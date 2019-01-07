@@ -1,3 +1,4 @@
+<div class="percentage" *ngIf="showPercentage" [ngClass]="{disabled: disabled}">{{value}}%</div>
 <mat-slider
   [min]="min"
   [max]="max"
@@ -7,3 +8,4 @@
   (input)="onProgressChange($event)"
   class="progress-slider">
 </mat-slider>
+

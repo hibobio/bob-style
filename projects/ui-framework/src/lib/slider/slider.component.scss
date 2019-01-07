@@ -1,6 +1,14 @@
 @import '../style/colors.scss';
 
 :host ::ng-deep {
+  .percentage {
+    min-width: 128px;
+    text-align: right;
+    color: $grey-700;
+    &.disabled {
+      color: $grey-500;
+    }
+  }
   .mat-slider {
     &.mat-slider-disabled {
       &.mat-slider-horizontal {
@@ -17,6 +25,7 @@
     }
 
     &.mat-slider-horizontal {
+      width: 100%;
       .mat-slider-track-wrapper {
         height: 8px;
         border-radius: 5px
