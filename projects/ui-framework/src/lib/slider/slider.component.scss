@@ -1,7 +1,9 @@
 @import '../style/colors.scss';
 
 :host ::ng-deep {
-  .percentage {
+  .slider-label {
+    position: absolute;
+    right: 20px;
     min-width: 128px;
     text-align: right;
     color: $grey-700;
@@ -40,7 +42,7 @@
       }
     }
 
-    &.progress-slider {
+    &.slider-progress {
       .mat-slider-thumb {
         background-color: $white;
         border: 2px solid $grey-500;

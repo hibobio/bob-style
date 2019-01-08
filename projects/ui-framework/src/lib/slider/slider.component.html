@@ -1,11 +1,14 @@
-<div class="percentage" *ngIf="showPercentage" [ngClass]="{disabled: disabled}">{{value}}%</div>
-<mat-slider
-  [min]="min"
-  [max]="max"
-  [value]="value"
-  [step]="step"
-  [disabled]="disabled"
-  (input)="onProgressChange($event)"
-  class="progress-slider">
-</mat-slider>
+<div class="slider-wrapper">
+  <div class="slider-label" *ngIf="showLabel" [ngClass]="{disabled: disabled}">{{value}}{{labelSymbol}}</div>
+  <mat-slider
+    [min]="min"
+    [max]="max"
+    [value]="value"
+    [step]="step"
+    [disabled]="disabled"
+    (input)="onProgressChange($event)"
+    class="slider-progress">
+  </mat-slider>
+</div>
+
 
