@@ -14,6 +14,7 @@ export class SliderComponent implements OnInit {
   @Input() step?: Number = 1;
   @Input() disabled?: Boolean = false;
   @Input() showLabel?: Boolean = false;
+  @Input() readOnly?: Boolean = false;
   @Input() labelSymbol?: String = '%';
   constructor() {
   }

@@ -1,4 +1,4 @@
-<div class="slider-wrapper">
+<div class="slider-wrapper" [ngClass]="{'read-only': readOnly}">
   <div class="slider-label" *ngIf="showLabel" [ngClass]="{disabled: disabled}">{{value}}{{labelSymbol}}</div>
   <mat-slider
     [min]="min"

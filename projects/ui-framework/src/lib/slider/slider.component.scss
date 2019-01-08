@@ -1,61 +1,66 @@
 @import '../style/colors.scss';
 
 :host ::ng-deep {
-  .slider-label {
-    position: absolute;
-    right: 20px;
-    min-width: 128px;
-    text-align: right;
-    color: $grey-700;
-    &.disabled {
-      color: $grey-500;
+  .slider-wrapper {
+    &.read-only {
+      pointer-events: none;
     }
-  }
-  .mat-slider {
-    &.mat-slider-disabled {
+    .slider-label {
+      position: absolute;
+      right: 20px;
+      min-width: 128px;
+      text-align: right;
+      color: $grey-700;
+      &.disabled {
+        color: $grey-500;
+      }
+    }
+    .mat-slider {
+      &.mat-slider-disabled {
+        &.mat-slider-horizontal {
+          .mat-slider-track-fill {
+            background-color: $grey-500;
+          }
+          .mat-slider-track-background {
+            background-color: $grey-300;
+          }
+          .mat-slider-thumb {
+            transform: scale(0.7);
+          }
+        }
+      }
+
       &.mat-slider-horizontal {
-        .mat-slider-track-fill {
+        width: 100%;
+        .mat-slider-track-wrapper {
+          height: 8px;
+          border-radius: 5px
+        }
+        .mat-slider-track-fill, .mat-slider-track-background {
+          height: 100%;
+          background-color: var(--primary-500);
+        }
+
+        .mat-slider-track-background {
           background-color: $grey-500;
         }
-        .mat-slider-track-background {
-          background-color: $grey-300;
-        }
+      }
+
+      &.slider-progress {
         .mat-slider-thumb {
-          transform: scale(0.7);
+          background-color: $white;
+          border: 2px solid $grey-500;
+          bottom: -12px;
+          box-shadow: 0 0 8px 6px rgba(0, 0, 0, 0.07);
         }
       }
     }
 
-    &.mat-slider-horizontal {
-      width: 100%;
-      .mat-slider-track-wrapper {
-        height: 8px;
-        border-radius: 5px
-      }
-      .mat-slider-track-fill, .mat-slider-track-background {
-        height: 100%;
-        background-color: var(--primary-500);
-      }
-
-      .mat-slider-track-background {
-        background-color: $grey-500;
-      }
-    }
-
-    &.slider-progress {
-      .mat-slider-thumb {
-        background-color: $white;
-        border: 2px solid $grey-500;
-        bottom: -12px;
-        box-shadow: 0 0 8px 6px rgba(0, 0, 0, 0.07);
-      }
-    }
-  }
-
-  .mat-slider:hover:not(.mat-slider-disabled) {
-    &.mat-slider-horizontal {
-      .mat-slider-track-background {
-        background-color: $grey-500;
+    .mat-slider:hover:not(.mat-slider-disabled) {
+      &.mat-slider-horizontal {
+        .mat-slider-track-background {
+          background-color: $grey-500;
+        }
       }
     }
   }

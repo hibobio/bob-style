@@ -15,6 +15,7 @@ const template = `
     [step]="step"
     [disabled]="disabled"
     [showLabel]="showLabel"
+    [readOnly]="readOnly"
     [labelSymbol]="labelSymbol"
     (progressChange)="progressChange($event)">
   </b-slider>
@@ -32,6 +33,7 @@ const note = `
   step | number | Step for each slider change | 1 (optional)
   disabled | boolean | Disabled mode | false (optional)
   showLabel | boolean | Show the value label with symbol | true (optional)
+  readOnly | boolean | Set slider to read only | false (optional)
   labelSymbol | string | The symbol for the label | '%' (optional)
   progressChange | EventEmitter | Progress change callback |
 
@@ -52,6 +54,7 @@ sliderStories.add(
         step: number('step', 1),
         disabled: boolean('disabled', false),
         showLabel: boolean('showLabel', true),
+        readOnly: boolean('readOnly', false),
         labelSymbol: text('labelSymbol', '%'),
         progressChange: action(),
       },
