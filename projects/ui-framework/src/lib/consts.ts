@@ -4,3 +4,5 @@ export enum ComponentGroupType {
   Icons = 'Icons',
   Typography  = 'Typography'
 }
+
+export const inputAttributesPlaceholder = '#moreattributes';
