@@ -3,7 +3,6 @@ import {DatepickerComponent} from './datepicker.component';
 import {MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {IconsModule} from '../../icons';
-import {BrowserModule} from '@angular/platform-browser';
 import {CommonModule} from '@angular/common';
 import {InputModule} from '../input/input.module';
 import {DatepickerInputComponent} from './datepicker-input.component';
@@ -15,7 +14,6 @@ import {FormsModule} from '@angular/forms';
     DatepickerComponent,
   ],
   imports: [
-    BrowserModule,
     CommonModule,
     BrowserAnimationsModule,
     MatDatepickerModule,

@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { MatButtonModule, MatRippleModule } from '@angular/material';
 import { ButtonComponent } from './button/button.component';
 import { SquareButtonComponent } from '../buttons/square/square.component';
@@ -16,7 +15,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     BackButtonComponent,
   ],
   imports: [
-    BrowserModule,
     MatButtonModule,
     MatRippleModule,
     IconsModule,
