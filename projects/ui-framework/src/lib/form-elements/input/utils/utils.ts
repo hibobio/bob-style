@@ -1,5 +1,5 @@
-import {baseInputTemplate} from './form-elements/input/input.component';
-import {inputAttributesPlaceholder} from './consts';
+import {baseInputTemplate} from '../input.component';
+import {inputAttributesPlaceholder} from '../../../consts';
 
 export default class BUtils {
   static addAttributesToBaseInput(attributes: string): string {

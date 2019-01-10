@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import BUtils from '../../utils';
+import BUtils from '../input/utils/utils';
 import {InputComponent} from '../input/input.component';
 
 @Component({

@@ -25,9 +25,9 @@ export class DatepickerComponent implements OnInit {
   @Input() inputPlaceholder: String;
   @Input() dateFormat?: string;
 
-  private readonly calendarIcon: String = Icons.calendar;
-  private readonly calendarIconSize: String = IconSize.small;
-  private readonly calendarIconColor: String = IconColor.dark;
+  public readonly calendarIcon: String = Icons.calendar;
+  public readonly calendarIconSize: String = IconSize.small;
+  public readonly calendarIconColor: String = IconColor.dark;
 
   inputTypes = InputTypes;
 
