@@ -6,7 +6,7 @@ import { values } from 'lodash';
 import { TextareaModule } from './textarea.module';
 import { ComponentGroupType } from '../../consts';
 
-const avatarStories = storiesOf(ComponentGroupType.FormElements, module)
+const textareaStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
@@ -44,7 +44,7 @@ const note = `
   ${ template }
   ~~~
 `;
-avatarStories.add(
+textareaStories.add(
   'Textarea',
   () => {
     return {
@@ -60,7 +60,9 @@ avatarStories.add(
         errorMessage: text('errorMessage', ''),
       },
       moduleMetadata: {
-        imports: [TextareaModule]
+        imports: [
+          TextareaModule,
+        ]
       }
     };
   },

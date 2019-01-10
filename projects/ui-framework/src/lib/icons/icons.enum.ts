@@ -26,4 +26,5 @@ export enum Icons {
   back_arrow_link = 'back_Icon',
   close = 'x',
   reset_x = 'reset_x',
+  three_dots = 'three_dots',
 }

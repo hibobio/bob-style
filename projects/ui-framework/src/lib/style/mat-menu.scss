@@ -1,0 +1,96 @@
+@import './colors.scss';
+@import './shapes.scss';
+
+.cdk-overlay-container {
+  .mat-menu-panel {
+    position: relative;
+    overflow: visible;
+    border: 1px solid $grey-500;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    .mat-menu-content {
+      position: relative;
+      overflow: auto;
+      max-height: 500px;
+      padding: 0;
+    }
+  }
+
+  > .cdk-overlay-connected-position-bounding-box {
+    .mat-menu-panel {
+      z-index: 1;
+
+      &:before, &:after {
+        content: '';
+        display: block;
+        position: absolute;
+      }
+
+      &:before {
+        z-index: 0;
+      }
+      &:after {
+        z-index: 2;
+      }
+
+      // opens below - default
+      &.mat-menu-below {
+        top: 8px;
+        &:before {
+          top: -5px;
+          @include arrow-up(7px, $grey-500);
+          border-bottom-width: 5px;
+        }
+        &:after {
+          top: -4px;
+          @include arrow-up(5px, $white);
+        }
+      }
+
+      // opens above
+      &.mat-menu-above {
+        bottom: 8px;
+        &:before {
+          bottom: -5px;
+          @include arrow-down(7px, $grey-500);
+          border-top-width: 5px;
+        }
+        &:after {
+          bottom: -4px;
+          @include arrow-down(5px, $white);
+        }
+      }
+
+      // opens to the right - default
+      &.mat-menu-after {
+        &:before {
+          left: 11px;
+        }
+        &:after {
+          left: 13px;
+        }
+      }
+
+      // opens to the left {
+      &.mat-menu-before {
+        &:before {
+          right: 11px;
+        }
+        &:after {
+          right: 13px;
+        }
+      }
+    }
+  }
+
+  > .cdk-overlay-connected-position-bounding-box ~ .cdk-overlay-connected-position-bounding-box {
+    .mat-menu-panel {
+      top: auto;
+      bottom: auto;
+      &:before, &:after {
+        content: none;
+      }
+    }
+  }
+
+}

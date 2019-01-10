@@ -7,7 +7,7 @@ import { InputModule } from './input.module';
 import { InputTypes } from './input.enum';
 import {ComponentGroupType} from '../../consts';
 
-const avatarStories = storiesOf(ComponentGroupType.FormElements, module)
+const inputStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
@@ -47,7 +47,7 @@ const note = `
   ${ template }
   ~~~
 `;
-avatarStories.add(
+inputStories.add(
   'Input',
   () => {
     return {
