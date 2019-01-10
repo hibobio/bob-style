@@ -1,0 +1,32 @@
+<mat-form-field class="text-area"
+                [ngClass]="{'required': required, 'error': errorMessage}">
+  <textarea matInput
+            #textarea
+            [maxlength]="maxChars"
+            [disabled]="disabled"
+            [placeholder]="placeholder"
+            [(ngModel)]="value"
+            (blur)="emitInputEvent(eventType.onBlur, value)"
+            (focus)="emitInputEvent(eventType.onFocus, value)"
+            (ngModelChange)="emitInputEvent(eventType.onChange, value)">
+  </textarea>
+
+  <mat-hint *ngIf="errorMessage"
+            align="start"
+            class="error-message">
+    {{errorMessage}}
+  </mat-hint>
+
+  <mat-hint *ngIf="hintMessage && !errorMessage"
+            align="start"
+            class="hint-message">
+    {{hintMessage}}
+  </mat-hint>
+
+  <mat-hint *ngIf="maxChars"
+            align="end"
+            class="length-indicator">
+    {{textarea.value?.length || 0}}/{{maxChars}}
+  </mat-hint>
+
+</mat-form-field>

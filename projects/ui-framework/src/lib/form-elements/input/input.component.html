@@ -10,13 +10,13 @@
          (ngModelChange)="emitInputEvent(eventType.onChange, value)"
          #moreattributes>
 
-  <div class="error-message" *ngIf="errorMessage">
+  <mat-hint class="error-message" *ngIf="errorMessage">
     {{errorMessage}}
-  </div>
+  </mat-hint>
 
-  <div class="hint-message" *ngIf="hintMessage && !errorMessage">
+  <mat-hint class="hint-message" *ngIf="hintMessage && !errorMessage">
     {{hintMessage}}
-  </div>
+  </mat-hint>
 
   <div matSuffix>
     <ng-content select="[input-suffix]"></ng-content>

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { InputComponent } from './input.component';
+import { TextareaComponent } from './textarea.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    InputComponent,
+    TextareaComponent,
   ],
   imports: [
     BrowserModule,
@@ -18,9 +18,9 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
   ],
   exports: [
-    InputComponent,
+    TextareaComponent,
   ],
-  providers: [InputComponent],
+  providers: [TextareaComponent],
 })
-export class InputModule {
+export class TextareaModule {
 }

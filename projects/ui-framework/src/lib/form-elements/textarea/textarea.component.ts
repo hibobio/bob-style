@@ -1,16 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { InputEvent, InputEventType, InputTypes } from './input.enum';
-
-export const baseInputTemplate = require('./input.component.html');
+import { InputEvent, InputEventType } from '../input/input.enum';
 
 @Component({
-  selector: 'b-input',
-  templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss'],
+  selector: 'b-textarea',
+  templateUrl: './textarea.component.html',
+  styleUrls: ['./textarea.component.scss'],
 })
-export class InputComponent implements OnInit {
+export class TextareaComponent implements OnInit {
 
-  @Input() inputType: InputTypes;
+  @Input() maxChars: number;
   @Input() placeholder: string;
   @Input() value: string;
   @Input() disabled: boolean;

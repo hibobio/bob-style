@@ -10,7 +10,7 @@
     .mat-form-field-flex {
       border: 1px solid $grey-500;
       background-color: $white;
-      height: 46px;
+      height: auto;
       border-radius: 4px;
       position: relative;
       place-content: center;
@@ -21,9 +21,8 @@
         border: none;
         height: 100%;
         position: relative;
-        input {
+        input, textarea {
           margin: 0;
-          padding: 0 16px;
           box-sizing: border-box;
           height: 100%;
           &[type=number]::-webkit-inner-spin-button,
@@ -31,6 +30,14 @@
             -webkit-appearance: none;
             margin: 0;
           }
+        }
+        input {
+          height: 46px;
+          padding: 0 16px;
+        }
+        textarea {
+          height: 120px;
+          padding: 16px;
         }
         .mat-form-field-label-wrapper {
           box-sizing: border-box;
@@ -55,13 +62,12 @@
       .mat-form-field-suffix {
         padding: 0 5px;
       }
-      .error-message, .hint-message {
-        padding: 0 16px;
-        margin-top: 8px;
-      }
-      .error-message {
-        color: var(--negative-500);
-      }
+    }
+    .mat-form-field-subscript-wrapper {
+      top: auto;
+      margin-top: 4px;
+      font-size: 12px;
+      padding: 0 16px;
     }
     .mat-form-field-underline {
       display: none;
@@ -80,7 +86,7 @@
   }
   &.mat-form-field-should-float {
     .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
-      transform: translateY(-36px);
+      transform: translateY(-34px);
     }
   }
   &.mat-form-field-disabled {
@@ -103,10 +109,26 @@
   &.error {
     .mat-form-field-wrapper .mat-form-field-flex {
       border: 1px solid var(--negative-500);
-      .error-message {
-        color: var(--negative-500);
-        padding: 0 16px;
-        margin-top: 8px;
+    }
+    .mat-form-field-subscript-wrapper {
+      color: var(--negative-500);
+    }
+  }
+  &.text-area {
+    line-height: initial;
+    .mat-form-field-wrapper .mat-form-field-flex {
+      .mat-form-field-infix {
+        .mat-form-field-label-wrapper {
+          align-items: start;
+          .mat-form-field-label {
+            padding: 16px;
+          }
+        }
+      }
+    }
+    .mat-form-field-subscript-wrapper {
+      .length-indicator {
+        color: $grey-600;
       }
     }
   }
