@@ -1,5 +1,7 @@
 @import 'colors';
 
+$form-field-height: 46px;
+
 .mat-form-field {
   width: 100%;
   margin: 20px 0;
@@ -32,7 +34,7 @@
           }
         }
         input {
-          height: 46px;
+          height: $form-field-height;
           padding: 0 16px;
         }
         textarea {
@@ -59,7 +61,7 @@
           }
         }
       }
-      .mat-form-field-suffix {
+      .mat-form-field-prefix, .mat-form-field-suffix {
         padding: 0 5px;
       }
     }
@@ -112,6 +114,11 @@
     }
     .mat-form-field-subscript-wrapper {
       color: var(--negative-500);
+    }
+  }
+  &.hide-label-on-focus.mat-focused {
+    .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
+      display: none;
     }
   }
   &.text-area {

@@ -1,0 +1,23 @@
+<b-input class="search-input"
+         [inputType]="inputTypes.text"
+         [placeholder]="placeholder"
+         [value]="value"
+         [hideLabelOnFocus]="hideLabelOnFocus"
+         (inputEvents)="onInputEvents($event)">
+
+  <div input-prefix>
+    <b-icon [icon]="searchIcon"
+            [color]="iconColor"
+            [size]="iconSize">
+    </b-icon>
+  </div>
+
+  <div input-suffix>
+    <b-icon [icon]="resetIcon"
+            [color]="iconColor"
+            [size]="iconSize"
+            (click)="onResetClick()">
+    </b-icon>
+  </div>
+
+</b-input>

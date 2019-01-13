@@ -27,4 +27,5 @@ export enum Icons {
   close = 'x',
   reset_x = 'reset_x',
   three_dots = 'three_dots',
+  search = 'search_card_17px',
 }

@@ -1,10 +1,20 @@
 <mat-form-field
-  [ngClass]="{'required': required, 'error': errorMessage}">
+  [ngClass]="{
+    'required': required,
+    'error': errorMessage,
+    'hide-label-on-focus': hideLabelOnFocus
+  }">
+
+  <div matPrefix>
+    <ng-content select="[input-prefix]"></ng-content>
+  </div>
+
   <input matInput
          [type]="inputType"
          [disabled]="disabled"
          [placeholder]="placeholder"
          [(ngModel)]="value"
+         [autocomplete]="enableBrowserAutoComplete"
          (blur)="emitInputEvent(eventType.onBlur, value)"
          (focus)="emitInputEvent(eventType.onFocus, value)"
          (ngModelChange)="emitInputEvent(eventType.onChange, value)"

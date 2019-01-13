@@ -13,7 +13,7 @@
     }
     &.dark {
       svg g {
-        path {
+        path, circle {
           fill: $grey-700 !important;
         }
         line {
@@ -23,7 +23,7 @@
     }
     &.light {
       svg g {
-        path {
+        path, circle {
           fill: $grey-500 !important;
         }
         line {
@@ -33,7 +33,7 @@
     }
     &.white {
       svg g {
-        path {
+        path, circle {
           fill: $white !important;
         }
         line {
@@ -43,7 +43,7 @@
     }
     &.primary {
       svg g {
-        path {
+        path, circle {
           fill: var(--primary-500) !important;
         }
         line {

@@ -4,7 +4,7 @@ import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { InputModule } from './input.module';
-import { InputTypes } from './input.enum';
+import { InputAutoCompleteOptions, InputTypes } from './input.enum';
 import {ComponentGroupType} from '../../consts';
 
 const inputStories = storiesOf(ComponentGroupType.FormElements, module)
@@ -12,6 +12,7 @@ const inputStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withKnobs);
 
 const inputTypes = values(InputTypes);
+const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
 
 const template = `
   <b-input
@@ -21,6 +22,8 @@ const template = `
     [disabled]="disabled"
     [required]="required"
     [errorMessage]="errorMessage"
+    [hideLabelOnFocus]="hideLabelOnFocus"
+    [enableBrowserAutoComplete]="enableBrowserAutoComplete"
     [hintMessage]="hintMessage"
     (inputEvents)="inputEvents($event)">
  </b-input>
@@ -41,6 +44,8 @@ const note = `
   required | boolean | is field required
   hintMessage | text | hint text
   errorMessage | text | error text
+  enableBrowserAutoComplete | InputAutoCompleteOptions | shows browser autocomplete options
+  hideLabelOnFocus | boolean | hides label on focus
   inputEvents | InputEvents | input events emitter
 
   ~~~
@@ -59,8 +64,10 @@ inputStories.add(
         placeholder: text('placeholder', 'placeholder text'),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
+        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         hintMessage: text('hintMessage', 'this field should contain something'),
         errorMessage: text('errorMessage', ''),
+        enableBrowserAutoComplete: select('enableBrowserAutoComplete', inputAutoCompleteOptions, InputAutoCompleteOptions.off),
       },
       moduleMetadata: {
         imports: [InputModule]

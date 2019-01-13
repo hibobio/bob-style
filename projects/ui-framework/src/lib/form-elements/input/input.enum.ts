@@ -19,3 +19,8 @@ export enum InputEventType {
   onBlur = 'onBlur',
   onChange = 'onChange',
 }
+
+export enum InputAutoCompleteOptions {
+  on = 'on',
+  off = 'off',
+}
