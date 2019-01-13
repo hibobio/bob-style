@@ -11,6 +11,7 @@ $form-field-height: 46px;
     padding: 0;
     .mat-form-field-flex {
       border: 1px solid $grey-500;
+      box-sizing: border-box;
       background-color: $white;
       height: auto;
       border-radius: 4px;
@@ -23,7 +24,7 @@ $form-field-height: 46px;
         border: none;
         height: 100%;
         position: relative;
-        input, textarea {
+        input, textarea, mat-select {
           margin: 0;
           box-sizing: border-box;
           height: 100%;
@@ -33,7 +34,7 @@ $form-field-height: 46px;
             margin: 0;
           }
         }
-        input {
+        input, mat-select {
           height: $form-field-height;
           padding: 0 16px;
         }
@@ -112,7 +113,7 @@ $form-field-height: 46px;
     .mat-form-field-wrapper .mat-form-field-flex {
       border: 1px solid var(--negative-500);
     }
-    .mat-form-field-subscript-wrapper {
+    .mat-form-field-subscript-wrapper .mat-hint {
       color: var(--negative-500);
     }
   }
