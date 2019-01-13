@@ -6,6 +6,7 @@
   [required]="false"
   [errorMessage]=""
   (inputEvents)="inputEvents($event, picker)"
+  #datePickerInput
   [datePickerId]="picker">
 
   <div input-suffix>
@@ -16,6 +17,6 @@
     </b-icon>
   </div>
 
-  <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
+  <mat-datepicker #picker (closed)="datePickerClosed()" [dateClass]="dateClass"></mat-datepicker>
 
 </b-datepicker-input>

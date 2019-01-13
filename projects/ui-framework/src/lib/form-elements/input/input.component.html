@@ -18,6 +18,7 @@
          (blur)="emitInputEvent(eventType.onBlur, value)"
          (focus)="emitInputEvent(eventType.onFocus, value)"
          (ngModelChange)="emitInputEvent(eventType.onChange, value)"
+         #bInput
          #moreattributes>
 
   <mat-hint class="error-message" *ngIf="errorMessage">

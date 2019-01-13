@@ -1,9 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DateAdapter, MAT_DATE_FORMATS, MatDatepicker} from '@angular/material';
-import {IconColor, Icons, IconSize} from '../../icons';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { DateAdapter, MAT_DATE_FORMATS, MatDatepicker } from '@angular/material';
+import { IconColor, Icons, IconSize } from '../../icons';
 import * as moment from 'moment';
-import {InputEvent, InputEventType, InputTypes} from '../input/input.enum';
-import {B_DATE_FORMATS, BDateAdapter} from './date.adapter';
+import { InputEvent, InputEventType, InputTypes } from '../input/input.enum';
+import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
+import { invoke } from 'lodash';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class DatepickerComponent implements OnInit {
   public readonly calendarIconColor: String = IconColor.dark;
 
   inputTypes = InputTypes;
+  @ViewChild('datePickerInput') datePickerInput: ElementRef;
 
   constructor() {
   }
@@ -43,6 +45,9 @@ export class DatepickerComponent implements OnInit {
   inputEvents(inputEvent: InputEvent, picker: MatDatepicker<any>): void {
     switch (inputEvent.event) {
       case InputEventType.onBlur:
+        if (picker.opened) {
+          invoke(this, 'datePickerInput.bInput.nativeElement.focus');
+        }
         break;
       case InputEventType.onChange:
         this.dateChange.emit(inputEvent);
@@ -59,5 +64,9 @@ export class DatepickerComponent implements OnInit {
     const diff = date.diff(today, 'days');
     const same = date.isSame(today, 'day');
     return same ? 'today' : diff < 0 ? 'past' : 'future';
+  }
+
+  datePickerClosed() {
+    invoke(this, 'datePickerInput.bInput.nativeElement.blur');
   }
 }

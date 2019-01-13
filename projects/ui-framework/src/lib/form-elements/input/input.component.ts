@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { InputAutoCompleteOptions, InputEvent, InputEventType, InputTypes } from './input.enum';
 import { inputAttributesPlaceholder } from '../../consts';
+import { MatInput } from '@angular/material';
 
 export const baseInputTemplate = require('./input.component.html');
 
@@ -22,6 +23,7 @@ export class InputComponent implements OnInit {
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions = InputAutoCompleteOptions.off;
   @Output() inputEvents: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
 
+  @ViewChild('bInput') bInput: MatInput;
   eventType = InputEventType;
 
   constructor() {
