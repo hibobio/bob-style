@@ -5,14 +5,16 @@
          [hideLabelOnFocus]="hideLabelOnFocus"
          (inputEvents)="onInputEvents($event)">
 
-  <div input-prefix>
+  <div input-prefix
+       class="search-icon">
     <b-icon [icon]="searchIcon"
             [color]="iconColor"
             [size]="iconSize">
     </b-icon>
   </div>
 
-  <div input-suffix>
+  <div input-suffix *ngIf="value.length > 0"
+       class="reset-button">
     <b-icon [icon]="resetIcon"
             [color]="iconColor"
             [size]="iconSize"

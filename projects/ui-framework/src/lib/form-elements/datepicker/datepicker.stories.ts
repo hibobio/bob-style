@@ -10,7 +10,9 @@ import {ComponentGroupType} from '../../consts';
   .addDecorator(withKnobs);
 const template = `
   <b-datepicker
-  (dateChange)="dateChange($event)" [inputPlaceholder]="inputPlaceholder" [dateFormat]="dateFormat">
+    (dateChange)="dateChange($event)"
+    [inputPlaceholder]="inputPlaceholder"
+    [dateFormat]="dateFormat">
   </b-datepicker>
 `;
 const note = `

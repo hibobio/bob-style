@@ -25,7 +25,7 @@ import {FormsModule} from '@angular/forms';
     IconsModule,
     MatInputModule,
     InputModule,
-    FormsModule
+    FormsModule,
   ],
   exports: [
     DatepickerComponent,

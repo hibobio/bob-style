@@ -1,7 +1,8 @@
 @import './variables.scss';
 @import './typography.scss';
 @import './mat-form-field.scss';
-@import './mat-menu.scss';
+@import './mat-menu-panel.scss';
+@import './mat-select-panel.scss';
 
 body {
   font-family: var(--body-font-family);
