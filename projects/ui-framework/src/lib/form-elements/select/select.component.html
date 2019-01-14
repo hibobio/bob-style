@@ -1,8 +1,18 @@
 <mat-form-field>
 
-  <mat-select placeholder="Favorite food"
+  <mat-select panelClass="select-element"
+              multiple="true"
+              placeholder="Favorite food"
               disableOptionCentering="true"
+              disableRipple="true"
               (selectionChange)="onSelectionChange($event)">
+
+    <mat-select-trigger>
+      <b-button type="{{buttonType.primary}}"
+                size="{{buttonSize.small}}">
+        open select
+      </b-button>
+    </mat-select-trigger>
 
     <b-search [hideLabelOnFocus]="true"
               placeholder="Search Favourite food"
@@ -10,10 +20,19 @@
               (inputEvents)="onInputEvents($event)">
     </b-search>
 
-    <mat-option *ngFor="let option of options" [value]="option">
-      {{option}}
-    </mat-option>
+    <mat-optgroup *ngFor="let group of options"
+                  [label]="group.groupName">
+      <mat-option *ngFor="let option of group.options">
+        {{option.value}}
+      </mat-option>
+    </mat-optgroup>
 
+    <div class="select-footer">
+      <b-button type="{{buttonType.primary}}"
+                size="{{buttonSize.small}}">
+        apply
+      </b-button>
+    </div>
   </mat-select>
 
 </mat-form-field>

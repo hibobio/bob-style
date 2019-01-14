@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { InputEvent, InputEventType } from '../input/input.enum';
+import { InputEventType } from '../input/input.enum';
+import { InputEvent } from '../input/input.interface';
 
 @Component({
   selector: 'b-textarea',

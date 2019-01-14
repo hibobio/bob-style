@@ -3,9 +3,10 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchComponent } from './search.component';
 import { InputModule } from '../form-elements/input';
-import { InputEvent, InputEventType } from '../form-elements/input/input.enum';
+import { InputEventType } from '../form-elements/input/input.enum';
 import { IconsModule } from '../icons';
 import { By } from '@angular/platform-browser';
+import { InputEvent } from '../form-elements/input/input.interface';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;

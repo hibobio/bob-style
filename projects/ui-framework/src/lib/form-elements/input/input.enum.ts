@@ -9,11 +9,6 @@ export enum InputTypes {
   date = 'date',
 }
 
-export interface InputEvent {
-  event: InputEventType;
-  value: string | number;
-}
-
 export enum InputEventType {
   onFocus = 'onFocus',
   onBlur = 'onBlur',

@@ -2,10 +2,10 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { DateAdapter, MAT_DATE_FORMATS, MatDatepicker } from '@angular/material';
 import { IconColor, Icons, IconSize } from '../../icons';
 import * as moment from 'moment';
-import { InputEvent, InputEventType, InputTypes } from '../input/input.enum';
+import { InputEventType, InputTypes } from '../input/input.enum';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
 import { invoke } from 'lodash';
-
+import { InputEvent } from '../input/input.interface';
 
 @Component({
   selector: 'b-datepicker',

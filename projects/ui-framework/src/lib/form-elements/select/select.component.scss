@@ -1,4 +1,6 @@
 @import '../../style/typography.scss';
+@import '../../style/colors.scss';
+@import '../../style/mat-form-field.scss';
 
 :host ::ng-deep {
   display: block;
@@ -7,6 +9,45 @@
     height: 100%;
     .mat-select-value {
       vertical-align: middle;
+    }
+  }
+}
+
+::ng-deep {
+  .cdk-overlay-container .cdk-overlay-pane {
+    transform: translateX(-16px) translateY($form-field-height) scale(1) !important;
+    .mat-select-panel {
+      position: relative;
+      // todo: fix the min-width without the flickering
+      //min-width: calc(100% + 32px) !important;
+      border: 1px solid $grey-500;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      box-shadow: none;
+      max-height: 350px;
+      b-search {
+        display: block;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        .mat-form-field {
+          margin: 0;
+          .mat-form-field-wrapper .mat-form-field-flex {
+            border: none;
+            border-bottom: 1px solid $grey-500;
+            border-radius: 0;
+          }
+        }
+      }
+      .select-footer {
+        display: block;
+        position: sticky;
+        padding: 5px;
+        border-top: 1px solid red;
+        background-color: white;
+        bottom: 0;
+        z-index: 1;
+      }
     }
   }
 }

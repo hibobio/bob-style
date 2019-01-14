@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { InputAutoCompleteOptions, InputEvent, InputEventType, InputTypes } from './input.enum';
+import { InputAutoCompleteOptions, InputEventType, InputTypes } from './input.enum';
 import { inputAttributesPlaceholder } from '../../consts';
 import { MatInput } from '@angular/material';
+import { InputEvent } from './input.interface';
 
 export const baseInputTemplate = require('./input.component.html');
 

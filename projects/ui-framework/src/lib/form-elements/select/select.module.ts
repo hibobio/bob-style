@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { SearchModule } from '../../search/search.module';
+import { ButtonsModule } from '../../buttons';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { SearchModule } from '../../search/search.module';
     MatInputModule,
     MatOptionModule,
     MatSelectModule,
+    ButtonsModule,
   ],
   exports: [
     SelectComponent,

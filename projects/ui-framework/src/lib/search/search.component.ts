@@ -1,8 +1,9 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../icons';
 import { InputComponent } from '../form-elements/input/input.component';
-import { InputEvent, InputTypes } from '../form-elements/input/input.enum';
+import { InputTypes } from '../form-elements/input/input.enum';
 import { set } from 'lodash';
+import { InputEvent } from '../form-elements/input/input.interface';
 
 @Component({
   selector: 'b-search',
@@ -29,7 +30,6 @@ export class SearchComponent extends InputComponent implements OnInit {
 
   onInputEvents(event: InputEvent): void {
     this.value = event.value as string;
-    console.log('this.value', this.value);
     this.inputEvents.emit(event);
   }
 
