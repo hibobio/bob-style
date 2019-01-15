@@ -1,0 +1,11 @@
+<content (click)="openPanel()"
+         cdkOverlayOrigin
+         class="panel-trigger">
+  <ng-content select="[panel-trigger]"></ng-content>
+</content>
+
+<ng-template #templateRef>
+  <div>
+    <ng-content select="[panel-content]"></ng-content>
+  </div>
+</ng-template>
