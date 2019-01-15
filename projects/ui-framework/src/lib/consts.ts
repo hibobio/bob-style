@@ -8,4 +8,6 @@ export enum ComponentGroupType {
   Search = 'Search'
 }
 
+export const serverDateFormat = 'YYYY-MM-DDTHH:mm';
+
 export const inputAttributesPlaceholder = '#moreattributes';

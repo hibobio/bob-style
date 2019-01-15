@@ -8,6 +8,7 @@ import { invoke } from 'lodash';
 import { InputEvent } from '../input/input.interface';
 import { BaseFormElement } from '../base-form-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { serverDateFormat } from '../../consts';
 
 @Component({
   selector: 'b-datepicker',
@@ -63,6 +64,7 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
         }
         break;
       case InputEventType.onChange:
+        inputEvent.value = moment(inputEvent.value).format(serverDateFormat);
         this.propagateChange(inputEvent.value);
         this.dateChange.emit(inputEvent);
         break;
