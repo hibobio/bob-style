@@ -5,7 +5,7 @@ export enum ComponentGroupType {
   Typography  = 'Typography',
   Panel = 'Panel',
   Menu = 'Menu',
-  Search = 'Search'
+  Search = 'Search',
 }
 
 export const serverDateFormat = 'YYYY-MM-DDTHH:mm';
