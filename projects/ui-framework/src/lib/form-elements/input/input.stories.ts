@@ -16,18 +16,18 @@ const inputTypes = values(InputTypes);
 const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
 
 const template = `
-  <b-input
-    [inputType]="inputType"
-    [placeholder]="placeholder"
-    [value]="value"
-    [disabled]="disabled"
-    [required]="required"
-    [errorMessage]="errorMessage"
-    [hideLabelOnFocus]="hideLabelOnFocus"
-    [enableBrowserAutoComplete]="enableBrowserAutoComplete"
-    [hintMessage]="hintMessage"
-    (inputEvents)="inputEvents($event)">
- </b-input>
+<b-input style="display:block; width: 600px;"
+        [inputType]="inputType"
+        [placeholder]="placeholder"
+        [value]="value"
+        [disabled]="disabled"
+        [required]="required"
+        [errorMessage]="errorMessage"
+        [hideLabelOnFocus]="hideLabelOnFocus"
+        [enableBrowserAutoComplete]="enableBrowserAutoComplete"
+        [hintMessage]="hintMessage"
+        (inputEvents)="inputEvents($event)">
+</b-input>
 `;
 
 

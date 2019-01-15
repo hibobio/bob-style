@@ -12,16 +12,16 @@ const textareaStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withKnobs);
 
 const template = `
-  <b-textarea
-    [maxChars]="maxChars"
-    [placeholder]="placeholder"
-    [value]="value"
-    [disabled]="disabled"
-    [required]="required"
-    [errorMessage]="errorMessage"
-    [hintMessage]="hintMessage"
-    (inputEvents)="inputEvents($event)">
- </b-textarea>
+<b-textarea style="display:block; width: 600px;"
+            [maxChars]="maxChars"
+            [placeholder]="placeholder"
+            [value]="value"
+            [disabled]="disabled"
+            [required]="required"
+            [errorMessage]="errorMessage"
+            [hintMessage]="hintMessage"
+            (inputEvents)="inputEvents($event)">
+</b-textarea>
 `;
 
 

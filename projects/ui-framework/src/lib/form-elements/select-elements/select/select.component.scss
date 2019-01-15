@@ -1,9 +1,8 @@
-@import '../../style/typography.scss';
-@import '../../style/colors.scss';
-@import '../../style/mat-form-field.scss';
+@import '../../../style/typography';
+@import '../../../style/colors';
+@import '../../../style/mat-form-field';
 
 :host ::ng-deep {
-  display: block;
   @include BodyFont(normal, normal, 12px);
   .mat-select-trigger {
     height: 100%;
@@ -24,10 +23,10 @@
       border-top-left-radius: 0;
       border-top-right-radius: 0;
       box-shadow: none;
-      max-height: 350px;
+      max-height: none;
+      overflow: hidden !important;
       b-search {
         display: block;
-        position: sticky;
         top: 0;
         z-index: 1;
         .mat-form-field {
@@ -39,9 +38,35 @@
           }
         }
       }
+      .options-wrapper {
+        position: relative;
+        overflow: auto;
+        max-height: 250px;
+        mat-option {
+          padding-left: 24px;
+          box-sizing: border-box;
+          position: relative;
+          &.group-header {
+            padding-left: 16px;
+            border: 1px solid red;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: white;
+          }
+          .collapse-group {
+            float: right;
+          }
+        }
+        &.no-grouping {
+          mat-option {
+            padding-left: 16px;
+          }
+        }
+      }
       .select-footer {
         display: block;
-        position: sticky;
         padding: 5px;
         border-top: 1px solid red;
         background-color: white;

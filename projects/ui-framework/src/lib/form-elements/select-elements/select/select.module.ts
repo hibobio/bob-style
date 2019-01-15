@@ -3,8 +3,9 @@ import { SelectComponent } from './select.component';
 import { MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SearchModule } from '../../search/search.module';
-import { ButtonsModule } from '../../buttons';
+import { SearchModule } from '../../../search/search.module';
+import { ButtonsModule } from '../../../buttons';
+import { SelectModelService } from './select-model.service';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,9 @@ import { ButtonsModule } from '../../buttons';
   exports: [
     SelectComponent,
   ],
+  providers: [
+    SelectModelService,
+  ]
 })
 export class SelectModule {
 }

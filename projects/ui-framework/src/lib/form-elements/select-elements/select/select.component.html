@@ -1,0 +1,64 @@
+<mat-form-field>
+
+  <mat-select panelClass="select-element"
+              [multiple]="isMultiSelect"
+              placeholder="Favorite food"
+              disableOptionCentering="true"
+              disableRipple="true"
+              [(ngModel)]="selectedModel"
+              #mySelect>
+
+    <mat-select-trigger>
+      <span>___x___ {{triggerValue}}</span>
+    </mat-select-trigger>
+
+    <b-search [hideLabelOnFocus]="true"
+              placeholder="Search Favourite food"
+              (keydown)="onSearchKeyDown($event)"
+              (inputEvents)="onSearchEvents($event)">
+    </b-search>
+
+    <div class="options-wrapper"
+         [ngClass]="{'no-grouping': selectionGroupOption.length === 1 && !showSingleGroupHeader}">
+
+      <div *ngFor="let group of selectionGroupOption"
+           class="group">
+
+        <mat-option *ngIf="selectionGroupOption.length > 1 || showSingleGroupHeader"
+                    [value]="group.groupHeader"
+                    (click)="onOptionClick(group.groupHeader)"
+                    [disabled]="!isMultiSelect || blockGroupHeaderOptionClick"
+                    class="group-header">
+          <span class="option-value">{{group.groupHeader.value}}</span>
+          <div class="collapse-group"
+               (mouseenter)="blockGroupHeaderOptionClick=true"
+               (mouseleave)="blockGroupHeaderOptionClick=false"
+               (click)="onCollapseGroup($event, group)">
+            --X--
+          </div>
+        </mat-option>
+
+        <div *ngIf="!group.isCollapsed"
+             class="group-options">
+          <mat-option *ngFor="let option of group.options"
+                      [value]="option"
+                      (click)="onOptionClick(option)"
+                      class="group-option">
+            <span class="option-value">{{option.value}}</span>
+          </mat-option>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div *ngIf="isMultiSelect"
+         class="select-footer">
+      <b-button type="{{buttonType.primary}}"
+                size="{{buttonSize.small}}">
+        apply
+      </b-button>
+    </div>
+  </mat-select>
+
+</mat-form-field>

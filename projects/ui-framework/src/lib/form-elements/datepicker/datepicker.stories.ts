@@ -11,11 +11,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 const template = `
-  <b-datepicker
-    (dateChange)="dateChange($event)"
-    [inputPlaceholder]="inputPlaceholder"
-    [dateFormat]="dateFormat">
-  </b-datepicker>
+<b-datepicker style="display:block; width: 600px;"
+              (dateChange)="dateChange($event)"
+              [inputPlaceholder]="inputPlaceholder"
+              [dateFormat]="dateFormat">
+</b-datepicker>
 `;
 const note = `
   ## Slider Element
