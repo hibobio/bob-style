@@ -1,6 +1,7 @@
-import {NativeDateAdapter} from '@angular/material';
-import * as moment from 'moment';
+import { NativeDateAdapter } from '@angular/material';
+import * as moment_ from 'moment';
 
+const moment = moment_;
 export class BDateAdapter extends NativeDateAdapter {
   public static bFormat = 'DD/MM/YYYY';
 

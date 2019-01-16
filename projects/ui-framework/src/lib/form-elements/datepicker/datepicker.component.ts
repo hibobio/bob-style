@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS, MatDatepicker } from '@angular/material';
 import { IconColor, Icons, IconSize } from '../../icons';
-import * as moment from 'moment';
+import * as moment_ from 'moment';
 import { InputEventType, InputTypes } from '../input/input.enum';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
 import { invoke } from 'lodash';
@@ -10,6 +10,7 @@ import { BaseFormElement } from '../base-form-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
 
+const moment = moment_;
 @Component({
   selector: 'b-datepicker',
   templateUrl: './datepicker.component.html',
