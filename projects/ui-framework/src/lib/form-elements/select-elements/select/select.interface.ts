@@ -5,7 +5,7 @@ export interface SelectGroupOption {
 
 export interface SelectOptions {
   value: string;
-  id: number;
+  id: number | string;
 }
 
 export interface SelectionGroupOption {

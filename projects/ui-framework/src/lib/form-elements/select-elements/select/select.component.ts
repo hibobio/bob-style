@@ -21,7 +21,7 @@ export class SelectComponent implements OnInit {
   @Input() isMultiSelect: boolean;
   @Input() showSingleGroupHeader = false;
 
-  selectionGroupOption: SelectionGroupOption[];
+  selectionGroupOptions: SelectionGroupOption[];
   selectedModel: SelectionOption[];
   triggerValue: string;
   blockGroupHeaderOptionClick = false;
@@ -35,13 +35,13 @@ export class SelectComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.selectionGroupOption = this.selectModelService
+    this.selectionGroupOptions = this.selectModelService
       .getSelectElementOptionsModel(this.options);
 
     const selectedOptions = this.selectModelService
-      .getSelectedOptions(this.selectionGroupOption, this.selectedIds);
+      .getSelectedOptions(this.selectionGroupOptions, this.selectedIds);
     const selectedGroupsHeaders = this.selectModelService
-      .getSelectedGroupHeaderOptions(this.selectionGroupOption, this.selectedIds);
+      .getSelectedGroupHeaderOptions(this.selectionGroupOptions, this.selectedIds);
 
     this.selectedModel = this.isMultiSelect
       ? concat(selectedOptions, selectedGroupsHeaders)
@@ -63,8 +63,7 @@ export class SelectComponent implements OnInit {
     }
   }
 
-  onCollapseGroup($event, group): void {
-    $event.preventDefault();
+  onCollapseGroup(group): void {
     group.isCollapsed = !group.isCollapsed;
   }
 
@@ -77,7 +76,7 @@ export class SelectComponent implements OnInit {
       this.onGroupHeaderClick(selectedOption);
     } else {
       this.selectedModel = this.selectModelService
-        .updateGroupHeaderSelectionByOptions(this.selectionGroupOption, this.selectedModel);
+        .updateGroupHeaderSelectionByOptions(this.selectionGroupOptions, this.selectedModel);
     }
   }
 
@@ -87,9 +86,9 @@ export class SelectComponent implements OnInit {
 
     this.selectedModel = isOptionSelected
       ? this.selectModelService
-        .selectAllGroupOptions(selectedOption, this.selectionGroupOption, this.selectedModel)
+        .selectAllGroupOptions(selectedOption, this.selectionGroupOptions, this.selectedModel)
       : this.selectModelService
-        .removeAllGroupOptions(selectedOption, this.selectionGroupOption, this.selectedModel);
+        .unselectAllGroupOptions(selectedOption, this.selectionGroupOptions, this.selectedModel);
   }
 
   private updateTriggerText(): void {

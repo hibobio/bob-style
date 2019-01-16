@@ -18,13 +18,14 @@
     .mat-select-panel {
       position: relative;
       // todo: fix the min-width without the flickering
-      //min-width: calc(100% + 32px) !important;
+      // min-width: calc(100% + 32px) !important;
       border: 1px solid $grey-500;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
       box-shadow: none;
       max-height: none;
       overflow: hidden !important;
+      transform-origin: 0 0 0 !important;
       b-search {
         display: block;
         top: 0;

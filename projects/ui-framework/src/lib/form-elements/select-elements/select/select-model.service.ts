@@ -7,7 +7,9 @@ export class SelectModelService {
   constructor() {
   }
 
-  public getSelectElementOptionsModel(options: SelectGroupOption[]): SelectionGroupOption[] {
+  public getSelectElementOptionsModel(
+    options: SelectGroupOption[],
+  ): SelectionGroupOption[] {
     return map(options, (group) => {
       return {
         groupName: group.groupName,
@@ -37,34 +39,59 @@ export class SelectModelService {
   }
 
   public getSelectedOptions(
-    selectionGroupOption: SelectGroupOption[],
+    selectionGroupOptions: SelectGroupOption[],
     selectedIds: (string | number)[],
   ): SelectionOption[] {
-    return chain(selectionGroupOption)
-      .concat(flatMap(selectionGroupOption, 'groupHeader'), flatMap(selectionGroupOption, 'options'))
+    return chain(selectionGroupOptions)
+      .concat(flatMap(selectionGroupOptions, 'groupHeader'), flatMap(selectionGroupOptions, 'options'))
       .filter(option => includes(selectedIds, option.id))
       .value();
   }
 
   public getSelectedGroupHeaderOptions(
-    selectionGroupOption: SelectGroupOption[],
+    selectionGroupOptions: SelectGroupOption[],
     selectedIds: (string | number)[],
   ): SelectionOption[] {
-    return chain(selectionGroupOption)
+    return chain(selectionGroupOptions)
       .filter(group => this.isEveryGroupOptionSelected(group.options, selectedIds))
       .map('groupHeader')
       .value();
   }
 
   public updateGroupHeaderSelectionByOptions(
-    selectionGroupOption: SelectGroupOption[],
+    selectionGroupOptions: SelectGroupOption[],
     selectedModel: SelectionOption[],
   ): SelectionOption[] {
-    const groupHeaderIds = flatMap(selectionGroupOption, 'groupHeader.id');
+    const groupHeaderIds = flatMap(selectionGroupOptions, 'groupHeader.id');
     const selectedModelNoHeaders = filter(selectedModel, option => !includes(groupHeaderIds, option.id));
     const selectedGroups = this
-      .getSelectedGroupHeaderOptions(selectionGroupOption, flatMap(selectedModelNoHeaders, 'id'));
+      .getSelectedGroupHeaderOptions(selectionGroupOptions, flatMap(selectedModelNoHeaders, 'id'));
     return concat(selectedModelNoHeaders, selectedGroups);
+  }
+
+  public selectAllGroupOptions(
+    selectedOption: SelectionOption,
+    selectionGroupOptions: SelectionGroupOption[],
+    selectedModel: SelectionOption[],
+  ): SelectionOption[] {
+    const selectedGroup = find(selectionGroupOptions, group => isEqual(selectedOption.groupName, group.groupName));
+    return chain([])
+      .concat(selectedModel, selectedGroup.options, selectedOption)
+      .uniq()
+      .value();
+  }
+
+  public unselectAllGroupOptions(
+    selectedOption: SelectionOption,
+    selectionGroupOptions: SelectionGroupOption[],
+    selectedModel: SelectionOption[],
+  ): SelectionOption[] {
+    const selectedGroup = find(selectionGroupOptions, group => isEqual(selectedOption.groupName, group.groupName));
+    const groupIds = chain(selectedGroup.options)
+      .concat(selectedGroup.groupHeader)
+      .flatMap('id')
+      .value();
+    return filter(selectedModel, option => !includes(groupIds, option.id));
   }
 
   private isEveryGroupOptionSelected(
@@ -72,30 +99,5 @@ export class SelectModelService {
     selectedIds: (string | number)[],
   ): boolean {
     return every(groupOptions, option => includes(selectedIds, option.id));
-  }
-
-  public selectAllGroupOptions(
-    selectedOption: SelectionOption,
-    selectionGroupOption: SelectionGroupOption[],
-    selectedModel: SelectionOption[],
-  ): SelectionOption[] {
-    const selectedGroup = find(selectionGroupOption, group => isEqual(selectedOption.groupName, group.groupName));
-    return chain(selectionGroupOption)
-      .concat(selectedModel, selectedGroup.options, selectedOption)
-      .uniq()
-      .value();
-  }
-
-  public removeAllGroupOptions(
-    selectedOption: SelectionOption,
-    selectionGroupOption: SelectionGroupOption[],
-    selectedModel: SelectionOption[],
-  ): SelectionOption[] {
-    const selectedGroup = find(selectionGroupOption, group => isEqual(selectedOption.groupName, group.groupName));
-    const groupIds = chain(selectedGroup.options)
-      .concat(selectedGroup.groupHeader)
-      .flatMap('id')
-      .value();
-    return filter(selectedModel, option => !includes(groupIds, option.id));
   }
 }

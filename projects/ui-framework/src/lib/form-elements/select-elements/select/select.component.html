@@ -19,12 +19,12 @@
     </b-search>
 
     <div class="options-wrapper"
-         [ngClass]="{'no-grouping': selectionGroupOption.length === 1 && !showSingleGroupHeader}">
+         [ngClass]="{'no-grouping': selectionGroupOptions.length === 1 && !showSingleGroupHeader}">
 
-      <div *ngFor="let group of selectionGroupOption"
+      <div *ngFor="let group of selectionGroupOptions"
            class="group">
 
-        <mat-option *ngIf="selectionGroupOption.length > 1 || showSingleGroupHeader"
+        <mat-option *ngIf="selectionGroupOptions.length > 1 || showSingleGroupHeader"
                     [value]="group.groupHeader"
                     (click)="onOptionClick(group.groupHeader)"
                     [disabled]="!isMultiSelect || blockGroupHeaderOptionClick"
@@ -33,7 +33,7 @@
           <div class="collapse-group"
                (mouseenter)="blockGroupHeaderOptionClick=true"
                (mouseleave)="blockGroupHeaderOptionClick=false"
-               (click)="onCollapseGroup($event, group)">
+               (click)="onCollapseGroup(group)">
             --X--
           </div>
         </mat-option>
