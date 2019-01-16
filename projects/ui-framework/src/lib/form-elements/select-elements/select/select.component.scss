@@ -14,7 +14,7 @@
 
 ::ng-deep {
   .cdk-overlay-container .cdk-overlay-pane {
-    transform: translateX(-16px) translateY($form-field-height) scale(1) !important;
+    transform: translateX(-17px) translateY($form-field-height) scale(1) !important;
     .mat-select-panel {
       position: relative;
       // todo: fix the min-width without the flickering
