@@ -6,12 +6,48 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { InputEvent } from './input.interface';
 import { BaseFormElement } from '../base-form-element';
 
+export const baseInputTemplate = `
+<mat-form-field
+  [ngClass]="{
+    'required': required,
+    'error': errorMessage,
+    'hide-label-on-focus': hideLabelOnFocus
+  }">
 
-export const baseInputTemplate = require('./input.component.html');
+  <div matPrefix>
+    <ng-content select="[input-prefix]"></ng-content>
+  </div>
+
+  <input matInput
+         [type]="inputType"
+         [disabled]="disabled"
+         [placeholder]="placeholder"
+         [(ngModel)]="value"
+         [autocomplete]="enableBrowserAutoComplete"
+         (blur)="emitInputEvent(eventType.onBlur, value)"
+         (focus)="emitInputEvent(eventType.onFocus, value)"
+         (ngModelChange)="emitInputEvent(eventType.onChange, value)"
+         #bInput
+         #moreattributes>
+
+  <mat-hint class="error-message" *ngIf="errorMessage">
+    {{errorMessage}}
+  </mat-hint>
+
+  <mat-hint class="hint-message" *ngIf="hintMessage && !errorMessage">
+    {{hintMessage}}
+  </mat-hint>
+
+  <div matSuffix>
+    <ng-content select="[input-suffix]"></ng-content>
+  </div>
+
+</mat-form-field>
+`;
 
 @Component({
   selector: 'b-input',
-  templateUrl: './input.component.html',
+  template: baseInputTemplate,
   styleUrls: ['./input.component.scss'],
   providers: [
     {

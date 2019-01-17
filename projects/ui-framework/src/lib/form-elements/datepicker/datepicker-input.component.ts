@@ -3,7 +3,7 @@ import { InputComponent } from '../input/input.component';
 
 @Component({
   selector: 'b-datepicker-input',
-  templateUrl: '../input/input.component.html',
+  templateUrl: './datepicker-input.html',
   template: InputComponent.addAttributesToBaseInput('[matDatepicker]="datePickerId"'),
   styleUrls: ['../input/input.component.scss']
 })
