@@ -8,6 +8,7 @@
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
   border-radius: 4px;
   box-sizing: border-box;
+  background-color: $white;
 }
 
 @mixin OverlayPointerHolders() {
@@ -32,9 +33,9 @@
   @if $direction == "below" {
     top: 8px;
     &:before {
+      @include arrow-up(6px, $grey-500);
       top: -5px;
-      @include arrow-up(7px, $grey-500);
-      border-bottom-width: 5px;
+      border-bottom-width: 6px;
     }
     &:after {
       top: -4px;
@@ -46,7 +47,7 @@
     bottom: 8px;
     &:before {
       bottom: -5px;
-      @include arrow-down(7px, $grey-500);
+      @include arrow-down(6px, $grey-500);
       border-top-width: 5px;
     }
     &:after {
@@ -57,7 +58,7 @@
 
   @if $direction == "after" {
     &:before {
-      left: 11px;
+      left: 12px;
     }
     &:after {
       left: 13px;
@@ -66,7 +67,7 @@
 
   @if $direction == "before" {
     &:before {
-      right: 11px;
+      right: 12px;
     }
     &:after {
       right: 13px;

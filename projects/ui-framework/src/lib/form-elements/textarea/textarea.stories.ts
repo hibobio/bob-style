@@ -12,7 +12,7 @@ const textareaStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withKnobs);
 
 const template = `
-<b-textarea style="display:block; width: 600px;"
+<b-textarea style="display:block; width: 400px;"
             [maxChars]="maxChars"
             [placeholder]="placeholder"
             [value]="value"

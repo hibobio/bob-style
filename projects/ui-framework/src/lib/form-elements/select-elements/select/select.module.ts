@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { SearchModule } from '../../search/search.module';
 import { ButtonsModule } from '../../../buttons';
 import { SelectModelService } from './select-model.service';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { SelectModelService } from './select-model.service';
     MatOptionModule,
     MatSelectModule,
     ButtonsModule,
+    FlexLayoutModule,
   ],
   exports: [
     SelectComponent,

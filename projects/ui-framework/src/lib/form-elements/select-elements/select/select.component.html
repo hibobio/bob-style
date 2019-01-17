@@ -53,10 +53,15 @@
     </div>
 
     <div *ngIf="isMultiSelect"
+         fxLayout="row" fxLayoutAlign="end center"
          class="select-footer">
+      <b-button size="{{buttonSize.small}}"
+                type="{{buttonType.secondary}}">
+        Cancel
+      </b-button>
       <b-button type="{{buttonType.primary}}"
                 size="{{buttonSize.small}}">
-        apply
+        Apply
       </b-button>
     </div>
   </mat-select>

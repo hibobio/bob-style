@@ -16,7 +16,7 @@ const inputTypes = values(InputTypes);
 const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
 
 const template = `
-<b-input style="display:block; width: 600px;"
+<b-input style="display:block; width: 400px;"
         [inputType]="inputType"
         [placeholder]="placeholder"
         [value]="value"

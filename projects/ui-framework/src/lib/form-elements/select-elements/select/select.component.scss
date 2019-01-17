@@ -1,6 +1,7 @@
 @import '../../../style/typography';
 @import '../../../style/colors';
-@import '../../form-elements.scss';
+@import '../../form-element.scss';
+@import '../../checkbox/checkbox.scss';
 
 :host ::ng-deep {
   @include BodyFont(normal, normal, 12px);
@@ -55,18 +56,36 @@
         position: relative;
         overflow: auto;
         max-height: 250px;
+        .group {
+          border-top: 1px solid $grey-500;
+          &:first-child {
+            border-top: 0;
+          }
+        }
         mat-option {
           padding-left: 24px;
           box-sizing: border-box;
           position: relative;
+          height: 44px;
+          line-height: 1;
+          color: initial;
+          &:hover {
+            background-color: $grey-100;
+          }
+          .mat-pseudo-checkbox {
+            @include Checkbox();
+          }
           &.group-header {
             padding-left: 16px;
-            border: 1px solid red;
+            border-bottom: 1px solid $grey-500;
             position: -webkit-sticky;
             position: sticky;
             top: 0;
             z-index: 1;
             background-color: white;
+            &:hover {
+              background-color: $grey-100;
+            }
           }
           .collapse-group {
             float: right;
@@ -80,11 +99,16 @@
       }
       .select-footer {
         display: block;
-        padding: 5px;
-        border-top: 1px solid red;
-        background-color: white;
-        bottom: 0;
+        padding: 6px 16px;
+        border-top: 1px solid $grey-500;
         z-index: 1;
+        b-button {
+          display: block;
+          margin-right: 6px;
+          &:last-child {
+            margin-right: 0;
+          }
+        }
       }
     }
   }

@@ -8,8 +8,6 @@
     .panel-wrapper {
       @include OverlayPanel();
       padding: 15px;
-      box-sizing: border-box;
-      background-color: white;
       max-width: 500px;
     }
 

@@ -58,7 +58,13 @@ $textarea-height: 120px;
           }
         }
         .mat-form-field-prefix, .mat-form-field-suffix {
-          padding: 0 5px;
+          padding: 0 16px;
+        }
+        .mat-form-field-prefix {
+          padding-right: 8px;
+        }
+        .mat-form-field-suffix {
+          padding-left: 8px;
         }
       }
       .mat-form-field-subscript-wrapper {

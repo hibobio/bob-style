@@ -11,7 +11,7 @@ const inputStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withKnobs);
 
 const template = `
-<b-search style="display:block; width: 600px;"
+<b-search style="display:block; width: 400px;"
           [value]="value"
           [placeholder]="placeholder"
           [hideLabelOnFocus]="hideLabelOnFocus">

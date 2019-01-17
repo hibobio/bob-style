@@ -12,7 +12,7 @@ const selectStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withKnobs);
 
 const template = `
-<b-single-select style="display:block; width: 600px;"
+<b-single-select style="display:block; width: 400px;"
                  [options]="options"
                  [selectedId]="selectedId"
                  [showSingleGroupHeader]="showSingleGroupHeader">
