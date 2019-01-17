@@ -13,7 +13,8 @@
     </b-icon>
   </div>
 
-  <div input-suffix *ngIf="value.length > 0"
+  <div *ngIf="value.length > 0"
+       input-suffix
        class="reset-button">
     <b-icon [icon]="resetIcon"
             [color]="iconColor"

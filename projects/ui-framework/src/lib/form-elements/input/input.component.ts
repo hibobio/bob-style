@@ -5,17 +5,22 @@ import { MatInput } from '@angular/material';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { InputEvent } from './input.interface';
 import { BaseFormElement } from '../base-form-element';
+import { includes } from 'lodash';
 
 export const baseInputTemplate = `
 <mat-form-field
   [ngClass]="{
     'required': required,
     'error': errorMessage,
-    'hide-label-on-focus': hideLabelOnFocus
+    'hide-label-on-focus': hideLabelOnFocus,
+    'has-prefix': hasTranscludeContent(prefix),
+    'has-suffix': hasTranscludeContent(suffix)
   }">
 
   <div matPrefix>
-    <ng-content select="[input-prefix]"></ng-content>
+    <div class="prefix" #prefix>
+      <ng-content select="[input-prefix]"></ng-content>
+    </div>
   </div>
 
   <input matInput
@@ -39,7 +44,9 @@ export const baseInputTemplate = `
   </mat-hint>
 
   <div matSuffix>
-    <ng-content select="[input-suffix]"></ng-content>
+    <div class="suffix" #suffix>
+      <ng-content select="[input-suffix]"></ng-content>
+    </div>
   </div>
 
 </mat-form-field>
@@ -78,6 +85,7 @@ export class InputComponent extends BaseFormElement implements OnInit {
 
   @ViewChild('bInput') bInput: MatInput;
   eventType = InputEventType;
+  readonly emptyNodeNames = ['empty', '#comment'];
 
   static addAttributesToBaseInput(attributes: string): string {
     return baseInputTemplate.replace(inputAttributesPlaceholder, attributes);
@@ -97,5 +105,10 @@ export class InputComponent extends BaseFormElement implements OnInit {
     if (event === InputEventType.onChange) {
       this.propagateChange(value);
     }
+  }
+
+  hasTranscludeContent(node: HTMLElement): boolean {
+    return node.childNodes.length > 0 && (node.childNodes.length > 1 ||
+      !includes(this.emptyNodeNames, node.childNodes[0].nodeName));
   }
 }

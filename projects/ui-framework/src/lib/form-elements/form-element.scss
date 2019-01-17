@@ -58,13 +58,7 @@ $textarea-height: 120px;
           }
         }
         .mat-form-field-prefix, .mat-form-field-suffix {
-          padding: 0 16px;
-        }
-        .mat-form-field-prefix {
-          padding-right: 8px;
-        }
-        .mat-form-field-suffix {
-          padding-left: 8px;
+          display: block;
         }
       }
       .mat-form-field-subscript-wrapper {
@@ -123,6 +117,35 @@ $textarea-height: 120px;
         display: none;
       }
     }
+    &.has-prefix {
+      .mat-form-field-wrapper .mat-form-field-flex {
+        .mat-form-field-infix {
+          input, textarea, mat-select {
+            padding-left: 0;
+          }
+          .mat-form-field-label-wrapper .mat-form-field-label {
+            padding-left: 0;
+          }
+        }
+        .mat-form-field-prefix {
+          padding: 0 10px 0 16px;
+        }
+      }
+    }
+    &.has-suffix {
+      .mat-form-field-wrapper .mat-form-field-flex {
+        .mat-form-field-infix {
+          input, textarea, mat-select {
+            padding-right: 0;
+          }
+          .mat-form-field-label-wrapper .mat-form-field-label {
+            padding-right: 0;
+          }
+        }
+        .mat-form-field-suffix {
+          padding: 0 10px 0 6px;
+        }
+      }
+    }
   }
-
 }
