@@ -6,13 +6,15 @@ import { ComponentGroupType } from '../../consts';
 import { PanelModule } from '../panel/panel.module';
 import { ButtonsModule } from '../../buttons';
 import { TypographyModule } from '../../typography/typography.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MultiSelectModule } from '../../form-elements/select-elements';
 
 const buttonStories = storiesOf(ComponentGroupType.Overlay, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
 const template = `
-<b-panel style="margin-right: 20px;">
+<b-panel style="position: absolute; top: 20px; left: 20px;">
   <b-button panel-trigger>
     open Syria
   </b-button>
@@ -26,7 +28,7 @@ const template = `
   </div>
 </b-panel>
 
-<b-panel>
+<b-panel style="position: absolute; bottom: 20px; right: 20px;">
   <b-button panel-trigger>
     open Iraq
   </b-button>
@@ -58,6 +60,8 @@ buttonStories.add(
         PanelModule,
         ButtonsModule,
         TypographyModule,
+        BrowserAnimationsModule,
+        MultiSelectModule,
       ],
     }
   }),

@@ -5,7 +5,10 @@
 </content>
 
 <ng-template #templateRef>
-  <div>
-    <ng-content select="[panel-content]"></ng-content>
+  <div class="panel-position"
+       [ngClass]="positionClassList">
+    <div class="panel-wrapper">
+      <ng-content select="[panel-content]"></ng-content>
+    </div>
   </div>
 </ng-template>

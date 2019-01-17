@@ -1,11 +1,38 @@
+@import '../overlay.scss';
+
 ::ng-deep {
   .panel-trigger {
     display: inline-block;
   }
   .b-panel {
-    padding: 20px;
-    background-color: white;
-    box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.4);
-    max-width: 500px;
+    .panel-wrapper {
+      @include OverlayPanel();
+      padding: 15px;
+      box-sizing: border-box;
+      background-color: white;
+      max-width: 500px;
+    }
+
+    .panel-position {
+      @include OverlayPointerHolders();
+      &.panel-below {
+        @include OverlayPositionBounding('below');
+      }
+
+      // opens above
+      &.panel-above {
+        @include OverlayPositionBounding('above');
+      }
+
+      // opens to the right - default
+      &.panel-after {
+        @include OverlayPositionBounding('after');
+      }
+
+      // opens to the left {
+      &.panel-before {
+        @include OverlayPositionBounding('before');
+      }
+    }
   }
 }

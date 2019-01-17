@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PanelComponent } from './panel.component';
+import { PanelPositionService } from './panel-position.service';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,9 @@ import { PanelComponent } from './panel.component';
   ],
   exports: [
     PanelComponent,
+  ],
+  providers: [
+    PanelPositionService,
   ],
 })
 export class PanelModule {
