@@ -7,7 +7,7 @@ import { PanelModule } from '../panel/panel.module';
 import { ButtonsModule } from '../../buttons';
 import { TypographyModule } from '../../typography/typography.module';
 
-const buttonStories = storiesOf(ComponentGroupType.Panel, module)
+const buttonStories = storiesOf(ComponentGroupType.Overlay, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
@@ -36,6 +36,9 @@ const template = `
     officially known as the Republic of Iraq (Arabic: جُمُهورية العِراق‎ ; Kurdish: کۆماری عێراق‎ Komari Eraq),
     is a country in Western Asia, bordered by Turkey to the north, Iran to the east, Kuwait to the southeast,
     Saudi Arabia to the south, Jordan to the southwest and Syria to the west.</p>
+    <b-button>
+    read more
+  </b-button>
   </div>
 </b-panel>
 `;

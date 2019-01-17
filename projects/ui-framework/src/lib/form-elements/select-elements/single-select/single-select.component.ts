@@ -7,7 +7,7 @@ import { SelectGroupOption } from '../select/select.interface';
 })
 export class SingleSelectComponent {
 
-  @Input() options: SelectGroupOption[];
+  @Input() options: SelectGroupOption[] = [];
   @Input() selectedId: (string | number);
   @Input() showSingleGroupHeader = false;
 

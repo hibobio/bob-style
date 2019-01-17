@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { SearchComponent } from './search.component';
-import { InputModule } from '../form-elements/input';
-import { InputEventType } from '../form-elements/input/input.enum';
-import { IconsModule } from '../icons';
+import { InputModule } from '../input';
+import { InputEventType } from '../input/input.enum';
+import { IconsModule } from '../../icons';
 import { By } from '@angular/platform-browser';
-import { InputEvent } from '../form-elements/input/input.interface';
+import { InputEvent } from '../input/input.interface';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SearchComponent', () => {

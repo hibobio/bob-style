@@ -3,9 +3,8 @@ export enum ComponentGroupType {
   FormElements = 'Form Elements',
   Icons = 'Icons',
   Typography  = 'Typography',
-  Panel = 'Panel',
+  Overlay = 'Overlay',
   Menu = 'Menu',
-  Search = 'Search',
 }
 
 export const serverDateFormat = 'YYYY-MM-DDTHH:mm';

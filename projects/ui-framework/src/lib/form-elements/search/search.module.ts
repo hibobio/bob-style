@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { SearchComponent } from './search.component';
 import { CommonModule } from '@angular/common';
-import { IconsModule } from '../icons';
-import { InputModule } from '../form-elements/input';
+import { IconsModule } from '../../icons';
+import { InputModule } from '../input';
 
 @NgModule({
   declarations: [

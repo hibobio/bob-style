@@ -3,19 +3,19 @@ import { withNotes } from '@storybook/addon-notes';
 import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { SearchModule } from './search.module';
-import { ComponentGroupType } from '../consts';
+import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const inputStories = storiesOf(ComponentGroupType.Search, module)
+const inputStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
 const template = `
-  <b-search
-    [value]="value"
-    [placeholder]="placeholder"
-    [hideLabelOnFocus]="hideLabelOnFocus">
- </b-search>
+<b-search style="display:block; width: 600px;"
+          [value]="value"
+          [placeholder]="placeholder"
+          [hideLabelOnFocus]="hideLabelOnFocus">
+</b-search>
 `;
 
 const note = `
