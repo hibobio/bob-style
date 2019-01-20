@@ -30,6 +30,7 @@ export class PanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    debugger
   }
 
   ngOnDestroy(): void {

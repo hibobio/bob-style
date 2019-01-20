@@ -8,7 +8,7 @@ import { By } from '@angular/platform-browser';
 import { InputEvent } from '../input/input.interface';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('SearchComponent', () => {
+fdescribe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
 
@@ -35,7 +35,7 @@ describe('SearchComponent', () => {
 
 
   describe('onInputEvents', () => {
-    it('should emitInputEvent on input focus with input value', () => {
+    fit('should emitInputEvent on input focus with input value', () => {
       const inputEvent: InputEvent = { event: InputEventType.onChange, value: 'input value' };
       component.onInputEvents(inputEvent);
       expect(component.inputEvents.emit).toHaveBeenCalledWith(inputEvent);

@@ -73,11 +73,4 @@ describe('InputComponent', () => {
       expect(inputTemplate).toContain('[myCustomAttribute1]="1" [myCustomAttribute2]="2">');
     });
   });
-
-  describe('hasTranscludeContent', () => {
-    it('should return false if component has no prefix', () => {
-      const prefix = fixture.debugElement.query(By.css('.prefix')).nativeElement;
-      expect(component.hasTranscludeContent(prefix)).toBe(false);
-    });
-  });
 });

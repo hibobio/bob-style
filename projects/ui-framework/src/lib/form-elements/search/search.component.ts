@@ -1,9 +1,10 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons';
-import { InputComponent } from '../input/input.component';
 import { InputTypes } from '../input/input.enum';
 import { set } from 'lodash';
 import { InputEvent } from '../input/input.interface';
+import { BaseInputElement } from '../base-input-element';
+import { InputComponent } from '../input/input.component';
 
 @Component({
   selector: 'b-search',
@@ -24,7 +25,6 @@ export class SearchComponent extends InputComponent implements OnInit {
   }
 
   ngOnInit() {
-    super.ngOnInit();
     this.value = '';
   }
 

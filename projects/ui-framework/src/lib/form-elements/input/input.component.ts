@@ -1,11 +1,10 @@
-import { Component, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { InputAutoCompleteOptions, InputEventType, InputTypes } from './input.enum';
+import { AfterViewInit, Component, ElementRef, forwardRef, OnInit, ViewChild } from '@angular/core';
+import { InputEventType } from './input.enum';
 import { inputAttributesPlaceholder } from '../../consts';
 import { MatInput } from '@angular/material';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { InputEvent } from './input.interface';
-import { BaseFormElement } from '../base-form-element';
 import { includes } from 'lodash';
+import { BaseInputElement } from '../base-input-element';
 
 export const baseInputTemplate = `
 <mat-form-field
@@ -13,8 +12,8 @@ export const baseInputTemplate = `
     'required': required,
     'error': errorMessage,
     'hide-label-on-focus': hideLabelOnFocus,
-    'has-prefix': hasTranscludeContent(prefix),
-    'has-suffix': hasTranscludeContent(suffix)
+    'has-prefix': prefix && prefix.childNodes.length > 0,
+    'has-suffix': suffix && suffix.childNodes.length > 0
   }">
 
   <div matPrefix>
@@ -69,46 +68,20 @@ export const baseInputTemplate = `
     }
   ]
 })
-export class InputComponent extends BaseFormElement implements OnInit {
+export class InputComponent extends BaseInputElement {
 
-  constructor() {
+  @ViewChild('prefix') prefixEl: ElementRef;
+
+  @ViewChild('bInput') bInput: MatInput;
+  @ViewChild('suffix') suffixEl: ElementRef;
+  eventType = InputEventType;
+
+  constructor(
+  ) {
     super();
   }
 
-  @Input() inputType: InputTypes;
-  @Input() placeholder: string;
-  @Input() hideLabelOnFocus = false;
-  @Input() hintMessage: string;
-  @Input() errorMessage: string;
-  @Input() enableBrowserAutoComplete: InputAutoCompleteOptions = InputAutoCompleteOptions.off;
-  @Output() inputEvents: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
-
-  @ViewChild('bInput') bInput: MatInput;
-  eventType = InputEventType;
-  readonly emptyNodeNames = ['empty', '#comment'];
-
   static addAttributesToBaseInput(attributes: string): string {
     return baseInputTemplate.replace(inputAttributesPlaceholder, attributes);
-  }
-
-  ngOnInit() {
-  }
-
-  emitInputEvent(
-    event: InputEventType,
-    value: string | number,
-  ): void {
-    this.inputEvents.emit({
-      event,
-      value,
-    });
-    if (event === InputEventType.onChange) {
-      this.propagateChange(value);
-    }
-  }
-
-  hasTranscludeContent(node: HTMLElement): boolean {
-    return node.childNodes.length > 0 && (node.childNodes.length > 1 ||
-      !includes(this.emptyNodeNames, node.childNodes[0].nodeName));
   }
 }
