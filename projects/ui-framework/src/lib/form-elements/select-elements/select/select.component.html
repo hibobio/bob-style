@@ -31,10 +31,10 @@
                     class="group-header">
           <span class="option-value">{{group.groupHeader.value}}</span>
           <div class="collapse-group"
+               [ngClass]="{'collapse': group.isCollapsed}"
                (mouseenter)="blockGroupHeaderOptionClick=true"
                (mouseleave)="blockGroupHeaderOptionClick=false"
                (click)="onCollapseGroup(group)">
-            --X--
           </div>
         </mat-option>
 

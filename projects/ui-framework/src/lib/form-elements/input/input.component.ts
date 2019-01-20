@@ -11,11 +11,15 @@ export const baseInputTemplate = `
   [ngClass]="{
     'required': required,
     'error': errorMessage,
-    'hide-label-on-focus': hideLabelOnFocus
+    'hide-label-on-focus': hideLabelOnFocus,
+    'has-prefix': prefix && prefix.childNodes.length > 0,
+    'has-suffix': suffix && suffix.childNodes.length > 0
   }">
 
   <div matPrefix>
-    <ng-content select="[input-prefix]"></ng-content>
+    <div class="prefix" #prefix>
+      <ng-content select="[input-prefix]"></ng-content>
+    </div>
   </div>
 
   <input matInput
@@ -39,7 +43,9 @@ export const baseInputTemplate = `
   </mat-hint>
 
   <div matSuffix>
-    <ng-content select="[input-suffix]"></ng-content>
+    <div class="suffix" #suffix>
+      <ng-content select="[input-suffix]"></ng-content>
+    </div>
   </div>
 
 </mat-form-field>

@@ -1,5 +1,6 @@
 @import '../../../style/typography';
 @import '../../../style/colors';
+@import '../../../style/shapes';
 @import '../../form-element.scss';
 @import '../../checkbox/checkbox.scss';
 
@@ -86,9 +87,32 @@
             &:hover {
               background-color: $grey-100;
             }
+            .mat-pseudo-checkbox {
+              z-index: 10;
+            }
           }
           .collapse-group {
-            float: right;
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+            cursor: pointer;
+            &:after {
+              display: block;
+              content: '';
+              position: absolute;
+              right: 16px;
+              top: 50%;
+              transform: translateY(-50%);
+              @include arrow-down(5px, $grey-600);
+            }
+            &.collapse {
+              &:after {
+                transform: translateY(-50%) scaleY(-1);
+              }
+            }
           }
         }
         &.no-grouping {

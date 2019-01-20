@@ -2,6 +2,5 @@
 @import './typography.scss';
 
 body {
-  font-family: var(--body-font-family);
   @include BodyFont(normal, normal, 12px);
 }
