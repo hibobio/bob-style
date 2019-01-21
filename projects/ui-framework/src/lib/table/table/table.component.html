@@ -1,8 +1,8 @@
 <div class="container">
   <div class="table">
 
-    <table cdk-table #table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" [matSortActive]="activeSort.name"
-      [matSortDirection]="activeSort.sortActive" cdkDropList (cdkDropListDropped)="drop($event)">
+    <table cdk-table #table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" [matSortActive]="activeSort?.name"
+      [matSortDirection]="activeSort?.sortActive" cdkDropList (cdkDropListDropped)="drop($event)">
 
       <ng-container cdkColumnDef="select" >
         <th cdk-header-cell *cdkHeaderCellDef >

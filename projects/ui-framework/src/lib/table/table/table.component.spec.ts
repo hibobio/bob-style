@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TableComponent } from './table.component';
+import { CommonModule } from '@angular/common';
 import {
   MatCheckboxModule,
   MatIconModule,
@@ -10,10 +11,13 @@ import {
   MatSortModule,
   MatTableModule
 } from '@angular/material';
-import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CdkTableModule } from '@angular/cdk/table';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TableCellComponent } from '../table-cell/table-cell.component';
+import { mockColumns, mockData } from '../table.mock';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { AvatarComponent, AvatarModule } from '../../buttons-indicators/avatar';
 
 describe('TableComponent', () => {
   let component: TableComponent;
@@ -21,8 +25,9 @@ describe('TableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TableComponent ],
+      declarations: [ TableComponent, TableCellComponent ],
       imports: [
+        BrowserAnimationsModule,
         CommonModule,
         MatTableModule,
         MatSortModule,
@@ -33,8 +38,12 @@ describe('TableComponent', () => {
         MatMenuModule,
         DragDropModule,
         CdkTableModule,
+        AvatarModule
       ],
-      schemas: [NO_ERRORS_SCHEMA],
+    }).overrideModule(BrowserDynamicTestingModule, {
+      set: {
+        entryComponents: [ AvatarComponent ],
+      }
     })
     .compileComponents();
   }));
@@ -42,12 +51,13 @@ describe('TableComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TableComponent);
     component = fixture.componentInstance;
+    component.columns = mockColumns;
+    component.data = mockData;
     component.ngOnInit();
     fixture.detectChanges();
   });
 
-  /*it('should create', () => {
-    component.data = mockData;
+  it('should create', () => {
     expect(component).toBeTruthy();
-  });*/
+  });
 });

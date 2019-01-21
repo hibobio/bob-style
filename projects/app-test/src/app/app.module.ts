@@ -9,7 +9,6 @@ import { ButtonsModule, DatepickerModule, InputModule, SelectModule, TextareaMod
 @NgModule({
   declarations: [
     AppComponent,
-    TestComponent
   ],
   imports: [
     BrowserModule,
