@@ -1,9 +1,9 @@
 @import '../../style/colors.scss';
 
 @mixin Checkbox {
-  width: 18px;
-  height: 18px;
-  border: 1px solid;
+  width: 22px;
+  height: 22px;
+  border: 1px solid $grey-600;
   color: $grey-600;
   background: $white;
   display: flex;
