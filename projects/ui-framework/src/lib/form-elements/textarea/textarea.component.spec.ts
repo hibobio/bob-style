@@ -4,16 +4,18 @@ import { TextareaComponent } from './textarea.component';
 import { InputEventType } from '../input/input.enum';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('TextareaComponent', () => {
   let component: TextareaComponent;
   let fixture: ComponentFixture<TextareaComponent>;
-  // let inputElement: any;
+  let textareaElement: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TextareaComponent],
       imports: [
+        NoopAnimationsModule,
         FormsModule,
         MatFormFieldModule,
         MatInputModule
@@ -28,15 +30,18 @@ describe('TextareaComponent', () => {
       });
   }));
 
-  /*
   describe('emitInputEvent', () => {
     beforeEach(() => {
-      inputElement = fixture.debugElement.query(By.css('input')).nativeElement;
+      textareaElement = fixture.debugElement.query(By.css('textarea')).nativeElement;
+    });
+
+    it('expect 11', () => {
+      expect(1 === 1).toBe(true);
     });
 
     it('should emitInputEvent on input focus with input value', () => {
       component.value = 'input value';
-      inputElement.dispatchEvent(new Event('focus'));
+      textareaElement.dispatchEvent(new Event('focus'));
       expect(component.inputEvents.emit).toHaveBeenCalledWith({
         event: InputEventType.onFocus,
         value: 'input value',
@@ -44,21 +49,20 @@ describe('TextareaComponent', () => {
     });
     it('should emitInputEvent on input blur with input value', () => {
       component.value = 'input value';
-      inputElement.dispatchEvent(new Event('blur'));
+      textareaElement.dispatchEvent(new Event('blur'));
       expect(component.inputEvents.emit).toHaveBeenCalledWith({
         event: InputEventType.onBlur,
         value: 'input value',
       });
     });
     it('should emitInputEvent on model change with input value', () => {
-      inputElement.value = 'change input value';
-      inputElement.dispatchEvent(new Event('input'));
+      textareaElement.value = 'change input value';
+      textareaElement.dispatchEvent(new Event('input'));
       expect(component.inputEvents.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
         value: 'change input value',
       });
     });
   });
-  */
 
 });

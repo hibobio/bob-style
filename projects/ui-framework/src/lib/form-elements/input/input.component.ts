@@ -1,10 +1,9 @@
-import { Component, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { InputAutoCompleteOptions, InputEventType, InputTypes } from './input.enum';
+import { Component, forwardRef, ViewChild } from '@angular/core';
+import { InputEventType } from './input.enum';
 import { inputAttributesPlaceholder } from '../../consts';
-import { MatInput } from '@angular/material';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { InputEvent } from './input.interface';
-import { BaseFormElement } from '../base-form-element';
+import { BaseInputElement } from '../base-input-element';
+import { MatInput } from '@angular/material';
 
 export const baseInputTemplate = `
 <mat-form-field
@@ -68,40 +67,16 @@ export const baseInputTemplate = `
     }
   ]
 })
-export class InputComponent extends BaseFormElement implements OnInit {
+export class InputComponent extends BaseInputElement {
+
+  @ViewChild('bInput') bInput: MatInput;
+  eventType = InputEventType;
 
   constructor() {
     super();
   }
 
-  @Input() inputType: InputTypes;
-  @Input() placeholder: string;
-  @Input() hideLabelOnFocus = false;
-  @Input() hintMessage: string;
-  @Input() errorMessage: string;
-  @Input() enableBrowserAutoComplete: InputAutoCompleteOptions = InputAutoCompleteOptions.off;
-  @Output() inputEvents: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
-
-  @ViewChild('bInput') bInput: MatInput;
-  eventType = InputEventType;
-
   static addAttributesToBaseInput(attributes: string): string {
     return baseInputTemplate.replace(inputAttributesPlaceholder, attributes);
-  }
-
-  ngOnInit() {
-  }
-
-  emitInputEvent(
-    event: InputEventType,
-    value: string | number,
-  ): void {
-    this.inputEvents.emit({
-      event,
-      value,
-    });
-    if (event === InputEventType.onChange) {
-      this.propagateChange(value);
-    }
   }
 }

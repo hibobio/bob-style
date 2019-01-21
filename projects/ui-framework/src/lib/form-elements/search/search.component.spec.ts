@@ -1,12 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { SearchComponent } from './search.component';
-import { InputModule } from '../input';
-import { InputEventType } from '../input/input.enum';
-import { IconsModule } from '../../icons';
-import { By } from '@angular/platform-browser';
-import { InputEvent } from '../input/input.interface';
+import { InputModule } from '../input/input.module';
+import { IconsModule } from '../../icons/icons.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -33,19 +31,16 @@ describe('SearchComponent', () => {
       });
   }));
 
-
   describe('onInputEvents', () => {
-    it('should emitInputEvent on input focus with input value', () => {
-      const inputEvent: InputEvent = { event: InputEventType.onChange, value: 'input value' };
-      component.onInputEvents(inputEvent);
-      expect(component.inputEvents.emit).toHaveBeenCalledWith(inputEvent);
-    });
     it('should show reset icon if search has value', () => {
+      const inputElement = fixture.debugElement.query(By.css('input'));
       let resetElement = fixture.debugElement.query(By.css('.reset-button'));
       expect(resetElement).toBe(null);
-      const inputEvent: InputEvent = { event: InputEventType.onChange, value: 'input value' };
-      component.onInputEvents(inputEvent);
+
+      inputElement.nativeElement.value = 'change input value';
+      inputElement.nativeElement.dispatchEvent(new Event('input'));
       fixture.detectChanges();
+
       resetElement = fixture.debugElement.query(By.css('.reset-button'));
       expect(resetElement).not.toBe(null);
     });
@@ -53,11 +48,18 @@ describe('SearchComponent', () => {
 
   describe('onResetClick', () => {
     it('should set value to be empty', () => {
-      const inputEvent: InputEvent = { event: InputEventType.onChange, value: 'input value' };
-      component.onInputEvents(inputEvent);
-      expect(component.value).toEqual('input value');
-      component.onResetClick();
-      expect(component.value).toEqual('');
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      expect(component.value).toBe('');
+
+      inputElement.nativeElement.value = 'change input value';
+      inputElement.nativeElement.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      expect(component.value).toBe('change input value');
+
+      const resetElement = fixture.debugElement.query(By.css('.reset-button b-icon'));
+      resetElement.triggerEventHandler('click', null);
+      fixture.detectChanges();
+      expect(component.value).toBe('');
     });
   });
 });

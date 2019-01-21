@@ -6,9 +6,9 @@ import { InputEventType, InputTypes } from '../input/input.enum';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
 import { invoke } from 'lodash';
 import { InputEvent } from '../input/input.interface';
-import { BaseFormElement } from '../base-form-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
+import { BaseInputElement } from '../base-input-element';
 
 const moment = moment_;
 @Component({
@@ -34,7 +34,7 @@ const moment = moment_;
     }
   ]
 })
-export class DatepickerComponent extends BaseFormElement implements OnInit {
+export class DatepickerComponent extends BaseInputElement implements OnInit {
 
   @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
   @Input() inputPlaceholder: String;
@@ -57,7 +57,7 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
     }
   }
 
-  inputEvents(inputEvent: InputEvent, picker: MatDatepicker<any>): void {
+  onInputEvents(inputEvent: InputEvent, picker: MatDatepicker<any>): void {
     switch (inputEvent.event) {
       case InputEventType.onBlur:
         if (picker.opened) {

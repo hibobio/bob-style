@@ -13,12 +13,11 @@ import { CommonModule } from '@angular/common';
     MatFormFieldModule,
     MatIconModule,
     FormsModule,
-    CommonModule
+    CommonModule,
   ],
   exports: [
     TextareaComponent,
   ],
-  providers: [TextareaComponent],
 })
 export class TextareaModule {
 }

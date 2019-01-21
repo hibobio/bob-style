@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { SearchComponent } from './search.component';
 import { CommonModule } from '@angular/common';
 import { IconsModule } from '../../icons';
-import { InputModule } from '../input';
+import { InputModule } from '../input/input.module';
+import { TextareaModule } from '../textarea/textarea.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import { InputModule } from '../input';
   imports: [
     CommonModule,
     IconsModule,
-    InputModule
+    InputModule,
+    TextareaModule,
   ],
   exports: [
     SearchComponent,

@@ -34,7 +34,6 @@ describe('InputComponent', () => {
       });
   }));
 
-
   describe('emitInputEvent', () => {
     beforeEach(() => {
       inputElement = fixture.debugElement.query(By.css('input')).nativeElement;
