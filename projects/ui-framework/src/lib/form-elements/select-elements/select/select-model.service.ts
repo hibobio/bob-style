@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SelectGroupOption, SelectionGroupOption, SelectionOption } from './select.interface';
+import { SelectGroupOption, SelectionGroupOption, SelectionOption } from '../select.interface';
 import { map, assign, find, isEqual, chain, filter, includes, flatMap, every, get, concat } from 'lodash';
 
 @Injectable()
@@ -92,6 +92,12 @@ export class SelectModelService {
       .flatMap('id')
       .value();
     return filter(selectedModel, option => !includes(groupIds, option.id));
+  }
+
+  public getSelectedOptionIds(
+    selectedModel: SelectionOption[],
+  ): (string | number)[] {
+    return chain(selectedModel).filter(option => !option.isGroupHeader).map('id').value();
   }
 
   private isEveryGroupOptionSelected(

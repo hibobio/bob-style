@@ -1,7 +1,6 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { concat, flatMap, get, join } from 'lodash';
-import { InputEvent } from '../../input/input.interface';
-import { SelectGroupOption, SelectionGroupOption, SelectionOption } from './select.interface';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { concat, flatMap, get, join, escapeRegExp, forEach } from 'lodash';
+import { SelectGroupOption, SelectionGroupOption, SelectionOption } from '../select.interface';
 import { ButtonSize, ButtonType } from '../../../buttons';
 import { SelectModelService } from './select-model.service';
 
@@ -21,8 +20,10 @@ export class SelectComponent implements OnInit {
   @Input() isMultiSelect: boolean;
   @Input() showSingleGroupHeader = false;
 
+  @Output() selectChange: EventEmitter<(string | number)[]> = new EventEmitter<(string | number)[]>();
+
   selectionGroupOptions: SelectionGroupOption[];
-  selectedModel: SelectionOption[];
+  selectedModel: SelectionOption[] | SelectionOption;
   triggerValue: string;
   blockGroupHeaderOptionClick = false;
 
@@ -53,6 +54,8 @@ export class SelectComponent implements OnInit {
   onOptionClick(selectedOption): void {
     if (this.isMultiSelect) {
       this.onMultiSelectOptionClick(selectedOption);
+    } else {
+      this.onSingleSelectOptionClick(selectedOption);
     }
     this.updateTriggerText();
   }
@@ -67,8 +70,25 @@ export class SelectComponent implements OnInit {
     group.isCollapsed = !group.isCollapsed;
   }
 
-  onSearchEvents(inputEvent: InputEvent): void {
+  onSearchChange(searchVal: string): void {
     // todo: filter values by inputEvent.value
+    // const matcher = new RegExp(escapeRegExp(searchVal), 'i');
+    // forEach(this.selectionGroupOptions, (group) => {
+    //   console.log('isMatch', group.groupHeader.value.match(matcher));
+    // });
+  }
+
+  cancelSelection(): void {
+    this.ngOnInit();
+    this.mySelect.close();
+  }
+
+  notifySelectionIds(): void {
+    const selectedIds = this.isMultiSelect
+      ? this.selectModelService.getSelectedOptionIds(this.selectedModel as SelectionOption[])
+      : [(this.selectedModel as SelectionOption).id];
+    this.selectChange.emit(selectedIds);
+    this.mySelect.close();
   }
 
   private onMultiSelectOptionClick(selectedOption: SelectionOption): void {
@@ -76,19 +96,25 @@ export class SelectComponent implements OnInit {
       this.onGroupHeaderClick(selectedOption);
     } else {
       this.selectedModel = this.selectModelService
-        .updateGroupHeaderSelectionByOptions(this.selectionGroupOptions, this.selectedModel);
+        .updateGroupHeaderSelectionByOptions(this.selectionGroupOptions, this.selectedModel as SelectionOption[]);
     }
   }
 
   private onGroupHeaderClick(selectedOption: SelectionOption): void {
     const isOptionSelected = this.selectModelService
-      .isOptionSelected(selectedOption, this.selectedModel);
+      .isOptionSelected(selectedOption, this.selectedModel as SelectionOption[]);
 
     this.selectedModel = isOptionSelected
       ? this.selectModelService
-        .selectAllGroupOptions(selectedOption, this.selectionGroupOptions, this.selectedModel)
+        .selectAllGroupOptions(selectedOption, this.selectionGroupOptions, this.selectedModel as SelectionOption[])
       : this.selectModelService
-        .unselectAllGroupOptions(selectedOption, this.selectionGroupOptions, this.selectedModel);
+        .unselectAllGroupOptions(selectedOption, this.selectionGroupOptions, this.selectedModel as SelectionOption[]);
+  }
+
+  private onSingleSelectOptionClick(selectedOption: SelectionOption): void {
+    if (!selectedOption.isGroupHeader) {
+      this.notifySelectionIds();
+    }
   }
 
   private updateTriggerText(): void {

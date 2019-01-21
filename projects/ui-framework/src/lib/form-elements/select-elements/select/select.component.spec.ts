@@ -9,6 +9,7 @@ import { SearchModule } from '../../search/search.module';
 import { ButtonsModule } from '../../../buttons';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
+import { By } from '@angular/platform-browser';
 
 describe('SelectComponent', () => {
   let component: SelectComponent;
@@ -126,6 +127,7 @@ describe('SelectComponent', () => {
       component.options = optionsMock;
       component.isMultiSelect = true;
       component.selectedIds = [1, 2];
+      spyOn(component.selectChange, 'emit');
       fixture.detectChanges();
     }));
     it('should set the selectionGroupOptions', () => {
@@ -231,6 +233,89 @@ describe('SelectComponent', () => {
 
           expect(component.triggerValue).toEqual('Basic Info 1, Basic Info 2, Personal 1, Basic Info');
         }));
+
+      it('should emit the selectedId after apply trigger',
+        fakeAsync(() => {
+          component.mySelect.open();
+          fixture.detectChanges();
+          flush();
+
+          (overlayContainerElement.querySelectorAll('mat-option')[4] as HTMLElement).click();
+          fixture.detectChanges();
+          flush();
+
+          const applyButtonEl = fixture.debugElement.query(By.css('.apply-button'));
+          applyButtonEl.triggerEventHandler('click', null);
+
+          expect(component.selectChange.emit).toHaveBeenCalledWith([1, 2, 11]);
+        }));
+
+      it('should close the panel after apply trigger',
+        fakeAsync(() => {
+          spyOn(component.mySelect, 'close');
+          component.mySelect.open();
+          fixture.detectChanges();
+          flush();
+
+          (overlayContainerElement.querySelectorAll('mat-option')[4] as HTMLElement).click();
+          fixture.detectChanges();
+          flush();
+
+          const applyButtonEl = fixture.debugElement.query(By.css('.apply-button'));
+          applyButtonEl.triggerEventHandler('click', null);
+
+          expect(component.mySelect.close).toHaveBeenCalled();
+        }));
+
+      it('should reset the model after cancel trigger',
+        fakeAsync(() => {
+          component.mySelect.open();
+          fixture.detectChanges();
+          flush();
+
+          (overlayContainerElement.querySelectorAll('mat-option')[4] as HTMLElement).click();
+          fixture.detectChanges();
+          flush();
+
+          const cancelButtonEl = fixture.debugElement.query(By.css('.cancel-button'));
+          cancelButtonEl.triggerEventHandler('click', null);
+
+          expect(component.selectedModel).toEqual([
+            selectionGroupOptionsMock[0].options[0],
+            selectionGroupOptionsMock[0].options[1],
+            selectionGroupOptionsMock[0].groupHeader,
+          ]);
+          expect(component.triggerValue).toEqual('Basic Info 1, Basic Info 2, Basic Info');
+        }));
+
+      it('should not emit the selectedId after cancel trigger',
+        fakeAsync(() => {
+          component.mySelect.open();
+          fixture.detectChanges();
+          flush();
+
+          (overlayContainerElement.querySelectorAll('mat-option')[4] as HTMLElement).click();
+          fixture.detectChanges();
+          flush();
+
+          const cancelButtonEl = fixture.debugElement.query(By.css('.cancel-button'));
+          cancelButtonEl.triggerEventHandler('click', null);
+
+          expect(component.selectChange.emit).not.toHaveBeenCalled();
+        }));
+
+      it('should close the panel after cancel trigger',
+        fakeAsync(() => {
+          spyOn(component.mySelect, 'close');
+          component.mySelect.open();
+          fixture.detectChanges();
+          flush();
+
+          const cancelButtonEl = fixture.debugElement.query(By.css('.cancel-button'));
+          cancelButtonEl.triggerEventHandler('click', null);
+
+          expect(component.mySelect.close).toHaveBeenCalled();
+        }));
     });
   });
 
@@ -241,6 +326,7 @@ describe('SelectComponent', () => {
       component.options = optionsMock;
       component.isMultiSelect = false;
       component.selectedIds = [1];
+      spyOn(component.selectChange, 'emit');
       fixture.detectChanges();
     }));
     it('should set the selectionGroupOptions', () => {
@@ -264,6 +350,33 @@ describe('SelectComponent', () => {
           flush();
 
           expect(component.selectedModel).toEqual(selectionGroupOptionsMock[1].options[0]);
+        }));
+
+      it('should emit the selectedId',
+        fakeAsync(() => {
+          component.mySelect.open();
+          fixture.detectChanges();
+          flush();
+
+          (overlayContainerElement.querySelectorAll('mat-option')[4] as HTMLElement).click();
+          fixture.detectChanges();
+          flush();
+
+          expect(component.selectChange.emit).toHaveBeenCalledWith([11]);
+        }));
+
+      it('should close the panel after selection',
+        fakeAsync(() => {
+          spyOn(component.mySelect, 'close');
+          component.mySelect.open();
+          fixture.detectChanges();
+          flush();
+
+          (overlayContainerElement.querySelectorAll('mat-option')[4] as HTMLElement).click();
+          fixture.detectChanges();
+          flush();
+
+          expect(component.mySelect.close).toHaveBeenCalled();
         }));
 
       it('should update triggerText',

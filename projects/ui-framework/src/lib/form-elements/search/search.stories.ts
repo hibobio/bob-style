@@ -14,7 +14,8 @@ const template = `
 <b-search style="display:block; width: 400px;"
           [value]="value"
           [placeholder]="placeholder"
-          [hideLabelOnFocus]="hideLabelOnFocus">
+          [hideLabelOnFocus]="hideLabelOnFocus"
+          (searchChange)="searchChange($event)">
 </b-search>
 `;
 
@@ -28,6 +29,7 @@ const note = `
   value | string/number/float | type of input field
   placeholder | string | placeholder text
   hideLabelOnFocus | boolean | should hide label on focus
+  searchChange | action | searchChange
 
   ~~~
   ${ template }
@@ -42,6 +44,7 @@ inputStories.add(
         value: text('value', ''),
         placeholder: text('placeholder', 'Search'),
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
+        searchChange: action(),
       },
       moduleMetadata: {
         imports: [

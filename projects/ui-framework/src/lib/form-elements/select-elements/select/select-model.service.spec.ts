@@ -1,6 +1,6 @@
 import { SelectModelService } from './select-model.service';
 import { TestBed } from '@angular/core/testing';
-import { SelectGroupOption, SelectionGroupOption, SelectionOption } from './select.interface';
+import { SelectGroupOption, SelectionGroupOption, SelectionOption } from '../select.interface';
 
 describe('IconService', () => {
   let selectModelService: SelectModelService;

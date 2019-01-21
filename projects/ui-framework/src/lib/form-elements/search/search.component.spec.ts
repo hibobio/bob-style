@@ -26,7 +26,7 @@ describe('SearchComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(SearchComponent);
         component = fixture.componentInstance;
-        spyOn(component.inputEvents, 'emit');
+        spyOn(component.searchChange, 'emit');
         fixture.detectChanges();
       });
   }));
@@ -43,6 +43,13 @@ describe('SearchComponent', () => {
 
       resetElement = fixture.debugElement.query(By.css('.reset-button'));
       expect(resetElement).not.toBe(null);
+    });
+    it('should invoke searcChange.emit with search value', () => {
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      inputElement.nativeElement.value = 'change input value';
+      inputElement.nativeElement.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      expect(component.searchChange.emit).toHaveBeenCalledWith('change input value');
     });
   });
 

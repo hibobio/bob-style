@@ -1,16 +1,28 @@
-import { Component, Input } from '@angular/core';
-import { SelectGroupOption } from '../select/select.interface';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { SelectGroupOption } from '../select.interface';
 
 @Component({
   selector: 'b-multi-select',
-  templateUrl: './multi-select.component.html',
+  template: `
+    <b-select [options]="options"
+              [selectedIds]="selectedIds"
+              [isMultiSelect]="true"
+              [showSingleGroupHeader]="showSingleGroupHeader"
+              (selectChange)="onSelectChange($event)">>
+    </b-select>
+  `,
 })
 export class MultiSelectComponent {
 
   @Input() options: SelectGroupOption[] = [];
   @Input() selectedIds: (string | number)[] = [];
   @Input() showSingleGroupHeader = false;
+  @Output() selectChange: EventEmitter<(number | string)[]> = new EventEmitter<(number | string)[]>();
 
   constructor() {
+  }
+
+  onSelectChange(selectionIds: (string | number)[]): void {
+    this.selectChange.emit(selectionIds);
   }
 }

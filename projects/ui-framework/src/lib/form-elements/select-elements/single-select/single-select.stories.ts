@@ -4,8 +4,8 @@ import { array, boolean, number, object, select, text, withKnobs } from '@storyb
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SelectGroupOption } from '../select/select.interface';
-import { SingleSelectModule } from './single-select.module';
+import { SelectGroupOption } from '../select.interface';
+import { SelectModule } from '../select.module';
 
 const selectStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
@@ -15,7 +15,8 @@ const template = `
 <b-single-select style="display:block; width: 400px;"
                  [options]="options"
                  [selectedId]="selectedId"
-                 [showSingleGroupHeader]="showSingleGroupHeader">
+                 [showSingleGroupHeader]="showSingleGroupHeader"
+                 (selectChange)="selectChange($event)">
 </b-single-select>
 `;
 
@@ -29,6 +30,7 @@ const note = `
   options | SelectGroupOption[] | model of selection group
   selectedId | (string or number) | selected id
   showSingleGroupHeader | boolean | shows header for single groups (default=false)
+  selectChange | action | returns selected id
 
   ~~~
   ${ template }
@@ -61,11 +63,12 @@ selectStories.add(
         options: object<SelectGroupOption>('options', optionsMock),
         selectedId: number('selectedId', 2),
         showSingleGroupHeader: boolean('showSingleGroupHeader', false),
+        selectChange: action(),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
-          SingleSelectModule,
+          SelectModule,
         ]
       }
     };

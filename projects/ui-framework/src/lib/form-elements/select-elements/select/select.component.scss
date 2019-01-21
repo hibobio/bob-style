@@ -70,6 +70,9 @@
           height: 44px;
           line-height: 1;
           color: initial;
+          &.mat-selected {
+            background-color: initial;
+          }
           &:hover {
             background-color: $grey-100;
           }

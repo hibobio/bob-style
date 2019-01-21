@@ -7,7 +7,6 @@ import { PanelModule } from '../panel/panel.module';
 import { ButtonsModule } from '../../buttons';
 import { TypographyModule } from '../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MultiSelectModule } from '../../form-elements/select-elements';
 
 const buttonStories = storiesOf(ComponentGroupType.Overlay, module)
   .addDecorator(withNotes)
@@ -61,7 +60,6 @@ buttonStories.add(
         ButtonsModule,
         TypographyModule,
         BrowserAnimationsModule,
-        MultiSelectModule,
       ],
     }
   }),
