@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { concat, flatMap, get, join, escapeRegExp, forEach } from 'lodash';
 import { SelectGroupOption, SelectionGroupOption, SelectionOption } from '../select.interface';
-import { ButtonSize, ButtonType } from '../../../buttons';
+import { ButtonSize, ButtonType } from '../../../buttons/buttons.enum';
 import { SelectModelService } from './select-model.service';
 
 const navigationKeys = new Set(['ArrowUp', 'ArrowDown', 'Enter']);

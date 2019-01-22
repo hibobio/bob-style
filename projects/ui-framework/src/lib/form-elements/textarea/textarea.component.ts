@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { InputEventType } from '../input/input.enum';
-import { InputEvent } from '../input/input.interface';
 import { BaseInputElement } from '../base-input-element';
 
 @Component({
