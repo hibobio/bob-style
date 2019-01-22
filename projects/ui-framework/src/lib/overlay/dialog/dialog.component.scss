@@ -1,0 +1,40 @@
+$dialogPadding: 24px;
+
+:host {
+
+}
+
+::ng-deep {
+  .mat-dialog-container {
+    display: block;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    .mat-dialog-title, .mat-dialog-content, .mat-dialog-actions {
+      display: block;
+      margin: 0;
+      padding: 0;
+      max-height: none;
+      min-height: 0;
+      font: inherit;
+    }
+    .mat-dialog-title {
+      padding: $dialogPadding $dialogPadding 10px;
+      div[b-dialog-sub-title] {
+        margin-top: 5px;
+      }
+    }
+    .mat-dialog-content {
+      padding: 0 $dialogPadding $dialogPadding;
+      max-height: 65vh;
+    }
+    .mat-dialog-actions {
+      text-align: center;
+    }
+  }
+}

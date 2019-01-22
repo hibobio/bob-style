@@ -3,6 +3,7 @@ import { concat, flatMap, get, join, escapeRegExp, forEach } from 'lodash';
 import { SelectGroupOption, SelectionGroupOption, SelectionOption } from '../select.interface';
 import { ButtonSize, ButtonType } from '../../../buttons/buttons.enum';
 import { SelectModelService } from './select-model.service';
+import { BaseInputElement } from '../../base-input-element';
 
 const navigationKeys = new Set(['ArrowUp', 'ArrowDown', 'Enter']);
 
@@ -11,7 +12,7 @@ const navigationKeys = new Set(['ArrowUp', 'ArrowDown', 'Enter']);
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
 })
-export class SelectComponent implements OnInit {
+export class SelectComponent extends BaseInputElement implements OnInit {
 
   @ViewChild('mySelect') mySelect;
 
@@ -33,6 +34,7 @@ export class SelectComponent implements OnInit {
   constructor(
     private selectModelService: SelectModelService,
   ) {
+    super();
   }
 
   ngOnInit(): void {

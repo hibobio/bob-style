@@ -8,7 +8,8 @@ import { SelectGroupOption } from '../select.interface';
               [selectedIds]="[selectedId]"
               [isMultiSelect]="false"
               [showSingleGroupHeader]="showSingleGroupHeader"
-              (selectChange)="onSelectChange($event)">
+              (selectChange)="onSelectChange($event)"
+              [placeholder]="placeholder">
     </b-select>
   `,
 })
@@ -16,6 +17,7 @@ export class SingleSelectComponent {
 
   @Input() options: SelectGroupOption[] = [];
   @Input() selectedId: (string | number);
+  @Input() placeholder: string | number;
   @Input() showSingleGroupHeader = false;
   @Output() selectChange: EventEmitter<number | string> = new EventEmitter<number | string>();
 

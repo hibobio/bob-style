@@ -1,2 +1,2 @@
-export * from './select.interface';
+export { SelectGroupOption } from './select.interface';
 export * from './select.module';

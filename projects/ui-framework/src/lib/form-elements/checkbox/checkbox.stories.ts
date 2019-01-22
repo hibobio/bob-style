@@ -13,7 +13,7 @@ const inputStories = storiesOf(ComponentGroupType.FormElements, module)
 const template = `
 <b-checkbox (checkboxChange)="checkboxChange($event)"
             [value]="value"
-            [placeholder]="placeholder"
+            [label]="label"
             [disabled]="disabled"
             [required]="required">
 </b-checkbox>
@@ -27,7 +27,7 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   value | boolean | start checkbox state
-  placeholder | string | placeholder text
+  label | string | label text
   disabled | boolean | is field disabled
   required | boolean | is field required
   checkboxChange | checkboxChange | checkboxChange emitter
@@ -44,7 +44,7 @@ inputStories.add(
       props: {
         checkboxChange: action(),
         value: boolean('value', true),
-        placeholder: text('placeholder', 'Check this'),
+        label: text('label', 'Check this'),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
       },

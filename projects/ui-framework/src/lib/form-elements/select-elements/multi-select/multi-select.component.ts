@@ -8,7 +8,8 @@ import { SelectGroupOption } from '../select.interface';
               [selectedIds]="selectedIds"
               [isMultiSelect]="true"
               [showSingleGroupHeader]="showSingleGroupHeader"
-              (selectChange)="onSelectChange($event)">>
+              (selectChange)="onSelectChange($event)"
+              [placeholder]="placeholder">
     </b-select>
   `,
 })

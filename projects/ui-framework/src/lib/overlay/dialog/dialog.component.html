@@ -1,0 +1,21 @@
+<div (click)="closeDialog()"
+     class="close-button"
+     mat-dialog-close>
+  <b-icon [icon]="icons.close"
+          [size]="iconSize.small">
+  </b-icon>
+</div>
+
+<div mat-dialog-title>
+  <b-heading>{{dialogTitle}}</b-heading>
+  <ng-content select="[b-dialog-sub-title]"></ng-content>
+</div>
+
+<div mat-dialog-content>
+  <ng-content select="[b-dialog-content]"></ng-content>
+</div>
+
+<div mat-dialog-actions>
+  <b-button (click)="onCancel()">{{dialogButtonConfig.cancelLabel}}</b-button>
+  <b-button (click)="onOk()">{{dialogButtonConfig.okLabel}}</b-button>
+</div>

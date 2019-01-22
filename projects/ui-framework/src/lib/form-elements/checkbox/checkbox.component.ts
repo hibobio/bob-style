@@ -15,7 +15,7 @@ export enum CheckboxStates {
       <mat-pseudo-checkbox [state]="checkboxState"
                            class="checkbox">
       </mat-pseudo-checkbox>
-      <label>{{placeholder}}</label>
+      <label>{{label}}</label>
     </div>
   `,
   styleUrls: ['./checkbox.component.scss'],
@@ -23,7 +23,7 @@ export enum CheckboxStates {
 export class CheckboxComponent implements OnInit {
 
   @Input() value = false;
-  @Input() placeholder: string;
+  @Input() label: string;
   @Input() disabled: boolean;
   @Input() required: boolean;
   @Output() checkboxChange: EventEmitter<boolean> = new EventEmitter<boolean>();

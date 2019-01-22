@@ -6,7 +6,8 @@ import { DialogService } from './dialog.service';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { FormElementsModule } from '../../form-elements/form-elements.module';
-import { SelectGroupOption } from '../../form-elements/select-elements';
+import { SelectGroupOption } from '../../form-elements/select-elements/select.interface';
+import { InputEvent, InputEventType } from '../../form-elements/input';
 
 @Component({
   selector: 'b-dialog-example',
@@ -19,7 +20,7 @@ export class DialogExampleComponent {
   private dataMock: any = {
     id: 'id_123',
     source: 'Wikipedia',
-    title: 'Syria',
+    title: 'Syria (سوريا‎)',
     textContent: `Syria (Arabic: سوريا‎ Sūriyā), officially the Syrian Arab Republic
     (Arabic: الجمهورية العربية السورية‎ al-Jumhūrīyah al-ʻArabīyah as-Sūrīyah), is a
     country in Western Asia, bordering Lebanon and the Mediterranean Sea to the west,
@@ -33,7 +34,7 @@ export class DialogExampleComponent {
 
   openDialog(): void {
     this.dialogService.openDialog(DialogExampleDialogComponent, {
-      width: '500px',
+      width: '800px',
       data: this.dataMock,
     });
   }
@@ -46,15 +47,21 @@ export class DialogExampleComponent {
       dialogTitle="{{data.title}}"
       [dialogButtonConfig]="dialogButtonConfig">
       <div b-dialog-sub-title>
-        <b-subheading>The article id is {{data.id}}</b-subheading>
+        <b-subheading style="display:inline;">The article id is {{data.id}} </b-subheading>
         <a href="https://en.wikipedia.org/wiki/Syria" target="_blank">read more</a>
       </div>
       <div b-dialog-content>
         <b-textarea placeholder="Edit text"
-                    value="{{data.textContent}}">
+                    value="{{data.textContent}}"
+                    (inputEvents)="onTextEdit($event)">
         </b-textarea>
-        <!--<b-single-select [options]="selectOptions">-->
-        <!--</b-single-select>-->
+        <article style="padding:20px; background-color:#F8F7F7;">
+          <b-display-4>"{{editedText}}"</b-display-4>
+        </article>
+        <b-single-select [options]="selectOptions"
+                         placeholder="was this article helpfull">
+        </b-single-select>
+        <b-checkbox label="Click this"></b-checkbox>
       </div>
     </b-dialog>
   `,
@@ -63,6 +70,7 @@ export class DialogExampleDialogComponent implements OnInit {
 
   dialogButtonConfig: any;
   selectOptions: SelectGroupOption[];
+  editedText: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -70,6 +78,7 @@ export class DialogExampleDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.editedText = this.data.textContent;
     this.dialogButtonConfig = {
       okLabel: 'Ok',
       cancelLabel: 'cancel',
@@ -83,6 +92,12 @@ export class DialogExampleDialogComponent implements OnInit {
         ],
       }
     ];
+  }
+
+  onTextEdit(event: InputEvent): void {
+    if (event.event === InputEventType.onChange) {
+      this.editedText = event.value as string;
+    }
   }
 }
 
