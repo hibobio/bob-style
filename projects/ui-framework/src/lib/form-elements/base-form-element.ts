@@ -25,6 +25,7 @@ export abstract class BaseFormElement implements ControlValueAccessor {
   }
 
   writeValue(val: any): void {
+    console.log('val', val);
     this.value = val;
   }
 

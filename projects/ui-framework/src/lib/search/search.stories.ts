@@ -6,7 +6,7 @@ import { SearchModule } from './search.module';
 import { ComponentGroupType } from '../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const inputStories = storiesOf(ComponentGroupType.Search, module)
+const inputStories = storiesOf(ComponentGroupType.ShemZmani, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
