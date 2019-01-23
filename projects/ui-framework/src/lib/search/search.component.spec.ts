@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { SearchComponent } from './search.component';
-import { InputModule } from '../input/input.module';
-import { IconsModule } from '../../icons/icons.module';
+import { InputModule } from '../form-elements/input/input.module';
+import { IconsModule } from '../icons/icons.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 

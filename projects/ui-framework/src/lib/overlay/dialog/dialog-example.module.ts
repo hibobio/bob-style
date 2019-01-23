@@ -4,7 +4,7 @@ import { TypographyModule } from '../../typography/typography.module';
 import { DialogModule } from './dialog.module';
 import { DialogService } from './dialog.service';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { ButtonsModule } from '../../buttons/buttons.module';
+import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { FormElementsModule } from '../../form-elements/form-elements.module';
 import { SelectGroupOption } from '../../form-elements/select-elements/select.interface';
 import { InputEvent, InputEventType } from '../../form-elements/input';

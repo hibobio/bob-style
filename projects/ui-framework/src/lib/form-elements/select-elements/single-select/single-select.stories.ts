@@ -14,7 +14,7 @@ const selectStories = storiesOf(ComponentGroupType.FormElements, module)
 const template = `
 <b-single-select style="display:block; width: 400px;"
                  [options]="options"
-                 [selectedId]="selectedId"
+                 [value]="value"
                  [showSingleGroupHeader]="showSingleGroupHeader"
                  (selectChange)="selectChange($event)">
 </b-single-select>
@@ -28,7 +28,7 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   options | SelectGroupOption[] | model of selection group
-  selectedId | (string or number) | selected id
+  value | (string or number) | selected id
   showSingleGroupHeader | boolean | shows header for single groups (default=false)
   selectChange | action | returns selected id
 
@@ -61,7 +61,7 @@ selectStories.add(
       template,
       props: {
         options: object<SelectGroupOption>('options', optionsMock),
-        selectedId: number('selectedId', 2),
+        value: number('value', 2),
         showSingleGroupHeader: boolean('showSingleGroupHeader', false),
         selectChange: action(),
       },

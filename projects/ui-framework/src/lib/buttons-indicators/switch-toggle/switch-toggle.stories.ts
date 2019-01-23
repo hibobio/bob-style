@@ -2,9 +2,9 @@ import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
 import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { SwitchToggleModule } from '../switch-toggle/switch-toggle.module';
+import { SwitchToggleModule } from './switch-toggle.module';
 import { values } from 'lodash';
-import {ComponentGroupType} from '../consts';
+import {ComponentGroupType} from '../../consts';
 
 const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
   .addDecorator(withNotes)

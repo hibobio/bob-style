@@ -6,7 +6,7 @@ import { BaseFormElement } from '../../base-form-element';
   selector: 'b-multi-select',
   template: `
     <b-select [options]="options"
-              [selectedIds]="selectedIds"
+              [value]="value"
               [isMultiSelect]="true"
               [showSingleGroupHeader]="showSingleGroupHeader"
               (selectChange)="onSelectChange($event)"
@@ -17,7 +17,7 @@ import { BaseFormElement } from '../../base-form-element';
 export class MultiSelectComponent extends BaseFormElement {
 
   @Input() options: SelectGroupOption[] = [];
-  @Input() selectedIds: (string | number)[] = [];
+  @Input() value: (string | number)[] = [];
   @Input() showSingleGroupHeader = false;
   @Input() label: string | number;
   @Output() selectChange: EventEmitter<(number | string)[]> = new EventEmitter<(number | string)[]>();
@@ -26,7 +26,7 @@ export class MultiSelectComponent extends BaseFormElement {
     super();
   }
 
-  onSelectChange(selectionIds: (string | number)[]): void {
-    this.selectChange.emit(selectionIds);
+  onSelectChange(value: (string | number)[]): void {
+    this.selectChange.emit(value);
   }
 }

@@ -27,7 +27,7 @@ describe('MultiSelectComponent', () => {
   }));
 
   describe('onSelectChange', () => {
-    it('should call selectChange.emit with array of selectedIds', () => {
+    it('should call selectChange.emit with array of value', () => {
       component.onSelectChange([1, 2, 11]);
       expect(component.selectChange.emit).toHaveBeenCalledWith([1, 2, 11]);
     });

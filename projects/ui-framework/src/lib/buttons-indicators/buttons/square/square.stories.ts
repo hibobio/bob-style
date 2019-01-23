@@ -1,35 +1,35 @@
-import { storiesOf, moduleMetadata } from '@storybook/angular';
+import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
+import { select, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
-import { ButtonType, ButtonSize } from '../buttons.enum';
+import { ButtonType } from '../buttons.enum';
 import { values } from 'lodash';
-import {ComponentGroupType} from '../../consts';
+import { Icons, IconSize, IconColor } from '../../../icons/icons.enum';
+import { IconsModule } from '../../../icons/icons.module';
+import {ComponentGroupType} from '../../../consts';
 
 const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
 const typeOptions = values(ButtonType);
-const sizeOptions = values(ButtonSize);
+const IconColors = values(IconColor);
 const template = `
-  <b-button
+  <b-square-button
     (clicked)="onClick($event)"
-    [type]="type"
-    [size]="size">
-      {{label}}
-  </b-button>
+    [type]="type">
+    <b-icon icon="${Icons.phone_link}" size="${IconSize.mini}" [color]="iconColor"></b-icon>
+  </b-square-button>
 `;
 const note = `
-  ## Button Element
+  ## Square Button Element
 
   #### Properties
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
   type | ButtonType | enum for setting the button type | primary (optional)
-  size | ButtonSize | enum for setting the button size | medium (optional)
   clicked | Function | callback for clicking on the button |
 
   #### Style customization
@@ -45,16 +45,15 @@ const note = `
   ~~~
 `;
 buttonStories.add(
-    'Regular Button', () => ({
+    'Square Button', () => ({
       template,
       props: {
         onClick: action(),
-        label: text('label', 'Click me'),
         type: select('type', typeOptions, ButtonType.primary),
-        size: select('size', sizeOptions, ButtonSize.medium),
+        iconColor: select('color', IconColors, IconColor.white),
       },
       moduleMetadata: {
-        imports: [ButtonsModule]
+        imports: [ButtonsModule, IconsModule]
       }
     }),
     { notes: { markdown: note }  }

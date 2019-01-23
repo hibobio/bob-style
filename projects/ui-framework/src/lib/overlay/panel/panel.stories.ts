@@ -4,7 +4,7 @@ import { select, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { PanelModule } from '../panel/panel.module';
-import { ButtonsModule } from '../../buttons';
+import { ButtonsModule } from '../../buttons-indicators/buttons';
 import { TypographyModule } from '../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 

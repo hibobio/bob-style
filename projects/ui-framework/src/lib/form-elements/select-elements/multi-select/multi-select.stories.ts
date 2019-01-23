@@ -14,7 +14,7 @@ const selectStories = storiesOf(ComponentGroupType.FormElements, module)
 const template = `
 <b-multi-select style="display:block; width: 400px;"
                 [options]="options"
-                [selectedIds]="selectedIds"
+                [value]="value"
                 [showSingleGroupHeader]="showSingleGroupHeader"
                 (selectChange)="selectChange($event)">
 </b-multi-select>
@@ -28,7 +28,7 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   options | SelectGroupOption[] | model of selection group
-  selectedIds | (string or number)[] | selected id
+  value | (string or number)[] | selected id
   showSingleGroupHeader | boolean | shows header for single groups (default=false)
   selectChange | action | returns selectedIds as Array
 
@@ -61,7 +61,7 @@ selectStories.add(
       template,
       props: {
         options: object<SelectGroupOption>('options', optionsMock),
-        selectedIds: array<number>('selectedIds', [1, 2]),
+        value: array<number>('value', [1, 2]),
         showSingleGroupHeader: boolean('showSingleGroupHeader', false),
         selectChange: action(),
       },

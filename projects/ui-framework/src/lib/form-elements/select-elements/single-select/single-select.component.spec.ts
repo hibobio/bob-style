@@ -27,7 +27,7 @@ describe('SingleSelectComponent', () => {
   }));
 
   describe('onSelectChange', () => {
-    it('should call selectChange.emit with of selectedId', () => {
+    it('should call selectChange.emit with value', () => {
       component.onSelectChange([1]);
       expect(component.selectChange.emit).toHaveBeenCalledWith(1);
     });

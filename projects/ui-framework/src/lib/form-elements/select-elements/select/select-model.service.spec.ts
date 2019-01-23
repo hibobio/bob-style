@@ -119,42 +119,42 @@ describe('IconService', () => {
 
   describe('getSelectedOptions', () => {
     it('should return an array of selected ids as SelectionOption[]', () => {
-      const selectedIds = [1, 12];
-      const selectedOptions = selectModelService.getSelectedOptions(selectionGroupOptionsMock, selectedIds);
+      const value = [1, 12];
+      const selectedOptions = selectModelService.getSelectedOptions(selectionGroupOptionsMock, value);
       expect(selectedOptions).toEqual([
         selectionGroupOptionsMock[0].options[0],
         selectionGroupOptionsMock[1].options[1],
       ]);
     });
     it('should return empty array if no ids are passed', () => {
-      const selectedIds = [];
-      const selectedOptions = selectModelService.getSelectedOptions(selectionGroupOptionsMock, selectedIds);
+      const value = [];
+      const selectedOptions = selectModelService.getSelectedOptions(selectionGroupOptionsMock, value);
       expect(selectedOptions).toEqual([]);
     });
   });
 
   describe('getSelectedGroupHeaderOptions', () => {
     it('should return an array of groupHeaders as SelectionOption[] for groups that all options are selected', () => {
-      const selectedIds = [1, 2, 11, 12];
+      const value = [1, 2, 11, 12];
       const selectedGroupHeaderOptions: SelectionOption[] = selectModelService
-        .getSelectedGroupHeaderOptions(selectionGroupOptionsMock, selectedIds);
+        .getSelectedGroupHeaderOptions(selectionGroupOptionsMock, value);
       expect(selectedGroupHeaderOptions).toEqual([
         selectionGroupOptionsMock[0].groupHeader,
         selectionGroupOptionsMock[1].groupHeader,
       ]);
     });
     it('should return an array of groupHeaders as SelectionOption[] for groups that all options are selected', () => {
-      const selectedIds = [1, 2, 11];
+      const value = [1, 2, 11];
       const selectedGroupHeaderOptions: SelectionOption[] = selectModelService
-        .getSelectedGroupHeaderOptions(selectionGroupOptionsMock, selectedIds);
+        .getSelectedGroupHeaderOptions(selectionGroupOptionsMock, value);
       expect(selectedGroupHeaderOptions).toEqual([
         selectionGroupOptionsMock[0].groupHeader,
       ]);
     });
     it('should return empty array if no groups options are all selected', () => {
-      const selectedIds = [1, 11];
+      const value = [1, 11];
       const selectedGroupHeaderOptions: SelectionOption[] = selectModelService
-        .getSelectedGroupHeaderOptions(selectionGroupOptionsMock, selectedIds);
+        .getSelectedGroupHeaderOptions(selectionGroupOptionsMock, value);
       expect(selectedGroupHeaderOptions).toEqual([]);
     });
   });

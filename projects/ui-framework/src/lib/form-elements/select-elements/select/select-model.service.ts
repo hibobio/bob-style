@@ -40,20 +40,20 @@ export class SelectModelService {
 
   public getSelectedOptions(
     selectionGroupOptions: SelectGroupOption[],
-    selectedIds: (string | number)[],
+    value: (string | number)[],
   ): SelectionOption[] {
     return chain(selectionGroupOptions)
       .concat(flatMap(selectionGroupOptions, 'groupHeader'), flatMap(selectionGroupOptions, 'options'))
-      .filter(option => includes(selectedIds, option.id))
+      .filter(option => includes(value, option.id))
       .value();
   }
 
   public getSelectedGroupHeaderOptions(
     selectionGroupOptions: SelectGroupOption[],
-    selectedIds: (string | number)[],
+    value: (string | number)[],
   ): SelectionOption[] {
     return chain(selectionGroupOptions)
-      .filter(group => this.isEveryGroupOptionSelected(group.options, selectedIds))
+      .filter(group => this.isEveryGroupOptionSelected(group.options, value))
       .map('groupHeader')
       .value();
   }
@@ -102,8 +102,8 @@ export class SelectModelService {
 
   private isEveryGroupOptionSelected(
     groupOptions: SelectionOption[],
-    selectedIds: (string | number)[],
+    value: (string | number)[],
   ): boolean {
-    return every(groupOptions, option => includes(selectedIds, option.id));
+    return every(groupOptions, option => includes(value, option.id));
   }
 }

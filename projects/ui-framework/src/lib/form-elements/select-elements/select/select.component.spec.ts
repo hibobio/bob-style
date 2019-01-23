@@ -5,8 +5,8 @@ import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SelectComponent } from './select.component';
 import { SelectModelService } from './select-model.service';
-import { SearchModule } from '../../search/search.module';
-import { ButtonsModule } from '../../../buttons';
+import { SearchModule } from '../../../search/search.module';
+import { ButtonsModule } from '../../../buttons-indicators/buttons';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { By } from '@angular/platform-browser';
@@ -126,7 +126,7 @@ describe('SelectComponent', () => {
       component = fixture.componentInstance;
       component.options = optionsMock;
       component.isMultiSelect = true;
-      component.selectedIds = [1, 2];
+      component.value = [1, 2];
       spyOn(component.selectChange, 'emit');
       fixture.detectChanges();
     }));
@@ -325,7 +325,7 @@ describe('SelectComponent', () => {
       component = fixture.componentInstance;
       component.options = optionsMock;
       component.isMultiSelect = false;
-      component.selectedIds = [1];
+      component.value = [1];
       spyOn(component.selectChange, 'emit');
       fixture.detectChanges();
     }));

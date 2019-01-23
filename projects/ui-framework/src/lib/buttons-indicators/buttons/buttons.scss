@@ -1,5 +1,5 @@
-@import '../style/colors.scss';
-@import '../style/typography.scss';
+@import '../../style/colors';
+@import '../../style/typography';
 
 @mixin Button($type) {
   box-sizing: border-box;

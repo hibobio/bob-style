@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { concat, flatMap, get, join, escapeRegExp, forEach } from 'lodash';
 import { SelectGroupOption, SelectionGroupOption, SelectionOption } from '../select.interface';
-import { ButtonSize, ButtonType } from '../../../buttons/buttons.enum';
+import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
 import { SelectModelService } from './select-model.service';
 import { BaseInputElement } from '../../base-input-element';
 
@@ -17,7 +17,7 @@ export class SelectComponent extends BaseInputElement implements OnInit {
   @ViewChild('mySelect') mySelect;
 
   @Input() options: SelectGroupOption[];
-  @Input() selectedIds: (string | number)[] = [];
+  @Input() value: (string | number)[] = [];
   @Input() isMultiSelect: boolean;
   @Input() showSingleGroupHeader = false;
 
@@ -46,9 +46,9 @@ export class SelectComponent extends BaseInputElement implements OnInit {
       .getSelectElementOptionsModel(this.options);
 
     const selectedOptions = this.selectModelService
-      .getSelectedOptions(this.selectionGroupOptions, this.selectedIds);
+      .getSelectedOptions(this.selectionGroupOptions, this.value);
     const selectedGroupsHeaders = this.selectModelService
-      .getSelectedGroupHeaderOptions(this.selectionGroupOptions, this.selectedIds);
+      .getSelectedGroupHeaderOptions(this.selectionGroupOptions, this.value);
 
     this.selectedModel = this.isMultiSelect
       ? concat(selectedOptions, selectedGroupsHeaders)
@@ -90,10 +90,10 @@ export class SelectComponent extends BaseInputElement implements OnInit {
   }
 
   notifySelectionIds(): void {
-    const selectedIds = this.isMultiSelect
+    const value = this.isMultiSelect
       ? this.selectModelService.getSelectedOptionIds(this.selectedModel as SelectionOption[])
       : [(this.selectedModel as SelectionOption).id];
-    this.selectChange.emit(selectedIds);
+    this.selectChange.emit(value);
     this.mySelect.close();
   }
 

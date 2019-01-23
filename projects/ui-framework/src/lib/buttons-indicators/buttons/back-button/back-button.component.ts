@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { ButtonSize, BackButtonType } from '../buttons.enum';
-import { Icons, IconSize } from '../../icons/icons.enum';
+import { Icons, IconSize } from '../../../icons/icons.enum';
 
 @Component({
   selector: 'b-back-button',

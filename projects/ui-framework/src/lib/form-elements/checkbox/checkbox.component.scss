@@ -2,6 +2,8 @@
 @import 'checkbox.scss';
 
 :host {
+  display: block;
+  margin: 20px 0;
   .checkbox-wrapper {
     display: flex;
     place-content: center start;

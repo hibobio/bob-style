@@ -6,7 +6,7 @@ import { BaseFormElement } from '../../base-form-element';
   selector: 'b-single-select',
   template: `
     <b-select [options]="options"
-              [selectedIds]="[selectedId]"
+              [value]="[value]"
               [isMultiSelect]="false"
               [showSingleGroupHeader]="showSingleGroupHeader"
               (selectChange)="onSelectChange($event)"
@@ -17,7 +17,7 @@ import { BaseFormElement } from '../../base-form-element';
 export class SingleSelectComponent extends BaseFormElement {
 
   @Input() options: SelectGroupOption[] = [];
-  @Input() selectedId: (string | number);
+  @Input() value: (string | number);
   @Input() label: string | number;
   @Input() showSingleGroupHeader = false;
   @Output() selectChange: EventEmitter<number | string> = new EventEmitter<number | string>();
@@ -26,7 +26,7 @@ export class SingleSelectComponent extends BaseFormElement {
     super();
   }
 
-  onSelectChange(selectionIds: (string | number)[]): void {
-    this.selectChange.emit(selectionIds[0]);
+  onSelectChange(value: (string | number)[]): void {
+    this.selectChange.emit(value[0]);
   }
 }

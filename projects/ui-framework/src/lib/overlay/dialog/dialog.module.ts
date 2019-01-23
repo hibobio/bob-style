@@ -4,7 +4,7 @@ import { MatDialogModule } from '@angular/material';
 import { DialogService } from './dialog.service';
 import { DialogComponent } from './dialog.component';
 import { TypographyModule } from '../../typography/typography.module';
-import { ButtonsModule } from '../../buttons/buttons.module';
+import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { IconsModule } from '../../icons/icons.module';
 
 @NgModule({

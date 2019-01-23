@@ -5,7 +5,7 @@ import { BackButtonType } from '../buttons.enum';
 import { values, remove } from 'lodash';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
-import {ComponentGroupType} from '../../consts';
+import {ComponentGroupType} from '../../../consts';
 
 const backButtonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
   .addDecorator(withNotes)

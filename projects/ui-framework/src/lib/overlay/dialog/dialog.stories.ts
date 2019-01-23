@@ -3,7 +3,7 @@ import { withNotes } from '@storybook/addon-notes';
 import { select, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
-import { ButtonsModule } from '../../buttons';
+import { ButtonsModule } from '../../buttons-indicators/buttons';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogModule } from './dialog.module';
 import { DialogExampleModule } from './dialog-example.module';

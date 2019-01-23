@@ -3,10 +3,10 @@ import { withNotes } from '@storybook/addon-notes';
 import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { SearchModule } from './search.module';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType } from '../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const inputStories = storiesOf(ComponentGroupType.FormElements, module)
+const inputStories = storiesOf(ComponentGroupType.Search, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
