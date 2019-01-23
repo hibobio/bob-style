@@ -18,6 +18,7 @@ export class MultiSelectComponent {
   @Input() options: SelectGroupOption[] = [];
   @Input() selectedIds: (string | number)[] = [];
   @Input() showSingleGroupHeader = false;
+  @Input() label: string | number;
   @Output() selectChange: EventEmitter<(number | string)[]> = new EventEmitter<(number | string)[]>();
 
   constructor() {
