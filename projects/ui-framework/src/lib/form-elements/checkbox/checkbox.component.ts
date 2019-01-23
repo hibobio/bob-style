@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { set } from 'lodash';
+import { BaseFormElement } from '../base-form-element';
 
 export enum CheckboxStates {
   checked = 'checked',
@@ -20,7 +21,7 @@ export enum CheckboxStates {
   `,
   styleUrls: ['./checkbox.component.scss'],
 })
-export class CheckboxComponent implements OnInit {
+export class CheckboxComponent extends BaseFormElement implements OnInit {
 
   @Input() value = false;
   @Input() label: string;
@@ -31,6 +32,7 @@ export class CheckboxComponent implements OnInit {
   checkboxState: CheckboxStates;
 
   constructor() {
+    super();
   }
 
   ngOnInit(): void {

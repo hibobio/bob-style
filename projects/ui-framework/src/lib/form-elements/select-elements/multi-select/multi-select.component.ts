@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SelectGroupOption } from '../select.interface';
+import { BaseFormElement } from '../../base-form-element';
 
 @Component({
   selector: 'b-multi-select',
@@ -13,7 +14,7 @@ import { SelectGroupOption } from '../select.interface';
     </b-select>
   `,
 })
-export class MultiSelectComponent {
+export class MultiSelectComponent extends BaseFormElement {
 
   @Input() options: SelectGroupOption[] = [];
   @Input() selectedIds: (string | number)[] = [];
@@ -22,6 +23,7 @@ export class MultiSelectComponent {
   @Output() selectChange: EventEmitter<(number | string)[]> = new EventEmitter<(number | string)[]>();
 
   constructor() {
+    super();
   }
 
   onSelectChange(selectionIds: (string | number)[]): void {

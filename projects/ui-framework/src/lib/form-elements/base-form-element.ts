@@ -4,7 +4,7 @@ import { InputEvent } from './input/input.interface';
 
 export abstract class BaseFormElement implements ControlValueAccessor {
 
-  @Input() value: string;
+  @Input() value: (number | string)[] | number | string | boolean;
   @Input() disabled: boolean;
   @Input() required: boolean;
   @Input() validateFn: Function = (_: FormControl) => {
