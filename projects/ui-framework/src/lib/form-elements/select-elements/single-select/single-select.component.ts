@@ -39,7 +39,9 @@ export class SingleSelectComponent extends BaseFormElement {
     super();
   }
 
-  onSelectChange(value: (string | number)[]): void {
-    this.selectChange.emit(value[0]);
+  onSelectChange(val: (string | number)[]): void {
+    const value = val[0];
+    this.propagateChange(value);
+    this.selectChange.emit(value);
   }
 }

@@ -55,6 +55,7 @@ export class CheckboxComponent extends BaseFormElement implements OnInit {
   toggleCheckbox(): void {
     this.value = !this.value;
     this.checkboxState = this.getCheckboxState();
+    this.propagateChange(this.value);
     this.checkboxChange.emit(this.value);
   }
 

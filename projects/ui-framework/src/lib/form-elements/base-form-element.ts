@@ -10,7 +10,7 @@ export abstract class BaseFormElement implements ControlValueAccessor {
   @Input() validateFn: Function = (_: FormControl) => {
   };
 
-  propagateChange: Function = (_: InputEvent) => {
+  propagateChange: Function = (_: any) => {
   };
 
   registerOnChange(fn: any): void {

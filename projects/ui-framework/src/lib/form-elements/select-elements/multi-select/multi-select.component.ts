@@ -40,6 +40,7 @@ export class MultiSelectComponent extends BaseFormElement {
   }
 
   onSelectChange(value: (string | number)[]): void {
+    this.propagateChange(value);
     this.selectChange.emit(value);
   }
 }
