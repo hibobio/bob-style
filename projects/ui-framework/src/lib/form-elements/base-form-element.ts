@@ -4,7 +4,7 @@ import { InputEvent } from './input/input.interface';
 
 export abstract class BaseFormElement implements ControlValueAccessor {
 
-  @Input() value: (number | string)[] | number | string | boolean;
+  @Input() value: any;
   @Input() disabled: boolean;
   @Input() required: boolean;
   @Input() validateFn: Function = (_: FormControl) => {
@@ -24,7 +24,7 @@ export abstract class BaseFormElement implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
-  writeValue(val: string): void {
+  writeValue(val: any): void {
     this.value = val;
   }
 
