@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
 import { SelectGroupOption } from '../select.interface';
 import { BaseFormElement } from '../../base-form-element';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'b-multi-select',
@@ -13,6 +14,18 @@ import { BaseFormElement } from '../../base-form-element';
               [label]="label">
     </b-select>
   `,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => MultiSelectComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => MultiSelectComponent),
+      multi: true
+    }
+  ],
 })
 export class MultiSelectComponent extends BaseFormElement {
 

@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { set } from 'lodash';
 import { BaseFormElement } from '../base-form-element';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export enum CheckboxStates {
   checked = 'checked',
@@ -20,6 +21,18 @@ export enum CheckboxStates {
     </div>
   `,
   styleUrls: ['./checkbox.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => CheckboxComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => CheckboxComponent),
+      multi: true
+    }
+  ],
 })
 export class CheckboxComponent extends BaseFormElement implements OnInit {
 

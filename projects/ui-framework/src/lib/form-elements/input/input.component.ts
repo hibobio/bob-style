@@ -4,7 +4,6 @@ import { inputAttributesPlaceholder } from '../../consts';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseInputElement } from '../base-input-element';
 import { MatInput } from '@angular/material';
-import { formElementProviders } from '../form-elements.consts';
 
 export const baseInputTemplate = `
 <mat-form-field
@@ -56,7 +55,18 @@ export const baseInputTemplate = `
   selector: 'b-input',
   template: baseInputTemplate,
   styleUrls: ['./input.component.scss'],
-  providers: formElementProviders(InputComponent),
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => InputComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => InputComponent),
+      multi: true
+    }
+  ],
 })
 export class InputComponent extends BaseInputElement {
 
