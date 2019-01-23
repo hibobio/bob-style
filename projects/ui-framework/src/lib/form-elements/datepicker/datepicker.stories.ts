@@ -13,7 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 const template = `
 <b-datepicker style="display:block; width: 400px;"
               (dateChange)="dateChange($event)"
-              [inputPlaceholder]="inputPlaceholder"
+              [inputLabel]="inputLabel"
               [dateFormat]="dateFormat">
 </b-datepicker>
 `;
@@ -24,7 +24,7 @@ const note = `
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  inputPlaceholder | string | Input placeholder | mandatory |
+  inputLabel | string | Input label | mandatory |
   dateFormat | string | Input date format | DD/MM/YYYY (optional) |
   dateChange | EventEmitter | Date change callback |
 
@@ -39,7 +39,7 @@ datepickerStories.add(
     return {
       template,
       props: {
-        inputPlaceholder: text('inputPlaceholder', 'Choose a date'),
+        inputLabel: text('inputLabel', 'Choose a date'),
         dateFormat: text('dateFormat', 'DD/MM/YYYY'),
         dateChange: action(),
       },

@@ -1,9 +1,8 @@
 <mat-form-field>
 
-  <mat-select panelClass="select-element-panel"
+  <mat-select [panelClass]="panelClass"
               [multiple]="isMultiSelect"
-              [placeholder]="placeholder"
-              disableOptionCentering="true"
+              disableOptionCentering
               disableRipple="true"
               [(ngModel)]="selectedModel"
               #mySelect>
@@ -13,7 +12,7 @@
     </mat-select-trigger>
 
     <b-search [hideLabelOnFocus]="true"
-              placeholder="Search"
+              label="Search"
               (keydown)="onSearchKeyDown($event)"
               (searchChange)="onSearchChange($event)">
     </b-search>
@@ -69,5 +68,7 @@
       </b-button>
     </div>
   </mat-select>
+
+  <mat-label>{{label}}</mat-label>
 
 </mat-form-field>

@@ -14,7 +14,7 @@ const textareaStories = storiesOf(ComponentGroupType.FormElements, module)
 const template = `
 <b-textarea style="display:block; width: 400px;"
             [maxChars]="maxChars"
-            [placeholder]="placeholder"
+            [label]="label"
             [value]="value"
             [disabled]="disabled"
             [required]="required"
@@ -34,7 +34,7 @@ const note = `
   --- | --- | ---
   maxChars | number | maximum characters
   value | string/number/float | type of input field
-  placeholder | string | placeholder text
+  label | string | label text
   disabled | boolean | is field disabled
   required | boolean | is field required
   hintMessage | text | hint text
@@ -54,7 +54,7 @@ textareaStories.add(
         inputEvents: action(),
         maxChars: number('maxChars', ''),
         value: text('value', ''),
-        placeholder: text('placeholder', 'placeholder text'),
+        label: text('label', 'label text'),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'this field should contain something'),

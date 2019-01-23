@@ -6,7 +6,7 @@ import { InputAutoCompleteOptions, InputEventType, InputTypes } from './input/in
 export abstract class BaseInputElement extends BaseFormElement {
 
   @Input() inputType: InputTypes;
-  @Input() placeholder: string;
+  @Input() label: string;
   @Input() hideLabelOnFocus = false;
   @Input() hintMessage: string;
   @Input() errorMessage: string;

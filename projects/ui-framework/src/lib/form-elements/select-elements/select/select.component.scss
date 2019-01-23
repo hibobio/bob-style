@@ -29,10 +29,14 @@
 ::ng-deep {
   .cdk-overlay-container .cdk-overlay-pane {
     .mat-select-panel {
-      //transform: translateX(-1px) translateY($form-field-height) scale(1) !important;
-      //min-width: calc(100% + 32px) !important;
       position: relative;
-      // todo: fix the min-width without the flickering
+      top: $form-field-height;
+      &.single-select-panel {
+        left: -1px;
+      }
+      &.multi-select-panel {
+        left: 4px;
+      }
       border: 1px solid $grey-500;
       border-top-left-radius: 0;
       border-top-right-radius: 0;

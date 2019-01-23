@@ -4,7 +4,6 @@
             #textarea
             [maxlength]="maxChars"
             [disabled]="disabled"
-            [placeholder]="placeholder"
             [(ngModel)]="value"
             (blur)="emitInputEvent(eventType.onBlur, value)"
             (focus)="emitInputEvent(eventType.onFocus, value)"
@@ -28,5 +27,7 @@
             class="length-indicator">
     {{textarea.value?.length || 0}}/{{maxChars}}
   </mat-hint>
+
+  <mat-label>{{label}}</mat-label>
 
 </mat-form-field>

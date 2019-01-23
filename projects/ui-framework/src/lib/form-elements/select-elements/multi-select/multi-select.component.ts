@@ -9,7 +9,7 @@ import { SelectGroupOption } from '../select.interface';
               [isMultiSelect]="true"
               [showSingleGroupHeader]="showSingleGroupHeader"
               (selectChange)="onSelectChange($event)"
-              [placeholder]="placeholder">
+              [label]="label">
     </b-select>
   `,
 })

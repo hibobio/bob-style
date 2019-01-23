@@ -13,7 +13,7 @@ const inputStories = storiesOf(ComponentGroupType.FormElements, module)
 const template = `
 <b-search style="display:block; width: 400px;"
           [value]="value"
-          [placeholder]="placeholder"
+          [label]="label"
           [hideLabelOnFocus]="hideLabelOnFocus"
           (searchChange)="searchChange($event)">
 </b-search>
@@ -27,7 +27,7 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   value | string/number/float | type of input field
-  placeholder | string | placeholder text
+  label | string | label text
   hideLabelOnFocus | boolean | should hide label on focus
   searchChange | action | searchChange
 
@@ -42,7 +42,7 @@ inputStories.add(
       template,
       props: {
         value: text('value', ''),
-        placeholder: text('placeholder', 'Search'),
+        label: text('label', 'Search'),
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         searchChange: action(),
       },

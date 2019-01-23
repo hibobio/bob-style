@@ -18,7 +18,7 @@ const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
 const template = `
 <b-input style="display:block; width: 400px;"
         [inputType]="inputType"
-        [placeholder]="placeholder"
+        [label]="label"
         [value]="value"
         [disabled]="disabled"
         [required]="required"
@@ -40,7 +40,7 @@ const note = `
   --- | --- | ---
   type | InputType | type of input field
   value | string/number/float | type of input field
-  placeholder | string | placeholder text
+  label | string | label text
   disabled | boolean | is field disabled
   required | boolean | is field required
   hintMessage | text | hint text
@@ -62,7 +62,7 @@ inputStories.add(
         inputEvents: action(),
         inputType: select('inputType', inputTypes, InputTypes.text),
         value: text('value', ''),
-        placeholder: text('placeholder', 'placeholder text'),
+        label: text('label', 'label text'),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),

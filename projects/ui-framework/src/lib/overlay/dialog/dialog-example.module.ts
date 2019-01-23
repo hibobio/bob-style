@@ -51,7 +51,7 @@ export class DialogExampleComponent {
         <a href="https://en.wikipedia.org/wiki/Syria" target="_blank">read more</a>
       </div>
       <div b-dialog-content>
-        <b-textarea placeholder="Edit text"
+        <b-textarea label="Edit text"
                     value="{{data.textContent}}"
                     (inputEvents)="onTextEdit($event)">
         </b-textarea>
@@ -59,7 +59,7 @@ export class DialogExampleComponent {
           <b-display-4>"{{editedText}}"</b-display-4>
         </article>
         <b-single-select [options]="selectOptions"
-                         placeholder="was this article helpfull">
+                         label="was this article helpfull">
         </b-single-select>
         <b-checkbox label="Click this"></b-checkbox>
       </div>

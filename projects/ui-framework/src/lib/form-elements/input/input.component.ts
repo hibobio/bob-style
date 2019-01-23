@@ -24,7 +24,6 @@ export const baseInputTemplate = `
   <input matInput
          [type]="inputType"
          [disabled]="disabled"
-         [placeholder]="placeholder"
          [(ngModel)]="value"
          [autocomplete]="enableBrowserAutoComplete"
          (blur)="emitInputEvent(eventType.onBlur, value)"
@@ -46,6 +45,8 @@ export const baseInputTemplate = `
       <ng-content select="[input-suffix]"></ng-content>
     </div>
   </div>
+
+  <mat-label>{{label}}</mat-label>
 
 </mat-form-field>
 `;

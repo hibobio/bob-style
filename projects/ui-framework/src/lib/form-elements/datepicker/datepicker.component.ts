@@ -37,7 +37,7 @@ const moment = moment_;
 export class DatepickerComponent extends BaseInputElement implements OnInit {
 
   @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
-  @Input() inputPlaceholder: String;
+  @Input() inputLabel: String;
   @Input() dateFormat?: string;
 
   public readonly calendarIcon: String = Icons.calendar;

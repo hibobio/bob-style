@@ -27,6 +27,7 @@ export class SelectComponent extends BaseInputElement implements OnInit {
   selectedModel: SelectionOption[] | SelectionOption;
   triggerValue: string;
   blockGroupHeaderOptionClick = false;
+  panelClass: string;
 
   buttonType = ButtonType;
   buttonSize = ButtonSize;
@@ -38,6 +39,9 @@ export class SelectComponent extends BaseInputElement implements OnInit {
   }
 
   ngOnInit(): void {
+    this.panelClass = this.isMultiSelect
+      ? 'multi-select-panel'
+      : 'single-select-panel';
     this.selectionGroupOptions = this.selectModelService
       .getSelectElementOptionsModel(this.options);
 
