@@ -5,7 +5,7 @@ import { DatepickerComponent } from './datepicker/datepicker.component';
 import { InputComponent } from './input/input.component';
 import { TextareaModule } from './textarea/textarea.module';
 import { TextareaComponent } from './textarea/textarea.component';
-import { SearchModule } from '../search/search.module';
+import { SearchModule } from '../shem-zmani/search/search.module';
 import { SelectModule } from './select-elements';
 import { CheckboxModule } from './checkbox/checkbox.module';
 import { MultiSelectComponent } from './select-elements/multi-select/multi-select.component';

@@ -1,9 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { IconColor, Icons, IconSize } from '../icons';
-import { InputEventType, InputTypes } from '../form-elements/input/input.enum';
+import { IconColor, Icons, IconSize } from '../../icons';
+import { InputEventType, InputTypes } from '../../form-elements/input/input.enum';
 import { set } from 'lodash';
-import { InputEvent } from '../form-elements/input/input.interface';
-import { BaseInputElement } from '../form-elements/base-input-element';
+import { InputEvent } from '../../form-elements/input/input.interface';
+import { BaseInputElement } from '../../form-elements/base-input-element';
 
 @Component({
   selector: 'b-search',

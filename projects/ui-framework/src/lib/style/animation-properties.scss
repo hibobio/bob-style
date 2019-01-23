@@ -1,0 +1,97 @@
+@mixin animate-property($obj,$time) {
+  -webkit-transition: $obj $time ease;
+  -moz-transition: $obj $time ease;
+  -o-transition: $obj $time ease;
+  transition: $obj $time ease;
+}
+
+@mixin animation-delay($delay) {
+  animation-delay: $delay;
+  -o-animation-delay: $delay;
+  -ms-animation-delay: $delay;
+  -webkit-animation-delay: $delay;
+  -moz-animation-delay: $delay;
+}
+
+@mixin animation-name($name) {
+  animation-name: $name;
+  -o-animation-name: $name;
+  -ms-animation-name: $name;
+  -webkit-animation-name: $name;
+  -moz-animation-name: $name;
+}
+
+@mixin animation-duration($duration) {
+  animation-duration: $duration;
+  -o-animation-duration: $duration;
+  -ms-animation-duration: $duration;
+  -webkit-animation-duration: $duration;
+  -moz-animation-duration: $duration;
+}
+
+@mixin animation-iteration-count($iteration) {
+  animation-iteration-count: $iteration;
+  -o-animation-iteration-count: $iteration;
+  -ms-animation-iteration-count: $iteration;
+  -webkit-animation-iteration-count: $iteration;
+  -moz-animation-iteration-count: $iteration;
+}
+
+@mixin animation-direction($direction) {
+  animation-direction: $direction;
+  -o-animation-direction: $direction;
+  -ms-animation-direction: $direction;
+  -webkit-animation-direction: $direction;
+  -moz-animation-direction: $direction;
+}
+
+@mixin transform($transform) {
+  transform: $transform;
+  -o-transform: $transform;
+  -ms-transform: $transform;
+  -webkit-transform: $transform;
+  -moz-transform: $transform;
+}
+
+@mixin transform-origin($transformOrigin) {
+  transform-origin: $transformOrigin;
+  -o-transform-origin: $transformOrigin;
+  -ms-transform-origin: $transformOrigin;
+  -webkit-transform-origin: $transformOrigin;
+  -moz-transform-origin: $transformOrigin;
+}
+
+@mixin animateEase($obj,$time,$type) {
+  -webkit-transition: $obj $time $type;
+  -moz-transition: $obj $time $type;
+  -o-transition: $obj $time $type;
+  transition: $obj $time $type;
+}
+
+@mixin animateEaseTimingFunction($obj,$time,$type) {
+  @include animateEase($obj, $time, $type);
+  -webkit-transition-timing-function: ($obj, $time, $type);
+  -moz-transition-timing-function: ($obj, $time, $type);
+  -o-transition-timing-function: ($obj, $time, $type);
+  transition-timing-function: ($obj, $time, $type); /* ease-in-out */
+}
+
+@mixin disableAnimation {
+  transition-property: none !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+@mixin perspective($val) {
+  -webkit-perspective: $val;
+  -moz-perspective: $val;
+  -ms-perspective: $val;
+  perspective: $val;
+}
+
+@mixin backfaceVisibility($val) {
+  -webkit-backface-visibility: $val;
+  -moz-backface-visibility: $val;
+  -ms-backface-visibility: $val;
+  backface-visibility: $val;
+}
