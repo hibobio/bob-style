@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'b-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
 })
-export class MenuComponent implements OnInit {
-  constructor() {
-  }
+export class MenuComponent {
 
-  ngOnInit(): void {
+  @Input() actionsModel: any[];
+  @ViewChild('childMenu') public childMenu;
+
+  constructor() {
   }
 }

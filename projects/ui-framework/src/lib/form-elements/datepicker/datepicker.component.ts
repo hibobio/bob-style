@@ -65,7 +65,7 @@ export class DatepickerComponent extends BaseInputElement implements OnInit {
         }
         break;
       case InputEventType.onChange:
-        inputEvent.value = moment(inputEvent.value).format(serverDateFormat);
+        inputEvent.value = moment(inputEvent.value).isValid() ? moment(inputEvent.value).format(serverDateFormat) : inputEvent.value;
         this.propagateChange(inputEvent.value);
         this.dateChange.emit(inputEvent);
         break;

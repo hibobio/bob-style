@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { ButtonSize, ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
@@ -15,7 +15,7 @@ const menuStories = storiesOf(ComponentGroupType.Overlay, module)
   .addDecorator(withKnobs);
 
 const template = `
-  <b-menu>
+  <b-menu [actionsModel]="actionsModel">
     <b-square-button menu-trigger
                     type="${ ButtonType.secondary }"
                     size="${ ButtonSize.medium }">
@@ -39,12 +39,65 @@ const note = `
   ${ template }
   ~~~
 `;
+
+const actionsModelMock = [
+  {
+    displayName: 'Employee',
+    children: [
+      {
+        displayName: 'Update work details',
+        children: [
+          {
+            displayName: 'Update site',
+            action: ($event) => console.log('update site', $event),
+          },
+          {
+            displayName: 'Update email',
+            action: ($event) => console.log('update email', $event),
+          },
+          {
+            displayName: 'Update reports to',
+            action: ($event) => console.log('update reports to', $event),
+          },
+        ]
+      },
+      {
+        displayName: 'Update internal details',
+        children: [
+          {
+            displayName: 'Terminate',
+            action: ($event) => console.log('terminate', $event),
+          },
+          {
+            displayName: 'Rehire',
+            action: ($event) => console.log('rehire', $event),
+          }
+        ]
+      },
+      {
+        displayName: 'Delete file',
+        action: ($event) => console.log('delete file', $event),
+      }
+    ]
+  },
+  {
+    displayName: 'View profile',
+    action: ($event) => console.log('view profile', $event),
+  },
+  {
+    displayName: 'Request time-off',
+    action: ($event) => console.log('request time off', $event),
+  }
+];
+
 menuStories.add(
   'Menu',
   () => {
     return {
       template,
-      props: {},
+      props: {
+        actionsModel: object<any>('actionsModel', actionsModelMock),
+      },
       moduleMetadata: {
         imports: [
           MenuModule,

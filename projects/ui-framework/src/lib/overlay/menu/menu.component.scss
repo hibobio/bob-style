@@ -3,15 +3,35 @@
 @import '../overlay.scss';
 
 ::ng-deep {
-  border: 1px solid red;
   .cdk-overlay-container {
     .mat-menu-panel {
       @include OverlayPanel();
+      min-width: 0;
       .mat-menu-content {
         position: relative;
         overflow: auto;
         max-height: 500px;
         padding: 0;
+        .mat-menu-item-submenu-trigger {
+          padding: 0;
+        }
+        .mat-menu-item {
+          padding: 0;
+          line-height: 36px;
+          height: 36px;
+          padding: 0 30px 0 12px;
+          display: flex;
+          align-content: space-between;
+          align-items: center;
+          &.mat-menu-item-submenu-trigger::after {
+            position: absolute;
+            right: 12px;
+            top: auto;
+            transform: none;
+            left: auto;
+            bottom: auto;
+          }
+        }
       }
     }
 
@@ -39,16 +59,12 @@
         }
       }
     }
-  }
-
-  > .cdk-overlay-connected-position-bounding-box ~ .cdk-overlay-connected-position-bounding-box {
-    .mat-menu-panel {
-      top: auto;
-      bottom: auto;
-      &:before, &:after {
-        content: none;
+    > .cdk-overlay-connected-position-bounding-box ~ .cdk-overlay-connected-position-bounding-box {
+      .mat-menu-panel {
+        &:before, &:after {
+          content: none;
+        }
       }
     }
   }
-
 }
