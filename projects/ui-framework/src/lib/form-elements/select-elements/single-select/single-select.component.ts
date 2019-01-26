@@ -2,6 +2,7 @@ import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/cor
 import { SelectGroupOption } from '../select.interface';
 import { BaseFormElement } from '../../base-form-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { BaseInputElement } from '../../base-input-element';
 
 @Component({
   selector: 'b-single-select',
@@ -11,6 +12,10 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
               [isMultiSelect]="false"
               [showSingleGroupHeader]="showSingleGroupHeader"
               (selectChange)="onSelectChange($event)"
+              [hintMessage]="hintMessage"
+              [errorMessage]="errorMessage"
+              [required]="required"
+              [disabled]="disabled"
               [label]="label">
     </b-select>
   `,
@@ -31,8 +36,12 @@ export class SingleSelectComponent extends BaseFormElement {
 
   @Input() options: SelectGroupOption[] = [];
   @Input() value: (string | number);
-  @Input() label: string | number;
   @Input() showSingleGroupHeader = false;
+  @Input() label: string;
+  @Input() hintMessage: string;
+  @Input() errorMessage: string;
+  @Input() required: boolean;
+  @Input() disabled: boolean;
   @Output() selectChange: EventEmitter<number | string> = new EventEmitter<number | string>();
 
   constructor() {

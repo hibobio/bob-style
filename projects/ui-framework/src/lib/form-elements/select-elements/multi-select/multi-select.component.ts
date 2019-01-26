@@ -11,6 +11,10 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
               [isMultiSelect]="true"
               [showSingleGroupHeader]="showSingleGroupHeader"
               (selectChange)="onSelectChange($event)"
+              [hintMessage]="hintMessage"
+              [errorMessage]="errorMessage"
+              [required]="required"
+              [disabled]="disabled"
               [label]="label">
     </b-select>
   `,
@@ -33,6 +37,10 @@ export class MultiSelectComponent extends BaseFormElement {
   @Input() value: (string | number)[] = [];
   @Input() showSingleGroupHeader = false;
   @Input() label: string | number;
+  @Input() hintMessage: string;
+  @Input() errorMessage: string;
+  @Input() required: boolean;
+  @Input() disabled: boolean;
   @Output() selectChange: EventEmitter<(number | string)[]> = new EventEmitter<(number | string)[]>();
 
   constructor() {

@@ -4,6 +4,7 @@ import { SelectGroupOption, SelectionGroupOption, SelectionOption } from '../sel
 import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
 import { SelectModelService } from './select-model.service';
 import { BaseInputElement } from '../../base-input-element';
+import { IconColor, Icons, IconSize } from '../../../icons';
 
 const navigationKeys = new Set(['ArrowUp', 'ArrowDown', 'Enter']);
 
@@ -15,11 +16,17 @@ const navigationKeys = new Set(['ArrowUp', 'ArrowDown', 'Enter']);
 export class SelectComponent extends BaseInputElement implements OnInit {
 
   @ViewChild('mySelect') mySelect;
+  @ViewChild('triggerValueText') triggerValueText;
 
   @Input() options: SelectGroupOption[];
   @Input() value: (string | number)[] = [];
   @Input() isMultiSelect: boolean;
   @Input() showSingleGroupHeader = false;
+  @Input() label: string;
+  @Input() required: boolean;
+  @Input() disabled: boolean;
+  @Input() hintMessage: string;
+  @Input() errorMessage: string;
 
   @Output() selectChange: EventEmitter<(string | number)[]> = new EventEmitter<(string | number)[]>();
 
@@ -27,10 +34,16 @@ export class SelectComponent extends BaseInputElement implements OnInit {
   selectedModel: SelectionOption[] | SelectionOption;
   triggerValue: string;
   blockGroupHeaderOptionClick = false;
+  blockSelectClick = false;
+  hasEllipsis = false;
   panelClass: string;
 
-  buttonType = ButtonType;
-  buttonSize = ButtonSize;
+  readonly buttonType = ButtonType;
+  readonly buttonSize = ButtonSize;
+
+  readonly resetIcon: String = Icons.reset_x;
+  readonly iconSize: String = IconSize.small;
+  readonly iconColor: String = IconColor.dark;
 
   constructor(
     private selectModelService: SelectModelService,
@@ -84,6 +97,14 @@ export class SelectComponent extends BaseInputElement implements OnInit {
     // });
   }
 
+  clearSelection(): void {
+    this.selectedModel = [];
+    this.selectChange.emit([]);
+    setTimeout(() => {
+      this.blockSelectClick = false;
+    });
+  }
+
   cancelSelection(): void {
     this.ngOnInit();
     this.mySelect.close();
@@ -127,5 +148,8 @@ export class SelectComponent extends BaseInputElement implements OnInit {
     this.triggerValue = this.isMultiSelect
       ? join(flatMap(this.selectedModel, 'value'), ', ')
       : get(this.selectedModel, 'value', '');
+    setTimeout(() => {
+      this.hasEllipsis = this.triggerValueText.nativeElement.offsetWidth < this.triggerValueText.nativeElement.scrollWidth;
+    });
   }
 }

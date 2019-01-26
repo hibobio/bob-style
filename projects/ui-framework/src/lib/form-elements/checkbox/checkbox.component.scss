@@ -9,7 +9,7 @@
     place-content: center start;
     align-items: center;
     .checkbox {
-      @include Checkbox;
+      @include checkbox;
       margin-right: 10px;
       cursor: pointer;
     }

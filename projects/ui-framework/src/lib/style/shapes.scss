@@ -13,3 +13,35 @@
   border-right: $size solid transparent;
   border-bottom: $size solid $color;
 }
+
+$chevronWidth: 2px;
+
+@mixin chevron($color, $size) {
+  border-style: solid;
+  border-color: $color;
+  border-width: $chevronWidth $chevronWidth $chevronWidth $chevronWidth;
+  height: $size;
+  vertical-align: top;
+  width: $size;
+  transform: rotate(45deg)
+}
+
+@mixin chevron-up($color, $size:5px) {
+  @include chevron($color, $size);
+  border-width: $chevronWidth 0 0 $chevronWidth;
+}
+
+@mixin chevron-down($color, $size:5px) {
+  @include chevron($color, $size);
+  border-width: 0 $chevronWidth $chevronWidth 0;
+}
+
+@mixin chevron-right($color, $size:5px) {
+  @include chevron($color, $size);
+  border-width: $chevronWidth $chevronWidth 0 0;
+}
+
+@mixin chevron-left($color, $size:5px) {
+  @include chevron($color, $size);
+  border-width: 0 0 $chevronWidth $chevronWidth;
+}

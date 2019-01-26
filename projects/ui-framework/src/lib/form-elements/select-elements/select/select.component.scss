@@ -16,10 +16,42 @@
       }
     }
     .mat-form-field-wrapper .mat-form-field-flex {
-      .mat-select-trigger {
-        height: 100%;
-        .mat-select-value {
-          vertical-align: middle;
+      .mat-select {
+        .mat-select-trigger {
+          height: 100%;
+          .mat-select-value {
+            vertical-align: middle;
+            white-space: initial;
+            overflow: initial;
+            text-overflow: initial;
+            .mat-select-value-text {
+              white-space: initial;
+              overflow: initial;
+              text-overflow: initial;
+              .trigger-value {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+            }
+          }
+          .reset-selection {
+            padding: 0 8px 0 0;
+          }
+          .number-of-values {
+            padding: 0 4px;
+          }
+          .mat-select-arrow-wrapper .mat-select-arrow {
+            margin: 0 4px;
+            position: relative;
+            top: -1px;
+            @include chevron-down($grey-600);
+          }
+        }
+        &.mat-select-empty + .mat-form-field-label-wrapper {
+          .mat-form-field-label {
+            transform: translateY(0);
+          }
         }
       }
     }
@@ -81,7 +113,7 @@
             background-color: $grey-100;
           }
           .mat-pseudo-checkbox {
-            @include Checkbox();
+            @include checkbox();
           }
           &.group-header {
             padding-left: 16px;
@@ -107,17 +139,16 @@
             box-sizing: border-box;
             cursor: pointer;
             &:after {
-              display: block;
               content: '';
+              display: block;
               position: absolute;
               right: 16px;
-              top: 50%;
-              transform: translateY(-50%);
-              @include arrow-down(5px, $grey-600);
+              top: calc(50% - 6px);
+              @include chevron-down($grey-600);
             }
             &.collapse {
               &:after {
-                transform: translateY(-50%) scaleY(-1);
+                @include chevron-up($grey-600);
               }
             }
           }

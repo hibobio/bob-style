@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule, MatTooltipModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -9,6 +9,7 @@ import { SelectModelService } from './select/select-model.service';
 import { SingleSelectComponent } from './single-select/single-select.component';
 import { SelectComponent } from './select/select.component';
 import { MultiSelectComponent } from './multi-select/multi-select.component';
+import { IconsModule } from '../../icons';
 
 @NgModule({
   declarations: [
@@ -24,14 +25,15 @@ import { MultiSelectComponent } from './multi-select/multi-select.component';
     MatInputModule,
     MatOptionModule,
     MatSelectModule,
+    MatTooltipModule,
     ButtonsModule,
     FlexLayoutModule,
+    IconsModule,
   ],
   providers: [
     SelectModelService,
   ],
   exports: [
-    // SelectComponent,
     SingleSelectComponent,
     MultiSelectComponent,
   ],

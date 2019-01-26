@@ -1,6 +1,6 @@
-import { async, ComponentFixture, fakeAsync, flush, inject, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule } from '@angular/material';
+import { MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule, MatTooltipModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SelectComponent } from './select.component';
@@ -10,6 +10,7 @@ import { ButtonsModule } from '../../../buttons-indicators/buttons';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { By } from '@angular/platform-browser';
+import { IconsModule } from '../../../icons';
 
 describe('SelectComponent', () => {
   let component: SelectComponent;
@@ -106,6 +107,8 @@ describe('SelectComponent', () => {
         MatSelectModule,
         SearchModule,
         ButtonsModule,
+        IconsModule,
+        MatTooltipModule,
       ],
     })
       .compileComponents()
@@ -280,6 +283,8 @@ describe('SelectComponent', () => {
           const cancelButtonEl = fixture.debugElement.query(By.css('.cancel-button'));
           cancelButtonEl.triggerEventHandler('click', null);
 
+          tick();
+
           expect(component.selectedModel).toEqual([
             selectionGroupOptionsMock[0].options[0],
             selectionGroupOptionsMock[0].options[1],
@@ -301,6 +306,8 @@ describe('SelectComponent', () => {
           const cancelButtonEl = fixture.debugElement.query(By.css('.cancel-button'));
           cancelButtonEl.triggerEventHandler('click', null);
 
+          tick();
+
           expect(component.selectChange.emit).not.toHaveBeenCalled();
         }));
 
@@ -313,6 +320,8 @@ describe('SelectComponent', () => {
 
           const cancelButtonEl = fixture.debugElement.query(By.css('.cancel-button'));
           cancelButtonEl.triggerEventHandler('click', null);
+
+          tick();
 
           expect(component.mySelect.close).toHaveBeenCalled();
         }));

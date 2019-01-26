@@ -14,7 +14,12 @@ const selectStories = storiesOf(ComponentGroupType.FormElements, module)
 const template = `
 <b-multi-select style="display:block; width: 400px;"
                 [options]="options"
+                [label]="label"
                 [value]="value"
+                [hintMessage]="hintMessage"
+                [errorMessage]="errorMessage"
+                [disabled]="disabled"
+                [required]="required"
                 [showSingleGroupHeader]="showSingleGroupHeader"
                 (selectChange)="selectChange($event)">
 </b-multi-select>
@@ -31,7 +36,12 @@ const note = `
   value | (string or number)[] | selected id
   showSingleGroupHeader | boolean | shows header for single groups (default=false)
   selectChange | action | returns selectedIds as Array
-
+  label | string | label text
+  disabled | boolean | is field disabled
+  required | boolean | is field required
+  hintMessage | text | hint text
+  errorMessage | text | error text
+  
   ~~~
   ${ template }
   ~~~
@@ -64,6 +74,11 @@ selectStories.add(
         value: array<number>('value', [1, 2]),
         showSingleGroupHeader: boolean('showSingleGroupHeader', false),
         selectChange: action(),
+        label: text('label', 'select value'),
+        disabled: boolean('disabled', false),
+        required: boolean('required', false),
+        hintMessage: text('hintMessage', 'this field should contain something'),
+        errorMessage: text('errorMessage', ''),
       },
       moduleMetadata: {
         imports: [
