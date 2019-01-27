@@ -3,4 +3,4 @@ export * from './input';
 export * from './textarea';
 export * from './select-elements';
 export * from './checkbox';
-export * from '../shem-zmani/search';
+export * from '../navigation/search';

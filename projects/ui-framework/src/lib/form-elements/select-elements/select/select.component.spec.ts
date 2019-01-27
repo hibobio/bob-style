@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SelectComponent } from './select.component';
 import { SelectModelService } from './select-model.service';
-import { SearchModule } from '../../../shem-zmani/search/search.module';
+import { SearchModule } from '../../../navigation/search/search.module';
 import { ButtonsModule } from '../../../buttons-indicators/buttons';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
