@@ -11,6 +11,8 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { By } from '@angular/platform-browser';
 import { IconsModule } from '../../../icons';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { SelectionOption } from '../select.interface';
 
 describe('SelectComponent', () => {
   let component: SelectComponent;
@@ -109,6 +111,7 @@ describe('SelectComponent', () => {
         ButtonsModule,
         IconsModule,
         MatTooltipModule,
+        FlexLayoutModule,
       ],
     })
       .compileComponents()
@@ -133,19 +136,23 @@ describe('SelectComponent', () => {
       spyOn(component.selectChange, 'emit');
       fixture.detectChanges();
     }));
-    it('should set the selectionGroupOptions', () => {
-      expect(component.selectionGroupOptions).toEqual(selectionGroupOptionsMock);
+
+    describe('ngOnInit', () => {
+      it('should set the selectionGroupOptions', () => {
+        expect(component.selectionGroupOptions).toEqual(selectionGroupOptionsMock);
+      });
+      it('should set the selectedModel', () => {
+        expect(component.selectedModel).toEqual([
+          selectionGroupOptionsMock[0].options[0],
+          selectionGroupOptionsMock[0].options[1],
+          selectionGroupOptionsMock[0].groupHeader,
+        ]);
+      });
+      it('should set the triggerValue', () => {
+        expect(component.triggerValue).toEqual('Basic Info 1, Basic Info 2, Basic Info');
+      });
     });
-    it('should set the selectedModel', () => {
-      expect(component.selectedModel).toEqual([
-        selectionGroupOptionsMock[0].options[0],
-        selectionGroupOptionsMock[0].options[1],
-        selectionGroupOptionsMock[0].groupHeader,
-      ]);
-    });
-    it('should set the triggerValue', () => {
-      expect(component.triggerValue).toEqual('Basic Info 1, Basic Info 2, Basic Info');
-    });
+
     describe('onOptionClick', () => {
       it('should add all options when clicking unselected headerOption',
         fakeAsync(() => {
@@ -338,15 +345,19 @@ describe('SelectComponent', () => {
       spyOn(component.selectChange, 'emit');
       fixture.detectChanges();
     }));
-    it('should set the selectionGroupOptions', () => {
-      expect(component.selectionGroupOptions).toEqual(selectionGroupOptionsMock);
+
+    describe('ngOnInit', () => {
+      it('should set the selectionGroupOptions', () => {
+        expect(component.selectionGroupOptions).toEqual(selectionGroupOptionsMock);
+      });
+      it('should set the selectedModel', () => {
+        expect(component.selectedModel).toEqual(selectionGroupOptionsMock[0].options[0]);
+      });
+      it('should set the triggerValue', () => {
+        expect(component.triggerValue).toEqual('Basic Info 1');
+      });
     });
-    it('should set the selectedModel', () => {
-      expect(component.selectedModel).toEqual(selectionGroupOptionsMock[0].options[0]);
-    });
-    it('should set the triggerValue', () => {
-      expect(component.triggerValue).toEqual('Basic Info 1');
-    });
+
     describe('onOptionClick', () => {
       it('should change selectedModel with the selected option',
         fakeAsync(() => {
@@ -401,5 +412,102 @@ describe('SelectComponent', () => {
           expect(component.triggerValue).toEqual('Personal 1');
         }));
     });
+  });
+
+  describe('triggerText', () => {
+    beforeEach(async(() => {
+      fixture = TestBed.createComponent(SelectComponent);
+      component = fixture.componentInstance;
+      fixture.nativeElement.style.width = '200px';
+      component.options = optionsMock;
+      component.isMultiSelect = true;
+      component.value = [];
+      spyOn(component.selectChange, 'emit');
+      fixture.detectChanges();
+    }));
+    it('should not show select trigger value when value is empty', () => {
+      const triggerValue = fixture.debugElement.query(By.css('.trigger-value'));
+      expect(triggerValue).toBe(null);
+    });
+    it('should show trigger value when value is not empty',
+      fakeAsync(() => {
+        component.mySelect.open();
+        fixture.detectChanges();
+        flush();
+
+        (overlayContainerElement.querySelectorAll('mat-option')[1] as HTMLElement).click();
+        (overlayContainerElement.querySelectorAll('mat-option')[4] as HTMLElement).click();
+        fixture.detectChanges();
+        flush();
+
+        const triggerValue = fixture.debugElement.query(By.css('.trigger-value'));
+        expect(triggerValue.nativeElement.innerText).toBe('Basic Info 1, Personal 1');
+      }));
+    it('should show (numSelectedOptions) that has a tooltip',
+      fakeAsync(() => {
+        component.mySelect.open();
+        fixture.detectChanges();
+        flush();
+
+        (overlayContainerElement.querySelectorAll('mat-option')[0] as HTMLElement).click();
+        fixture.detectChanges();
+        flush();
+        (overlayContainerElement.querySelectorAll('mat-option')[3] as HTMLElement).click();
+        fixture.detectChanges();
+        flush();
+
+        const triggerValue = fixture.debugElement.query(By.css('.trigger-value'));
+        expect(triggerValue.nativeElement.innerText).toBe('Basic Info, Basic Info 1, Basic Info 2, Personal, Personal 1, Personal 2');
+        const numberOfSelectedOptions = fixture.debugElement.query(By.css('.number-of-selected-options'));
+        expect(numberOfSelectedOptions.nativeElement.innerText).toBe('(6)');
+      }));
+  });
+
+  describe('clearSelection', () => {
+    beforeEach(async(() => {
+      fixture = TestBed.createComponent(SelectComponent);
+      component = fixture.componentInstance;
+      component.options = optionsMock;
+      component.isMultiSelect = true;
+      component.value = [];
+      spyOn(component.selectChange, 'emit');
+      fixture.detectChanges();
+    }));
+    it('should not be displayed when there are no values', () => {
+      const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
+      expect(clearSelection).toBe(null);
+    });
+    it('should be displayed when there is at list one value',
+      fakeAsync(() => {
+        component.mySelect.open();
+        fixture.detectChanges();
+        flush();
+
+        (overlayContainerElement.querySelectorAll('mat-option')[0] as HTMLElement).click();
+        fixture.detectChanges();
+        flush();
+
+        const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
+        expect(clearSelection).not.toBe(null);
+      }));
+    it('should empty selection when clicked',
+      fakeAsync(() => {
+        component.mySelect.open();
+        fixture.detectChanges();
+        flush();
+
+        (overlayContainerElement.querySelectorAll('mat-option')[0] as HTMLElement).click();
+        fixture.detectChanges();
+        flush();
+
+        expect((component.selectedModel as SelectionOption[]).length).toEqual(3);
+
+        const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
+        clearSelection.triggerEventHandler('click', null);
+        fixture.detectChanges();
+        flush();
+
+        expect((component.selectedModel as SelectionOption[]).length).toEqual(0);
+      }));
   });
 });

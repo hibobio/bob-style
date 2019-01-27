@@ -21,14 +21,14 @@
               [color]="iconColor"
               [icon]="resetIcon"
               [size]="iconSize"
-              class="reset-selection">
+              class="clear-selection">
       </b-icon>
 
       <span #triggerValueText class="trigger-value">{{triggerValue}}</span>
 
       <span *ngIf="hasEllipsis"
             [matTooltip]="triggerValue"
-            class="number-of-values"
+            class="number-of-selected-options"
             matTooltipPosition="above">
           ({{selectedModel.length}})
         </span>
