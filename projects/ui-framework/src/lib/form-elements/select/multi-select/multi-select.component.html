@@ -5,7 +5,7 @@
   }">
 
   <mat-select [panelClass]="panelClass"
-              [multiple]="isMultiSelect"
+              [multiple]="true"
               disableOptionCentering
               disableRipple="true"
               [(ngModel)]="selectedModel"
@@ -50,7 +50,7 @@
         <mat-option *ngIf="selectionGroupOptions.length > 1 || showSingleGroupHeader"
                     [value]="group.groupHeader"
                     (click)="onOptionClick(group.groupHeader)"
-                    [disabled]="!isMultiSelect || blockGroupHeaderOptionClick"
+                    [disabled]="blockGroupHeaderOptionClick"
                     class="group-header">
           <span class="option-value">{{group.groupHeader.value}}</span>
           <div class="collapse-group"
@@ -75,8 +75,7 @@
 
     </div>
 
-    <div *ngIf="isMultiSelect"
-         fxLayout="row" fxLayoutAlign="end center"
+    <div fxLayout="row" fxLayoutAlign="end center"
          class="select-footer">
       <b-button (click)="cancelSelection()"
                 class="cancel-button"

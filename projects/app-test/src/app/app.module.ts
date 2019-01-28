@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TypographyModule } from '../../../ui-framework/src/lib/typography/typography.module';
 import { DatepickerModule } from '../../../ui-framework/src/lib/form-elements/datepicker/datepicker.module';
 import { InputModule } from '../../../ui-framework/src/lib/form-elements/input';
-import { SelectModule } from '../../../ui-framework/src/lib/form-elements/select-elements';
+import { SelectModule } from '../../../ui-framework/src/lib/form-elements/select';
 import { TextareaModule } from '../../../ui-framework/src/lib/form-elements/textarea';
 
 

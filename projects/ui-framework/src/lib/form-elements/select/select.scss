@@ -1,8 +1,8 @@
-@import '../../../style/typography';
-@import '../../../style/colors';
-@import '../../../style/shapes';
-@import '../../form-element.scss';
-@import '../../checkbox/checkbox.scss';
+@import '../../style/typography';
+@import '../../style/colors';
+@import '../../style/shapes';
+@import '../form-element';
+@import '../checkbox/checkbox';
 
 :host ::ng-deep {
   @include BodyFont(normal, normal, 12px);

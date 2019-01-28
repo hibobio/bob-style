@@ -5,15 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SearchModule } from '../../navigation/search/search.module';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
-import { SelectModelService } from './select/select-model.service';
+import { SelectModelService } from './select-model-service/select-model.service';
 import { SingleSelectComponent } from './single-select/single-select.component';
-import { SelectComponent } from './select/select.component';
 import { MultiSelectComponent } from './multi-select/multi-select.component';
 import { IconsModule } from '../../icons';
 
 @NgModule({
   declarations: [
-    SelectComponent,
     SingleSelectComponent,
     MultiSelectComponent,
   ],
