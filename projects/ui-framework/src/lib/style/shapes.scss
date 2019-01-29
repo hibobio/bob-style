@@ -19,7 +19,6 @@ $chevronWidth: 2px;
 @mixin chevron($color, $size) {
   border-style: solid;
   border-color: $color;
-  border-width: $chevronWidth $chevronWidth $chevronWidth $chevronWidth;
   height: $size;
   vertical-align: top;
   width: $size;
