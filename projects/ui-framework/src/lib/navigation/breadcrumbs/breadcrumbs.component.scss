@@ -1,0 +1,21 @@
+@import '../../style/colors';
+
+:host {
+  display: flex;
+  flex-direction: row;
+  .step {
+    cursor: pointer;
+    padding: 4px 8px;
+    margin-right: 2px;
+    background-color: var(--primary-500);
+    color: $white;
+    &:last-child {
+      margin-right: 0;
+    }
+    &.disabled {
+      color: $grey-600;
+      pointer-events: none;
+      background-color: $grey-300;
+    }
+  }
+}

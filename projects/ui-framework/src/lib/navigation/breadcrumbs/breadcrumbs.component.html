@@ -1,0 +1,6 @@
+<a (click)="onStepClick($event, i)"
+   *ngFor="let step of breadcrumbs; let i = index"
+   [ngClass]="{ disabled: step.disabled }"
+     class="step">
+  {{step.title}}
+</a>
