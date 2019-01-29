@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { concat, escapeRegExp, flatMap, forEach, get, join } from 'lodash';
 import { SelectGroupOption, SelectionGroupOption, SelectionOption } from '../select.interface';
 import { SelectModelService } from '../select-model-service/select-model.service';
 import { BaseInputElement } from '../../base-input-element';
 import { IconColor, Icons, IconSize } from '../../../icons';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 const navigationKeys = new Set(['ArrowUp', 'ArrowDown', 'Enter']);
 
@@ -11,6 +12,18 @@ const navigationKeys = new Set(['ArrowUp', 'ArrowDown', 'Enter']);
   selector: 'b-single-select',
   templateUrl: './single-select.component.html',
   styleUrls: ['../select.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SingleSelectComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => SingleSelectComponent),
+      multi: true
+    }
+  ],
 })
 export class SingleSelectComponent extends BaseInputElement implements OnInit {
 

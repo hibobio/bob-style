@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { concat, escapeRegExp, flatMap, forEach, get, join } from 'lodash';
 import { SelectGroupOption, SelectionGroupOption, SelectionOption } from '../select.interface';
 import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
 import { SelectModelService } from '../select-model-service/select-model.service';
 import { BaseInputElement } from '../../base-input-element';
 import { IconColor, Icons, IconSize } from '../../../icons';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 const navigationKeys = new Set(['ArrowUp', 'ArrowDown', 'Enter']);
 
@@ -12,6 +13,18 @@ const navigationKeys = new Set(['ArrowUp', 'ArrowDown', 'Enter']);
   selector: 'b-multi-select',
   templateUrl: './multi-select.component.html',
   styleUrls: ['../select.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => MultiSelectComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => MultiSelectComponent),
+      multi: true
+    }
+  ],
 })
 export class MultiSelectComponent extends BaseInputElement implements OnInit {
 
