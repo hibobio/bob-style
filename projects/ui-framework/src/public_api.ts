@@ -8,3 +8,4 @@ export * from './lib/buttons-indicators/buttons';
 export * from './lib/buttons-indicators/slider';
 export * from './lib/buttons-indicators/switch-toggle';
 export * from './lib/form-elements';
+export * from './lib/navigation/breadcrumbs';
