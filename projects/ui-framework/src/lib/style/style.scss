@@ -1,5 +1,8 @@
 @import './variables.scss';
 @import './typography.scss';
+@import './colors.scss';
+@import './shapes.scss';
+@import './animation-properties.scss';
 
 body {
   @include BodyFont(normal, normal, 12px);
