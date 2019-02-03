@@ -14,12 +14,15 @@ const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
   .addDecorator(withKnobs);
 
 const typeOptions = values(ButtonType);
-const IconColors = values(IconColor);
+const iconColor = values(IconColor);
+const icons = values(Icons);
+
 const template = `
   <b-square-button
     (clicked)="onClick($event)"
-    [type]="type">
-    <b-icon icon="${Icons.phone_link}" size="${IconSize.small}" [color]="iconColor"></b-icon>
+    [type]="type"
+    [icon]="icon"
+    [color]="color">
   </b-square-button>
 `;
 const note = `
@@ -30,15 +33,9 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   type | ButtonType | enum for setting the button type | primary (optional)
+  icon | Icons | Icon enum value
+  color | IconColor | the color of the icon | dark (optional)
   clicked | Function | callback for clicking on the button |
-
-  #### Style customization
-
-  property name | Description
-  --- | ---
-  primary-color | the color of the primary button
-  primary-color-dark | the hover color of the primary button
-  primary-color-darker | the pressed color of the primary button
 
   ~~~
   ${template}
@@ -48,9 +45,10 @@ buttonStories.add(
     'Square Button', () => ({
       template,
       props: {
+        type: select('type', typeOptions, ButtonType.secondary),
+        icon: select('icon', icons, Icons.phone_link),
+        color: select('color', iconColor, IconColor.dark),
         onClick: action(),
-        type: select('type', typeOptions, ButtonType.primary),
-        iconColor: select('color', IconColors, IconColor.white),
       },
       moduleMetadata: {
         imports: [ButtonsModule, IconsModule]

@@ -60,7 +60,7 @@ iconStories.add(
 
   const listHtml = reduce(icons, (iconsTemplate, icon) => {
     return iconsTemplate + `<div class="icon-wrapper">
-      <b-icon icon=${icon} size="medium"></b-icon><div class="icon-title">${icon}</div>
+      <b-icon icon=${icon} size="large"></b-icon><div class="icon-title">${icon}</div>
     </div>`;
   }, '');
   const iconsListTemplate = `

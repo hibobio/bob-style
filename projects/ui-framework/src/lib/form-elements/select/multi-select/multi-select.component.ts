@@ -49,7 +49,7 @@ export class MultiSelectComponent extends BaseInputElement implements OnInit {
   readonly buttonSize = ButtonSize;
 
   readonly resetIcon: String = Icons.reset_x;
-  readonly iconSize: String = IconSize.small;
+  readonly iconSize: String = IconSize.medium;
   readonly iconColor: String = IconColor.dark;
 
   constructor(

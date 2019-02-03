@@ -13,7 +13,7 @@ import { Icons, IconSize, IconColor } from './icons.enum';
 })
 export class IconComponent implements OnInit {
   @Input() icon: Icons;
-  @Input() size: IconSize = IconSize.small;
+  @Input() size: IconSize = IconSize.medium;
   @Input() color: IconColor = IconColor.dark;
   @Input() toolTipSummary: string;
 

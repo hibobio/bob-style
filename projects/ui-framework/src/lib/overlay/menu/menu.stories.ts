@@ -3,11 +3,11 @@ import { withNotes } from '@storybook/addon-notes';
 import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
-import { ButtonSize, ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { MenuModule } from './menu.module';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { IconsModule } from '../../icons/icons.module';
-import { IconColor, Icons, IconSize } from '../../icons';
+import { Icons } from '../../icons';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const menuStories = storiesOf(ComponentGroupType.Overlay, module)
@@ -18,11 +18,7 @@ const template = `
   <b-menu [actionsModel]="actionsModel">
     <b-square-button menu-trigger
                     type="${ ButtonType.secondary }"
-                    size="${ ButtonSize.medium }">
-      <b-icon icon="${ Icons.three_dots }"
-              size="${ IconSize.mini }"
-              color="${ IconColor.dark }">
-      </b-icon>
+                    icon="${ Icons.three_dots }">
     </b-square-button>
  </b-menu>
 `;

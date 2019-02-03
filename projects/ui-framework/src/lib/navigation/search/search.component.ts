@@ -16,7 +16,7 @@ export class SearchComponent extends BaseInputElement implements OnInit {
 
   readonly searchIcon: String = Icons.search;
   readonly resetIcon: String = Icons.reset_x;
-  readonly iconSize: String = IconSize.small;
+  readonly iconSize: String = IconSize.medium;
   readonly iconColor: String = IconColor.dark;
 
   inputTypes = InputTypes;

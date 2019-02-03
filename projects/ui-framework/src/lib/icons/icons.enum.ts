@@ -1,14 +1,14 @@
 export enum IconSize {
-  mini = 'mini',
   small = 'small',
-  large = 'large'
+  medium = 'medium',
+  large = 'large',
 }
 
 export enum IconColor {
   dark = 'dark',
   light = 'light',
   white = 'white',
-  primary = 'primary'
+  primary = 'primary',
 }
 
 export enum Icons {

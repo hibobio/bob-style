@@ -41,7 +41,7 @@ export class DatepickerComponent extends BaseInputElement implements OnInit {
   @Input() dateFormat?: string;
 
   public readonly calendarIcon: String = Icons.calendar;
-  public readonly calendarIconSize: String = IconSize.small;
+  public readonly calendarIconSize: String = IconSize.medium;
   public readonly calendarIconColor: String = IconColor.dark;
 
   inputTypes = InputTypes;

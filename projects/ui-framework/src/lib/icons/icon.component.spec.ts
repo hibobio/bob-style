@@ -45,9 +45,9 @@ describe('IconElementComponent', () => {
   describe('getClassNames', () => {
     it('Should return both type and size', () => {
       component.color = IconColor.primary;
-      component.size = IconSize.small;
+      component.size = IconSize.medium;
       const result = component.getClassNames();
-      expect(result).toEqual('small primary');
+      expect(result).toEqual('medium primary');
     });
   });
 });
