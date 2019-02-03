@@ -66,7 +66,7 @@ inputStories.add(
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
-        hintMessage: text('hintMessage', 'this field should contain something'),
+        hintMessage: text('hintMessage', 'This field should contain something'),
         errorMessage: text('errorMessage', ''),
         enableBrowserAutoComplete: select('enableBrowserAutoComplete', inputAutoCompleteOptions, InputAutoCompleteOptions.off),
       },

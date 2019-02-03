@@ -31,6 +31,9 @@ const displayTemplate = `
   <div>
     <b-subheading>Sub heading</b-subheading>
   </div>
+    <div>
+    <b-big-body>Big Body</b-big-body>
+  </div>
   <div>
     <span>Body</span>
   </div>

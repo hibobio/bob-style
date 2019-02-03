@@ -43,7 +43,6 @@ export class MultiSelectComponent extends BaseInputElement implements OnInit {
   blockGroupHeaderOptionClick = false;
   blockSelectClick = false;
   hasEllipsis = false;
-  panelClass = 'multi-select-panel';
   isMultiSelect = true;
 
   readonly buttonType = ButtonType;

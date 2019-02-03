@@ -1,4 +1,5 @@
 @import '../style/colors';
+@import '../style/typography';
 
 $form-field-height: 46px;
 $textarea-height: 120px;
@@ -66,6 +67,10 @@ $textarea-height: 120px;
         margin-top: 4px;
         font-size: 12px;
         padding: 0 16px;
+        .mat-hint {
+          margin-top: 2px;
+          @include BodyFont(normal, normal, 11px);
+        }
       }
       .mat-form-field-underline {
         display: none;
@@ -73,7 +78,7 @@ $textarea-height: 120px;
     }
     &:hover {
       .mat-form-field-wrapper .mat-form-field-flex {
-        box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.04);
+        box-shadow: 0 2px 3px 0 $boxShadowColor;
       }
     }
     &.mat-focused {

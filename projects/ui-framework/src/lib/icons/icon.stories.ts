@@ -47,7 +47,7 @@ iconStories.add(
         props: {
           toolTipSummary: text('toolTipSummary', 'This is the icon element'),
           icon: select('icon', icons, Icons.docs_link),
-          size: select('size', size, IconSize.medium),
+          size: select('size', size, IconSize.large),
           color: select('color', color, IconColor.dark),
         },
         moduleMetadata: {

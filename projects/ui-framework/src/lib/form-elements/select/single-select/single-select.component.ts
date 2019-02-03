@@ -42,7 +42,6 @@ export class SingleSelectComponent extends BaseInputElement implements OnInit {
   blockGroupHeaderOptionClick = false;
   blockSelectClick = false;
   hasEllipsis = false;
-  panelClass: 'single-select-panel';
   isMultiSelect = false;
 
   readonly resetIcon: String = Icons.reset_x;

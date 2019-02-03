@@ -13,26 +13,24 @@
       margin-right: 10px;
       cursor: pointer;
     }
-    &:hover {
-      .checkbox {
-        box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.04);
-      }
-    }
     &.disabled {
       pointer-events: none;
       .checkbox {
         background: $grey-100;
-        border-color: $grey-300;
+        border-color: $grey-500;
         &:after {
           color: $grey-500;
         }
+      }
+      label {
+        color: $grey-500;
       }
     }
     &.required {
       label {
         &:after {
           content: '*';
-          color: $grey-600;
+          color: inherit;
           display: inline-block;
           margin-left: 2px;
         }

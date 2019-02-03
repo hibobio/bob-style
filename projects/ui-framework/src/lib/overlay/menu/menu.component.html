@@ -6,14 +6,17 @@
   <span *ngFor="let child of actionsModel">
     <!-- Handle branch node menu actionsModel -->
     <span *ngIf="child.children && child.children.length > 0">
-      <button mat-menu-item color="primary" [matMenuTriggerFor]="menu.childMenu">
+      <button mat-menu-item color="primary"
+              [matMenuTriggerFor]="menu.childMenu"
+              [disableRipple]="true">
         <span>{{child.displayName}}</span>
       </button>
       <b-menu #menu [actionsModel]="child.children"></b-menu>
     </span>
     <!-- Handle leaf node menu actionsModel -->
     <span *ngIf="!child.children || child.children.length === 0">
-      <button mat-menu-item (click)="child.action($event)">
+      <button mat-menu-item (click)="child.action($event)"
+              [disableRipple]="true">
         <span>{{child.displayName}}</span>
       </button>
     </span>

@@ -3,16 +3,21 @@
 @mixin checkbox {
   width: 22px;
   height: 22px;
-  border: 1px solid $grey-600;
+  border: 1px solid $grey-500;
   color: $grey-600;
   background: $white;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 4px;
   &:after {
     color: $grey-800;
     position: relative;
     top: -1px;
     left: auto;
+  }
+  &:hover {
+    box-shadow: 0 2px 5px $boxShadowColor;
+    border-color: $grey-600;
   }
 }

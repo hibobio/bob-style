@@ -72,10 +72,10 @@
       border: 1px solid $grey-500;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
-      box-shadow: none;
       max-height: none;
       overflow: hidden !important;
       transform-origin: 0 0 0 !important;
+      box-shadow: 0 3px 5px $boxShadowColor;
       b-search {
         display: block;
         top: 0;

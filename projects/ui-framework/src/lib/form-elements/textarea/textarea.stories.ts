@@ -57,7 +57,7 @@ textareaStories.add(
         label: text('label', 'label text'),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
-        hintMessage: text('hintMessage', 'this field should contain something'),
+        hintMessage: text('hintMessage', 'This field should contain something'),
         errorMessage: text('errorMessage', ''),
       },
       moduleMetadata: {

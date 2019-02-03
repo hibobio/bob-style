@@ -1,58 +1,61 @@
-.b-avatar{
+@import '../../style/colors';
+
+.b-avatar {
   &.clickable {
     cursor: pointer;
   }
-  .avatar-image{
+  .avatar-image {
     border-radius: 50%;
     margin-right: 8px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     box-sizing: border-box;
-    transition: box-shadow .2s;
+    transition: box-shadow .2s, transform .2s;
+    border: 2px solid $white;
   }
   &.mini {
-    .avatar-image{
+    .avatar-image {
       height: 30px;
       width: 30px;
-      border: 1px solid white;
-      box-shadow: 0 0 2px 0 rgba(83,83,83,0.4);
+      box-shadow: 0 1px 2px 0 $boxShadowColor;
     }
-    &.clickable:hover .avatar-image{
-      box-shadow: 0 6px 12px 0 rgba(83,83,83,0.2);
+    &.clickable:hover .avatar-image {
+      box-shadow: 0 3px 6px 0 $boxShadowColor;
+      transform: scale(1.05);
     }
   }
   &.small {
-    .avatar-image{
+    .avatar-image {
       height: 60px;
       width: 60px;
-      border: 3px solid white;
-      box-shadow: 0 1px 4px 0 rgba(83,83,83,0.3);
+      box-shadow: 0 1px 2px 0 $boxShadowColor;
     }
-    &.clickable:hover .avatar-image{
-      box-shadow: 0 9px 18px 0 rgba(83,83,83,0.3);
+    &.clickable:hover .avatar-image {
+      box-shadow: 0 3px 6px 0 $boxShadowColor;
+      transform: scale(1.05);
     }
   }
   &.medium {
-    .avatar-image{
+    .avatar-image {
       height: 90px;
       width: 90px;
-      border: 5px solid white;
-      box-shadow: 0 1px 4px 0 rgba(83,83,83,0.3);
+      box-shadow: 0 2px 4px 0 $boxShadowColor;
     }
-    &.clickable:hover .avatar-image{
-      box-shadow: 0 9px 18px 0 rgba(83,83,83,0.3);
+    &.clickable:hover .avatar-image {
+      box-shadow: 0 6px 12px 0 $boxShadowColor;
+      transform: scale(1.05);
     }
   }
   &.large {
-    .avatar-image{
+    .avatar-image {
       height: 120px;
       width: 120px;
-      border: 7px solid white;
-      box-shadow: 0 1px 4px 0 rgba(83,83,83,0.3);
+      box-shadow: 0 2px 4px 0 $boxShadowColor;
     }
-    &.clickable:hover .avatar-image{
-      box-shadow: 0 10px 20px 0 rgba(83,83,83,0.2);
+    &.clickable:hover .avatar-image {
+      box-shadow: 0 6px 12px 0 $boxShadowColor;
+      transform: scale(1.05);
     }
   }
 }

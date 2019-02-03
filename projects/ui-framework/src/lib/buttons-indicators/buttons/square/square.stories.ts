@@ -19,7 +19,7 @@ const template = `
   <b-square-button
     (clicked)="onClick($event)"
     [type]="type">
-    <b-icon icon="${Icons.phone_link}" size="${IconSize.mini}" [color]="iconColor"></b-icon>
+    <b-icon icon="${Icons.phone_link}" size="${IconSize.small}" [color]="iconColor"></b-icon>
   </b-square-button>
 `;
 const note = `
