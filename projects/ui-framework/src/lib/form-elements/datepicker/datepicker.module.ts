@@ -19,7 +19,6 @@ import { FormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatNativeDateModule,
     IconsModule,
-    MatInputModule,
     InputModule,
     FormsModule,
   ],

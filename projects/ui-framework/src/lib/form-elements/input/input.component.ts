@@ -59,12 +59,12 @@ export const baseInputTemplate = `
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => InputComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => InputComponent),
-      multi: true
+      multi: true,
     }
   ],
 })

@@ -93,6 +93,7 @@ $textarea-height: 120px;
       }
     }
     &.mat-form-field-disabled {
+      //pointer-events: none;
       .mat-form-field-wrapper .mat-form-field-flex {
         background-color: $grey-100;
         .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {

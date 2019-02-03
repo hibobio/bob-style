@@ -1,0 +1,49 @@
+@import '../../style/colors';
+@import '../../style/typography';
+@import '../form-element';
+
+:host ::ng-deep {
+  display: block;
+  @include MatFormField();
+
+  .mat-form-field {
+    .mat-form-field-wrapper .mat-form-field-flex {
+      .mat-form-field-infix {
+        input, .mat-form-field-label-wrapper .mat-form-field-label {
+          padding-left: 0;
+        }
+      }
+      .mat-form-field-prefix {
+        padding: 0 8px 0 12px;
+        .selected-avatar {
+          &.show-avatar {
+          }
+        }
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .b-auto-complete-panel {
+    .v-scroll-wrapper {
+      max-height: 250px;
+      .v-scroll {
+        height: 100%;
+      }
+    }
+    .mat-option {
+      @include BodyFont(normal, normal, 12px);
+      border-bottom: 1px solid $grey-300;
+      .mat-option-text {
+        b-avatar, span {
+          display: inline-block;
+          vertical-align: middle;
+        }
+        b-avatar {
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+}

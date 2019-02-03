@@ -1,0 +1,38 @@
+<mat-form-field class="example-full-width">
+  <input [formControl]="myControl"
+         [matAutocomplete]="auto"
+         aria-label="Number" matInput
+         type="text">
+
+  <div [ngClass]="{'show-avatar': selectedAvatarUrl}"
+       class="selected-avatar"
+       matPrefix>
+    <b-avatar [imageSource]="selectedAvatarUrl"
+              [size]="avatarSize.mini">
+    </b-avatar>
+  </div>
+
+  <mat-label>pick me</mat-label>
+
+</mat-form-field>
+
+<mat-autocomplete #auto="matAutocomplete"
+                  class="b-auto-complete-panel"
+                  [disableRipple]="true"
+                  [displayWith]="displayFn"
+                  (optionSelected)="onOptionsSelected($event)">
+
+  <div class="v-scroll-wrapper"
+       [ngStyle]="{height: optionsHeight+'px'}">
+    <cdk-virtual-scroll-viewport class="v-scroll" itemSize="48" minBufferPx="288" maxBufferPx="4800">
+      <mat-option *cdkVirtualFor="let option of filteredOptions | async"
+                  [value]="option">
+        <b-avatar [size]="avatarSize.mini"
+                  [imageSource]="option.avatar">
+        </b-avatar>
+        <span>{{option.displayName}}</span>
+      </mat-option>
+    </cdk-virtual-scroll-viewport>
+  </div>
+
+</mat-autocomplete>

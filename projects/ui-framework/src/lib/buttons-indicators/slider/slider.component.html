@@ -1,14 +1,14 @@
-<div class="slider-wrapper" [ngClass]="{'read-only': readOnly}">
-  <div class="slider-label" *ngIf="showLabel" [ngClass]="{disabled: disabled}">{{value}}{{labelSymbol}}</div>
-  <mat-slider
-    [min]="min"
-    [max]="max"
-    [value]="value"
-    [step]="step"
-    [disabled]="disabled"
-    (input)="onProgressChange($event)"
-    class="slider-progress">
-  </mat-slider>
+<div *ngIf="showLabel"
+     [ngClass]="{'disabled': disabled}"
+     class="slider-label">
+  <span>{{value}}{{labelSymbol}}</span>
 </div>
 
-
+<mat-slider [min]="min"
+            [max]="max"
+            [value]="value"
+            [step]="step"
+            (input)="onProgressChange($event)"
+            [ngClass]="{'read-only': readOnly, 'disabled': disabled, 'bar-full': barFull}"
+            class="slider-progress">
+</mat-slider>

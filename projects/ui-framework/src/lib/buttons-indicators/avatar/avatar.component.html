@@ -1,3 +1,5 @@
 <div class="b-avatar" [ngClass]="getClassNames()" (click)="onClick($event)">
-  <img class="avatar-image" [src]="imageSource"/>
+  <div [ngStyle]="{ 'background-image': 'url(' + imageSource + ')'}"
+       class="avatar-image">
+  </div>
 </div>

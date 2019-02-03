@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MatSliderChange} from '@angular/material';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatSliderChange } from '@angular/material';
 
 @Component({
   selector: 'b-slider',
@@ -7,22 +7,28 @@ import {MatSliderChange} from '@angular/material';
   styleUrls: ['./slider.component.scss'],
 })
 export class SliderComponent implements OnInit {
+
   @Output() progressChange: EventEmitter<MatSliderChange> = new EventEmitter<MatSliderChange>();
-  @Input() value?: Number = 0;
-  @Input() min?: Number = 0;
-  @Input() max?: Number = 100;
-  @Input() step?: Number = 1;
-  @Input() disabled?: Boolean = false;
-  @Input() showLabel?: Boolean = false;
-  @Input() readOnly?: Boolean = false;
-  @Input() labelSymbol?: String = '%';
+  @Input() value = 0;
+  @Input() min = 0;
+  @Input() max = 100;
+  @Input() step = 1;
+  @Input() disabled = false;
+  @Input() showLabel = false;
+  @Input() readOnly = false;
+  @Input() labelSymbol = '%';
+
+  barFull: boolean;
+
   constructor() {
   }
 
   ngOnInit(): void {
+    this.barFull = this.value === this.max;
   }
 
   public onProgressChange(event: MatSliderChange): void {
+    this.barFull = event.value === this.max;
     this.value = event.value;
     this.progressChange.emit(event);
   }

@@ -9,7 +9,7 @@ import {ComponentGroupType} from '../../consts';
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 const template = `
-  <b-slider
+  <b-slider style="width: 400px;"
     [value]="value"
     [min]="min"
     [max]="max"
@@ -32,8 +32,8 @@ const note = `
   min | number | Minimum value of the slider | 0 (optional)
   max | number | Maximum value of the slider | 100 (optional)
   step | number | Step for each slider change | 1 (optional)
-  disabled | boolean | Disabled mode | false (optional)
   showLabel | boolean | Show the value label with symbol | true (optional)
+  disabled | boolean | Disabled mode | false (optional)
   readOnly | boolean | Set slider to read only | false (optional)
   labelSymbol | string | The symbol for the label | '%' (optional)
   progressChange | EventEmitter | Progress change callback |
@@ -49,12 +49,12 @@ sliderStories.add(
     return {
       template,
       props: {
-        value: number('value', 0),
+        value: number('value', 30),
         min: number('min', 0),
         max: number('max', 100),
         step: number('step', 1),
-        disabled: boolean('disabled', false),
         showLabel: boolean('showLabel', true),
+        disabled: boolean('disabled', false),
         readOnly: boolean('readOnly', false),
         labelSymbol: text('labelSymbol', '%'),
         progressChange: action(),

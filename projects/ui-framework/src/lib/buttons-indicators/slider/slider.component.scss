@@ -1,66 +1,79 @@
 @import '../../style/colors';
 
 :host ::ng-deep {
-  .slider-wrapper {
-    &.read-only {
-      pointer-events: none;
+  display: block;
+  position: relative;
+  width: 100%;
+  .slider-label {
+    float: right;
+    margin-right: 8px;
+    &.disabled {
+      color: $grey-500;
     }
-    .slider-label {
-      position: absolute;
-      right: 20px;
-      min-width: 128px;
-      text-align: right;
-      color: $grey-700;
-      &.disabled {
-        color: $grey-500;
-      }
+  }
+  mat-slider {
+    &.mat-slider-horizontal {
+      height: auto;
     }
-    .mat-slider {
-      &.mat-slider-disabled {
-        &.mat-slider-horizontal {
-          .mat-slider-track-fill {
-            background-color: $grey-500;
-          }
-          .mat-slider-track-background {
-            background-color: $grey-300;
-          }
-          .mat-slider-thumb {
-            transform: scale(0.7);
-          }
+    width: 100%;
+    .mat-slider-wrapper {
+      height: 10px;
+      right: auto;
+      top: auto;
+      left: auto;
+      position: relative;
+      .mat-slider-track-wrapper {
+        border: 2px solid $grey-300;
+        background-color: $grey-300;
+        box-sizing: border-box;
+        height: 100%;
+        border-radius: 5px;
+        .mat-slider-track-background {
+          display: none;
         }
-      }
-
-      &.mat-slider-horizontal {
-        width: 100%;
-        .mat-slider-track-wrapper {
-          height: 8px;
-          border-radius: 5px
-        }
-        .mat-slider-track-fill, .mat-slider-track-background {
+        .mat-slider-track-fill {
           height: 100%;
+          position: relative;
           background-color: var(--primary-500);
         }
-
-        .mat-slider-track-background {
-          background-color: $grey-500;
-        }
       }
-
-      &.slider-progress {
+      .mat-slider-ticks-container {
+        display: none;
+      }
+      .mat-slider-thumb-container {
+        height: auto;
         .mat-slider-thumb {
-          background-color: $white;
-          border: 2px solid $grey-500;
-          bottom: -12px;
-          box-shadow: 0 0 8px 6px $boxShadowColor;
+          cursor: ew-resize;
+          transform: scale(1) !important;
+          border: 1px solid $grey-500 !important;
+          background-color: $white !important;
+          box-sizing: border-box;
+          width: 16px;
+          height: 16px;
+          bottom: -8px;
+          right: -8px;
+          box-shadow: 0 2px 4px $boxShadowColor;
+          &:hover {
+            transform: scale(1.2) !important;
+            box-shadow: 0 3px 6px $boxShadowColor;
+          }
         }
       }
     }
-
-    .mat-slider:hover:not(.mat-slider-disabled) {
-      &.mat-slider-horizontal {
-        .mat-slider-track-background {
-          background-color: $grey-500;
-        }
+    &.read-only, &.disabled {
+      pointer-events: none;
+      .mat-slider-wrapper .mat-slider-thumb {
+        visibility: hidden;
+      }
+    }
+    &.disabled {
+      .mat-slider-wrapper .mat-slider-track-fill {
+        background-color: $grey-500;
+      }
+    }
+    &.bar-full {
+      .mat-slider-wrapper .mat-slider-track-fill {
+        background-color: var(--positive-500);
       }
     }
   }
