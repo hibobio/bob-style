@@ -2,5 +2,6 @@
 
 :host ::ng-deep {
   display: inline-block;
+  width: 100%;
   @include MatFormField();
 }

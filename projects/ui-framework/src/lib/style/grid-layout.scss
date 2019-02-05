@@ -1,7 +1,11 @@
-.grid-layout-12-cols {
+@mixin gridLayout12Cols() {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-column-gap: 8px;
+  grid-column-gap: 12px;
+}
+
+.grid-layout-12-cols {
+  @include gridLayout12Cols;
 }
 .col-2 {
   grid-column: span 1;

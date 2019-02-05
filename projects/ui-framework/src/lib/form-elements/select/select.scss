@@ -6,6 +6,7 @@
 
 :host ::ng-deep {
   display: inline-block;
+  width: 100%;
   @include BodyFont(normal, normal, 12px);
   @include MatFormField();
   .mat-form-field {
