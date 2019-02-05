@@ -3,10 +3,6 @@
 @import '../../style/typography.scss';
 @import '../overlay.scss';
 
-:host {
-  display: inline-block;
-}
-
 ::ng-deep {
   .cdk-overlay-container {
     .mat-menu-panel {

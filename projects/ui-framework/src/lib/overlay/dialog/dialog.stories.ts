@@ -7,26 +7,23 @@ import { ButtonsModule } from '../../buttons-indicators/buttons';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogModule } from './dialog.module';
 import { DialogExampleModule } from './dialog-example.module';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
 const buttonStories = storiesOf(ComponentGroupType.Overlay, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
 const template = `
-<b-story-book-layout title="Dialog">
   <b-dialog-example></b-dialog-example>
-</b-story-book-layout>
 `;
 const note = `
-  ## Dialog
+  ## Dialog example
 
   ~~~
   ${ template }
   ~~~
 `;
 buttonStories.add(
-  'Dialog', () => ({
+  'Dialog example', () => ({
     template,
     props: {},
     moduleMetadata: {
@@ -35,7 +32,6 @@ buttonStories.add(
         ButtonsModule,
         BrowserAnimationsModule,
         DialogExampleModule,
-        StoryBookLayoutModule,
       ],
     }
   }),

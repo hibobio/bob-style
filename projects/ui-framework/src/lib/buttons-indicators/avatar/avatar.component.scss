@@ -1,63 +1,60 @@
 @import '../../style/colors';
 
-:host {
-  display: inline-block;
-  .b-avatar {
-    &.clickable {
-      cursor: pointer;
-    }
+.b-avatar {
+  &.clickable {
+    cursor: pointer;
+  }
+  .avatar-image {
+    border-radius: 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    box-sizing: border-box;
+    transition: box-shadow .2s, transform .2s;
+    border: 2px solid $white;
+  }
+  &.mini {
     .avatar-image {
-      border-radius: 50%;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      box-sizing: border-box;
-      transition: box-shadow .2s, transform .2s;
-      border: 2px solid $white;
+      height: 30px;
+      width: 30px;
+      box-shadow: 0 1px 2px 0 $boxShadowColor;
     }
-    &.mini {
-      .avatar-image {
-        height: 30px;
-        width: 30px;
-        box-shadow: 0 1px 2px 0 $boxShadowColor;
-      }
-      &.clickable:hover .avatar-image {
-        box-shadow: 0 3px 6px 0 $boxShadowColor;
-        transform: scale(1.05);
-      }
+    &.clickable:hover .avatar-image {
+      box-shadow: 0 3px 6px 0 $boxShadowColor;
+      transform: scale(1.05);
     }
-    &.small {
-      .avatar-image {
-        height: 60px;
-        width: 60px;
-        box-shadow: 0 1px 2px 0 $boxShadowColor;
-      }
-      &.clickable:hover .avatar-image {
-        box-shadow: 0 3px 6px 0 $boxShadowColor;
-        transform: scale(1.05);
-      }
+  }
+  &.small {
+    .avatar-image {
+      height: 60px;
+      width: 60px;
+      box-shadow: 0 1px 2px 0 $boxShadowColor;
     }
-    &.medium {
-      .avatar-image {
-        height: 90px;
-        width: 90px;
-        box-shadow: 0 2px 4px 0 $boxShadowColor;
-      }
-      &.clickable:hover .avatar-image {
-        box-shadow: 0 6px 12px 0 $boxShadowColor;
-        transform: scale(1.05);
-      }
+    &.clickable:hover .avatar-image {
+      box-shadow: 0 3px 6px 0 $boxShadowColor;
+      transform: scale(1.05);
     }
-    &.large {
-      .avatar-image {
-        height: 120px;
-        width: 120px;
-        box-shadow: 0 2px 4px 0 $boxShadowColor;
-      }
-      &.clickable:hover .avatar-image {
-        box-shadow: 0 6px 12px 0 $boxShadowColor;
-        transform: scale(1.05);
-      }
+  }
+  &.medium {
+    .avatar-image {
+      height: 90px;
+      width: 90px;
+      box-shadow: 0 2px 4px 0 $boxShadowColor;
+    }
+    &.clickable:hover .avatar-image {
+      box-shadow: 0 6px 12px 0 $boxShadowColor;
+      transform: scale(1.05);
+    }
+  }
+  &.large {
+    .avatar-image {
+      height: 120px;
+      width: 120px;
+      box-shadow: 0 2px 4px 0 $boxShadowColor;
+    }
+    &.clickable:hover .avatar-image {
+      box-shadow: 0 6px 12px 0 $boxShadowColor;
+      transform: scale(1.05);
     }
   }
 }

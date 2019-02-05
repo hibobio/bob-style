@@ -9,21 +9,18 @@ import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { IconsModule } from '../../icons/icons.module';
 import { Icons } from '../../icons';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
 const menuStories = storiesOf(ComponentGroupType.Overlay, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
 const template = `
-<b-story-book-layout title="Actions menu">
   <b-menu [actionsModel]="actionsModel">
     <b-square-button menu-trigger
                     type="${ ButtonType.secondary }"
                     icon="${ Icons.three_dots }">
     </b-square-button>
  </b-menu>
-</b-story-book-layout>
 `;
 
 const note = `
@@ -102,8 +99,7 @@ menuStories.add(
           MenuModule,
           ButtonsModule,
           IconsModule,
-          BrowserAnimationsModule,
-          StoryBookLayoutModule,
+          BrowserAnimationsModule
         ]
       }
     };

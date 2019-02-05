@@ -1,16 +1,14 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { text, select, withKnobs, number, boolean } from '@storybook/addon-knobs/angular';
+import { text, select, withKnobs, number, boolean} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { SliderModule } from './slider.module';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import {ComponentGroupType} from '../../consts';
 
-const sliderStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
+  const sliderStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 const template = `
-<b-story-book-layout title="Slider">
   <b-slider style="width: 400px;"
     [value]="value"
     [min]="min"
@@ -22,7 +20,6 @@ const template = `
     [labelSymbol]="labelSymbol"
     (progressChange)="progressChange($event)">
   </b-slider>
-</b-story-book-layout>
 `;
 const note = `
   ## Slider Element
@@ -42,7 +39,7 @@ const note = `
   progressChange | EventEmitter | Progress change callback |
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 
@@ -63,12 +60,9 @@ sliderStories.add(
         progressChange: action(),
       },
       moduleMetadata: {
-        imports: [
-          SliderModule,
-          StoryBookLayoutModule,
-        ]
+        imports: [SliderModule]
       }
     };
   },
-  { notes: { markdown: note } }
+  { notes: { markdown: note }  }
 );

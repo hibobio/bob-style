@@ -7,7 +7,6 @@ import { InputModule } from './input.module';
 import { InputAutoCompleteOptions, InputTypes } from './input.enum';
 import {ComponentGroupType} from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
 const inputStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
@@ -17,20 +16,18 @@ const inputTypes = values(InputTypes);
 const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
 
 const template = `
-<b-story-book-layout title="Input">
-  <b-input style="width: 400px;"
-          [inputType]="inputType"
-          [label]="label"
-          [value]="value"
-          [disabled]="disabled"
-          [required]="required"
-          [errorMessage]="errorMessage"
-          [hideLabelOnFocus]="hideLabelOnFocus"
-          [enableBrowserAutoComplete]="enableBrowserAutoComplete"
-          [hintMessage]="hintMessage"
-          (inputEvents)="inputEvents($event)">
-  </b-input>
-</b-story-book-layout>
+<b-input style="display:block; width: 400px;"
+        [inputType]="inputType"
+        [label]="label"
+        [value]="value"
+        [disabled]="disabled"
+        [required]="required"
+        [errorMessage]="errorMessage"
+        [hideLabelOnFocus]="hideLabelOnFocus"
+        [enableBrowserAutoComplete]="enableBrowserAutoComplete"
+        [hintMessage]="hintMessage"
+        (inputEvents)="inputEvents($event)">
+</b-input>
 `;
 
 
@@ -74,11 +71,7 @@ inputStories.add(
         enableBrowserAutoComplete: select('enableBrowserAutoComplete', inputAutoCompleteOptions, InputAutoCompleteOptions.off),
       },
       moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          InputModule,
-          StoryBookLayoutModule,
-        ]
+        imports: [BrowserAnimationsModule, InputModule]
       }
     };
   },

@@ -7,8 +7,7 @@ import { ButtonType } from '../buttons.enum';
 import { values } from 'lodash';
 import { Icons, IconSize, IconColor } from '../../../icons/icons.enum';
 import { IconsModule } from '../../../icons/icons.module';
-import { ComponentGroupType } from '../../../consts';
-import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
+import {ComponentGroupType} from '../../../consts';
 
 const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
   .addDecorator(withNotes)
@@ -19,14 +18,12 @@ const iconColor = values(IconColor);
 const icons = values(Icons);
 
 const template = `
-<b-story-book-layout title="Square button">
   <b-square-button
     (clicked)="onClick($event)"
     [type]="type"
     [icon]="icon"
     [color]="color">
   </b-square-button>
-</b-story-book-layout>
 `;
 const note = `
   ## Square Button Element
@@ -41,26 +38,22 @@ const note = `
   clicked | Function | callback for clicking on the button |
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 buttonStories.add(
-  'Square Button', () => ({
-    template,
-    props: {
-      type: select('type', typeOptions, ButtonType.secondary),
-      icon: select('icon', icons, Icons.phone_link),
-      color: select('color', iconColor, IconColor.dark),
-      onClick: action(),
-    },
-    moduleMetadata: {
-      imports: [
-        ButtonsModule,
-        IconsModule,
-        StoryBookLayoutModule,
-      ]
-    }
-  }),
-  { notes: { markdown: note } }
-);
+    'Square Button', () => ({
+      template,
+      props: {
+        type: select('type', typeOptions, ButtonType.secondary),
+        icon: select('icon', icons, Icons.phone_link),
+        color: select('color', iconColor, IconColor.dark),
+        onClick: action(),
+      },
+      moduleMetadata: {
+        imports: [ButtonsModule, IconsModule]
+      }
+    }),
+    { notes: { markdown: note }  }
+  );
 

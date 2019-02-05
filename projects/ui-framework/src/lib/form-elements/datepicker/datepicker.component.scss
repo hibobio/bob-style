@@ -1,13 +1,8 @@
 @import '../../style/colors';
 
 :host {
-  display: inline-block;
-  b-datepicker-input {
-    display: block;
-    width: 100%;
-    b-icon {
-      cursor: pointer;
-    }
+  b-icon {
+    cursor: pointer;
   }
 }
 

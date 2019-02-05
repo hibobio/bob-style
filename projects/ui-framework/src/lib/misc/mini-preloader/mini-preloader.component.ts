@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { set } from 'lodash';
 
 @Component({
   selector: 'b-mini-preloader',
