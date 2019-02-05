@@ -1,0 +1,24 @@
+.grid-layout-12-cols {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-column-gap: 8px;
+}
+.col-2 {
+  grid-column: span 1;
+}
+.col-2 {
+  grid-column: span 2;
+}
+.col-3, .col-quarter {
+  grid-column: span 3;
+}
+.col-4, .col-third {
+  grid-column: span 4;
+}
+.col-6, .col-half {
+  grid-column: span 6;
+}
+
+.col-12, .col-full {
+  grid-column: span 12;
+}

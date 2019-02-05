@@ -3,6 +3,7 @@
 @import './colors.scss';
 @import './shapes.scss';
 @import './animation-properties.scss';
+@import 'grid-layout.scss';
 
 body {
   @include BodyFont(normal, normal, 12px);
