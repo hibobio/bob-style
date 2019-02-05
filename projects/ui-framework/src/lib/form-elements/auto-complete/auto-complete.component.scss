@@ -21,10 +21,22 @@
         }
       }
     }
+    &.mat-focused .mat-form-field-wrapper .mat-form-field-flex {
+      border-color: $grey-500;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
   }
 }
 
 ::ng-deep {
+  .mat-autocomplete-panel.mat-autocomplete-visible {
+    visibility: visible;
+    border: 1px solid $grey-500;
+    box-sizing: border-box;
+    border-top: none;
+    box-shadow: 0 2px 4px rgba(83, 83, 83, 0.1);
+  }
   .b-auto-complete-panel {
     .v-scroll-wrapper {
       max-height: 250px;
@@ -35,6 +47,7 @@
     .mat-option {
       @include BodyFont(normal, normal, 12px);
       border-bottom: 1px solid $grey-300;
+      height: 44px;
       .mat-option-text {
         b-avatar, span {
           display: inline-block;

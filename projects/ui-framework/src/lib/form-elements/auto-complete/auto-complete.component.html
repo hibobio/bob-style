@@ -1,6 +1,7 @@
 <mat-form-field class="example-full-width">
   <input [formControl]="myControl"
          [matAutocomplete]="auto"
+         [(ngModel)]="value"
          aria-label="Number" matInput
          type="text">
 
@@ -20,17 +21,18 @@
                   class="b-auto-complete-panel"
                   [disableRipple]="true"
                   [displayWith]="displayFn"
+                  (closed)="onPanelClosed()"
                   (optionSelected)="onOptionsSelected($event)">
 
   <div class="v-scroll-wrapper"
-       [ngStyle]="{height: optionsHeight+'px'}">
-    <cdk-virtual-scroll-viewport class="v-scroll" itemSize="48" minBufferPx="288" maxBufferPx="4800">
+       [ngStyle]="{height: optionsPanelHeight+'px'}">
+    <cdk-virtual-scroll-viewport class="v-scroll" itemSize="44" minBufferPx="352" maxBufferPx="4800">
       <mat-option *cdkVirtualFor="let option of filteredOptions | async"
                   [value]="option">
         <b-avatar [size]="avatarSize.mini"
                   [imageSource]="option.avatar">
         </b-avatar>
-        <span>{{option.displayName}}</span>
+        <span>{{option.value}}</span>
       </mat-option>
     </cdk-virtual-scroll-viewport>
   </div>
