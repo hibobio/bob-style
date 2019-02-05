@@ -5,8 +5,9 @@
   .story-wrapper {
     text-align: center;
     b-display-3 {
-      margin: 20px auto;
-      color: $grey-700;
+      padding: 20px 0;
+      color: $white;
+      background-color: var(--primary-500);
     }
     .story-content {
       padding-top: 20px;
