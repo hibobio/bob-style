@@ -1,21 +1,24 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { text, select, withKnobs, number, boolean} from '@storybook/addon-knobs/angular';
+import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { DatepickerModule } from './datepicker.module';
-import {ComponentGroupType} from '../../consts';
+import { ComponentGroupType } from '../../consts';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-  const datepickerStories = storiesOf(ComponentGroupType.FormElements, module)
+const datepickerStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 const template = `
-<b-datepicker style="display:block; width: 400px;"
-              (dateChange)="dateChange($event)"
-              [inputLabel]="inputLabel"
-              [dateFormat]="dateFormat">
-</b-datepicker>
+<b-story-book-layout title="Datepicker">
+  <b-datepicker style="width: 400px;"
+                (dateChange)="dateChange($event)"
+                [inputLabel]="inputLabel"
+                [dateFormat]="dateFormat">
+  </b-datepicker>
+</b-story-book-layout>
 `;
 const note = `
   ## Slider Element
@@ -46,7 +49,8 @@ datepickerStories.add(
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
-          DatepickerModule
+          DatepickerModule,
+          StoryBookLayoutModule,
         ]
       }
     };

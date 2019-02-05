@@ -1,7 +1,7 @@
 @import '../../style/colors';
 
 :host ::ng-deep {
-  display: block;
+  display: inline-block;
   position: relative;
   width: 100%;
   .slider-label {

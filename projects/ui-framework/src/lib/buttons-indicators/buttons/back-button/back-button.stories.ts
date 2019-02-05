@@ -6,6 +6,7 @@ import { values, remove } from 'lodash';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
 import {ComponentGroupType} from '../../../consts';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
 const backButtonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
   .addDecorator(withNotes)
@@ -14,11 +15,13 @@ const backButtonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, mod
 const typeOptions = values(BackButtonType);
 
 const template = `
+<b-story-book-layout title="Back button">
   <b-back-button
     (clicked)="onClick($event)"
     [type]="type">
       {{label}}
   </b-back-button>
+</b-story-book-layout>
 `;
 
 const note = `
@@ -45,7 +48,10 @@ backButtonStories.add(
       type: select('type', typeOptions, BackButtonType.secondary),
     },
     moduleMetadata: {
-      imports: [ButtonsModule]
+      imports: [
+        ButtonsModule,
+        StoryBookLayoutModule,
+      ]
     },
   }),
   { notes: { markdown: note }  }

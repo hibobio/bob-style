@@ -6,23 +6,26 @@ import { ComponentGroupType } from '../../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SelectGroupOption } from '../select.interface';
 import { SelectModule } from '../select.module';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
 const selectStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
 const template = `
-<b-multi-select style="display:block; width: 400px;"
-                [options]="options"
-                [label]="label"
-                [value]="value"
-                [hintMessage]="hintMessage"
-                [errorMessage]="errorMessage"
-                [disabled]="disabled"
-                [required]="required"
-                [showSingleGroupHeader]="showSingleGroupHeader"
-                (selectChange)="selectChange($event)">
-</b-multi-select>
+<b-story-book-layout title="Single select">
+  <b-multi-select style="width: 400px;"
+                  [options]="options"
+                  [label]="label"
+                  [value]="value"
+                  [hintMessage]="hintMessage"
+                  [errorMessage]="errorMessage"
+                  [disabled]="disabled"
+                  [required]="required"
+                  [showSingleGroupHeader]="showSingleGroupHeader"
+                  (selectChange)="selectChange($event)">
+  </b-multi-select>
+</b-story-book-layout>
 `;
 
 const note = `
@@ -84,6 +87,7 @@ selectStories.add(
         imports: [
           BrowserAnimationsModule,
           SelectModule,
+          StoryBookLayoutModule,
         ]
       }
     };

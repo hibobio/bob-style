@@ -1,31 +1,31 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { text, select, boolean, withKnobs, number, object } from '@storybook/addon-knobs/angular';
+import { boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AutoCompleteModule } from './auto-complete.module';
-import { TypographyModule } from '../../typography/typography.module';
 import { SelectGroupOption } from '../select';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
 const textareaStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
 const template = `
-<b-display-3>Auto complete</b-display-3>
-
-<b-auto-complete style="display:block; width: 400px;"
-                [options]="options"
-                [label]="label"
-                [value]="value"
-                [disabled]="disabled"
-                [required]="required"
-                [errorMessage]="errorMessage"
-                [hintMessage]="hintMessage"
-                (inputEvents)="inputEvents($event)">
-</b-auto-complete>
+<b-story-book-layout title="Auto complete">
+  <b-auto-complete style="width: 400px;"
+                  [options]="options"
+                  [label]="label"
+                  [value]="value"
+                  [disabled]="disabled"
+                  [required]="required"
+                  [errorMessage]="errorMessage"
+                  [hintMessage]="hintMessage"
+                  (inputEvents)="inputEvents($event)">
+  </b-auto-complete>
+</b-story-book-layout>
 `;
 
 const optionsMock = [
@@ -87,7 +87,7 @@ textareaStories.add(
         imports: [
           BrowserAnimationsModule,
           AutoCompleteModule,
-          TypographyModule,
+          StoryBookLayoutModule,
         ]
       }
     };

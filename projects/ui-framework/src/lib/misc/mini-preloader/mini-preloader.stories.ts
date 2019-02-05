@@ -5,12 +5,19 @@ import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MiniPreloaderModule } from './mini-preloader.module';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { TypographyModule } from '../../typography/typography.module';
 
 const inputStories = storiesOf(ComponentGroupType.Misc, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
-const template = `<b-mini-preloader></b-mini-preloader>`;
+const template = `
+<b-story-book-layout title="Mini preloader">
+  <b-mini-preloader></b-mini-preloader>
+  <div style="margin: 5px auto;"><b-caption>fetching</b-caption></div>
+</b-story-book-layout>
+`;
 
 const note = `
   ## Mini Preloader Element
@@ -35,6 +42,8 @@ inputStories.add(
         imports: [
           BrowserAnimationsModule,
           MiniPreloaderModule,
+          TypographyModule,
+          StoryBookLayoutModule,
         ]
       }
     };

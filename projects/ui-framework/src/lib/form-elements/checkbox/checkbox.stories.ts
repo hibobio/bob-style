@@ -5,18 +5,21 @@ import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxModule } from './checkbox.module';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
 const inputStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
 const template = `
-<b-checkbox (checkboxChange)="checkboxChange($event)"
-            [value]="value"
-            [label]="label"
-            [disabled]="disabled"
-            [required]="required">
-</b-checkbox>
+<b-story-book-layout title="Checkbox">
+  <b-checkbox (checkboxChange)="checkboxChange($event)"
+              [value]="value"
+              [label]="label"
+              [disabled]="disabled"
+              [required]="required">
+  </b-checkbox>
+</b-story-book-layout>
 `;
 
 const note = `
@@ -51,7 +54,8 @@ inputStories.add(
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
-          CheckboxModule
+          CheckboxModule,
+          StoryBookLayoutModule,
         ]
       }
     };

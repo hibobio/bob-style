@@ -52,13 +52,15 @@ export class DialogExampleComponent {
       </div>
       <div b-dialog-content>
         <b-textarea label="Edit text"
+                    style="width: 100%;"
                     value="{{data.textContent}}"
                     (inputEvents)="onTextEdit($event)">
         </b-textarea>
-        <article style="padding:20px; background-color:#F8F7F7;">
+        <article style="padding:20px; background-color:#f8f7f7; margin: 20px auto;">
           <b-display-4>"{{editedText}}"</b-display-4>
         </article>
         <b-single-select [options]="selectOptions"
+                         style="width: 100%;"
                          label="was this article helpfull">
         </b-single-select>
         <b-checkbox label="Click this"></b-checkbox>

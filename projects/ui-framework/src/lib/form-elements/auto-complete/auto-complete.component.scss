@@ -3,7 +3,7 @@
 @import '../form-element';
 
 :host ::ng-deep {
-  display: block;
+  display: inline-block;
   @include MatFormField();
 
   .mat-form-field {

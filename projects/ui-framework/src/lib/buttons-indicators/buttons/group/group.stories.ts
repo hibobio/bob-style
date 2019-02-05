@@ -4,16 +4,17 @@ import { withKnobs } from '@storybook/addon-knobs/angular';
 import { ButtonsModule } from '../buttons.module';
 import { IconsModule } from '../../../icons/icons.module';
 import { ButtonType } from '../buttons.enum';
-import { Icons, IconSize } from '../../../icons/icons.enum';
+import { Icons } from '../../../icons/icons.enum';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../../consts';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
 const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
-const typeOptions = values(ButtonType);
 const template = `
+<b-story-book-layout title="Grouped buttons">
   <b-group>
     <b-square-button type="${ ButtonType.secondary }"
                      icon="${ Icons.skype_link }">
@@ -25,6 +26,7 @@ const template = `
                      icon="${ Icons.slack_link }">
     </b-square-button>
   </b-group>
+</b-story-book-layout>  
 `;
 const note = `
   ## Group Element
@@ -39,7 +41,11 @@ buttonStories.add(
     template,
     props: {},
     moduleMetadata: {
-      imports: [ButtonsModule, IconsModule]
+      imports: [
+        ButtonsModule,
+        IconsModule,
+        StoryBookLayoutModule,
+      ]
     }
   }),
   { notes: { markdown: note } }

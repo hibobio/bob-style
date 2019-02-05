@@ -5,5 +5,7 @@
 @import './animation-properties.scss';
 
 body {
+  margin: 0;
+  padding: 0;
   @include BodyFont(normal, normal, 12px);
 }

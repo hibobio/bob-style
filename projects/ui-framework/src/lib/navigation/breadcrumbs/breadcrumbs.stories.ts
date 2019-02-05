@@ -6,15 +6,18 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BreadcrumbsModule } from './breadcrumbs.module';
 import { Breadcrumb } from './breadcrumbs.interface';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
 const inputStories = storiesOf(ComponentGroupType.Navigation, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
 const template = `
-<b-breadcrumbs [breadcrumbs]="breadcrumbs"
-               (stepClick)="stepClick($event)">
-</b-breadcrumbs>
+<b-story-book-layout title="breadcrumbs">
+  <b-breadcrumbs [breadcrumbs]="breadcrumbs"
+                 (stepClick)="stepClick($event)">
+  </b-breadcrumbs>
+</b-story-book-layout>
 `;
 
 const note = `
@@ -52,6 +55,7 @@ inputStories.add(
         imports: [
           BrowserAnimationsModule,
           BreadcrumbsModule,
+          StoryBookLayoutModule,
         ]
       }
     };
