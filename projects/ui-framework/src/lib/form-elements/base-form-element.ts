@@ -3,9 +3,14 @@ import { ControlValueAccessor, FormControl } from '@angular/forms';
 
 export abstract class BaseFormElement implements ControlValueAccessor {
 
+  @Input() label: string;
   @Input() value: any;
   @Input() disabled: boolean;
   @Input() required: boolean;
+  @Input() hideLabelOnFocus = false;
+  @Input() hintMessage: string;
+  @Input() errorMessage: string;
+
   @Input() validateFn: Function = (_: FormControl) => {
   };
 

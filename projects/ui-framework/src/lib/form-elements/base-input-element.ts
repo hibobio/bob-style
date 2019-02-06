@@ -6,10 +6,6 @@ import { InputAutoCompleteOptions, InputEventType, InputTypes } from './input/in
 export abstract class BaseInputElement extends BaseFormElement {
 
   @Input() inputType: InputTypes;
-  @Input() label: string;
-  @Input() hideLabelOnFocus = false;
-  @Input() hintMessage: string;
-  @Input() errorMessage: string;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions = InputAutoCompleteOptions.off;
   @Output() inputEvents: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
 

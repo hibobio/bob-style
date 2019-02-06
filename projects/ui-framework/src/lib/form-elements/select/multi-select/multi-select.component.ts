@@ -3,9 +3,9 @@ import { concat, escapeRegExp, flatMap, forEach, get, join } from 'lodash';
 import { SelectGroupOption, SelectionGroupOption, SelectionOption } from '../select.interface';
 import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
 import { SelectModelService } from '../select-model-service/select-model.service';
-import { BaseInputElement } from '../../base-input-element';
 import { IconColor, Icons, IconSize } from '../../../icons';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { BaseFormElement } from '../../base-form-element';
 
 const navigationKeys = new Set(['ArrowUp', 'ArrowDown', 'Enter']);
 
@@ -26,7 +26,7 @@ const navigationKeys = new Set(['ArrowUp', 'ArrowDown', 'Enter']);
     }
   ],
 })
-export class MultiSelectComponent extends BaseInputElement implements OnInit {
+export class MultiSelectComponent extends BaseFormElement implements OnInit {
 
   @ViewChild('mySelect') mySelect;
   @ViewChild('triggerValueText') triggerValueText;
@@ -103,6 +103,7 @@ export class MultiSelectComponent extends BaseInputElement implements OnInit {
   clearSelection(): void {
     this.selectedModel = [];
     this.selectChange.emit([]);
+    this.propagateChange([]);
     setTimeout(() => {
       this.blockSelectClick = false;
     });
@@ -116,6 +117,7 @@ export class MultiSelectComponent extends BaseInputElement implements OnInit {
   notifySelectionIds(): void {
     const value = this.selectModelService.getSelectedOptionIds(this.selectedModel);
     this.selectChange.emit(value);
+    this.propagateChange(value);
     this.mySelect.close();
   }
 

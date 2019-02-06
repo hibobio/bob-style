@@ -5,6 +5,7 @@ import { SelectModelService } from '../select-model-service/select-model.service
 import { BaseInputElement } from '../../base-input-element';
 import { IconColor, Icons, IconSize } from '../../../icons';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { BaseFormElement } from '../../base-form-element';
 
 const navigationKeys = new Set(['ArrowUp', 'ArrowDown', 'Enter']);
 
@@ -25,7 +26,7 @@ const navigationKeys = new Set(['ArrowUp', 'ArrowDown', 'Enter']);
     }
   ],
 })
-export class SingleSelectComponent extends BaseInputElement implements OnInit {
+export class SingleSelectComponent extends BaseFormElement implements OnInit {
 
   @ViewChild('mySelect') mySelect;
   @ViewChild('triggerValueText') triggerValueText;
@@ -94,6 +95,7 @@ export class SingleSelectComponent extends BaseInputElement implements OnInit {
   clearSelection(): void {
     this.selectedModel = null;
     this.selectChange.emit(null);
+    this.propagateChange(null);
     setTimeout(() => {
       this.blockSelectClick = false;
     });
@@ -102,6 +104,7 @@ export class SingleSelectComponent extends BaseInputElement implements OnInit {
   notifySelectionIds(): void {
     const value = (this.selectedModel as SelectionOption).id;
     this.selectChange.emit(value);
+    this.propagateChange(value);
     this.mySelect.close();
   }
 
