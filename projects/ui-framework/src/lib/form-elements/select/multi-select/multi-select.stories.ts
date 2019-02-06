@@ -74,7 +74,7 @@ selectStories.add(
       template,
       props: {
         options: object<SelectGroupOption>('options', optionsMock),
-        value: array<number>('value', [1, 2]),
+        value: array('value', [1, 2]),
         showSingleGroupHeader: boolean('showSingleGroupHeader', false),
         selectChange: action(),
         label: text('label', 'select value'),

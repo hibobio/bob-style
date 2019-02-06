@@ -73,7 +73,7 @@ selectStories.add(
       template,
       props: {
         options: object<SelectGroupOption>('options', optionsMock),
-        value: number('value', 2),
+        value: text('value', 2),
         showSingleGroupHeader: boolean('showSingleGroupHeader', false),
         selectChange: action(),
         label: text('label', 'select value'),
