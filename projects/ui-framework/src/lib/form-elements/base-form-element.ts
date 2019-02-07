@@ -18,26 +18,21 @@ export abstract class BaseFormElement implements ControlValueAccessor {
   };
 
   registerOnChange(fn: any): void {
-    console.log('registerOnChange', fn);
     this.propagateChange = fn;
   }
 
   registerOnTouched(fn: any): void {
-    console.log('registerOnTouched', fn);
   }
 
   setDisabledState(isDisabled: boolean): void {
-    console.log('setDisabledState', isDisabled);
     this.disabled = isDisabled;
   }
 
   writeValue(val: any): void {
-    console.log('writeValue', val);
     this.value = val;
   }
 
   validate(c: FormControl) {
-    console.log('validate', c);
     return this.validateFn(c);
   }
 }
