@@ -114,4 +114,12 @@ export class SingleSelectComponent extends BaseFormElement implements OnInit {
       this.hasEllipsis = this.triggerValueText.nativeElement.offsetWidth < this.triggerValueText.nativeElement.scrollWidth;
     });
   }
+
+  public writeValue(val: any): void {
+    super.writeValue(val);
+    const selectedOptions = this.selectModelService
+      .getSelectedOptions(this.selectionGroupOptions, [val]);
+
+    this.selectedModel = selectedOptions[0];
+  }
 }
