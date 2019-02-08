@@ -1,0 +1,28 @@
+<div [ngStyle]="{height: listOptions.length * LIST_EL_HEIGHT + 'px', maxHeight: maxHeight + 'px'}"
+     class="v-scroll-wrapper">
+
+  <cdk-virtual-scroll-viewport class="v-scroll"
+                               itemSize="44"
+                               maxBufferPx="{{maxHeight*44}}" minBufferPx="5">
+
+    <div class="headers">
+      <div *ngFor="let header of listHeaders">
+        <div (click)="headerClick(header)"
+             class="option-select header">
+          <span>{{header.groupName}}</span>
+        </div>
+        <div [ngStyle]="{height: header.isCollapsed ? 0 : header.placeHolderSize + 'px'}" class="placeholder"></div>
+      </div>
+    </div>
+
+    <div class="options">
+      <div (click)="optionClick(option)"
+           *cdkVirtualFor="let option of listOptions"
+           [ngClass]="{'header-placeholder': option.groupHeader, 'option': !option.groupHeader}"
+           class="option-select">
+        <span>{{option.value}}</span>
+      </div>
+    </div>
+  </cdk-virtual-scroll-viewport>
+
+</div>

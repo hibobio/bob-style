@@ -1,0 +1,23 @@
+<content (click)="openPanel()"
+         [ngClass]="{'panel-open': panelOpen}"
+         cdkOverlayOrigin
+         class="panel-trigger">
+  <b-input [value]="selectedValue"
+           label="select a value">
+  </b-input>
+</content>
+
+<ng-template #templateRef>
+  <div class="panel-position"
+       [ngClass]="positionClassList">
+
+    <b-search [hideLabelOnFocus]="true">
+    </b-search>
+
+    <b-single-list (onSelect)="onSelect($event)"
+                   [maxHeight]="44*6">
+    </b-single-list>
+
+
+  </div>
+</ng-template>
