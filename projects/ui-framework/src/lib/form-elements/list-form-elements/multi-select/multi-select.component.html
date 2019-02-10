@@ -1,0 +1,47 @@
+<content (click)="openPanel()"
+         [ngClass]="{'disabled': disabled, 'panel-open': panelOpen}"
+         cdkOverlayOrigin
+         class="panel-trigger">
+  <b-input [disabled]="disabled"
+           [errorMessage]="errorMessage"
+           [hintMessage]="hintMessage"
+           [label]="label"
+           [required]="required"
+           [value]="triggerValue">
+    <div class="select-chevron"
+         input-suffix>
+    </div>
+  </b-input>
+</content>
+
+<ng-template #templateRef>
+  <div class="panel-position"
+       [ngClass]="positionClassList">
+
+    <b-search [hideLabelOnFocus]="true">
+    </b-search>
+
+    <b-multi-list (selectChange)="onSelect($event)"
+                  [options]="options"
+                  [value]="value"
+                  [maxHeight]="listElHeight*6">
+    </b-multi-list>
+
+    <div fxLayout="row" fxLayoutAlign="end center"
+         class="select-footer">
+      <b-button (click)="cancelSelection()"
+                class="cancel-button"
+                size="{{buttonSize.small}}"
+                type="{{buttonType.secondary}}">
+        Cancel
+      </b-button>
+      <b-button (click)="notifySelectionIds()"
+                class="apply-button"
+                size="{{buttonSize.small}}"
+                type="{{buttonType.primary}}">
+        Apply
+      </b-button>
+    </div>
+
+  </div>
+</ng-template>

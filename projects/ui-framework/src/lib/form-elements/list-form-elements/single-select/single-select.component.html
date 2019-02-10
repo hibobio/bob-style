@@ -1,9 +1,16 @@
 <content (click)="openPanel()"
-         [ngClass]="{'panel-open': panelOpen}"
+         [ngClass]="{'disabled': disabled, 'panel-open': panelOpen}"
          cdkOverlayOrigin
          class="panel-trigger">
-  <b-input [value]="selectedValue"
-           label="select a value">
+  <b-input [disabled]="disabled"
+           [errorMessage]="errorMessage"
+           [hintMessage]="hintMessage"
+           [label]="label"
+           [required]="required"
+           [value]="triggerValue">
+    <div class="select-chevron"
+         input-suffix>
+    </div>
   </b-input>
 </content>
 
@@ -14,8 +21,9 @@
     <b-search [hideLabelOnFocus]="true">
     </b-search>
 
-    <b-single-list (onSelect)="onSelect($event)"
-                   [maxHeight]="44*6">
+    <b-single-list (selectChange)="onSelect($event)"
+                   [options]="options"
+                   [maxHeight]="listElHeight*6">
     </b-single-list>
 
 

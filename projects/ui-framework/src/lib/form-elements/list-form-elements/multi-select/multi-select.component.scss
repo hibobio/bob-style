@@ -13,11 +13,15 @@
         margin: 0;
         .mat-form-field-wrapper .mat-form-field-flex {
           pointer-events: none;
-          //border: 1px solid $grey-500;
         }
       }
       .select-chevron {
         @include chevron-down($grey-600);
+      }
+      input {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
     &.panel-open b-input .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
@@ -60,6 +64,19 @@
     }
     b-single-list {
       display: block;
+    }
+    .select-footer {
+      display: block;
+      padding: 8px 16px;
+      border-top: 1px solid $grey-500;
+      z-index: 1;
+      b-button {
+        display: block;
+        margin-right: 6px;
+        &:last-child {
+          margin-right: 0;
+        }
+      }
     }
   }
 }

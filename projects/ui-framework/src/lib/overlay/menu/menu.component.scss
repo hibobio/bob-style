@@ -10,6 +10,9 @@
 ::ng-deep {
   .cdk-overlay-container {
     .mat-menu-panel {
+      b-menu {
+        display: none;
+      }
       @include OverlayPanel();
       @include BodyFont(normal, normal, 12px);
       min-width: 0;

@@ -1,23 +1,24 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { CdkOverlayOrigin, FlexibleConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { chain, invoke } from 'lodash';
+import { chain, invoke, includes } from 'lodash';
 import { Subscription } from 'rxjs';
 import { PanelPositionService } from '../../../overlay/panel/panel-position.service';
 import { SelectGroupOption } from '../../select';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { BaseFormElement } from '../../base-form-element';
+import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons';
 
 @Component({
-  selector: 'b-single-select',
-  templateUrl: 'single-select.component.html',
-  styleUrls: ['single-select.component.scss'],
+  selector: 'b-multi-select',
+  templateUrl: 'multi-select.component.html',
+  styleUrls: ['multi-select.component.scss'],
 })
 
-export class SingleSelectComponent extends BaseFormElement implements OnInit, OnDestroy {
+export class MultiSelectComponent extends BaseFormElement implements OnInit, OnDestroy {
 
   @Input() options: SelectGroupOption[];
-  @Input() value: string | number = 2;
+  @Input() value: (string | number)[] = [];
   @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild(CdkOverlayOrigin) overlayOrigin: CdkOverlayOrigin;
@@ -26,6 +27,8 @@ export class SingleSelectComponent extends BaseFormElement implements OnInit, On
   positionClassList: { [key: string]: boolean } = {};
   panelOpen = false;
   triggerValue: any;
+  readonly buttonSize = ButtonSize;
+  readonly buttonType = ButtonType;
   readonly listElHeight = LIST_EL_HEIGHT;
 
   private panelConfig: OverlayConfig;
@@ -43,14 +46,7 @@ export class SingleSelectComponent extends BaseFormElement implements OnInit, On
   }
 
   ngOnInit(): void {
-    this.triggerValue = this.value ? this.getTriggerValue(this.value) : null;
-  }
-
-  onSelect(optionId) {
-    this.value = optionId;
     this.triggerValue = this.getTriggerValue(this.value);
-    this.selectChange.emit(this.value);
-    this.destroyPanel();
   }
 
   ngOnDestroy(): void {
@@ -75,12 +71,26 @@ export class SingleSelectComponent extends BaseFormElement implements OnInit, On
       });
   }
 
-  private getTriggerValue(value: string | number): string {
+  onSelect(value): void {
+    this.value = value;
+    this.triggerValue = this.getTriggerValue(this.value);
+    this.selectChange.emit(this.value);
+  }
+
+  cancelSelection(): void {
+    console.log('cancel');
+  }
+
+  notifySelectionIds(): void {
+    console.log('notify');
+  }
+
+  private getTriggerValue(value: (string | number)[]): string {
     return chain(this.options)
       .flatMap('options')
-      .filter(option => option.id === value)
-      .first()
-      .get('value', null)
+      .filter(option => includes(value, option.id))
+      .map('value')
+      .join(', ')
       .value();
   }
 

@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SelectGroupOption } from '../../select';
-import map from 'lodash/map';
-import concat from 'lodash/concat';
-import flatten from 'lodash/flatten';
-import assign from 'lodash/assign';
-import find from 'lodash/find';
+import { flatten, forEach, map, concat, assign, find, set, includes, filter, every } from 'lodash';
+import { LIST_EL_HEIGHT } from '../list.consts';
 
 @Injectable()
 export class ListModelService {
@@ -18,7 +15,7 @@ export class ListModelService {
     const groupOptions = map(options, (group) => {
       const groupHeaderModel = find(listHeaders, header => header.groupName === group.groupName);
       const placeholder = {
-        groupHeader: true,
+        isPlaceHolder: true,
         groupName: group.groupName,
         value: group.groupName,
         id: group.groupName,
@@ -27,7 +24,10 @@ export class ListModelService {
         ? placeholder
         : concat(
           placeholder,
-          map(group.options, option => assign(option, { groupName: group.groupName, groupHeader: false })),
+          map(group.options, option => assign(
+            option,
+            { groupName: group.groupName, isPlaceHolder: false },
+          )),
         );
     });
     return flatten(groupOptions);
@@ -38,9 +38,25 @@ export class ListModelService {
       return {
         groupName: group.groupName,
         isCollapsed: false,
-        placeHolderSize: group.options.length * 44,
+        placeHolderSize: group.options.length * LIST_EL_HEIGHT,
       };
     });
     return groupHeaders;
+  }
+
+  setSelectedOptions(
+    listHeaders: any,
+    listOptions: any,
+    selectedValues: (string | number)[],
+  ): any {
+    forEach(listOptions, option => {
+      set(option, 'selected', includes(selectedValues, option.id));
+    });
+    forEach(listHeaders, header => {
+      const groupOptions = filter(listOptions, option =>
+        option.groupName === header.groupName &&
+        !option.isPlaceHolder);
+      set(header, 'selected', every(groupOptions, ['selected', true]));
+    });
   }
 }

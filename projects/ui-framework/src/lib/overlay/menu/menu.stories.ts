@@ -17,7 +17,8 @@ const menuStories = storiesOf(ComponentGroupType.Overlay, module)
 
 const template = `
 <b-story-book-layout title="Actions menu">
-  <b-menu [actionsModel]="actionsModel">
+  <b-menu style="position: absolute; top: 20px; left: 20px;"
+          [actionsModel]="actionsModel">
     <b-square-button menu-trigger
                     type="${ ButtonType.secondary }"
                     icon="${ Icons.three_dots }">
