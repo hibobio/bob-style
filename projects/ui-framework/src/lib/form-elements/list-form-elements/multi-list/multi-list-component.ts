@@ -53,6 +53,7 @@ export class MultiListComponent implements OnInit {
       ? chain(this.value).concat(groupOptionsIds).uniq().value()
       : chain(this.value).difference(groupOptionsIds).value();
     this.listModelService.setSelectedOptions(this.listHeaders, this.listOptions, this.value);
+    this.selectChange.emit(this.value);
   }
 
   optionClick(selectedOption): void {
