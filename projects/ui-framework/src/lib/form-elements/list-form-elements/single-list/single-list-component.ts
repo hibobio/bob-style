@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { SelectGroupOption } from '../../select';
 import { ListModelService } from '../list-service/list-model.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
+import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
 
 @Component({
   selector: 'b-single-list',
@@ -15,10 +15,10 @@ export class SingleListComponent implements OnInit {
   @Input() options: SelectGroupOption[];
   @Input() maxHeight = this.listElHeight * 8;
   @Input() value: number | string;
-  @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() selectChange: EventEmitter<(number | string)> = new EventEmitter<(number | string)>();
 
-  listOptions: any[];
-  listHeaders: any[];
+  listOptions: ListOption[];
+  listHeaders: ListHeader[];
 
   constructor(
     private listModelService: ListModelService,
@@ -32,13 +32,13 @@ export class SingleListComponent implements OnInit {
       .getOptionsModel(this.options, this.listHeaders);
   }
 
-  headerClick(header): void {
+  headerClick(header: ListHeader): void {
     header.isCollapsed = !header.isCollapsed;
     this.listOptions = this.listModelService
       .getOptionsModel(this.options, this.listHeaders);
   }
 
-  optionClick(option): void {
+  optionClick(option: ListOption): void {
     this.value = option.id;
     this.selectChange.emit(this.value);
   }

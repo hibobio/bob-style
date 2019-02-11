@@ -5,6 +5,7 @@ import { ListModelService } from '../list-service/list-model.service';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatOptionModule, MatPseudoCheckboxModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { SearchModule } from '../../../navigation/search';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatOptionModule,
     FlexLayoutModule,
     MatPseudoCheckboxModule,
+    SearchModule,
   ],
   exports: [
     MultiListComponent,

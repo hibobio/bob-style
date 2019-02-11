@@ -6,8 +6,8 @@ import { DialogService } from './dialog.service';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { FormElementsModule } from '../../form-elements/form-elements.module';
-import { SelectGroupOption } from '../../form-elements/select/select.interface';
 import { InputEvent, InputEventType } from '../../form-elements/input';
+import { SelectGroupOption } from '../../form-elements/list-form-elements/list.interface';
 
 @Component({
   selector: 'b-dialog-example',

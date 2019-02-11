@@ -4,7 +4,6 @@ import { MultiSelectComponent } from './multi-select.component';
 import { PanelModule } from '../../../overlay/panel/panel.module';
 import { ButtonsModule } from '../../../buttons-indicators/buttons';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { SearchModule } from '../../../navigation/search';
 import { InputModule } from '../../input';
 import { MultiListModule } from '../multi-list/multi-list.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -19,7 +18,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     ButtonsModule,
     OverlayModule,
     MultiListModule,
-    SearchModule,
     InputModule,
     FlexLayoutModule,
   ],

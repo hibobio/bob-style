@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { SelectGroupOption } from '../../select';
 import { flatten, forEach, map, concat, assign, find, set, includes, filter, every } from 'lodash';
 import { LIST_EL_HEIGHT } from '../list.consts';
+import { ListOption, ListHeader, SelectGroupOption } from '../list.interface';
 
 @Injectable()
 export class ListModelService {
@@ -11,44 +11,43 @@ export class ListModelService {
   getOptionsModel(
     options: SelectGroupOption[],
     listHeaders: any,
-  ): any {
+  ): ListOption[] {
     const groupOptions = map(options, (group) => {
-      const groupHeaderModel = find(listHeaders, header => header.groupName === group.groupName);
+      const groupHeader: ListHeader = find(listHeaders, header => header.groupName === group.groupName);
       const placeholder = {
         isPlaceHolder: true,
         groupName: group.groupName,
         value: group.groupName,
         id: group.groupName,
+        selected: null,
       };
-      return groupHeaderModel.isCollapsed
+      return groupHeader.isCollapsed
         ? placeholder
         : concat(
           placeholder,
           map(group.options, option => assign(
             option,
-            { groupName: group.groupName, isPlaceHolder: false },
+            { groupName: group.groupName, isPlaceHolder: false, selected: null },
           )),
         );
     });
     return flatten(groupOptions);
   }
 
-  getHeadersModel(options: SelectGroupOption[]): any {
-    const groupHeaders = map(options, (group) => {
-      return {
-        groupName: group.groupName,
-        isCollapsed: false,
-        placeHolderSize: group.options.length * LIST_EL_HEIGHT,
-      };
-    });
-    return groupHeaders;
+  getHeadersModel(options: SelectGroupOption[]): ListHeader[] {
+    return map(options, group => ({
+      groupName: group.groupName,
+      isCollapsed: false,
+      placeHolderSize: group.options.length * LIST_EL_HEIGHT,
+      selected: null,
+    }));
   }
 
   setSelectedOptions(
-    listHeaders: any,
-    listOptions: any,
+    listHeaders: ListHeader[],
+    listOptions: SelectGroupOption[],
     selectedValues: (string | number)[],
-  ): any {
+  ): void {
     forEach(listOptions, option => {
       set(option, 'selected', includes(selectedValues, option.id));
     });

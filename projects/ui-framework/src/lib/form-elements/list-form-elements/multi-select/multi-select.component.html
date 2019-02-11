@@ -18,9 +18,6 @@
   <div class="panel-position"
        [ngClass]="positionClassList">
 
-    <b-search [hideLabelOnFocus]="true">
-    </b-search>
-
     <b-multi-list (selectChange)="onSelect($event)"
                   [options]="options"
                   [value]="value"

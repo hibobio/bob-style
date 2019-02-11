@@ -8,14 +8,14 @@ import { TypographyModule } from '../../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { MultiSelectModule } from './multi-select.module';
-import { SelectGroupOption } from '../../select';
+import { SelectGroupOption } from '../list.interface';
 
 const buttonStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
 const template = `
-<b-story-book-layout title="Multi select 2">
+<b-story-book-layout title="Multi select">
   <b-multi-select style="width: 400px;"
                   [label]="label"
                   [options]="options"
@@ -29,7 +29,7 @@ const template = `
 </b-story-book-layout>
 `;
 const note = `
-  ## Multi Select 2
+  ## Multi Select
   options | SelectGroupOption[] | model of selection group
   value | (string or number) | selected id
   selectChange | action | returns selected id
@@ -43,7 +43,7 @@ const note = `
   ~~~
 `;
 
-const optionsMock = Array.from(Array(3), (_, i) => {
+const optionsMock: SelectGroupOption[] = Array.from(Array(3), (_, i) => {
   return {
     groupName: `Personal G${ i }`,
     options: Array.from(Array(4), (_, k) => {
@@ -56,7 +56,7 @@ const optionsMock = Array.from(Array(3), (_, i) => {
 });
 
 buttonStories.add(
-  'Multi select 2', () => ({
+  'Multi select', () => ({
     template,
     props: {
       options: object<SelectGroupOption>('options', optionsMock),

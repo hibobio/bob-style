@@ -8,7 +8,7 @@ import { TypographyModule } from '../../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { SingleListModule } from './single-list.module';
-import { SelectGroupOption } from '../../select';
+import { SelectGroupOption } from '../list.interface';
 
 const buttonStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
@@ -18,7 +18,8 @@ const template = `
 <b-story-book-layout title="Single list">
   <b-single-list style="width: 400px;"
                  [options]="options"
-                 [value]="value">
+                 [value]="value"
+                 (selectChange)="selectChange($event)">
   </b-single-list>
 </b-story-book-layout>
 `;
@@ -31,7 +32,7 @@ const note = `
   ~~~
 `;
 
-const optionsMock = Array.from(Array(4), (_, i) => {
+const optionsMock: SelectGroupOption[] = Array.from(Array(4), (_, i) => {
   return {
     groupName: `Basic Info G${ i }`,
     options: Array.from(Array(4), (_, k) => {
@@ -47,6 +48,7 @@ buttonStories.add(
   'Single list', () => ({
     template,
     props: {
+      selectChange: action(),
       options: object<SelectGroupOption>('options', optionsMock),
       value: text('value', 1),
     },

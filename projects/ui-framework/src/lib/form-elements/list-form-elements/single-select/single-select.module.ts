@@ -5,7 +5,6 @@ import { PanelModule } from '../../../overlay/panel/panel.module';
 import { ButtonsModule } from '../../../buttons-indicators/buttons';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { SingleListModule } from '../single-list/single-list.module';
-import { SearchModule } from '../../../navigation/search';
 import { InputModule } from '../../input';
 
 @NgModule({
@@ -18,7 +17,6 @@ import { InputModule } from '../../input';
     ButtonsModule,
     OverlayModule,
     SingleListModule,
-    SearchModule,
     InputModule,
   ],
   exports: [

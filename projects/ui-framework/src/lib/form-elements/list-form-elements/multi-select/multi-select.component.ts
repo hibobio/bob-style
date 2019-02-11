@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewContaine
 import { Overlay } from '@angular/cdk/overlay';
 import { chain, includes } from 'lodash';
 import { PanelPositionService } from '../../../overlay/panel/panel-position.service';
-import { SelectGroupOption } from '../../select';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
+import { SelectGroupOption } from '../list.interface';
 
 @Component({
   selector: 'b-multi-select',
@@ -17,9 +17,9 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
 
   @Input() options: SelectGroupOption[];
   @Input() value: (string | number)[] = [];
-  @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() selectChange: EventEmitter<(string | number)[]> = new EventEmitter<(string | number)[]>();
 
-  triggerValue: any;
+  triggerValue: string;
   readonly buttonSize = ButtonSize;
   readonly buttonType = ButtonType;
   readonly listElHeight = LIST_EL_HEIGHT;
@@ -43,16 +43,15 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
   onSelect(value): void {
     this.value = value;
     this.triggerValue = this.getTriggerValue(this.value);
-    this.selectChange.emit(this.value);
   }
 
   cancelSelection(): void {
-    console.log('cancel');
     this.destroyPanel();
   }
 
   notifySelectionIds(): void {
-    console.log('notify');
+    this.selectChange.emit(this.value);
+    this.propagateChange(this.value);
   }
 
   private getTriggerValue(value: (string | number)[]): string {

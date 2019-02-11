@@ -2,11 +2,24 @@
 @import '../../../style/typography';
 @import '../../../style/shapes';
 
-:host {
+:host ::ng-deep{
   display: inline-block;
   width: 100%;
   @include BodyFont(normal, normal, 12px);
   text-align: left;
+  b-search {
+    display: block;
+    top: 0;
+    z-index: 1;
+    .mat-form-field {
+      margin: 0;
+      &.mat-focused .mat-form-field-wrapper .mat-form-field-flex, .mat-form-field-wrapper .mat-form-field-flex {
+        border: none;
+        border-bottom: 1px solid $grey-500;
+        border-radius: 0;
+      }
+    }
+  }
   .v-scroll-wrapper {
     position: relative;
     background-color: $white;

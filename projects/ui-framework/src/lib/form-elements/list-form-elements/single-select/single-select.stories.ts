@@ -8,18 +8,18 @@ import { TypographyModule } from '../../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { SingleSelectModule } from './single-select.module';
-import { SelectGroupOption } from '../../select';
+import { SelectGroupOption } from '../list.interface';
 
 const buttonStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
 const template = `
-<b-story-book-layout title="Single select 2">
+<b-story-book-layout title="Single select">
   <b-single-select style="width: 400px;"
                    [label]="label"
                    [options]="options"
-                   value="2"
+                   [value]="value"
                    (selectChange)="selectChange($event)"
                    [disabled]="disabled"
                    [required]="required"
@@ -56,7 +56,7 @@ const optionsMock = Array.from(Array(3), (_, i) => {
 });
 
 buttonStories.add(
-  'Single select 2', () => ({
+  'Single select', () => ({
     template,
     props: {
       options: object<SelectGroupOption>('options', optionsMock),

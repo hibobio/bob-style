@@ -19,7 +19,10 @@ export { AutoCompleteModule } from './lib/form-elements/auto-complete/auto-compl
 export { CheckboxModule } from './lib/form-elements/checkbox/checkbox.module';
 export { DatepickerModule } from './lib/form-elements/datepicker/datepicker.module';
 export { InputModule } from './lib/form-elements/input/input.module';
-export { SelectModule } from './lib/form-elements/select/select.module';
+export { SingleListModule } from './lib/form-elements/list-form-elements/single-list/single-list.module';
+export { SingleSelectModule } from './lib/form-elements/list-form-elements/single-select/single-select.module';
+export { MultiListModule } from './lib/form-elements/list-form-elements/multi-list/multi-list.module';
+export { MultiSelectModule } from './lib/form-elements/list-form-elements/multi-select/multi-select.module';
 export * from './lib/form-elements';
 export {BreadcrumbsModule} from './lib/navigation/breadcrumbs/breadcrumbs.module';
 export * from './lib/navigation/breadcrumbs';

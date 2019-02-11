@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { SelectGroupOption } from '../../select';
 import { ListModelService } from '../list-service/list-model.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { CheckboxStates } from '../../checkbox';
 import { chain, filter, flatMap } from 'lodash';
+import { ListOption, ListHeader, SelectGroupOption } from '../list.interface';
 
 @Component({
   selector: 'b-multi-list',
@@ -20,8 +20,8 @@ export class MultiListComponent implements OnInit {
   @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();
 
   checkboxState = CheckboxStates;
-  listOptions: any[];
-  listHeaders: any[];
+  listOptions: ListOption[];
+  listHeaders: ListHeader[];
 
   constructor(
     private listModelService: ListModelService,
@@ -36,13 +36,13 @@ export class MultiListComponent implements OnInit {
     this.listModelService.setSelectedOptions(this.listHeaders, this.listOptions, this.value);
   }
 
-  toggleGroupCollapse(header): void {
+  toggleGroupCollapse(header: ListHeader): void {
     header.isCollapsed = !header.isCollapsed;
     this.listOptions = this.listModelService
       .getOptionsModel(this.options, this.listHeaders);
   }
 
-  headerSelect(header): void {
+  headerSelect(header: ListHeader): void {
     header.selected = !header.selected;
     const groupOptionsIds = chain(this.options)
       .filter(group => group.groupName === header.groupName)
@@ -56,7 +56,7 @@ export class MultiListComponent implements OnInit {
     this.selectChange.emit(this.value);
   }
 
-  optionClick(selectedOption): void {
+  optionClick(selectedOption: ListOption): void {
     selectedOption.selected = !selectedOption.selected;
     this.value = selectedOption.selected
       ? chain(this.value).concat(selectedOption.id).uniq().value()
