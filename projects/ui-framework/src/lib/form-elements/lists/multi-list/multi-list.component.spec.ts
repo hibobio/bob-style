@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatIconModule, MatInputModule, MatTooltipModule } from '@angular/material';
+import { MatFormFieldModule, MatIconModule, MatInputModule, MatPseudoCheckboxModule, MatTooltipModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchModule } from '../../../navigation/search/search.module';
@@ -9,15 +9,15 @@ import { IconsModule } from '../../../icons';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { InputModule } from '../../input';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { SingleListComponent } from './single-list.component';
 import { ListModelService } from '../list-service/list-model.service';
 import { SelectGroupOption } from '../list.interface';
 import { By } from '@angular/platform-browser';
+import { MultiListComponent } from './multi-list-component';
 
-describe('SingleSelectComponent', () => {
-  let component: SingleListComponent;
+describe('MultiListComponent', () => {
+  let component: MultiListComponent;
   let optionsMock: SelectGroupOption[];
-  let fixture: ComponentFixture<SingleListComponent>;
+  let fixture: ComponentFixture<MultiListComponent>;
 
   beforeEach(async(() => {
     optionsMock = [
@@ -39,7 +39,7 @@ describe('SingleSelectComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [
-        SingleListComponent,
+        MultiListComponent,
       ],
       providers: [
         ListModelService,
@@ -58,14 +58,15 @@ describe('SingleSelectComponent', () => {
         MatTooltipModule,
         FlexLayoutModule,
         ScrollingModule,
+        MatPseudoCheckboxModule,
       ],
     })
       .compileComponents()
       .then(() => {
-        fixture = TestBed.createComponent(SingleListComponent);
+        fixture = TestBed.createComponent(MultiListComponent);
         component = fixture.componentInstance;
         component.options = optionsMock;
-        component.value = 2;
+        component.value = [1, 11];
         spyOn(component.selectChange, 'emit');
         fixture.autoDetectChanges();
       });
@@ -78,13 +79,13 @@ describe('SingleSelectComponent', () => {
           groupName: 'Basic Info',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: null
+          selected: false,
         },
         {
           groupName: 'Personal',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: null,
+          selected: false,
         }
       ]);
     });
@@ -95,42 +96,42 @@ describe('SingleSelectComponent', () => {
           groupName: 'Basic Info',
           value: 'Basic Info',
           id: 'Basic Info',
-          selected: null,
+          selected: false,
         },
         {
           value: 'Basic Info 1',
           id: 1,
           groupName: 'Basic Info',
           isPlaceHolder: false,
-          selected: null,
+          selected: true,
         },
         {
           value: 'Basic Info 2',
           id: 2,
           groupName: 'Basic Info',
           isPlaceHolder: false,
-          selected: null,
+          selected: false,
         },
         {
           isPlaceHolder: true,
           groupName: 'Personal',
           value: 'Personal',
           id: 'Personal',
-          selected: null,
+          selected: false,
         },
         {
           value: 'Personal 1',
           id: 11,
           groupName: 'Personal',
           isPlaceHolder: false,
-          selected: null,
+          selected: true,
         },
         {
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal',
           isPlaceHolder: false,
-          selected: null,
+          selected: false,
         },
       ]);
     });
@@ -142,25 +143,27 @@ describe('SingleSelectComponent', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       expect(options.length).toEqual(4);
     });
-    it('should not set selected option (id=1) with class selected', () => {
-      const option = fixture.debugElement.queryAll(By.css('.option'))[0];
-      expect(option.nativeElement.classList).not.toContain('selected');
+    it('should set the checkbox of options where (id=1,11) as checked', () => {
+      const checkboxes = fixture.debugElement.queryAll(By.css('.option .checkbox'));
+      expect(checkboxes[0].nativeElement.getAttribute('ng-reflect-state')).toEqual('checked');
+      expect(checkboxes[2].nativeElement.getAttribute('ng-reflect-state')).toEqual('checked');
     });
-    it('should set the selected option (id=2) with class selected', () => {
-      const option = fixture.debugElement.queryAll(By.css('.option'))[1];
-      expect(option.nativeElement.classList).toContain('selected');
+    it('should set the checkbox of options where (id=2,12) as unchecked', () => {
+      const checkboxes = fixture.debugElement.queryAll(By.css('.option .checkbox'));
+      expect(checkboxes[1].nativeElement.getAttribute('ng-reflect-state')).toEqual('unchecked');
+      expect(checkboxes[3].nativeElement.getAttribute('ng-reflect-state')).toEqual('unchecked');
     });
     it('should render 2 options if 1 group is collapsed', () => {
-      const header = fixture.debugElement.queryAll(By.css('.header'))[0];
-      header.triggerEventHandler('click', null);
+      const headerCollapseTrigger = fixture.debugElement.queryAll(By.css('.header-collapse-trigger'))[0];
+      headerCollapseTrigger.triggerEventHandler('click', null);
       fixture.autoDetectChanges();
       const options = fixture.debugElement.queryAll(By.css('.option'));
       expect(options.length).toEqual(2);
     });
     it('should not render options if 2 group are collapsed', () => {
-      const headers = fixture.debugElement.queryAll(By.css('.header'));
-      headers[0].triggerEventHandler('click', null);
-      headers[1].triggerEventHandler('click', null);
+      const headerCollapseTrigger = fixture.debugElement.queryAll(By.css('.header-collapse-trigger'));
+      headerCollapseTrigger[0].triggerEventHandler('click', null);
+      headerCollapseTrigger[1].triggerEventHandler('click', null);
       fixture.autoDetectChanges();
       const options = fixture.debugElement.queryAll(By.css('.option'));
       expect(options.length).toEqual(0);
@@ -168,12 +171,33 @@ describe('SingleSelectComponent', () => {
     it('should update value when option is clicked with the option id', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
-      expect(component.value).toBe(12);
+      expect(component.value).toEqual([1, 11, 12]);
     });
     it('should emit event when selecting an option', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
-      expect(component.selectChange.emit).toHaveBeenCalledWith(12);
+      expect(component.selectChange.emit).toHaveBeenCalledWith([1, 11, 12]);
+    });
+    it('should select all options in group when selecting header', () => {
+      const headerCheckbox = fixture.debugElement.queryAll(By.css('.header .checkbox'));
+      headerCheckbox[0].triggerEventHandler('click', null);
+      fixture.autoDetectChanges();
+      expect(component.value).toEqual([1, 11, 2]);
+    });
+    it('should deselect all options in group when deselecting header', () => {
+      const headerCheckbox = fixture.debugElement.queryAll(By.css('.header .checkbox'));
+      headerCheckbox[0].triggerEventHandler('click', null);
+      fixture.autoDetectChanges();
+      expect(component.value).toEqual([1, 11, 2]);
+      headerCheckbox[0].triggerEventHandler('click', null);
+      fixture.autoDetectChanges();
+      expect(component.value).toEqual([11]);
+    });
+    it('should emit event when header is selected', () => {
+      const headerCheckbox = fixture.debugElement.queryAll(By.css('.header .checkbox'));
+      headerCheckbox[0].triggerEventHandler('click', null);
+      fixture.autoDetectChanges();
+      expect(component.selectChange.emit).toHaveBeenCalledWith([1, 11, 2]);
     });
   });
 });

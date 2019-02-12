@@ -13,7 +13,7 @@ import { By } from '@angular/platform-browser';
 import { IconsModule } from '../../../icons';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-describe('SingleSelectComponent', () => {
+xdescribe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;
   let optionsMock;
   let selectionGroupOptionsMock;
