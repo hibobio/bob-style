@@ -143,9 +143,9 @@ xdescribe('SingleSelectComponent', () => {
 
 
       fakeAsync(() => {
-        component.openPanel();
-        fixture.autoDetectChanges();
-        tick(20);
+        // component.openPanel();
+        // fixture.autoDetectChanges();
+        // tick(20);
         // debugger;
 
 
@@ -165,7 +165,7 @@ xdescribe('SingleSelectComponent', () => {
 
         // flush();
 
-        expect(1 === 1).toBe(true);
+        // expect(1 === 1).toBe(true);
 
       }));
 

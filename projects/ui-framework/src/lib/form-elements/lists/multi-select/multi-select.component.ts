@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewContainerRef } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output, ViewContainerRef } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { chain, includes } from 'lodash';
 import { PanelPositionService } from '../../../overlay/panel/panel-position.service';
@@ -6,17 +6,31 @@ import { LIST_EL_HEIGHT } from '../list.consts';
 import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { SelectGroupOption } from '../list.interface';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'b-multi-select',
   templateUrl: 'multi-select.component.html',
   styleUrls: ['multi-select.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => MultiSelectComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => MultiSelectComponent),
+      multi: true
+    }
+  ],
 })
 
 export class MultiSelectComponent extends BaseSelectPanelElement implements OnInit, OnDestroy {
 
   @Input() options: SelectGroupOption[];
   @Input() value: (string | number)[] = [];
+  @Input() showSingleGroupHeader = false;
   @Output() selectChange: EventEmitter<(string | number)[]> = new EventEmitter<(string | number)[]>();
 
   triggerValue: string;

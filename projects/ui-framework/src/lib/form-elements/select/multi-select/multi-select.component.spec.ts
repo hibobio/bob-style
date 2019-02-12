@@ -14,7 +14,7 @@ import { IconsModule } from '../../../icons';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SelectionOption } from '../select.interface';
 
-describe('MultiSelectComponent', () => {
+xdescribe('MultiSelectComponent', () => {
   let component: MultiSelectComponent;
   let optionsMock;
   let selectionGroupOptionsMock;

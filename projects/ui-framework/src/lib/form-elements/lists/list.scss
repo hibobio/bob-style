@@ -1,0 +1,59 @@
+@import '../../style/typography';
+@import '../../style/colors';
+@import '../../style/shapes';
+
+@mixin listOption {
+  @include BodyFont(normal, normal, 12px);
+  padding: 0 16px;
+  box-sizing: border-box;
+  position: relative;
+  height: 44px;
+  line-height: 1;
+  color: initial;
+  &.mat-selected {
+    background-color: initial;
+  }
+  &:hover, &.selected {
+    background-color: $grey-100;
+  }
+}
+
+@mixin headers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  pointer-events: none;
+  .headers-group {
+    border-top: 1px solid $grey-300;
+    .header {
+      position: relative;
+      z-index: 2;
+      pointer-events: all;
+      position: sticky;
+      top: 0;
+      background-color: $white;
+      box-shadow: 0 2px 3px $boxShadowColor;
+      .header-collapse-trigger {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+      .chevron {
+        width: 10px;
+        height: 10px;
+        @include chevron-down($grey-600);
+      }
+      &.collapsed .chevron {
+        @include chevron-up($grey-600);
+      }
+    }
+    &:first-child {
+      border-top: none;
+    }
+  }
+}
