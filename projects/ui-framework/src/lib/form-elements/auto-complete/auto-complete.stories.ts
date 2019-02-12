@@ -7,7 +7,7 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AutoCompleteModule } from './auto-complete.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { SelectGroupOption } from '../list-form-elements/list.interface';
+import { SelectGroupOption } from '../lists/list.interface';
 
 const textareaStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)

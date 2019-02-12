@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { FormElementsModule } from '../../form-elements/form-elements.module';
 import { InputEvent, InputEventType } from '../../form-elements/input';
-import { SelectGroupOption } from '../../form-elements/list-form-elements/list.interface';
+import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 
 @Component({
   selector: 'b-dialog-example',
