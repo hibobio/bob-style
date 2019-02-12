@@ -170,7 +170,6 @@ describe('ListModelService', () => {
           selected: true,
         }
       ]);
-      console.log('optionsModel', optionsModel);
       expect(optionsModel).toEqual([
         {
           isPlaceHolder: true,

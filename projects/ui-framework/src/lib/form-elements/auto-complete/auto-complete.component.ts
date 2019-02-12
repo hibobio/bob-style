@@ -86,6 +86,6 @@ export class AutoCompleteComponent extends BaseInputElement implements OnInit {
   }
 
   private notify(option: AutoCompleteOption): void {
-    console.log('notify select', option);
+    // console.log('notify select', option);
   }
 }

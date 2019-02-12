@@ -21,10 +21,10 @@
           <div draggable="true">{{ column.displayName }} <button (click)="$event.stopPropagation(); removeColumnClicked(column)">X</button></div>
         </th>
         <td cdk-cell *cdkCellDef="let row" (click)="rowClicked(row)" (contextmenu)="rightClicked(row)">
-          <div *ngIf="column.type!=='component'">{{getColumnName(row, column.name)}}</div>
-          <div *ngIf="column.type==='component'">
+          <span *ngIf="column.type!=='component'">{{getColumnName(row, column.name)}}</span>
+          <span *ngIf="column.type==='component'">
             <b-table-cell [row]="row" [column]="column" [data]="row[column.name]"></b-table-cell>
-          </div>
+          </span>
         </td>
       </ng-container>
 
