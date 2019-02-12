@@ -16,7 +16,7 @@ import { PanelPositionService } from '../../../overlay/panel/panel-position.serv
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { SingleListComponent } from '../single-list/single-list.component';
 
-xdescribe('SingleSelectComponent', () => {
+fdescribe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;
   let optionsMock;
   let selectionGroupOptionsMock;
@@ -143,10 +143,10 @@ xdescribe('SingleSelectComponent', () => {
 
 
       fakeAsync(() => {
-        // component.openPanel();
-        // fixture.autoDetectChanges();
-        // tick(20);
-        // debugger;
+        component.openPanel();
+        fixture.autoDetectChanges();
+        tick(20);
+        debugger;
 
 
 
