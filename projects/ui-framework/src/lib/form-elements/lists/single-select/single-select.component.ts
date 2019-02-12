@@ -1,21 +1,35 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewContainerRef } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output, ViewContainerRef } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { chain } from 'lodash';
 import { PanelPositionService } from '../../../overlay/panel/panel-position.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { SelectGroupOption } from '../list.interface';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'b-single-select',
   templateUrl: 'single-select.component.html',
   styleUrls: ['single-select.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SingleSelectComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => SingleSelectComponent),
+      multi: true
+    }
+  ],
 })
 
 export class SingleSelectComponent extends BaseSelectPanelElement implements OnInit, OnDestroy {
 
   @Input() options: SelectGroupOption[];
   @Input() value: string | number;
+  @Input() showSingleGroupHeader = false;
   @Output() selectChange: EventEmitter<(string | number)> = new EventEmitter<(string | number)>();
 
   triggerValue: string;
