@@ -38,7 +38,7 @@ export class TableCellComponent implements OnInit {
       const attribute = get(this.row, v);
       if (atrribute instanceof Function) {
         // subscribe to output
-        cell[k].subscribe (data => attribute.apply(atrribute, [data]));
+        cell[k].subscribe ($event => attribute.apply(atrribute, [$event]));
       } else {
         // set component attribute
         cell[k] = atrribute;
