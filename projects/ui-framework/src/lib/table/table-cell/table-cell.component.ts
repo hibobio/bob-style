@@ -36,12 +36,12 @@ export class TableCellComponent implements OnInit {
 
     forEach(attr, (v, k) => {
       const attribute = get(this.row, v);
-      if (atrribute instanceof Function) {
+      if (attribute instanceof Function) {
         // subscribe to output
-        cell[k].subscribe ($event => attribute.apply(atrribute, [$event]));
+        cell[k].subscribe ($event => attribute.apply(attribute, [$event]));
       } else {
         // set component attribute
-        cell[k] = atrribute;
+        cell[k] = attribute;
       }
     });
   }
