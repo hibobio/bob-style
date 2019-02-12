@@ -20,12 +20,10 @@ const template = `
   <b-table
     [data]="data"
     [columns]="columns"
-    [multiSelect]="multiSelect"
-    (selected)="selected($event)"
+    (select)="select($event)"
     (sort)="sort($event)"
-    (rowClicked)="rowClicked($event)"
-    (columnFiltered)="columnFiltered($event)"
-    (rowRightClicked)="rowRightClicked($event)">
+    (rowClick)="rowClick($event)"
+    (rowRightClick)="rowRightClick($event)">
   </b-table>
 </b-story-book-layout>
 `;
@@ -38,11 +36,10 @@ const note = `
   --- | --- | ---
   data | json | Table data
   columns | json | Table columns
-  multiSelect | boolean | is multi select
-  selected | id | input events emitter
-  sort | id | input events emitter
-  rowClicked | id | input events emitter
-  rowRightClicked | id | input events emitter
+  select | id |  select event
+  sort | id | sort event
+  rowClick | id | row click event
+  rowRightClick | id | right click event
 
   ~~~
   ${ template }
@@ -57,10 +54,10 @@ tableStories.add(
         data: object('data', mockData),
         columns: object('columns', mockColumns),
         multiSelect: boolean('multiSelect', false),
-        selected: action(),
+        select: action(),
         sort: action(),
-        rowClicked: action(),
-        rowRightClicked: action()
+        rowClick: action(),
+        rowRightClick: action()
       },
       moduleMetadata: {
         entryComponents: [AvatarComponent],

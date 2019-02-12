@@ -1,7 +1,7 @@
 <div class="container">
   <div class="table">
 
-    <table cdk-table #table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" [matSortActive]="activeSort?.name"
+    <table cdk-table #table [dataSource]="dataSource" matSort (matSortChange)="sorted($event)" [matSortActive]="activeSort?.name"
       [matSortDirection]="activeSort?.sortActive" cdkDropList (cdkDropListDropped)="drop($event)">
 
       <ng-container cdkColumnDef="select" >
@@ -18,9 +18,9 @@
 
       <ng-container *ngFor="let column of columns; let i = index" [cdkColumnDef]="column.name">
         <th cdk-header-cell *cdkHeaderCellDef mat-sort-header [disabled]="!column.isSort" >
-          <div draggable="true">{{ column.name }} <button (click)="$event.stopPropagation(); removeColumnClicked(column)">X</button></div>
+          <div draggable="true">{{ column.displayName }} <button (click)="$event.stopPropagation(); removeColumnClicked(column)">X</button></div>
         </th>
-        <td cdk-cell *cdkCellDef="let row" (click)="rowClick(row)" (contextmenu)="rightClick(row)">
+        <td cdk-cell *cdkCellDef="let row" (click)="rowClicked(row)" (contextmenu)="rightClicked(row)">
           <div *ngIf="column.type!=='component'">{{getColumnName(row, column.name)}}</div>
           <div *ngIf="column.type==='component'">
             <b-table-cell [row]="row" [column]="column" [data]="row[column.name]"></b-table-cell>

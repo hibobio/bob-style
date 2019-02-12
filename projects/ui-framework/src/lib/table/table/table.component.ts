@@ -13,16 +13,12 @@ import get from 'lodash/get';
 export class TableComponent implements OnInit {
   @Input() data: any;
   @Input() columns: ColumnConfig[] = [];
-  @Input() multiSelect = false;
-  @Input() sortInit = {};
-  @Input() selectedRowInit = {};
 
   @Output() sort: EventEmitter<any> = new EventEmitter<any>();
   @Output() loadMore: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() selected: EventEmitter<any> = new EventEmitter<any>();
-  @Output() rowClicked: EventEmitter<any> = new EventEmitter<any>();
-  @Output() columnFiltered: EventEmitter<any> = new EventEmitter<any>();
-  @Output() rowRightClicked: EventEmitter<any> = new EventEmitter<any>();
+  @Output() select: EventEmitter<any> = new EventEmitter<any>();
+  @Output() rowClick: EventEmitter<any> = new EventEmitter<any>();
+  @Output() rowRightClick: EventEmitter<any> = new EventEmitter<any>();
 
   activeSort: ColumnConfig = null;
   selection: SelectionModel<any>;
@@ -47,7 +43,7 @@ export class TableComponent implements OnInit {
     return get(row, name);
   }
 
-  public sortData(event): void {
+  public sorted(event): void {
     this.sort.emit(event);
   }
 
@@ -55,14 +51,14 @@ export class TableComponent implements OnInit {
     if (event) {
       this.selection.toggle(row);
     }
-    this.selected.emit(this.selection.selected);
+    this.select.emit(this.selection.selected);
   }
 
   public onSelectMaster(event): void {
     if (event) {
       this.masterToggle();
     }
-    this.selected.emit(this.selection.selected);
+    this.select.emit(this.selection.selected);
   }
 
   public isAllSelected() {
@@ -77,13 +73,13 @@ export class TableComponent implements OnInit {
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  public rowClick(row): void {
-    this.rowClicked.emit(row);
+  public rowClicked (row): void {
+    this.rowClick.emit(row);
   }
 
 
-  public rightClick(row) {
-    this.rowRightClicked.emit(row);
+  public rightClicked (row) {
+    this.rowRightClick.emit(row);
   }
 
   public removeColumnClicked(column): void {

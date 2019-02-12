@@ -28,6 +28,6 @@ import { CdkTableModule } from '@angular/cdk/table';
     DragDropModule,
     CdkTableModule,
   ],
-  exports: [TableComponent, TableCellComponent],
+  exports: [TableComponent],
 })
 export class TableModule { }
