@@ -53,7 +53,6 @@ tableStories.add(
       props: {
         data: object('data', mockData),
         columns: object('columns', mockColumns),
-        multiSelect: boolean('multiSelect', false),
         select: action(),
         sort: action(),
         rowClick: action(),
