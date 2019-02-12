@@ -16,8 +16,7 @@ export class TableCellComponent implements OnInit {
   @Input() column: ColumnConfig;
   @Input() data: any;
 
-  constructor(
-    private readonly componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private readonly componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
     this.initCell();

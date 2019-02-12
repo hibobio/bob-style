@@ -11,7 +11,6 @@ import get from 'lodash/get';
   styleUrls: ['./table.component.scss']
 })
 export class TableComponent implements OnInit {
-  @Input() data: any;
   @Input() columns: ColumnConfig[] = [];
 
   @Output() sort: EventEmitter<any> = new EventEmitter<any>();
@@ -19,19 +18,23 @@ export class TableComponent implements OnInit {
   @Output() select: EventEmitter<any> = new EventEmitter<any>();
   @Output() rowClick: EventEmitter<any> = new EventEmitter<any>();
   @Output() rowRightClick: EventEmitter<any> = new EventEmitter<any>();
+  @Input() set data (data: any[]) {
+    this.dataSource.data = data;
+  }
 
-  activeSort: ColumnConfig = null;
-  selection: SelectionModel<any>;
-  cols = [];
   public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
 
-  constructor() { }
+  private activeSort: ColumnConfig = null;
+  private selection: SelectionModel<any>;
+  private cols = [];
+
+
+  constructor() {
+  }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource(this.data);
     this.cols = this.columns.map((column: ColumnConfig) => column.name);
     this.cols.unshift('select');
-
     const initialSelection = [];
     const allowMultiSelect = true;
     this.selection = new SelectionModel<any>(allowMultiSelect, initialSelection);
@@ -39,7 +42,7 @@ export class TableComponent implements OnInit {
     this.activeSort = this.columns.find((x) => x.sortActive !== null);
   }
 
-  public getColumnName (row: object, name: string): any {
+  public getColumnName (row: object, name: string): string {
     return get(row, name);
   }
 
