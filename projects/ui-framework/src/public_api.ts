@@ -29,3 +29,5 @@ export * from './lib/navigation/breadcrumbs';
 export { MiniPreloaderModule } from './lib/misc/mini-preloader/mini-preloader.module';
 export { SearchModule } from './lib/navigation/search/search.module';
 export * from  './lib/form-elements/lists';
+export { TableModule } from './lib/table/table.module';
+
