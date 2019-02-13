@@ -55,10 +55,10 @@ tableStories.add(
     return {
       template,
       props: {
-        data: object('data', mockData),
-        columns: object('columns', mockColumns),
         stickyHeader: boolean('stickyHeader', false),
         stickyColumns: number('stickyColumns', -1),
+        data: object('data', mockData),
+        columns: object('columns', mockColumns),
         select: action(),
         sort: action(),
         rowClick: action(),

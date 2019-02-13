@@ -1,5 +1,6 @@
-import { Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ColumnConfig } from '../table/column-config';
+import { Subscription } from 'rxjs';
 import forEach from 'lodash/forEach';
 import get from 'lodash/get';
 
@@ -8,18 +9,23 @@ import get from 'lodash/get';
   templateUrl: './table-cell.component.html',
   styleUrls: ['./table-cell.component.scss']
 })
-export class TableCellComponent implements OnInit {
+export class TableCellComponent implements OnInit, OnDestroy {
 
   @ViewChild('container', {read: ViewContainerRef}) cellHost: ViewContainerRef;
 
   @Input() row: object;
   @Input() column: ColumnConfig;
   @Input() data: any;
+  private subscriptions: Subscription[] = [];
 
   constructor(private readonly componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
     this.initComponentCell();
+  }
+
+  ngOnDestroy() {
+    forEach(this.subscriptions, (subscription: Subscription) => subscription.unsubscribe());
   }
 
   private initComponentCell() {
@@ -37,12 +43,12 @@ export class TableCellComponent implements OnInit {
     forEach(attr, (v, k) => {
       if (v instanceof Function) {
         // subscribe to output
-        cell[k].subscribe($event => v.apply(null, [$event, cell, this.row, this.column]));
+        const subscription = cell[k].subscribe($event => v.apply(null, [$event, cell, this.row, this.column]));
+        this.subscriptions.push(subscription);
       } else {
         // set component attribute
         cell[k] = get(this.row, v);
       }
     });
   }
-
 }
