@@ -5,7 +5,7 @@ import { Breadcrumb } from './breadcrumbs.interface';
 import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-fdescribe('BreadcrumbsComponent', () => {
+describe('BreadcrumbsComponent', () => {
   let component: BreadcrumbsComponent;
   let fixture: ComponentFixture<BreadcrumbsComponent>;
   let breadCrumbsMock: Breadcrumb[];

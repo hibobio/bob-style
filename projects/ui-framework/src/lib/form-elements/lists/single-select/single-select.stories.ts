@@ -82,6 +82,7 @@ buttonStories.add(
       required: boolean('required', false),
       hintMessage: text('hintMessage', 'This field should contain something'),
       errorMessage: text('errorMessage', ''),
+      showSingleGroupHeader: boolean('showSingleGroupHeader', false),
     },
     moduleMetadata: {
       imports: [

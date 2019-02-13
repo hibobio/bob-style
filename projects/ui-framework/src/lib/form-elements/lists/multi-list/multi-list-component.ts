@@ -44,6 +44,7 @@ export class MultiListComponent implements OnInit {
     header.isCollapsed = !header.isCollapsed;
     this.listOptions = this.listModelService
       .getOptionsModel(this.options, this.listHeaders, this.noGroupHeaders);
+    this.listModelService.setSelectedOptions(this.listHeaders, this.listOptions, this.value);
   }
 
   headerSelect(header: ListHeader): void {

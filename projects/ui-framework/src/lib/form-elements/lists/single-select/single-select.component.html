@@ -16,14 +16,14 @@
 
     <div *ngIf="value!==null"
          class="clear-selection"
+         (click)="clearSelection()"
          input-prefix>
-      <b-icon (click)="clearSelection()"
-              (mouseenter)="blockSelectClick=true"
+      <b-icon (mouseenter)="blockSelectClick=true"
               (mouseleave)="blockSelectClick=false"
               [color]="iconColor"
               [icon]="resetIcon"
               [size]="iconSize"
-              class="clear-selection">
+              class="clear-button">
       </b-icon>
     </div>
 

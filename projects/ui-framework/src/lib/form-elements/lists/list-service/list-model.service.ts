@@ -73,13 +73,17 @@ export class ListModelService {
     selectedValues: (string | number)[],
   ): void {
     forEach(listOptions, option => {
-      set(option, 'selected', includes(selectedValues, option.id));
+      set(option, 'selected', option.isPlaceHolder
+        ? null
+        : includes(selectedValues, option.id));
     });
     forEach(listHeaders, header => {
       const groupOptions = filter(listOptions, option =>
         option.groupName === header.groupName &&
         !option.isPlaceHolder);
-      set(header, 'selected', every(groupOptions, ['selected', true]));
+      set(header, 'selected', header.isCollapsed
+        ? header.selected
+        : every(groupOptions, ['selected', true]));
     });
   }
 }

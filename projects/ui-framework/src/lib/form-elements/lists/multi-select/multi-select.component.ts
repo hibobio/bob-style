@@ -37,7 +37,6 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
   @Output() selectChange: EventEmitter<(string | number)[]> = new EventEmitter<(string | number)[]>();
 
   triggerValue: string;
-  showTriggerTooltip: boolean;
   blockSelectClick: boolean;
 
   readonly listElHeight = LIST_EL_HEIGHT;
@@ -83,12 +82,6 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
     setTimeout(() => {
       this.blockSelectClick = false;
       this.triggerInput.bInput.nativeElement.blur();
-    });
-  }
-
-  private updateTriggerTooltip(): void {
-    setTimeout(() => {
-      this.showTriggerTooltip = this.triggerInput.bInput.nativeElement.scrollWidth > this.triggerInput.bInput.nativeElement.offsetWidth;
     });
   }
 

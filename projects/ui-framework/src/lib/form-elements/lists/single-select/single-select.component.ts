@@ -77,12 +77,6 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnI
     this.destroyPanel();
   }
 
-  private updateTriggerTooltip(): void {
-    setTimeout(() => {
-      this.showTriggerTooltip = this.triggerInput.bInput.nativeElement.scrollWidth > this.triggerInput.bInput.nativeElement.offsetWidth;
-    });
-  }
-
   private getTriggerValue(value: string | number): string {
     this.updateTriggerTooltip();
     return chain(this.options)

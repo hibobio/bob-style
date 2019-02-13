@@ -151,7 +151,7 @@ describe('ListModelService', () => {
         },
         {
           groupName: 'Personal',
-          isCollapsed: true,
+          isCollapsed: false,
           placeHolderSize: 88,
           selected: null,
         }
@@ -168,7 +168,7 @@ describe('ListModelService', () => {
         },
         {
           groupName: 'Personal',
-          isCollapsed: true,
+          isCollapsed: false,
           placeHolderSize: 88,
           selected: true,
         }
@@ -179,7 +179,7 @@ describe('ListModelService', () => {
           groupName: 'Basic Info',
           value: 'Basic Info',
           id: 'Basic Info',
-          selected: false,
+          selected: null,
         },
         {
           value: 'Basic Info 1',
@@ -200,7 +200,71 @@ describe('ListModelService', () => {
           groupName: 'Personal',
           value: 'Personal',
           id: 'Personal',
-          selected: false,
+          selected: null,
+        },
+        {
+          value: 'Personal 1',
+          id: 11,
+          groupName: 'Personal',
+          isPlaceHolder: false,
+          selected: true,
+        },
+        {
+          value: 'Personal 2',
+          id: 12,
+          groupName: 'Personal',
+          isPlaceHolder: false,
+          selected: true,
+        },
+      ]);
+    });
+    it('should enrich header selected values if also when header is collapsed', () => {
+      const noGroupHeaders = false;
+      const headerModel = [
+        {
+          groupName: 'Basic Info',
+          isCollapsed: true,
+          placeHolderSize: 88,
+          selected: true,
+        },
+        {
+          groupName: 'Personal',
+          isCollapsed: true,
+          placeHolderSize: 88,
+          selected: true,
+        }
+      ];
+      const optionsModel = listModelService.getOptionsModel(optionsMock, headerModel, noGroupHeaders);
+      const selectedValues = [1, 11, 12];
+      listModelService.setSelectedOptions(headerModel, optionsModel, selectedValues);
+      expect(headerModel).toEqual([
+        {
+          groupName: 'Basic Info',
+          isCollapsed: true,
+          placeHolderSize: 88,
+          selected: true,
+        },
+        {
+          groupName: 'Personal',
+          isCollapsed: true,
+          placeHolderSize: 88,
+          selected: true,
+        }
+      ]);
+      expect(optionsModel).toEqual([
+        {
+          isPlaceHolder: true,
+          groupName: 'Basic Info',
+          value: 'Basic Info',
+          id: 'Basic Info',
+          selected: null,
+        },
+        {
+          isPlaceHolder: true,
+          groupName: 'Personal',
+          value: 'Personal',
+          id: 'Personal',
+          selected: null,
         },
       ]);
     });
