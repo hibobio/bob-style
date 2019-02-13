@@ -13,6 +13,7 @@ import { SingleListComponent } from './single-list.component';
 import { ListModelService } from '../list-service/list-model.service';
 import { SelectGroupOption } from '../list.interface';
 import { By } from '@angular/platform-browser';
+import { FiltersModule } from '../../../filters/filters.module';
 
 describe('SingleSelectComponent', () => {
   let component: SingleListComponent;
@@ -58,6 +59,7 @@ describe('SingleSelectComponent', () => {
         MatTooltipModule,
         FlexLayoutModule,
         ScrollingModule,
+        FiltersModule,
       ],
     })
       .compileComponents()
@@ -151,6 +153,7 @@ describe('SingleSelectComponent', () => {
       expect(option.nativeElement.classList).toContain('selected');
     });
   });
+
   describe('header collapse', () => {
     it('should render 2 options if 1 group is collapsed', () => {
       const header = fixture.debugElement.queryAll(By.css('.header'))[0];
@@ -168,6 +171,7 @@ describe('SingleSelectComponent', () => {
       expect(options.length).toEqual(0);
     });
   });
+  
   describe('option click', () => {
     it('should update value when option is clicked with the option id', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { flatten, forEach, map, concat, assign, find, set, includes, filter, every } from 'lodash';
+import { flatten, forEach, map, concat, assign, find, set, includes, filter, every, escapeRegExp, some, compact } from 'lodash';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { ListOption, ListHeader, SelectGroupOption } from '../list.interface';
 
@@ -85,5 +85,19 @@ export class ListModelService {
         ? header.selected
         : every(groupOptions, ['selected', true]));
     });
+  }
+
+  getFilteredOptions(
+    options: SelectGroupOption[],
+    s: string,
+  ): SelectGroupOption[] {
+    const matcher = new RegExp(escapeRegExp(s), 'i');
+    const filteredOptions = map(options, (group) => {
+      const filteredGroup = group.groupName.match(matcher) || some(group.options, option => option.value.match(matcher))
+        ? assign({}, group, { options: filter(group.options, option => option.value.match(matcher)) })
+        : null;
+      return filteredGroup;
+    });
+    return compact(filteredOptions);
   }
 }

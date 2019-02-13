@@ -1,4 +1,5 @@
-<b-search [hideLabelOnFocus]="true">
+<b-search (searchChange)="searchChange($event)"
+          [hideLabelOnFocus]="true">
 </b-search>
 
 <div [ngStyle]="{height: listOptions.length * listElHeight + 'px', maxHeight: maxHeight + 'px'}"
@@ -17,7 +18,7 @@
              [ngClass]="{'collapsed': header.isCollapsed}"
              class="option-select header"
              fxLayout="row" fxLayoutAlign="space-between center">
-          <span>{{header.groupName}}</span>
+          <span [innerHTML]="header.groupName | highlight: searchValue"></span>
           <span class="chevron"></span>
         </div>
         <div [ngStyle]="{height: header.isCollapsed ? 0 : header.placeHolderSize + 'px'}" class="placeholder"></div>
@@ -30,7 +31,7 @@
            [ngClass]="{'header-placeholder': option.isPlaceHolder, 'option': !option.isPlaceHolder, 'selected': option.id===value}"
            fxLayout="row" fxLayoutAlign="start center"
            class="option-select">
-        <span>{{option.value}}</span>
+        <span [innerHTML]="option.value | highlight: searchValue"></span>
       </div>
     </div>
   </cdk-virtual-scroll-viewport>

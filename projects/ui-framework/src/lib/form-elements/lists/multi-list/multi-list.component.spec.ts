@@ -13,6 +13,7 @@ import { ListModelService } from '../list-service/list-model.service';
 import { SelectGroupOption } from '../list.interface';
 import { By } from '@angular/platform-browser';
 import { MultiListComponent } from './multi-list-component';
+import { FiltersModule } from '../../../filters/filters.module';
 
 describe('MultiListComponent', () => {
   let component: MultiListComponent;
@@ -59,6 +60,7 @@ describe('MultiListComponent', () => {
         FlexLayoutModule,
         ScrollingModule,
         MatPseudoCheckboxModule,
+        FiltersModule,
       ],
     })
       .compileComponents()

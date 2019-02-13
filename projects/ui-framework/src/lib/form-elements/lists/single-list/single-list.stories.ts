@@ -48,10 +48,10 @@ const note = `
 
 const optionsMock: SelectGroupOption[] = Array.from(Array(4), (_, i) => {
   return {
-    groupName: `Basic Info G${ i }`,
+    groupName: `Basic Info G${ i } - header`,
     options: Array.from(Array(4), (_, k) => {
       return {
-        value: `Basic Info G${ i }_E${ k }`,
+        value: `Basic Info G${ i }_E${ k } - option`,
         id: (i * 4) + k,
       };
     }),
