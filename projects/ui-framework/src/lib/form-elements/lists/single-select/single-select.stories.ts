@@ -48,7 +48,9 @@ const optionsMock = Array.from(Array(3), (_, i) => {
     groupName: `Personal G${ i }`,
     options: Array.from(Array(4), (_, k) => {
       return {
-        value: `Personal G${ i }_E${ k }`,
+        value: k % 2 === 0
+          ? `Personal G${ i }_E${ k } and some other very long text and some more words to have ellipsis and tooltip`
+          : `Personal G${ i }_E${ k }`,
         id: (i * 4) + k,
       };
     }),

@@ -6,6 +6,8 @@ import { ButtonsModule } from '../../../buttons-indicators/buttons';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { SingleListModule } from '../single-list/single-list.module';
 import { InputModule } from '../../input';
+import { MatTooltipModule } from '@angular/material';
+import { IconsModule } from '../../../icons';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { InputModule } from '../../input';
     OverlayModule,
     SingleListModule,
     InputModule,
+    MatTooltipModule,
+    IconsModule,
   ],
   exports: [
     SingleSelectComponent,

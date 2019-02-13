@@ -1,17 +1,44 @@
-<content (click)="openPanel()"
+<content (click)="blockSelectClick ? null : openPanel()"
          [ngClass]="{'disabled': disabled, 'panel-open': panelOpen}"
          cdkOverlayOrigin
          class="panel-trigger">
-  <b-input [disabled]="disabled"
+
+  <b-input #triggerInput
+           [disabled]="disabled"
+           [ngClass]="{'has-tooltip': showTriggerTooltip, 'has-clear-prefix': value.length > 0}"
            [errorMessage]="errorMessage"
            [hintMessage]="hintMessage"
            [label]="label"
            [required]="required"
            [value]="triggerValue">
-    <div class="select-chevron"
-         input-suffix>
+
+    <div *ngIf="value.length > 0"
+         class="clear-selection"
+         input-prefix>
+      <b-icon (click)="clearSelection()"
+              (mouseenter)="blockSelectClick=true"
+              (mouseleave)="blockSelectClick=false"
+              [color]="iconColor"
+              [icon]="resetIcon"
+              [size]="iconSize"
+              class="clear-selection">
+      </b-icon>
     </div>
+
+    <div input-suffix>
+            <span *ngIf="showTriggerTooltip"
+                  [matTooltip]="triggerValue"
+                  class="trigger-tooltip"
+                  matTooltipPosition="above">
+          ({{value.length}})
+        </span>
+
+      <span class="select-chevron"></span>
+
+    </div>
+
   </b-input>
+
 </content>
 
 <ng-template #templateRef>

@@ -10,13 +10,26 @@
     display: block;
     margin: 20px 0;
     b-input {
+      .mat-form-field.has-prefix .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-prefix {
+        padding-right: 0;
+      }
       .mat-form-field {
         margin: 0;
         .mat-form-field-wrapper .mat-form-field-flex {
           pointer-events: none;
         }
       }
+      .clear-selection {
+        pointer-events: all;
+        cursor: pointer;
+      }
+      .trigger-tooltip {
+        pointer-events: all;
+        display: inline-block;
+        margin-right: 12px;
+      }
       .select-chevron {
+        display: inline-block;
         @include chevron-down($grey-600);
       }
       input {
@@ -24,7 +37,18 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
+      &.has-tooltip {
+        .mat-form-field.has-suffix .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-suffix {
+          padding-left: 4px;
+        }
+      }
+      &.has-clear-prefix {
+        .mat-form-field.has-prefix .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-prefix {
+          padding-right: 10px;
+        }
+      }
     }
+
     &.panel-open b-input .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
