@@ -42,54 +42,54 @@ export class TableComponent implements OnInit {
     this.activeSort = this.columns.find((x) => x.sortActive !== null);
   }
 
-  public getColumnName (row: object, name: string): string {
+  private getColumnName (row: object, name: string): string {
     return get(row, name);
   }
 
-  public sorted(event): void {
+  private sorted(event): void {
     this.sort.emit(event);
   }
 
-  public onSelectRow(event, row): void {
+  private onSelectRow(event, row): void {
     if (event) {
       this.selection.toggle(row);
     }
     this.select.emit(this.selection.selected);
   }
 
-  public onSelectMaster(event): void {
+  private onSelectMaster(event): void {
     if (event) {
       this.masterToggle();
     }
     this.select.emit(this.selection.selected);
   }
 
-  public isAllSelected() {
+  private isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
-  public masterToggle(): void {
+  private masterToggle(): void {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  public rowClicked (row): void {
+  private rowClicked (row): void {
     this.rowClick.emit(row);
   }
 
 
-  public rightClicked (row) {
+  private rightClicked (row) {
     this.rowRightClick.emit(row);
   }
 
-  public removeColumnClicked(column): void {
+  private removeColumnClicked(column): void {
     this.cols = this.cols.filter((x) => x !== column.name);
   }
 
-  public drop(event: CdkDragDrop<ColumnConfig>): void {
+  private drop(event: CdkDragDrop<ColumnConfig>): void {
     moveItemInArray(this.cols, event.previousIndex, event.currentIndex);
   }
 

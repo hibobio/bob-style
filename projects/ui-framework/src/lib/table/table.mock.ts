@@ -5,9 +5,10 @@ const startWarsChar: string[] =
   [
     'https://johnnycat.wordpress.com/files/2009/05/c3po.jpg',
     'https://cdn-02.independent.ie/regionals/kerryman/news/article34250758.ece/AUTOCROP/w620/2015-12-02_ker_15039481_I1.JPG',
-    'https://static.tvtropes.org/pmwiki/pub/images/anakin_skywalker_rots_6.png'
+    'https://static.tvtropes.org/pmwiki/pub/images/anakin_skywalker_rots_6.png',
+    'https://lumiere-a.akamaihd.net/v1/images/Obi-Wan-Kenobi_6d775533.jpeg?region=0%2C0%2C1536%2C864&width=960'
   ];
-const starWarsRand = () => startWarsChar[Math.floor(Math.random() * Math.floor(3))];
+const starWarsRand = () => startWarsChar[Math.floor(Math.random() * Math.floor(4))];
 export const mockColumns: ColumnConfig[] = [
   {
     name: 'avatar',
@@ -56,7 +57,7 @@ export const mockData = [
     },
     about: {
       avatar: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg',
-      avatarClick: (component, $event) => component.imageSource = starWarsRand(),
+      avatarClick: ($event, component) => component.imageSource = starWarsRand(),
       isClickable: true,
     }
   },
@@ -68,7 +69,7 @@ export const mockData = [
     },
     about: {
       avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvWogj6uHgdZ8ovMF6cYShBGxsOvfk0xv1GB6rxwAP7ABAivC6',
-      avatarClick: (component, $event) => component.imageSource = starWarsRand(),
+      avatarClick: ($event, component) => component.imageSource = starWarsRand(),
       isClickable: true,
     }
   },
@@ -80,7 +81,7 @@ export const mockData = [
     },
     about: {
       avatar: 'https://townsquare.media/site/442/files/2014/06/solo-foot-1.jpg?w=980&q=75',
-      avatarClick: (component, $event) => component.imageSource = starWarsRand(),
+      avatarClick: ($event, component) => component.imageSource = starWarsRand(),
       isClickable: true,
     }
   },
@@ -92,7 +93,7 @@ export const mockData = [
     },
     about: {
       avatar: 'https://lumiere-a.akamaihd.net/v1/images/solo-han-solo-main_890f79bd.jpeg?region=8%2C0%2C1543%2C868&width=960',
-      avatarClick: (component, $event) => component.imageSource = starWarsRand(),
+      avatarClick: ($event, component) => component.imageSource = starWarsRand(),
       isClickable: true,
     }
   }
