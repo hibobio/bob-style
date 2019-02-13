@@ -26,9 +26,9 @@ export class TableComponent implements OnInit {
 
   public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
 
-  private activeSort: ColumnConfig = null;
-  private selection: SelectionModel<any>;
-  private cols = [];
+  public activeSort: ColumnConfig = null;
+  public selection: SelectionModel<any>;
+  public cols = [];
 
 
   constructor() {
