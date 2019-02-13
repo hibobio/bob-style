@@ -55,8 +55,9 @@ describe('ListModelService', () => {
 
   describe('getOptionsModel', () => {
     it('should return options model for virtual scroll', () => {
+      const noGroupHeaders = false;
       const headerModel = listModelService.getHeadersModel(optionsMock);
-      const optionsModel = listModelService.getOptionsModel(optionsMock, headerModel);
+      const optionsModel = listModelService.getOptionsModel(optionsMock, headerModel, noGroupHeaders);
       expect(optionsModel).toEqual([
         {
           isPlaceHolder: true,
@@ -103,6 +104,7 @@ describe('ListModelService', () => {
       ]);
     });
     it('should return options model for virtual scroll filtered by collapsed headers', () => {
+      const noGroupHeaders = false;
       const headerModel = [
         {
           groupName: 'Basic Info',
@@ -117,7 +119,7 @@ describe('ListModelService', () => {
           selected: null,
         }
       ];
-      const optionsModel = listModelService.getOptionsModel(optionsMock, headerModel);
+      const optionsModel = listModelService.getOptionsModel(optionsMock, headerModel, noGroupHeaders);
       expect(optionsModel).toEqual([
         {
           isPlaceHolder: true,
@@ -139,6 +141,7 @@ describe('ListModelService', () => {
 
   describe('setSelectedOptions', () => {
     it('should enrich models with selected property based on selected values', () => {
+      const noGroupHeaders = false;
       const headerModel = [
         {
           groupName: 'Basic Info',
@@ -153,7 +156,7 @@ describe('ListModelService', () => {
           selected: null,
         }
       ];
-      const optionsModel = listModelService.getOptionsModel(optionsMock, headerModel);
+      const optionsModel = listModelService.getOptionsModel(optionsMock, headerModel, noGroupHeaders);
       const selectedValues = [1, 11, 12];
       listModelService.setSelectedOptions(headerModel, optionsModel, selectedValues);
       expect(headerModel).toEqual([

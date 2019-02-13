@@ -88,7 +88,6 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
 
   private updateTriggerTooltip(): void {
     setTimeout(() => {
-      console.log('this.value', this.value);
       this.showTriggerTooltip = this.triggerInput.bInput.nativeElement.scrollWidth > this.triggerInput.bInput.nativeElement.offsetWidth;
     });
   }

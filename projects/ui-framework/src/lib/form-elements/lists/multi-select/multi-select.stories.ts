@@ -15,21 +15,32 @@ const buttonStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withKnobs);
 
 const template = `
+<b-multi-select style="width: 400px;"
+                [label]="label"
+                [options]="options"
+                [value]="value"
+                (selectChange)="selectChange($event)"
+                [disabled]="disabled"
+                [required]="required"
+                [errorMessage]="errorMessage"
+                [hintMessage]="hintMessage"
+                [showSingleGroupHeader]="showSingleGroupHeader">
+</b-multi-select>
+`;
+
+const storyTemplate = `
 <b-story-book-layout title="Multi select">
-  <b-multi-select style="width: 400px;"
-                  [label]="label"
-                  [options]="options"
-                  [value]="value"
-                  (selectChange)="selectChange($event)"
-                  [disabled]="disabled"
-                  [required]="required"
-                  [errorMessage]="errorMessage"
-                  [hintMessage]="hintMessage">
-  </b-multi-select>
+  ${template}
 </b-story-book-layout>
 `;
+
 const note = `
   ## Multi Select
+
+  #### Properties
+
+  Name | Type | Description
+  --- | --- | ---
   options | SelectGroupOption[] | model of selection group
   value | (string or number) | selected id
   selectChange | action | returns selected id
@@ -38,6 +49,8 @@ const note = `
   required | boolean | is field required
   hintMessage | text | hint text
   errorMessage | text | error text
+  showSingleGroupHeader | boolean | displays single group with group header
+
   ~~~
   ${ template }
   ~~~
@@ -57,7 +70,7 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(3), (_, i) => {
 
 buttonStories.add(
   'Multi select', () => ({
-    template,
+    template: storyTemplate,
     props: {
       options: object<SelectGroupOption>('options', optionsMock),
       value: array('value', [2, 7]),
@@ -67,6 +80,7 @@ buttonStories.add(
       required: boolean('required', false),
       hintMessage: text('hintMessage', 'This field should contain something'),
       errorMessage: text('errorMessage', ''),
+      showSingleGroupHeader: boolean('showSingleGroupHeader', false),
     },
     moduleMetadata: {
       imports: [

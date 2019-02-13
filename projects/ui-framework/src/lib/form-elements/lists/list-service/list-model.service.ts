@@ -10,7 +10,8 @@ export class ListModelService {
 
   getOptionsModel(
     options: SelectGroupOption[],
-    listHeaders: any,
+    listHeaders: ListHeader[],
+    noGroupHeaders: boolean,
   ): ListOption[] {
     const groupOptions = map(options, (group) => {
       const groupHeader: ListHeader = find(listHeaders, header => header.groupName === group.groupName);
@@ -21,6 +22,29 @@ export class ListModelService {
         id: group.groupName,
         selected: null,
       };
+
+      let virtualOptions;
+
+      if (noGroupHeaders) {
+        virtualOptions = map(group.options, option => assign(
+          option,
+          { groupName: group.groupName, isPlaceHolder: false, selected: null },
+        ));
+      } else if (groupHeader.isCollapsed) {
+        virtualOptions = placeholder;
+      } else {
+        virtualOptions = concat(
+          placeholder,
+          map(group.options, option => assign(
+            option,
+            { groupName: group.groupName, isPlaceHolder: false, selected: null },
+          ))
+        );
+      }
+
+      return virtualOptions;
+
+
       return groupHeader.isCollapsed
         ? placeholder
         : concat(

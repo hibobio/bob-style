@@ -48,7 +48,8 @@
     <b-multi-list (selectChange)="onSelect($event)"
                   [options]="options"
                   [value]="value"
-                  [maxHeight]="listElHeight*6">
+                  [maxHeight]="listElHeight*6"
+                  [showSingleGroupHeader]="showSingleGroupHeader">
     </b-multi-list>
 
     <div fxLayout="row" fxLayoutAlign="end center"
