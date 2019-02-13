@@ -4,7 +4,7 @@
     <table cdk-table #table [dataSource]="dataSource" matSort (matSortChange)="sorted($event)" [matSortActive]="activeSort?.name"
       [matSortDirection]="activeSort?.sortActive" cdkDropList (cdkDropListDropped)="drop($event)">
 
-      <ng-container cdkColumnDef="select" [sticky]="stickyColumn >= 0">
+      <ng-container cdkColumnDef="select" [sticky]="stickyColumns >= 0">
         <th cdk-header-cell *cdkHeaderCellDef >
           <mat-checkbox (change)="onSelectMaster($event)" [checked]="selection.hasValue() && isAllSelected()"
             [indeterminate]="selection.hasValue() && !isAllSelected()">
@@ -16,7 +16,7 @@
         </td>
       </ng-container>
 
-      <ng-container *ngFor="let column of columns; let i = index" [cdkColumnDef]="column.name" [sticky]="stickyColumn >= i + 1">
+      <ng-container *ngFor="let column of columns; let i = index" [cdkColumnDef]="column.name" [sticky]="stickyColumns >= i + 1">
         <th cdk-header-cell *cdkHeaderCellDef mat-sort-header [disabled]="!column.isSort" >
           <div draggable="true">{{ column.displayName }} <button (click)="$event.stopPropagation(); removeColumnClicked(column)">X</button></div>
         </th>
@@ -28,7 +28,7 @@
         </td>
       </ng-container>
 
-      <cdk-header-row *matHeaderRowDef="cols; sticky: stickyHeaders"></cdk-header-row>
+      <cdk-header-row *matHeaderRowDef="cols; sticky: stickyHeader"></cdk-header-row>
       <cdk-row *matRowDef="let row; columns: cols;" ></cdk-row>
     </table>
 
