@@ -1,17 +1,38 @@
-<content (click)="openPanel()"
+<content (click)="blockSelectClick ? null : openPanel()"
          [ngClass]="{'disabled': disabled, 'panel-open': panelOpen}"
          cdkOverlayOrigin
          class="panel-trigger">
-  <b-input [disabled]="disabled"
+
+  <b-input #triggerInput
+           [disabled]="disabled"
            [errorMessage]="errorMessage"
            [hintMessage]="hintMessage"
            [label]="label"
            [required]="required"
-           [value]="triggerValue">
+           [matTooltip]="showTriggerTooltip ? triggerValue : null"
+           [ngClass]="{'has-clear-prefix': value !== null}"
+           [value]="triggerValue"
+           matTooltipPosition="above">
+
+    <div *ngIf="value!==null"
+         class="clear-selection"
+         (click)="clearSelection()"
+         input-prefix>
+      <b-icon (mouseenter)="blockSelectClick=true"
+              (mouseleave)="blockSelectClick=false"
+              [color]="iconColor"
+              [icon]="resetIcon"
+              [size]="iconSize"
+              class="clear-button">
+      </b-icon>
+    </div>
+
     <div class="select-chevron"
          input-suffix>
     </div>
+
   </b-input>
+
 </content>
 
 <ng-template #templateRef>
@@ -20,7 +41,8 @@
 
     <b-single-list (selectChange)="onSelect($event)"
                    [options]="options"
-                   [maxHeight]="listElHeight*6">
+                   [maxHeight]="listElHeight*6"
+                   [showSingleGroupHeader]="showSingleGroupHeader">
     </b-single-list>
 
 

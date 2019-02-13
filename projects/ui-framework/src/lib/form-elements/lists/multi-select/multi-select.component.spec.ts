@@ -15,6 +15,7 @@ import { MultiSelectComponent } from './multi-select.component';
 import { MultiListModule } from '../multi-list/multi-list.module';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import { By } from '@angular/platform-browser';
 
 describe('MultiSelectComponent', () => {
   let component;
@@ -129,6 +130,23 @@ describe('MultiSelectComponent', () => {
       }));
   });
 
+  describe('clearSelection', () => {
+    it('should clear the selection',
+      fakeAsync(() => {
+        component.openPanel();
+        fixture.autoDetectChanges();
+        tick(0);
+        (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
+        fixture.autoDetectChanges();
+        const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
+        clearSelection.triggerEventHandler('click', null);
+        fixture.autoDetectChanges();
+        expect(component.value).toEqual([]);
+        expect(component.triggerValue).toEqual('');
+        flush();
+      }));
+  });
+
   describe('OnDestroy', () => {
     it('should invoke panel close', () => {
       spyOn(component, 'destroyPanel');
@@ -137,4 +155,33 @@ describe('MultiSelectComponent', () => {
     });
   });
 
+  describe('tooltip', () => {
+    beforeEach(async(() => {
+      fixture = TestBed.createComponent(MultiSelectComponent);
+      component = fixture.componentInstance;
+      fixture.nativeElement.style.width = '200px';
+      component.options = optionsMock;
+      component.value = [1];
+      spyOn(component.selectChange, 'emit');
+      fixture.autoDetectChanges();
+    }));
+    it('should not show tooltip', () => {
+      const tooltipEl = fixture.debugElement.query(By.css('.trigger-tooltip'));
+      expect(tooltipEl).toBe(null);
+    });
+    it('should add tooltip',
+      fakeAsync(() => {
+        component.openPanel();
+        fixture.autoDetectChanges();
+        tick(0);
+        (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
+        fixture.autoDetectChanges();
+        tick(0);
+        const tooltipEl = fixture.debugElement.query(By.css('.trigger-tooltip'));
+
+        expect(tooltipEl).not.toBe(null);
+        expect(tooltipEl.properties.matTooltip).toEqual('Basic Info 1, Personal 2');
+        flush();
+      }));
+  });
 });

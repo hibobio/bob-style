@@ -1,21 +1,83 @@
 @import '../../style/colors';
+@import '../../style/shapes';
 
 :host {
-  display: flex;
-  flex-direction: row;
-  .step {
-    cursor: pointer;
-    padding: 4px 8px;
-    margin-right: 2px;
-    background-color: var(--primary-500);
-    color: $white;
-    &:last-child {
-      margin-right: 0;
-    }
-    &.disabled {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  .breadcrumbs-wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    white-space: nowrap;
+    .step {
+      cursor: pointer;
       color: $grey-600;
-      pointer-events: none;
-      background-color: $grey-300;
+      display: flex;
+      align-items: center;
+      margin-right: 6px;
+
+      &:last-child {
+        margin-right: 0;
+        .chevron-right {
+          display: none;
+        }
+      }
+      &.disabled {
+        pointer-events: none;
+
+        .step-index {
+          color: $grey-600;
+          background-color: $white;
+          border: 1px solid $grey-600;
+        }
+
+        .step-title {
+          color: $grey-600;
+        }
+        .chevron-right {
+          @include chevron-right($grey-500);
+        }
+      }
+      &.active {
+        color: var(--primary-500);
+        .step-index {
+          color: $white;
+          background-color: var(--primary-500);
+          border: 1px solid var(--primary-500);
+        }
+        .step-title {
+          color: var(--primary-500);
+        }
+        .chevron-right {
+          @include chevron-right(var(--primary-500));
+        }
+      }
+
+      .step-index {
+        color: var(--primary-500);
+        background-color: $white;
+        border: 1px solid var(--primary-500);
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        margin-right: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease-in;
+      }
+      .step-title {
+        color: var(--primary-500);
+        display: inline-block;
+        text-transform: capitalize;
+        transition: all 0.2s ease-in;
+      }
+      .chevron-right {
+        @include chevron-right(var(--primary-500));
+        margin-left: 6px;
+        margin-right: 8px;
+      }
     }
   }
 }

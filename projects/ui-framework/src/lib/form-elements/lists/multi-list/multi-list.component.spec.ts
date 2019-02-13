@@ -13,6 +13,7 @@ import { ListModelService } from '../list-service/list-model.service';
 import { SelectGroupOption } from '../list.interface';
 import { By } from '@angular/platform-browser';
 import { MultiListComponent } from './multi-list-component';
+import { FiltersModule } from '../../../filters/filters.module';
 
 describe('MultiListComponent', () => {
   let component: MultiListComponent;
@@ -59,6 +60,7 @@ describe('MultiListComponent', () => {
         FlexLayoutModule,
         ScrollingModule,
         MatPseudoCheckboxModule,
+        FiltersModule,
       ],
     })
       .compileComponents()
@@ -96,7 +98,7 @@ describe('MultiListComponent', () => {
           groupName: 'Basic Info',
           value: 'Basic Info',
           id: 'Basic Info',
-          selected: false,
+          selected: null,
         },
         {
           value: 'Basic Info 1',
@@ -117,7 +119,7 @@ describe('MultiListComponent', () => {
           groupName: 'Personal',
           value: 'Personal',
           id: 'Personal',
-          selected: false,
+          selected: null,
         },
         {
           value: 'Personal 1',
@@ -153,6 +155,8 @@ describe('MultiListComponent', () => {
       expect(checkboxes[1].nativeElement.getAttribute('ng-reflect-state')).toEqual('unchecked');
       expect(checkboxes[3].nativeElement.getAttribute('ng-reflect-state')).toEqual('unchecked');
     });
+  });
+  describe('header collapse', () => {
     it('should render 2 options if 1 group is collapsed', () => {
       const headerCollapseTrigger = fixture.debugElement.queryAll(By.css('.header-collapse-trigger'))[0];
       headerCollapseTrigger.triggerEventHandler('click', null);
@@ -168,6 +172,8 @@ describe('MultiListComponent', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       expect(options.length).toEqual(0);
     });
+  });
+  describe('option click', () => {
     it('should update value when option is clicked with the option id', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
@@ -178,6 +184,8 @@ describe('MultiListComponent', () => {
       options[3].triggerEventHandler('click', null);
       expect(component.selectChange.emit).toHaveBeenCalledWith([1, 11, 12]);
     });
+  });
+  describe('header checkbox click', () => {
     it('should select all options in group when selecting header', () => {
       const headerCheckbox = fixture.debugElement.queryAll(By.css('.header .checkbox'));
       headerCheckbox[0].triggerEventHandler('click', null);
@@ -192,6 +200,60 @@ describe('MultiListComponent', () => {
       headerCheckbox[0].triggerEventHandler('click', null);
       fixture.autoDetectChanges();
       expect(component.value).toEqual([11]);
+    });
+    it('should not update options model when header is collapsed', () => {
+      const expectedHeaderModel = [
+        {
+          groupName: 'Basic Info',
+          isCollapsed: true,
+          placeHolderSize: 88,
+          selected: true,
+        },
+        {
+          groupName: 'Personal',
+          isCollapsed: false,
+          placeHolderSize: 88,
+          selected: false,
+        }
+      ];
+      const expectedOptionsModel = [
+        {
+          isPlaceHolder: true,
+          groupName: 'Basic Info',
+          value: 'Basic Info',
+          id: 'Basic Info',
+          selected: null,
+        },
+        {
+          isPlaceHolder: true,
+          groupName: 'Personal',
+          value: 'Personal',
+          id: 'Personal',
+          selected: null,
+        },
+        {
+          value: 'Personal 1',
+          id: 11,
+          groupName: 'Personal',
+          isPlaceHolder: false,
+          selected: true,
+        },
+        {
+          value: 'Personal 2',
+          id: 12,
+          groupName: 'Personal',
+          isPlaceHolder: false,
+          selected: false,
+        },
+      ];
+      const headerCollapseTrigger = fixture.debugElement.queryAll(By.css('.header-collapse-trigger'))[0];
+      headerCollapseTrigger.triggerEventHandler('click', null);
+      fixture.autoDetectChanges();
+      const headerCheckbox = fixture.debugElement.queryAll(By.css('.header .checkbox'));
+      headerCheckbox[0].triggerEventHandler('click', null);
+      fixture.autoDetectChanges();
+      expect(component.listHeaders).toEqual(expectedHeaderModel);
+      expect(component.listOptions).toEqual(expectedOptionsModel);
     });
     it('should emit event when header is selected', () => {
       const headerCheckbox = fixture.debugElement.queryAll(By.css('.header .checkbox'));

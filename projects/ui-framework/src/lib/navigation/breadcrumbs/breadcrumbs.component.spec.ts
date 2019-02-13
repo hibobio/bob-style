@@ -3,6 +3,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BreadcrumbsComponent } from './breadcrumbs.component';
 import { Breadcrumb } from './breadcrumbs.interface';
 import { By } from '@angular/platform-browser';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('BreadcrumbsComponent', () => {
   let component: BreadcrumbsComponent;
@@ -14,22 +15,20 @@ describe('BreadcrumbsComponent', () => {
       { title: 'details', disabled: false },
       { title: 'avatar', disabled: false },
       { title: 'to dos', disabled: false },
-      { title: 'summary', disabled: true },
+      { title: 'summary', disabled: true }
     ];
 
     TestBed.configureTestingModule({
-      declarations: [
-        BreadcrumbsComponent,
-      ],
-      imports: [
-        NoopAnimationsModule,
-      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [BreadcrumbsComponent],
+      imports: [NoopAnimationsModule]
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(BreadcrumbsComponent);
         component = fixture.componentInstance;
         component.breadcrumbs = breadCrumbsMock;
+        component.activeIndex = 2;
         spyOn(component.stepClick, 'emit');
         fixture.detectChanges();
       });
@@ -47,6 +46,16 @@ describe('BreadcrumbsComponent', () => {
           expect(stepsElements[i].nativeElement.classList).toContain('disabled');
         } else {
           expect(stepsElements[i].nativeElement.classList).not.toContain('disabled');
+        }
+      }
+    });
+    it('should put active class on the active step', () => {
+      const stepsElements = fixture.debugElement.queryAll(By.css('.step'));
+      for (let i = 0; i < stepsElements.length; i++) {
+        if (i === 2) {
+          expect(stepsElements[i].nativeElement.classList).toContain('active');
+        } else {
+          expect(stepsElements[i].nativeElement.classList).not.toContain('active');
         }
       }
     });

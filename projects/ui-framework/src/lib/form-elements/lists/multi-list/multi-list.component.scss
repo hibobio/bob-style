@@ -4,7 +4,7 @@
 @import '../../checkbox/checkbox';
 @import '../list';
 
-:host ::ng-deep{
+:host ::ng-deep {
   display: inline-block;
   width: 100%;
   @include BodyFont(normal, normal, 12px);
@@ -29,7 +29,7 @@
       height: 100%;
       .headers, .options {
         .option-select {
-@include listOption;
+          @include listOption;
           .checkbox {
             position: relative;
             z-index: 2;
@@ -52,6 +52,11 @@
             padding-left: 46px;
           }
         }
+      }
+    }
+    &.no-group-header {
+      .v-scroll .options .option-select.option {
+        padding-left: 16px;
       }
     }
   }
