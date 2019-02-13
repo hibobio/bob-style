@@ -16,7 +16,9 @@ export const mockColumns: ColumnConfig[] = [
     type: filedType.component,
     component: {
       component: AvatarComponent,
-      attributes: { 'imageSource': 'about.avatar', 'clicked': 'about.avatarClick', 'isClickable': 'about.isClickable' },
+      attributes: { 'imageSource': 'about.avatar',
+                    'clicked': ($event, component, row, col) => component.imageSource = starWarsRand(),
+                    'isClickable': 'about.isClickable' },
     },
     isSort: true,
     sortActive: sortDirections.asc
@@ -57,7 +59,6 @@ export const mockData = [
     },
     about: {
       avatar: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg',
-      avatarClick: ($event, component) => component.imageSource = starWarsRand(),
       isClickable: true,
     }
   },
@@ -69,7 +70,6 @@ export const mockData = [
     },
     about: {
       avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvWogj6uHgdZ8ovMF6cYShBGxsOvfk0xv1GB6rxwAP7ABAivC6',
-      avatarClick: ($event, component) => component.imageSource = starWarsRand(),
       isClickable: true,
     }
   },
@@ -81,7 +81,6 @@ export const mockData = [
     },
     about: {
       avatar: 'https://townsquare.media/site/442/files/2014/06/solo-foot-1.jpg?w=980&q=75',
-      avatarClick: ($event, component) => component.imageSource = starWarsRand(),
       isClickable: true,
     }
   },
@@ -93,7 +92,6 @@ export const mockData = [
     },
     about: {
       avatar: 'https://lumiere-a.akamaihd.net/v1/images/solo-han-solo-main_890f79bd.jpeg?region=8%2C0%2C1543%2C868&width=960',
-      avatarClick: ($event, component) => component.imageSource = starWarsRand(),
       isClickable: true,
     }
   }
