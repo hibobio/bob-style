@@ -12,6 +12,8 @@ import get from 'lodash/get';
 })
 export class TableComponent implements OnInit {
   @Input() columns: ColumnConfig[] = [];
+  @Input() stickyHeaders: Boolean = false;
+  @Input() stickyColumn: Number = -1;
 
   @Output() sort: EventEmitter<any> = new EventEmitter<any>();
   @Output() loadMore: EventEmitter<boolean> = new EventEmitter<boolean>();
