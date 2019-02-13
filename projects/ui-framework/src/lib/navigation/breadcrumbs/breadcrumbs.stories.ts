@@ -1,6 +1,14 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  array,
+  boolean,
+  number,
+  object,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,12 +20,17 @@ const inputStories = storiesOf(ComponentGroupType.Navigation, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
-const template = `
-<b-story-book-layout title="breadcrumbs">
+const componmentTemplate = `
   <b-breadcrumbs [breadcrumbs]="breadcrumbs"
-                 (stepClick)="stepClick($event)">
+                  [activeIndex]="activeIndex"
+                (stepClick)="stepClick($event)">
   </b-breadcrumbs>
-</b-story-book-layout>
+`;
+
+const template = `
+  <b-story-book-layout title="breadcrumbs">
+    ${componmentTemplate}
+  </b-story-book-layout>
 `;
 
 const note = `
@@ -31,7 +44,7 @@ const note = `
   stepClick | action | returns step index
 
   ~~~
-  ${ template }
+  ${componmentTemplate}
   ~~~
 `;
 
@@ -39,7 +52,7 @@ const breadcrumbsMock = [
   { title: 'details', disabled: false },
   { title: 'avatar', disabled: false },
   { title: 'to dos', disabled: false },
-  { title: 'summary', disabled: true },
+  { title: 'summary', disabled: true }
 ];
 
 inputStories.add(
@@ -49,14 +62,11 @@ inputStories.add(
       template,
       props: {
         breadcrumbs: object<Breadcrumb>('breadcrumbs', breadcrumbsMock),
-        stepClick: action(),
+        activeIndex: number('activeIndex', 2),
+        stepClick: action()
       },
       moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          BreadcrumbsModule,
-          StoryBookLayoutModule,
-        ]
+        imports: [BrowserAnimationsModule, BreadcrumbsModule, StoryBookLayoutModule]
       }
     };
   },

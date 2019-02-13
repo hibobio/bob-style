@@ -47,5 +47,10 @@
         }
       }
     }
+    &.no-group-header {
+      .v-scroll .options .option-select.option {
+        padding-left: 16px;
+      }
+    }
   }
 }

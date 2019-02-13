@@ -5,7 +5,6 @@
   font-weight: $weight;
   font-size: $size;
   line-height: $lineHeight;
-  color: $grey-700;
 }
 
 @mixin DisplayFont($style, $weight, $size, $lineHeight: 1.3) {

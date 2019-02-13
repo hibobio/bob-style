@@ -1,21 +1,24 @@
-<b-search [hideLabelOnFocus]="true">
+<b-search (searchChange)="searchChange($event)"
+          [hideLabelOnFocus]="true">
 </b-search>
 
 <div [ngStyle]="{height: listOptions.length * listElHeight + 'px', maxHeight: maxHeight + 'px'}"
+     [ngClass]="{'no-group-header': noGroupHeaders}"
      class="v-scroll-wrapper">
 
   <cdk-virtual-scroll-viewport class="v-scroll"
                                itemSize="44"
                                maxBufferPx="{{maxHeight*44}}" minBufferPx="5">
 
-    <div class="headers">
+    <div class="headers"
+         *ngIf="!noGroupHeaders">
       <div *ngFor="let header of listHeaders"
            class="headers-group">
         <div (click)="headerClick(header)"
              [ngClass]="{'collapsed': header.isCollapsed}"
              class="option-select header"
              fxLayout="row" fxLayoutAlign="space-between center">
-          <span>{{header.groupName}}</span>
+          <span [innerHTML]="header.groupName | highlight: searchValue"></span>
           <span class="chevron"></span>
         </div>
         <div [ngStyle]="{height: header.isCollapsed ? 0 : header.placeHolderSize + 'px'}" class="placeholder"></div>
@@ -28,7 +31,7 @@
            [ngClass]="{'header-placeholder': option.isPlaceHolder, 'option': !option.isPlaceHolder, 'selected': option.id===value}"
            fxLayout="row" fxLayoutAlign="start center"
            class="option-select">
-        <span>{{option.value}}</span>
+        <span [innerHTML]="option.value | highlight: searchValue"></span>
       </div>
     </div>
   </cdk-virtual-scroll-viewport>

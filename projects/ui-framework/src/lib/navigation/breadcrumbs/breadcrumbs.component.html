@@ -1,6 +1,16 @@
-<a (click)="onStepClick($event, i)"
-   *ngFor="let step of breadcrumbs; let i = index"
-   [ngClass]="{ disabled: step.disabled }"
-     class="step">
-  {{step.title}}
-</a>
+<div #breadcrumbsWrapper class="breadcrumbs-wrapper">
+  <a
+    (click)="onStepClick($event, i)"
+    *ngFor="let step of breadcrumbs; let i = index"
+    [ngClass]="{ disabled: step.disabled, active: i == activeIndex }"
+    class="step"
+  >
+    <div class="step-index">
+      <b-caption>{{ i + 1 }}</b-caption>
+    </div>
+    <b-caption class="step-title" *ngIf="i == activeIndex || !isSmallMode">{{
+      step.title
+    }}</b-caption>
+    <div class="chevron-right"></div>
+  </a>
+</div>

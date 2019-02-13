@@ -10,15 +10,31 @@
     display: block;
     margin: 20px 0;
     b-input {
+      .mat-form-field.has-prefix .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-prefix {
+        padding-right: 0;
+      }
       .mat-form-field {
         margin: 0;
         .mat-form-field-wrapper .mat-form-field-flex {
           pointer-events: none;
-          //border: 1px solid $grey-500;
         }
+      }
+      .clear-selection {
+        pointer-events: all;
+        cursor: pointer;
       }
       .select-chevron {
         @include chevron-down($grey-600);
+      }
+      input {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      &.has-clear-prefix {
+        .mat-form-field.has-prefix .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-prefix {
+          padding-right: 10px;
+        }
       }
     }
     &.panel-open b-input .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {

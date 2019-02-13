@@ -13,6 +13,7 @@ import { PanelPositionService } from '../../../overlay/panel/panel-position.serv
 import { SingleListModule } from '../single-list/single-list.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { IconService } from '../../../icons/icon.service';
+import { By } from '@angular/platform-browser';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
@@ -105,12 +106,58 @@ describe('SingleSelectComponent', () => {
       }));
   });
 
+  describe('clearSelection', () => {
+    it('should clear the selection',
+      fakeAsync(() => {
+        component.openPanel();
+        fixture.autoDetectChanges();
+        tick(0);
+        (overlayContainerElement.querySelectorAll('b-single-list .option')[3] as HTMLElement).click();
+        fixture.autoDetectChanges();
+        const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
+        clearSelection.triggerEventHandler('click', null);
+        fixture.autoDetectChanges();
+        expect(component.value).toBe(null);
+        expect(component.triggerValue).toBe(null);
+        flush();
+      }));
+  });
+
   describe('OnDestroy', () => {
     it('should invoke panel close', () => {
       spyOn(component, 'destroyPanel');
       component.ngOnDestroy();
       expect(component.destroyPanel).toHaveBeenCalled();
     });
+  });
+
+  describe('tooltip', () => {
+    beforeEach(async(() => {
+      fixture = TestBed.createComponent(SingleSelectComponent);
+      component = fixture.componentInstance;
+      fixture.nativeElement.style.width = '200px';
+      component.options = optionsMock;
+      component.options[1].options[1].value = 'a very long text that has a tooltip';
+      component.value = 1;
+      spyOn(component.selectChange, 'emit');
+      fixture.autoDetectChanges();
+    }));
+    it('should not show tooltip', () => {
+      const inputEl = fixture.debugElement.query(By.css('b-input'));
+      expect(inputEl.properties.matTooltip).toBe(null);
+    });
+    it('should add tooltip',
+      fakeAsync(() => {
+        component.openPanel();
+        fixture.autoDetectChanges();
+        tick(0);
+        (overlayContainerElement.querySelectorAll('b-single-list .option')[3] as HTMLElement).click();
+        fixture.autoDetectChanges();
+        tick(0);
+        const inputEl = fixture.debugElement.query(By.css('b-input'));
+        expect(inputEl.properties.matTooltip).toEqual('a very long text that has a tooltip');
+        flush();
+      }));
   });
 
 });

@@ -10,10 +10,12 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
 
   @ViewChild(CdkOverlayOrigin) overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef') templateRef: TemplateRef<any>;
+  @ViewChild('triggerInput') triggerInput;
 
   positionClassList: { [key: string]: boolean } = {};
   panelOpen = false;
   triggerValue: any;
+  showTriggerTooltip: boolean;
 
   private panelConfig: OverlayConfig;
   private overlayRef: OverlayRef;
@@ -75,5 +77,11 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
       .subscribe(change => {
         this.positionClassList = this.panelPositionService.getPositionClassList(change);
       });
+  }
+
+  updateTriggerTooltip(): void {
+    setTimeout(() => {
+      this.showTriggerTooltip = this.triggerInput.bInput.nativeElement.scrollWidth > this.triggerInput.bInput.nativeElement.offsetWidth;
+    });
   }
 }

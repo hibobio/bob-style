@@ -1,14 +1,17 @@
-<b-search [hideLabelOnFocus]="true">
+<b-search (searchChange)="searchChange($event)"
+          [hideLabelOnFocus]="true">
 </b-search>
 
 <div [ngStyle]="{height: listOptions.length * listElHeight + 'px', maxHeight: maxHeight + 'px'}"
+     [ngClass]="{'no-group-header': noGroupHeaders}"
      class="v-scroll-wrapper">
 
   <cdk-virtual-scroll-viewport class="v-scroll"
                                itemSize="44"
                                maxBufferPx="{{maxHeight*44}}" minBufferPx="5">
 
-    <div class="headers">
+    <div *ngIf="!noGroupHeaders"
+         class="headers">
       <div *ngFor="let header of listHeaders"
            class="headers-group">
         <div [ngClass]="{'collapsed': header.isCollapsed}"
@@ -22,7 +25,7 @@
                                  [state]="header.selected ? checkboxState.checked : checkboxState.unchecked"
                                  class="checkbox">
             </mat-pseudo-checkbox>
-            <span>{{header.groupName}}</span>
+            <span [innerHTML]="header.groupName | highlight: searchValue"></span>
           </div>
           <span class="chevron"></span>
         </div>
@@ -39,7 +42,7 @@
         <mat-pseudo-checkbox [state]="option.selected ? checkboxState.checked : checkboxState.unchecked"
                              class="checkbox">
         </mat-pseudo-checkbox>
-        <span>{{option.value}}</span>
+        <span [innerHTML]="option.value | highlight: searchValue"></span>
       </div>
     </div>
   </cdk-virtual-scroll-viewport>

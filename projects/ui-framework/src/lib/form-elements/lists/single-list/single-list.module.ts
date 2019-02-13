@@ -5,6 +5,7 @@ import { ListModelService } from '../list-service/list-model.service';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SearchModule } from '../../../navigation/search';
+import { FiltersModule } from '../../../filters/filters.module';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { SearchModule } from '../../../navigation/search';
     ScrollingModule,
     FlexLayoutModule,
     SearchModule,
+    FiltersModule,
   ],
   exports: [
     SingleListComponent,
