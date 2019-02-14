@@ -17,7 +17,7 @@ import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 import { By } from '@angular/platform-browser';
 
-describe('MultiSelectComponent', () => {
+xdescribe('MultiSelectComponent', () => {
   let component;
   let optionsMock;
   let fixture: ComponentFixture<MultiSelectComponent>;

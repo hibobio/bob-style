@@ -64,7 +64,7 @@ buttonStories.add(
     props: {
       selectChange: action(),
       options: object<SelectGroupOption>('options', optionsMock),
-      value: text('value', 1),
+      value: number('value', 1),
       showSingleGroupHeader: boolean('showSingleGroupHeader', false),
     },
     moduleMetadata: {

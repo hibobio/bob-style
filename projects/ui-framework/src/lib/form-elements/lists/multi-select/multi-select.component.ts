@@ -1,4 +1,4 @@
-import { Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnChanges, OnDestroy, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { chain, includes } from 'lodash';
 import { PanelPositionService } from '../../../overlay/panel/panel-position.service';
@@ -27,7 +27,7 @@ import { IconColor, Icons, IconSize } from '../../../icons';
   ],
 })
 
-export class MultiSelectComponent extends BaseSelectPanelElement implements OnInit, OnDestroy {
+export class MultiSelectComponent extends BaseSelectPanelElement implements OnChanges, OnDestroy {
 
   @ViewChild('triggerInput') triggerInput;
 
@@ -54,7 +54,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
     super(overlay, viewContainerRef, panelPositionService);
   }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.value = this.value || [];
     this.triggerValue = this.getTriggerValue(this.value);
   }

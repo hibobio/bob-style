@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { select, withKnobs, object, text, boolean } from '@storybook/addon-knobs/angular';
+import { select, withKnobs, object, text, boolean, number } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
 import { ButtonsModule } from '../../../buttons-indicators/buttons';
@@ -75,7 +75,7 @@ buttonStories.add(
     template: storyTemplate,
     props: {
       options: object<SelectGroupOption>('options', optionsMock),
-      value: text('value', 2),
+      value: number('value', 2),
       selectChange: action(),
       label: text('label', 'label text'),
       disabled: boolean('disabled', false),
