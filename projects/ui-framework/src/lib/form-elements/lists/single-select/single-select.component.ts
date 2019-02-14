@@ -31,7 +31,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnI
   @ViewChild('triggerInput') triggerInput;
 
   @Input() options: SelectGroupOption[];
-  @Input() value: string | number;
+  @Input() value: string | number = null;
   @Input() showSingleGroupHeader = false;
   @Output() selectChange: EventEmitter<(string | number)> = new EventEmitter<(string | number)>();
 
@@ -53,6 +53,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnI
   }
 
   ngOnInit(): void {
+    this.value = this.value || null;
     this.triggerValue = this.value ? this.getTriggerValue(this.value) : null;
   }
 

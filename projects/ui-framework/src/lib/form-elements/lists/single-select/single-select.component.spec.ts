@@ -16,6 +16,7 @@ import { IconService } from '../../../icons/icon.service';
 import { By } from '@angular/platform-browser';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import { MultiSelectComponent } from '../multi-select/multi-select.component';
 
 describe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;
@@ -87,6 +88,14 @@ describe('SingleSelectComponent', () => {
   }));
 
   describe('ngOnInit', () => {
+    it('should set value as empty array if value is not defined', () => {
+      fixture = TestBed.createComponent(SingleSelectComponent);
+      component = fixture.componentInstance;
+      component.options = optionsMock;
+      component.value = undefined;
+      fixture.autoDetectChanges();
+      expect(component.value).toEqual(null);
+    });
     it('should set triggerValue if value is provided', () => {
       expect(component.triggerValue).toEqual('Basic Info 1');
     });

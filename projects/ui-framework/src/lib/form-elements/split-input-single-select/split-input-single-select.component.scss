@@ -1,0 +1,18 @@
+:host ::ng-deep{
+  display: inline-block;
+  width: 100%;
+  > div > b-input {
+    .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
+      border-right: none;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+  b-single-select {
+    width: 120px;
+    .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+}

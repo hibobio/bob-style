@@ -85,7 +85,15 @@ describe('MultiSelectComponent', () => {
     })();
   }));
 
-  describe('ngOnInit', () => {
+  describe('onInit', () => {
+    it('should set value as empty array if value is not defined', () => {
+      fixture = TestBed.createComponent(MultiSelectComponent);
+      component = fixture.componentInstance;
+      component.options = optionsMock;
+      component.value = undefined;
+      fixture.autoDetectChanges();
+      expect(component.value).toEqual([]);
+    });
     it('should set triggerValue if value is provided', () => {
       expect(component.triggerValue).toEqual('Basic Info 1, Personal 1');
     });

@@ -171,7 +171,7 @@ describe('SingleSelectComponent', () => {
       expect(options.length).toEqual(0);
     });
   });
-  
+
   describe('option click', () => {
     it('should update value when option is clicked with the option id', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));

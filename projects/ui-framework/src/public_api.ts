@@ -30,4 +30,4 @@ export { MiniPreloaderModule } from './lib/misc/mini-preloader/mini-preloader.mo
 export { SearchModule } from './lib/navigation/search/search.module';
 export * from  './lib/form-elements/lists';
 export { TableModule } from './lib/table/table.module';
-
+export { FiltersModule } from './lib/filters/filters.module';
