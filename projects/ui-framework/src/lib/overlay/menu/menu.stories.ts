@@ -16,14 +16,18 @@ const menuStories = storiesOf(ComponentGroupType.Overlay, module)
   .addDecorator(withKnobs);
 
 const template = `
+<b-menu style="position: absolute; top: 20px; left: 20px;"
+        [actionsModel]="actionsModel">
+  <b-square-button menu-trigger
+                  type="${ ButtonType.secondary }"
+                  icon="${ Icons.three_dots }">
+  </b-square-button>
+</b-menu>
+`;
+
+const storyTemplate = `
 <b-story-book-layout title="Actions menu">
-  <b-menu style="position: absolute; top: 20px; left: 20px;"
-          [actionsModel]="actionsModel">
-    <b-square-button menu-trigger
-                    type="${ ButtonType.secondary }"
-                    icon="${ Icons.three_dots }">
-    </b-square-button>
- </b-menu>
+  ${ template }
 </b-story-book-layout>
 `;
 
@@ -94,7 +98,7 @@ menuStories.add(
   'Menu',
   () => {
     return {
-      template,
+      template: storyTemplate,
       props: {
         actionsModel: object<any>('actionsModel', actionsModelMock),
       },

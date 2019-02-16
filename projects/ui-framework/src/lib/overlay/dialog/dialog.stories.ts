@@ -14,10 +14,15 @@ const buttonStories = storiesOf(ComponentGroupType.Overlay, module)
   .addDecorator(withKnobs);
 
 const template = `
+<b-dialog-example></b-dialog-example>
+`;
+
+const storyTemplate = `
 <b-story-book-layout title="Dialog">
-  <b-dialog-example></b-dialog-example>
+  ${ template }
 </b-story-book-layout>
 `;
+
 const note = `
   ## Dialog
 
@@ -27,7 +32,7 @@ const note = `
 `;
 buttonStories.add(
   'Dialog', () => ({
-    template,
+    template: storyTemplate,
     props: {},
     moduleMetadata: {
       imports: [

@@ -14,17 +14,21 @@ const textareaStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withKnobs);
 
 const template = `
+<b-auto-complete style="width: 400px;"
+                [options]="options"
+                [label]="label"
+                [value]="value"
+                [disabled]="disabled"
+                [required]="required"
+                [errorMessage]="errorMessage"
+                [hintMessage]="hintMessage"
+                (inputEvents)="inputEvents($event)">
+</b-auto-complete>
+`;
+
+const storyTemplate = `
 <b-story-book-layout title="Auto complete">
-  <b-auto-complete style="width: 400px;"
-                  [options]="options"
-                  [label]="label"
-                  [value]="value"
-                  [disabled]="disabled"
-                  [required]="required"
-                  [errorMessage]="errorMessage"
-                  [hintMessage]="hintMessage"
-                  (inputEvents)="inputEvents($event)">
-  </b-auto-complete>
+  ${ template }
 </b-story-book-layout>
 `;
 
@@ -57,6 +61,7 @@ const note = `
   #### Properties
 
   Name | Type | Description
+  --- | --- | ---
   label | string | label text
   disabled | boolean | is field disabled
   required | boolean | is field required
@@ -72,7 +77,7 @@ textareaStories.add(
   'Auto Complete',
   () => {
     return {
-      template,
+      template: storyTemplate,
       props: {
         options: object<SelectGroupOption>('options', optionsMock),
         onSelect: action(),

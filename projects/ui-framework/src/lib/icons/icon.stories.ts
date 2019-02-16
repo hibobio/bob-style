@@ -16,16 +16,14 @@ const size = values(IconSize);
 const color = values(IconColor);
 
 const template = `
-<b-story-book-layout title="Icon">
-  <b-icon
-    [toolTipSummary]="toolTipSummary"
-    [icon]="icon"
-    [size]="size"
-    [color]="color">
-  </b-icon>
-</b-story-book-layout>
+<b-icon
+  [toolTipSummary]="toolTipSummary"
+  [icon]="icon"
+  [size]="size"
+  [color]="color">
+</b-icon>
 `;
-const displayTemplate = `${ template }`;
+
 const note = `
   ## Icon Element
 
@@ -42,11 +40,18 @@ const note = `
   ${ template }
   ~~~
 `;
+
+const storyTemplate = `
+<b-story-book-layout title="Icon">
+  ${ template }
+</b-story-book-layout>
+`;
+
 iconStories.add(
   'Icon element',
   () => {
     return {
-      template: displayTemplate,
+      template: storyTemplate,
       props: {
         toolTipSummary: text('toolTipSummary', 'This is the icon element'),
         icon: select('icon', icons, Icons.docs_link),

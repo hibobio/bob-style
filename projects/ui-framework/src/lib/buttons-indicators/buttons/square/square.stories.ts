@@ -19,14 +19,12 @@ const iconColor = values(IconColor);
 const icons = values(Icons);
 
 const template = `
-<b-story-book-layout title="Square button">
-  <b-square-button
-    (clicked)="onClick($event)"
-    [type]="type"
-    [icon]="icon"
-    [color]="color">
-  </b-square-button>
-</b-story-book-layout>
+<b-square-button
+  (clicked)="onClick($event)"
+  [type]="type"
+  [icon]="icon"
+  [color]="color">
+</b-square-button>
 `;
 const note = `
   ## Square Button Element
@@ -44,9 +42,16 @@ const note = `
   ${ template }
   ~~~
 `;
+
+const storyTemplate = `
+<b-story-book-layout title="Square button">
+  ${ template }
+</b-story-book-layout>
+`;
+
 buttonStories.add(
   'Square Button', () => ({
-    template,
+    template: storyTemplate,
     props: {
       type: select('type', typeOptions, ButtonType.secondary),
       icon: select('icon', icons, Icons.phone_link),

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MultiListComponent } from './multi-list-component';
+import { MultiListComponent } from './multi-list.component';
 import { ListModelService } from '../list-service/list-model.service';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatPseudoCheckboxModule } from '@angular/material';

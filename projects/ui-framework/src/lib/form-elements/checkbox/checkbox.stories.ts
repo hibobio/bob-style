@@ -12,13 +12,17 @@ const inputStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withKnobs);
 
 const template = `
+<b-checkbox (checkboxChange)="checkboxChange($event)"
+            [value]="value"
+            [label]="label"
+            [disabled]="disabled"
+            [required]="required">
+</b-checkbox>
+`;
+
+const storyTemplate = `
 <b-story-book-layout title="Checkbox">
-  <b-checkbox (checkboxChange)="checkboxChange($event)"
-              [value]="value"
-              [label]="label"
-              [disabled]="disabled"
-              [required]="required">
-  </b-checkbox>
+  ${ template }
 </b-story-book-layout>
 `;
 
@@ -43,7 +47,7 @@ inputStories.add(
   'Checkbox',
   () => {
     return {
-      template,
+      template: storyTemplate,
       props: {
         checkboxChange: action(),
         value: boolean('value', true),

@@ -16,17 +16,21 @@ const tableStories = storiesOf(ComponentGroupType.DataTable, module)
   .addDecorator(withKnobs);
 
 const template = `
+<b-table
+  [data]="data"
+  [columns]="columns"
+  [stickyHeader]="stickyHeader"
+  [stickyColumns]="stickyColumns"
+  (select)="select($event)"
+  (sort)="sort($event)"
+  (rowClick)="rowClick($event)"
+  (rowRightClick)="rowRightClick($event)">
+</b-table>
+`;
+
+const storyTemplate = `
 <b-story-book-layout title="Data Table">
-  <b-table
-    [data]="data"
-    [columns]="columns"
-    [stickyHeader]="stickyHeader"
-    [stickyColumns]="stickyColumns"
-    (select)="select($event)"
-    (sort)="sort($event)"
-    (rowClick)="rowClick($event)"
-    (rowRightClick)="rowRightClick($event)">
-  </b-table>
+  ${ template }
 </b-story-book-layout>
 `;
 
@@ -53,7 +57,7 @@ tableStories.add(
   'Data Table',
   () => {
     return {
-      template,
+      template: storyTemplate,
       props: {
         stickyHeader: boolean('stickyHeader', false),
         stickyColumns: number('stickyColumns', -1),

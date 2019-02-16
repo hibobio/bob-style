@@ -69,6 +69,7 @@ describe('SingleSelectComponent', () => {
         component.options = optionsMock;
         component.value = 2;
         spyOn(component.selectChange, 'emit');
+        component.ngOnChanges({});
         fixture.autoDetectChanges();
       });
   }));

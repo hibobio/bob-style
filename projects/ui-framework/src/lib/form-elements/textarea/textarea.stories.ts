@@ -13,20 +13,23 @@ const textareaStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withKnobs);
 
 const template = `
-<b-story-book-layout title="Textarea">
-  <b-textarea style="width: 400px;"
-              [maxChars]="maxChars"
-              [label]="label"
-              [value]="value"
-              [disabled]="disabled"
-              [required]="required"
-              [errorMessage]="errorMessage"
-              [hintMessage]="hintMessage"
-              (inputEvents)="inputEvents($event)">
-  </b-textarea>
-</b-story-book-layout>
+<b-textarea style="width: 400px;"
+            [maxChars]="maxChars"
+            [label]="label"
+            [value]="value"
+            [disabled]="disabled"
+            [required]="required"
+            [errorMessage]="errorMessage"
+            [hintMessage]="hintMessage"
+            (inputEvents)="inputEvents($event)">
+</b-textarea>
 `;
 
+const storyTemplate = `
+<b-story-book-layout title="Textarea">
+  ${ template }
+</b-story-book-layout>
+`;
 
 const note = `
   ## Textarea Element
@@ -52,7 +55,7 @@ textareaStories.add(
   'Textarea',
   () => {
     return {
-      template,
+      template: storyTemplate,
       props: {
         inputEvents: action(),
         maxChars: number('maxChars', ''),

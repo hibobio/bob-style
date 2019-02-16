@@ -1,4 +1,4 @@
-import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { set } from 'lodash';
 import { BaseFormElement } from '../base-form-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -34,7 +34,7 @@ export enum CheckboxStates {
     }
   ],
 })
-export class CheckboxComponent extends BaseFormElement implements OnInit {
+export class CheckboxComponent extends BaseFormElement implements OnChanges {
 
   @Input() value = false;
   @Input() label: string;
@@ -48,7 +48,7 @@ export class CheckboxComponent extends BaseFormElement implements OnInit {
     super();
   }
 
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.checkboxState = this.getCheckboxState();
   }
 

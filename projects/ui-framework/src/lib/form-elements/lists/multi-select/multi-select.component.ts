@@ -1,4 +1,15 @@
-import { Component, EventEmitter, forwardRef, Input, OnChanges, OnDestroy, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { chain, includes } from 'lodash';
 import { PanelPositionService } from '../../../overlay/panel/panel-position.service';
@@ -54,7 +65,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnCh
     super(overlay, viewContainerRef, panelPositionService);
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.value = this.value || [];
     this.triggerValue = this.getTriggerValue(this.value);
   }

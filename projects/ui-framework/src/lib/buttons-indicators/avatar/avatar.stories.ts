@@ -14,14 +14,12 @@ const avatarStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
 
 const sizeOptions = values(AvatarSize);
 const template = `
-<b-story-book-layout title="Avatar">
-  <b-avatar
-    [imageSource]="imageSource"
-    [size]="size"
-    [isClickable]="isClickable"
-    (clicked)="clickHandler($event)">
-  </b-avatar>
-</b-story-book-layout>
+<b-avatar
+  [imageSource]="imageSource"
+  [size]="size"
+  [isClickable]="isClickable"
+  (clicked)="clickHandler($event)">
+</b-avatar>
 `;
 const note = `
   ## Avatar Element
@@ -39,11 +37,18 @@ const note = `
   ${ template }
   ~~~
 `;
+
+const storyTemplate = `
+<b-story-book-layout title="Avatar">
+  ${template}
+</b-story-book-layout>
+`;
+
 avatarStories.add(
   'Avatar',
   () => {
     return {
-      template,
+      template: storyTemplate,
       props: {
         imageSource: text('imageSource', 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'),
         size: select('size', sizeOptions, AvatarSize.medium),

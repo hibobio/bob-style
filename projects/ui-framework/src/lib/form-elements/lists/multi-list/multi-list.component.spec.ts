@@ -12,7 +12,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ListModelService } from '../list-service/list-model.service';
 import { SelectGroupOption } from '../list.interface';
 import { By } from '@angular/platform-browser';
-import { MultiListComponent } from './multi-list-component';
+import { MultiListComponent } from './multi-list.component';
 import { FiltersModule } from '../../../filters/filters.module';
 
 describe('MultiListComponent', () => {
@@ -70,12 +70,14 @@ describe('MultiListComponent', () => {
         component.options = optionsMock;
         component.value = [1, 11];
         spyOn(component.selectChange, 'emit');
+        component.ngOnChanges({});
         fixture.autoDetectChanges();
       });
   }));
 
-  describe('ngOnInit', () => {
+  describe('OnChanges', () => {
     it('should create headerModel based on options', () => {
+      component.ngOnChanges({});
       expect(component.listHeaders).toEqual([
         {
           groupName: 'Basic Info',

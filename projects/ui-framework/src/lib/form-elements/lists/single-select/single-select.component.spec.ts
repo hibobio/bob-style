@@ -17,7 +17,7 @@ import { By } from '@angular/platform-browser';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
-xdescribe('SingleSelectComponent', () => {
+describe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;
   let optionsMock;
   let fixture: ComponentFixture<SingleSelectComponent>;
@@ -86,16 +86,18 @@ xdescribe('SingleSelectComponent', () => {
     })();
   }));
 
-  describe('ngOnInit', () => {
+  describe('ngOnChanges', () => {
     it('should set value as empty array if value is not defined', () => {
       fixture = TestBed.createComponent(SingleSelectComponent);
       component = fixture.componentInstance;
       component.options = optionsMock;
       component.value = undefined;
+      component.ngOnChanges({});
       fixture.autoDetectChanges();
       expect(component.value).toEqual(null);
     });
     it('should set triggerValue if value is provided', () => {
+      component.ngOnChanges({});
       expect(component.triggerValue).toEqual('Basic Info 1');
     });
   });

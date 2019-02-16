@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { MatSliderChange } from '@angular/material';
 
 @Component({
@@ -6,7 +6,7 @@ import { MatSliderChange } from '@angular/material';
   templateUrl: './slider.component.html',
   styleUrls: ['./slider.component.scss'],
 })
-export class SliderComponent implements OnInit {
+export class SliderComponent implements OnChanges {
 
   @Output() progressChange: EventEmitter<MatSliderChange> = new EventEmitter<MatSliderChange>();
   @Input() value = 0;
@@ -23,7 +23,7 @@ export class SliderComponent implements OnInit {
   constructor() {
   }
 
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.barFull = this.value === this.max;
   }
 

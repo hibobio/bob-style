@@ -17,22 +17,25 @@ const inputTypes = values(InputTypes);
 const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
 
 const template = `
-<b-story-book-layout title="Input">
-  <b-input style="width: 400px;"
-          [inputType]="inputType"
-          [label]="label"
-          [value]="value"
-          [disabled]="disabled"
-          [required]="required"
-          [errorMessage]="errorMessage"
-          [hideLabelOnFocus]="hideLabelOnFocus"
-          [enableBrowserAutoComplete]="enableBrowserAutoComplete"
-          [hintMessage]="hintMessage"
-          (inputEvents)="inputEvents($event)">
-  </b-input>
-</b-story-book-layout>
+<b-input style="width: 400px;"
+        [inputType]="inputType"
+        [label]="label"
+        [value]="value"
+        [disabled]="disabled"
+        [required]="required"
+        [errorMessage]="errorMessage"
+        [hideLabelOnFocus]="hideLabelOnFocus"
+        [enableBrowserAutoComplete]="enableBrowserAutoComplete"
+        [hintMessage]="hintMessage"
+        (inputEvents)="inputEvents($event)">
+</b-input>
 `;
 
+const storyTemplate = `
+<b-story-book-layout title="Input">
+  ${ template }
+</b-story-book-layout>
+`;
 
 const note = `
   ## Input Element
@@ -60,7 +63,7 @@ inputStories.add(
   'Input',
   () => {
     return {
-      template,
+      template: storyTemplate,
       props: {
         inputEvents: action(),
         inputType: select('inputType', inputTypes, InputTypes.text),

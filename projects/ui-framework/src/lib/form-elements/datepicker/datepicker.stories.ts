@@ -12,14 +12,19 @@ const datepickerStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 const template = `
+<b-datepicker style="width: 400px;"
+              (dateChange)="dateChange($event)"
+              [inputLabel]="inputLabel"
+              [dateFormat]="dateFormat">
+</b-datepicker>
+`;
+
+const storyTemplate = `
 <b-story-book-layout title="Datepicker">
-  <b-datepicker style="width: 400px;"
-                (dateChange)="dateChange($event)"
-                [inputLabel]="inputLabel"
-                [dateFormat]="dateFormat">
-  </b-datepicker>
+  ${ template }
 </b-story-book-layout>
 `;
+
 const note = `
   ## Slider Element
 
@@ -40,7 +45,7 @@ datepickerStories.add(
   'Datepicker',
   () => {
     return {
-      template,
+      template: storyTemplate,
       props: {
         inputLabel: text('inputLabel', 'Choose a date'),
         dateFormat: text('dateFormat', 'DD/MM/YYYY'),

@@ -17,7 +17,7 @@ import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 import { By } from '@angular/platform-browser';
 
-xdescribe('MultiSelectComponent', () => {
+describe('MultiSelectComponent', () => {
   let component;
   let optionsMock;
   let fixture: ComponentFixture<MultiSelectComponent>;
@@ -85,16 +85,18 @@ xdescribe('MultiSelectComponent', () => {
     })();
   }));
 
-  describe('onInit', () => {
+  describe('ngOnChanges', () => {
     it('should set value as empty array if value is not defined', () => {
       fixture = TestBed.createComponent(MultiSelectComponent);
       component = fixture.componentInstance;
       component.options = optionsMock;
       component.value = undefined;
+      component.ngOnChanges({});
       fixture.autoDetectChanges();
       expect(component.value).toEqual([]);
     });
     it('should set triggerValue if value is provided', () => {
+      component.ngOnChanges({});
       expect(component.triggerValue).toEqual('Basic Info 1, Personal 1');
     });
   });

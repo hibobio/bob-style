@@ -1,15 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
-import { some, escapeRegExp, map, compact, filter, cloneDeep, assign } from 'lodash';
+import { assign, cloneDeep, compact, escapeRegExp, filter, map, some } from 'lodash';
 
 @Component({
   selector: 'b-single-list',
   templateUrl: 'single-list.component.html',
   styleUrls: ['single-list.component.scss'],
 })
-export class SingleListComponent implements OnInit {
+export class SingleListComponent implements OnChanges {
 
   readonly listElHeight = LIST_EL_HEIGHT;
 
@@ -31,7 +31,7 @@ export class SingleListComponent implements OnInit {
   ) {
   }
 
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.filteredOptions = this.options;
     this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
     this.updateLists();

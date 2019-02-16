@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material';
 
 @Component({
@@ -6,17 +6,15 @@ import { MatSlideToggleChange } from '@angular/material';
   templateUrl: './switch-toggle.component.html',
   styleUrls: ['./switch-toggle.component.scss']
 })
-export class SwitchToggleComponent implements OnInit {
+export class SwitchToggleComponent {
   @Input() isChecked: boolean;
   @Input() isDisabled: boolean;
-  @Output() changed: EventEmitter<MatSlideToggleChange> = new EventEmitter<MatSlideToggleChange>();
+  @Output() switchChange: EventEmitter<MatSlideToggleChange> = new EventEmitter<MatSlideToggleChange>();
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor() {
   }
 
-  public onChange($event: MatSlideToggleChange): void {
-    this.changed.emit($event);
+  onChange($event: MatSlideToggleChange): void {
+    this.switchChange.emit($event);
   }
 }

@@ -10,20 +10,25 @@ const sliderStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 const template = `
+<b-slider style="width: 400px;"
+  [value]="value"
+  [min]="min"
+  [max]="max"
+  [step]="step"
+  [disabled]="disabled"
+  [showLabel]="showLabel"
+  [readOnly]="readOnly"
+  [labelSymbol]="labelSymbol"
+  (progressChange)="progressChange($event)">
+</b-slider>
+`;
+
+const storyTemplate = `
 <b-story-book-layout title="Slider">
-  <b-slider style="width: 400px;"
-    [value]="value"
-    [min]="min"
-    [max]="max"
-    [step]="step"
-    [disabled]="disabled"
-    [showLabel]="showLabel"
-    [readOnly]="readOnly"
-    [labelSymbol]="labelSymbol"
-    (progressChange)="progressChange($event)">
-  </b-slider>
+  ${ template }
 </b-story-book-layout>
 `;
+
 const note = `
   ## Slider Element
 
@@ -50,7 +55,7 @@ sliderStories.add(
   'Slider',
   () => {
     return {
-      template,
+      template: storyTemplate,
       props: {
         value: number('value', 30),
         min: number('min', 0),

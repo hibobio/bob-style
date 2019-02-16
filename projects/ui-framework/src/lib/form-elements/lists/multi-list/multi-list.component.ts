@@ -1,16 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { CheckboxStates } from '../../checkbox';
 import { chain, filter, flatMap } from 'lodash';
-import { ListOption, ListHeader, SelectGroupOption } from '../list.interface';
+import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
 
 @Component({
   selector: 'b-multi-list',
   templateUrl: 'multi-list.component.html',
   styleUrls: ['multi-list.component.scss'],
 })
-export class MultiListComponent implements OnInit {
+export class MultiListComponent implements OnChanges {
 
   readonly listElHeight = LIST_EL_HEIGHT;
 
@@ -33,7 +33,7 @@ export class MultiListComponent implements OnInit {
   ) {
   }
 
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.filteredOptions = this.options;
     this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
     this.updateLists();
@@ -76,6 +76,7 @@ export class MultiListComponent implements OnInit {
   }
 
   private updateLists(): void {
+    console.log('a');
     this.listHeaders = this.listModelService
       .getHeadersModel(this.filteredOptions);
     this.listOptions = this.listModelService

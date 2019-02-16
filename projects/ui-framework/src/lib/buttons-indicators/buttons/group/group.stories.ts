@@ -14,20 +14,25 @@ const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
   .addDecorator(withKnobs);
 
 const template = `
-<b-story-book-layout title="Grouped buttons">
-  <b-group>
-    <b-square-button type="${ ButtonType.secondary }"
-                     icon="${ Icons.skype_link }">
-    </b-square-button>
-    <b-square-button type="${ ButtonType.secondary }"
-                     icon="${ Icons.phone_link }">
-    </b-square-button>
-    <b-square-button type="${ ButtonType.secondary }"
-                     icon="${ Icons.slack_link }">
-    </b-square-button>
-  </b-group>
-</b-story-book-layout>  
+<b-group>
+  <b-square-button type="${ ButtonType.secondary }"
+                   icon="${ Icons.skype_link }">
+  </b-square-button>
+  <b-square-button type="${ ButtonType.secondary }"
+                   icon="${ Icons.phone_link }">
+  </b-square-button>
+  <b-square-button type="${ ButtonType.secondary }"
+                   icon="${ Icons.slack_link }">
+  </b-square-button>
+</b-group>
 `;
+
+const storyTemplate = `
+<b-story-book-layout title="Grouped buttons">
+  ${ template }
+</b-story-book-layout>
+`;
+
 const note = `
   ## Group Element
 
@@ -38,7 +43,7 @@ const note = `
 `;
 buttonStories.add(
   'Group', () => ({
-    template,
+    template: storyTemplate,
     props: {},
     moduleMetadata: {
       imports: [
