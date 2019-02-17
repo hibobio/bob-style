@@ -12,6 +12,9 @@
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
       }
+      .mat-form-field-subscript-wrapper {
+        width: calc(100% + 120px);
+      }
     }
     b-single-select {
       width: 120px;

@@ -13,8 +13,10 @@ const textareaStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withKnobs);
 
 const template = `
-<b-currency-value style="width: 400px;">
-</b-currency-value>
+<b-split-input-single-select style="width: 400px;"
+                             [hintMessage]="hintMessage"
+                             [errorMessage]="errorMessage">
+</b-split-input-single-select>
 `;
 
 const storyTemplate = `

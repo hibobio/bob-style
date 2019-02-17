@@ -1,5 +1,7 @@
 <div class="split-single-select-wrapper">
-  <b-input type="number">
+  <b-input [errorMessage]="errorMessage"
+           [hintMessage]="hintMessage"
+           type="number">
   </b-input>
 
   <b-single-select [options]="optionsMock"

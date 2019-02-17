@@ -5,7 +5,7 @@ import { SelectGroupOption } from '../lists';
 import map from 'lodash/map';
 
 @Component({
-  selector: 'b-currency-value',
+  selector: 'b-split-input-single-select',
   templateUrl: './split-input-single-select.component.html',
   styleUrls: ['./split-input-single-select.component.scss'],
   providers: [
