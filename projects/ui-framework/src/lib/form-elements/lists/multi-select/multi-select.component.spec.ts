@@ -6,7 +6,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonsModule } from '../../../buttons-indicators/buttons';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { InputModule } from '../../input';
 import { PanelPositionService } from '../../../overlay/panel/panel-position.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -63,7 +62,6 @@ describe('MultiSelectComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         ButtonsModule,
-        FlexLayoutModule,
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { SingleListComponent } from './single-list.component';
 import { ListModelService } from '../list-service/list-model.service';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { SearchModule } from '../../../navigation/search';
 import { FiltersModule } from '../../../filters/filters.module';
 
@@ -14,7 +13,6 @@ import { FiltersModule } from '../../../filters/filters.module';
   imports: [
     CommonModule,
     ScrollingModule,
-    FlexLayoutModule,
     SearchModule,
     FiltersModule,
   ],

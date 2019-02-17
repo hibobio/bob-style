@@ -7,7 +7,6 @@ import { SingleSelectComponent } from './single-select.component';
 import { ButtonsModule } from '../../../buttons-indicators/buttons';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { InputModule } from '../../input';
 import { PanelPositionService } from '../../../overlay/panel/panel-position.service';
 import { SingleListModule } from '../single-list/single-list.module';
@@ -64,7 +63,6 @@ describe('SingleSelectComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         ButtonsModule,
-        FlexLayoutModule,
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

@@ -5,13 +5,13 @@ import { Icons, IconSize } from '../../../icons/icons.enum';
 @Component({
   selector: 'b-back-button',
   template: `
-    <b-button
-      (clicked)="onClick($event)"
-      [type]="type"
-      [size]="size">
-      <span class="back-button-content-wrapper"
-            fxLayout="row" fxLayoutAlign="center center">
-        <b-icon icon="${Icons.back_arrow_link}" size="${IconSize.small}"></b-icon>
+    <b-button (clicked)="onClick($event)"
+              [type]="type"
+              [size]="size">
+      <span class="back-button-content-wrapper">
+        <b-icon icon="${Icons.back_arrow_link}"
+                size="${IconSize.small}">
+        </b-icon>
         <span class="back-button-content">
           <ng-content></ng-content>
         </span>

@@ -83,6 +83,8 @@
       border-top: 1px solid $grey-500;
       z-index: 1;
       background-color: $white;
+      display: flex;
+      justify-content: flex-end;
       b-button {
         display: block;
         margin-right: 6px;

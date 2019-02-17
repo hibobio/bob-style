@@ -38,6 +38,10 @@
         position: relative;
         z-index: 1;
         .option-select {
+          display: flex;
+          flex-direction: row;
+          align-content: start;
+          align-items: center;
           &.header-placeholder {
             visibility: hidden;
           }

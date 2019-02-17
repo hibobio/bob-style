@@ -35,6 +35,10 @@
       top: 0;
       background-color: $white;
       box-shadow: 0 2px 3px $boxShadowColor;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
       .header-collapse-trigger {
         position: absolute;
         top: 0;

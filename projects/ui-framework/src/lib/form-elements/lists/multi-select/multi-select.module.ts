@@ -6,7 +6,6 @@ import { ButtonsModule } from '../../../buttons-indicators/buttons';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { InputModule } from '../../input';
 import { MultiListModule } from '../multi-list/multi-list.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatTooltipModule } from '@angular/material';
 import { IconsModule } from '../../../icons';
 
@@ -21,7 +20,6 @@ import { IconsModule } from '../../../icons';
     OverlayModule,
     MultiListModule,
     InputModule,
-    FlexLayoutModule,
     MatTooltipModule,
     IconsModule,
   ],

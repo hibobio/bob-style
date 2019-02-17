@@ -6,7 +6,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchModule } from '../../../navigation/search/search.module';
 import { ButtonsModule } from '../../../buttons-indicators/buttons';
 import { IconsModule } from '../../../icons';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { InputModule } from '../../input';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { SingleListComponent } from './single-list.component';
@@ -57,7 +56,6 @@ describe('SingleSelectComponent', () => {
         ButtonsModule,
         IconsModule,
         MatTooltipModule,
-        FlexLayoutModule,
         ScrollingModule,
         FiltersModule,
       ],

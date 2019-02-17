@@ -16,8 +16,7 @@
            class="headers-group">
         <div (click)="headerClick(header)"
              [ngClass]="{'collapsed': header.isCollapsed}"
-             class="option-select header"
-             fxLayout="row" fxLayoutAlign="space-between center">
+             class="option-select header">
           <span [innerHTML]="header.groupName | highlight: searchValue"></span>
           <span class="chevron"></span>
         </div>
@@ -29,7 +28,6 @@
       <div (click)="optionClick(option)"
            *cdkVirtualFor="let option of listOptions"
            [ngClass]="{'header-placeholder': option.isPlaceHolder, 'option': !option.isPlaceHolder, 'selected': option.id===value}"
-           fxLayout="row" fxLayoutAlign="start center"
            class="option-select">
         <span [innerHTML]="option.value | highlight: searchValue"></span>
       </div>

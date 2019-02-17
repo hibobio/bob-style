@@ -40,11 +40,23 @@
       }
       .headers {
         @include headers;
+        .header {
+          .header-option {
+            display: flex;
+            flex-direction: row;
+            align-content: start;
+            align-items: center;
+          }
+        }
       }
       .options {
         position: relative;
         z-index: 1;
         .option-select {
+          display: flex;
+          flex-direction: row;
+          align-content: start;
+          align-items: center;
           &.header-placeholder {
             visibility: hidden;
           }
