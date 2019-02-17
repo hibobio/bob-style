@@ -7,7 +7,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UtilsService } from '../../utils/utils.service';
 import { cold, getTestScheduler } from 'jasmine-marbles';
 
-fdescribe('BreadcrumbsComponent', () => {
+describe('BreadcrumbsComponent', () => {
   let utilsServiceMock: jasmine.SpyObj<UtilsService>;
   let component: BreadcrumbsComponent;
   let fixture: ComponentFixture<BreadcrumbsComponent>;
