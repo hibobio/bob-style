@@ -16,28 +16,33 @@ const buttonStories = storiesOf(ComponentGroupType.Overlay, module)
 const template = `
 <b-panel style="position: absolute; top: 20px; left: 20px;">
   <b-button panel-trigger>
-    open Syria
+    Time Off Policies info
   </b-button>
   <div panel-content>
-    <b-display-3>Syria</b-display-3>
-    <p>Syria (Arabic: سوريا‎ Sūriyā), officially the Syrian Arab Republic
-    (Arabic: الجمهورية العربية السورية‎ al-Jumhūrīyah al-ʻArabīyah as-Sūrīyah),
-    is a country in Western Asia, bordering Lebanon and the Mediterranean Sea to
-    the west, Turkey to the north, Iraq to the east, Jordan to the south,
-    and Israel to the southwest.</p>
+    <b-display-3>Time Off Policies info</b-display-3>
+    <p>A ‘policy’ is the a collection of rules which govern a type of leave.
+    With bob you can add as many holiday policies as you need for your organisation.
+    Before we create a policy, a note on what types are.
+    <img style="display: block; width: 100%; margin-top: 20px;"
+    src="https://downloads.intercomcdn.com/i/o/86579629/3d3ae5d60c93aed41996abed/Screen+Shot+2018-11-20+at+11.19.09.png" />
+    </p>
   </div>
 </b-panel>
 
 <b-panel style="position: absolute; bottom: 20px; right: 20px;">
   <b-button panel-trigger>
-    open Iraq
+    Insights info
   </b-button>
   <div panel-content>
-    <b-display-3>Iraq</b-display-3>
-    <p>raq (/ɪˈræk/, /ɪˈrɑːk/ (About this soundlisten) or /aɪˈræk/; Arabic: العراق‎ al-'Irāq; Kurdish: عێراق‎ Eraq),
-    officially known as the Republic of Iraq (Arabic: جُمُهورية العِراق‎ ; Kurdish: کۆماری عێراق‎ Komari Eraq),
-    is a country in Western Asia, bordered by Turkey to the north, Iran to the east, Kuwait to the southeast,
-    Saudi Arabia to the south, Jordan to the southwest and Syria to the west.</p>
+    <b-display-4>How can I improve "Headcount" display</b-display-4>
+    <p>
+    <b-subheading>Check people’s data</b-subheading>
+    Make sure all your people have start and end dates. Employees with end-dates that occur before their start-date can’t be counted.
+    </p>
+    <p>
+    <b-subheading>Check your permissions</b-subheading>
+    Make sure you have SECRET PERMISSIONS
+    </p>
     <b-button>
     read more
   </b-button>

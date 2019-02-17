@@ -12,19 +12,18 @@ import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 @Component({
   selector: 'b-dialog-example',
   template: `
-    <b-button (click)="openDialog()">open Syria</b-button>
+    <b-button (click)="openDialog()">Time Off Policies info</b-button>
   `,
 })
 export class DialogExampleComponent {
 
   private dataMock: any = {
     id: 'id_123',
-    source: 'Wikipedia',
-    title: 'Syria (سوريا‎)',
-    textContent: `Syria (Arabic: سوريا‎ Sūriyā), officially the Syrian Arab Republic
-    (Arabic: الجمهورية العربية السورية‎ al-Jumhūrīyah al-ʻArabīyah as-Sūrīyah), is a
-    country in Western Asia, bordering Lebanon and the Mediterranean Sea to the west,
-    Turkey to the north, Iraq to the east, Jordan to the south, and Israel to the southwest.`,
+    source: 'help.hibob.com',
+    title: 'Time Off Policies',
+    textContent: `A ‘policy’ is the a collection of rules which govern a type of leave. With bob you
+can add as many holiday policies as you need for your organisation. Before we create a policy,
+a note on what types are.`,
   };
 
   constructor(
@@ -48,7 +47,7 @@ export class DialogExampleComponent {
       [dialogButtonConfig]="dialogButtonConfig">
       <div b-dialog-sub-title>
         <b-subheading style="display:inline;">The article id is {{data.id}} </b-subheading>
-        <a href="https://en.wikipedia.org/wiki/Syria" target="_blank">read more</a>
+        <a href="https://help.hibob.com/time-off/configuring-time-off-policies/time-off-policies" target="_blank">read more</a>
       </div>
       <div b-dialog-content>
         <b-textarea label="Edit text"
@@ -61,7 +60,7 @@ export class DialogExampleComponent {
         </article>
         <b-single-select [options]="selectOptions"
                          style="width: 100%;"
-                         label="was this article helpfull">
+                         label="was this article helpful">
         </b-single-select>
         <b-checkbox label="Click this"></b-checkbox>
       </div>

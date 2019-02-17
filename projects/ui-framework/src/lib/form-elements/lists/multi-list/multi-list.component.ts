@@ -76,7 +76,6 @@ export class MultiListComponent implements OnChanges {
   }
 
   private updateLists(): void {
-    console.log('a');
     this.listHeaders = this.listModelService
       .getHeadersModel(this.filteredOptions);
     this.listOptions = this.listModelService
