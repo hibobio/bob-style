@@ -70,6 +70,9 @@
     box-shadow: 0 2px 5px $boxShadowColor;
     b-single-list {
       display: block;
+      border: none;
+      overflow: initial;
+      border-radius: 0;
     }
   }
 }

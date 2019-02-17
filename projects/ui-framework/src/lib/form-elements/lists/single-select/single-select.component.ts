@@ -52,8 +52,8 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
 
   readonly listElHeight = LIST_EL_HEIGHT;
   readonly resetIcon: String = Icons.reset_x;
-  readonly iconSize: String = IconSize.medium;
-  readonly iconColor: String = IconColor.dark;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
 
   constructor(
     overlay: Overlay,

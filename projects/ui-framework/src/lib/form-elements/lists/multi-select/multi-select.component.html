@@ -10,6 +10,7 @@
            [hintMessage]="hintMessage"
            [label]="label"
            [required]="required"
+           [matTooltip]="showTriggerTooltip ? triggerValue : null"
            [value]="triggerValue">
 
     <div *ngIf="value.length > 0"
@@ -18,16 +19,16 @@
          input-prefix>
       <b-icon (mouseenter)="blockSelectClick=true"
               (mouseleave)="blockSelectClick=false"
-              [color]="iconColor"
+              [color]="iconColor.normal"
               [icon]="resetIcon"
-              [size]="iconSize"
+              [hasHoverState]="true"
+              [size]="iconSize.medium"
               class="clear-button">
       </b-icon>
     </div>
 
     <div input-suffix>
             <span *ngIf="showTriggerTooltip"
-                  [matTooltip]="triggerValue"
                   class="trigger-tooltip"
                   matTooltipPosition="above">
           ({{value.length}})

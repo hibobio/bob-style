@@ -17,7 +17,8 @@ export class SearchComponent extends BaseInputElement implements OnInit {
   readonly searchIcon: String = Icons.search;
   readonly resetIcon: String = Icons.reset_x;
   readonly iconSize: String = IconSize.medium;
-  readonly iconColor: String = IconColor.dark;
+  iconColor = IconColor;
+  searchIconColor: String = IconColor.normal;
 
   inputTypes = InputTypes;
 
@@ -33,6 +34,12 @@ export class SearchComponent extends BaseInputElement implements OnInit {
     this.value = event.value as string;
     if (event.event === InputEventType.onChange) {
       this.searchChange.emit(this.value);
+    }
+    if (event.event === InputEventType.onFocus) {
+      this.searchIconColor = IconColor.dark;
+    }
+    if (event.event === InputEventType.onBlur) {
+      this.searchIconColor = IconColor.normal;
     }
   }
 

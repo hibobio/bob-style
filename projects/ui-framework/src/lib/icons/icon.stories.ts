@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { text, select, withKnobs } from '@storybook/addon-knobs/angular';
+import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { IconsModule } from './icons.module';
 import { Icons, IconSize, IconColor } from './icons.enum';
 import { values, reduce } from 'lodash';
@@ -16,11 +16,11 @@ const size = values(IconSize);
 const color = values(IconColor);
 
 const template = `
-<b-icon
-  [toolTipSummary]="toolTipSummary"
-  [icon]="icon"
-  [size]="size"
-  [color]="color">
+<b-icon [toolTipSummary]="toolTipSummary"
+        [icon]="icon"
+        [size]="size"
+        [color]="color"
+        [hasHoverState]="hasHoverState">
 </b-icon>
 `;
 
@@ -35,6 +35,7 @@ const note = `
   icon | Icons | enum for the available icons |
   size | IconSize | enum for the available icon sizes |
   color | IconColor | enum for the available icon colors | dark (optional)
+  hasHoverState | boolean | if icon has hover state | false
 
   ~~~
   ${ template }
@@ -56,7 +57,8 @@ iconStories.add(
         toolTipSummary: text('toolTipSummary', 'This is the icon element'),
         icon: select('icon', icons, Icons.docs_link),
         size: select('size', size, IconSize.large),
-        color: select('color', color, IconColor.dark),
+        color: select('color', color, IconColor.normal),
+        hasHoverState: boolean('hasHoverState', false),
       },
       moduleMetadata: {
         imports: [

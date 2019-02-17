@@ -8,6 +8,7 @@ import { ButtonsModule } from '../../buttons-indicators/buttons';
 import { TypographyModule } from '../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { CheckboxModule } from '../../form-elements/checkbox';
 
 const buttonStories = storiesOf(ComponentGroupType.Overlay, module)
   .addDecorator(withNotes)
@@ -34,15 +35,18 @@ const template = `
     Insights info
   </b-button>
   <div panel-content>
-    <b-display-4>How can I improve "Headcount" display</b-display-4>
+    <b-heading>How can I improve "Headcount" display</b-heading>
     <p>
-    <b-subheading>Check people’s data</b-subheading>
+    <b>Check people’s data</b><br />
     Make sure all your people have start and end dates. Employees with end-dates that occur before their start-date can’t be counted.
     </p>
     <p>
-    <b-subheading>Check your permissions</b-subheading>
-    Make sure you have SECRET PERMISSIONS
+    <b>Check your permissions</b><br />
+    Make sure you have <a href="https://www.hibob.com" target="_blank">secret permissions</a>
     </p>
+    <div>
+      <b-checkbox label="This was helpful" [value]="true"></b-checkbox>
+    </div>
     <b-button>
     read more
   </b-button>
@@ -74,6 +78,7 @@ buttonStories.add(
         TypographyModule,
         BrowserAnimationsModule,
         StoryBookLayoutModule,
+        CheckboxModule,
       ],
     }
   }),

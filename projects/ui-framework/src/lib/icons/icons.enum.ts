@@ -6,6 +6,7 @@ export enum IconSize {
 
 export enum IconColor {
   dark = 'dark',
+  normal = 'normal',
   light = 'light',
   white = 'white',
   primary = 'primary',

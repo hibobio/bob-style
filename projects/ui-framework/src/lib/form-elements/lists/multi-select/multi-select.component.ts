@@ -54,8 +54,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnCh
   readonly buttonSize = ButtonSize;
   readonly buttonType = ButtonType;
   readonly resetIcon: String = Icons.reset_x;
-  readonly iconSize: String = IconSize.medium;
-  readonly iconColor: String = IconColor.dark;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
 
   constructor(
     overlay: Overlay,

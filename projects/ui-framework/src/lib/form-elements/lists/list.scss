@@ -4,12 +4,12 @@
 
 @mixin listOption {
   @include BodyFont(normal, normal, 12px);
+  color: $grey-700;
   padding: 0 16px;
   box-sizing: border-box;
   position: relative;
   height: 44px;
   line-height: 1;
-  color: initial;
   &.mat-selected {
     background-color: initial;
   }
@@ -34,7 +34,7 @@
       position: sticky;
       top: 0;
       background-color: $white;
-      box-shadow: 0 2px 3px $boxShadowColor;
+      border-bottom: 1px solid $grey-300;
       display: flex;
       flex-direction: row;
       justify-content: space-between;

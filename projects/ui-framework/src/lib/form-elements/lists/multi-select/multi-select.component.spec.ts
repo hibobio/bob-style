@@ -185,7 +185,7 @@ describe('MultiSelectComponent', () => {
         (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
         fixture.autoDetectChanges();
         tick(0);
-        const tooltipEl = fixture.debugElement.query(By.css('.trigger-tooltip'));
+        const tooltipEl = fixture.debugElement.query(By.css('b-input'));
 
         expect(tooltipEl).not.toBe(null);
         expect(tooltipEl.properties.matTooltip).toEqual('Basic Info 1, Personal 2');
