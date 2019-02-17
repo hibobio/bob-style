@@ -1,3 +1,5 @@
+@import '../../style/colors';
+
 :host ::ng-deep {
   display: inline-block;
   width: 100%;
@@ -8,7 +10,6 @@
     align-items: center;
     > b-input {
       .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
-        border-right: none;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
       }
@@ -19,8 +20,16 @@
     b-single-select {
       width: 120px;
       .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
+        border-left: none;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
+      }
+    }
+    &.has-error {
+      b-single-select {
+        .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
+          border-color: var(--negative-500);
+        }
       }
     }
   }

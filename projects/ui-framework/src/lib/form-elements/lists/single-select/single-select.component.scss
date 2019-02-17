@@ -36,6 +36,12 @@
           padding-right: 10px;
         }
       }
+      .mat-form-field-disabled {
+        .clear-selection {
+          pointer-events: none;
+          opacity: .3;
+        }
+      }
     }
     &.panel-open b-input .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
       border-bottom-right-radius: 0;
