@@ -64,7 +64,9 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.triggerValue = this.value ? this.getTriggerValue(this.value) : null;
+    if (changes.value) {
+      this.triggerValue = this.value ? this.getTriggerValue(this.value) : null;
+    }
   }
 
   onSelect(optionId: (string | number)) {

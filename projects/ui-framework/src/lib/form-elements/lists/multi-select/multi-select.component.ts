@@ -66,7 +66,9 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnCh
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.triggerValue = this.getTriggerValue(this.value);
+    if (changes.value) {
+      this.triggerValue = this.getTriggerValue(this.value);
+    }
   }
 
   ngOnDestroy(): void {
