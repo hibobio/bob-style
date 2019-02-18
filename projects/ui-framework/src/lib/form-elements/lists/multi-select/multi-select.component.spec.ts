@@ -1,12 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  flush,
-  inject,
-  TestBed,
-  tick
-} from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
@@ -85,12 +77,12 @@ describe('MultiSelectComponent', () => {
       fixture = TestBed.createComponent(MultiSelectComponent);
       component = fixture.componentInstance;
       component.options = optionsMock;
-      component.ngOnChanges({});
+      component.ngAfterViewInit();
       fixture.autoDetectChanges();
       expect(component.value).toEqual([]);
     });
     it('should set triggerValue if value is provided', () => {
-      component.ngOnChanges({});
+      component.ngAfterViewInit();
       expect(component.triggerValue).toEqual('Basic Info 1, Personal 1');
     });
   });

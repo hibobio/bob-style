@@ -1,17 +1,6 @@
-import {
-  Component,
-  EventEmitter,
-  forwardRef,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Output,
-  SimpleChanges,
-  ViewChild,
-  ViewContainerRef
-} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, forwardRef, Input, OnDestroy, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
-import { chain } from 'lodash';
+import { chain, has } from 'lodash';
 import { PanelPositionService } from '../../../overlay/panel/panel-position.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
@@ -37,7 +26,7 @@ import { IconColor, Icons, IconSize } from '../../../icons';
   ],
 })
 
-export class SingleSelectComponent extends BaseSelectPanelElement implements OnChanges, OnDestroy {
+export class SingleSelectComponent extends BaseSelectPanelElement implements AfterViewInit, OnDestroy {
 
   @ViewChild('triggerInput') triggerInput;
 
@@ -63,7 +52,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
     super(overlay, viewContainerRef, panelPositionService);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngAfterViewInit(): void {
     this.triggerValue = this.value ? this.getTriggerValue(this.value) : null;
   }
 
