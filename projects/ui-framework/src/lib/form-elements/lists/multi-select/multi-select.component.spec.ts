@@ -72,7 +72,7 @@ describe('MultiSelectComponent', () => {
     })();
   }));
 
-  describe('ngOnChanges', () => {
+  xdescribe('ngOnChanges', () => {
     it('should set value as empty array if value is not defined', () => {
       fixture = TestBed.createComponent(MultiSelectComponent);
       component = fixture.componentInstance;
