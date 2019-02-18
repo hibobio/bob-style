@@ -41,7 +41,6 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnCh
   @ViewChild('triggerInput') triggerInput;
 
   @Input() options: SelectGroupOption[];
-  @Input() value: (string | number)[] = [];
   @Input() showSingleGroupHeader = false;
   @Output() selectChange: EventEmitter<(string | number)[]> = new EventEmitter<
     (string | number)[]
@@ -63,6 +62,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnCh
     panelPositionService: PanelPositionService
   ) {
     super(overlay, viewContainerRef, panelPositionService);
+    this.value = [];
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -42,7 +42,6 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
   @ViewChild('triggerInput') triggerInput;
 
   @Input() options: SelectGroupOption[];
-  @Input() value: string | number = null;
   @Input() showSingleGroupHeader = false;
   @Output() selectChange: EventEmitter<(string | number)> = new EventEmitter<(string | number)>();
 
@@ -61,6 +60,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
     panelPositionService: PanelPositionService,
   ) {
     super(overlay, viewContainerRef, panelPositionService);
+    this.value = null;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
