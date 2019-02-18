@@ -89,7 +89,6 @@ describe('SingleSelectComponent', () => {
       fixture = TestBed.createComponent(SingleSelectComponent);
       component = fixture.componentInstance;
       component.options = optionsMock;
-      component.value = undefined;
       component.ngOnChanges({});
       fixture.autoDetectChanges();
       expect(component.value).toEqual(null);
