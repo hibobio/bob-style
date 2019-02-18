@@ -12,9 +12,9 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { IconService } from '../../../icons/icon.service';
 import { MultiSelectComponent } from './multi-select.component';
 import { MultiListModule } from '../multi-list/multi-list.module';
+import { By } from '@angular/platform-browser';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
-import { By } from '@angular/platform-browser';
 
 describe('MultiSelectComponent', () => {
   let component;
@@ -88,7 +88,6 @@ describe('MultiSelectComponent', () => {
       fixture = TestBed.createComponent(MultiSelectComponent);
       component = fixture.componentInstance;
       component.options = optionsMock;
-      component.value = undefined;
       component.ngOnChanges({});
       fixture.autoDetectChanges();
       expect(component.value).toEqual([]);
