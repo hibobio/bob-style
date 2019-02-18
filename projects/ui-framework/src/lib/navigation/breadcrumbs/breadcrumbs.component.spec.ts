@@ -5,7 +5,7 @@ import { Breadcrumb } from './breadcrumbs.interface';
 import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UtilsService } from '../../utils/utils.service';
-import { cold, getTestScheduler } from 'jasmine-marbles';
+import { cold } from 'jasmine-marbles';
 
 describe('BreadcrumbsComponent', () => {
   let utilsServiceMock: jasmine.SpyObj<UtilsService>;
