@@ -5,7 +5,7 @@ import { SquareButtonComponent } from './square/square.component';
 import { GroupComponent } from './group/group.component';
 import { BackButtonComponent } from './back-button/back-button.component';
 import {IconsModule} from '../../icons/icons.module';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,7 @@ import { BrowserModule } from '@angular/platform-browser';
     BackButtonComponent,
   ],
   imports: [
-    BrowserModule,
+    CommonModule,
     MatButtonModule,
     MatRippleModule,
     IconsModule,
