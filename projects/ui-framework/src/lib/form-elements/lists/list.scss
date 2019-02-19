@@ -26,7 +26,6 @@
   z-index: 2;
   pointer-events: none;
   .headers-group {
-    border-top: 1px solid $grey-300;
     .header {
       position: relative;
       z-index: 2;
@@ -34,7 +33,9 @@
       position: sticky;
       top: 0;
       background-color: $white;
+      border-top: 1px solid $grey-300;
       border-bottom: 1px solid $grey-300;
+      box-sizing: border-box;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -56,7 +57,7 @@
         @include chevron-up($grey-600);
       }
     }
-    &:first-child {
+    &:first-child .header {
       border-top: none;
     }
   }

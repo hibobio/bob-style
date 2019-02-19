@@ -1,16 +1,21 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { CheckboxStates } from '../../checkbox';
 import { chain, filter, flatMap } from 'lodash';
 import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import has from 'lodash/has';
 
 @Component({
   selector: 'b-multi-list',
   templateUrl: 'multi-list.component.html',
   styleUrls: ['multi-list.component.scss'],
 })
-export class MultiListComponent implements OnChanges {
+export class MultiListComponent implements OnChanges, AfterViewInit {
+
+  @ViewChild('vScroll') vScroll: CdkVirtualScrollViewport;
+  @ViewChild('headers') headers;
 
   readonly listElHeight = LIST_EL_HEIGHT;
 
@@ -30,13 +35,26 @@ export class MultiListComponent implements OnChanges {
 
   constructor(
     private listModelService: ListModelService,
+    private renderer: Renderer2,
   ) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.filteredOptions = this.options;
-    this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
-    this.updateLists();
+    if (!this.filteredOptions && this.options) {
+      this.filteredOptions = this.options;
+      this.updateLists();
+      this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
+    }
+  }
+
+  ngAfterViewInit(): void {
+    if (!this.noGroupHeaders) {
+      this.renderer.insertBefore(
+        this.vScroll.elementRef.nativeElement,
+        this.headers.nativeElement,
+        this.vScroll.elementRef.nativeElement.firstChild,
+      );
+    }
   }
 
   toggleGroupCollapse(header: ListHeader): void {

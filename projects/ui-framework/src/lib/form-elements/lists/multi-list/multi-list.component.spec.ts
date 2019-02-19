@@ -19,6 +19,7 @@ import { SelectGroupOption } from '../list.interface';
 import { By } from '@angular/platform-browser';
 import { MultiListComponent } from './multi-list.component';
 import { FiltersModule } from '../../../filters/filters.module';
+import { ListOptionModule } from '../list-option/list-option.module';
 
 describe('MultiListComponent', () => {
   let component: MultiListComponent;
@@ -38,8 +39,12 @@ describe('MultiListComponent', () => {
     ];
 
     TestBed.configureTestingModule({
-      declarations: [MultiListComponent],
-      providers: [ListModelService],
+      declarations: [
+        MultiListComponent,
+      ],
+      providers: [
+        ListModelService,
+      ],
       imports: [
         NoopAnimationsModule,
         CommonModule,
@@ -54,7 +59,8 @@ describe('MultiListComponent', () => {
         MatTooltipModule,
         ScrollingModule,
         MatPseudoCheckboxModule,
-        FiltersModule
+        FiltersModule,
+        ListOptionModule,
       ]
     })
       .compileComponents()
@@ -150,6 +156,45 @@ describe('MultiListComponent', () => {
       const checkboxes = fixture.debugElement.queryAll(By.css('.option .checkbox'));
       expect(checkboxes[1].nativeElement.getAttribute('ng-reflect-state')).toEqual('unchecked');
       expect(checkboxes[3].nativeElement.getAttribute('ng-reflect-state')).toEqual('unchecked');
+    });
+    it('should not build model if filteredOptions are defined', () => {
+      // checks that the model has been changed in onChanges
+      // - the if statement in the ngOnChanges
+      const headerCollapseTrigger = fixture.debugElement.queryAll(
+        By.css('.header-collapse-trigger')
+      )[0];
+      headerCollapseTrigger.triggerEventHandler('click', null);
+      fixture.autoDetectChanges();
+      expect(component.listHeaders).toEqual([
+        {
+          groupName: 'Basic Info',
+          isCollapsed: true,
+          placeHolderSize: 88,
+          selected: false
+        },
+        {
+          groupName: 'Personal',
+          isCollapsed: false,
+          placeHolderSize: 88,
+          selected: false
+        }
+      ]);
+      component.ngOnChanges({});
+      fixture.autoDetectChanges();
+      expect(component.listHeaders).toEqual([
+        {
+          groupName: 'Basic Info',
+          isCollapsed: true,
+          placeHolderSize: 88,
+          selected: false
+        },
+        {
+          groupName: 'Personal',
+          isCollapsed: false,
+          placeHolderSize: 88,
+          selected: false
+        }
+      ]);
     });
   });
   describe('header collapse', () => {

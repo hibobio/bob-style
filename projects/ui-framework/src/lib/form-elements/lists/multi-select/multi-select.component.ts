@@ -4,7 +4,7 @@ import {
   forwardRef,
   Input,
   OnChanges,
-  OnDestroy,
+  OnDestroy, OnInit,
   Output,
   SimpleChanges,
   ViewChild,
@@ -37,14 +37,12 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
     }
   ]
 })
-export class MultiSelectComponent extends BaseSelectPanelElement implements OnChanges, OnDestroy {
+export class MultiSelectComponent extends BaseSelectPanelElement implements OnInit, OnChanges, OnDestroy {
   @ViewChild('triggerInput') triggerInput;
 
   @Input() options: SelectGroupOption[];
   @Input() showSingleGroupHeader = false;
-  @Output() selectChange: EventEmitter<(string | number)[]> = new EventEmitter<
-    (string | number)[]
-  >();
+  @Output() selectChange: EventEmitter<(string | number)[]> = new EventEmitter<(string | number)[]>();
 
   triggerValue: string;
   blockSelectClick: boolean;
@@ -56,6 +54,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnCh
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
 
+  private initialValue: (number | string)[];
+
   constructor(
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
@@ -63,6 +63,10 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnCh
   ) {
     super(overlay, viewContainerRef, panelPositionService);
     this.value = [];
+  }
+
+  ngOnInit(): void {
+    this.initialValue = this.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -81,12 +85,16 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnCh
   }
 
   cancelSelection(): void {
+    this.value = this.initialValue;
+    this.triggerValue = this.getTriggerValue(this.value);
     this.destroyPanel();
   }
 
   notifySelectionIds(): void {
     this.selectChange.emit(this.value);
     this.propagateChange(this.value);
+    this.initialValue = this.value;
+    this.destroyPanel();
   }
 
   clearSelection(): void {

@@ -1,1 +1,1 @@
-export { SelectGroupOption, SelectOptions } from './list.interface';
+export { SelectGroupOption, SelectOption } from './list.interface';

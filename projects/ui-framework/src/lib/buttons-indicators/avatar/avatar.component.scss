@@ -2,6 +2,7 @@
 
 :host {
   display: inline-block;
+  vertical-align: top;
   .b-avatar {
     &.clickable {
       cursor: pointer;

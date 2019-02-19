@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { MultiSelectModule } from './multi-select.module';
 import { SelectGroupOption } from '../list.interface';
+import { AvatarComponent } from '../../../buttons-indicators/avatar';
+import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
 
 const buttonStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
@@ -58,13 +60,19 @@ const note = `
 
 const optionsMock: SelectGroupOption[] = Array.from(Array(3), (_, i) => {
   return {
-    groupName: `Personal G${i}`,
+    groupName: `Basic Info G${ i } - header`,
     options: Array.from(Array(4), (_, k) => {
       return {
-        value: `Personal G${i}_E${k}`,
-        id: i * 4 + k
+        value: `Basic Info G${ i }_E${ k } - option`,
+        id: (i * 4) + k,
+        prefixComponent: {
+          component: AvatarComponent,
+          attributes: {
+            imageSource: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg',
+          },
+        },
       };
-    })
+    }),
   };
 });
 
@@ -74,7 +82,7 @@ buttonStories.add(
     template: storyTemplate,
     props: {
       options: object<SelectGroupOption>('options', optionsMock),
-      value: array('value', [2, 7]),
+      value: array('value', [2]),
       selectChange: action(),
       label: text('label', 'label text'),
       disabled: boolean('disabled', false),
@@ -89,8 +97,12 @@ buttonStories.add(
         ButtonsModule,
         TypographyModule,
         BrowserAnimationsModule,
-        StoryBookLayoutModule
-      ]
+        StoryBookLayoutModule,
+        AvatarModule,
+      ],
+      entryComponents: [
+        AvatarComponent,
+      ],
     }
   }),
   { notes: { markdown: note } }

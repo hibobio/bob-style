@@ -18,6 +18,7 @@ import { ListModelService } from '../list-service/list-model.service';
 import { SelectGroupOption } from '../list.interface';
 import { By } from '@angular/platform-browser';
 import { FiltersModule } from '../../../filters/filters.module';
+import { ListOptionModule } from '../list-option/list-option.module';
 
 describe('SingleSelectComponent', () => {
   let component: SingleListComponent;
@@ -52,7 +53,8 @@ describe('SingleSelectComponent', () => {
         IconsModule,
         MatTooltipModule,
         ScrollingModule,
-        FiltersModule
+        FiltersModule,
+        ListOptionModule,
       ]
     })
       .compileComponents()

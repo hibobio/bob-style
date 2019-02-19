@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { SingleListModule } from './single-list.module';
 import { SelectGroupOption } from '../list.interface';
+import { AvatarComponent } from '../../../buttons-indicators/avatar';
+import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
 
 const buttonStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
@@ -25,7 +27,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Single list">
-  ${template}
+  ${ template }
 </b-story-book-layout>
 `;
 
@@ -42,31 +44,36 @@ const note = `
   showSingleGroupHeader | boolean | displays single group with group header
 
   ~~~
-  ${template}
+  ${ template }
   ~~~
 `;
 
-const optionsMock: SelectGroupOption[] = Array.from(Array(4), (_, i) => {
+const optionsMock: SelectGroupOption[] = Array.from(Array(10), (_, i) => {
   return {
-    groupName: `Basic Info G${i} - header`,
-    options: Array.from(Array(4), (_, k) => {
+    groupName: `Basic Info G${ i } - header`,
+    options: Array.from(Array(6), (_, k) => {
       return {
-        value: `Basic Info G${i}_E${k} - option`,
-        id: i * 4 + k
+        value: `Basic Info G${ i }_E${ k } - option`,
+        id: (i * 6) + k,
+        prefixComponent: {
+          component: AvatarComponent,
+          attributes: {
+            imageSource: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg',
+          },
+        },
       };
-    })
+    }),
   };
 });
 
 buttonStories.add(
-  'Single list',
-  () => ({
+  'Single list', () => ({
     template: storyTemplate,
     props: {
       selectChange: action(),
       options: object<SelectGroupOption>('options', optionsMock),
       value: number('value', 1),
-      showSingleGroupHeader: boolean('showSingleGroupHeader', false)
+      showSingleGroupHeader: boolean('showSingleGroupHeader', false),
     },
     moduleMetadata: {
       imports: [
@@ -74,9 +81,14 @@ buttonStories.add(
         ButtonsModule,
         TypographyModule,
         BrowserAnimationsModule,
-        StoryBookLayoutModule
-      ]
+        StoryBookLayoutModule,
+        AvatarModule,
+      ],
+      entryComponents: [
+        AvatarComponent,
+      ],
     }
   }),
   { notes: { markdown: note } }
 );
+

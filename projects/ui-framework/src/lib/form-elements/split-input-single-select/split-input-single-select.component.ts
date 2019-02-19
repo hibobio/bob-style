@@ -32,7 +32,6 @@ export class SplitInputSingleSelectComponent extends BaseInputElement implements
   }
 
   onInputChange($event: InputEvent): void {
-    console.log('aaa', $event);
     if ($event.event === InputEventType.onChange) {
       this.value.inputValue = $event.value;
       this.emitChange();

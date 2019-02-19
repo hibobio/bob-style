@@ -1,16 +1,19 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
 import { assign, cloneDeep, compact, escapeRegExp, filter, map, some } from 'lodash';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'b-single-list',
   templateUrl: 'single-list.component.html',
   styleUrls: ['single-list.component.scss'],
 })
-export class SingleListComponent implements OnChanges {
+export class SingleListComponent implements OnChanges, AfterViewInit {
 
+  @ViewChild('vScroll') vScroll: CdkVirtualScrollViewport;
+  @ViewChild('headers') headers;
   readonly listElHeight = LIST_EL_HEIGHT;
 
   @Input() options: SelectGroupOption[];
@@ -28,6 +31,7 @@ export class SingleListComponent implements OnChanges {
 
   constructor(
     private listModelService: ListModelService,
+    private renderer: Renderer2,
   ) {
   }
 
@@ -35,6 +39,16 @@ export class SingleListComponent implements OnChanges {
     this.filteredOptions = this.options;
     this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
     this.updateLists();
+  }
+
+  ngAfterViewInit(): void {
+    if (!this.noGroupHeaders) {
+      this.renderer.insertBefore(
+        this.vScroll.elementRef.nativeElement,
+        this.headers.nativeElement,
+        this.vScroll.elementRef.nativeElement.firstChild,
+      );
+    }
   }
 
   headerClick(header: ListHeader): void {

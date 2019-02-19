@@ -6,11 +6,26 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatPseudoCheckboxModule } from '@angular/material';
 import { SearchModule } from '../../../navigation/search/search.module';
 import { FiltersModule } from '../../../filters/filters.module';
+import { ListOptionModule } from '../list-option/list-option.module';
 
 @NgModule({
-  declarations: [MultiListComponent],
-  imports: [CommonModule, ScrollingModule, MatPseudoCheckboxModule, SearchModule, FiltersModule],
-  exports: [MultiListComponent],
-  providers: [ListModelService]
+  declarations: [
+    MultiListComponent,
+  ],
+  imports: [
+    CommonModule,
+    ScrollingModule,
+    MatPseudoCheckboxModule,
+    SearchModule,
+    FiltersModule,
+    ListOptionModule,
+  ],
+  exports: [
+    MultiListComponent,
+  ],
+  providers: [
+    ListModelService,
+  ]
 })
-export class MultiListModule {}
+export class MultiListModule {
+}
