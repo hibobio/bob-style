@@ -92,6 +92,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnCh
   clearSelection(): void {
     this.value = [];
     this.triggerValue = this.getTriggerValue(this.value);
+    this.propagateChange(this.value);
     setTimeout(() => {
       this.blockSelectClick = false;
       this.triggerInput.bInput.nativeElement.blur();
