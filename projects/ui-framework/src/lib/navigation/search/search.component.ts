@@ -44,5 +44,6 @@ export class SearchComponent extends BaseInputElement implements OnInit {
 
   onResetClick() {
     this.value = '';
+    this.searchChange.emit(this.value);
   }
 }

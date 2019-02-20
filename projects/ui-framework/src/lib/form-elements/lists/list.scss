@@ -13,7 +13,7 @@
   &.mat-selected {
     background-color: initial;
   }
-  &:hover, &.selected {
+  &:hover, &.selected, &.focus {
     background-color: $grey-100;
   }
 }
@@ -55,6 +55,9 @@
       }
       &.collapsed .chevron {
         @include chevron-up($grey-600);
+      }
+      &:hover, &.focus {
+        background-color: $grey-100;
       }
     }
     &:first-child .header {

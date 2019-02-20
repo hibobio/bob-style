@@ -48,7 +48,7 @@ const note = `
   ~~~
 `;
 
-const optionsMock: SelectGroupOption[] = Array.from(Array(10), (_, i) => {
+const optionsMock: SelectGroupOption[] = Array.from(Array(100), (_, i) => {
   return {
     groupName: `Basic Info G${i} - header`,
     options: Array.from(Array(6), (_, k) => {

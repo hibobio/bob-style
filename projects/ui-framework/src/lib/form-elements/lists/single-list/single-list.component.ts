@@ -1,20 +1,15 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, Renderer2, SimpleChanges } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
-import { LIST_EL_HEIGHT } from '../list.consts';
 import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
-import { assign, cloneDeep, compact, escapeRegExp, filter, map, some } from 'lodash';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { BaseListElement } from '../list-element.abstract';
+import findIndex from 'lodash/findIndex';
 
 @Component({
   selector: 'b-single-list',
   templateUrl: 'single-list.component.html',
   styleUrls: ['single-list.component.scss'],
 })
-export class SingleListComponent implements OnChanges, AfterViewInit {
-
-  @ViewChild('vScroll') vScroll: CdkVirtualScrollViewport;
-  @ViewChild('headers') headers;
-  readonly listElHeight = LIST_EL_HEIGHT;
+export class SingleListComponent extends BaseListElement implements OnChanges {
 
   @Input() options: SelectGroupOption[];
   @Input() maxHeight = this.listElHeight * 8;
@@ -24,30 +19,21 @@ export class SingleListComponent implements OnChanges, AfterViewInit {
 
   noGroupHeaders: boolean;
   searchValue: string;
-  listOptions: ListOption[];
-  listHeaders: ListHeader[];
 
   private filteredOptions: SelectGroupOption[];
 
   constructor(
     private listModelService: ListModelService,
-    private renderer: Renderer2,
+    renderer: Renderer2,
   ) {
+    super(renderer);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.filteredOptions = this.options;
-    this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
-    this.updateLists();
-  }
-
-  ngAfterViewInit(): void {
-    if (!this.noGroupHeaders) {
-      this.renderer.insertBefore(
-        this.vScroll.elementRef.nativeElement,
-        this.headers.nativeElement,
-        this.vScroll.elementRef.nativeElement.firstChild,
-      );
+    if (!this.filteredOptions && this.options) {
+      this.filteredOptions = this.options;
+      this.updateLists();
+      this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
     }
   }
 
@@ -60,6 +46,8 @@ export class SingleListComponent implements OnChanges, AfterViewInit {
   optionClick(option: ListOption): void {
     this.value = option.id;
     this.selectChange.emit(this.value);
+    this.focusIndex = findIndex(this.listOptions, o => o.id === option.id);
+    this.focusOption = option;
   }
 
   searchChange(s: string): void {

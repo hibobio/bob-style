@@ -4,7 +4,8 @@ import {
   forwardRef,
   Input,
   OnChanges,
-  OnDestroy, OnInit,
+  OnDestroy,
+  OnInit,
   Output,
   SimpleChanges,
   ViewChild,
@@ -85,6 +86,10 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
   }
 
   cancelSelection(): void {
+    this.onCancel();
+  }
+
+  onCancel(): void {
     this.value = this.initialValue;
     this.triggerValue = this.getTriggerValue(this.value);
     this.destroyPanel();

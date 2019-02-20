@@ -11,7 +11,10 @@
        *ngIf="!noGroupHeaders">
     <div *ngFor="let header of listHeaders"
          class="headers-group">
-      <div [ngClass]="{'collapsed': header.isCollapsed}"
+      <div [ngClass]="{
+           'collapsed': header.isCollapsed,
+           'focus': focusOption?.isPlaceHolder && focusOption?.groupName === header.groupName
+           }"
            class="option-select header">
           <span (click)="toggleGroupCollapse(header)"
                 class="header-collapse-trigger">
@@ -36,7 +39,12 @@
     <div class="options">
       <div (click)="optionClick(option)"
            *cdkVirtualFor="let option of listOptions"
-           [ngClass]="{'header-placeholder': option.isPlaceHolder, 'option': !option.isPlaceHolder}"
+           [ngClass]="{
+            'header-placeholder': option.isPlaceHolder,
+            'option': !option.isPlaceHolder,
+            'selected': option.id===value,
+            'focus': option.id===focusOption?.id
+           }"
            class="option-select">
         <mat-pseudo-checkbox [state]="option.selected ? checkboxState.checked : checkboxState.unchecked"
                              class="checkbox">

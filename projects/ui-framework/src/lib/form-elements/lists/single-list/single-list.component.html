@@ -1,4 +1,4 @@
-<b-search (searchChange)="searchChange($event)"
+<b-search (searchChange§)="searchChange($event)"
           [hideLabelOnFocus]="true">
 </b-search>
 
@@ -12,7 +12,10 @@
     <div *ngFor="let header of listHeaders"
          class="headers-group">
       <div (click)="headerClick(header)"
-           [ngClass]="{'collapsed': header.isCollapsed}"
+           [ngClass]="{
+           'collapsed': header.isCollapsed,
+           'focus': focusOption?.isPlaceHolder && focusOption?.groupName === header.groupName
+           }"
            class="option-select header">
         <span [innerHTML]="header.groupName | highlight: searchValue"></span>
         <span class="chevron"></span>
@@ -29,7 +32,12 @@
     <div class="options">
       <div (click)="optionClick(option)"
            *cdkVirtualFor="let option of listOptions"
-           [ngClass]="{'header-placeholder': option.isPlaceHolder, 'option': !option.isPlaceHolder, 'selected': option.id===value}"
+           [ngClass]="{
+           'header-placeholder': option.isPlaceHolder,
+           'option': !option.isPlaceHolder,
+           'selected': option.id===value,
+           'focus': option.id===focusOption?.id
+           }"
            class="option-select">
         <b-list-option [option]="option"
                        [searchValue]="searchValue">

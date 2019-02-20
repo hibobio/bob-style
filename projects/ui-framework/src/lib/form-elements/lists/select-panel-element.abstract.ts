@@ -43,10 +43,17 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
       width: this.overlayOrigin.elementRef.nativeElement.offsetWidth,
     });
 
+    const searchInput = this.overlayRef.overlayElement.querySelector('b-input input') as HTMLElement;
+    searchInput.focus();
+
     this.backdropClickSubscriber = this.overlayRef.backdropClick()
       .subscribe(() => {
-        this.destroyPanel();
+        this.onCancel();
       });
+  }
+
+  onCancel(): void {
+    this.destroyPanel();
   }
 
   destroyPanel(): void {

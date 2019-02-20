@@ -11,11 +11,14 @@ import { CommonModule } from '@angular/common';
     HttpClientModule,
     CommonModule,
     MatIconModule,
-    MatTooltipModule],
+    MatTooltipModule,
+  ],
   exports: [
     IconComponent,
   ],
-  providers: [IconService],
+  providers: [
+    IconService,
+  ],
 })
 export class IconsModule {
 }

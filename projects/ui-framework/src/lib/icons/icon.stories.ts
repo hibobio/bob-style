@@ -1,11 +1,12 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { IconsModule } from './icons.module';
-import { Icons, IconSize, IconColor } from './icons.enum';
-import { values, reduce } from 'lodash';
+import { IconColor, Icons, IconSize } from './icons.enum';
+import { reduce, values } from 'lodash';
 import { ComponentGroupType } from '../consts';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const iconStories = storiesOf(ComponentGroupType.Icons, module)
   .addDecorator(withNotes)
@@ -62,6 +63,7 @@ iconStories.add(
       },
       moduleMetadata: {
         imports: [
+          BrowserAnimationsModule,
           IconsModule,
           StoryBookLayoutModule,
         ]
@@ -101,6 +103,7 @@ iconStories.add(
       props: {},
       moduleMetadata: {
         imports: [
+          BrowserAnimationsModule,
           IconsModule,
           StoryBookLayoutModule,
         ]
