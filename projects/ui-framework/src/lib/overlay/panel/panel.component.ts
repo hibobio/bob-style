@@ -59,7 +59,7 @@ export class PanelComponent implements OnInit, OnDestroy {
   }
 
   private getDefaultConfig(): OverlayConfig {
-    const positionStrategy = this.panelPositionService.getPanelPositionStrategy(this.overlayOrigin);
+    const positionStrategy = this.panelPositionService.getDefaultPanelPositionStrategy(this.overlayOrigin);
 
     this.subscribeToPositions(positionStrategy as FlexibleConnectedPositionStrategy);
 

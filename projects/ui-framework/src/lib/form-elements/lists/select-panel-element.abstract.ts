@@ -66,7 +66,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
   }
 
   private getDefaultConfig(): OverlayConfig {
-    const positionStrategy = this.panelPositionService.getPanelPositionStrategy(this.overlayOrigin);
+    const positionStrategy = this.panelPositionService.getCenterPanelPositionStrategy(this.overlayOrigin);
 
     this.subscribeToPositions(positionStrategy as FlexibleConnectedPositionStrategy);
 

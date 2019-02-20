@@ -9,7 +9,7 @@ export class PanelPositionService {
   ) {
   }
 
-  getPanelPositionStrategy(overlayOrigin: CdkOverlayOrigin): PositionStrategy {
+  getDefaultPanelPositionStrategy(overlayOrigin: CdkOverlayOrigin): PositionStrategy {
     const positionStrategy: PositionStrategy = this.overlay.position()
       .flexibleConnectedTo(overlayOrigin.elementRef)
       .withPush()
@@ -36,6 +36,27 @@ export class PanelPositionService {
           originX: 'end',
           originY: 'top',
           overlayX: 'end',
+          overlayY: 'bottom',
+        },
+      ]);
+    return positionStrategy;
+  }
+
+  getCenterPanelPositionStrategy(overlayOrigin: CdkOverlayOrigin): PositionStrategy {
+    const positionStrategy: PositionStrategy = this.overlay.position()
+      .flexibleConnectedTo(overlayOrigin.elementRef)
+      .withPush()
+      .withPositions([
+        {
+          originX: 'center',
+          originY: 'bottom',
+          overlayX: 'center',
+          overlayY: 'top',
+        },
+        {
+          originX: 'center',
+          originY: 'top',
+          overlayX: 'center',
           overlayY: 'bottom',
         },
       ]);
