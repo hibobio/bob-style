@@ -58,4 +58,6 @@ export { UtilsService } from './lib/utils/utils.service';
 // Panel
 export { PanelModule } from './lib/overlay/panel/panel.module';
 export { SplitInputSingleSelectModule } from './lib/form-elements/split-input-single-select/split-input-single-select.module';
-
+// Tabs
+export { TabsModule } from './lib/navigation/tabs/tabs.module';
+export { Tab } from './lib/navigation/tabs/tabs.interface';
