@@ -24,9 +24,6 @@ export { SwitchToggleModule } from './lib/buttons-indicators/switch-toggle/switc
 export { FormElementsModule } from './lib/form-elements/form-elements.module';
 // Textarea
 export { TextareaModule } from './lib/form-elements/textarea/textarea.module';
-// AutoComplete
-export { AutoCompleteModule } from './lib/form-elements/auto-complete/auto-complete.module';
-export { AutoCompleteOption } from './lib/form-elements/auto-complete/auto-complete.interface';
 // Checkbox
 export { CheckboxModule } from './lib/form-elements/checkbox/checkbox.module';
 export { DatepickerModule } from './lib/form-elements/datepicker/datepicker.module';
