@@ -26,7 +26,10 @@ const tabs: Tab[] = [
     id: 1
   }];
 const template = `
-<b-tabs [tabs]="tabs" [onSelectedTabChange]="onSelectedTabChange" [selectedIndex]="selectedIndex"></b-tabs>`;
+<b-tabs [tabs]="tabs"
+        [onSelectedTabChange]="onSelectedTabChange"
+        [selectedIndex]="selectedIndex">
+</b-tabs>`;
 
 const storyTemplate = `
 <b-story-book-layout title="Tabs">
