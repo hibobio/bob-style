@@ -15,15 +15,12 @@ const inputStories = storiesOf(ComponentGroupType.Navigation, module)
 const tabs: Tab[] = [
   {
     label: 'tab 1',
-    id: 0
   },
   {
     label: 'tab 2',
-    id: 1
   },
   {
     label: 'tab 3',
-    id: 1
   }];
 const template = `
 <b-tabs [tabs]="tabs"
