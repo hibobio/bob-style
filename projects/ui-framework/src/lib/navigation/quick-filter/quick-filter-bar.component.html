@@ -3,9 +3,18 @@
     <ng-content select="[bar-prefix]"></ng-content>
   </div>
   <div class="bar-filters">
-    <b-quick-filter></b-quick-filter>
-    <b-quick-filter></b-quick-filter>
-    <b-quick-filter></b-quick-filter>
+    <div class="quick-filter-holder"
+         [ngStyle]="{width: 100/3 + '%'}">
+      <b-quick-filter></b-quick-filter>
+    </div>
+    <div class="quick-filter-holder"
+         [ngStyle]="{width: 100/3 + '%'}">
+      <b-quick-filter></b-quick-filter>
+    </div>
+    <div class="quick-filter-holder"
+         [ngStyle]="{width: 100/3 + '%'}">
+      <b-quick-filter></b-quick-filter>
+    </div>
   </div>
   <div class="bar-suffix">
     <ng-content select="[bar-suffix]"></ng-content>

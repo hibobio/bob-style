@@ -60,7 +60,8 @@ $textarea-height: 120px;
           }
         }
         .mat-form-field-prefix, .mat-form-field-suffix {
-          display: block;
+          display: flex;
+          align-items: center;
         }
       }
       .mat-form-field-subscript-wrapper {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 
 const optionsMock: SelectGroupOption[] = Array.from(Array(3), (_, i) => {
@@ -20,15 +20,22 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(3), (_, i) => {
 })
 export class QuickFilterComponent {
 
-  label = 'Department';
-  options: SelectGroupOption[] = optionsMock;
-  value = [];
-  showSingleGroupHeader = false;
+  @Input() label = 'Department';
+  @Input() showSingleGroupHeader = false;
+  @Input() options: SelectGroupOption[] = optionsMock;
+  @Input() value: any = [];
+
+  hasValue = false;
 
   constructor() {
   }
 
-  selectChange($event): void {
-    console.log('$event');
+  multiSelectChange(value: (string | number)[]): void {
+    console.log('apply value', value);
+  }
+
+  multiSelectModified(value: (string | number)[]): void {
+    console.log('modify value', value);
+    this.hasValue = value.length > 0;
   }
 }

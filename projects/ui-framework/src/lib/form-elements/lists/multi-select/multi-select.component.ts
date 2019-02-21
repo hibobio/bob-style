@@ -44,6 +44,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
   @Input() options: SelectGroupOption[];
   @Input() showSingleGroupHeader = false;
   @Output() selectChange: EventEmitter<(string | number)[]> = new EventEmitter<(string | number)[]>();
+  @Output() selectModified: EventEmitter<(string | number)[]> = new EventEmitter<(string | number)[]>();
 
   triggerValue: string;
   blockSelectClick: boolean;
@@ -83,6 +84,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
   onSelect(value): void {
     this.value = value;
     this.triggerValue = this.getTriggerValue(this.value);
+    this.selectModified.emit(this.value);
   }
 
   cancelSelection(): void {
@@ -92,6 +94,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
   onCancel(): void {
     this.value = this.initialValue;
     this.triggerValue = this.getTriggerValue(this.value);
+    this.selectModified.emit(this.value);
     this.destroyPanel();
   }
 

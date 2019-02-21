@@ -17,10 +17,11 @@
 $chevronWidth: 2px;
 
 @mixin chevron($color, $size) {
+  position: relative;
   border-style: solid;
   border-color: $color;
   height: $size;
-  vertical-align: top;
+  vertical-align: middle;
   width: $size;
   transform: rotate(45deg)
 }
@@ -28,11 +29,13 @@ $chevronWidth: 2px;
 @mixin chevron-up($color, $size:5px) {
   @include chevron($color, $size);
   border-width: $chevronWidth 0 0 $chevronWidth;
+  top: 2px;
 }
 
 @mixin chevron-down($color, $size:5px) {
   @include chevron($color, $size);
   border-width: 0 $chevronWidth $chevronWidth 0;
+  top: -2px;
 }
 
 @mixin chevron-right($color, $size:5px) {

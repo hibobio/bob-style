@@ -1,8 +1,16 @@
-<b-multi-select [label]="label"
+<div class="label-wrapper"
+     [ngClass]="{'has-value': hasValue}">
+  <label>{{label}}</label>
+  <div class="chevron"></div>
+</div>
+
+<b-multi-select [ngClass]="{'has-value': hasValue}"
                 [options]="options"
                 [value]="value"
-                (selectChange)="selectChange($event)"
+                (selectChange)="multiSelectChange($event)"
+                (selectModified)="multiSelectModified($event)"
                 [disabled]="false"
                 [required]="false"
-                [showSingleGroupHeader]="showSingleGroupHeader">
+                [showSingleGroupHeader]="showSingleGroupHeader"
+                [isQuickFilter]="true">
 </b-multi-select>
