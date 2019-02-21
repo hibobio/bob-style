@@ -4,6 +4,7 @@ import { QuickFilterBarComponent } from './quick-filter-bar.component';
 import { QuickFilterComponent } from './quick-filter.component';
 import { MultiSelectModule } from '../../form-elements/lists/multi-select/multi-select.module';
 import { PanelPositionService } from '../../overlay/panel/panel-position.service';
+import { SingleSelectModule } from '../../form-elements/lists/single-select/single-select.module';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { PanelPositionService } from '../../overlay/panel/panel-position.service
   imports: [
     CommonModule,
     MultiSelectModule,
+    SingleSelectModule,
   ],
   providers: [
     PanelPositionService,

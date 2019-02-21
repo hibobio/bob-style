@@ -33,9 +33,9 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.filteredOptions && this.options) {
+      this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
       this.filteredOptions = this.options;
       this.updateLists();
-      this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
     }
   }
 

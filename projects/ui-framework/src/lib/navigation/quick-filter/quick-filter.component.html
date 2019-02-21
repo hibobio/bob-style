@@ -1,16 +1,34 @@
 <div class="label-wrapper"
      [ngClass]="{'has-value': hasValue}">
-  <label>{{label}}</label>
+  <label>{{quickFilterConfig.label}}</label>
   <div class="chevron"></div>
 </div>
 
-<b-multi-select [ngClass]="{'has-value': hasValue}"
-                [options]="options"
-                [value]="value"
-                (selectChange)="multiSelectChange($event)"
-                (selectModified)="multiSelectModified($event)"
-                [disabled]="false"
-                [required]="false"
-                [showSingleGroupHeader]="showSingleGroupHeader"
-                [isQuickFilter]="true">
-</b-multi-select>
+<div [ngTemplateOutletContext]="{ $implicit: quickFilterConfig }"
+     [ngTemplateOutlet]="getTemplate()">
+</div>
+
+<ng-template #multiSelect let-quickFilterConfig>
+  <b-multi-select [ngClass]="{'has-value': hasValue}"
+                  [options]="quickFilterConfig.options"
+                  [value]="quickFilterConfig.value"
+                  (selectChange)="multiSelectChange($event)"
+                  (selectModified)="multiSelectModified($event)"
+                  [disabled]="false"
+                  [required]="false"
+                  [showSingleGroupHeader]="showSingleGroupHeader"
+                  [isQuickFilter]="true">
+  </b-multi-select>
+</ng-template>
+
+<ng-template #singleSelect let-quickFilterConfig>
+  <b-single-select [ngClass]="{'has-value': hasValue}"
+                  [options]="quickFilterConfig.options"
+                  [value]="quickFilterConfig.value"
+                  (selectChange)="singleSelectChange($event)"
+                  [disabled]="false"
+                  [required]="false"
+                  [showSingleGroupHeader]="showSingleGroupHeader"
+                  [isQuickFilter]="true">
+  </b-single-select>
+</ng-template>

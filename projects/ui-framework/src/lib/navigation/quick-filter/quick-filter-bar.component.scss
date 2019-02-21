@@ -16,9 +16,9 @@
     .bar-prefix, .bar-suffix {
       height: 100%;
       padding: 0 16px;
-      display: flex;
       align-items: center;
       white-space: nowrap;
+      display: none;
     }
     .bar-prefix {
       border-right: 1px solid $grey-500;
@@ -38,6 +38,12 @@
           flex-grow: 0;
         }
       }
+    }
+    &.has-prefix .bar-prefix {
+      display: flex;
+    }
+    &.has-suffix .bar-suffix {
+      display: flex;
     }
   }
 }

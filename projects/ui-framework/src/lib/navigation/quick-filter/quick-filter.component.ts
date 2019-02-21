@@ -1,41 +1,46 @@
-import { Component, Input } from '@angular/core';
-import { SelectGroupOption } from '../../form-elements/lists/list.interface';
-
-const optionsMock: SelectGroupOption[] = Array.from(Array(3), (_, i) => {
-  return {
-    groupName: `Basic Info G${ i } - header`,
-    options: Array.from(Array(4), (_, k) => {
-      return {
-        value: `Basic Info G${ i }_E${ k } - option`,
-        id: i * 4 + k,
-      };
-    })
-  };
-});
+import { Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { QuickFilterConfig } from './quick-filter.interface';
+import { QuickFilterSelectType } from './quick-filter.enum';
+import isEmpty from 'lodash/isEmpty';
 
 @Component({
   selector: 'b-quick-filter',
   templateUrl: './quick-filter.component.html',
   styleUrls: ['./quick-filter.component.scss'],
 })
-export class QuickFilterComponent {
+export class QuickFilterComponent implements OnChanges {
 
-  @Input() label = 'Department';
-  @Input() showSingleGroupHeader = false;
-  @Input() options: SelectGroupOption[] = optionsMock;
-  @Input() value: any = [];
+  @ViewChild('singleSelect') singleSelect: TemplateRef<any>;
+  @ViewChild('multiSelect') multiSelect: TemplateRef<any>;
 
+  @Input() quickFilterConfig: QuickFilterConfig;
+
+  showSingleGroupHeader = false;
   hasValue = false;
 
   constructor() {
   }
 
+  ngOnChanges(simpleChanges: SimpleChanges): void {
+    this.hasValue = !isEmpty(this.quickFilterConfig.value) && this.quickFilterConfig.value !== null;
+  }
+
   multiSelectChange(value: (string | number)[]): void {
-    console.log('apply value', value);
   }
 
   multiSelectModified(value: (string | number)[]): void {
-    console.log('modify value', value);
     this.hasValue = value.length > 0;
+  }
+
+  singleSelectChange(value: (string | number)): void {
+    this.hasValue = value !== null;
+  }
+
+  private getTemplate(): TemplateRef<any> {
+    const referenceElement = {
+      [QuickFilterSelectType.singleSelect]: this.singleSelect,
+      [QuickFilterSelectType.multiSelect]: this.multiSelect,
+    };
+    return referenceElement[this.quickFilterConfig.selectType];
   }
 }
