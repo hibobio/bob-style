@@ -1,6 +1,15 @@
-import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS, MatDatepicker } from '@angular/material';
-import { IconColor, Icons, IconSize } from '../../icons';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import * as moment_ from 'moment';
 import { InputEventType, InputTypes } from '../input/input.enum';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
@@ -17,10 +26,12 @@ const moment = moment_;
   styleUrls: ['./datepicker.component.scss'],
   providers: [
     {
-      provide: DateAdapter, useClass: BDateAdapter
+      provide: DateAdapter,
+      useClass: BDateAdapter
     },
     {
-      provide: MAT_DATE_FORMATS, useValue: B_DATE_FORMATS
+      provide: MAT_DATE_FORMATS,
+      useValue: B_DATE_FORMATS
     },
     {
       provide: NG_VALUE_ACCESSOR,
@@ -35,7 +46,6 @@ const moment = moment_;
   ]
 })
 export class DatepickerComponent extends BaseInputElement implements OnInit {
-
   @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
   @Input() inputLabel: String;
   @Input() dateFormat?: string;
@@ -65,7 +75,9 @@ export class DatepickerComponent extends BaseInputElement implements OnInit {
         }
         break;
       case InputEventType.onChange:
-        inputEvent.value = moment(inputEvent.value).isValid() ? moment(inputEvent.value).format(serverDateFormat) : inputEvent.value;
+        inputEvent.value = moment(inputEvent.value).isValid()
+          ? moment(inputEvent.value).format(serverDateFormat)
+          : inputEvent.value;
         this.propagateChange(inputEvent.value);
         this.dateChange.emit(inputEvent);
         break;

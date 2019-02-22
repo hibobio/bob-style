@@ -17,18 +17,12 @@
     "start-app-test": "ng serve --project=app-test"
   },
   "private": false,
-  "storybook-deployer": {
-    "gitUsername": "bob-admin",
-    "gitEmail": "admin@hibob.io",
-    "commitMessage": "Deploy Storybook to GitHub Pages"
-  },
   "dependencies": {
     "@angular/animations": "^7.2.0",
     "@angular/cdk": "^7.2.1",
     "@angular/common": "~7.2.0",
     "@angular/compiler": "~7.2.0",
     "@angular/core": "~7.2.0",
-    "@angular/flex-layout": "^7.0.0-beta.22",
     "@angular/forms": "~7.2.0",
     "@angular/http": "~7.2.0",
     "@angular/material": "^7.2.0",
@@ -51,28 +45,29 @@
     "@angular/compiler-cli": "~7.2.0",
     "@angular/language-service": "~7.2.0",
     "@babel/core": "^7.2.2",
-    "@storybook/addon-actions": "^4.1.11",
-    "@storybook/addon-knobs": "^4.1.11",
-    "@storybook/addon-links": "^4.1.11",
-    "@storybook/addon-notes": "^4.1.11",
-    "@storybook/addon-options": "^4.1.11",
-    "@storybook/addons": "^4.1.11",
-    "@storybook/angular": "^4.1.11",
+    "@storybook/addon-actions": "^4.1.12",
+    "@storybook/addon-knobs": "^4.1.12",
+    "@storybook/addon-links": "^4.1.12",
+    "@storybook/addon-notes": "^4.1.12",
+    "@storybook/addon-options": "^4.1.12",
+    "@storybook/addons": "^4.1.12",
+    "@storybook/angular": "^4.1.12",
     "@storybook/storybook-deployer": "^2.8.1",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^8.9.5",
-    "babel-loader": "^8.0.4",
+    "babel-loader": "^8.0.5",
     "codelyzer": "~4.5.0",
     "cpx": "^1.5.0",
     "jasmine-core": "~2.99.1",
+    "jasmine-marbles": "^0.4.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~3.0.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "ng-packagr": "^4.4.5",
+    "ng-packagr": "^4.7.1",
     "protractor": "~5.4.1",
     "ts-node": "~7.0.1",
     "tsconfig-paths": "^3.7.0",
@@ -82,6 +77,6 @@
     "typescript": "~3.2.2"
   },
   "publishConfig": {
-    "access": "public"
+    "registry": "https://hibob.jfrog.io/hibob/api/npm/bob-js-virtual/"
   }
 }

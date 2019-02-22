@@ -1,23 +1,17 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonType } from '../buttons.enum';
-import { IconColor, Icons, IconSize } from '../../../icons/';
+import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 
 @Component({
   selector: 'b-square-button',
   template: `
-    <button mat-button [disableRipple]="true"
-            [ngClass]="type"
-            (click)="onClick($event)">
-      <b-icon [icon]="icon"
-              [size]="iconSize.medium"
-              [color]="color">
-      </b-icon>
+    <button mat-button [disableRipple]="true" [ngClass]="type" (click)="onClick($event)">
+      <b-icon [icon]="icon" [size]="iconSize.medium" [color]="color"> </b-icon>
     </button>
   `,
   styleUrls: ['./square.component.scss']
 })
 export class SquareButtonComponent {
-
   @Input() type?: ButtonType = ButtonType.primary;
   @Input() icon: Icons;
   @Input() color: IconColor = IconColor.dark;
@@ -25,8 +19,7 @@ export class SquareButtonComponent {
 
   iconSize = IconSize;
 
-  constructor() {
-  }
+  constructor() {}
 
   onClick($event) {
     this.clicked.emit($event);

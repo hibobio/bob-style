@@ -15,14 +15,12 @@ const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
 const typeOptions = values(ButtonType);
 const sizeOptions = values(ButtonSize);
 const template = `
-<b-story-book-layout title="Button">
-  <b-button
-    (clicked)="onClick($event)"
-    [type]="type"
-    [size]="size">
-      {{label}}
-  </b-button>
-</b-story-book-layout>
+<b-button
+  (clicked)="onClick($event)"
+  [type]="type"
+  [size]="size">
+    {{label}}
+</b-button>
 `;
 const note = `
   ## Button Element
@@ -47,9 +45,16 @@ const note = `
   ${ template }
   ~~~
 `;
+
+const storyTemplate = `
+<b-story-book-layout title="Button">
+  ${ template }
+</b-story-book-layout>
+`;
+
 buttonStories.add(
   'Regular Button', () => ({
-    template,
+    template: storyTemplate,
     props: {
       onClick: action(),
       label: text('label', 'Click me'),

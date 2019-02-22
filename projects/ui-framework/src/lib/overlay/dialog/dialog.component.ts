@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
-import { Icons, IconSize } from '../../icons';
+import { Icons, IconSize } from '../../icons/icons.enum';
 
 @Component({
   selector: 'b-dialog',
@@ -8,17 +8,13 @@ import { Icons, IconSize } from '../../icons';
   styleUrls: ['./dialog.component.scss']
 })
 export class DialogComponent {
-
   @Input() dialogTitle: string;
   @Input() dialogButtonConfig: any;
 
   icons = Icons;
   iconSize = IconSize;
 
-  constructor(
-    public dialogRef: MatDialogRef<DialogComponent>,
-  ) {
-  }
+  constructor(public dialogRef: MatDialogRef<DialogComponent>) {}
 
   onOk(): void {
     console.log('ok');

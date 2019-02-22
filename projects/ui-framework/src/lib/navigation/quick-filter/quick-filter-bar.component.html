@@ -1,0 +1,22 @@
+<div class="bar-content"
+     [ngClass]="{
+        'has-prefix': prefix && prefix.childNodes.length > 0,
+        'has-suffix': suffix && suffix.childNodes.length > 0
+     }">
+  <div #prefix
+       class="bar-prefix">
+    <ng-content select="[bar-prefix]"></ng-content>
+  </div>
+  <div class="bar-filters">
+    <div *ngFor="let quickFilterConfig of quickFilters"
+         class="quick-filter-holder"
+         [ngStyle]="{width: 100/quickFilters.length + '%'}">
+      <b-quick-filter [quickFilterConfig]="quickFilterConfig">
+      </b-quick-filter>
+    </div>
+  </div>
+  <div #suffix
+       class="bar-suffix">
+    <ng-content select="[bar-suffix]"></ng-content>
+  </div>
+</div>

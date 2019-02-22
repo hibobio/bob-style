@@ -4,8 +4,11 @@ import { BreadcrumbsComponent } from './breadcrumbs.component';
 import { Breadcrumb } from './breadcrumbs.interface';
 import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { UtilsService } from '../../utils/utils.service';
+import { cold } from 'jasmine-marbles';
 
 describe('BreadcrumbsComponent', () => {
+  let utilsServiceMock: jasmine.SpyObj<UtilsService>;
   let component: BreadcrumbsComponent;
   let fixture: ComponentFixture<BreadcrumbsComponent>;
   let breadCrumbsMock: Breadcrumb[];
@@ -18,10 +21,14 @@ describe('BreadcrumbsComponent', () => {
       { title: 'summary', disabled: true }
     ];
 
+    utilsServiceMock = jasmine.createSpyObj('UtilsService', ['getResizeEvent']);
+    utilsServiceMock.getResizeEvent.and.callFake(() => cold('x', { x: true }));
+
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [BreadcrumbsComponent],
-      imports: [NoopAnimationsModule]
+      imports: [NoopAnimationsModule],
+      providers: [{ provide: UtilsService, useValue: utilsServiceMock }]
     })
       .compileComponents()
       .then(() => {

@@ -1,0 +1,6 @@
+<span [ngClass]="{'comp-prefix': option?.prefixComponent}">
+  <ng-template #prefixCompHost></ng-template>
+</span>
+<span class="value"
+      [innerHTML]="option?.value | highlight: searchValue">
+</span>

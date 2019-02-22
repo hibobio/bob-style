@@ -15,12 +15,14 @@
     padding: 8px 16px;
   }
   &.medium {
-    padding: 12px 21px;
+    padding: 12px 22px;
   }
   &.large {
     padding: 16px 32px;
     text-transform: uppercase;
     font-weight: 500;
   }
+  .mat-ripple {
+    display: none;
+  }
 }
-

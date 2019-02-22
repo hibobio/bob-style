@@ -1,0 +1,11 @@
+:host {
+  display: inline-block;
+  vertical-align: middle;
+  .comp-prefix, .value {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .comp-prefix {
+    margin-right: 8px;
+  }
+}

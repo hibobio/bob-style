@@ -2,7 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TableCellComponent } from './table-cell.component';
 import { mockColumns } from '../table.mock';
-import { AvatarComponent, AvatarModule } from '../../buttons-indicators/avatar';
+import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
+import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 describe('TableCellComponent', () => {
@@ -11,14 +12,15 @@ describe('TableCellComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TableCellComponent ],
-      imports: [ AvatarModule ]
-    }).overrideModule(BrowserDynamicTestingModule, {
-      set: {
-        entryComponents: [ AvatarComponent ],
-      }
+      declarations: [TableCellComponent],
+      imports: [AvatarModule]
     })
-    .compileComponents();
+      .overrideModule(BrowserDynamicTestingModule, {
+        set: {
+          entryComponents: [AvatarComponent]
+        }
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {

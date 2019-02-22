@@ -5,19 +5,14 @@
     "target": "es2015",
     "module": "es2015",
     "moduleResolution": "node",
-    "declaration": true,
+    "declaration": false,
     "sourceMap": true,
     "inlineSources": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "types": [
-      "node"
-    ],
-    "lib": [
-      "dom",
-      "es2018"
-    ]
+    "types": ["node"],
+    "lib": ["dom", "es2018"]
   },
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,
@@ -27,9 +22,5 @@
     "strictInjectionParameters": true,
     "enableResourceInlining": true
   },
-  "exclude": [
-    "src/test.ts",
-    "**/*.spec.ts",
-    "**/*.stories.ts"
-  ]
+  "exclude": ["src/test.ts", "**/*.spec.ts", "**/*.stories.ts"]
 }

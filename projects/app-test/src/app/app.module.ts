@@ -1,27 +1,20 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ButtonsModule, DatepickerModule, InputModule, SelectModule, TextareaModule, TypographyModule } from 'bob-style';
-
+import { TypographyModule, ButtonsModule, IconsModule, MultiListModule } from 'bob-style';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     TypographyModule,
-    DatepickerModule,
     ButtonsModule,
-    DatepickerModule,
-    InputModule,
-    SelectModule,
-    TextareaModule,
+    IconsModule,
+    MultiListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

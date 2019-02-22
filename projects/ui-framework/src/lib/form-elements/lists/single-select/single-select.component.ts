@@ -17,7 +17,7 @@ import { LIST_EL_HEIGHT } from '../list.consts';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { SelectGroupOption } from '../list.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IconColor, Icons, IconSize } from '../../../icons';
+import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 
 @Component({
   selector: 'b-single-select',
@@ -34,17 +34,14 @@ import { IconColor, Icons, IconSize } from '../../../icons';
       useExisting: forwardRef(() => SingleSelectComponent),
       multi: true
     }
-  ],
+  ]
 })
-
 export class SingleSelectComponent extends BaseSelectPanelElement implements OnChanges, OnDestroy {
-
   @ViewChild('triggerInput') triggerInput;
 
   @Input() options: SelectGroupOption[];
-  @Input() value: string | number = null;
   @Input() showSingleGroupHeader = false;
-  @Output() selectChange: EventEmitter<(string | number)> = new EventEmitter<(string | number)>();
+  @Output() selectChange: EventEmitter<string | number> = new EventEmitter<string | number>();
 
   triggerValue: string;
   showTriggerTooltip: boolean;
@@ -52,23 +49,25 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
 
   readonly listElHeight = LIST_EL_HEIGHT;
   readonly resetIcon: String = Icons.reset_x;
-  readonly iconSize: String = IconSize.medium;
-  readonly iconColor: String = IconColor.dark;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
 
   constructor(
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
-    panelPositionService: PanelPositionService,
+    panelPositionService: PanelPositionService
   ) {
     super(overlay, viewContainerRef, panelPositionService);
+    this.value = null;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.value = this.value || null;
-    this.triggerValue = this.value ? this.getTriggerValue(this.value) : null;
+    if (changes.value) {
+      this.triggerValue = this.value ? this.getTriggerValue(this.value) : null;
+    }
   }
 
-  onSelect(optionId: (string | number)) {
+  onSelect(optionId: string | number) {
     this.value = optionId;
     this.triggerValue = this.getTriggerValue(this.value);
     this.selectChange.emit(this.value);
@@ -79,6 +78,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
   clearSelection(): void {
     this.value = null;
     this.triggerValue = this.getTriggerValue(this.value);
+    this.propagateChange(this.value);
     setTimeout(() => {
       this.blockSelectClick = false;
       this.triggerInput.bInput.nativeElement.blur();
@@ -93,7 +93,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
     this.updateTriggerTooltip();
     return chain(this.options)
       .flatMap('options')
-      .filter(option => option.id === value)
+      .filter((option) => option.id === value)
       .first()
       .get('value', null)
       .value();

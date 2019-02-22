@@ -27,11 +27,11 @@ npm run storybook
 ## Contribute Instructions
 - Generate the new component source files
 ```sh
-ng generate component newComponent --project=ui-framework
+ng g module newComponent --project=ui-framework
+ng g component newComponent --project=ui-framework
 ```
 - Each component should have its own module and enum if there are any
-- Create index.ts file and export the relevant files (module, enums)
-- Export the module and reference to the index.ts file in the global public_api.ts file
+- Export the module, enum, interfaces in the global public_api.ts file
 - Add to the peer dependencies collection of the library package.json any new dependencies
 - Add also to the main package.json the new dependency
 - Add the component stories file

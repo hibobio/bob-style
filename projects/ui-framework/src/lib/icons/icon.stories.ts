@@ -1,11 +1,12 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { text, select, withKnobs } from '@storybook/addon-knobs/angular';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { IconsModule } from './icons.module';
-import { Icons, IconSize, IconColor } from './icons.enum';
-import { values, reduce } from 'lodash';
+import { IconColor, Icons, IconSize } from './icons.enum';
+import { reduce, values } from 'lodash';
 import { ComponentGroupType } from '../consts';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const iconStories = storiesOf(ComponentGroupType.Icons, module)
   .addDecorator(withNotes)
@@ -16,16 +17,14 @@ const size = values(IconSize);
 const color = values(IconColor);
 
 const template = `
-<b-story-book-layout title="Icon">
-  <b-icon
-    [toolTipSummary]="toolTipSummary"
-    [icon]="icon"
-    [size]="size"
-    [color]="color">
-  </b-icon>
-</b-story-book-layout>
+<b-icon [toolTipSummary]="toolTipSummary"
+        [icon]="icon"
+        [size]="size"
+        [color]="color"
+        [hasHoverState]="hasHoverState">
+</b-icon>
 `;
-const displayTemplate = `${ template }`;
+
 const note = `
   ## Icon Element
 
@@ -37,24 +36,34 @@ const note = `
   icon | Icons | enum for the available icons |
   size | IconSize | enum for the available icon sizes |
   color | IconColor | enum for the available icon colors | dark (optional)
+  hasHoverState | boolean | if icon has hover state | false
 
   ~~~
   ${ template }
   ~~~
 `;
+
+const storyTemplate = `
+<b-story-book-layout title="Icon">
+  ${ template }
+</b-story-book-layout>
+`;
+
 iconStories.add(
   'Icon element',
   () => {
     return {
-      template: displayTemplate,
+      template: storyTemplate,
       props: {
         toolTipSummary: text('toolTipSummary', 'This is the icon element'),
         icon: select('icon', icons, Icons.docs_link),
         size: select('size', size, IconSize.large),
-        color: select('color', color, IconColor.dark),
+        color: select('color', color, IconColor.normal),
+        hasHoverState: boolean('hasHoverState', false),
       },
       moduleMetadata: {
         imports: [
+          BrowserAnimationsModule,
           IconsModule,
           StoryBookLayoutModule,
         ]
@@ -94,6 +103,7 @@ iconStories.add(
       props: {},
       moduleMetadata: {
         imports: [
+          BrowserAnimationsModule,
           IconsModule,
           StoryBookLayoutModule,
         ]

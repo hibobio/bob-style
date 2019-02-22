@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoryBookLayoutComponent } from './story-book-layout.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { TypographyModule } from '../typography/typography.module';
 
 @NgModule({
@@ -11,7 +10,6 @@ import { TypographyModule } from '../typography/typography.module';
   imports: [
     CommonModule,
     TypographyModule,
-    // FlexLayoutModule,
   ],
   exports: [
     StoryBookLayoutComponent,

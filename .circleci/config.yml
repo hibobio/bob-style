@@ -10,7 +10,7 @@ jobs:
 
       # Download and cache dependencies
       - restore_cache:
-           key: bob-style-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: bob-style-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - run: npm install
       - save_cache:
           key: bob-style-{{ .Branch }}-{{ checksum "package-lock.json" }}
@@ -18,7 +18,7 @@ jobs:
             - node_modules
 
       # run tests!
-       #npm run to run ng because @angular/cli is not installed globally.
+      #npm run to run ng because @angular/cli is not installed globally.
 
       - run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadless
       - run: npm run build-storybook
@@ -27,45 +27,43 @@ jobs:
       - store_artifacts:
           path: ~/repo/test-results/
       - persist_to_workspace:
-            root: ~/repo
-            paths:
-              - .
+          root: ~/repo
+          paths:
+            - .
   deploy:
     docker:
-     - image: circleci/node:11.4
+      - image: circleci/node:11.4
     working_directory: ~/repo
-    parameters: 
-         bobStylePackageJson: "./projects/ui-framework/package.json"
+    parameters:
+      bobStylePackageJson: './projects/ui-framework/package.json'
     steps:
       - checkout
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-         at: .
-      
+          at: .
+
       # deploy!
       - run: mkdir -p .out/.circleci && cp -a .circleci/. .out/.circleci/.
       - run: npm run build-storybook
-      - run: npm run deploy-storybook --  --existing-output-dir=.out --ci --host-token-env-variable=${GITHUB_TOKEN}
-
+      - run: npm run deploy-storybook --  --existing-output-dir=.out --ci --host-token-env-variable=GITHUB_TOKEN
 
       #deploy to npm
-      - run: 
-          name: "bump"
+      - run:
+          name: 'bump'
           command: |
-               PACKAGE_VERSION=$(node -p -e "require('./projects/ui-framework/package.json').version")
-               cd ./projects/ui-framework
-               yarn version --new-version "${PACKAGE_VERSION}-unstable-${CIRCLE_BUILD_NUM}" --no-git-tag-version
-               cd ../..
+            PACKAGE_VERSION=$(node -p -e "require('./projects/ui-framework/package.json').version")
+            cd ./projects/ui-framework
+            yarn version --new-version "${PACKAGE_VERSION}-unstable-${CIRCLE_BUILD_NUM}" --no-git-tag-version
+            cd ../..
       - run: npm run package
       - run:
-          name: "Deploy to npm"
+          name: 'Deploy to npm'
           command: |
-                  echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
-                  npm publish ./dist/ui-framework/*.tgz --scope=hibob
-
-
-
-
+            echo "registry=https://hibob.jfrog.io/hibob/api/npm/bob-js-virtual/
+            _auth = ${JFROG_NPM_TOKEN}
+            always-auth = true
+            email = deploy-js@hibob.io" > .npmrc
+            npm publish ./dist/ui-framework/*.tgz --scope=hibob
 
 workflows:
   version: 2
@@ -77,11 +75,9 @@ workflows:
               ignore:
                 - gh-pages
       - deploy:
-         requires:
-          - test
-         filters:
+          requires:
+            - test
+          filters:
             branches:
               only:
                 - master
-
-

@@ -1,0 +1,49 @@
+@import '../../style/colors';
+
+:host {
+  display: block;
+  width: 100%;
+  .bar-content {
+    width: 100%;
+    background-color: $white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 44px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border: 1px solid $grey-500;
+    .bar-prefix, .bar-suffix {
+      height: 100%;
+      padding: 0 16px;
+      align-items: center;
+      white-space: nowrap;
+      display: none;
+    }
+    .bar-prefix {
+      border-right: 1px solid $grey-500;
+    }
+    .bar-suffix {
+      border-left: 1px solid $grey-500;
+    }
+    .bar-filters {
+      flex-grow: 1;
+      display: flex;
+      justify-content: space-evenly;
+      .quick-filter-holder {
+        margin: 0 8px;
+        display: flex;
+        justify-content: center;
+        b-quick-filter {
+          flex-grow: 0;
+        }
+      }
+    }
+    &.has-prefix .bar-prefix {
+      display: flex;
+    }
+    &.has-suffix .bar-suffix {
+      display: flex;
+    }
+  }
+}

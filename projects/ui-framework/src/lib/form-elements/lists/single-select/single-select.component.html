@@ -20,9 +20,10 @@
          input-prefix>
       <b-icon (mouseenter)="blockSelectClick=true"
               (mouseleave)="blockSelectClick=false"
-              [color]="iconColor"
+              [color]="iconColor.normal"
               [icon]="resetIcon"
-              [size]="iconSize"
+              [hasHoverState]="true"
+              [size]="iconSize.medium"
               class="clear-button">
       </b-icon>
     </div>

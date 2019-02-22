@@ -1,18 +1,17 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, Renderer2, SimpleChanges } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
-import { LIST_EL_HEIGHT } from '../list.consts';
-import { CheckboxStates } from '../../checkbox';
 import { chain, filter, flatMap } from 'lodash';
-import { ListOption, ListHeader, SelectGroupOption } from '../list.interface';
+import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
+import { BaseListElement } from '../list-element.abstract';
+import { CheckboxStates } from '../../checkbox/checkbox.component';
+import has from 'lodash/has';
 
 @Component({
   selector: 'b-multi-list',
   templateUrl: 'multi-list.component.html',
   styleUrls: ['multi-list.component.scss'],
 })
-export class MultiListComponent implements OnInit {
-
-  readonly listElHeight = LIST_EL_HEIGHT;
+export class MultiListComponent extends BaseListElement implements OnChanges {
 
   @Input() options: SelectGroupOption[];
   @Input() maxHeight = this.listElHeight * 8;
@@ -25,18 +24,30 @@ export class MultiListComponent implements OnInit {
   filteredOptions: SelectGroupOption[];
 
   checkboxState = CheckboxStates;
-  listOptions: ListOption[];
-  listHeaders: ListHeader[];
 
   constructor(
     private listModelService: ListModelService,
+    renderer: Renderer2,
   ) {
+    super(renderer);
   }
 
-  ngOnInit(): void {
-    this.filteredOptions = this.options;
-    this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
-    this.updateLists();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.shouldResetModel(changes)) {
+      this.value = has(changes, 'value') ? changes.value.currentValue : this.value;
+      this.options = changes.options.currentValue;
+      this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
+      this.filteredOptions = this.options;
+      this.updateLists();
+    }
+  }
+
+  private shouldResetModel(changes: SimpleChanges): boolean {
+    return has(changes, 'options');
+  }
+
+  headerClick(header: ListHeader): void {
+    this.toggleGroupCollapse(header);
   }
 
   toggleGroupCollapse(header: ListHeader): void {

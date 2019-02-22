@@ -17,7 +17,8 @@ import { TableCellComponent } from '../table-cell/table-cell.component';
 import { mockColumns, mockData } from '../table.mock';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { AvatarComponent, AvatarModule } from '../../buttons-indicators/avatar';
+import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
+import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 
 describe('TableComponent', () => {
   let component: TableComponent;
@@ -25,7 +26,7 @@ describe('TableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TableComponent, TableCellComponent ],
+      declarations: [TableComponent, TableCellComponent],
       imports: [
         BrowserAnimationsModule,
         CommonModule,
@@ -39,13 +40,14 @@ describe('TableComponent', () => {
         DragDropModule,
         CdkTableModule,
         AvatarModule
-      ],
-    }).overrideModule(BrowserDynamicTestingModule, {
-      set: {
-        entryComponents: [ AvatarComponent ],
-      }
+      ]
     })
-    .compileComponents();
+      .overrideModule(BrowserDynamicTestingModule, {
+        set: {
+          entryComponents: [AvatarComponent]
+        }
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {

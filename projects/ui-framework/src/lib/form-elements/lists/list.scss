@@ -4,16 +4,16 @@
 
 @mixin listOption {
   @include BodyFont(normal, normal, 12px);
+  color: $grey-700;
   padding: 0 16px;
   box-sizing: border-box;
   position: relative;
   height: 44px;
   line-height: 1;
-  color: initial;
   &.mat-selected {
     background-color: initial;
   }
-  &:hover, &.selected {
+  &:hover, &.selected, &.focus {
     background-color: $grey-100;
   }
 }
@@ -26,7 +26,6 @@
   z-index: 2;
   pointer-events: none;
   .headers-group {
-    border-top: 1px solid $grey-300;
     .header {
       position: relative;
       z-index: 2;
@@ -34,7 +33,13 @@
       position: sticky;
       top: 0;
       background-color: $white;
-      box-shadow: 0 2px 3px $boxShadowColor;
+      border-top: 1px solid $grey-300;
+      border-bottom: 1px solid $grey-300;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
       .header-collapse-trigger {
         position: absolute;
         top: 0;
@@ -51,8 +56,11 @@
       &.collapsed .chevron {
         @include chevron-up($grey-600);
       }
+      &:hover, &.focus {
+        background-color: $grey-100;
+      }
     }
-    &:first-child {
+    &:first-child .header {
       border-top: none;
     }
   }

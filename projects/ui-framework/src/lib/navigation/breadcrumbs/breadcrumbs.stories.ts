@@ -21,16 +21,16 @@ const inputStories = storiesOf(ComponentGroupType.Navigation, module)
   .addDecorator(withKnobs);
 
 const componmentTemplate = `
-  <b-breadcrumbs [breadcrumbs]="breadcrumbs"
-                  [activeIndex]="activeIndex"
-                (stepClick)="stepClick($event)">
-  </b-breadcrumbs>
+<b-breadcrumbs [breadcrumbs]="breadcrumbs"
+               [activeIndex]="activeIndex"
+               (stepClick)="stepClick($event)">
+</b-breadcrumbs>
 `;
 
 const template = `
-  <b-story-book-layout title="breadcrumbs">
-    ${componmentTemplate}
-  </b-story-book-layout>
+<b-story-book-layout title="breadcrumbs">
+  ${componmentTemplate}
+</b-story-book-layout>
 `;
 
 const note = `

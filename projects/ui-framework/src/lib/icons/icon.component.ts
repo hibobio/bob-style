@@ -5,7 +5,9 @@ import { Icons, IconSize, IconColor } from './icons.enum';
 @Component({
   selector: 'b-icon',
   template: `
-  <div [matTooltip]="toolTipSummary" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300">
+  <div [matTooltip]="toolTipSummary"
+       [matTooltipPosition]="'above'"
+       [matTooltipShowDelay]="300">
     <mat-icon [svgIcon]="icon" [ngClass]="getClassNames()"></mat-icon>
   </div>
   `,
@@ -15,6 +17,7 @@ export class IconComponent implements OnInit {
   @Input() icon: Icons;
   @Input() size: IconSize = IconSize.medium;
   @Input() color: IconColor = IconColor.dark;
+  @Input() hasHoverState = false;
   @Input() toolTipSummary: string;
 
   constructor(private iconService: IconService) {
@@ -25,6 +28,6 @@ export class IconComponent implements OnInit {
   }
 
   getClassNames() {
-    return `${this.size} ${this.color}`;
+    return `${this.size} ${this.color}${this.hasHoverState ? ' has-hover-state' : ''}`;
   }
 }

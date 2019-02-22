@@ -5,7 +5,7 @@ import { BackButtonType } from '../buttons.enum';
 import { values, remove } from 'lodash';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
-import {ComponentGroupType} from '../../../consts';
+import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
 const backButtonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
@@ -15,13 +15,11 @@ const backButtonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, mod
 const typeOptions = values(BackButtonType);
 
 const template = `
-<b-story-book-layout title="Back button">
-  <b-back-button
-    (clicked)="onClick($event)"
-    [type]="type">
-      {{label}}
-  </b-back-button>
-</b-story-book-layout>
+<b-back-button
+  (clicked)="onClick($event)"
+  [type]="type">
+    {{label}}
+</b-back-button>
 `;
 
 const note = `
@@ -35,13 +33,19 @@ const note = `
   clicked | Function | callback for clicking on the back button |
 
   ~~~
-  ${template}
+  ${ template }
   ~~~
+`;
+
+const storyTemplate = `
+<b-story-book-layout title="Back button">
+  ${ template }
+</b-story-book-layout>
 `;
 
 backButtonStories.add(
   'Back Button', () => ({
-    template,
+    template: storyTemplate,
     props: {
       onClick: action(),
       label: text('label', 'Back'),
@@ -54,5 +58,5 @@ backButtonStories.add(
       ]
     },
   }),
-  { notes: { markdown: note }  }
+  { notes: { markdown: note } }
 );

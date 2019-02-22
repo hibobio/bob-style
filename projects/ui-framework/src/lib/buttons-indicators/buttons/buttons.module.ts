@@ -5,7 +5,7 @@ import { SquareButtonComponent } from './square/square.component';
 import { GroupComponent } from './group/group.component';
 import { BackButtonComponent } from './back-button/back-button.component';
 import {IconsModule} from '../../icons/icons.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -15,10 +15,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     BackButtonComponent,
   ],
   imports: [
+    CommonModule,
     MatButtonModule,
     MatRippleModule,
     IconsModule,
-    FlexLayoutModule,
   ],
   exports: [
     ButtonComponent,

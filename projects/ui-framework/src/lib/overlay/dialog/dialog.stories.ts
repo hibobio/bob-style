@@ -3,7 +3,7 @@ import { withNotes } from '@storybook/addon-notes';
 import { select, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
-import { ButtonsModule } from '../../buttons-indicators/buttons';
+import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogModule } from './dialog.module';
 import { DialogExampleModule } from './dialog-example.module';
@@ -14,20 +14,26 @@ const buttonStories = storiesOf(ComponentGroupType.Overlay, module)
   .addDecorator(withKnobs);
 
 const template = `
+<b-dialog-example></b-dialog-example>
+`;
+
+const storyTemplate = `
 <b-story-book-layout title="Dialog">
-  <b-dialog-example></b-dialog-example>
+  ${template}
 </b-story-book-layout>
 `;
+
 const note = `
   ## Dialog
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 buttonStories.add(
-  'Dialog', () => ({
-    template,
+  'Dialog',
+  () => ({
+    template: storyTemplate,
     props: {},
     moduleMetadata: {
       imports: [
@@ -35,10 +41,9 @@ buttonStories.add(
         ButtonsModule,
         BrowserAnimationsModule,
         DialogExampleModule,
-        StoryBookLayoutModule,
-      ],
+        StoryBookLayoutModule
+      ]
     }
   }),
   { notes: { markdown: note } }
 );
-

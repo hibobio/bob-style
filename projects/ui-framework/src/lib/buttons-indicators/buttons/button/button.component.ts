@@ -4,9 +4,10 @@ import { ButtonType, ButtonSize } from '../buttons.enum';
 @Component({
   selector: 'b-button',
   template: `
-    <button mat-button [disableRipple]="true"
-      [ngClass]="getClassNames()"
-      (click)="onClick($event)">
+    <button mat-button
+            [disableRipple]="true"
+            [ngClass]="getClassNames()"
+            (click)="onClick($event)">
       <ng-content></ng-content>
     </button>
   `,

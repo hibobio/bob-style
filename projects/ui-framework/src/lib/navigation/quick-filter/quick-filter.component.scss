@@ -1,0 +1,102 @@
+@import '../../style/colors';
+@import '../../style/shapes';
+
+$selectHeight: 26px;
+
+:host ::ng-deep {
+  display: block;
+  box-sizing: border-box;
+  height: 100%;
+  position: relative;
+  .label-wrapper {
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    label, .chevron {
+      display: block;
+    }
+    label {
+      margin-right: 10px;
+      position: relative;
+      transition: transform 0.2s;
+      color: $grey-600;
+    }
+    .chevron {
+      @include chevron-down($grey-600);
+    }
+    &.has-value {
+      label {
+        margin: 0;
+        transform: translateY(-32px);
+      }
+      .chevron {
+        display: none;
+      }
+    }
+  }
+  b-multi-select, b-single-select {
+    .panel-trigger {
+      margin: 0;
+    }
+    b-input {
+      vertical-align: top;
+      .mat-form-field {
+        display: block;
+        .mat-form-field-wrapper {
+          .mat-form-field-flex {
+            border-radius: 0;
+            border: none;
+            height: $selectHeight;
+            .mat-form-field-prefix, .mat-form-field-suffix {
+              display: none;
+              padding-right: 0 !important;
+            }
+            .mat-form-field-infix {
+              width: auto;
+              input {
+                height: $selectHeight;
+              }
+            }
+          }
+        }
+        .mat-form-field-subscript-wrapper, .mat-form-field-underline {
+          display: none;
+        }
+      }
+      &:hover {
+        .mat-form-field-wrapper .mat-form-field-flex {
+          box-shadow: none !important;
+        }
+      }
+      &.mat-focused {
+        .mat-form-field-wrapper .mat-form-field-flex {
+          border: none;
+          box-shadow: none;
+        }
+      }
+      &.mat-form-field-should-float {
+        .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
+          transform: translateY(-36px) scale(0.9);
+        }
+      }
+    }
+    &.has-value {
+      b-input .mat-form-field .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-suffix {
+        display: block;
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .b-quick-filter-panel {
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid $grey-500 !important;
+  }
+}

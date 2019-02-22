@@ -8,9 +8,8 @@ import {
   OnDestroy
 } from '@angular/core';
 import { Breadcrumb } from './breadcrumbs.interface';
-import { Subscription, fromEvent } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-import { invoke } from 'lodash/invoke';
+import { Subscription } from 'rxjs';
+import { UtilsService } from '../../utils/utils.service';
 
 @Component({
   selector: 'b-breadcrumbs',
@@ -26,19 +25,17 @@ export class BreadcrumbsComponent implements AfterViewInit, OnDestroy {
   @Input() activeIndex: number;
   @Output() stepClick: EventEmitter<number> = new EventEmitter<number>();
 
-  constructor() {}
+  constructor(public utilsService: UtilsService) {}
 
   ngAfterViewInit() {
     this.setIsSmallMode();
-    // this.resizeSubscription = fromEvent(window, 'resize')
-    //   .pipe(debounceTime(500))
-    //   .subscribe(() => {
-    //     this.setIsSmallMode();
-    //   });
+    this.resizeSubscription = this.utilsService.getResizeEvent().subscribe(() => {
+      this.setIsSmallMode();
+    });
   }
 
   ngOnDestroy() {
-    // invoke(this.resizeSubscription, 'unsubscribe');
+    this.resizeSubscription.unsubscribe();
   }
 
   private setIsSmallMode() {

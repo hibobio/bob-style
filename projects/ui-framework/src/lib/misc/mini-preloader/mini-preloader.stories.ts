@@ -13,9 +13,13 @@ const inputStories = storiesOf(ComponentGroupType.Misc, module)
   .addDecorator(withKnobs);
 
 const template = `
+<b-mini-preloader></b-mini-preloader>
+<div style="margin: 5px auto;"><b-caption>fetching</b-caption></div>
+`;
+
+const storyTemplate = `
 <b-story-book-layout title="Mini preloader">
-  <b-mini-preloader></b-mini-preloader>
-  <div style="margin: 5px auto;"><b-caption>fetching</b-caption></div>
+  ${ template }
 </b-story-book-layout>
 `;
 
@@ -31,11 +35,12 @@ const note = `
   ${ template }
   ~~~
 `;
+
 inputStories.add(
   'Mini preloader',
   () => {
     return {
-      template,
+      template: storyTemplate,
       props: {
       },
       moduleMetadata: {

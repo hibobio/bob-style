@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { SplitInputSingleSelectComponent } from './split-input-single-select.component';
 import { SingleSelectModule } from '../lists/single-select/single-select.module';
 import { InputModule } from '../input/input.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -15,7 +14,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CommonModule,
     InputModule,
     SingleSelectModule,
-    FlexLayoutModule,
   ],
   exports: [
     SplitInputSingleSelectComponent,

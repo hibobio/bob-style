@@ -12,13 +12,11 @@ const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
   .addDecorator(withKnobs);
 
 const template = `
-<b-story-book-layout title="Switch toggle">
-  <b-switch-toggle [isDisabled]="isDisabled"
-                   [isChecked]="isChecked"
-                   (changed)="changed($event)">
-    Toggle Me!
-  </b-switch-toggle>
-</b-story-book-layout>
+<b-switch-toggle [isDisabled]="isDisabled"
+                 [isChecked]="isChecked"
+                 (switchChange)="switchChange($event)">
+  Toggle Me!
+</b-switch-toggle>
 `;
 const note = `
   ## Switch toggle element
@@ -35,13 +33,20 @@ const note = `
   ${ template }
   ~~~
 `;
+
+const storyTemplate = `
+<b-story-book-layout title="Switch toggle">
+  ${ template }
+</b-story-book-layout>
+`;
+
 buttonStories.add(
   'Switch toggle', () => ({
-    template,
+    template: storyTemplate,
     props: {
       isDisabled: boolean('isDisabled', false),
       isChecked: boolean('isChecked', true),
-      changed: action(),
+      switchChange: action(),
     },
     moduleMetadata: {
       imports: [

@@ -11,21 +11,20 @@ describe('SwitchToggleComponent', () => {
       declarations: [ SwitchToggleComponent ],
       imports: [MatSlideToggleModule],
     })
-    .compileComponents();
+    .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(SwitchToggleComponent);
+        component = fixture.componentInstance;
+        spyOn(component.switchChange, 'emit');
+        fixture.detectChanges();
+      });
   }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SwitchToggleComponent);
-    component = fixture.componentInstance;
-    spyOn(component.changed, 'emit');
-    fixture.detectChanges();
-  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
   it('Should call changed callback', () => {
     component.onChange({ checked: true } as MatSlideToggleChange);
-    expect(component.changed.emit).toHaveBeenCalled();
+    expect(component.switchChange.emit).toHaveBeenCalled();
   });
 });

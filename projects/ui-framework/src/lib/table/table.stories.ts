@@ -7,26 +7,30 @@ import { ComponentGroupType } from '../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 import { TableModule } from './table.module';
-import { AvatarComponent, AvatarModule } from '../buttons-indicators/avatar';
+import { AvatarComponent } from '../buttons-indicators/avatar/avatar.component';
+import { AvatarModule } from '../buttons-indicators/avatar/avatar.module';
 import { mockColumns, mockData } from './table.mock';
-
 
 const tableStories = storiesOf(ComponentGroupType.DataTable, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
 const template = `
+<b-table
+  [data]="data"
+  [columns]="columns"
+  [stickyHeader]="stickyHeader"
+  [stickyColumns]="stickyColumns"
+  (select)="select($event)"
+  (sort)="sort($event)"
+  (rowClick)="rowClick($event)"
+  (rowRightClick)="rowRightClick($event)">
+</b-table>
+`;
+
+const storyTemplate = `
 <b-story-book-layout title="Data Table">
-  <b-table
-    [data]="data"
-    [columns]="columns"
-    [stickyHeader]="stickyHeader"
-    [stickyColumns]="stickyColumns"
-    (select)="select($event)"
-    (sort)="sort($event)"
-    (rowClick)="rowClick($event)"
-    (rowRightClick)="rowRightClick($event)">
-  </b-table>
+  ${template}
 </b-story-book-layout>
 `;
 
@@ -46,14 +50,14 @@ const note = `
   rowRightClick | id | right click event
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 tableStories.add(
   'Data Table',
   () => {
     return {
-      template,
+      template: storyTemplate,
       props: {
         stickyHeader: boolean('stickyHeader', false),
         stickyColumns: number('stickyColumns', -1),
@@ -66,12 +70,7 @@ tableStories.add(
       },
       moduleMetadata: {
         entryComponents: [AvatarComponent],
-        imports: [
-          BrowserAnimationsModule,
-          StoryBookLayoutModule,
-          TableModule,
-          AvatarModule,
-        ]
+        imports: [BrowserAnimationsModule, StoryBookLayoutModule, TableModule, AvatarModule]
       }
     };
   },

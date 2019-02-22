@@ -4,58 +4,73 @@ import { select, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { PanelModule } from '../panel/panel.module';
-import { ButtonsModule } from '../../buttons-indicators/buttons';
+import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { TypographyModule } from '../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { CheckboxModule } from '../../form-elements/checkbox/checkbox.module';
 
 const buttonStories = storiesOf(ComponentGroupType.Overlay, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
 const template = `
-<b-story-book-layout title="Overlay panel">
-  <b-panel style="position: absolute; top: 20px; left: 20px;">
-    <b-button panel-trigger>
-      open Syria
-    </b-button>
-    <div panel-content>
-      <b-display-3>Syria</b-display-3>
-      <p>Syria (Arabic: سوريا‎ Sūriyā), officially the Syrian Arab Republic
-      (Arabic: الجمهورية العربية السورية‎ al-Jumhūrīyah al-ʻArabīyah as-Sūrīyah),
-      is a country in Western Asia, bordering Lebanon and the Mediterranean Sea to
-      the west, Turkey to the north, Iraq to the east, Jordan to the south,
-      and Israel to the southwest.</p>
-    </div>
-  </b-panel>
+<b-panel style="position: absolute; top: 20px; left: 20px;">
+  <b-button panel-trigger>
+    Time Off Policies info
+  </b-button>
+  <div panel-content>
+    <b-display-3>Time Off Policies info</b-display-3>
+    <p>A ‘policy’ is the a collection of rules which govern a type of leave.
+    With bob you can add as many holiday policies as you need for your organisation.
+    Before we create a policy, a note on what types are.
+    <img style="display: block; width: 100%; margin-top: 20px;"
+    src="https://downloads.intercomcdn.com/i/o/86579629/3d3ae5d60c93aed41996abed/Screen+Shot+2018-11-20+at+11.19.09.png" />
+    </p>
+  </div>
+</b-panel>
 
-  <b-panel style="position: absolute; bottom: 20px; right: 20px;">
-    <b-button panel-trigger>
-      open Iraq
-    </b-button>
-    <div panel-content>
-      <b-display-3>Iraq</b-display-3>
-      <p>raq (/ɪˈræk/, /ɪˈrɑːk/ (About this soundlisten) or /aɪˈræk/; Arabic: العراق‎ al-'Irāq; Kurdish: عێراق‎ Eraq),
-      officially known as the Republic of Iraq (Arabic: جُمُهورية العِراق‎ ; Kurdish: کۆماری عێراق‎ Komari Eraq),
-      is a country in Western Asia, bordered by Turkey to the north, Iran to the east, Kuwait to the southeast,
-      Saudi Arabia to the south, Jordan to the southwest and Syria to the west.</p>
-      <b-button>
-      read more
-    </b-button>
+<b-panel style="position: absolute; bottom: 20px; right: 20px;">
+  <b-button panel-trigger>
+    Insights info
+  </b-button>
+  <div panel-content>
+    <b-heading>How can I improve "Headcount" display</b-heading>
+    <p>
+    <b>Check people’s data</b><br />
+    Make sure all your people have start and end dates. Employees with end-dates that occur before their start-date can’t be counted.
+    </p>
+    <p>
+    <b>Check your permissions</b><br />
+    Make sure you have <a href="https://www.hibob.com" target="_blank">secret permissions</a>
+    </p>
+    <div>
+      <b-checkbox label="This was helpful" [value]="true"></b-checkbox>
     </div>
-  </b-panel>
+    <b-button>
+    read more
+  </b-button>
+  </div>
+</b-panel>
+`;
+
+const storyTemplate = `
+<b-story-book-layout title="Overlay panel">
+  ${template}
 </b-story-book-layout>
 `;
+
 const note = `
   ## Panel
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 buttonStories.add(
-  'Panel', () => ({
-    template,
+  'Panel',
+  () => ({
+    template: storyTemplate,
     props: {},
     moduleMetadata: {
       imports: [
@@ -64,9 +79,9 @@ buttonStories.add(
         TypographyModule,
         BrowserAnimationsModule,
         StoryBookLayoutModule,
-      ],
+        CheckboxModule
+      ]
     }
   }),
   { notes: { markdown: note } }
 );
-

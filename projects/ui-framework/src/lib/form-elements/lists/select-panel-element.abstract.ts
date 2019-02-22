@@ -1,4 +1,4 @@
-import { TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Input, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { CdkOverlayOrigin, FlexibleConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import invoke from 'lodash/invoke';
@@ -11,6 +11,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
   @ViewChild(CdkOverlayOrigin) overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef') templateRef: TemplateRef<any>;
   @ViewChild('triggerInput') triggerInput;
+
+  @Input() isQuickFilter = false;
 
   positionClassList: { [key: string]: boolean } = {};
   panelOpen = false;
@@ -43,10 +45,17 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
       width: this.overlayOrigin.elementRef.nativeElement.offsetWidth,
     });
 
+    const searchInput = this.overlayRef.overlayElement.querySelector('b-input input') as HTMLElement;
+    searchInput.focus();
+
     this.backdropClickSubscriber = this.overlayRef.backdropClick()
       .subscribe(() => {
-        this.destroyPanel();
+        this.onCancel();
       });
+  }
+
+  onCancel(): void {
+    this.destroyPanel();
   }
 
   destroyPanel(): void {
@@ -59,15 +68,17 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
   }
 
   private getDefaultConfig(): OverlayConfig {
-    const positionStrategy = this.panelPositionService.getPanelPositionStrategy(this.overlayOrigin);
+    const positionStrategy = this.panelPositionService.getCenterPanelPositionStrategy(this.overlayOrigin);
 
     this.subscribeToPositions(positionStrategy as FlexibleConnectedPositionStrategy);
+
+    const panelClass = this.isQuickFilter ? ['b-select-panel', 'b-quick-filter-panel'] : ['b-select-panel'];
 
     return {
       disposeOnNavigation: true,
       hasBackdrop: true,
       backdropClass: 'b-select-backdrop',
-      panelClass: ['b-select-panel'],
+      panelClass,
       positionStrategy,
     };
   }

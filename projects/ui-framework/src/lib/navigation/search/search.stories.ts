@@ -12,13 +12,17 @@ const inputStories = storiesOf(ComponentGroupType.Navigation, module)
   .addDecorator(withKnobs);
 
 const template = `
+<b-search style="width: 400px;"
+          [value]="value"
+          [label]="label"
+          [hideLabelOnFocus]="hideLabelOnFocus"
+          (searchChange)="searchChange($event)">
+</b-search>
+`;
+
+const storyTemplate = `
 <b-story-book-layout title="Search">
-  <b-search style="width: 400px;"
-            [value]="value"
-            [label]="label"
-            [hideLabelOnFocus]="hideLabelOnFocus"
-            (searchChange)="searchChange($event)">
-  </b-search>
+  ${ template }
 </b-story-book-layout>
 `;
 
@@ -42,7 +46,7 @@ inputStories.add(
   'Search',
   () => {
     return {
-      template,
+      template: storyTemplate,
       props: {
         value: text('value', ''),
         label: text('label', 'Search'),

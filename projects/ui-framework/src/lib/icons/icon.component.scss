@@ -3,11 +3,12 @@
 :host ::ng-deep {
   line-height: 1;
   .mat-icon {
+    vertical-align: top;
     svg {
       pointer-events: none;
       g {
         path, line {
-          transition: fill .2s ease, stroke .2s ease;
+          transition: fill .1s ease, stroke .1s ease;
         }
       }
     }
@@ -18,6 +19,16 @@
         }
         line {
           stroke: $grey-700 !important;
+        }
+      }
+    }
+    &.normal {
+      svg g {
+        path, circle {
+          fill: $grey-600 !important;
+        }
+        line {
+          stroke: $grey-600 !important;
         }
       }
     }
@@ -48,6 +59,58 @@
         }
         line {
           stroke: var(--primary-500) !important;
+        }
+      }
+    }
+    &.has-hover-state:hover {
+      &.dark {
+        svg g {
+          path, circle {
+            fill: $grey-700 !important;
+          }
+          line {
+            stroke: $grey-700 !important;
+          }
+        }
+      }
+      &.normal {
+        svg g {
+          path, circle {
+            fill: $grey-700 !important;
+          }
+          line {
+            stroke: $grey-700 !important;
+          }
+        }
+      }
+      &.light {
+        svg g {
+          path, circle {
+            fill: $grey-600 !important;
+          }
+          line {
+            stroke: $grey-600 !important;
+          }
+        }
+      }
+      &.white {
+        svg g {
+          path, circle {
+            fill: $white !important;
+          }
+          line {
+            stroke: $white !important;
+          }
+        }
+      }
+      &.primary {
+        svg g {
+          path, circle {
+            fill: var(--primary-700) !important;
+          }
+          line {
+            stroke: var(--primary-700) !important;
+          }
         }
       }
     }

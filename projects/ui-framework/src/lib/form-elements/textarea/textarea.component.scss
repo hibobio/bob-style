@@ -7,6 +7,7 @@
   .mat-form-field.text-area {
     line-height: initial;
     .mat-form-field-wrapper .mat-form-field-flex {
+      height: auto;
       .mat-form-field-infix {
         textarea {
           height: $textarea-height;

@@ -1,17 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, Renderer2, SimpleChanges } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
-import { LIST_EL_HEIGHT } from '../list.consts';
 import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
-import { some, escapeRegExp, map, compact, filter, cloneDeep, assign } from 'lodash';
+import { BaseListElement } from '../list-element.abstract';
+import findIndex from 'lodash/findIndex';
+import has from 'lodash/has';
 
 @Component({
   selector: 'b-single-list',
   templateUrl: 'single-list.component.html',
   styleUrls: ['single-list.component.scss'],
 })
-export class SingleListComponent implements OnInit {
-
-  readonly listElHeight = LIST_EL_HEIGHT;
+export class SingleListComponent extends BaseListElement implements OnChanges {
 
   @Input() options: SelectGroupOption[];
   @Input() maxHeight = this.listElHeight * 8;
@@ -21,20 +20,28 @@ export class SingleListComponent implements OnInit {
 
   noGroupHeaders: boolean;
   searchValue: string;
-  listOptions: ListOption[];
-  listHeaders: ListHeader[];
 
   private filteredOptions: SelectGroupOption[];
 
   constructor(
     private listModelService: ListModelService,
+    renderer: Renderer2,
   ) {
+    super(renderer);
   }
 
-  ngOnInit(): void {
-    this.filteredOptions = this.options;
-    this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
-    this.updateLists();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.shouldResetModel(changes)) {
+      this.value = has(changes, 'value') ? changes.value.currentValue : this.value;
+      this.options = changes.options.currentValue;
+      this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
+      this.filteredOptions = this.options;
+      this.updateLists();
+    }
+  }
+
+  private shouldResetModel(changes: SimpleChanges): boolean {
+    return has(changes, 'options');
   }
 
   headerClick(header: ListHeader): void {
@@ -46,6 +53,8 @@ export class SingleListComponent implements OnInit {
   optionClick(option: ListOption): void {
     this.value = option.id;
     this.selectChange.emit(this.value);
+    this.focusIndex = findIndex(this.listOptions, o => o.id === option.id);
+    this.focusOption = option;
   }
 
   searchChange(s: string): void {
