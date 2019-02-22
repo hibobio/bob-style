@@ -1,0 +1,44 @@
+@import '../../style/colors';
+
+:host ::ng-deep{
+  mat-radio-group {
+    display: inline-flex;
+  }
+  .direction-column {
+    padding-bottom: 25px;
+    flex-direction: column;
+  }
+  .direction-row {
+    padding-right: 30px;
+    flex-direction: row;
+  }
+  mat-radio-button {
+    .mat-radio-ripple {
+      display: none;
+    }
+    .mat-radio-outer-circle .mat-radio-inner-circle {
+      width: 18px;
+      height: 18px;
+    }
+    .mat-radio-outer-circle {
+      border-color: $grey-500;
+      border-width: 1px;
+      &:hover {
+        background-color: $white;
+      }
+    }
+    .mat-radio-disabled {
+      border-color: $grey-500;
+      box-shadow: inset 0 0 7px rgba(0,0,0,0.1);
+    }
+    &.mat-accent .mat-radio-inner-circle {
+      background-color: var(--primary-500);
+    }mat-radio-outer-circle
+    .mat-radio-inner-circle {
+      transition-duration: 0.1s;
+    }
+    &.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+      border-color: $grey-500;
+    }
+  }
+}
