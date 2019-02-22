@@ -28,11 +28,11 @@ describe('SingleSelectComponent', () => {
   beforeEach(async(() => {
     optionsMock = [
       {
-        groupName: 'Basic Info',
+        groupName: 'Basic Info Header',
         options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
       },
       {
-        groupName: 'Personal',
+        groupName: 'Personal Header',
         options: [{ value: 'Personal 1', id: 11 }, { value: 'Personal 2', id: 12 }]
       }
     ];
@@ -61,25 +61,30 @@ describe('SingleSelectComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(SingleListComponent);
         component = fixture.componentInstance;
-        component.options = optionsMock;
-        component.value = 2;
         spyOn(component.selectChange, 'emit');
-        component.ngOnChanges({});
+        component.ngOnChanges({
+          options: {
+            previousValue: undefined, currentValue: optionsMock, firstChange: true, isFirstChange: () => true,
+          },
+          value: {
+            previousValue: undefined, currentValue: 2, firstChange: true, isFirstChange: () => true,
+          },
+        });
         fixture.autoDetectChanges();
       });
   }));
 
-  describe('ngOnInit', () => {
+  describe('ngOnChanges', () => {
     it('should create headerModel based on options', () => {
       expect(component.listHeaders).toEqual([
         {
-          groupName: 'Basic Info',
+          groupName: 'Basic Info Header',
           isCollapsed: false,
           placeHolderSize: 88,
           selected: null
         },
         {
-          groupName: 'Personal',
+          groupName: 'Personal Header',
           isCollapsed: false,
           placeHolderSize: 88,
           selected: null
@@ -90,43 +95,43 @@ describe('SingleSelectComponent', () => {
       expect(component.listOptions).toEqual([
         {
           isPlaceHolder: true,
-          groupName: 'Basic Info',
-          value: 'Basic Info',
-          id: 'Basic Info',
+          groupName: 'Basic Info Header',
+          value: 'Basic Info Header',
+          id: 'Basic Info Header',
           selected: null
         },
         {
           value: 'Basic Info 1',
           id: 1,
-          groupName: 'Basic Info',
+          groupName: 'Basic Info Header',
           isPlaceHolder: false,
           selected: null
         },
         {
           value: 'Basic Info 2',
           id: 2,
-          groupName: 'Basic Info',
+          groupName: 'Basic Info Header',
           isPlaceHolder: false,
           selected: null
         },
         {
           isPlaceHolder: true,
-          groupName: 'Personal',
-          value: 'Personal',
-          id: 'Personal',
+          groupName: 'Personal Header',
+          value: 'Personal Header',
+          id: 'Personal Header',
           selected: null
         },
         {
           value: 'Personal 1',
           id: 11,
-          groupName: 'Personal',
+          groupName: 'Personal Header',
           isPlaceHolder: false,
           selected: null
         },
         {
           value: 'Personal 2',
           id: 12,
-          groupName: 'Personal',
+          groupName: 'Personal Header',
           isPlaceHolder: false,
           selected: null
         }
@@ -147,6 +152,75 @@ describe('SingleSelectComponent', () => {
     it('should set the selected option (id=2) with class selected', () => {
       const option = fixture.debugElement.queryAll(By.css('.option'))[1];
       expect(option.nativeElement.classList).toContain('selected');
+    });
+    it('should rerender lists if simpleChanges includes options', () => {
+      let options = fixture.debugElement.queryAll(By.css('.option'));
+      expect(options.length).toEqual(4);
+      const changedOptions = [
+        {
+          groupName: 'Basic Info Header',
+          options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
+        },
+      ];
+      component.ngOnChanges({
+        options:
+          {
+            previousValue: undefined, currentValue: changedOptions, firstChange: false, isFirstChange: () => true,
+          }
+      });
+      fixture.autoDetectChanges();
+      options = fixture.debugElement.queryAll(By.css('.option'));
+      expect(options.length).toEqual(2);
+    });
+    it('should not show group header if options.length=1 && showSingleGroupHeader=false (default)', () => {
+      let options = fixture.debugElement.queryAll(By.css('.option'));
+      let headers = fixture.debugElement.queryAll(By.css('.header'));
+      let headerPlaceholder = fixture.debugElement.queryAll(By.css('.header-placeholder'));
+      expect(options.length).toEqual(4);
+      expect(headers.length).toEqual(2);
+      expect(headerPlaceholder.length).toEqual(2);
+      const changedOptions = [
+        {
+          groupName: 'Basic Info Header',
+          options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
+        },
+      ];
+      component.ngOnChanges({
+        options:
+          {
+            previousValue: undefined, currentValue: changedOptions, firstChange: false, isFirstChange: () => true,
+          }
+      });
+      fixture.autoDetectChanges();
+      options = fixture.debugElement.queryAll(By.css('.option'));
+      headers = fixture.debugElement.queryAll(By.css('.header'));
+      headerPlaceholder = fixture.debugElement.queryAll(By.css('.header-placeholder'));
+      expect(options.length).toEqual(2);
+      expect(headers.length).toEqual(0);
+      expect(headerPlaceholder.length).toEqual(0);
+    });
+    it('should show group header if showSingleGroupHeader=true', () => {
+      component.showSingleGroupHeader = true;
+      const changedOptions = [
+        {
+          groupName: 'Basic Info Header',
+          options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
+        },
+      ];
+      component.ngOnChanges({
+        options:
+          {
+            previousValue: undefined, currentValue: changedOptions, firstChange: false, isFirstChange: () => true,
+          }
+      });
+      fixture.autoDetectChanges();
+      expect(component.noGroupHeaders).toBe(false);
+      const options = fixture.debugElement.queryAll(By.css('.option'));
+      const headerPlaceholder = fixture.debugElement.queryAll(By.css('.header-placeholder'));
+      const headers = fixture.debugElement.queryAll(By.css('.header'));
+      expect(options.length).toEqual(2);
+      expect(headerPlaceholder.length).toEqual(1);
+      expect(headers.length).toEqual(1);
     });
   });
 
@@ -178,6 +252,28 @@ describe('SingleSelectComponent', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
       expect(component.selectChange.emit).toHaveBeenCalledWith(12);
+    });
+  });
+
+  describe('searchChange', () => {
+    it('should show group header and option that match the search', () => {
+      component.searchChange('info 1');
+      fixture.autoDetectChanges();
+      const options = fixture.debugElement.queryAll(By.css('.option'));
+      const headers = fixture.debugElement.queryAll(By.css('.header'));
+      expect(options.length).toEqual(1);
+      expect(headers.length).toEqual(1);
+      expect(options[0].nativeElement.innerText.trim()).toEqual('Basic Info 1');
+      expect(headers[0].nativeElement.innerText.trim()).toEqual('Basic Info Header');
+    });
+    it('should show group headers and no options if search only matches headers', () => {
+      component.searchChange('Personal He');
+      fixture.autoDetectChanges();
+      const options = fixture.debugElement.queryAll(By.css('.option'));
+      const headers = fixture.debugElement.queryAll(By.css('.header'));
+      expect(options.length).toEqual(0);
+      expect(headers.length).toEqual(1);
+      expect(headers[0].nativeElement.innerText.trim()).toEqual('Personal Header');
     });
   });
 });

@@ -3,6 +3,7 @@ import { ListModelService } from '../list-service/list-model.service';
 import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
 import findIndex from 'lodash/findIndex';
+import has from 'lodash/has';
 
 @Component({
   selector: 'b-single-list',
@@ -30,11 +31,17 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!this.filteredOptions && this.options) {
+    if (this.shouldResetModel(changes)) {
+      this.value = has(changes, 'value') ? changes.value.currentValue : this.value;
+      this.options = changes.options.currentValue;
       this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
       this.filteredOptions = this.options;
       this.updateLists();
     }
+  }
+
+  private shouldResetModel(changes: SimpleChanges): boolean {
+    return has(changes, 'options');
   }
 
   headerClick(header: ListHeader): void {

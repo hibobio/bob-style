@@ -23,12 +23,12 @@
 
 <ng-template #singleSelect let-quickFilterConfig>
   <b-single-select [ngClass]="{'has-value': hasValue}"
-                  [options]="quickFilterConfig.options"
-                  [value]="quickFilterConfig.value"
-                  (selectChange)="singleSelectChange($event)"
-                  [disabled]="false"
-                  [required]="false"
-                  [showSingleGroupHeader]="showSingleGroupHeader"
-                  [isQuickFilter]="true">
+                   [options]="quickFilterConfig.options"
+                   [value]="quickFilterConfig.value"
+                   (selectChange)="singleSelectChange($event)"
+                   [disabled]="false"
+                   [required]="false"
+                   [showSingleGroupHeader]="showSingleGroupHeader"
+                   [isQuickFilter]="true">
   </b-single-select>
 </ng-template>
