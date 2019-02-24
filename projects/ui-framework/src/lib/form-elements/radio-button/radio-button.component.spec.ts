@@ -1,13 +1,18 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {RadioButtonComponent, RadioDirection} from './radio-button.component';
-import {DebugElement, NO_ERRORS_SCHEMA} from '@angular/core';
-import {By} from '@angular/platform-browser';
-import {MatRadioGroup} from '@angular/material';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RadioButtonComponent, RadioDirection } from './radio-button.component';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { MatRadioGroup } from '@angular/material';
 
-
-xdescribe('RadioButtonComponent', () => {
+fdescribe('RadioButtonComponent', () => {
   let component: RadioButtonComponent;
   let fixture: ComponentFixture<RadioButtonComponent>;
+
+  const radioConfigMock = [
+    { id: 11, label: 'option one' },
+    { id: 12, label: 'option two' },
+    { id: 13, label: 'option three' },
+  ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -17,24 +22,31 @@ xdescribe('RadioButtonComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-      .compileComponents();
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(RadioButtonComponent);
+        component = fixture.componentInstance;
+        component.radioConfig = radioConfigMock;
+        fixture.detectChanges();
+      });
   });
-  beforeEach(() => {
-    fixture = TestBed.createComponent(RadioButtonComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-  describe('xxx', () => {
-    it('should create component', () => {
-      expect(component).toBeDefined();
+
+  describe('direction', () => {
+    it('should set direction class with row by default', () => {
+      const matRadioGroup = fixture.debugElement.query(By.css('mat-radio-group'));
+      expect(matRadioGroup.nativeElement.classList).toContain('direction-row');
     });
-  });
-  describe('template', () => {
-    it('should call mat-radio-group with disable', () => {
+    it('should set direction class with column by attr', () => {
       component.direction = RadioDirection.column;
       fixture.detectChanges();
-      const matRadioGroup: DebugElement = <DebugElement>fixture.debugElement.query(By.css('mat-radio-group'));
+      const matRadioGroup = fixture.debugElement.query(By.css('mat-radio-group'));
       expect(matRadioGroup.nativeElement.classList).toContain('direction-column');
+    });
+  });
+
+  describe('OnChanges', () => {
+    it('should mark selected radio option with the matching value', () => {
+
     });
   });
 });
