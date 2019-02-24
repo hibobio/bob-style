@@ -1,12 +1,11 @@
-<mat-radio-group [ngClass]="[radioDirection === 'column'
+<mat-radio-group [ngClass]="[direction === 'column'
                  ? 'direction' + '-column'
                  : 'direction' + '-row']"
-                 [(ngModel)]="model"
-                 [disabled]="disabled">
-  <mat-radio-button *ngFor="let radioButton of radioDataModel"
-                    [ngClass]="[radioDirection === 'column'
-                    ? 'direction' + '-column'
-                    : 'direction' + '-row']"
-                    [value]="radioButton.id">{{radioButton.value}}
+                 [disabled]="disabled"
+                 (change)="onRadioChange($event)">
+  <mat-radio-button *ngFor="let radioButton of radioConfig"
+                    [checked]="value===radioButton.id"
+                    [value]="radioButton.id">
+    {{radioButton.label}}
   </mat-radio-button>
 </mat-radio-group>

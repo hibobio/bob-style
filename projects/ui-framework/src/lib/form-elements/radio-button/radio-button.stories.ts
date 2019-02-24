@@ -1,29 +1,32 @@
-import {storiesOf} from '@storybook/angular';
-import {withNotes} from '@storybook/addon-notes';
-import {array, boolean, number, object, select, text, withKnobs} from '@storybook/addon-knobs/angular';
-import {action} from '@storybook/addon-actions';
-import {ComponentGroupType} from '../../consts';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {RadioButtonModule} from './radio-button.module';
-import {RadioDirection} from './radio-button.component';
-import { values } from 'lodash';
+import { storiesOf } from '@storybook/angular';
+import { withNotes } from '@storybook/addon-notes';
+import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import { action } from '@storybook/addon-actions';
+import { ComponentGroupType } from '../../consts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RadioButtonModule } from './radio-button.module';
+import { RadioDirection } from './radio-button.component';
+import values from 'lodash/values';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const radioDirection = values(RadioDirection);
+const direction = values(RadioDirection);
 const radioStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
 const template = `
-<b-story-book-layout title="Radio">
-  <b-radio-button [label]="label" [disabled]="disabled" >
-  </b-radio-button>
-</b-story-book-layout>
+<b-radio-button [radioConfig]="radioConfig"
+                [value]="value"
+                [direction]="direction"
+                [disabled]="disabled"
+                (radioChange)="radioChange($event)">
+</b-radio-button>
 `;
 
-const noteTemplate = `
- <b-radio-button [label]="label" [disabled]="disabled" >
- </b-radio-button>`;
+const stroyTemplate = `
+<b-story-book-layout title="Radio Buttons">
+  ${ template }
+</b-story-book-layout>`;
 
 const note = `
   ## Radio Button Element
@@ -32,13 +35,14 @@ const note = `
 
   Name | Type | Description
   --- | --- | ---
-  label | string | label text
   disabled | boolean | is field disabled
-  radioDirection | enum | column/row
-  radioDataModel | RadioDataModel | model
+  direction | RadioDirection | column or row, default=row
+  radioConfig | RadioConfig | radio select config
+  value | number | the id of selected option
+  radioChange | action | callback with the selected id
 
   ~~~
-  ${noteTemplate}
+  ${ template }
   ~~~
 `;
 
@@ -46,12 +50,17 @@ radioStories.add(
   'Radio Button',
   () => {
     return {
-      template,
+      template: stroyTemplate,
       props: {
-        label: text('label', 'radio option'),
+        value: number('value', 11),
+        radioConfig: object('radioConfig', [
+          { id: 11, label: 'option one' },
+          { id: 12, label: 'option two' },
+          { id: 13, label: 'option three' },
+        ]),
+        direction: select('direction', direction, direction.row),
         disabled: boolean('disabled', false),
-        radioDataModel: object('radioDataModel', [{id: '1', value: 'radioOne'}, {id: '2', value: 'radioTwo'}]),
-        radioDirection: select('radioDirection', radioDirection, radioDirection.row),
+        radioChange: action(),
       },
       moduleMetadata: {
         imports: [
@@ -62,6 +71,5 @@ radioStories.add(
       }
     };
   },
-  {notes: {markdown: note}}
+  { notes: { markdown: note } }
 );
-

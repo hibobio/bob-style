@@ -1,44 +1,65 @@
 @import '../../style/colors';
 
-:host ::ng-deep{
+:host ::ng-deep {
   mat-radio-group {
-    display: inline-flex;
-  }
-  .direction-column {
-    padding-bottom: 25px;
-    flex-direction: column;
-  }
-  .direction-row {
-    padding-right: 30px;
-    flex-direction: row;
-  }
-  mat-radio-button {
-    .mat-radio-ripple {
-      display: none;
-    }
-    .mat-radio-outer-circle .mat-radio-inner-circle {
-      width: 18px;
-      height: 18px;
-    }
-    .mat-radio-outer-circle {
-      border-color: $grey-500;
-      border-width: 1px;
-      &:hover {
-        background-color: $white;
+    display: flex;
+    text-align: left;
+    &.direction-column {
+      flex-direction: column;
+      mat-radio-button {
+        margin-bottom: 10px;
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
     }
-    .mat-radio-disabled {
-      border-color: $grey-500;
-      box-shadow: inset 0 0 7px rgba(0,0,0,0.1);
+    &.direction-row {
+      flex-direction: row;
+      mat-radio-button {
+        margin-right: 20px;
+        &:last-child {
+          margin-right: 0;
+        }
+      }
     }
-    &.mat-accent .mat-radio-inner-circle {
-      background-color: var(--primary-500);
-    }mat-radio-outer-circle
-    .mat-radio-inner-circle {
-      transition-duration: 0.1s;
-    }
-    &.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-      border-color: $grey-500;
+    mat-radio-button {
+      .mat-radio-ripple {
+        display: none;
+      }
+      .mat-radio-outer-circle .mat-radio-inner-circle {
+        width: 18px;
+        height: 18px;
+      }
+      .mat-radio-outer-circle {
+        background-color: $white;
+        border-color: $grey-500;
+        border-width: 1px;
+        &:hover {
+          box-shadow: 0 2px 5px 0 $boxShadowColor;
+        }
+      }
+      &.mat-accent .mat-radio-inner-circle {
+        background-color: var(--primary-500);
+      }
+      .mat-radio-inner-circle {
+        transition-duration: 0.2s;
+      }
+      &.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+        border-color: $grey-500;
+      }
+      &.mat-radio-disabled {
+        .mat-radio-outer-circle {
+          border-color: $grey-500;
+          box-shadow: none;
+          background-color: transparent;
+        }
+        .mat-radio-label .mat-radio-label-content {
+          color: $grey-500;
+        }
+        &.mat-accent .mat-radio-inner-circle {
+          opacity: 0.5;
+        }
+      }
     }
   }
 }

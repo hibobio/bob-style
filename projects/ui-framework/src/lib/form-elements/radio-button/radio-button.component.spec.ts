@@ -5,7 +5,7 @@ import {By} from '@angular/platform-browser';
 import {MatRadioGroup} from '@angular/material';
 
 
-fdescribe('RadioButtonComponent', () => {
+xdescribe('RadioButtonComponent', () => {
   let component: RadioButtonComponent;
   let fixture: ComponentFixture<RadioButtonComponent>;
 
@@ -31,7 +31,7 @@ fdescribe('RadioButtonComponent', () => {
   });
   describe('template', () => {
     it('should call mat-radio-group with disable', () => {
-      component.radioDirection = RadioDirection.column;
+      component.direction = RadioDirection.column;
       fixture.detectChanges();
       const matRadioGroup: DebugElement = <DebugElement>fixture.debugElement.query(By.css('mat-radio-group'));
       expect(matRadioGroup.nativeElement.classList).toContain('direction-column');

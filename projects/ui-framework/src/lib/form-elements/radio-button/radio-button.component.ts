@@ -1,10 +1,12 @@
-import {Component, EventEmitter, forwardRef, Input, Output} from '@angular/core';
-import {NG_VALIDATORS, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {BaseFormElement} from '../base-form-element';
+import { Component, EventEmitter, forwardRef, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { BaseFormElement } from '../base-form-element';
+import { MatRadioChange } from '@angular/material';
+import has from 'lodash/has';
 
-export interface RadioDataModel {
- id: string;
- value: string;
+export interface RadioConfig {
+  id: number;
+  label: string;
 }
 
 export enum RadioDirection {
@@ -29,19 +31,24 @@ export enum RadioDirection {
     }
   ],
 })
-export class RadioButtonComponent extends BaseFormElement {
+export class RadioButtonComponent extends BaseFormElement implements OnChanges {
 
-  @Input() label: string;
-  @Input() value: boolean;
-  @Input() selected: boolean;
-  @Input() labelPosition: string;
-  @Input() disabled: boolean;
-  @Input() model: string;
-  @Input() radioDataModel: RadioDataModel[] = [{id: '1', value: 'radioOne'}, {id: '2', value: 'radioTwo'}];
-  @Input() radioDirection: RadioDirection;
-  @Output() radioChange: EventEmitter<any> = new EventEmitter<any>();
+  @Input() value: number = null;
+  @Input() radioConfig: RadioConfig[];
+  @Input() direction: RadioDirection = RadioDirection.row;
+  @Output() radioChange: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {
     super();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (has(changes, 'value')) {
+      this.value = changes.value.currentValue;
+    }
+  }
+
+  onRadioChange(e: MatRadioChange): void {
+    this.radioChange.emit(e.value);
   }
 }
