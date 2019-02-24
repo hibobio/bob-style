@@ -7,9 +7,11 @@ import { ComponentGroupType } from '../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 import { TableModule } from './table.module';
-import { AvatarComponent } from '../buttons-indicators/avatar/avatar.component';
 import { AvatarModule } from '../buttons-indicators/avatar/avatar.module';
-import { mockColumns, mockData } from './table.mock';
+import { mockColumnsDefs, mockRowData } from './table.mock';
+import { AvatarCellComponent } from './table/avatar.component';
+import { AgGridModule } from 'ag-grid-angular';
+import { RowSelection } from './table/table.interface';
 
 const tableStories = storiesOf(ComponentGroupType.DataTable, module)
   .addDecorator(withNotes)
@@ -17,14 +19,11 @@ const tableStories = storiesOf(ComponentGroupType.DataTable, module)
 
 const template = `
 <b-table
-  [data]="data"
-  [columns]="columns"
-  [stickyHeader]="stickyHeader"
-  [stickyColumns]="stickyColumns"
-  (select)="select($event)"
-  (sort)="sort($event)"
-  (rowClick)="rowClick($event)"
-  (rowRightClick)="rowRightClick($event)">
+  [rowData]="rowData"
+  [columnDefs]="columnDefs"
+  [rowSelection]="rowSelection"
+  [rowHeight]="rowHeight"
+  [sizeColumnsToFit]="sizeColumnsToFit">
 </b-table>
 `;
 
@@ -40,14 +39,11 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | ---
-  data | json | Table data
-  columns | json | Table columns
-  stickyHeader | boolean | Make headers sticky
-  stickyColumns | number | Number of the sticky column
-  select | id |  select event
-  sort | id | sort event
-  rowClick | id | row click event
-  rowRightClick | id | right click event
+  rowData | json | Table data
+  columnDefs | json | Columns definition
+  rowSelection | boolean | Make headers sticky
+  rowHeight | number | The height of the row
+  rowSelection | RowSelection | Single or multiple
 
   ~~~
   ${template}
@@ -59,18 +55,21 @@ tableStories.add(
     return {
       template: storyTemplate,
       props: {
-        stickyHeader: boolean('stickyHeader', false),
-        stickyColumns: number('stickyColumns', -1),
-        data: object('data', mockData),
-        columns: object('columns', mockColumns),
-        select: action(),
-        sort: action(),
-        rowClick: action(),
-        rowRightClick: action()
+        rowData: object('rowData', mockRowData),
+        columnDefs: object('columnDefs', mockColumnsDefs),
+        rowHeight: number('rowHeight', 50),
+        rowSelection: object('rowSelection', RowSelection.Multiple),
+        sizeColumnsToFit: boolean('sizeColumnsToFit', true)
       },
       moduleMetadata: {
-        entryComponents: [AvatarComponent],
-        imports: [BrowserAnimationsModule, StoryBookLayoutModule, TableModule, AvatarModule]
+        entryComponents: [AvatarCellComponent],
+        imports: [
+          BrowserAnimationsModule,
+          StoryBookLayoutModule,
+          TableModule,
+          AgGridModule,
+          AvatarModule,
+          AgGridModule.withComponents([AvatarCellComponent])],
       }
     };
   },

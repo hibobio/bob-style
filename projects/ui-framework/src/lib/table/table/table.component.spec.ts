@@ -2,23 +2,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TableComponent } from './table.component';
 import { CommonModule } from '@angular/common';
-import {
-  MatCheckboxModule,
-  MatIconModule,
-  MatInputModule,
-  MatMenuModule,
-  MatPaginatorModule,
-  MatSortModule,
-  MatTableModule
-} from '@angular/material';
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import { CdkTableModule } from '@angular/cdk/table';
-import { TableCellComponent } from '../table-cell/table-cell.component';
-import { mockColumns, mockData } from '../table.mock';
+import { mockColumnsDefs, mockRowData } from '../table.mock';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { TableModule } from '../table.module';
+import { AvatarCellComponent } from './avatar.component';
+import { AgGridModule } from 'ag-grid-angular';
 
 describe('TableComponent', () => {
   let component: TableComponent;
@@ -26,25 +17,19 @@ describe('TableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TableComponent, TableCellComponent],
       imports: [
         BrowserAnimationsModule,
         CommonModule,
-        MatTableModule,
-        MatSortModule,
-        MatPaginatorModule,
-        MatIconModule,
-        MatInputModule,
-        MatCheckboxModule,
-        MatMenuModule,
-        DragDropModule,
-        CdkTableModule,
-        AvatarModule
-      ]
+        BrowserAnimationsModule,
+        StoryBookLayoutModule,
+        TableModule,
+        AgGridModule,
+        AvatarModule,
+        AgGridModule.withComponents([AvatarCellComponent])]
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
-          entryComponents: [AvatarComponent]
+          entryComponents: [AvatarCellComponent]
         }
       })
       .compileComponents();
@@ -53,8 +38,8 @@ describe('TableComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TableComponent);
     component = fixture.componentInstance;
-    component.columns = mockColumns;
-    component.data = mockData;
+    component.columnDefs = mockColumnsDefs;
+    component.rowData = mockRowData;
     component.ngOnInit();
     fixture.detectChanges();
   });

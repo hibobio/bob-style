@@ -1,32 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableComponent } from './table/table.component';
-import {
-  MatCheckboxModule,
-  MatIconModule,
-  MatInputModule,
-  MatMenuModule,
-  MatPaginatorModule,
-  MatSortModule,
-  MatTableModule
-} from '@angular/material';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { TableCellComponent } from './table-cell/table-cell.component';
 import { CdkTableModule } from '@angular/cdk/table';
+import { AgGridModule } from 'ag-grid-angular';
+import { AvatarModule } from '../../public_api';
+import { AvatarCellComponent } from './table/avatar.component';
+
 
 @NgModule({
-  declarations: [TableComponent, TableCellComponent],
+  declarations: [TableComponent, AvatarCellComponent],
   imports: [
     CommonModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatIconModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatMenuModule,
     DragDropModule,
     CdkTableModule,
+    AvatarModule,
+    AgGridModule,
+    AgGridModule.withComponents([AvatarCellComponent])
   ],
   exports: [TableComponent],
 })

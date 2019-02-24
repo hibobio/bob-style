@@ -1,57 +1,24 @@
-import { ColumnConfig, filedType, sortDirections } from './table/column-config';
-import { AvatarComponent } from '../buttons-indicators/avatar/avatar.component';
+import { ColumnDef, PinDirection, SortDirections } from './table/table.interface';
+import { AvatarCellComponent } from './table/avatar.component';
 
-const startWarsChar: string[] = [
-  'https://johnnycat.wordpress.com/files/2009/05/c3po.jpg',
-  'https://cdn-02.independent.ie/regionals/kerryman/news/article34250758.ece/AUTOCROP/w620/2015-12-02_ker_15039481_I1.JPG',
-  'https://static.tvtropes.org/pmwiki/pub/images/anakin_skywalker_rots_6.png',
-  'https://lumiere-a.akamaihd.net/v1/images/Obi-Wan-Kenobi_6d775533.jpeg?region=0%2C0%2C1536%2C864&width=960'
-];
-const starWarsRand = () => startWarsChar[Math.floor(Math.random() * Math.floor(4))];
-export const mockColumns: ColumnConfig[] = [
+export const mockColumnsDefs: ColumnDef[] = [
   {
-    name: 'avatar',
-    displayName: '',
-    type: filedType.component,
-    component: {
-      component: AvatarComponent,
-      attributes: {
-        imageSource: 'about.avatar',
-        clicked: ($event, component, row, col) => (component.imageSource = starWarsRand()),
-        isClickable: 'about.isClickable'
-      }
-    },
-    isSort: true,
-    sortActive: sortDirections.asc
+    headerName: 'selection',
+    field: 'selection',
+    checkboxSelection: true,
+    resizable: true,
+    pinned: PinDirection.Left,
+    width: 40,
+    lockPosition: true
   },
-  {
-    name: 'fullName',
-    displayName: 'Display Name',
-    type: filedType.string,
-    isSort: true,
-    sortActive: sortDirections.asc
-  },
-  {
-    name: 'email',
-    displayName: 'Email',
-    type: filedType.string,
-    isSort: true,
-    sortActive: sortDirections.asc
-  },
-  {
-    name: 'internal.status',
-    displayName: 'Status',
-    type: filedType.enum,
-    options: [
-      { name: 'active', displayName: 'Active', selected: false },
-      { name: 'inactive', displayName: 'InActive', selected: true }
-    ],
-    isSort: true,
-    sortActive: sortDirections.asc
-  }
+  {headerName: '', field: 'about.avatar', cellRendererFramework: AvatarCellComponent, width: 40, lockPosition: true},
+  {headerName: 'Display Name', field: 'fullName', resizable: true, sort: SortDirections.Asc, sortable: true},
+  {headerName: 'Email', field: 'email', resizable: true, sortable: true},
+  {headerName: 'Status', field: 'internal.status', resizable: true, sortable: true},
+  {headerName: 'Hired Date', field: 'hiredDate', resizable: true, sortable: true},
 ];
 
-export const mockData = [
+export const mockRowData = [
   {
     fullName: 'Omri Hecht',
     email: 'omri.hecht@hibob.io',
@@ -59,9 +26,9 @@ export const mockData = [
       status: 'Active'
     },
     about: {
-      avatar: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg',
-      isClickable: true
-    }
+      avatar: {imageSource: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'},
+    },
+    hiredDate: '2017-11-29'
   },
   {
     fullName: 'Doron Cynsiger',
@@ -71,9 +38,9 @@ export const mockData = [
     },
     about: {
       avatar:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvWogj6uHgdZ8ovMF6cYShBGxsOvfk0xv1GB6rxwAP7ABAivC6',
-      isClickable: true
-    }
+        {imageSource: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvWogj6uHgdZ8ovMF6cYShBGxsOvfk0xv1GB6rxwAP7ABAivC6'},
+    },
+    hiredDate: '2017-02-29'
   },
   {
     fullName: 'Israel David',
@@ -82,20 +49,22 @@ export const mockData = [
       status: 'Active'
     },
     about: {
-      avatar: 'https://townsquare.media/site/442/files/2014/06/solo-foot-1.jpg?w=980&q=75',
-      isClickable: true
-    }
+      avatar: {imageSource: 'https://townsquare.media/site/442/files/2014/06/solo-foot-1.jpg?w=980&q=75'},
+    },
+    hiredDate: '2016-01-29'
   },
   {
     fullName: 'Ishai Borovoy',
     email: 'ishai.borovoy@hibob.io',
     internal: {
-      status: 'Active'
+      status: 'InActive'
     },
     about: {
-      avatar:
-        'https://lumiere-a.akamaihd.net/v1/images/solo-han-solo-main_890f79bd.jpeg?region=8%2C0%2C1543%2C868&width=960',
-      isClickable: true
-    }
+      avatar: {
+        imageSource:
+          'https://lumiere-a.akamaihd.net/v1/images/solo-han-solo-main_890f79bd.jpeg?region=8%2C0%2C1543%2C868&width=960',
+      }
+    },
+    hiredDate: '2017-01-30'
   }
 ];
