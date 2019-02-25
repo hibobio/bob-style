@@ -1,7 +1,12 @@
 <ag-grid-angular
+  #agGrid
   class="ag-theme-balham"
   [rowData]="rowData"
   [columnDefs]="columnDefs"
   [rowSelection]="rowSelection"
-  [rowHeight]="rowHeight">
+  [rowHeight]="rowHeight"
+  [gridOptions]="gridOptions"
+  (rowClicked)="onRowClicked($event)"
+  (rowSelected)="onRowSelected($event)"
+  (sortChanged)="onSortChanged($event)">
 </ag-grid-angular>

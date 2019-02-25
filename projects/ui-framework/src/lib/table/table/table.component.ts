@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
-import { ColumnDef, RowSelection } from './table.interface';
+import { get } from 'lodash';
+import { ColumnDef, RowClickedEvent, RowSelectedEvent, RowSelection, RowSelectionEventType, SortChangedEvent } from './table.interface';
+import { AgGridNg2 } from 'ag-grid-angular';
 
 @Component({
   selector: 'b-table',
@@ -10,9 +12,10 @@ import { ColumnDef, RowSelection } from './table.interface';
 export class TableComponent implements OnInit {
 
 
-  @Output() sort: EventEmitter<any> = new EventEmitter<any>();
-  @Output() select: EventEmitter<any> = new EventEmitter<any>();
-  @Output() rowClick: EventEmitter<any> = new EventEmitter<any>();
+  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<SortChangedEvent>();
+  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
+  @Output() rowSelected: EventEmitter<RowSelectedEvent> = new EventEmitter<RowSelectedEvent>();
+  @Output() rowSelectionChanged: EventEmitter<RowSelectedEvent> = new EventEmitter<RowSelectedEvent>();
 
   public gridOptions: GridOptions;
 
@@ -22,6 +25,8 @@ export class TableComponent implements OnInit {
   @Input() sizeColumnsToFit: Boolean = true;
   @Input() rowHeight: Number = 50;
   @Input() rowSelection: RowSelection = RowSelection.Multiple;
+
+  @ViewChild('agGrid') agGrid: AgGridNg2;
 
 
 
@@ -33,6 +38,28 @@ export class TableComponent implements OnInit {
         }
       }
     };
+  }
+
+  onSortChanged ($event) {
+    this.sortChanged.emit({
+      colId: get (this.agGrid.api.getSortModel(), '[0].colId'),
+      sort:  get (this.agGrid.api.getSortModel(), '[0].sort')
+    });
+  }
+
+  onRowSelected ($event) {
+    this.rowSelected.emit({
+      rowIndex: $event.rowIndex,
+      type: $event.node.selected ? RowSelectionEventType.Select : RowSelectionEventType.Unselect,
+      data: $event.data,
+    });
+  }
+
+  onRowClicked ($event) {
+    this.rowClicked.emit({
+      rowIndex: $event.rowIndex,
+      data: $event.data,
+    });
   }
 
   ngOnInit() {

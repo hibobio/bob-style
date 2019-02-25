@@ -25,3 +25,22 @@ export interface ColumnDef {
   comparator?: Function;
   lockPosition?: boolean;
 }
+
+export enum RowSelectionEventType {
+  Select = 'select',
+  Unselect = 'unselect',
+}
+
+export interface RowClickedEvent {
+  rowIndex: number,
+  data: object;
+}
+
+export interface RowSelectedEvent  extends RowClickedEvent{
+  type: RowSelectionEventType;
+}
+
+export interface SortChangedEvent {
+  colId: string;
+  sort: string;
+}
