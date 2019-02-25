@@ -3,9 +3,11 @@
                  : 'direction' + '-row']"
                  [disabled]="disabled"
                  (change)="onRadioChange($event)">
+
   <mat-radio-button *ngFor="let radioButton of radioConfig"
                     [checked]="value===radioButton.id"
                     [value]="radioButton.id">
     {{radioButton.label}}
   </mat-radio-button>
+
 </mat-radio-group>

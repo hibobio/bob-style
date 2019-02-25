@@ -1,10 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RadioButtonComponent, RadioDirection } from './radio-button.component';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { MatRadioGroup } from '@angular/material';
+import { MatRadioModule } from '@angular/material';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
+import { SimpleChanges } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-fdescribe('RadioButtonComponent', () => {
+describe('RadioButtonComponent', () => {
   let component: RadioButtonComponent;
   let fixture: ComponentFixture<RadioButtonComponent>;
 
@@ -14,21 +17,42 @@ fdescribe('RadioButtonComponent', () => {
     { id: 13, label: 'option three' },
   ];
 
-  beforeEach(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [RadioButtonComponent],
-      providers: [
-        MatRadioGroup,
+      declarations: [
+        RadioButtonComponent,
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      imports: [
+        NoopAnimationsModule,
+        CommonModule,
+        FormsModule,
+        MatRadioModule,
+      ],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(RadioButtonComponent);
         component = fixture.componentInstance;
         component.radioConfig = radioConfigMock;
+        spyOn(component.radioChange, 'emit');
         fixture.detectChanges();
       });
+  }));
+
+  describe('init', () => {
+    it('should render three options', () => {
+      const matRadioButtons = fixture.debugElement.queryAll(By.css('mat-radio-button'));
+      expect(matRadioButtons.length).toEqual(3);
+    });
+  });
+
+  describe('option click', () => {
+    it('should set selected option to be checked and emit radioChange event with id', () => {
+      const matRadioButtonLabel = fixture.debugElement.queryAll(By.css('mat-radio-button label'))[2];
+      matRadioButtonLabel.nativeElement.click();
+      fixture.detectChanges();
+      expect(component.radioChange.emit).toHaveBeenCalledWith(13);
+    });
   });
 
   describe('direction', () => {
@@ -46,7 +70,32 @@ fdescribe('RadioButtonComponent', () => {
 
   describe('OnChanges', () => {
     it('should mark selected radio option with the matching value', () => {
-
+      const changes: SimpleChanges = {
+        value: {
+          previousValue: undefined, currentValue: 12, firstChange: true, isFirstChange: () => true,
+        }
+      };
+      component.ngOnChanges(changes);
+      fixture.detectChanges();
+      const matRadioButtons = fixture.debugElement.queryAll(By.css('mat-radio-button'));
+      expect(matRadioButtons.length).toEqual(3);
+      for (let i = 0; i < matRadioButtons.length; i++) {
+        if (i === 1) {
+          expect(matRadioButtons[i].componentInstance.checked).toBe(true);
+        } else {
+          expect(matRadioButtons[i].componentInstance.checked).toBe(false);
+        }
+      }
+    });
+    it('should not emit change from value change', () => {
+      const changes: SimpleChanges = {
+        value: {
+          previousValue: undefined, currentValue: 12, firstChange: true, isFirstChange: () => true,
+        }
+      };
+      component.ngOnChanges(changes);
+      fixture.detectChanges();
+      expect(component.radioChange.emit).not.toHaveBeenCalled();
     });
   });
 });
