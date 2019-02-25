@@ -66,5 +66,10 @@ export const mockRowData = [
       }
     },
     hiredDate: '2017-01-30'
-  }
+  },
 ];
+
+// For test performance
+/*for (let i = 4; i < 10000; i++) {
+  mockRowData[i] = mockRowData[0];
+}*/

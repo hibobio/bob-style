@@ -65,7 +65,7 @@ tableStories.add(
         columnDefs: object('columnDefs', mockColumnsDefs),
         rowHeight: number('rowHeight', 50),
         rowSelection: object('rowSelection', RowSelection.Multiple),
-        sizeColumnsToFit: boolean('sizeColumnsToFit', false),
+        sizeColumnsToFit: boolean('sizeColumnsToFit', true),
         rowClicked: action(),
         rowSelected: action(),
         sortChanged: action(),
