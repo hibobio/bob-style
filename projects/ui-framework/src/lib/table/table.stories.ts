@@ -46,6 +46,7 @@ const note = `
   columnDefs | json | Columns definition
   rowSelection | boolean | Make headers sticky
   rowHeight | number | The height of the row
+  sizeColumnsToFit | boolean | Auto column size
   rowSelection | RowSelection | Single or multiple
   rowClicked | Event | Row clicked event
   rowSelected | Function | Row selected event
@@ -63,8 +64,8 @@ tableStories.add(
       props: {
         rowData: object('rowData', mockRowData),
         columnDefs: object('columnDefs', mockColumnsDefs),
-        rowHeight: number('rowHeight', 50),
         rowSelection: object('rowSelection', RowSelection.Multiple),
+        rowHeight: number('rowHeight', 50),
         sizeColumnsToFit: boolean('sizeColumnsToFit', true),
         rowClicked: action(),
         rowSelected: action(),

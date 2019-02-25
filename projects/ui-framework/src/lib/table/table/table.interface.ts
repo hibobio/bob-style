@@ -24,6 +24,7 @@ export interface ColumnDef {
   minWidth?: number;
   comparator?: Function;
   lockPosition?: boolean;
+  headerCheckboxSelection?: boolean | Function;
 }
 
 export enum RowSelectionEventType {

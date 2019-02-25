@@ -32,6 +32,11 @@ export class TableComponent implements OnInit {
 
   constructor() {
     this.gridOptions = <GridOptions>{
+      onGridSizeChanged: () => {
+        if (this.sizeColumnsToFit) {
+          this.gridOptions.api.sizeColumnsToFit();
+        }
+      },
       onGridReady: () => {
         if (this.sizeColumnsToFit) {
           this.gridOptions.api.sizeColumnsToFit();
@@ -52,7 +57,6 @@ export class TableComponent implements OnInit {
   }
 
   public onRowSelected ($event) : void {
-    console.log(this.agGrid.api.getSelectedRows());
     this.rowSelected.emit({
       rowIndex: $event.rowIndex,
       type: $event.node.selected ? RowSelectionEventType.Select : RowSelectionEventType.Unselect,
