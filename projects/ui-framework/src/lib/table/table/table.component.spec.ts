@@ -52,9 +52,43 @@ describe('TableComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('Selected rows', () => {
+    it('should get select row', fakeAsync(() => {
+      component.agGrid.api.selectIndex(0, true, true);
+      component.agGrid.api.selectIndex(1, true, true);
+      tick(1);
+      expect(component.getSelectedRows()).toEqual([
+        {
+          fullName: 'Doron Cynsiger',
+          email: 'doron.cynsiger@hibob.io',
+          internal: { status: 'Active' },
+          about: {
+            avatar: {
+              imageSource:
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvWogj6uHgdZ8ovMF6cYShBGxsOvfk0xv1GB6rxwAP7ABAivC6'
+            }
+          },
+          hiredDate: '2017-02-29'
+        },
+        {
+          fullName: 'Ishai Borovoy',
+          email: 'ishai.borovoy@hibob.io',
+          internal: { status: 'InActive' },
+          about: {
+            avatar: {
+              imageSource:
+                'https://lumiere-a.akamaihd.net/v1/images/solo-han-solo-main_890f79bd.jpeg?region=8%2C0%2C1543%2C868&width=960'
+            }
+          },
+          hiredDate: '2017-01-30'
+        }
+      ]);
+    }));
+  });
+
   describe('Table events', () => {
     it('should select row', fakeAsync(() => {
-      component.agGrid.api.selectNode(component.agGrid.api.getRowNode('1'));
+      component.agGrid.api.selectIndex(0, false, true);
       tick(1);
       expect(component.rowSelected.emit).toHaveBeenCalledWith({
         rowIndex: 0,
@@ -73,8 +107,8 @@ describe('TableComponent', () => {
       });
     }));
     it('should unselect row', fakeAsync(() => {
-      component.agGrid.api.selectNode(component.agGrid.api.getRowNode('1'));
-      component.agGrid.api.deselectNode(component.agGrid.api.getRowNode('1'));
+      component.agGrid.api.selectIndex(0, false, true);
+      component.agGrid.api.deselectIndex(0, true);
       tick(1);
       expect(component.rowSelected.emit).toHaveBeenCalledWith({
         rowIndex: 0,

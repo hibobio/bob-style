@@ -40,14 +40,19 @@ export class TableComponent implements OnInit {
     };
   }
 
-  onSortChanged ($event) {
+  public getSelectedRows (): object [] {
+    return this.agGrid.api.getSelectedRows();
+  }
+
+  public onSortChanged ($event): void {
     this.sortChanged.emit({
       colId: get (this.agGrid.api.getSortModel(), '[0].colId'),
       sort:  get (this.agGrid.api.getSortModel(), '[0].sort')
     });
   }
 
-  onRowSelected ($event) {
+  public onRowSelected ($event) : void {
+    console.log(this.agGrid.api.getSelectedRows());
     this.rowSelected.emit({
       rowIndex: $event.rowIndex,
       type: $event.node.selected ? RowSelectionEventType.Select : RowSelectionEventType.Unselect,
@@ -55,7 +60,7 @@ export class TableComponent implements OnInit {
     });
   }
 
-  onRowClicked ($event) {
+  public onRowClicked ($event) : void {
     this.rowClicked.emit({
       rowIndex: $event.rowIndex,
       data: $event.data,
