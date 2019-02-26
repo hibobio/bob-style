@@ -1,0 +1,10 @@
+@import '../../style/colors';
+
+.wrapper {
+  text-align: left;
+  width: 90%;
+  margin: 0 auto;
+  border: 1px solid $grey-500;
+  background-color: $white;
+  padding: 20px;
+}
