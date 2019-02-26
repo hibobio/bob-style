@@ -1,0 +1,14 @@
+@import '../../style/typography';
+
+:host ::ng-deep {
+  text-align: left;
+  .ql-toolbar.ql-snow{
+    @include BodyFont(normal, normal, 12px);
+  }
+  .ql-container {
+    @include BodyFont(normal, normal, 12px);
+  }
+  .quill-editor {
+    max-height: 200px;
+  }
+}

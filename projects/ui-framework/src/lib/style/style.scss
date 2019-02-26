@@ -4,8 +4,9 @@
 @import './shapes.scss';
 @import './animation-properties.scss';
 @import './grid-layout.scss';
-@import "~ag-grid-community/dist/styles/ag-grid.css";
-@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+@import '~ag-grid-community/dist/styles/ag-grid.css';
+@import '~ag-grid-community/dist/styles/ag-theme-balham.css';
+@import './quill.snow.css';
 
 body {
   margin: 0;
