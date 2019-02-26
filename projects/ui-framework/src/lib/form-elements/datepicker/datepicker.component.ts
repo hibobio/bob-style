@@ -1,16 +1,6 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  forwardRef,
-  Input,
-  OnInit,
-  Output,
-  ViewChild
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS, MatDatepicker } from '@angular/material';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import * as moment_ from 'moment';
 import { InputEventType, InputTypes } from '../input/input.enum';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
 import { invoke } from 'lodash';
@@ -18,8 +8,8 @@ import { InputEvent } from '../input/input.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
 import { BaseInputElement } from '../base-input-element';
+import { differenceInDays, format, isSameDay, isValid } from 'date-fns';
 
-const moment = moment_;
 @Component({
   selector: 'b-datepicker',
   templateUrl: './datepicker.component.html',
@@ -75,8 +65,8 @@ export class DatepickerComponent extends BaseInputElement implements OnInit {
         }
         break;
       case InputEventType.onChange:
-        inputEvent.value = moment(inputEvent.value).isValid()
-          ? moment(inputEvent.value).format(serverDateFormat)
+        inputEvent.value = isValid(new Date(inputEvent.value))
+          ? format(inputEvent.value, serverDateFormat)
           : inputEvent.value;
         this.propagateChange(inputEvent.value);
         this.dateChange.emit(inputEvent);
@@ -87,11 +77,10 @@ export class DatepickerComponent extends BaseInputElement implements OnInit {
     }
   }
 
-  public dateClass(d: Date): string {
-    const today = moment(new Date());
-    const date = moment(d);
-    const diff = date.diff(today, 'days');
-    const same = date.isSame(today, 'day');
+  public dateClass(date: Date): string {
+    const today = new Date();
+    const diff = differenceInDays(date, today);
+    const same = isSameDay(today, date);
     return same ? 'today' : diff < 0 ? 'past' : 'future';
   }
 

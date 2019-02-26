@@ -71,7 +71,7 @@ export const mockRowData = [
 ];
 
 // For test performance
-/*for (let i = 4; i < 10000; i++) {
+/*for (let i = 4; i < 2000; i++) {
   mockRowData[i] = mockRowData[0];
   if (i % 100 === 0) {
     console.log('Generate rows ' + i);

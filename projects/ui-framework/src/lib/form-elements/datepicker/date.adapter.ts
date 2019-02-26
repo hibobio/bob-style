@@ -1,9 +1,9 @@
 import { NativeDateAdapter } from '@angular/material';
-import * as moment_ from 'moment';
+import { format } from 'date-fns';
 
-const moment = moment_;
 export class BDateAdapter extends NativeDateAdapter {
   public static bFormat = 'DD/MM/YYYY';
+  public static readonly monthFormat = 'MMM';
 
   parse(value: any): Date | null {
     if ((typeof value === 'string') && (value.indexOf('/') > -1)) {
@@ -19,9 +19,9 @@ export class BDateAdapter extends NativeDateAdapter {
   format(date: Date, displayFormat: any): string {
     switch (displayFormat) {
       case 'input':
-        return moment(date).format(BDateAdapter.bFormat);
+        return format(date, BDateAdapter.bFormat);
       case 'inputMonth':
-        return moment(date).format('MMM');
+        return format(date, BDateAdapter.monthFormat);
       default:
         return date.toDateString();
     }
