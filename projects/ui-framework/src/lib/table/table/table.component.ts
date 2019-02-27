@@ -31,6 +31,9 @@ export class TableComponent implements OnInit {
 
 
   constructor() {
+  }
+
+  ngOnInit() {
     this.gridOptions = <GridOptions>{
       onGridSizeChanged: () => {
         if (this.sizeColumnsToFit) {
@@ -56,7 +59,7 @@ export class TableComponent implements OnInit {
     });
   }
 
-  public onRowSelected ($event) : void {
+  public onRowSelected ($event): void {
     this.rowSelected.emit({
       rowIndex: $event.rowIndex,
       type: $event.node.selected ? RowSelectionEventType.Select : RowSelectionEventType.Unselect,
@@ -64,13 +67,10 @@ export class TableComponent implements OnInit {
     });
   }
 
-  public onRowClicked ($event) : void {
+  public onRowClicked ($event): void {
     this.rowClicked.emit({
       rowIndex: $event.rowIndex,
       data: $event.data,
     });
-  }
-
-  ngOnInit() {
   }
 }
