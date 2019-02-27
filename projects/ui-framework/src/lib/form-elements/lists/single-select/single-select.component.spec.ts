@@ -83,7 +83,7 @@ describe('SingleSelectComponent', () => {
       expect(component.value).toEqual(null);
     });
     it('should set triggerValue if value is provided', () => {
-      component.ngOnChanges({value: {previousValue: undefined, currentValue: 1, firstChange: true, isFirstChange: () => true}});
+      component.ngOnChanges({ value: { previousValue: undefined, currentValue: 1, firstChange: true, isFirstChange: () => true } });
       expect(component.triggerValue).toEqual('Basic Info 1');
     });
   });
@@ -113,6 +113,19 @@ describe('SingleSelectComponent', () => {
       fixture.autoDetectChanges();
       expect(component.value).toBe(null);
       expect(component.triggerValue).toBe(null);
+      flush();
+    }));
+    it('should invoke selectChange.emit and propagateChange with null', fakeAsync(() => {
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+      (overlayContainerElement.querySelectorAll('b-single-list .option')[3] as HTMLElement).click();
+      fixture.autoDetectChanges();
+      const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
+      clearSelection.triggerEventHandler('click', null);
+      fixture.autoDetectChanges();
+      expect(component.selectChange.emit).toHaveBeenCalledWith(null);
+      expect(component.propagateChange).toHaveBeenCalledWith(null);
       flush();
     }));
   });

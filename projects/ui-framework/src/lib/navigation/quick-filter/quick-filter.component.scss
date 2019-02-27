@@ -32,7 +32,7 @@ $selectHeight: 26px;
     &.has-value {
       label {
         margin: 0;
-        transform: translateY(-32px);
+        transform: translateY(-34px) scale(0.9);
       }
       .chevron {
         display: none;
@@ -52,7 +52,7 @@ $selectHeight: 26px;
             border-radius: 0;
             border: none;
             height: $selectHeight;
-            .mat-form-field-prefix, .mat-form-field-suffix {
+            .mat-form-field-suffix {
               display: none;
               padding-right: 0 !important;
             }
@@ -77,11 +77,6 @@ $selectHeight: 26px;
         .mat-form-field-wrapper .mat-form-field-flex {
           border: none;
           box-shadow: none;
-        }
-      }
-      &.mat-form-field-should-float {
-        .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
-          transform: translateY(-36px) scale(0.9);
         }
       }
     }

@@ -46,7 +46,9 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
     });
 
     const searchInput = this.overlayRef.overlayElement.querySelector('b-input input') as HTMLElement;
-    searchInput.focus();
+    if (searchInput) {
+      searchInput.focus();
+    }
 
     this.backdropClickSubscriber = this.overlayRef.backdropClick()
       .subscribe(() => {

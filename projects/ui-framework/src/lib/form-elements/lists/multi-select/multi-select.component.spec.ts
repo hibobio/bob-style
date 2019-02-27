@@ -137,6 +137,19 @@ describe('MultiSelectComponent', () => {
       expect(component.triggerValue).toEqual('');
       flush();
     }));
+    it('should invoke selectChange.emit and propagateChange with []', fakeAsync(() => {
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+      (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
+      fixture.autoDetectChanges();
+      const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
+      clearSelection.triggerEventHandler('click', null);
+      fixture.autoDetectChanges();
+      expect(component.selectChange.emit).toHaveBeenCalledWith([]);
+      expect(component.propagateChange).toHaveBeenCalledWith([]);
+      flush();
+    }));
   });
 
   describe('OnDestroy', () => {

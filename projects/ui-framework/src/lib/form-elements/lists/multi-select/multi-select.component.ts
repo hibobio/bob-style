@@ -108,6 +108,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
   clearSelection(): void {
     this.value = [];
     this.triggerValue = this.getTriggerValue(this.value);
+    this.selectChange.emit(this.value);
     this.propagateChange(this.value);
     setTimeout(() => {
       this.blockSelectClick = false;

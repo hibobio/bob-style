@@ -222,6 +222,66 @@ describe('SingleSelectComponent', () => {
       expect(headerPlaceholder.length).toEqual(1);
       expect(headers.length).toEqual(1);
     });
+    it('should display search if list is greater than DISPLAY_SEARCH_OPTION_NUM', () => {
+      const testOptionsMock = [
+        {
+          groupName: 'Basic Info Header',
+          options: [
+            { value: 'Basic Info 1', id: 1 },
+            { value: 'Basic Info 2', id: 2 },
+            { value: 'Basic Info 3', id: 3 },
+            { value: 'Basic Info 4', id: 4 },
+            { value: 'Basic Info 5', id: 5 },
+            { value: 'Basic Info 6', id: 6 },
+          ]
+        },
+        {
+          groupName: 'Personal Header',
+          options: [
+            { value: 'Personal 1', id: 11 },
+            { value: 'Personal 2', id: 12 },
+            { value: 'Personal 3', id: 13 },
+            { value: 'Personal 4', id: 14 },
+            { value: 'Personal 5', id: 15 },
+            { value: 'Personal 6', id: 16 },
+          ]
+        }
+      ];
+      component.ngOnChanges({
+        options:
+          {
+            previousValue: undefined, currentValue: testOptionsMock, firstChange: false, isFirstChange: () => false,
+          }
+      });
+      fixture.autoDetectChanges();
+      const searchEl = fixture.debugElement.query(By.css('b-search'));
+      expect(searchEl).toBeTruthy();
+    });
+    it('should not display search if list is smaller than DISPLAY_SEARCH_OPTION_NUM', () => {
+      const testOptionsMock = [
+        {
+          groupName: 'Basic Info Header',
+          options: [
+            { value: 'Basic Info 1', id: 1 },
+          ]
+        },
+        {
+          groupName: 'Personal Header',
+          options: [
+            { value: 'Personal 1', id: 11 },
+          ]
+        }
+      ];
+      component.ngOnChanges({
+        options:
+          {
+            previousValue: undefined, currentValue: testOptionsMock, firstChange: false, isFirstChange: () => false,
+          }
+      });
+      fixture.autoDetectChanges();
+      const searchEl = fixture.debugElement.query(By.css('b-search'));
+      expect(searchEl).toBeFalsy();
+    });
   });
 
   describe('header collapse', () => {

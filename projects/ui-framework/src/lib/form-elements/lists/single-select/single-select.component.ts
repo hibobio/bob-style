@@ -78,6 +78,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
   clearSelection(): void {
     this.value = null;
     this.triggerValue = this.getTriggerValue(this.value);
+    this.selectChange.emit(this.value);
     this.propagateChange(this.value);
     setTimeout(() => {
       this.blockSelectClick = false;

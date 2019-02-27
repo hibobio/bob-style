@@ -26,6 +26,7 @@ export class QuickFilterComponent implements OnChanges {
   }
 
   multiSelectChange(value: (string | number)[]): void {
+    this.hasValue = value.length > 0;
   }
 
   multiSelectModified(value: (string | number)[]): void {

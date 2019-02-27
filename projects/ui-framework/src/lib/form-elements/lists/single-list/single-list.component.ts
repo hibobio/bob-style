@@ -4,6 +4,7 @@ import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
 import findIndex from 'lodash/findIndex';
 import has from 'lodash/has';
+import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 
 @Component({
   selector: 'b-single-list',
@@ -22,6 +23,7 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
   searchValue: string;
 
   private filteredOptions: SelectGroupOption[];
+  readonly displaySearchOptionNum = DISPLAY_SEARCH_OPTION_NUM;
 
   constructor(
     private listModelService: ListModelService,

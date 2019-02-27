@@ -5,6 +5,7 @@ import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
 import { CheckboxStates } from '../../checkbox/checkbox.component';
 import has from 'lodash/has';
+import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 
 @Component({
   selector: 'b-multi-list',
@@ -24,6 +25,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   filteredOptions: SelectGroupOption[];
 
   checkboxState = CheckboxStates;
+  readonly displaySearchOptionNum = DISPLAY_SEARCH_OPTION_NUM;
 
   constructor(
     private listModelService: ListModelService,

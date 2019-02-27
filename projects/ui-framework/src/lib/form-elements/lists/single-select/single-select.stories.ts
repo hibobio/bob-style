@@ -56,10 +56,10 @@ const note = `
   ~~~
 `;
 
-const optionsMock = Array.from(Array(3), (_, i) => {
+const optionsMock = Array.from(Array(2), (_, i) => {
   return {
     groupName: `Personal G${i}`,
-    options: Array.from(Array(4), (_, k) => {
+    options: Array.from(Array(3), (_, k) => {
       return {
         value:
           k % 2 === 0
