@@ -8,7 +8,7 @@ import { InputEvent } from '../input/input.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
 import { BaseInputElement } from '../base-input-element';
-import { differenceInDays, format, isSameDay, isValid } from 'date-fns';
+import { differenceInDays, format, isDate, isSameDay } from 'date-fns';
 
 @Component({
   selector: 'b-datepicker',
@@ -65,7 +65,7 @@ export class DatepickerComponent extends BaseInputElement implements OnInit {
         }
         break;
       case InputEventType.onChange:
-        inputEvent.value = isValid(new Date(inputEvent.value))
+        inputEvent.value = isDate(inputEvent.value)
           ? format(inputEvent.value, serverDateFormat)
           : inputEvent.value;
         this.propagateChange(inputEvent.value);
