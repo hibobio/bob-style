@@ -48,7 +48,7 @@ export class QuickFilterComponent implements OnChanges {
     this.emitChangeEvent(value);
   }
 
-  private getTemplate(): TemplateRef<any> {
+  public getTemplate(): TemplateRef<any> {
     const referenceElement = {
       [QuickFilterSelectType.singleSelect]: this.singleSelect,
       [QuickFilterSelectType.multiSelect]: this.multiSelect,
