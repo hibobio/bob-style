@@ -52,6 +52,10 @@ $selectHeight: 26px;
             border-radius: 0;
             border: none;
             height: $selectHeight;
+            .mat-form-field-prefix {
+              padding-left: 0 !important;
+              padding-right: 4px !important;
+            }
             .mat-form-field-suffix {
               display: none;
               padding-right: 0 !important;

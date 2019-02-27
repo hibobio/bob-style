@@ -11,7 +11,8 @@
     <div *ngFor="let quickFilterConfig of quickFilters"
          class="quick-filter-holder"
          [ngStyle]="{width: 100/quickFilters.length + '%'}">
-      <b-quick-filter [quickFilterConfig]="quickFilterConfig">
+      <b-quick-filter [quickFilterConfig]="quickFilterConfig"
+                      (filterChange)="onFilterChange($event)">
       </b-quick-filter>
     </div>
   </div>

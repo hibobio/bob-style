@@ -18,7 +18,8 @@ const textareaStories = storiesOf(ComponentGroupType.Navigation, module)
 
 const template = `
 <b-quick-filter-bar style="width: 95vw; margin: 20px auto;"
-                    [quickFilters]="quickFilters">
+                    [quickFilters]="quickFilters"
+                    (filtersChange)="filtersChange($event)">
   <div bar-prefix>total: 85</div>
   <b-button bar-suffix size="${ ButtonSize.small }">more</b-button>
 </b-quick-filter-bar>
@@ -83,7 +84,8 @@ textareaStories.add(
     return {
       template: storyTemplate,
       props: {
-        quickFilters: object('quickFilters', quickFilters)
+        quickFilters: object('quickFilters', quickFilters),
+        filtersChange: action(),
       },
       moduleMetadata: {
         imports: [

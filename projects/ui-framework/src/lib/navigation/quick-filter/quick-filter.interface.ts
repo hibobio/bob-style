@@ -7,3 +7,12 @@ export interface QuickFilterConfig {
   options: SelectGroupOption[];
   value: (string | number) | (string | number)[];
 }
+
+export interface QuickFilterChangeEvent {
+  label: string;
+  value: (string | number) | (string | number)[];
+}
+
+export interface QuickFilterBarChangeEvent {
+  [key: string]: (string | number) | (string | number)[];
+}

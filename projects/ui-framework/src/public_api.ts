@@ -62,3 +62,6 @@ export { SplitInputSingleSelectModule } from './lib/form-elements/split-input-si
 // Tabs
 export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { Tab } from './lib/navigation/tabs/tabs.interface';
+// Quick Filters
+export { QuickFilterModule } from './lib/navigation/quick-filter/quick-filter.module';
+export { QuickFilterConfig, QuickFilterChangeEvent, QuickFilterBarChangeEvent } from './lib/navigation/quick-filter/quick-filter.interface';
