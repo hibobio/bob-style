@@ -35,6 +35,8 @@ export {
   InputEventType,
   InputAutoCompleteOptions
 } from './lib/form-elements/input/input.enum';
+// Split input + single select form field
+export { SplitInputSingleSelectModule } from './lib/form-elements/split-input-single-select/split-input-single-select.module';
 // Lists
 export { SingleListModule } from './lib/form-elements/lists/single-list/single-list.module';
 export { SingleSelectModule } from './lib/form-elements/lists/single-select/single-select.module';
@@ -58,7 +60,10 @@ export { UtilsModule } from './lib/utils/utils.module';
 export { UtilsService } from './lib/utils/utils.service';
 // Panel
 export { PanelModule } from './lib/overlay/panel/panel.module';
-export { SplitInputSingleSelectModule } from './lib/form-elements/split-input-single-select/split-input-single-select.module';
+// Dialog
+export { DialogModule } from './lib/overlay/dialog/dialog.module';
+export { DialogSize } from './lib/overlay/dialog/dialog.enum';
+export { DialogConfig, DialogButtons, DialogButton } from './lib/overlay/dialog/dialog.interface';
 // Tabs
 export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { Tab } from './lib/navigation/tabs/tabs.interface';
