@@ -65,6 +65,7 @@ export class PanelComponent implements OnInit, OnDestroy {
 
     return {
       disposeOnNavigation: true,
+      backdropClass: 'b-panel-backdrop',
       hasBackdrop: true,
       panelClass: ['b-panel'],
       positionStrategy,

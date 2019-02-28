@@ -9,6 +9,8 @@ import { FormElementsModule } from '../../form-elements/form-elements.module';
 import { InputEventType } from '../../form-elements/input/input.enum';
 import { InputEvent } from '../../form-elements/input/input.interface';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
+import { DialogSize } from './dialog.enum';
+import { DialogButtons } from './dialog.interface';
 
 @Component({
   selector: 'b-dialog-example',
@@ -26,44 +28,43 @@ can add as many holiday policies as you need for your organisation. Before we cr
 a note on what types are.`
   };
 
-  constructor(private dialogService: DialogService) {}
+  constructor(
+    private dialogService: DialogService,
+  ) {
+  }
 
   openDialog(): void {
-    this.dialogService.openDialog(DialogExampleDialogComponent, {
-      width: '800px',
-      data: this.dataMock
-    });
+    this.dialogService
+      .openDialog(DialogExampleDialogComponent, {
+        size: DialogSize.small,
+        panelClass: 'dialog-example',
+        data: this.dataMock,
+      });
   }
 }
 
 @Component({
   selector: 'b-dialog-example-dialog',
   template: `
-    <b-dialog dialogTitle="{{ data.title }}" [dialogButtonConfig]="dialogButtonConfig">
+    <b-dialog dialogTitle="{{ data.title }}" [dialogButtons]="dialogButtonConfig">
       <div b-dialog-sub-title>
         <b-subheading style="display:inline;">The article id is {{ data.id }} </b-subheading>
-        <a
-          href="https://help.hibob.com/time-off/configuring-time-off-policies/time-off-policies"
-          target="_blank"
-          >read more</a
-        >
+        <a href="https://help.hibob.com/time-off/configuring-time-off-policies/time-off-policies"
+           target="_blank">read more
+        </a>
       </div>
       <div b-dialog-content>
-        <b-textarea
-          label="Edit text"
-          style="width: 100%;"
-          value="{{ data.textContent }}"
-          (inputEvents)="onTextEdit($event)"
-        >
+        <b-textarea label="Edit text"
+                    style="width: 100%;"
+                    value="{{ data.textContent }}"
+                    (inputEvents)="onTextEdit($event)">
         </b-textarea>
         <article style="padding:20px; background-color:#f8f7f7; margin: 20px auto;">
           <b-display-4>"{{ editedText }}"</b-display-4>
         </article>
-        <b-single-select
-          [options]="selectOptions"
-          style="width: 100%;"
-          label="was this article helpful"
-        >
+        <b-single-select [options]="selectOptions"
+                         style="width: 100%;"
+                         label="was this article helpful">
         </b-single-select>
         <b-checkbox label="Click this"></b-checkbox>
       </div>
@@ -71,17 +72,27 @@ a note on what types are.`
   `
 })
 export class DialogExampleDialogComponent implements OnInit {
-  dialogButtonConfig: any;
+
+  dialogButtonConfig: DialogButtons;
   selectOptions: SelectGroupOption[];
   editedText: string;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {
+  }
 
   ngOnInit(): void {
     this.editedText = this.data.textContent;
     this.dialogButtonConfig = {
-      okLabel: 'Ok',
-      cancelLabel: 'cancel'
+      ok: {
+        label: 'Ok',
+        action: () => console.log('click ok!!!'),
+      },
+      cancel: {
+        label: 'Cancel',
+        action: () => console.log('click cancel!!!'),
+      },
     };
     this.selectOptions = [
       {
@@ -99,10 +110,26 @@ export class DialogExampleDialogComponent implements OnInit {
 }
 
 @NgModule({
-  declarations: [DialogExampleComponent, DialogExampleDialogComponent],
-  imports: [CommonModule, DialogModule, TypographyModule, ButtonsModule, FormElementsModule],
-  exports: [DialogExampleComponent],
-  entryComponents: [DialogExampleDialogComponent],
-  providers: [DialogService]
+  declarations: [
+    DialogExampleComponent,
+    DialogExampleDialogComponent,
+  ],
+  imports: [
+    CommonModule,
+    DialogModule,
+    TypographyModule,
+    ButtonsModule,
+    FormElementsModule,
+  ],
+  exports: [
+    DialogExampleComponent,
+  ],
+  entryComponents: [
+    DialogExampleDialogComponent,
+  ],
+  providers: [
+    DialogService,
+  ]
 })
-export class DialogExampleModule {}
+export class DialogExampleModule {
+}

@@ -16,6 +16,11 @@
 </div>
 
 <div mat-dialog-actions>
-  <b-button (click)="onCancel()">{{dialogButtonConfig.cancelLabel}}</b-button>
-  <b-button (click)="onOk()">{{dialogButtonConfig.okLabel}}</b-button>
+  <b-button *ngIf="dialogButtons.cancel"
+            (click)="onCancel()">
+    {{dialogButtons.cancel.label}}
+  </b-button>
+  <b-button (click)="onOk()">
+    {{dialogButtons.ok.label}}
+  </b-button>
 </div>

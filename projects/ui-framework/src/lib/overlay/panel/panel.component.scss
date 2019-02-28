@@ -4,6 +4,10 @@
   .panel-trigger {
     display: inline-block;
   }
+  .b-panel-backdrop {
+    background-color: rgba(0, 0, 0, .3);
+    transition: none;
+  }
   .b-panel {
     .panel-wrapper {
       @include OverlayPanel();
