@@ -11,6 +11,9 @@
   &.tertiary {
     @include Button(tertiary);
   }
+  &.disabled {
+    @include Button(disabled);
+  }
   &.small {
     padding: 8px 16px;
   }

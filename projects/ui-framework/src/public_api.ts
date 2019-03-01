@@ -64,6 +64,7 @@ export { PanelModule } from './lib/overlay/panel/panel.module';
 export { DialogModule } from './lib/overlay/dialog/dialog.module';
 export { DialogSize } from './lib/overlay/dialog/dialog.enum';
 export { DialogConfig, DialogButtons, DialogButton } from './lib/overlay/dialog/dialog.interface';
+export { DialogService } from './lib/overlay/dialog/dialog.service';
 // Tabs
 export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { Tab } from './lib/navigation/tabs/tabs.interface';

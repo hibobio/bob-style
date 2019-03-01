@@ -47,4 +47,11 @@
       background-color: $grey-300;
     }
   }
+
+  @if $type == 'disabled' {
+    pointer-events: none;
+    border: 1px solid $grey-300;
+    background-color: $grey-200;
+    color: $grey-500;
+  }
 }

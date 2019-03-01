@@ -15,11 +15,11 @@ const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
 const typeOptions = values(ButtonType);
 const sizeOptions = values(ButtonSize);
 const template = `
-<b-button
-  (clicked)="onClick($event)"
-  [type]="type"
-  [size]="size">
-    {{label}}
+<b-button (clicked)="onClick($event)"
+          [type]="type"
+          [size]="size"
+          [disabled]="disabled">
+  {{label}}
 </b-button>
 `;
 const note = `
@@ -29,8 +29,10 @@ const note = `
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
+  label | string | button text |
   type | ButtonType | enum for setting the button type | primary (optional)
   size | ButtonSize | enum for setting the button size | medium (optional)
+  disabled | boolean | disabled | false
   clicked | Function | callback for clicking on the button |
 
   #### Style customization
@@ -60,6 +62,7 @@ buttonStories.add(
       label: text('label', 'Click me'),
       type: select('type', typeOptions, ButtonType.primary),
       size: select('size', sizeOptions, ButtonSize.medium),
+      disabled: boolean('disabled', false),
     },
     moduleMetadata: {
       imports: [

@@ -5,8 +5,9 @@ import { ButtonType, ButtonSize } from '../buttons.enum';
   selector: 'b-button',
   template: `
     <button mat-button
+            class="{{type}} {{size}}"
             [disableRipple]="true"
-            [ngClass]="getClassNames()"
+            [ngClass]="{'disabled': disabled}"
             (click)="onClick($event)">
       <ng-content></ng-content>
     </button>
@@ -15,17 +16,15 @@ import { ButtonType, ButtonSize } from '../buttons.enum';
 })
 export class ButtonComponent {
 
-  constructor() { }
   @Input() type?: ButtonType = ButtonType.primary;
   @Input() size?: ButtonSize = ButtonSize.medium;
+  @Input() disabled = false;
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
-  getClassNames() {
-    return `${this.type} ${this.size}`;
+  constructor() {
   }
 
   onClick($event) {
     this.clicked.emit($event);
   }
-
 }

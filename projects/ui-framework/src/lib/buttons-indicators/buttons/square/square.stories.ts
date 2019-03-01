@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { select, withKnobs } from '@storybook/addon-knobs/angular';
+import { select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
 import { ButtonType } from '../buttons.enum';
@@ -19,11 +19,11 @@ const iconColor = values(IconColor);
 const icons = values(Icons);
 
 const template = `
-<b-square-button
-  (clicked)="onClick($event)"
-  [type]="type"
-  [icon]="icon"
-  [color]="color">
+<b-square-button (clicked)="onClick($event)"
+                 [type]="type"
+                 [icon]="icon"
+                 [color]="color"
+                 [disabled]="disabled">
 </b-square-button>
 `;
 const note = `
@@ -37,6 +37,7 @@ const note = `
   icon | Icons | Icon enum value
   color | IconColor | the color of the icon | dark (optional)
   clicked | Function | callback for clicking on the button |
+  disabled | boolean | disabled | false
 
   ~~~
   ${ template }
@@ -56,6 +57,7 @@ buttonStories.add(
       type: select('type', typeOptions, ButtonType.secondary),
       icon: select('icon', icons, Icons.phone_link),
       color: select('color', iconColor, IconColor.dark),
+      disabled: boolean('disabled', false),
       onClick: action(),
     },
     moduleMetadata: {

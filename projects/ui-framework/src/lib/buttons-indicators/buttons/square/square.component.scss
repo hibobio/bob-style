@@ -17,5 +17,8 @@
   &.tertiary {
     @include Button(tertiary);
   }
+  &.disabled {
+    @include Button(disabled);
+  }
 }
 
