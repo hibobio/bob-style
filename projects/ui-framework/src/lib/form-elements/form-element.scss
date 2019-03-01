@@ -124,9 +124,11 @@ $textarea-height: 120px;
         color: var(--negative-500);
       }
     }
-    &.hide-label-on-focus.mat-focused {
-      .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
-        display: none;
+    &.hide-label-on-focus {
+      &.mat-form-field-should-float {
+        .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
+          display: none;
+        }
       }
     }
     &.has-prefix {

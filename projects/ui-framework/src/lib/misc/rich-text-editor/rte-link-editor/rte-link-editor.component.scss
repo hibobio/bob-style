@@ -1,0 +1,15 @@
+:host ::ng-deep {
+  b-input .mat-form-field {
+    margin: 0;
+  }
+  .link-url {
+    margin: 10px 0;
+  }
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    .cancel {
+      margin-right: 4px;
+    }
+  }
+}

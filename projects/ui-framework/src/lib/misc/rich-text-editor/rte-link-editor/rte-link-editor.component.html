@@ -1,0 +1,29 @@
+<b-input class="link-display-text"
+         [inputType]="inputTypes.text"
+         [hideLabelOnFocus]="true"
+         [value]="displayText"
+         (inputEvents)="onDisplayTextChange($event)"
+         label="text">
+</b-input>
+
+<b-input class="link-url"
+         [inputType]="inputTypes.url"
+         [hideLabelOnFocus]="true"
+         (inputEvents)="onUrlTextChange($event)"
+         [value]="urlText"
+         label="url">
+</b-input>
+
+<div class="footer">
+  <b-button class="cancel"
+            (clicked)="onCancel()"
+            [type]="buttonType.secondary"
+            [size]="buttonSize.small">
+    Cancel
+  </b-button>
+  <b-button class="add"
+            (clicked)="onAdd()"
+            [size]="buttonSize.small">
+    Add
+  </b-button>
+</div>

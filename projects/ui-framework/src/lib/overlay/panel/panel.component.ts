@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnDestroy, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { CdkOverlayOrigin, FlexibleConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import invoke from 'lodash/invoke';
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['panel.component.scss'],
 })
 
-export class PanelComponent implements OnInit, OnDestroy {
+export class PanelComponent implements OnDestroy {
   @ViewChild(CdkOverlayOrigin) overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef') templateRef: TemplateRef<any>;
 
@@ -27,9 +27,6 @@ export class PanelComponent implements OnInit, OnDestroy {
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService,
   ) {
-  }
-
-  ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
@@ -48,6 +45,10 @@ export class PanelComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.destroyPanel();
       });
+  }
+
+  closePanel(): void {
+    this.destroyPanel();
   }
 
   private destroyPanel(): void {

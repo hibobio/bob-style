@@ -1,12 +1,27 @@
 <div #quillEditor
      class="quill-editor">
-  <p>Hello World!</p>
-  <p>Some initial <strong>bold</strong> text</p>
 </div>
 
 <div #toolbar
      class="quill-toolbar">
-  <!-- Add font size dropdown -->
+
+  <button class="ql-bold"></button>
+  <button class="ql-italic"></button>
+  <button class="ql-underline"></button>
+  <b-panel #linkPanel>
+    <button panel-trigger
+            (click)="onLinkPanelOpen()"
+            class="add-link">
+      L
+    </button>
+    <div panel-content>
+      <b-rte-link-editor [displayText]="selectedText"
+                         (linkCancel)="onLinkCancel()"
+                         (linkUpdate)="onLinkUpdate($event)">
+      </b-rte-link-editor>
+    </div>
+  </b-panel>
+
   <select class="ql-size">
     <option value="small"></option>
     <!-- Note a missing, thus falsy value, is used to reset to default -->
@@ -14,9 +29,5 @@
     <option value="large"></option>
     <option value="huge"></option>
   </select>
-  <!-- Add a bold button -->
-  <button class="ql-bold"></button>
-  <!-- Add subscript and superscript buttons -->
-  <button class="ql-script" value="sub"></button>
-  <button class="ql-script" value="super"></button>
+
 </div>

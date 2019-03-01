@@ -13,7 +13,9 @@ const inputStories = storiesOf(ComponentGroupType.Misc, module)
   .addDecorator(withKnobs);
 
 const template = `
-<b-rich-text-editor></b-rich-text-editor>
+<b-rich-text-editor style="width: 90%; margin: 20px auto;"
+                    [rteHtml]="rteHtml">
+</b-rich-text-editor>
 `;
 
 const storyTemplate = `
@@ -29,11 +31,18 @@ const note = `
 
   Name | Type | Description
   --- | --- | ---
+  rteHtml | string | html content to be placed inside editor
 
   ~~~
   ${ template }
   ~~~
 `;
+
+const rteHtml = `
+  <div>Hello World!</div>
+  <div>Some initial <strong>bold</strong> text</div>
+`;
+
 
 inputStories.add(
   'Rich text editor',
@@ -41,6 +50,7 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
+        rteHtml: text('rteHtml', rteHtml),
       },
       moduleMetadata: {
         imports: [
