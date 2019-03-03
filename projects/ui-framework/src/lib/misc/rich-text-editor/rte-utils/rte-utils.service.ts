@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { chain, get, set, isEmpty, trim } from 'lodash';
+import { chain, get, set, isEmpty, trim, isNull, has } from 'lodash';
 import { UpdateRteConfig } from '../rich-text-editor.interface';
+import { FormatTypes } from '../rich-text-editor.enum';
 
 @Injectable()
 export class RteUtilsService {
@@ -21,6 +22,10 @@ export class RteUtilsService {
       body: editorHtml,
       plainText: editor.getText(),
     };
+  }
+
+  isSelectionHasFormat(editor: any, formatType: FormatTypes): boolean {
+    return editor && !isNull(editor.getSelection()) && has(editor.getFormat(), formatType);
   }
 
   getCurrentSelection(editor: any): any {

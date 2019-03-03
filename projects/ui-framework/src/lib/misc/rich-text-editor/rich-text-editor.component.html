@@ -5,15 +5,31 @@
 <div #toolbar
      class="quill-toolbar">
 
-  <button class="ql-bold"></button>
-  <button class="ql-italic"></button>
-  <button class="ql-underline"></button>
+  <b-square-button (clicked)="toggleFormat(formatTypes.bold)"
+                   [type]="buttonType.tertiary"
+                   [icon]="icons.bold"
+                   [color]="iconColor.normal">
+  </b-square-button>
+
+  <b-square-button (clicked)="toggleFormat(formatTypes.italic)"
+                   [type]="buttonType.tertiary"
+                   [icon]="icons.italic"
+                   [color]="iconColor.normal">
+  </b-square-button>
+
+  <b-square-button (clicked)="toggleFormat(formatTypes.underline)"
+                   [type]="buttonType.tertiary"
+                   [icon]="icons.underline"
+                   [color]="iconColor.normal">
+  </b-square-button>
+
   <b-panel #linkPanel>
-    <button panel-trigger
-            (click)="onLinkPanelOpen()"
-            class="add-link">
-      L
-    </button>
+    <b-square-button panel-trigger
+                     (clicked)="onLinkPanelOpen()"
+                     [type]="buttonType.tertiary"
+                     [icon]="icons.link"
+                     [color]="iconColor.normal">
+    </b-square-button>
     <div panel-content>
       <b-rte-link-editor [displayText]="selectedText"
                          (linkCancel)="onLinkCancel()"

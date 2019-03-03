@@ -7,6 +7,7 @@ import { InputModule } from '../../form-elements/input/input.module';
 import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
+import { IconsModule } from '../../icons/icons.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { RteUtilsService } from './rte-utils/rte-utils.service';
     PanelModule,
     InputModule,
     ButtonsModule,
+    IconsModule,
   ],
   exports: [
     RichTextEditorComponent,

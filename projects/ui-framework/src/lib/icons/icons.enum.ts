@@ -29,4 +29,10 @@ export enum Icons {
   reset_x = 'reset_x',
   three_dots = 'three_dots',
   search = 'search_card_17px',
+  reset = 'reset',
+  bold = 'bold',
+  italic = 'italic',
+  underline = 'underline',
+  link = 'link',
+  text_size = 'text_size_option',
 }

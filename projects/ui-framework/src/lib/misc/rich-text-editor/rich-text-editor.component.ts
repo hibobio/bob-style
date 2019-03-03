@@ -2,10 +2,12 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import Quill from 'quill';
 import { LinkBlot } from './formats/link-blot';
 import { PanelComponent } from '../../overlay/panel/panel.component';
-import { BlotType } from './rich-text-editor.enum';
+import { BlotType, FormatTypes } from './rich-text-editor.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import { RteLink, UpdateRteConfig } from './rich-text-editor.interface';
 import isEmpty from 'lodash/isEmpty';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 
 const Block = Quill.import('blots/block');
 Block.tagName = 'DIV';
@@ -30,6 +32,11 @@ export class RichTextEditorComponent implements OnInit {
   selection: any;
   selectedText: string;
 
+  formatTypes = FormatTypes;
+  buttonType = ButtonType;
+  icons = Icons;
+  iconColor = IconColor;
+
   constructor(
     private rteUtilsService: RteUtilsService,
   ) {
@@ -52,6 +59,11 @@ export class RichTextEditorComponent implements OnInit {
 
   getCurrentText(): any {
     return this.rteUtilsService.getHtmlContent(this.editor);
+  }
+
+  toggleFormat(formatType: FormatTypes) {
+    this.editor.focus();
+    this.editor.format(formatType, !this.rteUtilsService.isSelectionHasFormat(this.editor, formatType));
   }
 
   onLinkPanelOpen(): void {
