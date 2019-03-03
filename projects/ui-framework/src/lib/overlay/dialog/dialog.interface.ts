@@ -9,9 +9,17 @@ export interface DialogConfig {
 export interface DialogButtons {
   ok: DialogButton;
   cancel?: DialogButton;
+  preloaderMessage?: string;
+  confirmation?: DialogConfirmation;
 }
 
 export interface DialogButton {
   label: string;
-  action?(): void;
+  action?(): any;
+}
+
+export interface DialogConfirmation {
+  title: string;
+  subTitle?: string;
+  buttonLabel: string;
 }

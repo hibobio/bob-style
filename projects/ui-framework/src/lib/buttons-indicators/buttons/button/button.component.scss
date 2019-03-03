@@ -1,31 +1,31 @@
 @import '../../../style/typography';
 @import '../buttons';
 
-.mat-button {
-  &.primary {
-    @include Button(primary);
-  }
-  &.secondary {
-    @include Button(secondary);
-  }
-  &.tertiary {
-    @include Button(tertiary);
-  }
-  &.disabled {
-    @include Button(disabled);
-  }
-  &.small {
-    padding: 8px 16px;
-  }
-  &.medium {
-    padding: 12px 22px;
-  }
-  &.large {
-    padding: 16px 32px;
-    text-transform: uppercase;
-    font-weight: 500;
-  }
-  .mat-ripple {
-    display: none;
+:host ::ng-deep {
+  .mat-button {
+    @include MatButton;
+    &.primary {
+      @include Button(primary);
+    }
+    &.secondary {
+      @include Button(secondary);
+    }
+    &.tertiary {
+      @include Button(tertiary);
+    }
+    &.disabled {
+      @include Button(disabled);
+    }
+    &.small {
+      padding: 8px 16px;
+    }
+    &.medium {
+      padding: 12px 22px;
+    }
+    &.large {
+      padding: 16px 32px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
   }
 }

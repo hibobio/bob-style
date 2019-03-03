@@ -19,21 +19,19 @@ export class DialogService {
   ) {
   }
 
-  openDialog(componentRef: ComponentType<any>, config: DialogConfig): void {
+  openDialog(
+    dialogComponent: ComponentType<any>,
+    config: DialogConfig,
+  ): void {
     const dialogConfig: MatDialogConfig = assign(config, {
       width: this.dialogSizeToWidth[config.size],
       closeOnNavigation: true,
       backdropClass: 'b-dialog-backdrop',
       panelClass: ['b-dialog-panel', config.panelClass],
       hasBackdrop: true,
+      disableClose: true,
     });
 
-    const dialogRef = this.dialog.open(componentRef, dialogConfig);
-
-    dialogRef
-      .afterClosed()
-      .subscribe(result => {
-        console.log('The dialog was closed');
-      });
+    this.dialog.open(dialogComponent, dialogConfig);
   }
 }

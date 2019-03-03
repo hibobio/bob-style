@@ -1,10 +1,9 @@
-<div (click)="closeDialog()"
-     class="close-button"
-     mat-dialog-close>
-  <b-icon [icon]="icons.close"
-          [size]="iconSize.medium">
-  </b-icon>
-</div>
+<b-square-button (clicked)="closeDialog()"
+                 [type]="buttonType.tertiary"
+                 [icon]="icons.close"
+                 [disabled]="showProgress"
+                 class="close-button">
+</b-square-button>
 
 <div mat-dialog-title>
   <b-heading>{{dialogTitle}}</b-heading>
@@ -12,15 +11,42 @@
 </div>
 
 <div mat-dialog-content>
-  <ng-content select="[b-dialog-content]"></ng-content>
+
+  <div [ngClass]="{'show-progress': showProgress}"
+       class="dialog-content">
+    <ng-content select="[b-dialog-content]"></ng-content>
+  </div>
+
+  <div *ngIf="showProgress"
+       class="progress-indicator">
+    <b-mini-preloader></b-mini-preloader>
+    <span *ngIf="dialogButtons.preloaderMessage"
+          class="preloader-message">{{dialogButtons.preloaderMessage}}</span>
+  </div>
+
 </div>
 
-<div mat-dialog-actions>
-  <b-button *ngIf="dialogButtons.cancel"
-            (click)="onCancel()">
-    {{dialogButtons.cancel.label}}
-  </b-button>
-  <b-button (click)="onOk()">
-    {{dialogButtons.ok.label}}
-  </b-button>
+<div class="dialog-footer">
+
+  <div *ngIf="showConfirmation"
+       [@confirmMessage]
+       class="confirmation-message">
+    <b-subheading>{{dialogButtons.confirmation.title}}</b-subheading>
+    <div *ngIf="dialogButtons.confirmation.subTitle">{{dialogButtons.confirmation.subTitle}}</div>
+  </div>
+
+  <div mat-dialog-actions>
+    <b-button *ngIf="dialogButtons.cancel"
+              (clicked)="onCancel()"
+              [disabled]="showProgress"
+              class="cancel-button">
+      {{dialogButtons.cancel.label}}
+    </b-button>
+    <b-button (clicked)="onOk()"
+              [disabled]="showProgress"
+              class="ok-button">
+      {{showConfirmation ? dialogButtons.confirmation.buttonLabel : dialogButtons.ok.label}}
+    </b-button>
+  </div>
+
 </div>

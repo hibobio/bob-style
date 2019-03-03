@@ -46,8 +46,18 @@ describe('DialogService', () => {
         panelClass: 'test-class',
         data: {},
       };
+      const expectedConfig = {
+        size: DialogSize.medium,
+        data: {},
+        width: 700,
+        closeOnNavigation: true,
+        backdropClass: 'b-dialog-backdrop',
+        panelClass: ['b-dialog-panel', 'test-class'],
+        hasBackdrop: true,
+        disableClose: true,
+      };
       dialogService.openDialog(comp, config);
-      expect(spyMatDialog.open).toHaveBeenCalledWith(comp, config);
+      expect(spyMatDialog.open).toHaveBeenCalledWith(comp, expectedConfig);
     });
   });
 });

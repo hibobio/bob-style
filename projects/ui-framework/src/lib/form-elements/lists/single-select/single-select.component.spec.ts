@@ -40,8 +40,13 @@ describe('SingleSelectComponent', () => {
     ];
 
     TestBed.configureTestingModule({
-      declarations: [SingleSelectComponent],
-      providers: [PanelPositionService, { provide: IconService, useValue: spyIconService }],
+      declarations: [
+        SingleSelectComponent,
+      ],
+      providers: [
+        PanelPositionService,
+        { provide: IconService, useValue: spyIconService },
+      ],
       imports: [
         SingleListModule,
         OverlayModule,

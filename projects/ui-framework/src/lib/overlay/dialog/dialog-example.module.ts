@@ -35,11 +35,14 @@ a note on what types are.`
 
   openDialog(): void {
     this.dialogService
-      .openDialog(DialogExampleDialogComponent, {
-        size: DialogSize.small,
-        panelClass: 'dialog-example',
-        data: this.dataMock,
-      });
+      .openDialog(
+        DialogExampleDialogComponent,
+        {
+          size: DialogSize.small,
+          panelClass: 'dialog-example',
+          data: this.dataMock,
+        }
+      );
   }
 }
 
@@ -84,16 +87,30 @@ export class DialogExampleDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.editedText = this.data.textContent;
+
     this.dialogButtonConfig = {
       ok: {
         label: 'Ok',
-        action: () => console.log('click ok!!!'),
+        action: () => {
+          return new Promise(
+            (resolve, reject) => {
+              setTimeout(() => {
+                resolve();
+              }, 3000);
+            });
+        },
       },
       cancel: {
         label: 'Cancel',
-        action: () => console.log('click cancel!!!'),
       },
+      preloaderMessage: 'updating row data',
+      confirmation: {
+        title: 'are you sure?',
+        subTitle: 'clicking confirm will invoke the method',
+        buttonLabel: 'i am sure',
+      }
     };
+
     this.selectOptions = [
       {
         groupName: 'Article interest options',

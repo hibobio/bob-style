@@ -1,6 +1,12 @@
 @import '../../style/colors';
 @import '../../style/typography';
 
+@mixin MatButton() {
+  .mat-ripple, .mat-button-focus-overlay {
+    display: none !important;
+  }
+}
+
 @mixin Button($type) {
   box-sizing: border-box;
   border-radius: 4px;

@@ -1,24 +1,27 @@
 @import '../../../style/typography';
 @import '../buttons';
 
-.mat-button {
-  height: 36px;
-  width: 36px;
-  min-width: 36px;
-  text-align: center;
-  padding: 0;
+:host ::ng-deep {
+  .mat-button {
+    @include MatButton;
+    height: 36px;
+    width: 36px;
+    min-width: 36px;
+    text-align: center;
+    padding: 0;
 
-  &.primary {
-    @include Button(primary);
-  }
-  &.secondary {
-    @include Button(secondary);
-  }
-  &.tertiary {
-    @include Button(tertiary);
-  }
-  &.disabled {
-    @include Button(disabled);
+    &.primary {
+      @include Button(primary);
+    }
+    &.secondary {
+      @include Button(secondary);
+    }
+    &.tertiary {
+      @include Button(tertiary);
+    }
+    &.disabled {
+      @include Button(disabled);
+    }
   }
 }
 
