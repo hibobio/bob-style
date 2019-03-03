@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { chain, get, set, isEmpty, trim, isNull, has } from 'lodash';
-import { UpdateRteConfig } from '../rich-text-editor.interface';
+import { RteCurrentContent, UpdateRteConfig } from '../rich-text-editor.interface';
 import { FormatTypes } from '../rich-text-editor.enum';
+import { Quill, RangeStatic } from 'quill';
 
 @Injectable()
 export class RteUtilsService {
@@ -9,7 +10,7 @@ export class RteUtilsService {
   constructor() {
   }
 
-  getHtmlContent(editor: any): any {
+  getHtmlContent(editor: Quill): RteCurrentContent {
     const editorHtml = isEmpty(trim(editor.getText()))
       ? ''
       : chain(editor.root.innerHTML)
@@ -24,23 +25,23 @@ export class RteUtilsService {
     };
   }
 
-  isSelectionHasFormat(editor: any, formatType: FormatTypes): boolean {
+  isSelectionHasFormat(editor: Quill, formatType: FormatTypes): boolean {
     return editor && !isNull(editor.getSelection()) && has(editor.getFormat(), formatType);
   }
 
-  getCurrentSelection(editor: any): any {
+  getCurrentSelection(editor: Quill): RangeStatic {
     return (editor.getSelection())
       ? editor.getSelection()
       : { index: 0, length: 0 };
   }
 
-  getSelectionText(editor: any, selection: any): string {
+  getSelectionText(editor: Quill, selection: RangeStatic): string {
     return (get(selection, 'length') > 0)
       ? editor.getText(selection.index, selection.length)
       : '';
   }
 
-  updateEditor(editor: any, updateConfig: UpdateRteConfig, insertSpaceAfterBlot = true) {
+  updateEditor(editor: Quill, updateConfig: UpdateRteConfig, insertSpaceAfterBlot = true): void {
     const charAfterBlot = insertSpaceAfterBlot ? ' ' : '';
     set(updateConfig, 'insertText', `${ updateConfig.insertText }${ charAfterBlot }`);
     editor.focus();

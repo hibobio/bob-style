@@ -16,3 +16,8 @@ export interface RteLink {
   text: string;
   url: string;
 }
+
+export interface RteCurrentContent {
+  body: string;
+  plainText: string;
+}

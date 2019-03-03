@@ -1,19 +1,19 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import Quill from 'quill';
+import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
 import { LinkBlot } from './formats/link-blot';
 import { PanelComponent } from '../../overlay/panel/panel.component';
 import { BlotType, FormatTypes } from './rich-text-editor.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
-import { RteLink, UpdateRteConfig } from './rich-text-editor.interface';
+import { RteCurrentContent, RteLink, UpdateRteConfig } from './rich-text-editor.interface';
 import isEmpty from 'lodash/isEmpty';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { IconColor, Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 
-const Block = Quill.import('blots/block');
+const Block = quillLib.import('blots/block');
 Block.tagName = 'DIV';
 
-Quill.register(Block, true);
-Quill.register(LinkBlot);
+quillLib.register(Block, true);
+quillLib.register(LinkBlot);
 
 @Component({
   selector: 'b-rich-text-editor',
@@ -28,8 +28,8 @@ export class RichTextEditorComponent implements OnInit {
   @ViewChild('toolbar') toolbar: ElementRef;
   @ViewChild('linkPanel') linkPanel: PanelComponent;
 
-  editor: any;
-  selection: any;
+  editor: Quill;
+  selection: RangeStatic;
   selectedText: string;
 
   formatTypes = FormatTypes;
@@ -43,21 +43,21 @@ export class RichTextEditorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const editorOptions = {
+    const editorOptions: QuillOptionsStatic = {
       modules: {
         toolbar: this.toolbar.nativeElement,
       },
       theme: 'snow'
     };
 
-    this.editor = new Quill(this.quillEditor.nativeElement, editorOptions);
+    this.editor = new quillLib(this.quillEditor.nativeElement, editorOptions);
 
     if (!isEmpty(this.rteHtml)) {
-      this.editor.pasteHTML(this.rteHtml);
+      this.editor.clipboard.dangerouslyPasteHTML(this.rteHtml);
     }
   }
 
-  getCurrentText(): any {
+  getCurrentText(): RteCurrentContent {
     return this.rteUtilsService.getHtmlContent(this.editor);
   }
 
