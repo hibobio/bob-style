@@ -1,0 +1,22 @@
+<content [ngClass]="{'disabled': false, 'panel-open': panelOpen}"
+         cdkOverlayOrigin
+         class="panel-trigger">
+
+  <b-search [label]="label"
+            [hideLabelOnFocus]="true"
+            (inputChange)="onInputChange($event)"
+            (searchChange)="onSearchChange($event)">
+  </b-search>
+
+</content>
+
+
+<ng-template #templateRef>
+  <div class="panel-position"
+       [ngClass]="positionClassList">
+    <b-auto-complete-panel (optionSelect)="onOptionSelect($event)"
+                           [searchValue]="searchValue"
+                           [options]="options">
+    </b-auto-complete-panel>
+  </div>
+</ng-template>

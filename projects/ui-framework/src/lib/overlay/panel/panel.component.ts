@@ -43,7 +43,7 @@ export class PanelComponent implements OnDestroy {
   }
 
   openPanel(): void {
-    this.panelConfig = this.getDefaultConfig();
+    this.panelConfig = this.getConfig();
     this.overlayRef = this.overlay.create(this.panelConfig);
     this.templatePortal = new TemplatePortal(this.templateRef, this.viewContainerRef);
     this.overlayRef.attach(this.templatePortal);
@@ -68,7 +68,7 @@ export class PanelComponent implements OnDestroy {
     this.templatePortal = null;
   }
 
-  private getDefaultConfig(): OverlayConfig {
+  private getConfig(): OverlayConfig {
     const positionStrategy = this.panelPositionService.getDefaultPanelPositionStrategy(this.overlayOrigin);
 
     this.subscribeToPositions(positionStrategy as FlexibleConnectedPositionStrategy);

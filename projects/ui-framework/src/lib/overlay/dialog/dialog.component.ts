@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { Icons } from '../../icons/icons.enum';
 import { DialogButton, DialogButtons } from './dialog.interface';
@@ -24,7 +24,7 @@ import isFunction from 'lodash/isFunction';
     ])
   ],
 })
-export class DialogComponent {
+export class DialogComponent implements OnDestroy {
 
   @Input() dialogTitle: string;
   @Input() dialogButtons: DialogButtons;
@@ -84,5 +84,9 @@ export class DialogComponent {
   private shouldShowConfirmationMessage(): boolean {
     return has(this.dialogButtons, 'confirmation') &&
       !this.showConfirmation;
+  }
+
+  ngOnDestroy(): void {
+    this.dialogRef.close();
   }
 }

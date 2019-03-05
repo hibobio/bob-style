@@ -1,0 +1,20 @@
+@import '../../../style/colors';
+@import '../../../form-elements/lists/list';
+
+:host {
+  display: block;
+  background-color: $white;
+  .v-scroll {
+    height: 100%;
+    .option-select {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      @include listOption;
+      b-caption {
+        margin-top: 2px;
+        color: $grey-600;
+      }
+    }
+  }
+}

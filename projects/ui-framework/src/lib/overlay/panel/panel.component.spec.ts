@@ -9,8 +9,9 @@ import { ViewContainerRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import { PanelModule } from './panel.module';
 
-xdescribe('SearchComponent', () => {
+describe('SearchComponent', () => {
   let component: PanelComponent;
   let fixture: ComponentFixture<PanelComponent>;
   let spyIconService: SpyObj<IconService>;
@@ -26,6 +27,7 @@ xdescribe('SearchComponent', () => {
         NoopAnimationsModule,
         CommonModule,
         OverlayModule,
+        PanelModule,
       ],
       providers: [
         PanelPositionService,
@@ -44,6 +46,7 @@ xdescribe('SearchComponent', () => {
   describe('openPanel', () => {
     it('should invoke overlay.create with config', () => {
       component.openPanel();
+      // console.log('component.overlayRef', component.overlayRef);
     });
   });
 });

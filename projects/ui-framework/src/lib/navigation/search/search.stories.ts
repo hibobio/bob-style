@@ -13,6 +13,7 @@ const template = `
           [value]="value"
           [label]="label"
           [hideLabelOnFocus]="hideLabelOnFocus"
+          (inputChange)="inputChange($event)"
           (searchChange)="searchChange($event)">
 </b-search>
 `;
@@ -35,7 +36,8 @@ const note = `
   value | string/number/float | type of input field | none
   label | string | label text | none
   hideLabelOnFocus | boolean | should hide label on focus | false
-  searchChange | action | searchChange | none
+  inputChange | action | inputChange output InputEvent | none
+  searchChange | action | searchChange output string | none
 
   ~~~
   ${template}
@@ -50,7 +52,8 @@ inputStories.add(
         value: text('value', 'Alan Tulin'),
         label: text('label', 'Search'),
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
-        searchChange: action()
+        inputChange: action(),
+        searchChange: action(),
       },
       moduleMetadata: {
         imports: [BrowserAnimationsModule, SearchModule, StoryBookLayoutModule]
