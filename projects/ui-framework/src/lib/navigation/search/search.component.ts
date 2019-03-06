@@ -15,10 +15,9 @@ export class SearchComponent extends BaseInputElement implements OnChanges {
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() inputChange: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
 
-  readonly searchIcon: String = Icons.search;
-  readonly resetIcon: String = Icons.reset_x;
-  readonly iconSize: String = IconSize.medium;
-  iconColor = IconColor;
+  readonly icons = Icons;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
   searchIconColor: String = IconColor.normal;
 
   inputTypes = InputTypes;

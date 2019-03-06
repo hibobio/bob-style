@@ -7,17 +7,17 @@
 
   <div input-prefix
        class="search-icon">
-    <b-icon [icon]="searchIcon"
+    <b-icon [icon]="icons.search"
             [color]="searchIconColor"
-            [size]="iconSize">
+            [size]="iconSize.medium">
     </b-icon>
   </div>
 
   <div input-suffix *ngIf="value.length > 0"
        class="reset-button">
-    <b-icon [icon]="resetIcon"
+    <b-icon [icon]="icons.reset_x"
             (click)="onResetClick()"
-            [size]="iconSize"
+            [size]="iconSize.medium"
             [color]="iconColor.normal"
             [hasHoverState]="true">
     </b-icon>

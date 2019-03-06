@@ -1,3 +1,5 @@
+@import './colors';
+
 @mixin arrow-down($size, $color) {
   width: 0;
   height: 0;
@@ -46,4 +48,18 @@ $chevronWidth: 2px;
 @mixin chevron-left($color, $size:5px) {
   @include chevron($color, $size);
   border-width: 0 0 $chevronWidth $chevronWidth;
+}
+
+@mixin circle-border-shadow($backgroundColor, $size: 28px) {
+  position: relative;
+  background-color: $backgroundColor;
+  border: 2px solid $white;
+  border-radius: 100%;
+  box-shadow: 0 2px 5px 0 $boxShadowColor;
+  width: $size;
+  height: $size;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

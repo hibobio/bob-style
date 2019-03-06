@@ -36,4 +36,6 @@ export enum Icons {
   link = 'link',
   text_size = 'text_size_option',
   question_mark = 'question_mark',
+  department_icon = 'department_icon',
+  company_icon = 'company_icon',
 }
