@@ -1,10 +1,10 @@
 import { AfterViewInit, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { fromEvent, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { ListHeader, ListOption } from './list.interface';
 import find from 'lodash/find';
 import { LIST_EL_HEIGHT } from './list.consts';
+import { ListKeyboardService, NavigationKeys } from './list-service/list-keyboard.service';
 
 export abstract class BaseListElement implements OnInit, OnDestroy, AfterViewInit {
 
@@ -24,29 +24,26 @@ export abstract class BaseListElement implements OnInit, OnDestroy, AfterViewIni
 
   protected constructor(
     private renderer: Renderer2,
+    private listKeyboardService: ListKeyboardService,
   ) {
   }
 
   ngOnInit(): void {
     this.focusIndex = -1;
-    let scrollToIndex;
-    this.keyDownSubscriber = fromEvent(document, 'keydown')
-      .pipe(filter((e: KeyboardEvent) => e.code === 'ArrowUp' || e.code === 'ArrowDown' || e.code === 'Enter'))
+    this.keyDownSubscriber = this.listKeyboardService.getKeyboardNavigationObservable()
       .subscribe((e: KeyboardEvent) => {
         switch (e.code) {
-          case('ArrowDown'):
-            this.focusIndex = (this.focusIndex + 1) % this.listOptions.length;
+          case(NavigationKeys.down):
+            this.focusIndex = this.listKeyboardService.getFocusIndex(NavigationKeys.down, this.focusIndex, this.listOptions.length);
             this.focusOption = this.listOptions[this.focusIndex];
-            scrollToIndex = this.focusIndex - (this.maxHeight / this.listElHeight) + 2;
-            this.vScroll.scrollToIndex(scrollToIndex);
+            this.vScroll.scrollToIndex(this.listKeyboardService.getScrollToIndex(this.focusIndex, this.maxHeight));
             break;
-          case('ArrowUp'):
-            this.focusIndex = (this.focusIndex - 1) > -1 ? this.focusIndex - 1 : this.listOptions.length - 1;
+          case(NavigationKeys.up):
+            this.focusIndex = this.listKeyboardService.getFocusIndex(NavigationKeys.up, this.focusIndex, this.listOptions.length);
             this.focusOption = this.listOptions[this.focusIndex];
-            scrollToIndex = this.focusIndex - (this.maxHeight / this.listElHeight) + 2;
-            this.vScroll.scrollToIndex(scrollToIndex);
+            this.vScroll.scrollToIndex(this.listKeyboardService.getScrollToIndex(this.focusIndex, this.maxHeight));
             break;
-          case('Enter'):
+          case(NavigationKeys.enter):
             this.focusOption.isPlaceHolder
               ? this.headerClick(find(this.listHeaders, { groupName: this.focusOption.groupName }))
               : this.optionClick(this.focusOption);

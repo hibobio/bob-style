@@ -19,6 +19,7 @@ import { SelectGroupOption } from '../list.interface';
 import { By } from '@angular/platform-browser';
 import { FiltersModule } from '../../../filters/filters.module';
 import { ListOptionModule } from '../list-option/list-option.module';
+import { ListKeyboardService } from '../list-service/list-keyboard.service';
 
 describe('SingleSelectComponent', () => {
   let component: SingleListComponent;
@@ -38,8 +39,13 @@ describe('SingleSelectComponent', () => {
     ];
 
     TestBed.configureTestingModule({
-      declarations: [SingleListComponent],
-      providers: [ListModelService],
+      declarations: [
+        SingleListComponent,
+      ],
+      providers: [
+        ListModelService,
+        ListKeyboardService,
+      ],
       imports: [
         NoopAnimationsModule,
         CommonModule,

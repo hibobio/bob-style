@@ -20,6 +20,7 @@ import { By } from '@angular/platform-browser';
 import { MultiListComponent } from './multi-list.component';
 import { FiltersModule } from '../../../filters/filters.module';
 import { ListOptionModule } from '../list-option/list-option.module';
+import { ListKeyboardService } from '../list-service/list-keyboard.service';
 
 describe('MultiListComponent', () => {
   let component: MultiListComponent;
@@ -50,6 +51,7 @@ describe('MultiListComponent', () => {
       ],
       providers: [
         ListModelService,
+        ListKeyboardService,
       ],
       imports: [
         NoopAnimationsModule,

@@ -32,8 +32,6 @@ export class AutoCompleteComponent implements OnDestroy {
   private templatePortal: TemplatePortal;
   private positionChangeSubscriber: Subscription;
 
-  readonly blurDestroyDuration = 200;
-
   constructor(
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
@@ -49,17 +47,6 @@ export class AutoCompleteComponent implements OnDestroy {
       this.invokePanelDestroy();
     }
     this.searchChange.emit(this.searchValue);
-  }
-
-  onInputChange(inputEvent: InputEvent): void {
-    if (inputEvent.event === InputEventType.onBlur) {
-      setTimeout(() => {
-        this.invokePanelDestroy();
-      }, this.blurDestroyDuration);
-    }
-    if (inputEvent.event === InputEventType.onFocus && (inputEvent.value as string).length > 0) {
-      this.invokePanelOpen();
-    }
   }
 
   onOptionSelect(option: AutoCompleteOption): void {

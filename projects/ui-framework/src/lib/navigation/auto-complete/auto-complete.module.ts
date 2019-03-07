@@ -8,6 +8,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { TypographyModule } from '../../typography/typography.module';
 import { FiltersModule } from '../../filters/filters.module';
+import { ListKeyboardService } from '../../form-elements/lists/list-service/list-keyboard.service';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { FiltersModule } from '../../filters/filters.module';
   ],
   providers: [
     PanelPositionService,
+    ListKeyboardService,
   ],
   exports: [
     AutoCompleteComponent,

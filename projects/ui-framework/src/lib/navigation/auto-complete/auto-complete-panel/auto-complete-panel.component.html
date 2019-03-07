@@ -1,12 +1,13 @@
-<div [ngStyle]="{height: filteredOptions.length * listElHeight + 'px', maxHeight: listElHeight * 8 + 'px'}">
+<div [ngStyle]="{height: filteredOptions.length * listElHeight + 'px', maxHeight: maxHeight + 'px'}">
 
   <cdk-virtual-scroll-viewport #vScroll
                                class="v-scroll"
-                               itemSize="listElHeight"
+                               [itemSize]="listElHeight"
                                maxBufferPx="{{5*listElHeight}}" minBufferPx="{{5*listElHeight}}">
 
     <div class="options">
       <div (click)="optionClick(option)"
+           [ngClass]="{'focus': option.id===focusOption?.id}"
            *cdkVirtualFor="let option of filteredOptions"
            class="option-select">
         <span [innerHTML]="option.value | highlight: searchValue"></span>

@@ -7,6 +7,7 @@ import { MatPseudoCheckboxModule } from '@angular/material';
 import { SearchModule } from '../../../navigation/search/search.module';
 import { FiltersModule } from '../../../filters/filters.module';
 import { ListOptionModule } from '../list-option/list-option.module';
+import { ListKeyboardService } from '../list-service/list-keyboard.service';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ListOptionModule } from '../list-option/list-option.module';
   ],
   providers: [
     ListModelService,
+    ListKeyboardService,
   ]
 })
 export class MultiListModule {

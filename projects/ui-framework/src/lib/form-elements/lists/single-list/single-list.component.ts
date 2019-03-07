@@ -5,6 +5,7 @@ import { BaseListElement } from '../list-element.abstract';
 import findIndex from 'lodash/findIndex';
 import has from 'lodash/has';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
+import { ListKeyboardService } from '../list-service/list-keyboard.service';
 
 @Component({
   selector: 'b-single-list',
@@ -28,8 +29,9 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
   constructor(
     private listModelService: ListModelService,
     renderer: Renderer2,
+    listKeyboardService: ListKeyboardService,
   ) {
-    super(renderer);
+    super(renderer, listKeyboardService);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

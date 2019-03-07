@@ -6,6 +6,7 @@ import { BaseListElement } from '../list-element.abstract';
 import { CheckboxStates } from '../../checkbox/checkbox.component';
 import has from 'lodash/has';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
+import { ListKeyboardService } from '../list-service/list-keyboard.service';
 
 @Component({
   selector: 'b-multi-list',
@@ -30,8 +31,9 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   constructor(
     private listModelService: ListModelService,
     renderer: Renderer2,
+    listKeyboardService: ListKeyboardService,
   ) {
-    super(renderer);
+    super(renderer, listKeyboardService);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

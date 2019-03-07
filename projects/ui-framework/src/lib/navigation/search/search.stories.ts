@@ -13,7 +13,6 @@ const template = `
           [value]="value"
           [label]="label"
           [hideLabelOnFocus]="hideLabelOnFocus"
-          (inputChange)="inputChange($event)"
           (searchChange)="searchChange($event)">
 </b-search>
 `;
@@ -36,7 +35,6 @@ const note = `
   value | string/number/float | type of input field | none
   label | string | label text | none
   hideLabelOnFocus | boolean | should hide label on focus | false
-  inputChange | action | inputChange output InputEvent | none
   searchChange | action | searchChange output string | none
 
   ~~~
@@ -52,7 +50,6 @@ inputStories.add(
         value: text('value', 'Alan Tulin'),
         label: text('label', 'Search'),
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
-        inputChange: action(),
         searchChange: action(),
       },
       moduleMetadata: {

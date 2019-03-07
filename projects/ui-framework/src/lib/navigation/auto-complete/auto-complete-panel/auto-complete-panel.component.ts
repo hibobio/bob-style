@@ -1,24 +1,62 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { LIST_EL_HEIGHT } from '../../../form-elements/lists/list.consts';
 import { AutoCompleteOption } from '../auto-complete.interface';
-import { has, escapeRegExp, compact, filter } from 'lodash';
+import { compact, escapeRegExp, filter as _filter, has, min } from 'lodash';
+import { Subscription } from 'rxjs';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { ListKeyboardService, NavigationKeys } from '../../../form-elements/lists/list-service/list-keyboard.service';
 
 @Component({
   selector: 'b-auto-complete-panel',
   templateUrl: './auto-complete-panel.component.html',
   styleUrls: ['./auto-complete-panel.component.scss'],
 })
-export class AutoCompletePanelComponent implements OnChanges {
+export class AutoCompletePanelComponent implements OnChanges, OnInit, OnDestroy {
 
+  @ViewChild('vScroll') vScroll: CdkVirtualScrollViewport;
   @Input() options: AutoCompleteOption[];
   @Input() searchValue: string;
   @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<AutoCompleteOption>();
 
   readonly listElHeight = LIST_EL_HEIGHT;
-
+  readonly maxHeight = this.listElHeight * 8;
+  focusIndex: number;
   filteredOptions: AutoCompleteOption[];
+  focusOption: AutoCompleteOption;
 
-  constructor() {
+  private keyDownSubscriber: Subscription;
+
+  constructor(
+    private listKeyboardService: ListKeyboardService,
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.focusIndex = -1;
+    this.keyDownSubscriber = this.listKeyboardService.getKeyboardNavigationObservable()
+      .subscribe((e: KeyboardEvent) => {
+        switch (e.code) {
+          case(NavigationKeys.down):
+            this.focusIndex = this.listKeyboardService.getFocusIndex(NavigationKeys.down, this.focusIndex, this.filteredOptions.length);
+            this.focusOption = this.filteredOptions[this.focusIndex];
+            this.vScroll.scrollToIndex(this.listKeyboardService.getScrollToIndex(this.focusIndex, this.maxHeight));
+            break;
+          case(NavigationKeys.up):
+            this.focusIndex = this.listKeyboardService.getFocusIndex(NavigationKeys.up, this.focusIndex, this.filteredOptions.length);
+            this.focusOption = this.filteredOptions[this.focusIndex];
+            this.vScroll.scrollToIndex(this.listKeyboardService.getScrollToIndex(this.focusIndex, this.maxHeight));
+            break;
+          case(NavigationKeys.enter):
+            this.optionClick(this.focusOption);
+            break;
+          default:
+            break;
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.keyDownSubscriber.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -38,7 +76,12 @@ export class AutoCompletePanelComponent implements OnChanges {
 
   private updateList(): void {
     const matcher = new RegExp(escapeRegExp(this.searchValue), 'i');
-    this.filteredOptions = filter(this.options, option => option.value.match(matcher) || option.subText.match(matcher));
+    this.filteredOptions = this.options;
+    this.filteredOptions = _filter(this.options, option => option.value.match(matcher) || option.subText.match(matcher));
+  }
+
+  private getHeight(): number {
+    return min(this.maxHeight, this.listElHeight * this.filteredOptions.length);
   }
 
   optionClick(option: AutoCompleteOption): void {

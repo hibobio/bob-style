@@ -35,7 +35,7 @@
 
   <cdk-virtual-scroll-viewport #vScroll
                                class="v-scroll"
-                               itemSize="listElHeight"
+                               [itemSize]="listElHeight"
                                maxBufferPx="{{5*listElHeight}}" minBufferPx="{{5*listElHeight}}">
     <div class="options">
       <div (click)="optionClick(option)"
@@ -43,7 +43,6 @@
            [ngClass]="{
             'header-placeholder': option.isPlaceHolder,
             'option': !option.isPlaceHolder,
-            'selected': option.id===value,
             'focus': option.id===focusOption?.id
            }"
            class="option-select">
