@@ -3,61 +3,88 @@
 :host {
   display: inline-block;
   vertical-align: top;
+
   .b-avatar {
+    position: relative;
+    overflow: hidden;
+    border-radius: 100%;
+    box-sizing: border-box;
+    transition: box-shadow .2s, transform .2s;
+    border: 2px solid $white;
+
     &.clickable {
       cursor: pointer;
     }
+
+    &.mini {
+      height: 30px;
+      width: 30px;
+      box-shadow: 0 1px 2px 0 $boxShadowColor;
+
+      &.clickable:hover {
+        box-shadow: 0 3px 6px 0 $boxShadowColor;
+        transform: scale(1.05);
+      }
+    }
+
+    &.small {
+      height: 60px;
+      width: 60px;
+      box-shadow: 0 1px 2px 0 $boxShadowColor;
+
+      &.clickable:hover {
+        box-shadow: 0 3px 6px 0 $boxShadowColor;
+        transform: scale(1.05);
+      }
+    }
+
+    &.medium {
+      height: 90px;
+      width: 90px;
+      box-shadow: 0 2px 4px 0 $boxShadowColor;
+
+      &.clickable:hover {
+        box-shadow: 0 6px 12px 0 $boxShadowColor;
+        transform: scale(1.05);
+      }
+    }
+
+    &.large {
+      height: 120px;
+      width: 120px;
+      box-shadow: 0 2px 4px 0 $boxShadowColor;
+
+      &.clickable:hover {
+        box-shadow: 0 6px 12px 0 $boxShadowColor;
+        transform: scale(1.05);
+      }
+    }
+
     .avatar-image {
-      border-radius: 50%;
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
-      box-sizing: border-box;
-      transition: box-shadow .2s, transform .2s;
-      border: 2px solid $white;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
-    &.mini {
-      .avatar-image {
-        height: 30px;
-        width: 30px;
-        box-shadow: 0 1px 2px 0 $boxShadowColor;
-      }
-      &.clickable:hover .avatar-image {
-        box-shadow: 0 3px 6px 0 $boxShadowColor;
-        transform: scale(1.05);
-      }
+
+    .avatar-content {
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
-    &.small {
-      .avatar-image {
-        height: 60px;
-        width: 60px;
-        box-shadow: 0 1px 2px 0 $boxShadowColor;
-      }
-      &.clickable:hover .avatar-image {
-        box-shadow: 0 3px 6px 0 $boxShadowColor;
-        transform: scale(1.05);
-      }
-    }
-    &.medium {
-      .avatar-image {
-        height: 90px;
-        width: 90px;
-        box-shadow: 0 2px 4px 0 $boxShadowColor;
-      }
-      &.clickable:hover .avatar-image {
-        box-shadow: 0 6px 12px 0 $boxShadowColor;
-        transform: scale(1.05);
-      }
-    }
-    &.large {
-      .avatar-image {
-        height: 120px;
-        width: 120px;
-        box-shadow: 0 2px 4px 0 $boxShadowColor;
-      }
-      &.clickable:hover .avatar-image {
-        box-shadow: 0 6px 12px 0 $boxShadowColor;
-        transform: scale(1.05);
+
+    &.clickable:hover {
+      .avatar-content {
+        opacity: 1;
       }
     }
   }
