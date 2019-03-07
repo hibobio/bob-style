@@ -5,7 +5,7 @@ export enum AvatarSize {
   large  = 'large',
 }
 
-export namespace AvatarSize {
+export namespace AvatarSizeConverter {
   export function toNumber(avatarSize: AvatarSize): number {
     switch (avatarSize) {
       case AvatarSize.mini:
