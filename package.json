@@ -78,7 +78,8 @@
     "tsickle": ">=0.29.0",
     "tslib": "^1.9.0",
     "tslint": "~5.12.1",
-    "typescript": "~3.1.6"
+    "typescript": "~3.1.6",
+    "prettier": "^1.16.4"
   },
   "publishConfig": {
     "registry": "https://hibob.jfrog.io/hibob/api/npm/bob-js-virtual/"
