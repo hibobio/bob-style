@@ -81,6 +81,7 @@ export class PanelComponent implements OnDestroy {
       backdropClass,
       panelClass,
       positionStrategy,
+      scrollStrategy: this.panelPositionService.getScrollStrategy(),
     };
   }
 

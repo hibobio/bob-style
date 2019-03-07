@@ -47,7 +47,7 @@ const note = `
   ~~~
 `;
 
-const optionsMock: AutoCompleteOption[] = Array.from(Array(100), (_, k) => {
+const optionsMock: AutoCompleteOption[] = Array.from(Array(20), (_, k) => {
   return {
     value: `Basic Info E${ k } - option`,
     subText: `subtext e${ k }`,

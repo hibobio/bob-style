@@ -82,6 +82,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
       backdropClass: 'b-select-backdrop',
       panelClass,
       positionStrategy,
+      scrollStrategy: this.panelPositionService.getScrollStrategy(),
     };
   }
 

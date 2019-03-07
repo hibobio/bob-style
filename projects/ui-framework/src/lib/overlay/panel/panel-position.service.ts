@@ -1,11 +1,19 @@
 import { Injectable } from '@angular/core';
-import { CdkOverlayOrigin, ConnectedOverlayPositionChange, Overlay, PositionStrategy } from '@angular/cdk/overlay';
+import {
+  CdkOverlayOrigin,
+  ConnectedOverlayPositionChange,
+  Overlay,
+  PositionStrategy,
+  ScrollStrategy,
+  ScrollStrategyOptions
+} from '@angular/cdk/overlay';
 
 @Injectable()
 export class PanelPositionService {
 
   constructor(
     private overlay: Overlay,
+    private readonly scrollStrategyOptions: ScrollStrategyOptions,
   ) {
   }
 
@@ -70,5 +78,9 @@ export class PanelPositionService {
       'panel-after': change.connectionPair.overlayX === 'start',
       'panel-before': change.connectionPair.overlayX === 'end',
     };
+  }
+
+  getScrollStrategy(): ScrollStrategy {
+    return this.scrollStrategyOptions.reposition();
   }
 }

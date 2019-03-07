@@ -12,6 +12,8 @@
       }
     }
     &.panel-open {
+      position:relative;
+      z-index: 10000;
       b-search b-input {
         .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
           border-bottom-left-radius: 0;

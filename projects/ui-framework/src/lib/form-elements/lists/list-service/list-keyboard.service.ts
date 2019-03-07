@@ -7,6 +7,7 @@ export enum NavigationKeys {
   up = 'ArrowUp',
   down = 'ArrowDown',
   enter = 'Enter',
+  escape = 'Escape',
 }
 
 @Injectable()
@@ -19,11 +20,12 @@ export class ListKeyboardService {
       .pipe(filter((e: KeyboardEvent) =>
         e.code === NavigationKeys.up ||
         e.code === NavigationKeys.down ||
-        e.code === NavigationKeys.enter
+        e.code === NavigationKeys.enter ||
+        e.code === NavigationKeys.escape
       ));
   }
 
-  getFocusIndex(
+  getNextFocusIndex(
     navKey: NavigationKeys,
     focusIndex: number,
     listLength: number,

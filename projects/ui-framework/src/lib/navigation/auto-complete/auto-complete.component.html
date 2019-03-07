@@ -3,6 +3,7 @@
          class="panel-trigger">
 
   <b-search [label]="label"
+            [value]="searchValue"
             [hideLabelOnFocus]="true"
             (searchChange)="onSearchChange($event)">
   </b-search>
@@ -14,8 +15,9 @@
   <div class="panel-position"
        [ngClass]="positionClassList">
     <b-auto-complete-panel (optionSelect)="onOptionSelect($event)"
+                           (escapeClick)="onEscape()"
                            [searchValue]="searchValue"
-                           [options]="options">
+                           [options]="filteredOptions">
     </b-auto-complete-panel>
   </div>
 </ng-template>

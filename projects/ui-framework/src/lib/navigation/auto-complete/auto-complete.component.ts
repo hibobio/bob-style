@@ -1,11 +1,20 @@
-import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { invoke, isEmpty } from 'lodash';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import { escapeRegExp, filter, invoke, has } from 'lodash';
 import { PanelPositionService } from '../../overlay/panel/panel-position.service';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Subscription } from 'rxjs';
 import { CdkOverlayOrigin, FlexibleConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
-import { InputEvent } from '../../form-elements/input/input.interface';
-import { InputEventType } from '../../form-elements/input/input.enum';
 import { AutoCompleteOption } from './auto-complete.interface';
 
 @Component({
@@ -13,7 +22,7 @@ import { AutoCompleteOption } from './auto-complete.interface';
   templateUrl: './auto-complete.component.html',
   styleUrls: ['./auto-complete.component.scss'],
 })
-export class AutoCompleteComponent implements OnDestroy {
+export class AutoCompleteComponent implements OnChanges, OnDestroy {
 
   @ViewChild(CdkOverlayOrigin) overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef') templateRef: TemplateRef<any>;
@@ -24,19 +33,29 @@ export class AutoCompleteComponent implements OnDestroy {
   @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<AutoCompleteOption>();
 
   positionClassList: { [key: string]: boolean } = {};
-  searchValue: string;
+  searchValue = '';
+
+  filteredOptions: AutoCompleteOption[];
 
   private panelOpen = false;
   private panelConfig: OverlayConfig;
   private overlayRef: OverlayRef;
   private templatePortal: TemplatePortal;
   private positionChangeSubscriber: Subscription;
+  private backdropClickSubscriber: Subscription;
 
   constructor(
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService,
   ) {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (has(changes, 'options')) {
+      this.options = changes.options.currentValue;
+      this.filteredOptions = this.getFilteredOptions();
+    }
   }
 
   onSearchChange(searchVal: string): void {
@@ -46,12 +65,25 @@ export class AutoCompleteComponent implements OnDestroy {
     } else {
       this.invokePanelDestroy();
     }
+    this.filteredOptions = this.getFilteredOptions();
+    if (this.filteredOptions.length === 0) {
+      this.invokePanelDestroy();
+    }
     this.searchChange.emit(this.searchValue);
   }
 
   onOptionSelect(option: AutoCompleteOption): void {
+    this.searchValue = option.value;
     this.optionSelect.emit(option);
-    this.destroyPanel();
+    this.invokePanelDestroy();
+  }
+
+  onEscape(): void {
+    this.invokePanelDestroy();
+  }
+
+  ngOnDestroy(): void {
+    this.invokePanelDestroy();
   }
 
   private invokePanelOpen(): void {
@@ -77,14 +109,22 @@ export class AutoCompleteComponent implements OnDestroy {
     this.overlayRef.updateSize({
       width: this.overlayOrigin.elementRef.nativeElement.offsetWidth,
     });
+
+    this.backdropClickSubscriber = this.overlayRef.backdropClick()
+      .subscribe(() => {
+        this.destroyPanel();
+      });
+    console.log('1');
   }
 
   private destroyPanel(): void {
     this.panelOpen = false;
     invoke(this.overlayRef, 'dispose');
     invoke(this.positionChangeSubscriber, 'unsubscribe');
+    invoke(this.backdropClickSubscriber, 'unsubscribe');
     this.panelConfig = {};
     this.templatePortal = null;
+    console.log('2');
   }
 
   private getConfig(): OverlayConfig {
@@ -92,10 +132,11 @@ export class AutoCompleteComponent implements OnDestroy {
     this.subscribeToPositions(positionStrategy as FlexibleConnectedPositionStrategy);
     return {
       disposeOnNavigation: true,
-      hasBackdrop: false,
+      hasBackdrop: true,
       backdropClass: 'b-select-backdrop',
       panelClass: ['b-auto-complete-panel'],
       positionStrategy,
+      scrollStrategy: this.panelPositionService.getScrollStrategy(),
     };
   }
 
@@ -106,7 +147,8 @@ export class AutoCompleteComponent implements OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
-    this.invokePanelDestroy();
+  private getFilteredOptions(): AutoCompleteOption[] {
+    const matcher = new RegExp(escapeRegExp(this.searchValue), 'i');
+    return filter(this.options, option => option.value.match(matcher) || option.subText.match(matcher));
   }
 }
