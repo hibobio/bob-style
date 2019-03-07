@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AvatarSize } from './avatar.enum';
 
 @Component({
@@ -23,5 +23,4 @@ export class AvatarComponent {
   getClassNames() {
     return `${this.size}${this.isClickable ? ' clickable' : ''}`;
   }
-
 }
