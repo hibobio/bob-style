@@ -1,12 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import {
-  MatFormFieldModule,
-  MatIconModule,
-  MatInputModule,
-  MatPseudoCheckboxModule,
-  MatTooltipModule
-} from '@angular/material';
+import { MatFormFieldModule, MatIconModule, MatInputModule, MatPseudoCheckboxModule, MatTooltipModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchModule } from '../../../navigation/search/search.module';
@@ -239,7 +233,7 @@ describe('MultiListComponent', () => {
       expect(headerPlaceholder.length).toEqual(1);
       expect(headers.length).toEqual(1);
     });
-    it('should display search if list is greater than DISPLAY_SEARCH_OPTION_NUM', () => {
+    it('should display search if total options is greater than DISPLAY_SEARCH_OPTION_NUM', () => {
       const testOptionsMock = [
         {
           groupName: 'Basic Info Header',
@@ -274,7 +268,7 @@ describe('MultiListComponent', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeTruthy();
     });
-    it('should not display search if list is smaller than DISPLAY_SEARCH_OPTION_NUM', () => {
+    it('should not display search if total options is smaller than DISPLAY_SEARCH_OPTION_NUM', () => {
       const testOptionsMock = [
         {
           groupName: 'Basic Info Header',
@@ -298,6 +292,46 @@ describe('MultiListComponent', () => {
       fixture.autoDetectChanges();
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeFalsy();
+    });
+    it('should display search field also when listOptions is empty if total options is greater the DISPLAY_SEARCH_OPTION_NUM', () => {
+      const testOptionsMock = [
+        {
+          groupName: 'Basic Info Header',
+          options: [
+            { value: 'Basic Info 1', id: 1 },
+            { value: 'Basic Info 2', id: 2 },
+            { value: 'Basic Info 3', id: 3 },
+            { value: 'Basic Info 4', id: 4 },
+            { value: 'Basic Info 5', id: 5 },
+            { value: 'Basic Info 6', id: 6 },
+          ]
+        },
+        {
+          groupName: 'Personal Header',
+          options: [
+            { value: 'Personal 1', id: 11 },
+            { value: 'Personal 2', id: 12 },
+            { value: 'Personal 3', id: 13 },
+            { value: 'Personal 4', id: 14 },
+            { value: 'Personal 5', id: 15 },
+            { value: 'Personal 6', id: 16 },
+          ]
+        }
+      ];
+      component.ngOnChanges({
+        options:
+          {
+            previousValue: undefined, currentValue: testOptionsMock, firstChange: false, isFirstChange: () => false,
+          }
+      });
+      fixture.autoDetectChanges();
+      let searchEl = fixture.debugElement.query(By.css('b-search'));
+      expect(searchEl).toBeTruthy();
+      component.searchChange('no possible options');
+      fixture.autoDetectChanges();
+      expect(component.listOptions.length).toEqual(0);
+      searchEl = fixture.debugElement.query(By.css('b-search'));
+      expect(searchEl).toBeTruthy();
     });
   });
 

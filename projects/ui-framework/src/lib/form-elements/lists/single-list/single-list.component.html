@@ -1,4 +1,4 @@
-<b-search *ngIf="listOptions.length > displaySearchOptionNum"
+<b-search *ngIf="shouldDisplaySearch"
           (searchChange)="searchChange($event)"
           [hideLabelOnFocus]="true">
 </b-search>

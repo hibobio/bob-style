@@ -22,11 +22,11 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();
 
   noGroupHeaders: boolean;
+  shouldDisplaySearch = false;
   searchValue: string;
   filteredOptions: SelectGroupOption[];
 
   checkboxState = CheckboxStates;
-  readonly displaySearchOptionNum = DISPLAY_SEARCH_OPTION_NUM;
 
   constructor(
     private listModelService: ListModelService,
@@ -42,6 +42,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       this.options = changes.options.currentValue;
       this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
       this.filteredOptions = this.options;
+      this.shouldDisplaySearch = flatMap(this.options, 'options').length > DISPLAY_SEARCH_OPTION_NUM;
       this.updateLists();
     }
   }

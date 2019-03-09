@@ -2,8 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, Renderer2, SimpleCha
 import { ListModelService } from '../list-service/list-model.service';
 import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
-import findIndex from 'lodash/findIndex';
-import has from 'lodash/has';
+import { findIndex, has, flatMap } from 'lodash';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 
@@ -22,9 +21,9 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
 
   noGroupHeaders: boolean;
   searchValue: string;
+  shouldDisplaySearch = false;
 
   private filteredOptions: SelectGroupOption[];
-  readonly displaySearchOptionNum = DISPLAY_SEARCH_OPTION_NUM;
 
   constructor(
     private listModelService: ListModelService,
@@ -40,6 +39,7 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
       this.options = changes.options.currentValue;
       this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
       this.filteredOptions = this.options;
+      this.shouldDisplaySearch = flatMap(this.options, 'options').length > DISPLAY_SEARCH_OPTION_NUM;
       this.updateLists();
     }
   }
