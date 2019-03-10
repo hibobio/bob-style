@@ -84,3 +84,6 @@ export {
 // Menu
 export { MenuModule } from './lib/overlay/menu/menu.module';
 export { MenuItem } from './lib/overlay/menu/menu.interface';
+// Side Menu
+export { SideMenuModule } from './lib/navigation/side-menu/side-menu.module';
+export { SideMenuOption, OptionComponent } from './lib/navigation/side-menu/side-menu-option/side-menu-option.interface';
