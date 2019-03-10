@@ -1,5 +1,6 @@
-$breakpoint-mobile: 768px;
-$breakpoint-tablet: 1024px;
+$breakpoint-device-sm: 768px;
+$breakpoint-device-md: 992px;
+$breakpoint-device-lg: 1200px;
 
 @mixin gridLayout12Cols() {
   display: grid;
@@ -14,46 +15,83 @@ $breakpoint-tablet: 1024px;
   }
 }
 
-@media screen and (min-width: $breakpoint-tablet) {
-  .col-lg-1 {
+.col-1 {
+  grid-column: span 1;
+}
+.col-2 {
+  grid-column: span 2;
+}
+.col-3, .col-quarter {
+  grid-column: span 3;
+}
+.col-4, .col-third {
+  grid-column: span 4;
+}
+.col-5 {
+  grid-column: span 5;
+}
+.col-6, .col-half {
+  grid-column: span 6;
+}
+.col-7 {
+  grid-column: span 7;
+}
+.col-8 {
+  grid-column: span 8;
+}
+.col-9 {
+  grid-column: span 9;
+}
+.col-10 {
+  grid-column: span 10;
+}
+.col-11 {
+  grid-column: span 11;
+}
+.col-12, .col-full {
+  grid-column: span 12;
+}
+
+@media screen and (min-width: $breakpoint-device-sm) {
+  .col-sm-1 {
     grid-column: span 1;
   }
-  .col-lg-2 {
+  .col-sm-2 {
     grid-column: span 2;
   }
-  .col-lg-3, .col-lg-quarter {
+  .col-sm-3, .col-sm-quarter {
     grid-column: span 3;
   }
-  .col-lg-4, .col-lg-third {
+  .col-sm-4, .col-sm-third {
     grid-column: span 4;
   }
-  .col-lg-5 {
+  .col-sm-5 {
     grid-column: span 5;
   }
-  .col-lg-6, .col-lg-half {
+  .col-sm-6, .col-sm-half {
     grid-column: span 6;
   }
-  .col-lg-7 {
+  .col-sm-7 {
     grid-column: span 7;
   }
-  .col-lg-8 {
+  .col-sm-8 {
     grid-column: span 8;
   }
-  .col-lg-9 {
+  .col-sm-9 {
     grid-column: span 9;
   }
-  .col-lg-10 {
+  .col-sm-10 {
     grid-column: span 10;
   }
-  .col-lg-11 {
+  .col-sm-11 {
     grid-column: span 11;
   }
-  .col-lg-12, .col-lg-full {
+  .col-sm-12, .col-sm-full {
     grid-column: span 12;
   }
 }
 
-@media screen and (max-width: $breakpoint-tablet) and (min-width: $breakpoint-mobile) {
+@media screen and (min-width: $breakpoint-device-md) {
   .col-md-1 {
     grid-column: span 1;
   }
@@ -92,41 +130,41 @@ $breakpoint-tablet: 1024px;
   }
 }
 
-@media screen and (max-width: $breakpoint-mobile) {
-  .col-sm-1 {
+@media screen and (min-width: $breakpoint-device-lg) {
+  .col-lg-1 {
     grid-column: span 1;
   }
-  .col-sm-2 {
+  .col-lg-2 {
     grid-column: span 2;
   }
-  .col-sm-3, .col-sm-quarter {
+  .col-lg-3, .col-lg-quarter {
     grid-column: span 3;
   }
-  .col-sm-4, .col-sm-third {
+  .col-lg-4, .col-lg-third {
     grid-column: span 4;
   }
-  .col-sm-5 {
+  .col-lg-5 {
     grid-column: span 5;
   }
-  .col-sm-6, .col-sm-half {
+  .col-lg-6, .col-lg-half {
     grid-column: span 6;
   }
-  .col-sm-7 {
+  .col-lg-7 {
     grid-column: span 7;
   }
-  .col-sm-8 {
+  .col-lg-8 {
     grid-column: span 8;
   }
-  .col-sm-9 {
+  .col-lg-9 {
     grid-column: span 9;
   }
-  .col-sm-10 {
+  .col-lg-10 {
     grid-column: span 10;
   }
-  .col-sm-11 {
+  .col-lg-11 {
     grid-column: span 11;
   }
-  .col-sm-12, .col-sm-full {
+  .col-lg-12, .col-lg-full {
     grid-column: span 12;
   }
 }
