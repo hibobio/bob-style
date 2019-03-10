@@ -16,7 +16,7 @@ export {
 // Avatar
 export { AvatarModule } from './lib/buttons-indicators/avatar/avatar.module';
 export { AvatarSize } from './lib/buttons-indicators/avatar/avatar.enum';
-export { AvatarComponent } from './lib/buttons-indicators/avatar/avatar.component';
+export * from './lib/buttons-indicators/avatar/avatar.component';
 // Slider
 export { SliderModule } from './lib/buttons-indicators/slider/slider.module';
 // SwitchToggle
