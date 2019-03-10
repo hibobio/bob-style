@@ -2,7 +2,7 @@ import { Component, Inject, NgModule, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TypographyModule } from '../../typography/typography.module';
 import { DialogModule } from './dialog.module';
-import { DialogService } from './dialog.service';
+import { DialogService } from './dialog-service/dialog.service';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { FormElementsModule } from '../../form-elements/form-elements.module';
@@ -38,7 +38,7 @@ a note on what types are.`
       .openDialog(
         DialogExampleDialogComponent,
         {
-          size: DialogSize.small,
+          size: DialogSize.medium,
           panelClass: 'dialog-example',
           data: this.dataMock,
         }

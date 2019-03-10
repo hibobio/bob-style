@@ -16,7 +16,6 @@ export {
 // Avatar
 export { AvatarModule } from './lib/buttons-indicators/avatar/avatar.module';
 export { AvatarSize } from './lib/buttons-indicators/avatar/avatar.enum';
-export * from './lib/buttons-indicators/avatar/avatar.component';
 // Slider
 export { SliderModule } from './lib/buttons-indicators/slider/slider.module';
 // SwitchToggle
@@ -71,7 +70,7 @@ export { PanelModule } from './lib/overlay/panel/panel.module';
 export { DialogModule } from './lib/overlay/dialog/dialog.module';
 export { DialogSize } from './lib/overlay/dialog/dialog.enum';
 export { DialogConfig, DialogButtons, DialogButton } from './lib/overlay/dialog/dialog.interface';
-export { DialogService } from './lib/overlay/dialog/dialog.service';
+export { DialogService } from './lib/overlay/dialog/dialog-service/dialog.service';
 // Tabs
 export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { Tab } from './lib/navigation/tabs/tabs.interface';

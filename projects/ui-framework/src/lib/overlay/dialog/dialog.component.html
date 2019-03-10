@@ -26,27 +26,28 @@
 
 </div>
 
-<div class="dialog-footer">
-
+<div class="confirmation-wrapper">
   <div *ngIf="showConfirmation"
        [@confirmMessage]
        class="confirmation-message">
     <b-subheading>{{dialogButtons.confirmation.title}}</b-subheading>
     <div *ngIf="dialogButtons.confirmation.subTitle">{{dialogButtons.confirmation.subTitle}}</div>
   </div>
+</div>
 
+<div class="dialog-footer">
   <div mat-dialog-actions>
-    <b-button *ngIf="dialogButtons.cancel"
-              (clicked)="onCancel()"
-              [disabled]="showProgress"
-              class="cancel-button">
-      {{dialogButtons.cancel.label}}
-    </b-button>
-    <b-button (clicked)="onOk()"
-              [disabled]="showProgress"
-              class="ok-button">
-      {{showConfirmation ? dialogButtons.confirmation.buttonLabel : dialogButtons.ok.label}}
-    </b-button>
+    <button *ngIf="dialogButtons.cancel"
+            (click)="onCancel()"
+            [ngClass]="{'disabled': showProgress}"
+            class="dialog-button cancel-button">
+      <b-subheading>{{dialogButtons.cancel.label}}</b-subheading>
+    </button>
+    <button (click)="onOk()"
+            [ngClass]="{'disabled': showProgress}"
+            class="dialog-button ok-button">
+      <b-subheading>{{showConfirmation ? dialogButtons.confirmation.buttonLabel : dialogButtons.ok.label}}</b-subheading>
+    </button>
   </div>
 
 </div>

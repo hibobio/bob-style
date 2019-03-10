@@ -114,7 +114,6 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
       .subscribe(() => {
         this.destroyPanel();
       });
-    console.log('1');
   }
 
   private destroyPanel(): void {
@@ -124,7 +123,6 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     invoke(this.backdropClickSubscriber, 'unsubscribe');
     this.panelConfig = {};
     this.templatePortal = null;
-    console.log('2');
   }
 
   private getConfig(): OverlayConfig {

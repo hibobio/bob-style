@@ -1,6 +1,7 @@
 @import '../../style/colors';
 
 $dialogPadding: 24px;
+$footerSize: 50px;
 
 ::ng-deep {
   .b-dialog-backdrop {
@@ -12,7 +13,7 @@ $dialogPadding: 24px;
       display: block;
       padding: 0;
       position: relative;
-      overflow: hidden;
+      overflow: visible;
       .close-button {
         position: absolute;
         top: 0;
@@ -62,26 +63,80 @@ $dialogPadding: 24px;
           }
         }
       }
-      .dialog-footer {
-        position: relative;
-        overflow: visible;
+      .confirmation-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
         .confirmation-message {
           position: absolute;
-          top: 0;
+          bottom: $footerSize;
           left: 0;
           width: 100%;
           box-sizing: border-box;
           padding: 12px 24px;
           background-color: $white;
           box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.2), 0 -3px 5px rgba(0, 0, 0, 0.1) inset;
-          transform: translateY(-100%);
+          transform: translateY(0);
         }
+      }
+      .dialog-footer {
+        position: relative;
+        overflow: visible;
+        height: $footerSize;
         .mat-dialog-actions {
           background-color: $white;
           text-align: center;
           border-top: 1px solid $grey-500;
           position: relative;
           z-index: 2;
+          display: flex;
+          justify-content: center;
+          height: 100%;
+          border-bottom-left-radius: 4px;
+          border-bottom-right-radius: 4px;
+          .dialog-button {
+            position: relative;
+            flex-grow: 1;
+            max-width: 250px;
+            height: 100%;
+            cursor: pointer;
+            padding: 0;
+            background-color: $white;
+            border: none;
+            outline: none;
+            border-right: 1px solid $grey-500;
+            border-left: 1px solid $grey-500;
+            &:nth-child(2) {
+              border-left: 0;
+            }
+            &:hover {
+              background-color: $grey-100;
+            }
+            &:active {
+              background-color: $grey-200;
+            }
+            &:after {
+              content: '';
+              display: block;
+              position: absolute;
+              height: 3px;
+              width: 100%;
+              bottom: -3px;
+            }
+            &.ok-button:after {
+              background-color: var(--primary-500);
+            }
+            &.cancel-button:after {
+              background-color: var(--negative-500);
+            }
+            &.disabled {
+              pointer-events: none;
+            }
+          }
         }
       }
     }

@@ -16,10 +16,10 @@ import isFunction from 'lodash/isFunction';
   animations: [
     trigger('confirmMessage', [
       transition(':enter', useAnimation(slideUpDown, {
-        params: { timings: '200ms ease-out', from: '20px', to: '-100%' }
+        params: { timings: '200ms ease-out', from: '100%', to: '0' }
       })),
       transition(':leave', useAnimation(slideUpDown, {
-        params: { timings: '200ms ease-out', to: '20px', from: '-100%' }
+        params: { timings: '200ms ease-out', from: '0', to: '100%' }
       })),
     ])
   ],

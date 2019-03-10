@@ -2,8 +2,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material';
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import assign from 'lodash/assign';
-import { DialogConfig } from './dialog.interface';
-import { DialogSize } from './dialog.enum';
+import { DialogConfig } from '../dialog.interface';
+import { DialogSize } from '../dialog.enum';
 
 @Injectable()
 export class DialogService {

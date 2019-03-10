@@ -13,7 +13,6 @@ import { BaseInputElement } from '../../form-elements/base-input-element';
 export class SearchComponent extends BaseInputElement implements OnChanges {
 
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
-  @Output() inputChange: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
@@ -35,7 +34,6 @@ export class SearchComponent extends BaseInputElement implements OnChanges {
   }
 
   onInputEvents(event: InputEvent): void {
-    this.inputChange.emit(event);
     this.value = event.value as string;
     if (event.event === InputEventType.onChange) {
       this.searchChange.emit(this.value);
