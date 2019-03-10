@@ -9,7 +9,7 @@
       <button mat-menu-item color="primary"
               [matMenuTriggerFor]="menu.childMenu"
               [disableRipple]="true">
-        <span>{{child.displayName}}</span>
+        <span>{{child.label}}</span>
       </button>
       <b-menu #menu [menu]="child.children"></b-menu>
     </span>
@@ -17,7 +17,7 @@
     <span *ngIf="!child.children || child.children.length === 0">
       <button mat-menu-item (click)="child.action($event)"
               [disableRipple]="true">
-        <span>{{child.displayName}}</span>
+        <span>{{child.label}}</span>
       </button>
     </span>
   </span>

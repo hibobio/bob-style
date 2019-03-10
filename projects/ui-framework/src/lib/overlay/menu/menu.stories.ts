@@ -47,50 +47,50 @@ const note = `
 
 const menuMock: MenuItem[] = [
   {
-    displayName: 'Employee',
+    label: 'Employee',
     children: [
       {
-        displayName: 'Update work details',
+        label: 'Update work details',
         children: [
           {
-            displayName: 'Update site',
+            label: 'Update site',
             action: ($event) => console.log('update site', $event)
           },
           {
-            displayName: 'Update email',
+            label: 'Update email',
             action: ($event) => console.log('update email', $event)
           },
           {
-            displayName: 'Update reports to',
+            label: 'Update reports to',
             action: ($event) => console.log('update reports to', $event)
           }
         ]
       },
       {
-        displayName: 'Update internal details',
+        label: 'Update internal details',
         children: [
           {
-            displayName: 'Terminate',
+            label: 'Terminate',
             action: ($event) => console.log('terminate', $event)
           },
           {
-            displayName: 'Rehire',
+            label: 'Rehire',
             action: ($event) => console.log('rehire', $event)
           }
         ]
       },
       {
-        displayName: 'Delete file',
+        label: 'Delete file',
         action: ($event) => console.log('delete file', $event)
       }
     ]
   },
   {
-    displayName: 'View profile',
+    label: 'View profile',
     action: ($event) => console.log('view profile', $event)
   },
   {
-    displayName: 'Request time-off',
+    label: 'Request time-off',
     action: ($event) => console.log('request time off', $event)
   }
 ];

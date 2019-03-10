@@ -1,5 +1,5 @@
 export interface MenuItem {
   children?: MenuItem[];
-  displayName: string;
+  label: string;
   action?($event): void;
 }
