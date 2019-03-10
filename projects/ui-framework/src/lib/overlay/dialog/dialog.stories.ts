@@ -23,12 +23,9 @@ const storyTemplate = `
 const note = `
   ## Dialog
 
-  ~~~
-  ${template}
-  ~~~
-
   ## How to use
   trigger:
+
   ~~~
   constructor(
     private dialogService: DialogService,
@@ -48,6 +45,7 @@ const note = `
   ~~~
 
   YourDialogComponent:
+
   ~~~
 @Component({
   selector: 'b-dialog-example-dialog',
@@ -82,6 +80,7 @@ export class YourDialogComponent implements OnInit {
 
 
   Module:
+
   ~~~
   @NgModule({
     declarations: [
