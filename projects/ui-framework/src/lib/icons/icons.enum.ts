@@ -38,4 +38,5 @@ export enum Icons {
   question_mark = 'question_mark',
   department_icon = 'department_icon',
   company_icon = 'company_icon',
+  edit_field_pencil = 'edit_field_pencil',
 }
