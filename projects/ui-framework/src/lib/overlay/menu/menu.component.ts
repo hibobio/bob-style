@@ -1,4 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
+import { MenuItem } from './menu.interface';
 
 @Component({
   selector: 'b-menu',
@@ -7,7 +8,7 @@ import { Component, Input, ViewChild } from '@angular/core';
 })
 export class MenuComponent {
 
-  @Input() actionsModel: any[];
+  @Input() menu: MenuItem[];
   @ViewChild('childMenu') public childMenu;
 
   constructor() {

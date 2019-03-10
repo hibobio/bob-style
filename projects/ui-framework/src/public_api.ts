@@ -82,3 +82,6 @@ export {
   QuickFilterChangeEvent,
   QuickFilterBarChangeEvent
 } from './lib/navigation/quick-filter/quick-filter.interface';
+// Menu
+export { MenuModule } from './lib/overlay/menu/menu.module';
+export { MenuItem } from './lib/overlay/menu/menu.interface';

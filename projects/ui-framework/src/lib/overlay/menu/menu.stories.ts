@@ -1,13 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  array,
-  boolean,
-  number,
-  object,
-  select,
-  text,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
@@ -17,39 +9,43 @@ import { IconsModule } from '../../icons/icons.module';
 import { Icons } from '../../icons/icons.enum';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { MenuItem } from './menu.interface';
 
 const menuStories = storiesOf(ComponentGroupType.Overlay, module).addDecorator(withKnobs);
 
 const template = `
 <b-menu style="position: absolute; top: 20px; left: 20px;"
-        [actionsModel]="actionsModel">
+        [menu]="menu">
   <b-square-button menu-trigger
-                  type="${ButtonType.secondary}"
-                  icon="${Icons.three_dots}">
+                   type="${ ButtonType.secondary }"
+                   icon="${ Icons.three_dots }">
   </b-square-button>
 </b-menu>
 `;
 
 const storyTemplate = `
 <b-story-book-layout title="Actions menu">
-  ${template}
+  ${ template }
 </b-story-book-layout>
 `;
 
 const note = `
   ## Panel Element
 
-  #### Properties
+  #### Module
+  *MenuModule*
 
-  Name | Type | Description
-  --- | --- | ---
+  #### Properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  menu | MenuItem[] | array of menu items | none
 
   ~~~
-  ${template}
+  ${ template }
   ~~~
 `;
 
-const actionsModelMock = [
+const menuMock: MenuItem[] = [
   {
     displayName: 'Employee',
     children: [
@@ -105,15 +101,15 @@ menuStories.add(
     return {
       template: storyTemplate,
       props: {
-        actionsModel: object<any>('actionsModel', actionsModelMock)
+        menu: object('menu', menuMock),
       },
       moduleMetadata: {
         imports: [
+          StoryBookLayoutModule,
+          BrowserAnimationsModule,
           MenuModule,
           ButtonsModule,
           IconsModule,
-          BrowserAnimationsModule,
-          StoryBookLayoutModule
         ]
       }
     };
