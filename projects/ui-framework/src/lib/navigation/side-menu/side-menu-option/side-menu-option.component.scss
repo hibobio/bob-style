@@ -1,34 +1,24 @@
+@import "../../../../lib/form-elements/lists/list.scss";
+
 :host {
   .side-menu-option-container {
     display: grid;
-    grid-template-columns: max-content 1fr 50px;
+    grid-template-columns: max-content 1fr max-content;
     cursor: pointer;
-    height: 50px;
     align-items: center;
-
-    &:hover {
-      background-color: #F9F9F9;
-    }
-
-    &.selected-option {
-      background-color: #F9F9F9;
-      font-weight: bold;
-    }
+    @include listOption;
 
     &.no-prefix {
-      grid-template-columns: 0 1fr 50px;
+      grid-template-columns: 0px 1fr max-content;
 
       .option-display-name {
-        margin-left: 16px;
+        margin: 0 16px 0 0;
       }
-    }
-
-    .option-prefix {
-      padding: 0 16px;
     }
 
     .option-display-name {
       justify-self: left;
+      margin: 0 16px;
     }
 
   }

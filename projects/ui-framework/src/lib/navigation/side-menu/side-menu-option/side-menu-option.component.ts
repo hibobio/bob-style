@@ -4,14 +4,15 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
 import { SideMenuOption } from './side-menu-option.interface';
 import merge from 'lodash/merge';
 import isUndefined from 'lodash/isUndefined';
+import has from 'lodash/has';
 import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 
 @Component({
@@ -19,7 +20,7 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
   templateUrl: './side-menu-option.component.html',
   styleUrls: ['./side-menu-option.component.scss']
 })
-export class SideMenuOptionComponent implements OnInit, OnChanges {
+export class SideMenuOptionComponent implements OnChanges {
   @Input() option: SideMenuOption;
   @Input() selected: boolean;
   @Output() selectOption: EventEmitter<string> = new EventEmitter<string>();
@@ -37,12 +38,10 @@ export class SideMenuOptionComponent implements OnInit, OnChanges {
   constructor(private readonly componentFactoryResolver: ComponentFactoryResolver) {
   }
 
-  ngOnInit() {
-    this.renderComponent();
-  }
-
-  ngOnChanges() {
-    this.renderComponent();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (has(changes, 'option.currentValue.prefix')) {
+      this.renderComponent();
+    }
   }
 
   private renderComponent(): void {

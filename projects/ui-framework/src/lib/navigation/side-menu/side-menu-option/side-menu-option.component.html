@@ -1,5 +1,5 @@
 <div class="side-menu-option-container"
-     [ngClass]="{'selected-option': selected, 'no-prefix': !option.prefix}"
+     [ngClass]="{'selected': selected, 'no-prefix': !option.prefix}"
      (click)="onSelectOption()"
      (mouseenter)="showActions = true" (mouseleave)="showActions = false">
     <div class="option-prefix">
