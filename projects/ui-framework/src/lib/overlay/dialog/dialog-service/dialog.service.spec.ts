@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material';
 import { Component } from '@angular/core';
 import { DialogSize } from '../dialog.enum';
 import { DialogConfig } from '../dialog.interface';
-import { of } from 'rxjs';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
@@ -20,10 +19,17 @@ export class CompMockComponent {
 describe('DialogService', () => {
   let dialogService: DialogService;
   let spyMatDialog: SpyObj<MatDialog>;
+  let dialogRefMock;
+
+  const comp = CompMockComponent;
+  const config: DialogConfig = {
+    size: DialogSize.medium,
+    panelClass: 'test-class',
+    data: {},
+  };
 
   beforeEach(() => {
-    const dialogRefMock = createSpyObj('dialogRefMock', ['afterClosed']);
-    dialogRefMock.afterClosed.and.returnValue(of({}));
+    dialogRefMock = createSpyObj('dialogRefMock', ['afterClosed', 'beforeClosed']);
 
     spyMatDialog = createSpyObj('spyMatDialog', ['open']);
     spyMatDialog.open.and.returnValue(dialogRefMock);
@@ -40,12 +46,6 @@ describe('DialogService', () => {
 
   describe('openDialog', () => {
     it('should call matDialog.open with config', () => {
-      const comp = CompMockComponent;
-      const config: DialogConfig = {
-        size: DialogSize.medium,
-        panelClass: 'test-class',
-        data: {},
-      };
       const expectedConfig = {
         size: DialogSize.medium,
         data: {},
@@ -58,6 +58,10 @@ describe('DialogService', () => {
       };
       dialogService.openDialog(comp, config);
       expect(spyMatDialog.open).toHaveBeenCalledWith(comp, expectedConfig);
+    });
+    it('should return the dialogRef object', () => {
+      const dialogRef = dialogService.openDialog(comp, config);
+      expect(dialogRef).toEqual(dialogRefMock);
     });
   });
 });

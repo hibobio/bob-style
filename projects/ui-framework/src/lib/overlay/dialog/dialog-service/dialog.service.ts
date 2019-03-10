@@ -1,4 +1,4 @@
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import assign from 'lodash/assign';
@@ -22,7 +22,7 @@ export class DialogService {
   openDialog(
     dialogComponent: ComponentType<any>,
     config: DialogConfig,
-  ): void {
+  ): MatDialogRef<any> {
     const dialogConfig: MatDialogConfig = assign(config, {
       width: this.dialogSizeToWidth[config.size],
       closeOnNavigation: true,
@@ -32,6 +32,6 @@ export class DialogService {
       disableClose: true,
     });
 
-    this.dialog.open(dialogComponent, dialogConfig);
+    return this.dialog.open(dialogComponent, dialogConfig);
   }
 }

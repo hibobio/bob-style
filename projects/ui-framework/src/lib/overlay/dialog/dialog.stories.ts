@@ -41,6 +41,14 @@ const note = `
           data: {...yourData},
         }
       );
+
+    // observable containing the response when dialog is closed
+    // onSuccess res contains value
+    // onCancel or on X, result is undefined
+    dialogRef.beforeClosed()
+      .subscribe(res => {
+        console.log('res', res);
+      });
   }
   ~~~
 

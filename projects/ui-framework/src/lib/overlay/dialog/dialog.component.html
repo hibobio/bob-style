@@ -6,6 +6,7 @@
 </b-square-button>
 
 <div mat-dialog-title>
+  <ng-content select="[b-dialog-above-header]"></ng-content>
   <b-heading>{{dialogTitle}}</b-heading>
   <ng-content select="[b-dialog-sub-title]"></ng-content>
 </div>
