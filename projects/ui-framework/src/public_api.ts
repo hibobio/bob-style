@@ -44,7 +44,7 @@ export { SingleListModule } from './lib/form-elements/lists/single-list/single-l
 export { SingleSelectModule } from './lib/form-elements/lists/single-select/single-select.module';
 export { MultiListModule } from './lib/form-elements/lists/multi-list/multi-list.module';
 export { MultiSelectModule } from './lib/form-elements/lists/multi-select/multi-select.module';
-export { SelectGroupOption, SelectOption } from './lib/form-elements/lists/list.interface';
+export { SelectGroupOption, SelectOption, ListComponentPrefix } from './lib/form-elements/lists/list.interface';
 // Breadcrumbs
 export { BreadcrumbsModule } from './lib/navigation/breadcrumbs/breadcrumbs.module';
 export {
@@ -84,3 +84,6 @@ export {
 // Menu
 export { MenuModule } from './lib/overlay/menu/menu.module';
 export { MenuItem } from './lib/overlay/menu/menu.interface';
+// Side Menu
+export { SideMenuModule } from './lib/navigation/side-menu/side-menu.module';
+export { SideMenuOption } from './lib/navigation/side-menu/side-menu-option/side-menu-option.interface';

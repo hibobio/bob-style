@@ -11,7 +11,7 @@ export interface ListOption {
   value: string;
   id: number | string;
   selected: boolean;
-  prefixComponent?: ListComponent;
+  prefixComponent?: ListComponentPrefix;
 }
 
 export interface SelectGroupOption {
@@ -22,10 +22,10 @@ export interface SelectGroupOption {
 export interface SelectOption {
   value: string;
   id: number | string;
-  prefixComponent?: ListComponent;
+  prefixComponent?: ListComponentPrefix;
 }
 
-export interface ListComponent {
+export interface ListComponentPrefix {
   component: any;
   attributes: any;
 }

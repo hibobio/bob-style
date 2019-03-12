@@ -1,13 +1,9 @@
 import { MenuItem } from '../../../overlay/menu/menu.interface';
+import { ListComponentPrefix } from '../../../form-elements/lists/list.interface';
 
 export interface SideMenuOption {
   id: string;
   displayName: string;
-  prefix?: OptionComponent;
+  prefix?: ListComponentPrefix;
   actions?: MenuItem[];
-}
-
-export interface OptionComponent {
-  component: any;
-  attributes: any;
 }

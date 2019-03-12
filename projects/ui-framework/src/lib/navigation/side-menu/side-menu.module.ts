@@ -6,12 +6,18 @@ import { MenuModule } from '../../overlay/menu/menu.module';
 import { IconsModule } from '../../icons/icons.module';
 
 @NgModule({
-  declarations: [SideMenuComponent, SideMenuOptionComponent],
+  declarations: [
+    SideMenuComponent,
+    SideMenuOptionComponent,
+  ],
   imports: [
     CommonModule,
     IconsModule,
     MenuModule,
   ],
-  exports: [SideMenuComponent]
+  exports: [
+    SideMenuComponent,
+  ]
 })
-export class SideMenuModule { }
+export class SideMenuModule {
+}
