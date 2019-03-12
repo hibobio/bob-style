@@ -85,6 +85,16 @@ describe('MultiSelectComponent', () => {
       component.ngOnChanges({value: {previousValue: undefined, currentValue: [1, 11], firstChange: true, isFirstChange: () => true}});
       expect(component.triggerValue).toEqual('Basic Info 1, Personal 1');
     });
+    it('should update trigger value also when options update', () => {
+      component.options = [];
+      component.ngOnChanges({ value: { previousValue: undefined, currentValue: [1, 11], firstChange: true, isFirstChange: () => true } });
+      expect(component.triggerValue).toBe('');
+      component.ngOnChanges({
+        options:
+          { previousValue: undefined, currentValue: optionsMock, firstChange: false, isFirstChange: () => false },
+      });
+      expect(component.triggerValue).toEqual('Basic Info 1, Personal 1');
+    });
   });
 
   describe('onSelect', () => {

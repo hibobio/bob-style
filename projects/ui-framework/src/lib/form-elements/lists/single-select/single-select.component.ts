@@ -65,6 +65,9 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
     if (changes.value) {
       this.value = changes.value.currentValue || null;
     }
+    if (changes.options) {
+      this.options = changes.options.currentValue;
+    }
     this.triggerValue = this.value ? this.getTriggerValue(this.value) : null;
   }
 
