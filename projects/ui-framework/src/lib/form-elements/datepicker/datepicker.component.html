@@ -2,9 +2,9 @@
   [inputType]="inputTypes.text"
   [label]="inputLabel"
   [value]="value"
-  [disabled]="false"
-  [required]="false"
-  [errorMessage]=""
+  [disabled]="disabled"
+  [required]="required"
+  [errorMessage]="errorMessage"
   (inputEvents)="onInputEvents($event, picker)"
   #datePickerInput
   [datePickerId]="picker">

@@ -14,7 +14,11 @@ const template = `
 <b-datepicker style="width: 400px;"
               (dateChange)="dateChange($event)"
               [inputLabel]="inputLabel"
-              [dateFormat]="dateFormat">
+              [dateFormat]="dateFormat"
+              [errorMessage]="errorMessage"
+              [label]="label"
+              [disabled]="disabled"
+              [required]="required">
 </b-datepicker>
 `;
 
@@ -48,6 +52,10 @@ datepickerStories.add(
       props: {
         inputLabel: text('inputLabel', 'Choose a date'),
         dateFormat: text('dateFormat', 'DD/MM/YYYY'),
+        errorMessage: text('errorMessage', ''),
+        required: boolean('required', false),
+        label: text('label', 'Date picker'),
+        disabled: boolean('disabled', false),
         dateChange: action()
       },
       moduleMetadata: {

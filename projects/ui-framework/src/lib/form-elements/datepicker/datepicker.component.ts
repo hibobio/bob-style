@@ -39,6 +39,9 @@ export class DatepickerComponent extends BaseInputElement implements OnInit {
   @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
   @Input() inputLabel: String;
   @Input() dateFormat?: string;
+  @Input() errorMessage: string;
+  @Input() disabled: boolean;
+  @Input() required: boolean;
 
   public readonly calendarIcon: String = Icons.calendar;
   public readonly calendarIconSize: String = IconSize.medium;
