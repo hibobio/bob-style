@@ -5,13 +5,17 @@
                  class="close-button">
 </b-square-button>
 
-<div mat-dialog-title>
+<div #dialogHeader
+     mat-dialog-title>
   <ng-content select="[b-dialog-above-header]"></ng-content>
-  <b-heading>{{dialogTitle}}</b-heading>
+  <b-display-2>{{dialogTitle}}</b-display-2>
   <ng-content select="[b-dialog-sub-title]"></ng-content>
 </div>
 
-<div mat-dialog-content>
+<div #dialogContent
+     (scroll)="onScroll($event)"
+     [ngClass]="{'show-scrolling-top': showScrolling==dialogScrollDir.top, 'show-scrolling-bottom': showScrolling==dialogScrollDir.bottom}"
+     mat-dialog-content>
 
   <div [ngClass]="{'show-progress': showProgress}"
        class="dialog-content">
@@ -27,28 +31,31 @@
 
 </div>
 
-<div class="confirmation-wrapper">
+<div class="dialog-footer">
+
   <div *ngIf="showConfirmation"
        [@confirmMessage]
        class="confirmation-message">
     <b-subheading>{{dialogButtons.confirmation.title}}</b-subheading>
     <div *ngIf="dialogButtons.confirmation.subTitle">{{dialogButtons.confirmation.subTitle}}</div>
   </div>
-</div>
 
-<div class="dialog-footer">
-  <div mat-dialog-actions>
-    <button *ngIf="dialogButtons.cancel"
-            (click)="onCancel()"
-            [ngClass]="{'disabled': showProgress}"
-            class="dialog-button cancel-button">
-      <b-subheading>{{dialogButtons.cancel.label}}</b-subheading>
-    </button>
-    <button (click)="onOk()"
-            [ngClass]="{'disabled': showProgress}"
-            class="dialog-button ok-button">
-      <b-subheading>{{showConfirmation ? dialogButtons.confirmation.buttonLabel : dialogButtons.ok.label}}</b-subheading>
-    </button>
+  <div mat-dialog-actions
+       [ngClass]="{'single-button': !dialogButtons.cancel}">
+    <b-button *ngIf="dialogButtons.cancel"
+              (clicked)="onCancel()"
+              [disabled]="showProgress"
+              [size]="buttonSize.large"
+              [type]="buttonType.secondary"
+              class="dialog-button cancel-button">
+      {{dialogButtons.cancel.label}}
+    </b-button>
+    <b-button (clicked)="onOk()"
+              [disabled]="showProgress"
+              [size]="buttonSize.large"
+              class="dialog-button ok-button">
+      {{showConfirmation ? dialogButtons.confirmation.buttonLabel : dialogButtons.ok.label}}
+    </b-button>
   </div>
 
 </div>

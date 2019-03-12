@@ -3,3 +3,8 @@ export enum DialogSize {
   medium = 'medium',
   large = 'large',
 }
+
+export enum DialogScrollDir {
+  top = 'top',
+  bottom = 'bottom',
+}

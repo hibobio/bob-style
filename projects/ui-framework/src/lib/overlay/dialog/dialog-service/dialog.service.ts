@@ -27,7 +27,7 @@ export class DialogService {
       width: this.dialogSizeToWidth[config.size],
       closeOnNavigation: true,
       backdropClass: 'b-dialog-backdrop',
-      panelClass: ['b-dialog-panel', config.panelClass],
+      panelClass: ['b-dialog-panel', `size-${config.size}`, config.panelClass],
       hasBackdrop: true,
       disableClose: true,
     });
