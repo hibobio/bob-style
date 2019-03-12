@@ -10,12 +10,12 @@
            [label]="label"
            [required]="required"
            [matTooltip]="showTriggerTooltip ? triggerValue : null"
-           [ngClass]="{'has-clear-prefix': value !== null}"
+           [ngClass]="{'has-clear-prefix': value != null}"
            [value]="triggerValue"
            matTooltipPosition="above"
            [hideLabelOnFocus]="hideLabelOnFocus">
 
-    <div *ngIf="value!==null"
+    <div *ngIf="value != null"
          class="clear-selection"
          (click)="clearSelection()"
          input-prefix>
@@ -46,7 +46,6 @@
                    [maxHeight]="listElHeight*6"
                    [showSingleGroupHeader]="showSingleGroupHeader">
     </b-single-list>
-
 
   </div>
 </ng-template>

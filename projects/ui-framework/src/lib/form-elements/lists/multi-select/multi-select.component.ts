@@ -12,7 +12,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
-import { chain, includes } from 'lodash';
+import { chain, includes, has } from 'lodash';
 import { PanelPositionService } from '../../../overlay/panel/panel-position.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
@@ -72,7 +72,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value) {
+    if (has(changes, 'value')) {
+      this.value = changes.value.currentValue || [];
       this.triggerValue = this.getTriggerValue(this.value);
     }
   }

@@ -82,7 +82,7 @@ describe('MultiSelectComponent', () => {
       expect(component.value).toEqual([]);
     });
     it('should set triggerValue if value is provided', () => {
-      component.ngOnChanges({value: {previousValue: undefined, currentValue: 1, firstChange: true, isFirstChange: () => true}});
+      component.ngOnChanges({value: {previousValue: undefined, currentValue: [1, 11], firstChange: true, isFirstChange: () => true}});
       expect(component.triggerValue).toEqual('Basic Info 1, Personal 1');
     });
   });

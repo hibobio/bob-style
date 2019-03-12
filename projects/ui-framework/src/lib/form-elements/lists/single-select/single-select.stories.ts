@@ -78,7 +78,7 @@ buttonStories.add(
     template: storyTemplate,
     props: {
       options: object<SelectGroupOption>('options', optionsMock),
-      value: number('value', 2),
+      value: number('value', null),
       selectChange: action(),
       label: text('label', 'label text'),
       disabled: boolean('disabled', false),

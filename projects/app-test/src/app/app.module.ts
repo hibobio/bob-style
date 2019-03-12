@@ -2,19 +2,21 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TypographyModule, ButtonsModule, IconsModule, MultiListModule } from 'bob-style';
+import { TypographyModule, MultiSelectModule } from 'bob-style';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     TypographyModule,
-    ButtonsModule,
-    IconsModule,
-    MultiListModule
+    MultiSelectModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent,
+  ]
 })
 export class AppModule {}
