@@ -5,6 +5,7 @@
 export { TypographyModule } from './lib/typography/typography.module';
 // Icons
 export { IconsModule } from './lib/icons/icons.module';
+export { IconComponent } from './lib/icons/icon.component';
 export { IconSize, IconColor, Icons } from './lib/icons/icons.enum';
 // Buttons
 export { ButtonsModule } from './lib/buttons-indicators/buttons/buttons.module';
@@ -15,6 +16,7 @@ export {
 } from './lib/buttons-indicators/buttons/buttons.enum';
 // Avatar
 export { AvatarModule } from './lib/buttons-indicators/avatar/avatar.module';
+export { AvatarComponent } from './lib/buttons-indicators/avatar/avatar.component';
 export { AvatarSize } from './lib/buttons-indicators/avatar/avatar.enum';
 // Slider
 export { SliderModule } from './lib/buttons-indicators/slider/slider.module';
@@ -44,6 +46,8 @@ export { SingleListModule } from './lib/form-elements/lists/single-list/single-l
 export { SingleSelectModule } from './lib/form-elements/lists/single-select/single-select.module';
 export { MultiListModule } from './lib/form-elements/lists/multi-list/multi-list.module';
 export { MultiSelectModule } from './lib/form-elements/lists/multi-select/multi-select.module';
+export { MultiSelectComponent } from './lib/form-elements/lists/multi-select/multi-select.component';
+export { SingleSelectComponent } from './lib/form-elements/lists/single-select/single-select.component';
 export { SelectGroupOption, SelectOption, ListComponentPrefix } from './lib/form-elements/lists/list.interface';
 // Breadcrumbs
 export { BreadcrumbsModule } from './lib/navigation/breadcrumbs/breadcrumbs.module';
