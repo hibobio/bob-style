@@ -143,6 +143,13 @@ export { DialogService } from './lib/overlay/dialog/dialog-service/dialog.servic
 export { TableModule } from './lib/table/table.module';
 export * from './lib/table/table/table.interface';
 
+/*
+ * Cards
+ */
+
+// Single card
+export { CardModule } from './lib/cards/card/card.module';
+export { CardComponent } from './lib/cards/card/card.component';
 
 /*
  * Misc
@@ -159,6 +166,4 @@ export { UtilsService } from './lib/services/utils/utils.service';
 // Divider
 export { DividerModule } from './lib/misc/divider/divider.module';
 export { DividerComponent } from './lib/misc/divider/divider.component';
-// Card
-export { CardModule } from './lib/misc/card/card.module';
-export { CardComponent } from './lib/misc/card/card.component';
+

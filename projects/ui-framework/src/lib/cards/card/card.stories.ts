@@ -18,7 +18,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 
 import { MenuItem } from '../../navigation/menu/menu.interface';
 
-const menuStories = storiesOf(ComponentGroupType.Misc, module).addDecorator(
+const menuStories = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs
 );
 

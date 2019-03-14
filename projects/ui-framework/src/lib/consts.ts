@@ -8,6 +8,7 @@ export enum ComponentGroupType {
   Misc = 'Misc',
   DataTable = 'Data Table',
   Services = 'Services',
+  Cards = 'Cards',
 }
 
 export const serverDateFormat = 'YYYY-MM-DDTHH:mm';
