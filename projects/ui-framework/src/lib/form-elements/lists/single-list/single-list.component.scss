@@ -50,7 +50,7 @@
         .option-select {
           display: flex;
           flex-direction: row;
-          align-content: start;
+          align-content: flex-start;
           align-items: center;
           &.header-placeholder {
             visibility: hidden;

@@ -34,10 +34,10 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
 
   positionClassList: { [key: string]: boolean } = {};
   searchValue = '';
+  panelOpen = false;
 
   filteredOptions: AutoCompleteOption[];
 
-  private panelOpen = false;
   private panelConfig: OverlayConfig;
   private overlayRef: OverlayRef;
   private templatePortal: TemplatePortal;
