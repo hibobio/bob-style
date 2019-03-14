@@ -1,0 +1,10 @@
+
+@import "../../style/colors.scss";
+
+:host {
+  display: block;
+  margin: 0;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: $grey-300;
+}
