@@ -12,7 +12,7 @@ import { ListModelService } from '../list-service/list-model.service';
 import { SelectGroupOption } from '../list.interface';
 import { By } from '@angular/platform-browser';
 import { MultiListComponent } from './multi-list.component';
-import { FiltersModule } from '../../../filters/filters.module';
+import { FiltersModule } from '../../../services/filters/filters.module';
 import { ListOptionModule } from '../list-option/list-option.module';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 

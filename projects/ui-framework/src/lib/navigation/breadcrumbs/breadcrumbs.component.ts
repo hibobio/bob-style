@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 import { Subscription } from 'rxjs';
-import { UtilsService } from '../../utils/utils.service';
+import { UtilsService } from '../../services/utils/utils.service';
 import { ButtonSize, ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { has } from 'lodash';
 

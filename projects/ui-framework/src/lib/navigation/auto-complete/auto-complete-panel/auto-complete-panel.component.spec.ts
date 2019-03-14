@@ -7,7 +7,7 @@ import { AutoCompleteOption } from '../auto-complete.interface';
 import { By } from '@angular/platform-browser';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
-import { FiltersModule } from '../../../filters/filters.module';
+import { FiltersModule } from '../../../services/filters/filters.module';
 import { TypographyModule } from '../../../typography/typography.module';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;

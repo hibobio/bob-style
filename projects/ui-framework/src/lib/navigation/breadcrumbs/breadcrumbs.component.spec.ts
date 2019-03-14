@@ -4,7 +4,7 @@ import { BreadcrumbsComponent } from './breadcrumbs.component';
 import { Breadcrumb } from './breadcrumbs.interface';
 import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { UtilsService } from '../../utils/utils.service';
+import { UtilsService } from '../../services/utils/utils.service';
 import { cold } from 'jasmine-marbles';
 
 describe('BreadcrumbsComponent', () => {

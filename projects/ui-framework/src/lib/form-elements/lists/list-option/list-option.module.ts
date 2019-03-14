@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListOptionComponent } from './list-option.component';
-import { FiltersModule } from '../../../filters/filters.module';
+import { FiltersModule } from '../../../services/filters/filters.module';
 
 @NgModule({
   declarations: [

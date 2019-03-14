@@ -7,7 +7,7 @@ import { PanelPositionService } from '../../overlay/panel/panel-position.service
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { TypographyModule } from '../../typography/typography.module';
-import { FiltersModule } from '../../filters/filters.module';
+import { FiltersModule } from '../../services/filters/filters.module';
 import { ListKeyboardService } from '../../form-elements/lists/list-service/list-keyboard.service';
 
 @NgModule({

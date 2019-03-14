@@ -11,7 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { MenuItem } from './menu.interface';
 
-const menuStories = storiesOf(ComponentGroupType.Overlay, module).addDecorator(withKnobs);
+const menuStories = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
 
 const template = `
 <b-menu style="position: absolute; top: 20px; left: 20px;"

@@ -4,7 +4,7 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { getSideMenuOptionsMock } from './side-menu.mock';
 import { MockComponent } from 'ng-mocks';
-import { MenuModule } from '../../overlay/menu/menu.module';
+import { MenuModule } from '../menu/menu.module';
 import { IconsModule } from '../../icons/icons.module';
 import { SideMenuOptionComponent } from './side-menu-option/side-menu-option.component';
 

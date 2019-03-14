@@ -1,7 +1,8 @@
 import { storiesOf } from '@storybook/angular';
-import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { ComponentGroupType } from '../../consts';
 
-const utilsStories = storiesOf('Utils', module);
+const utilsStories = storiesOf(ComponentGroupType.Services, module);
 
 const storyTemplate = `
 <b-story-book-layout title="Utils">

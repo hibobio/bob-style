@@ -6,7 +6,8 @@ export enum ComponentGroupType {
   Overlay = 'Overlay',
   Navigation = 'Navigation',
   Misc = 'Misc',
-  DataTable = 'Data Table'
+  DataTable = 'Data Table',
+  Services = 'Services',
 }
 
 export const serverDateFormat = 'YYYY-MM-DDTHH:mm';
