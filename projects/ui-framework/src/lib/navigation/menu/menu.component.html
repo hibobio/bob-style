@@ -2,7 +2,9 @@
   <ng-content select="[menu-trigger]"></ng-content>
 </div>
 
-<mat-menu #childMenu="matMenu" (closed)="onCloseMenu()">
+<mat-menu #childMenu="matMenu"
+          (closed)="onCloseMenu()"
+          [xPosition]="menuDir">
   <span *ngFor="let child of menu">
     <!-- Handle branch node menu menu -->
     <span *ngIf="child.children && child.children.length > 0">
@@ -11,7 +13,9 @@
               [disableRipple]="true">
         <span>{{child.label}}</span>
       </button>
-      <b-menu #menu [menu]="child.children"></b-menu>
+      <b-menu #menu [menu]="child.children"
+              [openLeft]="openLeft">
+      </b-menu>
     </span>
     <!-- Handle leaf node menu menu -->
     <span *ngIf="!child.children || child.children.length === 0">
