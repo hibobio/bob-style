@@ -41,6 +41,10 @@ b-menu {
     padding: 0;
   }
 
+  [card-top], [card-bottom] {
+    font-weight: 300;
+  }
+
   [card-top], [card-content] {
     margin-bottom: 15px;
     color: $grey-700;
