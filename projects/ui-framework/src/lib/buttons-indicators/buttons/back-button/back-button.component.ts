@@ -7,7 +7,8 @@ import { Icons, IconSize } from '../../../icons/icons.enum';
   template: `
     <b-button (clicked)="onClick($event)"
               [type]="type"
-              [size]="size">
+              [size]="size"
+              [disabled]="disabled">
       <span class="back-button-content-wrapper">
         <b-icon icon="${Icons.back_arrow_link}"
                 size="${IconSize.small}">
@@ -23,8 +24,10 @@ import { Icons, IconSize } from '../../../icons/icons.enum';
 export class BackButtonComponent {
 
   constructor() { }
+
   size: ButtonSize = ButtonSize.small;
   @Input() type?: BackButtonType = BackButtonType.secondary;
+  @Input() disabled = false;
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
   onClick($event) {

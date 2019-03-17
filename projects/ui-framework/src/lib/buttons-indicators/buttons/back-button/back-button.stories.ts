@@ -16,7 +16,8 @@ const typeOptions = values(BackButtonType);
 const template = `
 <b-back-button
   (clicked)="onClick($event)"
-  [type]="type">
+  [type]="type"
+  [disabled]="disabled">
     {{label}}
 </b-back-button>
 `;
@@ -30,6 +31,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   type | BackButtonType | enum for setting the button type | secondary (optional)
+  disabled | boolean | disabled | false
   clicked | Function | callback for clicking on the back button |
 
   ~~~
@@ -50,7 +52,8 @@ backButtonStories.add(
     props: {
       onClick: action(),
       label: text('label', 'Back'),
-      type: select('type', typeOptions, BackButtonType.secondary)
+      type: select('type', typeOptions, BackButtonType.secondary),
+      disabled: boolean('disabled', false)
     },
     moduleMetadata: {
       imports: [ButtonsModule, StoryBookLayoutModule]

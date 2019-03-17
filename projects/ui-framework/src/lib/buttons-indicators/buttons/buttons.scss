@@ -59,5 +59,9 @@
     border: 1px solid $grey-300;
     background-color: $grey-200;
     color: $grey-500;
+
+    .mat-icon {
+      opacity: 0.2;
+    }
   }
 }

@@ -1,11 +1,11 @@
 $white: #FFF;
 
-$grey-100: #F8F7F7;
-$grey-200: #F3F2F2;
-$grey-300: #E9E9E9;
-$grey-500: #D2D2D2;
-$grey-600: #9D9D9D;
-$grey-700: #535353;
-$grey-800: #303030;
+$grey-100: #F8F7F7; // rgb(248,247,247)
+$grey-200: #F3F2F2; // rgb(243,242,242)
+$grey-300: #E9E9E9; // rgb(233,233,233)
+$grey-500: #D2D2D2; // rgb(210,210,210)
+$grey-600: #9D9D9D; // rgb(157,157,157)
+$grey-700: #535353; // rgb(83,83,83)
+$grey-800: #303030; // rgb(48,48,48)
 
-$boxShadowColor: rgba(83, 83, 83, 0.2);
+$boxShadowColor: rgba($grey-700, 0.2);
