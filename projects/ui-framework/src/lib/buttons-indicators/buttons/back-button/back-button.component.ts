@@ -6,17 +6,13 @@ import { Icons, IconSize } from '../../../icons/icons.enum';
   selector: 'b-back-button',
   template: `
     <b-button (clicked)="onClick($event)"
-              [type]="type"
-              [size]="size"
-              [disabled]="disabled">
-      <span class="back-button-content-wrapper">
-        <b-icon icon="${Icons.back_arrow_link}"
-                size="${IconSize.small}">
-        </b-icon>
-        <span class="back-button-content">
-          <ng-content></ng-content>
-        </span>
-      </span>
+            [type]="type"
+            [size]="size"
+            [disabled]="disabled">
+      <b-icon icon="${Icons.back_arrow_link}"
+            size="${IconSize.small}">
+      </b-icon>
+      <ng-content></ng-content>
     </b-button>
   `,
   styleUrls: ['./back-button.component.scss']

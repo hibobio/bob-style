@@ -1,16 +1,12 @@
-@import '../../../style/typography';
-@import '../buttons';
-
 :host ::ng-deep {
-  b-button {
-    .back-button-content-wrapper {
-      display: flex;
-      flex-direction: row;
-      align-content: center;
-      align-items: center;
-      .back-button-content {
-        margin-left: 6px;
-      }
-    }
+  .mat-button-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+
+  }
+  b-icon {
+    margin-right: 6px;
   }
 }
