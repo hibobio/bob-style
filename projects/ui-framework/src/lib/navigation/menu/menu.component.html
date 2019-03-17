@@ -1,4 +1,4 @@
-<div [matMenuTriggerFor]="childMenu">
+<div [matMenuTriggerFor]="childMenu" (menuOpened)="onOpenMenu()">
   <ng-content select="[menu-trigger]"></ng-content>
 </div>
 

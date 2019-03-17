@@ -1,0 +1,68 @@
+@import "../../style/colors.scss";
+@import "../../style/typography.scss";
+
+:host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  padding: 20px;
+  border: 1px solid $grey-500;
+  border-radius: 4px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  transition-delay: 0.1s;
+
+  text-align: left;
+
+  &:hover, &.focusInside {
+    box-shadow: 0 2px 15px 0 $grey-500;
+    transform: translateY(-10px);
+
+    b-menu {
+      opacity: 1;
+    }
+  }
+
+}
+
+b-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+  transition-delay: 0.1s;
+}
+
+:host ::ng-deep {
+
+  [card-top], [card-content], [card-bottom] {
+    margin: 0;
+    padding: 0;
+  }
+
+  [card-top], [card-content] {
+    margin-bottom: 15px;
+    color: $grey-700;
+  }
+
+  [card-top] {
+    max-width: calc(100% - 15px);
+  }
+
+  [card-content] {
+    @include line-clamp(4, 22px, 1.2);
+    text-transform: none;
+    flex-grow: 5;
+
+    &:last-child {
+      margin: 0;
+    }
+  }
+
+  [card-bottom] {
+    color: $grey-600;
+    margin-top: auto;
+  }
+
+}

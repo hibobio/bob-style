@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, HostListener } from '@angular/core';
 import { MenuItem } from './menu.interface';
 import { MenuPositionX } from '@angular/material';
 
@@ -12,6 +12,7 @@ export class MenuComponent implements OnInit {
   @Input() menu: MenuItem[];
   @Input() openLeft = false;
   @Output() actionClick: EventEmitter<void> = new EventEmitter<void>();
+  @Output() openMenu: EventEmitter<void> = new EventEmitter<void>();
   @Output() closeMenu: EventEmitter<void> = new EventEmitter<void>();
   @ViewChild('childMenu') public childMenu;
 
@@ -27,6 +28,10 @@ export class MenuComponent implements OnInit {
   onClick($event, child): void {
     child.action($event);
     this.actionClick.emit();
+  }
+
+  onOpenMenu(): void {
+    this.openMenu.emit();
   }
 
   onCloseMenu(): void {

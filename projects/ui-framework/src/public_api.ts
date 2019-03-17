@@ -70,7 +70,7 @@ export { SplitInputSingleSelectModule } from './lib/form-elements/split-input-si
 export { SplitInputSingleSelectComponent } from './lib/form-elements/split-input-single-select/split-input-single-select.component';
 // Lists Module
 export { SingleListModule } from './lib/form-elements/lists/single-list/single-list.module';
-export { SingleListComponent} from './lib/form-elements/lists/single-list/single-list.component';
+export { SingleListComponent } from './lib/form-elements/lists/single-list/single-list.component';
 export { SingleSelectModule } from './lib/form-elements/lists/single-select/single-select.module';
 export { SingleSelectComponent } from './lib/form-elements/lists/single-select/single-select.component';
 export { MultiListModule } from './lib/form-elements/lists/multi-list/multi-list.module';
@@ -159,3 +159,6 @@ export { UtilsService } from './lib/services/utils/utils.service';
 // Divider
 export { DividerModule } from './lib/misc/divider/divider.module';
 export { DividerComponent } from './lib/misc/divider/divider.component';
+// Card
+export { CardModule } from './lib/misc/card/card.module';
+export { CardComponent } from './lib/misc/card/card.component';

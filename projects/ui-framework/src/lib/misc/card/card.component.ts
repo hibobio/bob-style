@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+  HostBinding
+} from '@angular/core';
+
+import { MenuItem } from '../../navigation/menu/menu.interface';
 
 @Component({
   selector: 'b-card',
@@ -6,10 +14,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
+  @Input() text = '';
+  @Input() menu: MenuItem[];
+  @HostBinding('class.focusInside') menuIsOpened: boolean;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  onMenuOpen(): void {
+    this.menuIsOpened = true;
   }
 
+  onMenuClose(): void {
+    this.menuIsOpened = false;
+  }
 }

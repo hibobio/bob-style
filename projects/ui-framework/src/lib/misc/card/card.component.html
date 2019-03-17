@@ -1,1 +1,12 @@
-<div class=>
+<b-menu [menu]="menu" (openMenu)="onMenuOpen()" (closeMenu)="onMenuClose()">
+  <b-square-button menu-trigger type="tertiary" icon="three_dots" rotate="90" border="0">
+  </b-square-button>
+</b-menu>
+
+<ng-content select="[card-top]"></ng-content>
+
+<b-display-3 card-content>
+  {{ text }}
+</b-display-3>
+
+<ng-content select="[card-bottom]"></ng-content>

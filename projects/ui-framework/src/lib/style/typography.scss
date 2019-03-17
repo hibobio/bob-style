@@ -7,11 +7,11 @@
   line-height: $lineHeight;
 }
 
-@mixin DisplayFont($style, $weight, $size, $lineHeight: 1.3) {
+@mixin DisplayFont($style, $weight, $size, $lineHeight: 1.3, $transform: capitalize) {
   @include FontDefault($style, $weight, $size, $lineHeight);
   font-family: var(--display-font-family);
   display: block;
-  text-transform: capitalize;
+  text-transform: $transform;
 }
 
 @mixin HeadingFont($style, $weight, $size, $lineHeight: 1.3) {
@@ -24,4 +24,15 @@
 @mixin BodyFont($style, $weight, $size, $lineHeight: 1.5) {
   @include FontDefault($style, $weight, $size, $lineHeight);
   font-family: var(--body-font-family);
+}
+
+@mixin line-clamp($lines, $font-size, $line-height) {
+  line-height: $line-height;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  max-height: $font-size * $line-height * $lines;
+  line-clamp: $lines;
+  -webkit-line-clamp: $lines;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
