@@ -13,6 +13,13 @@ export enum IconColor {
 }
 
 export enum Icons {
+  home = 'sidebar_menu_home',
+  people = 'sidebar_menu_people_',
+  surveys = 'sidebar_menu_surveys',
+  reports = 'sidebar_menu_reports',
+  analytics = 'sidebar_menu_analytics',
+  harmonise = 'sidebar_menu_harmonise',
+  sidebar_settings = 'sidebar_menu_settings',
   calendar = 'calendar',
   toDos_link = 'todos_link',
   docs_link = 'docs_link',

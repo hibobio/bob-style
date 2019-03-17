@@ -52,7 +52,7 @@ describe('DialogService', () => {
         width: 700,
         closeOnNavigation: true,
         backdropClass: 'b-dialog-backdrop',
-        panelClass: ['b-dialog-panel', 'test-class'],
+        panelClass: ['b-dialog-panel', 'size-medium', 'test-class'],
         hasBackdrop: true,
         disableClose: true,
       };

@@ -15,7 +15,8 @@ import { DialogButtons } from './dialog.interface';
 @Component({
   selector: 'b-dialog-example',
   template: `
-    <b-button (click)="openDialog()">Time Off Policies info</b-button>
+    <b-button (click)="openDialog1()" style="margin-right: 10px;">Time Off Policies info</b-button>
+    <b-button (click)="openDialog2()">Success</b-button>
   `
 })
 export class DialogExampleComponent {
@@ -33,13 +34,13 @@ a note on what types are.`
   ) {
   }
 
-  openDialog(): void {
-    const dialogRef: MatDialogRef<DialogExampleDialogComponent> = this.dialogService
+  openDialog1(): void {
+    const dialogRef: MatDialogRef<ExampleDialog1Component> = this.dialogService
       .openDialog(
-        DialogExampleDialogComponent,
+        ExampleDialog1Component,
         {
-          size: DialogSize.medium,
-          panelClass: 'dialog-example',
+          size: DialogSize.large,
+          panelClass: 'dialog-example-1',
           data: this.dataMock,
         }
       );
@@ -49,10 +50,22 @@ a note on what types are.`
         console.log('res', res);
       });
   }
+
+  openDialog2(): void {
+    const dialogRef: MatDialogRef<ExampleDialog2Component> = this.dialogService
+      .openDialog(
+        ExampleDialog2Component,
+        {
+          size: DialogSize.small,
+          panelClass: 'dialog-example-2',
+          data: {},
+        }
+      );
+  }
 }
 
 @Component({
-  selector: 'b-dialog-example-dialog',
+  selector: 'b-example-dialog-1',
   template: `
     <b-dialog dialogTitle="{{ data.title }}" [dialogButtons]="dialogButtonConfig">
       <div b-dialog-sub-title>
@@ -68,7 +81,7 @@ a note on what types are.`
                     (inputEvents)="onTextEdit($event)">
         </b-textarea>
         <article style="padding:20px; background-color:#f8f7f7; margin: 20px auto;">
-          <b-display-4>"{{ editedText }}"</b-display-4>
+          <b-big-body>"{{ editedText }}"</b-big-body>
         </article>
         <b-single-select [options]="selectOptions"
                          style="width: 100%;"
@@ -79,7 +92,7 @@ a note on what types are.`
     </b-dialog>
   `
 })
-export class DialogExampleDialogComponent implements OnInit {
+export class ExampleDialog1Component implements OnInit {
 
   dialogButtonConfig: DialogButtons;
   selectOptions: SelectGroupOption[];
@@ -131,10 +144,48 @@ export class DialogExampleDialogComponent implements OnInit {
   }
 }
 
+@Component({
+  selector: 'b-example-dialog-2',
+  template: `
+    <b-dialog dialogTitle="congratulations" [dialogButtons]="dialogButtonConfig">
+      <div b-dialog-above-header>
+        <div class="success-icon"></div>
+      </div>
+      <div b-dialog-content>
+        Alan Tulin has been successfully added to your company, check out his profile
+      </div>
+    </b-dialog>
+  `,
+  styleUrls: ['./dialog-example.scss'],
+})
+export class ExampleDialog2Component implements OnInit {
+
+  dialogButtonConfig: DialogButtons;
+  selectOptions: SelectGroupOption[];
+  editedText: string;
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.editedText = this.data.textContent;
+
+    this.dialogButtonConfig = {
+      ok: {
+        label: 'Cool!',
+        action: () => {},
+      },
+    };
+  }
+}
+
 @NgModule({
   declarations: [
     DialogExampleComponent,
-    DialogExampleDialogComponent,
+    ExampleDialog1Component,
+    ExampleDialog2Component,
   ],
   imports: [
     CommonModule,
@@ -147,7 +198,8 @@ export class DialogExampleDialogComponent implements OnInit {
     DialogExampleComponent,
   ],
   entryComponents: [
-    DialogExampleDialogComponent,
+    ExampleDialog1Component,
+    ExampleDialog2Component,
   ],
   providers: [
     DialogService,

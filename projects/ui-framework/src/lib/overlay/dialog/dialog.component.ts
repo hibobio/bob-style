@@ -2,12 +2,13 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { Icons } from '../../icons/icons.enum';
 import { DialogButton, DialogButtons } from './dialog.interface';
-import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { ButtonSize, ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { slideUpDown } from '../../style/animations';
 import get from 'lodash/get';
 import has from 'lodash/has';
 import isFunction from 'lodash/isFunction';
+import { DialogScrollDir } from './dialog.enum';
 
 @Component({
   selector: 'b-dialog',
@@ -16,10 +17,10 @@ import isFunction from 'lodash/isFunction';
   animations: [
     trigger('confirmMessage', [
       transition(':enter', useAnimation(slideUpDown, {
-        params: { timings: '200ms ease-out', from: '100%', to: '0' }
+        params: { timings: '200ms ease-out', from: '20px', to: '-100%' }
       })),
       transition(':leave', useAnimation(slideUpDown, {
-        params: { timings: '200ms ease-out', from: '0', to: '100%' }
+        params: { timings: '200ms ease-out', from: '-100%', to: '20px' }
       })),
     ])
   ],
@@ -31,9 +32,14 @@ export class DialogComponent implements OnDestroy {
 
   icons = Icons;
   buttonType = ButtonType;
+  buttonSize = ButtonSize;
 
   showProgress = false;
   showConfirmation = false;
+
+  readonly dialogScrollDir = DialogScrollDir;
+  showScrolling: DialogScrollDir = null;
+  private oldScrollPos = 0;
 
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
@@ -61,6 +67,12 @@ export class DialogComponent implements OnDestroy {
     this.dialogRef.close();
   }
 
+  onScroll($event: Event): void {
+    const scrollTop = ($event.target as HTMLElement).scrollTop;
+    this.showScrolling = scrollTop > this.oldScrollPos ? DialogScrollDir.top : DialogScrollDir.bottom;
+    this.oldScrollPos = scrollTop;
+  }
+
   private invokeDialogActionAsPromise(dialogButton: DialogButton): void {
     if (this.hasAction(dialogButton)) {
       this.showProgress = true;
@@ -80,8 +92,7 @@ export class DialogComponent implements OnDestroy {
   }
 
   private shouldShowConfirmationMessage(): boolean {
-    return has(this.dialogButtons, 'confirmation') &&
-      !this.showConfirmation;
+    return has(this.dialogButtons, 'confirmation') && !this.showConfirmation;
   }
 
   ngOnDestroy(): void {
