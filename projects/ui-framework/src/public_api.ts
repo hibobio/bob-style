@@ -86,7 +86,7 @@ export {
   BreadcrumbNavButtons,
   BreadcrumbNavButton
 } from './lib/navigation/breadcrumbs/breadcrumbs.interface';
-
+export { BaseFormElement } from './lib/form-elements/base-form-element';
 
 /*
  * Navigation
