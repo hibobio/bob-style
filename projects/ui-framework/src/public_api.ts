@@ -150,6 +150,9 @@ export * from './lib/table/table/table.interface';
 // Single card
 export { CardModule } from './lib/cards/card/card.module';
 export { CardComponent } from './lib/cards/card/card.component';
+// Add new Card
+export { CardAddModule } from './lib/cards/card-add/card-add.module';
+export { CardAddComponent } from './lib/cards/card-add/card-add.component';
 
 /*
  * Misc

@@ -63,3 +63,10 @@ $chevronWidth: 2px;
   justify-content: center;
   align-items: center;
 }
+
+@mixin cross($color, $size, $gauge) {
+  background-image: linear-gradient($color,$color),linear-gradient($color,$color);
+  background-size: $size $gauge, $gauge $size;
+  background-position: center;
+  background-repeat: no-repeat;
+}

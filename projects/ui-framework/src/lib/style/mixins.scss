@@ -1,0 +1,18 @@
+@mixin pseudo {
+  content: "";
+  display: block;
+  pointer-events: none;
+}
+
+@mixin size($w, $h: $w) {
+  width: $w;
+  height: $h;
+}
+
+@mixin position($pos: 0 null null 0, $p: absolute) {
+  position: $p;
+  top: nth($pos,1);
+  right: nth($pos,2);
+  bottom: nth($pos,3);
+  left: nth($pos,4);
+}

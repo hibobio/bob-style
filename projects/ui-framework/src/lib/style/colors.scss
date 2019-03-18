@@ -9,3 +9,7 @@ $grey-700: #535353; // rgb(83,83,83)
 $grey-800: #303030; // rgb(48,48,48)
 
 $boxShadowColor: rgba($grey-700, 0.2);
+
+@function black($opacity){
+  @return rgba(0,0,0,$opacity);
+}

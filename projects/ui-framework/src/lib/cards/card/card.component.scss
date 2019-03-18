@@ -36,12 +36,12 @@ b-menu {
 
 :host ::ng-deep {
 
-  [card-top], [card-content], [card-bottom] {
+  [card-top], [card-content], [card-bottom], p {
     margin: 0;
     padding: 0;
   }
 
-  [card-top], [card-bottom] {
+  [card-top], [card-bottom], [card-content] p {
     font-weight: 300;
   }
 
@@ -55,12 +55,16 @@ b-menu {
   }
 
   [card-content] {
-    @include line-clamp(4, 22px, 1.2);
+    @include line-clamp(4, 22px, 1.2, true);
     text-transform: none;
     flex-grow: 5;
 
     &:last-child {
       margin: 0;
+    }
+
+    p {
+      color: inherit;
     }
   }
 
