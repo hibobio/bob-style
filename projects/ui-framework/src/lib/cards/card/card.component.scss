@@ -1,5 +1,5 @@
 @import "../../style/colors.scss";
-@import "../../style/typography.scss";
+@import "../../style/mixins.scss";
 
 :host {
   position: relative;
@@ -36,6 +36,10 @@ b-menu {
 
 :host ::ng-deep {
 
+  b-display-3, [card-content] {
+    text-transform: none;
+  }
+
   [card-top], [card-content], [card-bottom], p {
     margin: 0;
     padding: 0;
@@ -56,7 +60,6 @@ b-menu {
 
   [card-content] {
     @include line-clamp(4, 22px, 1.2, true);
-    text-transform: none;
     flex-grow: 5;
 
     &:last-child {

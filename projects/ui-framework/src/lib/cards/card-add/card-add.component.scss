@@ -10,6 +10,8 @@
   user-select: none;
   cursor: pointer;
 
+  min-height: height-from-text(3, 22px, 1.2, 60px);
+
   &, &:hover {
     box-shadow: 0 10px 20px 0 black(0.06);
   }
@@ -24,17 +26,24 @@
 
   [card-content] {
     color: $grey-600;
+    margin: 0;
+    flex-grow: 0;
 
-    p {
-      margin-top: 4px;
+    &:last-child {
+      margin-bottom: 10px;
     }
+
+    @include line-clamp(3, 22px, 1.2, 0, true);
+  }
+
+  [card-bottom] {
+    margin: 4px 0 10px 0;
   }
 
   &:after {
     @include pseudo;
     @include size(20px);
     @include cross($grey-600, 20px, 2px);
-    @include position(null null 20px 20px);
     margin-top: auto;
   }
 
