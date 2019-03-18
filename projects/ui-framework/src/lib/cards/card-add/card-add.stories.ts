@@ -10,7 +10,7 @@ import {
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
-import { CardAddModule } from './card-add.module';
+import { CardsModule } from '../cards.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
@@ -39,7 +39,7 @@ const note = `
   ## Add new Card
 
   #### Module
-  *CardAddModule*
+  *CardsModule*
 
   #### Properties
   Name | Type | Description | Default value
@@ -65,7 +65,7 @@ menuStories.add(
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
-          CardAddModule,
+          CardsModule,
         ]
       }
     };

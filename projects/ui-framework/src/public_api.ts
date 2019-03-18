@@ -147,11 +147,10 @@ export * from './lib/table/table/table.interface';
  * Cards
  */
 
+export { CardsModule } from './lib/cards/cards.module';
 // Single card
-export { CardModule } from './lib/cards/card/card.module';
 export { CardComponent } from './lib/cards/card/card.component';
 // Add new Card
-export { CardAddModule } from './lib/cards/card-add/card-add.module';
 export { CardAddComponent } from './lib/cards/card-add/card-add.component';
 
 /*
