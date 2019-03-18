@@ -16,7 +16,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 
 
 
-const menuStories = storiesOf(ComponentGroupType.Cards, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs
 );
 
@@ -53,7 +53,7 @@ const note = `
   ~~~
 `;
 
-menuStories.add(
+story.add(
   'Add Card',
   () => {
     return {
