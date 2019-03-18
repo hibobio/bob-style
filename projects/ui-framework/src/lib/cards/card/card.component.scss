@@ -2,10 +2,10 @@
 @import "../../style/mixins.scss";
 
 :host {
+  box-sizing: border-box;
   position: relative;
   display: flex;
   flex-direction: column;
-
   padding: 20px;
   border: 1px solid $grey-500;
   border-radius: 4px;
@@ -41,6 +41,7 @@ b-menu {
   }
 
   [card-top], [card-content], [card-bottom], p {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
