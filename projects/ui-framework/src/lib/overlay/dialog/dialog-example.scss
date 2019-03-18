@@ -8,7 +8,9 @@
     border-radius: 100%;
     margin-bottom: 5px;
     position: relative;
+
     &:before {
+      box-sizing: content-box;
       content: '';
       display: block;
       position: absolute;

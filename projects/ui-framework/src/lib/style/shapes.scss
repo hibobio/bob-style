@@ -25,7 +25,8 @@ $chevronWidth: 2px;
   height: $size;
   vertical-align: middle;
   width: $size;
-  transform: rotate(45deg)
+  transform: rotate(45deg);
+  box-sizing: content-box;
 }
 
 @mixin chevron-up($color, $size:5px) {
