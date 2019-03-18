@@ -10,7 +10,8 @@ import { Icons, IconSize } from '../../../icons/icons.enum';
             [size]="size"
             [disabled]="disabled">
       <b-icon icon="${Icons.back_arrow_link}"
-            size="${IconSize.small}">
+            size="${IconSize.small}"
+            [color]="disabled ? 'light' : 'dark'">
       </b-icon>
       <ng-content></ng-content>
     </b-button>
