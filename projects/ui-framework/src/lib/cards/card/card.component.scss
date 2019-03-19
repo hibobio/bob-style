@@ -10,7 +10,6 @@
   border: 1px solid $grey-500;
   border-radius: 4px;
   transition: transform 0.2s, box-shadow 0.2s;
-  transition-delay: 0.1s;
 
   text-align: left;
 
@@ -31,7 +30,6 @@ b-menu {
   right: 0;
   opacity: 0;
   transition: opacity 0.2s;
-  transition-delay: 0.1s;
 }
 
 :host ::ng-deep {
