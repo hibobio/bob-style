@@ -1,8 +1,4 @@
-import {
-  Component,
-  Input,
-  HostBinding
-} from '@angular/core';
+import { Component, Input, HostBinding } from '@angular/core';
 
 import { MenuItem } from '../../navigation/menu/menu.interface';
 
@@ -25,6 +21,6 @@ export class CardComponent {
   onMenuClose(): void {
     setTimeout(() => {
       this.menuIsOpened = false;
-    }, 300);
+    }, 150);
   }
 }
