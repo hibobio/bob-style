@@ -2,7 +2,7 @@
 @import '../buttons';
 
 :host {
-  display: block;
+  display: inline-flex;
 }
 
 :host ::ng-deep .mat-button {

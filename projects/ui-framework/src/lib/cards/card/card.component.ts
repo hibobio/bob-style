@@ -12,7 +12,8 @@ import { MenuItem } from '../../navigation/menu/menu.interface';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent {
-  constructor() {}
+  constructor() {
+  }
 
   @Input() text = '';
   @Input() menu: MenuItem[];
@@ -23,6 +24,8 @@ export class CardComponent {
   }
 
   onMenuClose(): void {
-    this.menuIsOpened = false;
+    setTimeout(() => {
+      this.menuIsOpened = false;
+    }, 300);
   }
 }
