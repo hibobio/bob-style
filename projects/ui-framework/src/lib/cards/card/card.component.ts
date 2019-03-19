@@ -15,7 +15,7 @@ export class CardComponent {
   constructor() {}
 
   @Input() text = '';
-  @Input() menu: MenuItem[];
+  @Input() menu?: MenuItem[];
   @HostBinding('class.focusInside') menuIsOpened: boolean;
 
   onMenuOpen(): void {

@@ -1,4 +1,4 @@
-<b-menu [menu]="menu" (openMenu)="onMenuOpen()" (closeMenu)="onMenuClose()">
+<b-menu *ngIf="menu && menu.length > 0" [menu]="menu" (openMenu)="onMenuOpen()" (closeMenu)="onMenuClose()">
   <b-square-button menu-trigger type="tertiary" icon="three_dots" rotate="90" border="0">
   </b-square-button>
 </b-menu>

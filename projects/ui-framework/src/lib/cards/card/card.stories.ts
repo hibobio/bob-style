@@ -46,7 +46,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  menu | MenuItem[] | array of menu items | none
+  menu | MenuItem[] | array of menu items | none (optional)
   text | string | main text | ''
 
   ~~~
@@ -87,7 +87,7 @@ story.add(
           BrowserAnimationsModule,
           CardsModule,
           ButtonsModule,
-          IconsModule
+          IconsModule,
         ]
       }
     };

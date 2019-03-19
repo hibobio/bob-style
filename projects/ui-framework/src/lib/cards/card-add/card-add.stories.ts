@@ -45,7 +45,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   title | string | main text | ''
-  subtitle | string | sub title | none
+  subtitle | string | sub title | none (optional)
   clicked | Function | callback for clicking on the  card |
 
   ~~~
