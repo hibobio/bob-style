@@ -7,13 +7,12 @@ import {
   tick
 } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MenuModule } from '../../navigation/menu/menu.module';
 import { By } from '@angular/platform-browser';
 import { TypographyModule } from '../../typography/typography.module';
 import { MockComponent } from 'ng-mocks';
 import { MenuComponent } from '../../navigation/menu/menu.component';
 
-fdescribe('CardComponent', () => {
+describe('CardComponent', () => {
   let fixture: ComponentFixture<CardComponent>;
   let component: CardComponent;
 
@@ -31,24 +30,24 @@ fdescribe('CardComponent', () => {
   }));
 
   describe('component', () => {
-    it('should set input text inside b-display-3 element', () => {
+    it('should set input text inside <b-display-3> element', () => {
       component.text = 'hello';
       fixture.detectChanges();
-      const bDisplay3Component = fixture.debugElement.query(
+      const bDisplay3Element = fixture.debugElement.query(
         By.css('b-display-3')
       );
-      expect(bDisplay3Component.nativeElement.innerText).toEqual('hello');
+      expect(bDisplay3Element.nativeElement.innerText).toEqual('hello');
     });
-    it('should set input text inside b-display-3 element and truncate text', () => {
+    it('should set input text inside <b-display-3> element and truncate text', () => {
       fixture.nativeElement.style.width = '200px';
       component.text =
         'Compensation update with a very long text that cuts off after 4 lines of text. And here is another very long text that should not be displayed at all.';
       fixture.detectChanges();
-      const bDisplay3Component = fixture.debugElement.query(
+      const bDisplay3Element = fixture.debugElement.query(
         By.css('b-display-3')
       );
-      expect(bDisplay3Component.nativeElement.scrollHeight).toBeGreaterThan(
-        bDisplay3Component.nativeElement.clientHeight
+      expect(bDisplay3Element.nativeElement.scrollHeight).toBeGreaterThan(
+        bDisplay3Element.nativeElement.clientHeight
       );
     });
     it('should create menu element when menu configuration is passed', () => {
