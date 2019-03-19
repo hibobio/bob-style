@@ -33,6 +33,8 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
+const rowSelection = values(RowSelection);
+
 const note = `
   ## Auto complete Element
   #### Module
@@ -43,7 +45,6 @@ const note = `
   --- | --- | ---
   rowData | json | Table data
   columnDefs | json | Columns definition
-  rowSelection | boolean | Make headers sticky
   rowHeight | number | The height of the row
   sizeColumnsToFit | boolean | Auto column size
   rowSelection | RowSelection | Single or multiple
@@ -61,11 +62,11 @@ tableStories.add(
     return {
       template: storyTemplate,
       props: {
-        rowData: object('rowData', mockRowData),
-        columnDefs: object('columnDefs', mockColumnsDefs),
-        rowSelection: object('rowSelection', RowSelection.Multiple),
+        rowSelection: select('rowSelection', rowSelection, RowSelection.Multiple),
         rowHeight: number('rowHeight', 50),
         sizeColumnsToFit: boolean('sizeColumnsToFit', true),
+        rowData: object('rowData', mockRowData),
+        columnDefs: object('columnDefs', mockColumnsDefs),
         rowClicked: action(),
         rowSelected: action(),
         sortChanged: action()
