@@ -1,0 +1,18 @@
+{
+  "indent_with_tabs": false,
+  "indent_size": 2,
+  "max_preserve_newlines": 2,
+  "preserve_newlines": true,
+  "keep_array_indentation": true,
+  "break_chained_methods": true,
+  "wrap_line_length": 100,
+  "end_with_newline": true,
+  "brace_style": "collapse,preserve-inline",
+  "wrap_attributes": "force-aligned",
+
+  "beautify.language": {
+    "css": [],
+    "js": [],
+    "html": ["html"]
+  }
+}

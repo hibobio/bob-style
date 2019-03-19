@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UtilsService } from '../../services/utils/utils.service';
 import { cold } from 'jasmine-marbles';
+import { MatTooltipModule } from '@angular/material';
 
 describe('BreadcrumbsComponent', () => {
   let utilsServiceMock: jasmine.SpyObj<UtilsService>;
@@ -27,7 +28,7 @@ describe('BreadcrumbsComponent', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [BreadcrumbsComponent],
-      imports: [NoopAnimationsModule],
+      imports: [NoopAnimationsModule, MatTooltipModule],
       providers: [{ provide: UtilsService, useValue: utilsServiceMock }]
     })
       .compileComponents()

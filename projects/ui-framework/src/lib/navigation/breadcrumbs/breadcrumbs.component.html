@@ -6,7 +6,7 @@
       [ngClass]="{ disabled: step.disabled, active: i == activeIndex }"
       class="step"
     >
-      <div class="step-index">
+      <div class="step-index" [matTooltip]="i !== activeIndex && isSmallMode ? step.title : null">
         <b-caption>{{ i + 1 }}</b-caption>
       </div>
       <b-caption class="step-title" *ngIf="i == activeIndex || !isSmallMode">{{
