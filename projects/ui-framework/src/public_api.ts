@@ -169,13 +169,3 @@ export { UtilsService } from './lib/services/utils/utils.service';
 export { DividerModule } from './lib/misc/divider/divider.module';
 export { DividerComponent } from './lib/misc/divider/divider.component';
 
-/*
- * Badges
- */
-
-// Buttons Module
-export { BadgesModule } from './lib/badges/badges.module';
-export { BadgeComponent } from './lib/badges/badge/badge.component';
-export {
-  BadgeType,
-} from './lib/badges/badges.enum';
