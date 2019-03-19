@@ -49,8 +49,6 @@
         z-index: 1;
       }
       .chevron {
-        width: 10px;
-        height: 10px;
         @include chevron-down($grey-600);
       }
       &.collapsed .chevron {

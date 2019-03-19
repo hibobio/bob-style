@@ -1,4 +1,5 @@
 @import '../../style/colors';
+@import '../../style/mixins';
 
 :host ::ng-deep {
   .success-icon {
@@ -10,12 +11,9 @@
     position: relative;
 
     &:before {
-      box-sizing: content-box;
-      content: '';
-      display: block;
+      @include pseudo;
+      @include size(14px, 7px);
       position: absolute;
-      width: 12px;
-      height: 5px;
       border-left: 2px solid #FFF;
       border-bottom: 2px solid #FFF;
       transform: rotate(-45deg);

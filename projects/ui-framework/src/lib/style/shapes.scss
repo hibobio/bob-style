@@ -26,27 +26,26 @@ $chevronWidth: 2px;
   vertical-align: middle;
   width: $size;
   transform: rotate(45deg);
-  box-sizing: content-box;
 }
 
-@mixin chevron-up($color, $size:5px) {
+@mixin chevron-up($color, $size: (5px + $chevronWidth)) {
   @include chevron($color, $size);
   border-width: $chevronWidth 0 0 $chevronWidth;
   top: 2px;
 }
 
-@mixin chevron-down($color, $size:5px) {
+@mixin chevron-down($color, $size: (5px + $chevronWidth)) {
   @include chevron($color, $size);
   border-width: 0 $chevronWidth $chevronWidth 0;
   top: -2px;
 }
 
-@mixin chevron-right($color, $size:5px) {
+@mixin chevron-right($color, $size: (5px + $chevronWidth)) {
   @include chevron($color, $size);
   border-width: $chevronWidth $chevronWidth 0 0;
 }
 
-@mixin chevron-left($color, $size:5px) {
+@mixin chevron-left($color, $size: (5px + $chevronWidth)) {
   @include chevron($color, $size);
   border-width: 0 0 $chevronWidth $chevronWidth;
 }
