@@ -39,7 +39,7 @@ fdescribe('CardComponent', () => {
       );
       expect(bDisplay3Component.nativeElement.innerText).toEqual('hello');
     });
-    fit('should set input text inside b-display-3 element and truncate text', () => {
+    it('should set input text inside b-display-3 element and truncate text', () => {
       fixture.nativeElement.style.width = '200px';
       component.text =
         'Compensation update with a very long text that cuts off after 4 lines of text. And here is another very long text that should not be displayed at all.';
@@ -47,28 +47,21 @@ fdescribe('CardComponent', () => {
       const bDisplay3Component = fixture.debugElement.query(
         By.css('b-display-3')
       );
-      // console.log(bDisplay3Component);
       expect(bDisplay3Component.nativeElement.scrollHeight).toBeGreaterThan(
         bDisplay3Component.nativeElement.clientHeight
       );
     });
     it('should create menu element when menu configuration is passed', () => {
-      component.menu = [];
+      component.menu = [{ label: '' }];
       fixture.detectChanges();
       const menuElement = fixture.debugElement.query(By.css('b-menu'));
       expect(menuElement).toBeTruthy();
-    });
-    it('should create menu element when menu configuration is passed', () => {
-      component.menu = undefined;
-      fixture.detectChanges();
-      const menuElement = fixture.debugElement.query(By.css('b-menu'));
-      expect(menuElement).toBeFalsy();
     });
   });
 
   describe('onMenuOpen', () => {
     it('should add focusInside class on the host element', () => {
-      component.menu = [];
+      component.menu = [{ label: '' }];
       fixture.detectChanges();
       const menuElement = fixture.debugElement.query(By.css('b-menu'));
       menuElement.componentInstance.openMenu.emit();
@@ -79,7 +72,7 @@ fdescribe('CardComponent', () => {
 
   describe('onMenuClose', () => {
     it('should remove focusInside class from host element after timeout', fakeAsync(() => {
-      component.menu = [];
+      component.menu = [{ label: '' }];
       fixture.detectChanges();
       const menuElement = fixture.debugElement.query(By.css('b-menu'));
       menuElement.componentInstance.openMenu.emit();

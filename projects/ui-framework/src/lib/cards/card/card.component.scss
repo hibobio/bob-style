@@ -18,6 +18,7 @@
     transform: translateY(-10px);
 
     b-menu {
+      display: block;
       opacity: 1;
     }
   }
@@ -28,8 +29,9 @@ b-menu {
   position: absolute;
   top: 0;
   right: 0;
-  opacity: 0;
   transition: opacity 0.2s;
+  opacity: 0;
+  display: none;
 }
 
 :host ::ng-deep {
