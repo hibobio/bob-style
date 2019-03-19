@@ -1,0 +1,42 @@
+@mixin pseudo {
+  content: "";
+  display: block;
+  pointer-events: none;
+}
+
+@mixin size($w, $h: $w) {
+  width: $w;
+  height: $h;
+}
+
+@mixin position($pos: 0 null null 0, $p: absolute) {
+  position: $p;
+  top: nth($pos,1);
+  right: nth($pos,2);
+  bottom: nth($pos,3);
+  left: nth($pos,4);
+}
+
+@function height-from-text($lines, $font-size, $line-height, $add: 0) {
+  @return $font-size * $line-height * $lines + $add;
+}
+
+@mixin line-clamp($lines, $font-size, $line-height, $minHeight: false, $mod: false) {
+  @if not $mod {
+    line-height: $line-height;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  max-height: height-from-text($lines, $font-size, $line-height);
+  @if $minHeight {
+    @if $minHeight != 0 {
+      min-height: height-from-text($lines, $font-size, $line-height);
+    } @else {
+      min-height: 0;
+    }
+  }
+  line-clamp: $lines;
+  -webkit-line-clamp: $lines;
+}

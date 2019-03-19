@@ -23,6 +23,8 @@ export class CardComponent {
   }
 
   onMenuClose(): void {
-    this.menuIsOpened = false;
+    setTimeout(() => {
+      this.menuIsOpened = false;
+    }, 300);
   }
 }
