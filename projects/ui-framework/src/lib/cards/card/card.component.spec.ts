@@ -56,6 +56,10 @@ describe('CardComponent', () => {
       const menuElement = fixture.debugElement.query(By.css('b-menu'));
       expect(menuElement).toBeTruthy();
     });
+    it('should NOT create menu element when no menu configuration is passed', () => {
+      const menuElement = fixture.debugElement.query(By.css('b-menu'));
+      expect(menuElement).toBeFalsy();
+    });
     it('should NOT create menu element when invalid menu configuration is passed', () => {
       component.menu = [];
       fixture.detectChanges();

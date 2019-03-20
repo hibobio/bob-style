@@ -12,18 +12,6 @@
 
   min-height: height-from-text(3, 22px, 1.2, 70px);
 
-  &, &:hover {
-    box-shadow: 0 10px 20px 0 black(0.06);
-  }
-
-  &:hover {
-    transform: none;
-  }
-
-  &:focus {
-    outline: 0;
-  }
-
   [card-content] {
     color: $grey-600;
     margin: 0;
@@ -47,5 +35,21 @@
     margin-top: auto;
   }
 
+  &, &:hover {
+    box-shadow: 0 10px 20px 0 black(0.06);
+  }
+
+  &:hover {
+    transform: none;
+    background-color: $grey-300;
+
+    [card-content], [card-bottom] {
+      color: $grey-700;
+    }
+  }
+
+  &:focus {
+    outline: 0;
+  }
 }
 
