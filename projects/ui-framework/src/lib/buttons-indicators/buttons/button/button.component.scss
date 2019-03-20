@@ -16,13 +16,16 @@
       @include Button(disabled);
     }
     &.small {
-      padding: 8px 16px;
+      padding: 0 16px;
+      height: 30px;
     }
     &.medium {
-      padding: 12px 22px;
+      padding: 0 22px;
+      height: 36px;
     }
     &.large {
-      padding: 16px 32px;
+      padding: 0 32px;
+      height: 46px;
       text-transform: uppercase;
       font-weight: 500;
     }
