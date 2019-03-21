@@ -69,13 +69,13 @@ describe('CardComponent', () => {
   });
 
   describe('onMenuOpen', () => {
-    it('should add focusInside class on the host element', () => {
+    it('should add focus-inside class on the host element', () => {
       component.menu = [{ label: '' }];
       fixture.detectChanges();
       const menuElement = fixture.debugElement.query(By.css('b-menu'));
       menuElement.componentInstance.openMenu.emit();
       fixture.detectChanges();
-      expect(fixture.nativeElement.classList).toContain('focusInside');
+      expect(fixture.nativeElement.classList).toContain('focus-inside');
     });
   });
 
