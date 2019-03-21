@@ -25,27 +25,27 @@ $chevronWidth: 2px;
   height: $size;
   vertical-align: middle;
   width: $size;
-  transform: rotate(45deg)
+  transform: rotate(45deg);
 }
 
-@mixin chevron-up($color, $size:5px) {
+@mixin chevron-up($color, $size: (5px + $chevronWidth)) {
   @include chevron($color, $size);
   border-width: $chevronWidth 0 0 $chevronWidth;
   top: 2px;
 }
 
-@mixin chevron-down($color, $size:5px) {
+@mixin chevron-down($color, $size: (5px + $chevronWidth)) {
   @include chevron($color, $size);
   border-width: 0 $chevronWidth $chevronWidth 0;
   top: -2px;
 }
 
-@mixin chevron-right($color, $size:5px) {
+@mixin chevron-right($color, $size: (5px + $chevronWidth)) {
   @include chevron($color, $size);
   border-width: $chevronWidth $chevronWidth 0 0;
 }
 
-@mixin chevron-left($color, $size:5px) {
+@mixin chevron-left($color, $size: (5px + $chevronWidth)) {
   @include chevron($color, $size);
   border-width: 0 0 $chevronWidth $chevronWidth;
 }
@@ -62,4 +62,11 @@ $chevronWidth: 2px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@mixin cross($color, $size, $gauge) {
+  background-image: linear-gradient($color,$color),linear-gradient($color,$color);
+  background-size: $size $gauge, $gauge $size;
+  background-position: center;
+  background-repeat: no-repeat;
 }

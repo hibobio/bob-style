@@ -1,94 +1,5 @@
-@import '../../style/animation-properties.scss';
 
 @keyframes bounce_fountainG {
-  0% {
-    transform: scale(.5);
-    background-color: rgba(255, 255, 255, 0);
-  }
-  25% {
-    background-color: var(--primary-500);
-  }
-  65% {
-    transform: scale(1.1);
-    background-color: var(--primary-500);
-  }
-  90% {
-    transform: scale(.5);
-    background-color: rgba(255, 255, 255, 0);
-  }
-  100% {
-    transform: scale(.5);
-    background-color: rgba(255, 255, 255, 0);
-  }
-}
-
-@-o-keyframes bounce_fountainG {
-  0% {
-    transform: scale(.5);
-    background-color: rgba(255, 255, 255, 0);
-  }
-  25% {
-    background-color: var(--primary-500);
-  }
-  65% {
-    transform: scale(1.1);
-    background-color: var(--primary-500);
-  }
-  90% {
-    transform: scale(.5);
-    background-color: rgba(255, 255, 255, 0);
-  }
-  100% {
-    transform: scale(.5);
-    background-color: rgba(255, 255, 255, 0);
-  }
-}
-
-@-ms-keyframes bounce_fountainG {
-  0% {
-    transform: scale(.5);
-    background-color: rgba(255, 255, 255, 0);
-  }
-  25% {
-    background-color: var(--primary-500);
-  }
-  65% {
-    transform: scale(1.1);
-    background-color: var(--primary-500);
-  }
-  90% {
-    transform: scale(.5);
-    background-color: rgba(255, 255, 255, 0);
-  }
-  100% {
-    transform: scale(.5);
-    background-color: rgba(255, 255, 255, 0);
-  }
-}
-
-@-webkit-keyframes bounce_fountainG {
-  0% {
-    transform: scale(.5);
-    background-color: rgba(255, 255, 255, 0);
-  }
-  25% {
-    background-color: var(--primary-500);
-  }
-  65% {
-    transform: scale(1.1);
-    background-color: var(--primary-500);
-  }
-  90% {
-    transform: scale(.5);
-    background-color: rgba(255, 255, 255, 0);
-  }
-  100% {
-    transform: scale(.5);
-    background-color: rgba(255, 255, 255, 0);
-  }
-}
-
-@-moz-keyframes bounce_fountainG {
   0% {
     transform: scale(.5);
     background-color: rgba(255, 255, 255, 0);
@@ -122,21 +33,22 @@
     height: 12px;
     border-radius: 100%;
     background-color: var(--primary-500);
-    @include animation-name(bounce_fountainG);
-    @include animation-duration(1.15s);
-    @include animation-iteration-count(infinite);
-    @include animation-direction(normal);
+    animation-name: bounce_fountainG;
+    animation-duration: 1.15s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+
     &.fountainG_1 {
       left: 0;
-      @include animation-delay(-0.4s);
+      animation-delay: -0.4s;
     }
     &.fountainG_2 {
       left: 18px;
-      @include animation-delay(-0.2s);
+      animation-delay: -0.2s;
     }
     &.fountainG_3 {
       left: 36px;
-      @include animation-delay(0s);
+      animation-delay: 0s;
     }
   }
 }

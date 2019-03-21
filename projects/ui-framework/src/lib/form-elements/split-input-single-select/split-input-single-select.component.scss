@@ -1,3 +1,5 @@
+$selectFieldWidth: 140px;
+
 @import '../../style/colors';
 
 :host ::ng-deep {
@@ -13,12 +15,15 @@
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
       }
+      .mat-form-field.mat-form-field-should-float .mat-form-field-label-wrapper {
+        width: calc(100% + #{$selectFieldWidth});
+      }
       .mat-form-field-subscript-wrapper {
-        width: calc(100% + 120px);
+        width: calc(100% + #{$selectFieldWidth});
       }
     }
     b-single-select {
-      width: 120px;
+      width: $selectFieldWidth;
       .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
         border-left: none;
         border-top-left-radius: 0;

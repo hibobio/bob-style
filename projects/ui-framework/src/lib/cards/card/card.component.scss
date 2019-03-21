@@ -1,16 +1,15 @@
 @import "../../style/colors.scss";
-@import "../../style/typography.scss";
+@import "../../style/mixins.scss";
 
 :host {
+  box-sizing: border-box;
   position: relative;
   display: flex;
   flex-direction: column;
-
   padding: 20px;
   border: 1px solid $grey-500;
   border-radius: 4px;
   transition: transform 0.2s, box-shadow 0.2s;
-  transition-delay: 0.1s;
 
   text-align: left;
 
@@ -19,6 +18,7 @@
     transform: translateY(-10px);
 
     b-menu {
+      pointer-events: all;
       opacity: 1;
     }
   }
@@ -29,19 +29,24 @@ b-menu {
   position: absolute;
   top: 0;
   right: 0;
-  opacity: 0;
   transition: opacity 0.2s;
-  transition-delay: 0.1s;
+  opacity: 0;
+  pointer-events: none;
 }
 
 :host ::ng-deep {
 
-  [card-top], [card-content], [card-bottom] {
+  b-display-3, [card-content] {
+    text-transform: none;
+  }
+
+  [card-top], [card-content], [card-bottom], p {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
 
-  [card-top], [card-bottom] {
+  [card-top], [card-bottom], [card-content] p {
     font-weight: 300;
   }
 
@@ -55,12 +60,15 @@ b-menu {
   }
 
   [card-content] {
-    @include line-clamp(4, 22px, 1.2);
-    text-transform: none;
+    @include line-clamp(4, 22px, 1.2, true);
     flex-grow: 5;
 
     &:last-child {
       margin: 0;
+    }
+
+    p {
+      color: inherit;
     }
   }
 

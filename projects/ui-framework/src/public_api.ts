@@ -66,8 +66,15 @@ export {
   InputAutoCompleteOptions
 } from './lib/form-elements/input/input.enum';
 // Split input + single select Module
-export { SplitInputSingleSelectModule } from './lib/form-elements/split-input-single-select/split-input-single-select.module';
-export { SplitInputSingleSelectComponent } from './lib/form-elements/split-input-single-select/split-input-single-select.component';
+export {
+  SplitInputSingleSelectModule,
+} from './lib/form-elements/split-input-single-select/split-input-single-select.module';
+export {
+  SplitInputSingleSelectComponent,
+} from './lib/form-elements/split-input-single-select/split-input-single-select.component';
+export {
+  InputSingleSelectValue,
+} from './lib/form-elements/split-input-single-select/split-input-single-select.interface';
 // Lists Module
 export { SingleListModule } from './lib/form-elements/lists/single-list/single-list.module';
 export { SingleListComponent } from './lib/form-elements/lists/single-list/single-list.component';
@@ -147,9 +154,11 @@ export * from './lib/table/table/table.interface';
  * Cards
  */
 
+export { CardsModule } from './lib/cards/cards.module';
 // Single card
-export { CardModule } from './lib/cards/card/card.module';
 export { CardComponent } from './lib/cards/card/card.component';
+// Add new Card
+export { CardAddComponent } from './lib/cards/card-add/card-add.component';
 
 /*
  * Misc
