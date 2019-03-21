@@ -13,7 +13,7 @@
 
   text-align: left;
 
-  &:hover, &.focusInside {
+  &:hover, &.focus-inside {
     box-shadow: 0 2px 15px 0 $grey-500;
     transform: translateY(-10px);
 

@@ -30,7 +30,7 @@ const template2 = `
 const note = `
   ## Text-only Chip
   #### Module
-  *BadgesModule*
+  *ChipsModule*
 
   #### Properties
   Name | Type | Description | Default value
@@ -54,12 +54,12 @@ const storyTemplate = `
 `;
 
 story.add(
-  'Text-only Chip',
+  'Chip',
   () => ({
     template: storyTemplate,
     props: {
       type: select('type', typeOptions, ChipType.default),
-      text: text('text', 'Badge text')
+      text: text('text', 'Chip text')
     },
     moduleMetadata: {
       imports: [ChipsModule, StoryBookLayoutModule]

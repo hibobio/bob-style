@@ -12,7 +12,7 @@ export class CardComponent {
 
   @Input() text = '';
   @Input() menu?: MenuItem[];
-  @HostBinding('class.focusInside') menuIsOpened: boolean;
+  @HostBinding('class.focus-inside') menuIsOpened: boolean;
 
   onMenuOpen(): void {
     this.menuIsOpened = true;
