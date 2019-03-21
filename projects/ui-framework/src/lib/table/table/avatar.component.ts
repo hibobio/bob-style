@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 
-// both this and the parent component could be folded into one component as they're both simple, but it illustrates how
-// a fuller example could work
+// both this and the parent component could be folded into one component as they're both simple,
+// but it illustrates how a fuller example could work
 @Component({
   selector: 'b-avatar-cell',
   template: `
         <b-avatar [imageSource]='params.value.imageSource'
-                  [isClickable]='true'
+                  [isClickable]="true"
                   (clicked)='clicked($event)'>
         </b-avatar>
     `

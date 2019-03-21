@@ -6,6 +6,7 @@ import { ButtonType, ButtonSize } from '../buttons.enum';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
+import { Icons } from '../../../icons/icons.enum';
 
 const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
   withKnobs
@@ -13,11 +14,22 @@ const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
 
 const typeOptions = values(ButtonType);
 const sizeOptions = values(ButtonSize);
+const icons = values(Icons);
+
 const template = `
-<b-button (clicked)="onClick($event)"
+<b-button style="margin-right: 20px;"
+          (clicked)="onClick($event)"
           [type]="type"
           [size]="size"
           [disabled]="disabled">
+  {{label}}
+</b-button>
+
+<b-button (clicked)="onClick($event)"
+          [type]="type"
+          [size]="size"
+          [disabled]="disabled"
+          [icon]="icon">
   {{label}}
 </b-button>
 `;
@@ -34,6 +46,7 @@ const note = `
   size | ButtonSize | enum for setting the button size | medium (optional)
   disabled | boolean | disabled | false
   clicked | Function | callback for clicking on the button |
+  icon | Icons | button with icon |
 
   #### Style customization
 
@@ -63,7 +76,8 @@ buttonStories.add(
       label: text('label', 'Click me'),
       type: select('type', typeOptions, ButtonType.primary),
       size: select('size', sizeOptions, ButtonSize.medium),
-      disabled: boolean('disabled', false)
+      disabled: boolean('disabled', false),
+      icon: select('icons', icons, Icons.timeline),
     },
     moduleMetadata: {
       imports: [ButtonsModule, StoryBookLayoutModule]
