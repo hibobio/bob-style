@@ -1,5 +1,5 @@
 
-export enum BadgeType {
+export enum ChipType {
   empty = 'empty',
   default = 'default',
   info = 'info',

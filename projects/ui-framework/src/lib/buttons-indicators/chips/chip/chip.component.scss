@@ -1,7 +1,8 @@
-@import '../../style/colors';
+@import '../../../style/colors';
+@import '../../../style/typography';
 
 
-$badgesMap: (
+$chipsMap: (
   empty: (
     bgColor: white,
     color: $grey-700,
@@ -35,27 +36,34 @@ $badgesMap: (
 );
 
 :host {
-
-  box-sizing: border-box;
   display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 13px;
-  white-space: nowrap;
-  border: 1px solid transparent;
-  user-select: none;
-  cursor: default;
 
-  min-width: 90px;
-  height: 26px;
-  padding: 0 14px;
-
-  @each $type, $typeProps in $badgesMap {
-    &.badge-#{$type} {
+  @each $type, $typeProps in $chipsMap {
+    &.chip-#{$type} .mat-chip {
       background-color: map-get($typeProps, bgColor);
       color: map-get($typeProps, color);
       border-color: map-get($typeProps, brdrColor);
     }
   }
+}
 
+.mat-chip {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 13px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+
+  font-size: $font-size-body;
+  font-weight: 400;
+
+  min-width: 90px;
+  height: 26px;
+  padding: 0 14px;
+
+  user-select: none;
+  cursor: default;
+  outline: 0;
 }

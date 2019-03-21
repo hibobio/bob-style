@@ -1,5 +1,7 @@
 @import '../style/colors.scss';
 
+$font-size-body: 12px;
+
 @mixin FontDefault($style, $weight, $size, $lineHeight) {
   font-style: $style;
   font-weight: $weight;
