@@ -9,16 +9,16 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType } from '../../../consts';
 import { CardsModule } from '../cards.module';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
-import { IconsModule } from '../../icons/icons.module';
+import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { IconsModule } from '../../../icons/icons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
-import { MenuItem } from '../../navigation/menu/menu.interface';
+import { MenuItem } from '../../../navigation/menu/menu.interface';
 
-const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 

@@ -217,15 +217,20 @@ export {
 export { TableModule } from './lib/table/table.module';
 export * from './lib/table/table/table.interface';
 
-/*
- * Cards
- */
 
-export { CardsModule } from './lib/cards/cards.module';
+/*
+ * Layout
+ */
+// Divider
+export { DividerModule } from './lib/layout/divider/divider.module';
+export { DividerComponent } from './lib/layout/divider/divider.component';
+// Cards
+export { CardsModule } from './lib/layout/cards/cards.module';
 // Single card
-export { CardComponent } from './lib/cards/card/card.component';
+export { CardComponent } from './lib/layout/cards/card/card.component';
 // Add new Card
-export { CardAddComponent } from './lib/cards/card-add/card-add.component';
+export { CardAddComponent } from './lib/layout/cards/card-add/card-add.component';
+
 
 /*
  * Misc
@@ -243,6 +248,4 @@ export { FiltersModule } from './lib/services/filters/filters.module';
 // Utils Module
 export { UtilsModule } from './lib/services/utils/utils.module';
 export { UtilsService } from './lib/services/utils/utils.service';
-// Divider
-export { DividerModule } from './lib/misc/divider/divider.module';
-export { DividerComponent } from './lib/misc/divider/divider.component';
+

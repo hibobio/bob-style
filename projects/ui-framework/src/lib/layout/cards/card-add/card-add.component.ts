@@ -10,15 +10,12 @@ import {
 @Component({
   selector: 'b-card-add',
   template: `
-
-        <b-display-3 card-content>
-          {{ title }}
-        </b-display-3>
-        <p card-bottom *ngIf="subtitle">{{ subtitle }}</p>
-
+    <b-display-3 card-content>
+      {{ title }}
+    </b-display-3>
+    <p card-bottom *ngIf="subtitle">{{ subtitle }}</p>
   `,
-  styleUrls: ['../card/card.component.scss',
-              './card-add.component.scss'],
+  styleUrls: ['../card/card.component.scss', './card-add.component.scss']
 })
 export class CardAddComponent {
   constructor() {}

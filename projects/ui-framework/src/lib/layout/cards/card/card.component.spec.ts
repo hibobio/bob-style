@@ -8,9 +8,9 @@ import {
 } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { TypographyModule } from '../../typography/typography.module';
+import { TypographyModule } from '../../../typography/typography.module';
 import { MockComponent } from 'ng-mocks';
-import { MenuComponent } from '../../navigation/menu/menu.component';
+import { MenuComponent } from '../../../navigation/menu/menu.component';
 
 describe('CardComponent', () => {
   let fixture: ComponentFixture<CardComponent>;

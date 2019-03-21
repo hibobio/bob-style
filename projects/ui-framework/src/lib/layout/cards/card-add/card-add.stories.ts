@@ -9,14 +9,12 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType } from '../../../consts';
 import { CardsModule } from '../cards.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
-
-
-const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
@@ -59,14 +57,10 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        onClick: action('Card clicked'),
+        onClick: action('Card clicked')
       },
       moduleMetadata: {
-        imports: [
-          StoryBookLayoutModule,
-          BrowserAnimationsModule,
-          CardsModule,
-        ]
+        imports: [StoryBookLayoutModule, BrowserAnimationsModule, CardsModule]
       }
     };
   },

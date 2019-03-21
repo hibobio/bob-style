@@ -1,6 +1,6 @@
 import { Component, Input, HostBinding } from '@angular/core';
 
-import { MenuItem } from '../../navigation/menu/menu.interface';
+import { MenuItem } from '../../../navigation/menu/menu.interface';
 
 @Component({
   selector: 'b-card',
