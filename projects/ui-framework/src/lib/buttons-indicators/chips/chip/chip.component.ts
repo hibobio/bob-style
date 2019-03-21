@@ -6,7 +6,6 @@ import { ChipType } from '../chips.enum';
   template: `
     <mat-basic-chip [selectable]="false" [disableRipple]="true">
       <ng-content></ng-content>
-      {{ text }}
     </mat-basic-chip>
   `,
   styleUrls: ['./chip.component.scss']
@@ -14,7 +13,6 @@ import { ChipType } from '../chips.enum';
 export class ChipComponent {
   constructor() {}
 
-  @Input() text = '';
   @Input() type: ChipType = ChipType.default;
 
   @HostBinding('class')

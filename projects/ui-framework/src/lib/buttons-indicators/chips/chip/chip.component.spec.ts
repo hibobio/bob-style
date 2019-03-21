@@ -22,18 +22,7 @@ describe('ButtonComponent', () => {
       });
   }));
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('components', () => {
-    it('should set input text', () => {
-      component.text = 'hello';
-      fixture.detectChanges();
-      const chipElement = fixture.debugElement;
-      expect(chipElement.nativeElement.innerText).toEqual('hello');
-    });
-
     it('should have type class', () => {
       component.type = ChipType.info;
       fixture.detectChanges();

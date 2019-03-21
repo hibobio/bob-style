@@ -19,12 +19,14 @@ const story = storiesOf(
 
 const typeOptions = values(ChipType);
 const template = `
-  <b-chip [type]="type"
-          [text]="text">
+  <b-chip [type]="type">
+    {{ text }}
   </b-chip>
 `;
 const template2 = `
-  <p b-chip [type]="type">Used as directive</p>
+  <p b-chip [type]="type">
+    Used as directive
+  </p>
 `;
 
 const note = `
