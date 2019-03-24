@@ -24,22 +24,23 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
 const template = `
 <b-collapsible
   [type]="type"
+  [expanded]="expanded"
   [title]="title"
-  [description]="description">
+  [description]="description"
+  (closed)="onPanelClosed($event)"
+  (opened)="onPanelOpened($event)">
 
   <b-button suffix size="medium" type="secondary">
     Preview
   </b-button>
 
-  <div content>
-    {{ content.repeat(10) }}
-  </div>
+  {{ content.repeat(10) }}
 
 </b-collapsible>
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Single Card">
+<b-story-book-layout title="Collapsible">
   <div style="padding: 50px; overflow: hidden;">
     ${template.repeat(5)}
 </div>
@@ -55,8 +56,14 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  menu | MenuItem[] | array of menu items | none (optional)
-  text | string | main text | ''
+  type | CollapsibleType | ennum to set panel type (small or big) | small
+  expanded | boolean | if the panel is open | false
+  title | panel header title | title | ''
+  description | string | panel header description | none (optional)
+  opened | Function | Event emitted every time the panel is opened
+  closed | Function | Event emitted every time the panel is closed
+
+  Content marked with [suffix] will be projected into the right part of the panel header.
 
   ~~~
   ${template}
@@ -75,12 +82,16 @@ story.add(
       template: storyTemplate,
       props: {
         type: select('type', typeOptions, CollapsibleType.small),
+        expanded: boolean('expanded', false),
         title: text('title', 'Other People’s requests (4):'),
         description: text(
           'description',
           'Here you could see the manager side details'
         ),
-        content: text('content', contentMock)
+        content: text('content', contentMock),
+
+        onPanelOpened: action('Panel opened'),
+        onPanelClosed: action('Panel closed')
       },
       moduleMetadata: {
         imports: [

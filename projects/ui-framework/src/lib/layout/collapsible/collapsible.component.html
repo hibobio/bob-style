@@ -1,4 +1,6 @@
-<mat-expansion-panel>
+<mat-expansion-panel [expanded]="expanded"
+                     (closed)="onPanelClosed($event)"
+                     (opened)="onPanelOpened($event)">
   <mat-expansion-panel-header [collapsedHeight]="'auto'"
                               [expandedHeight]="'auto'">
 
@@ -25,6 +27,6 @@
 
   </mat-expansion-panel-header>
 
-  <ng-content select="[content]"></ng-content>
+  <ng-content></ng-content>
 
 </mat-expansion-panel>

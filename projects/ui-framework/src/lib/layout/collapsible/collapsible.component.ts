@@ -1,8 +1,9 @@
 import {
   Component,
   Input,
+  Output,
+  EventEmitter,
   HostBinding,
-  OnInit,
   AfterViewInit,
   ViewChild,
   ElementRef
@@ -14,7 +15,7 @@ import { CollapsibleType } from './collapsible.enum';
   templateUrl: './collapsible.component.html',
   styleUrls: ['./collapsible.component.scss']
 })
-export class CollapsibleComponent implements OnInit, AfterViewInit {
+export class CollapsibleComponent implements AfterViewInit {
   constructor() {}
 
   @HostBinding('class')
@@ -24,8 +25,13 @@ export class CollapsibleComponent implements OnInit, AfterViewInit {
 
   @Input() type: CollapsibleType = CollapsibleType.small;
 
+  @Input() expanded = false;
+
   @Input() title: string;
   @Input() description?: string;
+
+  @Output() opened: EventEmitter<void> = new EventEmitter<void>();
+  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
   @ViewChild('suffix') suffix: ElementRef;
 
@@ -36,5 +42,11 @@ export class CollapsibleComponent implements OnInit, AfterViewInit {
       this.suffix.nativeElement.children.length !== 0 ? true : false;
   }
 
-  ngOnInit() {}
+  onPanelOpened($event) {
+    this.opened.emit($event);
+  }
+
+  onPanelClosed($event) {
+    this.closed.emit($event);
+  }
 }
