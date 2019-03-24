@@ -28,7 +28,9 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
     font-size: inherit;
     text-transform: none;
 
-    @include break-out-pseudo(top);
+    @include break-out-pseudo(top) {
+      pointer-events: all;
+    };
 
     .mat-expansion-indicator {
       display: block;
