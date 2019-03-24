@@ -76,7 +76,7 @@
 
     @if (not $mod) and (not $add) {
       @include pseudo;
-      @include size(200vw, 100%);
+      @include size(200%, 100%);
       @include position(0 -50% 0 -50%);
       z-index: 0;
       background-color: $bg-color;
