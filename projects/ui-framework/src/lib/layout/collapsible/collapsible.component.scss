@@ -1,0 +1,40 @@
+
+@import "../../style/colors.scss";
+@import "../../style/mixins.scss";
+
+:host {
+  background: red;
+
+
+
+
+}
+
+:host ::ng-deep {
+
+  .mat-expansion-panel {
+    box-shadow: none;
+  }
+
+  .mat-expansion-panel-header {
+
+    padding: 0;
+
+    .mat-expansion-indicator {
+      order: 1;
+    }
+
+    > .mat-content {
+      order: 2;
+    }
+
+    b-display-3 {
+      font-weight: 600;
+      color: $grey-700;
+    }
+
+  }
+
+
+
+}
