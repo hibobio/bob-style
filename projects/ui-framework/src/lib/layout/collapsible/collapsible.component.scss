@@ -4,10 +4,10 @@
 @import "../../style/mixins.scss";
 @import "../../style/keyframes.scss";
 
+$mat-header-hover-selector: '.mat-expansion-panel-header:not([aria-disabled=true]).cdk-keyboard-focused, .mat-expansion-panel-header:not([aria-disabled=true]).cdk-program-focused, .mat-expansion-panel-header:not([aria-disabled=true]):hover';
 
-$mat-header-hover-selector: '&:not([aria-disabled=true]).cdk-keyboard-focused,&:not([aria-disabled=true]).cdk-program-focused,&:not([aria-disabled=true]):hover';
+$mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):not(.cdk-keyboard-focused):not(.cdk-program-focused):not(:hover), .mat-expansion-panel-header[aria-disabled=true]';
 
-$mat-header-not-hover-selector: '&:not(.cdk-keyboard-focused):not(.cdk-program-focused):not(:hover),&[aria-disabled=true]';
 
 :host {
   text-align: left;
@@ -17,19 +17,18 @@ $mat-header-not-hover-selector: '&:not(.cdk-keyboard-focused):not(.cdk-program-f
 
   .mat-expansion-panel {
     box-shadow: none;
+    overflow: visible;
   }
 
   .mat-expansion-panel-header {
-
     padding: 0;
     min-height: 80px;
     border-radius: 0;
+    border: 0;
     font-size: inherit;
     text-transform: none;
 
-    border-style: solid;
-    border-color: $grey-500;
-    border-width: 1px 0 0 0;
+    @include break-out-pseudo(top);
 
     .mat-expansion-indicator {
       display: block;
@@ -48,18 +47,25 @@ $mat-header-not-hover-selector: '&:not(.cdk-keyboard-focused):not(.cdk-program-f
     > .mat-content {
       order: 2;
       align-items: center;
-    }
-
-    #{$mat-header-not-hover-selector} {
-      .collapsible-description, .collapsible-suffux {
-        display: none;
-      }
+      position: relative;
     }
 
   }
 
+  #{$mat-header-not-hover-selector} {
+    .collapsible-description, .collapsible-suffix {
+      display: none;
+    }
+  }
+
   .mat-expansion-panel-content {
     visibility: visible !important;
+    overflow: hidden;
+    @include animate(visibility, 0s, 0.3s, $dir: reverse);
+  }
+
+  .mat-expanded + .mat-expansion-panel-content {
+    @include animate(visibility, 0s, $dir: normal);
   }
 
   .mat-expansion-panel-body {
@@ -76,17 +82,6 @@ $mat-header-not-hover-selector: '&:not(.cdk-keyboard-focused):not(.cdk-program-f
 
 }
 
-.collapsible-description, .collapsible-suffux {
-  @include animate(zoom-in, 0.3s);
-}
-
-.collapsible-suffux {
-  transform-origin: right;
-}
-
-.collapsible-description {
-  transform-origin: left;
-}
 
 .collapsible-title, .collapsible-description {
   @include text-truncate;
@@ -104,7 +99,7 @@ $mat-header-not-hover-selector: '&:not(.cdk-keyboard-focused):not(.cdk-program-f
   letter-spacing: 0.2px;
 }
 
-.collapsible-suffux {
+.collapsible-suffix {
   margin-left: auto;
 }
 
@@ -113,34 +108,39 @@ $mat-header-not-hover-selector: '&:not(.cdk-keyboard-focused):not(.cdk-program-f
 
   &:first-of-type ::ng-deep {
     .mat-expansion-panel-header {
-      border-top-width: 0;
+      @include break-out-pseudo($brdr-width: 0, $mod: true);
     }
   }
 
   & ::ng-deep .mat-expansion-panel-body {
     padding-top: 0;
   }
-
 }
 
 :host.collapsible-big {
 
   &:last-of-type ::ng-deep {
     .mat-expansion-panel-header {
-      border-bottom-width: 1px;
+      @include break-out-pseudo(top bottom, $mod: true);
     }
   }
 
-  & ::ng-deep .mat-expansion-panel-header {
-    transition: box-shadow 0.2s;
+  & ::ng-deep {
+    .mat-expansion-panel-header {
 
-    &.mat-expanded {
-      box-shadow: 0 5px 10px -1px $boxShadowColor;
+      @include break-out-pseudo($add: true) {
+        transition: box-shadow 0.2s;
+      }
+
+      &.mat-expanded {
+        @include break-out-pseudo($mod: true, $shadow: 0 5px 10px -1px $boxShadowColor);
+      }
     }
 
     #{$mat-header-hover-selector} {
-      background-color: $grey-200;
+      &,&:before {
+        background-color: $grey-200;
+      }
     }
   }
-
 }

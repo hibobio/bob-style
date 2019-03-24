@@ -48,3 +48,12 @@
     opacity: 1;
   }
 }
+
+@keyframes visibility {
+  0% {
+    visibility: hidden;
+  }
+  100% {
+    visibility: visible;
+  }
+}

@@ -40,7 +40,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Single Card">
-  <div style="padding: 50px;">
+  <div style="padding: 50px; overflow: hidden;">
     ${template.repeat(5)}
 </div>
 </b-story-book-layout>
