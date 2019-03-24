@@ -57,3 +57,12 @@
     visibility: visible;
   }
 }
+@keyframes invisibility {
+  0% {
+    visibility: visible;
+  }
+  100% {
+    visibility: hidden;
+  }
+}
+

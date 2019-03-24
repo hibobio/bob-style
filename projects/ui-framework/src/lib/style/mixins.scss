@@ -112,7 +112,11 @@
     }
 
     @if $shadow {
-      box-shadow: $shadow;
+      @if $shadow == 0 {
+        box-shadow: 0 0 0 0 transparent;
+      } @else {
+        box-shadow: $shadow;
+      }
     }
 
     @content;
