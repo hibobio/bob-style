@@ -40,3 +40,18 @@
   line-clamp: $lines;
   -webkit-line-clamp: $lines;
 }
+
+@mixin text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin animate($name, $time, $delay: null, $iterate: 1) {
+  animation-name: $name;
+  animation-duration: $time;
+  animation-fill-mode: both;
+  animation-iteration-count: $iterate;
+  animation-delay: $delay;
+  backface-visibility: hidden;
+}

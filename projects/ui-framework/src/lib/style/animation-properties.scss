@@ -41,6 +41,6 @@
   perspective: $val;
 }
 
-@mixin backfaceVisibility($val) {
+@mixin backfaceVisibility($val: hidden) {
   backface-visibility: $val;
 }

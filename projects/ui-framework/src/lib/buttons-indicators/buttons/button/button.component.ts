@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output
+} from '@angular/core';
 import { ButtonSize, ButtonType } from '../buttons.enum';
 import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 import { isEqual } from 'lodash';
@@ -9,7 +15,6 @@ import { isEqual } from 'lodash';
   styleUrls: ['./button.component.scss']
 })
 export class ButtonComponent implements OnChanges {
-
   @Input() type?: ButtonType = ButtonType.primary;
   @Input() size?: ButtonSize = ButtonSize.medium;
   @Input() disabled = false;
@@ -19,14 +24,15 @@ export class ButtonComponent implements OnChanges {
   iconColor: IconColor;
   iconSize: IconSize;
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnChanges(): void {
     if (this.icon) {
       this.iconColor = isEqual(this.type, ButtonType.primary)
         ? IconColor.white
-        : this.disabled ? IconColor.light : IconColor.dark;
+        : this.disabled
+        ? IconColor.light
+        : IconColor.dark;
       this.iconSize = isEqual(this.size, ButtonSize.large)
         ? IconSize.large
         : IconSize.medium;
@@ -34,6 +40,7 @@ export class ButtonComponent implements OnChanges {
   }
 
   onClick($event) {
+    $event.stopPropagation();
     this.clicked.emit($event);
   }
 }

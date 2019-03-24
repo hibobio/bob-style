@@ -1,13 +1,16 @@
 
 @import "../../style/colors.scss";
+@import "../../style/typography.scss";
 @import "../../style/mixins.scss";
+@import "../../style/keyframes.scss";
+
+
+$mat-header-hover-selector: '&:not([aria-disabled=true]).cdk-keyboard-focused,&:not([aria-disabled=true]).cdk-program-focused,&:not([aria-disabled=true]):hover';
+
+$mat-header-not-hover-selector: '&:not(.cdk-keyboard-focused):not(.cdk-program-focused):not(:hover),&[aria-disabled=true]';
 
 :host {
-  background: red;
-
-
-
-
+  text-align: left;
 }
 
 :host ::ng-deep {
@@ -19,22 +22,125 @@
   .mat-expansion-panel-header {
 
     padding: 0;
+    min-height: 80px;
+    border-radius: 0;
+    font-size: inherit;
+    text-transform: none;
+
+    border-style: solid;
+    border-color: $grey-500;
+    border-width: 1px 0 0 0;
 
     .mat-expansion-indicator {
+      display: block;
       order: 1;
+      text-align: center;
+      @include size(12px);
+      line-height: 0.1;
+      margin-right: 15px;
+
+      &:after {
+       border-color: $grey-700;
+       vertical-align: baseline;
+      }
     }
 
     > .mat-content {
       order: 2;
+      align-items: center;
     }
 
-    b-display-3 {
-      font-weight: 600;
-      color: $grey-700;
+    #{$mat-header-not-hover-selector} {
+      .collapsible-description, .collapsible-suffux {
+        display: none;
+      }
     }
 
   }
 
+  .mat-expansion-panel-content {
+    visibility: visible !important;
+  }
 
+  .mat-expansion-panel-body {
+    padding: 35px 0;
+    transition: transform 0.3s, opacity 0.3s;
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+
+  .mat-expanded .mat-expansion-panel-body {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+}
+
+.collapsible-description, .collapsible-suffux {
+  @include animate(zoom-in, 0.3s);
+}
+
+.collapsible-suffux {
+  transform-origin: right;
+}
+
+.collapsible-description {
+  transform-origin: left;
+}
+
+.collapsible-title, .collapsible-description {
+  @include text-truncate;
+  line-height: inherit;
+
+  &:not(:last-child) {
+    margin-right: 15px;
+  }
+}
+
+.collapsible-description {
+  margin: 0;
+  font-size: $font-size-body;
+  color: $grey-600;
+  letter-spacing: 0.2px;
+}
+
+.collapsible-suffux {
+  margin-left: auto;
+}
+
+
+:host.collapsible-small {
+
+  &:first-of-type ::ng-deep {
+    .mat-expansion-panel-header {
+      border-top-width: 0;
+    }
+  }
+
+  & ::ng-deep .mat-expansion-panel-body {
+    padding-top: 0;
+  }
+
+}
+
+:host.collapsible-big {
+
+  &:last-of-type ::ng-deep {
+    .mat-expansion-panel-header {
+      border-bottom-width: 1px;
+    }
+  }
+
+  & ::ng-deep .mat-expansion-panel-header {
+    transition: box-shadow 0.2s;
+
+    &.mat-expanded {
+      box-shadow: 0 5px 10px -1px $boxShadowColor;
+    }
+
+    #{$mat-header-hover-selector} {
+      background-color: $grey-200;
+    }
+  }
 
 }

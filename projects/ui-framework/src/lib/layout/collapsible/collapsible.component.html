@@ -1,22 +1,30 @@
 <mat-expansion-panel>
   <mat-expansion-panel-header [collapsedHeight]="'auto'"
                               [expandedHeight]="'auto'">
-    <!-- <mat-panel-title>
-      This is the expansion title
-    </mat-panel-title>
-    <mat-panel-description>
-      This is a summary of the content
-    </mat-panel-description> -->
 
-    <ng-content select="[title]"
-                mat-panel-title>
+    <b-display-3 class="collapsible-title"
+                 *ngIf="type === 'big'">
+      {{ title }}
+    </b-display-3>
 
+    <b-subheading class="collapsible-title"
+                  *ngIf="type === 'small'">
+      {{ title }}
+    </b-subheading>
 
-    </ng-content>
+    <p class="collapsible-description"
+       *ngIf="description">
+      {{ description }}
+    </p>
 
+    <div #suffix
+         *ngIf="hasSuffix"
+         class="collapsible-suffux">
+      <ng-content select="[suffix]"></ng-content>
+    </div>
 
   </mat-expansion-panel-header>
 
-  <p>This is the primary content of the panel.</p>
+  <ng-content select="[content]"></ng-content>
 
 </mat-expansion-panel>
