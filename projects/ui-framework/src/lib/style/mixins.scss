@@ -57,54 +57,6 @@
   backface-visibility: hidden;
 }
 
-@mixin break-out-border($loc: top bottom, $color: $grey-500, $width: 1px, $use: before) {
-
-  $selector: '&:#{$use}';
-  @if (length($loc) > 1 or index($loc, x) or index($loc, y)) {
-    $selector: '&:before,&:after';
-  }
-
-  $axis: y;
-  @if (index($loc, left) or index($loc, right) or index($loc, x)) {
-    $axis: x;
-  }
-
-  position: relative;
-
-  #{$selector} {
-    @include pseudo;
-    background-color: $color;
-
-    @if ( $axis == x ) {
-      @include size($width, 200vh);
-      top: -50%;
-    } @else {
-      @include size(200vw, $width);
-      left: -50%;
-    }
-
-    position: absolute;
-  }
-
-  @if (($axis == x) and (length($loc) > 1 or $loc == x)) {
-    &:before { left: 0; }
-    &:after { right: 0; }
-  }
-
-  @else if (($axis == y) and (length($loc) > 1 or $loc == y)) {
-    &:before { top: 0; }
-    &:after { bottom: 0; }
-  }
-
-  @else {
-    &:#{$use} {
-      #{$loc}: 0;
-    }
-  }
-
-}
-
-
 @mixin break-out-pseudo(
   $brdr-loc: top bottom,
   $bg-color: null,
