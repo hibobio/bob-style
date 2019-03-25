@@ -173,6 +173,7 @@ export {
   QuickFilterChangeEvent,
   QuickFilterBarChangeEvent
 } from './lib/navigation/quick-filter/quick-filter.interface';
+export { QuickFilterSelectType } from './lib/navigation/quick-filter/quick-filter.enum';
 // Menu Module
 export { MenuModule } from './lib/navigation/menu/menu.module';
 export { MenuComponent } from './lib/navigation/menu/menu.component';
