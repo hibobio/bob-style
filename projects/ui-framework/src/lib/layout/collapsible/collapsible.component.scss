@@ -40,6 +40,7 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
     &[aria-disabled="true"] {
       color: $grey-500;
       user-select: none;
+      pointer-events: none;
     }
 
     .mat-expansion-indicator {
