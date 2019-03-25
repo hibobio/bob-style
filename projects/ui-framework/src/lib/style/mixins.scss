@@ -116,3 +116,10 @@
     @content;
   }
 }
+
+@mixin disabled-state {
+  pointer-events: none;
+  color: $grey-500;
+  border-color: $grey-300;
+  @content;
+}

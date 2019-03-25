@@ -39,6 +39,14 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
       pointer-events: all;
     };
 
+    &[aria-disabled="true"] {
+      @include disabled-state {
+        &:before {
+          border-color: inherit;
+        }
+      }
+    }
+
     .mat-expansion-indicator {
       display: block;
       order: 1;

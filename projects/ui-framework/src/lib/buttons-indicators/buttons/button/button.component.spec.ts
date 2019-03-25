@@ -19,16 +19,9 @@ describe('ButtonComponent', () => {
     spyIconService = createSpyObj('spyIconService', ['initIcon']);
 
     TestBed.configureTestingModule({
-      declarations: [
-        ButtonComponent,
-      ],
-      providers: [
-        { provide: IconService, useValue: spyIconService }
-      ],
-      imports: [
-        MatButtonModule,
-        IconsModule,
-      ],
+      declarations: [ButtonComponent],
+      providers: [{ provide: IconService, useValue: spyIconService }],
+      imports: [MatButtonModule, IconsModule]
     })
       .compileComponents()
       .then(() => {
@@ -42,7 +35,8 @@ describe('ButtonComponent', () => {
   describe('onClick', () => {
     it('Should emit the click event', () => {
       const e = {
-        id: 1
+        id: 1,
+        stopPropagation: () => true
       };
       component.onClick(e);
       expect(component.clicked.emit).toHaveBeenCalledWith(e);
@@ -90,7 +84,10 @@ describe('ButtonComponent', () => {
   });
 
   describe('OnChanges', () => {
-    const testColor = (buttonType: ButtonType, expectedColor: IconColor): void => {
+    const testColor = (
+      buttonType: ButtonType,
+      expectedColor: IconColor
+    ): void => {
       component.type = buttonType;
       component.icon = Icons.timeline;
       component.ngOnChanges();

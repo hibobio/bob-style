@@ -25,6 +25,7 @@ const template = `
 <b-collapsible
   [type]="type"
   [expanded]="expanded"
+  [disabled]="disabled"
   [title]="title"
   [description]="description"
   (closed)="onPanelClosed($event)"
@@ -58,6 +59,7 @@ const note = `
   --- | --- | --- | ---
   type | CollapsibleType | ennum to set panel type (small or big) | small
   expanded | boolean | if the panel is open | false
+  disabled | boolean | if the panel is disabled (can't be opened) | false
   title | panel header title | title | ''
   description | string | panel header description | none (optional)
   opened | Function | Event emitted every time the panel is opened
@@ -83,6 +85,7 @@ story.add(
       props: {
         type: select('type', typeOptions, CollapsibleType.small),
         expanded: boolean('expanded', false),
+        disabled: boolean('disabled', false),
         title: text('title', 'Other People’s requests (4):'),
         description: text(
           'description',
