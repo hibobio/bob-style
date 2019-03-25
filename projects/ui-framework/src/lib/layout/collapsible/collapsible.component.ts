@@ -26,6 +26,7 @@ export class CollapsibleComponent implements AfterViewInit {
   @Input() type: CollapsibleType = CollapsibleType.small;
 
   @Input() expanded = false;
+  @Input() disabled = false;
 
   @Input() title: string;
   @Input() description?: string;
