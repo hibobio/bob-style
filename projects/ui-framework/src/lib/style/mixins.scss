@@ -62,8 +62,8 @@
   $bg-color: null,
   $brdr-width: 1px,
   $brdr-color: $grey-500,
-  $use: before,
   $shadow: false,
+  $use: before,
   $mod: false,
   $add: false
 ) {
@@ -92,7 +92,7 @@
     }
 
     @if $shadow {
-      @if $shadow == 0 {
+      @if $shadow == 0 or $shadow == none {
         box-shadow: 0 0 0 0 transparent;
       } @else {
         box-shadow: $shadow;
@@ -101,5 +101,4 @@
 
     @content;
   }
-
 }
