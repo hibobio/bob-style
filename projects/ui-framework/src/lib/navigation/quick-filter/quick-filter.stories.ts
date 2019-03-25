@@ -10,6 +10,7 @@ import { ButtonSize } from '../../buttons-indicators/buttons/buttons.enum';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuickFilterSelectType } from './quick-filter.enum';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
+import { QuickFilterConfig } from './quick-filter.interface';
 
 const textareaStories = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
 
@@ -34,8 +35,10 @@ const note = `
   *QuickFilterModule*
 
   #### Properties
-  Name | Type | Description
-  --- | --- | ---
+  Name | Type | Description | Default Value
+  --- | --- | --- | ---
+  quickFilters | QuickFilterConfig[] | array of quick filters | none
+  filtersChange | QuickFilterBarChangeEvent | Output of quick filter bar change | none
 
   ~~~
   ${template}
@@ -54,7 +57,7 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(3), (_, i) => {
   };
 });
 
-const quickFilters = [
+const quickFilters: QuickFilterConfig[] = [
   {
     selectType: QuickFilterSelectType.multiSelect,
     label: 'department',
