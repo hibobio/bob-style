@@ -39,8 +39,13 @@ export class CollapsibleComponent implements AfterViewInit {
   hasSuffix = true;
 
   ngAfterViewInit() {
-    this.hasSuffix =
-      this.suffix.nativeElement.children.length !== 0 ? true : false;
+    // wait a tick first to avoid one-time devMode
+    // unidirectional-data-flow-violation error
+    // https://stackoverflow.com/a/38937802
+    setTimeout(() => {
+      this.hasSuffix =
+        this.suffix.nativeElement.children.length !== 0 ? true : false;
+    }, 0);
   }
 
   onPanelOpened($event) {
