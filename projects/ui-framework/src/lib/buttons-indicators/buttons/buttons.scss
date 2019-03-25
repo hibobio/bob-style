@@ -1,5 +1,6 @@
 @import '../../style/colors';
 @import '../../style/typography';
+@import '../../style/mixins';
 
 @mixin MatButton() {
   .mat-ripple, .mat-button-focus-overlay {
@@ -55,9 +56,8 @@
   }
 
   @if $type == 'disabled' {
-    pointer-events: none;
-    border: 1px solid $grey-300;
-    background-color: $grey-200;
-    color: $grey-500;
+    @include disabled-state {
+      background-color: $grey-200;
+    }
   }
 }
