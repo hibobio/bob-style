@@ -32,7 +32,7 @@ const note = `
   ) {
   }
   openDialog() {
-    this.dialogService
+    const dialogRef: MatDialogRef<YourDialogComponent> = this.dialogService
       .openDialog(
         YourDialogComponent,
         {
