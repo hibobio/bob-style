@@ -1,3 +1,5 @@
+@import './functions';
+
 @mixin pseudo {
   content: "";
   display: block;
@@ -5,6 +7,10 @@
 }
 
 @mixin size($w, $h: $w) {
+  @if length($w) == 2 {
+    $h: nth($w, 2);
+    $w: nth($w, 1);
+  }
   width: $w;
   height: $h;
 }
@@ -15,10 +21,6 @@
   right: nth($pos,2);
   bottom: nth($pos,3);
   left: nth($pos,4);
-}
-
-@function height-from-text($lines, $font-size, $line-height, $add: 0) {
-  @return $font-size * $line-height * $lines + $add;
 }
 
 @mixin line-clamp($lines, $font-size, $line-height, $minHeight: false, $mod: false) {
@@ -41,10 +43,22 @@
   -webkit-line-clamp: $lines;
 }
 
+@mixin text-hide {
+  font-size: 0;
+  color: white(0.1);
+  user-select: none;
+}
+
 @mixin text-truncate {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+@mixin flex-align(){
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @mixin animate($name, $time: 0.3s, $delay: null, $iterate: 1, $dir: null) {

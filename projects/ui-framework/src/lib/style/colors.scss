@@ -8,12 +8,26 @@ $grey-600: #9D9D9D; // rgb(157,157,157)
 $grey-700: #535353; // rgb(83,83,83)
 $grey-800: #303030; // rgb(48,48,48)
 
+
+$primary-500: #FEA54A; // rgb(254,165,74)
+$primary-600: #FF962B; // rgb(255,150,43)
+$primary-700: #FF8100; // rgb(255,129,0)
+
+$secondary-500: #FECC4A; // rgb(254,204,74)
+$secondary-600: #F8BC20; // rgb(248,188,32)
+$secondary-700: #F0AD00; // rgb(240,173,0)
+
+$positive-500: #1BD164; // rgb(27,209,100)
+$positive-600: #17B456; // rgb(23,180,86)
+$positive-700: #0D853D; // rgb(13,133,61)
+
+$negative-500: #FF476D; // rgb(255,71,109)
+$negative-600: #E52C51; // rgb(229,44,81)
+$negative-700: #CC2748; // rgb(204,39,72)
+
+$inform-500: #9BC3F2; // rgb(155,195,242)
+$inform-600: #70ABF0; // rgb(112,171,240)
+$inform-700: #4B95EC; // rgb(75,149,236)
+
+
 $boxShadowColor: rgba($grey-700, 0.2);
-
-@function black($opacity){
-  @return rgba(0,0,0,$opacity);
-}
-
-@function white($opacity){
-  @return rgba(255,255,255,$opacity);
-}

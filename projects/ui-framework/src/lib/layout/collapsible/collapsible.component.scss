@@ -1,8 +1,10 @@
 
-@import "../../style/colors.scss";
-@import "../../style/typography.scss";
-@import "../../style/mixins.scss";
-@import "../../style/keyframes.scss";
+@import "../../style/colors";
+@import "../../style/typography";
+@import "../../style/mixins";
+@import "../../style/keyframes";
+
+@import "../../misc/mini-preloader/mini-preloader-mixin";
 
 $mat-header-hover-selector: '.mat-expansion-panel-header:not([aria-disabled=true]).cdk-keyboard-focused, .mat-expansion-panel-header:not([aria-disabled=true]).cdk-program-focused, .mat-expansion-panel-header:not([aria-disabled=true]):hover';
 
@@ -83,6 +85,8 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
     transition: transform 0.3s, opacity 0.3s;
     transform: translateY(-15px);
     opacity: 0;
+
+    @include mini-preloader;
   }
 
   .mat-expanded .mat-expansion-panel-body {

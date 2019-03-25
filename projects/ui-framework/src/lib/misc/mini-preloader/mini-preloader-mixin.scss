@@ -1,0 +1,29 @@
+@import '../../style/colors';
+@import '../../style/mixins';
+
+$preloader-anim-duration: 1500ms;
+$preloader-color: $primary-500;
+
+$preloader-svg: url("data:image/svg+xml,%3Csvg viewBox='0 0 210 60' width='210' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='#{uri-encode-color($preloader-color)}'%3E%3Ccircle cx='30' cy='30' r='30'%3E%3Canimate attributeName='fill-opacity' dur='#{$preloader-anim-duration}' repeatCount='indefinite' values='0;.6;1;1;1;.6;0;0'/%3E%3Canimate attributeName='r' dur='#{$preloader-anim-duration}' repeatCount='indefinite' values='0;0;10;20;30;20;10;0'/%3E%3C/circle%3E%3Ccircle cx='105' cy='30' r='30'%3E%3Canimate attributeName='fill-opacity' dur='#{$preloader-anim-duration}' repeatCount='indefinite' values='0;0;.6;1;1;1;.6;0'/%3E%3Canimate attributeName='r' dur='#{$preloader-anim-duration}' repeatCount='indefinite' values='10;0;0;10;20;30;20;10'/%3E%3C/circle%3E%3Ccircle cx='180' cy='30' r='30'%3E%3Canimate attributeName='fill-opacity' dur='#{$preloader-anim-duration}' repeatCount='indefinite' values='.6;0;0;.6;1;1;1;.6'/%3E%3Canimate attributeName='r' dur='#{$preloader-anim-duration}' repeatCount='indefinite' values='20;10;0;0;10;20;30;20'/%3E%3C/circle%3E%3C/g%3E%3C/svg%3E");
+
+@mixin mini-preloader($size: 48px 12px, $full-size-selecotr: '&') {
+  &:empty {
+    &:before {
+      content: 'Loading...';
+      @include text-hide;
+      display: block;
+      overflow: hidden;
+      @include size($size);
+      background-image: $preloader-svg;
+      background-position: center bottom;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+
+    #{$full-size-selecotr} {
+      @include flex-align;
+      @include size(100%);
+      flex-grow: 5;
+    }
+  }
+}

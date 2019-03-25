@@ -1,0 +1,27 @@
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+  @return $string;
+}
+
+@function height-from-text($lines, $font-size, $line-height, $add: 0) {
+  @return $font-size * $line-height * $lines + $add;
+}
+
+@function black($opacity){
+  @return rgba(0,0,0,$opacity);
+}
+
+@function white($opacity){
+  @return rgba(255,255,255,$opacity);
+}
+
+@function uri-encode-color($color) {
+	  @if type-of($color) == 'color' {
+      $color: unquote('%23' + str-slice(ie-hex-str($color), 4));
+    }
+	@return $color;
+}
+

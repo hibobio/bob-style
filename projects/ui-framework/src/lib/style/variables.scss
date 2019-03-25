@@ -1,25 +1,25 @@
 @import './colors.scss';
 
 :root {
-  --primary-500: #FEA54A;
-  --primary-600: #FF962B;
-  --primary-700: #FF8100;
+  --primary-500: #{$primary-500};
+  --primary-600: #{$primary-600};
+  --primary-700: #{$primary-700};
 
-  --secondary-500: #FECC4A;
-  --secondary-600: #F8BC20;
-  --secondary-700: #F0AD00;
+  --secondary-500: #{$secondary-500};
+  --secondary-600: #{$secondary-600};
+  --secondary-700: #{$secondary-700};
 
-  --positive-500: #1BD164;
-  --positive-600: #17B456;
-  --positive-700: #0D853D;
+  --positive-500: #{$positive-500};
+  --positive-600: #{$positive-600};
+  --positive-700: #{$positive-700};
 
-  --negative-500: #FF476D;
-  --negative-600: #E52C51;
-  --negative-700: #CC2748;
+  --negative-500: #{$negative-500};
+  --negative-600: #{$negative-600};
+  --negative-700: #{$negative-700};
 
-  --inform-500: #9BC3F2;
-  --inform-600: #70ABF0;
-  --inform-700: #4B95EC;
+  --inform-500: #{$inform-500};
+  --inform-600: #{$inform-600};
+  --inform-700: #{$inform-700};
 
   --display-font-family: 'Sentinel SSm A', 'Sentinel SSm B', 'Helvetica';
   --heading-font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica';
