@@ -33,7 +33,7 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
     font-size: inherit;
     text-transform: none;
 
-    @include break-out-pseudo(top, white) {
+    @include breakout-underlay($brdr-loc: top, $bg-color: white) {
       pointer-events: all;
     };
 
@@ -118,7 +118,7 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
 
   &:first-of-type ::ng-deep {
     .mat-expansion-panel-header {
-      @include break-out-pseudo($brdr-width: 0, $mod: true);
+      @include breakout-underlay($brdr-width: 0, $mod: true);
     }
   }
 
@@ -131,19 +131,19 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
 
   &:last-of-type ::ng-deep {
     .mat-expansion-panel-header {
-      @include break-out-pseudo(top bottom, $mod: true);
+      @include breakout-underlay($brdr-loc: top bottom, $mod: true);
     }
   }
 
   & ::ng-deep {
     .mat-expansion-panel-header {
 
-      @include break-out-pseudo($add: true) {
+      @include breakout-underlay($add: true) {
         transition: box-shadow 0.2s;
       }
 
       &.mat-expanded, &.ng-animating {
-        @include break-out-pseudo(top bottom, $mod: true, $shadow: 0 5px 10px -1px $boxShadowColor);
+        @include breakout-underlay($brdr-loc: top bottom, $mod: true, $shadow: 0 5px 10px -1px $boxShadowColor);
       }
     }
 

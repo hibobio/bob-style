@@ -57,7 +57,7 @@
   backface-visibility: hidden;
 }
 
-@mixin break-out-pseudo(
+@mixin breakout-underlay(
   $brdr-loc: top bottom,
   $bg-color: null,
   $brdr-width: 1px,
@@ -83,32 +83,12 @@
     }
 
     @if ($brdr-width and $brdr-width > 0 and $brdr-color and (not $add)) {
-      $grad: '';
-      $grad-pos: '';
-      $grad-size: '';
-
       @each $loc in $brdr-loc {
-        @if $grad != '' {
-          $grad: $grad + ',';
-          $grad-pos: $grad-pos + ',';
-          $grad-size: $grad-size + ',';
-        }
-        $grad: $grad + linear-gradient($brdr-color,$brdr-color);
-        $grad-pos: $grad-pos + '#{$loc} center';
-        @if ($loc == top or $loc == bottom)  {
-          $grad-size: $grad-size + '100% #{$brdr-width}';
-        }
-        @if ($loc == left or $loc == right)  {
-          $grad-size: $grad-size + '#{$brdr-width} 100%';
-        }
+        border-#{$loc}: $brdr-width solid $brdr-color;
       }
-
-      background-image: unquote($grad);
-      background-position: unquote($grad-pos);
-      background-size: unquote($grad-size);
-
-    } @else if ($brdr-width == 0) {
-      background-image: none;
+    }
+    @else if ($brdr-width == 0) {
+      border: 0;
     }
 
     @if $shadow {
