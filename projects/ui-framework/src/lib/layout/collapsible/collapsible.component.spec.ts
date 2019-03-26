@@ -58,7 +58,7 @@ class TestComponent {
   }
 }
 
-fdescribe('CollapsibleComponent', () => {
+describe('CollapsibleComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let component: TestComponent;
 
@@ -257,12 +257,12 @@ fdescribe('CollapsibleComponent', () => {
       expect(component.opened.emit).toHaveBeenCalled();
     });
 
-    fit('should emit closed event, when panel is collapsed', () => {
+    it('should emit closed event, when panel is collapsed', () => {
       component.expanded = true;
       fixture.detectChanges();
-      
+      component.expanded = false;
+      fixture.detectChanges();
       expect(component.closed.emit).toHaveBeenCalled();
     });
-
   });
 });
