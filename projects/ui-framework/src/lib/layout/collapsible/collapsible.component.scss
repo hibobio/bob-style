@@ -121,6 +121,25 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
   margin-left: auto;
 }
 
+@media (max-width: 1200px) {
+  :host ::ng-deep .mat-content {
+    display: grid;
+  }
+  .collapsible-title {
+    grid-column-start: 1;
+    grid-row-start: 1;
+  }
+  .collapsible-description {
+    grid-column-start: 1;
+    grid-row-start: 2;
+  }
+  .collapsible-suffix {
+    grid-column-start: 2;
+    grid-row-start: 1;
+    grid-row-end: span 2;
+  }
+}
+
 
 :host.collapsible-small {
 
