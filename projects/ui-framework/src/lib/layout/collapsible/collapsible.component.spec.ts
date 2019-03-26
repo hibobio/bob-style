@@ -249,24 +249,23 @@ describe('CollapsibleComponent', () => {
   });
 
   describe('Disabled input', () => {
-    it('should disable the panel and remove content if disabled=true', () => {
+    it('should disable the panel and collapse the panel if disabled=true (but not to remove content that was already initialised)', () => {
       collapsibleComponent.expanded = true;
       fixture.detectChanges();
-      const panelBodyElement = fixture.debugElement.query(
-        By.css('.mat-expansion-panel-body')
-      );
-      expect(panelBodyElement.nativeElement.children.length).toEqual(1);
       collapsibleComponent.disabled = true;
-      collapsibleComponent.expanded = false;
       fixture.detectChanges();
       const headerElement = fixture.debugElement.query(
         By.css('mat-expansion-panel-header[aria-disabled="true"]')
       );
-
+      const panelBodyElement = fixture.debugElement.query(
+        By.css('.mat-expansion-panel-body')
+      );
+      const contentElement = fixture.debugElement.query(
+        By.css('.mat-expansion-panel-content')
+      );
       expect(headerElement).toBeTruthy();
-
-      // i cant get this line to work. tried everything (imcluding fakeasync and all the other esoteric things)
-      // expect(panelBodyElement.nativeElement.children.length).toEqual(0);
+      expect(panelBodyElement.nativeElement.children.length).toEqual(1);
+      expect(contentElement.nativeElement.clientHeight).toEqual(0);
     });
   });
 

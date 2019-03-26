@@ -6,8 +6,7 @@ import {
   HostBinding,
   AfterViewInit,
   ViewChild,
-  ElementRef,
-  SimpleChanges
+  ElementRef
 } from '@angular/core';
 import { CollapsibleType } from './collapsible.enum';
 
