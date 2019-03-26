@@ -62,10 +62,23 @@ const note = `
   disabled | boolean | if the panel is disabled (can't be opened) | false
   title | panel header title | title | ''
   description | string | panel header description | none (optional)
-  opened | Function | Event emitted every time the panel is opened
-  closed | Function | Event emitted every time the panel is closed
 
   Content marked with [suffix] will be projected into the right part of the panel header.
+
+
+  #### Events
+  Name | Description
+  --- | ---
+  opened | Emitted every time the panel is opened
+  closed | Emitted every time the panel is closed
+
+
+  #### Methods
+  Name | Description
+  --- | ---
+  close() | collapses panel
+  open() | expands panel, if collapsible is not disabled
+  toggle() | expands or collapses panel, if collapsible is not disabled
 
   ~~~
   ${template}
