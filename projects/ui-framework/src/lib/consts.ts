@@ -11,6 +11,6 @@ export enum ComponentGroupType {
   Layout = 'Layout'
 }
 
-export const serverDateFormat = 'YYYY-MM-DDTHH:mm';
+export const serverDateFormat = 'YYYY-MM-DD';
 
 export const inputAttributesPlaceholder = '#moreattributes';
