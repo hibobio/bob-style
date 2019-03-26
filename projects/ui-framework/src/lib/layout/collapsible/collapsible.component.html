@@ -1,10 +1,10 @@
-<mat-expansion-panel [expanded]="expanded"
+<mat-expansion-panel [expanded]="expanded && !disabled"
                      [disabled]="disabled"
                      (closed)="onPanelClosed($event)"
                      (opened)="onPanelOpened($event)">
 
-  <mat-expansion-panel-header [collapsedHeight]="'auto'"
-                              [expandedHeight]="'auto'">
+  <mat-expansion-panel-header collapsedHeight="auto"
+                              expandedHeight="auto">
 
     <b-display-3 class="collapsible-title"
                  *ngIf="type === 'big'">

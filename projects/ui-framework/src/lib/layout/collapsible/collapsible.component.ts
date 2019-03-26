@@ -6,7 +6,8 @@ import {
   HostBinding,
   AfterViewInit,
   ViewChild,
-  ElementRef
+  ElementRef,
+  SimpleChanges
 } from '@angular/core';
 import { CollapsibleType } from './collapsible.enum';
 
@@ -38,21 +39,34 @@ export class CollapsibleComponent implements AfterViewInit {
 
   hasSuffix = true;
 
-  ngAfterViewInit() {
-    // wait a tick first to avoid one-time devMode
-    // unidirectional-data-flow-violation error
-    // https://stackoverflow.com/a/38937802
+  open(): void {
+    if (!this.disabled) {
+      this.expanded = true;
+    }
+  }
+
+  close(): void {
+    this.expanded = false;
+  }
+
+  toggle(): void {
+    if (!this.disabled) {
+      this.expanded = !this.expanded;
+    }
+  }
+
+  ngAfterViewInit(): void {
     setTimeout(() => {
       this.hasSuffix =
         this.suffix.nativeElement.children.length !== 0 ? true : false;
     }, 0);
   }
 
-  onPanelOpened($event) {
+  onPanelOpened($event): void {
     this.opened.emit($event);
   }
 
-  onPanelClosed($event) {
+  onPanelClosed($event): void {
     this.closed.emit($event);
   }
 }

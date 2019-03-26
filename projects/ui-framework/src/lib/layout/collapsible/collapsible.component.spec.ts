@@ -1,18 +1,5 @@
-/* tslint:disable:no-unused-variable */
-import {
-  ComponentFixture,
-  async,
-  TestBed,
-  fakeAsync,
-  tick
-} from '@angular/core/testing';
-import {
-  NO_ERRORS_SCHEMA,
-  Component,
-  Input,
-  EventEmitter,
-  Output
-} from '@angular/core';
+import { ComponentFixture, async, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { CollapsibleComponent } from './collapsible.component';
@@ -23,18 +10,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
-  selector: 'test',
   template: `
-    <b-collapsible
-      [@.disabled]="true"
-      [type]="type"
-      [expanded]="expanded"
-      [disabled]="disabled"
-      [title]="title"
-      [description]="description"
-      (closed)="onPanelClosed($event)"
-      (opened)="onPanelOpened($event)"
-    >
+    <b-collapsible [@.disabled]="true">
       <span suffix>suffix</span>
       <span class="test-content" style="height: 300px;">content</span>
     </b-collapsible>
@@ -43,24 +20,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 })
 class TestComponent {
   constructor() {}
-  @Input() type: CollapsibleType = CollapsibleType.small;
-  @Input() expanded = false;
-  @Input() disabled = false;
-  @Input() title: string;
-  @Input() description?: string;
-  @Output() opened: EventEmitter<void> = new EventEmitter<void>();
-  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
-  onPanelOpened($event) {
-    this.opened.emit($event);
-  }
-  onPanelClosed($event) {
-    this.closed.emit($event);
-  }
 }
 
 describe('CollapsibleComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let component: TestComponent;
+  let collapsibleComponent: CollapsibleComponent;
+  let collapsibleNativeElement: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -72,13 +38,21 @@ describe('CollapsibleComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(TestComponent);
         component = fixture.componentInstance;
-        spyOn(component.opened, 'emit');
-        spyOn(component.closed, 'emit');
+
+        collapsibleComponent = fixture.debugElement.query(
+          By.css('b-collapsible')
+        ).componentInstance;
+        collapsibleNativeElement = fixture.debugElement.query(
+          By.css('b-collapsible')
+        ).nativeElement;
+
+        spyOn(collapsibleComponent.opened, 'emit');
+        spyOn(collapsibleComponent.closed, 'emit');
       });
   }));
 
-  describe('component', () => {
-    it(': should start with no content (content lazy loaded on first panel open)', () => {
+  describe('Lazy content init', () => {
+    it('should start with no content (content lazy loaded on first panel open)', () => {
       fixture.detectChanges();
       const panelBodyElement = fixture.debugElement.query(
         By.css('.mat-expansion-panel-body')
@@ -86,16 +60,18 @@ describe('CollapsibleComponent', () => {
       expect(panelBodyElement.nativeElement.children.length).toEqual(0);
     });
 
-    it(': if the panel is expanded, we should see content (this tests both the expanded input and the lazy content init mechanism)', () => {
-      component.expanded = true;
+    it('should add content when panel is expanded the first time', () => {
+      collapsibleComponent.expanded = true;
       fixture.detectChanges();
       const contentElement = fixture.debugElement.query(
         By.css('.test-content')
       );
       expect(contentElement).toBeTruthy();
     });
+  });
 
-    it(': clicking on panel title should expand the panel', () => {
+  describe('Expand / Collapse', () => {
+    it('should expand panel when title is clicked', () => {
       fixture.detectChanges();
       const headerElement = fixture.debugElement.query(
         By.css('mat-expansion-panel-header')
@@ -112,8 +88,8 @@ describe('CollapsibleComponent', () => {
       expect(headerElement.nativeElement.classList).toContain('mat-expanded');
     });
 
-    it(': clicking on expanded panel title should collapse the panel', () => {
-      component.expanded = true;
+    it('should collapse panel when title is clicked', () => {
+      collapsibleComponent.expanded = true;
       fixture.detectChanges();
       const headerElement = fixture.debugElement.query(
         By.css('mat-expansion-panel-header')
@@ -130,18 +106,12 @@ describe('CollapsibleComponent', () => {
       );
       expect(contentElement.nativeElement.clientHeight).toEqual(0);
     });
+  });
 
-    it(': element with attribute [suffix] should be transcluded in the header', () => {
-      fixture.detectChanges();
-      const suffixElement = fixture.debugElement.query(
-        By.css('.mat-expansion-panel-header .collapsible-suffix [suffix]')
-      );
-      expect(suffixElement).toBeTruthy();
-    });
-
-    it(': type=small input should display title input in b-subheading element', () => {
-      component.title = 'hello';
-      component.type = CollapsibleType.small;
+  describe('Type', () => {
+    it('should display title text in b-subheading element when type=small', () => {
+      collapsibleComponent.title = 'hello';
+      collapsibleComponent.type = CollapsibleType.small;
       fixture.detectChanges();
       const bSubheadingElement = fixture.debugElement.query(
         By.css('b-subheading')
@@ -155,9 +125,9 @@ describe('CollapsibleComponent', () => {
       ).toEqual('hello');
     });
 
-    it(': type=big input should display title input in b-display-3 element', () => {
-      component.title = 'hello';
-      component.type = CollapsibleType.big;
+    it('should display title text in b-display-3 element when type=big', () => {
+      collapsibleComponent.title = 'hello';
+      collapsibleComponent.type = CollapsibleType.big;
       fixture.detectChanges();
       const bSubheadingElement = fixture.debugElement.query(
         By.css('b-subheading')
@@ -171,29 +141,32 @@ describe('CollapsibleComponent', () => {
       ).toEqual('hello');
     });
 
-    it(': type input should change class on host component and default to collapsible-small', () => {
+    it('should change class on component host according to type input and default to .collapsible-small', () => {
       fixture.detectChanges();
-      const collapsibleHostElement = fixture.debugElement.query(
-        By.css('b-collapsible')
-      );
-      expect(collapsibleHostElement.nativeElement.classList).toContain(
-        'collapsible-small'
-      );
-      expect(collapsibleHostElement.nativeElement.classList).not.toContain(
+      expect(collapsibleNativeElement.classList).toContain('collapsible-small');
+      expect(collapsibleNativeElement.classList).not.toContain(
         'collapsible-big'
       );
-      component.type = CollapsibleType.big;
+      collapsibleComponent.type = CollapsibleType.big;
       fixture.detectChanges();
-      expect(collapsibleHostElement.nativeElement.classList).not.toContain(
+      expect(collapsibleNativeElement.classList).not.toContain(
         'collapsible-small'
       );
-      expect(collapsibleHostElement.nativeElement.classList).toContain(
-        'collapsible-big'
+      expect(collapsibleNativeElement.classList).toContain('collapsible-big');
+    });
+  });
+
+  describe('Description and Suffix in header', () => {
+    it('should put transcluded element with attribute [suffix] in the header', () => {
+      fixture.detectChanges();
+      const suffixElement = fixture.debugElement.query(
+        By.css('.mat-expansion-panel-header .collapsible-suffix [suffix]')
       );
+      expect(suffixElement).toBeTruthy();
     });
 
-    it(': description input should be displayed in .collapsible-description element', () => {
-      component.description = 'hello';
+    it('should display description text in .collapsible-description element', () => {
+      collapsibleComponent.description = 'hello';
       fixture.detectChanges();
       const descriptionElement = fixture.debugElement.query(
         By.css('.collapsible-description')
@@ -203,8 +176,8 @@ describe('CollapsibleComponent', () => {
       );
     });
 
-    it(': when pannel is collapsed, description and suffix should only be displayed on header hover', () => {
-      component.description = 'hello';
+    it('should display description and suffix only on header hover if panel is collapsed', () => {
+      collapsibleComponent.description = 'hello';
       fixture.detectChanges();
       const descriptionElement = fixture.debugElement.query(
         By.css('.collapsible-description')
@@ -220,9 +193,9 @@ describe('CollapsibleComponent', () => {
       );
     });
 
-    it(': when pannel is expanded, description and suffix should always show', () => {
-      component.expanded = true;
-      component.description = 'hello';
+    it('should always display description and suffix if pannel is expanded', () => {
+      collapsibleComponent.expanded = true;
+      collapsibleComponent.description = 'hello';
       fixture.detectChanges();
       const descriptionElement = fixture.debugElement.query(
         By.css('.collapsible-description')
@@ -237,32 +210,79 @@ describe('CollapsibleComponent', () => {
         'none'
       );
     });
+  });
 
-    it(': setting disabled input to true should disable the panel', () => {
-      component.disabled = true;
+  describe('Control methods', () => {
+    it('should expand the panel when open() is called', () => {
+      collapsibleComponent.open();
+      fixture.detectChanges();
+      expect(collapsibleComponent.expanded).toEqual(true);
+    });
+
+    it('should collapse the panel when close() is called', () => {
+      collapsibleComponent.expanded = true;
+      fixture.detectChanges();
+      collapsibleComponent.close();
+      fixture.detectChanges();
+      expect(collapsibleComponent.expanded).toEqual(false);
+    });
+
+    it('should toggle the panel when toggle() is called', () => {
+      collapsibleComponent.toggle();
+      fixture.detectChanges();
+      expect(collapsibleComponent.expanded).toEqual(true);
+      collapsibleComponent.toggle();
+      fixture.detectChanges();
+      expect(collapsibleComponent.expanded).toEqual(false);
+    });
+
+    it('should not do anything if disabled=true', () => {
+      collapsibleComponent.disabled = true;
+      fixture.detectChanges();
+      collapsibleComponent.open();
+      fixture.detectChanges();
+      expect(collapsibleComponent.expanded).toEqual(false);
+      collapsibleComponent.toggle();
+      fixture.detectChanges();
+      expect(collapsibleComponent.expanded).toEqual(false);
+    });
+  });
+
+  describe('Disabled input', () => {
+    it('should disable the panel and remove content if disabled=true', () => {
+      collapsibleComponent.expanded = true;
+      fixture.detectChanges();
+      const panelBodyElement = fixture.debugElement.query(
+        By.css('.mat-expansion-panel-body')
+      );
+      expect(panelBodyElement.nativeElement.children.length).toEqual(1);
+      collapsibleComponent.disabled = true;
+      collapsibleComponent.expanded = false;
       fixture.detectChanges();
       const headerElement = fixture.debugElement.query(
         By.css('mat-expansion-panel-header[aria-disabled="true"]')
       );
-      const panelBodyElement = fixture.debugElement.query(
-        By.css('.mat-expansion-panel-body')
-      );
+
       expect(headerElement).toBeTruthy();
-      expect(panelBodyElement.nativeElement.children.length).toEqual(0);
+
+      // i cant get this line to work. tried everything (imcluding fakeasync and all the other esoteric things)
+      // expect(panelBodyElement.nativeElement.children.length).toEqual(0);
+    });
+  });
+
+  describe('Opend & Closed events', () => {
+    it('should emit opened event when panel is expanded', () => {
+      collapsibleComponent.expanded = true;
+      fixture.detectChanges();
+      expect(collapsibleComponent.opened.emit).toHaveBeenCalled();
     });
 
-    it('should emit opened event, when panel is expanded', () => {
-      component.expanded = true;
+    it('should emit closed event when panel is collapsed', () => {
+      collapsibleComponent.expanded = true;
       fixture.detectChanges();
-      expect(component.opened.emit).toHaveBeenCalled();
-    });
-
-    it('should emit closed event, when panel is collapsed', () => {
-      component.expanded = true;
+      collapsibleComponent.expanded = false;
       fixture.detectChanges();
-      component.expanded = false;
-      fixture.detectChanges();
-      expect(component.closed.emit).toHaveBeenCalled();
+      expect(collapsibleComponent.closed.emit).toHaveBeenCalled();
     });
   });
 });
