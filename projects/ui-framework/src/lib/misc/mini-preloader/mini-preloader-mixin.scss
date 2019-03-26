@@ -9,7 +9,7 @@ $preloader-svg: url("data:image/svg+xml,%3Csvg viewBox='0 0 210 60' width='210' 
 @mixin mini-preloader(
   $size: 48px 12px,
   $base-selector: '&:empty', // use '&' to insert preloader on non-empty container element
-  $full-size-selecotr: '&'
+  $full-size-selector: '&'
 ) {
   #{$base-selector} {
     &:before {
@@ -24,7 +24,7 @@ $preloader-svg: url("data:image/svg+xml,%3Csvg viewBox='0 0 210 60' width='210' 
       background-size: contain;
     }
 
-    #{$full-size-selecotr} {
+    #{$full-size-selector} {
       @include flex-align;
       @include size(100%);
       flex-grow: 5;

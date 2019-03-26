@@ -2,5 +2,5 @@
 
 :host {
   display: inline-flex;
-  @include mini-preloader($full-size-selecotr: '&[b-mini-preloader]');
+  @include mini-preloader($full-size-selector: '&[b-mini-preloader]');
 }
