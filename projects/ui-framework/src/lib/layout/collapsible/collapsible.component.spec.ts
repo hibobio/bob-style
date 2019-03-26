@@ -28,7 +28,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       [description]="description"
     >
       <span suffix>suffix</span>
-      <span class="test-content">content</span>
+      <span class="test-content" style="height: 300px;">content</span>
     </b-collapsible>
   `,
   providers: []
@@ -71,27 +71,27 @@ describe('CollapsibleComponent', () => {
     it(': if the panel is expanded, we should see content (this tests both the expanded input and the lazy content init mechanism)', () => {
       component.expanded = true;
       fixture.detectChanges();
-      const panelContentElement = fixture.debugElement.query(
+      const contentElement = fixture.debugElement.query(
         By.css('.test-content')
       );
-      expect(panelContentElement).toBeTruthy();
+      expect(contentElement).toBeTruthy();
     });
 
     it(': clicking on panel title should expand the panel', () => {
       fixture.detectChanges();
-      const collapsibleHeaderElement = fixture.debugElement.query(
+      const headerElement = fixture.debugElement.query(
         By.css('mat-expansion-panel-header')
       );
-      expect(collapsibleHeaderElement.nativeElement.classList).not.toContain(
+      expect(headerElement.nativeElement.classList).not.toContain(
         'mat-expanded'
       );
-      collapsibleHeaderElement.nativeElement.click();
+      headerElement.nativeElement.click();
       fixture.detectChanges();
-      const panelContentElement = fixture.debugElement.query(
+      const contentElement = fixture.debugElement.query(
         By.css('.test-content')
       );
-      expect(panelContentElement).toBeTruthy();
-      expect(collapsibleHeaderElement.nativeElement.classList).toContain(
+      expect(contentElement).toBeTruthy();
+      expect(headerElement.nativeElement.classList).toContain(
         'mat-expanded'
       );
     });
@@ -99,22 +99,22 @@ describe('CollapsibleComponent', () => {
     it(': clicking on expanded panel title should collapse the panel', () => {
       component.expanded = true;
       fixture.detectChanges();
-      const collapsibleHeaderElement = fixture.debugElement.query(
+      const headerElement = fixture.debugElement.query(
         By.css('mat-expansion-panel-header')
       );
-      const panelContentElement = fixture.debugElement.query(
+      const contentElement = fixture.debugElement.query(
         By.css('.mat-expansion-panel-content')
       );
-      expect(collapsibleHeaderElement.nativeElement.classList).toContain(
+      expect(headerElement.nativeElement.classList).toContain(
         'mat-expanded'
       );
-      expect(panelContentElement.nativeElement.clientHeight).toBeGreaterThan(0);
-      collapsibleHeaderElement.nativeElement.click();
+      expect(contentElement.nativeElement.clientHeight).toBeGreaterThan(0);
+      headerElement.nativeElement.click();
       fixture.detectChanges();
-      expect(collapsibleHeaderElement.nativeElement.classList).not.toContain(
+      expect(headerElement.nativeElement.classList).not.toContain(
         'mat-expanded'
       );
-      expect(panelContentElement.nativeElement.clientHeight).toEqual(0);
+      expect(contentElement.nativeElement.clientHeight).toEqual(0);
     });
 
     it(': element with attribute [suffix] should be transcluded in the header', () => {
@@ -180,17 +180,32 @@ describe('CollapsibleComponent', () => {
       );
     });
 
+    it(': when pannel is collapsed, description and suffix should only be displayed on header hover', () => {
+      component.description = 'hello';
+      fixture.detectChanges();
+      const descriptionElement = fixture.debugElement.query(
+        By.css('.collapsible-description')
+      );
+      const suffixElement = fixture.debugElement.query(
+        By.css('.mat-expansion-panel-header .collapsible-suffix [suffix]')
+      );
+
+
+
+      
+    });
+
     it(': setting disabled input to true should disable the panel', () => {
       component.disabled = true;
       fixture.detectChanges();
-      const panelHeaderElement = fixture.debugElement.query(
+      const headerElement = fixture.debugElement.query(
         By.css('mat-expansion-panel-header[aria-disabled="true"]')
       );
       const panelBodyElement = fixture.debugElement.query(
         By.css('.mat-expansion-panel-body')
       );
 
-      expect(panelHeaderElement).toBeTruthy();
+      expect(headerElement).toBeTruthy();
       expect(panelBodyElement.nativeElement.children.length).toEqual(0);
     });
   });
