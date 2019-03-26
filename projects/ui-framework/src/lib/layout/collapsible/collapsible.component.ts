@@ -34,11 +34,14 @@ export class CollapsibleComponent implements AfterViewInit {
   @Output() opened: EventEmitter<void> = new EventEmitter<void>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
+  @ViewChild('matpanel') matpanel: ElementRef;
   @ViewChild('suffix') suffix: ElementRef;
 
   hasSuffix = true;
 
   ngAfterViewInit() {
+    console.log(this.matpanel.nativeElement);
+
     // wait a tick first to avoid one-time devMode
     // unidirectional-data-flow-violation error
     // https://stackoverflow.com/a/38937802

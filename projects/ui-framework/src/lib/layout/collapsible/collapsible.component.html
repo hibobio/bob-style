@@ -1,4 +1,5 @@
-<mat-expansion-panel [expanded]="expanded"
+<mat-expansion-panel #matpanel
+                     [expanded]="expanded"
                      [disabled]="disabled"
                      (closed)="onPanelClosed($event)"
                      (opened)="onPanelOpened($event)">
