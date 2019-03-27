@@ -38,22 +38,6 @@ export class CollapsibleComponent implements AfterViewInit {
 
   hasSuffix = true;
 
-  open(): void {
-    if (!this.disabled) {
-      this.expanded = true;
-    }
-  }
-
-  close(): void {
-    this.expanded = false;
-  }
-
-  toggle(): void {
-    if (!this.disabled) {
-      this.expanded = !this.expanded;
-    }
-  }
-
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.hasSuffix =

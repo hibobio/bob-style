@@ -72,14 +72,6 @@ const note = `
   opened | Emitted every time the panel is opened
   closed | Emitted every time the panel is closed
 
-
-  #### Methods
-  Name | Description
-  --- | ---
-  close() | collapses panel
-  open() | expands panel, if collapsible is not disabled
-  toggle() | expands or collapses panel, if collapsible is not disabled
-
   ~~~
   ${template}
   ~~~

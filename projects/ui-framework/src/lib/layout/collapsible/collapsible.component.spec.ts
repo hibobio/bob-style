@@ -212,42 +212,6 @@ describe('CollapsibleComponent', () => {
     });
   });
 
-  describe('Control methods', () => {
-    it('should expand the panel when open() is called', () => {
-      collapsibleComponent.open();
-      fixture.detectChanges();
-      expect(collapsibleComponent.expanded).toEqual(true);
-    });
-
-    it('should collapse the panel when close() is called', () => {
-      collapsibleComponent.expanded = true;
-      fixture.detectChanges();
-      collapsibleComponent.close();
-      fixture.detectChanges();
-      expect(collapsibleComponent.expanded).toEqual(false);
-    });
-
-    it('should toggle the panel when toggle() is called', () => {
-      collapsibleComponent.toggle();
-      fixture.detectChanges();
-      expect(collapsibleComponent.expanded).toEqual(true);
-      collapsibleComponent.toggle();
-      fixture.detectChanges();
-      expect(collapsibleComponent.expanded).toEqual(false);
-    });
-
-    it('should not do anything if disabled=true', () => {
-      collapsibleComponent.disabled = true;
-      fixture.detectChanges();
-      collapsibleComponent.open();
-      fixture.detectChanges();
-      expect(collapsibleComponent.expanded).toEqual(false);
-      collapsibleComponent.toggle();
-      fixture.detectChanges();
-      expect(collapsibleComponent.expanded).toEqual(false);
-    });
-  });
-
   describe('Disabled input', () => {
     it('should disable the panel and collapse the panel if disabled=true (but not to remove content that was already initialised)', () => {
       collapsibleComponent.expanded = true;
