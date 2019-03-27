@@ -1,13 +1,13 @@
 <ag-grid-angular #agGrid
-                 class="ag-theme-balham"
+                 [ngClass]="{'grid-ready': gridReady}"
                  [rowData]="rowData"
-                 [suppressRowClickSelection]="true"
-                 [columnDefs]="columnDefs"
+                 [columnDefs]="gridColumnDefs"
+                 [gridOptions]="gridOptions"
                  [rowSelection]="rowSelection"
                  [rowHeight]="rowHeight"
                  [headerHeight]="rowHeight"
-                 [gridOptions]="gridOptions"
+                 [suppressRowClickSelection]="true"
                  (rowClicked)="onRowClicked($event)"
-                 (rowSelected)="onRowSelected($event)"
+                 (selectionChanged)="onSelectionChanged($event)"
                  (sortChanged)="onSortChanged($event)">
 </ag-grid-angular>

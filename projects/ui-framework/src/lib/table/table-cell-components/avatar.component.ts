@@ -10,7 +10,7 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
                   [isClickable]="true"
                   (clicked)='clicked($event)'>
         </b-avatar>
-    `
+    `,
 })
 export class AvatarCellComponent implements ICellRendererAngularComp {
   public params: any;
@@ -24,6 +24,5 @@ export class AvatarCellComponent implements ICellRendererAngularComp {
   }
 
   clicked($event: void) {
-    console.log($event);
   }
 }

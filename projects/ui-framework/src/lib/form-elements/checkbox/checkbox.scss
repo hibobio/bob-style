@@ -16,6 +16,7 @@
     color: $grey-800;
     position: relative;
     top: -1px;
+    transition: none;
   }
   &:hover {
     box-shadow: 0 2px 5px $boxShadowColor;

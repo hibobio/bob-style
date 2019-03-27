@@ -2,19 +2,21 @@ export enum SortDirections {
   Asc = 'asc',
   Desc = 'desc'
 }
+
 export enum RowSelection {
   Multiple = 'multiple',
   Single = 'single',
 }
+
 export enum PinDirection {
   Left = 'left',
   Right = 'right',
 }
+
 export interface ColumnDef {
   headerName: string;
   field: string;
-  sortable?: true;
-  checkboxSelection?: boolean;
+  sortable?: boolean;
   resizable?: boolean;
   pinned?: PinDirection;
   cellRendererFramework?: any;
@@ -27,18 +29,9 @@ export interface ColumnDef {
   headerCheckboxSelection?: boolean | Function;
 }
 
-export enum RowSelectionEventType {
-  Select = 'select',
-  Unselect = 'unselect',
-}
-
 export interface RowClickedEvent {
   rowIndex: number,
   data: object;
-}
-
-export interface RowSelectedEvent  extends RowClickedEvent{
-  type: RowSelectionEventType;
 }
 
 export interface SortChangedEvent {

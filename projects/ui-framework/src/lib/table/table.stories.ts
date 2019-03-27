@@ -8,7 +8,7 @@ import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.mo
 import { TableModule } from './table.module';
 import { AvatarModule } from '../buttons-indicators/avatar/avatar.module';
 import { mockColumnsDefs, mockRowData } from './table.mock';
-import { AvatarCellComponent } from './table/avatar.component';
+import { AvatarCellComponent } from './table-cell-components/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { RowSelection } from './table/table.interface';
 
@@ -20,7 +20,7 @@ const template = `
          [columnDefs]="columnDefs"
          [rowSelection]="rowSelection"
          (rowClicked)="rowClicked($event)"
-         (rowSelected)="rowSelected($event)"
+         (selectionChanged)="selectionChanged($event)"
          (sortChanged)="sortChanged($event)">
 </b-table>
 `;
@@ -39,14 +39,15 @@ const note = `
   *TableModule*
 
   #### Properties
-  Name | Type | Description
-  --- | --- | ---
-  rowData | json | Table data
-  columnDefs | json | Columns definition
-  rowSelection | RowSelection | Single or multiple
+  Name | Type | Description | default value
+  --- | --- | --- | ---
+  rowData | json | Table data |
+  columnDefs | json | Columns definition |
+  rowSelection | RowSelection | single multiple | null
+  maxHeight | number | grid max height | 450
   rowClicked | Event | Row clicked event
-  rowSelected | Function | Row selected event
-  sortChanged | Function | Sort changed event
+  selectionChanged | Event | All selected rows
+  sortChanged | Event | Sort changed event
 
   ~~~
   ${ template }
@@ -62,7 +63,7 @@ tableStories.add(
         rowData: object('rowData', mockRowData),
         columnDefs: object('columnDefs', mockColumnsDefs),
         rowClicked: action('rowClicked'),
-        rowSelected: action('rowSelected'),
+        selectionChanged: action('selectionChanged'),
         sortChanged: action('sortChanged'),
       },
       moduleMetadata: {

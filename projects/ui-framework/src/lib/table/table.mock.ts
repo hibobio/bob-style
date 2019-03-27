@@ -1,52 +1,39 @@
 import { ColumnDef, PinDirection, SortDirections } from './table/table.interface';
-import { AvatarCellComponent } from './table/avatar.component';
+import { AvatarCellComponent } from './table-cell-components/avatar.component';
 
 export const mockColumnsDefs: ColumnDef[] = [
   {
     headerName: '',
-    field: 'selection',
-    checkboxSelection: true,
-    pinned: PinDirection.Left,
-    lockPosition: true,
-    headerCheckboxSelection: true,
-  },
-  {
-    headerName: '',
     field: 'about.avatar',
     cellRendererFramework: AvatarCellComponent,
-    lockPosition: true,
     pinned: PinDirection.Left,
+    lockPosition: true,
+    resizable: false,
+    sortable: false,
   },
   {
     headerName: 'Display Name',
     field: 'fullName',
-    resizable: true,
     sort: SortDirections.Asc,
-    sortable: true,
   },
   {
     headerName: 'Email',
     field: 'email',
-    resizable: true,
-    sortable: true,
   },
   {
     headerName: 'Status',
     field: 'internal.status',
-    resizable: true,
-    sortable: true,
   },
   {
     headerName: 'Hired Date',
     field: 'hiredDate',
-    resizable: true,
-    sortable: true,
   },
 ];
 
 export const mockRowData = [
   {
     fullName: 'Omri Hecht',
+    id: '1',
     email: 'omri.hecht@hibob.io',
     internal: {
       status: 'Active'
@@ -60,6 +47,7 @@ export const mockRowData = [
   },
   {
     fullName: 'Doron Cynsiger',
+    id: '2',
     email: 'doron.cynsiger@hibob.io',
     internal: {
       status: 'Active'
@@ -74,6 +62,7 @@ export const mockRowData = [
   },
   {
     fullName: 'Israel David',
+    id: '3',
     email: 'israel.david@hibob.io',
     internal: {
       status: 'Active'
@@ -87,6 +76,7 @@ export const mockRowData = [
   },
   {
     fullName: 'Ishai Borovoy',
+    id: '4',
     email: 'ishai.borovoy@hibob.io',
     internal: {
       status: 'InActive'
@@ -102,8 +92,9 @@ export const mockRowData = [
 ];
 
 // For test performance
-// for (let i = 4; i < 2000; i++) {
+// for (let i = 4; i < 40; i++) {
 //   mockRowData[i] = mockRowData[0];
+//   mockRowData[i].id = `${ i }`;
 //   if (i % 100 === 0) {
 //     console.log('Generate rows ' + i);
 //   }

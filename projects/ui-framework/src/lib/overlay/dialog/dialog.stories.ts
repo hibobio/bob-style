@@ -79,8 +79,6 @@ export class YourDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.editedText = this.data.textContent;
-
     this.dialogButtonConfig = {} // DialogButtons config
   }
 }

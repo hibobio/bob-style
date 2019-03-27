@@ -5,11 +5,18 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CdkTableModule } from '@angular/cdk/table';
 import { AgGridModule } from 'ag-grid-angular';
 import { AvatarModule } from '../../public_api';
-import { AvatarCellComponent } from './table/avatar.component';
+import { AvatarCellComponent } from './table-cell-components/avatar.component';
+import { TableUtilsService } from './table-utils-service/table-utils.service';
 
 
 @NgModule({
-  declarations: [TableComponent, AvatarCellComponent],
+  declarations: [
+    TableComponent,
+    AvatarCellComponent,
+  ],
+  providers: [
+    TableUtilsService,
+  ],
   imports: [
     CommonModule,
     DragDropModule,
@@ -18,6 +25,8 @@ import { AvatarCellComponent } from './table/avatar.component';
     AgGridModule,
     AgGridModule.withComponents([AvatarCellComponent])
   ],
-  exports: [TableComponent],
+  exports: [
+    TableComponent,
+  ],
 })
 export class TableModule { }
