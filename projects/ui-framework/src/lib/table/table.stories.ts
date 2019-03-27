@@ -15,21 +15,19 @@ import { RowSelection } from './table/table.interface';
 const tableStories = storiesOf(ComponentGroupType.DataTable, module).addDecorator(withKnobs);
 
 const template = `
-<b-table
-  [rowData]="rowData"
-  [columnDefs]="columnDefs"
-  [rowSelection]="rowSelection"
-  [rowHeight]="rowHeight"
-  [sizeColumnsToFit]="sizeColumnsToFit"
-  (rowClicked)="rowClicked($event)"
-  (rowSelected)="rowSelected($event)"
-  (sortChanged)="sortChanged($event)">
+<b-table style="width: calc(100% - 40px); margin: 0 auto;"
+         [rowData]="rowData"
+         [columnDefs]="columnDefs"
+         [rowSelection]="rowSelection"
+         (rowClicked)="rowClicked($event)"
+         (rowSelected)="rowSelected($event)"
+         (sortChanged)="sortChanged($event)">
 </b-table>
 `;
 
 const storyTemplate = `
 <b-story-book-layout title="Data Table">
-  ${template}
+  ${ template }
 </b-story-book-layout>
 `;
 
@@ -45,15 +43,13 @@ const note = `
   --- | --- | ---
   rowData | json | Table data
   columnDefs | json | Columns definition
-  rowHeight | number | The height of the row
-  sizeColumnsToFit | boolean | Auto column size
   rowSelection | RowSelection | Single or multiple
   rowClicked | Event | Row clicked event
   rowSelected | Function | Row selected event
   sortChanged | Function | Sort changed event
 
   ~~~
-  ${template}
+  ${ template }
   ~~~
 `;
 tableStories.add(
@@ -63,13 +59,11 @@ tableStories.add(
       template: storyTemplate,
       props: {
         rowSelection: select('rowSelection', rowSelection, RowSelection.Multiple),
-        rowHeight: number('rowHeight', 50),
-        sizeColumnsToFit: boolean('sizeColumnsToFit', true),
         rowData: object('rowData', mockRowData),
         columnDefs: object('columnDefs', mockColumnsDefs),
-        rowClicked: action(),
-        rowSelected: action(),
-        sortChanged: action()
+        rowClicked: action('rowClicked'),
+        rowSelected: action('rowSelected'),
+        sortChanged: action('sortChanged'),
       },
       moduleMetadata: {
         entryComponents: [AvatarCellComponent],

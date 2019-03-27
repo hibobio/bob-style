@@ -6,17 +6,42 @@ export const mockColumnsDefs: ColumnDef[] = [
     headerName: '',
     field: 'selection',
     checkboxSelection: true,
-    resizable: true,
     pinned: PinDirection.Left,
-    width: 40,
     lockPosition: true,
     headerCheckboxSelection: true,
   },
-  {headerName: '', field: 'about.avatar', cellRendererFramework: AvatarCellComponent, width: 40, lockPosition: true},
-  {headerName: 'Display Name', field: 'fullName', resizable: true, sort: SortDirections.Asc, sortable: true},
-  {headerName: 'Email', field: 'email', resizable: true, sortable: true},
-  {headerName: 'Status', field: 'internal.status', resizable: true, sortable: true},
-  {headerName: 'Hired Date', field: 'hiredDate', resizable: true, sortable: true},
+  {
+    headerName: '',
+    field: 'about.avatar',
+    cellRendererFramework: AvatarCellComponent,
+    lockPosition: true,
+    pinned: PinDirection.Left,
+  },
+  {
+    headerName: 'Display Name',
+    field: 'fullName',
+    resizable: true,
+    sort: SortDirections.Asc,
+    sortable: true,
+  },
+  {
+    headerName: 'Email',
+    field: 'email',
+    resizable: true,
+    sortable: true,
+  },
+  {
+    headerName: 'Status',
+    field: 'internal.status',
+    resizable: true,
+    sortable: true,
+  },
+  {
+    headerName: 'Hired Date',
+    field: 'hiredDate',
+    resizable: true,
+    sortable: true,
+  },
 ];
 
 export const mockRowData = [
@@ -27,7 +52,9 @@ export const mockRowData = [
       status: 'Active'
     },
     about: {
-      avatar: {imageSource: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'},
+      avatar: {
+        imageSource: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg',
+      },
     },
     hiredDate: '2017-11-29'
   },
@@ -39,7 +66,9 @@ export const mockRowData = [
     },
     about: {
       avatar:
-        {imageSource: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvWogj6uHgdZ8ovMF6cYShBGxsOvfk0xv1GB6rxwAP7ABAivC6'},
+        {
+          imageSource: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvWogj6uHgdZ8ovMF6cYShBGxsOvfk0xv1GB6rxwAP7ABAivC6',
+        },
     },
     hiredDate: '2017-02-29'
   },
@@ -50,7 +79,9 @@ export const mockRowData = [
       status: 'Active'
     },
     about: {
-      avatar: {imageSource: 'https://townsquare.media/site/442/files/2014/06/solo-foot-1.jpg?w=980&q=75'},
+      avatar: {
+        imageSource: 'https://townsquare.media/site/442/files/2014/06/solo-foot-1.jpg?w=980&q=75',
+      },
     },
     hiredDate: '2016-01-29'
   },
@@ -71,9 +102,9 @@ export const mockRowData = [
 ];
 
 // For test performance
-/*for (let i = 4; i < 2000; i++) {
-  mockRowData[i] = mockRowData[0];
-  if (i % 100 === 0) {
-    console.log('Generate rows ' + i);
-  }
-}*/
+// for (let i = 4; i < 2000; i++) {
+//   mockRowData[i] = mockRowData[0];
+//   if (i % 100 === 0) {
+//     console.log('Generate rows ' + i);
+//   }
+// }

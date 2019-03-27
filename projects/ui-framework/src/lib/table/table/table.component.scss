@@ -1,5 +1,99 @@
-::ng-deep {
-  .ag-cell {
-    text-align: left !important;
+@import '../../style/colors';
+@import '../../style/mixins';
+@import '../../form-elements/checkbox/checkbox';
+
+@mixin cell {
+  text-align: left;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  color: $grey-700;
+  &:focus {
+    outline: none;
+  }
+}
+
+:host ::ng-deep {
+  display: block;
+
+  ag-grid-angular {
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    .ag-root {
+      background-color: white;
+      border: 1px solid $grey-500;
+      border-radius: 4px;
+
+      .ag-header {
+        background-color: $grey-100;
+        border-bottom: 1px solid $grey-300;
+        .ag-header-cell {
+          @include cell;
+          .ag-header-cell-resize {
+            right: -3px;
+            width: 5px;
+            &:before {
+              content: '';
+              display: block;
+              position: absolute;
+              height: 50%;
+              top: 25%;
+              right: 50%;
+              border-left: 1px solid $grey-500;
+            }
+          }
+        }
+      }
+
+      .ag-row {
+        transition: none;
+        border-bottom: 1px solid $grey-300;
+        &.ag-row-hover {
+          background-color: $grey-100;
+        }
+        .ag-cell {
+          @include cell;
+        }
+      }
+
+    }
+
+    .ag-selection-checkbox, .ag-header-select-all {
+      @include checkbox;
+      position: relative;
+      .ag-icon, .ag-header-select-all, .ag-checkbox-checked, .ag-checkbox-indeterminate {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        color: $grey-800;
+        background: none;
+        &.ag-icon-checkbox-checked {
+          &:after {
+            @include pseudo();
+            position: absolute;
+            top: 7px;
+            left: 5px;
+            border-left: 2px solid currentColor;
+            border-bottom: 2px solid currentColor;
+            transform: rotate(-45deg);
+            width: 10px;
+            height: 5px;
+          }
+        }
+        &.ag-checkbox-indeterminate {
+          &:after {
+            @include pseudo();
+            position: absolute;
+            width: 10px;
+            height: 2px;
+            background-color: currentColor;
+            top: 9px;
+            left: 5px;
+          }
+        }
+      }
+    }
   }
 }
