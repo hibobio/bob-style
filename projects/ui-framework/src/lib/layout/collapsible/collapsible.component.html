@@ -4,7 +4,7 @@
                      (opened)="onPanelOpened($event)">
 
   <mat-expansion-panel-header collapsedHeight="auto"
-                              expandedHeight="auto">
+                              expandedHeight="auto" role="tab">
 
     <b-display-3 class="collapsible-title"
                  *ngIf="type === 'big'">
@@ -23,7 +23,7 @@
 
     <div #suffix
          *ngIf="hasSuffix"
-         class="collapsible-suffix">
+         class="collapsible-suffix" (click)="stopPropagation($event)">
       <ng-content select="[suffix]"></ng-content>
     </div>
 

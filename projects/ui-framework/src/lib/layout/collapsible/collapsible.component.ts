@@ -52,4 +52,8 @@ export class CollapsibleComponent implements AfterViewInit {
   onPanelClosed($event): void {
     this.closed.emit($event);
   }
+
+  stopPropagation($event): void {
+    $event.stopPropagation();
+  }
 }
