@@ -210,6 +210,16 @@ describe('CollapsibleComponent', () => {
         'none'
       );
     });
+
+    it('should not trigger panel expansion on clicks originating from suffix', () => {
+      fixture.detectChanges();
+      const suffixElement = fixture.debugElement.query(
+        By.css('.collapsible-suffix')
+      ).nativeElement;
+      suffixElement.click();
+      fixture.detectChanges();
+      expect(collapsibleComponent.opened.emit).not.toHaveBeenCalled();
+    });
   });
 
   describe('Disabled input', () => {
