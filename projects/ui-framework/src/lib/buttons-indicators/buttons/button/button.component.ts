@@ -40,7 +40,6 @@ export class ButtonComponent implements OnChanges {
   }
 
   onClick($event) {
-    $event.stopPropagation();
     this.clicked.emit($event);
   }
 }

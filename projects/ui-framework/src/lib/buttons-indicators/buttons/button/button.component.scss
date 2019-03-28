@@ -7,7 +7,7 @@ $paddingSmall: 16px;
 $paddingMedium: 22px;
 $paddingLarge: 32px;
 
-:host {
+:host ::ng-deep {
   display: inline-flex;
   .mat-button {
     @include MatButton;
