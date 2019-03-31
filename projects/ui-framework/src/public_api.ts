@@ -237,6 +237,14 @@ export { CardAddComponent } from './lib/layout/cards/card-add/card-add.component
  * Misc
  */
 
+// Rich Text Editor
+export {
+  RichTextEditorModule
+} from './lib/misc/rich-text-editor/rich-text-editor.module';
+export {
+  RichTextEditorComponent
+} from './lib/misc/rich-text-editor/rich-text-editor.component';
+
 // Preloader
 export {
   MiniPreloaderModule
