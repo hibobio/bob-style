@@ -34,14 +34,17 @@ export abstract class BaseListElement implements OnInit, OnDestroy, AfterViewIni
       .subscribe((e: KeyboardEvent) => {
         switch (e.code) {
           case(NavigationKeys.down):
-            this.focusIndex = this.listKeyboardService.getNextFocusIndex(NavigationKeys.down, this.focusIndex, this.listOptions.length);
+            this.focusIndex = this.listKeyboardService
+              .getNextFocusIndex(NavigationKeys.down, this.focusIndex, this.listOptions.length);
             this.focusOption = this.listOptions[this.focusIndex];
             this.vScroll.scrollToIndex(this.listKeyboardService.getScrollToIndex(this.focusIndex, this.maxHeight));
             break;
           case(NavigationKeys.up):
-            this.focusIndex = this.listKeyboardService.getNextFocusIndex(NavigationKeys.up, this.focusIndex, this.listOptions.length);
+            this.focusIndex = this.listKeyboardService
+              .getNextFocusIndex(NavigationKeys.up, this.focusIndex, this.listOptions.length);
             this.focusOption = this.listOptions[this.focusIndex];
-            this.vScroll.scrollToIndex(this.listKeyboardService.getScrollToIndex(this.focusIndex, this.maxHeight));
+            this.vScroll.scrollToIndex(this.listKeyboardService
+              .getScrollToIndex(this.focusIndex, this.maxHeight));
             break;
           case(NavigationKeys.enter):
             this.focusOption.isPlaceHolder

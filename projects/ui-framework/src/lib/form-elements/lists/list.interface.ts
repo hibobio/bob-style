@@ -16,12 +16,14 @@ export interface ListOption {
 
 export interface SelectGroupOption {
   groupName: string;
-  options?: SelectOption[];
+  key?: string,
+  options: SelectOption[];
 }
 
 export interface SelectOption {
   value: string;
   id: number | string;
+  selected: boolean;
   prefixComponent?: ListComponentPrefix;
 }
 

@@ -47,7 +47,7 @@ const note = `
   required | boolean | is field required
   hintMessage | text | hint text
   errorMessage | text | error text
-  elementChange | Action | element change emitter
+  elementChange | return { value, selectedId } | element change emitter
 
   ~~~
   ${template}
@@ -114,14 +114,15 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(1), (_, i) => {
     groupName: 'all currencies',
     options: map(currencies, (currency) => ({
       value: currency.value,
-      id: currency.value
+      id: currency.value,
+      selected: null,
     }))
   };
 });
 
 const value: InputSingleSelectValue = {
   inputValue: 100,
-  selectValue: 'GBP'
+  selectValue: 'AED'
 };
 
 textareaStories.add(
@@ -138,7 +139,7 @@ textareaStories.add(
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
         errorMessage: text('errorMessage', ''),
-        elementChange: action()
+        elementChange: action('SplitInputSingleSelectChange'),
       },
       moduleMetadata: {
         imports: [BrowserAnimationsModule, StoryBookLayoutModule, SplitInputSingleSelectModule]

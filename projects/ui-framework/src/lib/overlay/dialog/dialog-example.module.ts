@@ -132,7 +132,10 @@ export class ExampleDialog1Component implements OnInit {
     this.selectOptions = [
       {
         groupName: 'Article interest options',
-        options: [{ id: 1, value: 'yes' }, { id: 2, value: 'no' }]
+        options: [
+          { id: 1, value: 'yes', selected: false, },
+          { id: 2, value: 'no', selected: false, },
+        ]
       }
     ];
   }

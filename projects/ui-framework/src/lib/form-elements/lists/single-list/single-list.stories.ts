@@ -16,7 +16,6 @@ const buttonStories = storiesOf(ComponentGroupType.FormElements, module).addDeco
 const template = `
 <b-single-list style="width: 400px;"
                [options]="options"
-               [value]="value"
                (selectChange)="selectChange($event)"
                [showSingleGroupHeader]="showSingleGroupHeader">
 </b-single-list>
@@ -38,8 +37,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   options | SelectGroupOption[] | model of selection group | none
-  value | (string or number) | selected id | none
-  selectChange | action | returns selected id | none
+  selectChange | action | returns ListChange | none
   showSingleGroupHeader | boolean | displays single group with group header | false
   maxHeight | number | component max height | 352 (8 rows)
 
@@ -48,13 +46,17 @@ const note = `
   ~~~
 `;
 
-const optionsMock: SelectGroupOption[] = Array.from(Array(6), (_, i) => {
+const groupNum = 3;
+const optionsNum = 4;
+
+const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
   return {
     groupName: `Basic Info G${i} - header`,
-    options: Array.from(Array(7), (_, k) => {
+    options: Array.from(Array(optionsNum), (_, k) => {
       return {
         value: `Basic Info G${i}_E${k} - option`,
-        id: i * 6 + k,
+        id: i * optionsNum + k,
+        selected: false,
         prefixComponent: {
           component: AvatarComponent,
           attributes: {
@@ -67,14 +69,15 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(6), (_, i) => {
   };
 });
 
+optionsMock[0].options[1].selected = true;
+
 buttonStories.add(
   'Single list',
   () => ({
     template: storyTemplate,
     props: {
-      selectChange: action(),
+      selectChange: action('SingleListChange'),
       options: object<SelectGroupOption>('options', optionsMock),
-      value: number('value', 1),
       showSingleGroupHeader: boolean('showSingleGroupHeader', false)
     },
     moduleMetadata: {

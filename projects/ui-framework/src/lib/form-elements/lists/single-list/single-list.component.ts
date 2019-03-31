@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, Output, Renderer2, SimpleChanges } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
-import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
+import { ListHeader, ListOption, SelectGroupOption, SelectOption } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
-import { findIndex, has, flatMap } from 'lodash';
+import { findIndex, has, flatMap, find } from 'lodash';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
+import { ListChangeService } from '../list-change/list-change.service';
+import { ListChange } from '../list-change/list-change';
 
 @Component({
   selector: 'b-single-list',
@@ -15,18 +17,19 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
 
   @Input() options: SelectGroupOption[];
   @Input() maxHeight = this.listElHeight * 8;
-  @Input() value: number | string;
   @Input() showSingleGroupHeader = false;
-  @Output() selectChange: EventEmitter<(number | string)> = new EventEmitter<(number | string)>();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
 
   noGroupHeaders: boolean;
   searchValue: string;
   shouldDisplaySearch = false;
 
   private filteredOptions: SelectGroupOption[];
+  private selectedOption: SelectOption;
 
   constructor(
     private listModelService: ListModelService,
+    private listChangeService: ListChangeService,
     renderer: Renderer2,
     listKeyboardService: ListKeyboardService,
   ) {
@@ -35,7 +38,6 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.shouldResetModel(changes)) {
-      this.value = has(changes, 'value') ? changes.value.currentValue : this.value;
       this.options = changes.options.currentValue;
       this.noGroupHeaders = this.options.length === 1 && !this.showSingleGroupHeader;
       this.filteredOptions = this.options;
@@ -55,10 +57,15 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
   }
 
   optionClick(option: ListOption): void {
-    this.value = option.id;
-    this.selectChange.emit(this.value);
-    this.focusIndex = findIndex(this.listOptions, o => o.id === option.id);
+    if (this.selectedOption) {
+      this.selectedOption.selected = false;
+    }
+    this.selectedOption = option;
+    this.selectedOption.selected = true;
+    this.focusIndex = findIndex(this.listOptions, o => o.selected);
     this.focusOption = option;
+
+    this.emitChange();
   }
 
   searchChange(s: string): void {
@@ -72,5 +79,11 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
       .getHeadersModel(this.filteredOptions);
     this.listOptions = this.listModelService
       .getOptionsModel(this.filteredOptions, this.listHeaders, this.noGroupHeaders);
+    this.selectedOption = find(this.listOptions, o => o.selected);
+  }
+
+  private emitChange(): void {
+    const listChange = this.listChangeService.getListChange(this.options, [this.selectedOption.id]);
+    this.selectChange.emit(listChange);
   }
 }

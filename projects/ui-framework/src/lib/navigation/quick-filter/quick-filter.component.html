@@ -12,7 +12,7 @@
   <b-multi-select [ngClass]="{'has-value': hasValue}"
                   [options]="quickFilterConfig.options"
                   [value]="quickFilterConfig.value"
-                  (selectChange)="multiSelectChange($event)"
+                  (selectChange)="selectChange($event)"
                   (selectModified)="multiSelectModified($event)"
                   [disabled]="false"
                   [required]="false"
@@ -24,8 +24,7 @@
 <ng-template #singleSelect let-quickFilterConfig>
   <b-single-select [ngClass]="{'has-value': hasValue}"
                    [options]="quickFilterConfig.options"
-                   [value]="quickFilterConfig.value"
-                   (selectChange)="singleSelectChange($event)"
+                   (selectChange)="selectChange($event)"
                    [disabled]="false"
                    [required]="false"
                    [showSingleGroupHeader]="showSingleGroupHeader"

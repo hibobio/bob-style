@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild, } from '@angular/core';
 import { QuickFilterChangeEvent, QuickFilterConfig } from './quick-filter.interface';
 import { QuickFilterSelectType } from './quick-filter.enum';
-import isEmpty from 'lodash/isEmpty';
 import has from 'lodash/has';
 import { SingleSelectComponent } from '../../form-elements/lists/single-select/single-select.component';
 import { MultiSelectComponent } from '../../form-elements/lists/multi-select/multi-select.component';
+import { ListChange } from '../../form-elements/lists/list-change/list-change';
+import { ListModelService } from '../../form-elements/lists/list-service/list-model.service';
 
 @Component({
   selector: 'b-quick-filter',
@@ -22,30 +23,25 @@ export class QuickFilterComponent implements OnChanges {
   showSingleGroupHeader = false;
   hasValue = false;
 
-  constructor() {
+  constructor(
+    private listModelService: ListModelService,
+  ) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'quickFilterConfig')) {
       this.quickFilterConfig = changes.quickFilterConfig.currentValue;
-      this.hasValue = this.quickFilterConfig.selectType === QuickFilterSelectType.multiSelect
-        ? !isEmpty(this.quickFilterConfig.value)
-        : this.quickFilterConfig.value !== null;
+      this.hasValue = this.listModelService.getSelectedIdsMap(this.quickFilterConfig.options).length > 0;
     }
   }
 
-  multiSelectChange(value: (string | number)[]): void {
-    this.hasValue = value.length > 0;
-    this.emitChangeEvent(value);
+  selectChange(listChange: ListChange): void {
+    this.hasValue = listChange.getSelectedIds().length > 0;
+    this.emitChangeEvent(listChange);
   }
 
-  multiSelectModified(value: (string | number)[]): void {
-    this.hasValue = value.length > 0;
-  }
-
-  singleSelectChange(value: (string | number)): void {
-    this.hasValue = value !== null;
-    this.emitChangeEvent(value);
+  multiSelectModified(listChange: ListChange): void {
+    this.hasValue = listChange.getSelectedIds().length > 0;
   }
 
   public getTemplate(): TemplateRef<any> {
@@ -56,10 +52,10 @@ export class QuickFilterComponent implements OnChanges {
     return referenceElement[this.quickFilterConfig.selectType];
   }
 
-  private emitChangeEvent(value: any): void {
+  private emitChangeEvent(listChange: ListChange): void {
     this.filterChange.emit({
-      label: this.quickFilterConfig.label,
-      value,
+      key: this.quickFilterConfig.key,
+      listChange,
     });
   }
 }

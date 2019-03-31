@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatIconModule, MatInputModule, MatPseudoCheckboxModule, MatTooltipModule } from '@angular/material';
+import {
+  MatFormFieldModule, MatIconModule, MatInputModule, MatPseudoCheckboxModule, MatTooltipModule,
+} from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchModule } from '../../../navigation/search/search.module';
@@ -15,6 +17,7 @@ import { MultiListComponent } from './multi-list.component';
 import { FiltersModule } from '../../../services/filters/filters.module';
 import { ListOptionModule } from '../list-option/list-option.module';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
+import { ListChangeService } from '../list-change/list-change.service';
 
 describe('MultiListComponent', () => {
   let component: MultiListComponent;
@@ -26,15 +29,15 @@ describe('MultiListComponent', () => {
       {
         groupName: 'Basic Info Header',
         options: [
-          { value: 'Basic Info 1', id: 1 },
-          { value: 'Basic Info 2', id: 2 },
+          { value: 'Basic Info 1', id: 1, selected: true },
+          { value: 'Basic Info 2', id: 2, selected: false },
         ]
       },
       {
         groupName: 'Personal Header',
         options: [
-          { value: 'Personal 1', id: 11 },
-          { value: 'Personal 2', id: 12 },
+          { value: 'Personal 1', id: 11, selected: false },
+          { value: 'Personal 2', id: 12, selected: false },
         ]
       }
     ];
@@ -45,6 +48,7 @@ describe('MultiListComponent', () => {
       ],
       providers: [
         ListModelService,
+        ListChangeService,
         ListKeyboardService,
       ],
       imports: [
@@ -83,6 +87,10 @@ describe('MultiListComponent', () => {
   }));
 
   describe('OnChanges', () => {
+    it('should create selectedIdsMap based on options', () => {
+      component.ngOnChanges({});
+      expect(component.selectedIdsMap).toEqual([1]);
+    });
     it('should create headerModel based on options', () => {
       component.ngOnChanges({});
       expect(component.listHeaders).toEqual([
@@ -135,7 +143,7 @@ describe('MultiListComponent', () => {
           id: 11,
           groupName: 'Personal Header',
           isPlaceHolder: false,
-          selected: true
+          selected: false
         },
         {
           value: 'Personal 2',
@@ -154,14 +162,14 @@ describe('MultiListComponent', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       expect(options.length).toEqual(4);
     });
-    it('should set the checkbox of options where (id=1,11) as checked', () => {
+    it('should set the checkbox of options where (id=1) as checked', () => {
       const checkboxes = fixture.debugElement.queryAll(By.css('.option .checkbox'));
       expect(checkboxes[0].nativeElement.getAttribute('ng-reflect-state')).toEqual('checked');
-      expect(checkboxes[2].nativeElement.getAttribute('ng-reflect-state')).toEqual('checked');
     });
-    it('should set the checkbox of options where (id=2,12) as unchecked', () => {
+    it('should set the checkbox of options where (id=2,11,12) as unchecked', () => {
       const checkboxes = fixture.debugElement.queryAll(By.css('.option .checkbox'));
       expect(checkboxes[1].nativeElement.getAttribute('ng-reflect-state')).toEqual('unchecked');
+      expect(checkboxes[2].nativeElement.getAttribute('ng-reflect-state')).toEqual('unchecked');
       expect(checkboxes[3].nativeElement.getAttribute('ng-reflect-state')).toEqual('unchecked');
     });
     it('should rerender lists if simpleChanges includes options', () => {
@@ -238,23 +246,23 @@ describe('MultiListComponent', () => {
         {
           groupName: 'Basic Info Header',
           options: [
-            { value: 'Basic Info 1', id: 1 },
-            { value: 'Basic Info 2', id: 2 },
-            { value: 'Basic Info 3', id: 3 },
-            { value: 'Basic Info 4', id: 4 },
-            { value: 'Basic Info 5', id: 5 },
-            { value: 'Basic Info 6', id: 6 },
+            { value: 'Basic Info 1', id: 1, selected: false },
+            { value: 'Basic Info 2', id: 2, selected: false },
+            { value: 'Basic Info 3', id: 3, selected: false },
+            { value: 'Basic Info 4', id: 4, selected: false },
+            { value: 'Basic Info 5', id: 5, selected: false },
+            { value: 'Basic Info 6', id: 6, selected: false },
           ]
         },
         {
           groupName: 'Personal Header',
           options: [
-            { value: 'Personal 1', id: 11 },
-            { value: 'Personal 2', id: 12 },
-            { value: 'Personal 3', id: 13 },
-            { value: 'Personal 4', id: 14 },
-            { value: 'Personal 5', id: 15 },
-            { value: 'Personal 6', id: 16 },
+            { value: 'Personal 1', id: 11, selected: false },
+            { value: 'Personal 2', id: 12, selected: false },
+            { value: 'Personal 3', id: 13, selected: false },
+            { value: 'Personal 4', id: 14, selected: false },
+            { value: 'Personal 5', id: 15, selected: false },
+            { value: 'Personal 6', id: 16, selected: false },
           ]
         }
       ];
@@ -293,28 +301,28 @@ describe('MultiListComponent', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeFalsy();
     });
-    it('should display search field also when listOptions is empty if total options is greater the DISPLAY_SEARCH_OPTION_NUM', () => {
+    it('should display search field when listOptions=empty if total options>DISPLAY_SEARCH_OPTION_NUM', () => {
       const testOptionsMock = [
         {
           groupName: 'Basic Info Header',
           options: [
-            { value: 'Basic Info 1', id: 1 },
-            { value: 'Basic Info 2', id: 2 },
-            { value: 'Basic Info 3', id: 3 },
-            { value: 'Basic Info 4', id: 4 },
-            { value: 'Basic Info 5', id: 5 },
-            { value: 'Basic Info 6', id: 6 },
+            { value: 'Basic Info 1', id: 1, selected: false },
+            { value: 'Basic Info 2', id: 2, selected: false },
+            { value: 'Basic Info 3', id: 3, selected: false },
+            { value: 'Basic Info 4', id: 4, selected: false },
+            { value: 'Basic Info 5', id: 5, selected: false },
+            { value: 'Basic Info 6', id: 6, selected: false },
           ]
         },
         {
           groupName: 'Personal Header',
           options: [
-            { value: 'Personal 1', id: 11 },
-            { value: 'Personal 2', id: 12 },
-            { value: 'Personal 3', id: 13 },
-            { value: 'Personal 4', id: 14 },
-            { value: 'Personal 5', id: 15 },
-            { value: 'Personal 6', id: 16 },
+            { value: 'Personal 1', id: 11, selected: false },
+            { value: 'Personal 2', id: 12, selected: false },
+            { value: 'Personal 3', id: 13, selected: false },
+            { value: 'Personal 4', id: 14, selected: false },
+            { value: 'Personal 5', id: 15, selected: false },
+            { value: 'Personal 6', id: 16, selected: false },
           ]
         }
       ];
@@ -358,15 +366,16 @@ describe('MultiListComponent', () => {
   });
 
   describe('option click', () => {
-    it('should update value when option is clicked with the option id', () => {
+    it('should update selectionMap on option select with the option id', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
-      expect(component.value).toEqual([1, 11, 12]);
+      expect(component.selectedIdsMap).toEqual([1, 12]);
     });
     it('should emit event when selecting an option', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
-      expect(component.selectChange.emit).toHaveBeenCalledWith([1, 11, 12]);
+      const listChange = component['listChangeService'].getListChange(component.options, [1, 12]);
+      expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
     });
   });
 
@@ -375,16 +384,16 @@ describe('MultiListComponent', () => {
       const headerCheckbox = fixture.debugElement.queryAll(By.css('.header .checkbox'));
       headerCheckbox[0].triggerEventHandler('click', null);
       fixture.autoDetectChanges();
-      expect(component.value).toEqual([1, 11, 2]);
+      expect(component.selectedIdsMap).toEqual([1, 2]);
     });
     it('should deselect all options in group when deselecting header', () => {
       const headerCheckbox = fixture.debugElement.queryAll(By.css('.header .checkbox'));
       headerCheckbox[0].triggerEventHandler('click', null);
       fixture.autoDetectChanges();
-      expect(component.value).toEqual([1, 11, 2]);
+      expect(component.selectedIdsMap).toEqual([1, 2]);
       headerCheckbox[0].triggerEventHandler('click', null);
       fixture.autoDetectChanges();
-      expect(component.value).toEqual([11]);
+      expect(component.selectedIdsMap).toEqual([]);
     });
     it('should not update options model when header is collapsed', () => {
       const expectedHeaderModel = [
@@ -421,7 +430,7 @@ describe('MultiListComponent', () => {
           id: 11,
           groupName: 'Personal Header',
           isPlaceHolder: false,
-          selected: true
+          selected: false
         },
         {
           value: 'Personal 2',
@@ -446,7 +455,36 @@ describe('MultiListComponent', () => {
       const headerCheckbox = fixture.debugElement.queryAll(By.css('.header .checkbox'));
       headerCheckbox[0].triggerEventHandler('click', null);
       fixture.autoDetectChanges();
-      expect(component.selectChange.emit).toHaveBeenCalledWith([1, 11, 2]);
+      const listChange = component['listChangeService'].getListChange(component.options, [1, 2]);
+      expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
+    });
+  });
+
+  describe('singleList listChange class', () => {
+    let listChange;
+    beforeEach(() => {
+      listChange = component['listChangeService'].getListChange(component.options, [1, 12]);
+    });
+    it('should return updated options model', () => {
+      expect(listChange.getSelectGroupOptions()).toEqual([
+        {
+          groupName: 'Basic Info Header',
+          options: [
+            { value: 'Basic Info 1', id: 1, selected: true },
+            { value: 'Basic Info 2', id: 2, selected: false },
+          ],
+        },
+        {
+          groupName: 'Personal Header',
+          options: [
+            { value: 'Personal 1', id: 11, selected: false },
+            { value: 'Personal 2', id: 12, selected: true },
+          ]
+        }
+      ]);
+    });
+    it('should return selectedId', () => {
+      expect(listChange.getSelectedIds()).toEqual([1, 12]);
     });
   });
 

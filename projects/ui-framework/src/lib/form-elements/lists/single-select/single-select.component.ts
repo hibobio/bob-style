@@ -11,13 +11,15 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
-import { chain } from 'lodash';
+import { chain, isNull } from 'lodash';
 import { PanelPositionService } from '../../../overlay/panel/panel-position.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { SelectGroupOption } from '../list.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
+import { ListChange } from '../list-change/list-change';
+import { ListChangeService } from '../list-change/list-change.service';
 
 @Component({
   selector: 'b-single-select',
@@ -41,7 +43,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
 
   @Input() options: SelectGroupOption[];
   @Input() showSingleGroupHeader = false;
-  @Output() selectChange: EventEmitter<string | number> = new EventEmitter<string | number>();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
 
   triggerValue: string;
   showTriggerTooltip: boolean;
@@ -52,38 +54,42 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
 
+  private selectedOptionId: number | string;
+  private singleSelectOptions: SelectGroupOption[];
+
   constructor(
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
-    panelPositionService: PanelPositionService
+    panelPositionService: PanelPositionService,
+    private listChangeService: ListChangeService,
+
   ) {
     super(overlay, viewContainerRef, panelPositionService);
     this.value = null;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value) {
-      this.value = changes.value.currentValue || null;
-    }
     if (changes.options) {
-      this.options = changes.options.currentValue;
+      this.singleSelectOptions = changes.options.currentValue;
+      this.selectedOptionId = this.getSelectedOptionId(this.singleSelectOptions);
     }
-    this.triggerValue = this.value ? this.getTriggerValue(this.value) : null;
+    this.triggerValue = isNull(this.selectedOptionId)
+      ? null
+      : this.getTriggerValue(this.selectedOptionId);
   }
 
-  onSelect(optionId: string | number) {
-    this.value = optionId;
-    this.triggerValue = this.getTriggerValue(this.value);
-    this.selectChange.emit(this.value);
-    this.propagateChange(this.value);
+  onSelect(listChange: ListChange) {
+    this.selectedOptionId = listChange.getSelectedIds()[0];
+    this.triggerValue = this.getTriggerValue(this.selectedOptionId);
+    this.emitChange(listChange);
     this.destroyPanel();
   }
 
   clearSelection(): void {
-    this.value = null;
-    this.triggerValue = this.getTriggerValue(this.value);
-    this.selectChange.emit(this.value);
-    this.propagateChange(this.value);
+    this.selectedOptionId = null;
+    this.triggerValue = this.getTriggerValue(this.selectedOptionId);
+    const listChange = this.listChangeService.getListChange(this.singleSelectOptions, []);
+    this.emitChange(listChange);
     setTimeout(() => {
       this.blockSelectClick = false;
       this.triggerInput.bInput.nativeElement.blur();
@@ -94,13 +100,28 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
     this.destroyPanel();
   }
 
-  private getTriggerValue(value: string | number): string {
+  private getTriggerValue(selectedOptionId: string | number): string {
     this.updateTriggerTooltip();
-    return chain(this.options)
+    return chain(this.singleSelectOptions)
       .flatMap('options')
-      .filter((option) => option.id === value)
+      .filter((option) => option.id === selectedOptionId)
       .first()
       .get('value', null)
       .value();
+  }
+
+  private getSelectedOptionId(options: SelectGroupOption[]): (number | string) {
+    return chain(options)
+      .flatMap('options')
+      .filter(o => o.selected)
+      .flatMap('id')
+      .first()
+      .value();
+  }
+
+  private emitChange(listChange: ListChange): void {
+    this.singleSelectOptions = listChange.getSelectGroupOptions();
+    this.selectChange.emit(listChange);
+    this.propagateChange(listChange);
   }
 }

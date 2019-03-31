@@ -17,8 +17,8 @@ const template = `
 <b-multi-select style="width: 400px;"
                 [label]="label"
                 [options]="options"
-                [value]="value"
                 (selectChange)="selectChange($event)"
+                (selectModified)="selectModified($event)"
                 [disabled]="disabled"
                 [required]="required"
                 [errorMessage]="errorMessage"
@@ -44,8 +44,8 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   options | SelectGroupOption[] | model of selection group | none
-  value | (string or number) | selected id | none
-  selectChange | action | returns selected id | none
+  selectChange | action | returns ListChange | none
+  selectModified | action | returns ListChange | none
   label | string | label text | none
   disabled | boolean | is field disabled | none
   required | boolean | is field required | none
@@ -59,13 +59,17 @@ const note = `
   ~~~
 `;
 
-const optionsMock: SelectGroupOption[] = Array.from(Array(3), (_, i) => {
+const groupNum = 3;
+const optionsNum = 4;
+
+const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
   return {
     groupName: `Basic Info G${i} - header`,
-    options: Array.from(Array(4), (_, k) => {
+    options: Array.from(Array(optionsNum), (_, k) => {
       return {
         value: `Basic Info G${i}_E${k} - option`,
-        id: i * 4 + k,
+        id: i * optionsNum + k,
+        selected: false,
         prefixComponent: {
           component: AvatarComponent,
           attributes: {
@@ -78,14 +82,17 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(3), (_, i) => {
   };
 });
 
+optionsMock[0].options[1].selected = true;
+optionsMock[1].options[2].selected = true;
+
 buttonStories.add(
   'Multi select',
   () => ({
     template: storyTemplate,
     props: {
       options: object<SelectGroupOption>('options', optionsMock),
-      value: array('value', [2]),
-      selectChange: action(),
+      selectChange: action('MultiSelectChange'),
+      selectModified: action('MultiSelectModified'),
       label: text('label', 'label text'),
       disabled: boolean('disabled', false),
       required: boolean('required', false),

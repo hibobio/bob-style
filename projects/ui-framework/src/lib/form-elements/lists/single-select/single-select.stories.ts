@@ -15,7 +15,6 @@ const template = `
 <b-single-select style="width: 400px;"
                  [label]="label"
                  [options]="options"
-                 [value]="value"
                  (selectChange)="selectChange($event)"
                  [disabled]="disabled"
                  [required]="required"
@@ -43,7 +42,7 @@ const note = `
   --- | --- | --- | ---
   options | SelectGroupOption[] | model of selection group | none
   value | (string or number) | selected id | none
-  selectChange | action | returns selected id | none
+  selectChange | action | returns ListChange | none
   label | string | label text | none
   disabled | boolean | is field disabled | none
   required | boolean | is field required | none
@@ -57,20 +56,26 @@ const note = `
   ~~~
 `;
 
-const optionsMock = Array.from(Array(2), (_, i) => {
+const groupNum = 6;
+const optionsNum = 3;
+
+const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
   return {
     groupName: `Personal G${i}`,
-    options: Array.from(Array(3), (_, k) => {
+    options: Array.from(Array(optionsNum), (_, k) => {
       return {
         value:
           k % 2 === 0
             ? `Personal G${i}_E${k} and some other very long text and some more words to have ellipsis and tooltip`
             : `Personal G${i}_E${k}`,
-        id: i * 4 + k
+        id: i * optionsNum + k,
+        selected: false,
       };
     })
   };
 });
+
+optionsMock[0].options[1].selected = true;
 
 buttonStories.add(
   'Single select',
@@ -78,8 +83,7 @@ buttonStories.add(
     template: storyTemplate,
     props: {
       options: object<SelectGroupOption>('options', optionsMock),
-      value: number('value', null),
-      selectChange: action(),
+      selectChange: action('SingleSelectChange'),
       label: text('label', 'label text'),
       disabled: boolean('disabled', false),
       required: boolean('required', false),

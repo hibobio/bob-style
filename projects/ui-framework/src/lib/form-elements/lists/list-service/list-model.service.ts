@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { flatten, forEach, map, concat, assign, find, set, includes, filter, every, escapeRegExp, some, compact } from 'lodash';
+import {
+  flatten, forEach, map, concat, assign, find, set, includes, filter, every, escapeRegExp, some, compact, chain
+} from 'lodash';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { ListOption, ListHeader, SelectGroupOption } from '../list.interface';
 
@@ -27,8 +29,12 @@ export class ListModelService {
 
       if (noGroupHeaders) {
         virtualOptions = map(group.options, option => assign(
+          {},
           option,
-          { groupName: group.groupName, isPlaceHolder: false, selected: null },
+          {
+            groupName: group.groupName,
+            isPlaceHolder: false,
+          },
         ));
       } else if (groupHeader.isCollapsed) {
         virtualOptions = placeholder;
@@ -36,24 +42,17 @@ export class ListModelService {
         virtualOptions = concat(
           placeholder,
           map(group.options, option => assign(
+            {},
             option,
-            { groupName: group.groupName, isPlaceHolder: false, selected: null },
-          ))
-        );
-      }
-
-      return virtualOptions;
-
-
-      return groupHeader.isCollapsed
-        ? placeholder
-        : concat(
-          placeholder,
-          map(group.options, option => assign(
-            option,
-            { groupName: group.groupName, isPlaceHolder: false, selected: null },
+            {
+              groupName: group.groupName,
+              isPlaceHolder: false,
+              selected: option.selected,
+            },
           )),
         );
+      }
+      return virtualOptions;
     });
     return flatten(groupOptions);
   }
@@ -69,13 +68,13 @@ export class ListModelService {
 
   setSelectedOptions(
     listHeaders: ListHeader[],
-    listOptions: SelectGroupOption[],
-    selectedValues: (string | number)[],
+    listOptions: ListOption[],
+    selectedIdsMap: (string | number)[],
   ): void {
     forEach(listOptions, option => {
       set(option, 'selected', option.isPlaceHolder
         ? null
-        : includes(selectedValues, option.id));
+        : includes(selectedIdsMap, option.id));
     });
     forEach(listHeaders, header => {
       const groupOptions = filter(listOptions, option =>
@@ -99,5 +98,13 @@ export class ListModelService {
       return filteredGroup;
     });
     return compact(filteredOptions);
+  }
+
+  getSelectedIdsMap(options: SelectGroupOption[]): (number | string)[] {
+    return chain(options)
+      .flatMap('options')
+      .filter(o => o.selected)
+      .flatMap('id')
+      .value();
   }
 }

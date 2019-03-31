@@ -11,15 +11,15 @@ describe('ListModelService', () => {
       {
         groupName: 'Basic Info',
         options: [
-          { value: 'Basic Info 1', id: 1 },
-          { value: 'Basic Info 2', id: 2 },
+          { value: 'Basic Info 1', id: 1, selected: true, },
+          { value: 'Basic Info 2', id: 2, selected: false, },
         ],
       },
       {
         groupName: 'Personal',
         options: [
-          { value: 'Personal 1', id: 11 },
-          { value: 'Personal 2', id: 12 },
+          { value: 'Personal 1', id: 11, selected: false, },
+          { value: 'Personal 2', id: 12, selected: false, },
         ],
       },
     ];
@@ -71,14 +71,14 @@ describe('ListModelService', () => {
           id: 1,
           groupName: 'Basic Info',
           isPlaceHolder: false,
-          selected: null,
+          selected: true,
         },
         {
           value: 'Basic Info 2',
           id: 2,
           groupName: 'Basic Info',
           isPlaceHolder: false,
-          selected: null,
+          selected: false,
         },
         {
           isPlaceHolder: true,
@@ -92,14 +92,14 @@ describe('ListModelService', () => {
           id: 11,
           groupName: 'Personal',
           isPlaceHolder: false,
-          selected: null,
+          selected: false,
         },
         {
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal',
           isPlaceHolder: false,
-          selected: null,
+          selected: false,
         },
       ]);
     });
@@ -267,6 +267,20 @@ describe('ListModelService', () => {
           selected: null,
         },
       ]);
+    });
+  });
+
+  describe('getSelectedIdsMap', () => {
+    it('should return empty array when no option is selected', () => {
+      optionsMock[0].options[0].selected = false;
+      const selectedIdsMap = listModelService.getSelectedIdsMap(optionsMock);
+      expect(selectedIdsMap).toEqual([]);
+    });
+    it('should return array of selected Ids', () => {
+      optionsMock[0].options[0].selected = true;
+      optionsMock[1].options[0].selected = true;
+      const selectedIdsMap = listModelService.getSelectedIdsMap(optionsMock);
+      expect(selectedIdsMap).toEqual([1, 11]);
     });
   });
 });

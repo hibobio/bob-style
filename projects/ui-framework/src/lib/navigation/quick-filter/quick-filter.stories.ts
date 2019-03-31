@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/angular';
 import { text, select, boolean, withKnobs, number, object } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { values } from 'lodash';
+import { values, cloneDeep } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { QuickFilterModule } from './quick-filter.module';
@@ -19,13 +19,13 @@ const template = `
                     [quickFilters]="quickFilters"
                     (filtersChange)="filtersChange($event)">
   <div bar-prefix>total: 85</div>
-  <b-button bar-suffix size="${ButtonSize.small}">more</b-button>
+  <b-button bar-suffix size="${ ButtonSize.small }">more</b-button>
 </b-quick-filter-bar>
 `;
 
 const storyTemplate = `
 <b-story-book-layout title="Textarea">
-  ${template}
+  ${ template }
 </b-story-book-layout>
 `;
 
@@ -41,17 +41,21 @@ const note = `
   filtersChange | QuickFilterBarChangeEvent | Output of quick filter bar change | none
 
   ~~~
-  ${template}
+  ${ template }
   ~~~
 `;
 
-const optionsMock: SelectGroupOption[] = Array.from(Array(3), (_, i) => {
+const groupNun = 3;
+const optionsNum = 4;
+
+const optionsMock: SelectGroupOption[] = Array.from(Array(groupNun), (_, i) => {
   return {
-    groupName: `Basic Info G${i} - header`,
-    options: Array.from(Array(4), (_, k) => {
+    groupName: `Basic Info G${ i } - header`,
+    options: Array.from(Array(optionsNum), (_, k) => {
       return {
-        value: `Basic Info G${i}_E${k} - option`,
-        id: i * 4 + k
+        selected: false,
+        value: `Basic Info G${ i }_E${ k } - option`,
+        id: i * optionsNum + k
       };
     })
   };
@@ -61,22 +65,26 @@ const quickFilters: QuickFilterConfig[] = [
   {
     selectType: QuickFilterSelectType.multiSelect,
     label: 'department',
-    options: [optionsMock[0]],
-    value: [1, 2]
+    key: 'department',
+    options: [cloneDeep(optionsMock[0]), cloneDeep(optionsMock[1])],
   },
   {
     selectType: QuickFilterSelectType.multiSelect,
     label: 'site',
-    options: optionsMock,
-    value: []
+    key: 'site',
+    options: cloneDeep(optionsMock),
   },
   {
     selectType: QuickFilterSelectType.singleSelect,
     label: 'employment',
-    options: [optionsMock[0]],
-    value: null
+    key: 'employment',
+    options: [cloneDeep(optionsMock[0])],
   }
 ];
+
+quickFilters[0].options[0].options[1].selected = true;
+quickFilters[0].options[1].options[1].selected = true;
+quickFilters[2].options[0].options[3].selected = true;
 
 textareaStories.add(
   'Quick filters',
@@ -85,7 +93,7 @@ textareaStories.add(
       template: storyTemplate,
       props: {
         quickFilters: object('quickFilters', quickFilters),
-        filtersChange: action()
+        filtersChange: action('QuickFilterBarChange'),
       },
       moduleMetadata: {
         imports: [BrowserAnimationsModule, StoryBookLayoutModule, QuickFilterModule, ButtonsModule]

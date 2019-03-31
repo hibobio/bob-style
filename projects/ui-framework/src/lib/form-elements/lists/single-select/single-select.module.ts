@@ -8,9 +8,13 @@ import { SingleListModule } from '../single-list/single-list.module';
 import { InputModule } from '../../input/input.module';
 import { MatTooltipModule } from '@angular/material';
 import { IconsModule } from '../../../icons/icons.module';
+import { ListChangeService } from '../list-change/list-change.service';
+import { ListModelService } from '../list-service/list-model.service';
 
 @NgModule({
-  declarations: [SingleSelectComponent],
+  declarations: [
+    SingleSelectComponent,
+  ],
   imports: [
     CommonModule,
     PanelModule,
@@ -21,7 +25,12 @@ import { IconsModule } from '../../../icons/icons.module';
     MatTooltipModule,
     IconsModule
   ],
-  exports: [SingleSelectComponent],
-  providers: []
+  exports: [
+    SingleSelectComponent,
+  ],
+  providers: [
+    ListChangeService,
+    ListModelService,
+  ]
 })
 export class SingleSelectModule {}

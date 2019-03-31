@@ -16,7 +16,6 @@ const buttonStories = storiesOf(ComponentGroupType.FormElements, module).addDeco
 const template = `
 <b-multi-list style="width: 400px;"
               [options]="options"
-              [value]="value"
               [showSingleGroupHeader]="showSingleGroupHeader"
               (selectChange)="selectChange($event)">
 </b-multi-list>
@@ -24,7 +23,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Single select">
-  ${template}
+  ${ template }
 </b-story-book-layout>
 `;
 
@@ -38,23 +37,26 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   options | SelectGroupOption[] | model of selection group | none
-  value | (string or number) | selected id | none
-  selectChange | action | returns selected id | none
+  selectChange | action | returns ListChange | none
   showSingleGroupHeader | boolean | displays single group with group header | false
   maxHeight | number | component max height | 352 (8 rows)
 
   ~~~
-  ${template}
+  ${ template }
   ~~~
 `;
 
-const optionsMock: SelectGroupOption[] = Array.from(Array(5), (_, i) => {
+const groupNum = 6;
+const optionsNum = 3;
+
+const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
   return {
-    groupName: `Basic Info G${i} - header`,
-    options: Array.from(Array(4), (_, k) => {
+    groupName: `Basic Info G${ i } - header`,
+    options: Array.from(Array(optionsNum), (_, k) => {
       return {
-        value: `Basic Info G${i}_E${k} - option`,
-        id: i * 4 + k,
+        value: `Basic Info G${ i }_E${ k } - option`,
+        id: i * optionsNum + k,
+        selected: false,
         prefixComponent: {
           component: AvatarComponent,
           attributes: {
@@ -67,15 +69,17 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(5), (_, i) => {
   };
 });
 
+optionsMock[0].options[1].selected = true;
+optionsMock[1].options[2].selected = true;
+
 buttonStories.add(
   'Multi list',
   () => ({
     template: storyTemplate,
     props: {
-      selectChange: action(),
+      selectChange: action('MultiListChange'),
       options: object<SelectGroupOption>('options', optionsMock),
-      value: array('value', [1, 3, 6, 8, 9, 10, 11]),
-      showSingleGroupHeader: boolean('showSingleGroupHeader', false)
+      showSingleGroupHeader: boolean('showSingleGroupHeader', true)
     },
     moduleMetadata: {
       imports: [

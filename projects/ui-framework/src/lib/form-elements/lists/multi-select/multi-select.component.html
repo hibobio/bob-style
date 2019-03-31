@@ -5,7 +5,7 @@
 
   <b-input #triggerInput
            [disabled]="disabled"
-           [ngClass]="{'has-tooltip': showTriggerTooltip, 'has-clear-prefix': value.length > 0}"
+           [ngClass]="{'has-tooltip': showTriggerTooltip, 'has-clear-prefix': selectedValuesMap.length > 0}"
            [errorMessage]="errorMessage"
            [hintMessage]="hintMessage"
            [label]="label"
@@ -15,7 +15,7 @@
            [hideLabelOnFocus]="hideLabelOnFocus"
            [value]="triggerValue">
 
-    <div *ngIf="value.length > 0"
+    <div *ngIf="selectedValuesMap.length > 0"
          class="clear-selection"
          (click)="clearSelection()"
          input-prefix>
@@ -32,7 +32,7 @@
     <div input-suffix>
             <span *ngIf="showTriggerTooltip"
                   class="trigger-tooltip">
-          ({{value.length}})
+          ({{selectedValuesMap.length}})
         </span>
 
       <span class="select-chevron"></span>
@@ -47,9 +47,9 @@
   <div class="panel-position"
        [ngClass]="positionClassList">
 
-    <b-multi-list (selectChange)="onSelect($event)"
+    <b-multi-list #multiList
+                  (selectChange)="onSelect($event)"
                   [options]="options"
-                  [value]="value"
                   [maxHeight]="listElHeight*6"
                   [showSingleGroupHeader]="showSingleGroupHeader">
     </b-multi-list>

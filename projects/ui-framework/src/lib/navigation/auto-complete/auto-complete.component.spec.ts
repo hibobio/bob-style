@@ -79,7 +79,6 @@ describe('AutoCompleteComponent', () => {
   describe('searchChange', () => {
     it('should open panel if search has value', () => {
       let panel = overlayContainerElement.querySelector('b-auto-complete-panel');
-      console.log('panel', panel);
       expect(panel).toBeFalsy();
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       searchEl.componentInstance.searchChange.emit('e1');
@@ -151,7 +150,6 @@ describe('AutoCompleteComponent', () => {
 
       component.ngOnDestroy();
 
-      console.log(component['positionChangeSubscriber']);
       expect(component['positionChangeSubscriber'].closed).toBe(true);
       expect(component['backdropClickSubscriber'].closed).toBe(true);
       expect(component['panelOpen']).toBe(false);

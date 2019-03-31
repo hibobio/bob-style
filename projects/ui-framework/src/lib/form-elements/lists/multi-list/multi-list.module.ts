@@ -8,6 +8,7 @@ import { SearchModule } from '../../../navigation/search/search.module';
 import { FiltersModule } from '../../../services/filters/filters.module';
 import { ListOptionModule } from '../list-option/list-option.module';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
+import { ListChangeService } from '../list-change/list-change.service';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ListKeyboardService } from '../list-service/list-keyboard.service';
   ],
   providers: [
     ListModelService,
+    ListChangeService,
     ListKeyboardService,
   ]
 })

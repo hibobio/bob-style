@@ -6,49 +6,62 @@ import { QuickFilterSelectType } from './quick-filter.enum';
 import { By } from '@angular/platform-browser';
 import { QuickFilterComponent } from './quick-filter.component';
 import { MockComponent } from 'ng-mocks';
-import { QuickFilterChangeEvent } from './quick-filter.interface';
+import { QuickFilterChangeEvent, QuickFilterConfig } from './quick-filter.interface';
+import { ListModelService } from '../../form-elements/lists/list-service/list-model.service';
+import { ListChangeService } from '../../form-elements/lists/list-change/list-change.service';
+import { ListChange } from '../../form-elements/lists/list-change/list-change';
 
 describe('QuickFilterBarComponent', () => {
   let component: QuickFilterBarComponent;
   let fixture: ComponentFixture<QuickFilterBarComponent>;
 
-  const optionsMock: SelectGroupOption[] = Array.from(Array(3), (_, i) => {
-    return {
-      groupName: `Basic Info G${ i } - header`,
-      options: Array.from(Array(4), (_, k) => {
-        return {
-          value: `Basic Info G${ i }_E${ k } - option`,
-          id: i * 4 + k,
-        };
-      })
-    };
-  });
-  const quickFiltersMock = [
-    {
-      selectType: QuickFilterSelectType.multiSelect,
-      label: 'department',
-      options: [optionsMock[0]],
-      value: [1, 2],
-    },
-    {
-      selectType: QuickFilterSelectType.multiSelect,
-      label: 'site',
-      options: optionsMock,
-      value: [],
-    },
-    {
-      selectType: QuickFilterSelectType.singleSelect,
-      label: 'employment',
-      options: [optionsMock[0]],
-      value: null,
-    },
-  ];
+  let optionsMock: SelectGroupOption[];
+  let quickFiltersMock: QuickFilterConfig[];
 
   beforeEach(async(() => {
+
+    optionsMock = Array.from(Array(3), (_, i) => {
+      return {
+        groupName: `Basic Info G${ i } - header`,
+        options: Array.from(Array(4), (_, k) => {
+          return {
+            value: `Basic Info G${ i }_E${ k } - option`,
+            id: i * 4 + k,
+            selected: false,
+          };
+        })
+      };
+    });
+
+    quickFiltersMock = [
+      {
+        selectType: QuickFilterSelectType.multiSelect,
+        label: 'department',
+        key: 'department',
+        options: [optionsMock[0]],
+      },
+      {
+        selectType: QuickFilterSelectType.multiSelect,
+        label: 'site',
+        key: 'site',
+        options: optionsMock,
+      },
+      {
+        selectType: QuickFilterSelectType.singleSelect,
+        label: 'employment',
+        key: 'employment',
+        options: [optionsMock[0]],
+      },
+    ];
+
     TestBed.configureTestingModule({
       declarations: [
         QuickFilterBarComponent,
         MockComponent(QuickFilterComponent),
+      ],
+      providers: [
+        ListModelService,
+        ListChangeService,
       ],
       imports: [
         NoopAnimationsModule,
@@ -81,9 +94,18 @@ describe('QuickFilterBarComponent', () => {
       });
       fixture.detectChanges();
       expect(component.quickFiltersChanges).toEqual({
-        department: [1, 2],
-        site: [],
-        employment: null,
+        department: {
+          key: 'department',
+          listChange: new ListChange([optionsMock[0]]),
+        },
+        site: {
+          key: 'site',
+          listChange: new ListChange(optionsMock),
+        },
+        employment: {
+          key: 'employment',
+          listChange: new ListChange([optionsMock[0]]),
+        },
       });
     });
   });
@@ -92,35 +114,56 @@ describe('QuickFilterBarComponent', () => {
     beforeEach(() => {
       component.ngOnChanges({
         quickFilters: {
-          previousValue: undefined, currentValue: quickFiltersMock, firstChange: true, isFirstChange: () => true,
+          previousValue: undefined,
+          currentValue: quickFiltersMock,
+          firstChange: true,
+          isFirstChange: () => true,
         },
       });
       fixture.detectChanges();
     });
     it('should update quickFiltersChanges model with the changed filter value', () => {
       const changedFilter: QuickFilterChangeEvent = {
-        label: 'site',
-        value: [1],
+        key: 'site',
+        listChange: new ListChange(optionsMock),
       };
       const quickFilterSiteEl = fixture.debugElement.queryAll(By.css('b-quick-filter'))[1];
       quickFilterSiteEl.componentInstance.filterChange.emit(changedFilter);
       expect(component.quickFiltersChanges).toEqual({
-        department: [1, 2],
-        site: [1],
-        employment: null,
+        department: {
+          key: 'department',
+          listChange: new ListChange([optionsMock[0]]),
+        },
+        site: {
+          key: 'site',
+          listChange: new ListChange(optionsMock),
+        },
+        employment: {
+          key: 'employment',
+          listChange: new ListChange([optionsMock[0]]),
+        },
       });
     });
     it('should invoke onFilterChange.emit with the quickFiltersChanges model', () => {
       const changedFilter: QuickFilterChangeEvent = {
-        label: 'site',
-        value: [1],
+        key: 'department',
+        listChange: new ListChange([optionsMock[0]]),
       };
       const quickFilterSiteEl = fixture.debugElement.queryAll(By.css('b-quick-filter'))[1];
       quickFilterSiteEl.componentInstance.filterChange.emit(changedFilter);
       expect(component.filtersChange.emit).toHaveBeenCalledWith({
-        department: [1, 2],
-        site: [1],
-        employment: null,
+        department: {
+          key: 'department',
+          listChange: new ListChange([optionsMock[0]]),
+        },
+        site: {
+          key: 'site',
+          listChange: new ListChange(optionsMock),
+        },
+        employment: {
+          key: 'employment',
+          listChange: new ListChange([optionsMock[0]]),
+        },
       });
     });
   });

@@ -9,27 +9,33 @@ import { InputComponent } from '../input/input.component';
 import { SelectGroupOption } from '../lists/list.interface';
 import { InputSingleSelectValue } from './split-input-single-select.interface';
 import { By } from '@angular/platform-browser';
+import { cloneDeep } from 'lodash';
+import { ListChange } from '../lists/list-change/list-change';
 
 describe('SplitInputSingleSelectComponent', () => {
   let component: SplitInputSingleSelectComponent;
   let fixture: ComponentFixture<SplitInputSingleSelectComponent>;
-  const optionsMock: SelectGroupOption[] = [
-    {
-      groupName: 'currencies',
-      options: [
-        { value: 'USD', id: 'USD' },
-        { value: 'GBP', id: 'GBP' },
-        { value: 'ILS', id: 'ILS' }
-      ]
-    }
-  ];
-
-  const valueMock: InputSingleSelectValue = {
-    inputValue: 200,
-    selectValue: 'USD'
-  };
+  let optionsMock: SelectGroupOption[];
+  let valueMock: InputSingleSelectValue;
 
   beforeEach(async(() => {
+
+    valueMock = {
+      inputValue: 200,
+      selectValue: 'USD'
+    };
+
+    optionsMock = [
+      {
+        groupName: 'currencies',
+        options: [
+          { value: 'USD', id: 'USD', selected: false },
+          { value: 'GBP', id: 'GBP', selected: false },
+          { value: 'ILS', id: 'ILS', selected: false },
+        ]
+      }
+    ];
+
     TestBed.configureTestingModule({
       declarations: [
         SplitInputSingleSelectComponent,
@@ -67,19 +73,37 @@ describe('SplitInputSingleSelectComponent', () => {
       const inputEl = fixture.debugElement.query(By.css('b-input'));
       expect(inputEl.context.value).toEqual(valueMock.inputValue);
     });
-    it('should set selectValue as value on the selectEl', () => {
+    it('should enrich selectOptions with select=true from value', () => {
+      const expectedOptions = cloneDeep(optionsMock);
+      expectedOptions[0].options[0].selected = true;
       component.value = valueMock;
-      component.ngOnChanges({});
-      fixture.detectChanges();
-      const selectEl = fixture.debugElement.query(By.css('b-single-select'));
-      expect(selectEl.context.value).toEqual(valueMock.selectValue);
+      component.ngOnChanges({
+        selectOptions:
+          {
+            previousValue: undefined,
+            currentValue: optionsMock,
+            firstChange: false,
+            isFirstChange: () => false,
+          },
+      });
+      expect(component.options).toEqual(expectedOptions);
     });
-    it('should set options on select element', () => {
-      component.selectOptions = optionsMock;
-      component.ngOnChanges({});
+    it('should set selectedOptions as options on the selectEl', () => {
+      const expectedOptions = cloneDeep(optionsMock);
+      expectedOptions[0].options[0].selected = true;
+      component.value = valueMock;
+      component.ngOnChanges({
+        selectOptions:
+          {
+            previousValue: undefined,
+            currentValue: optionsMock,
+            firstChange: false,
+            isFirstChange: () => false,
+          },
+      });
       fixture.detectChanges();
       const selectEl = fixture.debugElement.query(By.css('b-single-select'));
-      expect(selectEl.context.options).toEqual(optionsMock);
+      expect(selectEl.context.options).toEqual(expectedOptions);
     });
   });
 
@@ -121,12 +145,15 @@ describe('SplitInputSingleSelectComponent', () => {
       fixture.detectChanges();
     });
     it('should update value and emit event with updated value', () => {
+      const listElOptions = cloneDeep(optionsMock);
+      listElOptions[0].options[1].selected = true;
       const selectEl = fixture.debugElement.query(By.css('b-single-select'));
-      selectEl.context.selectChange.emit('GBP');
+      const listChange = new ListChange(listElOptions);
+      selectEl.context.selectChange.emit(listChange);
       fixture.detectChanges();
       expect(component.elementChange.emit).toHaveBeenCalledWith({
         inputValue: 200,
-        selectValue: 'GBP'
+        selectValue: 'GBP',
       });
     });
   });

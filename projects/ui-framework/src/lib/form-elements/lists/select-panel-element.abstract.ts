@@ -95,7 +95,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
 
   updateTriggerTooltip(): void {
     setTimeout(() => {
-      this.showTriggerTooltip = this.triggerInput.bInput.nativeElement.scrollWidth > this.triggerInput.bInput.nativeElement.offsetWidth;
+      this.showTriggerTooltip = this.triggerInput.bInput.nativeElement.scrollWidth >
+        this.triggerInput.bInput.nativeElement.offsetWidth;
     });
   }
 }

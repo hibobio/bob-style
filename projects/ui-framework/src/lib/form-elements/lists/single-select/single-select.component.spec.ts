@@ -13,12 +13,14 @@ import { SingleListModule } from '../single-list/single-list.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { IconService } from '../../../icons/icon.service';
 import { By } from '@angular/platform-browser';
+import { SelectGroupOption } from '../list.interface';
+import { cloneDeep } from 'lodash';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
 describe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;
-  let optionsMock;
+  let optionsMock: SelectGroupOption[];
   let fixture: ComponentFixture<SingleSelectComponent>;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
@@ -31,11 +33,17 @@ describe('SingleSelectComponent', () => {
     optionsMock = [
       {
         groupName: 'Basic Info',
-        options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
+        options: [
+          { value: 'Basic Info 1', id: 1, selected: true },
+          { value: 'Basic Info 2', id: 2, selected: false },
+        ]
       },
       {
         groupName: 'Personal',
-        options: [{ value: 'Personal 1', id: 11 }, { value: 'Personal 2', id: 12 }]
+        options: [
+          { value: 'Personal 1', id: 11, selected: false },
+          { value: 'Personal 2', id: 12, selected: false },
+        ]
       }
     ];
 
@@ -64,10 +72,16 @@ describe('SingleSelectComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(SingleSelectComponent);
         component = fixture.componentInstance;
-        component.options = optionsMock;
-        component.value = 1;
         spyOn(component.selectChange, 'emit');
         spyOn(component, 'propagateChange');
+        component.ngOnChanges({
+          options: {
+            previousValue: undefined,
+            currentValue: optionsMock,
+            firstChange: true,
+            isFirstChange: () => true,
+          }
+        });
         fixture.autoDetectChanges();
       });
 
@@ -79,34 +93,47 @@ describe('SingleSelectComponent', () => {
   }));
 
   describe('ngOnChanges', () => {
-    it('should set value as empty array if value is not defined', () => {
-      fixture = TestBed.createComponent(SingleSelectComponent);
-      component = fixture.componentInstance;
-      component.options = optionsMock;
-      component.ngOnChanges({});
-      fixture.autoDetectChanges();
-      expect(component.value).toEqual(null);
-    });
-    it('should set triggerValue if value is provided', () => {
-      component.ngOnChanges({ value: { previousValue: undefined, currentValue: 1, firstChange: true, isFirstChange: () => true } });
+    it('should set triggerValue for selected options', () => {
       expect(component.triggerValue).toEqual('Basic Info 1');
     });
-    it('should not show clear button if value is null', () => {
-      component.ngOnChanges({ value: { previousValue: undefined, currentValue: null, firstChange: true, isFirstChange: () => true } });
-      expect(component.triggerValue).toBe(null);
+    it('should not show clear button if no selected options', () => {
+      const testOptionsMock = cloneDeep(optionsMock);
+      testOptionsMock[0].options[0].selected = false;
+      component.ngOnChanges({
+        options: {
+          previousValue: optionsMock,
+          currentValue: testOptionsMock,
+          firstChange: false,
+          isFirstChange: () => false,
+        }
+      });
       fixture.detectChanges();
+      expect(component.triggerValue).toBe(null);
       const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
       expect(clearSelection).toBeFalsy();
     });
     it('should update trigger value also when options update', () => {
-      component.options = [];
-      component.ngOnChanges({ value: { previousValue: undefined, currentValue: 1, firstChange: true, isFirstChange: () => true } });
-      expect(component.triggerValue).toBe(null);
+      const testOptionsMock = cloneDeep(optionsMock);
+      testOptionsMock[0].options[0].selected = false;
       component.ngOnChanges({
-        options:
-          { previousValue: undefined, currentValue: optionsMock, firstChange: false, isFirstChange: () => false },
+        options: {
+          previousValue: optionsMock,
+          currentValue: testOptionsMock,
+          firstChange: false,
+          isFirstChange: () => false,
+        }
       });
-      expect(component.triggerValue).toEqual('Basic Info 1');
+      expect(component.triggerValue).toBe(null);
+      testOptionsMock[1].options[0].selected = true;
+      component.ngOnChanges({
+        options: {
+          previousValue: optionsMock,
+          currentValue: testOptionsMock,
+          firstChange: false,
+          isFirstChange: () => false,
+        }
+      });
+      expect(component.triggerValue).toEqual('Personal 1');
     });
   });
 
@@ -116,9 +143,9 @@ describe('SingleSelectComponent', () => {
       fixture.autoDetectChanges();
       tick(0);
       (overlayContainerElement.querySelectorAll('b-single-list .option')[3] as HTMLElement).click();
-      expect(component.value).toEqual(12);
-      expect(component.selectChange.emit).toHaveBeenCalledWith(12);
-      expect(component.propagateChange).toHaveBeenCalledWith(12);
+      const listChange = component['listChangeService'].getListChange(optionsMock, [12]);
+      expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
+      expect(component.propagateChange).toHaveBeenCalledWith(listChange);
       flush();
     }));
   });
@@ -133,7 +160,6 @@ describe('SingleSelectComponent', () => {
       const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
       clearSelection.triggerEventHandler('click', null);
       fixture.autoDetectChanges();
-      expect(component.value).toBe(null);
       expect(component.triggerValue).toBe(null);
       flush();
     }));
@@ -146,8 +172,8 @@ describe('SingleSelectComponent', () => {
       const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
       clearSelection.triggerEventHandler('click', null);
       fixture.autoDetectChanges();
-      expect(component.selectChange.emit).toHaveBeenCalledWith(null);
-      expect(component.propagateChange).toHaveBeenCalledWith(null);
+      const listChange = component['listChangeService'].getListChange(optionsMock, []);
+      expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
       flush();
     }));
   });
@@ -162,13 +188,20 @@ describe('SingleSelectComponent', () => {
 
   describe('tooltip', () => {
     beforeEach(async(() => {
+      const testOptionsMock = cloneDeep(optionsMock);
+      testOptionsMock[1].options[1].value = 'a very long text that has a tooltip';
       fixture = TestBed.createComponent(SingleSelectComponent);
       component = fixture.componentInstance;
-      fixture.nativeElement.style.width = '200px';
-      component.options = optionsMock;
-      component.options[1].options[1].value = 'a very long text that has a tooltip';
-      component.value = 1;
       spyOn(component.selectChange, 'emit');
+      fixture.nativeElement.style.width = '200px';
+      component.ngOnChanges({
+        options: {
+          previousValue: undefined,
+          currentValue: testOptionsMock,
+          firstChange: true,
+          isFirstChange: () => true,
+        }
+      });
       fixture.autoDetectChanges();
     }));
     it('should not show tooltip', () => {

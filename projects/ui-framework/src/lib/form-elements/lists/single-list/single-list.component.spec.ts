@@ -15,6 +15,7 @@ import { By } from '@angular/platform-browser';
 import { FiltersModule } from '../../../services/filters/filters.module';
 import { ListOptionModule } from '../list-option/list-option.module';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
+import { ListChangeService } from '../list-change/list-change.service';
 
 describe('SingleSelectComponent', () => {
   let component: SingleListComponent;
@@ -25,11 +26,17 @@ describe('SingleSelectComponent', () => {
     optionsMock = [
       {
         groupName: 'Basic Info Header',
-        options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
+        options: [
+          { value: 'Basic Info 1', id: 1, selected: true },
+          { value: 'Basic Info 2', id: 2, selected: false },
+        ],
       },
       {
         groupName: 'Personal Header',
-        options: [{ value: 'Personal 1', id: 11 }, { value: 'Personal 2', id: 12 }]
+        options: [
+          { value: 'Personal 1', id: 11, selected: false },
+          { value: 'Personal 2', id: 12, selected: false },
+        ]
       }
     ];
 
@@ -39,6 +46,7 @@ describe('SingleSelectComponent', () => {
       ],
       providers: [
         ListModelService,
+        ListChangeService,
         ListKeyboardService,
       ],
       imports: [
@@ -106,14 +114,14 @@ describe('SingleSelectComponent', () => {
           id: 1,
           groupName: 'Basic Info Header',
           isPlaceHolder: false,
-          selected: null
+          selected: true
         },
         {
           value: 'Basic Info 2',
           id: 2,
           groupName: 'Basic Info Header',
           isPlaceHolder: false,
-          selected: null
+          selected: false
         },
         {
           isPlaceHolder: true,
@@ -127,14 +135,14 @@ describe('SingleSelectComponent', () => {
           id: 11,
           groupName: 'Personal Header',
           isPlaceHolder: false,
-          selected: null
+          selected: false
         },
         {
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal Header',
           isPlaceHolder: false,
-          selected: null
+          selected: false
         }
       ]);
     });
@@ -146,13 +154,13 @@ describe('SingleSelectComponent', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       expect(options.length).toEqual(4);
     });
-    it('should not set selected option (id=1) with class selected', () => {
+    it('should set selected option (id=1) with class selected', () => {
       const option = fixture.debugElement.queryAll(By.css('.option'))[0];
-      expect(option.nativeElement.classList).not.toContain('selected');
-    });
-    it('should set the selected option (id=2) with class selected', () => {
-      const option = fixture.debugElement.queryAll(By.css('.option'))[1];
       expect(option.nativeElement.classList).toContain('selected');
+    });
+    it('should not set the selected option (id=2) with class selected', () => {
+      const option = fixture.debugElement.queryAll(By.css('.option'))[1];
+      expect(option.nativeElement.classList).not.toContain('selected');
     });
     it('should rerender lists if simpleChanges includes options', () => {
       let options = fixture.debugElement.queryAll(By.css('.option'));
@@ -283,28 +291,28 @@ describe('SingleSelectComponent', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeFalsy();
     });
-    it('should display search field also when listOptions is empty if total options is greater the DISPLAY_SEARCH_OPTION_NUM', () => {
+    it('should display search field also when listOptions=empty if total option>DISPLAY_SEARCH_OPTION_NUM', () => {
       const testOptionsMock = [
         {
           groupName: 'Basic Info Header',
           options: [
-            { value: 'Basic Info 1', id: 1 },
-            { value: 'Basic Info 2', id: 2 },
-            { value: 'Basic Info 3', id: 3 },
-            { value: 'Basic Info 4', id: 4 },
-            { value: 'Basic Info 5', id: 5 },
-            { value: 'Basic Info 6', id: 6 },
+            { value: 'Basic Info 1', id: 1, selected: false },
+            { value: 'Basic Info 2', id: 2, selected: false },
+            { value: 'Basic Info 3', id: 3, selected: false },
+            { value: 'Basic Info 4', id: 4, selected: false },
+            { value: 'Basic Info 5', id: 5, selected: false },
+            { value: 'Basic Info 6', id: 6, selected: false },
           ]
         },
         {
           groupName: 'Personal Header',
           options: [
-            { value: 'Personal 1', id: 11 },
-            { value: 'Personal 2', id: 12 },
-            { value: 'Personal 3', id: 13 },
-            { value: 'Personal 4', id: 14 },
-            { value: 'Personal 5', id: 15 },
-            { value: 'Personal 6', id: 16 },
+            { value: 'Personal 1', id: 11, selected: false },
+            { value: 'Personal 2', id: 12, selected: false },
+            { value: 'Personal 3', id: 13, selected: false },
+            { value: 'Personal 4', id: 14, selected: false },
+            { value: 'Personal 5', id: 15, selected: false },
+            { value: 'Personal 6', id: 16, selected: false },
           ]
         }
       ];
@@ -347,12 +355,41 @@ describe('SingleSelectComponent', () => {
     it('should update value when option is clicked with the option id', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
-      expect(component.value).toBe(12);
     });
     it('should emit event when selecting an option', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
-      expect(component.selectChange.emit).toHaveBeenCalledWith(12);
+      const listChange = component['listChangeService'].getListChange(component.options, [12]);
+      expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
+    });
+  });
+
+  describe('singleList listChange class', () => {
+    let listChange;
+    beforeEach(() => {
+      listChange = component['listChangeService'].getListChange(component.options, [12]);
+    });
+
+    it('should return updated options model', () => {
+      expect(listChange.getSelectGroupOptions()).toEqual([
+        {
+          groupName: 'Basic Info Header',
+          options: [
+            { value: 'Basic Info 1', id: 1, selected: false },
+            { value: 'Basic Info 2', id: 2, selected: false },
+          ],
+        },
+        {
+          groupName: 'Personal Header',
+          options: [
+            { value: 'Personal 1', id: 11, selected: false },
+            { value: 'Personal 2', id: 12, selected: true },
+          ]
+        }
+      ]);
+    });
+    it('should return selectedId', () => {
+      expect(listChange.getSelectedIds()).toEqual([12]);
     });
   });
 
