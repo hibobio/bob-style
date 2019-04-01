@@ -144,14 +144,14 @@ describe('MultiSelectComponent', () => {
   });
 
   describe('notifySelectionIds', () => {
-    it('should emit onSelect with selected value', fakeAsync(() => {
+    it('should emit onSelect with listChange and propogateChange with selectedValuesArray', fakeAsync(() => {
       const expectedListChange = new ListChange(optionsMock);
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
       (overlayContainerElement.querySelector('.apply-button') as HTMLElement).click();
       expect(component.selectChange.emit).toHaveBeenCalledWith(expectedListChange);
-      expect(component.propagateChange).toHaveBeenCalledWith(expectedListChange);
+      expect(component.propagateChange).toHaveBeenCalledWith([1, 11]);
       flush();
     }));
   });
@@ -189,7 +189,7 @@ describe('MultiSelectComponent', () => {
       expect(component.options).toEqual(expectedOptionsMock);
       flush();
     }));
-    it('should invoke selectChange.emit and propagateChange with []', fakeAsync(() => {
+    it('should invoke selectChange.emit with listChange and propagateChange with []', fakeAsync(() => {
       const expectedListChange = new ListChange(expectedOptionsMock);
       component.openPanel();
       fixture.autoDetectChanges();
@@ -200,7 +200,7 @@ describe('MultiSelectComponent', () => {
       clearSelection.triggerEventHandler('click', null);
       fixture.autoDetectChanges();
       expect(component.selectChange.emit).toHaveBeenCalledWith(expectedListChange);
-      expect(component.propagateChange).toHaveBeenCalledWith(expectedListChange);
+      expect(component.propagateChange).toHaveBeenCalledWith([]);
       flush();
     }));
   });

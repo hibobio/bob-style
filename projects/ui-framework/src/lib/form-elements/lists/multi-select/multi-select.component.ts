@@ -131,7 +131,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
   private emitSelectChange(listChange: ListChange): void {
     this.options = listChange.getSelectGroupOptions();
     this.selectChange.emit(listChange);
-    this.propagateChange(listChange);
+    const selectedValue = listChange.getSelectedIds();
+    this.propagateChange(selectedValue);
   }
 
   private emitSelectModified(listChange: ListChange): void {

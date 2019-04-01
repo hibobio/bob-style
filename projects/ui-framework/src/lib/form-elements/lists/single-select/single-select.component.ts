@@ -11,7 +11,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
-import { chain, isNull } from 'lodash';
+import { chain, isNull, isUndefined } from 'lodash';
 import { PanelPositionService } from '../../../overlay/panel/panel-position.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
@@ -61,7 +61,6 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
     private listChangeService: ListChangeService,
-
   ) {
     super(overlay, viewContainerRef, panelPositionService);
     this.value = null;
@@ -121,6 +120,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
   private emitChange(listChange: ListChange): void {
     this.singleSelectOptions = listChange.getSelectGroupOptions();
     this.selectChange.emit(listChange);
-    this.propagateChange(listChange);
+    const selectedValue = listChange.getSelectedIds()[0];
+    this.propagateChange(isUndefined(selectedValue) ? null : selectedValue);
   }
 }

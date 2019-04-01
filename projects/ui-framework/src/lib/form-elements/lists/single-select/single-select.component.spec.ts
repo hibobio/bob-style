@@ -138,14 +138,14 @@ describe('SingleSelectComponent', () => {
   });
 
   describe('onSelect', () => {
-    it('should emit onSelect with selected value', fakeAsync(() => {
+    it('should emit onSelect with list change and propagateChange with selected value', fakeAsync(() => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
       (overlayContainerElement.querySelectorAll('b-single-list .option')[3] as HTMLElement).click();
       const listChange = component['listChangeService'].getListChange(optionsMock, [12]);
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
-      expect(component.propagateChange).toHaveBeenCalledWith(listChange);
+      expect(component.propagateChange).toHaveBeenCalledWith(12);
       flush();
     }));
   });
