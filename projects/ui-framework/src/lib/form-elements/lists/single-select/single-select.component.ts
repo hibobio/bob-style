@@ -48,14 +48,13 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
   triggerValue: string;
   showTriggerTooltip: boolean;
   blockSelectClick: boolean;
+  singleSelectOptions: SelectGroupOption[];
+  selectedOptionId: number | string;
 
   readonly listElHeight = LIST_EL_HEIGHT;
   readonly resetIcon: String = Icons.reset_x;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
-
-  private selectedOptionId: number | string;
-  private singleSelectOptions: SelectGroupOption[];
 
   constructor(
     overlay: Overlay,

@@ -133,6 +133,7 @@ export {
   SelectOption,
   ListComponentPrefix
 } from './lib/form-elements/lists/list.interface';
+export { ListChange } from './lib/form-elements/lists/list-change/list-change';
 // Breadcrumbs Module
 export {
   BreadcrumbsModule

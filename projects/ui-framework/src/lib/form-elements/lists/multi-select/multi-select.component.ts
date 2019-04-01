@@ -51,6 +51,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
 
   triggerValue: string;
   blockSelectClick: boolean;
+  selectedValuesMap: (number | string)[];
 
   readonly listElHeight = LIST_EL_HEIGHT;
   readonly buttonSize = ButtonSize;
@@ -59,7 +60,6 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
 
-  private selectedValuesMap: (number | string)[];
   private listChange: ListChange;
 
   constructor(
