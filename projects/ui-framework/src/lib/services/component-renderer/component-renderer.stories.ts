@@ -82,7 +82,7 @@ const note = `
     --- | --- | --- | ---
   component | Component | component reference | none
   attributes | object | object with component inputs | none (optional)
-  content | string  / RenderedComponent / (string / RenderedComponent)[] | text to be passed as ng-content of the component | none (optional)
+  content | string  / RenderedComponent / (string / RenderedComponent)[] | a string, another component or an array of strings and components to be passed as ng-content of the component | none (optional)
 
 
   #### componentData:
