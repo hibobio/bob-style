@@ -31,52 +31,38 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Component Renderer">
-  <div style="padding: 50px;">
+  <div style="padding: 50px; display:flex; justify-content: center; background: rgba(0,0,0,0.1);">
     ${template}
   </div>
 </b-story-book-layout>
 `;
 
 const componentData = {
-  component: ButtonComponent,
+  component: MockComponent,
   attributes: {
-    type: 'primary',
-    size: 'large'
+    hostcss: {
+      display: 'flex',
+      alignItems: 'center'
+    },
+    slot1css: {
+      marginRight: '10px'
+    }
   },
   content: [
     {
-      component: MockComponent,
+      component: AvatarComponent,
       attributes: {
-        hostcss: {
-          width: '160px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
-        }
+        imageSource: 'http://i.pravatar.cc/200',
+        size: 'mini',
+        isClickable: true
       },
-      content: [
-        {
-          component: AvatarComponent,
-          attributes: {
-            imageSource: 'http://i.pravatar.cc/200',
-            size: 'mini',
-            isClickable: true
-          },
-          handlers: {
-            clicked: () => {
-              console.log('Avatar was clicked!');
-            }
-          }
-        },
-        'Super button'
-      ]
-    }
-  ],
-  handlers: {
-    clicked: () => {
-      console.log('Button was clicked!');
-    }
-  }
+      handlers: {
+        clicked: action('Avatar was clicked')
+      }
+    },
+
+    'Zoe Clark'
+  ]
 };
 
 const note = `
@@ -85,8 +71,7 @@ const note = `
   #### Module
   *ComponentRendererModule*
 
-  #### [component]
-  properties of object describing Component to be rendered
+  #### component: RenderedComponent (properties of object describing Component to be rendered)
   Name | Type | Description | Default value
     --- | --- | --- | ---
   component | Component | component reference | none
@@ -96,6 +81,44 @@ const note = `
   ~~~
   ${template}
   ~~~
+
+  #### componentData:
+
+  \`\`\`
+{
+  component: MockComponent,
+
+  attributes: {
+    hostcss: {
+      display: 'flex',
+        alignItems: 'center'
+    },
+    slot1css: {
+      marginRight: '10px'
+    }
+  },
+
+  content: [
+
+    {
+      component: AvatarComponent,
+      attributes: {
+        imageSource: 'http://i.pravatar.cc/200',
+        size: 'mini',
+        isClickable: true
+      },
+      handlers: {
+        clicked: () => {
+          console.log('Avatar was clicked!');
+        }
+      }
+    },
+
+    'Zoe Clark'
+  ]
+}
+\`\`\`
+
 `;
 
 story.add(
@@ -104,7 +127,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        componentData: object('component', componentData)
+        componentData: object('componentData', componentData)
       },
       moduleMetadata: {
         declarations: [MockComponent],

@@ -30,7 +30,7 @@ import {
 })
 export class ComponentRendererComponent implements OnInit, OnDestroy {
   constructor(
-    @Inject(DOCUMENT) private document: Document,
+    @Inject(DOCUMENT) private document: any,
     private factoryResolver: ComponentFactoryResolver,
     private injector: Injector
   ) {}
