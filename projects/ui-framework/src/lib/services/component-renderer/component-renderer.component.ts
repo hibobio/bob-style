@@ -38,12 +38,12 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
   @ViewChild('componentHost', { read: ViewContainerRef })
   container: ViewContainerRef;
 
-  @Input() component: RenderedComponent;
+  @Input() render: RenderedComponent;
 
   private componentRef: ComponentRef<any>;
 
   ngOnInit() {
-    this.insertComponent(this.component);
+    this.insertComponent(this.render);
   }
 
   ngOnDestroy(): void {
@@ -141,6 +141,6 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
 
   private destroyComponent(): void {
     this.componentRef.destroy();
-    this.component = null;
+    this.componentRef = null;
   }
 }

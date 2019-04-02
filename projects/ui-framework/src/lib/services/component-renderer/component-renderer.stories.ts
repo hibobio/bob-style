@@ -25,7 +25,7 @@ const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
 );
 
 const template = `
-<b-component-renderer [component]="componentData">
+<b-component-renderer [render]="componentData">
 </b-component-renderer>
 `;
 
@@ -71,7 +71,7 @@ const note = `
   #### Module
   *ComponentRendererModule*
 
-  #### component: RenderedComponent (properties of object describing Component to be rendered)
+  #### [render: RenderedComponent] (properties of object describing Component to be rendered)
   Name | Type | Description | Default value
     --- | --- | --- | ---
   component | Component | component reference | none

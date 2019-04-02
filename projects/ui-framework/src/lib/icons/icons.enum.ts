@@ -49,4 +49,5 @@ export enum Icons {
   folder = 'folder',
   add_doc = 'add_doc',
   timeline = 'Icon_timeline',
+  employee_ref = 'employee_ref',
 }
