@@ -25,7 +25,7 @@ const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
 );
 
 const template = `
-<b-component-renderer [render]="componentData">
+<b-component-renderer [render]="renderData">
 </b-component-renderer>
 `;
 
@@ -37,7 +37,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-const componentData = {
+const renderData = {
   component: MockComponent,
   attributes: {
     hostcss: {
@@ -80,26 +80,19 @@ const note = `
   #### [render: RenderedComponent] (properties of object describing Component to be rendered)
   Name | Type | Description | Default value
     --- | --- | --- | ---
-  component | Component | component reference | none
-  attributes | object | object with component inputs | none (optional)
+  component | any | component reference | none
+  attributes | { inputName: inputValue } | object with component attributes (inputs) | none (optional)
   content | string  / RenderedComponent / (string / RenderedComponent)[] | a string, another component or an array of strings and components to be passed as ng-content of the component | none (optional)
+  handlers | { eventName: handlerFunction() } | object that maps events output by component to handler functions | none (optional)
 
 
-  #### componentData:
+   #### Example
+
+  #### renderData: RenderedComponent
 
   \`\`\`
 {
   component: MockComponent,
-
-  attributes: {
-    hostcss: {
-      display: 'flex',
-        alignItems: 'center'
-    },
-    slot1css: {
-      marginRight: '10px'
-    }
-  },
 
   content: [
 
@@ -118,6 +111,7 @@ const note = `
     },
 
     'Zoe Clark'
+
   ]
 }
 \`\`\`
@@ -130,7 +124,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        componentData: object('componentData', componentData)
+        renderData: object('renderData', renderData)
       },
       moduleMetadata: {
         declarations: [MockComponent],
