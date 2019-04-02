@@ -71,16 +71,19 @@ const note = `
   #### Module
   *ComponentRendererModule*
 
+
+  ~~~
+  ${template}
+  ~~~
+
+
   #### [render: RenderedComponent] (properties of object describing Component to be rendered)
   Name | Type | Description | Default value
     --- | --- | --- | ---
   component | Component | component reference | none
   attributes | object | object with component inputs | none (optional)
-  content | string | text to be passed as ng-content of the component | none (optional)
+  content | string  / RenderedComponent / (string / RenderedComponent)[] | text to be passed as ng-content of the component | none (optional)
 
-  ~~~
-  ${template}
-  ~~~
 
   #### componentData:
 
