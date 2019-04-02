@@ -22,7 +22,7 @@ export class ComponentFactoryService {
 
   constructor(
     private factoryResolver: ComponentFactoryResolver,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: any
   ) {}
 
   setComponentContainerRef(view: ViewContainerRef): void {
