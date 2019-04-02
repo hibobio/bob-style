@@ -24,6 +24,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
 
   readonly rowHeight: number = 50;
+  readonly autoSizePadding: number = 30;
 
   gridReady = false;
   gridOptions: GridOptions;
@@ -42,13 +43,16 @@ export class TableComponent implements OnInit, OnChanges {
       .getGridColumnDef(this.columnDefs, this.rowSelection);
 
     this.gridOptions = <GridOptions>{
-      autoSizePadding: 30,
       suppressAutoSize: true,
+      suppressRowClickSelection: true,
+      autoSizePadding: this.autoSizePadding,
+      rowHeight: this.rowHeight,
+      headerHeight: this.rowHeight,
+      rowSelection: this.rowSelection,
       onGridSizeChanged: () => {
       },
       onGridReady: () => {
-        this.gridOptions.columnApi
-          .autoSizeColumns(this.tableUtilsService.getAllColFields(this.gridOptions));
+        this.gridOptions.columnApi.autoSizeAllColumns();
         this.gridReady = true;
       },
     };
@@ -56,7 +60,8 @@ export class TableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'maxHeight')) {
-      this.setGridHeight(changes.maxHeight.currentValue);
+      this.maxHeight = changes.maxHeight.currentValue;
+      this.setGridHeight(this.maxHeight);
     }
   }
 

@@ -1,5 +1,5 @@
-import { ColumnDef, PinDirection, SortDirections } from './table/table.interface';
-import { AvatarCellComponent } from './table-cell-components/avatar.component';
+import { ColumnDef, PinDirection, SortDirections } from '../table/table.interface';
+import { AvatarCellComponent } from '../table-cell-components/avatar.component';
 
 export const mockColumnsDefs: ColumnDef[] = [
   {
@@ -98,4 +98,11 @@ export const mockRowData = [
 //   if (i % 100 === 0) {
 //     console.log('Generate rows ' + i);
 //   }
+// }
+//
+// for (let i = 5; i < 10; i++) {
+//   mockColumnsDefs[i] = {
+//     headerName: ` ${i} column Name ${i}`,
+//     field: `field.path`,
+//   };
 // }

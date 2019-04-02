@@ -179,7 +179,7 @@ export class ExampleDialog2Component implements OnInit {
       ok: {
         label: 'Cool!',
         action: () => {
-          return false;
+          return true;
         },
       },
     };

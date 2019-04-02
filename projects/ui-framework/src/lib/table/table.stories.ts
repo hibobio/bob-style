@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 import { TableModule } from './table.module';
 import { AvatarModule } from '../buttons-indicators/avatar/avatar.module';
-import { mockColumnsDefs, mockRowData } from './table.mock';
+import { mockColumnsDefs, mockRowData } from './table-mocks/table-story.mock';
 import { AvatarCellComponent } from './table-cell-components/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { RowSelection } from './table/table.interface';
