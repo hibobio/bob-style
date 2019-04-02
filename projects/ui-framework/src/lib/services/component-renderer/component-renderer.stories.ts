@@ -18,6 +18,7 @@ import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import { MockComponent } from '../mock.component';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs
@@ -39,24 +40,37 @@ const storyTemplate = `
 const componentData = {
   component: ButtonComponent,
   attributes: {
-    type: 'secondary'
+    type: 'primary',
+    size: 'large'
   },
   content: [
     {
-      component: AvatarComponent,
-      content: 'Super button!',
+      component: MockComponent,
       attributes: {
-        imageSource: 'http://i.pravatar.cc/200',
-        size: 'mini',
-        isClickable: true
-      },
-      handlers: {
-        clicked: () => {
-          console.log('Avatar was clicked!');
+        hostcss: {
+          width: '160px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
         }
-      }
-    },
-    'Super button'
+      },
+      content: [
+        {
+          component: AvatarComponent,
+          attributes: {
+            imageSource: 'http://i.pravatar.cc/200',
+            size: 'mini',
+            isClickable: true
+          },
+          handlers: {
+            clicked: () => {
+              console.log('Avatar was clicked!');
+            }
+          }
+        },
+        'Super button'
+      ]
+    }
   ],
   handlers: {
     clicked: () => {
@@ -93,6 +107,7 @@ story.add(
         componentData: object('component', componentData)
       },
       moduleMetadata: {
+        declarations: [MockComponent],
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
@@ -100,7 +115,7 @@ story.add(
           ButtonsModule,
           AvatarModule
         ],
-        entryComponents: [ButtonComponent, AvatarComponent]
+        entryComponents: [ButtonComponent, AvatarComponent, MockComponent]
       }
     };
   },
