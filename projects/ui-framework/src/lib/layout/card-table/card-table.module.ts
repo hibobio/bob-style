@@ -15,7 +15,7 @@ import { ComponentRendererComponent } from '../../services/component-renderer/co
     ComponentRendererComponent
   ],
   imports: [CommonModule],
-  exports: [TableCardCellComponent, TableCardComponent, CardTableComponent],
+  exports: [CardTableComponent],
   providers: [CellWidthsService]
 })
 export class CardTableModule {}

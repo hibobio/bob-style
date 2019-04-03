@@ -13,7 +13,7 @@ import { CellWidthsService } from '../cell-widths.service';
   styleUrls: ['./card-table.component.scss']
 })
 export class CardTableComponent implements OnInit {
-  constructor(private CellWidthsService: CellWidthsService) {}
+  constructor(private widthsService: CellWidthsService) {}
 
   @Input() meta: CardTableMetaData;
   @Input() table: CardTableData;
@@ -24,7 +24,7 @@ export class CardTableComponent implements OnInit {
   cellsStyle: cardTableAllowedCellStyles[];
 
   private setCellsStyle(): void {
-    const cellsWidths = this.CellWidthsService.getCellsWidth(
+    const cellsWidths = this.widthsService.getCellsWidth(
       this.meta,
       this.minCellWidth
     );
