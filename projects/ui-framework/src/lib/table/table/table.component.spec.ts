@@ -1,5 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { TableComponent } from './table.component';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -8,83 +7,29 @@ import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { TableModule } from '../table.module';
 import { AvatarCellComponent } from '../table-cell-components/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';
-import { ColumnDef, PinDirection, SortDirections } from './table.interface';
-import { By } from '@angular/platform-browser';
-import { DebugElement, getDebugNode } from '@angular/core';
+import { ColumnDef, RowSelection } from './table.interface';
+import { TableUtilsService } from '../table-utils-service/table-utils.service';
+import { IconService } from '../../icons/icon.service';
+import { cloneDeep, concat, keys, pick } from 'lodash';
+import { COLUMN_DEFS_MOCK, ROW_DATA_MOCK } from '../table-mocks/table-test.mock';
+import SpyObj = jasmine.SpyObj;
+import createSpyObj = jasmine.createSpyObj;
 
 describe('TableComponent', () => {
   let component: TableComponent;
   let fixture: ComponentFixture<TableComponent>;
   let columnDefsMock: ColumnDef[] = [];
   let rowDataMock = [];
+  let spyIconService: SpyObj<IconService>;
+  let spyTableUtilsService: SpyObj<TableUtilsService>;
 
   beforeEach(async(() => {
-    columnDefsMock = [
-      {
-        headerName: '',
-        field: 'about.avatar',
-        pinned: PinDirection.Left,
-        lockPosition: true,
-        resizable: false,
-        sortable: false,
-      },
-      {
-        headerName: 'Display Name',
-        field: 'fullName',
-        sort: SortDirections.Asc,
-        resizable: true,
-        'sortable': true,
-      },
-      {
-        headerName: 'Email',
-        field: 'email',
-        resizable: true,
-        sortable: true,
-      },
-    ];
+    columnDefsMock = cloneDeep(COLUMN_DEFS_MOCK);
+    rowDataMock = cloneDeep(ROW_DATA_MOCK);
 
-    rowDataMock = [
-      {
-        fullName: 'Omri Hecht',
-        id: '1',
-        email: 'omri.hecht@hibob.io',
-        internal: {
-          status: 'Active'
-        },
-        about: {
-          avatar: {
-            imageSource: 'img_url1.jpg',
-          },
-        },
-      },
-      {
-        fullName: 'Doron Cynsiger',
-        id: '2',
-        email: 'doron.cynsiger@hibob.io',
-        internal: {
-          status: 'Active'
-        },
-        about: {
-          avatar:
-            {
-              imageSource: 'img_url2.jpg',
-            },
-        },
-      },
-      {
-        fullName: 'Ishai Borovoy',
-        id: '3',
-        email: 'ishai.borovoy@hibob.io',
-        internal: {
-          status: 'InActive'
-        },
-        about: {
-          avatar: {
-            imageSource: 'img_url3.jpg',
-          }
-        },
-      },
-    ];
+    spyIconService = createSpyObj('spyIconService', ['initIcon']);
+    spyTableUtilsService = createSpyObj('spyTableUtilsService', ['getGridColumnDef']);
+    spyTableUtilsService.getGridColumnDef.and.returnValue(columnDefsMock);
 
     TestBed.configureTestingModule({
       imports: [
@@ -93,7 +38,12 @@ describe('TableComponent', () => {
         TableModule,
         AgGridModule,
         AvatarModule,
-        AgGridModule.withComponents([AvatarCellComponent])]
+        AgGridModule.withComponents([AvatarCellComponent]),
+      ],
+      providers: [
+        { provide: IconService, useValue: spyIconService },
+        { provide: TableUtilsService, useValue: spyTableUtilsService },
+      ],
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
@@ -107,78 +57,149 @@ describe('TableComponent', () => {
           component = fixture.componentInstance;
           component.columnDefs = columnDefsMock;
           component.rowData = rowDataMock;
-          fixture.autoDetectChanges();
-          // spyOn(component.sortChanged, 'emit');
-          // spyOn(component.rowClicked, 'emit');
+          spyOn(component.sortChanged, 'emit');
+          spyOn(component.selectionChanged, 'emit');
+          spyOn(component.rowClicked, 'emit');
         }
       );
   }));
 
   describe('OnInit', () => {
     it('should set the grid maxHeight based on input maxHeight', () => {
-      // const agGrid = fixture.debugElement.query(By.css('ag-grid-angular'));
-      // const agRoot = fixture.debugElement.query(By.css('.ag-root'));
-      // const agRoot2 = fixture.debugElement.queryAll(By.css('.ag-root-wrapper'));
-      // console.log('a', component);
-
-      // const a = getDebugNode(agGrid.nativeElement) as DebugElement;
-      // const agRoot = a.query(By.css('.ag-root'));
-      // expect(1 === 1).toBeTruthy();
+      component.maxHeight = 200;
+      fixture.autoDetectChanges();
+      const shadowRoot: DocumentFragment = fixture.debugElement.nativeElement;
+      const agRoot = shadowRoot.querySelector('.ag-root') as HTMLElement;
+      expect(getComputedStyle(agRoot).maxHeight).toEqual('200px');
+    });
+    it('should set the grid maxHeight to 450px by default', () => {
+      fixture.autoDetectChanges();
+      const shadowRoot: DocumentFragment = fixture.debugElement.nativeElement;
+      const agRoot = shadowRoot.querySelector('.ag-root') as HTMLElement;
+      expect(getComputedStyle(agRoot).maxHeight).toEqual('450px');
+    });
+    it('should get table columnDef from tableUtilsService', () => {
+      fixture.autoDetectChanges();
+      expect(spyTableUtilsService.getGridColumnDef).toHaveBeenCalledWith(columnDefsMock, null);
+      expect(component.gridColumnDefs).toEqual(columnDefsMock);
     });
   });
 
-  // describe('Table events', () => {
-  //   it('should select row', fakeAsync(() => {
-  //     component.agGrid.api.selectIndex(0, false, true);
-  //     tick(1);
-  //     expect(component.rowSelected.emit).toHaveBeenCalledWith({
-  //       rowIndex: 0,
-  //       type: RowSelectionEventType.Select,
-  //       data: { fullName: 'Doron Cynsiger',
-  //               email: 'doron.cynsiger@hibob.io',
-  //               internal: { status: 'Active' },
-  //               about: {
-  //                 avatar: {
-  //                     imageSource:
-  //                       'img_url1.jpg',
-  //                 }
-  //               },
-  //
-  //       },
-  //     });
-  //   }));
-  //   it('should unselect row', fakeAsync(() => {
-  //     component.agGrid.api.selectIndex(0, false, true);
-  //     component.agGrid.api.deselectIndex(0, true);
-  //     tick(1);
-  //     expect(component.rowSelected.emit).toHaveBeenCalledWith({
-  //       rowIndex: 0,
-  //       type: RowSelectionEventType.Unselect,
-  //       data: { fullName: 'Doron Cynsiger',
-  //         email: 'doron.cynsiger@hibob.io',
-  //         internal: { status: 'Active' },
-  //         about: {
-  //           avatar: {
-  //             imageSource:
-  //               'img_url1.jpg',
-  //           }
-  //         },
-  //
-  //       },
-  //     });
-  //   }));
-  //   it('should sort column', fakeAsync(() => {
-  //     component.agGrid.api.setSortModel([
-  //       {
-  //         colId: 'fullName',
-  //         sort: 'asc'
-  //       },
-  //     ]);
-  //     tick(1);
-  //     expect(component.sortChanged.emit).toHaveBeenCalledWith({
-  //       colId: 'fullName',
-  //       sort: 'asc'
-  //     });
-  //   }));
-  // });
+  describe('GridOptions', () => {
+    it('should define gridOptions with input values and readonly values', () => {
+      fixture.autoDetectChanges();
+      const expectedPartialOptions = {
+        autoSizePadding: 30,
+        suppressAutoSize: true,
+        suppressRowClickSelection: true,
+        rowHeight: 50,
+        headerHeight: 50,
+        rowSelection: null,
+      };
+      const actualPartialOptions = pick(component.gridOptions, keys(expectedPartialOptions));
+      expect(actualPartialOptions).toEqual(expectedPartialOptions);
+    });
+    it('should set rowSelection as option if provided', () => {
+      component.rowSelection = RowSelection.Single;
+      fixture.autoDetectChanges();
+      expect(component.gridOptions.rowSelection).toEqual(RowSelection.Single);
+    });
+  });
+
+  describe('onGridReady', () => {
+    it('should set gridReady to true when onGridReady is triggered',
+      fakeAsync(() => {
+        expect(component.gridReady).toBe(false);
+        fixture.autoDetectChanges();
+        flush();
+        expect(component.gridReady).toBe(true);
+      }));
+    it('should call autoSizeAllColumns when onGridReady is triggered',
+      fakeAsync(() => {
+        fixture.autoDetectChanges();
+        spyOn(component.gridOptions.columnApi, 'autoSizeAllColumns');
+        flush();
+        expect(component.gridOptions.columnApi.autoSizeAllColumns).toHaveBeenCalled();
+      }));
+  });
+
+  describe('OnChanges', () => {
+    it('should update height if changed', () => {
+      fixture.autoDetectChanges();
+      const shadowRoot: DocumentFragment = fixture.debugElement.nativeElement;
+      let agRoot = shadowRoot.querySelector('.ag-root') as HTMLElement;
+      expect(getComputedStyle(agRoot).maxHeight).toEqual('450px');
+      component.ngOnChanges({
+        maxHeight: {
+          previousValue: undefined,
+          currentValue: 200,
+          firstChange: false,
+          isFirstChange: () => false,
+        },
+      });
+      agRoot = shadowRoot.querySelector('.ag-root') as HTMLElement;
+      expect(getComputedStyle(agRoot).maxHeight).toEqual('200px');
+    });
+  });
+
+  describe('onSortChanged', () => {
+    it('should emit sortChanged event',
+      fakeAsync(() => {
+        fixture.autoDetectChanges();
+        component.agGrid.api.setSortModel([
+          {
+            colId: 'fullName',
+            sort: 'asc'
+          },
+        ]);
+        tick();
+        expect(component.sortChanged.emit).toHaveBeenCalledWith({
+          colId: 'fullName',
+          sort: 'asc'
+        });
+        flush();
+      }));
+  });
+
+  describe('onSelectionChanged', () => {
+    it('should select row',
+      fakeAsync(() => {
+        fixture.autoDetectChanges();
+        component.agGrid.api.selectIndex(0, false, true);
+        tick();
+        expect(component.selectionChanged.emit).toHaveBeenCalledWith([ROW_DATA_MOCK[0]]);
+        flush();
+      }));
+    it('should unselect row',
+      fakeAsync(() => {
+        fixture.autoDetectChanges();
+
+        component.agGrid.api.selectIndex(1, false, true);
+        tick();
+        expect(component.selectionChanged.emit).toHaveBeenCalledWith([ROW_DATA_MOCK[1]]);
+
+        component.agGrid.api.deselectIndex(1, true);
+        tick();
+        expect(component.selectionChanged.emit).toHaveBeenCalledWith([]);
+
+        flush();
+      }));
+  });
+
+  describe('onRowClicked', () => {
+    it('should emit row clicked with row index and row data',
+      fakeAsync(() => {
+        fixture.autoDetectChanges();
+        tick();
+        const shadowRoot: DocumentFragment = fixture.debugElement.nativeElement;
+        const firstRow = shadowRoot.querySelectorAll('.ag-row')[0] as HTMLElement;
+        firstRow.click();
+        tick();
+        expect(component.rowClicked.emit).toHaveBeenCalledWith({
+          rowIndex: 0,
+          data: ROW_DATA_MOCK[0],
+        });
+        flush();
+      }));
+  });
 });
