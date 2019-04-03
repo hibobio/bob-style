@@ -14,15 +14,15 @@ export class TableCardCellComponent {
   @Input() cell: CardTableCellData;
   @Input() index: number;
 
-  isString(val: any): boolean {
-    return typeof val === 'string';
-  }
-
-  isArray(obj: any): boolean {
-    return Array.isArray(obj);
-  }
-
   isComponent(obj: any): boolean {
     return !!obj.component;
+  }
+
+  asArray(data: CardTableCellData) {
+    return Array.isArray(data)
+      ? data
+      : typeof data === 'string'
+      ? [data]
+      : null;
   }
 }
