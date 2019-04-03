@@ -17,6 +17,8 @@ export type cardTableAllowedCellStyles = {
   [key in cardTableAllowedTextCssProps]?: string
 };
 
+export type CardTableCellDataType = string | string[] | RenderedComponent;
+
 export interface CardTableCellMeta {
   id?: string | number;
   name: string;
@@ -27,7 +29,7 @@ export interface CardTableCellMeta {
 }
 
 export interface CardTableCellData {
-  data: string | string[] | RenderedComponent;
+  data: CardTableCellDataType;
 }
 
 export interface CardTableMetaData extends Array<CardTableCellMeta> {}

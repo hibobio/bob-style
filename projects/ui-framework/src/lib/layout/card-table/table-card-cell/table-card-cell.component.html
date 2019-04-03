@@ -1,5 +1,10 @@
-<span *ngFor="let line of asArray(cell.data)"
-      class="text">{{ line }}</span>
+<span *ngIf="isString(cell.data)"
+      class="text">{{ cell.data }}</span>
+
+<ng-container *ngIf="isArray(cell.data)">
+  <span *ngFor="let line of cell.data"
+        class="text">{{ line }}</span>
+</ng-container>
 
 <b-component-renderer *ngIf="isComponent(cell.data)"
                       [render]="cell.data"></b-component-renderer>
