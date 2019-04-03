@@ -22,6 +22,7 @@ import {
       <div #slot4 class="slot-4" [ngStyle]="slot4css" *ngIf="hasSlots[3]">
         <ng-content select="[slot4]"></ng-content>
       </div>
+      <ng-content></ng-content>
     </div>
   `,
   styles: [':host {display: block;']
