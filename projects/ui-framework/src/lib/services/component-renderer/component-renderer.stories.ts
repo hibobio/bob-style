@@ -14,10 +14,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
 import { ComponentRendererModule } from './component-renderer.module';
-import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
-import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { MockComponent } from '../mock-component/mock.component';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
@@ -127,15 +125,13 @@ story.add(
         renderData: object('renderData', renderData)
       },
       moduleMetadata: {
-        declarations: [MockComponent],
+        declarations: [MockComponent, AvatarComponent],
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
-          ComponentRendererModule,
-          ButtonsModule,
-          AvatarModule
+          ComponentRendererModule
         ],
-        entryComponents: [ButtonComponent, AvatarComponent, MockComponent]
+        entryComponents: [AvatarComponent, MockComponent]
       }
     };
   },
