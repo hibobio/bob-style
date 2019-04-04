@@ -1,117 +1,159 @@
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CardTableComponent } from './card-table.component';
-
-
-import { ComponentRendererModule } from '../../../services/component-renderer/component-renderer.module';
+import { CardTableModule } from '../card-table.module';
+import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
 
 import { ComponentRendererComponent } from '../../../services/component-renderer/component-renderer.component';
 
-import { MockModule } from '../../../services/mock-component/mock.module';
-import { MockComponent } from '../../../services/mock-component/mock.component';
-import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
-import { AvatarComponent } from '../../../buttons-indicators/avatar/avatar.component';
+import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ButtonComponent } from '../../../buttons-indicators/buttons/button/button.component';
 
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
-fdescribe('ComponentRendererComponent', () => {
+describe('CardTableComponent', () => {
   let fixture: ComponentFixture<CardTableComponent>;
   let component: CardTableComponent;
 
-  let mockNativeElement: HTMLElement;
-  let avatarComponent: AvatarComponent;
-  let avatarNativeElement: HTMLElement;
-  let textElement: HTMLElement;
+  let componentRenderer: ComponentRendererComponent;
+  let tableHeaderElement: HTMLElement;
+  let tableBodyElement: HTMLElement;
+  let buttonElement: HTMLElement;
 
   let testVar = 'hello';
 
-  const renderData = {
-    component: MockComponent,
-    content: [
+  const CardTableMockMetaData = [
+    {
+      name: '1',
+      width: 25
+    },
+    {
+      name: '2',
+      textStyle: {
+        fontWeight: '500'
+      }
+    },
+    { name: '3' },
+    { name: '4' },
+    {
+      name: '5',
+      width: 15,
+      align: 'right'
+    }
+  ];
+
+  const CardTableMockData = [
+    [
+      { data: 'text1' },
+      { data: 'text2' },
+      { data: ['text3', 'text4'] },
+      { data: 'text5' },
       {
-        component: AvatarComponent,
-        attributes: {
-          imageSource: 'hello.jpg',
-          size: 'mini',
-          isClickable: true
-        },
-        handlers: {
-          clicked: () => {
-            testVar = 'bye';
+        data: {
+          component: ButtonComponent,
+          attributes: {
+            type: 'secondary'
+          },
+          content: 'Button',
+          handlers: {
+            clicked: () => {
+              testVar = 'bye';
+            }
           }
         }
-      },
-      'Hello'
+      }
     ]
-  };
+  ];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CardTableComponent],
-      imports: [
-        MatExpansionModule,
-        BrowserAnimationsModule,
-        ComponentRendererModule,
-        MockModule,
-        AvatarModule
-      ],
+      declarations: [],
+      imports: [BrowserAnimationsModule, CardTableModule, ButtonsModule],
+      providers: [CellWidthsService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
-          entryComponents: [AvatarComponent, MockComponent]
+          entryComponents: [ButtonComponent]
         }
       })
       .compileComponents()
       .then(() => {
-        fixture = TestBed.createComponent(ComponentRendererComponent);
+        fixture = TestBed.createComponent(CardTableComponent);
         component = fixture.componentInstance;
-
-        component.render = renderData;
+        component.meta = CardTableMockMetaData;
+        component.table = CardTableMockData;
         fixture.detectChanges();
 
-        mockNativeElement = fixture.debugElement.query(By.css('b-mock'))
-          .nativeElement;
-        avatarComponent = fixture.debugElement.query(
-          By.css('.slot-1 .b-avatar')
-        ).componentInstance;
-        avatarNativeElement = fixture.debugElement.query(
-          By.css('.b-avatar.clickable')
+        tableBodyElement = fixture.debugElement.query(
+          By.css('.card-table-body')
         ).nativeElement;
-        textElement = fixture.debugElement.query(By.css('.slot-2'))
-          .nativeElement;
+
+        tableHeaderElement = fixture.debugElement.query(
+          By.css('.card-table-header')
+        ).nativeElement;
+
+        componentRenderer = fixture.debugElement.query(
+          By.css('b-component-renderer')
+        ).componentInstance;
+
+        buttonElement = fixture.debugElement.query(
+          By.css('b-button .mat-button')
+        ).nativeElement;
       });
   }));
 
+  describe('Table layout', () => {
+    it('should create table header with 5 cells', () => {
+      expect(tableHeaderElement.children.length).toEqual(5);
+    });
+    it('should create table body with  1 row of 5 cells', () => {
+      expect(tableBodyElement.children.length).toEqual(1);
+      expect(tableBodyElement.children[0].children.length).toEqual(5);
+    });
+  });
+
+  describe('Table content', () => {
+    it('should put column names in header row', () => {
+      expect(tableHeaderElement.children[2].children[0].innerHTML).toEqual('3');
+    });
+    it('should put two lines of text in 3rd column', () => {
+      expect(tableBodyElement.children[0].children[2].children.length).toEqual(
+        2
+      );
+      expect(
+        tableBodyElement.children[0].children[2].children[1].innerHTML
+      ).toEqual('text4');
+    });
+  });
+
+  describe('Table Cell styles', () => {
+    it('should attach widths and text styles to cells', () => {
+      const cellStyleAttributeValue = tableBodyElement.children[0].children[1]
+        .getAttribute('style')
+        .replace(/\s/g, '');
+      const expectedValue = 'max-width:20%;font-weight:500;';
+      expect(cellStyleAttributeValue).toEqual(expectedValue);
+    });
+    it('should attach widths but not text styles to header cells', () => {
+      const cellStyleAttributeValue = tableHeaderElement.children[1]
+        .getAttribute('style')
+        .replace(/\s/g, '');
+      const expectedValue = 'max-width:20%;';
+      expect(cellStyleAttributeValue).toEqual(expectedValue);
+    });
+  });
+
   describe('Component injection', () => {
-    it('should insert MockComponent', () => {
-      expect(mockNativeElement).toBeTruthy();
+    it('should insert ButtonComponent', () => {
+      expect(buttonElement).toBeTruthy();
+      expect(buttonElement.innerText).toEqual('Button');
     });
-
-    it('should insert AvatarComponent inside MockComponent', () => {
-      expect(avatarNativeElement).toBeTruthy();
-    });
-  });
-
-  describe('Component attributes', () => {
-    it('should pass attributes to MockComponent', () => {
-      expect(avatarComponent.imageSource).toEqual('hello.jpg');
-    });
-  });
-
-  describe('Component content', () => {
-    it('should pass text to MockComponent as content', () => {
-      expect(textElement.innerText).toEqual('Hello');
-    });
-  });
-
-  describe('Event handlers', () => {
-    it('should attach a click handler to AvatarComponent', () => {
-      avatarNativeElement.click();
+    it('should attach handler to Button click', () => {
+      buttonElement.click();
       expect(testVar).toEqual('bye');
     });
   });
