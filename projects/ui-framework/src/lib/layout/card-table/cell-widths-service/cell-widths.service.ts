@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CardTableMetaData } from './card-table.interface';
+import { CardTableMetaData } from '../card-table.interface';
 
 @Injectable()
 export class CellWidthsService {
@@ -35,10 +35,10 @@ export class CellWidthsService {
         : minCellWidth;
     });
 
-    const totalWidth = () =>
+    const totalWidth = (): number =>
       Math.round(cellWidths.reduce((acc, width) => acc + width, 0));
 
-    const cellsBiggerThanMinimum = () =>
+    const cellsBiggerThanMinimum = (): number =>
       cellWidths.reduce(
         (acc, width) => (width > minCellWidth ? acc + 1 : acc),
         0

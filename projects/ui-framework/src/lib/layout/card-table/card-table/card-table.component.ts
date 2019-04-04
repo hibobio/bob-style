@@ -5,7 +5,7 @@ import {
   CardTableData,
   cardTableAllowedCellStyles
 } from '../card-table.interface';
-import { CellWidthsService } from '../cell-widths.service';
+import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
 
 @Component({
   selector: 'b-card-table',
