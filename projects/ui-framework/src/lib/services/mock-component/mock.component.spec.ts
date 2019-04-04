@@ -1,7 +1,6 @@
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MockComponent } from './mock.component';
@@ -32,7 +31,7 @@ describe('MockComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, MockComponent],
-      imports: [MatExpansionModule, BrowserAnimationsModule],
+      imports: [BrowserAnimationsModule],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents()

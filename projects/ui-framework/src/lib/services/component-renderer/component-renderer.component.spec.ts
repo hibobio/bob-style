@@ -1,7 +1,6 @@
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ComponentRendererComponent } from './component-renderer.component';
@@ -47,7 +46,6 @@ describe('ComponentRendererComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ComponentRendererComponent],
       imports: [
-        MatExpansionModule,
         BrowserAnimationsModule,
         MockModule,
         AvatarModule
