@@ -41,7 +41,8 @@ describe('CardComponent', () => {
     it('should set input text inside <b-display-3> element and truncate text', () => {
       fixture.nativeElement.style.width = '200px';
       component.text =
-        'Compensation update with a very long text that cuts off after 4 lines of text. And here is another very long text that should not be displayed at all.';
+        `Compensation update with a very long text that cuts off after 4 lines of text.
+        And here is another very long text that should not be displayed at all.`;
       fixture.detectChanges();
       const bDisplay3Element = fixture.debugElement.query(
         By.css('b-display-3')
