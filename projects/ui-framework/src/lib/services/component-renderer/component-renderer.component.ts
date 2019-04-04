@@ -14,6 +14,8 @@ import {
   OnDestroy
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import {
   RenderedComponent,
@@ -37,6 +39,8 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
 
   @ViewChild('componentHost', { read: ViewContainerRef })
   container: ViewContainerRef;
+
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
   @Input() render: RenderedComponent;
 
@@ -85,9 +89,9 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
     handlers: RenderedComponentHandlers
   ): ComponentRef<any> {
     for (const handler of Object.keys(handlers)) {
-      component.instance[handler].subscribe((event: EventEmitter<any>) =>
-        handlers[handler](event)
-      );
+      component.instance[handler]
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((event: EventEmitter<any>) => handlers[handler](event));
     }
     return component;
   }
@@ -140,6 +144,8 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
   }
 
   private destroyComponent(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
     this.componentRef.destroy();
     this.componentRef = null;
   }
