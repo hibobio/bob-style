@@ -27,19 +27,19 @@ describe('CardTableComponent', () => {
 
   const CardTableMockMetaData = [
     {
-      name: '1',
+      name: 'title1',
       width: 25
     },
     {
-      name: '2',
+      name: 'title2',
       textStyle: {
         fontWeight: '500'
       }
     },
-    { name: '3' },
-    { name: '4' },
+    { name: 'title3' },
+    { name: 'title4' },
     {
-      name: '5',
+      name: 'title5',
       width: 15,
       align: 'right'
     }
@@ -118,7 +118,9 @@ describe('CardTableComponent', () => {
 
   describe('Table content', () => {
     it('should put column names in header row', () => {
-      expect(tableHeaderElement.children[2].children[0].innerHTML).toEqual('3');
+      expect(tableHeaderElement.children[2].children[0].innerHTML).toEqual(
+        'title3'
+      );
     });
     it('should put two lines of text in 3rd column', () => {
       expect(tableBodyElement.children[0].children[2].children.length).toEqual(
@@ -135,15 +137,13 @@ describe('CardTableComponent', () => {
       const cellStyleAttributeValue = tableBodyElement.children[0].children[1]
         .getAttribute('style')
         .replace(/\s/g, '');
-      const expectedValue = 'max-width:20%;font-weight:500;';
-      expect(cellStyleAttributeValue).toEqual(expectedValue);
+      expect(cellStyleAttributeValue).toEqual('max-width:20%;font-weight:500;');
     });
     it('should attach widths but not text styles to header cells', () => {
       const cellStyleAttributeValue = tableHeaderElement.children[1]
         .getAttribute('style')
         .replace(/\s/g, '');
-      const expectedValue = 'max-width:20%;';
-      expect(cellStyleAttributeValue).toEqual(expectedValue);
+      expect(cellStyleAttributeValue).toEqual('max-width:20%;');
     });
   });
 
