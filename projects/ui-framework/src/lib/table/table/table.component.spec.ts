@@ -78,87 +78,127 @@ describe('TableComponent', () => {
       const agRoot = shadowRoot.querySelector('.ag-root') as HTMLElement;
       expect(getComputedStyle(agRoot).maxHeight).toEqual('450px');
     });
-    it('should get table columnDef from tableUtilsService', () => {
-      fixture.autoDetectChanges();
-      expect(spyTableUtilsService.getGridColumnDef).toHaveBeenCalledWith(columnDefsMock, null);
-      expect(component.gridColumnDefs).toEqual(columnDefsMock);
-    });
-  });
-
-  describe('GridOptions', () => {
-    it('should define gridOptions with input values and readonly values', () => {
-      fixture.autoDetectChanges();
-      const expectedPartialOptions = {
-        autoSizePadding: 30,
-        suppressAutoSize: true,
-        suppressRowClickSelection: true,
-        rowHeight: 50,
-        headerHeight: 50,
-        rowSelection: null,
-      };
-      const actualPartialOptions = pick(component.gridOptions, keys(expectedPartialOptions));
-      expect(actualPartialOptions).toEqual(expectedPartialOptions);
-    });
-    it('should set rowSelection as option if provided', () => {
-      component.rowSelection = RowSelection.Single;
-      fixture.autoDetectChanges();
-      expect(component.gridOptions.rowSelection).toEqual(RowSelection.Single);
-    });
-  });
-
-  describe('onGridReady', () => {
-    it('should set gridReady to true when onGridReady is triggered',
-      fakeAsync(() => {
-        expect(component.gridReady).toBe(false);
-        fixture.autoDetectChanges();
-        flush();
-        expect(component.gridReady).toBe(true);
-      }));
-    it('should call autoSizeAllColumns when onGridReady is triggered',
-      fakeAsync(() => {
-        fixture.autoDetectChanges();
-        spyOn(component.gridOptions.columnApi, 'autoSizeAllColumns');
-        flush();
-        expect(component.gridOptions.columnApi.autoSizeAllColumns).toHaveBeenCalled();
-      }));
   });
 
   describe('OnChanges', () => {
-    it('should update height if changed', () => {
-      fixture.autoDetectChanges();
-      const shadowRoot: DocumentFragment = fixture.debugElement.nativeElement;
-      let agRoot = shadowRoot.querySelector('.ag-root') as HTMLElement;
-      expect(getComputedStyle(agRoot).maxHeight).toEqual('450px');
-      component.ngOnChanges({
-        maxHeight: {
-          previousValue: undefined,
-          currentValue: 200,
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
-      agRoot = shadowRoot.querySelector('.ag-root') as HTMLElement;
-      expect(getComputedStyle(agRoot).maxHeight).toEqual('200px');
-    });
-  });
-
-  describe('onSortChanged', () => {
-    it('should emit sortChanged event',
-      fakeAsync(() => {
+    describe('maxHeight', () => {
+      it('should update height if changed', () => {
         fixture.autoDetectChanges();
-        component.agGrid.api.setSortModel([
-          {
-            colId: 'fullName',
-            sort: 'asc'
+        const shadowRoot: DocumentFragment = fixture.debugElement.nativeElement;
+        let agRoot = shadowRoot.querySelector('.ag-root') as HTMLElement;
+        expect(getComputedStyle(agRoot).maxHeight).toEqual('450px');
+        agRoot = shadowRoot.querySelector('.ag-root') as HTMLElement;
+        component.ngOnChanges({
+          maxHeight: {
+            previousValue: undefined,
+            currentValue: 200,
+            firstChange: false,
+            isFirstChange: () => false,
           },
-        ]);
-        tick();
-        expect(component.sortChanged.emit).toHaveBeenCalledWith({
-          colId: 'fullName',
-          sort: 'asc'
         });
+        expect(getComputedStyle(agRoot).maxHeight).toEqual('200px');
+      });
+    });
+    describe('columnDefs', () => {
+      beforeEach(() => {
+        component.ngOnChanges({
+          columnDefs: {
+            previousValue: undefined,
+            currentValue: columnDefsMock,
+            firstChange: false,
+            isFirstChange: () => false,
+          },
+          rowData: {
+            previousValue: undefined,
+            currentValue: rowDataMock,
+            firstChange: false,
+            isFirstChange: () => false,
+          },
+          rowSelection: {
+            previousValue: undefined,
+            currentValue: RowSelection.Single,
+            firstChange: false,
+            isFirstChange: () => false,
+          },
+        });
+      });
+      describe('onSortChanged', () => {
+        it('should emit sortChanged event',
+          fakeAsync(() => {
+            fixture.autoDetectChanges();
+            component.agGrid.api.setSortModel([
+              {
+                colId: 'fullName',
+                sort: 'asc'
+              },
+            ]);
+            tick();
+            expect(component.sortChanged.emit).toHaveBeenCalledWith({
+              colId: 'fullName',
+              sort: 'asc'
+            });
+            flush();
+          }));
+      });
+      it('should get table columnDef from tableUtilsService', fakeAsync(() => {
+        fixture.autoDetectChanges();
         flush();
+        expect(spyTableUtilsService.getGridColumnDef).toHaveBeenCalledWith(columnDefsMock, null);
+        expect(component.gridColumnDefs).toEqual(columnDefsMock);
       }));
+      describe('GridOptions', () => {
+        it('should set rowSelection as option if provided', () => {
+          component.rowSelection = RowSelection.Single;
+          fixture.autoDetectChanges();
+          expect(component.gridOptions.rowSelection).toEqual(RowSelection.Single);
+        });
+        it('should define gridOptions with input values and readonly values', () => {
+          fixture.autoDetectChanges();
+          const expectedPartialOptions = {
+            autoSizePadding: 30,
+            suppressAutoSize: true,
+            suppressRowClickSelection: true,
+            rowHeight: 50,
+            headerHeight: 50,
+            rowSelection: null,
+          };
+          const actualPartialOptions = pick(component.gridOptions, keys(expectedPartialOptions));
+          expect(actualPartialOptions).toEqual(expectedPartialOptions);
+        });
+      });
+      describe('onGridReady', () => {
+        it('should set gridReady to true when onGridReady is triggered',
+          fakeAsync(() => {
+            expect(component.gridReady).toBe(false);
+            fixture.autoDetectChanges();
+            flush();
+            expect(component.gridReady).toBe(true);
+          }));
+        it('should call autoSizeAllColumns when onGridReady is triggered',
+          fakeAsync(() => {
+            fixture.autoDetectChanges();
+            spyOn(component.gridOptions.columnApi, 'autoSizeAllColumns');
+            flush();
+            expect(component.gridOptions.columnApi.autoSizeAllColumns).toHaveBeenCalled();
+          }));
+      });
+      describe('onRowClicked', () => {
+        it('should emit row clicked with row index and row data',
+          fakeAsync(() => {
+            fixture.autoDetectChanges();
+            tick();
+            const shadowRoot: DocumentFragment = fixture.debugElement.nativeElement;
+            const firstRow = shadowRoot.querySelectorAll('.ag-row')[0] as HTMLElement;
+            firstRow.click();
+            tick();
+            expect(component.rowClicked.emit).toHaveBeenCalledWith({
+              rowIndex: 0,
+              data: ROW_DATA_MOCK[0],
+            });
+            flush();
+          }));
+      });
+    });
   });
 
   describe('onSelectionChanged', () => {
@@ -182,23 +222,6 @@ describe('TableComponent', () => {
         tick();
         expect(component.selectionChanged.emit).toHaveBeenCalledWith([]);
 
-        flush();
-      }));
-  });
-
-  describe('onRowClicked', () => {
-    it('should emit row clicked with row index and row data',
-      fakeAsync(() => {
-        fixture.autoDetectChanges();
-        tick();
-        const shadowRoot: DocumentFragment = fixture.debugElement.nativeElement;
-        const firstRow = shadowRoot.querySelectorAll('.ag-row')[0] as HTMLElement;
-        firstRow.click();
-        tick();
-        expect(component.rowClicked.emit).toHaveBeenCalledWith({
-          rowIndex: 0,
-          data: ROW_DATA_MOCK[0],
-        });
         flush();
       }));
   });

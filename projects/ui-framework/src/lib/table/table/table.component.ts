@@ -38,27 +38,25 @@ export class TableComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.setGridHeight(this.maxHeight);
+    this.gridOptions = <GridOptions>{
+      suppressAutoSize: true,
+      suppressRowClickSelection: true,
+      autoSizePadding: this.autoSizePadding,
+      rowHeight: this.rowHeight,
+      headerHeight: this.rowHeight,
+      rowSelection: this.rowSelection,
+      onGridReady: () => {
+        this.gridOptions.columnApi.autoSizeAllColumns();
+        this.gridReady = true;
+      },
+    };
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'columnDefs')) {
       this.gridColumnDefs = this.tableUtilsService
         .getGridColumnDef(this.columnDefs, this.rowSelection);
-
-      this.gridOptions = <GridOptions>{
-        suppressAutoSize: true,
-        suppressRowClickSelection: true,
-        autoSizePadding: this.autoSizePadding,
-        rowHeight: this.rowHeight,
-        headerHeight: this.rowHeight,
-        rowSelection: this.rowSelection,
-        onGridReady: () => {
-          this.gridOptions.columnApi.autoSizeAllColumns();
-          this.gridReady = true;
-        },
-      };
     }
-
     if (has(changes, 'maxHeight')) {
       this.maxHeight = changes.maxHeight.currentValue;
       this.setGridHeight(this.maxHeight);
