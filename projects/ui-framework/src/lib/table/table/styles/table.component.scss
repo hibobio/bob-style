@@ -26,6 +26,11 @@
       visibility: visible;
     }
 
+    .ag-root-wrapper-body.ag-layout-normal {
+      height: auto;
+      overflow: hidden;
+    }
+
     .ag-root {
       background-color: white;
       border: 1px solid $grey-500;
