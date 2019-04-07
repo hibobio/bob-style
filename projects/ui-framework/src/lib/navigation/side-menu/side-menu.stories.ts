@@ -17,7 +17,7 @@ const inputStories = storiesOf(ComponentGroupType.Navigation, module)
 
 const template = `
 <b-side-menu [options]="options"
-             (selectOption)="onSelectOption($event)">
+             (selectOption)="selectOption($event)">
 </b-side-menu>
 `;
 
@@ -53,7 +53,7 @@ inputStories.add(
       template: storyTemplate,
       props: {
         options: object<SideMenuOption[]>('options', sideMenuOptionsMock),
-        selectOption: action(),
+        selectOption: action('SideMenuSelect'),
       },
       moduleMetadata: {
         entryComponents: [IconComponent],

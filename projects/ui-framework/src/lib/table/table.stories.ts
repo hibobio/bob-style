@@ -59,6 +59,7 @@ tableStories.add(
     return {
       template: storyTemplate,
       props: {
+        maxHeight: number('maxHeight', null),
         rowSelection: select('rowSelection', rowSelection, RowSelection.Multiple),
         rowData: object('rowData', mockRowData),
         columnDefs: object('columnDefs', mockColumnsDefs),
