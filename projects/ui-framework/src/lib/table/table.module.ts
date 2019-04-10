@@ -27,6 +27,7 @@ import { TableUtilsService } from './table-utils-service/table-utils.service';
   ],
   exports: [
     TableComponent,
+    AvatarCellComponent,
   ],
 })
 export class TableModule { }

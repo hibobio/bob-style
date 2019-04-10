@@ -7,6 +7,9 @@
  */
 
 // Typography Module
+import { TableComponent } from './lib/table/table/table.component';
+import { AvatarCellComponent } from './lib/table/table-cell-components/avatar.component';
+
 export { TypographyModule } from './lib/typography/typography.module';
 
 /*
@@ -227,6 +230,8 @@ export {
 // Table Module
 export { TableModule } from './lib/table/table.module';
 export * from './lib/table/table/table.interface';
+export { TableComponent } from './lib/table/table/table.component';
+export { AvatarCellComponent } from './lib/table/table-cell-components/avatar.component';
 
 
 /*
