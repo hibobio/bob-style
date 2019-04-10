@@ -3,7 +3,7 @@ import { PinDirection, SortDirections } from '../table/table.interface';
 export const COLUMN_DEFS_MOCK = [
   {
     headerName: '',
-    field: 'about.avatar',
+    field: 'about.avatar.imageSource',
     pinned: PinDirection.Left,
     lockPosition: true,
     resizable: false,

@@ -6,7 +6,7 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
 @Component({
   selector: 'b-avatar-cell',
   template: `
-        <b-avatar [imageSource]='params.value.imageSource'
+        <b-avatar [imageSource]='params.value'
                   [isClickable]="true"
                   (clicked)='clicked($event)'>
         </b-avatar>

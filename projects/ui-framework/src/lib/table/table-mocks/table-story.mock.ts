@@ -4,7 +4,7 @@ import { AvatarCellComponent } from '../table-cell-components/avatar.component';
 export const mockColumnsDefs: ColumnDef[] = [
   {
     headerName: '',
-    field: 'about.avatar',
+    field: 'about.avatar.imageSource',
     cellRendererFramework: AvatarCellComponent,
     pinned: PinDirection.Left,
     lockPosition: true,
