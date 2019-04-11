@@ -249,6 +249,7 @@ export { CardAddComponent } from './lib/layout/cards/card-add/card-add.component
 // Card Table
 export { CardTableModule } from './lib/layout/card-table/card-table.module';
 export { CardTableComponent } from './lib/layout/card-table/card-table/card-table.component';
+export * from './lib/layout/card-table/card-table.interface';
 
 
 /*

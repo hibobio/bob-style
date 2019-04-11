@@ -91,7 +91,7 @@ const note = `
     name: 'Status',
     width: 15,
     align: 'right',
-    sortablle: true
+    sortable: true
   }
 ]
   \`\`\`

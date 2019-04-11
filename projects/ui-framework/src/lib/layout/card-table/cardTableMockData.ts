@@ -40,7 +40,7 @@ export const CardTableMockMetaData: CardTableMetaData = [
     id: 1,
     name: 'Requested For',
     width: 25,
-    sortablle: false
+    sortable: false
   },
   {
     id: 2,
@@ -48,24 +48,24 @@ export const CardTableMockMetaData: CardTableMetaData = [
     textStyle: {
       fontWeight: '500'
     },
-    sortablle: false
+    sortable: false
   },
   {
     id: 3,
     name: 'Requested by',
-    sortablle: false
+    sortable: false
   },
   {
     id: 4,
     name: 'Assignee',
-    sortablle: false
+    sortable: false
   },
   {
     id: 5,
     name: 'Status',
     width: 15,
     align: 'right',
-    sortablle: true
+    sortable: true
   }
 ];
 

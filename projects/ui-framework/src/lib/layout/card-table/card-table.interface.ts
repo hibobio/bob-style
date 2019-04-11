@@ -25,7 +25,7 @@ export interface CardTableCellMeta {
   width?: number;
   align?: string;
   textStyle?: cardTableAllowedTextStyles;
-  sortablle?: boolean;
+  sortable?: boolean;
 }
 
 export interface CardTableCellData {
