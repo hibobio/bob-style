@@ -50,4 +50,5 @@ export enum Icons {
   add_doc = 'add_doc',
   timeline = 'Icon_timeline',
   employee_ref = 'employee_ref',
+  docs_empty = 'docs_empty',
 }

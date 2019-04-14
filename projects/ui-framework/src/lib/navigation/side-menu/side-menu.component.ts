@@ -1,24 +1,24 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { SideMenuOption } from './side-menu-option/side-menu-option.interface';
 import head from 'lodash/head';
 import size from 'lodash/size';
+import isNull from 'lodash/isNull';
 
 @Component({
   selector: 'b-side-menu',
   templateUrl: './side-menu.component.html',
   styleUrls: ['./side-menu.component.scss']
 })
-export class SideMenuComponent implements OnInit {
+export class SideMenuComponent implements OnChanges {
   @Input() options: SideMenuOption[];
+  @Input() selectedId: string = null;
   @Output() selectOption: EventEmitter<string> = new EventEmitter<string>();
-
-  public selectedId: string;
 
   constructor() {
   }
 
-  ngOnInit() {
-    if (size(this.options)) {
+  ngOnChanges() {
+    if (size(this.options) && isNull(this.selectedId)) {
       this.onSelectOption(head(this.options).id);
     }
   }

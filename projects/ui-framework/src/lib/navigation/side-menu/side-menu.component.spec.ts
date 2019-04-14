@@ -8,7 +8,7 @@ import { MenuModule } from '../menu/menu.module';
 import { IconsModule } from '../../icons/icons.module';
 import { SideMenuOptionComponent } from './side-menu-option/side-menu-option.component';
 
-describe('SideMenuComponent', () => {
+fdescribe('SideMenuComponent', () => {
   let component: SideMenuComponent;
   let fixture: ComponentFixture<SideMenuComponent>;
 
@@ -30,8 +30,9 @@ describe('SideMenuComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('ngOnInit', () => {
+  describe('ngOnChanges', () => {
     it('should set selectedId to 1', () => {
+      component.ngOnChanges();
       expect(component.selectedId).toEqual('1');
     });
   });
