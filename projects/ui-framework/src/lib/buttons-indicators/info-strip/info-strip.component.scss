@@ -1,0 +1,38 @@
+@import '../../style/colors';
+@import '../../style/typography';
+
+:host {
+  position: relative;
+  .b-info-strip {
+    padding: 0px 10px;
+    height: 64px;
+    background-color: $grey-100;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .icon {
+      display: flex;
+      margin-right: 10px;
+    }
+
+    .content {
+      text-align: left;
+      padding-right: 30px;
+      .text {
+
+      }
+      .url {
+        a {
+          color: $grey-700;
+          @include HeadingFont(12px);
+          text-decoration-line: none;
+          text-transform: lowercase;
+          &::first-letter {
+            text-transform: capitalize;
+          }
+        }
+      }
+    }
+  }
+}

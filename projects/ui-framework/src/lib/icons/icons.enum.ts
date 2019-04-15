@@ -2,6 +2,7 @@ export enum IconSize {
   small = 'small',
   medium = 'medium',
   large = 'large',
+  xLarge = 'x-large'
 }
 
 export enum IconColor {
@@ -10,6 +11,7 @@ export enum IconColor {
   light = 'light',
   white = 'white',
   primary = 'primary',
+  inform = 'inform',
 }
 
 export enum Icons {
@@ -51,4 +53,5 @@ export enum Icons {
   timeline = 'Icon_timeline',
   employee_ref = 'employee_ref',
   docs_empty = 'docs_empty',
+  baseline_info_icon = 'baseline_info_icon'
 }

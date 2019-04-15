@@ -6,14 +6,66 @@
     vertical-align: top;
     svg {
       pointer-events: none;
-      g {
-        path, line {
-          transition: fill .1s ease, stroke .1s ease;
-        }
+      path, line {
+        transition: fill .1s ease, stroke .1s ease;
+      }
+      path[fill='none'] {
+        fill: transparent !important;
       }
     }
     &.dark {
-      svg {
+      path, circle {
+        fill: $grey-700 !important;
+      }
+      line {
+        stroke: $grey-700 !important;
+      }
+    }
+    &.normal {
+      path, circle {
+        fill: $grey-600 !important;
+      }
+      line {
+        stroke: $grey-600 !important;
+      }
+    }
+    &.light {
+      path, circle {
+        fill: $grey-500 !important;
+      }
+      line {
+        stroke: $grey-500 !important;
+      }
+    }
+    &.white {
+      path, circle {
+        fill: $white !important;
+      }
+      line {
+        stroke: $white !important;
+      }
+    }
+    &.primary {
+      path, circle {
+        fill: var(--primary-500) !important;
+      }
+      line {
+        stroke: var(--primary-500) !important;
+      }
+    }
+    &.inform {
+      path, circle {
+        fill: var(--inform-500) !important;
+      }
+      line {
+        stroke: var(--inform-500) !important;
+      }
+    }
+    &.has-hover-state:hover {
+      svg path[fill='none'] {
+        fill: transparent !important;
+      }
+      &.dark {
         path, circle {
           fill: $grey-700 !important;
         }
@@ -21,29 +73,25 @@
           stroke: $grey-700 !important;
         }
       }
-    }
-    &.normal {
-      svg {
+      &.normal {
+        path, circle {
+          fill: $grey-700 !important;
+        }
+        line {
+          stroke: $grey-700 !important;
+        }
+
+      }
+      &.light {
         path, circle {
           fill: $grey-600 !important;
         }
         line {
           stroke: $grey-600 !important;
+
         }
       }
-    }
-    &.light {
-      svg {
-        path, circle {
-          fill: $grey-500 !important;
-        }
-        line {
-          stroke: $grey-500 !important;
-        }
-      }
-    }
-    &.white {
-      svg {
+      &.white {
         path, circle {
           fill: $white !important;
         }
@@ -51,66 +99,20 @@
           stroke: $white !important;
         }
       }
-    }
-    &.primary {
-      svg {
+      &.primary {
         path, circle {
-          fill: var(--primary-500) !important;
+          fill: var(--primary-700) !important;
         }
         line {
-          stroke: var(--primary-500) !important;
+          stroke: var(--primary-700) !important;
         }
       }
-    }
-    &.has-hover-state:hover {
-      &.dark {
-        svg {
-          path, circle {
-            fill: $grey-700 !important;
-          }
-          line {
-            stroke: $grey-700 !important;
-          }
+      &.inform {
+        path, circle {
+          fill: var(--inform-700) !important;
         }
-      }
-      &.normal {
-        svg {
-          path, circle {
-            fill: $grey-700 !important;
-          }
-          line {
-            stroke: $grey-700 !important;
-          }
-        }
-      }
-      &.light {
-        svg {
-          path, circle {
-            fill: $grey-600 !important;
-          }
-          line {
-            stroke: $grey-600 !important;
-          }
-        }
-      }
-      &.white {
-        svg {
-          path, circle {
-            fill: $white !important;
-          }
-          line {
-            stroke: $white !important;
-          }
-        }
-      }
-      &.primary {
-        svg {
-          path, circle {
-            fill: var(--primary-700) !important;
-          }
-          line {
-            stroke: var(--primary-700) !important;
-          }
+        line {
+          stroke: var(--inform-700) !important;
         }
       }
     }
@@ -125,6 +127,10 @@
     &.large {
       height: 24px;
       width: 24px;
+    }
+    &.x-large {
+      height: 46px;
+      width: 46px;
     }
   }
 }
