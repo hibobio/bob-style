@@ -30,9 +30,4 @@ describe('InfoStripComponent', () => {
     const iconElement = fixture.debugElement.query(By.css('b-icon'));
     expect(iconElement.componentInstance.color).toEqual(IconColor.dark);
   });
-
-  it('should get the icon to show', () => {
-    component.icon = Icons.baseline_info_icon;
-    expect(component.getIcon()).toEqual('baseline_info_icon');
-  });
 });
