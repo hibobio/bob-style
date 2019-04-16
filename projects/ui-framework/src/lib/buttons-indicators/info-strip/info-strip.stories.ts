@@ -12,19 +12,19 @@ const infoStripStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, modu
 const icons = values(Icons);
 const color = values(IconColor);
 
-const template = `<div style="margin: 0px 25px;"><b-info-strip
+const template = `<b-info-strip
   [icon]="icon"
   [iconColor]="iconColor"
   [linkText]="linkText"
   [text]="text"
   [targetUrl]="targetUrl">
-</b-info-strip></div>`;
+</b-info-strip>`;
 
-const storyTemplate = `
-<b-story-book-layout title="Info Strip">
-  ${template}
-</b-story-book-layout>
-`;
+const storyTemplate = `<b-story-book-layout title="Info Strip">
+  <div style="margin: 0px 25px;">
+    ${template}
+  </div>
+</b-story-book-layout>`;
 
 const note = `
   ## Info Strip Element
