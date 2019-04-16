@@ -19,7 +19,7 @@
       .url {
         a {
           color: $grey-700;
-          @include BodyFont(12px, 700);
+          font-weight: 700;
           text-decoration-line: none;
         }
       }
