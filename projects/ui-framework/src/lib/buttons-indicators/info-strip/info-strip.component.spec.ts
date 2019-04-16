@@ -1,9 +1,9 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-
-import {InfoStripComponent} from './info-strip.component';
-import {IconColor, Icons} from '../../icons/icons.enum';
-import {IconsModule} from '../../icons/icons.module';
-import {By} from '@angular/platform-browser';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { InfoStripComponent } from './info-strip.component';
+import { IconColor, Icons } from '../../icons/icons.enum';
+import { By } from '@angular/platform-browser';
+import { MockComponent } from 'ng-mocks';
+import { IconComponent } from '../../icons/icon.component';
 
 describe('InfoStripComponent', () => {
   let component: InfoStripComponent;
@@ -11,8 +11,10 @@ describe('InfoStripComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InfoStripComponent ],
-      imports: [IconsModule]
+      declarations: [
+        MockComponent(IconComponent),
+        InfoStripComponent,
+      ],
     })
     .compileComponents();
   }));
@@ -20,6 +22,7 @@ describe('InfoStripComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InfoStripComponent);
     component = fixture.componentInstance;
+    component.link = { url: 'https://app.hibob.com', text: 'Click here' };
     fixture.detectChanges();
   });
 
@@ -48,8 +51,6 @@ describe('InfoStripComponent', () => {
 
   it('should check info strip text & link', () => {
     component.text = 'info strip text';
-    component.targetUrl = 'https://app.hibob.com';
-    component.linkText = 'click here';
     fixture.detectChanges();
     const text = fixture.debugElement.query(By.css('.content .text')).nativeElement;
     const link = fixture.debugElement.query(By.css('a')).nativeElement;

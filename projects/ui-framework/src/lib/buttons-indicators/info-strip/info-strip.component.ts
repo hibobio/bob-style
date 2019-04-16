@@ -8,11 +8,15 @@ import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 })
 export class InfoStripComponent {
   @Input() icon: Icons;
-  @Input() iconColor;
+  @Input() iconColor: IconColor;
+  @Input() link: Link;
   @Input() text = '';
-  @Input() linkText = '';
-  @Input() targetUrl = '';
-  iconSize: String = IconSize.xLarge;
+  iconSize: IconSize = IconSize.xLarge;
 
   constructor() { }
+}
+
+export interface Link {
+  text: string;
+  url: string;
 }

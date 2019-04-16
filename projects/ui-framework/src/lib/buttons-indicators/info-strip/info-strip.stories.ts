@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { text, withKnobs, select } from '@storybook/addon-knobs/angular';
+import { text, withKnobs, select, object } from '@storybook/addon-knobs/angular';
 import { InfoStripModule } from './info-strip.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -15,10 +15,8 @@ const color = values(IconColor);
 const template = `<b-info-strip
   [icon]="icon"
   [iconColor]="iconColor"
-  [linkText]="linkText"
-  [text]="text"
-  [targetUrl]="targetUrl">
-</b-info-strip>`;
+  [link]="link"
+  [text]="text"></b-info-strip>`;
 
 const storyTemplate = `<b-story-book-layout title="Info Strip">
   <div style="margin: 0px 25px;">
@@ -36,10 +34,8 @@ const note = `
   --- | --- | --- | ---
   icon | string | icon | baseline_info_icon (optional)
   iconColor | string | icon color | inform (optional)
-  linkText | string | text of the link
   text | string | The text inside the strip
-  targetUrl | string | url address
-
+  link | json | link definition - text, url |
   ~~~
   ${template}
   ~~~
@@ -53,9 +49,8 @@ infoStripStories.add(
       props: {
         icon: select('icon', icons, Icons.baseline_info_icon),
         iconColor: select('color', color, IconColor.inform),
-        linkText: text('linkText', 'click here'),
         text: text('text', 'Place your info text here'),
-        targetUrl: text('targetUrl', 'https://app.hibob.com'),
+        link: object('link', { text: 'Click here', url: 'https://app.hibob.com' })
       },
       moduleMetadata: {
         imports: [InfoStripModule, StoryBookLayoutModule]

@@ -4,15 +4,13 @@
 :host {
   position: relative;
   .b-info-strip {
-    padding: 0px 10px;
-    height: 64px;
+    padding: 10px;
     background-color: $grey-100;
     border-radius: 4px;
     display: flex;
     flex-direction: row;
     align-items: center;
     .icon {
-      display: flex;
       margin-right: 10px;
     }
 
@@ -25,12 +23,8 @@
       .url {
         a {
           color: $grey-700;
-          @include HeadingFont(12px);
+          @include BodyFont(12px, 700);
           text-decoration-line: none;
-          text-transform: lowercase;
-          &::first-letter {
-            text-transform: capitalize;
-          }
         }
       }
     }
