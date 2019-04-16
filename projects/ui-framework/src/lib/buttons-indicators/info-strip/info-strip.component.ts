@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { Link } from './info-strip.types';
 
 @Component({
   selector: 'b-info-strip',
@@ -16,7 +17,4 @@ export class InfoStripComponent {
   constructor() { }
 }
 
-export interface Link {
-  text: string;
-  url: string;
-}
+
