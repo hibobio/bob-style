@@ -64,6 +64,7 @@ const menuMock: MenuItem[] = [
           },
           {
             label: 'Update reports to',
+            disabled: true,
             action: ($event) => console.log('update reports to', $event)
           }
         ]
@@ -93,6 +94,7 @@ const menuMock: MenuItem[] = [
   },
   {
     label: 'Request time-off',
+    disabled: true,
     action: ($event) => console.log('request time off', $event)
   }
 ];
