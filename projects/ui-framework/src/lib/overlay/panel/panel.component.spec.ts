@@ -85,7 +85,7 @@ describe('SearchComponent', () => {
         );
     });
     it('should request position strategy from positionService with below from input', () => {
-      component.panelDefaultPosVer = PanelDefaultPosVer.below;
+      component.defaultPosVer = PanelDefaultPosVer.below;
       component.openPanel();
       expect(panelPositionService.getPanelPositionStrategy)
         .toHaveBeenCalledWith(

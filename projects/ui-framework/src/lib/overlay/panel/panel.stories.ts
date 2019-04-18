@@ -19,9 +19,9 @@ const panelDefaultPosVer = values(PanelDefaultPosVer);
 const template = `
 <b-panel style="position: absolute; top: 20px; left: 20px;"
          [panelClass]="panelClass"
-         [panelSize]="panelSize"
+         [size]="panelSize"
          [showBackdrop]="showBackdrop"
-         [panelDefaultPosVer]="panelDefaultPosVer"
+         [defaultPosVer]="panelDefaultPosVer"
          [openOnHover]="openOnHover">
   <b-button panel-trigger>
     Time Off Policies info
@@ -54,8 +54,8 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   panelClass | string | panel class | none
-  panelSize | PanelSize | panel size | "medium"
-  panelDefaultPosVer | PanelDefaultPosVer | default vertical position | PanelDefaultPosVer.above
+  size | PanelSize | panel size | "medium"
+  defaultPosVer | PanelDefaultPosVer | default vertical position | PanelDefaultPosVer.above
   showBackdrop | boolean | show backdrop | true
   openOnHover | boolean | trigger panel open on hover (delay 300ms) | false
 
@@ -69,8 +69,8 @@ buttonStories.add(
     template: storyTemplate,
     props: {
       panelClass: text('panelClass', 'my-panel-class'),
-      panelSize: select('panelSize', panelSize, PanelSize.medium),
-      panelDefaultPosVer: select('panelDefaultPosVer', panelDefaultPosVer, PanelDefaultPosVer.above),
+      panelSize: select('size', panelSize, PanelSize.medium),
+      defaultPosVer: select('defaultPosVer', panelDefaultPosVer, PanelDefaultPosVer.above),
       showBackdrop: boolean('showBackdrop', true),
       openOnHover: boolean('openOnHover', false),
     },

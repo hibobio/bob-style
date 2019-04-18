@@ -19,9 +19,9 @@ export class PanelComponent implements OnDestroy {
   @ViewChild('templateRef') templateRef: TemplateRef<any>;
 
   @Input() panelClass: string;
-  @Input() panelSize = PanelSize.medium;
+  @Input() size = PanelSize.medium;
   @Input() showBackdrop = true;
-  @Input() panelDefaultPosVer = PanelDefaultPosVer.above;
+  @Input() defaultPosVer = PanelDefaultPosVer.above;
   @Input() openOnHover = false;
 
   private panelConfig: OverlayConfig;
@@ -93,7 +93,7 @@ export class PanelComponent implements OnDestroy {
 
   private getConfig(): OverlayConfig {
     const positionStrategy = this.panelPositionService
-      .getPanelPositionStrategy(this.overlayOrigin, this.panelDefaultPosVer);
+      .getPanelPositionStrategy(this.overlayOrigin, this.defaultPosVer);
 
     this.subscribeToPositions(positionStrategy);
 
