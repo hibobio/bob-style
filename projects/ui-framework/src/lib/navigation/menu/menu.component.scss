@@ -5,6 +5,12 @@
 
 :host {
   display: inline-block;
+  .menu-trigger-wrapper {
+    display: inline-block;
+    &.disabled {
+      pointer-events: none;
+    }
+  }
 }
 
 ::ng-deep {
