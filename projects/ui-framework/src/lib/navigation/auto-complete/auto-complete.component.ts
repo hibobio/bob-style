@@ -11,7 +11,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { escapeRegExp, filter, invoke, has } from 'lodash';
-import { PanelPositionService } from '../../overlay/panel/panel-position.service';
+import { PanelPositionService } from '../../overlay/panel/panel-position-service/panel-position.service';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Subscription } from 'rxjs';
 import { CdkOverlayOrigin, FlexibleConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';

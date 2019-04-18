@@ -14,7 +14,8 @@
     <b-panel panelClass="rte-size-controls"
              [showBackdrop]="false"
              [panelSize]="panelSize.medium"
-             *ngIf="controls.includes(RTEControls.size)">
+             *ngIf="controls.includes(RTEControls.size)"
+             [panelDefaultPosVer]="panelDefaultPosVer.below">
 
       <button type="button"
               class="rte-size"
@@ -54,7 +55,8 @@
              panelClass="rte-link-editor"
              [showBackdrop]="false"
              [panelSize]="panelSize.medium"
-             *ngIf="controls.includes(RTEControls.link)">
+             *ngIf="controls.includes(RTEControls.link)"
+             [panelDefaultPosVer]="panelDefaultPosVer.below">
       <button class="ql-link"
               panel-trigger></button>
       <b-rte-link-editor panel-content

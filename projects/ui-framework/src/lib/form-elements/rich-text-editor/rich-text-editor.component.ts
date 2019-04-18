@@ -32,7 +32,7 @@ import {
 
 import { Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
-import { PanelSize } from '../../overlay/panel/panel.enum';
+import { PanelDefaultPosVer, PanelSize } from '../../overlay/panel/panel.enum';
 
 import { BaseFormElement } from '../../form-elements/base-form-element';
 
@@ -125,6 +125,8 @@ export class RichTextEditorComponent extends BaseFormElement
   panelSize = PanelSize;
   RTEControls = RTEControls;
   RTEFontSize = RTEFontSize;
+
+  panelDefaultPosVer = PanelDefaultPosVer;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.disabled && this.editor) {

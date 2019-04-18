@@ -3,7 +3,7 @@ import { CdkOverlayOrigin, FlexibleConnectedPositionStrategy, Overlay, OverlayCo
 import { TemplatePortal } from '@angular/cdk/portal';
 import invoke from 'lodash/invoke';
 import { Subscription } from 'rxjs';
-import { PanelPositionService } from '../../overlay/panel/panel-position.service';
+import { PanelPositionService } from '../../overlay/panel/panel-position-service/panel-position.service';
 import { BaseFormElement } from '../base-form-element';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement {

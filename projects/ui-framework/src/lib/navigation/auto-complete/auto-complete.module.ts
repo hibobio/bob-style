@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AutoCompleteComponent } from './auto-complete.component';
 import { SearchModule } from '../search/search.module';
 import { AutoCompletePanelComponent } from './auto-complete-panel/auto-complete-panel.component';
-import { PanelPositionService } from '../../overlay/panel/panel-position.service';
+import { PanelPositionService } from '../../overlay/panel/panel-position-service/panel-position.service';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { TypographyModule } from '../../typography/typography.module';

@@ -8,18 +8,21 @@ import { TypographyModule } from '../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { CheckboxModule } from '../../form-elements/checkbox/checkbox.module';
-import { PanelSize } from './panel.enum';
+import { PanelDefaultPosVer, PanelSize } from './panel.enum';
 import { values } from 'lodash';
 
 const buttonStories = storiesOf(ComponentGroupType.Overlay, module).addDecorator(withKnobs);
 
 const panelSize = values(PanelSize);
+const panelDefaultPosVer = values(PanelDefaultPosVer);
 
 const template = `
 <b-panel style="position: absolute; top: 20px; left: 20px;"
          [panelClass]="panelClass"
          [panelSize]="panelSize"
-         [showBackdrop]="showBackdrop">
+         [showBackdrop]="showBackdrop"
+         [panelDefaultPosVer]="panelDefaultPosVer"
+         [openOnHover]="openOnHover">
   <b-button panel-trigger>
     Time Off Policies info
   </b-button>
@@ -33,37 +36,11 @@ const template = `
     </p>
   </div>
 </b-panel>
-
-<b-panel style="position: absolute; bottom: 20px; right: 20px;"
-         [panelClass]="panelClass"
-         [panelSize]="panelSize"
-         [showBackdrop]="showBackdrop">
-  <b-button panel-trigger>
-    Insights info
-  </b-button>
-  <div panel-content>
-    <b-heading>How can I improve "Headcount" display</b-heading>
-    <p>
-    <b>Check people’s data</b><br />
-    Make sure all your people have start and end dates. Employees with end-dates that occur before their start-date can’t be counted.
-    </p>
-    <p>
-    <b>Check your permissions</b><br />
-    Make sure you have <a href="https://www.hibob.com" target="_blank">secret permissions</a>
-    </p>
-    <div>
-      <b-checkbox label="This was helpful" [value]="true"></b-checkbox>
-    </div>
-    <b-button>
-    read more
-  </b-button>
-  </div>
-</b-panel>
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Overlay panel">
-  ${template}
+<b-story-book-layout [title]="'Overlay panel'">
+  ${ template }
 </b-story-book-layout>
 `;
 
@@ -76,12 +53,14 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  panelSize | PanelSize | panel size | "medium"
   panelClass | string | panel class | none
+  panelSize | PanelSize | panel size | "medium"
+  panelDefaultPosVer | PanelDefaultPosVer | default vertical position | PanelDefaultPosVer.above
   showBackdrop | boolean | show backdrop | true
+  openOnHover | boolean | trigger panel open on hover (delay 300ms) | false
 
   ~~~
-  ${template}
+  ${ template }
   ~~~
 `;
 buttonStories.add(
@@ -89,9 +68,11 @@ buttonStories.add(
   () => ({
     template: storyTemplate,
     props: {
-      panelSize: select('panelSize', panelSize, PanelSize.medium),
       panelClass: text('panelClass', 'my-panel-class'),
-      showBackdrop: boolean('showBackdrop', true)
+      panelSize: select('panelSize', panelSize, PanelSize.medium),
+      panelDefaultPosVer: select('panelDefaultPosVer', panelDefaultPosVer, PanelDefaultPosVer.above),
+      showBackdrop: boolean('showBackdrop', true),
+      openOnHover: boolean('openOnHover', false),
     },
     moduleMetadata: {
       imports: [

@@ -30,6 +30,14 @@
 }
 
 @mixin OverlayPositionBounding($direction) {
+  @if $direction == "center" {
+    &:before {
+      left: calc(50% - 6px);
+    }
+    &:after {
+      left: calc(50% - 5px);
+    }
+  }
   @if $direction == "below" {
     top: 8px;
     &:before {
@@ -58,18 +66,22 @@
 
   @if $direction == "after" {
     &:before {
+      right: auto;
       left: 12px;
     }
     &:after {
+      right: auto;
       left: 13px;
     }
   }
 
   @if $direction == "before" {
     &:before {
+      left: auto;
       right: 12px;
     }
     &:after {
+      left: auto;
       right: 13px;
     }
   }

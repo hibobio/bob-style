@@ -3,3 +3,8 @@ export enum PanelSize {
   medium = 'medium',
   large = 'large',
 }
+
+export enum PanelDefaultPosVer {
+  above = 'above',
+  below = 'below',
+}

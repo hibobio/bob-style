@@ -2,11 +2,16 @@ import { Injectable } from '@angular/core';
 import {
   CdkOverlayOrigin,
   ConnectedOverlayPositionChange,
+  FlexibleConnectedPositionStrategy,
   Overlay,
   PositionStrategy,
   ScrollStrategy,
   ScrollStrategyOptions
 } from '@angular/cdk/overlay';
+import { ABOVE_CENTER, ABOVE_END, ABOVE_START, BELOW_CENTER, BELOW_END, BELOW_START } from './panel-position.const';
+import { ConnectedPosition } from '@angular/cdk/typings/overlay';
+import { concat, isEqual } from 'lodash';
+import { PanelDefaultPosVer } from '../panel.enum';
 
 @Injectable()
 export class PanelPositionService {
@@ -17,37 +22,24 @@ export class PanelPositionService {
   ) {
   }
 
-  getDefaultPanelPositionStrategy(overlayOrigin: CdkOverlayOrigin): PositionStrategy {
-    const positionStrategy: PositionStrategy = this.overlay.position()
+  getPanelPositionStrategy(
+    overlayOrigin: CdkOverlayOrigin,
+    panelDefaultPosVer: PanelDefaultPosVer,
+  ): FlexibleConnectedPositionStrategy {
+    const panelPosition: ConnectedPosition[] = isEqual(panelDefaultPosVer, PanelDefaultPosVer.below)
+      ? concat(
+        this.getBelowPositionStrategy(),
+        this.getAbovePositionStrategy(),
+      )
+      : concat(
+        this.getAbovePositionStrategy(),
+        this.getBelowPositionStrategy(),
+      );
+
+    return this.overlay.position()
       .flexibleConnectedTo(overlayOrigin.elementRef)
       .withPush()
-      .withPositions([
-        {
-          originX: 'start',
-          originY: 'bottom',
-          overlayX: 'start',
-          overlayY: 'top',
-        },
-        {
-          originX: 'start',
-          originY: 'top',
-          overlayX: 'start',
-          overlayY: 'bottom',
-        },
-        {
-          originX: 'end',
-          originY: 'bottom',
-          overlayX: 'end',
-          overlayY: 'top',
-        },
-        {
-          originX: 'end',
-          originY: 'top',
-          overlayX: 'end',
-          overlayY: 'bottom',
-        },
-      ]);
-    return positionStrategy;
+      .withPositions(panelPosition);
   }
 
   getCenterPanelPositionStrategy(overlayOrigin: CdkOverlayOrigin): PositionStrategy {
@@ -55,18 +47,8 @@ export class PanelPositionService {
       .flexibleConnectedTo(overlayOrigin.elementRef)
       .withPush()
       .withPositions([
-        {
-          originX: 'center',
-          originY: 'bottom',
-          overlayX: 'center',
-          overlayY: 'top',
-        },
-        {
-          originX: 'center',
-          originY: 'top',
-          overlayX: 'center',
-          overlayY: 'bottom',
-        },
+        BELOW_CENTER,
+        ABOVE_CENTER,
       ]);
     return positionStrategy;
   }
@@ -82,5 +64,21 @@ export class PanelPositionService {
 
   getScrollStrategy(): ScrollStrategy {
     return this.scrollStrategyOptions.reposition();
+  }
+
+  private getBelowPositionStrategy(): ConnectedPosition[] {
+    return [
+      BELOW_CENTER,
+      BELOW_START,
+      BELOW_END,
+    ];
+  }
+
+  private getAbovePositionStrategy(): ConnectedPosition[] {
+    return [
+      ABOVE_CENTER,
+      ABOVE_START,
+      ABOVE_END,
+    ];
   }
 }

@@ -29,7 +29,7 @@ export class DialogService {
       backdropClass: 'b-dialog-backdrop',
       panelClass: ['b-dialog-panel', `size-${config.size}`, config.panelClass],
       hasBackdrop: true,
-      disableClose: true,
+      disableClose: false,
     });
 
     return this.dialog.open(dialogComponent, dialogConfig);

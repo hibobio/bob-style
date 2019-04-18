@@ -11,6 +11,7 @@ body {
   padding: 0;
   color: $grey-700;
   @include BodyFont;
+  -webkit-font-smoothing: antialiased;
 }
 
 *, *:before, *:after {

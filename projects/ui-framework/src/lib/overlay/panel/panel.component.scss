@@ -12,6 +12,9 @@
     background-color: rgba(0, 0, 0, 0);
     transition: none;
   }
+  .b-panel-backdrop-disabled {
+    display: none;
+  }
   .b-panel {
     .panel-wrapper {
       @include OverlayPanel();
@@ -29,6 +32,7 @@
 
     .panel-position {
       @include OverlayPointerHolders();
+      @include OverlayPositionBounding('center');
       &.panel-below {
         @include OverlayPositionBounding('below');
       }

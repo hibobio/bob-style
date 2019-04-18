@@ -54,7 +54,7 @@ describe('DialogService', () => {
         backdropClass: 'b-dialog-backdrop',
         panelClass: ['b-dialog-panel', 'size-medium', 'test-class'],
         hasBackdrop: true,
-        disableClose: true,
+        disableClose: false,
       };
       dialogService.openDialog(comp, config);
       expect(spyMatDialog.open).toHaveBeenCalledWith(comp, expectedConfig);
