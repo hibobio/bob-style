@@ -6,3 +6,22 @@
     <ng-content></ng-content>
   </div>
 </div>
+<!-- Title and subtitle -->
+<div *ngIf="title" [ngSwitch]="size" class="employee-avatar-title">
+  <div *ngSwitchCase=avatarSizeEnum.large class="large-title">
+    <b-display-1>{{title}}</b-display-1>
+    <b-display-3>{{subtitle}}</b-display-3>
+  </div>
+  <div *ngSwitchCase=avatarSizeEnum.medium class="medium-title">
+    <b-display-3>{{title}}</b-display-3>
+    <b-big-body>{{subtitle}}</b-big-body>
+  </div>
+  <div *ngSwitchCase=avatarSizeEnum.small class="small-title">
+    <b-bold-body>{{title}}</b-bold-body>
+    <p>{{subtitle}}</p>
+  </div>
+  <div *ngSwitchCase=avatarSizeEnum.mini class="mini-title">
+    <b-bold-body>{{title}}</b-bold-body>
+    <p>{{subtitle}}</p>
+  </div>
+</div>

@@ -1,8 +1,30 @@
 @import '../../style/colors';
 
 :host {
-  display: inline-block;
   vertical-align: top;
+
+  display: flex;
+  align-items: center;
+
+  .employee-avatar-title {
+    .large-title {
+      margin-left: 20px;
+    }
+
+    .medium-title {
+      margin-left: 10px;
+    }
+
+    .small-title {
+      margin-left: 8px;
+      line-height: 0;
+    }
+
+    .mini-title {
+      margin-left: 8px;
+      line-height: 0;
+    }
+  }
 
   .b-avatar {
     position: relative;
