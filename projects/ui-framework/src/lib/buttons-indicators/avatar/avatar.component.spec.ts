@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AvatarComponent } from './avatar.component';
 import { AvatarSize } from './avatar.enum';
 import { TypographyModule } from '../../typography/typography.module';
+import { By } from '@angular/platform-browser';
+import { forEach, values } from 'lodash';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;
@@ -61,5 +63,20 @@ describe('AvatarComponent', () => {
       const result = component.getClassNames();
       expect(result).toEqual('medium');
     });
+  });
+
+  describe('Title and subtitle', () => {
+    const sizes = values (AvatarSize);
+    forEach ( sizes, (size) => {
+      it('Avatar should have title for size ' + size, () => {
+        component.title = `John Doe ${size}`;
+        component.subtitle = `Web Developer ${size}`;
+        component.size = size;
+        fixture.detectChanges();
+        const title = fixture.debugElement.queryAll(By.css(`.${size}-title `))[0];
+        expect(title.nativeElement.innerText.toLowerCase()).toContain(`john doe ${size}`);
+        expect(title.nativeElement.innerText.toLowerCase()).toContain(`web developer ${size}`);
+      });
+    })
   });
 });
