@@ -35,8 +35,8 @@ const note = `
   --- | --- | --- | ---
   imageSource | String | url of the image |
   size | AvatarSize | enum for setting the avatar size | mini (optional)
-  title | String | callback for clicking on the avatar | no click (optional)
-  subtitle | String | callback for clicking on the avatar | no click (optional)
+  title | String | main title of the avatar | no click (optional)
+  subtitle | String | subtitle of the avatar | no click (optional)
   clicked | Boolean | boolean flag for indicating if the avatar is clickable or not | false (optional)
   handleClick | Function | callback for clicking on the avatar | no click (optional)
 
