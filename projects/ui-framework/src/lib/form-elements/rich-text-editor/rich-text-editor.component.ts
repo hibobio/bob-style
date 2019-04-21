@@ -10,9 +10,16 @@ import {
   OnChanges,
   SimpleChanges,
   AfterViewInit,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Injector,
+  Type
 } from '@angular/core';
-import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  FormControl,
+  NgControl
+} from '@angular/forms';
 
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
 import { LinkBlot } from './formats/link-blot';
@@ -21,7 +28,8 @@ import {
   BlotType,
   RTEType,
   RTEControls,
-  RTEFontSize
+  RTEFontSize,
+  RTEchangeEvent
 } from './rich-text-editor.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import {
@@ -63,7 +71,8 @@ export class RichTextEditorComponent extends BaseFormElement
   implements OnChanges, AfterViewInit {
   constructor(
     private rteUtilsService: RteUtilsService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private injector: Injector
   ) {
     super();
   }
@@ -89,6 +98,7 @@ export class RichTextEditorComponent extends BaseFormElement
   ];
 
   @Input() type?: RTEType = RTEType.primary;
+  @Input() sendChangeOn = RTEchangeEvent.blur;
   @Input() minHeight = 185;
   @Input() maxHeight = 295;
   @Input() required = false;
@@ -119,6 +129,7 @@ export class RichTextEditorComponent extends BaseFormElement
   hasSizeSet = false;
   private latestOutputValue: RteCurrentContent;
   private writingValue = false;
+  private control: FormControl;
 
   buttonType = ButtonType;
   icons = Icons;
@@ -139,6 +150,16 @@ export class RichTextEditorComponent extends BaseFormElement
   }
 
   ngAfterViewInit(): void {
+    const ngControl: NgControl = this.injector.get<NgControl>(NgControl as Type<
+      NgControl
+    >);
+    if (ngControl) {
+      this.control = ngControl.control as FormControl;
+      this.sendChangeOn =
+        this.control.updateOn === 'change'
+          ? RTEchangeEvent.change
+          : RTEchangeEvent.blur;
+    }
     setTimeout(() => {
       this.initEditor();
       this.hasSuffix =
@@ -152,9 +173,7 @@ export class RichTextEditorComponent extends BaseFormElement
   private initEditor(): void {
     const editorOptions: QuillOptionsStatic = {
       theme: 'snow',
-      placeholder: this.label
-        ? this.label + (this.required ? ' *' : '')
-        : '',
+      placeholder: this.label ? this.label + (this.required ? ' *' : '') : '',
       modules: {
         toolbar: {
           container: this.toolbar.nativeElement,
@@ -182,7 +201,7 @@ export class RichTextEditorComponent extends BaseFormElement
       ) {
         this.latestOutputValue = newOutputValue;
         this.changed.emit(newOutputValue);
-        if (!this.writingValue) {
+        if (!this.writingValue && this.sendChangeOn === RTEchangeEvent.change) {
           this.propagateChange(newOutputValue);
         }
         this.writingValue = false;
@@ -209,6 +228,11 @@ export class RichTextEditorComponent extends BaseFormElement
 
     this.editor.root.addEventListener('blur', () => {
       this.blurred.emit(this.latestOutputValue);
+      if (!this.writingValue && this.sendChangeOn === RTEchangeEvent.blur) {
+        this.propagateChange(this.latestOutputValue);
+        this.onTouched();
+      }
+      this.writingValue = false;
     });
   }
 

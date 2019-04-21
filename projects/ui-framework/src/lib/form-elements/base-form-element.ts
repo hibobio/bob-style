@@ -2,7 +2,6 @@ import { Input } from '@angular/core';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
 
 export abstract class BaseFormElement implements ControlValueAccessor {
-
   @Input() label: string;
   @Input() value: any;
   @Input() disabled: boolean;
@@ -11,17 +10,18 @@ export abstract class BaseFormElement implements ControlValueAccessor {
   @Input() hintMessage: string;
   @Input() errorMessage: string;
 
-  @Input() validateFn: Function = (_: FormControl) => {
-  };
+  @Input() validateFn: Function = (_: FormControl) => {};
 
-  propagateChange: Function = (_: any) => {
-  };
+  onTouched: Function = (_: any) => {};
+
+  propagateChange: Function = (_: any) => {};
 
   registerOnChange(fn: any): void {
     this.propagateChange = fn;
   }
 
   registerOnTouched(fn: any): void {
+    this.onTouched = fn;
   }
 
   setDisabledState(isDisabled: boolean): void {

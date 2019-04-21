@@ -21,6 +21,11 @@ export enum RTEFontSize {
   huge = 'huge'
 }
 
+export enum RTEchangeEvent {
+  change = 'change',
+  blur = 'blur'
+}
+
 export enum BlotType {
   Link = 'Link'
 }

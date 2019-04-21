@@ -4,7 +4,8 @@ import {
   select,
   boolean,
   withKnobs,
-  array
+  array,
+  number
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -14,7 +15,7 @@ import { values } from 'lodash';
 import { TypographyModule } from '../../typography/typography.module';
 import { RichTextEditorModule } from './rich-text-editor.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RTEType, RTEControls } from './rich-text-editor.enum';
+import { RTEType, RTEControls, RTEchangeEvent } from './rich-text-editor.enum';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -29,19 +30,19 @@ const value = `
 const template = `
   <b-rich-text-editor
       [type]="type"
-      [minHeight]="200"
-      [maxHeight]="400"
-      [controls]="controls"
-      [value]="value"
       [label]="label"
+      [value]="value"
+      [controls]="controls"
+      [minHeight]="minHeight"
+      [maxHeight]="maxHeight"
       [disabled]="disabled"
       [required]="required"
-      [errorMessage]="errorMessage"
       [hintMessage]="hintMessage"
+      [errorMessage]="errorMessage"
+      [sendChangeOn]="sendChangeOn"
       (changed)="change($event)"
       (focused)="focus($event)"
-      (blurred)="blur($event)"
-      >
+      (blurred)="blur($event)">
     Some custom toolbar thing
   </b-rich-text-editor>
 `;
@@ -60,14 +61,30 @@ const note = `
   #### Module
   *RichTextEditorModule*
 
-  #### Properties
-  Name | Type | Description
-  --- | --- | ---
-  value | string | html content to be placed inside editor
-
   ~~~
   ${template}
   ~~~
+
+  #### Properties
+  Name | Type | Description | default
+  --- | --- | --- | ---
+  type | RTEType | primary (white bg, border) or secondary (transparent bg, no borders) | primary
+  label | string | placeholder text | none (optional)
+  value | string | html content to be placed inside editor | none (optional)
+  controls | RTEControls[] | array of toolbar controls. Possible controls: size, bold, italic, underline, link, list, align, dir. Defaults to all controls. Pass empty array to disable all controls. | all
+  minHeight | number | minimum height of editor (including toolbar). Set to null or 0 to disable min-height | 185 (optional)
+  maxHeight | number | maximum height of editor (including toolbar). Set to null to disable max-height | 295 (optional)
+  disabled | boolean | disables editor | false (optional)
+  required | boolean | adds * to placeholder | false (optional)
+  hintMessage | string | adds a hint message below editor | none (optional)
+  errorMessage | string | adds 'invalid' style, hides hint message and displays error message below editor | none (optional)
+  sendChangeOn | RTEchangeEvent | When to transmit value changes - on change (every keystroke) or on blur | blur (optional)
+  changed | function | change event handler (event transmits latest change: {body,plainText}) |
+  focused | function | focus event handler (event transmits latest change: {body,plainText}) |
+  blurred | function | blur event handler (event transmits latest change: {body,plainText}) |
+  /content/ | any | pass content to transclude any custom controls/etc to toolbar |
+
+
 `;
 
 inputStories.add(
@@ -76,17 +93,24 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
+        sendChangeOn: select(
+          'type',
+          values(RTEchangeEvent),
+          RTEchangeEvent.blur
+        ),
         type: select('type', values(RTEType), RTEType.primary),
-        controls: array('controls', values(RTEControls), '\n'),
-        value: text('value', value),
         label: text('label', 'Compose an epic...'),
+        value: text('value', value),
+        controls: array('controls', values(RTEControls), '\n'),
+        minHeight: number('minHeight', 200),
+        maxHeight: number('maxHeight', 400),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
         errorMessage: text('errorMessage', ''),
-        blur: action('Editor blurred'),
+        change: action('Something has changed'),
         focus: action('Editor focused'),
-        change: action('Something has changed')
+        blur: action('Editor blurred')
       },
       moduleMetadata: {
         imports: [

@@ -1,21 +1,29 @@
 <div style="padding: 100px; height: 100%; display: flex;">
 
 
-  <form style="max-width: 700px; margin: auto; display: flex; justify-content: space-between; align-self: flex-start;">
+  <form [formGroup]="myForm"
+        style="max-width: 700px; margin: auto; display: flex; justify-content: space-between; align-self: flex-start;">
 
-    <b-rich-text-editor [formControl]="rteControl"
-                        [controls]="['bold','size','link']"
-                        [minHeight]="null"
-                        [disabled]="disabled"
-                        [errorMessage]="error ? 'Error' : undefined"
-                        style="margin-right: 40px;">
-    </b-rich-text-editor>
+    <div>
+      <b-rich-text-editor formControlName="rteControl"
+                          [minHeight]="null"
+                          [disabled]="disabled"
+                          [errorMessage]="error ? 'Error' : undefined"
+                          style="margin-right: 40px;">
+      </b-rich-text-editor>
+
+      <div style="margin: 20px 40px 30px; padding: 10px; border: 1px solid silver;"
+           class="rte-output"
+           [innerHTML]="myForm.get('rteControl').value.body ? myForm.get('rteControl').value.body :
+           myForm.get('rteControl').value">
+      </div>
+    </div>
 
     <div>
       <p>
         <input type="text"
-               style="width: 300px; height: 40px; padding: 0 10px; line-height: 38px;outline:0;"
-               [formControl]="inputControl">
+               formControlName="inputControl"
+               style="width: 300px; height: 40px; padding: 0 10px; line-height: 38px;outline:0;">
       </p>
       <p>
         <button (click)="disabled = !disabled">tgl dsbld</button>
