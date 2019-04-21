@@ -77,7 +77,7 @@ buttonStories.add(
       type: select('type', typeOptions, ButtonType.primary),
       size: select('size', sizeOptions, ButtonSize.medium),
       disabled: boolean('disabled', false),
-      icon: select('icons', icons, Icons.timeline),
+      icon: select('icon', icons, Icons.timeline),
     },
     moduleMetadata: {
       imports: [ButtonsModule, StoryBookLayoutModule]
