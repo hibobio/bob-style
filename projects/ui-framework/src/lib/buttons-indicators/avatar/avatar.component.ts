@@ -12,6 +12,7 @@ export class AvatarComponent {
   @Input() isClickable ? = false;
   @Input() title = '';
   @Input() subtitle = '';
+  @Input() disabled = false;
   @Output() clicked?: EventEmitter<void> = new EventEmitter<void>();
 
   readonly avatarSizeEnum = AvatarSize;

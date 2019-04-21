@@ -21,6 +21,7 @@ const template = `
   [isClickable]="isClickable"
   [title]="title"
   [subtitle]="subtitle"
+  [disabled]="disabled"
   (clicked)="clickHandler($event)">
 </b-avatar>
 </div>
@@ -35,9 +36,10 @@ const note = `
   --- | --- | --- | ---
   imageSource | String | url of the image |
   size | AvatarSize | enum for setting the avatar size | mini (optional)
-  title | String | main title of the avatar | no click (optional)
-  subtitle | String | subtitle of the avatar | no click (optional)
-  clicked | Boolean | boolean flag for indicating if the avatar is clickable or not | false (optional)
+  title | string | main title of the avatar | '' (optional)
+  subtitle | string | subtitle of the avatar | '' (optional)
+  disabled | boolean | disabled avatar | false (optional)
+  clicked | boolean | boolean flag for indicating if the avatar is clickable or not | false (optional)
   handleClick | Function | callback for clicking on the avatar | no click (optional)
 
 
@@ -66,7 +68,8 @@ avatarStories.add(
         isClickable: boolean('isClickable', false),
         clickHandler: action(),
         title: text('title', 'John Doe'),
-        subtitle: text('subtitle', 'Web Developer')
+        subtitle: text('subtitle', 'Web Developer'),
+        disabled: boolean('disabled', false),
       },
       moduleMetadata: {
         imports: [

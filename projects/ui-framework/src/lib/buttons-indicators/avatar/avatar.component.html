@@ -1,5 +1,5 @@
 <div class="b-avatar" [ngClass]="getClassNames()" (click)="onClick($event)">
-  <div [ngStyle]="{ 'background-image': 'url(' + imageSource + ')'}"
+  <div [ngStyle]="{ 'background-image': 'url(' + imageSource + ')'}" [ngClass]="{'avatar-disabled': disabled}"
        class="avatar-image">
   </div>
   <div class="avatar-content">
@@ -7,7 +7,7 @@
   </div>
 </div>
 <!-- Title and subtitle -->
-<div *ngIf="title" [ngSwitch]="size" class="employee-avatar-title">
+<div *ngIf="title" [ngSwitch]="size" class="employee-avatar-title" [ngClass]="{'title-disabled': disabled}">
   <div *ngSwitchCase=avatarSizeEnum.large class="large-title">
     <b-display-1>{{title}}</b-display-1>
     <b-display-3>{{subtitle}}</b-display-3>

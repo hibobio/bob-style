@@ -6,6 +6,14 @@
   display: flex;
   align-items: center;
 
+  .title-disabled {
+    color: $grey-500;
+  }
+
+  .avatar-disabled {
+    opacity: 0.3;
+  }
+
   .employee-avatar-title {
     .large-title {
       margin-left: 20px;
