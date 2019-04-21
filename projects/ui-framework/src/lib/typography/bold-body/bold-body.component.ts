@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'b-medium-body',
+  selector: 'b-bold-body',
   template: '<ng-content></ng-content>',
-  styleUrls: ['./medium-body.component.scss']
+  styleUrls: ['./bold-body.component.scss']
 })
-export class MediumBodyComponent {
+export class BoldBodyComponent {
   constructor() { }
 }

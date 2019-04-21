@@ -19,6 +19,7 @@ const template = `
                 [options]="options"
                 (selectChange)="selectChange($event)"
                 (selectModified)="selectModified($event)"
+                (selectCancelled)="selectCancelled($event)"
                 [disabled]="disabled"
                 [required]="required"
                 [errorMessage]="errorMessage"
@@ -46,6 +47,7 @@ const note = `
   options | SelectGroupOption[] | model of selection group | none
   selectChange | action | returns ListChange | none
   selectModified | action | returns ListChange | none
+  selectCancelled | action | returns ListChange | none
   label | string | label text | none
   disabled | boolean | is field disabled | none
   required | boolean | is field required | none
@@ -93,6 +95,7 @@ buttonStories.add(
       options: object<SelectGroupOption>('options', optionsMock),
       selectChange: action('MultiSelectChange'),
       selectModified: action('MultiSelectModified'),
+      selectCancelled: action('MultiSelectCancelled'),
       label: text('label', 'label text'),
       disabled: boolean('disabled', false),
       required: boolean('required', false),

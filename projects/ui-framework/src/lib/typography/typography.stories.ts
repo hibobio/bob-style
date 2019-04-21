@@ -48,8 +48,8 @@ const displayTemplate = `
   <b-big-body>Big body</b-big-body>
 </div>
  <div>
-  <span class="code-sample">&#60;b-medium-body&#62;</span><br/>
-  <b-medium-body>Medium body</b-medium-body>
+  <span class="code-sample">&#60;b-bold-body&#62;</span><br/>
+  <b-bold-body>Bold body</b-bold-body>
 </div>
 <div>
   <span>Default body font</span>

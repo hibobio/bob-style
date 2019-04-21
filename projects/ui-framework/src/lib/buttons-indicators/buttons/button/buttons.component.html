@@ -4,8 +4,6 @@
         [ngClass]="{'disabled': disabled, 'has-icon': icon}"
         (click)="onClick($event)">
 
-  <ng-content></ng-content>
-
   <div *ngIf="icon"
        class="icon-wrapper">
     <b-icon [icon]="icon"
@@ -13,6 +11,8 @@
             [size]="iconSize">
     </b-icon>
   </div>
+
+  <span><ng-content></ng-content></span>
 
 </button>
 

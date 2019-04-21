@@ -14,6 +14,7 @@
                   [value]="quickFilterConfig.value"
                   (selectChange)="selectChange($event)"
                   (selectModified)="multiSelectModified($event)"
+                  (selectCancelled)="multiSelectModified($event)"
                   [disabled]="false"
                   [required]="false"
                   [showSingleGroupHeader]="showSingleGroupHeader"

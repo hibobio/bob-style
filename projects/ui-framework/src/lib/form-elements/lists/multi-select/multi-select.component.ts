@@ -48,6 +48,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
   @Input() showSingleGroupHeader = false;
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
   @Output() selectModified: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() selectCancelled: EventEmitter<ListChange> = new EventEmitter<ListChange>();
 
   triggerValue: string;
   blockSelectClick: boolean;
@@ -106,13 +107,11 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
     this.selectedValuesMap = this.getSelectedValuesMap(this.options);
     this.setTriggerValue();
     this.destroyPanel();
+    this.selectCancelled.emit(this.getListChange());
   }
 
   notifySelectionIds(): void {
-    const listChange = this.listChange
-      ? this.listChange
-      : this.listChangeService.getListChange(this.options, this.selectedValuesMap);
-    this.emitSelectChange(listChange);
+    this.emitSelectChange(this.getListChange());
     this.destroyPanel();
   }
 
@@ -165,5 +164,9 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
         }),
       });
     });
+  }
+
+  private getListChange(): ListChange {
+    return this.listChangeService.getListChange(this.options, this.selectedValuesMap);
   }
 }

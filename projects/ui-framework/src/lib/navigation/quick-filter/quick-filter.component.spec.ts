@@ -126,7 +126,7 @@ describe('QuickFilterComponent', () => {
     });
   });
 
-  describe('multiSelectModified', () => {
+  describe('selectModified, selectCancelled', () => {
     beforeEach(() => {
       const quickFilterConfig: QuickFilterConfig = {
         selectType: QuickFilterSelectType.multiSelect,
@@ -155,6 +155,21 @@ describe('QuickFilterComponent', () => {
       const listChange: ListChange = new ListChange([optionsMock[0]]);
       const multiSelectEl = fixture.debugElement.query(By.css('b-multi-select'));
       multiSelectEl.componentInstance.selectModified.emit(listChange);
+      fixture.detectChanges();
+      expect(component.hasValue).toBe(false);
+    });
+    it('should update hasValue to true is some options are selected', () => {
+      optionsMock[0].options[0].selected = true;
+      const listChange: ListChange = new ListChange([optionsMock[0]]);
+      const multiSelectEl = fixture.debugElement.query(By.css('b-multi-select'));
+      multiSelectEl.componentInstance.selectCancelled.emit(listChange);
+      fixture.detectChanges();
+      expect(component.hasValue).toBe(true);
+    });
+    it('should update hasValue to false to false if no options are selected', () => {
+      const listChange: ListChange = new ListChange([optionsMock[0]]);
+      const multiSelectEl = fixture.debugElement.query(By.css('b-multi-select'));
+      multiSelectEl.componentInstance.selectCancelled.emit(listChange);
       fixture.detectChanges();
       expect(component.hasValue).toBe(false);
     });

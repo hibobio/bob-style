@@ -77,6 +77,7 @@ describe('MultiSelectComponent', () => {
         component.options = optionsMock;
         spyOn(component.selectChange, 'emit');
         spyOn(component.selectModified, 'emit');
+        spyOn(component.selectCancelled, 'emit');
         spyOn(component, 'propagateChange');
         fixture.autoDetectChanges();
       });
@@ -164,6 +165,16 @@ describe('MultiSelectComponent', () => {
       tick(0);
       (overlayContainerElement.querySelector('.cancel-button') as HTMLElement).click();
       expect(component.destroyPanel).toHaveBeenCalled();
+      flush();
+    }));
+    it('should emit selectCancelled event and ignore option click in listChange', fakeAsync(() => {
+      const expectedListChange = new ListChange(optionsMock);
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+      (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
+      (overlayContainerElement.querySelector('.cancel-button') as HTMLElement).click();
+      expect(component.selectCancelled.emit).toHaveBeenCalledWith(expectedListChange);
       flush();
     }));
   });

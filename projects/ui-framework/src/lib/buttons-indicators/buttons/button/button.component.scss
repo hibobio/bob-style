@@ -3,9 +3,10 @@
 $sizeSmall: 30px;
 $sizeMedium: 36px;
 $sizeLarge: 44px;
-$paddingSmall: 16px;
-$paddingMedium: 22px;
-$paddingLarge: 32px;
+$padding: 15px;
+$minWidthSmall: 80px;
+$minWidthMedium: 95px;
+$minWidthLarge: 110px;
 
 :host ::ng-deep {
   display: inline-flex;
@@ -24,15 +25,18 @@ $paddingLarge: 32px;
       @include Button(disabled);
     }
     &.small {
-      padding: 0 $paddingSmall;
+      padding: 0 $padding;
+      min-width: $minWidthSmall;
       height: $sizeSmall;
     }
     &.medium {
-      padding: 0 $paddingMedium;
+      padding: 0 $padding;
+      min-width: $minWidthMedium;
       height: $sizeMedium;
     }
     &.large {
-      padding: 0 $paddingLarge;
+      padding: 0 $padding;
+      min-width: $minWidthLarge;
       height: $sizeLarge;
       text-transform: uppercase;
       font-weight: 500;
@@ -41,43 +45,11 @@ $paddingLarge: 32px;
     &.has-icon {
       position: relative;
       overflow: hidden;
+      padding-left: 12px;
       .icon-wrapper {
-        position: absolute;
-        top: 0;
-        right: 0;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      &.small {
-        padding-right: calc(#{$sizeSmall} + #{$paddingSmall});
-        .icon-wrapper {
-          width: $sizeSmall;
-        }
-      }
-      &.medium {
-        padding-right: calc(#{$sizeMedium} + #{$paddingMedium});
-        .icon-wrapper {
-          width: $sizeMedium;
-        }
-      }
-      &.large {
-        padding-right: calc(#{$sizeLarge} + #{$paddingLarge});
-        .icon-wrapper {
-          width: $sizeLarge;
-        }
-      }
-      &.primary .icon-wrapper {
-        background-color: black(0.05);
-      }
-      &.secondary, &.tertiary {
-        .icon-wrapper {
-          border-left: 1px solid $grey-600;
-        }
-        &.disabled .icon-wrapper {
-          border-left: 1px solid $grey-300;
-        }
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 8px;
       }
     }
   }
