@@ -1,6 +1,5 @@
 <div class="b-avatar" [ngClass]="getClassNames()" (click)="onClick($event)">
-  <div [ngStyle]="{ 'background-image': 'url(' + imageSource + ')'}" [ngClass]="{'avatar-disabled': disabled}"
-       class="avatar-image">
+  <div [ngStyle]="{ 'background-image': 'url(' + imageSource + ')'}" [ngClass]="{'avatar-disabled': disabled}" class="avatar-image">
   </div>
   <div class="avatar-content">
     <ng-content></ng-content>
