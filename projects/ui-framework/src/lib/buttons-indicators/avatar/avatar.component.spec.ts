@@ -79,4 +79,16 @@ describe('AvatarComponent', () => {
       });
     })
   });
+
+  describe('Disabled', () => {
+    it('Should set avatar disabled', () => {
+      component.title = 'John Doe';
+      component.disabled = true;
+      fixture.detectChanges();
+      const title = fixture.debugElement.queryAll(By.css('.employee-avatar-title'))[0];
+      const image = fixture.debugElement.queryAll(By.css('.avatar-image'))[0];
+      expect(title.classes['title-disabled']).toBeTruthy();
+      expect(image.classes['avatar-disabled']).toBeTruthy();
+    });
+  });
 });
