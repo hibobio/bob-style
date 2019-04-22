@@ -1,7 +1,9 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BackButtonComponent } from './back-button.component';
-
+import { ButtonComponent } from '../button/button.component';
+import { MockComponent } from 'ng-mocks';
+import { By } from '@angular/platform-browser';
+import { Icons } from '../../../icons/icons.enum';
 import { BackButtonType } from '../buttons.enum';
 
 describe('BackButtonComponent', () => {
@@ -10,25 +12,57 @@ describe('BackButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BackButtonComponent ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      declarations: [
+        MockComponent(ButtonComponent),
+        BackButtonComponent,
+      ],
     })
-    .compileComponents()
-    .then(() => {
-      fixture = TestBed.createComponent(BackButtonComponent);
-      component = fixture.componentInstance;
-      spyOn(component.clicked, 'emit');
-      fixture.detectChanges();
-    });
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(BackButtonComponent);
+        component = fixture.componentInstance;
+        spyOn(component.clicked, 'emit');
+      });
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(BackButtonComponent);
-    component = fixture.componentInstance;
+  it('should show button component with back icon and button size small', () => {
     fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('b-button'));
+    expect(button.componentInstance.icon).toEqual(Icons.back_arrow_link);
+    expect(button.componentInstance.size).toEqual('small');
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should emit onclick when regular button emits onclick', () => {
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('b-button'));
+    button.context.clicked.emit();
+    expect(component.clicked.emit).toHaveBeenCalledTimes(1);
   });
+
+  it('should not set button as disabled by default', () => {
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('b-button'));
+    expect(button.componentInstance.disabled).toBe(false);
+  });
+
+  it('should set button as disabled', () => {
+    component.disabled = true;
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('b-button'));
+    expect(button.componentInstance.disabled).toBe(true);
+  });
+
+  it('should set button type as secondary by default', () => {
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('b-button'));
+    expect(button.componentInstance.type).toBe(BackButtonType.secondary);
+  });
+
+  it('should set button type as tertiary', () => {
+    component.type = BackButtonType.tertiary;
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('b-button'));
+    expect(button.componentInstance.type).toBe(BackButtonType.tertiary);
+  });
+
 });

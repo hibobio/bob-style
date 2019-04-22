@@ -1,18 +1,15 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
-import { ButtonSize, BackButtonType } from '../buttons.enum';
-import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { BackButtonType, ButtonSize } from '../buttons.enum';
+import { Icons } from '../../../icons/icons.enum';
 
 @Component({
   selector: 'b-back-button',
   template: `
     <b-button (clicked)="onClick($event)"
-            [type]="type"
-            [size]="size"
-            [disabled]="disabled">
-      <b-icon icon="${Icons.back_arrow_link}"
-            size="${IconSize.small}"
-            [color]="disabled ? iconColor.light : color">
-      </b-icon>
+              [type]="type"
+              [size]="size"
+              [icon]="icons.back_arrow_link"
+              [disabled]="disabled">
       <ng-content></ng-content>
     </b-button>
   `,
@@ -20,15 +17,15 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 })
 export class BackButtonComponent {
 
-  constructor() { }
-
-  size: ButtonSize = ButtonSize.small;
   @Input() type?: BackButtonType = BackButtonType.secondary;
   @Input() disabled = false;
-  @Input() color: IconColor = IconColor.dark;
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
-  iconColor = IconColor;
+  size: ButtonSize = ButtonSize.small;
+  icons = Icons;
+
+  constructor() {
+  }
 
   onClick($event) {
     this.clicked.emit($event);
