@@ -36,12 +36,12 @@ const note = `
   --- | --- | --- | ---
   imageSource | String | url of the image |
   size | AvatarSize | enum for setting the avatar size | mini (optional)
+  isClickable | boolean | can click avatar | false
   title | string | main title of the avatar | '' (optional)
   subtitle | string | subtitle of the avatar | '' (optional)
   disabled | boolean | disabled avatar | false (optional)
   clicked | boolean | boolean flag for indicating if the avatar is clickable or not | false (optional)
   handleClick | Function | callback for clicking on the avatar | no click (optional)
-
 
   ~~~
   ${template}

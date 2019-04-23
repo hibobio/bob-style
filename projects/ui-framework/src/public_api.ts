@@ -7,9 +7,6 @@
  */
 
 // Typography Module
-import { TableComponent } from './lib/table/table/table.component';
-import { AvatarCellComponent } from './lib/table/table-cell-components/avatar.component';
-
 export { TypographyModule } from './lib/typography/typography.module';
 
 /*
@@ -154,7 +151,19 @@ export {
 export {
   RichTextEditorComponent
 } from './lib/form-elements/rich-text-editor/rich-text-editor.component';
-
+// Radio Buttons
+export {
+  RadioButtonModule
+} from './lib/form-elements/radio-button/radio-button.module';
+export {
+  RadioButtonComponent
+} from './lib/form-elements/radio-button/radio-button.component';
+export {
+  RadioDirection
+} from './lib/form-elements/radio-button/radio-button.enum';
+export {
+  RadioConfig
+} from './lib/form-elements/radio-button/radio-button.interface';
 
 /*
  * Navigation

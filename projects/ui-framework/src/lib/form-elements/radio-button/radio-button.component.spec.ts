@@ -1,23 +1,25 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { RadioButtonComponent, RadioDirection } from './radio-button.component';
+import { RadioButtonComponent } from './radio-button.component';
 import { By } from '@angular/platform-browser';
 import { MatRadioModule } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RadioDirection } from './radio-button.enum';
+import { RadioConfig } from './radio-button.interface';
 
 describe('RadioButtonComponent', () => {
   let component: RadioButtonComponent;
   let fixture: ComponentFixture<RadioButtonComponent>;
-
-  const radioConfigMock = [
-    { id: 11, label: 'option one' },
-    { id: 12, label: 'option two' },
-    { id: 13, label: 'option three' },
-  ];
+  let radioConfigMock: RadioConfig[];
 
   beforeEach(async(() => {
+    radioConfigMock = [
+      { id: 11, label: 'option one' },
+      { id: 12, label: 'option two' },
+      { id: 13, label: 'option three' },
+    ];
     TestBed.configureTestingModule({
       declarations: [
         RadioButtonComponent,

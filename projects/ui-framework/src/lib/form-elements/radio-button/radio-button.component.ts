@@ -3,16 +3,8 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
 import { MatRadioChange } from '@angular/material';
 import has from 'lodash/has';
-
-export interface RadioConfig {
-  id: number;
-  label: string;
-}
-
-export enum RadioDirection {
-  row = 'row',
-  column = 'column'
-}
+import { RadioConfig } from './radio-button.interface';
+import { RadioDirection } from './radio-button.enum';
 
 @Component({
   selector: 'b-radio-button',
@@ -32,7 +24,6 @@ export enum RadioDirection {
   ],
 })
 export class RadioButtonComponent extends BaseFormElement implements OnChanges {
-
   @Input() value: number = null;
   @Input() radioConfig: RadioConfig[];
   @Input() direction: RadioDirection = RadioDirection.row;

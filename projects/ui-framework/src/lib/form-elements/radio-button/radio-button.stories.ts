@@ -12,9 +12,9 @@ import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RadioButtonModule } from './radio-button.module';
-import { RadioDirection } from './radio-button.component';
 import values from 'lodash/values';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { RadioDirection } from './radio-button.enum';
 
 const direction = values(RadioDirection);
 const radioStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(withKnobs);

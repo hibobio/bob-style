@@ -8,8 +8,8 @@ import { AvatarSize } from './avatar.enum';
 })
 export class AvatarComponent {
   @Input() imageSource: string;
-  @Input() size?: AvatarSize = AvatarSize.mini;
-  @Input() isClickable ? = false;
+  @Input() size: AvatarSize = AvatarSize.mini;
+  @Input() isClickable = false;
   @Input() title = '';
   @Input() subtitle = '';
   @Input() disabled = false;
