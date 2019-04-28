@@ -3,7 +3,6 @@ import { GridOptions } from 'ag-grid-community';
 import { get, has, once } from 'lodash';
 import { ColumnDef, RowClickedEvent, RowSelection, SortChangedEvent } from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
-import { LicenseManager } from 'ag-grid-enterprise';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 
 @Component({
@@ -30,13 +29,11 @@ export class TableComponent implements OnInit, OnChanges {
   gridReady = false;
   gridOptions: GridOptions;
   gridColumnDefs: ColumnDef[];
-  readonly tableLicense = once(() => LicenseManager.setLicenseKey("hibob_Bob_1Devs_1Deployment_23_April_2020__MTU4NzU5NjQwMDAwMA==5b77134bf43e27e7f8ccb20bdfa3c155"));
 
   constructor(
     private tableUtilsService: TableUtilsService,
     private elRef: ElementRef,
   ) {
-    this.tableLicense();
   }
 
 

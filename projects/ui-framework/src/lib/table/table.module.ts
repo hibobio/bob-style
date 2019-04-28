@@ -7,6 +7,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { AvatarModule } from '../../public_api';
 import { AvatarCellComponent } from './table-cell-components/avatar.component';
 import { TableUtilsService } from './table-utils-service/table-utils.service';
+import { LicenseManager } from 'ag-grid-enterprise';
 
 
 @NgModule({
@@ -30,4 +31,9 @@ import { TableUtilsService } from './table-utils-service/table-utils.service';
     AvatarCellComponent,
   ],
 })
-export class TableModule { }
+export class TableModule {
+
+  constructor() {
+    LicenseManager.setLicenseKey("hibob_Bob_1Devs_1Deployment_23_April_2020__MTU4NzU5NjQwMDAwMA==5b77134bf43e27e7f8ccb20bdfa3c155");
+  }
+}
