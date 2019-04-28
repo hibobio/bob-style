@@ -27,7 +27,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Grouped buttons">
+<b-story-book-layout [title]="'Grouped buttons'">
   ${template}
 </b-story-book-layout>
 `;

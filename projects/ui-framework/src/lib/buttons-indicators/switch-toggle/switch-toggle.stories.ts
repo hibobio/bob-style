@@ -35,7 +35,7 @@ const note = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Switch toggle">
+<b-story-book-layout [title]="'Switch toggle'">
   ${template}
 </b-story-book-layout>
 `;

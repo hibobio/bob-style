@@ -23,7 +23,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Datepicker">
+<b-story-book-layout [title]="'Datepicker'">
   ${template}
 </b-story-book-layout>
 `;

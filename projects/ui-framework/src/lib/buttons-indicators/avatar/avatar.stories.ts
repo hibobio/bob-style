@@ -49,7 +49,7 @@ const note = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Avatar">
+<b-story-book-layout [title]="'Avatar'">
   ${template}
 </b-story-book-layout>
 `;

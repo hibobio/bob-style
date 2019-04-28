@@ -51,7 +51,7 @@ const note = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Chip">
+<b-story-book-layout [title]="'Chip'">
   <div style="margin: 100px auto;">
     ${template}
   </div>
@@ -63,7 +63,7 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
-      OnClick: action('Clicked!'),
+      OnClick: action('Chip clicked'),
       type: select('type', typeOptions, ChipType.default),
       text: text('text', 'Chip text'),
       color: text('color', '')

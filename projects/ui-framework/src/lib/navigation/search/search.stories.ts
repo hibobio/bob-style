@@ -18,7 +18,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Search">
+<b-story-book-layout [title]="'Search'">
   ${template}
 </b-story-book-layout>
 `;

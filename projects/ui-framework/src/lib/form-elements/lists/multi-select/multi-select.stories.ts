@@ -30,7 +30,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Multi select">
+<b-story-book-layout [title]="'Multi select'">
   ${template}
 </b-story-book-layout>
 `;
@@ -93,9 +93,9 @@ buttonStories.add(
     template: storyTemplate,
     props: {
       options: object<SelectGroupOption>('options', optionsMock),
-      selectChange: action('MultiSelectChange'),
-      selectModified: action('MultiSelectModified'),
-      selectCancelled: action('MultiSelectCancelled'),
+      selectChange: action('Multi select change'),
+      selectModified: action('Multi select modified'),
+      selectCancelled: action('Multi select cancelled'),
       label: text('label', 'label text'),
       disabled: boolean('disabled', false),
       required: boolean('required', false),

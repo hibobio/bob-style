@@ -21,7 +21,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Grid layout example">
+<b-story-book-layout [title]="'Grid layout example'">
   ${template}
 </b-story-book-layout>
 `;

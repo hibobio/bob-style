@@ -45,7 +45,7 @@ const note = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Square button">
+<b-story-book-layout [title]="'Square button'">
   ${template}
 </b-story-book-layout>
 `;

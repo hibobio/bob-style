@@ -30,7 +30,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Single Card">
+<b-story-book-layout [title]="'Single Card'">
   <div style="display: flex; width:280px; height: 280px; margin: 100px auto;">
     ${template}
   </div>

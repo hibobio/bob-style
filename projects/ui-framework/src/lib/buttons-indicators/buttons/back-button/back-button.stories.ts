@@ -40,7 +40,7 @@ const note = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Back button">
+<b-story-book-layout [title]="'Back button'">
   ${template}
 </b-story-book-layout>
 `;

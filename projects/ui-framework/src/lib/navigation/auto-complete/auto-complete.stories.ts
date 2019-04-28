@@ -23,7 +23,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Auto complete">
+<b-story-book-layout [title]="'Auto complete'">
   ${ template }
 </b-story-book-layout>
 `;

@@ -29,7 +29,7 @@ const template = `
 `;
 
 const stroyTemplate = `
-<b-story-book-layout title="Radio Buttons">
+<b-story-book-layout [title]="'Radio Buttons'">
   ${template}
 </b-story-book-layout>`;
 
@@ -67,7 +67,7 @@ radioStories.add(
         ]),
         direction: select('direction', direction, direction.row),
         disabled: boolean('disabled', false),
-        radioChange: action()
+        radioChange: action('Radio buttons value')
       },
       moduleMetadata: {
         imports: [BrowserAnimationsModule, RadioButtonModule, StoryBookLayoutModule]

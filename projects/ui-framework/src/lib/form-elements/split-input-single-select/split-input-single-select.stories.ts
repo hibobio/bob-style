@@ -28,7 +28,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Split input single select">
+<b-story-book-layout [title]="'Split input single select'">
   ${template}
 </b-story-book-layout>
 `;
@@ -139,7 +139,7 @@ textareaStories.add(
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
         errorMessage: text('errorMessage', ''),
-        elementChange: action('SplitInputSingleSelectChange'),
+        elementChange: action('Split input single select change'),
       },
       moduleMetadata: {
         imports: [BrowserAnimationsModule, StoryBookLayoutModule, SplitInputSingleSelectModule]

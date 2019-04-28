@@ -23,7 +23,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Slider">
+<b-story-book-layout [title]="'Slider'">
   ${template}
 </b-story-book-layout>
 `;

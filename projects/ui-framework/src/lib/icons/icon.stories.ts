@@ -42,7 +42,7 @@ const note = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Icon">
+<b-story-book-layout [title]="'Icon'">
   ${template}
 </b-story-book-layout>
 `;
@@ -80,7 +80,7 @@ const listHtml = reduce(
   ''
 );
 const iconsListTemplate = `
-<b-story-book-layout title="Icon list">
+<b-story-book-layout [title]="'Icon list'">
     <style>
       .icons-list {
         display: grid;

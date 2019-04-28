@@ -23,7 +23,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Textarea">
+<b-story-book-layout [title]="'Textarea'">
   ${template}
 </b-story-book-layout>
 `;

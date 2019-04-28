@@ -10,7 +10,7 @@ const linkStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).a
 );
 const template = `<b-link [config]="config"></b-link>`;
 
-const storyTemplate = `<b-story-book-layout title="Link">
+const storyTemplate = `<b-story-book-layout [title]="'Link'">
   ${template}
 </b-story-book-layout>`;
 

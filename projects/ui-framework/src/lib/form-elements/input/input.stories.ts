@@ -29,7 +29,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Input">
+<b-story-book-layout [title]="'Input'">
   ${template}
 </b-story-book-layout>
 `;

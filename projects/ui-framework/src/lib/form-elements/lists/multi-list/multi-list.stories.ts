@@ -22,7 +22,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Single select">
+<b-story-book-layout [title]="'Single select'">
   ${ template }
 </b-story-book-layout>
 `;
@@ -77,7 +77,7 @@ buttonStories.add(
   () => ({
     template: storyTemplate,
     props: {
-      selectChange: action('MultiListChange'),
+      selectChange: action('Multi list change'),
       options: object<SelectGroupOption>('options', optionsMock),
       showSingleGroupHeader: boolean('showSingleGroupHeader', true)
     },

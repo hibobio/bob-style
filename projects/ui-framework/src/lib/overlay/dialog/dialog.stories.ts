@@ -15,7 +15,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Dialog">
+<b-story-book-layout [title]="'Dialog'">
   ${template}
 </b-story-book-layout>
 `;

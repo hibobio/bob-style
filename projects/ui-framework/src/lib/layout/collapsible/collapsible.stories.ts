@@ -41,7 +41,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Collapsible">
+<b-story-book-layout [title]="'Collapsible'">
   <div style="padding: 50px; overflow: hidden;">
     ${template.repeat(5)}
 </div>

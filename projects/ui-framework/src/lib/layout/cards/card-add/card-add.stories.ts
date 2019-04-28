@@ -19,14 +19,14 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
 );
 
 const template = `
-  <b-card-add title="Add a new flow"
-              subtitle="Create a new pay schedule"
+  <b-card-add [title]="'Add a new flow'"
+              [subtitle]="'Create a new pay schedule'"
               (clicked)="onClick($event)">
   </b-card-add>
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Add new Card">
+<b-story-book-layout [title]="'Add new Card'">
   <div style="display: flex; width:280px; height: 280px; margin: 100px auto;">
     ${template}
   </div>

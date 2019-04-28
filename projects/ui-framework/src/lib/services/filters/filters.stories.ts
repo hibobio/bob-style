@@ -5,7 +5,7 @@ import { ComponentGroupType } from '../../consts';
 const utilsStories = storiesOf(ComponentGroupType.Services, module);
 
 const storyTemplate = `
-<b-story-book-layout title="Filters">
+<b-story-book-layout [title]="'Filters'">
 
 </b-story-book-layout>
 `;

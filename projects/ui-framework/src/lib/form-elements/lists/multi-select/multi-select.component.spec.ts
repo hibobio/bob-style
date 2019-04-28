@@ -145,7 +145,7 @@ describe('MultiSelectComponent', () => {
   });
 
   describe('notifySelectionIds', () => {
-    it('should emit onSelect with listChange and propogateChange with selectedValuesArray', fakeAsync(() => {
+    it('should emit onSelect with listChange and propagateChange with selectedValuesArray', fakeAsync(() => {
       const expectedListChange = new ListChange(optionsMock);
       component.openPanel();
       fixture.autoDetectChanges();

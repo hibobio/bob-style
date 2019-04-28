@@ -22,7 +22,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Side Menu">
+<b-story-book-layout [title]="'Side Menu'">
   ${template}
 </b-story-book-layout>
 `;
@@ -53,7 +53,7 @@ inputStories.add(
       template: storyTemplate,
       props: {
         options: object<SideMenuOption[]>('options', sideMenuOptionsMock),
-        selectOption: action('SideMenuSelect'),
+        selectOption: action('Side menu select'),
       },
       moduleMetadata: {
         entryComponents: [IconComponent],

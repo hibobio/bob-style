@@ -18,7 +18,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Checkbox">
+<b-story-book-layout [title]="'Checkbox'">
   ${template}
 </b-story-book-layout>
 `;

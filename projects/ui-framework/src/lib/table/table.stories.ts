@@ -26,7 +26,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Data Table">
+<b-story-book-layout [title]="'Data Table'">
   ${ template }
 </b-story-book-layout>
 `;
@@ -63,9 +63,9 @@ tableStories.add(
         rowSelection: select('rowSelection', rowSelection, RowSelection.Multiple),
         rowData: object('rowData', mockRowData),
         columnDefs: object('columnDefs', mockColumnsDefs),
-        rowClicked: action('rowClicked'),
-        selectionChanged: action('selectionChanged'),
-        sortChanged: action('sortChanged'),
+        rowClicked: action('Row clicked'),
+        selectionChanged: action('Selection changed'),
+        sortChanged: action('sort changed'),
       },
       moduleMetadata: {
         entryComponents: [AvatarCellComponent],

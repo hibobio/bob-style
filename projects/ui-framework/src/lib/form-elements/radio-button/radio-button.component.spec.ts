@@ -37,6 +37,7 @@ describe('RadioButtonComponent', () => {
         component = fixture.componentInstance;
         component.radioConfig = radioConfigMock;
         spyOn(component.radioChange, 'emit');
+        spyOn(component, 'propagateChange');
         fixture.detectChanges();
       });
   }));
@@ -54,6 +55,12 @@ describe('RadioButtonComponent', () => {
       matRadioButtonLabel.nativeElement.click();
       fixture.detectChanges();
       expect(component.radioChange.emit).toHaveBeenCalledWith(13);
+    });
+    it('should invoke propagateChange', () => {
+      const matRadioButtonLabel = fixture.debugElement.queryAll(By.css('mat-radio-button label'))[2];
+      matRadioButtonLabel.nativeElement.click();
+      fixture.detectChanges();
+      expect(component.propagateChange).toHaveBeenCalledWith(13);
     });
   });
 

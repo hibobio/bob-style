@@ -24,7 +24,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Textarea">
+<b-story-book-layout [title]="'Textarea'">
   ${ template }
 </b-story-book-layout>
 `;
@@ -93,7 +93,7 @@ textareaStories.add(
       template: storyTemplate,
       props: {
         quickFilters: object('quickFilters', quickFilters),
-        filtersChange: action('QuickFilterBarChange'),
+        filtersChange: action('Quick filter bar change'),
       },
       moduleMetadata: {
         imports: [BrowserAnimationsModule, StoryBookLayoutModule, QuickFilterModule, ButtonsModule]

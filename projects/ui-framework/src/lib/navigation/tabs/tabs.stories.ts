@@ -35,7 +35,7 @@ const template = `
 </b-tabs>`;
 
 const storyTemplate = `
-<b-story-book-layout title="Tabs">
+<b-story-book-layout [title]="'Tabs'">
   ${template}
 </b-story-book-layout>
 `;

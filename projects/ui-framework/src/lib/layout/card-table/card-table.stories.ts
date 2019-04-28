@@ -43,7 +43,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Card Table">
+<b-story-book-layout [title]="'Card Table'">
   <style>
     :host ::ng-deep .highlight-second-line span:nth-child(2) {
       color: var(--primary-500);
@@ -223,8 +223,8 @@ story.add(
         CardTableMetaData: object('meta', CardTableMockMetaData),
         CardTableData: object('table', CardTableMockData),
 
-        rowClickHandler: action('Row Clicked'),
-        cellClickHandler: action('Cell Clicked')
+        rowClickHandler: action('Row clicked'),
+        cellClickHandler: action('Cell clicked')
       },
       moduleMetadata: {
         declarations: [MockComponent],

@@ -15,7 +15,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Mini preloader">
+<b-story-book-layout [title]="'Mini preloader'">
   ${template}
 </b-story-book-layout>
 `;

@@ -25,7 +25,7 @@ const template2 = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Divider">
+<b-story-book-layout [title]="'Divider'">
   ${template}
   <div style="margin: 5px auto;"><b-caption>Simple Divider line</b-caption></div>
 </b-story-book-layout>

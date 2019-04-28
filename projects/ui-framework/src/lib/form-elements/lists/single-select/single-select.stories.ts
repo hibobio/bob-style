@@ -26,7 +26,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Single select">
+<b-story-book-layout [title]="'Single select'">
   ${template}
 </b-story-book-layout>
 `;
@@ -83,7 +83,7 @@ buttonStories.add(
     template: storyTemplate,
     props: {
       options: object<SelectGroupOption>('options', optionsMock),
-      selectChange: action('SingleSelectChange'),
+      selectChange: action('Single select change'),
       label: text('label', 'label text'),
       disabled: boolean('disabled', false),
       required: boolean('required', false),

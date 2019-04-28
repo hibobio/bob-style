@@ -28,7 +28,7 @@ const componmentTemplate = `
 `;
 
 const template = `
-<b-story-book-layout title="breadcrumbs">
+<b-story-book-layout [title]="'breadcrumbs'">
   ${componmentTemplate}
 </b-story-book-layout>
 `;

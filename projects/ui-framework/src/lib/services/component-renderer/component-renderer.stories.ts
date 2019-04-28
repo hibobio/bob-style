@@ -28,7 +28,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Component Renderer">
+<b-story-book-layout [title]="'Component Renderer'">
   <div style="padding: 50px; display:flex; justify-content: center; background: rgba(0,0,0,0.1);">
     ${template}
   </div>

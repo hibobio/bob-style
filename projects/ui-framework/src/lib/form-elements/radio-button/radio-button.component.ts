@@ -41,5 +41,6 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
 
   onRadioChange(e: MatRadioChange): void {
     this.radioChange.emit(e.value);
+    this.propagateChange(e.value);
   }
 }

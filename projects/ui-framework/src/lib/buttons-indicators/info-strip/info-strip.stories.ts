@@ -17,7 +17,7 @@ const template = `<b-info-strip
   [link]="link"
   [text]="text"></b-info-strip>`;
 
-const storyTemplate = `<b-story-book-layout title="Info Strip">
+const storyTemplate = `<b-story-book-layout [title]="'Info Strip'">
   <div style="margin: 0px 25px;">
     ${template}
   </div>
