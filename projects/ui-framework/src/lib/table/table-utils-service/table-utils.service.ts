@@ -25,6 +25,7 @@ export class TableUtilsService {
       assign({}, colDef, {
         resizable: get(colDef, 'resizable', true),
         sortable: get(colDef, 'sortable', true),
+        menuTabs: []
       }));
   }
 
@@ -32,6 +33,7 @@ export class TableUtilsService {
     return rowSelection
       ? assign({}, SELECTION_COLUMN_DEF, {
         headerCheckboxSelection: rowSelection === RowSelection.Multiple ? true : false,
+        menuTabs: []
       })
       : null;
   }
