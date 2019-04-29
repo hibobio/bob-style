@@ -102,6 +102,7 @@ describe('TableUtilsService', () => {
         headerName: '',
         lockPosition: true,
         pinned: 'left',
+        menuTabs: [],
       };
       const columnDefs = tableUtilsService.getGridColumnDef(columnDefsMock, rowSelectionMock);
       expect(columnDefs).toEqual(concat(multiColumnDef, columnDefsMock));
