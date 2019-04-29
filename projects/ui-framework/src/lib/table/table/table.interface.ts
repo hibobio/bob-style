@@ -27,6 +27,7 @@ export interface ColumnDef {
   comparator?: Function;
   lockPosition?: boolean;
   headerCheckboxSelection?: boolean | Function;
+  menuTabs?: string[],
 }
 
 export interface RowClickedEvent {

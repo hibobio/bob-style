@@ -19,6 +19,7 @@ describe('TableUtilsService', () => {
         lockPosition: true,
         resizable: false,
         sortable: false,
+        menuTabs: [],
       },
       {
         headerName: 'Display Name',
@@ -26,12 +27,14 @@ describe('TableUtilsService', () => {
         sort: SortDirections.Asc,
         resizable: true,
         'sortable': true,
+        menuTabs: [],
       },
       {
         headerName: 'Email',
         field: 'email',
         resizable: true,
         sortable: true,
+        menuTabs: [],
       },
     ];
     tableColumnsMock = [
@@ -74,7 +77,7 @@ describe('TableUtilsService', () => {
     });
   });
 
-  describe('getGridColumnDef', () => {
+  fdescribe('getGridColumnDef', () => {
     it('should not enrich data with select column', () => {
       rowSelectionMock = null;
       const columnDefs = tableUtilsService.getGridColumnDef(columnDefsMock, rowSelectionMock);
@@ -89,6 +92,7 @@ describe('TableUtilsService', () => {
         headerName: '',
         lockPosition: true,
         pinned: 'left',
+        menuTabs: [],
       };
       const columnDefs = tableUtilsService.getGridColumnDef(columnDefsMock, rowSelectionMock);
       expect(columnDefs).toEqual(concat(multiColumnDef, columnDefsMock));
