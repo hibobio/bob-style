@@ -1,7 +1,7 @@
 <div class="b-avatar" [ngClass]="getClassNames()" (click)="onClick($event)">
   <div [ngStyle]="{ 'background-image': 'url(' + imageSource + ')'}" [ngClass]="{'avatar-disabled': disabled}" class="avatar-image">
   </div>
-  <b-icon *ngIf="badge" [icon]="badge" [size]="badgeConfig.size" [color]="badgeConfig.color" class="avatar-badge">
+  <b-icon *ngIf="badge" [icon]="badge" [size]="badgeConfig.size" [color]="badgeConfig.color" class="avatar-badge" [ngClass]="{'avatar-disabled': disabled}">
   </b-icon>
   <div class="avatar-content">
     <ng-content></ng-content>
