@@ -12,12 +12,13 @@ export class TabsComponent implements OnInit {
   @Input() public selectedIndex = 0;
   @Output() selectChange: EventEmitter<MatTabChangeEvent> = new EventEmitter<MatTabChangeEvent>();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
 
-  public onSelectChange ($event: MatTabChangeEvent) {
+  public onSelectChange($event: MatTabChangeEvent) {
     this.selectChange.emit($event);
   }
 

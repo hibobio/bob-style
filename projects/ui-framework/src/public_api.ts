@@ -7,6 +7,8 @@
  */
 
 // Typography Module
+import { ScrollEvent } from './lib/services/utils/utils.interface';
+
 export { TypographyModule } from './lib/typography/typography.module';
 
 /*
@@ -290,6 +292,7 @@ export { FiltersModule } from './lib/services/filters/filters.module';
 // Utils Module
 export { UtilsModule } from './lib/services/utils/utils.module';
 export { UtilsService } from './lib/services/utils/utils.service';
+export { ScrollEvent }  from './lib/services/utils/utils.interface';
 // Component Renderer
 export { ComponentRendererModule } from './lib/services/component-renderer/component-renderer.module';
 export { ComponentRendererComponent } from './lib/services/component-renderer/component-renderer.component';

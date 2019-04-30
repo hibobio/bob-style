@@ -14,10 +14,14 @@ const note = `
   ## Utils Service
   #### Module
   *UtilsModule*
+
   #### Methods
 
   ##### getResizeEvent
   Returns observable of window resize events
+
+  ##### getScrollEvent
+  Returns observable of scroll event with ScrollEvent interface
 
 `;
 

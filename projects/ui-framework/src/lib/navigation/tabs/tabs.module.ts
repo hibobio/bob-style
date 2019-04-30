@@ -4,11 +4,16 @@ import { TabsComponent } from './tabs.component';
 import { MatTabsModule } from '@angular/material';
 
 @NgModule({
-  declarations: [TabsComponent],
+  declarations: [
+    TabsComponent,
+  ],
   imports: [
     CommonModule,
     MatTabsModule,
   ],
-  exports: [TabsComponent]
+  exports: [
+    TabsComponent,
+  ],
 })
-export class TabsModule { }
+export class TabsModule {
+}
