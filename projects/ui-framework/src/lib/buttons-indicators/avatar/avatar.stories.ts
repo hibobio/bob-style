@@ -7,12 +7,14 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { AvatarModule } from './avatar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Icons } from '../../icons/icons.enum';
 
 const avatarStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
   withKnobs
 );
 
 const sizeOptions = values(AvatarSize);
+const badges = [Icons.pending_badge, Icons.approve_badge];
 const template = `
 <div style="display: flex; justify-content: center;">
 <b-avatar
@@ -72,10 +74,7 @@ avatarStories.add(
         title: text('title', 'John Doe'),
         subtitle: text('subtitle', 'Web Developer'),
         disabled: boolean('disabled', false),
-        badge: text(
-          'badge',
-          'pending_badge'
-        ),
+        badge: select('badge', badges, Icons.pending_badge),
       },
       moduleMetadata: {
         imports: [
