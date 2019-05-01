@@ -14,6 +14,7 @@
     .mat-tab-label {
       color: $grey-600;
       opacity: initial;
+      height: 50px;
 
       &.mat-tab-label-active {
         color: $grey-700;
@@ -22,17 +23,7 @@
 
     .mat-ink-bar {
       background-color: var(--primary-500);
-      transition-duration: 0.2s;
-
-      //&:after {
-      //  content: '';
-      //  display: block;
-      //  position: absolute;
-      //  bottom: -6px;
-      //  right: 50%;
-      //  transform: translateX(50%);
-      //  @include arrow-down(6px, var(--primary-500));
-      //}
+      transition-duration: 0.15s;
     }
   }
 }
