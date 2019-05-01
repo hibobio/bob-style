@@ -228,7 +228,7 @@ $border-color-error: $color-error;
     display: block;
     margin-top: 5px;
     padding: 0 16px;
-    @include BodyFont(11px);
+    @include BodyFont($font-size-caption);
   }
 
   .ql-editor.ql-blank:before {
@@ -405,10 +405,10 @@ $border-color-error: $color-error;
       }
 
       &.rte-size-small {
-        @include BodyFont(11px);
+        @include BodyFont($font-size-caption);
       }
       &.rte-size-normal {
-        @include BodyFont(12px);
+        @include BodyFont($font-size-body);
       }
       &.rte-size-large {
         @include BodyFont(18px, $lineHeight: 1);

@@ -1,5 +1,4 @@
 @import '../../style/typography.scss';
 :host {
-  @include BodyFont($font-size-body, 600);
-
+  @include BodyFont($font-size-body, $font-weight-bold-body);
 }

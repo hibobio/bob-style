@@ -1,4 +1,4 @@
 @import '../../style/typography.scss';
 :host {
-  @include HeadingFont(16px);
+  @include HeadingFont($font-size-heading);
 }

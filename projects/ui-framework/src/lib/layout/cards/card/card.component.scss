@@ -82,7 +82,7 @@
   min-height: 240px;
 
   .card-content {
-    @include DisplayFont(18px, 600, $transform: null);
+    @include DisplayFont($font-size-display-4, 600, $transform: null);
     @include line-clamp(4, 18px, $line-height-heading, true);
   }
 }
@@ -90,7 +90,11 @@
 :host.card-secondary,
 :host.card-tertiary {
   .card-content {
-    @include DisplayFont(22px, 600, $transform: null);
+    @include DisplayFont(
+      $font-size-display-3,
+      $font-weight-display-3,
+      $transform: null
+    );
     @include line-clamp(3, 22px, $line-height-heading, true);
   }
 }

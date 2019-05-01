@@ -4,6 +4,28 @@ $font-size-body: 12px;
 $line-height-body: 1.5;
 $line-height-heading: 1.3;
 
+$font-size-big-body: 14px;
+
+$font-weight-bold-body: 600;
+
+$font-size-caption: 11px;
+
+$font-size-display-1: 42px;
+$font-weight-display-1: 900;
+
+$font-size-display-2: 28px;
+$font-weight-display-2: 900;
+
+$font-size-display-3: 22px;
+$font-weight-display-3: 600;
+
+$font-size-display-4: 18px;
+$font-weight-display-4: 500;
+
+$font-size-heading: 16px;
+
+$font-size-subheading: $font-size-body;
+
 @mixin FontDefault($style, $weight, $size, $lineHeight) {
   font-style: $style;
   font-weight: $weight;
@@ -11,21 +33,37 @@ $line-height-heading: 1.3;
   line-height: $lineHeight;
 }
 
-@mixin DisplayFont($size, $weight, $lineHeight: $line-height-heading, $transform: capitalize, $style: normal) {
+@mixin DisplayFont(
+  $size,
+  $weight,
+  $lineHeight: $line-height-heading,
+  $transform: capitalize,
+  $style: normal
+) {
   @include FontDefault($style, $weight, $size, $lineHeight);
   font-family: var(--display-font-family);
   display: block;
   text-transform: $transform;
 }
 
-@mixin HeadingFont($size, $weight: 700, $lineHeight: $line-height-heading, $style: normal) {
+@mixin HeadingFont(
+  $size,
+  $weight: 700,
+  $lineHeight: $line-height-heading,
+  $style: normal
+) {
   @include FontDefault($style, $weight, $size, $lineHeight);
   font-family: var(--heading-font-family);
   display: block;
   text-transform: uppercase;
 }
 
-@mixin BodyFont($size: $font-size-body, $weight: normal, $lineHeight: $line-height-body, $style: normal) {
+@mixin BodyFont(
+  $size: $font-size-body,
+  $weight: normal,
+  $lineHeight: $line-height-body,
+  $style: normal
+) {
   @include FontDefault($style, $weight, $size, $lineHeight);
   font-family: var(--body-font-family);
 }

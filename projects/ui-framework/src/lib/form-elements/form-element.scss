@@ -28,13 +28,15 @@ $textarea-height: 120px;
           border: none;
           height: 100%;
           position: relative;
-          input, textarea, mat-select {
+          input,
+          textarea,
+          mat-select {
             margin: 0;
             box-sizing: border-box;
             height: $input-height;
             padding: 0 16px;
-            &[type=number]::-webkit-inner-spin-button,
-            &[type=number]::-webkit-outer-spin-button {
+            &[type='number']::-webkit-inner-spin-button,
+            &[type='number']::-webkit-outer-spin-button {
               -webkit-appearance: none;
               margin: 0;
             }
@@ -59,7 +61,8 @@ $textarea-height: 120px;
             }
           }
         }
-        .mat-form-field-prefix, .mat-form-field-suffix {
+        .mat-form-field-prefix,
+        .mat-form-field-suffix {
           display: flex;
           align-items: center;
         }
@@ -70,7 +73,7 @@ $textarea-height: 120px;
         font-size: $font-size-body;
         padding: 0 16px;
         .mat-hint {
-          @include BodyFont(11px);
+          @include BodyFont($font-size-caption);
         }
       }
       .mat-form-field-underline {
@@ -89,14 +92,20 @@ $textarea-height: 120px;
       }
     }
     &.mat-form-field-should-float {
-      .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
+      .mat-form-field-wrapper
+        .mat-form-field-flex
+        .mat-form-field-infix
+        .mat-form-field-label-wrapper
+        .mat-form-field-label {
         transform: translateY(-30px) scale(0.9);
       }
     }
     &.mat-form-field-disabled {
       .mat-form-field-wrapper .mat-form-field-flex {
         background-color: $grey-100;
-        .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
+        .mat-form-field-infix
+          .mat-form-field-label-wrapper
+          .mat-form-field-label {
           color: $grey-500;
         }
       }
@@ -107,7 +116,11 @@ $textarea-height: 120px;
       }
     }
     &.required {
-      .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
+      .mat-form-field-wrapper
+        .mat-form-field-flex
+        .mat-form-field-infix
+        .mat-form-field-label-wrapper
+        .mat-form-field-label {
         &:after {
           content: '*';
           display: inline-block;
@@ -125,7 +138,11 @@ $textarea-height: 120px;
     }
     &.hide-label-on-focus {
       &.mat-form-field-should-float {
-        .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
+        .mat-form-field-wrapper
+          .mat-form-field-flex
+          .mat-form-field-infix
+          .mat-form-field-label-wrapper
+          .mat-form-field-label {
           display: none;
         }
       }
@@ -133,7 +150,9 @@ $textarea-height: 120px;
     &.has-prefix {
       .mat-form-field-wrapper .mat-form-field-flex {
         .mat-form-field-infix {
-          input, textarea, mat-select {
+          input,
+          textarea,
+          mat-select {
             padding-left: 0;
           }
           .mat-form-field-label-wrapper .mat-form-field-label {
@@ -148,7 +167,9 @@ $textarea-height: 120px;
     &.has-suffix {
       .mat-form-field-wrapper .mat-form-field-flex {
         .mat-form-field-infix {
-          input, textarea, mat-select {
+          input,
+          textarea,
+          mat-select {
             padding-right: 0;
           }
           .mat-form-field-label-wrapper .mat-form-field-label {
