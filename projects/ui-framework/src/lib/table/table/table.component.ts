@@ -91,10 +91,6 @@ export class TableComponent implements OnInit, OnChanges {
     });
   }
 
-  updateTableData(data: any): void {
-    this.gridOptions.api.setRowData(data);
-  }
-
   private setGridHeight(height: number): void {
     this.elRef.nativeElement.style.setProperty('--max-height', `${height}px`);
   }
