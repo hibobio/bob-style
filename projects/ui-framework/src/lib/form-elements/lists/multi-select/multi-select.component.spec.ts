@@ -13,12 +13,12 @@ import { IconService } from '../../../icons/icon.service';
 import { MultiSelectComponent } from './multi-select.component';
 import { MultiListModule } from '../multi-list/multi-list.module';
 import { By } from '@angular/platform-browser';
-import SpyObj = jasmine.SpyObj;
-import createSpyObj = jasmine.createSpyObj;
 import { SelectGroupOption } from '../list.interface';
 import { ListModelService } from '../list-service/list-model.service';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../list-change/list-change';
+import SpyObj = jasmine.SpyObj;
+import createSpyObj = jasmine.createSpyObj;
 
 describe('MultiSelectComponent', () => {
   let component;
@@ -66,9 +66,11 @@ describe('MultiSelectComponent', () => {
         InputModule,
         MatFormFieldModule,
         MatInputModule,
-        ButtonsModule
+        ButtonsModule,
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [
+        NO_ERRORS_SCHEMA,
+      ],
     })
       .compileComponents()
       .then(() => {
@@ -144,15 +146,28 @@ describe('MultiSelectComponent', () => {
     }));
   });
 
-  describe('notifySelectionIds', () => {
+  describe('selectChange', () => {
     it('should emit onSelect with listChange and propagateChange with selectedValuesArray', fakeAsync(() => {
       const expectedListChange = new ListChange(optionsMock);
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      (overlayContainerElement.querySelector('.apply-button') as HTMLElement).click();
+      const applyButton = overlayContainerElement
+        .querySelectorAll('b-list-footer .cancel-apply b-button')[1] as HTMLElement;
+      applyButton.click();
       expect(component.selectChange.emit).toHaveBeenCalledWith(expectedListChange);
       expect(component.propagateChange).toHaveBeenCalledWith([1, 11]);
+      flush();
+    }));
+    it('should close the panel on apply', fakeAsync(() => {
+      spyOn(component, 'destroyPanel');
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+      const applyButton = overlayContainerElement
+        .querySelectorAll('b-list-footer .cancel-apply b-button')[1] as HTMLElement;
+      applyButton.click();
+      expect(component.destroyPanel).toHaveBeenCalled();
       flush();
     }));
   });
@@ -163,7 +178,9 @@ describe('MultiSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      (overlayContainerElement.querySelector('.cancel-button') as HTMLElement).click();
+      const cancelButton = overlayContainerElement
+        .querySelectorAll('b-list-footer .cancel-apply b-button')[0] as HTMLElement;
+      cancelButton.click();
       expect(component.destroyPanel).toHaveBeenCalled();
       flush();
     }));
@@ -173,13 +190,15 @@ describe('MultiSelectComponent', () => {
       fixture.autoDetectChanges();
       tick(0);
       (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
-      (overlayContainerElement.querySelector('.cancel-button') as HTMLElement).click();
+      const cancelButton = overlayContainerElement
+        .querySelectorAll('b-list-footer .cancel-apply b-button')[0] as HTMLElement;
+      cancelButton.click();
       expect(component.selectCancelled.emit).toHaveBeenCalledWith(expectedListChange);
       flush();
     }));
   });
 
-  describe('clearSelection', () => {
+  describe('clear -> apply', () => {
     let expectedOptionsMock: SelectGroupOption[];
     beforeEach(() => {
       expectedOptionsMock = cloneDeep(optionsMock);
@@ -192,8 +211,12 @@ describe('MultiSelectComponent', () => {
       tick(0);
       (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
       fixture.autoDetectChanges();
-      const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
-      clearSelection.triggerEventHandler('click', null);
+      const clearButton = overlayContainerElement
+        .querySelectorAll('b-list-footer .clear b-button')[0] as HTMLElement;
+      clearButton.click();
+      const applyButton = overlayContainerElement
+        .querySelectorAll('b-list-footer .cancel-apply b-button')[1] as HTMLElement;
+      applyButton.click();
       fixture.autoDetectChanges();
       expect(component.selectedValuesMap).toEqual([]);
       expect(component.triggerValue).toEqual('');
@@ -207,11 +230,53 @@ describe('MultiSelectComponent', () => {
       tick(0);
       (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
       fixture.autoDetectChanges();
-      const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
-      clearSelection.triggerEventHandler('click', null);
+      const clearButton = overlayContainerElement
+        .querySelectorAll('b-list-footer .clear b-button')[0] as HTMLElement;
+      clearButton.click();
+      const applyButton = overlayContainerElement
+        .querySelectorAll('b-list-footer .cancel-apply b-button')[1] as HTMLElement;
+      applyButton.click();
       fixture.autoDetectChanges();
       expect(component.selectChange.emit).toHaveBeenCalledWith(expectedListChange);
       expect(component.propagateChange).toHaveBeenCalledWith([]);
+      flush();
+    }));
+  });
+
+  describe('clear -> cancel', () => {
+    it('should reset the selection from options, selectedValuesMap and reset triggerValue', fakeAsync(() => {
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+      (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
+      fixture.autoDetectChanges();
+      const clearButton = overlayContainerElement
+        .querySelectorAll('b-list-footer .clear b-button')[0] as HTMLElement;
+      clearButton.click();
+      const cancelButton = overlayContainerElement
+        .querySelectorAll('b-list-footer .cancel-apply b-button')[0] as HTMLElement;
+      cancelButton.click();
+      fixture.autoDetectChanges();
+      expect(component.selectedValuesMap).toEqual([1, 11]);
+      expect(component.triggerValue).toEqual('Basic Info 1, Personal 1');
+      expect(component.options).toEqual(optionsMock);
+      flush();
+    }));
+    it('should invoke selectCancelled.emit with listChange and propagateChange with [3]', fakeAsync(() => {
+      const expectedListChange = new ListChange(optionsMock);
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+      (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
+      fixture.autoDetectChanges();
+      const clearButton = overlayContainerElement
+        .querySelectorAll('b-list-footer .clear b-button')[0] as HTMLElement;
+      clearButton.click();
+      const cancelButton = overlayContainerElement
+        .querySelectorAll('b-list-footer .cancel-apply b-button')[0] as HTMLElement;
+      cancelButton.click();
+      fixture.autoDetectChanges();
+      expect(component.selectCancelled.emit).toHaveBeenCalledWith(expectedListChange);
       flush();
     }));
   });

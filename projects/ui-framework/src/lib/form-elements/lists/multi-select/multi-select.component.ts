@@ -12,17 +12,16 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
-import { chain, includes, map, assign } from 'lodash';
+import { assign, chain, includes, map } from 'lodash';
 import { PanelPositionService } from '../../../overlay/panel/panel-position-service/panel-position.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
-import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { SelectGroupOption } from '../list.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListModelService } from '../list-service/list-model.service';
+import { ListFooterActions } from '../list-footer/list-footer.component';
 
 @Component({
   selector: 'b-multi-select',
@@ -51,15 +50,14 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
   @Output() selectCancelled: EventEmitter<ListChange> = new EventEmitter<ListChange>();
 
   triggerValue: string;
-  blockSelectClick: boolean;
   selectedValuesMap: (number | string)[];
 
+  readonly listActions: ListFooterActions = {
+    clear: true,
+    apply: true,
+    cancel: true,
+  };
   readonly listElHeight = LIST_EL_HEIGHT;
-  readonly buttonSize = ButtonSize;
-  readonly buttonType = ButtonType;
-  readonly resetIcon: String = Icons.reset_x;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
 
   private listChange: ListChange;
 
@@ -110,21 +108,9 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
     this.selectCancelled.emit(this.getListChange());
   }
 
-  notifySelectionIds(): void {
+  onApply(): void {
     this.emitSelectChange(this.getListChange());
     this.destroyPanel();
-  }
-
-  clearSelection(): void {
-    this.selectedValuesMap = [];
-    this.setTriggerValue();
-    this.options = this.removeAllSelected(this.options);
-    const listChange = this.listChangeService.getListChange(this.options, this.selectedValuesMap);
-    this.emitSelectChange(listChange);
-    setTimeout(() => {
-      this.blockSelectClick = false;
-      this.triggerInput.bInput.nativeElement.blur();
-    });
   }
 
   private emitSelectChange(listChange: ListChange): void {

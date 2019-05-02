@@ -14,7 +14,6 @@ export class RteUtilsService {
   constructor(private placeholderRteConverterService: PlaceholderRteConverterService) {}
 
   getHtmlContent(editor: Quill, controls: RTEControls[]): RteCurrentContent {
-    console.log('editor', editor);
     const editorHtml = isEmpty(trim(editor.getText()))
       ? ''
       : chain(editor.root.innerHTML)

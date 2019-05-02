@@ -9,6 +9,7 @@ import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListChange } from '../list-change/list-change';
+import { ListFooterActions } from '../list-footer/list-footer.component';
 
 @Component({
   selector: 'b-multi-list',
@@ -20,7 +21,12 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   @Input() options: SelectGroupOption[];
   @Input() maxHeight = this.listElHeight * 8;
   @Input() showSingleGroupHeader = false;
-  @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();
+  @Input() listActions: ListFooterActions = {
+    clear: true,
+  };
+  @Output() apply: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() cancel: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
 
   noGroupHeaders: boolean;
   shouldDisplaySearch = false;
@@ -87,6 +93,12 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       : chain(this.selectedIdsMap).difference([selectedOption.id]).value();
     this.listModelService.setSelectedOptions(this.listHeaders, this.listOptions, this.selectedIdsMap);
 
+    this.emitChange();
+  }
+
+  onClear(): void {
+    this.selectedIdsMap = [];
+    this.listModelService.setSelectedOptions(this.listHeaders, this.listOptions, this.selectedIdsMap);
     this.emitChange();
   }
 

@@ -17,6 +17,7 @@ import { SelectGroupOption } from '../list.interface';
 import { cloneDeep } from 'lodash';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import { ListFooterModule } from '../list-footer/list-footer.module';
 
 describe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;
@@ -64,9 +65,12 @@ describe('SingleSelectComponent', () => {
         InputModule,
         MatFormFieldModule,
         MatInputModule,
-        ButtonsModule
+        ButtonsModule,
+        ListFooterModule,
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [
+        NO_ERRORS_SCHEMA,
+      ]
     })
       .compileComponents()
       .then(() => {
@@ -95,22 +99,6 @@ describe('SingleSelectComponent', () => {
   describe('ngOnChanges', () => {
     it('should set triggerValue for selected options', () => {
       expect(component.triggerValue).toEqual('Basic Info 1');
-    });
-    it('should not show clear button if no selected options', () => {
-      const testOptionsMock = cloneDeep(optionsMock);
-      testOptionsMock[0].options[0].selected = false;
-      component.ngOnChanges({
-        options: {
-          previousValue: optionsMock,
-          currentValue: testOptionsMock,
-          firstChange: false,
-          isFirstChange: () => false,
-        }
-      });
-      fixture.detectChanges();
-      expect(component.triggerValue).toBe(null);
-      const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
-      expect(clearSelection).toBeFalsy();
     });
     it('should update trigger value also when options update', () => {
       const testOptionsMock = cloneDeep(optionsMock);
@@ -155,10 +143,9 @@ describe('SingleSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      (overlayContainerElement.querySelectorAll('b-single-list .option')[3] as HTMLElement).click();
-      fixture.autoDetectChanges();
-      const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
-      clearSelection.triggerEventHandler('click', null);
+      const clearButton = overlayContainerElement
+        .querySelectorAll('b-list-footer .clear b-button')[0] as HTMLElement;
+      clearButton.click();
       fixture.autoDetectChanges();
       expect(component.triggerValue).toBe(null);
       flush();
@@ -167,10 +154,9 @@ describe('SingleSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      (overlayContainerElement.querySelectorAll('b-single-list .option')[3] as HTMLElement).click();
-      fixture.autoDetectChanges();
-      const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
-      clearSelection.triggerEventHandler('click', null);
+      const clearButton = overlayContainerElement
+        .querySelectorAll('b-list-footer .clear b-button')[0] as HTMLElement;
+      clearButton.click();
       fixture.autoDetectChanges();
       const listChange = component['listChangeService'].getListChange(optionsMock, []);
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);

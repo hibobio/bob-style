@@ -9,6 +9,8 @@ import { FiltersModule } from '../../../services/filters/filters.module';
 import { ListOptionModule } from '../list-option/list-option.module';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
+import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ListFooterModule } from '../list-footer/list-footer.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { ListChangeService } from '../list-change/list-change.service';
     SearchModule,
     FiltersModule,
     ListOptionModule,
+    ButtonsModule,
+    ListFooterModule,
   ],
   exports: [
     MultiListComponent,

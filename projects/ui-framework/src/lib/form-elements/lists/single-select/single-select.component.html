@@ -1,4 +1,4 @@
-<content (click)="blockSelectClick ? null : openPanel()"
+<content (click)="openPanel()"
          [ngClass]="{'disabled': disabled, 'panel-open': panelOpen}"
          cdkOverlayOrigin
          class="panel-trigger">
@@ -14,20 +14,6 @@
            [value]="triggerValue"
            matTooltipPosition="above"
            [hideLabelOnFocus]="hideLabelOnFocus">
-
-    <div *ngIf="selectedOptionId != null"
-         class="clear-selection"
-         (click)="clearSelection()"
-         input-prefix>
-      <b-icon (mouseenter)="blockSelectClick=true"
-              (mouseleave)="blockSelectClick=false"
-              [color]="iconColor.normal"
-              [icon]="resetIcon"
-              [hasHoverState]="true"
-              [size]="iconSize.medium"
-              class="clear-button">
-      </b-icon>
-    </div>
 
     <div class="select-chevron"
          input-suffix>
@@ -46,6 +32,10 @@
                    [maxHeight]="listElHeight*6"
                    [showSingleGroupHeader]="showSingleGroupHeader">
     </b-single-list>
+
+    <b-list-footer [listActions]="listActions"
+                   (clear)="clearSelection()">
+    </b-list-footer>
 
   </div>
 </ng-template>

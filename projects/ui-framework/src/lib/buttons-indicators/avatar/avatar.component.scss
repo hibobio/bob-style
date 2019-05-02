@@ -38,6 +38,7 @@
     position: relative;
     box-sizing: border-box;
     border-radius: 100%;
+    transition: box-shadow .2s, transform .2s;
 
     &.clickable {
       cursor: pointer;
@@ -99,7 +100,6 @@
       border: 2px solid $white;
       border-radius: 100%;
       overflow: hidden;
-      transition: box-shadow .2s, transform .2s;
     }
 
     .avatar-badge {

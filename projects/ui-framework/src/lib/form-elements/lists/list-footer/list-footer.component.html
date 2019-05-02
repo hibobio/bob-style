@@ -1,0 +1,27 @@
+<div *ngIf="listActions.clear"
+     class="clear">
+  <b-button (click)="clear.emit()"
+            [icon]="icons.reset_x"
+            [type]="buttonType.tertiary"
+            [size]="buttonSize.small">
+    Clear
+  </b-button>
+</div>
+
+<div class="cancel-apply">
+  <b-button *ngIf="listActions.cancel"
+            (click)="cancel.emit()"
+            class="cancel-button"
+            [size]="buttonSize.small"
+            [type]="buttonType.secondary">
+    Cancel
+  </b-button>
+
+  <b-button *ngIf="listActions.apply"
+            (click)="apply.emit()"
+            class="apply-button"
+            [size]="buttonSize.small"
+            [type]="buttonType.primary">
+    Apply
+  </b-button>
+</div>

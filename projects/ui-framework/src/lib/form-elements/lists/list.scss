@@ -1,6 +1,7 @@
 @import '../../style/typography';
 @import '../../style/colors';
 @import '../../style/shapes';
+@import '../../style/variables';
 
 @mixin listOption {
   @include BodyFont;
@@ -62,4 +63,15 @@
       border-top: none;
     }
   }
+}
+
+@mixin selectPanel {
+  display: block;
+  box-sizing: border-box;
+  border: 1px solid $grey-500;
+  border-top: none;
+  border-bottom-right-radius: $border-radius;
+  border-bottom-left-radius: $border-radius;
+  box-shadow: 0 2px 5px $boxShadowColor;
+  min-width: 320px;
 }

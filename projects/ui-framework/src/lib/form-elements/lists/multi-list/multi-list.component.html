@@ -57,3 +57,9 @@
   </cdk-virtual-scroll-viewport>
 
 </div>
+
+<b-list-footer [listActions]="listActions"
+               (clear)="onClear()"
+               (apply)="apply.emit()"
+               (cancel)="cancel.emit()">
+</b-list-footer>

@@ -17,9 +17,9 @@ import { LIST_EL_HEIGHT } from '../list.consts';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { SelectGroupOption } from '../list.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
+import { ListFooterActions } from '../list-footer/list-footer.component';
 
 @Component({
   selector: 'b-single-select',
@@ -47,14 +47,13 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
 
   triggerValue: string;
   showTriggerTooltip: boolean;
-  blockSelectClick: boolean;
   singleSelectOptions: SelectGroupOption[];
   selectedOptionId: number | string;
 
   readonly listElHeight = LIST_EL_HEIGHT;
-  readonly resetIcon: String = Icons.reset_x;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
+  readonly listActions: ListFooterActions = {
+    clear: true,
+  };
 
   constructor(
     overlay: Overlay,
@@ -88,10 +87,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
     this.triggerValue = this.getTriggerValue(this.selectedOptionId);
     const listChange = this.listChangeService.getListChange(this.singleSelectOptions, []);
     this.emitChange(listChange);
-    setTimeout(() => {
-      this.blockSelectClick = false;
-      this.triggerInput.bInput.nativeElement.blur();
-    });
+    this.destroyPanel();
   }
 
   ngOnDestroy(): void {

@@ -18,6 +18,8 @@ import { FiltersModule } from '../../../services/filters/filters.module';
 import { ListOptionModule } from '../list-option/list-option.module';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
+import { MockComponent } from 'ng-mocks';
+import { ListFooterComponent } from '../list-footer/list-footer.component';
 
 describe('MultiListComponent', () => {
   let component: MultiListComponent;
@@ -45,6 +47,7 @@ describe('MultiListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         MultiListComponent,
+        MockComponent(ListFooterComponent),
       ],
       providers: [
         ListModelService,
@@ -74,6 +77,8 @@ describe('MultiListComponent', () => {
         fixture = TestBed.createComponent(MultiListComponent);
         component = fixture.componentInstance;
         spyOn(component.selectChange, 'emit');
+        spyOn(component.apply, 'emit');
+        spyOn(component.cancel, 'emit');
         component.ngOnChanges({
           options: {
             previousValue: undefined, currentValue: optionsMock, firstChange: true, isFirstChange: () => true,
@@ -510,4 +515,53 @@ describe('MultiListComponent', () => {
     });
   });
 
+  describe('list footer', () => {
+    it('should show clear option only by default', () => {
+      const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
+      expect(listFooter.componentInstance.listActions).toEqual({
+        clear: true,
+      });
+    });
+    it('should have all 3 footer options if passed', () => {
+      component.listActions = {
+        clear: true,
+        apply: true,
+        cancel: true,
+      };
+      fixture.autoDetectChanges();
+      const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
+      expect(listFooter.componentInstance.listActions).toEqual({
+        clear: true,
+        apply: true,
+        cancel: true,
+      });
+    });
+    it('should emit apply', () => {
+      component.listActions = {
+        apply: true,
+      };
+      fixture.autoDetectChanges();
+      const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
+      listFooter.componentInstance.apply.emit();
+      expect(component.apply.emit).toHaveBeenCalled();
+    });
+    it('should emit cancel', () => {
+      component.listActions = {
+        cancel: true,
+      };
+      fixture.autoDetectChanges();
+      const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
+      listFooter.componentInstance.cancel.emit();
+      expect(component.cancel.emit).toHaveBeenCalled();
+    });
+    it('should clear selection on footer clear emit and emit list change', () => {
+      const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
+      listFooter.componentInstance.clear.emit();
+      fixture.detectChanges();
+      expect(component.selectedIdsMap).toEqual([]);
+      expect(component.selectChange.emit).toHaveBeenCalled();
+      const listChange = component['listChangeService'].getListChange(component.options, component.selectedIdsMap);
+      expect(listChange.getSelectedIds()).toEqual([]);
+    });
+  });
 });

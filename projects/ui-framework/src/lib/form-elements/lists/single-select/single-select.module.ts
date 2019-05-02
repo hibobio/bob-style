@@ -10,6 +10,7 @@ import { MatTooltipModule } from '@angular/material';
 import { IconsModule } from '../../../icons/icons.module';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListModelService } from '../list-service/list-model.service';
+import { ListFooterModule } from '../list-footer/list-footer.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ListModelService } from '../list-service/list-model.service';
     SingleListModule,
     InputModule,
     MatTooltipModule,
-    IconsModule
+    IconsModule,
+    ListFooterModule,
   ],
   exports: [
     SingleSelectComponent,
