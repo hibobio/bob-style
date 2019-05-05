@@ -15,17 +15,19 @@ import { QuickFilterConfig } from './quick-filter.interface';
 const textareaStories = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
 
 const template = `
-<b-quick-filter-bar style="width: 95vw; margin: 20px auto;"
-                    [quickFilters]="quickFilters"
-                    (filtersChange)="filtersChange($event)">
-  <div bar-prefix>total: 85</div>
+<b-quick-filter-bar [quickFilters]="quickFilters"
+                    [showResetFilter]="showResetFilter"
+                    (filtersChange)="filtersChange($event)"
+                    (resetFilters)="resetFilters()">
   <b-button bar-suffix size="${ ButtonSize.small }">more</b-button>
 </b-quick-filter-bar>
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Textarea'">
+<div style="width: calc(100vw - 100px); margin: 40px auto;">
   ${ template }
+</div>
 </b-story-book-layout>
 `;
 
@@ -39,6 +41,8 @@ const note = `
   --- | --- | --- | ---
   quickFilters | QuickFilterConfig[] | array of quick filters | none
   filtersChange | QuickFilterBarChangeEvent | Output of quick filter bar change | none
+  showResetFilter | boolean | displays reset button | false
+  resetFilters | void | event of reset click | none
 
   ~~~
   ${ template }
@@ -92,8 +96,10 @@ textareaStories.add(
     return {
       template: storyTemplate,
       props: {
+        showResetFilter: boolean('showResetFilter', false),
         quickFilters: object('quickFilters', quickFilters),
         filtersChange: action('Quick filter bar change'),
+        resetFilters: action('Reset Filters click'),
       },
       moduleMetadata: {
         imports: [BrowserAnimationsModule, StoryBookLayoutModule, QuickFilterModule, ButtonsModule]

@@ -1,8 +1,26 @@
 @import '../../style/colors';
+@import '../../style/mixins';
+
+@mixin quick-filter-separator-pseudo {
+  @include pseudo;
+  position: absolute;
+  height: 50%;
+  top: 25%;
+  width: 1px;
+  background-color: $grey-500;
+}
 
 :host {
   display: block;
   width: 100%;
+  position: relative;
+  .reset-filters {
+    position: absolute;
+    top: 8px;
+    left: -30px;
+    display: block;
+    cursor: pointer;
+  }
   .bar-content {
     width: 100%;
     background-color: $white;
@@ -14,28 +32,41 @@
     box-sizing: border-box;
     border: 1px solid $grey-500;
     .bar-prefix, .bar-suffix {
+      position: relative;
       height: 100%;
-      padding: 0 16px;
+      padding: 0 8px;
       align-items: center;
       white-space: nowrap;
       display: none;
+      &:after {
+        @include quick-filter-separator-pseudo;
+      }
     }
-    .bar-prefix {
-      border-right: 1px solid $grey-500;
+    .bar-prefix:after {
+      right: 0;
     }
-    .bar-suffix {
-      border-left: 1px solid $grey-500;
+    .bar-suffix:after {
+      left: 0;
     }
     .bar-filters {
       flex-grow: 1;
       display: flex;
       justify-content: space-evenly;
       .quick-filter-holder {
-        margin: 0 12px;
+        margin: 0;
         display: flex;
         justify-content: center;
+        position: relative;
         b-quick-filter {
           flex-grow: 0;
+          width: 100%;
+        }
+        &:after {
+          right: 0;
+          @include quick-filter-separator-pseudo;
+        }
+        &:last-child:after {
+          content: none;
         }
       }
     }

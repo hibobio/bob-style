@@ -1,3 +1,12 @@
+<b-icon *ngIf="showResetFilter"
+        class="reset-filters"
+        (click)="resetFilters.emit()"
+        [hasHoverState]="true"
+        [icon]="icons.reset"
+        [color]="iconColor.normal"
+        [size]="iconSize.large">
+</b-icon>
+
 <div class="bar-content"
      [ngClass]="{
         'has-prefix': prefix && prefix.childNodes.length > 0,

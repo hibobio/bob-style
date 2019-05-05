@@ -7,6 +7,7 @@ import { PanelPositionService } from '../../overlay/panel/panel-position-service
 import { SingleSelectModule } from '../../form-elements/lists/single-select/single-select.module';
 import { ListModelService } from '../../form-elements/lists/list-service/list-model.service';
 import { ListChangeService } from '../../form-elements/lists/list-change/list-change.service';
+import { IconsModule } from '../../icons/icons.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ListChangeService } from '../../form-elements/lists/list-change/list-ch
     CommonModule,
     MultiSelectModule,
     SingleSelectModule,
+    IconsModule,
   ],
   providers: [
     PanelPositionService,

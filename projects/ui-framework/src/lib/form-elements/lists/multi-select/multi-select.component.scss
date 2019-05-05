@@ -11,6 +11,7 @@
     display: block;
     margin: 20px 0;
     b-input {
+      cursor: pointer;
       .mat-form-field.has-prefix .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-prefix {
         padding-right: 0;
       }
@@ -56,9 +57,14 @@
       }
     }
 
-    &.panel-open b-input .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
-      border-bottom-right-radius: 0;
-      border-bottom-left-radius: 0;
+    &.panel-open b-input {
+      .select-chevron {
+        @include chevron-up($grey-600);
+      }
+      .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+      }
     }
     &.disabled {
       pointer-events: none;

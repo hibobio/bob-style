@@ -10,6 +10,7 @@ import { QuickFilterChangeEvent, QuickFilterConfig } from './quick-filter.interf
 import { ListModelService } from '../../form-elements/lists/list-service/list-model.service';
 import { ListChangeService } from '../../form-elements/lists/list-change/list-change.service';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
+import { IconComponent } from '../../icons/icon.component';
 
 describe('QuickFilterBarComponent', () => {
   let component: QuickFilterBarComponent;
@@ -58,6 +59,7 @@ describe('QuickFilterBarComponent', () => {
       declarations: [
         QuickFilterBarComponent,
         MockComponent(QuickFilterComponent),
+        MockComponent(IconComponent),
       ],
       providers: [
         ListModelService,
@@ -72,6 +74,7 @@ describe('QuickFilterBarComponent', () => {
         fixture = TestBed.createComponent(QuickFilterBarComponent);
         component = fixture.componentInstance;
         spyOn(component.filtersChange, 'emit');
+        spyOn(component.resetFilters, 'emit');
       });
   }));
 
@@ -165,6 +168,27 @@ describe('QuickFilterBarComponent', () => {
           listChange: new ListChange([optionsMock[0]]),
         },
       });
+    });
+  });
+
+  describe('resetFilter', () => {
+    it('should not show reset filter by default', () => {
+      fixture.detectChanges();
+      const resetIcon = fixture.debugElement.query(By.css('.reset-filters'));
+      expect(resetIcon).toBeFalsy();
+    });
+    it('should display reset filter icon when showReset is true', () => {
+      component.showResetFilter = true;
+      fixture.detectChanges();
+      const resetIcon = fixture.debugElement.query(By.css('.reset-filters'));
+      expect(resetIcon).toBeTruthy();
+    });
+    it('should emit resetClick event when reset icon was clicked', () => {
+      component.showResetFilter = true;
+      fixture.detectChanges();
+      const resetIcon = fixture.debugElement.query(By.css('.reset-filters'));
+      resetIcon.triggerEventHandler('click', null);
+      expect(component.resetFilters.emit).toHaveBeenCalled();
     });
   });
 });

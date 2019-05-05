@@ -1,15 +1,10 @@
-<div class="label-wrapper"
-     [ngClass]="{'has-value': hasValue}">
-  <label>{{quickFilterConfig.label}}</label>
-  <div class="chevron"></div>
-</div>
-
 <div [ngTemplateOutletContext]="{ $implicit: quickFilterConfig }"
      [ngTemplateOutlet]="getTemplate()">
 </div>
 
 <ng-template #multiSelect let-quickFilterConfig>
   <b-multi-select [ngClass]="{'has-value': hasValue}"
+                  [label]="quickFilterConfig.label"
                   [options]="quickFilterConfig.options"
                   [value]="quickFilterConfig.value"
                   (selectChange)="selectChange($event)"
@@ -24,6 +19,7 @@
 
 <ng-template #singleSelect let-quickFilterConfig>
   <b-single-select [ngClass]="{'has-value': hasValue}"
+                   [label]="quickFilterConfig.label"
                    [options]="quickFilterConfig.options"
                    (selectChange)="selectChange($event)"
                    [disabled]="false"
