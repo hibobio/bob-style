@@ -19,7 +19,7 @@ import { SelectGroupOption } from '../list.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
-import { ListFooterActions } from '../list-footer/list-footer.component';
+import { ListFooterActions } from '../list.interface';
 
 @Component({
   selector: 'b-single-select',

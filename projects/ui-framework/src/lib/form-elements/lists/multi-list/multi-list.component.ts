@@ -9,7 +9,7 @@ import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListChange } from '../list-change/list-change';
-import { ListFooterActions } from '../list-footer/list-footer.component';
+import { ListFooterActions } from '../list.interface';
 
 @Component({
   selector: 'b-multi-list',

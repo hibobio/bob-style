@@ -31,3 +31,9 @@ export interface ListComponentPrefix {
   component: any;
   attributes: any;
 }
+
+export interface ListFooterActions {
+  clear?: boolean;
+  cancel?: boolean;
+  apply?: boolean;
+}

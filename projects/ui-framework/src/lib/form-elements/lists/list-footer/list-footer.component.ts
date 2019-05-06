@@ -1,12 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
 import { Icons } from '../../../icons/icons.enum';
-
-export interface ListFooterActions {
-  clear?: true;
-  cancel?: true;
-  apply?: true;
-}
+import { ListFooterActions } from '../list.interface';
 
 @Component({
   selector: 'b-list-footer',
