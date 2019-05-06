@@ -1,6 +1,6 @@
 import { animate, animation, keyframes, style } from '@angular/animations';
 
-export const slideUpDown = animation([
+export const SLIDE_UP_DOWN = animation([
   animate(
     '{{ timings }}',
     keyframes([

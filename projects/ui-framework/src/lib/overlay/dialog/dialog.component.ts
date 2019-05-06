@@ -4,7 +4,7 @@ import { Icons } from '../../icons/icons.enum';
 import { DialogButton, DialogButtons } from './dialog.interface';
 import { ButtonSize, ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { transition, trigger, useAnimation } from '@angular/animations';
-import { slideUpDown } from '../../style/animations';
+import { SLIDE_UP_DOWN } from '../../style/animations';
 import get from 'lodash/get';
 import has from 'lodash/has';
 import isFunction from 'lodash/isFunction';
@@ -16,10 +16,10 @@ import { DialogScrollDir } from './dialog.enum';
   styleUrls: ['./dialog.component.scss'],
   animations: [
     trigger('confirmMessage', [
-      transition(':enter', useAnimation(slideUpDown, {
+      transition(':enter', useAnimation(SLIDE_UP_DOWN, {
         params: { timings: '200ms ease-out', from: '20px', to: '-100%' }
       })),
-      transition(':leave', useAnimation(slideUpDown, {
+      transition(':leave', useAnimation(SLIDE_UP_DOWN, {
         params: { timings: '200ms ease-out', from: '-100%', to: '20px' }
       })),
     ])

@@ -301,3 +301,9 @@ export { ComponentRendererComponent } from './lib/services/component-renderer/co
 export { TruncateTooltipModule} from './lib/services/truncate-tooltip/truncate-tooltip.module';
 export { TruncateTooltipComponent} from './lib/services/truncate-tooltip/truncate-tooltip.component';
 export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/truncate-tooltip.directive';
+
+/*
+* Animation
+ */
+
+export { SLIDE_UP_DOWN } from './lib/style/animations';
