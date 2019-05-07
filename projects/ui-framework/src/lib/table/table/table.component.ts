@@ -1,6 +1,6 @@
 // tslint:disable-next-line:max-line-length
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { GridOptions, GridReadyEvent } from 'ag-grid-community';
+import { GridOptions, GridReadyEvent, RowNodeTransaction } from 'ag-grid-community';
 import { get, has, once } from 'lodash';
 import { ColumnDef, RowClickedEvent, RowSelection, SortChangedEvent } from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
@@ -95,15 +95,15 @@ export class TableComponent implements OnInit, OnChanges {
     this.elRef.nativeElement.style.setProperty('--max-height', `${height}px`);
   }
 
-  public addRows(rows: any[]): void {
-    this.gridOptions.api.updateRowData({add: rows});
+  public addRows(rows: any[]): RowNodeTransaction {
+    return this.gridOptions.api.updateRowData({add: rows});
   }
 
-  public removeRows(rows: any[]): void {
-    this.gridOptions.api.updateRowData({remove: rows});
+  public removeRows(rows: any[]): RowNodeTransaction {
+    return this.gridOptions.api.updateRowData({remove: rows});
   }
 
-  public updateRows(rows: any[]): void {
-    this.gridOptions.api.updateRowData({update: rows});
+  public updateRows(rows: any[]): RowNodeTransaction {
+    return this.gridOptions.api.updateRowData({update: rows});
   }
 }
