@@ -6,6 +6,7 @@ import { DialogSize } from '../dialog.enum';
 import { DialogConfig } from '../dialog.interface';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import { of } from 'rxjs';
 
 @Component({
   selector: 'b-comp-mock',
@@ -30,6 +31,7 @@ describe('DialogService', () => {
 
   beforeEach(() => {
     dialogRefMock = createSpyObj('dialogRefMock', ['afterClosed', 'beforeClosed']);
+    dialogRefMock.afterClosed.and.returnValue(of({}));
 
     spyMatDialog = createSpyObj('spyMatDialog', ['open']);
     spyMatDialog.open.and.returnValue(dialogRefMock);
@@ -62,6 +64,10 @@ describe('DialogService', () => {
     it('should return the dialogRef object', () => {
       const dialogRef = dialogService.openDialog(comp, config);
       expect(dialogRef).toEqual(dialogRefMock);
+    });
+    it('should subscribe to afterClosed event', () => {
+      dialogService.openDialog(comp, config);
+      expect(dialogRefMock.afterClosed).toHaveBeenCalled();
     });
   });
 });

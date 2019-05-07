@@ -23,15 +23,23 @@ export class DialogService {
     dialogComponent: ComponentType<any>,
     config: DialogConfig,
   ): MatDialogRef<any> {
+    const scrollBarGap = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.paddingRight = `${ scrollBarGap }px`;
+
     const dialogConfig: MatDialogConfig = assign(config, {
       width: this.dialogSizeToWidth[config.size],
       closeOnNavigation: true,
       backdropClass: 'b-dialog-backdrop',
-      panelClass: ['b-dialog-panel', `size-${config.size}`, config.panelClass],
+      panelClass: ['b-dialog-panel', `size-${ config.size }`, config.panelClass],
       hasBackdrop: true,
       disableClose: false,
     });
 
-    return this.dialog.open(dialogComponent, dialogConfig);
+    const dialogRef = this.dialog.open(dialogComponent, dialogConfig);
+
+    dialogRef.afterClosed()
+      .subscribe(() => document.body.style.paddingRight = '0');
+
+    return dialogRef;
   }
 }
