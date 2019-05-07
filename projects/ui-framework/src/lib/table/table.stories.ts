@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import { number, object, select, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../consts';
@@ -48,7 +48,9 @@ const note = `
   rowClicked | Event | Row clicked event
   selectionChanged | Event | All selected rows
   sortChanged | Event | Sort changed event
-
+  addRows | Function | add rows
+  updateRows | Function | update rows
+  removeRows | Function | remove rows
   ~~~
   ${ template }
   ~~~

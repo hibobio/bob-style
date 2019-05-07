@@ -226,4 +226,28 @@ describe('TableComponent', () => {
         flush();
       }));
   });
+
+  fdescribe('Table actions', () => {
+    it('should add rows',
+      () => {
+        fixture.autoDetectChanges();
+        spyOn(component.agGrid.api, 'updateRowData');
+        component.addRows([{'test:': 1}]);
+        expect(component.agGrid.api.updateRowData).toHaveBeenCalledWith({add: [{'test:': 1}]});
+      });
+    it('should update rows',
+      () => {
+        fixture.autoDetectChanges();
+        spyOn(component.agGrid.api, 'updateRowData');
+        component.updateRows([{'test:': 2}]);
+        expect(component.agGrid.api.updateRowData).toHaveBeenCalledWith({update: [{'test:': 2}]});
+      });
+    it('should remove rows',
+      () => {
+        fixture.autoDetectChanges();
+        spyOn(component.agGrid.api, 'updateRowData');
+        component.removeRows([{'test:': 3}]);
+        expect(component.agGrid.api.updateRowData).toHaveBeenCalledWith({remove: [{'test:': 3}]});
+      });
+  });
 });
