@@ -87,6 +87,7 @@ export class TableComponent implements OnInit, OnChanges {
     this.rowClicked.emit({
       rowIndex: $event.rowIndex,
       data: $event.data,
+      agGridId: get($event, 'node.id', null)
     });
   }
 

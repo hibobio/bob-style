@@ -31,8 +31,9 @@ export interface ColumnDef {
 }
 
 export interface RowClickedEvent {
-  rowIndex: number,
+  rowIndex: number;
   data: object;
+  agGridId: string;
 }
 
 export interface SortChangedEvent {

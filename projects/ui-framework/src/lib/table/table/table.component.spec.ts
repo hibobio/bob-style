@@ -10,7 +10,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { ColumnDef, RowSelection } from './table.interface';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { IconService } from '../../icons/icon.service';
-import { cloneDeep, concat, keys, pick } from 'lodash';
+import { cloneDeep, keys, pick } from 'lodash';
 import { COLUMN_DEFS_MOCK, ROW_DATA_MOCK } from '../table-mocks/table-test.mock';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
@@ -194,6 +194,7 @@ describe('TableComponent', () => {
             expect(component.rowClicked.emit).toHaveBeenCalledWith({
               rowIndex: 0,
               data: ROW_DATA_MOCK[0],
+              agGridId: '0'
             });
             flush();
           }));
