@@ -1,0 +1,12 @@
+html.cdk-global-scrollblock {
+  overflow: unset;
+  position: unset;
+  body {
+    position: absolute;
+    width: 100%;
+    overflow: hidden;
+    .cdk-overlay-container {
+      overflow-y: scroll;
+    }
+  }
+}
