@@ -58,10 +58,10 @@ export abstract class RTEformElement extends BaseFormElement
   >();
 
   public editor: Quill;
+  public hasSizeSet = false;
   protected selection: RangeStatic;
   protected selectedText: string;
   protected currentBlot: BlotData;
-  protected hasSizeSet = false;
   private latestOutputValue: RteCurrentContent;
   private writingValue = false;
   private sendChangeOn = RTEchangeEvent.blur;
