@@ -18,11 +18,7 @@
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
             "tsConfig": "projects/ui-framework/tsconfig.lib.json",
-            "project": "projects/ui-framework/ng-package.json",
-            "styles": [
-              "projects/ui-framework/src/lib/style/style.scss",
-              "projects/ui-framework/src/lib/style/quill/quill.scss"
-            ]
+            "project": "projects/ui-framework/ng-package.json"
           }
         },
         "test": {
