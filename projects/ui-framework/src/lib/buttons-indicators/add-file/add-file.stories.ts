@@ -42,7 +42,7 @@ stories.add(
             'https://i.imgur.com/LMg0fWt.png',
             'https://www.freeiconspng.com/uploads/skype-icon-5.png',
         ]),
-        onClick: action()
+        onClick: action('Add file click')
       },
       moduleMetadata: {
         imports: [AddFileModule, StoryBookLayoutModule]

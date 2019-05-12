@@ -15,9 +15,8 @@ export class AddFileComponent {
   readonly iconShape = Icons;
   constructor() {
   }
-  @HostListener('click', ['$event'])
+  @HostListener('click')
   onClick() {
     this.clicked.emit();
   }
-
 }
