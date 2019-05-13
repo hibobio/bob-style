@@ -213,6 +213,7 @@ export {
 } from './lib/navigation/side-menu/side-menu-option/side-menu-option.interface';
 // Tabs Module
 export { TabsModule } from './lib/navigation/tabs/tabs.module';
+export { TabsComponent } from './lib/navigation/tabs/tabs.component';
 export { Tab } from './lib/navigation/tabs/tabs.interface';
 // Breadcrumbs Module
 export {
