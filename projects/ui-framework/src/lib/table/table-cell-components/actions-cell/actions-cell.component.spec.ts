@@ -1,14 +1,15 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {ActionsCellComponent} from './actions-cell.component';
-import {By} from '@angular/platform-browser';
-import {IconColor, Icons} from '../../../icons/icons.enum';
-import {ButtonType} from '../../../buttons-indicators/buttons/buttons.enum';
-import {MockComponent} from 'ng-mocks';
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {MenuComponent} from '../../../navigation/menu/menu.component';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {SquareButtonComponent} from '../../../buttons-indicators/buttons/square/square.component';
-import {GridActions} from './actions-cell.interface';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActionsCellComponent } from './actions-cell.component';
+import { By } from '@angular/platform-browser';
+import { IconColor, Icons } from '../../../icons/icons.enum';
+import { ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
+import { MockComponent } from 'ng-mocks';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MenuComponent } from '../../../navigation/menu/menu.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { SquareButtonComponent } from '../../../buttons-indicators/buttons/square/square.component';
+import { GridActions } from './actions-cell.interface';
+import { map } from 'lodash';
 
 describe('ActionsCellComponent', () => {
   let component: ActionsCellComponent;
@@ -38,8 +39,12 @@ describe('ActionsCellComponent', () => {
 
   it('should get menu items data', () => {
     const mockGridActions: GridActions = {
-      menuItems: [{label: 'first action'}, {label: 'second action'}], openLeft: true };
+      menuItems: [{label: 'first action'}, {label: 'second action'}], openLeft: true};
     component.agInit({value: mockGridActions});
+    component.menuItems = map (component.menuItems, (item) => {
+      delete item.action;
+      return item;
+    });
     expect(component.menuItems).toEqual(mockGridActions.menuItems);
   });
 
@@ -49,6 +54,10 @@ describe('ActionsCellComponent', () => {
     component.agInit({value: mockGridActions});
     fixture.detectChanges();
     const menuElement = fixture.debugElement.query(By.css('b-menu'));
+    component.menuItems = map (component.menuItems, (item) => {
+      delete item.action;
+      return item;
+    });
     expect(menuElement.componentInstance.menu).toEqual(mockGridActions.menuItems);
     expect(menuElement.componentInstance.openLeft).toEqual(false);
   });
