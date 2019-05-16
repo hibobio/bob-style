@@ -54,13 +54,12 @@ jobs:
             cd ./projects/ui-framework
             npm version patch --no-git-tag-version
             cd ../..
-            git config credential.helper 'cache --timeout=120'
-            git config user.email "doron.cy@gmail.com"
-            git config user.name "Deployment Bot"
-            git add .
-            git commit --allow-empty -m "bump version"
-
-            git push -q https://${GITHUB_TOKEN}@github.com/hibobio/bob-style.git master
+            # git config credential.helper 'cache --timeout=120'
+            # git config user.email "doron.cy@gmail.com"
+            # git config user.name "Deployment Bot"
+            # git add .
+            # git commit --allow-empty -m "bump version"
+            # git push -q https://${GITHUB_TOKEN}@github.com/hibobio/bob-style.git master
       - run: npm run package
       - run:
           name: 'Deploy to npm'
