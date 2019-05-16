@@ -4,7 +4,7 @@ import { ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
 import { MenuItem } from '../../../navigation/menu/menu.interface';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
-import { map } from 'lodash';
+import { assign, map } from 'lodash';
 
 @Component({
   selector: 'b-actions-cell',
@@ -20,9 +20,14 @@ export class ActionsCellComponent implements ICellRendererAngularComp {
   constructor() { }
 
   agInit(params: any): void {
-    this.menuItems = params.value.menuItems;
     this.openLeft = params.value.openLeft || false;
-    map (this.menuItems, (item: MenuItem) => item.action = () => item.action ({rowId: params.rowIndex}));
+    this.menuItems = map(params.value.menuItems, (item: MenuItem) => {
+      return assign({}, item, {
+        action: () => {
+          item.action(params.rowIndex);
+        }
+      });
+    });
   }
 
   refresh(params: ICellRendererParams): boolean {
