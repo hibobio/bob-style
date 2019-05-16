@@ -19,7 +19,7 @@ export class ActionsCellComponent implements ICellRendererAngularComp {
 
   constructor() { }
 
-  agInit(params: ICellRendererParams): void {
+  agInit(params: any): void {
     this.menuItems = params.value.menuItems;
     this.openLeft = params.value.openLeft || false;
     map (this.menuItems, (item: MenuItem) => item.action = () => item.action ({rowId: params.rowIndex}));
