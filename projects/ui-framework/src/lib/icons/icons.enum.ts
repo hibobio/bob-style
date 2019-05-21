@@ -39,6 +39,7 @@ export enum Icons {
   close = 'x',
   reset_x = 'reset_x',
   three_dots = 'three_dots',
+  three_dots_vert = '3_dots_vert',
   search = 'search_card_17px',
   reset = 'baseline-settings_backup_restore-24px',
   bold = 'bold',

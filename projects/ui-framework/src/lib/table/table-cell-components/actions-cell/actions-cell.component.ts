@@ -15,7 +15,7 @@ export class ActionsCellComponent implements ICellRendererAngularComp {
   public openLeft: boolean;
   readonly buttonType: ButtonType = ButtonType.tertiary;
   readonly buttonColor: IconColor = IconColor.dark;
-  readonly buttonIcon: Icons = Icons.three_dots;
+  readonly buttonIcon: Icons = Icons.three_dots_vert;
 
   constructor() { }
 

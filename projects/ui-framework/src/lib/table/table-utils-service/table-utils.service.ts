@@ -29,7 +29,7 @@ export class TableUtilsService {
       lockPosition: true,
       resizable: false,
       sortable: false,
-      width: 60,
+      width: 40,
       cellRendererFramework: ActionsCellComponent,
     };
   }
