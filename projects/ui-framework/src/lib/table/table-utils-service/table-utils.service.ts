@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ColumnDef, RowSelection } from '../table/table.interface';
-import { assign, chain, compact, concat, flatMap, get, map } from 'lodash';
+import { ColumnDef, PinDirection, RowSelection } from '../table/table.interface';
+import { assign, compact, concat, flatMap, get, map } from 'lodash';
 import { SELECTION_COLUMN_DEF } from '../table/table.consts';
 import { GridOptions } from 'ag-grid-community';
+import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
 
 @Injectable()
 export class TableUtilsService {
@@ -18,6 +19,19 @@ export class TableUtilsService {
         this.getEnrichColumnDef(columnDefs),
       )
     );
+  }
+
+  getActionsColumnDef (): ColumnDef {
+    return {
+      headerName: '',
+      field: 'actions',
+      pinned: PinDirection.Right,
+      lockPosition: true,
+      resizable: false,
+      sortable: false,
+      width: 60,
+      cellRendererFramework: ActionsCellComponent,
+    };
   }
 
   private getEnrichColumnDef(columnDefs: ColumnDef[]): ColumnDef[] {
