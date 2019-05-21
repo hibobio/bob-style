@@ -1,5 +1,5 @@
 import { BlotType, UtilBlotType } from './rte.enum';
-import { TextBlot } from 'quill/blots/text';
+import { Blot } from 'parchment/dist/src/blot/abstract/blot';
 import { DeltaStatic, RangeStatic } from 'quill';
 
 export interface UpdateRteConfig {
@@ -37,7 +37,7 @@ export interface BlotData {
   text: string;
   format?: RteBlotFormat;
   node?: Node | HTMLElement;
-  blot?: TextBlot;
+  blot?: Blot;
   element?: HTMLElement;
   link?: string;
   formatIs?: (f: string) => boolean;
