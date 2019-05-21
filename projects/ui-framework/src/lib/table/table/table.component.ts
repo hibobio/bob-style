@@ -52,6 +52,7 @@ export class TableComponent implements OnInit, OnChanges {
       rowHeight: this.rowHeight,
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,
+      suppressContextMenu: true,
       onGridReady: (event: GridReadyEvent) => {
         event.columnApi.autoSizeAllColumns();
         this.gridReady = true;
