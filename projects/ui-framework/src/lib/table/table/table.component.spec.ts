@@ -14,7 +14,7 @@ import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { TableModule } from '../table.module';
 import { AvatarCellComponent } from '../table-cell-components/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';
-import { ColumnDef, RowSelection } from './table.interface';
+import {ColumnDef, RowNodeDef, RowSelection} from './table.interface';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { IconService } from '../../icons/icon.service';
 import { cloneDeep, keys, pick } from 'lodash';
@@ -260,7 +260,11 @@ describe('TableComponent', () => {
     it('should update rows', () => {
       fixture.autoDetectChanges();
       spyOn(component.agGrid.api, 'updateRowData');
-      component.updateRows([{ 'test:': 2 }]);
+      const rowDef: RowNodeDef = {
+        rowIndex: 2,
+        data: { 'test:': 2 }
+      };
+      component.updateRows([rowDef]);
       expect(component.agGrid.api.updateRowData).toHaveBeenCalledWith({
         update: [{ 'test:': 2 }]
       });

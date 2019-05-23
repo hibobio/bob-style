@@ -40,3 +40,8 @@ export interface SortChangedEvent {
   colId: string;
   sort: string;
 }
+
+export interface RowNodeDef {
+  rowIndex: number;
+  data: any;
+}
