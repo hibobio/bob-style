@@ -12,8 +12,8 @@ import find from 'lodash/find';
 })
 export class SideMenuComponent implements OnChanges {
   @Input() options: SideMenuOption[];
-  @Input() selectedId: string = null;
-  @Output() selectOption: EventEmitter<string> = new EventEmitter<string>();
+  @Input() selectedId: number = null;
+  @Output() selectOption: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {
   }
@@ -26,7 +26,7 @@ export class SideMenuComponent implements OnChanges {
     }
   }
 
-  onSelectOption(id: string): void {
+  onSelectOption(id: number): void {
     this.selectedId = id;
     this.selectOption.emit(id);
   }

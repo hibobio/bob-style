@@ -23,7 +23,7 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 export class SideMenuOptionComponent implements OnChanges {
   @Input() option: SideMenuOption;
   @Input() selected: boolean;
-  @Output() selectOption: EventEmitter<string> = new EventEmitter<string>();
+  @Output() selectOption: EventEmitter<number> = new EventEmitter<number>();
   @ViewChild('prefix', { read: ViewContainerRef }) private prefix: ViewContainerRef;
   @ViewChild('postfix', { read: ViewContainerRef }) postfix: ViewContainerRef;
 

@@ -33,7 +33,7 @@ describe('SideMenuComponent', () => {
   describe('ngOnChanges', () => {
     it('should select the first option', () => {
       component.ngOnChanges();
-      expect(component.selectedId).toEqual('1');
+      expect(component.selectedId).toEqual(1);
     });
     it('should not select an option when no options', () => {
       component.options = [];
@@ -41,16 +41,16 @@ describe('SideMenuComponent', () => {
       expect(component.selectedId).toBeNull();
     });
     it('should select the fist option when selectedId is not in options', () => {
-      component.selectedId = '99999';
+      component.selectedId = 99999;
       component.ngOnChanges();
-      expect(component.selectedId).toEqual('1');
+      expect(component.selectedId).toEqual(1);
     });
   });
 
   describe('onSelectOption', () => {
     it('should set selectedId to 2', () => {
-      component.onSelectOption('2');
-      expect(component.selectedId).toEqual('2');
+      component.onSelectOption(2);
+      expect(component.selectedId).toEqual(2);
     });
   });
 

@@ -41,7 +41,7 @@
       .ag-header {
         background-color: white;
         border-bottom: 1px solid $grey-300;
-        font-weight: $font-weight-display-3;
+        font-weight: $font-weight-bold-body;
         .ag-header-cell {
           @include cell;
           .ag-header-cell-resize {

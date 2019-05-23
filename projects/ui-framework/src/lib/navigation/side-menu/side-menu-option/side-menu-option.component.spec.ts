@@ -55,7 +55,7 @@ describe('SideMenuOptionComponent', () => {
       const selectOption = spyOn(component.selectOption, 'emit');
       sideMenuOptionContainer.triggerEventHandler('click', null);
       fixture.detectChanges();
-      expect(selectOption).toHaveBeenCalledWith('1');
+      expect(selectOption).toHaveBeenCalledWith(1);
     });
 
     it('should display prefix component if exists', () => {

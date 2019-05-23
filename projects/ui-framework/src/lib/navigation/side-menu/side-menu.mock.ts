@@ -4,7 +4,7 @@ import { IconColor, Icons } from '../../icons/icons.enum';
 
 export const getSideMenuOptionsMock: () => SideMenuOption[] = () => [
   {
-    id: '1',
+    id: 1,
     displayName: 'option 1',
     prefix: {
       component: IconComponent,
@@ -23,7 +23,7 @@ export const getSideMenuOptionsMock: () => SideMenuOption[] = () => [
     ],
   },
   {
-    id: '2',
+    id: 2,
     displayName: 'option 2',
     prefix: {
       component: IconComponent,
@@ -42,7 +42,7 @@ export const getSideMenuOptionsMock: () => SideMenuOption[] = () => [
     ],
   },
   {
-    id: '3',
+    id: 3,
     displayName: 'option 3',
     prefix: {
       component: IconComponent,
@@ -61,7 +61,7 @@ export const getSideMenuOptionsMock: () => SideMenuOption[] = () => [
     ],
   },
   {
-    id: '4',
+    id: 4,
     displayName: 'option 4',
     prefix: {
       component: IconComponent,
@@ -80,7 +80,7 @@ export const getSideMenuOptionsMock: () => SideMenuOption[] = () => [
     ],
   },
   {
-    id: '5',
+    id: 5,
     displayName: 'option 5',
     prefix: {
       component: IconComponent,

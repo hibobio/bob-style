@@ -1,11 +1,12 @@
 // tslint:disable-next-line:max-line-length
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { GridOptions, GridReadyEvent } from 'ag-grid-community';
-import { get, has, once } from 'lodash';
-import { ColumnDef, RowClickedEvent, RowSelection, SortChangedEvent } from './table.interface';
+import { GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
+import { get, has, once, cloneDeep, map, toString } from 'lodash';
+import {ColumnDef, RowClickedEvent, RowNodeDef, RowSelection, SortChangedEvent} from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
 import { LicenseManager } from 'ag-grid-enterprise';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
+import {mockRowData} from '../table-mocks/table-story.mock';
 
 @Component({
   selector: 'b-table',
@@ -104,7 +105,16 @@ export class TableComponent implements OnInit, OnChanges {
     this.gridOptions.api.updateRowData({remove: rows});
   }
 
-  public updateRows(rows: any[]): void {
-    this.gridOptions.api.updateRowData({update: rows});
+  public updateRows(rows: RowNodeDef[]): void {
+    const rowsData: any[] = map(rows, (row: RowNodeDef) => {
+      const getRow: RowNode = this.getRow(toString(row.rowIndex));
+      getRow.data = cloneDeep(row.data);
+      return getRow.data;
+    });
+    this.gridOptions.api.updateRowData({update: rowsData});
+  }
+
+  public getRow(rowIndex: string): RowNode {
+    return this.gridOptions.api.getRowNode(rowIndex);
   }
 }
