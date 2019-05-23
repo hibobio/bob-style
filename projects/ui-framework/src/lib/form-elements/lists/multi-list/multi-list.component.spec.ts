@@ -1,11 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import {
-  MatFormFieldModule, MatIconModule, MatInputModule, MatPseudoCheckboxModule, MatTooltipModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatPseudoCheckboxModule,
+  MatTooltipModule
 } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { SearchModule } from '../../../navigation/search/search.module';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { IconsModule } from '../../../icons/icons.module';
 import { InputModule } from '../../input/input.module';
@@ -20,6 +23,7 @@ import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { MockComponent } from 'ng-mocks';
 import { ListFooterComponent } from '../list-footer/list-footer.component';
+import { SearchModule } from '../../../search/search/search.module';
 
 describe('MultiListComponent', () => {
   let component: MultiListComponent;
@@ -30,30 +34,17 @@ describe('MultiListComponent', () => {
     optionsMock = [
       {
         groupName: 'Basic Info Header',
-        options: [
-          { value: 'Basic Info 1', id: 1, selected: true },
-          { value: 'Basic Info 2', id: 2, selected: false },
-        ]
+        options: [{ value: 'Basic Info 1', id: 1, selected: true }, { value: 'Basic Info 2', id: 2, selected: false }]
       },
       {
         groupName: 'Personal Header',
-        options: [
-          { value: 'Personal 1', id: 11, selected: false },
-          { value: 'Personal 2', id: 12, selected: false },
-        ]
+        options: [{ value: 'Personal 1', id: 11, selected: false }, { value: 'Personal 2', id: 12, selected: false }]
       }
     ];
 
     TestBed.configureTestingModule({
-      declarations: [
-        MultiListComponent,
-        MockComponent(ListFooterComponent),
-      ],
-      providers: [
-        ListModelService,
-        ListChangeService,
-        ListKeyboardService,
-      ],
+      declarations: [MultiListComponent, MockComponent(ListFooterComponent)],
+      providers: [ListModelService, ListChangeService, ListKeyboardService],
       imports: [
         NoopAnimationsModule,
         CommonModule,
@@ -69,7 +60,7 @@ describe('MultiListComponent', () => {
         ScrollingModule,
         MatPseudoCheckboxModule,
         FiltersModule,
-        ListOptionModule,
+        ListOptionModule
       ]
     })
       .compileComponents()
@@ -81,11 +72,17 @@ describe('MultiListComponent', () => {
         spyOn(component.cancel, 'emit');
         component.ngOnChanges({
           options: {
-            previousValue: undefined, currentValue: optionsMock, firstChange: true, isFirstChange: () => true,
+            previousValue: undefined,
+            currentValue: optionsMock,
+            firstChange: true,
+            isFirstChange: () => true
           },
           value: {
-            previousValue: undefined, currentValue: [1, 11], firstChange: true, isFirstChange: () => true,
-          },
+            previousValue: undefined,
+            currentValue: [1, 11],
+            firstChange: true,
+            isFirstChange: () => true
+          }
         });
         fixture.autoDetectChanges();
       });
@@ -184,13 +181,15 @@ describe('MultiListComponent', () => {
         {
           groupName: 'Basic Info Header',
           options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
-        },
+        }
       ];
       component.ngOnChanges({
-        options:
-          {
-            previousValue: undefined, currentValue: changedOptions, firstChange: false, isFirstChange: () => false,
-          }
+        options: {
+          previousValue: undefined,
+          currentValue: changedOptions,
+          firstChange: false,
+          isFirstChange: () => false
+        }
       });
       fixture.autoDetectChanges();
       options = fixture.debugElement.queryAll(By.css('.option'));
@@ -207,13 +206,15 @@ describe('MultiListComponent', () => {
         {
           groupName: 'Basic Info Header',
           options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
-        },
+        }
       ];
       component.ngOnChanges({
-        options:
-          {
-            previousValue: undefined, currentValue: changedOptions, firstChange: false, isFirstChange: () => true,
-          }
+        options: {
+          previousValue: undefined,
+          currentValue: changedOptions,
+          firstChange: false,
+          isFirstChange: () => true
+        }
       });
       fixture.autoDetectChanges();
       options = fixture.debugElement.queryAll(By.css('.option'));
@@ -229,13 +230,15 @@ describe('MultiListComponent', () => {
         {
           groupName: 'Basic Info Header',
           options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
-        },
+        }
       ];
       component.ngOnChanges({
-        options:
-          {
-            previousValue: undefined, currentValue: changedOptions, firstChange: false, isFirstChange: () => true,
-          }
+        options: {
+          previousValue: undefined,
+          currentValue: changedOptions,
+          firstChange: false,
+          isFirstChange: () => true
+        }
       });
       fixture.autoDetectChanges();
       expect(component.noGroupHeaders).toBe(false);
@@ -256,7 +259,7 @@ describe('MultiListComponent', () => {
             { value: 'Basic Info 3', id: 3, selected: false },
             { value: 'Basic Info 4', id: 4, selected: false },
             { value: 'Basic Info 5', id: 5, selected: false },
-            { value: 'Basic Info 6', id: 6, selected: false },
+            { value: 'Basic Info 6', id: 6, selected: false }
           ]
         },
         {
@@ -267,15 +270,17 @@ describe('MultiListComponent', () => {
             { value: 'Personal 3', id: 13, selected: false },
             { value: 'Personal 4', id: 14, selected: false },
             { value: 'Personal 5', id: 15, selected: false },
-            { value: 'Personal 6', id: 16, selected: false },
+            { value: 'Personal 6', id: 16, selected: false }
           ]
         }
       ];
       component.ngOnChanges({
-        options:
-          {
-            previousValue: undefined, currentValue: testOptionsMock, firstChange: false, isFirstChange: () => false,
-          }
+        options: {
+          previousValue: undefined,
+          currentValue: testOptionsMock,
+          firstChange: false,
+          isFirstChange: () => false
+        }
       });
       fixture.autoDetectChanges();
       const searchEl = fixture.debugElement.query(By.css('b-search'));
@@ -285,22 +290,20 @@ describe('MultiListComponent', () => {
       const testOptionsMock = [
         {
           groupName: 'Basic Info Header',
-          options: [
-            { value: 'Basic Info 1', id: 1 },
-          ]
+          options: [{ value: 'Basic Info 1', id: 1 }]
         },
         {
           groupName: 'Personal Header',
-          options: [
-            { value: 'Personal 1', id: 11 },
-          ]
+          options: [{ value: 'Personal 1', id: 11 }]
         }
       ];
       component.ngOnChanges({
-        options:
-          {
-            previousValue: undefined, currentValue: testOptionsMock, firstChange: false, isFirstChange: () => false,
-          }
+        options: {
+          previousValue: undefined,
+          currentValue: testOptionsMock,
+          firstChange: false,
+          isFirstChange: () => false
+        }
       });
       fixture.autoDetectChanges();
       const searchEl = fixture.debugElement.query(By.css('b-search'));
@@ -316,7 +319,7 @@ describe('MultiListComponent', () => {
             { value: 'Basic Info 3', id: 3, selected: false },
             { value: 'Basic Info 4', id: 4, selected: false },
             { value: 'Basic Info 5', id: 5, selected: false },
-            { value: 'Basic Info 6', id: 6, selected: false },
+            { value: 'Basic Info 6', id: 6, selected: false }
           ]
         },
         {
@@ -327,15 +330,17 @@ describe('MultiListComponent', () => {
             { value: 'Personal 3', id: 13, selected: false },
             { value: 'Personal 4', id: 14, selected: false },
             { value: 'Personal 5', id: 15, selected: false },
-            { value: 'Personal 6', id: 16, selected: false },
+            { value: 'Personal 6', id: 16, selected: false }
           ]
         }
       ];
       component.ngOnChanges({
-        options:
-          {
-            previousValue: undefined, currentValue: testOptionsMock, firstChange: false, isFirstChange: () => false,
-          }
+        options: {
+          previousValue: undefined,
+          currentValue: testOptionsMock,
+          firstChange: false,
+          isFirstChange: () => false
+        }
       });
       fixture.autoDetectChanges();
       let searchEl = fixture.debugElement.query(By.css('b-search'));
@@ -350,18 +355,14 @@ describe('MultiListComponent', () => {
 
   describe('header collapse', () => {
     it('should render 2 options if 1 group is collapsed', () => {
-      const headerCollapseTrigger = fixture.debugElement.queryAll(
-        By.css('.header-collapse-trigger')
-      )[0];
+      const headerCollapseTrigger = fixture.debugElement.queryAll(By.css('.header-collapse-trigger'))[0];
       headerCollapseTrigger.triggerEventHandler('click', null);
       fixture.autoDetectChanges();
       const options = fixture.debugElement.queryAll(By.css('.option'));
       expect(options.length).toEqual(2);
     });
     it('should not render options if 2 group are collapsed', () => {
-      const headerCollapseTrigger = fixture.debugElement.queryAll(
-        By.css('.header-collapse-trigger')
-      );
+      const headerCollapseTrigger = fixture.debugElement.queryAll(By.css('.header-collapse-trigger'));
       headerCollapseTrigger[0].triggerEventHandler('click', null);
       headerCollapseTrigger[1].triggerEventHandler('click', null);
       fixture.autoDetectChanges();
@@ -445,9 +446,7 @@ describe('MultiListComponent', () => {
           selected: false
         }
       ];
-      const headerCollapseTrigger = fixture.debugElement.queryAll(
-        By.css('.header-collapse-trigger')
-      )[0];
+      const headerCollapseTrigger = fixture.debugElement.queryAll(By.css('.header-collapse-trigger'))[0];
       headerCollapseTrigger.triggerEventHandler('click', null);
       fixture.autoDetectChanges();
       const headerCheckbox = fixture.debugElement.queryAll(By.css('.header .checkbox'));
@@ -474,17 +473,11 @@ describe('MultiListComponent', () => {
       expect(listChange.getSelectGroupOptions()).toEqual([
         {
           groupName: 'Basic Info Header',
-          options: [
-            { value: 'Basic Info 1', id: 1, selected: true },
-            { value: 'Basic Info 2', id: 2, selected: false },
-          ],
+          options: [{ value: 'Basic Info 1', id: 1, selected: true }, { value: 'Basic Info 2', id: 2, selected: false }]
         },
         {
           groupName: 'Personal Header',
-          options: [
-            { value: 'Personal 1', id: 11, selected: false },
-            { value: 'Personal 2', id: 12, selected: true },
-          ]
+          options: [{ value: 'Personal 1', id: 11, selected: false }, { value: 'Personal 2', id: 12, selected: true }]
         }
       ]);
     });
@@ -519,26 +512,26 @@ describe('MultiListComponent', () => {
     it('should show clear option only by default', () => {
       const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
       expect(listFooter.componentInstance.listActions).toEqual({
-        clear: true,
+        clear: true
       });
     });
     it('should have all 3 footer options if passed', () => {
       component.listActions = {
         clear: true,
         apply: true,
-        cancel: true,
+        cancel: true
       };
       fixture.autoDetectChanges();
       const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
       expect(listFooter.componentInstance.listActions).toEqual({
         clear: true,
         apply: true,
-        cancel: true,
+        cancel: true
       });
     });
     it('should emit apply', () => {
       component.listActions = {
-        apply: true,
+        apply: true
       };
       fixture.autoDetectChanges();
       const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
@@ -547,7 +540,7 @@ describe('MultiListComponent', () => {
     });
     it('should emit cancel', () => {
       component.listActions = {
-        cancel: true,
+        cancel: true
       };
       fixture.autoDetectChanges();
       const listFooter = fixture.debugElement.query(By.css('b-list-footer'));

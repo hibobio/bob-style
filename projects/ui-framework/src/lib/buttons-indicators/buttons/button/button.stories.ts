@@ -8,9 +8,7 @@ import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { Icons } from '../../../icons/icons.enum';
 
-const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
-  withKnobs
-);
+const buttonStories = storiesOf(`${ComponentGroupType.ButtonsAndIndicators}.Buttons`, module).addDecorator(withKnobs);
 
 const typeOptions = values(ButtonType);
 const sizeOptions = values(ButtonSize);
@@ -77,7 +75,7 @@ buttonStories.add(
       type: select('type', typeOptions, ButtonType.primary),
       size: select('size', sizeOptions, ButtonSize.medium),
       disabled: boolean('disabled', false),
-      icon: select('icon', icons, Icons.timeline),
+      icon: select('icon', icons, Icons.timeline)
     },
     moduleMetadata: {
       imports: [ButtonsModule, StoryBookLayoutModule]

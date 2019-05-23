@@ -7,7 +7,7 @@ import {
 import { BlotType } from '../rte-core/rte.enum';
 import { RteLinkFormats } from './link-blot';
 import { RteLinkEditorComponent } from './rte-link-editor.component';
-import { PanelComponent } from '../../../overlay/panel/panel.component';
+import { PanelComponent } from '../../../popups/panel/panel.component';
 import { RteUtilsService } from '../rte-core/rte-utils.service';
 import Quill, { RangeStatic } from 'quill';
 

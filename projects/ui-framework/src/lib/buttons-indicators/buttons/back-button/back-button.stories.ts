@@ -7,7 +7,7 @@ import { ButtonsModule } from '../buttons.module';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
-const backButtonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
+const backButtonStories = storiesOf(`${ComponentGroupType.ButtonsAndIndicators}.Buttons`, module).addDecorator(
   withKnobs
 );
 

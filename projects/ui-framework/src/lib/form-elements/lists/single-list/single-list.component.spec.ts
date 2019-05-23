@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatIconModule, MatInputModule, MatTooltipModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { SearchModule } from '../../../navigation/search/search.module';
+import { SearchModule } from '../../../search/search/search.module';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { IconsModule } from '../../../icons/icons.module';
 import { InputModule } from '../../input/input.module';
@@ -26,29 +26,17 @@ describe('SingleSelectComponent', () => {
     optionsMock = [
       {
         groupName: 'Basic Info Header',
-        options: [
-          { value: 'Basic Info 1', id: 1, selected: true },
-          { value: 'Basic Info 2', id: 2, selected: false },
-        ],
+        options: [{ value: 'Basic Info 1', id: 1, selected: true }, { value: 'Basic Info 2', id: 2, selected: false }]
       },
       {
         groupName: 'Personal Header',
-        options: [
-          { value: 'Personal 1', id: 11, selected: false },
-          { value: 'Personal 2', id: 12, selected: false },
-        ]
+        options: [{ value: 'Personal 1', id: 11, selected: false }, { value: 'Personal 2', id: 12, selected: false }]
       }
     ];
 
     TestBed.configureTestingModule({
-      declarations: [
-        SingleListComponent,
-      ],
-      providers: [
-        ListModelService,
-        ListChangeService,
-        ListKeyboardService,
-      ],
+      declarations: [SingleListComponent],
+      providers: [ListModelService, ListChangeService, ListKeyboardService],
       imports: [
         NoopAnimationsModule,
         CommonModule,
@@ -63,7 +51,7 @@ describe('SingleSelectComponent', () => {
         MatTooltipModule,
         ScrollingModule,
         FiltersModule,
-        ListOptionModule,
+        ListOptionModule
       ]
     })
       .compileComponents()
@@ -73,11 +61,17 @@ describe('SingleSelectComponent', () => {
         spyOn(component.selectChange, 'emit');
         component.ngOnChanges({
           options: {
-            previousValue: undefined, currentValue: optionsMock, firstChange: true, isFirstChange: () => true,
+            previousValue: undefined,
+            currentValue: optionsMock,
+            firstChange: true,
+            isFirstChange: () => true
           },
           value: {
-            previousValue: undefined, currentValue: 2, firstChange: true, isFirstChange: () => true,
-          },
+            previousValue: undefined,
+            currentValue: 2,
+            firstChange: true,
+            isFirstChange: () => true
+          }
         });
         fixture.autoDetectChanges();
       });
@@ -169,13 +163,15 @@ describe('SingleSelectComponent', () => {
         {
           groupName: 'Basic Info Header',
           options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
-        },
+        }
       ];
       component.ngOnChanges({
-        options:
-          {
-            previousValue: undefined, currentValue: changedOptions, firstChange: false, isFirstChange: () => true,
-          }
+        options: {
+          previousValue: undefined,
+          currentValue: changedOptions,
+          firstChange: false,
+          isFirstChange: () => true
+        }
       });
       fixture.autoDetectChanges();
       options = fixture.debugElement.queryAll(By.css('.option'));
@@ -192,13 +188,15 @@ describe('SingleSelectComponent', () => {
         {
           groupName: 'Basic Info Header',
           options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
-        },
+        }
       ];
       component.ngOnChanges({
-        options:
-          {
-            previousValue: undefined, currentValue: changedOptions, firstChange: false, isFirstChange: () => true,
-          }
+        options: {
+          previousValue: undefined,
+          currentValue: changedOptions,
+          firstChange: false,
+          isFirstChange: () => true
+        }
       });
       fixture.autoDetectChanges();
       options = fixture.debugElement.queryAll(By.css('.option'));
@@ -214,13 +212,15 @@ describe('SingleSelectComponent', () => {
         {
           groupName: 'Basic Info Header',
           options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
-        },
+        }
       ];
       component.ngOnChanges({
-        options:
-          {
-            previousValue: undefined, currentValue: changedOptions, firstChange: false, isFirstChange: () => true,
-          }
+        options: {
+          previousValue: undefined,
+          currentValue: changedOptions,
+          firstChange: false,
+          isFirstChange: () => true
+        }
       });
       fixture.autoDetectChanges();
       expect(component.noGroupHeaders).toBe(false);
@@ -241,7 +241,7 @@ describe('SingleSelectComponent', () => {
             { value: 'Basic Info 3', id: 3 },
             { value: 'Basic Info 4', id: 4 },
             { value: 'Basic Info 5', id: 5 },
-            { value: 'Basic Info 6', id: 6 },
+            { value: 'Basic Info 6', id: 6 }
           ]
         },
         {
@@ -252,15 +252,17 @@ describe('SingleSelectComponent', () => {
             { value: 'Personal 3', id: 13 },
             { value: 'Personal 4', id: 14 },
             { value: 'Personal 5', id: 15 },
-            { value: 'Personal 6', id: 16 },
+            { value: 'Personal 6', id: 16 }
           ]
         }
       ];
       component.ngOnChanges({
-        options:
-          {
-            previousValue: undefined, currentValue: testOptionsMock, firstChange: false, isFirstChange: () => false,
-          }
+        options: {
+          previousValue: undefined,
+          currentValue: testOptionsMock,
+          firstChange: false,
+          isFirstChange: () => false
+        }
       });
       fixture.autoDetectChanges();
       const searchEl = fixture.debugElement.query(By.css('b-search'));
@@ -270,22 +272,20 @@ describe('SingleSelectComponent', () => {
       const testOptionsMock = [
         {
           groupName: 'Basic Info Header',
-          options: [
-            { value: 'Basic Info 1', id: 1 },
-          ]
+          options: [{ value: 'Basic Info 1', id: 1 }]
         },
         {
           groupName: 'Personal Header',
-          options: [
-            { value: 'Personal 1', id: 11 },
-          ]
+          options: [{ value: 'Personal 1', id: 11 }]
         }
       ];
       component.ngOnChanges({
-        options:
-          {
-            previousValue: undefined, currentValue: testOptionsMock, firstChange: false, isFirstChange: () => false,
-          }
+        options: {
+          previousValue: undefined,
+          currentValue: testOptionsMock,
+          firstChange: false,
+          isFirstChange: () => false
+        }
       });
       fixture.autoDetectChanges();
       const searchEl = fixture.debugElement.query(By.css('b-search'));
@@ -301,7 +301,7 @@ describe('SingleSelectComponent', () => {
             { value: 'Basic Info 3', id: 3, selected: false },
             { value: 'Basic Info 4', id: 4, selected: false },
             { value: 'Basic Info 5', id: 5, selected: false },
-            { value: 'Basic Info 6', id: 6, selected: false },
+            { value: 'Basic Info 6', id: 6, selected: false }
           ]
         },
         {
@@ -312,15 +312,17 @@ describe('SingleSelectComponent', () => {
             { value: 'Personal 3', id: 13, selected: false },
             { value: 'Personal 4', id: 14, selected: false },
             { value: 'Personal 5', id: 15, selected: false },
-            { value: 'Personal 6', id: 16, selected: false },
+            { value: 'Personal 6', id: 16, selected: false }
           ]
         }
       ];
       component.ngOnChanges({
-        options:
-          {
-            previousValue: undefined, currentValue: testOptionsMock, firstChange: false, isFirstChange: () => false,
-          }
+        options: {
+          previousValue: undefined,
+          currentValue: testOptionsMock,
+          firstChange: false,
+          isFirstChange: () => false
+        }
       });
       fixture.autoDetectChanges();
       let searchEl = fixture.debugElement.query(By.css('b-search'));
@@ -376,15 +378,12 @@ describe('SingleSelectComponent', () => {
           groupName: 'Basic Info Header',
           options: [
             { value: 'Basic Info 1', id: 1, selected: false },
-            { value: 'Basic Info 2', id: 2, selected: false },
-          ],
+            { value: 'Basic Info 2', id: 2, selected: false }
+          ]
         },
         {
           groupName: 'Personal Header',
-          options: [
-            { value: 'Personal 1', id: 11, selected: false },
-            { value: 'Personal 2', id: 12, selected: true },
-          ]
+          options: [{ value: 'Personal 1', id: 11, selected: false }, { value: 'Personal 2', id: 12, selected: true }]
         }
       ]);
     });

@@ -77,8 +77,8 @@ export { LinkComponent } from './lib/buttons-indicators/link/link.component';
 export { Link } from './lib/buttons-indicators/link/link.types';
 export { LinkColor, LinkTarget } from './lib/buttons-indicators/link/link.enum';
 // InfoTooltip Module
-export { InfoTooltipModule } from './lib/buttons-indicators/info-tooltip/info-tooltip.module';
-export { InfoTooltipComponent } from './lib/buttons-indicators/info-tooltip/info-tooltip.component';
+export { InfoTooltipModule } from './lib/popups/info-tooltip/info-tooltip.module';
+export { InfoTooltipComponent } from './lib/popups/info-tooltip/info-tooltip.component';
 /*
  * Form Elements
  */
@@ -178,28 +178,28 @@ export {
  */
 
 // Search
-export { SearchModule } from './lib/navigation/search/search.module';
-export { SearchComponent } from './lib/navigation/search/search.component';
+export { SearchModule } from './lib/search/search/search.module';
+export { SearchComponent } from './lib/search/search/search.component';
 // Auto complete Module
 export {
   AutoCompleteModule
-} from './lib/navigation/auto-complete/auto-complete.module';
+} from './lib/search/auto-complete/auto-complete.module';
 export {
   AutoCompleteComponent
-} from './lib/navigation/auto-complete/auto-complete.component';
+} from './lib/search/auto-complete/auto-complete.component';
 // Quick Filters Module
 export {
   QuickFilterModule
-} from './lib/navigation/quick-filter/quick-filter.module';
+} from './lib/search/quick-filter/quick-filter.module';
 export {
   QuickFilterComponent
-} from './lib/navigation/quick-filter/quick-filter.component';
+} from './lib/search/quick-filter/quick-filter.component';
 export {
   QuickFilterConfig,
   QuickFilterChangeEvent,
   QuickFilterBarChangeEvent
-} from './lib/navigation/quick-filter/quick-filter.interface';
-export { QuickFilterSelectType } from './lib/navigation/quick-filter/quick-filter.enum';
+} from './lib/search/quick-filter/quick-filter.interface';
+export { QuickFilterSelectType } from './lib/search/quick-filter/quick-filter.enum';
 // Menu Module
 export { MenuModule } from './lib/navigation/menu/menu.module';
 export { MenuComponent } from './lib/navigation/menu/menu.component';
@@ -236,20 +236,20 @@ export { BaseFormElement } from './lib/form-elements/base-form-element';
  */
 
 // Panel Module
-export { PanelModule } from './lib/overlay/panel/panel.module';
-export { PanelComponent } from './lib/overlay/panel/panel.component';
+export { PanelModule } from './lib/popups/panel/panel.module';
+export { PanelComponent } from './lib/popups/panel/panel.component';
 // Dialog Module
-export { DialogModule } from './lib/overlay/dialog/dialog.module';
-export { DialogComponent } from './lib/overlay/dialog/dialog.component';
-export { DialogSize } from './lib/overlay/dialog/dialog.enum';
+export { DialogModule } from './lib/popups/dialog/dialog.module';
+export { DialogComponent } from './lib/popups/dialog/dialog.component';
+export { DialogSize } from './lib/popups/dialog/dialog.enum';
 export {
   DialogConfig,
   DialogButtons,
   DialogButton
-} from './lib/overlay/dialog/dialog.interface';
+} from './lib/popups/dialog/dialog.interface';
 export {
   DialogService
-} from './lib/overlay/dialog/dialog-service/dialog.service';
+} from './lib/popups/dialog/dialog-service/dialog.service';
 
 /*
  * Table
@@ -271,17 +271,17 @@ export { TableUtilsService } from './lib/table/table-utils-service/table-utils.s
 export { DividerModule } from './lib/layout/divider/divider.module';
 export { DividerComponent } from './lib/layout/divider/divider.component';
 // Cards
-export { CardsModule } from './lib/layout/cards/cards.module';
+export { CardsModule } from './lib/cards/cards.module';
 // Single card
-export { CardComponent } from './lib/layout/cards/card/card.component';
+export { CardComponent } from './lib/cards/card/card.component';
 // Add new Card
-export { CardAddComponent } from './lib/layout/cards/card-add/card-add.component';
+export { CardAddComponent } from './lib/cards/card-add/card-add.component';
 // Cards Layout
-export { CardsLayoutComponent } from './lib/layout/cards/cards-layout/cards-layout.component';
+export { CardsLayoutComponent } from './lib/cards/cards-layout/cards-layout.component';
 // Card Table
-export { CardTableModule } from './lib/layout/card-table/card-table.module';
-export { CardTableComponent } from './lib/layout/card-table/card-table/card-table.component';
-export * from './lib/layout/card-table/card-table.interface';
+export { CardTableModule } from './lib/table/card-table/card-table.module';
+export { CardTableComponent } from './lib/table/card-table/card-table/card-table.component';
+export * from './lib/table/card-table/card-table.interface';
 
 
 /*
@@ -291,10 +291,10 @@ export * from './lib/layout/card-table/card-table.interface';
 // Preloader
 export {
   MiniPreloaderModule
-} from './lib/misc/mini-preloader/mini-preloader.module';
+} from './lib/buttons-indicators/mini-preloader/mini-preloader.module';
 export {
   MiniPreloaderComponent
-} from './lib/misc/mini-preloader/mini-preloader.component';
+} from './lib/buttons-indicators/mini-preloader/mini-preloader.component';
 // Filter Module
 export { FiltersModule } from './lib/services/filters/filters.module';
 // Utils Module

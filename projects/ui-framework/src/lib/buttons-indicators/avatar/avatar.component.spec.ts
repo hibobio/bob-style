@@ -24,8 +24,8 @@ describe('AvatarComponent', () => {
         component.title = 'Title';
         component.imageSource =
           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+        component.backgroundColor = 'rgb(255, 255, 255)';
         fixture.detectChanges();
-
         avatarElement = fixture.debugElement.query(By.css('.avatar'))
           .nativeElement;
         titleElement = fixture.debugElement.query(By.css('.avatar-title'))
@@ -43,6 +43,13 @@ describe('AvatarComponent', () => {
     it('Should put the image as background on .avatar element', () => {
       expect(avatarElement.style.backgroundImage).toContain(
         'iVBORw0KGgoAAAANSUhEUgAAA'
+      );
+    });
+  });
+  describe('Avatar background color', () => {
+    it('Should put the background color on .avatar element', () => {
+      expect(avatarElement.style.backgroundColor).toContain(
+        'rgb(255, 255, 255)'
       );
     });
   });

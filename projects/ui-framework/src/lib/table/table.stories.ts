@@ -12,7 +12,7 @@ import { AvatarCellComponent } from './table-cell-components/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { RowSelection } from './table/table.interface';
 
-const tableStories = storiesOf(ComponentGroupType.DataTable, module).addDecorator(withKnobs);
+const tableStories = storiesOf(ComponentGroupType.Tables, module).addDecorator(withKnobs);
 
 const template = `
 <b-table style="width: calc(100% - 40px); margin: 0 auto;"
@@ -27,7 +27,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Data Table'">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
@@ -52,7 +52,7 @@ const note = `
   updateRows | Function | update rows
   removeRows | Function | remove rows
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 tableStories.add(
@@ -67,7 +67,7 @@ tableStories.add(
         columnDefs: object('columnDefs', mockColumnsDefs),
         rowClicked: action('Row clicked'),
         selectionChanged: action('Selection changed'),
-        sortChanged: action('sort changed'),
+        sortChanged: action('sort changed')
       },
       moduleMetadata: {
         entryComponents: [AvatarCellComponent],

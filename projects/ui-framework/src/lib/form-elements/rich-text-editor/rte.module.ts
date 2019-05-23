@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RichTextEditorComponent } from './rte.component';
-import { PanelModule } from '../../overlay/panel/panel.module';
+import { PanelModule } from '../../popups/panel/panel.module';
 import { InputModule } from '../../form-elements/input/input.module';
 import { RteLinkEditorComponent } from './rte-link/rte-link-editor.component';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';

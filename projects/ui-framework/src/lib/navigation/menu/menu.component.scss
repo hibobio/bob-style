@@ -1,7 +1,7 @@
 @import '../../style/colors.scss';
 @import '../../style/shapes.scss';
 @import '../../style/typography.scss';
-@import '../../overlay/overlay.scss';
+@import '../../popups/overlay.scss';
 
 :host {
   display: inline-block;
@@ -79,7 +79,8 @@
     }
     > .cdk-overlay-connected-position-bounding-box ~ .cdk-overlay-connected-position-bounding-box {
       .mat-menu-panel {
-        &:before, &:after {
+        &:before,
+        &:after {
           content: none;
         }
       }

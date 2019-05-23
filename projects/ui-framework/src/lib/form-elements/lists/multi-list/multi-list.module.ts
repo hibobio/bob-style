@@ -4,18 +4,16 @@ import { MultiListComponent } from './multi-list.component';
 import { ListModelService } from '../list-service/list-model.service';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatPseudoCheckboxModule } from '@angular/material';
-import { SearchModule } from '../../../navigation/search/search.module';
 import { FiltersModule } from '../../../services/filters/filters.module';
 import { ListOptionModule } from '../list-option/list-option.module';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { ListFooterModule } from '../list-footer/list-footer.module';
+import { SearchModule } from '../../../search/search/search.module';
 
 @NgModule({
-  declarations: [
-    MultiListComponent,
-  ],
+  declarations: [MultiListComponent],
   imports: [
     CommonModule,
     ScrollingModule,
@@ -24,16 +22,9 @@ import { ListFooterModule } from '../list-footer/list-footer.module';
     FiltersModule,
     ListOptionModule,
     ButtonsModule,
-    ListFooterModule,
+    ListFooterModule
   ],
-  exports: [
-    MultiListComponent,
-  ],
-  providers: [
-    ListModelService,
-    ListChangeService,
-    ListKeyboardService,
-  ]
+  exports: [MultiListComponent],
+  providers: [ListModelService, ListChangeService, ListKeyboardService]
 })
-export class MultiListModule {
-}
+export class MultiListModule {}

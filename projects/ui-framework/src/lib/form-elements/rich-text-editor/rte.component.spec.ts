@@ -27,7 +27,7 @@ import { RteLinkEditorComponent } from './rte-link/rte-link-editor.component';
 import { RteUtilsService } from './rte-core/rte-utils.service';
 import { RTEType, BlotType, RTEchangeEvent } from './rte-core/rte.enum';
 import Quill from 'quill';
-import { PanelModule } from '../../overlay/panel/panel.module';
+import { PanelModule } from '../../popups/panel/panel.module';
 import { SingleSelectModule } from '../lists/single-select/single-select.module';
 import { InputModule } from '../input/input.module';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';

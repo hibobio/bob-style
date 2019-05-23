@@ -14,11 +14,11 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { merge } from 'lodash';
 
-import { PanelComponent } from '../../overlay/panel/panel.component';
+import { PanelComponent } from '../../popups/panel/panel.component';
 import { SingleListComponent } from '../lists/single-list/single-list.component';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { Icons } from '../../icons/icons.enum';
-import { PanelSize, PanelDefaultPosVer } from '../../overlay/panel/panel.enum';
+import { PanelSize, PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 import quillLib, { RangeStatic } from 'quill';

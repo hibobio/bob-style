@@ -2,7 +2,7 @@
 @import '../../../style/typography';
 @import '../../../style/mixins';
 @import '../../../form-elements/form-element';
-@import '../../../overlay/overlay';
+@import '../../../popups/overlay';
 
 :host {
   display: block;
@@ -23,9 +23,7 @@
     border-radius: 0;
   }
 
-  .mat-form-field.autocomplete-open
-    .mat-form-field-wrapper
-    .mat-form-field-flex {
+  .mat-form-field.autocomplete-open .mat-form-field-wrapper .mat-form-field-flex {
     border-color: transparent;
   }
 
@@ -39,11 +37,7 @@
     box-shadow: none;
   }
 
-  .mat-form-field
-    .mat-form-field-wrapper
-    .mat-form-field-flex
-    .mat-form-field-infix
-    input {
+  .mat-form-field .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix input {
     margin: 4px;
     padding: 0;
     height: auto;
@@ -57,18 +51,11 @@
     }
   }
 
-  .mat-form-field
-    .mat-form-field-wrapper
-    .mat-form-field-flex
-    .mat-form-field-infix {
+  .mat-form-field .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix {
     position: static;
   }
 
-  .mat-form-field
-    .mat-form-field-wrapper
-    .mat-form-field-flex
-    .mat-form-field-infix
-    .mat-form-field-label-wrapper {
+  .mat-form-field .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper {
     height: $input-height;
   }
 

@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { assign, chain, includes, map } from 'lodash';
-import { PanelPositionService } from '../../../overlay/panel/panel-position-service/panel-position.service';
+import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { SelectGroupOption } from '../list.interface';

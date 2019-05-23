@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  text,
-  select,
-  boolean,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,9 +7,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { TypographyModule } from '../../typography/typography.module';
 import { GridLayoutExampleModule } from './grid-layout-example.module';
 
-const inputStories = storiesOf(ComponentGroupType.Layout, module).addDecorator(
-  withKnobs
-);
+const inputStories = storiesOf(ComponentGroupType.Layout, module).addDecorator(withKnobs);
 
 const template = `
 <b-grid-layout-example></b-grid-layout-example>
@@ -45,12 +38,7 @@ inputStories.add(
       template: storyTemplate,
       props: {},
       moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          TypographyModule,
-          StoryBookLayoutModule,
-          GridLayoutExampleModule
-        ]
+        imports: [BrowserAnimationsModule, TypographyModule, StoryBookLayoutModule, GridLayoutExampleModule]
       }
     };
   },

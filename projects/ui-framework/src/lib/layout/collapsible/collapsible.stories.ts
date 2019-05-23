@@ -1,13 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  array,
-  boolean,
-  number,
-  object,
-  select,
-  text,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
@@ -17,9 +9,7 @@ import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
-  withKnobs
-);
+const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(withKnobs);
 
 const template = `
   <b-collapsible
@@ -92,22 +82,14 @@ story.add(
         expanded: boolean('expanded', false),
         disabled: boolean('disabled', false),
         title: text('title', 'Other People’s requests (4):'),
-        description: text(
-          'description',
-          'Here you could see the manager side details'
-        ),
+        description: text('description', 'Here you could see the manager side details'),
         content: text('content', contentMock),
 
         onPanelOpened: action('Panel opened'),
         onPanelClosed: action('Panel closed')
       },
       moduleMetadata: {
-        imports: [
-          StoryBookLayoutModule,
-          BrowserAnimationsModule,
-          CollapsibleModule,
-          ButtonsModule
-        ]
+        imports: [StoryBookLayoutModule, BrowserAnimationsModule, CollapsibleModule, ButtonsModule]
       }
     };
   },

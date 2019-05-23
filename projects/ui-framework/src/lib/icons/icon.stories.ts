@@ -9,7 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const iconStories = storiesOf(ComponentGroupType.Icons, module).addDecorator(withKnobs);
 
-const icons = values(Icons);
+const icons = values(Icons).sort();
 const size = values(IconSize);
 const color = values(IconColor);
 

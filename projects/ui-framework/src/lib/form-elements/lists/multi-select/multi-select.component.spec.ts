@@ -7,7 +7,7 @@ import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.modul
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { InputModule } from '../../input/input.module';
-import { PanelPositionService } from '../../../overlay/panel/panel-position-service/panel-position.service';
+import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { IconService } from '../../../icons/icon.service';
 import { MultiSelectComponent } from './multi-select.component';

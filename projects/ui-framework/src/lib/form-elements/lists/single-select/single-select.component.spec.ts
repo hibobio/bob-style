@@ -8,8 +8,6 @@ import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.modul
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { InputModule } from '../../input/input.module';
-import { PanelPositionService } from '../../../overlay/panel/panel-position-service/panel-position.service';
-import { SingleListModule } from '../single-list/single-list.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { IconService } from '../../../icons/icon.service';
 import { By } from '@angular/platform-browser';
@@ -18,6 +16,8 @@ import { cloneDeep } from 'lodash';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 import { ListFooterModule } from '../list-footer/list-footer.module';
+import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
+import { SingleListModule } from '../single-list/single-list.module';
 
 describe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;
@@ -34,28 +34,17 @@ describe('SingleSelectComponent', () => {
     optionsMock = [
       {
         groupName: 'Basic Info',
-        options: [
-          { value: 'Basic Info 1', id: 1, selected: true },
-          { value: 'Basic Info 2', id: 2, selected: false },
-        ]
+        options: [{ value: 'Basic Info 1', id: 1, selected: true }, { value: 'Basic Info 2', id: 2, selected: false }]
       },
       {
         groupName: 'Personal',
-        options: [
-          { value: 'Personal 1', id: 11, selected: false },
-          { value: 'Personal 2', id: 12, selected: false },
-        ]
+        options: [{ value: 'Personal 1', id: 11, selected: false }, { value: 'Personal 2', id: 12, selected: false }]
       }
     ];
 
     TestBed.configureTestingModule({
-      declarations: [
-        SingleSelectComponent,
-      ],
-      providers: [
-        PanelPositionService,
-        { provide: IconService, useValue: spyIconService },
-      ],
+      declarations: [SingleSelectComponent],
+      providers: [PanelPositionService, { provide: IconService, useValue: spyIconService }],
       imports: [
         SingleListModule,
         OverlayModule,
@@ -66,11 +55,9 @@ describe('SingleSelectComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         ButtonsModule,
-        ListFooterModule,
+        ListFooterModule
       ],
-      schemas: [
-        NO_ERRORS_SCHEMA,
-      ]
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents()
       .then(() => {
@@ -83,7 +70,7 @@ describe('SingleSelectComponent', () => {
             previousValue: undefined,
             currentValue: optionsMock,
             firstChange: true,
-            isFirstChange: () => true,
+            isFirstChange: () => true
           }
         });
         fixture.autoDetectChanges();
@@ -108,7 +95,7 @@ describe('SingleSelectComponent', () => {
           previousValue: optionsMock,
           currentValue: testOptionsMock,
           firstChange: false,
-          isFirstChange: () => false,
+          isFirstChange: () => false
         }
       });
       expect(component.triggerValue).toBe(null);
@@ -118,7 +105,7 @@ describe('SingleSelectComponent', () => {
           previousValue: optionsMock,
           currentValue: testOptionsMock,
           firstChange: false,
-          isFirstChange: () => false,
+          isFirstChange: () => false
         }
       });
       expect(component.triggerValue).toEqual('Personal 1');
@@ -143,8 +130,7 @@ describe('SingleSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      const clearButton = overlayContainerElement
-        .querySelectorAll('b-list-footer .clear b-button')[0] as HTMLElement;
+      const clearButton = overlayContainerElement.querySelectorAll('b-list-footer .clear b-button')[0] as HTMLElement;
       clearButton.click();
       fixture.autoDetectChanges();
       expect(component.triggerValue).toBe(null);
@@ -154,8 +140,7 @@ describe('SingleSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      const clearButton = overlayContainerElement
-        .querySelectorAll('b-list-footer .clear b-button')[0] as HTMLElement;
+      const clearButton = overlayContainerElement.querySelectorAll('b-list-footer .clear b-button')[0] as HTMLElement;
       clearButton.click();
       fixture.autoDetectChanges();
       const listChange = component['listChangeService'].getListChange(optionsMock, []);
@@ -185,7 +170,7 @@ describe('SingleSelectComponent', () => {
           previousValue: undefined,
           currentValue: testOptionsMock,
           firstChange: true,
-          isFirstChange: () => true,
+          isFirstChange: () => true
         }
       });
       fixture.autoDetectChanges();

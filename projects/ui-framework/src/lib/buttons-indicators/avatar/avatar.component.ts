@@ -20,6 +20,7 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 export class AvatarComponent implements OnInit, AfterViewInit {
   @ViewChild('content') private content: ElementRef;
   @Input() imageSource: string;
+  @Input() backgroundColor?: string;
   @Input() size: AvatarSize = AvatarSize.mini;
   @Input() isClickable = false;
   @Input() title: string;

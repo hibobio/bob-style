@@ -8,9 +8,7 @@ import { values } from 'lodash';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
-const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
-  withKnobs
-);
+const buttonStories = storiesOf(`${ComponentGroupType.ButtonsAndIndicators}.Buttons`, module).addDecorator(withKnobs);
 
 const template = `
 <b-group>

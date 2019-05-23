@@ -1,6 +1,5 @@
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ChipInputComponent } from './chip-input.component';
 import { ChipType } from '../chips.enum';
 import { By } from '@angular/platform-browser';

@@ -1,0 +1,122 @@
+@import '../../style/colors';
+@import '../../style/mixins';
+@import '../../style/typography';
+
+@keyframes enablePointer {
+  from {
+    pointer-events: none;
+  }
+  to {
+    pointer-events: all;
+  }
+}
+
+:host {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+  padding: 20px;
+  border: 1px solid $grey-500;
+  border-radius: 4px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: left;
+  background-color: white;
+
+  &:hover,
+  &.focus-inside {
+    box-shadow: 0 2px 15px 0 $grey-500;
+    transform: translateY(-10px);
+
+    .card-menu {
+      pointer-events: all;
+      opacity: 1;
+    }
+  }
+
+  &:hover {
+    .card-content {
+      @include animate(enablePointer, 0s, 0.2s);
+    }
+  }
+
+  &.clickable {
+    cursor: pointer;
+  }
+}
+
+.card-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: opacity 0.2s;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.card-content {
+  text-transform: none;
+  pointer-events: none;
+}
+
+.card-top,
+.card-content,
+.card-bottom {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.card-top,
+.card-bottom {
+  font-weight: 300;
+}
+
+.card-top,
+.card-content {
+  margin-bottom: 15px;
+  color: $grey-700;
+}
+
+.card-top {
+  max-width: calc(100% - 15px);
+}
+
+.card-bottom {
+  color: $grey-600;
+  margin-top: auto;
+}
+
+.card-content {
+  flex-grow: 5;
+
+  &:last-child {
+    margin: 0;
+  }
+}
+
+// Types
+
+:host.card-primary {
+  min-height: 240px;
+
+  .card-content {
+    @include DisplayFont($font-size-display-4, 600, $transform: null);
+  }
+}
+
+:host.card-secondary,
+:host.card-tertiary {
+  .card-content {
+    @include DisplayFont($font-size-display-3, $font-weight-display-3, $transform: null);
+  }
+}
+
+:host.card-secondary {
+  min-height: 260px;
+}
+
+:host.card-tertiary {
+  min-height: 175px;
+}

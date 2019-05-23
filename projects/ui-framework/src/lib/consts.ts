@@ -1,14 +1,16 @@
 export enum ComponentGroupType {
-  ButtonsAndIndicators = 'Buttons & Indicators',
-  FormElements = 'Form Elements',
+  ButtonsAndIndicators = 'Components|Buttons & Indicators',
+  FormElements = 'Components|Form Elements',
+  Cards = 'Components|Cards',
+  Tables = 'Components|Tables',
+  Popups = 'Components|Popups',
+  Layout = 'Components|Layout',
+  Misc = 'Components|Misc',
+  Navigation = 'Components|Navigation',
+  Search = 'Components|Search',
   Icons = 'Icons',
   Typography = 'Typography',
-  Overlay = 'Overlay',
-  Navigation = 'Navigation',
-  Misc = 'Misc',
-  DataTable = 'Data Table',
-  Services = 'Services',
-  Layout = 'Layout'
+  Services = 'Services'
 }
 
 export const serverDateFormat = 'YYYY-MM-DD';

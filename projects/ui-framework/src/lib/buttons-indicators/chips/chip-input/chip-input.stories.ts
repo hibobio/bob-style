@@ -1,20 +1,12 @@
 import { storiesOf, moduleMetadata } from '@storybook/angular';
-import {
-  text,
-  array,
-  boolean,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { text, array, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { ChipsModule } from '../chips.module';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { chipOptionsMock } from './chipsOptionsMock';
 import { randomFromArray } from '../../../services/utils/functional-utils';
 
-const story = storiesOf(
-  ComponentGroupType.ButtonsAndIndicators,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(`${ComponentGroupType.ButtonsAndIndicators}.Chips`, module).addDecorator(withKnobs);
 
 const options = chipOptionsMock;
 const value = [...randomFromArray(chipOptionsMock, 3), 'Rimming'];

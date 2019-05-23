@@ -4,7 +4,7 @@
                 (disabled ? ' disabled' : '') +
                 (imageSource && imageSource.includes('emptyAvatar')
                 ? ' emptyAvatar' : '')"
-     [ngStyle]="{ backgroundImage: imageSource ? 'url(' +  imageSource + ')' : null }"
+     [ngStyle]="{ backgroundImage: imageSource ? 'url(' +  imageSource + ')' : null, backgroundColor: backgroundColor }"
      (click)="onClick($event)">
 
   <b-icon *ngIf="badge && size !== avatarSize.mini"

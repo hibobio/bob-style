@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { ButtonSize, ButtonType } from '../buttons.enum';
 import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 import { isEqual } from 'lodash';
@@ -33,9 +27,7 @@ export class ButtonComponent implements OnChanges {
         : this.disabled
         ? IconColor.light
         : IconColor.dark;
-      this.iconSize = isEqual(this.size, ButtonSize.large)
-        ? IconSize.large
-        : IconSize.medium;
+      this.iconSize = isEqual(this.size, ButtonSize.large) ? IconSize.large : IconSize.medium;
     }
   }
 

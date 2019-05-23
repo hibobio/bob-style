@@ -41,7 +41,8 @@ const template = `
   [subtitle]="subtitle"
   [disabled]="disabled"
   [badge]="badge"
-  (clicked)="clickHandler($event)">
+  (clicked)="clickHandler($event)"
+  [backgroundColor]="backgroundColor">
 </b-avatar>
 </div>
 `;
@@ -62,7 +63,7 @@ const note = `
   disabled | boolean | disabled avatar | false (optional)
   badge | BadgeConfig | badge config: includes icon and color | undefined (optional)
   clicked | Function | callback for clicking on the avatar | none
-
+  backgroundColor | string | background color | none
   ~~~
   ${template}
   ~~~
@@ -93,7 +94,8 @@ avatarStories.add(
         badge: {
           icon: select('badge icon', badges, Icons.pending_badge),
           color: select('badge color', badgeColors, IconColor.primary)
-        }
+        },
+        backgroundColor: select('background color', ['#fff', 'red', 'black'])
       },
       moduleMetadata: {
         imports: [

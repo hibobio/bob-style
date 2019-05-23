@@ -263,6 +263,10 @@ export abstract class RTEformElement extends BaseFormElement
   private onEditorBlur(): void {
     this.transmitValue(this.sendChangeOn === RTEchangeEvent.blur);
 
+    if (!this.writingValue && this.sendChangeOn === RTEchangeEvent.blur) {
+      this.onTouched();
+    }
+
     this.blurred.emit(this.value);
   }
 
