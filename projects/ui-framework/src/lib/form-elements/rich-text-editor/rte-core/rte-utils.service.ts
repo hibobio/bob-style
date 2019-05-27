@@ -19,6 +19,10 @@ export class RteUtilsService {
     return !editor.root.innerText.trim() ? '' : editor.root.innerHTML;
   }
 
+  getTextLength(editor: Quill): number {
+    return editor.root.innerText.trim().length;
+  }
+
   cleanupHtml(value: string): string {
     return (
       value

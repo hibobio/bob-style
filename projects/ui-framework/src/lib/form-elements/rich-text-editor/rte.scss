@@ -37,133 +37,168 @@ $border-color-error: $color-error;
 }
 
 :host ::ng-deep {
-  .ql-snow {
-    &.ql-container,
-    &.ql-toolbar,
-    .ql-picker {
-      @include BodyFont;
-    }
+  .ql-container,
+  .ql-toolbar,
+  .ql-picker {
+    @include BodyFont;
+  }
 
-    &.ql-container,
-    &.ql-toolbar {
-      border: 0;
-    }
+  .ql-container,
+  .ql-toolbar {
+    border: 0;
+  }
 
-    &.ql-container {
-      order: 1;
-      flex-grow: 1;
+  .ql-container {
+    order: 1;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ql-editor {
+    flex-grow: 1;
+    min-height: inherit;
+    max-height: inherit;
+    overflow: auto;
+    border-bottom: none;
+    padding-bottom: 15px;
+  }
+
+  .ql-toolbar {
+    order: 2;
+    border-top: 1px solid $border-color;
+  }
+
+  .toolbar-suffix {
+    margin-left: auto;
+  }
+
+  .ql-toolbar,
+  .ql-toolbar .ql-formats {
+    display: flex;
+    align-items: center;
+
+    &:after {
+      display: none;
+    }
+  }
+
+  // picker dropdown (horizontal)
+
+  .ql-icon-picker {
+    width: auto;
+    display: flex;
+
+    .ql-picker-options {
+      min-width: 0;
+      margin: 0;
+      position: static;
       display: flex;
-      flex-direction: column;
-    }
+      box-shadow: none;
+      overflow: hidden;
+      border-left: 0;
+      background-color: transparent;
+      max-width: ($button-width * 4);
+      padding: 0 5px;
+      transition: max-width 0.3s, padding 0.2s;
 
-    .ql-editor {
-      flex-grow: 1;
-      min-height: inherit;
-      max-height: inherit;
-      overflow: auto;
-      border-bottom: none;
-    }
-
-    &.ql-toolbar {
-      order: 2;
-      border-top: 1px solid $border-color;
-
-      .toolbar-suffix {
-        margin-left: auto;
+      &[aria-hidden='true'] {
+        max-width: 0px;
+        padding: 0;
+        border-right: 0;
       }
     }
 
-    &.ql-toolbar,
-    &.ql-toolbar .ql-formats {
+    .ql-picker-item {
+      max-height: 100%;
+      max-width: ($button-width - 3px);
+    }
+
+    .ql-picker-label {
       display: flex;
       align-items: center;
+      justify-content: space-between;
+    }
+  }
 
-      &:after {
-        display: none;
-      }
+  // buttons
+
+  .ql-picker .ql-picker-label,
+  .ql-icon-picker .ql-picker-item,
+  .ql-toolbar button {
+    @include size($button-width, ($button-width - 1px));
+    @include flex-align;
+    padding: 0;
+
+    &,
+    svg {
+      float: none;
     }
 
-    // picker dropdown (horizontal)
-
-    .ql-icon-picker {
-      width: auto;
-      display: flex;
-
-      .ql-picker-options {
-        min-width: 0;
-        margin: 0;
-        position: static;
-        display: flex;
-        box-shadow: none;
-        overflow: hidden;
-        border-left: 0;
-        background-color: transparent;
-        max-width: ($button-width * 4);
-        padding: 0 5px;
-        transition: max-width 0.3s, padding 0.2s;
-
-        &[aria-hidden='true'] {
-          max-width: 0px;
-          padding: 0;
-          border-right: 0;
-        }
-      }
-
-      .ql-picker-item {
-        max-height: 100%;
-        max-width: ($button-width - 3px);
-      }
-
-      .ql-picker-label {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
+    svg {
+      @include size($button-icon-size);
     }
 
-    // buttons
+    .mat-icon {
+      @include size(auto);
+      display: block;
+    }
+  }
 
-    .ql-picker .ql-picker-label,
-    .ql-icon-picker .ql-picker-item,
-    &.ql-toolbar button {
-      @include size($button-width, ($button-width - 1px));
-      @include flex-align;
-      padding: 0;
+  // button mods
 
-      &,
-      svg {
-        float: none;
+  .ql-list {
+    margin: 0 1px;
+  }
+  .ql-italic {
+    margin: 0 -2px;
+  }
+  .ql-toolbar .ql-direction svg {
+    @include size($button-icon-size + 1px);
+  }
+  .rte-size {
+    margin-right: -2px;
+  }
+  .ql-toolbar .rte-size svg {
+    @include size($button-icon-size + 1px, auto);
+  }
+
+  // svg fill colors
+
+  .ql-fill,
+  .ql-stroke.ql-fill {
+    fill: $icon-color;
+  }
+  .ql-stroke {
+    stroke: $icon-color;
+  }
+
+  .ql-toolbar button {
+    &:hover,
+    &:focus,
+    &.ql-active {
+      outline: 0;
+
+      .ql-fill,
+      .ql-stroke.ql-fill {
+        fill: $icon-color-hover;
       }
-
-      svg {
-        @include size($button-icon-size);
+      .ql-stroke {
+        stroke: $icon-color-hover;
       }
 
       .mat-icon {
-        @include size(auto);
-        display: block;
+        path,
+        circle {
+          fill: $grey-700 !important;
+        }
       }
     }
+  }
 
-    // button mods
-
-    .ql-list {
-      margin: 0 1px;
-    }
-    .ql-italic {
-      margin: 0 -2px;
-    }
-    &.ql-toolbar .ql-direction svg {
-      @include size($button-icon-size + 1px);
-    }
-    .rte-size {
-      margin-right: -2px;
-    }
-    &.ql-toolbar .rte-size svg {
-      @include size($button-icon-size + 1px, auto);
-    }
-
-    // svg fill colors
+  .ql-picker-item,
+  .ql-picker-label {
+    color: $icon-color;
 
     .ql-fill,
     .ql-stroke.ql-fill {
@@ -172,54 +207,18 @@ $border-color-error: $color-error;
     .ql-stroke {
       stroke: $icon-color;
     }
-
-    &.ql-toolbar button {
-      &:hover,
-      &:focus,
-      &.ql-active {
-        outline: 0;
-
-        .ql-fill,
-        .ql-stroke.ql-fill {
-          fill: $icon-color-hover;
-        }
-        .ql-stroke {
-          stroke: $icon-color-hover;
-        }
-
-        .mat-icon {
-          path,
-          circle {
-            fill: $grey-700 !important;
-          }
-        }
-      }
-    }
-
-    &.ql-toolbar .ql-picker-item,
-    &.ql-toolbar .ql-picker-label {
-      color: $icon-color;
+    &:hover,
+    &:focus,
+    &.ql-active {
+      outline: 0;
+      color: $icon-color-hover;
 
       .ql-fill,
       .ql-stroke.ql-fill {
-        fill: $icon-color;
+        fill: $icon-color-hover;
       }
       .ql-stroke {
-        stroke: $icon-color;
-      }
-      &:hover,
-      &:focus,
-      &.ql-active {
-        outline: 0;
-        color: $icon-color-hover;
-
-        .ql-fill,
-        .ql-stroke.ql-fill {
-          fill: $icon-color-hover;
-        }
-        .ql-stroke {
-          stroke: $icon-color-hover;
-        }
+        stroke: $icon-color-hover;
       }
     }
   }
@@ -237,6 +236,30 @@ $border-color-error: $color-error;
   }
 }
 
+// Length counter
+
+.ql-container {
+  position: relative;
+
+  &:after {
+    content: attr(data-length);
+    display: block;
+    @include position(null null 3px null);
+    font-size: 9px;
+    line-height: 1;
+    border-radius: 10px;
+    padding: 1px 7px;
+    color: $grey-600;
+    background-color: white(0.5);
+  }
+
+  &.length-invalid:after {
+    color: $color-error;
+  }
+}
+
+// Disabled
+
 :host {
   &.error:not(.disabled) ::ng-deep {
     .mat-hint {
@@ -247,35 +270,34 @@ $border-color-error: $color-error;
   &.disabled ::ng-deep {
     user-select: none;
 
-    .ql-snow {
-      &.ql-container,
-      &.ql-toolbar {
-        pointer-events: none;
+    .ql-container,
+    .ql-toolbar {
+      pointer-events: none;
+    }
+    .ql-fill,
+    .ql-stroke.ql-fill {
+      fill: $icon-color-disabled;
+    }
+    .ql-stroke {
+      stroke: $icon-color-disabled;
+    }
+    .ql-toolbar .mat-icon.normal {
+      path,
+      circle {
+        fill: $icon-color-disabled !important;
       }
+    }
+    .ql-picker-item,
+    .ql-picker-label,
+    button.ql-active {
+      color: $icon-color-disabled;
+
       .ql-fill,
       .ql-stroke.ql-fill {
         fill: $icon-color-disabled;
       }
       .ql-stroke {
         stroke: $icon-color-disabled;
-      }
-      .mat-icon {
-        path,
-        circle {
-          fill: $icon-color-disabled !important;
-        }
-      }
-      &.ql-toolbar .ql-picker-item,
-      &.ql-toolbar .ql-picker-label {
-        color: $icon-color-disabled;
-
-        .ql-fill,
-        .ql-stroke.ql-fill {
-          fill: $icon-color-disabled;
-        }
-        .ql-stroke {
-          stroke: $icon-color-disabled;
-        }
       }
     }
 
@@ -301,11 +323,12 @@ $border-color-error: $color-error;
     border-radius: 4px;
   }
   & ::ng-deep {
-    .ql-snow {
-      &.ql-toolbar {
-        padding-left: 11px;
-        padding-right: 16px;
-      }
+    .ql-toolbar {
+      padding-left: 11px;
+      padding-right: 16px;
+    }
+    .ql-container:after {
+      right: 7px;
     }
   }
   &.error:not(.disabled) ::ng-deep {
@@ -328,11 +351,9 @@ $border-color-error: $color-error;
 :host.rte-secondary,
 :host.rte-tertiary {
   & ::ng-deep {
-    .ql-snow {
-      &.ql-toolbar {
-        padding-left: 0;
-        padding-right: 0;
-      }
+    .ql-toolbar {
+      padding-left: 0;
+      padding-right: 0;
     }
   }
   .mat-hint {
@@ -359,13 +380,14 @@ $border-color-error: $color-error;
       left: 0;
       right: 0;
     }
-    .ql-snow {
-      &.ql-toolbar {
-        border-bottom: 1px solid $border-color;
-      }
+    .ql-toolbar {
+      border-bottom: 1px solid $border-color;
     }
     .ql-container:last-child {
       border-bottom: 1px solid $border-color;
+    }
+    .ql-container:after {
+      right: 0;
     }
   }
 }
@@ -378,10 +400,12 @@ $border-color-error: $color-error;
       background-color: $grey-100;
       padding: 20px;
     }
-    .ql-snow {
-      &.ql-toolbar {
-        border: 0;
-      }
+    .ql-toolbar {
+      border: 0;
+    }
+    .ql-container:after {
+      right: 12px;
+      bottom: 5px;
     }
   }
 }
@@ -456,11 +480,6 @@ $border-color-error: $color-error;
 .quill-toolbar[hide-align='true'] ::ng-deep {
   .ql-align {
     display: none;
-  }
-}
-::ng-deep {
-  .single-list-select {
-    min-width: 400px;
   }
 }
 

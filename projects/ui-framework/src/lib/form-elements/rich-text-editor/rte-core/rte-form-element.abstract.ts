@@ -23,6 +23,7 @@ import { RTEchangeEvent, BlotType, RTEFontSize } from './rte.enum';
 import { RteUtilsService } from './rte-utils.service';
 import { BlotData, SpecialBlots, StoreCurrentResult } from './rte.interface';
 import { BaseFormElement } from '../../base-form-element';
+import { PanelComponent } from '../../../popups/panel/panel.component';
 
 const Block = quillLib.import('blots/block');
 Block.tagName = 'DIV';
@@ -39,6 +40,7 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   @Input() public value: string;
+  @Input() public minChars = 0;
   @Input() public maxChars: number;
   @Input() public controls: BlotType[] = Object.values(BlotType);
   @Input() public disableControls: BlotType[] = [];
@@ -47,6 +49,7 @@ export abstract class RTEformElement extends BaseFormElement
   @Input() private formControl: any;
 
   @ViewChild('quillEditor') protected quillEditor: ElementRef;
+  @ViewChild('sizePanel') protected sizePanel: PanelComponent;
 
   @Output() blurred: EventEmitter<any> = new EventEmitter<any>();
   @Output() focused: EventEmitter<any> = new EventEmitter<any>();
@@ -60,6 +63,7 @@ export abstract class RTEformElement extends BaseFormElement
   public lastSelection: RangeStatic;
   public lastCurrentBlot: BlotData;
   private latestOutputValue: string;
+  public length: number;
   private writingValue = false;
   private control: FormControl;
   protected specialBlots: SpecialBlots = {
@@ -73,7 +77,6 @@ export abstract class RTEformElement extends BaseFormElement
 
   public editorOptions: QuillOptionsStatic = {
     theme: 'snow',
-    placeholder: this.rteUtils.getEditorPlaceholder(this.label, this.required),
     modules: {
       clipboard: {
         matchVisual: false
@@ -240,6 +243,7 @@ export abstract class RTEformElement extends BaseFormElement
         };
       }
     }
+    this.length = this.rteUtils.getTextLength(this.editor);
     this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
   }
 
@@ -330,6 +334,7 @@ export abstract class RTEformElement extends BaseFormElement
   public changeFontSize(size: RTEFontSize) {
     this.editor.format('size', size === RTEFontSize.normal ? false : size);
     this.hasSizeSet = size !== RTEFontSize.normal;
+    this.sizePanel.closePanel();
   }
 
   // this is part of ControlValueAccessor interface

@@ -1,0 +1,19 @@
+@import '../../style/mixins';
+
+:host {
+  position: relative;
+  display: flex;
+
+  ::ng-deep .avatar .avatar-content {
+    @include flex-align;
+    opacity: 1;
+  }
+
+  b-avatar {
+    margin-left: var(--avatar-gap);
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}

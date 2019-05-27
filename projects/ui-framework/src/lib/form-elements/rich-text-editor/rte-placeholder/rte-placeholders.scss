@@ -51,6 +51,7 @@ $border-color: var(--negative-700);
     b-single-list {
       border: 0;
       display: block;
+      min-width: 400px;
 
       &:hover {
         box-shadow: none;

@@ -31,7 +31,8 @@ describe('CardAddComponent', () => {
         component.card = mockCardData;
 
         fixture.detectChanges();
-        cardContentElement = fixture.debugElement.query(By.css('.card-content')).nativeElement;
+        cardContentElement = fixture.debugElement.query(By.css('.card-content'))
+          .nativeElement;
 
         spyOn(component.clicked, 'emit');
         fixture.detectChanges();
@@ -43,7 +44,9 @@ describe('CardAddComponent', () => {
       expect(cardContentElement.innerText).toContain('Add a new flow');
     });
     it('should set input Subtitle inside .card-bottom element', () => {
-      const cardBottomElement = fixture.debugElement.query(By.css('.card-bottom')).nativeElement;
+      const cardBottomElement = fixture.debugElement.query(
+        By.css('.card-bottom')
+      ).nativeElement;
       expect(cardBottomElement.innerText).toContain('Right now');
     });
 

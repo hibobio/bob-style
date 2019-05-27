@@ -1,5 +1,5 @@
 <div
-     style="padding: 50px 100px; height: 100%; max-width: 700px; margin: auto; display: flex; flex-direction: column; justify-content: center;">
+     style="padding: 50px 100px; height: 100%; max-width: 700px; margin: auto; display: flex; flex-direction: column; justify-content: center; display: none; ">
 
   <form [formGroup]="myForm2">
 
@@ -20,7 +20,8 @@
 <div style="padding: 50px 100px; height: 100%; max-width: 700px; margin: auto; display: flex; flex-direction: column;
      justify-content: center;  ">
 
-  <form [formGroup]="myForm">
+  <form [formGroup]="myForm"
+        (ngSubmit)="onRteFormSubmit()">
     <p>
       Input: <br>
       <input type="text"
@@ -28,50 +29,101 @@
              formControlName="inputControl"
              style="height: 40px; padding: 0 10px; line-height: 38px;outline:0; font-size: 16px;" />
       <br>
-      <button (click)="disabled = !disabled">
-        {{ disabled ? 'disable' : 'enable' }}
-        disabled
-      </button>
-      &nbsp;
-      <button (click)="error = !error">
-        {{ error ? 'disable' : 'enable' }}
-        error</button>
-      &nbsp;
-      <button (click)="togglePlaceholders()">
-        {{ plchldrs ? 'disable' : 'enable' }}
-        plchldrs</button>
+
     </p>
     <br>
+
     <p>
-      Editor: "{{ rteEditor.value }}"
       <b-rich-text-editor #rteEditor
                           label="Label text"
                           required="true"
                           formControlName="rteControl"
+                          [type]="themeSelect.value"
+                          [minChars]="minchars.value"
+                          [maxChars]="maxchars.value"
                           [disableControls]="plchldrs ? [] : ['Placeholder']"
                           [placeholderList]="placeholderList"
                           [disabled]="disabled"
-                          [errorMessage]="error ? 'Error' : undefined"
+                          [errorMessage]="error || myForm.get('rteControl').invalid ? 'Invalid!' : undefined"
                           (changed)="onRTEevent($event, 'change')"
                           (blurred)="onRTEevent($event, 'blur')"
-                          (focused)="onRTEevent($event, 'focus')">
+                          (focused)="onRTEevent($event, 'focus')"
+                          [hintMessage]="myForm.get('rteControl').valid ? 'Valid!' : 'Hint message'">
       </b-rich-text-editor>
     </p>
+
+    <div style="display: flex;align-items:center;">
+      <button type="submit"
+              style="margin-right: auto; background-color: green; color: white; padding: 10px; border: 0;"
+              [disabled]="!myForm.valid">Submit</button>
+
+      <div style="margin: 0; display: flex; flex-direction: column;">
+        <span>
+          <button (click)="disabled = !disabled">
+            {{ disabled ? 'disable' : 'enable' }}
+            disabled
+          </button>
+          &nbsp;
+          <button (click)="error = !error">
+            {{ error ? 'disable' : 'enable' }}
+            error</button>
+          &nbsp;
+          <button (click)="togglePlaceholders()">
+            {{ plchldrs ? 'disable' : 'enable' }}
+            plchldrs</button>
+        </span>
+
+        <p style="margin-bottom: 0;">
+
+          <span style="margin: 0 15px 0 0">
+            Type:
+            <select #themeSelect
+                    (change)="themeSelect.blur()">
+              <option value="primary"
+                      selected>1</option>
+              <option value="secondary">2</option>
+              <option value="tertiary">3</option>
+            </select>
+          </span>
+
+          <span>
+            MinChars:
+            <input type="number"
+                   style="width: 40px; padding: 0;"
+                   value="10"
+                   length="3"
+                   #minchars>
+          </span>
+          &nbsp;
+          <span>
+            MaxChars: <input type="number"
+                   style="width: 40px; padding: 0;"
+                   value="100"
+                   length="3"
+                   #maxchars>
+          </span>
+        </p>
+      </div>
+
+    </div>
   </form>
-  <br>
+
+  <br><br>
+
   <div>
-    Output with Truncate Tooltip:
+    Value:
     <div class="rte-output"
-         style="width: 250px; border: 1px solid silver; padding: 10px;margin: 0 0 20px 0; font-size: 20px;">
+         style="width: 250px; border: 1px solid silver; padding: 10px;margin: 0 0 20px 0; ">
       <div *bTruncateTooltip="lines">
-        {{ myForm.get('rteControl').value}}
+        {{ rteEditor.value }}
       </div>
     </div>
   </div>
+
   <p>
-    MaxLines:
+    Truncate tooltip MaxLines:
     <input type="number"
-           style="width: 50px; height: 45px; padding: 0 5px 0 10px; line-height: 38px;outline:0; font-size: 16px;"
+           style="width: 50px; height: 25px; padding: 0 5px 0 10px; line-height: 25px;outline:0; font-size: 16px;"
            [(ngModel)]="lines" />
   </p>
 

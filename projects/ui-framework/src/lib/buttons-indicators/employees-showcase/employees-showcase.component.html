@@ -1,0 +1,11 @@
+<ng-container
+        *ngFor="let employee of employees; let i = index; let last = last">
+    <b-avatar
+            *ngIf="i < avatarsToFit - 1 || (i < avatarsToFit && !showMore) || (i < avatarsToFit && last && showMore)"
+            [imageSource]="employee.imageSource"
+            [size]="avatarSize"></b-avatar>
+    <b-avatar class="show-more" *ngIf="i === avatarsToFit - 1 && !last && showMore"
+              [size]="avatarSize">
+        <b-icon [icon]="icon"></b-icon>
+    </b-avatar>
+</ng-container>

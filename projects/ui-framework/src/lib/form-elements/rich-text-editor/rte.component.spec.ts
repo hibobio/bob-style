@@ -4,14 +4,16 @@ import {
   TestBed,
   inject,
   fakeAsync,
-  tick
+  tick,
+  flush
 } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import {
   NO_ERRORS_SCHEMA,
   Component,
   SimpleChange,
-  OnInit
+  OnInit,
+  OnDestroy
 } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
@@ -42,19 +44,32 @@ import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rt
 @Component({
   template: `
     <form class="form" [formGroup]="rteForm">
-      <b-rich-text-editor formControlName="rteControl"></b-rich-text-editor>
+      <b-rich-text-editor
+        [label]="'label text'"
+        formControlName="rteControl"
+      ></b-rich-text-editor>
     </form>
   `,
   providers: []
 })
-class TestComponent implements OnInit {
+class TestComponent implements OnInit, OnDestroy {
   constructor() {}
   rteForm: any;
+  rtrValue: string;
+  subscr;
 
   ngOnInit(): void {
     this.rteForm = new FormGroup({
       rteControl: new FormControl('', { updateOn: 'change' })
     });
+    this.subscr = this.rteForm
+      .get('rteControl')
+      .valueChanges.subscribe(value => {
+        this.rtrValue = value;
+      });
+  }
+  ngOnDestroy(): void {
+    this.subscr.unsubscribe();
   }
 }
 
@@ -70,6 +85,7 @@ describe('RichTextEditorComponent', () => {
   let overlayContainerElement: HTMLElement;
   let QuillEditor: Quill;
   let RTEqlEditorNativeElement: HTMLElement;
+  let rteControl: FormControl;
 
   let rteUtils: RteUtilsService;
 
@@ -114,6 +130,8 @@ describe('RichTextEditorComponent', () => {
         RTEeditorNativeElement = fixture.debugElement.query(
           By.css('.quill-editor')
         ).nativeElement;
+
+        rteControl = testComponent.rteForm.get('rteControl');
 
         RTEComponent.ngOnChanges({
           controls: new SimpleChange(null, RTEComponent.controls, true),
@@ -160,6 +178,12 @@ describe('RichTextEditorComponent', () => {
     });
 
     it('should insert label placeholder text', () => {
+      expect(RTEqlEditorNativeElement.getAttribute('data-placeholder')).toEqual(
+        'label text'
+      );
+    });
+
+    it('should update label placeholder text', () => {
       RTEComponent.ngOnChanges({
         label: new SimpleChange(null, 'test label', false)
       });
@@ -270,63 +294,6 @@ describe('RichTextEditorComponent', () => {
     });
   });
 
-  describe('Value input', () => {
-    it('should set the editor text to value input', () => {
-      RTEComponent.ngOnChanges({
-        value: new SimpleChange(null, 'test text', false)
-      });
-      fixture.detectChanges();
-
-      expect(RTEqlEditorNativeElement.textContent.trim()).toEqual('test text');
-    });
-  });
-
-  describe('Events', () => {
-    it('should propagate value when text changes and sendChangeOn = change', done => {
-      const subscr = RTEComponent.changed.subscribe(val => {
-        expect(val).toEqual('<div>test text </div>');
-        subscr.unsubscribe();
-        done();
-      });
-      RTEComponent.sendChangeOn = RTEchangeEvent.change;
-      fixture.detectChanges();
-
-      RTEComponent.ngOnChanges({
-        value: new SimpleChange(null, 'test text', false)
-      });
-    });
-
-    it('should propagate value only on blur, if sendChangeOn = blur', done => {
-      let testVar = 1;
-      const subscr = RTEComponent.changed.subscribe(val => {
-        expect(val).toEqual('<div>test text 2 </div>');
-        expect(testVar).toEqual(2);
-        subscr.unsubscribe();
-        done();
-      });
-      RTEComponent.sendChangeOn = RTEchangeEvent.blur;
-      fixture.detectChanges();
-
-      RTEComponent.ngOnChanges({
-        value: new SimpleChange(null, 'test text 2', false)
-      });
-
-      testVar = 2;
-      RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
-    });
-
-    it('should output focused event when editor is focused', () => {
-      spyOn(RTEComponent.focused, 'emit');
-      RTEqlEditorNativeElement.dispatchEvent(new Event('focus'));
-      expect(RTEComponent.focused.emit).toHaveBeenCalled();
-    });
-    it('should output blurred event when editor is blurred', () => {
-      spyOn(RTEComponent.blurred, 'emit');
-      RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
-      expect(RTEComponent.blurred.emit).toHaveBeenCalled();
-    });
-  });
-
   describe('Size control', () => {
     it('should open Size Panel on toolbar Size button click', () => {
       const sizeButtonElement = fixture.debugElement.query(
@@ -341,7 +308,7 @@ describe('RichTextEditorComponent', () => {
       expect(sizePanelElement).toBeTruthy();
     });
 
-    it('should change font-size with Size Panel controls', done => {
+    it('should change font-size with Size Panel controls', fakeAsync(() => {
       RTEComponent.ngOnChanges({
         value: new SimpleChange(null, 'test', false)
       });
@@ -350,20 +317,16 @@ describe('RichTextEditorComponent', () => {
       ).nativeElement;
       sizeButtonElement.click();
 
-      const subscr = RTEComponent.changed.subscribe(val => {
-        expect(val).toContain('ql-size-huge');
-        subscr.unsubscribe();
-        done();
-      });
-
-      fixture.detectChanges();
-
       const hugeButtonElement = overlayContainerElement.querySelector(
         '.rte-button.rte-size-huge'
       ) as HTMLElement;
       QuillEditor.setSelection(0, 4);
       hugeButtonElement.click();
-    });
+
+      tick(50);
+      expect(testComponent.rtrValue).toContain('ql-size-huge');
+      flush();
+    }));
   });
 
   describe('Link control', () => {
@@ -380,7 +343,7 @@ describe('RichTextEditorComponent', () => {
       expect(linkPanelElement).toBeTruthy();
     });
 
-    it('should insert link into Editor', done => {
+    it('should insert link into Editor', fakeAsync(() => {
       const linkButtonElement = fixture.debugElement.query(
         By.css('b-panel button.ql-link')
       ).nativeElement;
@@ -404,50 +367,121 @@ describe('RichTextEditorComponent', () => {
       textInputElement.dispatchEvent(new Event('input'));
       urlInputElement.value = 'test2';
       urlInputElement.dispatchEvent(new Event('input'));
-
-      const subscr = RTEComponent.blurred.subscribe(val => {
-        expect(val).toContain('a href="http://test2"');
-        subscr.unsubscribe();
-        done();
-      });
-
       addButtonElement.click();
-      RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
+
+      tick(50);
+      expect(testComponent.rtrValue).toContain('a href="http://test2"');
+      flush();
+    }));
+  });
+
+  describe('Value input', () => {
+    it('should set the editor text to value input', () => {
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(null, 'test text', false)
+      });
+      fixture.detectChanges();
+
+      expect(RTEqlEditorNativeElement.textContent.trim()).toEqual('test text');
     });
   });
 
   describe('FormControl setValue', () => {
     it('should let FormControl set value and then emit valueChanges', fakeAsync(() => {
-      const rteControl = testComponent.rteForm.get('rteControl');
-      let testVar = 'some value';
-
-      const subscr = rteControl.valueChanges.subscribe(value => {
-        testVar = value;
-      });
-
       rteControl.setValue('test');
-
-      tick();
-      subscr.unsubscribe();
-      expect(testVar).toEqual('test');
+      tick(50);
+      expect(testComponent.rtrValue).toEqual('test');
+      flush();
     }));
 
     it('should not emit valueChanges when setting value with emitEvent false', fakeAsync(() => {
-      const rteControl = testComponent.rteForm.get('rteControl');
-      let testVar = 'some value';
-
-      const subscr = rteControl.valueChanges.subscribe(value => {
-        testVar = value;
-      });
-
       rteControl.setValue('test2', {
         emitEvent: false
       });
-
-      tick();
-      subscr.unsubscribe();
-      expect(testVar).not.toEqual('test2');
+      tick(50);
+      expect(testComponent.rtrValue).not.toEqual('test2');
+      flush();
     }));
+  });
+
+  describe('FormControl propagateChange', () => {
+    it('should propagate value when text changes and sendChangeOn = change', fakeAsync(() => {
+      RTEComponent.sendChangeOn = RTEchangeEvent.change;
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(null, 'test text 1', false)
+      });
+      tick(50);
+      expect(testComponent.rtrValue).toEqual('<div>test text 1 </div>');
+      flush();
+    }));
+
+    it('should propagate value only on blur, if sendChangeOn = blur', fakeAsync(() => {
+      RTEComponent.sendChangeOn = RTEchangeEvent.blur;
+
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(null, 'test text 2', false)
+      });
+      tick(50);
+      expect(testComponent.rtrValue).not.toEqual('<div>test text 2 </div>');
+      flush();
+
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(null, 'test text 3', false)
+      });
+      RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
+      tick(50);
+      expect(testComponent.rtrValue).toEqual('<div>test text 3 </div>');
+      flush();
+    }));
+  });
+
+  describe('Events', () => {
+    it('should output changed event when text changes and sendChangeOn = change', () => {
+      RTEComponent.sendChangeOn = RTEchangeEvent.change;
+      spyOn(RTEComponent.changed, 'emit');
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(null, 'test text 8', false)
+      });
+      expect(RTEComponent.changed.emit).toHaveBeenCalledWith(
+        '<div>test text 8 </div>'
+      );
+    });
+
+    it('should output changed event only on blur, if sendChangeOn = blur', () => {
+      RTEComponent.sendChangeOn = RTEchangeEvent.blur;
+      spyOn(RTEComponent.changed, 'emit');
+
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(null, 'test text 9', false)
+      });
+
+      expect(RTEComponent.changed.emit).not.toHaveBeenCalled();
+      RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
+      expect(RTEComponent.changed.emit).toHaveBeenCalledWith(
+        '<div>test text 9 </div>'
+      );
+    });
+
+    it('should output focused event when editor is focused', () => {
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(null, 'test text 10', false)
+      });
+      spyOn(RTEComponent.focused, 'emit');
+      RTEqlEditorNativeElement.dispatchEvent(new Event('focus'));
+      expect(RTEComponent.focused.emit).toHaveBeenCalledWith(
+        '<div>test text 10 </div>'
+      );
+    });
+    it('should output blurred event when editor is blurred', () => {
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(null, 'test text 11', false)
+      });
+      spyOn(RTEComponent.blurred, 'emit');
+      RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
+      expect(RTEComponent.blurred.emit).toHaveBeenCalledWith(
+        '<div>test text 11 </div>'
+      );
+    });
   });
 
   describe('PlaceholderRteConverter', () => {

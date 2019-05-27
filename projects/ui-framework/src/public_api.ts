@@ -79,6 +79,10 @@ export { LinkColor, LinkTarget } from './lib/buttons-indicators/link/link.enum';
 // InfoTooltip Module
 export { InfoTooltipModule } from './lib/popups/info-tooltip/info-tooltip.module';
 export { InfoTooltipComponent } from './lib/popups/info-tooltip/info-tooltip.component';
+// Employees Showcase Module
+export { EmployeesShowcaseModule } from './lib/buttons-indicators/employees-showcase/employees-showcase.module';
+export { EmployeesShowcaseComponent } from './lib/buttons-indicators/employees-showcase/employees-showcase.component';
+export { EmployeeShowcase } from './lib/buttons-indicators/employees-showcase/employees-showcase.interface';
 /*
  * Form Elements
  */

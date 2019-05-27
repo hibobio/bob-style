@@ -165,6 +165,10 @@ export class RichTextEditorComponent extends RTEformElement
   // this extends RTE Abstract's ngAfterViewInit
   onNgAfterViewInit(): void {
     merge(this.editorOptions, {
+      placeholder: this.rteUtils.getEditorPlaceholder(
+        this.label,
+        this.required
+      ),
       modules: {
         toolbar: {
           container: this.toolbar.nativeElement,

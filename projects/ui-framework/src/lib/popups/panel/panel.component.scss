@@ -18,7 +18,7 @@
   .b-panel {
     .panel-wrapper {
       @include OverlayPanel();
-      padding: 15px;
+      padding: 30px;
       &.small {
         max-width: 300px;
       }

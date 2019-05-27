@@ -1,6 +1,8 @@
 <div class="quill-editor">
   <div #quillEditor
+       [attr.data-length]="(minChars > 0 || maxChars) ? ( (length || 0) + (maxChars ? '/' + maxChars : '')) : null"
        (keydown)="$event.stopPropagation()"
+       [ngClass]="{'length-invalid': length < minChars || (maxChars && length > maxChars)}"
        [ngStyle]="{
          minHeight: minHeight ? (minHeight - 43) + 'px' : null,
          maxHeight: maxHeight ? (maxHeight - 43) + 'px' : null
@@ -10,9 +12,11 @@
   <div #toolbar
        class="quill-toolbar"
        [attr.hide-align]="!controls.includes(BlotType.align)"
-       *ngIf="controls.length > 0 || hasSuffix">
+       *ngIf="controls.length > 0 || hasSuffix"
+       (mousedown)="$event.preventDefault()">
 
-    <b-panel panelClass="rte-size-controls"
+    <b-panel #sizePanel
+             panelClass="rte-size-controls"
              [showBackdrop]="false"
              [size]="panelSize.medium"
              *ngIf="controls.includes(BlotType.size)"

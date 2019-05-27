@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, SimpleChange } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { chipOptionsMock } from '../../../ui-framework/src/lib/buttons-indicators/chips/chip-input/chipsOptionsMock';
-import { ColorService } from '../../../ui-framework/src/lib/services/color-service/color.service';
+
+import { RichTextEditorComponent } from '../../../ui-framework/src/lib/form-elements/rich-text-editor/rte.component';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,9 @@ import { ColorService } from '../../../ui-framework/src/lib/services/color-servi
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  constructor(public colorService: ColorService) {}
+  constructor() {}
+
+  @ViewChild('rteEditor') private rteEditor: RichTextEditorComponent;
 
   // Chips Input
 
@@ -69,6 +72,10 @@ export class AppComponent implements OnInit {
     console.log('*** RTE ' + type + ': "' + event + '"');
   }
 
+  onRteFormSubmit() {
+    console.log(this.myForm.value);
+  }
+
   ngOnInit() {
     this.myForm.get('rteControl').valueChanges.subscribe(value => {
       console.log('!!!!!!! RTE valueChanges: "' + value + '"');
@@ -82,9 +89,16 @@ export class AppComponent implements OnInit {
     this.myForm.get('inputControl').setValue('i am input', {
       emitEvent: false
     });
-    this.myForm.get('rteControl').setValue(this.rteInitValue, {
+    this.myForm.get('rteControl').setValue('i am rte', {
       emitEvent: false
     });
+
+    setTimeout(() => {
+      this.rteEditor.ngOnChanges({
+        value: new SimpleChange(null, this.rteInitValue, false)
+      });
+      this.rteEditor.editor.root.dispatchEvent(new Event('blur'));
+    }, 1000);
 
     // chips
 
