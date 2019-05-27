@@ -19,8 +19,6 @@
   }
 
   .icon-container mat-icon {
-    width: 24px !important;
-    height: 24px;
     margin-right: 13px;
   }
 
@@ -28,13 +26,7 @@
     color: $grey-600;
   }
 
-  .prefix-container {
-    display: flex;
-    flex-direction: row;
-  }
-
   .prefix-text {
     align-self: center;
   }
 }
-

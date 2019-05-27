@@ -3,9 +3,10 @@ import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { InputEvent } from '../input/input.interface';
 import { InputTypes } from '../input/input.enum';
 import { BaseInputElement } from '../base-input-element';
-import { SocialInputConfig, SocialType, socialTypesConfig } from './social.interface';
+import { SocialType } from './social.interface';
 import { set, has } from 'lodash';
 import { SocialService } from './social.service';
+import { SocialInputConfig, socialTypesConfig } from './social.const';
 
 @Component({
   selector: 'b-social',
