@@ -8,7 +8,7 @@ import { By } from '@angular/platform-browser';
 import { SocialType } from './social.interface';
 import { Icons } from '../../icons/icons.enum';
 
-fdescribe('SearchComponent', () => {
+describe('SearchComponent', () => {
   let component: SocialComponent;
   let fixture: ComponentFixture<SocialComponent>;
 
