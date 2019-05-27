@@ -4,8 +4,7 @@
 @mixin OverlayPanel($overflow: visible) {
   position: relative;
   overflow: $overflow;
-  border: 1px solid $grey-500;
-  box-shadow: 0 2px 5px 0 $boxShadowColor;
+  box-shadow: 0 0 10px 0 $boxShadowColor;
   border-radius: 4px;
   box-sizing: border-box;
   background-color: $white;
@@ -20,10 +19,12 @@
     content: '';
     display: block;
     position: absolute;
+    @include arrow(16px);
   }
 
   &:before {
     z-index: 0;
+    box-shadow: 0 0 10px 0 $boxShadowColor;
   }
   &:after {
     z-index: 2;
@@ -32,58 +33,36 @@
 
 @mixin OverlayPositionBounding($direction) {
   @if $direction == 'center' {
-    &:before {
-      left: calc(50% - 6px);
-    }
-    &:after {
-      left: calc(50% - 5px);
+    &:before, &:after {
+      left: calc(50% - 8px);
     }
   }
+
   @if $direction == 'below' {
-    top: 8px;
-    &:before {
-      @include arrow-up(6px, $grey-500);
-      top: -5px;
-      border-bottom-width: 6px;
-    }
-    &:after {
-      top: -4px;
-      @include arrow-up(5px, $white);
+    top: 17px;
+    &:before, &:after {
+      top: -8px;
     }
   }
 
   @if $direction == 'above' {
-    bottom: 8px;
-    &:before {
-      bottom: -5px;
-      @include arrow-down(6px, $grey-500);
-      border-top-width: 5px;
-    }
-    &:after {
-      bottom: -4px;
-      @include arrow-down(5px, $white);
+    bottom: 17px;
+    &:before, &:after {
+      bottom: -8px;
     }
   }
 
   @if $direction == 'after' {
-    &:before {
+    &:before, &:after {
       right: auto;
-      left: 12px;
-    }
-    &:after {
-      right: auto;
-      left: 13px;
+      left: 25px;
     }
   }
 
   @if $direction == 'before' {
-    &:before {
+    &:before, &:after {
       left: auto;
-      right: 12px;
-    }
-    &:after {
-      left: auto;
-      right: 13px;
+      right: 25px;
     }
   }
 }

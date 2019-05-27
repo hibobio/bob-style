@@ -10,10 +10,7 @@
   border-radius: 4px;
   border: 1px solid $grey-500;
   overflow: hidden;
-  transition: box-shadow 0.2s;
-  &:hover {
-    box-shadow: 0 2px 3px 0 $boxShadowColor;
-  }
+  box-shadow: 0 2px 3px 0 $boxShadowColor;
 }
 
 :host ::ng-deep {

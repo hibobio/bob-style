@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Icons } from './icons.enum';
+import { first } from 'rxjs/operators';
 
 const ICONS_CDN = 'https://images.hibob.com/icons/';
 
@@ -12,7 +13,11 @@ export class IconService {
   }
 
   public initIcon(icon: Icons): void {
-    this.iconRegistry.addSvgIcon(icon,
-      this.sanitizer.bypassSecurityTrustResourceUrl(`${ICONS_CDN}${icon}.svg`));
+    this.iconRegistry.getNamedSvgIcon(icon).pipe(first()).subscribe(() => {
+    }, () => {
+      console.log('error', icon);
+      this.iconRegistry.addSvgIcon(icon,
+        this.sanitizer.bypassSecurityTrustResourceUrl(`${ICONS_CDN}${icon}.svg`));
+    });
   }
 }

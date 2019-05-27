@@ -25,14 +25,12 @@
      class="avatar-title"
      [ngClass]="'avatar-title-' + getSizeClass(size) + (disabled ? ' disabled' : '')">
 
-  <h4 b-truncate-tooltip
-      *ngIf="title"
+  <h4 *ngIf="title"
       class="title">
     {{title}}
   </h4>
 
-  <p b-truncate-tooltip
-     *ngIf="subtitle"
+  <p *ngIf="subtitle"
      class="subtitle">
     {{subtitle}}
   </p>

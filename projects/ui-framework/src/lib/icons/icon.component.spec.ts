@@ -1,12 +1,8 @@
 import { IconService } from './icon.service';
 import { IconComponent } from './icon.component';
-import {
-  ComponentFixture,
-  async,
-  TestBed
-} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Icons, IconColor, IconSize } from './icons.enum';
+import { IconColor, Icons, IconSize } from './icons.enum';
 import createSpyObj = jasmine.createSpyObj;
 import SpyObj = jasmine.SpyObj;
 
@@ -17,7 +13,7 @@ describe('IconElementComponent', () => {
 
   beforeEach(async(() => {
     spyIconService =
-      createSpyObj('spyIconService', ['initIcon']);
+      createSpyObj('spyIconService', ['initIcon', 'getNamedSvgIcon']);
 
     TestBed.configureTestingModule({
       declarations: [IconComponent],

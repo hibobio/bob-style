@@ -2,7 +2,6 @@
 @import '../../../style/typography';
 @import '../../../style/mixins';
 @import '../../../form-elements/form-element';
-@import '../../../popups/overlay';
 
 :host {
   display: block;
@@ -124,8 +123,9 @@
 
 ::ng-deep .chip-input-autocomplete {
   &.mat-autocomplete-panel {
-    @include OverlayPanel(null);
     margin-top: -1px;
+    border: 1px solid $grey-500;
+    box-shadow: 0 2px 3px 0 $boxShadowColor;
   }
   .mat-option {
     color: $body-text-color;

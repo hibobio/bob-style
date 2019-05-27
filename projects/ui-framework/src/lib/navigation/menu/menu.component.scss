@@ -52,38 +52,5 @@
         }
       }
     }
-
-    > .cdk-overlay-connected-position-bounding-box {
-      .mat-menu-panel {
-        @include OverlayPointerHolders();
-
-        &.mat-menu-below {
-          @include OverlayPositionBounding('below');
-        }
-
-        // opens above
-        &.mat-menu-above {
-          @include OverlayPositionBounding('above');
-        }
-
-        // opens to the right - default
-        &.mat-menu-after {
-          @include OverlayPositionBounding('after');
-        }
-
-        // opens to the left {
-        &.mat-menu-before {
-          @include OverlayPositionBounding('before');
-        }
-      }
-    }
-    > .cdk-overlay-connected-position-bounding-box ~ .cdk-overlay-connected-position-bounding-box {
-      .mat-menu-panel {
-        &:before,
-        &:after {
-          content: none;
-        }
-      }
-    }
   }
 }
