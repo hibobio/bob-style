@@ -13,7 +13,7 @@ describe('IconElementComponent', () => {
 
   beforeEach(async(() => {
     spyIconService =
-      createSpyObj('spyIconService', ['initIcon', 'getNamedSvgIcon']);
+      createSpyObj('spyIconService', ['initIcon']);
 
     TestBed.configureTestingModule({
       declarations: [IconComponent],
