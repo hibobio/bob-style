@@ -5,7 +5,7 @@ import { TestBed } from '@angular/core/testing';
 import { Icons } from './icons.enum';
 import { Observable } from 'rxjs';
 
-fdescribe('IconService', () => {
+describe('IconService', () => {
   let iconService: IconService;
   let iconRegistry: jasmine.SpyObj<MatIconRegistry>;
   let sanitizer: jasmine.SpyObj<DomSanitizer>;
