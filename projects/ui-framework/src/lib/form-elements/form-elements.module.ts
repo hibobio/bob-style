@@ -12,6 +12,7 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
 import { MultiSelectModule } from './lists/multi-select/multi-select.module';
 import { SingleSelectModule } from './lists/single-select/single-select.module';
 import { SearchModule } from '../search/search/search.module';
+import { SocialModule } from './social/social.module';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { SearchModule } from '../search/search/search.module';
     SearchModule,
     CheckboxModule,
     MultiSelectModule,
-    SingleSelectModule
+    SingleSelectModule,
+    SocialModule
   ],
   exports: [
     InputComponent,

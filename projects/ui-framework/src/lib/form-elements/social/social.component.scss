@@ -1,0 +1,40 @@
+@import '../form-element.scss';
+
+:host ::ng-deep {
+
+  display: inline-flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  b-input {
+    width: 100%;
+  }
+
+  .mat-form-field.has-prefix .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-prefix {
+    padding-right: 0 !important;
+  }
+
+  .social-input {
+    padding-right: 0
+  }
+
+  .icon-container mat-icon {
+    width: 24px !important;
+    height: 24px;
+    margin-right: 13px;
+  }
+
+  input {
+    color: $grey-600;
+  }
+
+  .prefix-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .prefix-text {
+    align-self: center;
+  }
+}
+
