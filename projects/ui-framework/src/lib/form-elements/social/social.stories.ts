@@ -60,7 +60,7 @@ inputStories.add(
         value: text('value', ''),
         errorMessage: text('errorMessage', ''),
         placeholder: text('placeholder', 'Your name'),
-        socialInputChange: action(),
+        socialInputChange: action('social'),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', ''),

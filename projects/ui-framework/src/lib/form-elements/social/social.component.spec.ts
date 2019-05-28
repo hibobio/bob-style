@@ -7,10 +7,23 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { SocialType } from './social.interface';
 import { Icons } from '../../icons/icons.enum';
+import { socialTypesConfig } from './social.const';
 
-describe('SearchComponent', () => {
+describe('SocialComponent', () => {
   let component: SocialComponent;
   let fixture: ComponentFixture<SocialComponent>;
+
+  const assignSocialSelection = (type) => {
+    const socialTypesRes = socialTypesConfig;
+    const res = {
+      facebook: 'www.facebook.com/AlanTulin',
+      linkedin: 'www.linkedin.com/AlanTulin',
+      twitter: 'www.twitter.com/AlanTulin'
+    };
+    expect(`${socialTypesRes[type].prefix}AlanTulin`).toEqual(res[type]);
+  };
+
+
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -35,12 +48,11 @@ describe('SearchComponent', () => {
   }));
 
   describe('ngOnInit', () => {
-    it('should assign social selection (facebook) to social input type', () => {
-      const socialConfigRes = {
-        icon: Icons.facebook,
-        prefix: 'www.facebook.com/'
-      };
-      expect(component.socialSelection).toEqual(socialConfigRes);
+    fit('should assign social selection (facebook) to social input type', () => {
+      const socialConfigRes = [  'facebook', 'linkedin', 'twitter'];
+      for (const socialType of socialConfigRes) {
+        assignSocialSelection(socialType);
+      }
     });
     it('should assign value with value if exists', () => {
       component.value = 'www.facebook.com/AlanTulin';
