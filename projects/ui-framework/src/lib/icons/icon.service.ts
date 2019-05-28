@@ -15,7 +15,6 @@ export class IconService {
   public initIcon(icon: Icons): void {
     this.iconRegistry.getNamedSvgIcon(icon).pipe(first()).subscribe(() => {
     }, () => {
-      console.log('error', icon);
       this.iconRegistry.addSvgIcon(icon,
         this.sanitizer.bypassSecurityTrustResourceUrl(`${ICONS_CDN}${icon}.svg`));
     });
