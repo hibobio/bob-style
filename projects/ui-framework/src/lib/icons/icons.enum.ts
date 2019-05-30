@@ -68,6 +68,7 @@ export enum Icons {
   facebook = 'Facebook',
   linkedin = 'Linkedin',
   twitter = 'Twitter',
+
   // duplicate icons for backwards compatibility
   // TODO: remove if not used
   approve_badge = 'success_icon',
