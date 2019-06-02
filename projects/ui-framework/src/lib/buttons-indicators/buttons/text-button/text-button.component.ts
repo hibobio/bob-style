@@ -27,8 +27,8 @@ export class TextButtonComponent {
   readonly iconColor = IconColor;
 
   @HostListener('click')
-  onClick($event) {
-    this.clicked.emit($event);
+  onClick() {
+    this.clicked.emit();
   }
 
   @HostBinding('class')
