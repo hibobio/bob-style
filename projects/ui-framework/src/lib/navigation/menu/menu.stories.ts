@@ -60,50 +60,52 @@ const menuMock: MenuItem[] = [
     children: [
       {
         label: 'Update work details',
+        key: 'update.work.details',
         children: [
           {
             label: 'Update site',
-            action: ($event) => console.log('update site', $event)
+            action: ($event) => console.log('update site', $event),
+            key: 'update.site',
           },
           {
             label: 'Update email',
-            action: ($event) => console.log('update email', $event)
+            action: ($event) => console.log('update email', $event),
           },
           {
             label: 'Update reports to',
             disabled: true,
-            action: ($event) => console.log('update reports to', $event)
-          }
-        ]
+            action: ($event) => console.log('update reports to', $event),
+          },
+        ],
       },
       {
         label: 'Update internal details',
         children: [
           {
             label: 'Terminate',
-            action: ($event) => console.log('terminate', $event)
+            action: ($event) => console.log('terminate', $event),
           },
           {
             label: 'Rehire',
-            action: ($event) => console.log('rehire', $event)
-          }
-        ]
+            action: ($event) => console.log('rehire', $event),
+          },
+        ],
       },
       {
         label: 'Delete file',
-        action: ($event) => console.log('delete file', $event)
-      }
-    ]
+        action: ($event) => console.log('delete file', $event),
+      },
+    ],
   },
   {
     label: 'View profile',
-    action: ($event) => console.log('view profile', $event)
+    action: ($event) => console.log('view profile', $event),
   },
   {
     label: 'Request time-off',
     disabled: true,
-    action: ($event) => console.log('request time off', $event)
-  }
+    action: ($event) => console.log('request time off', $event),
+  },
 ];
 
 menuStories.add(

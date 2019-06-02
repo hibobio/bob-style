@@ -36,7 +36,7 @@ export enum Icons {
   skype_link = 'skype_link',
   slack_link = 'slack_link',
   back_arrow_link = 'back_Icon',
-  close = 'x',
+  close = 'baseline-close-24px',
   reset_x = 'reset_x',
   three_dots = 'three_dots',
   three_dots_vert = '3_dots_vert',

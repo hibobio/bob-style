@@ -61,9 +61,9 @@ radioStories.add(
       props: {
         value: number('value', 11),
         radioConfig: object('radioConfig', [
-          { id: 11, label: 'option one' },
-          { id: 12, label: 'option two' },
-          { id: 13, label: 'option three' }
+          { id: 11, label: 'Option one' },
+          { id: 12, label: 'Option two' },
+          { id: 13, label: 'Option three' }
         ]),
         direction: select('direction', direction, direction.row),
         disabled: boolean('disabled', false),

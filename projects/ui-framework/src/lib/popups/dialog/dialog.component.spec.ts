@@ -6,7 +6,6 @@ import { MatDialogModule, MatDialogRef } from '@angular/material';
 import { DialogButtons } from './dialog.interface';
 import { IconService } from '../../icons/icon.service';
 import { By } from '@angular/platform-browser';
-import { startCase, toUpper } from 'lodash';
 import { MockComponent } from 'ng-mocks';
 import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
 import { SquareButtonComponent } from '../../buttons-indicators/buttons/square/square.component';
@@ -19,7 +18,7 @@ describe('DialogComponent', () => {
   let spyIconService: SpyObj<IconService>;
   let spyMatDialogRef: SpyObj<MatDialogRef<any>>;
 
-  const dialogTitle = 'dialog title';
+  const dialogTitle = 'Dialog title';
 
   beforeEach(async(() => {
     const dialogButtonsConfig: DialogButtons = {
@@ -66,7 +65,7 @@ describe('DialogComponent', () => {
   describe('title', () => {
     it('should display component title', () => {
       const titleEl = fixture.debugElement.query(By.css('b-display-2'));
-      expect(titleEl.nativeElement.innerText).toEqual(startCase(dialogTitle));
+      expect(titleEl.nativeElement.innerText).toEqual(dialogTitle);
     });
   });
 
@@ -183,7 +182,7 @@ describe('DialogComponent', () => {
         fixture.detectChanges();
         const confirmationMessage = fixture.debugElement.query(By.css('.confirmation-message'));
         expect(confirmationMessage).toBeTruthy();
-        expect(confirmationMessage.children[0].nativeElement.innerText).toBe(toUpper('are you sure?'));
+        expect(confirmationMessage.children[0].nativeElement.innerText).toBe('are you sure?');
         expect(confirmationMessage.children[1].nativeElement.innerText).toBe('click confirm to invoke method');
       });
       it('should change ok label to the confirmation label', () => {
@@ -191,7 +190,7 @@ describe('DialogComponent', () => {
         okButton.clicked.emit();
         fixture.detectChanges();
         const okButtonEl = fixture.debugElement.query(By.css('.ok-button'));
-        expect(okButtonEl.nativeElement.innerText).toEqual('CONFIRM');
+        expect(okButtonEl.nativeElement.innerText).toEqual('confirm');
       });
       it('should remove confirmation when clicking cancel and not close dialog', () => {
         const okButton = fixture.debugElement.query(By.css('.ok-button')).componentInstance;

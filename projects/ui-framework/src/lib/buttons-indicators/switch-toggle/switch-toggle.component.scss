@@ -32,9 +32,6 @@
 
     .mat-slide-toggle-content {
       @include BodyFont;
-      &:first-letter {
-        text-transform: uppercase;
-      }
     }
 
     .mat-slide-toggle-ripple.mat-ripple {

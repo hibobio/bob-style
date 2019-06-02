@@ -45,11 +45,12 @@ $font-size-subheading: $font-size-body;
   $size,
   $weight,
   $lineHeight: $line-height-heading,
-  $transform: capitalize,
+  $transform: none,
   $style: normal,
   $font-family: var(--display-font-family),
   $addCssVars: false
 ) {
+  color: $grey-700;
   @include FontDefault($style, $weight, $size, $lineHeight, $addCssVars);
   font-family: $font-family;
   display: block;
@@ -66,7 +67,6 @@ $font-size-subheading: $font-size-body;
   @include FontDefault($style, $weight, $size, $lineHeight, $addCssVars);
   font-family: var(--heading-font-family);
   display: block;
-  text-transform: uppercase;
 }
 
 @mixin BodyFont(

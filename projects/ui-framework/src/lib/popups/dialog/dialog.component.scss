@@ -17,8 +17,8 @@ $footerSize: 50px;
       color: inherit;
       .close-button {
         position: absolute;
-        top: 0;
-        right: 0;
+        top: 5px;
+        right: 5px;
       }
       .mat-dialog-title, .mat-dialog-content, .mat-dialog-actions {
         display: block;
@@ -99,22 +99,6 @@ $footerSize: 50px;
               margin-left: 10px;
             }
           }
-        }
-      }
-    }
-    &.size-small .mat-dialog-container {
-      .dialog-footer .mat-dialog-actions {
-        justify-content: center;
-        .dialog-button {
-          flex-basis: calc(50% - 5px);
-          button {
-            width: 100%;
-            padding-left: 0;
-            padding-right: 0;
-          }
-        }
-        &.single-button .dialog-button {
-          flex-basis: 100%;
         }
       }
     }

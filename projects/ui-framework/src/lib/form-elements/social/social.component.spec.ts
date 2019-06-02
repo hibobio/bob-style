@@ -48,7 +48,7 @@ describe('SocialComponent', () => {
   }));
 
   describe('ngOnInit', () => {
-    fit('should assign social selection (facebook) to social input type', () => {
+    it('should assign social selection (facebook) to social input type', () => {
       const socialConfigRes = [  'facebook', 'linkedin', 'twitter'];
       for (const socialType of socialConfigRes) {
         assignSocialSelection(socialType);

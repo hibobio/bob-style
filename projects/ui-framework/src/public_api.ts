@@ -32,6 +32,9 @@ export {
   BackButtonComponent
 } from './lib/buttons-indicators/buttons/back-button/back-button.component';
 export {
+  TextButtonComponent
+} from './lib/buttons-indicators/buttons/text-button/text-button.component';
+export {
   ButtonType,
   ButtonSize,
   BackButtonType

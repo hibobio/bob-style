@@ -4,8 +4,10 @@
                [selectedIndex]="selectedIndex"
                [disableRipple]="true">
 
-  <mat-tab *ngFor="let tab of tabs"
-           label="{{tab.label}}">
+  <mat-tab *ngFor="let tab of tabs">
+    <ng-template mat-tab-label>
+      <span class="{{tab?.key}}">{{tab.label}}</span>
+    </ng-template>
   </mat-tab>
 
 </mat-tab-group>

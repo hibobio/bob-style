@@ -1,0 +1,18 @@
+:host {
+  display: inline-block;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  &.color-primary {
+    color: var(--primary-500);
+  }
+}
+
+b-icon {
+  margin-right: 4px;
+}

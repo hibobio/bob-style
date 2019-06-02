@@ -45,14 +45,14 @@
     <b-button *ngIf="dialogButtons.cancel"
               (clicked)="onCancel()"
               [disabled]="showProgress"
-              [size]="buttonSize.large"
+              [size]="buttonSize.medium"
               [type]="buttonType.secondary"
               class="dialog-button cancel-button">
       {{dialogButtons.cancel.label}}
     </b-button>
     <b-button (clicked)="onOk()"
               [disabled]="showProgress"
-              [size]="buttonSize.large"
+              [size]="buttonSize.medium"
               class="dialog-button ok-button">
       {{showConfirmation ? dialogButtons.confirmation.buttonLabel : dialogButtons.ok.label}}
     </b-button>

@@ -14,7 +14,7 @@ const template = `
 <b-switch-toggle [isDisabled]="isDisabled"
                  [isChecked]="isChecked"
                  (switchChange)="switchChange($event)">
-  Toggle Me!
+  Toggle me!
 </b-switch-toggle>
 `;
 const note = `

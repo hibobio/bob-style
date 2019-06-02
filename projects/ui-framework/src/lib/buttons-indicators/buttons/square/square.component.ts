@@ -11,7 +11,7 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
             [ngClass]="{'disabled': disabled}"
             (click)="onClick($event)">
       <b-icon [icon]="icon"
-              [size]="iconSize.medium"
+              [size]="iconSize.large"
               [color]="disabled ? iconColor.light : color">
       </b-icon>
     </button>

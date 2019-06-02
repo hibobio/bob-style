@@ -22,13 +22,14 @@ describe('TabsComponent', () => {
     component = fixture.componentInstance;
     component.tabs = [
       {
-        label: 'tab 1'
+        label: 'tab 1',
+        key: 'tab.one',
       },
       {
-        label: 'tab 2'
+        label: 'tab 2',
       },
       {
-        label: 'tab 3'
+        label: 'tab 3',
       }
     ];
     spyOn(component.selectChange, 'emit');
@@ -67,6 +68,13 @@ describe('TabsComponent', () => {
     it('Should output selectChange event', () => {
       component.selectedIndex = 1;
       expect(component.selectChange.emit).not.toHaveBeenCalled();
+    });
+
+    it('should add class from key param when exists in model', () => {
+      fixture.detectChanges();
+      const tabSpan = fixture.debugElement.queryAll(
+        By.css('.mat-tab-label span'));
+      expect(tabSpan[0].nativeElement.classList).toContain('tab.one');
     });
   });
 });

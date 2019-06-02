@@ -14,6 +14,7 @@ describe('MenuComponent', () => {
     menuMock = [
       {
         label: 'button 0',
+        key: 'button.zero',
         action: ($event) => console.log('button 0', $event),
       },
       {
@@ -120,6 +121,13 @@ describe('MenuComponent', () => {
       openMenu();
       const menuOption = fixture.debugElement.queryAll(By.css('.mat-menu-item'))[1];
       expect(menuOption.nativeElement.classList).toContain('disabled');
+    });
+    it('should add class from config key', () => {
+      component.menu = menuMock;
+      fixture.detectChanges();
+      openMenu();
+      const menuOption = fixture.debugElement.queryAll(By.css('.mat-menu-item'))[0];
+      expect(menuOption.nativeElement.classList).toContain('button.zero');
     });
   });
 

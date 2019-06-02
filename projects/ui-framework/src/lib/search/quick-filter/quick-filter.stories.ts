@@ -1,12 +1,11 @@
 import { storiesOf } from '@storybook/angular';
-import { text, select, boolean, withKnobs, number, object } from '@storybook/addon-knobs/angular';
+import { boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { values, cloneDeep } from 'lodash';
+import { cloneDeep, values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { QuickFilterModule } from './quick-filter.module';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
-import { ButtonSize } from '../../buttons-indicators/buttons/buttons.enum';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuickFilterSelectType } from './quick-filter.enum';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
@@ -19,7 +18,10 @@ const template = `
                     [showResetFilter]="showResetFilter"
                     (filtersChange)="filtersChange($event)"
                     (resetFilters)="resetFilters()">
-  <b-button bar-suffix size="${ButtonSize.small}">more</b-button>
+  <b-text-button bar-suffix
+                 text="More"
+                 color="primary">
+  </b-text-button>
 </b-quick-filter-bar>
 `;
 

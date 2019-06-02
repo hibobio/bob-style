@@ -23,16 +23,19 @@ const inputStories = storiesOf(
 
 const tabs: Tab[] = [
   {
-    label: 'Add new hire'
+    label: 'Add new hire',
+    key: 'add.new.hire',
   },
   {
-    label: 'Employee changes'
+    label: 'Employee changes',
+    key: 'employee.changes',
   },
   {
-    label: 'Leave'
+    label: 'Leave',
+    key: 'leave',
   },
   {
-    label: 'Termination'
+    label: 'Termination',
   }
 ];
 const template = `

@@ -57,7 +57,7 @@ buttonStories.add(
       icon: select('icon', icons, Icons.phone_link),
       color: select('color', iconColor, IconColor.dark),
       disabled: boolean('disabled', false),
-      onClick: action()
+      onClick: action('Square button'),
     },
     moduleMetadata: {
       imports: [ButtonsModule, IconsModule, StoryBookLayoutModule]

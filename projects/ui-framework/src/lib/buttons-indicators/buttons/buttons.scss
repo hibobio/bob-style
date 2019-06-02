@@ -24,13 +24,13 @@
   }
 
   @if $type == 'primary' {
-    background-color: var(--primary-500);
-    border: 1px solid var(--primary-500);
+    background-color: var(--primary-600);
+    border: 1px solid var(--primary-600);
     color: $white;
     &:hover {
-      background-color: var(--primary-600);
+      background-color: var(--primary-500);
       box-shadow: 0 1px 3px 0 $boxShadowColor;
-      border: 1px solid var(--primary-700);
+      border: 1px solid var(--primary-600);
     }
     &:active {
       background-color: var(--primary-700);
@@ -53,12 +53,6 @@
 
   @if $type == 'tertiary' {
     border: 1px solid transparent;
-    &:hover {
-      background-color: $grey-200;
-    }
-    &:active {
-      background-color: $grey-300;
-    }
   }
 
   @if $type == 'disabled' {
