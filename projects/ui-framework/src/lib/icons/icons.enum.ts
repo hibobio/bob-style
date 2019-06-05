@@ -53,6 +53,7 @@ export enum Icons {
   edit_field_pencil = 'edit_field_pencil',
   folder = 'folder',
   add_doc = 'add_doc',
+  add = 'add',
   timeline = 'Icon_timeline',
   employee_ref = 'employee_ref',
   docs_empty = 'docs_empty',
