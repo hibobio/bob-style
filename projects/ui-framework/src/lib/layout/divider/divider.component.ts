@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'b-divider, [b-divider]',
-  template: '',
+  template: `{{text}}`,
   styleUrls: ['./divider.component.scss']
 })
 export class DividerComponent {
-  constructor() {}
+
+  @Input() text: string = null;
+
+  constructor() {
+  }
 }
