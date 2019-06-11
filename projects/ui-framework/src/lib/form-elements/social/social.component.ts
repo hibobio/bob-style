@@ -4,7 +4,6 @@ import { InputEvent } from '../input/input.interface';
 import { InputTypes } from '../input/input.enum';
 import { BaseInputElement } from '../base-input-element';
 import { SocialType } from './social.interface';
-import { set, has } from 'lodash';
 import { SocialService } from './social.service';
 import { SocialInputConfig, socialTypesConfig } from './social.const';
 
