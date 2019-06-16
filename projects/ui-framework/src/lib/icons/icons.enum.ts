@@ -71,6 +71,7 @@ export enum Icons {
   twitter = 'Twitter',
   download = 'baseline-get_app-24px',
   add_folder = 'baseline-create_new_folder-24px',
+  add_photo_camera_icon = 'icons/baseline-add_a_photo-24px.svg',
 
 
   // duplicate icons for backwards compatibility
