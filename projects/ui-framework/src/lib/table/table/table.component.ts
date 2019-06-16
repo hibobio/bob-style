@@ -1,28 +1,10 @@
 // tslint:disable-next-line:max-line-length
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
-import { get, has, once, cloneDeep, map, toString } from 'lodash';
-import {
-  ColumnDef,
-  RowClickedEvent,
-  RowNodeDef,
-  RowSelection,
-  SortChangedEvent
-} from './table.interface';
+import { cloneDeep, get, has, map, once, toString } from 'lodash';
+import { ColumnDef, RowClickedEvent, RowNodeDef, RowSelection, SortChangedEvent } from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
-import { LicenseManager } from 'ag-grid-enterprise';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
-import { mockRowData } from '../table-mocks/table-story.mock';
 
 @Component({
   selector: 'b-table',
@@ -30,6 +12,14 @@ import { mockRowData } from '../table-mocks/table-story.mock';
   styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss']
 })
 export class TableComponent implements OnInit, OnChanges {
+
+  constructor(
+    private tableUtilsService: TableUtilsService,
+    private elRef: ElementRef
+  ) {
+    this.tableLicense();
+  }
+  static isLicenseSet = false;
   @ViewChild('agGrid') agGrid: AgGridNg2;
 
   @Input() rowData: any[];
@@ -37,12 +27,8 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() rowSelection: RowSelection = null;
   @Input() maxHeight = 450;
 
-  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
-    SortChangedEvent
-  >();
-  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<
-    RowClickedEvent
-  >();
+  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<SortChangedEvent>();
+  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
 
   readonly rowHeight: number = 50;
@@ -51,18 +37,18 @@ export class TableComponent implements OnInit, OnChanges {
   gridReady = false;
   gridOptions: GridOptions;
   gridColumnDefs: ColumnDef[];
-  readonly tableLicense = once(() =>
-    LicenseManager.setLicenseKey(
-      'hibob_Bob_1Devs_1Deployment_23_April_2020__MTU4NzU5NjQwMDAwMA==5b77134bf43e27e7f8ccb20bdfa3c155'
-    )
-  );
 
-  constructor(
-    private tableUtilsService: TableUtilsService,
-    private elRef: ElementRef
-  ) {
-    this.tableLicense();
-  }
+  readonly tableLicense = once(() =>
+    // @ts-ignore
+    import('ag-grid-enterprise').then((agGrig) => {
+      // tslint:disable-next-line:max-line-length
+      if (!TableComponent.isLicenseSet) {
+        TableComponent.isLicenseSet = true;
+        // tslint:disable-next-line:max-line-length
+        agGrig.LicenseManager.setLicenseKey('hibob_Bob_1Devs_1Deployment_23_April_2020__MTU4NzU5NjQwMDAwMA==5b77134bf43e27e7f8ccb20bdfa3c155');
+      }
+    })
+  );
 
   ngOnInit() {
     this.setGridHeight(this.maxHeight);
