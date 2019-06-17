@@ -361,6 +361,10 @@ export { DOMhelpers } from './lib/services/utils/dom-helpers.service';
 export { ScrollEvent }  from './lib/services/utils/utils.interface';
 export { WindowRef } from './lib/services/utils/window-ref.service';
 export { DocumentRef } from './lib/services/utils/document-ref.service';
+// Device
+export { DeviceService } from './lib/services/device/device.service';
+export * from './lib/services/device/device.interface';
+export * from './lib/services/device/device.enum';
 // Component Renderer
 export { ComponentRendererModule } from './lib/services/component-renderer/component-renderer.module';
 export { ComponentRendererComponent } from './lib/services/component-renderer/component-renderer.component';
