@@ -6,6 +6,7 @@
              let-quickFilterConfig>
   <b-multi-select [ngClass]="{'has-value': hasValue}"
                   [label]="quickFilterConfig.label"
+                  [placeholder]="quickFilterConfig.placeholder || null"
                   [options]="quickFilterConfig.options"
                   [value]="quickFilterConfig.value"
                   (selectChange)="selectChange($event)"
@@ -22,6 +23,7 @@
              let-quickFilterConfig>
   <b-single-select [ngClass]="{'has-value': hasValue}"
                    [label]="quickFilterConfig.label"
+                   [placeholder]="quickFilterConfig.placeholder || null"
                    [options]="quickFilterConfig.options"
                    (selectChange)="selectChange($event)"
                    [disabled]="false"

@@ -68,10 +68,6 @@ $input-focus-border-color: $grey-700;
   color: $label-color;
   @include BodyFont();
 
-  &::first-letter {
-    text-transform: uppercase;
-  }
-
   &:empty {
     display: none;
   }
@@ -131,10 +127,6 @@ $input-focus-border-color: $grey-700;
       color: $grey-600;
       transition: opacity 0.2s;
       @include text-truncate;
-
-      &::first-letter {
-        text-transform: uppercase;
-      }
     }
 
     &:focus::placeholder,

@@ -1,3 +1,5 @@
+@import '../../style/colors';
+
 ::ng-deep {
   .b-quick-filter-panel {
     position: relative !important;
@@ -10,6 +12,11 @@
   b-multi-select {
     &::ng-deep {
       margin: 0;
+
+      .bfe-label {
+        color: $grey-600;
+        padding-left: 16px;
+      }
 
       .bfe-wrap {
         transition: none;

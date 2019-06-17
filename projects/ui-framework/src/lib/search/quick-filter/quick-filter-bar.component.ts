@@ -19,11 +19,24 @@ import { ListChangeService } from '../../form-elements/lists/list-change/list-ch
 import { ListModelService } from '../../form-elements/lists/list-service/list-model.service';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'b-quick-filter-bar',
   templateUrl: './quick-filter-bar.component.html',
-  styleUrls: ['./quick-filter-bar.component.scss']
+  styleUrls: ['./quick-filter-bar.component.scss'],
+  animations: [
+    trigger('reset', [
+      transition(':enter', [
+        style({ transform: 'scale(0.4)' }),
+        animate('350ms cubic-bezier(0.3,1.55,0.85,1.45)', style({ transform: 'scale(1)' })),
+      ]),
+      transition(':leave', [
+        style({ transform: 'scale(1)' }),
+        animate('350ms cubic-bezier(0.8,-0.9,0.95,0.4)', style({ transform: 'scale(0.4)' })),
+      ]),
+    ])
+  ],
 })
 export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
   @ViewChild('prefix') prefix: ElementRef;
@@ -31,9 +44,7 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
 
   @Input() quickFilters: QuickFilterConfig[];
   @Input() showResetFilter = false;
-  @Output() filtersChange: EventEmitter<
-    QuickFilterBarChangeEvent
-  > = new EventEmitter<QuickFilterBarChangeEvent>();
+  @Output() filtersChange: EventEmitter<QuickFilterBarChangeEvent> = new EventEmitter<QuickFilterBarChangeEvent>();
   @Output() resetFilters: EventEmitter<void> = new EventEmitter<void>();
 
   quickFiltersChanges: QuickFilterBarChangeEvent = {};
@@ -48,7 +59,8 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
   constructor(
     private listModelService: ListModelService,
     private listChangeService: ListChangeService
-  ) {}
+  ) {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'quickFilters')) {

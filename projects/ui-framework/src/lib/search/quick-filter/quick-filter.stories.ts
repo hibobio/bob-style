@@ -73,19 +73,22 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(groupNun), (_, i) => {
 const quickFilters: QuickFilterConfig[] = [
   {
     selectType: QuickFilterSelectType.multiSelect,
-    label: 'department',
+    label: 'Departments',
+    placeholder: 'No departments',
     key: 'department',
     options: [cloneDeep(optionsMock[0]), cloneDeep(optionsMock[1])]
   },
   {
     selectType: QuickFilterSelectType.multiSelect,
-    label: 'site',
+    label: 'Sites',
+    placeholder: 'No sites',
     key: 'site',
     options: cloneDeep(optionsMock)
   },
   {
     selectType: QuickFilterSelectType.singleSelect,
-    label: 'employment',
+    label: 'Employment type',
+    placeholder: 'Select employment type',
     key: 'employment',
     options: [cloneDeep(optionsMock[0])]
   }

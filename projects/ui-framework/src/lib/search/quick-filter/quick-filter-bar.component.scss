@@ -29,7 +29,7 @@
 
 .bar-filters {
   flex-grow: 1;
-  min-width: 0px;
+  min-width: 0;
   display: flex;
   align-items: flex-end;
 }
@@ -67,8 +67,8 @@
 
 .reset-filters {
   position: absolute;
-  top: 8px;
-  left: -30px;
+  bottom: 8px;
+  left: -28px;
   display: block;
   cursor: pointer;
 }

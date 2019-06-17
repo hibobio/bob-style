@@ -42,6 +42,7 @@ export enum Icons {
   three_dots_vert = '3_dots_vert',
   search = 'search_card_17px',
   reset = 'baseline-settings_backup_restore-24px',
+  refresh = 'baseline-refresh-24px',
   bold = 'bold',
   italic = 'italic',
   underline = 'underline',
@@ -71,7 +72,7 @@ export enum Icons {
   twitter = 'Twitter',
   download = 'baseline-get_app-24px',
   add_folder = 'baseline-create_new_folder-24px',
-  add_photo_camera_icon = 'icons/baseline-add_a_photo-24px.svg',
+  add_photo_camera_icon = 'baseline-add_a_photo-24px',
 
 
   // duplicate icons for backwards compatibility
