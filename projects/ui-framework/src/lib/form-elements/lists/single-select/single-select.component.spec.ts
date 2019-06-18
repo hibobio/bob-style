@@ -146,12 +146,19 @@ describe('SingleSelectComponent', () => {
   });
 
   describe('clearSelection', () => {
+    it('should show -None- option in single-list', fakeAsync(() => {
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+      const clearSelection = overlayContainerElement.querySelector('.clear-selection');
+      expect(clearSelection).toBeTruthy();
+    }));
     it('should clear the selection', fakeAsync(() => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
       const clearButton = overlayContainerElement.querySelector(
-        'b-list-footer .clear-button'
+        '.clear-selection'
       ) as HTMLElement;
       clearButton.click();
       fixture.autoDetectChanges();
@@ -163,7 +170,7 @@ describe('SingleSelectComponent', () => {
       fixture.autoDetectChanges();
       tick(0);
       const clearButton = overlayContainerElement.querySelector(
-        'b-list-footer .clear-button'
+        '.clear-selection'
       ) as HTMLElement;
       clearButton.click();
       fixture.autoDetectChanges();

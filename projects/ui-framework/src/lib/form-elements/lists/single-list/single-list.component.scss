@@ -2,6 +2,7 @@
 @import '../../../style/typography';
 @import '../../../style/shapes';
 @import '../list';
+@import '../../form-element.mixin';
 
 :host {
   display: flex;
@@ -46,7 +47,7 @@
 
     &.no-group-header {
       .option-select.option {
-        padding-left: 16px;
+        padding-left: $input-padding;
       }
     }
   }
@@ -61,6 +62,22 @@
 
   .headers {
     @include headers;
+  }
+
+  .show-none-option {
+    .headers {
+      top: $wrap-height;
+    }
+    .clear-selection {
+      border: none;
+      outline: none;
+      width: 100%;
+      @include listOption;
+      border-bottom: 1px solid $grey-200;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
   }
 
   .header {
@@ -85,7 +102,7 @@
       }
 
       &.option {
-        padding-left: 36px;
+        padding-left: 40px;
       }
     }
   }

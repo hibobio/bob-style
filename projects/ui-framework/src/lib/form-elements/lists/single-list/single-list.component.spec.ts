@@ -60,6 +60,7 @@ describe('SingleListComponent', () => {
         fixture = TestBed.createComponent(SingleListComponent);
         component = fixture.componentInstance;
         spyOn(component.selectChange, 'emit');
+        spyOn(component.clear, 'emit');
         component.ngOnChanges({
           options: {
             previousValue: undefined,
@@ -442,4 +443,54 @@ describe('SingleListComponent', () => {
       );
     });
   });
+
+  describe('-None-', () => {
+    it('should not show -None- button by default', () => {
+      const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
+      expect(clearSelection).toBeFalsy();
+    });
+    it('should show -None- button if showNoneOption is true', () => {
+      component.showNoneOption = true;
+      const testOptionsMock = [
+        {
+          groupName: 'Basic Info Header',
+          options: [{ value: 'Basic Info 1', id: 1 }]
+        },
+      ];
+      component.ngOnChanges({
+        options: {
+          previousValue: undefined,
+          currentValue: testOptionsMock,
+          firstChange: false,
+          isFirstChange: () => false,
+        }
+      });
+      fixture.autoDetectChanges();
+      const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
+      expect(clearSelection).toBeTruthy();
+      expect(clearSelection.nativeElement.innerText).toEqual('— None —');
+    });
+    it('should emit clear on click', () => {
+      component.showNoneOption = true;
+      const testOptionsMock = [
+        {
+          groupName: 'Basic Info Header',
+          options: [{ value: 'Basic Info 1', id: 1 }]
+        },
+      ];
+      component.ngOnChanges({
+        options: {
+          previousValue: undefined,
+          currentValue: testOptionsMock,
+          firstChange: false,
+          isFirstChange: () => false,
+        }
+      });
+      fixture.autoDetectChanges();
+      const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
+      clearSelection.triggerEventHandler('click', null);
+      expect(component.clear.emit).toHaveBeenCalled();
+    });
+  });
+
 });

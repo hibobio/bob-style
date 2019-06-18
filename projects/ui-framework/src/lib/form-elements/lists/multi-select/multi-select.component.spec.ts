@@ -55,11 +55,13 @@ describe('MultiSelectComponent', () => {
     ];
 
     TestBed.configureTestingModule({
-      declarations: [MultiSelectComponent],
+      declarations: [
+        MultiSelectComponent,
+      ],
       providers: [
         PanelPositionService,
         { provide: IconService, useValue: spyIconService },
-        ListModelService
+        ListModelService,
       ],
       imports: [
         MultiListModule,
@@ -67,9 +69,11 @@ describe('MultiSelectComponent', () => {
         NoopAnimationsModule,
         CommonModule,
         ButtonsModule,
-        TruncateTooltipModule
+        TruncateTooltipModule,
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [
+        NO_ERRORS_SCHEMA,
+      ],
     })
       .compileComponents()
       .then(() => {

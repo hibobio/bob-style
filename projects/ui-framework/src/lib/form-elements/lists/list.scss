@@ -1,22 +1,27 @@
 @import '../../style/typography';
 @import '../../style/shapes';
 @import '../../style/variables';
+@import '../form-element.mixin';
 
 @mixin listOption {
   @include BodyFont;
   color: $grey-700;
-  padding: 0 16px;
+  padding: 0 $input-padding;
   box-sizing: border-box;
   position: relative;
-  height: 44px;
+  height: $wrap-height;
   line-height: 1;
   &.mat-selected {
     background-color: initial;
   }
   &:hover,
-  &.selected,
   &.focus {
     background-color: $grey-100;
+  }
+  &.selected {
+    background-color: $grey-600;
+    color: white;
+    font-weight: bold;
   }
 }
 
@@ -40,8 +45,8 @@
       box-sizing: border-box;
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
       align-items: center;
+      cursor: pointer;
       .header-collapse-trigger {
         position: absolute;
         top: 0;
@@ -51,10 +56,11 @@
         z-index: 1;
       }
       .chevron {
-        @include chevron-down($grey-600);
+        @include chevron-down($grey-700);
+        margin-right: 8px;
       }
       &.collapsed .chevron {
-        @include chevron-up($grey-600);
+        @include chevron-right($grey-700);
       }
       &:hover,
       &.focus {

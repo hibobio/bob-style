@@ -31,14 +31,11 @@ export class TextButtonComponent {
     this.clicked.emit();
   }
 
-  @HostBinding('class')
-  get typeClass(): string {
-    return (
-      (this.disabled ? 'disabled' : '') +
-      (this.color === LinkColor.primary ? ' color-primary' : '')
-    );
+  @HostBinding('class.disabled') get isDisabled(): boolean {
+    return this.disabled;
   }
 
-  constructor() {
+  @HostBinding('class.color-primary') get colorPrimary(): boolean {
+    return this.color === LinkColor.primary;
   }
 }

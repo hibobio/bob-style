@@ -3,7 +3,7 @@
 </b-search>
 
 <div [ngStyle]="{height: listOptions && (listOptions.length * listElHeight + 'px'), maxHeight: maxHeight + 'px'}"
-     [ngClass]="{'no-group-header': noGroupHeaders}"
+     [ngClass]="{'no-group-header': noGroupHeaders, 'show-none-option': showNoneOption}"
      class="v-scroll-wrapper">
 
   <div #headers
@@ -17,8 +17,8 @@
            'focus': focusOption?.isPlaceHolder && focusOption?.groupName === header.groupName
            }"
            class="option-select header">
-        <span [innerHTML]="header.groupName | highlight: searchValue"></span>
         <span class="chevron"></span>
+        <span [innerHTML]="header.groupName | highlight: searchValue"></span>
       </div>
       <div [ngStyle]="{height: header.isCollapsed ? 0 : header.placeHolderSize + 'px'}"
            class="placeholder"></div>
@@ -30,6 +30,13 @@
                                [itemSize]="listElHeight"
                                maxBufferPx="{{8*listElHeight}}"
                                minBufferPx="{{8*listElHeight}}">
+
+    <button *ngIf="showNoneOption"
+            type="button"
+            class="clear-selection"
+            (click)="clear.emit()">
+      — None —
+    </button>
 
     <div class="options">
       <div (click)="optionClick(option)"

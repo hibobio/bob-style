@@ -34,13 +34,11 @@
        [ngClass]="positionClassList">
     <b-single-list class="b-select-list"
                    (selectChange)="onSelect($event)"
+                   (clear)="clearSelection()"
                    [options]="singleSelectOptions"
                    [maxHeight]="listElHeight*6"
-                   [showSingleGroupHeader]="showSingleGroupHeader">
+                   [showSingleGroupHeader]="showSingleGroupHeader"
+                   [showNoneOption]="true">
     </b-single-list>
-
-    <b-list-footer [listActions]="listActions"
-                   (clear)="clearSelection()">
-    </b-list-footer>
   </div>
 </ng-template>

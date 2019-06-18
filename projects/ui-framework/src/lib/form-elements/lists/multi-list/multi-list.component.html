@@ -19,6 +19,7 @@
         <span (click)="toggleGroupCollapse(header)"
               class="header-collapse-trigger">
         </span>
+        <span class="chevron"></span>
         <div class="header-option">
           <span class="checkbox"
                 role="checkbox"
@@ -27,7 +28,6 @@
 
           <span [innerHTML]="header.groupName | highlight: searchValue"></span>
         </div>
-        <span class="chevron"></span>
       </div>
       <div [ngStyle]="{height: header.isCollapsed ? 0 : header.placeHolderSize + 'px'}"
            class="placeholder"></div>

@@ -1,15 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ListFooterComponent } from './list-footer.component';
 import { MockComponent } from 'ng-mocks';
 import { ButtonComponent } from '../../../buttons-indicators/buttons/button/button.component';
 import { IconComponent } from '../../../icons/icon.component';
 import { By } from '@angular/platform-browser';
-import { Icons } from '../../../icons/icons.enum';
-import {
-  ButtonSize,
-  ButtonType
-} from '../../../buttons-indicators/buttons/buttons.enum';
+import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
+import { TextButtonComponent } from '../../../buttons-indicators/buttons/text-button/text-button.component';
 
 describe('ListFooterComponent', () => {
   let component: ListFooterComponent;
@@ -20,7 +16,8 @@ describe('ListFooterComponent', () => {
       declarations: [
         ListFooterComponent,
         MockComponent(ButtonComponent),
-        MockComponent(IconComponent)
+        MockComponent(TextButtonComponent),
+        MockComponent(IconComponent),
       ]
     })
       .compileComponents()
@@ -40,10 +37,7 @@ describe('ListFooterComponent', () => {
       };
       fixture.detectChanges();
       const clearButton = fixture.debugElement.query(By.css('.clear-button'));
-      expect(clearButton.componentInstance.icon).toEqual(Icons.reset_x);
-      expect(clearButton.componentInstance.type).toEqual(ButtonType.tertiary);
-      expect(clearButton.componentInstance.size).toEqual(ButtonSize.small);
-      expect(clearButton.nativeElement.innerText).toEqual('Clear');
+      expect(clearButton.componentInstance.text).toEqual('Clear');
     });
     it('should emit clear on clear click', () => {
       component.listActions = {
@@ -108,7 +102,9 @@ describe('ListFooterComponent', () => {
       };
       fixture.detectChanges();
       const footerButtons = fixture.debugElement.queryAll(By.css('b-button'));
-      expect(footerButtons.length).toEqual(3);
+      const clearButton = fixture.debugElement.queryAll(By.css('.clear-button'));
+      expect(footerButtons.length).toEqual(2);
+      expect(clearButton.length).toEqual(1);
     });
   });
 });
