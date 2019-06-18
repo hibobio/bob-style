@@ -50,7 +50,7 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
     } as InputSingleSelectValue;
   }
 
-  @Input() value: InputSingleSelectValue = this.baseValue;
+  @Input() value: InputSingleSelectValue;
   @Input() inputType: InputTypes;
   @Input() selectOptions: SelectGroupOption[];
 

@@ -52,7 +52,7 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
     this.wrapEvent = false;
   }
 
-  @Input() value: RadioConfig = this.baseValue;
+  @Input() value: RadioConfig;
   // tslint:disable-next-line: no-input-rename
   @Input('radioConfig') options: RadioConfig[];
   @Input() direction: RadioDirection = RadioDirection.row;

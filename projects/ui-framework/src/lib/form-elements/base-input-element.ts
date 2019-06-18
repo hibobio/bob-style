@@ -16,7 +16,7 @@ export abstract class BaseInputElement extends BaseFormElement {
 
   public eventType = InputEventType;
 
-  @Input() value: any = this.baseValue;
+  @Input() value = '';
   @Input() inputType: InputTypes = InputTypes.text;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;

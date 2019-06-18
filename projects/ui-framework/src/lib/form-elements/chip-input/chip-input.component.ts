@@ -54,7 +54,7 @@ export class ChipInputComponent extends BaseFormElement
     this.baseValue = [];
   }
 
-  @Input() value: string[] = this.baseValue;
+  @Input() value: string[] = [];
   @Input() options: string[] = [];
   @Input() acceptNew = true;
 
