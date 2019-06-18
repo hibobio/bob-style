@@ -1,4 +1,4 @@
-import { PinDirection, SortDirections } from '../table/table.interface';
+import { PinDirection } from '../table/table.enum';
 
 export const COLUMN_DEFS_MOCK = [
   {

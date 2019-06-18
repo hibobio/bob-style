@@ -1,17 +1,4 @@
-export enum SortDirections {
-  Asc = 'asc',
-  Desc = 'desc'
-}
-
-export enum RowSelection {
-  Multiple = 'multiple',
-  Single = 'single',
-}
-
-export enum PinDirection {
-  Left = 'left',
-  Right = 'right',
-}
+import { PinDirection, SortDirections } from './table.enum';
 
 export interface ColumnDef {
   headerName: string;

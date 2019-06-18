@@ -5,7 +5,7 @@ $breakpoint-device-lg: 1200px;
 @mixin gridLayout12Cols() {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-column-gap: 12px;
+  grid-column-gap: 24px;
 }
 
 .grid-layout-12-cols {

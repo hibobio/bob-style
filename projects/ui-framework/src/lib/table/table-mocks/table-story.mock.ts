@@ -1,8 +1,8 @@
-import { ColumnDef, PinDirection, SortDirections } from '../table/table.interface';
+import { ColumnDef } from '../table/table.interface';
 import { AvatarCellComponent } from '../table-cell-components/avatar.component';
-import {ActionsCellComponent} from '../table-cell-components/actions-cell/actions-cell.component';
-import {MenuItem} from '../../navigation/menu/menu.interface';
-import {GridActions} from '../table-cell-components/actions-cell/actions-cell.interface';
+import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
+import { GridActions } from '../table-cell-components/actions-cell/actions-cell.interface';
+import { PinDirection, SortDirections } from '../table/table.enum';
 
 export const mockColumnsDefs: ColumnDef[] = [
   {

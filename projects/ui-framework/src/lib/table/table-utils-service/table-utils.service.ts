@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ColumnDef, PinDirection, RowSelection } from '../table/table.interface';
+import { ColumnDef } from '../table/table.interface';
 import { assign, compact, concat, flatMap, get, map } from 'lodash';
 import { SELECTION_COLUMN_DEF } from '../table/table.consts';
 import { GridOptions } from 'ag-grid-community';
 import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
+import { PinDirection, RowSelection } from '../table/table.enum';
 
 @Injectable()
 export class TableUtilsService {
@@ -21,7 +22,7 @@ export class TableUtilsService {
     );
   }
 
-  getActionsColumnDef (): ColumnDef {
+  getActionsColumnDef(): ColumnDef {
     return {
       headerName: '',
       field: 'actions',

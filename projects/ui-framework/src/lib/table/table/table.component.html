@@ -1,5 +1,5 @@
 <ag-grid-angular #agGrid
-                 [ngClass]="{'grid-ready': gridReady}"
+                 [ngClass]="{'grid-ready': gridReady, 'secondary': type === tableType.Secondary}"
                  [rowData]="rowData"
                  [columnDefs]="gridColumnDefs"
                  [gridOptions]="gridOptions"

@@ -1,12 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { TableUtilsService } from './table-utils.service';
-import {
-  ColumnDef,
-  PinDirection,
-  RowSelection,
-  SortDirections
-} from '../table/table.interface';
+import { ColumnDef } from '../table/table.interface';
 import { concat } from 'lodash';
+import { PinDirection, RowSelection, SortDirections } from '../table/table.enum';
 
 describe('TableUtilsService', () => {
   let tableUtilsService: TableUtilsService;

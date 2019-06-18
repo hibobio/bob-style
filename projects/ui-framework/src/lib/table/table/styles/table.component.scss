@@ -25,6 +25,13 @@
     &.grid-ready {
       visibility: visible;
     }
+    &.secondary {
+      .ag-root {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+      }
+    }
 
     .ag-root-wrapper-body.ag-layout-normal {
       height: auto;
@@ -70,6 +77,9 @@
         }
         .ag-cell {
           @include cell;
+        }
+        &:last-child {
+          border-bottom: none;
         }
       }
     }

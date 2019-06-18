@@ -15,14 +15,15 @@ import { AvatarModule } from '../buttons-indicators/avatar/avatar.module';
 import { mockColumnsDefs, mockRowData } from './table-mocks/table-story.mock';
 import { AvatarCellComponent } from './table-cell-components/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';
-import { RowSelection } from './table/table.interface';
+import { RowSelection, TableType } from './table/table.enum';
 
 const tableStories = storiesOf(ComponentGroupType.Tables, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-table [rowData]="rowData"
+<b-table [type]="type"
+         [rowData]="rowData"
          [columnDefs]="columnDefs"
          [rowSelection]="rowSelection"
          (rowClicked)="rowClicked($event)"
@@ -34,11 +35,12 @@ const template = `
 const storyTemplate = `
 <b-story-book-layout [title]="'Data Table'">
   <div style="width: calc(100% - 60px); margin: 30px auto;">
-    ${template}
+    ${ template }
   </div>
 </b-story-book-layout>
 `;
 
+const type = values(TableType);
 const rowSelection = values(RowSelection);
 
 const note = `
@@ -49,6 +51,7 @@ const note = `
   #### Properties
   Name | Type | Description | default value
   --- | --- | --- | ---
+  type | TableType | table style theme | TableType.primary
   rowData | json | Table data |
   columnDefs | json | Columns definition |
   rowSelection | RowSelection | single multiple | null
@@ -60,7 +63,7 @@ const note = `
   updateRows | Function | update rows
   removeRows | Function | remove rows
   ~~~
-  ${template}
+  ${ template }
   ~~~
 `;
 tableStories.add(
@@ -69,12 +72,9 @@ tableStories.add(
     return {
       template: storyTemplate,
       props: {
+        type: select('type', type, TableType.Primary),
         maxHeight: number('maxHeight', null),
-        rowSelection: select(
-          'rowSelection',
-          rowSelection,
-          RowSelection.Multiple
-        ),
+        rowSelection: select('rowSelection', rowSelection, RowSelection.Multiple),
         rowData: object('rowData', mockRowData),
         columnDefs: object('columnDefs', mockColumnsDefs),
         rowClicked: action('Row clicked'),

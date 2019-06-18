@@ -2,9 +2,10 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
 import { cloneDeep, get, has, map, once, toString } from 'lodash';
-import { ColumnDef, RowClickedEvent, RowNodeDef, RowSelection, SortChangedEvent } from './table.interface';
+import { ColumnDef, RowClickedEvent, RowNodeDef, SortChangedEvent } from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
+import { RowSelection, TableType } from './table.enum';
 
 @Component({
   selector: 'b-table',
@@ -22,6 +23,7 @@ export class TableComponent implements OnInit, OnChanges {
   static isLicenseSet = false;
   @ViewChild('agGrid') agGrid: AgGridNg2;
 
+  @Input() type: TableType = TableType.Primary;
   @Input() rowData: any[];
   @Input() columnDefs: ColumnDef[];
   @Input() rowSelection: RowSelection = null;
@@ -33,6 +35,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   readonly rowHeight: number = 50;
   readonly autoSizePadding: number = 30;
+  readonly tableType = TableType;
 
   gridReady = false;
   gridOptions: GridOptions;

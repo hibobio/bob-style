@@ -1,11 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  flush,
-  TestBed,
-  tick
-} from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { TableComponent } from './table.component';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,16 +7,15 @@ import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { TableModule } from '../table.module';
 import { AvatarCellComponent } from '../table-cell-components/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';
-import {ColumnDef, RowNodeDef, RowSelection} from './table.interface';
+import { ColumnDef, RowNodeDef } from './table.interface';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { IconService } from '../../icons/icon.service';
 import { cloneDeep, keys, pick } from 'lodash';
-import {
-  COLUMN_DEFS_MOCK,
-  ROW_DATA_MOCK
-} from '../table-mocks/table-test.mock';
+import { COLUMN_DEFS_MOCK, ROW_DATA_MOCK } from '../table-mocks/table-test.mock';
+import { RowSelection, TableType } from './table.enum';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import { By } from '@angular/platform-browser';
 
 describe('TableComponent', () => {
   let component: TableComponent;
@@ -87,6 +79,12 @@ describe('TableComponent', () => {
       const shadowRoot: DocumentFragment = fixture.debugElement.nativeElement;
       const agRoot = shadowRoot.querySelector('.ag-root') as HTMLElement;
       expect(getComputedStyle(agRoot).maxHeight).toEqual('450px');
+    });
+    it('should add class "secondary" if type is secondary', () => {
+      component.type = TableType.Secondary;
+      fixture.autoDetectChanges();
+      const grid = fixture.debugElement.query(By.css('ag-grid-angular'));
+      expect(grid.nativeElement.classList).toContain('secondary');
     });
   });
 

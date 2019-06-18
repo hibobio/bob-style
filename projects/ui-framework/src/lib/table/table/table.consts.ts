@@ -1,4 +1,4 @@
-import { PinDirection } from './table.interface';
+import { PinDirection } from './table.enum';
 
 export const SELECTION_COLUMN_DEF = {
   headerName: '',
