@@ -98,8 +98,8 @@ export class RichTextEditorComponent extends RTEformElement
     return this.type === RTEType.tertiary;
   }
 
-  @ViewChild('toolbar') private toolbar: ElementRef;
-  @ViewChild('suffix') private suffix: ElementRef;
+  @ViewChild('toolbar', { static: false }) private toolbar: ElementRef;
+  @ViewChild('suffix', { static: false }) private suffix: ElementRef;
 
   public hasSuffix = true;
   readonly buttonType = ButtonType;
@@ -115,14 +115,14 @@ export class RichTextEditorComponent extends RTEformElement
   };
 
   // implementing RteLinkBlot mixin
-  @ViewChild('linkPanel') public linkPanel: PanelComponent;
-  @ViewChild('linkEditor') public linkEditor: RteLinkEditorComponent;
+  @ViewChild('linkPanel', { static: false }) public linkPanel: PanelComponent;
+  @ViewChild('linkEditor', { static: false }) public linkEditor: RteLinkEditorComponent;
   public onLinkPanelOpen: () => void;
   public onLinkUpdate: (rteLink: RteLink) => void;
 
   // implementing RtePlaceholderBlot mixin
   @Input() public placeholderList: RtePlaceholderList[];
-  @ViewChild('placeholderPanel') public placeholderPanel: PanelComponent;
+  @ViewChild('placeholderPanel', { static: false }) public placeholderPanel: PanelComponent;
   public placeholderRteConverterService: PlaceholderRteConverterService;
   public onPlaceholderPanelOpen: () => void;
   public onPlaceholderSelectChange: (

@@ -23,7 +23,7 @@ export class TabsComponent implements AfterViewInit {
     MatTabChangeEvent
   >();
 
-  @ViewChild('tabgroup') tabGroup: MatTabGroup;
+  @ViewChild('tabgroup', { static: true }) tabGroup: MatTabGroup;
 
   constructor() {}
 

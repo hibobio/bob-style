@@ -41,7 +41,7 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
     this.baseValue = false;
   }
 
-  @ViewChild('input') public input: ElementRef;
+  @ViewChild('input', { static: true }) public input: ElementRef;
   @Input() public value = this.baseValue;
   @Input() public indeterminate = false;
 

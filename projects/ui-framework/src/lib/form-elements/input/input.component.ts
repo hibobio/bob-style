@@ -30,9 +30,9 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   constructor() {
     super();
   }
-  @ViewChild('input') input: ElementRef;
-  @ViewChild('prefix') prefix: ElementRef;
-  @ViewChild('suffix') suffix: ElementRef;
+  @ViewChild('input', { static: true }) input: ElementRef;
+  @ViewChild('prefix', { static: false }) prefix: ElementRef;
+  @ViewChild('suffix', { static: false }) suffix: ElementRef;
 
   @Input() hasPrefix = false;
   @Input() hasSuffix = false;

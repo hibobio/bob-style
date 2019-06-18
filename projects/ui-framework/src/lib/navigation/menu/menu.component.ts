@@ -17,7 +17,7 @@ export class MenuComponent implements OnChanges {
   @Output() openMenu: EventEmitter<void> = new EventEmitter<void>();
   @Output() closeMenu: EventEmitter<void> = new EventEmitter<void>();
 
-  @ViewChild('childMenu') public childMenu;
+  @ViewChild('childMenu', { static: true }) public childMenu;
 
   menuDir: MenuPositionX = 'after';
 

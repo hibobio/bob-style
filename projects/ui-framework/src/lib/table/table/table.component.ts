@@ -20,7 +20,7 @@ export class TableComponent implements OnInit, OnChanges {
     this.tableLicense();
   }
   static isLicenseSet = false;
-  @ViewChild('agGrid') agGrid: AgGridNg2;
+  @ViewChild('agGrid', { static: true }) agGrid: AgGridNg2;
 
   @Input() rowData: any[];
   @Input() columnDefs: ColumnDef[];

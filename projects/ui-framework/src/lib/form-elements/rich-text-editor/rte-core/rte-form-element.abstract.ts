@@ -48,8 +48,8 @@ export abstract class RTEformElement extends BaseFormElement
   @Input() private formControlName: any;
   @Input() private formControl: any;
 
-  @ViewChild('quillEditor') protected quillEditor: ElementRef;
-  @ViewChild('sizePanel') protected sizePanel: PanelComponent;
+  @ViewChild('quillEditor', { static: true }) protected quillEditor: ElementRef;
+  @ViewChild('sizePanel', { static: false }) protected sizePanel: PanelComponent;
 
   @Output() blurred: EventEmitter<any> = new EventEmitter<any>();
   @Output() focused: EventEmitter<any> = new EventEmitter<any>();

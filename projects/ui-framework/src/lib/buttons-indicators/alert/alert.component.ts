@@ -11,7 +11,7 @@ import {ButtonType} from '../buttons/buttons.enum';
   styleUrls: ['./alert.component.scss'],
 })
 export class AlertComponent {
-  @ViewChild('alertTemplateRef') alertTemplateRef: TemplateRef<any>;
+  @ViewChild('alertTemplateRef', { static: true }) alertTemplateRef: TemplateRef<any>;
   public alertConfig: AlertConfig;
   public closeAlertCallback: Function;
   readonly iconSize: IconSize = IconSize.xLarge;
