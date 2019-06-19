@@ -74,6 +74,7 @@ export enum Icons {
   add_folder = 'baseline-create_new_folder-24px',
   add_photo_camera_icon = 'baseline-add_a_photo-24px',
   folder_shared = 'baseline-folder_shared-24px',
+  person = 'baseline-person-24px',
 
   // duplicate icons for backwards compatibility
   // TODO: remove if not used
