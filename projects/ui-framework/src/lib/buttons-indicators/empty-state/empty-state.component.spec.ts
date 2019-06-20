@@ -21,9 +21,7 @@ describe('EmptyStateComponent', () => {
     .compileComponents().then(() => {
       fixture = TestBed.createComponent(EmptyStateComponent);
       component = fixture.componentInstance;
-      component.icon = Icons.feedback_icon;
-      component.text = 'empty state text';
-      component.buttonLabel = 'button text';
+      component.config = { icon: Icons.feedback_icon, text: 'empty state text', buttonLabel: 'button text' };
     });
   }));
 
@@ -36,7 +34,7 @@ describe('EmptyStateComponent', () => {
   });
 
   it('should hide button if its empty', () => {
-    component.buttonLabel = '';
+    component.config.buttonLabel = '';
     fixture.detectChanges();
     const buttonElement = fixture.debugElement.query(By.css('b-button'));
     expect(buttonElement).toBeNull();

@@ -1,19 +1,17 @@
 @import '../../style/colors.scss';
 
 :host {
-  .b-empty-state {
-    justify-content: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  .empty-state-text {
+    margin: 10px 0px 25px 0px;
+    color: $grey-600;
+  }
+
+  b-button {
     display: flex;
-    flex-direction: column;
-
-    .empty-state-text {
-      margin: 10px 0px 25px 0px;
-      color: $grey-600;
-    }
-
-    b-button {
-      display: flex;
-      justify-content: center;
-    }
+    justify-content: center;
   }
 }
+

@@ -1,27 +1,24 @@
-import { storiesOf } from '@storybook/angular';
-import {
-  withKnobs,
-  select,
-  text,
-} from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import {storiesOf} from '@storybook/angular';
+import {withKnobs, object} from '@storybook/addon-knobs/angular';
+import {action} from '@storybook/addon-actions';
+import {ComponentGroupType} from '../../consts';
+import {StoryBookLayoutModule} from '../../story-book-layout/story-book-layout.module';
 import {EmptyStateModule} from './empty-state.module';
 import {Icons} from '../../icons/icons.enum';
-import { values } from 'lodash';
+import {values} from 'lodash';
+import {EmptyStateConfig} from './empty-state.types';
 
 const iconTypes = values(Icons);
 
+const emptyStateConfig: EmptyStateConfig = { text: 'Place your empty state text here',
+  icon: Icons.feedback_icon, buttonLabel: 'CLICK HERE' };
 const EmptyStateStories = storiesOf(
   ComponentGroupType.ButtonsAndIndicators,
   module
 ).addDecorator(withKnobs);
 
 const template =
-  `<b-empty-state [icon]="icon"
-                  [text]="text"
-                  [buttonLabel]="buttonLabel"
+  `<b-empty-state [config]="config"
                   (buttonClick)="buttonClicked($event)"></b-empty-state>`;
 
 const storyTemplate = `<b-story-book-layout [title]="'Empty State'">${template}</b-story-book-layout>`;
@@ -34,9 +31,8 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  icon | IconTypes
-  text | string | empty state text
-  buttonLabel | string | button text
+  config | EmptyStateConfig | text, buttonLabel - string, icon - Icon
+  buttonClicked | Function
   ~~~
   ${template}
   ~~~
@@ -48,9 +44,7 @@ EmptyStateStories.add(
     return {
       template: storyTemplate,
       props: {
-        icon: select('icon', iconTypes, Icons.feedback_icon),
-        text: text('text', 'Place your info text here'),
-        buttonLabel: text('text', 'CLICK HERE'),
+        config: object('config', emptyStateConfig),
         buttonClicked: action('button clicked')
       },
       moduleMetadata: {

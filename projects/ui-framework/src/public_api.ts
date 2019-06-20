@@ -97,7 +97,7 @@ export { EmployeeShowcase } from './lib/buttons-indicators/employees-showcase/em
 // Empty State Module
 export { EmptyStateModule } from './lib/buttons-indicators/empty-state/empty-state.module';
 export { EmptyStateComponent } from './lib/buttons-indicators/empty-state/empty-state.component';
-
+export { EmptyStateConfig } from './lib/buttons-indicators/empty-state/empty-state.types';
 /*
  * Form Elements
  */

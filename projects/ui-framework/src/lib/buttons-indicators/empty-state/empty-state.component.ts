@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IconColor, Icons, IconSize} from '../../icons/icons.enum';
 import {ButtonSize, ButtonType} from '../buttons/buttons.enum';
+import {EmptyStateConfig} from './empty-state.types';
 
 @Component({
   selector: 'b-empty-state',
@@ -8,9 +9,7 @@ import {ButtonSize, ButtonType} from '../buttons/buttons.enum';
   styleUrls: ['./empty-state.component.scss']
 })
 export class EmptyStateComponent {
-  @Input() public icon: Icons;
-  @Input() public text: string;
-  @Input() public buttonLabel: string;
+  @Input() public config: EmptyStateConfig;
   @Output() buttonClick: EventEmitter<void> = new EventEmitter<void>();
   readonly iconSize: IconSize = IconSize.xxLarge;
   readonly iconColor: IconColor = IconColor.light;
@@ -18,8 +17,4 @@ export class EmptyStateComponent {
   readonly buttonSize: ButtonSize = ButtonSize.medium;
 
   constructor() { }
-
-  public onClick(): void {
-    this.buttonClick.emit();
-  }
 }
