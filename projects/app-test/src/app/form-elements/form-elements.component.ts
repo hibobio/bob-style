@@ -90,8 +90,8 @@ export class FormElementsTestComponent
 
   ///////////////////////////////////
 
-  @ViewChild('bInput') private bInput_component;
-  @ViewChild('bInput', { read: ElementRef }) private bInput_element: ElementRef;
+  @ViewChild('bInput', { static: false }) private bInput_component;
+  @ViewChild('bInput', { read: ElementRef, static: false }) private bInput_element: ElementRef;
   bInput_SubscrValue;
   bInput_EventValue;
   bInput_SubscrCounter = 0;
@@ -130,8 +130,8 @@ export class FormElementsTestComponent
 
   ///////////////////////////////////
 
-  @ViewChild('bTextarea') private bTextarea_component;
-  @ViewChild('bTextarea', { read: ElementRef })
+  @ViewChild('bTextarea', { static: false }) private bTextarea_component;
+  @ViewChild('bTextarea', { read: ElementRef, static: false })
   private bTextarea_element: ElementRef;
   bTextarea_SubscrValue;
   bTextarea_EventValue;
@@ -171,8 +171,8 @@ export class FormElementsTestComponent
 
   ///////////////////////////////////
 
-  @ViewChild('bDatepicker') private bDatepicker_component;
-  @ViewChild('bDatepicker', { read: ElementRef })
+  @ViewChild('bDatepicker', { static: false }) private bDatepicker_component;
+  @ViewChild('bDatepicker', { read: ElementRef, static: false })
   private bDatepicker_element: ElementRef;
   bDatepicker_SubscrValue;
   bDatepicker_EventValue;
@@ -212,8 +212,8 @@ export class FormElementsTestComponent
 
   ///////////////////////////////////
 
-  @ViewChild('bChipinput') private bChipinput_component;
-  @ViewChild('bChipinput', { read: ElementRef })
+  @ViewChild('bChipinput', { static: false }) private bChipinput_component;
+  @ViewChild('bChipinput', { read: ElementRef, static: false })
   private bChipinput_element: ElementRef;
   bChipinput_SubscrValue;
   bChipinput_EventValue;
@@ -253,8 +253,8 @@ export class FormElementsTestComponent
 
   ///////////////////////////////////
 
-  @ViewChild('bSocial') private bSocial_component;
-  @ViewChild('bSocial', { read: ElementRef })
+  @ViewChild('bSocial', { static: false }) private bSocial_component;
+  @ViewChild('bSocial', { read: ElementRef, static: false })
   private bSocial_element: ElementRef;
   bSocial_SubscrValue;
   bSocial_EventValue;
@@ -294,8 +294,8 @@ export class FormElementsTestComponent
 
   ///////////////////////////////////
 
-  @ViewChild('bCheckbox') private bCheckbox_component;
-  @ViewChild('bCheckbox', { read: ElementRef })
+  @ViewChild('bCheckbox', { static: false }) private bCheckbox_component;
+  @ViewChild('bCheckbox', { read: ElementRef, static: false })
   private bCheckbox_element: ElementRef;
   bCheckbox_SubscrValue;
   bCheckbox_EventValue;
@@ -344,8 +344,8 @@ export class FormElementsTestComponent
     ]
   };
 
-  @ViewChild('bRadio') private bRadio_component;
-  @ViewChild('bRadio', { read: ElementRef }) private bRadio_element: ElementRef;
+  @ViewChild('bRadio', { static: false }) private bRadio_component;
+  @ViewChild('bRadio', { read: ElementRef, static: false }) private bRadio_element: ElementRef;
   bRadio_SubscrValue;
   bRadio_EventValue;
   bRadio_SubscrCounter = 0;
@@ -403,8 +403,8 @@ export class FormElementsTestComponent
     };
   });
 
-  @ViewChild('bSingleSelect') private bSingleSelect_component;
-  @ViewChild('bSingleSelect', { read: ElementRef })
+  @ViewChild('bSingleSelect', { static: false }) private bSingleSelect_component;
+  @ViewChild('bSingleSelect', { read: ElementRef, static: false })
   private bSingleSelect_element: ElementRef;
   bSingleSelect_SubscrValue;
   bSingleSelect_EventValue;
@@ -475,8 +475,8 @@ export class FormElementsTestComponent
     }
   );
 
-  @ViewChild('bMultiSelect') private bMultiSelect_component;
-  @ViewChild('bMultiSelect', { read: ElementRef })
+  @ViewChild('bMultiSelect', { static: false }) private bMultiSelect_component;
+  @ViewChild('bMultiSelect', { read: ElementRef, static: false })
   private bMultiSelect_element: ElementRef;
   bMultiSelect_SubscrValue;
   bMultiSelect_EventValue;
@@ -592,8 +592,8 @@ export class FormElementsTestComponent
     selectValue: 'AED'
   };
 
-  @ViewChild('bSplitInput') private bSplitInput_component;
-  @ViewChild('bSplitInput', { read: ElementRef })
+  @ViewChild('bSplitInput', { static: false }) private bSplitInput_component;
+  @ViewChild('bSplitInput', { read: ElementRef, static: false })
   private bSplitInput_element: ElementRef;
   bSplitInput_SubscrValue;
   bSplitInput_EventValue;
@@ -660,8 +660,8 @@ export class FormElementsTestComponent
     cntrl => !this.bRTE_disableControlsDef.includes(cntrl)
   );
 
-  @ViewChild('bRTE') private bRTE_component;
-  @ViewChild('bRTE', { read: ElementRef }) private bRTE_element: ElementRef;
+  @ViewChild('bRTE', { static: false }) private bRTE_component;
+  @ViewChild('bRTE', { read: ElementRef, static: false }) private bRTE_element: ElementRef;
   bRTE_SubscrValue;
   bRTE_EventValue;
   bRTE_SubscrCounter = 0;

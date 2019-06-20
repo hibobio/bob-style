@@ -46,8 +46,8 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
   ]
 })
 export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
-  @ViewChild('prefix') prefix: ElementRef;
-  @ViewChild('suffix') suffix: ElementRef;
+  @ViewChild('prefix', { static: false }) prefix: ElementRef;
+  @ViewChild('suffix', { static: false }) suffix: ElementRef;
 
   @Input() quickFilters: QuickFilterConfig[];
   @Input() showResetFilter = false;

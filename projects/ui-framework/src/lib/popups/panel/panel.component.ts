@@ -31,8 +31,8 @@ const HOVER_DELAY_DURATION = 300;
   styleUrls: ['panel.component.scss']
 })
 export class PanelComponent implements OnDestroy {
-  @ViewChild(CdkOverlayOrigin) overlayOrigin: CdkOverlayOrigin;
-  @ViewChild('templateRef') templateRef: TemplateRef<any>;
+  @ViewChild(CdkOverlayOrigin, { static: true }) overlayOrigin: CdkOverlayOrigin;
+  @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
 
   @Input() panelClass: string;
   @Input() size = PanelSize.medium;

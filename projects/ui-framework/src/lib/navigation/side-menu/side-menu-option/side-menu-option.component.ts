@@ -25,8 +25,8 @@ export class SideMenuOptionComponent implements OnChanges {
   @Input() option: SideMenuOption;
   @Input() selected: boolean;
   @Output() selectOption: EventEmitter<number> = new EventEmitter<number>();
-  @ViewChild('prefix', { read: ViewContainerRef }) private prefix: ViewContainerRef;
-  @ViewChild('postfix', { read: ViewContainerRef }) postfix: ViewContainerRef;
+  @ViewChild('prefix', { read: ViewContainerRef, static: true }) private prefix: ViewContainerRef;
+  @ViewChild('postfix', { read: ViewContainerRef, static: false }) postfix: ViewContainerRef;
 
   private prefixComponent: any;
 

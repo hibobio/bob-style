@@ -12,7 +12,7 @@ import has from 'lodash/has';
 })
 export class ListOptionComponent implements OnChanges {
 
-  @ViewChild('prefixCompHost', { read: ViewContainerRef }) prefixCompHost: ViewContainerRef;
+  @ViewChild('prefixCompHost', { read: ViewContainerRef, static: true }) prefixCompHost: ViewContainerRef;
 
   @Input() option: ListOption = null;
   @Input() searchValue: string;

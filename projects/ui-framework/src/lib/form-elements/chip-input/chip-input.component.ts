@@ -65,11 +65,11 @@ export class ChipInputComponent extends BaseFormElement
   public readonly inputTypes = InputTypes;
   readonly addOnBlur = true;
 
-  @ViewChild('input') private input: ElementRef<HTMLInputElement>;
+  @ViewChild('input', { static: true }) private input: ElementRef<HTMLInputElement>;
   @ViewChildren('chipList') private chipList: QueryList<ChipComponent>;
-  @ViewChild('input', { read: MatAutocompleteTrigger })
+  @ViewChild('input', { read: MatAutocompleteTrigger, static: true })
   private autocompleteTrigger: MatAutocompleteTrigger;
-  @ViewChild('auto')
+  @ViewChild('auto', { static: true })
   private autocompletePanel: MatAutocomplete;
 
   @Output() changed: EventEmitter<ChipInputChange> = new EventEmitter<

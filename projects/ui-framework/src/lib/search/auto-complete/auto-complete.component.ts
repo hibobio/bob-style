@@ -30,8 +30,8 @@ import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
   styleUrls: ['./auto-complete.component.scss']
 })
 export class AutoCompleteComponent implements OnChanges, OnDestroy {
-  @ViewChild(CdkOverlayOrigin) overlayOrigin: CdkOverlayOrigin;
-  @ViewChild('templateRef') templateRef: TemplateRef<any>;
+  @ViewChild(CdkOverlayOrigin, { static: true }) overlayOrigin: CdkOverlayOrigin;
+  @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
 
   @Input() label: string;
   @Input() placeholder: string;
