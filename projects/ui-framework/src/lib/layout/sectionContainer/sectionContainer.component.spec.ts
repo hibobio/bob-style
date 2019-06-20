@@ -24,7 +24,7 @@ class TestComponent {
   constructor() {}
 }
 
-fdescribe('SectionContainerComponent', () => {
+describe('SectionContainerComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let component: TestComponent;
   let collapsibleComponent: SectionContainerComponent;
