@@ -39,7 +39,7 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
     private injector: Injector
   ) {}
 
-  @ViewChild('componentHost', { read: ViewContainerRef })
+  @ViewChild('componentHost', { read: ViewContainerRef, static: true })
   container: ViewContainerRef;
 
   destroy$: Subject<boolean> = new Subject<boolean>();

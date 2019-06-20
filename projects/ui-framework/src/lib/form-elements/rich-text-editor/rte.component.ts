@@ -112,14 +112,14 @@ export class RichTextEditorComponent extends RTEformElement
   };
 
   // implementing RteLinkBlot mixin
-  @ViewChild('linkPanel') public linkPanel: PanelComponent;
-  @ViewChild('linkEditor') public linkEditor: RteLinkEditorComponent;
+  @ViewChild('linkPanel', { static: true }) public linkPanel: PanelComponent;
+  @ViewChild('linkEditor', { static: true }) public linkEditor: RteLinkEditorComponent;
   public onLinkPanelOpen: () => void;
   public onLinkUpdate: (rteLink: RteLink) => void;
 
   // implementing RtePlaceholderBlot mixin
   @Input() public placeholderList: RtePlaceholderList[];
-  @ViewChild('placeholderPanel') public placeholderPanel: PanelComponent;
+  @ViewChild('placeholderPanel', { static: false }) public placeholderPanel: PanelComponent;
   public placeholderRteConverterService: PlaceholderRteConverterService;
   public onPlaceholderPanelOpen: () => void;
   public onPlaceholderSelectChange: (

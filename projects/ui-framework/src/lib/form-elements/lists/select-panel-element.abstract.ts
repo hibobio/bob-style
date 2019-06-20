@@ -19,8 +19,8 @@ import { PanelPositionService } from '../../popups/panel/panel-position-service/
 import { BaseFormElement } from '../base-form-element';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement {
-  @ViewChild(CdkOverlayOrigin) overlayOrigin: CdkOverlayOrigin;
-  @ViewChild('templateRef') templateRef: TemplateRef<any>;
+  @ViewChild(CdkOverlayOrigin, { static: true }) overlayOrigin: CdkOverlayOrigin;
+  @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
 
   @Input() isQuickFilter = false;
 

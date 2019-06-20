@@ -26,7 +26,7 @@ import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
 export class RteLinkEditorComponent {
   constructor() {}
 
-  @ViewChild('textInput') private textInput: InputComponent;
+  @ViewChild('textInput', { static: true }) private textInput: InputComponent;
 
   @Input() text: string;
   @Input() url: string;
