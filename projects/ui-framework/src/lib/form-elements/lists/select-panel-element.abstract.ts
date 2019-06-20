@@ -3,7 +3,8 @@ import {
   TemplateRef,
   ViewChild,
   ViewContainerRef,
-  ElementRef
+  ElementRef,
+  AfterViewInit
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
@@ -17,12 +18,17 @@ import invoke from 'lodash/invoke';
 import { Subscription } from 'rxjs';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { BaseFormElement } from '../base-form-element';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
-export abstract class BaseSelectPanelElement extends BaseFormElement {
+export abstract class BaseSelectPanelElement extends BaseFormElement
+  implements AfterViewInit {
   @ViewChild(CdkOverlayOrigin) overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef') templateRef: TemplateRef<any>;
+  @ViewChild('prefix') prefix: ElementRef;
 
   @Input() isQuickFilter = false;
+  @Input() hasPrefix = false;
+  public showPrefix = true;
 
   positionClassList: { [key: string]: boolean } = {};
   panelOpen = false;
@@ -38,9 +44,16 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
   protected constructor(
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
-    private panelPositionService: PanelPositionService
+    private panelPositionService: PanelPositionService,
+    private DOM: DOMhelpers
   ) {
     super();
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.showPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);
+    }, 0);
   }
 
   openPanel(): void {

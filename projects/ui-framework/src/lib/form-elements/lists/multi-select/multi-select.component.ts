@@ -9,9 +9,7 @@ import {
   Output,
   SimpleChanges,
   ViewContainerRef,
-  ViewChild,
-  ElementRef,
-  AfterViewInit
+  ViewChild
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { assign, chain, includes, map } from 'lodash';
@@ -49,15 +47,12 @@ import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
   ]
 })
 export class MultiSelectComponent extends BaseSelectPanelElement
-  implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+  implements OnInit, OnChanges, OnDestroy {
   @ViewChild('triggerInput')
   truncate: TruncateTooltipComponent;
-  @ViewChild('prefix') prefix: ElementRef;
 
   @Input() options: SelectGroupOption[];
   @Input() showSingleGroupHeader = false;
-  @Input() hasPrefix = false;
-  public showPrefix = true;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
@@ -85,11 +80,11 @@ export class MultiSelectComponent extends BaseSelectPanelElement
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
+    DOM: DOMhelpers,
     private listChangeService: ListChangeService,
-    private listModelService: ListModelService,
-    private DOM: DOMhelpers
+    private listModelService: ListModelService
   ) {
-    super(overlay, viewContainerRef, panelPositionService);
+    super(overlay, viewContainerRef, panelPositionService, DOM);
   }
 
   ngOnInit(): void {
@@ -105,12 +100,6 @@ export class MultiSelectComponent extends BaseSelectPanelElement
       this.selectedValuesMap = this.getSelectedValuesMap(this.options);
       this.setTriggerValue();
     }
-  }
-
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.showPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);
-    }, 0);
   }
 
   ngOnDestroy(): void {
