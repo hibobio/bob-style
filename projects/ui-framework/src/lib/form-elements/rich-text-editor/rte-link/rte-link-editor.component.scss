@@ -1,5 +1,9 @@
+@import '../../../style/variables';
+
 :host {
-  max-width: 390px;
+  display: block;
+  min-width: 350px;
+  max-width: 95vw;
 }
 
 :host ::ng-deep {
@@ -29,4 +33,11 @@
 
 .cancel {
   margin-right: 4px;
+}
+
+::ng-deep {
+  .b-panel.rte-link-editor-panel {
+    display: flex;
+    justify-content: center;
+  }
 }

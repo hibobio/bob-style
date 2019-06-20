@@ -1,8 +1,15 @@
-<div class="quill-editor">
+<label *ngIf="label && placeholder"
+       class="bfe-label"
+       [attr.for]="id">{{label}}</label>
+
+<div class="quill-editor"
+     [attr.id]="id">
   <div #quillEditor
-       [attr.data-length]="(minChars > 0 || maxChars) ? ( (length || 0) + (maxChars ? '/' + maxChars : '')) : null"
+       [attr.data-length]="hasSuffix && (minChars > 0 || maxChars) ? ( (length || 0) + (maxChars ? '/' + maxChars : '')) :
+       null"
        (keydown)="$event.stopPropagation()"
-       [ngClass]="{'length-invalid': length < minChars || (maxChars && length > maxChars)}"
+       [ngClass]="{'length-invalid': hasSuffix && (length < minChars
+         || (maxChars && length > maxChars))}"
        [ngStyle]="{
          minHeight: minHeight ? (minHeight - 43) + 'px' : null,
          maxHeight: maxHeight ? (maxHeight - 43) + 'px' : null
@@ -11,8 +18,7 @@
 
   <div #toolbar
        class="quill-toolbar"
-       [attr.hide-align]="!controls.includes(BlotType.align)"
-       *ngIf="controls.length > 0 || hasSuffix"
+       [hidden]="controls.length === 0 && !hasSuffix"
        (mousedown)="$event.preventDefault()">
 
     <b-panel #sizePanel
@@ -50,17 +56,17 @@
     </b-panel>
 
     <button class="ql-bold"
-            *ngIf="controls.includes(BlotType.bold)"></button>
+            [hidden]="!controls.includes(BlotType.bold)"></button>
     <button class="ql-italic"
-            *ngIf="controls.includes(BlotType.italic)"></button>
+            [hidden]="!controls.includes(BlotType.italic)"></button>
     <button class="ql-underline"
-            *ngIf="controls.includes(BlotType.underline)"></button>
+            [hidden]="!controls.includes(BlotType.underline)"></button>
 
     <b-panel #linkPanel
-             panelClass="rte-link-editor"
+             panelClass="rte-link-editor-panel"
              [showBackdrop]="false"
              [size]="panelSize.medium"
-             *ngIf="controls.includes(BlotType.link)"
+             [hidden]="!controls.includes(BlotType.link)"
              [defaultPosVer]="panelDefaultPosVer.below"
              (closed)="restoreSelection()">
       <button class="ql-link"
@@ -75,14 +81,14 @@
     <button type="button"
             class="ql-list"
             value="ordered"
-            *ngIf="controls.includes(BlotType.list)"></button>
+            [hidden]="!controls.includes(BlotType.list)"></button>
     <button type="button"
             class="ql-list"
             value="bullet"
-            *ngIf="controls.includes(BlotType.list)"></button>
+            [hidden]="!controls.includes(BlotType.list)"></button>
 
     <select class="ql-align"
-            *ngIf="controls.includes(BlotType.align)">
+            [hidden]="!controls.includes(BlotType.align)">
       <option selected></option>
       <option value="center"></option>
       <option value="right"></option>
@@ -92,7 +98,7 @@
     <button type="button"
             class="ql-direction"
             value="rtl"
-            *ngIf="controls.includes(BlotType.direction)"></button>
+            [hidden]="!controls.includes(BlotType.direction)"></button>
 
     <b-panel #placeholderPanel
              class="placeholder-panel"
@@ -103,7 +109,7 @@
              [defaultPosVer]="panelDefaultPosVer.below"
              (closed)="restoreSelection()">
       <button (click)="onPlaceholderPanelOpen()"
-              panel-trigger>rte</button>
+              panel-trigger>💊</button>
       <b-single-list #placeholderSelect
                      panel-content
                      class="single-list-select"
@@ -119,12 +125,24 @@
       <ng-content></ng-content>
     </div>
 
+    <span class="length-indicator"
+          *ngIf="!hasSuffix && (minChars > 0 || maxChars)"
+          [ngClass]="{'length-invalid': length < minChars ||
+            (maxChars && length > maxChars)}">
+      {{ (length || 0) + (maxChars ? '/' + maxChars : '') }}
+    </span>
+
   </div>
 
 </div>
 
 <p b-input-message
-   *ngIf="hintMessage || warnMessage || errorMessage"
+   *ngIf="
+          hintMessage
+          ||
+          warnMessage
+          ||
+          errorMessage"
    [hintMessage]="hintMessage"
    [warnMessage]="warnMessage"
    [errorMessage]="errorMessage"

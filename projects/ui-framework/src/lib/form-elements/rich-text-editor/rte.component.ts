@@ -7,7 +7,6 @@ import {
   ViewChild,
   HostBinding,
   Input,
-  ElementRef,
   SimpleChanges
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -79,14 +78,15 @@ export class RichTextEditorComponent extends RTEformElement
     super(rteUtils, changeDetector, injector);
   }
 
-  @Input() public type: RTEType = RTEType.primary;
-  @Input() public minHeight = 185;
-  @Input() public maxHeight = 295;
-  @Input() public disableControls: BlotType[] = [
+  public disableControlsDef = [
     BlotType.placeholder,
     BlotType.align,
     BlotType.direction
   ];
+
+  @Input() public type: RTEType = RTEType.primary;
+  @Input() public minHeight = 185;
+  @Input() public maxHeight = 295;
 
   @HostBinding('class.rte-primary') get isOfTypePrimary(): boolean {
     return !this.type || this.type === RTEType.primary;
@@ -97,9 +97,6 @@ export class RichTextEditorComponent extends RTEformElement
   @HostBinding('class.rte-tertiary') get isOfTypeTertiary(): boolean {
     return this.type === RTEType.tertiary;
   }
-
-  @ViewChild('toolbar') private toolbar: ElementRef;
-  @ViewChild('suffix') private suffix: ElementRef;
 
   public hasSuffix = true;
   readonly buttonType = ButtonType;
@@ -168,8 +165,8 @@ export class RichTextEditorComponent extends RTEformElement
   onNgAfterViewInit(): void {
     merge(this.editorOptions, {
       placeholder: this.rteUtils.getEditorPlaceholder(
-        this.label,
-        this.required
+        this.placeholder || this.label,
+        this.required && this.placeholder && this.label ? false : this.required
       ),
       modules: {
         toolbar: {

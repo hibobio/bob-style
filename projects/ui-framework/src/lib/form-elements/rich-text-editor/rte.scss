@@ -21,6 +21,15 @@ $border-color: $grey-500;
   @include form-element-margins;
 }
 
+.bfe-label {
+  @include bFormElement-label;
+}
+:host.required {
+  .bfe-label {
+    @include input-requred;
+  }
+}
+
 .quill-editor {
   display: flex;
   flex-direction: column;
@@ -31,6 +40,12 @@ $border-color: $grey-500;
 
   &:not(.ql-toolbar) {
     opacity: 0;
+  }
+
+  &[hidden],
+  [hidden] {
+    display: none !important;
+    pointer-events: none;
   }
 }
 
@@ -249,6 +264,16 @@ $border-color: $grey-500;
   }
 }
 
+.length-indicator {
+  font-size: $font-size-caption;
+  color: $grey-600;
+  margin-left: auto;
+
+  &.length-invalid {
+    color: $color-error;
+  }
+}
+
 // Disabled
 
 :host {
@@ -369,7 +394,7 @@ $border-color: $grey-500;
 
 ::ng-deep {
   .b-panel.rte-size-controls,
-  .b-panel.rte-link-editor,
+  .b-panel.rte-link-editor-panel,
   .b-panel.placeholder-rte-panel {
     margin-top: -3px;
 
@@ -424,14 +449,6 @@ $border-color: $grey-500;
         @include BodyFont(32px, $lineHeight: 1);
       }
     }
-  }
-}
-
-// Align panel
-
-.quill-toolbar[hide-align='true'] ::ng-deep {
-  .ql-align {
-    display: none;
   }
 }
 

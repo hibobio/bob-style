@@ -2734,8 +2734,8 @@
                          [type]="bRTE_type"
                          [label]="bRTE_label"
                          [value]="bRTE_directValueInput ? bRTE_value : undefined"
-                         [controls]="RTE_controls"
-                         [disableControls]="RTE_disableControls"
+                         [controls]="bRTE_controls"
+                         [disableControls]="bRTE_disableControls"
                          [placeholderList]="bRTE_placeholderList"
                          [disabled]="bRTE_disabled"
                          [required]="bRTE_required"
@@ -2753,8 +2753,8 @@
                          [type]="bRTE_type"
                          [label]="bRTE_label"
                          [value]="bRTE_directValueInput ? bRTE_value : undefined"
-                         [controls]="RTE_controls"
-                         [disableControls]="RTE_disableControls"
+                         [controls]="bRTE_controls"
+                         [disableControls]="bRTE_disableControls"
                          [placeholderList]="bRTE_placeholderList"
                          [disabled]="bRTE_disabled"
                          [required]="bRTE_required"
@@ -2824,6 +2824,97 @@
      </p>
      <div class="outputValue full-width">
        {{ bRTE_EventValue }}
+     </div>
+
+     <p class="
+            full-width">
+       <strong>Controls prop</strong>
+     </p>
+
+     <div class="control-item col">
+       <label>
+         <textarea class="simple-textarea bigger"
+                   (change)="runComponentNgOnChanges('bRTE',
+                          arrayOfStringsOrArrayFromString($event.target.value), 'controls')"
+                   [value]="bRTE_controls"
+                   type="search"></textarea>
+       </label>
+       <div style="margin: 5px 0 0 0;justify-content: space-between;"
+            class="row">
+         <button type="button"
+                 style="padding: 0 2px; max-width: none;"
+                 class="small-button"
+                 (click)="bRTE_controls = getComponentProp('bRTE', 'controls')">
+           get
+         </button>
+         <button type="button"
+                 style="padding: 0 2px; max-width: none;"
+                 class="small-button"
+                 (click)="bRTE_controls = bRTE_controlsDef;">
+           set
+         </button>
+         <button type="button"
+                 style="padding: 0 2px; max-width: none;"
+                 class="small-button"
+                 (click)="bRTE_controls = [];">
+           []
+         </button>
+         <button type="button"
+                 style="padding: 0 2px; max-width: none;"
+                 class="small-button"
+                 (click)="bRTE_controls = null;">
+           null
+         </button>
+         <button type="button"
+                 style="padding: 0 2px; max-width: none;"
+                 class="small-button"
+                 (click)="bRTE_controls = undefined;">
+           undef
+         </button>
+       </div>
+     </div>
+
+     <div class="control-item col">
+       <label>
+         <textarea class="simple-textarea bigger"
+                   (change)="runComponentNgOnChanges('bRTE',
+                          arrayOfStringsOrArrayFromString($event.target.value), 'disableControls')"
+                   [value]="bRTE_disableControls"
+                   type="search"></textarea>
+       </label>
+       <div style="margin: 5px 0 0 0;justify-content: space-between;"
+            class="row">
+         <button type="button"
+                 style="padding: 0 2px; max-width: none;"
+                 class="small-button"
+                 (click)="bRTE_disableControls = getComponentProp('bRTE', 'disableControls')">
+           get
+         </button>
+         <button type="button"
+                 style="padding: 0 2px; max-width: none;"
+                 class="small-button"
+                 (click)="bRTE_disableControls = bRTE_disableControlsDef;">
+           set
+         </button>
+         <button type="button"
+                 style="padding: 0 2px; max-width: none;"
+                 class="small-button"
+                 (click)="bRTE_disableControls = [];">
+           []
+         </button>
+         <button type="button"
+                 style="padding: 0 2px; max-width: none;"
+                 class="small-button"
+                 (click)="bRTE_disableControls = null;">
+           null
+         </button>
+         <button type="button"
+                 style="padding: 0 2px; max-width: none;"
+                 class="small-button"
+                 (click)="bRTE_disableControls = undefined;">
+           undef
+         </button>
+       </div>
      </div>
 
      <div class="control-item col">

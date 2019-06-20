@@ -31,6 +31,7 @@ const template = `
   <b-rich-text-editor
       [type]="type"
       [label]="label"
+      [placeholder]="placeholder"
       [value]="value"
       [controls]="controls"
       [disableControls]="disableControls"
@@ -42,11 +43,11 @@ const template = `
       [disabled]="disabled"
       [required]="required"
       [hintMessage]="hintMessage"
+      [warnMessage]="warnMessage"
       [errorMessage]="errorMessage"
       (changed)="change($event)"
       (focused)="focus($event)"
       (blurred)="blur($event)">
-    Some custom toolbar thing
   </b-rich-text-editor>
 `;
 
@@ -74,9 +75,10 @@ const note = `
   Name | Type | Description | default
   --- | --- | --- | ---
   type | RTEType | primary (white bg, border) or secondary (transparent bg, no borders) | primary
-  label | string | placeholder text | none (optional)
+  label | string | label text (above editor) | none (optional)
+  placeholder | string | placeholder text (inside editor. if only label is present, it will be treated as placeholder) | none (optional)
   value | string | html content to be placed inside editor | none (optional)
-  controls | BlotType[] | array of toolbar controls. Possible controls: size, bold, italic, underline, link, list, align, dir. Defaults to all controls. Pass empty array to disable all controls. | all
+  controls | BlotType[] | array of toolbar controls (check BlotType enum for all possible controls). Defaults to all controls. Pass empty array to disable all controls | all
   minChars | number | minimum (plain) text length | 0
   maxChars | number | maximum (plain) text length | none (optional)
   minHeight | number | minimum height of editor (including toolbar). Set to null or 0 to disable min-height | 185 (optional)
@@ -84,7 +86,8 @@ const note = `
   disabled | boolean | disables editor | false (optional)
   required | boolean | adds * to placeholder | false (optional)
   hintMessage | string | adds a hint message below editor | none (optional)
-  errorMessage | string | adds 'invalid' style, hides hint message and displays error message below editor | none (optional)
+  warnMessage | string | adds a warning message below editor | none (optional)
+  errorMessage | string | adds 'invalid' style, hides hint/warn message and displays error message below editor | none (optional)
   sendChangeOn | RTEchangeEvent | When to transmit value changes - on change (every keystroke) or on blur | blur (optional)
   changed | function | change event handler (event transmits latest change: {body,plainText}) |
   focused | function | focus event handler (event transmits latest change: {body,plainText}) |
@@ -113,11 +116,7 @@ const placeholderMock = [
   }
 ];
 
-const disableControlsDef = [
-  // BlotType.color,
-  BlotType.align,
-  BlotType.direction
-];
+const disableControlsDef = [BlotType.align, BlotType.direction];
 const controlsDef = values(BlotType).filter(
   cntrl => !disableControlsDef.includes(cntrl)
 );
@@ -129,7 +128,8 @@ inputStories.add(
       template: storyTemplate,
       props: {
         type: select('type', values(RTEType), RTEType.primary),
-        label: text('label', 'Compose an epic...'),
+        placeholder: text('placeholder', 'Compose an epic...'),
+        label: text('label', 'Edit rich textor'),
         value: text('value', value),
         controls: array('controls', controlsDef, '\n'),
         disableControls: array('disableControls', disableControlsDef, '\n'),
@@ -141,6 +141,7 @@ inputStories.add(
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
+        warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
         change: action('Something has changed'),
         focus: action('Editor focused'),

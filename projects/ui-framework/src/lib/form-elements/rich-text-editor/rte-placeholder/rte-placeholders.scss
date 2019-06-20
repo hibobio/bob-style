@@ -31,6 +31,18 @@ $border-color: var(--negative-700);
       @include position(0 null 0 0);
     }
   }
+
+  .placeholder-panel [panel-trigger] {
+    font-size: 96%;
+    padding-top: 2px;
+    filter: grayscale(1);
+    opacity: 0.75;
+
+    &:hover,
+    &:focus {
+      opacity: 1;
+    }
+  }
 }
 
 :host.disabled ::ng-deep {
@@ -44,14 +56,15 @@ $border-color: var(--negative-700);
 }
 
 ::ng-deep {
-  .placeholder-rte-panel {
-    .panel-position .panel-wrapper {
+  .b-panel.placeholder-rte-panel {
+    .panel-wrapper {
       padding: 0;
     }
+
     b-single-list {
       border: 0;
-      display: block;
-      min-width: 400px;
+      min-width: 350px;
+      max-width: 95vw;
 
       &:hover {
         box-shadow: none;

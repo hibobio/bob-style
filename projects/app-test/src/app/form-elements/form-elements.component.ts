@@ -655,9 +655,9 @@ export class FormElementsTestComponent
     }
   ];
 
-  disableControlsDef = [BlotType.align, BlotType.direction];
-  controlsDef = Object.values(BlotType).filter(
-    cntrl => !this.disableControlsDef.includes(cntrl)
+  bRTE_disableControlsDef = [BlotType.align, BlotType.direction];
+  bRTE_controlsDef = Object.values(BlotType).filter(
+    cntrl => !this.bRTE_disableControlsDef.includes(cntrl)
   );
 
   @ViewChild('bRTE') private bRTE_component;
@@ -670,8 +670,8 @@ export class FormElementsTestComponent
   bRTE_type = 'primary';
   bRTE_value = this.RTEvalueMock;
 
-  RTE_controls = this.controlsDef;
-  RTE_disableControls = this.disableControlsDef;
+  bRTE_controls = this.bRTE_controlsDef;
+  bRTE_disableControls  = this.bRTE_disableControlsDef;
   bRTE_placeholderList = this.placeholderMock;
 
   bRTE_label = 'Rich text label';
@@ -729,13 +729,13 @@ export class FormElementsTestComponent
     }
   }
 
-  runComponentNgOnChanges(name, value: any = NaN) {
+  runComponentNgOnChanges(name, value: any = NaN, prop = 'value') {
     if (value !== value) {
       value = this[name + '_value'];
     }
     // this[name + '_component'].value = value;
     this[name + '_component'].ngOnChanges({
-      value: new SimpleChange(null, value, false)
+      [prop]: new SimpleChange(null, value, false)
     });
   }
 
@@ -745,6 +745,12 @@ export class FormElementsTestComponent
     }
     if (this[name + '_component']) {
       this[name + '_component'][prop] = value;
+    }
+  }
+
+  getComponentProp(name, prop = 'value') {
+    if (this[name + '_component']) {
+      return this[name + '_component'][prop]
     }
   }
 
@@ -758,7 +764,7 @@ export class FormElementsTestComponent
         if (this.global_consoleLog) {
           console.log('--------<<<<<<<<-----------');
           console.log(
-            'Setting value of ' + name + ' to ' + (getType(val)) + ':',
+            'Setting value of ' + name + ' to ' + getType(val) + ':',
             val
           );
         }
@@ -1002,7 +1008,7 @@ export class FormElementsTestComponent
     this.subscribeToAll(this.allFormElements);
 
     // this.hideComponents(this.allFormElements);
-    // this.showComponents(['bDatepicker']);
+    // this.showComponents(['bRTE']);
 
     // 'bInput'
     // 'bTextarea'
