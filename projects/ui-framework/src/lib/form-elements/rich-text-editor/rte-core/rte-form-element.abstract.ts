@@ -9,7 +9,8 @@ import {
   SimpleChanges,
   Type,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
+  HostBinding
 } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
 import quillLib, {
@@ -60,6 +61,16 @@ export abstract class RTEformElement extends BaseFormElement
   @Output() focused: EventEmitter<any> = new EventEmitter<any>();
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
 
+  @HostBinding('class.length-invalid') get isLengthInvalid(): boolean {
+    return (
+      this.length < this.minChars ||
+      (this.maxChars && this.length > this.maxChars)
+    );
+  }
+  @HostBinding('class.length-warning') get hasLengthWarning(): boolean {
+    return this.maxChars && this.maxChars - this.length < 15;
+  }
+
   public editor: Quill;
   public hasSizeSet = false;
   public selection: RangeStatic;
@@ -105,7 +116,7 @@ export abstract class RTEformElement extends BaseFormElement
       this.editor.setContents(
         this.editor.clipboard.convert(newInputValue).insert(' \n')
       );
-      this.length = this.rteUtils.getTextLength(this.editor);
+      this.checkLength();
     } else if (this.editor) {
       this.editor.setText('\n');
     } else {
@@ -253,8 +264,9 @@ export abstract class RTEformElement extends BaseFormElement
         };
       }
     }
-    this.length = this.rteUtils.getTextLength(this.editor);
+    this.checkLength();
     if (this.maxChars && this.length > this.maxChars) {
+      this.editor.setContents(oldDelta);
     }
     this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
   }
@@ -347,6 +359,10 @@ export abstract class RTEformElement extends BaseFormElement
     this.editor.format('size', size === RTEFontSize.normal ? false : size);
     this.hasSizeSet = size !== RTEFontSize.normal;
     this.sizePanel.closePanel();
+  }
+
+  private checkLength(): void {
+    this.length = this.rteUtils.getTextLength(this.editor);
   }
 
   // this is part of ControlValueAccessor interface

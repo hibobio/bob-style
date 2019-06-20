@@ -8,8 +8,6 @@
        [attr.data-length]="hasSuffix && (minChars > 0 || maxChars) ? ( (length || 0) + (maxChars ? '/' + maxChars : '')) :
        null"
        (keydown)="$event.stopPropagation()"
-       [ngClass]="{'length-invalid': hasSuffix && (length < minChars
-         || (maxChars && length > maxChars))}"
        [ngStyle]="{
          minHeight: minHeight ? (minHeight - 43) + 'px' : null,
          maxHeight: maxHeight ? (maxHeight - 43) + 'px' : null
@@ -126,9 +124,7 @@
     </div>
 
     <span class="length-indicator"
-          *ngIf="!hasSuffix && (minChars > 0 || maxChars)"
-          [ngClass]="{'length-invalid': length < minChars ||
-            (maxChars && length > maxChars)}">
+          *ngIf="!hasSuffix && (minChars > 0 || maxChars)">
       {{ (length || 0) + (maxChars ? '/' + maxChars : '') }}
     </span>
 
@@ -137,12 +133,7 @@
 </div>
 
 <p b-input-message
-   *ngIf="
-          hintMessage
-          ||
-          warnMessage
-          ||
-          errorMessage"
+   *ngIf="hintMessage || warnMessage || errorMessage"
    [hintMessage]="hintMessage"
    [warnMessage]="warnMessage"
    [errorMessage]="errorMessage"
