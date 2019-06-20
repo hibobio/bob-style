@@ -1,0 +1,13 @@
+<div class="b-empty-state">
+  <b-icon class="empty-state-icon"
+          [icon]="icon"
+          [color]="iconColor"
+          [size]="iconSize"></b-icon>
+
+  <p class="empty-state-text">{{text}}</p>
+
+  <b-button *ngIf="buttonLabel"
+            (clicked)="onClick()"
+            [type]="buttonType"
+            [size]="buttonSize">{{buttonLabel}}</b-button>
+</div>
