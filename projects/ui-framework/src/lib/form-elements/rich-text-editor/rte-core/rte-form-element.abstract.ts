@@ -254,6 +254,8 @@ export abstract class RTEformElement extends BaseFormElement
       }
     }
     this.length = this.rteUtils.getTextLength(this.editor);
+    if (this.maxChars && this.length > this.maxChars) {
+    }
     this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
   }
 

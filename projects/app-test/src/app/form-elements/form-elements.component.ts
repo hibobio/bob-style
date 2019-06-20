@@ -1007,8 +1007,8 @@ export class FormElementsTestComponent
   ngOnInit() {
     this.subscribeToAll(this.allFormElements);
 
-    // this.hideComponents(this.allFormElements);
-    // this.showComponents(['bRTE']);
+    this.hideComponents(this.allFormElements);
+    this.showComponents(['bRTE']);
 
     // 'bInput'
     // 'bTextarea'
