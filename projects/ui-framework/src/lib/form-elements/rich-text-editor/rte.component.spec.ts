@@ -373,7 +373,7 @@ describe('RichTextEditorComponent', () => {
       hugeButtonElement.click();
 
       tick(50);
-      expect(testComponent.rtrValue).toContain('ql-size-huge');
+      expect(testComponent.rtrValue).toContain('font-size: 32px;');
       flush();
     }));
   });
