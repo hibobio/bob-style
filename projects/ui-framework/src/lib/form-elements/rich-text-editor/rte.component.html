@@ -5,8 +5,6 @@
 <div class="quill-editor"
      [attr.id]="id">
   <div #quillEditor
-       [attr.data-length]="hasSuffix && (minChars > 0 || maxChars) ? ( (length || 0) + (maxChars ? '/' + maxChars : '')) :
-       null"
        (keydown)="$event.stopPropagation()"
        [ngStyle]="{
          minHeight: minHeight ? (minHeight - 43) + 'px' : null,
@@ -122,11 +120,6 @@
          class="toolbar-suffix">
       <ng-content></ng-content>
     </div>
-
-    <span class="length-indicator"
-          *ngIf="!hasSuffix && (minChars > 0 || maxChars)">
-      {{ (length || 0) + (maxChars ? '/' + maxChars : '') }}
-    </span>
 
   </div>
 

@@ -47,8 +47,6 @@ export abstract class RTEformElement extends BaseFormElement
   public disableControlsDef = [];
 
   @Input() public value: string;
-  @Input() public minChars = 0;
-  @Input() public maxChars: number;
   @Input() public controls: BlotType[] = this.controlsDef;
   @Input() public disableControls: BlotType[] = this.disableControlsDef;
   @Input() public sendChangeOn: RTEchangeEvent = RTEchangeEvent.blur;
@@ -64,16 +62,6 @@ export abstract class RTEformElement extends BaseFormElement
   @Output() focused: EventEmitter<any> = new EventEmitter<any>();
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
 
-  @HostBinding('class.length-invalid') get isLengthInvalid(): boolean {
-    return (
-      this.length < this.minChars ||
-      (this.maxChars && this.length > this.maxChars)
-    );
-  }
-  @HostBinding('class.length-warning') get hasLengthWarning(): boolean {
-    return this.maxChars && this.maxChars - this.length < 15;
-  }
-
   public editor: Quill;
   public hasSizeSet = false;
   public selection: RangeStatic;
@@ -82,7 +70,6 @@ export abstract class RTEformElement extends BaseFormElement
   public lastSelection: RangeStatic;
   public lastCurrentBlot: BlotData;
   private latestOutputValue: string;
-  public length: number;
   protected writingValue = false;
   private control: FormControl;
   protected specialBlots: SpecialBlots = {
@@ -119,7 +106,6 @@ export abstract class RTEformElement extends BaseFormElement
       this.editor.setContents(
         this.editor.clipboard.convert(newInputValue).insert(' \n')
       );
-      this.checkLength();
     } else if (this.editor) {
       this.editor.setText('\n');
     } else {
@@ -267,10 +253,6 @@ export abstract class RTEformElement extends BaseFormElement
         };
       }
     }
-    this.checkLength();
-    if (this.maxChars && this.length > this.maxChars) {
-      (this.editor as any).history.undo();
-    }
     this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
   }
 
@@ -362,10 +344,6 @@ export abstract class RTEformElement extends BaseFormElement
     this.editor.format('size', size === RTEFontSize.normal ? false : size);
     this.hasSizeSet = size !== RTEFontSize.normal;
     this.sizePanel.closePanel();
-  }
-
-  private checkLength(): number {
-    return (this.length = this.rteUtils.getTextLength(this.editor));
   }
 
   // this is part of ControlValueAccessor interface
