@@ -29,7 +29,6 @@
   background-repeat: no-repeat;
   @include size(var(--avatar-size));
 
-
   &.emptyAvatar {
     background-size: auto;
   }
@@ -122,6 +121,10 @@
 
     .avatar-text {
       align-items: center;
+    }
+
+    [data-max-lines] {
+      max-width: 100%;
     }
   }
 }

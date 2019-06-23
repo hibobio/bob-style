@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   ViewChild,
   ViewContainerRef,
   Input,
@@ -13,7 +12,8 @@ import {
   EventEmitter,
   OnDestroy,
   SimpleChange,
-  SimpleChanges
+  SimpleChanges,
+  OnChanges
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Subject } from 'rxjs';
@@ -32,7 +32,7 @@ import {
   `,
   styles: []
 })
-export class ComponentRendererComponent implements OnInit, OnDestroy {
+export class ComponentRendererComponent implements OnChanges, OnDestroy {
   constructor(
     @Inject(DOCUMENT) private document: any,
     private factoryResolver: ComponentFactoryResolver,
@@ -48,8 +48,15 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
 
   private componentRef: ComponentRef<any>;
 
-  ngOnInit() {
-    this.insertComponent(this.render);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.render) {
+      if (this.componentRef) {
+        this.destroyComponent();
+      }
+      if (changes.render.currentValue) {
+        this.insertComponent(changes.render.currentValue);
+      }
+    }
   }
 
   ngOnDestroy(): void {
@@ -147,7 +154,9 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
 
   private insertComponent(comp: RenderedComponent): void {
     this.reset();
-    this.componentRef = this.createComponent(comp, true, this.container);
+    if (comp) {
+      this.componentRef = this.createComponent(comp, true, this.container);
+    }
   }
 
   private reset(): void {
@@ -155,9 +164,13 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
   }
 
   private destroyComponent(): void {
-    this.destroy$.next(true);
+    if (!this.destroy$.isStopped) {
+      this.destroy$.next(true);
+    }
     this.destroy$.unsubscribe();
-    this.componentRef.destroy();
-    this.componentRef = null;
+    if (this.componentRef) {
+      this.componentRef.destroy();
+      this.componentRef = null;
+    }
   }
 }

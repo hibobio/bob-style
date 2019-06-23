@@ -7,10 +7,9 @@ import { values } from 'lodash';
 import { AlertType } from './alert.enum';
 import { AlertExampleModule } from './alert-example.module';
 
-const alertStories = storiesOf(
-  ComponentGroupType.ButtonsAndIndicators,
-  module
-).addDecorator(withKnobs);
+const alertStories = storiesOf(ComponentGroupType.Popups, module).addDecorator(
+  withKnobs
+);
 const alertTypes = values(AlertType);
 
 const template = `<b-alert-example

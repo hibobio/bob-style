@@ -1,0 +1,11 @@
+<b-icon class="empty-state-icon"
+        [icon]="config.icon"
+        [color]="iconColor"
+        [size]="iconSize"></b-icon>
+
+<p class="empty-state-text">{{config.text}}</p>
+
+<b-button *ngIf="config.buttonLabel"
+          (clicked)="buttonClick.emit()"
+          [type]="buttonType"
+          [size]="buttonSize">{{config.buttonLabel}}</b-button>

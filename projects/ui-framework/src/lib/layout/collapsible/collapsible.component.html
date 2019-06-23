@@ -1,5 +1,6 @@
 <mat-expansion-panel [expanded]="expanded && !disabled"
                      [disabled]="disabled"
+                     [hideToggle]="true"
                      (closed)="onPanelClosed($event)"
                      (opened)="onPanelOpened($event)">
 

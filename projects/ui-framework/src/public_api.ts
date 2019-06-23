@@ -2,11 +2,13 @@
  * Public API Surface of ui-framework
  */
 
+
 /*
 * Global
 */
 
 export { Keys } from './lib/enums';
+
 
 /*
  * Typography
@@ -14,6 +16,7 @@ export { Keys } from './lib/enums';
 
 // Typography Module
 export { TypographyModule } from './lib/typography/typography.module';
+
 
 /*
  * Buttons & Indicators
@@ -87,16 +90,14 @@ export { LinkColor, LinkTarget } from './lib/buttons-indicators/link/link.enum';
 // InfoTooltip Module
 export { InfoTooltipModule } from './lib/popups/info-tooltip/info-tooltip.module';
 export { InfoTooltipComponent } from './lib/popups/info-tooltip/info-tooltip.component';
-// Alert Module
-export { AlertService } from './lib/buttons-indicators/alert/alert-service/alert.service';
-export { AlertModule } from './lib/buttons-indicators/alert/alert.module';
-export { AlertConfig } from './lib/buttons-indicators/alert/alert.interface';
-export { AlertComponent } from './lib/buttons-indicators/alert/alert.component';
-export { AlertType } from './lib/buttons-indicators/alert/alert.enum';
 // Employees Showcase Module
 export { EmployeesShowcaseModule } from './lib/buttons-indicators/employees-showcase/employees-showcase.module';
 export { EmployeesShowcaseComponent } from './lib/buttons-indicators/employees-showcase/employees-showcase.component';
 export { EmployeeShowcase } from './lib/buttons-indicators/employees-showcase/employees-showcase.interface';
+// Empty State Module
+export { EmptyStateModule } from './lib/buttons-indicators/empty-state/empty-state.module';
+export { EmptyStateComponent } from './lib/buttons-indicators/empty-state/empty-state.component';
+export { EmptyStateConfig } from './lib/buttons-indicators/empty-state/empty-state.types';
 /*
  * Form Elements
  */
@@ -262,6 +263,7 @@ export { BaseFormElement } from './lib/form-elements/base-form-element';
 export { ActionBarModule } from './lib/navigation/action-bar/action-bar.module';
 export { ActionBarComponent } from './lib/navigation/action-bar/action-bar.component';
 
+
 /*
  * Overlays
  */
@@ -281,6 +283,18 @@ export {
 export {
   DialogService
 } from './lib/popups/dialog/dialog-service/dialog.service';
+// Alert Module
+export { AlertModule } from './lib/popups/alert/alert.module';
+export { AlertService } from './lib/popups/alert/alert-service/alert.service';
+export { AlertComponent } from './lib/popups/alert/alert.component';
+export { AlertConfig } from './lib/popups/alert/alert.interface';
+export { AlertType } from './lib/popups/alert/alert.enum';
+// Lightbox Module
+export { LightboxModule } from './lib/popups/lightbox/lightbox.module';
+export { LightboxService } from './lib/popups/lightbox/lightbox.service';
+export { LightboxComponent } from './lib/popups/lightbox/lightbox.component';
+export { LightboxConfig, LightboxData } from './lib/popups/lightbox/lightbox.interface';
+
 
 /*
  * Table
@@ -295,6 +309,7 @@ export { AvatarCellComponent } from './lib/table/table-cell-components/avatar.co
 export { ActionsCellComponent } from './lib/table/table-cell-components/actions-cell/actions-cell.component';
 export { GridActions } from './lib/table/table-cell-components/actions-cell/actions-cell.interface';
 export { TableUtilsService } from './lib/table/table-utils-service/table-utils.service';
+
 
 /*
  * Layout
@@ -320,6 +335,7 @@ export * from './lib/table/card-table/card-table.interface';
 export { CollapsibleModule } from './lib/layout/collapsible/collapsible.module';
 export { CollapsibleComponent } from './lib/layout/collapsible/collapsible.component';
 export { CollapsibleType } from './lib/layout/collapsible/collapsible.enum';
+
 
 /*
  * Misc
@@ -349,6 +365,7 @@ export { RenderedComponent } from './lib/services/component-renderer/component-r
 export { TruncateTooltipModule} from './lib/services/truncate-tooltip/truncate-tooltip.module';
 export { TruncateTooltipComponent} from './lib/services/truncate-tooltip/truncate-tooltip.component';
 export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/truncate-tooltip.directive';
+
 
 /*
 * Animation

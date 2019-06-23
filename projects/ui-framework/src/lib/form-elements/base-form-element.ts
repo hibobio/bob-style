@@ -122,7 +122,7 @@ export abstract class BaseFormElement
     if (value !== undefined) {
       value = this.outputTransformers.reduce(
         (previousResult, fn) => fn(previousResult),
-        value
+        value,
       );
 
       if (

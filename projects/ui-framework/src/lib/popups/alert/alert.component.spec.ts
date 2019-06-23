@@ -1,10 +1,10 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {AlertComponent} from './alert.component';
-import {AlertType} from './alert.enum';
-import {MockComponent} from 'ng-mocks';
-import {IconComponent} from '../../icons/icon.component';
-import {ButtonsModule} from '../buttons/buttons.module';
-import {TypographyModule} from '../../typography/typography.module';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { AlertComponent } from './alert.component';
+import { AlertType } from './alert.enum';
+import { MockComponent } from 'ng-mocks';
+import { IconComponent } from '../../icons/icon.component';
+import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { TypographyModule } from '../../typography/typography.module';
 
 describe('AlertComponent', () => {
   let component: AlertComponent;
@@ -12,16 +12,10 @@ describe('AlertComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ButtonsModule,
-        TypographyModule,
-      ],
-      declarations: [
-        AlertComponent,
-        MockComponent(IconComponent)
-      ],
+      imports: [ButtonsModule, TypographyModule],
+      declarations: [AlertComponent, MockComponent(IconComponent)]
     })
-    .compileComponents()
+      .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(AlertComponent);
         component = fixture.componentInstance;

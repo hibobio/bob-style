@@ -1,0 +1,140 @@
+@import '../../style/variables';
+@import '../../style/keyframes';
+@import '../../style/mixins';
+@import '../../buttons-indicators/mini-preloader/mini-preloader-mixin';
+
+$lighbox-padding: 50px;
+
+::ng-deep {
+  .b-lightbox-panel {
+    @include size(100%);
+    @include flex-align;
+    padding: $lighbox-padding;
+    background-color: black(0.75);
+    overflow: hidden;
+    position: relative;
+  }
+}
+
+:host {
+  @include size(100%);
+}
+
+:host,
+.lightbox-container {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+// image
+
+:host.type-image {
+  .lightbox-container {
+    align-items: center;
+  }
+}
+
+.lightbox-image {
+  max-width: 100%;
+  display: block;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  position: relative;
+}
+
+// video
+
+:host.type-video {
+  .lightbox-container {
+    align-items: center;
+    width: 100%;
+  }
+}
+
+.lightbox-video {
+  @include size(100%);
+  max-width: calc((100vh - #{$lighbox-padding * 2}) * 16 / 9);
+  max-height: calc((100vw - #{$lighbox-padding * 2}) * 9 / 16);
+  position: relative;
+}
+
+// component
+
+:host.type-component {
+  .lightbox-container {
+    align-items: center;
+    width: 100%;
+  }
+}
+
+.lightbox-component {
+  @include flex-align;
+  min-width: 320px;
+  min-height: 320px;
+  padding: 20px;
+  border-radius: $border-radius;
+  background-color: white;
+}
+
+// fillScreen
+
+:host.fill-cover {
+  .lightbox-container {
+    overflow: hidden;
+  }
+
+  .lightbox-image {
+    max-width: none;
+    max-height: none;
+    @include size(100%);
+    object-fit: cover;
+  }
+
+  .lightbox-video {
+    max-width: none;
+    max-height: none;
+  }
+
+  .lightbox-component {
+    min-width: 0;
+    min-height: 0;
+    @include size(100%);
+    border-radius: 0;
+  }
+}
+
+// animations
+
+@include keyframes(slide-up);
+@include keyframes(fade-in);
+
+::ng-deep {
+  .b-lightbox-panel {
+    @include animate(fade-in);
+  }
+}
+
+:host {
+  &.type-video,
+  &.type-image {
+    .lightbox-container {
+      @include mini-preloader(
+        $base-selector: '&',
+        $full-size-selector: null,
+        $abs-pos-center: true
+      );
+    }
+  }
+}
+
+.lightbox-container {
+  @include animate(slide-up);
+}

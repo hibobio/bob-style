@@ -1,0 +1,17 @@
+@import '../../style/colors.scss';
+
+:host {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  .empty-state-text {
+    margin: 10px 0 25px;
+    color: $grey-600;
+  }
+
+  b-button {
+    display: flex;
+    justify-content: center;
+  }
+}
+

@@ -1,22 +1,27 @@
-import {Component, NgModule, Input, OnDestroy} from '@angular/core';
+import { Component, NgModule, Input, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {AlertService} from './alert-service/alert.service';
-import {AlertConfig} from './alert.interface';
-import {AlertType} from './alert.enum';
-import {ButtonsModule} from '../buttons/buttons.module';
-import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
+import { AlertService } from './alert-service/alert.service';
+import { AlertConfig } from './alert.interface';
+import { AlertType } from './alert.enum';
+import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import {
+  BrowserAnimationsModule,
+  NoopAnimationsModule
+} from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'b-alert-example',
-  template: `<b-button (click)="showAlert()">Show alert</b-button>`
+  template: `
+    <b-button (click)="showAlert()">Show alert</b-button>
+  `,
+  providers: []
 })
 export class AlertExampleComponent implements OnDestroy {
   @Input() public alertType: AlertType;
   @Input() public text: string;
   @Input() public title: string;
 
-  constructor(private alertService: AlertService) {
-  }
+  constructor(private alertService: AlertService) {}
 
   showAlert(): void {
     const alertConfig: AlertConfig = {
@@ -41,6 +46,6 @@ export class AlertExampleComponent implements OnDestroy {
     BrowserAnimationsModule
   ],
   exports: [AlertExampleComponent],
-  providers: [AlertService],
+  providers: [AlertService]
 })
-export class AlertExampleModule { }
+export class AlertExampleModule {}

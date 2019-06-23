@@ -2,7 +2,9 @@ export enum IconSize {
   small = 'small',
   medium = 'medium',
   large = 'large',
-  xLarge = 'x-large'
+  xLarge = 'x-large',
+  xxLarge = 'xx-large'
+
 }
 
 export enum IconColor {
@@ -75,7 +77,7 @@ export enum Icons {
   add_photo_camera_icon = 'baseline-add_a_photo-24px',
   folder_shared = 'baseline-folder_shared-24px',
   person = 'baseline-person-24px',
-
+  feedback_icon = 'survey_empty_state',
   // duplicate icons for backwards compatibility
   // TODO: remove if not used
   approve_badge = 'success_icon',

@@ -20,3 +20,7 @@ $color-warn: #fea54a;
 @function white($opacity) {
   @return rgba(255, 255, 255, $opacity);
 }
+
+@function random-color() {
+  @return rgb(random(255), random(255), random(255));
+}

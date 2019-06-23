@@ -1,5 +1,3 @@
-import { SimpleChanges } from '@angular/core';
-
 export function MixIn(baseCtors: Function[]) {
   return function(derivedCtor: Function) {
     baseCtors.forEach(baseCtor => {
@@ -79,7 +77,7 @@ export const asNumber = (smth: any): number => parseInt(smth, 10);
 export const compareAsNumbers = (
   a: string | number,
   b: string | number
-): boolean => parseInt(a as string, 10) === parseInt(b as string, 10);
+): boolean => asNumber(a) === asNumber(b);
 
 export const compareAsStrings = (a: any, b: any): boolean =>
   String(a) === String(b);
@@ -110,7 +108,6 @@ import {
   set as _set,
   compose as _compose
 } from 'lodash/fp';
-import { type } from 'os';
 
 export const flatten = (obj, path = []) => {
   return _isPlainObject(obj) || _isArray(obj)
@@ -126,14 +123,6 @@ export const unflatten = _compose(
   _reduce((acc, [k, v]) => _set(k, v, acc), {}),
   _toPairs
 );
-
-export const domainFromUrl = (url: string) => {
-  let a = document.createElement('a');
-  a.href = url;
-  const domain = a.hostname || '.com';
-  a = null;
-  return domain;
-};
 
 export const stringify = (smth: any): string =>
   isString(smth)
@@ -152,3 +141,11 @@ export const getType = smth =>
     : smth instanceof Date
     ? 'date'
     : String(typeof smth);
+
+export const domainFromUrl = (url: string) => {
+  let a = document.createElement('a');
+  a.href = url;
+  const domain = a.hostname || '.com';
+  a = null;
+  return domain;
+};

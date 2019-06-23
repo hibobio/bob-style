@@ -7,7 +7,7 @@ import {
   OnDestroy,
   Output,
   SimpleChanges,
-  ViewContainerRef,
+  ViewContainerRef
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { chain, isNull, isUndefined } from 'lodash';
@@ -19,6 +19,7 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListFooterActions } from '../list.interface';
+import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
 
 @Component({
   selector: 'b-single-select',
@@ -62,9 +63,10 @@ export class SingleSelectComponent extends BaseSelectPanelElement
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
+    DOM: DOMhelpers,
     private listChangeService: ListChangeService
   ) {
-    super(overlay, viewContainerRef, panelPositionService);
+    super(overlay, viewContainerRef, panelPositionService, DOM);
     this.value = null;
   }
 

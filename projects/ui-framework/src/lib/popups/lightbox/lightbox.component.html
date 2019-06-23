@@ -1,0 +1,28 @@
+<b-square-button (clicked)="closeLightbox()"
+                 [type]="buttons.tertiary"
+                 [icon]="icons.close"
+                 [color]="iconColor.white"
+                 class="close-button"></b-square-button>
+
+<div class="lightbox-container">
+
+  <img class="lightbox-image"
+       *ngIf="config.image"
+       [src]="config.image"
+       (click)="$event.stopPropagation()"
+       alt="">
+
+  <iframe class="lightbox-video"
+          *ngIf="config.video && !config.image"
+          [src]="config.video"
+          frameborder="0"
+          allowfullscreen>
+  </iframe>
+
+  <b-component-renderer class="lightbox-component"
+                        *ngIf="config.component && !config.image && !config.video"
+                        [render]="config.component"
+                        (click)="$event.stopPropagation()">
+  </b-component-renderer>
+
+</div>

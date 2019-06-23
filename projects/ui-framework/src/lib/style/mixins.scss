@@ -7,6 +7,10 @@
 }
 
 @mixin size($w: 100%, $h: $w) {
+  @if (type-of($w) == list) {
+    $h: nth($w, 2);
+    $w: nth($w, 1);
+  }
   width: $w;
   height: $h;
 }
@@ -181,4 +185,39 @@
   overflow: hidden;
   position: absolute;
   appearance: none;
+}
+
+@mixin mask-image($img, $color: null, $align: center, $size: contain) {
+  @supports not ((-webkit-mask-image: url('')) or (mask-image: url(''))) {
+    background-image: $img;
+    background-repeat: no-repeat;
+    background-position: $align;
+    background-size: $size;
+  }
+  @supports (-webkit-mask-image: url('')) or (mask-image: url('')) {
+    background-image: none;
+    background-color: $color;
+    -webkit-mask-image: $img;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: $align;
+    -webkit-mask-size: $size;
+  }
+}
+
+@mixin ratio($ratio-or-width, $height: null) {
+  $padding: if(
+    $height,
+    percentage($height/$ratio-or-width),
+    percentage(1 / $ratio-or-width)
+  );
+  &:before {
+    content: '';
+    float: left;
+    padding-bottom: $padding;
+  }
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
 }

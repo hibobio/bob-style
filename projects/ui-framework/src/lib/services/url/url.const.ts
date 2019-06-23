@@ -1,0 +1,10 @@
+import { URLtype } from './url.enum';
+
+export const allowedDomainsTest = {
+  [URLtype.youtube]: /(www\.)?youtu(be\.com|\.be|be\.googleapis\.com)/i,
+  [URLtype.vimeo]: /(player\.|www\.)?(vimeo\.com)/i
+};
+
+export const naiveLinkTest = /(www\.|http|\/|\w+\.\w+)/i;
+
+export const imageLinkTest = /(\.(jpg|jpeg|gif|png|svg))|(data:image)/i;

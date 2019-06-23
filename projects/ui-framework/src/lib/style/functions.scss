@@ -38,3 +38,10 @@
   }
   @return $get;
 }
+
+@function uri-encode-color($color) {
+  @if type-of($color) == 'color' {
+    $color: unquote('%23' + str-slice(ie-hex-str($color), 4));
+  }
+  @return $color;
+}
