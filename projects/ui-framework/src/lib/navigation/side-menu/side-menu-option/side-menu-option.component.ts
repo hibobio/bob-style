@@ -33,6 +33,7 @@ export class SideMenuOptionComponent implements OnChanges {
   public icons = Icons;
   public colors = IconColor;
   public types = ButtonType;
+  public menuOpened: boolean;
 
   public showActions = false;
 
@@ -75,8 +76,8 @@ export class SideMenuOptionComponent implements OnChanges {
     $event.stopPropagation();
   }
 
-  setShowActions(status: boolean, timeout: number = 0): void {
-    setTimeout(() => this.showActions = status, timeout);
+  setShowActions(status: boolean): void {
+    this.showActions = status;
   }
 
   onActionClick(): void {

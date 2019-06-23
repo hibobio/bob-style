@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
@@ -32,7 +33,7 @@ const SHUFFLE_EMPLOYEES_INTERVAL = 3000;
   styleUrls: ['./employees-showcase.component.scss'],
 })
 export class EmployeesShowcaseComponent
-  implements OnInit, OnChanges, OnDestroy {
+  implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   @Input() employees: EmployeeShowcase[] = [];
   @Input() avatarSize: AvatarSize = AvatarSize.mini;
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
@@ -62,13 +63,16 @@ export class EmployeesShowcaseComponent
         this.subscribeToShuffleEmployees();
       });
     this.buildShowMoreOptions();
-    this.calcAvatars();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.avatarSize) {
       this.calcAvatars();
     }
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => this.calcAvatars());
   }
 
   private calcAvatars() {

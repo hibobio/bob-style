@@ -493,4 +493,46 @@ describe('SingleListComponent', () => {
     });
   });
 
+  describe('getListHeight', () => {
+    const updateList = () => {
+      const testOptionsMock = [
+        {
+          groupName: 'Basic Info Header',
+          options: [
+            { value: 'Basic Info 1', id: 1 },
+            { value: 'Basic Info 2', id: 2 },
+          ],
+        },
+      ];
+      component.ngOnChanges({
+        options: {
+          previousValue: undefined,
+          currentValue: testOptionsMock,
+          firstChange: false,
+          isFirstChange: () => false,
+        }
+      });
+      fixture.autoDetectChanges();
+    };
+    it('should return options.length * listElHeight', () => {
+      updateList();
+
+      const listHeight = component.getListHeight();
+      expect(listHeight).toEqual(88);
+      const vScrollWrapper = fixture.debugElement.query(By.css('.v-scroll-wrapper'));
+      const styles = getComputedStyle(vScrollWrapper.nativeElement);
+      expect(styles.height).toEqual('88px');
+    });
+    it('should add another row if showNoneOption is true', () => {
+      component.showNoneOption = true;
+      updateList();
+
+      const listHeight = component.getListHeight();
+      expect(listHeight).toEqual(132);
+      const vScrollWrapper = fixture.debugElement.query(By.css('.v-scroll-wrapper'));
+      const styles = getComputedStyle(vScrollWrapper.nativeElement);
+      expect(styles.height).toEqual('132px');
+    });
+  });
+
 });

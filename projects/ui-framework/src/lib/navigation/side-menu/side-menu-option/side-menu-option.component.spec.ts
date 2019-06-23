@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement, NO_ERRORS_SCHEMA, SimpleChanges } from '@angular/core';
 import { SideMenuOptionComponent } from './side-menu-option.component';
 import { getSideMenuOptionsMock } from '../side-menu.mock';
@@ -96,13 +96,12 @@ describe('SideMenuOptionComponent', () => {
     it('should display option-action if actions provided', () => {
       expect(optionActions.nativeElement).toBeTruthy();
     });
-    it('should set option-actions opacity to 1 when opening menu', fakeAsync(() => {
+    it('should set option-actions opacity to 1 when opening menu', () => {
       const bMenu = fixture.debugElement.query(By.css('b-menu'));
-      component.setShowActions(false);
+      component.menuOpened = false;
       bMenu.triggerEventHandler('click', null);
-      tick(25);
       fixture.detectChanges();
       expect(optionActions.nativeElement.style.opacity).toEqual('1');
-    }));
+    });
   });
 });

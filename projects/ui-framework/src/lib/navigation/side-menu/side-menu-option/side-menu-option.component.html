@@ -10,10 +10,10 @@
          [matTooltipShowDelay]="300">{{option.displayName}}</div>
     <div class="option-actions"
          *ngIf="option.actions?.length"
-         [ngStyle]="{'opacity': (showActions || selected) ? 1 : 0}">
+         [ngStyle]="{'opacity': (showActions || selected || menuOpened) ? 1 : 0}">
         <b-menu [menu]="option.actions"
-                (click)="stopBubbling($event); setShowActions(true, 25)"
-                (closeMenu)="setShowActions(false)">
+                (click)="stopBubbling($event); menuOpened = true"
+                (closeMenu)="menuOpened = false">
             <b-square-button menu-trigger
                              [type]="types.tertiary"
                              [icon]="icons.three_dots_vert"

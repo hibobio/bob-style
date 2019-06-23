@@ -8,6 +8,10 @@
 
   @include form-element-margins;
   @include input-border-colors($add: ' .brd-label:before');
+
+  &.disabled {
+    @include disabled-state;
+  }
 }
 
 .bfe-wrap {
