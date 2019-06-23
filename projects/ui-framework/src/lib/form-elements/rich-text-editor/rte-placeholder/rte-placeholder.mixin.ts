@@ -16,7 +16,7 @@ export class RtePlaceholderBlot {
 
   // stand-ins for Base class properties & methods
 
-  public placeholderRteConverterService: PlaceholderRteConverterService = new PlaceholderRteConverterService();
+  public placeholderRteConverterService: PlaceholderRteConverterService;
   public placeholderList: RtePlaceholderList[];
   public placeholderPanel: PanelComponent;
   public rteUtils: RteUtilsService;

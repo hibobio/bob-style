@@ -72,6 +72,7 @@ export class RichTextEditorComponent extends RTEformElement
   constructor(
     private DOM: DOMhelpers,
     public rteUtils: RteUtilsService,
+    public placeholderRteConverterService: PlaceholderRteConverterService,
     changeDetector: ChangeDetectorRef,
     injector: Injector
   ) {
@@ -120,7 +121,6 @@ export class RichTextEditorComponent extends RTEformElement
   // implementing RtePlaceholderBlot mixin
   @Input() public placeholderList: RtePlaceholderList[];
   @ViewChild('placeholderPanel', { static: false }) public placeholderPanel: PanelComponent;
-  public placeholderRteConverterService: PlaceholderRteConverterService;
   public onPlaceholderPanelOpen: () => void;
   public onPlaceholderSelectChange: (
     selectGroupOptions: SingleListComponent
