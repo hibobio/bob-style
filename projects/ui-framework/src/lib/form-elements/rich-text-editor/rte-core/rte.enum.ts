@@ -24,9 +24,9 @@ export enum UtilBlotType {
 
 export enum RTEFontSize {
   normal = 'normal',
-  small = 'small',
-  large = 'large',
-  huge = 'huge'
+  small = '10px',
+  large = '18px',
+  huge = '32px'
 }
 
 export enum RTEchangeEvent {

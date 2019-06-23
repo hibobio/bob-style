@@ -3,11 +3,11 @@
   max-width: 100%;
 }
 
-.ql-video.ql-align-center {
+.ql-video#{$ql-align-center} {
   margin: 0 auto;
 }
 
-.ql-video.ql-align-right {
+.ql-video#{$ql-align-right} {
   margin: 0 0 0 auto;
 }
 

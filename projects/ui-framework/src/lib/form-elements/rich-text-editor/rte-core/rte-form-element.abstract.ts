@@ -29,6 +29,9 @@ import { PanelComponent } from '../../../popups/panel/panel.component';
 const Block = quillLib.import('blots/block');
 Block.tagName = 'DIV';
 quillLib.register(Block, true);
+quillLib.register(quillLib.import('attributors/style/direction'), true);
+quillLib.register(quillLib.import('attributors/style/align'), true);
+quillLib.register(quillLib.import('attributors/style/size'), true);
 
 export abstract class RTEformElement extends BaseFormElement
   implements OnChanges, AfterViewInit {
@@ -266,7 +269,7 @@ export abstract class RTEformElement extends BaseFormElement
     }
     this.checkLength();
     if (this.maxChars && this.length > this.maxChars) {
-      this.editor.setContents(oldDelta);
+      (this.editor as any).history.undo();
     }
     this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
   }
@@ -361,8 +364,8 @@ export abstract class RTEformElement extends BaseFormElement
     this.sizePanel.closePanel();
   }
 
-  private checkLength(): void {
-    this.length = this.rteUtils.getTextLength(this.editor);
+  private checkLength(): number {
+    return (this.length = this.rteUtils.getTextLength(this.editor));
   }
 
   // this is part of ControlValueAccessor interface

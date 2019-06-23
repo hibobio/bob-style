@@ -164,7 +164,7 @@
       white-space: nowrap;
       min-width: 2em;
     }
-    &:not(.ql-direction-rtl) {
+    &:not(#{$ql-direction-rtl}) {
       &::before {
         margin-right: 0.3em;
         margin-left: -0.5em;
@@ -172,7 +172,7 @@
       }
     }
 
-    &.ql-direction-rtl {
+    &#{$ql-direction-rtl} {
       &::before {
         margin-left: 0.3em;
         margin-right: -0.5em;

@@ -1,11 +1,11 @@
 .ql-editor {
-  .ql-size-small {
+  #{$ql-size-small} {
     font-size: 0.75em;
   }
-  .ql-size-large {
+  #{$ql-size-large} {
     font-size: 1.5em;
   }
-  .ql-size-huge {
+  #{$ql-size-huge} {
     font-size: 2.5em;
   }
 }
