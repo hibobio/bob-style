@@ -5,12 +5,15 @@ import { InputAutoCompleteOptions, InputTypes } from './input/input.enum';
 import { FormEvents, InputEventType } from './form-elements.enum';
 import { isKey } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
-import { stringyOrFail } from '../services/utils/transformers';
+import { asNumber, stringyOrFail } from '../services/utils/transformers';
 
 export abstract class BaseInputElement extends BaseFormElement {
   protected constructor() {
     super();
     this.inputTransformers = [stringyOrFail];
+    this.outputTransformers = [
+      value => asNumber(this.inputType, value)
+    ];
     this.baseValue = '';
   }
 
@@ -22,9 +25,7 @@ export abstract class BaseInputElement extends BaseFormElement {
     InputAutoCompleteOptions.off;
   @Input() maxChars: number;
 
-  @Output(FormEvents.inputEvents) changed: EventEmitter<
-    InputEvent
-  > = new EventEmitter<InputEvent>();
+  @Output(FormEvents.inputEvents) changed: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
 
   onInputChange(event) {
     if (event.target.value !== this.value) {
