@@ -1,11 +1,11 @@
 @import '../../style/colors.scss';
 
 :host {
-  justify-content: center;
+  align-items: center;
   display: flex;
   flex-direction: column;
   .empty-state-text {
-    margin: 10px 0px 25px 0px;
+    margin: 10px 0 25px;
     color: $grey-600;
   }
 
