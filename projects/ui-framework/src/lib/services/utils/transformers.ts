@@ -190,9 +190,7 @@ export const valueInArrayOrFail = (
   return value;
 };
 
-export const asNumber = (inputType: InputTypes, value: any) => {
-  console.log('inputType', inputType, 'value', value);
-  return inputType === InputTypes.number
+export const asNumber = (inputType: InputTypes, value: any) =>
+  inputType === InputTypes.number
     ? parseFloat(value)
     : value;
-};
