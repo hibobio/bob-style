@@ -78,11 +78,7 @@ export class RichTextEditorComponent extends RTEformElement
     super(rteUtils, changeDetector, injector);
   }
 
-  public disableControlsDef = [
-    BlotType.placeholder,
-    BlotType.align,
-    BlotType.direction
-  ];
+  public disableControlsDef = [BlotType.placeholder, BlotType.direction];
 
   @Input() public type: RTEType = RTEType.primary;
   @Input() public minHeight = 185;

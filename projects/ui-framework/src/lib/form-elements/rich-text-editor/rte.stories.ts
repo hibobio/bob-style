@@ -116,7 +116,7 @@ const placeholderMock = [
   }
 ];
 
-const disableControlsDef = [BlotType.align, BlotType.direction];
+const disableControlsDef = [];
 const controlsDef = values(BlotType).filter(
   cntrl => !disableControlsDef.includes(cntrl)
 );
