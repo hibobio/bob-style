@@ -1,3 +1,11 @@
+$ql-align-center: '[style*="text-align: center"]';
+$ql-align-right: '[style*="text-align: right"]';
+$ql-align-justify: '[style*="text-align: justify"]';
+$ql-direction-rtl: '[style*="direction: rtl"]';
+$ql-size-small: '[style*="font-size: 10px"]';
+$ql-size-large: '[style*="font-size: 18px"]';
+$ql-size-huge: '[style*="font-size: 32px"]';
+
 // $font_family_1: Helvetica, Arial, sans-serif;
 // $font_family_2: Georgia, Times New Roman, serif;
 // $font_family_3: Monaco, Courier New, monospace;
@@ -21,7 +29,6 @@ $font_family_4: inherit;
 // $color_11: #f8f8f2;
 // $color_12: #ccc;
 // $color_13: #ddd;
-
 
 $color_1: null;
 $color_2: null;

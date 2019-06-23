@@ -2,14 +2,6 @@
  * Quill Editor v1.3.6
  */
 
-$ql-align-center: '[style*="text-align: center"]';
-$ql-align-right: '[style*="text-align: right"]';
-$ql-align-justify: '[style*="text-align: justify"]';
-$ql-direction-rtl: '[style*="direction: rtl"]';
-$ql-size-small: '[style*="font-size: 10px"]';
-$ql-size-large: '[style*="font-size: 18px"]';
-$ql-size-huge: '[style*="font-size: 32px"]';
-
 @import './quill-variables';
 @import './quill-container';
 @import './quill-main';

@@ -12,7 +12,6 @@ import {
 
 import { parse, format, isDate } from 'date-fns';
 import { InputTypes } from '../../form-elements/input/input.enum';
-import { Input } from '@angular/core';
 
 // -------------------------------
 // Transformers
@@ -48,8 +47,8 @@ export const stringToDate = date => {
   return isDate(date)
     ? date
     : String(converted) !== 'Invalid Date'
-      ? converted
-      : undefined;
+    ? converted
+    : undefined;
 };
 
 export const dateToString = (date, frmt) =>
@@ -58,6 +57,9 @@ export const dateToString = (date, frmt) =>
 export const valueToObjectKey = key => value => {
   return isObject(value) && value[key] ? value : { [key]: value };
 };
+
+export const asNumber = (inputType: InputTypes, value: any) =>
+  inputType === InputTypes.number ? parseFloat(value) : value;
 
 // -------------------------------
 // Typecheckers
@@ -69,9 +71,9 @@ export const booleanOrFail = value => {
   }
   if (typeof value !== 'boolean') {
     throw new Error(
-      `Value (${ stringify(value) }) must be of type boolean, instead ${
+      `Value (${stringify(value)}) must be of type boolean, instead ${
         value === null ? 'null' : getType(value)
-        } was provided.`
+      } was provided.`
     );
   }
   return value;
@@ -83,9 +85,9 @@ export const arrayOrFail = value => {
   }
   if (!isArray(value)) {
     throw new Error(
-      `Value (${ stringify(value) }) must be an array, instead ${ getType(
+      `Value (${stringify(value)}) must be an array, instead ${getType(
         value
-      ) } was provided.`
+      )} was provided.`
     );
   }
   return value;
@@ -97,9 +99,9 @@ export const objectOrFail = value => {
   }
   if (!isObject(value)) {
     throw new Error(
-      `Value (${ stringify(value) }) must be an object, instead ${ getType(
+      `Value (${stringify(value)}) must be an object, instead ${getType(
         value
-      ) } was provided.`
+      )} was provided.`
     );
   }
   return value;
@@ -111,9 +113,9 @@ export const stringyOrFail = value => {
   }
   if (isArray(value) || isObject(value)) {
     throw new Error(
-      `Value (${ stringify(value) }) should not be ${ getType(
+      `Value (${stringify(value)}) should not be ${getType(
         value
-      ).toUpperCase() }.`
+      ).toUpperCase()}.`
     );
   }
   return String(value);
@@ -129,7 +131,7 @@ export const dateyOrFail = value => {
     Date.parse(value) <= 0 ||
     converted === undefined
   ) {
-    throw new Error(`Value (${ stringify(value) }) could not be parsed to Date.`);
+    throw new Error(`Value (${stringify(value)}) could not be parsed to Date.`);
   }
   return converted;
 };
@@ -150,15 +152,15 @@ export const objectHasKeyOrFail = (key: string | string[]) => (
   }
   if (isNullOrUndefined(key) || !isObject(value)) {
     throw new Error(
-      `Value (${ stringify(
+      `Value (${stringify(
         value
-      ) }) is  not an object or key (${ key }) is invalid.`
+      )}) is  not an object or key (${key}) is invalid.`
     );
   }
   for (const k of asArray(key)) {
     if (!value.hasOwnProperty(k)) {
       throw new Error(
-        `Value object (${ stringify(value) }) has no key (${ key }).`
+        `Value object (${stringify(value)}) has no key (${key}).`
       );
     }
   }
@@ -183,14 +185,9 @@ export const valueInArrayOrFail = (
     value = stringify(value);
     array = array.map(i => stringify(i));
     throw new Error(
-      `Value (${ stringify(value) }) is not part of array (${ stringify(array) }).`
+      `Value (${stringify(value)}) is not part of array (${stringify(array)}).`
     );
   }
 
   return value;
 };
-
-export const asNumber = (inputType: InputTypes, value: any) =>
-  inputType === InputTypes.number
-    ? parseFloat(value)
-    : value;

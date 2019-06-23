@@ -3,6 +3,8 @@
 @import '../../style/mixins';
 @import '../form-element.mixin';
 
+@import './styles/quill';
+
 $button-width: 25px;
 $button-icon-size: 14px;
 // next good value is 17px (without blurring)
