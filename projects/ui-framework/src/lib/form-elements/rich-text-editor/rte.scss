@@ -242,6 +242,45 @@ $border-color: $grey-500;
   }
 }
 
+// Length counter
+
+.ql-container {
+  position: relative;
+
+  &:after {
+    content: attr(data-length);
+    display: block;
+    @include position(null null 3px null);
+    font-size: 9px;
+    line-height: 1;
+    border-radius: 10px;
+    padding: 1px 7px;
+    color: $grey-600;
+    background-color: white(0.5);
+  }
+}
+
+.length-indicator {
+  font-size: $font-size-caption;
+  color: $grey-600;
+  margin-left: auto;
+}
+
+:host {
+  &.length-invalid {
+    .ql-container:after,
+    .length-indicator {
+      color: $color-error;
+    }
+  }
+  &.length-warning {
+    .ql-container:after,
+    .length-indicator {
+      color: $color-warn;
+    }
+  }
+}
+
 // Disabled
 
 :host {

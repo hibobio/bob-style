@@ -36,6 +36,8 @@ const template = `
       [controls]="controls"
       [disableControls]="disableControls"
       [placeholderList]="placeholderList"
+      [minChars]="minChars"
+      [maxChars]="maxChars"
       [minHeight]="minHeight"
       [maxHeight]="maxHeight"
       [disabled]="disabled"
@@ -77,6 +79,8 @@ const note = `
   placeholder | string | placeholder text (inside editor. if only label is present, it will be treated as placeholder) | none (optional)
   value | string | html content to be placed inside editor | none (optional)
   controls | BlotType[] | array of toolbar controls (check BlotType enum for all possible controls). Defaults to all controls. Pass empty array to disable all controls | all
+  minChars | number | minimum (plain) text length | 0
+  maxChars | number | maximum (plain) text length | none (optional)
   minHeight | number | minimum height of editor (including toolbar). Set to null or 0 to disable min-height | 185 (optional)
   maxHeight | number | maximum height of editor (including toolbar). Set to null to disable max-height | 295 (optional)
   disabled | boolean | disables editor | false (optional)
@@ -130,6 +134,8 @@ inputStories.add(
         controls: array('controls', controlsDef, '\n'),
         disableControls: array('disableControls', disableControlsDef, '\n'),
         placeholderList: object<SelectGroupOption>('options', placeholderMock),
+        minChars: number('minChars', 0),
+        maxChars: number('maxChars', 100),
         minHeight: number('minHeight', 200),
         maxHeight: number('maxHeight', 400),
         disabled: boolean('disabled', false),
