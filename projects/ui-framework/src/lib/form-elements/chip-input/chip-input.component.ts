@@ -13,11 +13,7 @@ import {
   ViewChildren,
   QueryList
 } from '@angular/core';
-import {
-  MatAutocompleteSelectedEvent,
-  MatAutocompleteTrigger,
-  MatAutocomplete
-} from '@angular/material';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
 import { ChipType } from '../../buttons-indicators/chip/chip.enum';

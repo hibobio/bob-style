@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MenuItem } from './menu.interface';
-import { MenuPositionX } from '@angular/material';
+import { MenuPositionX } from '@angular/material/menu';
 import { has } from 'lodash';
 
 @Component({

@@ -1,4 +1,4 @@
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import assign from 'lodash/assign';

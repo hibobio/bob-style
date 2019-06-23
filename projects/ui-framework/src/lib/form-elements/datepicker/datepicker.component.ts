@@ -9,11 +9,8 @@ import {
   ViewChild,
   SimpleChanges
 } from '@angular/core';
-import {
-  DateAdapter,
-  MAT_DATE_FORMATS,
-  MatDatepicker
-} from '@angular/material';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatDatepicker } from '@angular/material/datepicker';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { InputTypes, InputAutoCompleteOptions } from '../input/input.enum';
 import { InputEventType } from '../form-elements.enum';

@@ -5,7 +5,7 @@ import {
   TestBed
 } from '@angular/core/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { MatSliderChange } from '@angular/material';
+import { MatSliderChange } from '@angular/material/slider';
 import { By } from '@angular/platform-browser';
 
 describe('SliderModule', () => {

@@ -7,7 +7,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Tab } from './tabs.interface';
-import { MatTabChangeEvent, MatTabGroup } from '@angular/material';
+import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { TabsType } from './tabs.enum';
 
 @Component({

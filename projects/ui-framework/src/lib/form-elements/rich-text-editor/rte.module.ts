@@ -7,7 +7,7 @@ import { RteLinkEditorComponent } from './rte-link/rte-link-editor.component';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { RteUtilsService } from './rte-core/rte-utils.service';
 import { IconsModule } from '../../icons/icons.module';
-import { MatFormFieldModule } from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { UtilsModule } from '../../services/utils/utils.module';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';

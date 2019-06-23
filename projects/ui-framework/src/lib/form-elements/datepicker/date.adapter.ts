@@ -1,4 +1,4 @@
-import { NativeDateAdapter } from '@angular/material';
+import { NativeDateAdapter } from '@angular/material/core';
 import { format } from 'date-fns';
 
 export class BDateAdapter extends NativeDateAdapter {

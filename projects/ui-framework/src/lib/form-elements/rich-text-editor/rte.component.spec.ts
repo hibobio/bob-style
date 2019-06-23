@@ -34,7 +34,7 @@ import { SingleSelectModule } from '../lists/single-select/single-select.module'
 import { InputModule } from '../input/input.module';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { IconsModule } from '../../icons/icons.module';
-import { MatFormFieldModule } from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';

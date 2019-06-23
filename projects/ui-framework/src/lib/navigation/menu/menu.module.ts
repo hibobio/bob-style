@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { MenuComponent } from './menu.component';
-import { MatMenuModule } from '@angular/material';
+import { MatMenuModule } from '@angular/material/menu';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
