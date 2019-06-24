@@ -62,7 +62,7 @@ export class ChipComponent implements OnChanges {
   readonly resetIcon: String = Icons.close;
   readonly iconSize = IconSize;
 
-  @ViewChild('chip', { read: ElementRef }) public chip: ElementRef;
+  @ViewChild('chip', { read: ElementRef, static: true }) public chip: ElementRef;
 
   @HostBinding('tabindex')
   get tabind(): string {

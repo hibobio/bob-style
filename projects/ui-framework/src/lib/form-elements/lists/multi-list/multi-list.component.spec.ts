@@ -26,17 +26,11 @@ describe('MultiListComponent', () => {
     optionsMock = [
       {
         groupName: 'Basic Info Header',
-        options: [
-          { value: 'Basic Info 1', id: 1, selected: true },
-          { value: 'Basic Info 2', id: 2, selected: false }
-        ]
+        options: [{ value: 'Basic Info 1', id: 1, selected: true }, { value: 'Basic Info 2', id: 2, selected: false }]
       },
       {
         groupName: 'Personal Header',
-        options: [
-          { value: 'Personal 1', id: 11, selected: false },
-          { value: 'Personal 2', id: 12, selected: false }
-        ]
+        options: [{ value: 'Personal 1', id: 11, selected: false }, { value: 'Personal 2', id: 12, selected: false }]
       }
     ];
 
@@ -44,7 +38,6 @@ describe('MultiListComponent', () => {
       declarations: [MultiListComponent, MockComponent(ListFooterComponent)],
       providers: [ListModelService, ListChangeService, ListKeyboardService],
       imports: [
-        NoopAnimationsModule,
         CommonModule,
         SearchModule,
         ButtonsModule,
@@ -82,6 +75,7 @@ describe('MultiListComponent', () => {
   describe('OnChanges', () => {
     it('should create selectedIdsMap based on options', () => {
       component.ngOnChanges({});
+      fixture.detectChanges();
       expect(component.selectedIdsMap).toEqual([1]);
     });
     it('should create headerModel based on options', () => {
@@ -156,26 +150,14 @@ describe('MultiListComponent', () => {
       expect(options.length).toEqual(4);
     });
     it('should set the checkbox of options where (id=1) as checked', () => {
-      const checkboxes = fixture.debugElement.queryAll(
-        By.css('.option .checkbox')
-      );
-      expect(checkboxes[0].nativeElement.getAttribute('aria-checked')).toEqual(
-        'true'
-      );
+      const checkboxes = fixture.debugElement.queryAll(By.css('.option .checkbox'));
+      expect(checkboxes[0].nativeElement.getAttribute('aria-checked')).toEqual('true');
     });
     it('should set the checkbox of options where (id=2,11,12) as unchecked', () => {
-      const checkboxes = fixture.debugElement.queryAll(
-        By.css('.option .checkbox')
-      );
-      expect(
-        checkboxes[1].nativeElement.getAttribute('aria-checked')
-      ).not.toEqual('true');
-      expect(
-        checkboxes[2].nativeElement.getAttribute('aria-checked')
-      ).not.toEqual('true');
-      expect(
-        checkboxes[3].nativeElement.getAttribute('aria-checked')
-      ).not.toEqual('true');
+      const checkboxes = fixture.debugElement.queryAll(By.css('.option .checkbox'));
+      expect(checkboxes[1].nativeElement.getAttribute('aria-checked')).not.toEqual('true');
+      expect(checkboxes[2].nativeElement.getAttribute('aria-checked')).not.toEqual('true');
+      expect(checkboxes[3].nativeElement.getAttribute('aria-checked')).not.toEqual('true');
     });
     it('should rerender lists if simpleChanges includes options', () => {
       let options = fixture.debugElement.queryAll(By.css('.option'));
@@ -183,10 +165,7 @@ describe('MultiListComponent', () => {
       const changedOptions = [
         {
           groupName: 'Basic Info Header',
-          options: [
-            { value: 'Basic Info 1', id: 1 },
-            { value: 'Basic Info 2', id: 2 }
-          ]
+          options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
         }
       ];
       component.ngOnChanges({
@@ -204,19 +183,14 @@ describe('MultiListComponent', () => {
     it('should not show group header if options.length=1 && showSingleGroupHeader=false (default)', () => {
       let options = fixture.debugElement.queryAll(By.css('.option'));
       let headers = fixture.debugElement.queryAll(By.css('.header'));
-      let headerPlaceholder = fixture.debugElement.queryAll(
-        By.css('.header-placeholder')
-      );
+      let headerPlaceholder = fixture.debugElement.queryAll(By.css('.header-placeholder'));
       expect(options.length).toEqual(4);
       expect(headers.length).toEqual(2);
       expect(headerPlaceholder.length).toEqual(2);
       const changedOptions = [
         {
           groupName: 'Basic Info Header',
-          options: [
-            { value: 'Basic Info 1', id: 1 },
-            { value: 'Basic Info 2', id: 2 }
-          ]
+          options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
         }
       ];
       component.ngOnChanges({
@@ -230,9 +204,7 @@ describe('MultiListComponent', () => {
       fixture.autoDetectChanges();
       options = fixture.debugElement.queryAll(By.css('.option'));
       headers = fixture.debugElement.queryAll(By.css('.header'));
-      headerPlaceholder = fixture.debugElement.queryAll(
-        By.css('.header-placeholder')
-      );
+      headerPlaceholder = fixture.debugElement.queryAll(By.css('.header-placeholder'));
       expect(options.length).toEqual(2);
       expect(headers.length).toEqual(0);
       expect(headerPlaceholder.length).toEqual(0);
@@ -242,10 +214,7 @@ describe('MultiListComponent', () => {
       const changedOptions = [
         {
           groupName: 'Basic Info Header',
-          options: [
-            { value: 'Basic Info 1', id: 1 },
-            { value: 'Basic Info 2', id: 2 }
-          ]
+          options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
         }
       ];
       component.ngOnChanges({
@@ -259,9 +228,7 @@ describe('MultiListComponent', () => {
       fixture.autoDetectChanges();
       expect(component.noGroupHeaders).toBe(false);
       const options = fixture.debugElement.queryAll(By.css('.option'));
-      const headerPlaceholder = fixture.debugElement.queryAll(
-        By.css('.header-placeholder')
-      );
+      const headerPlaceholder = fixture.debugElement.queryAll(By.css('.header-placeholder'));
       const headers = fixture.debugElement.queryAll(By.css('.header'));
       expect(options.length).toEqual(2);
       expect(headerPlaceholder.length).toEqual(1);
@@ -373,18 +340,14 @@ describe('MultiListComponent', () => {
 
   describe('header collapse', () => {
     it('should render 2 options if 1 group is collapsed', () => {
-      const headerCollapseTrigger = fixture.debugElement.queryAll(
-        By.css('.header-collapse-trigger')
-      )[0];
+      const headerCollapseTrigger = fixture.debugElement.queryAll(By.css('.header-collapse-trigger'))[0];
       headerCollapseTrigger.triggerEventHandler('click', null);
       fixture.autoDetectChanges();
       const options = fixture.debugElement.queryAll(By.css('.option'));
       expect(options.length).toEqual(2);
     });
     it('should not render options if 2 group are collapsed', () => {
-      const headerCollapseTrigger = fixture.debugElement.queryAll(
-        By.css('.header-collapse-trigger')
-      );
+      const headerCollapseTrigger = fixture.debugElement.queryAll(By.css('.header-collapse-trigger'));
       headerCollapseTrigger[0].triggerEventHandler('click', null);
       headerCollapseTrigger[1].triggerEventHandler('click', null);
       fixture.autoDetectChanges();
@@ -402,27 +365,20 @@ describe('MultiListComponent', () => {
     it('should emit event when selecting an option', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
-      const listChange = component['listChangeService'].getListChange(
-        component.options,
-        [1, 12]
-      );
+      const listChange = component['listChangeService'].getListChange(component.options, [1, 12]);
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
     });
   });
 
   describe('header checkbox click', () => {
     it('should select all options in group when selecting header', () => {
-      const headerCheckbox = fixture.debugElement.queryAll(
-        By.css('.header .checkbox')
-      );
+      const headerCheckbox = fixture.debugElement.queryAll(By.css('.header .checkbox'));
       headerCheckbox[0].triggerEventHandler('click', null);
       fixture.autoDetectChanges();
       expect(component.selectedIdsMap).toEqual([1, 2]);
     });
     it('should deselect all options in group when deselecting header', () => {
-      const headerCheckbox = fixture.debugElement.queryAll(
-        By.css('.header .checkbox')
-      );
+      const headerCheckbox = fixture.debugElement.queryAll(By.css('.header .checkbox'));
       headerCheckbox[0].triggerEventHandler('click', null);
       fixture.autoDetectChanges();
       expect(component.selectedIdsMap).toEqual([1, 2]);
@@ -475,29 +431,20 @@ describe('MultiListComponent', () => {
           selected: false
         }
       ];
-      const headerCollapseTrigger = fixture.debugElement.queryAll(
-        By.css('.header-collapse-trigger')
-      )[0];
+      const headerCollapseTrigger = fixture.debugElement.queryAll(By.css('.header-collapse-trigger'))[0];
       headerCollapseTrigger.triggerEventHandler('click', null);
       fixture.autoDetectChanges();
-      const headerCheckbox = fixture.debugElement.queryAll(
-        By.css('.header .checkbox')
-      );
+      const headerCheckbox = fixture.debugElement.queryAll(By.css('.header .checkbox'));
       headerCheckbox[0].triggerEventHandler('click', null);
       fixture.autoDetectChanges();
       expect(component.listHeaders).toEqual(expectedHeaderModel);
       expect(component.listOptions).toEqual(expectedOptionsModel);
     });
     it('should emit event when header is selected', () => {
-      const headerCheckbox = fixture.debugElement.queryAll(
-        By.css('.header .checkbox')
-      );
+      const headerCheckbox = fixture.debugElement.queryAll(By.css('.header .checkbox'));
       headerCheckbox[0].triggerEventHandler('click', null);
       fixture.autoDetectChanges();
-      const listChange = component['listChangeService'].getListChange(
-        component.options,
-        [1, 2]
-      );
+      const listChange = component['listChangeService'].getListChange(component.options, [1, 2]);
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
     });
   });
@@ -505,26 +452,17 @@ describe('MultiListComponent', () => {
   describe('singleList listChange class', () => {
     let listChange;
     beforeEach(() => {
-      listChange = component['listChangeService'].getListChange(
-        component.options,
-        [1, 12]
-      );
+      listChange = component['listChangeService'].getListChange(component.options, [1, 12]);
     });
     it('should return updated options model', () => {
       expect(listChange.getSelectGroupOptions()).toEqual([
         {
           groupName: 'Basic Info Header',
-          options: [
-            { value: 'Basic Info 1', id: 1, selected: true },
-            { value: 'Basic Info 2', id: 2, selected: false }
-          ]
+          options: [{ value: 'Basic Info 1', id: 1, selected: true }, { value: 'Basic Info 2', id: 2, selected: false }]
         },
         {
           groupName: 'Personal Header',
-          options: [
-            { value: 'Personal 1', id: 11, selected: false },
-            { value: 'Personal 2', id: 12, selected: true }
-          ]
+          options: [{ value: 'Personal 1', id: 11, selected: false }, { value: 'Personal 2', id: 12, selected: true }]
         }
       ]);
     });
@@ -542,9 +480,7 @@ describe('MultiListComponent', () => {
       expect(options.length).toEqual(1);
       expect(headers.length).toEqual(1);
       expect(options[0].nativeElement.innerText.trim()).toEqual('Basic Info 1');
-      expect(headers[0].nativeElement.innerText.trim()).toEqual(
-        'Basic Info Header'
-      );
+      expect(headers[0].nativeElement.innerText.trim()).toEqual('Basic Info Header');
     });
     it('should show group headers and no options if search only matches headers', () => {
       component.searchChange('Personal He');
@@ -553,9 +489,7 @@ describe('MultiListComponent', () => {
       const headers = fixture.debugElement.queryAll(By.css('.header'));
       expect(options.length).toEqual(0);
       expect(headers.length).toEqual(1);
-      expect(headers[0].nativeElement.innerText.trim()).toEqual(
-        'Personal Header'
-      );
+      expect(headers[0].nativeElement.innerText.trim()).toEqual('Personal Header');
     });
   });
 
@@ -604,10 +538,7 @@ describe('MultiListComponent', () => {
       fixture.detectChanges();
       expect(component.selectedIdsMap).toEqual([]);
       expect(component.selectChange.emit).toHaveBeenCalled();
-      const listChange = component['listChangeService'].getListChange(
-        component.options,
-        component.selectedIdsMap
-      );
+      const listChange = component['listChangeService'].getListChange(component.options, component.selectedIdsMap);
       expect(listChange.getSelectedIds()).toEqual([]);
     });
   });

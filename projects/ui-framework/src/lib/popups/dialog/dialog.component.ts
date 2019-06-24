@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Icons } from '../../icons/icons.enum';
 import { DialogButton, DialogButtons } from './dialog.interface';
 import { ButtonSize, ButtonType } from '../../buttons-indicators/buttons/buttons.enum';

@@ -21,7 +21,7 @@ import { has } from 'lodash';
   styleUrls: ['./breadcrumbs.component.scss']
 })
 export class BreadcrumbsComponent implements AfterViewInit, OnDestroy, OnChanges {
-  @ViewChild('breadcrumbsWrapper') breadcrumbsWrapper;
+  @ViewChild('breadcrumbsWrapper', { static: true }) breadcrumbsWrapper;
   public isSmallMode = false;
   public resizeSubscription: Subscription;
   public buttonSize = ButtonSize;

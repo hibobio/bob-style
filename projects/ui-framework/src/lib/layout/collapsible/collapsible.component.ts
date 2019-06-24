@@ -30,7 +30,7 @@ export class CollapsibleComponent implements AfterViewInit {
   @Output() opened: EventEmitter<void> = new EventEmitter<void>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
-  @ViewChild('suffix') suffix: ElementRef;
+  @ViewChild('suffix', { static: false }) suffix: ElementRef;
 
   @HostBinding('class.collapsible-small') get isOfTypeSmall(): boolean {
     return this.type === CollapsibleType.small;

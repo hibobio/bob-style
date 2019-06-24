@@ -15,8 +15,8 @@ import { Keys } from '../../enums';
 
 export abstract class BaseListElement
   implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('vScroll') vScroll: CdkVirtualScrollViewport;
-  @ViewChild('headers') headers;
+  @ViewChild('vScroll', { static: true }) vScroll: CdkVirtualScrollViewport;
+  @ViewChild('headers', { static: false }) headers;
 
   noGroupHeaders;
   focusOption: ListOption;

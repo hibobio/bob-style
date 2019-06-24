@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SquareButtonComponent } from './square.component';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
 import { IconsModule } from '../../../icons/icons.module';
 import { IconService } from '../../../icons/icon.service';
 import { ButtonType } from '../buttons.enum';

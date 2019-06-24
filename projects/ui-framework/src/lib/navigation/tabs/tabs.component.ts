@@ -7,7 +7,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Tab } from './tabs.interface';
-import { MatTabChangeEvent, MatTabGroup } from '@angular/material';
+import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { TabsType } from './tabs.enum';
 
 @Component({
@@ -23,7 +23,7 @@ export class TabsComponent implements AfterViewInit {
     MatTabChangeEvent
   >();
 
-  @ViewChild('tabgroup') tabGroup: MatTabGroup;
+  @ViewChild('tabgroup', { static: true }) tabGroup: MatTabGroup;
 
   constructor() {}
 

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { DialogService } from './dialog.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { Component } from '@angular/core';
 import { DialogSize } from '../dialog.enum';
 import { DialogConfig } from '../dialog.interface';

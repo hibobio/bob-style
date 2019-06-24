@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogComponent } from './dialog.component';
 import { DialogModule } from './dialog.module';
-import { MatDialogModule, MatDialogRef } from '@angular/material';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { DialogButtons } from './dialog.interface';
 import { IconService } from '../../icons/icon.service';
 import { By } from '@angular/platform-browser';

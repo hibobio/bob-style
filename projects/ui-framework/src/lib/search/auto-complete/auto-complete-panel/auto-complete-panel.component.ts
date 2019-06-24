@@ -24,7 +24,7 @@ import { Keys } from '../../../enums';
 })
 export class AutoCompletePanelComponent
   implements OnChanges, OnInit, OnDestroy {
-  @ViewChild('vScroll') vScroll: CdkVirtualScrollViewport;
+  @ViewChild('vScroll', { static: false }) vScroll: CdkVirtualScrollViewport;
 
   @Input() options: AutoCompleteOption[];
   @Input() searchValue: string;

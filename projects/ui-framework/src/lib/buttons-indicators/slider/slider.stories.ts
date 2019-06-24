@@ -1,20 +1,11 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  text,
-  select,
-  withKnobs,
-  number,
-  boolean
-} from '@storybook/addon-knobs/angular';
+import { text, select, withKnobs, number, boolean } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { SliderModule } from './slider.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const sliderStories = storiesOf(
-  ComponentGroupType.ButtonsAndIndicators,
-  module
-).addDecorator(withKnobs);
+const sliderStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(withKnobs);
 const template = `
 <b-slider [value]="value"
           [min]="min"
@@ -73,7 +64,7 @@ sliderStories.add(
         disabled: boolean('disabled', false),
         readOnly: boolean('readOnly', false),
         labelSymbol: text('labelSymbol', '%'),
-        progressChange: action()
+        progressChange: action('progressChange')
       },
       moduleMetadata: {
         imports: [SliderModule, StoryBookLayoutModule]

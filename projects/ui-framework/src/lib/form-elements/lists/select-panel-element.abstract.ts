@@ -22,9 +22,9 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements AfterViewInit {
-  @ViewChild(CdkOverlayOrigin) overlayOrigin: CdkOverlayOrigin;
-  @ViewChild('templateRef') templateRef: TemplateRef<any>;
-  @ViewChild('prefix') prefix: ElementRef;
+  @ViewChild(CdkOverlayOrigin, { static: true }) overlayOrigin: CdkOverlayOrigin;
+  @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
+  @ViewChild('prefix', { static: false }) prefix: ElementRef;
 
   @Input() isQuickFilter = false;
   @Input() hasPrefix = false;

@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UtilsService } from '../../services/utils/utils.service';
 import { cold } from 'jasmine-marbles';
-import { MatTooltipModule } from '@angular/material';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 describe('BreadcrumbsComponent', () => {
   let utilsServiceMock: jasmine.SpyObj<UtilsService>;
@@ -58,6 +58,7 @@ describe('BreadcrumbsComponent', () => {
       }
     });
     it('should put active class on the active step', () => {
+      fixture = TestBed.createComponent(BreadcrumbsComponent);
       const stepsElements = fixture.debugElement.queryAll(By.css('.step'));
       for (let i = 0; i < stepsElements.length; i++) {
         if (i === 2) {

@@ -1,13 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  array,
-  boolean,
-  number,
-  object,
-  select,
-  text,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { TabsModule } from './tabs.module';
 import { ComponentGroupType } from '../../consts';
@@ -16,10 +8,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { Tab } from './tabs.interface';
 import { TabsType } from './tabs.enum';
 
-const inputStories = storiesOf(
-  ComponentGroupType.Navigation,
-  module
-).addDecorator(withKnobs);
+const inputStories = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
 
 const tabs: Tab[] = [
   {
@@ -78,7 +67,7 @@ inputStories.add(
       props: {
         tabs: object<Tab>('tabs', tabs),
         type: select('type', Object.values(TabsType), TabsType.primary),
-        onSelectedTabChange: action(),
+        onSelectedTabChange: action('onSelectedTabChange'),
         selectedIndex: number('selectedIndex', 0, 0)
       },
       moduleMetadata: {

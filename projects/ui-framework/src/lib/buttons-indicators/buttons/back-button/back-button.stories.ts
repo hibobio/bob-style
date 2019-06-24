@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  text,
-  select,
-  boolean,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { BackButtonType } from '../buttons.enum';
 import { values, remove } from 'lodash';
 import { action } from '@storybook/addon-actions';
@@ -12,10 +7,9 @@ import { ButtonsModule } from '../buttons.module';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
-const backButtonStories = storiesOf(
-  `${ComponentGroupType.ButtonsAndIndicators}.Buttons`,
-  module
-).addDecorator(withKnobs);
+const backButtonStories = storiesOf(`${ComponentGroupType.ButtonsAndIndicators}.Buttons`, module).addDecorator(
+  withKnobs
+);
 
 const typeOptions = values(BackButtonType);
 
@@ -58,7 +52,7 @@ backButtonStories.add(
   () => ({
     template: storyTemplate,
     props: {
-      onClick: action(),
+      onClick: action('onClick'),
       label: text('label', 'Back'),
       type: select('type', typeOptions, BackButtonType.secondary),
       disabled: boolean('disabled', false)
