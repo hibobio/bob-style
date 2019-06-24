@@ -247,6 +247,8 @@ export {
 export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { TabsComponent } from './lib/navigation/tabs/tabs.component';
 export { Tab } from './lib/navigation/tabs/tabs.interface';
+export { TabsType } from './lib/navigation/tabs/tabs.enum';
+
 // Breadcrumbs Module
 export {
   BreadcrumbsModule
