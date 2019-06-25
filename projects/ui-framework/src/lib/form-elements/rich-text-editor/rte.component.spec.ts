@@ -148,6 +148,7 @@ describe('RichTextEditorComponent', () => {
         setTimeout(() => {
           QuillEditor = RTEComponent.editor;
           RTEqlEditorNativeElement = QuillEditor.root;
+          fixture.detectChanges();
         }, 0);
       });
 
@@ -373,7 +374,7 @@ describe('RichTextEditorComponent', () => {
       hugeButtonElement.click();
 
       tick(50);
-      expect(testComponent.rtrValue).toContain('ql-size-huge');
+      expect(testComponent.rtrValue).toContain('font-size: 32px;');
       flush();
     }));
   });
@@ -564,6 +565,49 @@ describe('RichTextEditorComponent', () => {
       expect(rteUtils.getHtmlContent(QuillEditor)).toContain(
         'name is <span data-placeholder-id="/root/firstName'
       );
+    });
+  });
+
+  describe('Chars counter', () => {
+    it('Should display char counter', () => {
+      RTEComponent.maxChars = 30;
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(null, 'test text', false)
+      });
+      fixture.detectChanges();
+
+      const counterElement = fixture.debugElement.query(
+        By.css('.length-indicator')
+      ).nativeElement;
+
+      expect(counterElement.textContent).toContain('10/30');
+      expect(RTEnativeElement.classList).not.toContain('length-warning');
+    });
+    it('Should not display char counter if maxChars prop is undefined', () => {
+      const counterElement = fixture.debugElement.query(
+        By.css('.length-indicator')
+      );
+      expect(counterElement).toBeFalsy();
+    });
+    it('Should display a warning when approaching maxChars', () => {
+      RTEComponent.maxChars = 30;
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(null, 'test text 12345', false)
+      });
+      fixture.detectChanges();
+      expect(RTEnativeElement.classList).toContain('length-warning');
+    });
+    it('Should not allow to enter more than maxChars characters', () => {
+      RTEComponent.maxChars = 30;
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(
+          null,
+          'this_text_is_longer_than_20_characters',
+          false
+        )
+      });
+      fixture.detectChanges();
+      expect(RTEComponent.value).toEqual('');
     });
   });
 });

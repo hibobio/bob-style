@@ -1,4 +1,4 @@
-.ql-editor {
+:host ::ng-deep .ql-editor {
   h1,
   h2,
   h3,
@@ -45,7 +45,7 @@
   }
 }
 
-.ql-picker.ql-header {
+:host ::ng-deep .ql-picker.ql-header {
   width: 98px;
 
   .ql-picker-label[data-label] {

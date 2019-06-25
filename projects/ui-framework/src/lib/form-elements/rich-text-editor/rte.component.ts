@@ -32,7 +32,10 @@ import { LinkBlot } from './rte-link/link-blot';
 import { RteLinkEditorComponent } from './rte-link/rte-link-editor.component';
 import { RteLinkBlot } from './rte-link/rte-link.mixin';
 
-import { RtePlaceholder, RtePlaceholderList } from './rte-placeholder/placeholder-rte-converter.interface';
+import {
+  RtePlaceholder,
+  RtePlaceholderList
+} from './rte-placeholder/placeholder-rte-converter.interface';
 import { PlaceholderBlot } from './rte-placeholder/placeholder-blot';
 
 import { RtePlaceholderBlot } from './rte-placeholder/rte-placeholder.mixin';
@@ -76,7 +79,7 @@ export class RichTextEditorComponent extends RTEformElement
     super(rteUtils, changeDetector, injector);
   }
 
-  public disableControlsDef = [BlotType.placeholder, BlotType.align, BlotType.direction];
+  public disableControlsDef = [BlotType.placeholder, BlotType.direction];
 
   @Input() public type: RTEType = RTEType.primary;
   @Input() public minHeight = 185;
@@ -107,18 +110,26 @@ export class RichTextEditorComponent extends RTEformElement
 
   // implementing RteLinkBlot mixin
   @ViewChild('linkPanel', { static: true }) public linkPanel: PanelComponent;
-  @ViewChild('linkEditor', { static: true }) public linkEditor: RteLinkEditorComponent;
+  @ViewChild('linkEditor', { static: true })
+  public linkEditor: RteLinkEditorComponent;
   public onLinkPanelOpen: () => void;
   public onLinkUpdate: (rteLink: RteLink) => void;
 
   // implementing RtePlaceholderBlot mixin
   @Input() public placeholderList: RtePlaceholderList[];
-  @ViewChild('placeholderPanel', { static: false }) public placeholderPanel: PanelComponent;
+  @ViewChild('placeholderPanel', { static: false })
+  public placeholderPanel: PanelComponent;
   public onPlaceholderPanelOpen: () => void;
-  public onPlaceholderSelectChange: (selectGroupOptions: SingleListComponent) => void;
+  public onPlaceholderSelectChange: (
+    selectGroupOptions: SingleListComponent
+  ) => void;
 
   // implementing RteKeybindings mixin
-  public checkCurrentBlot: (selection: RangeStatic, checkAt: number | number[], lookAhead: boolean) => boolean;
+  public checkCurrentBlot: (
+    selection: RangeStatic,
+    checkAt: number | number[],
+    lookAhead: boolean
+  ) => boolean;
   public addKeyBindings: () => void;
 
   // registering input/output transformers
@@ -128,7 +139,8 @@ export class RichTextEditorComponent extends RTEformElement
 
     if (this.placeholderList && this.controls.includes(BlotType.placeholder)) {
       this.inputTransformers.push(
-        this.placeholderRteConverterService.toRtePartial(this.placeholderList[0].options as RtePlaceholder[])
+        this.placeholderRteConverterService.toRtePartial(this.placeholderList[0]
+          .options as RtePlaceholder[])
       );
 
       this.outputTransformers.push(this.placeholderRteConverterService.fromRte);
@@ -137,7 +149,11 @@ export class RichTextEditorComponent extends RTEformElement
 
   // this extends RTE Abstract's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
-    if (changes.placeholderList || changes.controls || changes.disableControls) {
+    if (
+      changes.placeholderList ||
+      changes.controls ||
+      changes.disableControls
+    ) {
       this.initTransformers();
       this.writeValue(this.value);
     }

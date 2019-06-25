@@ -20,7 +20,7 @@ export class RteUtilsService {
   }
 
   getTextLength(editor: Quill): number {
-    return editor.root.innerText.trim().length;
+    return editor.getLength() - 1;
   }
 
   cleanupHtml(value: string): string {
