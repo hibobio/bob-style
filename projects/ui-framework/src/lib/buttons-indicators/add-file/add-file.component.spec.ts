@@ -48,14 +48,14 @@ describe('AddFileComponent', () => {
       expect(iconElement).toBeTruthy();
     });
     it('Should set icon color to normal if no image url ', () => {
-      const iconElement = fixture.debugElement.query(By.css('b-icon'))
+      const iconElement = fixture.debugElement.query(By.css('.b-icon'))
         .nativeElement;
       expect(iconElement.className).toContain('normal');
     });
     it('Should set icon color to white if image url ', () => {
       component.imageUrl = 'some url';
       fixture.detectChanges();
-      const iconElement = fixture.debugElement.query(By.css('b-icon'))
+      const iconElement = fixture.debugElement.query(By.css('.b-icon'))
         .nativeElement;
       expect(iconElement.className).toContain('white');
     });
