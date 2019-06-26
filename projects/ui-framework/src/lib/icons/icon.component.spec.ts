@@ -35,7 +35,7 @@ describe('IconElementComponent', () => {
       ).nativeElement;
 
       expect(iconElement.className).toEqual(
-        'b-icon ' + Icons.toDos_link + ' medium primary'
+        'b-icon ' + Icons.toDos_link + ' b-icon-medium b-icon-primary'
       );
     });
 

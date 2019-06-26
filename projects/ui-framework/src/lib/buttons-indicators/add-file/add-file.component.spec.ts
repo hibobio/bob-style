@@ -48,18 +48,16 @@ describe('AddFileComponent', () => {
       expect(iconElement).toBeTruthy();
     });
     it('Should set icon color to normal if no image url ', () => {
-      const iconElementColor = fixture.debugElement.query(
-        By.css('b-icon .normal')
-      );
-      expect(iconElementColor).toBeTruthy();
+      const iconElement = fixture.debugElement.query(By.css('b-icon'))
+        .nativeElement;
+      expect(iconElement.className).toContain('normal');
     });
     it('Should set icon color to white if image url ', () => {
       component.imageUrl = 'some url';
       fixture.detectChanges();
-      const iconElementColor = fixture.debugElement.query(
-        By.css('b-icon .white')
-      );
-      expect(iconElementColor).toBeTruthy();
+      const iconElement = fixture.debugElement.query(By.css('b-icon'))
+        .nativeElement;
+      expect(iconElement.className).toContain('white');
     });
   });
   describe('container', () => {
