@@ -98,7 +98,7 @@ $icon-chars: (
   zoom-out: '\e935'
 );
 
-$icon-size: (
+$icon-sizes: (
   small: 12px,
   medium: 16px,
   large: 24px,
@@ -143,9 +143,9 @@ $icon-colors: (
 
 @mixin icon-size($size: large, $elem: '&:before') {
   #{$elem} {
-    @include size(map-get($icon-size, $size));
-    font-size: map-get($icon-size, $size);
-    line-height: map-get($icon-size, $size);
+    @include size(map-get($icon-sizes, $size));
+    font-size: map-get($icon-sizes, $size);
+    line-height: map-get($icon-sizes, $size);
   }
 }
 
@@ -159,6 +159,12 @@ $icon-colors: (
         color: map-get-deep($icon-colors, $color, hover);
       }
     }
+  }
+}
+
+@mixin icon-class($class, $elem: '&:before') {
+  #{$elem} {
+    content: map-get($icon-chars, $class);
   }
 }
 
@@ -184,9 +190,7 @@ $icon-colors: (
   @include icon-color($color, $elem);
 
   @if $icon {
-    #{$elem} {
-      content: map-get($icon-chars, $icon);
-    }
+    @include icon-class($icon, $elem);
   }
 }
 
@@ -201,7 +205,7 @@ $icon-colors: (
 
   @include b-icon(null, large, dark);
 
-  @each $sizeKey, $size in $icon-size {
+  @each $sizeKey, $size in $icon-sizes {
     &.b-icon-#{$sizeKey} {
       @include icon-size($sizeKey);
     }
