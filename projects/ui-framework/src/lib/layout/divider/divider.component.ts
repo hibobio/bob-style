@@ -9,4 +9,6 @@ export class DividerComponent {
 
   @Input() text: string = null;
 
+  constructor() {
+  }
 }
