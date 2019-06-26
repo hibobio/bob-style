@@ -1,16 +1,215 @@
 @import url('https://images.hibob.com/icons-font/style.css');
 
-.b-icon,
-[class*='b-icon'] {
-  &:before {
+@import './colors.scss';
+@import './mixins.scss';
+
+$icon-chars: (
+  docs: '\e95b',
+  surveys: '\e936',
+  doc-outline: '\e937',
+  success: '\e938',
+  arrow-right-alt: '\e939',
+  company: '\e93a',
+  question-mark: '\e93b',
+  calendar: '\e93c',
+  todos: '\e93d',
+  benefits: '\e93e',
+  reports: '\e93f',
+  timeoff: '\e940',
+  slack: '\e941',
+  pin: '\e942',
+  doc-add-alt: '\e943',
+  performance: '\e944',
+  settings-alt: '\e945',
+  harmonise: '\e946',
+  attendance: '\e947',
+  analytics: '\e948',
+  phone-alt: '\e949',
+  timeline-alt: '\e94a',
+  people-alt: '\e94b',
+  home-alt: '\e94c',
+  folder-no: '\e94d',
+  linkedin: '\e94e',
+  twitter: '\e94f',
+  skype: '\e950',
+  youtube: '\e951',
+  facebook: '\e952',
+  survey: '\e953',
+  doc-chart: '\e954',
+  employee-ref: '\e957',
+  attendance-alt: '\e958',
+  tick-double: '\e959',
+  doc-no: '\e95a',
+  plus: '\e900',
+  photo-add: '\e901',
+  circle-add: '\e902',
+  photo-add-alt: '\e903',
+  arrow-left: '\e904',
+  arrow-right: '\e905',
+  arrow-right-alt2: '\e906',
+  assignment: '\e907',
+  cake: '\e908',
+  circle-cancel: '\e909',
+  close: '\e90a',
+  edit: '\e90b',
+  folder-add: '\e90c',
+  date: '\e90d',
+  delete: '\e90e',
+  tick: '\e90f',
+  drag: '\e910',
+  email: '\e911',
+  error: '\e912',
+  file-copy: '\e913',
+  file-download: '\e914',
+  folder: '\e915',
+  folder-shared: '\e916',
+  help: '\e917',
+  home: '\e918',
+  person-check: '\e919',
+  info: '\e91a',
+  chart: '\e91b',
+  doc: '\e91c',
+  chevron-down: '\e91d',
+  chevron-left: '\e91e',
+  chevron-right: '\e91f',
+  chevron-up: '\e920',
+  more-horiz: '\e921',
+  tag: '\e955',
+  location: '\e922',
+  more-vert: '\e923',
+  doc-add: '\e956',
+  people: '\e924',
+  person: '\e925',
+  person-add: '\e926',
+  phone: '\e927',
+  refresh: '\e928',
+  visibility-on: '\e929',
+  reply: '\e92a',
+  save: '\e92b',
+  search: '\e92c',
+  settings: '\e92d',
+  restore: '\e92e',
+  swap-horiz: '\e92f',
+  swap-vert: '\e930',
+  table: '\e931',
+  graph-timeline: '\e932',
+  visibility-off: '\e933',
+  watch: '\e934',
+  zoom-out: '\e935'
+);
+
+$icon-size: (
+  small: 12px,
+  medium: 16px,
+  large: 24px,
+  x-large: 46px,
+  xx-large: 60px
+);
+
+$icon-colors: (
+  dark: (
+    color: $grey-700,
+    hover: $grey-800
+  ),
+  normal: (
+    color: $grey-600,
+    hover: $grey-700
+  ),
+  light: (
+    color: $grey-500,
+    hover: $grey-600
+  ),
+  white: (
+    color: $white,
+    hover: $white
+  ),
+  primary: (
+    color: var(--primary-500),
+    hover: var(--primary-700)
+  ),
+  inform: (
+    color: var(--inform-500),
+    hover: var(--inform-700)
+  ),
+  negative: (
+    color: var(--negative-500),
+    hover: var(--negative-700)
+  ),
+  positive: (
+    color: var(--positive-500),
+    hover: var(--positive-700)
+  )
+);
+
+@mixin icon-size($size: large, $elem: '&:before') {
+  #{$elem} {
+    @include size(map-get($icon-size, $size));
+    font-size: map-get($icon-size, $size);
+    line-height: map-get($icon-size, $size);
+  }
+}
+
+@mixin icon-color($color: dark, $hover: true, $elem: '&:before') {
+  #{$elem} {
+    color: map-get-deep($icon-colors, $color, color);
+  }
+  @if $hover {
+    &.has-hover:hover {
+      #{$elem} {
+        color: map-get-deep($icon-colors, $color, hover);
+      }
+    }
+  }
+}
+
+@mixin b-icon($icon, $size: large, $color: dark, $elem: '&:before') {
+  #{$elem} {
+    display: block;
     font-family: 'bicons' !important;
     speak: none;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
     text-transform: none;
+    text-decoration: none !important;
     line-height: 1;
+    text-align: center;
+    user-select: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: color 0.1s ease;
+  }
+
+  @include icon-size($size, $elem);
+  @include icon-color($color, $elem);
+
+  @if $icon {
+    #{$elem} {
+      content: map-get($icon-chars, $icon);
+    }
+  }
+}
+
+.b-icon,
+[class*='b-icon'] {
+  display: block;
+  position: relative;
+
+  &:not(.has-hover) {
+    pointer-events: none;
+  }
+
+  @include b-icon(null, large, dark);
+
+  @each $sizeKey, $size in $icon-size {
+    &.b-icon-#{$sizeKey} {
+      @include icon-size($sizeKey);
+    }
+  }
+
+  @each $colorKey, $colors in $icon-colors {
+    &.b-icon-#{$colorKey} {
+      @include icon-color($colorKey, true);
+    }
   }
 }

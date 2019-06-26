@@ -19,9 +19,9 @@ export class IconComponent {
   getIconClass(): string {
     return (
       this.icon +
-      ' ' +
+      ' b-icon-' +
       this.size +
-      ' ' +
+      ' b-icon-' +
       this.color +
       (this.hasHoverState ? ' has-hover' : '')
     );
