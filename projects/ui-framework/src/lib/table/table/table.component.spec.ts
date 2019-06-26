@@ -161,6 +161,15 @@ describe('TableComponent', () => {
             RowSelection.Single
           );
         });
+        it('should set suppressColumnVirtualisation to true by default', () => {
+          fixture.autoDetectChanges();
+          expect(component.gridOptions.suppressColumnVirtualisation).toEqual(true);
+        });
+        it('should set suppressColumnVirtualisation to input value', () => {
+          component.suppressColumnVirtualisation = false;
+          fixture.autoDetectChanges();
+          expect(component.gridOptions.suppressColumnVirtualisation).toEqual(false);
+        });
         it('should define gridOptions with input values and readonly values', () => {
           fixture.autoDetectChanges();
           const expectedPartialOptions = {

@@ -1,11 +1,14 @@
-// tslint:disable-next-line:max-line-length
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild,
+} from '@angular/core';
 import { GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
 import { cloneDeep, get, has, map, once, toString } from 'lodash';
 import { ColumnDef, RowClickedEvent, RowNodeDef, SortChangedEvent } from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { RowSelection, TableType } from './table.enum';
+
+const LICENSE_KEY = 'hibob_Bob_1Devs_1Deployment_23_April_2020__MTU4NzU5NjQwMDAwMA==5b77134bf43e27e7f8ccb20bdfa3c155';
 
 @Component({
   selector: 'b-table',
@@ -20,6 +23,7 @@ export class TableComponent implements OnInit, OnChanges {
   ) {
     this.tableLicense();
   }
+
   static isLicenseSet = false;
   @ViewChild('agGrid', { static: true }) agGrid: AgGridNg2;
 
@@ -28,6 +32,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() columnDefs: ColumnDef[];
   @Input() rowSelection: RowSelection = null;
   @Input() maxHeight = 450;
+  @Input() suppressColumnVirtualisation = true;
 
   @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<SortChangedEvent>();
   @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
@@ -42,15 +47,13 @@ export class TableComponent implements OnInit, OnChanges {
   gridColumnDefs: ColumnDef[];
 
   readonly tableLicense = once(() =>
-    // @ts-ignore
-    import('ag-grid-enterprise').then((agGrig) => {
-      // tslint:disable-next-line:max-line-length
-      if (!TableComponent.isLicenseSet) {
-        TableComponent.isLicenseSet = true;
-        // tslint:disable-next-line:max-line-length
-        agGrig.LicenseManager.setLicenseKey('hibob_Bob_1Devs_1Deployment_23_April_2020__MTU4NzU5NjQwMDAwMA==5b77134bf43e27e7f8ccb20bdfa3c155');
-      }
-    })
+    import('ag-grid-enterprise')
+      .then((agGrig) => {
+        if (!TableComponent.isLicenseSet) {
+          TableComponent.isLicenseSet = true;
+          agGrig.LicenseManager.setLicenseKey(LICENSE_KEY);
+        }
+      })
   );
 
   ngOnInit() {
@@ -63,10 +66,11 @@ export class TableComponent implements OnInit, OnChanges {
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,
       suppressContextMenu: true,
+      suppressColumnVirtualisation: this.suppressColumnVirtualisation,
       onGridReady: (event: GridReadyEvent) => {
         event.columnApi.autoSizeAllColumns();
         this.gridReady = true;
-      }
+      },
     };
   }
 
@@ -103,7 +107,7 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   private setGridHeight(height: number): void {
-    this.elRef.nativeElement.style.setProperty('--max-height', `${height}px`);
+    this.elRef.nativeElement.style.setProperty('--max-height', `${ height }px`);
   }
 
   public addRows(rows: any[]): void {
