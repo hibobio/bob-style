@@ -45,6 +45,7 @@ export class TableComponent implements OnInit, OnChanges {
   gridColumnDefs: ColumnDef[];
 
   readonly tableLicense = once(() =>
+    // @ts-ignore
     import('ag-grid-enterprise')
       .then((agGrig) => {
         if (!TableComponent.isLicenseSet) {
