@@ -13,11 +13,7 @@ import {
   ViewChildren,
   QueryList
 } from '@angular/core';
-import {
-  MatAutocompleteSelectedEvent,
-  MatAutocompleteTrigger,
-  MatAutocomplete
-} from '@angular/material';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
 import { ChipType } from '../../buttons-indicators/chip/chip.enum';
@@ -65,11 +61,11 @@ export class ChipInputComponent extends BaseFormElement
   public readonly inputTypes = InputTypes;
   readonly addOnBlur = true;
 
-  @ViewChild('input') private input: ElementRef<HTMLInputElement>;
+  @ViewChild('input', { static: true }) private input: ElementRef<HTMLInputElement>;
   @ViewChildren('chipList') private chipList: QueryList<ChipComponent>;
-  @ViewChild('input', { read: MatAutocompleteTrigger })
+  @ViewChild('input', { read: MatAutocompleteTrigger, static: true })
   private autocompleteTrigger: MatAutocompleteTrigger;
-  @ViewChild('auto')
+  @ViewChild('auto', { static: true })
   private autocompletePanel: MatAutocomplete;
 
   @Output() changed: EventEmitter<ChipInputChange> = new EventEmitter<

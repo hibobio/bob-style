@@ -105,13 +105,13 @@ export class DOMhelpers {
 
   public getInnerWidth(element: HTMLElement) {
     const computedStyle = getComputedStyle(element);
-    return (
+    const width =
       element.offsetWidth -
       parseFloat(computedStyle.paddingLeft) -
       parseFloat(computedStyle.paddingRight) -
       parseFloat(computedStyle.borderLeftWidth) -
-      parseFloat(computedStyle.borderRightWidth)
-    );
+      parseFloat(computedStyle.borderRightWidth);
+    return width > 0 ? width : 0;
   }
 
   // find closest parent either by CSS selector or by test function

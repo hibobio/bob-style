@@ -5,25 +5,17 @@ import { getSideMenuOptionsMock } from '../side-menu.mock';
 import head from 'lodash/head';
 import { By } from '@angular/platform-browser';
 import { IconsModule } from '../../../icons/icons.module';
-import { IconService } from '../../../icons/icon.service';
-import SpyObj = jasmine.SpyObj;
-import createSpyObj = jasmine.createSpyObj;
 
 describe('SideMenuOptionComponent', () => {
   let component: SideMenuOptionComponent;
   let fixture: ComponentFixture<SideMenuOptionComponent>;
-  let spyIconService: SpyObj<IconService>;
 
   beforeEach(() => {
-    spyIconService = createSpyObj('spyIconService', ['initIcon']);
-
     TestBed.configureTestingModule({
       declarations: [SideMenuOptionComponent],
-      providers: [
-        { provide: IconService, useValue: spyIconService },
-      ],
+      providers: [],
       imports: [IconsModule],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   });
 
@@ -42,13 +34,19 @@ describe('SideMenuOptionComponent', () => {
     let optionActions: DebugElement;
 
     beforeEach(() => {
-      sideMenuOptionContainer = fixture.debugElement.query(By.css('.side-menu-option-container'));
-      optionDisplayName = fixture.debugElement.query(By.css('.option-display-name'));
+      sideMenuOptionContainer = fixture.debugElement.query(
+        By.css('.side-menu-option-container')
+      );
+      optionDisplayName = fixture.debugElement.query(
+        By.css('.option-display-name')
+      );
       optionActions = fixture.debugElement.query(By.css('.option-actions'));
     });
 
     it('should add selected-option class to side-menu-option-container', () => {
-      expect(sideMenuOptionContainer.nativeElement.classList).toContain('selected');
+      expect(sideMenuOptionContainer.nativeElement.classList).toContain(
+        'selected'
+      );
     });
 
     it('should call onSelectOption when click on side-menu-option-container', () => {
@@ -64,14 +62,15 @@ describe('SideMenuOptionComponent', () => {
           currentValue: getSideMenuOptionsMock()[0],
           previousValue: {},
           firstChange: true,
-          isFirstChange: () => true,
-        },
+          isFirstChange: () => true
+        }
       };
       component.ngOnChanges(changes);
       fixture.detectChanges();
-      prefixComponent = fixture.debugElement.query(By.css('.option-prefix b-icon'));
+      prefixComponent = fixture.debugElement.query(
+        By.css('.option-prefix b-icon')
+      );
       expect(prefixComponent).toBeTruthy();
-      expect(spyIconService.initIcon).toHaveBeenCalled();
     });
 
     it('should not display prefix component if not exists', () => {
@@ -80,12 +79,14 @@ describe('SideMenuOptionComponent', () => {
           currentValue: {},
           previousValue: {},
           firstChange: true,
-          isFirstChange: () => true,
-        },
+          isFirstChange: () => true
+        }
       };
       component.ngOnChanges(changes);
       fixture.detectChanges();
-      prefixComponent = fixture.debugElement.query(By.css('.option-prefix b-icon'));
+      prefixComponent = fixture.debugElement.query(
+        By.css('.option-prefix b-icon')
+      );
       expect(prefixComponent).toBeFalsy();
     });
 

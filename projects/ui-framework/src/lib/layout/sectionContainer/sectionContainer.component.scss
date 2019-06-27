@@ -1,4 +1,3 @@
-@import '../../style/typography.scss';
 @import '../../style/variables';
 
 :host {
@@ -6,11 +5,11 @@
   border-radius: $border-radius;
   border: 1px solid $grey-500;
 
-  .label-container {
+  .title-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid $grey-500;;
+    border-bottom: 1px solid $grey-500;
     padding: 20px 40px;
   }
 

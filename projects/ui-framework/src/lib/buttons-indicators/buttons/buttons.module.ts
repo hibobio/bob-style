@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatRippleModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatRippleModule } from '@angular/material/core';
 import { ButtonComponent } from './button/button.component';
 import { SquareButtonComponent } from './square/square.component';
 import { GroupComponent } from './group/group.component';

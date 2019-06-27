@@ -8,11 +8,31 @@ import { CardAddComponent } from './card-add/card-add.component';
 import { CardsLayoutComponent } from './cards-layout/cards-layout.component';
 import { ComponentRendererModule } from '../services/component-renderer/component-renderer.module';
 import { TruncateTooltipModule } from '../services/truncate-tooltip/truncate-tooltip.module';
+import { EmployeeCardComponent } from './card-employee/card-employee.component';
+import { AvatarModule } from '../buttons-indicators/avatar/avatar.module';
 
 @NgModule({
-  declarations: [CardComponent, CardAddComponent, CardsLayoutComponent],
-  imports: [CommonModule, ButtonsModule, TypographyModule, MenuModule, ComponentRendererModule, TruncateTooltipModule],
-  exports: [CardComponent, CardAddComponent, CardsLayoutComponent],
+  declarations: [
+    CardComponent,
+    CardAddComponent,
+    EmployeeCardComponent,
+    CardsLayoutComponent
+  ],
+  imports: [
+    CommonModule,
+    ButtonsModule,
+    TypographyModule,
+    MenuModule,
+    ComponentRendererModule,
+    TruncateTooltipModule,
+    AvatarModule
+  ],
+  exports: [
+    CardComponent,
+    CardAddComponent,
+    EmployeeCardComponent,
+    CardsLayoutComponent
+  ],
   providers: []
 })
 export class CardsModule {}

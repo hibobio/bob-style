@@ -1,3 +1,4 @@
+@import '../../style/mixins';
 @import './checkbox.mixin';
 @import '../form-element.mixin';
 
@@ -8,6 +9,14 @@
 
   @include form-element-margins;
   @include input-border-colors($add: ' .bchk-label:before');
+
+  &.disabled {
+    @include disabled-state;
+
+    .bchk-label:before {
+      pointer-events: none;
+    }
+  }
 }
 
 .bfe-label {
@@ -23,5 +32,15 @@
 
   &:before {
     margin-right: 10px;
+  }
+}
+
+:host.required.has-label {
+  .bfe-label {
+    @include input-requred;
+  }
+
+  .bchk-label:after {
+    display: none;
   }
 }

@@ -104,7 +104,8 @@ $toolti-offset: 10px;
     @include animate(tooltip-arrow-apprnc, 0.1s, 0.3s);
   }
 
-  &:not(:hover) {
+  &:not(:hover),
+  &[data-tooltip=''] {
     &:before,
     &:after {
       display: none;

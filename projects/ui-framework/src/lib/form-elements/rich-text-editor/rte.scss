@@ -3,6 +3,8 @@
 @import '../../style/mixins';
 @import '../form-element.mixin';
 
+@import './styles/quill';
+
 $button-width: 25px;
 $button-icon-size: 14px;
 // next good value is 17px (without blurring)
@@ -98,7 +100,7 @@ $border-color: $grey-500;
 
   // picker dropdown (horizontal)
 
-  .ql-icon-picker {
+  .ql-align.ql-icon-picker {
     width: auto;
     display: flex;
 
@@ -125,12 +127,6 @@ $border-color: $grey-500;
     .ql-picker-item {
       max-height: 100%;
       max-width: ($button-width - 3px);
-    }
-
-    .ql-picker-label {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
   }
 
@@ -258,19 +254,26 @@ $border-color: $grey-500;
     color: $grey-600;
     background-color: white(0.5);
   }
-
-  &.length-invalid:after {
-    color: $color-error;
-  }
 }
 
 .length-indicator {
   font-size: $font-size-caption;
   color: $grey-600;
   margin-left: auto;
+}
 
+:host {
   &.length-invalid {
-    color: $color-error;
+    .ql-container:after,
+    .length-indicator {
+      color: $color-error;
+    }
+  }
+  &.length-warning {
+    .ql-container:after,
+    .length-indicator {
+      color: $color-warn;
+    }
   }
 }
 

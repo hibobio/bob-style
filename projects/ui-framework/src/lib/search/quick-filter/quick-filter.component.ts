@@ -14,8 +14,8 @@ import { ListModelService } from '../../form-elements/lists/list-service/list-mo
 })
 export class QuickFilterComponent implements OnChanges {
 
-  @ViewChild('singleSelect') singleSelect: TemplateRef<SingleSelectComponent>;
-  @ViewChild('multiSelect') multiSelect: TemplateRef<MultiSelectComponent>;
+  @ViewChild('singleSelect', { static: true }) singleSelect: TemplateRef<SingleSelectComponent>;
+  @ViewChild('multiSelect', { static: true }) multiSelect: TemplateRef<MultiSelectComponent>;
 
   @Input() quickFilterConfig: QuickFilterConfig;
   @Output() filterChange: EventEmitter<QuickFilterChangeEvent> = new EventEmitter<QuickFilterChangeEvent>();

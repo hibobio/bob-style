@@ -1,4 +1,4 @@
-$fit-strategy: auto-fit;
+$fit-strategy: auto-fill;
 $grid-gap: 15px;
 
 :host {
@@ -43,12 +43,12 @@ $grid-gap: 15px;
   }
 }
 
+// flex layout fallback
+
 .card-primary {
   width: calc(100% / 4 - #{$grid-gap});
-  min-width: 190px;
 }
 .card-secondary,
 .card-tertiary {
   width: calc(100% / 3 - #{$grid-gap * 2 / 3});
-  min-width: 260px;
 }

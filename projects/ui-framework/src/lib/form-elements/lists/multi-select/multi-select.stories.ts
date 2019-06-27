@@ -23,6 +23,7 @@ const buttonStories = storiesOf(
 
 const template = `
 <b-multi-select [label]="label"
+                [placeholder]="placeholder"
                 [options]="options"
                 (selectChange)="selectChange($event)"
                 (selectModified)="selectModified($event)"
@@ -56,6 +57,7 @@ const note = `
   selectModified | action | returns ListChange | none
   selectCancelled | action | returns ListChange | none
   label | string | label text | none
+  placeholder | string | placeholder text | none
   disabled | boolean | is field disabled | none
   required | boolean | is field required | none
   hintMessage | text | hint text | none
@@ -103,6 +105,7 @@ buttonStories.add(
       selectModified: action('Multi select modified'),
       selectCancelled: action('Multi select cancelled'),
       label: text('label', 'label text'),
+      placeholder: text('placeholder', 'placeholder text'),
       disabled: boolean('disabled', false),
       required: boolean('required', false),
       hintMessage: text('hintMessage', 'This field should contain something'),

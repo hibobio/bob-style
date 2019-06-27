@@ -9,7 +9,6 @@ import { AvatarCellComponent } from '../table-cell-components/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { ColumnDef, RowNodeDef } from './table.interface';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
-import { IconService } from '../../icons/icon.service';
 import { cloneDeep, keys, pick } from 'lodash';
 import { COLUMN_DEFS_MOCK, ROW_DATA_MOCK } from '../table-mocks/table-test.mock';
 import { RowSelection, TableType } from './table.enum';
@@ -22,14 +21,12 @@ describe('TableComponent', () => {
   let fixture: ComponentFixture<TableComponent>;
   let columnDefsMock: ColumnDef[] = [];
   let rowDataMock = [];
-  let spyIconService: SpyObj<IconService>;
   let spyTableUtilsService: SpyObj<TableUtilsService>;
 
   beforeEach(async(() => {
     columnDefsMock = cloneDeep(COLUMN_DEFS_MOCK);
     rowDataMock = cloneDeep(ROW_DATA_MOCK);
 
-    spyIconService = createSpyObj('spyIconService', ['initIcon']);
     spyTableUtilsService = createSpyObj('spyTableUtilsService', [
       'getGridColumnDef'
     ]);
@@ -45,7 +42,7 @@ describe('TableComponent', () => {
         AgGridModule.withComponents([AvatarCellComponent])
       ],
       providers: [
-        { provide: IconService, useValue: spyIconService },
+
         { provide: TableUtilsService, useValue: spyTableUtilsService }
       ]
     })
@@ -163,6 +160,15 @@ describe('TableComponent', () => {
           expect(component.gridOptions.rowSelection).toEqual(
             RowSelection.Single
           );
+        });
+        it('should set suppressColumnVirtualisation to true by default', () => {
+          fixture.autoDetectChanges();
+          expect(component.gridOptions.suppressColumnVirtualisation).toEqual(true);
+        });
+        it('should set suppressColumnVirtualisation to input value', () => {
+          component.suppressColumnVirtualisation = false;
+          fixture.autoDetectChanges();
+          expect(component.gridOptions.suppressColumnVirtualisation).toEqual(false);
         });
         it('should define gridOptions with input values and readonly values', () => {
           fixture.autoDetectChanges();

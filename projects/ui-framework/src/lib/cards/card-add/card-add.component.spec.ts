@@ -2,7 +2,7 @@ import { CardAddComponent } from './card-add.component';
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { AddCardMockData } from '../cardsMockData';
+import { AddCardMockData } from '../cards.mock';
 import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
 import { CardsModule } from '../cards.module';
 import { CardType } from '../cards.enum';

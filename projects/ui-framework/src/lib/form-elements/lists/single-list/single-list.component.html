@@ -2,7 +2,7 @@
           (searchChange)="searchChange($event)">
 </b-search>
 
-<div [ngStyle]="{height: listOptions && (listOptions.length * listElHeight + 'px'), maxHeight: maxHeight + 'px'}"
+<div [ngStyle]="{height: listOptions && (getListHeight() + 'px'), maxHeight: maxHeight + 'px'}"
      [ngClass]="{'no-group-header': noGroupHeaders, 'show-none-option': showNoneOption}"
      class="v-scroll-wrapper">
 

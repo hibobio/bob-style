@@ -5,9 +5,10 @@
 @mixin cell {
   text-align: left;
   padding: 0 15px;
-  display: flex;
-  align-items: center;
   color: $grey-700;
+  height: auto;
+  display: block;
+  width: 100%;
   &:focus {
     outline: none;
   }
@@ -48,6 +49,10 @@
         background-color: white;
         border-bottom: 1px solid $grey-300;
         font-weight: $font-weight-bold-body;
+        .ag-header-row {
+          display: flex;
+          align-items: center;
+        }
         .ag-header-cell {
           @include cell;
           .ag-header-cell-resize {
@@ -57,8 +62,9 @@
               content: '';
               display: block;
               position: absolute;
-              height: 50%;
-              top: 25%;
+              height: 30px;
+              top: 50%;
+              transform: translateY(-50%);
               right: 50%;
               border-left: 1px solid $grey-500;
             }
@@ -72,6 +78,8 @@
       .ag-row {
         transition: none;
         border-bottom: 1px solid $grey-300;
+        display: flex;
+        align-items: center;
         &.ag-row-hover {
           background-color: $grey-100;
         }

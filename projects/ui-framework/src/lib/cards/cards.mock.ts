@@ -5,7 +5,8 @@ import { AvatarComponent } from '../buttons-indicators/avatar/avatar.component';
 import { AvatarSize } from '../buttons-indicators/avatar/avatar.enum';
 import { CardData, AddCardData } from './cards.interface';
 
-const random = (min = 0, max = 100): number => Math.floor(Math.random() * (max - min + 1)) + min;
+const random = (min = 0, max = 100): number =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
 
 const names = [
   'Dylan Herrera',
@@ -25,15 +26,15 @@ const names = [
 const menuMock: MenuItem[] = [
   {
     label: 'Do this',
-    action: ($event) => console.log('Do this', $event)
+    action: $event => console.log('Do this', $event)
   },
   {
     label: 'Do that',
-    action: ($event) => console.log('Do that', $event)
+    action: $event => console.log('Do that', $event)
   },
   {
     label: 'Do something else',
-    action: ($event) => console.log('Do something else', $event)
+    action: $event => console.log('Do something else', $event)
   }
 ];
 
@@ -112,5 +113,62 @@ export const CardsMockData: CardData[] = [
       footer: footerComponent()
     },
     menu: menuMock
+  }
+];
+
+export const EmployeeCardsMockData: CardData[] = [
+  {
+    data: {
+      avatar: {
+        imageSource: 'http://i.pravatar.cc/200?img=3',
+        title: 'Dylan Herrera',
+        subtitle: 'Product designer'
+      }
+    }
+  },
+  {
+    data: {
+      avatar: {
+        imageSource: 'http://i.pravatar.cc/200?img=2',
+        title: 'Joel Sanders',
+        subtitle: 'Business developer'
+      }
+    }
+  },
+  {
+    data: {
+      avatar: {
+        imageSource: 'http://i.pravatar.cc/200?img=1',
+        title: 'Nora Herrera',
+        subtitle: 'Front-end engineer'
+      }
+    }
+  },
+  {
+    data: {
+      avatar: {
+        imageSource: 'http://i.pravatar.cc/200?img=4',
+        title: 'Jaspreet Bhamrai',
+        subtitle: 'Product designer'
+      }
+    }
+  },
+  {
+    data: {
+      avatar: {
+        imageSource: 'http://i.pravatar.cc/200?img=5',
+        title: 'Chioke Okonkwo',
+        subtitle: 'Business developer'
+      }
+    }
+  },
+  {
+    data: {
+      avatar: {
+        imageSource: 'http://i.pravatar.cc/200?img=6',
+        title: 'Abhoy Latif',
+        subtitle: 'Business developer'
+      }
+    }
   }
 ];

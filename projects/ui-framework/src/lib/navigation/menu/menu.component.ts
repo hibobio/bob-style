@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MenuItem } from './menu.interface';
-import { MenuPositionX } from '@angular/material';
+import { MenuPositionX } from '@angular/material/menu';
 import { has } from 'lodash';
 
 @Component({
@@ -17,7 +17,7 @@ export class MenuComponent implements OnChanges {
   @Output() openMenu: EventEmitter<void> = new EventEmitter<void>();
   @Output() closeMenu: EventEmitter<void> = new EventEmitter<void>();
 
-  @ViewChild('childMenu') public childMenu;
+  @ViewChild('childMenu', { static: true }) public childMenu;
 
   menuDir: MenuPositionX = 'after';
 

@@ -55,6 +55,7 @@ const note = `
   rowData | json | Table data |
   columnDefs | json | Columns definition |
   rowSelection | RowSelection | single multiple | null
+  suppressColumnVirtualisation | boolean | disables virtual scroll on columns | true
   maxHeight | number | grid max height | 450
   rowClicked | Event | Row clicked event
   selectionChanged | Event | All selected rows

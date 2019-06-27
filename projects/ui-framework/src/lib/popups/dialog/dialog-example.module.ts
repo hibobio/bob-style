@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TypographyModule } from '../../typography/typography.module';
 import { DialogModule } from './dialog.module';
 import { DialogService } from './dialog-service/dialog.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { FormElementsModule } from '../../form-elements/form-elements.module';
 import { InputEventType } from '../../form-elements/form-elements.enum';

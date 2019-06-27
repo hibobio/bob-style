@@ -1,4 +1,12 @@
+@import '../../../style/typography';
+
 @mixin cell-style {
+  @include BodyFont(
+    $weight: null,
+    $style: null,
+    $font-family: null,
+    $addCssVars: true
+  );
   flex: 1;
   display: flex;
   flex-direction: column;

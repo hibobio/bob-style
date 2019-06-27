@@ -1,10 +1,15 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick
+} from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogComponent } from './dialog.component';
 import { DialogModule } from './dialog.module';
-import { MatDialogModule, MatDialogRef } from '@angular/material';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { DialogButtons } from './dialog.interface';
-import { IconService } from '../../icons/icon.service';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
@@ -15,7 +20,6 @@ import createSpyObj = jasmine.createSpyObj;
 describe('DialogComponent', () => {
   let component: DialogComponent;
   let fixture: ComponentFixture<DialogComponent>;
-  let spyIconService: SpyObj<IconService>;
   let spyMatDialogRef: SpyObj<MatDialogRef<any>>;
 
   const dialogTitle = 'Dialog title';
@@ -24,17 +28,14 @@ describe('DialogComponent', () => {
     const dialogButtonsConfig: DialogButtons = {
       ok: {
         label: 'ok',
-        action: () => {
-        },
+        action: () => {}
       },
       cancel: {
         label: 'cancel',
-        action: () => {
-        },
-      },
+        action: () => {}
+      }
     };
 
-    spyIconService = createSpyObj('spyIconService', ['initIcon']);
     spyMatDialogRef = createSpyObj('spyMatDialogRef', ['close']);
 
     TestBed.configureTestingModule({
@@ -42,15 +43,8 @@ describe('DialogComponent', () => {
         MockComponent(ButtonComponent),
         MockComponent(SquareButtonComponent)
       ],
-      imports: [
-        NoopAnimationsModule,
-        DialogModule,
-        MatDialogModule,
-      ],
-      providers: [
-        { provide: MatDialogRef, useValue: spyMatDialogRef },
-        { provide: IconService, useValue: spyIconService }
-      ]
+      imports: [NoopAnimationsModule, DialogModule, MatDialogModule],
+      providers: [{ provide: MatDialogRef, useValue: spyMatDialogRef }]
     })
       .compileComponents()
       .then(() => {
@@ -71,7 +65,8 @@ describe('DialogComponent', () => {
 
   describe('closeButton', () => {
     it('should invoke dialogRef.close', () => {
-      const closeButton = fixture.debugElement.query(By.css('.close-button')).componentInstance;
+      const closeButton = fixture.debugElement.query(By.css('.close-button'))
+        .componentInstance;
       closeButton.clicked.emit();
       expect(spyMatDialogRef.close).toHaveBeenCalled();
     });
@@ -80,22 +75,24 @@ describe('DialogComponent', () => {
   describe('cancelButton', () => {
     it('should invoke button config method and close panel', () => {
       spyOn(component.dialogButtons.cancel, 'action');
-      const cancelButton = fixture.debugElement.query(By.css('.cancel-button')).componentInstance;
+      const cancelButton = fixture.debugElement.query(By.css('.cancel-button'))
+        .componentInstance;
       cancelButton.clicked.emit();
       expect(component.dialogButtons.cancel.action).toHaveBeenCalled();
     });
-    it('should close dialog after method is resolved',
-      fakeAsync(() => {
-        const cancelButton = fixture.debugElement.query(By.css('.cancel-button')).componentInstance;
-        cancelButton.clicked.emit();
-        tick();
-        expect(spyMatDialogRef.close).toHaveBeenCalled();
-      }));
+    it('should close dialog after method is resolved', fakeAsync(() => {
+      const cancelButton = fixture.debugElement.query(By.css('.cancel-button'))
+        .componentInstance;
+      cancelButton.clicked.emit();
+      tick();
+      expect(spyMatDialogRef.close).toHaveBeenCalled();
+    }));
     it('should close dialog immediately if no cancel action exists', () => {
       component.dialogButtons.cancel = {
-        label: 'cancel',
+        label: 'cancel'
       };
-      const cancelButton = fixture.debugElement.query(By.css('.cancel-button')).componentInstance;
+      const cancelButton = fixture.debugElement.query(By.css('.cancel-button'))
+        .componentInstance;
       cancelButton.clicked.emit();
       expect(spyMatDialogRef.close).toHaveBeenCalled();
     });
@@ -103,9 +100,8 @@ describe('DialogComponent', () => {
       component.dialogButtons = {
         ok: {
           label: 'ok',
-          action: () => {
-          },
-        },
+          action: () => {}
+        }
       };
       fixture.detectChanges();
       const cancelButton = fixture.debugElement.query(By.css('.cancel-button'));
@@ -116,55 +112,72 @@ describe('DialogComponent', () => {
   describe('okButton', () => {
     it('should display preload message if exists', () => {
       component.dialogButtons.preloaderMessage = 'preload message';
-      let progressIndicator = fixture.debugElement.query(By.css('.progress-indicator'));
+      let progressIndicator = fixture.debugElement.query(
+        By.css('.progress-indicator')
+      );
       expect(progressIndicator).toBeFalsy();
 
-      const okButton = fixture.debugElement.query(By.css('.ok-button')).componentInstance;
+      const okButton = fixture.debugElement.query(By.css('.ok-button'))
+        .componentInstance;
       okButton.clicked.emit();
       okButton.clicked.emit();
       fixture.detectChanges();
 
-      progressIndicator = fixture.debugElement.query(By.css('.progress-indicator'));
+      progressIndicator = fixture.debugElement.query(
+        By.css('.progress-indicator')
+      );
       expect(progressIndicator).toBeTruthy();
       expect(progressIndicator.children[0].name).toBe('b-mini-preloader');
-      expect(progressIndicator.children[1].nativeElement.innerText).toBe('preload message');
+      expect(progressIndicator.children[1].nativeElement.innerText).toBe(
+        'preload message'
+      );
     });
     it('should not show preload message if none exists', () => {
-      const okButton = fixture.debugElement.query(By.css('.ok-button')).componentInstance;
+      const okButton = fixture.debugElement.query(By.css('.ok-button'))
+        .componentInstance;
       okButton.clicked.emit();
       fixture.detectChanges();
-      const progressIndicator = fixture.debugElement.query(By.css('.progress-indicator'));
+      const progressIndicator = fixture.debugElement.query(
+        By.css('.progress-indicator')
+      );
       expect(progressIndicator.children.length).toBe(1);
       expect(progressIndicator.children[0].name).toBe('b-mini-preloader');
     });
     it('should invoke ok button action method', () => {
       spyOn(component.dialogButtons.ok, 'action');
-      const okButton = fixture.debugElement.query(By.css('.ok-button')).componentInstance;
+      const okButton = fixture.debugElement.query(By.css('.ok-button'))
+        .componentInstance;
       okButton.clicked.emit();
       expect(component.dialogButtons.ok.action).toHaveBeenCalled();
     });
-    it('should close dialog after method is resolved',
-      fakeAsync(() => {
-        const okButton = fixture.debugElement.query(By.css('.ok-button')).componentInstance;
-        okButton.clicked.emit();
-        tick();
-        expect(spyMatDialogRef.close).toHaveBeenCalled();
-      }));
+    it('should close dialog after method is resolved', fakeAsync(() => {
+      const okButton = fixture.debugElement.query(By.css('.ok-button'))
+        .componentInstance;
+      okButton.clicked.emit();
+      tick();
+      expect(spyMatDialogRef.close).toHaveBeenCalled();
+    }));
     it('should leave dialog open if action resolves false', () => {
       fakeAsync(() => {
         let closeButton;
-        const okButton = fixture.debugElement.query(By.css('.ok-button')).componentInstance;
+        const okButton = fixture.debugElement.query(By.css('.ok-button'))
+          .componentInstance;
         let progressIndicator;
         component.dialogButtons.ok.action = () => false;
         okButton.clicked.emit();
         fixture.detectChanges();
-        progressIndicator = fixture.debugElement.query(By.css('.progress-indicator'));
+        progressIndicator = fixture.debugElement.query(
+          By.css('.progress-indicator')
+        );
         expect(progressIndicator.children.length).toBe(1);
-        closeButton = fixture.debugElement.query(By.css('.close-button')).componentInstance;
+        closeButton = fixture.debugElement.query(By.css('.close-button'))
+          .componentInstance;
         expect(closeButton.nativeElement).toBeTruthy();
         tick();
         expect(spyMatDialogRef.close).not.toHaveBeenCalled();
-        progressIndicator = fixture.debugElement.query(By.css('.progress-indicator'));
+        progressIndicator = fixture.debugElement.query(
+          By.css('.progress-indicator')
+        );
         expect(progressIndicator).toBeFalsy();
       });
     });
@@ -173,54 +186,70 @@ describe('DialogComponent', () => {
         component.dialogButtons.confirmation = {
           buttonLabel: 'confirm',
           title: 'are you sure?',
-          subTitle: 'click confirm to invoke method',
+          subTitle: 'click confirm to invoke method'
         };
       });
       it('should show confirm message if exists', () => {
-        const okButton = fixture.debugElement.query(By.css('.ok-button')).componentInstance;
+        const okButton = fixture.debugElement.query(By.css('.ok-button'))
+          .componentInstance;
         okButton.clicked.emit();
         fixture.detectChanges();
-        const confirmationMessage = fixture.debugElement.query(By.css('.confirmation-message'));
+        const confirmationMessage = fixture.debugElement.query(
+          By.css('.confirmation-message')
+        );
         expect(confirmationMessage).toBeTruthy();
-        expect(confirmationMessage.children[0].nativeElement.innerText).toBe('are you sure?');
-        expect(confirmationMessage.children[1].nativeElement.innerText).toBe('click confirm to invoke method');
+        expect(confirmationMessage.children[0].nativeElement.innerText).toBe(
+          'are you sure?'
+        );
+        expect(confirmationMessage.children[1].nativeElement.innerText).toBe(
+          'click confirm to invoke method'
+        );
       });
       it('should change ok label to the confirmation label', () => {
-        const okButton = fixture.debugElement.query(By.css('.ok-button')).componentInstance;
+        const okButton = fixture.debugElement.query(By.css('.ok-button'))
+          .componentInstance;
         okButton.clicked.emit();
         fixture.detectChanges();
         const okButtonEl = fixture.debugElement.query(By.css('.ok-button'));
-        expect(okButtonEl.nativeElement.innerText).toEqual('confirm');
+        expect(okButtonEl.nativeElement.innerText).toContain('confirm');
       });
       it('should remove confirmation when clicking cancel and not close dialog', () => {
-        const okButton = fixture.debugElement.query(By.css('.ok-button')).componentInstance;
+        const okButton = fixture.debugElement.query(By.css('.ok-button'))
+          .componentInstance;
         okButton.clicked.emit();
         fixture.detectChanges();
-        let confirmationMessage = fixture.debugElement.query(By.css('.confirmation-message'));
+        let confirmationMessage = fixture.debugElement.query(
+          By.css('.confirmation-message')
+        );
         expect(confirmationMessage).toBeTruthy();
-        const cancelButton = fixture.debugElement.query(By.css('.cancel-button')).componentInstance;
+        const cancelButton = fixture.debugElement.query(
+          By.css('.cancel-button')
+        ).componentInstance;
         cancelButton.clicked.emit();
         fixture.detectChanges();
-        confirmationMessage = fixture.debugElement.query(By.css('.confirmation-message'));
+        confirmationMessage = fixture.debugElement.query(
+          By.css('.confirmation-message')
+        );
         expect(confirmationMessage).toBeFalsy();
         expect(spyMatDialogRef.close).not.toHaveBeenCalled();
       });
       it('should invoke ok button action method on second click', () => {
         spyOn(component.dialogButtons.ok, 'action');
-        const okButton = fixture.debugElement.query(By.css('.ok-button')).componentInstance;
+        const okButton = fixture.debugElement.query(By.css('.ok-button'))
+          .componentInstance;
         okButton.clicked.emit();
         expect(component.dialogButtons.ok.action).not.toHaveBeenCalled();
         okButton.clicked.emit();
         expect(component.dialogButtons.ok.action).toHaveBeenCalled();
       });
-      it('should close dialog after method is resolved after 2nd click',
-        fakeAsync(() => {
-          const okButton = fixture.debugElement.query(By.css('.ok-button')).componentInstance;
-          okButton.clicked.emit();
-          okButton.clicked.emit();
-          tick();
-          expect(spyMatDialogRef.close).toHaveBeenCalled();
-        }));
+      it('should close dialog after method is resolved after 2nd click', fakeAsync(() => {
+        const okButton = fixture.debugElement.query(By.css('.ok-button'))
+          .componentInstance;
+        okButton.clicked.emit();
+        okButton.clicked.emit();
+        tick();
+        expect(spyMatDialogRef.close).toHaveBeenCalled();
+      }));
     });
   });
 });

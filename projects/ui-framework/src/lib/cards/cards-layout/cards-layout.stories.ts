@@ -1,11 +1,23 @@
 import { storiesOf } from '@storybook/angular';
-import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  array,
+  boolean,
+  number,
+  object,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { CardsModule } from '../cards.module';
 
-import { CardsMockData, AddCardMockData } from '../cardsMockData';
+import {
+  CardsMockData,
+  AddCardMockData,
+  EmployeeCardsMockData
+} from '../cards.mock';
 import { CardType } from '../cards.enum';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,7 +27,9 @@ import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { SliderModule } from '../../buttons-indicators/slider/slider.module';
 import { SliderComponent } from '../../buttons-indicators/slider/slider.component';
 
-const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-cards
@@ -26,10 +40,22 @@ const template = `
 </b-cards>
 `;
 
+const template2 = `
+<b-cards
+    [type]="type"
+    [cards]="employeeCardsData"
+    (cardClicked)="cardClickHandler($event)">
+</b-cards>
+`;
+
 const storyTemplate = `
 <b-story-book-layout [title]="'Cards Layout'">
   <div style="min-width:100%; min-height: 100%; padding: 30px; background: rgb(247,247,247);">
+  <h3>Cards</h3>
     ${template}
+    <br><br>
+    <h3>Employee Cards</h3>
+    ${template2}
   </div>
 </b-story-book-layout>
 `;
@@ -66,6 +92,7 @@ const note = `
   - | RenderedComponent  | object describing a Component to be displayed in the card header | none
   footer | string  | text to put in card footer | none
   - | RenderedComponent  | object describing a Component to be displayed in the card footer | none
+  avatar | Avatar | <u>for employee-card</u> - object describing user avatar: {imageSource, title, subtitle} | none
 
   *Note:* If using RenderedComponent for footer/header, consumer must
    declare the component to be used in entryComponents section of the module
@@ -74,37 +101,49 @@ const note = `
 
   ##### CardData example
 
-  \`\`\`
-
-{
-  data: {
-    text: 'Compensation update',
-    header: {
-      component: AvatarComponent,
-      attributes: {
-        imageSource: 'http://....',
-        size: AvatarSize.mini,
-        title: 'Dylan Herrera'
+\`\`\`
+  {
+    data: {
+      text: 'Compensation update',
+      header: {
+        component: AvatarComponent,
+        attributes: {
+          imageSource: 'http://....',
+          size: AvatarSize.mini,
+          title: 'Dylan Herrera'
+        }
+      },
+      footer: {
+        component: SliderComponent,
+        attributes: {
+          value: 78,
+          showLabel: false,
+          readOnly: true
+        }
       }
     },
-    footer: {
-      component: SliderComponent,
-      attributes: {
-        value: 78,
-        showLabel: false,
-        readOnly: true
+    menu: [
+      {
+        label: 'Do this',
+        action: handler()
+      }, ...
+    ]
+  }
+\`\`\`
+
+  ##### Employee-card CardData example
+
+\`\`\`
+  {
+    data: {
+      avatar: {
+        imageSource: 'http://i.pravatar.cc/200?img=5',
+        title: 'Chioke Okonkwo',
+        subtitle: 'Business developer'
       }
     }
-  },
-  menu: [
-    {
-      label: 'Do this',
-      action: handler()
-    }, ...
-  ]
-}
-
-  \`\`\`
+  }
+\`\`\`
 
 `;
 
@@ -119,11 +158,18 @@ story.add(
       props: {
         type: select('type', values(CardType), CardType.primary),
         addCard: object('addCard', addCardMockData),
-        cardsData: object('cards', CardsMockData),
+        cardsData: object('cardsData', CardsMockData),
+        employeeCardsData: object('employeeCardsData', EmployeeCardsMockData),
         cardClickHandler: action('Card clicked')
       },
       moduleMetadata: {
-        imports: [StoryBookLayoutModule, BrowserAnimationsModule, CardsModule, AvatarModule, SliderModule],
+        imports: [
+          StoryBookLayoutModule,
+          BrowserAnimationsModule,
+          CardsModule,
+          AvatarModule,
+          SliderModule
+        ],
         entryComponents: [AvatarComponent, SliderComponent]
       }
     };

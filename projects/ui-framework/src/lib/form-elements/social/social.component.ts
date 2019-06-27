@@ -64,7 +64,7 @@ export class SocialComponent extends BaseFormElement {
     this.wrapEvent = false;
   }
 
-  @ViewChild('bInput') bInput: InputComponent;
+  @ViewChild('bInput', { static: true }) bInput: InputComponent;
 
   @Input() type: Social;
   public readonly iconSize = IconSize;

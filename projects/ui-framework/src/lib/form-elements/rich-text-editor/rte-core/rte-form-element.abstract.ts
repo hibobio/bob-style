@@ -9,7 +9,8 @@ import {
   SimpleChanges,
   Type,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
+  HostBinding
 } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
 import quillLib, {
@@ -28,6 +29,9 @@ import { PanelComponent } from '../../../popups/panel/panel.component';
 const Block = quillLib.import('blots/block');
 Block.tagName = 'DIV';
 quillLib.register(Block, true);
+quillLib.register(quillLib.import('attributors/style/direction'), true);
+quillLib.register(quillLib.import('attributors/style/align'), true);
+quillLib.register(quillLib.import('attributors/style/size'), true);
 
 export abstract class RTEformElement extends BaseFormElement
   implements OnChanges, AfterViewInit {
@@ -51,14 +55,24 @@ export abstract class RTEformElement extends BaseFormElement
   @Input() private formControlName: any;
   @Input() private formControl: any;
 
-  @ViewChild('quillEditor') protected quillEditor: ElementRef;
-  @ViewChild('toolbar') protected toolbar: ElementRef;
-  @ViewChild('suffix') protected suffix: ElementRef;
-  @ViewChild('sizePanel') protected sizePanel: PanelComponent;
+  @ViewChild('quillEditor', { static: true }) protected quillEditor: ElementRef;
+  @ViewChild('toolbar', { static: true }) protected toolbar: ElementRef;
+  @ViewChild('suffix', { static: false }) protected suffix: ElementRef;
+  @ViewChild('sizePanel', { static: false }) protected sizePanel: PanelComponent;
 
   @Output() blurred: EventEmitter<any> = new EventEmitter<any>();
   @Output() focused: EventEmitter<any> = new EventEmitter<any>();
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
+
+  @HostBinding('class.length-invalid') get isLengthInvalid(): boolean {
+    return (
+      this.length < this.minChars ||
+      (this.maxChars && this.length > this.maxChars)
+    );
+  }
+  @HostBinding('class.length-warning') get hasLengthWarning(): boolean {
+    return this.maxChars && this.maxChars - this.length < 15;
+  }
 
   public editor: Quill;
   public hasSizeSet = false;
@@ -105,7 +119,7 @@ export abstract class RTEformElement extends BaseFormElement
       this.editor.setContents(
         this.editor.clipboard.convert(newInputValue).insert(' \n')
       );
-      this.length = this.rteUtils.getTextLength(this.editor);
+      this.checkLength();
     } else if (this.editor) {
       this.editor.setText('\n');
     } else {
@@ -253,7 +267,10 @@ export abstract class RTEformElement extends BaseFormElement
         };
       }
     }
-    this.length = this.rteUtils.getTextLength(this.editor);
+    this.checkLength();
+    if (this.maxChars && this.length > this.maxChars) {
+      (this.editor as any).history.undo();
+    }
     this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
   }
 
@@ -345,6 +362,10 @@ export abstract class RTEformElement extends BaseFormElement
     this.editor.format('size', size === RTEFontSize.normal ? false : size);
     this.hasSizeSet = size !== RTEFontSize.normal;
     this.sizePanel.closePanel();
+  }
+
+  private checkLength(): number {
+    return (this.length = this.rteUtils.getTextLength(this.editor));
   }
 
   // this is part of ControlValueAccessor interface

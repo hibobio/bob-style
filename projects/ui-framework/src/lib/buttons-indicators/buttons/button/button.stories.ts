@@ -1,10 +1,5 @@
 import { storiesOf, moduleMetadata } from '@storybook/angular';
-import {
-  text,
-  select,
-  boolean,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
 import { ButtonType, ButtonSize } from '../buttons.enum';
@@ -13,10 +8,7 @@ import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { Icons } from '../../../icons/icons.enum';
 
-const buttonStories = storiesOf(
-  `${ComponentGroupType.ButtonsAndIndicators}.Buttons`,
-  module
-).addDecorator(withKnobs);
+const buttonStories = storiesOf(`${ComponentGroupType.ButtonsAndIndicators}.Buttons`, module).addDecorator(withKnobs);
 
 const typeOptions = values(ButtonType);
 const sizeOptions = values(ButtonSize);
@@ -84,7 +76,7 @@ buttonStories.add(
   () => ({
     template: storyTemplate,
     props: {
-      onClick: action(),
+      onClick: action('onClick'),
       label: text('label', 'Click me'),
       type: select('type', typeOptions, ButtonType.primary),
       size: select('size', sizeOptions, ButtonSize.medium),

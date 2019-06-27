@@ -10,7 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { MenuComponent } from '../../navigation/menu/menu.component';
-import { CardsMockData } from '../cardsMockData';
+import { CardsMockData } from '../cards.mock';
 import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
 import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';

@@ -1,9 +1,14 @@
-import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  inject,
+  TestBed,
+  tick
+} from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AutoCompleteComponent } from './auto-complete.component';
-import { IconService } from '../../icons/icon.service';
-import SpyObj = jasmine.SpyObj;
-import createSpyObj = jasmine.createSpyObj;
 import { AutoCompleteModule } from './auto-complete.module';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
@@ -20,7 +25,6 @@ describe('AutoCompleteComponent', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   let platform: Platform;
-  let spyIconService: SpyObj<IconService>;
   let optionsMock: AutoCompleteOption[];
 
   beforeEach(async(() => {
@@ -32,12 +36,18 @@ describe('AutoCompleteComponent', () => {
       };
     });
 
-    spyIconService = createSpyObj('spyIconService', ['initIcon']);
-
     TestBed.configureTestingModule({
-      declarations: [MockComponent(SearchComponent), MockComponent(AutoCompletePanelComponent)],
-      imports: [NoopAnimationsModule, AutoCompleteModule, OverlayModule, SearchModule],
-      providers: [{ provide: IconService, useValue: spyIconService }]
+      declarations: [
+        MockComponent(SearchComponent),
+        MockComponent(AutoCompletePanelComponent)
+      ],
+      imports: [
+        NoopAnimationsModule,
+        AutoCompleteModule,
+        OverlayModule,
+        SearchModule
+      ],
+      providers: []
     })
       .compileComponents()
       .then(() => {
@@ -56,11 +66,14 @@ describe('AutoCompleteComponent', () => {
         fixture.autoDetectChanges();
       });
 
-    inject([OverlayContainer, Platform], (oc: OverlayContainer, p: Platform) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-      platform = p;
-    })();
+    inject(
+      [OverlayContainer, Platform],
+      (oc: OverlayContainer, p: Platform) => {
+        overlayContainer = oc;
+        overlayContainerElement = oc.getContainerElement();
+        platform = p;
+      }
+    )();
   }));
 
   describe('OnChanges', () => {
@@ -71,7 +84,9 @@ describe('AutoCompleteComponent', () => {
 
   describe('searchChange', () => {
     it('should open panel if search has value', () => {
-      let panel = overlayContainerElement.querySelector('b-auto-complete-panel');
+      let panel = overlayContainerElement.querySelector(
+        'b-auto-complete-panel'
+      );
       expect(panel).toBeFalsy();
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       searchEl.componentInstance.searchChange.emit('e1');
@@ -83,7 +98,9 @@ describe('AutoCompleteComponent', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       searchEl.componentInstance.searchChange.emit('e1');
       fixture.autoDetectChanges();
-      let panel = overlayContainerElement.querySelector('b-auto-complete-panel');
+      let panel = overlayContainerElement.querySelector(
+        'b-auto-complete-panel'
+      );
       expect(panel).toBeTruthy();
       searchEl.componentInstance.searchChange.emit('');
       fixture.autoDetectChanges();
@@ -93,20 +110,28 @@ describe('AutoCompleteComponent', () => {
     it('should update filtered list based on search value', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       searchEl.componentInstance.searchChange.emit('e1');
-      expect(component.filteredOptions).toEqual([optionsMock[1], optionsMock[10], optionsMock[11]]);
+      expect(component.filteredOptions).toEqual([
+        optionsMock[1],
+        optionsMock[10],
+        optionsMock[11]
+      ]);
     });
     it('should have panel open if filteredList.length > 0', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       searchEl.componentInstance.searchChange.emit('e1');
       fixture.autoDetectChanges();
-      const panel = overlayContainerElement.querySelector('b-auto-complete-panel');
+      const panel = overlayContainerElement.querySelector(
+        'b-auto-complete-panel'
+      );
       expect(panel).toBeTruthy();
     });
     it('should have panel close if filteredList.length=0', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       searchEl.componentInstance.searchChange.emit('abcdef');
       fixture.autoDetectChanges();
-      const panel = overlayContainerElement.querySelector('b-auto-complete-panel');
+      const panel = overlayContainerElement.querySelector(
+        'b-auto-complete-panel'
+      );
       expect(panel).toBeFalsy();
     });
     it('should emit search value', () => {
@@ -122,7 +147,9 @@ describe('AutoCompleteComponent', () => {
       searchEl.componentInstance.searchChange.emit('e1');
       fixture.autoDetectChanges();
       tick(0);
-      (overlayContainerElement.querySelectorAll('.option-select')[0] as HTMLElement).click();
+      (overlayContainerElement.querySelectorAll(
+        '.option-select'
+      )[0] as HTMLElement).click();
       expect(component.optionSelect.emit).toHaveBeenCalledWith(optionsMock[1]);
       flush();
     }));

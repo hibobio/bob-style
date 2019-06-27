@@ -49,11 +49,11 @@ export class TruncateTooltipComponent
   implements AfterViewInit, DoCheck, OnDestroy {
   constructor(private utilsService: UtilsService, private DOM: DOMhelpers) {}
 
-  @ViewChild('textContainer')
+  @ViewChild('textContainer', { static: true })
   set container(element: ElementRef) {
     this.textContainer = element.nativeElement;
   }
-  @ViewChild('directiveTemplate', { read: ViewContainerRef })
+  @ViewChild('directiveTemplate', { read: ViewContainerRef, static: true })
   child: ViewContainerRef;
 
   @Input('maxLines')

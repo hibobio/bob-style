@@ -14,7 +14,6 @@ import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.modul
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { IconService } from '../../../icons/icon.service';
 import { By } from '@angular/platform-browser';
 import { SelectGroupOption } from '../list.interface';
 import { cloneDeep } from 'lodash';
@@ -32,10 +31,8 @@ describe('SingleSelectComponent', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   let platform: Platform;
-  let spyIconService: SpyObj<IconService>;
 
   beforeEach(async(() => {
-    spyIconService = createSpyObj('spyIconService', ['initIcon']);
 
     optionsMock = [
       {
@@ -57,8 +54,7 @@ describe('SingleSelectComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SingleSelectComponent],
       providers: [
-        PanelPositionService,
-        { provide: IconService, useValue: spyIconService }
+        PanelPositionService
       ],
       imports: [
         SingleListModule,

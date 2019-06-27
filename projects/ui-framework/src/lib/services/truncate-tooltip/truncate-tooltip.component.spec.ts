@@ -9,7 +9,7 @@ import { TruncateTooltipComponent } from './truncate-tooltip.component';
 import { DOMhelpers } from '../utils/dom-helpers.service';
 import { UtilsService } from '../utils/utils.service';
 import { UtilsModule } from '../utils/utils.module';
-import { MatTooltipModule } from '@angular/material';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TruncateTooltipModule } from './truncate-tooltip.module';
 import { TruncateTooltiptype } from './truncate-tooltip.enum';
 

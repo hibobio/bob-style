@@ -6,7 +6,10 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { ActionBarModule } from './action-bar.module';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 
-const inputStories = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
+const inputStories = storiesOf(
+  ComponentGroupType.Navigation,
+  module
+).addDecorator(withKnobs);
 
 const componentTemplate = `
 <b-action-bar [label]="label">
@@ -16,7 +19,9 @@ const componentTemplate = `
 
 const template = `
 <b-story-book-layout [title]="'action bar'">
+  <div style="max-width: 400px; margin: 30px auto;">
   ${componentTemplate}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -42,10 +47,15 @@ inputStories.add(
     return {
       template,
       props: {
-        label: text('label', 'Test label'),
+        label: text('label', 'Test label')
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, ActionBarModule, StoryBookLayoutModule, ButtonsModule]
+        imports: [
+          BrowserAnimationsModule,
+          ActionBarModule,
+          StoryBookLayoutModule,
+          ButtonsModule
+        ]
       }
     };
   },

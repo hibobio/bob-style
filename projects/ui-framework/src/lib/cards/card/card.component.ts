@@ -1,11 +1,21 @@
-import { Component, Input, HostBinding, Output, EventEmitter, HostListener } from '@angular/core';
+import {
+  Component,
+  Input,
+  HostBinding,
+  Output,
+  EventEmitter,
+  HostListener
+} from '@angular/core';
 import { CardData } from '../cards.interface';
 import { CardType } from '../cards.enum';
 import { RenderedComponent } from '../../services/component-renderer/component-renderer.interface';
 import { Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 
-import { isString, isRenderedComponent } from '../../services/utils/functional-utils';
+import {
+  isString,
+  isRenderedComponent
+} from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-card, [b-card]',
@@ -21,8 +31,8 @@ export class CardComponent {
   @Input() clickable = false;
 
   cardType = CardType;
-  icons = Icons;
   button = ButtonType;
+  icons = Icons;
   ifString = isString;
   ifComponent = isRenderedComponent;
 

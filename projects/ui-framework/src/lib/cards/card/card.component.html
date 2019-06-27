@@ -6,8 +6,7 @@
         (click)="stopPropagation($event)">
   <b-square-button menu-trigger
                    [type]="button.tertiary"
-                   [icon]="icons.three_dots"
-                   rotate="90"
+                   [icon]="icons.three_dots_vert"
                    border="0">
   </b-square-button>
 </b-menu>
@@ -24,7 +23,8 @@
 
 <p class="card-content"
    [b-truncate-tooltip]="type === cardType.primary ? 4 : 3"
-   [delay]="100">
+   [delay]="100"
+   [trustCssVars]="true">
   {{ card.data.text }}
 </p>
 

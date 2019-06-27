@@ -1,22 +1,18 @@
-import { UpdateRteConfig, SpecialBlots } from '../rte-core/rte.interface';
+import { SpecialBlots, UpdateRteConfig } from '../rte-core/rte.interface';
 import { BlotType } from '../rte-core/rte.enum';
 import { PanelComponent } from '../../../popups/panel/panel.component';
 import { RteUtilsService } from '../rte-core/rte-utils.service';
 import Quill, { RangeStatic } from 'quill';
 import { SingleListComponent } from '../../lists/single-list/single-list.component';
 import { PlaceholderRteConverterService } from './placeholder-rte-converter.service';
-import {
-  RtePlaceholderList,
-  RtePlaceholder,
-  RtePlaceholderUpdate
-} from './placeholder-rte-converter.interface';
+import { RtePlaceholder, RtePlaceholderList, RtePlaceholderUpdate } from './placeholder-rte-converter.interface';
 
 export class RtePlaceholderBlot {
   constructor() {}
 
   // stand-ins for Base class properties & methods
 
-  public placeholderRteConverterService: PlaceholderRteConverterService = new PlaceholderRteConverterService();
+  public placeholderRteConverterService: PlaceholderRteConverterService;
   public placeholderList: RtePlaceholderList[];
   public placeholderPanel: PanelComponent;
   public rteUtils: RteUtilsService;

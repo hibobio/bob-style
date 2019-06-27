@@ -181,22 +181,25 @@ button {
   margin-top: 10px;
 }
 
-:disabled,
-.disabled,
-[disabled] {
-  pointer-events: none;
-  cursor: default;
-  user-select: none;
+.global-controls,
+.control-item {
+  :disabled,
+  .disabled,
+  [disabled] {
+    pointer-events: none;
+    cursor: default;
+    user-select: none;
 
-  &,
-  * {
-    border-color: silver;
+    &,
+    * {
+      border-color: silver;
+    }
   }
-}
 
-.disabled,
-[disabled] + span {
-  opacity: 0.5;
+  .disabled,
+  [disabled] + span {
+    opacity: 0.5;
+  }
 }
 
 .note {

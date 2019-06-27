@@ -1,27 +1,35 @@
 @import '../../style/colors';
 
 :host ::ng-deep {
-  display: inline-block;
+  display: block;
   position: relative;
   width: 100%;
+
   .slider-label {
-    float: right;
-    margin-right: 8px;
+    text-align: right;
+    margin-bottom: 8px;
+
     &.disabled {
       color: $grey-500;
     }
   }
+
   mat-slider {
+    display: block;
+    width: 100%;
+    padding: 0;
+
     &.mat-slider-horizontal {
       height: auto;
     }
-    width: 100%;
+
     .mat-slider-wrapper {
       height: 10px;
       right: auto;
       top: auto;
       left: auto;
       position: relative;
+
       .mat-slider-track-wrapper {
         border: 2px solid $grey-300;
         background-color: $grey-300;
@@ -37,9 +45,11 @@
           background-color: var(--primary-500);
         }
       }
+
       .mat-slider-ticks-container {
         display: none;
       }
+
       .mat-slider-thumb-container {
         height: auto;
         .mat-slider-thumb {
@@ -60,17 +70,22 @@
         }
       }
     }
-    &.read-only, &.disabled {
+
+    &.read-only,
+    &.disabled {
       pointer-events: none;
+
       .mat-slider-wrapper .mat-slider-thumb {
         visibility: hidden;
       }
     }
+
     &.disabled {
       .mat-slider-wrapper .mat-slider-track-fill {
         background-color: $grey-500;
       }
     }
+
     &.bar-full {
       .mat-slider-wrapper .mat-slider-track-fill {
         background-color: var(--positive-500);

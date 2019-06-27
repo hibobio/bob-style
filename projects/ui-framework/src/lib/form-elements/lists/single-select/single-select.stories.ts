@@ -23,6 +23,7 @@ const buttonStories = storiesOf(
 
 const template = `
 <b-single-select [label]="label"
+                 [placeholder]="placeholder"
                  [options]="options"
                  (selectChange)="selectChange($event)"
                  [disabled]="disabled"
@@ -54,6 +55,7 @@ const note = `
   value | (string or number) | selected id | none
   selectChange | action | returns ListChange | none
   label | string | label text | none
+  placeholder | string | placeholder text | none
   disabled | boolean | is field disabled | none
   required | boolean | is field required | none
   hintMessage | text | hint text | none
@@ -95,6 +97,7 @@ buttonStories.add(
       options: object<SelectGroupOption>('options', optionsMock),
       selectChange: action('Single select change'),
       label: text('label', 'label text'),
+      placeholder: text('placeholder', 'placeholder text'),
       disabled: boolean('disabled', false),
       required: boolean('required', false),
       hintMessage: text('hintMessage', 'This field should contain something'),

@@ -7,7 +7,7 @@ import {
 } from '@storybook/addon-knobs/angular';
 import { IconsModule } from './icons.module';
 import { IconColor, Icons, IconSize } from './icons.enum';
-import { reduce, values } from 'lodash';
+import { reduce, values, keys } from 'lodash';
 import { ComponentGroupType } from '../consts';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -16,11 +16,23 @@ const iconStories = storiesOf(ComponentGroupType.Icons, module).addDecorator(
   withKnobs
 );
 
-const icons = values(Icons).sort();
+const iconClasses = Object.values(Icons).sort();
+
+let iconKeys = iconClasses.reduce((acc, ic) => {
+  const allKeys = Object.keys(Icons).filter(key => Icons[key] === ic);
+  allKeys.forEach(key => {
+    acc.push(key);
+  });
+
+  return acc;
+}, []);
+iconKeys = Array.from(new Set(iconKeys));
+
 const size = values(IconSize);
 const color = values(IconColor);
 
 const template = `
+
 <b-icon [toolTipSummary]="toolTipSummary"
         [icon]="icon"
         [size]="size"
@@ -63,10 +75,10 @@ iconStories.add(
       template: storyTemplate,
       props: {
         toolTipSummary: text('toolTipSummary', 'This is the icon element'),
-        icon: select('icon', icons, Icons.docs_link),
+        icon: select('icon', iconClasses, Icons.person),
         size: select('size', size, IconSize.large),
         color: select('color', color, IconColor.normal),
-        hasHoverState: boolean('hasHoverState', false)
+        hasHoverState: boolean('hasHoverState', true)
       },
       moduleMetadata: {
         imports: [BrowserAnimationsModule, IconsModule, StoryBookLayoutModule]
@@ -77,12 +89,16 @@ iconStories.add(
 );
 
 const listHtml = reduce(
-  icons,
+  iconKeys,
   (iconsTemplate, icon) => {
     return (
       iconsTemplate +
       `<div class="icon-wrapper">
-      <b-icon icon=${icon} size="large"></b-icon><div class="icon-title">${icon}</div>
+      <b-icon icon=${Icons[icon]} size="large"></b-icon>
+      <div class="icon-title">
+        <strong>enum:</strong> ${icon}<br>
+        <strong>class:</strong> ${Icons[icon]}
+      </div>
     </div>`
     );
   },
@@ -120,6 +136,9 @@ const iconsListTemplate = `
         overflow-wrap: break-word;
       }
     </style>
+      <p style="margin: 0;">total icons: ${
+        Array.from(new Set(iconClasses)).length
+      }</p>
       <div class="icons-list">
         ${listHtml}
       </div>

@@ -4,7 +4,7 @@ import { SideMenuComponent } from './side-menu.component';
 import { SideMenuOptionComponent } from './side-menu-option/side-menu-option.component';
 import { MenuModule } from '../menu/menu.module';
 import { IconsModule } from '../../icons/icons.module';
-import { MatTooltipModule } from '@angular/material';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 
 @NgModule({

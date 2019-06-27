@@ -1,13 +1,18 @@
 :host {
-  display: inline-block;
+  display: inline-flex;
   cursor: pointer;
+
   &:hover {
-    text-decoration: underline;
+    b-bold-body {
+      text-decoration: underline;
+    }
   }
+
   &.disabled {
     opacity: 0.5;
     pointer-events: none;
   }
+
   &.color-primary {
     color: var(--primary-500);
   }

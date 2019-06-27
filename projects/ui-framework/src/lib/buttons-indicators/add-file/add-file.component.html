@@ -1,6 +1,6 @@
 <div class="container"
      [ngClass]="{'edit-mode': imageUrl}"
-     [ngStyle]="{ 'background-image': 'url(' + imageUrl + ')'}">
+     [ngStyle]="{ 'background-image': imageUrl ? 'url(' + imageUrl + ')' : null}">
   <b-icon [icon]="imageUrl ? iconShape.edit_field_pencil : icon"
           [size]="iconSize.large"
           [color]="imageUrl ? iconColor.white : iconColor.normal">

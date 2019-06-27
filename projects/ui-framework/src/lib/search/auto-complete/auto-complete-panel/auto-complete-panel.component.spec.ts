@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AutoCompletePanelComponent } from './auto-complete-panel.component';
-import { IconService } from '../../../icons/icon.service';
 import { ListKeyboardService } from '../../../form-elements/lists/list-service/list-keyboard.service';
 import { AutoCompleteOption } from '../auto-complete.interface';
 import { By } from '@angular/platform-browser';
@@ -16,11 +15,9 @@ import { Keys } from '../../../enums';
 describe('AutoCompletePanelComponent', () => {
   let component: AutoCompletePanelComponent;
   let fixture: ComponentFixture<AutoCompletePanelComponent>;
-  let spyIconService: SpyObj<IconService>;
   let optionsMock: AutoCompleteOption[];
 
   beforeEach(async(() => {
-    spyIconService = createSpyObj('spyIconService', ['initIcon']);
 
     optionsMock = Array.from(Array(12), (_, k) => {
       return {
@@ -34,7 +31,6 @@ describe('AutoCompletePanelComponent', () => {
       declarations: [AutoCompletePanelComponent],
       providers: [
         ListKeyboardService,
-        { provide: IconService, useValue: spyIconService }
       ],
       imports: [
         NoopAnimationsModule,

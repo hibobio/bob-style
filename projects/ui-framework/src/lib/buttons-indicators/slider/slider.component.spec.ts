@@ -1,11 +1,7 @@
 import { SliderComponent } from './slider.component';
-import {
-  ComponentFixture,
-  async,
-  TestBed
-} from '@angular/core/testing';
+import { ComponentFixture, async, TestBed } from '@angular/core/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { MatSliderChange } from '@angular/material';
+import { MatSliderChange } from '@angular/material/slider';
 import { By } from '@angular/platform-browser';
 
 describe('SliderModule', () => {
@@ -17,8 +13,7 @@ describe('SliderModule', () => {
       declarations: [SliderComponent],
       providers: [],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -32,7 +27,7 @@ describe('SliderModule', () => {
     it('Should emit the change event', () => {
       const e: MatSliderChange = {
         source: null,
-        value: 10,
+        value: 10
       };
       component.onProgressChange(e);
       expect(component.progressChange.emit).toHaveBeenCalledWith(e);
@@ -41,7 +36,7 @@ describe('SliderModule', () => {
       component.max = 10;
       const e: MatSliderChange = {
         source: null,
-        value: 10,
+        value: 10
       };
       component.onProgressChange(e);
       fixture.detectChanges();
@@ -106,8 +101,8 @@ describe('SliderModule', () => {
       component.labelSymbol = '$';
       fixture.detectChanges();
 
-      const labelEl = fixture.debugElement.query(By.css('.slider-label span'));
-      expect(labelEl.nativeElement['innerHTML']).toEqual('10$');
+      const labelEl = fixture.debugElement.query(By.css('.slider-label'));
+      expect(labelEl.nativeElement.innerText).toEqual('10$');
     });
   });
 });

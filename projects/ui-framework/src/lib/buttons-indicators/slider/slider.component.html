@@ -1,7 +1,7 @@
 <div *ngIf="showLabel"
      [ngClass]="{'disabled': disabled}"
      class="slider-label">
-  <span>{{value}}{{labelSymbol}}</span>
+  {{value}}{{labelSymbol}}
 </div>
 
 <mat-slider [min]="min"

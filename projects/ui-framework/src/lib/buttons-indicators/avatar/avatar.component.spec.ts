@@ -149,7 +149,7 @@ describe('AvatarComponent', () => {
       });
       fixture.detectChanges();
       const badgeElement = fixture.debugElement.query(
-        By.css('.avatar-badge .mat-icon.' + BadgeSize[AvatarSize.small])
+        By.css('.avatar-badge .b-icon.b-icon-' + BadgeSize[AvatarSize.small])
       );
       expect(badgeElement).toBeTruthy();
     });
@@ -160,7 +160,7 @@ describe('AvatarComponent', () => {
       });
       fixture.detectChanges();
       const badgeElement = fixture.debugElement.query(
-        By.css('.avatar-badge .mat-icon.' + BadgeSize[AvatarSize.medium])
+        By.css('.avatar-badge .b-icon.b-icon-' + BadgeSize[AvatarSize.medium])
       );
       expect(badgeElement).toBeTruthy();
     });

@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { CardsLayoutComponent } from './cards-layout.component';
-import { CardsMockData, AddCardMockData } from '../cardsMockData';
+import { CardsMockData, AddCardMockData } from '../cards.mock';
 import { CardsModule } from '../cards.module';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { SliderModule } from '../../buttons-indicators/slider/slider.module';
@@ -27,7 +27,13 @@ describe('CardsLayoutComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
-      imports: [CardsModule, AvatarModule, SliderModule, TruncateTooltipModule, ComponentRendererModule],
+      imports: [
+        CardsModule,
+        AvatarModule,
+        SliderModule,
+        TruncateTooltipModule,
+        ComponentRendererModule
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .overrideModule(BrowserDynamicTestingModule, {
@@ -45,9 +51,11 @@ describe('CardsLayoutComponent', () => {
 
         fixture.detectChanges();
 
-        addCardElement = fixture.debugElement.query(By.css('[b-card-add]')).nativeElement;
+        addCardElement = fixture.debugElement.query(By.css('[b-card-add]'))
+          .nativeElement;
 
-        cardsListElement = fixture.debugElement.query(By.css('.cards-list')).nativeElement;
+        cardsListElement = fixture.debugElement.query(By.css('.cards-list'))
+          .nativeElement;
 
         cardsElements = cardsListElement.querySelectorAll('[b-card]');
       });

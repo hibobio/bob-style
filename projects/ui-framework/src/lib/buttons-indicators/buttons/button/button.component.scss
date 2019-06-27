@@ -12,6 +12,8 @@ $minWidthLarge: 110px;
   display: inline-flex;
   .mat-button {
     @include MatButton;
+    width: 100%;
+
     &.primary {
       @include Button(primary);
     }
@@ -46,11 +48,17 @@ $minWidthLarge: 110px;
       position: relative;
       overflow: hidden;
       padding-left: 12px;
+
       .icon-wrapper {
         display: inline-block;
         vertical-align: middle;
         margin-right: 8px;
       }
     }
+  }
+  .mat-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

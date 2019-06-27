@@ -1,33 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SquareButtonComponent } from './square.component';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
 import { IconsModule } from '../../../icons/icons.module';
-import { IconService } from '../../../icons/icon.service';
 import { ButtonType } from '../buttons.enum';
 import { By } from '@angular/platform-browser';
-import SpyObj = jasmine.SpyObj;
-import createSpyObj = jasmine.createSpyObj;
 
 describe('ButtonComponent', () => {
   let component: SquareButtonComponent;
   let fixture: ComponentFixture<SquareButtonComponent>;
-  let spyIconService: SpyObj<IconService>;
 
   beforeEach(async(() => {
-    spyIconService = createSpyObj('spyIconService', ['initIcon']);
-
     TestBed.configureTestingModule({
-      declarations: [
-        SquareButtonComponent,
-      ],
-      providers: [
-        { provide: IconService, useValue: spyIconService }
-      ],
-      imports: [
-        MatButtonModule,
-        IconsModule,
-      ],
+      declarations: [SquareButtonComponent],
+      providers: [],
+      imports: [MatButtonModule, IconsModule]
     })
       .compileComponents()
       .then(() => {

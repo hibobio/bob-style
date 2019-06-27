@@ -99,6 +99,10 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
     this.updateLists();
   }
 
+  getListHeight(): number {
+    return (this.listOptions.length + (this.showNoneOption ? 1 : 0)) * this.listElHeight;
+  }
+
   private updateLists(): void {
     this.listHeaders = this.listModelService.getHeadersModel(
       this.filteredOptions

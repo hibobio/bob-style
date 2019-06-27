@@ -55,10 +55,12 @@ describe('SectionContainerComponent', () => {
     it('should put transcluded element with attribute [section-action] in the header', () => {
       fixture.detectChanges();
       const sectionActionElement = fixture.debugElement.query(
-        By.css('.label-container [section-action]')
+        By.css('.title-container [section-action]')
       );
       expect(sectionActionElement).toBeTruthy();
-      expect(sectionActionElement.nativeElement.innerHTML).toEqual('<p>Hello</p>');
+      expect(sectionActionElement.nativeElement.innerHTML).toEqual(
+        '<p>Hello</p>'
+      );
     });
     it('should put transcluded element with attribute [section-content] in the content', () => {
       fixture.detectChanges();
@@ -66,15 +68,15 @@ describe('SectionContainerComponent', () => {
         By.css('.content-container [section-content]')
       );
       expect(sectionContentElement).toBeTruthy();
-      expect(sectionContentElement.nativeElement.innerHTML).toEqual('<p>world</p>');
-    });
-    it('should init label', () => {
-      fixture.detectChanges();
-      const labelElement = fixture.debugElement.query(
-        By.css('b-display-3')
+      expect(sectionContentElement.nativeElement.innerHTML).toEqual(
+        '<p>world</p>'
       );
-      expect(labelElement).toBeTruthy();
-      expect(labelElement.nativeElement.innerHTML).toEqual('TitleHere');
+    });
+    it('should init title', () => {
+      fixture.detectChanges();
+      const titleElement = fixture.debugElement.query(By.css('b-display-3'));
+      expect(titleElement).toBeTruthy();
+      expect(titleElement.nativeElement.innerHTML).toEqual('TitleHere');
     });
   });
 });

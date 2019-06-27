@@ -3,6 +3,9 @@ $maxMaxLines: 5;
 [data-max-lines] {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+[data-max-lines]:not(.btt) {
   --font-size: 1em;
   --line-height: #{$line-height-body};
 }

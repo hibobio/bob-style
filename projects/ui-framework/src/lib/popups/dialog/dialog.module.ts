@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
 import { DialogService } from './dialog-service/dialog.service';
 import { DialogComponent } from './dialog.component';
 import { TypographyModule } from '../../typography/typography.module';

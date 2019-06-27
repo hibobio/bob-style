@@ -15,22 +15,15 @@ import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.modul
 import { IconsModule } from '../../../icons/icons.module';
 import { TypographyModule } from '../../../typography/typography.module';
 import { AlertModule } from '../alert.module';
-import { IconSize } from '../../../icons/icons.enum';
 import { IconComponent } from '../../../icons/icon.component';
-import { IconService } from '../../../icons/icon.service';
-import createSpyObj = jasmine.createSpyObj;
-import SpyObj = jasmine.SpyObj;
 
 const ALERT_DURATION_TICK = 7001;
 
 describe('AlertService', () => {
   let alertService: AlertService;
   let overlayElement: HTMLElement;
-  let spyIconService: SpyObj<IconService>;
 
   beforeEach(() => {
-    spyIconService = createSpyObj('spyIconService', ['initIcon']);
-
     TestBed.configureTestingModule({
       imports: [
         AlertModule,
@@ -43,10 +36,7 @@ describe('AlertService', () => {
         MockComponent(IconComponent),
         MockComponent(AlertComponent)
       ],
-      providers: [
-        AlertService,
-        { provide: IconService, useValue: spyIconService }
-      ],
+      providers: [AlertService],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     });
     inject(
@@ -86,11 +76,11 @@ describe('AlertService', () => {
         '.content p'
       ) as HTMLElement;
       const iconElement = overlayElement.querySelector(
-        '.icon mat-icon'
+        '.b-icon'
       ) as HTMLElement;
       expect(titleElement.innerText).toEqual('TITLE');
       expect(textElement.innerText).toEqual('text');
-      expect(iconElement.classList.contains(IconSize.xLarge)).toBeTruthy();
+      expect(iconElement).toBeTruthy();
       expect(alertService.isOpen).toBeTruthy();
       tick(ALERT_DURATION_TICK);
     }));

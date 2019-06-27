@@ -57,7 +57,7 @@ export {
   AvatarComponent
 } from './lib/buttons-indicators/avatar/avatar.component';
 export { AvatarSize, AvatarOrientation, AvatarBadge } from './lib/buttons-indicators/avatar/avatar.enum';
-export { BadgeConfig } from './lib/buttons-indicators/avatar/avatar.interface';
+export { BadgeConfig, Avatar } from './lib/buttons-indicators/avatar/avatar.interface';
 // Slider Module
 export { SliderModule } from './lib/buttons-indicators/slider/slider.module';
 export {
@@ -247,6 +247,8 @@ export {
 export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { TabsComponent } from './lib/navigation/tabs/tabs.component';
 export { Tab } from './lib/navigation/tabs/tabs.interface';
+export { TabsType } from './lib/navigation/tabs/tabs.enum';
+
 // Breadcrumbs Module
 export {
   BreadcrumbsModule
@@ -325,6 +327,8 @@ export { CardDataType, CardData, AddCardData, CardClickEvent } from './lib/cards
 export { CardComponent } from './lib/cards/card/card.component';
 // Add new Card
 export { CardAddComponent } from './lib/cards/card-add/card-add.component';
+// Employee Card
+export { EmployeeCardComponent } from './lib/cards/card-employee/card-employee.component';
 // Cards Layout
 export { CardsLayoutComponent } from './lib/cards/cards-layout/cards-layout.component';
 // Card Table

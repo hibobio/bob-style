@@ -1,12 +1,18 @@
 import { storiesOf } from '@storybook/angular';
-import { object, select, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  object,
+  select,
+  withKnobs,
+  boolean
+} from '@storybook/addon-knobs/angular';
+import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { CardsModule } from '../cards.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-import { CardsMockData } from '../cardsMockData';
+import { CardsMockData } from '../cards.mock';
 import { CardType } from '../cards.enum';
 
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
@@ -20,7 +26,9 @@ const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
 
 const template = `
 <b-card [card]="cardData"
-        [type]="type">
+        [type]="type"
+        [clickable]="clickable"
+        (clicked)="cardClickHandler($event)">
 </b-card>
 `;
 
@@ -47,6 +55,8 @@ const note = `
   --- | --- | --- | ---
   type | CardType | Card theme | primary (optional)
   card | CardData | card contents data | none
+  clickable | boolean | is the card clickable? | false
+  clicked | Function | handler of Card Clicked event | none
 
   #### card: CardData - single card data properties
   Name | Type | Description | Default value
@@ -54,7 +64,7 @@ const note = `
   data | CardDataType | card data | none
   menu | MenuItem[] | array of menu items | none (optional)
 
-  *Note:* For desctiption of [data: CardDataType] properties, see <u>Cards Layout</u> story.
+  *Note:* For description of [data: CardDataType] properties, see <u>Cards Layout</u> story.
 
 `;
 
@@ -65,7 +75,9 @@ story.add(
       template: storyTemplate,
       props: {
         type: select('type', values(CardType), CardType.primary),
-        cardData: object('card', CardsMockData[1])
+        clickable: boolean('clickable', true),
+        cardData: object('card', CardsMockData[1]),
+        cardClickHandler: action('Card clicked')
       },
       moduleMetadata: {
         imports: [

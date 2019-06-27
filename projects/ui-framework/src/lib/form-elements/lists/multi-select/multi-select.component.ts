@@ -48,7 +48,7 @@ import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
 })
 export class MultiSelectComponent extends BaseSelectPanelElement
   implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('triggerInput')
+  @ViewChild('triggerInput', { static: true })
   truncate: TruncateTooltipComponent;
 
   @Input() options: SelectGroupOption[];

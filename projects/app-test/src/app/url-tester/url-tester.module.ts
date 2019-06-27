@@ -5,6 +5,7 @@ import { URLutils } from '../../../../ui-framework/src/lib/services/url/url-util
 @Component({
   selector: 'url-tester',
   template: `
+    <label style="display:block;text-align:right;">URL tester</label>
     <input #input type="text" />
     <button (click)="testUrl(input.value)" type="button">test</button>
   `,

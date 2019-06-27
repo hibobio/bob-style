@@ -27,7 +27,7 @@ import { getKeyByValue } from '../../services/utils/functional-utils';
 export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   constructor(private host: ElementRef, private DOM: DOMhelpers) {}
 
-  @ViewChild('content') private content: ElementRef;
+  @ViewChild('content', { static: false }) private content: ElementRef;
 
   public hasContent = true;
   readonly avatarSize = AvatarSize;

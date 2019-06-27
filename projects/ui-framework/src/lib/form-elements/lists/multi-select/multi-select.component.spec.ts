@@ -14,7 +14,6 @@ import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { IconService } from '../../../icons/icon.service';
 import { MultiSelectComponent } from './multi-select.component';
 import { MultiListModule } from '../multi-list/multi-list.module';
 import { By } from '@angular/platform-browser';
@@ -22,8 +21,6 @@ import { SelectGroupOption } from '../list.interface';
 import { ListModelService } from '../list-service/list-model.service';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../list-change/list-change';
-import SpyObj = jasmine.SpyObj;
-import createSpyObj = jasmine.createSpyObj;
 import { TruncateTooltipModule } from '../../../services/truncate-tooltip/truncate-tooltip.module';
 
 describe('MultiSelectComponent', () => {
@@ -33,10 +30,8 @@ describe('MultiSelectComponent', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   let platform: Platform;
-  let spyIconService: SpyObj<IconService>;
 
   beforeEach(async(() => {
-    spyIconService = createSpyObj('spyIconService', ['initIcon']);
     optionsMock = [
       {
         groupName: 'Basic Info',
@@ -60,7 +55,6 @@ describe('MultiSelectComponent', () => {
       ],
       providers: [
         PanelPositionService,
-        { provide: IconService, useValue: spyIconService },
         ListModelService,
       ],
       imports: [

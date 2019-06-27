@@ -1,13 +1,13 @@
 import {
-  Component,
-  forwardRef,
   AfterViewInit,
   ChangeDetectorRef,
-  Injector,
-  ViewChild,
+  Component,
+  forwardRef,
   HostBinding,
+  Injector,
   Input,
-  SimpleChanges
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -17,7 +17,7 @@ import { PanelComponent } from '../../popups/panel/panel.component';
 import { SingleListComponent } from '../lists/single-list/single-list.component';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { Icons } from '../../icons/icons.enum';
-import { PanelSize, PanelDefaultPosVer } from '../../popups/panel/panel.enum';
+import { PanelDefaultPosVer, PanelSize } from '../../popups/panel/panel.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 import quillLib, { RangeStatic } from 'quill';
@@ -73,16 +73,13 @@ export class RichTextEditorComponent extends RTEformElement
     private DOM: DOMhelpers,
     public rteUtils: RteUtilsService,
     changeDetector: ChangeDetectorRef,
-    injector: Injector
+    injector: Injector,
+    public placeholderRteConverterService: PlaceholderRteConverterService
   ) {
     super(rteUtils, changeDetector, injector);
   }
 
-  public disableControlsDef = [
-    BlotType.placeholder,
-    BlotType.align,
-    BlotType.direction
-  ];
+  public disableControlsDef = [BlotType.placeholder, BlotType.direction];
 
   @Input() public type: RTEType = RTEType.primary;
   @Input() public minHeight = 185;
@@ -112,15 +109,16 @@ export class RichTextEditorComponent extends RTEformElement
   };
 
   // implementing RteLinkBlot mixin
-  @ViewChild('linkPanel') public linkPanel: PanelComponent;
-  @ViewChild('linkEditor') public linkEditor: RteLinkEditorComponent;
+  @ViewChild('linkPanel', { static: true }) public linkPanel: PanelComponent;
+  @ViewChild('linkEditor', { static: true })
+  public linkEditor: RteLinkEditorComponent;
   public onLinkPanelOpen: () => void;
   public onLinkUpdate: (rteLink: RteLink) => void;
 
   // implementing RtePlaceholderBlot mixin
   @Input() public placeholderList: RtePlaceholderList[];
-  @ViewChild('placeholderPanel') public placeholderPanel: PanelComponent;
-  public placeholderRteConverterService: PlaceholderRteConverterService;
+  @ViewChild('placeholderPanel', { static: false })
+  public placeholderPanel: PanelComponent;
   public onPlaceholderPanelOpen: () => void;
   public onPlaceholderSelectChange: (
     selectGroupOptions: SingleListComponent
