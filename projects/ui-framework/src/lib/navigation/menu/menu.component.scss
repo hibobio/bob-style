@@ -28,14 +28,14 @@
         position: relative;
         overflow: auto;
         max-height: 500px;
-        padding: 0;
+        padding: 10px 0;
         .mat-menu-item-submenu-trigger {
           padding: 0;
         }
         .mat-menu-item {
           line-height: 36px;
           height: 36px;
-          padding: 0 30px 0 12px;
+          padding: 0 30px 0 15px;
           display: flex;
           align-content: space-between;
           align-items: center;
