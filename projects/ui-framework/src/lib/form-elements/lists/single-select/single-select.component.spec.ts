@@ -153,6 +153,14 @@ describe('SingleSelectComponent', () => {
       const clearSelection = overlayContainerElement.querySelector('.clear-selection');
       expect(clearSelection).toBeTruthy();
     }));
+    it('should hide -None- option in single-list', fakeAsync(() => {
+      component.hideNoneOption = true;
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+      const clearSelection = overlayContainerElement.querySelector('.clear-selection');
+      expect(clearSelection).toBeFalsy();
+    }));
     it('should clear the selection', fakeAsync(() => {
       component.openPanel();
       fixture.autoDetectChanges();

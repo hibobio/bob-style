@@ -59,6 +59,7 @@ const note = `
   hintMessage | text | hint text | none
   errorMessage | text | error text | none
   showSingleGroupHeader | boolean | displays single group with group header | false
+  hideNoneOption | boolean | displays none option | false
 
   ~~~
   ${template}
@@ -98,7 +99,7 @@ buttonStories.add(
       required: boolean('required', false),
       hintMessage: text('hintMessage', 'This field should contain something'),
       errorMessage: text('errorMessage', ''),
-      showSingleGroupHeader: boolean('showSingleGroupHeader', false)
+      showSingleGroupHeader: boolean('showSingleGroupHeader', false),
     },
     moduleMetadata: {
       imports: [
