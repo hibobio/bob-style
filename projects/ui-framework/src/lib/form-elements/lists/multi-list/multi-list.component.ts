@@ -35,9 +35,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   };
   @Output() apply: EventEmitter<ListChange> = new EventEmitter<ListChange>();
   @Output() cancel: EventEmitter<ListChange> = new EventEmitter<ListChange>();
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
 
   noGroupHeaders: boolean;
   shouldDisplaySearch = false;
@@ -101,12 +99,14 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       .value();
     this.selectedIdsMap = header.selected
       ? chain(this.selectedIdsMap)
-          .concat(groupOptionsIds)
-          .uniq()
-          .value()
+        .concat(groupOptionsIds)
+        .concat(this.getSelectedDisabledMap())
+        .uniq()
+        .value()
       : chain(this.selectedIdsMap)
-          .difference(groupOptionsIds)
-          .value();
+        .difference(groupOptionsIds)
+        .concat(this.getSelectedDisabledMap())
+        .value();
     this.listModelService.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
@@ -120,12 +120,12 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     selectedOption.selected = !selectedOption.selected;
     this.selectedIdsMap = selectedOption.selected
       ? chain(this.selectedIdsMap)
-          .concat(selectedOption.id)
-          .uniq()
-          .value()
+        .concat(selectedOption.id)
+        .uniq()
+        .value()
       : chain(this.selectedIdsMap)
-          .difference([selectedOption.id])
-          .value();
+        .difference([selectedOption.id])
+        .value();
     this.listModelService.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
@@ -136,7 +136,8 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   }
 
   onClear(): void {
-    this.selectedIdsMap = [];
+    this.selectedIdsMap = this.getSelectedDisabledMap();
+
     this.listModelService.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
@@ -187,5 +188,13 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       this.selectedIdsMap
     );
     this.selectChange.emit(listChange);
+  }
+
+  private getSelectedDisabledMap(): (string | number)[] {
+    return chain(this.options)
+      .flatMap('options')
+      .filter(o => o.selected && o.disabled)
+      .flatMap('id')
+      .value();
   }
 }

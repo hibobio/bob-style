@@ -39,15 +39,28 @@ describe('ListModelService', () => {
           groupName: 'Basic Info',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: null
+          selected: null,
+          disabled: false,
         },
         {
           groupName: 'Personal',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: null
+          selected: null,
+          disabled: false,
         }
       ]);
+    });
+    it('should set header disabled to true if some of the options are disabled and not selected', () => {
+      optionsMock[1].options[0].disabled = true;
+      const headerModel = listModelService.getHeadersModel(optionsMock);
+      expect(headerModel[1].disabled).toEqual(true);
+    });
+    it('should set header disabled to false if option is disabled and selected', () => {
+      optionsMock[1].options[0].disabled = true;
+      optionsMock[1].options[0].selected = true;
+      const headerModel = listModelService.getHeadersModel(optionsMock);
+      expect(headerModel[1].disabled).toEqual(false);
     });
   });
 

@@ -15,3 +15,14 @@
   z-index: 2;
   margin-right: 12px;
 }
+
+.options {
+  .option {
+    &.disabled {
+      @include disabled-state;
+      > *, > *:before {
+        pointer-events: none;
+      }
+    }
+  }
+}

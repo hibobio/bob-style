@@ -86,13 +86,15 @@ describe('SingleListComponent', () => {
           groupName: 'Basic Info Header',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: null
+          selected: null,
+          disabled: false,
         },
         {
           groupName: 'Personal Header',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: null
+          selected: null,
+          disabled: false,
         }
       ]);
     });

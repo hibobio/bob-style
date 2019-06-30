@@ -3,6 +3,7 @@ export interface ListHeader {
   isCollapsed: boolean;
   placeHolderSize: number;
   selected: boolean;
+  disabled?: boolean;
 }
 
 export interface ListOption {
@@ -12,6 +13,7 @@ export interface ListOption {
   id: number | string;
   selected: boolean;
   prefixComponent?: ListComponentPrefix;
+  disabled?: boolean;
 }
 
 export interface SelectGroupOption {
@@ -25,6 +27,7 @@ export interface SelectOption {
   id: number | string;
   selected: boolean;
   prefixComponent?: ListComponentPrefix;
+  disabled?: boolean;
 }
 
 export interface ListComponentPrefix {

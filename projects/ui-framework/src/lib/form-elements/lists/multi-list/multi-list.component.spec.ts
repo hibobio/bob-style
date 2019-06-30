@@ -1,7 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CommonModule } from '@angular/common';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { IconsModule } from '../../../icons/icons.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -85,13 +83,15 @@ describe('MultiListComponent', () => {
           groupName: 'Basic Info Header',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: false
+          selected: false,
+          disabled: false,
         },
         {
           groupName: 'Personal Header',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: false
+          selected: false,
+          disabled: false,
         }
       ]);
     });
@@ -386,19 +386,57 @@ describe('MultiListComponent', () => {
       fixture.autoDetectChanges();
       expect(component.selectedIdsMap).toEqual([]);
     });
+    it('should concat options that are selected and disabled and deselect the rest', () => {
+      const testOptionsMock = [
+        {
+          groupName: 'Basic Info Header',
+          options: [
+            { value: 'Basic Info 1', id: 1, selected: false, disabled: false },
+            { value: 'Basic Info 2', id: 2, selected: false, disabled: true },
+          ]
+        },
+        {
+          groupName: 'Personal Header',
+          options: [
+            { value: 'Personal 1', id: 11, selected: false, disabled: false },
+            { value: 'Personal 2', id: 12, selected: true, disabled: true },
+            { value: 'Personal 3', id: 13, selected: false, disabled: false },
+          ]
+        }
+      ];
+      component.ngOnChanges({
+        options: {
+          previousValue: undefined,
+          currentValue: testOptionsMock,
+          firstChange: false,
+          isFirstChange: () => false
+        }
+      });
+      fixture.autoDetectChanges();
+
+      const headerCheckbox = fixture.debugElement.queryAll(By.css('.header .checkbox'));
+      headerCheckbox[1].triggerEventHandler('click', null);
+      fixture.autoDetectChanges();
+      expect(component.selectedIdsMap).toEqual([12, 11, 13]);
+      headerCheckbox[1].triggerEventHandler('click', null);
+      fixture.autoDetectChanges();
+      expect(component.selectedIdsMap).toEqual([12]);
+    });
     it('should not update options model when header is collapsed', () => {
       const expectedHeaderModel = [
         {
           groupName: 'Basic Info Header',
           isCollapsed: true,
           placeHolderSize: 88,
-          selected: true
+          selected: true,
+          disabled: false,
         },
         {
           groupName: 'Personal Header',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: false
+          selected: false,
+          disabled: false,
         }
       ];
       const expectedOptionsModel = [
@@ -407,14 +445,14 @@ describe('MultiListComponent', () => {
           groupName: 'Basic Info Header',
           value: 'Basic Info Header',
           id: 'Basic Info Header',
-          selected: null
+          selected: null,
         },
         {
           isPlaceHolder: true,
           groupName: 'Personal Header',
           value: 'Personal Header',
           id: 'Personal Header',
-          selected: null
+          selected: null,
         },
         {
           value: 'Personal 1',
@@ -540,6 +578,40 @@ describe('MultiListComponent', () => {
       expect(component.selectChange.emit).toHaveBeenCalled();
       const listChange = component['listChangeService'].getListChange(component.options, component.selectedIdsMap);
       expect(listChange.getSelectedIds()).toEqual([]);
+    });
+    it('on clear should set selection map for disabled and selected options', () => {
+      const testOptionsMock = [
+        {
+          groupName: 'Basic Info Header',
+          options: [
+            { value: 'Basic Info 1', id: 1, selected: true, disabled: false },
+            { value: 'Basic Info 2', id: 2, selected: false, disabled: true },
+          ]
+        },
+        {
+          groupName: 'Personal Header',
+          options: [
+            { value: 'Personal 1', id: 11, selected: false, disabled: true },
+            { value: 'Personal 2', id: 12, selected: true, disabled: true },
+          ]
+        }
+      ];
+      component.ngOnChanges({
+        options: {
+          previousValue: undefined,
+          currentValue: testOptionsMock,
+          firstChange: false,
+          isFirstChange: () => false
+        }
+      });
+      fixture.autoDetectChanges();
+      const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
+      listFooter.componentInstance.clear.emit();
+      fixture.detectChanges();
+      expect(component.selectedIdsMap).toEqual([12]);
+      expect(component.selectChange.emit).toHaveBeenCalled();
+      const listChange = component['listChangeService'].getListChange(component.options, component.selectedIdsMap);
+      expect(listChange.getSelectedIds()).toEqual([12]);
     });
   });
 });

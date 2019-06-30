@@ -63,6 +63,7 @@ export class ListModelService {
       isCollapsed: false,
       placeHolderSize: group.options.length * LIST_EL_HEIGHT,
       selected: null,
+      disabled: this.isHeaderDisabled(group),
     }));
   }
 
@@ -106,5 +107,10 @@ export class ListModelService {
       .filter(o => o.selected)
       .flatMap('id')
       .value();
+  }
+
+  private isHeaderDisabled(group: SelectGroupOption): boolean {
+    return group.options.some(o => o.disabled && !o.selected) ||
+      group.options.every(o => o.disabled && o.selected);
   }
 }

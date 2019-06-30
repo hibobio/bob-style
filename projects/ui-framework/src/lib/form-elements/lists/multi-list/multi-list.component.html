@@ -13,7 +13,8 @@
          class="headers-group">
       <div [ngClass]="{
            'collapsed': header.isCollapsed,
-           'focus': focusOption?.isPlaceHolder && focusOption?.groupName === header.groupName
+           'focus': focusOption?.isPlaceHolder && focusOption?.groupName === header.groupName,
+           'disabled': header.disabled
            }"
            class="option-select header">
         <span (click)="toggleGroupCollapse(header)"
@@ -45,7 +46,8 @@
            [ngClass]="{
             'header-placeholder': option.isPlaceHolder,
             'option': !option.isPlaceHolder,
-            'focus': option.id===focusOption?.id
+            'focus': option.id===focusOption?.id,
+            'disabled': option.disabled
            }"
            class="option-select">
         <span class="checkbox"

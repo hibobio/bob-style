@@ -66,6 +66,14 @@
       &.focus {
         background-color: $grey-100;
       }
+      &.disabled {
+        .checkbox {
+          @include disabled-state;
+          &:before {
+            pointer-events: none;
+          }
+        }
+      }
     }
     &:first-child .header {
       border-top: none;
