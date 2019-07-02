@@ -29,11 +29,11 @@
       <button type="button"
               class="rte-size"
               panel-trigger
-              [ngClass]="{'ql-active': hasSizeSet}"
+              [ngClass]="{'ql-active': false && hasSizeSet}"
               (click)="storeSelection()">
 
         <b-icon [icon]="icons.text_size"
-                [size]="iconSize.large"
+                [size]="iconSize.medium"
                 [color]="iconColor.normal">
         </b-icon>
       </button>

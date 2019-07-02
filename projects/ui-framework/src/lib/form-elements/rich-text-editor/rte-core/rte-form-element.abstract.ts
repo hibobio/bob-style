@@ -58,7 +58,8 @@ export abstract class RTEformElement extends BaseFormElement
   @ViewChild('quillEditor', { static: true }) protected quillEditor: ElementRef;
   @ViewChild('toolbar', { static: true }) protected toolbar: ElementRef;
   @ViewChild('suffix', { static: false }) protected suffix: ElementRef;
-  @ViewChild('sizePanel', { static: false }) protected sizePanel: PanelComponent;
+  @ViewChild('sizePanel', { static: false })
+  protected sizePanel: PanelComponent;
 
   @Output() blurred: EventEmitter<any> = new EventEmitter<any>();
   @Output() focused: EventEmitter<any> = new EventEmitter<any>();
@@ -278,13 +279,13 @@ export abstract class RTEformElement extends BaseFormElement
     range: RangeStatic,
     oldRange: RangeStatic
   ): void {
-    if (range) {
-      const newSize = !!this.editor.getFormat(range).size;
-      if (this.hasSizeSet !== newSize) {
-        this.hasSizeSet = newSize;
-        this.changeDetector.detectChanges();
-      }
-    }
+    // if (range) {
+    //   const newSize = !!this.editor.getFormat(range).size;
+    //   if (this.hasSizeSet !== newSize) {
+    //     this.hasSizeSet = newSize;
+    //     this.changeDetector.detectChanges();
+    //   }
+    // }
   }
 
   private onEditorFocus(): void {
