@@ -1,3 +1,5 @@
+@import '../../../style/grid-layout';
+
 :host {
   display: inline-flex;
   cursor: pointer;
@@ -20,4 +22,12 @@
 
 b-icon {
   margin-right: 4px;
+}
+
+@media screen and (max-width: $breakpoint-device-sm) {
+  :host {
+    &:hover b-bold-body {
+      text-decoration: none;
+    }
+  }
 }

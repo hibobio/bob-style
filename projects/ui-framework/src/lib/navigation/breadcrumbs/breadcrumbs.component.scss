@@ -1,5 +1,6 @@
 @import '../../style/colors';
 @import '../../style/shapes';
+@import '../../style/grid-layout';
 
 :host {
   padding: 15px 0;
@@ -20,7 +21,6 @@
         line-height: 24px;
         background-color: var(--primary-600);
         border-radius: 100%;
-        text-align: center;
         &:hover {
           background-color: var(--primary-500);
         }
@@ -45,11 +45,28 @@
     }
   }
   .buttons {
-    b-button {
-      margin-right: 15px;
+    b-button, b-text-button {
+      margin-right: 16px;
       &:last-child {
         margin-right: 0;
       }
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint-device-sm) {
+  .step {
+    background-color: $grey-500;
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    display: inline-block;
+    border-radius: 100%;
+    &.active {
+      background-color: var(--primary-500);
+    }
+    &:last-child {
+      margin-right: 0;
     }
   }
 }
