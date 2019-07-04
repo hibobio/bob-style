@@ -14,12 +14,12 @@
       }
       .index {
         color: white;
+        text-align: center;
         width: 24px;
         height: 24px;
         line-height: 24px;
         background-color: var(--primary-600);
         border-radius: 100%;
-        text-align: center;
         &:hover {
           background-color: var(--primary-500);
         }
