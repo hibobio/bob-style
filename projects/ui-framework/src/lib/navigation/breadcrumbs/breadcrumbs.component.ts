@@ -1,63 +1,38 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild,
-  AfterViewInit,
-  OnDestroy,
-  OnChanges,
-  SimpleChanges
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
-import { Subscription } from 'rxjs';
-import { UtilsService } from '../../services/utils/utils.service';
 import { ButtonSize, ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { has } from 'lodash';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 
 @Component({
   selector: 'b-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.scss']
 })
-export class BreadcrumbsComponent implements AfterViewInit, OnDestroy, OnChanges {
-  @ViewChild('breadcrumbsWrapper', { static: true }) breadcrumbsWrapper;
-  public isSmallMode = false;
-  public resizeSubscription: Subscription;
+export class BreadcrumbsComponent implements OnChanges {
+
   public buttonSize = ButtonSize;
   public buttonType = ButtonType;
 
   @Input() breadcrumbs: Breadcrumb[];
   @Input() buttons: BreadcrumbNavButtons;
   @Input() activeIndex: number;
+
   @Output() stepClick: EventEmitter<number> = new EventEmitter<number>();
   @Output() nextClick: EventEmitter<number> = new EventEmitter<number>();
   @Output() prevClick: EventEmitter<number> = new EventEmitter<number>();
-  breadcrumbsFullWidth: number;
 
-  constructor(public utilsService: UtilsService) {}
+  readonly icons = Icons;
+  readonly iconColor = IconColor;
+  readonly iconSize = IconSize;
 
-  ngAfterViewInit() {
-    this.breadcrumbsFullWidth = this.breadcrumbsWrapper.nativeElement.scrollWidth;
-    this.setIsSmallMode();
-    this.resizeSubscription = this.utilsService.getResizeEvent().subscribe(() => {
-      this.setIsSmallMode();
-    });
-  }
-
-  ngOnDestroy() {
-    this.resizeSubscription.unsubscribe();
+  constructor() {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'buttons')) {
       this.buttons = changes.buttons.currentValue;
     }
-  }
-
-  private setIsSmallMode() {
-    this.isSmallMode =
-      this.breadcrumbsWrapper.nativeElement.offsetWidth < this.breadcrumbsFullWidth;
   }
 
   onStepClick($event, stepIndex): void {

@@ -4,12 +4,9 @@ import { BreadcrumbsComponent } from './breadcrumbs.component';
 import { Breadcrumb } from './breadcrumbs.interface';
 import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { UtilsService } from '../../services/utils/utils.service';
-import { cold } from 'jasmine-marbles';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 describe('BreadcrumbsComponent', () => {
-  let utilsServiceMock: jasmine.SpyObj<UtilsService>;
   let component: BreadcrumbsComponent;
   let fixture: ComponentFixture<BreadcrumbsComponent>;
   let breadCrumbsMock: Breadcrumb[];
@@ -22,14 +19,17 @@ describe('BreadcrumbsComponent', () => {
       { title: 'summary', disabled: true }
     ];
 
-    utilsServiceMock = jasmine.createSpyObj('UtilsService', ['getResizeEvent']);
-    utilsServiceMock.getResizeEvent.and.callFake(() => cold('x', { x: true }));
-
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [BreadcrumbsComponent],
-      imports: [NoopAnimationsModule, MatTooltipModule],
-      providers: [{ provide: UtilsService, useValue: utilsServiceMock }]
+      declarations: [
+        BreadcrumbsComponent,
+      ],
+      imports: [
+        NoopAnimationsModule,
+        MatTooltipModule,
+      ],
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA,
+      ],
     })
       .compileComponents()
       .then(() => {
@@ -57,16 +57,10 @@ describe('BreadcrumbsComponent', () => {
         }
       }
     });
-    it('should put active class on the active step', () => {
-      fixture = TestBed.createComponent(BreadcrumbsComponent);
-      const stepsElements = fixture.debugElement.queryAll(By.css('.step'));
-      for (let i = 0; i < stepsElements.length; i++) {
-        if (i === 2) {
-          expect(stepsElements[i].nativeElement.classList).toContain('active');
-        } else {
-          expect(stepsElements[i].nativeElement.classList).not.toContain('active');
-        }
-      }
+    it('should show step title on active state', () => {
+      const titleElement = fixture.debugElement.queryAll(By.css('.title'));
+      expect(titleElement.length).toEqual(1);
+      expect(titleElement[0].nativeElement.innerText).toEqual('to dos');
     });
   });
 

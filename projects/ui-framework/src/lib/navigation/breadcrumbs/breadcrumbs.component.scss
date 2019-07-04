@@ -2,101 +2,52 @@
 @import '../../style/shapes';
 
 :host {
-  display: inline-block;
-  position: relative;
-  width: 100%;
-  .breadcrumbs-wrapper {
-    padding: 20px 0;
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
-    box-sizing: border-box;
-  }
-  .breadcrumbs-container {
-    display: flex;
-    flex-direction: row;
-    white-space: nowrap;
-    margin-right: 10px;
+  padding: 15px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .steps {
     .step {
-      cursor: pointer;
-      color: $grey-600;
-      display: flex;
-      align-items: center;
-      margin-right: 6px;
-
-      &:last-child {
-        margin-right: 0;
-        .chevron-right {
-          display: none;
+      .index, .title, b-icon {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .index {
+        color: white;
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        background-color: var(--primary-600);
+        border-radius: 100%;
+        &:hover {
+          background-color: var(--primary-500);
         }
+        &:active {
+          background-color: var(--primary-700);
+        }
+      }
+      .title {
+        color: var(--primary-600);
+        margin-left: 8px;
+      }
+      b-icon {
+        margin: 0 8px;
       }
       &.disabled {
-        pointer-events: none;
-
-        .step-index {
-          color: $grey-600;
-          background-color: $white;
-          border: 1px solid $grey-600;
+        .index {
+          background-color: $grey-300;
+          color: $grey-700;
+          cursor: default;
         }
-
-        .step-title {
-          color: $grey-600;
-        }
-        .chevron-right {
-          @include chevron-right($grey-500);
-        }
-      }
-      &.active {
-        color: var(--primary-500);
-        .step-index {
-          color: $white;
-          background-color: var(--primary-500);
-          border: 1px solid var(--primary-500);
-        }
-        .step-title {
-          color: var(--primary-500);
-        }
-        .chevron-right {
-          @include chevron-right(var(--primary-500));
-        }
-      }
-
-      .step-index {
-        color: var(--primary-500);
-        background-color: $white;
-        border: 1px solid var(--primary-500);
-        border-radius: 50%;
-        width: 22px;
-        height: 22px;
-        margin-right: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease-in;
-
-        &:hover {
-          color: $white;
-          background-color: var(--primary-500);
-          border: 1px solid var(--primary-500);
-        }
-      }
-      .step-title {
-        color: var(--primary-500);
-        display: inline-block;
-        transition: all 0.2s ease-in;
-      }
-      .chevron-right {
-        @include chevron-right(var(--primary-500));
-        margin-left: 6px;
-        margin-right: 8px;
       }
     }
   }
-  .buttons-warpper {
-    display: flex;
-    & > b-button:first-child {
-      margin-right: 10px;
+  .buttons {
+    b-button {
+      margin-right: 15px;
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
 }

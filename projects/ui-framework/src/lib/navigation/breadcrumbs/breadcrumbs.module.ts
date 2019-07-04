@@ -16,7 +16,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     TypographyModule,
     UtilsModule,
     ButtonsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    IconsModule,
   ],
   exports: [BreadcrumbsComponent],
   providers: [UtilsService]

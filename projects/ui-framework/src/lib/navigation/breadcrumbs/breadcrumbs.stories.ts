@@ -21,7 +21,7 @@ const componmentTemplate = `
 
 const template = `
 <b-story-book-layout [title]="'breadcrumbs'">
-  <div style="max-width: 900px; margin: 30px auto; display:flex; justify-content: center;">
+  <div style="max-width: 900px; margin: 30px auto;">
     ${componmentTemplate}
   </div>
 </b-story-book-layout>
@@ -49,10 +49,10 @@ const note = `
 `;
 
 const breadcrumbsMock = [
-  { title: 'details', disabled: false },
-  { title: 'avatar', disabled: false },
-  { title: 'to dos', disabled: false },
-  { title: 'summary', disabled: true }
+  { title: 'Details', disabled: false },
+  { title: 'Avatar', disabled: false },
+  { title: 'To dos', disabled: false },
+  { title: 'Summary', disabled: true }
 ];
 
 const breadcrumbsButtons = {

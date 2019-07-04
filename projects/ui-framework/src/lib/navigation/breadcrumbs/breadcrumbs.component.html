@@ -1,36 +1,41 @@
-<div #breadcrumbsWrapper class="breadcrumbs-wrapper">
-  <div #breadcrumbsContainer class="breadcrumbs-container">
-    <a
-      (click)="onStepClick($event, i)"
-      *ngFor="let step of breadcrumbs; let i = index"
-      [ngClass]="{ disabled: step.disabled, active: i == activeIndex }"
-      class="step"
-    >
-      <div class="step-index" [matTooltip]="i !== activeIndex && isSmallMode ? step.title : null">
-        <b-caption>{{ i + 1 }}</b-caption>
-      </div>
-      <b-caption class="step-title" *ngIf="i == activeIndex || !isSmallMode">{{
-        step.title
-      }}</b-caption>
-      <div class="chevron-right"></div>
-    </a>
-  </div>
-  <div class="buttons-warpper">
-    <b-button
-      *ngIf="buttons?.backBtn?.isVisible"
-      (clicked)="onPrevClick()"
-      [size]="buttonSize.medium"
-      [type]="buttonType.secondary"
-    >
-      {{ buttons?.backBtn?.label }}
-    </b-button>
-    <b-button
-      *ngIf="buttons?.nextBtn?.isVisible"
-      (clicked)="onNextClick()"
-      [size]="buttonSize.medium"
-      [type]="buttonType.primary"
-    >
-      {{ buttons?.nextBtn?.label }}
-    </b-button>
-  </div>
+<div class="steps">
+  <a *ngFor="let step of breadcrumbs; let i = index"
+     class="step"
+     [ngClass]="{ disabled: step.disabled }"
+     (click)="onStepClick($event, i)">
+
+    <span class="index"
+          [matTooltip]="i !== activeIndex  ? step.title : null"
+          matTooltipPosition="above">
+      {{ i + 1 }}
+    </span>
+
+    <b-bold-body class="title"
+                 *ngIf="i == activeIndex">
+      {{step.title}}
+    </b-bold-body>
+
+    <b-icon *ngIf="i < breadcrumbs.length - 1"
+            [icon]="icons.chevron_right"
+            [color]="iconColor.normal"
+            [size]="iconSize.medium">
+    </b-icon>
+
+  </a>
+</div>
+
+<div class="buttons">
+  <b-button *ngIf="buttons?.backBtn?.isVisible"
+            (clicked)="onPrevClick()"
+            [size]="buttonSize.medium"
+            [type]="buttonType.secondary">
+    {{ buttons?.backBtn?.label }}
+  </b-button>
+
+  <b-button *ngIf="buttons?.nextBtn?.isVisible"
+            (clicked)="onNextClick()"
+            [size]="buttonSize.medium"
+            [type]="buttonType.primary">
+    {{ buttons?.nextBtn?.label }}
+  </b-button>
 </div>
