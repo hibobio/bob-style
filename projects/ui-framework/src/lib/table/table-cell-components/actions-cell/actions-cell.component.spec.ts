@@ -73,7 +73,7 @@ describe('ActionsCellComponent', () => {
 
   it('should check b-square-button element', () => {
     const triggerButtonElement = fixture.debugElement.query(By.css('b-square-button'));
-    expect(triggerButtonElement.componentInstance.color).toEqual(IconColor.dark);
+    expect(triggerButtonElement.componentInstance.color).toEqual(IconColor.normal);
     expect(triggerButtonElement.componentInstance.type).toEqual(ButtonType.tertiary);
     expect(triggerButtonElement.componentInstance.icon).toEqual(Icons.three_dots_vert);
   });

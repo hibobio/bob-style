@@ -369,6 +369,10 @@ $border-color: $grey-500;
       background-color: $grey-100;
       padding: 20px;
     }
+    .ql-editor.ql-blank:before {
+      left: 20px;
+      right: 20px;
+    }
     .ql-toolbar {
       border: 0;
     }
