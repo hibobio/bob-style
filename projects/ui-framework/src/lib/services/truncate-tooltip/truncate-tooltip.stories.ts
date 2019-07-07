@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
 import { TruncateTooltipModule } from './truncate-tooltip.module';
-import { MockModule } from '../mock-component/mock.module';
+import { UtilComponentsModule } from '../util-components/utilComponents.module';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs
@@ -59,7 +59,7 @@ const storyTemplate = `
       <br>
       ${template4}
     </div>
-    <b-mock></b-mock>
+    <b-stats></b-stats>
   </div>
 </b-story-book-layout>
 `;
@@ -149,7 +149,7 @@ story.add(
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           TruncateTooltipModule,
-          MockModule
+          UtilComponentsModule
         ],
         entryComponents: []
       }

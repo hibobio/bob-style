@@ -133,9 +133,9 @@ export class TruncateTooltipComponent
         this.tooltipText = this.textContainer.nativeElement.textContent.trim();
         this.setCssVars();
         this.setMaxLinesAttr();
-      }, 0);
+        // }, 0);
 
-      setTimeout(() => {
+        // setTimeout(() => {
         this.checkTooltipNecessity();
 
         this.initialized = true;
