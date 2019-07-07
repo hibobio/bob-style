@@ -3,7 +3,8 @@ import {
   Input,
   ViewChild,
   ElementRef,
-  AfterViewInit
+  AfterViewInit,
+  DoCheck
 } from '@angular/core';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
@@ -28,7 +29,7 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
   `,
   styles: [':host {display: block;']
 })
-export class MockComponent implements AfterViewInit {
+export class MockComponent implements AfterViewInit, DoCheck {
   constructor(private DOM: DOMhelpers) {}
 
   @Input() hostcss = {};
@@ -43,6 +44,11 @@ export class MockComponent implements AfterViewInit {
   @ViewChild('slot4', { static: false }) slot4: ElementRef;
 
   hasSlots = [true, true, true, true];
+
+  counter = 0;
+  ngDoCheck(): void {
+    console.log('mock change', ++this.counter);
+  }
 
   ngAfterViewInit(): void {
     setTimeout(() => {

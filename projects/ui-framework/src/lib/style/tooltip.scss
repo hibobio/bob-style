@@ -7,6 +7,7 @@ $tooltip-arrow-size: 12px;
 $toolti-offset: 10px;
 
 %tooltip-body {
+  position: relative;
   background-color: $tooltip-color;
   color: white;
   max-width: 350px;
@@ -26,7 +27,6 @@ $toolti-offset: 10px;
 
 .mat-tooltip[class] {
   @extend %tooltip-body;
-  position: relative;
 
   &:before {
     @extend %tooltip-arrow-common;

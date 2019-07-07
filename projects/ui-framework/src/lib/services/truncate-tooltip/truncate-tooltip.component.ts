@@ -7,7 +7,9 @@ import {
   AfterViewInit,
   ViewContainerRef,
   DoCheck,
-  HostListener
+  NgZone,
+  OnInit,
+  ChangeDetectorRef
 } from '@angular/core';
 import { UtilsService } from '../utils/utils.service';
 import { Subscription } from 'rxjs';
@@ -37,7 +39,7 @@ import { TruncateTooltiptype } from './truncate-tooltip.enum';
         initialized: initialized,
         'tooltip-enabled': tooltipEnabled
       }"
-      [attr.data-max-lines]="maxLines"
+      data-max-lines="1"
     >
       <ng-content></ng-content>
       <ng-template #directiveTemplate></ng-template>
@@ -46,13 +48,17 @@ import { TruncateTooltiptype } from './truncate-tooltip.enum';
   styleUrls: ['./truncate-tooltip.component.scss']
 })
 export class TruncateTooltipComponent
-  implements AfterViewInit, DoCheck, OnDestroy {
-  constructor(private utilsService: UtilsService, private DOM: DOMhelpers) {}
-
-  @ViewChild('textContainer', { static: true })
-  set container(element: ElementRef) {
-    this.textContainer = element.nativeElement;
+  implements AfterViewInit, DoCheck, OnInit, OnDestroy {
+  constructor(
+    private utilsService: UtilsService,
+    private DOM: DOMhelpers,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
+  ) {
+    cd.detach();
   }
+
+  @ViewChild('textContainer', { static: true }) textContainer: ElementRef;
   @ViewChild('directiveTemplate', { read: ViewContainerRef, static: true })
   child: ViewContainerRef;
 
@@ -71,7 +77,6 @@ export class TruncateTooltipComponent
   @Input() type: TruncateTooltiptype = TruncateTooltiptype.lazy;
 
   private resizeSubscription: Subscription;
-  private textContainer: HTMLElement;
   private textElementTextProps: TextProps;
   private maxLinesDefault = 1;
   private maxLinesCache = this.maxLinesDefault;
@@ -83,56 +88,80 @@ export class TruncateTooltipComponent
   public initialized = this.trustCssVars;
   readonly types = TruncateTooltiptype;
 
-  @HostListener('mouseenter')
-  onMouseEnter() {
-    if (
-      this.type === TruncateTooltiptype.lazy &&
-      !this.tooltipAllowed &&
-      !this.hoverTimer
-    ) {
+  private onMouseEnter = () => {
+    if (!this.tooltipAllowed && !this.hoverTimer) {
       this.hoverTimer = setTimeout(() => {
+        this.textContainer.nativeElement.removeEventListener(
+          'mouseenter',
+          this.onMouseEnter
+        );
+        this.textContainer.nativeElement.removeEventListener(
+          'mouseleave',
+          this.onMouseLeave
+        );
         this.tooltipAllowed = true;
+        this.cd.reattach();
       }, this.lazyness);
     }
   }
-  @HostListener('mouseleave')
-  onMouseLeave() {
+
+  private onMouseLeave = () => {
     if (this.hoverTimer) {
       clearTimeout(this.hoverTimer);
       this.hoverTimer = null;
     }
   }
 
+  ngOnInit(): void {
+    if (this.type === TruncateTooltiptype.lazy) {
+      this.textContainer.nativeElement.addEventListener(
+        'mouseenter',
+        this.onMouseEnter
+      );
+      this.textContainer.nativeElement.addEventListener(
+        'mouseleave',
+        this.onMouseLeave
+      );
+    }
+  }
+
   ngAfterViewInit(): void {
     this.maxLinesCache = this.maxLines;
 
-    setTimeout(() => {
-      this.tooltipText = this.textContainer.textContent.trim();
-      this.setCssVars();
-    }, 0);
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.tooltipText = this.textContainer.nativeElement.textContent.trim();
+        this.setCssVars();
+        this.setMaxLinesAttr();
+      }, 0);
 
-    setTimeout(() => {
-      this.checkTooltipNecessity();
-      this.initialized = true;
-      if (this.type !== TruncateTooltiptype.lazy) {
-        this.tooltipAllowed = true;
-      }
-    }, 0);
-
-    this.resizeSubscription = this.utilsService
-      .getResizeEvent()
-      .subscribe(() => {
+      setTimeout(() => {
         this.checkTooltipNecessity();
-      });
+
+        this.initialized = true;
+
+        if (this.type === TruncateTooltiptype.css && !this.expectChanges) {
+          this.cd.detectChanges();
+        } else {
+          this.cd.reattach();
+        }
+      }, 0);
+    });
+
+    // this.resizeSubscription = this.utilsService
+    //   .getResizeEvent()
+    //   .subscribe(() => {
+    //     this.checkTooltipNecessity();
+    //   });
   }
 
   ngDoCheck(): void {
     if (this.expectChanges) {
       if (
         this.initialized &&
-        this.tooltipText !== this.textContainer.textContent.trim()
+        this.tooltipText !== this.textContainer.nativeElement.textContent.trim()
       ) {
-        this.tooltipText = this.textContainer.textContent.trim();
+        this.tooltipText = this.textContainer.nativeElement.textContent.trim();
         this.checkTooltipNecessity();
       }
 
@@ -143,28 +172,48 @@ export class TruncateTooltipComponent
   }
 
   ngOnDestroy(): void {
-    this.resizeSubscription.unsubscribe();
+    if (this.resizeSubscription) {
+      this.resizeSubscription.unsubscribe();
+    }
     if (this.hoverTimer) {
       clearTimeout(this.hoverTimer);
       this.hoverTimer = null;
     }
   }
 
+  private setMaxLinesAttr(): void {
+    if (this.textContainer) {
+      this.textContainer.nativeElement.dataset.maxLines = this.maxLines;
+    }
+  }
+
+  private setMaxHeight(): void {
+    if (!this.trustCssVars) {
+      this.textElementTextProps.maxHeight =
+        this.textElementTextProps.fontSize *
+        this.textElementTextProps.lineHeight *
+        this.maxLines;
+      this.DOM.setCssProps(this.textContainer.nativeElement, {
+        'max-height': this.textElementTextProps.maxHeight + 'px'
+      });
+    }
+  }
+
   private setCssVars(): void {
     if (!this.textElementTextProps && !this.trustCssVars) {
       this.textElementTextProps = this.DOM.getElementTextProps(
-        this.DOM.getDeepTextElement(this.textContainer)
+        this.DOM.getDeepTextElement(this.textContainer.nativeElement)
       );
       this.textElementTextProps.maxHeight =
         this.textElementTextProps.fontSize *
         this.textElementTextProps.lineHeight *
         this.maxLines;
 
-      this.DOM.setCssProps(this.textContainer, {
+      this.DOM.setCssProps(this.textContainer.nativeElement, {
         '--line-height': this.textElementTextProps.lineHeight,
-        '--font-size': this.textElementTextProps.fontSize + 'px',
-        'max-height': this.textElementTextProps.maxHeight + 'px'
+        '--font-size': this.textElementTextProps.fontSize + 'px'
       });
+      this.setMaxHeight();
     }
   }
 
@@ -177,16 +226,18 @@ export class TruncateTooltipComponent
     }
 
     const compareHeight = this.trustCssVars
-      ? this.textContainer.offsetHeight + 5
+      ? this.textContainer.nativeElement.offsetHeight + 5
       : this.textElementTextProps.maxHeight;
 
     this.tooltipEnabled =
       (this.maxLines === 1 &&
-        this.textContainer.scrollWidth > this.textContainer.offsetWidth) ||
+        this.textContainer.nativeElement.scrollWidth >
+          this.textContainer.nativeElement.offsetWidth) ||
       (this.maxLines > 1 &&
-        (this.textContainer.scrollHeight > compareHeight ||
-          (this.textContainer.children[0] &&
-            (this.textContainer.children[0] as HTMLElement).offsetHeight)))
+        (this.textContainer.nativeElement.scrollHeight > compareHeight ||
+          (this.textContainer.nativeElement.children[0] &&
+            (this.textContainer.nativeElement.children[0] as HTMLElement)
+              .offsetHeight)))
         ? true
         : false;
   }
@@ -198,14 +249,15 @@ export class TruncateTooltipComponent
 
   private setMaxLines(value: number | string): void {
     this.maxLines = this.parseMaxLines(value);
+
     if (
       this.maxLines !== this.maxLinesCache &&
       this.initialized &&
       this.expectChanges
     ) {
-      setTimeout(() => {
-        this.checkTooltipNecessity();
-      }, 0);
+      this.setMaxHeight();
+      this.setMaxLinesAttr();
+      this.checkTooltipNecessity();
     }
     this.maxLinesCache = this.maxLines;
   }

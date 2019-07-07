@@ -18,6 +18,7 @@ import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.componen
 
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { MockModule } from '../../services/mock-component/mock.module';
 
 const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(
   withKnobs
@@ -75,7 +76,7 @@ const storyTemplate = `
         (radioChange)="tableData = ($event && $event.value === 2) || ($event === 2) ? [] : CardTableData">
       </b-radio-button>
     </p>
-
+    <b-mock></b-mock>
   </div>
   </div>
 </b-story-book-layout>
@@ -226,7 +227,8 @@ story.add(
           CardTableModule,
           ChipModule,
           ButtonsModule,
-          AvatarModule
+          AvatarModule,
+          MockModule
         ],
         entryComponents: [ChipComponent, ButtonComponent, AvatarComponent]
       }
