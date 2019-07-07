@@ -6,3 +6,10 @@ export enum ChipType {
   success = 'success',
   avatar = 'avatar'
 }
+
+export enum ChipListAlign {
+  left = 'left',
+  right = 'right',
+  center = 'center',
+  justify = 'justify'
+}

@@ -2,176 +2,31 @@ import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 import {
   simpleUID,
   randomNumber,
-  randomFromArray
+  randomFromArray,
+  arrayDifference
 } from '../../services/utils/functional-utils';
+import { mockHobbies } from '../../mock.const';
 
-const oldPeopleHobbies = [
-  'Rock And Mineral Collecting',
-  'Collecting Sea Glass',
-  'Upholstery',
-  'Woodburning',
-  'RV Travelling',
-  'Whale Watching',
-  'Gardening',
-  'Golf',
-  'Art Collecting',
-  'Food Preservation (Pickling, Canning)',
-  'Using Ham Radio',
-  'Taking Part Historical Reenactments',
-  'Museum/Art Gallery Hopping',
-  'Coin Collecting',
-  'Infuse Alcohol',
-  'Being A Cigar Aficionado',
-  'Record Collecting',
-  'Being A History Buff',
-  'Terrarium Making',
-  'Farming',
-  'Aquascaping',
-  'Growing Bonsais',
-  'Meteorology',
-  'Found A Charity Group',
-  'Cartography',
-  'Taxidermy',
-  'Astrology',
-  'Cryptography',
-  'Graphology',
-  'Tea Drinking',
-  'Fishing',
-  'Tai Chi',
-  'Palm Reading',
-  'Music Memorabilia',
-  'Butterfly Watching',
-  'Gyotaku',
-  'Tombstone Rubbing',
-  'Trainspotting',
-  'Bird Watching',
-  'Rock Balancing',
-  'Curling',
-  'Fish Tournaments',
-  'Cloud Watching',
-  'Deltiology',
-  'Antiquing'
-];
+const maxOpts = 10;
 
-const couplesHobbies = [
-  'Yoga',
-  'Snorkeling',
-  'Touring Wineries',
-  'Massage',
-  'Babysitting',
-  'Squash',
-  'Wine/Cheese Tasting',
-  'Ballroom Dancing',
-  'Board Game Club',
-  'Volunteering',
-  'Sailing',
-  'Tennis',
-  'Starting An Etsy Or EBay Store',
-  'Star Gazing',
-  'Homesteading',
-  'Canoeing',
-  'Bowling',
-  'Entertaining & Event Hosting',
-  'Learning A Foreign Language',
-  'Recipe Creation',
-  'People Watching',
-  'Picnicking',
-  'Acroyoga',
-  'Lamp Making',
-  'Dancing',
-  'Chocolate Tasting',
-  'Salsa Dancing',
-  'Pottery',
-  'Badminton',
-  'Theme Night Dates',
-  'Self-Care',
-  'World Record Breaking',
-  'Renovating',
-  'Weekend Adventuring',
-  'Hosting Dinner Parties',
-  'Road Trips',
-  'Cosplaying',
-  'Self Defense',
-  'Zumba',
-  'Cooking'
-];
-
-const kidsHobbies = [
-  'Drawing',
-  'Learning A New Sport',
-  'Flying Model Planes',
-  'Model Ship Building',
-  'Sculpt With Clay/ Playdough',
-  'Collecting Seashells',
-  'Beach / Sand Building',
-  'Nature Walk',
-  'Zoo Visits',
-  'Solving Mazes',
-  'Balloon Twisting',
-  'Collecting Stickers',
-  'Collecting Leaves',
-  'Puppetry',
-  'Playing T-Ball',
-  'Mini Golf',
-  'Playing Soccer',
-  'Finger Painting',
-  'Collecting Stamps',
-  'Coloring',
-  'Lego Building/Assembling',
-  'Doll Making',
-  'Making Bird Feeders And Birdhouses',
-  'Insect Interest',
-  'Crocheting',
-  'Flower Pressing',
-  'Felting',
-  'Trekking',
-  'Knitting',
-  'Skating',
-  'Speed Cubing (Rubix Cube)',
-  'Creating Family Trees',
-  'Story-Writing',
-  'Collecting Baseball Cards',
-  'Tapestry',
-  'Pencil Sketching',
-  'Comic Book Art',
-  'Jewellery Making',
-  'Doing Science Experiments',
-  'Flower Making',
-  'Learning How To Play Musical Instruments',
-  'Juggling',
-  'Kite Flying',
-  'Collecting Marbles',
-  'Roller Blading',
-  'Collage Making',
-  'Slingshots',
-  'Paper Mache',
-  'Making Bookmarks',
-  'Making Key Holders',
-  'Skateboarding',
-  'Animal Craft',
-  'Acrobatics',
-  'Jump Roping',
-  'Color Guard',
-  'Cheerleading',
-  'Baseball',
-  'Basketball',
-  'Baton Twirling',
-  'Scouting',
-  'RC Model Racing',
-  'Stone Skipping',
-  'Gymnastics'
-];
+const oldPeopleHobbies = randomFromArray(mockHobbies(), maxOpts);
+const couplesHobbies = randomFromArray(
+  arrayDifference(mockHobbies(), oldPeopleHobbies),
+  maxOpts
+);
+const kidsHobbies = randomFromArray(
+  arrayDifference(mockHobbies(), oldPeopleHobbies.concat(couplesHobbies)),
+  maxOpts
+);
 
 const mayBeSelected = () => {
   return randomNumber() > 90;
 };
 
-const maxOpts = 10;
-
 export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
   {
     groupName: 'For kids',
-    options: randomFromArray(kidsHobbies, maxOpts).map(hobby => ({
+    options: kidsHobbies.map(hobby => ({
       value: hobby,
       id: simpleUID(),
       selected: mayBeSelected()
@@ -179,7 +34,7 @@ export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
   },
   {
     groupName: 'For couples',
-    options: randomFromArray(couplesHobbies, maxOpts).map(hobby => ({
+    options: couplesHobbies.map(hobby => ({
       value: hobby,
       id: simpleUID(),
       selected: mayBeSelected()
@@ -187,7 +42,7 @@ export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
   },
   {
     groupName: 'For old people',
-    options: randomFromArray(oldPeopleHobbies, maxOpts).map(hobby => ({
+    options: oldPeopleHobbies.map(hobby => ({
       value: hobby,
       id: simpleUID(),
       selected: mayBeSelected()

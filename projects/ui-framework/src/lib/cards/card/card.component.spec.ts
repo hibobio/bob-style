@@ -127,7 +127,9 @@ describe('CardComponent', () => {
   describe('Component injection', () => {
     it('should insert AvatarComponent', () => {
       expect(avatarTitle).toBeTruthy();
-      expect(avatarTitle.innerText).toContain('Madge Scott');
+      expect(avatarTitle.innerText).toContain(
+        (mockCardData.data.header as any).attributes.title
+      );
     });
   });
 });

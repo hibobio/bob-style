@@ -68,7 +68,7 @@ $chipStateMap: (
 :host {
   box-sizing: border-box;
   display: inline-flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   border-radius: 13px;
   white-space: nowrap;
@@ -129,6 +129,10 @@ $chipStateMap: (
 :host[data-type='avatar']::ng-deep {
   b-avatar {
     margin-right: 5px;
+
+    .avatar.avatar {
+      box-shadow: none;
+    }
   }
 
   .remove-button {

@@ -361,6 +361,7 @@ export { DOMhelpers } from './lib/services/utils/dom-helpers.service';
 export { ScrollEvent }  from './lib/services/utils/utils.interface';
 export { WindowRef } from './lib/services/utils/window-ref.service';
 export { DocumentRef } from './lib/services/utils/document-ref.service';
+export { MobileService } from './lib/services/utils/mobile.service';
 // Component Renderer
 export { ComponentRendererModule } from './lib/services/component-renderer/component-renderer.module';
 export { ComponentRendererComponent } from './lib/services/component-renderer/component-renderer.component';

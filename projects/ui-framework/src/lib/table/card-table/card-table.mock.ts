@@ -4,10 +4,44 @@ import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 import { action } from '@storybook/addon-actions';
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
+import { mockAvatar, mockNames, mockJobs, mockDate } from '../../mock.const';
+import { ChipType } from '../../chips/chips.enum';
+import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import {
+  randomFromArray,
+  makeArray
+} from '../../services/utils/functional-utils';
 
-const avatarComponentAttributes = {
-  size: AvatarSize.small,
-  isClickable: true
+const numberOfLines = 10;
+
+const getMockAvatar = () => ({
+  component: AvatarComponent,
+  attributes: {
+    imageSource: mockAvatar(),
+    title: mockNames(1),
+    subtitle: mockJobs(1),
+    size: AvatarSize.small,
+    isClickable: true
+  },
+  handlers: {
+    clicked: action('Avatar was clicked')
+  }
+});
+
+const getMockStatusChip = () => {
+  const status = randomFromArray(['Rejected', 'Pending', 'Approved']);
+  return {
+    component: ChipComponent,
+    attributes: {
+      type:
+        status === 'Rejected'
+          ? ChipType.error
+          : status === 'Pending'
+          ? ChipType.warning
+          : ChipType.success
+    },
+    content: status
+  };
 };
 
 export const CardTableMockMetaData: CardTableCellMeta[] = [
@@ -44,215 +78,58 @@ export const CardTableMockMetaData: CardTableCellMeta[] = [
   }
 ];
 
+const firstLine = [
+  {
+    data: {
+      component: ButtonComponent,
+      attributes: {
+        type: ButtonType.secondary
+      },
+      content: 'Approve',
+      handlers: {
+        clicked: action('Button was clicked')
+      }
+    }
+  },
+  {
+    data: getMockAvatar()
+  },
+  {
+    data: 'UK Product Team Salary Change'
+  },
+  {
+    data: [mockNames(1), mockDate()]
+  },
+  {
+    data: [mockNames(1), '(You)'],
+    class: 'highlight-second-line'
+  }
+];
+
+const texts = [
+  'Personal Information Update',
+  'NYC Employee Promotion',
+  'UK Design Team Salary Change',
+  'Single line of some very long text that should truncate after two lines with an ellipsis'
+];
+
 export const CardTableMockData: CardTableCellData[][] = [
-  [
+  firstLine,
+  ...makeArray(numberOfLines).map(i => [
     {
-      data: {
-        component: ButtonComponent,
-        attributes: {
-          type: 'secondary'
-        },
-        content: 'Approve',
-        handlers: {
-          clicked: action('Button was clicked')
-        }
-      }
+      data: getMockStatusChip()
     },
     {
-      data: {
-        component: AvatarComponent,
-        attributes: {
-          imageSource: 'http://i.pravatar.cc/200?img=3',
-          title: 'Dylan Herrera',
-          subtitle: 'Product designer',
-          ...avatarComponentAttributes
-        },
-        handlers: {
-          clicked: action('Avatar was clicked')
-        }
-      }
+      data: getMockAvatar()
     },
     {
-      data: 'UK Product Team Salary Change'
+      data: randomFromArray(texts)
     },
     {
-      data: ['Elsie Hunter', '11/03/2019']
+      data: [mockNames(1), mockDate()]
     },
     {
-      data: ['Madge Scott', '(You)'],
-      class: 'highlight-second-line'
+      data: [mockNames(1), mockJobs(1)]
     }
-  ],
-  [
-    {
-      data: {
-        component: ChipComponent,
-        attributes: {
-          type: 'attention',
-          color: 'red'
-        },
-        content: 'Pending'
-      }
-    },
-    {
-      data: {
-        component: AvatarComponent,
-        attributes: {
-          imageSource: 'http://i.pravatar.cc/200?img=2',
-          title: 'Joel Sanders',
-          subtitle: 'Business developer',
-          ...avatarComponentAttributes
-        },
-        handlers: {
-          clicked: action('Avatar was clicked')
-        }
-      }
-    },
-    {
-      data: 'Personal Information Update'
-    },
-    {
-      data: ['Fakhri Shokoohi', '05/05/2019']
-    },
-    {
-      data: ['Emelda Scandroot', 'CFO']
-    }
-  ],
-  [
-    {
-      data: {
-        component: ChipComponent,
-        attributes: {
-          type: 'attention'
-        },
-        content: 'Pending'
-      }
-    },
-    {
-      data: {
-        component: AvatarComponent,
-        attributes: {
-          imageSource: 'http://i.pravatar.cc/200?img=1',
-          title: 'Nora Herrera',
-          subtitle: 'Front-end engineer',
-          ...avatarComponentAttributes
-        },
-        handlers: {
-          clicked: action('Avatar was clicked')
-        }
-      }
-    },
-    {
-      data: 'NYC Employee Promotion'
-    },
-    {
-      data: ['Elsie Hunter', '11/03/2019']
-    },
-    {
-      data: ['Constanza Mariano', 'HR admin']
-    }
-  ],
-  [
-    {
-      data: {
-        component: ChipComponent,
-        attributes: {
-          type: 'success'
-        },
-        content: 'Approved'
-      }
-    },
-    {
-      data: {
-        component: AvatarComponent,
-        attributes: {
-          imageSource: 'http://i.pravatar.cc/200?img=4',
-          title: 'Jaspreet Bhamrai',
-          subtitle: 'Product designer',
-          ...avatarComponentAttributes
-        },
-        handlers: {
-          clicked: action('Avatar was clicked')
-        }
-      }
-    },
-    {
-      data: 'UK Design Team Salary Change'
-    },
-    {
-      data: ['Elsie Hunter', '11/03/2019']
-    },
-    {
-      data:
-        'Single line of some very long text that should truncate after two lines with an ellipsis.'
-    }
-  ],
-  [
-    {
-      data: {
-        component: ChipComponent,
-        attributes: {
-          type: 'success'
-        },
-        content: 'Approved'
-      }
-    },
-    {
-      data: {
-        component: AvatarComponent,
-        attributes: {
-          imageSource: 'http://i.pravatar.cc/200?img=5',
-          title: 'Chioke Okonkwo',
-          subtitle: 'Business developer',
-          ...avatarComponentAttributes
-        },
-        handlers: {
-          clicked: action('Avatar was clicked')
-        }
-      }
-    },
-    {
-      data: 'Personal Information Update'
-    },
-    {
-      data: ['Elsie Hunter', '11/03/2019']
-    },
-    {
-      data: ''
-    }
-  ],
-  [
-    {
-      data: {
-        component: ChipComponent,
-        attributes: {
-          type: 'warning'
-        },
-        content: 'Rejected'
-      }
-    },
-    {
-      data: {
-        component: AvatarComponent,
-        attributes: {
-          imageSource: 'http://i.pravatar.cc/200?img=6',
-          title: 'Abhoy Latif',
-          subtitle: 'Business developer',
-          ...avatarComponentAttributes
-        },
-        handlers: {
-          clicked: action('Avatar was clicked')
-        }
-      }
-    },
-    {
-      data: 'Personal Information Update'
-    },
-    {
-      data: ['Gopichand Sana', '7/12/2018']
-    },
-    {
-      data: ['Madge Scott', 'VP Product']
-    }
-  ]
+  ])
 ];

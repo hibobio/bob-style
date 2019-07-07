@@ -40,7 +40,7 @@ export class MultiListAndChipsComponent implements OnChanges {
   readonly chipListConfig: ChipListConfig = {
     type: ChipType.tag,
     selectable: false,
-    focusable: false,
+    focusable: true,
     removable: true
   };
   readonly listID: string = simpleUID('mlacl-');
@@ -68,7 +68,7 @@ export class MultiListAndChipsComponent implements OnChanges {
             key: group.key,
             name: group.groupName
           },
-          type: ChipType.info
+          type: this.chipListConfig.type !== ChipType.avatar && ChipType.info
         });
       } else {
         group.options.forEach((option: SelectOption) => {

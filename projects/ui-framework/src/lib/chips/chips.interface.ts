@@ -1,4 +1,4 @@
-import { ChipType } from './chips.enum';
+import { ChipType, ChipListAlign } from './chips.enum';
 import { InputEventType } from '../form-elements/form-elements.enum';
 
 export interface Chip {
@@ -17,6 +17,7 @@ export interface ChipListConfig {
   selectable?: boolean;
   focusable?: boolean;
   disabled?: boolean;
+  align?: ChipListAlign;
 }
 
 export interface ChipKeydownEvent {

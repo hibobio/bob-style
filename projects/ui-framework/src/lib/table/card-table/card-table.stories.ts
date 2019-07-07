@@ -51,7 +51,8 @@ const storyTemplate = `
       (cellClicked)="cellClickHandler($event)">
     </b-card-table>
 
-    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: auto;">
+
+    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: 40px auto 15px;">
       <span>Width: </span>
 
       <b-radio-button [radioConfig]="[

@@ -8,14 +8,11 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-
-import { chipsMock } from '../../../../ui-framework/src/lib/chips/chips.mock';
 import {
   isString,
   countChildren,
   flatten,
   getType,
-  isNullOrUndefined
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
 import { BlotType } from '../../../../ui-framework/src/lib/form-elements/rich-text-editor/rte-core/rte.enum';
 import { AvatarComponent } from '../../../../ui-framework/src/lib/buttons-indicators/avatar/avatar.component';
@@ -24,6 +21,7 @@ import {
   arrayOfStringsOrArrayFromString,
   valueToObjectWithKeyOfValueFromArray
 } from '../../../../ui-framework/src/lib/services/utils/transformers';
+import { mockHobbies } from '../../../../ui-framework/src/lib/mock.const';
 
 @Component({
   selector: 'app-form-elements-test',
@@ -222,7 +220,7 @@ export class FormElementsTestComponent
   bChipinput_label = 'Chip Input label';
   bChipinput_placeholder = 'Chip Input placeholder';
   bChipinput_value = ['petting', 'fisting', 'rimming']; // 'petting, fisting, rimming';
-  bChipinput_options = chipsMock;
+  bChipinput_options = mockHobbies();
   bChipinput_acceptNew = true;
   bChipinput_disabled = this.global_disabled;
   bChipinput_required = this.global_required;

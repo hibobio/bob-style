@@ -1,4 +1,117 @@
-export const chipsMock = [
+import {
+  randomNumber,
+  randomFromArray,
+  padWith0
+} from './services/utils/functional-utils';
+
+export const mockNamesList = [
+  'Nada Gish',
+  'Mathilde Vogler',
+  'Casie Wadkins',
+  'Kisha Dick',
+  'Claudie Redick',
+  'Dorthey Tollison',
+  'Manual Dedios',
+  'Melania Burruel',
+  'Nida Audia',
+  'Shawanna Petree',
+  'Florance Wolfson',
+  'America Danz',
+  'Mendy Mcsherry',
+  'Valencia Dantin',
+  'Ted Medrano',
+  'Abby Hance',
+  'Nakia Joplin',
+  'Nilda Seneca',
+  'Amal Ralphs',
+  'Allan Nicoll',
+  'Jasper Grass',
+  'Sharleen Callanan',
+  'Leatha Chiodo',
+  'Micki Skinner',
+  'Kristine Seyfried',
+  'Isaura Stork',
+  'Dusty Avina',
+  'Shira Chilson',
+  'Lane Kerbs',
+  'Viola Netzer',
+  'Elma Strawn',
+  'Allene Crupi',
+  'Eloisa Ostler',
+  'Sandee Snellgrove',
+  'Gordon Kukowski',
+  'Darcie Pickle',
+  'Elicia Skiba',
+  'Ngan Winsett',
+  'Reyna Marvel',
+  'Tyson Avey',
+  'Craig Sher',
+  'Pa Locicero',
+  'Forrest Deshazo',
+  'Krystina Adrian',
+  'Violeta Jacobo',
+  'Arlena Rempel',
+  'Herlinda Prochnow',
+  'Shavonda Chumley',
+  'Lacresha Hyre',
+  'Richard Sosnowski',
+  'Arturo Boldt',
+  'Tammy Bolin',
+  'Mohamed Grist',
+  'Thad Vos',
+  'Delphine Cammack',
+  'Laine Rolls',
+  'Sybil Urso',
+  'Anastacia Felipe',
+  'Laree Hammock',
+  'Stefania Dollinger'
+];
+
+export const mockJobsList = [
+  'A/B tester',
+  'Application analyst',
+  'Business analyst',
+  'Computer operator',
+  'Computer repair technician',
+  'Computer scientist',
+  'Computer analyst',
+  'Data entry clerk',
+  'Database administrator',
+  'Data analyst',
+  'Data designer',
+  'Data scientist',
+  'Hardware engineer',
+  'Information systems technician',
+  'IT assistant',
+  'Network analyst',
+  'Network administrator',
+  'Programmer',
+  'Product manager',
+  'Project manager',
+  'Rapid prototyper',
+  'Scrum master',
+  'Security engineer',
+  'Software analyst',
+  'Software architect',
+  'Software design',
+  'Software engineer',
+  'Software project manager',
+  'Software quality analyst',
+  'Software test engineer (Tester)',
+  'Solution architect',
+  'Support technician (Help Desk)',
+  'System administrator',
+  'Systems analyst',
+  'Test engineer',
+  'User experience designer',
+  'User interaction designer',
+  'User researcher',
+  'Visual designer',
+  'Web developer',
+  'Website administrator'
+];
+
+export const mockHobbiesList = [
   'Aircraft Spotting',
   'Airbrushing',
   'Airsofting',
@@ -308,3 +421,21 @@ export const chipsMock = [
   'Ziplining',
   'Zumba'
 ];
+
+export const mockAvatar = () =>
+  `https://randomuser.me/api/portraits/${randomFromArray([
+    'men',
+    'women'
+  ])}/${randomNumber(0, 99)}.jpg`;
+
+export const mockNames = (num = null) => randomFromArray(mockNamesList, num);
+
+export const mockJobs = (num = null) => randomFromArray(mockJobsList, num);
+
+export const mockHobbies = (num = null) =>
+  randomFromArray(mockHobbiesList, num);
+
+export const mockDate = () =>
+  `${padWith0(randomNumber(1, 31))}/${padWith0(
+    randomNumber(1, 12)
+  )}/${randomNumber(2018, 2020)}`;

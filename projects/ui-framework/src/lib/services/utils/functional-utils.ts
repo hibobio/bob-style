@@ -11,8 +11,13 @@ export function MixIn(baseCtors: Function[]) {
 export const randomNumber = (min = 0, max = 100): number =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
-export const randomFromArray = (array: any[], num: number = 1) =>
-  array.sort(() => 0.5 - Math.random()).slice(0, num);
+export const randomFromArray = (array: any[], num: number = 1) => {
+  if (!num) {
+    num = array.length;
+  }
+  const random = array.sort(() => 0.5 - Math.random()).slice(0, num);
+  return num === 1 ? random[0] : random;
+};
 
 export const keysFromArrayOrObject = (smth: string[] | {}): string[] =>
   Array.isArray(smth) ? smth : Object.keys(smth);
@@ -132,3 +137,15 @@ export const domainFromUrl = (url: string) => {
   a = null;
   return domain;
 };
+
+export const arrayDifference = (arrA: any[], arrB: any[]) => {
+  return arrA
+    .filter(x => !arrB.includes(x))
+    .concat(arrB.filter(x => !arrA.includes(x)));
+};
+
+export const makeArray = (length: number, fill: any = undefined): any[] =>
+  Array(length).fill(fill);
+
+export const padWith0 = (number: string | number, digits = 2): string =>
+  String(number).padStart(digits, '0');

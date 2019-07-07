@@ -1,18 +1,17 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 import { ButtonSize, ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { has } from 'lodash';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { MobileService } from '../../services/utils/mobile.service';
+import { LinkColor } from '../../buttons-indicators/link/link.enum';
 
 @Component({
   selector: 'b-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.scss']
 })
-export class BreadcrumbsComponent implements OnChanges {
-
-  public buttonSize = ButtonSize;
-  public buttonType = ButtonType;
+export class BreadcrumbsComponent implements OnInit, OnChanges {
 
   @Input() breadcrumbs: Breadcrumb[];
   @Input() buttons: BreadcrumbNavButtons;
@@ -22,11 +21,22 @@ export class BreadcrumbsComponent implements OnChanges {
   @Output() nextClick: EventEmitter<number> = new EventEmitter<number>();
   @Output() prevClick: EventEmitter<number> = new EventEmitter<number>();
 
+  isMobile: boolean;
+
+  readonly buttonSize = ButtonSize;
+  readonly buttonType = ButtonType;
   readonly icons = Icons;
   readonly iconColor = IconColor;
   readonly iconSize = IconSize;
+  readonly linkColor = LinkColor;
 
-  constructor() {
+  constructor(
+    private mobileService: MobileService,
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.isMobile = this.mobileService.isMobileBrowser();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

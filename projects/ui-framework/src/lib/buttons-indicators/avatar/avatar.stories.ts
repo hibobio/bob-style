@@ -14,6 +14,7 @@ import { AvatarModule } from './avatar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsModule } from '../../icons/icons.module';
 import { ChipType } from '../../chips/chips.enum';
+import { mockNames, mockJobs, mockAvatar } from '../../mock.const';
 
 const avatarStories = storiesOf(
   `${ComponentGroupType.ButtonsAndIndicators}.Avatar`,
@@ -90,10 +91,7 @@ avatarStories.add(
     return {
       template: storyTemplate,
       props: {
-        imageSource: text(
-          'imageSource',
-          'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
-        ),
+        imageSource: text('imageSource', mockAvatar()),
         size: select('size', sizeOptions, AvatarSize.large),
         orientation: select(
           'orientation',
@@ -102,8 +100,8 @@ avatarStories.add(
         ),
         isClickable: boolean('isClickable', false),
         clickHandler: action('Avatar Clicked'),
-        title: text('title', 'John Doe'),
-        subtitle: text('subtitle', 'Web Developer'),
+        title: text('title', mockNames(1)),
+        subtitle: text('subtitle', mockJobs(1)),
         caption: text('caption', 'Product, Israel'),
         disabled: boolean('disabled', false),
         badge: select('badge', badges, AvatarBadge.approved),
