@@ -17,12 +17,14 @@ import { DOMhelpers } from '../utils/dom-helpers.service';
         background: rgba(255, 255, 255, 0.8);
         max-width: 100px;
         padding: 5px 10px;
-        margin: 20px auto;
+        margin: 0;
         position: fixed;
-        right: 20px;
-        top: 5px;
+        right: 15px;
+        bottom: 15px;
+        z-index: 100;
       }
-    `
+    `,
+    'span: {display:block; white-space:nowrap;}'
   ],
   providers: []
 })
