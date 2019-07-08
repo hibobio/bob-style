@@ -21,5 +21,5 @@ export interface CardEmployee {
 export interface AddCardData {
   title: string;
   subtitle?: string;
-  action: (...args: any[]) => void;
+  action?: (...args: any[]) => void;
 }
