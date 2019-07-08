@@ -1,33 +1,6 @@
-<ul class="cards-list"
+<div class="cards-list"
     [ngClass]="'cards-' + type">
 
-  <li *ngIf="addCard"
-      b-card-add
-      [type]="type"
-      [card]="addCard"
-      (clicked)="addCard.action()">
-  </li>
+  <ng-content></ng-content>
 
-  <ng-container *ngIf="cards?.length > 0 && cards[0].data.text">
-    <li *ngFor="let card of cards; index as index;"
-        b-card
-        [type]="type"
-        [card]="card"
-        [index]="index"
-        [clickable]="{'clickable': cardClicked.observers.length > 0}"
-        (clicked)="onCardClicked(card, index)">
-    </li>
-  </ng-container>
-
-  <ng-container *ngIf="cards?.length > 0 && cards[0].data.avatar">
-    <li *ngFor="let card of cards; index as index;"
-        b-card-employee
-        [type]="type"
-        [card]="card"
-        [index]="index"
-        [clickable]="{'clickable': cardClicked.observers.length > 0}"
-        (clicked)="onCardClicked(card, index)">
-    </li>
-  </ng-container>
-
-</ul>
+</div>

@@ -1,21 +1,11 @@
-import {
-  Component,
-  Input,
-  HostBinding,
-  Output,
-  EventEmitter,
-  HostListener
-} from '@angular/core';
+import { Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
 import { CardData } from '../cards.interface';
 import { CardType } from '../cards.enum';
 import { RenderedComponent } from '../../services/component-renderer/component-renderer.interface';
 import { Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 
-import {
-  isString,
-  isRenderedComponent
-} from '../../services/utils/functional-utils';
+import { isRenderedComponent, isString } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-card, [b-card]',
@@ -33,8 +23,6 @@ export class CardComponent {
   cardType = CardType;
   button = ButtonType;
   icons = Icons;
-  ifString = isString;
-  ifComponent = isRenderedComponent;
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
@@ -58,12 +46,6 @@ export class CardComponent {
     setTimeout(() => {
       this.menuIsOpened = false;
     }, 150);
-  }
-
-  onComponentClick($event: any, data: string | RenderedComponent): void {
-    if ((data as RenderedComponent).handlers) {
-      $event.stopPropagation();
-    }
   }
 
   stopPropagation($event): void {

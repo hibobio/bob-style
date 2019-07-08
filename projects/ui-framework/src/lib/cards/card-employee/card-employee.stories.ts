@@ -50,7 +50,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   type | CardType | Card theme | primary (optional)
-  card | CardData | card contents data | none
+  card | CardEmployee | card contents data | none
   clickable | boolean | is the card clickable? | false
   clicked | Function | handler of Card Clicked event | none
 
@@ -67,7 +67,7 @@ const note = `
 `;
 
 story.add(
-  'EmployeeCard',
+  'Employee Card',
   () => {
     return {
       template: storyTemplate,

@@ -4,9 +4,13 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MultiListAndChipsOptionsMock } from './multi-list-and-chips.mock';
+import {
+  MultiListAndChipsOptionsMock,
+  MultiListAndAvatarChipsOptionsMock
+} from './multi-list-and-chips.mock';
 import { MultiListAndChipsModule } from './multi-list-and-chips.module';
 import { action } from '@storybook/addon-actions';
+import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
@@ -16,15 +20,26 @@ const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
-const options = MultiListAndChipsOptionsMock;
+const listOpts = MultiListAndChipsOptionsMock;
+const avatarListOpts = MultiListAndAvatarChipsOptionsMock;
 
 const template = `
   <b-multi-list-and-chips
-        [options]="options"
+        [options]="options || listOpts"
         [listLabel]="listLabel"
         [chipsLabel]="chipsLabel"
         (selectChange)="onSelectChange($event)">
   </b-multi-list-and-chips>
+
+  <br><br>
+
+        <b-radio-button [radioConfig]="[
+          {id: 1, label: 'Hobbies'},
+          {id: 2, label: 'People'}
+        ]"
+        [value]="{id: 1}"
+        (radioChange)="options = $event === 1 ? listOpts : avatarListOpts">
+      </b-radio-button>
 `;
 
 const note = `
@@ -79,13 +94,15 @@ const toAdd = () => ({
     listLabel: text('chipsLabel', 'Select fields:'),
     chipsLabel: text('listLabel', 'Selected fields:'),
     onSelectChange: action('ListChange'),
-    options: object('options', options)
+    listOpts: object('listOpts', listOpts),
+    avatarListOpts: object('avatarListOpts', avatarListOpts)
   },
   moduleMetadata: {
     imports: [
       MultiListAndChipsModule,
       StoryBookLayoutModule,
-      BrowserAnimationsModule
+      BrowserAnimationsModule,
+      RadioButtonModule
     ]
   }
 });

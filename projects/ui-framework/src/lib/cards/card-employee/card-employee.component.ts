@@ -1,17 +1,7 @@
-import {
-  Component,
-  Input,
-  HostBinding,
-  Output,
-  EventEmitter,
-  HostListener
-} from '@angular/core';
-import { CardData } from '../cards.interface';
+import { Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
+import { CardEmployee } from '../cards.interface';
 import { CardType } from '../cards.enum';
-import {
-  AvatarSize,
-  AvatarOrientation
-} from '../../buttons-indicators/avatar/avatar.enum';
+import { AvatarOrientation, AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 
 @Component({
   selector: 'b-card-employee, [b-card-employee]',
@@ -21,12 +11,10 @@ import {
 export class EmployeeCardComponent {
   constructor() {}
 
-  @Input() card: CardData;
+  @Input() card: CardEmployee;
   @Input() type: CardType = CardType.primary;
-  @Input() index: number;
   @Input() clickable = false;
 
-  cardType = CardType;
   avatarSize = AvatarSize;
   avatarOrientation = AvatarOrientation;
 

@@ -322,7 +322,7 @@ export { DividerComponent } from './lib/layout/divider/divider.component';
 // Cards
 export { CardsModule } from './lib/cards/cards.module';
 export { CardType } from './lib/cards/cards.enum';
-export { CardDataType, CardData, AddCardData, CardClickEvent } from './lib/cards/cards.interface';
+export { CardContent, CardData, CardEmployee, AddCardData } from './lib/cards/cards.interface';
 // Single card
 export { CardComponent } from './lib/cards/card/card.component';
 // Add new Card

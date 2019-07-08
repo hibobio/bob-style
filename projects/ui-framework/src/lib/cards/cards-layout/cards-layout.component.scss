@@ -9,46 +9,15 @@ $grid-gap: 15px;
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  margin: $grid-gap / -2;
-
-  @supports (display: grid) {
-    display: grid;
-    grid-gap: $grid-gap;
-    margin: 0;
-  }
+  display: grid;
+  grid-gap: $grid-gap;
 
   &.cards-primary {
-    @supports (display: grid) {
-      grid-template-columns: repeat($fit-strategy, minmax(190px, 1fr));
-    }
+    grid-template-columns: repeat($fit-strategy, minmax(190px, 1fr));
   }
 
   &.cards-secondary,
   &.cards-tertiary {
-    @supports (display: grid) {
-      grid-template-columns: repeat($fit-strategy, minmax(260px, 1fr));
-    }
+    grid-template-columns: repeat($fit-strategy, minmax(260px, 1fr));
   }
-
-  li {
-    margin: $grid-gap / 2;
-
-    @supports (display: grid) {
-      min-width: 0;
-      width: auto;
-      margin: 0;
-    }
-  }
-}
-
-// flex layout fallback
-
-.card-primary {
-  width: calc(100% / 4 - #{$grid-gap});
-}
-.card-secondary,
-.card-tertiary {
-  width: calc(100% / 3 - #{$grid-gap * 2 / 3});
 }

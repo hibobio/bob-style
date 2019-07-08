@@ -11,29 +11,18 @@
   </b-square-button>
 </b-menu>
 
-<p class="card-top"
-   *ngIf="type !== cardType.tertiary && ifString(card.data.header)">
-  {{ card.data.header }}
-</p>
-
-<b-component-renderer class="card-top"
-                      *ngIf="type !== cardType.tertiary && ifComponent(card.data.header)"
-                      [render]="card.data.header"
-                      (click)="onComponentClick($event, card.data.header)"></b-component-renderer>
+<div class="card-top">
+  <ng-content select="[card-top]"></ng-content>
+</div>
 
 <p class="card-content"
+   *ngIf="card.data.text"
    [b-truncate-tooltip]="type === cardType.primary ? 4 : 3"
    [delay]="100"
    [trustCssVars]="true">
   {{ card.data.text }}
 </p>
 
-<p class="card-bottom"
-   *ngIf="ifString(card.data.footer)">
-  {{ card.data.footer }}
-</p>
-
-<b-component-renderer class="card-bottom"
-                      *ngIf="ifComponent(card.data.footer)"
-                      [render]="card.data.footer"
-                      (click)="onComponentClick($event, card.data.footer)"></b-component-renderer>
+<div class="card-bottom">
+  <ng-content select="[card-bottom]"></ng-content>
+</div>

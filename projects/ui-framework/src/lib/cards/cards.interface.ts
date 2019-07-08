@@ -1,26 +1,23 @@
-import { RenderedComponent } from '../services/component-renderer/component-renderer.interface';
 import { MenuItem } from '../navigation/menu/menu.interface';
-import { Avatar } from '../buttons-indicators/avatar/avatar.interface';
 
-export interface CardDataType {
+export interface CardContent {
   text?: string;
-  header?: string | RenderedComponent;
-  footer?: string | RenderedComponent;
-  avatar?: Avatar;
+  subText?: string;
 }
 
 export interface CardData {
-  data: CardDataType;
+  data: CardContent;
   menu?: MenuItem[];
+}
+
+export interface CardEmployee {
+  imageSource: string;
+  title: string;
+  subtitle: string;
 }
 
 export interface AddCardData {
   title: string;
   subtitle?: string;
   action: (...args: any[]) => void;
-}
-
-export interface CardClickEvent {
-  cardIndex: number;
-  card: CardData;
 }

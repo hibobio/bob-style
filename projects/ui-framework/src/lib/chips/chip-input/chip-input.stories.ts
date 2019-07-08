@@ -21,7 +21,7 @@ const story2 = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
 );
 
-const options = mockHobbies;
+const options = mockHobbies();
 const value = [...mockHobbies(3), 'Rimming'];
 
 const template = `

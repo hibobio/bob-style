@@ -1,34 +1,36 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  object,
-  select,
-  withKnobs,
-  boolean
-} from '@storybook/addon-knobs/angular';
+import { boolean, object, select, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { CardsModule } from '../cards.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-
 import { CardsMockData } from '../cards.mock';
 import { CardType } from '../cards.enum';
-
-import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { SliderModule } from '../../buttons-indicators/slider/slider.module';
-import { SliderComponent } from '../../buttons-indicators/slider/slider.component';
+import { mockAvatar } from '../../mock.const';
 
 const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs
 );
+
+const avatarMock = mockAvatar();
 
 const template = `
 <b-card [card]="cardData"
         [type]="type"
         [clickable]="clickable"
         (clicked)="cardClickHandler($event)">
+  <b-avatar card-top
+            [imageSource]="'${avatarMock}'"
+            [title]="'Nada Gish'">
+  </b-avatar>
+  <b-slider card-bottom
+            [value]="50"
+            [readOnly]="true">
+  </b-slider>
 </b-card>
 `;
 
@@ -63,9 +65,6 @@ const note = `
   --- | --- | --- | ---
   data | CardDataType | card data | none
   menu | MenuItem[] | array of menu items | none (optional)
-
-  *Note:* For description of [data: CardDataType] properties, see <u>Cards Layout</u> story.
-
 `;
 
 story.add(
@@ -85,9 +84,8 @@ story.add(
           BrowserAnimationsModule,
           CardsModule,
           AvatarModule,
-          SliderModule
+          SliderModule,
         ],
-        entryComponents: [AvatarComponent, SliderComponent]
       }
     };
   },

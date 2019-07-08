@@ -50,8 +50,6 @@ export const CardsMockData: CardData[] = [
   {
     data: {
       text: 'Compensation update',
-      header: headerComponent(1),
-      footer: footerComponent()
     },
     menu: menuMock
   },
@@ -60,32 +58,24 @@ export const CardsMockData: CardData[] = [
       text: `Compensation update with a very long text that
         cuts off after 4 lines of text. And here is another very long text that should not be
         displayed at all.`,
-      header: headerComponent(2),
-      footer: footerComponent()
     },
     menu: menuMock
   },
   {
     data: {
       text: 'Another compensation update',
-      header: headerComponent(3),
-      footer: footerComponent()
     },
     menu: menuMock
   },
   {
     data: {
       text: 'Update that compensation already!',
-      header: headerComponent(4),
-      footer: footerComponent()
     },
     menu: menuMock
   },
   {
     data: {
       text: `Come on! The compensation has not been updated for ages!`,
-      header: headerComponent(5),
-      footer: footerComponent()
     },
     menu: menuMock
   },
@@ -93,19 +83,13 @@ export const CardsMockData: CardData[] = [
     data: {
       text: `If you dont update the compensation immidiately,
       I will update your compensation and you will not like it!`,
-      header: headerComponent(6),
-      footer: footerComponent()
     },
     menu: menuMock
   }
 ];
 
 export const EmployeeCardsMockData: CardData[] = mockNames(6).map(name => ({
-  data: {
-    avatar: {
-      imageSource: mockAvatar(),
-      title: name,
-      subtitle: mockJobs(1)
-    }
-  }
+  imageSource: mockAvatar(),
+  title: name,
+  subtitle: mockJobs(1)
 }));

@@ -1,11 +1,15 @@
-import { SelectGroupOption } from '../../form-elements/lists/list.interface';
+import {
+  SelectGroupOption,
+  SelectOption
+} from '../../form-elements/lists/list.interface';
 import {
   simpleUID,
   randomNumber,
   randomFromArray,
   arrayDifference
 } from '../../services/utils/functional-utils';
-import { mockHobbies } from '../../mock.const';
+import { mockHobbies, mockNames, mockAvatar } from '../../mock.const';
+import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 
 const maxOpts = 10;
 
@@ -19,8 +23,8 @@ const kidsHobbies = randomFromArray(
   maxOpts
 );
 
-const mayBeSelected = () => {
-  return randomNumber() > 90;
+const mayBeSelected = (perc = 80) => {
+  return randomNumber() > perc;
 };
 
 export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
@@ -47,5 +51,24 @@ export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
       id: simpleUID(),
       selected: mayBeSelected()
     }))
+  }
+];
+
+export const MultiListAndAvatarChipsOptionsMock: SelectGroupOption[] = [
+  {
+    groupName: 'People',
+    options: mockNames(30).map(
+      (person: string): SelectOption => ({
+        value: person,
+        id: simpleUID(),
+        selected: mayBeSelected(),
+        prefixComponent: {
+          component: AvatarComponent,
+          attributes: {
+            imageSource: mockAvatar()
+          }
+        }
+      })
+    )
   }
 ];

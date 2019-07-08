@@ -51,8 +51,8 @@ const note = `
 
   Name | Type | Description
   --- | --- | ---
-  radioConfig | string[] / RadioConfig[] | list of possible values or array of RadioConfig ({id,value}) objects
-  value | string / number | value representing one of the string[] options or id of one of the RadioConfig ({id,value}) objects
+  radioConfig | RadioConfig[] | list of RadioConfig ({id,value}) objects
+  value | RadioConfig | selected option
   direction | RadioDirection | column or row, default=row
   label | string | label text
   hintMessage | string | hint text
@@ -60,7 +60,7 @@ const note = `
   errorMessage | string | error text
   disabled | boolean | is field disabled
   required | boolean | is field required
-  radioChange | Function | callback for radioChange event
+  radioChange | &lt;string/number&gt; | fired on radio change, returns option ID
 
   ~~~
   ${template}
@@ -75,7 +75,7 @@ radioStories.add(
       props: {
         value: object('value', { id: 11 }),
 
-        options: array('radioConfig', [
+        options: object('radioConfig', [
           { id: 11, label: 'Option one' },
           { id: 12, label: 'Option two' },
           { id: 13, label: 'Option three' }

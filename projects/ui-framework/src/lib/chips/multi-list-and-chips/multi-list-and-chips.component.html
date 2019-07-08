@@ -7,6 +7,7 @@
                 [attr.aria-labelledby]="listLabel ? listID : null"
                 [options]="listOptions"
                 [maxHeight]="listElHeight*6"
+                [showSingleGroupHeader]="true"
                 (selectChange)="onListChange($event)">
   </b-multi-list>
 </div>
