@@ -22,7 +22,6 @@ const template = `
 <b-social [value]="value"
           [type]="type"
           [errorMessage]="errorMessage"
-          [label]="label"
           [placeholder]="placeholder"
           [disabled]="disabled"
           [required]="required"
@@ -48,9 +47,14 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  value | string | type of input field | none
-  label | string | label text | none
+  value | string | field value | null
+  type | Social | type of input field | null
   socialInputChange | action | socialInputChange output string | none
+  required | boolean | required | false
+  disabled | boolean | disabled | false
+  errorMessage | string | error message | null
+  hintMessage | string | hint message | null
+  socialInputChange | InputEvent | output event | emitter
 
   ~~~
   ${template}
@@ -63,14 +67,13 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
+        required: boolean('required', false),
         type: select('type', Social, Social.facebook),
         value: text('value', ''),
         errorMessage: text('errorMessage', ''),
-        label: text('label', ''),
-        placeholder: text('placeholder', 'Your name'),
         socialInputChange: action('social'),
         disabled: boolean('disabled', false),
-        required: boolean('required', false),
+        placeholder: text('placeholder', 'Your name'),
         hintMessage: text('hintMessage', '')
       },
       moduleMetadata: {
