@@ -59,7 +59,7 @@ class TestComponent {
   text3 = 'And this text too! TEXTEND2';
 }
 
-describe('TruncateTooltipComponent', () => {
+fdescribe('TruncateTooltipComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let testComponent: TestComponent;
 
@@ -95,14 +95,16 @@ describe('TruncateTooltipComponent', () => {
           By.css('b-truncate-tooltip:not(.test1)')
         ).componentInstance;
 
-        bttComp1.type = TruncateTooltiptype.eager;
+        bttComp1.type = TruncateTooltiptype.material;
         bttComp1.expectChanges = true;
         bttComp1.trustCssVars = false;
         bttComp1.delay = 0;
-        bttComp2.type = TruncateTooltiptype.eager;
+        bttComp1.lazyness = 0;
+        bttComp2.type = TruncateTooltiptype.material;
         bttComp2.expectChanges = true;
         bttComp2.trustCssVars = false;
         bttComp2.delay = 0;
+        bttComp2.lazyness = 0;
 
         setTimeout(() => {
           bttComp1textContainer = fixture.debugElement.query(

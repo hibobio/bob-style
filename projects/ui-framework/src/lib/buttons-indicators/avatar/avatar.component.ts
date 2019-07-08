@@ -10,7 +10,8 @@ import {
   SimpleChanges,
   OnChanges,
   OnInit,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  NgZone
 } from '@angular/core';
 import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
 import { AvatarBadges, BadgeSize } from './avatar.consts';
@@ -29,7 +30,8 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   constructor(
     private host: ElementRef,
     private DOM: DOMhelpers,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private zone: NgZone
   ) {}
 
   @ViewChild('content', { static: false }) private content: ElementRef;
@@ -96,9 +98,13 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.hasContent =
-      this.content && !this.DOM.isEmpty(this.content.nativeElement);
-    this.cd.markForCheck();
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.hasContent =
+          this.content && !this.DOM.isEmpty(this.content.nativeElement);
+        this.cd.markForCheck();
+      }, 0);
+    });
   }
 
   setCssVars(): void {

@@ -24,7 +24,7 @@ import { DOMhelpers } from '../utils/dom-helpers.service';
         z-index: 100;
       }
     `,
-    'span: {display:block; white-space:nowrap;}'
+    'span {display:block; white-space:nowrap;}'
   ],
   providers: []
 })

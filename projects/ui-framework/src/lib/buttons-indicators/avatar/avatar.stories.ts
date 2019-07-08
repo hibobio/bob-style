@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsModule } from '../../icons/icons.module';
 import { ChipType } from '../../chips/chips.enum';
 import { mockNames, mockJobs, mockAvatar } from '../../mock.const';
+import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const avatarStories = storiesOf(
   `${ComponentGroupType.ButtonsAndIndicators}.Avatar`,
@@ -82,6 +83,7 @@ const storyTemplate = `
   <div style="display: flex; justify-content: center; padding: 30px;">
     ${template}
   </div>
+  <b-stats></b-stats>
 </b-story-book-layout>
 `;
 
@@ -116,7 +118,8 @@ avatarStories.add(
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           AvatarModule,
-          IconsModule
+          IconsModule,
+          UtilComponentsModule
         ]
       }
     };

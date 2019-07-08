@@ -59,8 +59,8 @@ const storyTemplate = `
       <br>
       ${template4}
     </div>
-    <b-stats></b-stats>
   </div>
+  <b-stats></b-stats>
 </b-story-book-layout>
 `;
 

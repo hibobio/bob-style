@@ -15,12 +15,13 @@ import { UtilsService } from '../utils/utils.service';
 import { Subscription } from 'rxjs';
 import { DOMhelpers, TextProps } from '../utils/dom-helpers.service';
 import { TruncateTooltiptype } from './truncate-tooltip.enum';
+import { simpleUID } from '../utils/functional-utils';
 
 @Component({
   selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
   template: `
     <i
-      *ngIf="type !== types.css && tooltipAllowed && tooltipEnabled"
+      *ngIf="type === types.material && tooltipAllowed && tooltipEnabled"
       class="tooltip-trigger"
       [matTooltip]="tooltipText"
       [matTooltipShowDelay]="delay"
@@ -54,9 +55,7 @@ export class TruncateTooltipComponent
     private DOM: DOMhelpers,
     private zone: NgZone,
     private cd: ChangeDetectorRef
-  ) {
-    cd.detach();
-  }
+  ) {}
 
   @ViewChild('textContainer', { static: true }) textContainer: ElementRef;
   @ViewChild('directiveTemplate', { read: ViewContainerRef, static: true })
@@ -74,7 +73,7 @@ export class TruncateTooltipComponent
   @Input() lazyness = 200;
   @Input() expectChanges = false;
   @Input() trustCssVars = false;
-  @Input() type: TruncateTooltiptype = TruncateTooltiptype.lazy;
+  @Input() type: TruncateTooltiptype = TruncateTooltiptype.auto;
 
   private resizeSubscription: Subscription;
   private textElementTextProps: TextProps;
@@ -87,33 +86,11 @@ export class TruncateTooltipComponent
   public tooltipAllowed = false;
   public initialized = this.trustCssVars;
   readonly types = TruncateTooltiptype;
-
-  private onMouseEnter = () => {
-    if (!this.tooltipAllowed && !this.hoverTimer) {
-      this.hoverTimer = setTimeout(() => {
-        this.textContainer.nativeElement.removeEventListener(
-          'mouseenter',
-          this.onMouseEnter
-        );
-        this.textContainer.nativeElement.removeEventListener(
-          'mouseleave',
-          this.onMouseLeave
-        );
-        this.tooltipAllowed = true;
-        this.cd.reattach();
-      }, this.lazyness);
-    }
-  }
-
-  private onMouseLeave = () => {
-    if (this.hoverTimer) {
-      clearTimeout(this.hoverTimer);
-      this.hoverTimer = null;
-    }
-  }
+  counter = 0;
+  id = simpleUID();
 
   ngOnInit(): void {
-    if (this.type === TruncateTooltiptype.lazy) {
+    if (this.lazyness !== 0) {
       this.textContainer.nativeElement.addEventListener(
         'mouseenter',
         this.onMouseEnter
@@ -131,6 +108,7 @@ export class TruncateTooltipComponent
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
         this.tooltipText = this.textContainer.nativeElement.textContent.trim();
+
         this.setCssVars();
         this.setMaxLinesAttr();
         // }, 0);
@@ -139,12 +117,12 @@ export class TruncateTooltipComponent
         this.checkTooltipNecessity();
 
         this.initialized = true;
-
-        if (this.type === TruncateTooltiptype.css && !this.expectChanges) {
-          this.cd.detectChanges();
-        } else {
-          this.cd.reattach();
+        if (this.type === TruncateTooltiptype.css || this.lazyness === 0) {
+          this.tooltipAllowed = true;
         }
+
+        this.cd.markForCheck();
+        // this.cd.detectChanges();
       }, 0);
     });
 
@@ -156,6 +134,7 @@ export class TruncateTooltipComponent
   }
 
   ngDoCheck(): void {
+    console.log('TT Change', this.id, ++this.counter);
     if (this.expectChanges) {
       if (
         this.initialized &&
@@ -175,6 +154,34 @@ export class TruncateTooltipComponent
     if (this.resizeSubscription) {
       this.resizeSubscription.unsubscribe();
     }
+    if (this.hoverTimer) {
+      clearTimeout(this.hoverTimer);
+      this.hoverTimer = null;
+    }
+  }
+
+  private onMouseEnter = () => {
+    console.log('onMouseEnter');
+    if (!this.hoverTimer) {
+      this.hoverTimer = setTimeout(() => {
+        this.textContainer.nativeElement.removeEventListener(
+          'mouseenter',
+          this.onMouseEnter
+        );
+        this.textContainer.nativeElement.removeEventListener(
+          'mouseleave',
+          this.onMouseLeave
+        );
+        this.tooltipAllowed = true;
+        // this.cd.reattach();
+        // this.cd.detectChanges();
+        console.log('onMouseEnter markForCheck');
+        this.cd.markForCheck();
+      }, this.lazyness);
+    }
+  }
+
+  private onMouseLeave = () => {
     if (this.hoverTimer) {
       clearTimeout(this.hoverTimer);
       this.hoverTimer = null;
@@ -218,11 +225,11 @@ export class TruncateTooltipComponent
   }
 
   private checkTooltipNecessity(): void {
-    if (
-      this.type === TruncateTooltiptype.css &&
-      this.tooltipText.length > 130
-    ) {
-      this.type = TruncateTooltiptype.lazy;
+    if (this.type === TruncateTooltiptype.auto) {
+      this.type =
+        this.tooltipText.length > 130
+          ? TruncateTooltiptype.material
+          : TruncateTooltiptype.css;
     }
 
     const compareHeight = this.trustCssVars

@@ -76,9 +76,10 @@ const storyTemplate = `
         (radioChange)="tableData = ($event && $event.value === 2) || ($event === 2) ? [] : CardTableData">
       </b-radio-button>
     </p>
-    <b-stats></b-stats>
+
   </div>
-  </div>
+</div>
+<b-stats></b-stats>
 </b-story-book-layout>
 `;
 
