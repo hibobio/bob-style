@@ -1,12 +1,12 @@
 import { storiesOf } from '@storybook/angular';
 import { select, withKnobs } from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogModule } from './dialog.module';
 import { DialogExampleModule } from './dialog-example.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const buttonStories = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
@@ -21,6 +21,7 @@ const storyTemplate = `
   <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
     ${template}
   </div>
+  <b-stats></b-stats>
 </b-story-book-layout>
 `;
 
@@ -123,7 +124,8 @@ buttonStories.add(
         ButtonsModule,
         BrowserAnimationsModule,
         DialogExampleModule,
-        StoryBookLayoutModule
+        StoryBookLayoutModule,
+        UtilComponentsModule,
       ]
     }
   }),

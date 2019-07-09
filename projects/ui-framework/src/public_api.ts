@@ -97,7 +97,7 @@ export { EmptyStateConfig } from './lib/buttons-indicators/empty-state/empty-sta
 // Chip Module
 export { ChipsModule } from './lib/chips/chips.module';
 export { ChipType, ChipListAlign } from './lib/chips/chips.enum';
-export { Chip, ChipListConfig,ChipKeydownEvent, ChipInputChange } from './lib/chips/chips.interface';
+export { Chip, ChipListConfig, ChipKeydownEvent, ChipInputChange } from './lib/chips/chips.interface';
 // Single Chip
 export { ChipModule } from './lib/chips/chip/chip.module';
 export {
@@ -378,8 +378,8 @@ export { ComponentRendererModule } from './lib/services/component-renderer/compo
 export { ComponentRendererComponent } from './lib/services/component-renderer/component-renderer.component';
 export { RenderedComponent } from './lib/services/component-renderer/component-renderer.interface';
 // Truncate Tooltip
-export { TruncateTooltipModule} from './lib/services/truncate-tooltip/truncate-tooltip.module';
-export { TruncateTooltipComponent} from './lib/services/truncate-tooltip/truncate-tooltip.component';
+export { TruncateTooltipModule } from './lib/services/truncate-tooltip/truncate-tooltip.module';
+export { TruncateTooltipComponent } from './lib/services/truncate-tooltip/truncate-tooltip.component';
 export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/truncate-tooltip.directive';
 export { TruncateTooltipType, TruncateTooltipPosition } from './lib/services/truncate-tooltip/truncate-tooltip.enum';
 
