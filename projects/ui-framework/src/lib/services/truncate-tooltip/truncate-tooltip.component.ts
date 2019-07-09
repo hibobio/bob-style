@@ -83,43 +83,6 @@ export class TruncateTooltipComponent
   public initialized = this.trustCssVars;
   readonly types = TruncateTooltiptype;
 
-  private onWindowResize = debounce(() => {
-    this.checkTooltipNecessity();
-    if (!this.cd['destroyed']) {
-      this.cd.detectChanges();
-    }
-  }, 1000);
-
-  private startHoverTimer = () => {
-    if (!this.hoverTimer) {
-      this.hoverTimer = setTimeout(() => {
-        this.removeMouseListeners();
-        this.tooltipAllowed = true;
-        if (!this.cd['destroyed']) {
-          this.cd.detectChanges();
-        }
-      }, this.lazyness);
-    }
-  }
-
-  private stopHoverTimer() {
-    if (this.hoverTimer) {
-      clearTimeout(this.hoverTimer);
-      this.hoverTimer = null;
-    }
-  }
-
-  private removeMouseListeners() {
-    this.textContainer.nativeElement.removeEventListener(
-      'mouseenter',
-      this.startHoverTimer
-    );
-    this.textContainer.nativeElement.removeEventListener(
-      'mouseleave',
-      this.stopHoverTimer
-    );
-  }
-
   ngOnInit(): void {
     if (this.lazyness !== 0 && this.type !== TruncateTooltiptype.css) {
       this.textContainer.nativeElement.addEventListener(
@@ -157,8 +120,6 @@ export class TruncateTooltipComponent
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
         }
-        // console.log(this.cd['destroyed']);
-        // // console.log((this.cd as any).destroyed());
       }, 0);
     });
   }
@@ -263,5 +224,43 @@ export class TruncateTooltipComponent
       this.checkTooltipNecessity();
     }
     this.maxLinesCache = this.maxLines;
+  }
+
+  // tslint:disable-next-line: member-ordering
+  private onWindowResize = debounce(() => {
+    this.checkTooltipNecessity();
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
+  }, 1000);
+
+  private startHoverTimer = () => {
+    if (!this.hoverTimer) {
+      this.hoverTimer = setTimeout(() => {
+        this.removeMouseListeners();
+        this.tooltipAllowed = true;
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, this.lazyness);
+    }
+  }
+
+  private stopHoverTimer() {
+    if (this.hoverTimer) {
+      clearTimeout(this.hoverTimer);
+      this.hoverTimer = null;
+    }
+  }
+
+  private removeMouseListeners() {
+    this.textContainer.nativeElement.removeEventListener(
+      'mouseenter',
+      this.startHoverTimer
+    );
+    this.textContainer.nativeElement.removeEventListener(
+      'mouseleave',
+      this.stopHoverTimer
+    );
   }
 }
