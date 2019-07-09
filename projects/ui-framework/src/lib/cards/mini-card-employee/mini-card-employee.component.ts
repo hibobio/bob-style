@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input } from '@angular/core';
 import {AvatarSize} from '../../buttons-indicators/avatar/avatar.enum';
 
 export interface MiniEmployeeCard {
@@ -13,13 +13,8 @@ export interface MiniEmployeeCard {
   templateUrl: './mini-card-employee.component.html',
   styleUrls: ['./mini-card-employee.component.scss']
 })
-export class MiniEmployeeCardComponent implements OnInit {
+export class MiniEmployeeCardComponent {
   avatarSize = AvatarSize;
   @Input() card: MiniEmployeeCard;
-  constructor() { }
-
-  ngOnInit() {
-  }
-
 }
 
