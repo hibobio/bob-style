@@ -1,25 +1,28 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CardProfileComponent } from './card-profile.component';
+import { MiniEmployeeCardComponent } from './mini-card-employee.component';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import {TypographyModule} from '../../typography/typography.module';
+import {TruncateTooltipModule} from '../../services/truncate-tooltip/truncate-tooltip.module';
+import {mockAvatar} from '../../mock.const';
 
 describe('CardProfileComponent', () => {
-  let component: CardProfileComponent;
-  let fixture: ComponentFixture<CardProfileComponent>;
+  let component: MiniEmployeeCardComponent;
+  let fixture: ComponentFixture<MiniEmployeeCardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [AvatarModule],
-      declarations: [ CardProfileComponent ],
+      imports: [AvatarModule, TypographyModule, TruncateTooltipModule],
+      declarations: [ MiniEmployeeCardComponent ],
     })
       .compileComponents()
       .then(() => {
-        fixture = TestBed.createComponent(CardProfileComponent);
+        fixture = TestBed.createComponent(MiniEmployeeCardComponent);
         component = fixture.componentInstance;
         component.card = {
           name: 'Larry Murfiray',
           title: 'Product design',
-          avatar: 'http://i.pravatar.cc/200?img=5',
+          imageSource: mockAvatar(),
           dates: '11/07 - 20/07'
         };
         fixture.detectChanges();

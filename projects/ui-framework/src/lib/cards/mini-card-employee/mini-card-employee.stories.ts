@@ -3,26 +3,20 @@ import {
   object,
   withKnobs,
 } from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { CardsModule } from '../cards.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-
-import { EmployeeCardsMockData } from '../cards.mock';
+import {MiniEmployeeCard} from './mini-card-employee.component';
+import {mockAvatar} from '../../mock.const';
 
 const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-card-profile [card]="{
-        name: 'Larry Murfiray askdf alskdjf asdf asldf asdfasd fasdf a',
-        title: 'Product design',
-        avatar: 'http://i.pravatar.cc/200?img=5',
-        dates: '11/07 - 20/07'
-      }"
-></b-card-profile>
+<b-mini-employee-card [card]="cardData"
+></b-mini-employee-card>
 `;
 
 const storyTemplate = `
@@ -55,14 +49,20 @@ const note = `
 
 `;
 
+const mockMiniProfileCardData: MiniEmployeeCard = {
+  name: 'Larry Murfiray',
+  title: 'Product design',
+  imageSource: mockAvatar(),
+  dates: '11/07 - 20/07'
+};
+
 story.add(
   'Profile Card',
   () => {
     return {
       template: storyTemplate,
       props: {
-        card: object('card', EmployeeCardsMockData[0]),
-        cardClickHandler: action('Card clicked')
+        cardData: object('cardData', mockMiniProfileCardData)
       },
       moduleMetadata: {
         imports: [StoryBookLayoutModule, BrowserAnimationsModule, CardsModule],
