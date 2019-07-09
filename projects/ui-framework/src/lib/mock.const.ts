@@ -67,6 +67,11 @@ export const mockNamesList = [
   'Stefania Dollinger'
 ];
 
+export const mockFirstNamesList = mockNamesList.map(name => name.split(' ')[0]);
+export const mockSecondNamesList = mockNamesList.map(
+  name => name.split(' ')[1]
+);
+
 export const mockJobsList = [
   'A/B tester',
   'Application analyst',
@@ -432,7 +437,17 @@ export const mockAvatar = () =>
     'women'
   ])}/${randomNumber(0, 99)}.jpg`;
 
-export const mockNames = (num = null) => randomFromArray(mockNamesList, num);
+export const mockNames = (num = null) => {
+  if (num === 1) {
+    return `${randomFromArray(mockFirstNamesList, num)} ${randomFromArray(
+      mockSecondNamesList,
+      num
+    )}`;
+  }
+  const fns = randomFromArray(mockFirstNamesList, num);
+  const sns = randomFromArray(mockSecondNamesList, num);
+  return fns.map((n, i) => `${n} ${sns[i]}`);
+};
 
 export const mockJobs = (num = null) => randomFromArray(mockJobsList, num);
 

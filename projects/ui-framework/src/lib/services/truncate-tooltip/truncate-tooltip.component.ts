@@ -9,7 +9,8 @@ import {
   DoCheck,
   NgZone,
   OnInit,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { DOMhelpers, TextProps } from '../utils/dom-helpers.service';
 import { TruncateTooltiptype } from './truncate-tooltip.enum';
