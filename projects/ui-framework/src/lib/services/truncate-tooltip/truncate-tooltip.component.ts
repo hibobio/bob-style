@@ -159,7 +159,10 @@ export class TruncateTooltipComponent
         this.textElementTextProps.lineHeight *
         this.maxLines;
       this.DOM.setCssProps(this.textContainer.nativeElement, {
-        'max-height': this.textElementTextProps.maxHeight + 'px'
+        'max-height':
+          this.textElementTextProps.maxHeight > 0
+            ? this.textElementTextProps.maxHeight + 'px'
+            : null
       });
     }
   }
@@ -169,11 +172,6 @@ export class TruncateTooltipComponent
       this.textElementTextProps = this.DOM.getElementTextProps(
         this.DOM.getDeepTextElement(this.textContainer.nativeElement)
       );
-      this.textElementTextProps.maxHeight =
-        this.textElementTextProps.fontSize *
-        this.textElementTextProps.lineHeight *
-        this.maxLines;
-
       this.DOM.setCssProps(this.textContainer.nativeElement, {
         '--line-height': this.textElementTextProps.lineHeight,
         '--font-size': this.textElementTextProps.fontSize + 'px'
@@ -208,7 +206,7 @@ export class TruncateTooltipComponent
   }
 
   private parseMaxLines(value: string | number): number {
-    value = parseInt(value as string, 10);
+    value = value === null ? 0 : parseInt(value as string, 10);
     return value === value ? value : this.maxLinesDefault;
   }
 
