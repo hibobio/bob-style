@@ -73,6 +73,7 @@ export const mockRowData = [
     },
     hiredDate: '2017-11-29',
     actions: gridActions,
+    isClickable: true,
   },
   {
     fullName: 'Doron Cynsiger',
@@ -89,6 +90,7 @@ export const mockRowData = [
     },
     hiredDate: '2017-02-29',
     actions: gridActions,
+    isClickable: false,
   },
   {
     fullName: 'Israel David',
@@ -104,6 +106,7 @@ export const mockRowData = [
     },
     hiredDate: '2016-01-29',
     actions: gridActions,
+    isClickable: true,
   },
   {
     fullName: 'Ishai Borovoy',
@@ -120,6 +123,7 @@ export const mockRowData = [
     },
     hiredDate: '2017-01-30',
     actions: gridActions,
+    isClickable: true,
   },
 ];
 

@@ -67,6 +67,7 @@ export class TableComponent implements OnInit, OnChanges {
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,
       suppressContextMenu: true,
+      getRowClass: (params) => get(params.data, 'isClickable', false) ? 'row-clickable' : '',
       onGridReady: (event: GridReadyEvent) => {
         event.columnApi.autoSizeAllColumns();
         this.gridReady = true;
