@@ -28,7 +28,7 @@ $border-color: $grey-500;
 }
 :host.required {
   .bfe-label {
-    @include input-requred;
+    @include input-required;
   }
 }
 

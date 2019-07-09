@@ -94,7 +94,7 @@
 
   @if ($required-selector) {
     #{$required-selector} {
-      @include input-requred;
+      @include input-required;
     }
   }
 }
