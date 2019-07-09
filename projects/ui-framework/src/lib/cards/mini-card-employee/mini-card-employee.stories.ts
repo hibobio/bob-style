@@ -7,15 +7,15 @@ import { ComponentGroupType } from '../../consts';
 import { CardsModule } from '../cards.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import {MiniEmployeeCard} from './mini-card-employee.component';
-import {mockAvatar} from '../../mock.const';
+import { MiniEmployeeCard } from './mini-card-employee.component';
+import { mockAvatar } from '../../mock.const';
 
 const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-mini-employee-card [card]="cardData"
+<b-mini-employee-card [card]="card"
 ></b-mini-employee-card>
 `;
 
@@ -37,10 +37,10 @@ const note = `
   ~~~
 
   #### Properties
-  #### card: CardData - single card data properties
+  #### card: single card data properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  data | MiniProfileCardData | card data | none
+  card | MiniProfileCardData | card data | none
 
 
 
@@ -61,7 +61,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        cardData: object('cardData', mockMiniProfileCardData)
+        card: object('card', mockMiniProfileCardData)
       },
       moduleMetadata: {
         imports: [StoryBookLayoutModule, BrowserAnimationsModule, CardsModule],
