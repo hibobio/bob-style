@@ -20,7 +20,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Profile Card'">
+<b-story-book-layout [title]="'Mini Employee card'">
   <div style="display: flex; width:280px; margin: 50px auto; justify-content: center;">
     ${template}
   </div>
@@ -28,8 +28,7 @@ const storyTemplate = `
 `;
 
 const note = `
-  ## Profile Card
-
+  ## Mini Employee card
   #### Module
   *CardsModule*
 
