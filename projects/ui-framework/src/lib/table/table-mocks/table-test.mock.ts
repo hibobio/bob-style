@@ -36,6 +36,7 @@ export const ROW_DATA_MOCK = [
         imageSource: 'img_url1.jpg',
       },
     },
+    isClickable: true,
   },
   {
     fullName: 'Doron Cynsiger',

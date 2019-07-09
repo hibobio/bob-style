@@ -19,13 +19,19 @@ describe('SocialComponent', () => {
       linkedin: 'www.linkedin.com/in/AlanTulin',
       twitter: 'www.twitter.com/AlanTulin'
     };
-    expect(`${socialTypesRes[type].prefix}AlanTulin`).toEqual(res[type]);
+    expect(`${ socialTypesRes[type].prefix }AlanTulin`).toEqual(res[type]);
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SocialComponent],
-      imports: [NoopAnimationsModule, InputModule, IconsModule]
+      declarations: [
+        SocialComponent,
+      ],
+      imports: [
+        NoopAnimationsModule,
+        InputModule,
+        IconsModule,
+      ],
     })
       .compileComponents()
       .then(() => {
@@ -34,12 +40,12 @@ describe('SocialComponent', () => {
         component.wrapEvent = true;
         spyOn(component.changed, 'emit');
         component.type = Social.facebook;
-        fixture.detectChanges();
       });
   }));
 
   describe('ngOnInit', () => {
     it('should assign social selection (facebook) to social input type', () => {
+      fixture.detectChanges();
       const socialConfigRes = ['facebook', 'linkedin', 'twitter'];
       for (const socialType of socialConfigRes) {
         assignSocialSelection(socialType);
@@ -49,6 +55,23 @@ describe('SocialComponent', () => {
       component.value = 'www.facebook.com/AlanTulin';
       fixture.detectChanges();
       expect(component.value).toContain('www.facebook.com/AlanTulin');
+    });
+    it('should get input element id and attach to the label', () => {
+      fixture.detectChanges();
+      const inputElement = fixture.debugElement.query(By.css('b-input'));
+      const label = fixture.debugElement.query(By.css('.bfe-label label'));
+      expect(label.attributes.for).toEqual(inputElement.componentInstance.id);
+    });
+    it('should map label to type', () => {
+      const testType = (type: Social, expectedLabel: string) => {
+        component.type = type;
+        fixture.detectChanges();
+        const label = fixture.debugElement.query(By.css('.bfe-label label'));
+        expect(label.nativeElement.innerText).toBe(expectedLabel);
+      };
+      testType(Social.facebook, 'Facebook');
+      testType(Social.linkedin, 'Linkedin');
+      testType(Social.twitter, 'Twitter');
     });
   });
 

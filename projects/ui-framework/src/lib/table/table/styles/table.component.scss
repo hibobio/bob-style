@@ -97,6 +97,9 @@
         &:last-child {
           border-bottom: none;
         }
+        &.row-clickable {
+          cursor: pointer;
+        }
       }
     }
   }

@@ -221,6 +221,14 @@ describe('TableComponent', () => {
           });
           flush();
         }));
+
+        it('clickable row should have "row-clickable" selector', fakeAsync(() => {
+          fixture.autoDetectChanges();
+          const shadowRoot: DocumentFragment = fixture.debugElement.nativeElement;
+          const firstRow = shadowRoot.querySelectorAll('.ag-row')[0] as HTMLElement;
+          expect(firstRow.className.includes('row-clickable')).toBeTruthy();
+          flush();
+        }));
       });
     });
   });
