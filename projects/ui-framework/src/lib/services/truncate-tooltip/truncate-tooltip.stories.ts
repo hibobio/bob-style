@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { number, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  number,
+  text,
+  withKnobs,
+  select
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,6 +12,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { TypographyModule } from '../../typography/typography.module';
 import { TruncateTooltipModule } from './truncate-tooltip.module';
 import { UtilComponentsModule } from '../util-components/utilComponents.module';
+import { TruncateTooltiptype } from './truncate-tooltip.enum';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs
@@ -19,7 +25,7 @@ const template1 = `
   </b-big-body>
 `;
 const template2 = `
-  <b-truncate-tooltip [maxLines]="maxLines" class="employee-title">
+  <b-truncate-tooltip [maxLines]="maxLines" [type]="type" class="employee-title">
     <b-display-3>
       <span>
         <!-- this html comment should not be displayed -->
@@ -32,7 +38,7 @@ const template2 = `
   </b-truncate-tooltip>
 `;
 const template3 = `
-  <p b-truncate-tooltip="3" class="employee-title">
+  <p b-truncate-tooltip="3" [type]="type" class="employee-title">
     <span>{{ text1 }}</span>
     <span>{{ text2 }}</span>
   </p>
@@ -81,6 +87,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   maxLines | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0 or null. | 1 (optional)
+  type | TruncateTooltiptype | Use Material tooltip or CSS tooltip. Defaut 'auto' type will use Material for text longer than 130 chars, otherwise CSS | auto
 
    --------
 
@@ -131,6 +138,11 @@ story.add(
       template: storyTemplate,
       props: {
         maxLines: number('bTruncateTooltip/maxLines', 2),
+        type: select(
+          'type',
+          Object.values(TruncateTooltiptype),
+          TruncateTooltiptype.auto
+        ),
         text1: text(
           'text1',
           `If you’re trying to wear official headgear in a public setting, my advice is
