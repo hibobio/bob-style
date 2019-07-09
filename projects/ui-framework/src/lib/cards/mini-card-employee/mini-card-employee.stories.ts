@@ -1,27 +1,26 @@
 import { storiesOf } from '@storybook/angular';
 import {
   object,
-  boolean,
   withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { CardsModule } from '../cards.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { MiniEmployeeCard } from './mini-card-employee.component';
-import { mockAvatar } from '../../mock.const';
+import {MiniEmployeeCard} from './mini-card-employee.component';
+import {mockAvatar} from '../../mock.const';
 
 const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-mini-employee-card [clickable]="clickable" [card]="card"
+<b-mini-employee-card [card]="cardData"
 ></b-mini-employee-card>
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Mini Employee card'">
+<b-story-book-layout [title]="'Profile Card'">
   <div style="display: flex; width:280px; margin: 50px auto; justify-content: center;">
     ${template}
   </div>
@@ -29,7 +28,8 @@ const storyTemplate = `
 `;
 
 const note = `
-  ## Mini Employee card
+  ## Profile Card
+
   #### Module
   *CardsModule*
 
@@ -38,28 +38,31 @@ const note = `
   ~~~
 
   #### Properties
-  #### card: single card data properties
+  #### card: CardData - single card data properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  card | MiniProfileCardData | card data | none
-  clickable | boolean | is the card clickable? | false
+  data | MiniProfileCardData | card data | none
+
+
+
+  *Note:* For more info on [data: CardDataType] properties, see <u>Cards Layout</u> story.
+
 `;
 
 const mockMiniProfileCardData: MiniEmployeeCard = {
-  title: 'Larry Murfiray',
-  subtitle: 'Product design',
+  name: 'Larry Murfiray',
+  title: 'Product design',
   imageSource: mockAvatar(),
-  footer: '11/07 - 20/07'
+  dates: '11/07 - 20/07'
 };
 
 story.add(
-  'Mini Employee Card',
+  'Profile Card',
   () => {
     return {
       template: storyTemplate,
       props: {
-        card: object('card', mockMiniProfileCardData),
-        clickable: boolean('clickable', false)
+        cardData: object('cardData', mockMiniProfileCardData)
       },
       moduleMetadata: {
         imports: [StoryBookLayoutModule, BrowserAnimationsModule, CardsModule],
