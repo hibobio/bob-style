@@ -15,6 +15,7 @@ import { MultiSelectModule } from './multi-select.module';
 import { SelectGroupOption } from '../list.interface';
 import { AvatarComponent } from '../../../buttons-indicators/avatar/avatar.component';
 import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
+import { UtilComponentsModule } from '../../../services/util-components/utilComponents.module';
 
 const buttonStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -40,6 +41,7 @@ const storyTemplate = `
   <div style="max-width: 400px; margin: 30px auto;">
     ${template}
   </div>
+  <b-stats></b-stats>
 </b-story-book-layout>
 `;
 
@@ -119,7 +121,8 @@ buttonStories.add(
         TypographyModule,
         BrowserAnimationsModule,
         StoryBookLayoutModule,
-        AvatarModule
+        AvatarModule,
+        UtilComponentsModule
       ],
       entryComponents: [AvatarComponent]
     }

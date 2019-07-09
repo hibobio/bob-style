@@ -10,7 +10,7 @@
   box-sizing: border-box;
   position: relative;
   height: $wrap-height;
-  line-height: $line-height-body;
+  line-height: 1.2;
 
   &.mat-selected {
     background-color: initial;

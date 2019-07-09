@@ -17,6 +17,7 @@ import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.
 import { AgGridModule } from 'ag-grid-angular';
 import { RowSelection, TableType } from './table/table.enum';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
+import { UtilComponentsModule } from '../services/util-components/utilComponents.module';
 
 const tableStories = storiesOf(ComponentGroupType.Tables, module).addDecorator(
   withKnobs
@@ -36,8 +37,9 @@ const template = `
 const storyTemplate = `
 <b-story-book-layout [title]="'Data Table'">
   <div style="width: calc(100% - 60px); margin: 30px auto;">
-    ${ template }
+    ${template}
   </div>
+  <b-stats></b-stats>
 </b-story-book-layout>
 `;
 
@@ -65,7 +67,7 @@ const note = `
   updateRows | Function | update rows
   removeRows | Function | remove rows
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 tableStories.add(
@@ -76,7 +78,11 @@ tableStories.add(
       props: {
         type: select('type', type, TableType.Primary),
         maxHeight: number('maxHeight', null),
-        rowSelection: select('rowSelection', rowSelection, RowSelection.Multiple),
+        rowSelection: select(
+          'rowSelection',
+          rowSelection,
+          RowSelection.Multiple
+        ),
         rowData: object('rowData', mockRowData),
         columnDefs: object('columnDefs', mockColumnsDefs),
         rowClicked: action('Row clicked'),
@@ -84,17 +90,15 @@ tableStories.add(
         sortChanged: action('sort changed')
       },
       moduleMetadata: {
-        entryComponents: [
-          AvatarCellComponent,
-          ActionsCellComponent,
-        ],
+        entryComponents: [AvatarCellComponent, ActionsCellComponent],
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           TableModule,
           AgGridModule,
           AvatarModule,
-          AgGridModule.withComponents([AvatarCellComponent])
+          AgGridModule.withComponents([AvatarCellComponent]),
+          UtilComponentsModule
         ]
       }
     };
