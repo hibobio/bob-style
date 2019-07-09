@@ -59,7 +59,7 @@ class TestComponent {
   text3 = 'And this text too! TEXTEND2';
 }
 
-fdescribe('TruncateTooltipComponent', () => {
+describe('TruncateTooltipComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let testComponent: TestComponent;
 

@@ -85,7 +85,9 @@ export class TruncateTooltipComponent
 
   private onWindowResize = debounce(() => {
     this.checkTooltipNecessity();
-    this.cd.detectChanges();
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }, 1000);
 
   private startHoverTimer = () => {
@@ -93,7 +95,9 @@ export class TruncateTooltipComponent
       this.hoverTimer = setTimeout(() => {
         this.removeMouseListeners();
         this.tooltipAllowed = true;
-        this.cd.detectChanges();
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
       }, this.lazyness);
     }
   }
@@ -150,7 +154,11 @@ export class TruncateTooltipComponent
           this.removeMouseListeners();
         }
 
-        this.cd.detectChanges();
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+        // console.log(this.cd['destroyed']);
+        // // console.log((this.cd as any).destroyed());
       }, 0);
     });
   }
