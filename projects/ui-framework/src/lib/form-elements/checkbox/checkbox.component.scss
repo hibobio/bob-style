@@ -37,7 +37,7 @@
 
 :host.required.has-label {
   .bfe-label {
-    @include input-requred;
+    @include input-required;
   }
 
   .bchk-label:after {

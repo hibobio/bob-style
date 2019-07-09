@@ -1,14 +1,17 @@
-<b-icon class="social-icon"
-        [color]="iconColor.normal"
-        [icon]="socialTypes[type].icon"
-        [size]="iconSize.large">
-</b-icon>
+<div class="bfe-label"
+     [ngClass]="{'disabled': disabled, 'required': required}">
+  <b-icon class="social-icon"
+          [color]="iconColor.normal"
+          [icon]="socialTypes[type].icon"
+          [size]="iconSize.large">
+  </b-icon>
+  <label [attr.for]="inputId">{{socialLabelMap[type]}}</label>
+</div>
+
 <b-input #bInput
-         [errorMessage]="errorMessage"
          [inputType]="inputTypes.text"
          [hasPrefix]="true"
          [value]="value"
-         [label]="label"
          [placeholder]="placeholder"
          [hideLabelOnFocus]="hideLabelOnFocus"
          [hintMessage]="hintMessage"
