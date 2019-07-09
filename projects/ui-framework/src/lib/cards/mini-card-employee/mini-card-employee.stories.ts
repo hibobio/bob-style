@@ -57,7 +57,7 @@ const mockMiniProfileCardData: MiniEmployeeCard = {
 };
 
 story.add(
-  'Profile Card',
+  'Mini Employee Card',
   () => {
     return {
       template: storyTemplate,
