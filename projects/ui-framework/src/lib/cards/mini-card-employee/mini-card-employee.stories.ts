@@ -1,6 +1,7 @@
 import { storiesOf } from '@storybook/angular';
 import {
   object,
+  boolean,
   withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
@@ -15,7 +16,7 @@ const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
 );
 
 const template = `
-<b-mini-employee-card [card]="card"
+<b-mini-employee-card [clickable]="clickable" [card]="card"
 ></b-mini-employee-card>
 `;
 
@@ -41,11 +42,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   card | MiniProfileCardData | card data | none
-
-
-
-  *Note:* For more info on [data: CardDataType] properties, see <u>Cards Layout</u> story.
-
+  clickable | boolean | is the card clickable? | false
 `;
 
 const mockMiniProfileCardData: MiniEmployeeCard = {
@@ -61,7 +58,8 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        card: object('card', mockMiniProfileCardData)
+        card: object('card', mockMiniProfileCardData),
+        clickable: boolean('clickable', true)
       },
       moduleMetadata: {
         imports: [StoryBookLayoutModule, BrowserAnimationsModule, CardsModule],

@@ -10,14 +10,15 @@
   border: 1px solid $grey-300;
   border-radius: $border-radius;
   background-color: #FFFFFF;
-  box-shadow: 0 2px 15px 0 $boxShadowColor;
   flex-direction: column;
   transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
   justify-content: space-between;
-  &:hover {
-    box-shadow: 0 2px 15px 0 $grey-500;
-    transform: translateY(-10px);
+  &.clickable {
+    cursor: pointer;
+    &:hover {
+      box-shadow: 0 2px 15px 0 $grey-500;
+      transform: translateY(-10px);
+    }
   }
 
   &:before {

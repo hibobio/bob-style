@@ -340,6 +340,8 @@ export { CardComponent } from './lib/cards/card/card.component';
 export { CardAddComponent } from './lib/cards/card-add/card-add.component';
 // Employee Card
 export { EmployeeCardComponent } from './lib/cards/card-employee/card-employee.component';
+// Mini Employee Card
+export { MiniEmployeeCardComponent } from './lib/cards/mini-card-employee/mini-card-employee.component';
 // Cards Layout
 export { CardsLayoutComponent } from './lib/cards/cards-layout/cards-layout.component';
 // Card Table

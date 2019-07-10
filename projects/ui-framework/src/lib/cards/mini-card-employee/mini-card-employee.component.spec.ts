@@ -2,13 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MiniEmployeeCardComponent } from './mini-card-employee.component';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
-import {TypographyModule} from '../../typography/typography.module';
-import {TruncateTooltipModule} from '../../services/truncate-tooltip/truncate-tooltip.module';
-import {mockAvatar} from '../../mock.const';
-import {By} from '@angular/platform-browser';
-import {AvatarComponent} from '../../buttons-indicators/avatar/avatar.component';
+import { TypographyModule } from '../../typography/typography.module';
+import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
+import { mockAvatar } from '../../mock.const';
+import { By } from '@angular/platform-browser';
+import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 
-describe('CardProfileComponent', () => {
+describe('MiniEmployeeCardComponent', () => {
   let component: MiniEmployeeCardComponent;
   let fixture: ComponentFixture<MiniEmployeeCardComponent>;
   let mockComponentElement: HTMLElement;
@@ -23,6 +23,7 @@ describe('CardProfileComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(MiniEmployeeCardComponent);
         component = fixture.componentInstance;
+        component.clickable = true;
         component.card = {
           name: 'Larry Murfiray',
           title: 'Product design',
@@ -37,12 +38,19 @@ describe('CardProfileComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should have clickable class if input of clickable is true.', () => {
+    mockComponentElement = fixture.debugElement.nativeElement;
+    expect(mockComponentElement.classList).toContain('clickable');
+  });
+
   it('should have name rendered', () => {
     mockComponentElement = fixture.debugElement.query(
       By.css('.name')
     ).nativeElement;
     expect(mockComponentElement.innerText).toEqual('Larry Murfiray');
   });
+
+
 
   it('should have title rendered', () => {
     mockComponentElement = fixture.debugElement.query(

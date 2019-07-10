@@ -1,4 +1,4 @@
-import {Component, Input } from '@angular/core';
+import {Component, HostBinding, Input} from '@angular/core';
 import {AvatarSize} from '../../buttons-indicators/avatar/avatar.enum';
 
 export interface MiniEmployeeCard {
@@ -14,7 +14,13 @@ export interface MiniEmployeeCard {
   styleUrls: ['./mini-card-employee.component.scss']
 })
 export class MiniEmployeeCardComponent {
-  avatarSize = AvatarSize;
+  @Input() clickable = false;
   @Input() card: MiniEmployeeCard;
+  avatarSize = AvatarSize;
+  @HostBinding('class.clickable')
+  get isClickable(): boolean {
+    console.log(this.clickable);
+    return this.clickable;
+  }
 }
 
