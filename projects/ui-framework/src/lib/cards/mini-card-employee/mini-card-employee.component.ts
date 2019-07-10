@@ -19,7 +19,6 @@ export class MiniEmployeeCardComponent {
   avatarSize = AvatarSize;
   @HostBinding('class.clickable')
   get isClickable(): boolean {
-    console.log(this.clickable);
     return this.clickable;
   }
 }
