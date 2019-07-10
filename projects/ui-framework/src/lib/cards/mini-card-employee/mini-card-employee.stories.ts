@@ -59,7 +59,7 @@ story.add(
       template: storyTemplate,
       props: {
         card: object('card', mockMiniProfileCardData),
-        clickable: boolean('clickable', true)
+        clickable: boolean('clickable', false)
       },
       moduleMetadata: {
         imports: [StoryBookLayoutModule, BrowserAnimationsModule, CardsModule],
