@@ -6,7 +6,8 @@ export enum InputTypes {
   search = 'search',
   tel = 'tel',
   url = 'url',
-  date = 'date'
+  date = 'date',
+  hidden = 'hidden'
 }
 
 export enum InputAutoCompleteOptions {
