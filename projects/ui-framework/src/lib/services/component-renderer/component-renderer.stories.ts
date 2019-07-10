@@ -16,10 +16,10 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { ComponentRendererModule } from './component-renderer.module';
 
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
-import { MockComponent } from '../mock-component/mock.component';
+import { MockComponent } from '../util-components/mock.component';
 import { TypographyModule } from '../../typography/typography.module';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
-import { MockModule } from '../mock-component/mock.module';
+import { UtilComponentsModule } from '../util-components/utilComponents.module';
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
@@ -36,6 +36,7 @@ const storyTemplate = `
   <div style="padding: 50px; display:flex; justify-content: center; background: rgb(245,245,245);">
     ${template}
   </div>
+  <b-stats></b-stats>
 </b-story-book-layout>
 `;
 
@@ -132,7 +133,7 @@ story.add(
         declarations: [],
         imports: [
           AvatarModule,
-          MockModule,
+          UtilComponentsModule,
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           ComponentRendererModule,

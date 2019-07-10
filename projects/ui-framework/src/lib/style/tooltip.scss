@@ -7,6 +7,7 @@ $tooltip-arrow-size: 12px;
 $toolti-offset: 10px;
 
 %tooltip-body {
+  position: relative;
   background-color: $tooltip-color;
   color: white;
   max-width: 350px;
@@ -26,7 +27,6 @@ $toolti-offset: 10px;
 
 .mat-tooltip[class] {
   @extend %tooltip-body;
-  position: relative;
 
   &:before {
     @extend %tooltip-arrow-common;
@@ -79,6 +79,20 @@ $toolti-offset: 10px;
     transform: translateY(0) scale(1);
   }
 }
+@keyframes tooltip-arrow-apprnc-below {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0);
+  }
+  50% {
+    opacity: 0.65;
+    transform: translateY(0) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
 
 [data-tooltip] {
   &:after {
@@ -86,22 +100,48 @@ $toolti-offset: 10px;
     content: attr(data-tooltip);
     @extend %tooltip-body;
     position: absolute;
-    bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
     white-space: normal;
-    transform-origin: center bottom;
     @include animate(tooltip-apprnc, 0.1s, 0.3s);
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 
   &:before {
     @extend %tooltip-arrow-common;
-    @include arrow-down($tooltip-arrow-size, $tooltip-color);
-    bottom: calc(100% + #{$toolti-offset - $tooltip-arrow-size/2});
-    transform-origin: center bottom;
-    @include animate(tooltip-arrow-apprnc, 0.1s, 0.3s);
+  }
+
+  // position above (default)
+  &,
+  &[data-tooltip-position='above'] {
+    &:after {
+      bottom: 100%;
+      transform-origin: center bottom;
+    }
+    &:before {
+      @include arrow-down($tooltip-arrow-size, $tooltip-color);
+      bottom: calc(100% + #{$toolti-offset - $tooltip-arrow-size/2});
+      transform-origin: center bottom;
+      @include animate(tooltip-arrow-apprnc, 0.1s, 0.3s);
+    }
+  }
+
+  // position below
+  &[data-tooltip-position='below'] {
+    &:after {
+      bottom: auto;
+      top: 100%;
+      transform-origin: center top;
+    }
+    &:before {
+      border-top: 0;
+      border-bottom: ($tooltip-arrow-size/2) solid $tooltip-color;
+      bottom: auto;
+      top: calc(100% + #{$toolti-offset - $tooltip-arrow-size/2});
+      transform-origin: center top;
+      animation-name: tooltip-arrow-apprnc-below;
+    }
   }
 
   &:not(:hover),

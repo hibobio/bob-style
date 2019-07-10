@@ -70,14 +70,6 @@ export {
 export {
   SwitchToggleComponent
 } from './lib/buttons-indicators/switch-toggle/switch-toggle.component';
-// Chip Module
-export { ChipsModule } from './lib/chips/chips.module';
-export { ChipModule } from './lib/chips/chip/chip.module';
-export {
-  ChipComponent
-} from './lib/chips/chip/chip.component';
-export { ChipType } from './lib/chips/chips.enum';
-export { Chip } from './lib/chips/chips.interface';
 // InfoStrip Module
 export { InfoStripModule } from './lib/buttons-indicators/info-strip/info-strip.module';
 export { InfoStripComponent } from './lib/buttons-indicators/info-strip/info-strip.component';
@@ -98,6 +90,29 @@ export { EmployeeShowcase } from './lib/buttons-indicators/employees-showcase/em
 export { EmptyStateModule } from './lib/buttons-indicators/empty-state/empty-state.module';
 export { EmptyStateComponent } from './lib/buttons-indicators/empty-state/empty-state.component';
 export { EmptyStateConfig } from './lib/buttons-indicators/empty-state/empty-state.types';
+
+/*
+* Chips
+*/
+// Chip Module
+export { ChipsModule } from './lib/chips/chips.module';
+export { ChipType, ChipListAlign } from './lib/chips/chips.enum';
+export { Chip, ChipListConfig, ChipKeydownEvent, ChipInputChange } from './lib/chips/chips.interface';
+// Single Chip
+export { ChipModule } from './lib/chips/chip/chip.module';
+export {
+  ChipComponent
+} from './lib/chips/chip/chip.component';
+// Chip List
+export { ChipListModule } from './lib/chips/chip-list/chip-list.module';
+export { ChipListComponent } from './lib/chips/chip-list/chip-list.component';
+// Chip Input
+export { ChipInputModule } from './lib/chips/chip-input/chip-input.module';
+export { ChipInputComponent } from './lib/chips/chip-input/chip-input.component';
+// Multi List and Chips
+export { MultiListAndChipsModule } from './lib/chips/multi-list-and-chips/multi-list-and-chips.module';
+export { MultiListAndChipsComponent } from './lib/chips/multi-list-and-chips/multi-list-and-chips.component';
+
 /*
  * Form Elements
  */
@@ -195,10 +210,6 @@ export {
 export {
   RadioConfig
 } from './lib/form-elements/radio-button/radio-button.interface';
-// Chip Input Module
-export { ChipInputModule } from './lib/chips/chip-input/chip-input.module';
-export { ChipInputComponent } from './lib/chips/chip-input/chip-input.component';
-export { ChipInputChange } from './lib/chips/chips.interface';
 // Social Module
 export { SocialModule } from './lib/form-elements/social/social.module';
 export { Social } from './lib/form-elements/social/social.enum';
@@ -367,9 +378,10 @@ export { ComponentRendererModule } from './lib/services/component-renderer/compo
 export { ComponentRendererComponent } from './lib/services/component-renderer/component-renderer.component';
 export { RenderedComponent } from './lib/services/component-renderer/component-renderer.interface';
 // Truncate Tooltip
-export { TruncateTooltipModule} from './lib/services/truncate-tooltip/truncate-tooltip.module';
-export { TruncateTooltipComponent} from './lib/services/truncate-tooltip/truncate-tooltip.component';
+export { TruncateTooltipModule } from './lib/services/truncate-tooltip/truncate-tooltip.module';
+export { TruncateTooltipComponent } from './lib/services/truncate-tooltip/truncate-tooltip.component';
 export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/truncate-tooltip.directive';
+export { TruncateTooltipType, TruncateTooltipPosition } from './lib/services/truncate-tooltip/truncate-tooltip.enum';
 
 
 /*

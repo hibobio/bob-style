@@ -1,6 +1,21 @@
 @import '../../style/mixins';
 @import '../../style/typography';
 
+@keyframes tooltip-apprnc {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 :host {
   display: block;
   position: relative;
@@ -25,12 +40,6 @@
   }
 }
 
-.tooltip-trigger {
-  @include size;
-  @include position(0 0 0 0);
-  display: flex;
-}
-
 [data-max-lines='1'] {
   white-space: nowrap;
 
@@ -38,5 +47,41 @@
     * {
       display: inline;
     }
+  }
+}
+
+.tooltip-trigger {
+  display: flex;
+  justify-content: center;
+}
+
+[aria-describedby] {
+  @include size;
+  @include position(0 0 0 0);
+
+  & + .btt {
+    position: static;
+  }
+}
+
+[data-tooltip] {
+  @include size(350px, 100%);
+  @include position(0 calc((100% - 350px) / 2) 0 calc((100% - 350px) / 2));
+  pointer-events: none;
+
+  &:after {
+    transform: none;
+    left: auto;
+  }
+
+  & + .btt {
+    position: relative;
+  }
+}
+
+:host:hover::ng-deep [data-tooltip]:not([data-tooltip='']) {
+  &:before,
+  &:after {
+    display: block;
   }
 }

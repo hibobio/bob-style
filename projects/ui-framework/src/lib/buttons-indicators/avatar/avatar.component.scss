@@ -90,7 +90,7 @@
 }
 
 :host {
-  &.clickable {
+  &[data-clickable='true'] {
     .avatar {
       cursor: pointer;
 
@@ -104,22 +104,32 @@
     }
   }
 
-  &.disabled {
+  &[data-disabled='true'] {
     @include disabled-state;
   }
 
-  &.horizontal {
+  &[data-orientation='horizontal'] {
     b-chip {
       margin-right: auto;
     }
   }
 
-  &.vertical {
+  &[data-orientation='vertical'] {
     text-align: center;
     flex-direction: column;
 
+    .avatar {
+      margin: 0 auto;
+    }
+
     .avatar-text {
       align-items: center;
+    }
+
+    .slot1-big,
+    .slot2-medium,
+    .slot3-small {
+      max-width: inherit;
     }
 
     [data-max-lines] {

@@ -70,9 +70,6 @@ a note on what types are.`
     <b-dialog dialogTitle="{{ data.title }}" [dialogButtons]="dialogButtonConfig">
       <div b-dialog-sub-title>
         <b-subheading style="display:inline;">The article id is {{ data.id }} </b-subheading>
-        <a href="https://help.hibob.com/time-off/configuring-time-off-policies/time-off-policies"
-           target="_blank">read more
-        </a>
       </div>
       <div b-dialog-content>
         <b-textarea label="Edit text"
@@ -87,7 +84,6 @@ a note on what types are.`
                          style="width: 100%;"
                          label="was this article helpful">
         </b-single-select>
-        <b-checkbox label="Click this"></b-checkbox>
       </div>
     </b-dialog>
   `
@@ -150,7 +146,8 @@ export class ExampleDialog1Component implements OnInit {
 @Component({
   selector: 'b-example-dialog-2',
   template: `
-    <b-dialog dialogTitle="congratulations" [dialogButtons]="dialogButtonConfig">
+    <b-dialog dialogTitle="congratulations"
+              [dialogButtons]="dialogButtonConfig">
       <div b-dialog-above-header>
         <div class="success-icon"></div>
       </div>

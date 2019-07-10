@@ -5,7 +5,7 @@ import {
   ElementRef,
   AfterViewInit
 } from '@angular/core';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../utils/dom-helpers.service';
 
 @Component({
   selector: 'b-mock',
@@ -26,7 +26,7 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
       <ng-content></ng-content>
     </div>
   `,
-  styles: [':host {display: block;']
+  styles: [':host {display: block;}']
 })
 export class MockComponent implements AfterViewInit {
   constructor(private DOM: DOMhelpers) {}

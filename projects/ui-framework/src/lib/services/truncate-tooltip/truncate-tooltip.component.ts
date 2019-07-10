@@ -7,28 +7,33 @@ import {
   AfterViewInit,
   ViewContainerRef,
   DoCheck,
-  HostListener
+  NgZone,
+  OnInit,
+  ChangeDetectorRef
 } from '@angular/core';
-import { UtilsService } from '../utils/utils.service';
-import { Subscription } from 'rxjs';
 import { DOMhelpers, TextProps } from '../utils/dom-helpers.service';
-import { TruncateTooltiptype } from './truncate-tooltip.enum';
+import {
+  TruncateTooltipType,
+  TruncateTooltipPosition
+} from './truncate-tooltip.enum';
+import { debounce } from 'lodash';
 
 @Component({
   selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
   template: `
     <i
-      *ngIf="type !== types.css && tooltipAllowed && tooltipEnabled"
+      *ngIf="type === types.material && tooltipAllowed && tooltipEnabled"
       class="tooltip-trigger"
       [matTooltip]="tooltipText"
       [matTooltipShowDelay]="delay"
-      matTooltipPosition="above"
+      [matTooltipPosition]="position"
       matTooltipClass="b-truncate-tooltip"
     ></i>
     <i
       *ngIf="type === types.css && tooltipEnabled"
       class="tooltip-trigger"
       [attr.data-tooltip]="tooltipText"
+      [attr.data-tooltip-position]="position"
     ></i>
     <div
       #textContainer
@@ -37,7 +42,7 @@ import { TruncateTooltiptype } from './truncate-tooltip.enum';
         initialized: initialized,
         'tooltip-enabled': tooltipEnabled
       }"
-      [attr.data-max-lines]="maxLines"
+      data-max-lines="1"
     >
       <ng-content></ng-content>
       <ng-template #directiveTemplate></ng-template>
@@ -46,15 +51,12 @@ import { TruncateTooltiptype } from './truncate-tooltip.enum';
   styleUrls: ['./truncate-tooltip.component.scss']
 })
 export class TruncateTooltipComponent
-  implements AfterViewInit, DoCheck, OnDestroy {
-  constructor(private utilsService: UtilsService, private DOM: DOMhelpers) {}
-
-  @ViewChild('textContainer', { static: true })
-  set container(element: ElementRef) {
-    this.textContainer = element.nativeElement;
-  }
-  @ViewChild('directiveTemplate', { read: ViewContainerRef, static: true })
-  child: ViewContainerRef;
+  implements AfterViewInit, DoCheck, OnInit, OnDestroy {
+  constructor(
+    private DOM: DOMhelpers,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
+  ) {}
 
   @Input('maxLines')
   set lines(value: number | string) {
@@ -64,14 +66,17 @@ export class TruncateTooltipComponent
   set linesAlt(value: number | string) {
     this.setMaxLines(value);
   }
+
+  @ViewChild('textContainer', { static: true }) textContainer: ElementRef;
+  @ViewChild('directiveTemplate', { read: ViewContainerRef, static: true })
+  child: ViewContainerRef;
   @Input() delay = 300;
   @Input() lazyness = 200;
   @Input() expectChanges = false;
   @Input() trustCssVars = false;
-  @Input() type: TruncateTooltiptype = TruncateTooltiptype.lazy;
+  @Input() type: TruncateTooltipType = TruncateTooltipType.auto;
+  @Input() position = TruncateTooltipPosition.above;
 
-  private resizeSubscription: Subscription;
-  private textContainer: HTMLElement;
   private textElementTextProps: TextProps;
   private maxLinesDefault = 1;
   private maxLinesCache = this.maxLinesDefault;
@@ -81,58 +86,56 @@ export class TruncateTooltipComponent
   public tooltipEnabled = false;
   public tooltipAllowed = false;
   public initialized = this.trustCssVars;
-  readonly types = TruncateTooltiptype;
+  readonly types = TruncateTooltipType;
 
-  @HostListener('mouseenter')
-  onMouseEnter() {
-    if (
-      this.type === TruncateTooltiptype.lazy &&
-      !this.tooltipAllowed &&
-      !this.hoverTimer
-    ) {
-      this.hoverTimer = setTimeout(() => {
-        this.tooltipAllowed = true;
-      }, this.lazyness);
+  ngOnInit(): void {
+    if (this.lazyness !== 0 && this.type !== TruncateTooltipType.css) {
+      this.textContainer.nativeElement.addEventListener(
+        'mouseenter',
+        this.startHoverTimer
+      );
+      this.textContainer.nativeElement.addEventListener(
+        'mouseleave',
+        this.stopHoverTimer
+      );
     }
-  }
-  @HostListener('mouseleave')
-  onMouseLeave() {
-    if (this.hoverTimer) {
-      clearTimeout(this.hoverTimer);
-      this.hoverTimer = null;
-    }
+    this.zone.runOutsideAngular(() => {
+      window.addEventListener('resize', this.onWindowResize);
+    });
   }
 
   ngAfterViewInit(): void {
     this.maxLinesCache = this.maxLines;
 
-    setTimeout(() => {
-      this.tooltipText = this.textContainer.textContent.trim();
-      this.setCssVars();
-    }, 0);
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.tooltipText = this.textContainer.nativeElement.textContent.trim();
 
-    setTimeout(() => {
-      this.checkTooltipNecessity();
-      this.initialized = true;
-      if (this.type !== TruncateTooltiptype.lazy) {
-        this.tooltipAllowed = true;
-      }
-    }, 0);
-
-    this.resizeSubscription = this.utilsService
-      .getResizeEvent()
-      .subscribe(() => {
+        this.setCssVars();
+        this.setMaxLinesAttr();
         this.checkTooltipNecessity();
-      });
+
+        this.initialized = true;
+        if (this.type === TruncateTooltipType.css || this.lazyness === 0) {
+          this.tooltipAllowed = true;
+          this.stopHoverTimer();
+          this.removeMouseListeners();
+        }
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, 0);
+    });
   }
 
   ngDoCheck(): void {
     if (this.expectChanges) {
       if (
         this.initialized &&
-        this.tooltipText !== this.textContainer.textContent.trim()
+        this.tooltipText !== this.textContainer.nativeElement.textContent.trim()
       ) {
-        this.tooltipText = this.textContainer.textContent.trim();
+        this.tooltipText = this.textContainer.nativeElement.textContent.trim();
         this.checkTooltipNecessity();
       }
 
@@ -143,70 +146,124 @@ export class TruncateTooltipComponent
   }
 
   ngOnDestroy(): void {
-    this.resizeSubscription.unsubscribe();
-    if (this.hoverTimer) {
-      clearTimeout(this.hoverTimer);
-      this.hoverTimer = null;
+    window.removeEventListener('resize', this.onWindowResize);
+    this.stopHoverTimer();
+  }
+
+  private setMaxLinesAttr(): void {
+    if (this.textContainer) {
+      this.textContainer.nativeElement.dataset.maxLines = this.maxLines;
+    }
+  }
+
+  private setMaxHeight(): void {
+    if (!this.trustCssVars) {
+      this.textElementTextProps.maxHeight =
+        this.textElementTextProps.fontSize *
+        this.textElementTextProps.lineHeight *
+        this.maxLines;
+      this.DOM.setCssProps(this.textContainer.nativeElement, {
+        'max-height':
+          this.textElementTextProps.maxHeight > 0
+            ? this.textElementTextProps.maxHeight + 'px'
+            : null
+      });
     }
   }
 
   private setCssVars(): void {
     if (!this.textElementTextProps && !this.trustCssVars) {
       this.textElementTextProps = this.DOM.getElementTextProps(
-        this.DOM.getDeepTextElement(this.textContainer)
+        this.DOM.getDeepTextElement(this.textContainer.nativeElement)
       );
-      this.textElementTextProps.maxHeight =
-        this.textElementTextProps.fontSize *
-        this.textElementTextProps.lineHeight *
-        this.maxLines;
-
-      this.DOM.setCssProps(this.textContainer, {
+      this.DOM.setCssProps(this.textContainer.nativeElement, {
         '--line-height': this.textElementTextProps.lineHeight,
-        '--font-size': this.textElementTextProps.fontSize + 'px',
-        'max-height': this.textElementTextProps.maxHeight + 'px'
+        '--font-size': this.textElementTextProps.fontSize + 'px'
       });
+      this.setMaxHeight();
     }
   }
 
   private checkTooltipNecessity(): void {
-    if (
-      this.type === TruncateTooltiptype.css &&
-      this.tooltipText.length > 130
-    ) {
-      this.type = TruncateTooltiptype.lazy;
+    if (this.type === TruncateTooltipType.auto) {
+      this.type =
+        this.tooltipText.length > 130
+          ? TruncateTooltipType.material
+          : TruncateTooltipType.css;
     }
 
     const compareHeight = this.trustCssVars
-      ? this.textContainer.offsetHeight + 5
+      ? this.textContainer.nativeElement.offsetHeight + 5
       : this.textElementTextProps.maxHeight;
 
     this.tooltipEnabled =
       (this.maxLines === 1 &&
-        this.textContainer.scrollWidth > this.textContainer.offsetWidth) ||
+        this.textContainer.nativeElement.scrollWidth >
+          this.textContainer.nativeElement.offsetWidth) ||
       (this.maxLines > 1 &&
-        (this.textContainer.scrollHeight > compareHeight ||
-          (this.textContainer.children[0] &&
-            (this.textContainer.children[0] as HTMLElement).offsetHeight)))
+        (this.textContainer.nativeElement.scrollHeight > compareHeight ||
+          (this.textContainer.nativeElement.children[0] &&
+            (this.textContainer.nativeElement.children[0] as HTMLElement)
+              .offsetHeight)))
         ? true
         : false;
   }
 
   private parseMaxLines(value: string | number): number {
-    value = parseInt(value as string, 10);
+    value = value === null ? 0 : parseInt(value as string, 10);
     return value === value ? value : this.maxLinesDefault;
   }
 
   private setMaxLines(value: number | string): void {
     this.maxLines = this.parseMaxLines(value);
+
     if (
       this.maxLines !== this.maxLinesCache &&
       this.initialized &&
       this.expectChanges
     ) {
-      setTimeout(() => {
-        this.checkTooltipNecessity();
-      }, 0);
+      this.setMaxHeight();
+      this.setMaxLinesAttr();
+      this.checkTooltipNecessity();
     }
     this.maxLinesCache = this.maxLines;
+  }
+
+  // tslint:disable-next-line: member-ordering
+  private onWindowResize = debounce(() => {
+    this.checkTooltipNecessity();
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
+  }, 1000);
+
+  private startHoverTimer = () => {
+    if (!this.hoverTimer) {
+      this.hoverTimer = setTimeout(() => {
+        this.removeMouseListeners();
+        this.tooltipAllowed = true;
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, this.lazyness);
+    }
+  }
+
+  private stopHoverTimer() {
+    if (this.hoverTimer) {
+      clearTimeout(this.hoverTimer);
+      this.hoverTimer = null;
+    }
+  }
+
+  private removeMouseListeners() {
+    this.textContainer.nativeElement.removeEventListener(
+      'mouseenter',
+      this.startHoverTimer
+    );
+    this.textContainer.nativeElement.removeEventListener(
+      'mouseleave',
+      this.stopHoverTimer
+    );
   }
 }

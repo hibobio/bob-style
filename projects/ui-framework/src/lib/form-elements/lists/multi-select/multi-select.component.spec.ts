@@ -324,13 +324,14 @@ describe('MultiSelectComponent', () => {
     beforeEach(async(() => {
       fixture = TestBed.createComponent(MultiSelectComponent);
       component = fixture.componentInstance;
-      fixture.nativeElement.style.width = '200px';
+      fixture.nativeElement.style.width = '150px';
       spyOn(component.selectChange, 'emit');
     }));
     it('should not show tooltip', () => {
       optionsMock[0].options[0].selected = false;
       component.options = optionsMock;
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
+
       const tooltipEl = fixture.debugElement.query(
         By.css('.btt.tooltip-enabled')
       );
@@ -338,18 +339,23 @@ describe('MultiSelectComponent', () => {
     });
     it('should add tooltip', fakeAsync(() => {
       component.options = optionsMock;
-      fixture.autoDetectChanges();
       component.openPanel();
-      fixture.autoDetectChanges();
+
       tick(0);
+      fixture.detectChanges();
+
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();
-      fixture.autoDetectChanges();
+
       tick(0);
+      fixture.detectChanges();
+      tick(0);
+
       const tooltipEl = fixture.debugElement.query(
         By.css('.btt.tooltip-enabled')
       );
+
       expect(tooltipEl).not.toBe(null);
       expect(tooltipEl.nativeElement.innerText).toEqual(
         'Basic Info 1, Personal 1, Personal 2'

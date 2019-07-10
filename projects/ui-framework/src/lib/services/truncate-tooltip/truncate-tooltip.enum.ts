@@ -1,5 +1,10 @@
-export enum TruncateTooltiptype {
-  eager = 'eager',
-  lazy = 'lazy',
+export enum TruncateTooltipType {
+  auto = 'auto',
+  material = 'material',
   css = 'css'
+}
+
+export enum TruncateTooltipPosition {
+  above = 'above',
+  below = 'below'
 }

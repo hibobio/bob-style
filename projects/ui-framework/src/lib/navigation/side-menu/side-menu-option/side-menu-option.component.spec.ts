@@ -51,7 +51,7 @@ describe('SideMenuOptionComponent', () => {
 
     it('should call onSelectOption when click on side-menu-option-container', () => {
       const selectOption = spyOn(component.selectOption, 'emit');
-      sideMenuOptionContainer.triggerEventHandler('click', null);
+      sideMenuOptionContainer.nativeElement.click();
       fixture.detectChanges();
       expect(selectOption).toHaveBeenCalledWith(1);
     });
@@ -100,7 +100,7 @@ describe('SideMenuOptionComponent', () => {
     it('should set option-actions opacity to 1 when opening menu', () => {
       const bMenu = fixture.debugElement.query(By.css('b-menu'));
       component.menuOpened = false;
-      bMenu.triggerEventHandler('click', null);
+      bMenu.nativeElement.click();
       fixture.detectChanges();
       expect(optionActions.nativeElement.style.opacity).toEqual('1');
     });

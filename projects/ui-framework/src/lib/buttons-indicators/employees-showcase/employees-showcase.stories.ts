@@ -8,6 +8,7 @@ import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarSize } from '../avatar/avatar.enum';
 import zipObject from 'lodash/zipObject';
 import { getEmployeesMock } from './employees-showcase.mock';
+import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const avatarStories = storiesOf(
   ComponentGroupType.ButtonsAndIndicators,
@@ -52,6 +53,7 @@ const storyTemplate = `
   <div style="display: flex; justify-content: center; padding: 30px;">
     ${template}
   </div>
+  <b-stats></b-stats>
 </b-story-book-layout>
 `;
 
@@ -68,7 +70,8 @@ avatarStories.add(
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
-          EmployeesShowcaseModule
+          EmployeesShowcaseModule,
+          UtilComponentsModule
         ]
       }
     };

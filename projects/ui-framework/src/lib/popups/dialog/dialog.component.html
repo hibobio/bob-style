@@ -14,7 +14,8 @@
 
 <div #dialogContent
      (scroll)="onScroll($event)"
-     [ngClass]="{'show-scrolling-top': showScrolling==dialogScrollDir.top, 'show-scrolling-bottom': showScrolling==dialogScrollDir.bottom}"
+     class="dialog-content-wrapper"
+     [ngClass]="{'show-scrolling-top': showScrolling==dialogScrollDir.top, 'show-scrolling-bottom': showScrolling==dialogScrollDir.bottom, 'no-footer': !dialogButtons}"
      mat-dialog-content>
 
   <div [ngClass]="{'show-progress': showProgress}"
@@ -31,7 +32,8 @@
 
 </div>
 
-<div class="dialog-footer">
+<div *ngIf="dialogButtons"
+     class="dialog-footer">
 
   <div *ngIf="showConfirmation"
        [@confirmMessage]

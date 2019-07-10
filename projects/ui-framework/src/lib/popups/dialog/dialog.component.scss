@@ -1,7 +1,7 @@
 @import '../../style/colors';
 
-$dialogPadding: 30px;
-$footerSize: 50px;
+$dialogPadding: 24px;
+$footerSize: 48px;
 
 ::ng-deep {
   .b-dialog-backdrop {
@@ -29,7 +29,7 @@ $footerSize: 50px;
         font: inherit;
       }
       .mat-dialog-title {
-        padding: $dialogPadding $dialogPadding 20px;
+        padding: $dialogPadding $dialogPadding 16px;
         div[b-dialog-sub-title] {
           margin-top: 5px;
         }
@@ -38,14 +38,17 @@ $footerSize: 50px;
         }
       }
       .mat-dialog-content {
-        padding: 0 $dialogPadding 20px;
-        max-height: 50vh;
+        padding: 0 $dialogPadding $dialogPadding;
+        max-height: 60vh;
         position: relative;
         &.show-scrolling-top {
           border-top: 1px solid $grey-300;
         }
         &.show-scrolling-bottom {
           border-bottom: 1px solid $grey-300;
+        }
+        &.no-footer {
+          padding-bottom: 48px;
         }
         .dialog-content {
           position: relative;
@@ -82,7 +85,7 @@ $footerSize: 50px;
           left: 0;
           width: 100%;
           box-sizing: border-box;
-          padding: 12px 24px;
+          padding: 16px 24px;
           background-color: $white;
           box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.2), 0 -3px 5px rgba(0, 0, 0, 0.1) inset;
           transform: translateY(-100%);

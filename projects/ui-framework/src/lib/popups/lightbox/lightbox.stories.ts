@@ -10,6 +10,7 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { LightboxExampleModule } from './lightbox-example.module';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const lightboxStories = storiesOf(
   ComponentGroupType.Popups,
@@ -27,6 +28,7 @@ const storyTemplate = `<b-story-book-layout [title]="'Lightbox'">
   <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
     ${template}
   </div>
+  <b-stats></b-stats>
 </b-story-book-layout>`;
 
 const note = `
@@ -105,7 +107,8 @@ lightboxStories.add(
           LightboxModule,
           LightboxExampleModule,
           StoryBookLayoutModule,
-          ButtonsModule
+          ButtonsModule,
+          UtilComponentsModule
         ]
       }
     };

@@ -28,11 +28,13 @@ describe('DialogComponent', () => {
     const dialogButtonsConfig: DialogButtons = {
       ok: {
         label: 'ok',
-        action: () => {}
+        action: () => {
+        }
       },
       cancel: {
         label: 'cancel',
-        action: () => {}
+        action: () => {
+        }
       }
     };
 
@@ -43,8 +45,14 @@ describe('DialogComponent', () => {
         MockComponent(ButtonComponent),
         MockComponent(SquareButtonComponent)
       ],
-      imports: [NoopAnimationsModule, DialogModule, MatDialogModule],
-      providers: [{ provide: MatDialogRef, useValue: spyMatDialogRef }]
+      imports: [
+        NoopAnimationsModule,
+        DialogModule,
+        MatDialogModule,
+      ],
+      providers: [
+        { provide: MatDialogRef, useValue: spyMatDialogRef },
+      ],
     })
       .compileComponents()
       .then(() => {
@@ -52,18 +60,34 @@ describe('DialogComponent', () => {
         component = fixture.componentInstance;
         component.dialogTitle = dialogTitle;
         component.dialogButtons = dialogButtonsConfig;
-        fixture.detectChanges();
       });
   }));
 
   describe('title', () => {
+    beforeEach(() => fixture.detectChanges());
     it('should display component title', () => {
       const titleEl = fixture.debugElement.query(By.css('b-display-2'));
       expect(titleEl.nativeElement.innerText).toEqual(dialogTitle);
     });
   });
 
+  describe('no button config', () => {
+    beforeEach(() => {
+      component.dialogButtons = null;
+      fixture.detectChanges();
+    });
+    it('should not show footer', () => {
+      const dialogFooter = fixture.debugElement.query(By.css('.dialog-footer'));
+      expect(dialogFooter).toBeFalsy();
+    });
+    it('should add no-buttons class to body', () => {
+      const dialogBody = fixture.debugElement.query(By.css('.dialog-content-wrapper'));
+      expect(dialogBody.nativeElement.classList).toContain('no-footer');
+    });
+  });
+
   describe('closeButton', () => {
+    beforeEach(() => fixture.detectChanges());
     it('should invoke dialogRef.close', () => {
       const closeButton = fixture.debugElement.query(By.css('.close-button'))
         .componentInstance;
@@ -73,6 +97,7 @@ describe('DialogComponent', () => {
   });
 
   describe('cancelButton', () => {
+    beforeEach(() => fixture.detectChanges());
     it('should invoke button config method and close panel', () => {
       spyOn(component.dialogButtons.cancel, 'action');
       const cancelButton = fixture.debugElement.query(By.css('.cancel-button'))
@@ -100,7 +125,8 @@ describe('DialogComponent', () => {
       component.dialogButtons = {
         ok: {
           label: 'ok',
-          action: () => {}
+          action: () => {
+          }
         }
       };
       fixture.detectChanges();
@@ -110,6 +136,7 @@ describe('DialogComponent', () => {
   });
 
   describe('okButton', () => {
+    beforeEach(() => fixture.detectChanges());
     it('should display preload message if exists', () => {
       component.dialogButtons.preloaderMessage = 'preload message';
       let progressIndicator = fixture.debugElement.query(

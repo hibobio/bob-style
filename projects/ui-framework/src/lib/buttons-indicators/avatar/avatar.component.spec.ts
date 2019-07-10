@@ -75,16 +75,16 @@ describe('AvatarComponent', () => {
     });
   });
 
-  describe('Classes', () => {
-    it('Should put the right classes on component host element', () => {
+  describe('Attributes', () => {
+    it('Should put the right attributes on component host element', () => {
       component.isClickable = true;
       component.ngOnChanges({
         size: new SimpleChange(null, AvatarSize.large, false)
       });
       fixture.detectChanges();
-      expect(componentElem.classList.value).toEqual(
-        'large horizontal clickable'
-      );
+      expect(componentElem.dataset.size).toEqual('large');
+      expect(componentElem.dataset.orientation).toEqual('horizontal');
+      expect(componentElem.dataset.clickable).toEqual('true');
     });
   });
 
@@ -132,10 +132,10 @@ describe('AvatarComponent', () => {
   });
 
   describe('Disabled', () => {
-    it('Should set avatar disabled', () => {
+    it('Should set disabled attribute', () => {
       component.disabled = true;
       fixture.detectChanges();
-      expect(componentElem.classList.value).toContain('disabled');
+      expect(componentElem.dataset.disabled).toEqual('true');
       component.onClick('click');
       expect(component.clicked.emit).not.toHaveBeenCalled();
     });
@@ -202,7 +202,7 @@ describe('AvatarComponent', () => {
     it('Should have vertical orientation', () => {
       component.orientation = AvatarOrientation.vertical;
       fixture.detectChanges();
-      expect(componentElem.classList.value).toContain('vertical');
+      expect(componentElem.dataset.orientation).toEqual('vertical');
       expect(getComputedStyle(componentElem).flexDirection).toEqual('column');
     });
   });

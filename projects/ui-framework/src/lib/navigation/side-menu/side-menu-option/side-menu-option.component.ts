@@ -25,8 +25,10 @@ export class SideMenuOptionComponent implements OnChanges {
   @Input() option: SideMenuOption;
   @Input() selected: boolean;
   @Output() selectOption: EventEmitter<number> = new EventEmitter<number>();
-  @ViewChild('prefix', { read: ViewContainerRef, static: true }) private prefix: ViewContainerRef;
-  @ViewChild('postfix', { read: ViewContainerRef, static: false }) postfix: ViewContainerRef;
+  @ViewChild('prefix', { read: ViewContainerRef, static: true })
+  private prefix: ViewContainerRef;
+  @ViewChild('postfix', { read: ViewContainerRef, static: false })
+  postfix: ViewContainerRef;
 
   private prefixComponent: any;
 
@@ -37,8 +39,9 @@ export class SideMenuOptionComponent implements OnChanges {
 
   public showActions = false;
 
-  constructor(private readonly componentFactoryResolver: ComponentFactoryResolver) {
-  }
+  constructor(
+    private readonly componentFactoryResolver: ComponentFactoryResolver
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'option.currentValue.prefix')) {
@@ -56,7 +59,9 @@ export class SideMenuOptionComponent implements OnChanges {
 
   private createComponent() {
     const component = this.option.prefix.component;
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+      component
+    );
     const viewContainerRef = this.prefix;
     viewContainerRef.clear();
     this.prefixComponent = viewContainerRef.createComponent(componentFactory);

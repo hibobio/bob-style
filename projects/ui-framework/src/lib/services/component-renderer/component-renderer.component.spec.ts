@@ -5,9 +5,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ComponentRendererComponent } from './component-renderer.component';
 
-import { MockModule } from '../mock-component/mock.module';
+import { UtilComponentsModule } from '../util-components/utilComponents.module';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
-import { MockComponent } from '../mock-component/mock.component';
+import { MockComponent } from '../util-components/mock.component';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
@@ -46,7 +46,7 @@ describe('ComponentRendererComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ComponentRendererComponent],
-      imports: [BrowserAnimationsModule, MockModule, AvatarModule],
+      imports: [BrowserAnimationsModule, UtilComponentsModule, AvatarModule],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .overrideModule(BrowserDynamicTestingModule, {
@@ -70,7 +70,7 @@ describe('ComponentRendererComponent', () => {
         avatarComponent = fixture.debugElement.query(By.css('.slot-1 b-avatar'))
           .componentInstance;
         avatarNativeElement = fixture.debugElement.query(
-          By.css('b-avatar.clickable .avatar')
+          By.css('b-avatar[data-clickable="true"] .avatar')
         ).nativeElement;
         textElement = fixture.debugElement.query(By.css('.slot-2'))
           .nativeElement;

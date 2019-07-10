@@ -18,6 +18,7 @@ import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.componen
 
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(
   withKnobs
@@ -77,7 +78,8 @@ const storyTemplate = `
     </p>
 
   </div>
-  </div>
+</div>
+<b-stats></b-stats>
 </b-story-book-layout>
 `;
 
@@ -226,7 +228,8 @@ story.add(
           CardTableModule,
           ChipModule,
           ButtonsModule,
-          AvatarModule
+          AvatarModule,
+          UtilComponentsModule
         ],
         entryComponents: [ChipComponent, ButtonComponent, AvatarComponent]
       }

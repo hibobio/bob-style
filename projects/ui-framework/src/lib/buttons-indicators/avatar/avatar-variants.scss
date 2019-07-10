@@ -2,12 +2,12 @@
 @import '../../style/mixins';
 @import '../../style/typography';
 
-:host.mini {
+:host[data-size='mini'] {
   .avatar {
     box-shadow: 0 1px 2px 0 $boxShadowColor;
     border-width: 2px;
   }
-  &.clickable .avatar:hover {
+  &[data-clickable='true'] .avatar:hover {
     box-shadow: 0 3px 6px 0 $boxShadowColor;
   }
   .avatar-badge {
@@ -31,13 +31,13 @@
   .slot2-medium {
     @include BodyFont($font-size-body, null, null, $addCssVars: true);
   }
-  &.horizontal {
+  &[data-orientation='horizontal'] {
     .avatar-text {
       margin-left: 5px;
       max-width: calc(100% - (var(--avatar-size) + 5px));
     }
   }
-  &.vertical {
+  &[data-orientation='vertical'] {
     .avatar-text {
       margin-top: 3px;
       max-width: 80px;
@@ -45,12 +45,12 @@
   }
 }
 
-:host.small {
+:host[data-size='small'] {
   .avatar {
     box-shadow: 0 1px 2px 0 $boxShadowColor;
     border-width: 2px;
   }
-  &.clickable .avatar:hover {
+  &[data-clickable='true'] .avatar:hover {
     box-shadow: 0 3px 6px 0 $boxShadowColor;
   }
   .avatar-badge {
@@ -74,13 +74,13 @@
   .slot2-medium {
     @include BodyFont($font-size-body, null, null, $addCssVars: true);
   }
-  &.horizontal {
+  &[data-orientation='horizontal'] {
     .avatar-text {
       margin-left: 8px;
       max-width: calc(100% - (var(--avatar-size) + 8px));
     }
   }
-  &.vertical {
+  &[data-orientation='vertical'] {
     .avatar-text {
       max-width: 100px;
       margin-top: 6px;
@@ -88,12 +88,12 @@
   }
 }
 
-:host.medium {
+:host[data-size='medium'] {
   .avatar {
     box-shadow: 0 2px 4px 0 $boxShadowColor;
     border-width: 3px;
   }
-  &.clickable .avatar:hover {
+  &[data-clickable='true'] .avatar:hover {
     box-shadow: 0 6px 12px 0 $boxShadowColor;
   }
   b-chip {
@@ -118,13 +118,13 @@
   .slot3-small {
     margin-top: 5px;
   }
-  &.horizontal {
+  &[data-orientation='horizontal'] {
     .avatar-text {
       margin-left: 10px;
       max-width: calc(100% - (var(--avatar-size) + 10px));
     }
   }
-  &.vertical {
+  &[data-orientation='vertical'] {
     .avatar-text {
       max-width: 160px;
       margin-top: 14px;
@@ -143,12 +143,12 @@
   }
 }
 
-:host.large {
+:host[data-size='large'] {
   .avatar {
     box-shadow: 0 2px 4px 0 $boxShadowColor;
     border-width: 3px;
   }
-  &.clickable .avatar:hover {
+  &[data-clickable='true'] .avatar:hover {
     box-shadow: 0 6px 12px 0 $boxShadowColor;
   }
   b-chip {
@@ -162,7 +162,7 @@
     @include DisplayFont(
       $font-size-display-1,
       $font-weight-display-1,
-      1,
+      1.12,
       null,
       $addCssVars: true
     );
@@ -179,13 +179,13 @@
   .slot3-small {
     margin-top: 5px;
   }
-  &.horizontal {
+  &[data-orientation='horizontal'] {
     .avatar-text {
       margin-left: 16px;
       max-width: calc(100% - (var(--avatar-size) + 16px));
     }
   }
-  &.vertical {
+  &[data-orientation='vertical'] {
     .avatar-text {
       max-width: 215px;
       margin-top: 3px;

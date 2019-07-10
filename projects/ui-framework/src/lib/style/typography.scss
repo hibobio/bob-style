@@ -53,7 +53,6 @@ $font-size-subheading: $font-size-body;
   color: $grey-700;
   @include FontDefault($style, $weight, $size, $lineHeight, $addCssVars);
   font-family: $font-family;
-  display: block;
   text-transform: $transform;
 }
 
@@ -66,7 +65,6 @@ $font-size-subheading: $font-size-body;
 ) {
   @include FontDefault($style, $weight, $size, $lineHeight, $addCssVars);
   font-family: var(--heading-font-family);
-  display: block;
 }
 
 @mixin BodyFont(

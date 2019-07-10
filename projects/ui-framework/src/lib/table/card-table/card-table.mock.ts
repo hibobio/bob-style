@@ -12,7 +12,7 @@ import {
   makeArray
 } from '../../services/utils/functional-utils';
 
-const numberOfLines = 10;
+const numberOfLines = 5;
 
 const getMockAvatar = () => ({
   component: AvatarComponent,
