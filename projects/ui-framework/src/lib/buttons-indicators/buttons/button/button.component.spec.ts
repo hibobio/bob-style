@@ -10,6 +10,7 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 describe('ButtonComponent', () => {
   let component: ButtonComponent;
   let fixture: ComponentFixture<ButtonComponent>;
+  let buttonElement: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -21,6 +22,8 @@ describe('ButtonComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(ButtonComponent);
         component = fixture.componentInstance;
+        buttonElement = fixture.debugElement.query(By.css('button'))
+          .nativeElement;
         spyOn(component.clicked, 'emit');
         fixture.detectChanges();
       });
@@ -42,32 +45,27 @@ describe('ButtonComponent', () => {
       component.type = ButtonType.primary;
       component.size = ButtonSize.large;
       fixture.detectChanges();
-      const buttonElement = fixture.debugElement.query(By.css('button'));
-      expect(buttonElement.nativeElement.classList).toContain('primary');
-      expect(buttonElement.nativeElement.classList).toContain('large');
+      expect(buttonElement.classList).toContain('primary');
+      expect(buttonElement.classList).toContain('large');
     });
     it('should not have disabled class by default', () => {
-      const buttonElement = fixture.debugElement.query(By.css('button'));
-      expect(buttonElement.nativeElement.classList).not.toContain('disabled');
+      expect(buttonElement.classList).not.toContain('disabled');
     });
     it('should have disabled class', () => {
       component.disabled = true;
       fixture.detectChanges();
-      const buttonElement = fixture.debugElement.query(By.css('button'));
-      expect(buttonElement.nativeElement.classList).toContain('disabled');
+      expect(buttonElement.classList).toContain('disabled');
     });
   });
 
   describe('icon', () => {
     it('should not add icon if no icon is passed', () => {
-      const iconElement = fixture.debugElement.query(By.css('b-icon'));
-      expect(iconElement).toBeFalsy();
+      expect(buttonElement.className).not.toContain('b-icon');
     });
     it('should add icon if icon is passed', () => {
       component.icon = Icons.timeline;
       fixture.detectChanges();
-      const iconElement = fixture.debugElement.query(By.css('b-icon'));
-      expect(iconElement).toBeTruthy();
+      expect(buttonElement.className).toContain('b-icon');
     });
   });
 
@@ -80,16 +78,14 @@ describe('ButtonComponent', () => {
       component.icon = Icons.timeline;
       component.ngOnChanges();
       fixture.detectChanges();
-      const iconElement = fixture.debugElement.query(By.css('b-icon'));
-      expect(iconElement.componentInstance.color).toEqual(expectedColor);
+      expect(buttonElement.className).toContain('b-icon-' + expectedColor);
     };
     const testSize = (buttonSize: ButtonSize, expectedSize: IconSize): void => {
       component.size = buttonSize;
       component.icon = Icons.timeline;
       component.ngOnChanges();
       fixture.detectChanges();
-      const iconElement = fixture.debugElement.query(By.css('b-icon'));
-      expect(iconElement.componentInstance.size).toEqual(expectedSize);
+      expect(buttonElement.className).toContain('b-icon-' + expectedSize);
     };
     it('should not set iconColor or iconSize if there is no icon', () => {
       component.ngOnChanges();

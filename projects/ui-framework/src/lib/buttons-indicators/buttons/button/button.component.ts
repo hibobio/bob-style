@@ -1,14 +1,32 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output
+} from '@angular/core';
 import { ButtonSize, ButtonType } from '../buttons.enum';
 import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
-import { isEqual } from 'lodash';
 
 @Component({
   selector: 'b-button',
-  templateUrl: 'buttons.component.html',
+  template: `
+    <button
+      type="button"
+      class="{{ type }} {{ size }} {{
+        icon ? icon + ' b-icon-' + iconSize + ' b-icon-' + iconColor : ''
+      }}"
+      [ngClass]="{ disabled: disabled }"
+      (click)="onClick($event)"
+    >
+      {{ text }}
+      <ng-content></ng-content>
+    </button>
+  `,
   styleUrls: ['./button.component.scss']
 })
 export class ButtonComponent implements OnChanges {
+  @Input() text: string;
   @Input() type?: ButtonType = ButtonType.primary;
   @Input() size?: ButtonSize = ButtonSize.medium;
   @Input() disabled = false;
@@ -22,12 +40,14 @@ export class ButtonComponent implements OnChanges {
 
   ngOnChanges(): void {
     if (this.icon) {
-      this.iconColor = isEqual(this.type, ButtonType.primary)
-        ? IconColor.white
-        : this.disabled
-        ? IconColor.light
-        : IconColor.dark;
-      this.iconSize = isEqual(this.size, ButtonSize.large) ? IconSize.large : IconSize.medium;
+      this.iconColor =
+        this.type === ButtonType.primary
+          ? IconColor.white
+          : this.disabled
+          ? IconColor.light
+          : IconColor.dark;
+      this.iconSize =
+        this.size === ButtonSize.large ? IconSize.large : IconSize.medium;
     }
   }
 

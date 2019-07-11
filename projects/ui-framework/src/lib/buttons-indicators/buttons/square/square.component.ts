@@ -1,19 +1,25 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { ButtonSize, ButtonType } from '../buttons.enum';
 import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 
 @Component({
   selector: 'b-square-button',
   template: `
-    <button type="button"
-            class="{{ type }} {{ size }}"
-            [ngClass]="{ disabled: disabled }"
-            (click)="onClick($event)">
-      <b-icon [icon]="icon"
-              [size]="iconSize"
-              [color]="color">
-      </b-icon>
-    </button>
+    <button
+      type="button"
+      class="{{ type }} {{ size }} {{
+        icon ? icon + ' b-icon-' + iconSize + ' b-icon-' + color : ''
+      }}"
+      [ngClass]="{ disabled: disabled }"
+      (click)="onClick($event)"
+    ></button>
   `,
   styleUrls: ['./square.component.scss']
 })
@@ -29,14 +35,13 @@ export class SquareButtonComponent implements OnChanges {
 
   readonly iconColor = IconColor;
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.size) {
-      this.iconSize = this.size === ButtonSize.small
-        ? IconSize.medium
-        : IconSize.large;
+      this.size = changes.size.currentValue;
+      this.iconSize =
+        this.size === ButtonSize.small ? IconSize.medium : IconSize.large;
     }
   }
 

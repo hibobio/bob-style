@@ -1,19 +1,22 @@
-@import '../../../style/grid-layout';
+@import '../../../style/mixins';
+@import '../../../style/typography.scss';
 
 :host {
   display: inline-flex;
   cursor: pointer;
   align-items: center;
 
-  &:hover {
-    b-bold-body {
+  @include BodyFont($font-size-body, $font-weight-bold-body);
+
+  &:hover,
+  &:focus {
+    @include desktop-hover {
       text-decoration: underline;
     }
   }
 
   &.disabled {
-    opacity: 0.5;
-    pointer-events: none;
+    @include disabled-state;
   }
 
   &.color-primary {
@@ -21,14 +24,7 @@
   }
 }
 
-b-icon {
+.b-icon {
+  overflow: hidden;
   margin-right: 4px;
-}
-
-@media screen and (max-width: $breakpoint-device-sm) {
-  :host {
-    &:hover b-bold-body {
-      text-decoration: none;
-    }
-  }
 }

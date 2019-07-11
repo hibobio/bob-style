@@ -1,5 +1,4 @@
 @import '../buttons';
-@import '../../../style/typography';
 
 $padding: 15px;
 $minWidthSmall: 80px;
@@ -11,18 +10,8 @@ $minWidthLarge: 110px;
 }
 
 button {
-  &.primary {
-    @include Button(primary);
-  }
-  &.secondary {
-    @include Button(secondary);
-  }
-  &.tertiary {
-    @include Button(tertiary);
-  }
-  &.disabled {
-    @include Button(disabled);
-  }
+  @include button-basic-types;
+
   &.small {
     padding: 0 $padding;
     min-width: $minWidthSmall;
@@ -43,7 +32,11 @@ button {
     @include HeadingFont(14px);
   }
 
-  b-icon {
-    margin: 0 6px 0 -3px;
+  &[class*='b-icon'] {
+    padding-left: $padding - 3px;
+
+    &:before {
+      margin-right: 6px;
+    }
   }
 }
