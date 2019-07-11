@@ -24,7 +24,7 @@ describe('CardsLayoutComponent', () => {
         fixture = TestBed.createComponent(CardsLayoutComponent);
         fixture.nativeElement.style.width = '950px';
         component = fixture.componentInstance;
-        component.type = CardType.primary;
+        component.type = CardType.regular;
         fixture.detectChanges();
         cardsListElement = fixture.debugElement.query(By.css('.cards-list'))
           .nativeElement;
@@ -33,12 +33,17 @@ describe('CardsLayoutComponent', () => {
 
   describe('Type', () => {
     it('should be of type primary by default', () => {
-      expect(cardsListElement.classList).toContain('cards-primary');
+      expect(cardsListElement.classList).toContain('cards-regular');
     });
     it('should change type on type input change', () => {
-      component.type = CardType.tertiary;
+      component.type = CardType.large;
       fixture.detectChanges();
-      expect(cardsListElement.classList).toContain('cards-tertiary');
+      expect(cardsListElement.classList).toContain('cards-large');
+    });
+    it('should change type on type input change', () => {
+      component.type = CardType.small;
+      fixture.detectChanges();
+      expect(cardsListElement.classList).toContain('cards-small');
     });
   });
 });

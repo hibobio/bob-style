@@ -10,5 +10,6 @@ import { CardType } from '../cards.enum';
 export class CardsLayoutComponent {
   constructor() {}
 
-  @Input() type: CardType = CardType.primary;
+  @Input() type: CardType = CardType.regular;
+
 }

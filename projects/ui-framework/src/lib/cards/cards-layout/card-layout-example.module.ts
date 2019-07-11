@@ -9,6 +9,7 @@ import { mockAvatar, mockJobs, mockNames } from '../../mock.const';
 import { CardsMockData } from '../cards.mock';
 import { SliderModule } from '../../buttons-indicators/slider/slider.module';
 import { randomNumber } from '../../services/utils/functional-utils';
+import {MiniEmployeeCard} from '../mini-card-employee/mini-card-employee.component';
 
 @Component({
   selector: 'b-card-layout-example-1',
@@ -37,7 +38,7 @@ import { randomNumber } from '../../services/utils/functional-utils';
 })
 export class CardLayoutExample1Component implements OnInit {
 
-  @Input() type: CardType = CardType.primary;
+  @Input() type: CardType = CardType.regular;
 
   addCard: AddCardData = {
     title: 'Add a new flow',
@@ -89,7 +90,7 @@ export class CardLayoutExample1Component implements OnInit {
 })
 export class CardLayoutExample2Component implements OnInit {
 
-  @Input() type: CardType = CardType.primary;
+  @Input() type: CardType = CardType.regular;
 
   cards: CardEmployee[] = [];
 
@@ -112,11 +113,49 @@ export class CardLayoutExample2Component implements OnInit {
   }
 }
 
+@Component({
+  selector: 'b-card-layout-example-3',
+  template: `
+    <b-cards [type]="type">
+      <b-mini-employee-card *ngFor="let card of cards; let i = index"
+                       [clickable]="true"
+                       [card]="card">
+      </b-mini-employee-card>
+    </b-cards>
+  `,
+})
+export class CardLayoutExample3Component implements OnInit {
+
+  @Input() type: CardType = CardType.small;
+
+  cards: MiniEmployeeCard[] = [];
+
+  constructor() {
+  }
+
+  ngOnInit(): void {
+    for (let i = 0; i < 6; i++) {
+      this.cards.push({
+        imageSource: mockAvatar(),
+        title: mockNames(30)[i],
+        subtitle: mockJobs(1),
+        footer: 'mock'
+      });
+    }
+  }
+
+  onCardClick(cardData: CardEmployee, index: number): void {
+    console.log('cardData', cardData);
+    console.log('index', index);
+  }
+}
+
 
 @NgModule({
   declarations: [
     CardLayoutExample1Component,
     CardLayoutExample2Component,
+    CardLayoutExample3Component
   ],
   imports: [
     BrowserModule,
@@ -127,6 +166,7 @@ export class CardLayoutExample2Component implements OnInit {
   exports: [
     CardLayoutExample1Component,
     CardLayoutExample2Component,
+    CardLayoutExample3Component
   ],
 })
 export class CardLayoutExampleModule {

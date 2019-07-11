@@ -12,7 +12,7 @@ export class EmployeeCardComponent {
   constructor() {}
 
   @Input() card: CardEmployee;
-  @Input() type: CardType = CardType.primary;
+  @Input() type: CardType = CardType.regular;
   @Input() clickable = false;
 
   avatarSize = AvatarSize;

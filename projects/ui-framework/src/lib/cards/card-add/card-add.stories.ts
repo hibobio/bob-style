@@ -73,7 +73,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', values(CardType), CardType.primary),
+        type: select('type', values(CardType), CardType.regular),
         addCard: object('addCard', AddCardMockData),
         onClick: action('Card clicked')
       },

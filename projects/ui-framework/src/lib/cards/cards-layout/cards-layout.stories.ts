@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import { select, withKnobs } from '@storybook/addon-knobs/angular';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { CardType } from '../cards.enum';
@@ -18,6 +18,9 @@ const template = `
 const template2 = `
   <b-card-layout-example-2 [type]="type"></b-card-layout-example-2>
 `;
+const template3 = `
+  <b-card-layout-example-3></b-card-layout-example-3>
+`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Cards Layout'">
@@ -27,6 +30,9 @@ const storyTemplate = `
     <br><br>
     <h3>Employee Cards</h3>
     ${ template2 }
+    <br><br>
+    <h3>Employee Cards</h3>
+    ${ template3 }
   </div>
 </b-story-book-layout>
 `;
@@ -82,7 +88,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', values(CardType), CardType.primary),
+        type: select('type', values(CardType), CardType.regular),
       },
       moduleMetadata: {
         imports: [
