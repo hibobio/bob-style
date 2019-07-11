@@ -8,8 +8,8 @@ import { ComponentGroupType } from '../../consts';
 import { CardsModule } from '../cards.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { MiniEmployeeCard } from './mini-card-employee.component';
 import { mockAvatar } from '../../mock.const';
+import { MiniEmployeeCard } from './mini-card-employee.interface';
 
 const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs

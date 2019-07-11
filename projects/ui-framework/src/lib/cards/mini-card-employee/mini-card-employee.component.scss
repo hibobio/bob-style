@@ -13,6 +13,7 @@
   flex-direction: column;
   transition: transform 0.2s, box-shadow 0.2s;
   justify-content: space-between;
+  text-align: center;
   &.clickable {
     cursor: pointer;
     &:hover {
@@ -33,7 +34,6 @@
 
   .card-content {
     padding: 20px 10px 10px;
-    text-align: center;
     ::ng-deep b-avatar .avatar {
       margin: 0 auto;
     }
