@@ -9,7 +9,7 @@ import { mockAvatar, mockJobs, mockNames } from '../../mock.const';
 import { CardsMockData } from '../cards.mock';
 import { SliderModule } from '../../buttons-indicators/slider/slider.module';
 import { randomNumber } from '../../services/utils/functional-utils';
-import {MiniEmployeeCard} from '../mini-card-employee/mini-card-employee.component';
+import { MiniEmployeeCard } from '../mini-card-employee/mini-card-employee.interface';
 
 @Component({
   selector: 'b-card-layout-example-1',
