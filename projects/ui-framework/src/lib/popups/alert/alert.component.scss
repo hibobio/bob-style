@@ -9,18 +9,18 @@ $alert_width: 400px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 15px;
+  padding: 16px;
   width: 100%;
 }
 
 .close-button {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 0;
+  right: 0;
 }
 
 .icon {
-  margin-right: 10px;
+  margin-right: 8px;
 }
 
 .content {
