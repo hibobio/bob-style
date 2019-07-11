@@ -16,7 +16,7 @@ export class CardComponent {
   constructor() {}
 
   @Input() card: CardData;
-  @Input() type: CardType = CardType.primary;
+  @Input() type: CardType = CardType.regular;
   @Input() index: number;
   @Input() clickable = false;
 

@@ -1,5 +1,5 @@
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Component, ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -86,6 +86,9 @@ describe('CardTableComponent', () => {
         set: {
           entryComponents: [ButtonComponent]
         }
+      })
+      .overrideComponent(CardTableComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default }
       })
       .compileComponents()
       .then(() => {

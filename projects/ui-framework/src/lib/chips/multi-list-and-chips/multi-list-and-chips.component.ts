@@ -6,7 +6,8 @@ import {
   ElementRef,
   Output,
   EventEmitter,
-  NgZone
+  NgZone,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { LIST_EL_HEIGHT } from '../../form-elements/lists/list.consts';
 import {
@@ -21,7 +22,8 @@ import { simpleUID } from '../../services/utils/functional-utils';
 @Component({
   selector: 'b-multi-list-and-chips',
   templateUrl: './multi-list-and-chips.component.html',
-  styleUrls: ['./multi-list-and-chips.component.scss']
+  styleUrls: ['./multi-list-and-chips.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MultiListAndChipsComponent implements OnChanges {
   constructor(private host: ElementRef, private zone: NgZone) {}
@@ -29,6 +31,7 @@ export class MultiListAndChipsComponent implements OnChanges {
   @Input() options: SelectGroupOption[] = [];
   @Input() listLabel: string;
   @Input() chipsLabel: string;
+  @Input() showSingleGroupHeader = false;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange

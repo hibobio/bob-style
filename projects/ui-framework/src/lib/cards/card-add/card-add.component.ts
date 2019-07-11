@@ -18,7 +18,7 @@ export class CardAddComponent {
   constructor() {}
 
   @Input() card: AddCardData;
-  @Input() type: CardType = CardType.primary;
+  @Input() type: CardType = CardType.regular;
 
   cardType = CardType;
 

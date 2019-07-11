@@ -51,7 +51,6 @@ export class LightboxComponent implements OnInit, OnChanges, OnDestroy {
       .getWindowKeydownEvent()
       .pipe(filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)))
       .subscribe(() => {
-        console.log('escape!!');
         this.closeLightboxCallback();
       });
   }

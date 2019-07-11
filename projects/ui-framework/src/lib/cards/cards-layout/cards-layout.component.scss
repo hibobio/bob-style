@@ -12,12 +12,15 @@ $grid-gap: 16px;
   display: grid;
   grid-gap: $grid-gap;
 
-  &.cards-primary {
+  &.cards-small {
+    grid-template-columns: repeat($fit-strategy, minmax(160px, 1fr));
+  }
+
+  &.cards-regular {
     grid-template-columns: repeat($fit-strategy, minmax(190px, 1fr));
   }
 
-  &.cards-secondary,
-  &.cards-tertiary {
+  &.cards-large {
     grid-template-columns: repeat($fit-strategy, minmax(260px, 1fr));
   }
 }

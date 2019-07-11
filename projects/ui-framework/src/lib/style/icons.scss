@@ -184,6 +184,7 @@ $icon-colors: (
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: color 0.1s ease;
+    overflow: hidden;
   }
 
   @include icon-size($size, $elem);

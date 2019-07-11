@@ -63,8 +63,8 @@ avatarStories.add(
     return {
       template: storyTemplate,
       props: {
-        employees: object<EmployeeShowcase>('employees', employeesMock),
-        avatarSize: select('avatarSize', sizeOptions, AvatarSize.mini)
+        avatarSize: select('avatarSize', sizeOptions, AvatarSize.mini),
+        employees: object<EmployeeShowcase>('employees', employeesMock)
       },
       moduleMetadata: {
         imports: [

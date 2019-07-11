@@ -97,7 +97,7 @@
 
 // Types
 
-:host.card-primary {
+:host.card-regular {
   min-height: 240px;
   min-width: 190px;
 
@@ -111,8 +111,7 @@
   }
 }
 
-:host.card-secondary,
-:host.card-tertiary {
+:host.card-large {
   min-width: 260px;
 
   .card-content {
@@ -125,10 +124,6 @@
   }
 }
 
-:host.card-secondary {
+:host.card-large {
   min-height: 260px;
-}
-
-:host.card-tertiary {
-  min-height: 175px;
 }

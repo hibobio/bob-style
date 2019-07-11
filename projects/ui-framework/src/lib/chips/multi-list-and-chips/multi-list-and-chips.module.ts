@@ -7,7 +7,7 @@ import { ChipListModule } from '../chip-list/chip-list.module';
 
 @NgModule({
   declarations: [MultiListAndChipsComponent],
-  imports: [CommonModule, ChipModule, ChipListModule, MultiListModule],
+  imports: [CommonModule, ChipListModule, MultiListModule],
   exports: [MultiListAndChipsComponent],
   providers: []
 })

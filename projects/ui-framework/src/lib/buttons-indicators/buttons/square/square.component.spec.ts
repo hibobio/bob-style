@@ -12,22 +12,20 @@ import { SimpleChanges } from '@angular/core';
 describe('ButtonComponent', () => {
   let component: SquareButtonComponent;
   let fixture: ComponentFixture<SquareButtonComponent>;
+  let buttonElement: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        SquareButtonComponent,
-        MockComponent(IconComponent),
-      ],
-      imports: [
-        MatButtonModule,
-      ],
+      declarations: [SquareButtonComponent, MockComponent(IconComponent)],
+      imports: [MatButtonModule]
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(SquareButtonComponent);
         component = fixture.componentInstance;
         component.icon = Icons.file_copy;
+        buttonElement = fixture.debugElement.query(By.css('button'))
+          .nativeElement;
         spyOn(component.clicked, 'emit');
         fixture.detectChanges();
       });
@@ -45,8 +43,7 @@ describe('ButtonComponent', () => {
 
   describe('OnChanges', () => {
     it('should set icon size to large by default', () => {
-      const icon = fixture.debugElement.query(By.css('b-icon'));
-      expect(icon.componentInstance.size).toEqual(IconSize.large);
+      expect(buttonElement.classList).toContain('b-icon-' + IconSize.large);
     });
     it('should set icon size to medium if size is small', () => {
       const changes: SimpleChanges = {
@@ -59,8 +56,7 @@ describe('ButtonComponent', () => {
       };
       component.ngOnChanges(changes);
       fixture.detectChanges();
-      const icon = fixture.debugElement.query(By.css('b-icon'));
-      expect(icon.componentInstance.size).toEqual(IconSize.large);
+      expect(buttonElement.classList).toContain('b-icon-' + IconSize.medium);
     });
   });
 
@@ -68,18 +64,15 @@ describe('ButtonComponent', () => {
     it('should have type as class', () => {
       component.type = ButtonType.tertiary;
       fixture.detectChanges();
-      const buttonElement = fixture.debugElement.query(By.css('button'));
-      expect(buttonElement.nativeElement.classList).toContain('tertiary');
+      expect(buttonElement.classList).toContain('tertiary');
     });
     it('should not have disabled class by default', () => {
-      const buttonElement = fixture.debugElement.query(By.css('button'));
-      expect(buttonElement.nativeElement.classList).not.toContain('disabled');
+      expect(buttonElement.classList).not.toContain('disabled');
     });
     it('should have disabled class', () => {
       component.disabled = true;
       fixture.detectChanges();
-      const buttonElement = fixture.debugElement.query(By.css('button'));
-      expect(buttonElement.nativeElement.classList).toContain('disabled');
+      expect(buttonElement.classList).toContain('disabled');
     });
   });
 });

@@ -32,7 +32,7 @@ const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
 
 const orientationOptions = Object.keys(AvatarOrientation);
 const badges = Object.keys(AvatarBadge);
-const chips = Object.keys(ChipType);
+const chips = Object.values(ChipType).filter(o => o !== ChipType.avatar);
 
 const template = `
 <b-avatar

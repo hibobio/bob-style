@@ -61,7 +61,7 @@ describe('CardAddComponent', () => {
       expect(getComputedStyle(cardContentElement).fontSize).toEqual('18px');
     });
     it('should change type on type input change', () => {
-      component.type = CardType.tertiary;
+      component.type = CardType.large;
       fixture.detectChanges();
       expect(getComputedStyle(cardContentElement).fontSize).toEqual('22px');
     });

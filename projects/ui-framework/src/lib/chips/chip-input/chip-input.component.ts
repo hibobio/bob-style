@@ -9,7 +9,8 @@ import {
   OnChanges,
   Output,
   EventEmitter,
-  OnDestroy
+  OnDestroy,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   MatAutocompleteSelectedEvent,
@@ -47,7 +48,8 @@ import { Subscription } from 'rxjs';
       useExisting: forwardRef(() => ChipInputComponent),
       multi: true
     }
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChipInputComponent extends BaseFormElement
   implements OnChanges, OnInit, OnDestroy {

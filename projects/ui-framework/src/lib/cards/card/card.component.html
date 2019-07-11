@@ -17,7 +17,7 @@
 
 <p class="card-content"
    *ngIf="card.data.text"
-   [b-truncate-tooltip]="type === cardType.primary ? 4 : 3"
+   [b-truncate-tooltip]="type === cardType.regular ? 4 : 3"
    [delay]="100"
    [trustCssVars]="true">
   {{ card.data.text }}

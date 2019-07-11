@@ -5,23 +5,21 @@
 :host ::ng-deep {
   & > :not(:first-child):not(:last-child) {
     button {
-      border-radius: unset !important;
+      border-radius: 0 !important;
       border-right-width: 0 !important;
     }
   }
   & > :first-child {
     button {
-      border-bottom-right-radius: unset !important;
-      border-top-right-radius: unset !important;
+      border-bottom-right-radius: 0 !important;
+      border-top-right-radius: 0 !important;
       border-right-width: 0 !important;
     }
   }
   & > :last-child {
     button {
-      border-bottom-left-radius: unset !important;
-      border-top-left-radius: unset !important;
+      border-bottom-left-radius: 0 !important;
+      border-top-left-radius: 0 !important;
     }
   }
 }
-
-

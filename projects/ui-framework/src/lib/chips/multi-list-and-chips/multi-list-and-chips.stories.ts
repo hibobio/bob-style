@@ -55,6 +55,7 @@ const note = `
   options | SelectGroupOption[] | model of selection group | none
   listLabel | string | label text for the Multi List component | none
   chipsLabel | string | label text for the Chips List component | none
+  showSingleGroupHeader | boolean | displays single group with group header | false
   selectChange | &lt;ListChange&gt; | returns ListChange | none
 
   ~~~

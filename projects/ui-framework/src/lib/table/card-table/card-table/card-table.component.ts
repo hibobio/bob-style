@@ -4,7 +4,8 @@ import {
   HostBinding,
   OnInit,
   Output,
-  EventEmitter
+  EventEmitter,
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 import {
@@ -19,7 +20,8 @@ import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
 @Component({
   selector: 'b-card-table',
   templateUrl: './card-table.component.html',
-  styleUrls: ['./card-table.component.scss']
+  styleUrls: ['./card-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardTableComponent implements OnInit {
   constructor(private widthsService: CellWidthsService) {}

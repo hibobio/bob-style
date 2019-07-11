@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChipInputComponent } from './chip-input.component';
 
@@ -10,7 +10,10 @@ import {
   inputValue
 } from '../../services/utils/test-helpers';
 import { ChipListModule } from '../chip-list/chip-list.module';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import {
+  MatAutocompleteModule,
+  MatAutocompleteSelectedEvent
+} from '@angular/material/autocomplete';
 import { ChipModule } from '../chip/chip.module';
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
 import { ChipComponent } from '../chip/chip.component';
@@ -19,7 +22,7 @@ describe('ChipInputComponent', () => {
   let component: ChipInputComponent;
   let fixture: ComponentFixture<ChipInputComponent>;
   let chipInputElem: HTMLElement;
-  let inputElement: HTMLElement;
+  let inputElement: HTMLInputElement;
   let messageElement: HTMLElement;
   let chipsComponents: () => ChipComponent[];
   let chipsElements: () => HTMLElement[];
@@ -38,6 +41,9 @@ describe('ChipInputComponent', () => {
       providers: [ColorService],
       schemas: [NO_ERRORS_SCHEMA]
     })
+      .overrideComponent(ChipInputComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default }
+      })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(ChipInputComponent);
@@ -50,6 +56,8 @@ describe('ChipInputComponent', () => {
         component.required = true;
 
         fixture.detectChanges();
+
+        spyOn(component.changed, 'emit');
 
         chipsComponents = () => component.chips.list.toArray();
         inputElement = elementFromFixture(
@@ -106,24 +114,57 @@ describe('ChipInputComponent', () => {
     });
   });
 
+  describe('Input', () => {
+    it('should add chip from options from user input', () => {
+      inputValue(inputElement, 'ABC');
+      fixture.detectChanges();
+      expect(component.value).toEqual(['ABC']);
+      expect(chipsComponents().length).toEqual(1);
+      expect(inputElement.value).toEqual('');
+      expect(component.changed.emit).toHaveBeenCalledWith({
+        event: 'onChange',
+        added: 'ABC',
+        value: ['ABC']
+      });
+    });
+    it('should not add chip if its already present in value', () => {
+      component.value = ['ABC'];
+      fixture.detectChanges();
+
+      inputValue(inputElement, 'ABC');
+      fixture.detectChanges();
+
+      expect(component.value).toEqual(['ABC']);
+      expect(chipsComponents().length).toEqual(1);
+      expect(chipsElements()[0].className).toContain('blink');
+      expect(component.changed.emit).not.toHaveBeenCalled();
+    });
+  });
+
   describe('Add new', () => {
     it('should add new chip if acceptNew is true', () => {
       component.acceptNew = true;
       fixture.detectChanges();
       inputValue(inputElement, 'XYZ');
       fixture.detectChanges();
-      expect(component.value).toContain('XYZ');
+      expect(component.value).toEqual(['XYZ']);
       expect(chipsComponents().length).toEqual(1);
-      expect(component.value.length).toEqual(1);
+      expect(inputElement.value).toEqual('');
+      expect(component.changed.emit).toHaveBeenCalledWith({
+        event: 'onChange',
+        added: 'XYZ',
+        value: ['XYZ']
+      });
     });
     it('should not add new chip if acceptNew is false', () => {
       component.acceptNew = false;
       fixture.detectChanges();
       inputValue(inputElement, 'XYZ');
       fixture.detectChanges();
-      expect(component.value).not.toContain('XYZ');
-      expect(chipsComponents().length).toEqual(0);
       expect(component.value.length).toEqual(0);
+      expect(chipsComponents().length).toEqual(0);
+      expect(inputElement.value).toEqual('XYZ');
+      expect(component.changed.emit).not.toHaveBeenCalled();
     });
   });
 
@@ -139,6 +180,51 @@ describe('ChipInputComponent', () => {
 
       expect(chipsComponents().length).toEqual(1);
       expect(component.value.length).toEqual(1);
+      expect(component.changed.emit).toHaveBeenCalledWith({
+        event: 'onChange',
+        removed: 'ABC',
+        value: ['ACB']
+      });
+    });
+  });
+
+  describe('Autocomplete', () => {
+    it('should filter chips options', () => {
+      inputValue(inputElement, 'A');
+      fixture.detectChanges();
+      expect(component.filteredChips).toEqual(['ABC', 'ACB']);
+    });
+    it('should add chip from options to value', () => {
+      expect(component.value.length).toEqual(0);
+      component.optionSelected({
+        option: {
+          viewValue: 'ABC'
+        }
+      } as MatAutocompleteSelectedEvent);
+      fixture.detectChanges();
+      expect(component.value).toEqual(['ABC']);
+      expect(chipsComponents().length).toEqual(1);
+      expect(component.changed.emit).toHaveBeenCalledWith({
+        event: 'onChange',
+        added: 'ABC',
+        value: ['ABC']
+      });
+    });
+    it('should not add chip if its already present in value', () => {
+      component.value = ['ABC'];
+      fixture.detectChanges();
+
+      component.optionSelected({
+        option: {
+          viewValue: 'ABC'
+        }
+      } as MatAutocompleteSelectedEvent);
+      fixture.detectChanges();
+
+      expect(component.value).toEqual(['ABC']);
+      expect(chipsComponents().length).toEqual(1);
+      expect(chipsElements()[0].className).toContain('blink');
+      expect(component.changed.emit).not.toHaveBeenCalled();
     });
   });
 });
