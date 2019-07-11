@@ -2,9 +2,9 @@ import {Component, HostBinding, Input} from '@angular/core';
 import {AvatarSize} from '../../buttons-indicators/avatar/avatar.enum';
 
 export interface MiniEmployeeCard {
-  name: string;
   title: string;
-  dates: string;
+  subtitle: string;
+  footer: string;
   imageSource: string;
 }
 

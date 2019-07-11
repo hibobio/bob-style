@@ -37,19 +37,19 @@
     ::ng-deep b-avatar .avatar {
       margin: 0 auto;
     }
-    .name {
+    .title {
       display: block;
       margin-top: 5px;
       color: $grey-700;
     }
-    .title {
+    .subtitle {
       display: block;
       margin-top: 4px;
       color: $grey-600;
     }
   }
   .card-bottom {
-    .dates {
+    .footer {
       display: block;
       color: $grey-800;
       margin-bottom: 10px;

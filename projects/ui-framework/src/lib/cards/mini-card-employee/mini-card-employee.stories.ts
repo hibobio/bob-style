@@ -46,10 +46,10 @@ const note = `
 `;
 
 const mockMiniProfileCardData: MiniEmployeeCard = {
-  name: 'Larry Murfiray',
-  title: 'Product design',
+  title: 'Larry Murfiray',
+  subtitle: 'Product design',
   imageSource: mockAvatar(),
-  dates: '11/07 - 20/07'
+  footer: '11/07 - 20/07'
 };
 
 story.add(

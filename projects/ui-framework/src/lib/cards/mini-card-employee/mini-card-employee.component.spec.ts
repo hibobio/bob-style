@@ -25,10 +25,10 @@ describe('MiniEmployeeCardComponent', () => {
         component = fixture.componentInstance;
         component.clickable = true;
         component.card = {
-          name: 'Larry Murfiray',
-          title: 'Product design',
+          title: 'Larry Murfiray',
+          subtitle: 'Product design',
           imageSource: mockAvatarSource,
-          dates: '11/07 - 20/07'
+          footer: '11/07 - 20/07'
         };
         fixture.detectChanges();
       });
@@ -45,7 +45,7 @@ describe('MiniEmployeeCardComponent', () => {
 
   it('should have name rendered', () => {
     mockComponentElement = fixture.debugElement.query(
-      By.css('.name')
+      By.css('.title')
     ).nativeElement;
     expect(mockComponentElement.innerText).toEqual('Larry Murfiray');
   });
@@ -54,14 +54,14 @@ describe('MiniEmployeeCardComponent', () => {
 
   it('should have title rendered', () => {
     mockComponentElement = fixture.debugElement.query(
-      By.css('.title')
+      By.css('.subtitle')
     ).nativeElement;
     expect(mockComponentElement.innerText).toEqual('Product design');
   });
 
   it('should have dates rendered', () => {
     mockComponentElement = fixture.debugElement.query(
-      By.css('.dates')
+      By.css('.footer')
     ).nativeElement;
     expect(mockComponentElement.innerText).toEqual('11/07 - 20/07');
   });
@@ -75,7 +75,7 @@ describe('MiniEmployeeCardComponent', () => {
 
   it('name should be colored', () => {
     mockComponentElement = fixture.debugElement.query(
-      By.css('.name')
+      By.css('.title')
     ).nativeElement;
     expect(getComputedStyle(mockComponentElement).color).toEqual(
       'rgb(83, 83, 83)'
@@ -83,7 +83,7 @@ describe('MiniEmployeeCardComponent', () => {
   });
   it('title should be colored', () => {
     mockComponentElement = fixture.debugElement.query(
-      By.css('.title')
+      By.css('.subtitle')
     ).nativeElement;
     expect(getComputedStyle(mockComponentElement).color).toEqual(
       'rgb(157, 157, 157)'
@@ -91,7 +91,7 @@ describe('MiniEmployeeCardComponent', () => {
   });
   it('dates should be colored', () => {
     mockComponentElement = fixture.debugElement.query(
-      By.css('.dates')
+      By.css('.footer')
     ).nativeElement;
     expect(getComputedStyle(mockComponentElement).color).toEqual(
       'rgb(48, 48, 48)'
