@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipListModule } from './chip-list.module';
 import { ChipType, ChipListAlign } from '../chips.enum';
 import { mockAvatar, mockNames } from '../../mock.const';
+import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
@@ -21,7 +22,7 @@ const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
 const chips = mockNames(10).map(chip => ({
   text: chip,
   id: simpleUID(),
-  avatar: mockAvatar()
+  imageSource: mockAvatar()
 }));
 
 const template = `
@@ -71,6 +72,7 @@ const storyTemplate = `
       * Set chip type to Avatar (in Knobs panel) to see Avatar Chip List
     </p>
   </div>
+  <b-stats></b-stats>
 </b-story-book-layout>
 `;
 
@@ -95,7 +97,12 @@ story.add(
       onChipKeydown: action('Chip key pressed')
     },
     moduleMetadata: {
-      imports: [ChipListModule, StoryBookLayoutModule, BrowserAnimationsModule]
+      imports: [
+        ChipListModule,
+        StoryBookLayoutModule,
+        BrowserAnimationsModule,
+        UtilComponentsModule
+      ]
     }
   }),
   { notes: { markdown: note } }

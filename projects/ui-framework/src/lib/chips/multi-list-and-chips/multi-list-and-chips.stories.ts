@@ -11,6 +11,7 @@ import {
 import { MultiListAndChipsModule } from './multi-list-and-chips.module';
 import { action } from '@storybook/addon-actions';
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
+import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
@@ -85,6 +86,7 @@ const storyTemplate = `
   <div style="padding: 30px;margin:auto;max-width:900px;background: rgb(245,245,245);">
     ${template}
   </div>
+  <b-stats></b-stats>
 </b-story-book-layout>
 `;
 
@@ -102,7 +104,8 @@ const toAdd = () => ({
       MultiListAndChipsModule,
       StoryBookLayoutModule,
       BrowserAnimationsModule,
-      RadioButtonModule
+      RadioButtonModule,
+      UtilComponentsModule
     ]
   }
 });

@@ -41,18 +41,16 @@ export class ChipListComponent implements OnChanges {
   >();
 
   @HostBinding('attr.role') role = 'list';
-  @HostBinding('attr.data-align') alignChips = ChipListAlign.left;
+  @HostBinding('attr.data-align')
+  get alignChips() {
+    return this.config.align || ChipListAlign.left;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.chips) {
       this.chips = arrayOfValuesToArrayOfObjects('text')(
         changes.chips.currentValue
       );
-    }
-    if (changes.config) {
-      this.alignChips = changes.config.currentValue.align
-        ? changes.config.currentValue.align
-        : this.alignChips;
     }
   }
 

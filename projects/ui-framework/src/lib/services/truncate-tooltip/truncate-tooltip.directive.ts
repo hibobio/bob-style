@@ -24,6 +24,7 @@ export class TruncateTooltipDirective implements OnChanges, OnInit, OnDestroy {
 
   private tooltipComponent: ComponentRef<any>;
   private initialized = false;
+  public expectChanges = true;
 
   @Input() bTruncateTooltip = 1;
 
@@ -44,6 +45,7 @@ export class TruncateTooltipDirective implements OnChanges, OnInit, OnDestroy {
     );
     this.tooltipComponent = this.viewContainer.createComponent(factory);
     this.tooltipComponent.instance.maxLines = this.bTruncateTooltip || 1;
+    this.tooltipComponent.instance.expectChanges = this.expectChanges;
     this.tooltipComponent.instance.child.createEmbeddedView(this.templateRef);
     this.initialized = true;
   }

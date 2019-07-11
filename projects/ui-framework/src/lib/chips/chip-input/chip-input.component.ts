@@ -71,7 +71,7 @@ export class ChipInputComponent extends BaseFormElement
     focusable: true
   };
 
-  @ViewChild('chips', { static: true }) private chips: ChipListComponent;
+  @ViewChild('chips', { static: true }) public chips: ChipListComponent;
   @ViewChild('input', { static: true }) private input: ElementRef<
     HTMLInputElement
   >;

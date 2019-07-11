@@ -5,7 +5,7 @@ export interface Chip {
   text: string;
   id?: string | number;
   type?: ChipType;
-  avatar?: string;
+  imageSource?: string;
   removable?: boolean;
   disabled?: boolean;
   selected?: boolean;

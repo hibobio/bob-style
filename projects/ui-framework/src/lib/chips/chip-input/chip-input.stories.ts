@@ -12,6 +12,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipInputModule } from './chip-input.module';
 import { mockHobbies } from '../../mock.const';
+import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -70,6 +71,7 @@ const storyTemplate = `
   <div style="padding: 30px;margin:auto;max-width:600px;">
     ${template}
   </div>
+  <b-stats></b-stats>
 </b-story-book-layout>
 `;
 
@@ -89,7 +91,12 @@ const toAdd = () => ({
     chipInputChangeHandler: action('Chip input changed')
   },
   moduleMetadata: {
-    imports: [ChipInputModule, StoryBookLayoutModule, BrowserAnimationsModule]
+    imports: [
+      ChipInputModule,
+      StoryBookLayoutModule,
+      BrowserAnimationsModule,
+      UtilComponentsModule
+    ]
   }
 });
 

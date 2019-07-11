@@ -22,15 +22,16 @@ const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
 );
 
 const template1 = `
-  <b-big-body *bTruncateTooltip="maxLines" class="employee-title">
+  <b-big-body *bTruncateTooltip="maxLines">
     <span class="span1">{{ text1 }}</span>
     <span class="span2">{{ text2 }}</span>
   </b-big-body>
 `;
 const template2 = `
   <b-truncate-tooltip [maxLines]="maxLines"
-                      [type]="type" class="employee-title"
-                      [position]="position">
+                      [type]="type"
+                      [position]="position"
+                      [expectChanges]="true">
     <b-display-3>
       <span>
         <!-- this html comment should not be displayed -->
@@ -43,17 +44,19 @@ const template2 = `
   </b-truncate-tooltip>
 `;
 const template3 = `
-  <p b-truncate-tooltip="3"
-     [type]="type"
-     [position]="position" class="employee-title">
+  <p [b-truncate-tooltip]="maxLines"
+        [type]="type"
+        [position]="position"
+        [expectChanges]="true">
     <span>{{ text1 }}</span>
     <span>{{ text2 }}</span>
   </p>
 `;
 
 const template4 = `
-  <div b-truncate-tooltip="2" [type]="'css'"
-                              [position]="position">
+  <div [b-truncate-tooltip]="maxLines" [type]="'css'"
+                              [position]="position"
+                              [expectChanges]="true">
     <h3>
       This is a pure CSS tooltip! Looks and feels the same as matTooltip-based ones.
       Can't be used inside overflow hidden containers.

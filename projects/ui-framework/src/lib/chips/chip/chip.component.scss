@@ -47,8 +47,7 @@ $chipTypeMap: (
     height: map-get($avatarSizes, mini) + 2px,
     border-radius: (
       map-get($avatarSizes, mini) + 2px
-    ) /2,
-    padding-left: 0
+    ) /2
   )
 );
 
@@ -129,6 +128,7 @@ $chipStateMap: (
 :host[data-type='avatar']::ng-deep {
   b-avatar {
     margin-right: 5px;
+    margin-left: -10px;
 
     .avatar.avatar {
       box-shadow: none;

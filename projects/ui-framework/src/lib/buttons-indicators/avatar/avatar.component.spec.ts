@@ -30,6 +30,7 @@ describe('AvatarComponent', () => {
         componentElem = fixture.nativeElement;
         component.title = 'Title';
         component.imageSource =
+          // tslint:disable-next-line: max-line-length
           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
         component.backgroundColor = 'rgb(255, 255, 255)';
 

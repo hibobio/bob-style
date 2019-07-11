@@ -1,7 +1,10 @@
 import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { URLutils } from '../../../../ui-framework/src/lib/services/url/url-utils';
-import { TruncateTooltipModule } from '../../../../ui-framework/src/public_api';
+import {
+  TruncateTooltipModule,
+  TypographyModule
+} from '../../../../ui-framework/src/public_api';
 import { FormsModule } from '@angular/forms';
 import { mockText } from '../../../../ui-framework/src/lib/mock.const';
 
@@ -51,6 +54,22 @@ import { mockText } from '../../../../ui-framework/src/lib/mock.const';
 
       <br /><br />
 
+      <b-display-4
+        style="width: 138px; margin-top: 4px;"
+        *bTruncateTooltip="lines"
+        >Larry Murfiray</b-display-4
+      >
+
+      <br /><br />
+
+      <b-truncate-tooltip [maxLines]="lines">
+        <b-display-4 style="width: 138px; margin-top: 4px;">
+          Larry Murfiray
+        </b-display-4>
+      </b-truncate-tooltip>
+
+      <br /><br />
+
       <p
         style="display:flex; align-items:center; justify-content: space-between;max-width:300px;"
       >
@@ -82,7 +101,7 @@ export class TooltipTesterComponent {
 
 @NgModule({
   declarations: [TooltipTesterComponent],
-  imports: [CommonModule, TruncateTooltipModule, FormsModule],
+  imports: [CommonModule, TruncateTooltipModule, FormsModule, TypographyModule],
   exports: [TooltipTesterComponent],
   providers: [],
   entryComponents: []

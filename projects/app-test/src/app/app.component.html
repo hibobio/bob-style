@@ -1,7 +1,18 @@
 <!-- <url-tester ></url-tester>
 
-<app-form-elements-test></app-form-elements-test> -->
+<app-form-elements-test></app-form-elements-test>
 
 <tooltip-tester></tooltip-tester>
 
-<b-stats></b-stats>
+<b-stats></b-stats> -->
+
+<div style="width: 600px; margin: auto;">
+  <b-rich-text-editor [value]="editorValue"
+                      (changed)="updateValue($event)">
+
+  </b-rich-text-editor>
+
+  <div style="border: 1px solid black; padding: 10px; margin: 20px 0;">
+    {{editorValue}}
+  </div>
+</div>

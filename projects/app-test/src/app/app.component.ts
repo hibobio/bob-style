@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   constructor() {}
+
+  editorValue = 'some text';
+
+  updateValue(event) {
+    console.log(event);
+    this.editorValue = event;
+  }
 }

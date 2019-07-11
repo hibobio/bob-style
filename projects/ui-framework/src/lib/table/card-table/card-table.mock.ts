@@ -21,7 +21,7 @@ const getMockAvatar = () => ({
     title: mockNames(1),
     subtitle: mockJobs(1),
     size: AvatarSize.small,
-    isClickable: true
+    isClickable: false
   },
   handlers: {
     clicked: action('Avatar was clicked')

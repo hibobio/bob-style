@@ -80,7 +80,7 @@ export class MultiListAndChipsComponent implements OnChanges {
             chips.push({
               text: option.value,
               id: option.id,
-              avatar:
+              imageSource:
                 this.chipListConfig.type === ChipType.avatar &&
                 option.prefixComponent.attributes.imageSource,
               type: this.chipListConfig.type

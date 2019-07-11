@@ -43,8 +43,8 @@
 
   &:before {
     @include pseudo;
-    @include size(80%);
-    @include position(10% 10% 10% 10%);
+    @include size(76%);
+    @include position(12% 12% 12% 12%);
     border-radius: 50%;
     background-color: white;
     z-index: 0;

@@ -72,9 +72,10 @@ export const valueToObjectKey = (key: string) => (value: any) => {
 export const arrayOfValuesToArrayOfObjects = (key: string) => (
   value: any[]
 ) => {
-  if (isNullOrUndefined(value) || !isArray(value)) {
+  if (isNullOrUndefined(value)) {
     return value;
   }
+  value = asArray(value);
   return value.map(valueToObjectKey(key));
 };
 
