@@ -17,12 +17,11 @@ export class UtilsService {
       shareReplay()
     );
     this.winScroll$ = fromEvent(this.windowRef.nativeWindow, 'scroll').pipe(
-      debounceTime(100),
+      shareReplay(),
       map((e: Event) => ({
         scrollY: (e.currentTarget as Window).scrollY,
         scrollX: (e.currentTarget as Window).scrollX
-      })),
-      shareReplay()
+      }))
     );
     this.winClick$ = fromEvent(this.windowRef.nativeWindow, 'click');
     this.winKey$ = fromEvent(this.windowRef.nativeWindow, 'keydown');

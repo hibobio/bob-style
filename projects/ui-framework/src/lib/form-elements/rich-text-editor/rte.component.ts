@@ -7,7 +7,8 @@ import {
   Injector,
   Input,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -64,7 +65,8 @@ quillLib.register(Italic);
       useExisting: forwardRef(() => RichTextEditorComponent),
       multi: true
     }
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 @MixIn([RteLinkBlot, RtePlaceholderBlot, RteKeybindings])
 export class RichTextEditorComponent extends RTEformElement
@@ -136,6 +138,7 @@ export class RichTextEditorComponent extends RTEformElement
 
   // registering input/output transformers
   private initTransformers(): void {
+    console.log('initTransformers');
     this.inputTransformers = [stringyOrFail];
     this.outputTransformers = [this.rteUtils.cleanupHtml];
 
@@ -159,6 +162,11 @@ export class RichTextEditorComponent extends RTEformElement
       this.initTransformers();
       this.writeValue(this.value);
     }
+  }
+
+  // this extends RTE Abstract's ngOnInit
+  onNgOnInit(): void {
+    this.initTransformers();
   }
 
   // this extends RTE Abstract's ngAfterViewInit

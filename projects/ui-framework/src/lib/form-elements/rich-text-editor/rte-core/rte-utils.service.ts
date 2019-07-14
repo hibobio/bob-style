@@ -24,6 +24,7 @@ export class RteUtilsService {
   }
 
   cleanupHtml(value: string): string {
+    console.log('cleanup', value);
     return (
       value
         // empty lines in the end
@@ -32,7 +33,7 @@ export class RteUtilsService {
           ''
         )
         // empty tags
-        .replace(/<([^>/][^>]+)([^\n\r\/<>]+)?>(\s+)?<\/\1>/gi, '')
+        .replace(/<[^\/>][^>]+>(\s+)?<\/[^>]+>/gi, '')
     );
   }
 

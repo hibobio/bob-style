@@ -18,6 +18,7 @@ import { RichTextEditorModule } from './rte.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BlotType, RTEType } from './rte-core/rte.enum';
 import { SelectGroupOption } from '../lists/list.interface';
+import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -58,6 +59,7 @@ const storyTemplate = `
       ${template}
     </div>
   </div>
+  <b-stats></b-stats>
 </b-story-book-layout>
 `;
 
@@ -154,7 +156,8 @@ inputStories.add(
           BrowserAnimationsModule,
           TypographyModule,
           StoryBookLayoutModule,
-          RichTextEditorModule
+          RichTextEditorModule,
+          UtilComponentsModule
         ]
       }
     };

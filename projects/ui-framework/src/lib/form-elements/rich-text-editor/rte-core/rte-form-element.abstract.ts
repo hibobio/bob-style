@@ -10,7 +10,8 @@ import {
   Type,
   ViewChild,
   AfterViewInit,
-  HostBinding
+  HostBinding,
+  OnInit
 } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
 import quillLib, {
@@ -34,17 +35,18 @@ quillLib.register(quillLib.import('attributors/style/align'), true);
 quillLib.register(quillLib.import('attributors/style/size'), true);
 
 export abstract class RTEformElement extends BaseFormElement
-  implements OnChanges, AfterViewInit {
+  implements OnChanges, OnInit, AfterViewInit {
   protected constructor(
     public rteUtils: RteUtilsService,
     private changeDetector: ChangeDetectorRef,
     private injector: Injector
   ) {
     super();
+    this.baseValue = '';
   }
 
   public controlsDef = Object.values(BlotType);
-  public disableControlsDef = [];
+  public disableControlsDef;
 
   @Input() public value: string;
   @Input() public minChars = 0;
@@ -61,9 +63,9 @@ export abstract class RTEformElement extends BaseFormElement
   @ViewChild('sizePanel', { static: false })
   protected sizePanel: PanelComponent;
 
-  @Output() blurred: EventEmitter<any> = new EventEmitter<any>();
-  @Output() focused: EventEmitter<any> = new EventEmitter<any>();
-  @Output() changed: EventEmitter<any> = new EventEmitter<any>();
+  @Output() blurred: EventEmitter<string> = new EventEmitter<string>();
+  @Output() focused: EventEmitter<string> = new EventEmitter<string>();
+  @Output() changed: EventEmitter<string> = new EventEmitter<string>();
 
   @HostBinding('class.length-invalid') get isLengthInvalid(): boolean {
     return (
@@ -106,6 +108,7 @@ export abstract class RTEformElement extends BaseFormElement
 
   protected outputFormatTransformer: Function = (val: string): any => val;
   protected onNgAfterViewInit(): void {}
+  protected onNgOnInit(): void {}
 
   protected applyValue(newInputValue: string): void {
     if (newInputValue !== undefined) {
@@ -142,8 +145,9 @@ export abstract class RTEformElement extends BaseFormElement
 
       this.value = this.outputFormatTransformer(newOutputValue);
 
-      if (doPropagate && this.latestOutputValue !== newOutputValue) {
-        this.latestOutputValue = newOutputValue;
+      if (doPropagate && this.latestOutputValue !== this.value) {
+        console.log('transmitting');
+        this.latestOutputValue = this.value;
         this.changed.emit(this.value);
         this.propagateChange(this.value);
       }
@@ -193,16 +197,28 @@ export abstract class RTEformElement extends BaseFormElement
         );
       }
     }
-    if (changes.controls || changes.disableControls) {
-      this.controls = this.controls.filter(
-        (cntrl: BlotType) => !this.disableControls.includes(cntrl)
-      );
-      if (this.editor) {
-        (this.editor as any).options.formats = Object.values(this.controls);
-      }
-
-      this.updateSpecialBlots();
+    if (
+      (changes.controls && !changes.controls.firstChange) ||
+      (changes.disableControls && !changes.disableControls.firstChange)
+    ) {
+      this.initControls();
     }
+  }
+
+  protected initControls() {
+    this.disableControls = this.disableControls || this.disableControlsDef;
+    this.controls = this.controls.filter(
+      (cntrl: BlotType) => !this.disableControls.includes(cntrl)
+    );
+    if (this.editor) {
+      (this.editor as any).options.formats = Object.values(this.controls);
+    }
+    this.updateSpecialBlots();
+  }
+
+  public ngOnInit(): void {
+    this.initControls();
+    this.onNgOnInit();
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -233,8 +249,13 @@ export abstract class RTEformElement extends BaseFormElement
 
     this.onNgChanges(changes);
 
-    if (changes.value) {
+    if (
+      changes.value &&
+      changes.value.currentValue !== this.latestOutputValue
+    ) {
       this.applyValue(changes.value.currentValue);
+    } else {
+      console.log('not applyValue!');
     }
   }
 
@@ -279,13 +300,13 @@ export abstract class RTEformElement extends BaseFormElement
     range: RangeStatic,
     oldRange: RangeStatic
   ): void {
-    // if (range) {
-    //   const newSize = !!this.editor.getFormat(range).size;
-    //   if (this.hasSizeSet !== newSize) {
-    //     this.hasSizeSet = newSize;
-    //     this.changeDetector.detectChanges();
-    //   }
-    // }
+    if (range) {
+      const newSize = !!this.editor.getFormat(range).size;
+      if (this.hasSizeSet !== newSize) {
+        this.hasSizeSet = newSize;
+        this.changeDetector.detectChanges();
+      }
+    }
   }
 
   private onEditorFocus(): void {
