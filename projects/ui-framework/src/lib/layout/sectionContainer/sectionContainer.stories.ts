@@ -1,11 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  select,
-  withKnobs,
-  text,
-  boolean
-} from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
