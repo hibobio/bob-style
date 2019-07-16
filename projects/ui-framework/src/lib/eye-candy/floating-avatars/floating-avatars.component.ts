@@ -7,6 +7,7 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 
 const MIN_DIST = 250;
 const SPRING_AMOUNT = 0.0001;
+const SHADOW_BLEED = 10;
 
 @Component({
   selector: 'b-floating-avatars',
@@ -82,6 +83,8 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
       particle = new Ball(90, this.centerAvatarImage);
       particle.x = this.canvasDimension.width / 2;
       particle.y = this.canvasDimension.height / 2;
+      particle.vx = 1;
+      particle.vy = 1;
       particle.isCenter = true;
       this.particles.push(particle);
     }
@@ -104,55 +107,26 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
       ball1.y += ball1.vy;
     }
 
-    let scale;
-    if (this.shouldShrink(ball1)) {
-      scale = this.getNextShrinkScale(ball1);
-    } else if (this.shouldGrow(ball1)) {
-      scale = this.getNextGrowScale(ball1);
-    }
-    ball1.scaleX = ball1.scaleY = scale || 1;
-
-    if (ball1.x > this.canvasDimension.width + ball1.radius) {
-      ball1.x = -ball1.radius;
-    } else if (ball1.x < -ball1.radius) {
-      ball1.x = this.canvasDimension.width + ball1.radius;
+    if (ball1.x > this.canvasDimension.width - ball1.radius - SHADOW_BLEED) {
+      ball1.x = this.canvasDimension.width - ball1.radius - SHADOW_BLEED - 2;
+      ball1.vx = -ball1.vx;
+    } else if (ball1.x < ball1.radius + SHADOW_BLEED) {
+      ball1.x = ball1.radius + SHADOW_BLEED + 2;
+      ball1.vx = -ball1.vx;
     }
 
-    if (ball1.y > this.canvasDimension.height + ball1.radius) {
-      ball1.y = -ball1.radius;
-    } else if (ball1.y < -ball1.radius) {
-      ball1.y = this.canvasDimension.height + ball1.radius;
+    if (ball1.y > this.canvasDimension.height - ball1.radius - SHADOW_BLEED) {
+      ball1.y = this.canvasDimension.height - ball1.radius - SHADOW_BLEED - 2;
+      ball1.vy = -ball1.vy;
+    } else if (ball1.y < ball1.radius) {
+      ball1.y = ball1.radius + 2;
+      ball1.vy = -ball1.vy;
     }
 
-    for (let ball2, j = index + 1; j < this.avatarImages.length; j++) {
+    for (let ball2, j = index + 1; j <= this.avatarImages.length; j++) {
       ball2 = this.particles[j];
       this.spring(ball1, ball2);
     }
-  }
-
-  private shouldShrink(ball: Ball): boolean {
-    return ((ball.x > this.canvasDimension.width - ball.radius) && (ball.vx > 0)) ||
-      ((ball.x < ball.radius) && (ball.vx < 0)) ||
-      ((ball.y > this.canvasDimension.height - ball.radius) && (ball.vy > 0)) ||
-      ((ball.y < ball.radius) && (ball.vy < 0));
-  }
-
-  private shouldGrow(ball: Ball): boolean {
-    return ball.scaleX < 1 &&
-      (
-        ((ball.x < this.canvasDimension.width / 2) && (ball.vx > 0)) ||
-        ((ball.x > this.canvasDimension.width / 2) && (ball.vx < 0)) ||
-        ((ball.y > this.canvasDimension.height / 2) && (ball.vy < 0)) ||
-        ((ball.y < this.canvasDimension.height / 2) && (ball.vy > 0))
-      );
-  }
-
-  private getNextShrinkScale(ball: Ball): number {
-    return Math.max(ball.scaleX * 0.95, 0.05);
-  }
-
-  private getNextGrowScale(ball: Ball): number {
-    return Math.min(ball.scaleX * 1.05, 1);
   }
 
   private spring(ball1: Ball, ball2: Ball): void {

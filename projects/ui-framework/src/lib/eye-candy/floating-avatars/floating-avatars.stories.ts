@@ -11,7 +11,7 @@ const story = storiesOf(ComponentGroupType.EyeCandy, module).addDecorator(
   withKnobs
 );
 
-const avatarNum = 30;
+const avatarNum = 15;
 const avatarImagesMock: string[] = Array
   .from(Array(avatarNum), (_, i) => {
     return mockAvatar();
@@ -47,11 +47,11 @@ const note = `
 const storyTemplate = `
 <b-story-book-layout [title]="'Floating avatars'" style=" background: rgb(247,247,247);">
   <div style="
-        position: absolute;
+        position: relative;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+        width: 90%;
+        height: 400px;
         max-width: none;
   ">
     ${ template }
