@@ -64,10 +64,8 @@ const storyTemplate = `
       margin: 0 20px;
     }
   </style>
-  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
     ${button1}
     ${button2}
-  </div>
 </b-story-book-layout>
 `;
 

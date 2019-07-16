@@ -19,7 +19,7 @@ const componentTemplate = `
 
 const template = `
 <b-story-book-layout [title]="'action bar'">
-  <div style="max-width: 400px; margin: 30px auto;">
+  <div style="max-width: 400px;">
   ${componentTemplate}
   </div>
 </b-story-book-layout>

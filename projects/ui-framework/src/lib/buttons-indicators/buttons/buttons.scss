@@ -6,58 +6,69 @@ $sizeSmall: 30px;
 $sizeMedium: 36px;
 $sizeLarge: 44px;
 
-@mixin Button($type) {
-  @include BodyFont;
-  @include flex-align;
-  box-sizing: border-box;
-  width: 100%;
-  outline: none;
-  border: none;
-  border-radius: $border-radius;
+@mixin Button($type: null, $basics: true) {
+  @if $basics {
+    @include BodyFont;
+    @include flex-align;
+    box-sizing: border-box;
+    width: 100%;
+    outline: none;
+    border: none;
+    border-radius: $border-radius;
+    user-select: none;
 
-  :first-letter {
-    text-transform: capitalize;
-  }
-
-  @if $type == 'primary' {
-    background-color: var(--primary-600);
-    color: $white;
-    &:hover,
-    &:focus {
-      background-color: var(--primary-500);
-    }
-    &:active {
-      background-color: var(--primary-700);
+    :first-letter {
+      text-transform: capitalize;
     }
   }
 
-  @if $type == 'secondary' {
-    background-color: $grey-400;
-    &:hover,
-    &:focus {
-      background-color: $grey-300;
+  @if $type {
+    @if $type == 'primary' {
+      background-color: var(--primary-600);
+      color: $white;
+      &:hover,
+      &:focus {
+        background-color: var(--primary-500);
+      }
+      &:active {
+        background-color: var(--primary-700);
+      }
     }
-    &:active {
-      background-color: $grey-500;
-    }
-  }
 
-  @if $type == 'disabled' {
-    @include disabled-state;
+    @if $type == 'secondary' {
+      background-color: $grey-400;
+      &:hover,
+      &:focus {
+        background-color: $grey-300;
+      }
+      &:active {
+        background-color: $grey-500;
+      }
+    }
+
+    @if $type == 'tertiary' {
+      background-color: transparent;
+    }
+
+    @if $type == 'disabled' {
+      @include disabled-state;
+    }
   }
 }
 
 @mixin button-basic-types {
+  @include Button($type: false, $basics: true);
+
   &.primary {
-    @include Button(primary);
+    @include Button(primary, $basics: false);
   }
   &.secondary {
-    @include Button(secondary);
+    @include Button(secondary, $basics: false);
   }
   &.tertiary {
-    @include Button(tertiary);
+    @include Button(tertiary, $basics: false);
   }
   &.disabled {
-    @include Button(disabled);
+    @include Button(disabled, $basics: false);
   }
 }

@@ -20,34 +20,7 @@ import { debounce } from 'lodash';
 
 @Component({
   selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
-  template: `
-    <i
-      *ngIf="type === types.material && tooltipAllowed && tooltipEnabled"
-      class="tooltip-trigger"
-      [matTooltip]="tooltipText"
-      [matTooltipShowDelay]="delay"
-      [matTooltipPosition]="position"
-      matTooltipClass="b-truncate-tooltip"
-    ></i>
-    <i
-      *ngIf="type === types.css && tooltipEnabled"
-      class="tooltip-trigger"
-      [attr.data-tooltip]="tooltipText"
-      [attr.data-tooltip-position]="position"
-    ></i>
-    <div
-      #textContainer
-      class="btt"
-      [ngClass]="{
-        initialized: initialized,
-        'tooltip-enabled': tooltipEnabled
-      }"
-      data-max-lines="1"
-    >
-      <ng-content></ng-content>
-      <ng-template #directiveTemplate></ng-template>
-    </div>
-  `,
+  templateUrl: './truncate-tooltip.component.html',
   styleUrls: ['./truncate-tooltip.component.scss']
 })
 export class TruncateTooltipComponent

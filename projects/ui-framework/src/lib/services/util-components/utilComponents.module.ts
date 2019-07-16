@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { MockComponent } from './mock.component';
 import { UtilsModule } from '../utils/utils.module';
 import { DOMhelpers } from '../utils/dom-helpers.service';
+import { countChildren } from '../utils/functional-utils';
 
 @Component({
   selector: 'b-stats',
   template: `
     <span>changes: {{ changesCount }}</span>
+    <span>elements: {{ elementsCount }}</span>
   `,
   styles: [
     `
@@ -31,9 +33,11 @@ import { DOMhelpers } from '../utils/dom-helpers.service';
 export class StatsComponent implements DoCheck {
   constructor() {}
   public changesCount = 0;
+  public elementsCount = 0;
 
   ngDoCheck(): void {
     ++this.changesCount;
+    this.elementsCount = countChildren('b-story-book-layout', null);
   }
 }
 

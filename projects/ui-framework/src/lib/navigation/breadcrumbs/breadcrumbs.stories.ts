@@ -1,5 +1,13 @@
 import { storiesOf } from '@storybook/angular';
-import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  array,
+  boolean,
+  number,
+  object,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,7 +15,10 @@ import { BreadcrumbsModule } from './breadcrumbs.module';
 import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const inputStories = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
+const inputStories = storiesOf(
+  ComponentGroupType.Navigation,
+  module
+).addDecorator(withKnobs);
 
 const componmentTemplate = `
 <b-breadcrumbs [breadcrumbs]="breadcrumbs"
@@ -21,7 +32,7 @@ const componmentTemplate = `
 
 const template = `
 <b-story-book-layout [title]="'breadcrumbs'">
-  <div style="max-width: 900px; margin: 30px auto;">
+  <div style="max-width: 900px;">
     ${componmentTemplate}
   </div>
 </b-story-book-layout>
@@ -74,7 +85,11 @@ inputStories.add(
         prevClick: action('prevClick')
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, BreadcrumbsModule, StoryBookLayoutModule]
+        imports: [
+          BrowserAnimationsModule,
+          BreadcrumbsModule,
+          StoryBookLayoutModule
+        ]
       }
     };
   },

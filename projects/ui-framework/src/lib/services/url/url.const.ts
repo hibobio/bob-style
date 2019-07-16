@@ -7,4 +7,4 @@ export const allowedDomainsTest = {
 
 export const naiveLinkTest = /(www\.|http|\/|\w+\.\w+)/i;
 
-export const imageLinkTest = /(\.(jpg|jpeg|gif|png|svg))|(data:image)/i;
+export const imageLinkTest = /(\.(jpg|jpeg|gif|png|svg|webp))|(data:image)/i;

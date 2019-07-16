@@ -3,13 +3,16 @@ import { withKnobs } from '@storybook/addon-knobs/angular';
 import { TypographyModule } from './typography.module';
 import { ComponentGroupType } from '../consts';
 
-const typographyStories = storiesOf(ComponentGroupType.Typography, module).addDecorator(withKnobs);
+const typographyStories = storiesOf(
+  ComponentGroupType.Typography,
+  module
+).addDecorator(withKnobs);
 
 const displayTemplate = `
 <style>
   div {
     border-bottom: 1px solid #c4cdd5;
-    padding: 30px;
+
   }
   div .code-sample {
     padding: 4px 8px;

@@ -18,9 +18,7 @@ const template = `<b-alert-example
   [text]="text"></b-alert-example>`;
 
 const storyTemplate = `<b-story-book-layout [title]="'Alert'">
-  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
     ${template}
-  </div>
 </b-story-book-layout>`;
 
 const note = `

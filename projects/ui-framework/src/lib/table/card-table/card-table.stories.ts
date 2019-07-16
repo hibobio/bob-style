@@ -35,14 +35,14 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Card Table'">
+<b-story-book-layout [title]="'Card Table'" style="background-color: rgb(247,247,247);">
   <style>
     :host ::ng-deep .highlight-second-line span:nth-child(2) {
       color: var(--primary-500);
     }
   </style>
-  <div style="min-width:100%; min-height: 100%; padding: 20px; background: rgb(247,247,247);">
-  <div style="margin: 50px auto;" [ngStyle]="{maxWidth: !res ? '840px' : res}">
+
+  <div [ngStyle]="{maxWidth: !res ? '840px' : res}">
 
     <b-card-table
       [meta]="CardTableMetaData"
@@ -55,7 +55,6 @@ const storyTemplate = `
 
     <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: 40px auto 15px;">
       <span>Width: </span>
-
       <b-radio-button [radioConfig]="[
           {id: '95%', label: 'auto'},
           {id: '840px', label: '840px'},
@@ -66,7 +65,7 @@ const storyTemplate = `
       </b-radio-button>
     </p>
 
-    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: auto;">
+    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: 0 auto;">
       <span>Data: </span>
       <b-radio-button [radioConfig]="[
           {id: 1, label: 'original'},
@@ -78,7 +77,7 @@ const storyTemplate = `
     </p>
 
   </div>
-</div>
+
 <b-stats></b-stats>
 </b-story-book-layout>
 `;

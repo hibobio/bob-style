@@ -11,16 +11,22 @@ $grid-gap: 16px;
   padding: 0;
   display: grid;
   grid-gap: $grid-gap;
+  grid-template-columns: repeat(
+    $fit-strategy,
+    minmax(var(--card-max-width), 1fr)
+  );
 
-  &.cards-small {
-    grid-template-columns: repeat($fit-strategy, minmax(160px, 1fr));
-  }
+  &.align-center {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    grid-template-columns: none;
+    margin: calc(var(--card-grid-gap) / -2);
 
-  &.cards-regular {
-    grid-template-columns: repeat($fit-strategy, minmax(190px, 1fr));
-  }
-
-  &.cards-large {
-    grid-template-columns: repeat($fit-strategy, minmax(260px, 1fr));
+    ::ng-deep > * {
+      margin: calc(var(--card-grid-gap) / 2);
+      width: var(--card-max-width);
+    }
   }
 }

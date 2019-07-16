@@ -1,9 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  object,
-  boolean,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { object, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { CardsModule } from '../cards.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,7 +18,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Mini Employee card'">
-  <div style="display: flex; width:280px; margin: 50px auto; justify-content: center;">
+  <div style="max-width:160px;">
     ${template}
   </div>
 </b-story-book-layout>

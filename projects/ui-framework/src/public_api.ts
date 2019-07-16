@@ -385,6 +385,11 @@ export { TruncateTooltipModule } from './lib/services/truncate-tooltip/truncate-
 export { TruncateTooltipComponent } from './lib/services/truncate-tooltip/truncate-tooltip.component';
 export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/truncate-tooltip.directive';
 export { TruncateTooltipType, TruncateTooltipPosition } from './lib/services/truncate-tooltip/truncate-tooltip.enum';
+// RxJs operators
+export { outsideZone } from './lib/services/utils/rxjs.operators';
+// Eye Candy
+export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
+export { FloatingAvatarsComponent } from './lib/eye-candy/floating-avatars/floating-avatars.component';
 
 
 /*

@@ -199,10 +199,6 @@ $icon-colors: (
 [class*='b-icon'] {
   display: block;
 
-  &:not(.has-hover) {
-    pointer-events: none;
-  }
-
   @include b-icon(null, large, dark);
 
   @each $sizeKey, $size in $icon-sizes {

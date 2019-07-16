@@ -1,5 +1,11 @@
 import { storiesOf } from '@storybook/angular';
-import { text, select, boolean, withKnobs, number } from '@storybook/addon-knobs/angular';
+import {
+  text,
+  select,
+  boolean,
+  withKnobs,
+  number
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { TextareaModule } from './textarea.module';
@@ -7,7 +13,10 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const textareaStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(withKnobs);
+const textareaStories = storiesOf(
+  ComponentGroupType.FormElements,
+  module
+).addDecorator(withKnobs);
 
 const template = `
 <b-textarea [maxChars]="maxChars"
@@ -25,7 +34,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Textarea'">
-  <div style="max-width: 400px; margin: 30px auto;">
+  <div style="max-width: 350px;">
     ${template}
   </div>
 </b-story-book-layout>
@@ -70,7 +79,11 @@ textareaStories.add(
         errorMessage: text('errorMessage', '')
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, TextareaModule, StoryBookLayoutModule]
+        imports: [
+          BrowserAnimationsModule,
+          TextareaModule,
+          StoryBookLayoutModule
+        ]
       }
     };
   },

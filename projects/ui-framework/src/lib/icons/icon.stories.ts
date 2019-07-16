@@ -62,9 +62,7 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Icon'">
-  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
     ${template}
-  </div>
 </b-story-book-layout>
 `;
 
@@ -109,7 +107,7 @@ const iconsListTemplate = `
     <style>
       .icons-list {
         max-width: 100%;
-        padding: 30px;
+
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
@@ -136,10 +134,10 @@ const iconsListTemplate = `
         overflow-wrap: break-word;
       }
     </style>
-      <p style="margin: 0;">total icons: ${
+      <p style="width:100%; margin: 0 0 10px;">total icons: ${
         Array.from(new Set(iconClasses)).length
       }</p>
-      <div class="icons-list">
+      <div class="icons-list" style="max-width:none;">
         ${listHtml}
       </div>
 </b-story-book-layout>

@@ -26,7 +26,7 @@ const template = `
 `;
 
 const storyTemplate = `<b-story-book-layout [title]="'Info Strip'">
-  <div style="padding: 30px; margin:auto; max-width:600px;">
+  <div>
     ${template}
   </div>
 </b-story-book-layout>`;

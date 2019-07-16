@@ -27,10 +27,19 @@ export const getKeyByValue = (object: object, value: any) =>
 
 export const isString = (val: any): boolean => val && typeof val === 'string';
 
+export const isEmptyString = (val: any): boolean =>
+  isString(val) && val.trim() !== '';
+
 export const isArray = (val: any): boolean => val && Array.isArray(val);
+
+export const isEmptyArray = (val: any): boolean =>
+  isArray(val) && val.length > 0;
 
 export const isObject = (val: any): boolean =>
   val && !isArray(val) && val === Object(val);
+
+export const isEmptyObject = (val: any): boolean =>
+  isObject(val) && Object.keys(val).length > 0;
 
 export const isNullOrUndefined = (val: any): boolean =>
   val === undefined || val === null;
@@ -143,6 +152,11 @@ export const arrayDifference = (arrA: any[], arrB: any[]) => {
     .filter(x => !arrB.includes(x))
     .concat(arrB.filter(x => !arrA.includes(x)));
 };
+
+export const dedupeArray = (arr: any[]): any[] => Array.from(new Set(arr));
+
+export const joinArrays = (arr1: any[], ...rest): any[] =>
+  dedupeArray(arr1.concat(...rest));
 
 export const makeArray = (length: number, fill: any = undefined): any[] =>
   Array(length).fill(fill);

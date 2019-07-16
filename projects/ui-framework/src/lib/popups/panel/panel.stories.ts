@@ -47,7 +47,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Overlay panel'">
-  <div style="position: absolute; top: 30px; left: 30px;">
+  <div style="max-width: none; text-align: left;">
     ${template}
   </div>
 </b-story-book-layout>

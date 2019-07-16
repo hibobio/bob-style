@@ -32,10 +32,8 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Component Renderer'">
-  <div style="padding: 50px; display:flex; justify-content: center; background: rgb(245,245,245);">
+<b-story-book-layout [title]="'Component Renderer'" style="background-color: rgb(247,247,247);">
     ${template}
-  </div>
   <b-stats></b-stats>
 </b-story-book-layout>
 `;

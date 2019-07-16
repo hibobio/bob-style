@@ -65,7 +65,7 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Chip List'">
-  <div style="padding: 30px;margin:auto;max-width:600px;">
+  <div style="max-width:500px;">
     ${template}
     <br>
     <p>

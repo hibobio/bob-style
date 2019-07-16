@@ -83,8 +83,8 @@ const note = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Multi List And Chips'">
-  <div style="padding: 30px;margin:auto;max-width:900px;background: rgb(245,245,245);">
+<b-story-book-layout [title]="'Multi List And Chips'" style=" background: rgb(247,247,247);">
+  <div style="max-width:900px;">
     ${template}
   </div>
   <b-stats></b-stats>

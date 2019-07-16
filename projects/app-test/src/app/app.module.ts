@@ -8,6 +8,7 @@ import { UrlTesterModule } from './url-tester/url-tester.module';
 import { UtilComponentsModule } from '../../../ui-framework/src/lib/services/util-components/utilComponents.module';
 import { TooltipTesterModule } from './truncate-tooltip/truncate-tooltip.module';
 import { FormElementsModule } from '../../../ui-framework/src/public_api';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,7 +19,8 @@ import { FormElementsModule } from '../../../ui-framework/src/public_api';
     UrlTesterModule,
     UtilComponentsModule,
     TooltipTesterModule,
-    FormElementsModule
+    FormElementsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

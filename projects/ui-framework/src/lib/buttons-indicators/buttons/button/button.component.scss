@@ -16,20 +16,22 @@ button {
     padding: 0 $padding;
     min-width: $minWidthSmall;
     height: $sizeSmall;
+    font-weight: 500;
   }
   &.medium {
     padding: 0 $padding;
     min-width: $minWidthMedium;
     height: $sizeMedium;
     @include HeadingFont(14px);
+    font-weight: 500;
   }
   &.large {
     padding: 0 $padding;
     min-width: $minWidthLarge;
     height: $sizeLarge;
     text-transform: uppercase;
-    font-weight: 500;
     @include HeadingFont(14px);
+    font-weight: 500;
   }
 
   &[class*='b-icon'] {
@@ -37,6 +39,9 @@ button {
 
     &:before {
       margin-right: 6px;
+      display: inline-block;
+      vertical-align: middle;
+      pointer-events: none;
     }
   }
 }

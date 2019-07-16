@@ -20,15 +20,15 @@ const template2 = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Divider'">
+<div>
+    <b-caption>Simple Divider line:</b-caption>
+    ${template2}
 
-  <div style="margin: 5px auto;"><b-caption>Simple Divider line:</b-caption></div>
-  ${ template2 }
+    <br /><br /><br />
 
-  <br /><br /><br />
-
-  <div style="margin: 5px auto;"><b-caption>Simple Text Divider:</b-caption></div>
-  ${ template1 }
-
+    <b-caption>Simple Text Divider:</b-caption>
+    ${template1}
+</div>
 </b-story-book-layout>
 `;
 
@@ -43,7 +43,7 @@ const note = `
   text | string | text to be displayed in divider | null
 
   ~~~
-  ${ template1 }
+  ${template1}
   ~~~
 `;
 
@@ -53,7 +53,7 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
-        text: text('text', 'Some text'),
+        text: text('text', 'Some text')
       },
       moduleMetadata: {
         imports: [

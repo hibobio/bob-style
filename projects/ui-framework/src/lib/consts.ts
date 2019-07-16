@@ -12,7 +12,8 @@ export enum ComponentGroupType {
   Lists = 'Components|Lists',
   Icons = 'Icons',
   Typography = 'Typography',
-  Services = 'Services'
+  Services = 'Services',
+  EyeCandy = 'Eye Candy',
 }
 
 export const serverDateFormat = 'YYYY-MM-DD';

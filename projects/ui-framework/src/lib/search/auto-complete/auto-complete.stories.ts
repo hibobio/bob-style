@@ -24,7 +24,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Auto complete'">
-  <div style="max-width: 400px; margin: 30px auto;">
+  <div style="max-width: 300px;">
     ${template}
   </div>
 </b-story-book-layout>

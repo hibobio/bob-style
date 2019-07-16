@@ -25,9 +25,7 @@ const template = `<b-lightbox-example
                 </b-lightbox-example>`;
 
 const storyTemplate = `<b-story-book-layout [title]="'Lightbox'">
-  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
     ${template}
-  </div>
   <b-stats></b-stats>
 </b-story-book-layout>`;
 

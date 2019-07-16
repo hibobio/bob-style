@@ -29,7 +29,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Side Menu'">
-  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
+  <div style="max-width: 300px;">
     ${template}
   </div>
 </b-story-book-layout>

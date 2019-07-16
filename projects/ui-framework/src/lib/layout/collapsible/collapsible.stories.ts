@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
@@ -9,7 +14,9 @@ import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
+  withKnobs
+);
 
 const template = `
   <b-collapsible
@@ -32,7 +39,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Collapsible'">
-  <div style="padding: 50px; overflow: hidden;">
+  <div style="max-width: none; margin: 0 -30px; padding: 0 50px; overflow: hidden;">
     ${template.repeat(5)}
 </div>
 </b-story-book-layout>
@@ -82,14 +89,22 @@ story.add(
         expanded: boolean('expanded', false),
         disabled: boolean('disabled', false),
         title: text('title', 'Other People’s requests (4):'),
-        description: text('description', 'Here you could see the manager side details'),
+        description: text(
+          'description',
+          'Here you could see the manager side details'
+        ),
         content: text('content', contentMock),
 
         onPanelOpened: action('Panel opened'),
         onPanelClosed: action('Panel closed')
       },
       moduleMetadata: {
-        imports: [StoryBookLayoutModule, BrowserAnimationsModule, CollapsibleModule, ButtonsModule]
+        imports: [
+          StoryBookLayoutModule,
+          BrowserAnimationsModule,
+          CollapsibleModule,
+          ButtonsModule
+        ]
       }
     };
   },

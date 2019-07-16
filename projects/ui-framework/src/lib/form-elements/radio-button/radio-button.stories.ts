@@ -37,9 +37,7 @@ const template = `
 
 const stroyTemplate = `
 <b-story-book-layout [title]="'Radio Buttons'">
-  <div style="padding: 30px; display: flex; justify-content: center;">
     ${template}
-  </div>
 </b-story-book-layout>`;
 
 const note = `

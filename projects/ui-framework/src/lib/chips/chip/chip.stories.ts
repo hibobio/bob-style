@@ -57,9 +57,7 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Chip'">
-  <div style="margin: 50px auto;">
     ${template}
-  </div>
 </b-story-book-layout>
 `;
 

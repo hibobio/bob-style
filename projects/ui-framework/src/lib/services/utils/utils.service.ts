@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { fromEvent, Observable, of } from 'rxjs';
-import { debounceTime, map, share, shareReplay } from 'rxjs/operators';
+import { fromEvent, Observable } from 'rxjs';
+import { debounceTime, map, shareReplay } from 'rxjs/operators';
 import { WindowRef } from './window-ref.service';
 import { ScrollEvent } from './utils.interface';
 

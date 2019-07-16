@@ -1,4 +1,13 @@
 import { Injectable } from '@angular/core';
+import {
+  isString,
+  isArray,
+  isObject,
+  isEmptyObject,
+  isEmptyString,
+  isEmptyArray,
+  joinArrays
+} from './functional-utils';
 
 export interface Styles {
   [key: string]: string | number;
@@ -11,6 +20,10 @@ export interface TextProps {
 export interface NotEmptyChildren {
   total: number;
   firstIndex: number | null;
+}
+
+export interface NgClass {
+  [key: string]: boolean;
 }
 
 @Injectable()
@@ -114,6 +127,7 @@ export class DOMhelpers {
     return width > 0 ? width : 0;
   }
 
+  // TODO: Add Test
   // find closest parent either by CSS selector or by test function
   // can return element or test result
   public getClosest(
@@ -137,5 +151,75 @@ export class DOMhelpers {
     }
     test = test(element);
     return { element: test ? element : null, result: test }[rtrn];
+  }
+
+  // Similar to [ngClass] binding.
+  // Takes a string of space-separated classes, string[] of classes or {[class]: boolean} object
+  // and adds/removes relative classes.
+  // Usecase - to use on component host element,
+  // as Hostbinding('ngClass') is not available
+  public bindClasses(
+    element: HTMLElement,
+    classes: string | string[] | NgClass
+  ): NgClass {
+    if (!element || !this.isElement(element)) {
+      return {};
+    }
+
+    let removeClasses: string[] = [];
+    let addClasses: string[] = [];
+
+    const classStringToArray = (cls: string): string[] => cls.split(' ').sort();
+
+    const classesAsArray = (cls: string | string[]): string[] => {
+      return isString(cls)
+        ? (cls as string).split(' ').sort()
+        : isArray(cls)
+        ? (cls as string[]).slice().sort()
+        : [];
+    };
+
+    const arrayToNgClass = (cls: string[], value = true): NgClass =>
+      cls.reduce((acc, c) => {
+        acc[c] = value;
+        return acc;
+      }, {});
+
+    if (
+      classes &&
+      (!isEmptyString(classes) ||
+        !isEmptyArray(classes) ||
+        !isEmptyObject(classes))
+    ) {
+      const currentClassesAsArray = classStringToArray(element.className);
+      let addClassesString: string;
+
+      if (isObject(classes)) {
+        removeClasses = Object.keys(classes)
+          .filter(c => !classes[c])
+          .sort();
+        addClasses = joinArrays(
+          currentClassesAsArray,
+          Object.keys(classes).filter(c => classes[c])
+        ).sort();
+      } else {
+        addClasses = joinArrays(
+          currentClassesAsArray,
+          classesAsArray(classes as string | string[])
+        ).sort();
+      }
+      addClassesString = addClasses
+        .filter(c => !removeClasses.includes(c))
+        .join(' ');
+
+      if (currentClassesAsArray.join(' ') !== addClassesString) {
+        element.className = addClassesString;
+      }
+    }
+
+    return {
+      ...arrayToNgClass(classStringToArray(element.className), true),
+      ...arrayToNgClass(removeClasses, false)
+    };
   }
 }

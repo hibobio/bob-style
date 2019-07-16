@@ -24,7 +24,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Mini preloader'">
-  <div style="max-width: 400px; margin: 30px auto; display:flex; flex-direction: column; align-items: center;">
+  <div style="display:flex; flex-direction: column; align-items: center;">
     ${template}
   </div>
 </b-story-book-layout>

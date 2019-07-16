@@ -36,7 +36,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Data Table'">
-  <div style="width: calc(100% - 60px); margin: 30px auto;">
+  <div style="max-width: calc(100% - 60px);">
     ${template}
   </div>
   <b-stats></b-stats>

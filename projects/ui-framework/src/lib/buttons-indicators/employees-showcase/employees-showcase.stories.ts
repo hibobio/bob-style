@@ -50,9 +50,7 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Employees Showcase'">
-  <div style="display: flex; justify-content: center; padding: 30px;">
     ${template}
-  </div>
   <b-stats></b-stats>
 </b-story-book-layout>
 `;

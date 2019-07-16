@@ -1,39 +1,41 @@
 import { storiesOf } from '@storybook/angular';
-import { select, withKnobs } from '@storybook/addon-knobs/angular';
+import { boolean, select, withKnobs } from '@storybook/addon-knobs/angular';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { CardType } from '../cards.enum';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { CardLayoutExampleModule } from './card-layout-example.module';
+import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs
 );
 
 const template = `
-  <b-card-layout-example-1 [type]="type"></b-card-layout-example-1>
+  <b-card-layout-example-1 [type]="type" [alignCenter]="alignCenter"></b-card-layout-example-1>
 `;
 
 const template2 = `
-  <b-card-layout-example-2 [type]="type"></b-card-layout-example-2>
+  <b-card-layout-example-2 [type]="type" [alignCenter]="alignCenter"></b-card-layout-example-2>
 `;
 const template3 = `
-  <b-card-layout-example-3></b-card-layout-example-3>
+  <b-card-layout-example-3 [alignCenter]="alignCenter"></b-card-layout-example-3>
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Cards Layout'">
-  <div style="min-width:100%; min-height: 100%; padding: 30px; background: rgb(247,247,247);">
+<b-story-book-layout [title]="'Cards Layout'" style=" background: rgb(247,247,247);">
+  <div style="max-width: none;">
   <h3>Cards</h3>
-    ${ template }
+    ${template}
     <br><br>
     <h3>Employee Cards</h3>
-    ${ template2 }
+    ${template2}
     <br><br>
     <h3>Employee Cards</h3>
-    ${ template3 }
+    ${template3}
   </div>
+  <b-stats></b-stats>
 </b-story-book-layout>
 `;
 
@@ -47,6 +49,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   type | CardType | Card theme | primary (optional)
+  alignCenter | boolean | put cards in the center | false
 
 ~~~
 <b-cards [type]="type">
@@ -89,13 +92,15 @@ story.add(
       template: storyTemplate,
       props: {
         type: select('type', values(CardType), CardType.regular),
+        alignCenter: boolean('alignCenter', false)
       },
       moduleMetadata: {
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           CardLayoutExampleModule,
-        ],
+          UtilComponentsModule
+        ]
       }
     };
   },

@@ -4,6 +4,7 @@ import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UtilsModule } from './utils.module';
 import { By } from '@angular/platform-browser';
+import { elementFromFixture } from './test-helpers';
 
 @Component({
   template: `
@@ -34,6 +35,11 @@ import { By } from '@angular/platform-browser';
         </p>
       </div>
     </div>
+
+    <div
+      class="test4"
+      style="box-sizing:border-box; width:300px; padding:20px; border:2px solid red;"
+    ></div>
   `,
   providers: [DOMhelpers]
 })
@@ -48,6 +54,7 @@ describe('DOMhelpers', () => {
   let testDiv1: HTMLElement;
   let testDiv2: HTMLElement;
   let testDiv3: HTMLElement;
+  let testDiv4: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -62,9 +69,10 @@ describe('DOMhelpers', () => {
         testComponent = fixture.componentInstance;
         DOM = TestBed.get(DOMhelpers);
 
-        testDiv1 = fixture.debugElement.query(By.css('.test1')).nativeElement;
-        testDiv2 = fixture.debugElement.query(By.css('.test2')).nativeElement;
-        testDiv3 = fixture.debugElement.query(By.css('.test3')).nativeElement;
+        testDiv1 = elementFromFixture(fixture, '.test1');
+        testDiv2 = elementFromFixture(fixture, '.test2');
+        testDiv3 = elementFromFixture(fixture, '.test3');
+        testDiv4 = elementFromFixture(fixture, '.test4');
       });
   }));
 
@@ -127,11 +135,141 @@ describe('DOMhelpers', () => {
     });
   });
 
+  describe('isTextNode', () => {
+    it('should return true if node is a Text Node', () => {
+      expect(DOM.isTextNode(testDiv1)).toEqual(false);
+      expect(
+        DOM.isTextNode(testDiv1.querySelector('.test-me').childNodes[0])
+      ).toEqual(true);
+    });
+  });
+
+  describe('getTextNode', () => {
+    it('should return Text Node or undefined', () => {
+      const testElem = testDiv1.querySelector('.test-me') as HTMLElement;
+      expect(DOM.getTextNode(testElem).textContent).toEqual('Test');
+      expect(DOM.getTextNode(testDiv4)).toEqual(undefined);
+    });
+  });
+
+  describe('getDeepTextNode', () => {
+    it('should return nested Text Node or false', () => {
+      expect(DOM.getDeepTextNode(testDiv1).textContent).toEqual('Test');
+      expect(DOM.getDeepTextNode(testDiv4) as any).toEqual(false);
+    });
+  });
+
+  describe('isElement', () => {
+    it('should return true if node is an Element', () => {
+      const testElem = testDiv1.querySelector('.test-me') as HTMLElement;
+      expect(DOM.isElement(testDiv1)).toEqual(true);
+      expect(DOM.isElement(testElem.childNodes[0])).toEqual(false);
+    });
+  });
+
+  describe('hasInnerText', () => {
+    it('should return true is element has text inside', () => {
+      expect(DOM.hasInnerText(testDiv1)).toEqual(true);
+      expect(DOM.hasInnerText(testDiv4)).toEqual(false);
+    });
+  });
+
+  describe('getInnerWidth', () => {
+    it('should return element width minus padding and border', () => {
+      expect(DOM.getInnerWidth(testDiv4)).toEqual(300 - 20 * 2 - 2 * 2);
+      testDiv4.style.width = '0px';
+      expect(DOM.getInnerWidth(testDiv4)).toEqual(0);
+    });
+  });
+
   describe('getDeepTextElement', () => {
     it('should return deepest element that has text or multiple children with text or combination of above', () => {
       const testElem = testDiv3.querySelector('.right-one') as HTMLElement;
       expect(DOM.getDeepTextElement(testElem).classList).toContain('right-one');
       expect(DOM.getDeepTextElement(testDiv1).innerText).toEqual('Test');
+    });
+  });
+
+  describe('bindClasses', () => {
+    it('should bind 3 classes passed as a string', () => {
+      const classStr = 'class1 class2 class3';
+      const result = DOM.bindClasses(testDiv4, classStr);
+      expect(testDiv4.className).toEqual(classStr + ' test4');
+      expect(result).toEqual({
+        class1: true,
+        class2: true,
+        class3: true,
+        test4: true
+      });
+    });
+    it('should bind 3 classes passed as a string[]', () => {
+      const classStr = 'class1 class2 class3';
+      const classArr = ['class1', 'class2', 'class3'];
+      const result = DOM.bindClasses(testDiv4, classArr);
+      expect(testDiv4.className).toEqual(classStr + ' test4');
+      expect(result).toEqual({
+        class1: true,
+        class2: true,
+        class3: true,
+        test4: true
+      });
+    });
+    it('should bind 3 classes passed as an NgClass object', () => {
+      const classStr = 'class1 class2 class3';
+      const classObj = { class1: true, class2: true, class3: true };
+      const result = DOM.bindClasses(testDiv4, classObj);
+      expect(testDiv4.className).toEqual(classStr + ' test4');
+      expect(result).toEqual({
+        class1: true,
+        class2: true,
+        class3: true,
+        test4: true
+      });
+    });
+    it('should not bind class from NgClass object that has falsey value', () => {
+      const classObj = { class1: true, class2: true, class3: false };
+      const result = DOM.bindClasses(testDiv4, classObj);
+      expect(testDiv4.className).toEqual('class1 class2 test4');
+      expect(result).toEqual({
+        class1: true,
+        class2: true,
+        class3: false,
+        test4: true
+      });
+    });
+    it('should not do anythinig if empty classes passed', () => {
+      expect(DOM.bindClasses(testDiv4, '')).toEqual({ test4: true });
+      expect(DOM.bindClasses(testDiv4, [])).toEqual({ test4: true });
+      expect(DOM.bindClasses(testDiv4, null)).toEqual({ test4: true });
+      expect(DOM.bindClasses(testDiv4, undefined)).toEqual({ test4: true });
+      expect(DOM.bindClasses(testDiv4, {})).toEqual({ test4: true });
+      expect(testDiv4.className).toEqual('test4');
+    });
+    it('should remove existing class if NgClass object  has this key with falsey value', () => {
+      const classObj = { class1: true, class2: true, test4: false };
+      const result = DOM.bindClasses(testDiv4, classObj);
+      expect(testDiv4.className).toEqual('class1 class2');
+      expect(result).toEqual({ class1: true, class2: true, test4: false });
+    });
+
+    it('should result in the right classlist', () => {
+      DOM.bindClasses(testDiv4, 'class1 class2');
+      DOM.bindClasses(testDiv4, {
+        class1: true,
+        class2: false,
+        test: true,
+        test4: true
+      });
+      DOM.bindClasses(testDiv4, ['class2', 'class3']);
+      const result = DOM.bindClasses(testDiv4, { test: false, test4: false });
+      expect(testDiv4.className).toEqual('class1 class2 class3');
+      expect(result).toEqual({
+        class1: true,
+        class2: true,
+        class3: true,
+        test: false,
+        test4: false
+      });
     });
   });
 });

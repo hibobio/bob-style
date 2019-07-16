@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuickFilterSelectType } from './quick-filter.enum';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 import { QuickFilterConfig } from './quick-filter.interface';
+import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const textareaStories = storiesOf(
   ComponentGroupType.Search,
@@ -30,7 +31,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Textarea'" style="background-color: rgb(247,247,247);">
-<div style="width: calc(100vw - 100px); margin: 40px auto;">
+<div style="max-width: calc(100vw - 100px);">
   ${template}
 </div>
 </b-story-book-layout>
@@ -114,7 +115,8 @@ textareaStories.add(
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           QuickFilterModule,
-          ButtonsModule
+          ButtonsModule,
+          UtilComponentsModule
         ]
       }
     };

@@ -1,5 +1,13 @@
 import { storiesOf } from '@storybook/angular';
-import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  array,
+  boolean,
+  number,
+  object,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { TabsModule } from './tabs.module';
 import { ComponentGroupType } from '../../consts';
@@ -8,7 +16,10 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { Tab } from './tabs.interface';
 import { TabsType } from './tabs.enum';
 
-const inputStories = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
+const inputStories = storiesOf(
+  ComponentGroupType.Navigation,
+  module
+).addDecorator(withKnobs);
 
 const tabs: Tab[] = [
   {
@@ -25,7 +36,7 @@ const tabs: Tab[] = [
   },
   {
     label: 'Termination'
-  },
+  }
 ];
 const template = `
 <b-tabs [tabs]="tabs"
@@ -37,7 +48,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Tabs'">
-  <div style="max-width: 900px; margin: 30px auto;">
+  <div style="max-width: 900px;">
     ${template}
   </div>
 </b-story-book-layout>

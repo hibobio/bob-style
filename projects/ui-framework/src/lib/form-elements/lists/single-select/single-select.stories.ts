@@ -36,7 +36,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Single select'">
-  <div style="max-width: 400px; margin: 30px auto;">
+  <div style="flex:1; max-width: 350px;">
     ${template}
   </div>
 </b-story-book-layout>

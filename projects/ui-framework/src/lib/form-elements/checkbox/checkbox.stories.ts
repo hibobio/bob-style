@@ -1,12 +1,20 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxModule } from './checkbox.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const inputStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(withKnobs);
+const inputStories = storiesOf(
+  ComponentGroupType.FormElements,
+  module
+).addDecorator(withKnobs);
 
 const template = `
 <b-checkbox (checkboxChange)="checkboxChange($event)"
@@ -24,9 +32,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Checkbox'">
-  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
     ${template}
-  </div>
 </b-story-book-layout>
 `;
 
@@ -71,7 +77,11 @@ inputStories.add(
         errorMessage: text('errorMessage', '')
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, CheckboxModule, StoryBookLayoutModule]
+        imports: [
+          BrowserAnimationsModule,
+          CheckboxModule,
+          StoryBookLayoutModule
+        ]
       }
     };
   },

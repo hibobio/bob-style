@@ -18,9 +18,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Dialog'">
-  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
     ${template}
-  </div>
   <b-stats></b-stats>
 </b-story-book-layout>
 `;
@@ -125,7 +123,7 @@ buttonStories.add(
         BrowserAnimationsModule,
         DialogExampleModule,
         StoryBookLayoutModule,
-        UtilComponentsModule,
+        UtilComponentsModule
       ]
     }
   }),
