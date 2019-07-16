@@ -3,10 +3,10 @@ import {
 } from '@angular/core';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
+import { outsideZone } from '../../services/utils/rxjs.operators';
 
 const MIN_DIST = 250;
 const SPRING_AMOUNT = 0.0001;
-const SPEED = 4;
 
 @Component({
   selector: 'b-floating-avatars',
@@ -18,7 +18,9 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
 
   @ViewChild('canvas', { static: true }) canvas: ElementRef;
 
+  @Input() centerAvatarImage: string = null;
   @Input() avatarImages: string[] = [];
+  @Input() speed = 4;
 
   private canvasEl: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
@@ -43,14 +45,13 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
     this.scaleCanvas();
     this.setScene();
     this.loop();
-    this.zone.runOutsideAngular(() => {
-      this.resizeSubscribe = this.utils.getResizeEvent()
-        .subscribe(() => {
-          this.scaleCanvas();
-          this.particles = [];
-          this.setScene();
-        });
-    });
+    this.resizeSubscribe = this.utils.getResizeEvent()
+      .pipe(outsideZone(this.zone))
+      .subscribe(() => {
+        this.scaleCanvas();
+        this.particles = [];
+        this.setScene();
+      });
   }
 
   ngOnDestroy(): void {
@@ -69,17 +70,19 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
 
   private setScene(): void {
     for (let particle, i = 0; i < this.avatarImages.length; i++) {
-      particle = i === this.avatarImages.length - 1
-        ? new Ball(90, this.avatarImages[i])
-        : new Ball(Math.round(Math.random() * 30 + 20), this.avatarImages[i]);
-      particle.x = i === this.avatarImages.length - 1
-        ? this.canvasDimension.width / 2
-        : Math.random() * this.canvasDimension.width;
-      particle.y = i === this.avatarImages.length - 1
-        ? this.canvasDimension.height / 2
-        : Math.random() * this.canvasDimension.height;
-      particle.vx = Math.random() * SPEED - SPEED / 2;
-      particle.vy = Math.random() * SPEED - SPEED / 2;
+      particle = new Ball(Math.round(Math.random() * 30 + 20), this.avatarImages[i]);
+      particle.x = Math.random() * this.canvasDimension.width;
+      particle.y = Math.random() * this.canvasDimension.height;
+      particle.vx = Math.random() * this.speed - this.speed / 2;
+      particle.vy = Math.random() * this.speed - this.speed / 2;
+      this.particles.push(particle);
+    }
+    if (this.centerAvatarImage) {
+      let particle: Ball;
+      particle = new Ball(90, this.centerAvatarImage);
+      particle.x = this.canvasDimension.width / 2;
+      particle.y = this.canvasDimension.height / 2;
+      particle.isCenter = true;
       this.particles.push(particle);
     }
   }
@@ -96,7 +99,7 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
   }
 
   private move(ball1: Ball, index: number): void {
-    if (index !== this.avatarImages.length - 1) {
+    if (!ball1.isCenter) {
       ball1.x += ball1.vx;
       ball1.y += ball1.vy;
     }
@@ -186,7 +189,7 @@ export class Ball {
   scaleX: number;
   scaleY: number;
   lineWidth: number;
-  easeMult: number;
+  isCenter: boolean;
   img: HTMLImageElement;
 
   constructor(radius: number, imgUrl: string) {

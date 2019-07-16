@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { object, text, withKnobs } from '@storybook/addon-knobs/angular';
+import { object, text, number, withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -16,9 +16,13 @@ const avatarImagesMock: string[] = Array
   .from(Array(avatarNum), (_, i) => {
     return mockAvatar();
   });
+const centerAvatarImageMock = mockAvatar();
 
 const template = `
-  <b-floating-avatars [avatarImages]="avatarImages"></b-floating-avatars>
+  <b-floating-avatars [avatarImages]="avatarImages"
+                      [centerAvatarImage]="centerAvatarImage"
+                      [speed]="speed">
+  </b-floating-avatars>
 `;
 
 const note = `
@@ -30,7 +34,9 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  avatarImages | string[] | Array of image urls | none
+  avatarImages | string[] | Array of image urls | []
+  centerAvatarImage | string | the avatar to be displayed in center | null
+  speed | number | avatar movement speed is around value | 4
 
   ~~~
   ${ template }
@@ -57,6 +63,8 @@ const storyTemplate = `
 const toAdd = () => ({
   template: storyTemplate,
   props: {
+    speed: number('speed', 4),
+    centerAvatarImage: text('centerAvatarImage', centerAvatarImageMock),
     avatarImages: object('avatarImages', avatarImagesMock),
   },
   moduleMetadata: {
