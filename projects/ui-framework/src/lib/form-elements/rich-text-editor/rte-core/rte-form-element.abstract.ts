@@ -146,7 +146,6 @@ export abstract class RTEformElement extends BaseFormElement
       this.value = this.outputFormatTransformer(newOutputValue);
 
       if (doPropagate && this.latestOutputValue !== this.value) {
-        console.log('transmitting');
         this.latestOutputValue = this.value;
         this.changed.emit(this.value);
         this.propagateChange(this.value);
@@ -254,8 +253,6 @@ export abstract class RTEformElement extends BaseFormElement
       changes.value.currentValue !== this.latestOutputValue
     ) {
       this.applyValue(changes.value.currentValue);
-    } else {
-      console.log('not applyValue!');
     }
   }
 

@@ -17,6 +17,7 @@
   <div #toolbar
        class="quill-toolbar"
        [hidden]="controls.length === 0 && !hasSuffix"
+       [attr.hide-align]="!controls.includes(BlotType.align)"
        (mousedown)="$event.preventDefault()">
 
     <b-panel #sizePanel

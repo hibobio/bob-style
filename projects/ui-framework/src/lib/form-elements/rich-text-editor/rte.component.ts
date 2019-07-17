@@ -138,7 +138,6 @@ export class RichTextEditorComponent extends RTEformElement
 
   // registering input/output transformers
   private initTransformers(): void {
-    console.log('initTransformers');
     this.inputTransformers = [stringyOrFail];
     this.outputTransformers = [this.rteUtils.cleanupHtml];
 
@@ -154,6 +153,9 @@ export class RichTextEditorComponent extends RTEformElement
 
   // this extends RTE Abstract's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
+    if (changes.placeholderList) {
+      this.placeholderList = changes.placeholderList.currentValue;
+    }
     if (
       changes.placeholderList ||
       changes.controls ||

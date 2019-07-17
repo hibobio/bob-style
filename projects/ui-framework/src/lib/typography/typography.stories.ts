@@ -2,6 +2,7 @@ import { storiesOf } from '@storybook/angular';
 import { withKnobs } from '@storybook/addon-knobs/angular';
 import { TypographyModule } from './typography.module';
 import { ComponentGroupType } from '../consts';
+import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 
 const typographyStories = storiesOf(
   ComponentGroupType.Typography,
@@ -10,11 +11,19 @@ const typographyStories = storiesOf(
 
 const displayTemplate = `
 <style>
-  div {
+  .item {
     border-bottom: 1px solid #c4cdd5;
-
+    text-align: left;
+    padding: 30px;
   }
-  div .code-sample {
+  .item:first-child {
+    padding-top: 0;
+  }
+  .item:last-child {
+    padding-bottom: 0;
+    border: 0;
+  }
+  .code-sample {
     padding: 4px 8px;
     background-color: #d4dde6;
     display: inline-block;
@@ -22,47 +31,55 @@ const displayTemplate = `
     font-weight: 500;
   }
 </style>
-<div>
+<div class="item">
   <span class="code-sample">&#60;b-display-1&#62;</span>
   <b-display-1>Display XLarge</b-display-1>
 </div>
-<div>
+<div class="item">
   <span class="code-sample">&#60;b-display-2&#62;</span>
   <b-display-2>Display Large</b-display-2>
 </div>
-<div>
+<div class="item">
   <span class="code-sample">&#60;b-display-3&#62;</span>
   <b-display-3>Display Medium</b-display-3>
 </div>
-<div>
+<div class="item">
   <span class="code-sample">&#60;b-display-4&#62;</span>
   <b-display-4>Display Small</b-display-4>
 </div>
-<div>
+<div class="item">
   <span class="code-sample">&#60;b-heading&#62;</span>
   <b-heading>Heading</b-heading>
 </div>
-<div>
+<div class="item">
   <span class="code-sample">&#60;b-subheading&#62;</span>
   <b-subheading>Sub heading</b-subheading>
 </div>
- <div>
+ <div class="item">
   <span class="code-sample">&#60;b-big-body&#62;</span><br/>
   <b-big-body>Big body</b-big-body>
 </div>
- <div>
+ <div class="item">
   <span class="code-sample">&#60;b-bold-body&#62;</span><br/>
   <b-bold-body>Bold body</b-bold-body>
 </div>
-<div>
+<div class="item">
   <span>Default body font</span>
 </div>
-<div>
+<div class="item">
   <span class="code-sample">&#60;b-caption&#62;</span><br/>
   <b-caption>Caption</b-caption>
 </div>
-<ul>
 `;
+
+const storyTemplate = `
+<b-story-book-layout [title]="'Typography'" style="background-color: rgb(247,247,247);">
+  <div style="max-width: none;">
+    ${displayTemplate}
+  </div>
+</b-story-book-layout>
+`;
+
 const note = `
 ## Typography
 The typography is arranged into multiple levels:
@@ -94,10 +111,10 @@ Body
 typographyStories.add(
   'Text',
   () => ({
-    template: displayTemplate,
+    template: storyTemplate,
     props: {},
     moduleMetadata: {
-      imports: [TypographyModule]
+      imports: [TypographyModule, StoryBookLayoutModule]
     }
   }),
   { notes: { markdown: note } }

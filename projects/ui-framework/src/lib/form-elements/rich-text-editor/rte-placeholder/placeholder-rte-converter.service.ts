@@ -39,6 +39,7 @@ export class PlaceholderRteConverterService {
         const category = this.getGroupDisplayName(placeholders, innerContent);
         const name = this.getDisplayNameById(placeholders, innerContent);
         const text = this.getPlaceholderText(name, category);
+        // tslint:disable-next-line: max-line-length
         return `<span data-placeholder-id="${innerContent}" data-placeholder-category="${category}" data-text="${text}">${text}</span>`;
       }
     );

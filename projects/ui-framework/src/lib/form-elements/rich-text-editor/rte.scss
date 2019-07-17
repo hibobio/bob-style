@@ -451,6 +451,14 @@ $border-color: $grey-500;
   }
 }
 
+// Align panel
+
+.quill-toolbar[hide-align='true'] ::ng-deep {
+  .ql-align {
+    display: none;
+  }
+}
+
 // Editor text area CSS mods
 
 :host ::ng-deep {
