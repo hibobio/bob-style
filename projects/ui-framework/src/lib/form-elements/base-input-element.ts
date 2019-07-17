@@ -11,9 +11,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   protected constructor() {
     super();
     this.inputTransformers = [stringyOrFail];
-    this.outputTransformers = [
-      value => asNumber(this.inputType, value)
-    ];
+    this.outputTransformers = [value => asNumber(this.inputType, value)];
     this.baseValue = '';
   }
 
@@ -25,7 +23,9 @@ export abstract class BaseInputElement extends BaseFormElement {
     InputAutoCompleteOptions.off;
   @Input() maxChars: number;
 
-  @Output(FormEvents.inputEvents) changed: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
+  @Output(FormEvents.inputEvents) changed: EventEmitter<
+    InputEvent
+  > = new EventEmitter<InputEvent>();
 
   onInputChange(event) {
     if (event.target.value !== this.value) {
@@ -44,17 +44,15 @@ export abstract class BaseInputElement extends BaseFormElement {
     this.inputFocused = false;
   }
 
-  onInputKeydown(event: KeyboardEvent) {
+  onInputKey(event: KeyboardEvent) {
     if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) {
-      setTimeout(() => {
-        this.transmitValue(this.value, {
-          eventType: [InputEventType.onKey],
-          doPropagate: false,
-          addToEventObj: {
-            key: event.key
-          }
-        });
-      }, 0);
+      this.transmitValue(this.value, {
+        eventType: [InputEventType.onKey],
+        doPropagate: false,
+        addToEventObj: {
+          key: event.key
+        }
+      });
     }
   }
 }

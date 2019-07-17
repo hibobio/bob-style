@@ -9,7 +9,9 @@ import {
   Output,
   SimpleChanges,
   ViewContainerRef,
-  ViewChild
+  ViewChild,
+  NgZone,
+  ChangeDetectorRef
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { assign, chain, includes, map } from 'lodash';
@@ -81,10 +83,12 @@ export class MultiSelectComponent extends BaseSelectPanelElement
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
     DOM: DOMhelpers,
+    zone: NgZone,
+    cd: ChangeDetectorRef,
     private listChangeService: ListChangeService,
     private listModelService: ListModelService
   ) {
-    super(overlay, viewContainerRef, panelPositionService, DOM);
+    super(overlay, viewContainerRef, panelPositionService, DOM, zone, cd);
   }
 
   ngOnInit(): void {

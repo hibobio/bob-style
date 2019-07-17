@@ -4,7 +4,9 @@ import {
   ViewChild,
   AfterViewInit,
   ElementRef,
-  Input
+  Input,
+  NgZone,
+  ChangeDetectorRef
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseInputElement } from '../base-input-element';
@@ -28,7 +30,11 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
   ]
 })
 export class InputComponent extends BaseInputElement implements AfterViewInit {
-  constructor(private DOM: DOMhelpers) {
+  constructor(
+    private DOM: DOMhelpers,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
+  ) {
     super();
   }
   @ViewChild('input', { static: true }) input: ElementRef;
@@ -41,9 +47,15 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   public showSuffix = true;
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.showPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);
-      this.showSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
-    }, 0);
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.showPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);
+        this.showSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, 0);
+    });
   }
 }

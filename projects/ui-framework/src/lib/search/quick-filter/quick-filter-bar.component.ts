@@ -7,7 +7,9 @@ import {
   SimpleChanges,
   ViewChild,
   ElementRef,
-  AfterViewInit
+  AfterViewInit,
+  ChangeDetectorRef,
+  NgZone
 } from '@angular/core';
 import {
   QuickFilterBarChangeEvent,
@@ -68,7 +70,9 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
   constructor(
     private listModelService: ListModelService,
     private listChangeService: ListChangeService,
-    private DOM: DOMhelpers
+    private DOM: DOMhelpers,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -93,9 +97,14 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.hasPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);
-      this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
-    }, 0);
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.hasPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);
+        this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, 0);
+    });
   }
 }

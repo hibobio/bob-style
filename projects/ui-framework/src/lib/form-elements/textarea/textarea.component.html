@@ -16,7 +16,7 @@
             (input)="onInputChange($event)"
             (blur)="onInputBlur()"
             (focus)="onInputFocus()"
-            (keydown)="onInputKeydown($event)"></textarea>
+            (keyup)="onInputKey($event)"></textarea>
 </div>
 <p b-input-message
    *ngIf="hintMessage || warnMessage || errorMessage"

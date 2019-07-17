@@ -1,11 +1,15 @@
-import { Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostBinding,
+  HostListener,
+  Input,
+  Output
+} from '@angular/core';
 import { CardData } from '../cards.interface';
 import { CardType } from '../cards.enum';
-import { RenderedComponent } from '../../services/component-renderer/component-renderer.interface';
 import { Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
-
-import { isRenderedComponent, isString } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-card, [b-card]',
@@ -16,9 +20,6 @@ export class CardComponent {
   constructor() {}
 
   @Input() card: CardData;
-  @Input() type: CardType = CardType.regular;
-  @Input() index: number;
-  @Input() clickable = false;
 
   cardType = CardType;
   button = ButtonType;
@@ -26,11 +27,11 @@ export class CardComponent {
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
-  @HostBinding('class.focus-inside') menuIsOpened: boolean;
-
-  @HostBinding('class')
-  get typeClass() {
-    return 'card-' + this.type + (this.clickable ? ' clickable' : '');
+  @HostBinding('attr.data-focus-inside') menuIsOpened: boolean;
+  @HostBinding('attr.data-type') @Input() type: CardType = CardType.regular;
+  @HostBinding('attr.data-clickable') @Input() clickable = false;
+  @HostBinding('attr.tabindex') get tabindex() {
+    return this.clickable ? '0' : '-1';
   }
 
   @HostListener('click', ['$event'])

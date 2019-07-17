@@ -4,7 +4,9 @@ import {
   ViewChild,
   ViewContainerRef,
   ElementRef,
-  AfterViewInit
+  AfterViewInit,
+  NgZone,
+  ChangeDetectorRef
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
@@ -22,7 +24,8 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements AfterViewInit {
-  @ViewChild(CdkOverlayOrigin, { static: true }) overlayOrigin: CdkOverlayOrigin;
+  @ViewChild(CdkOverlayOrigin, { static: true })
+  overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
   @ViewChild('prefix', { static: false }) prefix: ElementRef;
 
@@ -45,15 +48,23 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService,
-    private DOM: DOMhelpers
+    private DOM: DOMhelpers,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
   ) {
     super();
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.showPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);
-    }, 0);
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.showPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, 0);
+    });
   }
 
   openPanel(): void {

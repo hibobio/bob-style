@@ -1,5 +1,5 @@
-import {Component, HostBinding, Input} from '@angular/core';
-import {AvatarSize} from '../../buttons-indicators/avatar/avatar.enum';
+import { Component, HostBinding, Input } from '@angular/core';
+import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 import { MiniEmployeeCard } from './mini-card-employee.interface';
 
 @Component({
@@ -8,12 +8,7 @@ import { MiniEmployeeCard } from './mini-card-employee.interface';
   styleUrls: ['./mini-card-employee.component.scss']
 })
 export class MiniEmployeeCardComponent {
-  @Input() clickable = false;
   @Input() card: MiniEmployeeCard;
   avatarSize = AvatarSize;
-  @HostBinding('class.clickable')
-  get isClickable(): boolean {
-    return this.clickable;
-  }
+  @HostBinding('class.clickable') @Input() clickable = false;
 }
-

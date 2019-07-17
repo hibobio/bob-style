@@ -9,6 +9,7 @@ import { ChipType } from '../../chips/chips.enum';
 import { ChipModule } from '../../chips/chip/chip.module';
 import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
 import { BadgeSize, AvatarBadges } from './avatar.consts';
+import { simpleChange } from '../../services/utils/test-helpers';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;
@@ -79,9 +80,11 @@ describe('AvatarComponent', () => {
   describe('Attributes', () => {
     it('Should put the right attributes on component host element', () => {
       component.isClickable = true;
-      component.ngOnChanges({
-        size: new SimpleChange(null, AvatarSize.large, false)
-      });
+      component.ngOnChanges(
+        simpleChange({
+          size: AvatarSize.large
+        })
+      );
       fixture.detectChanges();
       expect(componentElem.dataset.size).toEqual('large');
       expect(componentElem.dataset.orientation).toEqual('horizontal');
@@ -91,9 +94,11 @@ describe('AvatarComponent', () => {
 
   describe('Avatar size', () => {
     it('Should set the right size of the avatar with css variable', () => {
-      component.ngOnChanges({
-        size: new SimpleChange(null, AvatarSize.large, false)
-      });
+      component.ngOnChanges(
+        simpleChange({
+          size: AvatarSize.large
+        })
+      );
       fixture.detectChanges();
       expect(getComputedStyle(avatarElement).width).toEqual(
         AvatarSize.large + 'px'
@@ -104,6 +109,11 @@ describe('AvatarComponent', () => {
   describe('Text', () => {
     it('Should put title & subtitle text', () => {
       component.subtitle = 'Subtitle';
+      component.ngOnChanges(
+        simpleChange({
+          size: AvatarSize.medium
+        })
+      );
       fixture.detectChanges();
 
       const subtitle = fixture.debugElement.query(By.css('.slot2-medium'))
@@ -113,9 +123,11 @@ describe('AvatarComponent', () => {
     });
     it('Should put caption text on large avatar', () => {
       component.caption = 'department';
-      component.ngOnChanges({
-        size: new SimpleChange(null, AvatarSize.large, false)
-      });
+      component.ngOnChanges(
+        simpleChange({
+          size: AvatarSize.large
+        })
+      );
       fixture.detectChanges();
       const department = fixture.debugElement.query(By.css('.slot3-small'));
       expect(department).toBeTruthy();
@@ -123,9 +135,11 @@ describe('AvatarComponent', () => {
     });
     it('Should not put caption text on avatar, if size is not large', () => {
       component.caption = 'department';
-      component.ngOnChanges({
-        size: new SimpleChange(null, AvatarSize.medium, false)
-      });
+      component.ngOnChanges(
+        simpleChange({
+          size: AvatarSize.medium
+        })
+      );
       fixture.detectChanges();
       const department = fixture.debugElement.query(By.css('.slot3-small'));
       expect(department).toBeFalsy();
@@ -144,10 +158,12 @@ describe('AvatarComponent', () => {
 
   describe('Badge', () => {
     it('Should add badge icon', () => {
-      component.ngOnChanges({
-        badge: new SimpleChange(null, AvatarBadge.pending, false),
-        size: new SimpleChange(null, AvatarSize.small, false)
-      });
+      component.ngOnChanges(
+        simpleChange({
+          size: AvatarSize.small,
+          badge: AvatarBadge.pending
+        })
+      );
       fixture.detectChanges();
       const badgeElement = fixture.debugElement.query(
         By.css('.avatar-badge .b-icon.b-icon-' + BadgeSize[AvatarSize.small])
@@ -155,10 +171,13 @@ describe('AvatarComponent', () => {
       expect(badgeElement).toBeTruthy();
     });
     it('Should also accept BadgeConfig-format input', () => {
-      component.ngOnChanges({
-        badge: new SimpleChange(null, AvatarBadges[AvatarBadge.pending], false),
-        size: new SimpleChange(null, AvatarSize.medium, false)
-      });
+      component.ngOnChanges(
+        simpleChange({
+          size: AvatarSize.medium,
+          badge: AvatarBadges[AvatarBadge.pending]
+        })
+      );
+
       fixture.detectChanges();
       const badgeElement = fixture.debugElement.query(
         By.css('.avatar-badge .b-icon.b-icon-' + BadgeSize[AvatarSize.medium])
@@ -169,9 +188,11 @@ describe('AvatarComponent', () => {
 
   describe('Status', () => {
     it('Should add status chip', () => {
-      component.ngOnChanges({
-        size: new SimpleChange(null, AvatarSize.large, false)
-      });
+      component.ngOnChanges(
+        simpleChange({
+          size: AvatarSize.large
+        })
+      );
       component.chip = {
         type: ChipType.success,
         text: 'status'
@@ -184,9 +205,11 @@ describe('AvatarComponent', () => {
       expect(statusElement.nativeElement.innerText).toEqual('status');
     });
     it('Should not add status chip to small avatar', () => {
-      component.ngOnChanges({
-        size: new SimpleChange(null, AvatarSize.small, false)
-      });
+      component.ngOnChanges(
+        simpleChange({
+          size: AvatarSize.small
+        })
+      );
       component.chip = {
         type: ChipType.success,
         text: 'status'

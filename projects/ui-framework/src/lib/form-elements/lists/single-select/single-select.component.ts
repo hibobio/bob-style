@@ -7,7 +7,9 @@ import {
   OnDestroy,
   Output,
   SimpleChanges,
-  ViewContainerRef
+  ViewContainerRef,
+  NgZone,
+  ChangeDetectorRef
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { chain, isNull, isUndefined } from 'lodash';
@@ -64,9 +66,11 @@ export class SingleSelectComponent extends BaseSelectPanelElement
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
     DOM: DOMhelpers,
+    zone: NgZone,
+    cd: ChangeDetectorRef,
     private listChangeService: ListChangeService
   ) {
-    super(overlay, viewContainerRef, panelPositionService, DOM);
+    super(overlay, viewContainerRef, panelPositionService, DOM, zone, cd);
     this.value = null;
   }
 

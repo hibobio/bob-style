@@ -7,7 +7,10 @@ import {
   SimpleChanges,
   OnChanges,
   ViewChildren,
-  QueryList
+  QueryList,
+  HostListener,
+  ChangeDetectionStrategy,
+  NgZone
 } from '@angular/core';
 import { Chip, ChipListConfig, ChipKeydownEvent } from '../chips.interface';
 import { isKey } from '../../services/utils/functional-utils';
@@ -20,10 +23,11 @@ import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 @Component({
   selector: 'b-chip-list',
   templateUrl: './chip-list.component.html',
-  styleUrls: ['./chip-list.component.scss']
+  styleUrls: ['./chip-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChipListComponent implements OnChanges {
-  constructor() {}
+  constructor(private zone: NgZone) {}
 
   @ViewChildren('list') public list: QueryList<ChipComponent>;
 
@@ -44,6 +48,27 @@ export class ChipListComponent implements OnChanges {
   @HostBinding('attr.data-align')
   get alignChips() {
     return this.config.align || ChipListAlign.left;
+  }
+
+  @HostListener('click', ['$event'])
+  onHostClick($event: MouseEvent) {
+    const target = $event.target as HTMLElement;
+
+    if (target.nodeName.toUpperCase() === 'B-CHIP') {
+      const index = parseInt(target.dataset.index, 10);
+      const chip = this.chips[index];
+      this.onChipClick($event, chip);
+    }
+  }
+
+  @HostListener('keydown', ['$event'])
+  onHostKeydown($event: KeyboardEvent) {
+    const target = $event.target as HTMLElement;
+    if (target.nodeName.toUpperCase() === 'B-CHIP') {
+      const index = parseInt(target.dataset.index, 10);
+      const chip = this.chips[index];
+      this.onChipKeydown($event, chip, index);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -67,6 +92,7 @@ export class ChipListComponent implements OnChanges {
   }
 
   onChipKeydown(event: KeyboardEvent, chip: Chip, index: number): void {
+    console.log(event);
     this.keyPressed.emit({ event, chip });
 
     if (this.config.focusable) {
@@ -98,11 +124,13 @@ export class ChipListComponent implements OnChanges {
       event.stopPropagation();
       this.onChipRemove(chip);
 
-      setTimeout(() => {
-        this.focusChipElByIndex(
-          isKey(event.key, Keys.backspace) ? index - 1 : index
-        );
-      }, 0);
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.focusChipElByIndex(
+            isKey(event.key, Keys.backspace) ? index - 1 : index
+          );
+        }, 0);
+      });
     }
   }
 

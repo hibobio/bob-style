@@ -25,7 +25,7 @@
          (input)="onInputChange($event)"
          (blur)="onInputBlur();"
          (focus)="onInputFocus()"
-         (keydown)="onInputKeydown($event)">
+         (keyup)="onInputKey($event)">
 
   <div *ngIf="hasSuffix || showSuffix"
        class="bfe-suffix"

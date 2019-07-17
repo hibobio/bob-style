@@ -17,19 +17,15 @@ import { CardType } from '../cards.enum';
 export class CardAddComponent {
   constructor() {}
 
-  @Input() card: AddCardData;
-  @Input() type: CardType = CardType.regular;
-
   cardType = CardType;
+
+  @Input() card: AddCardData;
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
   @HostBinding('attr.tabindex') string = '0';
 
-  @HostBinding('class')
-  get typeClass() {
-    return 'card-' + this.type;
-  }
+  @HostBinding('attr.data-type') @Input() type: CardType = CardType.regular;
 
   @HostListener('click', ['$event'])
   onClick($event) {

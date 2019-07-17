@@ -1,7 +1,11 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, object, select, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  object,
+  select,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { CardsModule } from '../cards.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -11,6 +15,7 @@ import { CardType } from '../cards.enum';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { SliderModule } from '../../buttons-indicators/slider/slider.module';
 import { mockAvatar } from '../../mock.const';
+import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs
@@ -39,6 +44,7 @@ const storyTemplate = `
   <div style="max-width:280px;">
     ${template}
   </div>
+  <b-stats></b-stats>
 </b-story-book-layout>
 `;
 
@@ -73,7 +79,13 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', values(CardType), CardType.regular),
+        type: select(
+          'type',
+          Object.values(CardType).filter(
+            t => t === CardType.regular || t === CardType.large
+          ),
+          CardType.regular
+        ),
         clickable: boolean('clickable', true),
         cardData: object('card', CardsMockData[1]),
         cardClickHandler: action('Card clicked')
@@ -85,7 +97,8 @@ story.add(
           CardsModule,
           AvatarModule,
           SliderModule,
-        ],
+          UtilComponentsModule
+        ]
       }
     };
   },

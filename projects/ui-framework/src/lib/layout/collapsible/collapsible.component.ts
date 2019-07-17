@@ -6,7 +6,9 @@ import {
   HostBinding,
   AfterViewInit,
   ViewChild,
-  ElementRef
+  ElementRef,
+  NgZone,
+  ChangeDetectorRef
 } from '@angular/core';
 import { CollapsibleType } from './collapsible.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
@@ -17,7 +19,11 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
   styleUrls: ['./collapsible.component.scss']
 })
 export class CollapsibleComponent implements AfterViewInit {
-  constructor(private DOM: DOMhelpers) {}
+  constructor(
+    private DOM: DOMhelpers,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
+  ) {}
 
   @Input() type: CollapsibleType = CollapsibleType.small;
 
@@ -43,9 +49,15 @@ export class CollapsibleComponent implements AfterViewInit {
   collapsibleType = CollapsibleType;
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
-    }, 0);
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, 0);
+    });
   }
 
   onPanelOpened($event): void {

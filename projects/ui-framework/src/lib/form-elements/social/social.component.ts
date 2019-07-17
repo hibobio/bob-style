@@ -4,7 +4,9 @@ import {
   Input,
   Output,
   forwardRef,
-  ViewChild, OnInit
+  ViewChild,
+  OnInit,
+  NgZone
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { IconColor, IconSize } from '../../icons/icons.enum';
@@ -14,7 +16,10 @@ import { SocialTypes } from './social.const';
 import { Social } from './social.enum';
 import { BaseFormElement } from '../base-form-element';
 import { FormEvents, InputEventType } from '../form-elements.enum';
-import { domainFromUrl, simpleUID } from '../../services/utils/functional-utils';
+import {
+  domainFromUrl,
+  simpleUID
+} from '../../services/utils/functional-utils';
 import { InputComponent } from '../input/input.component';
 import { stringyOrFail } from '../../services/utils/transformers';
 
@@ -36,7 +41,7 @@ import { stringyOrFail } from '../../services/utils/transformers';
   ]
 })
 export class SocialComponent extends BaseFormElement implements OnInit {
-  constructor() {
+  constructor(private zone: NgZone) {
     super();
     this.inputTransformers = [
       stringyOrFail,
@@ -59,7 +64,7 @@ export class SocialComponent extends BaseFormElement implements OnInit {
       }
     ];
     this.outputTransformers = [
-      value => (value ? `http://${ SocialTypes[this.type].prefix }${ value }` : '')
+      value => (value ? `http://${SocialTypes[this.type].prefix}${value}` : '')
     ];
     this.wrapEvent = false;
   }
@@ -67,7 +72,9 @@ export class SocialComponent extends BaseFormElement implements OnInit {
   @ViewChild('bInput', { static: true }) bInput: InputComponent;
 
   @Input() type: Social;
-  @Output(FormEvents.socialInputChange) changed: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
+  @Output(FormEvents.socialInputChange) changed: EventEmitter<
+    InputEvent
+  > = new EventEmitter<InputEvent>();
 
   inputId: string;
 
@@ -78,7 +85,7 @@ export class SocialComponent extends BaseFormElement implements OnInit {
   readonly socialLabelMap = {
     [Social.facebook]: 'Facebook',
     [Social.twitter]: 'Twitter',
-    [Social.linkedin]: 'Linkedin',
+    [Social.linkedin]: 'Linkedin'
   };
 
   ngOnInit(): void {
@@ -99,9 +106,11 @@ export class SocialComponent extends BaseFormElement implements OnInit {
       this.transmitValue(this.value, { eventType: [event.event] });
     }
     if (event.event === InputEventType.onBlur) {
-      setTimeout(() => {
-        this.bInput.input.nativeElement.value = this.value;
-      }, 0);
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.bInput.input.nativeElement.value = this.value;
+        }, 0);
+      });
     }
   }
 }

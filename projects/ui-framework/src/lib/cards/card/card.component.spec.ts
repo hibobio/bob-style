@@ -1,5 +1,11 @@
 import { CardComponent } from './card.component';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick
+} from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
@@ -20,16 +26,9 @@ describe('CardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(MenuComponent),
-      ],
-      imports: [
-        CardsModule,
-        TruncateTooltipModule,
-      ],
-      schemas: [
-        NO_ERRORS_SCHEMA,
-      ]
+      declarations: [MockComponent(MenuComponent)],
+      imports: [CardsModule, TruncateTooltipModule],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents()
       .then(() => {
@@ -78,20 +77,20 @@ describe('CardComponent', () => {
       expect(menuElement).toBeTruthy();
     });
 
-    it('should add focus-inside class on the host element on menu open', () => {
+    it('should add focus-inside attribute on the host element on menu open', () => {
       menuComponent.openMenu.emit();
       fixture.detectChanges();
-      expect(fixture.nativeElement.classList).toContain('focus-inside');
+      expect(fixture.nativeElement.dataset.focusInside).toEqual('true');
     });
 
     it('should remove focus-inside class from host element after timeout on menu close', fakeAsync(() => {
       menuComponent.openMenu.emit();
       menuComponent.closeMenu.emit();
       fixture.detectChanges();
-      expect(fixture.nativeElement.classList).toContain('focus-inside');
+      expect(fixture.nativeElement.dataset.focusInside).toEqual('true');
       tick(300);
       fixture.detectChanges();
-      expect(fixture.nativeElement.classList).not.toContain('focus-inside');
+      expect(fixture.nativeElement.dataset.focusInside).not.toEqual('true');
     }));
 
     it('should NOT create menu element when falsy menu configuration is passed', () => {

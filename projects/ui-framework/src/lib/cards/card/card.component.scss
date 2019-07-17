@@ -24,7 +24,8 @@
   background-color: white;
 
   &:hover,
-  &.focus-inside {
+  &:focus,
+  &[data-focus-inside='true'] {
     box-shadow: 0 2px 15px 0 $grey-500;
     transform: translateY(-10px);
 
@@ -34,14 +35,19 @@
     }
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
     .card-content {
       @include animate(enablePointer, 0s, 0.2s);
     }
   }
 
-  &.clickable {
+  &[data-clickable='true'] {
     cursor: pointer;
+  }
+
+  &:focus {
+    outline: 0;
   }
 }
 
@@ -97,7 +103,7 @@
 
 // Types
 
-:host.card-regular {
+:host[data-type='regular'] {
   min-height: 240px;
   min-width: 190px;
 
@@ -111,8 +117,9 @@
   }
 }
 
-:host.card-large {
+:host[data-type='large'] {
   min-width: 260px;
+  min-height: 260px;
 
   .card-content {
     @include DisplayFont(
@@ -122,8 +129,4 @@
       $addCssVars: true
     );
   }
-}
-
-:host.card-large {
-  min-height: 260px;
 }

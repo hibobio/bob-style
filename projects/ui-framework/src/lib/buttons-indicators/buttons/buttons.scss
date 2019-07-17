@@ -16,6 +16,7 @@ $sizeLarge: 44px;
     border: none;
     border-radius: $border-radius;
     user-select: none;
+    white-space: nowrap;
 
     :first-letter {
       text-transform: capitalize;

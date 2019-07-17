@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { elementsFromFixture } from '../../services/utils/test-helpers';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
 import { MultiListAndChipsComponent } from './multi-list-and-chips.component';
 import { ChipListModule } from '../chip-list/chip-list.module';
 import { MultiListModule } from '../../form-elements/lists/multi-list/multi-list.module';
@@ -21,6 +21,9 @@ xdescribe('MultiListAndChipsComponent', () => {
       providers: [],
       schemas: [NO_ERRORS_SCHEMA]
     })
+      .overrideComponent(MultiListAndChipsComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default }
+      })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(MultiListAndChipsComponent);

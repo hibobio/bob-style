@@ -1,21 +1,6 @@
 @import '../../style/mixins';
 @import '../../style/typography';
 
-@keyframes tooltip-apprnc {
-  0% {
-    opacity: 0;
-    transform: scale(0);
-  }
-  50% {
-    opacity: 0.5;
-    transform: scale(0.99);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
 :host {
   display: block;
   position: relative;
@@ -70,6 +55,7 @@
   pointer-events: none;
 
   &:after {
+    animation-name: tooltip-apprnc-btt;
     transform: none;
     left: auto;
   }

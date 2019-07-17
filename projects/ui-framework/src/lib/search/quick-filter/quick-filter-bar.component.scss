@@ -96,6 +96,10 @@
       border-left: 1px solid $input-border-color;
       border-top-left-radius: $border-radius;
       border-bottom-left-radius: $border-radius;
+
+      &:before {
+        display: none;
+      }
     }
   }
 
@@ -104,6 +108,10 @@
       border-right: 1px solid $input-border-color;
       border-top-right-radius: $border-radius;
       border-bottom-right-radius: $border-radius;
+
+      &:after {
+        display: none;
+      }
     }
   }
 }

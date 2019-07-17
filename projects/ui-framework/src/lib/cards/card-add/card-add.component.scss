@@ -35,11 +35,13 @@
   }
 
   &,
-  &:hover {
+  &:hover,
+  &:focus {
     box-shadow: none;
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
     transform: none;
     background-color: $grey-300;
 
@@ -47,9 +49,5 @@
     .card-bottom {
       color: $grey-700;
     }
-  }
-
-  &:focus {
-    outline: 0;
   }
 }

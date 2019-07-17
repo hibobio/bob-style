@@ -11,8 +11,7 @@ import {
   OnChanges,
   OnInit,
   ChangeDetectorRef,
-  NgZone,
-  ChangeDetectionStrategy
+  NgZone
 } from '@angular/core';
 import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
 import { AvatarBadges, BadgeSize } from './avatar.consts';
@@ -26,8 +25,7 @@ import { TruncateTooltipType } from '../../services/truncate-tooltip/truncate-to
 @Component({
   selector: 'b-avatar',
   templateUrl: './avatar.component.html',
-  styleUrls: ['./avatar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./avatar.component.scss']
 })
 export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   constructor(
@@ -102,7 +100,10 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
       setTimeout(() => {
         this.hasContent =
           this.content && !this.DOM.isEmpty(this.content.nativeElement);
-        this.cd.markForCheck();
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
       }, 0);
     });
   }

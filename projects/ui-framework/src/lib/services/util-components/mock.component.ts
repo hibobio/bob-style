@@ -3,7 +3,9 @@ import {
   Input,
   ViewChild,
   ElementRef,
-  AfterViewInit
+  AfterViewInit,
+  ChangeDetectorRef,
+  NgZone
 } from '@angular/core';
 import { DOMhelpers } from '../utils/dom-helpers.service';
 
@@ -29,7 +31,11 @@ import { DOMhelpers } from '../utils/dom-helpers.service';
   styles: [':host {display: block;}']
 })
 export class MockComponent implements AfterViewInit {
-  constructor(private DOM: DOMhelpers) {}
+  constructor(
+    private DOM: DOMhelpers,
+    private cd: ChangeDetectorRef,
+    private zone: NgZone
+  ) {}
 
   @Input() hostcss = {};
   @Input() slot1css = {};
@@ -45,11 +51,17 @@ export class MockComponent implements AfterViewInit {
   hasSlots = [true, true, true, true];
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.hasSlots[0] = !this.DOM.isEmpty(this.slot1.nativeElement);
-      this.hasSlots[1] = !this.DOM.isEmpty(this.slot2.nativeElement);
-      this.hasSlots[2] = !this.DOM.isEmpty(this.slot3.nativeElement);
-      this.hasSlots[3] = !this.DOM.isEmpty(this.slot4.nativeElement);
-    }, 0);
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.hasSlots[0] = !this.DOM.isEmpty(this.slot1.nativeElement);
+        this.hasSlots[1] = !this.DOM.isEmpty(this.slot2.nativeElement);
+        this.hasSlots[2] = !this.DOM.isEmpty(this.slot3.nativeElement);
+        this.hasSlots[3] = !this.DOM.isEmpty(this.slot4.nativeElement);
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, 0);
+    });
   }
 }

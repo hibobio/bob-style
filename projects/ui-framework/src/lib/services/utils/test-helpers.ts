@@ -38,3 +38,25 @@ export const inputValue = (inputElem: any, value: string | number): void => {
     } as EventInit)
   );
 };
+
+export const emitNativeEvent = (
+  element: any,
+  type = 'click',
+  props = null
+): void => {
+  if (!props) {
+    props = {};
+  }
+  if (!props.target) {
+    props.target = element;
+  }
+  (element as HTMLElement).dispatchEvent(
+    new Event(type, {
+      type: type,
+      bubbles: true,
+      currentTarget: props.target,
+      srcElement: props.target,
+      ...props
+    } as EventInit)
+  );
+};

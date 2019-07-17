@@ -10,7 +10,8 @@ import {
   Output,
   EventEmitter,
   OnDestroy,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  NgZone
 } from '@angular/core';
 import {
   MatAutocompleteSelectedEvent,
@@ -53,7 +54,7 @@ import { Subscription } from 'rxjs';
 })
 export class ChipInputComponent extends BaseFormElement
   implements OnChanges, OnInit, OnDestroy {
-  constructor(private utilsService: UtilsService) {
+  constructor(private utilsService: UtilsService, private zone: NgZone) {
     super();
     this.inputTransformers = [arrayOrFail];
     this.baseValue = [];
@@ -168,9 +169,11 @@ export class ChipInputComponent extends BaseFormElement
         ).chip.nativeElement;
       if (existingChipElemnent) {
         existingChipElemnent.classList.add('blink');
-        setTimeout(() => {
-          existingChipElemnent.classList.remove('blink');
-        }, 200);
+        this.zone.runOutsideAngular(() => {
+          setTimeout(() => {
+            existingChipElemnent.classList.remove('blink');
+          }, 200);
+        });
         this.input.nativeElement.value = this.input.nativeElement.value.replace(
           /,/g,
           ''
@@ -247,11 +250,12 @@ export class ChipInputComponent extends BaseFormElement
           this.chips.list.last.chip.nativeElement.dataset.aboutToDelete =
             'true';
         }
-
-        setTimeout(() => {
-          this.input.nativeElement.focus();
-          this.autocompleteTrigger.closePanel();
-        }, 0);
+        this.zone.runOutsideAngular(() => {
+          setTimeout(() => {
+            this.input.nativeElement.focus();
+            this.autocompleteTrigger.closePanel();
+          }, 0);
+        });
       }
     } else if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.comma)) {
       this.addChipFromInput();
