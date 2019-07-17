@@ -7,18 +7,15 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
-  Type,
   ViewChild,
   AfterViewInit,
   HostBinding,
   OnInit
 } from '@angular/core';
-import { FormControl, NgControl } from '@angular/forms';
 import quillLib, {
   Quill,
   QuillOptionsStatic,
   RangeStatic,
-  DeltaOperation,
   DeltaStatic
 } from 'quill';
 import { RTEchangeEvent, BlotType, RTEFontSize } from './rte.enum';
@@ -38,7 +35,7 @@ export abstract class RTEformElement extends BaseFormElement
   implements OnChanges, OnInit, AfterViewInit {
   protected constructor(
     public rteUtils: RteUtilsService,
-    private changeDetector: ChangeDetectorRef,
+    public changeDetector: ChangeDetectorRef,
     private injector: Injector
   ) {
     super();
@@ -53,9 +50,8 @@ export abstract class RTEformElement extends BaseFormElement
   @Input() public maxChars: number;
   @Input() public controls: BlotType[] = this.controlsDef;
   @Input() public disableControls: BlotType[] = this.disableControlsDef;
-  @Input() public sendChangeOn: RTEchangeEvent = RTEchangeEvent.blur;
-  @Input() private formControlName: any;
-  @Input() private formControl: any;
+  @Input() public sendChangeOn: RTEchangeEvent = RTEchangeEvent.change;
+  @Input() public sendChangeOnWrite = false;
 
   @ViewChild('quillEditor', { static: true }) protected quillEditor: ElementRef;
   @ViewChild('toolbar', { static: true }) protected toolbar: ElementRef;
@@ -87,15 +83,11 @@ export abstract class RTEformElement extends BaseFormElement
   private latestOutputValue: string;
   public length: number;
   protected writingValue = false;
-  private control: FormControl;
   protected specialBlots: SpecialBlots = {
     treatAsWholeDefs: [],
     deleteAsWholeDefs: [],
     noLinebreakAfterDefs: []
   };
-
-  public storeLastChange = false;
-  public lastChange: DeltaOperation;
 
   public editorOptions: QuillOptionsStatic = {
     theme: 'snow',
@@ -120,15 +112,17 @@ export abstract class RTEformElement extends BaseFormElement
     }
 
     if (!!newInputValue && this.editor) {
+      if (!this.sendChangeOnWrite) {
+        this.writingValue = true;
+      }
       this.editor.setContents(
         this.editor.clipboard.convert(newInputValue).insert(' \n')
       );
       this.checkLength();
     } else if (this.editor) {
       this.editor.setText('\n');
-    } else {
-      this.writingValue = false;
     }
+    this.writingValue = false;
   }
 
   protected transmitValue(doPropagate: boolean): void {
@@ -257,19 +251,6 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   public ngAfterViewInit(): void {
-    if (this.formControl || this.formControlName) {
-      const ngControl: NgControl = this.injector.get<NgControl>(
-        NgControl as Type<NgControl>
-      );
-
-      if (ngControl) {
-        this.control = ngControl.control as FormControl;
-        this.sendChangeOn =
-          this.control.updateOn === 'change'
-            ? RTEchangeEvent.change
-            : RTEchangeEvent.blur;
-      }
-    }
     this.onNgAfterViewInit();
   }
 
@@ -278,14 +259,6 @@ export abstract class RTEformElement extends BaseFormElement
     oldDelta: DeltaStatic,
     source: string
   ): void {
-    if (this.storeLastChange) {
-      this.lastChange = oldDelta.diff(this.editor.getContents()).ops[1];
-      if (this.lastChange && this.lastChange.delete) {
-        this.lastChange = {
-          delete: this.editor.getContents().diff(oldDelta).ops[1].insert
-        };
-      }
-    }
     this.checkLength();
     if (this.maxChars && this.length > this.maxChars) {
       (this.editor as any).history.undo();
@@ -312,12 +285,8 @@ export abstract class RTEformElement extends BaseFormElement
 
   private onEditorBlur(): void {
     this.transmitValue(this.sendChangeOn === RTEchangeEvent.blur);
-
-    if (!this.writingValue && this.sendChangeOn === RTEchangeEvent.blur) {
-      this.onTouched();
-    }
-
     this.blurred.emit(this.value);
+    this.onTouched();
   }
 
   public storeSelection(): void {
@@ -400,10 +369,6 @@ export abstract class RTEformElement extends BaseFormElement
 
     this.editor.enable(!this.disabled);
 
-    if (!!this.value) {
-      this.applyValue(this.value);
-    }
-
     // attaching events
 
     this.editor.on('editor-change', (eventName: string, ...args: any[]) => {
@@ -428,5 +393,11 @@ export abstract class RTEformElement extends BaseFormElement
     this.editor.root.addEventListener('blur', () => {
       this.onEditorBlur();
     });
+
+    // write init value
+
+    if (!!this.value) {
+      this.applyValue(this.value);
+    }
   }
 }

@@ -11,7 +11,6 @@ import { CommonModule } from '@angular/common';
 import {
   NO_ERRORS_SCHEMA,
   Component,
-  SimpleChange,
   OnInit,
   OnDestroy,
   ChangeDetectionStrategy
@@ -26,23 +25,15 @@ import {
 } from '@angular/forms';
 
 import { RichTextEditorComponent } from './rte.component';
-import { RteLinkEditorComponent } from './rte-link/rte-link-editor.component';
 import { RteUtilsService } from './rte-core/rte-utils.service';
 import { RTEType, BlotType, RTEchangeEvent } from './rte-core/rte.enum';
 import Quill from 'quill';
-import { PanelModule } from '../../popups/panel/panel.module';
-import { SingleSelectModule } from '../lists/single-select/single-select.module';
-import { InputModule } from '../input/input.module';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
-import { IconsModule } from '../../icons/icons.module';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
-import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';
-import { InputMessageModule } from '../input-message/input-message.module';
 import { simpleChange } from '../../services/utils/test-helpers';
+import { RichTextEditorModule } from './rte.module';
+import { placeholderMock } from './rte-placeholder/rte-placeholder.mock';
 
 @Component({
   template: `
@@ -77,7 +68,7 @@ class TestComponent implements OnInit, OnDestroy {
   }
 }
 
-fdescribe('RichTextEditorComponent', () => {
+describe('RichTextEditorComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let testComponent: TestComponent;
 
@@ -95,26 +86,16 @@ fdescribe('RichTextEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        TestComponent,
-        RichTextEditorComponent,
-        RteLinkEditorComponent
-      ],
+      declarations: [TestComponent],
       imports: [
         CommonModule,
         BrowserAnimationsModule,
         ReactiveFormsModule,
         FormsModule,
-        PanelModule,
-        SingleSelectModule,
-        InputModule,
-        ButtonsModule,
-        IconsModule,
-        MatFormFieldModule,
-        InputMessageModule
+        RichTextEditorModule
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [RteUtilsService, DOMhelpers, PlaceholderRteConverterService]
+      providers: []
     })
       .overrideComponent(RichTextEditorComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default }
@@ -131,6 +112,20 @@ fdescribe('RichTextEditorComponent', () => {
         RTEComponent = fixture.debugElement.query(By.css('b-rich-text-editor'))
           .componentInstance;
 
+        RTEComponent.sendChangeOnWrite = true;
+
+        // RTEComponent.controls = RTEComponent.controlsDef;
+        // RTEComponent.disableControls = [];
+
+        // RTEComponent.ngOnChanges(
+        //   simpleChange({
+        //     controls: RTEComponent.controlsDef,
+        //     disableControls: []
+        //   })
+        // );
+
+        spyOn(RTEComponent.changed, 'emit');
+
         RTEnativeElement = fixture.debugElement.query(
           By.css('b-rich-text-editor')
         ).nativeElement;
@@ -140,13 +135,6 @@ fdescribe('RichTextEditorComponent', () => {
         ).nativeElement;
 
         rteControl = testComponent.rteForm.get('rteControl');
-
-        // RTEComponent.ngOnChanges(
-        //   simpleChange({
-        //     controls: RTEComponent.controlsDef,
-        //     disableControls: RTEComponent.disableControlsDef
-        //   })
-        // );
 
         setTimeout(() => {
           QuillEditor = RTEComponent.editor;
@@ -507,7 +495,7 @@ fdescribe('RichTextEditorComponent', () => {
   describe('Events', () => {
     it('should output changed event when text changes and sendChangeOn = change', () => {
       RTEComponent.sendChangeOn = RTEchangeEvent.change;
-      spyOn(RTEComponent.changed, 'emit');
+      fixture.detectChanges();
       RTEComponent.ngOnChanges(
         simpleChange({
           value: 'test text 8'
@@ -520,7 +508,6 @@ fdescribe('RichTextEditorComponent', () => {
 
     it('should output changed event only on blur, if sendChangeOn = blur', () => {
       RTEComponent.sendChangeOn = RTEchangeEvent.blur;
-      spyOn(RTEComponent.changed, 'emit');
 
       RTEComponent.ngOnChanges(
         simpleChange({
@@ -561,29 +548,11 @@ fdescribe('RichTextEditorComponent', () => {
     });
   });
 
-  fdescribe('PlaceholderRteConverter', () => {
+  describe('PlaceholderRteConverter', () => {
     it('Should convert HTML to RTE', () => {
-      const placeholderList = [
-        {
-          groupName: 'Basic Info - header',
-          options: [
-            {
-              id: '/work/title',
-              selected: false,
-              displayName: 'work | title'
-            },
-            {
-              id: '/root/firstName',
-              selected: false,
-              displayName: 'First name'
-            }
-          ]
-        }
-      ];
-      // RTEComponent.placeholderList = placeholderList;
       RTEComponent.ngOnChanges(
         simpleChange({
-          placeholderList: placeholderList,
+          placeholderList: placeholderMock,
           value:
             '<div>Hi, <strong>My</strong> name is {{/root/firstName}} my job title</div>',
           controls: [BlotType.placeholder],
@@ -592,8 +561,6 @@ fdescribe('RichTextEditorComponent', () => {
       );
 
       fixture.detectChanges();
-
-      console.log(RTEComponent);
 
       expect(rteUtils.getHtmlContent(QuillEditor)).toContain(
         'name is <span data-placeholder-id="/root/firstName'

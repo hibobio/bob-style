@@ -19,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BlotType, RTEType } from './rte-core/rte.enum';
 import { SelectGroupOption } from '../lists/list.interface';
 import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
+import { placeholderMock } from './rte-placeholder/rte-placeholder.mock';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -54,7 +55,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Rich text editor'" style="background-color: rgb(247,247,247);">
-  <div style="flex:1; max-width: 600px;">
+  <div>
     ${template}
   </div>
 
@@ -96,25 +97,6 @@ const note = `
 
 
 `;
-
-const placeholderMock = [
-  {
-    groupName: 'Basic Info - header',
-    options: [
-      {
-        displayName: 'First name',
-        id: '/root/firstName',
-        value: 'First name'
-      },
-      {
-        displayName: 'title',
-        id: '/work/title',
-        category: 'Work',
-        value: 'title'
-      }
-    ]
-  }
-];
 
 const disableControlsDef = [];
 const controlsDef = values(BlotType).filter(

@@ -4,7 +4,8 @@ import {
   Input,
   Output,
   ViewChild,
-  HostListener
+  HostListener,
+  ChangeDetectorRef
 } from '@angular/core';
 import { InputTypes } from '../../input/input.enum';
 import { InputEventType } from '../../form-elements.enum';
@@ -17,6 +18,8 @@ import { InputEvent } from '../../input/input.interface';
 import { InputComponent } from '../../input/input.component';
 import { checkUrl } from './link-blot';
 import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
+import { isKey } from '../../../services/utils/functional-utils';
+import { Keys } from '../../../enums';
 
 @Component({
   selector: 'b-rte-link-editor',
@@ -44,11 +47,17 @@ export class RteLinkEditorComponent {
 
   private updateOnEvent = InputEventType.onChange;
 
-  @HostListener('keydown.enter', ['$event']) handleEnter(event: KeyboardEvent) {
-    event.preventDefault();
+  @HostListener('keydown.outside-zone', ['$event']) handleEnter(
+    event: KeyboardEvent
+  ) {
     event.stopPropagation();
-    if (!this.isEditing && this.url !== '') {
-      this.onAdd();
+
+    if (isKey(event.key, Keys.enter)) {
+      event.preventDefault();
+
+      if (!this.isEditing && this.url !== '') {
+        this.onAdd();
+      }
     }
   }
 

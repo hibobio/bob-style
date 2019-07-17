@@ -109,10 +109,8 @@ export class RteKeybindings {
       ) {
         this.checkCurrentBlot(true, [0, -1]);
       }
-    });
 
-    // after delete default action
-    this.editor.root.addEventListener('keydown', (event: KeyboardEvent) => {
+      // after delete default action
       if (
         (this.specialBlots.treatAsWhole || this.specialBlots.deleteAsWhole) &&
         isKey(event.key, Keys.delete)

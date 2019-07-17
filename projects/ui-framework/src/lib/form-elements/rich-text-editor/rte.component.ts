@@ -8,7 +8,8 @@ import {
   Input,
   SimpleChanges,
   ViewChild,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  NgZone
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -73,6 +74,7 @@ export class RichTextEditorComponent extends RTEformElement
   implements AfterViewInit, RteLinkBlot, RtePlaceholderBlot, RteKeybindings {
   constructor(
     private DOM: DOMhelpers,
+    private zone: NgZone,
     public rteUtils: RteUtilsService,
     changeDetector: ChangeDetectorRef,
     injector: Injector,
@@ -188,13 +190,16 @@ export class RichTextEditorComponent extends RTEformElement
           }
         }
       },
-      formats: Object.values(this.controls)
+      formats: Object.values(this.controlsDef)
     });
 
-    setTimeout(() => {
-      this.initEditor(this.editorOptions);
-      this.addKeyBindings();
-      this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
-    }, 0);
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.initEditor(this.editorOptions);
+        this.addKeyBindings();
+        this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
+        this.changeDetector.detectChanges();
+      }, 0);
+    });
   }
 }

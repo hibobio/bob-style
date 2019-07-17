@@ -38,7 +38,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Multi select'">
-  <div style="flex:1; max-width: 350px;">
+  <div style="max-width: 350px;">
     ${template}
   </div>
 

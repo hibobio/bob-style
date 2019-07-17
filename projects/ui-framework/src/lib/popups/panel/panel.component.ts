@@ -7,7 +7,8 @@ import {
   ViewChild,
   ViewContainerRef,
   EventEmitter,
-  Output
+  Output,
+  NgZone
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
@@ -25,6 +26,7 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { filter } from 'rxjs/operators';
+import { outsideZone } from '../../services/utils/rxjs.operators';
 
 const HOVER_DELAY_DURATION = 300;
 
@@ -60,7 +62,8 @@ export class PanelComponent implements OnInit, OnDestroy {
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService,
-    private utilsService: UtilsService
+    private utilsService: UtilsService,
+    private zone: NgZone
   ) {
     this.mouseEnterDebounce = debounce(this.openPanel, HOVER_DELAY_DURATION);
     this.mouseLeaveDebounce = debounce(this.closePanel, HOVER_DELAY_DURATION);
@@ -69,7 +72,10 @@ export class PanelComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.windowKeydownSubscriber = this.utilsService
       .getWindowKeydownEvent()
-      .pipe(filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)))
+      .pipe(
+        outsideZone(this.zone),
+        filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
+      )
       .subscribe(() => {
         this.closePanel();
       });

@@ -42,7 +42,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Input'">
-  <div style="flex:1; max-width: 300px;">
+  <div style="max-width: 300px;">
     ${template}
   </div>
 </b-story-book-layout>
