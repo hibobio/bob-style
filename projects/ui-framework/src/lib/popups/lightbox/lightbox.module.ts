@@ -7,12 +7,13 @@ import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
 import { URLutils } from '../../services/url/url-utils';
 import { UtilsService } from '../../services/utils/utils.service';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 @NgModule({
   declarations: [LightboxComponent],
   entryComponents: [LightboxComponent],
   imports: [CommonModule, IconsModule, ButtonsModule, ComponentRendererModule],
   exports: [],
-  providers: [URLutils, UtilsService]
+  providers: [URLutils, UtilsService, EventManagerPlugins[0]]
 })
 export class LightboxModule {}

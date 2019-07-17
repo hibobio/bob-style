@@ -6,7 +6,7 @@
      matAutocompleteOrigin
      #wrapper="matAutocompleteOrigin"
      [ngClass]="{focused: inputFocused, 'autocomplete-open': auto.isOpen,'empty': !value || value.length === 0}"
-     (click)="input.focus();">
+     (click.outside-zone)="input.focus();">
 
   <b-chip-list #chips
                class="chips-wrap"

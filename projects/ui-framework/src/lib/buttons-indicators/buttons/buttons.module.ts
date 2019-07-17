@@ -16,21 +16,22 @@ import { TypographyModule } from '../../typography/typography.module';
     SquareButtonComponent,
     GroupComponent,
     BackButtonComponent,
-    TextButtonComponent,
+    TextButtonComponent
   ],
   imports: [
     CommonModule,
     MatButtonModule,
     MatRippleModule,
     IconsModule,
-    TypographyModule,
+    TypographyModule
   ],
   exports: [
     ButtonComponent,
     SquareButtonComponent,
     GroupComponent,
     BackButtonComponent,
-    TextButtonComponent,
-  ]
+    TextButtonComponent
+  ],
+  providers: []
 })
-export class ButtonsModule { }
+export class ButtonsModule {}

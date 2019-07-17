@@ -9,7 +9,7 @@
   <img class="lightbox-image"
        *ngIf="config.image"
        [src]="config.image"
-       (click)="$event.stopPropagation()"
+       (click.outside-zone)="$event.stopPropagation()"
        alt="">
 
   <iframe class="lightbox-video"
@@ -22,7 +22,7 @@
   <b-component-renderer class="lightbox-component"
                         *ngIf="config.component && !config.image && !config.video"
                         [render]="config.component"
-                        (click)="$event.stopPropagation()">
+                        (click.outside-zone)="$event.stopPropagation()">
   </b-component-renderer>
 
 </div>

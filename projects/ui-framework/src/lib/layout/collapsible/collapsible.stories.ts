@@ -13,6 +13,7 @@ import { CollapsibleType } from './collapsible.enum';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
@@ -42,6 +43,7 @@ const storyTemplate = `
   <div style="max-width: none; margin: 0 -30px; padding: 0 50px; overflow: hidden;">
     ${template.repeat(5)}
 </div>
+
 </b-story-book-layout>
 `;
 
@@ -103,7 +105,8 @@ story.add(
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           CollapsibleModule,
-          ButtonsModule
+          ButtonsModule,
+          UtilComponentsModule
         ]
       }
     };

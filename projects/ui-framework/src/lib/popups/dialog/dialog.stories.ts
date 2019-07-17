@@ -19,7 +19,7 @@ const template = `
 const storyTemplate = `
 <b-story-book-layout [title]="'Dialog'">
     ${template}
-  <b-stats></b-stats>
+
 </b-story-book-layout>
 `;
 

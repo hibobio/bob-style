@@ -11,6 +11,7 @@ import { ComponentRendererModule } from '../services/component-renderer/componen
 import { TruncateTooltipModule } from '../services/truncate-tooltip/truncate-tooltip.module';
 import { EmployeeCardComponent } from './card-employee/card-employee.component';
 import { AvatarModule } from '../buttons-indicators/avatar/avatar.module';
+import { EventManagerPlugins } from '../services/utils/eventManager.plugins';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,6 @@ import { AvatarModule } from '../buttons-indicators/avatar/avatar.module';
     CardsLayoutComponent,
     MiniEmployeeCardComponent
   ],
-  providers: []
+  providers: [EventManagerPlugins[0]]
 })
 export class CardsModule {}

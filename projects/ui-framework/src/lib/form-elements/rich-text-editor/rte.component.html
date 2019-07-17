@@ -7,7 +7,7 @@
   <div #quillEditor
        [attr.data-length]="hasSuffix && (minChars > 0 || maxChars) ? ( (length || 0) + (maxChars ? '/' + maxChars : '')) :
        null"
-       (keydown)="$event.stopPropagation()"
+       (keydown.outside-zone)="$event.stopPropagation()"
        [ngStyle]="{
          minHeight: minHeight ? (minHeight - 43) + 'px' : null,
          maxHeight: maxHeight ? (maxHeight - 43) + 'px' : null
@@ -18,7 +18,8 @@
        class="quill-toolbar"
        [hidden]="controls.length === 0 && !hasSuffix"
        [attr.hide-align]="!controls.includes(BlotType.align)"
-       (mousedown)="$event.preventDefault()">
+       (mousedown.outside-zone)="$event.preventDefault()">
+
 
     <b-panel #sizePanel
              panelClass="rte-size-controls"

@@ -39,7 +39,7 @@ const storyTemplate = `
   <div style="max-width: calc(100% - 60px);">
     ${template}
   </div>
-  <b-stats></b-stats>
+
 </b-story-book-layout>
 `;
 

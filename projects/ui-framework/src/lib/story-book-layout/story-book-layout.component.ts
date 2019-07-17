@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
       <b-display-3>{{ title }}</b-display-3>
       <div class="story-content">
         <ng-content></ng-content>
+        <b-stats></b-stats>
       </div>
     </div>
   `,

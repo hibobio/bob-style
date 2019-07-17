@@ -1,6 +1,6 @@
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
-import { By } from '@angular/platform-browser';
+import { By, EVENT_MANAGER_PLUGINS } from '@angular/platform-browser';
 
 import { CollapsibleComponent } from './collapsible.component';
 import { CollapsibleType } from './collapsible.enum';
@@ -9,6 +9,7 @@ import { TypographyModule } from '../../typography/typography.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { OutsideZonePlugin } from '../../services/utils/eventManager.plugins';
 
 @Component({
   template: `
@@ -34,12 +35,20 @@ describe('CollapsibleComponent', () => {
       declarations: [TestComponent, CollapsibleComponent],
       imports: [MatExpansionModule, BrowserAnimationsModule, TypographyModule],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [DOMhelpers]
+      providers: [
+        DOMhelpers,
+        {
+          multi: true,
+          provide: EVENT_MANAGER_PLUGINS,
+          useClass: OutsideZonePlugin
+        }
+      ]
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(TestComponent);
         component = fixture.componentInstance;
+        fixture.detectChanges();
 
         collapsibleComponent = fixture.debugElement.query(
           By.css('b-collapsible')
@@ -55,7 +64,6 @@ describe('CollapsibleComponent', () => {
 
   describe('Lazy content init', () => {
     it('should start with no content (content lazy loaded on first panel open)', () => {
-      fixture.detectChanges();
       const panelBodyElement = fixture.debugElement.query(
         By.css('.mat-expansion-panel-body')
       );
@@ -74,7 +82,6 @@ describe('CollapsibleComponent', () => {
 
   describe('Expand / Collapse', () => {
     it('should expand panel when title is clicked', () => {
-      fixture.detectChanges();
       const headerElement = fixture.debugElement.query(
         By.css('mat-expansion-panel-header')
       );
@@ -144,7 +151,6 @@ describe('CollapsibleComponent', () => {
     });
 
     it('should change class on component host according to type input and default to .collapsible-small', () => {
-      fixture.detectChanges();
       expect(collapsibleNativeElement.classList).toContain('collapsible-small');
       expect(collapsibleNativeElement.classList).not.toContain(
         'collapsible-big'
@@ -160,7 +166,6 @@ describe('CollapsibleComponent', () => {
 
   describe('Description and Suffix in header', () => {
     it('should put transcluded element with attribute [suffix] in the header', () => {
-      fixture.detectChanges();
       const suffixElement = fixture.debugElement.query(
         By.css('.mat-expansion-panel-header .collapsible-suffix [suffix]')
       );
@@ -214,7 +219,6 @@ describe('CollapsibleComponent', () => {
     });
 
     it('should not trigger panel expansion on clicks originating from suffix', () => {
-      fixture.detectChanges();
       const suffixElement = fixture.debugElement.query(
         By.css('.collapsible-suffix')
       ).nativeElement;

@@ -3,7 +3,7 @@
         [menu]="card.menu"
         (openMenu)="onMenuOpen()"
         (closeMenu)="onMenuClose()"
-        (click)="stopPropagation($event)">
+        (click.outside-zone)="$event.stopPropagation()">
   <b-square-button menu-trigger
                    [type]="button.tertiary"
                    [icon]="icons.three_dots_vert">

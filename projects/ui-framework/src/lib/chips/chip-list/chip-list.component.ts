@@ -10,7 +10,8 @@ import {
   QueryList,
   HostListener,
   ChangeDetectionStrategy,
-  NgZone
+  NgZone,
+  ChangeDetectorRef
 } from '@angular/core';
 import { Chip, ChipListConfig, ChipKeydownEvent } from '../chips.interface';
 import { isKey } from '../../services/utils/functional-utils';
@@ -92,7 +93,6 @@ export class ChipListComponent implements OnChanges {
   }
 
   onChipKeydown(event: KeyboardEvent, chip: Chip, index: number): void {
-    console.log(event);
     this.keyPressed.emit({ event, chip });
 
     if (this.config.focusable) {

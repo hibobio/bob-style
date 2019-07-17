@@ -13,6 +13,7 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';
 import { SingleListModule } from '../lists/single-list/single-list.module';
 import { InputMessageModule } from '../input-message/input-message.module';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 @NgModule({
   declarations: [RichTextEditorComponent, RteLinkEditorComponent],
@@ -28,6 +29,11 @@ import { InputMessageModule } from '../input-message/input-message.module';
     InputMessageModule
   ],
   exports: [RichTextEditorComponent],
-  providers: [RteUtilsService, DOMhelpers, PlaceholderRteConverterService]
+  providers: [
+    RteUtilsService,
+    DOMhelpers,
+    PlaceholderRteConverterService,
+    EventManagerPlugins[0]
+  ]
 })
 export class RichTextEditorModule {}

@@ -35,7 +35,7 @@ const storyTemplate = `
     <h3>Employee Cards</h3>
     ${template3}
   </div>
-  <b-stats></b-stats>
+
 </b-story-book-layout>
 `;
 

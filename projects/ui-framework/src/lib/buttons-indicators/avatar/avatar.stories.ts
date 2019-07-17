@@ -81,7 +81,7 @@ const note = `
 const storyTemplate = `
 <b-story-book-layout [title]="'Avatar'">
     ${template}
-  <b-stats></b-stats>
+
 </b-story-book-layout>
 `;
 

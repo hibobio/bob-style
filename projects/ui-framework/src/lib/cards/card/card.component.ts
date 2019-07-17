@@ -48,8 +48,4 @@ export class CardComponent {
       this.menuIsOpened = false;
     }, 150);
   }
-
-  stopPropagation($event): void {
-    $event.stopPropagation();
-  }
 }
