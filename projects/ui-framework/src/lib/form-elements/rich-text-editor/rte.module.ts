@@ -13,8 +13,7 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';
 import { SingleListModule } from '../lists/single-list/single-list.module';
 import { InputMessageModule } from '../input-message/input-message.module';
-import { EVENT_MANAGER_PLUGINS } from '@angular/platform-browser';
-import { OutsideZonePlugin } from '../../services/utils/eventManager.plugins';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 @NgModule({
   declarations: [RichTextEditorComponent, RteLinkEditorComponent],
@@ -34,11 +33,7 @@ import { OutsideZonePlugin } from '../../services/utils/eventManager.plugins';
     RteUtilsService,
     DOMhelpers,
     PlaceholderRteConverterService,
-    {
-      multi: true,
-      provide: EVENT_MANAGER_PLUGINS,
-      useClass: OutsideZonePlugin
-    }
+    EventManagerPlugins[0]
   ]
 })
 export class RichTextEditorModule {}

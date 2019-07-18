@@ -72,7 +72,7 @@ const storyTemplate = `
       * Set chip type to Avatar (in Knobs panel) to see Avatar Chip List
     </p>
   </div>
-  <b-stats></b-stats>
+
 </b-story-book-layout>
 `;
 

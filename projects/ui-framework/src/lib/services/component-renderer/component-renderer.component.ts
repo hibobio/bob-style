@@ -100,9 +100,11 @@ export class ComponentRendererComponent implements OnChanges, OnDestroy {
     handlers: RenderedComponentHandlers
   ): ComponentRef<any> {
     for (const handler of Object.keys(handlers)) {
-      component.instance[handler]
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((event: EventEmitter<any>) => handlers[handler](event));
+      if (component.instance[handler]) {
+        component.instance[handler]
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((event: EventEmitter<any>) => handlers[handler](event));
+      }
     }
     return component;
   }

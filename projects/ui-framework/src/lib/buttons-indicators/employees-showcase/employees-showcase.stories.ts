@@ -51,7 +51,7 @@ const note = `
 const storyTemplate = `
 <b-story-book-layout [title]="'Employees Showcase'">
     ${template}
-  <b-stats></b-stats>
+
 </b-story-book-layout>
 `;
 

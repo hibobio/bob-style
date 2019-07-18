@@ -43,7 +43,7 @@ const storyTemplate = `
   <div style="max-width: none; margin: 0 -30px; padding: 0 50px; overflow: hidden;">
     ${template.repeat(5)}
 </div>
-<b-stats></b-stats>
+
 </b-story-book-layout>
 `;
 

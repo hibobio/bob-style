@@ -24,16 +24,19 @@ export const truthyOrFalse = value => {
   return value;
 };
 
-export const stringListToArray = (list: string): string[] => {
+export const stringListToArray = (
+  list: string,
+  test = /[^\w\u0020]+/
+): string[] => {
   if (isArray(list) || !list) {
     return list as any;
   }
   if (!isString(list)) {
     return [list];
   }
-  return Array.from(
-    new Set(list.split(/[^\w\u0020]+/).map(i => i.trim()))
-  ).filter(i => !!i);
+  return Array.from(new Set(list.split(test).map(i => i.trim()))).filter(
+    i => !!i
+  );
 };
 
 export const arrayOfStringsOrArrayFromString = value =>

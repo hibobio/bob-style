@@ -34,7 +34,7 @@ const template = `
 const storyTemplate = `
 <b-story-book-layout [title]="'Component Renderer'" style="background-color: rgb(247,247,247);">
     ${template}
-  <b-stats></b-stats>
+
 </b-story-book-layout>
 `;
 

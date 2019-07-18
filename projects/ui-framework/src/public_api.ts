@@ -7,7 +7,7 @@
 * Global
 */
 
-export { Keys } from './lib/enums';
+export { Keys, NativeEvents } from './lib/enums';
 
 
 /*

@@ -1,7 +1,17 @@
-import { Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostBinding,
+  HostListener,
+  Input,
+  Output
+} from '@angular/core';
 import { CardEmployee } from '../cards.interface';
 import { CardType } from '../cards.enum';
-import { AvatarOrientation, AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
+import {
+  AvatarOrientation,
+  AvatarSize
+} from '../../buttons-indicators/avatar/avatar.enum';
 
 @Component({
   selector: 'b-card-employee, [b-card-employee]',

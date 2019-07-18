@@ -77,7 +77,7 @@ const storyTemplate = `
   ${template4}
 </div>
 
-  <b-stats></b-stats>
+
 </b-story-book-layout>
 `;
 

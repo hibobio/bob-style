@@ -30,6 +30,7 @@ import { arrayOrFail } from '../../services/utils/transformers';
 import { ChipListComponent } from '../chip-list/chip-list.component';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
+import { outsideZone } from '../../services/utils/rxjs.operators';
 
 @Component({
   selector: 'b-chip-input',
@@ -104,6 +105,7 @@ export class ChipInputComponent extends BaseFormElement
 
     this.windowClickSubscriber = this.utilsService
       .getWindowClickEvent()
+      .pipe(outsideZone(this.zone))
       .subscribe(() => {
         this.unSelectLastChip();
       });
@@ -233,7 +235,6 @@ export class ChipInputComponent extends BaseFormElement
     this.inputFocused = false;
     if (!this.autocompletePanel.isOpen) {
       this.addChipFromInput();
-      this.autocompleteTrigger.closePanel();
     }
   }
 

@@ -7,6 +7,7 @@ import { InputMessageModule } from '../../form-elements/input-message/input-mess
 import { ChipModule } from '../chip/chip.module';
 import { ChipListModule } from '../chip-list/chip-list.module';
 import { UtilsService } from '../../services/utils/utils.service';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 @NgModule({
   declarations: [ChipInputComponent],
@@ -19,6 +20,6 @@ import { UtilsService } from '../../services/utils/utils.service';
     InputMessageModule
   ],
   exports: [ChipInputComponent],
-  providers: [UtilsService]
+  providers: [UtilsService, EventManagerPlugins[0]]
 })
 export class ChipInputModule {}

@@ -26,7 +26,7 @@ const template = `<b-lightbox-example
 
 const storyTemplate = `<b-story-book-layout [title]="'Lightbox'">
     ${template}
-  <b-stats></b-stats>
+
 </b-story-book-layout>`;
 
 const note = `

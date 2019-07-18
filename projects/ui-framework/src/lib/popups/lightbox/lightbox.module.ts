@@ -7,22 +7,13 @@ import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
 import { URLutils } from '../../services/url/url-utils';
 import { UtilsService } from '../../services/utils/utils.service';
-import { EVENT_MANAGER_PLUGINS } from '@angular/platform-browser';
-import { OutsideZonePlugin } from '../../services/utils/eventManager.plugins';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 @NgModule({
   declarations: [LightboxComponent],
   entryComponents: [LightboxComponent],
   imports: [CommonModule, IconsModule, ButtonsModule, ComponentRendererModule],
   exports: [],
-  providers: [
-    URLutils,
-    UtilsService,
-    {
-      multi: true,
-      provide: EVENT_MANAGER_PLUGINS,
-      useClass: OutsideZonePlugin
-    }
-  ]
+  providers: [URLutils, UtilsService, EventManagerPlugins[0]]
 })
 export class LightboxModule {}
