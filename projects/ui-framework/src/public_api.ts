@@ -17,6 +17,13 @@ export { Keys } from './lib/enums';
 // Typography Module
 export { TypographyModule } from './lib/typography/typography.module';
 
+/*
+ * text links
+ */
+
+// text colored links
+export { TextColoredLinksModule } from './lib/eye-candy/text-colored-links/text-colored-links.module';
+
 
 /*
  * Buttons & Indicators

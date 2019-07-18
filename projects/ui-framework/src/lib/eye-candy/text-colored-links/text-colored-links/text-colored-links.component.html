@@ -1,0 +1,5 @@
+<div [class.is-clickable]="isClickable">
+  <span *ngFor="let infoGraphicItem of infoGraphicItems; trackBy: trackByText"
+        [style.color]="infoGraphicItem.color" (click)="onItemClick(infoGraphicItem)"
+        [ngClass]="['info-graphic-item', infoGraphicItem.font, infoGraphicItem.size]">{{infoGraphicItem.label}}</span>
+</div>

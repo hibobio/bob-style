@@ -1,0 +1,89 @@
+@import "fonts";
+
+:host {
+  text-align: justify;
+  .info-graphic-item {
+    padding-right: 20px;
+  }
+
+  .size-sm {
+    font-size: 30px;
+    line-height: 42px;
+  }
+
+  .size-md {
+    font-size: 35px;
+    line-height: 42px;
+
+  }
+
+  .size-lg {
+    font-size: 38px;
+    line-height: 42px;
+  }
+
+  .sentinel-light {
+    @include sentinel300;
+  }
+
+  .sentinel-light-italic {
+    @include sentinelI300;
+  }
+
+  .sentinel-regular {
+    @include sentinel400;
+  }
+
+  .sentinel-regular-italic {
+    @include sentinelI400;
+  }
+
+  .sentinel-medium {
+    @include sentinel500;
+  }
+
+  .sentinel-medium-italic {
+    @include sentinelI500;
+  }
+
+  .sentinel-semibold {
+    @include sentinel600;
+  }
+
+  .sentinel-semibold-italic {
+    @include sentinelI600;
+  }
+
+  .sentinel-bold {
+    @include sentinel700;
+  }
+
+  .sentinel-bold-italic {
+    @include sentinelI700;
+  }
+
+  .sentinel-black {
+    @include sentinel800;
+  }
+
+  .sentinel-black-italic {
+    @include sentinelI800;
+  }
+}
+
+.is-clickable {
+  .info-graphic-item {
+    cursor: pointer;
+    transition: .3s opacity;
+    will-change: opacity;
+  }
+  &:hover {
+    .info-graphic-item {
+      opacity: .5;
+      &:hover {
+        opacity: 1;
+        text-decoration: underline;
+      }
+    }
+  }
+}
