@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChipListComponent } from './chip-list.component';
-import { ChipType, ChipListAlign } from '../chips.enum';
+import {ChipType, ChipListAlign, ChipListSelectable} from '../chips.enum';
 import { ChipModule } from '../chip/chip.module';
 import {
   elementsFromFixture,
@@ -129,6 +129,38 @@ describe('ChipListComponent', () => {
         chipsElements.filter(elem => elem.getAttribute('tabindex') === '0')
           .length
       ).toEqual(3);
+    });
+    describe('chip list selectable single', () => {
+      beforeEach(() => {
+        component.chipListSelectable = ChipListSelectable.single;
+      });
+      it('should chip list selectable single nothing if not passed active index.', () => {
+        expect(
+          chipsElements.filter(elem => elem.getAttribute('data-selected') === 'true')
+            .length
+        ).toEqual(0);
+      });
+    });
+    describe('should chip list selectable single few clicks and active', () => {
+      beforeEach( () => {
+        component.chipListSelectable = ChipListSelectable.single;
+        component.activeIndex = 2;
+        chipsElements[0].click();
+        fixture.detectChanges();
+        chipsElements[2].click();
+        fixture.detectChanges();
+      });
+      it('should have one selected when radioSelect is true', () => {
+        expect(
+          chipsElements.filter(elem => elem.getAttribute('data-selected') === 'true')
+            .length
+        ).toEqual(1);
+      });
+      it('should have 4th be selected when radioSelect is true', () => {
+        expect(
+          chipsElements.findIndex(elem => elem.getAttribute('data-selected') === 'true')
+        ).toEqual(2);
+      });
     });
 
     it('should enable removable', () => {

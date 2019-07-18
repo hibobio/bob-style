@@ -3,7 +3,8 @@ import {
   object,
   withKnobs,
   select,
-  boolean
+  boolean,
+  number
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -11,7 +12,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { simpleUID } from '../../services/utils/functional-utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipListModule } from './chip-list.module';
-import { ChipType, ChipListAlign } from '../chips.enum';
+import {ChipType, ChipListAlign, ChipListSelectable} from '../chips.enum';
 import { mockAvatar, mockNames } from '../../mock.const';
 import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
@@ -27,6 +28,8 @@ const chips = mockNames(10).map(chip => ({
 
 const template = `
   <b-chip-list [chips]="chips"
+               [chipListSelectable]="chipListSelectable"
+               [activeIndex]="activeIndex"
                [config]="{
                   type: type,
                   align: align,
@@ -52,6 +55,8 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   chips | Chip[] / string[] | Array of Chip objects (will also accept an array of strings) | none
+  chipListSelectable | chipListSelectable (single, multi) | single select (like radio buttons) or multi select | multi
+  activeIndex | number | active index initializer | none
   config | ChipListConfig | list configuration (options common to all chips, including: type, removable, selectable, focusable, disabled, align) | none
   removed | &lt;Chip&gt; | handler for chip removed event | none
   clicked | &lt;Chip&gt; | handler for chip clicked event | none
@@ -78,6 +83,7 @@ const storyTemplate = `
 
 const typeOptions = Object.values(ChipType);
 const alignOptions = Object.values(ChipListAlign);
+const chipListSelectable = Object.values(ChipListSelectable);
 
 story.add(
   'Chip List',
@@ -90,6 +96,8 @@ story.add(
       selectable: boolean('selectable', true),
       focusable: boolean('focusable', true),
       disabled: boolean('disabled', false),
+      chipListSelectable: select('chipListSelectable', chipListSelectable, ChipListSelectable.multi),
+      activeIndex: number('activeIndex', null),
       chips: object('chips', chips),
       onChipRemove: action('Chip removed'),
       onChipClicked: action('Chip clicked'),
