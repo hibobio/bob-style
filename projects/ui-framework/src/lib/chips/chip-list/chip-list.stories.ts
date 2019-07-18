@@ -3,6 +3,7 @@ import {
   object,
   withKnobs,
   select,
+  number,
   boolean
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
@@ -27,6 +28,8 @@ const chips = mockNames(10).map(chip => ({
 
 const template = `
   <b-chip-list [chips]="chips"
+               [activeIndex]="activeIndex"
+               [radioSelect]="radioSelect"
                [config]="{
                   type: type,
                   align: align,
@@ -90,11 +93,13 @@ story.add(
       selectable: boolean('selectable', true),
       focusable: boolean('focusable', true),
       disabled: boolean('disabled', false),
+      radioSelect: boolean('radioSelect', false),
+      activeIndex: number('activeIndex', null),
       chips: object('chips', chips),
       onChipRemove: action('Chip removed'),
       onChipClicked: action('Chip clicked'),
       inChipSelected: action('Chip selected'),
-      onChipKeydown: action('Chip key pressed')
+      onChipKeydown: action('Chip key pressed'),
     },
     moduleMetadata: {
       imports: [

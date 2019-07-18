@@ -5,7 +5,7 @@
         [type]="chip.type || config.type"
         [disabled]="chip.disabled || config.disabled"
         [removable]="chip.removable || config.removable"
-        [selected]="chip.selected"
+        [selected]="checkSelected(chip, index)"
         [attr.tabindex]="config.focusable ? 0 : -1"
         [attr.data-index]="index"
         (removed)="onChipRemove(chip)">

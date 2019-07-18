@@ -32,6 +32,8 @@ export class ChipListComponent implements OnChanges {
 
   @ViewChildren('list') public list: QueryList<ChipComponent>;
 
+  @Input() radioSelect = false;
+  @Input() activeIndex: number = null;
   @Input() chips: Chip[] = [];
   @Input() config: ChipListConfig = {};
 
@@ -58,7 +60,7 @@ export class ChipListComponent implements OnChanges {
     if (target.nodeName.toUpperCase() === 'B-CHIP') {
       const index = parseInt(target.dataset.index, 10);
       const chip = this.chips[index];
-      this.onChipClick($event, chip);
+      this.onChipClick($event, chip, index);
     }
   }
 
@@ -80,13 +82,23 @@ export class ChipListComponent implements OnChanges {
     }
   }
 
+  checkSelected(chip, index) {
+    if (this.radioSelect) {
+      return this.activeIndex === index;
+    } else {
+      return chip.selected;
+    }
+  }
+
   onChipRemove(chip: Chip): void {
     this.removed.emit(chip);
   }
 
-  onChipClick(event: MouseEvent, chip: Chip): void {
+  onChipClick(event: MouseEvent, chip: Chip, index: number): void {
     event.stopPropagation();
-    if (this.config.selectable) {
+    if (this.radioSelect) {
+      this.activeIndex = index;
+    } else if (this.config.selectable) {
       this.selectChip(chip);
     }
     this.clicked.emit(chip);
