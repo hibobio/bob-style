@@ -40,6 +40,9 @@ export {
   BackButtonComponent
 } from './lib/buttons-indicators/buttons/back-button/back-button.component';
 export {
+  ChevronButtonComponent
+} from './lib/buttons-indicators/buttons/chevron-button/chevron-button.component';
+export {
   TextButtonComponent
 } from './lib/buttons-indicators/buttons/text-button/text-button.component';
 export {
