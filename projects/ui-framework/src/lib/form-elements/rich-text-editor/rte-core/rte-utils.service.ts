@@ -24,14 +24,16 @@ export class RteUtilsService {
   }
 
   cleanupHtml(value: string): string {
-    return value;
-    // empty lines in the end
-    // .replace(
-    //   /(<p([^\n\r\/<>]+)?><br><\/p>|<div([^\n\r\/<>]+)?><br><\/div>)+$/gi,
-    //   ''
-    // )
-    // empty tags
-    // .replace(/<[^\/>][^>]+>(\s+)?<\/[^>]+>/gi, '')
+    return (
+      value
+        // empty lines in the end
+        .replace(
+          /(<p([^\n\r\/<>]+)?><br><\/p>|<div([^\n\r\/<>]+)?><br><\/div>)+$/gi,
+          ''
+        )
+        // empty tags
+        .replace(/<[^\/>][^>]+>(\s+)?<\/[^>]+>/gi, '')
+    );
   }
 
   getCurrentSelection(editor: Quill): RangeStatic {

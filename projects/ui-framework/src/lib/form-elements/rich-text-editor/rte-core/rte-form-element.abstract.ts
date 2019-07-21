@@ -10,7 +10,8 @@ import {
   ViewChild,
   AfterViewInit,
   HostBinding,
-  OnInit
+  OnInit,
+  NgZone
 } from '@angular/core';
 import quillLib, {
   Quill,
@@ -36,7 +37,8 @@ export abstract class RTEformElement extends BaseFormElement
   protected constructor(
     public rteUtils: RteUtilsService,
     public changeDetector: ChangeDetectorRef,
-    private injector: Injector
+    private injector: Injector,
+    private zone: NgZone
   ) {
     super();
     this.baseValue = '';
@@ -263,7 +265,9 @@ export abstract class RTEformElement extends BaseFormElement
     if (this.maxChars && this.length > this.maxChars) {
       (this.editor as any).history.undo();
     }
-    this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
+    this.zone.run(() => {
+      this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
+    })
   }
 
   private onEditorSelectionChange(
@@ -280,13 +284,17 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   private onEditorFocus(): void {
-    this.focused.emit(this.value);
+    this.zone.run(() => {
+      this.focused.emit(this.value);
+    });
   }
 
   private onEditorBlur(): void {
-    this.transmitValue(this.sendChangeOn === RTEchangeEvent.blur);
-    this.blurred.emit(this.value);
-    this.onTouched();
+    this.zone.run(() => {
+      this.transmitValue(this.sendChangeOn === RTEchangeEvent.blur);
+      this.blurred.emit(this.value);
+      this.onTouched();
+    });
   }
 
   public storeSelection(): void {
