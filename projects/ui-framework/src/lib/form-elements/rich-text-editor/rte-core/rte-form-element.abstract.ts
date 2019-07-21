@@ -35,10 +35,10 @@ quillLib.register(quillLib.import('attributors/style/size'), true);
 export abstract class RTEformElement extends BaseFormElement
   implements OnChanges, OnInit, AfterViewInit {
   protected constructor(
+    public zone: NgZone,
     public rteUtils: RteUtilsService,
     public changeDetector: ChangeDetectorRef,
-    private injector: Injector,
-    private zone: NgZone
+    private injector: Injector
   ) {
     super();
     this.baseValue = '';
@@ -267,7 +267,7 @@ export abstract class RTEformElement extends BaseFormElement
     }
     this.zone.run(() => {
       this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
-    })
+    });
   }
 
   private onEditorSelectionChange(

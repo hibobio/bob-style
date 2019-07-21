@@ -74,13 +74,13 @@ export class RichTextEditorComponent extends RTEformElement
   implements AfterViewInit, RteLinkBlot, RtePlaceholderBlot, RteKeybindings {
   constructor(
     private DOM: DOMhelpers,
-    private zone: NgZone,
+    public zone: NgZone,
     public rteUtils: RteUtilsService,
     changeDetector: ChangeDetectorRef,
     injector: Injector,
     public placeholderRteConverterService: PlaceholderRteConverterService
   ) {
-    super(rteUtils, changeDetector, injector);
+    super(zone, rteUtils, changeDetector, injector);
   }
 
   public disableControlsDef = [BlotType.placeholder, BlotType.direction];
