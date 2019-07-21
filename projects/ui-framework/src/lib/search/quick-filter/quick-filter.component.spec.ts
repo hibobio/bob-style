@@ -89,6 +89,39 @@ describe('QuickFilterComponent', () => {
       expect(multiSelectEl.length).toEqual(0);
       expect(singleSelectEl.length).toEqual(1);
     });
+    it('should set showSingleGroupHeader to false by default', () => {
+      const quickFilterConfig: QuickFilterConfig = {
+        selectType: QuickFilterSelectType.multiSelect,
+        label: 'department',
+        key: 'department',
+        options: [optionsMock[0]],
+      };
+      component.ngOnChanges({
+        quickFilterConfig: {
+          previousValue: undefined, currentValue: quickFilterConfig, firstChange: true, isFirstChange: () => true,
+        }
+      });
+      fixture.detectChanges();
+      const multiSelectEl = fixture.debugElement.query(By.css('b-multi-select'));
+      expect(multiSelectEl.componentInstance.showSingleGroupHeader).toBe(false);
+    });
+    it('should set showSingleGroupHeader on select from the config', () => {
+      const quickFilterConfig: QuickFilterConfig = {
+        selectType: QuickFilterSelectType.multiSelect,
+        label: 'department',
+        key: 'department',
+        options: [optionsMock[0]],
+        showSingleGroupHeader: true,
+      };
+      component.ngOnChanges({
+        quickFilterConfig: {
+          previousValue: undefined, currentValue: quickFilterConfig, firstChange: true, isFirstChange: () => true,
+        }
+      });
+      fixture.detectChanges();
+      const multiSelectEl = fixture.debugElement.query(By.css('b-multi-select'));
+      expect(multiSelectEl.componentInstance.showSingleGroupHeader).toBe(true);
+    });
     it('should set hasValue to true if some options are selected', () => {
       optionsMock[0].options[0].selected = true;
       const quickFilterConfig: QuickFilterConfig = {

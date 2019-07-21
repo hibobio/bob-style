@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/angular';
 import { boolean, object, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { cloneDeep, values } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { QuickFilterModule } from './quick-filter.module';
@@ -91,8 +91,9 @@ const quickFilters: QuickFilterConfig[] = [
     label: 'Employment type',
     placeholder: 'Select employment type',
     key: 'employment',
+    showSingleGroupHeader: true,
     options: [cloneDeep(optionsMock[0])]
-  }
+  },
 ];
 
 quickFilters[0].options[0].options[1].selected = true;

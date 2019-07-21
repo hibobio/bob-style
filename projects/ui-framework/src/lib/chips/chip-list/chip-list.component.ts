@@ -10,15 +10,14 @@ import {
   QueryList,
   HostListener,
   ChangeDetectionStrategy,
-  NgZone,
-  ChangeDetectorRef
+  NgZone
 } from '@angular/core';
 import { Chip, ChipListConfig, ChipKeydownEvent } from '../chips.interface';
 import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { ChipComponent } from '../chip/chip.component';
 import { arrayOfValuesToArrayOfObjects } from '../../services/utils/transformers';
-import { ChipType, ChipListAlign } from '../chips.enum';
+import {ChipType, ChipListAlign, ChipListSelectable} from '../chips.enum';
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 
 @Component({
@@ -32,6 +31,8 @@ export class ChipListComponent implements OnChanges {
 
   @ViewChildren('list') public list: QueryList<ChipComponent>;
 
+  @Input() chipListSelectable: ChipListSelectable = ChipListSelectable.multi;
+  @Input() activeIndex: number = null;
   @Input() chips: Chip[] = [];
   @Input() config: ChipListConfig = {};
 
@@ -58,7 +59,7 @@ export class ChipListComponent implements OnChanges {
     if (target.nodeName.toUpperCase() === 'B-CHIP') {
       const index = parseInt(target.dataset.index, 10);
       const chip = this.chips[index];
-      this.onChipClick($event, chip);
+      this.onChipClick($event, chip, index);
     }
   }
 
@@ -80,14 +81,22 @@ export class ChipListComponent implements OnChanges {
     }
   }
 
+  checkSelected(chip, index) {
+    if (this.chipListSelectable === ChipListSelectable.single) {
+      return this.activeIndex === index;
+    } else {
+      return chip.selected;
+    }
+  }
+
   onChipRemove(chip: Chip): void {
     this.removed.emit(chip);
   }
 
-  onChipClick(event: MouseEvent, chip: Chip): void {
+  onChipClick(event: MouseEvent, chip: Chip, index: number): void {
     event.stopPropagation();
     if (this.config.selectable) {
-      this.selectChip(chip);
+      this.selectChip(chip, index);
     }
     this.clicked.emit(chip);
   }
@@ -114,7 +123,7 @@ export class ChipListComponent implements OnChanges {
       (isKey(event.key, Keys.space) || isKey(event.key, Keys.enter))
     ) {
       event.stopPropagation();
-      this.selectChip(chip);
+      this.selectChip(chip, index);
     }
 
     if (
@@ -134,8 +143,12 @@ export class ChipListComponent implements OnChanges {
     }
   }
 
-  private selectChip(chip: Chip): void {
-    chip.selected = !chip.selected;
+  private selectChip(chip: Chip, index): void {
+    if (this.chipListSelectable === ChipListSelectable.single) {
+      this.activeIndex = index;
+    } else {
+      chip.selected = !chip.selected;
+    }
     this.selected.emit(chip);
   }
 

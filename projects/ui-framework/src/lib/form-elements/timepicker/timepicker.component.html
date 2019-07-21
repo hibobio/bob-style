@@ -1,0 +1,52 @@
+<label *ngIf="label && !hideLabelOnFocus"
+       class="bfe-label"
+       [attr.for]="id">{{label}}</label>
+
+<div class="bfe-wrap"
+     [ngClass]="{focused: inputFocused}">
+
+  <span class="bfe-input"
+        [attr.id]="id"
+        (click.outside-zone)="inputHours.focus()">
+
+    <input #inputHours
+           class="bfe-input-hours"
+           type="tel"
+           autocomplete="off"
+           maxlength="2"
+           placeholder="00"
+           [value]="valueHours || null"
+           [disabled]="disabled"
+           [required]="required"
+           (blur)="onHoursBlur($event)"
+           (keydown.outside-zone)="onInputKeydown($event)"
+           (input.outside-zone)="onHoursChange($event)"
+           (focus.outside-zone)="onHoursFocus()"
+           (click.outside-zone)="$event.stopPropagation(); inputHours.select();">
+
+    <span class="separator">:</span>
+
+    <input #inputMinutes
+           class="bfe-input-minutes"
+           type="tel"
+           autocomplete="off"
+           maxlength="2"
+           placeholder="00"
+           [value]="valueMinutes || null"
+           [disabled]="disabled"
+           [required]="required"
+           (blur)="onMinutesBlur($event);"
+           (keydown.outside-zone)="onInputKeydown($event)"
+           (input.outside-zone)="onMinutesChange($event)"
+           (focus.outside-zone)="onMinutesFocus();"
+           (click.outside-zone)="$event.stopPropagation(); inputMinutes.select();">
+
+  </span>
+</div>
+
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled"></p>

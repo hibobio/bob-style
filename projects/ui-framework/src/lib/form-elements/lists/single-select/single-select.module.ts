@@ -12,7 +12,9 @@ import { TruncateTooltipModule } from '../../../services/truncate-tooltip/trunca
 import { InputMessageModule } from '../../input-message/input-message.module';
 
 @NgModule({
-  declarations: [SingleSelectComponent],
+  declarations: [
+    SingleSelectComponent,
+  ],
   imports: [
     CommonModule,
     PanelModule,
@@ -23,7 +25,12 @@ import { InputMessageModule } from '../../input-message/input-message.module';
     InputMessageModule,
     ListFooterModule
   ],
-  exports: [SingleSelectComponent],
-  providers: [ListChangeService, ListModelService]
+  exports: [
+    SingleSelectComponent,
+  ],
+  providers: [
+    ListChangeService,
+    ListModelService,
+  ],
 })
 export class SingleSelectModule {}

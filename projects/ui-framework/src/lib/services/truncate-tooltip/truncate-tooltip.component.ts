@@ -104,17 +104,28 @@ export class TruncateTooltipComponent
 
   ngDoCheck(): void {
     if (this.expectChanges) {
-      if (
-        this.initialized &&
-        this.tooltipText !== this.textContainer.nativeElement.textContent.trim()
-      ) {
-        this.tooltipText = this.textContainer.nativeElement.textContent.trim();
-        this.checkTooltipNecessity();
-      }
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          if (
+            this.initialized &&
+            this.tooltipText !==
+              this.textContainer.nativeElement.textContent.trim()
+          ) {
+            this.tooltipText = this.textContainer.nativeElement.textContent.trim();
+            this.checkTooltipNecessity();
+            if (!this.cd['destroyed']) {
+              this.cd.detectChanges();
+            }
+          }
 
-      if (this.initialized && this.maxLines !== this.maxLinesCache) {
-        this.setMaxLines(this.maxLines);
-      }
+          if (this.initialized && this.maxLines !== this.maxLinesCache) {
+            this.setMaxLines(this.maxLines);
+            if (!this.cd['destroyed']) {
+              this.cd.detectChanges();
+            }
+          }
+        }, 0);
+      });
     }
   }
 

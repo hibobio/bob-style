@@ -16,10 +16,7 @@ import { SocialTypes } from './social.const';
 import { Social } from './social.enum';
 import { BaseFormElement } from '../base-form-element';
 import { FormEvents, InputEventType } from '../form-elements.enum';
-import {
-  domainFromUrl,
-  simpleUID
-} from '../../services/utils/functional-utils';
+import { domainFromUrl } from '../../services/utils/functional-utils';
 import { InputComponent } from '../input/input.component';
 import { stringyOrFail } from '../../services/utils/transformers';
 

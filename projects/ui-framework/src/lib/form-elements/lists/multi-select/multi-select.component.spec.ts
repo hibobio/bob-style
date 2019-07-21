@@ -368,16 +368,17 @@ describe('MultiSelectComponent', () => {
     it('should put a selected values number in suffix, if tooltip is enabled', fakeAsync(() => {
       fixture.nativeElement.style.width = '200px';
       component.options = optionsMock;
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       component.openPanel();
-      fixture.autoDetectChanges();
-      tick(0);
+      tick();
+      fixture.detectChanges();
       const options = overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       );
       (options[1] as HTMLElement).click();
       (options[3] as HTMLElement).click();
-      tick(0);
+      tick();
+      fixture.detectChanges();
       const tooltipEl = fixture.debugElement.query(
         By.css('.btt.tooltip-enabled')
       );

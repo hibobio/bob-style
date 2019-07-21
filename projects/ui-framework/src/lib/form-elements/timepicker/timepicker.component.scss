@@ -1,0 +1,25 @@
+@import '../form-element.mixin';
+
+:host {
+  .bfe-input {
+    display: flex;
+  }
+}
+
+.bfe-input-hours,
+.bfe-input-minutes {
+  @include input-basics;
+  flex: 0;
+  padding: 0;
+  min-width: 2em;
+  text-align: center;
+
+  &:focus::placeholder {
+    opacity: 0;
+  }
+}
+
+.separator {
+  pointer-events: none;
+  user-select: none;
+}

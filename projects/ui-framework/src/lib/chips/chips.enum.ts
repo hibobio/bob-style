@@ -13,3 +13,8 @@ export enum ChipListAlign {
   center = 'center',
   justify = 'justify'
 }
+
+export enum ChipListSelectable {
+  multi = 'multi',
+  single = 'single',
+}

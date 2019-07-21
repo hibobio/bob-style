@@ -31,12 +31,12 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
   @Input() isQuickFilter = false;
   @Input() hasPrefix = false;
-  public showPrefix = true;
 
+  showPrefix = true;
   positionClassList: { [key: string]: boolean } = {};
   panelOpen = false;
   triggerValue: any;
-  showTriggerTooltip: boolean;
+  panelClassList: string[] = [];
 
   private panelConfig: OverlayConfig;
   private overlayRef: OverlayRef;
@@ -58,7 +58,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
-        this.showPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);
+        this.showPrefix = this.prefix && !this.DOM.isEmpty(this.prefix.nativeElement);
 
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
@@ -118,9 +118,12 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       positionStrategy as FlexibleConnectedPositionStrategy
     );
 
-    const panelClass = this.isQuickFilter
-      ? ['b-select-panel', 'b-quick-filter-panel']
-      : ['b-select-panel'];
+    const panelClass = [
+      ...this.panelClassList,
+      'b-select-panel',
+      this.isQuickFilter ? 'b-quick-filter-panel' : null,
+    ]
+      .filter(Boolean);
 
     return {
       disposeOnNavigation: true,

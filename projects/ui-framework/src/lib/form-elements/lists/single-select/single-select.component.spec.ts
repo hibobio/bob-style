@@ -1,12 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  flush,
-  inject,
-  TestBed,
-  tick
-} from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SingleSelectComponent } from './single-select.component';
@@ -17,8 +9,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { SelectGroupOption } from '../list.interface';
 import { cloneDeep } from 'lodash';
-import SpyObj = jasmine.SpyObj;
-import createSpyObj = jasmine.createSpyObj;
 import { ListFooterModule } from '../list-footer/list-footer.module';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
 import { SingleListModule } from '../single-list/single-list.module';

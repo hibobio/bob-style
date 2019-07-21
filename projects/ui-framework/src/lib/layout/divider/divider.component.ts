@@ -6,9 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./divider.component.scss']
 })
 export class DividerComponent {
-
   @Input() text: string = null;
-
-  constructor() {
-  }
 }

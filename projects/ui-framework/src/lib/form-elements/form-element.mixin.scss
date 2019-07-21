@@ -64,6 +64,23 @@ $input-focus-border-color: $grey-700;
   }
 }
 
+@mixin input-basics {
+  box-sizing: border-box;
+  display: block;
+  min-width: 0;
+  flex-grow: 1;
+  padding: 0 $input-padding;
+  border: 0;
+  border-radius: inherit;
+  margin: 0;
+  outline: 0;
+  @include BodyFont($lineHeight: null);
+  color: $grey-800;
+  background: transparent;
+  height: $input-height;
+  line-height: $input-height;
+}
+
 @mixin bFormElement-label {
   box-sizing: border-box;
   display: block;
@@ -110,20 +127,7 @@ $input-focus-border-color: $grey-700;
   // input
 
   .bfe-input {
-    box-sizing: border-box;
-    display: block;
-    min-width: 0;
-    flex-grow: 1;
-    height: $input-height;
-    line-height: $input-height;
-    padding: 0 $input-padding;
-    border: 0;
-    margin: 0;
-    outline: 0;
-    border-radius: inherit;
-    @include BodyFont($lineHeight: null);
-    color: $grey-800;
-    background: transparent;
+    @include input-basics;
 
     &[data-placeholder] {
       position: relative;

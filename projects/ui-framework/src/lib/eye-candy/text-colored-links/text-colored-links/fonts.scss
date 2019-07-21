@@ -1,0 +1,78 @@
+@mixin sentinel {
+  font-family: "Sentinel SSm A", "Sentinel SSm B", "Helvetica", sans-serif !important;
+}
+
+@mixin fontDefaults($style,$weight) {
+  font-style: $style !important;
+  font-weight: $weight !important;
+}
+
+@mixin sentinel300 {
+  @include sentinel;
+  @include fontDefaults(normal, 300);
+}
+
+@mixin sentinelI300 {
+  @include sentinel;
+  @include fontDefaults(italic, 300);
+}
+
+@mixin sentinel400 {
+  @include sentinel;
+  @include fontDefaults(normal, 400);
+}
+
+@mixin sentinelI400 {
+  @include sentinel;
+  @include fontDefaults(italic, 400);
+}
+
+@mixin sentinel500 {
+  @include sentinel;
+  @include fontDefaults(normal, 500);
+}
+
+@mixin sentinelI500 {
+  @include sentinel;
+  @include fontDefaults(italic, 500);
+}
+
+@mixin sentinel600 {
+  @include sentinel;
+  @include fontDefaults(normal, 600);
+}
+
+@mixin sentinelI600 {
+  @include sentinel;
+  @include fontDefaults(italic, 600);
+}
+
+@mixin sentinel700 {
+  @include sentinel;
+  @include fontDefaults(normal, 700);
+}
+
+@mixin sentinelI700 {
+  @include sentinel;
+  @include fontDefaults(italic, 700);
+}
+
+@mixin sentinel800 {
+  @include sentinel;
+  @include fontDefaults(normal, 800);
+}
+
+@mixin sentinelI800 {
+  @include sentinel;
+  @include fontDefaults(italic, 800);
+}
+
+@mixin sentinel900 {
+  @include sentinel;
+  @include fontDefaults(normal, 900);
+}
+
+@mixin sentinelI900 {
+  @include sentinel;
+  @include fontDefaults(italic, 900);
+}

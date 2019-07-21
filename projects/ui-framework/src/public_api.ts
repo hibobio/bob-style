@@ -9,14 +9,12 @@
 
 export { Keys, NativeEvents } from './lib/enums';
 
-
 /*
  * Typography
  */
 
 // Typography Module
 export { TypographyModule } from './lib/typography/typography.module';
-
 
 /*
  * Buttons & Indicators
@@ -40,6 +38,9 @@ export {
 export {
   BackButtonComponent
 } from './lib/buttons-indicators/buttons/back-button/back-button.component';
+export {
+  ChevronButtonComponent
+} from './lib/buttons-indicators/buttons/chevron-button/chevron-button.component';
 export {
   TextButtonComponent
 } from './lib/buttons-indicators/buttons/text-button/text-button.component';
@@ -213,7 +214,9 @@ export {
 // Social Module
 export { SocialModule } from './lib/form-elements/social/social.module';
 export { Social } from './lib/form-elements/social/social.enum';
-
+// Timepicker
+export { TimePickerModule } from './lib/form-elements/timepicker/timepicker.module';
+export { TimePickerComponent } from './lib/form-elements/timepicker/timepicker.component';
 
 /*
  * Navigation
@@ -259,6 +262,10 @@ export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { TabsComponent } from './lib/navigation/tabs/tabs.component';
 export { Tab } from './lib/navigation/tabs/tabs.interface';
 export { TabsType } from './lib/navigation/tabs/tabs.enum';
+// Single list menu
+export { SingleListMenuModule } from './lib/navigation/single-list-menu/single-list-menu.module';
+export { SingleListMenuComponent } from './lib/navigation/single-list-menu/single-list-menu.component';
+export { SingleListMenuItem } from './lib/navigation/single-list-menu/single-list-menu.interface';
 
 // Breadcrumbs Module
 export {
@@ -284,6 +291,7 @@ export { ActionBarComponent } from './lib/navigation/action-bar/action-bar.compo
 // Panel Module
 export { PanelModule } from './lib/popups/panel/panel.module';
 export { PanelComponent } from './lib/popups/panel/panel.component';
+export { PanelSize, PanelDefaultPosVer } from './lib/popups/panel/panel.enum';
 // Dialog Module
 export { DialogModule } from './lib/popups/dialog/dialog.module';
 export { DialogComponent } from './lib/popups/dialog/dialog.component';
@@ -299,7 +307,7 @@ export {
 // Alert Module
 export { AlertModule } from './lib/popups/alert/alert.module';
 export { AlertService } from './lib/popups/alert/alert-service/alert.service';
-export { AlertComponent } from './lib/popups/alert/alert.component';
+export { AlertComponent } from './lib/popups/alert/alert/alert.component';
 export { AlertConfig } from './lib/popups/alert/alert.interface';
 export { AlertType } from './lib/popups/alert/alert.enum';
 // Lightbox Module
@@ -387,10 +395,20 @@ export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/trunca
 export { TruncateTooltipType, TruncateTooltipPosition } from './lib/services/truncate-tooltip/truncate-tooltip.enum';
 // RxJs operators
 export { outsideZone } from './lib/services/utils/rxjs.operators';
+// Event Manager Plugins
+export {
+  EventManagerPlugins,
+  OutsideZonePlugin,
+  MultiEventPlugin,
+} from './lib/services/utils/eventManager.plugins';
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
 export { FloatingAvatarsComponent } from './lib/eye-candy/floating-avatars/floating-avatars.component';
-
+// text colored links
+export { TextColoredLinksModule } from './lib/eye-candy/text-colored-links/text-colored-links.module';
+export { TextColoredLinksComponent } from
+    './lib/eye-candy/text-colored-links/text-colored-links/text-colored-links.component';
+export { ColorTextItem } from './lib/eye-candy/text-colored-links/text-colored-links.interface';
 
 /*
 * Animation

@@ -23,16 +23,33 @@ const storyTemplate = `<b-story-book-layout [title]="'Alert'">
 
 const note = `
   ## Alert Element
+
+  ## How to use
+  open the alert from alertService:
+
+  ~~~
+  constructor(private alertService: AlertService) {
+
+    openAlert() {
+      const alertRef: ComponentRef<AlertComponent> = this.alertService
+        .showAlert({
+          alertType: this.alertType,
+          title: this.title,
+          text: this.text
+      });
+    }
+  }
+  ~~~
+
   #### Module
   *AlertModule*
 
   #### Properties
-  Name | Type | Description | Default value
+  Name | Type | Description
   --- | --- | --- | ---
-  alertSize | AlertSize | sizes - small, medium, large
   alertType | AlertType | types - success, error, information, warning
-  text | string | The text inside the alert
-  ~~~
+  title | string | alert title
+  text | string | alert content
 `;
 
 alertStories.add(

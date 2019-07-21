@@ -20,7 +20,7 @@ export class QuickFilterComponent implements OnChanges {
   @Input() quickFilterConfig: QuickFilterConfig;
   @Output() filterChange: EventEmitter<QuickFilterChangeEvent> = new EventEmitter<QuickFilterChangeEvent>();
 
-  showSingleGroupHeader = false;
+  showSingleGroupHeader: boolean;
   hasValue = false;
 
   constructor(
@@ -31,6 +31,7 @@ export class QuickFilterComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'quickFilterConfig')) {
       this.quickFilterConfig = changes.quickFilterConfig.currentValue;
+      this.showSingleGroupHeader = this.quickFilterConfig.showSingleGroupHeader || false;
       this.hasValue = this.listModelService.getSelectedIdsMap(this.quickFilterConfig.options).length > 0;
     }
   }

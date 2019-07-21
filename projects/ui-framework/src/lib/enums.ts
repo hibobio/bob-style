@@ -45,6 +45,7 @@ export enum NativeEvents {
   scroll = 'scroll',
   select = 'select',
   change = 'change',
+  input = 'input',
   submit = 'submit',
   reset = 'reset',
   focus = 'focus',

@@ -1,4 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+  flush
+} from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA, Component, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -119,12 +126,15 @@ describe('TruncateTooltipComponent', () => {
   }));
 
   describe('Text truncation (1 line)', () => {
-    it('should display a single truncated line of text', () => {
+    it('should display a single truncated line of text', fakeAsync(() => {
       const textContainerStyle = getComputedStyle(bttComp1textContainer);
+      tick();
+      fixture.detectChanges();
       expect(
         parseInt(textContainerStyle.height, 10) <= 20 * 1.5 * 1
       ).toBeTruthy();
-    });
+      flush();
+    }));
     it('should display tooltip with full text', () => {
       const tooltipElem = document.querySelector(
         '#cdk-describedby-message-container'
@@ -145,42 +155,49 @@ describe('TruncateTooltipComponent', () => {
       ).toBeTruthy();
     });
 
-    it('should display tooltip with updated (changed) full text', () => {
+    it('should display tooltip with updated (changed) full text', fakeAsync(() => {
       testComponent.maxLines = 3;
       testComponent.testNum = 2;
-      fixture.autoDetectChanges();
+      tick();
+      fixture.detectChanges();
       const tooltipElem = document.querySelector(
         '#cdk-describedby-message-container'
       ) as HTMLElement;
+      tick();
       expect(tooltipElem.innerText).toContain('TEST2');
       expect(tooltipElem.innerText).toContain('TEXTEND1');
-    });
+      flush();
+    }));
   });
 
   describe('Structural directive', () => {
-    it('should wrap element in b-truncate-tooltip component and display a single truncated line of text', () => {
+    it('should wrap element in b-truncate-tooltip component and display a single truncated line of text', fakeAsync(() => {
       const textContainerStyle = getComputedStyle(bttComp2textContainer);
       const testElement = bttComp2textContainer.querySelector('.test2');
+      tick();
       expect(testElement).toBeTruthy();
       expect(
         parseInt(textContainerStyle.height, 10) <= 20 * 1.5 * 1
       ).toBeTruthy();
-    });
+      flush();
+    }));
 
-    it('should also update on maxLines or text changes', () => {
+    it('should also update on maxLines or text changes', fakeAsync(() => {
       testComponent.maxLines = 3;
       testComponent.testNum2 = 4;
+      tick();
       fixture.autoDetectChanges();
-
       const textContainerStyle = getComputedStyle(bttComp2textContainer);
       const tooltipElem = document.querySelector(
         '#cdk-describedby-message-container'
       ) as HTMLElement;
+      tick();
       expect(
         parseInt(textContainerStyle.height, 10) <= 20 * 1.5 * 3
       ).toBeTruthy();
       expect(tooltipElem.innerText).toContain('TEST4');
       expect(tooltipElem.innerText).toContain('TEXTEND2');
-    });
+      flush();
+    }));
   });
 });

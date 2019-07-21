@@ -8,6 +8,7 @@ export interface QuickFilterConfig {
   placeholder?: string;
   key: string;
   options: SelectGroupOption[];
+  showSingleGroupHeader?: boolean;
 }
 
 export interface QuickFilterChangeEvent {

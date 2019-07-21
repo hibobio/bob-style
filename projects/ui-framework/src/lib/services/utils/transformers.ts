@@ -160,6 +160,17 @@ export const dateyOrFail = value => {
   return converted;
 };
 
+export const timeyOrFail = value => {
+  if (isNullOrUndefined(value)) {
+    return value;
+  }
+
+  if (isString(value) && value.indexOf(':') === -1) {
+    throw new Error(`Value (${stringify(value)}) could not be parsed to Time.`);
+  }
+  return value;
+};
+
 // -------------------------------
 // Validators
 // -------------------------------

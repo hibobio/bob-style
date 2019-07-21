@@ -55,7 +55,7 @@ const note = `
   required | boolean | is field required
   hintMessage | text | hint text
   errorMessage | text | error text
-  inputEvents | InputEvents | input events emitter
+  inputEvents | InputEvent | input events emitter
 
   ~~~
   ${template}

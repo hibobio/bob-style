@@ -1,10 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AlertComponent } from './alert.component';
-import { AlertType } from './alert.enum';
+import { AlertType } from '../alert.enum';
 import { MockComponent } from 'ng-mocks';
-import { IconComponent } from '../../icons/icon.component';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
-import { TypographyModule } from '../../typography/typography.module';
+import { IconComponent } from '../../../icons/icon.component';
+import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { TypographyModule } from '../../../typography/typography.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AlertComponent', () => {
   let component: AlertComponent;
@@ -12,7 +13,7 @@ describe('AlertComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ButtonsModule, TypographyModule],
+      imports: [ButtonsModule, TypographyModule, BrowserAnimationsModule],
       declarations: [AlertComponent, MockComponent(IconComponent)]
     })
       .compileComponents()
@@ -30,8 +31,10 @@ describe('AlertComponent', () => {
       });
   }));
 
-  it('should call to close alert callback', () => {
+  it('should change animation state and call to alert callback when animation finish', () => {
     component.closeAlert();
+    expect(component.animationState).toEqual('leave');
+    component.onAnimationDone({toState: 'leave'});
     expect(component.closeAlertCallback).toHaveBeenCalled();
   });
 });

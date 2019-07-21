@@ -52,7 +52,6 @@ export class SingleSelectComponent extends BaseSelectPanelElement
   >();
 
   triggerValue: string;
-  showTriggerTooltip: boolean;
   singleSelectOptions: SelectGroupOption[];
   selectedOptionId: number | string;
 

@@ -68,7 +68,7 @@ const note = `
   warnMessage | string | warning text
   errorMessage | string | error text
   enableBrowserAutoComplete | InputAutoCompleteOptions | shows browser autocomplete options
-  inputEvents | InputEvents | input events emitter
+  inputEvents | InputEvent | input events emitter
 
   ~~~
   ${template}
