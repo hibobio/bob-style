@@ -21,7 +21,10 @@ export class AlertExampleComponent {
   @Input() public text: string;
   @Input() public title: string;
 
-  constructor(private alertService: AlertService) {}
+  constructor(
+    private alertService: AlertService,
+  ) {
+  }
 
   showAlert(): void {
     const alertConfig: AlertConfig = {
@@ -44,4 +47,5 @@ export class AlertExampleComponent {
   exports: [AlertExampleComponent],
   providers: [AlertService]
 })
-export class AlertExampleModule {}
+export class AlertExampleModule {
+}

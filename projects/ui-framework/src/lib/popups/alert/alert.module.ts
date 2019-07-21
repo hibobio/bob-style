@@ -1,6 +1,6 @@
 import {Injector, NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AlertComponent } from './alert.component';
+import { AlertComponent } from './alert/alert.component';
 import { IconsModule } from '../../icons/icons.module';
 import { AlertService} from './alert-service/alert.service';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';

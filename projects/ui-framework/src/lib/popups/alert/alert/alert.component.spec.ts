@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AlertComponent } from './alert.component';
-import { AlertType } from './alert.enum';
+import { AlertType } from '../alert.enum';
 import { MockComponent } from 'ng-mocks';
-import { IconComponent } from '../../icons/icon.component';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
-import { TypographyModule } from '../../typography/typography.module';
+import { IconComponent } from '../../../icons/icon.component';
+import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { TypographyModule } from '../../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AlertComponent', () => {

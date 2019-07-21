@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {Dictionary} from 'lodash';
-import {IconColor, Icons, IconSize} from '../../icons/icons.enum';
-import {InfoStripIcon} from '../../buttons-indicators/info-strip/info-strip.types';
-import {AlertConfig} from './alert.interface';
-import {ButtonType} from '../../buttons-indicators/buttons/buttons.enum';
+import {IconColor, Icons, IconSize} from '../../../icons/icons.enum';
+import {InfoStripIcon} from '../../../buttons-indicators/info-strip/info-strip.types';
+import {AlertConfig} from '../alert.interface';
+import {ButtonType} from '../../../buttons-indicators/buttons/buttons.enum';
 import {animate, keyframes, style, transition, trigger} from '@angular/animations';
 
 @Component({
@@ -14,7 +14,7 @@ import {animate, keyframes, style, transition, trigger} from '@angular/animation
     trigger('toastAnimation', [
       transition('void => enter',
         [
-          animate('300ms cubic-bezier(.25,1.2,.9,1.18)',
+          animate('500ms cubic-bezier(0.2 ,2 , 0.5, 1)',
             keyframes([
                 style({offset: 0, 'transform': 'translateY(-60px)', opacity: 0}),
                 style({offset: 1, 'transform': 'translateY(0)', opacity: 1}),
@@ -24,7 +24,7 @@ import {animate, keyframes, style, transition, trigger} from '@angular/animation
       ),
       transition('enter => leave',
       [
-        animate('300ms cubic-bezier(.52,-0.36,.95,.74)',
+        animate('500ms cubic-bezier(0.8 ,-1, 0.5, 1)',
           keyframes([
               style({offset: 0, 'transform': 'translateY(0)', opacity: 1}),
               style({offset: 1, 'transform': 'translateY(-60px)', opacity: 0}),

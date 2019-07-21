@@ -1,9 +1,10 @@
-import {ComponentRef, Injectable, Injector} from '@angular/core';
-import {AlertConfig} from '../alert.interface';
-import {AlertComponent} from '../alert.component';
-import {Overlay, OverlayConfig, OverlayRef} from '@angular/cdk/overlay';
-import {ComponentPortal} from '@angular/cdk/portal';
-import {cloneDeep, bind} from 'lodash';
+import { ComponentRef, Injectable, Injector } from '@angular/core';
+import { AlertConfig } from '../alert.interface';
+import { AlertComponent } from '../alert/alert.component';
+import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { cloneDeep, bind, invoke } from 'lodash';
+
 const ALERT_DURATION = 7000;
 
 @Injectable()
@@ -14,9 +15,13 @@ export class AlertService {
   public isOpen: boolean;
   private timeRef: NodeJS.Timer;
 
-  constructor(private overlay: Overlay) { }
+  constructor(
+    private overlay: Overlay,
+  ) {
+  }
 
   public showAlert(config: AlertConfig): ComponentRef<AlertComponent> {
+    this.closeAlertCallback();
     if (!this.isOpen) {
       this.overlayConfig = this.getConfig();
       this.overlayRef = this.overlay.create(this.overlayConfig);

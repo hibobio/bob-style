@@ -1,5 +1,5 @@
 import { fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
-import {AlertService} from './alert.service';
+import { AlertService } from './alert.service';
 import { AlertConfig } from '../alert.interface';
 import { AlertType } from '../alert.enum';
 import {
@@ -8,13 +8,13 @@ import {
   NO_ERRORS_SCHEMA
 } from '@angular/core';
 import { MockComponent } from 'ng-mocks';
-import { Overlay, OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
+import { Overlay, OverlayContainer, OverlayModule, OverlayRef } from '@angular/cdk/overlay';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { TypographyModule } from '../../../typography/typography.module';
 import { IconComponent } from '../../../icons/icon.component';
-import {AlertComponent} from '../alert.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {AlertModule} from '../alert.module';
+import { AlertComponent } from '../alert/alert.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AlertModule } from '../alert.module';
 
 const ALERT_DURATION_TICK = 7001;
 const ALERT_CONFIG: AlertConfig = {
@@ -64,6 +64,14 @@ describe('AlertService', () => {
       expect(alertService.isOpen).toBeTruthy();
       alertComponentRef.instance.onAnimationDone({ toState: 'leave' });
     }));
+
+    it('should dispose alert if one is open before opening a new one', () => {
+      alertService.showAlert(ALERT_CONFIG);
+      const spyAlert = alertService.overlayRef;
+      spyOn(spyAlert, 'dispose');
+      alertService.showAlert(ALERT_CONFIG);
+      expect(spyAlert.dispose).toHaveBeenCalledTimes(1);
+    });
 
     it('should start leave animation on button click and close alert', fakeAsync(() => {
       const alertComponentRef: ComponentRef<AlertComponent> = alertService.showAlert(ALERT_CONFIG);

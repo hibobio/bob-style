@@ -308,7 +308,7 @@ export {
 // Alert Module
 export { AlertModule } from './lib/popups/alert/alert.module';
 export { AlertService } from './lib/popups/alert/alert-service/alert.service';
-export { AlertComponent } from './lib/popups/alert/alert.component';
+export { AlertComponent } from './lib/popups/alert/alert/alert.component';
 export { AlertConfig } from './lib/popups/alert/alert.interface';
 export { AlertType } from './lib/popups/alert/alert.enum';
 // Lightbox Module
