@@ -9,7 +9,6 @@
 
 export { Keys, NativeEvents } from './lib/enums';
 
-
 /*
  * Typography
  */
@@ -397,7 +396,11 @@ export { TruncateTooltipType, TruncateTooltipPosition } from './lib/services/tru
 // RxJs operators
 export { outsideZone } from './lib/services/utils/rxjs.operators';
 // Event Manager Plugins
-export { EventManagerPlugins } from './lib/services/utils/eventManager.plugins';
+export {
+  EventManagerPlugins,
+  OutsideZonePlugin,
+  MultiEventPlugin,
+} from './lib/services/utils/eventManager.plugins';
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
 export { FloatingAvatarsComponent } from './lib/eye-candy/floating-avatars/floating-avatars.component';
