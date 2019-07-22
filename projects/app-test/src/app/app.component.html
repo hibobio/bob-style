@@ -2,11 +2,12 @@
 
 <app-form-elements-test></app-form-elements-test>
 
-<tooltip-tester></tooltip-tester>
+<tooltip-tester></tooltip-tester> -->
 
-<div style="width: 600px; margin: 0 auto">
+<div *ngFor="let editorValue of editorValues; let index = index;"
+     style="width: 600px; margin: 0 auto">
   <b-rich-text-editor [value]="editorValue"
-                      (changed)="updateValue($event)">
+                      (changed)="updateValue($event,index)">
 
   </b-rich-text-editor>
 
@@ -15,11 +16,12 @@
   </div>
 </div>
 
-<class-binder-tester></class-binder-tester> -->
+<!--
+<class-binder-tester></class-binder-tester>
 
-<event-manager-tester *ngIf="!remove"></event-manager-tester>
+ <event-manager-tester *ngIf="!remove"></event-manager-tester>
 
 <button style="width:100px;margin:30px auto;"
-        (click)="remove=!remove">XXX</button>
+        (click)="remove=!remove">XXX</button> -->
 
 <b-stats></b-stats>
