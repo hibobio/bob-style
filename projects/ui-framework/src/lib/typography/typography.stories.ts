@@ -23,52 +23,110 @@ const displayTemplate = `
     padding-bottom: 0;
     border: 0;
   }
+  span, strong {
+    display: inline-block;
+
+  }
+  .code-sample,  .details {
+    margin-bottom: 10px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
   .code-sample {
     padding: 4px 8px;
+    min-height: 26px;
     background-color: #d4dde6;
-    display: inline-block;
-    margin-bottom: 10px;
     font-weight: 500;
+    margin-right: 15px;
+  }
+  .code-sample:empty {
+    padding: 0;
+    margin: 0;
+  }
+  strong {
+    margin-right: 5px;
+    vertical-align: baseline;
   }
 </style>
 <div class="item">
   <span class="code-sample">&#60;b-display-1&#62;</span>
+  <span class="details">
+    <strong>Sentinel SSm A</strong>
+    42px / 1.3 / 900
+  </span>
   <b-display-1>Display XLarge</b-display-1>
 </div>
 <div class="item">
   <span class="code-sample">&#60;b-display-2&#62;</span>
+  <span class="details">
+    <strong>Sentinel SSm A</strong>
+    28px / 1.3 / 900
+  </span>
   <b-display-2>Display Large</b-display-2>
 </div>
 <div class="item">
   <span class="code-sample">&#60;b-display-3&#62;</span>
+  <span class="details">
+    <strong>Sentinel SSm A</strong>
+    22px / 1.3 / 900
+  </span>
   <b-display-3>Display Medium</b-display-3>
 </div>
 <div class="item">
   <span class="code-sample">&#60;b-display-4&#62;</span>
+  <span class="details">
+    <strong>Sentinel SSm A</strong>
+    18px / 1.3 / 900
+  </span>
   <b-display-4>Display Small</b-display-4>
 </div>
 <div class="item">
   <span class="code-sample">&#60;b-heading&#62;</span>
+  <span class="details">
+    <strong>Gotham SSm A</strong>
+    14px / 1.3 / 600
+  </span>
   <b-heading>Heading</b-heading>
 </div>
 <div class="item">
   <span class="code-sample">&#60;b-subheading&#62;</span>
+  <span class="details">
+    <strong>Gotham SSm A</strong>
+    12px / 1.3 / 600
+  </span>
   <b-subheading>Sub heading</b-subheading>
 </div>
  <div class="item">
-  <span class="code-sample">&#60;b-big-body&#62;</span><br/>
-  <b-big-body>Big body</b-big-body>
+  <span class="code-sample">&#60;b-big-body&#62;</span>
+  <span class="details">
+    <strong>Gotham SSm A</strong>
+    14px / 1.5 / 400
+  </span>
+  <div><b-big-body>Big body</b-big-body></div>
 </div>
  <div class="item">
-  <span class="code-sample">&#60;b-bold-body&#62;</span><br/>
-  <b-bold-body>Bold body</b-bold-body>
+  <span class="code-sample">&#60;b-bold-body&#62;</span>
+  <span class="details">
+    <strong>Gotham SSm A</strong>
+    12px / 1.5 / 600
+  </span>
+  <div><b-bold-body>Bold body</b-bold-body></div>
 </div>
 <div class="item">
-  <span>Default body font</span>
+  <span class="code-sample"></span>
+  <span class="details">
+    <strong>Gotham SSm A</strong>
+    12px / 1.5 / 400
+  </span>
+  <div>Default body font</div>
 </div>
 <div class="item">
-  <span class="code-sample">&#60;b-caption&#62;</span><br/>
-  <b-caption>Caption</b-caption>
+  <span class="code-sample">&#60;b-caption&#62;</span>
+  <span class="details">
+    <strong>Gotham SSm A</strong>
+    11px / 1.5 / 400
+  </span>
+  <div><b-caption>Caption</b-caption></div>
 </div>
 `;
 

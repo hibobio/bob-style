@@ -18,6 +18,11 @@ $sizeLarge: 44px;
     user-select: none;
     white-space: nowrap;
 
+    &,
+    &[disabled] {
+      color: $body-text-color;
+    }
+
     :first-letter {
       text-transform: capitalize;
     }
@@ -26,7 +31,12 @@ $sizeLarge: 44px;
   @if $type {
     @if $type == 'primary' {
       background-color: var(--primary-600);
-      color: $white;
+
+      &,
+      &[disabled] {
+        color: $white;
+      }
+
       &:hover,
       &:focus {
         background-color: var(--primary-500);
@@ -69,7 +79,8 @@ $sizeLarge: 44px;
   &.tertiary {
     @include Button(tertiary, $basics: false);
   }
-  &.disabled {
+  &.disabled,
+  &[disabled] {
     @include Button(disabled, $basics: false);
   }
 }

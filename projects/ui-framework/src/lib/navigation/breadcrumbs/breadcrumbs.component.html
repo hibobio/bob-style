@@ -6,11 +6,11 @@
        [ngClass]="{ disabled: step.disabled }"
        (click)="onStepClick($event, i)">
 
-    <span class="index"
-          [matTooltip]="i !== activeIndex  ? step.title : null"
-          matTooltipPosition="above">
-      {{ i + 1 }}
-    </span>
+      <span class="index"
+            [matTooltip]="i !== activeIndex  ? step.title : null"
+            matTooltipPosition="above">
+        {{ i + 1 }}
+      </span>
 
       <b-bold-body class="title"
                    *ngIf="i == activeIndex">
@@ -46,7 +46,7 @@
 
 <ng-container *ngIf="isMobile">
 
-  <div class="steps">
+  <div class="steps steps-mobile">
     <span *ngFor="let step of breadcrumbs; let i = index"
           class="step"
           [ngClass]="{ active: i == activeIndex }"></span>

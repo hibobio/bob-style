@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
 import { values } from 'lodash';
@@ -8,14 +13,15 @@ import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
 const buttonStories = storiesOf(
-  `${ ComponentGroupType.ButtonsAndIndicators }.Buttons`,
+  `${ComponentGroupType.ButtonsAndIndicators}.Buttons`,
   module
 ).addDecorator(withKnobs);
 
 const button = `
 <b-chevron-button (clicked)="onClick($event)"
                  [text]="text"
-                 [active]="active">
+                 [active]="active"
+                 [disabled]="disabled">
 </b-chevron-button>
 `;
 
@@ -29,16 +35,17 @@ const note = `
   --- | --- | --- | ---
   text | text | Button text | none
   active | boolean | changes chevron down / up | false
+   disabled | boolean | disabled state | false
   clicked | Function | callback for clicking on the button |
 
   ~~~
-  ${ button }
+  ${button}
   ~~~
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Chevron button'">
-    ${ button }
+    ${button}
 </b-story-book-layout>
 `;
 
@@ -49,6 +56,7 @@ buttonStories.add(
     props: {
       text: text('text', 'Jump to section'),
       active: boolean('active', false),
+      disabled: boolean('disabled', false),
       onClick: action('chevron button clicked')
     },
     moduleMetadata: {

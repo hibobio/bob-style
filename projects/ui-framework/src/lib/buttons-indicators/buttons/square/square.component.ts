@@ -4,7 +4,9 @@ import {
   Input,
   OnChanges,
   Output,
-  SimpleChanges
+  SimpleChanges,
+  ViewChild,
+  ElementRef
 } from '@angular/core';
 import { ButtonSize, ButtonType } from '../buttons.enum';
 import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
@@ -17,13 +19,14 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
       class="{{ type }} {{ size }} {{
         icon ? icon + ' b-icon-' + iconSize + ' b-icon-' + color : ''
       }}"
-      [ngClass]="{ disabled: disabled }"
+      [attr.disabled]="disabled || null"
       (click)="onClick($event)"
     ></button>
   `,
   styleUrls: ['./square.component.scss']
 })
 export class SquareButtonComponent implements OnChanges {
+  @ViewChild('button', { static: true }) public button: ElementRef;
   @Input() type: ButtonType = ButtonType.primary;
   @Input() size: ButtonSize = ButtonSize.medium;
   @Input() icon: Icons;

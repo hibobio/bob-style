@@ -143,6 +143,7 @@
   }
 }
 
+:host[data-size='xlarge'],
 :host[data-size='large'] {
   .avatar {
     box-shadow: 0 2px 4px 0 $boxShadowColor;

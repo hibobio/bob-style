@@ -1,6 +1,4 @@
-$breakpoint-device-sm: 768px;
-$breakpoint-device-md: 992px;
-$breakpoint-device-lg: 1200px;
+@import './variables';
 
 @mixin gridLayout12Cols() {
   display: grid;
@@ -21,16 +19,19 @@ $breakpoint-device-lg: 1200px;
 .col-2 {
   grid-column: span 2;
 }
-.col-3, .col-quarter {
+.col-3,
+.col-quarter {
   grid-column: span 3;
 }
-.col-4, .col-third {
+.col-4,
+.col-third {
   grid-column: span 4;
 }
 .col-5 {
   grid-column: span 5;
 }
-.col-6, .col-half {
+.col-6,
+.col-half {
   grid-column: span 6;
 }
 .col-7 {
@@ -48,7 +49,8 @@ $breakpoint-device-lg: 1200px;
 .col-11 {
   grid-column: span 11;
 }
-.col-12, .col-full {
+.col-12,
+.col-full {
   grid-column: span 12;
 }
 
@@ -59,16 +61,19 @@ $breakpoint-device-lg: 1200px;
   .col-sm-2 {
     grid-column: span 2;
   }
-  .col-sm-3, .col-sm-quarter {
+  .col-sm-3,
+  .col-sm-quarter {
     grid-column: span 3;
   }
-  .col-sm-4, .col-sm-third {
+  .col-sm-4,
+  .col-sm-third {
     grid-column: span 4;
   }
   .col-sm-5 {
     grid-column: span 5;
   }
-  .col-sm-6, .col-sm-half {
+  .col-sm-6,
+  .col-sm-half {
     grid-column: span 6;
   }
   .col-sm-7 {
@@ -86,7 +91,8 @@ $breakpoint-device-lg: 1200px;
   .col-sm-11 {
     grid-column: span 11;
   }
-  .col-sm-12, .col-sm-full {
+  .col-sm-12,
+  .col-sm-full {
     grid-column: span 12;
   }
 }
@@ -98,16 +104,19 @@ $breakpoint-device-lg: 1200px;
   .col-md-2 {
     grid-column: span 2;
   }
-  .col-md-3, .col-md-quarter {
+  .col-md-3,
+  .col-md-quarter {
     grid-column: span 3;
   }
-  .col-md-4, .col-md-third {
+  .col-md-4,
+  .col-md-third {
     grid-column: span 4;
   }
   .col-md-5 {
     grid-column: span 5;
   }
-  .col-md-6, .col-md-half {
+  .col-md-6,
+  .col-md-half {
     grid-column: span 6;
   }
   .col-md-7 {
@@ -125,7 +134,8 @@ $breakpoint-device-lg: 1200px;
   .col-md-11 {
     grid-column: span 11;
   }
-  .col-md-12, .col-md-full {
+  .col-md-12,
+  .col-md-full {
     grid-column: span 12;
   }
 }
@@ -137,16 +147,19 @@ $breakpoint-device-lg: 1200px;
   .col-lg-2 {
     grid-column: span 2;
   }
-  .col-lg-3, .col-lg-quarter {
+  .col-lg-3,
+  .col-lg-quarter {
     grid-column: span 3;
   }
-  .col-lg-4, .col-lg-third {
+  .col-lg-4,
+  .col-lg-third {
     grid-column: span 4;
   }
   .col-lg-5 {
     grid-column: span 5;
   }
-  .col-lg-6, .col-lg-half {
+  .col-lg-6,
+  .col-lg-half {
     grid-column: span 6;
   }
   .col-lg-7 {
@@ -164,7 +177,8 @@ $breakpoint-device-lg: 1200px;
   .col-lg-11 {
     grid-column: span 11;
   }
-  .col-lg-12, .col-lg-full {
+  .col-lg-12,
+  .col-lg-full {
     grid-column: span 12;
   }
 }

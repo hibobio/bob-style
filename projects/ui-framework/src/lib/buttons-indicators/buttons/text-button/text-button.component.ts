@@ -32,6 +32,8 @@ export class TextButtonComponent {
   @HostBinding('class.color-primary') get colorPrimary(): boolean {
     return this.color === LinkColor.primary;
   }
+  @HostBinding('class.disabled') @Input() disabled = false;
+
   @Input() text: string;
   @Input() icon: Icons;
   @Input() color: LinkColor = LinkColor.none;
@@ -41,8 +43,6 @@ export class TextButtonComponent {
   readonly iconSize = IconSize;
   readonly linkColor = LinkColor;
   readonly iconColor = IconColor;
-
-  @HostBinding('class.disabled') @Input() disabled = false;
 
   @HostListener('click')
   onClick() {

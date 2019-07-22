@@ -45,3 +45,11 @@
   }
   @return $color;
 }
+
+@function base8($num: 0) {
+  @return round($num/8) * 8px;
+}
+
+@function times8($times: 1) {
+  @return 8px * $times;
+}

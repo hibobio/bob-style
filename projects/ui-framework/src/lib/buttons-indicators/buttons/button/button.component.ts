@@ -3,7 +3,9 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  Output
+  Output,
+  ViewChild,
+  ElementRef
 } from '@angular/core';
 import { ButtonSize, ButtonType } from '../buttons.enum';
 import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
@@ -12,11 +14,12 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
   selector: 'b-button',
   template: `
     <button
+      #button
       type="button"
       class="{{ type }} {{ size }} {{
         icon ? icon + ' b-icon-' + iconSize + ' b-icon-' + iconColor : ''
       }}"
-      [ngClass]="{ disabled: disabled }"
+      [attr.disabled]="disabled || null"
       (click)="onClick($event)"
     >
       {{ text }}
@@ -26,6 +29,7 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
   styleUrls: ['./button.component.scss']
 })
 export class ButtonComponent implements OnChanges {
+  @ViewChild('button', { static: true }) public button: ElementRef;
   @Input() text: string;
   @Input() type?: ButtonType = ButtonType.primary;
   @Input() size?: ButtonSize = ButtonSize.medium;
@@ -41,11 +45,7 @@ export class ButtonComponent implements OnChanges {
   ngOnChanges(): void {
     if (this.icon) {
       this.iconColor =
-        this.type === ButtonType.primary
-          ? IconColor.white
-          : this.disabled
-          ? IconColor.light
-          : IconColor.dark;
+        this.type === ButtonType.primary ? IconColor.white : IconColor.dark;
       this.iconSize =
         this.size === ButtonSize.large ? IconSize.large : IconSize.medium;
     }

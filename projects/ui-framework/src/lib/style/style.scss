@@ -10,6 +10,32 @@
 @import './dialog';
 @import './icons';
 
+:root {
+  --primary-500: #{$primary-500};
+  --primary-600: #{$primary-600};
+  --primary-700: #{$primary-700};
+
+  --secondary-500: #{$secondary-500};
+  --secondary-600: #{$secondary-600};
+  --secondary-700: #{$secondary-700};
+
+  --positive-500: #{$positive-500};
+  --positive-600: #{$positive-600};
+  --positive-700: #{$positive-700};
+
+  --negative-500: #{$negative-500};
+  --negative-600: #{$negative-600};
+  --negative-700: #{$negative-700};
+
+  --inform-500: #{$inform-500};
+  --inform-600: #{$inform-600};
+  --inform-700: #{$inform-700};
+
+  --display-font-family: 'Sentinel SSm A', 'Sentinel SSm B', 'Helvetica';
+  --heading-font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica';
+  --body-font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica';
+}
+
 html,
 body {
   color: $grey-800;

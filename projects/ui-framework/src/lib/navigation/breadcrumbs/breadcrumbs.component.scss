@@ -1,60 +1,70 @@
-@import '../../style/colors';
 @import '../../style/shapes';
-@import '../../style/grid-layout';
+@import '../../style/variables';
 
 :host {
   padding: 15px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  .steps {
-    .step {
-      .index, .title, b-icon {
-        display: inline-block;
-        vertical-align: middle;
-      }
-      .index {
-        color: white;
-        text-align: center;
-        width: 24px;
-        height: 24px;
-        line-height: 24px;
-        background-color: var(--primary-600);
-        border-radius: 100%;
-        &:hover {
-          background-color: var(--primary-500);
-        }
-        &:active {
-          background-color: var(--primary-700);
-        }
-      }
-      .title {
-        color: var(--primary-600);
-        margin-left: 8px;
-      }
-      b-icon {
-        margin: 0 8px;
-      }
-      &.disabled {
-        .index {
-          background-color: $grey-300;
-          color: $grey-700;
-          cursor: default;
-        }
-      }
+}
+
+.steps,
+.buttons,
+.step {
+  display: flex;
+  align-items: center;
+}
+
+.step {
+  .index,
+  .title,
+  b-icon {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .index {
+    color: white;
+    text-align: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    line-height: 24px;
+    background-color: var(--primary-600);
+    border-radius: 100%;
+
+    &:hover {
+      background-color: var(--primary-500);
+    }
+    &:active {
+      background-color: var(--primary-700);
     }
   }
-  .buttons {
-    b-button, b-text-button {
-      margin-right: 16px;
-      &:last-child {
-        margin-right: 0;
-      }
+
+  .title {
+    color: var(--primary-600);
+    margin-left: 8px;
+  }
+
+  b-icon {
+    margin: 0 8px;
+  }
+
+  &.disabled {
+    .index {
+      background-color: $grey-300;
+      color: $grey-700;
+      cursor: default;
     }
   }
 }
 
-@media screen and (max-width: $breakpoint-device-sm) {
+b-button,
+b-text-button {
+  margin-left: 16px;
+}
+
+.steps-mobile {
   .step {
     background-color: $grey-500;
     width: 8px;
@@ -62,6 +72,7 @@
     margin-right: 8px;
     display: inline-block;
     border-radius: 100%;
+
     &.active {
       background-color: var(--primary-500);
     }

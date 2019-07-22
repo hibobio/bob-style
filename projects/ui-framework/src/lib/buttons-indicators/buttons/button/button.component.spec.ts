@@ -48,13 +48,13 @@ describe('ButtonComponent', () => {
       expect(buttonElement.classList).toContain('primary');
       expect(buttonElement.classList).toContain('large');
     });
-    it('should not have disabled class by default', () => {
-      expect(buttonElement.classList).not.toContain('disabled');
+    it('should not have disabled attribute by default', () => {
+      expect(buttonElement.getAttribute('disabled')).toBeFalsy();
     });
-    it('should have disabled class', () => {
+    it('should have disabled attribute', () => {
       component.disabled = true;
       fixture.detectChanges();
-      expect(buttonElement.classList).toContain('disabled');
+      expect(buttonElement.getAttribute('disabled')).toBeTruthy();
     });
   });
 
@@ -96,12 +96,6 @@ describe('ButtonComponent', () => {
       testColor(ButtonType.primary, IconColor.white);
       testColor(ButtonType.secondary, IconColor.dark);
       testColor(ButtonType.tertiary, IconColor.dark);
-    });
-    it('should set iconColor based on disabled', () => {
-      component.disabled = true;
-      testColor(ButtonType.primary, IconColor.white);
-      testColor(ButtonType.secondary, IconColor.light);
-      testColor(ButtonType.tertiary, IconColor.light);
     });
     it('should set iconSize based on button size', () => {
       testSize(ButtonSize.small, IconSize.medium);

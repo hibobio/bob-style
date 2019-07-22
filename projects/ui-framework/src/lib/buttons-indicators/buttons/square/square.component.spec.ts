@@ -67,12 +67,12 @@ describe('ButtonComponent', () => {
       expect(buttonElement.classList).toContain('tertiary');
     });
     it('should not have disabled class by default', () => {
-      expect(buttonElement.classList).not.toContain('disabled');
+      expect(buttonElement.getAttribute('disabled')).toBeFalsy();
     });
     it('should have disabled class', () => {
       component.disabled = true;
       fixture.detectChanges();
-      expect(buttonElement.classList).toContain('disabled');
+      expect(buttonElement.getAttribute('disabled')).toBeTruthy();
     });
   });
 });
