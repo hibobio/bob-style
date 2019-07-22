@@ -4,7 +4,7 @@
 <tooltip-tester></tooltip-tester>
 -->
 
-<div *ngFor="let editorValue of editorValues; let index = index;"
+<div *ngFor="let editorValue of editorValues; let index = index; trackBy: editorTrackBy"
      style="width: 600px; margin: 0 auto">
   <b-rich-text-editor [value]="editorValue"
                       (changed)="updateValue($event,index)">

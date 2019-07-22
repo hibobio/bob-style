@@ -36,6 +36,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.editorValues[index] = event;
   }
 
+  editorTrackBy(index) {
+    return index;
+  }
+
   ngOnInit(): void {
     this.scrollSubscription = this.utilsService
       .getScrollEvent()

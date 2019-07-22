@@ -290,6 +290,7 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   private onEditorBlur(): void {
+    console.log('onEditorBlur');
     this.zone.run(() => {
       this.transmitValue(this.sendChangeOn === RTEchangeEvent.blur);
       this.blurred.emit(this.value);
