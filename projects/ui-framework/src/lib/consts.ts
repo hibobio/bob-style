@@ -13,7 +13,9 @@ export enum ComponentGroupType {
   Icons = 'Icons',
   Typography = 'Typography',
   Services = 'Services',
-  EyeCandy = 'Eye Candy',
+  EyeCandy = 'Eye Candy'
 }
 
 export const serverDateFormat = 'YYYY-MM-DD';
+
+export const mobileBreakpoint = 768;

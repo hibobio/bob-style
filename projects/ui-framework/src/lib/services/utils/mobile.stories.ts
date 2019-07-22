@@ -12,10 +12,17 @@ const storyTemplate = `
 const note = `
   ## Mobile Service
 
-  #### Methods
+  #### Methods & properties
 
-  ##### isMobileBrowser
-  returns boolean for is mobile browser
+  Name | Type | Description
+  --- | --- | ---
+  getMediaEvent() | Observable&lt;MediaEvent&gt; | returns {matchMobile: boolean, matchDesktop: boolean, isTouchDevice: boolean, isMobileBrowser: boolean}. Is updated on window resize
+  isMobBrowser | boolean | is true when browser is mobile
+  isMobileBrowser() | boolean | returns isMobBrowser property
+  isTouchDevice | boolean | is true if device supports touch
+  matchMedia(query: string) | boolean | checks if (provided) media quiery matches (returns true)
+  matchBreakpoint(point: number, mode: WidthMode) | boolean | checks if media query width check returns true. Arguments - point: width to check, mode: 'min'-width or 'max'-WidthMode
+
 `;
 
 mobileStories.add(
@@ -24,9 +31,7 @@ mobileStories.add(
     return {
       template: storyTemplate,
       moduleMetadata: {
-        imports: [
-          StoryBookLayoutModule,
-        ]
+        imports: [StoryBookLayoutModule]
       }
     };
   },

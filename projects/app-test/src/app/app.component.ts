@@ -3,6 +3,7 @@ import { UtilsService } from '../../../ui-framework/src/lib/services/utils/utils
 import { outsideZone } from '../../../ui-framework/src/lib/services/utils/rxjs.operators';
 
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { MobileService } from '../../../ui-framework/src/lib/services/utils/mobile.service';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +11,16 @@ import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  constructor(private utilsService: UtilsService, private zone: NgZone) {}
+  constructor(
+    private utilsService: UtilsService,
+    private zone: NgZone,
+    private mobileService: MobileService
+  ) {}
 
   editorValue = 'some text';
   scrollSubscription: Subscription;
   resizeSubscription: Subscription;
+  mediaSubscribtion: Subscription;
 
   updateValue(event) {
     console.log(event);
@@ -31,8 +37,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.resizeSubscription = this.utilsService
       .getResizeEvent()
       .pipe(outsideZone(this.zone))
-      .subscribe(scrollPos => {
-        console.log('window resized');
+      .subscribe(event => {
+        console.log('window resized', event);
+      });
+
+    this.mediaSubscribtion = this.mobileService
+      .getMediaEvent()
+      .subscribe(value => {
+        console.log(value);
       });
   }
 
