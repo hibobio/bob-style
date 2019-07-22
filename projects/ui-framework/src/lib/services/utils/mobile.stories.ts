@@ -16,7 +16,8 @@ const note = `
 
   Name | Type | Description
   --- | --- | ---
-  getMediaEvent() | Observable&lt;MediaEvent&gt; | returns {matchMobile: boolean, matchDesktop: boolean, isTouchDevice: boolean, isMobileBrowser: boolean}. Is updated on window resize
+   mediaEvent$ | Observable&lt;MediaEvent&gt; | returns {matchMobile: boolean, matchDesktop: boolean, isTouchDevice: boolean, isMobileBrowser: boolean}. Is updated on window resize
+  getMediaEvent() | Observable&lt;MediaEvent&gt; | returns  mediaEvent$
   isMobBrowser | boolean | is true when browser is mobile
   isMobileBrowser() | boolean | returns isMobBrowser property
   isTouchDevice | boolean | is true if device supports touch
