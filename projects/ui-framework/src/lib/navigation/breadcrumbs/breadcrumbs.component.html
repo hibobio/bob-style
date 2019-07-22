@@ -1,68 +1,63 @@
-<ng-container *ngIf="!isMobile">
+<div *ngIf="!isMobile && type === breadcrumbsType.primary"
+     class="steps">
+  <span *ngFor="let step of breadcrumbs; let i = index"
+        class="step"
+        [ngClass]="{ disabled: step.disabled }"
+        (click)="onStepClick(i)">
 
-  <div class="steps">
-    <a *ngFor="let step of breadcrumbs; let i = index"
-       class="step"
-       [ngClass]="{ disabled: step.disabled }"
-       (click)="onStepClick($event, i)">
+    <span class="index"
+          [matTooltip]="i !== activeIndex  ? step.title : null"
+          matTooltipPosition="above">
+      {{ i + 1 }}
+    </span>
 
-      <span class="index"
-            [matTooltip]="i !== activeIndex  ? step.title : null"
-            matTooltipPosition="above">
-        {{ i + 1 }}
-      </span>
+    <b-bold-body class="title"
+                 *ngIf="i == activeIndex">
+      {{step.title}}
+    </b-bold-body>
 
-      <b-bold-body class="title"
-                   *ngIf="i == activeIndex">
-        {{step.title}}
-      </b-bold-body>
+    <b-icon *ngIf="i < breadcrumbs.length - 1"
+            [icon]="icons.chevron_right"
+            [color]="iconColor.normal"
+            [size]="iconSize.medium">
+    </b-icon>
+  </span>
+</div>
 
-      <b-icon *ngIf="i < breadcrumbs.length - 1"
-              [icon]="icons.chevron_right"
-              [color]="iconColor.normal"
-              [size]="iconSize.medium">
-      </b-icon>
+<div *ngIf="isMobile || type === breadcrumbsType.secondary"
+     class="steps steps-circles">
+  <span *ngFor="let step of breadcrumbs; let i = index"
+        class="step"
+        [ngClass]="{ active: i == activeIndex }"></span>
+</div>
 
-    </a>
-  </div>
+<div class="buttons"
+     *ngIf="!isMobile">
+  <b-button *ngIf="buttons?.backBtn?.isVisible"
+            (clicked)="onPrevClick()"
+            [size]="buttonSize.medium"
+            [type]="buttonType.secondary">
+    {{ buttons?.backBtn?.label }}
+  </b-button>
 
-  <div class="buttons">
-    <b-button *ngIf="buttons?.backBtn?.isVisible"
-              (clicked)="onPrevClick()"
-              [size]="buttonSize.medium"
-              [type]="buttonType.secondary">
-      {{ buttons?.backBtn?.label }}
-    </b-button>
+  <b-button *ngIf="buttons?.nextBtn?.isVisible"
+            (clicked)="onNextClick()"
+            [size]="buttonSize.medium"
+            [type]="buttonType.primary">
+    {{ buttons?.nextBtn?.label }}
+  </b-button>
+</div>
 
-    <b-button *ngIf="buttons?.nextBtn?.isVisible"
-              (clicked)="onNextClick()"
-              [size]="buttonSize.medium"
-              [type]="buttonType.primary">
-      {{ buttons?.nextBtn?.label }}
-    </b-button>
-  </div>
+<div *ngIf="isMobile"
+     class="buttons">
+  <b-text-button *ngIf="buttons?.backBtn?.isVisible"
+                 (clicked)="onPrevClick()"
+                 [text]="buttons?.backBtn?.label">
+  </b-text-button>
 
-</ng-container>
-
-<ng-container *ngIf="isMobile">
-
-  <div class="steps steps-mobile">
-    <span *ngFor="let step of breadcrumbs; let i = index"
-          class="step"
-          [ngClass]="{ active: i == activeIndex }"></span>
-  </div>
-
-  <div class="buttons">
-    <b-text-button *ngIf="buttons?.backBtn?.isVisible"
-                   (clicked)="onPrevClick()"
-                   [text]="buttons?.backBtn?.label">
-    </b-text-button>
-
-    <b-text-button *ngIf="buttons?.nextBtn?.isVisible"
-                   [color]="linkColor.primary"
-                   (clicked)="onNextClick()"
-                   [text]="buttons?.nextBtn?.label">
-    </b-text-button>
-  </div>
-
-</ng-container>
+  <b-text-button *ngIf="buttons?.nextBtn?.isVisible"
+                 [color]="linkColor.primary"
+                 (clicked)="onNextClick()"
+                 [text]="buttons?.nextBtn?.label">
+  </b-text-button>
+</div>

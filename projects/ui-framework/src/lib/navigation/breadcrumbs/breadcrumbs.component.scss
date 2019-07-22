@@ -1,8 +1,9 @@
 @import '../../style/shapes';
 @import '../../style/variables';
+@import '../../style/mixins';
 
 :host {
-  padding: 15px 0;
+  padding: times8(2) 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -26,10 +27,9 @@
   .index {
     color: white;
     text-align: center;
-    width: 24px;
-    height: 24px;
+    @include size(times8(3));
+    line-height: times8(3);
     flex-shrink: 0;
-    line-height: 24px;
     background-color: var(--primary-600);
     border-radius: 100%;
 
@@ -43,11 +43,11 @@
 
   .title {
     color: var(--primary-600);
-    margin-left: 8px;
+    margin-left: times8(1);
   }
 
   b-icon {
-    margin: 0 8px;
+    margin: 0 times8(1);
   }
 
   &.disabled {
@@ -61,23 +61,48 @@
 
 b-button,
 b-text-button {
-  margin-left: 16px;
+  margin-left: times8(2);
 }
 
-.steps-mobile {
+// Secondary Desktop
+
+@include desktop {
+  :host[data-type='secondary'] {
+    position: relative;
+    justify-content: flex-end;
+
+    .steps {
+      @include size(100%);
+      @include position;
+      justify-content: center;
+    }
+
+    .buttons {
+      margin-left: auto;
+    }
+  }
+}
+
+// Secondary & Mobile
+
+.steps-circles {
   .step {
+    @include size(6px);
     background-color: $grey-500;
-    width: 8px;
-    height: 8px;
-    margin-right: 8px;
+    margin-right: times8(1);
     display: inline-block;
     border-radius: 100%;
 
     &.active {
       background-color: var(--primary-500);
+      @include size(times8(1));
     }
     &:last-child {
       margin-right: 0;
     }
   }
+}
+
+b-text-button {
+  text-transform: uppercase;
 }

@@ -2,13 +2,21 @@ import { Subscription } from 'rxjs';
 import { UtilsService } from '../../../ui-framework/src/lib/services/utils/utils.service';
 import { outsideZone } from '../../../ui-framework/src/lib/services/utils/rxjs.operators';
 
-import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  NgZone,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { MobileService } from '../../../ui-framework/src/lib/services/utils/mobile.service';
+import { makeArray } from '../../../ui-framework/src/lib/services/utils/functional-utils';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit, OnDestroy {
   constructor(
@@ -17,14 +25,15 @@ export class AppComponent implements OnInit, OnDestroy {
     private mobileService: MobileService
   ) {}
 
-  editorValue = 'some text';
+  editorsNumber = 200;
+  editorValues = makeArray(this.editorsNumber).map(i => 'some text');
   scrollSubscription: Subscription;
   resizeSubscription: Subscription;
   mediaSubscribtion: Subscription;
 
-  updateValue(event) {
+  updateValue(event, index) {
     console.log(event);
-    this.editorValue = event;
+    this.editorValues[index] = event;
   }
 
   ngOnInit(): void {
@@ -51,5 +60,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.scrollSubscription.unsubscribe();
     this.resizeSubscription.unsubscribe();
+    this.mediaSubscribtion.unsubscribe();
   }
 }

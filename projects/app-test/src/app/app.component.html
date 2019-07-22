@@ -1,24 +1,27 @@
- <!-- <url-tester ></url-tester> -->
+<!--
+<url-tester ></url-tester>
+<app-form-elements-test></app-form-elements-test>
+<tooltip-tester></tooltip-tester>
+-->
 
- <!-- <app-form-elements-test></app-form-elements-test> -->
+<div *ngFor="let editorValue of editorValues; let index = index;"
+     style="width: 600px; margin: 0 auto">
+  <b-rich-text-editor [value]="editorValue"
+                      (changed)="updateValue($event,index)">
 
- <!-- <tooltip-tester></tooltip-tester> -->
+  </b-rich-text-editor>
 
- <div style="width: 600px; margin: 0 auto">
-   <b-rich-text-editor [value]="editorValue"
-                       (changed)="updateValue($event)">
+  <div style="border: 1px solid black; padding: 10px; margin: 20px 0;">
+    {{editorValue}}
+  </div>
+</div>
 
-   </b-rich-text-editor>
+<!--
+<class-binder-tester></class-binder-tester>
 
-   <div style="border: 1px solid black; padding: 10px; margin: 20px 0;">
-     {{editorValue}}
-   </div>
- </div>
-
- <!-- <class-binder-tester></class-binder-tester>  -->
-
- <!-- <event-manager-tester *ngIf="!remove"></event-manager-tester>
+<event-manager-tester *ngIf="!remove"></event-manager-tester>
 <button style="width:100px;margin:30px auto;"
-        (click)="remove=!remove">XXX</button> -->
+        (click)="remove=!remove">XXX</button>
+-->
 
- <b-stats></b-stats>
+<b-stats></b-stats>

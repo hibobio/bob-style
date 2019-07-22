@@ -394,7 +394,7 @@ export { TruncateTooltipComponent } from './lib/services/truncate-tooltip/trunca
 export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/truncate-tooltip.directive';
 export { TruncateTooltipType, TruncateTooltipPosition } from './lib/services/truncate-tooltip/truncate-tooltip.enum';
 // RxJs operators
-export { outsideZone } from './lib/services/utils/rxjs.operators';
+export { outsideZone, insideZone } from './lib/services/utils/rxjs.operators';
 // Event Manager Plugins
 export {
   EventManagerPlugins,

@@ -15,8 +15,14 @@ describe('BreadcrumbsComponent', () => {
   let mobileServiceStub: jasmine.SpyObj<MobileService>;
 
   beforeEach(async(() => {
-    mobileServiceStub = createSpyObj('MobileService', ['isMobileBrowser']);
-    mobileServiceStub.isMobileBrowser.and.returnValue(false);
+    mobileServiceStub = createSpyObj('MobileService', ['getMediaEvent']);
+    mobileServiceStub.getMediaEvent.and.returnValue({
+      pipe: () => ({
+        subscribe: () => ({
+          matchMobile: false
+        })
+      })
+    });
 
     breadCrumbsMock = [
       { title: 'details', disabled: false },
@@ -26,19 +32,10 @@ describe('BreadcrumbsComponent', () => {
     ];
 
     TestBed.configureTestingModule({
-      declarations: [
-        BreadcrumbsComponent,
-      ],
-      imports: [
-        NoopAnimationsModule,
-        MatTooltipModule,
-      ],
-      providers: [
-        { provide: MobileService, useValue: mobileServiceStub },
-      ],
-      schemas: [
-        CUSTOM_ELEMENTS_SCHEMA,
-      ],
+      declarations: [BreadcrumbsComponent],
+      imports: [NoopAnimationsModule, MatTooltipModule],
+      providers: [{ provide: MobileService, useValue: mobileServiceStub }],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents()
       .then(() => {
@@ -46,15 +43,16 @@ describe('BreadcrumbsComponent', () => {
         component = fixture.componentInstance;
         component.breadcrumbs = breadCrumbsMock;
         component.activeIndex = 2;
+        component.isMobile = false;
         component.buttons = {
           nextBtn: {
             label: 'Next',
-            isVisible: true,
+            isVisible: true
           },
           backBtn: {
             label: 'Back',
-            isVisible: true,
-          },
+            isVisible: true
+          }
         };
         spyOn(component.stepClick, 'emit');
       });
@@ -72,9 +70,13 @@ describe('BreadcrumbsComponent', () => {
       const stepsElements = fixture.debugElement.queryAll(By.css('.step'));
       for (let i = 0; i < stepsElements.length; i++) {
         if (i === 3) {
-          expect(stepsElements[i].nativeElement.classList).toContain('disabled');
+          expect(stepsElements[i].nativeElement.classList).toContain(
+            'disabled'
+          );
         } else {
-          expect(stepsElements[i].nativeElement.classList).not.toContain('disabled');
+          expect(stepsElements[i].nativeElement.classList).not.toContain(
+            'disabled'
+          );
         }
       }
     });
@@ -97,12 +99,14 @@ describe('BreadcrumbsComponent', () => {
 
   describe('mobile', () => {
     beforeEach(() => {
-      mobileServiceStub.isMobileBrowser.and.returnValue(true);
+      component.isMobile = true;
       fixture.detectChanges();
     });
     it('should show text buttons and not regular buttons', () => {
-      const regularButtons =  fixture.debugElement.queryAll(By.css('b-button'));
-      const textButtons =  fixture.debugElement.queryAll(By.css('b-text-button'));
+      const regularButtons = fixture.debugElement.queryAll(By.css('b-button'));
+      const textButtons = fixture.debugElement.queryAll(
+        By.css('b-text-button')
+      );
       expect(regularButtons.length).toEqual(0);
       expect(textButtons.length).toEqual(2);
     });
@@ -112,7 +116,9 @@ describe('BreadcrumbsComponent', () => {
         if (i === 2) {
           expect(stepsElements[i].nativeElement.classList).toContain('active');
         } else {
-          expect(stepsElements[i].nativeElement.classList).not.toContain('active');
+          expect(stepsElements[i].nativeElement.classList).not.toContain(
+            'active'
+          );
         }
       }
     });
