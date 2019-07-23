@@ -184,11 +184,6 @@ export class Ball {
     context.translate(this.x, this.y);
     context.scale(this.scaleX, this.scaleY);
 
-    context.shadowColor = 'rgba(0,0,0,0.3)';
-    context.shadowBlur = 10;
-    context.shadowOffsetX = 0;
-    context.shadowOffsetY = 6;
-
     context.fillStyle = 'rgba(248,247,247,1)';
     context.beginPath();
     context.arc(0, 0, this.radius, 0, (Math.PI * 2), true);

@@ -17,7 +17,7 @@ import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { ChipComponent } from '../chip/chip.component';
 import { arrayOfValuesToArrayOfObjects } from '../../services/utils/transformers';
-import {ChipType, ChipListAlign, ChipListSelectable} from '../chips.enum';
+import { ChipType, ChipListAlign, ChipListSelectable } from '../chips.enum';
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 
 @Component({
@@ -52,24 +52,34 @@ export class ChipListComponent implements OnChanges {
     return this.config.align || ChipListAlign.left;
   }
 
-  @HostListener('click', ['$event'])
+  @HostListener('click.outside-zone', ['$event'])
   onHostClick($event: MouseEvent) {
     const target = $event.target as HTMLElement;
 
-    if (target.nodeName.toUpperCase() === 'B-CHIP') {
+    if (!this.config.disabled && target.nodeName.toUpperCase() === 'B-CHIP') {
       const index = parseInt(target.dataset.index, 10);
       const chip = this.chips[index];
-      this.onChipClick($event, chip, index);
+
+      if (!chip.disabled) {
+        this.zone.run(() => {
+          this.onChipClick($event, chip, index);
+        });
+      }
     }
   }
 
-  @HostListener('keydown', ['$event'])
+  @HostListener('keydown.outside-zone', ['$event'])
   onHostKeydown($event: KeyboardEvent) {
     const target = $event.target as HTMLElement;
-    if (target.nodeName.toUpperCase() === 'B-CHIP') {
+    if (!this.config.disabled && target.nodeName.toUpperCase() === 'B-CHIP') {
       const index = parseInt(target.dataset.index, 10);
       const chip = this.chips[index];
-      this.onChipKeydown($event, chip, index);
+
+      if (!chip.disabled) {
+        this.zone.run(() => {
+          this.onChipKeydown($event, chip, index);
+        });
+      }
     }
   }
 
@@ -81,7 +91,7 @@ export class ChipListComponent implements OnChanges {
     }
   }
 
-  checkSelected(chip, index) {
+  checkSelected(chip: Chip, index: number) {
     if (this.chipListSelectable === ChipListSelectable.single) {
       return this.activeIndex === index;
     } else {

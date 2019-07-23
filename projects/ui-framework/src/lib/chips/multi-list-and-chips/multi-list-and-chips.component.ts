@@ -26,16 +26,15 @@ import { simpleUID } from '../../services/utils/functional-utils';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MultiListAndChipsComponent implements OnChanges {
-  constructor(private host: ElementRef, private zone: NgZone) {}
+  constructor(private host: ElementRef, private zone: NgZone) {
+  }
 
   @Input() options: SelectGroupOption[] = [];
   @Input() listLabel: string;
   @Input() chipsLabel: string;
   @Input() showSingleGroupHeader = false;
 
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
 
   public listOptions: SelectGroupOption[] = [];
   public chips: Chip[] = [];
@@ -86,7 +85,8 @@ export class MultiListAndChipsComponent implements OnChanges {
               imageSource:
                 this.chipListConfig.type === ChipType.avatar &&
                 option.prefixComponent.attributes.imageSource,
-              type: this.chipListConfig.type
+              type: this.chipListConfig.type,
+              disabled: option.disabled,
             });
           }
         });
@@ -107,17 +107,12 @@ export class MultiListAndChipsComponent implements OnChanges {
       );
 
       group.options.forEach((option: SelectOption) => {
-        option.selected = false;
+        if (!option.disabled) {
+          option.selected = false;
+        }
       });
 
-      this.chips = this.chips.filter(
-        (ch: any) =>
-          !ch.group ||
-          ((ch.group &&
-            ch.group.key &&
-            ch.group.key !== (chip as any).group.key) ||
-            (ch.group && ch.group.name !== (chip as any).group.name))
-      );
+      this.chips = this.optionsToChips(options);
     } else {
       options.find((group: SelectGroupOption) => {
         const opt = group.options.find((o: SelectOption) => o.id === chip.id);
@@ -136,8 +131,8 @@ export class MultiListAndChipsComponent implements OnChanges {
 
   detectChipType(options: SelectGroupOption[] = this.options): ChipType {
     return options[0].options[0].prefixComponent &&
-      options[0].options[0].prefixComponent.attributes &&
-      options[0].options[0].prefixComponent.attributes.imageSource
+    options[0].options[0].prefixComponent.attributes &&
+    options[0].options[0].prefixComponent.attributes.imageSource
       ? ChipType.avatar
       : ChipType.tag;
   }

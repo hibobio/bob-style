@@ -30,19 +30,21 @@ const mayBeSelected = (perc = 80) => {
 export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
   {
     groupName: 'For kids',
-    options: kidsHobbies.map(hobby => ({
+    options: kidsHobbies.map((hobby, index) => ({
       value: hobby,
       id: simpleUID(),
-      selected: mayBeSelected()
-    }))
+      selected: index === 1 || mayBeSelected(),
+      disabled: index === 1,
+    })),
   },
   {
     groupName: 'For couples',
-    options: couplesHobbies.map(hobby => ({
+    options: couplesHobbies.map((hobby, index) => ({
       value: hobby,
       id: simpleUID(),
-      selected: mayBeSelected()
-    }))
+      selected: mayBeSelected(),
+      disabled: index === 2,
+    })),
   },
   {
     groupName: 'For old people',
@@ -50,8 +52,8 @@ export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
       value: hobby,
       id: simpleUID(),
       selected: mayBeSelected()
-    }))
-  }
+    })),
+  },
 ];
 
 export const MultiListAndAvatarChipsOptionsMock: SelectGroupOption[] = [

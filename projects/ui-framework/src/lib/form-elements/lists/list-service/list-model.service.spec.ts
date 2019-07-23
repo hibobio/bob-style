@@ -40,27 +40,28 @@ describe('ListModelService', () => {
           isCollapsed: false,
           placeHolderSize: 88,
           selected: null,
-          disabled: false,
+          indeterminate: true,
         },
         {
           groupName: 'Personal',
           isCollapsed: false,
           placeHolderSize: 88,
           selected: null,
-          disabled: false,
+          indeterminate: false,
         }
       ]);
     });
-    it('should set header disabled to true if some of the options are disabled and not selected', () => {
-      optionsMock[1].options[0].disabled = true;
-      const headerModel = listModelService.getHeadersModel(optionsMock);
-      expect(headerModel[1].disabled).toEqual(true);
-    });
-    it('should set header disabled to false if option is disabled and selected', () => {
-      optionsMock[1].options[0].disabled = true;
+    it('should set header indeterminate to true if some of the options are disabled and selected', () => {
       optionsMock[1].options[0].selected = true;
+      optionsMock[1].options[0].disabled = true;
       const headerModel = listModelService.getHeadersModel(optionsMock);
-      expect(headerModel[1].disabled).toEqual(false);
+      expect(headerModel[1].indeterminate).toEqual(true);
+    });
+    it('should set header disabled to false if option is disabled and not selected', () => {
+      optionsMock[1].options[0].disabled = true;
+      optionsMock[1].options[0].selected = false;
+      const headerModel = listModelService.getHeadersModel(optionsMock);
+      expect(headerModel[1].indeterminate).toEqual(false);
     });
   });
 
@@ -166,13 +167,15 @@ describe('ListModelService', () => {
           groupName: 'Basic Info',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: null
+          selected: null,
+          indeterminate: false,
         },
         {
           groupName: 'Personal',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: null
+          selected: null,
+          indeterminate: true,
         }
       ];
       const optionsModel = listModelService.getOptionsModel(
@@ -180,24 +183,40 @@ describe('ListModelService', () => {
         headerModel,
         noGroupHeaders
       );
-      const selectedValues = [1, 11, 12];
+      const options = [{
+        groupName: 'Basic Info',
+        options: [
+          { value: 'Basic Info 1', id: 1, selected: true },
+          { value: 'Basic Info 2', id: 2, selected: false }
+        ]
+      },
+        {
+          groupName: 'Personal',
+          options: [
+            { value: 'Personal 1', id: 11, selected: true },
+            { value: 'Personal 2', id: 12, selected: true }
+          ]
+        },
+      ];
       listModelService.setSelectedOptions(
         headerModel,
         optionsModel,
-        selectedValues
+        options,
       );
       expect(headerModel).toEqual([
         {
           groupName: 'Basic Info',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: false
+          selected: false,
+          indeterminate: true
         },
         {
           groupName: 'Personal',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: true
+          selected: true,
+          indeterminate: false,
         }
       ]);
       expect(optionsModel).toEqual([
@@ -245,20 +264,22 @@ describe('ListModelService', () => {
         }
       ]);
     });
-    it('should enrich header selected values if also when header is collapsed', () => {
+    it('should enrich header selected values also when header is collapsed', () => {
       const noGroupHeaders = false;
       const headerModel = [
         {
           groupName: 'Basic Info',
           isCollapsed: true,
           placeHolderSize: 88,
-          selected: true
+          selected: true,
+          indeterminate: false,
         },
         {
           groupName: 'Personal',
           isCollapsed: true,
           placeHolderSize: 88,
-          selected: true
+          selected: true,
+          indeterminate: true,
         }
       ];
       const optionsModel = listModelService.getOptionsModel(
@@ -266,26 +287,43 @@ describe('ListModelService', () => {
         headerModel,
         noGroupHeaders
       );
-      const selectedValues = [1, 11, 12];
+      const options = [{
+        groupName: 'Basic Info',
+        options: [
+          { value: 'Basic Info 1', id: 1, selected: true },
+          { value: 'Basic Info 2', id: 2, selected: false }
+        ]
+      },
+        {
+          groupName: 'Personal',
+          options: [
+            { value: 'Personal 1', id: 11, selected: true },
+            { value: 'Personal 2', id: 12, selected: true }
+          ]
+        },
+      ];
       listModelService.setSelectedOptions(
         headerModel,
         optionsModel,
-        selectedValues
+        options,
       );
       expect(headerModel).toEqual([
         {
           groupName: 'Basic Info',
           isCollapsed: true,
           placeHolderSize: 88,
-          selected: true
+          selected: false,
+          indeterminate: true,
         },
         {
           groupName: 'Personal',
           isCollapsed: true,
           placeHolderSize: 88,
-          selected: true
+          selected: true,
+          indeterminate: false,
         }
       ]);
+
       expect(optionsModel).toEqual([
         {
           isPlaceHolder: true,

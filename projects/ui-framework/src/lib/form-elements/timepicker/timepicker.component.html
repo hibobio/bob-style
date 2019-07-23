@@ -2,12 +2,12 @@
        class="bfe-label"
        [attr.for]="id">{{label}}</label>
 
-<div class="bfe-wrap"
-     [ngClass]="{focused: inputFocused}">
+<div class="bfe-wrap has-suffix"
+     [ngClass]="{focused: inputFocused}"
+     (click.outside-zone)="inputHours.focus()">
 
   <span class="bfe-input"
-        [attr.id]="id"
-        (click.outside-zone)="inputHours.focus()">
+        [attr.id]="id">
 
     <input #inputHours
            class="bfe-input-hours"
@@ -42,6 +42,12 @@
            (click.outside-zone)="$event.stopPropagation(); inputMinutes.select();">
 
   </span>
+
+  <b-icon class="bfe-suffix"
+          [icon]="icons.timeline"
+          [color]="iconColor.dark"
+          [size]="iconSize.medium">
+  </b-icon>
 </div>
 
 <p b-input-message

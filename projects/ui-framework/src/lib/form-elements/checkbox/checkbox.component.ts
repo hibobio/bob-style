@@ -45,9 +45,7 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
   @Input() public value = false;
   @Input() public indeterminate = false;
 
-  @Output(FormEvents.checkboxChange) changed: EventEmitter<
-    InputEvent
-  > = new EventEmitter<InputEvent>();
+  @Output(FormEvents.checkboxChange) changed: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
 
   private transmit(event: InputEventType): void {
     this.transmitValue(this.value, {
