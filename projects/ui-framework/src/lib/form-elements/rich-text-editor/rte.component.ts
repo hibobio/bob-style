@@ -4,7 +4,6 @@ import {
   Component,
   forwardRef,
   HostBinding,
-  Injector,
   Input,
   SimpleChanges,
   ViewChild,
@@ -77,10 +76,9 @@ export class RichTextEditorComponent extends RTEformElement
     public zone: NgZone,
     public rteUtils: RteUtilsService,
     changeDetector: ChangeDetectorRef,
-    injector: Injector,
     public placeholderRteConverterService: PlaceholderRteConverterService
   ) {
-    super(zone, rteUtils, changeDetector, injector);
+    super(zone, rteUtils, changeDetector);
   }
 
   public disableControlsDef = [BlotType.placeholder, BlotType.direction];

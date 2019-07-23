@@ -10,6 +10,7 @@ import { RteLinkEditorComponent } from './rte-link-editor.component';
 import { PanelComponent } from '../../../popups/panel/panel.component';
 import { RteUtilsService } from '../rte-core/rte-utils.service';
 import Quill, { RangeStatic } from 'quill';
+import { NgZone } from '@angular/core';
 
 export class RteLinkBlot {
   constructor() {}
@@ -25,6 +26,7 @@ export class RteLinkBlot {
   public selectedText: string;
   public specialBlots: SpecialBlots;
   public storeCurrent: Function;
+  public zone: NgZone;
 
   // instance methods
 
@@ -46,9 +48,11 @@ export class RteLinkBlot {
     this.linkEditor.isEditing = !!this.currentBlot.link;
 
     this.editor.blur();
-    setTimeout(() => {
-      this.linkEditor.focusTextInput();
-    }, 0);
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.linkEditor.focusTextInput();
+      }, 0);
+    });
   }
 
   public onLinkUpdate(rteLink: RteLink): void {

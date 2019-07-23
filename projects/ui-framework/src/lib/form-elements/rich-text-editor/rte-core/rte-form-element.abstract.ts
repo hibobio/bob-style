@@ -2,7 +2,6 @@ import {
   ChangeDetectorRef,
   ElementRef,
   EventEmitter,
-  Injector,
   Input,
   OnChanges,
   Output,
@@ -37,8 +36,7 @@ export abstract class RTEformElement extends BaseFormElement
   protected constructor(
     public zone: NgZone,
     public rteUtils: RteUtilsService,
-    public changeDetector: ChangeDetectorRef,
-    private injector: Injector
+    public changeDetector: ChangeDetectorRef
   ) {
     super();
     this.baseValue = '';
@@ -52,7 +50,7 @@ export abstract class RTEformElement extends BaseFormElement
   @Input() public maxChars: number;
   @Input() public controls: BlotType[] = this.controlsDef;
   @Input() public disableControls: BlotType[] = this.disableControlsDef;
-  @Input() public sendChangeOn: RTEchangeEvent = RTEchangeEvent.change;
+  @Input() public sendChangeOn: RTEchangeEvent = RTEchangeEvent.blur;
   @Input() public sendChangeOnWrite = false;
 
   @ViewChild('quillEditor', { static: true }) protected quillEditor: ElementRef;
@@ -143,8 +141,11 @@ export abstract class RTEformElement extends BaseFormElement
 
       if (doPropagate && this.latestOutputValue !== this.value) {
         this.latestOutputValue = this.value;
-        this.changed.emit(this.value);
-        this.propagateChange(this.value);
+
+        this.zone.run(() => {
+          this.changed.emit(this.value);
+          this.propagateChange(this.value);
+        });
       }
     }
     this.writingValue = false;
@@ -265,9 +266,7 @@ export abstract class RTEformElement extends BaseFormElement
     if (this.maxChars && this.length > this.maxChars) {
       (this.editor as any).history.undo();
     }
-    this.zone.run(() => {
-      this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
-    });
+    this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
   }
 
   private onEditorSelectionChange(
@@ -290,9 +289,8 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   private onEditorBlur(): void {
-    console.log('onEditorBlur');
+    this.transmitValue(this.sendChangeOn === RTEchangeEvent.blur);
     this.zone.run(() => {
-      this.transmitValue(this.sendChangeOn === RTEchangeEvent.blur);
       this.blurred.emit(this.value);
       this.onTouched();
     });
@@ -375,7 +373,6 @@ export abstract class RTEformElement extends BaseFormElement
 
   protected initEditor(options: QuillOptionsStatic): void {
     this.editor = new quillLib(this.quillEditor.nativeElement, options);
-
     this.editor.enable(!this.disabled);
 
     // attaching events
