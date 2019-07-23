@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { cloneDeep, flatMap, chain } from 'lodash';
-import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
+import { ListHeader, ListOption, SelectGroupOption, SelectOption } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
 import has from 'lodash/has';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
@@ -35,15 +35,15 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   };
   @Output() apply: EventEmitter<ListChange> = new EventEmitter<ListChange>();
   @Output() cancel: EventEmitter<ListChange> = new EventEmitter<ListChange>();
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
 
   noGroupHeaders: boolean;
   shouldDisplaySearch = false;
   searchValue: string;
   filteredOptions: SelectGroupOption[];
   selectedIdsMap: (string | number)[];
+
+  private optionsDraft: SelectGroupOption[];
 
   constructor(
     private listModelService: ListModelService,
@@ -57,6 +57,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (this.shouldResetModel(changes)) {
       this.options = changes.options.currentValue;
+      this.optionsDraft = this.options;
       this.selectedIdsMap = this.getSelectedIdsMap();
       this.noGroupHeaders =
         this.options &&
@@ -88,64 +89,69 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     this.listModelService.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
-      this.selectedIdsMap
+      this.optionsDraft,
     );
   }
 
   headerSelect(header: ListHeader): void {
-    header.selected = !header.selected;
+    header.selected = this.getHeaderSelect(header);
     const groupOptionsIds = chain(this.options)
       .filter(group => group.groupName === header.groupName)
       .flatMap('options')
+      .filter(option => !option.disabled)
       .flatMap('id')
       .value();
     this.selectedIdsMap = header.selected
       ? chain(this.selectedIdsMap)
-          .concat(groupOptionsIds)
-          .concat(this.getSelectedDisabledMap())
-          .uniq()
-          .value()
+        .concat(groupOptionsIds)
+        .concat(this.getSelectedDisabledMap())
+        .uniq()
+        .value()
       : chain(this.selectedIdsMap)
-          .difference(groupOptionsIds)
-          .concat(this.getSelectedDisabledMap())
-          .value();
+        .difference(groupOptionsIds)
+        .concat(this.getSelectedDisabledMap())
+        .uniq()
+        .value();
+
+    this.emitChange();
+
     this.listModelService.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
-      this.selectedIdsMap
+      this.optionsDraft,
     );
-
-    this.emitChange();
   }
 
   optionClick(selectedOption: ListOption): void {
     selectedOption.selected = !selectedOption.selected;
     this.selectedIdsMap = selectedOption.selected
       ? chain(this.selectedIdsMap)
-          .concat(selectedOption.id)
-          .uniq()
-          .value()
+        .concat(selectedOption.id)
+        .uniq()
+        .value()
       : chain(this.selectedIdsMap)
-          .difference([selectedOption.id])
-          .value();
+        .difference([selectedOption.id])
+        .value();
+
+    this.emitChange();
+
     this.listModelService.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
-      this.selectedIdsMap
+      this.optionsDraft,
     );
-
-    this.emitChange();
   }
 
   onClear(): void {
     this.selectedIdsMap = this.getSelectedDisabledMap();
 
+    this.emitChange();
+
     this.listModelService.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
-      this.selectedIdsMap
+      this.optionsDraft,
     );
-    this.emitChange();
   }
 
   searchChange(s: string): void {
@@ -176,7 +182,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     this.listModelService.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
-      this.selectedIdsMap
+      this.optionsDraft,
     );
   }
 
@@ -189,6 +195,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       this.options,
       this.selectedIdsMap
     );
+    this.optionsDraft = listChange.getSelectGroupOptions();
     this.selectChange.emit(listChange);
   }
 
@@ -198,5 +205,14 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       .filter(o => o.selected && o.disabled)
       .flatMap('id')
       .value();
+  }
+
+  private getHeaderSelect(header: ListHeader): boolean {
+    const options = chain(this.optionsDraft)
+      .filter(group => group.groupName === header.groupName)
+      .flatMap('options')
+      .filter(o => !(o.disabled && !o.selected))
+      .value();
+    return !options.every(o => o.selected);
   }
 }

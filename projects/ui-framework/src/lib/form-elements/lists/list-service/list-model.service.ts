@@ -3,7 +3,7 @@ import {
   flatten, forEach, map, concat, assign, find, set, includes, filter, every, escapeRegExp, some, compact, chain
 } from 'lodash';
 import { LIST_EL_HEIGHT } from '../list.consts';
-import { ListOption, ListHeader, SelectGroupOption } from '../list.interface';
+import { ListOption, ListHeader, SelectGroupOption, SelectOption } from '../list.interface';
 
 @Injectable()
 export class ListModelService {
@@ -63,27 +63,28 @@ export class ListModelService {
       isCollapsed: false,
       placeHolderSize: group.options.length * LIST_EL_HEIGHT,
       selected: null,
-      disabled: this.isHeaderDisabled(group),
+      indeterminate: this.isIndeterminate(group.options),
     }));
   }
 
   setSelectedOptions(
     listHeaders: ListHeader[],
     listOptions: ListOption[],
-    selectedIdsMap: (string | number)[],
+    options: SelectGroupOption[],
   ): void {
+    const selectedIdsMap = this.getSelectedIdsMap(options);
     forEach(listOptions, option => {
       set(option, 'selected', option.isPlaceHolder
         ? null
         : includes(selectedIdsMap, option.id));
     });
     forEach(listHeaders, header => {
-      const groupOptions = filter(listOptions, option =>
-        option.groupName === header.groupName &&
-        !option.isPlaceHolder);
-      set(header, 'selected', header.isCollapsed
-        ? header.selected
-        : every(groupOptions, ['selected', true]));
+      const groupOptions = chain(options)
+        .filter(group => group.groupName === header.groupName)
+        .flatMap('options')
+        .value();
+      set(header, 'selected', every(groupOptions, ['selected', true]));
+      set(header, 'indeterminate', this.isIndeterminate(groupOptions));
     });
   }
 
@@ -109,8 +110,9 @@ export class ListModelService {
       .value();
   }
 
-  private isHeaderDisabled(group: SelectGroupOption): boolean {
-    return group.options.some(o => o.disabled && !o.selected) ||
-      group.options.every(o => o.disabled && o.selected);
+  isIndeterminate(options: SelectOption[]): boolean {
+    const isIndeterminate = options.some(o => o.selected) &&
+      !options.every(o => o.selected);
+    return isIndeterminate;
   }
 }

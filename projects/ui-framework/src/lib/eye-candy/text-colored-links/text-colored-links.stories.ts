@@ -3,28 +3,15 @@ import { withKnobs, boolean, object } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import {TextColoredLinksModule} from './text-colored-links.module';
 import {COLOR_TEXT_ITEMS} from './text-colored-links/text-colored-links.mocks';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
 const textColoredLinksStories = storiesOf(
   ComponentGroupType.EyeCandy,
   module
 ).addDecorator(withKnobs);
 
-const displayTemplate = `
-<style>
-  div {
-    border-bottom: 1px solid #c4cdd5;
-
-  }
-  div .code-sample {
-    padding: 4px 8px;
-    background-color: #d4dde6;
-    display: inline-block;
-    margin-bottom: 10px;
-    font-weight: 500;
-  }
-</style>
+const template = `
 <div>
-  <span class="code-sample">&#60;b-text-colored-links&#62;</span><br/>
   <b-text-colored-links [colorTextItems]="colorTextItems"
                         [isClickable]="isClickable">
   </b-text-colored-links>
@@ -50,16 +37,29 @@ fonts: | string[] - Array of font class names
 b-text-colored-links
 ~~~
 `;
+
+const storyTemplate = `
+<b-story-book-layout [title]="'Multi List And Chips'" style=" background: rgb(247,247,247);">
+  <div style="max-width:900px;">
+    ${template}
+  </div>
+
+</b-story-book-layout>
+`;
+
 textColoredLinksStories.add(
   'Text colored links',
   () => ({
-    template: displayTemplate,
+    template: storyTemplate,
     props: {
       isClickable: boolean('isClickable', true),
       colorTextItems: object('texts', COLOR_TEXT_ITEMS),
     },
     moduleMetadata: {
-      imports: [TextColoredLinksModule]
+      imports: [
+        TextColoredLinksModule,
+        StoryBookLayoutModule,
+      ],
     }
   }),
   { notes: { markdown: note } }

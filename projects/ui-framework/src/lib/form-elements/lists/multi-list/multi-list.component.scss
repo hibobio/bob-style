@@ -1,16 +1,7 @@
 @import '../../../style/variables';
-@import '../../checkbox/checkbox.mixin';
+@import '../../form-element.mixin';
 
-@include checkbox(
-  $border-radius: $border-radius / 2,
-  $input-selector: null,
-  $checkbox-selector: '.checkbox',
-  $checked-selector: '.checkbox[aria-checked="true"]',
-  $disabled-selector: null,
-  $required-selector: null,
-  $indeterminate-selector: null,
-  $hover-selector: '.checkbox:hover'
-) {
+.checkbox {
   position: relative;
   z-index: 2;
   margin-right: 12px;

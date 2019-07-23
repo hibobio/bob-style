@@ -34,7 +34,8 @@ describe('ChipListComponent', () => {
     },
     {
       text: 'C',
-      id: 3
+      id: 3,
+      disabled: true,
     }
   ];
 
@@ -128,7 +129,7 @@ describe('ChipListComponent', () => {
       expect(
         chipsElements.filter(elem => elem.getAttribute('tabindex') === '0')
           .length
-      ).toEqual(3);
+      ).toEqual(2);
     });
     describe('chip list selectable single', () => {
       beforeEach(() => {
@@ -173,9 +174,9 @@ describe('ChipListComponent', () => {
       ).toEqual(3);
       expect(
         chipsElements.filter(
-          elem => elem.children[0].className === 'remove-button'
+          elem => elem.children.length > 0 && elem.children[0].className === 'remove-button'
         ).length
-      ).toEqual(3);
+      ).toEqual(2);
     });
 
     it('should set align attribute', () => {
@@ -203,9 +204,17 @@ describe('ChipListComponent', () => {
       (chipsElements[0].children[0] as HTMLElement).click();
       expect(component.removed.emit).toHaveBeenCalled();
     });
+    it('should not have remove event if chip is disabled', () => {
+      component.config = {
+        removable: true
+      };
+      fixture.detectChanges();
+      expect(chipsElements[1].children.length).toEqual(1); // remove button
+      expect(chipsElements[2].children.length).toEqual(0);
+    });
   });
 
-  describe('Selectabe chips', () => {
+  describe('Selectable chips', () => {
     it('should set Chip selected atrribute when on click', () => {
       component.config = {
         selectable: true

@@ -90,7 +90,9 @@ export class ChipListComponent implements OnChanges {
   }
 
   onChipRemove(chip: Chip): void {
-    this.removed.emit(chip);
+    if (!chip.disabled) {
+      this.removed.emit(chip);
+    }
   }
 
   onChipClick(event: MouseEvent, chip: Chip, index: number): void {
