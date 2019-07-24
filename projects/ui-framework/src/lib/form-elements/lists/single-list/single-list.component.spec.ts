@@ -87,14 +87,14 @@ describe('SingleListComponent', () => {
           isCollapsed: false,
           placeHolderSize: 88,
           selected: null,
-          disabled: false,
+          indeterminate: true,
         },
         {
           groupName: 'Personal Header',
           isCollapsed: false,
           placeHolderSize: 88,
           selected: null,
-          disabled: false,
+          indeterminate: false,
         }
       ]);
     });

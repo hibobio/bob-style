@@ -33,6 +33,10 @@
   &:before {
     margin-right: 10px;
   }
+
+  &.empty-label:before {
+    margin: 0;
+  }
 }
 
 :host.required.has-label {

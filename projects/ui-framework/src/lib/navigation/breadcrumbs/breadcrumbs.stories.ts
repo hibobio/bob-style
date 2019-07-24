@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BreadcrumbsModule } from './breadcrumbs.module';
 import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { BreadcrumbsType } from './breadcrumbs.enum';
 
 const inputStories = storiesOf(
   ComponentGroupType.Navigation,
@@ -21,7 +22,8 @@ const inputStories = storiesOf(
 ).addDecorator(withKnobs);
 
 const componmentTemplate = `
-<b-breadcrumbs [breadcrumbs]="breadcrumbs"
+<b-breadcrumbs [type]="type"
+               [breadcrumbs]="breadcrumbs"
                [buttons]="buttons"
                [activeIndex]="activeIndex"
                (stepClick)="stepClick($event)"
@@ -77,6 +79,11 @@ inputStories.add(
     return {
       template,
       props: {
+        type: select(
+          'type',
+          Object.values(BreadcrumbsType),
+          BreadcrumbsType.primary
+        ),
         breadcrumbs: object<Breadcrumb>('breadcrumbs', breadcrumbsMock),
         buttons: object<BreadcrumbNavButtons>('buttons', breadcrumbsButtons),
         activeIndex: number('activeIndex', 2),

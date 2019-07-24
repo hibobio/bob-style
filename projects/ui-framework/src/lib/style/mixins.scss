@@ -229,3 +229,15 @@
     }
   }
 }
+
+@mixin mobile {
+  @media (max-width: $breakpoint-device-sm) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: ($breakpoint-device-sm + 1px)) {
+    @content;
+  }
+}

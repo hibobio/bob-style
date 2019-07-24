@@ -1,17 +1,37 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  HostBinding,
+  OnDestroy,
+  NgZone
+} from '@angular/core';
 import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
-import { ButtonSize, ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import {
+  ButtonSize,
+  ButtonType
+} from '../../buttons-indicators/buttons/buttons.enum';
 import { has } from 'lodash';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { MobileService } from '../../services/utils/mobile.service';
+import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
 import { LinkColor } from '../../buttons-indicators/link/link.enum';
+import { BreadcrumbsType } from './breadcrumbs.enum';
+import { Subscription } from 'rxjs';
+import { outsideZone } from '../../services/utils/rxjs.operators';
 
 @Component({
   selector: 'b-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.scss']
 })
-export class BreadcrumbsComponent implements OnInit, OnChanges {
+export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
+  @HostBinding('attr.data-type')
+  @Input()
+  type: BreadcrumbsType = BreadcrumbsType.primary;
 
   @Input() breadcrumbs: Breadcrumb[];
   @Input() buttons: BreadcrumbNavButtons;
@@ -22,21 +42,30 @@ export class BreadcrumbsComponent implements OnInit, OnChanges {
   @Output() prevClick: EventEmitter<number> = new EventEmitter<number>();
 
   isMobile: boolean;
-
   readonly buttonSize = ButtonSize;
   readonly buttonType = ButtonType;
   readonly icons = Icons;
   readonly iconColor = IconColor;
   readonly iconSize = IconSize;
   readonly linkColor = LinkColor;
+  readonly breadcrumbsType = BreadcrumbsType;
+  private mediaEventSubscriber: Subscription;
 
-  constructor(
-    private mobileService: MobileService,
-  ) {
-  }
+  constructor(private mobileService: MobileService, private zone: NgZone) {}
 
   ngOnInit(): void {
-    this.isMobile = this.mobileService.isMobileBrowser();
+    this.mediaEventSubscriber = this.mobileService
+      .getMediaEvent()
+      .pipe(outsideZone(this.zone))
+      .subscribe((media: MediaEvent) => {
+        this.zone.run(() => {
+          this.isMobile = media.matchMobile;
+        });
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.mediaEventSubscriber.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -45,7 +74,7 @@ export class BreadcrumbsComponent implements OnInit, OnChanges {
     }
   }
 
-  onStepClick($event, stepIndex): void {
+  onStepClick(stepIndex): void {
     this.stepClick.emit(stepIndex);
   }
 

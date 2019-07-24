@@ -15,6 +15,7 @@
        [disabled]="disabled"
        (change)="toggleCheckbox()" />
 <label class="bchk-label"
+       [ngClass]="{'empty-label': !placeholder && !label}"
        [attr.for]="id">
   {{ placeholder || label }}
 </label>

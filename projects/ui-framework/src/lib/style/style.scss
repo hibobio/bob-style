@@ -41,3 +41,14 @@ body {
   color: $grey-800;
   @include BodyFont;
 }
+
+.b-mobile {
+  @include desktop {
+    display: none !important;
+  }
+}
+.b-desktop {
+  @include mobile {
+    display: none !important;
+  }
+}

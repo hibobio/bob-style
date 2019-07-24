@@ -3,7 +3,7 @@ export interface ListHeader {
   isCollapsed: boolean;
   placeHolderSize: number;
   selected: boolean;
-  disabled?: boolean;
+  indeterminate?: boolean;
 }
 
 export interface ListOption {
@@ -18,7 +18,7 @@ export interface ListOption {
 
 export interface SelectGroupOption {
   groupName: string;
-  key?: string;
+  key?: string | number;
   options: SelectOption[];
 }
 

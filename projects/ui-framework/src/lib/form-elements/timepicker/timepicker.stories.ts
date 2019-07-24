@@ -62,7 +62,7 @@ inputStories.add(
       props: {
         onChange: action('Time changed'),
 
-        value: text('value', '11:15'),
+        value: text('value', undefined),
         label: text('label', 'Input label'),
 
         disabled: boolean('disabled', false),

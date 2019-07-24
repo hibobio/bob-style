@@ -383,7 +383,7 @@ export { DOMhelpers } from './lib/services/utils/dom-helpers.service';
 export { ScrollEvent }  from './lib/services/utils/utils.interface';
 export { WindowRef } from './lib/services/utils/window-ref.service';
 export { DocumentRef } from './lib/services/utils/document-ref.service';
-export { MobileService } from './lib/services/utils/mobile.service';
+export { MobileService, WidthMode, MediaEvent } from './lib/services/utils/mobile.service';
 // Component Renderer
 export { ComponentRendererModule } from './lib/services/component-renderer/component-renderer.module';
 export { ComponentRendererComponent } from './lib/services/component-renderer/component-renderer.component';
@@ -394,7 +394,7 @@ export { TruncateTooltipComponent } from './lib/services/truncate-tooltip/trunca
 export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/truncate-tooltip.directive';
 export { TruncateTooltipType, TruncateTooltipPosition } from './lib/services/truncate-tooltip/truncate-tooltip.enum';
 // RxJs operators
-export { outsideZone } from './lib/services/utils/rxjs.operators';
+export { outsideZone, insideZone } from './lib/services/utils/rxjs.operators';
 // Event Manager Plugins
 export {
   EventManagerPlugins,

@@ -55,10 +55,10 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
     InputAutoCompleteOptions.off;
   public date: Date;
 
-  public readonly calendarIcon: String = Icons.calendar;
-  public readonly calendarIconSize: String = IconSize.medium;
-  public readonly calendarIconColor: String = IconColor.dark;
-  public readonly inputTypes = InputTypes;
+  readonly icons = Icons;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
+  readonly inputTypes = InputTypes;
 
   @ViewChild('input', { static: true }) input: ElementRef;
   @ViewChild('picker', { static: true }) picker: MatDatepicker<any>;

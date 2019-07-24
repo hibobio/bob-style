@@ -6,7 +6,7 @@
         [disabled]="chip.disabled || config.disabled"
         [removable]="chip.removable || config.removable"
         [selected]="checkSelected(chip, index)"
-        [attr.tabindex]="config.focusable ? 0 : -1"
+        [attr.tabindex]="!(chip.disabled || config.disabled) && config.focusable ? 0 : -1"
         [attr.data-index]="index"
         (removed)="onChipRemove(chip)">
   <b-avatar *ngIf="(chip.type === chipType.avatar || config.type === chipType.avatar) && chip.imageSource"

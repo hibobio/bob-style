@@ -15,3 +15,16 @@ export function outsideZone<T>(zone: NgZone) {
     });
   };
 }
+
+export function insideZone<T>(zone: NgZone) {
+  return function(source: Observable<T>) {
+    return new Observable(observer => {
+      let sub: Subscription;
+      zone.run(() => {
+        sub = source.subscribe(observer);
+      });
+
+      return sub;
+    });
+  };
+}

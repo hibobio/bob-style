@@ -10,9 +10,12 @@ import { ListChangeService } from '../list-change/list-change.service';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { ListFooterModule } from '../list-footer/list-footer.module';
 import { SearchModule } from '../../../search/search/search.module';
+import { CheckboxModule } from '../../checkbox/checkbox.module';
 
 @NgModule({
-  declarations: [MultiListComponent],
+  declarations: [
+    MultiListComponent,
+  ],
   imports: [
     CommonModule,
     ScrollingModule,
@@ -20,9 +23,16 @@ import { SearchModule } from '../../../search/search/search.module';
     FiltersModule,
     ListOptionModule,
     ButtonsModule,
-    ListFooterModule
+    ListFooterModule,
+    CheckboxModule,
   ],
-  exports: [MultiListComponent],
-  providers: [ListModelService, ListChangeService, ListKeyboardService]
+  exports: [
+    MultiListComponent,
+  ],
+  providers: [
+    ListModelService,
+    ListChangeService,
+    ListKeyboardService,
+  ],
 })
 export class MultiListModule {}

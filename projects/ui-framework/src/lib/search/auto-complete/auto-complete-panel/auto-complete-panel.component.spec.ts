@@ -8,8 +8,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { FiltersModule } from '../../../services/filters/filters.module';
 import { TypographyModule } from '../../../typography/typography.module';
-import SpyObj = jasmine.SpyObj;
-import createSpyObj = jasmine.createSpyObj;
 import { Keys } from '../../../enums';
 
 describe('AutoCompletePanelComponent', () => {

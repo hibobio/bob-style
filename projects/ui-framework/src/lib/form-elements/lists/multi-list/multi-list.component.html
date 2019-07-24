@@ -13,8 +13,7 @@
          class="headers-group">
       <div [ngClass]="{
            'collapsed': header.isCollapsed,
-           'focus': focusOption?.isPlaceHolder && focusOption?.groupName === header.groupName,
-           'disabled': header.disabled
+           'focus': focusOption?.isPlaceHolder && focusOption?.groupName === header.groupName
            }"
            class="option-select header">
         <span (click)="toggleGroupCollapse(header)"
@@ -22,11 +21,12 @@
         </span>
         <span class="chevron"></span>
         <div class="header-option">
-          <span class="checkbox"
-                role="checkbox"
-                [attr.aria-checked]="header.selected"
-                (click)="headerSelect(header)"></span>
-
+          <b-checkbox class="checkbox"
+                      [value]="header.selected"
+                      [indeterminate]="header.indeterminate"
+                      (checkboxChange)="headerSelect(header)"
+                      [doPropagate]="false">
+          </b-checkbox>
           <span [innerHTML]="header.groupName | highlight: searchValue"></span>
         </div>
       </div>
@@ -50,9 +50,10 @@
             'disabled': option.disabled
            }"
            class="option-select">
-        <span class="checkbox"
-              role="checkbox"
-              [attr.aria-checked]="option.selected"></span>
+        <b-checkbox class="checkbox"
+                    [value]="option.selected"
+                    [doPropagate]="false">
+        </b-checkbox>
         <b-list-option [option]="option"
                        [searchValue]="searchValue">
         </b-list-option>
