@@ -11,18 +11,23 @@ export class UtilsService {
   winClick$: Observable<MouseEvent>;
   winKey$: Observable<KeyboardEvent>;
 
-  constructor(public windowRef: WindowRef) {
+  constructor(
+    private windowRef: WindowRef,
+  ) {
+
     this.winResize$ = fromEvent(this.windowRef.nativeWindow, 'resize').pipe(
       debounceTime(500),
-      shareReplay()
+      shareReplay(1),
     );
+
     this.winScroll$ = fromEvent(this.windowRef.nativeWindow, 'scroll').pipe(
-      shareReplay(),
       map((e: Event) => ({
         scrollY: (e.currentTarget as Window).scrollY,
         scrollX: (e.currentTarget as Window).scrollX
-      }))
+      })),
+      shareReplay(1),
     );
+
     this.winClick$ = fromEvent(this.windowRef.nativeWindow, 'click');
     this.winKey$ = fromEvent(this.windowRef.nativeWindow, 'keydown');
   }

@@ -11,9 +11,14 @@ import { FormsModule } from '@angular/forms';
 import { EventManagerModule } from './event-manager/event-manager.module';
 import { ClassBinderTesterModule } from './class-binder/class-binder.module';
 import { UrlUtilsModule } from '../../../ui-framework/src/lib/services/url/url-utils.module';
+import { RouterModule } from '@angular/router';
+import { AppRoutingModule } from './app-routing.module';
+import { UtilsModule } from './utils/utils.module';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -25,10 +30,15 @@ import { UrlUtilsModule } from '../../../ui-framework/src/lib/services/url/url-u
     FormsModule,
     EventManagerModule,
     ClassBinderTesterModule,
-    UrlUtilsModule
+    UrlUtilsModule,
+    RouterModule,
+    AppRoutingModule,
+    UtilsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [
+    AppComponent,
+  ],
   entryComponents: []
 })
 export class AppModule {}

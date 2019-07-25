@@ -43,7 +43,7 @@ export class MobileService {
       startWith(this.getMediaData()),
       map((e: Event) => this.getMediaData()),
       distinctUntilChanged(isEqual),
-      shareReplay()
+      shareReplay(1),
     );
   }
 
