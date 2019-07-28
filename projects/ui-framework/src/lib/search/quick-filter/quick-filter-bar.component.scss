@@ -1,6 +1,5 @@
 @import '../../style/colors';
 @import '../../style/mixins';
-
 @import '../../form-elements/form-element.mixin';
 
 @mixin quick-filter-separator-pseudo {
@@ -10,6 +9,16 @@
   height: 20px;
   bottom: (($wrap-height - 20px) / 2);
   background-color: $input-border-color;
+}
+
+@mixin border-radius-left {
+  border-top-left-radius: $border-radius;
+  border-bottom-left-radius: $border-radius;
+}
+
+@mixin border-radius-right {
+  border-top-right-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
 }
 
 // layout
@@ -91,11 +100,19 @@
 }
 
 .bar-content {
+  .quick-filter-placeholder {
+    background-color: $white;
+    border: 1px solid $input-border-color;
+    height: $wrap-height;
+    flex-grow: 1;
+  }
   &:not(.has-prefix)::ng-deep {
+    .quick-filter-placeholder {
+      @include border-radius-left;
+    }
     b-quick-filter:first-child .bfe-wrap {
       border-left: 1px solid $input-border-color;
-      border-top-left-radius: $border-radius;
-      border-bottom-left-radius: $border-radius;
+      @include border-radius-left;
 
       &:before {
         display: none;
@@ -104,10 +121,12 @@
   }
 
   &:not(.has-suffix)::ng-deep {
+    .quick-filter-placeholder {
+      @include border-radius-right;
+    }
     b-quick-filter:last-child .bfe-wrap {
       border-right: 1px solid $input-border-color;
-      border-top-right-radius: $border-radius;
-      border-bottom-right-radius: $border-radius;
+      @include border-radius-right;
 
       &:after {
         display: none;
