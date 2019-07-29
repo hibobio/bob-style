@@ -1,20 +1,22 @@
 @import '../../style/variables';
+@import '../../style/mixins';
 
 :host {
   display: block;
   border-radius: $border-radius;
   border: 1px solid $grey-500;
   text-align: left;
+  background-color: white;
+}
 
-  .title-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid $grey-500;
-    padding: 20px 40px;
-  }
+.title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid $grey-500;
+  padding: base8(15) base8(30);
+}
 
-  .content-container {
-    padding: 40px;
-  }
+.content-container {
+  padding: base8(30);
 }

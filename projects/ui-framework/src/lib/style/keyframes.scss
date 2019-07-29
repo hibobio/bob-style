@@ -1,8 +1,11 @@
-@mixin keyframes($name) {
+@mixin keyframes($name, $val: null, $id: '') {
   @if $name == slide-left {
-    @keyframes slide-left {
+    @if not $val {
+      $val: 15px;
+    }
+    @keyframes slide-left#{$id} {
       0% {
-        transform: translateX(15px);
+        transform: translateX($val);
         opacity: 0;
       }
       100% {
@@ -13,9 +16,12 @@
   }
 
   @if $name == slide-right {
-    @keyframes slide-right {
+    @if not $val {
+      $val: 15px;
+    }
+    @keyframes slide-right#{$id} {
       0% {
-        transform: translateX(-15px);
+        transform: translateX(-1 * $val);
         opacity: 0;
       }
       100% {
@@ -26,9 +32,12 @@
   }
 
   @if $name == slide-down {
-    @keyframes slide-down {
+    @if not $val {
+      $val: 15px;
+    }
+    @keyframes slide-down#{$id} {
       0% {
-        transform: translateY(-15px);
+        transform: translateY(-1 * $val);
         opacity: 0;
       }
       100% {
@@ -39,9 +48,12 @@
   }
 
   @if $name == slide-up {
-    @keyframes slide-up {
+    @if not $val {
+      $val: 15px;
+    }
+    @keyframes slide-up#{$id} {
       0% {
-        transform: translateY(15px);
+        transform: translateY($val);
         opacity: 0;
       }
       100% {
@@ -52,9 +64,12 @@
   }
 
   @if $name == zoom-in {
-    @keyframes zoom-in {
+    @if not $val {
+      $val: 0.9;
+    }
+    @keyframes zoom-in#{$id} {
       0% {
-        transform: scale(0.9);
+        transform: scale($val);
         opacity: 0;
       }
       100% {
@@ -65,9 +80,12 @@
   }
 
   @if $name == zoom-out {
-    @keyframes zoom-out {
+    @if not $val {
+      $val: 1.1;
+    }
+    @keyframes zoom-out#{$id} {
       0% {
-        transform: scale(1.1);
+        transform: scale($val);
         opacity: 0;
       }
       100% {
@@ -78,7 +96,7 @@
   }
 
   @if $name == fade-in {
-    @keyframes fade-in {
+    @keyframes fade-in#{$id} {
       0% {
         opacity: 0;
       }

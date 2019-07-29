@@ -21,23 +21,6 @@ export class ListChange {
       .flatMap('id')
       .value();
   }
-  /**
-   * @deprecate use getSelectedGroupOptions(). will be deleted shortly.
-   */
-  getSelected(): { id: number | string; groupName: string }[] {
-    return chain(this.selectGroupOptions)
-      .reduce(
-        (selected, group) =>
-          concat(
-            selected,
-            map(group.options, option => ({ option,  groupName: group.groupName }))
-          ),
-        [],
-      )
-      .filter(groupOption => groupOption.option.selected)
-      .map(groupOption => ({ id: groupOption.option.id, groupName: groupOption.groupName }))
-      .value();
-  }
 
   getSelectedGroupOptions(): SelectGroupOption[] {
     return chain(this.selectGroupOptions)

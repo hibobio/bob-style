@@ -1,0 +1,40 @@
+@import '../../../style/colors';
+@import '../../../style/typography';
+
+:host {
+  text-align: left;
+}
+
+.chain-link-row {
+  position: relative;
+
+  b-component-renderer {
+    display: block;
+  }
+
+  .delete-button {
+    position: absolute;
+    right: -44px;
+    bottom: 0;
+  }
+}
+
+.then {
+  margin: 8px 0 8px 16px;
+
+  b-icon {
+    transform: rotate(90deg);
+  }
+}
+
+:host ::ng-deep {
+  .add-chain-link {
+    display: block;
+
+    button.large {
+      justify-content: flex-start;
+      text-transform: none;
+      font-size: $font-size-body;
+    }
+  }
+}

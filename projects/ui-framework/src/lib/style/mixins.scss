@@ -1,4 +1,5 @@
 @import './functions';
+@import './keyframes';
 
 @mixin pseudo {
   content: '';
@@ -107,8 +108,21 @@
   hyphenate-limit-chars: 10 4 4;
 }
 
-@mixin animate($name, $time: 0.3s, $delay: null, $iterate: 1, $dir: null) {
-  animation-name: $name;
+@mixin animate(
+  $name,
+  $time: 0.3s,
+  $delay: null,
+  $iterate: 1,
+  $dir: null,
+  $keyframes: false
+) {
+  $id: simpleUID();
+  @if $keyframes {
+    @include keyframes($name, $id: ('-' + $id));
+    animation-name: ($name + '-' + $id);
+  } @else {
+    animation-name: $name;
+  }
   animation-duration: $time;
   animation-iteration-count: $iterate;
   animation-delay: $delay;
@@ -204,16 +218,20 @@
   }
 }
 
-@mixin ratio($ratio-or-width, $height: null) {
+@mixin ratioPad($ratio-or-width, $height: null) {
   $padding: if(
     $height,
     percentage($height/$ratio-or-width),
     percentage(1 / $ratio-or-width)
   );
+  padding-bottom: $padding;
+}
+
+@mixin ratio($ratio-or-width, $height: null) {
   &:before {
     content: '';
     float: left;
-    padding-bottom: $padding;
+    @include ratioPad($ratio-or-width, $height);
   }
   &:after {
     content: '';
@@ -230,14 +248,14 @@
   }
 }
 
-@mixin mobile {
-  @media (max-width: $breakpoint-device-sm) {
+@mixin mobile($break: $breakpoint-device-sm) {
+  @media (max-width: $break) {
     @content;
   }
 }
 
-@mixin desktop {
-  @media (min-width: ($breakpoint-device-sm + 1px)) {
+@mixin desktop($break: $breakpoint-device-sm) {
+  @media (min-width: ($break + 1px)) {
     @content;
   }
 }

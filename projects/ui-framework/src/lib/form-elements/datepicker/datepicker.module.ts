@@ -16,7 +16,7 @@ import { InputMessageModule } from '../input-message/input-message.module';
     InputMessageModule
   ],
   exports: [DatepickerComponent],
-  entryComponents: [DatepickerComponent],
+  entryComponents: [],
   providers: []
 })
 export class DatepickerModule {}

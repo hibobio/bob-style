@@ -1,5 +1,12 @@
-@import '../../style/typography.scss';
+@import '../../style/variables';
+@import '../../style/mixins';
+@import '../../style/typography';
+
 :host {
   display: block;
   @include DisplayFont($font-size-display-1, $font-weight-display-1);
+
+  @include mobile {
+    font-size: $font-size-display-2;
+  }
 }

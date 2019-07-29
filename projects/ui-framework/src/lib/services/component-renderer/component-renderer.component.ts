@@ -166,10 +166,12 @@ export class ComponentRendererComponent implements OnChanges, OnDestroy {
   }
 
   private destroyComponent(): void {
-    if (!this.destroy$.isStopped) {
+    if (this.destroy$ && !this.destroy$.isStopped) {
       this.destroy$.next(true);
     }
-    this.destroy$.unsubscribe();
+    if (this.destroy$) {
+      this.destroy$.unsubscribe();
+    }
     if (this.componentRef) {
       this.componentRef.destroy();
       this.componentRef = null;

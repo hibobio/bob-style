@@ -1,5 +1,5 @@
 @import '../../style/typography.scss';
 :host {
   display: block;
-  @include DisplayFont(22px, 600);
+  @include DisplayFont($font-size-display-3, $font-weight-display-3);
 }

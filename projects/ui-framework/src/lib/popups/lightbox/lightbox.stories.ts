@@ -57,7 +57,7 @@ const note = `
 
   \`\`\`
 this.lightbox = this.lightboxService.showLightbox({
-      video: 'https://www.youtube.com/embed/p3j2NYZ8FKs
+      video: 'https://www.youtube.com/embed/p3j2NYZ8FKs'
     })
   \`\`\`
 
@@ -69,7 +69,7 @@ this.lightbox = this.lightboxService.showLightbox({
           title: 'John Malkovich',
           subtitle: 'American actor',
           orientation: 'vertical',
-          imageSource: 'https://randomuser.me/api/portraits/men/1.jpg,
+          imageSource: 'https://randomuser.me/api/portraits/men/1.jpg',
           size: AvatarSize.large
         }
       },

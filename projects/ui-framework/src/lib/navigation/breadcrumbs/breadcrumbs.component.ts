@@ -8,7 +8,8 @@ import {
   SimpleChanges,
   HostBinding,
   OnDestroy,
-  NgZone
+  NgZone,
+  ChangeDetectorRef
 } from '@angular/core';
 import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 import {
@@ -41,7 +42,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
   @Output() nextClick: EventEmitter<number> = new EventEmitter<number>();
   @Output() prevClick: EventEmitter<number> = new EventEmitter<number>();
 
-  isMobile: boolean;
+  isMobile = false;
   readonly buttonSize = ButtonSize;
   readonly buttonType = ButtonType;
   readonly icons = Icons;
@@ -51,21 +52,26 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
   readonly breadcrumbsType = BreadcrumbsType;
   private mediaEventSubscriber: Subscription;
 
-  constructor(private mobileService: MobileService, private zone: NgZone) {}
+  constructor(
+    private mobileService: MobileService,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.mediaEventSubscriber = this.mobileService
       .getMediaEvent()
       .pipe(outsideZone(this.zone))
       .subscribe((media: MediaEvent) => {
-        this.zone.run(() => {
-          this.isMobile = media.matchMobile;
-        });
+        this.isMobile = media.matchMobile;
+        this.cd.detectChanges();
       });
   }
 
   ngOnDestroy(): void {
-    this.mediaEventSubscriber.unsubscribe();
+    if (this.mediaEventSubscriber) {
+      this.mediaEventSubscriber.unsubscribe();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {

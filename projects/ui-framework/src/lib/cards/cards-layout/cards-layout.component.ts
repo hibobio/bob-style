@@ -8,13 +8,15 @@ import {
   AfterViewInit,
   OnDestroy,
   SimpleChanges,
-  OnChanges
+  OnChanges,
+  NgZone
 } from '@angular/core';
 import { CardType } from '../cards.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { outsideZone } from '../../services/utils/rxjs.operators';
 
 export const CARD_TYPE_WIDTH = {
   [CardType.small]: 160,
@@ -40,7 +42,8 @@ export class CardsLayoutComponent
   constructor(
     private hostRef: ElementRef,
     private domUtils: DOMhelpers,
-    private utilsService: UtilsService
+    private utilsService: UtilsService,
+    private zone: NgZone
   ) {}
 
   @Input() alignCenter = false;
@@ -51,13 +54,13 @@ export class CardsLayoutComponent
 
   ngAfterViewInit(): void {
     this.setCssVars();
-
-    this.calcCardsInRow();
-    this.listenToResize();
+    this.cardsInRow = this.calcCardsInRow();
   }
 
   ngOnDestroy(): void {
-    this.resizeSubscription.unsubscribe();
+    if (this.resizeSubscription) {
+      this.resizeSubscription.unsubscribe();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -74,15 +77,6 @@ export class CardsLayoutComponent
     });
   }
 
-  listenToResize() {
-    this.resizeSubscription = this.utilsService
-      .getResizeEvent()
-      .pipe()
-      .subscribe(() => {
-        this.calcCardsInRow();
-      });
-  }
-
   getCardsInRow$(): Observable<number> {
     this.cardsInRow = this.calcCardsInRow();
     if (!this.cardsInRow$) {
@@ -90,14 +84,20 @@ export class CardsLayoutComponent
       this.resizeSubscription = this.utilsService
         .getResizeEvent()
         .pipe(
+          outsideZone(this.zone),
           filter(() => {
             const cardsInRow = this.calcCardsInRow();
             return this.cardsInRow !== cardsInRow;
           })
         )
         .subscribe(() => {
-          this.cardsInRow = this.calcCardsInRow();
-          this.cardsInRow$.next(this.cardsInRow);
+          this.zone.run(() => {
+            this.cardsInRow = this.calcCardsInRow();
+            this.cardsInRow$.next(this.cardsInRow);
+            if (this.cardsAmountChanged.observers.length > 0) {
+              this.cardsAmountChanged.emit(this.cardsInRow);
+            }
+          });
         });
     }
     return this.cardsInRow$ as Observable<number>;

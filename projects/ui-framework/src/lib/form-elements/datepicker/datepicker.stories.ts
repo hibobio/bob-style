@@ -42,15 +42,25 @@ const storyTemplate = `
 `;
 
 const note = `
-  ## Slider Element
+  ## Datepicker
+
+  #### Module
+  *DatepickerModule*
 
   #### Properties
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  inputLabel | string | Input label | mandatory |
+  inputLabel | string | label text (above input) | none
+  placeholder | string | placeholder text (inside input) | none
   dateFormat | string | Input date format | DD/MM/YYYY (optional) |
-  dateChange | EventEmitter | Date change callback |
+  (dateChange) | EventEmitter | Date change callback |
+
+  disabled | boolean | is field disabled
+  required | boolean | is field required
+  hintMessage | string | hint text
+  warnMessage | string | warning text
+  errorMessage | string | error text
 
   ~~~
   ${template}

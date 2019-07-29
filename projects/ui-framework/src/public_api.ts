@@ -97,7 +97,7 @@ export { EmptyStateConfig } from './lib/buttons-indicators/empty-state/empty-sta
 */
 // Chip Module
 export { ChipsModule } from './lib/chips/chips.module';
-export { ChipType, ChipListAlign } from './lib/chips/chips.enum';
+export { ChipType, ChipListAlign, ChipListSelectable } from './lib/chips/chips.enum';
 export { Chip, ChipListConfig, ChipKeydownEvent, ChipInputChange } from './lib/chips/chips.interface';
 // Single Chip
 export { ChipModule } from './lib/chips/chip/chip.module';
@@ -188,6 +188,16 @@ export {
   ListComponentPrefix
 } from './lib/form-elements/lists/list.interface';
 export { ListChange } from './lib/form-elements/lists/list-change/list-change';
+// Chain select
+export {
+  SelectComponentConfig
+} from './lib/form-elements/lists/chain-select/chain-select.interface';
+export {
+  ChainSelectComponent
+} from './lib/form-elements/lists/chain-select/chain-select.component';
+export {
+  ChainSelectModule
+} from './lib/form-elements/lists/chain-select/chain-select.module';
 // Rich Text Editor
 export {
   RichTextEditorModule
@@ -279,6 +289,7 @@ export {
   BreadcrumbNavButtons,
   BreadcrumbNavButton
 } from './lib/navigation/breadcrumbs/breadcrumbs.interface';
+export { BreadcrumbsType } from './lib/navigation/breadcrumbs/breadcrumbs.enum';
 export { BaseFormElement } from './lib/form-elements/base-form-element';
 export { ActionBarModule } from './lib/navigation/action-bar/action-bar.module';
 export { ActionBarComponent } from './lib/navigation/action-bar/action-bar.component';
@@ -314,6 +325,7 @@ export { AlertType } from './lib/popups/alert/alert.enum';
 export { LightboxModule } from './lib/popups/lightbox/lightbox.module';
 export { LightboxService } from './lib/popups/lightbox/lightbox.service';
 export { LightboxComponent } from './lib/popups/lightbox/lightbox.component';
+export { VideoEmbedComponent } from './lib/popups/lightbox/video-embed/video-embed.component';
 export { LightboxConfig, LightboxData } from './lib/popups/lightbox/lightbox.interface';
 
 
@@ -361,7 +373,9 @@ export * from './lib/table/card-table/card-table.interface';
 export { CollapsibleModule } from './lib/layout/collapsible/collapsible.module';
 export { CollapsibleComponent } from './lib/layout/collapsible/collapsible.component';
 export { CollapsibleType } from './lib/layout/collapsible/collapsible.enum';
-
+// Section Container
+export {SectionContainerModule} from './lib/layout/sectionContainer/sectionContainer.module';
+export { SectionContainerComponent } from './lib/layout/sectionContainer/sectionContainer.component';
 
 /*
  * Misc
@@ -384,6 +398,12 @@ export { ScrollEvent }  from './lib/services/utils/utils.interface';
 export { WindowRef } from './lib/services/utils/window-ref.service';
 export { DocumentRef } from './lib/services/utils/document-ref.service';
 export { MobileService, WidthMode, MediaEvent } from './lib/services/utils/mobile.service';
+// URL utils
+export { UrlUtilsModule } from './lib/services/url/url-utils.module';
+export { URLutils } from './lib/services/url/url-utils.service';
+export { URLtype } from './lib/services/url/url.enum';
+export { VideoData } from './lib/services/url/url.interface';
+export { allowedDomainsTest, naiveLinkTest, imageLinkTest } from './lib/services/url/url.const';
 // Component Renderer
 export { ComponentRendererModule } from './lib/services/component-renderer/component-renderer.module';
 export { ComponentRendererComponent } from './lib/services/component-renderer/component-renderer.component';
@@ -409,6 +429,9 @@ export { TextColoredLinksModule } from './lib/eye-candy/text-colored-links/text-
 export { TextColoredLinksComponent } from
     './lib/eye-candy/text-colored-links/text-colored-links/text-colored-links.component';
 export { ColorTextItem } from './lib/eye-candy/text-colored-links/text-colored-links.interface';
+// Mocks
+export { mockText, mockDate, mockHobbies, mockJobs, mockNames, mockAvatar } from './lib/mock.const';
+
 
 /*
 * Animation

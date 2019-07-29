@@ -22,6 +22,9 @@
 
   <div class="bar-filters">
 
+    <div *ngIf="!quickFilters" class="quick-filter-placeholder">
+    </div>
+
     <b-quick-filter *ngFor="let quickFilterConfig of quickFilters"
                     class="quick-filter-holder"
                     [ngStyle]="{width: 100/quickFilters.length + '%'}"

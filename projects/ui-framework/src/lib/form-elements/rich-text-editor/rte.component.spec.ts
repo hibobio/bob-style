@@ -71,7 +71,9 @@ class TestComponent implements OnInit, OnDestroy {
       });
   }
   ngOnDestroy(): void {
-    this.subscr.unsubscribe();
+    if (this.subscr) {
+      this.subscr.unsubscribe();
+    }
   }
 }
 

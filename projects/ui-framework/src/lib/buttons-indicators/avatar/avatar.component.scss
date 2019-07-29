@@ -53,14 +53,22 @@
 
 .avatar-content {
   @include size(100%);
+  border-radius: 50%;
   @include flex-align;
   position: relative;
   border-radius: 50%;
-  overflow: hidden;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.2s;
   z-index: 1;
+}
+
+.avatar.noAvatar {
+  background-image: none !important;
+
+  .avatar-content {
+    opacity: 1;
+  }
 }
 
 .slot1-big,

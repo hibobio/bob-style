@@ -53,3 +53,7 @@
 @function times8($times: 1) {
   @return 8px * $times;
 }
+
+@function simpleUID() {
+  @return str-slice(ie-hex-str(rgb(random(255), random(255), random(255))), 5);
+}

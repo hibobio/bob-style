@@ -3,7 +3,7 @@ import { LightboxConfig, LightboxData } from './lightbox.interface';
 import { LightboxComponent } from './lightbox.component';
 import { Overlay, OverlayConfig } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { URLutils } from '../../services/url/url-utils';
+import { URLutils } from '../../services/url/url-utils.service';
 
 @Injectable()
 export class LightboxService {

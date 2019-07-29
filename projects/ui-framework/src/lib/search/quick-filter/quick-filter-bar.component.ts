@@ -53,9 +53,7 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
 
   @Input() quickFilters: QuickFilterConfig[];
   @Input() showResetFilter = false;
-  @Output() filtersChange: EventEmitter<
-    QuickFilterBarChangeEvent
-  > = new EventEmitter<QuickFilterBarChangeEvent>();
+  @Output() filtersChange: EventEmitter<QuickFilterBarChangeEvent> = new EventEmitter<QuickFilterBarChangeEvent>();
   @Output() resetFilters: EventEmitter<void> = new EventEmitter<void>();
 
   quickFiltersChanges: QuickFilterBarChangeEvent = {};
@@ -73,7 +71,8 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
     private DOM: DOMhelpers,
     private zone: NgZone,
     private cd: ChangeDetectorRef
-  ) {}
+  ) {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'quickFilters')) {
