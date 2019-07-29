@@ -97,7 +97,7 @@ export { EmptyStateConfig } from './lib/buttons-indicators/empty-state/empty-sta
 */
 // Chip Module
 export { ChipsModule } from './lib/chips/chips.module';
-export { ChipType, ChipListAlign } from './lib/chips/chips.enum';
+export { ChipType, ChipListAlign, ChipListSelectable } from './lib/chips/chips.enum';
 export { Chip, ChipListConfig, ChipKeydownEvent, ChipInputChange } from './lib/chips/chips.interface';
 // Single Chip
 export { ChipModule } from './lib/chips/chip/chip.module';
