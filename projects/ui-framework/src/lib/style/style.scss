@@ -1,8 +1,5 @@
 @import './reset';
-@import './variables';
-@import './typography';
-@import './shapes';
-@import './mixins';
+@import './common-imports';
 @import './grid-layout';
 @import '~ag-grid-community/dist/styles/ag-grid.css';
 @import './tooltip';

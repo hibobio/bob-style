@@ -3,20 +3,36 @@
 
 :host {
   display: block;
-  border-radius: $border-radius;
-  border: 1px solid $grey-500;
   text-align: left;
   background-color: white;
+
+  @include desktop {
+    border-radius: $border-radius;
+    border: 1px solid $grey-500;
+  }
 }
 
 .title-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid $grey-500;
-  padding: base8(15) base8(30);
+
+  @include desktop {
+    border-bottom: 1px solid $grey-500;
+    padding: times8(2) times8(4);
+  }
+
+  @include mobile {
+    border-bottom: 1px solid $grey-300;
+    padding: times8(2) $padding-x-mob;
+  }
 }
 
 .content-container {
-  padding: base8(30);
+  @include desktop {
+    padding: times8(4);
+  }
+  @include mobile {
+    padding: times8(4) $padding-x-mob;
+  }
 }

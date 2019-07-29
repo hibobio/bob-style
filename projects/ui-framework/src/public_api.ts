@@ -114,6 +114,8 @@ export { ChipInputComponent } from './lib/chips/chip-input/chip-input.component'
 export { MultiListAndChipsModule } from './lib/chips/multi-list-and-chips/multi-list-and-chips.module';
 export { MultiListAndChipsComponent } from './lib/chips/multi-list-and-chips/multi-list-and-chips.component';
 
+
+
 /*
  * Form Elements
  */
@@ -227,6 +229,9 @@ export { Social } from './lib/form-elements/social/social.enum';
 // Timepicker
 export { TimePickerModule } from './lib/form-elements/timepicker/timepicker.module';
 export { TimePickerComponent } from './lib/form-elements/timepicker/timepicker.component';
+// Password Input
+export { PasswordInputModule } from './lib/form-elements/password-input/password-input.module';
+export { PasswordInputComponent } from './lib/form-elements/password-input/password-input.component';
 
 /*
  * Navigation
