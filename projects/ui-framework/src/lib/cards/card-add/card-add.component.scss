@@ -9,24 +9,6 @@
   user-select: none;
   cursor: pointer;
 
-  .card-content {
-    color: $grey-600;
-    margin: 0;
-
-    &:first-child {
-      flex-grow: 0;
-      min-height: 0;
-    }
-
-    &:last-child {
-      margin-bottom: 10px;
-    }
-  }
-
-  .card-bottom {
-    margin: 4px 0 10px 0;
-  }
-
   &:after {
     @include pseudo;
     @include size(20px);
@@ -44,10 +26,12 @@
   &:focus {
     transform: none;
     background-color: $grey-300;
-
-    .card-content,
-    .card-bottom {
-      color: $grey-700;
-    }
   }
+}
+
+.card-title {
+  margin: 0;
+}
+.card-subtitle {
+  color: $grey-700;
 }

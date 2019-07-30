@@ -21,7 +21,7 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 export const CARD_TYPE_WIDTH = {
   [CardType.small]: 160,
   [CardType.regular]: 190,
-  [CardType.large]: 260
+  [CardType.large]: 260,
 };
 
 export const GAP_SIZE = 16;
@@ -48,9 +48,7 @@ export class CardsLayoutComponent
 
   @Input() alignCenter = false;
   @Input() type: CardType = CardType.regular;
-  @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<
-    number
-  >();
+  @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<number>();
 
   ngAfterViewInit(): void {
     this.setCssVars();

@@ -1,13 +1,6 @@
-import {
-  Component,
-  Input,
-  Output,
-  HostBinding,
-  HostListener,
-  EventEmitter
-} from '@angular/core';
-import { AddCardData } from '../cards.interface';
+import { Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
 import { CardType } from '../cards.enum';
+import { AddCard } from './card-add.interface';
 
 @Component({
   selector: 'b-card-add, [b-card-add]',
@@ -15,17 +8,13 @@ import { CardType } from '../cards.enum';
   styleUrls: ['../card/card.component.scss', './card-add.component.scss']
 })
 export class CardAddComponent {
-  constructor() {}
-
-  cardType = CardType;
-
-  @Input() card: AddCardData;
-
+  @Input() card: AddCard;
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
   @HostBinding('attr.tabindex') string = '0';
-
   @HostBinding('attr.data-type') @Input() type: CardType = CardType.regular;
+
+  readonly cardType = CardType;
 
   @HostListener('click', ['$event'])
   onClick($event) {

@@ -1,3 +1,56 @@
+@import '../../style/colors';
+
 :host {
   justify-content: space-between;
+  text-align: center;
+  --background-color-1: #{$grey-200};
+  --background-color-2: #{$grey-200};
+}
+
+.cover-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background-image: linear-gradient(180deg, var(--background-color-1) 0%, var(--background-color-2) 100%);
+}
+
+b-avatar {
+  display: inline-block;
+  margin: 0 auto 16px;
+}
+
+.title {
+  font-weight: 600;
+}
+
+.subtitle {
+  color: $grey-600;
+}
+
+.social {
+  margin: 16px auto;
+  max-width: 140px;
+  display: flex;
+  justify-content: space-evenly;
+
+  a {
+    &:before {
+      color: $grey-700;
+    }
+    &:hover:before {
+      color: $grey-800;
+    }
+  }
+}
+
+:host[data-type='small'] {
+  min-height: 200px;
+  .cover-container {
+    height: 60px;
+  }
+  b-avatar {
+    margin-bottom: 8px;
+  }
 }
