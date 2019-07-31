@@ -69,7 +69,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    if (this.mediaEventSubscriber) {
+    if (this.mediaEventSubscriber && this.mediaEventSubscriber.unsubscribe) {
       this.mediaEventSubscriber.unsubscribe();
     }
   }

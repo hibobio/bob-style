@@ -7,7 +7,9 @@ import {
   OnInit,
   Output,
   ViewChild,
-  SimpleChanges
+  SimpleChanges,
+  ChangeDetectorRef,
+  AfterViewInit
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -20,7 +22,11 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
 import { BaseFormElement } from '../base-form-element';
 import { FormEvents } from '../form-elements.enum';
-import { dateyOrFail, dateToString } from '../../services/utils/transformers';
+import {
+  dateyOrFail,
+  dateToString,
+  stringyOrFail
+} from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-datepicker',
@@ -47,7 +53,8 @@ import { dateyOrFail, dateToString } from '../../services/utils/transformers';
     }
   ]
 })
-export class DatepickerComponent extends BaseFormElement implements OnInit {
+export class DatepickerComponent extends BaseFormElement
+  implements OnInit, AfterViewInit {
   // tslint:disable-next-line: no-input-rename
   @Input('inputLabel') label: string;
   @Input() dateFormat?: string;
@@ -67,9 +74,9 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  constructor() {
+  constructor(private cd: ChangeDetectorRef) {
     super();
-    this.inputTransformers = [dateyOrFail];
+    this.inputTransformers = [stringyOrFail, dateyOrFail];
     this.outputTransformers = [
       date =>
         dateToString(
@@ -83,6 +90,10 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
     if (this.dateFormat) {
       BDateAdapter.bFormat = this.dateFormat.toUpperCase();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.cd.detectChanges();
   }
 
   // this extends BaseFormElement's ngOnChanges
@@ -106,6 +117,8 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
         eventType: [InputEventType.onChange, InputEventType.onBlur],
         addToEventObj: { date: this.date }
       });
+
+      this.cd.detectChanges();
     }
   }
 

@@ -9,13 +9,13 @@ import { URLutils } from '../../services/url/url-utils.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { LightboxService } from './lightbox.service';
-import { VideoEmbedComponent } from './video-embed/video-embed.component';
+import { MediaEmbedComponent } from './media-embed/media-embed.component';
 
 @NgModule({
-  declarations: [LightboxComponent, VideoEmbedComponent],
+  declarations: [LightboxComponent, MediaEmbedComponent],
   entryComponents: [LightboxComponent],
   imports: [CommonModule, IconsModule, ButtonsModule, ComponentRendererModule],
-  exports: [LightboxComponent, VideoEmbedComponent],
+  exports: [LightboxComponent, MediaEmbedComponent],
   providers: [URLutils, UtilsService, LightboxService, EventManagerPlugins[0]]
 })
 export class LightboxModule {}

@@ -46,6 +46,7 @@ export class LightboxService {
         this.closeLightbox(lightbox as LightboxData)
       );
 
+      lightbox.close = () => this.closeLightbox(lightbox as LightboxData);
       return lightbox as LightboxData;
     } catch (e) {
       this.closeLightbox(lightbox as LightboxData);

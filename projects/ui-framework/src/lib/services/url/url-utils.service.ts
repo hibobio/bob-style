@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { stringify } from '../utils/functional-utils';
-import { allowedDomainsTest, naiveLinkTest, imageLinkTest } from './url.const';
+import {
+  allowedDomainsTest,
+  naiveLinkTest,
+  imageLinkTest,
+  base64imageTest
+} from './url.const';
 import { VideoData } from './url.interface';
 import { URLtype } from './url.enum';
 
@@ -31,7 +36,7 @@ export class URLutils {
 
   validateImg(url: string): string {
     if (imageLinkTest.test(url)) {
-      return this.reconstruct(url);
+      return !base64imageTest.test(url) ? this.reconstruct(url) : url;
     }
 
     throw new Error(`URL (${url}) is not a valid image URL.`);

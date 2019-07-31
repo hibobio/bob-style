@@ -26,15 +26,16 @@ import { simpleUID } from '../../services/utils/functional-utils';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MultiListAndChipsComponent implements OnChanges {
-  constructor(private host: ElementRef, private zone: NgZone) {
-  }
+  constructor(private host: ElementRef, private zone: NgZone) {}
 
   @Input() options: SelectGroupOption[] = [];
   @Input() listLabel: string;
   @Input() chipsLabel: string;
   @Input() showSingleGroupHeader = false;
 
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
 
   public listOptions: SelectGroupOption[] = [];
   public chips: Chip[] = [];
@@ -86,7 +87,7 @@ export class MultiListAndChipsComponent implements OnChanges {
                 this.chipListConfig.type === ChipType.avatar &&
                 option.prefixComponent.attributes.imageSource,
               type: this.chipListConfig.type,
-              disabled: option.disabled,
+              disabled: option.disabled
             });
           }
         });
@@ -130,9 +131,11 @@ export class MultiListAndChipsComponent implements OnChanges {
   }
 
   detectChipType(options: SelectGroupOption[] = this.options): ChipType {
-    return options[0].options[0].prefixComponent &&
-    options[0].options[0].prefixComponent.attributes &&
-    options[0].options[0].prefixComponent.attributes.imageSource
+    return options &&
+      options[0].options &&
+      options[0].options[0].prefixComponent &&
+      options[0].options[0].prefixComponent.attributes &&
+      options[0].options[0].prefixComponent.attributes.imageSource
       ? ChipType.avatar
       : ChipType.tag;
   }
