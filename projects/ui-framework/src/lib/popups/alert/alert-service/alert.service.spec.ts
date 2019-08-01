@@ -57,7 +57,7 @@ describe('AlertService', () => {
       expect(alertComponentRef.instance.alertConfig.title).toEqual(ALERT_CONFIG.title);
       expect(alertComponentRef.instance.alertConfig.text).toEqual(ALERT_CONFIG.text);
       expect(alertComponentRef.instance.alertConfig.alertType).toEqual(ALERT_CONFIG.alertType);
-      expect(alertService.isOpen).toBeTruthy();
+      expect(alertService.isOpen).toBeFalsy();
       alertComponentRef.instance.onAnimationDone({ toState: 'leave' });
     }));
 
