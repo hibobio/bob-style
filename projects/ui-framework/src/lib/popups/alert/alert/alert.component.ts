@@ -1,10 +1,10 @@
-import {Component} from '@angular/core';
-import {Dictionary} from 'lodash';
-import {IconColor, Icons, IconSize} from '../../../icons/icons.enum';
-import {InfoStripIcon} from '../../../buttons-indicators/info-strip/info-strip.types';
-import {AlertConfig} from '../alert.interface';
-import {ButtonType} from '../../../buttons-indicators/buttons/buttons.enum';
-import {animate, keyframes, style, transition, trigger} from '@angular/animations';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { Dictionary } from 'lodash';
+import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
+import { InfoStripIcon } from '../../../buttons-indicators/info-strip/info-strip.types';
+import { AlertConfig } from '../alert.interface';
+import { ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
+import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'b-alert',
@@ -50,8 +50,12 @@ export class AlertComponent {
   readonly closeButtonType: ButtonType = ButtonType.tertiary;
   readonly closeButtonIcon: Icons = Icons.close;
 
+  constructor (private cd: ChangeDetectorRef) {
+  }
+
   public closeAlert(): void {
     this.animationState = 'leave';
+    this.cd.detectChanges();
   }
 
   public onAnimationDone(event): void {
