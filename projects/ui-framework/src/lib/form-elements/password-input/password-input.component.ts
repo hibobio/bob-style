@@ -41,8 +41,6 @@ export class PasswordInputComponent extends BaseInputElement {
 
   @ViewChild('input', { static: true }) input: ElementRef;
 
-  @Output() changed: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
-
   constructor() {
     super();
     this.outputTransformers = [];

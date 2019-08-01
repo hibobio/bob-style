@@ -10,6 +10,7 @@ $breadcrumbs-height: base8(64);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  user-select: none;
 }
 
 .steps,
@@ -35,7 +36,9 @@ $breadcrumbs-height: base8(64);
     flex-shrink: 0;
     background-color: var(--primary-600);
     border-radius: 100%;
+  }
 
+  &.clickable .index {
     &:hover {
       background-color: var(--primary-500);
     }
@@ -51,6 +54,10 @@ $breadcrumbs-height: base8(64);
 
   b-icon {
     margin: 0 times8(1);
+  }
+
+  &.clickable {
+    cursor: pointer;
   }
 
   &.disabled {
