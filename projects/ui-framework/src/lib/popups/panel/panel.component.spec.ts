@@ -11,7 +11,6 @@ import { PanelDefaultPosVer } from './panel.enum';
 import { of } from 'rxjs';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
-import { _ } from 'ag-grid-community';
 
 describe('PanelComponent', () => {
   let component: PanelComponent;

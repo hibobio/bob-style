@@ -1,13 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Icons } from '../../icons/icons.enum';
 import { DialogButton, DialogButtons } from './dialog.interface';
 import { ButtonSize, ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { SLIDE_UP_DOWN } from '../../style/animations';
-import get from 'lodash/get';
-import has from 'lodash/has';
-import isFunction from 'lodash/isFunction';
+import { get, has, isFunction } from 'lodash';
 import { DialogScrollDir } from './dialog.enum';
 
 @Component({

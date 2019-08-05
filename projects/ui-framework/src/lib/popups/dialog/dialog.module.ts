@@ -12,7 +12,6 @@ import { MiniPreloaderModule } from '../../buttons-indicators/mini-preloader/min
   declarations: [DialogComponent],
   imports: [CommonModule, MatDialogModule, TypographyModule, ButtonsModule, IconsModule, MiniPreloaderModule],
   exports: [DialogComponent],
-  providers: [DialogService],
   entryComponents: [DialogComponent]
 })
 export class DialogModule {}

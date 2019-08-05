@@ -319,6 +319,11 @@ export {
 export {
   DialogService
 } from './lib/popups/dialog/dialog-service/dialog.service';
+// Confirmation dialog module
+export { ConfirmationDialogModule } from './lib/popups/confirmation-dialog/confirmation-dialog.module';
+export { ConfirmationDialogComponent } from './lib/popups/confirmation-dialog/confirmation-dialog.component';
+export { ConfirmationDialogConfig } from './lib/popups/confirmation-dialog/confirmation-dialog.interface';
+export { ConfirmationDialogService } from './lib/popups/confirmation-dialog/confirmation-dialog.service';
 // Alert Module
 export { AlertModule } from './lib/popups/alert/alert.module';
 export { AlertService } from './lib/popups/alert/alert-service/alert.service';

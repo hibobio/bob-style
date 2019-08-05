@@ -1,0 +1,8 @@
+<b-dialog [dialogTitle]="config.title"
+          [dialogButtons]="config.buttonConfig">
+  <div b-dialog-content
+       class="message"
+       *ngIf="config.message">
+    {{config.message}}
+  </div>
+</b-dialog>
