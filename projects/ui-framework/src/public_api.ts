@@ -189,6 +189,17 @@ export {
   ListComponentPrefix
 } from './lib/form-elements/lists/list.interface';
 export { ListChange } from './lib/form-elements/lists/list-change/list-change';
+// Single select panel
+export { SingleSelectPanelModule } from './lib/form-elements/lists/single-select-panel/single-select-panel.module';
+export {
+  SingleSelectPanelComponent,
+} from './lib/form-elements/lists/single-select-panel/single-select-panel.component';
+// Multi select panel
+export { MultiSelectPanelModule } from './lib/form-elements/lists/multi-select-panel/multi-select-panel.module';
+export {
+  MultiSelectPanelComponent,
+} from './lib/form-elements/lists/multi-select-panel/multi-select-panel.component';
+
 // Chain select
 export {
   SelectComponentConfig
@@ -276,10 +287,6 @@ export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { TabsComponent } from './lib/navigation/tabs/tabs.component';
 export { Tab } from './lib/navigation/tabs/tabs.interface';
 export { TabsType } from './lib/navigation/tabs/tabs.enum';
-// Single list menu
-export { SingleListMenuModule } from './lib/navigation/single-list-menu/single-list-menu.module';
-export { SingleListMenuComponent } from './lib/navigation/single-list-menu/single-list-menu.component';
-export { SingleListMenuItem } from './lib/navigation/single-list-menu/single-list-menu.interface';
 
 // Breadcrumbs Module
 export {

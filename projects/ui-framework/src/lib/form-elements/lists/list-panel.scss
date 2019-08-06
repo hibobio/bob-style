@@ -1,4 +1,4 @@
-@import '../../popups/overlay.scss';
+@import '../../popups/overlay';
 @import '../../style/variables';
 
 :host {
@@ -7,9 +7,9 @@
 }
 
 ::ng-deep {
-  .b-single-menu {
+  .b-select-panel {
     position: relative !important;
-    min-width: 240px;
+    min-width: 280px;
 
     .b-select-panel {
 

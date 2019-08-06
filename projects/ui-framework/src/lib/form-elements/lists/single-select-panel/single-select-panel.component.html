@@ -4,12 +4,12 @@
      (click)="openPanel()"
      cdkOverlayOrigin>
 
-  <b-chevron-button *ngIf="chevronText"
-                    [text]="chevronText"
+  <b-chevron-button *ngIf="chevronButtonText"
+                    [text]="chevronButtonText"
                     [active]="panelOpen">
   </b-chevron-button>
 
-  <ng-content *ngIf="!chevronText"></ng-content>
+  <ng-content *ngIf="!chevronButtonText"></ng-content>
 
 </div>
 
@@ -18,7 +18,7 @@
        [ngClass]="positionClassList">
     <b-single-list class="b-select-list"
                    (selectChange)="onSelect($event)"
-                   [options]="singleSelectOptions"
+                   [options]="options"
                    [maxHeight]="listElHeight*6"
                    [showSingleGroupHeader]="false"
                    [showNoneOption]="false">
