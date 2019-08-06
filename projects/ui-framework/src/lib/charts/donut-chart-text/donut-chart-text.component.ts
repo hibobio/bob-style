@@ -18,6 +18,8 @@ export class DonutChartTextComponent implements OnChanges {
   @Input() legend = false;
   @Input() pointFormat = '{series.name}: <b>{point.percentage:.1f}%</b>';
   @Input() extraOptions: Options = {};
+  @Input() preTooltipValue = '';
+  @Input() postTooltipValue = '';
   @Input() colorPalette: string[] = [
     '#058DC7',
     '#50B432',

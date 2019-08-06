@@ -5,6 +5,7 @@ import {StoryBookLayoutModule} from '../../story-book-layout/story-book-layout.m
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ChartsModule} from '../charts.module';
 import {TypographyModule} from '../../typography/typography.module';
+import {NUMBER_OF_EMPLOYEES, PIE_CHART_DATA_MOCK} from '../pie-chart/pie-chart.mock';
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
 );
@@ -14,6 +15,8 @@ const template = `
     [data]="data"
     [legend]="legend"
     [height]="height"
+    [preTooltipValue]="preTooltipValue"
+    [postTooltipValue]="postTooltipValue"
     [name]="name"
     [donutInnerSize]="donutInnerSize"
   >
@@ -51,13 +54,14 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        text: text('text', '£135K'),
-        name: text('name', 'fruits'),
-        pointFormat: text('pointFormat', '{point.percentage:.1f}% of {series.name}'),
+        text: text('text', NUMBER_OF_EMPLOYEES + ''),
+        name: text('name', 'employees'),
         legend: boolean('legend', false),
         height: number('height', 200),
+        preTooltipValue: text('preTooltipValue', ''),
+        postTooltipValue: text('postTooltipValue', ' PEOPLE'),
         donutInnerSize: number('donutInnerSize', 100),
-        data: object('data', [['bananas', 15], ['apples', 24], ['avocado', 12], ['mango', 77]]),
+        data: object('data', PIE_CHART_DATA_MOCK),
         colorPalette: object('colorPalette', [
           '#CC2E4E',
           '#87233D',

@@ -1,7 +1,7 @@
 import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
 import { PieChartComponent } from './pie-chart.component';
-import {pieChartDataMock} from './pie-chart.mock';
+import {PIE_CHART_DATA_MOCK} from './pie-chart.mock';
 import {ChangeDetectorRef, NgZone} from '@angular/core';
 import {ChartCore} from '../chart/chart-core';
 import * as Highcharts from 'highcharts';
@@ -28,7 +28,7 @@ describe('PieChartComponent', () => {
       fixture = TestBed.createComponent(PieChartComponent);
       component = fixture.componentInstance;
       highchartRefSpy = spyOn(Highcharts, 'chart');
-      component.data = pieChartDataMock;
+      component.data = PIE_CHART_DATA_MOCK;
       component.name = 'fruits';
       fixture.detectChanges();
     });
@@ -76,7 +76,7 @@ describe('PieChartComponent', () => {
       });
       it('should inputs be same as highchart options properties', () => {
         expect(component.options.series[0].name).toEqual('fruits');
-        expect(component.options.series[0].data).toEqual(pieChartDataMock);
+        expect(component.options.series[0].data).toEqual(PIE_CHART_DATA_MOCK);
         expect(component.options.chart.type).toEqual('pie');
         expect(component.type).toEqual('pie');
         expect(component.legend).toEqual(component.options.plotOptions[component.type].showInLegend);
