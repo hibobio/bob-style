@@ -1,10 +1,23 @@
-import { Component, Input, NgModule, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  NgModule,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { CardsModule } from '../cards.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { action } from '@storybook/addon-actions';
 import { CardType } from '../cards.enum';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
-import { mockAvatar, mockDate, mockImage, mockJobs, mockNames } from '../../mock.const';
+import {
+  mockAvatar,
+  mockDate,
+  mockImage,
+  mockJobs,
+  mockNames
+} from '../../mock.const';
 import { CardsMockData, EmployeeCardsMockData } from '../cards.mock';
 import { SliderModule } from '../../buttons-indicators/slider/slider.module';
 import { CardsLayoutComponent } from './cards-layout.component';
@@ -23,24 +36,30 @@ import { cloneDeep } from 'lodash';
     <b-cards [type]="type" [alignCenter]="alignCenter">
       <b-card-add [type]="type" (clicked)="onAddCardClick()" [card]="addCard">
       </b-card-add>
-      <b-card *ngFor="let card of cards; let i = index"
-              [type]="type"
-              (clicked)="onCardClick(card, i)"
-              [card]="card">
-        <b-avatar card-top
-                  [imageSource]="avatars[i].imageUrl"
-                  [title]="avatars[i].displayName">
+      <b-card
+        *ngFor="let card of cards; let i = index"
+        [type]="type"
+        (clicked)="onCardClick(card, i)"
+        [card]="card"
+      >
+        <b-avatar
+          card-top
+          [imageSource]="avatars[i].imageUrl"
+          [title]="avatars[i].displayName"
+        >
         </b-avatar>
         <div card-content *ngIf="i % 2 === 0">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </div>
         <div card-content *ngIf="i % 2 !== 0">
-          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+          officia deserunt mollit anim id est laborum.
         </div>
       </b-card>
     </b-cards>
   `,
+  styles: [':host {display: block;}']
 })
 export class CardLayoutExample1Component implements OnInit {
   @Input() type: CardType = CardType.regular;
@@ -55,8 +74,7 @@ export class CardLayoutExample1Component implements OnInit {
   cards: Card[] = cloneDeep(CardsMockData);
   avatars: any = [];
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.cards.forEach((d, index) => {
@@ -81,14 +99,17 @@ export class CardLayoutExample1Component implements OnInit {
   selector: 'b-card-layout-example-2',
   template: `
     <b-cards [type]="type" [alignCenter]="alignCenter">
-      <b-card-employee *ngFor="let card of cards; let i = index"
-                       [type]="type"
-                       (click)="onClick($event)"
-                       [card]="card">
-        <b-caption card-bottom><b>Likes:</b> {{hobbies[i]}}</b-caption>
+      <b-card-employee
+        *ngFor="let card of cards; let i = index"
+        [type]="type"
+        (click)="onClick($event)"
+        [card]="card"
+      >
+        <b-caption card-bottom><b>Likes:</b> {{ hobbies[i] }}</b-caption>
       </b-card-employee>
     </b-cards>
   `,
+  styles: [':host {display: block;}']
 })
 export class CardLayoutExample2Component implements OnInit {
   @Input() alignCenter = false;
@@ -97,8 +118,7 @@ export class CardLayoutExample2Component implements OnInit {
   cards: CardEmployee[] = EmployeeCardsMockData;
   hobbies: string[] = [];
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     for (let i = 0; i < this.cards.length; i++) {
@@ -116,14 +136,17 @@ export class CardLayoutExample2Component implements OnInit {
   selector: 'b-card-layout-example-3',
   template: `
     <b-cards [type]="type" [alignCenter]="alignCenter">
-      <b-card-employee *ngFor="let card of cards; let i = index"
-                       [type]="type"
-                       (click)="onClick($event)"
-                       [card]="card">
-        <b-caption card-bottom>{{dates[i]}}</b-caption>
+      <b-card-employee
+        *ngFor="let card of cards; let i = index"
+        [type]="type"
+        (click)="onClick($event)"
+        [card]="card"
+      >
+        <b-caption card-bottom>{{ dates[i] }}</b-caption>
       </b-card-employee>
     </b-cards>
   `,
+  styles: [':host {display: block;}']
 })
 export class CardLayoutExample3Component implements OnInit, OnDestroy {
   @Input() alignCenter = false;
@@ -143,8 +166,7 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
       });
   }
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     for (let i = 0; i < 5; i++) {
@@ -154,7 +176,7 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
         subtitle: mockJobs(1),
         coverColors: {
           color1: '#fea54a',
-          color2: '#fe4a4a',
+          color2: '#fe4a4a'
         }
       });
       this.dates.push(mockDate());
@@ -176,15 +198,18 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
     <b-cards [type]="type" [alignCenter]="alignCenter">
       <b-card-add [type]="type" (clicked)="onAddCardClick()" [card]="addCard">
       </b-card-add>
-      <b-card *ngFor="let card of cards; let i = index"
-              [type]="type"
-              (clicked)="onCardClick(card, i)"
-              [card]="card">
-        <div card-top
-             class="top">
-          <b-icon [icon]="icons.person"
-                  [size]="iconSize.small"
-                  [color]="iconColor.white">
+      <b-card
+        *ngFor="let card of cards; let i = index"
+        [type]="type"
+        (clicked)="onCardClick(card, i)"
+        [card]="card"
+      >
+        <div card-top class="top">
+          <b-icon
+            [icon]="icons.person"
+            [size]="iconSize.small"
+            [color]="iconColor.white"
+          >
           </b-icon>
           <span>1 enrolled</span>
         </div>
@@ -201,30 +226,31 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
       </b-card>
     </b-cards>
   `,
-  styles: [`
-    .top {
-      display: flex;
-      align-items: center;
-      color: white;
-    }
-
-    .top b-icon {
-      margin-right: 4px;
-    }
-
-    .benefit-detail {
-      margin-bottom: 8px;
-    }
-
-    .benefit-detail span {
-      display: block;
-    }
-
-    .benefit-detail span:first-child {
-      color: #9D9D9D;
-    }
-  `
+  styles: [
+    `
+      :host {
+        display: block;
+      }
+      .top {
+        display: flex;
+        align-items: center;
+        color: white;
+      }
+      .top b-icon {
+        margin-right: 4px;
+      }
+      .benefit-detail {
+        margin-bottom: 8px;
+      }
+      .benefit-detail span {
+        display: block;
+      }
+      .benefit-detail span:first-child {
+        color: #9d9d9d;
+      }
+    `
   ],
+  providers: []
 })
 export class CardLayoutExample4Component implements OnInit {
   @Input() type: CardType = CardType.regular;
@@ -242,8 +268,7 @@ export class CardLayoutExample4Component implements OnInit {
 
   cards: Card[] = cloneDeep(CardsMockData);
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.cards.forEach((card, index) => {
@@ -266,7 +291,7 @@ export class CardLayoutExample4Component implements OnInit {
     CardLayoutExample1Component,
     CardLayoutExample2Component,
     CardLayoutExample3Component,
-    CardLayoutExample4Component,
+    CardLayoutExample4Component
   ],
   imports: [
     BrowserModule,
@@ -274,14 +299,13 @@ export class CardLayoutExample4Component implements OnInit {
     AvatarModule,
     SliderModule,
     TypographyModule,
-    IconsModule,
+    IconsModule
   ],
   exports: [
     CardLayoutExample1Component,
     CardLayoutExample2Component,
     CardLayoutExample3Component,
-    CardLayoutExample4Component,
+    CardLayoutExample4Component
   ]
 })
-export class CardLayoutExampleModule {
-}
+export class CardLayoutExampleModule {}

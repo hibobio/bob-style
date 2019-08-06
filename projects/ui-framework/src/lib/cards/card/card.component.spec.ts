@@ -1,5 +1,11 @@
 import { CardComponent } from './card.component';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { MenuComponent } from '../../navigation/menu/menu.component';
@@ -20,12 +26,9 @@ describe('CardComponent', () => {
         CardComponent,
         MockComponent(MenuComponent),
         MockComponent(SquareButtonComponent),
-        MockComponent(TextButtonComponent),
+        MockComponent(TextButtonComponent)
       ],
-      imports: [
-        TruncateTooltipModule,
-        TypographyModule,
-      ],
+      imports: [TruncateTooltipModule, TypographyModule]
     })
       .compileComponents()
       .then(() => {
@@ -38,24 +41,28 @@ describe('CardComponent', () => {
   describe('Type', () => {
     beforeEach(() => {
       component.card = {
-        title: 'test title',
+        title: 'test title'
       };
     });
     it('should be of type primary by default', () => {
       fixture.detectChanges();
-      expect(fixture.nativeElement.attributes['data-type'].value).toEqual('regular');
+      expect(fixture.nativeElement.attributes['data-type'].value).toEqual(
+        'regular'
+      );
     });
     it('should change type on type input change', () => {
       component.type = CardType.large;
       fixture.detectChanges();
-      expect(fixture.nativeElement.attributes['data-type'].value).toEqual('large');
+      expect(fixture.nativeElement.attributes['data-type'].value).toEqual(
+        'large'
+      );
     });
   });
 
   describe('Title', () => {
     it('should set .card-title text', () => {
       component.card = {
-        title: 'test title',
+        title: 'test title'
       };
       fixture.detectChanges();
       const title = fixture.debugElement.query(By.css('.card-title'));
@@ -65,7 +72,7 @@ describe('CardComponent', () => {
     it('should add truncate-tooltip to long .card-content text', () => {
       component.card = {
         title: `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`
       };
       fixture.detectChanges();
       const title = fixture.debugElement.query(By.css('.card-title'));
@@ -79,8 +86,8 @@ describe('CardComponent', () => {
       component.card = {
         title: 'test',
         menuConfig: [
-          { label: 'action 1', action: () => console.log('action 1') },
-        ],
+          { label: 'action 1', action: () => console.log('action 1') }
+        ]
       };
       fixture.detectChanges();
       const menu = fixture.debugElement.query(By.css('.card-menu'));
@@ -89,7 +96,7 @@ describe('CardComponent', () => {
     });
     it('should not create menu element if no menuConfig is passed', () => {
       component.card = {
-        title: 'test',
+        title: 'test'
       };
       const menu = fixture.debugElement.query(By.css('.card-menu'));
 
@@ -99,7 +106,7 @@ describe('CardComponent', () => {
       component.card = {
         title: 'test',
         menuConfig: [
-          { label: 'action 1', action: () => console.log('action 1') },
+          { label: 'action 1', action: () => console.log('action 1') }
         ],
         actionConfig: {
           icon: Icons.file_copy,
@@ -118,8 +125,8 @@ describe('CardComponent', () => {
       component.card = {
         title: 'test',
         menuConfig: [
-          { label: 'action 1', action: () => console.log('action 1') },
-        ],
+          { label: 'action 1', action: () => console.log('action 1') }
+        ]
       };
       fixture.detectChanges();
       const menu = fixture.debugElement.query(By.css('.card-menu'));
@@ -129,26 +136,25 @@ describe('CardComponent', () => {
       expect(fixture.nativeElement.dataset.focusInside).toEqual('true');
     });
 
-    it('should remove focus-inside class from host element after timeout on menu close',
-      fakeAsync(() => {
-        component.card = {
-          title: 'test',
-          menuConfig: [
-            { label: 'action 1', action: () => console.log('action 1') },
-          ],
-        };
-        fixture.detectChanges();
-        const menu = fixture.debugElement.query(By.css('.card-menu'));
+    it('should remove focus-inside class from host element after timeout on menu close', fakeAsync(() => {
+      component.card = {
+        title: 'test',
+        menuConfig: [
+          { label: 'action 1', action: () => console.log('action 1') }
+        ]
+      };
+      fixture.detectChanges();
+      const menu = fixture.debugElement.query(By.css('.card-menu'));
 
-        menu.componentInstance.openMenu.emit();
-        fixture.detectChanges();
-        menu.componentInstance.closeMenu.emit();
-        fixture.detectChanges();
-        expect(fixture.nativeElement.dataset.focusInside).toEqual('true');
-        tick(300);
-        fixture.detectChanges();
-        expect(fixture.nativeElement.dataset.focusInside).not.toEqual('true');
-      }));
+      menu.componentInstance.openMenu.emit();
+      fixture.detectChanges();
+      menu.componentInstance.closeMenu.emit();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.dataset.focusInside).toEqual('true');
+      tick(300);
+      fixture.detectChanges();
+      expect(fixture.nativeElement.dataset.focusInside).not.toEqual('true');
+    }));
   });
 
   describe('Action Button', () => {
@@ -182,7 +188,7 @@ describe('CardComponent', () => {
   describe('cta', () => {
     it('should not show cta button if not in config', () => {
       component.card = {
-        title: 'test',
+        title: 'test'
       };
       fixture.detectChanges();
       const ctaButton = fixture.debugElement.query(By.css('.cta-button'));
@@ -191,7 +197,7 @@ describe('CardComponent', () => {
     it('should not show cta button if not in config', () => {
       component.card = {
         title: 'test',
-        footerCtaLabel: 'click here',
+        footerCtaLabel: 'click here'
       };
       fixture.detectChanges();
       const ctaButton = fixture.debugElement.query(By.css('.cta-button'));
@@ -202,7 +208,7 @@ describe('CardComponent', () => {
       spyOn(component.clicked, 'emit');
       component.card = {
         title: 'test',
-        footerCtaLabel: 'click here',
+        footerCtaLabel: 'click here'
       };
       fixture.detectChanges();
       const ctaButton = fixture.debugElement.query(By.css('.cta-button'));
@@ -214,7 +220,7 @@ describe('CardComponent', () => {
   describe('cover image', () => {
     it('should not show cover image when no image is supplied', () => {
       component.card = {
-        title: 'test',
+        title: 'test'
       };
       fixture.detectChanges();
       const image = fixture.debugElement.query(By.css('.image-holder'));
@@ -223,7 +229,7 @@ describe('CardComponent', () => {
     it('should show image if supplied', () => {
       component.card = {
         title: 'test',
-        imageUrl: 'some_image.png',
+        imageUrl: 'some_image.png'
       };
       fixture.detectChanges();
       const image = fixture.debugElement.query(By.css('.image-holder'));
@@ -232,12 +238,13 @@ describe('CardComponent', () => {
     it('should set background image', () => {
       component.card = {
         title: 'test',
-        imageUrl: 'some_image.png',
+        imageUrl: 'some_image.png'
       };
       fixture.detectChanges();
       const image = fixture.debugElement.query(By.css('.image-holder'));
-      expect(getComputedStyle(image.nativeElement).backgroundImage)
-        .toEqual('url("http://localhost:9876/some_image.png")');
+      expect(getComputedStyle(image.nativeElement).backgroundImage).toContain(
+        'some_image.png'
+      );
     });
     it('should change icon color to white when image is displayed', () => {
       component.card = {
@@ -246,7 +253,7 @@ describe('CardComponent', () => {
         actionConfig: {
           icon: Icons.file_copy,
           action: () => console.log('action button')
-        },
+        }
       };
       fixture.detectChanges();
       const action = fixture.debugElement.query(By.css('.card-action'));

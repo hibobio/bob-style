@@ -41,6 +41,7 @@
     "ng-mocks": "^8.0.0",
     "quill": "^1.3.6",
     "rxjs": "~6.5.2",
+    "swiper": "^4.5.0",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {

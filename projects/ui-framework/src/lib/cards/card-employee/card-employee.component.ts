@@ -1,29 +1,30 @@
 import {
-  Component, ElementRef, EventEmitter, HostBinding, Input, OnChanges, Output, SimpleChanges,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
-import { CardType } from '../cards.enum';
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 import { CardEmployee } from './card-employee.interface';
 import { has } from 'lodash';
+import { BaseCardElement } from '../card/card.abstract';
 
 @Component({
   selector: 'b-card-employee, [b-card-employee]',
   templateUrl: './card-employee.component.html',
-  styleUrls: ['../card/card.component.scss', './card-employee.component.scss']
+  styleUrls: ['../card/card.component.scss', './card-employee.component.scss'],
+  providers: [{ provide: BaseCardElement, useExisting: CardEmployeeComponent }]
 })
-export class CardEmployeeComponent implements OnChanges {
-  constructor(
-    private elRef: ElementRef,
-  ) {
+export class CardEmployeeComponent extends BaseCardElement
+  implements OnChanges {
+  constructor(public cardElRef: ElementRef) {
+    super(cardElRef);
   }
 
   @Input() card: CardEmployee;
-  @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
   readonly avatarSize = AvatarSize;
-  readonly cardType = CardType;
-
-  @HostBinding('attr.data-type') @Input() type: CardType = CardType.regular;
 
   onClick($event) {
     this.clicked.emit($event);
@@ -32,10 +33,14 @@ export class CardEmployeeComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'card.currentValue.coverColors')) {
       this.card = changes.card.currentValue;
-      this.elRef.nativeElement.style
-        .setProperty('--background-color-1', `${ this.card.coverColors.color1 }`);
-      this.elRef.nativeElement.style
-        .setProperty('--background-color-2', `${ this.card.coverColors.color2 }`);
+      this.cardElRef.nativeElement.style.setProperty(
+        '--background-color-1',
+        `${this.card.coverColors.color1}`
+      );
+      this.cardElRef.nativeElement.style.setProperty(
+        '--background-color-2',
+        `${this.card.coverColors.color2}`
+      );
     }
   }
 }
