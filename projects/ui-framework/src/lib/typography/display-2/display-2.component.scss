@@ -1,5 +1,7 @@
 @import '../../style/typography.scss';
+
 :host {
-  display: block;
-  @include DisplayFont($font-size-display-2, $font-weight-display-2);
+  @include b-display-2($addCssVars: false) {
+    display: block;
+  }
 }

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'b-big-body, [b-big-body]',
+  selector: 'b-body, [b-body]',
   template: '<ng-content></ng-content>',
-  styleUrls: ['./big-body.component.scss']
+  styleUrls: ['./body.component.scss']
 })
-export class BigBodyComponent {
+export class BodyComponent {
   constructor() {}
 }
