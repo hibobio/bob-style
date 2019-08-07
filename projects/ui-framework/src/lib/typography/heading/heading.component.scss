@@ -1,5 +1,7 @@
 @import '../../style/typography.scss';
+
 :host {
-  display: block;
-  @include HeadingFont($font-size-heading);
+  @include b-heading($addCssVars: false) {
+    display: block;
+  }
 }

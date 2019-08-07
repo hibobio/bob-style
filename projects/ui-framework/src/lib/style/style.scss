@@ -35,8 +35,7 @@
 
 html,
 body {
-  color: $grey-800;
-  @include BodyFont;
+  @include b-body($color: $grey-800);
 }
 
 .b-mobile {
@@ -44,8 +43,69 @@ body {
     display: none !important;
   }
 }
+
 .b-desktop {
   @include mobile {
     display: none !important;
+  }
+}
+
+.b-body {
+  @include b-body($addCssVars: true) {
+    margin: 0;
+  }
+}
+
+.b-big-body {
+  @include b-big-body($addCssVars: true) {
+    margin: 0;
+  }
+}
+
+.b-bold-body {
+  @include b-bold-body($addCssVars: true) {
+    margin: 0;
+  }
+}
+
+.b-caption {
+  @include b-caption($addCssVars: true) {
+    margin: 0;
+  }
+}
+
+.b-display-1 {
+  @include b-display-1($addCssVars: true) {
+    margin: 0;
+  }
+}
+
+.b-display-2 {
+  @include b-display-2($addCssVars: true) {
+    margin: 0;
+  }
+}
+
+.b-display-3 {
+  @include b-display-3($addCssVars: true) {
+    margin: 0;
+  }
+}
+
+.b-display-4 {
+  @include b-display-4($addCssVars: true) {
+    margin: 0;
+  }
+}
+
+.b-heading {
+  @include b-heading($addCssVars: true) {
+    margin: 0;
+  }
+}
+
+.b-subheading {
+  @include b-subheading($addCssVars: true) {
+    margin: 0;
   }
 }
