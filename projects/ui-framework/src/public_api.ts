@@ -460,5 +460,4 @@ export { mockText, mockDate, mockHobbies, mockJobs, mockNames, mockAvatar } from
 /*
 * Animation
  */
-
 export { SLIDE_UP_DOWN } from './lib/style/animations';
