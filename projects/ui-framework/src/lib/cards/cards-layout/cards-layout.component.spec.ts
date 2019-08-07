@@ -1,15 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  CardsLayoutComponent,
-  GAP_SIZE,
-  CARD_TYPE_WIDTH
-} from './cards-layout.component';
+import { CardsLayoutComponent } from './cards-layout.component';
 import { CardsModule } from '../cards.module';
 import { CardType } from '../cards.enum';
 import { MockComponent } from 'ng-mocks';
 import { simpleChange } from '../../services/utils/test-helpers';
+import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
 
 describe('CardsLayoutComponent', () => {
   let fixture: ComponentFixture<CardsLayoutComponent>;
@@ -18,7 +15,7 @@ describe('CardsLayoutComponent', () => {
   let cardsHostElement: HTMLElement;
 
   const getCardMaxWidth = () =>
-    getComputedStyle(cardsHostElement).getPropertyValue('--card-max-width');
+    getComputedStyle(cardsHostElement).getPropertyValue('--card-width');
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

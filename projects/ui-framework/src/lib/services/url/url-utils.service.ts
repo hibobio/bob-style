@@ -5,7 +5,8 @@ import {
   allowedDomainsTest,
   naiveLinkTest,
   imageLinkTest,
-  base64imageTest
+  base64imageTest,
+  filestackTest
 } from './url.const';
 import { VideoData } from './url.interface';
 import { URLtype } from './url.enum';
@@ -35,10 +36,12 @@ export class URLutils {
   }
 
   validateImg(url: string): string {
+    if (filestackTest.test(url)) {
+      return this.reconstruct(url);
+    }
     if (imageLinkTest.test(url)) {
       return !base64imageTest.test(url) ? this.reconstruct(url) : url;
     }
-
     throw new Error(`URL (${url}) is not a valid image URL.`);
   }
 

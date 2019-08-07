@@ -8,7 +8,7 @@
     </b-component-renderer>
 
     <b-square-button class="delete-button"
-                     *ngIf="chainLink.active"
+                     *ngIf="chainLink.active && chainLinkList.length > 1"
                      [type]="buttonType.tertiary"
                      [size]="buttonSize.large"
                      [icon]="icons.delete"

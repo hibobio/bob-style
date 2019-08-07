@@ -2,12 +2,11 @@
      class="steps">
   <span *ngFor="let step of breadcrumbs; let i = index"
         class="step"
-        [ngClass]="{ disabled: step.disabled }"
+        [ngClass]="{ disabled: step.disabled, clickable: i < activeIndex}"
         (click)="onStepClick(i)">
 
     <span class="index"
-          [matTooltip]="i !== activeIndex  ? step.title : null"
-          matTooltipPosition="above">
+          [attr.data-tooltip]="i !== activeIndex ? step.title : null">
       {{ i + 1 }}
     </span>
 
@@ -28,7 +27,8 @@
      class="steps steps-circles">
   <span *ngFor="let step of breadcrumbs; let i = index"
         class="step"
-        [ngClass]="{ active: i == activeIndex }"></span>
+        [ngClass]="{ active: i == activeIndex, clickable: i < activeIndex}"
+        (click)="onStepClick(i)"></span>
 </div>
 
 <div class="buttons"

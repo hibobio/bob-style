@@ -115,7 +115,6 @@ export { MultiListAndChipsModule } from './lib/chips/multi-list-and-chips/multi-
 export { MultiListAndChipsComponent } from './lib/chips/multi-list-and-chips/multi-list-and-chips.component';
 
 
-
 /*
  * Form Elements
  */
@@ -190,6 +189,17 @@ export {
   ListComponentPrefix
 } from './lib/form-elements/lists/list.interface';
 export { ListChange } from './lib/form-elements/lists/list-change/list-change';
+// Single select panel
+export { SingleSelectPanelModule } from './lib/form-elements/lists/single-select-panel/single-select-panel.module';
+export {
+  SingleSelectPanelComponent,
+} from './lib/form-elements/lists/single-select-panel/single-select-panel.component';
+// Multi select panel
+export { MultiSelectPanelModule } from './lib/form-elements/lists/multi-select-panel/multi-select-panel.module';
+export {
+  MultiSelectPanelComponent,
+} from './lib/form-elements/lists/multi-select-panel/multi-select-panel.component';
+
 // Chain select
 export {
   SelectComponentConfig
@@ -277,10 +287,6 @@ export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { TabsComponent } from './lib/navigation/tabs/tabs.component';
 export { Tab } from './lib/navigation/tabs/tabs.interface';
 export { TabsType } from './lib/navigation/tabs/tabs.enum';
-// Single list menu
-export { SingleListMenuModule } from './lib/navigation/single-list-menu/single-list-menu.module';
-export { SingleListMenuComponent } from './lib/navigation/single-list-menu/single-list-menu.component';
-export { SingleListMenuItem } from './lib/navigation/single-list-menu/single-list-menu.interface';
 
 // Breadcrumbs Module
 export {
@@ -320,6 +326,11 @@ export {
 export {
   DialogService
 } from './lib/popups/dialog/dialog-service/dialog.service';
+// Confirmation dialog module
+export { ConfirmationDialogModule } from './lib/popups/confirmation-dialog/confirmation-dialog.module';
+export { ConfirmationDialogComponent } from './lib/popups/confirmation-dialog/confirmation-dialog.component';
+export { ConfirmationDialogConfig } from './lib/popups/confirmation-dialog/confirmation-dialog.interface';
+export { ConfirmationDialogService } from './lib/popups/confirmation-dialog/confirmation-dialog.service';
 // Alert Module
 export { AlertModule } from './lib/popups/alert/alert.module';
 export { AlertService } from './lib/popups/alert/alert-service/alert.service';
@@ -355,19 +366,25 @@ export { TableUtilsService } from './lib/table/table-utils-service/table-utils.s
 // Divider
 export { DividerModule } from './lib/layout/divider/divider.module';
 export { DividerComponent } from './lib/layout/divider/divider.component';
+// Charts
+export { ChartsModule } from './lib/charts/charts.module';
+export { HighChartOptions } from './lib/charts/chart/chart.interface';
+export { PieChartComponent } from './lib/charts/pie-chart/pie-chart.component';
+export { DonutChartTextComponent } from './lib/charts/donut-chart-text/donut-chart-text.component';
 // Cards
 export { CardsModule } from './lib/cards/cards.module';
 export { CardType } from './lib/cards/cards.enum';
-export { CardContent, CardData, CardEmployee, AddCardData } from './lib/cards/cards.interface';
 // Single card
 export { CardComponent } from './lib/cards/card/card.component';
+export { Card, CardActionButton } from './lib/cards/card/card.interface';
 // Add new Card
 export { CardAddComponent } from './lib/cards/card-add/card-add.component';
+export { AddCard } from './lib/cards/card-add/card-add.interface';
 // Employee Card
-export { EmployeeCardComponent } from './lib/cards/card-employee/card-employee.component';
-// Mini Employee Card
-export { MiniEmployeeCardComponent } from './lib/cards/mini-card-employee/mini-card-employee.component';
-export { MiniEmployeeCard } from './lib/cards/mini-card-employee/mini-card-employee.interface';
+export { CardEmployeeComponent } from './lib/cards/card-employee/card-employee.component';
+export {
+  CardEmployee, CardEmployeeSocial, CardEmployeeCoverColors,
+} from './lib/cards/card-employee/card-employee.interface';
 // Cards Layout
 export { CardsLayoutComponent } from './lib/cards/cards-layout/cards-layout.component';
 // Card Table
@@ -379,7 +396,7 @@ export { CollapsibleModule } from './lib/layout/collapsible/collapsible.module';
 export { CollapsibleComponent } from './lib/layout/collapsible/collapsible.component';
 export { CollapsibleType } from './lib/layout/collapsible/collapsible.enum';
 // Section Container
-export {SectionContainerModule} from './lib/layout/sectionContainer/sectionContainer.module';
+export { SectionContainerModule } from './lib/layout/sectionContainer/sectionContainer.module';
 export { SectionContainerComponent } from './lib/layout/sectionContainer/sectionContainer.component';
 
 /*
@@ -431,7 +448,9 @@ export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
 export { FloatingAvatarsComponent } from './lib/eye-candy/floating-avatars/floating-avatars.component';
 // text colored links
 export { TextColoredLinksModule } from './lib/eye-candy/text-colored-links/text-colored-links.module';
-export { TextColoredLinksComponent } from
+export {
+  TextColoredLinksComponent
+} from
     './lib/eye-candy/text-colored-links/text-colored-links/text-colored-links.component';
 export { ColorTextItem } from './lib/eye-candy/text-colored-links/text-colored-links.interface';
 // Mocks
@@ -441,5 +460,4 @@ export { mockText, mockDate, mockHobbies, mockJobs, mockNames, mockAvatar } from
 /*
 * Animation
  */
-
 export { SLIDE_UP_DOWN } from './lib/style/animations';

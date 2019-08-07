@@ -33,7 +33,7 @@
 
     &:not(.focused):not(.empty) {
       .bfe-input.empty {
-        max-height: 0px;
+        max-height: 0;
         margin-top: 0;
         margin-bottom: 0;
       }

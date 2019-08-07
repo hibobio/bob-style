@@ -1,27 +1,50 @@
+<div *ngIf="card.imageUrl"
+     class="image-holder"
+     [ngStyle]="{ 'background-image': 'url(' + card.imageUrl + ')' }">
+</div>
+
 <b-menu class="card-menu"
-        *ngIf="card.menu && card.menu.length > 0"
-        [menu]="card.menu"
+        *ngIf="card.menuConfig && card.menuConfig.length > 0"
+        [menu]="card.menuConfig"
         (openMenu)="onMenuOpen()"
         (closeMenu)="onMenuClose()"
         (click.outside-zone)="$event.stopPropagation()">
   <b-square-button menu-trigger
-                   [type]="button.tertiary"
+                   [type]="buttonType.tertiary"
+                   [color]="card.imageUrl ? iconColor.white : iconColor.dark"
                    [icon]="icons.three_dots_vert">
   </b-square-button>
 </b-menu>
 
-<div class="card-top">
+<b-square-button class="card-action"
+                 *ngIf="!(card.menuConfig && card.menuConfig.length > 0) && card.actionConfig"
+                 [type]="buttonType.tertiary"
+                 [icon]="card.actionConfig.icon"
+                 [color]="card.imageUrl ? iconColor.white : iconColor.dark"
+                 (clicked)="card.actionConfig.action($event)">
+</b-square-button>
+
+<div class="card-top"
+     [ngClass]="{'cover-image': card.imageUrl}">
   <ng-content select="[card-top]"></ng-content>
 </div>
 
-<p class="card-content"
-   *ngIf="card.data.text"
-   [b-truncate-tooltip]="type === cardType.regular ? 4 : 3"
+<p class="card-title"
+   [b-truncate-tooltip]="2"
    [delay]="100"
    [trustCssVars]="true">
-  {{ card.data.text }}
+  {{ card.title }}
 </p>
 
-<div class="card-bottom">
-  <ng-content select="[card-bottom]"></ng-content>
+<div class="card-content">
+  <ng-content select="[card-content]"></ng-content>
+</div>
+
+<div *ngIf="card.footerCtaLabel"
+     class="card-footer">
+  <b-text-button class="cta-button"
+                 [text]="card.footerCtaLabel"
+                 [color]="linkColor.primary"
+                 (clicked)="onCtaClick($event)">
+  </b-text-button>
 </div>

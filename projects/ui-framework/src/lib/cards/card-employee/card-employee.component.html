@@ -1,7 +1,45 @@
-<b-avatar class="card-content"
-          [imageSource]="card.imageSource"
-          [title]="card.title"
-          [subtitle]="card.subtitle"
-          [size]="avatarSize.medium"
-          [orientation]="avatarOrientation.vertical">
-</b-avatar>
+<div class="card-content">
+
+  <div class="cover-container"></div>
+
+  <b-avatar [size]="type === cardType.small ? avatarSize.small : avatarSize.medium"
+            [imageSource]="card.imageSource"
+            [ngStyle]="{ cursor: clicked ? 'pointer' : 'default' }"
+            (clicked)="clicked ? onClick($event) : null">
+  </b-avatar>
+
+  <b-display-4 class="title"
+               *bTruncateTooltip="2">
+    {{card.title}}
+  </b-display-4>
+
+  <b-caption class="subtitle"
+             *bTruncateTooltip="2">
+    {{card.subtitle}}
+  </b-caption>
+
+  <div *ngIf="card.social"
+       class="social">
+    <a *ngIf="card.social.linkedin"
+       class="b-icon-linkedin"
+       href="{{card.social.linkedin}}"
+       target="_blank">
+    </a>
+    <a *ngIf="card.social.facebook"
+       class="b-icon-facebook"
+       href="{{card.social.facebook}}"
+       target="_blank">
+    </a>
+    <a *ngIf="card.social.twitter"
+       class="b-icon-twitter"
+       href="{{card.social.twitter}}"
+       target="_blank">
+    </a>
+  </div>
+
+  <ng-content select="[card-content]"></ng-content>
+</div>
+
+<div class="card-bottom">
+  <ng-content select="[card-bottom]"></ng-content>
+</div>

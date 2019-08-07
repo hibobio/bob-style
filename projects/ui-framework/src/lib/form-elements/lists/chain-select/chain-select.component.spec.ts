@@ -110,13 +110,13 @@ describe('EmployeeChainSelectComponent', () => {
     });
 
     it('Should set empty state', () => {
-      expect(component.state[0].getSelectedIds()).toEqual([]);
+      expect(component.state).toEqual([null]);
     });
 
     it('Should set state from selected IDs', () => {
       component.selectComponentConfig.selectedIds = ['123'];
       component.ngOnInit();
-      expect(component.state[0].getSelectedIds()).toEqual(['123']);
+      expect(component.state[0]).toBeNull();
     });
   });
 
@@ -133,7 +133,7 @@ describe('EmployeeChainSelectComponent', () => {
       const selectElement = fixture.debugElement.queryAll(By.css('select'))[1];
       selectElement.triggerEventHandler('click', new ListChange([]));
       expect(component.selectChange.emit).toHaveBeenCalledWith([
-        jasmine.any(ListChange),
+        null,
         jasmine.any(ListChange),
       ]);
     });

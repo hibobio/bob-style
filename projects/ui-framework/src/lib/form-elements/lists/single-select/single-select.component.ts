@@ -47,9 +47,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement
   implements OnChanges, OnDestroy {
   @Input() options: SelectGroupOption[];
   @Input() showSingleGroupHeader = false;
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
 
   triggerValue: string;
   singleSelectOptions: SelectGroupOption[];

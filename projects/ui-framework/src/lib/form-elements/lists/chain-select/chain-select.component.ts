@@ -29,7 +29,7 @@ export class ChainSelectComponent implements OnInit {
   ngOnInit() {
     if (isEmpty(this.selectComponentConfig.selectedIds) || !this.selectComponentConfig.selectedIdKey) {
       this.chainLinkList = [this.createEmptyChainLink(0)];
-      this.state = [new ListChange([])];
+      this.state = [null];
     } else {
       this.chainLinkList = this.selectComponentConfig.selectedIds.map((optionId, index) => ({
         active: false,
@@ -43,14 +43,7 @@ export class ChainSelectComponent implements OnInit {
           }
         }
       }));
-      this.state = this.selectComponentConfig.selectedIds.map((optionId) => new ListChange([{
-        groupName: '',
-        options: [{
-          id: optionId,
-          value: '',
-          selected: true,
-        }],
-      }]));
+      this.state = this.selectComponentConfig.selectedIds.map(() => null);
     }
   }
 

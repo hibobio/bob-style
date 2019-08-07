@@ -15,7 +15,8 @@ import { LightboxService } from '../lightbox.service';
 import { MediaType } from './media-embed.enum';
 import {
   imageLinkTest,
-  base64imageTest
+  base64imageTest,
+  filestackTest
 } from '../../../services/url/url.const';
 
 @Component({
@@ -53,9 +54,10 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
     if (changes.url) {
       this.url = changes.url.currentValue;
 
-      this.mediaType = imageLinkTest.test(this.url)
-        ? MediaType.image
-        : MediaType.video;
+      this.mediaType =
+        imageLinkTest.test(this.url) || filestackTest.test(this.url)
+          ? MediaType.image
+          : MediaType.video;
 
       if (this.mediaType === MediaType.image) {
         this.url = !base64imageTest.test(this.url)

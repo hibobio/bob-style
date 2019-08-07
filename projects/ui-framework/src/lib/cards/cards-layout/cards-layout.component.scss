@@ -1,3 +1,6 @@
+@import '../../style/variables';
+@import '../../style/mixins';
+
 $fit-strategy: auto-fill;
 $grid-gap: 16px;
 
@@ -11,10 +14,7 @@ $grid-gap: 16px;
   padding: 0;
   display: grid;
   grid-gap: $grid-gap;
-  grid-template-columns: repeat(
-    $fit-strategy,
-    minmax(var(--card-max-width), 1fr)
-  );
+  grid-template-columns: repeat($fit-strategy, minmax(var(--card-width), 1fr));
 
   &.align-center {
     display: flex;
@@ -24,9 +24,39 @@ $grid-gap: 16px;
     grid-template-columns: none;
     margin: calc(var(--card-grid-gap) / -2);
 
-    ::ng-deep > * {
+    ::ng-deep .single-card {
       margin: calc(var(--card-grid-gap) / 2);
-      width: var(--card-max-width);
+      width: var(--card-width);
+    }
+  }
+}
+
+// Swiper
+
+:host[data-mobile-swiper='true'] {
+  @include mobile {
+    cursor: grab;
+
+    .cards-list {
+      display: flex;
+      flex-wrap: nowrap;
+      will-change: transform;
+      user-select: none;
+    }
+
+    ::ng-deep {
+      .single-card {
+        user-select: none;
+        flex-shrink: 0;
+        min-width: 0;
+        -webkit-touch-callout: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      a {
+        user-select: none;
+        -webkit-user-drag: none;
+      }
     }
   }
 }

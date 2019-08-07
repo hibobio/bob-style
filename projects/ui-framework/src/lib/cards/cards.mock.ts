@@ -1,11 +1,9 @@
 import { MenuItem } from '../navigation/menu/menu.interface';
-import { SliderComponent } from '../buttons-indicators/slider/slider.component';
-import { RenderedComponent } from '../services/component-renderer/component-renderer.interface';
-import { AvatarComponent } from '../buttons-indicators/avatar/avatar.component';
-import { AvatarSize } from '../buttons-indicators/avatar/avatar.enum';
-import { CardData, AddCardData } from './cards.interface';
-import { randomNumber } from '../services/utils/functional-utils';
-import { mockNames, mockAvatar, mockJobs } from '../mock.const';
+import { Card } from './card/card.interface';
+import { AddCard } from './card-add/card-add.interface';
+import { CardEmployee } from './card-employee/card-employee.interface';
+import { mockAvatar, mockJobs, mockNames } from '../mock.const';
+import { Icons } from '../icons/icons.enum';
 
 const menuMock: MenuItem[] = [
   {
@@ -22,74 +20,62 @@ const menuMock: MenuItem[] = [
   }
 ];
 
-const headerComponent = (index: number): RenderedComponent => ({
-  component: AvatarComponent,
-  attributes: {
-    imageSource: mockAvatar(),
-    size: AvatarSize.mini,
-    title: mockNames(30)[index]
-  }
-});
-
-const footerComponent = (): RenderedComponent => ({
-  component: SliderComponent,
-  attributes: {
-    value: randomNumber(10, 90),
-    showLabel: false,
-    readOnly: true
-  }
-});
-
-export const AddCardMockData: AddCardData = {
+export const AddCardMockData: AddCard = {
   title: 'Add a new flow',
   subtitle: 'Right now',
   action: () => console.log('Add Card was clicked')
 };
 
-export const CardsMockData: CardData[] = [
+export const CardsMockData: Card[] = [
   {
-    data: {
-      text: 'Compensation update',
-    },
-    menu: menuMock
+    title: 'Compensation update',
+    menuConfig: menuMock,
+    footerCtaLabel: 'EDIT',
   },
   {
-    data: {
-      text: `Compensation update with a very long text that
+    title: `Compensation update with a very long text that
         cuts off after 4 lines of text. And here is another very long text that should not be
         displayed at all.`,
-    },
-    menu: menuMock
+    menuConfig: menuMock,
+    footerCtaLabel: 'EDIT',
   },
   {
-    data: {
-      text: 'Another compensation update',
-    },
-    menu: menuMock
+    title: 'Another compensation update',
+    menuConfig: menuMock,
+    footerCtaLabel: 'EDIT',
   },
   {
-    data: {
-      text: 'Update that compensation already!',
-    },
-    menu: menuMock
+    title: 'Update that compensation already!',
+    menuConfig: menuMock,
+    footerCtaLabel: 'EDIT',
   },
   {
-    data: {
-      text: `Come on! The compensation has not been updated for ages!`,
-    },
-    menu: menuMock
+    title: `Come on! The compensation has not been updated for ages!`,
+    menuConfig: menuMock,
+    footerCtaLabel: 'EDIT',
   },
   {
-    data: {
-      text: `If you dont update the compensation immidiately,
+    title: `If you dont update the compensation immidiately,
       I will update your compensation and you will not like it!`,
+    actionConfig: {
+      icon: Icons.file_copy,
+      action: ($event) => console.log('copy file'),
     },
-    menu: menuMock
+    footerCtaLabel: 'EDIT',
   }
 ];
 
-export const EmployeeCardsMockData: CardData[] = mockNames(6).map(name => ({
+export const EmployeeCardsMockData: CardEmployee[] = mockNames(6).map(name => ({
   imageSource: mockAvatar(),
   title: name,
-  subtitle: mockJobs(1)
+  subtitle: mockJobs(1),
+  social: {
+    linkedin: 'bad_url_linkedin',
+    facebook: 'bad_url_facebook',
+    twitter: 'bad_url_twitter',
+  },
+  coverColors: {
+    color1: '#fea54a',
+    color2: '#fe4a4a',
+  }
 }));

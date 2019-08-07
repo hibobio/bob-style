@@ -4,6 +4,7 @@ import { ComponentGroupType } from '../../consts';
 import {TextColoredLinksModule} from './text-colored-links.module';
 import {COLOR_TEXT_ITEMS} from './text-colored-links/text-colored-links.mocks';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import {DEFAULT_COLORS} from './text-colored-links.interface';
 
 const textColoredLinksStories = storiesOf(
   ComponentGroupType.EyeCandy,
@@ -13,6 +14,7 @@ const textColoredLinksStories = storiesOf(
 const template = `
 <div>
   <b-text-colored-links [colorTextItems]="colorTextItems"
+                        [colors]="colors"
                         [isClickable]="isClickable">
   </b-text-colored-links>
 </div>
@@ -26,12 +28,11 @@ The Text Colored Links is a list of links with colors, fonts etc.
 *TextColoredLinksModule*
 
 #### Style customization
-property name | Description
+property name | Type | Description
 --- | ---
-texts: | string[] - Array of text strings
-colors: | string[] - Array of color strings to random from
-sizes: | string[] - Array of size class names
-fonts: | string[] - Array of font class names
+texts: | ColorTextItem[] | Array of object with text and action
+colors: | string[] - Optional | Array of color strings to random from
+isClickable: | boolean - Optional | should have cursor:pointer and hover state or not
 
 ~~~
 b-text-colored-links
@@ -53,6 +54,7 @@ textColoredLinksStories.add(
     template: storyTemplate,
     props: {
       isClickable: boolean('isClickable', true),
+      colors: object('colors', DEFAULT_COLORS),
       colorTextItems: object('texts', COLOR_TEXT_ITEMS),
     },
     moduleMetadata: {

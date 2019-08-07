@@ -17,8 +17,13 @@ import { AvatarComponent } from '../../../buttons-indicators/avatar/avatar.compo
 import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
 import { UtilComponentsModule } from '../../../services/util-components/utilComponents.module';
 
-const buttonStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.FormElements,
+  module
+).addDecorator(withKnobs);
+
+const story2 = storiesOf(
+  ComponentGroupType.Lists,
   module
 ).addDecorator(withKnobs);
 
@@ -39,7 +44,7 @@ const template = `
 const storyTemplate = `
 <b-story-book-layout [title]="'Multi select'">
   <div style="flex:1; max-width: 350px;">
-    ${template}
+    ${ template }
   </div>
 
 </b-story-book-layout>
@@ -67,7 +72,7 @@ const note = `
   showSingleGroupHeader | boolean | displays single group with group header | false
 
   ~~~
-  ${template}
+  ${ template }
   ~~~
 `;
 
@@ -76,10 +81,10 @@ const optionsNum = 4;
 
 const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
   return {
-    groupName: `Basic Info G${i} - header`,
+    groupName: `Basic Info G${ i } - header`,
     options: Array.from(Array(optionsNum), (_, k) => {
       return {
-        value: `Basic Info G${i}_E${k} - option`,
+        value: `Basic Info G${ i }_E${ k } - option`,
         id: i * optionsNum + k,
         selected: false,
         prefixComponent: {
@@ -97,35 +102,34 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
 optionsMock[0].options[1].selected = true;
 optionsMock[1].options[2].selected = true;
 
-buttonStories.add(
-  'Multi select',
-  () => ({
-    template: storyTemplate,
-    props: {
-      options: object<SelectGroupOption>('options', optionsMock),
-      selectChange: action('Multi select change'),
-      selectModified: action('Multi select modified'),
-      selectCancelled: action('Multi select cancelled'),
-      label: text('label', 'label text'),
-      placeholder: text('placeholder', 'placeholder text'),
-      disabled: boolean('disabled', false),
-      required: boolean('required', false),
-      hintMessage: text('hintMessage', 'This field should contain something'),
-      errorMessage: text('errorMessage', ''),
-      showSingleGroupHeader: boolean('showSingleGroupHeader', false)
-    },
-    moduleMetadata: {
-      imports: [
-        MultiSelectModule,
-        ButtonsModule,
-        TypographyModule,
-        BrowserAnimationsModule,
-        StoryBookLayoutModule,
-        AvatarModule,
-        UtilComponentsModule
-      ],
-      entryComponents: [AvatarComponent]
-    }
-  }),
-  { notes: { markdown: note } }
-);
+const toAdd = () => ({
+  template: storyTemplate,
+  props: {
+    options: object<SelectGroupOption>('options', optionsMock),
+    selectChange: action('Multi select change'),
+    selectModified: action('Multi select modified'),
+    selectCancelled: action('Multi select cancelled'),
+    label: text('label', 'label text'),
+    placeholder: text('placeholder', 'placeholder text'),
+    disabled: boolean('disabled', false),
+    required: boolean('required', false),
+    hintMessage: text('hintMessage', 'This field should contain something'),
+    errorMessage: text('errorMessage', ''),
+    showSingleGroupHeader: boolean('showSingleGroupHeader', false)
+  },
+  moduleMetadata: {
+    imports: [
+      MultiSelectModule,
+      ButtonsModule,
+      TypographyModule,
+      BrowserAnimationsModule,
+      StoryBookLayoutModule,
+      AvatarModule,
+      UtilComponentsModule
+    ],
+    entryComponents: [AvatarComponent]
+  }
+});
+
+story.add('Multi select', toAdd, { notes: { markdown: note } });
+story2.add('Multi select', toAdd, { notes: { markdown: note } });

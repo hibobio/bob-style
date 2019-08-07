@@ -5,7 +5,9 @@ import assign from 'lodash/assign';
 import { DialogConfig } from '../dialog.interface';
 import { DialogSize } from '../dialog.enum';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DialogService {
 
   readonly dialogSizeToWidth = {

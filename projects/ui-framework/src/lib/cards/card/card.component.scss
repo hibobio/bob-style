@@ -1,6 +1,9 @@
 @import '../../style/colors';
+@import '../../style/variables';
 @import '../../style/mixins';
 @import '../../style/typography';
+
+$cardPadding: 24px;
 
 @keyframes enablePointer {
   from {
@@ -16,9 +19,9 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: $cardPadding;
   border: 1px solid $grey-500;
-  border-radius: 4px;
+  border-radius: $border-radius;
   transition: transform 0.2s, box-shadow 0.2s;
   text-align: left;
   background-color: white;
@@ -26,10 +29,10 @@
   &:hover,
   &:focus,
   &[data-focus-inside='true'] {
-    box-shadow: 0 2px 15px 0 $grey-500;
-    transform: translateY(-10px);
+    box-shadow: 0 2px 12px 0 $grey-500;
 
-    .card-menu {
+    .card-menu,
+    .card-action {
       pointer-events: all;
       opacity: 1;
     }
@@ -42,91 +45,89 @@
     }
   }
 
-  &[data-clickable='true'] {
-    cursor: pointer;
-  }
-
   &:focus {
     outline: 0;
   }
 }
 
-.card-menu {
+.card-menu,
+.card-action {
   position: absolute;
-  top: 2px;
-  right: 0;
+  top: 12px;
+  right: 10px;
   transition: opacity 0.2s;
   opacity: 0;
   pointer-events: none;
+  z-index: 1;
 }
 
-.card-content {
-  text-transform: none;
-  pointer-events: none;
-}
-
-.card-top,
-.card-content,
-.card-bottom {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-.card-top,
-.card-bottom {
-  font-weight: 300;
-}
-
-.card-top,
-.card-content {
-  margin-bottom: 15px;
-  color: $grey-700;
+.image-holder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 136px;
+  background-size: cover;
+  background-position: center center;
+  border-top-left-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+  overflow: hidden;
+  &:after {
+    @include pseudo;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    opacity: 0.8;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%);
+  }
 }
 
 .card-top {
-  max-width: calc(100% - 15px);
+  position: relative;
+  max-width: calc(100% - 22px);
+  margin-bottom: 16px;
+  &.cover-image {
+    height: 108px;
+  }
 }
 
-.card-bottom {
-  color: $grey-600;
-  margin-top: auto;
+.card-title {
+  margin: 0 0 16px;
+  @include DisplayFont(
+      $font-size-display-4,
+      600,
+    $transform: null,
+    $addCssVars: true
+  );
 }
 
 .card-content {
-  flex-grow: 5;
+  flex-grow: 1;
+}
 
-  &:last-child {
-    margin: 0;
-  }
+.card-footer {
+  padding-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
 }
 
 // Types
 
-:host[data-type='regular'] {
-  min-height: 240px;
-  min-width: 190px;
+:host[data-type='small'] {
+  min-width: 160px;
+  min-height: 0;
+}
 
-  .card-content {
-    @include DisplayFont(
-      $font-size-display-4,
-      600,
-      $transform: null,
-      $addCssVars: true
-    );
-  }
+:host[data-type='regular'] {
+  min-height: 300px;
+  min-width: 190px;
 }
 
 :host[data-type='large'] {
+  min-height: 300px;
   min-width: 260px;
-  min-height: 260px;
-
-  .card-content {
-    @include DisplayFont(
-      $font-size-display-3,
-      $font-weight-display-3,
-      $transform: null,
-      $addCssVars: true
-    );
-  }
 }

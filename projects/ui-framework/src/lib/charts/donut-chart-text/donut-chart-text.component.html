@@ -1,0 +1,17 @@
+<b-pie-chart
+[height]="height"
+[data]="data"
+[name]="name"
+[legend]="legend"
+[colorPalette]="colorPalette"
+[donutInnerSize]="donutInnerSize"
+[donut]="true"
+[extraOptions]="extraOptions"
+[preTooltipValue]="preTooltipValue"
+[postTooltipValue]="postTooltipValue"
+(legendChanged)="updatePosition($event)"
+>
+</b-pie-chart>
+<span class="text-container" [ngStyle]="textStyle">
+  <ng-content></ng-content>
+</span>
