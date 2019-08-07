@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { ColumnDef } from '../table/table.interface';
-import { assign, compact, concat, flatMap, get, map, chain, has } from 'lodash';
+import { assign, chain, compact, concat, flatMap, get, has, map } from 'lodash';
 import { SELECTION_COLUMN_DEF } from '../table/table.consts';
 import { GridOptions } from 'ag-grid-community';
 import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
 import { PinDirection, RowSelection } from '../table/table.enum';
-import { IconColor, IconSize } from '../../icons/icons.enum';
+import { IconSize } from '../../icons/icons.enum';
 
 const ICON_CELL_STYLE = { 'padding': '0 15px 0 43px' };
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class TableUtilsService {
 
   getAllColFields(gridOptions: GridOptions): string[] {
