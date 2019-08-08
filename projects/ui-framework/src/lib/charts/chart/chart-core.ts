@@ -65,7 +65,7 @@ export class ChartCore implements AfterViewInit, OnChanges {
 
   constructor(
     public zone: NgZone,
-    public cdr: ChangeDetectorRef,
+    public cdr: ChangeDetectorRef
   ) {
 
   }
@@ -104,9 +104,6 @@ export class ChartCore implements AfterViewInit, OnChanges {
           dataLabels: {
             enabled: this.showDataLabels
           },
-          // tooltip: {
-          //   pointFormat: this.pointFormat,
-          // }
         }
       },
       credits: {
@@ -126,7 +123,10 @@ export class ChartCore implements AfterViewInit, OnChanges {
     this.initialOptions();
     this.zone.runOutsideAngular(() => {
       Highcharts.setOptions({
-        colors: this.colorPalette
+        colors: this.colorPalette,
+        lang: {
+          noData: '' // overrides no data alert
+        }
       });
       this.highChartRef = Highcharts.chart(this.containerId, this.options);
     });

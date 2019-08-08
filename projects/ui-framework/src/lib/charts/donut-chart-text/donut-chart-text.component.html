@@ -12,6 +12,6 @@
 (legendChanged)="updatePosition($event)"
 >
 </b-pie-chart>
-<span class="text-container" [ngStyle]="textStyle">
+<span class="text-container" [ngStyle]="textStyle" *ngIf="data?.length">
   <ng-content></ng-content>
 </span>
