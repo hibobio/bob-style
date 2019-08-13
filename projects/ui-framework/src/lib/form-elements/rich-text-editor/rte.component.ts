@@ -141,7 +141,11 @@ export class RichTextEditorComponent extends RTEformElement
     this.inputTransformers = [stringyOrFail];
     this.outputTransformers = [this.rteUtils.cleanupHtml];
 
-    if (this.placeholderList && this.controls.includes(BlotType.placeholder)) {
+    if (
+      this.placeholderList &&
+      this.controls.includes(BlotType.placeholder) &&
+      !this.disableControls.includes(BlotType.placeholder)
+    ) {
       this.inputTransformers.push(
         this.placeholderRteConverterService.toRtePartial(this.placeholderList[0]
           .options as RtePlaceholder[])

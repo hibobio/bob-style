@@ -86,6 +86,7 @@ export class RteKeybindings {
     return false;
   }
 
+  // outside zone
   public addKeyBindings(): void {
     //
     // before backspace default action
@@ -152,7 +153,9 @@ export class RteKeybindings {
     this.editor.root.addEventListener('dblclick', event => {
       const element = event.target as any;
       if (this.specialBlots.treatAsWhole) {
-        const { currentBlot } = this.storeCurrent(false, { element });
+        const { currentBlot } = this.storeCurrent(false, {
+          element
+        });
 
         if (
           this.rteUtils.commonFormats(

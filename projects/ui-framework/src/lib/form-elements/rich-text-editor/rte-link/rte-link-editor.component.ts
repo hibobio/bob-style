@@ -5,7 +5,7 @@ import {
   Output,
   ViewChild,
   HostListener,
-  ChangeDetectorRef
+  NgZone
 } from '@angular/core';
 import { InputTypes } from '../../input/input.enum';
 import { InputEventType } from '../../form-elements.enum';
@@ -27,7 +27,7 @@ import { Keys } from '../../../enums';
   styleUrls: ['./rte-link-editor.component.scss']
 })
 export class RteLinkEditorComponent {
-  constructor() {}
+  constructor(private zone: NgZone) {}
 
   @ViewChild('textInput', { static: true }) private textInput: InputComponent;
 
@@ -56,7 +56,9 @@ export class RteLinkEditorComponent {
       event.preventDefault();
 
       if (!this.isEditing && this.url !== '') {
-        this.onAdd();
+        this.zone.run(() => {
+          this.onAdd();
+        });
       }
     }
   }

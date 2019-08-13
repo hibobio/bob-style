@@ -1,7 +1,7 @@
 <label *ngIf="label && placeholder"
        class="bfe-label"
        [attr.for]="id">{{label}}</label>
-{{length}} / {{minChars}} / {{ maxChars}}
+
 <div class="quill-editor"
      [attr.id]="id"
      [ngClass]="{'length-invalid': length < minChars || (maxChars && length > maxChars),
@@ -33,7 +33,7 @@
               class="rte-size"
               panel-trigger
               [ngClass]="{'ql-active': hasSizeSet}"
-              (click)="storeSelection()">
+              (click.outside-zone)="storeSelection()">
 
         <b-icon [icon]="icons.text_size"
                 [size]="iconSize.medium"
@@ -106,10 +106,10 @@
              panelClass="placeholder-rte-panel"
              [showBackdrop]="false"
              [size]="panelSize.medium"
-             *ngIf="controls.includes(BlotType.placeholder)"
+             *ngIf="controls.includes(BlotType.placeholder) && placeholderList"
              [defaultPosVer]="panelDefaultPosVer.below"
              (closed)="restoreSelection()">
-      <button (click)="onPlaceholderPanelOpen()"
+      <button (click.outside-zone)="onPlaceholderPanelOpen()"
               panel-trigger>💊</button>
       <b-single-list #placeholderSelect
                      panel-content

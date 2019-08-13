@@ -36,7 +36,7 @@ const template = `
       [placeholder]="placeholder"
       [value]="value"
       [controls]="controls"
-
+      [disableControls]="disableControls"
       [placeholderList]="placeholderList"
       [minChars]="minChars"
       [maxChars]="maxChars"
@@ -47,9 +47,7 @@ const template = `
       [hintMessage]="hintMessage"
       [warnMessage]="warnMessage"
       [errorMessage]="errorMessage"
-      (changed)="change($event)"
-
-      >
+      (changed)="change($event)">
   </b-rich-text-editor>
 `;
 
