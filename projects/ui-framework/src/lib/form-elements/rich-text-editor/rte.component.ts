@@ -75,10 +75,10 @@ export class RichTextEditorComponent extends RTEformElement
     private DOM: DOMhelpers,
     public zone: NgZone,
     public rteUtils: RteUtilsService,
-    changeDetector: ChangeDetectorRef,
+    cd: ChangeDetectorRef,
     public placeholderRteConverterService: PlaceholderRteConverterService
   ) {
-    super(zone, rteUtils, changeDetector);
+    super(zone, rteUtils, cd);
   }
 
   public disableControlsDef = [BlotType.placeholder, BlotType.direction];
@@ -200,7 +200,9 @@ export class RichTextEditorComponent extends RTEformElement
         this.initEditor(this.editorOptions);
         this.addKeyBindings();
         this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
-        this.changeDetector.detectChanges();
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
       }, 0);
     });
   }

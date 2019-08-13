@@ -56,11 +56,14 @@
       </ng-container>
     </b-panel>
 
-    <button class="ql-bold"
+    <button type="button"
+            class="ql-bold"
             [hidden]="!controls.includes(BlotType.bold)"></button>
-    <button class="ql-italic"
+    <button type="button"
+            class="ql-italic"
             [hidden]="!controls.includes(BlotType.italic)"></button>
-    <button class="ql-underline"
+    <button type="button"
+            class="ql-underline"
             [hidden]="!controls.includes(BlotType.underline)"></button>
 
     <b-panel #linkPanel
@@ -70,7 +73,8 @@
              [hidden]="!controls.includes(BlotType.link)"
              [defaultPosVer]="panelDefaultPosVer.below"
              (closed)="restoreSelection()">
-      <button class="ql-link"
+      <button type="button"
+              class="ql-link"
               panel-trigger></button>
       <b-rte-link-editor #linkEditor
                          panel-content
@@ -109,7 +113,8 @@
              *ngIf="controls.includes(BlotType.placeholder) && placeholderList"
              [defaultPosVer]="panelDefaultPosVer.below"
              (closed)="restoreSelection()">
-      <button (click.outside-zone)="onPlaceholderPanelOpen()"
+      <button type="button"
+              (click.outside-zone)="onPlaceholderPanelOpen()"
               panel-trigger>💊</button>
       <b-single-list #placeholderSelect
                      panel-content

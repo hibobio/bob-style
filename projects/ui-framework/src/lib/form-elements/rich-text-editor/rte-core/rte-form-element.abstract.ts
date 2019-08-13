@@ -35,7 +35,7 @@ export abstract class RTEformElement extends BaseFormElement
   protected constructor(
     public zone: NgZone,
     public rteUtils: RteUtilsService,
-    public changeDetector: ChangeDetectorRef
+    public cd: ChangeDetectorRef
   ) {
     super();
     this.baseValue = '';
@@ -49,7 +49,6 @@ export abstract class RTEformElement extends BaseFormElement
   @Input() public maxChars: number;
   @Input() public controls: BlotType[] = this.controlsDef;
   @Input() public disableControls: BlotType[] = this.disableControlsDef;
-  @Input() public sendChangeOn: RTEchangeEvent = RTEchangeEvent.blur;
   @Input() public sendChangeOnWrite = false;
 
   @ViewChild('quillEditor', { static: true }) protected quillEditor: ElementRef;
@@ -115,7 +114,7 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   // outside zone
-  protected transmitValue(doPropagate: boolean): void {
+  protected transmitValue(): void {
     if (!this.writingValue) {
       let newOutputValue = this.rteUtils.getHtmlContent(this.editor).trim();
 
@@ -129,7 +128,7 @@ export abstract class RTEformElement extends BaseFormElement
 
       this.value = this.outputFormatTransformer(newOutputValue);
 
-      if (doPropagate && this.latestOutputValue !== this.value) {
+      if (this.latestOutputValue !== this.value) {
         this.latestOutputValue = this.value;
 
         this.zone.run(() => {
@@ -257,7 +256,7 @@ export abstract class RTEformElement extends BaseFormElement
     if (this.maxChars && this.length > this.maxChars) {
       (this.editor as any).history.undo();
     }
-    this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
+    this.transmitValue();
   }
 
   // outside zone
@@ -269,7 +268,9 @@ export abstract class RTEformElement extends BaseFormElement
       const newSize = !!this.editor.getFormat(range).size;
       if (this.hasSizeSet !== newSize) {
         this.hasSizeSet = newSize;
-        this.changeDetector.detectChanges();
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
       }
     }
   }
@@ -285,7 +286,7 @@ export abstract class RTEformElement extends BaseFormElement
 
   // outside zone
   private onEditorBlur(): void {
-    this.transmitValue(this.sendChangeOn === RTEchangeEvent.blur);
+    this.transmitValue();
     this.zone.run(() => {
       if (this.blurred.observers.length > 0) {
         this.blurred.emit(this.value);
@@ -359,7 +360,9 @@ export abstract class RTEformElement extends BaseFormElement
 
   private checkLength(): number {
     this.length = this.rteUtils.getTextLength(this.editor);
-    this.changeDetector.detectChanges();
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
     return this.length;
   }
 
