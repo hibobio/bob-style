@@ -18,18 +18,16 @@ const datepickerStories = storiesOf(
   module
 ).addDecorator(withKnobs);
 const template = `
-<b-datepicker (dateChange)="dateChange($event)"
+<b-datepicker [value]="value"
               [dateFormat]="dateFormat"
-
               [inputLabel]="label"
               [placeholder]="placeholder"
-
               [hintMessage]="hintMessage"
               [warnMessage]="warnMessage"
               [errorMessage]="errorMessage"
-
               [disabled]="disabled"
-              [required]="required">
+              [required]="required"
+              (dateChange)="dateChange($event)">
 </b-datepicker>
 `;
 
@@ -42,15 +40,25 @@ const storyTemplate = `
 `;
 
 const note = `
-  ## Slider Element
+  ## Datepicker
+
+  #### Module
+  *DatepickerModule*
 
   #### Properties
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  inputLabel | string | Input label | mandatory |
+  inputLabel | string | label text (above input) | none
+  placeholder | string | placeholder text (inside input) | none
   dateFormat | string | Input date format | DD/MM/YYYY (optional) |
-  dateChange | EventEmitter | Date change callback |
+  (dateChange) | EventEmitter | Date change callback |
+
+  disabled | boolean | is field disabled
+  required | boolean | is field required
+  hintMessage | string | hint text
+  warnMessage | string | warning text
+  errorMessage | string | error text
 
   ~~~
   ${template}
@@ -63,6 +71,7 @@ datepickerStories.add(
     return {
       template: storyTemplate,
       props: {
+        value: text('value', '1950-07-12'),
         dateFormat: text('dateFormat', 'DD/MM/YYYY'),
         label: text('label', 'Date picker'),
         placeholder: text('placeholder', 'Input placeholder'),

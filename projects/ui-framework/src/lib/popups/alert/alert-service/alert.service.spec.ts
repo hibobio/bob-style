@@ -2,13 +2,9 @@ import { fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { AlertService } from './alert.service';
 import { AlertConfig } from '../alert.interface';
 import { AlertType } from '../alert.enum';
-import {
-  ComponentRef,
-  CUSTOM_ELEMENTS_SCHEMA,
-  NO_ERRORS_SCHEMA
-} from '@angular/core';
+import { ComponentRef, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MockComponent } from 'ng-mocks';
-import { Overlay, OverlayContainer, OverlayModule, OverlayRef } from '@angular/cdk/overlay';
+import { Overlay, OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { TypographyModule } from '../../../typography/typography.module';
 import { IconComponent } from '../../../icons/icon.component';
@@ -61,7 +57,7 @@ describe('AlertService', () => {
       expect(alertComponentRef.instance.alertConfig.title).toEqual(ALERT_CONFIG.title);
       expect(alertComponentRef.instance.alertConfig.text).toEqual(ALERT_CONFIG.text);
       expect(alertComponentRef.instance.alertConfig.alertType).toEqual(ALERT_CONFIG.alertType);
-      expect(alertService.isOpen).toBeTruthy();
+      expect(alertService.isOpen).toBeFalsy();
       alertComponentRef.instance.onAnimationDone({ toState: 'leave' });
     }));
 

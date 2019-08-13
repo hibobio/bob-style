@@ -1,4 +1,4 @@
-@import '../../style/colors';
+@import '../../style/variables';
 @import '../../style/mixins';
 @import '../../style/typography';
 
@@ -18,18 +18,13 @@
     line-height: 1.35;
   }
   .slot1-big {
-    @include BodyFont(
-      $font-size-body,
-      $font-weight-bold-body,
-      null,
-      $addCssVars: true
-    );
+    @include b-bold-body($addCssVars: true);
   }
   .slot1-big:only-child {
     font-weight: 400;
   }
   .slot2-medium {
-    @include BodyFont($font-size-body, null, null, $addCssVars: true);
+    @include b-body($addCssVars: true);
   }
   &[data-orientation='horizontal'] {
     .avatar-text {
@@ -61,18 +56,13 @@
     line-height: 1.35;
   }
   .slot1-big {
-    @include BodyFont(
-      $font-size-body,
-      $font-weight-bold-body,
-      null,
-      $addCssVars: true
-    );
+    @include b-bold-body($addCssVars: true);
   }
   .slot1-big:only-child {
     font-weight: 400;
   }
   .slot2-medium {
-    @include BodyFont($font-size-body, null, null, $addCssVars: true);
+    @include b-body($addCssVars: true);
   }
   &[data-orientation='horizontal'] {
     .avatar-text {
@@ -104,16 +94,10 @@
     right: -1px;
   }
   .slot1-big {
-    @include DisplayFont(
-      $font-size-display-3,
-      $font-weight-display-3,
-      $line-height-heading,
-      null,
-      $addCssVars: true
-    );
+    @include b-display-3($addCssVars: true);
   }
   .slot2-medium {
-    @include BodyFont($font-size-big-body, null, null, $addCssVars: true);
+    @include b-big-body($addCssVars: true);
   }
   .slot3-small {
     margin-top: 5px;
@@ -130,14 +114,7 @@
       margin-top: 14px;
     }
     .slot2-medium {
-      @include BodyFont(
-        $font-size-body,
-        null,
-        null,
-        null,
-        null,
-        $addCssVars: true
-      );
+      @include b-body($addCssVars: true);
       margin-top: 3px;
     }
   }
@@ -160,22 +137,10 @@
     right: 3px;
   }
   .slot1-big {
-    @include DisplayFont(
-      $font-size-display-1,
-      $font-weight-display-1,
-      1.12,
-      null,
-      $addCssVars: true
-    );
+    @include b-display-1($lineHeight: 1.12, $addCssVars: true);
   }
   .slot2-medium {
-    @include DisplayFont(
-      $font-size-display-3,
-      $font-weight-display-3,
-      $line-height-heading,
-      null,
-      $addCssVars: true
-    );
+    @include b-display-3($addCssVars: true);
   }
   .slot3-small {
     margin-top: 5px;
@@ -192,25 +157,10 @@
       margin-top: 3px;
     }
     .slot1-big {
-      @include DisplayFont(
-        $font-size-display-2,
-        null,
-        null,
-        null,
-        null,
-        null,
-        $addCssVars: true
-      );
+      @include b-display-2($lineHeight: null, $weight: null, $addCssVars: true);
     }
     .slot3-small {
-      @include BodyFont(
-        $font-size-big-body,
-        null,
-        null,
-        null,
-        null,
-        $addCssVars: true
-      );
+      @include b-big-body($addCssVars: true);
       color: $grey-600;
       margin-top: 2px;
     }

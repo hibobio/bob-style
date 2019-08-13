@@ -74,8 +74,7 @@ $input-focus-border-color: $grey-700;
   border-radius: inherit;
   margin: 0;
   outline: 0;
-  @include BodyFont($lineHeight: null);
-  color: $grey-800;
+  @include b-body($lineHeight: null, $color: $body-text-color, $addCssVars: false);
   background: transparent;
   height: $input-height;
   line-height: $input-height;
@@ -86,8 +85,7 @@ $input-focus-border-color: $grey-700;
   display: block;
   min-height: $label-height;
   margin: 0 0 $label-hint-margin 0;
-  color: $label-color;
-  @include BodyFont();
+  @include b-body($color: $label-color, $addCssVars: false);
 
   &:empty {
     display: none;
@@ -112,12 +110,7 @@ $input-focus-border-color: $grey-700;
     border: 1px solid $input-border-color;
     border-radius: $border-radius;
     transition: box-shadow 0.2s, border-color 0.2s;
-    @include BodyFont(
-      $weight: null,
-      $style: null,
-      $font-family: null,
-      $addCssVars: true
-    );
+    @include b-body($addCssVars: true);
 
     &:only-child {
       width: 100%;

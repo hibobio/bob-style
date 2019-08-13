@@ -1,7 +1,8 @@
 import {
   randomNumber,
   randomFromArray,
-  padWith0
+  padWith0,
+  simpleUID
 } from './services/utils/functional-utils';
 
 export const mockNamesList = [
@@ -437,6 +438,9 @@ export const mockAvatar = () =>
     'women'
   ])}/${randomNumber(0, 99)}.jpg`;
 
+export const mockImage = (width, height) =>
+  `https://picsum.photos/id/${randomNumber(0, 99)}/${width}/${height}`;
+
 export const mockNames = (num = null) => {
   if (num === 1) {
     return `${randomFromArray(mockFirstNamesList, num)} ${randomFromArray(
@@ -459,7 +463,7 @@ export const mockDate = () =>
     randomNumber(1, 12)
   )}/${randomNumber(2018, 2020)}`;
 
-export const mockText = (words = null) => {
+export const loremText = (words = null) => {
   if (typeof words === 'number') {
     return lorem
       .split(' ')
@@ -467,4 +471,39 @@ export const mockText = (words = null) => {
       .join(' ');
   }
   return lorem;
+};
+
+export const mockText = (words = 100) => {
+  let text = lorem
+    .split(' ')
+    .sort(() => 0.5 - Math.random())
+    .slice(0, words)
+    .join(' ')
+    .replace(/,/g, '')
+    .replace(/\./g, '');
+  text = text.charAt(0).toUpperCase() + text.toLocaleLowerCase().slice(1);
+  return text;
+};
+
+export const mockUrl = (type = 'any') => {
+  const pref = 'http://www.';
+  switch (type) {
+    case 'facebook':
+      return `${pref}facebook.com/${simpleUID('id', 6)}/`;
+      break;
+    case 'linkedin':
+      return `${pref}linkedin.com/in/${simpleUID('id', 6)}/`;
+      break;
+    case 'twitter':
+      return `${pref}twitter.com/${simpleUID('id', 6)}/`;
+      break;
+    case 'youtube':
+      return `${pref}youtube.com/watch?v=${simpleUID('', 8)}/`;
+      break;
+    case 'vimeo':
+      return `${pref}vimeo.com/${simpleUID('', 8)}/`;
+      break;
+    default:
+      return `${pref}${simpleUID('', 6)}.com/`;
+  }
 };

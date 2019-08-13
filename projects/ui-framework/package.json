@@ -1,6 +1,6 @@
 {
   "name": "bob-style",
-  "version": "1.1.210",
+  "version": "1.1.275",
   "peerDependencies": {
     "@angular/animations": "^8.0.2",
     "@angular/cdk": "^8.0.1",
@@ -10,9 +10,11 @@
     "lodash": "^4.17.11",
     "hammerjs": "^2.0.8",
     "@types/node": "^8.9.5",
+    "@types/highcharts": "^5.0.44",
     "ag-grid-angular": "^20.0.0",
     "ag-grid-community": "^20.0.0",
     "ag-grid-enterprise": "^20.0.0",
+    "highcharts": "^7.1.2",
     "date-fns": "^1.30.1"
   },
   "browserslist": [

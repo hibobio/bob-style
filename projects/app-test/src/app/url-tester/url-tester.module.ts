@@ -1,6 +1,6 @@
 import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { URLutils } from '../../../../ui-framework/src/lib/services/url/url-utils';
+import { URLutils } from '../../../../ui-framework/src/lib/services/url/url-utils.service';
 
 @Component({
   selector: 'url-tester',

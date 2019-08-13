@@ -1,9 +1,9 @@
-<p class="card-content"
-   [b-truncate-tooltip]="type === cardType.regular ? 4 : 3"
+<p class="card-title"
+   [b-truncate-tooltip]="4"
    [trustCssVars]="true">
   {{ card.title }}
 </p>
 
-<p class="card-bottom"
+<p class="card-subtitle"
    *ngIf="card.subtitle">{{ card.subtitle }}
 </p>

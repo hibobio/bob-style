@@ -19,12 +19,14 @@ const template = `
 const storyTemplate = `
 <b-story-book-layout [title]="'Dialog'">
     ${template}
-
 </b-story-book-layout>
 `;
 
 const note = `
   ## Dialog
+
+  #### Module
+  *DialogModule*
 
   ## How to use
   trigger:

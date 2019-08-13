@@ -1,0 +1,23 @@
+:host {
+  position: relative;
+  display: block;
+  .text-container {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    text-align: center;
+    border-radius: 50%;
+    box-shadow: 3px 3px 18px rgba(0,0,0,.4);
+    transform: translateY(-3px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    will-change: width, height, transform;
+    transition: width .2s cubic-bezier(.17,.13,.53,.52), height .2s cubic-bezier(.17,.13,.53,.52), transform .2s cubic-bezier(.17,.13,.53,.52);
+    width: 1px;
+    height: 1px;
+  }
+}

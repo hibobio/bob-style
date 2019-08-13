@@ -18,11 +18,15 @@ button {
     height: $sizeSmall;
     font-weight: 500;
   }
+
+  &.medium,
+  &.large {
+    @include b-heading($addCssVars: false);
+  }
   &.medium {
     padding: 0 $padding;
     min-width: $minWidthMedium;
     height: $sizeMedium;
-    @include HeadingFont(14px);
     font-weight: 500;
   }
   &.large {
@@ -30,7 +34,6 @@ button {
     min-width: $minWidthLarge;
     height: $sizeLarge;
     text-transform: uppercase;
-    @include HeadingFont(14px);
     font-weight: 500;
   }
 

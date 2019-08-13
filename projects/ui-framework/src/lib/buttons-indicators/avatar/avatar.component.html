@@ -1,7 +1,7 @@
 <div class="avatar"
      [ngClass]="avatarClass"
      [ngStyle]="avatarStyle"
-     (click)="onClick($event)">
+     (click.outside-zone)="onClick($event)">
 
   <b-icon *ngIf="badge && !disabled"
           class="avatar-badge"

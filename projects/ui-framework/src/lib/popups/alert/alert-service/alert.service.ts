@@ -45,7 +45,6 @@ export class AlertService {
       hasBackdrop: false,
       panelClass,
       positionStrategy,
-      scrollStrategy: this.overlay.scrollStrategies.block(),
     };
   }
 

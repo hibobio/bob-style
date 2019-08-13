@@ -1,3 +1,68 @@
+@import '../../style/variables';
+@import '../../style/typography';
+@import '../../style/mixins';
+@import '../card/card.mixin';
+
+@include card-common;
+
 :host {
-  justify-content: space-between;
+  text-align: center;
+  --background-color-1: #{$grey-200};
+  --background-color-2: #{$grey-200};
+
+  background-image: linear-gradient(
+    180deg,
+    var(--background-color-1) 0%,
+    var(--background-color-2) 100%
+  );
+  background-position: center top;
+  background-size: 100% 80px;
+
+  &[data-type='small'] {
+    min-height: 200px;
+    background-size: 100% 60px;
+  }
+}
+
+.card-subtitle {
+  margin-bottom: auto;
+}
+
+.card-top {
+  display: flex;
+  justify-content: center;
+  margin-bottom: times8(2);
+}
+
+.card-bottom {
+  justify-content: center;
+}
+
+.card-top-with-image {
+  padding: $cardPadding $cardPadding 0 $cardPadding;
+}
+
+.social {
+  margin: auto;
+  padding: times8(2) 0;
+  width: 100%;
+  max-width: 140px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.social ~ .card-bottom {
+  padding: 0;
+  margin-top: auto;
+}
+
+// Types
+
+:host[data-type='small'] {
+  .card-top {
+    margin-bottom: times8(1);
+  }
+  .card-top-with-image {
+    padding: $cardPadding-small $cardPadding-small 0 $cardPadding-small;
+  }
 }

@@ -187,9 +187,9 @@ export class DOMhelpers {
 
     if (
       classes &&
-      (!isEmptyString(classes) ||
-        !isEmptyArray(classes) ||
-        !isEmptyObject(classes))
+      (isEmptyString(classes) ||
+        isEmptyArray(classes) ||
+        isEmptyObject(classes))
     ) {
       const currentClassesAsArray = classStringToArray(element.className);
       let addClassesString: string;

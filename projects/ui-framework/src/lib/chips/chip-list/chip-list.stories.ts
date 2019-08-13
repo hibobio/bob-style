@@ -45,7 +45,7 @@ const template = `
   </b-chip-list>
 `;
 
-const note = `
+let note = `
   ## Chip List
 
   #### Module
@@ -56,8 +56,9 @@ const note = `
   --- | --- | --- | ---
   chips | Chip[] / string[] | Array of Chip objects (will also accept an array of strings) | none
   chipListSelectable | chipListSelectable (single, multi) | single select (like radio buttons) or multi select | multi
-  activeIndex | number | active index initializer | none
-  config | ChipListConfig | list configuration (options common to all chips, including: type, removable, selectable, focusable, disabled, align) | none
+  activeIndex | number | active index initializer | none\n`;
+  // tslint:disable-next-line:max-line-length
+  note += `config | ChipListConfig | list configuration (options common to all chips, including: type, removable, selectable, focusable, disabled, align) | none
   removed | &lt;Chip&gt; | handler for chip removed event | none
   clicked | &lt;Chip&gt; | handler for chip clicked event | none
   selected | &lt;Chip&gt; | handler for chip selected event (fired only if chip is selectable) | none
@@ -97,7 +98,7 @@ story.add(
       focusable: boolean('focusable', true),
       disabled: boolean('disabled', false),
       chipListSelectable: select('chipListSelectable', chipListSelectable, ChipListSelectable.multi),
-      activeIndex: number('activeIndex', null),
+      activeIndex: number('activeIndex', 0),
       chips: object('chips', chips),
       onChipRemove: action('Chip removed'),
       onChipClicked: action('Chip clicked'),

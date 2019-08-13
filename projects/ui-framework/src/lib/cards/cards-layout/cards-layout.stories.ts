@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, select, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  select,
+  withKnobs,
+  number
+} from '@storybook/addon-knobs/angular';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { CardType } from '../cards.enum';
@@ -12,27 +17,43 @@ const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs
 );
 
-const template = `
-  <b-card-layout-example-1 [type]="type" [alignCenter]="alignCenter"></b-card-layout-example-1>
+const template1 = `
+  <b-card-layout-example-1 [type]="type"
+                           [alignCenter]="alignCenter"
+                           [maxCards]="maxCards">
+  </b-card-layout-example-1>
 `;
-
 const template2 = `
-  <b-card-layout-example-2 [type]="type" [alignCenter]="alignCenter"></b-card-layout-example-2>
+  <b-card-layout-example-2 [type]="type"
+                           [alignCenter]="alignCenter"
+                           [maxCards]="maxCards">
+  </b-card-layout-example-2>
 `;
 const template3 = `
-  <b-card-layout-example-3 [alignCenter]="alignCenter"></b-card-layout-example-3>
+  <b-card-layout-example-3 [alignCenter]="alignCenter"
+                           [maxCards]="maxCards">
+  </b-card-layout-example-3>
+`;
+const template4 = `
+  <b-card-layout-example-4 [type]="type"
+                           [alignCenter]="alignCenter"
+                           [maxCards]="maxCards">
+  </b-card-layout-example-4>
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Cards Layout'" style=" background: rgb(247,247,247);">
   <div style="max-width: none;">
-  <h3>Cards</h3>
-    ${template}
+    <h3>Text cards</h3>
+    ${template1}
     <br><br>
-    <h3>Employee Cards</h3>
+    <h3>Image cards</h3>
+    ${template4}
+    <br><br>
+    <h3>Employee cards</h3>
     ${template2}
     <br><br>
-    <h3>Employee Cards</h3>
+    <h3>Mini employee cards</h3>
     ${template3}
   </div>
 
@@ -48,9 +69,12 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  type | CardType | Card theme | primary (optional)
-  alignCenter | boolean | put cards in the center | false
+  type | CardType | Card theme | regular
+  [alignCenter] | boolean | put cards in the center. by default, if there is not enough cards to fill 1 row, the cards will be centered. to disable this behaviour, set [alignCenter] to **null**. set to **true** to force centering. | false
+  [mobileSwiper] | boolean | enable mobile swiper (1 row of scrollable cards) | true
+  cardsInRow$ / getCardsInRow$() | Observable of number | observable that returns cards in row | initial cards in row
 
+#### Example
 ~~~
 <b-cards [type]="type">
   <b-card-add [type]="type"
@@ -73,16 +97,6 @@ const note = `
   </b-card>
 </b-cards>
 ~~~
-
-~~~
-<b-cards [type]="type">
-  <b-card-employee *ngFor="let card of cards; let i = index"
-                  [clickable]="true"
-                  (clicked)="onCardClick(card, i)"
-                  [card]="card">
-  </b-card-employee>
-</b-cards>
-~~~
 `;
 
 story.add(
@@ -91,8 +105,9 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', values(CardType), CardType.regular),
-        alignCenter: boolean('alignCenter', false)
+        type: select('type', values(CardType), CardType.large),
+        alignCenter: boolean('alignCenter', false),
+        maxCards: number('maxCards', 6)
       },
       moduleMetadata: {
         imports: [

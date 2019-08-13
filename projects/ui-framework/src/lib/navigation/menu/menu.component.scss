@@ -20,7 +20,7 @@
         display: none;
       }
       @include OverlayPanel();
-      @include BodyFont;
+      @include b-body($addCssVars: false);
       min-width: 0;
       min-height: 0;
 

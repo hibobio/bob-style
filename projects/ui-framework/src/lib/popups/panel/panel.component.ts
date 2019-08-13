@@ -82,7 +82,9 @@ export class PanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.windowKeydownSubscriber.unsubscribe();
+    if (this.windowKeydownSubscriber) {
+      this.windowKeydownSubscriber.unsubscribe();
+    }
     this.destroyPanel();
   }
 
@@ -127,7 +129,7 @@ export class PanelComponent implements OnInit, OnDestroy {
   }
 
   private destroyPanel(): void {
-    if (this.overlayRef && this.overlayRef !== null) {
+    if (this.overlayRef) {
       invoke(this.overlayRef, 'dispose');
       invoke(this.backdropClickSubscriber, 'unsubscribe');
       invoke(this.positionChangeSubscriber, 'unsubscribe');

@@ -16,6 +16,7 @@
   @if type-of($this) == 'list' {
     @return index($this, $that);
   }
+  @return false;
 }
 
 @function map-get-deep($map, $keys...) {
@@ -52,4 +53,41 @@
 
 @function times8($times: 1) {
   @return 8px * $times;
+}
+
+@function simpleUID() {
+  @return str-slice(ie-hex-str(rgb(random(255), random(255), random(255))), 5);
+}
+
+@function height-from-text(
+  $lines: 2,
+  $font-size: $font-size-body,
+  $line-height: $line-height-body,
+  $add: 0,
+  $useCssVars: false
+) {
+  $return: null;
+  @if not $useCssVars {
+    $return: $font-size * $line-height * $lines + $add;
+  }
+  @if $useCssVars {
+    $return: unquote(
+      'calc(var(--font-size) * var(--line-height) * #{$lines} + #{add-unit($add)})'
+    );
+  }
+  @return $return;
+}
+
+// idea from: https://css-tricks.com/molten-leading-css/
+@function resp-val($min-width, $max-width, $min-val, $max-val, $unit: px) {
+  $min-width: strip-unit($min-width);
+  $max-width: strip-unit($max-width);
+  $min-val: strip-unit($min-val);
+  $max-val: strip-unit($max-val);
+
+  @return calc(
+    #{$min-val}#{$unit} + (#{$max-val} - #{$min-val}) * ((
+            100vw - #{$min-width}px
+          ) / (#{$max-width} - #{$min-width}))
+  );
 }

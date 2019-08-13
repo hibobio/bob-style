@@ -1,75 +1,74 @@
 import { CardAddComponent } from './card-add.component';
-import { ComponentFixture, async, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { AddCardMockData } from '../cards.mock';
 import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
-import { CardsModule } from '../cards.module';
 import { CardType } from '../cards.enum';
 
 describe('CardAddComponent', () => {
   let fixture: ComponentFixture<CardAddComponent>;
   let component: CardAddComponent;
-  let cardContentElement: HTMLElement;
-
-  const mockCardData = AddCardMockData;
-  mockCardData.title =
-    mockCardData.title +
-    'with a very long text that cuts off after 4 lines of text. And here is another very long text that should not be displayed at all.';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [],
-      imports: [CardsModule, TruncateTooltipModule],
-      schemas: [NO_ERRORS_SCHEMA]
+      declarations: [CardAddComponent],
+      imports: [TruncateTooltipModule]
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(CardAddComponent);
         component = fixture.componentInstance;
         fixture.nativeElement.style.width = '300px';
-        component.card = mockCardData;
-
-        fixture.detectChanges();
-        cardContentElement = fixture.debugElement.query(By.css('.card-content'))
-          .nativeElement;
-
-        spyOn(component.clicked, 'emit');
-        fixture.detectChanges();
       });
   }));
 
-  describe('Main text', () => {
-    it('should set .card-content input text', () => {
-      expect(cardContentElement.innerText).toContain('Add a new flow');
-    });
-    it('should set input Subtitle inside .card-bottom element', () => {
-      const cardBottomElement = fixture.debugElement.query(
-        By.css('.card-bottom')
-      ).nativeElement;
-      expect(cardBottomElement.innerText).toContain('Right now');
-    });
-
-    it('should add truncate-tooltip to long .card-content text', () => {
-      fixture.detectChanges();
-      expect(cardContentElement.children[0].classList).toContain('initialized');
-    });
-  });
-
   describe('Type', () => {
+    beforeEach(() => {
+      component.card = {
+        title: 'test'
+      };
+    });
     it('should be of type primary by default', () => {
-      expect(getComputedStyle(cardContentElement).fontSize).toEqual('18px');
+      fixture.detectChanges();
+      expect(fixture.nativeElement.attributes['data-type'].value).toEqual(
+        'regular'
+      );
     });
     it('should change type on type input change', () => {
       component.type = CardType.large;
       fixture.detectChanges();
-      expect(getComputedStyle(cardContentElement).fontSize).toEqual('22px');
+      expect(fixture.nativeElement.attributes['data-type'].value).toEqual(
+        'large'
+      );
+    });
+  });
+
+  describe('texts', () => {
+    it('should set title text', () => {
+      component.card = {
+        title: 'test'
+      };
+      fixture.detectChanges();
+      const title = fixture.debugElement.query(By.css('.card-title'));
+      expect(title.nativeElement.innerText).toContain('test');
+    });
+    it('should set subtitle text', () => {
+      component.card = {
+        title: 'test',
+        subtitle: 'subtitle test'
+      };
+      fixture.detectChanges();
+      const subtitle = fixture.debugElement.query(By.css('.card-title'));
+      expect(subtitle.nativeElement.innerText).toContain('test');
     });
   });
 
   describe('onClick', () => {
     it('should emit Clicked event', () => {
-      component.onClick('hello');
+      spyOn(component.clicked, 'emit');
+      component.card = {
+        title: 'test'
+      };
+      component.onClick('hello' as any);
       expect(component.clicked.emit).toHaveBeenCalledWith('hello');
     });
   });

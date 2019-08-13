@@ -98,7 +98,9 @@ export class AutoCompletePanelComponent
   }
 
   ngOnDestroy(): void {
-    this.keyDownSubscriber.unsubscribe();
+    if (this.keyDownSubscriber) {
+      this.keyDownSubscriber.unsubscribe();
+    }
   }
 
   private updateList(): void {

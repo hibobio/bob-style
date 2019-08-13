@@ -33,7 +33,7 @@
 
     &:not(.focused):not(.empty) {
       .bfe-input.empty {
-        max-height: 0px;
+        max-height: 0;
         margin-top: 0;
         margin-bottom: 0;
       }
@@ -58,8 +58,7 @@
     box-shadow: 0 2px 3px 0 $boxShadowColor;
   }
   .mat-option {
-    color: $body-text-color;
-    @include BodyFont();
+    @include b-body($color: $body-text-color, $addCssVars: false);
     height: 44px;
 
     &:hover:not(.mat-option-disabled) {

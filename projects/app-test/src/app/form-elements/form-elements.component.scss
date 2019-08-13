@@ -2,6 +2,7 @@
   display: block;
   min-height: 100vh;
   font-size: 14px;
+  position: relative;
 }
 
 section {
@@ -43,6 +44,7 @@ form.column {
     width: 30%;
   }
 }
+
 .col {
   display: flex;
   flex-direction: column;
@@ -97,6 +99,7 @@ label {
     pointer-events: all;
   }
 }
+
 input,
 button,
 select {
@@ -248,20 +251,23 @@ button {
   padding: 0;
   border-radius: 10px;
 }
+
 .show-code {
   margin-bottom: 10px;
   &:not(:focus) + .code-example {
     display: none;
   }
 }
+
 .show-global-controls {
   &:not(:focus):not(:hover) + .global-controls {
     display: none;
   }
 }
+
 .show-global-controls,
 .global-controls {
-  position: fixed;
+  position: absolute;
   top: 20px;
   left: 20px;
   z-index: 200;

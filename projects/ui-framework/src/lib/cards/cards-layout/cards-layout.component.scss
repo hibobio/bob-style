@@ -1,8 +1,16 @@
+@import '../../style/variables';
+@import '../../style/mixins';
+@import '../card/card.mixin';
+
 $fit-strategy: auto-fill;
 $grid-gap: 16px;
+$limit-card-width-on-mobile: false;
+$align-cards-on-mobile: start; // center
 
 :host {
   display: block;
+  --card-grid-gap: times8(2);
+  --card-width: $card-width-regular;
 }
 
 .cards-list {
@@ -11,22 +19,120 @@ $grid-gap: 16px;
   padding: 0;
   display: grid;
   grid-gap: $grid-gap;
-  grid-template-columns: repeat(
-    $fit-strategy,
-    minmax(var(--card-max-width), 1fr)
-  );
+  grid-template-columns: repeat($fit-strategy, minmax(var(--card-width), 1fr));
+}
 
-  &.align-center {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    grid-template-columns: none;
-    margin: calc(var(--card-grid-gap) / -2);
+:host[data-align-center='false'][data-swiper-mode='false']::ng-deep {
+  .single-card {
+    max-width: none;
+  }
+}
 
-    ::ng-deep > * {
+// Flex layout
+
+:host[data-align-center='true'],
+:host[data-swiper-mode='true'] {
+  &::ng-deep {
+    .cards-list {
+      grid-template-columns: none;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .single-card:only-child {
+      max-width: none;
+    }
+  }
+
+  &[data-cards-in-row='1']::ng-deep {
+    .single-card {
+      width: 100%;
+    }
+  }
+}
+
+// Align center
+
+:host[data-align-center='true'] {
+  &::ng-deep {
+    .cards-list {
+      justify-content: center;
+    }
+  }
+
+  &[data-swiper-mode='false']::ng-deep {
+    .cards-list {
+      flex-wrap: wrap;
+      margin: calc(var(--card-grid-gap) / -2);
+      width: calc(100% + var(--card-grid-gap));
+    }
+    .single-card {
       margin: calc(var(--card-grid-gap) / 2);
-      width: var(--card-max-width);
+    }
+  }
+
+  @for $i from 2 through 10 {
+    &[data-cards-in-row='#{$i}']::ng-deep {
+      .single-card {
+        width: calc((100% - var(--card-grid-gap) * #{$i}) / #{$i});
+      }
+    }
+  }
+}
+
+// Swiper
+
+:host[data-swiper-mode='true'] {
+  &[data-align-center='false']::ng-deep {
+    .cards-list {
+      justify-content: flex-start;
+    }
+  }
+
+  &::ng-deep {
+    .cards-list {
+      flex-wrap: nowrap;
+      padding-bottom: 12px;
+      margin-bottom: -12px;
+
+      @include scroll-snap-x(
+        $item: '.single-card',
+        $snap-align: $align-cards-on-mobile,
+        $breakout: var(--padding-x-mob),
+        $item-gap: var(--card-grid-gap)
+      );
+    }
+
+    @if $limit-card-width-on-mobile {
+      .single-card {
+        @include card-max-width($host: '&');
+      }
+    }
+  }
+
+  &[data-few-cards='false']::ng-deep .cards-list {
+    justify-content: flex-start;
+  }
+
+  &[data-cards-in-row='1']::ng-deep .cards-list {
+    padding-right: var(--padding-x-mob);
+  }
+
+  @for $i from 2 through 10 {
+    &[data-cards-in-row='#{$i}']::ng-deep {
+      .single-card {
+        width: calc(
+          (
+              100vw -
+                var(--padding-x-mob) *
+                2 -
+                var(--card-grid-gap) *
+                #{$i -
+                1}
+            ) /
+            #{$i}
+        );
+      }
     }
   }
 }

@@ -1,34 +1,33 @@
 import {
   Component,
-  Input,
-  Output,
   HostBinding,
   HostListener,
-  EventEmitter
+  Input,
+  ElementRef
 } from '@angular/core';
-import { AddCardData } from '../cards.interface';
 import { CardType } from '../cards.enum';
+import { AddCard } from './card-add.interface';
+import { BaseCardElement } from '../card/card.abstract';
 
 @Component({
   selector: 'b-card-add, [b-card-add]',
   templateUrl: './card-add.component.html',
-  styleUrls: ['../card/card.component.scss', './card-add.component.scss']
+  styleUrls: ['./card-add.component.scss'],
+  providers: [{ provide: BaseCardElement, useExisting: CardAddComponent }]
 })
-export class CardAddComponent {
-  constructor() {}
+export class CardAddComponent extends BaseCardElement {
+  constructor(public cardElRef: ElementRef) {
+    super(cardElRef);
+  }
 
-  cardType = CardType;
+  readonly cardType = CardType;
 
-  @Input() card: AddCardData;
-
-  @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
+  @Input() card: AddCard;
 
   @HostBinding('attr.tabindex') string = '0';
 
-  @HostBinding('attr.data-type') @Input() type: CardType = CardType.regular;
-
   @HostListener('click', ['$event'])
-  onClick($event) {
+  onClick($event: MouseEvent) {
     this.clicked.emit($event);
   }
 }

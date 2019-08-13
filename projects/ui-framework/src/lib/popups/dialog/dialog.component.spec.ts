@@ -279,4 +279,11 @@ describe('DialogComponent', () => {
       }));
     });
   });
+
+  describe('OnDestroy', () => {
+    it('should invoke close on dialogRef', () => {
+      component.ngOnDestroy();
+      expect(spyMatDialogRef.close).toHaveBeenCalledTimes(1);
+    });
+  });
 });

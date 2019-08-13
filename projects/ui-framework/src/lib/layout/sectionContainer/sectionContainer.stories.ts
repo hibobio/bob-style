@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import { text, withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,17 +9,20 @@ const inputStories = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
-const template = `<b-section-container [title]="'titleHere'">
-<div section-action>
-<p>Action here</p>
-</div>
-<div section-content>
-<p>Content Here</p>
-</div>
+const template = `<b-section-container [title]="'Title here'">
+  <div section-action>
+    Action here
+  </div>
+  <div section-content>
+    Content Here
+  </div>
 </b-section-container>`;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Section Container'">
+<b-story-book-layout [title]="'Section Container'" style="background-color: rgb(247,247,247);">
+<style>
+  p { margin: 0; }
+</style>
   <div>
     ${template}
   </div>

@@ -1,4 +1,5 @@
 @import './functions';
+@import './keyframes';
 
 @mixin pseudo {
   content: '';
@@ -21,25 +22,6 @@
   right: nth($pos, 2);
   bottom: nth($pos, 3);
   left: nth($pos, 4);
-}
-
-@function height-from-text(
-  $lines,
-  $font-size,
-  $line-height,
-  $add: 0,
-  $useCssVars: false
-) {
-  $return: null;
-  @if not $useCssVars {
-    $return: $font-size * $line-height * $lines + $add;
-  }
-  @if $useCssVars {
-    $return: unquote(
-      'calc(var(--font-size) * var(--line-height) * #{$lines} + #{add-unit($add)})'
-    );
-  }
-  @return $return;
 }
 
 @mixin line-clamp(
@@ -107,8 +89,21 @@
   hyphenate-limit-chars: 10 4 4;
 }
 
-@mixin animate($name, $time: 0.3s, $delay: null, $iterate: 1, $dir: null) {
-  animation-name: $name;
+@mixin animate(
+  $name,
+  $time: 0.3s,
+  $delay: null,
+  $iterate: 1,
+  $dir: null,
+  $keyframes: false
+) {
+  $id: simpleUID();
+  @if $keyframes {
+    @include keyframes($name, $id: ('-' + $id));
+    animation-name: ($name + '-' + $id);
+  } @else {
+    animation-name: $name;
+  }
   animation-duration: $time;
   animation-iteration-count: $iterate;
   animation-delay: $delay;
@@ -204,21 +199,27 @@
   }
 }
 
-@mixin ratio($ratio-or-width, $height: null) {
+@mixin ratioPad($ratio-or-width, $height: null) {
   $padding: if(
     $height,
     percentage($height/$ratio-or-width),
     percentage(1 / $ratio-or-width)
   );
+  padding-bottom: $padding;
+}
+
+@mixin ratio($ratio-or-width, $height: null, $clear: true) {
   &:before {
     content: '';
     float: left;
-    padding-bottom: $padding;
+    @include ratioPad($ratio-or-width, $height);
   }
-  &:after {
-    content: '';
-    display: table;
-    clear: both;
+  @if $clear {
+    &:after {
+      content: '';
+      display: table;
+      clear: both;
+    }
   }
 }
 
@@ -230,14 +231,139 @@
   }
 }
 
-@mixin mobile {
-  @media (max-width: $breakpoint-device-sm) {
+@mixin mobile($break: $breakpoint-device-sm) {
+  @media (max-width: $break) {
     @content;
   }
 }
 
-@mixin desktop {
-  @media (min-width: ($breakpoint-device-sm + 1px)) {
+@mixin desktop($break: $breakpoint-device-sm) {
+  @media (min-width: ($break + 1px)) {
     @content;
+  }
+}
+
+@mixin responsive(
+  $prop: null,
+  $min-width: 0,
+  $max-width: 2000px,
+  $min-val: 0px,
+  $max-val: 300px,
+  $unit: px,
+  $doEdges: true
+) {
+  $minWidth: strip-unit($min-width);
+  $maxWidth: strip-unit($max-width);
+
+  @if $prop {
+    @if $doEdges {
+      #{$prop}: #{strip-unit($min-val)}px;
+
+      @media (min-width: #{$maxWidth + 1}px) {
+        #{$prop}: #{strip-unit($max-val)}px;
+      }
+    }
+
+    @media (min-width: #{$minWidth}px) and (max-width: #{$maxWidth}px) {
+      #{$prop}: resp-val($min-width, $max-width, $min-val, $max-val, $unit);
+    }
+  }
+}
+
+@mixin responsive-font(
+  $min-val: 12,
+  $max-val: 24,
+  $min-width: $small-mobile-media-width,
+  $max-width: $mobile-media-width,
+  $unit: px,
+  $doEdges: true
+) {
+  @include responsive(
+    $prop: font-size,
+    $min-width: $min-width,
+    $max-width: $max-width,
+    $min-val: $min-val,
+    $max-val: $max-val,
+    $unit: $unit,
+    $doEdges: $doEdges
+  );
+}
+
+@mixin hide-scrollbar {
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+  &::-webkit-scrollbar {
+    background: transparent;
+    display: none;
+    width: 0;
+  }
+}
+
+@mixin scroll-snap-x-breakout($breakout: null) {
+  width: 100vw;
+  padding-right: 0;
+
+  @if (type-of($breakout) == number) or (contains($breakout, 'var(--')) {
+    padding-left: $breakout;
+    padding-right: 0;
+    margin-left: calc(-1 * #{$breakout});
+    margin-right: calc(-1 * #{$breakout});
+
+    &:after {
+      @include pseudo;
+      @include size($breakout, 1px);
+      flex-shrink: 0;
+    }
+  }
+  @elseif $breakout {
+    transform: translateX(-50%);
+    margin-left: 50%;
+    padding-left: 0;
+  }
+}
+
+@mixin scroll-snap-x(
+  $item: '& > *',
+  $snap-align: start,
+  $breakout: null,
+  $item-gap: null
+) {
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-snap-type: mandatory;
+  scroll-snap-type: x mandatory;
+  user-select: none;
+  will-change: scroll-position;
+  transform: translateZ(0);
+  @include hide-scrollbar;
+  @include scroll-snap-x-breakout($breakout);
+
+  @if ($snap-align != center) and $breakout {
+    scroll-padding: $breakout;
+  }
+
+  #{$item} {
+    scroll-snap-stop: always;
+    scroll-snap-align: $snap-align;
+    margin-left: 0;
+    flex-shrink: 0;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+
+    @if $item-gap {
+      margin-right: $item-gap;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    } @else {
+      margin-right: 0;
+    }
+
+    a {
+      user-select: none;
+      -webkit-user-drag: none;
+    }
   }
 }

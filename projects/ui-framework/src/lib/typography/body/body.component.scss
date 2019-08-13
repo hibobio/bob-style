@@ -1,0 +1,5 @@
+@import '../../style/typography.scss';
+
+:host {
+  @include b-body($addCssVars: false);
+}

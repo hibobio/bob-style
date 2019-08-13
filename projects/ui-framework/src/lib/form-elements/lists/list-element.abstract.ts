@@ -84,7 +84,9 @@ export abstract class BaseListElement
   }
 
   ngOnDestroy(): void {
-    this.keyDownSubscriber.unsubscribe();
+    if (this.keyDownSubscriber) {
+      this.keyDownSubscriber.unsubscribe();
+    }
   }
 
   ngAfterViewInit(): void {

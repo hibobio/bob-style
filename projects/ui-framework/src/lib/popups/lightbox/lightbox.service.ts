@@ -3,7 +3,7 @@ import { LightboxConfig, LightboxData } from './lightbox.interface';
 import { LightboxComponent } from './lightbox.component';
 import { Overlay, OverlayConfig } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { URLutils } from '../../services/url/url-utils';
+import { URLutils } from '../../services/url/url-utils.service';
 
 @Injectable()
 export class LightboxService {
@@ -46,6 +46,7 @@ export class LightboxService {
         this.closeLightbox(lightbox as LightboxData)
       );
 
+      lightbox.close = () => this.closeLightbox(lightbox as LightboxData);
       return lightbox as LightboxData;
     } catch (e) {
       this.closeLightbox(lightbox as LightboxData);

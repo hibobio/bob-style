@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { SideMenuComponent } from './side-menu.component';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -12,7 +12,7 @@ describe('SideMenuComponent', () => {
   let component: SideMenuComponent;
   let fixture: ComponentFixture<SideMenuComponent>;
 
-  beforeEach(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SideMenuComponent, MockComponent(SideMenuOptionComponent)],
       providers: [
@@ -20,32 +20,14 @@ describe('SideMenuComponent', () => {
         IconsModule,
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SideMenuComponent);
-    component = fixture.componentInstance;
-    component.options = getSideMenuOptionsMock();
-    fixture.detectChanges();
-  });
-
-  describe('ngOnChanges', () => {
-    it('should select the first option', () => {
-      component.ngOnChanges();
-      expect(component.selectedId).toEqual(1);
-    });
-    it('should not select an option when no options', () => {
-      component.options = [];
-      component.ngOnChanges();
-      expect(component.selectedId).toBeNull();
-    });
-    it('should select the fist option when selectedId is not in options', () => {
-      component.selectedId = 99999;
-      component.ngOnChanges();
-      expect(component.selectedId).toEqual(1);
-    });
-  });
+    }).compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(SideMenuComponent);
+        component = fixture.componentInstance;
+        component.options = getSideMenuOptionsMock();
+        fixture.detectChanges();
+      });
+  }));
 
   describe('onSelectOption', () => {
     it('should set selectedId to 2', () => {

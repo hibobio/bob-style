@@ -1,5 +1,7 @@
 @import './colors';
 
+$chevronWidth: 2px;
+
 @mixin diamond($size, $color: $white) {
   width: $size;
   height: $size;
@@ -43,8 +45,6 @@
   border-right: ($size/2) solid transparent;
   border-bottom: ($size/2) solid $color;
 }
-
-$chevronWidth: 2px;
 
 @mixin chevron($color, $size) {
   position: relative;

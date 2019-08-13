@@ -1,5 +1,12 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, Input, NgZone, OnDestroy, OnInit, ViewChild,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  ViewChild
 } from '@angular/core';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
@@ -13,10 +20,9 @@ const SHADOW_BLEED = 10;
   selector: 'b-floating-avatars',
   template: '<canvas #canvas></canvas>',
   styleUrls: ['./floating-avatars.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FloatingAvatarsComponent implements OnInit, OnDestroy {
-
   @ViewChild('canvas', { static: true }) canvas: ElementRef;
 
   @Input() centerAvatarImage: string = null;
@@ -28,7 +34,7 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
   private loopReq;
   private canvasDimension = {
     width: 0,
-    height: 0,
+    height: 0
   };
   private particles: Ball[] = [];
   private resizeSubscribe: Subscription;
@@ -36,9 +42,8 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
   constructor(
     private hostRef: ElementRef,
     private zone: NgZone,
-    private utils: UtilsService,
-  ) {
-  }
+    private utils: UtilsService
+  ) {}
 
   ngOnInit(): void {
     this.canvasEl = this.canvas.nativeElement;
@@ -46,7 +51,8 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
     this.scaleCanvas();
     this.setScene();
     this.loop();
-    this.resizeSubscribe = this.utils.getResizeEvent()
+    this.resizeSubscribe = this.utils
+      .getResizeEvent()
       .pipe(outsideZone(this.zone))
       .subscribe(() => {
         this.scaleCanvas();
@@ -56,14 +62,16 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.resizeSubscribe.unsubscribe();
+    if (this.resizeSubscribe) {
+      this.resizeSubscribe.unsubscribe();
+    }
     window.cancelAnimationFrame(this.loopReq);
   }
 
   private scaleCanvas(): void {
     this.canvasDimension = {
       width: this.hostRef.nativeElement.clientWidth,
-      height: this.hostRef.nativeElement.clientHeight,
+      height: this.hostRef.nativeElement.clientHeight
     };
     this.canvasEl.width = this.canvasDimension.width;
     this.canvasEl.height = this.canvasDimension.height;
@@ -71,7 +79,10 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
 
   private setScene(): void {
     for (let particle, i = 0; i < this.avatarImages.length; i++) {
-      particle = new Ball(Math.round(Math.random() * 30 + 20), this.avatarImages[i]);
+      particle = new Ball(
+        Math.round(Math.random() * 30 + 20),
+        this.avatarImages[i]
+      );
       particle.x = Math.random() * this.canvasDimension.width;
       particle.y = Math.random() * this.canvasDimension.height;
       particle.vx = Math.random() * this.speed - this.speed / 2;
@@ -92,7 +103,12 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
 
   private loop(): void {
     this.zone.runOutsideAngular(() => {
-      this.ctx.clearRect(0, 0, this.canvasDimension.width, this.canvasDimension.height);
+      this.ctx.clearRect(
+        0,
+        0,
+        this.canvasDimension.width,
+        this.canvasDimension.height
+      );
       this.particles.forEach((particle, index) => {
         this.move(particle, index);
         particle.draw(this.ctx);
@@ -136,7 +152,7 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
 
     if (dist < MIN_DIST) {
       const alpha = 1 - dist / MIN_DIST;
-      this.ctx.strokeStyle = `rgba(200,200,200, ${ alpha })`;
+      this.ctx.strokeStyle = `rgba(200,200,200, ${alpha})`;
       this.ctx.lineWidth = 1;
       this.ctx.beginPath();
       this.ctx.moveTo(ball1.x, ball1.y);
@@ -174,7 +190,7 @@ export class Ball {
     this.vy = 0;
     this.scaleX = 1;
     this.scaleY = 1;
-    this.img = new Image;
+    this.img = new Image();
     this.img.src = imgUrl;
     this.lineWidth = Math.min(Math.floor(radius / 10), 4);
   }
@@ -186,12 +202,18 @@ export class Ball {
 
     context.fillStyle = 'rgba(248,247,247,1)';
     context.beginPath();
-    context.arc(0, 0, this.radius, 0, (Math.PI * 2), true);
+    context.arc(0, 0, this.radius, 0, Math.PI * 2, true);
     context.closePath();
     context.fill();
     context.clip();
 
-    context.drawImage(this.img, -this.radius, -this.radius, this.radius * 2, this.radius * 2);
+    context.drawImage(
+      this.img,
+      -this.radius,
+      -this.radius,
+      this.radius * 2,
+      this.radius * 2
+    );
 
     context.restore();
     context.save();
@@ -200,7 +222,7 @@ export class Ball {
 
     if (this.lineWidth > 0) {
       context.beginPath();
-      context.arc(0, 0, this.radius, 0, (Math.PI * 2), true);
+      context.arc(0, 0, this.radius, 0, Math.PI * 2, true);
       context.closePath();
       context.lineWidth = this.lineWidth;
       context.strokeStyle = 'rgba(255,255,255,1)';

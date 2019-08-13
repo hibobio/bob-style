@@ -111,5 +111,6 @@ export enum Icons {
   table = 'b-icon-table',
   graph_timeline = 'b-icon-graph-timeline',
   zoom_out = 'b-icon-zoom-out',
-  text_size = 'b-icon-text-size'
+  text_size = 'b-icon-text-size',
+  enter = 'b-icon-enter'
 }

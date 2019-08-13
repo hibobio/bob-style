@@ -1,0 +1,32 @@
+<ng-container *ngFor="let chainLink of chainLinkList; index as i;">
+
+  <div class="chain-link-row"
+       (mouseenter)="activateChainLink($event, i)"
+       (mouseleave)="deactivateChainLink($event, i)">
+
+    <b-component-renderer [render]="chainLink.selectComponentConfig">
+    </b-component-renderer>
+
+    <b-square-button class="delete-button"
+                     *ngIf="chainLink.active && chainLinkList.length > 1"
+                     [type]="buttonType.tertiary"
+                     [size]="buttonSize.large"
+                     [icon]="icons.delete"
+                     (click)="removeChainLink(i)">
+    </b-square-button>
+
+  </div>
+
+  <div class="then">
+    <b-icon [icon]="icons.arrow_right"></b-icon>
+  </div>
+
+</ng-container>
+
+<b-button class="add-chain-link"
+          [size]="buttonSize.large"
+          [type]="buttonType.secondary"
+          [icon]="icons.person_add"
+          (clicked)="addChainLink()">
+  {{actionLabel}}
+</b-button>

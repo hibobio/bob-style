@@ -50,6 +50,8 @@ export const emitNativeEvent = (
   if (!props.target) {
     props.target = element;
   }
+  console.log('>>dispatch', type);
+
   (element as HTMLElement).dispatchEvent(
     new Event(type, {
       type: type,

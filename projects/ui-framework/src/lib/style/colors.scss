@@ -8,6 +8,7 @@ $grey-500: #d2d2d2; // rgb(210,210,210)
 $grey-600: #9d9d9d; // rgb(157,157,157)
 $grey-700: #535353; // rgb(83,83,83)
 $grey-800: #303030; // rgb(48,48,48)
+$grey-900: #050505; // rgb(5,5,5)
 
 $primary-500: #fea54a; // rgb(254,165,74)
 $primary-600: #ff962b; // rgb(255,150,43)
@@ -29,7 +30,10 @@ $inform-500: #9bc3f2; // rgb(155,195,242)
 $inform-600: #70abf0; // rgb(112,171,240)
 $inform-700: #4b95ec; // rgb(75,149,236)
 
-$body-text-color: $grey-700;
+$display-text-color: $grey-700; // #535353
+$heading-text-color: $grey-800; // #303030
+$body-text-color: $grey-800; // #303030
+$caption-text-color: $grey-700; // #535353
 $boxShadowColor: rgba($grey-700, 0.2);
 
 $color-error: $negative-600;

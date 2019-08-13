@@ -1,0 +1,8 @@
+@keyframes enablePointer {
+  from {
+    pointer-events: none;
+  }
+  to {
+    pointer-events: all;
+  }
+}

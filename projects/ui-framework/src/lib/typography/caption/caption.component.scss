@@ -1,4 +1,5 @@
 @import '../../style/typography.scss';
+
 :host {
-  @include BodyFont($font-size-caption);
+  @include b-caption($color: $caption-text-color, $addCssVars: false);
 }

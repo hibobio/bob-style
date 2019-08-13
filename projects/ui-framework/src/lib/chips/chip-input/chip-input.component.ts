@@ -111,7 +111,9 @@ export class ChipInputComponent extends BaseFormElement
       });
   }
   ngOnDestroy(): void {
-    this.windowClickSubscriber.unsubscribe();
+    if (this.windowClickSubscriber) {
+      this.windowClickSubscriber.unsubscribe();
+    }
   }
 
   private transmit(change: Partial<ChipInputChange>): void {

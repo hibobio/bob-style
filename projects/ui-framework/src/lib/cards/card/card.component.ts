@@ -1,43 +1,46 @@
 import {
+  ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   HostBinding,
-  HostListener,
-  Input,
-  Output
+  ElementRef,
+  ViewChild,
+  NgZone,
+  ChangeDetectorRef,
+  AfterViewInit
 } from '@angular/core';
-import { CardData } from '../cards.interface';
-import { CardType } from '../cards.enum';
-import { Icons } from '../../icons/icons.enum';
+import { IconColor, Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { LinkColor } from '../../buttons-indicators/link/link.enum';
+import { BaseCardElement } from './card.abstract';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 @Component({
   selector: 'b-card, [b-card]',
   templateUrl: './card.component.html',
-  styleUrls: ['./card.component.scss']
+  styleUrls: ['./card.component.scss'],
+  providers: [{ provide: BaseCardElement, useExisting: CardComponent }]
 })
-export class CardComponent {
-  constructor() {}
+export class CardComponent extends BaseCardElement implements AfterViewInit {
+  constructor(
+    public cardElRef: ElementRef,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef,
+    private DOM: DOMhelpers
+  ) {
+    super(cardElRef);
+  }
 
-  @Input() card: CardData;
+  @ViewChild('cardTop', { static: false }) cardTop: ElementRef;
+  @ViewChild('cardContent', { static: false }) cardContent: ElementRef;
 
-  cardType = CardType;
-  button = ButtonType;
-  icons = Icons;
-
-  @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
+  readonly buttonType = ButtonType;
+  readonly icons = Icons;
+  readonly iconColor = IconColor;
+  readonly linkColor = LinkColor;
+  public hasContent = true;
+  public hasTop = true;
 
   @HostBinding('attr.data-focus-inside') menuIsOpened: boolean;
-  @HostBinding('attr.data-type') @Input() type: CardType = CardType.regular;
-  @HostBinding('attr.data-clickable') @Input() clickable = false;
-  @HostBinding('attr.tabindex') get tabindex() {
-    return this.clickable ? '0' : '-1';
-  }
-
-  @HostListener('click', ['$event'])
-  onClick($event) {
-    this.clicked.emit($event);
-  }
 
   onMenuOpen(): void {
     this.menuIsOpened = true;
@@ -47,5 +50,22 @@ export class CardComponent {
     setTimeout(() => {
       this.menuIsOpened = false;
     }, 150);
+  }
+
+  onCtaClick(event: MouseEvent): void {
+    this.clicked.emit(event);
+  }
+
+  ngAfterViewInit(): void {
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.hasContent = !this.DOM.isEmpty(this.cardContent.nativeElement);
+        this.hasTop = !this.DOM.isEmpty(this.cardTop.nativeElement);
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, 0);
+    });
   }
 }

@@ -21,6 +21,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   @Input() inputType: InputTypes = InputTypes.text;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
+  @Input() minChars: number;
   @Input() maxChars: number;
 
   @Output(FormEvents.inputEvents) changed: EventEmitter<

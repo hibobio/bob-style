@@ -12,6 +12,7 @@
             [value]="value"
             [disabled]="disabled"
             [required]="required"
+            [attr.minlength]="minChars"
             [attr.maxlength]="maxChars"
             (input)="onInputChange($event)"
             (blur)="onInputBlur()"

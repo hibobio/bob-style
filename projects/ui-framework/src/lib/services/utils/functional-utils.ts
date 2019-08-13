@@ -27,19 +27,25 @@ export const getKeyByValue = (object: object, value: any) =>
 
 export const isString = (val: any): boolean => val && typeof val === 'string';
 
-export const isEmptyString = (val: any): boolean =>
+export const isNotEmptyString = (val: any): boolean =>
   isString(val) && val.trim() !== '';
+
+export const isEmptyString = (val: any): boolean => !isNotEmptyString(val);
 
 export const isArray = (val: any): boolean => val && Array.isArray(val);
 
-export const isEmptyArray = (val: any): boolean =>
+export const isNotEmptyArray = (val: any): boolean =>
   isArray(val) && val.length > 0;
+
+export const isEmptyArray = (val: any): boolean => !isNotEmptyArray(val);
 
 export const isObject = (val: any): boolean =>
   val && !isArray(val) && val === Object(val);
 
-export const isEmptyObject = (val: any): boolean =>
+export const isNotEmptyObject = (val: any): boolean =>
   isObject(val) && Object.keys(val).length > 0;
+
+export const isEmptyObject = (val: any): boolean => !isNotEmptyObject(val);
 
 export const isNullOrUndefined = (val: any): boolean =>
   val === undefined || val === null;

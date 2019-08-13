@@ -140,20 +140,15 @@ const storyTemplate = `
 
 const note = `
 ## Typography
-The typography is arranged into multiple levels:
-- display: Which are large titles (usually top of page)
-- heading: Which are section headings
+Typography is arranged in multiple levels:<br>
+- display: large titles (usually top of page)<br>
+- heading: section headings<br>
+- body: regular text<br>
+- caption: small text
 
-#### Module
-*TypographyModule*
+#### Module: *TypographyModule*
 
-#### Style customization
-property name | Description
---- | ---
-display-font-family | The display elements font family
-heading-font-family | The heading elements font family
-body-font-family | The body elements font family
-text-color | The font color
+-------------
 
 ~~~
 <b-display-1>Display XLarge</b-display-1>
@@ -162,9 +157,12 @@ text-color | The font color
 <b-display-4>Display Small</b-display-4>
 <b-heading>Heading</b-heading>
 <b-subheading>Sub heading</b-subheading>
-Body
+<b-big-body>Big Body</b-big-body>
+<b-bold-body>Bold Body</b-bold-body>
+Regular Body text
 <b-caption>Caption</b-caption>
 ~~~
+
 `;
 typographyStories.add(
   'Text',

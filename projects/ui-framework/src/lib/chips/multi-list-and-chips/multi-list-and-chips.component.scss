@@ -16,11 +16,11 @@ $gap: 20px;
 }
 
 .mlac-list {
-  width: calc(40% - #{$gap / 2});
+  width: calc(50% - #{$gap / 2});
 }
 
 .mlac-chips {
-  width: calc(60% - #{$gap / 2});
+  width: calc(50% - #{$gap / 2});
 }
 
 .mlac-list-label,
@@ -35,6 +35,7 @@ b-chip-list {
 
 b-multi-list {
   box-shadow: none;
+  background-color: white;
 }
 
 b-chip-list {
@@ -42,4 +43,9 @@ b-chip-list {
   border-radius: $border-radius;
   margin: 0;
   padding: ($gap - 4px);
+  max-height: 360px;
+}
+
+:host ::ng-deep b-list-footer {
+  margin-top: auto;
 }

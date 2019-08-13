@@ -21,7 +21,9 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Add new Card'">
+  <div style="max-width:260px;">
     ${template}
+  </div>
 </b-story-book-layout>
 `;
 

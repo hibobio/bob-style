@@ -56,7 +56,9 @@ export class LightboxComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.windowKeydownSubscriber.unsubscribe();
+    if (this.windowKeydownSubscriber) {
+      this.windowKeydownSubscriber.unsubscribe();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {

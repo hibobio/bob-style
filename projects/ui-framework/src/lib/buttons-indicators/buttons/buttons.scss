@@ -8,7 +8,7 @@ $sizeLarge: 44px;
 
 @mixin Button($type: null, $basics: true) {
   @if $basics {
-    @include BodyFont;
+    @include b-body($addCssVars: false);
     @include flex-align;
     box-sizing: border-box;
     width: 100%;
@@ -20,7 +20,7 @@ $sizeLarge: 44px;
 
     &,
     &[disabled] {
-      color: $body-text-color;
+      color: $grey-700;
     }
 
     :first-letter {

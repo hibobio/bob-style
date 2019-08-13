@@ -1,5 +1,9 @@
-@import '../../style/typography.scss';
+@import '../../style/variables';
+@import '../../style/mixins';
+@import '../../style/typography';
+
 :host {
-  display: block;
-  @include DisplayFont($font-size-display-1, $font-weight-display-1);
+  @include b-display-1($addCssVars: false) {
+    display: block;
+  }
 }

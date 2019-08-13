@@ -1,7 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import {
   text,
-  select,
   boolean,
   withKnobs,
   number
@@ -19,10 +18,12 @@ const textareaStories = storiesOf(
 ).addDecorator(withKnobs);
 
 const template = `
-<b-textarea [maxChars]="maxChars"
+<b-textarea
+            [value]="value"
             [label]="label"
             [placeholder]="placeholder"
-            [value]="value"
+            [maxChars]="maxChars"
+            [minChars]="minChars"
             [disabled]="disabled"
             [required]="required"
             [hintMessage]="hintMessage"
@@ -48,14 +49,17 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | ---
-  maxChars | number | maximum characters
   value | string/number/float | type of input field
   label | string | label text
+  placeholder | string | placeholder text (inside input)
+  minChars | number | minimum length
+  maxChars | number | maximum characters
   disabled | boolean | is field disabled
   required | boolean | is field required
   hintMessage | text | hint text
+  warnMessage | string | warning text
   errorMessage | text | error text
-  inputEvents | InputEvent | input events emitter
+  (inputEvents) | InputEvent | input events emitter
 
   ~~~
   ${template}
@@ -68,10 +72,11 @@ textareaStories.add(
       template: storyTemplate,
       props: {
         inputEvents: action('inputEvents'),
-        maxChars: number('maxChars', ''),
         value: text('value', ''),
         label: text('label', 'Input label'),
         placeholder: text('placeholder', 'Input placeholder'),
+        maxChars: number('maxChars', ''),
+        minChars: number('minChars', ''),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),

@@ -55,7 +55,7 @@ $border-color: $grey-500;
   .ql-container,
   .ql-toolbar,
   .ql-picker {
-    @include BodyFont;
+    @include b-body($addCssVars: false);
   }
 
   .ql-container,
@@ -436,16 +436,16 @@ $border-color: $grey-500;
       }
 
       &.rte-size-small {
-        @include BodyFont($font-size-caption);
+        @include b-caption($addCssVars: false);
       }
       &.rte-size-normal {
-        @include BodyFont($font-size-body);
+        @include b-body($addCssVars: false);
       }
       &.rte-size-large {
-        @include BodyFont(18px, $lineHeight: 1);
+        @include BodyFont($size: 18px, $lineHeight: 1);
       }
       &.rte-size-huge {
-        @include BodyFont(32px, $lineHeight: 1);
+        @include BodyFont($size: 32px, $lineHeight: 1);
       }
     }
   }

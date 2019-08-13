@@ -1,35 +1,17 @@
 @import '../../style/colors';
+@import '../../style/variables';
 @import '../../style/mixins';
 @import '../../style/typography';
+@import './card.mixin';
 
-@keyframes enablePointer {
-  from {
-    pointer-events: none;
-  }
-  to {
-    pointer-events: all;
-  }
-}
+@include card-common;
 
 :host {
-  box-sizing: border-box;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  border: 1px solid $grey-500;
-  border-radius: 4px;
-  transition: transform 0.2s, box-shadow 0.2s;
-  text-align: left;
-  background-color: white;
-
   &:hover,
   &:focus,
   &[data-focus-inside='true'] {
-    box-shadow: 0 2px 15px 0 $grey-500;
-    transform: translateY(-10px);
-
-    .card-menu {
+    .card-menu,
+    .card-action {
       pointer-events: all;
       opacity: 1;
     }
@@ -41,92 +23,86 @@
       @include animate(enablePointer, 0s, 0.2s);
     }
   }
-
-  &[data-clickable='true'] {
-    cursor: pointer;
-  }
-
-  &:focus {
-    outline: 0;
-  }
 }
 
-.card-menu {
-  position: absolute;
-  top: 2px;
-  right: 0;
+.card-menu,
+.card-action {
+  @include position(12px 10px null null);
   transition: opacity 0.2s;
   opacity: 0;
   pointer-events: none;
-}
-
-.card-content {
-  text-transform: none;
-  pointer-events: none;
-}
-
-.card-top,
-.card-content,
-.card-bottom {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-.card-top,
-.card-bottom {
-  font-weight: 300;
-}
-
-.card-top,
-.card-content {
-  margin-bottom: 15px;
-  color: $grey-700;
+  z-index: 2;
 }
 
 .card-top {
-  max-width: calc(100% - 15px);
+  position: relative;
 }
 
-.card-bottom {
-  color: $grey-600;
-  margin-top: auto;
-}
-
-.card-content {
-  flex-grow: 5;
-
-  &:last-child {
-    margin: 0;
+.card-top-with-image {
+  &:after {
+    @include pseudo;
+    @include position;
+    @include size(100%, 60%);
+    background: linear-gradient(to bottom, black(0.6) 20%, black(0) 100%);
+    z-index: 0;
+    clear: both;
   }
+}
+
+:host ::ng-deep {
+  [card-top] {
+    max-width: calc(100% - 22px);
+    position: relative;
+    z-index: 1;
+  }
+  .card-top-with-image [card-top] {
+    padding: $cardPadding $cardPadding 0 $cardPadding;
+    color: white;
+  }
+}
+
+.card-title,
+.card-content {
+  margin-top: times8(2);
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.card-action,
+.card-menu {
+  & + .card-title,
+  & + .card-content {
+    margin-top: 0;
+  }
+}
+
+.cta-button {
+  margin-left: auto;
 }
 
 // Types
 
-:host[data-type='regular'] {
-  min-height: 240px;
-  min-width: 190px;
-
-  .card-content {
-    @include DisplayFont(
-      $font-size-display-4,
-      600,
-      $transform: null,
-      $addCssVars: true
-    );
+:host {
+  &[data-type='small'],
+  &[data-type='regular'] {
+    .card-top-with-image {
+      @include ratio(304/128, $clear: false);
+      max-height: 140px;
+    }
   }
-}
 
-:host[data-type='large'] {
-  min-width: 260px;
-  min-height: 260px;
+  &[data-type='large'] {
+    .card-top-with-image {
+      @include ratio(304/160, $clear: false);
+      max-height: 160px;
+    }
+  }
 
-  .card-content {
-    @include DisplayFont(
-      $font-size-display-3,
-      $font-weight-display-3,
-      $transform: null,
-      $addCssVars: true
-    );
+  &[data-type='small'] ::ng-deep {
+    .card-top-with-image [card-top] {
+      padding: $cardPadding-small $cardPadding-small 0 $cardPadding-small;
+    }
   }
 }

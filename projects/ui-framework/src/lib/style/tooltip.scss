@@ -8,14 +8,13 @@ $toolti-offset: 10px;
 
 %tooltip-body {
   background-color: $tooltip-color;
-  color: white;
   max-width: 350px;
   overflow: visible;
   overflow-wrap: break-word;
   padding: 8px 15px;
   margin: $toolti-offset 0;
   border-radius: $border-radius;
-  @include BodyFont;
+  @include b-body($color: white, $style: normal, $addCssVars: false);
 
   @media (max-width: 400px) {
     max-width: 80vw;
