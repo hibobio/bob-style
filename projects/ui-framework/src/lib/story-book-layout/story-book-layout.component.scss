@@ -39,7 +39,7 @@ b-display-3 {
     flex: 1;
     max-width: 600px;
 
-    @include mobile {
+    @include mobile(550px) {
       max-width: 100% !important;
     }
   }
