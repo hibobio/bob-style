@@ -180,7 +180,15 @@
        enable console.log
      </label>
    </p>
-
+   <p>
+     <label>
+       <input class="simple-checkbox"
+              [(ngModel)]="global_disco"
+              (change)="doDisco()"
+              type="checkbox">
+       DISCO!
+     </label>
+   </p>
  </div>
 
 

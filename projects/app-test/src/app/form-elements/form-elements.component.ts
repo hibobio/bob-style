@@ -15,7 +15,7 @@ import {
   isString,
   countChildren,
   flatten,
-  getType,
+  getType
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
 import { BlotType } from '../../../../ui-framework/src/lib/form-elements/rich-text-editor/rte-core/rte.enum';
 import { AvatarComponent } from '../../../../ui-framework/src/lib/buttons-indicators/avatar/avatar.component';
@@ -65,6 +65,7 @@ export class FormElementsTestComponent
   global_consoleLog = true;
   global_hideLabelOnFocus = false;
   global_setGlobalFormControlValueStrategy = 'runComponentNgOnChanges';
+  global_disco = false;
 
   globalFormControlStartValues = {
     null: null,
@@ -89,6 +90,10 @@ export class FormElementsTestComponent
   global_error_value = 'Error message';
   global_keepControlMenuOpen = false;
   global_ControlMenuOnBottom = false;
+
+  timer1;
+  timer2;
+  timer3;
 
   ///////////////////////////////////
 
@@ -892,16 +897,23 @@ export class FormElementsTestComponent
     }, 10);
   }
 
-  globalControlChange(control) {
-    let value;
-
-    if (control.includes('error') || control.includes('warn')) {
-      value = this[control + '_value'];
-    } else {
-      value = this[control];
+  globalControlChange(control, value: any = NaN) {
+    if (value !== value) {
+      if (control.includes('error') || control.includes('warn')) {
+        value = this[control + '_value'];
+      } else {
+        value = this[control];
+      }
+    }
+    if (control.includes('_')) {
+      control = control.split('_')[1];
+    }
+    if (this.global_consoleLog && value) {
+      console.log('setting all components', control, 'to', value);
     }
     this.allFormElements.forEach(name => {
-      this[name + '_' + control.split('_')[1]] = value;
+      this[name + '_' + control] = value;
+      // this.cd.detectChanges();
     });
   }
 
@@ -1011,6 +1023,39 @@ export class FormElementsTestComponent
       this[name + '_element'] && this[name + '_element'].nativeElement
     );
     return this[name + '_nodeCount'];
+  }
+
+  doDisco() {
+    if (this.global_disco) {
+      console.log('DISCO! GO!');
+
+      this.timer1 = setInterval(() => {
+        this.globalControlChange('disabled', false);
+        this.globalControlChange('warn', this.global_warn_value);
+        this.globalControlChange('error', null);
+      }, 500);
+
+      this.timer2 = setInterval(() => {
+        this.globalControlChange('disabled', false);
+        this.globalControlChange('warn', null);
+        this.globalControlChange('error', this.global_error_value);
+      }, 1000);
+
+      this.timer3 = setInterval(() => {
+        this.globalClearWarnErrors();
+        this.globalControlChange('disabled', true);
+      }, 1500);
+    } else {
+      console.log('DISCO! STOP!');
+      clearInterval(this.timer1);
+      clearInterval(this.timer2);
+      clearInterval(this.timer3);
+      this.timer1 = null;
+      this.timer2 = null;
+      this.timer3 = null;
+      this.globalClearWarnErrors();
+      this.globalControlChange('disabled', false);
+    }
   }
 
   ///////////////////////////////////
