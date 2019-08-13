@@ -72,7 +72,7 @@ export class RteLinkBlot {
 
       unformat: rteLink.url
         ? this.specialBlots.treatAsWhole
-        : [...RteLinkFormats, ...this.specialBlots.treatAsWhole],
+        : [...RteLinkFormats, ...(this.specialBlots.treatAsWhole || [])],
       addSpaces: this.selectedText.length === 0,
       noLinebreakAfter: this.specialBlots.noLinebreakAfter
     };

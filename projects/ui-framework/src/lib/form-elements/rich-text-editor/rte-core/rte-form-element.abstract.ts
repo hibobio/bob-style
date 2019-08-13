@@ -8,7 +8,6 @@ import {
   SimpleChanges,
   ViewChild,
   AfterViewInit,
-  HostBinding,
   OnInit,
   NgZone
 } from '@angular/core';
@@ -63,16 +62,6 @@ export abstract class RTEformElement extends BaseFormElement
   @Output() focused: EventEmitter<string> = new EventEmitter<string>();
   @Output() changed: EventEmitter<string> = new EventEmitter<string>();
 
-  @HostBinding('class.length-invalid') get isLengthInvalid(): boolean {
-    return (
-      this.length < this.minChars ||
-      (this.maxChars && this.length > this.maxChars)
-    );
-  }
-  @HostBinding('class.length-warning') get hasLengthWarning(): boolean {
-    return this.maxChars && this.maxChars - this.length < 15;
-  }
-
   public editor: Quill;
   public hasSizeSet = false;
   public selection: RangeStatic;
@@ -81,7 +70,7 @@ export abstract class RTEformElement extends BaseFormElement
   public lastSelection: RangeStatic;
   public lastCurrentBlot: BlotData;
   private latestOutputValue: string;
-  public length: number;
+  public length = 0;
   protected writingValue = false;
   protected specialBlots: SpecialBlots = {
     treatAsWholeDefs: [],
@@ -125,6 +114,7 @@ export abstract class RTEformElement extends BaseFormElement
     this.writingValue = false;
   }
 
+  // outside zone
   protected transmitValue(doPropagate: boolean): void {
     if (!this.writingValue) {
       let newOutputValue = this.rteUtils.getHtmlContent(this.editor).trim();
@@ -257,6 +247,7 @@ export abstract class RTEformElement extends BaseFormElement
     this.onNgAfterViewInit();
   }
 
+  // outside zone
   private onEditorTextChange(
     delta: DeltaStatic,
     oldDelta: DeltaStatic,
@@ -269,6 +260,7 @@ export abstract class RTEformElement extends BaseFormElement
     this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
   }
 
+  // outside zone
   private onEditorSelectionChange(
     range: RangeStatic,
     oldRange: RangeStatic
@@ -282,16 +274,22 @@ export abstract class RTEformElement extends BaseFormElement
     }
   }
 
+  // outside zone
   private onEditorFocus(): void {
-    this.zone.run(() => {
-      this.focused.emit(this.value);
-    });
+    if (this.focused.observers.length > 0) {
+      this.zone.run(() => {
+        this.focused.emit(this.value);
+      });
+    }
   }
 
+  // outside zone
   private onEditorBlur(): void {
     this.transmitValue(this.sendChangeOn === RTEchangeEvent.blur);
     this.zone.run(() => {
-      this.blurred.emit(this.value);
+      if (this.blurred.observers.length > 0) {
+        this.blurred.emit(this.value);
+      }
       this.onTouched();
     });
   }
@@ -360,7 +358,9 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   private checkLength(): number {
-    return (this.length = this.rteUtils.getTextLength(this.editor));
+    this.length = this.rteUtils.getTextLength(this.editor);
+    this.changeDetector.detectChanges();
+    return this.length;
   }
 
   // this is part of ControlValueAccessor interface

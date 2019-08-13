@@ -1,9 +1,11 @@
 <label *ngIf="label && placeholder"
        class="bfe-label"
        [attr.for]="id">{{label}}</label>
-
+{{length}} / {{minChars}} / {{ maxChars}}
 <div class="quill-editor"
-     [attr.id]="id">
+     [attr.id]="id"
+     [ngClass]="{'length-invalid': length < minChars || (maxChars && length > maxChars),
+    'length-warning': maxChars && maxChars - length < 15}">
   <div #quillEditor
        [attr.data-length]="hasSuffix && (minChars > 0 || maxChars) ? ( (length || 0) + (maxChars ? '/' + maxChars : '')) :
        null"
@@ -20,7 +22,6 @@
        [attr.hide-align]="!controls.includes(BlotType.align)"
        (mousedown.outside-zone)="$event.preventDefault()">
 
-
     <b-panel #sizePanel
              panelClass="rte-size-controls"
              [showBackdrop]="false"
@@ -31,7 +32,7 @@
       <button type="button"
               class="rte-size"
               panel-trigger
-              [ngClass]="{'ql-active': false && hasSizeSet}"
+              [ngClass]="{'ql-active': hasSizeSet}"
               (click)="storeSelection()">
 
         <b-icon [icon]="icons.text_size"

@@ -254,18 +254,16 @@ $border-color: $grey-500;
   margin-left: auto;
 }
 
-:host {
-  &.length-invalid {
-    .ql-container:after,
-    .length-indicator {
-      color: $color-error;
-    }
+.length-invalid {
+  .ql-container:after,
+  .length-indicator {
+    color: $color-error;
   }
-  &.length-warning {
-    .ql-container:after,
-    .length-indicator {
-      color: $color-warn;
-    }
+}
+.length-warning {
+  .ql-container:after,
+  .length-indicator {
+    color: $color-warn;
   }
 }
 
