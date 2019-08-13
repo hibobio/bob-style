@@ -87,7 +87,6 @@ const note = `
   hintMessage | string | adds a hint message below editor | none (optional)
   warnMessage | string | adds a warning message below editor | none (optional)
   errorMessage | string | adds 'invalid' style, hides hint/warn message and displays error message below editor | none (optional)
-  sendChangeOn | RTEchangeEvent | When to transmit value changes - on change (every keystroke) or on blur | blur (optional)
   changed | function | change event handler (event transmits latest change: {body,plainText}) |
   focused | function | focus event handler (event transmits latest change: {body,plainText}) |
   blurred | function | blur event handler (event transmits latest change: {body,plainText}) |

@@ -26,7 +26,7 @@ import {
 
 import { RichTextEditorComponent } from './rte.component';
 import { RteUtilsService } from './rte-core/rte-utils.service';
-import { RTEType, BlotType, RTEchangeEvent } from './rte-core/rte.enum';
+import { RTEType, BlotType } from './rte-core/rte.enum';
 import Quill from 'quill';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OverlayContainer } from '@angular/cdk/overlay';
@@ -41,7 +41,10 @@ import { placeholderMock } from './rte-placeholder/rte-placeholder.mock';
       <b-rich-text-editor
         [label]="'label text'"
         [placeholder]="'placeholder text'"
+        [sendChangeOnWrite]="true"
         formControlName="rteControl"
+        (focused)="onFocus()"
+        (blurred)="onBlur()"
       ></b-rich-text-editor>
     </form>
   `,
@@ -68,6 +71,9 @@ class TestComponent implements OnInit, OnDestroy {
       this.subscr.unsubscribe();
     }
   }
+
+  onFocus() {}
+  onBlur() {}
 }
 
 describe('RichTextEditorComponent', () => {
@@ -113,18 +119,6 @@ describe('RichTextEditorComponent', () => {
 
         RTEComponent = fixture.debugElement.query(By.css('b-rich-text-editor'))
           .componentInstance;
-
-        RTEComponent.sendChangeOnWrite = true;
-
-        // RTEComponent.controls = RTEComponent.controlsDef;
-        // RTEComponent.disableControls = [];
-
-        // RTEComponent.ngOnChanges(
-        //   simpleChange({
-        //     controls: RTEComponent.controlsDef,
-        //     disableControls: []
-        //   })
-        // );
 
         spyOn(RTEComponent.changed, 'emit');
 
@@ -458,8 +452,7 @@ describe('RichTextEditorComponent', () => {
   });
 
   describe('FormControl propagateChange', () => {
-    it('should propagate value when text changes and sendChangeOn = change', fakeAsync(() => {
-      RTEComponent.sendChangeOn = RTEchangeEvent.change;
+    it('should propagate value', fakeAsync(() => {
       RTEComponent.ngOnChanges(
         simpleChange({
           value: 'test text 1'
@@ -469,34 +462,10 @@ describe('RichTextEditorComponent', () => {
       expect(testComponent.rtrValue).toEqual('<div>test text 1 </div>');
       flush();
     }));
-
-    it('should propagate value only on blur, if sendChangeOn = blur', fakeAsync(() => {
-      RTEComponent.sendChangeOn = RTEchangeEvent.blur;
-
-      RTEComponent.ngOnChanges(
-        simpleChange({
-          value: 'test text 2'
-        })
-      );
-      tick(50);
-      expect(testComponent.rtrValue).not.toEqual('<div>test text 2 </div>');
-      flush();
-
-      RTEComponent.ngOnChanges(
-        simpleChange({
-          value: 'test text 3'
-        })
-      );
-      RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
-      tick(50);
-      expect(testComponent.rtrValue).toEqual('<div>test text 3 </div>');
-      flush();
-    }));
   });
 
   describe('Events', () => {
-    it('should output changed event when text changes and sendChangeOn = change', () => {
-      RTEComponent.sendChangeOn = RTEchangeEvent.change;
+    it('should output changed event', () => {
       fixture.detectChanges();
       RTEComponent.ngOnChanges(
         simpleChange({
@@ -507,23 +476,6 @@ describe('RichTextEditorComponent', () => {
         '<div>test text 8 </div>'
       );
     });
-
-    it('should output changed event only on blur, if sendChangeOn = blur', () => {
-      RTEComponent.sendChangeOn = RTEchangeEvent.blur;
-
-      RTEComponent.ngOnChanges(
-        simpleChange({
-          value: 'test text 9'
-        })
-      );
-
-      expect(RTEComponent.changed.emit).not.toHaveBeenCalled();
-      RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
-      expect(RTEComponent.changed.emit).toHaveBeenCalledWith(
-        '<div>test text 9 </div>'
-      );
-    });
-
     it('should output focused event when editor is focused', () => {
       RTEComponent.ngOnChanges(
         simpleChange({
@@ -601,7 +553,7 @@ describe('RichTextEditorComponent', () => {
         })
       );
       fixture.detectChanges();
-      expect(RTEnativeElement.classList).toContain('length-warning');
+      expect(RTEeditorNativeElement.classList).toContain('length-warning');
     });
     it('Should not allow to enter more than maxChars characters', () => {
       RTEComponent.maxChars = 30;
