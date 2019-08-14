@@ -1,7 +1,7 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, }
-from '@angular/core';
+// tslint:disable-next-line:max-line-length
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, } from '@angular/core';
 import { GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
-import { cloneDeep, get, has, map, once, toString } from 'lodash';
+import { get, has, once } from 'lodash';
 import { ColumnDef, RowClickedEvent, SortChangedEvent } from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
@@ -113,6 +113,14 @@ export class TableComponent implements OnInit, OnChanges {
 
   public addRows(rows: any[]): void {
     this.gridOptions.api.updateRowData({ add: rows });
+  }
+
+  public filterRows(filterQuery: string): void {
+    this.gridOptions.api.setQuickFilter(filterQuery);
+  }
+
+  public resetFilter(): void {
+    this.gridOptions.api.resetQuickFilter();
   }
 
   public removeRows(rows: any[]): void {
