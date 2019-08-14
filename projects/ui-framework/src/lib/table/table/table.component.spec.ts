@@ -7,14 +7,14 @@ import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { TableModule } from '../table.module';
 import { AvatarCellComponent } from '../table-cell-components/avatar-cell/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';
-import { ColumnDef, RowNodeDef } from './table.interface';
+import { ColumnDef } from './table.interface';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { cloneDeep, keys, pick } from 'lodash';
 import { COLUMN_DEFS_MOCK, ROW_DATA_MOCK } from '../table-mocks/table-test.mock';
 import { RowSelection, TableType } from './table.enum';
+import { By } from '@angular/platform-browser';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
-import { By } from '@angular/platform-browser';
 
 describe('TableComponent', () => {
   let component: TableComponent;
@@ -285,6 +285,24 @@ describe('TableComponent', () => {
       expect(component.agGrid.api.updateRowData).toHaveBeenCalledWith({
         remove: [{ 'test:': 3 }]
       });
+    });
+  });
+
+  describe('filterRows', () => {
+    it('Should call grid api setQuickFilter', () => {
+      fixture.autoDetectChanges();
+      spyOn(component.agGrid.api, 'setQuickFilter');
+      component.filterRows('test');
+      expect(component.agGrid.api.setQuickFilter).toHaveBeenCalledWith('test');
+    });
+  });
+
+  describe('resetFilter', () => {
+    it('Should call grid api resetQuickFilter', () => {
+      fixture.autoDetectChanges();
+      spyOn(component.agGrid.api, 'resetQuickFilter');
+      component.resetFilter();
+      expect(component.agGrid.api.resetQuickFilter).toHaveBeenCalled();
     });
   });
 
