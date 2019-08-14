@@ -168,7 +168,7 @@ export class CardsLayoutComponent
   public hasEnoughCards() {
     return (
       this.cards &&
-      (this.cardsInRow <= this.cards.length && this.cards.length > 1)
+      (this.cardsInRow < this.cards.length && this.cards.length > 1)
     );
   }
 
