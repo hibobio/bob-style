@@ -2,45 +2,76 @@ import {
   Component,
   ElementRef,
   Input,
-  OnChanges,
-  SimpleChanges
+  NgZone,
+  ViewChild,
+  ChangeDetectorRef,
+  AfterViewInit,
+  SimpleChanges,
+  OnChanges
 } from '@angular/core';
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 import { CardEmployee } from './card-employee.interface';
-import { has } from 'lodash';
 import { BaseCardElement } from '../card/card.abstract';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 @Component({
   selector: 'b-card-employee, [b-card-employee]',
   templateUrl: './card-employee.component.html',
-  styleUrls: ['../card/card.component.scss', './card-employee.component.scss'],
+  styleUrls: ['./card-employee.component.scss'],
   providers: [{ provide: BaseCardElement, useExisting: CardEmployeeComponent }]
 })
 export class CardEmployeeComponent extends BaseCardElement
-  implements OnChanges {
-  constructor(public cardElRef: ElementRef) {
+  implements OnChanges, AfterViewInit {
+  constructor(
+    public cardElRef: ElementRef,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef,
+    private DOM: DOMhelpers
+  ) {
     super(cardElRef);
   }
 
-  @Input() card: CardEmployee;
+  @ViewChild('cardContent', { static: false }) cardContent: ElementRef;
+  @ViewChild('cardBottom', { static: false }) cardBottom: ElementRef;
 
   readonly avatarSize = AvatarSize;
+  public hasContent = true;
+  public hasBottom = true;
 
-  onClick($event) {
+  @Input() card: CardEmployee;
+
+  onClick($event: MouseEvent) {
     this.clicked.emit($event);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (has(changes, 'card.currentValue.coverColors')) {
+    if (changes.card && !changes.card.firstChange) {
       this.card = changes.card.currentValue;
-      this.cardElRef.nativeElement.style.setProperty(
-        '--background-color-1',
-        `${this.card.coverColors.color1}`
-      );
-      this.cardElRef.nativeElement.style.setProperty(
-        '--background-color-2',
-        `${this.card.coverColors.color2}`
-      );
+      this.setCssVars();
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.setCssVars();
+
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.hasContent = !this.DOM.isEmpty(this.cardContent.nativeElement);
+        this.hasBottom = !this.DOM.isEmpty(this.cardBottom.nativeElement);
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, 0);
+    });
+  }
+
+  private setCssVars(): void {
+    if (this.card.coverColors) {
+      this.DOM.setCssProps(this.cardElRef.nativeElement, {
+        '--background-color-1': this.card.coverColors.color1,
+        '--background-color-2': this.card.coverColors.color2
+      });
     }
   }
 }

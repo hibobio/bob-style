@@ -5,7 +5,6 @@ import {
   Input,
   NgZone,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
@@ -25,8 +24,6 @@ noData(Highcharts);
 More(Highcharts);
 noData(Highcharts);
 
-let component;
-
 export class ChartCore implements AfterViewInit, OnChanges {
   type: ChartTypesEnum;
   highChartRef: any;
@@ -34,6 +31,22 @@ export class ChartCore implements AfterViewInit, OnChanges {
   options: Options;
   firstTimeAfterAnimate = true;
 
+  private formatter = (function (component) {
+    return function () {
+      return component.tooltipFormatter(this, component);
+    };
+  })(this);
+
+  tooltipFormatter(chartThis, component) {
+    return `<div class="chart-tooltip">
+      <div class="value" style="color:${chartThis.color};">
+          ${component.preTooltipValue}${component.tooltipValueFormatter(chartThis.y)}${component.postTooltipValue}
+      </div>
+      <div class="key">${chartThis.key}</div>
+    </div>`;
+  }
+
+  @Input() tooltipValueFormatter: Function = (val) => val;
   @Input() preTooltipValue = '';
   @Input() postTooltipValue = '';
   @Input() colorPalette: string[] = [
@@ -56,9 +69,9 @@ export class ChartCore implements AfterViewInit, OnChanges {
 
   constructor(
     public zone: NgZone,
-    public cdr: ChangeDetectorRef,
+    public cdr: ChangeDetectorRef
   ) {
-    component = this;
+
   }
 
   initialOptions(): void {
@@ -83,19 +96,11 @@ export class ChartCore implements AfterViewInit, OnChanges {
           shadow: false,
           opacity: 1
         },
-        formatter: function (tooltip) {
-          return `<div class="chart-tooltip">
-                <div class="value" style="color:${this.color};">
-                    ${component.preTooltipValue}${this.y}${component.postTooltipValue}
-                </div>
-                <div class="key">${this.key}</div>
-                </div>`;
-        }
+        formatter: this.formatter
       },
       plotOptions: {
         [this.type]: {
-          animation: {
-          },
+          animation: {},
           events: {
             afterAnimate: undefined
           },
@@ -103,9 +108,6 @@ export class ChartCore implements AfterViewInit, OnChanges {
           dataLabels: {
             enabled: this.showDataLabels
           },
-          // tooltip: {
-          //   pointFormat: this.pointFormat,
-          // }
         }
       },
       credits: {
@@ -125,7 +127,10 @@ export class ChartCore implements AfterViewInit, OnChanges {
     this.initialOptions();
     this.zone.runOutsideAngular(() => {
       Highcharts.setOptions({
-        colors: this.colorPalette
+        colors: this.colorPalette,
+        lang: {
+          noData: '' // overrides no data alert
+        }
       });
       this.highChartRef = Highcharts.chart(this.containerId, this.options);
     });
@@ -140,7 +145,7 @@ export class ChartCore implements AfterViewInit, OnChanges {
       this.cdr.markForCheck();
       this.initialOptions();
       // window.requestAnimationFrame(() => {
-        this.highChartRef.update(this.options);
+      this.highChartRef.update(this.options);
       // });
     }
   }

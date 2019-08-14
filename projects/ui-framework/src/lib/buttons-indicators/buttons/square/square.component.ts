@@ -6,7 +6,8 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
-  ElementRef
+  ElementRef,
+  HostBinding
 } from '@angular/core';
 import { ButtonSize, ButtonType } from '../buttons.enum';
 import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
@@ -33,6 +34,8 @@ export class SquareButtonComponent implements OnChanges {
   @Input() color: IconColor = IconColor.dark;
   @Input() disabled = false;
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
+
+  @HostBinding('attr.data-tooltip') @Input() toolTipSummary: string = null;
 
   iconSize: IconSize = IconSize.large;
 

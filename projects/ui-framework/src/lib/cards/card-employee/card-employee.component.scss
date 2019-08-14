@@ -1,56 +1,66 @@
-@import '../../style/colors';
+@import '../../style/common-imports';
+@import '../card/card.mixin';
+
+@include card-common;
 
 :host {
-  justify-content: space-between;
   text-align: center;
   --background-color-1: #{$grey-200};
   --background-color-2: #{$grey-200};
+
+  background-image: linear-gradient(
+    180deg,
+    var(--background-color-1) 0%,
+    var(--background-color-2) 100%
+  );
+  background-position: center top;
+  background-size: 100% 80px;
+
+  &[data-type='small'] {
+    min-height: 200px;
+    background-size: 100% 60px;
+  }
 }
 
-.cover-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;
-  background-image: linear-gradient(180deg, var(--background-color-1) 0%, var(--background-color-2) 100%);
+.card-subtitle {
+  margin-bottom: auto;
 }
 
-b-avatar {
-  display: inline-block;
-  margin: 0 auto 16px;
+.card-top {
+  display: flex;
+  justify-content: center;
+  margin-bottom: times8(2);
 }
 
-.title {
-  font-weight: 600;
+.card-bottom {
+  justify-content: center;
 }
 
-.subtitle {
-  color: $grey-600;
+.card-top-with-image {
+  padding: $cardPadding $cardPadding 0 $cardPadding;
 }
 
 .social {
-  margin: 16px auto;
+  margin: auto;
+  padding: times8(2) 0;
+  width: 100%;
   max-width: 140px;
   display: flex;
   justify-content: space-evenly;
-
-  a {
-    &:before {
-      color: $grey-700;
-    }
-    &:hover:before {
-      color: $grey-800;
-    }
-  }
 }
 
+.social ~ .card-bottom {
+  padding: 0;
+  margin-top: auto;
+}
+
+// Types
+
 :host[data-type='small'] {
-  min-height: 200px;
-  .cover-container {
-    height: 60px;
+  .card-top {
+    margin-bottom: times8(1);
   }
-  b-avatar {
-    margin-bottom: 8px;
+  .card-top-with-image {
+    padding: $cardPadding-small $cardPadding-small 0 $cardPadding-small;
   }
 }

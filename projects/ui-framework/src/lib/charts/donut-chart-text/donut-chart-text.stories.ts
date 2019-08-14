@@ -9,6 +9,8 @@ import {NUMBER_OF_EMPLOYEES, PIE_CHART_DATA_MOCK} from '../pie-chart/pie-chart.m
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
 );
+
+
 const template = `
   <b-donut-text-chart
     [colorPalette]="colorPalette"
@@ -18,6 +20,7 @@ const template = `
     [preTooltipValue]="preTooltipValue"
     [postTooltipValue]="postTooltipValue"
     [name]="name"
+    [tooltipValueFormatter]="tooltipValueFormatter"
     [donutInnerSize]="donutInnerSize"
   >
     <b-display-3 style="color: #9d9c9c;">
@@ -54,6 +57,41 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        tooltipValueFormatter: (tooltipValue) => {
+          // custom value formatter suffix number pipe example
+          if (isNaN(tooltipValue)) {
+            return null;
+          }
+          if (tooltipValue === null) {
+            return null;
+          }
+          if (tooltipValue === 0) {
+            return null;
+          }
+          let abs = Math.abs(tooltipValue as number);
+          const rounder = Math.pow(10, 1);
+          const isNegative = tooltipValue < 0;
+          let key = '';
+
+          const powers = [
+            { key: 'q', value: Math.pow(10, 15) },
+            { key: 't', value: Math.pow(10, 12) },
+            { key: 'b', value: Math.pow(10, 9) },
+            { key: 'm', value: Math.pow(10, 6) },
+            { key: 'k', value: 1000 }
+          ];
+
+          for (let i = 0; i < powers.length; i++) {
+            let reduced = abs / powers[i].value;
+            reduced = Math.round(reduced * rounder) / rounder;
+            if (reduced >= 1) {
+              abs = reduced;
+              key = powers[i].key;
+              break;
+            }
+          }
+          return (isNegative ? '-' : '') + abs + key;
+        },
         text: text('text', NUMBER_OF_EMPLOYEES + ''),
         name: text('name', 'employees'),
         legend: boolean('legend', false),

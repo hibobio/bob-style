@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'b-story-book-layout',
@@ -12,6 +12,7 @@ import { Component, Input } from '@angular/core';
     </div>
   `,
   styleUrls: ['./story-book-layout.component.scss']
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StoryBookLayoutComponent {
   @Input() title: string;

@@ -4,7 +4,8 @@ import {
   Input,
   Output,
   ViewChild,
-  HostListener
+  HostListener,
+  NgZone
 } from '@angular/core';
 import { InputTypes } from '../../input/input.enum';
 import { InputEventType } from '../../form-elements.enum';
@@ -17,6 +18,8 @@ import { InputEvent } from '../../input/input.interface';
 import { InputComponent } from '../../input/input.component';
 import { checkUrl } from './link-blot';
 import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
+import { isKey } from '../../../services/utils/functional-utils';
+import { Keys } from '../../../enums';
 
 @Component({
   selector: 'b-rte-link-editor',
@@ -24,7 +27,7 @@ import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
   styleUrls: ['./rte-link-editor.component.scss']
 })
 export class RteLinkEditorComponent {
-  constructor() {}
+  constructor(private zone: NgZone) {}
 
   @ViewChild('textInput', { static: true }) private textInput: InputComponent;
 
@@ -44,11 +47,19 @@ export class RteLinkEditorComponent {
 
   private updateOnEvent = InputEventType.onChange;
 
-  @HostListener('keydown.enter', ['$event']) handleEnter(event: KeyboardEvent) {
-    event.preventDefault();
+  @HostListener('keydown.outside-zone', ['$event']) handleEnter(
+    event: KeyboardEvent
+  ) {
     event.stopPropagation();
-    if (!this.isEditing && this.url !== '') {
-      this.onAdd();
+
+    if (isKey(event.key, Keys.enter)) {
+      event.preventDefault();
+
+      if (!this.isEditing && this.url !== '') {
+        this.zone.run(() => {
+          this.onAdd();
+        });
+      }
     }
   }
 

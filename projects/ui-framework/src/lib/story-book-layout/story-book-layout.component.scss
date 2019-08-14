@@ -1,5 +1,4 @@
-@import '../style/variables';
-@import '../style/mixins';
+@import '../style/common-imports';
 
 :host {
   display: block;
@@ -30,12 +29,29 @@ b-display-3 {
   align-items: flex-start;
   flex-wrap: wrap;
 
+  @include mobile {
+    padding-left: $padding-x-mob;
+    padding-right: $padding-x-mob;
+  }
+
   & > div {
     flex: 1;
     max-width: 600px;
 
-    @include mobile {
+    @include mobile(550px) {
       max-width: 100% !important;
     }
+  }
+}
+
+:host ::ng-deep {
+  .small {
+    font-size: 12px;
+    font-weight: normal;
+  }
+
+  h3 + p {
+    margin-top: -1em;
+    margin-bottom: 1em;
   }
 }

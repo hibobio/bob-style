@@ -1,4 +1,4 @@
-@import '../../style/typography.scss';
+@import '../../style/common-imports';
 
 :host {
   @include b-bold-body($addCssVars: false);

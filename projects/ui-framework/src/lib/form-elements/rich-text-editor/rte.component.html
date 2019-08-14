@@ -3,7 +3,9 @@
        [attr.for]="id">{{label}}</label>
 
 <div class="quill-editor"
-     [attr.id]="id">
+     [attr.id]="id"
+     [ngClass]="{'length-invalid': length < minChars || (maxChars && length > maxChars),
+    'length-warning': maxChars && maxChars - length < 15}">
   <div #quillEditor
        [attr.data-length]="hasSuffix && (minChars > 0 || maxChars) ? ( (length || 0) + (maxChars ? '/' + maxChars : '')) :
        null"
@@ -17,6 +19,7 @@
   <div #toolbar
        class="quill-toolbar"
        [hidden]="controls.length === 0 && !hasSuffix"
+       [attr.hide-align]="!controls.includes(BlotType.align)"
        (mousedown.outside-zone)="$event.preventDefault()">
 
     <b-panel #sizePanel
@@ -29,8 +32,8 @@
       <button type="button"
               class="rte-size"
               panel-trigger
-              [ngClass]="{'ql-active': false && hasSizeSet}"
-              (click)="storeSelection()">
+              [ngClass]="{'ql-active': hasSizeSet}"
+              (click.outside-zone)="storeSelection()">
 
         <b-icon [icon]="icons.text_size"
                 [size]="iconSize.medium"
@@ -53,11 +56,14 @@
       </ng-container>
     </b-panel>
 
-    <button class="ql-bold"
+    <button type="button"
+            class="ql-bold"
             [hidden]="!controls.includes(BlotType.bold)"></button>
-    <button class="ql-italic"
+    <button type="button"
+            class="ql-italic"
             [hidden]="!controls.includes(BlotType.italic)"></button>
-    <button class="ql-underline"
+    <button type="button"
+            class="ql-underline"
             [hidden]="!controls.includes(BlotType.underline)"></button>
 
     <b-panel #linkPanel
@@ -67,7 +73,8 @@
              [hidden]="!controls.includes(BlotType.link)"
              [defaultPosVer]="panelDefaultPosVer.below"
              (closed)="restoreSelection()">
-      <button class="ql-link"
+      <button type="button"
+              class="ql-link"
               panel-trigger></button>
       <b-rte-link-editor #linkEditor
                          panel-content
@@ -103,10 +110,11 @@
              panelClass="placeholder-rte-panel"
              [showBackdrop]="false"
              [size]="panelSize.medium"
-             *ngIf="controls.includes(BlotType.placeholder)"
+             *ngIf="controls.includes(BlotType.placeholder) && placeholderList"
              [defaultPosVer]="panelDefaultPosVer.below"
              (closed)="restoreSelection()">
-      <button (click)="onPlaceholderPanelOpen()"
+      <button type="button"
+              (click.outside-zone)="onPlaceholderPanelOpen()"
               panel-trigger>💊</button>
       <b-single-list #placeholderSelect
                      panel-content

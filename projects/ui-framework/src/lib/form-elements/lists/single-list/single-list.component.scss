@@ -1,8 +1,6 @@
-@import '../../../style/colors';
-@import '../../../style/typography';
-@import '../../../style/shapes';
-@import '../list';
+@import '../../../style/common-imports';
 @import '../../form-element.mixin';
+@import '../list';
 
 :host {
   display: flex;
@@ -44,7 +42,7 @@
     background-color: $white;
     flex-grow: 5;
 
-    @include BodyFont;
+    @include b-body($addCssVars: false);
 
     &.no-group-header {
       .option-select.option {

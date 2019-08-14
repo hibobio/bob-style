@@ -1,4 +1,5 @@
-@import '../overlay.scss';
+@import '../../style/common-imports';
+@import '../overlay';
 
 ::ng-deep {
   .panel-trigger {

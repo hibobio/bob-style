@@ -32,7 +32,7 @@ export class RteUtilsService {
           ''
         )
         // empty tags
-        .replace(/<([^>/][^>]+)([^\n\r\/<>]+)?>(\s+)?<\/\1>/gi, '')
+        .replace(/<[^\/>][^>]+>(\s+)?<\/[^>]+>/gi, '')
     );
   }
 

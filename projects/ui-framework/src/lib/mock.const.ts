@@ -1,7 +1,8 @@
 import {
   randomNumber,
   randomFromArray,
-  padWith0
+  padWith0,
+  simpleUID
 } from './services/utils/functional-utils';
 
 export const mockNamesList = [
@@ -432,24 +433,24 @@ const lorem =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.';
 
 export const mockAvatar = () =>
-  `https://randomuser.me/api/portraits/${ randomFromArray([
+  `https://randomuser.me/api/portraits/${randomFromArray([
     'men',
     'women'
-  ]) }/${ randomNumber(0, 99) }.jpg`;
+  ])}/${randomNumber(0, 99)}.jpg`;
 
 export const mockImage = (width, height) =>
   `https://picsum.photos/id/${randomNumber(0, 99)}/${width}/${height}`;
 
 export const mockNames = (num = null) => {
   if (num === 1) {
-    return `${ randomFromArray(mockFirstNamesList, num) } ${ randomFromArray(
+    return `${randomFromArray(mockFirstNamesList, num)} ${randomFromArray(
       mockSecondNamesList,
       num
-    ) }`;
+    )}`;
   }
   const fns = randomFromArray(mockFirstNamesList, num);
   const sns = randomFromArray(mockSecondNamesList, num);
-  return fns.map((n, i) => `${ n } ${ sns[i] }`);
+  return fns.map((n, i) => `${n} ${sns[i]}`);
 };
 
 export const mockJobs = (num = null) => randomFromArray(mockJobsList, num);
@@ -458,11 +459,11 @@ export const mockHobbies = (num = null) =>
   randomFromArray(mockHobbiesList, num);
 
 export const mockDate = () =>
-  `${ padWith0(randomNumber(1, 31)) }/${ padWith0(
+  `${padWith0(randomNumber(1, 31))}/${padWith0(
     randomNumber(1, 12)
-  ) }/${ randomNumber(2018, 2020) }`;
+  )}/${randomNumber(2018, 2020)}`;
 
-export const mockText = (words = null) => {
+export const loremText = (words = null) => {
   if (typeof words === 'number') {
     return lorem
       .split(' ')
@@ -470,4 +471,39 @@ export const mockText = (words = null) => {
       .join(' ');
   }
   return lorem;
+};
+
+export const mockText = (words = 100) => {
+  let text = lorem
+    .split(' ')
+    .sort(() => 0.5 - Math.random())
+    .slice(0, words)
+    .join(' ')
+    .replace(/,/g, '')
+    .replace(/\./g, '');
+  text = text.charAt(0).toUpperCase() + text.toLocaleLowerCase().slice(1);
+  return text;
+};
+
+export const mockUrl = (type = 'any') => {
+  const pref = 'http://www.';
+  switch (type) {
+    case 'facebook':
+      return `${pref}facebook.com/${simpleUID('id', 6)}/`;
+      break;
+    case 'linkedin':
+      return `${pref}linkedin.com/in/${simpleUID('id', 6)}/`;
+      break;
+    case 'twitter':
+      return `${pref}twitter.com/${simpleUID('id', 6)}/`;
+      break;
+    case 'youtube':
+      return `${pref}youtube.com/watch?v=${simpleUID('', 8)}/`;
+      break;
+    case 'vimeo':
+      return `${pref}vimeo.com/${simpleUID('', 8)}/`;
+      break;
+    default:
+      return `${pref}${simpleUID('', 6)}.com/`;
+  }
 };

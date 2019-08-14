@@ -2,22 +2,19 @@ import {
   ChangeDetectorRef,
   ElementRef,
   EventEmitter,
-  Injector,
   Input,
   OnChanges,
   Output,
   SimpleChanges,
-  Type,
   ViewChild,
   AfterViewInit,
-  HostBinding
+  OnInit,
+  NgZone
 } from '@angular/core';
-import { FormControl, NgControl } from '@angular/forms';
 import quillLib, {
   Quill,
   QuillOptionsStatic,
   RangeStatic,
-  DeltaOperation,
   DeltaStatic
 } from 'quill';
 import { RTEchangeEvent, BlotType, RTEFontSize } from './rte.enum';
@@ -34,26 +31,25 @@ quillLib.register(quillLib.import('attributors/style/align'), true);
 quillLib.register(quillLib.import('attributors/style/size'), true);
 
 export abstract class RTEformElement extends BaseFormElement
-  implements OnChanges, AfterViewInit {
+  implements OnChanges, OnInit, AfterViewInit {
   protected constructor(
+    public zone: NgZone,
     public rteUtils: RteUtilsService,
-    private changeDetector: ChangeDetectorRef,
-    private injector: Injector
+    public cd: ChangeDetectorRef
   ) {
     super();
+    this.baseValue = '';
   }
 
   public controlsDef = Object.values(BlotType);
-  public disableControlsDef = [];
+  public disableControlsDef;
 
   @Input() public value: string;
   @Input() public minChars = 0;
   @Input() public maxChars: number;
   @Input() public controls: BlotType[] = this.controlsDef;
   @Input() public disableControls: BlotType[] = this.disableControlsDef;
-  @Input() public sendChangeOn: RTEchangeEvent = RTEchangeEvent.blur;
-  @Input() private formControlName: any;
-  @Input() private formControl: any;
+  @Input() public sendChangeOnWrite = false;
 
   @ViewChild('quillEditor', { static: true }) protected quillEditor: ElementRef;
   @ViewChild('toolbar', { static: true }) protected toolbar: ElementRef;
@@ -61,19 +57,9 @@ export abstract class RTEformElement extends BaseFormElement
   @ViewChild('sizePanel', { static: false })
   protected sizePanel: PanelComponent;
 
-  @Output() blurred: EventEmitter<any> = new EventEmitter<any>();
-  @Output() focused: EventEmitter<any> = new EventEmitter<any>();
-  @Output() changed: EventEmitter<any> = new EventEmitter<any>();
-
-  @HostBinding('class.length-invalid') get isLengthInvalid(): boolean {
-    return (
-      this.length < this.minChars ||
-      (this.maxChars && this.length > this.maxChars)
-    );
-  }
-  @HostBinding('class.length-warning') get hasLengthWarning(): boolean {
-    return this.maxChars && this.maxChars - this.length < 15;
-  }
+  @Output() blurred: EventEmitter<string> = new EventEmitter<string>();
+  @Output() focused: EventEmitter<string> = new EventEmitter<string>();
+  @Output() changed: EventEmitter<string> = new EventEmitter<string>();
 
   public editor: Quill;
   public hasSizeSet = false;
@@ -83,17 +69,13 @@ export abstract class RTEformElement extends BaseFormElement
   public lastSelection: RangeStatic;
   public lastCurrentBlot: BlotData;
   private latestOutputValue: string;
-  public length: number;
+  public length = 0;
   protected writingValue = false;
-  private control: FormControl;
   protected specialBlots: SpecialBlots = {
     treatAsWholeDefs: [],
     deleteAsWholeDefs: [],
     noLinebreakAfterDefs: []
   };
-
-  public storeLastChange = false;
-  public lastChange: DeltaOperation;
 
   public editorOptions: QuillOptionsStatic = {
     theme: 'snow',
@@ -106,6 +88,7 @@ export abstract class RTEformElement extends BaseFormElement
 
   protected outputFormatTransformer: Function = (val: string): any => val;
   protected onNgAfterViewInit(): void {}
+  protected onNgOnInit(): void {}
 
   protected applyValue(newInputValue: string): void {
     if (newInputValue !== undefined) {
@@ -117,18 +100,21 @@ export abstract class RTEformElement extends BaseFormElement
     }
 
     if (!!newInputValue && this.editor) {
+      if (!this.sendChangeOnWrite) {
+        this.writingValue = true;
+      }
       this.editor.setContents(
         this.editor.clipboard.convert(newInputValue).insert(' \n')
       );
       this.checkLength();
     } else if (this.editor) {
       this.editor.setText('\n');
-    } else {
-      this.writingValue = false;
     }
+    this.writingValue = false;
   }
 
-  protected transmitValue(doPropagate: boolean): void {
+  // outside zone
+  protected transmitValue(): void {
     if (!this.writingValue) {
       let newOutputValue = this.rteUtils.getHtmlContent(this.editor).trim();
 
@@ -142,10 +128,13 @@ export abstract class RTEformElement extends BaseFormElement
 
       this.value = this.outputFormatTransformer(newOutputValue);
 
-      if (doPropagate && this.latestOutputValue !== newOutputValue) {
-        this.latestOutputValue = newOutputValue;
-        this.changed.emit(this.value);
-        this.propagateChange(this.value);
+      if (this.latestOutputValue !== this.value) {
+        this.latestOutputValue = this.value;
+
+        this.zone.run(() => {
+          this.changed.emit(this.value);
+          this.propagateChange(this.value);
+        });
       }
     }
     this.writingValue = false;
@@ -193,16 +182,28 @@ export abstract class RTEformElement extends BaseFormElement
         );
       }
     }
-    if (changes.controls || changes.disableControls) {
-      this.controls = this.controls.filter(
-        (cntrl: BlotType) => !this.disableControls.includes(cntrl)
-      );
-      if (this.editor) {
-        (this.editor as any).options.formats = Object.values(this.controls);
-      }
-
-      this.updateSpecialBlots();
+    if (
+      (changes.controls && !changes.controls.firstChange) ||
+      (changes.disableControls && !changes.disableControls.firstChange)
+    ) {
+      this.initControls();
     }
+  }
+
+  protected initControls() {
+    this.disableControls = this.disableControls || this.disableControlsDef;
+    this.controls = this.controls.filter(
+      (cntrl: BlotType) => !this.disableControls.includes(cntrl)
+    );
+    if (this.editor) {
+      (this.editor as any).options.formats = Object.values(this.controls);
+    }
+    this.updateSpecialBlots();
+  }
+
+  public ngOnInit(): void {
+    this.initControls();
+    this.onNgOnInit();
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -233,73 +234,65 @@ export abstract class RTEformElement extends BaseFormElement
 
     this.onNgChanges(changes);
 
-    if (changes.value) {
+    if (
+      changes.value &&
+      changes.value.currentValue !== this.latestOutputValue
+    ) {
       this.applyValue(changes.value.currentValue);
     }
   }
 
   public ngAfterViewInit(): void {
-    if (this.formControl || this.formControlName) {
-      const ngControl: NgControl = this.injector.get<NgControl>(
-        NgControl as Type<NgControl>
-      );
-
-      if (ngControl) {
-        this.control = ngControl.control as FormControl;
-        this.sendChangeOn =
-          this.control.updateOn === 'change'
-            ? RTEchangeEvent.change
-            : RTEchangeEvent.blur;
-      }
-    }
     this.onNgAfterViewInit();
   }
 
+  // outside zone
   private onEditorTextChange(
     delta: DeltaStatic,
     oldDelta: DeltaStatic,
     source: string
   ): void {
-    if (this.storeLastChange) {
-      this.lastChange = oldDelta.diff(this.editor.getContents()).ops[1];
-      if (this.lastChange && this.lastChange.delete) {
-        this.lastChange = {
-          delete: this.editor.getContents().diff(oldDelta).ops[1].insert
-        };
-      }
-    }
     this.checkLength();
     if (this.maxChars && this.length > this.maxChars) {
       (this.editor as any).history.undo();
     }
-    this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
+    this.transmitValue();
   }
 
+  // outside zone
   private onEditorSelectionChange(
     range: RangeStatic,
     oldRange: RangeStatic
   ): void {
-    // if (range) {
-    //   const newSize = !!this.editor.getFormat(range).size;
-    //   if (this.hasSizeSet !== newSize) {
-    //     this.hasSizeSet = newSize;
-    //     this.changeDetector.detectChanges();
-    //   }
-    // }
-  }
-
-  private onEditorFocus(): void {
-    this.focused.emit(this.value);
-  }
-
-  private onEditorBlur(): void {
-    this.transmitValue(this.sendChangeOn === RTEchangeEvent.blur);
-
-    if (!this.writingValue && this.sendChangeOn === RTEchangeEvent.blur) {
-      this.onTouched();
+    if (range) {
+      const newSize = !!this.editor.getFormat(range).size;
+      if (this.hasSizeSet !== newSize) {
+        this.hasSizeSet = newSize;
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }
     }
+  }
 
-    this.blurred.emit(this.value);
+  // outside zone
+  private onEditorFocus(): void {
+    if (this.focused.observers.length > 0) {
+      this.zone.run(() => {
+        this.focused.emit(this.value);
+      });
+    }
+  }
+
+  // outside zone
+  private onEditorBlur(): void {
+    this.transmitValue();
+    this.zone.run(() => {
+      if (this.blurred.observers.length > 0) {
+        this.blurred.emit(this.value);
+      }
+      this.onTouched();
+    });
   }
 
   public storeSelection(): void {
@@ -366,7 +359,11 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   private checkLength(): number {
-    return (this.length = this.rteUtils.getTextLength(this.editor));
+    this.length = this.rteUtils.getTextLength(this.editor);
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
+    return this.length;
   }
 
   // this is part of ControlValueAccessor interface
@@ -379,12 +376,7 @@ export abstract class RTEformElement extends BaseFormElement
 
   protected initEditor(options: QuillOptionsStatic): void {
     this.editor = new quillLib(this.quillEditor.nativeElement, options);
-
     this.editor.enable(!this.disabled);
-
-    if (!!this.value) {
-      this.applyValue(this.value);
-    }
 
     // attaching events
 
@@ -410,5 +402,11 @@ export abstract class RTEformElement extends BaseFormElement
     this.editor.root.addEventListener('blur', () => {
       this.onEditorBlur();
     });
+
+    // write init value
+
+    if (!!this.value) {
+      this.applyValue(this.value);
+    }
   }
 }

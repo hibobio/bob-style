@@ -8,13 +8,16 @@
     "build": "ng build ui-framework",
     "test": "ng test ui-framework",
     "lint": "ng lint ui-framework",
+    "schematics:watch": "cd ./bob-schematics/ && npm link && cd .. && npm link bob-schematics && npm run build --prefix ./bob-schematics -- --watch",
+    "schematics:install": "npm run build --prefix ./bob-schematics && npm i ./bob-schematics",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "build-storybook": "build-storybook -o .out",
     "deploy-storybook": "storybook-to-ghpages",
     "npm_pack": "cd dist/ui-framework && npm pack",
     "package": "npm run build && npm run copy-style && npm run npm_pack",
     "copy-style": "cpx \"projects/ui-framework/src/lib/style/**/*\" \"dist/ui-framework/style/\"",
-    "start-app-test": "ng serve --project=app-test"
+    "start-app-test": "ng serve --project=app-test",
+    "postinstall": "npm run schematics:install"
   },
   "private": false,
   "dependencies": {
@@ -33,6 +36,7 @@
     "ag-grid-angular": "^20.0.0",
     "ag-grid-community": "^20.0.0",
     "ag-grid-enterprise": "^20.0.0",
+    "bob-schematics": "file:bob-schematics",
     "core-js": "^2.6.1",
     "date-fns": "^1.30.1",
     "hammerjs": "^2.0.8",
@@ -41,7 +45,6 @@
     "ng-mocks": "^8.0.0",
     "quill": "^1.3.6",
     "rxjs": "~6.5.2",
-    "swiper": "^4.5.0",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {

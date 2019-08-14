@@ -1,6 +1,4 @@
-@import '../../style/variables';
-@import '../../style/mixins';
-@import '../../style/typography';
+@import '../../style/common-imports';
 
 :host {
   @include b-display-1($addCssVars: false) {

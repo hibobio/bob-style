@@ -6,4 +6,10 @@ export const CARD_TYPE_WIDTH = {
   [CardType.large]: 260
 };
 
+export const CARD_TYPE_WIDTH_MOBILE = {
+  [CardType.small]: 160,
+  [CardType.regular]: 260,
+  [CardType.large]: 260
+};
+
 export const GAP_SIZE = 16;

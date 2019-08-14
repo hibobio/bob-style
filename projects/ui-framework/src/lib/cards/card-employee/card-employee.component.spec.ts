@@ -14,14 +14,8 @@ describe('CardEmployeeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        CardEmployeeComponent,
-        MockComponent(AvatarComponent),
-      ],
-      imports: [
-        TruncateTooltipModule,
-        TypographyModule,
-      ],
+      declarations: [CardEmployeeComponent, MockComponent(AvatarComponent)],
+      imports: [TruncateTooltipModule, TypographyModule]
     })
       .compileComponents()
       .then(() => {
@@ -35,17 +29,21 @@ describe('CardEmployeeComponent', () => {
     beforeEach(() => {
       component.card = {
         imageSource: 'employee_image.png',
-        title: 'test',
+        title: 'test'
       };
     });
     it('should be of type primary by default', () => {
       fixture.detectChanges();
-      expect(fixture.nativeElement.attributes['data-type'].value).toEqual('regular');
+      expect(fixture.nativeElement.attributes['data-type'].value).toEqual(
+        'regular'
+      );
     });
     it('should change type on type input change', () => {
       component.type = CardType.large;
       fixture.detectChanges();
-      expect(fixture.nativeElement.attributes['data-type'].value).toEqual('large');
+      expect(fixture.nativeElement.attributes['data-type'].value).toEqual(
+        'large'
+      );
     });
   });
 
@@ -53,13 +51,15 @@ describe('CardEmployeeComponent', () => {
     beforeEach(() => {
       component.card = {
         imageSource: 'employee_image.png',
-        title: 'test',
+        title: 'test'
       };
     });
     it('should set avatar image', () => {
       fixture.detectChanges();
       const avatar = fixture.debugElement.query(By.css('b-avatar'));
-      expect(avatar.componentInstance.imageSource).toEqual('employee_image.png');
+      expect(avatar.componentInstance.imageSource).toEqual(
+        'employee_image.png'
+      );
     });
     it('should set avatar size to medium if type is not small', () => {
       fixture.detectChanges();
@@ -78,12 +78,12 @@ describe('CardEmployeeComponent', () => {
     beforeEach(() => {
       component.card = {
         imageSource: 'employee_image.png',
-        title: 'test',
+        title: 'test'
       };
     });
     it('should set title', () => {
       fixture.detectChanges();
-      const title = fixture.debugElement.query(By.css('.title'));
+      const title = fixture.debugElement.query(By.css('.card-title'));
       expect(title.nativeElement.innerText).toContain('test');
     });
   });
@@ -92,7 +92,7 @@ describe('CardEmployeeComponent', () => {
     it('should not display social elements if none are provided', () => {
       component.card = {
         imageSource: 'employee_image.png',
-        title: 'test',
+        title: 'test'
       };
       fixture.detectChanges();
       const social = fixture.debugElement.query(By.css('.social'));
@@ -104,7 +104,7 @@ describe('CardEmployeeComponent', () => {
         title: 'test',
         social: {
           facebook: 'facebook_url',
-          twitter: 'twitter_url',
+          twitter: 'twitter_url'
         }
       };
       fixture.detectChanges();
@@ -121,7 +121,7 @@ describe('CardEmployeeComponent', () => {
         social: {
           linkedin: 'linkedin_url',
           facebook: 'facebook_url',
-          twitter: 'twitter_url',
+          twitter: 'twitter_url'
         }
       };
       fixture.detectChanges();

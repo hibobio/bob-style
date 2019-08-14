@@ -1,5 +1,4 @@
-@import '../../style/colors';
-@import '../../style/mixins';
+@import '../../style/common-imports';
 @import '../../form-elements/form-element.mixin';
 
 @mixin quick-filter-separator-pseudo {

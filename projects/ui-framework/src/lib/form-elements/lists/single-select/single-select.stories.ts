@@ -1,5 +1,12 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  number,
+  object,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
@@ -9,15 +16,13 @@ import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-lay
 import { SingleSelectModule } from './single-select.module';
 import { SelectGroupOption } from '../list.interface';
 
-const story = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
-const story2 = storiesOf(
-  ComponentGroupType.Lists,
-  module
-).addDecorator(withKnobs);
+const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-single-select [label]="label"
@@ -34,7 +39,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Single select'">
-  <div style="flex:1; max-width: 350px;">
+  <div style="max-width: 350px;">
     ${template}
   </div>
 </b-story-book-layout>
@@ -107,7 +112,7 @@ const toAdd = () => ({
       BrowserAnimationsModule,
       StoryBookLayoutModule
     ]
-  },
+  }
 });
 
 story.add('Single select', toAdd, { notes: { markdown: note } });

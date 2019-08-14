@@ -1,4 +1,9 @@
   <div class="cards-list"
-       [ngClass]="{'align-center' : alignCenter}">
+       role="list"
+       [attr.data-type]="type"
+       [attr.data-cards-in-row]="cardsInRow"
+       [attr.data-few-cards]="!hasEnoughCards()"
+       [attr.data-swiper-mode]="isSwiperEnabled()"
+       [attr.data-align-center]="isAlignedCenter()">
     <ng-content></ng-content>
   </div>

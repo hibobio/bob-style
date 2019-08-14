@@ -1,0 +1,121 @@
+@mixin scroll-snap-x-breakout($breakout: null, $item-gap: null) {
+  width: 100vw;
+
+  @if (type-of($breakout) == number) or (contains($breakout, 'var(--')) {
+    padding-left: $breakout;
+    padding-right: 0;
+
+    @if type-of($breakout) == number {
+      margin-left: (-1 * $breakout);
+      margin-right: (-1 * $breakout);
+    } @else {
+      margin-left: calc(-1 * #{$breakout});
+      margin-right: calc(-1 * #{$breakout});
+    }
+
+    &:before,
+    &:after {
+      @include pseudo;
+      min-height: 1px;
+      flex-shrink: 0;
+      @if not $item-gap {
+        width: $breakout;
+      } @else {
+        @if isCssVar($breakout $item-gap) {
+          width: calc(#{$breakout} - #{$item-gap});
+        } @else {
+          width: ($breakout - $item-gap);
+        }
+      }
+    }
+
+    &:before {
+      @include position(0 null 0 0);
+    }
+  } @else if $breakout {
+    transform: translateX(-50%);
+    margin-left: 50%;
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+@mixin scroll-snap-x-ghosts($ghost-color: $grey-300, $opacity: 1) {
+  &:before {
+    border-top-right-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+    background-image: linear-gradient(
+      to right,
+      rgba($ghost-color, 0),
+      rgba($ghost-color, $opacity)
+    );
+  }
+  &:after {
+    border-top-left-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+    background-image: linear-gradient(
+      to left,
+      rgba($ghost-color, 0),
+      rgba($ghost-color, $opacity)
+    );
+  }
+}
+
+@mixin scroll-snap-x(
+  $item: '& > *',
+  $snap-align: start,
+  $breakout: null,
+  $item-gap: null,
+  $ghosts: false,
+  $ghost-color: $grey-300
+) {
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-snap-type: mandatory;
+  scroll-snap-type: x mandatory;
+  user-select: none;
+  will-change: scroll-position;
+  transform: translateZ(0);
+  @include hide-scrollbar;
+  @include scroll-snap-x-breakout($breakout, $item-gap);
+
+  @if ($snap-align != center) and $breakout {
+    scroll-padding: $breakout;
+  }
+
+  #{$item} {
+    scroll-snap-stop: always;
+    scroll-snap-align: $snap-align;
+    margin-left: 0;
+    flex-shrink: 0;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+
+    @if $item-gap {
+      margin-right: $item-gap;
+
+      @if not $breakout {
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    } @else {
+      margin-right: 0;
+    }
+
+    a {
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+  }
+
+  @if $breakout and $ghosts {
+    &:before {
+      @include pseudo;
+    }
+    @include scroll-snap-x-ghosts;
+  }
+
+  @content;
+}

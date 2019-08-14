@@ -9,7 +9,6 @@ import {
   ViewChild,
   SimpleChanges,
   ChangeDetectorRef,
-  AfterViewInit
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -54,7 +53,7 @@ import {
   ]
 })
 export class DatepickerComponent extends BaseFormElement
-  implements OnInit, AfterViewInit {
+  implements OnInit {
   // tslint:disable-next-line: no-input-rename
   @Input('inputLabel') label: string;
   @Input() dateFormat?: string;
@@ -90,10 +89,6 @@ export class DatepickerComponent extends BaseFormElement
     if (this.dateFormat) {
       BDateAdapter.bFormat = this.dateFormat.toUpperCase();
     }
-  }
-
-  ngAfterViewInit(): void {
-    this.cd.detectChanges();
   }
 
   // this extends BaseFormElement's ngOnChanges

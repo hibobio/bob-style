@@ -1,0 +1,25 @@
+import {storiesOf, moduleMetadata} from '@storybook/angular';
+// @ts-ignore
+import * as readme from './README.md';
+
+import {<%= classify(name) %>Component} from './<%= dasherize(name) %>.component';
+
+storiesOf('<%= classify(name) %>', module)
+  .addDecorator(moduleMetadata({
+    declarations: [<%= classify(name) %>Component],
+    imports     : [],
+    schemas     : [],
+  }))
+  .add('Simple',
+    () => ({
+      component: <%= classify(name) %>Component
+    }),
+    {
+      notes: {
+        markdown: readme.default,
+        markdownOptions: {
+          breaks: true
+        }
+      },
+    }
+  );

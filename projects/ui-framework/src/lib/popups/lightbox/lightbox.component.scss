@@ -1,7 +1,4 @@
-@import '../../style/variables';
-@import '../../style/keyframes';
-@import '../../style/mixins';
-@import '../../style/preloader.mixin';
+@import '../../style/common-imports';
 
 $lightbox-padding: base8(50);
 $lightbox-padding-mob: times8(3);

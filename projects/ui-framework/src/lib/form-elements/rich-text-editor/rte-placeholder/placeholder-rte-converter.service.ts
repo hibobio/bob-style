@@ -33,15 +33,23 @@ export class PlaceholderRteConverterService {
     placeholders: RtePlaceholder[]
   ): string {
     const regex: RegExp = /{{(.*?)}}/gm;
-    return contentToConvert.replace(
-      regex,
-      (field: string, innerContent: string) => {
-        const category = this.getGroupDisplayName(placeholders, innerContent);
-        const name = this.getDisplayNameById(placeholders, innerContent);
-        const text = this.getPlaceholderText(name, category);
-        return `<span data-placeholder-id="${innerContent}" data-placeholder-category="${category}" data-text="${text}">${text}</span>`;
-      }
-    );
+    return contentToConvert && placeholders
+      ? contentToConvert.replace(
+          regex,
+          (field: string, innerContent: string) => {
+            const category = this.getGroupDisplayName(
+              placeholders,
+              innerContent
+            );
+            const name = this.getDisplayNameById(placeholders, innerContent);
+            const text = this.getPlaceholderText(name, category);
+            // tslint:disable-next-line: max-line-length
+            return `<span data-placeholder-id="${innerContent}" data-placeholder-category="${category}" data-text="${text}">${text}</span>`;
+          }
+        )
+      : contentToConvert
+      ? contentToConvert
+      : '';
   }
 
   public toRtePartial = (placeholders: RtePlaceholder[]) => (

@@ -66,13 +66,13 @@ describe('AvatarComponent', () => {
 
   describe('onClick', () => {
     it('Should not emit the click event if the component is set to not be clickable', () => {
-      component.onClick('click');
+      component.onClick('click' as any);
       expect(component.clicked.emit).not.toHaveBeenCalled();
     });
 
     it('Should emit the click event if the component is set to be clickable', () => {
       component.isClickable = true;
-      component.onClick('click');
+      component.onClick('click' as any);
       expect(component.clicked.emit).toHaveBeenCalledWith('click');
     });
   });
@@ -151,7 +151,7 @@ describe('AvatarComponent', () => {
       component.disabled = true;
       fixture.detectChanges();
       expect(componentElem.dataset.disabled).toEqual('true');
-      component.onClick('click');
+      component.onClick('click' as any);
       expect(component.clicked.emit).not.toHaveBeenCalled();
     });
   });

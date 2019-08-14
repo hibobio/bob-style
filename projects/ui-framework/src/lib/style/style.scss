@@ -1,5 +1,6 @@
 @import './reset';
 @import './common-imports';
+@import './keyframes.global';
 @import './grid-layout';
 @import '~ag-grid-community/dist/styles/ag-grid.css';
 @import './tooltip';
@@ -31,11 +32,13 @@
   --display-font-family: 'Sentinel SSm A', 'Sentinel SSm B', 'Helvetica';
   --heading-font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica';
   --body-font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica';
+
+  --padding-x-mob: #{$padding-x-mob};
 }
 
 html,
 body {
-  @include b-body($color: $grey-800);
+  @include b-body($color: $body-text-color, $addCssVars: false);
 }
 
 .b-mobile {
@@ -69,7 +72,7 @@ body {
 }
 
 .b-caption {
-  @include b-caption($addCssVars: true) {
+  @include b-caption($color: $caption-text-color, $addCssVars: true) {
     margin: 0;
   }
 }

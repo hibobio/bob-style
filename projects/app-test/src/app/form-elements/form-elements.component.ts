@@ -5,14 +5,17 @@ import {
   ViewChild,
   SimpleChange,
   ElementRef,
-  AfterViewInit
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  NgZone,
+  ChangeDetectorRef
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   isString,
   countChildren,
   flatten,
-  getType,
+  getType
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
 import { BlotType } from '../../../../ui-framework/src/lib/form-elements/rich-text-editor/rte-core/rte.enum';
 import { AvatarComponent } from '../../../../ui-framework/src/lib/buttons-indicators/avatar/avatar.component';
@@ -26,11 +29,12 @@ import { mockHobbies } from '../../../../ui-framework/src/lib/mock.const';
 @Component({
   selector: 'app-form-elements-test',
   templateUrl: './form-elements.component.html',
-  styleUrls: ['./form-elements.component.scss']
+  styleUrls: ['./form-elements.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormElementsTestComponent
   implements OnInit, OnDestroy, AfterViewInit {
-  constructor() {}
+  constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
 
   allFormElements = [
     'bInput',
@@ -57,10 +61,11 @@ export class FormElementsTestComponent
   global_disabled = false;
   global_required = true;
   global_maxChars = 30;
-  global_numberOfCustEvents = 2;
-  global_consoleLog = false;
+  global_numberOfCustEvents = 1;
+  global_consoleLog = true;
   global_hideLabelOnFocus = false;
   global_setGlobalFormControlValueStrategy = 'runComponentNgOnChanges';
+  global_disco = false;
 
   globalFormControlStartValues = {
     null: null,
@@ -86,10 +91,15 @@ export class FormElementsTestComponent
   global_keepControlMenuOpen = false;
   global_ControlMenuOnBottom = false;
 
+  timer1;
+  timer2;
+  timer3;
+
   ///////////////////////////////////
 
   @ViewChild('bInput', { static: false }) private bInput_component;
-  @ViewChild('bInput', { read: ElementRef, static: false }) private bInput_element: ElementRef;
+  @ViewChild('bInput', { read: ElementRef, static: false })
+  private bInput_element: ElementRef;
   bInput_SubscrValue;
   bInput_EventValue;
   bInput_SubscrCounter = 0;
@@ -343,7 +353,8 @@ export class FormElementsTestComponent
   };
 
   @ViewChild('bRadio', { static: false }) private bRadio_component;
-  @ViewChild('bRadio', { read: ElementRef, static: false }) private bRadio_element: ElementRef;
+  @ViewChild('bRadio', { read: ElementRef, static: false })
+  private bRadio_element: ElementRef;
   bRadio_SubscrValue;
   bRadio_EventValue;
   bRadio_SubscrCounter = 0;
@@ -401,7 +412,8 @@ export class FormElementsTestComponent
     };
   });
 
-  @ViewChild('bSingleSelect', { static: false }) private bSingleSelect_component;
+  @ViewChild('bSingleSelect', { static: false })
+  private bSingleSelect_component;
   @ViewChild('bSingleSelect', { read: ElementRef, static: false })
   private bSingleSelect_element: ElementRef;
   bSingleSelect_SubscrValue;
@@ -659,7 +671,8 @@ export class FormElementsTestComponent
   );
 
   @ViewChild('bRTE', { static: false }) private bRTE_component;
-  @ViewChild('bRTE', { read: ElementRef, static: false }) private bRTE_element: ElementRef;
+  @ViewChild('bRTE', { read: ElementRef, static: false })
+  private bRTE_element: ElementRef;
   bRTE_SubscrValue;
   bRTE_EventValue;
   bRTE_SubscrCounter = 0;
@@ -669,10 +682,11 @@ export class FormElementsTestComponent
   bRTE_value = this.RTEvalueMock;
 
   bRTE_controls = this.bRTE_controlsDef;
-  bRTE_disableControls  = this.bRTE_disableControlsDef;
+  bRTE_disableControls = this.bRTE_disableControlsDef;
   bRTE_placeholderList = this.placeholderMock;
 
   bRTE_label = 'Rich text label';
+  bRTE_placeholder = 'RTE Placeholder';
   bRTE_maxChars = 100;
   bRTE_minChars = 20;
 
@@ -748,7 +762,7 @@ export class FormElementsTestComponent
 
   getComponentProp(name, prop = 'value') {
     if (this[name + '_component']) {
-      return this[name + '_component'][prop]
+      return this[name + '_component'][prop];
     }
   }
 
@@ -830,6 +844,7 @@ export class FormElementsTestComponent
       );
       console.log($event);
     }
+    this.cd.detectChanges();
   }
 
   subscribeToValueChanges(name) {
@@ -846,6 +861,7 @@ export class FormElementsTestComponent
           );
           console.log(this[name + '_SubscrValue']);
         }
+        this.cd.detectChanges();
       });
   }
 
@@ -877,19 +893,27 @@ export class FormElementsTestComponent
       this[name] = this[name + '_Form'].get(name);
       this.unSubscribeFromValueChanges(name);
       this.subscribeToValueChanges(name);
+      this.cd.detectChanges();
     }, 10);
   }
 
-  globalControlChange(control) {
-    let value;
-
-    if (control.includes('error') || control.includes('warn')) {
-      value = this[control + '_value'];
-    } else {
-      value = this[control];
+  globalControlChange(control, value: any = NaN) {
+    if (value !== value) {
+      if (control.includes('error') || control.includes('warn')) {
+        value = this[control + '_value'];
+      } else {
+        value = this[control];
+      }
+    }
+    if (control.includes('_')) {
+      control = control.split('_')[1];
+    }
+    if (this.global_consoleLog && value) {
+      console.log('setting all components', control, 'to', value);
     }
     this.allFormElements.forEach(name => {
-      this[name + '_' + control.split('_')[1]] = value;
+      this[name + '_' + control] = value;
+      // this.cd.detectChanges();
     });
   }
 
@@ -994,10 +1018,44 @@ export class FormElementsTestComponent
   type = smth => getType(smth);
 
   countKids(name) {
-    return (this[name + '_nodeCount'] = countChildren(
+    this[name + '_nodeCount'] = countChildren(
       null,
       this[name + '_element'] && this[name + '_element'].nativeElement
-    ));
+    );
+    return this[name + '_nodeCount'];
+  }
+
+  doDisco() {
+    if (this.global_disco) {
+      console.log('DISCO! GO!');
+
+      this.timer1 = setInterval(() => {
+        this.globalControlChange('disabled', false);
+        this.globalControlChange('warn', this.global_warn_value);
+        this.globalControlChange('error', null);
+      }, 500);
+
+      this.timer2 = setInterval(() => {
+        this.globalControlChange('disabled', false);
+        this.globalControlChange('warn', null);
+        this.globalControlChange('error', this.global_error_value);
+      }, 1000);
+
+      this.timer3 = setInterval(() => {
+        this.globalClearWarnErrors();
+        this.globalControlChange('disabled', true);
+      }, 1500);
+    } else {
+      console.log('DISCO! STOP!');
+      clearInterval(this.timer1);
+      clearInterval(this.timer2);
+      clearInterval(this.timer3);
+      this.timer1 = null;
+      this.timer2 = null;
+      this.timer3 = null;
+      this.globalClearWarnErrors();
+      this.globalControlChange('disabled', false);
+    }
   }
 
   ///////////////////////////////////
@@ -1032,6 +1090,7 @@ export class FormElementsTestComponent
       });
 
       this.allFormElements.forEach(name => this.countKids(name));
+      this.cd.detectChanges();
     }, 0);
   }
 

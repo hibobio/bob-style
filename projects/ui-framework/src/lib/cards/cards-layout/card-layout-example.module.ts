@@ -8,53 +8,60 @@ import {
 } from '@angular/core';
 import { CardsModule } from '../cards.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { action } from '@storybook/addon-actions';
 import { CardType } from '../cards.enum';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import {
   mockAvatar,
   mockDate,
   mockImage,
-  mockJobs,
-  mockNames
+  mockNames,
+  mockHobbies,
+  mockText
 } from '../../mock.const';
-import { CardsMockData, EmployeeCardsMockData } from '../cards.mock';
+import {
+  AddCardMockData,
+  getEmployeeCardsMockData,
+  getCardsMockData
+} from '../cards.mock';
 import { SliderModule } from '../../buttons-indicators/slider/slider.module';
 import { CardsLayoutComponent } from './cards-layout.component';
 import { Subscription } from 'rxjs';
 import { Card } from '../card/card.interface';
 import { AddCard } from '../card-add/card-add.interface';
-import { CardEmployee } from '../card-employee/card-employee.interface';
 import { TypographyModule } from '../../typography/typography.module';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
-import { cloneDeep } from 'lodash';
+import { randomNumber } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-card-layout-example-1',
   template: `
-    <b-cards [type]="type" [alignCenter]="alignCenter">
-      <b-card-add [type]="type" (clicked)="onAddCardClick()" [card]="addCard">
+    <b-cards
+      [type]="type"
+      [alignCenter]="alignCenter"
+      [mobileSwiper]="mobileSwiper"
+    >
+      <b-card-add
+        *ngIf="addCard()"
+        [type]="type"
+        (clicked)="onAddCardClick()"
+        [card]="addCard()"
+      >
       </b-card-add>
       <b-card
-        *ngFor="let card of cards; let i = index"
+        *ngFor="let card of cards(); let i = index"
         [type]="type"
         (clicked)="onCardClick(card, i)"
         [card]="card"
       >
         <b-avatar
           card-top
-          [imageSource]="avatars[i].imageUrl"
-          [title]="avatars[i].displayName"
+          [imageSource]="card.avatarImgUrl"
+          [title]="card.avatarDisplayName"
         >
         </b-avatar>
-        <div card-content *ngIf="i % 2 === 0">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </div>
-        <div card-content *ngIf="i % 2 !== 0">
-          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-          officia deserunt mollit anim id est laborum.
+        <div card-content>
+          {{ card.text }}
         </div>
       </b-card>
     </b-cards>
@@ -64,26 +71,22 @@ import { cloneDeep } from 'lodash';
 export class CardLayoutExample1Component implements OnInit {
   @Input() type: CardType = CardType.regular;
   @Input() alignCenter = false;
+  @Input() mobileSwiper = true;
+  @Input() maxCards = 6;
 
-  addCard: AddCard = {
-    title: 'Add a new flow',
-    subtitle: 'Right now',
-    action: action('Add Card was clicked')
-  };
+  addCard = () => (this.maxCards > 1 ? AddCardMockData : null);
 
-  cards: Card[] = cloneDeep(CardsMockData);
-  avatars: any = [];
+  cards = () =>
+    getCardsMockData(this.maxCards === 1 ? 1 : this.maxCards - 1).map(card => ({
+      ...card,
+      text: mockText(randomNumber(10, 25)) + '.',
+      avatarImgUrl: mockAvatar(),
+      avatarDisplayName: mockNames(1)
+    }))
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.cards.forEach((d, index) => {
-      this.avatars.push({
-        imageUrl: mockAvatar(),
-        displayName: mockNames(1)
-      });
-    });
-  }
+  ngOnInit(): void {}
 
   onAddCardClick(): void {
     console.log('on add card click');
@@ -98,14 +101,20 @@ export class CardLayoutExample1Component implements OnInit {
 @Component({
   selector: 'b-card-layout-example-2',
   template: `
-    <b-cards [type]="type" [alignCenter]="alignCenter">
+    <b-cards
+      [type]="type"
+      [alignCenter]="alignCenter"
+      [mobileSwiper]="mobileSwiper"
+    >
       <b-card-employee
-        *ngFor="let card of cards; let i = index"
+        *ngFor="let card of cards(); let i = index"
         [type]="type"
-        (click)="onClick($event)"
+        (clicked)="onClick($event)"
         [card]="card"
       >
-        <b-caption card-bottom><b>Likes:</b> {{ hobbies[i] }}</b-caption>
+        <div card-bottom data-min-lines="2">
+          <b>Likes:</b> {{ card.hobbies }}
+        </div>
       </b-card-employee>
     </b-cards>
   `,
@@ -113,19 +122,19 @@ export class CardLayoutExample1Component implements OnInit {
 })
 export class CardLayoutExample2Component implements OnInit {
   @Input() alignCenter = false;
+  @Input() mobileSwiper = true;
   @Input() type: CardType = CardType.large;
+  @Input() maxCards = 6;
 
-  cards: CardEmployee[] = EmployeeCardsMockData;
-  hobbies: string[] = [];
+  cards = () =>
+    getEmployeeCardsMockData(this.maxCards).map(card => ({
+      ...card,
+      hobbies: mockHobbies(4).join(', ')
+    }))
 
   constructor() {}
 
-  ngOnInit(): void {
-    for (let i = 0; i < this.cards.length; i++) {
-      const hobbies = 'climbing, hiking';
-      this.hobbies.push(hobbies);
-    }
-  }
+  ngOnInit(): void {}
 
   onClick($event): void {
     console.log('navigate to employee');
@@ -135,28 +144,24 @@ export class CardLayoutExample2Component implements OnInit {
 @Component({
   selector: 'b-card-layout-example-3',
   template: `
-    <b-cards [type]="type" [alignCenter]="alignCenter">
+    <b-cards
+      [type]="type"
+      [alignCenter]="alignCenter"
+      [mobileSwiper]="mobileSwiper"
+    >
       <b-card-employee
-        *ngFor="let card of cards; let i = index"
+        *ngFor="let card of cards(); let i = index"
         [type]="type"
-        (click)="onClick($event)"
+        (clicked)="onClick($event)"
         [card]="card"
       >
-        <b-caption card-bottom>{{ dates[i] }}</b-caption>
+        <b-caption card-bottom>{{ card.date }}</b-caption>
       </b-card-employee>
     </b-cards>
   `,
   styles: [':host {display: block;}']
 })
 export class CardLayoutExample3Component implements OnInit, OnDestroy {
-  @Input() alignCenter = false;
-  @Input() type: CardType = CardType.small;
-
-  cards: CardEmployee[] = [];
-  dates: string[] = [];
-
-  private numberOfCardsSubscription: Subscription;
-
   @ViewChild(CardsLayoutComponent, { static: false })
   set amountOfCardsFn(bCardsComponent: CardsLayoutComponent) {
     this.numberOfCardsSubscription = bCardsComponent
@@ -167,21 +172,22 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
   }
 
   constructor() {}
+  @Input() alignCenter = false;
+  @Input() type: CardType = CardType.small;
+  @Input() maxCards = 6;
+  @Input() mobileSwiper = true;
 
-  ngOnInit(): void {
-    for (let i = 0; i < 5; i++) {
-      this.cards.push({
-        imageSource: mockAvatar(),
-        title: mockNames(1),
-        subtitle: mockJobs(1),
-        coverColors: {
-          color1: '#fea54a',
-          color2: '#fe4a4a'
-        }
-      });
-      this.dates.push(mockDate());
-    }
-  }
+  dates: string[] = [];
+
+  private numberOfCardsSubscription: Subscription;
+
+  cards = () =>
+    getEmployeeCardsMockData(this.maxCards).map(card => ({
+      ...card,
+      date: mockDate()
+    }))
+
+  ngOnInit(): void {}
 
   onClick($event): void {
     console.log('navigate to employee');
@@ -195,11 +201,20 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
 @Component({
   selector: 'b-card-layout-example-4',
   template: `
-    <b-cards [type]="type" [alignCenter]="alignCenter">
-      <b-card-add [type]="type" (clicked)="onAddCardClick()" [card]="addCard">
+    <b-cards
+      [type]="type"
+      [alignCenter]="alignCenter"
+      [mobileSwiper]="mobileSwiper"
+    >
+      <b-card-add
+        *ngIf="addCard()"
+        [type]="type"
+        (clicked)="onAddCardClick()"
+        [card]="addCard()"
+      >
       </b-card-add>
       <b-card
-        *ngFor="let card of cards; let i = index"
+        *ngFor="let card of cards(); let i = index"
         [type]="type"
         (clicked)="onCardClick(card, i)"
         [card]="card"
@@ -211,16 +226,16 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
             [color]="iconColor.white"
           >
           </b-icon>
-          <span>1 enrolled</span>
+          <span>{{ card.number }} enrolled</span>
         </div>
         <div card-content>
           <div class="benefit-detail">
             <span>Provider</span>
-            <span>Aviva</span>
+            <span>{{ card.provider }}</span>
           </div>
           <div class="benefit-detail">
             <span>Renewal</span>
-            <span>03/08/2020</span>
+            <span>{{ card.date }}</span>
           </div>
         </div>
       </b-card>
@@ -248,33 +263,35 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
       .benefit-detail span:first-child {
         color: #9d9d9d;
       }
-    `
+    `,
+    ''
   ],
   providers: []
 })
 export class CardLayoutExample4Component implements OnInit {
   @Input() type: CardType = CardType.regular;
   @Input() alignCenter = false;
+  @Input() maxCards = 6;
+  @Input() mobileSwiper = true;
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
 
-  addCard: AddCard = {
-    title: 'Add a new flow',
-    subtitle: 'Right now',
-    action: action('Add Card was clicked')
-  };
+  addCard = () => (this.maxCards > 1 ? AddCardMockData : null);
 
-  cards: Card[] = cloneDeep(CardsMockData);
+  cards = () =>
+    getCardsMockData(this.maxCards === 1 ? 1 : this.maxCards - 1).map(card => ({
+      ...card,
+      imageUrl: mockImage(400, 300),
+      provider: mockText(1),
+      date: mockDate(),
+      number: randomNumber(1, 1000)
+    }))
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.cards.forEach((card, index) => {
-      card.imageUrl = mockImage(400, 300);
-    });
-  }
+  ngOnInit(): void {}
 
   onAddCardClick(): void {
     console.log('on add card click');

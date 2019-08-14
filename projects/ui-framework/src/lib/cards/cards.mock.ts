@@ -2,8 +2,15 @@ import { MenuItem } from '../navigation/menu/menu.interface';
 import { Card } from './card/card.interface';
 import { AddCard } from './card-add/card-add.interface';
 import { CardEmployee } from './card-employee/card-employee.interface';
-import { mockAvatar, mockJobs, mockNames } from '../mock.const';
+import {
+  mockAvatar,
+  mockJobs,
+  mockNames,
+  mockText,
+  mockUrl
+} from '../mock.const';
 import { Icons } from '../icons/icons.enum';
+import { makeArray, randomNumber } from '../services/utils/functional-utils';
 
 const menuMock: MenuItem[] = [
   {
@@ -20,62 +27,52 @@ const menuMock: MenuItem[] = [
   }
 ];
 
+const actionConfigMock = {
+  icon: Icons.file_copy,
+  action: $event => console.log('copy file')
+};
+
 export const AddCardMockData: AddCard = {
   title: 'Add a new flow',
   subtitle: 'Right now',
   action: () => console.log('Add Card was clicked')
 };
 
-export const CardsMockData: Card[] = [
-  {
-    title: 'Compensation update',
-    menuConfig: menuMock,
-    footerCtaLabel: 'EDIT',
-  },
-  {
-    title: `Compensation update with a very long text that
-        cuts off after 4 lines of text. And here is another very long text that should not be
-        displayed at all.`,
-    menuConfig: menuMock,
-    footerCtaLabel: 'EDIT',
-  },
-  {
-    title: 'Another compensation update',
-    menuConfig: menuMock,
-    footerCtaLabel: 'EDIT',
-  },
-  {
-    title: 'Update that compensation already!',
-    menuConfig: menuMock,
-    footerCtaLabel: 'EDIT',
-  },
-  {
-    title: `Come on! The compensation has not been updated for ages!`,
-    menuConfig: menuMock,
-    footerCtaLabel: 'EDIT',
-  },
-  {
-    title: `If you dont update the compensation immidiately,
-      I will update your compensation and you will not like it!`,
-    actionConfig: {
-      icon: Icons.file_copy,
-      action: ($event) => console.log('copy file'),
-    },
-    footerCtaLabel: 'EDIT',
-  }
-];
+export const getCardsMockData = (number = 10) => {
+  return makeArray(number).map(i => {
+    const dice = randomNumber();
 
-export const EmployeeCardsMockData: CardEmployee[] = mockNames(6).map(name => ({
-  imageSource: mockAvatar(),
-  title: name,
-  subtitle: mockJobs(1),
-  social: {
-    linkedin: 'bad_url_linkedin',
-    facebook: 'bad_url_facebook',
-    twitter: 'bad_url_twitter',
-  },
-  coverColors: {
-    color1: '#fea54a',
-    color2: '#fe4a4a',
-  }
-}));
+    return {
+      title:
+        dice > 50
+          ? mockText(randomNumber(2, 13))
+          : mockText(randomNumber(2, 5)),
+      menuConfig: dice > 50 ? menuMock : null,
+      actionConfig: dice <= 50 ? actionConfigMock : null,
+      footerCtaLabel: 'EDIT'
+    };
+  });
+};
+
+export const CardsMockData: Card[] = getCardsMockData(5);
+
+export const getEmployeeCardsMockData = (number = 10) => {
+  return makeArray(number).map(i => ({
+    imageSource: mockAvatar(),
+    title: mockNames(1),
+    subtitle: mockJobs(1),
+    social: {
+      linkedin: mockUrl('linkedin'),
+      facebook: mockUrl('facebook'),
+      twitter: mockUrl('twitter')
+    },
+    coverColors: {
+      color1: '#fea54a',
+      color2: '#fe4a4a'
+    }
+  }));
+};
+
+export const EmployeeCardsMockData: CardEmployee[] = getEmployeeCardsMockData(
+  6
+);

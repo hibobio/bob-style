@@ -1,5 +1,6 @@
-@import "../../../../lib/form-elements/lists/list.scss";
-@import '../../../style/colors';
+@import '../../../style/common-imports';
+@import '../../../../lib/form-elements/form-element.mixin';
+@import '../../../../lib/form-elements/lists/list';
 
 :host {
   .side-menu-option-container {
@@ -9,7 +10,9 @@
     align-items: center;
     @include listOption;
     padding: 0 0 0 8px;
-    &:hover, &.selected, &.focus {
+    &:hover,
+    &.selected,
+    &.focus {
       background-color: $grey-200;
     }
 
@@ -37,6 +40,5 @@
       white-space: nowrap;
       text-align: left;
     }
-
   }
 }

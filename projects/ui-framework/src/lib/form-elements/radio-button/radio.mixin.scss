@@ -1,7 +1,3 @@
-@import '../../style/colors';
-@import '../../style/mixins';
-@import '../form-element.mixin';
-
 @mixin radio(
   $size: 19px,
   $checkmark-size: 8px,

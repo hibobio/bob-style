@@ -1,7 +1,7 @@
 import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
-import { PieChartComponent } from './pie-chart.component';
-import {PIE_CHART_DATA_MOCK} from './pie-chart.mock';
+import {PieChartComponent} from './pie-chart.component';
+import {PIE_CHART_DATA_MOCK, TOOLTIP_FORMATTER_MOCK_RESULT} from './pie-chart.mock';
 import {ChangeDetectorRef, NgZone} from '@angular/core';
 import {ChartCore} from '../chart/chart-core';
 import * as Highcharts from 'highcharts';
@@ -19,12 +19,12 @@ describe('PieChartComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PieChartComponent ],
+      declarations: [PieChartComponent],
       providers: [
-        { provide: [NgZone, ChangeDetectorRef]}
+        {provide: [NgZone, ChangeDetectorRef]}
       ]
     })
-    .compileComponents().then(() => {
+      .compileComponents().then(() => {
       fixture = TestBed.createComponent(PieChartComponent);
       component = fixture.componentInstance;
       highchartRefSpy = spyOn(Highcharts, 'chart');
@@ -59,6 +59,18 @@ describe('PieChartComponent', () => {
       updatePieOptionsSpy = spyOn(component, 'updatePieOptions').and.callThrough();
       component.ngOnInit.call(component);
       expect(updatePieOptionsSpy).toHaveBeenCalled();
+    }));
+    it('should format value, apply color, add pre and post values', (() => {
+      updatePieOptionsSpy = spyOn(component, 'updatePieOptions').and.callThrough();
+      component.ngOnInit.call(component);
+      component.preTooltipValue = 'ILS ';
+      component.postTooltipValue = ' end';
+      component.tooltipValueFormatter = (val) => `formatted ${val / 1000}`;
+      expect(component.tooltipFormatter({
+        color: 'red',
+        y: 48000,
+        key: 'balloons'
+      }, component)).toEqual(TOOLTIP_FORMATTER_MOCK_RESULT);
     }));
     describe('ngOnChanges', () => {
       beforeEach(() => {

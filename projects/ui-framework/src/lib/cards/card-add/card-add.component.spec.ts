@@ -10,12 +10,8 @@ describe('CardAddComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        CardAddComponent,
-      ],
-      imports: [
-        TruncateTooltipModule,
-      ],
+      declarations: [CardAddComponent],
+      imports: [TruncateTooltipModule]
     })
       .compileComponents()
       .then(() => {
@@ -28,24 +24,28 @@ describe('CardAddComponent', () => {
   describe('Type', () => {
     beforeEach(() => {
       component.card = {
-        title: 'test',
+        title: 'test'
       };
     });
     it('should be of type primary by default', () => {
       fixture.detectChanges();
-      expect(fixture.nativeElement.attributes['data-type'].value).toEqual('regular');
+      expect(fixture.nativeElement.attributes['data-type'].value).toEqual(
+        'regular'
+      );
     });
     it('should change type on type input change', () => {
       component.type = CardType.large;
       fixture.detectChanges();
-      expect(fixture.nativeElement.attributes['data-type'].value).toEqual('large');
+      expect(fixture.nativeElement.attributes['data-type'].value).toEqual(
+        'large'
+      );
     });
   });
 
   describe('texts', () => {
     it('should set title text', () => {
       component.card = {
-        title: 'test',
+        title: 'test'
       };
       fixture.detectChanges();
       const title = fixture.debugElement.query(By.css('.card-title'));
@@ -66,9 +66,9 @@ describe('CardAddComponent', () => {
     it('should emit Clicked event', () => {
       spyOn(component.clicked, 'emit');
       component.card = {
-        title: 'test',
+        title: 'test'
       };
-      component.onClick('hello');
+      component.onClick('hello' as any);
       expect(component.clicked.emit).toHaveBeenCalledWith('hello');
     });
   });

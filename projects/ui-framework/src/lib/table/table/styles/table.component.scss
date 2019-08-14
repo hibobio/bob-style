@@ -1,6 +1,4 @@
-@import '../../../style/colors';
-@import '../../../style/mixins';
-@import '../../../style/typography';
+@import '../../../style/common-imports';
 
 @mixin cell {
   text-align: left;

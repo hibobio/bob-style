@@ -53,3 +53,11 @@ $selector: '';
     }
   }
 }
+
+@for $lines from 2 through $maxMaxLines {
+  [data-min-lines='#{$lines}'] {
+    min-height: unquote(
+      'calc(var(--font-size) * var(--line-height) * #{$lines})'
+    );
+  }
+}

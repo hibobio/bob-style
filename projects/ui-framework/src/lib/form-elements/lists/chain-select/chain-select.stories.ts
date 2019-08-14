@@ -1,8 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  withKnobs,
-  text,
-} from '@storybook/addon-knobs/angular';
+import { withKnobs, text } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
@@ -17,7 +14,7 @@ const template = `<b-chain-select-example (selectChange)="selectChange($event)">
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Chain select'">
-  <div style="flex:1; max-width: 350px;">
+  <div style="max-width: 350px;">
     ${template}
   </div>
 </b-story-book-layout>
@@ -49,13 +46,10 @@ buttonStories.add(
   () => ({
     template: storyTemplate,
     props: {
-      selectChange: action('Chain select state'),
+      selectChange: action('Chain select state')
     },
     moduleMetadata: {
-      imports: [
-        StoryBookLayoutModule,
-        ChainSelectExampleModule,
-      ],
+      imports: [StoryBookLayoutModule, ChainSelectExampleModule],
       entryComponents: [SingleSelectComponent]
     }
   }),

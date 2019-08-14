@@ -1,5 +1,4 @@
-@import '../../../style/mixins';
-@import '../../../style/typography.scss';
+@import '../../../style/common-imports';
 
 :host {
   display: inline-flex;
@@ -7,7 +6,7 @@
   cursor: pointer;
   align-items: center;
 
-  @include BodyFont($font-size-body, $font-weight-bold-body);
+  @include b-bold-body($addCssVars: false);
 
   &:hover,
   &:focus {

@@ -1,7 +1,5 @@
-@import '../../style/colors';
-@import '../../style/typography';
-@import '../../style/mixins';
-@import '../../buttons-indicators//avatar/avatar.mixin';
+@import '../../style/common-imports';
+@import '../../buttons-indicators/avatar/avatar.mixin';
 
 @keyframes blink {
   0%,

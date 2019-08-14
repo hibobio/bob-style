@@ -1,0 +1,16 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "extends": ["@schematics/angular"],
+  "schematics": {
+    "ui-component": {
+      "description": "A ui component.",
+      "factory": "./ui-component/index",
+      "schema": "./ui-component/schema.json"
+    },
+    "story": {
+      "description": "A story for component",
+      "factory": "./story/index",
+      "schema": "./story/schema.json"
+    }
+  }
+}

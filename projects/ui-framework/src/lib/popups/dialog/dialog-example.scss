@@ -1,5 +1,4 @@
-@import '../../style/colors';
-@import '../../style/mixins';
+@import '../../style/common-imports';
 
 :host ::ng-deep {
   .success-icon {

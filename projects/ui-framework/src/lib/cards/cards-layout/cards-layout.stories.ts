@@ -1,6 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, select, withKnobs } from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
+import {
+  boolean,
+  select,
+  withKnobs,
+  number
+} from '@storybook/addon-knobs/angular';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { CardType } from '../cards.enum';
@@ -14,39 +18,52 @@ const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
 );
 
 const template1 = `
-  <b-card-layout-example-1 [type]="type"
-                           [alignCenter]="alignCenter">
+  <b-card-layout-example-1 [type]="type || 'regular'"
+                           [alignCenter]="alignCenter"
+                           [mobileSwiper]="mobileSwiper"
+                           [maxCards]="maxCards">
   </b-card-layout-example-1>
 `;
 const template2 = `
-  <b-card-layout-example-2 [type]="type"
-                           [alignCenter]="alignCenter">
+  <b-card-layout-example-2 [type]="type || 'regular'"
+                           [alignCenter]="alignCenter"
+                           [mobileSwiper]="mobileSwiper"
+                           [maxCards]="maxCards">
   </b-card-layout-example-2>
 `;
 const template3 = `
-  <b-card-layout-example-3 [alignCenter]="alignCenter">
+  <b-card-layout-example-3 [type]="type || 'small'"
+                           [alignCenter]="alignCenter"
+                           [mobileSwiper]="mobileSwiper"
+                           [maxCards]="maxCards">
   </b-card-layout-example-3>
 `;
 const template4 = `
-  <b-card-layout-example-4 [type]="type"
-                           [alignCenter]="alignCenter">
+  <b-card-layout-example-4 [type]="type || 'large'"
+                           [alignCenter]="alignCenter"
+                           [mobileSwiper]="mobileSwiper"
+                           [maxCards]="maxCards">
   </b-card-layout-example-4>
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Cards Layout'" style=" background: rgb(247,247,247);">
-  <div style="max-width: none;">
+  <div style="max-width: none; margin-top: -30px;">
     <h3>Text cards</h3>
-    ${ template1 }
+    <p>(size/type 'regular')</p>
+    ${template1}
     <br><br>
     <h3>Image cards</h3>
-    ${ template4 }
+    <p>(size/type 'large')</p>
+    ${template4}
     <br><br>
     <h3>Employee cards</h3>
-    ${ template2 }
+    <p>(size/type 'regular')</p>
+    ${template2}
     <br><br>
     <h3>Mini employee cards</h3>
-    ${ template3 }
+    <p>(size/type 'small')</p>
+    ${template3}
   </div>
 
 </b-story-book-layout>
@@ -61,33 +78,40 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  type | CardType | Card theme | primary (optional)
-  alignCenter | boolean | put cards in the center | false
-  getCardsInRow$ | Observable of number | observable that returns cards in row | initial cards in row
+  type | CardType | Card theme | regular
+  [alignCenter] | boolean | put cards in the center. by default, if there is not enough cards to fill 1 row, the cards will be centered. to disable this behaviour, set [alignCenter] to **null**. set to **true** to force centering. | false
+  [mobileSwiper] | boolean | enable mobile swiper (1 row of scrollable cards) | false
+  cardsInRow$ / getCardsInRow$() | Observable&lt;number&gt; | observable that returns cards in row | initial cards in row
+  (cardsAmountChanged) | EventEmitter&lt;number&gt; | emits when cardsInRow changes
 
 #### Example
-~~~
-<b-cards [type]="type">
-  <b-card-add [type]="type"
-              (clicked)="onAddCardClick()"
-              [card]="addCard">
-  </b-card-add>
-  <b-card *ngFor="let card of cards; let i = index"
-          [type]="type"
-          [clickable]="true"
-          (clicked)="onCardClick(card, i)"
-          [card]="card">
-    <b-avatar card-top
-              [imageSource]="avatars[i].imageUrl"
-              [title]="avatars[i].displayName">
-    </b-avatar>
-    <b-slider card-bottom
-              [value]="sliders[i].value"
-              [readOnly]="sliders[i].readOnly">
-    </b-slider>
-  </b-card>
+\`\`\`
+<b-cards [type]="type"
+         [alignCenter]="false"
+         [mobileSwiper]="true">
+
+    <b-card-add [type]="type"
+                (clicked)="onAddCardClick()"
+                [card]="addCard">
+    </b-card-add>
+
+    <b-card *ngFor="let card of cards; let i = index"
+            [type]="type"
+            [clickable]="true"
+            (clicked)="onCardClick(card, i)"
+            [card]="card">
+      <b-avatar card-top
+                [imageSource]="avatars[i].imageUrl"
+                [title]="avatars[i].displayName">
+      </b-avatar>
+      <b-slider card-bottom
+                [value]="sliders[i].value"
+                [readOnly]="sliders[i].readOnly">
+      </b-slider>
+    </b-card>
+
 </b-cards>
-~~~
+\`\`\`
 `;
 
 story.add(
@@ -96,8 +120,14 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', values(CardType), CardType.large),
+        type: select(
+          'type',
+          Object.values({ ...CardType, default: null }),
+          null
+        ),
         alignCenter: boolean('alignCenter', false),
+        mobileSwiper: boolean('mobileSwiper', true),
+        maxCards: number('maxCards', 6)
       },
       moduleMetadata: {
         imports: [

@@ -1,7 +1,7 @@
-@import '../../style/colors.scss';
-@import '../../style/typography.scss';
-@import '../../style/shapes.scss';
-@import '../../style/mixins.scss';
+@import '../../style/common-imports';
+@import '../card/card.mixin';
+
+@include card-common($doHover: false);
 
 :host {
   background-color: $grey-200;
@@ -16,22 +16,13 @@
     margin-top: auto;
   }
 
-  &,
   &:hover,
   &:focus {
-    box-shadow: none;
-  }
-
-  &:hover,
-  &:focus {
-    transform: none;
     background-color: $grey-300;
   }
 }
 
-.card-title {
-  margin: 0;
-}
 .card-subtitle {
   color: $grey-700;
+  margin-top: times8(1);
 }

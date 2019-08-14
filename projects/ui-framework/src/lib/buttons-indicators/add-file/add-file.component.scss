@@ -1,5 +1,4 @@
-@import '../../style/colors.scss';
-@import '../../style/mixins';
+@import '../../style/common-imports';
 
 :host {
   @include size(92px, 92px);

@@ -1,4 +1,4 @@
-@import '../../style/variables';
+@import '../../style/common-imports';
 @import '../../form-elements/form-element.mixin';
 
 $gap: 20px;
@@ -35,6 +35,7 @@ b-chip-list {
 
 b-multi-list {
   box-shadow: none;
+  background-color: white;
 }
 
 b-chip-list {
@@ -42,4 +43,9 @@ b-chip-list {
   border-radius: $border-radius;
   margin: 0;
   padding: ($gap - 4px);
+  max-height: 360px;
+}
+
+:host ::ng-deep b-list-footer {
+  margin-top: auto;
 }

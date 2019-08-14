@@ -20,6 +20,7 @@ export class DonutChartTextComponent implements OnChanges {
   @Input() extraOptions: Options = {};
   @Input() preTooltipValue = '';
   @Input() postTooltipValue = '';
+  @Input() tooltipValueFormatter: Function = (val) => val;
   @Input() colorPalette: string[] = [
     '#058DC7',
     '#50B432',

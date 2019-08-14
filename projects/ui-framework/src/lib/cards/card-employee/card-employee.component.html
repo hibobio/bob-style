@@ -1,45 +1,51 @@
-<div class="card-content">
-
-  <div class="cover-container"></div>
-
+<div class="card-top"
+     [ngClass]="{'card-top-with-image': false}">
   <b-avatar [size]="type === cardType.small ? avatarSize.small : avatarSize.medium"
             [imageSource]="card.imageSource"
-            [ngStyle]="{ cursor: clicked ? 'pointer' : 'default' }"
-            (clicked)="clicked ? onClick($event) : null">
+            [isClickable]="isClickableCard()"
+            (clicked)="onClick($event)">
   </b-avatar>
+</div>
 
-  <b-display-4 class="title"
-               *bTruncateTooltip="2">
-    {{card.title}}
-  </b-display-4>
+<h4 class="card-title"
+    [b-truncate-tooltip]="2"
+    [trustCssVars]="true">
+  {{card.title}}
+</h4>
 
-  <b-caption class="subtitle"
-             *bTruncateTooltip="2">
-    {{card.subtitle}}
-  </b-caption>
+<p class="card-subtitle"
+   [b-truncate-tooltip]="2"
+   [trustCssVars]="true">
+  {{card.subtitle}}
+</p>
 
-  <div *ngIf="card.social"
-       class="social">
-    <a *ngIf="card.social.linkedin"
-       class="b-icon-linkedin"
-       href="{{card.social.linkedin}}"
-       target="_blank">
-    </a>
-    <a *ngIf="card.social.facebook"
-       class="b-icon-facebook"
-       href="{{card.social.facebook}}"
-       target="_blank">
-    </a>
-    <a *ngIf="card.social.twitter"
-       class="b-icon-twitter"
-       href="{{card.social.twitter}}"
-       target="_blank">
-    </a>
-  </div>
+<div *ngIf="type !== cardType.small && card.social && (card.social.linkedin || card.social.facebook  || card.social.twitter)"
+     class="social">
+  <a *ngIf="card.social.linkedin"
+     class="b-icon-linkedin b-icon-dark has-hover"
+     href="{{card.social.linkedin}}"
+     target="_blank">
+  </a>
+  <a *ngIf="card.social.facebook"
+     class="b-icon-facebook b-icon-dark has-hover"
+     href="{{card.social.facebook}}"
+     target="_blank">
+  </a>
+  <a *ngIf="card.social.twitter"
+     class="b-icon-twitter b-icon-dark has-hover"
+     href="{{card.social.twitter}}"
+     target="_blank">
+  </a>
+</div>
 
+<div *ngIf="hasContent"
+     class="card-content"
+     #cardContent>
   <ng-content select="[card-content]"></ng-content>
 </div>
 
-<div class="card-bottom">
+<div *ngIf="hasBottom"
+     class="card-bottom"
+     #cardBottom>
   <ng-content select="[card-bottom]"></ng-content>
 </div>

@@ -1,7 +1,4 @@
-@import '../../style/colors.scss';
-@import '../../style/typography.scss';
-@import '../../style/mixins.scss';
-@import '../../style/keyframes.scss';
+@import '../../style/common-imports';
 
 $mat-header-hover-selector: '.mat-expansion-panel-header:not([aria-disabled=true]).cdk-keyboard-focused, .mat-expansion-panel-header:not([aria-disabled=true]).cdk-program-focused, .mat-expansion-panel-header:not([aria-disabled=true]):hover';
 

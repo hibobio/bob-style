@@ -1,5 +1,8 @@
 @import './functions';
 @import './keyframes';
+@import './shapes';
+@import './preloader.mixin';
+@import './scroll-snap.mixin';
 
 @mixin pseudo {
   content: '';
@@ -22,25 +25,6 @@
   right: nth($pos, 2);
   bottom: nth($pos, 3);
   left: nth($pos, 4);
-}
-
-@function height-from-text(
-  $lines,
-  $font-size,
-  $line-height,
-  $add: 0,
-  $useCssVars: false
-) {
-  $return: null;
-  @if not $useCssVars {
-    $return: $font-size * $line-height * $lines + $add;
-  }
-  @if $useCssVars {
-    $return: unquote(
-      'calc(var(--font-size) * var(--line-height) * #{$lines} + #{add-unit($add)})'
-    );
-  }
-  @return $return;
 }
 
 @mixin line-clamp(
@@ -227,16 +211,18 @@
   padding-bottom: $padding;
 }
 
-@mixin ratio($ratio-or-width, $height: null) {
+@mixin ratio($ratio-or-width, $height: null, $clear: true) {
   &:before {
     content: '';
     float: left;
     @include ratioPad($ratio-or-width, $height);
   }
-  &:after {
-    content: '';
-    display: table;
-    clear: both;
+  @if $clear {
+    &:after {
+      content: '';
+      display: table;
+      clear: both;
+    }
   }
 }
 
@@ -248,14 +234,76 @@
   }
 }
 
-@mixin mobile($break: $breakpoint-device-sm) {
-  @media (max-width: $break) {
-    @content;
+@mixin mobile($break: $breakpoint-device-sm, $min: null) {
+  @if $min {
+    @media (min-width: $min) and (max-width: $break) {
+      @content;
+    }
+  } @else {
+    @media (max-width: $break) {
+      @content;
+    }
   }
 }
 
 @mixin desktop($break: $breakpoint-device-sm) {
   @media (min-width: ($break + 1px)) {
     @content;
+  }
+}
+
+@mixin responsive(
+  $prop: null,
+  $min-width: 0,
+  $max-width: 2000px,
+  $min-val: 0px,
+  $max-val: 300px,
+  $unit: px,
+  $doEdges: true
+) {
+  $minWidth: strip-unit($min-width);
+  $maxWidth: strip-unit($max-width);
+
+  @if $prop {
+    @if $doEdges {
+      #{$prop}: #{strip-unit($min-val)}px;
+
+      @media (min-width: #{$maxWidth + 1}px) {
+        #{$prop}: #{strip-unit($max-val)}px;
+      }
+    }
+
+    @media (min-width: #{$minWidth}px) and (max-width: #{$maxWidth}px) {
+      #{$prop}: resp-val($min-width, $max-width, $min-val, $max-val, $unit);
+    }
+  }
+}
+
+@mixin responsive-font(
+  $min-val: 12,
+  $max-val: 24,
+  $min-width: $small-mobile-media-width,
+  $max-width: $mobile-media-width,
+  $unit: px,
+  $doEdges: true
+) {
+  @include responsive(
+    $prop: font-size,
+    $min-width: $min-width,
+    $max-width: $max-width,
+    $min-val: $min-val,
+    $max-val: $max-val,
+    $unit: $unit,
+    $doEdges: $doEdges
+  );
+}
+
+@mixin hide-scrollbar {
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+  &::-webkit-scrollbar {
+    background: transparent;
+    display: none;
+    width: 0;
   }
 }

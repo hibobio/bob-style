@@ -3,10 +3,8 @@ import {
   Input,
   SimpleChanges,
   OnChanges,
-  ElementRef,
   Output,
   EventEmitter,
-  NgZone,
   ChangeDetectionStrategy
 } from '@angular/core';
 import { LIST_EL_HEIGHT } from '../../form-elements/lists/list.consts';
@@ -26,7 +24,7 @@ import { simpleUID } from '../../services/utils/functional-utils';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MultiListAndChipsComponent implements OnChanges {
-  constructor(private host: ElementRef, private zone: NgZone) {}
+  constructor() {}
 
   @Input() options: SelectGroupOption[] = [];
   @Input() listLabel: string;
@@ -146,15 +144,6 @@ export class MultiListAndChipsComponent implements OnChanges {
 
       this.chipListConfig.type = this.detectChipType(this.options);
       this.optionsToChips(this.options);
-
-      this.zone.runOutsideAngular(() => {
-        setTimeout(() => {
-          this.host.nativeElement.style.height =
-            this.host.nativeElement.offsetHeight > 200
-              ? this.host.nativeElement.offsetHeight + 'px'
-              : null;
-        }, 0);
-      });
     }
   }
 }

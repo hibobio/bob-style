@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, object, select, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  object,
+  select,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -26,7 +31,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Single Card'">
-  <div style="max-width:280px;">
+  <div style="max-width:320px; display: flex; flex-direction: column; align-items: center;">
     <b-card-example-1-component></b-card-example-1-component>
     <br/>
     <b-card-example-2-component></b-card-example-2-component>
@@ -46,7 +51,7 @@ const note = `
   *CardsModule*
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 
   #### Properties
@@ -57,7 +62,7 @@ const note = `
 
   #### Card interface
   ~~~
-  export interface Card {
+  interface Card {
     title: string;
     titleEditable?: boolean;
     actionConfig?: CardActionButton;
@@ -67,7 +72,7 @@ const note = `
     imageUrl?: string;
   }
 
-  export interface CardActionButton {
+  interface CardActionButton {
     icon: Icons;
     tooltip?: string;
     action?($event): void;
@@ -86,7 +91,7 @@ story.add(
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           CardExampleModule,
-          UtilComponentsModule,
+          UtilComponentsModule
         ]
       }
     };

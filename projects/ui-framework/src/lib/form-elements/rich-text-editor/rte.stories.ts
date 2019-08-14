@@ -19,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BlotType, RTEType } from './rte-core/rte.enum';
 import { SelectGroupOption } from '../lists/list.interface';
 import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
+import { placeholderMock } from './rte-placeholder/rte-placeholder.mock';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -46,15 +47,13 @@ const template = `
       [hintMessage]="hintMessage"
       [warnMessage]="warnMessage"
       [errorMessage]="errorMessage"
-      (changed)="change($event)"
-      (focused)="focus($event)"
-      (blurred)="blur($event)">
+      (changed)="change($event)">
   </b-rich-text-editor>
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Rich text editor'" style="background-color: rgb(247,247,247);">
-  <div style="flex:1; max-width: 600px;">
+  <div>
     ${template}
   </div>
 
@@ -88,7 +87,6 @@ const note = `
   hintMessage | string | adds a hint message below editor | none (optional)
   warnMessage | string | adds a warning message below editor | none (optional)
   errorMessage | string | adds 'invalid' style, hides hint/warn message and displays error message below editor | none (optional)
-  sendChangeOn | RTEchangeEvent | When to transmit value changes - on change (every keystroke) or on blur | blur (optional)
   changed | function | change event handler (event transmits latest change: {body,plainText}) |
   focused | function | focus event handler (event transmits latest change: {body,plainText}) |
   blurred | function | blur event handler (event transmits latest change: {body,plainText}) |
@@ -96,25 +94,6 @@ const note = `
 
 
 `;
-
-const placeholderMock = [
-  {
-    groupName: 'Basic Info - header',
-    options: [
-      {
-        displayName: 'First name',
-        id: '/root/firstName',
-        value: 'First name'
-      },
-      {
-        displayName: 'title',
-        id: '/work/title',
-        category: 'Work',
-        value: 'title'
-      }
-    ]
-  }
-];
 
 const disableControlsDef = [];
 const controlsDef = values(BlotType).filter(

@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  object,
-  select,
-  withKnobs,
-  boolean
-} from '@storybook/addon-knobs/angular';
+import { object, select, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
@@ -22,14 +17,14 @@ const template = `
 <b-card-employee [card]="card"
                  [type]="type"
                  (clicked)="clicked($event)">
-  <div card-bottom><b>Likes:</b> cycling, hiking, code, food & drinks, music, design</div>
+  <div card-bottom data-min-lines="2"><b>Likes:</b> cycling, hiking, code, food & drinks, music, design</div>
 </b-card-employee>
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Employee Card'">
   <div style="max-width:240px;">
-    ${ template }
+    ${template}
   </div>
 </b-story-book-layout>
 `;
@@ -41,7 +36,7 @@ const note = `
   *CardsModule*
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 
   #### Properties

@@ -5,16 +5,15 @@ import {
   EventEmitter,
   Output,
   ElementRef,
-  AfterViewInit,
   OnDestroy,
   SimpleChanges,
   OnChanges,
   NgZone,
   ChangeDetectorRef,
-  OnInit,
   ContentChildren,
   QueryList,
-  HostBinding
+  OnInit,
+  AfterContentInit
 } from '@angular/core';
 import { CardType } from '../cards.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
@@ -22,11 +21,13 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
-import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
+import {
+  CARD_TYPE_WIDTH,
+  GAP_SIZE,
+  CARD_TYPE_WIDTH_MOBILE
+} from './cards-layout.const';
 import { BaseCardElement } from '../card/card.abstract';
-import { simpleUID } from '../../services/utils/functional-utils';
-import { Swiper } from 'swiper/dist/js/swiper.esm.js';
+import { MediaEvent, MobileService } from '../../services/utils/mobile.service';
 
 @Component({
   selector: 'b-cards',
@@ -35,154 +36,150 @@ import { Swiper } from 'swiper/dist/js/swiper.esm.js';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardsLayoutComponent
-  implements AfterViewInit, OnDestroy, OnChanges, OnInit {
+  implements OnDestroy, OnChanges, OnInit, AfterContentInit {
   constructor(
     private hostRef: ElementRef,
-    private domUtils: DOMhelpers,
+    private DOM: DOMhelpers,
     private utilsService: UtilsService,
     private mobileService: MobileService,
     private zone: NgZone,
     private cd: ChangeDetectorRef
   ) {}
 
-  isMobile = false;
-  private swiper: Swiper;
-
   private resizeSubscription: Subscription;
-  private cardsInRow$: BehaviorSubject<number>;
-  private cardsInRow: number;
-  private mediaEventSubscriber: Subscription;
+  private mediaEventSubscription: Subscription;
+  private cardsChangeSubscription: Subscription;
+  public cardsInRow = 1;
+  public cardsInRow$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+  public isMobile = false;
 
   @ContentChildren(BaseCardElement) public cards: QueryList<BaseCardElement>;
 
-  @Input() alignCenter = false;
+  @Input() alignCenter: boolean | 'auto' = false;
+  @Input() mobileSwiper = false;
   @Input() type: CardType = CardType.regular;
   @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<
     number
   >();
 
-  @HostBinding('attr.data-mobile-swiper') @Input() mobileSwiper = true;
-  @HostBinding('attr.id') cardsListId = simpleUID('cards-list-');
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.type && !changes.type.firstChange) {
       this.type = changes.type.currentValue;
       this.setCssVars();
+      this.updateCardsInRow(false);
+    }
+    if (
+      (changes.type && !changes.type.firstChange) ||
+      (changes.mobileSwiper && !changes.mobileSwiper.firstChange) ||
+      (changes.alignCenter && !changes.alignCenter.firstChange)
+    ) {
+      if (!this.cd['destroyed']) {
+        this.cd.detectChanges();
+      }
     }
   }
 
-  ngOnInit(): void {}
-
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.setCssVars();
-    this.cardsInRow = this.calcCardsInRow();
+    this.updateCardsInRow();
 
-    this.mediaEventSubscriber = this.mobileService
+    this.resizeSubscription = this.utilsService
+      .getResizeEvent()
+      .pipe(
+        outsideZone(this.zone),
+        filter(() => {
+          return this.cardsInRow !== this.calcCardsInRow();
+        })
+      )
+      .subscribe(() => {
+        this.zone.run(() => {
+          this.updateCardsInRow();
+        });
+      });
+
+    this.mediaEventSubscription = this.mobileService
       .getMediaEvent()
       .pipe(outsideZone(this.zone))
       .subscribe((media: MediaEvent) => {
         this.isMobile = media.matchMobile;
-        if (this.mobileSwiper && this.isMobile) {
-          this.initSwiper();
-        } else if (this.swiper) {
-          this.swiper.destroy();
-          this.setCssVars();
-        }
-        this.cd.detectChanges();
+        this.setCssVars();
+        this.updateCardsInRow();
       });
+  }
+
+  ngAfterContentInit(): void {
+    this.cardsChangeSubscription = this.cards.changes.subscribe(() => {
+      if (!this.cd['destroyed']) {
+        this.cd.detectChanges();
+      }
+    });
   }
 
   ngOnDestroy(): void {
     if (this.resizeSubscription) {
       this.resizeSubscription.unsubscribe();
     }
-    if (this.mediaEventSubscriber && this.mediaEventSubscriber.unsubscribe) {
-      this.mediaEventSubscriber.unsubscribe();
+    if (this.mediaEventSubscription) {
+      this.mediaEventSubscription.unsubscribe();
+    }
+    if (this.cardsChangeSubscription) {
+      this.cardsChangeSubscription.unsubscribe();
     }
   }
 
   getCardsInRow$(): Observable<number> {
-    this.cardsInRow = this.calcCardsInRow();
-    if (!this.cardsInRow$) {
-      this.cardsInRow$ = new BehaviorSubject<number>(this.cardsInRow);
-      this.resizeSubscription = this.utilsService
-        .getResizeEvent()
-        .pipe(
-          outsideZone(this.zone),
-          filter(() => {
-            const cardsInRow = this.calcCardsInRow();
-            return this.cardsInRow !== cardsInRow;
-          })
-        )
-        .subscribe(() => {
-          this.zone.run(() => {
-            this.cardsInRow = this.calcCardsInRow();
-            this.cardsInRow$.next(this.cardsInRow);
-            if (this.cardsAmountChanged.observers.length > 0) {
-              this.cardsAmountChanged.emit(this.cardsInRow);
-            }
-          });
-        });
-    }
     return this.cardsInRow$ as Observable<number>;
   }
 
-  private initSwiper(): void {
-    this.swiper = new Swiper('#' + this.cardsListId, {
-      wrapperClass: 'cards-list',
-      slideClass: 'single-card',
-      spaceBetween: GAP_SIZE,
-      centeredSlides: true,
-      centerInsufficientSlides: true,
-      roundLengths: true,
-
-      breakpoints:
-        this.type === CardType.large
-          ? {
-              800: {
-                slidesPerView: 2
-              },
-              450: {
-                slidesPerView: 1
-              }
-            }
-          : this.type === CardType.regular
-          ? {
-              800: {
-                slidesPerView: 3
-              },
-              450: {
-                slidesPerView: 2
-              },
-              330: {
-                slidesPerView: 1
-              }
-            }
-          : {
-              800: {
-                slidesPerView: 4
-              },
-              530: {
-                slidesPerView: 3
-              },
-              360: {
-                slidesPerView: 1
-              }
-            }
-    });
+  private updateCardsInRow(doCheck = true): void {
+    this.cardsInRow = this.calcCardsInRow();
+    this.cardsInRow$.next(this.cardsInRow);
+    if (this.cardsAmountChanged.observers.length > 0) {
+      this.cardsAmountChanged.emit(this.cardsInRow);
+    }
+    if (doCheck && !this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
   private setCssVars(): void {
-    this.domUtils.setCssProps(this.hostRef.nativeElement, {
-      '--card-width': CARD_TYPE_WIDTH[this.type] + 'px',
+    this.DOM.setCssProps(this.hostRef.nativeElement, {
+      '--card-width':
+        (!this.isMobile
+          ? CARD_TYPE_WIDTH[this.type]
+          : CARD_TYPE_WIDTH_MOBILE[this.type]) + 'px',
       '--card-grid-gap': GAP_SIZE + 'px'
     });
   }
 
   private calcCardsInRow(): number {
-    const hostWidth = this.domUtils.getInnerWidth(this.hostRef.nativeElement);
-    const gaps =
-      (Math.floor(hostWidth / CARD_TYPE_WIDTH[this.type]) - 1) * GAP_SIZE;
-    return Math.floor((hostWidth - gaps) / CARD_TYPE_WIDTH[this.type]);
+    const hostWidth = this.DOM.getInnerWidth(this.hostRef.nativeElement);
+
+    const cardWidth = !this.isMobile
+      ? CARD_TYPE_WIDTH[this.type]
+      : CARD_TYPE_WIDTH_MOBILE[this.type];
+
+    const gaps = (Math.floor(hostWidth / cardWidth) - 1) * GAP_SIZE;
+    const fullCards = Math.floor((hostWidth - gaps) / cardWidth);
+
+    return fullCards > 1 ? fullCards : 1;
+  }
+
+  public hasEnoughCards() {
+    return (
+      this.cards &&
+      (this.cardsInRow <= this.cards.length && this.cards.length > 1)
+    );
+  }
+
+  public isSwiperEnabled() {
+    return this.mobileSwiper && this.isMobile && this.hasEnoughCards();
+  }
+
+  public isAlignedCenter() {
+    return (
+      this.alignCenter === true ||
+      (this.alignCenter === 'auto' && !this.hasEnoughCards())
+    );
   }
 }

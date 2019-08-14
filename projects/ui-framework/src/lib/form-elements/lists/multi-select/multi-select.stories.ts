@@ -17,15 +17,13 @@ import { AvatarComponent } from '../../../buttons-indicators/avatar/avatar.compo
 import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
 import { UtilComponentsModule } from '../../../services/util-components/utilComponents.module';
 
-const story = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
-const story2 = storiesOf(
-  ComponentGroupType.Lists,
-  module
-).addDecorator(withKnobs);
+const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-multi-select [label]="label"
@@ -43,8 +41,8 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Multi select'">
-  <div style="flex:1; max-width: 350px;">
-    ${ template }
+  <div style="max-width: 350px;">
+    ${template}
   </div>
 
 </b-story-book-layout>
@@ -72,7 +70,7 @@ const note = `
   showSingleGroupHeader | boolean | displays single group with group header | false
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 
@@ -81,10 +79,10 @@ const optionsNum = 4;
 
 const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
   return {
-    groupName: `Basic Info G${ i } - header`,
+    groupName: `Basic Info G${i} - header`,
     options: Array.from(Array(optionsNum), (_, k) => {
       return {
-        value: `Basic Info G${ i }_E${ k } - option`,
+        value: `Basic Info G${i}_E${k} - option`,
         id: i * optionsNum + k,
         selected: false,
         prefixComponent: {

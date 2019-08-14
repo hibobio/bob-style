@@ -57,7 +57,7 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   @Input() badge: AvatarBadge | BadgeConfig;
   @Input() expectChanges = false;
 
-  @Output() clicked?: EventEmitter<void> = new EventEmitter<void>();
+  @Output() clicked?: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   @HostBinding('attr.data-size') get sizeClass() {
     return getKeyByValue(AvatarSize, this.size);
@@ -143,7 +143,7 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
     };
   }
 
-  onClick(event: any): void {
+  onClick(event: MouseEvent): void {
     if (this.isClickable) {
       this.zone.run(() => {
         this.clicked.emit(event);

@@ -42,6 +42,7 @@ const note = `
   color | IconColor | the color of the icon | dark (optional)
   clicked | Function | callback for clicking on the button |
   disabled | boolean | disabled | false
+  toolTipSummary | String | Tooltip text  |
 
   ~~~
   ${template}

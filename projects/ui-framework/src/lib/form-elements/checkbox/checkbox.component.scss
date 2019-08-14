@@ -1,6 +1,6 @@
-@import '../../style/mixins';
-@import './checkbox.mixin';
+@import '../../style/common-imports';
 @import '../form-element.mixin';
+@import './checkbox.mixin';
 
 :host {
   display: flex;

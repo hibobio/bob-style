@@ -34,7 +34,7 @@ describe('CardComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(CardComponent);
         component = fixture.componentInstance;
-        fixture.nativeElement.style.width = '300px';
+        fixture.debugElement.nativeElement.style.width = '300px';
       });
   }));
 
@@ -46,16 +46,16 @@ describe('CardComponent', () => {
     });
     it('should be of type primary by default', () => {
       fixture.detectChanges();
-      expect(fixture.nativeElement.attributes['data-type'].value).toEqual(
-        'regular'
-      );
+      expect(
+        fixture.debugElement.nativeElement.attributes['data-type'].value
+      ).toEqual('regular');
     });
     it('should change type on type input change', () => {
       component.type = CardType.large;
       fixture.detectChanges();
-      expect(fixture.nativeElement.attributes['data-type'].value).toEqual(
-        'large'
-      );
+      expect(
+        fixture.debugElement.nativeElement.attributes['data-type'].value
+      ).toEqual('large');
     });
   });
 
@@ -133,7 +133,9 @@ describe('CardComponent', () => {
 
       menu.componentInstance.openMenu.emit();
       fixture.detectChanges();
-      expect(fixture.nativeElement.dataset.focusInside).toEqual('true');
+      expect(fixture.debugElement.nativeElement.dataset.focusInside).toEqual(
+        'true'
+      );
     });
 
     it('should remove focus-inside class from host element after timeout on menu close', fakeAsync(() => {
@@ -150,10 +152,14 @@ describe('CardComponent', () => {
       fixture.detectChanges();
       menu.componentInstance.closeMenu.emit();
       fixture.detectChanges();
-      expect(fixture.nativeElement.dataset.focusInside).toEqual('true');
+      expect(fixture.debugElement.nativeElement.dataset.focusInside).toEqual(
+        'true'
+      );
       tick(300);
       fixture.detectChanges();
-      expect(fixture.nativeElement.dataset.focusInside).not.toEqual('true');
+      expect(
+        fixture.debugElement.nativeElement.dataset.focusInside
+      ).not.toEqual('true');
     }));
   });
 
@@ -232,19 +238,9 @@ describe('CardComponent', () => {
         imageUrl: 'some_image.png'
       };
       fixture.detectChanges();
-      const image = fixture.debugElement.query(By.css('.image-holder'));
-      expect(image).toBeTruthy();
-    });
-    it('should set background image', () => {
-      component.card = {
-        title: 'test',
-        imageUrl: 'some_image.png'
-      };
-      fixture.detectChanges();
-      const image = fixture.debugElement.query(By.css('.image-holder'));
-      expect(getComputedStyle(image.nativeElement).backgroundImage).toContain(
-        'some_image.png'
-      );
+      const image = fixture.debugElement.query(By.css('.card-top'))
+        .nativeElement;
+      expect(image.style.backgroundImage).toContain('some_image.png');
     });
     it('should change icon color to white when image is displayed', () => {
       component.card = {

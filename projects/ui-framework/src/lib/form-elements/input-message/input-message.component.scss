@@ -1,6 +1,4 @@
-@import '../../style/colors';
-@import '../../style/typography';
-@import '../../style/mixins';
+@import '../../style/common-imports';
 
 $label-hint-margin: 6px;
 
@@ -11,8 +9,7 @@ $label-hint-margin: 6px;
   align-items: center;
   justify-content: space-between;
   text-align: left;
-  @include BodyFont($font-size-caption);
-  color: $grey-600;
+  @include b-caption($color: $grey-600, $addCssVars: false);
 
   &.warn {
     color: $color-warn;

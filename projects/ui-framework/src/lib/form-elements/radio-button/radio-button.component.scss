@@ -1,5 +1,6 @@
-@import './radio.mixin';
+@import '../../style/common-imports';
 @import '../form-element.mixin';
+@import './radio.mixin';
 
 :host {
   display: flex;
