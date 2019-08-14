@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  number,
-  object,
-  select,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { number, object, select, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../consts';
@@ -66,6 +61,8 @@ const note = `
   addRows | Function | add rows
   updateRows | Function | update rows
   removeRows | Function | remove rows
+  filterRows | Function | search rows
+  resetFilter | Function | reset filter
   ~~~
   ${template}
   ~~~
