@@ -314,4 +314,13 @@ describe('TableComponent', () => {
       expect(component.agGrid.api.deselectAll).toHaveBeenCalled();
     });
   });
+
+  describe('getDisplayedRowCount', () => {
+    it('Should call grid api getDisplayedRowCount', () => {
+      fixture.autoDetectChanges();
+      spyOn(component.agGrid.api, 'getDisplayedRowCount');
+      component.getDisplayedRowCount();
+      expect(component.agGrid.api.getDisplayedRowCount).toHaveBeenCalled();
+    });
+  });
 });

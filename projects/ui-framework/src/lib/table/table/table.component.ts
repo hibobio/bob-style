@@ -111,6 +111,10 @@ export class TableComponent implements OnInit, OnChanges {
     this.elRef.nativeElement.style.setProperty('--max-height', `${ height }px`);
   }
 
+  public getDisplayedRowCount(): number {
+    return this.gridOptions.api.getDisplayedRowCount();
+  }
+
   public addRows(rows: any[]): void {
     this.gridOptions.api.updateRowData({ add: rows });
   }
