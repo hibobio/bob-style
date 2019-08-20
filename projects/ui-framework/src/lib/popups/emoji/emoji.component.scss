@@ -67,6 +67,13 @@ $emoji-padding: 15px;
     overflow-y: auto;
     position: relative;
     will-change: transform; // avoids glitches when scroll
+    &::-webkit-scrollbar {
+      width: 0;
+      cursor: pointer;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0);
+    }
     h3 {
       padding: 0 $emoji-padding;
       clear: both;
