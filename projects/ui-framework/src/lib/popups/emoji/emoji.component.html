@@ -1,27 +1,42 @@
-<div class="panel-position" *ngIf="emojiMenuState" (click)="$event.stopPropagation()">
-  <div class="emoji-panel">
-    <div class="emoji-header" *ngIf="title">
-      <b-display-3 class="emoji-title" *bTruncateTooltip="1">{{title}}</b-display-3>
-    </div>
-    <div class="emoji-list">
-      <div class="emoji-cat-list" *ngFor="let category of emojis | keyvalue">
-        <h3>{{category.key}}</h3>
-        <div class="icon-wrapper">
-          <div class="icon"
-               *ngFor="let emoji of category?.value" title="{{emoji?.shortname}}"
-               (click)="selectEmoji(emoji)">
-            {{emoji?.icon}}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="emoji-footer">
-      <div class="icon" *ngFor="let emoji of commonEmojis" (click)="selectEmoji(emoji)">
-        {{emoji?.icon}}
-      </div>
-    </div>
+<div class="emoji-panel"
+     *ngIf="emojiMenuState"
+     (click.outside-zone)="$event.stopPropagation()">
+
+  <h3 class="emoji-header b-display-4"
+      *ngIf="title"
+      [b-truncate-tooltip]="1"
+      [trustCssVars]="true">
+    {{title}}
+  </h3>
+
+  <div class="emojis">
+
+    <ng-container *ngFor="let category of emojis | keyvalue">
+      <h4 class="emoji-cat-title b-big-body">{{category.key}}</h4>
+
+      <ul class="emoji-list">
+        <li class="icon"
+            *ngFor="let emoji of category?.value"
+            title="{{emoji?.shortname}}"
+            (click)="selectEmoji(emoji)">
+          {{emoji?.icon}}
+        </li>
+      </ul>
+    </ng-container>
+
   </div>
+
+  <ul class="emoji-footer">
+    <li class="icon"
+        *ngFor="let emoji of commonEmojis"
+        (click)="selectEmoji(emoji)">
+      {{emoji?.icon}}
+    </li>
+  </ul>
+
 </div>
-<div class="button-wrapper" (click.outside-zone)="$event.stopPropagation(); toggleMenu()">
+
+<div class="button-wrapper"
+     (click.outside-zone)="$event.stopPropagation(); toggleMenu()">
   <ng-content></ng-content>
 </div>

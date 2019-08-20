@@ -1,14 +1,7 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  ViewChild,
-  ElementRef
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { ButtonSize, ButtonType } from '../buttons.enum';
-import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
+import { IconColor, IconSize } from '../../../icons/icons.enum';
+import { BaseButtonElement } from '../button.abstract';
 
 @Component({
   selector: 'b-button',
@@ -16,8 +9,8 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
     <button
       #button
       type="button"
-      class="{{ type }} {{ size }} {{
-        icon ? icon + ' b-icon-' + iconSize + ' b-icon-' + iconColor : ''
+      class="{{ type || buttonType.primary }} {{ size || buttonSize.medium }} {{
+        getIconClass()
       }}"
       [attr.disabled]="disabled || null"
       (click)="onClick($event)"
@@ -28,30 +21,18 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
   `,
   styleUrls: ['./button.component.scss']
 })
-export class ButtonComponent implements OnChanges {
-  @ViewChild('button', { static: true }) public button: ElementRef;
-  @Input() text: string;
-  @Input() type?: ButtonType = ButtonType.primary;
-  @Input() size?: ButtonSize = ButtonSize.medium;
-  @Input() disabled = false;
-  @Input() icon: Icons;
-  @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
-
-  iconColor: IconColor;
-  iconSize: IconSize;
-
-  constructor() {}
-
-  ngOnChanges(): void {
-    if (this.icon) {
-      this.iconColor =
-        this.type === ButtonType.primary ? IconColor.white : IconColor.dark;
-      this.iconSize =
-        this.size === ButtonSize.large ? IconSize.large : IconSize.medium;
-    }
+export class ButtonComponent extends BaseButtonElement {
+  constructor() {
+    super();
   }
 
-  onClick($event) {
-    this.clicked.emit($event);
+  getIconClass(): string {
+    return this.icon
+      ? this.icon +
+          ' b-icon-' +
+          (this.size === ButtonSize.large ? IconSize.large : IconSize.medium) +
+          ' b-icon-' +
+          (this.type === ButtonType.primary ? IconColor.white : IconColor.dark)
+      : '';
   }
 }

@@ -1,13 +1,6 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild,
-  ElementRef
-} from '@angular/core';
-import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
-import { ButtonSize, ButtonType } from '../buttons.enum';
+import { Component, Input } from '@angular/core';
+import { BaseButtonElement } from '../button.abstract';
+import { Icons, IconSize, IconColor } from '../../../icons/icons.enum';
 
 @Component({
   selector: 'b-chevron-button',
@@ -15,13 +8,8 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
     <button
       #button
       type="button"
-      class="icon-after {{ buttonType.secondary }} {{ buttonSize.medium }}
-                   {{
-        (active ? icons.chevron_up : icons.chevron_down) +
-          ' b-icon-' +
-          iconSize.medium +
-          ' b-icon-' +
-          iconColor.dark
+      class="icon-after {{ buttonType.secondary }} {{ buttonSize.medium }} {{
+        getIconClass()
       }}"
       (click)="onClick($event)"
       [attr.disabled]="disabled || null"
@@ -32,20 +20,20 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
   `,
   styleUrls: ['../button/button.component.scss']
 })
-export class ChevronButtonComponent {
-  @ViewChild('button', { static: true }) public button: ElementRef;
-  @Input() text: string;
+export class ChevronButtonComponent extends BaseButtonElement {
+  constructor() {
+    super();
+  }
+
   @Input() active = false;
-  @Input() disabled = false;
-  @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
-  buttonType = ButtonType;
-  buttonSize = ButtonSize;
-  icons = Icons;
-  iconSize = IconSize;
-  iconColor = IconColor;
-
-  onClick($event) {
-    this.clicked.emit($event);
+  getIconClass(): string {
+    return (
+      (this.active ? Icons.chevron_up : Icons.chevron_down) +
+      ' b-icon-' +
+      IconSize.medium +
+      ' b-icon-' +
+      IconColor.dark
+    );
   }
 }

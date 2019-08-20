@@ -1,13 +1,6 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild,
-  ElementRef
-} from '@angular/core';
-import { BackButtonType, ButtonSize } from '../buttons.enum';
-import { Icons, IconSize, IconColor } from '../../../icons/icons.enum';
+import { Component } from '@angular/core';
+import { BaseButtonElement } from '../button.abstract';
+import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
 
 @Component({
   selector: 'b-back-button',
@@ -15,12 +8,8 @@ import { Icons, IconSize, IconColor } from '../../../icons/icons.enum';
     <button
       #button
       type="button"
-      class="{{ type }} {{ buttonSize.small }} {{
-        icons.back_arrow_link +
-          ' b-icon-' +
-          iconSize.medium +
-          ' b-icon-' +
-          iconColor.dark
+      class="{{ type || buttonType.secondary }} {{ buttonSize.small }} {{
+        getIconClass()
       }}"
       [attr.disabled]="disabled || null"
       (click)="onClick($event)"
@@ -31,21 +20,18 @@ import { Icons, IconSize, IconColor } from '../../../icons/icons.enum';
   `,
   styleUrls: ['../button/button.component.scss']
 })
-export class BackButtonComponent {
-  @ViewChild('button', { static: true }) public button: ElementRef;
-  @Input() text: string;
-  @Input() type?: BackButtonType = BackButtonType.secondary;
-  @Input() disabled = false;
-  @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
+export class BackButtonComponent extends BaseButtonElement {
+  constructor() {
+    super();
+  }
 
-  buttonSize = ButtonSize;
-  icons = Icons;
-  iconSize = IconSize;
-  iconColor = IconColor;
-
-  constructor() {}
-
-  onClick($event) {
-    this.clicked.emit($event);
+  getIconClass(): string {
+    return (
+      Icons.back_arrow_link +
+      ' b-icon-' +
+      IconSize.medium +
+      ' b-icon-' +
+      IconColor.dark
+    );
   }
 }

@@ -4,7 +4,7 @@ $panel-arrow-size: 16px;
   position: relative;
   overflow: $overflow;
   box-shadow: 0 0 10px 0 $boxShadowColor;
-  border-radius: 4px;
+  border-radius: $border-radius;
   box-sizing: border-box;
   background-color: $white;
 }
@@ -18,11 +18,10 @@ $panel-arrow-size: 16px;
     content: '';
     display: block;
     position: absolute;
-    @include arrow($panel-arrow-size);
   }
 
   &:before {
-    z-index: 0;
+    z-index: -1;
     box-shadow: 0 0 8px 0 rgba($grey-700, 0.25);
   }
   &:after {
@@ -42,6 +41,7 @@ $panel-arrow-size: 16px;
     top: 17px;
     &:before,
     &:after {
+      @include arrow($panel-arrow-size, $dir: 'up');
       top: (-1 * $panel-arrow-size/2);
     }
   }
@@ -50,6 +50,7 @@ $panel-arrow-size: 16px;
     bottom: 17px;
     &:before,
     &:after {
+      @include arrow($panel-arrow-size, $dir: 'down');
       bottom: (-1 * $panel-arrow-size/2);
     }
   }

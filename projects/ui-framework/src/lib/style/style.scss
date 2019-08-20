@@ -36,9 +36,8 @@
   --padding-x-mob: #{$padding-x-mob};
 }
 
-html,
 body {
-  @include b-body($color: $body-text-color, $addCssVars: false);
+  @include b-body($color: $body-text-color, $addCssVars: true);
 }
 
 .b-mobile {
@@ -54,19 +53,19 @@ body {
 }
 
 .b-body {
-  @include b-body($addCssVars: true) {
+  @include b-body($weight: null, $addCssVars: true) {
     margin: 0;
   }
 }
 
 .b-big-body {
-  @include b-big-body($addCssVars: true) {
+  @include b-big-body($weight: null, $addCssVars: true) {
     margin: 0;
   }
 }
 
 .b-bold-body {
-  @include b-bold-body($addCssVars: true) {
+  @include b-bold-body($size: null, $addCssVars: true) {
     margin: 0;
   }
 }

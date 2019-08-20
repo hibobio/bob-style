@@ -86,6 +86,7 @@ $font-size-subheading: $font-size-body;
 
 @mixin b-body(
   $lineHeight: $line-height-body,
+  $weight: $font-weight-body,
   $color: null,
   $style: null,
   $addCssVars: false
@@ -93,6 +94,7 @@ $font-size-subheading: $font-size-body;
   @include BodyFont(
     $color: $color,
     $lineHeight: $lineHeight,
+    $weight: $weight,
     $style: $style,
     $addCssVars: $addCssVars
   );
@@ -101,6 +103,7 @@ $font-size-subheading: $font-size-body;
 
 @mixin b-big-body(
   $lineHeight: $line-height-body,
+  $weight: $font-weight-body,
   $color: null,
   $style: null,
   $addCssVars: false
@@ -109,6 +112,7 @@ $font-size-subheading: $font-size-body;
     $color: $color,
     $size: $font-size-big-body,
     $lineHeight: $lineHeight,
+    $weight: $weight,
     $style: $style,
     $addCssVars: $addCssVars
   );
@@ -116,6 +120,7 @@ $font-size-subheading: $font-size-body;
 }
 
 @mixin b-bold-body(
+  $size: $font-size-body,
   $lineHeight: $line-height-body,
   $color: null,
   $style: null,
@@ -123,7 +128,7 @@ $font-size-subheading: $font-size-body;
 ) {
   @include BodyFont(
     $color: $color,
-    $size: $font-size-body,
+    $size: $size,
     $weight: $font-weight-bold-body,
     $lineHeight: $lineHeight,
     $style: $style,

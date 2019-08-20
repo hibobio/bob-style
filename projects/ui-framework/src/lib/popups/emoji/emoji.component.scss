@@ -1,110 +1,154 @@
-@import "../../style/colors";
+@import '../../style/common-imports';
 @import '../overlay';
-@import '../../style/shapes';
 
-$emoji-padding: 15px;
+$emoji-padding: times8(2);
+$icon-width: 30px;
+$icons-in-row: 8;
+$heading-height: 35px;
+
 :host {
   position: relative;
-  display: inline-block;
+  display: block;
 }
-.panel-position {
+
+ul,
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.emoji-panel {
+  width: $icon-width * $icons-in-row + $emoji-padding * 2;
+  @include OverlayPanel();
   @include OverlayPointerHolders();
   @include OverlayPositionBounding('center');
   @include OverlayPositionBounding('above');
 }
-.emoji-panel {
-  width: 270px;
-  @include OverlayPanel();
-  .emoji-title {
-    line-height: 35px;
-    font-size: 18px;
-  }
-  .icon-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: left;
-    position: relative;
-  }
-  .icon {
-    font-family: "Segoe UI Emoji",
-    "Segoe UI Symbol",
-    "Segoe UI",
-    "Apple Color Emoji",
-    "Twemoji Mozilla",
-    "Noto Color Emoji",
-    "EmojiOne Color",
-    "Android Emoji";
-    user-select: none;
-    position: relative;
-    z-index: 3;
-    display: inline-flex;
-    justify-content: center;
-    font-size: 21px;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    line-height: 32px;
-    transition: transform .1s;
-    transform: scale(1);
-    cursor: pointer;
-    will-change: transform;
-    &:hover {
-      transform: scale(1.25);
-    }
-  }
 
-  .emoji-header, .icon-wrapper {
-    padding: 0 $emoji-padding;
+.emoji-header, .icon-wrapper {
+  padding: 0 $emoji-padding;
+}
+.emoji-header {
+  color: $grey-700;
+  border-bottom: 1px solid $grey-500;
+}
+.emoji-list {
+  height: 215px;
+  max-height: 40vh;
+  overflow-y: auto;
+  position: relative;
+  will-change: transform; // avoids glitches when scroll
+  &::-webkit-scrollbar {
+    width: 0;
+    cursor: pointer;
   }
-  .emoji-header {
-    color: $grey-700;
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0);
+  }
+  h3 {
+    padding: 0 $emoji-padding;
+    clear: both;
+    background-color: #fff;
+    top: 0;
+    display: block;
+    position: sticky;
+    font-size: 14px;
+    margin: 0;
+    line-height: 35px;
+    z-index: 4;
     border-bottom: 1px solid $grey-500;
   }
-  .emoji-list {
-    height: 215px;
-    max-height: 40vh;
-    overflow-y: auto;
-    position: relative;
-    will-change: transform; // avoids glitches when scroll
-    &::-webkit-scrollbar {
-      width: 0;
-      cursor: pointer;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: rgba(0, 0, 0, 0);
-    }
-    h3 {
-      padding: 0 $emoji-padding;
-      clear: both;
-      background-color: #fff;
-      top: 0;
-      display: block;
-      position: sticky;
-      font-size: 14px;
-      margin: 0;
-      line-height: 35px;
-      z-index: 4;
-      border-bottom: 1px solid $grey-500;
-    }
-  }
+}
 
-  .emoji-footer {
-    overflow: hidden;
-    height: 40px;
-    padding: 5px $emoji-padding;
-    display: block;
-    border-top: 1px solid $grey-500;
+.emoji-header,
+.emoji-list,
+.emoji-cat-title {
+  padding: 0 $emoji-padding;
+}
 
+.emoji-header,
+.emoji-cat-title {
+  margin: 0;
+  height: $heading-height;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emoji-header {
+  font-weight: 600;
+  height: 35px;
+  border-bottom: 1px solid $grey-500;
+}
+
+.emojis {
+  height: 250px;
+  max-height: 40vh;
+  overflow-y: auto;
+  position: relative;
+  will-change: transform; // avoids glitches when scroll
+}
+
+.emoji-cat-title {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  border-bottom: 1px solid $grey-500;
+  background-color: white;
+}
+
+.emoji-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: left;
+  position: relative;
+  margin: times8(1) 0;
+}
+
+.icon {
+  font-family: 'Segoe UI Emoji', 'Segoe UI Symbol', 'Segoe UI',
+    'Apple Color Emoji', 'Twemoji Mozilla', 'Noto Color Emoji', 'EmojiOne Color',
+    'Android Emoji';
+  user-select: none;
+  position: relative;
+  z-index: 3;
+  display: inline-flex;
+  justify-content: center;
+  font-size: 21px;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 32px;
+  transition: transform 0.1s;
+  transform: scale(1);
+  cursor: pointer;
+  will-change: transform;
+
+  &:hover {
+    transform: scale(1.25);
   }
+}
+
+.emoji-footer {
+  display: flex;
+  position: relative;
+  height: 40px;
+  padding: 5px $emoji-padding;
+  margin: 0;
+  overflow: hidden;
+  border-top: 1px solid $grey-500;
+  background-color: white;
 }
 
 .button-wrapper {
   display: inline-block;
   cursor: pointer;
-  transform: scale(.9);
-  transition: transform .1s;
+  transform: scale(0.9);
+  transition: transform 0.1s;
   will-change: transform;
+
   &:hover {
     transform: scale(1);
   }

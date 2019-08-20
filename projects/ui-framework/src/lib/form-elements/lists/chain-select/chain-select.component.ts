@@ -32,7 +32,6 @@ export class ChainSelectComponent implements OnInit {
       this.state = [null];
     } else {
       this.chainLinkList = this.selectComponentConfig.selectedIds.map((optionId, index) => ({
-        active: false,
         selectComponentConfig: {
           component: this.selectComponent,
           attributes: {
@@ -58,17 +57,8 @@ export class ChainSelectComponent implements OnInit {
     this.selectChange.emit(this.state);
   }
 
-  public activateChainLink(event, index: number) {
-    this.chainLinkList[index].active = true;
-  }
-
-  public deactivateChainLink(event, index: number) {
-    this.chainLinkList[index].active = false;
-  }
-
   private createEmptyChainLink(index: number): ChainLink {
     return {
-      active: false,
       selectComponentConfig: {
         component: this.selectComponent,
         attributes: {

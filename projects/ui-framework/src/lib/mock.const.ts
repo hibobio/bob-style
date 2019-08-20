@@ -482,6 +482,10 @@ export const mockText = (words = 100) => {
     .replace(/,/g, '')
     .replace(/\./g, '');
   text = text.charAt(0).toUpperCase() + text.toLocaleLowerCase().slice(1);
+
+  if (text.length < 5) {
+    return mockText(words);
+  }
   return text;
 };
 

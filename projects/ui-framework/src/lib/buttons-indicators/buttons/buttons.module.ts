@@ -14,18 +14,16 @@ import { ChevronButtonComponent } from './chevron-button/chevron-button.componen
     GroupComponent,
     BackButtonComponent,
     TextButtonComponent,
-    ChevronButtonComponent,
+    ChevronButtonComponent
   ],
-  imports: [
-    CommonModule,
-  ],
+  imports: [CommonModule],
   exports: [
     ButtonComponent,
     SquareButtonComponent,
     GroupComponent,
     BackButtonComponent,
     TextButtonComponent,
-    ChevronButtonComponent,
+    ChevronButtonComponent
   ]
 })
 export class ButtonsModule {}

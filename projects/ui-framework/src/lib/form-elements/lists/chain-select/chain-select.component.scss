@@ -7,11 +7,18 @@
 .chain-link-row {
   position: relative;
 
+  &:hover {
+    .delete-button {
+      display: block;
+    }
+  }
+
   b-component-renderer {
     display: block;
   }
 
   .delete-button {
+    display: none;
     position: absolute;
     right: -44px;
     bottom: 0;

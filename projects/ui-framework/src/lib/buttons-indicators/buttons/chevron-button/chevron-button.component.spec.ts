@@ -36,7 +36,9 @@ describe('ChevronButtonComponent', () => {
       fixture.detectChanges();
       const button = fixture.debugElement.query(By.css('button'));
 
-      expect(button.nativeElement.classList).not.toContain('b-icon-chevron-down');
+      expect(button.nativeElement.classList).not.toContain(
+        'b-icon-chevron-down'
+      );
       expect(button.nativeElement.classList).toContain('b-icon-chevron-up');
     });
   });
@@ -46,7 +48,7 @@ describe('ChevronButtonComponent', () => {
       const e = {
         id: 1,
         stopPropagation: () => true
-      };
+      } as any;
       component.onClick(e);
       expect(component.clicked.emit).toHaveBeenCalledWith(e);
     });

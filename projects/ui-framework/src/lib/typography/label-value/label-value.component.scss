@@ -1,0 +1,272 @@
+@import '../../style/common-imports';
+
+$BLVTypeMap: (
+  '1': (
+    '.blv-label': (
+      color: $heading-text-color,
+      font-size: $font-size-body,
+      font-weight: $font-weight-bold-body
+    ),
+    '.blv-value': (
+      color: $grey-600,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    )
+  ),
+  '2': (
+    '.blv-label': (
+      color: $grey-600,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    ),
+    '.blv-value': (
+      color: $heading-text-color,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    )
+  ),
+  '3': (
+    '.blv-label': (
+      color: $heading-text-color,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    ),
+    '.blv-value': (
+      color: $grey-600,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    )
+  ),
+  '4': (
+    '.blv-label': (
+      color: $grey-600,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    ),
+    '.blv-value': (
+      color: $display-text-color,
+      font-size: $font-size-display-3,
+      font-weight: $font-weight-display-3,
+      font-family: var(--display-font-family)
+    )
+  ),
+  '5': (
+    '.blv-label': (
+      color: $display-text-color,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    ),
+    '.blv-value': (
+      color: $display-text-color,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    )
+  )
+);
+
+.blv-icon {
+  order: 1;
+}
+.blv-label {
+  order: 2;
+}
+.blv-value {
+  order: 3;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  align-items: flex-start;
+  @include b-body;
+
+  &[data-swap='true'] {
+    .blv-label {
+      order: 3;
+    }
+    .blv-value {
+      order: 2;
+    }
+  }
+
+  &[data-text-align='right'] {
+    text-align: right;
+    align-items: flex-end;
+
+    .blv-label,
+    .blv-value {
+      justify-content: flex-end;
+    }
+  }
+
+  &[data-text-align='center'] {
+    text-align: center;
+    align-items: center;
+
+    .blv-label,
+    .blv-value {
+      justify-content: center;
+    }
+  }
+
+  &[data-icon-position='left'],
+  &[data-icon-position='right'] {
+    display: grid;
+
+    .blv-icon {
+      grid-row-start: span 2;
+      align-self: center;
+
+      &:nth-last-child(2) {
+        grid-row-start: 1;
+      }
+    }
+    .blv-label {
+      grid-row-start: 1;
+      align-self: flex-end;
+
+      &:nth-last-child(1) {
+        align-self: center;
+      }
+    }
+    .blv-value {
+      grid-row-start: 2;
+      align-self: flex-start;
+
+      &:nth-child(2) {
+        grid-row-start: 1;
+        align-self: center;
+      }
+    }
+
+    &[data-swap='true'] {
+      .blv-label {
+        grid-row-start: 2;
+
+        &:nth-last-child(1) {
+          grid-row-start: 1;
+        }
+      }
+      .blv-value {
+        grid-row-start: 1;
+
+        &:nth-child(2) {
+          grid-row-start: 1;
+        }
+      }
+    }
+  }
+
+  &[data-icon-position='left'] {
+    grid-template-columns: auto 1fr;
+
+    .blv-icon {
+      grid-column-start: 1;
+      margin-right: 10px;
+    }
+    .blv-label {
+      grid-column-start: 2;
+    }
+    .blv-value {
+      grid-column-start: 2;
+    }
+  }
+
+  &[data-icon-position='right'] {
+    grid-template-columns: 1fr auto;
+
+    .blv-icon {
+      grid-column-start: 2;
+      margin-left: 10px;
+    }
+    .blv-label {
+      grid-column-start: 1;
+    }
+    .blv-value {
+      grid-column-start: 1;
+    }
+  }
+
+  &[data-icon-position='top'] {
+    .blv-icon {
+      margin-bottom: times8(1);
+    }
+  }
+}
+
+:host,
+.blv-label,
+.blv-value,
+.blv-icon {
+  &[tabindex='0'] {
+    cursor: pointer;
+    outline: 0;
+  }
+}
+
+:host[tabindex='0'] {
+  &:focus,
+  &:hover {
+    filter: brightness(0.65);
+  }
+}
+
+.blv-icon[tabindex='0'] {
+  &:focus,
+  &:hover {
+    &:before {
+      filter: brightness(0.65);
+    }
+  }
+}
+
+.blv-label,
+.blv-value {
+  margin: 0;
+  font-size: inherit;
+  color: inherit;
+  display: flex;
+  align-items: center;
+
+  &:before {
+    margin-right: 5px;
+  }
+
+  &[tabindex='0'] {
+    &:before {
+      overflow: hidden;
+      height: 15px;
+      margin-bottom: 1px;
+    }
+
+    &:focus,
+    &:hover {
+      text-decoration: underline;
+
+      &:before {
+        filter: brightness(0.65);
+      }
+    }
+  }
+}
+
+:host {
+  @each $type, $elems in $BLVTypeMap {
+    &[data-type='#{$type}'] {
+      @each $elem, $props in $elems {
+        #{$elem} {
+          @each $prop, $value in $props {
+            #{$prop}: $value;
+
+            @if ($prop == 'color') {
+              &:before {
+                color: $value;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

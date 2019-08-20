@@ -34,7 +34,7 @@ describe('ButtonComponent', () => {
       const e = {
         id: 1,
         stopPropagation: () => true
-      };
+      } as any;
       component.onClick(e);
       expect(component.clicked.emit).toHaveBeenCalledWith(e);
     });
@@ -76,21 +76,17 @@ describe('ButtonComponent', () => {
     ): void => {
       component.type = buttonType;
       component.icon = Icons.timeline;
-      component.ngOnChanges();
       fixture.detectChanges();
       expect(buttonElement.className).toContain('b-icon-' + expectedColor);
     };
     const testSize = (buttonSize: ButtonSize, expectedSize: IconSize): void => {
       component.size = buttonSize;
       component.icon = Icons.timeline;
-      component.ngOnChanges();
       fixture.detectChanges();
       expect(buttonElement.className).toContain('b-icon-' + expectedSize);
     };
     it('should not set iconColor or iconSize if there is no icon', () => {
-      component.ngOnChanges();
-      expect(component.iconColor).toBeFalsy();
-      expect(component.iconSize).toBeFalsy();
+      expect(buttonElement.className).not.toContain('b-icon-');
     });
     it('should set iconColor based on button type', () => {
       testColor(ButtonType.primary, IconColor.white);

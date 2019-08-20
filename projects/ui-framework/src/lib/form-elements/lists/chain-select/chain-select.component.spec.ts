@@ -47,7 +47,6 @@ describe('EmployeeChainSelectComponent', () => {
     class TestSelectModule { }
 
     emptyChainLink = {
-      active: false,
       selectComponentConfig: {
         component: TestComponent,
         attributes: {
@@ -96,7 +95,6 @@ describe('EmployeeChainSelectComponent', () => {
       component.selectComponentConfig.selectedIds = ['123'];
       component.ngOnInit();
       expect(component.chainLinkList).toEqual([{
-        active: false,
         selectComponentConfig: {
           component: TestComponent,
           attributes: {
@@ -178,32 +176,6 @@ describe('EmployeeChainSelectComponent', () => {
       component.addChainLink();
       component.removeChainLink(1);
       expect(component.selectChange.emit).toHaveBeenCalledWith(component.state);
-    });
-  });
-
-  describe('activateChainLink', () => {
-    it('Should insert the delete icon', () => {
-      component.addChainLink();
-      fixture.detectChanges();
-      const chainLinkRow = fixture.debugElement.queryAll(By.css('.chain-link-row'))[1];
-      chainLinkRow.triggerEventHandler('mouseenter', {});
-      fixture.detectChanges();
-      const deleteButton = fixture.debugElement.query(By.css('.delete-button'));
-      expect(deleteButton).not.toBeNull();
-    });
-  });
-
-  describe('deactivateChainLink', () => {
-    it('Should remove the delete icon', () => {
-      component.addChainLink();
-      fixture.detectChanges();
-      const chainLinkRow = fixture.debugElement.queryAll(By.css('.chain-link-row'))[1];
-      chainLinkRow.triggerEventHandler('mouseenter', {});
-      fixture.detectChanges();
-      chainLinkRow.triggerEventHandler('mouseleave', {});
-      fixture.detectChanges();
-      const deleteButton = fixture.debugElement.query(By.css('.delete-button'));
-      expect(deleteButton).toBeNull();
     });
   });
 });

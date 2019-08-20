@@ -1,15 +1,15 @@
-export interface EmojiMap {
-  people?: EmojiCategory[];
-  nature?: EmojiCategory[];
-  foods?: EmojiCategory[];
-  activity?: EmojiCategory[];
-  places?: EmojiCategory[];
-  objects?: EmojiCategory[];
-  symbols?: EmojiCategory[];
-  flags?: EmojiCategory[];
+export interface EmojiCategories {
+  people?: Emoji[];
+  nature?: Emoji[];
+  foods?: Emoji[];
+  activity?: Emoji[];
+  places?: Emoji[];
+  objects?: Emoji[];
+  symbols?: Emoji[];
+  flags?: Emoji[];
 }
 
-export interface EmojiCategory {
+export interface Emoji {
   code: string;
   shortname: string;
   category: string;

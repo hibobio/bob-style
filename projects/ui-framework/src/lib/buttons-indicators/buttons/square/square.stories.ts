@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  select,
+  boolean,
+  withKnobs,
+  text
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
 import { ButtonSize, ButtonType } from '../buttons.enum';
@@ -25,6 +30,7 @@ const template = `
                  [size]="size"
                  [icon]="icon"
                  [color]="color"
+                 [toolTipSummary]="toolTipSummary"
                  [disabled]="disabled">
 </b-square-button>
 `;
@@ -42,7 +48,7 @@ const note = `
   color | IconColor | the color of the icon | dark (optional)
   clicked | Function | callback for clicking on the button |
   disabled | boolean | disabled | false
-  toolTipSummary | String | Tooltip text  |
+  toolTipSummary | string | Tooltip text  |
 
   ~~~
   ${template}
@@ -64,6 +70,7 @@ buttonStories.add(
       size: select('size', sizeOptions, ButtonSize.medium),
       icon: select('icon', icons, Icons.phone_link),
       color: select('color', iconColor, IconColor.dark),
+      toolTipSummary: text('toolTipSummary', 'Call me'),
       disabled: boolean('disabled', false),
       onClick: action('Square button')
     },

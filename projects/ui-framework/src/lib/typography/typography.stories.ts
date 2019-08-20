@@ -76,7 +76,7 @@ const displayTemplate = `
   <span class="code-sample">&#60;b-display-4&#62;</span>
   <span class="details">
     <strong>Sentinel SSm A</strong>
-    18px / 1.3 / 900
+    18px / 1.3 / 500
   </span>
   <b-display-4>Display Small</b-display-4>
 </div>

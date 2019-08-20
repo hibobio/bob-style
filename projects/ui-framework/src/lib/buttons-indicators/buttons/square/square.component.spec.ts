@@ -7,9 +7,8 @@ import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { IconComponent } from '../../../icons/icon.component';
 import { Icons, IconSize } from '../../../icons/icons.enum';
-import { SimpleChanges } from '@angular/core';
 
-describe('ButtonComponent', () => {
+describe('SquareButtonComponent', () => {
   let component: SquareButtonComponent;
   let fixture: ComponentFixture<SquareButtonComponent>;
   let buttonElement: HTMLElement;
@@ -35,7 +34,7 @@ describe('ButtonComponent', () => {
     it('Should emit the click event', () => {
       const e = {
         id: 1
-      };
+      } as any;
       component.onClick(e);
       expect(component.clicked.emit).toHaveBeenCalledWith(e);
     });
@@ -46,15 +45,7 @@ describe('ButtonComponent', () => {
       expect(buttonElement.classList).toContain('b-icon-' + IconSize.large);
     });
     it('should set icon size to medium if size is small', () => {
-      const changes: SimpleChanges = {
-        size: {
-          previousValue: undefined,
-          currentValue: ButtonSize.small,
-          firstChange: true,
-          isFirstChange: () => true
-        }
-      };
-      component.ngOnChanges(changes);
+      component.size = ButtonSize.small;
       fixture.detectChanges();
       expect(buttonElement.classList).toContain('b-icon-' + IconSize.medium);
     });

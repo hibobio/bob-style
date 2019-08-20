@@ -15,6 +15,8 @@ export { Keys, NativeEvents } from './lib/enums';
 
 // Typography Module
 export { TypographyModule } from './lib/typography/typography.module';
+export { LabelValueComponent } from './lib/typography/label-value/label-value.component';
+export {LabelValueType, TextAlign, IconPosition} from './lib/typography/label-value/label-value.enum';
 
 /*
  * Buttons & Indicators
@@ -238,8 +240,9 @@ export { SocialModule } from './lib/form-elements/social/social.module';
 export { Social } from './lib/form-elements/social/social.enum';
 
 // Emoji Module
-export {EmojiModule} from './lib/popups/emoji/emoji.module';
-export {EmojiComponent} from './lib/popups/emoji/emoji.component';
+export { EmojiModule } from './lib/popups/emoji/emoji.module';
+export { EmojiComponent } from './lib/popups/emoji/emoji.component';
+export { Emoji } from './lib/popups/emoji/emoji.interface';
 
 // Timepicker
 export { TimePickerModule } from './lib/form-elements/timepicker/timepicker.module';

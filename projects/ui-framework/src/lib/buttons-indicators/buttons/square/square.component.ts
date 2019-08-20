@@ -1,24 +1,15 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
-  ViewChild,
-  ElementRef,
-  HostBinding
-} from '@angular/core';
-import { ButtonSize, ButtonType } from '../buttons.enum';
-import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
+import { Component, Input, HostBinding } from '@angular/core';
+import { ButtonSize } from '../buttons.enum';
+import { IconColor, IconSize } from '../../../icons/icons.enum';
+import { BaseButtonElement } from '../button.abstract';
 
 @Component({
   selector: 'b-square-button',
   template: `
     <button
       type="button"
-      class="{{ type }} {{ size }} {{
-        icon ? icon + ' b-icon-' + iconSize + ' b-icon-' + color : ''
+      class="{{ type || buttonType.primary }} {{ size || buttonSize.medium }} {{
+        getIconClass()
       }}"
       [attr.disabled]="disabled || null"
       (click)="onClick($event)"
@@ -26,32 +17,22 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
   `,
   styleUrls: ['./square.component.scss']
 })
-export class SquareButtonComponent implements OnChanges {
-  @ViewChild('button', { static: true }) public button: ElementRef;
-  @Input() type: ButtonType = ButtonType.primary;
-  @Input() size: ButtonSize = ButtonSize.medium;
-  @Input() icon: Icons;
+export class SquareButtonComponent extends BaseButtonElement {
+  constructor() {
+    super();
+  }
+
   @Input() color: IconColor = IconColor.dark;
-  @Input() disabled = false;
-  @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
   @HostBinding('attr.data-tooltip') @Input() toolTipSummary: string = null;
 
-  iconSize: IconSize = IconSize.large;
-
-  readonly iconColor = IconColor;
-
-  constructor() {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.size) {
-      this.size = changes.size.currentValue;
-      this.iconSize =
-        this.size === ButtonSize.small ? IconSize.medium : IconSize.large;
-    }
-  }
-
-  onClick($event) {
-    this.clicked.emit($event);
+  getIconClass(): string {
+    return this.icon
+      ? this.icon +
+          ' b-icon-' +
+          (this.size === ButtonSize.small ? IconSize.medium : IconSize.large) +
+          ' b-icon-' +
+          this.color
+      : '';
   }
 }

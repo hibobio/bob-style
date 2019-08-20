@@ -51,7 +51,7 @@ describe('BackButtonComponent', () => {
   });
 
   it('should set button type as tertiary', () => {
-    component.type = BackButtonType.tertiary;
+    component.type = BackButtonType.tertiary as any;
     fixture.detectChanges();
     expect(buttonElement.classList).toContain(BackButtonType.tertiary);
   });
