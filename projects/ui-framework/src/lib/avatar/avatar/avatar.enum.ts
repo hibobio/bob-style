@@ -1,4 +1,5 @@
 export enum AvatarSize {
+  micro = 30,
   mini = 36,
   small = 60,
   medium = 90,

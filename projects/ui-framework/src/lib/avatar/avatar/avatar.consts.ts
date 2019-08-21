@@ -3,6 +3,7 @@ import { AvatarSize, AvatarBadge } from './avatar.enum';
 import { BadgeConfig } from './avatar.interface';
 
 export const BadgeSize: { [key in AvatarSize]: IconSize } = {
+  [AvatarSize.micro]: IconSize.small,
   [AvatarSize.mini]: IconSize.small,
   [AvatarSize.small]: IconSize.medium,
   [AvatarSize.medium]: IconSize.large,
