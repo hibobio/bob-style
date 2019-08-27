@@ -112,5 +112,9 @@ export enum Icons {
   graph_timeline = 'b-icon-graph-timeline',
   zoom_out = 'b-icon-zoom-out',
   text_size = 'b-icon-text-size',
-  enter = 'b-icon-enter'
+  enter = 'b-icon-enter',
+  bob_b = 'b-icon-bob-b',
+  note_edit = 'b-icon-note-edit',
+  note = 'b-icon-note',
+  lock = 'b-icon-lock',
 }
