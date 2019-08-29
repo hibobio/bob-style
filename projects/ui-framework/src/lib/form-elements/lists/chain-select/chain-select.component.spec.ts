@@ -31,6 +31,14 @@ describe('EmployeeChainSelectComponent', () => {
     fixture.detectChanges();
   });
 
+  describe('onInit', () => {
+    it('Should replace null values in selectedItemList', () => {
+      component.selectedItemList = [1, null, 3];
+      component.ngOnInit();
+      expect(component.chainLinkList).toEqual([1, {}, 3]);
+    });
+  });
+
   describe('addChainLink', () => {
     it('Should add chain link to the list', () => {
       component.addChainLink();
