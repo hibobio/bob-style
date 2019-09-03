@@ -29,6 +29,11 @@ export class DialogService {
     const scrollBarGap = window.innerWidth - document.documentElement.clientWidth;
     document.body.style.paddingRight = `${ scrollBarGap }px`;
 
+    if (!config.panelClass) {
+      console.warn('panelClass must be provided');
+      return;
+    }
+
     const dialogConfig: MatDialogConfig = assign(config, {
       width: this.dialogSizeToWidth[config.size],
       closeOnNavigation: true,
