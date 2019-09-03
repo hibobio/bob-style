@@ -21,7 +21,8 @@ export class HighlightPipe implements PipeTransform {
       return value;
     }
 
-    const replacedValue = value.replace(re, `<span class="highlight" style="font-weight: bold;">${ match[0] }</span>`);
+    const replacedValue = value.replace(re, (str) =>
+      `<span class="highlight" style="font-weight: bold;">${str}</span>`);
     return this.sanitizer.bypassSecurityTrustHtml(replacedValue);
   }
 }
