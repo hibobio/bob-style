@@ -20,7 +20,7 @@ export interface ColumnDef {
   iconColor?: IconColor;
   cellClass?: (Icons | string)[];
   cellStyle?: any;
-  getQuickFilterText: Function;
+  getQuickFilterText?: Function;
 }
 
 export interface RowClickedEvent {
