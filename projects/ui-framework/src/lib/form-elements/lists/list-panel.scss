@@ -7,11 +7,12 @@
 }
 
 ::ng-deep {
-  .b-select-panel {
+  .b-select-panel-with-arrow {
     position: relative !important;
     min-width: 280px;
 
     .b-select-panel {
+      width: 100%;
       @include OverlayPointerHolders();
       @include OverlayPositionBounding('center');
 

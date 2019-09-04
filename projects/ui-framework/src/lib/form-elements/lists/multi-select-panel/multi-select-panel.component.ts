@@ -32,7 +32,7 @@ export class MultiSelectPanelComponent extends BaseSelectPanelElement
     apply: true,
     cancel: true
   };
-  panelClassList: string[] = ['b-select-panel'];
+  panelClassList: string[] = ['b-select-panel-with-arrow'];
 
   constructor(
     overlay: Overlay,

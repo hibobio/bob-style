@@ -25,7 +25,7 @@ export class SingleSelectPanelComponent extends BaseSelectPanelElement
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
 
   readonly listElHeight = LIST_EL_HEIGHT;
-  panelClassList: string[] = ['b-select-panel'];
+  panelClassList: string[] = ['b-select-panel-with-arrow'];
 
   constructor(
     overlay: Overlay,
