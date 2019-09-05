@@ -91,6 +91,7 @@ describe('TableUtilsService', () => {
     it('should enrich data with multi select column', () => {
       rowSelectionMock = RowSelection.Multiple;
       const multiColumnDef = {
+        width: 46,
         field: 'selection',
         headerCheckboxSelection: true,
         checkboxSelection: true,
@@ -108,6 +109,7 @@ describe('TableUtilsService', () => {
     it('should enrich data with single select column', () => {
       rowSelectionMock = RowSelection.Single;
       const multiColumnDef = {
+        width: 46,
         field: 'selection',
         headerCheckboxSelection: false,
         checkboxSelection: true,
