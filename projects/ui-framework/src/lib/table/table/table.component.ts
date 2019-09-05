@@ -142,4 +142,8 @@ export class TableComponent implements OnInit, OnChanges {
   public deselectAll(): void {
     this.gridOptions.api.deselectAll();
   }
+
+  public autoSizeColumns(): void {
+    this.gridOptions.api.deselectAll();
+  }
 }

@@ -323,4 +323,13 @@ describe('TableComponent', () => {
       expect(component.agGrid.api.getDisplayedRowCount).toHaveBeenCalled();
     });
   });
+
+  describe('autoSizeColumns', () => {
+    it('Should call grid api autoSizeColumns', () => {
+      fixture.autoDetectChanges();
+      spyOn(component.agGrid.columnApi, 'autoSizeColumns');
+      component.autoSizeColumns();
+      expect(component.agGrid.columnApi.autoSizeAllColumns).toHaveBeenCalled();
+    });
+  });
 });
