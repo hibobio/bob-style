@@ -96,7 +96,7 @@
     @include b-big-body($addCssVars: true);
   }
   .slot3-small {
-    margin-top: 5px;
+    @include b-caption($addCssVars: true);
   }
   &[data-orientation='horizontal'] {
     .avatar-text {
