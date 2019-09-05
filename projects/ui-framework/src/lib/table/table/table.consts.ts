@@ -6,4 +6,5 @@ export const SELECTION_COLUMN_DEF = {
   checkboxSelection: true,
   pinned: PinDirection.Left,
   lockPosition: true,
+  width: 46,
 };

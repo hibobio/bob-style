@@ -41,9 +41,7 @@ export class EmployeesShowcaseComponent
   implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   @Input() employees: EmployeeShowcase[] = [];
   @Input() avatarSize: AvatarSize = AvatarSize.mini;
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
   @Output() clicked: EventEmitter<string> = new EventEmitter<string>();
 
   private avatarGap: number = AvatarGap[AvatarSize.mini];

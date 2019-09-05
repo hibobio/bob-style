@@ -15,6 +15,7 @@ import { RowSelection, TableType } from './table.enum';
 import { By } from '@angular/platform-browser';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import { ChangeDetectorRef } from '@angular/core';
 
 describe('TableComponent', () => {
   let component: TableComponent;
@@ -22,6 +23,7 @@ describe('TableComponent', () => {
   let columnDefsMock: ColumnDef[] = [];
   let rowDataMock = [];
   let spyTableUtilsService: SpyObj<TableUtilsService>;
+  let spyCdr: SpyObj<ChangeDetectorRef>;
 
   beforeEach(async(() => {
     columnDefsMock = cloneDeep(COLUMN_DEFS_MOCK);
@@ -31,6 +33,10 @@ describe('TableComponent', () => {
       'getGridColumnDef'
     ]);
     spyTableUtilsService.getGridColumnDef.and.returnValue(columnDefsMock);
+
+    spyCdr = createSpyObj('spyCdr', [
+      'markForChange'
+    ]);
 
     TestBed.configureTestingModule({
       imports: [
@@ -42,8 +48,8 @@ describe('TableComponent', () => {
         AgGridModule.withComponents([AvatarCellComponent])
       ],
       providers: [
-
-        { provide: TableUtilsService, useValue: spyTableUtilsService }
+        { provide: TableUtilsService, useValue: spyTableUtilsService },
+        { provide: ChangeDetectorRef, useValue: spyCdr },
       ]
     })
       .overrideModule(BrowserDynamicTestingModule, {

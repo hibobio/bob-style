@@ -1,6 +1,18 @@
 // tslint:disable-next-line:max-line-length
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, } from '@angular/core';
-import { GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
+import { GridColumnsChangedEvent, GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
 import { get, has, once } from 'lodash';
 import { ColumnDef, RowClickedEvent, SortChangedEvent } from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
@@ -12,13 +24,15 @@ const LICENSE_KEY = 'hibob_Bob_1Devs_1Deployment_23_April_2020__MTU4NzU5NjQwMDAw
 @Component({
   selector: 'b-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss']
+  styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent implements OnInit, OnChanges {
 
   constructor(
     private tableUtilsService: TableUtilsService,
-    private elRef: ElementRef
+    private elRef: ElementRef,
+    private cdr: ChangeDetectorRef,
   ) {
     this.tableLicense();
   }
@@ -69,9 +83,14 @@ export class TableComponent implements OnInit, OnChanges {
       suppressContextMenu: true,
       getRowClass: (params) => get(params.data, 'isClickable', false) ? 'row-clickable' : '',
       onGridReady: (event: GridReadyEvent) => {
-        event.columnApi.autoSizeAllColumns();
         this.gridReady = true;
+        event.columnApi.autoSizeAllColumns();
+        this.cdr.markForCheck();
       },
+      onGridColumnsChanged: (event: GridColumnsChangedEvent) => {
+        event.columnApi.autoSizeAllColumns();
+        this.cdr.markForCheck();
+      }
     };
   }
 
