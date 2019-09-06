@@ -1,23 +1,34 @@
-<ng-container
-        *ngFor="let employee of employees; let i = index; let last = last">
-    <b-avatar class="employees-showcase-avatar"
-              *ngIf="i < avatarsToFit - 1 || (i < avatarsToFit && !showMore) || (i < avatarsToFit && last && showMore)"
+<div class="avatar-showcase"
+     [ngClass]="{'expand-on-click': expandOnClick}"
+     (click)="openPanel()"
+     cdkOverlayOrigin>
+
+  <ng-container *ngFor="let employee of employees; let i = index; let last = last">
+
+    <b-avatar class="showcase-avatar"
+              *ngIf="i < avatarsToFit - 1 || (i < avatarsToFit && !showThreeDotsButton)"
               [imageSource]="employee.imageSource"
               [size]="avatarSize"
               [isClickable]="clicked.observers.length > 0"
-    (clicked)="onAvatarClick(employee.id)"></b-avatar>
-    <div class="employees-showcase-panel-wrapper"
-         *ngIf="i === avatarsToFit - 1 && !last && showMore">
-        <b-panel [panelClass]="'employees-showcase-panel'">
-            <b-avatar class="show-more"
-                      [size]="avatarSize" panel-trigger>
-                <b-icon [icon]="icon"></b-icon>
-            </b-avatar>
-            <div panel-content>
-                <b-single-list [options]="showMoreOptions"
-                               (selectChange)="onSelectChange($event)">
-                </b-single-list>
-            </div>
-        </b-panel>
-    </div>
-</ng-container>
+              (clicked)="onAvatarClick(employee.id)">
+    </b-avatar>
+
+
+  </ng-container>
+
+    <b-avatar class="show-more-indicator"
+              *ngIf="showThreeDotsButton"
+              [size]="avatarSize">
+      <b-icon [icon]="icon.three_dots"></b-icon>
+    </b-avatar>
+
+</div>
+
+<ng-template #templateRef>
+  <div class="b-select-panel"
+       [ngClass]="positionClassList">
+    <b-single-list [options]="panelListOptions"
+                   (selectChange)="onSelectChange($event)">
+    </b-single-list>
+  </div>
+</ng-template>

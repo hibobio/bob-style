@@ -5,4 +5,4 @@ export const AvatarGap = {
   [AvatarSize.small]: 35,
   [AvatarSize.medium]: 26,
   [AvatarSize.large]: 26
-}
+};

@@ -1,107 +1,133 @@
 import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-  NgZone,
-  ChangeDetectorRef
+  AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges,
+  OnDestroy, OnInit, Output, SimpleChanges, NgZone, ChangeDetectorRef, ViewContainerRef,
 } from '@angular/core';
 import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarSize } from '../avatar/avatar.enum';
-import floor from 'lodash/floor';
 import { UtilsService } from '../../services/utils/utils.service';
 import { AvatarGap } from './employees-showcase.const';
 import { Icons } from '../../icons/icons.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { interval, Subscription } from 'rxjs';
-import invoke from 'lodash/invoke';
-import map from 'lodash/map';
-import random from 'lodash/random';
-import assign from 'lodash/assign';
-import cloneDeep from 'lodash/cloneDeep';
+import { invoke, random, assign, cloneDeep, floor } from 'lodash';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 import { AvatarComponent } from '../avatar/avatar.component';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
 import { outsideZone } from '../../services/utils/rxjs.operators';
+import { Overlay } from '@angular/cdk/overlay';
+import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
+import { BaseSelectPanelElement } from '../../form-elements/lists/select-panel-element.abstract';
 
 const SHUFFLE_EMPLOYEES_INTERVAL = 3000;
 
 @Component({
   selector: 'b-employees-showcase',
   templateUrl: './employees-showcase.component.html',
-  styleUrls: ['./employees-showcase.component.scss']
+  styleUrls: [
+    './employees-showcase.component.scss',
+    '../../form-elements/lists/list-panel.scss',
+  ],
 })
-export class EmployeesShowcaseComponent
+export class EmployeesShowcaseComponent extends BaseSelectPanelElement
   implements OnInit, OnChanges, OnDestroy, AfterViewInit {
+
   @Input() employees: EmployeeShowcase[] = [];
   @Input() avatarSize: AvatarSize = AvatarSize.mini;
+  @Input() expandOnClick = true;
+
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
   @Output() clicked: EventEmitter<string> = new EventEmitter<string>();
 
+  panelListOptions: SelectGroupOption[];
+  avatarsToFit = 0;
+  showThreeDotsButton = false;
+  panelClassList: string[] = ['b-select-panel-with-arrow'];
+
+  readonly icon = Icons;
+
+  private shuffleEmployeesMode: boolean;
   private avatarGap: number = AvatarGap[AvatarSize.mini];
   private clientWidth = 0;
   private resizeEventSubscriber: Subscription;
   private intervalSubscriber: Subscription;
-  public showMore = false;
-  public avatarsToFit = 0;
-  public icon: Icons = Icons.three_dots;
-  public showMoreOptions: SelectGroupOption[];
+  private openPanelRef = this.openPanel;
 
   constructor(
     private utilsService: UtilsService,
     private host: ElementRef,
-    private DOM: DOMhelpers,
-    private zone: NgZone,
-    private cd: ChangeDetectorRef
-  ) {}
+    overlay: Overlay,
+    viewContainerRef: ViewContainerRef,
+    panelPositionService: PanelPositionService,
+    DOM: DOMhelpers,
+    zone: NgZone,
+    cd: ChangeDetectorRef,
+  ) {
+    super(overlay, viewContainerRef, panelPositionService, DOM, zone, cd);
+  }
 
   ngOnInit(): void {
     this.resizeEventSubscriber = this.utilsService
       .getResizeEvent()
       .pipe(outsideZone(this.zone))
       .subscribe(() => {
-        this.clientWidth = this.getClientWidth();
-        this.calcAvatarsToFit();
-        this.subscribeToShuffleEmployees();
+        this.initShowcase();
         this.cd.detectChanges();
       });
-    this.buildShowMoreOptions();
+
+    this.panelListOptions = this.getPanelListOptions();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.avatarSize) {
-      this.calcAvatars();
+      this.avatarSize = changes.avatarSize.currentValue;
+      this.initShowcase();
     }
+    /*
+    overrides the open panel method to disable default open list on click option
+    */
+    this.openPanel = this.expandOnClick
+      ? this.openPanelRef
+      : () => null;
   }
 
-  ngAfterViewInit() {
-    setTimeout(() => this.calcAvatars());
-  }
-
-  private calcAvatars() {
-    this.clientWidth = this.getClientWidth();
-    this.setAvatarGap();
-    this.setAvatarGapCss();
-    this.calcAvatarsToFit();
-    this.subscribeToShuffleEmployees();
+  ngAfterViewInit(): void {
+    setTimeout(() => this.initShowcase());
   }
 
   ngOnDestroy(): void {
     invoke(this.resizeEventSubscriber, 'unsubscribe');
     invoke(this.intervalSubscriber, 'unsubscribe');
+    this.destroyPanel();
   }
 
-  private buildShowMoreOptions() {
-    this.showMoreOptions = [
+  onSelectChange(listChange: ListChange): void {
+    this.selectChange.emit(listChange);
+    this.destroyPanel();
+  }
+
+  onAvatarClick(id: string) {
+    this.clicked.emit(id);
+  }
+
+  private initShowcase() {
+    this.clientWidth = this.getClientWidth();
+    this.avatarGap = this.getAvatarGap();
+    this.setAvatarGapCss();
+    this.avatarsToFit = this.getAvatarsToFit(this.clientWidth, this.avatarGap);
+    this.shuffleEmployeesMode = this.avatarSize > AvatarSize.medium;
+    this.showThreeDotsButton = this.shouldShowThreeDotsButton();
+    this.subscribeToShuffleEmployees();
+  }
+
+  private shouldShowThreeDotsButton(): boolean {
+    return !this.shuffleEmployeesMode && this.avatarsToFit < this.employees.length;
+  }
+
+  private getPanelListOptions(): SelectGroupOption[] {
+    return [
       {
         groupName: '',
-        options: map(this.employees, employee => ({
+        options: this.employees.map(employee => ({
           value: employee.displayName,
           id: employee.id,
           selected: false,
@@ -125,20 +151,19 @@ export class EmployeesShowcaseComponent
   }
 
   /*
-    Calculates the total number of avatars that can fit in a certain width.
-    floor((width - size) / (size - gap) + 1)
-   */
-  private calcAvatarsToFit() {
-    this.avatarsToFit = floor(
-      (this.clientWidth - this.avatarSize) /
-        (this.avatarSize - this.avatarGap) +
-        1
+  Calculates the total number of avatars that can fit in a certain width.
+  floor((width - size) / (size - gap) + 1)
+  */
+  private getAvatarsToFit(clientWidth: number, avatarGap: number): number {
+    return floor(
+      (clientWidth - this.avatarSize) /
+      (this.avatarSize - avatarGap) +
+      1
     );
   }
 
-  private setAvatarGap() {
-    this.avatarGap = AvatarGap[this.avatarSize];
-    this.showMore = this.avatarSize < AvatarSize.medium;
+  private getAvatarGap(): number {
+    return AvatarGap[this.avatarSize];
   }
 
   private setAvatarGapCss() {
@@ -147,16 +172,11 @@ export class EmployeesShowcaseComponent
     });
   }
 
-  onSelectChange(event) {
-    this.selectChange.emit(event);
-  }
-
   private subscribeToShuffleEmployees() {
     invoke(this.intervalSubscriber, 'unsubscribe');
-    if (!this.showMore && this.avatarsToFit < this.employees.length) {
-      this.intervalSubscriber = interval(SHUFFLE_EMPLOYEES_INTERVAL).subscribe(
-        () => this.shuffleEmployees()
-      );
+    if (this.shuffleEmployeesMode && this.avatarsToFit < this.employees.length) {
+      this.intervalSubscriber = interval(SHUFFLE_EMPLOYEES_INTERVAL)
+        .subscribe(() => this.shuffleEmployees());
     }
   }
 
@@ -170,15 +190,12 @@ export class EmployeesShowcaseComponent
       this.employees.length > 1 ? this.employees.length - 1 : 0
     );
     this.switchEmployeesImage(firstIndex, secondIndex);
+    this.cd.detectChanges();
   }
 
   private switchEmployeesImage(firstIndex, secondIndex) {
     const firstEmployee = cloneDeep(this.employees[firstIndex]);
     assign(this.employees[firstIndex], this.employees[secondIndex]);
     this.employees[secondIndex] = firstEmployee;
-  }
-
-  onAvatarClick(id: string) {
-    this.clicked.emit(id);
   }
 }

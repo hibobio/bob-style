@@ -1,6 +1,6 @@
 import { EmployeeShowcase } from './employees-showcase.interface';
 
-export const getEmployeesMock: () => EmployeeShowcase[] = () => [
+export const EMPLOYEE_SHOWCASE_MOCK: EmployeeShowcase[] = [
   {
     id: '1',
     displayName: 'Ben Baler',

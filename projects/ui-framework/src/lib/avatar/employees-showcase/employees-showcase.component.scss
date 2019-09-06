@@ -3,16 +3,6 @@
 :host {
   position: relative;
   width: 100%;
-  display: flex;
-
-  ::ng-deep .avatar {
-    transition: background-image 0.5s ease-in-out !important;
-
-    .avatar-content {
-      @include flex-align;
-      opacity: 1;
-    }
-  }
 
   b-avatar,
   .employees-showcase-panel-wrapper {
@@ -23,19 +13,18 @@
     margin-left: 0;
   }
 
-  .employees-showcase-panel-wrapper {
-    cursor: pointer;
-  }
-}
+  .avatar-showcase {
+    display: inline-flex;
+    &.expand-on-click {
+      cursor: pointer;
+    }
 
-::ng-deep {
-  .employees-showcase-panel {
-    .panel-wrapper {
-      padding: 0px !important;
+    ::ng-deep .avatar {
+      transition: background-image 0.5s ease-in-out !important;
 
-      b-single-list {
-        border: 0px;
-        width: 250px;
+      .avatar-content {
+        @include flex-align;
+        opacity: 1;
       }
     }
   }

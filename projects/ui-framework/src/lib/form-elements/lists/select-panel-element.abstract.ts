@@ -52,9 +52,9 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService,
-    private DOM: DOMhelpers,
-    private zone: NgZone,
-    private cd: ChangeDetectorRef
+    public DOM: DOMhelpers,
+    public zone: NgZone,
+    public cd: ChangeDetectorRef
   ) {
     super();
   }
