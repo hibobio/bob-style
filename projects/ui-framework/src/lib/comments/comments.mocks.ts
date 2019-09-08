@@ -1,9 +1,10 @@
 import {Icons} from '../icons/icons.enum';
-import {mockAvatar, mockNames, mockText} from '../mock.const';
+import {mockAvatar, mockDate, mockNames, mockText} from '../mock.const';
 
 export const COMMENT_ITEM = {
   avatar: mockAvatar(),
   name: mockNames(1),
+  date: mockDate(),
   content: mockText(5),
   menuConfig: [
     {
@@ -19,6 +20,7 @@ export const COMMENT_ITEM = {
 export const LONG_COMMENT_ITEM = {
   avatar: mockAvatar(),
   name: mockNames(1),
+  date: mockDate(),
   content: mockText(20),
   actionConfig: {
     icon: Icons.delete,

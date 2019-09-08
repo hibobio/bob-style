@@ -27,6 +27,10 @@
     </b-square-button>
   </div>
   <div class="comment-content">
-    {{comment.content}}
+    <div class="comment-header">
+      <b-bold-body class="name">{{comment.name}}</b-bold-body>
+      <b-caption class="date">{{comment.date}}</b-caption>
+    </div>
+    <div class="comment-body" [innerHtml]="comment.content"></div>
   </div>
 </div>

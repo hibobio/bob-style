@@ -13,6 +13,19 @@
   .comment-content {
     padding: 11px 15px;
     flex-grow: 1;
+    .comment-header {
+      margin-bottom: 6px;
+      .name {
+        color: $grey-700;
+        margin-right: times8(1);
+      }
+      .date {
+        color: $grey-600;
+      }
+    }
+    .comment-body {
+      line-height: 20px;
+    }
   }
   .text-section {
     display: block;
