@@ -13,9 +13,9 @@ import { cloneDeep, keys, pick } from 'lodash';
 import { COLUMN_DEFS_MOCK, ROW_DATA_MOCK } from '../table-mocks/table-test.mock';
 import { RowSelection, TableType } from './table.enum';
 import { By } from '@angular/platform-browser';
+import { ChangeDetectorRef } from '@angular/core';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
-import { ChangeDetectorRef } from '@angular/core';
 
 describe('TableComponent', () => {
   let component: TableComponent;
@@ -327,6 +327,15 @@ describe('TableComponent', () => {
       spyOn(component.agGrid.api, 'getDisplayedRowCount');
       component.getDisplayedRowCount();
       expect(component.agGrid.api.getDisplayedRowCount).toHaveBeenCalled();
+    });
+  });
+
+  describe('getDisplayedRowCount', () => {
+    it('Should return the column names', () => {
+      component.ngOnInit();
+      fixture.autoDetectChanges();
+      component.gridOptions.columnDefs = [{field: '1'}, {field: '2'}, {field: '3'}];
+      expect(component.getColumnNames()).toEqual(['1', '2', '3']);
     });
   });
 });

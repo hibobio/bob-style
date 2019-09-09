@@ -13,7 +13,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { GridColumnsChangedEvent, GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
-import { get, has, once } from 'lodash';
+import { get, has, map, once } from 'lodash';
 import { ColumnDef, RowClickedEvent, SortChangedEvent } from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
@@ -160,5 +160,9 @@ export class TableComponent implements OnInit, OnChanges {
 
   public deselectAll(): void {
     this.gridOptions.api.deselectAll();
+  }
+
+  public getColumnNames(): string[] {
+    return map(this.gridOptions.columnDefs, col => col.field);
   }
 }
