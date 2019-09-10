@@ -333,9 +333,9 @@ describe('TableComponent', () => {
   describe('getDisplayedRowCount', () => {
     it('Should return the column names', () => {
       component.ngOnInit();
-      fixture.autoDetectChanges();
       component.gridOptions.columnDefs = [{field: '1'}, {field: '2'}, {field: '3'}];
-      expect(component.getColumnNames()).toEqual(['1', '2', '3']);
+      fixture.autoDetectChanges();
+      component.gridOptions.onGridReady = (event) => expect(component.getColumnNames()).toEqual(['1', '2', '3']);
     });
   });
 });
