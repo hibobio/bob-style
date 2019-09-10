@@ -119,7 +119,6 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   onRowClicked($event): void {
-    console.log(this.getColumnNames());
     this.rowClicked.emit({
       rowIndex: $event.rowIndex,
       data: $event.data,
