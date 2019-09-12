@@ -118,5 +118,6 @@ export enum Icons {
   note = 'b-icon-note',
   lock = 'b-icon-lock',
   print = 'b-icon-print',
-  attachment = 'b-icon-attachment'
+  attachment = 'b-icon-attachment',
+  infinite = 'b-icon-infinite'
 }

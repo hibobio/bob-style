@@ -1,6 +1,6 @@
 <b-avatar [size]="avatarSize.mini" [imageSource]="comment?.avatar" [matTooltip]="comment?.name"></b-avatar>
 <div class="text-section">
   <b-textarea [placeholder]="placeholder"
-      #commentInput [value]="comment.content" (keydown.enter)="enterPress($event)"
+      #commentInput [value]="comment?.content" (keydown.enter)="enterPress($event)"
   ></b-textarea>
 </div>

@@ -12,8 +12,8 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { GridColumnsChangedEvent, GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
-import { get, has, once } from 'lodash';
+import { Column, DragStoppedEvent, GridColumnsChangedEvent, GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
+import { get, has, map, once } from 'lodash';
 import { ColumnDef, RowClickedEvent, SortChangedEvent } from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
@@ -59,6 +59,8 @@ export class TableComponent implements OnInit, OnChanges {
   gridOptions: GridOptions;
   gridColumnDefs: ColumnDef[];
 
+  private columns: string[];
+
   readonly tableLicense = once(() =>
     // @ts-ignore
     import('ag-grid-enterprise')
@@ -72,6 +74,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.setGridHeight(this.maxHeight);
+    const that = this;
     this.gridOptions = <GridOptions>{
       suppressAutoSize: true,
       suppressRowClickSelection: true,
@@ -85,12 +88,17 @@ export class TableComponent implements OnInit, OnChanges {
       onGridReady: (event: GridReadyEvent) => {
         this.gridReady = true;
         event.columnApi.autoSizeAllColumns();
+        this.setOrderedColumns(event.columnApi.getAllGridColumns());
         this.cdr.markForCheck();
       },
       onGridColumnsChanged: (event: GridColumnsChangedEvent) => {
         event.columnApi.autoSizeAllColumns();
         this.cdr.markForCheck();
-      }
+      },
+
+     onDragStopped(event: DragStoppedEvent): void {
+       that.setOrderedColumns(event.columnApi.getAllGridColumns());
+     },
     };
   }
 
@@ -124,6 +132,10 @@ export class TableComponent implements OnInit, OnChanges {
       data: $event.data,
       agGridId: get($event, 'node.id', null)
     });
+  }
+
+  private setOrderedColumns (columns: Column[]): void {
+    this.columns = map(columns, col => col.colDef.field);
   }
 
   private setGridHeight(height: number): void {
@@ -160,5 +172,9 @@ export class TableComponent implements OnInit, OnChanges {
 
   public deselectAll(): void {
     this.gridOptions.api.deselectAll();
+  }
+
+  public getOrderedColumnFields(): string[] {
+    return this.columns;
   }
 }
