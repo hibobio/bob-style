@@ -107,7 +107,7 @@ describe('MenuComponent', () => {
       openMenu();
       const menuOption = fixture.debugElement.queryAll(By.css('.mat-menu-item'))[1];
       menuOption.triggerEventHandler('click', null);
-      expect(component.actionClick.emit).toHaveBeenCalledTimes(1);
+      expect(component.actionClick.emit).toHaveBeenCalledWith(menuMock[1]);
     });
     it('should disable option when config has disabled=true', () => {
       menuMock[1] = {

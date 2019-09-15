@@ -37,8 +37,10 @@ export class MenuComponent implements OnChanges {
   }
 
   onClick($event, child): void {
-    child.action($event);
-    this.actionClick.emit();
+    if (child.action) {
+      child.action($event);
+    }
+    this.actionClick.emit(child);
   }
 
   onOpenMenu(): void {
