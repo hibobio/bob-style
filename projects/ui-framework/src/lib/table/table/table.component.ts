@@ -12,6 +12,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+// tslint:disable-next-line:max-line-length
 import { Column, DragStoppedEvent, GridColumnsChangedEvent, GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
 import { get, has, map, once } from 'lodash';
 import { ColumnDef, RowClickedEvent, SortChangedEvent } from './table.interface';
@@ -93,6 +94,7 @@ export class TableComponent implements OnInit, OnChanges {
       },
       onGridColumnsChanged: (event: GridColumnsChangedEvent) => {
         event.columnApi.autoSizeAllColumns();
+        this.setOrderedColumns(event.columnApi.getAllGridColumns());
         this.cdr.markForCheck();
       },
 
