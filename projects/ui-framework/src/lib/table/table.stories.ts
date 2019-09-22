@@ -32,7 +32,7 @@ const template = `
 const storyTemplate = `
 <b-story-book-layout [title]="'Data Table'">
   <div style="max-width: calc(100% - 60px);">
-    ${template}
+    ${ template }
   </div>
 
 </b-story-book-layout>
@@ -58,13 +58,14 @@ const note = `
   rowClicked | Event | Row clicked event
   selectionChanged | Event | All selected rows
   sortChanged | Event | Sort changed event
+  tableGridOptions | GridOptions - Partial | extra options that are added on grid | {}
   addRows | Function | add rows
   updateRows | Function | update rows
   removeRows | Function | remove rows
   filterRows | Function | search rows
   resetFilter | Function | reset filter
   ~~~
-  ${template}
+  ${ template }
   ~~~
 `;
 tableStories.add(
@@ -84,7 +85,7 @@ tableStories.add(
         columnDefs: object('columnDefs', mockColumnsDefs),
         rowClicked: action('Row clicked'),
         selectionChanged: action('Selection changed'),
-        sortChanged: action('sort changed')
+        sortChanged: action('sort changed'),
       },
       moduleMetadata: {
         entryComponents: [AvatarCellComponent, ActionsCellComponent],

@@ -47,6 +47,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() rowSelection: RowSelection = null;
   @Input() maxHeight = 450;
   @Input() suppressColumnVirtualisation = true;
+  @Input() tableGridOptions: Partial<GridOptions> = {};
 
   @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<SortChangedEvent>();
   @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
@@ -76,7 +77,7 @@ export class TableComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.setGridHeight(this.maxHeight);
     const that = this;
-    this.gridOptions = <GridOptions>{
+    const gridOptions = <GridOptions>{
       suppressAutoSize: true,
       suppressRowClickSelection: true,
       autoSizePadding: this.autoSizePadding,
@@ -98,9 +99,14 @@ export class TableComponent implements OnInit, OnChanges {
         this.cdr.markForCheck();
       },
 
-     onDragStopped(event: DragStoppedEvent): void {
-       that.setOrderedColumns(event.columnApi.getAllGridColumns());
-     },
+      onDragStopped(event: DragStoppedEvent): void {
+        that.setOrderedColumns(event.columnApi.getAllGridColumns());
+      },
+    };
+
+    this.gridOptions = {
+      ...gridOptions,
+      ...this.tableGridOptions,
     };
   }
 
@@ -136,7 +142,7 @@ export class TableComponent implements OnInit, OnChanges {
     });
   }
 
-  private setOrderedColumns (columns: Column[]): void {
+  private setOrderedColumns(columns: Column[]): void {
     this.columns = map(columns, col => col.colDef.field);
   }
 
