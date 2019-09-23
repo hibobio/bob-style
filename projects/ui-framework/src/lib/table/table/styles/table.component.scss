@@ -1,5 +1,7 @@
 @import '../../../style/common-imports';
 
+$min-table-height: 140px;
+
 @mixin cell {
   text-align: left;
   padding: 0 15px;
@@ -22,6 +24,7 @@
 
 :host {
   --max-height: 450px;
+  min-height: $min-table-height;
   display: block;
 }
 
@@ -53,6 +56,7 @@
       border: 1px solid $grey-500;
       border-radius: 4px;
       max-height: var(--max-height);
+      min-height: $min-table-height;
 
       .ag-header {
         background-color: white;
@@ -102,6 +106,15 @@
           cursor: pointer;
         }
       }
+
+      .ag-overlay {
+        height: 69px;
+        top: 56px;
+        .ag-overlay-no-rows-center {
+          @include b-display-3($color: $grey-500);
+        }
+      }
     }
   }
+
 }
