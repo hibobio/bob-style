@@ -52,6 +52,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<SortChangedEvent>();
   @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
+  @Output() gridInit: EventEmitter<null> = new EventEmitter<null>();
 
   readonly rowHeight: number = 56;
   readonly autoSizePadding: number = 30;
@@ -92,6 +93,7 @@ export class TableComponent implements OnInit, OnChanges {
         event.columnApi.autoSizeAllColumns();
         this.setOrderedColumns(event.columnApi.getAllGridColumns());
         this.cdr.markForCheck();
+        this.gridInit.emit();
       },
       onGridColumnsChanged: (event: GridColumnsChangedEvent) => {
         event.columnApi.autoSizeAllColumns();

@@ -208,6 +208,14 @@ describe('TableComponent', () => {
             component.gridOptions.columnApi.autoSizeAllColumns
           ).toHaveBeenCalled();
         }));
+        it('should emit gridInit event when onGridReady is triggered', fakeAsync(() => {
+          fixture.autoDetectChanges();
+          spyOn(component.gridInit, 'emit');
+          flush();
+          expect(
+            component.gridInit.emit
+          ).toHaveBeenCalled();
+        }));
       });
       describe('onRowClicked', () => {
         it('should emit row clicked with row index and row data', fakeAsync(() => {

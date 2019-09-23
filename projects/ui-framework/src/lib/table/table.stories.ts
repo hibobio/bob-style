@@ -56,6 +56,7 @@ const note = `
   suppressColumnVirtualisation | boolean | disables virtual scroll on columns | true
   maxHeight | number | grid max height | 450
   rowClicked | Event | Row clicked event
+  gridInit | Event | Grid init event
   selectionChanged | Event | All selected rows
   sortChanged | Event | Sort changed event
   tableGridOptions | GridOptions - Partial | extra options that are added on grid | {}
