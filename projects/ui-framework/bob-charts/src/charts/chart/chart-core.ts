@@ -12,7 +12,7 @@ import * as Highcharts from 'highcharts';
 import {Options} from 'highcharts';
 import {ChartTypesEnum} from './chart.enum';
 import {merge} from 'lodash';
-import {simpleUID} from '../../services/utils/functional-utils';
+import {simpleUID} from 'bob-style';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');

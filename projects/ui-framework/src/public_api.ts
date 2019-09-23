@@ -282,7 +282,7 @@ export { PasswordInputComponent } from './lib/form-elements/password-input/passw
  * Search
  */
 
- // Search
+// Search
 export { SearchModule } from './lib/search/search/search.module';
 export { SearchComponent } from './lib/search/search/search.component';
 // Auto complete Module
@@ -433,15 +433,6 @@ export { CollapsibleSectionComponent } from './lib/layout/collapsible-section/co
 export { CollapsibleOptions } from './lib/layout/collapsible-section/collapsible-section.interface';
 
 /*
- * Chardts
- */
-
-export { ChartsModule } from './lib/charts/charts.module';
-export { HighChartOptions } from './lib/charts/chart/chart.interface';
-export { PieChartComponent } from './lib/charts/pie-chart/pie-chart.component';
-export { DonutChartTextComponent } from './lib/charts/donut-chart-text/donut-chart-text.component';
-
-/*
  * Cards
  */
 
@@ -478,10 +469,11 @@ export { HighlightPipe } from './lib/services/filters/highlight.pipe';
 export { UtilsModule } from './lib/services/utils/utils.module';
 export { UtilsService } from './lib/services/utils/utils.service';
 export { DOMhelpers } from './lib/services/utils/dom-helpers.service';
-export { ScrollEvent }  from './lib/services/utils/utils.interface';
+export { ScrollEvent } from './lib/services/utils/utils.interface';
 export { WindowRef } from './lib/services/utils/window-ref.service';
 export { DocumentRef } from './lib/services/utils/document-ref.service';
 export { MobileService, WidthMode, MediaEvent } from './lib/services/utils/mobile.service';
+export { simpleUID } from './lib/services/utils/functional-utils';
 // URL utils
 export { UrlUtilsModule } from './lib/services/url/url-utils.module';
 export { URLutils } from './lib/services/url/url-utils.service';
@@ -508,7 +500,7 @@ export { TextColoredLinksModule } from './lib/eye-candy/text-colored-links/text-
 export {
   TextColoredLinksComponent
 } from
-    './lib/eye-candy/text-colored-links/text-colored-links/text-colored-links.component';
+  './lib/eye-candy/text-colored-links/text-colored-links/text-colored-links.component';
 export { ColorTextItem } from './lib/eye-candy/text-colored-links/text-colored-links.interface';
 // Mocks
 export * from './lib/mock.const';
