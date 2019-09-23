@@ -181,8 +181,8 @@ export const makeArray = (length: number, fill: any = undefined): any[] =>
 
 export const arrayOfNumbers = (
   length: number,
-  start: 0,
-  asStrings: false
+  start = 0,
+  asStrings = false
 ): (number | string)[] =>
   Array.from(
     Array(length),
