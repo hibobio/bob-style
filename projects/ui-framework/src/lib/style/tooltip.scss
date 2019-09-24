@@ -49,6 +49,28 @@ $toolti-offset: 10px;
       bottom: 100%;
     }
   }
+
+  // text align
+
+  &.text-left
+  {
+    text-align: left;
+  }
+
+  &.text-right{
+    text-align: right;
+  }
+
+  // wrap
+
+  &.no-wrap {
+    white-space: nowrap;
+    max-width: 65vw;
+  }
+
+  &.pre-wrap {
+    white-space: pre-line;
+  }
 }
 
 @keyframes tooltip-apprnc {

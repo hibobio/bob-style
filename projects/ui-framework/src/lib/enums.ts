@@ -107,3 +107,11 @@ export const NativeKeyboardEvents = [
   NativeEvents.keypress,
   NativeEvents.keyup
 ];
+
+export enum TooltipClass {
+  TextLeft = 'text-left',
+  TextCenter = 'text-center',
+  TextRight = 'text-right',
+  PreWrap = 'pre-wrap',
+  NoWrap = 'no-wrap',
+}

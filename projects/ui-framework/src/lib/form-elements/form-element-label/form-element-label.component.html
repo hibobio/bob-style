@@ -1,0 +1,13 @@
+<label [b-truncate-tooltip]="1" [type]="truncateTooltipType.auto">
+  {{label}}
+</label>
+
+<b-icon *ngIf="description"
+        [icon]="icons.baseline_info_icon"
+        [color]="iconColor.normal"
+        [hasHoverState]="true"
+        [matTooltip]="description"
+        [matTooltipClass]="tooltipClass"
+        [matTooltipShowDelay]="delay"
+        [matTooltipPosition]="truncateTooltipPosition.above">
+</b-icon>
