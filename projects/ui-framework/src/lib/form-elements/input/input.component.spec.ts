@@ -10,6 +10,7 @@ import { InputTypes } from './input.enum';
 import { inputValue, emitNativeEvent } from '../../services/utils/test-helpers';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { Keys, NativeEvents } from '../../enums';
+import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
 
 describe('InputComponent', () => {
   let component: InputComponent;
@@ -19,7 +20,12 @@ describe('InputComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [InputComponent],
-      imports: [NoopAnimationsModule, CommonModule, InputMessageModule],
+      imports: [
+        NoopAnimationsModule,
+        CommonModule,
+        InputMessageModule,
+        FormElementLabelModule,
+      ],
       providers: [DOMhelpers, EventManagerPlugins[0]]
     })
       .compileComponents()

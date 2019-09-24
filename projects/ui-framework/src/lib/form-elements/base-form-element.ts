@@ -22,6 +22,7 @@ export abstract class BaseFormElement
   protected constructor() {}
 
   @Input() label: string;
+  @Input() description: string;
   @Input() placeholder: string;
   @Input() value: any;
   @Input() hideLabelOnFocus = false;

@@ -8,7 +8,6 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -17,6 +16,7 @@ import { SelectGroupOption } from '../lists/list.interface';
 import { InputTypes } from '../input/input.enum';
 import map from 'lodash/map';
 import { InputSingleSelectValue } from './split-input-single-select.interface';
+import { mockText } from '../../mock.const';
 
 const textareaStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -28,6 +28,7 @@ const template = `
                              [selectOptions]="selectOptions"
                              [value]="value"
                              [label]="label"
+                             [description]="description"
                              [hintMessage]="hintMessage"
                              [errorMessage]="errorMessage"
                              [disabled]="disabled"
@@ -54,6 +55,7 @@ const note = `
   value | SplitInputSingleSelectValue | value of the input and select
   selectOptions | SelectGroupOption[] | the options model for the select element
   label | string | label text
+  description | string | description text (above icon)
   disabled | boolean | is field disabled
   required | boolean | is field required
   hintMessage | text | hint text
@@ -145,6 +147,7 @@ textareaStories.add(
         value: object('value', value),
         inputType: select('type', InputTypes, InputTypes.number),
         label: text('label', 'Base salary'),
+        description: text('description', mockText(30)),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),

@@ -22,6 +22,7 @@ import { ListModelService } from '../list-service/list-model.service';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../list-change/list-change';
 import { TruncateTooltipModule } from '../../../popups/truncate-tooltip/truncate-tooltip.module';
+import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
 
 describe('MultiSelectComponent', () => {
   let component;
@@ -58,7 +59,8 @@ describe('MultiSelectComponent', () => {
         NoopAnimationsModule,
         CommonModule,
         ButtonsModule,
-        TruncateTooltipModule
+        TruncateTooltipModule,
+        FormElementLabelModule,
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

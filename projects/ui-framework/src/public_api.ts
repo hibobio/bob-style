@@ -6,7 +6,6 @@
 /*
 * Global
 */
-
 export * from './lib/enums';
 export * from './lib/types';
 export { serverDateFormat, mobileBreakpoint } from './lib/consts';
@@ -279,7 +278,9 @@ export { TimePickerComponent } from './lib/form-elements/timepicker/timepicker.c
 // Password Input
 export { PasswordInputModule } from './lib/form-elements/password-input/password-input.module';
 export { PasswordInputComponent } from './lib/form-elements/password-input/password-input.component';
-
+// Form Element Label
+export { FormElementLabelModule } from './lib/form-elements/form-element-label/form-element-label.module';
+export { FormElementLabelComponent } from './lib/form-elements/form-element-label/form-element-label.component';
 /*
  * Search
  */

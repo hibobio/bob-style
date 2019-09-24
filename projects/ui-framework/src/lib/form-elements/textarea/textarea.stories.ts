@@ -6,11 +6,11 @@ import {
   number
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { values } from 'lodash';
 import { TextareaModule } from './textarea.module';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { mockText } from '../../mock.const';
 
 const textareaStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -21,6 +21,7 @@ const template = `
 <b-textarea
             [value]="value"
             [label]="label"
+            [description]="description"
             [placeholder]="placeholder"
             [maxChars]="maxChars"
             [minChars]="minChars"
@@ -52,6 +53,7 @@ const note = `
   --- | --- | ---
   value | string/number/float | type of input field
   label | string | label text
+  description | string | description text (above icon)
   placeholder | string | placeholder text (inside input)
   minChars | number | minimum length
   maxChars | number | maximum characters
@@ -76,6 +78,7 @@ textareaStories.add(
         inputEvents: action('inputEvents'),
         value: text('value', ''),
         label: text('label', 'Input label'),
+        description: text('description', mockText(30)),
         placeholder: text('placeholder', 'Input placeholder'),
         maxChars: number('maxChars', ''),
         minChars: number('minChars', ''),

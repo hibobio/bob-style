@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { thisYear, thisMonth } from '../../services/utils/functional-utils';
 import { DatepickerType } from './datepicker.enum';
+import { mockText } from '../../mock.const';
 
 const datepickerStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -25,6 +26,7 @@ const template = `
               [minDate]="minDate"
               [maxDate]="maxDate"
               [label]="label"
+              [description]="description"
               [placeholder]="placeholder"
               [hideLabelOnFocus]="hideLabelOnFocus"
               [hintMessage]="hintMessage"
@@ -59,6 +61,7 @@ const note = `
   [minDate] | Date / string (YYYY-MM-DD) | minimum date | none
   [maxDate] | Date / string (YYYY-MM-DD) | maximum date | none
   [label] | string | label text (above input) | none
+  [description] | string | description text (above icon)
   [placeholder] | string | placeholder text (inside input) | none
   [hideLabelOnFocus] | boolean | places label in placeholder position | false
   [disabled] | boolean | is field disabled | false
@@ -101,6 +104,7 @@ datepickerStories.add(
         minDate: select('minDate', ['', `${thisYear()}-${thisMonth()}-10`], ''),
         maxDate: select('maxDate', ['', `${thisYear()}-${thisMonth()}-25`], ''),
         label: text('label', 'Date picker'),
+        description: text('description', mockText(30)),
         placeholder: text('placeholder', ''),
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         disabled: boolean('disabled', false),

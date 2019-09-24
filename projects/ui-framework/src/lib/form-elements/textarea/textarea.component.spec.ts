@@ -7,6 +7,7 @@ import { InputMessageModule } from '../input-message/input-message.module';
 import { inputValue } from '../../services/utils/test-helpers';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
 
 describe('TextareaComponent', () => {
   let component: TextareaComponent;
@@ -16,7 +17,11 @@ describe('TextareaComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TextareaComponent],
-      imports: [NoopAnimationsModule, InputMessageModule],
+      imports: [
+        NoopAnimationsModule,
+        InputMessageModule,
+        FormElementLabelModule,
+      ],
       providers: [DOMhelpers, EventManagerPlugins[0]]
     })
       .compileComponents()

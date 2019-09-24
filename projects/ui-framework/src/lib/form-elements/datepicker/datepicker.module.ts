@@ -8,6 +8,7 @@ import { InputMessageModule } from '../input-message/input-message.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { DateParseService } from './date-parse.service';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
+import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
 
 @NgModule({
   declarations: [DatepickerComponent],
@@ -16,7 +17,8 @@ import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.serv
     MatDatepickerModule,
     MatNativeDateModule,
     IconsModule,
-    InputMessageModule
+    InputMessageModule,
+    FormElementLabelModule,
   ],
   exports: [DatepickerComponent],
   entryComponents: [],

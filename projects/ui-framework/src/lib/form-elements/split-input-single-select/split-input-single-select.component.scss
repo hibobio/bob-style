@@ -12,6 +12,10 @@ $selectFieldWidth: 140px;
   width: calc(100% - #{$selectFieldWidth});
 
   &::ng-deep {
+    .bfe-label {
+      z-index: 2;
+    }
+
     .bfe-wrap {
       border-right: 0;
       border-top-right-radius: 0;

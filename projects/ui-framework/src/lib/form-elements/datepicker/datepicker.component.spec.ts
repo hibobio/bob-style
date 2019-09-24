@@ -26,6 +26,7 @@ import { DatepickerType } from './datepicker.enum';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
 
 describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
@@ -55,7 +56,8 @@ describe('DatepickerComponent', () => {
         IconsModule,
         InputMessageModule,
         NoopAnimationsModule,
-        OverlayModule
+        OverlayModule,
+        FormElementLabelModule,
       ],
       declarations: [DatepickerComponent],
       providers: [

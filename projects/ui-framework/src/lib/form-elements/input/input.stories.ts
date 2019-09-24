@@ -13,6 +13,7 @@ import { InputAutoCompleteOptions, InputTypes } from './input.enum';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { mockText } from '../../mock.const';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -27,6 +28,7 @@ const template = `
         [inputType]="inputType"
         [value]="value"
         [label]="label"
+        [description]="description"
         [placeholder]="placeholder"
         [hideLabelOnFocus]="hideLabelOnFocus"
         [minChars]="minChars"
@@ -47,7 +49,7 @@ const template = `
 const storyTemplate = `
 <b-story-book-layout [title]="'Input'">
   <div style="max-width: 300px;">
-    ${template}
+    ${ template }
   </div>
 </b-story-book-layout>
 `;
@@ -63,6 +65,7 @@ const note = `
   InputType | InputTypes | type of input field
   value | string/number | value of input field
   label | string | label text (above input)
+  description | string | description text (above icon)
   placeholder | string | placeholder text (inside input)
   hideLabelOnFocus | boolean | if true: there will be no label above input, label text (if present) will be used as placeholder
   minChars | number | minimum length
@@ -79,7 +82,7 @@ const note = `
   (inputEvents) | InputEvent | input events emitter
 
   ~~~
-  ${template}
+  ${ template }
   ~~~
 `;
 inputStories.add(
@@ -92,6 +95,7 @@ inputStories.add(
         inputType: select('inputType', inputTypes, InputTypes.text),
         value: text('value', ''),
         label: text('label', 'Input label'),
+        description: text('description', mockText(30)),
         placeholder: text('placeholder', 'Input placeholder'),
         minChars: number('minChars', ''),
         maxChars: number('maxChars', 30),

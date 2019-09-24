@@ -21,6 +21,7 @@ import { ListFooterModule } from '../list-footer/list-footer.module';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
 import { SingleListModule } from '../single-list/single-list.module';
 import { TruncateTooltipModule } from '../../../popups/truncate-tooltip/truncate-tooltip.module';
+import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
 
 describe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;
@@ -58,7 +59,8 @@ describe('SingleSelectComponent', () => {
         CommonModule,
         ButtonsModule,
         ListFooterModule,
-        TruncateTooltipModule
+        TruncateTooltipModule,
+        FormElementLabelModule,
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

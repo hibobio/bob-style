@@ -1,5 +1,13 @@
 :host {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: relative;
+}
+
+label.has-description {
+  max-width: calc(100% - 26px);
+}
+
+b-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }

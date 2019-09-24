@@ -10,6 +10,7 @@ import { ListModelService } from '../list-service/list-model.service';
 import { ListFooterModule } from '../list-footer/list-footer.module';
 import { TruncateTooltipModule } from '../../../popups/truncate-tooltip/truncate-tooltip.module';
 import { InputMessageModule } from '../../input-message/input-message.module';
+import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { InputMessageModule } from '../../input-message/input-message.module';
     SingleListModule,
     TruncateTooltipModule,
     InputMessageModule,
-    ListFooterModule
+    ListFooterModule,
+    FormElementLabelModule,
   ],
   exports: [
     SingleSelectComponent,

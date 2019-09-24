@@ -1,10 +1,15 @@
-<label [b-truncate-tooltip]="1" [type]="truncateTooltipType.auto">
+<label [b-truncate-tooltip]="1"
+       [type]="truncateTooltipType.auto"
+       [trustCssVars]="true"
+       [attr.for]="fieldId"
+       [ngClass]="{'has-description': description}">
   {{label}}
 </label>
 
 <b-icon *ngIf="description"
         [icon]="icons.baseline_info_icon"
         [color]="iconColor.normal"
+        [size]="iconSize.medium"
         [hasHoverState]="true"
         [matTooltip]="description"
         [matTooltipClass]="tooltipClass"

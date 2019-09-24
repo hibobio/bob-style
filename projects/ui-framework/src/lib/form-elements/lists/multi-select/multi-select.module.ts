@@ -10,6 +10,7 @@ import { ListModelService } from '../list-service/list-model.service';
 import { TruncateTooltipModule } from '../../../popups/truncate-tooltip/truncate-tooltip.module';
 import { InputMessageModule } from '../../input-message/input-message.module';
 import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
+import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
 
 @NgModule({
   declarations: [MultiSelectComponent],
@@ -20,7 +21,8 @@ import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
     OverlayModule,
     MultiListModule,
     TruncateTooltipModule,
-    InputMessageModule
+    InputMessageModule,
+    FormElementLabelModule
   ],
   exports: [MultiSelectComponent],
   providers: [ListChangeService, ListModelService, DOMhelpers]

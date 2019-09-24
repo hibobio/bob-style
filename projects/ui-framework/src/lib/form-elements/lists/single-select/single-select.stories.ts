@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { SingleSelectModule } from './single-select.module';
 import { SelectGroupOption } from '../list.interface';
+import { mockText } from '../../../mock.const';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -27,6 +28,7 @@ const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 const template = `
 <b-single-select [label]="label"
                  [placeholder]="placeholder"
+                 [description]="description"
                  [options]="options"
                  (selectChange)="selectChange($event)"
                  [disabled]="disabled"
@@ -58,6 +60,7 @@ const note = `
   value | (string or number) | selected id | none
   selectChange | action | returns ListChange | none
   label | string | label text | none
+  description | string | description text (above icon)
   placeholder | string | placeholder text | none
   disabled | boolean | is field disabled | none
   required | boolean | is field required | none
@@ -96,6 +99,7 @@ const toAdd = () => ({
   props: {
     selectChange: action('Single select change'),
     label: text('label', 'label text'),
+    description: text('description', mockText(30)),
     placeholder: text('placeholder', 'placeholder text'),
     disabled: boolean('disabled', false),
     required: boolean('required', false),

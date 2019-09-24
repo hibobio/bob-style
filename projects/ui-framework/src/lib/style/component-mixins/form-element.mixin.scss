@@ -86,7 +86,7 @@ $input-focus-border-color: $grey-700;
   display: block;
   min-height: $label-height;
   margin: 0 0 $label-hint-margin 0;
-  @include b-body($color: $label-color, $addCssVars: false);
+  @include b-body($color: $label-color, $addCssVars: true);
 
   &:empty {
     display: none;
