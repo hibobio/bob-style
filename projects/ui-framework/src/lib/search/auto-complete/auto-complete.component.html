@@ -13,10 +13,12 @@
 <ng-template #templateRef>
   <div class="panel-position"
        [ngClass]="positionClassList">
+
     <b-auto-complete-panel (optionSelect)="onOptionSelect($event)"
                            (escapeClick)="onEscape()"
                            [searchValue]="searchValue"
                            [options]="filteredOptions">
     </b-auto-complete-panel>
+
   </div>
 </ng-template>
