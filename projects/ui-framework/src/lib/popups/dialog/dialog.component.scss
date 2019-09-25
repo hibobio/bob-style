@@ -41,6 +41,7 @@ $footerSize: 48px;
         padding: 0 $dialogPadding $dialogPadding;
         max-height: 60vh;
         position: relative;
+        overflow-x: hidden;
         &.show-scrolling-top {
           border-top: 1px solid $grey-300;
         }

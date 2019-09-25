@@ -128,17 +128,27 @@ export const mockRowData = [
 ];
 
 // For test performance
-// for (let i = 4; i < 40; i++) {
-//   mockRowData[i] = mockRowData[0];
-//   mockRowData[i].id = `${ i }`;
-//   if (i % 100 === 0) {
-//     console.log('Generate rows ' + i);
-//   }
-// }
-//
-// for (let i = 5; i < 10; i++) {
-//   mockColumnsDefs[i] = {
-//     headerName: ` ${i} column Name ${i}`,
-//     field: `field.path`,
-//   };
-// }
+/*
+const rowNumber = 400;
+const colNumber = 20;
+
+for (let i = 4; i < rowNumber; i++) {
+  mockRowData[i] = mockRowData[0];
+  mockRowData[i].id = `${ i }`;
+  if (i % 100 === 0) {
+    console.log('Generate rows ' + i);
+  }
+  for (let j = 5; j < colNumber; j++) {
+    mockRowData[i][`test${j}`] = 'test';
+  }
+}
+
+for (let i = 5; i < colNumber; i++) {
+  mockColumnsDefs[i] = {
+    headerName: ` ${ i } column Name ${ i }`,
+    field: `test${ i }`,
+  };
+}
+console.log('mockRowData', mockRowData);
+console.log('mockColumnsDefs', mockColumnsDefs);
+*/
