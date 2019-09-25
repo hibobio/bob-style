@@ -44,7 +44,7 @@ const note = `
   options | AutoCompleteOption[] | options for the select list | none
   searchChange | action | search value string | none
   optionSelect | action | AutoCompleteOption | none
-  displayOptionsOnFocus | boolean | opens list on focus | false
+  displayOptionsOnFocus | boolean | opens the list on focus | false
 
   ~~~
   ${template}
