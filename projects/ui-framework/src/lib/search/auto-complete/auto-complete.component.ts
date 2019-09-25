@@ -74,23 +74,19 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
 
   onSearchChange(searchVal: string): void {
     this.searchValue = searchVal;
-    if (this.displayOptionsOnFocus) {
-      this.invokePanelOpen();
-    } else if (this.searchValue.length > 0) {
+    if (this.searchValue.length > 0) {
       this.invokePanelOpen();
     } else {
       this.invokePanelDestroy();
     }
-    this.filteredOptions = this.getFilteredOptions();
-    if (this.filteredOptions.length === 0) {
-      this.invokePanelDestroy();
-    }
+    this.updateFilteredList();
     this.searchChange.emit(this.searchValue);
   }
 
   onSearchFocus(): void {
     if (this.displayOptionsOnFocus) {
       this.invokePanelOpen();
+      this.updateFilteredList();
     }
   }
 
@@ -106,6 +102,13 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.invokePanelDestroy();
+  }
+
+  private updateFilteredList(): void {
+    this.filteredOptions = this.getFilteredOptions();
+    if (this.filteredOptions.length === 0) {
+      this.invokePanelDestroy();
+    }
   }
 
   private invokePanelOpen(): void {

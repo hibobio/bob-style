@@ -8,6 +8,8 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { TypographyModule } from '../../typography/typography.module';
 import { AutoCompleteModule } from './auto-complete.module';
 import { AutoCompleteOption } from './auto-complete.interface';
+import { mockText } from '../../mock.const';
+import { randomNumber } from '../../services/utils/functional-utils';
 
 const inputStories = storiesOf(ComponentGroupType.Search, module)
   .addDecorator(withNotes)
@@ -53,8 +55,8 @@ const note = `
 
 const optionsMock: AutoCompleteOption[] = Array.from(Array(20), (_, k) => {
   return {
-    value: `Basic Info E${k} - option`,
-    subText: `subtext e${k}`,
+    value: mockText(randomNumber(2, 5)),
+    subText: mockText(randomNumber(2, 5)),
     id: k
   };
 });

@@ -141,6 +141,29 @@ describe('AutoCompleteComponent', () => {
     });
   });
 
+  describe('onSearchFocus', () => {
+    it('should note open panel if displayOptionsOnFocus = false', () => {
+      component.displayOptionsOnFocus = false;
+      const searchEl = fixture.debugElement.query(By.css('b-search'));
+      searchEl.componentInstance.searchFocus.emit();
+      fixture.autoDetectChanges();
+      const panel = overlayContainerElement.querySelector(
+        'b-auto-complete-panel'
+      );
+      expect(panel).toBeFalsy();
+    });
+    it('should open panel if displayOptionsOnFocus = true', () => {
+      component.displayOptionsOnFocus = true;
+      const searchEl = fixture.debugElement.query(By.css('b-search'));
+      searchEl.componentInstance.searchFocus.emit();
+      fixture.autoDetectChanges();
+      const panel = overlayContainerElement.querySelector(
+        'b-auto-complete-panel'
+      );
+      expect(panel).toBeTruthy();
+    });
+  });
+
   describe('optionClick', () => {
     it('should emit optionSelect with option', fakeAsync(() => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
