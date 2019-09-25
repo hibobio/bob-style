@@ -48,6 +48,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() maxHeight = 450;
   @Input() suppressColumnVirtualisation = true;
   @Input() tableGridOptions: Partial<GridOptions> = {};
+  @Input() suppressDragLeaveHidesColumns = false;
 
   @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<SortChangedEvent>();
   @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
@@ -81,6 +82,7 @@ export class TableComponent implements OnInit, OnChanges {
     const gridOptions = <GridOptions>{
       suppressAutoSize: true,
       suppressRowClickSelection: true,
+      suppressDragLeaveHidesColumns: this.suppressDragLeaveHidesColumns,
       autoSizePadding: this.autoSizePadding,
       suppressColumnVirtualisation: this.suppressColumnVirtualisation,
       rowHeight: this.rowHeight,
