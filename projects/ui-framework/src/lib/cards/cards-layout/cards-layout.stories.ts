@@ -5,7 +5,6 @@ import {
   withKnobs,
   number
 } from '@storybook/addon-knobs/angular';
-import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { CardType } from '../cards.enum';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
