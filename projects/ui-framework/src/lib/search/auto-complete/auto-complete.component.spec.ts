@@ -147,9 +147,7 @@ describe('AutoCompleteComponent', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       searchEl.componentInstance.searchFocus.emit();
       fixture.autoDetectChanges();
-      const panel = overlayContainerElement.querySelector(
-        'b-auto-complete-panel'
-      );
+      const panel = overlayContainerElement.querySelector('b-auto-complete-panel');
       expect(panel).toBeFalsy();
     });
     it('should open panel if displayOptionsOnFocus = true', () => {
@@ -157,9 +155,7 @@ describe('AutoCompleteComponent', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       searchEl.componentInstance.searchFocus.emit();
       fixture.autoDetectChanges();
-      const panel = overlayContainerElement.querySelector(
-        'b-auto-complete-panel'
-      );
+      const panel = overlayContainerElement.querySelector('b-auto-complete-panel');
       expect(panel).toBeTruthy();
     });
   });
