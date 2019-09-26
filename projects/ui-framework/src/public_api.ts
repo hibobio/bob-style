@@ -66,7 +66,9 @@ export { BadgeConfig, Avatar } from './lib/avatar/avatar/avatar.interface';
 export { EmployeesShowcaseModule } from './lib/avatar/employees-showcase/employees-showcase.module';
 export { EmployeesShowcaseComponent } from './lib/avatar/employees-showcase/employees-showcase.component';
 export { EmployeeShowcase } from './lib/avatar/employees-showcase/employees-showcase.interface';
-
+// Layout
+export { AvatarLayoutModule } from './lib/avatar/avatar-layout/avatar-layout.module';
+export { AvatarLayoutComponent } from './lib/avatar/avatar-layout/avatar-layout.component';
 
 /*
  * Indicators
