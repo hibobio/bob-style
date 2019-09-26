@@ -19,8 +19,8 @@ import {ItemsInRowService} from '../../services/items-in-row/items-in-row.servic
 export class AvatarLayoutComponent implements AfterViewInit {
   @Input() align: 'center' | 'left' = 'center';
   @Output() itemsInRowChange = new EventEmitter<number>();
-  gapSize = 16;
-  elemWidth = 100;
+  gapSize = 8;
+  elemWidth = 90;
   itemsInRow$;
   constructor(
     private DOM: DOMhelpers,
