@@ -10,6 +10,7 @@
     position: relative;
     flex-direction: row;
     justify-content: center;
+    font-family: inherit;
   }
 
   .mat-tab-header {
@@ -50,6 +51,7 @@
     .tab-label {
       line-height: 28px;
       padding: 0 15px;
+
     }
 
     &.mat-tab-label-active {
@@ -69,7 +71,8 @@
   .tabs-primary {
     .mat-tab-label {
       font-size: $font-size-caption;
-      letter-spacing: 0.8px;
+      letter-spacing: 0;
+      font-family: inherit;
     }
 
     .mat-ink-bar {
