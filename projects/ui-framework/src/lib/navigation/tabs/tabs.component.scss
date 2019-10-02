@@ -87,7 +87,8 @@
 
     .mat-tab-label {
       font-size: $font-size-body;
-      letter-spacing: 0.4px;
+      letter-spacing: 0;
+      font-family: inherit;
     }
 
     .mat-ink-bar {
