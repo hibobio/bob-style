@@ -1,50 +1,15 @@
-import { NgModule, Component, DoCheck } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MockComponent } from './mock.component';
 import { UtilsModule } from '../utils/utils.module';
 import { DOMhelpers } from '../utils/dom-helpers.service';
-import { countChildren } from '../utils/functional-utils';
-
-@Component({
-  selector: 'b-stats',
-  template: `
-    <span>changes: {{ changesCount }}</span>
-    <span>elements: {{ elementsCount }}</span>
-  `,
-  styles: [
-    `
-      :host {
-        display: block;
-        text-align: center;
-        background: rgba(255, 255, 255, 0.8);
-        max-width: 100px;
-        padding: 5px 10px;
-        margin: 0;
-        position: fixed;
-        right: 15px;
-        bottom: 15px;
-        z-index: 100;
-      }
-    `,
-    'span {display:block; white-space:nowrap;}'
-  ],
-  providers: []
-})
-export class StatsComponent implements DoCheck {
-  constructor() {}
-  public changesCount = 0;
-  public elementsCount = 0;
-
-  ngDoCheck(): void {
-    ++this.changesCount;
-    this.elementsCount = countChildren('b-story-book-layout', null);
-  }
-}
+import { StatsComponent } from './stats.component';
+import { EventManagerPlugins } from '../utils/eventManager.plugins';
 
 @NgModule({
   imports: [CommonModule, UtilsModule],
   declarations: [MockComponent, StatsComponent],
   exports: [MockComponent, StatsComponent],
-  providers: [DOMhelpers]
+  providers: [DOMhelpers, EventManagerPlugins[0]]
 })
 export class UtilComponentsModule {}

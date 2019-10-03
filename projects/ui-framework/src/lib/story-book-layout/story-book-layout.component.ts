@@ -7,7 +7,10 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
       <b-display-3>{{ title }}</b-display-3>
       <div class="story-content">
         <ng-content></ng-content>
-        <b-stats></b-stats>
+        <b-stats
+          [rootElem]="'b-story-book-layout'"
+          [countChildren]="true"
+        ></b-stats>
       </div>
     </div>
   `,
