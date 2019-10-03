@@ -1,5 +1,19 @@
+@import '../../style/common-imports';
+
 :host {
   position: relative;
+  &:after {
+    content: none !important;
+  }
+}
+
+:host-context(.has-label.required) ::ng-deep {
+  .btt {
+    @include input-required;
+    &:after {
+      margin-left: -3px;
+    }
+  }
 }
 
 label.has-description {

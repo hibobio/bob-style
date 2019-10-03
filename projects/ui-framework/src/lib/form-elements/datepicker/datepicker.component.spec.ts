@@ -85,7 +85,7 @@ describe('DatepickerComponent', () => {
 
         fixture.detectChanges();
 
-        labelElem = elementFromFixture(fixture, '.bfe-label');
+        labelElem = elementFromFixture(fixture, '.bfe-label .btt');
         inputElem = elementFromFixture(
           fixture,
           '.bfe-input'
