@@ -5,11 +5,12 @@ import { IconsModule } from '../../icons/icons.module';
 import { AlertService } from './alert-service/alert.service';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { TypographyModule } from '../../typography/typography.module';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [AlertComponent],
   entryComponents: [AlertComponent],
-  imports: [CommonModule, IconsModule, ButtonsModule, TypographyModule],
+  imports: [CommonModule, IconsModule, ButtonsModule, TypographyModule, OverlayModule],
   exports: [AlertComponent],
   providers: [AlertService]
 })
