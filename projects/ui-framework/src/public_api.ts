@@ -295,6 +295,9 @@ export {
 export {
   AutoCompleteComponent
 } from './lib/search/auto-complete/auto-complete.component';
+export {
+  AutoCompleteOption
+} from './lib/search/auto-complete/auto-complete.interface';
 // Quick Filters Module
 export {
   QuickFilterModule
