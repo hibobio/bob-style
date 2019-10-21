@@ -1,22 +1,22 @@
 import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   forwardRef,
   Input,
-  ChangeDetectorRef,
-  ChangeDetectionStrategy,
-  NgZone,
-  AfterViewInit
+  NgZone
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { B_DATE_FORMATS, BDateAdapter } from '../datepicker/date.adapter';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
 import {
-  dateToString,
   dateOrFail,
+  dateToString,
   objectHasKeyOrFail
 } from '../../services/utils/transformers';
-import { simpleUID, cloneObject } from '../../services/utils/functional-utils';
+import { cloneObject, simpleUID } from '../../services/utils/functional-utils';
 import { BaseDatepickerElement } from '../datepicker/datepicker.abstract';
 import { MobileService } from '../../services/utils/mobile.service';
 import { DateParseService } from '../datepicker/date-parse.service';
@@ -29,7 +29,7 @@ import {
 } from '@angular/material';
 import { Overlay } from '@angular/cdk/overlay';
 import { DatepickerType } from '../datepicker/datepicker.enum';
-import { parse, startOfMonth, lastDayOfMonth } from 'date-fns';
+import { lastDayOfMonth, startOfMonth } from 'date-fns';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 
 interface DateRangePickerValueLocal {
@@ -119,12 +119,18 @@ export class DateRangePickerComponent extends BaseDatepickerElement
       (value: DateRangePickerValueLocal): DateRangePickerValue => {
         const from =
           value.startDate && this.type === DatepickerType.month
-            ? dateToString(startOfMonth(value.startDate), serverDateFormat)
+            ? dateToString(
+                startOfMonth(value.startDate as Date),
+                serverDateFormat
+              )
             : dateToString(value.startDate, serverDateFormat);
 
         const to =
           value.endDate && this.type === DatepickerType.month
-            ? dateToString(lastDayOfMonth(value.endDate), serverDateFormat)
+            ? dateToString(
+                lastDayOfMonth(value.endDate as Date),
+                serverDateFormat
+              )
             : dateToString(value.endDate, serverDateFormat);
 
         return {
@@ -204,7 +210,7 @@ export class DateRangePickerComponent extends BaseDatepickerElement
 
           pickerCells.forEach((cell: HTMLElement) => {
             cell.classList.add(
-              ...this.getDateClass(parse(cell.getAttribute('aria-label')))
+              ...this.getDateClass(new Date(cell.getAttribute('aria-label')))
             );
           });
         });

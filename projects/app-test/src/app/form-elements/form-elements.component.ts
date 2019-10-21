@@ -429,6 +429,7 @@ export class FormElementsTestComponent
 
   bSingleSelect_options = this.bSingleSelect_optionsMock;
   bSingleSelect_showSingleGroupHeader = false;
+  bSingleSelect_showNoneOption = true;
 
   bSingleSelect_disabled = this.global_disabled;
   bSingleSelect_required = this.global_required;

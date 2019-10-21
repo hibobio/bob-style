@@ -26,6 +26,11 @@ const template = `
 <b-single-list [options]="options"
                (selectChange)="selectChange($event)"
                [showSingleGroupHeader]="showSingleGroupHeader">
+                <b-text-button footer
+                  [text]="'Click Me!'"
+                  [color]="'primary'"
+                  style="margin-left: auto">
+                </b-text-button>
 </b-single-list>
 `;
 

@@ -109,3 +109,20 @@
     }
   }
 }
+
+:host {
+  .footer {
+    border-top: 1px solid $grey-500;
+    background-color: white;
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+    align-items: center;
+    padding: 0 15px;
+    height: 50px;
+    display: flex;
+    &:empty {
+      display: none;
+    }
+  }
+
+}

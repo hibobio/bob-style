@@ -1,20 +1,21 @@
 import {
-  isArray,
-  isString,
-  isObject,
-  isNullOrUndefined,
-  compareAsStrings,
   asArray,
-  stringify,
+  compareAsStrings,
   getType,
-  isDateISO8601,
-  isDateFormat,
   hasProp,
+  isArray,
+  isDate,
+  isDateFormat,
+  isDateISO8601,
+  isNullOrUndefined,
   isNumber,
-  parseToNumber
+  isObject,
+  isString,
+  parseToNumber,
+  stringify
 } from './functional-utils';
 
-import { parse, format, isDate } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { InputTypes } from '../../form-elements/input/input.enum';
 import { serverDateFormat } from '../../consts';
 
@@ -63,7 +64,10 @@ export const stringToDate = date => {
   if (isDate(date) || isNullOrUndefined(date)) {
     return date;
   }
-  const converted = parse(date);
+  let converted = parseISO(date);
+  if (String(converted) === 'Invalid Date') {
+    converted = new Date(date);
+  }
   return String(converted) !== 'Invalid Date' ? converted : undefined;
 };
 

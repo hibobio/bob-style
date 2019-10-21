@@ -1,30 +1,30 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { DateRangePickerComponent } from './date-range-picker.component';
 import { UtilsService } from '../../services/utils/utils.service';
 import { MobileService } from '../../services/utils/mobile.service';
-import createSpyObj = jasmine.createSpyObj;
 import { DateParseService } from '../datepicker/date-parse.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { of } from 'rxjs';
 import {
+  MatDatepicker,
   MatDatepickerModule,
-  MatNativeDateModule,
-  MatDatepicker
+  MatNativeDateModule
 } from '@angular/material';
 import { IconsModule } from '../../icons/icons.module';
 import { InputMessageModule } from '../input-message/input-message.module';
 import {
-  elementsFromFixture,
   elementFromFixture,
+  elementsFromFixture,
   getPseudoContent,
-  simpleChange,
-  inputValue
+  inputValue,
+  simpleChange
 } from '../../services/utils/test-helpers';
 import { dateToString, stringToDate } from '../../services/utils/transformers';
-import { isDate, parse } from 'date-fns';
+import { isDate, parseISO } from 'date-fns';
 import { DatepickerType } from '../datepicker/datepicker.enum';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import createSpyObj = jasmine.createSpyObj;
 
 describe('DateRangePickerComponent', () => {
   let fixture: ComponentFixture<DateRangePickerComponent>;
@@ -88,8 +88,8 @@ describe('DateRangePickerComponent', () => {
         labelElems = elementsFromFixture(fixture, '.bfe-label');
         messageElem = elementFromFixture(fixture, '[b-input-message]');
 
-        pickers[0].startAt = parse('2019-09-01');
-        pickers[1].startAt = parse('2019-09-01');
+        pickers[0].startAt = parseISO('2019-09-01');
+        pickers[1].startAt = parseISO('2019-09-01');
 
         spyOn(component.changed, 'emit');
         spyOn(component, 'propagateChange');
@@ -543,14 +543,14 @@ describe('DateRangePickerComponent', () => {
       fixture.detectChanges();
 
       expect(component.value).toEqual({
-        startDate: parse('2019-01-01'),
-        endDate: parse('2019-02-01')
+        startDate: parseISO('2019-01-01'),
+        endDate: parseISO('2019-02-01')
       });
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'onBlur',
         date: {
-          startDate: parse('2019-01-01'),
-          endDate: parse('2019-02-01')
+          startDate: parseISO('2019-01-01'),
+          endDate: parseISO('2019-02-01')
         },
         value: {
           from: '2019-01-01',

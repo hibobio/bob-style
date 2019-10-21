@@ -91,8 +91,9 @@ datepickerStories.add(
           'value',
           [
             '',
-            `${thisYear()}-${thisMonth()}-12`,
-            `${thisYear()}-${thisMonth()}-23`
+            `${thisYear()}-${thisMonth(false, -1)}-9`,
+            `${thisYear()}-${thisMonth()}-23`,
+            `${thisYear()}-${thisMonth(false, 1)}-19`
           ],
           ''
         ),
@@ -101,8 +102,24 @@ datepickerStories.add(
           Object.values(DatepickerType),
           DatepickerType.date
         ),
-        minDate: select('minDate', ['', `${thisYear()}-${thisMonth()}-10`], ''),
-        maxDate: select('maxDate', ['', `${thisYear()}-${thisMonth()}-25`], ''),
+        minDate: select(
+          'minDate',
+          [
+            '',
+            `${thisYear()}-${thisMonth(false, -1)}-5`,
+            `${thisYear()}-${thisMonth()}-7`
+          ],
+          ''
+        ),
+        maxDate: select(
+          'maxDate',
+          [
+            '',
+            `${thisYear()}-${thisMonth()}-25`,
+            `${thisYear()}-${thisMonth(false, 1)}-15`
+          ],
+          ''
+        ),
         label: text('label', 'Date picker'),
         description: text('description', mockText(30)),
         placeholder: text('placeholder', ''),
