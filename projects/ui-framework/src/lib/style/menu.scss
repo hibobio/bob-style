@@ -1,3 +1,5 @@
+@import '../style/common-imports';
+
 .cdk-overlay-container {
   .mat-menu-panel {
     b-menu {
@@ -5,8 +7,9 @@
     }
     @include OverlayPanel();
     @include b-body($addCssVars: false);
-    min-width: 0;
+    min-width: 200px;
     min-height: 0;
+    max-width: none;
 
     .mat-menu-content {
       position: relative;

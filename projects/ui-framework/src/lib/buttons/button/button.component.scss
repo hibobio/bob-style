@@ -41,8 +41,10 @@ button {
     padding-left: $padding - 3px;
 
     &:before {
-      margin-right: 6px;
       display: inline-block;
+      position: relative;
+      top: -1px;
+      margin-right: 6px;
       vertical-align: middle;
       pointer-events: none;
     }

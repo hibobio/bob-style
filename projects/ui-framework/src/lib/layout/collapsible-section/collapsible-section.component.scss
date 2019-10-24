@@ -2,7 +2,7 @@
 
 $transition-length: 0.35s;
 $transition-easing: cubic-bezier(0.645, 0.045, 0.355, 1);
-$border-color: $grey-500;
+$border-color: $grey-300;
 
 :host {
   display: block;
@@ -126,7 +126,7 @@ p {
 
 .bcp-section-not-collapsible {
   .bcp-panel-content-wrap {
-    padding: times8(3) times8(4);
+    padding: times8(4);
 
     &:empty {
       padding: 0;
