@@ -123,5 +123,6 @@ export enum Icons {
   attachment = 'b-icon-attachment',
   infinite = 'b-icon-infinite',
   megaphone = 'b-icon-megaphone',
-  field_add = 'b-icon-field-add'
+  field_add = 'b-icon-field-add',
+  chat = 'b-icon-chat'
 }
