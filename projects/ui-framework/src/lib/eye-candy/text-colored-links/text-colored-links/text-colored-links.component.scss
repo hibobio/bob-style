@@ -10,16 +10,12 @@
 .is-clickable {
   .info-graphic-item {
     cursor: pointer;
-    transition: .3s opacity;
-    will-change: opacity;
   }
   &:hover {
     .info-graphic-item {
-      opacity: .5;
       cursor: auto;
       &.has-action:hover {
         cursor: pointer;
-        opacity: 1;
         text-decoration: underline;
       }
     }
