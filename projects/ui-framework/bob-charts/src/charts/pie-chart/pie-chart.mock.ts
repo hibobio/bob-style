@@ -1,6 +1,6 @@
 export const PIE_CHART_DATA_MOCK = [
   ['Human Resources', 3],
-  ['Client Services', 34002],
+  ['Client Services', 8],
   ['Business Development', 1],
   ['Marketing', 9],
   ['Product', 6],

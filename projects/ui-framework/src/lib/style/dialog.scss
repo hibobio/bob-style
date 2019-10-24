@@ -1,5 +1,6 @@
-$dialogPadding: 24px;
-$footerSize: 48px;
+@import '../style/common-imports';
+
+$footerSize: times8(6);
 
 body .cdk-overlay-container {
   bottom: 0;
@@ -50,7 +51,7 @@ html.cdk-global-scrollblock {
       font: inherit;
     }
     .mat-dialog-title {
-      padding: $dialogPadding $dialogPadding 16px;
+      padding: times8(5) times8(5) times8(2);
       div[b-dialog-sub-title] {
         margin-top: 5px;
       }
@@ -59,7 +60,7 @@ html.cdk-global-scrollblock {
       }
     }
     .mat-dialog-content {
-      padding: 0 $dialogPadding $dialogPadding;
+      padding: 0 times8(5) times8(3);
       max-height: 60vh;
       position: relative;
       overflow-x: hidden;
@@ -70,7 +71,7 @@ html.cdk-global-scrollblock {
         border-bottom: 1px solid $grey-300;
       }
       &.no-footer {
-        padding-bottom: 48px;
+        padding-bottom: times8(6);
       }
       .dialog-content {
         position: relative;
@@ -94,7 +95,7 @@ html.cdk-global-scrollblock {
         }
         .preloader-message {
           color: $grey-600;
-          margin-top: 8px;
+          margin-top: times8(1);
         }
       }
     }
@@ -107,7 +108,7 @@ html.cdk-global-scrollblock {
         left: 0;
         width: 100%;
         box-sizing: border-box;
-        padding: 16px 24px;
+        padding: times8(2) times8(3);
         background-color: $white;
         box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.2),
           0 -3px 5px rgba(0, 0, 0, 0.1) inset;
@@ -115,7 +116,7 @@ html.cdk-global-scrollblock {
       }
 
       .mat-dialog-actions {
-        padding: $dialogPadding;
+        padding: times8(3) times8(5) times8(5);
         background-color: $white;
         text-align: center;
         position: relative;
@@ -125,7 +126,7 @@ html.cdk-global-scrollblock {
         height: 100%;
         .dialog-button {
           &:nth-child(2) {
-            margin-left: 10px;
+            margin-left: times8(1);
           }
         }
       }
