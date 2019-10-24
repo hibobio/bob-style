@@ -122,5 +122,6 @@ export enum Icons {
   print = 'b-icon-print',
   attachment = 'b-icon-attachment',
   infinite = 'b-icon-infinite',
-  megaphone = 'b-icon-megaphone'
+  megaphone = 'b-icon-megaphone',
+  field_add = 'b-icon-field-add'
 }
