@@ -49,7 +49,7 @@
                    [options]="singleSelectOptions"
                    [maxHeight]="listElHeight*6"
                    [showSingleGroupHeader]="showSingleGroupHeader"
-                   [showNoneOption]="showNoneOption">
+                   [showNoneOption]="!required">
       <ng-content footer select="[footer]"></ng-content>
     </b-single-list>
   </div>

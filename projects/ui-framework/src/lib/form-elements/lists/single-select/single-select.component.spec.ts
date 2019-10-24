@@ -139,7 +139,7 @@ describe('SingleSelectComponent', () => {
   });
 
   describe('clearSelection', () => {
-    it('should show -None- option in single-list', fakeAsync(() => {
+    it('should show -None- option in single-list if not required', fakeAsync(() => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
@@ -147,6 +147,16 @@ describe('SingleSelectComponent', () => {
         '.clear-selection'
       );
       expect(clearSelection).toBeTruthy();
+    }));
+    it('should do not show -None- option in single-list if required', fakeAsync(() => {
+      component.required = true;
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+      const clearSelection = overlayContainerElement.querySelector(
+        '.clear-selection'
+      );
+      expect(clearSelection).toBeFalsy();
     }));
     it('should clear the selection', fakeAsync(() => {
       component.openPanel();

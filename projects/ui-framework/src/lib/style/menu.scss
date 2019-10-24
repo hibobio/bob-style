@@ -1,0 +1,41 @@
+.cdk-overlay-container {
+  .mat-menu-panel {
+    b-menu {
+      display: none;
+    }
+    @include OverlayPanel();
+    @include b-body($addCssVars: false);
+    min-width: 0;
+    min-height: 0;
+
+    .mat-menu-content {
+      position: relative;
+      overflow: auto;
+      max-height: 500px;
+      padding: 10px 0;
+      .mat-menu-item-submenu-trigger {
+        padding: 0;
+      }
+      .mat-menu-item {
+        line-height: 36px;
+        height: 36px;
+        padding: 0 30px 0 15px;
+        display: flex;
+        align-content: space-between;
+        align-items: center;
+        &.disabled {
+          color: $grey-600;
+          pointer-events: none;
+        }
+        &.mat-menu-item-submenu-trigger::after {
+          position: absolute;
+          right: 12px;
+          top: auto;
+          transform: none;
+          left: auto;
+          bottom: auto;
+        }
+      }
+    }
+  }
+}

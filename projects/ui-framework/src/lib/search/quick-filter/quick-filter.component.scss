@@ -1,12 +1,5 @@
 @import '../../style/common-imports';
 
-::ng-deep {
-  .b-quick-filter-panel {
-    position: relative !important;
-    min-width: 320px;
-  }
-}
-
 :host {
   b-single-select,
   b-multi-select {

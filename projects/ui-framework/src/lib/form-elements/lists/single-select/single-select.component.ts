@@ -43,7 +43,6 @@ import { UtilsService } from '../../../services/utils/utils.service';
 })
 export class SingleSelectComponent extends BaseSelectPanelElement
   implements OnChanges {
-  @Input() showNoneOption = true;
   @Input() showSingleGroupHeader = false;
 
   triggerValue: string;

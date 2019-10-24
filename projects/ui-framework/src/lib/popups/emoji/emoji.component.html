@@ -26,7 +26,7 @@
         <ul class="emoji-list">
           <li class="icon"
               *ngFor="let emoji of category.data"
-              title="{{emoji?.shortname}}"
+              title="{{emoji?.description}}"
               (click)="selectEmoji(emoji)">
             {{emoji?.icon}}
           </li>
@@ -38,6 +38,7 @@
     <ul class="emoji-footer">
       <li class="icon"
           *ngFor="let emoji of commonEmojis"
+          title="{{emoji?.description}}"
           (click)="selectEmoji(emoji)">
         {{emoji?.icon}}
       </li>

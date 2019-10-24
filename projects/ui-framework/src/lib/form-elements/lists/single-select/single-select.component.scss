@@ -1,6 +1,3 @@
-@import '../../../style/common-imports';
-@import '../list';
-
 :host {
   position: relative;
 }
@@ -30,51 +27,5 @@
     width: 12px;
     display: flex;
     justify-content: center;
-  }
-}
-
-::ng-deep {
-  .b-select-backdrop {
-    opacity: 0;
-
-    & + .cdk-overlay-connected-position-bounding-box {
-      height: 100% !important;
-    }
-  }
-
-  .b-select-panel {
-    flex-direction: column;
-
-    .b-select-list {
-      border: 0;
-      box-shadow: none;
-    }
-
-    .b-select-panel {
-      width: 100%;
-      border: 1px solid $grey-500;
-      border-radius: $border-radius;
-      box-shadow: 0 2px 5px $boxShadowColor;
-    }
-    .panel-below {
-      border-top-width: 0;
-      border-top-right-radius: 0;
-      border-top-left-radius: 0;
-
-      b-search .bfe-wrap {
-        border-top-right-radius: 0;
-        border-top-left-radius: 0;
-      }
-    }
-    .panel-above {
-      border-bottom-width: 0;
-      border-bottom-right-radius: 0;
-      border-bottom-left-radius: 0;
-
-      b-list-footer {
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-      }
-    }
   }
 }

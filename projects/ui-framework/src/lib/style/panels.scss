@@ -1,0 +1,197 @@
+// general panels
+
+.cdk-overlay-container {
+  @include desktop {
+    overflow: hidden;
+    bottom: 0;
+  }
+}
+
+.cdk-overlay-backdrop {
+  @include desktop {
+    position: fixed;
+  }
+}
+
+.panel-trigger {
+  display: inline-block;
+}
+
+.b-panel-backdrop {
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: none;
+}
+
+.b-panel-backdrop-invisible {
+  background-color: rgba(0, 0, 0, 0);
+  transition: none;
+}
+
+.b-panel-backdrop-disabled {
+  display: none;
+}
+
+.b-panel {
+  .panel-wrapper {
+    @include OverlayPanel();
+    padding: 24px;
+    max-height: 100%;
+
+    &.small {
+      max-width: 300px;
+    }
+    &.medium {
+      max-width: 450px;
+    }
+    &.large {
+      max-width: 700px;
+    }
+  }
+
+  .panel-position {
+    @include OverlayPointerHolders();
+    @include OverlayPositionBounding('center');
+
+    &.panel-below {
+      @include OverlayPositionBounding('below');
+    }
+
+    &.panel-above {
+      @include OverlayPositionBounding('above');
+    }
+
+    // opens to the right - default
+    &.panel-after {
+      @include OverlayPositionBounding('after');
+    }
+
+    // opens to the left {
+    &.panel-before {
+      @include OverlayPositionBounding('before');
+    }
+  }
+}
+
+html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
+  @include desktop {
+    min-height: 365px;
+  }
+}
+
+// select panels
+
+.b-select-backdrop {
+  opacity: 0;
+
+  & + .cdk-overlay-connected-position-bounding-box {
+    @include desktop {
+      min-height: 365px;
+    }
+  }
+}
+
+.b-select-panel {
+  flex-direction: column;
+
+  .b-select-list {
+    border: 0;
+    box-shadow: none;
+  }
+
+  .b-select-panel {
+    width: 100%;
+    border: 1px solid $grey-500;
+    border-radius: $border-radius;
+    box-shadow: 0 2px 5px $boxShadowColor;
+  }
+  .panel-below {
+    border-top-width: 0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+
+    b-search .bfe-wrap {
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+    }
+  }
+  .panel-above {
+    border-bottom-width: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+
+    b-list-footer {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+}
+
+// list panels
+
+.b-select-panel-with-arrow {
+  position: relative !important;
+  min-width: 280px;
+
+  .b-select-panel {
+    width: 100%;
+    @include OverlayPointerHolders();
+    @include OverlayPositionBounding('center');
+
+    &:before {
+      border-color: transparent transparent $grey-500 $grey-500 !important;
+    }
+
+    &.panel-below {
+      @include OverlayPositionBounding('below');
+      border-top-width: 1px;
+      border-top-right-radius: $border-radius;
+      border-top-left-radius: $border-radius;
+
+      &:after {
+        top: $panel-arrow-size/-2 + 1px;
+      }
+    }
+
+    &.panel-above {
+      @include OverlayPositionBounding('above');
+      border-bottom-width: 1px;
+      border-bottom-right-radius: $border-radius;
+      border-bottom-left-radius: $border-radius;
+
+      &:after {
+        bottom: $panel-arrow-size/-2 + 1px;
+      }
+    }
+  }
+}
+
+// ee showcase panel
+
+.ee-showcase-panel {
+  max-width: 350px;
+}
+
+// autocomplete panel
+
+.b-auto-complete-backdrop {
+  opacity: 0;
+}
+
+.b-auto-complete-panel {
+  overflow: hidden;
+  display: block;
+  box-sizing: border-box;
+
+  border: 1px solid $grey-500;
+  border-top: none;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 2px 5px $boxShadowColor;
+}
+
+// quick filter panel
+
+.b-quick-filter-panel {
+  position: relative !important;
+  min-width: 320px;
+}
