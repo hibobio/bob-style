@@ -277,6 +277,18 @@ describe('DialogComponent', () => {
         tick();
         expect(spyMatDialogRef.close).toHaveBeenCalled();
       }));
+      it('should disable ok button if configured to be disabled', () => {
+        component.dialogButtons = {
+          ok: {
+            label: 'ok',
+            action: () => {},
+            disabled: true
+          }
+        };
+        fixture.detectChanges();
+        const okButton = fixture.debugElement.query(By.css('.ok-button')).componentInstance;
+        expect(okButton.disabled).toBeTruthy();
+      });
     });
   });
 

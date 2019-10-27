@@ -53,7 +53,7 @@
       {{dialogButtons.cancel.label}}
     </b-button>
     <b-button (clicked)="onOk()"
-              [disabled]="showProgress"
+              [disabled]="showProgress || dialogButtons.ok.disabled"
               [size]="buttonSize.medium"
               class="dialog-button ok-button">
       {{showConfirmation ? dialogButtons.confirmation.buttonLabel : dialogButtons.ok.label}}
