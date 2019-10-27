@@ -42,7 +42,7 @@ export const stringListToArray = (
     return [list];
   }
   return Array.from(new Set(list.split(test).map(i => i.trim()))).filter(
-    i => !!i
+    Boolean
   );
 };
 

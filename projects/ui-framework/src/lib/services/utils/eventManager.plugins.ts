@@ -15,7 +15,7 @@ const allowedNativeEvents = Object.values(NativeEvents);
 const globalElems = Object.values(GlobalEventModifiers);
 
 const splitToArray = (name: string, test = /[^\w-]+/): string[] => {
-  return name.split(test).filter(i => !!i);
+  return name.split(test).filter(Boolean);
 };
 
 const getEventsArray = (eventName: string): string[] =>
