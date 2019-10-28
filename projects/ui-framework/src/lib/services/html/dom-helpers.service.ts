@@ -108,12 +108,23 @@ export class DOMhelpers {
     );
   }
 
-  public getInnerWidth(element: HTMLElement) {
+  public getInnerWidth(element: HTMLElement, hardcore = false) {
     const computedStyle = getComputedStyle(element);
-    const width =
-      (element.offsetWidth ||
-        parseFloat(computedStyle.width) ||
-        element.getBoundingClientRect().width) -
+
+    let width = !hardcore
+      ? element.offsetWidth
+      : Math.max(
+          element.offsetWidth ||
+            parseFloat(computedStyle.width) ||
+            element.getBoundingClientRect().width
+        );
+
+    if (width === 0) {
+      return 0;
+    }
+
+    width =
+      width -
       parseFloat(computedStyle.paddingLeft) -
       parseFloat(computedStyle.paddingRight) -
       parseFloat(computedStyle.borderLeftWidth) -
