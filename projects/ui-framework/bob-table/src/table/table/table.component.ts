@@ -21,10 +21,8 @@ import {
   GridReadyEvent,
   RowNode
 } from 'ag-grid-community';
-import { get, has, map, once } from 'lodash';
-import {
-  ColumnDef,
-  RowClickedEvent,
+import { cloneDeep, get, has, map, once } from 'lodash';
+import { ColumnDef, ColumnsOrderChangedEvent, RowClickedEvent,
   SortChangedEvent
 } from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
@@ -69,6 +67,7 @@ export class TableComponent implements OnInit, OnChanges {
   >();
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() gridInit: EventEmitter<void> = new EventEmitter<void>();
+  @Output() columnsOrderChanged: EventEmitter<ColumnsOrderChangedEvent> = new EventEmitter<ColumnsOrderChangedEvent>();
 
   readonly rowHeight: number = 56;
   readonly autoSizePadding: number = 30;
@@ -163,6 +162,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   private setOrderedColumns(columns: Column[]): void {
     this.columns = map(columns, col => col.colDef.field);
+    this.columnsOrderChanged.emit({columns: cloneDeep(this.columns)});
   }
 
   private setGridHeight(height: number): void {

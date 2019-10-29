@@ -38,3 +38,7 @@ export interface RowNodeDef {
   rowIndex: number;
   data: any;
 }
+
+export interface ColumnsOrderChangedEvent {
+  columns: string[];
+}
