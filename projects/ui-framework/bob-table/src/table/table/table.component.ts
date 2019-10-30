@@ -14,6 +14,7 @@ import {
 } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import {
+  CellClickedEvent,
   Column,
   DragStoppedEvent,
   GridColumnsChangedEvent,
@@ -22,9 +23,7 @@ import {
   RowNode
 } from 'ag-grid-community';
 import { cloneDeep, get, has, map, once } from 'lodash';
-import { ColumnDef, ColumnsOrderChangedEvent, RowClickedEvent,
-  SortChangedEvent
-} from './table.interface';
+import { ColumnDef, ColumnsOrderChangedEvent, RowClickedEvent, SortChangedEvent } from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { RowSelection, TableType } from './table.enum';
@@ -68,6 +67,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() gridInit: EventEmitter<void> = new EventEmitter<void>();
   @Output() columnsOrderChanged: EventEmitter<ColumnsOrderChangedEvent> = new EventEmitter<ColumnsOrderChangedEvent>();
+  @Output() cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter<CellClickedEvent>();
 
   readonly rowHeight: number = 56;
   readonly autoSizePadding: number = 30;
@@ -119,6 +119,10 @@ export class TableComponent implements OnInit, OnChanges {
 
       onDragStopped(event: DragStoppedEvent): void {
         that.setOrderedColumns(event.columnApi.getAllGridColumns());
+      },
+
+      onCellClicked(event: CellClickedEvent): void {
+        that.cellClicked.emit(event);
       }
     };
 
