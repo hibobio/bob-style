@@ -1,19 +1,11 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick
-} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PieChartComponent } from './pie-chart.component';
-import {
-  PIE_CHART_DATA_MOCK,
-  TOOLTIP_FORMATTER_MOCK_RESULT
-} from './pie-chart.mock';
-import { ChangeDetectorRef, NgZone } from '@angular/core';
-import { ChartCore } from '../chart/chart-core';
+import {PieChartComponent} from './pie-chart.component';
+
+import {ChangeDetectorRef, NgZone} from '@angular/core';
+import {ChartCore} from '../chart/chart-core';
 import * as Highcharts from 'highcharts';
+import {LINE_CHART_DATA_MOCK, TOOLTIP_FORMATTER_MOCK_RESULT} from '../chart.mock';
 
 export class MockNgZone extends NgZone {
   run(fn: Function): any {
@@ -24,7 +16,7 @@ export class MockNgZone extends NgZone {
 describe('PieChartComponent', () => {
   let component: PieChartComponent;
   let fixture: ComponentFixture<PieChartComponent>;
-  let updatePieOptionsSpy, applyOnChangeSpy, highchartRefSpy;
+  let updateChartOptionsSpy, applyOnChangeSpy, highchartRefSpy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -36,7 +28,7 @@ describe('PieChartComponent', () => {
         fixture = TestBed.createComponent(PieChartComponent);
         component = fixture.componentInstance;
         highchartRefSpy = spyOn(Highcharts, 'chart');
-        component.data = PIE_CHART_DATA_MOCK as any;
+        component.data = LINE_CHART_DATA_MOCK as any;
         component.name = 'fruits';
         fixture.detectChanges();
       });
@@ -46,13 +38,13 @@ describe('PieChartComponent', () => {
     it('should initialize', () => {
       expect(component).toBeTruthy();
     });
-    it('should call ngOnInit', () => {
-      updatePieOptionsSpy = spyOn(
+    it('should call ngOnChanges', () => {
+      updateChartOptionsSpy = spyOn(
         component,
-        'updatePieOptions'
+        'updateChartOptions'
       ).and.callThrough();
-      component.ngOnInit();
-      expect(updatePieOptionsSpy).toHaveBeenCalled();
+      component.ngOnChanges({});
+      expect(updateChartOptionsSpy).toHaveBeenCalled();
     });
   });
 
@@ -65,20 +57,20 @@ describe('PieChartComponent', () => {
       component.ngAfterViewInit();
       expect(ChartCore.prototype.ngAfterViewInit).toHaveBeenCalled();
     });
-    it('should call updatePieOptions', () => {
-      updatePieOptionsSpy = spyOn(
+    it('should call updateChartOptions', () => {
+      updateChartOptionsSpy = spyOn(
         component,
-        'updatePieOptions'
+        'updateChartOptions'
       ).and.callThrough();
-      component.ngOnInit.call(component);
-      expect(updatePieOptionsSpy).toHaveBeenCalled();
+      component.ngOnChanges.call(component);
+      expect(updateChartOptionsSpy).toHaveBeenCalled();
     });
     it('should format value, apply color, add pre and post values', () => {
-      updatePieOptionsSpy = spyOn(
+      updateChartOptionsSpy = spyOn(
         component,
-        'updatePieOptions'
+        'updateChartOptions'
       ).and.callThrough();
-      component.ngOnInit.call(component);
+      component.ngOnChanges.call(component);
       component.preTooltipValue = 'ILS ';
       component.postTooltipValue = ' end';
       component.tooltipValueFormatter = val => `formatted ${val / 1000}`;
@@ -95,13 +87,13 @@ describe('PieChartComponent', () => {
     });
     describe('ngOnChanges', () => {
       beforeEach(() => {
-        updatePieOptionsSpy = spyOn(component, 'updatePieOptions');
+        updateChartOptionsSpy = spyOn(component, 'updateChartOptions');
         applyOnChangeSpy = spyOn(ChartCore.prototype, 'applyOnChange');
         component.ngOnChanges.call(component);
         fixture.detectChanges();
       });
-      it('should call updatePieOptions and applyOnChangeSpy', () => {
-        expect(updatePieOptionsSpy).toHaveBeenCalled();
+      it('should call updateChartOptions and applyOnChangeSpy', () => {
+        expect(updateChartOptionsSpy).toHaveBeenCalled();
         expect(applyOnChangeSpy).toHaveBeenCalled();
       });
       it('should highchart update with options', () => {
@@ -113,7 +105,7 @@ describe('PieChartComponent', () => {
       it('should inputs be same as highchart options properties', () => {
         expect(component.options.series[0].name).toEqual('fruits');
         expect((component.options.series[0] as any).data).toEqual(
-          PIE_CHART_DATA_MOCK
+          LINE_CHART_DATA_MOCK
         );
         expect(component.options.chart.type).toEqual('pie');
         expect(component.type).toEqual('pie');

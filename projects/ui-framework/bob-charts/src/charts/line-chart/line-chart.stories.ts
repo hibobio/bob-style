@@ -1,38 +1,38 @@
 import {storiesOf} from '@storybook/angular';
-import {boolean, number, object, text, withKnobs} from '@storybook/addon-knobs/angular';
-import {ComponentGroupType} from '../../../../src/lib/consts';
-import {ChartsModule} from '../charts.module';
+import {boolean, number, object, select, text, withKnobs} from '@storybook/addon-knobs/angular';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ComponentGroupType} from '../../../../src/lib/consts';
 import {StoryBookLayoutModule} from '../../../../src/lib/story-book-layout/story-book-layout.module';
+import {ChartsModule} from '../charts.module';
 import {LINE_CHART_DATA_MOCK} from '../chart.mock';
+import {ChartTypesEnum} from '../chart/chart.enum';
+import {ChartLegendPositionEnum} from '../chart/chart.interface';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
 );
 const template = `
 <div>
-  <small>Demo of all binding options</small>
-  <b-pie-chart
+  <b-line-chart
     [data]="data"
+    [type]="type"
     [preTooltipValue]="preTooltipValue"
     [postTooltipValue]="postTooltipValue"
-    [donut]="donut"
     [showDataLabels]="showDataLabels"
     [legend]="legend"
+    [legendPosition]="legendPosition"
     [colorPalette]="colorPalette"
     [name]="name"
     [height]="height"
-    [donutWidth]="donutWidth"
-    [donutInnerSize]="donutInnerSize"
     [title]="title"
     [pointFormat]="pointFormat"
   >
-  </b-pie-chart>
+  </b-line-chart>
 </div>
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Pie Chart'">
+<b-story-book-layout [title]="'Line Chart'">
     ${template}
 </b-story-book-layout>
 `;
@@ -52,33 +52,35 @@ const note = `
   --- | --- | --- | ---
   *name | string | name of series | none
   *data | | series data array for chart | none
-  donut (optional) | boolean | make pie chart donut chart | false
-  showDataLabels (optional) | boolean | shows label in pie | false
+  type | ChartTypesEnum - (Area, Line, Spline) | the type of line chart | ChartTypesEnum.Line
   legend (optional) | boolean | shows legend | false
   colorPalette (optional) | string[] | color palette array | default array of colors
   height (optional) | number | height of chart | 500
-  donutInnerSize (optional) | number | defining the inner white circle in a donut pie chart | 60
-  donutWidth (optional) | number | overrides donutInnerSize by applying width of donut instead inner circle width | none
   title (optional) | string | title of chart | none
   pointFormat (optional) | string | tooltip formatter | {series.name}: <b>{point.percentage:.1f}%</b>
 `;
 
 story.add(
-  'Pie chart',
+  'Line chart',
   () => {
     return {
       template: storyTemplate,
       props: {
-        showDataLabels: boolean('showDataLabels', false),
-        donut: boolean('donut', false),
+        type: select('type', [
+          ChartTypesEnum.Line,
+          ChartTypesEnum.Spline,
+          ChartTypesEnum.Area,
+          ChartTypesEnum.Areaspline
+        ], ChartTypesEnum.Line),
         legend: boolean('legend', true),
+        legendPosition: select('legendPosition',
+          Object.values(ChartLegendPositionEnum),
+          ChartLegendPositionEnum.BOTTOM),
         name: text('name', 'employees'),
         preTooltipValue: text('preTooltipValue', ''),
         postTooltipValue: text('postTooltipValue', ' PEOPLE'),
         title: text('title', ''),
         height: number('height', 200),
-        donutInnerSize: number('donutInnerSize', 60),
-        donutWidth: number('donutWidth', 0),
         data: object('data', LINE_CHART_DATA_MOCK),
         colorPalette: object('colorPalette', [
           '#CC2E4E',

@@ -1,13 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Input,
-  NgZone,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewEncapsulation
-} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, NgZone, OnChanges, SimpleChanges, ViewEncapsulation} from '@angular/core';
 import {ChartCore} from '../chart/chart-core';
 import {ChartTypesEnum} from '../chart/chart.enum';
 import {SeriesPieDataOptions} from 'highcharts';
@@ -18,12 +9,12 @@ export const minDonutWidth = 3, pieLegendHeight = 37, piePadding = 50;
   templateUrl: '../chart/chart.component.html',
   styleUrls: [
     '../chart/chart.component.scss',
-    './pie-chart.component.scss'],
+  ],
   encapsulation: ViewEncapsulation.None
 })
-export class PieChartComponent extends ChartCore implements OnInit, OnChanges {
+export class PieChartComponent extends ChartCore implements OnChanges {
   type = ChartTypesEnum.Pie;
-  @Input() data: Array<(number|[string, (number|null)]|null|SeriesPieDataOptions)>;
+  @Input() data: SeriesPieDataOptions[];
   @Input() name: string;
   @Input() donut = false;
   @Input() donutInnerSize = 60;
@@ -35,12 +26,9 @@ export class PieChartComponent extends ChartCore implements OnInit, OnChanges {
     super(zone, cdr);
     this.height = 150;
   }
-  ngOnInit() {
-    this.updatePieOptions();
-  }
 
-  updatePieOptions() {
-    this.extraOptions = {
+  updateChartOptions() {
+    this.chartOptions = {
       chart: {
         height: Math.abs(this.height)
       },
@@ -59,27 +47,27 @@ export class PieChartComponent extends ChartCore implements OnInit, OnChanges {
       ]
     };
     if (this.donut) {
-      this.extraOptions.plotOptions.pie.innerSize = Math.min(
+      this.chartOptions.plotOptions.pie.innerSize = Math.min(
         Math.abs(this.donutInnerSize),
         this.setInnerSize(piePadding)
       );
     }
     if (this.donut && this.donutWidth) {
-      this.extraOptions.plotOptions.pie.innerSize = Math.max(
+      this.chartOptions.plotOptions.pie.innerSize = Math.max(
         0,
           this.setInnerSize(piePadding - minDonutWidth + Math.abs(this.donutWidth))
       );
     }
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.updateChartOptions();
+    this.applyOnChange();
+  }
+
   private setInnerSize(offset: number) {
     return this.legend
       ? Math.abs(this.height) - pieLegendHeight - offset
       : Math.abs(this.height) - offset;
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.updatePieOptions();
-    this.applyOnChange();
   }
 }

@@ -1,33 +1,32 @@
 import {storiesOf} from '@storybook/angular';
-import {boolean, number, object, text, withKnobs} from '@storybook/addon-knobs/angular';
-import {ComponentGroupType} from '../../../../src/lib/consts';
-import {ChartsModule} from '../charts.module';
+import {select, boolean, number, object, text, withKnobs} from '@storybook/addon-knobs/angular';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {StoryBookLayoutModule} from '../../../../src/lib/story-book-layout/story-book-layout.module';
-import {LINE_CHART_DATA_MOCK} from '../chart.mock';
+import {ChartsModule} from '../../charts.module';
+import {ComponentGroupType} from '../../../../../src/lib/consts';
+import {StoryBookLayoutModule} from '../../../../../src/lib/story-book-layout/story-book-layout.module';
+import {MULTI_BAR_CHART_CATEGORIES, MULTI_BAR_CHART_DATA_MOCK} from '../../chart.mock';
+import {ChartLegendPositionEnum} from '../../chart/chart.interface';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
 );
 const template = `
 <div>
-  <small>Demo of all binding options</small>
-  <b-pie-chart
+  <b-stacked-bar-chart
     [data]="data"
+    [showDataLabels]="showDataLabels"
+    [legendPosition]="legendPosition"
+    [categories]="categories"
     [preTooltipValue]="preTooltipValue"
     [postTooltipValue]="postTooltipValue"
-    [donut]="donut"
-    [showDataLabels]="showDataLabels"
     [legend]="legend"
     [colorPalette]="colorPalette"
     [name]="name"
     [height]="height"
-    [donutWidth]="donutWidth"
-    [donutInnerSize]="donutInnerSize"
     [title]="title"
     [pointFormat]="pointFormat"
   >
-  </b-pie-chart>
+  </b-stacked-bar-chart>
 </div>
 `;
 
@@ -52,34 +51,31 @@ const note = `
   --- | --- | --- | ---
   *name | string | name of series | none
   *data | | series data array for chart | none
-  donut (optional) | boolean | make pie chart donut chart | false
-  showDataLabels (optional) | boolean | shows label in pie | false
   legend (optional) | boolean | shows legend | false
   colorPalette (optional) | string[] | color palette array | default array of colors
   height (optional) | number | height of chart | 500
-  donutInnerSize (optional) | number | defining the inner white circle in a donut pie chart | 60
-  donutWidth (optional) | number | overrides donutInnerSize by applying width of donut instead inner circle width | none
   title (optional) | string | title of chart | none
   pointFormat (optional) | string | tooltip formatter | {series.name}: <b>{point.percentage:.1f}%</b>
 `;
 
 story.add(
-  'Pie chart',
+  'Stacked bar chart',
   () => {
     return {
       template: storyTemplate,
       props: {
         showDataLabels: boolean('showDataLabels', false),
-        donut: boolean('donut', false),
+        legendPosition: select('legendPosition',
+          Object.values(ChartLegendPositionEnum),
+          ChartLegendPositionEnum.BOTTOM),
         legend: boolean('legend', true),
         name: text('name', 'employees'),
         preTooltipValue: text('preTooltipValue', ''),
         postTooltipValue: text('postTooltipValue', ' PEOPLE'),
         title: text('title', ''),
         height: number('height', 200),
-        donutInnerSize: number('donutInnerSize', 60),
-        donutWidth: number('donutWidth', 0),
-        data: object('data', LINE_CHART_DATA_MOCK),
+        data: object('data', MULTI_BAR_CHART_DATA_MOCK),
+        categories: object('categories', MULTI_BAR_CHART_CATEGORIES),
         colorPalette: object('colorPalette', [
           '#CC2E4E',
           '#87233D',
