@@ -26,8 +26,7 @@
     .reaction-emoji {
       font-size: 18px;
       display: inline-flex;
-      font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-        'Noto Color Emoji';
+      font-family: var(--emoji-font-family);
       line-height: inherit;
     }
   }

@@ -1,6 +1,6 @@
 .fr-box,
 .fr-view {
-  .brte-plchldr {
+  [data-placeholder-id] {
     box-sizing: border-box;
     display: inline-block;
     vertical-align: bottom;

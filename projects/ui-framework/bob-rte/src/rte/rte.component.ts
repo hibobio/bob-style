@@ -12,7 +12,6 @@ import {
   InputEventType,
   FormEvents,
   HtmlParserHelpers,
-  isNotEmptyArray,
   isKey,
   Keys,
   ListChange,
@@ -21,8 +20,6 @@ import {
 
 import { RTEbaseElement } from './rte.abstract';
 import { PlaceholdersConverterService } from './placeholders.service';
-
-import Tribute, { TributeOptions, TributeItem } from 'tributejs';
 
 @Component({
   selector: 'b-rich-text-editor',
@@ -55,46 +52,14 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
   public ngOnInit(): void {
     super.ngOnInit();
 
-    // mentions
-
-    if (isNotEmptyArray(this.mentionsList)) {
-      this.tribute = new Tribute({
-        values: this.mentionsList as any,
-        lookup: 'displayName',
-        fillAttr: 'displayName',
-        requireLeadingSpace: true,
-        allowSpaces: true,
-
-        menuItemTemplate: function(item: TributeItem<any>) {
-          return item.original.avatar
-            ? `<span class="brte-mention-avatar" aria-hidden="true" style="background-image:url(${
-                item.original.avatar
-              })"></span><span>${item.string}</span>`
-            : item.string;
-        },
-
-        selectTemplate: function(item: TributeItem<any>) {
-          return (
-            // prettier-ignore
-            // tslint:disable-next-line: max-line-length
-            `<a href="${item.original.link}" class="brte-mention fr-deletable" spellcheck="false" rel="noopener noreferrer" contenteditable="false" tabindex="-1">@${item.original.displayName}</a>`
-          );
-        },
-
-        searchOpts: {
-          pre: '<em class="match">',
-          post: '</em>'
-        }
-      } as TributeOptions<any>);
-    }
-
-    // froala events
-
     this.options.events = {
+      //
       initialized: () => {
         this.toolbarButtons = this.getEditorElement(
           'button[title]'
         ) as HTMLElement[];
+
+        this.editor = this.getEditor();
 
         if (this.options.tooltips === false) {
           this.toolbarButtons.forEach(b => {
@@ -106,39 +71,54 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         this.updateToolbar();
 
         // init mentions
-        if (isNotEmptyArray(this.mentionsList)) {
-          this.tribute.attach(this.getEditorTextbox());
-          this.getEditor().events.on(
+        if (this.mentionsEnabled()) {
+          if (this.tribute) {
+            this.tribute.attach(this.getEditorTextbox());
+          }
+
+          this.editor.events.on(
             'keydown',
             (event: KeyboardEvent) => {
-              if (isKey(event.key, Keys.enter) && this.tribute.isActive) {
+              if (
+                isKey(event.key, Keys.enter) &&
+                this.tribute &&
+                this.tribute.isActive
+              ) {
                 return false;
+              }
+
+              if (isKey(event.key, Keys.escape)) {
+                this.closeMentions(true);
               }
             },
             true
           );
+
+          this.getEditorTextbox().addEventListener('tribute-replaced', () => {
+            this.editor.events.trigger('contentChanged', [], true);
+          });
         }
 
         // placeholders related
-        this.getEditor().events.bindClick(
-          this.getEditor().$(this.host.nativeElement),
+        this.editor.events.bindClick(
+          this.editor.$(this.host.nativeElement),
           '.placeholder-panel-trigger',
           () => {
-            this.getEditor().undo.saveStep();
-            this.getEditor().events.disableBlur();
+            this.editor.undo.saveStep();
+            this.editor.events.disableBlur();
           }
         );
       },
 
       contentChanged: () => {
-        this.transmitValue(this.getEditor().html.get(), {
+        this.transmitValue(this.editor.html.get(), {
           eventType: [InputEventType.onChange],
           updateValue: true
         });
       },
 
       focus: () => {
-        this.transmitValue(this.getEditor().html.get(), {
+        this.transmitValue(this.editor.html.get(), {
           eventType: [InputEventType.onFocus],
           eventName: FormEvents.focused,
           updateValue: true,
@@ -152,7 +132,9 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       },
 
       blur: () => {
-        this.transmitValue(this.getEditor().html.get(), {
+        this.closeMentions(true);
+
+        this.transmitValue(this.editor.html.get(), {
           eventType: [InputEventType.onBlur],
           eventName: FormEvents.blurred,
           updateValue: true
@@ -165,16 +147,25 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       },
 
       click: (event: MouseEvent) => {
-        const target = event.target as HTMLElement;
+        this.closeMentions();
 
         // prevent mentions link clicks
-        if (target.classList.contains('brte-mention')) {
-          this.getEditor().selection.save();
+        if (
+          !event.metaKey &&
+          (event.target as HTMLElement).className.includes('mention')
+        ) {
+          this.editor.selection.save();
           event.preventDefault();
-          this.getEditor().toolbar.enable();
-          this.getEditor().selection.restore();
+          this.editor.toolbar.enable();
+          this.editor.selection.restore();
         }
       },
+
+      'paste.afterCleanup': (html: string): string =>
+        this.inputTransformers.reduce(
+          (previousResult, fn) => fn(previousResult),
+          html
+        ),
 
       'charCounter.update': () => {
         this.length = this.getEditor().charCounter.count();
@@ -186,12 +177,60 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
 
       'commands.after': (cmd: string) => {
         if (cmd === 'linkInsert') {
-          const link = this.getEditor().link.get() as HTMLElement;
+          const link = this.editor.link.get() as HTMLElement;
           link.setAttribute('spellcheck', 'false');
           link.classList.add('fr-deletable');
         }
+      },
+
+      'commands.before': (cmd: string, param1: string, param2: string) => {
+        //
+        // mentions toolbar button
+        if (cmd === 'mentions') {
+          if (this.tribute) {
+            const curSelection = this.editor.selection.get();
+            const curText = curSelection.focusNode.textContent;
+
+            this.editor.undo.saveStep();
+
+            if (!/\s/.test(curText[curSelection.focusOffset - 1])) {
+              this.editor.html.insert(' ');
+            }
+
+            this.tribute.showMenuForCollection(this.getEditorTextbox());
+          }
+        }
+
+        // emoji toolbar button
+        if ((cmd = 'emoticonInsert') && param1 && param2) {
+          const curSelection = this.editor.selection.get();
+          const curText = curSelection.focusNode.textContent;
+
+          this.editor.undo.saveStep();
+          this.editor.html.insert(
+            (/\s/.test(curText[curSelection.focusOffset - 1]) ? '' : ' ') +
+              param2 +
+              (/\s/.test(curText[curSelection.focusOffset]) ? '' : ' ')
+          );
+          this.editor.undo.saveStep();
+          this.editor.popups.hideAll();
+
+          return false;
+        }
       }
     };
+  }
+
+  // mentions methods
+
+  private closeMentions(undo = false) {
+    if (this.tribute && this.tribute.isActive) {
+      this.tribute.hideMenu();
+
+      if (undo) {
+        this.editor.commands.undo();
+      }
+    }
   }
 
   // placeholder methods
@@ -199,13 +238,13 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
   public onPlaceholderPanelOpen() {
     this.inputFocused = true;
     this.plchldrPnlTrgrFocused = true;
-    this.getEditor().selection.save();
+    this.editor.selection.save();
   }
 
   public onPlaceholderPanelClose() {
     this.plchldrPnlTrgrFocused = false;
-    this.getEditor().selection.restore();
-    this.getEditor().events.enableBlur();
+    this.editor.selection.restore();
+    this.editor.events.enableBlur();
   }
 
   public addPlaceholder(event: ListChange) {
@@ -214,9 +253,9 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       event.getSelectedIds()[0] as string
     );
 
-    this.getEditor().selection.restore();
-    this.getEditor().html.insert(placeholder);
-    this.getEditor().undo.saveStep();
+    this.editor.selection.restore();
+    this.editor.html.insert(placeholder);
+    this.editor.undo.saveStep();
 
     this.placeholderList = cloneArray(this.placeholderList);
   }

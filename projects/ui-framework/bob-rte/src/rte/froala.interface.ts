@@ -346,7 +346,7 @@ export interface FroalaEvents {
 
 // source: https://github.com/froala/wysiwyg-editor/issues/2369
 
-export interface FroalaEdtr {
+export interface FroalaEditorInstance {
   opts: FroalaOptions;
   align: Align;
   button: Button;
@@ -401,15 +401,24 @@ export interface FroalaEdtr {
   [key: string]: any;
 }
 
-export interface RegisterCommandParameters {
-  title: string;
-  icon: string;
-  undo: boolean;
-  focus: boolean;
-  showOnMobile: boolean;
-  refreshAfterCallback: boolean;
-  callback: (buttonName: string) => void;
-  refresh: (button: JQuery) => void;
+export interface FroalaSelection {
+  blocks(): Element[];
+  clear(): object;
+  element(): HTMLElement;
+  endElement(): Element;
+  get(): Selection;
+  inEditor(): boolean;
+  info(element: Element): object;
+  isCollapsed(): boolean;
+  isFull(): boolean;
+  ranges(index?: number): Range | Range[];
+  restore(): object;
+  save(): object;
+  setAfter(node: Element): object;
+  setAtEnd(node: Element): object;
+  setAtStart(node: Element): object;
+  setBefore(node: Element): object;
+  text(): string;
 }
 
 export interface ToolbarButtons {
@@ -420,24 +429,10 @@ export interface ToolbarButtons {
   };
 }
 
-export interface EmoticonButton {
-  code: string;
-  desc: string;
-}
-
-export interface SpecialCharacterSet {
-  title: string;
-  list: {
-    char: string;
-    desc: string;
-  }[];
-}
-
 interface Apply<T> {
   apply(value: T): void;
 }
 
-export type MediaAlign = 'left' | 'right' | 'center';
 export type AlignType = 'left' | 'right' | 'center' | 'justify';
 
 export interface Align {
@@ -634,11 +629,6 @@ export interface Image {
   upload(images: any[]): object;
 }
 
-export interface ImageManager {
-  hide(): object;
-  show(): object;
-}
-
 export interface InlineClass extends Apply<string> {}
 
 export interface InlineStyle extends Apply<string> {}
@@ -708,10 +698,6 @@ export interface Node {
   isVoid(node: Element): boolean;
 }
 
-export interface ParagraphFormat extends Apply<string> {}
-
-export interface ParagraphStyle extends Apply<string> {}
-
 export interface Placeholder {
   hide(): void;
   isVisible(): void;
@@ -743,32 +729,10 @@ export interface Position {
   refresh(): object;
 }
 
-export interface Quote extends Apply<string> {}
-
 export interface Save {
   force(): object;
   save(): object;
   reset(): object;
-}
-
-export interface FroalaSelection {
-  blocks(): Element[];
-  clear(): object;
-  element(): HTMLElement;
-  endElement(): Element;
-  get(): Selection;
-  inEditor(): boolean;
-  info(element: Element): object;
-  isCollapsed(): boolean;
-  isFull(): boolean;
-  ranges(index?: number): Range | Range[];
-  restore(): object;
-  save(): object;
-  setAfter(node: Element): object;
-  setAtEnd(node: Element): object;
-  setAtStart(node: Element): object;
-  setBefore(node: Element): object;
-  text(): string;
 }
 
 export interface Size {
@@ -819,3 +783,40 @@ export interface Video {
   remove(): object;
   setSize(width: string, height: string): object;
 }
+
+// export type MediaAlign = 'left' | 'right' | 'center';
+
+// export interface ParagraphFormat extends Apply<string> {}
+
+// export interface ParagraphStyle extends Apply<string> {}
+
+// export interface Quote extends Apply<string> {}
+
+// export interface RegisterCommandParameters {
+//   title: string;
+//   icon: string;
+//   undo: boolean;
+//   focus: boolean;
+//   showOnMobile: boolean;
+//   refreshAfterCallback: boolean;
+//   callback: (buttonName: string) => void;
+//   refresh: (button: JQuery) => void;
+// }
+
+// export interface EmoticonButton {
+//   code: string;
+//   desc: string;
+// }
+
+// export interface SpecialCharacterSet {
+//   title: string;
+//   list: {
+//     char: string;
+//     desc: string;
+//   }[];
+// }
+
+// export interface ImageManager {
+//   hide(): object;
+//   show(): object;
+// }

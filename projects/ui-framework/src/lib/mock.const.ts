@@ -432,6 +432,76 @@ const lorem =
   // tslint:disable-next-line: max-line-length
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.';
 
+// (c) https://theuselessweb.com/
+const uselessURLs = [
+  'http://heeeeeeeey.com/',
+  'http://tinytuba.com/',
+  'http://corndog.io/',
+  'http://thatsthefinger.com/',
+  'http://cant-not-tweet-this.com/',
+  'http://weirdorconfusing.com/',
+  'https://www.eyes-only.net/',
+  'http://eelslap.com/',
+  'http://www.staggeringbeauty.com/',
+  'http://burymewithmymoney.com/',
+  'http://endless.horse/',
+  'http://www.trypap.com/',
+  'http://www.republiquedesmangues.fr/',
+  'http://www.movenowthinklater.com/',
+  'http://www.partridgegetslucky.com/',
+  'http://www.rrrgggbbb.com/',
+  'http://beesbeesbees.com/',
+  'http://www.koalastothemax.com/',
+  'http://www.everydayim.com/',
+  'http://randomcolour.com/',
+  'http://cat-bounce.com/',
+  'http://chrismckenzie.com/',
+  'http://hasthelargehadroncolliderdestroyedtheworldyet.com/',
+  'http://ninjaflex.com/',
+  'http://ihasabucket.com/',
+  'http://corndogoncorndog.com/',
+  'http://www.hackertyper.com/',
+  'https://pointerpointer.com',
+  'http://imaninja.com/',
+  'http://www.ismycomputeron.com/',
+  'http://www.nullingthevoid.com/',
+  'http://www.muchbetterthanthis.com/',
+  'http://www.yesnoif.com/',
+  'http://iamawesome.com/',
+  'http://www.pleaselike.com/',
+  'http://crouton.net/',
+  'http://corgiorgy.com/',
+  'http://www.wutdafuk.com/',
+  'http://unicodesnowmanforyou.com/',
+  'http://www.crossdivisions.com/',
+  'http://tencents.info/',
+  'http://www.patience-is-a-virtue.org/',
+  'http://whitetrash.nl/',
+  'http://www.theendofreason.com/',
+  'http://pixelsfighting.com/',
+  'http://isitwhite.com/',
+  'http://onemillionlols.com/',
+  'http://www.omfgdogs.com/',
+  'http://oct82.com/',
+  'http://chihuahuaspin.com/',
+  'http://www.blankwindows.com/',
+  'http://dogs.are.the.most.moe/',
+  'http://tunnelsnakes.com/',
+  'http://www.trashloop.com/',
+  'http://www.ascii-middle-finger.com/',
+  'http://spaceis.cool/',
+  'http://www.donothingfor2minutes.com/',
+  'http://buildshruggie.com/',
+  'http://buzzybuzz.biz/',
+  'http://yeahlemons.com/',
+  'http://burnie.com/',
+  'http://wowenwilsonquiz.com',
+  'https://thepigeon.org/',
+  'http://notdayoftheweek.com/',
+  'http://www.amialright.com/',
+  'http://nooooooooooooooo.com/'
+];
+
 export const mockAvatar = () =>
   `https://randomuser.me/api/portraits/${randomFromArray([
     'men',
@@ -503,6 +573,8 @@ export const mockText = (words = 100) => {
   return text;
 };
 
+export const uselessSite = () => randomFromArray(uselessURLs);
+
 export const mockUrl = (type = 'any') => {
   const pref = 'http://www.';
   switch (type) {
@@ -522,6 +594,6 @@ export const mockUrl = (type = 'any') => {
       return `${pref}vimeo.com/${simpleUID('', 8)}/`;
       break;
     default:
-      return `${pref}${simpleUID('', 6)}.com/`;
+      return uselessSite();
   }
 };

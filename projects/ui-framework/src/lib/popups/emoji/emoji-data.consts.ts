@@ -2,7 +2,7 @@ import { find } from 'lodash';
 import {EmojiCategory} from './emoji.interface';
 
 export const EMOJI_DATA: EmojiCategory[] = [
-  {name: 'people', data: [
+  {name: 'people', code: '1f600', data: [
     {
     code: '1F600',
     shortname: 'grinning',
@@ -984,7 +984,7 @@ export const EMOJI_DATA: EmojiCategory[] = [
     tags: ['weather', 'rain'],
     icon: '🌂'
   }]},
-  {name: 'nature', data: [
+  {name: 'nature',  code: '1f436', data: [
     {
     code: '1F436',
     shortname: 'dog',
@@ -1777,7 +1777,7 @@ export const EMOJI_DATA: EmojiCategory[] = [
     tags: ['rain', 'weather'],
     icon: '☔'
   }]},
-  {name: 'foods', data: [
+  {name: 'foods', code: '1f355', data: [
     {
     code: '1F34F',
     shortname: 'green_apple',
@@ -2171,7 +2171,7 @@ export const EMOJI_DATA: EmojiCategory[] = [
     tags: ['cutlery'],
     icon: '🍴'
   }]},
-  {name: 'activity', data: [
+  {name: 'activity', code: '26bd', data: [
     {
     code: '26BD',
     shortname: 'soccer',
@@ -2397,7 +2397,7 @@ export const EMOJI_DATA: EmojiCategory[] = [
     tags: [],
     icon: '🎰'
   }]},
-  {name: 'places', data: [
+  {name: 'places', code: '1f695', data: [
     {
     code: '1F695',
     shortname: 'taxi',
@@ -2959,7 +2959,7 @@ export const EMOJI_DATA: EmojiCategory[] = [
     tags: [],
     icon: '🌉'
   }, {code: '1F301', shortname: 'foggy', category: 'places', description: 'foggy', tags: ['karl'], icon: '🌁'}]},
-  {name: 'objects', data: [
+  {name: 'objects',  code: '1f4b0', data: [
     {
     code: '231A',
     shortname: 'watch',
@@ -3745,7 +3745,7 @@ export const EMOJI_DATA: EmojiCategory[] = [
     tags: ['security'],
     icon: '🔓'
   }]},
-  {name: 'symbols', data: [
+  {name: 'symbols', code: '26a0', data: [
     {
     code: '2764',
     shortname: 'heart',
@@ -5357,7 +5357,7 @@ export const EMOJI_DATA: EmojiCategory[] = [
     tags: [],
     icon: '🕧'
   }]},
-  {name: 'flags', data: [
+  {name: 'flags', code: '1f6a9', data: [
     {
     code: '1F3C1',
     shortname: 'checkered_flag',

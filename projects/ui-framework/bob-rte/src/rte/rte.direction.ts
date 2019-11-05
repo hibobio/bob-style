@@ -1,6 +1,5 @@
 import FroalaEditor from 'froala-editor';
 
-// https://www.froala.com/wysiwyg-editor/examples/rtl-ltr-custom-button
 const changeDirection = function(dir: string) {
   this.selection.save();
   this.html.wrap(true, true, true, true);

@@ -4,32 +4,44 @@ describe('HtmlParserHelpers', () => {
   const parser = new HtmlParserHelpers();
 
   describe('cleanupHtml', () => {
-    const testString = `
+    const testString = `<br>
 
+    <div><br></div>
     <p>Hello</p>
 <div><br></div>
     <p tabindex="0">
-    <a class="class" href="blah" contenteditable="true">
+    <a class="class" contenteditable="true" href="blah">
+      <br>
       blah
       </a>
       </p>
 
-    <p spellcheck="false"></p>
+      some text
+      <br><br><br>
+      some other text
+
+    <p class="fr-removeme" spellcheck="false"></p>
 
     <p><br></p> <em>
     </em>
 
     &nbsp; &nbsp;
 
+    <h1>Some Title</h1>
+
+    <h5>Some other title</h5>
 
     <div><br></div>
     <div><br></div>
 
-    <span>  </span>
+    <span>  </span> <sometag>
+
+
+    </sometag>
 
     <div><br></div>
 
-    `;
+    <br>`;
 
     const processedString = parser.cleanupHtml(testString);
 
@@ -37,13 +49,23 @@ describe('HtmlParserHelpers', () => {
       expect(processedString).not.toContain('<p');
     });
 
-    it('Should remove empty tags', () => {
-      expect(processedString).not.toContain('<span');
-      expect(processedString).not.toContain('<em');
+    it('Should replace Hx\'s', () => {
+      expect(processedString).not.toContain('<h1>');
+      expect(processedString).not.toContain('<h5>');
+      expect(processedString).toContain(
+        '<span style="font-size: 28px;"><strong>Some Title'
+      );
+      expect(processedString).toContain('<span><strong>Some other title');
     });
 
-    it('Should remove attributes', () => {
-      expect(processedString).not.toContain('class=');
+    it('Should remove empty tags', () => {
+      expect(processedString).not.toContain('<sometag>');
+      expect(processedString).not.toContain('<em>');
+    });
+
+    it('Should remove attributes & classes', () => {
+      expect(processedString).not.toContain('fr-removeme');
+      expect(processedString).not.toContain('class=""');
       expect(processedString).not.toContain('contenteditable=');
       expect(processedString).not.toContain('tabindex=');
       expect(processedString).not.toContain('spellcheck=');
@@ -54,16 +76,31 @@ describe('HtmlParserHelpers', () => {
       expect(/\s\s+/g.test(processedString)).toBeFalsy();
     });
 
+    it('Should replace multiple BR\'s with div+br', () => {
+      expect(processedString).not.toContain('<br><br>');
+    });
+
+    it('Should remove BRs from tags with text', () => {
+      expect(processedString).not.toContain('href="blah"><br>');
+    });
+
+    it('Should remove BRs from start/end of string', () => {
+      expect(processedString.endsWith('<br>')).toBeFalsy();
+      expect(processedString.startsWith('<br>')).toBeFalsy();
+    });
+
     it('Should remove unnecessary empty lines', () => {
       const regex = /\<div\>\<br\>\<\/div\>/gim;
-      expect(processedString.match(regex).length).toEqual(1);
+      expect(processedString.match(regex).length).toEqual(4);
       expect(processedString.endsWith('<div><br></div>')).toBeFalsy();
+      expect(processedString.startsWith('<div><br></div>')).toBeFalsy();
     });
   });
 
   describe('enforceAttributes', () => {
+    const origClass = 'mydiv rem-oveme rem-ovemetoo';
     const testString = `
-      <div class="mydiv">text</div>
+      <div class="${origClass}">text</div>
       <a href="link" class="mylink">link</a>
       <span data-blah="blah">text2</span>
     `;
@@ -73,7 +110,7 @@ describe('HtmlParserHelpers', () => {
         parser.enforceAttributes(testString, 'div', {
           class: 'hello'
         })
-      ).toContain('<div class="mydiv hello">');
+      ).toContain(`<div class="${origClass} hello">`);
     });
 
     it('Should add multiple classes', () => {
@@ -84,7 +121,7 @@ describe('HtmlParserHelpers', () => {
             world: true
           }
         })
-      ).toContain('<div class="mydiv hello world">');
+      ).toContain(`<div class="${origClass} hello world">`);
     });
 
     it('Should remove class', () => {
@@ -95,6 +132,18 @@ describe('HtmlParserHelpers', () => {
           }
         })
       ).not.toContain('<div class="mydiv');
+    });
+
+    it('Should remove wildcard classes', () => {
+      expect(
+        parser.enforceAttributes(testString, 'div', {
+          class: {
+            'rem-*': false,
+            mydiv: false,
+            'new-class': true
+          }
+        })
+      ).toContain('<div class="new-class');
     });
 
     it('Should remove attribute', () => {

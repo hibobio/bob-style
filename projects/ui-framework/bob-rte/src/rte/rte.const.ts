@@ -1,17 +1,9 @@
 import { BlotType } from './rte.enum';
-import { dedupeArray, joinArrays } from 'bob-style';
+import { joinArrays, EmojiCategory, Emoji, EMOJI_DATA } from 'bob-style';
 import { FroalaOptions } from './froala.interface';
+import { TributeOptions, TributeItem } from './tribute.interface';
 
-export const RTE_CONTROLS_DEF: BlotType[] = dedupeArray(
-  Object.values(BlotType)
-);
-export const RTE_DISABLE_CONTROLS_DEF: BlotType[] = [BlotType.placeholder];
-
-export const RTE_MINHEIGHT_DEF = 185;
-export const RTE_MAXHEIGHT_DEF = 350;
-export const RTE_TOOLBAR_HEIGHT = 41;
-
-export const RTE_CONTROLS_ORDER = joinArrays(
+export const RTE_CONTROLS_DEF = joinArrays(
   [
     BlotType.size,
     BlotType.bold,
@@ -23,10 +15,18 @@ export const RTE_CONTROLS_ORDER = joinArrays(
     BlotType.align,
     BlotType.rightToLeft,
     BlotType.leftToRight,
+    BlotType.emoticons,
+    BlotType.mentions,
     BlotType.placeholder
   ],
   Object.values(BlotType)
 );
+
+export const RTE_DISABLE_CONTROLS_DEF: BlotType[] = [BlotType.placeholder];
+
+export const RTE_MINHEIGHT_DEF = 185;
+export const RTE_MAXHEIGHT_DEF = 350;
+export const RTE_TOOLBAR_HEIGHT = 41;
 
 export const RTE_OPTIONS_DEF: FroalaOptions = {
   key: 'DUA2yE3G1A1A5B8B1pZGCTRSAPJWTLPLZHTQQe1JGZxC4B3A3B2B5B1C1E4I1B3==',
@@ -76,7 +76,8 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'class',
     'contenteditable',
     'spellcheck',
-    'tabindex'
+    'tabindex',
+    '.*mention.*'
 
     // 'align',
     // 'border',
@@ -110,14 +111,15 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'p',
     'span',
     'u',
-    'strike'
+    'strike',
 
-    // 'h1',
-    // 'h2',
-    // 'h3',
-    // 'h4',
-    // 'h5',
-    // 'h6',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6'
+
     // 'caption',
     // 'code',
     // 'figure',
@@ -135,7 +137,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   htmlExecuteScripts: false,
   htmlIgnoreCSSProperties: [],
   htmlRemoveTags: ['script', 'style'],
-  // htmlUntouched: true,
+  htmlUntouched: true,
 
   pasteAllowedStyleProps: [],
   pasteDeniedAttrs: [],
@@ -153,7 +155,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   linkInsertButtons: [],
 
   fontSizeSelection: false,
-  fontSize: ['10', '12', '18', '30'],
+  fontSize: ['11', '12', '18', '28'],
   fontSizeDefaultSelection: '12',
 
   colorsText: [],
@@ -177,8 +179,8 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'paragraphFormat',
     'paragraphStyle',
     'save',
-    'url'
-    // 'emoticons',
+    'url',
+    'emoticons'
     // 'fontFamily',
     // 'table',
     // 'video',
@@ -198,5 +200,38 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     // 'lineBreaker',
     // 'quickInsert',
     // 'quote',
-  ]
+  ],
+
+  emoticonsUseImage: false,
+
+  emoticonsSet: EMOJI_DATA.map((cat: EmojiCategory) => ({
+    name: cat.name,
+    id: cat.name,
+    code: cat.code || cat.data[0].code,
+    emoticons: cat.data.map((icn: Emoji) => ({
+      code: icn.code,
+      desc: icn.description,
+      icon: icn.icon
+    }))
+  })) as any
+};
+
+export const RTE_MENTIONS_OPTIONS_DEF: TributeOptions = {
+  lookup: 'displayName',
+  fillAttr: 'displayName',
+  requireLeadingSpace: false,
+  allowSpaces: true,
+
+  menuItemTemplate: function(item: TributeItem) {
+    return item.original.avatar
+      ? `<span class="brte-mention-avatar" aria-hidden="true" style="background-image:url(${
+          item.original.avatar
+        })"></span><span>${item.string}</span>`
+      : item.string;
+  },
+
+  searchOpts: {
+    pre: '<em class="match">',
+    post: '</em>'
+  }
 };

@@ -43,9 +43,12 @@ describe('CardsLayoutComponent', () => {
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(CardsLayoutComponent);
-        fixture.nativeElement.style.width = '950px';
+
         component = fixture.componentInstance;
+
         cardsHostElement = fixture.debugElement.nativeElement;
+        cardsHostElement.style.width = '950px';
+
         component.type = CardType.regular;
         fixture.detectChanges();
 
@@ -81,7 +84,7 @@ describe('CardsLayoutComponent', () => {
       5,
       CardType.small
     )} container, small cards`, () => {
-      fixture.nativeElement.style.width = calcNeededWidth(5, CardType.small);
+      cardsHostElement.style.width = calcNeededWidth(5, CardType.small);
       component.ngOnChanges(
         simpleChange({
           type: CardType.small
@@ -93,7 +96,7 @@ describe('CardsLayoutComponent', () => {
       6,
       CardType.regular
     )} container, regular cards`, () => {
-      fixture.nativeElement.style.width = calcNeededWidth(6, CardType.regular);
+      cardsHostElement.style.width = calcNeededWidth(6, CardType.regular);
       component.ngOnChanges(
         simpleChange({
           type: CardType.regular
@@ -105,7 +108,7 @@ describe('CardsLayoutComponent', () => {
       3,
       CardType.large
     )} container, large cards`, () => {
-      fixture.nativeElement.style.width = calcNeededWidth(3, CardType.large);
+      cardsHostElement.style.width = calcNeededWidth(3, CardType.large);
       component.ngOnChanges(
         simpleChange({
           type: CardType.large
@@ -143,10 +146,7 @@ describe('CardsLayoutComponent', () => {
       component.getCardsInRow$().subscribe(numberOfCards => {
         if (cardsInRowSubscribeCalled === 0) {
           cardsInRowSubscribeCalled++;
-          fixture.nativeElement.style.width = calcNeededWidth(
-            3,
-            CardType.regular
-          );
+          cardsHostElement.style.width = calcNeededWidth(3, CardType.regular);
           emitNativeEvent(window, 'resize');
         } else {
           expect(numberOfCards).toEqual(3);

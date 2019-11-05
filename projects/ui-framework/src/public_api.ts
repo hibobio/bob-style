@@ -401,7 +401,8 @@ export { InfoTooltipComponent } from './lib/popups/info-tooltip/info-tooltip.com
 // Emoji Module
 export { EmojiModule } from './lib/popups/emoji/emoji.module';
 export { EmojiComponent } from './lib/popups/emoji/emoji.component';
-export { Emoji } from './lib/popups/emoji/emoji.interface';
+export { Emoji, EmojiCategory } from './lib/popups/emoji/emoji.interface';
+export { EMOJI_DATA } from './lib/popups/emoji/emoji-data.consts';
 // Truncate Tooltip
 export { TruncateTooltipModule } from './lib/popups/truncate-tooltip/truncate-tooltip.module';
 export { TruncateTooltipComponent } from './lib/popups/truncate-tooltip/truncate-tooltip.component';

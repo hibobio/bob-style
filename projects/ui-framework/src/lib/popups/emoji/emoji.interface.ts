@@ -1,6 +1,7 @@
 export interface EmojiCategory {
   name: string;
   data: Emoji[];
+  code?: string;
 }
 
 export interface Emoji {

@@ -126,5 +126,6 @@ export enum Icons {
   dir_ltr = 'b-icon-dir-ltr',
   dir_rtl = 'b-icon-dir-rtl',
   field_add = 'b-icon-field-add',
-  chat = 'b-icon-chat'
+  chat = 'b-icon-chat',
+  at = 'b-icon-at'
 }

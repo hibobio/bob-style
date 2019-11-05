@@ -1,5 +1,6 @@
 $icon-chars: (
   megaphone: '\e965',
+  at: '\e96c',
   infinite: '\e964',
   field-add: '\e96a',
   bob-b: '\e95e',
@@ -203,6 +204,10 @@ $icon-colors: (
 
   @if $icon {
     @include icon-class($icon, $elem);
+  }
+
+  #{$elem} {
+    @content;
   }
 }
 

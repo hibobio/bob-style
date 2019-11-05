@@ -41,18 +41,20 @@ import {
   RTE_DISABLE_CONTROLS_DEF,
   RTE_MINHEIGHT_DEF,
   RTE_MAXHEIGHT_DEF,
-  RTE_CONTROLS_ORDER,
-  RTE_TOOLBAR_HEIGHT
+  RTE_TOOLBAR_HEIGHT,
+  RTE_MENTIONS_OPTIONS_DEF
 } from './rte.const';
 import { BlotType, RTEType } from './rte.enum';
 import { RteMentionsOption } from './rte.interface';
 import { PlaceholdersConverterService } from './placeholders.service';
 
 import { FroalaEditorDirective } from 'angular-froala-wysiwyg';
-import { FroalaEdtr, FroalaOptions } from './froala.interface';
+import { FroalaEditorInstance, FroalaOptions } from './froala.interface';
 import Tribute from 'tributejs';
+import { TributeInstance, TributeItem } from './tribute.interface';
 
 import './rte.direction';
+import './rte.mentions';
 
 export abstract class RTEbaseElement extends BaseFormElement
   implements OnChanges, OnInit {
@@ -64,12 +66,15 @@ export abstract class RTEbaseElement extends BaseFormElement
     super();
     this.baseValue = '';
     this.wrapEvent = false;
-    this.emitOnWrite = true;
+    this.emitOnWrite = false;
   }
+
+  public tribute: TributeInstance;
+  public editor: FroalaEditorInstance;
+  protected toolbarButtons: HTMLElement[];
 
   public length = 0;
   public editorValue: string;
-  public tribute: Tribute<any>;
   public plchldrPnlTrgrFocused = false;
 
   readonly icons = Icons;
@@ -79,8 +84,6 @@ export abstract class RTEbaseElement extends BaseFormElement
   readonly plchldrPanelPosition = [BELOW_END, ABOVE_END];
 
   private cntrlsInited = false;
-
-  protected toolbarButtons: HTMLElement[];
 
   @ViewChild('editor', { read: FroalaEditorDirective, static: true })
   protected editorDirective: FroalaEditorDirective;
@@ -117,25 +120,26 @@ export abstract class RTEbaseElement extends BaseFormElement
         value
       );
     }
-    if (isNullOrUndefined(this.editorValue) && this.baseValue !== undefined) {
+    if (
+      (value === undefined || isNullOrUndefined(this.editorValue)) &&
+      this.baseValue !== undefined
+    ) {
       this.editorValue = cloneValue(this.baseValue);
     }
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (hasChanges(changes)) {
-      applyChanges(
-        this,
-        changes,
-        {
-          minHeight: RTE_MINHEIGHT_DEF,
-          maxHeight: RTE_MAXHEIGHT_DEF,
-          controls: RTE_CONTROLS_DEF,
-          disableControls: RTE_DISABLE_CONTROLS_DEF
-        },
-        ['options', 'value']
-      );
-    }
+    applyChanges(
+      this,
+      changes,
+      {
+        minHeight: RTE_MINHEIGHT_DEF,
+        maxHeight: RTE_MAXHEIGHT_DEF,
+        controls: RTE_CONTROLS_DEF,
+        disableControls: RTE_DISABLE_CONTROLS_DEF
+      },
+      ['options', 'value']
+    );
 
     if (changes.options) {
       this.updateEditorOptions(
@@ -159,14 +163,14 @@ export abstract class RTEbaseElement extends BaseFormElement
               : this.placeholder || ' '
         },
         () => {
-          this.getEditor().placeholder.refresh();
+          this.editor.placeholder.refresh();
         }
       );
     }
 
     if (changes.maxChars) {
       this.updateEditorOptions({ charCounterMax: this.maxChars || -1 }, () => {
-        this.getEditor().charCounter['_init']();
+        this.editor.charCounter['_init']();
       });
     }
 
@@ -179,7 +183,7 @@ export abstract class RTEbaseElement extends BaseFormElement
           heightMax: this.maxHeight ? this.maxHeight - RTE_TOOLBAR_HEIGHT : null
         },
         () => {
-          this.getEditor().size.refresh();
+          this.editor.size.refresh();
         }
       );
     }
@@ -194,13 +198,17 @@ export abstract class RTEbaseElement extends BaseFormElement
       this.initTransformers();
     }
 
-    if (
-      changes.mentionsList &&
-      this.tribute &&
-      isNotEmptyArray(changes.mentionsList.currentValue)
-    ) {
-      this.tribute['hideMenu']();
-      this.tribute['collection'][0].values = this.mentionsList;
+    if (changes.mentionsList && this.mentionsEnabled()) {
+      if (!this.tribute) {
+        this.initMentions();
+
+        if (this.getEditorTextbox()) {
+          this.tribute.attach(this.getEditorTextbox());
+        }
+      } else {
+        this.tribute.hideMenu();
+        this.tribute.collection[0].values = this.mentionsList;
+      }
     }
 
     if (
@@ -208,8 +216,12 @@ export abstract class RTEbaseElement extends BaseFormElement
       (changes.placeholderList && this.editorValue !== undefined)
     ) {
       this.writeValue(
-        (changes.value && changes.value.currentValue) || this.editorValue
+        (changes.value && this.value) ||
+          (changes.placeholderList &&
+            this.editorValue !== undefined &&
+            this.editorValue)
       );
+
       this.transmitValue(this.editorValue, {
         eventType: [InputEventType.onWrite],
         updateValue: true
@@ -239,6 +251,13 @@ export abstract class RTEbaseElement extends BaseFormElement
     );
   }
 
+  public mentionsEnabled(): boolean {
+    return (
+      isNotEmptyArray(this.mentionsList) &&
+      this.controls.includes(BlotType.mentions)
+    );
+  }
+
   private initControls(): void {
     if (this.controls.includes(BlotType.list)) {
       this.controls = joinArrays(this.controls, [BlotType.ul, BlotType.ol]);
@@ -262,7 +281,7 @@ export abstract class RTEbaseElement extends BaseFormElement
       ]);
     }
 
-    this.controls = RTE_CONTROLS_ORDER.filter(
+    this.controls = RTE_CONTROLS_DEF.filter(
       (cntrl: BlotType) =>
         (this.controls || RTE_CONTROLS_DEF).includes(cntrl) &&
         !(this.disableControls || RTE_DISABLE_CONTROLS_DEF).includes(cntrl)
@@ -272,6 +291,9 @@ export abstract class RTEbaseElement extends BaseFormElement
   private initTransformers(): void {
     this.inputTransformers = [
       stringyOrFail,
+
+      (value: string): string =>
+        HtmlParserHelpers.prototype.cleanupHtml(value, {}),
 
       (value: string): string =>
         !value.includes('href')
@@ -285,16 +307,18 @@ export abstract class RTEbaseElement extends BaseFormElement
             }),
 
       (value: string): string =>
-        !value.includes('brte-mention')
+        !value.includes('mention')
           ? value
-          : this.parserService.enforceAttributes(value, '.brte-mention', {
+          : this.parserService.enforceAttributes(value, '[class*="mention"]', {
               class: 'fr-deletable',
               target: null,
-              spellcheck: 'false',
-              rel: 'noopener noreferrer',
-              contenteditable: false,
-              tabindex: '-1'
+              contenteditable: false
             }),
+
+      (value: string): string =>
+        this.parserService.enforceAttributes(value, 'span', {
+          class: null
+        }),
 
       (value: string): string =>
         this.parserService.linkify(
@@ -304,7 +328,7 @@ export abstract class RTEbaseElement extends BaseFormElement
     ];
 
     this.outputTransformers = [
-      value => HtmlParserHelpers.prototype.cleanupHtml(value)
+      (value: string): string => HtmlParserHelpers.prototype.cleanupHtml(value)
     ];
 
     if (this.placeholdersEnabled()) {
@@ -313,12 +337,36 @@ export abstract class RTEbaseElement extends BaseFormElement
           this.placeholdersConverter.toRte(value, this.placeholderList)
       );
 
-      this.outputTransformers.push(this.placeholdersConverter.fromRte);
+      this.outputTransformers.unshift(this.placeholdersConverter.fromRte);
     }
   }
 
-  public getEditor(): FroalaEdtr {
-    return this.editorDirective['_editor'] as FroalaEdtr;
+  private initMentions(): void {
+    this.tribute = new Tribute({
+      ...RTE_MENTIONS_OPTIONS_DEF,
+
+      values: this.mentionsList,
+
+      selectTemplate: (item: TributeItem) => {
+        // prettier-ignore
+        // tslint:disable-next-line: max-line-length
+        let html = `<a href="${item.original.link}" class="fr-deletable" spellcheck="false" rel="noopener noreferrer" contenteditable="false" tabindex="-1">@${item.original.displayName}</a>`;
+
+        if (isNotEmptyObject(item.original.attributes)) {
+          html = this.parserService.enforceAttributes(
+            html,
+            'a',
+            item.original.attributes
+          );
+        }
+
+        return html;
+      }
+    }) as TributeInstance;
+  }
+
+  public getEditor(): FroalaEditorInstance {
+    return this.editorDirective['_editor'] as FroalaEditorInstance;
   }
 
   public getEditorElement(selector = null): HTMLElement | HTMLElement[] {
@@ -334,7 +382,7 @@ export abstract class RTEbaseElement extends BaseFormElement
   }
 
   protected getEditorTextbox(): HTMLElement {
-    return this.getEditor().el as HTMLElement;
+    return this.getEditor() && (this.getEditor().el as HTMLElement);
   }
 
   protected updateToolbar(): void {

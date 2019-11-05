@@ -21,5 +21,7 @@ export enum BlotType {
   direction = 'direction',
   rightToLeft = 'rightToLeft',
   leftToRight = 'leftToRight',
-  placeholder = 'placeholder'
+  placeholder = 'placeholder',
+  mentions = 'mentions',
+  emoticons = 'emoticons'
 }

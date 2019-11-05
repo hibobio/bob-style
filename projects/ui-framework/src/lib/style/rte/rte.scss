@@ -214,7 +214,9 @@ $link-color: var(--primary-700);
   &:hover,
   &:focus,
   &.fr-active {
-    background-color: transparent !important;
+    &:not([data-cmd='setEmoticonCategory']) {
+      background-color: transparent !important;
+    }
 
     &:before {
       color: $icon-color-hover !important;
@@ -315,6 +317,10 @@ $link-color: var(--primary-700);
 }
 
 // popups
+
+.fr-popup {
+  overflow: hidden;
+}
 
 .fr-command.fr-btn.fr-active + .fr-dropdown-menu,
 .fr-popup {
@@ -422,6 +428,107 @@ $link-color: var(--primary-700);
   }
 }
 
+// emoticons popup
+
+$empticons-panel-max-width: 235px;
+
+.fr-emoticon-container + p {
+  color: transparent;
+  height: 10px;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+
+  .fr-link {
+    display: none;
+  }
+}
+
+.fr-icon-container.fr-emoticon-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  width: $empticons-panel-max-width;
+  height: 210px;
+  max-height: none;
+  padding: 3px 4px;
+  min-width: 0;
+}
+
+.fr-popup .fr-buttons.fr-tabs.fr-tabs-scroll {
+  width: $empticons-panel-max-width;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.fr-tabs.fr-tabs-scroll {
+  display: flex;
+}
+
+.fr-view span.fr-emoticon,
+.fr-command.fr-emoticon.fr-icon,
+.fr-popup .fr-tabs .fr-btn[data-cmd='setEmoticonCategory'] {
+  font-family: var(--emoji-font-family);
+  font-weight: normal;
+  line-height: 0;
+}
+
+.fr-command.fr-emoticon.fr-icon,
+.fr-popup .fr-tabs .fr-btn[data-cmd='setEmoticonCategory'] {
+  font-size: 18px;
+  @include flex-align;
+}
+
+.fr-popup .fr-tabs .fr-btn[data-cmd='setEmoticonCategory'] {
+  padding: 0;
+  width: (100% / 8);
+
+  &.fr-active-tab:hover,
+  &.fr-active-tab:focus {
+    background: white;
+  }
+}
+
+.fr-command.fr-emoticon.fr-icon {
+  padding: 5px 0;
+  width: (100% / 6);
+}
+
+// font-sizes
+
+.fr-element,
+.fr-toolbar,
+.fr-view {
+  --rte-font-size-small: #{$font-size-caption}; // 11px
+  --rte-font-size-normal: #{$font-size-body}; // 12px
+  --rte-font-size-large: #{$font-size-display-4}; // 18px
+  --rte-font-size-xlarge: #{$font-size-display-2}; // 28px
+}
+
+.fr-element,
+.fr-view {
+  [style*='11px'],
+  [style*='10px'] {
+    line-height: $font-size-body * $rte-lineheight;
+    font-size: var(--rte-font-size-small, $font-size-caption) !important;
+  }
+
+  [style*='12px'] {
+    font-size: var(--rte-font-size-normal, $font-size-body) !important;
+  }
+
+  [style*='18px'] {
+    line-height: 1;
+    font-size: var(--rte-font-size-large, $font-size-display-4) !important;
+  }
+
+  [style*='28px'],
+  [style*='30px'] {
+    line-height: 0.8;
+    font-size: var(--rte-font-size-xlarge, $font-size-display-2) !important;
+  }
+}
+
 // font-size popup
 
 .fr-command.fr-btn
@@ -439,38 +546,23 @@ $link-color: var(--primary-700);
     font-weight: normal;
   }
 
-  &[title='10']:before {
+  &[title='11']:before {
     content: 'Small';
-    font-size: 10px;
+    font-size: var(--rte-font-size-small, $font-size-caption);
   }
   &[title='12']:before {
     content: 'Normal';
-    font-size: $font-size-body;
+    font-size: var(--rte-font-size-normal, $font-size-body);
   }
   &[title='18']:before {
     content: 'Large';
-    font-size: 18px;
+    font-size: var(--rte-font-size-large, $font-size-display-4);
     line-height: 1;
   }
-  &[title='30']:before {
+  &[title='28']:before {
     content: 'Huge';
-    font-size: 30px;
+    font-size: var(--rte-font-size-xlarge, $font-size-display-2);
     line-height: 1;
-  }
-}
-
-// font-sizes
-
-.fr-box .fr-element,
-.fr-view {
-  span[style*='10px'] {
-    line-height: $font-size-body * $rte-lineheight;
-  }
-  span[style*='18px'] {
-    line-height: 1;
-  }
-  span[style*='30px'] {
-    line-height: 0.8;
   }
 }
 
@@ -499,9 +591,10 @@ $link-color: var(--primary-700);
   }
 }
 
-// direction
+// custom toolbar buttons
 
 .fr-toolbar {
+  [data-cmd='mentions'],
   [data-cmd='rightToLeft'],
   [data-cmd='leftToRight'] {
     font-size: 0px;
@@ -510,14 +603,18 @@ $link-color: var(--primary-700);
       display: none;
     }
   }
+}
 
+// direction
+
+.fr-toolbar {
   [data-cmd='leftToRight'] {
-    @include b-icon('dir-rtl', small, null);
+    @include b-icon($icon: 'dir-rtl', $size: small, $color: null);
     display: none;
   }
 
   [data-cmd='rightToLeft'] {
-    @include b-icon('dir-ltr', small, null);
+    @include b-icon($icon: 'dir-ltr', $size: small, $color: null);
 
     &.fr-active {
       display: none;
@@ -525,6 +622,16 @@ $link-color: var(--primary-700);
       & + [data-cmd='leftToRight'] {
         display: block;
       }
+    }
+  }
+}
+
+// mentions
+
+.fr-toolbar {
+  [data-cmd='mentions'] {
+    @include b-icon($icon: 'at', $size: small, $color: null) {
+      font-size: 17px;
     }
   }
 }
