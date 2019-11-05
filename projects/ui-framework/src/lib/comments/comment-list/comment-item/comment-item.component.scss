@@ -27,12 +27,14 @@
     .comment-body {
       line-height: 20px;
       @include text-hyphenate;
+      white-space: pre-line;
 
       ::ng-deep a {
         color: $primary-500;
       }
     }
   }
+
   .text-section {
     display: block;
     background-color: $grey-100;
