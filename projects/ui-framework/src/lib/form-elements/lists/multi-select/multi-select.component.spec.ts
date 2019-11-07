@@ -156,7 +156,7 @@ describe('MultiSelectComponent', () => {
       fixture.autoDetectChanges();
       tick(0);
       const applyButton = overlayContainerElement.querySelector(
-        'b-list-footer .apply-button'
+        'b-list-footer .apply-button button'
       ) as HTMLElement;
       applyButton.click();
       expect(component.selectChange.emit).toHaveBeenCalledWith(
@@ -171,7 +171,7 @@ describe('MultiSelectComponent', () => {
       fixture.autoDetectChanges();
       tick(0);
       const applyButton = overlayContainerElement.querySelector(
-        'b-list-footer .apply-button'
+        'b-list-footer .apply-button button'
       ) as HTMLElement;
       applyButton.click();
       expect(component.destroyPanel).toHaveBeenCalled();
@@ -186,7 +186,7 @@ describe('MultiSelectComponent', () => {
       fixture.autoDetectChanges();
       tick(0);
       const cancelButton = overlayContainerElement.querySelector(
-        'b-list-footer .cancel-button'
+        'b-list-footer .cancel-button button'
       ) as HTMLElement;
       cancelButton.click();
       expect(component.destroyPanel).toHaveBeenCalled();
@@ -201,7 +201,7 @@ describe('MultiSelectComponent', () => {
         'b-multi-list .option'
       )[3] as HTMLElement).click();
       const cancelButton = overlayContainerElement.querySelector(
-        'b-list-footer .cancel-button'
+        'b-list-footer .cancel-button button'
       ) as HTMLElement;
       cancelButton.click();
       expect(component.selectCancelled.emit).toHaveBeenCalledWith(
@@ -231,7 +231,7 @@ describe('MultiSelectComponent', () => {
       ) as HTMLElement;
       clearButton.click();
       const applyButton = overlayContainerElement.querySelector(
-        'b-list-footer .apply-button'
+        'b-list-footer .apply-button button'
       ) as HTMLElement;
       applyButton.click();
       fixture.autoDetectChanges();
@@ -254,7 +254,7 @@ describe('MultiSelectComponent', () => {
       ) as HTMLElement;
       clearButton.click();
       const applyButton = overlayContainerElement.querySelector(
-        'b-list-footer .apply-button'
+        'b-list-footer .apply-button button'
       ) as HTMLElement;
       applyButton.click();
       fixture.autoDetectChanges();
@@ -280,7 +280,7 @@ describe('MultiSelectComponent', () => {
       ) as HTMLElement;
       clearButton.click();
       const cancelButton = overlayContainerElement.querySelector(
-        'b-list-footer .cancel-button'
+        'b-list-footer .cancel-button button'
       ) as HTMLElement;
       cancelButton.click();
       fixture.autoDetectChanges();
@@ -303,7 +303,7 @@ describe('MultiSelectComponent', () => {
       ) as HTMLElement;
       clearButton.click();
       const cancelButton = overlayContainerElement.querySelector(
-        'b-list-footer .cancel-button'
+        'b-list-footer .cancel-button button'
       ) as HTMLElement;
       cancelButton.click();
       fixture.autoDetectChanges();

@@ -45,7 +45,7 @@ describe('ListFooterComponent', () => {
       };
       fixture.detectChanges();
       const clearButton = fixture.debugElement.query(By.css('.clear-button'));
-      clearButton.triggerEventHandler('click', null);
+      clearButton.componentInstance.clicked.emit();
       expect(component.clear.emit).toHaveBeenCalled();
     });
     it('should show apply with the right config', () => {
@@ -68,7 +68,7 @@ describe('ListFooterComponent', () => {
       const applyButton = fixture.debugElement.queryAll(
         By.css('.apply-button')
       )[0];
-      applyButton.triggerEventHandler('click', null);
+      applyButton.componentInstance.clicked.emit();
       expect(component.apply.emit).toHaveBeenCalled();
     });
     it('should show cancel with the right config', () => {
@@ -91,7 +91,7 @@ describe('ListFooterComponent', () => {
       const cancelButton = fixture.debugElement.queryAll(
         By.css('.cancel-button')
       )[0];
-      cancelButton.triggerEventHandler('click', null);
+      cancelButton.componentInstance.clicked.emit();
       expect(component.cancel.emit).toHaveBeenCalled();
     });
     it('should show all buttons if passed in config', () => {

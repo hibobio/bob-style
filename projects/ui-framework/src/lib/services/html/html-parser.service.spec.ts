@@ -1,6 +1,6 @@
 import { HtmlParserHelpers } from './html-parser.service';
 
-fdescribe('HtmlParserHelpers', () => {
+describe('HtmlParserHelpers', () => {
   const parser = new HtmlParserHelpers();
 
   describe('cleanupHtml', () => {
@@ -100,7 +100,7 @@ fdescribe('HtmlParserHelpers', () => {
   describe('enforceAttributes', () => {
     const origClass = 'mydiv rem-oveme rem-ovemetoo';
     const testString = `
-      <div class="${origClass}">text</div>
+      <div class="${ origClass }">text</div>
       <a href="link" class="mylink">link</a>
       <span data-blah="blah">text2</span>
     `;
@@ -110,7 +110,7 @@ fdescribe('HtmlParserHelpers', () => {
         parser.enforceAttributes(testString, {
           div: { class: 'hello' }
         })
-      ).toContain(`<div class="${origClass} hello">`);
+      ).toContain(`<div class="${ origClass } hello">`);
     });
 
     it('Should add multiple classes', () => {
@@ -123,7 +123,7 @@ fdescribe('HtmlParserHelpers', () => {
             }
           }
         })
-      ).toContain(`<div class="${origClass} hello world">`);
+      ).toContain(`<div class="${ origClass } hello world">`);
     });
 
     it('Should remove class', () => {

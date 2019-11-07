@@ -23,13 +23,15 @@ describe('DialogService', () => {
   let dialogRefMock;
 
   const comp = CompMockComponent;
-  const config: DialogConfig = {
-    size: DialogSize.medium,
-    panelClass: 'test-class',
-    data: {},
-  };
+  let config: DialogConfig;
 
   beforeEach(() => {
+    config = {
+      size: DialogSize.medium,
+      panelClass: 'test-class',
+      data: {},
+    };
+
     dialogRefMock = createSpyObj('dialogRefMock', ['afterClosed', 'beforeClosed']);
     dialogRefMock.afterClosed.and.returnValue(of({}));
 
@@ -47,14 +49,59 @@ describe('DialogService', () => {
   });
 
   describe('openDialog', () => {
-    it('should call matDialog.open with config', () => {
+    it('should call matDialog.open with config small', () => {
+      config = {
+        size: DialogSize.small,
+        panelClass: 'test-class',
+        data: {},
+      };
+      const expectedConfig = {
+        size: DialogSize.small,
+        data: {},
+        width: 480,
+        closeOnNavigation: true,
+        backdropClass: 'b-dialog-backdrop',
+        panelClass: ['b-dialog-panel', 'size-small', 'test-class'],
+        hasBackdrop: true,
+        disableClose: false,
+        maxWidth: '90vw',
+      };
+      dialogService.openDialog(comp, config);
+      expect(spyMatDialog.open).toHaveBeenCalledWith(comp, expectedConfig);
+    });
+    it('should call matDialog.open with config medium', () => {
+      config = {
+        size: DialogSize.medium,
+        panelClass: 'test-class',
+        data: {},
+      };
       const expectedConfig = {
         size: DialogSize.medium,
         data: {},
-        width: 700,
+        width: 720,
         closeOnNavigation: true,
         backdropClass: 'b-dialog-backdrop',
         panelClass: ['b-dialog-panel', 'size-medium', 'test-class'],
+        hasBackdrop: true,
+        disableClose: false,
+        maxWidth: '90vw',
+      };
+      dialogService.openDialog(comp, config);
+      expect(spyMatDialog.open).toHaveBeenCalledWith(comp, expectedConfig);
+    });
+    it('should call matDialog.open with config large', () => {
+      config = {
+        size: DialogSize.large,
+        panelClass: 'test-class',
+        data: {},
+      };
+      const expectedConfig = {
+        size: DialogSize.large,
+        data: {},
+        width: 960,
+        closeOnNavigation: true,
+        backdropClass: 'b-dialog-backdrop',
+        panelClass: ['b-dialog-panel', 'size-large', 'test-class'],
         hasBackdrop: true,
         disableClose: false,
         maxWidth: '90vw',
