@@ -16,6 +16,7 @@ const template = `
     [data]="data"
     [showDataLabels]="showDataLabels"
     [legendPosition]="legendPosition"
+    [stackedDataLabels]="stackedDataLabels"
     [categories]="categories"
     [preTooltipValue]="preTooltipValue"
     [postTooltipValue]="postTooltipValue"
@@ -65,6 +66,7 @@ story.add(
       template: storyTemplate,
       props: {
         showDataLabels: boolean('showDataLabels', false),
+        stackedDataLabels: boolean('stackedDataLabels', false),
         legendPosition: select('legendPosition',
           Object.values(ChartLegendPositionEnum),
           ChartLegendPositionEnum.BOTTOM),

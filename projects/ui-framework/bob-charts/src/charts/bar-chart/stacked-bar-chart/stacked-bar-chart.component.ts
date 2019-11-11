@@ -15,6 +15,7 @@ export class StackedBarChartComponent extends ChartCore implements OnChanges {
   type = ChartTypesEnum.Column;
   @Input() categories: string[];
   @Input() data: SeriesColumnOptions[];
+  @Input() stackedDataLabels = true;
   @Input() name: string;
   constructor(
     public zone: NgZone,
@@ -37,8 +38,19 @@ export class StackedBarChartComponent extends ChartCore implements OnChanges {
       xAxis: {
         categories: this.categories
       },
+      yAxis: {
+        stackLabels: {
+          enabled: this.stackedDataLabels,
+          style: {
+            fontWeight: 'bold',
+            color: '#535353'
+          }
+        }
+      },
       plotOptions: {
         column: {
+          pointPadding: 0.15,
+          groupPadding: 0,
           stacking: 'normal'
         }
       },
