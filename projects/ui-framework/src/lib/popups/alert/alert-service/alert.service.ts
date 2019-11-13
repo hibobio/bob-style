@@ -38,7 +38,7 @@ export class AlertService {
       .position()
       .global()
       .centerHorizontally()
-      .top('20px');
+      .top('10px');
     const panelClass = '';
     return {
       disposeOnNavigation: true,

@@ -119,10 +119,10 @@ describe('DatepickerComponent', () => {
       expect(picker.panelClass).toContain('type-date');
       expect(picker.startView).toEqual('month');
     });
-    it('should display calendar icon', () => {
+    it('should display date icon', () => {
       iconElem = elementFromFixture(fixture, '.open-picker .b-icon');
       expect(iconElem).toBeTruthy();
-      expect(iconElem.classList).toContain('b-icon-calendar');
+      expect(iconElem.classList).toContain('b-icon-date');
     });
     it('should not display clear icon, when component has no value', () => {
       iconElem = elementFromFixture(fixture, '.clear-input .b-icon');
