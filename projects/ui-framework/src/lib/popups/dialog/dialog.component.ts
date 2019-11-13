@@ -1,11 +1,8 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Icons } from '../../icons/icons.enum';
 import { DialogButton, DialogButtons } from './dialog.interface';
-import {
-  ButtonSize,
-  ButtonType
-} from '../../buttons/buttons.enum';
+import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { SLIDE_UP_DOWN } from '../../style/animations';
 import { get, has, isFunction } from 'lodash';
@@ -47,7 +44,11 @@ export class DialogComponent implements OnDestroy {
   showScrolling: DialogScrollDir = null;
   private oldScrollPos = 0;
 
-  constructor(public dialogRef: MatDialogRef<DialogComponent>) {}
+  constructor(
+    public dialogRef: MatDialogRef<DialogComponent>,
+    private cdr: ChangeDetectorRef,
+  ) {
+  }
 
   onOk(): void {
     if (this.shouldShowConfirmationMessage()) {
@@ -89,9 +90,11 @@ export class DialogComponent implements OnDestroy {
           } else {
             this.dialogRef.close(res);
           }
+          this.cdr.markForCheck();
         })
         .catch(err => {
           this.showProgress = false;
+          this.cdr.markForCheck();
         });
     } else {
       this.dialogRef.close();
