@@ -59,6 +59,22 @@ p {
   align-items: flex-start;
 }
 
+.inside-border-left {
+  box-sizing: border-box;
+  border-left-style: solid;
+  border-left-width: times8(2);
+}
+
+.inside-border-top-left {
+  @extend .inside-border-left;
+  border-top-left-radius: $border-radius;
+}
+
+.inside-border-bottom-left {
+  @extend .inside-border-left;
+  border-bottom-left-radius: $border-radius;
+}
+
 .bcp-header {
   padding: times8(2) times8(4);
   justify-content: space-between;

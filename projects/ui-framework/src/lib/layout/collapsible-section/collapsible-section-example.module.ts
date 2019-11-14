@@ -297,7 +297,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   template: `
     <b-collapsible-section
       [title]="title"
-      [titleColor]="titleColor"
+      [leftBorderColor]="leftBorderColor"
       [description]="description"
       [collapsible]="collapsible"
       [expanded]="expanded"
@@ -342,13 +342,11 @@ export class CollapsibleSectionExample2Component implements OnChanges {
   @Input() divided = true;
 
   @Input() title = mockText(randomNumber(2, 5));
-  @Input() titleColor = '#5555ff';
+  @Input() leftBorderColor = '#5555ff';
   @Input() description = mockText(randomNumber(3, 6));
 
   @Output() opened: EventEmitter<void> = new EventEmitter<void>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
-
-  readonly labelValueType = LabelValueType;
 
   public buttonText1 = mockText(1);
   public buttonText2 = mockText(1);

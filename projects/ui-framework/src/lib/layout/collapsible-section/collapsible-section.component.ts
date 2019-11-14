@@ -62,7 +62,7 @@ export class CollapsibleSectionComponent
   @Input() divided = true;
 
   @Input() title: string;
-  @Input() titleColor?: string;
+  @Input() leftBorderColor?: string;
   @Input() description?: string;
 
   @Input() options: CollapsibleOptions = cloneObject(collapsibleOptionsDef);

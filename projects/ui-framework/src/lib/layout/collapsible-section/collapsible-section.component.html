@@ -7,15 +7,16 @@
           'bcp-section-not-divided': !divided
          }">
 
-  <header class="
-         bcp-header"
+  <header class="bcp-header"
           [attr.id]="panelID+'-header'"
           [attr.aria-controls]="(collapsible && panelID) || null"
           [attr.aria-expanded]="(collapsible && expanded) || null"
           [ngClass]="{
             'b-icon-chevron-right': collapsible && !expanded,
-            'b-icon-chevron-down': collapsible && expanded
+            'b-icon-chevron-down': collapsible && expanded,
+            'inside-border-top-left': leftBorderColor
           }"
+          [ngStyle]="{'border-left-color': leftBorderColor}"
           (click)="togglePanel()">
 
     <div *ngIf="title"
@@ -23,8 +24,9 @@
          [ngClass]="{'bcp-title-wrap-column': options?.titlesAsColumn}">
 
       <h4 class="bcp-title"
-          [ngClass]="{'b-display-3': !options?.smallTitle, 'b-bold-body': options?.smallTitle}"
-          [ngStyle]="{'color': titleColor}">{{title}}</h4>
+          [ngClass]="{'b-display-3': !options?.smallTitle, 'b-bold-body': options?.smallTitle}">
+        {{title}}
+      </h4>
 
       <p *ngIf="description"
          class="bcp-description">{{description}}</p>
@@ -50,7 +52,9 @@
        [attr.id]="panelID"
        [attr.aria-labelledby]="panelID+'-header'">
     <div class="bcp-panel-content-wrap"
-         #panelContent>
+         #panelContent
+         [ngClass]="{ 'inside-border-bottom-left': leftBorderColor }"
+         [ngStyle]="{'border-left-color': leftBorderColor + '33'}">
       <ng-content></ng-content>
     </div>
   </div>

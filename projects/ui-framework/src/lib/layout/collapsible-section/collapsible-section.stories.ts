@@ -27,7 +27,7 @@ const template = `
     [disabled]="disabled"
     [divided]="divided"
     [title]="title"
-    [titleColor]="titleColor"
+    [leftBorderColor]="leftBorderColor"
     [description]="description"
     [options]="options"
     (closed)="onPanelClosed($event)"
@@ -63,7 +63,7 @@ const storyTemplate = `
 
    <b-collapsible-section-example-2
       [title]="title"
-      [titleColor]="titleColor"
+      [leftBorderColor]="leftBorderColor"
       [description]="description"
       [collapsible]="collapsible"
       [expanded]="expanded"
@@ -92,7 +92,7 @@ const note = `
   [disabled] | boolean | if the panel is disabled (can't be opened) | false
   [divided] | boolean | if the panel has a divider between the header and the content | true
   [title] | string | section title | none
-  [titleColor] | string | color for the title | none
+  [leftBorderColor] | string | color for the left border of the header and content panel | none
   [description] | string | section description (subtitle) | none
   [options] | CollapsibleOptions | additional options, among which: <br> **options.headerTranscludeStopPropagation** - set to true to prevent click event propagation from content transcluded in header (for example, to prevent buttons opening/closing the panel) | false
   (opened) |  EventEmitter | emits when collapsible panel was opened | none
@@ -118,7 +118,7 @@ story.add(
         disabled: boolean('disabled', false),
         divided: boolean('divided', true),
         title: text('title', mockText(randomNumber(2, 5))),
-        titleColor: text('titleColor', '#5555ff'),
+        leftBorderColor: text('leftBorderColor', '#5555ff'),
         description: text('description', mockText(randomNumber(3, 6))),
         onPanelOpened: action('Panel opened'),
         onPanelClosed: action('Panel closed')
