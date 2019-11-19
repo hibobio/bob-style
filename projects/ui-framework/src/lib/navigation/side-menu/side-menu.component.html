@@ -4,8 +4,10 @@
     <ng-content></ng-content>
   </div>
 </div>
-<b-side-menu-option *ngFor="let option of options"
-                    [option]="option"
-                    [selected]="option.id === selectedId"
-                    (selectOption)="onSelectOption($event)">
-</b-side-menu-option>
+<div class="menu-options-wrapper">
+  <b-side-menu-option *ngFor="let option of options"
+                      [option]="option"
+                      [selected]="option.id === selectedId"
+                      (selectOption)="onSelectOption($event)">
+  </b-side-menu-option>
+</div>
