@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { DatepickerComponent } from './datepicker.component';
-import { MatNativeDateModule } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MatNativeDateModule, } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { IconsModule } from '../../icons/icons.module';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,7 @@ import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { DateParseService } from './date-parse.service';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
+import { B_DATE_FORMATS } from './date.adapter';
 
 @NgModule({
   declarations: [DatepickerComponent],
@@ -25,7 +26,23 @@ import { FormElementLabelModule } from '../form-element-label/form-element-label
   providers: [
     FormElementKeyboardCntrlService,
     DateParseService,
-    EventManagerPlugins[0]
-  ]
+    EventManagerPlugins[0],
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: B_DATE_FORMATS,
+    },
+  ],
 })
-export class DatepickerModule {}
+export class DatepickerModule {
+  static init(dateAdapter: any): ModuleWithProviders {
+    return {
+      ngModule: DatepickerModule,
+      providers: [
+        {
+          provide: DateAdapter,
+          useClass: dateAdapter,
+        },
+      ],
+    };
+  }
+}

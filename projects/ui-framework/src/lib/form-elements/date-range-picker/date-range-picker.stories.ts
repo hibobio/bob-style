@@ -1,19 +1,14 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  boolean,
-  select,
-  text,
-  withKnobs,
-  object,
-} from '@storybook/addon-knobs/angular';
+import { boolean, select, text, withKnobs, } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { DateRangePickerModule } from './date-range-picker.module';
-import { thisYear, thisMonth } from '../../services/utils/functional-utils';
+import { thisMonth, thisYear } from '../../services/utils/functional-utils';
 import { DatepickerType } from '../datepicker/datepicker.enum';
+import { BDateAdapter } from '../datepicker/date.adapter';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -137,7 +132,7 @@ story.add(
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
-          DateRangePickerModule,
+          DateRangePickerModule.init(BDateAdapter),
           StoryBookLayoutModule,
         ],
       },

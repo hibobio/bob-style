@@ -1,20 +1,15 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  boolean,
-  number,
-  select,
-  text,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { boolean, select, text, withKnobs, } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { DatepickerModule } from './datepicker.module';
 import { ComponentGroupType } from '../../consts';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { thisYear, thisMonth } from '../../services/utils/functional-utils';
+import { thisMonth, thisYear } from '../../services/utils/functional-utils';
 import { DatepickerType } from './datepicker.enum';
 import { mockText } from '../../mock.const';
+import { BDateAdapter } from './date.adapter';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -133,7 +128,7 @@ story.add(
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
-          DatepickerModule,
+          DatepickerModule.init(BDateAdapter),
           StoryBookLayoutModule,
         ],
       },

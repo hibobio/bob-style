@@ -1,16 +1,7 @@
-import {
-  Component,
-  forwardRef,
-  Input,
-  ChangeDetectorRef,
-  ChangeDetectionStrategy,
-  NgZone,
-} from '@angular/core';
-import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, NgZone, } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
-import { dateToString, dateOrFail } from '../../services/utils/transformers';
+import { dateOrFail, dateToString } from '../../services/utils/transformers';
 import { MobileService } from '../../services/utils/mobile.service';
 import { BaseDatepickerElement } from './datepicker.abstract';
 import { DateParseService } from './date-parse.service';
@@ -26,14 +17,6 @@ import { BaseFormElement } from '../base-form-element';
   templateUrl: './datepicker.component.html',
   styleUrls: ['../input/input.component.scss', './datepicker.component.scss'],
   providers: [
-    {
-      provide: DateAdapter,
-      useClass: BDateAdapter,
-    },
-    {
-      provide: MAT_DATE_FORMATS,
-      useValue: B_DATE_FORMATS,
-    },
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DatepickerComponent),
