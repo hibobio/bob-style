@@ -58,14 +58,11 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() tableGridOptions: Partial<GridOptions> = {};
   @Input() suppressDragLeaveHidesColumns = false;
 
-  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
-    SortChangedEvent
-  >();
-  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<
-    RowClickedEvent
-  >();
+  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<SortChangedEvent>();
+  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() gridInit: EventEmitter<void> = new EventEmitter<void>();
+  @Output() columnsChanged: EventEmitter<void> = new EventEmitter<void>();
   @Output() columnsOrderChanged: EventEmitter<ColumnsOrderChangedEvent> = new EventEmitter<ColumnsOrderChangedEvent>();
   @Output() cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter<CellClickedEvent>();
 
@@ -115,6 +112,7 @@ export class TableComponent implements OnInit, OnChanges {
         event.columnApi.autoSizeAllColumns();
         this.setOrderedColumns(event.columnApi.getAllGridColumns());
         this.cdr.markForCheck();
+        this.columnsChanged.emit();
       },
 
       onDragStopped(event: DragStoppedEvent): void {
