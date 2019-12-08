@@ -67,10 +67,8 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   @Input() translation: EditableListTranslation = cloneObject(
     EDITABLE_LIST_TRANSLATION
   );
-
-  @Output() changed: EventEmitter<EditableListState> = new EventEmitter<
-    EditableListState
-  >();
+  @Input() maxChars: number;
+  @Output() changed: EventEmitter<EditableListState> = new EventEmitter<EditableListState>();
   @Output() inputChanged: EventEmitter<string> = new EventEmitter<string>();
 
   readonly icons = Icons;
@@ -88,6 +86,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
 
   public isDragged = false;
   public addingItem = false;
+  public addingItemLen = 0;
   public addedItem = false;
   public inputInvalid = false;
   public sameItemIndex: number = null;

@@ -5,6 +5,7 @@ import {
   withKnobs,
   boolean,
   select,
+  number
 } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -30,7 +31,8 @@ const componentTemplate1 = `
                    remove: allowRemove
                  }"
                  (changed)="onListUpdate($event)"
-                 (inputChanged)="onInputChange($event)">
+                 (inputChanged)="onInputChange($event)"
+                 [maxChars]="maxChars">
 </b-editable-list>
 `;
 
@@ -117,6 +119,7 @@ story.add(
 
         onListUpdate: action('onListUpdate'),
         onInputChange: action('onInputChange'),
+        maxChars: number('maxChars', 0, {}, 'Props'),
       },
       moduleMetadata: {
         imports: [

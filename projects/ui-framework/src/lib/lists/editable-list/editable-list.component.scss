@@ -25,7 +25,7 @@ $bel-item-dragged-border-color: $grey-400;
 
 .bel-header-top {
   min-height: $bel-item-height;
-  margin-bottom: times8(2);
+  margin-bottom: 3px;
   flex-wrap: wrap;
 
   .bel-item {
@@ -35,10 +35,25 @@ $bel-item-dragged-border-color: $grey-400;
 }
 
 .b-input-message {
-  width: 100%;
-  @include b-caption($color: $color-error, $addCssVars: false);
+  @include b-caption($addCssVars: false);
   margin: $label-hint-margin 0 0;
+  margin-left: auto;
   @include animate(slide-down, 0.15s, $val: 5px, $keyframes: true);
+  &.error {
+    color: $color-error;
+    margin-left: 0;
+
+
+  }
+
+}
+
+
+.input-wrapper
+{
+  display: flex;
+  justify-content: space-between;
+  margin: 8px,0px, 8px, 0px;
 }
 
 :host ::ng-deep .bel-sort-button {
