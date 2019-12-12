@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, Input, NgZone, OnDestroy, OnInit, ViewChild,
+  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, NgZone, OnDestroy, OnInit, Output, ViewChild,
 } from '@angular/core';
 import { remove as _remove, isEqual as _isEqual } from 'lodash';
 
@@ -16,6 +16,7 @@ const CONFETTI_HEIGHT = 15;
 export class ConfettiComponent implements OnInit, OnDestroy {
   @ViewChild('confettiCanvas', { static: true }) canvas: ElementRef;
 
+  @Output() complete: EventEmitter<any> = new EventEmitter<any>();
   @Input() colors: string[];
   @Input() numberOfConfetti = 20;
 
@@ -40,7 +41,6 @@ export class ConfettiComponent implements OnInit, OnDestroy {
     this.ctx = this.canvasEl.getContext('2d');
     this.canvasEl.width = this.windowDim.w;
     this.canvasEl.height = this.windowDim.h;
-    this._render();
   }
 
   fireConfetti(pos: { x: number, y: number }[]) {
@@ -49,6 +49,7 @@ export class ConfettiComponent implements OnInit, OnDestroy {
         this.CONFETTI.push(new Plane(p, this.colors));
       }
     });
+    this._render();
   }
 
   private _getColor(w, h, color) {
@@ -81,7 +82,13 @@ export class ConfettiComponent implements OnInit, OnDestroy {
         return _isEqual(confetti.outOfBounds, true);
       });
 
-      this.loopReq = requestAnimationFrame(this._render.bind(this));
+      if (this.CONFETTI.length > 0) {
+        this.loopReq = requestAnimationFrame(this._render.bind(this));
+      } else {
+        window.cancelAnimationFrame(this.loopReq);
+        this.loopReq = null;
+        this.complete.emit();
+      }
     });
   }
 
