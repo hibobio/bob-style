@@ -355,6 +355,8 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public listTrackBy(index: number, item: SelectOption): string | number {
-    return item.id || item.value || JSON.stringify(item);
+    return (
+      (item.id !== undefined && item.id) || item.value || JSON.stringify(item)
+    );
   }
 }

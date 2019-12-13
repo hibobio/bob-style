@@ -29,6 +29,7 @@ import {
   notFirstChanges,
   cloneObject,
   randomNumber,
+  simpleUID,
 } from '../../services/utils/functional-utils';
 
 const SHUFFLE_EMPLOYEES_INTERVAL = 3000;
@@ -47,9 +48,6 @@ export class EmployeesShowcaseComponent
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
-  >();
-  @Output() clicked: EventEmitter<EmployeeShowcase> = new EventEmitter<
-    EmployeeShowcase
   >();
 
   public panelListOptions: SelectGroupOption[];
@@ -117,22 +115,18 @@ export class EmployeesShowcaseComponent
   }
 
   trackBy(index: number, item: EmployeeShowcase): string {
-    return item.id;
+    return (
+      (item.id !== undefined && item.id) ||
+      item.displayName ||
+      JSON.stringify(item)
+    );
   }
 
   onSelectChange(listChange: ListChange): void {
     this.selectChange.emit(listChange);
   }
 
-  onAvatarClick(ee: EmployeeShowcase) {
-    if (this.clicked.observers.length > 0) {
-      this.zone.run(() => {
-        this.clicked.emit(ee);
-      });
-    }
-  }
-
-  public initShowcase() {
+  public initShowcase(): void {
     this.clientWidth = this.DOM.getClosest(
       this.host.nativeElement,
       this.DOM.getInnerWidth,
@@ -174,7 +168,7 @@ export class EmployeesShowcaseComponent
     }
   }
 
-  private getAvatarsToShow() {
+  private getAvatarsToShow(): EmployeeShowcase[] {
     return this.employees.slice(
       0,
       !this.showThreeDotsButton ? this.avatarsToFit : this.avatarsToFit - 1
@@ -184,8 +178,8 @@ export class EmployeesShowcaseComponent
   private getPanelListOptions(): SelectGroupOption[] {
     return [
       {
-        groupName: '',
-        options: this.employees.map(employee => ({
+        groupName: simpleUID(),
+        options: this.employees.map((employee: EmployeeShowcase) => ({
           value: employee.displayName,
           id: employee.id,
           selected: false,
@@ -200,7 +194,7 @@ export class EmployeesShowcaseComponent
     ];
   }
 
-  private shuffleAvatars() {
+  private shuffleAvatars(): void {
     const firstIndex = randomNumber(
       0,
       this.avatarsToFit > 1 ? this.avatarsToFit - 1 : 0
