@@ -1,5 +1,9 @@
 <b-search #searchInput
-          [ngClass]="{'panel-open': panelOpen}"
+          [ngClass]="{
+            'panel-open': panelOpen,
+            'panel-above': positionClassList['panel-above'],
+            'panel-below': positionClassList['panel-below']
+          }"
           cdkOverlayOrigin
           class="panel-trigger"
           [value]="searchValue"

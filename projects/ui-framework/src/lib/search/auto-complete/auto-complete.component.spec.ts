@@ -184,13 +184,8 @@ describe('AutoCompleteComponent', () => {
       searchEl.componentInstance.searchChange.emit('e1');
       fixture.autoDetectChanges();
 
-      expect(component['positionChangeSubscriber'].closed).toBe(false);
-      expect(component['backdropClickSubscriber'].closed).toBe(false);
-
       component.ngOnDestroy();
-
-      expect(component['positionChangeSubscriber'].closed).toBe(true);
-      expect(component['backdropClickSubscriber'].closed).toBe(true);
+      expect(component['subscribtions']).toEqual([]);
       expect(component['panelOpen']).toBe(false);
       expect(component['panelConfig']).toEqual({});
       expect(component['templatePortal']).toBe(null);

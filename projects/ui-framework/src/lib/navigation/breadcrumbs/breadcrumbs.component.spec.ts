@@ -1,42 +1,33 @@
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {By} from '@angular/platform-browser';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {MobileService} from '../../services/utils/mobile.service';
-import {BreadcrumbsComponent} from './breadcrumbs.component';
-import {BreadcrumbsToggleStrategy} from './breadcrumbs.enum';
-import {Breadcrumb} from './breadcrumbs.interface';
-import createSpyObj = jasmine.createSpyObj;
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MobileService } from '../../services/utils/mobile.service';
+import { BreadcrumbsComponent } from './breadcrumbs.component';
+import { BreadcrumbsToggleStrategy } from './breadcrumbs.enum';
+import { Breadcrumb } from './breadcrumbs.interface';
+import { mobileServiceStub } from '../../tests/services.stub.spec';
+import { of } from 'rxjs';
 
 describe('BreadcrumbsComponent', () => {
   let component: BreadcrumbsComponent;
   let fixture: ComponentFixture<BreadcrumbsComponent>;
   let breadCrumbsMock: Breadcrumb[];
-  let mobileServiceStub: jasmine.SpyObj<MobileService>;
 
   beforeEach(async(() => {
-    mobileServiceStub = createSpyObj('MobileService', ['getMediaEvent']);
-    mobileServiceStub.getMediaEvent.and.returnValue({
-      pipe: () => ({
-        subscribe: () => ({
-          matchMobile: false
-        })
-      })
-    });
-
     breadCrumbsMock = [
       { title: 'details', disabled: false },
       { title: 'avatar', disabled: false },
       { title: 'to dos', disabled: false },
-      { title: 'summary', disabled: true }
+      { title: 'summary', disabled: true },
     ];
 
     TestBed.configureTestingModule({
       declarations: [BreadcrumbsComponent],
       imports: [NoopAnimationsModule, MatTooltipModule],
       providers: [{ provide: MobileService, useValue: mobileServiceStub }],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
@@ -48,12 +39,12 @@ describe('BreadcrumbsComponent', () => {
         component.buttons = {
           nextBtn: {
             label: 'Next',
-            isVisible: true
+            isVisible: true,
           },
           backBtn: {
             label: 'Back',
-            isVisible: true
-          }
+            isVisible: true,
+          },
         };
         spyOn(component.stepClick, 'emit');
       });
@@ -115,6 +106,9 @@ describe('BreadcrumbsComponent', () => {
 
   describe('mobile', () => {
     beforeEach(() => {
+      mobileServiceStub.getMediaEvent.and.returnValue(
+        of({ matchMobile: true })
+      );
       component.isMobile = true;
       fixture.detectChanges();
     });

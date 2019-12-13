@@ -128,9 +128,10 @@ describe('SingleSelectComponent', () => {
 
   describe('onSelect', () => {
     it('should emit onSelect with list change and propagateChange with selected value', fakeAsync(() => {
-      component.openPanel();
       fixture.autoDetectChanges();
-      tick(0);
+      component.openPanel();
+      tick(500);
+
       (overlayContainerElement.querySelectorAll(
         'b-single-list .option'
       )[3] as HTMLElement).click();
@@ -146,9 +147,10 @@ describe('SingleSelectComponent', () => {
 
   describe('clearSelection', () => {
     it('should show -None- option in single-list if not required', fakeAsync(() => {
-      component.openPanel();
       fixture.autoDetectChanges();
-      tick(0);
+      component.openPanel();
+      tick(500);
+
       const clearSelection = overlayContainerElement.querySelector(
         '.clear-selection'
       );
@@ -156,18 +158,20 @@ describe('SingleSelectComponent', () => {
     }));
     it('should do not show -None- option in single-list if required', fakeAsync(() => {
       component.required = true;
-      component.openPanel();
       fixture.autoDetectChanges();
-      tick(0);
+      component.openPanel();
+      tick(500);
+
       const clearSelection = overlayContainerElement.querySelector(
         '.clear-selection'
       );
       expect(clearSelection).toBeFalsy();
     }));
     it('should clear the selection', fakeAsync(() => {
-      component.openPanel();
       fixture.autoDetectChanges();
-      tick(0);
+      component.openPanel();
+      tick(500);
+
       const clearButton = overlayContainerElement.querySelector(
         '.clear-selection'
       ) as HTMLElement;
@@ -177,9 +181,10 @@ describe('SingleSelectComponent', () => {
       flush();
     }));
     it('should invoke selectChange.emit and propagateChange with null', fakeAsync(() => {
-      component.openPanel();
       fixture.autoDetectChanges();
-      tick(0);
+      component.openPanel();
+      tick(500);
+
       const clearButton = overlayContainerElement.querySelector(
         '.clear-selection'
       ) as HTMLElement;
@@ -225,14 +230,16 @@ describe('SingleSelectComponent', () => {
       expect(tooltipEl).toBe(null);
     });
     it('should add tooltip', fakeAsync(() => {
-      component.openPanel();
       fixture.autoDetectChanges();
-      tick(0);
+      component.openPanel();
+      tick(500);
+
       (overlayContainerElement.querySelectorAll(
         'b-single-list .option'
       )[3] as HTMLElement).click();
-      fixture.autoDetectChanges();
-      tick(0);
+
+      tick(500);
+
       const tooltipEl = fixture.debugElement.query(
         By.css('.btt.tooltip-enabled')
       );

@@ -32,7 +32,7 @@ import {
 } from '@angular/material';
 import { Overlay } from '@angular/cdk/overlay';
 import { DatepickerType } from '../datepicker.enum';
-import { lastDayOfMonth, startOfMonth } from 'date-fns';
+import { startOfMonth } from 'date-fns';
 import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.service';
 import { BaseFormElement } from '../../base-form-element';
 

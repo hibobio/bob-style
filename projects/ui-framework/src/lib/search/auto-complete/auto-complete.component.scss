@@ -8,7 +8,19 @@
   &.panel-open ::ng-deep {
     position: relative;
     z-index: 10000;
+  }
 
+  &.panel-open.panel-above ::ng-deep {
+    .bfe-wrap {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+
+      &.focused {
+        border-color: $grey-500;
+      }
+    }
+  }
+  &.panel-open.panel-below ::ng-deep {
     .bfe-wrap {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;

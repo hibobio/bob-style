@@ -7,7 +7,7 @@ import { CardType } from '../cards.enum';
 import { MockComponent } from 'ng-mocks';
 import {
   simpleChange,
-  emitNativeEvent
+  emitNativeEvent,
 } from '../../services/utils/test-helpers';
 import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
 
@@ -35,10 +35,10 @@ describe('CardsLayoutComponent', () => {
     TestBed.configureTestingModule({
       declarations: [MockComponent(CardsLayoutComponent)],
       imports: [CardsModule],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(CardsLayoutComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default }
+        set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents()
       .then(() => {
@@ -87,7 +87,7 @@ describe('CardsLayoutComponent', () => {
       cardsHostElement.style.width = calcNeededWidth(5, CardType.small);
       component.ngOnChanges(
         simpleChange({
-          type: CardType.small
+          type: CardType.small,
         })
       );
       expect(component.cardsInRow).toEqual(5);
@@ -99,7 +99,7 @@ describe('CardsLayoutComponent', () => {
       cardsHostElement.style.width = calcNeededWidth(6, CardType.regular);
       component.ngOnChanges(
         simpleChange({
-          type: CardType.regular
+          type: CardType.regular,
         })
       );
       expect(component.cardsInRow).toEqual(6);
@@ -111,7 +111,7 @@ describe('CardsLayoutComponent', () => {
       cardsHostElement.style.width = calcNeededWidth(3, CardType.large);
       component.ngOnChanges(
         simpleChange({
-          type: CardType.large
+          type: CardType.large,
         })
       );
       expect(component.cardsInRow).toEqual(3);
@@ -131,7 +131,7 @@ describe('CardsLayoutComponent', () => {
           cardsInRowSubscribeCalled++;
           component.ngOnChanges(
             simpleChange({
-              type: CardType.small
+              type: CardType.small,
             })
           );
         } else {

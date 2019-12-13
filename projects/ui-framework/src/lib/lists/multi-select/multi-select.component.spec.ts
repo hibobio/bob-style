@@ -139,7 +139,7 @@ describe('MultiSelectComponent', () => {
     it('should update selectedIDs but not displayValue', fakeAsync(() => {
       component.openPanel();
       fixture.autoDetectChanges();
-      tick(0);
+      tick(500);
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();
@@ -156,7 +156,7 @@ describe('MultiSelectComponent', () => {
       expectedOptionsMock[1].options[1].selected = true;
       component.openPanel();
       fixture.autoDetectChanges();
-      tick(0);
+      tick(500);
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();
@@ -177,7 +177,7 @@ describe('MultiSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
 
-      tick(0);
+      tick(500);
 
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
@@ -200,7 +200,7 @@ describe('MultiSelectComponent', () => {
       spyOn(component as any, 'destroyPanel');
       component.openPanel();
       fixture.autoDetectChanges();
-      tick(0);
+      tick(500);
 
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
@@ -224,9 +224,10 @@ describe('MultiSelectComponent', () => {
       expectedOptionsMock[1].options[0].selected = false;
     });
     it('should clear the selection from options, selectedIDs and empty displayValue', fakeAsync(() => {
-      component.openPanel();
       fixture.autoDetectChanges();
-      tick(0);
+      component.openPanel();
+      tick(500);
+
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();
@@ -251,9 +252,11 @@ describe('MultiSelectComponent', () => {
     }));
     it('should invoke selectChange.emit with listChange and propagateChange with []', fakeAsync(() => {
       const expectedListChange = new ListChange(expectedOptionsMock);
-      component.openPanel();
+
       fixture.autoDetectChanges();
-      tick(0);
+      component.openPanel();
+      tick(500);
+
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();
@@ -286,6 +289,7 @@ describe('MultiSelectComponent', () => {
   describe('tooltip', () => {
     beforeEach(() => {
       fixture.nativeElement.style.width = '150px';
+      fixture.nativeElement.style.minWidth = '150px';
     });
 
     it('should not show tooltip', () => {
@@ -307,10 +311,9 @@ describe('MultiSelectComponent', () => {
     });
 
     it('should add tooltip', fakeAsync(() => {
+      fixture.autoDetectChanges();
       component.openPanel();
-
-      tick(0);
-      fixture.detectChanges();
+      tick(500);
 
       const option = overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
@@ -341,14 +344,13 @@ describe('MultiSelectComponent', () => {
   describe('total-values counter', () => {
     beforeEach(() => {
       fixture.nativeElement.style.width = '150px';
+      fixture.nativeElement.style.minWidth = '150px';
     });
 
     it('should put a selected values number in suffix, if tooltip is enabled', fakeAsync(() => {
+      fixture.autoDetectChanges();
       component.openPanel();
-
-      tick();
-      fixture.detectChanges();
-      tick(0);
+      tick(500);
 
       const options = overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
@@ -380,9 +382,10 @@ describe('MultiSelectComponent', () => {
   describe('cancelSelection', () => {
     it('should close the panel', fakeAsync(() => {
       spyOn(component as any, 'destroyPanel');
-      component.openPanel();
+
       fixture.autoDetectChanges();
-      tick(0);
+      component.openPanel();
+      tick(500);
 
       component.onCancel();
 
@@ -392,9 +395,11 @@ describe('MultiSelectComponent', () => {
 
     it('should emit selectCancelled event and ignore option click in listChange', fakeAsync(() => {
       const expectedListChange = new ListChange(optionsMock);
-      component.openPanel();
+
       fixture.autoDetectChanges();
-      tick(0);
+      component.openPanel();
+      tick(500);
+
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();
@@ -410,9 +415,10 @@ describe('MultiSelectComponent', () => {
 
   describe('clear -> cancel', () => {
     it('should reset the selection from options, selectedIDs and reset displayValue', fakeAsync(() => {
-      component.openPanel();
       fixture.autoDetectChanges();
-      tick(0);
+      component.openPanel();
+      tick(500);
+
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();
@@ -434,9 +440,11 @@ describe('MultiSelectComponent', () => {
 
     it('should invoke selectCancelled.emit with listChange and propagateChange with [3]', fakeAsync(() => {
       const expectedListChange = new ListChange(optionsMock);
-      component.openPanel();
+
       fixture.autoDetectChanges();
-      tick(0);
+      component.openPanel();
+      tick(500);
+
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();

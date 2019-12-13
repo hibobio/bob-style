@@ -6,9 +6,13 @@
 </b-form-element-label>
 
 <div class="bfe-wrap has-suffix"
-     [ngClass]="{'has-prefix': hasPrefix || showPrefix, focused: panelOpen, 'panel-open': panelOpen, 'panel-above':
-     positionClassList['panel-above'],
-     'panel-below': positionClassList['panel-below']}"
+     [ngClass]="{
+        'has-prefix': hasPrefix || showPrefix,
+        focused: panelOpen,
+        'panel-open': panelOpen,
+        'panel-above': positionClassList['panel-above'],
+        'panel-below': positionClassList['panel-below']
+      }"
      (click)="openPanel()"
      cdkOverlayOrigin>
 

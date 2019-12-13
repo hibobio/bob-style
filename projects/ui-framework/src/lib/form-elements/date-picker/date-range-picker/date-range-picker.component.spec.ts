@@ -4,7 +4,6 @@ import { UtilsService } from '../../../services/utils/utils.service';
 import { MobileService } from '../../../services/utils/mobile.service';
 import { DateParseService } from '../date-parse-service/date-parse.service';
 import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
-import { of } from 'rxjs';
 import {
   MatDatepicker,
   MatDatepickerModule,
@@ -26,8 +25,11 @@ import {
 import { isDate, parseISO, endOfMonth } from 'date-fns';
 import { DatepickerType } from '../datepicker.enum';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import createSpyObj = jasmine.createSpyObj;
 import { DateInputDirectiveModule } from '../date-input-directive/dateinput.directive.module';
+import {
+  utilsServiceStub,
+  mobileServiceStub,
+} from '../../../tests/services.stub.spec';
 
 describe('DateRangePickerComponent', () => {
   let fixture: ComponentFixture<DateRangePickerComponent>;
@@ -41,16 +43,7 @@ describe('DateRangePickerComponent', () => {
   let messageElem: HTMLElement;
   let pickerDateCellElems: HTMLElement[];
 
-  let utilsServiceStub: jasmine.SpyObj<UtilsService>;
-  let mobileServiceStub: jasmine.SpyObj<MobileService>;
-
   beforeEach(async(() => {
-    utilsServiceStub = createSpyObj('UtilsService', ['getResizeEvent']);
-    utilsServiceStub.getResizeEvent.and.returnValue(of());
-
-    mobileServiceStub = createSpyObj('MobileService', ['getMediaEvent']);
-    mobileServiceStub.getMediaEvent.and.returnValue(of());
-
     TestBed.configureTestingModule({
       imports: [
         MatDatepickerModule,

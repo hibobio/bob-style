@@ -3,7 +3,7 @@ import {
   ComponentFixture,
   fakeAsync,
   TestBed,
-  tick
+  tick,
 } from '@angular/core/testing';
 import { EmployeesShowcaseComponent } from './employees-showcase.component';
 import { DebugElement, SimpleChanges } from '@angular/core';
@@ -24,30 +24,26 @@ import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarGap } from './employees-showcase.const';
 // tslint:disable-next-line: max-line-length
 import { SingleSelectPanelComponent } from '../../lists/single-select-panel/single-select-panel.component';
-import createSpyObj = jasmine.createSpyObj;
+import { utilsServiceStub } from '../../tests/services.stub.spec';
 
 fdescribe('EmployeesShowcaseComponent', () => {
   let component: EmployeesShowcaseComponent;
   let fixture: ComponentFixture<EmployeesShowcaseComponent>;
-  let utilsServiceStub: jasmine.SpyObj<UtilsService>;
 
   beforeEach(async(() => {
-    utilsServiceStub = createSpyObj('UtilsService', ['getResizeEvent']);
-    utilsServiceStub.getResizeEvent.and.returnValue(cold('-x-', { x: {} }));
-
     TestBed.configureTestingModule({
       declarations: [
         EmployeesShowcaseComponent,
         MockComponent(AvatarComponent),
         MockComponent(IconComponent),
-        MockComponent(SingleSelectPanelComponent)
+        MockComponent(SingleSelectPanelComponent),
       ],
       imports: [NoopAnimationsModule, CommonModule],
       providers: [
         DOMhelpers,
         { provide: UtilsService, useValue: utilsServiceStub },
-        PanelPositionService
-      ]
+        PanelPositionService,
+      ],
     })
       .compileComponents()
       .then(() => {
@@ -81,7 +77,7 @@ fdescribe('EmployeesShowcaseComponent', () => {
     it('should set panelListOptions', () => {
       component.employees = [
         EMPLOYEE_SHOWCASE_MOCK[0],
-        EMPLOYEE_SHOWCASE_MOCK[1]
+        EMPLOYEE_SHOWCASE_MOCK[1],
       ];
       fixture.detectChanges();
       expect(component.panelListOptions).toEqual([
@@ -95,9 +91,9 @@ fdescribe('EmployeesShowcaseComponent', () => {
               prefixComponent: {
                 component: AvatarComponent,
                 attributes: {
-                  imageSource: 'https://randomuser.me/api/portraits/men/1.jpg'
-                }
-              }
+                  imageSource: 'https://randomuser.me/api/portraits/men/1.jpg',
+                },
+              },
             },
             {
               value: 'Omri Hecht',
@@ -106,12 +102,12 @@ fdescribe('EmployeesShowcaseComponent', () => {
               prefixComponent: {
                 component: AvatarComponent,
                 attributes: {
-                  imageSource: 'https://randomuser.me/api/portraits/men/2.jpg'
-                }
-              }
-            }
-          ]
-        }
+                  imageSource: 'https://randomuser.me/api/portraits/men/2.jpg',
+                },
+              },
+            },
+          ],
+        },
       ]);
     });
   });
@@ -124,7 +120,7 @@ fdescribe('EmployeesShowcaseComponent', () => {
       component.employees = [
         EMPLOYEE_SHOWCASE_MOCK[0],
         EMPLOYEE_SHOWCASE_MOCK[1],
-        EMPLOYEE_SHOWCASE_MOCK[2]
+        EMPLOYEE_SHOWCASE_MOCK[2],
       ];
       component.avatarSize = avatarSize;
       component.expandOnClick = expandOnClick;
@@ -133,8 +129,8 @@ fdescribe('EmployeesShowcaseComponent', () => {
           currentValue: avatarSize,
           previousValue: {},
           firstChange: true,
-          isFirstChange: () => true
-        }
+          isFirstChange: () => true,
+        },
       };
       fixture.detectChanges();
       component.ngOnChanges(changes);
@@ -144,7 +140,7 @@ fdescribe('EmployeesShowcaseComponent', () => {
       const startAvatarOrder = [
         EMPLOYEE_SHOWCASE_MOCK[0],
         EMPLOYEE_SHOWCASE_MOCK[1],
-        EMPLOYEE_SHOWCASE_MOCK[2]
+        EMPLOYEE_SHOWCASE_MOCK[2],
       ];
       fixture.nativeElement.style.width = '200px';
       createComponent(AvatarSize.large, false);
@@ -157,7 +153,7 @@ fdescribe('EmployeesShowcaseComponent', () => {
       const startAvatarOrder = [
         EMPLOYEE_SHOWCASE_MOCK[0],
         EMPLOYEE_SHOWCASE_MOCK[1],
-        EMPLOYEE_SHOWCASE_MOCK[2]
+        EMPLOYEE_SHOWCASE_MOCK[2],
       ];
       createComponent(AvatarSize.large, false);
       expect(component.employees).toEqual(startAvatarOrder);
@@ -169,7 +165,7 @@ fdescribe('EmployeesShowcaseComponent', () => {
       const startAvatarOrder = [
         EMPLOYEE_SHOWCASE_MOCK[0],
         EMPLOYEE_SHOWCASE_MOCK[1],
-        EMPLOYEE_SHOWCASE_MOCK[2]
+        EMPLOYEE_SHOWCASE_MOCK[2],
       ];
       createComponent(AvatarSize.small, false);
       expect(component.employees).toEqual(startAvatarOrder);
@@ -207,8 +203,8 @@ fdescribe('EmployeesShowcaseComponent', () => {
           currentValue: avatarSize,
           previousValue: {},
           firstChange: true,
-          isFirstChange: () => true
-        }
+          isFirstChange: () => true,
+        },
       };
       fixture.detectChanges();
       component.ngOnChanges(changes);
@@ -257,7 +253,7 @@ fdescribe('EmployeesShowcaseComponent', () => {
       const ees = [
         EMPLOYEE_SHOWCASE_MOCK[0],
         EMPLOYEE_SHOWCASE_MOCK[1],
-        EMPLOYEE_SHOWCASE_MOCK[2]
+        EMPLOYEE_SHOWCASE_MOCK[2],
       ];
       createComponent(ees, AvatarSize.mini, 50);
       showcaseAvatars = fixture.debugElement.queryAll(
@@ -314,7 +310,7 @@ fdescribe('EmployeesShowcaseComponent', () => {
       component.employees = [
         EMPLOYEE_SHOWCASE_MOCK[0],
         EMPLOYEE_SHOWCASE_MOCK[1],
-        EMPLOYEE_SHOWCASE_MOCK[2]
+        EMPLOYEE_SHOWCASE_MOCK[2],
       ];
       fixture.detectChanges();
       tick();

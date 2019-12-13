@@ -1,21 +1,20 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable, merge, Observer } from 'rxjs';
 import {
-  debounceTime,
   map,
   share,
   throttleTime,
   startWith,
   distinctUntilChanged,
   flatMap,
-  delay
+  delay,
 } from 'rxjs/operators';
 import { WindowRef } from './window-ref.service';
 import { ScrollEvent } from './utils.interface';
 import { DOMhelpers } from '../html/dom-helpers.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UtilsService {
   winResize$: Observable<any>;
@@ -25,19 +24,30 @@ export class UtilsService {
 
   constructor(private windowRef: WindowRef) {
     this.winResize$ = fromEvent(this.windowRef.nativeWindow, 'resize').pipe(
-      debounceTime(500),
+      throttleTime(500, undefined, {
+        leading: true,
+        trailing: true,
+      }),
       share()
     );
 
     this.winScroll$ = fromEvent(this.windowRef.nativeWindow, 'scroll').pipe(
       map((e: Event) => ({
-        scrollY: ((e.currentTarget as any) || (document.scrollingElement as any)).scrollY,
-        scrollX: ((e.currentTarget as any) || (document.scrollingElement as any)).scrollX
+        scrollY: (
+          (e.currentTarget as any) || (document.scrollingElement as any)
+        ).scrollY,
+        scrollX: (
+          (e.currentTarget as any) || (document.scrollingElement as any)
+        ).scrollX,
       })),
       share()
     );
-    this.winClick$ = fromEvent(this.windowRef.nativeWindow, 'click').pipe(share()) as Observable<MouseEvent>;
-    this.winKey$ = fromEvent(this.windowRef.nativeWindow, 'keydown').pipe(share()) as Observable<KeyboardEvent>;
+    this.winClick$ = fromEvent(this.windowRef.nativeWindow, 'click').pipe(
+      share()
+    ) as Observable<MouseEvent>;
+    this.winKey$ = fromEvent(this.windowRef.nativeWindow, 'keydown').pipe(
+      share()
+    ) as Observable<KeyboardEvent>;
   }
 
   public getResizeEvent(): Observable<any> {
@@ -60,13 +70,16 @@ export class UtilsService {
     if (
       !('IntersectionObserver' in this.windowRef.nativeWindow) ||
       !('IntersectionObserverEntry' in this.windowRef.nativeWindow) ||
-      !('intersectionRatio' in this.windowRef.nativeWindow.IntersectionObserverEntry.prototype)
+      !(
+        'intersectionRatio' in
+        this.windowRef.nativeWindow.IntersectionObserverEntry.prototype
+      )
     ) {
       return merge(this.winScroll$, this.winResize$).pipe(
         startWith(1),
         throttleTime(300, undefined, {
           leading: true,
-          trailing: true
+          trailing: true,
         }),
         map(() => DOMhelpers.prototype.isInView(element)),
         distinctUntilChanged()

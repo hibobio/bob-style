@@ -12,7 +12,6 @@ import {
   simpleChange,
 } from '../../../services/utils/test-helpers';
 import { UtilsService } from '../../../services/utils/utils.service';
-import { of } from 'rxjs';
 import { DateParseService } from '../date-parse-service/date-parse.service';
 import { MobileService } from '../../../services/utils/mobile.service';
 import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
@@ -25,8 +24,11 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.service';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
-import createSpyObj = jasmine.createSpyObj;
 import { DateInputDirectiveModule } from '../date-input-directive/dateinput.directive.module';
+import {
+  utilsServiceStub,
+  mobileServiceStub,
+} from '../../../tests/services.stub.spec';
 
 describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
@@ -39,16 +41,7 @@ describe('DatepickerComponent', () => {
   let picker: MatDatepicker<any>;
   let pickerDateCellElem: HTMLElement;
 
-  let utilsServiceStub: jasmine.SpyObj<UtilsService>;
-  let mobileServiceStub: jasmine.SpyObj<MobileService>;
-
   beforeEach(async(() => {
-    utilsServiceStub = createSpyObj('UtilsService', ['getResizeEvent']);
-    utilsServiceStub.getResizeEvent.and.returnValue(of());
-
-    mobileServiceStub = createSpyObj('MobileService', ['getMediaEvent']);
-    mobileServiceStub.getMediaEvent.and.returnValue(of());
-
     TestBed.configureTestingModule({
       imports: [
         MatDatepickerModule,

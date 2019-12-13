@@ -17,29 +17,18 @@ import { CommonModule } from '@angular/common';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { MultiListModule } from '../multi-list/multi-list.module';
 import { ListChange } from '../list-change/list-change';
-import { cold } from 'jasmine-marbles';
 import { UtilsService } from '../../services/utils/utils.service';
-import createSpyObj = jasmine.createSpyObj;
+import { utilsServiceStub } from '../../tests/services.stub.spec';
 
 describe('MultiSelectPanelComponent', () => {
   let component: MultiSelectPanelComponent;
   let fixture: ComponentFixture<MultiSelectPanelComponent>;
-  let utilsServiceStub: jasmine.SpyObj<UtilsService>;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   let platform: Platform;
   let optionsMock: SelectGroupOption[];
 
   beforeEach(async(() => {
-    utilsServiceStub = createSpyObj('UtilsService', [
-      'getResizeEvent',
-      'getWindowKeydownEvent',
-    ]);
-    utilsServiceStub.getResizeEvent.and.returnValue(cold('-x-', { x: {} }));
-    utilsServiceStub.getWindowKeydownEvent.and.returnValue(
-      cold('-x-', { x: {} })
-    );
-
     optionsMock = [
       {
         groupName: '',
@@ -95,9 +84,9 @@ describe('MultiSelectPanelComponent', () => {
 
   beforeEach(fakeAsync(() => {
     component.options = optionsMock;
-    component.openPanel();
     fixture.autoDetectChanges();
-    tick(0);
+    component.openPanel();
+    tick(500);
   }));
 
   describe('panel', () => {

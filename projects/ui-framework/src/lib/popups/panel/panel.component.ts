@@ -8,14 +8,14 @@ import {
   EventEmitter,
   Output,
   NgZone,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
   FlexibleConnectedPositionStrategy,
   Overlay,
   OverlayConfig,
-  OverlayRef
+  OverlayRef,
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { PanelPositionService } from './panel-position-service/panel-position.service';
@@ -34,7 +34,7 @@ const HOVER_DELAY_DURATION = 300;
 @Component({
   selector: 'b-panel',
   templateUrl: 'panel.component.html',
-  styleUrls: ['panel.component.scss']
+  styleUrls: ['panel.component.scss'],
 })
 export class PanelComponent implements OnDestroy {
   @ViewChild(CdkOverlayOrigin, { static: true })
@@ -174,7 +174,7 @@ export class PanelComponent implements OnDestroy {
       backdropClass,
       panelClass,
       positionStrategy,
-      scrollStrategy: this.panelPositionService.getScrollStrategy()
+      scrollStrategy: this.panelPositionService.getScrollStrategy(),
     };
   }
 
@@ -186,7 +186,7 @@ export class PanelComponent implements OnDestroy {
       .subscribe(change => {
         this.positionClassList = this.panelPositionService.getPositionClassList(
           change
-        ) as OverlayPositionClasses;
+        );
 
         if (!this.cd['destroyed'] && this.overlayRef) {
           this.cd.detectChanges();
