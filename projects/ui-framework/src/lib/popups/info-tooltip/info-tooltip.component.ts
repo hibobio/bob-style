@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { Link } from '../../buttons-indicators/link/link.types';
+import { Link } from '../../indicators/link/link.types';
 
 @Component({
   selector: 'b-info-tooltip',

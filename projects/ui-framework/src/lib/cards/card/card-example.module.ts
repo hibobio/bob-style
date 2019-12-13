@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CardsModule } from '../cards.module';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
-import { SliderModule } from '../../buttons-indicators/slider/slider.module';
+import { SliderModule } from '../../indicators/slider/slider.module';
 import { Card } from './card.interface';
 import { CardType } from '../cards.enum';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
@@ -13,18 +13,12 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
   template: `
     <b-card [card]="cardMockData" [type]="type" (clicked)="onCardClick($event)">
       <div card-top class="top">
-        <b-icon
-          [icon]="icons.surveys"
-          [size]="iconSize.small"
-          [color]="iconColor.normal"
-        >
-        </b-icon>
+        <b-icon [icon]="icons.surveys" [size]="iconSize.small" [color]="iconColor.normal"> </b-icon>
         <span>12 questions</span>
       </div>
       <div card-content>
         <p>
-          Dig deeper into your employees experience to fully understand their
-          perspectives, attitudes and needs
+          Dig deeper into your employees experience to fully understand their perspectives, attitudes and needs
         </p>
       </div>
     </b-card>
@@ -83,12 +77,7 @@ export class CardExample1Component {
   template: `
     <b-card [card]="cardMockData" [type]="type" (clicked)="onCardClick($event)">
       <div card-top class="top">
-        <b-icon
-          [icon]="icons.person"
-          [size]="iconSize.small"
-          [color]="iconColor.white"
-        >
-        </b-icon>
+        <b-icon [icon]="icons.person" [size]="iconSize.small" [color]="iconColor.white"> </b-icon>
         <span>4 people</span>
       </div>
     </b-card>
@@ -141,12 +130,7 @@ export class CardExample2Component {
   template: `
     <b-card [card]="cardMockData" [type]="type" (clicked)="onCardClick($event)">
       <div card-top class="top">
-        <b-icon
-          [icon]="icons.person"
-          [size]="iconSize.small"
-          [color]="iconColor.white"
-        >
-        </b-icon>
+        <b-icon [icon]="icons.person" [size]="iconSize.small" [color]="iconColor.white"> </b-icon>
         <span>1 enrolled</span>
       </div>
       <div card-content>
@@ -200,6 +184,7 @@ export class CardExample3Component {
     title: 'Medical Insurance',
     // tslint:disable-next-line: max-line-length
     imageUrl:
+      // tslint:disable-next-line: max-line-length
       'https://images.unsplash.com/photo-1464802686167-b939a6910659?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80',
     menuConfig: [
       {
@@ -225,11 +210,7 @@ export class CardExample3Component {
   selector: 'b-card-example-4-component',
   template: `
     <b-card [card]="cardMockData" [type]="type">
-      <b-avatar
-        card-top
-        imageSource="https://randomuser.me/api/portraits/women/46.jpg"
-        title="Amy Tulin Miles"
-      >
+      <b-avatar card-top imageSource="https://randomuser.me/api/portraits/women/46.jpg" title="Amy Tulin Miles">
       </b-avatar>
 
       <b-slider card-content [value]="25" [readOnly]="false"> </b-slider>
@@ -253,8 +234,7 @@ export class CardExample4Component {
   type: CardType = CardType.small;
 
   cardMockData: Card = {
-    title:
-      'This is a very long title for a goal card and some of the text will be truncated',
+    title: 'This is a very long title for a goal card and some of the text will be truncated',
     actionConfig: {
       icon: Icons.delete,
       tooltip: 'Delete',
@@ -266,18 +246,8 @@ export class CardExample4Component {
 }
 
 @NgModule({
-  declarations: [
-    CardExample1Component,
-    CardExample2Component,
-    CardExample3Component,
-    CardExample4Component
-  ],
+  declarations: [CardExample1Component, CardExample2Component, CardExample3Component, CardExample4Component],
   imports: [CommonModule, CardsModule, IconsModule, SliderModule, AvatarModule],
-  exports: [
-    CardExample1Component,
-    CardExample2Component,
-    CardExample3Component,
-    CardExample4Component
-  ]
+  exports: [CardExample1Component, CardExample2Component, CardExample3Component, CardExample4Component]
 })
 export class CardExampleModule {}

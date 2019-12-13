@@ -1,0 +1,80 @@
+@mixin listOption {
+  @include b-body($color: $grey-700, $addCssVars: false, $lineHeight: 1.2);
+  padding: 0 $input-padding;
+  box-sizing: border-box;
+  position: relative;
+  height: $wrap-height;
+  user-select: none;
+
+  &.mat-selected {
+    background-color: initial;
+  }
+  &:hover,
+  &.focus {
+    background-color: $grey-100;
+  }
+  &.selected {
+    background-color: $color-option-selected;
+    font-weight: bold;
+  }
+  &.disabled {
+    @include disabled-state;
+  }
+}
+
+@mixin headers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  pointer-events: none;
+
+  .headers-group .header {
+    z-index: 2;
+    pointer-events: all;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    user-select: none;
+    box-shadow: 0 -1px 0 0px $grey-500, 0 1px 0 0px $grey-500;
+    text-transform: uppercase;
+    font-weight: $font-weight-bold-body;
+    font-size: $font-size-caption;
+
+    &.clickable {
+      cursor: pointer;
+    }
+
+    &.has-hover,
+    &.clickable {
+      &:hover,
+      &.focus {
+        background-color: $grey-100;
+      }
+    }
+
+    .header-collapse-trigger {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .chevron {
+      &:before {
+        display: flex;
+        justify-content: center;
+        width: 12px;
+        margin-left: -1px;
+        margin-right: 7px;
+      }
+    }
+  }
+}

@@ -11,48 +11,40 @@ import { ConfirmationDialogConfig } from './confirmation-dialog.interface';
 @Component({
   selector: 'b-confirmation-dialog-example',
   template: `
-    <b-button (click)="openDialog()" style="margin-right: 10px;">Delete</b-button>
+    <b-button (clicked)="openDialog()" style="margin-right: 10px;"
+      >Delete</b-button
+    >
   `
 })
 export class ConfirmationDialogExampleComponent {
-  constructor(
-    private confirmationDialogService: ConfirmationDialogService,
-  ) {
-  }
+  constructor(private confirmationDialogService: ConfirmationDialogService) {}
 
   openDialog(): void {
     const dialogConfig: ConfirmationDialogConfig = {
       title: 'Are you sure?',
-      message: 'Deleting the data cannot be undone, please make sure you have back up to sensitive data',
+      message:
+        'Deleting the data cannot be undone, please make sure you have back up to sensitive data',
       buttonConfig: {
         ok: {
           label: 'ok',
-          action: () => true,
+          action: () => true
         },
         cancel: {
-          label: 'Cancel',
+          label: 'Cancel'
         }
       },
-      class: 'confirmation-example-dialog',
+      class: 'confirmation-example-dialog'
     };
 
-    const dialogRef: MatDialogRef<ConfirmationDialogComponent> = this.confirmationDialogService
-      .openDialog(dialogConfig);
+    const dialogRef: MatDialogRef<
+      ConfirmationDialogComponent
+    > = this.confirmationDialogService.openDialog(dialogConfig);
   }
 }
 
 @NgModule({
-  declarations: [
-    ConfirmationDialogExampleComponent,
-  ],
-  imports: [
-    CommonModule,
-    ButtonsModule,
-    ConfirmationDialogModule,
-  ],
-  exports: [
-    ConfirmationDialogExampleComponent,
-  ],
+  declarations: [ConfirmationDialogExampleComponent],
+  imports: [CommonModule, ButtonsModule, ConfirmationDialogModule],
+  exports: [ConfirmationDialogExampleComponent]
 })
-export class ConfirmationDialogExampleModule {
-}
+export class ConfirmationDialogExampleModule {}

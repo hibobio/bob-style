@@ -5,23 +5,17 @@ import {
   inject,
   fakeAsync,
   tick,
-  flush
+  flush,
 } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
-import {
-  NO_ERRORS_SCHEMA,
-  Component,
-  OnInit,
-  OnDestroy,
-  ChangeDetectionStrategy
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import {
   ReactiveFormsModule,
   FormControl,
   FormsModule,
-  FormGroup
+  FormGroup,
 } from '@angular/forms';
 
 import { RichTextEditorComponent } from './rte.component';
@@ -34,7 +28,6 @@ import { Platform } from '@angular/cdk/platform';
 import { simpleChange } from '../../services/utils/test-helpers';
 import { RichTextEditorModule } from './rte.module';
 import { placeholderMock } from './rte-placeholder/rte-placeholder.mock';
-import { InputMessageComponent } from '../input-message/input-message.component';
 
 @Component({
   template: `
@@ -49,7 +42,7 @@ import { InputMessageComponent } from '../input-message/input-message.component'
       ></b-rich-text-editor>
     </form>
   `,
-  providers: []
+  providers: [],
 })
 class TestComponent implements OnInit, OnDestroy {
   constructor() {}
@@ -59,7 +52,7 @@ class TestComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.rteForm = new FormGroup({
-      rteControl: new FormControl('', { updateOn: 'change' })
+      rteControl: new FormControl('', { updateOn: 'change' }),
     });
     this.subscr = this.rteForm
       .get('rteControl')
@@ -101,17 +94,10 @@ describe('RichTextEditorComponent', () => {
         BrowserAnimationsModule,
         ReactiveFormsModule,
         FormsModule,
-        RichTextEditorModule
+        RichTextEditorModule,
       ],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: []
+      providers: [],
     })
-      .overrideComponent(RichTextEditorComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default }
-      })
-      .overrideComponent(InputMessageComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default }
-      })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(TestComponent);
@@ -173,7 +159,12 @@ describe('RichTextEditorComponent', () => {
     });
 
     it('should insert hintMessage text', () => {
-      RTEComponent.hintMessage = 'test hint';
+      RTEComponent.ngOnChanges(
+        simpleChange({
+          hintMessage: 'test hint',
+        })
+      );
+
       fixture.detectChanges();
 
       const messageElement = fixture.debugElement.query(
@@ -183,8 +174,13 @@ describe('RichTextEditorComponent', () => {
     });
 
     it('should insert warnMessage text over hintMessage text', () => {
-      RTEComponent.hintMessage = 'test hint';
-      RTEComponent.warnMessage = 'test warn';
+      RTEComponent.ngOnChanges(
+        simpleChange({
+          hintMessage: 'test hint',
+          warnMessage: 'test warn',
+        })
+      );
+
       fixture.detectChanges();
 
       const messageElement = fixture.debugElement.query(
@@ -204,7 +200,7 @@ describe('RichTextEditorComponent', () => {
     it('should update placeholder text', () => {
       RTEComponent.ngOnChanges(
         simpleChange({
-          placeholder: 'test placeholder'
+          placeholder: 'test placeholder',
         })
       );
       fixture.detectChanges();
@@ -223,7 +219,7 @@ describe('RichTextEditorComponent', () => {
     it('should insert label text into placeholder slot if no placeholder text provided', () => {
       RTEComponent.ngOnChanges(
         simpleChange({
-          placeholder: undefined
+          placeholder: undefined,
         })
       );
       fixture.detectChanges();
@@ -240,7 +236,7 @@ describe('RichTextEditorComponent', () => {
       RTEComponent.ngOnChanges(
         simpleChange({
           label: undefined,
-          required: true
+          required: true,
         })
       );
       fixture.detectChanges();
@@ -254,7 +250,7 @@ describe('RichTextEditorComponent', () => {
     it('should add * to label text, and not placeholder, when required is true and both label and placeholder provided', () => {
       RTEComponent.ngOnChanges(
         simpleChange({
-          required: true
+          required: true,
         })
       );
       fixture.detectChanges();
@@ -279,7 +275,7 @@ describe('RichTextEditorComponent', () => {
 
       RTEComponent.ngOnChanges(
         simpleChange({
-          disabled: true
+          disabled: true,
         })
       );
 
@@ -290,7 +286,12 @@ describe('RichTextEditorComponent', () => {
     });
 
     it('should set invalid style when errorMessage is present', () => {
-      RTEComponent.errorMessage = 'test error';
+      RTEComponent.ngOnChanges(
+        simpleChange({
+          errorMessage: 'test error',
+        })
+      );
+
       fixture.detectChanges();
 
       const errorNativeElement = fixture.debugElement.query(By.css('.error'))
@@ -306,8 +307,13 @@ describe('RichTextEditorComponent', () => {
 
   describe('Min & Max height', () => {
     it('should set minimum and maximum editor height', () => {
-      RTEComponent.minHeight = 300;
-      RTEComponent.maxHeight = 600;
+      RTEComponent.ngOnChanges(
+        simpleChange({
+          minHeight: 300,
+          maxHeight: 600,
+        })
+      );
+
       fixture.detectChanges();
 
       const qlContainer = fixture.debugElement.query(By.css('.ql-container'))
@@ -322,8 +328,13 @@ describe('RichTextEditorComponent', () => {
     });
 
     it('should disable min/max height when set to null', () => {
-      RTEComponent.minHeight = null;
-      RTEComponent.maxHeight = null;
+      RTEComponent.ngOnChanges(
+        simpleChange({
+          minHeight: null,
+          maxHeight: null,
+        })
+      );
+
       fixture.detectChanges();
 
       const qlContainer = fixture.debugElement.query(By.css('.ql-container'))
@@ -336,7 +347,12 @@ describe('RichTextEditorComponent', () => {
 
   describe('Editor toolbar controls', () => {
     it('should display toolbar with controls present in controls array', () => {
-      RTEComponent.controls = [BlotType.bold, BlotType.italic];
+      RTEComponent.ngOnChanges(
+        simpleChange({
+          controls: [BlotType.bold, BlotType.italic],
+        })
+      );
+
       fixture.detectChanges();
       const controlElems = fixture.debugElement.queryAll(
         By.css('.quill-toolbar > [class*="ql-"]:not([hidden])')
@@ -362,7 +378,7 @@ describe('RichTextEditorComponent', () => {
     it('should change font-size with Size Panel controls', fakeAsync(() => {
       RTEComponent.ngOnChanges(
         simpleChange({
-          value: 'test'
+          value: 'test',
         })
       );
       const sizeButtonElement = fixture.debugElement.query(
@@ -428,7 +444,7 @@ describe('RichTextEditorComponent', () => {
     it('should set the editor text to value input', () => {
       RTEComponent.ngOnChanges(
         simpleChange({
-          value: 'test text'
+          value: 'test text',
         })
       );
       fixture.detectChanges();
@@ -447,7 +463,7 @@ describe('RichTextEditorComponent', () => {
 
     it('should not emit valueChanges when setting value with emitEvent false', fakeAsync(() => {
       rteControl.setValue('test2', {
-        emitEvent: false
+        emitEvent: false,
       });
       tick(50);
       expect(testComponent.rtrValue).not.toEqual('test2');
@@ -459,7 +475,7 @@ describe('RichTextEditorComponent', () => {
     it('should propagate value', fakeAsync(() => {
       RTEComponent.ngOnChanges(
         simpleChange({
-          value: 'test text 1'
+          value: 'test text 1',
         })
       );
       tick(50);
@@ -473,7 +489,7 @@ describe('RichTextEditorComponent', () => {
       fixture.detectChanges();
       RTEComponent.ngOnChanges(
         simpleChange({
-          value: 'test text 8'
+          value: 'test text 8',
         })
       );
       expect(RTEComponent.changed.emit).toHaveBeenCalledWith(
@@ -483,7 +499,7 @@ describe('RichTextEditorComponent', () => {
     it('should output focused event when editor is focused', () => {
       RTEComponent.ngOnChanges(
         simpleChange({
-          value: 'test text 10'
+          value: 'test text 10',
         })
       );
       spyOn(RTEComponent.focused, 'emit');
@@ -495,7 +511,7 @@ describe('RichTextEditorComponent', () => {
     it('should output blurred event when editor is blurred', () => {
       RTEComponent.ngOnChanges(
         simpleChange({
-          value: 'test text 11'
+          value: 'test text 11',
         })
       );
       spyOn(RTEComponent.blurred, 'emit');
@@ -514,7 +530,7 @@ describe('RichTextEditorComponent', () => {
           value:
             '<p>Hi, <strong>My</strong> name is {{/root/firstName}} my job title</p>',
           controls: [BlotType.placeholder],
-          disableControls: []
+          disableControls: [],
         })
       );
 
@@ -531,7 +547,7 @@ describe('RichTextEditorComponent', () => {
       RTEComponent.maxChars = 30;
       RTEComponent.ngOnChanges(
         simpleChange({
-          value: 'test text'
+          value: 'test text',
         })
       );
       fixture.detectChanges();
@@ -553,7 +569,7 @@ describe('RichTextEditorComponent', () => {
       RTEComponent.maxChars = 30;
       RTEComponent.ngOnChanges(
         simpleChange({
-          value: 'test text 12345'
+          value: 'test text 12345',
         })
       );
       fixture.detectChanges();
@@ -566,7 +582,7 @@ describe('RichTextEditorComponent', () => {
       RTEComponent.maxChars = 30;
       RTEComponent.ngOnChanges(
         simpleChange({
-          value: 'this_text_is_longer_than_20_characters'
+          value: 'this_text_is_longer_than_20_characters',
         })
       );
       fixture.detectChanges();

@@ -4,27 +4,35 @@ import { Injectable } from '@angular/core';
 export class ColorService {
   constructor() {}
 
-  private parseRGBcolor(color: string) {
-    const colorArr = color.match(/\d+/g);
+  public hexToRgb(hex: string): number[] {
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+      return r + r + g + g + b + b;
+    });
 
-    return colorArr && colorArr.length > 2
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
+    return result
       ? [
-          parseInt(colorArr[0], 10),
-          parseInt(colorArr[1], 10),
-          parseInt(colorArr[2], 10)
+          parseInt(result[1], 16),
+          parseInt(result[2], 16),
+          parseInt(result[3], 16),
         ]
       : undefined;
   }
 
-  private getBrightness(color: number[]): number {
-    return !color
-      ? undefined
-      : (color[0] * 299 + color[1] * 587 + color[2] * 114) / 1000;
+  public rgbToHex(rgb: number[]): string {
+    return (
+      '#' +
+      this.componentToHex(rgb[0]) +
+      this.componentToHex(rgb[1]) +
+      this.componentToHex(rgb[2])
+    );
   }
 
   public isDark(color: number[] | string) {
     if (typeof color === 'string') {
-      color = this.parseRGBcolor(color);
+      color = this.parseToRGB(color);
     }
     const brightness = this.getBrightness(color);
     return brightness && brightness < 160; // 128
@@ -34,5 +42,28 @@ export class ColorService {
     return (
       '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)
     );
+  }
+
+  public parseToRGB(color: string): number[] {
+    const colorArr = color.match(/\d+/g);
+
+    return colorArr && colorArr.length > 2
+      ? [
+          parseInt(colorArr[0], 10),
+          parseInt(colorArr[1], 10),
+          parseInt(colorArr[2], 10),
+        ]
+      : this.hexToRgb(color);
+  }
+
+  private componentToHex(c: number): string {
+    const hex = c.toString(16);
+    return hex.length === 1 ? '0' + hex : hex;
+  }
+
+  private getBrightness(color: number[]): number {
+    return !color
+      ? undefined
+      : (color[0] * 299 + color[1] * 587 + color[2] * 114) / 1000;
   }
 }

@@ -1,4 +1,9 @@
-<b-bold-body>{{ label }}</b-bold-body>
+<div class="label"
+     [hidden]="!showLabel">{{ label }}</div>
+<div [hidden]="showLabel">
+  <ng-content select="[label-toggle-content]"></ng-content>
+</div>
+
 <div class="bar-actions-wrapper">
-    <ng-content></ng-content>
+  <ng-content></ng-content>
 </div>

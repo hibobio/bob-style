@@ -50,8 +50,8 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [type] | CardType | Card theme | primary (optional)
-  [card] | Card | card contents data | none
+  [type] | CardType | Card theme | primary
+  [card] | Card | card contents data | &nbsp;
 
   #### Card interface
   ~~~
@@ -83,9 +83,9 @@ story.add(
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
-          CardExampleModule
-        ]
-      }
+          CardExampleModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

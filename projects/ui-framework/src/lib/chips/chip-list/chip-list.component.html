@@ -3,12 +3,15 @@
         role="listitem"
         [text]="chip.text"
         [type]="chip.type || config.type"
+        [icon]="chip.icon"
         [disabled]="chip.disabled || config.disabled"
         [removable]="chip.removable || config.removable"
-        [selected]="checkSelected(chip, index)"
+        [selected]="chip.selected"
         [attr.tabindex]="!(chip.disabled || config.disabled) && config.focusable ? 0 : -1"
         [attr.data-index]="index"
-        (removed)="onChipRemove(chip)">
+        (removed)="onChipRemove(chip)"
+        [attr.data-clickable]="(clicked.observers.length > 0 || !!config.selectable) || null">
+
   <b-avatar *ngIf="(chip.type === chipType.avatar || config.type === chipType.avatar) && chip.imageSource"
             [imageSource]="chip.imageSource"
             [size]="avatarSize.mini"></b-avatar>

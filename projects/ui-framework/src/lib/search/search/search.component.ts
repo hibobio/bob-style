@@ -4,12 +4,14 @@ import {
   Output,
   Input,
   SimpleChanges,
-  OnChanges
+  OnChanges,
+  ViewChild,
+  ElementRef,
 } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import {
   InputTypes,
-  InputAutoCompleteOptions
+  InputAutoCompleteOptions,
 } from '../../form-elements/input/input.enum';
 import { simpleUID } from '../../services/utils/functional-utils';
 
@@ -18,11 +20,13 @@ import { simpleUID } from '../../services/utils/functional-utils';
   templateUrl: './search.component.html',
   styleUrls: [
     '../../form-elements/input/input.component.scss',
-    './search.component.scss'
-  ]
+    './search.component.scss',
+  ],
 })
 export class SearchComponent implements OnChanges {
   constructor() {}
+
+  @ViewChild('input', { static: true }) input: ElementRef;
 
   @Input() value = '';
   @Input() label: string;

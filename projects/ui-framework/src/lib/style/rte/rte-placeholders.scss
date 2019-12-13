@@ -1,0 +1,41 @@
+.fr-box,
+.fr-view {
+  [data-placeholder-id] {
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: bottom;
+    align-items: center;
+    white-space: nowrap;
+    border-radius: 13px;
+    cursor: default;
+    letter-spacing: normal;
+    background-color: $grey-300;
+    box-shadow: inset 0 0 0 1px white;
+
+    em {
+      &:first-child,
+      &:last-child {
+        letter-spacing: -1.5px;
+
+        &,
+        &::selection {
+          color: transparent;
+        }
+      }
+    }
+
+    strong {
+      font-weight: 500;
+    }
+  }
+}
+
+.b-select-panel.placeholder-panel {
+  @include overlayTopBottomBorders;
+  margin-top: -1px;
+  margin-right: -1px;
+
+  .panel-below {
+    border-top-right-radius: 0;
+  }
+}

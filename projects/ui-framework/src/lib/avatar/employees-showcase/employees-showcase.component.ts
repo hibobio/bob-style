@@ -11,7 +11,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarSize } from '../avatar/avatar.enum';
@@ -20,15 +20,15 @@ import { AvatarGap } from './employees-showcase.const';
 import { Icons } from '../../icons/icons.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { interval, Subscription } from 'rxjs';
-import { SelectGroupOption } from '../../form-elements/lists/list.interface';
+import { SelectGroupOption } from '../../lists/list.interface';
 import { AvatarComponent } from '../avatar/avatar.component';
-import { ListChange } from '../../form-elements/lists/list-change/list-change';
+import { ListChange } from '../../lists/list-change/list-change';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import {
   applyChanges,
   notFirstChanges,
   cloneObject,
-  randomNumber
+  randomNumber,
 } from '../../services/utils/functional-utils';
 
 const SHUFFLE_EMPLOYEES_INTERVAL = 3000;
@@ -37,7 +37,7 @@ const SHUFFLE_EMPLOYEES_INTERVAL = 3000;
   selector: 'b-employees-showcase',
   templateUrl: './employees-showcase.component.html',
   styleUrls: ['./employees-showcase.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmployeesShowcaseComponent
   implements OnInit, OnChanges, OnDestroy, AfterViewInit {
@@ -77,7 +77,7 @@ export class EmployeesShowcaseComponent
 
     if (changes.avatarSize) {
       this.DOM.setCssProps(this.host.nativeElement, {
-        '--avatar-gap': '-' + AvatarGap[this.avatarSize] + 'px'
+        '--avatar-gap': '-' + AvatarGap[this.avatarSize] + 'px',
       });
     }
 
@@ -192,11 +192,11 @@ export class EmployeesShowcaseComponent
           prefixComponent: {
             component: AvatarComponent,
             attributes: {
-              imageSource: employee.imageSource
-            }
-          }
-        }))
-      }
+              imageSource: employee.imageSource,
+            },
+          },
+        })),
+      },
     ];
   }
 

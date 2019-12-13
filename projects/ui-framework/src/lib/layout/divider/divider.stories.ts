@@ -6,7 +6,7 @@ import { DividerModule } from './divider.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
 
-const inputStories = storiesOf(ComponentGroupType.Layout, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
@@ -47,7 +47,7 @@ const note = `
   ~~~
 `;
 
-inputStories.add(
+story.add(
   'Divider',
   () => {
     return {

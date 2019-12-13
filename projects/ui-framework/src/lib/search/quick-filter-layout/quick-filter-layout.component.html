@@ -1,0 +1,30 @@
+<b-icon [@reset]
+        *ngIf="showResetButt()"
+        class="reset-filters"
+        (click)="onReset()"
+        [hasHoverState]="true"
+        [icon]="icons.refresh"
+        [color]="iconColor.normal"
+        [size]="iconSize.large">
+</b-icon>
+
+<div class="bar-content"
+     [ngClass]="{
+        'has-prefix': hasPrefix,
+        'has-suffix': hasSuffix
+     }">
+
+  <div *ngIf="hasPrefix"
+       class="bar-prefix">
+    <ng-content select="[bar-prefix]"></ng-content>
+  </div>
+
+  <div class="bar-filters">
+    <ng-content></ng-content>
+  </div>
+
+  <div *ngIf="hasSuffix"
+       class="bar-suffix">
+    <ng-content select="[bar-suffix]"></ng-content>
+  </div>
+</div>

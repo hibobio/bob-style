@@ -5,7 +5,7 @@ import {
   text,
   array,
   object,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -27,7 +27,6 @@ const template = `
     [disabled]="disabled"
     [divided]="divided"
     [title]="title"
-    [titleColor]="titleColor"
     [description]="description"
     [options]="options"
     (closed)="onPanelClosed($event)"
@@ -63,7 +62,6 @@ const storyTemplate = `
 
    <b-collapsible-section-example-2
       [title]="title"
-      [titleColor]="titleColor"
       [description]="description"
       [collapsible]="collapsible"
       [expanded]="expanded"
@@ -91,14 +89,21 @@ const note = `
   [expanded] | boolean | if the panel is expanded (open) | false
   [disabled] | boolean | if the panel is disabled (can't be opened) | false
   [divided] | boolean | if the panel has a divider between the header and the content | true
-  [title] | string | section title | none
-  [titleColor] | string | color for the title | none
-  [description] | string | section description (subtitle) | none
-  [options] | CollapsibleOptions | additional options, among which: <br> **options.headerTranscludeStopPropagation** - set to true to prevent click event propagation from content transcluded in header (for example, to prevent buttons opening/closing the panel) | false
-  (opened) |  EventEmitter | emits when collapsible panel was opened | none
-  (closed) |  EventEmitter | emits when collapsible panel was closed | none
+  [title] | string | section title | &nbsp;
+  [description] | string | section description (subtitle) | &nbsp;
+  [options] | CollapsibleOptions | additional options, among which: <br> **options.headerTranscludeStopPropagation** \
+  - set to true to prevent click event propagation from content transcluded in header (for example, to prevent buttons\
+     opening/closing the panel)<br>**options.indicatorColor** - will add \`--bcp-color\` and \`--bcp-color-rgb\` css \
+     variables, that you can use for custom color mods in your feature css, \
+     for example: \`color: var(--bcp-color)\`, or for rgba color with opacity \
+     - \`color: rgba(var(--bcp-color-rgb), 0.2)\` \
+     | collapsibleOptionsDef
+  (opened) |  EventEmitter | emits when collapsible panel was opened | &nbsp;
+  (closed) |  EventEmitter | emits when collapsible panel was closed | &nbsp;
 
-  Content marked with [header] attribute will be projected into the  header (if Title text is present, the [header] content will be placed to the right of the Title, if no Title is present, [header] content will take the full width of header).
+  Content marked with [header] attribute will be projected into the  header (if Title text \
+    is present, the [header] content will be placed to the right of the Title, if no Title \
+    is present, [header] content will take the full width of header).
 
   Other content will be transcluded in the section body (panel).
 
@@ -118,10 +123,9 @@ story.add(
         disabled: boolean('disabled', false),
         divided: boolean('divided', true),
         title: text('title', mockText(randomNumber(2, 5))),
-        titleColor: text('titleColor', '#5555ff'),
         description: text('description', mockText(randomNumber(3, 6))),
         onPanelOpened: action('Panel opened'),
-        onPanelClosed: action('Panel closed')
+        onPanelClosed: action('Panel closed'),
       },
       moduleMetadata: {
         declarations: [],
@@ -129,10 +133,10 @@ story.add(
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           CollapsibleSectionModule,
-          CollapsibleSectionExampleModule
+          CollapsibleSectionExampleModule,
         ],
-        entryComponents: []
-      }
+        entryComponents: [],
+      },
     };
   },
   { notes: { markdown: note } }

@@ -1,24 +1,14 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  number,
-  text,
-  withKnobs,
-  select
-} from '@storybook/addon-knobs/angular';
+import { number, text, withKnobs, select } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
 import { TruncateTooltipModule } from './truncate-tooltip.module';
-import {
-  TruncateTooltipType,
-  TruncateTooltipPosition
-} from './truncate-tooltip.enum';
+import { TruncateTooltipType, TruncateTooltipPosition } from './truncate-tooltip.enum';
 
-const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
-  withKnobs
-);
+const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(withKnobs);
 
 const template1 = `
   <b-big-body *bTruncateTooltip="maxLines">
@@ -53,7 +43,7 @@ const template3 = `
 `;
 
 const template4 = `
-  <h3 [b-truncate-tooltip]="maxLines" [type]="'css'"
+  <h3 [b-truncate-tooltip]="maxLines" [type]="truncateTooltipType.css"
                               [position]="position"
                               [expectChanges]="true">
       This is a pure CSS tooltip! Looks and feels the same as matTooltip-based ones.
@@ -88,7 +78,7 @@ const note = `
 
   #### (example 1) Use as a component (b-truncate-tooltip):
   ~~~
-  <b-truncate-tooltip [maxLines]="maxLines" [type]="TruncateTooltipType.css">
+  <b-truncate-tooltip [maxLines]="maxLines" [type]="truncateTooltipType.css">
       {{ text }}
   </b-truncate-tooltip>
   ~~~
@@ -96,10 +86,13 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [maxLines] | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0 or null. | 1 (optional)
-  [type] | TruncateTooltipType | Use Material tooltip or CSS tooltip. Defaut 'auto' type will use Material for text longer than 130 chars, otherwise CSS | auto
+  [maxLines] | number | maximum lines. the overflowing text will be truncated and tooltip with \
+  full text will be shown. \to disable truncation, set to 0 or null. | 1
+  [type] | TruncateTooltipType | Use Material tooltip or CSS tooltip. Defaut 'auto' type will \
+  use Material for text longer than 130 chars, otherwise CSS | auto
   [position] | TruncateTooltipPosition | above or below | above
-  [trustCssVars] | boolean | performance can be optimised, if --line-height and --font-size CSS variables exist on the element | false
+  [trustCssVars] | boolean | performance can be optimised, if --line-height and --font-size \
+  CSS variables exist on the element | false
   [expectChanges] | boolean | if text inside truncate-tooltip component will be changing, set to true | false
   [delay] | number | time in ms before tooltip shows | 300
   [lazyness] | number | if type is Material, it will be initialized lazyly after this many ms of hover | 200
@@ -108,7 +101,7 @@ const note = `
 
   #### (example 2) Use as a component with an attrubute selector ([b-truncate-tooltip]):
   ~~~
-  <p [b-truncate-tooltip]="maxLines" [type]="TruncateTooltipType.css">
+  <p [b-truncate-tooltip]="maxLines" [type]="truncateTooltipType.css">
     {{ text }}
   </p>
   ~~~
@@ -116,7 +109,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  b-truncate-tooltip (or maxLines) | number | maximum lines | 1 (optional)
+  b-truncate-tooltip (or maxLines) | number | maximum lines | 1
   other properties are the same as in example 1
 
  --------
@@ -131,15 +124,17 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  bTruncateTooltip | number | maximum lines  | 1 (optional)
+  bTruncateTooltip | number | maximum lines  | 1
   other properties are not supported
 
   --------
 
   ### NOTE:
-  - In most cases it's better to use b-truncate-tooltip component in place of text-containing elements like P or DIV etc. You can add classes to it (example 1).
+  - In most cases it's better to use b-truncate-tooltip component in place of text-containing \
+  elements like P or DIV etc. You can add classes to it (example 1).
   - If you want to preserve the HTML element, you can use the component with an attribute selector (example 2).
-  - Use *bTruncateTooltip on another component (like b-display-3, etc) (example 3). This use is basically the same as wrapping your component in b-truncate-tooltip (as in example 1).
+  - Use *bTruncateTooltip on another component (like b-display-3, etc) (example 3). This use is \
+  basically the same as wrapping your component in b-truncate-tooltip (as in example 1).
   - Text inside the directive/component should be of uniform (same) font-size!
   - Elements inside the directive/component should not have margin or padding.
   - There should not be any adjacent block-level elements inside (\`\`\`<p>A</p> <p>B</p>\`\`\` Bad).
@@ -147,7 +142,9 @@ const note = `
   - Any number of adjacent inline elements are allowed  (\`\`\`<p><span>A</span> <span>B</span></p>\`\`\` OK).
 
   ### LIMITATIONS:
-  - Structural directive *bTruncateTooltip wraps the element it exists on with b-truncate-tooltip component. So if the element had any layout-related classes or styles, directive may break layout. This use is effectively same as wrapping your element in b-truncate-tooltip component yourself.
+  - Structural directive *bTruncateTooltip wraps the element it exists on with b-truncate-tooltip \
+  component. So if the element had any layout-related classes or styles, directive may break layout. \
+  This use is effectively same as wrapping your element in b-truncate-tooltip component yourself.
 
 
 `;
@@ -158,17 +155,10 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        truncateTooltipType: TruncateTooltipType,
         maxLines: number('bTruncateTooltip/maxLines', 2),
-        type: select(
-          'type',
-          Object.values(TruncateTooltipType),
-          TruncateTooltipType.auto
-        ),
-        position: select(
-          'position',
-          Object.values(TruncateTooltipPosition),
-          TruncateTooltipPosition.above
-        ),
+        type: select('type', Object.values(TruncateTooltipType), TruncateTooltipType.auto),
+        position: select('position', Object.values(TruncateTooltipPosition), TruncateTooltipPosition.above),
         text1: text(
           'text1',
           `If you’re trying to wear official headgear in a public setting, my advice is
@@ -182,12 +172,7 @@ story.add(
       },
       moduleMetadata: {
         declarations: [],
-        imports: [
-          TypographyModule,
-          StoryBookLayoutModule,
-          BrowserAnimationsModule,
-          TruncateTooltipModule
-        ],
+        imports: [TypographyModule, StoryBookLayoutModule, BrowserAnimationsModule, TruncateTooltipModule],
         entryComponents: []
       }
     };

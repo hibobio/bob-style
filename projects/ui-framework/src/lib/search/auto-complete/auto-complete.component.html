@@ -1,4 +1,5 @@
-<b-search [ngClass]="{'panel-open': panelOpen}"
+<b-search #searchInput
+          [ngClass]="{'panel-open': panelOpen}"
           cdkOverlayOrigin
           class="panel-trigger"
           [value]="searchValue"
@@ -17,7 +18,8 @@
     <b-auto-complete-panel (optionSelect)="onOptionSelect($event)"
                            (escapeClick)="onEscape()"
                            [searchValue]="searchValue"
-                           [options]="filteredOptions">
+                           [options]="filteredOptions"
+                           [searchInput]="searchInput">
     </b-auto-complete-panel>
 
   </div>

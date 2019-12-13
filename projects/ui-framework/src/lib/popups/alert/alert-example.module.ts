@@ -12,7 +12,7 @@ import {
 @Component({
   selector: 'b-alert-example',
   template: `
-    <b-button (click)="showAlert()">Show alert</b-button>
+    <b-button (clicked)="showAlert()">Show alert</b-button>
   `,
   providers: []
 })
@@ -21,10 +21,7 @@ export class AlertExampleComponent {
   @Input() public text: string;
   @Input() public title: string;
 
-  constructor(
-    private alertService: AlertService,
-  ) {
-  }
+  constructor(private alertService: AlertService) {}
 
   showAlert(): void {
     const alertConfig: AlertConfig = {
@@ -47,5 +44,4 @@ export class AlertExampleComponent {
   exports: [AlertExampleComponent],
   providers: [AlertService]
 })
-export class AlertExampleModule {
-}
+export class AlertExampleModule {}

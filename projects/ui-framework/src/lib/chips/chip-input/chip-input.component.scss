@@ -32,6 +32,10 @@
     .bfe-input {
       transition: all 0s;
       transition-delay: 0.05s;
+
+      &:only-child {
+        transition: none;
+      }
     }
 
     &:not(.focused):not(.empty) {

@@ -3,7 +3,7 @@ import {
   select,
   withKnobs,
   text,
-  boolean
+  boolean,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -13,14 +13,14 @@ import { SocialModule } from './social.module';
 import { SearchModule } from '../../search/search/search.module';
 import { Social } from './social.enum';
 
-const inputStories = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-social [value]="value"
           [type]="type"
+          [label]="label"
           [placeholder]="placeholder"
           [disabled]="disabled"
           [required]="required"
@@ -48,22 +48,25 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [type] | Social | type of input field |
-  [value] | string | field value |
-  [placeholder] | string | placeholder text (inside input) |
+  [type] | Social | type of input field | &nbsp;
+  [value] | string | field value | &nbsp;
+  [label] | string | field label (above input). By default, the Social type label is displayed, \
+  but if [label] is passed, it will be displayed instead, \
+  and the Social icon will be placed in placeholder (inside input) | &nbsp;
+  [placeholder] | string | placeholder text (inside input) | 'username'
   [disabled] | boolean | is field disabled | false
   [required] | boolean | is field required | false
-  [hintMessage] | string | hint text |
-  [warnMessage] | string | warning text |
-  [errorMessage] | string | error text |
-  (socialInputChange) |  EventEmitter&lt;InputEvent&gt; | input events emitter |
+  [hintMessage] | string | hint text | &nbsp;
+  [warnMessage] | string | warning text | &nbsp;
+  [errorMessage] | string | error text | &nbsp;
+  (socialInputChange) |  EventEmitter<wbr>&lt;InputEvent&gt; | input events emitter | &nbsp;
 
   ~~~
   ${template}
   ~~~
 `;
 
-inputStories.add(
+story.add(
   'Social',
   () => {
     return {
@@ -71,22 +74,23 @@ inputStories.add(
       props: {
         type: select('type', Social, Social.facebook),
         value: text('value', ''),
+        label: text('label', ''),
         placeholder: text('placeholder', 'username'),
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
-        socialInputChange: action('social')
+        socialInputChange: action('social'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           SearchModule,
           StoryBookLayoutModule,
-          SocialModule
-        ]
-      }
+          SocialModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

@@ -24,7 +24,7 @@
      class="card-top"
      #cardTop
      [ngStyle]="{ 'background-image': card.imageUrl && 'url(' + card.imageUrl + ')' }"
-     [ngClass]="{'card-top-with-image': card.imageUrl}">
+     [ngClass]="{'card-top-with-image': card.imageUrl, 'card-top-text-only': !card.imageUrl && cardTopTextOnly}">
   <ng-content select="[card-top]"></ng-content>
 </div>
 

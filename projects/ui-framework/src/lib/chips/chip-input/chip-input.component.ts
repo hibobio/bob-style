@@ -6,17 +6,17 @@ import {
   forwardRef,
   OnInit,
   SimpleChanges,
-  OnChanges,
   Output,
   EventEmitter,
   OnDestroy,
   ChangeDetectionStrategy,
-  NgZone
+  NgZone,
+  ChangeDetectorRef,
 } from '@angular/core';
 import {
   MatAutocompleteSelectedEvent,
   MatAutocompleteTrigger,
-  MatAutocomplete
+  MatAutocomplete,
 } from '@angular/material/autocomplete';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../../form-elements/base-form-element';
@@ -37,26 +37,30 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
   templateUrl: './chip-input.component.html',
   styleUrls: [
     '../../form-elements/input/input.component.scss',
-    './chip-input.component.scss'
+    './chip-input.component.scss',
   ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => ChipInputComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => ChipInputComponent),
-      multi: true
-    }
+      multi: true,
+    },
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChipInputComponent extends BaseFormElement
-  implements OnChanges, OnInit, OnDestroy {
-  constructor(private utilsService: UtilsService, private zone: NgZone) {
-    super();
+  implements OnInit, OnDestroy {
+  constructor(
+    protected cd: ChangeDetectorRef,
+    private utilsService: UtilsService,
+    private zone: NgZone
+  ) {
+    super(cd);
     this.inputTransformers = [arrayOrFail];
     this.baseValue = [];
   }
@@ -72,8 +76,10 @@ export class ChipInputComponent extends BaseFormElement
   readonly chipListConfig: ChipListConfig = {
     type: ChipType.tag,
     removable: true,
-    focusable: true
+    focusable: true,
   };
+
+  private ignoreAutoClosedEvent = false;
 
   @ViewChild('chips', { static: true }) public chips: ChipListComponent;
   @ViewChild('input', { static: true }) private input: ElementRef<
@@ -89,7 +95,7 @@ export class ChipInputComponent extends BaseFormElement
     ChipInputChange
   >();
 
-  // this extends BaseFormElement's ngOnChanges
+  // extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
     if (changes.value && !changes.value.firstChange) {
       this.updatePossibleChips();
@@ -110,6 +116,7 @@ export class ChipInputComponent extends BaseFormElement
         this.unSelectLastChip();
       });
   }
+
   ngOnDestroy(): void {
     if (this.windowClickSubscriber) {
       this.windowClickSubscriber.unsubscribe();
@@ -119,7 +126,7 @@ export class ChipInputComponent extends BaseFormElement
   private transmit(change: Partial<ChipInputChange>): void {
     this.transmitValue(this.value, {
       eventType: [InputEventType.onChange, InputEventType.onBlur],
-      addToEventObj: change
+      addToEventObj: change,
     });
   }
 
@@ -189,6 +196,11 @@ export class ChipInputComponent extends BaseFormElement
   public onInputChange(event: any): void {
     this.filteredChips =
       this.filterChips(event.target.value) || this.possibleChips;
+
+    if (this.filteredChips === this.possibleChips) {
+      this.ignoreAutoClosedEvent = true;
+      this.autocompleteTrigger.closePanel();
+    }
   }
 
   public optionSelected(event: MatAutocompleteSelectedEvent): void {
@@ -226,7 +238,10 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   public onAutoClosed(): void {
-    this.addChipFromInput();
+    if (!this.ignoreAutoClosedEvent) {
+      this.addChipFromInput();
+    }
+    this.ignoreAutoClosedEvent = false;
   }
 
   public onInputFocus(): void {

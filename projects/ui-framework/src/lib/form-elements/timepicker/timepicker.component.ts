@@ -4,7 +4,7 @@ import {
   ViewChild,
   ElementRef,
   ChangeDetectorRef,
-  NgZone
+  NgZone,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
@@ -13,8 +13,7 @@ import {
   isString,
   isKey,
   isNumber,
-  cloneObject,
-  isNullOrUndefined
+  isNullOrUndefined,
 } from '../../services/utils/functional-utils';
 import { timeyOrFail } from '../../services/utils/transformers';
 import { InputEventType } from '../form-elements.enum';
@@ -31,13 +30,13 @@ interface ParseConfig {
   def?: any;
 }
 
-const ParseConfigDef: ParseConfig = {
+const BTP_PARSE_CONFIG_DEF: ParseConfig = {
   minValue: 0,
   maxValue: undefined,
   mod: 0,
   round: 1,
   pad: 2,
-  def: ''
+  def: '',
 };
 
 @Component({
@@ -48,33 +47,36 @@ const ParseConfigDef: ParseConfig = {
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => TimePickerComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => TimePickerComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+    { provide: BaseFormElement, useExisting: TimePickerComponent },
+  ],
 })
 export class TimePickerComponent extends BaseFormElement {
   constructor(
-    private cd: ChangeDetectorRef,
+    cd: ChangeDetectorRef,
     private zone: NgZone,
     private kbrdCntrlSrvc: FormElementKeyboardCntrlService
   ) {
-    super();
+    super(cd);
+
     this.inputTransformers = [
       timeyOrFail,
       (value: string) => {
         this.valueHours = this.splitValue(value, 0);
         this.valueMinutes = this.splitValue(value, 1);
         return this.combineValue(this.valueHours, this.valueMinutes);
-      }
+      },
     ];
 
-    this.baseValue = '';
+    this.baseValue = null;
   }
+
   @ViewChild('inputHours', { static: true }) inputHours: ElementRef;
   @ViewChild('inputMinutes', { static: true }) inputMinutes: ElementRef;
 
@@ -221,7 +223,7 @@ export class TimePickerComponent extends BaseFormElement {
   clearInput() {
     this.value = this.valueMinutes = this.valueHours = null;
     this.transmitValue(this.value, {
-      eventType: [InputEventType.onChange]
+      eventType: [InputEventType.onChange],
     });
   }
 
@@ -233,11 +235,8 @@ export class TimePickerComponent extends BaseFormElement {
     }
   }
 
-  private parseValue(
-    value: string,
-    config: ParseConfig = cloneObject(ParseConfigDef)
-  ): string {
-    config = { ...ParseConfigDef, ...config };
+  private parseValue(value: string, config: ParseConfig = {} as any): string {
+    config = { ...BTP_PARSE_CONFIG_DEF, ...config };
 
     const parsed = parseInt(value, 10);
     if (parsed !== parsed) {

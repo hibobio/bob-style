@@ -2,7 +2,7 @@ import {
   Component,
   forwardRef,
   NgZone,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import { BaseInputElement } from '../base-input-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -16,21 +16,22 @@ import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.serv
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => TextareaComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => TextareaComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class TextareaComponent extends BaseInputElement {
   constructor(
-    zone: NgZone,
     cd: ChangeDetectorRef,
+    zone: NgZone,
     kbrdCntrlSrvc: FormElementKeyboardCntrlService
   ) {
-    super(zone, cd, kbrdCntrlSrvc);
+    super(cd, zone, kbrdCntrlSrvc);
+    this.outputTransformers = [];
   }
 }

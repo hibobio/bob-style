@@ -11,7 +11,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { LightboxExampleModule } from './lightbox-example.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 
-const lightboxStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Popups,
   module
 ).addDecorator(withKnobs);
@@ -78,7 +78,7 @@ this.lightbox = this.lightboxService.showLightbox({
 
 `;
 
-lightboxStories.add(
+story.add(
   'Lightbox',
   () => {
     return {

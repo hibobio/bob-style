@@ -80,9 +80,7 @@ li {
 }
 
 .icon {
-  font-family: 'Segoe UI Emoji', 'Segoe UI Symbol', 'Segoe UI',
-    'Apple Color Emoji', 'Twemoji Mozilla', 'Noto Color Emoji', 'EmojiOne Color',
-    'Android Emoji';
+  font-family: var(--emoji-font-family);
   user-select: none;
   position: relative;
   z-index: 3;

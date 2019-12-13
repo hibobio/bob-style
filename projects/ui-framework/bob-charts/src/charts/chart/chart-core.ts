@@ -1,52 +1,41 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  EventEmitter,
-  Input,
-  NgZone,
-  OnChanges,
-  Output,
-  SimpleChanges
-} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, EventEmitter, Input, NgZone, Output} from '@angular/core';
 import * as Highcharts from 'highcharts';
-import {Options} from 'highcharts';
+import {Chart, ExportingMimeTypeValue, Options} from 'highcharts';
 import {ChartTypesEnum} from './chart.enum';
 import {merge} from 'lodash';
 import {simpleUID} from 'bob-style';
+import {
+  ChartFormatterThis,
+  ChartLegendAlignEnum,
+  ChartLegendLayoutEnum,
+  ChartLegendPositionEnum,
+  ChartLegendVerticalAlignEnum
+} from './chart.interface';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
+const Exporting = require('highcharts/modules/exporting');
 const noData = require('highcharts/modules/no-data-to-display');
 const More = require('highcharts/highcharts-more');
 
+Exporting(Highcharts);
 Boost(Highcharts);
 noData(Highcharts);
 More(Highcharts);
-noData(Highcharts);
 
-export class ChartCore implements AfterViewInit, OnChanges {
-  type: ChartTypesEnum;
-  highChartRef: any;
+export abstract class ChartCore implements AfterViewInit  {
+  @Input() abstract type: ChartTypesEnum;
+  highChartRef: Chart;
   containerId: string = simpleUID();
+  chartOptions: Options;
   options: Options;
-  firstTimeAfterAnimate = true;
-
   private formatter = (function (component) {
     return function () {
       return component.tooltipFormatter(this, component);
     };
   })(this);
 
-  tooltipFormatter(chartThis, component) {
-    return `<div class="chart-tooltip">
-      <div class="value" style="color:${chartThis.color};">
-          ${component.preTooltipValue}${component.tooltipValueFormatter(chartThis.y)}${component.postTooltipValue}
-      </div>
-      <div class="key">${chartThis.key}</div>
-    </div>`;
-  }
-
-  @Input() tooltipValueFormatter: Function = (val) => val;
+  @Input() legendPosition: ChartLegendPositionEnum = ChartLegendPositionEnum.BOTTOM;
   @Input() preTooltipValue = '';
   @Input() postTooltipValue = '';
   @Input() colorPalette: string[] = [
@@ -66,28 +55,56 @@ export class ChartCore implements AfterViewInit, OnChanges {
   @Input() pointFormat = '{series.name}: <b>{point.percentage:.1f}%</b>';
   @Input() extraOptions: Options = {};
   @Output() legendChanged = new EventEmitter();
+  @Input() tooltipTemplate = <ChartTooltipTemplateFormatter>
+  (component: ChartCore, chartPoint: ChartFormatterThis) => `<div class="chart-tooltip">
+      <div class="value" style="color:${chartPoint.color};">
+          ${component.formatValue(chartPoint.y)}
+      </div>
+      <div class="key">${chartPoint.key}</div>
+    </div>`
+  @Input() tooltipValueFormatter = (val: number): number | string => val;
 
   constructor(
     public zone: NgZone,
     public cdr: ChangeDetectorRef
-  ) {
+  ) {}
 
+  tooltipFormatter(chartThis: ChartFormatterThis, component: ChartCore) {
+    return this.tooltipTemplate(component, chartThis);
+  }
+
+  formatValue(value: number): string {
+    return `${this.preTooltipValue}${this.tooltipValueFormatter(value)}${this.postTooltipValue}`;
+  }
+
+  exportChart(type: ExportingMimeTypeValue) {
+    (this.highChartRef as any).exportChart(
+      {
+        type: type
+      }
+    );
   }
 
   initialOptions(): void {
     this.options = merge({
+      colors: this.colorPalette,
       chart: {
+        events: {
+          render: (event) => {
+            this.legendChanged.emit();
+          }
+        },
         height: this.height,
         type: this.type,
         backgroundColor: 'rgba(255, 255, 255, 0.0)',
         animation: {
           duration: 200,
-          // easing: function(t) { return t; }
         }
       },
       title: {
         text: this.title,
       },
+      legend: this.getLegendPositioning(this.legendPosition),
       tooltip: {
         outside: true,
         useHTML: true,
@@ -114,39 +131,57 @@ export class ChartCore implements AfterViewInit, OnChanges {
         enabled: false
       },
       series: [],
-    }, this.extraOptions);
-    if (this.legend && this.legendChanged && this.firstTimeAfterAnimate) {
-      this.options.plotOptions[this.type].events.afterAnimate = (event) => {
-        this.firstTimeAfterAnimate = false;
-        this.legendChanged.emit(this.highChartRef.legend.legendHeight);
-      };
-    }
+      exporting: {
+        enabled: false
+      }
+    }, this.chartOptions);
   }
 
   ngAfterViewInit(): void {
     this.initialOptions();
     this.zone.runOutsideAngular(() => {
-      Highcharts.setOptions({
-        colors: this.colorPalette,
-        lang: {
-          noData: '' // overrides no data alert
-        }
-      });
       this.highChartRef = Highcharts.chart(this.containerId, this.options);
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.applyOnChange();
   }
 
   applyOnChange() {
     if (this.highChartRef) {
       this.cdr.markForCheck();
       this.initialOptions();
-      // window.requestAnimationFrame(() => {
-      this.highChartRef.update(this.options);
-      // });
+
+      this.zone.runOutsideAngular(() => {
+        this.highChartRef.update(this.options, true, true);
+      });
     }
+  }
+  private getLegendPositioning(position: ChartLegendPositionEnum, offset = {x: 0, y: 0}) {
+    const baseLegendPositionJson = {
+      [ChartLegendPositionEnum.TOP]: {
+        align: ChartLegendAlignEnum.CENTER,
+        verticalAlign: ChartLegendVerticalAlignEnum.TOP,
+        layout: ChartLegendLayoutEnum.HORIZONTAL
+      },
+      [ChartLegendPositionEnum.BOTTOM]: {
+        align: ChartLegendAlignEnum.CENTER,
+        verticalAlign: ChartLegendVerticalAlignEnum.BOTTOM,
+        layout: ChartLegendLayoutEnum.HORIZONTAL
+      },
+      [ChartLegendPositionEnum.RIGHT]: {
+        align: ChartLegendAlignEnum.RIGHT,
+        verticalAlign: ChartLegendVerticalAlignEnum.MIDDLE,
+        layout: ChartLegendLayoutEnum.VERTICAL
+      },
+      [ChartLegendPositionEnum.LEFT]: {
+        align: ChartLegendAlignEnum.LEFT,
+        verticalAlign: ChartLegendVerticalAlignEnum.MIDDLE,
+        layout: ChartLegendLayoutEnum.VERTICAL
+      },
+    };
+
+    return {
+      ...baseLegendPositionJson[position],
+      x: offset.x,
+      y: offset.y
+    };
   }
 }

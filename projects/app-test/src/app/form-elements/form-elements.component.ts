@@ -8,35 +8,45 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   NgZone,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   isString,
   countChildren,
   flatten,
-  getType
+  getType,
+  makeArray,
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
 import { BlotType } from '../../../../ui-framework/src/lib/form-elements/rich-text-editor/rte-core/rte.enum';
 import { AvatarComponent } from '../../../../ui-framework/src/lib/avatar/avatar/avatar.component';
 import {
   truthyOrFalse,
   arrayOfStringsOrArrayFromString,
-  valueToObjectWithKeyOfValueFromArray
+  valueToObjectWithKeyOfValueFromArray,
+  valueAsNumber,
+  stringListToArray,
 } from '../../../../ui-framework/src/lib/services/utils/transformers';
-import { mockHobbies } from '../../../../ui-framework/src/lib/mock.const';
+import {
+  mockHobbies,
+  mockJobs,
+  mockNames,
+} from '../../../../ui-framework/src/lib/mock.const';
 import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { isEqual } from 'lodash';
+import { InputTypes } from '../../../../ui-framework/src/lib/form-elements/input/input.enum';
 
 @Component({
   selector: 'app-form-elements-test',
   templateUrl: './form-elements.component.html',
   styleUrls: ['./form-elements.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormElementsTestComponent
   implements OnInit, OnDestroy, AfterViewInit {
   constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
+
+  parseInt = parseInt;
 
   allFormElements = [
     'bInput',
@@ -49,7 +59,7 @@ export class FormElementsTestComponent
     'bSingleSelect',
     'bMultiSelect',
     'bSplitInput',
-    'bRTE'
+    'bRTE',
   ];
 
   global_visibleComponents = this.allFormElements.reduce((acc, comp) => {
@@ -80,7 +90,7 @@ export class FormElementsTestComponent
     array: ['a', 'b', 'c'],
     object: { a: 'a', b: 'b', c: 'c' },
     date: new Date(),
-    dateString: '2019-06-16'
+    dateString: '2019-06-16',
   };
   globalFormControlStartValue = this.globalFormControlStartValues.null;
 
@@ -123,7 +133,7 @@ export class FormElementsTestComponent
   bInput_maxChars = this.global_maxChars;
   bInput_formSubmitted = false;
   bInput_nodeCount = 0;
-  bInput_lastEventName;
+  bInput_lastemitterName;
   bInput_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bInput_Form = new FormGroup({
@@ -132,9 +142,9 @@ export class FormElementsTestComponent
         ? this.globalFormControlStartValue
         : this.bInput_value,
       {
-        updateOn: this.bInput_updateOn_mode as any
+        updateOn: this.bInput_updateOn_mode as any,
       }
-    )
+    ),
   });
   bInput = this.bInput_Form.get('bInput');
 
@@ -164,7 +174,7 @@ export class FormElementsTestComponent
   bTextarea_maxChars = this.global_maxChars;
   bTextarea_formSubmitted = false;
   bTextarea_nodeCount = 0;
-  bTextarea_lastEventName;
+  bTextarea_lastemitterName;
   bTextarea_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bTextarea_Form = new FormGroup({
@@ -173,9 +183,9 @@ export class FormElementsTestComponent
         ? this.globalFormControlStartValue
         : this.bTextarea_value,
       {
-        updateOn: this.bTextarea_updateOn_mode as any
+        updateOn: this.bTextarea_updateOn_mode as any,
       }
-    )
+    ),
   });
   bTextarea = this.bTextarea_Form.get('bTextarea');
 
@@ -205,7 +215,7 @@ export class FormElementsTestComponent
   bDatepicker_setInputProgrammatically = this.global_setInputProgrammatically;
   bDatepicker_formSubmitted = false;
   bDatepicker_nodeCount = 0;
-  bDatepicker_lastEventName;
+  bDatepicker_lastemitterName;
   bDatepicker_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bDatepicker_Form = new FormGroup({
@@ -214,9 +224,9 @@ export class FormElementsTestComponent
         ? this.globalFormControlStartValue
         : this.bDatepicker_value,
       {
-        updateOn: this.bDatepicker_updateOn_mode as any
+        updateOn: this.bDatepicker_updateOn_mode as any,
       }
-    )
+    ),
   });
   bDatepicker = this.bDatepicker_Form.get('bDatepicker');
 
@@ -247,7 +257,7 @@ export class FormElementsTestComponent
   bChipinput_setInputProgrammatically = this.global_setInputProgrammatically;
   bChipinput_formSubmitted = false;
   bChipinput_nodeCount = 0;
-  bChipinput_lastEventName;
+  bChipinput_lastemitterName;
 
   bChipinput_Form = new FormGroup({
     bChipinput: new FormControl(
@@ -255,9 +265,9 @@ export class FormElementsTestComponent
         ? this.globalFormControlStartValue
         : this.bChipinput_value,
       {
-        updateOn: this.bChipinput_updateOn_mode as any
+        updateOn: this.bChipinput_updateOn_mode as any,
       }
-    )
+    ),
   });
   bChipinput = this.bChipinput_Form.get('bChipinput');
 
@@ -287,7 +297,7 @@ export class FormElementsTestComponent
   bSocial_setInputProgrammatically = this.global_setInputProgrammatically;
   bSocial_formSubmitted = false;
   bSocial_nodeCount = 0;
-  bSocial_lastEventName;
+  bSocial_lastemitterName;
   bSocial_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bSocial_Form = new FormGroup({
@@ -296,9 +306,9 @@ export class FormElementsTestComponent
         ? this.globalFormControlStartValue
         : this.bSocial_value,
       {
-        updateOn: this.bSocial_updateOn_mode as any
+        updateOn: this.bSocial_updateOn_mode as any,
       }
-    )
+    ),
   });
   bSocial = this.bSocial_Form.get('bSocial');
 
@@ -328,7 +338,7 @@ export class FormElementsTestComponent
   bCheckbox_setInputProgrammatically = this.global_setInputProgrammatically;
   bCheckbox_formSubmitted = false;
   bCheckbox_nodeCount = 0;
-  bCheckbox_lastEventName;
+  bCheckbox_lastemitterName;
 
   bCheckbox_Form = new FormGroup({
     bCheckbox: new FormControl(
@@ -336,9 +346,9 @@ export class FormElementsTestComponent
         ? this.globalFormControlStartValue
         : this.bCheckbox_value,
       {
-        updateOn: this.bCheckbox_updateOn_mode as any
+        updateOn: this.bCheckbox_updateOn_mode as any,
       }
-    )
+    ),
   });
   bCheckbox = this.bCheckbox_Form.get('bCheckbox');
 
@@ -350,8 +360,8 @@ export class FormElementsTestComponent
       { id: 11, label: 'option 1' },
       { id: 12, label: 'option 2' },
       { id: 13, label: 'option 3' },
-      { id: 'option 4' }
-    ]
+      { id: 'option 4' },
+    ],
   };
 
   @ViewChild('bRadio', { static: false }) private bRadio_component;
@@ -379,7 +389,7 @@ export class FormElementsTestComponent
   bRadio_setInputProgrammatically = this.global_setInputProgrammatically;
   bRadio_formSubmitted = false;
   bRadio_nodeCount = 0;
-  bRadio_lastEventName;
+  bRadio_lastemitterName;
 
   bRadio_Form = new FormGroup({
     bRadio: new FormControl(
@@ -387,30 +397,31 @@ export class FormElementsTestComponent
         ? this.globalFormControlStartValue
         : this.bRadio_value,
       {
-        updateOn: this.bRadio_updateOn_mode as any
+        updateOn: this.bRadio_updateOn_mode as any,
       }
-    )
+    ),
   });
   bRadio = this.bRadio_Form.get('bRadio');
 
   ///////////////////////////////////
 
-  groupNum = 6;
+  groupNum = 2;
   optionsNum = 3;
+  groupNames = mockJobs();
 
-  bSingleSelect_optionsMock = Array.from(Array(this.groupNum), (_, i) => {
+  bSingleSelect_optionsMock = makeArray(this.groupNum).map((group, index) => {
+    const groupId = index;
+
     return {
-      groupName: `Personal G${i}`,
-      options: Array.from(Array(this.optionsNum), (_, k) => {
-        return {
-          value:
-            k % 2 === 0
-              ? `Personal G${i}_E${k} and some other very long text and some more words to have ellipsis and tooltip`
-              : `Personal G${i}_E${k}`,
-          id: i * this.optionsNum + k,
-          selected: false
-        };
-      })
+      groupName: this.groupNames[index],
+      key: groupId,
+
+      options: makeArray(this.optionsNum).map((option, index) => ({
+        id: groupId * this.optionsNum + index,
+        value: mockNames(1),
+        selected: false,
+        disabled: false,
+      })),
     };
   });
 
@@ -444,7 +455,7 @@ export class FormElementsTestComponent
   bSingleSelect_setInputProgrammatically = this.global_setInputProgrammatically;
   bSingleSelect_formSubmitted = false;
   bSingleSelect_nodeCount = 0;
-  bSingleSelect_lastEventName;
+  bSingleSelect_lastemitterName;
   bSingleSelect_numberOfCustEvents = 1;
   bSingleSelect_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
@@ -454,36 +465,33 @@ export class FormElementsTestComponent
         ? this.globalFormControlStartValue
         : this.bSingleSelect_value,
       {
-        updateOn: this.bSingleSelect_updateOn_mode as any
+        updateOn: this.bSingleSelect_updateOn_mode as any,
       }
-    )
+    ),
   });
   bSingleSelect = this.bSingleSelect_Form.get('bSingleSelect');
 
   ///////////////////////////////////
 
-  bMultiSelect_groupNum = 3;
-  bMultiSelect_optionsNum = 4;
+  bMultiSelect_groupNum = 2;
+  bMultiSelect_optionsNum = 3;
 
-  bMultiSelect_optionsMock = Array.from(
-    Array(this.bMultiSelect_groupNum),
-    (_, i) => {
+  bMultiSelect_optionsMock = makeArray(this.bMultiSelect_groupNum).map(
+    (group, index) => {
+      const groupId = index;
+
       return {
-        groupName: `Basic Info G${i} - header`,
-        options: Array.from(Array(this.bMultiSelect_optionsNum), (_, k) => {
-          return {
-            value: `Basic Info G${i}_E${k} - option`,
-            id: i * this.bMultiSelect_groupNum + k,
+        groupName: this.groupNames[index],
+        key: groupId,
+
+        options: makeArray(this.bMultiSelect_optionsNum).map(
+          (option, index) => ({
+            id: groupId * this.bMultiSelect_optionsNum + index,
+            value: mockNames(1),
             selected: false,
-            prefixComponent: {
-              component: AvatarComponent,
-              attributes: {
-                imageSource:
-                  'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
-              }
-            }
-          };
-        })
+            disabled: false,
+          })
+        ),
       };
     }
   );
@@ -516,7 +524,7 @@ export class FormElementsTestComponent
   bMultiSelect_setInputProgrammatically = this.global_setInputProgrammatically;
   bMultiSelect_formSubmitted = false;
   bMultiSelect_nodeCount = 0;
-  bMultiSelect_lastEventName;
+  bMultiSelect_lastemitterName;
   bMultiSelect_numberOfCustEvents = 1;
   bMultiSelect_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
@@ -526,9 +534,9 @@ export class FormElementsTestComponent
         ? this.globalFormControlStartValue
         : this.bMultiSelect_value,
       {
-        updateOn: this.bMultiSelect_updateOn_mode as any
+        updateOn: this.bMultiSelect_updateOn_mode as any,
       }
-    )
+    ),
   });
   bMultiSelect = this.bMultiSelect_Form.get('bMultiSelect');
 
@@ -586,7 +594,7 @@ export class FormElementsTestComponent
     { value: 'UYU', serverId: null },
     { value: 'VND', serverId: null },
     { value: 'XOF', serverId: null },
-    { value: 'ZAR', serverId: null }
+    { value: 'ZAR', serverId: null },
   ];
 
   bSplitInput_optionsMock = Array.from(Array(1), (_, i) => {
@@ -595,14 +603,14 @@ export class FormElementsTestComponent
       options: this.currencies.map(currency => ({
         value: currency.value,
         id: currency.value,
-        selected: null
-      }))
+        selected: null,
+      })),
     };
   });
 
   bSplitInput_startValue = {
     inputValue: 100,
-    selectValue: 'AED'
+    selectValue: 'AED',
   };
 
   @ViewChild('bSplitInput', { static: false }) private bSplitInput_component;
@@ -629,7 +637,7 @@ export class FormElementsTestComponent
   bSplitInput_setInputProgrammatically = this.global_setInputProgrammatically;
   bSplitInput_formSubmitted = false;
   bSplitInput_nodeCount = 0;
-  bSplitInput_lastEventName;
+  bSplitInput_lastemitterName;
   bSplitInput_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bSplitInput_Form = new FormGroup({
@@ -638,9 +646,9 @@ export class FormElementsTestComponent
         ? this.globalFormControlStartValue
         : this.bSplitInput_value,
       {
-        updateOn: this.bSplitInput_updateOn_mode as any
+        updateOn: this.bSplitInput_updateOn_mode as any,
       }
-    )
+    ),
   });
   bSplitInput = this.bSplitInput_Form.get('bSplitInput');
 
@@ -656,16 +664,16 @@ export class FormElementsTestComponent
         {
           displayName: 'First name',
           id: '/root/firstName',
-          value: 'First name'
+          value: 'First name',
         },
         {
           displayName: 'title',
           id: '/work/title',
           category: 'Work',
-          value: 'title'
-        }
-      ]
-    }
+          value: 'title',
+        },
+      ],
+    },
   ];
 
   bRTE_disableControlsDef = [BlotType.align, BlotType.direction];
@@ -707,7 +715,7 @@ export class FormElementsTestComponent
   bRTE_setInputProgrammatically = this.global_setInputProgrammatically;
   bRTE_formSubmitted = false;
   bRTE_nodeCount = 0;
-  bRTE_lastEventName;
+  bRTE_lastemitterName;
 
   bRTE_Form = new FormGroup({
     bRTE: new FormControl(
@@ -715,9 +723,9 @@ export class FormElementsTestComponent
         ? this.globalFormControlStartValue
         : this.bRTE_value,
       {
-        updateOn: this.bRTE_updateOn_mode as any
+        updateOn: this.bRTE_updateOn_mode as any,
       }
-    )
+    ),
   });
   bRTE = this.bRTE_Form.get('bRTE');
 
@@ -739,7 +747,7 @@ export class FormElementsTestComponent
     }
     if (this[name]) {
       this[name].setValue(value, {
-        emitEvent: this[name + '_setValEmit']
+        emitEvent: this[name + '_setValEmit'],
       });
     }
   }
@@ -750,7 +758,7 @@ export class FormElementsTestComponent
     }
     // this[name + '_component'].value = value;
     this[name + '_component'].ngOnChanges({
-      [prop]: new SimpleChange(null, value, false)
+      [prop]: new SimpleChange(null, value, false),
     });
   }
 
@@ -797,18 +805,29 @@ export class FormElementsTestComponent
     });
   }
 
-  onValueInput(name, event = null, parse = false, value = NaN) {
+  onValueInput(name, event = null, parse = false, value: any = NaN) {
     value = value === value ? value : event.target.value;
     value = parse ? JSON.parse(value as any) : value;
+
     if (this[name + '_setInputProgrammatically']) {
-      event.preventDefault();
+      event && event.preventDefault();
       this.runComponentNgOnChanges(name, value);
     } else {
       this[name + '_value'] = value;
     }
   }
 
-  onEvent(name, $event, eventName, flat = false) {
+  onSelectValueInput(name, event = null) {
+    const value = event.target.value
+      ? stringListToArray(event.target.value).map(val =>
+          valueAsNumber(InputTypes.number, val)
+        )
+      : null;
+
+    this.onValueInput(name, event, null, value);
+  }
+
+  onEvent(name, $event, emitterName, flat = false) {
     $event = this.asString($event);
 
     const max =
@@ -833,14 +852,14 @@ export class FormElementsTestComponent
 
     this[name + '_EventValue'] = value;
     this[name + '_EventCounter']++;
-    this[name + '_lastEventName'] = eventName;
+    this[name + '_lastemitterName'] = emitterName;
 
     if (this.global_consoleLog) {
       console.log('-------->>>>>>>>-----------');
       console.log(
         name +
           ' custom event (' +
-          eventName +
+          emitterName +
           ') ' +
           this[name + '_EventCounter'] +
           ':'
@@ -856,23 +875,21 @@ export class FormElementsTestComponent
   subscribeToValueChanges(name) {
     this[name + '_subscribtion'] =
       this[name] &&
-    this[name].valueChanges
-      .pipe(
-        distinctUntilChanged(isEqual)
-      )
-      .subscribe(value => {
-        value = this.asString(value);
-        this[name + '_SubscrValue'] = value;
-        this[name + '_SubscrCounter']++;
-        if (this.global_consoleLog) {
-          console.log('-------->>>>>>>>-----------');
-          console.log(
-            name + ' valueChanges ' + this[name + '_SubscrCounter'] + ':'
-          );
-          console.log(this[name + '_SubscrValue']);
-        }
-        this.cd.detectChanges();
-      });
+      this[name].valueChanges
+        .pipe(distinctUntilChanged(isEqual))
+        .subscribe(value => {
+          value = this.asString(value);
+          this[name + '_SubscrValue'] = value;
+          this[name + '_SubscrCounter']++;
+          if (this.global_consoleLog) {
+            console.log('-------->>>>>>>>-----------');
+            console.log(
+              name + ' valueChanges ' + this[name + '_SubscrCounter'] + ':'
+            );
+            console.log(this[name + '_SubscrValue']);
+          }
+          this.cd.detectChanges();
+        });
   }
 
   unSubscribeFromValueChanges(name) {
@@ -897,7 +914,7 @@ export class FormElementsTestComponent
     setTimeout(() => {
       this[name + '_formControlEnabled'] = true;
       const newControl = new FormControl(value, {
-        updateOn: mode
+        updateOn: mode,
       });
       this[name + '_Form'].setControl(name, newControl);
       this[name] = this[name + '_Form'].get(name);
@@ -1076,8 +1093,8 @@ export class FormElementsTestComponent
   ngOnInit() {
     this.subscribeToAll(this.allFormElements);
 
-    // this.hideComponents(this.allFormElements);
-    // this.showComponents(['bInput']);
+    this.hideComponents(this.allFormElements);
+    this.showComponents(['bMultiSelect']);
 
     // 'bInput'
     // 'bTextarea'

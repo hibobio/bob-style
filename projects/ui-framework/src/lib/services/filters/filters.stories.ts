@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/angular';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { ComponentGroupType } from '../../consts';
 
-const utilsStories = storiesOf(ComponentGroupType.Services, module);
+const story = storiesOf(ComponentGroupType.Services, module);
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Filters'">
@@ -31,7 +31,7 @@ const note = `
 
 `;
 
-utilsStories.add(
+story.add(
   'Filters',
   () => {
     return {

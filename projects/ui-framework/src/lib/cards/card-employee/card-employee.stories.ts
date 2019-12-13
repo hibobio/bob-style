@@ -42,9 +42,9 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  type | CardType | Card theme | primary (optional)
-  card | EmployeeCard | card contents data | none
-  clicked | Function | handler of Card Clicked event | none
+  [type] | CardType | Card theme | primary
+  [card] | EmployeeCard | card contents data | &nbsp;
+  (clicked) | EventEmitter | handler of Card Clicked event | &nbsp;
 
   #### interface
   ~~~
@@ -78,12 +78,12 @@ story.add(
       props: {
         type: select('type', values(CardType), CardType.large),
         card: object('card', EmployeeCardsMockData[0]),
-        clicked: action('Employee avatar clicked')
+        clicked: action('Employee avatar clicked'),
       },
       moduleMetadata: {
         imports: [StoryBookLayoutModule, BrowserAnimationsModule, CardsModule],
-        entryComponents: []
-      }
+        entryComponents: [],
+      },
     };
   },
   { notes: { markdown: note } }

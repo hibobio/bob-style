@@ -19,7 +19,7 @@ export enum Keys {
   space = ' ',
   comma = ',',
   dollar = '$',
-  at = '@'
+  at = '@',
 }
 
 export const metaKeys = [Keys.meta, Keys.alt, Keys.control, Keys.shift];
@@ -41,14 +41,14 @@ export const controlKeys = [
   Keys.pagedown,
   Keys.pageup,
   Keys.backspace,
-  Keys.delete
+  Keys.delete,
 ];
 
 export const arrowKeys = [
   Keys.arrowdown,
   Keys.arrowleft,
   Keys.arrowright,
-  Keys.arrowup
+  Keys.arrowup,
 ];
 
 export const clickKeys = [Keys.enter, Keys.space];
@@ -87,7 +87,8 @@ export enum NativeEvents {
   touchmove = 'touchmove',
   touchenter = 'touchenter',
   touchleave = 'touchleave',
-  touchcancel = 'touchcancel'
+  touchcancel = 'touchcancel',
+  focusout = 'focusout',
 }
 
 export const NativeMouseEvents = [
@@ -99,19 +100,11 @@ export const NativeMouseEvents = [
   NativeEvents.mousemove,
   NativeEvents.mouseenter,
   NativeEvents.mouseleave,
-  NativeEvents.mouseout
+  NativeEvents.mouseout,
 ];
 
 export const NativeKeyboardEvents = [
   NativeEvents.keydown,
   NativeEvents.keypress,
-  NativeEvents.keyup
+  NativeEvents.keyup,
 ];
-
-export enum TooltipClass {
-  TextLeft = 'text-left',
-  TextCenter = 'text-center',
-  TextRight = 'text-right',
-  PreWrap = 'pre-wrap',
-  NoWrap = 'no-wrap',
-}

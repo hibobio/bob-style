@@ -1,7 +1,8 @@
 <div class="mlac-list">
   <p class="mlac-list-label"
      [attr.id]="listID"
-     *ngIf="listLabel">{{listLabel}}</p>
+     [attr.aria-hidden]="!listLabel"
+     *ngIf="listLabel || chipsLabel">{{listLabel}}</p>
 
   <b-multi-list #list
                 [attr.aria-labelledby]="listLabel ? listID : null"
@@ -15,12 +16,16 @@
 <div class="mlac-chips">
   <p class="mlac-chips-label"
      [attr.id]="chipListID"
-     *ngIf="chipsLabel">{{chipsLabel}}</p>
+     [attr.aria-hidden]="!chipsLabel"
+     *ngIf="listLabel || chipsLabel">{{chipsLabel}}</p>
 
   <b-chip-list #chiplist
                [attr.aria-labelledby]="chipsLabel ? chipListID : null"
                [chips]="chips"
                [config]="chipListConfig"
                (removed)="onChipRemoved($event)">
+
+    <b-empty-state *ngIf="emptyState && chips.length === 0"
+                   [config]="emptyState"></b-empty-state>
   </b-chip-list>
 </div>

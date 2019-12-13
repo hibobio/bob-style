@@ -5,23 +5,22 @@ import {
   object,
   select,
   text,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { SplitInputSingleSelectModule } from './split-input-single-select.module';
-import { SelectGroupOption } from '../lists/list.interface';
+import { SelectGroupOption } from '../../lists/list.interface';
 import { InputTypes } from '../input/input.enum';
 import map from 'lodash/map';
 import { InputSingleSelectValue } from './split-input-single-select.interface';
 import { mockText } from '../../mock.const';
 
-const textareaStories = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-split-input-single-select [inputType]="inputType"
@@ -52,15 +51,15 @@ const note = `
 
   Name | Type | Description
   --- | --- | ---
-  value | SplitInputSingleSelectValue | value of the input and select
-  selectOptions | SelectGroupOption[] | the options model for the select element
-  label | string | label text
-  description | string | description text (above icon)
-  disabled | boolean | is field disabled
-  required | boolean | is field required
-  hintMessage | text | hint text
-  errorMessage | text | error text
-  elementChange | return { value, selectedId } | element change emitter
+  [value] | SplitInputSingleSelectValue | value of the input and select
+  [selectOptions] | SelectGroupOption[] | the options model for the select element
+  [label] | string | label text
+  [description] | string | description text (above icon)
+  [disabled] | boolean | is field disabled
+  [required] | boolean | is field required
+  [hintMessage] | text | hint text
+  [errorMessage] | text | error text
+  (elementChange) | EventEmitter<wbr>&lt;InputSingleSelectValue&gt; |  change emitter
 
   ~~~
   ${template}
@@ -119,7 +118,7 @@ const currencies = [
   { value: 'UYU', serverId: null },
   { value: 'VND', serverId: null },
   { value: 'XOF', serverId: null },
-  { value: 'ZAR', serverId: null }
+  { value: 'ZAR', serverId: null },
 ];
 
 const optionsMock: SelectGroupOption[] = Array.from(Array(1), (_, i) => {
@@ -128,17 +127,17 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(1), (_, i) => {
     options: map(currencies, currency => ({
       value: currency.value,
       id: currency.value,
-      selected: null
-    }))
+      selected: null,
+    })),
   };
 });
 
 const value: InputSingleSelectValue = {
   inputValue: 100,
-  selectValue: 'AED'
+  selectValue: 'AED',
 };
 
-textareaStories.add(
+story.add(
   'Split input single select',
   () => {
     return {
@@ -153,15 +152,15 @@ textareaStories.add(
         hintMessage: text('hintMessage', 'This field should contain something'),
         errorMessage: text('errorMessage', ''),
         elementChange: action('Split input single select change'),
-        selectOptions: object('selectOptions', optionsMock)
+        selectOptions: object('selectOptions', optionsMock),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
-          SplitInputSingleSelectModule
-        ]
-      }
+          SplitInputSingleSelectModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

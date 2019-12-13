@@ -3,7 +3,7 @@ import {
   Output,
   EventEmitter,
   ElementRef,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { ButtonType, ButtonSize, BackButtonType } from './buttons.enum';
 import { Icons, IconColor, IconSize } from '../icons/icons.enum';
@@ -12,11 +12,13 @@ export abstract class BaseButtonElement {
   constructor() {}
 
   @ViewChild('button', { static: true }) public button: ElementRef;
+
   @Input() text: string;
   @Input() disabled = false;
-  @Input() type?: ButtonType | BackButtonType;
-  @Input() size?: ButtonSize;
-  @Input() icon?: Icons;
+  @Input() type: ButtonType | BackButtonType;
+  @Input() size: ButtonSize;
+  @Input() icon: Icons;
+
   @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   readonly buttonType = ButtonType;
@@ -26,6 +28,8 @@ export abstract class BaseButtonElement {
   readonly iconColor = IconColor;
 
   onClick($event: MouseEvent) {
-    this.clicked.emit($event);
+    if (this.clicked.observers.length > 0) {
+      this.clicked.emit($event);
+    }
   }
 }

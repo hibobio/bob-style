@@ -1,8 +1,5 @@
 import { storiesOf } from '@storybook/angular';
 import {
-  text,
-  select,
-  boolean,
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
@@ -12,7 +9,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { TypographyModule } from '../../typography/typography.module';
 import { GridLayoutExampleModule } from './grid-layout-example.module';
 
-const inputStories = storiesOf(ComponentGroupType.Layout, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
@@ -38,7 +35,7 @@ const note = `
   ~~~
 `;
 
-inputStories.add(
+story.add(
   'Grid layout example',
   () => {
     return {

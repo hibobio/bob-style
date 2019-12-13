@@ -13,7 +13,7 @@ import {
   OnDestroy,
   SimpleChange,
   SimpleChanges,
-  OnChanges
+  OnChanges,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Subject } from 'rxjs';
@@ -22,7 +22,7 @@ import { takeUntil } from 'rxjs/operators';
 import {
   RenderedComponent,
   RenderedComponentContent,
-  RenderedComponentHandlers
+  RenderedComponentHandlers,
 } from './component-renderer.interface';
 
 @Component({
@@ -30,7 +30,7 @@ import {
   template: `
     <ng-template #componentHost></ng-template>
   `,
-  styles: []
+  styles: [],
 })
 export class ComponentRendererComponent implements OnChanges, OnDestroy {
   constructor(

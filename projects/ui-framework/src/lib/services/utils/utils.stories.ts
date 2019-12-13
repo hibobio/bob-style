@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/angular';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { ComponentGroupType } from '../../consts';
 
-const utilsStories = storiesOf(ComponentGroupType.Services, module);
+const story = storiesOf(ComponentGroupType.Services, module);
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Utils'">
@@ -28,10 +28,12 @@ const note = `
   ##### getWindowKeydownEvent
   Returns observable of window keydown event with KeyboardEvent interface
 
+  ##### getElementInViewEvent(element: HTMLElement): Observable&lt;boolean&gt;
+  Returns observable of when element comes into / leaves viewport
 
 `;
 
-utilsStories.add(
+story.add(
   'UtilsService',
   () => {
     return {

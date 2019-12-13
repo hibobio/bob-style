@@ -1,7 +1,7 @@
 <b-icon [@reset]
         *ngIf="showResetFilter"
         class="reset-filters"
-        (click)="resetFilters.emit()"
+        (click)="onReset()"
         [hasHoverState]="true"
         [icon]="icons.refresh"
         [color]="iconColor.normal"
@@ -21,9 +21,6 @@
   </div>
 
   <div class="bar-filters">
-
-    <div *ngIf="!quickFilters" class="quick-filter-placeholder">
-    </div>
 
     <b-quick-filter *ngFor="let quickFilterConfig of quickFilters"
                     class="quick-filter-holder"

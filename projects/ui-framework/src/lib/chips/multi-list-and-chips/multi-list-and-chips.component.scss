@@ -24,12 +24,14 @@ $gap: 20px;
 
 .mlac-list-label,
 .mlac-chips-label {
-  @include bFormElement-label;
+  @include bFormElement-label(false);
 }
 
 b-multi-list,
 b-chip-list {
   flex-grow: 5;
+  min-height: 300px;
+  max-height: 360px;
 }
 
 b-multi-list {
@@ -42,9 +44,16 @@ b-chip-list {
   border-radius: $border-radius;
   margin: 0;
   padding: ($gap - 4px);
-  max-height: 360px;
+  position: relative;
 }
 
 :host ::ng-deep b-list-footer {
   margin-top: auto;
+}
+
+b-empty-state {
+  @include position(0 0 0 0);
+  justify-content: center;
+  text-align: center;
+  padding: inherit;
 }

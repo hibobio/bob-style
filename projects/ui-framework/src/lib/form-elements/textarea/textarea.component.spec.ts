@@ -22,14 +22,16 @@ describe('TextareaComponent', () => {
         InputMessageModule,
         FormElementLabelModule,
       ],
-      providers: [DOMhelpers, EventManagerPlugins[0]]
+      providers: [DOMhelpers, EventManagerPlugins[0]],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(TextareaComponent);
         component = fixture.componentInstance;
+        component.ignoreEvents = [];
+
         spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => { });
+        component.changed.subscribe(() => {});
         fixture.detectChanges();
       });
   }));
@@ -49,7 +51,7 @@ describe('TextareaComponent', () => {
       textareaElement.dispatchEvent(new Event('focus'));
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onFocus,
-        value: 'input value'
+        value: 'input value',
       });
     });
     it('should emit InputEvent on input blur with input value', () => {
@@ -57,14 +59,14 @@ describe('TextareaComponent', () => {
       textareaElement.dispatchEvent(new Event('blur'));
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onBlur,
-        value: 'input value'
+        value: 'input value',
       });
     });
     it('should emit InputEvent on model change with input value, if there is a subscriber to the event', () => {
       inputValue(textareaElement, 'change input value', false);
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
-        value: 'change input value'
+        value: 'change input value',
       });
     });
   });

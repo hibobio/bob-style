@@ -20,7 +20,7 @@ import { BaseButtonElement } from '../button.abstract';
     </button>
   `,
   styleUrls: ['./button.component.scss'],
-  providers: [{ provide: BaseButtonElement, useExisting: ButtonComponent }]
+  providers: [{ provide: BaseButtonElement, useExisting: ButtonComponent }],
 })
 export class ButtonComponent extends BaseButtonElement {
   constructor() {
@@ -33,7 +33,9 @@ export class ButtonComponent extends BaseButtonElement {
           ' b-icon-' +
           (this.size === ButtonSize.large ? IconSize.large : IconSize.medium) +
           ' b-icon-' +
-          (this.type === ButtonType.primary ? IconColor.white : IconColor.dark)
+          (this.type === ButtonType.primary || this.type === ButtonType.negative
+            ? IconColor.white
+            : IconColor.dark)
       : '';
   }
 }

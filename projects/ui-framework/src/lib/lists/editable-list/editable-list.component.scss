@@ -1,0 +1,181 @@
+@import '../../style/common-imports';
+
+$bel-item-height: 55px;
+$bel-item-padding: times8(2);
+$bel-item-border-color: $grey-300;
+$bel-item-dragged-bgcolor: $grey-100;
+$bel-item-dragged-border-color: $grey-400;
+
+:host {
+  display: block;
+  text-align: left;
+  outline: 0;
+}
+
+.bel-header {
+  margin-bottom: times8(1/2);
+}
+
+.bel-header-bottom,
+.bel-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bel-header-top {
+  min-height: $bel-item-height;
+  margin-bottom: times8(2);
+  flex-wrap: wrap;
+
+  .bel-item {
+    flex-grow: 1;
+    padding-left: 17px;
+  }
+}
+
+.b-input-message {
+  width: 100%;
+  @include b-caption($color: $color-error, $addCssVars: false);
+  margin: $label-hint-margin 0 0;
+  @include animate(slide-down, 0.15s, $val: 5px, $keyframes: true);
+}
+
+:host ::ng-deep .bel-sort-button {
+  margin-left: auto;
+
+  button[class*='b-icon'] {
+    @include button-icon-right;
+    font-weight: 400;
+    padding-right: 0;
+    min-width: 0;
+  }
+
+  button {
+    color: $grey-600;
+    transition: color 0.4s;
+  }
+
+  &.custom-sorting button {
+    color: $grey-700;
+
+    &:before {
+      color: $grey-600;
+    }
+  }
+}
+
+:host ::ng-deep {
+  .smooth-dnd-draggable-wrapper {
+    padding: 4px 0;
+  }
+
+  .smooth-dnd-container > .smooth-dnd-draggable-wrapper {
+    overflow: visible;
+  }
+}
+
+.bel-item {
+  height: $bel-item-height;
+  display: flex;
+  align-items: center;
+  border-radius: $border-radius;
+  padding: 0 $bel-item-padding;
+  @include b-body($color: $grey-700, $addCssVars: true);
+  background-color: white;
+  user-select: none;
+  outline: 0;
+  transition: box-shadow 0.2s;
+
+  &:before {
+    margin-right: 10px;
+  }
+
+  cursor: move;
+  cursor: grab;
+  box-shadow: inset 0 0 0 1px $bel-item-border-color;
+
+  &.focused {
+    box-shadow: inset 0 0 0 1px $input-focus-border-color;
+  }
+
+  &.warn {
+    box-shadow: inset 0 0 0 1px $color-warn;
+  }
+
+  &.error {
+    box-shadow: inset 0 0 0 1px $color-error;
+  }
+
+  &.new {
+    @include animate(zoom-in, 0.2s, $keyframes: true);
+  }
+
+  &.deleted {
+    @include animate(zoom-out, 0.15s, $keyframes: true);
+  }
+
+  &-dragged {
+    cursor: grabbing;
+    background-color: $bel-item-dragged-bgcolor;
+    box-shadow: 0 0 0 2px $bel-item-dragged-bgcolor,
+      0 0 0 3px $bel-item-dragged-border-color, 0 3px 14px 0 black(0.2);
+  }
+
+  &-dropped {
+    box-shadow: inset 0 0 0 1px $grey-500;
+  }
+
+  &:hover,
+  &-dragged {
+    .bel-trash-button {
+      display: flex;
+    }
+  }
+}
+
+.bel-item-value {
+  flex-grow: 1;
+}
+
+.bel-trash-button,
+.bel-item-confirm {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-right: $bel-item-padding;
+  margin-right: $bel-item-padding * -1;
+  cursor: default;
+}
+
+.bel-trash-button {
+  margin-left: auto;
+}
+
+.bel-item-confirm {
+  @include animate(slide-left, 0.2s, $keyframes: true, $val: 5px);
+  outline: 0;
+}
+
+:host ::ng-deep {
+  .bel-trash-button,
+  .bel-has-item-dragged .bel-item:hover .bel-trash-button {
+    opacity: 0;
+  }
+  .bel-item:hover .bel-trash-button,
+  .bel-item-dragged .bel-trash-button {
+    opacity: 1;
+  }
+  .bel-item:not(:hover):not(.bel-item-dragged) .bel-trash-button {
+    transition: opacity 0.15s;
+  }
+}
+
+.bfe-input {
+  @include input-basics($padding: 0, $height: $bel-item-height);
+  flex-grow: 1;
+}
+
+[hidden] {
+  @include visually-hidden;
+}

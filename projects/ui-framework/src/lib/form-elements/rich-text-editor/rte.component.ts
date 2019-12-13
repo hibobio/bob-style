@@ -8,14 +8,14 @@ import {
   SimpleChanges,
   ViewChild,
   ChangeDetectionStrategy,
-  NgZone
+  NgZone,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { merge } from 'lodash';
 
 import { PanelComponent } from '../../popups/panel/panel.component';
-import { SingleListComponent } from '../lists/single-list/single-list.component';
+import { SingleListComponent } from '../../lists/single-list/single-list.component';
 import { ButtonType } from '../../buttons/buttons.enum';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { PanelDefaultPosVer, PanelSize } from '../../popups/panel/panel.enum';
@@ -35,7 +35,7 @@ import { RteLinkBlot } from './rte-link/rte-link.mixin';
 
 import {
   RtePlaceholder,
-  RtePlaceholderList
+  RtePlaceholderList,
 } from './rte-placeholder/placeholder-rte-converter.interface';
 import { PlaceholderBlot } from './rte-placeholder/placeholder-blot';
 
@@ -58,15 +58,15 @@ quillLib.register(Italic);
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => RichTextEditorComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => RichTextEditorComponent),
-      multi: true
-    }
+      multi: true,
+    },
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 @MixIn([RteLinkBlot, RtePlaceholderBlot, RteKeybindings])
 export class RichTextEditorComponent extends RTEformElement
@@ -101,7 +101,7 @@ export class RichTextEditorComponent extends RTEformElement
   public specialBlots: SpecialBlots = {
     treatAsWholeDefs: [BlotType.placeholder],
     deleteAsWholeDefs: [BlotType.link, BlotType.placeholder],
-    noLinebreakAfterDefs: [BlotType.link, BlotType.align]
+    noLinebreakAfterDefs: [BlotType.link, BlotType.align],
   };
 
   // implementing RteLinkBlot mixin
@@ -180,11 +180,11 @@ export class RichTextEditorComponent extends RTEformElement
           handlers: {
             link: () => {
               this.onLinkPanelOpen();
-            }
-          }
-        }
+            },
+          },
+        },
       },
-      formats: Object.values(this.controlsDef)
+      formats: Object.values(this.controlsDef),
     });
 
     this.zone.runOutsideAngular(() => {

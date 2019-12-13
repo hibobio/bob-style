@@ -5,7 +5,7 @@ import {
   SimpleChanges,
   OnChanges,
   Output,
-  EventEmitter
+  EventEmitter,
 } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CollapsibleSectionModule } from './collapsible-section.module';
@@ -15,13 +15,12 @@ import {
   mockAvatar,
   mockNames,
   mockJobs,
-  mockDate,
   mockText,
-  mockDateRange
+  mockDateRange,
 } from '../../mock.const';
 import {
   LabelValueType,
-  IconPosition
+  IconPosition,
 } from '../../typography/label-value/label-value.enum';
 import { randomNumber, makeArray } from '../../services/utils/functional-utils';
 import { ButtonsModule } from '../../buttons/buttons.module';
@@ -30,6 +29,7 @@ import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { LabelValueModule } from '../../typography/label-value/label-value.module';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { InputModule } from '../../form-elements/input/input.module';
+import { ColorService } from '../../services/color-service/color.service';
 
 @Component({
   selector: 'b-collapsible-section-example-1',
@@ -192,8 +192,8 @@ import { InputModule } from '../../form-elements/input/input.module';
     ':host::ng-deep .avatars { margin-top: 4px; }',
     ':host::ng-deep .avatars b-avatar { margin-right: 16px; }',
     ':host::ng-deep .avatars b-avatar:last-child { margin-right: 0; }',
-    ':host::ng-deep .avatars b-avatar:after {min-width: 200px; text-align: center; }'
-  ]
+    ':host::ng-deep .avatars b-avatar:after {min-width: 200px; text-align: center; }',
+  ],
 })
 export class CollapsibleSectionExample1Component implements OnChanges {
   constructor() {}
@@ -211,43 +211,43 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   public avatar = {
     imageSource: mockAvatar(),
     label: mockNames(1),
-    value: mockJobs(1)
+    value: mockJobs(1),
   };
   public holiday = {
     label: mockDateRange(this.daysNum),
     value: 'Holiday',
     icon: Icons.doc_icon,
-    iconPosition: IconPosition.left
+    iconPosition: IconPosition.left,
   };
   public days = {
     label: this.daysNum,
-    value: 'Days'
+    value: 'Days',
   };
   public cancelButton = {
     type: ButtonType.tertiary,
     color: IconColor.negative,
     size: ButtonSize.medium,
-    icon: Icons.close
+    icon: Icons.close,
   };
   public confirmButton = {
     type: ButtonType.tertiary,
     color: IconColor.positive,
     size: ButtonSize.medium,
-    icon: Icons.tick
+    icon: Icons.tick,
   };
   public curBalance = {
     label: 'Current balance',
-    value: randomNumber(2, 8) + '.' + randomNumber(10, 90)
+    value: randomNumber(2, 8) + '.' + randomNumber(10, 90),
   };
   public docs = {
     label: 'Docs',
     value: mockText(1) + '.pdf',
     icon: Icons.doc,
-    iconPosition: IconPosition.value
+    iconPosition: IconPosition.value,
   };
   public reason = {
     label: 'Reason',
-    value: '"I\'m planning a trip to celebrate my birthday."'
+    value: '"I\'m planning a trip to celebrate my birthday."',
   };
   public outHolidayNum = 3;
   public outHoliday = {
@@ -255,8 +255,8 @@ export class CollapsibleSectionExample1Component implements OnChanges {
     avatars: makeArray(this.outHolidayNum).map(i => ({
       imageSource: mockAvatar(),
       size: AvatarSize.mini,
-      tooltip: mockNames(1) + '\n' + mockDateRange() + '\n' + 'Approved'
-    }))
+      tooltip: mockNames(1) + '\n' + mockDateRange() + '\n' + 'Approved',
+    })),
   };
   public outWorkNum = 5;
   public outWork = {
@@ -264,8 +264,8 @@ export class CollapsibleSectionExample1Component implements OnChanges {
     avatars: makeArray(this.outWorkNum).map(i => ({
       imageSource: mockAvatar(),
       size: AvatarSize.mini,
-      tooltip: mockNames(1) + '\n' + mockDateRange() + '\n' + 'Approved'
-    }))
+      tooltip: mockNames(1) + '\n' + mockDateRange() + '\n' + 'Approved',
+    })),
   };
   public outMilitaryNum = 2;
   public outMilitary = {
@@ -273,8 +273,8 @@ export class CollapsibleSectionExample1Component implements OnChanges {
     avatars: makeArray(this.outMilitaryNum).map(i => ({
       imageSource: mockAvatar(),
       size: AvatarSize.mini,
-      tooltip: mockNames(1) + '\n' + mockDateRange() + '\n' + 'Approved'
-    }))
+      tooltip: mockNames(1) + '\n' + mockDateRange() + '\n' + 'Approved',
+    })),
   };
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -297,7 +297,6 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   template: `
     <b-collapsible-section
       [title]="title"
-      [titleColor]="titleColor"
       [description]="description"
       [collapsible]="collapsible"
       [expanded]="expanded"
@@ -330,8 +329,10 @@ export class CollapsibleSectionExample1Component implements OnChanges {
     '.cell { width: 48%; margin-bottom: 16px; }',
     '.cell:nth-last-child(1), .cell:nth-last-child(2) { margin-bottom: 0; }',
     'b-button {margin-right: 8px;}',
-    'b-button:last-child {margin-right: 0;}'
-  ]
+    'b-button:last-child {margin-right: 0;}',
+    ':host ::ng-deep .bcp-header { border-left: 16px solid var(--bcp-color); }',
+    ':host ::ng-deep .bcp-panel { border-left: 16px solid rgba(var(--bcp-color-rgb), 0.2); }',
+  ],
 })
 export class CollapsibleSectionExample2Component implements OnChanges {
   constructor() {}
@@ -342,7 +343,6 @@ export class CollapsibleSectionExample2Component implements OnChanges {
   @Input() divided = true;
 
   @Input() title = mockText(randomNumber(2, 5));
-  @Input() titleColor = '#5555ff';
   @Input() description = mockText(randomNumber(3, 6));
 
   @Output() opened: EventEmitter<void> = new EventEmitter<void>();
@@ -353,13 +353,14 @@ export class CollapsibleSectionExample2Component implements OnChanges {
   public buttonText1 = mockText(1);
   public buttonText2 = mockText(1);
   public options = {
-    headerContentClickable: false
+    headerContentClickable: false,
+    indicatorColor: ColorService.prototype.randomColor(),
   };
 
   public formCells = makeArray(6).map(i => ({
     label: mockText(randomNumber(1, 2)),
     placeholder: mockText(randomNumber(2, 4)),
-    hint: mockText(randomNumber(3, 6))
+    hint: mockText(randomNumber(3, 6)),
   }));
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -379,7 +380,7 @@ export class CollapsibleSectionExample2Component implements OnChanges {
 @NgModule({
   declarations: [
     CollapsibleSectionExample1Component,
-    CollapsibleSectionExample2Component
+    CollapsibleSectionExample2Component,
   ],
   imports: [
     BrowserModule,
@@ -388,11 +389,11 @@ export class CollapsibleSectionExample2Component implements OnChanges {
     AvatarModule,
     TypographyModule,
     ButtonsModule,
-    InputModule
+    InputModule,
   ],
   exports: [
     CollapsibleSectionExample1Component,
-    CollapsibleSectionExample2Component
-  ]
+    CollapsibleSectionExample2Component,
+  ],
 })
 export class CollapsibleSectionExampleModule {}

@@ -75,6 +75,7 @@
 html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
   @include desktop {
     min-height: 365px;
+    min-width: 450px;
   }
 }
 
@@ -92,6 +93,7 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
 
 .b-select-panel {
   flex-direction: column;
+  justify-content: inherit;
 
   .b-select-list {
     border: 0;
@@ -100,14 +102,15 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
 
   .b-select-panel {
     width: 100%;
+    background-color: white;
     border: 1px solid $grey-500;
     border-radius: $border-radius;
     box-shadow: 0 2px 5px $boxShadowColor;
   }
   .panel-below {
-    border-top-width: 0;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
+    border-top-width: 0;
 
     b-search .bfe-wrap {
       border-top-right-radius: 0;
@@ -115,9 +118,10 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
     }
   }
   .panel-above {
-    border-bottom-width: 0;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
+    border-bottom-width: 0;
+    box-shadow: 0 -2px 5px $boxShadowColor;
 
     b-list-footer {
       border-bottom-left-radius: 0;
@@ -193,7 +197,8 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
 
 // quick filter panel
 
-.b-quick-filter-panel {
+.b-quick-filter-panel,
+.b-select-panel.b-quick-filter-panel {
   position: relative !important;
-  min-width: 320px;
+  min-width: 300px;
 }

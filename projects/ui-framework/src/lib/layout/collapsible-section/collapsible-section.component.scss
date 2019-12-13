@@ -16,6 +16,7 @@ p {
 
 .bcp-section {
   background-color: white;
+  overflow: hidden;
 
   @include desktop {
     border-radius: $border-radius;

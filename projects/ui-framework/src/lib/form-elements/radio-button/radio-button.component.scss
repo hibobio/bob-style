@@ -8,14 +8,6 @@
 
   @include form-element-margins;
   @include input-border-colors($add: ' .brd-label:before');
-
-  &.disabled {
-    @include disabled-state;
-
-    .brd-label:before {
-      pointer-events: none;
-    }
-  }
 }
 
 .bfe-wrap {
@@ -48,8 +40,12 @@
   @include bFormElement-label;
 }
 
-.brd-input {
-  @include radio($disabled-selector: null, $required-selector: null);
+:host ::ng-deep {
+  @include radio(
+    $input-selector: '.brd-input',
+    $disabled-selector: null,
+    $required-selector: null
+  );
 }
 
 .brd-label {
@@ -62,4 +58,12 @@
 
 :host.required .bfe-label {
   @include input-required;
+}
+
+:host.disabled {
+  @include disabled-state;
+
+  .brd-label:before {
+    pointer-events: none;
+  }
 }

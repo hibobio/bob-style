@@ -1,12 +1,12 @@
 import { storiesOf } from '@storybook/angular';
-import { text, boolean, withKnobs } from '@storybook/addon-knobs/angular';
+import { text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { SearchModule } from './search.module';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const inputStories = storiesOf(ComponentGroupType.Search, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
   withKnobs
 );
 
@@ -35,15 +35,15 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  value | string/number/float | type of input field | none
-  label | string | label text | none
-  searchChange | action | searchChange output string | none
+  value | string/number/float | type of input field | &nbsp;
+  label | string | label text | &nbsp;
+  searchChange | action | searchChange output string | &nbsp;
 
   ~~~
   ${template}
   ~~~
 `;
-inputStories.add(
+story.add(
   'Search',
   () => {
     return {

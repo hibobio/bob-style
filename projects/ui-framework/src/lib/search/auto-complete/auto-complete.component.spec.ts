@@ -5,7 +5,7 @@ import {
   flush,
   inject,
   TestBed,
-  tick
+  tick,
 } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AutoCompleteComponent } from './auto-complete.component';
@@ -32,22 +32,22 @@ describe('AutoCompleteComponent', () => {
       return {
         value: `Basic Info E${k} - option`,
         subText: `subtext e${k}`,
-        id: k
+        id: k,
       };
     });
 
     TestBed.configureTestingModule({
       declarations: [
         MockComponent(SearchComponent),
-        MockComponent(AutoCompletePanelComponent)
+        MockComponent(AutoCompletePanelComponent),
       ],
       imports: [
         NoopAnimationsModule,
         AutoCompleteModule,
         OverlayModule,
-        SearchModule
+        SearchModule,
       ],
-      providers: []
+      providers: [],
     })
       .compileComponents()
       .then(() => {
@@ -60,8 +60,8 @@ describe('AutoCompleteComponent', () => {
             previousValue: undefined,
             currentValue: optionsMock,
             firstChange: true,
-            isFirstChange: () => true
-          }
+            isFirstChange: () => true,
+          },
         });
         fixture.autoDetectChanges();
       });
@@ -113,7 +113,7 @@ describe('AutoCompleteComponent', () => {
       expect(component.filteredOptions).toEqual([
         optionsMock[1],
         optionsMock[10],
-        optionsMock[11]
+        optionsMock[11],
       ]);
     });
     it('should have panel open if filteredList.length > 0', () => {
@@ -147,7 +147,9 @@ describe('AutoCompleteComponent', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       searchEl.componentInstance.searchFocus.emit();
       fixture.autoDetectChanges();
-      const panel = overlayContainerElement.querySelector('b-auto-complete-panel');
+      const panel = overlayContainerElement.querySelector(
+        'b-auto-complete-panel'
+      );
       expect(panel).toBeFalsy();
     });
     it('should open panel if displayOptionsOnFocus = true', () => {
@@ -155,7 +157,9 @@ describe('AutoCompleteComponent', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       searchEl.componentInstance.searchFocus.emit();
       fixture.autoDetectChanges();
-      const panel = overlayContainerElement.querySelector('b-auto-complete-panel');
+      const panel = overlayContainerElement.querySelector(
+        'b-auto-complete-panel'
+      );
       expect(panel).toBeTruthy();
     });
   });

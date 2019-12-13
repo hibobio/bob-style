@@ -1,21 +1,32 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({name: 'linkify', pure: true})
+@Pipe({ name: 'linkify', pure: true })
 export class LinkifyPipe implements PipeTransform {
-  transform(link: string): string {
-    return this.linkify(link);
+  transform(link: string, add = ''): string {
+    return this.linkify(link, add);
   }
 
-  private linkify(plainText): string {
-    let replacedText;
-    const replacePatternHttpFtp = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
-    const replacePatternWww = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
-    const replacePatternEmail = /(([a-zA-Z0-9\-_.])+@[a-zA-Z_]+?(\.[a-zA-Z]{2,6})+)/gim;
+  private linkify(value, add = ''): string {
+    // tslint:disable-next-line: max-line-length
+    const urlRegex = /((?:(?:(?:(?:ftp|https?):\/\/)(www\.)?)|(www\.))([-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*)))(?![^<>]*>|[^"]*?<\/a)/gim;
 
-    replacedText = plainText.replace(replacePatternHttpFtp, '<a href="$1" target="_blank">$1</a>');
-    replacedText = replacedText.replace(replacePatternWww, '$1<a href="http://$2" target="_blank">$2</a>');
-    replacedText = replacedText.replace(replacePatternEmail, '<a href="mailto:$1">$1</a>');
+    const mailRegex = /((?:[a-zA-Z0-9\-_.])+@[a-zA-Z_]+?(?:\.[a-zA-Z]{2,6})+)(?![^<>]*>|[^"]*?<\/a)/gim;
 
-    return replacedText;
+    const linksWithoutProtocolRegex = /(href=")(?!(ftp|https?|mailto|tel))/gim;
+
+    // tslint:disable-next-line: max-line-length
+    const linkWithTooLongTextRegex = /(>(?:\s+)?)(?:(?:(?:(?:ftp|https?):\/\/)(www\.)?)|(www\.))?([^\s]{15})([^\s]{10,256})([^\s]{6}(?:\s+)?<\/a>)/gim;
+
+    return value
+      .replace(
+        urlRegex,
+        '<a href="$1" target="_blank"' + (add ? ' ' + add : '') + '>$2$3$4</a>'
+      )
+      .replace(
+        mailRegex,
+        '<a href="mailto:$1"' + (add ? ' ' + add : '') + '>$1</a>'
+      )
+      .replace(linksWithoutProtocolRegex, 'href="http://')
+      .replace(linkWithTooLongTextRegex, '$1$2$3$4…$6');
   }
 }

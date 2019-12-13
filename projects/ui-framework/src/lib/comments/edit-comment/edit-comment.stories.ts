@@ -7,7 +7,7 @@ import { CommentsModule } from '../comments.module';
 import { mockAvatar, mockNames } from '../../mock.const';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const stories = storiesOf(ComponentGroupType.Comments, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Comments, module).addDecorator(
   withKnobs
 );
 
@@ -36,7 +36,7 @@ const note = `
   ~~~
 `;
 
-stories.add(
+story.add(
   'Edit Comment',
   () => {
     return {

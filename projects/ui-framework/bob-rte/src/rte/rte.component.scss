@@ -1,0 +1,172 @@
+@import '../../../src/lib/style/common-imports';
+
+:host {
+  display: block;
+  text-align: left;
+  min-width: 250px;
+  width: 100%;
+
+  @include form-element-margins;
+}
+
+.bfe-label {
+  @include bFormElement-label;
+}
+
+.bfe-wrap {
+  position: relative;
+  background-color: white;
+  border: 1px solid $input-border-color;
+  border-radius: $border-radius;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.bfe-wrap:focus,
+.bfe-wrap.focused,
+.focused .bfe-wrap {
+  border-color: $input-focus-border-color;
+  box-shadow: none;
+}
+
+:host {
+  @include input-border-colors($add: ' .bfe-wrap');
+}
+
+:host.required::ng-deep {
+  .bfe-label {
+    @include input-required;
+  }
+}
+
+:host.disabled {
+  @include disabled-state;
+}
+
+.placeholder-select {
+  position: absolute;
+  top: 0px;
+  right: 0;
+  z-index: 5;
+}
+
+.placeholder-panel-trigger {
+  border: 1px solid $grey-500;
+  border-top-width: 0;
+  border-right-width: 0;
+  border-top-right-radius: $border-radius;
+  background-color: white;
+
+  &::ng-deep button {
+    transition: width 0.2s, height 0.2s, opacity 0.2s;
+
+    &:before {
+      transition: color 0.2s, font-size 0.2s;
+    }
+  }
+
+  &:not(:hover):not(.focused) {
+    background-color: white(0.7);
+
+    &::ng-deep button {
+      @include size($sizeSmall);
+
+      &:before {
+        font-size: 20px;
+      }
+    }
+  }
+
+  &.focused::ng-deep button:before {
+    color: $grey-700;
+  }
+}
+
+// Theme - Secondary & Tertiary common
+
+:host[data-type='secondary']::ng-deep,
+:host[data-type='tertiary']::ng-deep {
+  .fr-box.fr-basic.fr-top .fr-wrapper,
+  .fr-box.fr-basic.fr-bottom .fr-wrapper,
+  .bfe-wrap,
+  .fr-box.fr-basic .fr-element,
+  .fr-toolbar.fr-bottom,
+  .fr-toolbar.fr-top,
+  .fr-toolbar .fr-btn-grp {
+    border-radius: 0;
+  }
+
+  .bfe-wrap {
+    background-color: transparent;
+    border-width: 0;
+  }
+
+  .fr-toolbar .fr-btn-grp {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .placeholder-panel-trigger {
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-top-right-radius: 0;
+  }
+}
+
+// Theme - Secondary
+
+:host[data-type='secondary']::ng-deep {
+  .fr-box.fr-basic .fr-element {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+  }
+
+  .fr-toolbar.fr-bottom,
+  .fr-toolbar.fr-top {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
+}
+
+:host[data-type='secondary'].warn::ng-deep,
+:host[data-type='secondary'].error::ng-deep {
+  .fr-toolbar.fr-bottom,
+  .fr-toolbar.fr-top {
+    border-top-color: $input-border-color;
+  }
+
+  .focused {
+    .fr-toolbar.fr-bottom,
+    .fr-toolbar.fr-top {
+      border-top-color: $input-focus-border-color;
+    }
+  }
+}
+
+// Theme - Tertiary
+
+:host[data-type='tertiary']::ng-deep {
+  .fr-box[class] .fr-wrapper {
+    background-color: $grey-100;
+  }
+
+  .fr-box.fr-basic .fr-element {
+    padding: 20px;
+  }
+
+  .fr-toolbar.fr-bottom,
+  .fr-toolbar.fr-top {
+    border-width: 0;
+  }
+
+  [data-placeholder-id] {
+    box-shadow: inset 0 0 0 1px $grey-100;
+  }
+}
+
+:host[data-type='tertiary'].has-message::ng-deep {
+  .fr-toolbar.fr-bottom,
+  .fr-toolbar.fr-top {
+    border-bottom-width: 1px;
+  }
+}

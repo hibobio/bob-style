@@ -16,24 +16,28 @@ describe('SquareButtonComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SquareButtonComponent, MockComponent(IconComponent)],
-      imports: [MatButtonModule]
+      imports: [MatButtonModule],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(SquareButtonComponent);
         component = fixture.componentInstance;
         component.icon = Icons.file_copy;
-        buttonElement = fixture.debugElement.query(By.css('button'))
-          .nativeElement;
+        buttonElement = fixture.debugElement.query(By.css('button')).nativeElement;
+        component.clicked.subscribe(() => {});
         spyOn(component.clicked, 'emit');
         fixture.detectChanges();
       });
   }));
 
+  afterEach(() => {
+    component.clicked.complete();
+  });
+
   describe('onClick', () => {
     it('Should emit the click event', () => {
       const e = {
-        id: 1
+        id: 1,
       } as any;
       component.onClick(e);
       expect(component.clicked.emit).toHaveBeenCalledWith(e);

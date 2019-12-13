@@ -1,10 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick
-} from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { TabsComponent } from './tabs.component';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -22,10 +16,10 @@ describe('TabsComponent', () => {
     TestBed.configureTestingModule({
       imports: [MatTabsModule, BrowserAnimationsModule],
       declarations: [TabsComponent],
-      providers: [EventManagerPlugins[0]]
+      providers: [EventManagerPlugins[0]],
     })
       .overrideComponent(TabsComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default }
+        set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents();
   }));
@@ -36,14 +30,14 @@ describe('TabsComponent', () => {
     component.tabs = [
       {
         label: 'tab 1',
-        key: 'tab.one'
+        key: 'tab.one',
       },
       {
-        label: 'tab 2'
+        label: 'tab 2',
       },
       {
-        label: 'tab 3'
-      }
+        label: 'tab 3',
+      },
     ];
     spyOn(component.selectChange, 'emit');
     spyOn(component.selectClick, 'emit');
@@ -64,8 +58,7 @@ describe('TabsComponent', () => {
       component.type = TabsType.secondary;
       fixture.detectChanges();
 
-      const tabsGroupEl = fixture.debugElement.query(By.css('.mat-tab-group'))
-        .nativeElement;
+      const tabsGroupEl = fixture.debugElement.query(By.css('.mat-tab-group')).nativeElement;
       expect(tabsGroupEl.classList).not.toContain('tabs-primary');
       expect(tabsGroupEl.classList).toContain('tabs-secondary');
     });
@@ -73,45 +66,50 @@ describe('TabsComponent', () => {
     it('should to set selected tab via selectedIndex', () => {
       component.selectedIndex = 2;
       fixture.detectChanges();
-      const labelEl = fixture.debugElement.query(
-        By.css('.mat-tab-label:nth-child(3)')
-      ).nativeElement;
+      const labelEl = fixture.debugElement.query(By.css('.mat-tab-label:nth-child(3)')).nativeElement;
       expect(labelEl.classList).toContain('mat-tab-label-active');
     });
 
     it('should output selectChange event', fakeAsync(() => {
       component.selectedIndex = 1;
       fixture.detectChanges();
-      const matTabLabel = fixture.debugElement.queryAll(
-        By.css('.mat-tab-label')
-      )[0];
+      const matTabLabel = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[0];
       matTabLabel.triggerEventHandler('click', null);
       fixture.detectChanges();
       tick(500);
-      expect(component.selectChange.emit).toHaveBeenCalledTimes(2);
+      expect(component.selectChange.emit).toHaveBeenCalledTimes(1);
+    }));
+
+    it('should not change the selected index if the tab is controlled', fakeAsync(() => {
+      component.controlled = true;
+      component.selectedIndex = 1;
+      fixture.detectChanges();
+      const matTabLabel = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[0];
+      matTabLabel.triggerEventHandler('click', null);
+      fixture.detectChanges();
+      tick(500);
+      expect(component.selectedIndex).toEqual(1);
     }));
 
     it('should output select click event', () => {
       component.selectedIndex = 1;
       component.selectClick.subscribe(() => {});
       fixture.detectChanges();
-      const label = fixture.debugElement.queryAll(By.css('.tab-label'))[1]
-        .nativeElement;
+      const label = fixture.debugElement.queryAll(By.css('.tab-label'))[1].nativeElement;
       label.click();
       expect(component.selectClick.emit).toHaveBeenCalledTimes(1);
       expect(component.selectClick.emit).toHaveBeenCalledWith({
         index: 1,
         tab: {
-          label: 'tab 2'
-        }
+          label: 'tab 2',
+        },
       });
+      component.selectClick.complete();
     });
 
     it('should add class from key param when exists in model', () => {
       fixture.detectChanges();
-      const tabSpan = fixture.debugElement.queryAll(
-        By.css('.mat-tab-label span')
-      );
+      const tabSpan = fixture.debugElement.queryAll(By.css('.mat-tab-label span'));
       expect(tabSpan[0].nativeElement.classList).toContain('tab.one');
     });
   });

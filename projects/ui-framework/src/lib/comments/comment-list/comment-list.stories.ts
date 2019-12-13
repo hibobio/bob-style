@@ -10,7 +10,7 @@ import {COMMENT_ITEM, LONG_COMMENT_ITEM} from '../comments.mocks';
 import {CommentsModule} from '../comments.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-const stories = storiesOf(ComponentGroupType.Comments, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Comments, module).addDecorator(
   withKnobs
 );
 
@@ -22,7 +22,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-stories
+story
   .addDecorator(moduleMetadata({
     declarations: [
     ],

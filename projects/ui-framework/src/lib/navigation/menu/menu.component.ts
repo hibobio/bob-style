@@ -6,48 +6,54 @@ import { has } from 'lodash';
 @Component({
   selector: 'b-menu',
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss'],
+  styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnChanges {
-
+  @Input() id: string;
   @Input() menu: MenuItem[];
   @Input() openLeft = false;
   @Input() disabled: boolean;
-  @Output() actionClick: EventEmitter<void> = new EventEmitter<void>();
-  @Output() openMenu: EventEmitter<void> = new EventEmitter<void>();
-  @Output() closeMenu: EventEmitter<void> = new EventEmitter<void>();
+  @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter<MenuItem>();
+  @Output() openMenu: EventEmitter<string | void> = new EventEmitter<string | void>();
+  @Output() closeMenu: EventEmitter<string | void> = new EventEmitter<string | void>();
 
   @ViewChild('childMenu', { static: true }) public childMenu;
 
   menuDir: MenuPositionX = 'after';
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'openLeft')) {
       this.openLeft = changes.openLeft.currentValue;
-      this.menuDir = this.openLeft
-        ? 'before'
-        : 'after';
+      this.menuDir = this.openLeft ? 'before' : 'after';
     }
     if (has(changes, 'disabled')) {
       this.disabled = changes.disabled.currentValue;
     }
   }
 
-  onClick($event, child): void {
-    if (child.action) {
-      child.action($event);
+  onClick(child: MenuItem, triggerAction = true): void {
+    const childUpd = Object.assign({}, child, this.id ? { id: this.id } : {});
+
+    if (this.actionClick.observers.length > 0) {
+      this.actionClick.emit(childUpd);
     }
-    this.actionClick.emit(child);
+
+    if (child.action && triggerAction) {
+      child.action(childUpd);
+    }
   }
 
   onOpenMenu(): void {
-    this.openMenu.emit();
+    if (this.openMenu.observers.length > 0) {
+      this.openMenu.emit(this.id || null);
+    }
   }
 
   onCloseMenu(): void {
-    this.closeMenu.emit();
+    if (this.closeMenu.observers.length > 0) {
+      this.closeMenu.emit(this.id || null);
+    }
   }
 }

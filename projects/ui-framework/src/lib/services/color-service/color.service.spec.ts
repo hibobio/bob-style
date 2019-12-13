@@ -8,10 +8,32 @@ describe('ColorService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ColorService],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     });
 
     colorService = TestBed.get(ColorService);
+  });
+
+  describe('parseToRGB', () => {
+    it('should convert "rgba(66,66,66,0)"', () => {
+      expect(colorService.parseToRGB('rgba(66,66,66,0)')).toEqual([66, 66, 66]);
+    });
+
+    it('should convert "rgb(33,33,33)"', () => {
+      expect(colorService.parseToRGB('rgba(33,33,33)')).toEqual([33, 33, 33]);
+    });
+
+    it('should convert "#0000FF"', () => {
+      expect(colorService.parseToRGB('#0000FF')).toEqual([0, 0, 255]);
+    });
+
+    it('should convert "0000FF"', () => {
+      expect(colorService.parseToRGB('0000FF')).toEqual([0, 0, 255]);
+    });
+
+    it('should convert "#f00"', () => {
+      expect(colorService.parseToRGB('#f00')).toEqual([255, 0, 0]);
+    });
   });
 
   describe('isDark', () => {

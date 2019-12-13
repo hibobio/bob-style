@@ -89,14 +89,16 @@ $font-size-subheading: $font-size-body;
   $weight: $font-weight-body,
   $color: null,
   $style: null,
-  $addCssVars: false
+  $addCssVars: false,
+  $font-family: var(--body-font-family)
 ) {
   @include BodyFont(
     $color: $color,
     $lineHeight: $lineHeight,
     $weight: $weight,
     $style: $style,
-    $addCssVars: $addCssVars
+    $addCssVars: $addCssVars,
+    $font-family: var(--body-font-family)
   );
   @content;
 }
@@ -137,12 +139,7 @@ $font-size-subheading: $font-size-body;
   @content;
 }
 
-@mixin b-caption(
-  $lineHeight: $line-height-body,
-  $color: null,
-  $style: null,
-  $addCssVars: false
-) {
+@mixin b-caption($lineHeight: $line-height-body, $color: null, $style: null, $addCssVars: false) {
   @include BodyFont(
     $color: $color,
     $size: $font-size-caption,
@@ -237,12 +234,7 @@ $font-size-subheading: $font-size-body;
   @content;
 }
 
-@mixin b-heading(
-  $lineHeight: $line-height-heading,
-  $color: null,
-  $style: null,
-  $addCssVars: false
-) {
+@mixin b-heading($lineHeight: $line-height-heading, $color: null, $style: null, $addCssVars: false) {
   @include HeadingFont(
     $color: $color,
     $size: $font-size-heading,
@@ -253,12 +245,7 @@ $font-size-subheading: $font-size-body;
   @content;
 }
 
-@mixin b-subheading(
-  $lineHeight: $line-height-heading,
-  $color: null,
-  $style: null,
-  $addCssVars: false
-) {
+@mixin b-subheading($lineHeight: $line-height-heading, $color: null, $style: null, $addCssVars: false) {
   @include HeadingFont(
     $color: $color,
     $size: $font-size-subheading,

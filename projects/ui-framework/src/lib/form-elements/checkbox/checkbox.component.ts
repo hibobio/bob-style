@@ -7,7 +7,8 @@ import {
   ElementRef,
   ViewChild,
   SimpleChanges,
-  OnChanges
+  ChangeDetectorRef,
+  OnChanges,
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -15,6 +16,7 @@ import { InputEvent } from '../input/input.interface';
 import { InputEventType } from '../form-elements.enum';
 import { FormEvents } from '../form-elements.enum';
 import { booleanOrFail } from '../../services/utils/transformers';
+import { notFirstChanges } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-checkbox',
@@ -24,18 +26,18 @@ import { booleanOrFail } from '../../services/utils/transformers';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => CheckboxComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => CheckboxComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class CheckboxComponent extends BaseFormElement implements OnChanges {
-  constructor() {
-    super();
+  constructor(cd: ChangeDetectorRef) {
+    super(cd);
     this.inputTransformers = [booleanOrFail];
     this.wrapEvent = false;
     this.baseValue = false;
@@ -53,8 +55,8 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
     this.transmitValue(this.value, {
       eventType: [event],
       addToEventObj: {
-        indeterminate: this.indeterminate
-      }
+        indeterminate: this.indeterminate,
+      },
     });
   }
 
@@ -68,6 +70,10 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
     }
     if (changes.value || changes.indeterminate) {
       this.transmit(InputEventType.onWrite);
+    }
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
     }
   }
 

@@ -11,18 +11,15 @@ import {
   NgZone,
   ChangeDetectorRef
 } from '@angular/core';
-import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
-import {
-  ButtonSize,
-  ButtonType
-} from '../../buttons/buttons.enum';
 import { has } from 'lodash';
+import { Subscription } from 'rxjs';
+import { LinkColor } from '../../indicators/link/link.enum';
+import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
-import { LinkColor } from '../../buttons-indicators/link/link.enum';
-import { BreadcrumbsType } from './breadcrumbs.enum';
-import { Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
+import { BreadcrumbsType, BreadcrumbsToggleStrategy } from './breadcrumbs.enum';
+import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 
 @Component({
   selector: 'b-breadcrumbs',
@@ -33,6 +30,8 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
   @HostBinding('attr.data-type')
   @Input()
   type: BreadcrumbsType = BreadcrumbsType.primary;
+  @Input()
+  toggleStrategy: BreadcrumbsToggleStrategy = BreadcrumbsToggleStrategy.auto;
 
   @Input() breadcrumbs: Breadcrumb[];
   @Input() buttons: BreadcrumbNavButtons;
@@ -52,11 +51,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
   readonly breadcrumbsType = BreadcrumbsType;
   private mediaEventSubscriber: Subscription;
 
-  constructor(
-    private mobileService: MobileService,
-    private zone: NgZone,
-    private cd: ChangeDetectorRef
-  ) {}
+  constructor(private mobileService: MobileService, private zone: NgZone, private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.mediaEventSubscriber = this.mobileService
@@ -78,6 +73,10 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
     if (has(changes, 'buttons')) {
       this.buttons = changes.buttons.currentValue;
     }
+  }
+
+  showTitle(i: number) {
+    return this.toggleStrategy === BreadcrumbsToggleStrategy.alwaysOpen || i === this.activeIndex;
   }
 
   onStepClick(stepIndex): void {

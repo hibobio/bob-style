@@ -12,30 +12,31 @@ import {
   SimpleChanges,
   OnChanges,
   OnInit,
-  OnDestroy
+  OnDestroy,
 } from '@angular/core';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import {
   simpleUID,
   notFirstChanges,
-  cloneObject
+  cloneObject,
 } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import { CollapsibleOptions } from './collapsible-section.interface';
+import { ColorService } from '../../services/color-service/color.service';
 
 const collapsibleOptionsDef: CollapsibleOptions = {
   smallTitle: false,
   titlesAsColumn: true,
-  headerTranscludeStopPropagation: false
+  headerTranscludeStopPropagation: false,
 };
 
 @Component({
   selector: 'b-collapsible-section',
   templateUrl: './collapsible-section.component.html',
   styleUrls: ['./collapsible-section.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CollapsibleSectionComponent
   implements OnChanges, OnInit, AfterViewInit, OnDestroy {
@@ -44,7 +45,8 @@ export class CollapsibleSectionComponent
     private utilsService: UtilsService,
     private DOM: DOMhelpers,
     private zone: NgZone,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private colorService: ColorService
   ) {}
 
   public panelID = simpleUID('bcp-');
@@ -62,7 +64,6 @@ export class CollapsibleSectionComponent
   @Input() divided = true;
 
   @Input() title: string;
-  @Input() titleColor?: string;
   @Input() description?: string;
 
   @Input() options: CollapsibleOptions = cloneObject(collapsibleOptionsDef);
@@ -77,8 +78,23 @@ export class CollapsibleSectionComponent
     if (changes.options) {
       this.options = {
         ...collapsibleOptionsDef,
-        ...changes.options.currentValue
+        ...changes.options.currentValue,
       };
+
+      if (this.options.indicatorColor) {
+        const colorRGB = this.colorService.parseToRGB(
+          this.options.indicatorColor
+        );
+
+        if (colorRGB) {
+          this.DOM.setCssProps(this.host.nativeElement, {
+            '--bcp-color': this.options.indicatorColor,
+            '--bcp-color-rgb': this.colorService
+              .parseToRGB(this.options.indicatorColor)
+              .join(', '),
+          });
+        }
+      }
     }
 
     if (changes.expanded) {
@@ -162,7 +178,7 @@ export class CollapsibleSectionComponent
           : 500;
 
       this.DOM.setCssProps(this.host.nativeElement, {
-        '--panel-height': this.contentHeight + 'px'
+        '--panel-height': this.contentHeight + 'px',
       });
     }
 

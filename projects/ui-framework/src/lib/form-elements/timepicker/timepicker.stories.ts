@@ -7,10 +7,9 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const inputStories = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-timepicker
@@ -54,7 +53,7 @@ const note = `
   ${template}
   ~~~
 `;
-inputStories.add(
+story.add(
   'Timepicker',
   () => {
     return {
@@ -62,7 +61,7 @@ inputStories.add(
       props: {
         onChange: action('Time changed'),
 
-        value: text('value', undefined),
+        value: text('value', '4:20'),
         label: text('label', 'Input label'),
 
         disabled: boolean('disabled', false),
@@ -70,15 +69,15 @@ inputStories.add(
 
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
-        errorMessage: text('errorMessage', '')
+        errorMessage: text('errorMessage', ''),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           TimePickerModule,
-          StoryBookLayoutModule
-        ]
-      }
+          StoryBookLayoutModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

@@ -4,7 +4,7 @@ import { TimePickerComponent } from './timepicker.component';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { IconsModule } from '../../icons/icons.module';
-import { DateParseService } from '../datepicker/date-parse.service';
+import { DateParseService } from '../date-picker/date-parse-service/date-parse.service';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 
 @NgModule({

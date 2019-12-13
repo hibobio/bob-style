@@ -3,7 +3,7 @@ import {
   number,
   object,
   select,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
@@ -18,7 +18,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { RowSelection, TableType } from './table/table.enum';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
 
-const tableStories = storiesOf(ComponentGroupType.Tables, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(
   withKnobs
 );
 
@@ -26,6 +26,7 @@ const template = `
 <b-table [type]="type"
          [rowData]="rowData"
          [columnDefs]="columnDefs"
+         [maxHeight]="maxHeight"
          [rowSelection]="rowSelection"
          (rowClicked)="rowClicked($event)"
          (selectionChanged)="selectionChanged($event)"
@@ -47,50 +48,56 @@ const rowSelection = values(RowSelection);
 
 const note = `
   ## Auto complete Element
+
   #### Module
   *TableModule*
+  from <u>'bob-style/bob-table'</u>
+
+  \`\`\`
+  import { TableModule, TableType, RowSelection, ColumnDef, RowClickedEvent, GridActions } from 'bob-style/bob-table';
+  \`\`\`
 
   #### Properties
   Name | Type | Description | default value
   --- | --- | --- | ---
   type | TableType | table style theme | TableType.primary
-  rowData | json | Table data |
-  columnDefs | json | Columns definition |
+  rowData | json | Table data | &nbsp;
+  columnDefs | json | Columns definition | &nbsp;
   rowSelection | RowSelection | single multiple | null
   suppressColumnVirtualisation | boolean | disables virtual scroll on columns | true
   maxHeight | number | grid max height | 450
-  rowClicked | Event | Row clicked event
-  gridInit | Event | Grid init event
-  selectionChanged | Event | All selected rows
-  sortChanged | Event | Sort changed event
+  rowClicked | Event | Row clicked event | &nbsp;
+  gridInit | Event | Grid init event | &nbsp;
+  selectionChanged | Event | All selected rows | &nbsp;
+  sortChanged | Event | Sort changed event | &nbsp;
   tableGridOptions | GridOptions - Partial | extra options that are added on grid | {}
-  addRows | Function | add rows
-  updateRows | Function | update rows
-  removeRows | Function | remove rows
-  filterRows | Function | search rows
-  resetFilter | Function | reset filter
+  addRows | Function | add rows | &nbsp;
+  updateRows | Function | update rows | &nbsp;
+  removeRows | Function | remove rows | &nbsp;
+  filterRows | Function | search rows | &nbsp;
+  resetFilter | Function | reset filter | &nbsp;
   ~~~
   ${template}
   ~~~
 `;
-tableStories.add(
+story.add(
   'Data Table',
   () => {
     return {
       template: storyTemplate,
       props: {
         type: select('type', type, TableType.Primary),
-        maxHeight: number('maxHeight', null),
+        maxHeight: number('maxHeight', 450),
         rowSelection: select(
           'rowSelection',
           rowSelection,
           RowSelection.Multiple
         ),
-        rowData: object('rowData', mockRowData),
         columnDefs: object('columnDefs', mockColumnsDefs),
+        rowData: object('rowData', mockRowData),
         rowClicked: action('Row clicked'),
         selectionChanged: action('Selection changed'),
-        sortChanged: action('sort changed')
+        sortChanged: action('sort changed'),
       },
       moduleMetadata: {
         entryComponents: [AvatarCellComponent, ActionsCellComponent],
@@ -100,9 +107,9 @@ tableStories.add(
           TableModule,
           AgGridModule,
           AvatarModule,
-          AgGridModule.withComponents([AvatarCellComponent])
-        ]
-      }
+          AgGridModule.withComponents([AvatarCellComponent]),
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

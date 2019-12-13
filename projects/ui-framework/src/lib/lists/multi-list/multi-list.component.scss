@@ -1,0 +1,26 @@
+@import '../../style/common-imports';
+
+.checkbox {
+  position: relative;
+  z-index: 2;
+  margin-right: 12px;
+  cursor: pointer;
+
+  &[hidden] {
+    display: none;
+  }
+
+  &[hidden] + [class] {
+    margin-left: 9px;
+  }
+}
+
+:host ::ng-deep {
+  .header-option,
+  .option {
+    .bchk-label,
+    .bchk-label:before {
+      pointer-events: none;
+    }
+  }
+}

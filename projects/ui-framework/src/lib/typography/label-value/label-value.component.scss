@@ -61,6 +61,31 @@ $BLVTypeMap: (
       font-size: $font-size-body,
       font-weight: $font-weight-body
     )
+  ),
+  '6': (
+    '.blv-label': (
+      color: $display-text-color,
+      font-size: $font-size-display-4,
+      font-weight: $font-weight-body,
+      font-family: var(--display-font-family)
+    ),
+    '.blv-value': (
+      color: $grey-600,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    )
+  ),
+  '7': (
+    '.blv-label': (
+      color: $grey-600,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    ),
+    '.blv-value': (
+      color: $grey-600,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    )
   )
 );
 

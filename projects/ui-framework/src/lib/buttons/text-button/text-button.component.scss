@@ -5,8 +5,8 @@
   vertical-align: middle;
   cursor: pointer;
   align-items: center;
-
   @include b-bold-body($addCssVars: false);
+  user-select: none;
 
   &:hover,
   &:focus {

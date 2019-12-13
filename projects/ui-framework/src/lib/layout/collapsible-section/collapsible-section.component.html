@@ -23,8 +23,7 @@
          [ngClass]="{'bcp-title-wrap-column': options?.titlesAsColumn}">
 
       <h4 class="bcp-title"
-          [ngClass]="{'b-display-3': !options?.smallTitle, 'b-bold-body': options?.smallTitle}"
-          [ngStyle]="{'color': titleColor}">{{title}}</h4>
+          [ngClass]="{'b-display-3': !options?.smallTitle, 'b-bold-body': options?.smallTitle}">{{title}}</h4>
 
       <p *ngIf="description"
          class="bcp-description">{{description}}</p>

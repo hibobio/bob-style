@@ -48,14 +48,9 @@ button {
       vertical-align: middle;
       pointer-events: none;
     }
+
     &.icon-after {
-      flex-direction: row-reverse;
-      padding-left: $padding;
-      padding-right: $padding - 3px;
-      &:before {
-        margin-right: 0;
-        margin-left: 6px;
-      }
+      @include button-icon-right($padding);
     }
   }
 }

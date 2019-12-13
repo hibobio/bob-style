@@ -96,8 +96,31 @@ $min-table-height: 140px;
         &.ag-row-hover {
           background-color: $grey-100;
         }
+        &.ag-row-selected {
+          background-color: $color-option-selected;
+        }
         .ag-cell {
           @include cell;
+          &.row-select {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-content: center;
+            .ag-cell-wrapper,
+            .ag-selection-checkbox {
+              display: flex;
+            }
+            .ag-icon:after {
+              content: '';
+              position: absolute;
+              display: block;
+              width: 100%;
+              height: 100%;
+              top: 0;
+              left: 0;
+              z-index: 0;
+            }
+          }
         }
         &:last-child {
           border-bottom: none;

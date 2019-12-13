@@ -8,17 +8,22 @@ describe('ChevronButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ChevronButtonComponent]
+      declarations: [ChevronButtonComponent],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(ChevronButtonComponent);
         component = fixture.componentInstance;
+        component.clicked.subscribe(() => {});
         spyOn(component.clicked, 'emit');
         component.text = 'Click';
         fixture.detectChanges();
       });
   }));
+
+  afterEach(() => {
+    component.clicked.complete();
+  });
 
   describe('Inputs', () => {
     it('should display text in the button', () => {
@@ -36,9 +41,7 @@ describe('ChevronButtonComponent', () => {
       fixture.detectChanges();
       const button = fixture.debugElement.query(By.css('button'));
 
-      expect(button.nativeElement.classList).not.toContain(
-        'b-icon-chevron-down'
-      );
+      expect(button.nativeElement.classList).not.toContain('b-icon-chevron-down');
       expect(button.nativeElement.classList).toContain('b-icon-chevron-up');
     });
   });
@@ -47,7 +50,7 @@ describe('ChevronButtonComponent', () => {
     it('should emit clicked', () => {
       const e = {
         id: 1,
-        stopPropagation: () => true
+        stopPropagation: () => true,
       } as any;
       component.onClick(e);
       expect(component.clicked.emit).toHaveBeenCalledWith(e);

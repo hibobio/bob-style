@@ -35,11 +35,11 @@ const renderData = {
   attributes: {
     hostcss: {
       display: 'flex',
-      alignItems: 'center'
+      alignItems: 'center',
     },
     slot1css: {
-      marginRight: '10px'
-    }
+      marginRight: '10px',
+    },
   },
   content: [
     {
@@ -47,15 +47,15 @@ const renderData = {
       attributes: {
         imageSource: 'http://i.pravatar.cc/200',
         size: AvatarSize.mini,
-        isClickable: true
+        isClickable: true,
       },
       handlers: {
-        clicked: action('Avatar was clicked')
-      }
+        clicked: action('Avatar was clicked'),
+      },
     },
 
-    'Zoe Clark'
-  ]
+    'Zoe Clark',
+  ],
 };
 
 const note = `
@@ -73,10 +73,13 @@ const note = `
   #### [render: RenderedComponent] (properties of object describing Component to be rendered)
   Name | Type | Description | Default value
     --- | --- | --- | ---
-  component | any | component reference | none
-  attributes | { inputName: inputValue } | object with component attributes (inputs) | none (optional)
-  content | string  / RenderedComponent / (string / RenderedComponent)[] | a string, another component or an array of strings and components to be passed as ng-content of the component | none (optional)
-  handlers | { eventName: handlerFunction() } | object that maps events output by component to handler functions | none (optional)
+  component | any | component reference | &nbsp;
+  attributes | { inputName: inputValue } | object with component attributes (inputs) | &nbsp;
+  content | string  / RenderedComponent / (string / RenderedComponent)[] |\
+   a string, another component or an array of strings and components to be\
+    passed as ng-content of the component | &nbsp;
+  handlers | { eventName: handlerFunction() } | object that maps events\
+   output by component to handler functions | &nbsp;
 
 
    #### Example
@@ -117,7 +120,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        renderData: object('renderData', renderData)
+        renderData: object('renderData', renderData),
       },
       moduleMetadata: {
         declarations: [],
@@ -127,10 +130,10 @@ story.add(
           BrowserAnimationsModule,
           ComponentRendererModule,
           TypographyModule,
-          MockComponentModule
+          MockComponentModule,
         ],
-        entryComponents: [AvatarComponent, MockComponent]
-      }
+        entryComponents: [AvatarComponent, MockComponent],
+      },
     };
   },
   { notes: { markdown: note } }

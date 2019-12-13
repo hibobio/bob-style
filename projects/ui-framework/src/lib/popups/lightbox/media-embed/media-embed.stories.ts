@@ -3,7 +3,6 @@ import {
   select,
   text,
   withKnobs,
-  boolean
 } from '@storybook/addon-knobs/angular';
 import { LightboxModule } from '../lightbox.module';
 import { ComponentGroupType } from '../../../consts';
@@ -11,7 +10,7 @@ import { LightboxExampleModule } from '../lightbox-example.module';
 import { ButtonsModule } from '../../../buttons/buttons.module';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
-const lightboxStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Popups,
   module
 ).addDecorator(withKnobs);
@@ -42,7 +41,7 @@ const note = `
   [url] | string |  image, youtube or vimeo link to show in lightbox (other URLs types not supported)
 `;
 
-lightboxStories.add(
+story.add(
   'Media Embed',
   () => {
     return {

@@ -7,7 +7,7 @@ import { values } from 'lodash';
 import { AlertType } from './alert.enum';
 import { AlertExampleModule } from './alert-example.module';
 
-const alertStories = storiesOf(ComponentGroupType.Popups, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
 );
 const alertTypes = values(AlertType);
@@ -52,7 +52,7 @@ const note = `
   text | string | alert content
 `;
 
-alertStories.add(
+story.add(
   'Alert',
   () => {
     return {

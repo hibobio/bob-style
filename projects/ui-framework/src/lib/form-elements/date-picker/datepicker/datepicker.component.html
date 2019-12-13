@@ -1,0 +1,82 @@
+<b-form-element-label *ngIf="label && !hideLabelOnFocus"
+                      class="bfe-label"
+                      [label]="label"
+                      [description]="description"
+                      [fieldId]="id">
+</b-form-element-label>
+
+<div class="bfe-wrap has-suffix"
+     #inputWrap
+     [ngClass]="{focused: inputFocused[0],
+                'panel-above': panelPosition === panelPos.above,
+                'panel-below': panelPosition === panelPos.below}">
+
+  <input #input
+         class="bfe-input"
+         [bDateInput]="dateFormats[type]"
+         [date]="value"
+         [min]="minDate || null"
+         [max]="maxDate || null"
+         [setTo]="type === types.month ? dateAdjust.startOfMonth : null"
+         (parsed)="onInputChange($event)"
+         [readonly]="!allowKeyInput"
+         autocomplete="off"
+         [attr.id]="id"
+         [attr.name]="id"
+         [type]="inputTypes.text"
+         [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
+         [disabled]="disabled"
+         [required]="required"
+         (click)="openPicker()"
+         (focus)="onInputFocus()"
+         (blur)="onInputBlur()"
+         (keydown.outside-zone)="onInputKeydown($event)">
+
+  <input type="text"
+         class="dpi-ghost-input"
+         readonly
+         tabindex="-1"
+         aria-hidden="true"
+         [disabled]="disabled"
+         [matDatepicker]="picker"
+         (dateChange)="transmit($event.value)"
+         [min]="minDate || null"
+         [max]="maxDate || null">
+
+  <b-icon class="bfe-suffix open-picker"
+          role="button"
+          [hasHoverState]="true"
+          [icon]="icons.date"
+          [color]="inputFocused[0] ? iconColor.dark : iconColor.normal"
+          [size]="iconSize.medium"
+          (click)="openPicker()">
+  </b-icon>
+
+  <b-icon *ngIf="!isInputEmpty()"
+          class="bfe-suffix clear-input"
+          role="button"
+          [hasHoverState]="true"
+          [icon]="icons.reset_x"
+          [color]="inputFocused[0] ? iconColor.dark : iconColor.normal"
+          [size]="iconSize.medium"
+          (click)="clearInput()">
+  </b-icon>
+
+</div>
+
+<mat-datepicker #picker
+                [startView]="type === types.month ? 'year' : 'month'"
+                [disabled]="disabled"
+                [touchUi]="isMobile"
+                [panelClass]="'b-datepicker-panel ' + ' type-' + type + (panelClass ? ' ' + panelClass : '')"
+                (opened)="onPickerOpen()"
+                (closed)="onPickerClose()"
+                (monthSelected)="onPickerMonthSelect($event)">
+</mat-datepicker>
+
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled"></p>

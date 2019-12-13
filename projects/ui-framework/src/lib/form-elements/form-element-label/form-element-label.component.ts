@@ -1,18 +1,29 @@
-import { Component, Input } from '@angular/core';
-import { TruncateTooltipPosition, TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import {
+  Component,
+  Input,
+  HostBinding,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import {
+  TruncateTooltipPosition,
+  TruncateTooltipType,
+} from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { TooltipClass } from '../../enums';
+import { TooltipClass } from '../../popups/tooltip/tooltip.enum';
 
 @Component({
   selector: 'b-form-element-label',
   templateUrl: './form-element-label.component.html',
-  styleUrls: ['./form-element-label.component.scss']
+  styleUrls: ['./form-element-label.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormElementLabelComponent {
-
+  constructor() {}
   @Input() label: string;
   @Input() description: string;
   @Input() fieldId: string | number;
+
+  @HostBinding('class.bfe-label') classname = true;
 
   readonly truncateTooltipType = TruncateTooltipType;
   readonly icons = Icons;
@@ -24,5 +35,4 @@ export class FormElementLabelComponent {
     TooltipClass.TextLeft,
     TooltipClass.PreWrap,
   ];
-
 }

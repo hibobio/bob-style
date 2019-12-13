@@ -11,10 +11,11 @@ $preloader-size: 48px 12px;
   // use '&' to insert preloader on non-empty container element
     $full-size-selector: '&',
   $abs-pos-center: false,
-  $color: var(--primary-500)
+  $color: var(--primary-500),
+  $pseudo: 'before'
 ) {
   #{$base-selector} {
-    &:before {
+    &:#{$pseudo} {
       content: 'Loading...';
       @include text-hide;
       display: block;

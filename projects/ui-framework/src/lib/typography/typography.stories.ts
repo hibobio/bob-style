@@ -4,7 +4,7 @@ import { TypographyModule } from './typography.module';
 import { ComponentGroupType } from '../consts';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 
-const typographyStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Typography,
   module
 ).addDecorator(withKnobs);
@@ -164,7 +164,7 @@ Regular Body text
 ~~~
 
 `;
-typographyStories.add(
+story.add(
   'Text',
   () => ({
     template: storyTemplate,

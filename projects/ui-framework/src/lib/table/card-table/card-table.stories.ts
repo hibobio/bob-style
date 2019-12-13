@@ -47,7 +47,8 @@ const storyTemplate = `
     </b-card-table>
 
 
-    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: 40px auto 15px;">
+    <p style="display:flex; justify-content: space-between; align-items: center;\
+     max-width: 300px; margin: 40px auto 15px;">
       <span>Width: </span>
       <b-radio-button [radioConfig]="[
           {id: '95%', label: 'auto'},
@@ -89,22 +90,27 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [meta] | CardTableCellMeta[] | array of objects, describing table meta-data per column | none
-  [table] | CardTableCellData[][] | 2-dimentional array (array of arrays) of objects, providing table cell data per row | none
+  [meta] | CardTableCellMeta[] | array of objects, describing table meta-data per column | &nbsp;
+  [table] | CardTableCellData[][] | 2-dimentional array (array of arrays)\
+   of objects, providing table cell data per row | &nbsp;
   [minCellWidth] | number | number representing minimal cell width in percents | 5
   [default] | string | text to display if table is empty | 'No data to display'
-  (rowClicked) | EventEmitter&lt;CardTableRowClickEvent&gt; | row click event transmits: {row: CardTableCellData[], rowIndex: number} | none
-  (cellClicked) | EventEmitter&lt;CardTableCellClickEvent&gt; | cell click event transmits: {cell: CardTableCellData, cellIndex: number, rowIndex: number} | none
+  (rowClicked) | EventEmitter<wbr>&lt;CardTableRowClickEvent&gt; | row click\
+   event transmits: {row: CardTableCellData[], rowIndex: number} | &nbsp;
+  (cellClicked) | EventEmitter<wbr>&lt;CardTableCellClickEvent&gt; | cell click\
+   event transmits: {cell: CardTableCellData, cellIndex: number, rowIndex: number} | &nbsp;
 
   #### \`meta[0]\`: CardTableCellMeta - single column meta-data object properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  id | string / number | unique column id | none (optional)
-  name | string | column title | none
-  width | number | number representing percentage - to set column width (if not provided, column width will be set automatically) | none (optional)
-  align | string ('left' or undefined / 'right') | text alignment in column | undefined (optional)
-  textStyle | cardTableAllowedTextStyles | object with text-related CSS properties (camelCase), to be applied on the cell (color, fontWeight, fontSize) | none (optional)
-  sortable | boolean | to enable sorting by column | false (optional)
+  id | string / number | unique column id | &nbsp;
+  name | string | column title | &nbsp;
+  width | number | number representing percentage - to set column width\
+   (if not provided, column width will be set automatically) | &nbsp;
+  align | string ('left' or undefined / 'right') | text alignment in column | undefined
+  textStyle | cardTableAllowedTextStyles | object with text-related CSS \
+   properties (camelCase), to be applied on the cell (color, fontWeight, fontSize) | &nbsp;
+  sortable | boolean | to enable sorting by column | false
 
   ##### [meta] example
 
@@ -135,10 +141,12 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   data | string | if string is provided, it is treated as text with automatic truncating after 2 lines
-   - | string[] | if an array of strings is provided - each string is displayed as separate line, truncated if it doesnt fit the width
+   - | string[] | if an array of strings is provided - each string is\
+    displayed as separate line, truncated if it doesnt fit the width
    - | RenderedComponent | object describing a Component to be displayed in the cell
-    - | empty or absent | if the cell object doesnt have a data property or its value is an empty string, then a '-' will be displayed
-  class | string / string[] | class name(s) to be added to the cell (optional)
+    - | empty or absent | if the cell object doesnt have a data property\
+     or its value is an empty string, then a '-' will be displayed
+  class | string / string[] | class name(s) to be added to the cell
 
   *Note:* If using RenderedComponent as cell data, consumer must
    declare the component to be used in entryComponents section in the module
@@ -210,7 +218,7 @@ story.add(
         CardTableData: object('table', CardTableMockData),
 
         rowClickHandler: action('Row clicked'),
-        cellClickHandler: action('Cell clicked')
+        cellClickHandler: action('Cell clicked'),
       },
       moduleMetadata: {
         declarations: [],
@@ -221,10 +229,10 @@ story.add(
           CardTableModule,
           ChipModule,
           ButtonsModule,
-          AvatarModule
+          AvatarModule,
         ],
-        entryComponents: [ChipComponent, ButtonComponent, AvatarComponent]
-      }
+        entryComponents: [ChipComponent, ButtonComponent, AvatarComponent],
+      },
     };
   },
   { notes: { markdown: note } }

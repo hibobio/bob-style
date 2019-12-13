@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/angular';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { ComponentGroupType } from '../../consts';
 
-const mobileStories = storiesOf(ComponentGroupType.Services, module);
+const story = storiesOf(ComponentGroupType.Services, module);
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Mobile service'">
@@ -26,14 +26,14 @@ const note = `
 
 `;
 
-mobileStories.add(
+story.add(
   'MobileService',
   () => {
     return {
       template: storyTemplate,
       moduleMetadata: {
-        imports: [StoryBookLayoutModule]
-      }
+        imports: [StoryBookLayoutModule],
+      },
     };
   },
   { notes: { markdown: note } }

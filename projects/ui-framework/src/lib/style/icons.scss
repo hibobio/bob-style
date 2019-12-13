@@ -1,7 +1,11 @@
-@import url('https://images.hibob.com/icons-font/style.css');
-
 $icon-chars: (
   megaphone: '\e965',
+  person-reports: '\e971',
+  person-manager: '\e972',
+  person-peer: '\e970',
+  sort-asc: '\e96e',
+  sort-desc: '\e96f',
+  at: '\e96c',
   infinite: '\e964',
   field-add: '\e96a',
   bob-b: '\e95e',
@@ -60,6 +64,7 @@ $icon-chars: (
   edit: '\e90b',
   folder-add: '\e90c',
   date: '\e90d',
+  drag-alt: '\e96d',
   delete: '\e90e',
   tick: '\e90f',
   drag: '\e910',
@@ -108,7 +113,7 @@ $icon-chars: (
   graph-timeline: '\e932',
   visibility-off: '\e933',
   watch: '\e934',
-  zoom-out: '\e935'
+  zoom-out: '\e935',
 );
 
 $icon-sizes: (
@@ -116,42 +121,42 @@ $icon-sizes: (
   medium: 20px,
   large: 24px,
   x-large: 46px,
-  xx-large: 60px
+  xx-large: 60px,
 );
 
 $icon-colors: (
   dark: (
     color: $grey-700,
-    hover: $grey-800
+    hover: $grey-800,
   ),
   normal: (
     color: $grey-600,
-    hover: $grey-700
+    hover: $grey-700,
   ),
   light: (
     color: $grey-500,
-    hover: $grey-600
+    hover: $grey-600,
   ),
   white: (
     color: $white,
-    hover: $white
+    hover: $white,
   ),
   primary: (
     color: var(--primary-500),
-    hover: var(--primary-700)
+    hover: var(--primary-700),
   ),
   inform: (
     color: var(--inform-500),
-    hover: var(--inform-700)
+    hover: var(--inform-700),
   ),
   negative: (
     color: var(--negative-500),
-    hover: var(--negative-700)
+    hover: var(--negative-700),
   ),
   positive: (
     color: var(--positive-500),
-    hover: var(--positive-700)
-  )
+    hover: var(--positive-700),
+  ),
 );
 
 @mixin icon-size($size: large, $elem: '&:before') {
@@ -205,6 +210,10 @@ $icon-colors: (
 
   @if $icon {
     @include icon-class($icon, $elem);
+  }
+
+  #{$elem} {
+    @content;
   }
 }
 

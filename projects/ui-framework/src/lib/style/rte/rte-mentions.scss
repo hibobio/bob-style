@@ -1,0 +1,49 @@
+.tribute-container {
+  @include OverlayPanel();
+  border: 1px solid $grey-500;
+  display: block;
+  position: absolute;
+  z-index: 999999;
+  top: 0;
+  left: 0;
+  height: auto;
+  max-height: 300px;
+  max-width: 500px;
+  overflow: auto;
+  margin-top: 2px;
+}
+
+.tribute-container ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tribute-container li {
+  display: flex;
+  align-items: center;
+  padding: 6px 16px;
+  cursor: pointer;
+
+  &.highlight {
+    background-color: $grey-100;
+  }
+
+  &.no-match {
+    cursor: default;
+  }
+
+  .match {
+    font-weight: bold;
+    font-style: normal;
+  }
+}
+
+.brte-mention-avatar {
+  @include size(22px);
+  border-radius: 50%;
+  overflow: hidden;
+  background-position: center;
+  background-size: cover;
+  margin-right: 8px;
+}

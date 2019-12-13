@@ -16,16 +16,21 @@ describe('ChipComponent', () => {
       declarations: [ChipComponent],
       imports: [],
       providers: [ColorService],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(ChipComponent);
         component = fixture.componentInstance;
         chipElement = fixture.nativeElement;
+        component.removed.subscribe(() => {});
         spyOn(component.removed, 'emit');
       });
   }));
+
+  afterEach(() => {
+    component.removed.complete();
+  });
 
   describe('Text', () => {
     it('should put the right text', () => {

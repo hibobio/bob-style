@@ -1,43 +1,36 @@
 @import '../../../style/common-imports';
-@import '../../../../lib/form-elements/lists/list';
+@import '../../../../lib/lists/list';
 
 :host {
-  .side-menu-option-container {
-    display: grid;
-    grid-template-columns: max-content 1fr max-content;
-    cursor: pointer;
-    align-items: center;
-    @include listOption;
-    padding: 0 0 0 8px;
-    &:hover,
-    &.selected,
-    &.focus {
-      background-color: $grey-200;
-    }
+  display: block;
+}
 
-    &.no-prefix {
-      grid-template-columns: 0px 1fr max-content;
+.side-menu-option-container {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  @include listOption;
+  padding: 0 0 0 8px;
 
-      .option-display-name {
-        margin: 0 16px 0 0;
-      }
-    }
+  &:hover,
+  &.selected,
+  &.focus {
+    background-color: $grey-200;
+  }
 
-    &.selected {
-      background: $grey-600;
-      .option-display-name {
-        font-weight: bold;
-        color: $white;
-      }
-    }
+  &.selected {
+    background: $color-option-selected;
 
     .option-display-name {
-      margin: 0 0 0 8px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      justify-self: auto;
-      white-space: nowrap;
-      text-align: left;
+      font-weight: bold;
     }
   }
+}
+
+.option-display-name {
+  margin: 0 0 0 8px;
+}
+
+.option-actions {
+  margin-left: auto;
 }

@@ -1,26 +1,36 @@
 <div class="side-menu-option-container"
-     [ngClass]="{'selected': selected, 'no-prefix': !option.prefix}"
+     [ngClass]="{'selected': selected}"
      (click)="onSelectOption()"
      (mouseenter)="setShowActions(true)"
      (mouseleave)="setShowActions(false)">
-  <div class="option-prefix">
-    <ng-template #prefix></ng-template>
-  </div>
-  <div class="option-display-name"
-       matTooltip="{{option.displayName}}"
-       [matTooltipPosition]="'above'"
-       [matTooltipShowDelay]="300">{{option.displayName}}</div>
+
+  <b-icon *ngIf="option.icon"
+          [icon]="option.icon"
+          [color]="colors.normal">
+  </b-icon>
+
+  <b-truncate-tooltip [maxLines]="1"
+                      [trustCssVars]="true"
+                      class="option-display-name">
+    {{option.displayName}}
+  </b-truncate-tooltip>
+
   <div class="option-actions"
        *ngIf="option.actions?.length"
        [ngStyle]="{'opacity': (showActions || selected || menuOpened) ? 1 : 0}">
+
     <b-menu [menu]="option.actions"
-            (click)="stopBubbling($event); menuOpened = true"
+            (click)="$event.stopPropagation(); menuOpened = true"
             (closeMenu)="menuOpened = false">
+
       <b-square-button menu-trigger
                        [type]="types.tertiary"
                        [icon]="icons.three_dots_vert"
-                       [color]="selected ? colors.white : colors.normal">
+                       [color]="colors.normal">
       </b-square-button>
+
     </b-menu>
+
   </div>
+
 </div>

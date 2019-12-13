@@ -11,7 +11,7 @@ import { LightboxConfig, LightboxData } from './lightbox.interface';
 @Component({
   selector: 'b-lightbox-example',
   template: `
-    <b-button (click)="showLightbox()">Show lightbox</b-button>
+    <b-button (clicked)="showLightbox()">Show lightbox</b-button>
   `,
   providers: []
 })

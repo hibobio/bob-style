@@ -35,6 +35,11 @@
   position: relative;
 }
 
+.card-top-text-only {
+  max-height: height-from-text(3, $useCssVars: true);
+  overflow: hidden;
+}
+
 .card-top-with-image {
   &:after {
     @include pseudo;
@@ -66,6 +71,11 @@
       padding-right: 0;
     }
   }
+
+  [card-content] {
+    max-height: height-from-text(10, $useCssVars: true);
+    overflow: hidden;
+  }
 }
 
 .card-title,
@@ -75,6 +85,10 @@
   &:first-child {
     margin-top: 0;
   }
+}
+
+[card-top]:empty + .card-title {
+  margin-top: 0;
 }
 
 .card-action,

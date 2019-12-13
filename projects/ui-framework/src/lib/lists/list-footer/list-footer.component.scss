@@ -1,0 +1,57 @@
+@import '../../style/common-imports';
+
+:host {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  border-top: 1px solid $grey-500;
+  margin-top: -1px;
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+  z-index: 1;
+  background-color: $white;
+  height: 50px;
+  user-select: none;
+
+  &:empty {
+    display: none;
+  }
+}
+
+:host ::ng-deep {
+  b-button,
+  b-text-button {
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  b-text-button {
+    padding: 0 times8(1);
+
+    &:first-child {
+      padding-left: 0;
+    }
+
+    &:last-child {
+      padding-right: 0;
+    }
+
+    & + b-text-button {
+      background-image: linear-gradient($body-text-color, $body-text-color);
+      background-size: 1px 14px;
+      background-position: left center;
+    }
+
+    &:first-child[hidden] + b-text-button {
+      background-image: none;
+      padding-left: 0;
+    }
+  }
+
+  b-button,
+  b-square-button,
+  [footerActionRight] {
+    margin-left: auto;
+  }
+}

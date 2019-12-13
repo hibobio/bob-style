@@ -7,4 +7,5 @@ export const SELECTION_COLUMN_DEF = {
   pinned: PinDirection.Left,
   lockPosition: true,
   width: 46,
+  cellClass: 'row-select',
 };

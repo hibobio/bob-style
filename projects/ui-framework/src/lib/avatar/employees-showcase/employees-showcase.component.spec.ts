@@ -19,11 +19,11 @@ import { cold, getTestScheduler } from 'jasmine-marbles';
 import { IconComponent } from '../../icons/icon.component';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { By } from '@angular/platform-browser';
-import { ListChange } from '../../form-elements/lists/list-change/list-change';
+import { ListChange } from '../../lists/list-change/list-change';
 import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarGap } from './employees-showcase.const';
 // tslint:disable-next-line: max-line-length
-import { SingleSelectPanelComponent } from '../../form-elements/lists/single-select-panel/single-select-panel.component';
+import { SingleSelectPanelComponent } from '../../lists/single-select-panel/single-select-panel.component';
 import createSpyObj = jasmine.createSpyObj;
 
 fdescribe('EmployeesShowcaseComponent', () => {

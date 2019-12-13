@@ -3,7 +3,7 @@ import {
   boolean,
   select,
   text,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -11,10 +11,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxModule } from './checkbox.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const inputStories = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-checkbox (checkboxChange)="checkboxChange($event)"
@@ -44,22 +43,22 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | ---
-  value | boolean | start checkbox state
-  label | string | label text (above input)
-  placeholder | string | placeholder text (next to input)
-  disabled | boolean | is field disabled
-  required | boolean | is field required
-  indeterminate | boolean | indeterminate state
-  hintMessage | string | hint text
-  warnMessage | string | warning text
-  errorMessage | string | error text
-  checkboxChange | checkboxChange | checkboxChange emitter
+  [value] | boolean | start checkbox state
+  [label] | string | label text (above input)
+  [placeholder] | string | placeholder text (next to input)
+  [disabled] | boolean | is field disabled
+  [required] | boolean | is field required
+  [indeterminate] | boolean | indeterminate state
+  [hintMessage] | string | hint text
+  [warnMessage] | string | warning text
+  [errorMessage] | string | error text
+  (checkboxChange) | EventEmitter<wbr>&lt;InputEvent&gt; | checkboxChange emitter
 
   ~~~
   ${template}
   ~~~
 `;
-inputStories.add(
+story.add(
   'Checkbox',
   () => {
     return {
@@ -74,15 +73,15 @@ inputStories.add(
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'Usefull hint'),
         warnMessage: text('warnMessage', ''),
-        errorMessage: text('errorMessage', '')
+        errorMessage: text('errorMessage', ''),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           CheckboxModule,
-          StoryBookLayoutModule
-        ]
-      }
+          StoryBookLayoutModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

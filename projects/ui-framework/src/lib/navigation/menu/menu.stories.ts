@@ -1,13 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  array,
-  boolean,
-  number,
-  object,
-  select,
-  text,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { ButtonType } from '../../buttons/buttons.enum';
@@ -19,18 +11,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { MenuItem } from './menu.interface';
 
-const menuStories = storiesOf(
-  ComponentGroupType.Navigation,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
 
 const template = `
-<b-menu [menu]="menu"
+<b-menu [id]="'employee-menu'"
+        [menu]="menu"
         [openLeft]="openLeft"
         [disabled]="disabled"
-        (actionClick)="actionClick()"
-        (openMenu)="openMenu()"
-        (closeMenu)="closeMenu()">
+        (actionClick)="onActionClick($event)"
+        (openMenu)="onMenuOpen($event)"
+        (closeMenu)="onMenuClose($event)">
   <b-square-button menu-trigger
                    type="${ButtonType.secondary}"
                    icon="${Icons.three_dots}">
@@ -53,73 +43,167 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  menu | MenuItem[] | array of menu items | none
-  openLeft | boolean | open left by default | false
-  disabled | boolean | disables menu
-  actionClick | action | notifies on action click
-  openMenu | action | notifies on menu open
-  closeMenu | action | notifies on menu close
+  [id] | string | menu id (can be used to reference the item, that has the menu) | &nbsp;
+  [menu] | MenuItem[] | array of menu items | &nbsp;
+  [openLeft] | boolean | open left by default | false
+  [disabled] | boolean | disables menu | &nbsp;
+  (actionClick) | &lt;MenuItem&gt; | notifies on action click, emits menu item, \
+  enriched with menu id (if present) | &nbsp;
+  (openMenu) | &lt;string / void&gt; | notifies on menu open, outputs menu's id, if present | &nbsp;
+  (closeMenu) | &lt;string / void&gt; | notifies on menu close, outputs menu's id, if present | &nbsp;
 
   ~~~
   ${template}
   ~~~
+
+  #### Example \`MenuItem[]\` config:
+
+  ~~~
+menu = [
+    {
+      label: 'Employee',
+      key: 'employee',
+
+      children: [
+        {
+          label: 'Update work details',
+          key: 'update.work.details',
+          action: (event: MenuItem) => {
+            const {id: itemID, key: actionKey} = event;
+            this[actionKey](itemID);
+          }
+        },
+        {
+          label: 'Delete file',
+          key: 'delete.file',
+          action: (event: MenuItem) => {
+            this.deleteFile(event.id)
+          }
+        },
+      ],
+    }
+  ]
+~~~
+<br>
+
+### Note: Using single method to handle all menu actions
+If you utilize menu \`id\` input (for example, referencing the item that has \
+  the menu) and \`key\` of menu items, you might not need to provide \
+  menu item actions at all. You can use single \`(actionClick)\` binding \
+  (that receives MenuItem with menu \`id\` and action \`key\`) to have single handler for all actions.
+
+~~~
+menu = [
+    {
+      label: 'Employee',
+
+      children: [
+        {
+          label: 'Update work details',
+          key: 'updateDetails',
+        },
+        {
+          label: 'Delete file',
+          key: 'deleteFile',
+        },
+      ],
+    }
+  ]
+
+  <b-menu [id]="'employee-123'"
+          [menu]="menu"
+          (actionClick)="onActionClick($event)">
+
+  onActionClick(event) {
+
+    const {id: itemID, key: actionKey} = event;
+
+    // itemID now equals menu [id] ('employee-123'),
+    // actionKey now equals menu item .key ('updateDetails')
+
+    // calling [actionKey] (=== 'updateDetails') method of the component with the itemID:
+
+    this[actionKey](itemID);
+  }
+~~~
 `;
 
 const menuMock: MenuItem[] = [
   {
     label: 'Employee',
+    key: 'employee',
+
     children: [
       {
         label: 'Update work details',
         key: 'update.work.details',
+
         children: [
           {
             label: 'Update site',
-            action: $event => console.log('update site', $event),
+            action: action('update site'),
             key: 'update.site'
           },
           {
             label: 'Update email',
-            action: $event => console.log('update email', $event)
+            action: action('update email'),
+            key: 'update.email'
           },
           {
             label: 'Update reports to',
             disabled: true,
-            action: $event => console.log('update reports to', $event)
+            action: action('update reports to'),
+            key: 'update.reportsto'
           }
         ]
       },
+
       {
         label: 'Update internal details',
+        key: 'update.internal.details',
+
         children: [
           {
             label: 'Terminate',
-            action: $event => console.log('terminate', $event)
+            action: action('terminate'),
+            key: 'terminate'
           },
           {
             label: 'Rehire',
-            action: $event => console.log('rehire', $event)
+            action: action('rehire'),
+            key: 'rehire',
+
+            children: [
+              {
+                label: 'Secret action',
+                action: action('Deep action'),
+                key: 'deep'
+              }
+            ]
           }
         ]
       },
       {
         label: 'Delete file',
-        action: $event => console.log('delete file', $event)
+        action: action('delete file'),
+        key: 'delete.file'
       }
     ]
   },
   {
     label: 'View profile',
-    action: $event => console.log('view profile', $event)
+    action: action('view profile'),
+    key: 'view.profile'
   },
   {
     label: 'Request time-off',
     disabled: true,
-    action: $event => console.log('request time off', $event)
+    action: action('request time off'),
+    key: 'request.timeoff'
   }
 ];
 
-menuStories.add(
+story.add(
   'Menu',
   () => {
     return {
@@ -128,18 +212,12 @@ menuStories.add(
         openLeft: boolean('openLeft', false),
         disabled: boolean('disabled', false),
         menu: object('menu', menuMock),
-        actionClick: action('action click'),
-        openMenu: action('menu open'),
-        closeMenu: action('menu close')
+        onActionClick: action('action click'),
+        onMenuOpen: action('menu open'),
+        onMenuClose: action('menu close')
       },
       moduleMetadata: {
-        imports: [
-          StoryBookLayoutModule,
-          BrowserAnimationsModule,
-          MenuModule,
-          ButtonsModule,
-          IconsModule
-        ]
+        imports: [StoryBookLayoutModule, BrowserAnimationsModule, MenuModule, ButtonsModule, IconsModule]
       }
     };
   },

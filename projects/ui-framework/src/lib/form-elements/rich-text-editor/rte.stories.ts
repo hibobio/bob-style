@@ -6,7 +6,7 @@ import {
   object,
   select,
   text,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -17,13 +17,12 @@ import { TypographyModule } from '../../typography/typography.module';
 import { RichTextEditorModule } from './rte.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BlotType, RTEType } from './rte-core/rte.enum';
-import { SelectGroupOption } from '../lists/list.interface';
+import { SelectGroupOption } from '../../lists/list.interface';
 import { placeholderMock } from './rte-placeholder/rte-placeholder.mock';
 
-const inputStories = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
 const value = `<div> <span style="color: red;">Hello</span> <a href="http://www.google.com">World</a>!</div>
 <div>Some <em>initial</em> <strong>bold</strong> text</div> {{/work/title}}`;
@@ -73,22 +72,25 @@ const note = `
   Name | Type | Description | default
   --- | --- | --- | ---
   [type] | RTEType | primary (white bg, border) or secondary (transparent bg, no borders) | primary
-  [label] | string | label text (above editor) | none (optional)
-  [placeholder] | string | placeholder text (inside editor. if only label is present, it will be treated as placeholder) | none (optional)
-  [value] | string | html content to be placed inside editor | none (optional)
-  [controls] | BlotType[] | array of toolbar controls (check BlotType enum for all possible controls). Defaults to all controls. Pass empty array to disable all controls | all
+  [label] | string | label text (above editor) | &nbsp;
+  [placeholder] | string | placeholder text (inside editor. if only label\
+     is present, it will be treated as placeholder) | &nbsp;
+  [value] | string | html content to be placed inside editor | &nbsp;
+  [controls] | BlotType[] | array of toolbar controls (check BlotType enum\
+     for all possible controls). Defaults to all controls. Pass empty array to disable all controls | all
   [minChars] | number | minimum (plain) text length | 0
-  [maxChars] | number | maximum (plain) text length | none (optional)
-  [minHeight] | number | minimum height of editor (including toolbar). Set to null or 0 to disable min-height | 185 (optional)
-  [maxHeight] | number | maximum height of editor (including toolbar). Set to null to disable max-height | 295 (optional)
-  [disabled] | boolean | disables editor | false (optional)
-  [required] | boolean | adds * to placeholder | false (optional)
-  [hintMessage] | string | adds a hint message below editor | none (optional)
-  [warnMessage] | string | adds a warning message below editor | none (optional)
-  [errorMessage] | string | adds 'invalid' style, hides hint/warn message and displays error message below editor | none (optional)
-  (changed) | EventEmitter&lt;string&gt; | emits in text change |
-  (focused) | EventEmitter&lt;string&gt; | emits latest value on editor focus |
-  (blurred) | EventEmitter&lt;string&gt; | emits latest value on editor blut |
+  [maxChars] | number | maximum (plain) text length | &nbsp;
+  [minHeight] | number | minimum height of editor (including toolbar). Set to null or 0 to disable min-height | 185
+  [maxHeight] | number | maximum height of editor (including toolbar). Set to null to disable max-height | 295
+  [disabled] | boolean | disables editor | false
+  [required] | boolean | adds * to placeholder | false
+  [hintMessage] | string | adds a hint message below editor | &nbsp;
+  [warnMessage] | string | adds a warning message below editor | &nbsp;
+  [errorMessage] | string | adds 'invalid' style, hides hint/warn message\
+   and displays error message below editor | &nbsp;
+  (changed) | EventEmitter<wbr>&lt;string&gt; | emits in text change |
+  (focused) | EventEmitter<wbr>&lt;string&gt; | emits latest value on editor focus |
+  (blurred) | EventEmitter<wbr>&lt;string&gt; | emits latest value on editor blut |
   /content/ | any | pass content to transclude any custom controls/etc to toolbar |
 
 
@@ -99,7 +101,7 @@ const controlsDef = values(BlotType).filter(
   cntrl => !disableControlsDef.includes(cntrl)
 );
 
-inputStories.add(
+story.add(
   'Rich text editor',
   () => {
     return {
@@ -123,7 +125,7 @@ inputStories.add(
         errorMessage: text('errorMessage', ''),
         change: action('Something has changed'),
         focus: action('Editor focused'),
-        blur: action('Editor blurred')
+        blur: action('Editor blurred'),
       },
       moduleMetadata: {
         imports: [
@@ -132,15 +134,15 @@ inputStories.add(
           BrowserAnimationsModule,
           TypographyModule,
           StoryBookLayoutModule,
-          RichTextEditorModule
-        ]
-      }
+          RichTextEditorModule,
+        ],
+      },
     };
   },
   {
     notes: { markdown: note },
     knobs: {
-      escapeHTML: false
-    }
+      escapeHTML: false,
+    },
   }
 );

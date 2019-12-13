@@ -8,7 +8,7 @@ import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const buttonStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Buttons,
   module
 ).addDecorator(withKnobs);
@@ -44,7 +44,7 @@ const note = `
   ${template}
   ~~~
 `;
-buttonStories.add(
+story.add(
   'Group',
   () => ({
     template: storyTemplate,

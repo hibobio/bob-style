@@ -22,10 +22,10 @@ describe('AvatarComponent', () => {
     TestBed.configureTestingModule({
       declarations: [AvatarComponent],
       imports: [IconsModule, ChipModule, TruncateTooltipModule],
-      providers: [DOMhelpers]
+      providers: [DOMhelpers],
     })
       .overrideComponent(AvatarComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default }
+        set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents()
       .then(() => {
@@ -39,10 +39,8 @@ describe('AvatarComponent', () => {
         component.backgroundColor = 'rgb(255, 255, 255)';
 
         fixture.detectChanges();
-        avatarElement = fixture.debugElement.query(By.css('.avatar'))
-          .nativeElement;
-        titleElement = fixture.debugElement.query(By.css('.title'))
-          .nativeElement;
+        avatarElement = fixture.debugElement.query(By.css('.avatar')).nativeElement;
+        titleElement = fixture.debugElement.query(By.css('.title')).nativeElement;
         spyOn(component.clicked, 'emit');
       });
   }));
@@ -54,16 +52,12 @@ describe('AvatarComponent', () => {
 
   describe('Avatar image', () => {
     it('Should put the image as background on .avatar element', () => {
-      expect(avatarElement.style.backgroundImage).toContain(
-        'iVBORw0KGgoAAAANSUhEUgAAA'
-      );
+      expect(avatarElement.style.backgroundImage).toContain('iVBORw0KGgoAAAANSUhEUgAAA');
     });
   });
   describe('Avatar background color', () => {
     it('Should put the background color on .avatar element', () => {
-      expect(avatarElement.style.backgroundColor).toContain(
-        'rgb(255, 255, 255)'
-      );
+      expect(avatarElement.style.backgroundColor).toContain('rgb(255, 255, 255)');
     });
   });
 
@@ -78,6 +72,7 @@ describe('AvatarComponent', () => {
       component.clicked.subscribe(() => {});
       component.onClick('click' as any);
       expect(component.clicked.emit).toHaveBeenCalledWith('click');
+      component.clicked.complete();
     });
   });
 
@@ -96,13 +91,11 @@ describe('AvatarComponent', () => {
     it('Should set the right size of the avatar with css variable', () => {
       component.ngOnChanges(
         simpleChange({
-          size: AvatarSize.large
+          size: AvatarSize.large,
         })
       );
       fixture.detectChanges();
-      expect(getComputedStyle(avatarElement).width).toEqual(
-        AvatarSize.large + 'px'
-      );
+      expect(getComputedStyle(avatarElement).width).toEqual(AvatarSize.large + 'px');
     });
   });
 
@@ -112,8 +105,7 @@ describe('AvatarComponent', () => {
       component.size = AvatarSize.medium;
       fixture.detectChanges();
 
-      const subtitle = fixture.debugElement.query(By.css('.slot2-medium'))
-        .nativeElement;
+      const subtitle = fixture.debugElement.query(By.css('.slot2-medium')).nativeElement;
       expect(titleElement.innerText).toContain('Title');
       expect(subtitle.innerText).toContain('Subtitle');
     });
@@ -169,12 +161,10 @@ describe('AvatarComponent', () => {
       component.size = AvatarSize.large;
       component.chip = {
         type: ChipType.success,
-        text: 'status'
+        text: 'status',
       };
       fixture.detectChanges();
-      const statusElement = fixture.debugElement.query(
-        By.css('[data-type="success"]')
-      );
+      const statusElement = fixture.debugElement.query(By.css('[data-type="success"]'));
       expect(statusElement).toBeTruthy();
       expect(statusElement.nativeElement.innerText).toEqual('status');
     });
@@ -182,12 +172,10 @@ describe('AvatarComponent', () => {
       component.size = AvatarSize.small;
       component.chip = {
         type: ChipType.success,
-        text: 'status'
+        text: 'status',
       };
       fixture.detectChanges();
-      const statusElement = fixture.debugElement.query(
-        By.css('[data-type="success"]')
-      );
+      const statusElement = fixture.debugElement.query(By.css('[data-type="success"]'));
       expect(statusElement).toBeFalsy();
     });
   });

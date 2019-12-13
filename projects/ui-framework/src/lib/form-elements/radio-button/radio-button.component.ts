@@ -5,7 +5,8 @@ import {
   Input,
   Output,
   SimpleChanges,
-  OnChanges
+  OnChanges,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
@@ -17,11 +18,12 @@ import { InputEvent } from '../input/input.interface';
 import {
   valueInArrayOrFail,
   objectHasKeyOrFail,
-  valueToObjectKey
+  valueToObjectKey,
 } from '../../services/utils/transformers';
 import {
   isNullOrUndefined,
-  hasProp
+  hasProp,
+  notFirstChanges,
 } from '../../services/utils/functional-utils';
 
 @Component({
@@ -32,26 +34,29 @@ import {
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => RadioButtonComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => RadioButtonComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class RadioButtonComponent extends BaseFormElement implements OnChanges {
-  constructor() {
-    super();
+  constructor(cd: ChangeDetectorRef) {
+    super(cd);
+
     this.inputTransformers = [
       valueToObjectKey(this.key),
       objectHasKeyOrFail(this.key),
-      value => valueInArrayOrFail(value, this.options, this.key)
+      value => valueInArrayOrFail(value, this.options, this.key),
     ];
     this.outputTransformers = [
       value =>
-        !isNullOrUndefined(value) && hasProp(value, 'id') ? value.id : undefined
+        !isNullOrUndefined(value) && hasProp(value, 'id')
+          ? value.id
+          : undefined,
     ];
     this.baseValue = {};
     this.wrapEvent = false;
@@ -71,7 +76,7 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
 
   private transmit(event: InputEventType): void {
     this.transmitValue(this.value, {
-      eventType: [event]
+      eventType: [event],
     });
   }
 
@@ -84,6 +89,10 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
       const val = changes.value ? changes.value.currentValue : this.value;
       this.writeValue(val);
       this.transmit(InputEventType.onWrite);
+    }
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
     }
   }
 

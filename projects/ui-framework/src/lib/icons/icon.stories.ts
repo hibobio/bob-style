@@ -1,20 +1,13 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  boolean,
-  select,
-  text,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { IconsModule } from './icons.module';
 import { IconColor, Icons, IconSize } from './icons.enum';
-import { reduce, values, keys } from 'lodash';
+import { reduce, values } from 'lodash';
 import { ComponentGroupType } from '../consts';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const iconStories = storiesOf(ComponentGroupType.Icons, module).addDecorator(
-  withKnobs
-);
+const story = storiesOf(ComponentGroupType.Icons, module).addDecorator(withKnobs);
 
 const iconClasses = Object.values(Icons).sort();
 
@@ -49,11 +42,11 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  toolTipSummary | String | Tooltip text  |
-  icon | Icons | enum for the available icons |
-  size | IconSize | enum for the available icon sizes |
-  color | IconColor | enum for the available icon colors | dark (optional)
-  hasHoverState | boolean | if icon has hover state | false
+  [icon] | Icons | enum for the available icons | &nbsp;
+  [size] | IconSize | enum for the available icon sizes | &nbsp;
+  [color] | IconColor | enum for the available icon colors | dark
+  [toolTipSummary] | String | Tooltip text (uses simple CSS tooltip. if it looks bad, use matTooltip instead)  | &nbsp;
+  [hasHoverState] | boolean | if icon has hover state | false
 
   ~~~
   ${template}
@@ -66,7 +59,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-iconStories.add(
+story.add(
   'Icon element',
   () => {
     return {
@@ -134,15 +127,13 @@ const iconsListTemplate = `
         overflow-wrap: break-word;
       }
     </style>
-      <p style="width:100%; margin: 0 0 10px;">total icons: ${
-        Array.from(new Set(iconClasses)).length
-      }</p>
+      <p style="width:100%; margin: 0 0 10px;">total icons: ${Array.from(new Set(iconClasses)).length}</p>
       <div class="icons-list" style="max-width:none;">
         ${listHtml}
       </div>
 </b-story-book-layout>
   `;
-iconStories.add(
+story.add(
   'Icons list',
   () => {
     return {

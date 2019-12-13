@@ -1,9 +1,9 @@
 import { MenuItem } from '../../menu/menu.interface';
-import { ListComponentPrefix } from '../../../form-elements/lists/list.interface';
+import { Icons } from '../../../icons/icons.enum';
 
 export interface SideMenuOption {
-  id: number;
+  id: number | string;
   displayName: string;
-  prefix?: ListComponentPrefix;
+  icon?: Icons;
   actions?: MenuItem[];
 }

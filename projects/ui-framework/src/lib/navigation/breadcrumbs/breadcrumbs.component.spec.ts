@@ -1,11 +1,12 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { BreadcrumbsComponent } from './breadcrumbs.component';
-import { Breadcrumb } from './breadcrumbs.interface';
-import { By } from '@angular/platform-browser';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MobileService } from '../../services/utils/mobile.service';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {By} from '@angular/platform-browser';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {MobileService} from '../../services/utils/mobile.service';
+import {BreadcrumbsComponent} from './breadcrumbs.component';
+import {BreadcrumbsToggleStrategy} from './breadcrumbs.enum';
+import {Breadcrumb} from './breadcrumbs.interface';
 import createSpyObj = jasmine.createSpyObj;
 
 describe('BreadcrumbsComponent', () => {
@@ -94,6 +95,21 @@ describe('BreadcrumbsComponent', () => {
       step.triggerEventHandler('click', null);
       fixture.detectChanges();
       expect(component.stepClick.emit).toHaveBeenCalledWith(1);
+    });
+  });
+
+  describe('toggleStrategy', () => {
+    it('should display all titles', () => {
+      component.toggleStrategy = BreadcrumbsToggleStrategy.alwaysOpen;
+      fixture.detectChanges();
+      const titles = fixture.debugElement.queryAll(By.css('.title'));
+      expect(titles.length).toEqual(4);
+    });
+    it('should display only active title', () => {
+      component.toggleStrategy = BreadcrumbsToggleStrategy.auto;
+      fixture.detectChanges();
+      const titles = fixture.debugElement.queryAll(By.css('.title'));
+      expect(titles.length).toEqual(1);
     });
   });
 

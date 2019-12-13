@@ -1,7 +1,13 @@
-<div class="side-menu-container">
+<div class="menu-header">
+  <h4 class="header-label">{{ headerLabel }}</h4>
+  <div class="header-actions-wrapper">
     <ng-content></ng-content>
-    <b-side-menu-option *ngFor="let option of options" [option]="option"
-                        [selected]="option.id === selectedId"
-                        (selectOption)="onSelectOption($event)">
-    </b-side-menu-option>
+  </div>
+</div>
+<div class="menu-options-wrapper">
+  <b-side-menu-option *ngFor="let option of options"
+                      [option]="option"
+                      [selected]="option.id === selectedId"
+                      (selectOption)="onSelectOption($event)">
+  </b-side-menu-option>
 </div>

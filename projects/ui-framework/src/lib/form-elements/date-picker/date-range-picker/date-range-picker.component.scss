@@ -1,0 +1,69 @@
+@import '../../../style/common-imports';
+
+.bdrp-label-wrap,
+.bdrp-inputs-wrap {
+  display: flex;
+}
+
+.bfe-label,
+.start-date-wrap,
+.end-date-wrap {
+  width: 50%;
+}
+
+.bfe-suffix {
+  transition: opacity 0.1s;
+  transition-delay: 0.1s;
+}
+
+.bfe-wrap {
+  .bfe-suffix {
+    padding-right: 11px;
+  }
+
+  @include desktop {
+    &:not(:hover):not(.focused) {
+      .bfe-suffix {
+        display: none;
+        opacity: 0;
+      }
+      .bfe-input {
+        padding-right: $input-padding;
+      }
+    }
+  }
+}
+
+.start-date-wrap {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right-width: 0;
+
+  &.focused {
+    & + .end-date-wrap {
+      border-left-color: $input-focus-border-color;
+    }
+  }
+}
+
+.end-date-wrap {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.end-date-label {
+  padding-left: $input-padding;
+}
+
+.bfe-label:only-child {
+  width: 100%;
+  padding-left: 0;
+}
+
+:host.error .start-date-wrap + .end-date-wrap {
+  border-left-color: $color-error;
+}
+
+:host.warn .start-date-wrap + .end-date-wrap {
+  border-left-color: $color-warn;
+}

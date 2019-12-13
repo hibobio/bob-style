@@ -8,16 +8,18 @@ import { ButtonsModule } from '../../buttons/buttons.module';
 import { FormElementsModule } from '../../form-elements/form-elements.module';
 import { InputEventType } from '../../form-elements/form-elements.enum';
 import { InputEvent } from '../../form-elements/input/input.interface';
-import { SelectGroupOption } from '../../form-elements/lists/list.interface';
+import { SelectGroupOption } from '../../lists/list.interface';
 import { DialogSize } from './dialog.enum';
 import { DialogButtons } from './dialog.interface';
 
 @Component({
   selector: 'b-dialog-example',
   template: `
-    <b-button (click)="openDialog1()" style="margin-right: 10px;">Time Off Policies info</b-button>
-    <b-button (click)="openDialog2()">Success</b-button>
-  `
+    <b-button (clicked)="openDialog1()" style="margin-right: 10px;"
+      >Time Off Policies info</b-button
+    >
+    <b-button (clicked)="openDialog2()">Success</b-button>
+  `,
 })
 export class DialogExampleComponent {
   private dataMock: any = {
@@ -26,78 +28,81 @@ export class DialogExampleComponent {
     title: 'Time Off Policies',
     textContent: `A ‘policy’ is the a collection of rules which govern a type of leave. With bob you
 can add as many holiday policies as you need for your organisation. Before we create a policy,
-a note on what types are.`
+a note on what types are.`,
   };
 
-  constructor(
-    private dialogService: DialogService,
-  ) {
-  }
+  constructor(private dialogService: DialogService) {}
 
   openDialog1(): void {
-    const dialogRef: MatDialogRef<ExampleDialog1Component> = this.dialogService
-      .openDialog(
-        ExampleDialog1Component,
-        {
-          size: DialogSize.large,
-          panelClass: 'dialog-example-1',
-          data: this.dataMock,
-        }
-      );
+    const dialogRef: MatDialogRef<ExampleDialog1Component> = this.dialogService.openDialog(
+    // tslint:disable-next-line: no-use-before-declare
+      ExampleDialog1Component,
+      {
+        size: DialogSize.large,
+        panelClass: 'dialog-example-1',
+        data: this.dataMock,
+      }
+    );
 
-    dialogRef.beforeClosed()
-      .subscribe(res => {
-        console.log('res', res);
-      });
+    dialogRef.beforeClosed().subscribe(res => {
+      console.log('res', res);
+    });
   }
 
   openDialog2(): void {
-    const dialogRef: MatDialogRef<ExampleDialog2Component> = this.dialogService
-      .openDialog(
-        ExampleDialog2Component,
-        {
-          size: DialogSize.small,
-          panelClass: 'dialog-example-2',
-          data: {},
-        }
-      );
+    const dialogRef: MatDialogRef<ExampleDialog2Component> = this.dialogService.openDialog(
+    // tslint:disable-next-line: no-use-before-declare
+      ExampleDialog2Component,
+      {
+        size: DialogSize.small,
+        panelClass: 'dialog-example-2',
+        data: {},
+      }
+    );
   }
 }
 
 @Component({
   selector: 'b-example-dialog-1',
   template: `
-    <b-dialog dialogTitle="{{ data.title }}" [dialogButtons]="dialogButtonConfig">
+    <b-dialog
+      dialogTitle="{{ data.title }}"
+      [dialogButtons]="dialogButtonConfig"
+    >
       <div b-dialog-sub-title>
-        <b-subheading style="display:inline;">The article id is {{ data.id }} </b-subheading>
+        <b-subheading style="display:inline;"
+          >The article id is {{ data.id }}
+        </b-subheading>
       </div>
       <div b-dialog-content>
-        <b-textarea label="Edit text"
-                    style="width: 100%;"
-                    value="{{ data.textContent }}"
-                    (inputEvents)="onTextEdit($event)">
+        <b-textarea
+          label="Edit text"
+          style="width: 100%;"
+          value="{{ data.textContent }}"
+          (inputEvents)="onTextEdit($event)"
+        >
         </b-textarea>
-        <article style="padding:20px; background-color:#f8f7f7; margin: 20px auto;">
+        <article
+          style="padding:20px; background-color:#f8f7f7; margin: 20px auto;"
+        >
           <b-big-body>"{{ editedText }}"</b-big-body>
         </article>
-        <b-single-select [options]="selectOptions"
-                         style="width: 100%;"
-                         label="was this article helpful">
+        <b-single-select
+          [options]="selectOptions"
+          style="width: 100%;"
+          label="was this article helpful"
+        >
         </b-single-select>
       </div>
     </b-dialog>
-  `
+  `,
 })
 export class ExampleDialog1Component implements OnInit {
-
   dialogButtonConfig: DialogButtons;
   selectOptions: SelectGroupOption[];
   editedText: string;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-  ) {
-  }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 
   ngOnInit(): void {
     this.editedText = this.data.textContent;
@@ -105,34 +110,35 @@ export class ExampleDialog1Component implements OnInit {
     this.dialogButtonConfig = {
       ok: {
         label: 'Ok',
+        class: 'ok-button-666',
         action: () => {
-          return new Promise(
-            (resolve, reject) => {
-              setTimeout(() => {
-                resolve('Pizza');
-              }, 3000);
-            });
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              resolve('Pizza');
+            }, 3000);
+          });
         },
       },
       cancel: {
         label: 'Cancel',
+        class: 'cancel-button-666',
       },
       preloaderMessage: 'updating row data',
       confirmation: {
         title: 'are you sure?',
         subTitle: 'clicking confirm will invoke the method',
         buttonLabel: 'i am sure',
-      }
+      },
     };
 
     this.selectOptions = [
       {
         groupName: 'Article interest options',
         options: [
-          { id: 1, value: 'yes', selected: false, },
-          { id: 2, value: 'no', selected: false, },
-        ]
-      }
+          { id: 1, value: 'yes', selected: false },
+          { id: 2, value: 'no', selected: false },
+        ],
+      },
     ];
   }
 
@@ -146,28 +152,27 @@ export class ExampleDialog1Component implements OnInit {
 @Component({
   selector: 'b-example-dialog-2',
   template: `
-    <b-dialog dialogTitle="congratulations"
-              [dialogButtons]="dialogButtonConfig">
+    <b-dialog
+      dialogTitle="congratulations"
+      [dialogButtons]="dialogButtonConfig"
+    >
       <div b-dialog-above-header>
         <div class="success-icon"></div>
       </div>
       <div b-dialog-content>
-        Alan Tulin has been successfully added to your company, check out his profile
+        Alan Tulin has been successfully added to your company, check out his
+        profile
       </div>
     </b-dialog>
   `,
   styleUrls: ['./dialog-example.scss'],
 })
 export class ExampleDialog2Component implements OnInit {
-
   dialogButtonConfig: DialogButtons;
   selectOptions: SelectGroupOption[];
   editedText: string;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-  ) {
-  }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 
   ngOnInit(): void {
     this.editedText = this.data.textContent;
@@ -196,16 +201,8 @@ export class ExampleDialog2Component implements OnInit {
     ButtonsModule,
     FormElementsModule,
   ],
-  exports: [
-    DialogExampleComponent,
-  ],
-  entryComponents: [
-    ExampleDialog1Component,
-    ExampleDialog2Component,
-  ],
-  providers: [
-    DialogService,
-  ]
+  exports: [DialogExampleComponent],
+  entryComponents: [ExampleDialog1Component, ExampleDialog2Component],
+  providers: [DialogService],
 })
-export class DialogExampleModule {
-}
+export class DialogExampleModule {}

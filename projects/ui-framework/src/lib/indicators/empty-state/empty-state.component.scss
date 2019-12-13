@@ -1,0 +1,18 @@
+@import '../../style/common-imports';
+
+:host {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.empty-state-text {
+  margin: times8(1) 0 0;
+  color: $grey-600;
+}
+
+b-button {
+  margin-top: times8(3);
+  display: flex;
+  justify-content: center;
+}

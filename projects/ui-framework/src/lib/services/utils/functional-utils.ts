@@ -1,5 +1,7 @@
 import { SimpleChanges } from '@angular/core';
 import { metaKeys } from '../../enums';
+import { GenericObject } from '../../types';
+import { isEqual } from 'lodash';
 
 export function MixIn(baseCtors: Function[]) {
   return function(derivedCtor: Function) {
@@ -25,10 +27,13 @@ export const randomFromArray = (array: any[] = [], num: number = 1) => {
   return num === 1 ? random[0] : random;
 };
 
+export const isNullOrUndefined = (val: any): boolean =>
+  val === undefined || val === null;
+
 export const keysFromArrayOrObject = (smth: string[] | {}): string[] =>
   Array.isArray(smth) ? smth : Object.keys(smth);
 
-export const getKeyByValue = (object: object, value: any) =>
+export const getKeyByValue = (object: GenericObject, value: any) =>
   Object.keys(object).find(key => object[key] === value);
 
 export const isString = (val: any): boolean => typeof val === 'string';
@@ -43,30 +48,34 @@ export const isEmptyString = (val: any): boolean => !isNotEmptyString(val);
 
 export const isArray = (val: any): boolean => val && Array.isArray(val);
 
-export const isNotEmptyArray = (val: any): boolean =>
-  isArray(val) && val.length > 0;
+export const isNotEmptyArray = (val: any, min = 0): boolean =>
+  isArray(val) && val.length > min;
 
-export const isEmptyArray = (val: any): boolean => !isNotEmptyArray(val);
+export const isEmptyArray = (val: any): boolean =>
+  isNullOrUndefined(val) || (Array.isArray(val) && val.length === 0);
 
 export const isObject = (val: any): boolean =>
   val && !isArray(val) && typeof val !== 'function' && val === Object(val);
 
-export const hasProp = (obj: object, key: string): boolean =>
-  isObject(obj) && obj.hasOwnProperty(key);
+export const hasProp = (
+  obj: GenericObject,
+  key: string,
+  strict = true
+): boolean =>
+  isObject(obj) &&
+  ((strict && Object.prototype.hasOwnProperty.call(obj, key)) ||
+    (!strict && typeof obj[key] !== 'undefined'));
 
 export const isNotEmptyObject = (val: any): boolean =>
   isObject(val) && Object.keys(val).length > 0;
 
-export const isEmptyObject = (val: any): boolean => !isNotEmptyObject(val);
-
-export const isNullOrUndefined = (val: any): boolean =>
-  val === undefined || val === null;
+export const isEmptyObject = (val: any): boolean =>
+  isNullOrUndefined(val) || (isObject(val) && Object.keys(val).length === 0);
 
 export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
   isNullOrUndefined(smth) ||
   smth === false ||
-  (fuzzy && smth === '') ||
-  (fuzzy && smth === 0) ||
+  (fuzzy && !Boolean(smth)) ||
   isEmptyArray(smth) ||
   isEmptyObject(smth);
 
@@ -95,8 +104,12 @@ export const isKey = (key: string, expected: string): boolean =>
 export const isMetaKey = (key: string): boolean =>
   metaKeys.includes(key as any);
 
-export const asArray = (smth: any): any[] =>
-  !isNullOrUndefined(smth) ? (isArray(smth) ? smth : [smth]) : [];
+export const asArray = <T = any>(smth: T | T[]): T[] =>
+  !isNullOrUndefined(smth)
+    ? isArray(smth)
+      ? (smth as T[])
+      : ([smth] as T[])
+    : [];
 
 export const asNumber = (smth: any): number => (smth ? parseFloat(smth) : 0);
 
@@ -134,9 +147,8 @@ import {
   merge as _merge,
   reduce as _reduce,
   set as _set,
-  toPairs as _toPairs
+  toPairs as _toPairs,
 } from 'lodash/fp';
-import { GenericObject } from '../../types';
 
 export const flatten = (obj, path = []) => {
   return _isPlainObject(obj) || _isArray(obj)
@@ -162,7 +174,7 @@ export const stringify = (smth: any): string =>
     ? JSON.stringify(smth)
     : String(smth);
 
-export const getType = smth =>
+export const getType = (smth: any): string =>
   smth === null
     ? 'null'
     : isArray(smth)
@@ -171,15 +183,18 @@ export const getType = smth =>
     ? 'date'
     : String(typeof smth);
 
-export const arrayDifference = (arrA: any[], arrB: any[]) => {
+export const arrayDifference = <T = any>(arrA: T[], arrB: T[]): T[] => {
   return arrA
     .filter(x => !arrB.includes(x))
     .concat(arrB.filter(x => !arrA.includes(x)));
 };
 
-export const dedupeArray = (arr: any[]): any[] => Array.from(new Set(arr));
+export const arrayIntersection = <T = any>(arrA: T[], arrB: T[]): T[] =>
+  arrA.filter(x => arrB.includes(x));
 
-export const joinArrays = (arr1: any[], ...rest): any[] =>
+export const dedupeArray = <T = any>(arr: T[]): T[] => Array.from(new Set(arr));
+
+export const joinArrays = <T = any>(arr1: T[], ...rest): T[] =>
   dedupeArray(arr1.concat(...rest));
 
 export const makeArray = (length: number, fill: any = undefined): any[] =>
@@ -195,17 +210,30 @@ export const arrayOfNumbers = (
     (e, i) => i + start + ((asStrings ? '' : 0) as any)
   );
 
-export const padWith0 = (number: string | number, digits = 2): string =>
-  String(number).padStart(digits, '0');
+export const padWith0 = (number: string | number, digits = 2): string => {
+  if (isNullOrUndefined(number) || isNaN(parseInt(number as string, 10))) {
+    return number as any;
+  }
+
+  return String(number).padStart(digits, '0');
+};
 
 export const hasChanges = (
   changes: SimpleChanges,
-  keys: string[] = null
+  keys: string[] = null,
+  discardAllFalsey = false
 ): boolean => {
   if (!keys) {
     keys = Object.keys(changes);
   }
-  return !!keys.find(i => !!changes[i]);
+  return !!keys.find(
+    i =>
+      changes[i] !== undefined &&
+      (changes[i].currentValue !== undefined ||
+        changes[i].previousValue !== undefined) &&
+      (!discardAllFalsey ||
+        (discardAllFalsey && Boolean(changes[i].currentValue)))
+  );
 };
 
 export const firstChanges = (
@@ -232,20 +260,160 @@ export const applyChanges = (
   target: any,
   changes: SimpleChanges,
   defaults: GenericObject = {},
-  skip: string[] = []
+  skip: string[] = [],
+  discardAllFalsey = false
 ): void => {
   Object.keys(changes).forEach((change: string) => {
     if (!skip.includes(change)) {
       target[change] =
-        isNullOrUndefined(changes[change].currentValue) && defaults[change]
+        defaults[change] &&
+        ((!discardAllFalsey &&
+          isNullOrUndefined(changes[change].currentValue)) ||
+          (discardAllFalsey && !Boolean(changes[change].currentValue)))
           ? defaults[change]
           : changes[change].currentValue;
     }
   });
 };
 
-export const isDate = (value): boolean =>
-  value instanceof Date && typeof value.getMonth === 'function';
+export const onlyUpdatedProps = (
+  oldObj: GenericObject,
+  newObj: GenericObject
+): GenericObject => {
+  if (isEmptyObject(oldObj)) {
+    return newObj;
+  }
+
+  if (!newObj) {
+    return {};
+  }
+
+  return Object.keys(newObj)
+    .filter(
+      (key: string) =>
+        !hasProp(oldObj, key) || !isEqual(oldObj[key], newObj[key])
+    )
+    .reduce((updObj, key) => {
+      updObj[key] = newObj[key];
+      return updObj;
+    }, {});
+};
+
+export const cloneObject = <T = any>(value: T): T =>
+  isObject(value) ? Object.assign({}, value) : value;
+
+export const cloneArray = <T = any>(value: T[]): T[] =>
+  isArray(value) ? value.slice() : value;
+
+export const cloneValue = (value: any) =>
+  isObject(value)
+    ? cloneObject(value)
+    : isArray(value)
+    ? cloneArray(value)
+    : value;
+
+export const isIterable = (smth: any): boolean => {
+  if (!smth || isNumber(smth) || isString(smth)) {
+    return false;
+  }
+  return typeof smth[Symbol.iterator] === 'function';
+};
+
+export const lastItem = <T = any>(arr: T[]): T =>
+  !isIterable(arr) ? ((arr as any) as T) : arr[arr.length - 1];
+
+export const arrayInsertAt = <T = any>(
+  arr: T[],
+  val: any | any[],
+  index = 0,
+  overwrite = false
+): T[] => {
+  return arr
+    .slice(0, index)
+    .concat(val, arr.slice(!overwrite ? index : index + 1));
+};
+
+export const capitalize = (smth: string): string =>
+  smth.charAt(0).toUpperCase() + smth.slice(1);
+
+export const objectHasTruthyValue = (obj: GenericObject): boolean =>
+  isNotEmptyObject(obj) && Boolean(Object.values(obj).find(v => Boolean(v)));
+
+export type Func<A = any, B = A> = (val: A, ...args: any[]) => B;
+
+export const chainCall = <A = any>(
+  funcs: Func<A>[],
+  value: A,
+  ...args: any[]
+): A => {
+  return funcs.reduce(
+    (previousResult, fn) => fn(previousResult, ...args),
+    value
+  );
+};
+
+export const arrayFlatten = <T = any>(arr: any[]): T[] =>
+  asArray(arr).reduce((acc, val) => acc.concat(val), []);
+
+export const getEventPath = (event: Event): HTMLElement[] =>
+  ((event['path'] as any[]) ||
+    (event.composedPath && (event.composedPath() as any[])) ||
+    []) as HTMLElement[];
+
+export const arrOfObjSortByProp = (
+  arr: GenericObject[],
+  prop: string,
+  asc = true
+): GenericObject[] => {
+  arr.sort((a: GenericObject, b: GenericObject) => {
+    const x = a[prop].toLowerCase();
+    const y = b[prop].toLowerCase();
+    return x < y ? -1 : x > y ? 1 : 0;
+  });
+
+  if (!asc) {
+    arr.reverse();
+  }
+
+  return arr;
+};
+
+export const numberMinMax = (
+  number: number,
+  min: number = 0,
+  max: number = 100
+): number => Math.max(Math.min(max, number), min);
+
+export const arrayMode = <T = any>(arr: T[]): T =>
+  isArray(arr) &&
+  arr
+    .sort(
+      (a, b) =>
+        arr.filter(v => v === a).length - arr.filter(v => v === b).length
+    )
+    .pop();
+
+// DATES
+
+export const monthShortNames = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
+export const isDate = (value: any): boolean =>
+  String(value) !== 'Invalid Date' &&
+  value instanceof Date &&
+  typeof value.getMonth === 'function';
 
 export const isDateISO8601 = (date: string): boolean =>
   isString(date) &&
@@ -267,37 +435,38 @@ export const isDateFormat = (frmt: string): boolean => {
   );
 };
 
-export const thisYear = () => new Date().getFullYear();
-
-export const thisMonth = (pad = true, mod = 0) => {
-  const month = new Date().getMonth() + 1 + mod;
-  return pad ? padWith0(month, 2) : month;
+export const thisYear = <T = number>(short = false): T => {
+  const year = new Date().getFullYear();
+  return ((short ? (year + '').slice(2) : year) as any) as T;
 };
 
-export const thisDay = (pad = true) => {
-  const day = new Date().getDate();
-  return pad ? padWith0(day, 2) : day;
-};
-
-export const cloneObject = (value: any) =>
-  isObject(value) ? Object.assign({}, value) : value;
-
-export const cloneArray = (value: any) =>
-  isArray(value) ? value.slice() : value;
-
-export const cloneValue = (value: any) =>
-  isObject(value)
-    ? cloneObject(value)
-    : isArray(value)
-    ? cloneArray(value)
-    : value;
-
-export const isIterable = (smth: any): boolean => {
-  if (!smth || isNumber(smth) || isString(smth)) {
-    return false;
+export const thisMonth = <T = string>(pad = true, mod = 0, name = false): T => {
+  if (name) {
+    return (monthShortNames[new Date().getMonth()] as any) as T;
   }
-  return typeof smth[Symbol.iterator] === 'function';
+  const month = new Date().getMonth() + 1 + mod;
+  return ((pad ? padWith0(month, 2) : month) as any) as T;
 };
 
-export const lastItem = (arr: any[]): any =>
-  !isIterable(arr) ? arr : arr[arr.length - 1];
+export const thisDay = <T = string>(pad = true): T => {
+  const day = new Date().getDate();
+  return ((pad ? padWith0(day, 2) : day) as any) as T;
+};
+
+export const lastDayOfMonth = (month: number, year: number = thisYear()) =>
+  32 - new Date(year, month, 32).getDate();
+
+export const monthIndex = (month: number | string, minusOne = true): number => {
+  let num = parseInt(month as string, 10);
+  if (isNaN(num)) {
+    num = monthShortNames.findIndex(
+      i => i.toLowerCase() === (month as string).toLowerCase()
+    );
+    if (num === -1) {
+      return month as any;
+    }
+  } else if (minusOne) {
+    num = num - 1;
+  }
+  return Math.max(0, Math.min(11, num));
+};

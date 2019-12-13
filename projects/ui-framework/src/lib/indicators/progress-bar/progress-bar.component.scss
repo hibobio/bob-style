@@ -1,0 +1,168 @@
+@import '../../style/common-imports';
+@import './progress-bar.mixin';
+
+$BPBtypeMap: (
+  'primary': (
+    '*': (
+      '.bpb-header': (
+        margin-bottom: 12px,
+      ),
+      '.bpb-value': (
+        margin-right: times8(2),
+        width: 2.8em,
+      ),
+    ),
+    'large': (
+      '.bpb-bar': (
+        height: times8(2),
+        border-radius: times8(2) / 2,
+      ),
+      '.bpb-value': (
+        font-size: $font-size-display-1,
+        font-weight: $font-weight-display-1,
+      ),
+    ),
+    'medium': (
+      '.bpb-bar': (
+        height: times8(1),
+        border-radius: times8(1) / 2,
+      ),
+      '.bpb-value': (
+        font-size: $font-size-display-3,
+        font-weight: $font-weight-display-3,
+      ),
+    ),
+    'small': (
+      '.bpb-header': (
+        margin-bottom: 4px,
+      ),
+      '.bpb-bar': (
+        height: times8(1),
+        border-radius: times8(1) / 2,
+      ),
+      '.bpb-value': (
+        font-size: $font-size-display-4,
+        font-weight: $font-weight-display-3,
+        margin-right: times8(1),
+      ),
+    ),
+  ),
+  'secondary': (
+    '*': (
+      '.bpb-header': (
+        margin-bottom: 5px,
+      ),
+      '.bpb-bar': (
+        height: times8(3),
+        border-radius: $border-radius,
+      ),
+      '.bpb-value': (
+        font-size: $font-size-display-4,
+        font-weight: $font-weight-display-4,
+        text-align: right,
+        width: 3.3em,
+        margin-left: times8(2),
+      ),
+    ),
+  ),
+);
+
+:host {
+  @include progress-bar-host('bpb');
+  text-align: left;
+}
+
+h5,
+p {
+  margin: 0;
+}
+
+.bpb-bar {
+  @include progress-bar(horizontal, 'bpb');
+}
+
+.bpb-header,
+.bpb-bar-wrap,
+.bpb-text-scndr {
+  display: flex;
+  align-items: center;
+}
+
+.bpb-text {
+  &:empty {
+    display: none;
+  }
+}
+
+.bpb-text-prmr {
+  color: $grey-800;
+  flex-grow: 1;
+}
+
+.bpb-text-scndr {
+  color: $grey-600;
+  margin-left: times8(2);
+
+  &:before {
+    order: 10;
+    margin-left: times8(1);
+    margin-top: -2px;
+  }
+
+  .bpb-value + &,
+  .bpb-text-prmr:empty + &,
+  &:first-child {
+    margin-left: 0;
+    flex-direction: row-reverse;
+
+    &:before {
+      margin-right: times8(1);
+      margin-left: 0;
+    }
+  }
+}
+
+:host[data-size='small']::ng-deep {
+  .bpb-text-scndr {
+    &:before {
+      margin-left: (times8(1) / 2);
+    }
+    &:first-child:before {
+      margin-right: (times8(1) / 2);
+      margin-left: 0;
+    }
+  }
+}
+
+.bpb-value {
+  color: $display-text-color;
+  font-family: var(--display-font-family);
+  line-height: 1;
+}
+
+:host {
+  @each $type, $sizes in $BPBtypeMap {
+    &[data-type='#{$type}'] {
+      @each $size, $elems in $sizes {
+        $sel: '&::ng-deep ';
+        @if $size != '*' {
+          $sel: '&[data-size="' + $size + '"]::ng-deep';
+        }
+
+        #{$sel} {
+          @each $elem, $props in $elems {
+            #{$elem} {
+              @each $prop, $value in $props {
+                #{$prop}: $value;
+
+                @if ($prop == 'font-size' or $prop == 'line-height') {
+                  --#{$prop}: #{$value};
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

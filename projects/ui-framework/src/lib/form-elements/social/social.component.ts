@@ -7,7 +7,10 @@ import {
   ViewChild,
   OnInit,
   NgZone,
-  SimpleChanges
+  SimpleChanges,
+  OnChanges,
+  ElementRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { IconColor, IconSize } from '../../icons/icons.enum';
@@ -29,18 +32,25 @@ import { URLutils } from '../../services/url/url-utils.service';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => SocialComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => SocialComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+    { provide: BaseFormElement, useExisting: SocialComponent },
+  ],
 })
 export class SocialComponent extends BaseFormElement implements OnInit {
-  constructor(private URL: URLutils, private zone: NgZone) {
-    super();
+  constructor(
+    protected cd: ChangeDetectorRef,
+    private URL: URLutils,
+    private zone: NgZone,
+    private host: ElementRef
+  ) {
+    super(cd);
+
     this.inputTransformers = [
       stringyOrFail,
       (value: string): string => {
@@ -53,11 +63,11 @@ export class SocialComponent extends BaseFormElement implements OnInit {
           });
         }
         return this.URL.path(value);
-      }
+      },
     ];
     this.outputTransformers = [
       (value: string): string =>
-        value ? `http://${SocialTypes[this.type].prefix}${value}` : ''
+        value ? `http://${SocialTypes[this.type].prefix}${value}` : '',
     ];
     this.baseValue = '';
     this.wrapEvent = false;
@@ -66,12 +76,14 @@ export class SocialComponent extends BaseFormElement implements OnInit {
   @ViewChild('bInput', { static: true }) bInput: InputComponent;
 
   @Input() type: Social;
+  @Input() placeholder = 'username';
+
   @Output(FormEvents.socialInputChange) changed: EventEmitter<
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  public inputId: string;
-
+  public inputId: string | number;
+  public narrowInput = false;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
   readonly inputTypes = InputTypes;
@@ -79,21 +91,13 @@ export class SocialComponent extends BaseFormElement implements OnInit {
   readonly socialLabelMap = {
     [Social.facebook]: 'Facebook',
     [Social.twitter]: 'Twitter',
-    [Social.linkedin]: 'Linkedin'
+    [Social.linkedin]: 'Linkedin',
   };
 
   ngOnInit(): void {
     this.inputId = this.bInput.id;
-  }
-
-  onNgChanges(changes: SimpleChanges): void {
-    if (changes.type && !changes.type.firstChange && this.value) {
-      this.type = changes.type.currentValue;
-      this.writeValue(this.value);
-      this.transmitValue(this.value, {
-        eventType: [InputEventType.onBlur]
-      });
-    }
+    this.narrowInput =
+      (this.host.nativeElement as HTMLElement).offsetWidth < 300;
   }
 
   focusInput(): void {
@@ -103,22 +107,16 @@ export class SocialComponent extends BaseFormElement implements OnInit {
   onInputEvents(event: InputEvent): void {
     if (event.event === InputEventType.onChange) {
       this.writeValue(event.value);
-      this.transmitValue(this.value, {
-        eventType: [InputEventType.onChange]
-      });
     }
-    if (
-      event.event === InputEventType.onFocus ||
-      event.event === InputEventType.onBlur
-    ) {
-      this.transmitValue(this.value, { eventType: [event.event] });
-    }
+
     if (event.event === InputEventType.onBlur) {
       this.zone.runOutsideAngular(() => {
         setTimeout(() => {
-          this.bInput.input.nativeElement.value = this.value;
+          this.bInput.input.nativeElement.value = this.value || '';
         }, 0);
       });
     }
+
+    this.transmitValue(this.value, { eventType: [event.event] });
   }
 }

@@ -1,9 +1,9 @@
 :host {
-  display: grid;
-  grid-template-columns: max-content 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+}
 
-  .bar-actions-wrapper {
-    justify-self: end;
-  }
+[hidden] {
+  display: none;
 }

@@ -3,7 +3,7 @@ import {
   Input,
   Output,
   NgZone,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import { InputEvent } from './input/input.interface';
 import { BaseFormElement } from './base-form-element';
@@ -16,14 +16,14 @@ import { FormElementKeyboardCntrlService } from './services/keyboard-cntrl.servi
 
 export abstract class BaseInputElement extends BaseFormElement {
   protected constructor(
-    protected zone: NgZone,
     protected cd: ChangeDetectorRef,
+    protected zone: NgZone,
     protected kbrdCntrlSrvc: FormElementKeyboardCntrlService
   ) {
-    super();
+    super(cd);
     this.inputTransformers = [
       stringyOrFail,
-      value => valueAsNumber(this.inputType, value)
+      value => valueAsNumber(this.inputType, value),
     ];
     this.outputTransformers = [value => valueAsNumber(this.inputType, value)];
     this.baseValue = '';
@@ -49,7 +49,7 @@ export abstract class BaseInputElement extends BaseFormElement {
     if (event.target.value !== this.value) {
       this.writeValue(event.target.value);
       this.transmitValue(this.value, {
-        eventType: [InputEventType.onChange]
+        eventType: [InputEventType.onChange],
       });
     }
   }
@@ -70,7 +70,7 @@ export abstract class BaseInputElement extends BaseFormElement {
       ) {
         this.writeValue(parsed < this.min ? this.min : this.max);
         this.transmitValue(this.value, {
-          eventType: [InputEventType.onChange]
+          eventType: [InputEventType.onChange],
         });
       }
     }
@@ -90,8 +90,8 @@ export abstract class BaseInputElement extends BaseFormElement {
           eventType: [InputEventType.onKey],
           doPropagate: false,
           addToEventObj: {
-            key: event.key
-          }
+            key: event.key,
+          },
         });
       });
     }

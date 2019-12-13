@@ -1,11 +1,8 @@
 import { storiesOf } from '@storybook/angular';
 import {
-  array,
-  boolean,
   number,
   object,
   select,
-  text,
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
@@ -14,15 +11,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BreadcrumbsModule } from './breadcrumbs.module';
 import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { BreadcrumbsType } from './breadcrumbs.enum';
+import {BreadcrumbsType, BreadcrumbsToggleStrategy} from './breadcrumbs.enum';
 
-const inputStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Navigation,
   module
 ).addDecorator(withKnobs);
 
 const componmentTemplate = `
 <b-breadcrumbs [type]="type"
+               [toggleStrategy]="toggleStrategy"
                [breadcrumbs]="breadcrumbs"
                [buttons]="buttons"
                [activeIndex]="activeIndex"
@@ -49,6 +47,8 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | ---
+  type | BreadcrumbsType | breadcrumbs type
+  toggleStrategy | BreadcrumbsToggleStrategy | determine the title toggle behaviour
   breadcrumbs | Breadcrumb[] | breadcrumbs steps model
   buttons | BreadcrumbNavButtons | breadcrumbs navigation buttons model
   activeIndex | number | the active breadcrumb index
@@ -73,7 +73,7 @@ const breadcrumbsButtons = {
   backBtn: { label: 'Back', isVisible: true }
 };
 
-inputStories.add(
+story.add(
   'Breadcrumbs',
   () => {
     return {
@@ -83,6 +83,11 @@ inputStories.add(
           'type',
           Object.values(BreadcrumbsType),
           BreadcrumbsType.primary
+        ),
+        toggleStrategy: select(
+          'toggleStrategy',
+          Object.values(BreadcrumbsToggleStrategy),
+          BreadcrumbsToggleStrategy.auto
         ),
         breadcrumbs: object<Breadcrumb>('breadcrumbs', breadcrumbsMock),
         buttons: object<BreadcrumbNavButtons>('buttons', breadcrumbsButtons),

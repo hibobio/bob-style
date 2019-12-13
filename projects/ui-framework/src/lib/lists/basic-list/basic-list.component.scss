@@ -1,0 +1,43 @@
+@import '../../style/common-imports';
+
+:host {
+  display: block;
+  text-align: left;
+}
+
+.bbl-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: white;
+  border: 1px solid $grey-300;
+  border-radius: $border-radius;
+
+  &:empty {
+    display: none;
+  }
+
+  &-item {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    border-bottom: 1px solid $grey-300;
+    padding: 0 8px;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
+
+  &-icon {
+    margin-right: 8px;
+  }
+
+  &-label {
+    flex-grow: 1;
+  }
+
+  &-action-container {
+    margin-left: 8px;
+  }
+}

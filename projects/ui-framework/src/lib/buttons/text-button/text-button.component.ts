@@ -1,13 +1,7 @@
-import {
-  Component,
-  EventEmitter,
-  HostBinding,
-  HostListener,
-  Input,
-  Output
-} from '@angular/core';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { LinkColor } from '../../buttons-indicators/link/link.enum';
+import { Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
+import { IconColor, IconSize } from '../../icons/icons.enum';
+import { LinkColor } from '../../indicators/link/link.enum';
+import { BaseButtonElement } from '../button.abstract';
 
 @Component({
   selector: 'b-text-button',
@@ -16,23 +10,24 @@ import { LinkColor } from '../../buttons-indicators/link/link.enum';
     {{ text }}
     <ng-content></ng-content>
   `,
-  styleUrls: ['./text-button.component.scss']
+  styleUrls: ['./text-button.component.scss'],
+  providers: [{ provide: BaseButtonElement, useExisting: TextButtonComponent }],
 })
-export class TextButtonComponent {
+export class TextButtonComponent extends BaseButtonElement {
   @HostBinding('class.color-primary') get colorPrimary(): boolean {
     return this.color === LinkColor.primary;
   }
   @HostBinding('class.disabled') @Input() disabled = false;
 
-  @Input() text: string;
-  @Input() icon: Icons;
   @Input() color: LinkColor = LinkColor.none;
 
   @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   @HostListener('click', ['$event'])
   onClick($event: MouseEvent) {
-    this.clicked.emit($event);
+    if (this.clicked.observers.length > 0) {
+      this.clicked.emit($event);
+    }
   }
 
   getIconClass(): string {

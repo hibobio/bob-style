@@ -1,0 +1,37 @@
+<div class="bpb-header">
+
+  <h5 *ngIf="data.value && type === barType.primary && !config.hideValue"
+      class="bpb-value"
+      [id]="id+'-val'">{{data.value}}%</h5>
+
+  <p *ngIf="data.headerTextPrimary !== false"
+     class="bpb-text bpb-text-prmr"
+     [id]="id+'-dsc1'"
+     data-max-lines='1'>
+    {{data.headerTextPrimary}}
+    <ng-content select="[header-left]"></ng-content>
+  </p>
+
+  <p *ngIf="type === barType.primary"
+     class="bpb-text bpb-text-scndr"
+     [id]="id+'-dsc2'"
+     [ngClass]="data && data.iconHeaderRight ? data.iconHeaderRight + ' b-icon-medium b-icon-normal' : ''">
+    {{data.headerTextSecondary}}
+    <ng-content select="[header-right]"></ng-content>
+  </p>
+
+</div>
+
+<div class="bpb-bar-wrap">
+  <div class="bpb-bar"
+       [id]="id"
+       role="progressbar"
+       [attr.aria-labelledby]="id+'-val '+id+'-dsc1 '+id+'-dsc2'"
+       [attr.aria-valuenow]="data.value || null"
+       aria-valuemin="0"
+       aria-valuemax="100"></div>
+
+  <h5 *ngIf="type === barType.secondary && !config.hideValue"
+      class="bpb-value"
+      [id]="id+'-val'">{{data.value}}%</h5>
+</div>

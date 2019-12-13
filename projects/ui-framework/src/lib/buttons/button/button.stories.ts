@@ -3,7 +3,7 @@ import {
   text,
   select,
   boolean,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
@@ -13,10 +13,9 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { Icons } from '../../icons/icons.enum';
 
-const buttonStories = storiesOf(
-  ComponentGroupType.Buttons,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
+  withKnobs
+);
 
 const typeOptions = values(ButtonType);
 const sizeOptions = values(ButtonSize);
@@ -46,12 +45,12 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  label | string | button text |
-  type | ButtonType | enum for setting the button type | primary (optional)
-  size | ButtonSize | enum for setting the button size | medium (optional)
-  disabled | boolean | disabled | false
-  clicked | Function | callback for clicking on the button |
-  icon | Icons | button with icon |
+  [label] | string | button text |
+  [type] | ButtonType | enum for setting the button type | primary
+  [icon] | Icons | icon for button  | &nbsp;
+  [size] | ButtonSize | enum for setting the button size | medium
+  [disabled] | boolean | disabled | false
+  (clicked) | EventEmitter | button click event | &nbsp;
 
   #### Style customization
 
@@ -77,7 +76,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-buttonStories.add(
+story.add(
   'Regular Button',
   () => ({
     template: storyTemplate,
@@ -87,11 +86,11 @@ buttonStories.add(
       type: select('type', typeOptions, ButtonType.primary),
       size: select('size', sizeOptions, ButtonSize.medium),
       disabled: boolean('disabled', false),
-      icon: select('icon', icons, Icons.timeline)
+      icon: select('icon', icons, Icons.timeline),
     },
     moduleMetadata: {
-      imports: [ButtonsModule, StoryBookLayoutModule]
-    }
+      imports: [ButtonsModule, StoryBookLayoutModule],
+    },
   }),
   { notes: { markdown: note } }
 );

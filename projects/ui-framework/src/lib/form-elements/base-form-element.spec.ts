@@ -1,14 +1,7 @@
 import { BaseFormElement } from './base-form-element';
-import { simpleChange } from '../services/utils/test-helpers';
+import { simpleChange, eventEmitterMock, changeDetectorMock } from '../services/utils/test-helpers';
 import { InputEventType, FormEvents } from './form-elements.enum';
 import { cloneObject } from '../services/utils/functional-utils';
-
-const eventEmitterMock = {
-  emit: value => value,
-  observers: [1, 2, 3],
-  subscribe: () => {},
-  complete: () => {}
-};
 
 describe('BaseFormElement', () => {
   let baseFormElement: BaseFormElement;
@@ -20,19 +13,20 @@ describe('BaseFormElement', () => {
 
     baseFormElement.baseValue = baseValue;
     baseFormElement.doPropagate = true;
-    baseFormElement.emitOnWrite = true;
+    baseFormElement.ignoreEvents = [];
 
     baseFormElement.inputTransformers = [
       (value: string): string => value.replace('ABC', 'DEF'),
-      (value: string): string => value.replace('123', '456')
+      (value: string): string => value.replace('123', '456'),
     ];
     baseFormElement.outputTransformers = [
       (value: string): string => value.replace('DEF', 'ABC'),
-      (value: string): string => value.replace('456', '123')
+      (value: string): string => value.replace('456', '123'),
     ];
 
     baseFormElement['focused'] = cloneObject(eventEmitterMock);
     baseFormElement['blurred'] = cloneObject(eventEmitterMock);
+    baseFormElement['cd'] = cloneObject(changeDetectorMock);
 
     spyOn(baseFormElement.changed, 'emit');
     spyOn(baseFormElement['focused'], 'emit');
@@ -41,6 +35,10 @@ describe('BaseFormElement', () => {
     spyOn(baseFormElement, 'onTouched');
 
     baseFormElement.changed.subscribe(() => {});
+  });
+
+  afterEach(() => {
+    baseFormElement.changed.complete();
   });
 
   describe('WriteValue', () => {
@@ -53,7 +51,7 @@ describe('BaseFormElement', () => {
     it('Should set value to input and emit change', () => {
       baseFormElement.ngOnChanges(
         simpleChange({
-          value: testString
+          value: testString,
         })
       );
       expect(baseFormElement.value).toEqual(testString);
@@ -62,7 +60,7 @@ describe('BaseFormElement', () => {
     it('Should emit/propagate change with input value', () => {
       baseFormElement.ngOnChanges(
         simpleChange({
-          value: testString
+          value: testString,
         })
       );
       expect(baseFormElement.changed.emit).toHaveBeenCalledWith(testString);
@@ -75,7 +73,7 @@ describe('BaseFormElement', () => {
 
       baseFormElement.ngOnChanges(
         simpleChange({
-          value: testString
+          value: testString,
         })
       );
       expect(baseFormElement.value).toEqual(baseValue);
@@ -88,13 +86,11 @@ describe('BaseFormElement', () => {
     beforeEach(() => {
       baseFormElement.wrapEvent = false;
 
-      baseFormElement.outputTransformers.push(
-        (value: string): string => value + outTransAddedString
-      );
+      baseFormElement.outputTransformers.push((value: string): string => value + outTransAddedString);
 
       baseFormElement.ngOnChanges(
         simpleChange({
-          value: testString
+          value: testString,
         })
       );
     });
@@ -104,12 +100,8 @@ describe('BaseFormElement', () => {
     });
 
     it('Should transform output value', () => {
-      expect(baseFormElement.changed.emit).toHaveBeenCalledWith(
-        testString + outTransAddedString
-      );
-      expect(baseFormElement.propagateChange).toHaveBeenCalledWith(
-        testString + outTransAddedString
-      );
+      expect(baseFormElement.changed.emit).toHaveBeenCalledWith(testString + outTransAddedString);
+      expect(baseFormElement.propagateChange).toHaveBeenCalledWith(testString + outTransAddedString);
     });
   });
 
@@ -122,13 +114,13 @@ describe('BaseFormElement', () => {
 
     it('Should transmit event of particular type', () => {
       baseFormElement['transmitValue'](testString, {
-        eventType: [InputEventType.onKey]
+        eventType: [InputEventType.onKey],
       });
 
       expect(baseFormElement.changed.emit).toHaveBeenCalledTimes(1);
       expect(baseFormElement.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onKey,
-        value: testString
+        value: testString,
       });
       expect(baseFormElement.propagateChange).toHaveBeenCalledWith(testString);
       expect(baseFormElement.onTouched).not.toHaveBeenCalled();
@@ -137,14 +129,14 @@ describe('BaseFormElement', () => {
     it('Should emit using particular eventEmitter', () => {
       baseFormElement['transmitValue'](testString, {
         eventType: [InputEventType.onChange],
-        eventName: FormEvents.focused
+        emitterName: FormEvents.focused,
       });
 
       expect(baseFormElement.changed.emit).not.toHaveBeenCalled();
       expect(baseFormElement['focused'].emit).toHaveBeenCalledTimes(1);
       expect(baseFormElement['focused'].emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
-        value: testString
+        value: testString,
       });
       expect(baseFormElement.propagateChange).toHaveBeenCalledWith(testString);
       expect(baseFormElement.onTouched).not.toHaveBeenCalled();
@@ -152,28 +144,28 @@ describe('BaseFormElement', () => {
 
     it('Should be able to emit multiple event types', () => {
       baseFormElement['transmitValue'](testString, {
-        eventType: [InputEventType.onChange, InputEventType.onBlur]
+        eventType: [InputEventType.onChange, InputEventType.onBlur],
       });
 
       expect(baseFormElement.changed.emit).toHaveBeenCalledTimes(2);
       expect(baseFormElement.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
-        value: testString
+        value: testString,
       });
       expect(baseFormElement.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onBlur,
-        value: testString
+        value: testString,
       });
       expect(baseFormElement.onTouched).toHaveBeenCalledTimes(1);
     });
 
     it('Should call onTouched if event type is onBlur', () => {
       baseFormElement['transmitValue'](testString, {
-        eventType: [InputEventType.onBlur]
+        eventType: [InputEventType.onBlur],
       });
       expect(baseFormElement.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onBlur,
-        value: testString
+        value: testString,
       });
       expect(baseFormElement.onTouched).toHaveBeenCalled();
     });
@@ -182,49 +174,47 @@ describe('BaseFormElement', () => {
       baseFormElement['transmitValue'](testString, {
         eventType: [InputEventType.onChange],
         addToEventObj: {
-          hello: 'world'
-        }
+          hello: 'world',
+        },
       });
       expect(baseFormElement.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
         value: testString,
-        hello: 'world'
+        hello: 'world',
       });
     });
 
     it('Should update value with (output-)transformed value, if updateValue option is true', () => {
       baseFormElement.value = testString;
-      baseFormElement.outputTransformers.push(
-        (value: string): string => value + outTransAddedString
-      );
+      baseFormElement.outputTransformers.push((value: string): string => value + outTransAddedString);
 
       baseFormElement['transmitValue']('DEF 456', {
         eventType: [InputEventType.onKey],
-        updateValue: true
+        updateValue: true,
       });
 
       expect(baseFormElement.value).toEqual('ABC 123' + outTransAddedString);
       expect(baseFormElement.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onKey,
-        value: 'ABC 123' + outTransAddedString
+        value: 'ABC 123' + outTransAddedString,
       });
     });
 
     it('Should not propagate if doPropagate options is false', () => {
       baseFormElement['transmitValue'](testString, {
         eventType: [InputEventType.onBlur],
-        doPropagate: false
+        doPropagate: false,
       });
       expect(baseFormElement.changed.emit).toHaveBeenCalled();
       expect(baseFormElement.propagateChange).not.toHaveBeenCalled();
       expect(baseFormElement.onTouched).not.toHaveBeenCalled();
     });
 
-    it('Should not transmit onWrite if emitOnWrite is false', () => {
-      baseFormElement.emitOnWrite = false;
+    it('Should not transmit, if event type is in ignoreEvents array', () => {
+      baseFormElement.ignoreEvents = [InputEventType.onWrite];
 
       baseFormElement['transmitValue'](testString, {
-        eventType: [InputEventType.onWrite]
+        eventType: [InputEventType.onWrite],
       });
 
       expect(baseFormElement.changed.emit).not.toHaveBeenCalled();
@@ -239,11 +229,11 @@ describe('BaseFormElement', () => {
       baseFormElement.wrapEvent = false;
     });
 
-    it('should not emit event, if in has no observers', () => {
+    it('should not emit event, if it has no observers', () => {
       baseFormElement.changed.complete();
       baseFormElement.ngOnChanges(
         simpleChange({
-          value: testString
+          value: testString,
         })
       );
 
@@ -251,9 +241,5 @@ describe('BaseFormElement', () => {
       expect(baseFormElement.propagateChange).toHaveBeenCalledWith(testString);
       expect(baseFormElement.onTouched).not.toHaveBeenCalled();
     });
-  });
-
-  afterEach(() => {
-    baseFormElement.changed.complete();
   });
 });

@@ -10,6 +10,7 @@
 @import './datepicker';
 @import './menu';
 @import './icons';
+@import './rte/rte';
 
 :root {
   --primary-500: #{$primary-500};
@@ -35,6 +36,8 @@
   --display-font-family: 'Sentinel SSm A', 'Sentinel SSm B', 'Helvetica';
   --heading-font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica';
   --body-font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica';
+
+  --emoji-font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Segoe UI', 'Twemoji Mozilla', 'Noto Color Emoji',  NotoColorEmoji, 'EmojiOne Color', 'Android Emoji', EmojiSymbols;
 
   --padding-x-mob: #{$padding-x-mob};
 }
@@ -116,4 +119,31 @@ body {
   @include b-subheading($addCssVars: true) {
     margin: 0;
   }
+}
+
+.preloading,
+.preloading-collapsed {
+  @include mini-preloader(
+    $base-selector: '&',
+    $full-size-selector: null,
+    $abs-pos-center: true
+  );
+  display: block !important;
+  position: relative !important;
+  min-height: 30px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+
+  * {
+    opacity: 0;
+    visibility: hidden !important;
+    transition: none;
+    animation: none;
+  }
+}
+.preloading {
+  max-height: 70vh !important;
+}
+.preloading-collapsed {
+  max-height: 30px !important;
 }

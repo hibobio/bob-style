@@ -4,9 +4,9 @@ import { InfoTooltipComponent } from './info-tooltip.component';
 import { By } from '@angular/platform-browser';
 import { PanelModule } from '../panel/panel.module';
 import { TypographyModule } from '../../typography/typography.module';
-import { LinkModule } from '../../buttons-indicators/link/link.module';
+import { LinkModule } from '../../indicators/link/link.module';
 import { Icons } from '../../icons/icons.enum';
-import { LinkColor, LinkTarget } from '../../buttons-indicators/link/link.enum';
+import { LinkColor, LinkTarget } from '../../indicators/link/link.enum';
 import { MockComponent } from 'ng-mocks';
 import { IconComponent } from '../../icons/icon.component';
 

@@ -7,7 +7,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { TypographyModule } from '../../typography/typography.module';
 import { FiltersModule } from '../../services/filters/filters.module';
-import { ListKeyboardService } from '../../form-elements/lists/list-service/list-keyboard.service';
+import { ListKeyboardService } from '../../lists/list-service/list-keyboard.service';
 import { SearchModule } from '../search/search.module';
 
 @NgModule({

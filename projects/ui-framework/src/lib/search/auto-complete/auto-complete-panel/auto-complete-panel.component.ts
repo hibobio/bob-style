@@ -8,26 +8,31 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
-import { LIST_EL_HEIGHT } from '../../../form-elements/lists/list.consts';
+import { LIST_EL_HEIGHT } from '../../../lists/list.consts';
 import { AutoCompleteOption } from '../auto-complete.interface';
 import { has } from 'lodash';
 import { Subscription } from 'rxjs';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { ListKeyboardService } from '../../../form-elements/lists/list-service/list-keyboard.service';
+import { ListKeyboardService } from '../../../lists/list-service/list-keyboard.service';
 import { Keys } from '../../../enums';
+
+import { SearchComponent } from '../../search/search.component';
+import { getEventPath } from '../../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-auto-complete-panel',
   templateUrl: './auto-complete-panel.component.html',
-  styleUrls: ['./auto-complete-panel.component.scss']
+  styleUrls: ['./auto-complete-panel.component.scss'],
 })
 export class AutoCompletePanelComponent
   implements OnChanges, OnInit, OnDestroy {
   @ViewChild('vScroll', { static: false }) vScroll: CdkVirtualScrollViewport;
 
   @Input() options: AutoCompleteOption[];
+  @Input() searchInput: SearchComponent;
+
   @Input() searchValue: string;
   @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<
     AutoCompleteOption
@@ -56,8 +61,16 @@ export class AutoCompletePanelComponent
     this.keyDownSubscriber = this.listKeyboardService
       .getKeyboardNavigationObservable()
       .subscribe((e: KeyboardEvent) => {
+        if (
+          this.searchInput &&
+          !getEventPath(e).includes(this.searchInput.input.nativeElement)
+        ) {
+          return;
+        }
+
         switch (e.key) {
           case Keys.arrowdown:
+            e.preventDefault();
             this.focusIndex = this.listKeyboardService.getNextFocusIndex(
               Keys.arrowdown,
               this.focusIndex,
@@ -75,6 +88,7 @@ export class AutoCompletePanelComponent
             }
             break;
           case Keys.arrowup:
+            e.preventDefault();
             this.focusIndex = this.listKeyboardService.getNextFocusIndex(
               Keys.arrowup,
               this.focusIndex,
@@ -92,6 +106,7 @@ export class AutoCompletePanelComponent
             }
             break;
           case Keys.enter:
+            e.preventDefault();
             this.optionClick(this.focusOption);
             break;
           case Keys.escape:

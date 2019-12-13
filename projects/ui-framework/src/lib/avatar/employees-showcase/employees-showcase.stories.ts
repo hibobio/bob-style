@@ -3,7 +3,7 @@ import {
   object,
   select,
   boolean,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -15,7 +15,7 @@ import { AvatarSize } from '../avatar/avatar.enum';
 import zipObject from 'lodash/zipObject';
 import { EMPLOYEE_SHOWCASE_MOCK } from './employees-showcase.mock';
 
-const avatarStories = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
   withKnobs
 );
 
@@ -50,8 +50,8 @@ const note = `
   [employees] | EmployeeShowcase[] | employees list | []
   [avatarSize] | AvatarSize | avatar size | 'mini'
   [expandOnClick] | boolean | expands panel on click | true
-  (selectChange) | EventEmitter&lt;ListChange&gt; | list select change |
-  (clicked) | EventEmitter&lt;EmployeeShowcase&gt; | emits when avatar is clicked |
+  (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | list select change | &nbsp;
+  (clicked) | EventEmitter<wbr>&lt;EmployeeShowcase&gt; | emits when avatar is clicked | &nbsp;
 
   ~~~
   ${template}
@@ -66,7 +66,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-avatarStories.add(
+story.add(
   'Employees Showcase',
   () => {
     return {
@@ -76,15 +76,15 @@ avatarStories.add(
         expandOnClick: boolean('expandOnClick', true),
         employees: object<EmployeeShowcase>('employees', employeesMock),
         selectChange: action('Showcase list change'),
-        onAvatarClick: action('Avatar clicked')
+        onAvatarClick: action('Avatar clicked'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
-          EmployeesShowcaseModule
-        ]
-      }
+          EmployeesShowcaseModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { Dictionary } from 'lodash';
 import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
-import { InfoStripIcon } from '../../../buttons-indicators/info-strip/info-strip.types';
+import { InfoStripIcon } from '../../../indicators/info-strip/info-strip.types';
 import { AlertConfig } from '../alert.interface';
 import { ButtonType } from '../../../buttons/buttons.enum';
 import {

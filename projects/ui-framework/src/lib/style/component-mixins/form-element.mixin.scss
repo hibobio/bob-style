@@ -60,12 +60,12 @@ $input-focus-border-color: $grey-700;
   }
 }
 
-@mixin input-basics {
+@mixin input-basics($height: $input-height, $padding: 0 $input-padding) {
   box-sizing: border-box;
   display: block;
   min-width: 0;
   flex-grow: 1;
-  padding: 0 $input-padding;
+  padding: $padding;
   border: 0;
   border-color: inherit;
   border-radius: inherit;
@@ -77,30 +77,39 @@ $input-focus-border-color: $grey-700;
     $addCssVars: false
   );
   background: transparent;
-  height: $input-height;
-  line-height: $input-height;
+  height: $height;
+  line-height: $height;
+  text-overflow: ellipsis;
 }
 
-@mixin bFormElement-label {
+@mixin bFormElement-label($empty-rule: true) {
   box-sizing: border-box;
   display: block;
   min-height: $label-height;
   margin: 0 0 $label-hint-margin 0;
   @include b-body($color: $label-color, $addCssVars: true);
 
-  &:empty {
-    display: none;
+  @if $empty-rule {
+    &:empty {
+      display: none;
+    }
   }
+}
+
+@mixin bFormElement-basics {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  text-align: left;
+  max-width: 100%;
+  min-width: 0;
+  user-select: none;
+  @include form-element-margins;
 }
 
 @mixin bFormElement {
   :host {
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    text-align: left;
-    max-width: 100%;
-    @include form-element-margins;
+    @include bFormElement-basics;
   }
 
   :host ::ng-deep {

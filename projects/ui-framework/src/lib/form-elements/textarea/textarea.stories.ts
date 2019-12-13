@@ -3,7 +3,7 @@ import {
   text,
   boolean,
   withKnobs,
-  number
+  number,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { TextareaModule } from './textarea.module';
@@ -12,10 +12,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { mockText } from '../../mock.const';
 
-const textareaStories = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-textarea
@@ -51,25 +50,25 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | ---
-  value | string/number/float | type of input field
-  label | string | label text
-  description | string | description text (above icon)
-  placeholder | string | placeholder text (inside input)
-  minChars | number | minimum length
-  maxChars | number | maximum characters
-  readonly | boolean | disables input
-  disabled | boolean | is field disabled
-  required | boolean | is field required
-  hintMessage | text | hint text
-  warnMessage | string | warning text
-  errorMessage | text | error text
-  (inputEvents) | InputEvent | input events emitter
+  [value] | string/number/float | type of input field
+  [label] | string | label text
+  [description] | string | description text (above icon)
+  [placeholder] | string | placeholder text (inside input)
+  [minChars] | number | minimum length
+  [maxChars] | number | maximum characters
+  [readonly] | boolean | disables input
+  [disabled] | boolean | is field disabled
+  [required] | boolean | is field required
+  [hintMessage] | text | hint text
+  [warnMessage] | string | warning text
+  [errorMessage] | text | error text
+  (inputEvents) | EventEmitter<wbr>&lt;InputEvent&gt; | input events emitter
 
   ~~~
   ${template}
   ~~~
 `;
-textareaStories.add(
+story.add(
   'Textarea',
   () => {
     return {
@@ -87,15 +86,15 @@ textareaStories.add(
         readonly: boolean('readonly', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
-        errorMessage: text('errorMessage', '')
+        errorMessage: text('errorMessage', ''),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           TextareaModule,
-          StoryBookLayoutModule
-        ]
-      }
+          StoryBookLayoutModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

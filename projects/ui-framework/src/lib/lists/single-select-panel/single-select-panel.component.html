@@ -1,0 +1,30 @@
+<div [ngClass]="{'panel-open': panelOpen, 'panel-above':
+     positionClassList['panel-above'],
+     'panel-below': positionClassList['panel-below']}"
+     (click)="openPanel()"
+     cdkOverlayOrigin>
+
+  <b-chevron-button *ngIf="chevronButtonText"
+                    [text]="chevronButtonText"
+                    [active]="panelOpen"
+                    [disabled]="disabled">
+  </b-chevron-button>
+
+  <ng-content *ngIf="!chevronButtonText"></ng-content>
+
+</div>
+
+<ng-template #templateRef>
+  <div class="b-select-panel"
+       [ngClass]="positionClassList">
+    <b-single-list class="b-select-list"
+                   [options]="options"
+                   [optionsDefault]="optionsDefault"
+                   [maxHeight]="listElHeight*6"
+                   [showSingleGroupHeader]="false"
+                   [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+                   [showNoneOption]="false"
+                   (selectChange)="onSelect($event)">
+    </b-single-list>
+  </div>
+</ng-template>

@@ -319,7 +319,7 @@
 
      <p class="
           full-width">Custom event: {{bInput_EventCounter}}
-       <span class="eventName">{{bInput_lastEventName}}</span>
+       <span class="emitterName">{{bInput_lastemitterName}}</span>
      </p>
 
      <div class="outputValue full-width">
@@ -568,7 +568,7 @@
      </div>
 
      <p class="full-width">Custom event: {{bTextarea_EventCounter}}
-       <span class="eventName">{{bTextarea_lastEventName}}</span>
+       <span class="emitterName">{{bTextarea_lastemitterName}}</span>
      </p>
      <div class="outputValue full-width">
        {{ bTextarea_EventValue }}
@@ -825,7 +825,7 @@
      </div>
 
      <p class="full-width">Custom event: {{bDatepicker_EventCounter}}
-       <span class="eventName">{{bDatepicker_lastEventName}}</span>
+       <span class="emitterName">{{bDatepicker_lastemitterName}}</span>
      </p>
      <div class="outputValue full-width">
        {{ bDatepicker_EventValue }}
@@ -1081,7 +1081,7 @@
      </div>
 
      <p class="full-width">Custom event: {{bChipinput_EventCounter}}
-       <span class="eventName">{{bChipinput_lastEventName}}</span>
+       <span class="emitterName">{{bChipinput_lastemitterName}}</span>
      </p>
      <div class="outputValue full-width">
        {{ bChipinput_EventValue }}
@@ -1323,7 +1323,7 @@
      </div>
 
      <p class="full-width">Custom event: {{bSocial_EventCounter}}
-       <span class="eventName">{{bSocial_lastEventName}}</span>
+       <span class="emitterName">{{bSocial_lastemitterName}}</span>
      </p>
      <div class="outputValue full-width">
        {{ bSocial_EventValue }}
@@ -1579,7 +1579,7 @@
      </div>
 
      <p class="full-width">Custom event: {{bCheckbox_EventCounter}}
-       <span class="eventName">{{bCheckbox_lastEventName}}</span>
+       <span class="emitterName">{{bCheckbox_lastemitterName}}</span>
      </p>
      <div class="outputValue full-width">
        {{ bCheckbox_EventValue }}
@@ -1823,7 +1823,7 @@
      </div>
 
      <p class="full-width">Custom event: {{bRadio_EventCounter}}
-       <span class="eventName">{{bRadio_lastEventName}}</span>
+       <span class="emitterName">{{bRadio_lastemitterName}}</span>
      </p>
      <div class="outputValue full-width">
        {{ bRadio_EventValue }}
@@ -2080,7 +2080,7 @@
 
      <p class="
           full-width">Custom event: {{bSingleSelect_EventCounter}}
-       <span class="eventName">{{bSingleSelect_lastEventName}}</span>
+       <span class="emitterName">{{bSingleSelect_lastemitterName}}</span>
      </p>
 
      <div class="outputValue full-width">
@@ -2108,8 +2108,8 @@
        </p>
        <label>
          <input class="simple-input bigger"
-                (input)="onValueInput('bSingleSelect', $event)"
-                [value]="bSingleSelect_value"
+                (change)="onSelectValueInput('bSingleSelect',$event)"
+                [value]="bSingleSelect_value || null"
                 type="search">
        </label>
      </div>
@@ -2335,7 +2335,7 @@
 
      <p class="
           full-width">Custom event: {{bMultiSelect_EventCounter}}
-       <span class="eventName">{{bMultiSelect_lastEventName}}</span>
+       <span class="emitterName">{{bMultiSelect_lastemitterName}}</span>
      </p>
 
      <div class="outputValue full-width">
@@ -2363,8 +2363,8 @@
        </p>
        <label>
          <input class="simple-input bigger"
-                (input)="onValueInput('bMultiSelect', $event)"
-                [value]="bMultiSelect_value"
+                (change)="onSelectValueInput('bMultiSelect',$event)"
+                [value]="bMultiSelect_value || null"
                 type="search">
        </label>
      </div>
@@ -2590,7 +2590,7 @@
      </div>
 
      <p class="full-width">Custom event: {{bSplitInput_EventCounter}}
-       <span class="eventName">{{bSplitInput_lastEventName}}</span>
+       <span class="emitterName">{{bSplitInput_lastemitterName}}</span>
      </p>
      <div class="outputValue full-width">
        {{ bSplitInput_EventValue }}
@@ -2828,7 +2828,7 @@
 
      <p class="
             full-width">Custom event: {{bRTE_EventCounter}}
-       <span class="eventName">{{bRTE_lastEventName}}</span>
+       <span class="emitterName">{{bRTE_lastemitterName}}</span>
      </p>
      <div class="outputValue full-width">
        {{ bRTE_EventValue }}

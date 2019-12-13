@@ -1,10 +1,11 @@
-import {Icons} from '../../icons/icons.enum';
+import { Icons } from '../../icons/icons.enum';
 
 export interface MenuItem {
   children?: MenuItem[];
   label: string;
   disabled?: boolean;
   key?: string;
+  id?: string;
   action?($event): void;
 }
 

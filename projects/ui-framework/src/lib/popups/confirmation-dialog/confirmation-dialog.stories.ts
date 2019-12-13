@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { select, withKnobs } from '@storybook/addon-knobs/angular';
+import { withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,7 +7,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { ConfirmationDialogModule } from './confirmation-dialog.module';
 import { ConfirmationDialogExampleModule } from './confirmation-dialog-example.module';
 
-const buttonStories = storiesOf(ComponentGroupType.Popups, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
 );
 
@@ -38,7 +38,16 @@ const note = `
 
   openDialog() {
     const dialogConfig: ConfirmationDialogConfig = {
+      title: '...';
       ...
+      buttonConfig: {
+        ok: {
+          label: 'OK',
+          class: 'my-dialog-ok-button',
+          type: ButtonType.negative
+          ...
+        }
+      }
     };
 
     const dialogRef: MatDialogRef<ConfirmationDialogComponent> = this.confirmationDialogService
@@ -55,8 +64,33 @@ const note = `
       });
   }
   ~~~
+
+
+  #### interface ConfirmationDialogConfig
+  Name | Type | Description
+  --- | --- | ---
+  buttonConfig | ConfirmationDialogButtons | ok/cancel buttons config
+  title | string | Dialog title
+  message | string | Dialog message
+  class | string | Class to be added to the dialog panel
+
+  #### interface ConfirmationDialogButtons
+  Name | Type | Description
+  --- | --- | ---
+  ok | DialogButton | ok button config
+  cancel | DialogButton | cancel button config
+
+  #### interface DialogButton
+  Name | Type | Description
+  --- | --- | ---
+  label | string | button text
+  class | boolean | class to be added to the button
+  type | ButtonType | button type (primary, negative...)
+  disabled | boolean | if is disabled
+  action | Function | will be invoked on button click
+
 `;
-buttonStories.add(
+story.add(
   'Confirmation dialog',
   () => ({
     template: storyTemplate,
@@ -67,9 +101,9 @@ buttonStories.add(
         BrowserAnimationsModule,
         StoryBookLayoutModule,
         ConfirmationDialogModule,
-        ConfirmationDialogExampleModule
-      ]
-    }
+        ConfirmationDialogExampleModule,
+      ],
+    },
   }),
   { notes: { markdown: note } }
 );

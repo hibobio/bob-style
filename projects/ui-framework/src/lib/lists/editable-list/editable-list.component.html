@@ -1,0 +1,130 @@
+<header *ngIf="allowedActions.add || allowedActions.sort"
+        class="bel-header">
+
+  <div class="bel-header-top"
+       *ngIf="allowedActions.add">
+
+    <b-button class="bel-plus-button"
+              [hidden]="addingItem"
+              [type]="buttonType.secondary"
+              [size]="buttonSize.small"
+              [icon]="icons.add"
+              [text]="allowedActions.add!==true ? allowedActions.add : translation.add"
+              (clicked)="addItem()">
+    </b-button>
+
+    <div class="bel-item focused"
+         [hidden]="!addingItem"
+         [ngClass]="{error: inputInvalid}">
+
+      <input #addItemInput
+             type="text"
+             class="bfe-input bel-item-input"
+             autocomplete="off"
+             (input.outside-zone)="onInputChange()">
+
+      <div class="bel-item-confirm"
+           tabindex="0">
+        <b-button class="bel-cancel-button"
+                  [type]="buttonType.tertiary"
+                  [size]="buttonSize.small"
+                  [text]="translation.cancel">
+        </b-button>
+        <b-button class="bel-done-button"
+                  [type]="buttonType.secondary"
+                  [size]="buttonSize.small"
+                  [text]="translation.done"
+                  (clicked)="addItem(true)">
+        </b-button>
+      </div>
+    </div>
+
+    <p *ngIf="inputInvalid"
+       class="b-input-message error">
+      "{{listState.list[sameItemIndex].value}}"
+      {{translation.alreadyExists}}
+    </p>
+
+  </div>
+
+  <div class="bel-header-bottom">
+
+    <span class="bel-total b-big-body">
+      {{translation.total}}: {{listState.list.length || 0}}
+    </span>
+
+    <b-button *ngIf="allowedActions.sort"
+              class="bel-sort-button"
+              [type]="buttonType.tertiary"
+              [size]="buttonSize.small"
+              [icon]="listState.sortType === order.UserDefined || listState.sortType === order.Asc ? icons.sort_asc :
+              icons.sort_desc"
+              [ngClass]="{'custom-sorting': listState.sortType === order.UserDefined}"
+              (clicked)="sortList()"
+              [text]="listState.sortType === order.Asc
+                ? translation.sortAsc :
+                  listState.sortType === order.Desc ?
+                  translation.sortDesc :
+                  translation.sortCustom">
+    </b-button>
+
+  </div>
+
+</header>
+
+<smooth-dnd-container role="list"
+                      [ngClass]="{'bel-has-item-dragged': isDragged}"
+                      [orientation]="'vertical'"
+                      [lockAxis]="'y'"
+                      [dragClass]="'bel-item-dragged'"
+                      [dropClass]="'bel-item-dropped'"
+                      [nonDragAreaSelector]="'.bel-item-confirm, .bel-trash-button'"
+                      (dragStart)="onDragStart()"
+                      (drop)="onDrop($event)">
+
+  <smooth-dnd-draggable *ngFor="let item of listState.list; let index = index; trackBy: listTrackBy"
+                        role="listitem">
+
+    <div class="bel-item b-icon-drag-alt b-icon-medium b-icon-dark"
+         [attr.data-item-id]="item.id"
+         [ngClass]="{'new': addedItem && index === 0,
+                     'deleted':removedItem && removingIndex === index,
+                     'warn': sameItemIndex === index}">
+
+      <span class="bel-item-value"
+            data-max-lines="2">
+        {{ item.value }}
+      </span>
+
+      <b-square-button *ngIf="allowedActions.remove"
+                       class="bel-trash-button"
+                       [hidden]="removingIndex === index"
+                       [type]="buttonType.tertiary"
+                       [size]="buttonSize.small"
+                       [icon]="icons.delete"
+                       (clicked)="removeItem(index)">
+      </b-square-button>
+
+      <div *ngIf="allowedActions.remove"
+           class="bel-item-confirm"
+           [hidden]="removingIndex !== index"
+           tabindex="0">
+
+        <b-button class="bel-cancel-button"
+                  [type]="buttonType.tertiary"
+                  [size]="buttonSize.small"
+                  [text]="translation.cancel">
+        </b-button>
+
+        <b-button class="bel-remove-button"
+                  [type]="buttonType.negative"
+                  [size]="buttonSize.small"
+                  [text]="translation.remove"
+                  (clicked)="removeItem(index,true)">
+        </b-button>
+      </div>
+
+    </div>
+
+  </smooth-dnd-draggable>
+</smooth-dnd-container>

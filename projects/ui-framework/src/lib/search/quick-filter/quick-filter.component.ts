@@ -1,38 +1,56 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild, } from '@angular/core';
-import { QuickFilterChangeEvent, QuickFilterConfig } from './quick-filter.interface';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
+import {
+  QuickFilterChangeEvent,
+  QuickFilterConfig,
+} from './quick-filter.interface';
 import { QuickFilterSelectType } from './quick-filter.enum';
 import has from 'lodash/has';
-import { SingleSelectComponent } from '../../form-elements/lists/single-select/single-select.component';
-import { MultiSelectComponent } from '../../form-elements/lists/multi-select/multi-select.component';
-import { ListChange } from '../../form-elements/lists/list-change/list-change';
-import { ListModelService } from '../../form-elements/lists/list-service/list-model.service';
+import { SingleSelectComponent } from '../../lists/single-select/single-select.component';
+import { MultiSelectComponent } from '../../lists/multi-select/multi-select.component';
+import { ListChange } from '../../lists/list-change/list-change';
+import { ListModelService } from '../../lists/list-service/list-model.service';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 
 @Component({
   selector: 'b-quick-filter',
   templateUrl: './quick-filter.component.html',
-  styleUrls: ['./quick-filter.component.scss'],
 })
 export class QuickFilterComponent implements OnChanges {
-
-  @ViewChild('singleSelect', { static: true }) singleSelect: TemplateRef<SingleSelectComponent>;
-  @ViewChild('multiSelect', { static: true }) multiSelect: TemplateRef<MultiSelectComponent>;
+  @ViewChild('singleSelect', { static: true }) singleSelect: TemplateRef<
+    SingleSelectComponent
+  >;
+  @ViewChild('multiSelect', { static: true }) multiSelect: TemplateRef<
+    MultiSelectComponent
+  >;
 
   @Input() quickFilterConfig: QuickFilterConfig;
-  @Output() filterChange: EventEmitter<QuickFilterChangeEvent> = new EventEmitter<QuickFilterChangeEvent>();
+  @Output() filterChange: EventEmitter<
+    QuickFilterChangeEvent
+  > = new EventEmitter<QuickFilterChangeEvent>();
 
   showSingleGroupHeader: boolean;
   hasValue = false;
+  readonly tooltipType = TruncateTooltipType;
 
-  constructor(
-    private listModelService: ListModelService,
-  ) {
-  }
+  constructor(private listModelService: ListModelService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'quickFilterConfig')) {
       this.quickFilterConfig = changes.quickFilterConfig.currentValue;
-      this.showSingleGroupHeader = this.quickFilterConfig.showSingleGroupHeader || false;
-      this.hasValue = this.listModelService.getSelectedIdsMap(this.quickFilterConfig.options).length > 0;
+      this.showSingleGroupHeader =
+        this.quickFilterConfig.showSingleGroupHeader || false;
+      this.hasValue =
+        this.listModelService.getSelectedIDs(this.quickFilterConfig.options)
+          .length > 0;
     }
   }
 

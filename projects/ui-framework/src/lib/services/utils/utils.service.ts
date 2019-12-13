@@ -1,8 +1,18 @@
 import { Injectable } from '@angular/core';
-import { fromEvent, Observable } from 'rxjs';
-import { debounceTime, map, share, shareReplay } from 'rxjs/operators';
+import { fromEvent, Observable, merge, Observer } from 'rxjs';
+import {
+  debounceTime,
+  map,
+  share,
+  throttleTime,
+  startWith,
+  distinctUntilChanged,
+  flatMap,
+  delay
+} from 'rxjs/operators';
 import { WindowRef } from './window-ref.service';
 import { ScrollEvent } from './utils.interface';
+import { DOMhelpers } from '../html/dom-helpers.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,22 +26,18 @@ export class UtilsService {
   constructor(private windowRef: WindowRef) {
     this.winResize$ = fromEvent(this.windowRef.nativeWindow, 'resize').pipe(
       debounceTime(500),
-      shareReplay(1)
+      share()
     );
 
     this.winScroll$ = fromEvent(this.windowRef.nativeWindow, 'scroll').pipe(
       map((e: Event) => ({
-        scrollY: (e.currentTarget as Window).scrollY,
-        scrollX: (e.currentTarget as Window).scrollX
+        scrollY: ((e.currentTarget as any) || (document.scrollingElement as any)).scrollY,
+        scrollX: ((e.currentTarget as any) || (document.scrollingElement as any)).scrollX
       })),
-      shareReplay(1)
+      share()
     );
-    this.winClick$ = fromEvent(this.windowRef.nativeWindow, 'click').pipe(
-      share()
-    ) as Observable<MouseEvent>;
-    this.winKey$ = fromEvent(this.windowRef.nativeWindow, 'keydown').pipe(
-      share()
-    ) as Observable<KeyboardEvent>;
+    this.winClick$ = fromEvent(this.windowRef.nativeWindow, 'click').pipe(share()) as Observable<MouseEvent>;
+    this.winKey$ = fromEvent(this.windowRef.nativeWindow, 'keydown').pipe(share()) as Observable<KeyboardEvent>;
   }
 
   public getResizeEvent(): Observable<any> {
@@ -48,5 +54,39 @@ export class UtilsService {
 
   public getWindowKeydownEvent(): Observable<KeyboardEvent> {
     return this.winKey$;
+  }
+
+  public getElementInViewEvent(element: HTMLElement): Observable<boolean> {
+    if (
+      !('IntersectionObserver' in this.windowRef.nativeWindow) ||
+      !('IntersectionObserverEntry' in this.windowRef.nativeWindow) ||
+      !('intersectionRatio' in this.windowRef.nativeWindow.IntersectionObserverEntry.prototype)
+    ) {
+      return merge(this.winScroll$, this.winResize$).pipe(
+        startWith(1),
+        throttleTime(300, undefined, {
+          leading: true,
+          trailing: true
+        }),
+        map(() => DOMhelpers.prototype.isInView(element)),
+        distinctUntilChanged()
+      );
+    }
+
+    return new Observable((observer: Observer<IntersectionObserverEntry[]>) => {
+      const intersectionObserver = new IntersectionObserver(entries => {
+        observer.next(entries);
+      });
+      intersectionObserver.observe(element);
+
+      return () => {
+        intersectionObserver.disconnect();
+      };
+    }).pipe(
+      flatMap((entries: IntersectionObserverEntry[]) => entries),
+      map((entry: IntersectionObserverEntry) => entry.isIntersecting),
+      distinctUntilChanged(),
+      delay(100)
+    );
   }
 }

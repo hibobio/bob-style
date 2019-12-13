@@ -13,7 +13,7 @@ import { URLutils } from '../../../../ui-framework/src/lib/services/url/url-util
       <button (click)="testUrl(input.value)" type="button">test</button>
     </div>
   `,
-  providers: [URLutils]
+  providers: [URLutils],
 })
 export class UrlTesterComponent {
   constructor(private url: URLutils) {}
@@ -29,6 +29,6 @@ export class UrlTesterComponent {
   imports: [CommonModule],
   exports: [UrlTesterComponent],
   providers: [],
-  entryComponents: []
+  entryComponents: [],
 })
 export class UrlTesterModule {}

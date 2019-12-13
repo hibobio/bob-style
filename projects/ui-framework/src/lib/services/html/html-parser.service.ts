@@ -1,0 +1,151 @@
+import { Injectable } from '@angular/core';
+import { LinkifyPipe } from '../filters/linkify.pipe';
+import { GenericObject } from '../../types';
+import { isString, isObject, isEmptyObject } from '../utils/functional-utils';
+
+@Injectable({ providedIn: 'root' })
+export class HtmlParserHelpers {
+  constructor() {}
+
+  public linkify(value: string, add = ''): string {
+    return LinkifyPipe.prototype.transform(value, add);
+  }
+
+  public cleanupHtml(
+    value: string,
+    enforcedAttrs: GenericObject = {
+      contenteditable: null,
+      tabindex: null,
+      spellcheck: null,
+      class: {
+        'fr-.*': false
+      }
+    }
+  ): string {
+    return (
+      this.enforceAttributes(value, { 'span,p,div,a': enforcedAttrs || {} })
+
+        // replace P with DIV
+        .replace(/(<p)/gi, '<div')
+        .replace(/<\/p>/gi, '</div>')
+
+        // replace headings
+        .replace(
+          /(<h[1][^>]*>)/gi,
+          '<div><br></div><div><span style="font-size: 28px;"><strong>'
+        )
+        .replace(
+          /(<h[23][^>]*>)/gi,
+          '<div><br></div><div><span style="font-size: 18px;"><strong>'
+        )
+        .replace(/(<h[456][^>]*>)/gi, '<div><br></div><div><span><strong>')
+        .replace(/(<\/h\d>)/gi, '</strong></span></div>')
+
+        // empty tags
+        .replace(/<([^\/>\s]+)[^>]*>\s*<\/\1>/gi, ' ')
+
+        // unnecessary wrappers
+        .replace(/<(span)>([^<]+)<\/\1>/gi, '$2')
+
+        // no &nbsp;
+        // .replace(/&nbsp;/gi, ' ')
+        .replace(/(<\/div>)(\s*&nbsp;\s*)+(<div>)/gi, '$1$3')
+
+        // less white space
+        // .replace(/\s\s+/gi, ' ')
+        .replace(/\s+/gi, ' ')
+
+        // <br>'s inside tags with text (<div><br> text</div>)
+        .replace(
+          /(<(?:div|p|span|ul|ol|li|a|strong|em|i)[^>]*>)(?:\s*<br>\s*)+([^<\s]+)/gi,
+          '$1$2'
+        )
+
+        // replace <br><br> with <div><br></div>
+        .replace(/([^<>])(<br>\s*){2,}(?=[^<>\s])/gi, '$1<div><br></div>')
+
+        // <br>'s at the start / end
+        .replace(/(^(\s*<br>\s*)+)|((\s*<br>\s*)+$)/gi, '')
+
+        // too many <div><br></div>
+        .replace(
+          /(<([^\/>\s]+)[^>]*>\s*<br>\s*<\/\2>\s*){2,}/gi,
+          '<div><br></div>'
+        )
+
+        // <div><br></div> at the start / end
+        .replace(
+          /(^(\s*<([^\/>\s]+)[^>]*>(\s*<br>\s*)+<\/\3>)+)|((<([^\/>\s]+)[^>]*>(\s*<br>\s*)+<\/\7>\s*)+$)/gi,
+          ''
+        )
+
+        .trim()
+    );
+  }
+
+  public enforceAttributes(
+    value: string,
+    enforce: {
+      [selector: string]: GenericObject;
+    } = {}
+  ): string {
+    if (!enforce || isEmptyObject(enforce)) {
+      return value;
+    }
+
+    const elm: HTMLElement = document.createElement('div');
+    elm.innerHTML = value;
+
+    Object.keys(enforce).forEach((selector: string) => {
+      const attributes = enforce[selector];
+
+      Array.from(elm.querySelectorAll(selector)).forEach(
+        (elem: HTMLElement): void => {
+          Object.keys(attributes).forEach(attr => {
+            if (attributes[attr] === null) {
+              elem.removeAttribute(attr);
+            } else {
+              if (attr === 'class') {
+                let classes = attributes[attr];
+
+                if (isObject(classes)) {
+                  Object.keys(classes).forEach(c => {
+                    if (classes[c]) {
+                      elem.classList.add(c);
+                    } else {
+                      if (/[.*+]/g.test(c) && elem.className !== '') {
+                        [...elem.classList['values']()].forEach(
+                          (cls: string) => {
+                            if (new RegExp(c, 'gi').test(cls)) {
+                              elem.classList.remove(cls);
+                            }
+                          }
+                        );
+                      } else {
+                        elem.classList.remove(c);
+                      }
+                    }
+                  });
+                } else {
+                  if (isString(classes)) {
+                    classes = classes.split(' ').filter(Boolean);
+                  }
+                  elem.classList.add(...classes);
+                }
+                if (elem.className === '') {
+                  elem.removeAttribute(attr);
+                }
+              } else {
+                if (attributes[attr] !== null) {
+                  elem.setAttribute(attr, attributes[attr]);
+                }
+              }
+            }
+          });
+        }
+      );
+    });
+
+    return elm.innerHTML;
+  }
+}

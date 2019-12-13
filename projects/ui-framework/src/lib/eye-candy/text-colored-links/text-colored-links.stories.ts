@@ -6,7 +6,7 @@ import {COLOR_TEXT_ITEMS} from './text-colored-links/text-colored-links.mocks';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import {DEFAULT_COLORS} from './text-colored-links.interface';
 
-const textColoredLinksStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.EyeCandy,
   module
 ).addDecorator(withKnobs);
@@ -48,7 +48,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-textColoredLinksStories.add(
+story.add(
   'Text colored links',
   () => ({
     template: storyTemplate,

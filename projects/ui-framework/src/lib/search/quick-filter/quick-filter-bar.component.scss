@@ -5,7 +5,7 @@
   position: absolute;
   width: 1px;
   height: 20px;
-  bottom: (($wrap-height - 20px) / 2);
+  bottom: (($wrap-height - 20px) / 2 - 1px);
   background-color: $input-border-color;
 }
 
@@ -83,6 +83,26 @@
 // borders
 
 :host::ng-deep {
+  .bfe-label.bfe-label {
+    color: $grey-600;
+    padding-left: $input-padding;
+  }
+
+  .bfe-wrap.bfe-wrap {
+    transition: none;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+    position: relative;
+
+    &.panel-open,
+    &.focused {
+      border-color: $input-border-color;
+      box-shadow: none;
+      z-index: auto;
+    }
+  }
+
   .bfe-wrap {
     &:before,
     &:after {
@@ -95,20 +115,44 @@
       right: -1px;
     }
   }
+
+  .end-date-wrap {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 }
 
-.bar-content {
-  .quick-filter-placeholder {
-    background-color: $white;
-    border: 1px solid $input-border-color;
-    height: $wrap-height;
-    flex-grow: 1;
+:host::ng-deep {
+  .bar-filters:empty {
+    &:before {
+      @include pseudo;
+      background-color: $white;
+      border: 1px solid $input-border-color;
+      height: $wrap-height;
+      flex-grow: 5;
+    }
   }
-  &:not(.has-prefix)::ng-deep {
-    .quick-filter-placeholder {
+
+  .bar-filters {
+    @include mini-preloader(
+      $pseudo: after,
+      $size: 26px 12px,
+      $abs-pos-center: true
+    );
+  }
+
+  .bar-filters > * {
+    flex: 1;
+  }
+
+  .bar-content:not(.has-prefix) {
+    .bar-filters:empty:before {
       @include border-radius-left;
     }
-    b-quick-filter:first-child .bfe-wrap {
+
+    b-quick-filter:first-child .bfe-wrap,
+    .bar-filters > :first-child > .bfe-wrap:first-of-type,
+    .bar-filters > :first-child > :first-child .bfe-wrap {
       border-left: 1px solid $input-border-color;
       @include border-radius-left;
 
@@ -118,11 +162,14 @@
     }
   }
 
-  &:not(.has-suffix)::ng-deep {
-    .quick-filter-placeholder {
+  .bar-content:not(.has-suffix) {
+    .bar-filters:empty:before {
       @include border-radius-right;
     }
-    b-quick-filter:last-child .bfe-wrap {
+
+    b-quick-filter:last-child .bfe-wrap,
+    .bar-filters > :last-child > .bfe-wrap:last-of-type,
+    .bar-filters > :last-child > :nth-child(2) .bfe-wrap:last-of-type {
       border-right: 1px solid $input-border-color;
       @include border-radius-right;
 

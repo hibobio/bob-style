@@ -1,18 +1,18 @@
 @import '../../style/common-imports';
 
 :host {
-  text-align: left;
+  @include bFormElement-basics;
 }
 
 .bfe-label {
   @include bFormElement-label;
   display: flex;
   align-items: center;
+}
 
-  .social-icon {
-    margin-right: 4px;
-    height: 0;
-  }
+.social-icon {
+  margin-right: 4px;
+  height: 0;
 }
 
 :host {
@@ -37,4 +37,9 @@
       cursor: text;
     }
   }
+}
+
+[input-prefix] {
+  display: flex;
+  align-items: center;
 }

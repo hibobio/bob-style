@@ -13,18 +13,22 @@ describe('BackButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MockComponent(ButtonComponent), BackButtonComponent]
+      declarations: [MockComponent(ButtonComponent), BackButtonComponent],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(BackButtonComponent);
         component = fixture.componentInstance;
-        buttonElement = fixture.debugElement.query(By.css('button'))
-          .nativeElement;
+        buttonElement = fixture.debugElement.query(By.css('button')).nativeElement;
+        component.clicked.subscribe(() => {});
         spyOn(component.clicked, 'emit');
         fixture.detectChanges();
       });
   }));
+
+  afterEach(() => {
+    component.clicked.complete();
+  });
 
   it('should show button component with back icon and button size small', () => {
     expect(buttonElement.classList).toContain(Icons.back_arrow_link);

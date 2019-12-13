@@ -8,7 +8,7 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 import { escapeRegExp, filter, invoke, has } from 'lodash';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
@@ -19,7 +19,7 @@ import {
   FlexibleConnectedPositionStrategy,
   Overlay,
   OverlayConfig,
-  OverlayRef
+  OverlayRef,
 } from '@angular/cdk/overlay';
 import { AutoCompleteOption } from './auto-complete.interface';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
@@ -28,7 +28,7 @@ import { OverlayPositionClasses } from '../../types';
 @Component({
   selector: 'b-auto-complete',
   templateUrl: './auto-complete.component.html',
-  styleUrls: ['./auto-complete.component.scss']
+  styleUrls: ['./auto-complete.component.scss'],
 })
 export class AutoCompleteComponent implements OnChanges, OnDestroy {
   @ViewChild(CdkOverlayOrigin, { static: true })
@@ -44,7 +44,9 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   @Input() displayOptionsOnFocus = false;
 
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
-  @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<AutoCompleteOption>();
+  @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<
+    AutoCompleteOption
+  >();
 
   positionClassList: OverlayPositionClasses = {};
   searchValue = '';
@@ -62,8 +64,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService
-  ) {
-  }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'options')) {
@@ -135,7 +136,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
 
     this.overlayRef.updatePosition();
     this.overlayRef.updateSize({
-      width: this.overlayOrigin.elementRef.nativeElement.offsetWidth
+      width: this.overlayOrigin.elementRef.nativeElement.offsetWidth,
     });
 
     this.backdropClickSubscriber = this.overlayRef
@@ -167,7 +168,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
       backdropClass: 'b-select-backdrop',
       panelClass: ['b-auto-complete-panel'],
       positionStrategy,
-      scrollStrategy: this.panelPositionService.getScrollStrategy()
+      scrollStrategy: this.panelPositionService.getScrollStrategy(),
     };
   }
 
@@ -187,7 +188,9 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     const matcher = new RegExp(escapeRegExp(this.searchValue), 'i');
     return filter(
       this.options,
-      option => option.value.match(matcher) || (option.subText && option.subText.match(matcher))
+      option =>
+        option.value.match(matcher) ||
+        (option.subText && option.subText.match(matcher))
     );
   }
 }

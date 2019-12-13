@@ -1,7 +1,7 @@
 @import '../../style/common-imports';
 @import '../../avatar/avatar/avatar.mixin';
 
-@keyframes blink {
+@keyframes bchp-blink {
   0%,
   100% {
     box-shadow: 0 0 0 0 transparent;
@@ -16,27 +16,27 @@ $chipTypeMap: (
     background-color: $grey-300,
     color: $grey-700,
     border-color: $grey-300,
-    font-weight: $font-weight-body
+    font-weight: $font-weight-body,
   ),
   info: (
     background-color: var(--inform-500),
     color: white,
-    border-color: var(--inform-500)
+    border-color: var(--inform-500),
   ),
   warning: (
     background-color: $color-warn,
     color: white,
-    border-color: $color-warn
+    border-color: $color-warn,
   ),
   error: (
     background-color: $color-error,
     color: white,
-    border-color: $color-error
+    border-color: $color-error,
   ),
   success: (
     background-color: var(--positive-500),
     color: white,
-    border-color: var(--positive-500)
+    border-color: var(--positive-500),
   ),
   avatar: (
     background-color: white,
@@ -44,22 +44,41 @@ $chipTypeMap: (
     border-color: $grey-300,
     height: map-get($avatarSizes, mini) + 2px,
     border-radius: (
-      map-get($avatarSizes, mini) + 2px
-    ) /2
-  )
+      (map-get($avatarSizes, mini) + 2px) / 2,
+    ),
+    padding: 0 16px 0 10px,
+  ),
+  icon: (
+    background-color: white,
+    color: $grey-800,
+    border-color: $grey-300,
+    height: map-get($avatarSizes, mini) + 2px,
+    border-radius: (
+      (map-get($avatarSizes, mini) + 2px) / 2,
+    ),
+    padding: 0 16px,
+  ),
+  tab: (
+    color: $grey-800,
+    border: 0,
+    height: 32px,
+    border-radius: 16px,
+    padding: 0 16px,
+  ),
 );
 
 $chipStateMap: (
   selected: (
-    background-color: $primary-600,
+    background-color: var(--primary-600),
     color: white,
-    border-color: $primary-600
+    border-color: var(--primary-600),
   ),
   disabled: (
     background-color: $grey-200,
     color: $grey-500,
-    border-color: $grey-200
-  )
+    border-color: $grey-200,
+    pointer-events: none,
+  ),
 );
 
 :host {
@@ -82,18 +101,23 @@ $chipStateMap: (
   outline: 0;
 
   &.blink {
-    @include animate(blink, 0.3s);
+    @include animate(bchp-blink, 0.3s);
+  }
+
+  &[data-clickable='true'] {
+    cursor: pointer;
   }
 
   &[tabindex='0']:focus,
   &.focused {
     position: relative;
-    &:before {
+    &:after {
       @include pseudo;
       @include size(100%);
       @include position;
       border-radius: inherit;
       background-color: black(0.05);
+      z-index: 0;
     }
   }
 
@@ -114,6 +138,10 @@ $chipStateMap: (
   }
 }
 
+.chip-text {
+  pointer-events: none;
+}
+
 .remove-button {
   margin-left: 5px;
   margin-right: -9px;
@@ -121,7 +149,16 @@ $chipStateMap: (
   cursor: pointer;
 }
 
-// additional styles for Avatar Chip
+// additional styles for Avatar, Icon & Tab chips
+
+:host[data-type='tab']::ng-deep,
+:host[data-type='icon']::ng-deep,
+:host[data-type='avatar']::ng-deep {
+  .remove-button {
+    margin-right: -5px;
+    margin-left: 6px;
+  }
+}
 
 :host[data-type='avatar']::ng-deep {
   b-avatar {
@@ -132,8 +169,50 @@ $chipStateMap: (
       box-shadow: none;
     }
   }
+}
 
-  .remove-button {
-    margin-right: -4px;
+:host[data-type='avatar'][data-disabled='true']::ng-deep {
+  b-avatar {
+    .avatar {
+      filter: grayscale(1);
+      opacity: 0.3;
+    }
   }
+}
+
+:host[data-type='tab']:before,
+:host[data-type='icon']:before {
+  margin-right: 8px;
+  margin-left: -4px;
+}
+
+:host[data-type='icon'][data-selected='true']:not([data-disabled='true']) {
+  color: $grey-800;
+  background-color: $color-option-selected;
+  border-color: $color-option-selected;
+}
+
+:host[data-type='tab'][data-disabled='true']:before,
+:host[data-type='icon'][data-disabled='true']:before {
+  opacity: 0.3;
+}
+
+:host[data-type='tab'][data-selected='true']:not([data-disabled='true']) {
+  color: white;
+  background-color: var(--negative-600);
+
+  &:before {
+    color: white;
+  }
+}
+
+:host[data-type='tab'][data-selected='false']:not([data-disabled='true'])[data-clickable='true'] {
+  &:hover,
+  &:focus {
+    background-color: $grey-100;
+  }
+}
+
+:host[data-type='tab']:focus:after {
+  display: none;
 }

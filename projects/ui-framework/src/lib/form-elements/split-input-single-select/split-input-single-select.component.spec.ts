@@ -2,15 +2,15 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SplitInputSingleSelectComponent } from './split-input-single-select.component';
-import { SingleSelectComponent } from '../lists/single-select/single-select.component';
+import { SingleSelectComponent } from '../../lists/single-select/single-select.component';
 import { MockComponent } from 'ng-mocks';
 import { InputEventType } from '../form-elements.enum';
 import { InputComponent } from '../input/input.component';
-import { SelectGroupOption } from '../lists/list.interface';
+import { SelectGroupOption } from '../../lists/list.interface';
 import { InputSingleSelectValue } from './split-input-single-select.interface';
 import { By } from '@angular/platform-browser';
 import { cloneDeep } from 'lodash';
-import { ListChange } from '../lists/list-change/list-change';
+import { ListChange } from '../../lists/list-change/list-change';
 import { SimpleChange } from '@angular/core';
 
 describe('SplitInputSingleSelectComponent', () => {

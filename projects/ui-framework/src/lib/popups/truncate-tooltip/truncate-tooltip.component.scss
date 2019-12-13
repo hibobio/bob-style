@@ -41,7 +41,7 @@
   justify-content: center;
 }
 
-[aria-describedby] {
+.tooltip-trigger {
   @include size;
   @include position(0 0 0 0);
 
@@ -51,18 +51,11 @@
 }
 
 [data-tooltip] {
-  @include size(350px, 100%);
-  @include position(0 calc((100% - 350px) / 2) 0 calc((100% - 350px) / 2));
-  pointer-events: none;
-
   &:after {
     animation-name: tooltip-apprnc-btt;
     transform: none;
     left: auto;
-  }
-
-  & + .btt {
-    position: relative;
+    min-width: 260px;
   }
 }
 

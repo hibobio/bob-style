@@ -3,7 +3,7 @@ import {
   text,
   array,
   boolean,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -46,17 +46,17 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [value] | string[] | array of selected chips | none
-  [options] | string[] | array of all possible chips | none
+  [value] | string[] | array of selected chips | &nbsp;
+  [options] | string[] | array of all possible chips | &nbsp;
   [acceptNew] | boolean | if the input accepts new entries | true
-  [label] | string | label (on top of input) | none
-  [placeholder] | string | placeholder (inide input) | none
-  [hintMessage] | string | text below input | none
-  [warnMessage] | string | warning text
-  [errorMessage] | string | error text | none
+  [label] | string | label (on top of input) | &nbsp;
+  [placeholder] | string | placeholder (inide input) | &nbsp;
+  [hintMessage] | string | text below input | &nbsp;
+  [warnMessage] | string | warning text | &nbsp;
+  [errorMessage] | string | error text | &nbsp;
   [required] | boolean | if input is required | false
   [disabled] | boolean | if input is disabled | false
-  (changed) | EventEmitter&lt;ChipInputChange&gt; | emits on change: {value, added, removed} | none
+  (changed) | EventEmitter<wbr>&lt;ChipInputChange&gt; | emits on change: {value, added, removed} | &nbsp;
 
 
   ~~~
@@ -86,11 +86,11 @@ const toAdd = () => ({
     warnMessage: text('warnMessage', ''),
     errorMessage: text('errorMessage', ''),
     options: array('options', options, ','),
-    chipInputChangeHandler: action('Chip input changed')
+    chipInputChangeHandler: action('Chip input changed'),
   },
   moduleMetadata: {
-    imports: [ChipInputModule, StoryBookLayoutModule, BrowserAnimationsModule]
-  }
+    imports: [ChipInputModule, StoryBookLayoutModule, BrowserAnimationsModule],
+  },
 });
 
 story.add('Chip Input', toAdd, { notes: { markdown: note } });

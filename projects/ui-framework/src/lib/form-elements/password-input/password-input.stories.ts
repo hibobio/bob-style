@@ -4,7 +4,7 @@ import {
   number,
   select,
   text,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { PasswordInputModule } from './password-input.module';
@@ -13,10 +13,9 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const datepickerStories = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 const template = `
 <b-password-input
               [value]="value"
@@ -51,26 +50,27 @@ const note = `
 
   Name | Type | Description
   --- | --- | --- | ---
-  value | string | value of input field
-  label | string | label text (above input)
-  placeholder | string | placeholder text (inside input)
-  minChars | number | min length
-  maxChars | number | max length
-  readonly | boolean | disables input
-  disabled | boolean | is field disabled
-  required | boolean | is field required
-  hintMessage | string | hint text
-  warnMessage | string | warning text
-  errorMessage | string | error text
-  hideLabelOnFocus | boolean | if true: there will be no label above input, label text (if present) will be used as placeholder
-  enableBrowserAutoComplete | InputAutoCompleteOptions | shows browser autocomplete options
-  (inputEvents) | InputEvent | input events emitter
+  [value] | string | value of input field
+  [label] | string | label text (above input)
+  [placeholder] | string | placeholder text (inside input)
+  [minChars] | number | min length
+  [maxChars] | number | max length
+  [readonly] | boolean | disables input
+  [disabled] | boolean | is field disabled
+  [required] | boolean | is field required
+  [hintMessage] | string | hint text
+  [warnMessage] | string | warning text
+  [errorMessage] | string | error text
+  [hideLabelOnFocus] | boolean | if true: there will be no label above\
+   input, label text (if present) will be used as placeholder
+  [enableBrowserAutoComplete] | InputAutoCompleteOptions | shows browser autocomplete options
+  (inputEvents) | EventEmitter<wbr>&lt;InputEvent&gt; | input events emitter
   ~~~
   ${template}
   ~~~
 `;
 
-datepickerStories.add(
+story.add(
   'Password Input',
   () => {
     return {
@@ -92,15 +92,15 @@ datepickerStories.add(
         errorMessage: text('errorMessage', ''),
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         enableBrowserAutoComplete: boolean('enableBrowserAutoComplete', false),
-        onChange: action('Input changed')
+        onChange: action('Input changed'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           PasswordInputModule,
-          StoryBookLayoutModule
-        ]
-      }
+          StoryBookLayoutModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

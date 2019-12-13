@@ -15,14 +15,20 @@
 
   .mat-tab-header {
     border: 0;
-    box-shadow: inset 0 -1px 0 0 $grey-500;
     max-width: 100%;
+    flex-grow: 2;
+    display: flex;
+    justify-content: center;
 
     &.mat-tab-header-pagination-controls-enabled {
       max-width: calc(100% - 62px);
       position: static;
-      margin: 0 auto;
     }
+  }
+
+  .mat-tab-label-container {
+    box-shadow: inset 0 -1px 0 0 $grey-500;
+    flex-grow: 0;
   }
 
   .mat-tab-header-pagination {
@@ -40,6 +46,7 @@
   }
 
   .mat-tab-label {
+    cursor: pointer !important;
     height: 30px;
     min-width: 0;
     padding: 0;
@@ -51,7 +58,6 @@
     .tab-label {
       line-height: 28px;
       padding: 0 15px;
-
     }
 
     &.mat-tab-label-active {
@@ -81,7 +87,7 @@
   }
 
   .tabs-secondary {
-    .mat-tab-header {
+    .mat-tab-label-container {
       width: 100%;
     }
 

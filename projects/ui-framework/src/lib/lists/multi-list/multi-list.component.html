@@ -1,0 +1,96 @@
+<b-search *ngIf="shouldDisplaySearch"
+          (searchChange)="searchChange($event)">
+</b-search>
+
+<div [ngStyle]="{height: listOptions && (listOptions.length * listElHeight + 'px'), maxHeight: maxHeight + 'px'}"
+     [ngClass]="{'no-group-header': noGroupHeaders}"
+     class="v-scroll-wrapper">
+  <div #headers
+       class="headers"
+       *ngIf="!noGroupHeaders">
+    <div *ngFor="let header of listHeaders"
+         class="headers-group">
+      <div [ngClass]="{
+           'clickable': options.length > 1,
+           'collapsed': header.isCollapsed,
+           'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header)}"
+           class="option-select header has-hover">
+        <span (click)="headerClick(header)"
+              class="header-collapse-trigger">
+        </span>
+        <span *ngIf="options.length > 1"
+              class="chevron b-icon-medium"
+              [ngClass]="{'b-icon-chevron-down': !header.isCollapsed, 'b-icon-chevron-right':
+              header.isCollapsed}"></span>
+        <div class="header-option">
+          <b-checkbox [hidden]="searchValue"
+                      class="checkbox"
+                      [value]="header.selected"
+                      [indeterminate]="header.indeterminate"
+                      (click)="selectGroup(header)"
+                      [doPropagate]="false">
+          </b-checkbox>
+          <span class="header-option-value"
+                data-max-lines='3'
+                [innerHTML]="header.groupName | highlight: searchValue"></span>
+          <span *ngIf="header.selectedCount > 0"
+                class="header-selected-count">
+            ({{header.selectedCount}})
+          </span>
+        </div>
+      </div>
+      <div [ngStyle]="{height: header.isCollapsed ? 0 : header.placeHolderSize + 'px'}"
+           class="placeholder"></div>
+    </div>
+  </div>
+
+  <cdk-virtual-scroll-viewport #vScroll
+                               class="v-scroll"
+                               [itemSize]="listElHeight"
+                               maxBufferPx="{{8*listElHeight}}"
+                               minBufferPx="{{8*listElHeight}}">
+    <div class="options">
+      <div (click)="optionClick(option, true)"
+           *cdkVirtualFor="let option of listOptions"
+           [ngClass]="{
+            'header-placeholder': option.isPlaceHolder,
+            'option': !option.isPlaceHolder,
+            'focus': option.id===focusOption?.id,
+            'disabled': option.disabled,
+            'single-group-option': options.length === 1
+           }"
+           class="option-select">
+
+        <b-checkbox *ngIf="!option.isPlaceHolder"
+                    class="checkbox"
+                    [value]="option.selected"
+                    [doPropagate]="false">
+        </b-checkbox>
+
+        <b-component-renderer *ngIf="option.prefixComponent
+                        && option.prefixComponent.component"
+                              class="comp-prefix"
+                              [render]="option.prefixComponent"></b-component-renderer>
+
+        <span *ngIf="!option.isPlaceHolder"
+              class="option-value"
+              data-max-lines='3'
+              [innerHTML]="option.value | highlight: searchValue">
+        </span>
+
+      </div>
+    </div>
+  </cdk-virtual-scroll-viewport>
+
+</div>
+
+<b-list-footer #footer
+               *ngIf="hasFooter"
+               [listActions]="listActions"
+               [listActionsState]="listActionsState"
+               (clear)="clearList()"
+               (apply)="onApply()"
+               (reset)="resetList()">
+  <ng-content footerAction
+              select="[footerAction],[footerActionRight]"></ng-content>
+</b-list-footer>

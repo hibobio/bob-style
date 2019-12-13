@@ -15,6 +15,10 @@
   &::ng-deep .error {
     color: $color-error;
   }
+
+  &:empty {
+    display: none;
+  }
 }
 
 .length-indicator {

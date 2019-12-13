@@ -14,6 +14,7 @@ import {
 } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import {
+  CellClickedEvent,
   Column,
   DragStoppedEvent,
   GridColumnsChangedEvent,
@@ -21,12 +22,8 @@ import {
   GridReadyEvent,
   RowNode
 } from 'ag-grid-community';
-import { get, has, map, once } from 'lodash';
-import {
-  ColumnDef,
-  RowClickedEvent,
-  SortChangedEvent
-} from './table.interface';
+import { cloneDeep, get, has, map, once } from 'lodash';
+import { ColumnDef, ColumnsOrderChangedEvent, RowClickedEvent, SortChangedEvent } from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { RowSelection, TableType } from './table.enum';
@@ -61,14 +58,13 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() tableGridOptions: Partial<GridOptions> = {};
   @Input() suppressDragLeaveHidesColumns = false;
 
-  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
-    SortChangedEvent
-  >();
-  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<
-    RowClickedEvent
-  >();
+  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<SortChangedEvent>();
+  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() gridInit: EventEmitter<void> = new EventEmitter<void>();
+  @Output() columnsChanged: EventEmitter<void> = new EventEmitter<void>();
+  @Output() columnsOrderChanged: EventEmitter<ColumnsOrderChangedEvent> = new EventEmitter<ColumnsOrderChangedEvent>();
+  @Output() cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter<CellClickedEvent>();
 
   readonly rowHeight: number = 56;
   readonly autoSizePadding: number = 30;
@@ -116,10 +112,15 @@ export class TableComponent implements OnInit, OnChanges {
         event.columnApi.autoSizeAllColumns();
         this.setOrderedColumns(event.columnApi.getAllGridColumns());
         this.cdr.markForCheck();
+        this.columnsChanged.emit();
       },
 
       onDragStopped(event: DragStoppedEvent): void {
         that.setOrderedColumns(event.columnApi.getAllGridColumns());
+      },
+
+      onCellClicked(event: CellClickedEvent): void {
+        that.cellClicked.emit(event);
       }
     };
 
@@ -163,6 +164,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   private setOrderedColumns(columns: Column[]): void {
     this.columns = map(columns, col => col.colDef.field);
+    this.columnsOrderChanged.emit({columns: cloneDeep(this.columns)});
   }
 
   private setGridHeight(height: number): void {

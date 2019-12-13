@@ -1,11 +1,8 @@
 import { storiesOf } from '@storybook/angular';
 import {
-  array,
-  boolean,
   number,
   object,
   select,
-  text,
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
@@ -16,7 +13,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { Tab } from './tabs.interface';
 import { TabsType } from './tabs.enum';
 
-const inputStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Navigation,
   module
 ).addDecorator(withKnobs);
@@ -39,11 +36,13 @@ const tabs: Tab[] = [
   }
 ];
 const template = `
-<b-tabs [tabs]="tabs"
-        [type]="type"
-        [selectedIndex]="selectedIndex"
-        (selectClick)="selectClick($event)"
-        (selectChange)="selectChange($event)">
+<b-tabs
+  [controlled]="true"
+  [tabs]="tabs"
+  [type]="type"
+  [selectedIndex]="selectedIndex"
+  (selectClick)="selectClick($event)"
+  (selectChange)="selectChange($event)">
 </b-tabs>`;
 
 const storyTemplate = `
@@ -72,7 +71,8 @@ const note = `
   ${template}
   ~~~
 `;
-inputStories.add(
+const selectClick = action('selectClick');
+story.add(
   'Tabs',
   () => {
     return {
@@ -80,7 +80,10 @@ inputStories.add(
       props: {
         tabs: object<Tab>('tabs', tabs),
         type: select('type', Object.values(TabsType), TabsType.primary),
-        selectClick: action('selectClick'),
+        selectClick: function(e) {
+          this.selectedIndex = e.index;
+          selectClick(e);
+        },
         selectChange: action('selectChange'),
         selectedIndex: number('selectedIndex', 0, 0)
       },

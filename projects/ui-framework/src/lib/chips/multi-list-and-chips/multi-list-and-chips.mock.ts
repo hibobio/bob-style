@@ -1,12 +1,12 @@
 import {
   SelectGroupOption,
-  SelectOption
-} from '../../form-elements/lists/list.interface';
+  SelectOption,
+} from '../../lists/list.interface';
 import {
   simpleUID,
   randomNumber,
   randomFromArray,
-  arrayDifference
+  arrayDifference,
 } from '../../services/utils/functional-utils';
 import { mockHobbies, mockNames, mockAvatar } from '../../mock.const';
 import { AvatarComponent } from '../../avatar/avatar/avatar.component';
@@ -51,7 +51,7 @@ export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
     options: oldPeopleHobbies.map(hobby => ({
       value: hobby,
       id: simpleUID(),
-      selected: mayBeSelected()
+      selected: mayBeSelected(),
     })),
   },
 ];
@@ -63,14 +63,15 @@ export const MultiListAndAvatarChipsOptionsMock: SelectGroupOption[] = [
       (person: string): SelectOption => ({
         value: person,
         id: simpleUID(),
-        selected: mayBeSelected(),
+        selected: false,
+        disabled: false,
         prefixComponent: {
           component: AvatarComponent,
           attributes: {
-            imageSource: mockAvatar()
-          }
-        }
+            imageSource: mockAvatar(),
+          },
+        },
       })
-    )
-  }
+    ),
+  },
 ];

@@ -7,4 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class ActionBarComponent {
   @Input() label: string;
+  @Input() showLabel = true;
 }

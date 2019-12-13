@@ -3,7 +3,7 @@ import {
   select,
   boolean,
   withKnobs,
-  text
+  text,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
@@ -14,10 +14,9 @@ import { IconsModule } from '../../icons/icons.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const buttonStories = storiesOf(
-  ComponentGroupType.Buttons,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
+  withKnobs
+);
 
 const typeOptions = values(ButtonType);
 const iconColor = values(IconColor);
@@ -42,13 +41,13 @@ const note = `
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  type | ButtonType | enum for setting the button type | primary (optional)
-  size | ButtonSize | enum for setting the button size | medium (optional)
-  icon | Icons | Icon enum value
-  color | IconColor | the color of the icon | dark (optional)
-  clicked | Function | callback for clicking on the button |
-  disabled | boolean | disabled | false
-  toolTipSummary | string | Tooltip text  |
+  [type] | ButtonType | enum for setting the button type | primary
+  [size] | ButtonSize | enum for setting the button size | medium
+  [icon] | Icons | Icon enum value | &nbsp;
+  [color] | IconColor | the color of the icon | dark
+  [disabled] | boolean | disabled | false
+  [toolTipSummary] | string | Tooltip text  | &nbsp;
+  (clicked) | EventEmitter | button click event  | &nbsp;
 
   ~~~
   ${template}
@@ -61,7 +60,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-buttonStories.add(
+story.add(
   'Square Button',
   () => ({
     template: storyTemplate,
@@ -72,11 +71,11 @@ buttonStories.add(
       color: select('color', iconColor, IconColor.dark),
       toolTipSummary: text('toolTipSummary', 'Call me'),
       disabled: boolean('disabled', false),
-      onClick: action('Square button')
+      onClick: action('Square button'),
     },
     moduleMetadata: {
-      imports: [ButtonsModule, IconsModule, StoryBookLayoutModule]
-    }
+      imports: [ButtonsModule, IconsModule, StoryBookLayoutModule],
+    },
   }),
   { notes: { markdown: note } }
 );

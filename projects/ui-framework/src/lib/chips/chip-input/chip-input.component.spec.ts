@@ -5,12 +5,12 @@ import { ChipInputComponent } from './chip-input.component';
 import {
   elementsFromFixture,
   elementFromFixture,
-  inputValue
+  inputValue,
 } from '../../services/utils/test-helpers';
 import { ChipListModule } from '../chip-list/chip-list.module';
 import {
   MatAutocompleteModule,
-  MatAutocompleteSelectedEvent
+  MatAutocompleteSelectedEvent,
 } from '@angular/material/autocomplete';
 import { ChipModule } from '../chip/chip.module';
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
@@ -36,13 +36,13 @@ describe('ChipInputComponent', () => {
         ChipListModule,
         ChipModule,
         MatAutocompleteModule,
-        InputMessageModule
+        InputMessageModule,
       ],
       providers: [UtilsService, EventManagerPlugins[0]],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(ChipInputComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default }
+        set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents()
       .then(() => {
@@ -58,7 +58,7 @@ describe('ChipInputComponent', () => {
         fixture.detectChanges();
 
         spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => { });
+        component.changed.subscribe(() => {});
 
         chipsComponents = () => component.chips.list.toArray();
         inputElement = elementFromFixture(
@@ -129,7 +129,7 @@ describe('ChipInputComponent', () => {
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'onChange',
         added: 'ABC',
-        value: ['ABC']
+        value: ['ABC'],
       });
     });
     it('should not add chip if its already present in value', () => {
@@ -158,7 +158,7 @@ describe('ChipInputComponent', () => {
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'onChange',
         added: 'XYZ',
-        value: ['XYZ']
+        value: ['XYZ'],
       });
     });
     it('should not add new chip if acceptNew is false', () => {
@@ -180,7 +180,9 @@ describe('ChipInputComponent', () => {
       expect(chipsComponents().length).toEqual(2);
       expect(component.value.length).toEqual(2);
 
-      (chipsElements()[0].children[0] as HTMLElement).click();
+      (chipsElements()[0].querySelector(
+        '.remove-button'
+      ) as HTMLElement).click();
       fixture.detectChanges();
 
       expect(chipsComponents().length).toEqual(1);
@@ -188,7 +190,7 @@ describe('ChipInputComponent', () => {
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'onChange',
         removed: 'ABC',
-        value: ['ACB']
+        value: ['ACB'],
       });
     });
   });
@@ -203,8 +205,8 @@ describe('ChipInputComponent', () => {
       expect(component.value.length).toEqual(0);
       component.optionSelected({
         option: {
-          viewValue: 'ABC'
-        }
+          viewValue: 'ABC',
+        },
       } as MatAutocompleteSelectedEvent);
       fixture.detectChanges();
       expect(component.value).toEqual(['ABC']);
@@ -212,7 +214,7 @@ describe('ChipInputComponent', () => {
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'onChange',
         added: 'ABC',
-        value: ['ABC']
+        value: ['ABC'],
       });
     });
     it('should not add chip if its already present in value', () => {
@@ -221,8 +223,8 @@ describe('ChipInputComponent', () => {
 
       component.optionSelected({
         option: {
-          viewValue: 'ABC'
-        }
+          viewValue: 'ABC',
+        },
       } as MatAutocompleteSelectedEvent);
       fixture.detectChanges();
 

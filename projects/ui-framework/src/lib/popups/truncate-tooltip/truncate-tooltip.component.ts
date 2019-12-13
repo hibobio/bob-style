@@ -10,11 +10,11 @@ import {
   NgZone,
   OnInit,
   ChangeDetectorRef,
-  HostListener
+  HostListener,
 } from '@angular/core';
 import {
   TruncateTooltipType,
-  TruncateTooltipPosition
+  TruncateTooltipPosition,
 } from './truncate-tooltip.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { TextProps } from '../../services/html/html-helpers.interface';
@@ -25,7 +25,7 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 @Component({
   selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
   templateUrl: './truncate-tooltip.component.html',
-  styleUrls: ['./truncate-tooltip.component.scss']
+  styleUrls: ['./truncate-tooltip.component.scss'],
 })
 export class TruncateTooltipComponent
   implements AfterViewInit, DoCheck, OnInit, OnDestroy {
@@ -77,14 +77,7 @@ export class TruncateTooltipComponent
 
   ngOnInit(): void {
     if (this.lazyness !== 0 && this.type !== TruncateTooltipType.css) {
-      this.textContainer.nativeElement.addEventListener(
-        'mouseenter',
-        this.startHoverTimer
-      );
-      this.textContainer.nativeElement.addEventListener(
-        'mouseleave',
-        this.stopHoverTimer
-      );
+      this.addMouseListeners();
     }
 
     this.resizeSubscription = this.utilsService
@@ -133,7 +126,11 @@ export class TruncateTooltipComponent
               this.textContainer.nativeElement.textContent.trim()
           ) {
             this.tooltipText = this.textContainer.nativeElement.textContent.trim();
-            this.checkTooltipNecessity();
+
+            this.zone.run(() => {
+              this.checkTooltipNecessity();
+            });
+
             if (!this.cd['destroyed']) {
               this.cd.detectChanges();
             }
@@ -174,7 +171,7 @@ export class TruncateTooltipComponent
         'max-height':
           this.textElementTextProps.maxHeight > 0
             ? this.textElementTextProps.maxHeight + 'px'
-            : null
+            : null,
       });
     }
   }
@@ -186,14 +183,18 @@ export class TruncateTooltipComponent
       );
       this.DOM.setCssProps(this.textContainer.nativeElement, {
         '--line-height': this.textElementTextProps.lineHeight,
-        '--font-size': this.textElementTextProps.fontSize + 'px'
+        '--font-size': this.textElementTextProps.fontSize + 'px',
       });
       this.setMaxHeight();
     }
   }
 
   private checkTooltipNecessity(): void {
-    if (this.type === TruncateTooltipType.auto && this.tooltipText) {
+    if (
+      this.tooltipText &&
+      (this.type === TruncateTooltipType.auto ||
+        (this.type === TruncateTooltipType.css && this.expectChanges))
+    ) {
       this.type =
         this.tooltipText.length > 130
           ? TruncateTooltipType.material
@@ -254,6 +255,17 @@ export class TruncateTooltipComponent
       clearTimeout(this.hoverTimer);
       this.hoverTimer = null;
     }
+  }
+
+  private addMouseListeners() {
+    this.textContainer.nativeElement.addEventListener(
+      'mouseenter',
+      this.startHoverTimer
+    );
+    this.textContainer.nativeElement.addEventListener(
+      'mouseleave',
+      this.stopHoverTimer
+    );
   }
 
   private removeMouseListeners() {

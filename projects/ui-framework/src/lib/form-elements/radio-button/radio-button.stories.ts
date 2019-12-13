@@ -5,7 +5,7 @@ import {
   select,
   text,
   object,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -16,10 +16,9 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { RadioDirection } from './radio-button.enum';
 
 const direction = values(RadioDirection);
-const radioStories = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-radio-button [radioConfig]="options"
@@ -49,23 +48,23 @@ const note = `
 
   Name | Type | Description
   --- | --- | ---
-  radioConfig | RadioConfig[] | list of RadioConfig ({id,value}) objects
-  value | RadioConfig | selected option
-  direction | RadioDirection | column or row, default=row
-  label | string | label text
-  hintMessage | string | hint text
-  warnMessage | string | warning text
-  errorMessage | string | error text
-  disabled | boolean | is field disabled
-  required | boolean | is field required
-  radioChange | &lt;string/number&gt; | fired on radio change, returns option ID
+  [radioConfig] | RadioConfig[] | list of RadioConfig ({id, label}) objects
+  [value] | RadioConfig | selected option
+  [direction] | RadioDirection | column or row, default=row
+  [label] | string | label text
+  [hintMessage] | string | hint text
+  [warnMessage] | string | warning text
+  [errorMessage] | string | error text
+  [disabled] | boolean | is field disabled
+  [required] | boolean | is field required
+  (radioChange) | EventEmitter<wbr>&lt;string/number&gt; | fired on radio change, returns option ID
 
   ~~~
   ${template}
   ~~~
 `;
 
-radioStories.add(
+story.add(
   'Radio Button',
   () => {
     return {
@@ -87,16 +86,16 @@ radioStories.add(
         options: object('radioConfig', [
           { id: 0, label: 'Option one' },
           { id: 1, label: 'Option two' },
-          { id: 2, label: 'Option three' }
-        ])
+          { id: 2, label: 'Option three' },
+        ]),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           RadioButtonModule,
-          StoryBookLayoutModule
-        ]
-      }
+          StoryBookLayoutModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

@@ -3,7 +3,7 @@ import {
   object,
   withKnobs,
   text,
-  boolean
+  boolean,
 } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -11,11 +11,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
   MultiListAndChipsOptionsMock,
-  MultiListAndAvatarChipsOptionsMock
+  MultiListAndAvatarChipsOptionsMock,
 } from './multi-list-and-chips.mock';
 import { MultiListAndChipsModule } from './multi-list-and-chips.module';
 import { action } from '@storybook/addon-actions';
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
+import { Icons } from '../../icons/icons.enum';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
@@ -34,6 +35,7 @@ const template = `
         [listLabel]="listLabel"
         [chipsLabel]="chipsLabel"
         [showSingleGroupHeader]="showSingleGroupHeader"
+        [emptyState]="emptyStateConfig"
         (selectChange)="onSelectChange($event)">
   </b-multi-list-and-chips>
 
@@ -57,11 +59,13 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [options] | SelectGroupOption[] | model of selection group | none
-  [listLabel] | string | label text for the Multi List component | none
-  [chipsLabel] | string | label text for the Chips List component | none
+  [options] | SelectGroupOption[] | model of selection group | &nbsp;
+  [listLabel] | string | label text for the Multi List component | &nbsp;
+  [chipsLabel] | string | label text for the Chips List component | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | **false**
-  (selectChange) | EventEmitter&lt;ListChange&gt; | emits on list change | none
+  [emptyState] | EmptyStateConfig | config for the EmptyStateComponent to\
+   be displayed when no options are selected | &nbsp;
+  (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits on list change | &nbsp;
 
   ~~~
   ${template}
@@ -92,7 +96,6 @@ const storyTemplate = `
   <div style="max-width:900px;">
     ${template}
   </div>
-
 </b-story-book-layout>
 `;
 
@@ -104,16 +107,21 @@ const toAdd = () => ({
     onSelectChange: action('ListChange'),
     showSingleGroupHeader: boolean('showSingleGroupHeader', true),
     listOpts: object('listOpts', listOpts),
-    avatarListOpts: object('avatarListOpts', avatarListOpts)
+    avatarListOpts: object('avatarListOpts', avatarListOpts),
+    emptyStateConfig: object('emptyStateConfig', {
+      text:
+        'Choose a life. Choose a job. Choose a career. Choose a family. Choose a fucking big television.',
+      icon: Icons.toDos_link,
+    }),
   },
   moduleMetadata: {
     imports: [
       MultiListAndChipsModule,
       StoryBookLayoutModule,
       BrowserAnimationsModule,
-      RadioButtonModule
-    ]
-  }
+      RadioButtonModule,
+    ],
+  },
 });
 
 story.add('Multi List And Chips', toAdd, { notes: { markdown: note } });

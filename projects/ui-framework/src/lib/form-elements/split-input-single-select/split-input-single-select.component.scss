@@ -3,34 +3,32 @@
 $selectFieldWidth: 140px;
 
 :host {
-  display: flex;
-  width: 100%;
-  @include transfer-margins('b-input,b-single-select');
+  @include bFormElement-basics;
+  flex-direction: row;
 }
 
-:host b-input {
+:host ::ng-deep b-input {
   width: calc(100% - #{$selectFieldWidth});
 
-  &::ng-deep {
-    .bfe-label {
-      z-index: 2;
-    }
+  .bfe-label {
+    z-index: 2;
+  }
 
-    .bfe-wrap {
-      border-right: 0;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+  .bfe-wrap {
+    border-right: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 
-      &.focused {
-        position: relative;
-        z-index: 1;
-        box-shadow: 1px 0 0 0 $input-focus-border-color;
-      }
+    &.focused {
+      position: relative;
+      z-index: 1;
+      box-shadow: 1px 0 0 0 $input-focus-border-color;
     }
-    .bfe-label,
-    [b-input-message] {
-      width: calc(100% + #{$selectFieldWidth});
-    }
+  }
+
+  .bfe-label,
+  [b-input-message] {
+    width: calc(100% + #{$selectFieldWidth});
   }
 }
 
@@ -39,7 +37,7 @@ b-single-select {
   width: $selectFieldWidth;
 }
 
-:host b-single-select::ng-deep .bfe-wrap {
+:host ::ng-deep b-single-select .bfe-wrap {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 

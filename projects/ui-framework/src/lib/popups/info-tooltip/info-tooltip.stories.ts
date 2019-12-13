@@ -3,9 +3,9 @@ import { withKnobs, object, text } from '@storybook/addon-knobs/angular';
 import { InfoTooltipModule } from './info-tooltip.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { LinkColor, LinkTarget } from '../../buttons-indicators/link/link.enum';
+import { LinkColor, LinkTarget } from '../../indicators/link/link.enum';
 
-const stories = storiesOf(ComponentGroupType.Popups, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
   withKnobs
 );
 
@@ -17,10 +17,10 @@ const note = `
   *InfoTooltipModule*
 
   #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  title | string | tooltip title | ''
-  text | string | tooltip text | ''
+  Name | Type | Description
+  --- | --- | ---
+  title | string | tooltip title
+  text | string | tooltip text
   link | Link | tooltip link
   ~~~
   ${template}
@@ -31,7 +31,7 @@ const storyTemplate = `<b-story-book-layout [title]="'Info Tooltip'">
     ${template}
 </b-story-book-layout>`;
 
-stories.add(
+story.add(
   'Info tooltip',
   () => ({
     template: storyTemplate,
@@ -45,12 +45,12 @@ stories.add(
         text: 'Click here',
         url: 'https://app.hibob.com',
         color: LinkColor.primary,
-        target: LinkTarget.blank
-      })
+        target: LinkTarget.blank,
+      }),
     },
     moduleMetadata: {
-      imports: [InfoTooltipModule, StoryBookLayoutModule]
-    }
+      imports: [InfoTooltipModule, StoryBookLayoutModule],
+    },
   }),
   { notes: { markdown: note } }
 );

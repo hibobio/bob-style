@@ -24,14 +24,16 @@ describe('InputComponent', () => {
         NoopAnimationsModule,
         CommonModule,
         InputMessageModule,
-        FormElementLabelModule
+        FormElementLabelModule,
       ],
-      providers: [DOMhelpers, EventManagerPlugins[0]]
+      providers: [DOMhelpers, EventManagerPlugins[0]],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(InputComponent);
         component = fixture.componentInstance;
+        component.ignoreEvents = [];
+
         spyOn(component.changed, 'emit');
         component.changed.subscribe(() => {});
         spyOn(component, 'propagateChange');
@@ -52,7 +54,7 @@ describe('InputComponent', () => {
       inputElement.dispatchEvent(new Event('focus'));
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onFocus,
-        value: 'input value'
+        value: 'input value',
       });
     });
     it('should emitInputEvent on input blur with input value', () => {
@@ -60,14 +62,14 @@ describe('InputComponent', () => {
       inputElement.dispatchEvent(new Event('blur'));
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onBlur,
-        value: 'input value'
+        value: 'input value',
       });
     });
     it('should emit InputEvent on model change with input value', () => {
       inputValue(inputElement, 'change input value', false);
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
-        value: 'change input value'
+        value: 'change input value',
       });
       expect(component.propagateChange).toHaveBeenCalledWith(
         'change input value'
@@ -77,12 +79,12 @@ describe('InputComponent', () => {
     it('should emit InputEvent on keyup, if there is a subscriber to the event; Should not propagateChange.', () => {
       component.value = 'change input value';
       emitNativeEvent(inputElement, NativeEvents.keyup, {
-        key: Keys.enter
+        key: Keys.enter,
       });
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onKey,
         value: 'change input value',
-        key: Keys.enter
+        key: Keys.enter,
       });
       expect(component.propagateChange).not.toHaveBeenCalled();
     });
@@ -90,7 +92,7 @@ describe('InputComponent', () => {
     it('should NOT emit InputEvent on keyup, if there are no subscribers to the event', () => {
       component.changed.complete();
       emitNativeEvent(inputElement, NativeEvents.keyup, {
-        key: Keys.enter
+        key: Keys.enter,
       });
       expect(component.changed.emit).not.toHaveBeenCalled();
       expect(component.propagateChange).not.toHaveBeenCalled();
@@ -105,7 +107,7 @@ describe('InputComponent', () => {
       inputValue(inputElement, 500, false);
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
-        value: 500
+        value: 500,
       });
       expect(component.propagateChange).toHaveBeenCalledWith(500);
     });

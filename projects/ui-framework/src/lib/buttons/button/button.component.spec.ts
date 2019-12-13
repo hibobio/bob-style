@@ -16,24 +16,28 @@ describe('ButtonComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ButtonComponent],
       providers: [],
-      imports: [MatButtonModule, IconsModule]
+      imports: [MatButtonModule, IconsModule],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(ButtonComponent);
         component = fixture.componentInstance;
-        buttonElement = fixture.debugElement.query(By.css('button'))
-          .nativeElement;
+        buttonElement = fixture.debugElement.query(By.css('button')).nativeElement;
+        component.clicked.subscribe(() => {});
         spyOn(component.clicked, 'emit');
         fixture.detectChanges();
       });
   }));
 
+  afterEach(() => {
+    component.clicked.complete();
+  });
+
   describe('onClick', () => {
     it('Should emit the click event', () => {
       const e = {
         id: 1,
-        stopPropagation: () => true
+        stopPropagation: () => true,
       } as any;
       component.onClick(e);
       expect(component.clicked.emit).toHaveBeenCalledWith(e);
@@ -70,10 +74,7 @@ describe('ButtonComponent', () => {
   });
 
   describe('OnChanges', () => {
-    const testColor = (
-      buttonType: ButtonType,
-      expectedColor: IconColor
-    ): void => {
+    const testColor = (buttonType: ButtonType, expectedColor: IconColor): void => {
       component.type = buttonType;
       component.icon = Icons.timeline;
       fixture.detectChanges();

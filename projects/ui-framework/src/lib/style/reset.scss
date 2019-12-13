@@ -114,6 +114,8 @@ input[type='date'] {
 }
 
 input[type='search'] {
+  -webkit-appearance: textfield;
+
   &::-webkit-search-decoration,
   &::-webkit-search-cancel-button,
   &::-webkit-search-results-button,

@@ -6,7 +6,7 @@ import {
   Overlay,
   PositionStrategy,
   ScrollStrategy,
-  ScrollStrategyOptions
+  ScrollStrategyOptions,
 } from '@angular/cdk/overlay';
 import {
   ABOVE_CENTER,
@@ -14,7 +14,7 @@ import {
   ABOVE_START,
   BELOW_CENTER,
   BELOW_END,
-  BELOW_START
+  BELOW_START,
 } from './panel-position.const';
 import { ConnectedPosition } from '@angular/cdk/typings/overlay';
 import { PanelDefaultPosVer } from '../panel.enum';
@@ -41,7 +41,7 @@ export class PanelPositionService {
           BELOW_END,
           ABOVE_CENTER,
           ABOVE_START,
-          ABOVE_END
+          ABOVE_END,
         ]
       : position === PanelDefaultPosVer.above
       ? [
@@ -50,14 +50,14 @@ export class PanelPositionService {
           ABOVE_END,
           BELOW_CENTER,
           BELOW_START,
-          BELOW_END
+          BELOW_END,
         ]
       : [BELOW_CENTER, ABOVE_CENTER];
 
     return this.overlay
       .position()
       .flexibleConnectedTo(overlayOrigin.elementRef)
-      .withPush()
+      .withPush(false)
       .withPositions(panelPosition);
   }
 
@@ -66,7 +66,7 @@ export class PanelPositionService {
   ): PositionStrategy {
     return this.getPanelPositionStrategy(overlayOrigin, [
       BELOW_CENTER,
-      ABOVE_CENTER
+      ABOVE_CENTER,
     ]);
   }
 
@@ -77,11 +77,11 @@ export class PanelPositionService {
       'panel-below': change.connectionPair.overlayY === 'top',
       'panel-above': change.connectionPair.overlayY === 'bottom',
       'panel-after': change.connectionPair.overlayX === 'start',
-      'panel-before': change.connectionPair.overlayX === 'end'
+      'panel-before': change.connectionPair.overlayX === 'end',
     };
   }
 
   getScrollStrategy(): ScrollStrategy {
-    return this.scrollStrategyOptions.reposition();
+    return this.overlay.scrollStrategies.reposition();
   }
 }

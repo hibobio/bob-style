@@ -1,0 +1,43 @@
+@import '../../style/common-imports';
+@import '../progress-bar/progress-bar.mixin';
+
+$bsbc-bar-height: 160px;
+$bsbc-bar-width: 40px;
+$bsbc-item-width: 150px;
+
+:host {
+  @include progress-bar-host('bsbc');
+  text-align: center;
+  --bsbc-item-count: 10;
+}
+
+p {
+  margin: 0;
+}
+
+.bsbc-chart {
+  display: flex;
+  justify-content: center;
+  max-width: calc(var(--bsbc-item-count) * #{$bsbc-item-width});
+  margin: 0 auto;
+}
+
+.bsbc-bar-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: $bsbc-item-width;
+}
+
+.bsbc-bar {
+  @include progress-bar(vertical, 'bsbc');
+  height: $bsbc-bar-height;
+  width: $bsbc-bar-width;
+  border-radius: $border-radius;
+  margin-bottom: 12px;
+}
+
+.bsbc-bar-value {
+  font-weight: 600;
+}

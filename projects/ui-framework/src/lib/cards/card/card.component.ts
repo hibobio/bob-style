@@ -1,16 +1,15 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   HostBinding,
   ElementRef,
   ViewChild,
   NgZone,
   ChangeDetectorRef,
-  AfterViewInit
+  AfterViewInit,
 } from '@angular/core';
 import { IconColor, Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
-import { LinkColor } from '../../buttons-indicators/link/link.enum';
+import { LinkColor } from '../../indicators/link/link.enum';
 import { BaseCardElement } from './card.abstract';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
@@ -18,7 +17,7 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
   selector: 'b-card, [b-card]',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
-  providers: [{ provide: BaseCardElement, useExisting: CardComponent }]
+  providers: [{ provide: BaseCardElement, useExisting: CardComponent }],
 })
 export class CardComponent extends BaseCardElement implements AfterViewInit {
   constructor(
@@ -39,6 +38,7 @@ export class CardComponent extends BaseCardElement implements AfterViewInit {
   readonly linkColor = LinkColor;
   public hasContent = true;
   public hasTop = true;
+  public cardTopTextOnly = false;
 
   @HostBinding('attr.data-focus-inside') menuIsOpened: boolean;
 
@@ -61,6 +61,10 @@ export class CardComponent extends BaseCardElement implements AfterViewInit {
       setTimeout(() => {
         this.hasContent = !this.DOM.isEmpty(this.cardContent.nativeElement);
         this.hasTop = !this.DOM.isEmpty(this.cardTop.nativeElement);
+
+        this.cardTopTextOnly =
+          this.cardTop.nativeElement.children.length === 1 &&
+          this.cardTop.nativeElement.children[0].children.length === 0;
 
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();

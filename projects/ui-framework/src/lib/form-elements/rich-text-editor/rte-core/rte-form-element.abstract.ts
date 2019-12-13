@@ -9,19 +9,23 @@ import {
   ViewChild,
   AfterViewInit,
   OnInit,
-  NgZone
+  NgZone,
 } from '@angular/core';
 import quillLib, {
   Quill,
   QuillOptionsStatic,
   RangeStatic,
-  DeltaStatic
+  DeltaStatic,
 } from 'quill';
 import { BlotType, RTEFontSize } from './rte.enum';
 import { RteUtilsService } from './rte-utils.service';
 import { BlotData, SpecialBlots, StoreCurrentResult } from './rte.interface';
 import { BaseFormElement } from '../../base-form-element';
 import { PanelComponent } from '../../../popups/panel/panel.component';
+import {
+  notFirstChanges,
+  applyChanges,
+} from '../../../services/utils/functional-utils';
 
 quillLib.register(quillLib.import('attributors/style/direction'), true);
 quillLib.register(quillLib.import('attributors/style/align'), true);
@@ -30,11 +34,11 @@ quillLib.register(quillLib.import('attributors/style/size'), true);
 export abstract class RTEformElement extends BaseFormElement
   implements OnChanges, OnInit, AfterViewInit {
   protected constructor(
-    public zone: NgZone,
-    public rteUtils: RteUtilsService,
-    public cd: ChangeDetectorRef
+    protected zone: NgZone,
+    protected rteUtils: RteUtilsService,
+    protected cd: ChangeDetectorRef
   ) {
-    super();
+    super(cd);
     this.baseValue = '';
   }
 
@@ -71,16 +75,16 @@ export abstract class RTEformElement extends BaseFormElement
   protected specialBlots: SpecialBlots = {
     treatAsWholeDefs: [],
     deleteAsWholeDefs: [],
-    noLinebreakAfterDefs: []
+    noLinebreakAfterDefs: [],
   };
 
   public editorOptions: QuillOptionsStatic = {
     theme: 'snow',
     modules: {
       clipboard: {
-        matchVisual: false
-      }
-    }
+        matchVisual: false,
+      },
+    },
   };
 
   protected outputFormatTransformer: Function = (val: string): any => val;
@@ -204,21 +208,14 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes, {}, ['value']);
+
     if (changes.disabled) {
-      this.disabled = changes.disabled.currentValue;
       if (this.editor) {
         this.editor.enable(!this.disabled);
       }
     }
-    if (changes.placeholder) {
-      this.placeholder = changes.placeholder.currentValue;
-    }
-    if (changes.label) {
-      this.label = changes.label.currentValue;
-    }
-    if (changes.required) {
-      this.required = changes.required.currentValue;
-    }
+
     if (changes.placeholder || changes.label || changes.required) {
       this.rteUtils.setEditorPlaceholder(
         this.editor,
@@ -236,6 +233,10 @@ export abstract class RTEformElement extends BaseFormElement
       changes.value.currentValue !== this.latestOutputValue
     ) {
       this.applyValue(changes.value.currentValue);
+    }
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
     }
   }
 

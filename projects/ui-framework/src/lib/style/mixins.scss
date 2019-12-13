@@ -103,11 +103,12 @@
   $delay: null,
   $iterate: 1,
   $dir: null,
-  $keyframes: false
+  $keyframes: false,
+  $val: null
 ) {
   $id: simpleUID();
   @if $keyframes {
-    @include keyframes($name, $id: ('-' + $id));
+    @include keyframes($name, $val: $val, $id: ('-' + $id));
     animation-name: (unquote($name) + '-' + $id);
   } @else {
     animation-name: unquote($name);
@@ -329,6 +330,16 @@
 @mixin ie-only {
   /* autoprefixer: off */
   @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    @content;
+  }
+  @supports (-ms-ime-align: auto) {
+    @content;
+  }
+}
+
+@mixin not-ie {
+  /* autoprefixer: off */
+  @supports (not (-ms-ime-align: auto)) {
     @content;
   }
 }

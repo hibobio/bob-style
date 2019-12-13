@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { BaseButtonElement } from '../button.abstract';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
+import { ButtonSize, ButtonType } from '../buttons.enum';
 
 @Component({
   selector: 'b-chevron-button',
@@ -8,9 +9,9 @@ import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
     <button
       #button
       type="button"
-      class="icon-after {{ buttonType.secondary }} {{ buttonSize.medium }} {{
-        getIconClass()
-      }}"
+      class="icon-after {{ type || buttonType.secondary }} {{
+        size || buttonSize.medium
+      }} {{ getIconClass() }}"
       (click)="onClick($event)"
       [attr.disabled]="disabled || null"
     >
@@ -20,8 +21,8 @@ import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
   `,
   styleUrls: ['../button/button.component.scss'],
   providers: [
-    { provide: BaseButtonElement, useExisting: ChevronButtonComponent }
-  ]
+    { provide: BaseButtonElement, useExisting: ChevronButtonComponent },
+  ],
 })
 export class ChevronButtonComponent extends BaseButtonElement {
   constructor() {
@@ -34,9 +35,10 @@ export class ChevronButtonComponent extends BaseButtonElement {
     return (
       (this.active ? Icons.chevron_up : Icons.chevron_down) +
       ' b-icon-' +
-      IconSize.medium +
       ' b-icon-' +
-      IconColor.dark
+      (this.size === ButtonSize.large ? IconSize.large : IconSize.medium) +
+      ' b-icon-' +
+      (this.type === ButtonType.primary ? IconColor.white : IconColor.dark)
     );
   }
 }

@@ -1,0 +1,138 @@
+@import '../../style/common-imports';
+@import '../list';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  background-color: white;
+  border-radius: 4px;
+  border: 1px solid $grey-500;
+  box-shadow: 0 2px 3px 0 $boxShadowColor;
+  overflow: hidden;
+}
+
+:host b-search {
+  margin: 0;
+  top: 0;
+  z-index: 1;
+
+  &::ng-deep {
+    .bfe-wrap {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+
+      &,
+      &.focused {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+      }
+
+      &.focused {
+        border-color: $grey-500;
+      }
+    }
+  }
+}
+
+:host ::ng-deep {
+  .v-scroll-wrapper {
+    position: relative;
+    background-color: $white;
+    flex-grow: 5;
+
+    @include b-body($addCssVars: false);
+
+    &.no-group-header {
+      .option-select.option {
+        padding-left: $input-padding;
+      }
+    }
+  }
+
+  .cdk-virtual-scroll-viewport,
+  .cdk-virtual-scroll-content-wrapper {
+    max-width: 100%;
+  }
+
+  .v-scroll {
+    height: 100%;
+  }
+
+  .option-select {
+    @include listOption;
+  }
+
+  .headers {
+    @include headers;
+  }
+
+  .show-none-option {
+    .headers {
+      top: $wrap-height;
+    }
+    .clear-selection {
+      border: none;
+      outline: none;
+      width: 100%;
+      @include listOption;
+      border-bottom: 1px solid $grey-200;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+  }
+
+  .header {
+    .header-option {
+      display: flex;
+      flex-direction: row;
+      align-content: flex-start;
+      align-items: center;
+    }
+  }
+
+  .options {
+    position: relative;
+    z-index: 1;
+
+    .option-select {
+      display: flex;
+      align-items: center;
+
+      &.header-placeholder {
+        visibility: hidden;
+      }
+
+      &.option {
+        padding-left: 40px;
+      }
+
+      &.single-group-option {
+        padding-left: 23px;
+      }
+    }
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    max-width: 100%;
+    cursor: default;
+
+    .comp-prefix {
+      margin-right: 8px;
+    }
+  }
+
+  .header-option-value,
+  .option-value {
+    min-width: 0;
+  }
+}
+
+.header-selected-count {
+  margin-left: 5px;
+  font-weight: 400;
+}

@@ -81,16 +81,16 @@
 
   @if $name == zoom-out {
     @if not $val {
-      $val: 1.1;
+      $val: 1 0.9;
     }
     @keyframes zoom-out#{$id} {
       0% {
-        transform: scale($val);
-        opacity: 0;
+        transform: scale(nth($val, 1));
+        opacity: 1;
       }
       100% {
-        transform: scale(1);
-        opacity: 1;
+        transform: scale(nth($val, 2));
+        opacity: 0;
       }
     }
   }

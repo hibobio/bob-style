@@ -9,7 +9,7 @@ import { RteUtilsService } from './rte-core/rte-utils.service';
 import { IconsModule } from '../../icons/icons.module';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';
-import { SingleListModule } from '../lists/single-list/single-list.module';
+import { SingleListModule } from '../../lists/single-list/single-list.module';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 

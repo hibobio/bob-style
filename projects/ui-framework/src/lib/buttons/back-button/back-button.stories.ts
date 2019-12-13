@@ -3,19 +3,18 @@ import {
   text,
   select,
   boolean,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { BackButtonType } from '../buttons.enum';
-import { values, remove } from 'lodash';
+import { values } from 'lodash';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const backButtonStories = storiesOf(
-  ComponentGroupType.Buttons,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
+  withKnobs
+);
 
 const typeOptions = values(BackButtonType);
 
@@ -36,9 +35,9 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  type | BackButtonType | enum for setting the button type | secondary (optional)
-  disabled | boolean | disabled | false
-  clicked | Function | callback for clicking on the back button |
+  [type] | BackButtonType | enum for setting the button type | secondary
+  [disabled] | boolean | disabled | false
+  (clicked) | EventEmitter | back button click event | &nbsp;
 
   ~~~
   ${template}
@@ -51,7 +50,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-backButtonStories.add(
+story.add(
   'Back Button',
   () => ({
     template: storyTemplate,
@@ -59,11 +58,11 @@ backButtonStories.add(
       onClick: action('onClick'),
       label: text('label', 'Back'),
       type: select('type', typeOptions, BackButtonType.secondary),
-      disabled: boolean('disabled', false)
+      disabled: boolean('disabled', false),
     },
     moduleMetadata: {
-      imports: [ButtonsModule, StoryBookLayoutModule]
-    }
+      imports: [ButtonsModule, StoryBookLayoutModule],
+    },
   }),
   { notes: { markdown: note } }
 );

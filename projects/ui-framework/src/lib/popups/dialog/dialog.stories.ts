@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { select, withKnobs } from '@storybook/addon-knobs/angular';
+import { withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,7 +7,7 @@ import { DialogModule } from './dialog.module';
 import { DialogExampleModule } from './dialog-example.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const buttonStories = storiesOf(ComponentGroupType.Popups, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
 );
 
@@ -83,7 +83,22 @@ export class YourDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dialogButtonConfig = {} // DialogButtons config
+    this.dialogButtonConfig = {
+      ok: {
+        label: 'Ok',
+        type: ButtonType.primary,
+        class: 'ok-button-666',
+        disabled: false,
+        action: ...
+      },
+      cancel: {
+        label: 'Cancel',
+        class: 'cancel-button-666',
+        disabled: false,
+        action: ...
+      },
+    ...
+    }
   }
 }
   ~~~
@@ -111,8 +126,34 @@ export class YourDialogComponent implements OnInit {
   }
   ~~~
 
+  #### interface DialogButtons
+  Name | Type | Description
+  --- | --- | ---
+  ok | DialogButton | ok button config
+  cancel | DialogButton | cancel button config
+  preloaderMessage | string | message to show while loading data
+  confirmation | DialogConfirmation | confirmation dialog config
+
+  #### interface DialogButton
+  Name | Type | Description
+  --- | --- | ---
+  label | string | button text
+  class | boolean | class to be added to the button
+  type | ButtonType | button type (primary, negative...)
+  disabled | boolean | if is disabled
+  action | Function | will be invoked on button click
+
+  #### interface DialogConfirmation
+  Name | Type | Description
+  --- | --- | ---
+  title | string | confirm dialog title
+  subTitle | string | subtitle
+  buttonLabel | string | confirm button text
+  buttonClass | string | confirm button class
+  buttonType | ButtonType | confirm button type (primary, negative...)
+
 `;
-buttonStories.add(
+story.add(
   'Dialog',
   () => ({
     template: storyTemplate,
@@ -123,9 +164,9 @@ buttonStories.add(
         ButtonsModule,
         BrowserAnimationsModule,
         DialogExampleModule,
-        StoryBookLayoutModule
-      ]
-    }
+        StoryBookLayoutModule,
+      ],
+    },
   }),
   { notes: { markdown: note } }
 );

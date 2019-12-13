@@ -12,12 +12,12 @@ import {
   isObject,
   isString,
   parseToNumber,
-  stringify
+  stringify,
 } from './functional-utils';
 
 import { format, parseISO } from 'date-fns';
 import { InputTypes } from '../../form-elements/input/input.enum';
-import { serverDateFormat } from '../../consts';
+import { SERVER_DATE_FORMAT } from '../../consts';
 
 // -------------------------------
 // Transformers
@@ -71,7 +71,7 @@ export const stringToDate = date => {
   return String(converted) !== 'Invalid Date' ? converted : undefined;
 };
 
-export const dateToString = (date, frmt = serverDateFormat) =>
+export const dateToString = (date, frmt = SERVER_DATE_FORMAT) =>
   isDate(date) ? format(date, frmt) : date;
 
 export const valueToObjectKey = (key: string) => (value: any) => {
@@ -88,7 +88,11 @@ export const arrayOfValuesToArrayOfObjects = (key: string) => (
   return value.map(valueToObjectKey(key));
 };
 
-export const valueAsNumber = (inputType: InputTypes, value: any) => {
+export const valueAsNumber = (
+  inputType: InputTypes,
+  value: any,
+  def: any = undefined
+) => {
   if (inputType !== InputTypes.number || !value) {
     return value;
   }
@@ -96,7 +100,7 @@ export const valueAsNumber = (inputType: InputTypes, value: any) => {
   if (parsed !== parsed) {
     console.warn(`Value (${stringify(value)}) is not parseable to number.`);
   }
-  return parsed === parsed ? parsed : undefined;
+  return parsed === parsed ? parsed : def;
 };
 
 // -------------------------------
@@ -202,6 +206,23 @@ export const timeyOrFail = value => {
   return value;
 };
 
+export const selectValueOrFail = value => {
+  if (isNullOrUndefined(value)) {
+    return value;
+  }
+
+  if (!(isString(value) || isNumber(value) || isArray(value))) {
+    throw new Error(
+      `Value (${stringify(
+        value
+      )}) should be string, number or (string | number)[], instead ${getType(
+        value
+      ).toUpperCase()} was provided.`
+    );
+  }
+  return asArray(value);
+};
+
 // -------------------------------
 // Validators
 // -------------------------------
@@ -227,7 +248,7 @@ export const objectHasKeyOrFail = (
     );
   }
   for (const k of asArray(key)) {
-    if (!hasProp(value, k)) {
+    if (!hasProp(value, k as string)) {
       throw new Error(
         `Value object (${stringify(value)}) has no key (${key}).`
       );

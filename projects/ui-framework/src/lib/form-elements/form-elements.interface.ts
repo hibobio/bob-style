@@ -2,7 +2,7 @@ import { InputEventType, FormEvents } from './form-elements.enum';
 
 export interface TransmitOptions {
   eventType: InputEventType[];
-  eventName?: FormEvents;
+  emitterName?: FormEvents;
   doPropagate?: boolean;
   addToEventObj?: { [key: string]: any };
   updateValue?: boolean;

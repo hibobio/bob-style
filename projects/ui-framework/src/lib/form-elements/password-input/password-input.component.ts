@@ -4,7 +4,7 @@ import {
   forwardRef,
   ViewChild,
   NgZone,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { InputTypes } from '../input/input.enum';
@@ -17,22 +17,31 @@ import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.serv
   templateUrl: './password-input.component.html',
   styleUrls: [
     '../input/input.component.scss',
-    './password-input.component.scss'
+    './password-input.component.scss',
   ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => PasswordInputComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => PasswordInputComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class PasswordInputComponent extends BaseInputElement {
+  constructor(
+    cd: ChangeDetectorRef,
+    zone: NgZone,
+    kbrdCntrlSrvc: FormElementKeyboardCntrlService
+  ) {
+    super(cd, zone, kbrdCntrlSrvc);
+    this.outputTransformers = [];
+  }
+
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
@@ -40,15 +49,6 @@ export class PasswordInputComponent extends BaseInputElement {
   public inputType = InputTypes.password;
 
   @ViewChild('input', { static: true }) input: ElementRef;
-
-  constructor(
-    zone: NgZone,
-    cd: ChangeDetectorRef,
-    kbrdCntrlSrvc: FormElementKeyboardCntrlService
-  ) {
-    super(zone, cd, kbrdCntrlSrvc);
-    this.outputTransformers = [];
-  }
 
   isInputEmpty(): boolean {
     return !this.value || this.value.trim() === '';

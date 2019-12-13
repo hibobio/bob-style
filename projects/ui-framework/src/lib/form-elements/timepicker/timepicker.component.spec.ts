@@ -2,14 +2,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimePickerComponent } from './timepicker.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMessageModule } from '../input-message/input-message.module';
-import { DateParseService } from '../datepicker/date-parse.service';
+import { DateParseService } from '../date-picker/date-parse-service/date-parse.service';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import {
   elementFromFixture,
   getPseudoContent,
   simpleChange,
-  inputValue
+  inputValue,
 } from '../../services/utils/test-helpers';
 import { IconsModule } from '../../icons/icons.module';
 
@@ -30,8 +30,8 @@ describe('TimePickerComponent', () => {
       providers: [
         DateParseService,
         FormElementKeyboardCntrlService,
-        EventManagerPlugins[0]
-      ]
+        EventManagerPlugins[0],
+      ],
     })
       .compileComponents()
       .then(() => {
@@ -39,7 +39,7 @@ describe('TimePickerComponent', () => {
         component = fixture.componentInstance;
         componentElem = fixture.nativeElement;
 
-        component.emitOnWrite = true;
+        component.ignoreEvents = [];
         component.label = 'Label';
         component.hintMessage = 'Hint';
         component.required = true;
@@ -58,7 +58,7 @@ describe('TimePickerComponent', () => {
         messageElem = elementFromFixture(fixture, '[b-input-message]');
 
         spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => { });
+        component.changed.subscribe(() => {});
         spyOn(component, 'propagateChange');
       });
   }));
@@ -103,7 +103,7 @@ describe('TimePickerComponent', () => {
     beforeEach(() => {
       component.ngOnChanges(
         simpleChange({
-          value: '6:5'
+          value: '6:5',
         })
       );
       fixture.detectChanges();
@@ -118,7 +118,7 @@ describe('TimePickerComponent', () => {
     it('should emit changed event', () => {
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'onWrite',
-        value: '06:05'
+        value: '06:05',
       });
       expect(component.propagateChange).toHaveBeenCalledWith('06:05');
     });
@@ -140,7 +140,7 @@ describe('TimePickerComponent', () => {
     it('should emit changed event', () => {
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'onBlur',
-        value: '07:08'
+        value: '07:08',
       });
       expect(component.propagateChange).toHaveBeenCalledWith('07:08');
     });
@@ -156,7 +156,7 @@ describe('TimePickerComponent', () => {
     it('should not allow minutes more than 59', () => {
       component.ngOnChanges(
         simpleChange({
-          value: '6:133'
+          value: '6:133',
         })
       );
       fixture.detectChanges();
@@ -170,7 +170,7 @@ describe('TimePickerComponent', () => {
       expect(component.value).toEqual('00:33');
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'onBlur',
-        value: '00:33'
+        value: '00:33',
       });
     });
 
@@ -187,7 +187,7 @@ describe('TimePickerComponent', () => {
     beforeEach(() => {
       component.ngOnChanges(
         simpleChange({
-          value: '15:30'
+          value: '15:30',
         })
       );
       fixture.detectChanges();
@@ -206,7 +206,7 @@ describe('TimePickerComponent', () => {
       expect(component.value).toBeNull();
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'onChange',
-        value: null
+        value: null,
       });
       expect(component.propagateChange).toHaveBeenCalledWith(null);
     });

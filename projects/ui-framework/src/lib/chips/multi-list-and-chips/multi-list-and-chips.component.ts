@@ -5,23 +5,24 @@ import {
   OnChanges,
   Output,
   EventEmitter,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
 } from '@angular/core';
-import { LIST_EL_HEIGHT } from '../../form-elements/lists/list.consts';
+import { LIST_EL_HEIGHT } from '../../lists/list.consts';
 import {
   SelectGroupOption,
-  SelectOption
-} from '../../form-elements/lists/list.interface';
+  SelectOption,
+} from '../../lists/list.interface';
 import { ChipListConfig, Chip } from '../chips.interface';
 import { ChipType } from '../chips.enum';
-import { ListChange } from '../../form-elements/lists/list-change/list-change';
+import { ListChange } from '../../lists/list-change/list-change';
 import { simpleUID, cloneArray } from '../../services/utils/functional-utils';
+import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
 
 @Component({
   selector: 'b-multi-list-and-chips',
   templateUrl: './multi-list-and-chips.component.html',
   styleUrls: ['./multi-list-and-chips.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiListAndChipsComponent implements OnChanges {
   constructor() {}
@@ -30,6 +31,7 @@ export class MultiListAndChipsComponent implements OnChanges {
   @Input() listLabel: string;
   @Input() chipsLabel: string;
   @Input() showSingleGroupHeader = false;
+  @Input() emptyState: EmptyStateConfig;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
@@ -43,7 +45,7 @@ export class MultiListAndChipsComponent implements OnChanges {
     type: ChipType.tag,
     selectable: false,
     focusable: true,
-    removable: true
+    removable: true,
   };
   readonly listID: string = simpleUID('mlacl-');
   readonly chipListID: string = simpleUID('mlacc-');
@@ -70,12 +72,12 @@ export class MultiListAndChipsComponent implements OnChanges {
   public onListChange(listChange: ListChange): void {
     this.options = listChange.getSelectGroupOptions();
     this.optionsToChips(this.options);
-    this.selectChange.emit(new ListChange(this.options));
+    this.emitChange();
   }
 
   public onChipRemoved(chip: Chip) {
     this.listOptions = this.removeChipAndOption(chip);
-    this.selectChange.emit(new ListChange(this.options));
+    this.emitChange();
   }
 
   private optionsToChips(options: SelectGroupOption[] = this.options): Chip[] {
@@ -90,9 +92,9 @@ export class MultiListAndChipsComponent implements OnChanges {
           text: group.groupName + ' (all)',
           group: {
             key: group.key,
-            name: group.groupName
+            name: group.groupName,
           },
-          type: ChipType.info
+          type: ChipType.info,
         });
       } else {
         group.options.forEach((option: SelectOption) => {
@@ -104,7 +106,7 @@ export class MultiListAndChipsComponent implements OnChanges {
                 this.chipListConfig.type === ChipType.avatar &&
                 option.prefixComponent.attributes.imageSource,
               type: this.chipListConfig.type,
-              disabled: option.disabled
+              disabled: option.disabled,
             });
           }
         });
@@ -145,5 +147,9 @@ export class MultiListAndChipsComponent implements OnChanges {
     }
 
     return (this.options = options);
+  }
+
+  private emitChange(): void {
+    this.selectChange.emit(new ListChange(this.options));
   }
 }

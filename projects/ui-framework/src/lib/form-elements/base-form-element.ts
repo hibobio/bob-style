@@ -4,23 +4,30 @@ import {
   SimpleChanges,
   OnChanges,
   Output,
-  EventEmitter
+  EventEmitter,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
 import {
   simpleUID,
   asArray,
   isNullOrUndefined,
-  cloneValue
+  cloneValue,
+  applyChanges,
+  notFirstChanges,
+  chainCall,
+  Func,
+  cloneArray,
 } from '../services/utils/functional-utils';
 import { InputEventType } from './form-elements.enum';
-import { FormEvents } from './form-elements.enum';
 import { TransmitOptions } from './form-elements.interface';
+import { IGNORE_EVENTS_DEF, TRANSMIT_OPTIONS_DEF } from './form-elements.const';
 
 export abstract class BaseFormElement
   implements ControlValueAccessor, OnChanges {
-  protected constructor() {}
+  protected constructor(protected cd: ChangeDetectorRef) {}
 
+  @Input() id: string = simpleUID('bfe-');
   @Input() label: string;
   @Input() description: string;
   @Input() placeholder: string;
@@ -30,22 +37,13 @@ export abstract class BaseFormElement
   @Input() errorMessage: string;
   @Input() warnMessage: string;
   @Input() doPropagate = true;
-  @Input() emitOnWrite = false;
 
   public inputFocused: boolean | boolean[] = false;
-  public id = simpleUID('bfe-');
-  public inputTransformers: Function[] = [];
-  public outputTransformers: Function[] = [];
+  public inputTransformers: Func[] = [];
+  public outputTransformers: Func[] = [];
+  public baseValue: any;
   public wrapEvent = true;
-  public baseValue;
-
-  private transmitValueDefOptions: Partial<TransmitOptions> = {
-    eventType: [InputEventType.onChange],
-    eventName: FormEvents.changed,
-    doPropagate: this.doPropagate,
-    addToEventObj: {},
-    updateValue: false
-  };
+  public ignoreEvents: InputEventType[] = cloneArray(IGNORE_EVENTS_DEF);
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
 
@@ -96,14 +94,17 @@ export abstract class BaseFormElement
 
   writeValue(value: any): void {
     if (value !== undefined) {
-      this.value = this.inputTransformers.reduce(
-        (previousResult, fn) => fn(previousResult),
-        value
-      );
+      this.value = chainCall(this.inputTransformers, value);
     }
-    if (isNullOrUndefined(this.value) && this.baseValue !== undefined) {
+
+    if (
+      (value === undefined || isNullOrUndefined(this.value)) &&
+      this.baseValue !== undefined
+    ) {
       this.value = cloneValue(this.baseValue);
     }
+
+    this.cd.detectChanges();
   }
 
   protected transmitValue(
@@ -111,15 +112,16 @@ export abstract class BaseFormElement
     options: Partial<TransmitOptions> = {}
   ): void {
     options = {
-      ...this.transmitValueDefOptions,
-      ...options
+      ...TRANSMIT_OPTIONS_DEF,
+      doPropagate: this.doPropagate,
+      ...options,
     };
     const {
       eventType,
-      eventName,
+      emitterName,
       doPropagate,
       addToEventObj,
-      updateValue
+      updateValue,
     } = options;
 
     // If value is undefined, it will not be transmitted.
@@ -127,12 +129,10 @@ export abstract class BaseFormElement
     // to prevent transmission
     if (
       value !== undefined &&
-      (doPropagate || updateValue || this[eventName].observers.length > 0)
+      (doPropagate || updateValue || this[emitterName].observers.length > 0)
     ) {
-      value = this.outputTransformers.reduce(
-        (previousResult, fn) => fn(previousResult),
-        value
-      );
+      value = chainCall(this.outputTransformers, value);
+
       if (value === undefined && this.baseValue !== undefined) {
         value = cloneValue(this.baseValue);
       }
@@ -140,19 +140,18 @@ export abstract class BaseFormElement
         this.value = value;
       }
 
-      if (
-        eventName &&
-        this[eventName].observers.length > 0 &&
-        ((!this.emitOnWrite && !eventType.includes(InputEventType.onWrite)) ||
-          this.emitOnWrite)
-      ) {
-        asArray(eventType).forEach(event => {
-          this[eventName].emit(
+      const allowedEvents = asArray(eventType).filter(
+        event => !this.ignoreEvents.includes(event)
+      );
+
+      if (emitterName && this[emitterName].observers.length > 0) {
+        allowedEvents.forEach(event => {
+          this[emitterName].emit(
             this.wrapEvent
               ? {
                   event,
                   value,
-                  ...addToEventObj
+                  ...addToEventObj,
                 }
               : value
           );
@@ -161,25 +160,30 @@ export abstract class BaseFormElement
 
       if (
         doPropagate &&
-        ((!this.emitOnWrite && !eventType.includes(InputEventType.onWrite)) ||
-          this.emitOnWrite)
+        allowedEvents.filter(event => event !== InputEventType.onFocus).length >
+          0
       ) {
-        if (!eventType.includes(InputEventType.onFocus)) {
-          this.propagateChange(value);
-        }
+        this.propagateChange(value);
+      }
 
-        if (eventType.includes(InputEventType.onBlur)) {
-          this.onTouched();
-        }
+      if (doPropagate && allowedEvents.includes(InputEventType.onBlur)) {
+        this.onTouched();
       }
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes, {}, ['value', 'options']);
+
     if (changes.value) {
       this.writeValue(changes.value.currentValue);
       this.transmitValue(this.value, { eventType: [InputEventType.onWrite] });
     }
+
     this.onNgChanges(changes);
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 }

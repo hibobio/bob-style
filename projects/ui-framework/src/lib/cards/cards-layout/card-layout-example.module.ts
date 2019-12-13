@@ -25,7 +25,7 @@ import {
   getEmployeeCardsMockData,
   getCardsMockData
 } from '../cards.mock';
-import { SliderModule } from '../../buttons-indicators/slider/slider.module';
+import { SliderModule } from '../../indicators/slider/slider.module';
 import { CardsLayoutComponent } from './cards-layout.component';
 import { Subscription } from 'rxjs';
 import { Card } from '../card/card.interface';

@@ -5,7 +5,7 @@ import {
   OnInit,
   Output,
   EventEmitter,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy, ViewChildren, QueryList, ElementRef
 } from '@angular/core';
 
 import {
@@ -16,6 +16,7 @@ import {
   CardTableCellClickEvent
 } from '../card-table.interface';
 import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
+import {TableCardComponent} from './../table-card/table-card.component';
 
 @Component({
   selector: 'b-card-table',
@@ -25,7 +26,7 @@ import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
 })
 export class CardTableComponent implements OnInit {
   constructor(private widthsService: CellWidthsService) {}
-
+  @ViewChildren(TableCardComponent, { read: ElementRef }) public cardsElRefs: QueryList<TableCardComponent>;
   @Input() meta: CardTableCellMeta[];
   @Input() table: CardTableCellData[][];
   @Input() default = 'No data to display';

@@ -4,7 +4,7 @@
                [disableRipple]="true">
 
   <ng-container *ngFor="let tab of tabs; let i = index;">
-    <mat-tab [label]="tab.label">
+    <mat-tab [label]="tab.label" disabled>
       <ng-template mat-tab-label>
         <span #matLabels
               (click.outside-zone)="tabClick(tab, i)"
