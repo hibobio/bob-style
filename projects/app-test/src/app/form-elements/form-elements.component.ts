@@ -676,7 +676,7 @@ export class FormElementsTestComponent
     },
   ];
 
-  bRTE_disableControlsDef = [BlotType.align, BlotType.direction];
+  bRTE_disableControlsDef = []; // = [BlotType.align, BlotType.direction];
   bRTE_controlsDef = Object.values(BlotType).filter(
     cntrl => !this.bRTE_disableControlsDef.includes(cntrl)
   );
@@ -1094,7 +1094,7 @@ export class FormElementsTestComponent
     this.subscribeToAll(this.allFormElements);
 
     this.hideComponents(this.allFormElements);
-    this.showComponents(['bMultiSelect']);
+    this.showComponents(['bRTE']);
 
     // 'bInput'
     // 'bTextarea'

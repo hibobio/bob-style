@@ -113,7 +113,7 @@ export abstract class RTEbaseElement extends BaseFormElement
   @HostBinding('attr.data-type') @Input() public type: RTEType =
     RTEType.primary;
 
-  public writeValue(value: any): void {
+  public writeValue(value: any, onChanges = false): void {
     if (value !== undefined) {
       this.editorValue = this.inputTransformers.reduce(
         (previousResult, fn) => fn(previousResult),
@@ -126,8 +126,13 @@ export abstract class RTEbaseElement extends BaseFormElement
     ) {
       this.editorValue = cloneValue(this.baseValue);
     }
-    if (!this.cd['destroyed']) {
-      this.cd.detectChanges();
+
+    if (!onChanges) {
+      setTimeout(() => {
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, 0);
     }
   }
 
@@ -221,12 +226,7 @@ export abstract class RTEbaseElement extends BaseFormElement
       changes.value ||
       (changes.placeholderList && this.editorValue !== undefined)
     ) {
-      this.writeValue(
-        (changes.value && this.value) ||
-          (changes.placeholderList &&
-            this.editorValue !== undefined &&
-            this.editorValue)
-      );
+      this.writeValue(changes.value ? this.value : this.editorValue, true);
 
       this.transmitValue(this.editorValue, {
         eventType: [InputEventType.onWrite],
