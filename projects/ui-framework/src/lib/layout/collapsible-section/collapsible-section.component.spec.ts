@@ -48,7 +48,6 @@ describe('CollapsibleSectionComponent', () => {
         { provide: UtilsService, useValue: utilsServiceStub },
         EventManagerPlugins[0],
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(CollapsibleSectionComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },

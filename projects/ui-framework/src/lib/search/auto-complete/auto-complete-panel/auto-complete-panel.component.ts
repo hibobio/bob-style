@@ -107,7 +107,9 @@ export class AutoCompletePanelComponent
             break;
           case Keys.enter:
             e.preventDefault();
-            this.optionClick(this.focusOption);
+            if (this.focusOption) {
+              this.optionClick(this.focusOption);
+            }
             break;
           case Keys.escape:
             this.escapeClick.emit();

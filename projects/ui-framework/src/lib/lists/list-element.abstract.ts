@@ -197,13 +197,15 @@ export abstract class BaseListElement
             break;
           case Keys.enter:
             e.preventDefault();
-            this.focusOption.isPlaceHolder
-              ? this.headerClick(
-                  find(this.listHeaders, {
-                    groupName: this.focusOption.groupName,
-                  })
-                )
-              : this.optionClick(this.focusOption);
+            if (this.focusOption) {
+              this.focusOption.isPlaceHolder
+                ? this.headerClick(
+                    find(this.listHeaders, {
+                      groupName: this.focusOption.groupName,
+                    })
+                  )
+                : this.optionClick(this.focusOption);
+            }
             break;
           default:
             break;

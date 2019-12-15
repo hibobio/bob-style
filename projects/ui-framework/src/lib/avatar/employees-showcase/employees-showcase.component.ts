@@ -16,7 +16,10 @@ import {
 import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarSize } from '../avatar/avatar.enum';
 import { UtilsService } from '../../services/utils/utils.service';
-import { AvatarGap } from './employees-showcase.const';
+import {
+  AvatarGap,
+  SHUFFLE_EMPLOYEES_INTERVAL,
+} from './employees-showcase.const';
 import { Icons } from '../../icons/icons.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { interval, Subscription } from 'rxjs';
@@ -30,9 +33,8 @@ import {
   cloneObject,
   randomNumber,
   simpleUID,
+  hasChanges,
 } from '../../services/utils/functional-utils';
-
-const SHUFFLE_EMPLOYEES_INTERVAL = 3000;
 
 @Component({
   selector: 'b-employees-showcase',
@@ -71,12 +73,20 @@ export class EmployeesShowcaseComponent
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes);
+    console.log('ngOnChanges', changes);
 
-    if (changes.avatarSize) {
+    applyChanges(this, changes, {
+      employees: [],
+    });
+
+    if (hasChanges(changes, ['avatarSize'], true)) {
       this.DOM.setCssProps(this.host.nativeElement, {
         '--avatar-gap': '-' + AvatarGap[this.avatarSize] + 'px',
       });
+    }
+
+    if (hasChanges(changes, ['employees'], true)) {
+      this.panelListOptions = this.getPanelListOptions();
     }
 
     if (notFirstChanges(changes)) {
@@ -85,32 +95,40 @@ export class EmployeesShowcaseComponent
   }
 
   ngOnInit(): void {
+    console.log('ngOnInit');
     this.initShowcase();
 
     this.resizeEventSubscriber = this.utilsService
       .getResizeEvent()
       .pipe(outsideZone(this.zone))
       .subscribe(() => {
+        console.log('getResizeEvent');
         this.initShowcase();
       });
 
-    this.panelListOptions = this.getPanelListOptions();
+    if (!this.panelListOptions) {
+      this.panelListOptions = this.getPanelListOptions();
+    }
   }
 
   ngAfterViewInit(): void {
-    this.zone.runOutsideAngular(() => {
-      setTimeout(() => {
-        this.initShowcase();
-      }, 1000);
-    });
+    // this.zone.runOutsideAngular(() => {
+    setTimeout(() => {
+      console.log('ngAfterViewInit');
+      this.initShowcase();
+    }, 1000);
+    // });
   }
 
   ngOnDestroy(): void {
+    console.log('ngOnDestroy');
     if (this.resizeEventSubscriber) {
       this.resizeEventSubscriber.unsubscribe();
+      this.resizeEventSubscriber = null;
     }
     if (this.intervalSubscriber) {
       this.intervalSubscriber.unsubscribe();
+      this.intervalSubscriber = null;
     }
   }
 
@@ -139,11 +157,23 @@ export class EmployeesShowcaseComponent
         1
     );
 
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--avatar-count': this.avatarsToFit,
+    });
+
     this.showThreeDotsButton =
       this.avatarSize < AvatarSize.medium &&
       this.avatarsToFit < this.employees.length;
 
     this.avatarsToShow = this.getAvatarsToShow();
+
+    console.log(
+      'initShowcase',
+      this.clientWidth,
+      this.avatarSize,
+      AvatarGap[this.avatarSize],
+      this.avatarsToFit
+    );
 
     if (
       this.avatarSize >= AvatarSize.medium &&
@@ -159,8 +189,8 @@ export class EmployeesShowcaseComponent
     } else {
       if (this.intervalSubscriber) {
         this.intervalSubscriber.unsubscribe();
+        this.intervalSubscriber = null;
       }
-      this.intervalSubscriber = null;
     }
 
     if (!this.cd['destroyed']) {
@@ -169,6 +199,7 @@ export class EmployeesShowcaseComponent
   }
 
   private getAvatarsToShow(): EmployeeShowcase[] {
+    // console.log('getAvatarsToShow', this.avatarsToFit);
     return this.employees.slice(
       0,
       !this.showThreeDotsButton ? this.avatarsToFit : this.avatarsToFit - 1

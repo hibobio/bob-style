@@ -28,6 +28,12 @@ export class UtilsService {
         leading: true,
         trailing: true,
       }),
+      map((e: Event) => ({
+        innerWidth: e.target['innerWidth'],
+        innerHeight: e.target['innerHeight'],
+        outerHeight: e.target['outerHeight'],
+        outerWidth: e.target['outerWidth'],
+      })),
       share()
     );
 
@@ -42,9 +48,11 @@ export class UtilsService {
       })),
       share()
     );
+
     this.winClick$ = fromEvent(this.windowRef.nativeWindow, 'click').pipe(
       share()
     ) as Observable<MouseEvent>;
+
     this.winKey$ = fromEvent(this.windowRef.nativeWindow, 'keydown').pipe(
       share()
     ) as Observable<KeyboardEvent>;
