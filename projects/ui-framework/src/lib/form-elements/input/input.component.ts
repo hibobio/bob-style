@@ -43,6 +43,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     super(cd, zone, kbrdCntrlSrvc);
   }
 
+  // @ViewChild('step', { static: true }) step: ElementRef;
   @ViewChild('input', { static: true }) input: ElementRef;
   @ViewChild('prefix', { static: false }) prefix: ElementRef;
   @ViewChild('suffix', { static: false }) suffix: ElementRef;
@@ -63,6 +64,16 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
         }
       }, 0);
     });
+  }
+
+  onIncrement() {
+    this.writeValue(+this.input.nativeElement.value + this.step);
+    this.processValue(+this.input.nativeElement.value + this.step);
+  }
+
+  onDecrement() {
+    this.writeValue(+this.input.nativeElement.value - this.step);
+    this.processValue(+this.input.nativeElement.value - this.step);
   }
 
   public onInputKeydown(event: KeyboardEvent) {

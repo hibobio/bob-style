@@ -18,7 +18,7 @@
             [readonly]="readonly"
             [attr.minlength]="minChars || null"
             [attr.maxlength]="maxChars || null"
-            (input)="onInputChange($event)"
+            (input)="onInputChange($event.target.value)"
             (blur)="onInputBlur($event)"
             (focus)="onInputFocus()"
             (keyup.outside-zone)="onInputKeyUp($event)"></textarea>

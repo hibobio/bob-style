@@ -1,3 +1,7 @@
 @import '../../style/common-imports';
 
 @include bFormElement();
+
+.numeric-input {
+  width: 200px;
+}

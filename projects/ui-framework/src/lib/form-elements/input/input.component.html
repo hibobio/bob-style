@@ -6,7 +6,7 @@
 </b-form-element-label>
 
 <div class="bfe-wrap"
-     [ngClass]="{focused: inputFocused, 'has-prefix': hasPrefix || showPrefix, 'has-suffix': hasSuffix || showSuffix}">
+     [ngClass]="{focused: inputFocused, 'has-prefix': hasPrefix || showPrefix, 'has-suffix': hasSuffix || showSuffix, 'numeric-input':inputType===inputTypes.number}">
 
   <div *ngIf="hasPrefix || showPrefix"
        class="bfe-prefix"
@@ -27,8 +27,8 @@
          [readonly]="readonly"
          [attr.minlength]="minChars || null"
          [attr.maxlength]="maxChars || null"
-         (input)="onInputChange($event)"
-         (blur)="onInputBlur($event);"
+         (input)="onInputChange($event.target.value)"
+         (blur)="processValue($event.target.value);"
          (focus)="onInputFocus()"
          (keydown.outside-zone)="onInputKeydown($event)"
          (keyup.outside-zone)="onInputKeyUp($event)">
@@ -37,6 +37,15 @@
        class="bfe-suffix"
        #suffix>
     <ng-content select="[input-suffix]"></ng-content>
+  </div>
+
+  <div class="bfe-buttons-wrap"
+       *ngIf="inputType === inputTypes.number &&  step>0">
+    <button class="b-icon b-icon-chevron-up b-icon-large b-icon-normal has-hover"
+            (click)="onIncrement()"></button>
+    <button class="b-icon b-icon-chevron-down b-icon-large b-icon-normal has-hover"
+            (click)="
+            onDecrement()"></button>
   </div>
 
 </div>

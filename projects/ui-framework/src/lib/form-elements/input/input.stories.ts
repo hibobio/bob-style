@@ -41,7 +41,8 @@ const template = `
         [warnMessage]="warnMessage"
         [errorMessage]="errorMessage"
         [enableBrowserAutoComplete]="enableBrowserAutoComplete"
-        (inputEvents)="inputEvents($event)">
+        (inputEvents)="inputEvents($event)"
+        >
 </b-input>
 `;
 
@@ -92,7 +93,8 @@ story.add(
       template: storyTemplate,
       props: {
         inputEvents: action('Input event'),
-        inputType: select('inputType', inputTypes, InputTypes.text),
+
+        inputType: select('inputType', inputTypes, InputTypes.number),
         value: text('value', ''),
         label: text('label', 'Input label'),
         description: text('description', mockText(30)),
@@ -102,6 +104,7 @@ story.add(
         maxChars: number('maxChars', 30),
         min: number('min', 5),
         max: number('max', 30),
+        step: number('step', 3),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         readonly: boolean('readonly', false),
