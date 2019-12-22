@@ -19,7 +19,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   protected constructor(
     protected cd: ChangeDetectorRef,
     protected zone: NgZone,
-    protected kbrdCntrlSrvc: FormElementKeyboardCntrlService
+    protected kbrdCntrlSrvc: FormElementKeyboardCntrlService,
   ) {
     super(cd);
     this.inputTransformers = [
@@ -33,7 +33,9 @@ export abstract class BaseInputElement extends BaseFormElement {
   public eventType = InputEventType;
   readonly inputTypes = InputTypes;
 
-  @Input() step = 5;
+
+
+  @Input() step: number;
   @Input() value = '';
   @Input() inputType: InputTypes = InputTypes.text;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
@@ -43,9 +45,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   @Input() min: number;
   @Input() max: number;
 
-  @Output(FormEvents.inputEvents) changed: EventEmitter<
-    InputEvent
-  > = new EventEmitter<InputEvent>();
+  @Output(FormEvents.inputEvents) changed: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
 
   onInputChange(value: string) {
     if (value !== this.value) {
