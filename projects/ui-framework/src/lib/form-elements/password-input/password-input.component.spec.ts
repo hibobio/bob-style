@@ -10,7 +10,7 @@ import { ElementRef } from '@angular/core';
 import { InputEventType } from '../form-elements.enum';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
-describe('PasswordInputComponent', () => {
+fdescribe('PasswordInputComponent', () => {
   let component: PasswordInputComponent;
   let fixture: ComponentFixture<PasswordInputComponent>;
   let inputElement: HTMLInputElement;
@@ -46,7 +46,7 @@ describe('PasswordInputComponent', () => {
     component.changed.complete();
   });
 
-  describe('emit InputEvent', () => {
+  fdescribe('emit InputEvent', () => {
     it('should emitInputEvent on model change with input value', () => {
       inputValue(inputElement, 'text', false);
       expect(component.changed.emit).toHaveBeenCalledWith({
@@ -57,7 +57,7 @@ describe('PasswordInputComponent', () => {
     });
   });
 
-  describe('show button', () => {
+  fdescribe('show button', () => {
     it('should start with show button hidden', () => {
       showButtonElement = fixture.debugElement.query(By.css('.bfe-suffix'));
       expect(showButtonElement).toBeFalsy();
@@ -74,7 +74,7 @@ describe('PasswordInputComponent', () => {
     });
   });
 
-  describe('input type', () => {
+  fdescribe('input type', () => {
     it('should start with input type password', () => {
       fixture.detectChanges();
       expect(inputElement.getAttribute('type')).toEqual('password');

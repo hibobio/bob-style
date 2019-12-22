@@ -1,5 +1,6 @@
 <ag-grid-angular #agGrid
-                 [ngClass]="{'grid-ready': gridReady, 'secondary': type === tableType.Secondary}"
+                 [ngClass]="{'grid-ready': gridReady, 'secondary': type === tableType.Secondary, 'remove-column-button':
+                 removeColumnButtonEnabled}"
                  [rowData]="rowData"
                  [columnDefs]="gridColumnDefs"
                  [gridOptions]="gridOptions"

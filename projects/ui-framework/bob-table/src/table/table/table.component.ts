@@ -1,19 +1,44 @@
 // tslint:disable-next-line:max-line-length
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {AgGridNg2} from 'ag-grid-angular';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  HostListener,
+} from '@angular/core';
+import { AgGridNg2 } from 'ag-grid-angular';
 // tslint:disable-next-line:max-line-length
-import {CellClickedEvent, Column, DragStoppedEvent, GridColumnsChangedEvent, GridOptions, GridReadyEvent} from 'ag-grid-community';
-import {cloneDeep, get, has, map} from 'lodash';
-import {TableUtilsService} from '../table-utils-service/table-utils.service';
-import {AgGridWrapper} from './ag-grid-wrapper';
-import {RowSelection, TableType} from './table.enum';
-import {ColumnDef, ColumnsOrderChangedEvent, RowClickedEvent, SortChangedEvent} from './table.interface';
+import {
+  CellClickedEvent,
+  Column,
+  DragStoppedEvent,
+  GridColumnsChangedEvent,
+  GridOptions,
+  GridReadyEvent,
+} from 'ag-grid-community';
+import { cloneDeep, get, has, map } from 'lodash';
+import { TableUtilsService } from '../table-utils-service/table-utils.service';
+import { AgGridWrapper } from './ag-grid-wrapper';
+import { RowSelection, TableType } from './table.enum';
+import {
+  ColumnDef,
+  ColumnsOrderChangedEvent,
+  RowClickedEvent,
+  SortChangedEvent,
+} from './table.interface';
 
 @Component({
   selector: 'b-table',
   templateUrl: './table.component.html',
   styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   constructor(
@@ -35,13 +60,21 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Input() tableGridOptions: Partial<GridOptions> = {};
   @Input() suppressDragLeaveHidesColumns = false;
 
-  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<SortChangedEvent>();
-  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
+  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
+    SortChangedEvent
+  >();
+  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<
+    RowClickedEvent
+  >();
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() gridInit: EventEmitter<void> = new EventEmitter<void>();
   @Output() columnsChanged: EventEmitter<void> = new EventEmitter<void>();
-  @Output() columnsOrderChanged: EventEmitter<ColumnsOrderChangedEvent> = new EventEmitter<ColumnsOrderChangedEvent>();
-  @Output() cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter<CellClickedEvent>();
+  @Output() columnsOrderChanged: EventEmitter<
+    ColumnsOrderChangedEvent
+  > = new EventEmitter<ColumnsOrderChangedEvent>();
+  @Output() cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter<
+    CellClickedEvent
+  >();
 
   readonly rowHeight: number = 56;
   readonly autoSizePadding: number = 30;
@@ -53,11 +86,35 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   private columns: string[];
 
+  public removeColumnButtonEnabled = false;
+
+  @HostListener('click', ['$event'])
+  onHostClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+
+    if (
+      this.removeColumnButtonEnabled &&
+      target.matches('.ag-header-cell[col-id]')
+    ) {
+      const outerWidth = target.offsetWidth;
+      const paddingRight = parseFloat(getComputedStyle(target).paddingRight);
+
+      if (
+        event.offsetX <= outerWidth - paddingRight &&
+        event.offsetX >= outerWidth - paddingRight - 16
+      ) {
+        event.stopPropagation();
+        const colID = target.getAttribute('col-id');
+        console.log('remove button clicked, ID: ', colID);
+      }
+    }
+  }
+
   ngOnInit() {
     this.setGridHeight(this.maxHeight);
     this.setGridOptions({
       ...this.initGridOptions(),
-      ...this.tableGridOptions
+      ...this.tableGridOptions,
     });
   }
 
@@ -77,7 +134,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   onSortChanged($event): void {
     this.sortChanged.emit({
       colId: get($event.api.getSortModel(), '[0].colId'),
-      sort: get($event.api.getSortModel(), '[0].sort')
+      sort: get($event.api.getSortModel(), '[0].sort'),
     });
   }
 
@@ -89,13 +146,13 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     this.rowClicked.emit({
       rowIndex: $event.rowIndex,
       data: $event.data,
-      agGridId: get($event, 'node.id', null)
+      agGridId: get($event, 'node.id', null),
     });
   }
 
   private setOrderedColumns(columns: Column[]): void {
     this.columns = map(columns, col => col.colDef.field);
-    this.columnsOrderChanged.emit({columns: cloneDeep(this.columns)});
+    this.columnsOrderChanged.emit({ columns: cloneDeep(this.columns) });
   }
 
   private setGridHeight(height: number): void {
@@ -119,7 +176,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       rowSelection: this.rowSelection,
       suppressContextMenu: true,
       getRowClass: params =>
-          get(params.data, 'isClickable', false) ? 'row-clickable' : '',
+        get(params.data, 'isClickable', false) ? 'row-clickable' : '',
       onGridReady: (event: GridReadyEvent) => {
         this.gridReady = true;
         event.columnApi.autoSizeAllColumns();
@@ -138,8 +195,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       },
       onCellClicked(event: CellClickedEvent): void {
         that.cellClicked.emit(event);
-      }
+      },
     };
   }
-
 }
