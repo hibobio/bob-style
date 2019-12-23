@@ -530,6 +530,7 @@ export {
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
 export { FloatingAvatarsComponent } from './lib/eye-candy/floating-avatars/floating-avatars.component';
 export { ConfettiComponent } from './lib/eye-candy/confetti/confetti.component';
+export { SnowComponent } from './lib/eye-candy/snow/snow.component';
 // text colored links
 export { TextColoredLinksModule } from './lib/eye-candy/text-colored-links/text-colored-links.module';
 export {
