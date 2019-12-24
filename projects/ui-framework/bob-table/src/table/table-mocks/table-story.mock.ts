@@ -11,7 +11,7 @@ import {
   simpleUID,
   mockAvatar,
   mockDate,
-  randomFromArray
+  randomFromArray, randomNumber
 } from 'bob-style';
 
 export const mockColumnsDefs: ColumnDef[] = [
@@ -54,6 +54,73 @@ export const mockColumnsDefs: ColumnDef[] = [
   }
 ];
 
+export const treeColumnDefsMock: ColumnDef[] = [
+  { field: 'jobTitle', headerName: 'Job Title', sortable: true },
+  { field: 'employmentType', headerName: 'Employment Type', sortable: true }
+];
+export const treeRowDataMock = [
+  {
+    orgHierarchy: ['Erica Rogers'],
+    jobTitle: 'CEO',
+    employmentType: 'Permanent'
+  },
+  {
+    orgHierarchy: ['Erica Rogers', 'Malcolm Barrett'],
+    jobTitle: 'Exec. Vice President',
+    employmentType: 'Permanent'
+  },
+  {
+    orgHierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Esther Baker'],
+    jobTitle: 'Director of Operations',
+    employmentType: 'Permanent'
+  },
+  {
+    orgHierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Esther Baker', 'Brittany Hanson'],
+    jobTitle: 'Fleet Coordinator',
+    employmentType: 'Permanent'
+  },
+  {
+    orgHierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Esther Baker', 'Brittany Hanson', 'Leah Flowers'],
+    jobTitle: 'Parts Technician',
+    employmentType: 'Contract'
+  },
+  {
+    orgHierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Esther Baker', 'Brittany Hanson', 'Tammy Sutton'],
+    jobTitle: 'Service Technician',
+    employmentType: 'Contract'
+  },
+  {
+    orgHierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Esther Baker', 'Derek Paul'],
+    jobTitle: 'Inventory Control',
+    employmentType: 'Permanent'
+  },
+  {
+    orgHierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Francis Strickland'],
+    jobTitle: 'VP Sales',
+    employmentType: 'Permanent'
+  },
+  {
+    orgHierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Francis Strickland', 'Morris Hanson'],
+    jobTitle: 'Sales Manager',
+    employmentType: 'Permanent'
+  },
+  {
+    orgHierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Francis Strickland', 'Todd Tyler'],
+    jobTitle: 'Sales Executive',
+    employmentType: 'Contract'
+  },
+  {
+    orgHierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Francis Strickland', 'Bennie Wise'],
+    jobTitle: 'Sales Executive',
+    employmentType: 'Contract'
+  },
+  {
+    orgHierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Francis Strickland', 'Joel Cooper'],
+    jobTitle: 'Sales Executive',
+    employmentType: 'Permanent'
+  }
+];
+
 const gridActions: GridActions = {
   menuItems: [
     {
@@ -90,6 +157,41 @@ export const mockRowData = makeArray(200).map(i => ({
   actions: gridActions,
   isClickable: true
 }));
+
+function makeBranch(names: string[]) {
+  return makeArray(randomNumber(1, names.length)).map(() => names[randomNumber(1, names.length)]);
+}
+
+function generateTree() {
+  const names = mockNames(5);
+  return makeArray(200).map(() => makeBranch(names));
+}
+
+const tree = generateTree();
+export const mockRowDataTree = makeArray(200).map(i => ({
+  fullName: tree[i],
+  id: simpleUID(),
+  email: mockText(1).toLowerCase() + '@' + mockText(1).toLowerCase() + '.com',
+  internal: {
+    status: randomFromArray([
+      'Single',
+      'Married',
+      'Divorsed',
+      'Engaged',
+      'Separated',
+      'Diceased'
+    ])
+  },
+  about: {
+    avatar: {
+      imageSource: mockAvatar()
+    }
+  },
+  hiredDate: mockDate(),
+  actions: gridActions,
+  isClickable: true
+}));
+
 
 // For test performance
 /*

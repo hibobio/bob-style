@@ -1,9 +1,13 @@
 <ag-grid-angular #agGrid
                  [ngClass]="{'grid-ready': gridReady, 'secondary': type === tableType.Secondary, 'remove-column-button':
                  removeColumnButtonEnabled}"
+                 [treeData]="treeConfig.treeData"
                  [rowData]="rowData"
                  [columnDefs]="gridColumnDefs"
+                 [animateRows]="true"
                  [gridOptions]="gridOptions"
+                 [getDataPath]="treeConfig.getDataPath"
+                 [groupDefaultExpanded]="treeConfig.groupDefaultExpanded"
                  (rowClicked)="onRowClicked($event)"
                  (selectionChanged)="onSelectionChanged($event)"
                  (sortChanged)="onSortChanged($event)">

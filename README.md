@@ -20,8 +20,13 @@ npm install
 ```
 
 ## Run the storybook project locally
+In order to resolve all the libraries dependencies of one another we need to run: 
+```shell script
+npm i bob-style --no-save
+```
+Then, to run the project:
 ```sh
-npm run storybook
+npm run start
 ```
 
 ## Contribute Instructions

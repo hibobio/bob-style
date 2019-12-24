@@ -25,22 +25,23 @@ import {
 } from 'ag-grid-community';
 import { cloneDeep, get, has, map } from 'lodash';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
-import { AgGridWrapper } from './ag-grid-wrapper';
+import { WithAgGrid } from './ag-grid-wrapper';
 import { RowSelection, TableType } from './table.enum';
 import {
   ColumnDef,
   ColumnsOrderChangedEvent,
   RowClickedEvent,
-  SortChangedEvent,
+  SortChangedEvent
 } from './table.interface';
+import {WithTree} from './tree-able';
 
 @Component({
   selector: 'b-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss'],
+  styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss', './styles/tree-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
+export class TableComponent extends WithTree(WithAgGrid()) implements OnInit, OnChanges {
   constructor(
     private tableUtilsService: TableUtilsService,
     private elRef: ElementRef,
@@ -174,6 +175,11 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       suppressDragLeaveHidesColumns: this.suppressDragLeaveHidesColumns,
       autoSizePadding: this.autoSizePadding,
       suppressColumnVirtualisation: this.suppressColumnVirtualisation,
+      autoGroupColumnDef: {
+        cellRendererParams: {
+          suppressCount: true
+        }
+      },
       rowHeight: this.rowHeight,
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,
