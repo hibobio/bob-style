@@ -42,18 +42,15 @@ $bel-item-dragged-border-color: $grey-400;
   &.error {
     color: $color-error;
     margin-left: 0;
-
-
   }
 
 }
 
-
-.input-wrapper
+.input-message
 {
   display: flex;
   justify-content: space-between;
-  margin: 8px,0px, 8px, 0px;
+  margin: 8px 0px 8px 0px;
 }
 
 :host ::ng-deep .bel-sort-button {

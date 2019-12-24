@@ -5,7 +5,7 @@ import { IconsModule } from '../../icons/icons.module';
 import { Icons } from '../../icons/icons.enum';
 import { By } from '@angular/platform-browser';
 
-fdescribe('AddFileComponent', () => {
+describe('AddFileComponent', () => {
   let fixture: ComponentFixture<AddFileComponent>;
   let component: AddFileComponent;
 

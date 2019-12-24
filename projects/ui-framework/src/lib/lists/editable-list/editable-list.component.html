@@ -32,35 +32,27 @@
                   [text]="translation.cancel">
         </b-button>
         <b-button class="bel-done-button"
-                  [type]="buttonType.seucondary"
+                  [type]="buttonType.secondary"
                   [size]="buttonSize.small"
                   [text]="translation.done"
                   (clicked)="addItem(true)">
         </b-button>
       </div>
 
-
     </div>
-
-
-
-
   </div>
 
 
-  <div class="input-wrapper">
-
+  <div class="input-message">
     <p *ngIf="inputInvalid"
        class="b-input-message error">
       "{{listState.list[sameItemIndex].value}}"
       {{translation.alreadyExists}}
     </p>
-    <p [hidden]="!addingItem"
+    <p *ngIf="addingItem && maxChars"
        class="b-input-message">
-      <span *ngIf="maxChars">{{addingItemLen}}/{{maxChars}}</span>
+      {{addingItemLen}}/{{maxChars}}
     </p>
-
-
   </div>
 
   <div class="bel-header-bottom">

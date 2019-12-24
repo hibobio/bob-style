@@ -254,6 +254,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public removeItem(index: number, confirm = false): void {
+    console.log('removeItem', index, confirm)
     if (!confirm) {
       this.removingIndex = index;
     } else {
