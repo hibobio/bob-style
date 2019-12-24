@@ -95,14 +95,17 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     if (
       this.removeColumnButtonEnabled &&
       this.columnRemoved.observers &&
-      target.matches('.ag-header-cell[col-id]')
+      target.matches('.ag-header-viewport .ag-header-cell[col-id]')
     ) {
       const outerWidth = target.offsetWidth;
+      const outerHeight = target.offsetHeight;
       const paddingRight = parseFloat(getComputedStyle(target).paddingRight);
 
       if (
         event.offsetX <= outerWidth - paddingRight &&
-        event.offsetX >= outerWidth - paddingRight - 16
+        event.offsetX >= outerWidth - paddingRight - 16 &&
+        event.offsetY >= outerHeight / 2 - 8 &&
+        event.offsetY <= outerHeight / 2 + 8
       ) {
         event.stopPropagation();
         this.columnRemoved.emit(target.getAttribute('col-id'));

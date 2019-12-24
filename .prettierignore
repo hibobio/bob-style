@@ -1,3 +1,4 @@
 *.html
 *.json
+*.md
 public_api.ts

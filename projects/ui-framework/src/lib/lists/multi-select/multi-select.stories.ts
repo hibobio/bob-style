@@ -21,6 +21,8 @@ import { cloneDeep } from 'lodash';
 import { optionsMock, optionsMockDef } from '../multi-list/multi-list.mock';
 import { ListModelService } from '../list-service/list-model.service';
 
+import listInterfaceDoc from '../list.interface.md';
+
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
@@ -94,6 +96,8 @@ const note = `
   ~~~
   ${template}
   ~~~
+
+  ${listInterfaceDoc}
 `;
 
 const options = ListModelService.prototype.selectAll<SelectGroupOption>(

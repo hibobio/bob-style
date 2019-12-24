@@ -3,11 +3,11 @@
 
 $min-table-height: 140px;
 
-@mixin cell {
+@mixin cell($height: auto) {
   text-align: left;
   padding: 0 15px;
   color: $grey-700;
-  height: auto;
+  height: $height;
   display: block;
   width: 100%;
 
@@ -72,27 +72,58 @@ $min-table-height: 140px;
 
     .ag-header-row {
       display: flex;
-      align-items: center;
     }
 
     .ag-header-cell {
-      @include cell;
+      @include cell(null);
+      display: flex;
+      align-items: center;
+      cursor: default;
+    }
 
-      .ag-header-cell-resize {
-        right: -3px;
-        width: 5px;
+    .ag-cell-label-container {
+      flex-grow: 1;
+      min-width: 0;
+      cursor: pointer;
+      height: 100%;
+    }
 
-        &:before {
-          content: '';
-          display: block;
-          position: absolute;
-          height: 30px;
-          top: 50%;
-          transform: translateY(-50%);
-          right: 50%;
-          border-left: 1px solid $grey-500;
-        }
+    .ag-header-cell-label {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    .ag-header-cell-text {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ag-header-cell-resize {
+      right: -3px;
+      width: 5px;
+
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        height: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 50%;
+        border-left: 1px solid $grey-500;
       }
+    }
+
+    .ag-header-icon {
+      display: flex;
+      margin-left: 2px;
+      opacity: 0.73;
+    }
+
+    .ag-icon-asc {
+      margin-top: -2px;
     }
   }
 
@@ -164,10 +195,6 @@ $min-table-height: 140px;
 :host ::ng-deep .remove-column-button {
   .ag-header-viewport {
     .ag-header-cell {
-      display: flex;
-      align-items: center;
-      cursor: default;
-
       @include b-icon($icon: 'close', $size: small, $elem: '&:hover:after');
 
       &:hover:after {
@@ -176,33 +203,7 @@ $min-table-height: 140px;
         color: black;
         font-weight: 600;
         cursor: pointer;
-      }
-
-      .ag-cell-label-container {
-        flex-grow: 1;
-        min-width: 0;
-        cursor: pointer;
-      }
-
-      .ag-header-cell-label {
-        display: flex;
-        align-items: center;
-      }
-
-      .ag-header-cell-text {
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        flex-grow: 1;
-      }
-
-      .ag-header-icon {
-        display: flex;
-        align-items: center;
-
-        .ag-icon-asc {
-          margin-top: -3px;
-        }
+        margin-right: -6px;
       }
     }
   }
