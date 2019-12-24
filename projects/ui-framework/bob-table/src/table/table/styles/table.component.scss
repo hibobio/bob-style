@@ -81,10 +81,13 @@ $min-table-height: 140px;
       cursor: default;
     }
 
+    .ag-header-cell-sortable .ag-header-cell-label {
+      cursor: pointer;
+    }
+
     .ag-cell-label-container {
       flex-grow: 1;
       min-width: 0;
-      cursor: pointer;
       height: 100%;
     }
 
