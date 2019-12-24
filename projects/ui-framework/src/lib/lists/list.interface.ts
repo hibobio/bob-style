@@ -27,6 +27,7 @@ export interface SelectGroupOption {
   options: SelectOption[];
   selected?: boolean;
   hidden?: boolean;
+  [k: string]: any;
 }
 
 export interface SelectOption {
