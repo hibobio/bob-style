@@ -145,7 +145,7 @@ function tableStoryFactory({title, HTMLTemplate, tableData, tableCols, notes, pr
     ),
     removeColumnButtonEnabled: boolean(
         'removeColumnButtonEnabled',
-        false,
+        true,
         'Props'
     ),
     columnDefs: object(`${title} columnDefs`, tableCols, 'Data'),
