@@ -10,7 +10,7 @@ import { ElementRef } from '@angular/core';
 import { InputEventType } from '../form-elements.enum';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
-fdescribe('PasswordInputComponent', () => {
+describe('PasswordInputComponent', () => {
   let component: PasswordInputComponent;
   let fixture: ComponentFixture<PasswordInputComponent>;
   let inputElement: HTMLInputElement;
@@ -46,8 +46,9 @@ fdescribe('PasswordInputComponent', () => {
     component.changed.complete();
   });
 
-  fdescribe('emit InputEvent', () => {
-    it('should emitInputEvent on model change with input value', () => {
+
+  describe('InputEvent', () => {
+    it('should adjust text', () => {
       inputValue(inputElement, 'text', false);
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
@@ -57,7 +58,7 @@ fdescribe('PasswordInputComponent', () => {
     });
   });
 
-  fdescribe('show button', () => {
+  describe('show button', () => {
     it('should start with show button hidden', () => {
       showButtonElement = fixture.debugElement.query(By.css('.bfe-suffix'));
       expect(showButtonElement).toBeFalsy();
@@ -74,11 +75,12 @@ fdescribe('PasswordInputComponent', () => {
     });
   });
 
-  fdescribe('input type', () => {
+  describe('input type', () => {
     it('should start with input type password', () => {
       fixture.detectChanges();
       expect(inputElement.getAttribute('type')).toEqual('password');
     });
+    // tslint:disable-next-line:max-line-length
     it('should switch to input type text, when input has text and show button is clicked; icon should change to class .b-icon-visibility-off', () => {
       inputValue(inputElement, 'text', false);
       fixture.detectChanges();
