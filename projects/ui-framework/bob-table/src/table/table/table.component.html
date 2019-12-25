@@ -4,7 +4,7 @@
                  [treeData]="treeConfig.treeData"
                  [rowData]="rowData"
                  [columnDefs]="gridColumnDefs"
-                 [animateRows]="true"
+                 [animateRows]="false"
                  [gridOptions]="gridOptions"
                  [getDataPath]="treeConfig.getDataPath"
                  [groupDefaultExpanded]="treeConfig.groupDefaultExpanded"
@@ -12,4 +12,3 @@
                  (selectionChanged)="onSelectionChanged($event)"
                  (sortChanged)="onSortChanged($event)">
 </ag-grid-angular>
-
