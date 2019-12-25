@@ -34,9 +34,4 @@ export class TextareaComponent extends BaseInputElement {
     super(cd, zone, kbrdCntrlSrvc);
     this.outputTransformers = [];
   }
-
-  //blur
-
-  //   this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
-  // this.inputFocused = false;
 }
