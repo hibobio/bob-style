@@ -1,33 +1,9 @@
 @import '../../../../../src/lib/style/common-imports';
 @import '../../../../../src/lib/style/icons';
-
-$min-table-height: 140px;
-
-@mixin cell($height: auto) {
-  text-align: left;
-  padding: 0 15px;
-  color: $grey-700;
-  height: $height;
-  display: block;
-  width: 100%;
-
-  &:focus {
-    outline: none;
-  }
-
-  &[class*='b-icon'] {
-    &:before {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-  }
-}
+@import './table.mixin';
 
 :host {
   --max-height: 450px;
-  min-height: $min-table-height;
   display: block;
 }
 
@@ -62,7 +38,6 @@ $min-table-height: 140px;
     border: 1px solid $grey-500;
     border-radius: 4px;
     max-height: var(--max-height);
-    min-height: $min-table-height;
   }
 
   .ag-header {
@@ -107,16 +82,9 @@ $min-table-height: 140px;
       right: -3px;
       width: 5px;
 
-      &:before {
-        content: '';
-        display: block;
-        position: absolute;
-        height: 30px;
-        top: 50%;
-        transform: translateY(-50%);
-        right: 50%;
-        border-left: 1px solid $grey-500;
-      }
+      background-image: linear-gradient($grey-500, $grey-500);
+      background-size: 1px 30px;
+      background-position: center;
     }
 
     .ag-header-icon {
@@ -149,7 +117,7 @@ $min-table-height: 140px;
     }
 
     .ag-cell {
-      @include cell;
+      @include cell(null);
 
       &.row-select {
         position: relative;
