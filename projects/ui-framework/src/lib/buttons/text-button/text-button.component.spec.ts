@@ -6,6 +6,7 @@ import { TypographyModule } from '../../typography/typography.module';
 import { By } from '@angular/platform-browser';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { LinkColor } from '../../indicators/link/link.enum';
+import { simpleChange } from '../../services/utils/test-helpers';
 
 describe('TextButtonComponent', () => {
   let component: TextButtonComponent;
@@ -39,24 +40,38 @@ describe('TextButtonComponent', () => {
 
   it('should not display icon if no input is passed', () => {
     fixture.detectChanges();
-    expect(element.children.length).toEqual(0);
+    expect(component.buttonClass).not.toContain('b-icon');
+    expect(element.children[0].className).not.toContain('b-icon');
   });
 
   it('should display icon if is input', () => {
-    component.icon = Icons.home;
-    fixture.detectChanges();
-    expect(element.children.length).toEqual(1);
-    expect(element.children[0].className).toContain(Icons.home);
-    expect(element.children[0].className).toContain('b-icon-' + IconColor.dark);
-    expect(element.children[0].className).toContain('b-icon-' + IconSize.medium);
+    component.ngOnChanges(
+      simpleChange({
+        icon: Icons.home,
+      })
+    );
+
+    const expectedClass =
+      Icons.home + ' b-icon-' + IconSize.medium + ' b-icon-' + IconColor.dark;
+
+    expect(component.buttonClass).toContain(expectedClass);
+    expect(element.children[0].className).toContain(expectedClass);
   });
 
   it('should set color to orange for component and icon', () => {
-    component.icon = Icons.home;
-    component.color = LinkColor.primary;
-    fixture.detectChanges();
-    expect(element.classList).toContain('color-primary');
-    expect(element.children[0].className).toContain('b-icon-' + IconColor.primary);
+    component.ngOnChanges(
+      simpleChange({
+        icon: Icons.home,
+        color: LinkColor.primary,
+      })
+    );
+
+    expect(component.buttonClass).toContain('color-primary');
+    expect(component.buttonClass).toContain('b-icon-' + IconColor.primary);
+    expect(element.children[0].className).toContain('color-primary');
+    expect(element.children[0].className).toContain(
+      'b-icon-' + IconColor.primary
+    );
   });
 
   it('should emit clicked when clicking the component', () => {
@@ -67,8 +82,13 @@ describe('TextButtonComponent', () => {
   });
 
   it('should add disabled class', () => {
-    component.disabled = true;
-    fixture.detectChanges();
-    expect(fixture.nativeElement.classList).toContain('disabled');
+    component.ngOnChanges(
+      simpleChange({
+        disabled: true,
+      })
+    );
+
+    expect(component.buttonClass).toContain('disabled');
+    expect(element.children[0].className).toContain('disabled');
   });
 });

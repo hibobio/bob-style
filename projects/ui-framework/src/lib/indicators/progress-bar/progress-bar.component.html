@@ -1,6 +1,6 @@
 <div class="bpb-header">
 
-  <h5 *ngIf="data.value && type === barType.primary && !config.hideValue"
+  <h5 *ngIf="type === barType.primary && !config.hideValue"
       class="bpb-value"
       [id]="id+'-val'">{{data.value}}%</h5>
 

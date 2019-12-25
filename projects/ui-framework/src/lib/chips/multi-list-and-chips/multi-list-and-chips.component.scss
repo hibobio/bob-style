@@ -52,7 +52,8 @@ b-chip-list {
 }
 
 b-empty-state {
-  @include position(0 0 0 0);
+  align-self: center;
+  margin: auto;
   justify-content: center;
   text-align: center;
   padding: inherit;

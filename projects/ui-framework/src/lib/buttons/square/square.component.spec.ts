@@ -7,6 +7,7 @@ import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { IconComponent } from '../../icons/icon.component';
 import { Icons, IconSize } from '../../icons/icons.enum';
+import { simpleChange } from '../../services/utils/test-helpers';
 
 describe('SquareButtonComponent', () => {
   let component: SquareButtonComponent;
@@ -22,8 +23,15 @@ describe('SquareButtonComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(SquareButtonComponent);
         component = fixture.componentInstance;
-        component.icon = Icons.file_copy;
-        buttonElement = fixture.debugElement.query(By.css('button')).nativeElement;
+
+        component.ngOnChanges(
+          simpleChange({
+            icon: Icons.file_copy,
+          })
+        );
+
+        buttonElement = fixture.debugElement.query(By.css('button'))
+          .nativeElement;
         component.clicked.subscribe(() => {});
         spyOn(component.clicked, 'emit');
         fixture.detectChanges();
@@ -48,25 +56,39 @@ describe('SquareButtonComponent', () => {
     it('should set icon size to large by default', () => {
       expect(buttonElement.classList).toContain('b-icon-' + IconSize.large);
     });
+
     it('should set icon size to medium if size is small', () => {
-      component.size = ButtonSize.small;
       fixture.detectChanges();
+      component.ngOnChanges(
+        simpleChange({
+          size: ButtonSize.small,
+        })
+      );
+
+      expect(component.buttonClass).toContain('b-icon-' + IconSize.medium);
       expect(buttonElement.classList).toContain('b-icon-' + IconSize.medium);
     });
   });
 
   describe('button classes', () => {
     it('should have type as class', () => {
-      component.type = ButtonType.tertiary;
-      fixture.detectChanges();
+      component.ngOnChanges(
+        simpleChange({
+          type: ButtonType.tertiary,
+        })
+      );
+      expect(component.buttonClass).toContain('tertiary');
       expect(buttonElement.classList).toContain('tertiary');
     });
     it('should not have disabled class by default', () => {
       expect(buttonElement.getAttribute('disabled')).toBeFalsy();
     });
     it('should have disabled class', () => {
-      component.disabled = true;
-      fixture.detectChanges();
+      component.ngOnChanges(
+        simpleChange({
+          disabled: true,
+        })
+      );
       expect(buttonElement.getAttribute('disabled')).toBeTruthy();
     });
   });

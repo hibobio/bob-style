@@ -6,10 +6,12 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
 @Component({
   selector: 'b-avatar-cell',
   template: `
+    <b-table-actions-wrapper [menuItems]="params && params['menuItems']">
         <b-avatar [imageSource]='params.value'
                   [isClickable]="true"
                   (clicked)='clicked($event)'>
         </b-avatar>
+    </b-table-actions-wrapper>
     `,
 })
 export class AvatarCellComponent implements ICellRendererAngularComp {

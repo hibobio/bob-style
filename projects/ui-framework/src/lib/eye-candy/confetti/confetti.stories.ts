@@ -5,6 +5,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EyeCandyModule } from '../eye-candy.module';
 import { makeArray } from 'bob-style';
+import { action } from '@storybook/addon-actions';
 
 const story = storiesOf(ComponentGroupType.EyeCandy, module).addDecorator(
   withKnobs
@@ -13,7 +14,8 @@ const story = storiesOf(ComponentGroupType.EyeCandy, module).addDecorator(
 const template = `
   <b-confetti #confetti
               [colors]="colors"
-              [numberOfConfetti]="numberOfConfetti">
+              [numberOfConfetti]="numberOfConfetti"
+              (complete)="onComplete()">
   </b-confetti>
   <button (click)="confetti.fireConfetti(pos)">Party!</button>
 `;
@@ -27,9 +29,10 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [avatarImages] | string[] | Array of image urls | []
-  [centerAvatarImage] | string | the avatar to be displayed in center | null
-  [speed] | number | avatar movement speed is around value | 4
+  [colors] | string[] | Array of colors in hex | []
+  [numberOfConfetti] | number | number of confetti generated from each pos | 20
+  [pos] | { x: number, y: number }[] | coords the confetti are generated from | null
+  (complete) | callback when the last confetti is out of page & the requestAnimationFrame is canceled
 
   ~~~
   ${ template }
@@ -39,17 +42,7 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Confetti'" style=" background: rgb(247,247,247);">
-  <div style="
-        position: relative;
-        top: 0;
-        left: 0;
-        width: 90%;
-        height: 400px;
-        max-width: none;
-  ">
     ${ template }
-  </div>
-
 </b-story-book-layout>
 `;
 
@@ -65,6 +58,7 @@ const toAdd = () => ({
     colors: object('colors', ['#000000', '#CCCCCC', '#FF0000']),
     numberOfConfetti: number('numberOfConfetti', 20),
     pos: object('pos', pos),
+    onComplete: action('confetti complete'),
   },
   moduleMetadata: {
     imports: [StoryBookLayoutModule, BrowserAnimationsModule, EyeCandyModule]

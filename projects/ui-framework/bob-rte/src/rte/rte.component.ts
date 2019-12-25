@@ -5,6 +5,7 @@ import {
   forwardRef,
   ChangeDetectorRef,
   ElementRef,
+  OnDestroy,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 
@@ -16,6 +17,7 @@ import {
   Keys,
   ListChange,
   cloneArray,
+  chainCall,
 } from 'bob-style';
 
 import { RTEbaseElement } from './rte.abstract';
@@ -39,7 +41,8 @@ import { PlaceholdersConverterService } from './placeholders.service';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
+export class RichTextEditorComponent extends RTEbaseElement
+  implements OnInit, OnDestroy {
   constructor(
     public cd: ChangeDetectorRef,
     public placeholdersConverter: PlaceholdersConverterService,
@@ -129,6 +132,8 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
         }
+
+        this.editor.placeholder.hide();
       },
 
       blur: () => {
@@ -143,6 +148,10 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
 
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
+        }
+
+        if (this.length === 0) {
+          this.editor.placeholder.show();
         }
       },
 
@@ -167,18 +176,26 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         }
       },
 
+      'window.copy': (event: ClipboardEvent) => {
+        event.preventDefault();
+
+        const clipboardData: DataTransfer =
+          event.clipboardData || event['originalEvent'].clipboardData;
+
+        const html = chainCall(
+          this.outputTransformers,
+          this.editor.html.getSelected()
+        );
+
+        clipboardData.setData('text/plain', html);
+        clipboardData.setData('text/html', html);
+      },
+
       'paste.afterCleanup': (html: string): string =>
-        this.inputTransformers.reduce(
-          (previousResult, fn) => fn(previousResult),
-          html
-        ),
+        chainCall(this.inputTransformers, html),
 
       'charCounter.update': () => {
-        this.length = this.getEditor().charCounter.count();
-
-        if (!this.cd['destroyed']) {
-          this.cd.detectChanges();
-        }
+        this.updateLength();
       },
 
       'commands.after': (cmd: string) => {
@@ -194,7 +211,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         // mentions toolbar button
         if (cmd === 'mentions') {
           if (this.tribute) {
-            const curSelection = this.editor.selection.get();
+            const curSelection: Selection = this.editor.selection.get();
             const curText = curSelection.focusNode.textContent;
 
             this.editor.undo.saveStep();
@@ -209,7 +226,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
 
         // emoji toolbar button
         if ((cmd = 'emoticonInsert') && param1 && param2) {
-          const curSelection = this.editor.selection.get();
+          const curSelection: Selection = this.editor.selection.get();
           const curText = curSelection.focusNode.textContent;
 
           this.editor.undo.saveStep();
@@ -225,6 +242,15 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         }
       },
     };
+  }
+
+  public ngOnDestroy(): void {
+    if (this.tribute) {
+      this.tribute.detach(this.getEditorTextbox());
+    }
+
+    // remove event listeners
+    this.getEditorTextbox().outerHTML = this.getEditorTextbox().outerHTML;
   }
 
   // mentions methods

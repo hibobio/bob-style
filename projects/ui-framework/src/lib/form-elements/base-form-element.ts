@@ -44,6 +44,7 @@ export abstract class BaseFormElement
   public baseValue: any;
   public wrapEvent = true;
   public ignoreEvents: InputEventType[] = cloneArray(IGNORE_EVENTS_DEF);
+  protected writingValue = false;
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
 
@@ -93,6 +94,8 @@ export abstract class BaseFormElement
   }
 
   writeValue(value: any): void {
+    this.writingValue = true;
+
     if (value !== undefined) {
       this.value = chainCall(this.inputTransformers, value);
     }
@@ -105,6 +108,8 @@ export abstract class BaseFormElement
     }
 
     this.cd.detectChanges();
+
+    this.writingValue = false;
   }
 
   protected transmitValue(

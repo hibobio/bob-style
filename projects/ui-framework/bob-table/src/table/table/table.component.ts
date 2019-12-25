@@ -10,8 +10,10 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  HostListener,
 } from '@angular/core';
+import { AgGridNg2 } from 'ag-grid-angular';
 // tslint:disable-next-line:max-line-length
 import {
   CellClickedEvent,
@@ -20,33 +22,36 @@ import {
   GridColumnsChangedEvent,
   GridOptions,
   GridReadyEvent,
-  RowNode
 } from 'ag-grid-community';
-import { cloneDeep, get, has, map, once } from 'lodash';
-import { ColumnDef, ColumnsOrderChangedEvent, RowClickedEvent, SortChangedEvent } from './table.interface';
-import { AgGridNg2 } from 'ag-grid-angular';
+import { cloneDeep, get, has, map } from 'lodash';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
+import { WithAgGrid } from './ag-grid-wrapper';
 import { RowSelection, TableType } from './table.enum';
-
-const LICENSE_KEY =
-  'hibob_Bob_1Devs_1Deployment_23_April_2020__MTU4NzU5NjQwMDAwMA==5b77134bf43e27e7f8ccb20bdfa3c155';
+import {
+  ColumnDef,
+  ColumnsOrderChangedEvent,
+  RowClickedEvent,
+  SortChangedEvent
+} from './table.interface';
+import {WithTree} from './tree-able';
+// DO NOT DELETE!!!!, need this import for the build
+import {Constructor} from 'bob-style';
 
 @Component({
   selector: 'b-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss', './styles/tree-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableComponent implements OnInit, OnChanges {
+export class TableComponent extends WithTree(WithAgGrid()) implements OnInit, OnChanges {
   constructor(
     private tableUtilsService: TableUtilsService,
     private elRef: ElementRef,
     private cdr: ChangeDetectorRef
   ) {
-    this.tableLicense();
+    super();
   }
 
-  static isLicenseSet = false;
   @ViewChild('agGrid', { static: true }) agGrid: AgGridNg2;
 
   @Input() type: TableType = TableType.Primary;
@@ -57,14 +62,24 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() suppressColumnVirtualisation = true;
   @Input() tableGridOptions: Partial<GridOptions> = {};
   @Input() suppressDragLeaveHidesColumns = false;
+  @Input() removeColumnButtonEnabled = false;
 
-  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<SortChangedEvent>();
-  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
+  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
+    SortChangedEvent
+  >();
+  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<
+    RowClickedEvent
+  >();
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() gridInit: EventEmitter<void> = new EventEmitter<void>();
   @Output() columnsChanged: EventEmitter<void> = new EventEmitter<void>();
-  @Output() columnsOrderChanged: EventEmitter<ColumnsOrderChangedEvent> = new EventEmitter<ColumnsOrderChangedEvent>();
-  @Output() cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter<CellClickedEvent>();
+  @Output() columnsOrderChanged: EventEmitter<
+    ColumnsOrderChangedEvent
+  > = new EventEmitter<ColumnsOrderChangedEvent>();
+  @Output() cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter<
+    CellClickedEvent
+  >();
+  @Output() columnRemoved: EventEmitter<string> = new EventEmitter<string>();
 
   readonly rowHeight: number = 56;
   readonly autoSizePadding: number = 30;
@@ -76,25 +91,97 @@ export class TableComponent implements OnInit, OnChanges {
 
   private columns: string[];
 
-  readonly tableLicense = once(() =>
-    // @ts-ignore
-    import('ag-grid-enterprise').then(agGrig => {
-      if (!TableComponent.isLicenseSet) {
-        TableComponent.isLicenseSet = true;
-        agGrig.LicenseManager.setLicenseKey(LICENSE_KEY);
+  @HostListener('click', ['$event'])
+  onHostClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+
+    if (
+      this.removeColumnButtonEnabled &&
+      this.columnRemoved.observers &&
+      target.matches('.ag-header-viewport .ag-header-cell[col-id]')
+    ) {
+      const outerWidth = target.offsetWidth;
+      const outerHeight = target.offsetHeight;
+      const paddingRight = parseFloat(getComputedStyle(target).paddingRight);
+
+      if (
+        event.offsetX <= outerWidth - paddingRight &&
+        event.offsetX >= outerWidth - paddingRight - 16 &&
+        event.offsetY >= outerHeight / 2 - 8 &&
+        event.offsetY <= outerHeight / 2 + 8
+      ) {
+        event.stopPropagation();
+        this.columnRemoved.emit(target.getAttribute('col-id'));
       }
-    })
-  );
+    }
+  }
 
   ngOnInit() {
     this.setGridHeight(this.maxHeight);
+    this.setGridOptions({
+      ...this.initGridOptions(),
+      ...this.tableGridOptions,
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (has(changes, 'columnDefs')) {
+      this.gridColumnDefs = this.tableUtilsService.getGridColumnDef(
+        this.columnDefs,
+        this.rowSelection
+      );
+    }
+    if (has(changes, 'maxHeight')) {
+      this.maxHeight = changes.maxHeight.currentValue;
+      this.setGridHeight(this.maxHeight);
+    }
+  }
+
+  onSortChanged($event): void {
+    this.sortChanged.emit({
+      colId: get($event.api.getSortModel(), '[0].colId'),
+      sort: get($event.api.getSortModel(), '[0].sort'),
+    });
+  }
+
+  onSelectionChanged($event): void {
+    this.selectionChanged.emit($event.api.getSelectedRows());
+  }
+
+  onRowClicked($event): void {
+    this.rowClicked.emit({
+      rowIndex: $event.rowIndex,
+      data: $event.data,
+      agGridId: get($event, 'node.id', null),
+    });
+  }
+
+  private setOrderedColumns(columns: Column[]): void {
+    this.columns = map(columns, col => col.colDef.field);
+    this.columnsOrderChanged.emit({ columns: cloneDeep(this.columns) });
+  }
+
+  private setGridHeight(height: number): void {
+    this.elRef.nativeElement.style.setProperty('--max-height', `${height}px`);
+  }
+
+  public getOrderedColumnFields(): string[] {
+    return this.columns;
+  }
+
+  private initGridOptions(): GridOptions {
     const that = this;
-    const gridOptions = <GridOptions>{
+    return {
       suppressAutoSize: true,
       suppressRowClickSelection: true,
       suppressDragLeaveHidesColumns: this.suppressDragLeaveHidesColumns,
       autoSizePadding: this.autoSizePadding,
       suppressColumnVirtualisation: this.suppressColumnVirtualisation,
+      autoGroupColumnDef: {
+        cellRendererParams: {
+          suppressCount: true
+        }
+      },
       rowHeight: this.rowHeight,
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,
@@ -114,96 +201,12 @@ export class TableComponent implements OnInit, OnChanges {
         this.cdr.markForCheck();
         this.columnsChanged.emit();
       },
-
       onDragStopped(event: DragStoppedEvent): void {
         that.setOrderedColumns(event.columnApi.getAllGridColumns());
       },
-
       onCellClicked(event: CellClickedEvent): void {
         that.cellClicked.emit(event);
-      }
+      },
     };
-
-    this.gridOptions = {
-      ...gridOptions,
-      ...this.tableGridOptions
-    };
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (has(changes, 'columnDefs')) {
-      this.gridColumnDefs = this.tableUtilsService.getGridColumnDef(
-        this.columnDefs,
-        this.rowSelection
-      );
-    }
-    if (has(changes, 'maxHeight')) {
-      this.maxHeight = changes.maxHeight.currentValue;
-      this.setGridHeight(this.maxHeight);
-    }
-  }
-
-  onSortChanged($event): void {
-    this.sortChanged.emit({
-      colId: get($event.api.getSortModel(), '[0].colId'),
-      sort: get($event.api.getSortModel(), '[0].sort')
-    });
-  }
-
-  onSelectionChanged($event): void {
-    this.selectionChanged.emit($event.api.getSelectedRows());
-  }
-
-  onRowClicked($event): void {
-    this.rowClicked.emit({
-      rowIndex: $event.rowIndex,
-      data: $event.data,
-      agGridId: get($event, 'node.id', null)
-    });
-  }
-
-  private setOrderedColumns(columns: Column[]): void {
-    this.columns = map(columns, col => col.colDef.field);
-    this.columnsOrderChanged.emit({columns: cloneDeep(this.columns)});
-  }
-
-  private setGridHeight(height: number): void {
-    this.elRef.nativeElement.style.setProperty('--max-height', `${height}px`);
-  }
-
-  public getDisplayedRowCount(): number {
-    return this.gridOptions.api.getDisplayedRowCount();
-  }
-
-  public addRows(rows: any[]): void {
-    this.gridOptions.api.updateRowData({ add: rows });
-  }
-
-  public filterRows(filterQuery: string): void {
-    this.gridOptions.api.setQuickFilter(filterQuery);
-  }
-
-  public resetFilter(): void {
-    this.gridOptions.api.resetQuickFilter();
-  }
-
-  public removeRows(rows: any[]): void {
-    this.gridOptions.api.updateRowData({ remove: rows });
-  }
-
-  public updateRows(rowsData: any[]): void {
-    this.gridOptions.api.updateRowData({ update: rowsData });
-  }
-
-  public getRow(rowIndex: string): RowNode {
-    return this.gridOptions.api.getRowNode(rowIndex);
-  }
-
-  public deselectAll(): void {
-    this.gridOptions.api.deselectAll();
-  }
-
-  public getOrderedColumnFields(): string[] {
-    return this.columns;
   }
 }

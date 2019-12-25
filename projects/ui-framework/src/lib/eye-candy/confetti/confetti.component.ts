@@ -49,7 +49,9 @@ export class ConfettiComponent implements OnInit, OnDestroy {
         this.CONFETTI.push(new Plane(p, this.colors));
       }
     });
-    this._render();
+    if (!this.loopReq) {
+      this._render();
+    }
   }
 
   private _getColor(w, h, color) {

@@ -1,6 +1,8 @@
 @import '../../style/common-imports';
 
 .text-section {
+  min-width: 0;
+
   ::ng-deep b-textarea {
     position: relative;
     .bfe-wrap.focused[class] {

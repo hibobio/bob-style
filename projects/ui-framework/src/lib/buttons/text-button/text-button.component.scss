@@ -1,12 +1,17 @@
 @import '../../style/common-imports';
 
 :host {
-  display: inline-flex;
+  display: inline-block;
   vertical-align: middle;
-  cursor: pointer;
-  align-items: center;
-  @include b-bold-body($addCssVars: false);
   user-select: none;
+  overflow: hidden;
+}
+
+.text-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  @include b-bold-body($addCssVars: false);
 
   &:hover,
   &:focus {
@@ -22,11 +27,12 @@
   &.color-primary {
     color: var(--primary-500);
   }
-}
 
-.b-icon {
-  overflow: hidden;
-  margin-right: 4px;
-  position: relative;
-  top: -1px;
+  &:before {
+    overflow: hidden;
+    margin-right: 4px;
+    position: relative;
+    top: -1px;
+    padding-bottom: 1px;
+  }
 }

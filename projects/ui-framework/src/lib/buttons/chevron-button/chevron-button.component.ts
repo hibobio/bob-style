@@ -1,4 +1,8 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { BaseButtonElement } from '../button.abstract';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { ButtonSize, ButtonType } from '../buttons.enum';
@@ -9,9 +13,7 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
     <button
       #button
       type="button"
-      class="icon-after {{ type || buttonType.secondary }} {{
-        size || buttonSize.medium
-      }} {{ getIconClass() }}"
+      [ngClass]="buttonClass"
       (click)="onClick($event)"
       [attr.disabled]="disabled || null"
     >
@@ -23,22 +25,26 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
   providers: [
     { provide: BaseButtonElement, useExisting: ChevronButtonComponent },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChevronButtonComponent extends BaseButtonElement {
-  constructor() {
-    super();
+  constructor(protected cd: ChangeDetectorRef) {
+    super(cd);
   }
 
-  @Input() active = false;
-
-  getIconClass(): string {
+  getButtonClass(): string {
     return (
-      (this.active ? Icons.chevron_up : Icons.chevron_down) +
-      ' b-icon-' +
-      ' b-icon-' +
-      (this.size === ButtonSize.large ? IconSize.large : IconSize.medium) +
-      ' b-icon-' +
-      (this.type === ButtonType.primary ? IconColor.white : IconColor.dark)
+      (this.type || ButtonType.secondary) +
+      ' ' +
+      (this.size || ButtonSize.medium) +
+      ' ' +
+      ((this.active ? Icons.chevron_up : Icons.chevron_down) +
+        ' b-icon-' +
+        ' b-icon-' +
+        (this.size === ButtonSize.large ? IconSize.large : IconSize.medium) +
+        ' b-icon-' +
+        (this.type === ButtonType.primary ? IconColor.white : IconColor.dark)) +
+      ' icon-after'
     );
   }
 }

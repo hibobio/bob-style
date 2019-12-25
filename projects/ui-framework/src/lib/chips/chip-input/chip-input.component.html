@@ -19,6 +19,7 @@
            [ngClass]="{empty: input.value === ''}"
            [attr.id]="id"
            [attr.name]="id"
+           [attr.maxlength]="maxChars || null"
            [type]="inputTypes.text"
            [attr.placeholder]="(!value || value.length === 0) && placeholder ? placeholder : null"
            [disabled]="disabled"

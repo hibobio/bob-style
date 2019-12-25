@@ -65,8 +65,11 @@ export { AvatarModule } from './lib/avatar/avatar/avatar.module';
 export {
   AvatarComponent
 } from './lib/avatar/avatar/avatar.component';
-export { AvatarSize, AvatarOrientation, AvatarBadge } from './lib/avatar/avatar/avatar.enum';
-export { BadgeConfig, Avatar } from './lib/avatar/avatar/avatar.interface';
+export {
+  AvatarImageComponent
+} from './lib/avatar/avatar/avatar-image.component';
+export * from './lib/avatar/avatar/avatar.enum';
+export * from './lib/avatar/avatar/avatar.interface';
 // Employees Showcase Module
 export { EmployeesShowcaseModule } from './lib/avatar/employees-showcase/employees-showcase.module';
 export { EmployeesShowcaseComponent } from './lib/avatar/employees-showcase/employees-showcase.component';
@@ -181,6 +184,7 @@ export {
 export * from './lib/form-elements/date-picker/datepicker.enum';
 export * from './lib/form-elements/date-picker/datepicker.interface';
 export { DateParseService } from './lib/form-elements/date-picker/date-parse-service/date-parse.service';
+// tslint:disable-next-line: max-line-length
 export { DateInputDirectiveModule } from './lib/form-elements/date-picker/date-input-directive/dateinput.directive.module';
 export { DateInputDirective } from './lib/form-elements/date-picker/date-input-directive/dateinput.directive';
 export {
@@ -340,6 +344,7 @@ export {
 export {
   QuickFilterComponent
 } from './lib/search/quick-filter/quick-filter.component';
+export { QuickFilterBarComponent } from './lib/search/quick-filter/quick-filter-bar.component';
 export {
   QuickFilterConfig,
   QuickFilterChangeEvent,
@@ -526,6 +531,7 @@ export {
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
 export { FloatingAvatarsComponent } from './lib/eye-candy/floating-avatars/floating-avatars.component';
 export { ConfettiComponent } from './lib/eye-candy/confetti/confetti.component';
+export { SnowComponent } from './lib/eye-candy/snow/snow.component';
 // text colored links
 export { TextColoredLinksModule } from './lib/eye-candy/text-colored-links/text-colored-links.module';
 export {

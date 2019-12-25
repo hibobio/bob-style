@@ -121,7 +121,9 @@ export class AutoCompletePanelComponent
   }
 
   optionClick(option: AutoCompleteOption): void {
-    this.optionSelect.emit(option);
+    if (option && this.optionSelect.observers) {
+      this.optionSelect.emit(option);
+    }
   }
 
   ngOnDestroy(): void {

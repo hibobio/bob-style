@@ -1,6 +1,12 @@
-import { Component, Input, HostBinding } from '@angular/core';
+import {
+  Component,
+  Input,
+  HostBinding,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { ButtonSize, ButtonType } from '../buttons.enum';
-import { IconColor, IconSize } from '../../icons/icons.enum';
+import { IconSize, IconColor } from '../../icons/icons.enum';
 import { BaseButtonElement } from '../button.abstract';
 
 @Component({
@@ -8,35 +14,43 @@ import { BaseButtonElement } from '../button.abstract';
   template: `
     <button
       type="button"
-      class="{{ type || buttonType.primary }} {{ size || buttonSize.medium }} {{
-        getIconClass()
-      }}"
+      [ngClass]="buttonClass"
       [attr.disabled]="disabled || null"
       (click)="onClick($event)"
     ></button>
   `,
   styleUrls: ['./square.component.scss'],
   providers: [
-    { provide: BaseButtonElement, useExisting: SquareButtonComponent }
-  ]
+    { provide: BaseButtonElement, useExisting: SquareButtonComponent },
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SquareButtonComponent extends BaseButtonElement {
-  constructor() {
-    super();
+  constructor(protected cd: ChangeDetectorRef) {
+    super(cd);
   }
 
   @Input() color: IconColor = IconColor.dark;
+  @Input() toolTipSummary: string = null;
 
-  @HostBinding('attr.data-tooltip') @Input() toolTipSummary: string = null;
+  @HostBinding('attr.data-tooltip') get getTooltipText(): string {
+    return (!this.disabled && this.toolTipSummary) || null;
+  }
 
-  getIconClass(): string {
-    return this.icon
-      ? this.icon +
+  getButtonClass(): string {
+    return (
+      (this.type || ButtonType.primary) +
+      ' ' +
+      (this.size || ButtonSize.medium) +
+      ' ' +
+      (this.icon
+        ? this.icon +
           ' b-icon-' +
           (this.size === ButtonSize.small ? IconSize.medium : IconSize.large) +
           ' b-icon-' +
           this.color +
           (this.type === ButtonType.tertiary ? ' has-hover' : '')
-      : '';
+        : '')
+    );
   }
 }

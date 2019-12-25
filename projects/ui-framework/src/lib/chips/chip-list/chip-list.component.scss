@@ -4,8 +4,14 @@
   margin: 0 -4px;
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
   text-align: left;
+  overflow-y: auto;
   flex-grow: 1;
+
+  &.empty {
+    align-content: unset;
+  }
 
   &[data-align='left'] {
     justify-content: flex-start;

@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChevronButtonComponent } from './chevron-button.component';
 import { By } from '@angular/platform-browser';
+import { simpleChange } from '../../services/utils/test-helpers';
 
 describe('ChevronButtonComponent', () => {
   let component: ChevronButtonComponent;
@@ -37,11 +38,16 @@ describe('ChevronButtonComponent', () => {
       expect(button.nativeElement.classList).toContain('b-icon-chevron-down');
     });
     it('should display chevron-up icon when active is true', () => {
-      component.active = true;
-      fixture.detectChanges();
+      component.ngOnChanges(
+        simpleChange({
+          active: true,
+        })
+      );
       const button = fixture.debugElement.query(By.css('button'));
 
-      expect(button.nativeElement.classList).not.toContain('b-icon-chevron-down');
+      expect(button.nativeElement.classList).not.toContain(
+        'b-icon-chevron-down'
+      );
       expect(button.nativeElement.classList).toContain('b-icon-chevron-up');
     });
   });

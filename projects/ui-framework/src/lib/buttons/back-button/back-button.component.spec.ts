@@ -1,10 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BackButtonComponent } from './back-button.component';
-import { ButtonComponent } from '../button/button.component';
-import { MockComponent } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 import { Icons } from '../../icons/icons.enum';
 import { BackButtonType, ButtonSize } from '../buttons.enum';
+import { simpleChange } from '../../services/utils/test-helpers';
 
 describe('BackButtonComponent', () => {
   let component: BackButtonComponent;
@@ -13,16 +12,18 @@ describe('BackButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MockComponent(ButtonComponent), BackButtonComponent],
+      declarations: [BackButtonComponent],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(BackButtonComponent);
         component = fixture.componentInstance;
-        buttonElement = fixture.debugElement.query(By.css('button')).nativeElement;
+        fixture.detectChanges();
+
+        buttonElement = fixture.debugElement.query(By.css('button'))
+          .nativeElement;
         component.clicked.subscribe(() => {});
         spyOn(component.clicked, 'emit');
-        fixture.detectChanges();
       });
   }));
 
@@ -31,6 +32,8 @@ describe('BackButtonComponent', () => {
   });
 
   it('should show button component with back icon and button size small', () => {
+    expect(component.buttonClass).toContain(Icons.back_arrow_link);
+    expect(component.buttonClass).toContain(ButtonSize.small);
     expect(buttonElement.classList).toContain(Icons.back_arrow_link);
     expect(buttonElement.classList).toContain(ButtonSize.small);
   });
@@ -45,18 +48,28 @@ describe('BackButtonComponent', () => {
   });
 
   it('should set button as disabled', () => {
-    component.disabled = true;
-    fixture.detectChanges();
+    component.ngOnChanges(
+      simpleChange({
+        disabled: true,
+      })
+    );
+
     expect(buttonElement.getAttribute('disabled')).toBeTruthy();
   });
 
   it('should set button type as secondary by default', () => {
+    expect(component.buttonClass).toContain(BackButtonType.secondary);
     expect(buttonElement.classList).toContain(BackButtonType.secondary);
   });
 
   it('should set button type as tertiary', () => {
-    component.type = BackButtonType.tertiary as any;
-    fixture.detectChanges();
+    component.ngOnChanges(
+      simpleChange({
+        type: BackButtonType.tertiary,
+      })
+    );
+
+    expect(component.buttonClass).toContain(BackButtonType.tertiary);
     expect(buttonElement.classList).toContain(BackButtonType.tertiary);
   });
 });

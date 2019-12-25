@@ -242,6 +242,147 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     this.doneFirstChange = true;
   }
 
+  public transmit(
+    value = NaN,
+    path = 'value',
+    event = [InputEventType.onBlur]
+  ) {
+    if (this.writingValue) {
+      this.writingValue = false;
+      return;
+    }
+
+    if (value === value) {
+      set(this, path, value);
+    }
+
+    this.transmitValue(this.value, {
+      eventType: this.writingValue ? [InputEventType.onWrite] : event,
+      addToEventObj: { date: this.value },
+    });
+  }
+
+  public onInputChange(parsed: DateParseResult, index: number = 0): void {
+    let picker = this.getPicker(index);
+
+    if (picker) {
+      picker.select(parsed.date);
+    } else {
+      setTimeout(() => {
+        this.writingValue = true;
+        picker = this.getPicker(index);
+        picker.select(parsed.date);
+      }, 0);
+    }
+  }
+
+  public onPickerMonthSelect(date: Date, index: number = 0): void {
+    if (this.type === DatepickerType.month) {
+      const picker = this.getPicker(index);
+      this.allowInputBlur = true;
+      picker.select(date);
+      this.closePicker(picker);
+    }
+  }
+
+  public clearInput(index: number = 0, path = 'value'): void {
+    set(this, path, null);
+    this.cd.detectChanges();
+  }
+
+  public onInputFocus(index: number = 0): void {
+    if (!this.disabled) {
+      this.inputFocused[index] = true;
+      if (this.allowKeyInput && !this.isMobile) {
+        this.getInput(index).select();
+      }
+      if (!this.isMobile) {
+        this.openPicker(index);
+      }
+    }
+  }
+
+  public onInputBlur(index: number = 0): void {
+    const picker = this.getPicker(index);
+    if (
+      this.allowKeyInput &&
+      !this.allowInputBlur &&
+      !this.isMobile &&
+      picker.opened
+    ) {
+      this.getInput(index).focus();
+    } else if (!this.allowInputBlur || !picker.opened) {
+      this.inputFocused[index] = false;
+    }
+    this.allowInputBlur = false;
+  }
+
+  public onInputKeydown(event: KeyboardEvent, index: number = 0): void {
+    if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) {
+      this.closePicker(index);
+    }
+
+    if (isKey(event.key, Keys.tab)) {
+      const picker = this.getPicker(index);
+
+      if (picker.opened && !this.isMobile) {
+        event.preventDefault();
+        this.allowInputBlur = true;
+
+        const elToFocus = this.getPickerPanelElements(
+          picker,
+          '.mat-calendar-body td[tabindex="0"]'
+        )[0];
+        if (elToFocus) {
+          elToFocus.focus();
+        }
+      }
+    }
+  }
+
+  public onPickerOpen(index: number = 0): void {
+    this.inputFocused[index] = true;
+    if (this.allowKeyInput && !this.isMobile) {
+      this.getInput(index).focus();
+    }
+    const picker = this.getPicker(index);
+
+    this.zone.runOutsideAngular(() => {
+      this.windowRef.nativeWindow.requestAnimationFrame(() => {
+        const panel = this.getPickerPanel(picker);
+
+        if (!this.isMobile && panel.popup) {
+          this.DOM.setCssProps(panel.popup, this.getOverlayStyles(panel.popup));
+
+          const popupStyles = panel.popup.getAttribute('style');
+
+          if (popupStyles.includes('bottom')) {
+            this.panelPosition = PanelDefaultPosVer.above;
+          }
+          if (popupStyles.includes('top')) {
+            this.panelPosition = PanelDefaultPosVer.below;
+          }
+          this.cd.detectChanges();
+        }
+
+        if (this.isMobile && panel.dialog) {
+          this.DOM.setCssProps(panel.dialog, this.overlayStylesDef);
+        }
+      });
+    });
+
+    this.doOnPickerOpen(picker);
+  }
+
+  public onPickerClose(index: number = 0): void {
+    if (this.allowKeyInput && !this.isMobile) {
+      this.getInput(index).setSelectionRange(11, 11);
+    } else {
+      this.getInput(index).blur();
+    }
+    this.panelPosition = null;
+  }
+
   protected getPicker(index: string | number): MatDatepicker<any> {
     return this.pickers && this.pickers.length > 0
       ? this.pickers.toArray()[parseInt(index as string, 10)]
@@ -365,138 +506,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
   }
 
-  public onPickerOpen(index: number = 0): void {
-    this.inputFocused[index] = true;
-    if (this.allowKeyInput && !this.isMobile) {
-      this.getInput(index).focus();
-    }
-    const picker = this.getPicker(index);
-
-    this.zone.runOutsideAngular(() => {
-      this.windowRef.nativeWindow.requestAnimationFrame(() => {
-        const panel = this.getPickerPanel(picker);
-
-        if (!this.isMobile && panel.popup) {
-          this.DOM.setCssProps(panel.popup, this.getOverlayStyles(panel.popup));
-
-          const popupStyles = panel.popup.getAttribute('style');
-
-          if (popupStyles.includes('bottom')) {
-            this.panelPosition = PanelDefaultPosVer.above;
-          }
-          if (popupStyles.includes('top')) {
-            this.panelPosition = PanelDefaultPosVer.below;
-          }
-          this.cd.detectChanges();
-        }
-
-        if (this.isMobile && panel.dialog) {
-          this.DOM.setCssProps(panel.dialog, this.overlayStylesDef);
-        }
-      });
-    });
-
-    this.doOnPickerOpen(picker);
-  }
-
-  public onPickerClose(index: number = 0): void {
-    if (this.allowKeyInput && !this.isMobile) {
-      this.getInput(index).setSelectionRange(11, 11);
-    } else {
-      this.getInput(index).blur();
-    }
-    this.panelPosition = null;
-  }
-
-  public onPickerMonthSelect(date: Date, index: number = 0): void {
-    if (this.type === DatepickerType.month) {
-      const picker = this.getPicker(index);
-      this.allowInputBlur = true;
-      picker.select(date);
-      this.closePicker(picker);
-    }
-  }
-
   public isInputEmpty(index: number = 0): boolean {
     const input = this.getInput(index);
     return !input || !input.value.trim();
-  }
-
-  public clearInput(index: number = 0, path = 'value'): void {
-    set(this, path, null);
-    this.cd.detectChanges();
-  }
-
-  public onInputFocus(index: number = 0): void {
-    if (!this.disabled) {
-      this.inputFocused[index] = true;
-      if (this.allowKeyInput && !this.isMobile) {
-        this.getInput(index).select();
-      }
-      if (!this.isMobile) {
-        this.openPicker(index);
-      }
-    }
-  }
-
-  public onInputBlur(index: number = 0): void {
-    const picker = this.getPicker(index);
-    if (
-      this.allowKeyInput &&
-      !this.allowInputBlur &&
-      !this.isMobile &&
-      picker.opened
-    ) {
-      this.getInput(index).focus();
-    } else if (!this.allowInputBlur || !picker.opened) {
-      this.inputFocused[index] = false;
-    }
-    this.allowInputBlur = false;
-  }
-
-  public onInputKeydown(event: KeyboardEvent, index: number = 0): void {
-    if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) {
-      this.closePicker(index);
-    }
-
-    if (isKey(event.key, Keys.tab)) {
-      const picker = this.getPicker(index);
-
-      if (picker.opened && !this.isMobile) {
-        event.preventDefault();
-        this.allowInputBlur = true;
-
-        const elToFocus = this.getPickerPanelElements(
-          picker,
-          '.mat-calendar-body td[tabindex="0"]'
-        )[0];
-        if (elToFocus) {
-          elToFocus.focus();
-        }
-      }
-    }
-  }
-
-  public onInputChange(parsed: DateParseResult, index: number = 0): void {
-    const picker = this.getPicker(index);
-
-    if (picker) {
-      picker.select(parsed.date);
-    }
-  }
-
-  public transmit(
-    value = NaN,
-    path = 'value',
-    event = [InputEventType.onBlur]
-  ) {
-    if (value === value) {
-      set(this, path, value);
-    }
-
-    this.transmitValue(this.value, {
-      eventType: event,
-      addToEventObj: { date: this.value },
-    });
   }
 }

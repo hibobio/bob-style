@@ -37,7 +37,7 @@ const value = `<br><br> <br><br> <span> <br> </span> <div><br></div> <span><br><
   of <span style="font-size: 18px;">large 🔍</span> size.
 </div>
 
-<div><br></div> <span><br></span> <div><br></div>
+<div><br class="222"></div> <span><br></span> <div><br></div>
 
 <h1><em>Hooray!</em></h1>
 
@@ -79,6 +79,7 @@ const template = `
       [mentionsList]="mentionsList"
       [placeholderList]="placeholderList"
       [minChars]="minChars"
+      [maxChars]="maxChars"
       [minHeight]="minHeight"
       [maxHeight]="maxHeight"
       [disabled]="disabled"
@@ -211,28 +212,45 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', values(RTEType), RTEType.primary),
-        placeholder: text('placeholder', 'Compose an epic...'),
-        label: text('label', 'Edit rich textor'),
-        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
-        description: text('description', mockText(30)),
+        type: select('type', values(RTEType), RTEType.primary, 'Props'),
 
-        minChars: number('minChars', 20),
-        maxChars: number('maxChars', 500),
-        minHeight: number('minHeight', 185),
-        maxHeight: number('maxHeight'),
-        disabled: boolean('disabled', false),
-        required: boolean('required', true),
-        hintMessage: text('hintMessage', 'This field should contain something'),
-        warnMessage: text('warnMessage', ''),
-        errorMessage: text('errorMessage', ''),
+        placeholder: text('placeholder', 'Compose an epic...', 'Props'),
+        label: text('label', 'Edit rich textor', 'Props'),
+        hideLabelOnFocus: boolean('hideLabelOnFocus', false, 'Props'),
+        description: text('description', mockText(30), 'Props'),
 
-        controls: array('controls', controlsDef, '\n'),
-        disableControls: array('disableControls', disableControlsDef, '\n'),
+        minChars: number('minChars', 20, {}, 'Props'),
+        maxChars: number('maxChars', 400, {}, 'Props'),
+        minHeight: number('minHeight', 185, {}, 'Props'),
+        maxHeight: number('maxHeight', 350, {}, 'Props'),
 
-        value: text('value', value),
-        placeholderList: object<SelectGroupOption>('options', placeholderMock),
-        mentionsList: object('mentionsList', mentionsOptions),
+        disabled: boolean('disabled', false, 'Props'),
+        required: boolean('required', true, 'Props'),
+
+        hintMessage: text(
+          'hintMessage',
+          'This field should contain something',
+          'Props'
+        ),
+        warnMessage: text('warnMessage', '', 'Props'),
+        errorMessage: text('errorMessage', '', 'Props'),
+
+        controls: array('controls', controlsDef, '\n', 'Props'),
+        disableControls: array(
+          'disableControls',
+          disableControlsDef,
+          '\n',
+          'Props'
+        ),
+
+        value: text('value', value, 'Props'),
+        placeholderList: object<SelectGroupOption>(
+          'options',
+          placeholderMock,
+          'Data'
+        ),
+        mentionsList: object('mentionsList', mentionsOptions, 'Data'),
+
         change: action('Value changed'),
         focus: action('Editor focused'),
         blur: action('Editor blurred'),

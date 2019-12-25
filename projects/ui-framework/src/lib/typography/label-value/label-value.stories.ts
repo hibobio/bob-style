@@ -4,7 +4,7 @@ import {
   withKnobs,
   select,
   boolean,
-  number
+  number,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -165,6 +165,18 @@ const template2 = `
 
     <div class="cell">
       <p class="hdr">
+        <span class="bx">LabelValueType.eight</span>
+      </p>
+      <b-label-value
+        [type]="'8'"
+        [label]="'40'"
+        [icon]="'b-icon-people'"
+        [iconSize]="'x-large'"
+        [value]="'Employees'"></b-label-value>
+    </div>
+
+    <div class="cell">
+      <p class="hdr">
         <span class="bx">icon example 1, icon clickable</span>
       </p>
       <b-label-value
@@ -230,7 +242,9 @@ const note = `
   [labelMaxLines] | number | after maximum lines text will be truncated and tooltip shown | &nbsp;
   [valueMaxLines] | number | after maximum lines text will be truncated and tooltip shown | &nbsp;
   [icon] | Icons | icon, obviously | &nbsp;
-  [iconPosition] | IconPosition | top, left, right, and also 'label' and 'value' which allow to put the icon inside label or value | left
+  [iconPosition] | IconPosition | top, left, right, \
+  and also 'label', 'value', 'label_after', 'value_after' \
+  which allow to put the icon inside label or value | left
   [iconSize] | IconSize | icon size | large (small if positioned inside label or value)
   (clicked) | EventEmitter | emits when component is clicked
   (labelClicked) | EventEmitter | emits when label is clicked
@@ -271,15 +285,15 @@ story.add(
           Object.values(IconPosition),
           IconPosition.left
         ),
-        iconSize: select('iconSize', [0, ...Object.values(IconSize)], 0)
+        iconSize: select('iconSize', [0, ...Object.values(IconSize)], 0),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
-          LabelValueModule
-        ]
-      }
+          LabelValueModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

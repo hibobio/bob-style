@@ -73,6 +73,8 @@ export class ChipInputComponent extends BaseFormElement
   public filteredChips: string[] = this.options;
   public readonly inputTypes = InputTypes;
 
+  public maxChars = 50;
+
   readonly chipListConfig: ChipListConfig = {
     type: ChipType.tag,
     removable: true,
@@ -159,7 +161,7 @@ export class ChipInputComponent extends BaseFormElement
     chipsSource = this.possibleChips
   ): string[] {
     const filtered = chipsSource.filter(
-      chip => chip.toLowerCase().indexOf(name.toLowerCase()) === 0
+      chip => chip.toLowerCase().indexOf(name.toLowerCase()) > -1
     );
     return filtered.length > 0 && filtered;
   }

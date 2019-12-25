@@ -20,6 +20,8 @@ import {
 import { cloneDeep } from 'lodash';
 import { SelectGroupOption } from '../list.interface';
 
+import listInterfaceDoc from '../list.interface.md';
+
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
@@ -87,6 +89,9 @@ const note = `
   ~~~
   ${componentTemplate2}
   ~~~
+
+
+  ${listInterfaceDoc}
 `;
 
 const optionsMock = cloneDeep(selectOptionsMock);
@@ -96,7 +101,7 @@ const optionsDef = cloneDeep(selectOptionsMockDef);
 optionsMock[0].options[1].selected = true;
 
 story.add(
-  'Multi list panel',
+  'Multi Select Panel',
   () => {
     return {
       template,

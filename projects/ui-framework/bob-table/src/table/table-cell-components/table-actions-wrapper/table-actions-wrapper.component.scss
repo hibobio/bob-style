@@ -1,0 +1,16 @@
+:host {
+  display: flex;
+
+  .actionable-item {
+    flex-grow: 1;
+  }
+
+  &:hover b-menu {
+    visibility: visible;
+  }
+
+  b-menu {
+    visibility: hidden;
+  }
+}
+

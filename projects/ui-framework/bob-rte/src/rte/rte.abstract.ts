@@ -34,6 +34,7 @@ import {
   IconColor,
   isNotEmptyObject,
   isEmptyArray,
+  chainCall,
 } from 'bob-style';
 
 import {
@@ -61,8 +62,8 @@ export abstract class RTEbaseElement extends BaseFormElement
   implements OnChanges, OnInit {
   constructor(
     protected cd: ChangeDetectorRef,
-    public placeholdersConverter: PlaceholdersConverterService,
-    public parserService: HtmlParserHelpers
+    protected placeholdersConverter: PlaceholdersConverterService,
+    protected parserService: HtmlParserHelpers
   ) {
     super(cd);
     this.baseValue = '';
@@ -115,10 +116,7 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   public writeValue(value: any, onChanges = false): void {
     if (value !== undefined) {
-      this.editorValue = this.inputTransformers.reduce(
-        (previousResult, fn) => fn(previousResult),
-        value
-      );
+      this.editorValue = chainCall(this.inputTransformers, value);
     }
     if (
       (value === undefined || isNullOrUndefined(this.editorValue)) &&
@@ -205,7 +203,10 @@ export abstract class RTEbaseElement extends BaseFormElement
       this.cntrlsInited = true;
     }
 
-    if (changes.placeholderList) {
+    if (
+      changes.placeholderList ||
+      (this.inputTransformers.length === 0 && !notFirstChanges(changes))
+    ) {
       this.initTransformers();
     }
 
@@ -302,7 +303,17 @@ export abstract class RTEbaseElement extends BaseFormElement
       stringyOrFail,
 
       (value: string): string =>
-        HtmlParserHelpers.prototype.cleanupHtml(value, null),
+        HtmlParserHelpers.prototype.enforceAttributes(value, {
+          '*': {
+            '^on.*': null,
+          },
+          br: {
+            '.*': null,
+          },
+        }),
+
+      (value: string): string =>
+        HtmlParserHelpers.prototype.cleanupHtml(value, { removeNbsp: false }),
 
       (value: string): string =>
         this.parserService.enforceAttributes(value, {
@@ -320,9 +331,6 @@ export abstract class RTEbaseElement extends BaseFormElement
             rel: 'noopener noreferrer',
             contenteditable: false,
           },
-          span: {
-            class: null,
-          },
         }),
 
       (value: string): string =>
@@ -333,7 +341,22 @@ export abstract class RTEbaseElement extends BaseFormElement
     ];
 
     this.outputTransformers = [
-      (value: string): string => HtmlParserHelpers.prototype.cleanupHtml(value),
+      (value: string): string =>
+        this.parserService.enforceAttributes(value, {
+          'span,p,div,a': {
+            contenteditable: null,
+            tabindex: null,
+            spellcheck: null,
+            class: {
+              'fr-.*': false,
+            },
+          },
+        }),
+
+      (value: string): string =>
+        HtmlParserHelpers.prototype.cleanupHtml(value, {
+          removeNbsp: true,
+        }),
     ];
 
     if (this.placeholdersEnabled()) {
@@ -421,5 +444,19 @@ export abstract class RTEbaseElement extends BaseFormElement
         }
       }
     }
+  }
+
+  protected updateLength(): number {
+    const editorBox = this.getEditorTextbox();
+
+    if (editorBox) {
+      const newLength = this.getEditorTextbox().innerText.trim().length;
+
+      if (newLength !== this.length && !this.cd['destroyed']) {
+        this.length = newLength;
+        this.cd.detectChanges();
+      }
+    }
+    return this.length;
   }
 }

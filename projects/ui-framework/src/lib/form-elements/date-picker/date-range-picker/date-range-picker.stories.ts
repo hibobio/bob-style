@@ -89,8 +89,8 @@ const note = `
 const mockValues = [
   '',
   {
-    from: `${thisYear()}-${thisMonth()}-25`,
-    to: `${thisYear()}-${Math.min(thisMonth(false, 1) as number, 12)}-5`,
+    from: `${thisYear()}-${Math.max(1, thisMonth(false, -1))}-5`,
+    to: `${thisYear()}-${Math.min(thisMonth(false, 1) as number, 12)}-25`,
   },
 ];
 

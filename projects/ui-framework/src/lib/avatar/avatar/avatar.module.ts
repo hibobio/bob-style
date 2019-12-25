@@ -6,12 +6,13 @@ import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-to
 import { ChipModule } from '../../chips/chip/chip.module';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { AvatarImageComponent } from './avatar-image.component';
 
 @NgModule({
-  declarations: [AvatarComponent],
+  declarations: [AvatarComponent, AvatarImageComponent],
   imports: [CommonModule, IconsModule, TruncateTooltipModule, ChipModule],
-  exports: [AvatarComponent],
+  exports: [AvatarComponent, AvatarImageComponent],
   entryComponents: [AvatarComponent],
-  providers: [DOMhelpers, EventManagerPlugins[0]]
+  providers: [DOMhelpers, EventManagerPlugins[0]],
 })
 export class AvatarModule {}

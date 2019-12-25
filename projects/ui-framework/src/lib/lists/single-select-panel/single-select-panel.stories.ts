@@ -17,6 +17,8 @@ import { action } from '@storybook/addon-actions';
 import { mockJobs } from '../../mock.const';
 import { simpleUID } from '../../services/utils/functional-utils';
 
+import listInterfaceDoc from '../list.interface.md';
+
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
@@ -75,6 +77,8 @@ const note = `
   ~~~
   ${componentTemplate2}
   ~~~
+
+  ${listInterfaceDoc}
 `;
 
 const jobs = mockJobs(40);
@@ -107,7 +111,7 @@ const optionsMock: SelectGroupOption[] = [
 optionsMock[0].options[1].selected = true;
 
 story.add(
-  'Single list panel',
+  'Single Select Panel',
   () => {
     return {
       template,

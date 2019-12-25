@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import { MatButtonModule } from '@angular/material/button';
 import { IconsModule } from '../../icons/icons.module';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { simpleChange } from '../../services/utils/test-helpers';
 
 describe('ButtonComponent', () => {
   let component: ButtonComponent;
@@ -22,7 +23,8 @@ describe('ButtonComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(ButtonComponent);
         component = fixture.componentInstance;
-        buttonElement = fixture.debugElement.query(By.css('button')).nativeElement;
+        buttonElement = fixture.debugElement.query(By.css('button'))
+          .nativeElement;
         component.clicked.subscribe(() => {});
         spyOn(component.clicked, 'emit');
         fixture.detectChanges();
@@ -46,9 +48,15 @@ describe('ButtonComponent', () => {
 
   describe('button class names', () => {
     it('Should have both type and size', () => {
-      component.type = ButtonType.primary;
-      component.size = ButtonSize.large;
-      fixture.detectChanges();
+      component.ngOnChanges(
+        simpleChange({
+          type: ButtonType.primary,
+          size: ButtonSize.large,
+        })
+      );
+
+      expect(component.buttonClass).toContain('primary');
+      expect(component.buttonClass).toContain('large');
       expect(buttonElement.classList).toContain('primary');
       expect(buttonElement.classList).toContain('large');
     });
@@ -56,8 +64,12 @@ describe('ButtonComponent', () => {
       expect(buttonElement.getAttribute('disabled')).toBeFalsy();
     });
     it('should have disabled attribute', () => {
-      component.disabled = true;
-      fixture.detectChanges();
+      component.ngOnChanges(
+        simpleChange({
+          disabled: true,
+        })
+      );
+
       expect(buttonElement.getAttribute('disabled')).toBeTruthy();
     });
   });
@@ -67,33 +79,55 @@ describe('ButtonComponent', () => {
       expect(buttonElement.className).not.toContain('b-icon');
     });
     it('should add icon if icon is passed', () => {
-      component.icon = Icons.timeline;
-      fixture.detectChanges();
+      component.ngOnChanges(
+        simpleChange({
+          icon: Icons.timeline,
+        })
+      );
+
+      expect(component.buttonClass).toContain('b-icon');
       expect(buttonElement.className).toContain('b-icon');
     });
   });
 
   describe('OnChanges', () => {
-    const testColor = (buttonType: ButtonType, expectedColor: IconColor): void => {
-      component.type = buttonType;
-      component.icon = Icons.timeline;
-      fixture.detectChanges();
+    const testColor = (
+      buttonType: ButtonType,
+      expectedColor: IconColor
+    ): void => {
+      component.ngOnChanges(
+        simpleChange({
+          type: buttonType,
+          icon: Icons.timeline,
+        })
+      );
+
+      expect(component.buttonClass).toContain('b-icon-' + expectedColor);
       expect(buttonElement.className).toContain('b-icon-' + expectedColor);
     };
+
     const testSize = (buttonSize: ButtonSize, expectedSize: IconSize): void => {
-      component.size = buttonSize;
-      component.icon = Icons.timeline;
-      fixture.detectChanges();
+      component.ngOnChanges(
+        simpleChange({
+          size: buttonSize,
+          icon: Icons.timeline,
+        })
+      );
+
+      expect(component.buttonClass).toContain('b-icon-' + expectedSize);
       expect(buttonElement.className).toContain('b-icon-' + expectedSize);
     };
+
     it('should not set iconColor or iconSize if there is no icon', () => {
       expect(buttonElement.className).not.toContain('b-icon-');
     });
+
     it('should set iconColor based on button type', () => {
       testColor(ButtonType.primary, IconColor.white);
       testColor(ButtonType.secondary, IconColor.dark);
       testColor(ButtonType.tertiary, IconColor.dark);
     });
+
     it('should set iconSize based on button size', () => {
       testSize(ButtonSize.small, IconSize.medium);
       testSize(ButtonSize.medium, IconSize.medium);

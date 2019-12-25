@@ -102,17 +102,22 @@ const storyTemplate = `
 const toAdd = () => ({
   template: storyTemplate,
   props: {
-    listLabel: text('chipsLabel', 'Select fields:'),
-    chipsLabel: text('listLabel', 'Selected fields:'),
+    listLabel: text('chipsLabel', 'Select fields', 'Props'),
+    chipsLabel: text('listLabel', 'Selected fields', 'Props'),
+    showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
+    listOpts: object('listOpts', listOpts, 'Data'),
+    avatarListOpts: object('avatarListOpts', avatarListOpts, 'Data'),
+    emptyStateConfig: object(
+      'emptyStateConfig',
+      {
+        text:
+          'Choose a life. Choose a job. Choose a career. Choose a family. Choose a fucking big television.',
+        icon: Icons.toDos_link,
+      },
+      'Props'
+    ),
+
     onSelectChange: action('ListChange'),
-    showSingleGroupHeader: boolean('showSingleGroupHeader', true),
-    listOpts: object('listOpts', listOpts),
-    avatarListOpts: object('avatarListOpts', avatarListOpts),
-    emptyStateConfig: object('emptyStateConfig', {
-      text:
-        'Choose a life. Choose a job. Choose a career. Choose a family. Choose a fucking big television.',
-      icon: Icons.toDos_link,
-    }),
   },
   moduleMetadata: {
     imports: [

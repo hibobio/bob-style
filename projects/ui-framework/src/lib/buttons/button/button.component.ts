@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { ButtonSize, ButtonType } from '../buttons.enum';
 import { IconColor, IconSize } from '../../icons/icons.enum';
 import { BaseButtonElement } from '../button.abstract';
@@ -9,9 +13,7 @@ import { BaseButtonElement } from '../button.abstract';
     <button
       #button
       type="button"
-      class="{{ type || buttonType.primary }} {{ size || buttonSize.medium }} {{
-        getIconClass()
-      }}"
+      [ngClass]="buttonClass"
       [attr.disabled]="disabled || null"
       (click)="onClick($event)"
     >
@@ -21,21 +23,28 @@ import { BaseButtonElement } from '../button.abstract';
   `,
   styleUrls: ['./button.component.scss'],
   providers: [{ provide: BaseButtonElement, useExisting: ButtonComponent }],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonComponent extends BaseButtonElement {
-  constructor() {
-    super();
+  constructor(protected cd: ChangeDetectorRef) {
+    super(cd);
   }
 
-  getIconClass(): string {
-    return this.icon
-      ? this.icon +
+  getButtonClass(): string {
+    return (
+      (this.type || ButtonType.primary) +
+      ' ' +
+      (this.size || ButtonSize.medium) +
+      ' ' +
+      (this.icon
+        ? this.icon +
           ' b-icon-' +
           (this.size === ButtonSize.large ? IconSize.large : IconSize.medium) +
           ' b-icon-' +
           (this.type === ButtonType.primary || this.type === ButtonType.negative
             ? IconColor.white
             : IconColor.dark)
-      : '';
+        : '')
+    );
   }
 }

@@ -1,0 +1,51 @@
+@import './../../../../../src/lib/style/common-imports';
+@import './../../../../../src/lib/style/icons';
+@import './table.mixin';
+
+$toolpanel-indent-size: 35px;
+
+:host ::ng-deep .tree-table {
+  .ag-row-animation .ag-row {
+    transition: transform 0.4s, top 0.4s, height 0.4s, background-color 0.1s,
+      opacity 0.2s;
+  }
+
+  @for $i from 1 to 50 {
+    .ag-ltr .ag-row-group-indent-#{$i} {
+      padding-left: $i * $toolpanel-indent-size;
+    }
+  }
+
+  .ag-menu {
+    background: gray;
+  }
+
+  .ag-icon.ag-icon-contracted {
+    @include ag-icon('chevron-down');
+  }
+
+  .ag-icon.ag-icon-expanded {
+    @include ag-icon('chevron-right');
+  }
+
+  .ag-cell .ag-group-expanded,
+  .ag-cell .ag-group-contracted {
+    &:before {
+      content: '';
+      @include position(0 0 0 0);
+      cursor: pointer;
+    }
+  }
+
+  .ag-header-icon.ag-header-cell-menu-button {
+    display: none;
+  }
+
+  .ag-header-viewport .ag-header-cell:not(.ag-header-cell-sortable) {
+    @include cell-border(right center);
+
+    &:after {
+      display: none !important;
+    }
+  }
+}

@@ -197,9 +197,9 @@ describe('ChipInputComponent', () => {
 
   describe('Autocomplete', () => {
     it('should filter chips options', () => {
-      inputValue(inputElement, 'A');
+      inputValue(inputElement, 'AB');
       fixture.detectChanges();
-      expect(component.filteredChips).toEqual(['ABC', 'ACB']);
+      expect(component.filteredChips).toEqual(['ABC', 'CAB']);
     });
     it('should add chip from options to value', () => {
       expect(component.value.length).toEqual(0);

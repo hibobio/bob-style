@@ -28,6 +28,15 @@ export const RTE_MINHEIGHT_DEF = 185;
 export const RTE_MAXHEIGHT_DEF = 350;
 export const RTE_TOOLBAR_HEIGHT = 41;
 
+const RTE_ALLOWED_STYLE_PROPS = [
+  'font-family',
+  'font-size',
+  'font-weight',
+  'font-style',
+  'text-align',
+  'direction',
+];
+
 export const RTE_OPTIONS_DEF: FroalaOptions = {
   key: 'DUA2yE3G1A1A5B8B1pZGCTRSAPJWTLPLZHTQQe1JGZxC4B3A3B2B5B1C1E4I1B3==',
   attribution: false,
@@ -36,8 +45,10 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   initOnClick: false,
   theme: 'royal',
   fontFamily: {
-    '\'Gotham SSm A\', \'Gotham SSm B\', \'Helvetica\'': 'Body font',
-    '\'Sentinel SSm A\', \'Sentinel SSm B\', \'Helvetica\'': 'Heading font',
+    // tslint:disable-next-line: quotemark
+    "'Gotham SSm A', 'Gotham SSm B', 'Helvetica'": 'Body font',
+    // tslint:disable-next-line: quotemark
+    "'Sentinel SSm A', 'Sentinel SSm B', 'Helvetica'": 'Heading font',
   },
   scrollableContainer: 'body',
 
@@ -89,14 +100,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     // 'rowspan',
   ],
   htmlAllowedEmptyTags: ['.fa', '.fr-emoticon', '.fr-inner'],
-  htmlAllowedStyleProps: [
-    'font-family',
-    'font-size',
-    'font-weight',
-    'font-style',
-    'text-align',
-    'direction',
-  ],
+  htmlAllowedStyleProps: RTE_ALLOWED_STYLE_PROPS,
   htmlAllowedTags: [
     'a',
     'br',
@@ -121,28 +125,14 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'h4',
     'h5',
     'h6',
-
-    // 'caption',
-    // 'code',
-    // 'figure',
-    // 'header',
-    // 'footer',
-    // 'pre',
-    // 'rt',
-    // 'table',
-    // 'tbody',
-    // 'td',
-    // 'th',
-    // 'thead',
-    // 'tr'
   ],
   htmlExecuteScripts: false,
   htmlIgnoreCSSProperties: [],
   htmlRemoveTags: ['script', 'style'],
   htmlUntouched: true,
 
-  pasteAllowedStyleProps: [],
-  pasteDeniedAttrs: [],
+  pasteAllowedStyleProps: RTE_ALLOWED_STYLE_PROPS,
+  pasteDeniedAttrs: ['^on.*', 'type', 'value'],
   pasteDeniedTags: ['script', 'style'],
   pastePlain: false,
 

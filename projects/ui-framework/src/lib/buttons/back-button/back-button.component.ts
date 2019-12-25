@@ -1,6 +1,11 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { BaseButtonElement } from '../button.abstract';
 import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
+import { ButtonSize, ButtonType } from '../buttons.enum';
 
 @Component({
   selector: 'b-back-button',
@@ -8,9 +13,7 @@ import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
     <button
       #button
       type="button"
-      class="{{ type || buttonType.secondary }} {{ buttonSize.small }} {{
-        getIconClass()
-      }}"
+      [ngClass]="buttonClass"
       [attr.disabled]="disabled || null"
       (click)="onClick($event)"
     >
@@ -19,20 +22,25 @@ import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
     </button>
   `,
   styleUrls: ['../button/button.component.scss'],
-  providers: [{ provide: BaseButtonElement, useExisting: BackButtonComponent }]
+  providers: [{ provide: BaseButtonElement, useExisting: BackButtonComponent }],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BackButtonComponent extends BaseButtonElement {
-  constructor() {
-    super();
+  constructor(protected cd: ChangeDetectorRef) {
+    super(cd);
   }
 
-  getIconClass(): string {
+  getButtonClass(): string {
     return (
-      Icons.back_arrow_link +
-      ' b-icon-' +
-      IconSize.medium +
-      ' b-icon-' +
-      IconColor.dark
+      (this.type || ButtonType.secondary) +
+      ' ' +
+      ButtonSize.small +
+      ' ' +
+      (Icons.back_arrow_link +
+        ' b-icon-' +
+        IconSize.medium +
+        ' b-icon-' +
+        IconColor.dark)
     );
   }
 }

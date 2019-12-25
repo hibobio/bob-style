@@ -3,8 +3,18 @@ import { HtmlParserHelpers } from './html-parser.service';
 describe('HtmlParserHelpers', () => {
   const parser = new HtmlParserHelpers();
 
-  describe('cleanupHtml', () => {
-    const testString = `<br>
+  const testEnforce = {
+    'span,p,div,a': {
+      contenteditable: null,
+      tabindex: null,
+      spellcheck: null,
+      class: {
+        'fr-.*': false,
+      },
+    },
+  };
+
+  const testString = `<br>
 
     <div><br></div>
     <p>Hello</p>
@@ -43,13 +53,16 @@ describe('HtmlParserHelpers', () => {
 
     <br>`;
 
-    const processedString = parser.cleanupHtml(testString);
+  describe('cleanupHtml', () => {
+    const processedString = parser.cleanupHtml(testString, {
+      removeNbsp: true,
+    });
 
     it('Should replace Ps with DIVs', () => {
       expect(processedString).not.toContain('<p');
     });
 
-    it('Should replace Hx\'s', () => {
+    it('Should replace Hx', () => {
       expect(processedString).not.toContain('<h1>');
       expect(processedString).not.toContain('<h5>');
       expect(processedString).toContain(
@@ -63,20 +76,12 @@ describe('HtmlParserHelpers', () => {
       expect(processedString).not.toContain('<em>');
     });
 
-    it('Should remove attributes & classes', () => {
-      expect(processedString).not.toContain('fr-removeme');
-      expect(processedString).not.toContain('class=""');
-      expect(processedString).not.toContain('contenteditable=');
-      expect(processedString).not.toContain('tabindex=');
-      expect(processedString).not.toContain('spellcheck=');
-    });
-
     it('Should trim unnecessary white space', () => {
       expect(/&nbsp;/gi.test(processedString)).toBeFalsy();
       expect(/\s\s+/g.test(processedString)).toBeFalsy();
     });
 
-    it('Should replace multiple BR\'s with div+br', () => {
+    it('Should replace multiple BRs with div+br', () => {
       expect(processedString).not.toContain('<br><br>');
     });
 
@@ -98,9 +103,21 @@ describe('HtmlParserHelpers', () => {
   });
 
   describe('enforceAttributes', () => {
+    const processedString = parser.enforceAttributes(testString, testEnforce);
+
+    it('Should remove attributes & classes', () => {
+      expect(processedString).not.toContain('fr-removeme');
+      expect(processedString).not.toContain('class=""');
+      expect(processedString).not.toContain('contenteditable=');
+      expect(processedString).not.toContain('tabindex=');
+      expect(processedString).not.toContain('spellcheck=');
+    });
+  });
+
+  describe('enforceAttributes', () => {
     const origClass = 'mydiv rem-oveme rem-ovemetoo';
     const testString = `
-      <div class="${ origClass }">text</div>
+      <div class="${origClass}">text</div>
       <a href="link" class="mylink">link</a>
       <span data-blah="blah">text2</span>
     `;
@@ -108,9 +125,9 @@ describe('HtmlParserHelpers', () => {
     it('Should add class', () => {
       expect(
         parser.enforceAttributes(testString, {
-          div: { class: 'hello' }
+          div: { class: 'hello' },
         })
-      ).toContain(`<div class="${ origClass } hello">`);
+      ).toContain(`<div class="${origClass} hello">`);
     });
 
     it('Should add multiple classes', () => {
@@ -119,11 +136,11 @@ describe('HtmlParserHelpers', () => {
           div: {
             class: {
               hello: true,
-              world: true
-            }
-          }
+              world: true,
+            },
+          },
         })
-      ).toContain(`<div class="${ origClass } hello world">`);
+      ).toContain(`<div class="${origClass} hello world">`);
     });
 
     it('Should remove class', () => {
@@ -131,9 +148,9 @@ describe('HtmlParserHelpers', () => {
         parser.enforceAttributes(testString, {
           div: {
             class: {
-              mydiv: false
-            }
-          }
+              mydiv: false,
+            },
+          },
         })
       ).not.toContain('<div class="mydiv');
     });
@@ -145,9 +162,9 @@ describe('HtmlParserHelpers', () => {
             class: {
               'rem-.*': false,
               mydiv: false,
-              'new-class': true
-            }
-          }
+              'new-class': true,
+            },
+          },
         })
       ).toContain('<div class="new-class');
     });
@@ -156,8 +173,8 @@ describe('HtmlParserHelpers', () => {
       expect(
         parser.enforceAttributes(testString, {
           span: {
-            'data-blah': null
-          }
+            'data-blah': null,
+          },
         })
       ).not.toContain('<span data-blah="blah">');
     });
@@ -166,8 +183,8 @@ describe('HtmlParserHelpers', () => {
       const parsed = parser.enforceAttributes(testString, {
         span: {
           'data-blah': null,
-          'data-bruh': 'bro'
-        }
+          'data-bruh': 'bro',
+        },
       });
 
       expect(parsed).not.toContain('<span data-blah="blah">');
@@ -178,8 +195,8 @@ describe('HtmlParserHelpers', () => {
       expect(
         parser.enforceAttributes(testString, {
           a: {
-            target: '_blank'
-          }
+            target: '_blank',
+          },
         })
       ).toContain('<a href="link" class="mylink" target="_blank">');
     });

@@ -84,7 +84,7 @@ export abstract class BaseListElement
   private keyDownSubscriber: Subscription;
   readonly listElHeight = LIST_EL_HEIGHT;
 
-  @Input() options: SelectGroupOption[];
+  @Input() options: SelectGroupOption[] = [];
   @Input() optionsDefault: SelectGroupOption[];
   @Input() listActions: ListFooterActions;
   @Input() maxHeight = this.listElHeight * 8;
@@ -99,7 +99,9 @@ export abstract class BaseListElement
   @Output() apply: EventEmitter<ListChange> = new EventEmitter<ListChange>();
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes);
+    applyChanges(this, changes, {
+      options: [],
+    });
 
     if (hasChanges(changes, ['options'])) {
       this.allGroupsCollapsed =
@@ -108,7 +110,7 @@ export abstract class BaseListElement
 
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
       this.selectedIDs = this.getSelectedIDs(this.options);
-      this.filteredOptions = cloneDeep(this.options || []);
+      this.filteredOptions = cloneDeep(this.options) || [];
 
       this.shouldDisplaySearch =
         this.options &&
@@ -144,7 +146,15 @@ export abstract class BaseListElement
     }
 
     if (
-      changes.startWithGroupsCollapsed &&
+      hasChanges(changes, ['startWithGroupsCollapsed', 'options']) &&
+      typeof this.startWithGroupsCollapsed === 'boolean'
+    ) {
+      this.startWithGroupsCollapsed =
+        this.startWithGroupsCollapsed && this.options.length > 1;
+    }
+
+    if (
+      hasChanges(changes, ['startWithGroupsCollapsed']) &&
       typeof this.startWithGroupsCollapsed === 'boolean'
     ) {
       this.toggleCollapseAll(this.startWithGroupsCollapsed);
@@ -197,15 +207,16 @@ export abstract class BaseListElement
             break;
           case Keys.enter:
             e.preventDefault();
-            if (this.focusOption) {
-              this.focusOption.isPlaceHolder
-                ? this.headerClick(
-                    find(this.listHeaders, {
-                      groupName: this.focusOption.groupName,
-                    })
-                  )
-                : this.optionClick(this.focusOption);
+            if (!this.focusOption) {
+              break;
             }
+            this.focusOption.isPlaceHolder
+              ? this.headerClick(
+                  find(this.listHeaders, {
+                    groupName: this.focusOption.groupName,
+                  })
+                )
+              : this.optionClick(this.focusOption);
             break;
           default:
             break;
@@ -242,13 +253,15 @@ export abstract class BaseListElement
   }
 
   searchChange(searchValue: string): void {
-    this.searchValue = searchValue;
+    this.searchValue = searchValue.trim();
+
     this.filteredOptions = this.modelSrvc.getFilteredOptions(
       this.options,
-      searchValue
+      this.searchValue
     );
+
     this.updateLists({
-      collapseHeaders: this.startWithGroupsCollapsed && !searchValue,
+      collapseHeaders: this.startWithGroupsCollapsed && !this.searchValue,
     });
   }
 
@@ -289,7 +302,7 @@ export abstract class BaseListElement
   }
 
   toggleCollapseAll(force = null): void {
-    if (this.options.length > 1) {
+    if (this.options && this.options.length > 1) {
       this.allGroupsCollapsed =
         force !== null ? force : !this.allGroupsCollapsed;
       this.updateLists({ collapseHeaders: this.allGroupsCollapsed });

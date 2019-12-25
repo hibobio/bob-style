@@ -1,14 +1,16 @@
 <i *ngIf="icon && iconPosition !== iconPositions.label && iconPosition !== iconPositions.value"
    class="blv-icon"
    [ngClass]="icon + (iconSize ? ' b-icon-' + iconSize : ' b-icon-large')"
-   [attr.tabindex]="iconClicked.observers.length > 0 ? 0 : null"></i>
+   [attr.tabindex]="iconClicked.observers.length ? 0 : null"></i>
 
 <h6 *ngIf="label"
     class="blv-label"
-    [ngClass]="icon && iconPosition === iconPositions.label ? icon + (iconSize ? ' b-icon-' + iconSize : '
-    b-icon-small') + (labelClicked.observers.length >
-    0? ' has-hover': '') : null"
-    [attr.tabindex]="labelClicked.observers.length > 0 ? 0 : null">
+    [ngClass]="icon && iconPosition === iconPositions.label ?
+      icon + (iconSize ? ' b-icon-' + iconSize : ' b-icon-small')
+        + (labelClicked.observers.length ? ' has-hover' : '')
+        + (iconAfter ? ' icon-after' : '')
+      : null"
+    [attr.tabindex]="labelClicked.observers.length ? 0 : null">
   <b-truncate-tooltip *ngIf="labelMaxLines"
                       [maxLines]="labelMaxLines"
                       [type]="tooltipType.css"
@@ -21,10 +23,12 @@
 
 <p *ngIf="value"
    class="blv-value"
-   [ngClass]="icon && iconPosition === iconPositions.value ? icon + (iconSize ? ' b-icon-' + iconSize : '
-   b-icon-small') + (valueClicked.observers.length >
-   0? ' has-hover': '') : null"
-   [attr.tabindex]="valueClicked.observers.length > 0 ? 0 : null">
+   [ngClass]="icon && iconPosition === iconPositions.value ?
+    icon + (iconSize ? ' b-icon-' + iconSize : ' b-icon-small')
+      + (valueClicked.observers.length ? ' has-hover': '')
+      + (iconAfter ? ' icon-after' : '')
+    : null"
+   [attr.tabindex]="valueClicked.observers.length ? 0 : null">
   <b-truncate-tooltip *ngIf="valueMaxLines"
                       [maxLines]="valueMaxLines"
                       [type]="tooltipType.css"

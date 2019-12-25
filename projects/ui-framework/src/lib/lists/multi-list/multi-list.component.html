@@ -8,14 +8,15 @@
   <div #headers
        class="headers"
        *ngIf="!noGroupHeaders">
-    <div *ngFor="let header of listHeaders"
+    <div *ngFor="let header of listHeaders; let headerIndex =  index;"
          class="headers-group">
       <div [ngClass]="{
            'clickable': options.length > 1,
            'collapsed': header.isCollapsed,
-           'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header)}"
+           'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header),
+            hidden: header.hidden}"
            class="option-select header has-hover">
-        <span (click)="headerClick(header)"
+        <span (click)="headerClick(header, headerIndex)"
               class="header-collapse-trigger">
         </span>
         <span *ngIf="options.length > 1"
@@ -27,7 +28,7 @@
                       class="checkbox"
                       [value]="header.selected"
                       [indeterminate]="header.indeterminate"
-                      (click)="selectGroup(header)"
+                      (click)="selectGroup(header, headerIndex)"
                       [doPropagate]="false">
           </b-checkbox>
           <span class="header-option-value"
@@ -57,7 +58,8 @@
             'option': !option.isPlaceHolder,
             'focus': option.id===focusOption?.id,
             'disabled': option.disabled,
-            'single-group-option': options.length === 1
+            'single-group-option': options.length === 1,
+            hidden: option.hidden
            }"
            class="option-select">
 

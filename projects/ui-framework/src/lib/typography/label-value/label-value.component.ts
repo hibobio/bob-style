@@ -6,11 +6,18 @@ import {
   Output,
   HostListener,
   EventEmitter,
-  NgZone
+  NgZone,
+  SimpleChanges,
+  OnChanges,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { LabelValueType, TextAlign, IconPosition } from './label-value.enum';
 import { Icons, IconSize } from '../../icons/icons.enum';
-import { isKey } from '../../services/utils/functional-utils';
+import {
+  isKey,
+  applyChanges,
+  notFirstChanges,
+} from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 
@@ -18,10 +25,12 @@ import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tool
   selector: 'b-label-value',
   templateUrl: './label-value.component.html',
   styleUrls: ['./label-value.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LabelValueComponent {
-  constructor(private zone: NgZone) {}
+export class LabelValueComponent implements OnChanges {
+  constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
+
+  public iconAfter = false;
 
   readonly iconPositions = IconPosition;
   readonly iconSizes = IconSize;
@@ -77,6 +86,27 @@ export class LabelValueComponent {
   onKey($event: KeyboardEvent) {
     if (isKey($event.key, Keys.enter) || isKey($event.key, Keys.space)) {
       this.emitEvents($event);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes);
+
+    if (changes.iconPosition) {
+      this.iconAfter =
+        this.iconPosition === this.iconPositions.label_after ||
+        this.iconPosition === this.iconPositions.value_after;
+
+      this.iconPosition =
+        this.iconPosition === this.iconPositions.label_after
+          ? this.iconPositions.label
+          : this.iconPosition === this.iconPositions.value_after
+          ? this.iconPositions.value
+          : this.iconPosition;
+    }
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
     }
   }
 

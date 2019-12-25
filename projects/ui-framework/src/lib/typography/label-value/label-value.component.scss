@@ -5,88 +5,104 @@ $BLVTypeMap: (
     '.blv-label': (
       color: $heading-text-color,
       font-size: $font-size-body,
-      font-weight: $font-weight-bold-body
+      font-weight: $font-weight-bold-body,
     ),
     '.blv-value': (
       color: $grey-600,
       font-size: $font-size-body,
-      font-weight: $font-weight-body
-    )
+      font-weight: $font-weight-body,
+    ),
   ),
   '2': (
     '.blv-label': (
       color: $grey-600,
       font-size: $font-size-body,
-      font-weight: $font-weight-body
+      font-weight: $font-weight-body,
     ),
     '.blv-value': (
       color: $heading-text-color,
       font-size: $font-size-body,
-      font-weight: $font-weight-body
-    )
+      font-weight: $font-weight-body,
+    ),
   ),
   '3': (
     '.blv-label': (
       color: $heading-text-color,
       font-size: $font-size-body,
-      font-weight: $font-weight-body
+      font-weight: $font-weight-body,
     ),
     '.blv-value': (
       color: $grey-600,
       font-size: $font-size-body,
-      font-weight: $font-weight-body
-    )
+      font-weight: $font-weight-body,
+    ),
   ),
   '4': (
     '.blv-label': (
       color: $grey-600,
       font-size: $font-size-body,
-      font-weight: $font-weight-body
+      font-weight: $font-weight-body,
     ),
     '.blv-value': (
       color: $display-text-color,
       font-size: $font-size-display-3,
       font-weight: $font-weight-display-3,
-      font-family: var(--display-font-family)
-    )
+      font-family: var(--display-font-family),
+    ),
   ),
   '5': (
     '.blv-label': (
       color: $display-text-color,
       font-size: $font-size-body,
-      font-weight: $font-weight-body
+      font-weight: $font-weight-body,
     ),
     '.blv-value': (
       color: $display-text-color,
       font-size: $font-size-body,
-      font-weight: $font-weight-body
-    )
+      font-weight: $font-weight-body,
+    ),
   ),
   '6': (
     '.blv-label': (
       color: $display-text-color,
       font-size: $font-size-display-4,
       font-weight: $font-weight-body,
-      font-family: var(--display-font-family)
+      font-family: var(--display-font-family),
     ),
     '.blv-value': (
       color: $grey-600,
       font-size: $font-size-body,
-      font-weight: $font-weight-body
-    )
+      font-weight: $font-weight-body,
+    ),
   ),
   '7': (
     '.blv-label': (
       color: $grey-600,
       font-size: $font-size-body,
-      font-weight: $font-weight-body
+      font-weight: $font-weight-body,
     ),
     '.blv-value': (
       color: $grey-600,
       font-size: $font-size-body,
-      font-weight: $font-weight-body
-    )
-  )
+      font-weight: $font-weight-body,
+    ),
+  ),
+  '8': (
+    '.blv-label': (
+      color: $grey-600,
+      font-size: $font-size-display-4,
+      font-weight: $font-weight-display-4,
+      font-family: var(--display-font-family),
+      line-height: $line-height-heading,
+    ),
+    '.blv-value': (
+      color: $grey-600,
+      font-size: $font-size-display-4,
+      font-weight: $font-weight-display-4,
+      font-family: var(--display-font-family),
+      line-height: $line-height-heading,
+    ),
+  ),
 );
 
 .blv-icon {
@@ -266,6 +282,15 @@ $BLVTypeMap: (
 
   &:before {
     margin-right: 5px;
+  }
+
+  &.icon-after {
+    flex-direction: row-reverse;
+
+    &:before {
+      margin-right: 0;
+      margin-left: 5px;
+    }
   }
 
   &[tabindex='0'] {

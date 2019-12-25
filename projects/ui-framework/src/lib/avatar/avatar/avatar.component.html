@@ -1,13 +1,13 @@
 <div class="avatar"
-     [ngClass]="getAvatarClass()"
-     [ngStyle]="getAvatarStyle()"
+     [ngClass]="avatarClass"
+     [ngStyle]="avatarStyle"
      (click.outside-zone)="onClick($event)">
 
   <b-icon *ngIf="badge"
           class="avatar-badge"
           [size]="badgeSize[size]"
-          [icon]="getBadgeConfig().icon"
-          [color]="getBadgeConfig().color">
+          [icon]="badgeConfig.icon"
+          [color]="badgeConfig.color">
   </b-icon>
 
   <div class="avatar-content"

@@ -29,9 +29,12 @@ export class PlaceholdersConverterService {
   }
 
   public toRte(value: string, placeholders: SelectGroupOption[]): string {
-    const regex: RegExp = /{{(.*?)}}/gm;
+    const regex: RegExp = new RegExp(
+      `{{((?:[^}]*)${this.separator}(?:[^}]*))}}`,
+      'gim'
+    );
     return value && isNotEmptyArray(placeholders)
-      ? value.replace(regex, (field: string, id: string) =>
+      ? value.replace(regex, (field: string, id: string, ...args) =>
           this.getPlaceholderHtml(placeholders, id)
         )
       : value || '';

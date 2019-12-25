@@ -38,6 +38,10 @@ export class ChipListComponent implements OnChanges {
 
   @ViewChildren('list') public list: QueryList<ChipComponent>;
 
+  @HostBinding('class.empty') get isEmpty() {
+    return !this.chips || !this.chips.length;
+  }
+
   @Input() chipListSelectable: ChipListSelectable = ChipListSelectable.multi;
 
   @Input() activeIndex: number;

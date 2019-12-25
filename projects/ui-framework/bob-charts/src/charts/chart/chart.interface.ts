@@ -15,7 +15,10 @@ export interface ChartFormatterThis {
   color: string;
   y: number;
   key: number | string;
-  x?: number;
+  x?: number | string;
+  series?: any;
+  colorIndex?: number;
+  total?: number;
 }
 
 export type ChartTooltipTemplateFormatter = (component: ChartCore, chartThis: ChartFormatterThis) => string;

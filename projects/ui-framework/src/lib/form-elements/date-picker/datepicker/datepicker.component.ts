@@ -14,8 +14,6 @@ import { BaseDatepickerElement } from '../datepicker.abstract';
 import { DateParseService } from '../date-parse-service/date-parse.service';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { WindowRef } from '../../../services/utils/window-ref.service';
-import { startOfMonth } from 'date-fns';
-import { DatepickerType } from '../datepicker.enum';
 import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.service';
 import { BaseFormElement } from '../../base-form-element';
 import { DateAdapter } from '@angular/material';

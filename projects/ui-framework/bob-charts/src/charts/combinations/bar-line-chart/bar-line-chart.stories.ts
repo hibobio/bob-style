@@ -18,7 +18,7 @@ import {
 import { ChartLegendPositionEnum } from '../../chart/chart.interface';
 
 const story = storiesOf(
-  `${ComponentGroupType.Charts}.Combinations`,
+  `${ComponentGroupType.Charts}`,
   module
 ).addDecorator(withKnobs);
 const template = `
@@ -31,6 +31,8 @@ const template = `
     [postTooltipValue]="postTooltipValue"
     [categories]="categories"
     [legend]="legend"
+    [stacked]="stacked"
+    [stackedPercent]="stackedPercent"
     [colorPalette]="colorPalette"
     [name]="name"
     [height]="height"
@@ -44,13 +46,13 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Combination - bar / line Chart'">
+<b-story-book-layout [title]="'Combination - stacked bar / line Chart'">
     ${template}
 </b-story-book-layout>
 `;
-
+// tslint:disable:max-line-length
 const note = `
-  ## Combination Chart
+   ## Combination Chart
 
   #### Module
   *ChartModule*
@@ -75,10 +77,13 @@ const note = `
   height (optional) | number | height of chart | 500
   title (optional) | string | title of chart | &nbsp;
   pointFormat (optional) | string | tooltip formatter | {series.name}: <b>{point.percentage:.1f}%</b>
+  stacked | boolean | if true - shows bar chart items as stacked (default of 'normal' stacking). | false
+  stackedPercent | boolean | stacked must be true! if true - shows stacked bar chart as percentage division of full height of chart. | false
 `;
+// tslint:enable:max-line-length
 
 story.add(
-  'Bar/line chart',
+  'Combination (bar/line) charts',
   () => {
     return {
       template: storyTemplate,
@@ -92,18 +97,20 @@ story.add(
             'image/svg+xml'
           ],
           'image/jpeg'),
+        showDataLabels: boolean('showDataLabels', false),
         legend: boolean('legend', true),
         legendPosition: select(
           'legendPosition',
           Object.values(ChartLegendPositionEnum),
           ChartLegendPositionEnum.BOTTOM
         ),
-        showDataLabels: boolean('showDataLabels', false),
         name: text('name', 'employees'),
         preTooltipValue: text('preTooltipValue', ''),
         postTooltipValue: text('postTooltipValue', ' PEOPLE'),
         title: text('title', ''),
         height: number('height', 200),
+        stacked: boolean('stacked', false),
+        stackedPercent: boolean('stackedPercent', false),
         data: object('data', COMBINED_BAR_CHART_DATA_MOCK),
         categories: object('categories', MULTI_BAR_CHART_CATEGORIES),
         colorPalette: object('colorPalette', [

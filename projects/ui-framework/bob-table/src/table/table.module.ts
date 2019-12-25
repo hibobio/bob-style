@@ -7,12 +7,17 @@ import { AgGridModule } from 'ag-grid-angular';
 import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
 import { TableUtilsService } from './table-utils-service/table-utils.service';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
-import { AvatarModule } from 'bob-style';
-import { ButtonsModule } from 'bob-style';
-import { MenuModule } from 'bob-style';
+import { AvatarModule, ButtonsModule, MenuModule } from 'bob-style';
+// tslint:disable-next-line:max-line-length
+import { TableActionsWrapperComponent } from './table-cell-components/table-actions-wrapper/table-actions-wrapper.component';
 
 @NgModule({
-  declarations: [TableComponent, AvatarCellComponent, ActionsCellComponent],
+  declarations: [
+    TableComponent,
+    AvatarCellComponent,
+    ActionsCellComponent,
+    TableActionsWrapperComponent,
+  ],
   providers: [TableUtilsService],
   imports: [
     CommonModule,
@@ -22,8 +27,8 @@ import { MenuModule } from 'bob-style';
     AgGridModule,
     ButtonsModule,
     MenuModule,
-    AgGridModule.withComponents([AvatarCellComponent, ActionsCellComponent])
+    AgGridModule.withComponents([AvatarCellComponent, ActionsCellComponent, ActionsCellComponent]),
   ],
-  exports: [TableComponent, AvatarCellComponent, ActionsCellComponent]
+  exports: [TableComponent, AvatarCellComponent, ActionsCellComponent, TableActionsWrapperComponent],
 })
 export class TableModule {}
