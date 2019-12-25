@@ -183,14 +183,6 @@ $min-table-height: 140px;
       cursor: pointer;
     }
   }
-
-  .ag-overlay {
-    height: 69px;
-    top: 56px;
-    .ag-overlay-no-rows-center {
-      @include b-display-3($color: $grey-500);
-    }
-  }
 }
 
 // column remove (x) button
@@ -209,5 +201,28 @@ $min-table-height: 140px;
         margin-right: -6px;
       }
     }
+  }
+}
+
+// empty state
+
+:host ::ng-deep {
+  .ag-overlay {
+    right: 0;
+    bottom: 0;
+  }
+
+  .ag-overlay-wrapper {
+    @include b-icon($icon: 'table', $size: x-large, $color: light);
+
+    &:before {
+      margin: 0 auto 8px auto;
+    }
+  }
+
+  .ag-overlay-wrapper > span,
+  .ag-overlay-no-rows-center,
+  .ag-overlay-loading-center {
+    @include b-display-3($color: $grey-500);
   }
 }

@@ -1,21 +1,32 @@
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {action} from '@storybook/addon-actions';
-import {boolean, number, object, select, withKnobs,} from '@storybook/addon-knobs/angular';
-import {storiesOf} from '@storybook/angular';
-import {AgGridModule} from 'ag-grid-angular';
-import {AvatarModule, ComponentGroupType} from 'bob-style';
-import {values} from 'lodash';
-import {StoryBookLayoutModule} from '../../../src/lib/story-book-layout/story-book-layout.module';
-import {ActionsCellComponent} from './table-cell-components/actions-cell/actions-cell.component';
-import {AvatarCellComponent} from './table-cell-components/avatar-cell/avatar.component';
-import {mockColumnsDefs, mockRowData, treeColumnDefsMock, treeRowDataMock} from './table-mocks/table-story.mock';
-import {TableModule} from './table.module';
-import {TableComponent} from './table/table.component';
-import {RowSelection, TableType} from './table/table.enum';
-import {ColumnDef} from './table/table.interface';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { action } from '@storybook/addon-actions';
+import {
+  boolean,
+  number,
+  object,
+  select,
+  withKnobs,
+} from '@storybook/addon-knobs/angular';
+import { storiesOf } from '@storybook/angular';
+import { AgGridModule } from 'ag-grid-angular';
+import { AvatarModule, ComponentGroupType } from 'bob-style';
+import { values } from 'lodash';
+import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
+import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
+import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
+import {
+  mockColumnsDefs,
+  mockRowData,
+  treeColumnDefsMock,
+  treeRowDataMock,
+} from './table-mocks/table-story.mock';
+import { TableModule } from './table.module';
+import { TableComponent } from './table/table.component';
+import { RowSelection, TableType } from './table/table.enum';
+import { ColumnDef } from './table/table.interface';
 
 const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(
-    withKnobs
+  withKnobs
 );
 
 const template = `
@@ -100,53 +111,34 @@ const note = `
   ~~~
 `;
 
-tableStoryFactory({
-  title       : 'Data Table',
-  HTMLTemplate: storyTemplate,
-  tableCols   : mockColumnsDefs,
-  tableData   : mockRowData,
-  notes       : note,
-});
-
-tableStoryFactory({
-  title       : 'Tree Table',
-  HTMLTemplate: storyTemplate,
-  tableCols   : treeColumnDefsMock,
-  tableData   : treeRowDataMock,
-  notes       : note,
-  props       : {
-    treeConfig: {
-      treeData   : true,
-      getDataPath: (data) => {
-        return data.orgHierarchy;
-      }
-    }
-  }
-});
-
 export interface TableStory {
   title: string;
   HTMLTemplate: string;
   tableData: any;
   tableCols: ColumnDef[];
-  notes: string;
   props?: Partial<TableComponent>;
 }
 
-function tableStoryFactory({title, HTMLTemplate, tableData, tableCols, notes, props}: TableStory) {
+function tableStoryFactory({
+  title,
+  HTMLTemplate,
+  tableData,
+  tableCols,
+  props,
+}: TableStory) {
   const defaultProps = {
     type: select('type', type, TableType.Primary, 'Props'),
     maxHeight: number('maxHeight', 450, {}, 'Props'),
     rowSelection: select(
-        'rowSelection',
-        rowSelection,
-        RowSelection.Multiple,
-        'Props'
+      'rowSelection',
+      rowSelection,
+      RowSelection.Multiple,
+      'Props'
     ),
     removeColumnButtonEnabled: boolean(
-        'removeColumnButtonEnabled',
-        false,
-        'Props'
+      'removeColumnButtonEnabled',
+      true,
+      'Props'
     ),
     columnDefs: object(`${title} columnDefs`, tableCols, 'Data'),
     rowData: object(`${title} rowData`, tableData, 'Data'),
@@ -157,25 +149,52 @@ function tableStoryFactory({title, HTMLTemplate, tableData, tableCols, notes, pr
     columnsOrderChanged: action('Column order changed'),
     columnRemoved: action('Column remove button clicked'),
   };
-  story.add(
-      title,
-      () => {
-        return {
-          template      : HTMLTemplate,
-          props         : {...defaultProps, ...props},
-          moduleMetadata: {
-            entryComponents: [AvatarCellComponent, ActionsCellComponent],
-            imports        : [
-              BrowserAnimationsModule,
-              StoryBookLayoutModule,
-              TableModule,
-              AgGridModule,
-              AvatarModule,
-              AgGridModule.withComponents([AvatarCellComponent]),
-            ],
-          },
-        };
-      },
-      {notes: {markdown: notes}}
-  );
+
+  return {
+    template: HTMLTemplate,
+    props: { ...defaultProps, ...props },
+    moduleMetadata: {
+      entryComponents: [AvatarCellComponent, ActionsCellComponent],
+      imports: [
+        BrowserAnimationsModule,
+        StoryBookLayoutModule,
+        TableModule,
+        AgGridModule,
+        AvatarModule,
+        AgGridModule.withComponents([AvatarCellComponent]),
+      ],
+    },
+  };
 }
+
+story.add(
+  'Data Table',
+  () =>
+    tableStoryFactory({
+      title: 'Data Table',
+      HTMLTemplate: storyTemplate,
+      tableCols: mockColumnsDefs,
+      tableData: mockRowData,
+    }),
+  { notes: { markdown: note } }
+);
+
+story.add(
+  'Tree Table',
+  () =>
+    tableStoryFactory({
+      title: 'Tree Table',
+      HTMLTemplate: storyTemplate,
+      tableCols: treeColumnDefsMock,
+      tableData: treeRowDataMock,
+      props: {
+        treeConfig: {
+          treeData: true,
+          getDataPath: data => {
+            return data.orgHierarchy;
+          },
+        },
+      } as any,
+    }),
+  { notes: { markdown: note } }
+);
