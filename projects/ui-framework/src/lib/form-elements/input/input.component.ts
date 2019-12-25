@@ -14,6 +14,7 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { InputTypes } from './input.enum';
 import { BaseFormElement } from '../base-form-element';
+import { parseToNumber } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-input',
@@ -43,7 +44,6 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     super(cd, zone, kbrdCntrlSrvc);
   }
 
-  // @ViewChild('step', { static: true }) step: ElementRef;
   @ViewChild('input', { static: true }) input: ElementRef;
   @ViewChild('prefix', { static: false }) prefix: ElementRef;
   @ViewChild('suffix', { static: false }) suffix: ElementRef;
@@ -67,13 +67,15 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   }
 
   onIncrement() {
-    this.writeValue(+this.input.nativeElement.value + this.step);
-    this.processValue(+this.input.nativeElement.value + this.step);
+    const parsedValue = parseToNumber(this.input.nativeElement.value);
+    this.writeValue(parsedValue + this.step);
+    this.processValue(parsedValue + this.step);
   }
 
   onDecrement() {
-    this.writeValue(+this.input.nativeElement.value - this.step);
-    this.processValue(+this.input.nativeElement.value - this.step);
+    const parsedValue = parseToNumber(this.input.nativeElement.value);
+    this.writeValue(parsedValue - this.step);
+    this.processValue(parsedValue - this.step);
   }
 
   public onInputKeydown(event: KeyboardEvent) {

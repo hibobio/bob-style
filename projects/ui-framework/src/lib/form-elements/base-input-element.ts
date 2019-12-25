@@ -13,7 +13,6 @@ import { isKey, parseToNumber } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
 import { valueAsNumber, stringyOrFail } from '../services/utils/transformers';
 import { FormElementKeyboardCntrlService } from './services/keyboard-cntrl.service';
-import { ConditionalExpr } from '@angular/compiler';
 
 export abstract class BaseInputElement extends BaseFormElement {
   protected constructor(
@@ -33,7 +32,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   public eventType = InputEventType;
   readonly inputTypes = InputTypes;
 
-  @Input() step = 5;
+  @Input() step: number;
   @Input() value = '';
   @Input() inputType: InputTypes = InputTypes.text;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
@@ -66,21 +65,16 @@ export abstract class BaseInputElement extends BaseFormElement {
     this.inputFocused = false;
   }
 
-  processValue(value) {
+  processValue(value: number) {
     if (this.inputType === InputTypes.number) {
       const parsed = parseToNumber(value);
-
-      if (
-        (value !== '' && (this.min && parsed < this.min)) ||
-        (this.max && parsed > this.max)
-      ) {
+      if ((this.min && parsed < this.min) || (this.max && parsed > this.max)) {
         this.writeValue(parsed < this.min ? this.min : this.max);
         this.transmitValue(this.value, {
           eventType: [InputEventType.onChange],
         });
       }
     }
-
     this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
     this.inputFocused = false;
   }
