@@ -19,7 +19,7 @@
             [attr.minlength]="minChars || null"
             [attr.maxlength]="maxChars || null"
             (input)="onInputChange($event.target.value)"
-            (blur)="onInputBlur($event)"
+            (blur)="onInputBlur()"
             (focus)="onInputFocus()"
             (keyup.outside-zone)="onInputKeyUp($event)"></textarea>
 </div>

@@ -6,7 +6,7 @@
 </b-form-element-label>
 
 <div class="bfe-wrap"
-     [ngClass]="{focused: inputFocused, 'has-prefix': hasPrefix || showPrefix, 'has-suffix': hasSuffix || showSuffix, 'numeric-input':inputType===inputTypes.number}">
+     [ngClass]="{focused: inputFocused, 'has-prefix': hasPrefix || showPrefix, 'has-suffix': hasSuffix || showSuffix}">
 
   <div *ngIf="hasPrefix || showPrefix"
        class="bfe-prefix"
@@ -41,9 +41,9 @@
 
   <div class="bfe-buttons-wrap"
        *ngIf="inputType === inputTypes.number &&  step>0">
-    <button class="b-icon b-icon-chevron-up b-icon-large b-icon-normal has-hover"
+    <button class="b-icon b-icon-chevron-up b-icon-large has-hover"
             (click)="onIncrement()"></button>
-    <button class="b-icon b-icon-chevron-down b-icon-large b-icon-normal has-hover"
+    <button class="b-icon b-icon-chevron-down b-icon-large has-hover"
             (click)="
             onDecrement()"></button>
   </div>

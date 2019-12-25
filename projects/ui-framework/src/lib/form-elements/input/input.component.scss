@@ -2,6 +2,16 @@
 
 @include bFormElement();
 
-.numeric-input {
-  width: 200px;
+.b-icon {
+  background-color: white;
+  padding: 5px;
+  border: none;
+}
+.b-icon-chevron-up {
+  border-bottom: 1px solid lightgrey;
+}
+
+.bfe-buttons-wrap {
+  background-color: white;
+  border-left: 1px solid lightgrey;
 }
