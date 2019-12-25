@@ -34,6 +34,8 @@ import {
   SortChangedEvent
 } from './table.interface';
 import {WithTree} from './tree-able';
+// DO NOT DELETE!!!!, need this import for the build
+import {Constructor} from 'bob-style';
 
 @Component({
   selector: 'b-table',
