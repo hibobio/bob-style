@@ -64,7 +64,6 @@ export abstract class BaseInputElement extends BaseFormElement {
     this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
     this.inputFocused = false;
   }
-
   processValue(value: number | string) {
     if (this.inputType === InputTypes.number) {
       const parsed = parseToNumber(value);
