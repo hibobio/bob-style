@@ -34,6 +34,15 @@ export class BarLineChartComponent extends ChartCore implements OnChanges {
   }
 
   private updateChartOptions() {
+    const COLUMN_BAR_WIDTH = {
+      pointPadding: 0.1,
+      groupPadding: 0.08
+    };
+    const MULTI_COLUMN_WIDTH = {
+      pointPadding: 0.1,
+      groupPadding: 0.2
+    };
+
     this.chartOptions = merge(
       {
         chart: {
@@ -49,14 +58,15 @@ export class BarLineChartComponent extends ChartCore implements OnChanges {
           };
           return dataSet as SeriesOptionsType[];
         }),
-        plotOptions: this.stacked
-          ? this.stackedPercent
-            ? { column: { stacking: 'percent', }, }
-            : { column: { stacking: 'normal', }, }
-          : { column: { stacking: undefined, }, }
-
+        plotOptions: {
+          column: this.stacked
+              ? this.stackedPercent
+                ? {...COLUMN_BAR_WIDTH, stacking: 'percent'}
+                : {...COLUMN_BAR_WIDTH, stacking: 'normal'}
+              : {...MULTI_COLUMN_WIDTH, stacking: undefined}
+          }
       },
-      { ...this.extraOptions }
+      this.extraOptions
     );
   }
 }

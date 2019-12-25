@@ -184,6 +184,7 @@ export {
 export * from './lib/form-elements/date-picker/datepicker.enum';
 export * from './lib/form-elements/date-picker/datepicker.interface';
 export { DateParseService } from './lib/form-elements/date-picker/date-parse-service/date-parse.service';
+// tslint:disable-next-line: max-line-length
 export { DateInputDirectiveModule } from './lib/form-elements/date-picker/date-input-directive/dateinput.directive.module';
 export { DateInputDirective } from './lib/form-elements/date-picker/date-input-directive/dateinput.directive';
 export {

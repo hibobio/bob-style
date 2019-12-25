@@ -1,0 +1,39 @@
+@import "./../../../../../src/lib/style/common-imports";
+@import "./../../../../../src/lib/style/icons";
+
+@mixin ag-icon($b-icon) {
+  margin-right: 5px;
+  position: relative;
+  top: 0.8px;
+  background: none;
+  @include b-icon($icon: $b-icon, $size: small, $color: dark);
+  cursor: pointer;
+}
+$toolpanel-indent-size: 35px;
+
+:host ::ng-deep {
+  .ag-row-animation .ag-row {
+    -webkit-transition: top 0.4s, height 0.4s, background-color 0.1s, opacity 0.2s, -webkit-transform 0.4s;
+    transition: top 0.4s, height 0.4s, background-color 0.1s, opacity 0.2s, -webkit-transform 0.4s;
+    transition: transform 0.4s, top 0.4s, height 0.4s, background-color 0.1s, opacity 0.2s;
+    transition: transform 0.4s, top 0.4s, height 0.4s, background-color 0.1s, opacity 0.2s, -webkit-transform 0.4s;
+  }
+
+  @for $i from 1 to 50 {
+    .ag-ltr .ag-row-group-indent-#{$i} {
+      padding-left: $i * $toolpanel-indent-size;
+    }
+  }
+
+  ag-grid-angular {
+    .ag-menu {
+      background: gray;
+    }
+    .ag-icon.ag-icon-contracted {
+      @include ag-icon('chevron-down');
+    }
+    .ag-icon.ag-icon-expanded {
+      @include ag-icon('chevron-right');
+    }
+  }
+}

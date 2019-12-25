@@ -1,3 +1,5 @@
+import { RenderedComponent } from '../services/component-renderer/component-renderer.interface';
+
 export interface ListHeader {
   groupName: string;
   key?: string | number;
@@ -16,9 +18,10 @@ export interface ListOption {
   value: string;
   id: number | string;
   selected: boolean;
-  prefixComponent?: ListComponentPrefix;
+  prefixComponent?: ListComponentPrefix | RenderedComponent;
   disabled?: boolean;
   hidden?: boolean;
+  [key: string]: any;
 }
 
 export interface SelectGroupOption {
@@ -27,15 +30,17 @@ export interface SelectGroupOption {
   options: SelectOption[];
   selected?: boolean;
   hidden?: boolean;
+  [key: string]: any;
 }
 
 export interface SelectOption {
   value: string;
   id: number | string;
   selected?: boolean;
-  prefixComponent?: ListComponentPrefix;
+  prefixComponent?: ListComponentPrefix | RenderedComponent;
   disabled?: boolean;
   hidden?: boolean;
+  [key: string]: any;
 }
 
 export interface ListComponentPrefix {

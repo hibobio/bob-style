@@ -3,4 +3,12 @@
     display: flex;
     justify-content: space-between;
   }
+
+  .actionable-item:hover b-menu {
+    visibility: visible;
+  }
+
+  b-menu {
+    visibility: hidden;
+  }
 }

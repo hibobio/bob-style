@@ -6,7 +6,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { AvatarModule } from 'bob-style';
 import { TableModule } from '../table.module';
 import { AvatarCellComponent } from '../table-cell-components/avatar-cell/avatar.component';
-import { AgGridModule } from 'ag-grid-angular';
+import {AgGridModule, AgGridNg2} from 'ag-grid-angular';
 import { ColumnDef } from './table.interface';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { cloneDeep, keys, pick } from 'lodash';
@@ -14,6 +14,7 @@ import { COLUMN_DEFS_MOCK, ROW_DATA_MOCK } from '../table-mocks/table-test.mock'
 import { RowSelection, TableType } from './table.enum';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectorRef } from '@angular/core';
+import {TreeConfig, defaultTreeConfig} from './tree-able';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
@@ -335,6 +336,31 @@ describe('TableComponent', () => {
       spyOn(component.agGrid.api, 'getDisplayedRowCount');
       component.getDisplayedRowCount();
       expect(component.agGrid.api.getDisplayedRowCount).toHaveBeenCalled();
+    });
+  });
+
+  describe('treeAble', () => {
+    let grid: AgGridNg2;
+    const defaultConfigMock = {...defaultTreeConfig, treeData: true};
+    function setup(treeConfig: TreeConfig = defaultConfigMock) {
+      component.treeConfig = treeConfig;
+      fixture.detectChanges();
+      const gridElem = fixture.debugElement.query(By.css('ag-grid-angular'));
+      grid = gridElem.componentInstance;
+    }
+    it('should pass the treeData', () => {
+      setup();
+      expect(grid.treeData).toBeTruthy();
+    });
+    it('should pass getDataPath', () => {
+      const getPathMock = (data) => [];
+      setup({...defaultConfigMock, getDataPath: getPathMock});
+      expect(grid.getDataPath).toBe(getPathMock);
+    });
+    it('should pass groupDefaultExpanded', () => {
+      setup();
+      expect(grid.groupDefaultExpanded).toBe(defaultConfigMock.groupDefaultExpanded);
+
     });
   });
 

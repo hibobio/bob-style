@@ -123,3 +123,5 @@ export interface DateLocaleFormat {
 export type DateLocaleFormats = {
   [key in DateLocaleFormatKeys]: DateLocaleFormat
 };
+
+export type Constructor<T> = new(...args: any[]) => T;
