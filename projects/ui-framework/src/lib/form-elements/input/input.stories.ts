@@ -32,6 +32,7 @@ const template = `
         [hideLabelOnFocus]="hideLabelOnFocus"
         [minChars]="minChars"
         [maxChars]="maxChars"
+        [step]="step"
         [min]="min"
         [max]="max"
         [readonly]="readonly"

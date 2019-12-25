@@ -18,7 +18,6 @@ describe('InputComponent', () => {
   let inputElement: any;
   let buttonUpElement: any;
   let buttonDownElement: any;
-  let buttonsWrap: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -115,19 +114,17 @@ describe('InputComponent', () => {
       expect(component.propagateChange).toHaveBeenCalledWith(500);
     });
   });
-  describe('Numeric input limits: user input', () => {
+ describe('Numeric input limits: user input', () => {
     beforeEach(() => {
       component.inputType = InputTypes.number;
       component.max = 30;
       component.min = 5;
       inputElement = elementFromFixture(fixture, '.bfe-input');
-      inputValue(inputElement, '')
       fixture.detectChanges();
     });
 
     it('should return upper limit if the input value is bigger, and bottom limit if it was smaller', () => {
       expect(component.value as any).not.toEqual(30);
-
       inputValue(inputElement, 500);
       expect(component.value as any).toEqual(30);
     });
@@ -161,10 +158,9 @@ describe('InputComponent', () => {
     it('should return the upper limit on any tick that sets the value to be above max', () => {
       buttonUpElement = elementFromFixture(fixture, '.b-icon-chevron-up');
       emitNativeEvent(buttonUpElement);
-      expect(component.value as any).toEqual(3);
+      expect(component.value as any).toEqual(5);
       emitNativeEvent(buttonUpElement);
       expect(component.value as any).toEqual(6);
-      component.step = 5;
     });
   });
 
