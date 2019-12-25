@@ -1,11 +1,14 @@
+import { RenderedComponent } from '../services/component-renderer/component-renderer.interface';
+
 export interface ListHeader {
   groupName: string;
   key?: string | number;
   isCollapsed: boolean;
   placeHolderSize: number;
-  selected: boolean;
+  selected?: boolean;
   indeterminate?: boolean;
   selectedCount?: number;
+  hidden?: boolean;
 }
 
 export interface ListOption {
@@ -15,22 +18,29 @@ export interface ListOption {
   value: string;
   id: number | string;
   selected: boolean;
-  prefixComponent?: ListComponentPrefix;
+  prefixComponent?: ListComponentPrefix | RenderedComponent;
   disabled?: boolean;
+  hidden?: boolean;
+  [key: string]: any;
 }
 
 export interface SelectGroupOption {
   groupName: string;
   key?: string | number;
   options: SelectOption[];
+  selected?: boolean;
+  hidden?: boolean;
+  [key: string]: any;
 }
 
 export interface SelectOption {
   value: string;
   id: number | string;
   selected?: boolean;
-  prefixComponent?: ListComponentPrefix;
+  prefixComponent?: ListComponentPrefix | RenderedComponent;
   disabled?: boolean;
+  hidden?: boolean;
+  [key: string]: any;
 }
 
 export interface ListComponentPrefix {

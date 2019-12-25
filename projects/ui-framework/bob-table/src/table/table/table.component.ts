@@ -25,22 +25,25 @@ import {
 } from 'ag-grid-community';
 import { cloneDeep, get, has, map } from 'lodash';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
-import { AgGridWrapper } from './ag-grid-wrapper';
+import { WithAgGrid } from './ag-grid-wrapper';
 import { RowSelection, TableType } from './table.enum';
 import {
   ColumnDef,
   ColumnsOrderChangedEvent,
   RowClickedEvent,
-  SortChangedEvent,
+  SortChangedEvent
 } from './table.interface';
+import {WithTree} from './tree-able';
+// DO NOT DELETE!!!!, need this import for the build
+import {Constructor} from 'bob-style';
 
 @Component({
   selector: 'b-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss'],
+  styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss', './styles/tree-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
+export class TableComponent extends WithTree(WithAgGrid()) implements OnInit, OnChanges {
   constructor(
     private tableUtilsService: TableUtilsService,
     private elRef: ElementRef,
@@ -59,6 +62,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Input() suppressColumnVirtualisation = true;
   @Input() tableGridOptions: Partial<GridOptions> = {};
   @Input() suppressDragLeaveHidesColumns = false;
+  @Input() removeColumnButtonEnabled = false;
 
   @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
     SortChangedEvent
@@ -75,6 +79,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Output() cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter<
     CellClickedEvent
   >();
+  @Output() columnRemoved: EventEmitter<string> = new EventEmitter<string>();
 
   readonly rowHeight: number = 56;
   readonly autoSizePadding: number = 30;
@@ -86,26 +91,27 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   private columns: string[];
 
-  public removeColumnButtonEnabled = false;
-
   @HostListener('click', ['$event'])
   onHostClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
 
     if (
       this.removeColumnButtonEnabled &&
-      target.matches('.ag-header-cell[col-id]')
+      this.columnRemoved.observers &&
+      target.matches('.ag-header-viewport .ag-header-cell[col-id]')
     ) {
       const outerWidth = target.offsetWidth;
+      const outerHeight = target.offsetHeight;
       const paddingRight = parseFloat(getComputedStyle(target).paddingRight);
 
       if (
         event.offsetX <= outerWidth - paddingRight &&
-        event.offsetX >= outerWidth - paddingRight - 16
+        event.offsetX >= outerWidth - paddingRight - 16 &&
+        event.offsetY >= outerHeight / 2 - 8 &&
+        event.offsetY <= outerHeight / 2 + 8
       ) {
         event.stopPropagation();
-        const colID = target.getAttribute('col-id');
-        console.log('remove button clicked, ID: ', colID);
+        this.columnRemoved.emit(target.getAttribute('col-id'));
       }
     }
   }
@@ -171,6 +177,11 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       suppressDragLeaveHidesColumns: this.suppressDragLeaveHidesColumns,
       autoSizePadding: this.autoSizePadding,
       suppressColumnVirtualisation: this.suppressColumnVirtualisation,
+      autoGroupColumnDef: {
+        cellRendererParams: {
+          suppressCount: true
+        }
+      },
       rowHeight: this.rowHeight,
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,

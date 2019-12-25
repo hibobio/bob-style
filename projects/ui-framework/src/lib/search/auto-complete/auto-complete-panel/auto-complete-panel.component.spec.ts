@@ -42,6 +42,9 @@ describe('AutoCompletePanelComponent', () => {
         component = fixture.componentInstance;
         spyOn(component.optionSelect, 'emit');
         spyOn(component.escapeClick, 'emit');
+
+        component.optionSelect.subscribe(() => {});
+
         component.ngOnChanges({
           options: {
             previousValue: undefined,
@@ -53,6 +56,10 @@ describe('AutoCompletePanelComponent', () => {
         fixture.autoDetectChanges();
       });
   }));
+
+  afterAll(() => {
+    component.optionSelect.complete();
+  });
 
   describe('OnChanges', () => {
     it('should set the first option of list as focus', () => {

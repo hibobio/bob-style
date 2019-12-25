@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { escapeRegExp } from 'lodash';
+import { escapeRegExp, cloneDeep } from 'lodash';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import {
   ListOption,
@@ -14,6 +14,7 @@ import {
   isArray,
   hasProp,
   isEmptyArray,
+  isBoolean,
 } from '../../services/utils/functional-utils';
 
 @Injectable()
@@ -25,16 +26,21 @@ export class ListModelService {
     collapseHeaders = false
   ): ListHeader[] {
     return options.map(group => {
-      const selectedCount = this.countSelected(group.options);
+      const selectedCount = this.countOptions(group.options, 'selected');
 
       return Object.assign(
         {
           groupName: group.groupName,
           isCollapsed: collapseHeaders,
           placeHolderSize: group.options.length * LIST_EL_HEIGHT,
-          selected: selectedCount === group.options.length,
-          indeterminate:
-            selectedCount > 0 && selectedCount < group.options.length,
+          selected: isBoolean(group.selected)
+            ? group.selected
+            : selectedCount === group.options.length,
+          hidden: isBoolean(group.hidden)
+            ? group.hidden
+            : this.countOptions(group.options, 'hidden') ===
+              group.options.length,
+          indeterminate: this.isIndeterminate(group.options, selectedCount),
           selectedCount: selectedCount,
         },
         !isNullOrUndefined(group.key) ? { key: group.key } : {}
@@ -64,6 +70,9 @@ export class ListModelService {
               {
                 groupName: group.groupName,
                 isPlaceHolder: false,
+                hidden: isBoolean(group.hidden)
+                  ? group.hidden
+                  : !!option.hidden,
               },
               !isNullOrUndefined(group.key) ? { key: group.key } : {}
             )
@@ -80,7 +89,9 @@ export class ListModelService {
                 {
                   groupName: group.groupName,
                   isPlaceHolder: false,
-                  selected: option.selected,
+                  hidden: isBoolean(group.hidden)
+                    ? group.hidden
+                    : !!option.hidden,
                 },
                 !isNullOrUndefined(group.key) ? { key: group.key } : {}
               )
@@ -111,12 +122,15 @@ export class ListModelService {
     listHeaders.forEach((header: ListHeader, index: number) => {
       const groupOptions = options[index].options;
 
-      header.selectedCount = this.countSelected(groupOptions);
-
+      header.selectedCount = this.countOptions(groupOptions, 'selected');
       header.selected = header.selectedCount === groupOptions.length;
-
-      header.indeterminate =
-        header.selectedCount > 0 && header.selectedCount < groupOptions.length;
+      header.indeterminate = this.isIndeterminate(
+        groupOptions,
+        header.selectedCount
+      );
+      header.hidden = isBoolean(header.hidden)
+        ? header.hidden
+        : this.countOptions(groupOptions, 'hidden') === groupOptions.length;
     });
   }
 
@@ -124,17 +138,20 @@ export class ListModelService {
     options: SelectGroupOption[],
     searchValue: string
   ): SelectGroupOption[] {
+    searchValue = searchValue.trim();
     const matcher = new RegExp(escapeRegExp(searchValue), 'i');
 
-    return options
-      .map((group: SelectGroupOption) =>
-        Object.assign({}, group, {
-          options: group.options.filter((option: SelectOption) =>
-            matcher.test(option.value)
-          ),
-        })
-      )
-      .filter((group: SelectGroupOption) => isNotEmptyArray(group.options));
+    return searchValue
+      ? options
+          .map((group: SelectGroupOption) =>
+            Object.assign({}, group, {
+              options: group.options.filter((option: SelectOption) =>
+                matcher.test(option.value)
+              ),
+            })
+          )
+          .filter((group: SelectGroupOption) => isNotEmptyArray(group.options))
+      : cloneDeep(options);
   }
 
   getSelectedIDs(
@@ -151,15 +168,6 @@ export class ListModelService {
           .map((opt: SelectOption) => opt.id)
       )
     );
-  }
-
-  countSelected(options: SelectOption[]): number {
-    return options.filter(opt => opt.selected).length;
-  }
-
-  isIndeterminate(options: SelectOption[]): boolean {
-    const selectedCount = this.countSelected(options);
-    return selectedCount > 0 && selectedCount < options.length;
   }
 
   selectAll<T = SelectGroupOption>(options: T[]): T[] {
@@ -211,6 +219,18 @@ export class ListModelService {
       (!isNullOrUndefined(group1.key) && group1.key === group2.key) ||
       (isNullOrUndefined(group1.key) && group1.groupName === group2.groupName)
     );
+  }
+
+  countOptions(options: SelectOption[], mustBe = null) {
+    return mustBe ? options.filter(opt => opt[mustBe]).length : options.length;
+  }
+
+  isIndeterminate(options: SelectOption[], selectedCount = null): boolean {
+    selectedCount =
+      selectedCount !== null
+        ? selectedCount
+        : this.countOptions(options, 'selected');
+    return selectedCount > 0 && selectedCount < options.length;
   }
 
   totalOptionsCount(options: SelectGroupOption[]): number {

@@ -21,6 +21,8 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { cloneDeep } from 'lodash';
 import { ListModelService } from '../list-service/list-model.service';
 
+import listInterfaceDoc from '../list.interface.md';
+
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
@@ -87,6 +89,8 @@ const note = `
   ~~~
   ${template}
   ~~~
+
+  ${listInterfaceDoc}
 `;
 
 const options = ListModelService.prototype.selectAll(cloneDeep(optionsMock));

@@ -110,7 +110,7 @@ export abstract class BaseListElement
 
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
       this.selectedIDs = this.getSelectedIDs(this.options);
-      this.filteredOptions = cloneDeep(this.options || []);
+      this.filteredOptions = cloneDeep(this.options) || [];
 
       this.shouldDisplaySearch =
         this.options &&
@@ -143,6 +143,14 @@ export abstract class BaseListElement
       ])
     ) {
       this.updateActionButtonsState();
+    }
+
+    if (
+      hasChanges(changes, ['startWithGroupsCollapsed', 'options']) &&
+      typeof this.startWithGroupsCollapsed === 'boolean'
+    ) {
+      this.startWithGroupsCollapsed =
+        this.startWithGroupsCollapsed && this.options.length > 1;
     }
 
     if (
@@ -199,6 +207,9 @@ export abstract class BaseListElement
             break;
           case Keys.enter:
             e.preventDefault();
+            if (!this.focusOption) {
+              break;
+            }
             this.focusOption.isPlaceHolder
               ? this.headerClick(
                   find(this.listHeaders, {
@@ -242,13 +253,15 @@ export abstract class BaseListElement
   }
 
   searchChange(searchValue: string): void {
-    this.searchValue = searchValue;
+    this.searchValue = searchValue.trim();
+
     this.filteredOptions = this.modelSrvc.getFilteredOptions(
       this.options,
-      searchValue
+      this.searchValue
     );
+
     this.updateLists({
-      collapseHeaders: this.startWithGroupsCollapsed && !searchValue,
+      collapseHeaders: this.startWithGroupsCollapsed && !this.searchValue,
     });
   }
 

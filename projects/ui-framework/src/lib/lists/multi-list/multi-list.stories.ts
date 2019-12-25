@@ -13,6 +13,8 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { optionsMock, optionsMockDef } from './multi-list.mock';
 import { cloneDeep } from 'lodash';
 
+import listInterfaceDoc from '../list.interface.md';
+
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
@@ -65,6 +67,9 @@ const note = `
   ~~~
   ${template}
   ~~~
+
+  ${listInterfaceDoc}
+
 `;
 
 const options = cloneDeep(optionsMock);

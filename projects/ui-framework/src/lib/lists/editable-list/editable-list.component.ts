@@ -83,7 +83,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     create: [],
     order: null,
     sortType: null,
-    list: null,
+    list: [],
   };
 
   public isDragged = false;
@@ -192,8 +192,12 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
           .map(i => i.value)
           .findIndex(
             i =>
-              i.toLowerCase().replace(/\W/g, '') ===
-              value.toLowerCase().replace(/\W/g, '')
+              i
+                .toLowerCase()
+                .replace(/[./\\()\"':,.;<>~!@#$%^&*|+=[\]{}`~\?-]/g, '') ===
+              value
+                .toLowerCase()
+                .replace(/[./\\()\"':,.;<>~!@#$%^&*|+=[\]{}`~\?-]/g, '')
           );
 
         if (this.sameItemIndex > -1) {

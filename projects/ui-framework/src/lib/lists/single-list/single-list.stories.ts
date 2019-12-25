@@ -14,6 +14,8 @@ import { optionsMock } from './single-list.mock';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../list-change/list-change';
 
+import listInterfaceDoc from '../list.interface.md';
+
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
@@ -65,6 +67,8 @@ const note = `
   ~~~
   ${template}
   ~~~
+
+  ${listInterfaceDoc}
 `;
 
 const options = cloneDeep(optionsMock);

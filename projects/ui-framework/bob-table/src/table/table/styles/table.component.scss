@@ -1,33 +1,9 @@
 @import '../../../../../src/lib/style/common-imports';
 @import '../../../../../src/lib/style/icons';
-
-$min-table-height: 140px;
-
-@mixin cell {
-  text-align: left;
-  padding: 0 15px;
-  color: $grey-700;
-  height: auto;
-  display: block;
-  width: 100%;
-
-  &:focus {
-    outline: none;
-  }
-
-  &[class*='b-icon'] {
-    &:before {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-  }
-}
+@import './table.mixin';
 
 :host {
   --max-height: 450px;
-  min-height: $min-table-height;
   display: block;
 }
 
@@ -62,7 +38,6 @@ $min-table-height: 140px;
     border: 1px solid $grey-500;
     border-radius: 4px;
     max-height: var(--max-height);
-    min-height: $min-table-height;
   }
 
   .ag-header {
@@ -72,27 +47,54 @@ $min-table-height: 140px;
 
     .ag-header-row {
       display: flex;
-      align-items: center;
     }
 
     .ag-header-cell {
-      @include cell;
+      @include cell(null);
+      display: flex;
+      align-items: center;
+      cursor: default;
+    }
 
-      .ag-header-cell-resize {
-        right: -3px;
-        width: 5px;
+    .ag-header-cell-sortable .ag-header-cell-label {
+      cursor: pointer;
+    }
 
-        &:before {
-          content: '';
-          display: block;
-          position: absolute;
-          height: 30px;
-          top: 50%;
-          transform: translateY(-50%);
-          right: 50%;
-          border-left: 1px solid $grey-500;
-        }
-      }
+    .ag-cell-label-container {
+      flex-grow: 1;
+      min-width: 0;
+      height: 100%;
+    }
+
+    .ag-header-cell-label {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    .ag-header-cell-text {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ag-header-cell-resize {
+      right: -3px;
+      width: 5px;
+
+      background-image: linear-gradient($grey-500, $grey-500);
+      background-size: 1px 30px;
+      background-position: center;
+    }
+
+    .ag-header-icon {
+      display: flex;
+      margin-left: 2px;
+      opacity: 0.73;
+    }
+
+    .ag-icon-asc {
+      margin-top: -2px;
     }
   }
 
@@ -115,7 +117,7 @@ $min-table-height: 140px;
     }
 
     .ag-cell {
-      @include cell;
+      @include cell(null);
 
       &.row-select {
         position: relative;
@@ -149,14 +151,6 @@ $min-table-height: 140px;
       cursor: pointer;
     }
   }
-
-  .ag-overlay {
-    height: 69px;
-    top: 56px;
-    .ag-overlay-no-rows-center {
-      @include b-display-3($color: $grey-500);
-    }
-  }
 }
 
 // column remove (x) button
@@ -164,46 +158,39 @@ $min-table-height: 140px;
 :host ::ng-deep .remove-column-button {
   .ag-header-viewport {
     .ag-header-cell {
-      display: flex;
-      align-items: center;
-      cursor: default;
+      @include b-icon($icon: 'close', $size: small, $elem: '&:hover:after');
 
-      @include b-icon($icon: 'close', $size: small, $elem: '&:after');
-
-      &:after {
+      &:hover:after {
         font-size: 14px;
         text-align: right;
         color: black;
         font-weight: 600;
         cursor: pointer;
-      }
-
-      .ag-cell-label-container {
-        flex-grow: 1;
-        min-width: 0;
-        cursor: pointer;
-      }
-
-      .ag-header-cell-label {
-        display: flex;
-        align-items: center;
-      }
-
-      .ag-header-cell-text {
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        flex-grow: 1;
-      }
-
-      .ag-header-icon {
-        display: flex;
-        align-items: center;
-
-        .ag-icon-asc {
-          margin-top: -3px;
-        }
+        margin-right: -6px;
       }
     }
+  }
+}
+
+// empty state
+
+:host ::ng-deep {
+  .ag-overlay {
+    right: 0;
+    bottom: 0;
+  }
+
+  .ag-overlay-wrapper {
+    @include b-icon($icon: 'table', $size: x-large, $color: light);
+
+    &:before {
+      margin: 0 auto 8px auto;
+    }
+  }
+
+  .ag-overlay-wrapper > span,
+  .ag-overlay-no-rows-center,
+  .ag-overlay-loading-center {
+    @include b-display-3($color: $grey-500);
   }
 }

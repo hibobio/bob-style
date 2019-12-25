@@ -101,6 +101,7 @@ describe('MultiListComponent', () => {
           selected: false,
           indeterminate: true,
           selectedCount: 1,
+          hidden: false,
         },
         {
           groupName: 'Personal Header',
@@ -109,6 +110,7 @@ describe('MultiListComponent', () => {
           selected: false,
           indeterminate: false,
           selectedCount: 0,
+          hidden: false,
         },
       ]);
     });
@@ -125,6 +127,7 @@ describe('MultiListComponent', () => {
           groupName: 'Basic Info Header',
           isPlaceHolder: false,
           selected: true,
+          hidden: false,
         },
         {
           value: 'Basic Info 2',
@@ -132,6 +135,7 @@ describe('MultiListComponent', () => {
           groupName: 'Basic Info Header',
           isPlaceHolder: false,
           selected: false,
+          hidden: false,
         },
         {
           isPlaceHolder: true,
@@ -144,6 +148,7 @@ describe('MultiListComponent', () => {
           isPlaceHolder: false,
           selected: false,
           disabled: true,
+          hidden: false,
         },
         {
           value: 'Personal 2',
@@ -151,6 +156,7 @@ describe('MultiListComponent', () => {
           groupName: 'Personal Header',
           isPlaceHolder: false,
           selected: false,
+          hidden: false,
         },
       ] as any);
     });
@@ -469,6 +475,7 @@ describe('MultiListComponent', () => {
           selected: true,
           indeterminate: false,
           selectedCount: 2,
+          hidden: false,
         },
         {
           groupName: 'Personal Header',
@@ -477,6 +484,7 @@ describe('MultiListComponent', () => {
           selected: false,
           indeterminate: false,
           selectedCount: 0,
+          hidden: false,
         },
       ];
       const expectedOptionsModel = [
@@ -495,6 +503,7 @@ describe('MultiListComponent', () => {
           isPlaceHolder: false,
           selected: false,
           disabled: true,
+          hidden: false,
         },
         {
           value: 'Personal 2',
@@ -502,6 +511,7 @@ describe('MultiListComponent', () => {
           groupName: 'Personal Header',
           isPlaceHolder: false,
           selected: false,
+          hidden: false,
         },
       ];
 

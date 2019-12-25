@@ -6,12 +6,15 @@ import {
   ElementRef,
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
-import { chain } from 'lodash';
 import { ListHeader } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import {
+  arrayDifference,
+  joinArrays,
+} from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-multi-list',
@@ -40,35 +43,38 @@ export class MultiListComponent extends BaseListElement {
     };
   }
 
-  headerClick(header: ListHeader): void {
+  headerClick(header: ListHeader, index: number): void {
     if (this.options.length > 1) {
       this.toggleGroupCollapse(header);
     } else {
-      this.selectGroup(header);
+      this.selectGroup(header, index);
     }
   }
 
-  selectGroup(header: ListHeader): void {
-    header.selected = this.getHeaderSelect(header);
+  selectGroup(header: ListHeader, index: number): void {
+    header.selected = this.options[index].options
+      .filter(option => !(option.disabled && !option.selected))
+      .some(option => !option.selected);
 
-    const groupOptionsIds = chain(this.options)
-      .filter(group => this.isSameGroup(header, group))
-      .flatMap('options')
+    const groupOptionsNotDisabledIDs = this.options[index].options
       .filter(option => !option.disabled)
-      .flatMap('id')
-      .value();
+      .map(option => option.id);
+
+    const groupOptionsSelectedDisabledIDs = this.getSelectedIDs(
+      this.options,
+      'disabled'
+    );
 
     this.selectedIDs = header.selected
-      ? chain(this.selectedIDs)
-          .concat(groupOptionsIds)
-          .concat(this.getSelectedIDs(this.options, 'disabled'))
-          .uniq()
-          .value()
-      : chain(this.selectedIDs)
-          .difference(groupOptionsIds)
-          .concat(this.getSelectedIDs(this.options, 'disabled'))
-          .uniq()
-          .value();
+      ? joinArrays(
+          this.selectedIDs,
+          groupOptionsNotDisabledIDs,
+          groupOptionsSelectedDisabledIDs
+        )
+      : joinArrays(
+          arrayDifference(this.selectedIDs, groupOptionsNotDisabledIDs),
+          groupOptionsSelectedDisabledIDs
+        );
 
     this.emitChange();
     this.updateActionButtonsState();
@@ -78,14 +84,5 @@ export class MultiListComponent extends BaseListElement {
       updateListOptions: false,
       selectedIDs: this.selectedIDs,
     });
-  }
-
-  private getHeaderSelect(header: ListHeader): boolean {
-    const options = chain(this.options)
-      .filter(group => this.isSameGroup(header, group))
-      .flatMap('options')
-      .filter(o => !(o.disabled && !o.selected))
-      .value();
-    return !options.every(o => o.selected);
   }
 }

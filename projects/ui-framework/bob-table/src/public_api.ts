@@ -12,4 +12,6 @@ export { ActionsCellComponent } from './table/table-cell-components/actions-cell
 export { GridActions } from './table/table-cell-components/actions-cell/actions-cell.interface';
 export { TableUtilsService } from './table/table-utils-service/table-utils.service';
 export { TableModule } from './table/table.module';
-
+export {
+  TableActionsWrapperComponent,
+} from './table/table-cell-components/table-actions-wrapper/table-actions-wrapper.component';
