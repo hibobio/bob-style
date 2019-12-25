@@ -43,5 +43,9 @@ $toolpanel-indent-size: 35px;
 
   .ag-header-viewport .ag-header-cell:not(.ag-header-cell-sortable) {
     @include cell-border(right center);
+
+    &:after {
+      display: none !important;
+    }
   }
 }
