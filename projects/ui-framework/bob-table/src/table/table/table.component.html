@@ -3,7 +3,9 @@
                   'grid-ready': gridReady,
                   'secondary': type === tableType.Secondary,
                   'remove-column-button': removeColumnButtonEnabled,
-                  'tree-table': !!treeConfig
+                  'tree-table': !!treeConfig,
+                  'empty-table': !rowData || !rowData.length,
+                  'no-column-defs': !gridColumnDefs
                   }"
                  [treeData]="treeConfig.treeData"
                  [rowData]="rowData"

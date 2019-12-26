@@ -1,0 +1,19 @@
+:host {
+  .circle-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: left
+  }
+
+  .circle-icon-label {
+    margin-left: 10px;
+  }
+}
+
+:host ::ng-deep {
+  .avatar-content {
+    opacity: 1;
+  }
+}
+
+

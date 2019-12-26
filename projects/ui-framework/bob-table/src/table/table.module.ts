@@ -7,9 +7,11 @@ import { AgGridModule } from 'ag-grid-angular';
 import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
 import { TableUtilsService } from './table-utils-service/table-utils.service';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
-import { AvatarModule, ButtonsModule, MenuModule } from 'bob-style';
+import { AvatarModule, ButtonsModule, IconsModule, MenuModule, } from 'bob-style';
 // tslint:disable-next-line:max-line-length
 import { TableActionsWrapperComponent } from './table-cell-components/table-actions-wrapper/table-actions-wrapper.component';
+// tslint:disable-next-line:max-line-length
+import { CircleIconAndLabelComponent } from './table-cell-components/circle-icon-and-label/circle-icon-and-label.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,7 @@ import { TableActionsWrapperComponent } from './table-cell-components/table-acti
     AvatarCellComponent,
     ActionsCellComponent,
     TableActionsWrapperComponent,
+    CircleIconAndLabelComponent,
   ],
   providers: [TableUtilsService],
   imports: [
@@ -27,8 +30,20 @@ import { TableActionsWrapperComponent } from './table-cell-components/table-acti
     AgGridModule,
     ButtonsModule,
     MenuModule,
-    AgGridModule.withComponents([AvatarCellComponent, ActionsCellComponent, ActionsCellComponent]),
+    AgGridModule.withComponents([
+      AvatarCellComponent,
+      ActionsCellComponent,
+      ActionsCellComponent,
+      CircleIconAndLabelComponent,
+    ]),
+    IconsModule,
   ],
-  exports: [TableComponent, AvatarCellComponent, ActionsCellComponent, TableActionsWrapperComponent],
+  exports: [
+    TableComponent,
+    AvatarCellComponent,
+    ActionsCellComponent,
+    TableActionsWrapperComponent,
+    CircleIconAndLabelComponent,
+  ],
 })
 export class TableModule {}

@@ -256,7 +256,8 @@ export { EditableListComponent } from './lib/lists/editable-list/editable-list.c
 // Basic list
 export { BasicListModule } from './lib/lists/basic-list/basic-list.module';
 export { BasicListComponent } from './lib/lists/basic-list/basic-list.component';
-export { BasicListItem } from './lib/lists/basic-list/basic-list.interface';
+export * from './lib/lists/basic-list/basic-list.interface';
+export * from './lib/lists/basic-list/basic-list.enum';
 // Single select panel
 export { SingleSelectPanelModule } from './lib/lists/single-select-panel/single-select-panel.module';
 export {

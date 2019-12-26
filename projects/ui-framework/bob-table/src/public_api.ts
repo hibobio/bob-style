@@ -15,3 +15,9 @@ export { TableModule } from './table/table.module';
 export {
   TableActionsWrapperComponent,
 } from './table/table-cell-components/table-actions-wrapper/table-actions-wrapper.component';
+export {
+  CircleIconAndLabelComponent
+} from './table/table-cell-components/circle-icon-and-label/circle-icon-and-label.component';
+export {
+  CircleIconAndLabelParams
+} from './table/table-cell-components/circle-icon-and-label/circle-icon-and-label.interface';
