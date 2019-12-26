@@ -74,7 +74,11 @@ const note = `
   [items] | BasicListItem[] | List of items to display | &nbsp;
   [type] | BasicListType | primary (grey border), secondary (grey background) | primary
   [showActionOnHover] | boolean | if true, will hide item Action when not hovering over item | false
-
+  &lt;elem \*bBasicListAction&gt; | ng-content | passing an element with \
+  <u>*bBasicListAction</u> directive attached will put it in the item \
+  action slot. If the element needs access to the item data, you can \
+  use: <u>*bBasicListAction="let item=item"</u> (item will be the \
+    corresponding item of your BasicListItem[] array) | &nbsp;
   ~~~
   ${withMenuTemplate}
   ~~~
@@ -82,6 +86,12 @@ const note = `
   ~~~
   ${withButtonTemplate}
   ~~~
+
+  #### interface: BasicListItem
+  Name | Type | Description
+  --- | --- | ---
+  label | string / string[] | item text
+  icon? | Icons | item icon
 `;
 
 story.add(
