@@ -169,24 +169,18 @@ describe('InputComponent', () => {
      component.inputType = InputTypes.number;
      component.step = 5;
      fixture.detectChanges();
-     expect(elementFromFixture(fixture, '.b-icon-chevron-up')).toBeTruthy();
-     expect(elementFromFixture(fixture, '.b-icon-chevron-down')).toBeTruthy();
      expect(elementFromFixture(fixture, '.bfe-buttons-wrap')).toBeTruthy();
    });
    it('should not render if step is not greater than 0', () => {
      component.inputType = InputTypes.number;
      component.step = 0;
      fixture.detectChanges();
-     expect(elementFromFixture(fixture, '.b-icon-chevron-up')).toBeFalsy();
-     expect(elementFromFixture(fixture, '.b-icon-chevron-down')).toBeFalsy();
      expect(elementFromFixture(fixture, '.bfe-buttons-wrap')).toBeFalsy();
    });
    it('should not render if input type is not number', () => {
      component.inputType = InputTypes.text;
      component.step = 5;
      fixture.detectChanges();
-     expect(elementFromFixture(fixture, '.b-icon-chevron-up')).toBeFalsy();
-     expect(elementFromFixture(fixture, '.b-icon-chevron-down')).toBeFalsy();
      expect(elementFromFixture(fixture, '.bfe-buttons-wrap')).toBeFalsy();
    });
   });
