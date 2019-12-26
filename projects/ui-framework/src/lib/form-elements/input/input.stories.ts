@@ -63,7 +63,7 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | ---
-  [inputType] | InputTypes | type of input field
+  [inputType] | InputTypes | type of input field (inputType number is required to render ticker buttons)
   [value] | string/number | value of input field
   [label] | string | label text (above input)
   [description] | string | description text (above icon)
@@ -72,6 +72,7 @@ const note = `
    input, label text (if present) will be used as placeholder
   [minChars] | number | minimum length
   [maxChars] | number | maximum length
+  [step] | number | (required for input to render ticker buttons) defines the ticker step
   [min] | number | (only relevent for number inputs) minimum value (value will be corrected on blur)
   [max] | number | (only relevent for number inputs) maximum value (value will be corrected on blur)
   [readonly] | boolean | disables input
