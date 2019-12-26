@@ -4,8 +4,13 @@
 
 .b-icon {
   background-color: white;
-  padding: 5px;
+  padding: 1px;
   border: none;
+}
+.b-icon:focus {outline:0;}
+
+.b-icon:before{
+  color: #aaa;
 }
 .b-icon-chevron-up {
   border-bottom: 1px solid lightgrey;
