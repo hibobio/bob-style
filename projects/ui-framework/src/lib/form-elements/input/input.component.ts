@@ -67,15 +67,13 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   }
 
   onIncrement() {
-    const parsedValue = parseToNumber(this.input.nativeElement.value);
-    this.writeValue(parsedValue + this.step);
-    this.processValue(parsedValue + this.step);
+    this.writeValue(parseToNumber(this.input.nativeElement.value) + this.step);
+    this.processValue(this.value);
   }
 
   onDecrement() {
-    const parsedValue = parseToNumber(this.input.nativeElement.value);
-    this.writeValue(parsedValue - this.step);
-    this.processValue(parsedValue - this.step);
+    this.writeValue(parseToNumber(this.input.nativeElement.value) - this.step);
+    this.processValue(this.value);
   }
 
   public onInputKeydown(event: KeyboardEvent) {
