@@ -1,14 +1,29 @@
-<ol class="bbl-list">
-  <li class="bbl-list-item"
+<table class="bbl-list"
+       [ngClass]="{
+         'is-a-table': isTable,
+         'not-a-table': !isTable,
+         'single-label': singleLabel,
+         'show-action-on-hover': showActionOnHover
+        }">
+  <tr class="bbl-list-item"
       *ngFor="let item of items; index as i">
-    <b-icon class="bbl-list-icon"
-            [icon]="item.icon"
-            [color]="iconColor.normal"></b-icon>
-    <span class="bbl-list-label"
-          data-max-lines="2">{{item.label}}</span>
-    <div class="bbl-list-action-container">
+
+    <td *ngIf="item.icon"
+        b-icon
+        class="bbl-list-icon"
+        [icon]="item.icon"
+        [color]="iconColor.normal"></td>
+
+    <td *ngFor="let label of asArray(item.label)"
+        class="bbl-list-label">
+      <span data-max-lines="2">{{label}}</span>
+    </td>
+
+    <td *ngIf="contentChild"
+        class="bbl-list-action-container">
       <ng-container *ngTemplateOutlet="contentChild?.tpl; context: { item: item, index: i }">
       </ng-container>
-    </div>
-  </li>
-</ol>
+    </td>
+
+  </tr>
+</table>

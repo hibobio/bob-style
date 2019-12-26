@@ -14,7 +14,7 @@ import {
 } from '../services/utils/functional-utils';
 
 @Component({
-  selector: 'b-icon',
+  selector: 'b-icon, [b-icon]',
   template: `
     <span class="b-icon" [ngClass]="iconClass" aria-hidden="true"></span>
   `,
