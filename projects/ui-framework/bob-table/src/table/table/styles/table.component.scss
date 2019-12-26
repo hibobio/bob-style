@@ -204,6 +204,9 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     .ag-root {
       min-height: $min-table-height;
     }
+    .ag-header {
+      @include disabled-state;
+    }
   }
 
   .empty-table.no-column-defs {

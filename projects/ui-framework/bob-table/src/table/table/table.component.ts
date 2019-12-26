@@ -63,8 +63,8 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     this.treeConfig = { ...defaultTreeConfig, ...treeConfig };
   }
 
-  @Input() rowData: any[];
-  @Input() columnDefs: ColumnDef[];
+  @Input() rowData: any[] = [];
+  @Input() columnDefs: ColumnDef[] = [];
   @Input() rowSelection: RowSelection = null;
   @Input() maxHeight = 450;
   @Input() suppressColumnVirtualisation = true;
