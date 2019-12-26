@@ -1,19 +1,48 @@
 // tslint:disable-next-line:max-line-length
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, HostListener} from '@angular/core';
-import {AgGridNg2} from 'ag-grid-angular';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  HostListener,
+} from '@angular/core';
+import { AgGridNg2 } from 'ag-grid-angular';
 // tslint:disable-next-line:max-line-length
-import {CellClickedEvent, Column, DragStoppedEvent, GridColumnsChangedEvent, GridOptions, GridReadyEvent} from 'ag-grid-community';
-import {cloneDeep, get, has, map} from 'lodash';
-import {TableUtilsService} from '../table-utils-service/table-utils.service';
-import {AgGridWrapper} from './ag-grid-wrapper';
-import {RowSelection, TableType} from './table.enum';
-import {ColumnDef, ColumnsOrderChangedEvent, RowClickedEvent, SortChangedEvent} from './table.interface';
-import {TreeConfig, defaultTreeConfig} from './tree-able';
+import {
+  CellClickedEvent,
+  Column,
+  DragStoppedEvent,
+  GridColumnsChangedEvent,
+  GridOptions,
+  GridReadyEvent,
+} from 'ag-grid-community';
+import { cloneDeep, get, has, map } from 'lodash';
+import { TableUtilsService } from '../table-utils-service/table-utils.service';
+import { AgGridWrapper } from './ag-grid-wrapper';
+import { RowSelection, TableType } from './table.enum';
+import {
+  ColumnDef,
+  ColumnsOrderChangedEvent,
+  RowClickedEvent,
+  SortChangedEvent,
+} from './table.interface';
+import { TreeConfig, defaultTreeConfig } from './tree-able';
 
 @Component({
   selector: 'b-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss', './styles/tree-table.component.scss'],
+  styleUrls: [
+    './styles/table.component.scss',
+    './styles/table-checkbox.scss',
+    './styles/tree-table.component.scss',
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
@@ -31,7 +60,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   public treeConfig: TreeConfig = defaultTreeConfig;
   @Input('treeConfig') set setTreeConfig(treeConfig: TreeConfig) {
-    this.treeConfig = {...defaultTreeConfig, ...treeConfig};
+    this.treeConfig = { ...defaultTreeConfig, ...treeConfig };
   }
 
   @Input() rowData: any[];
@@ -157,8 +186,8 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       suppressColumnVirtualisation: this.suppressColumnVirtualisation,
       autoGroupColumnDef: {
         cellRendererParams: {
-          suppressCount: true
-        }
+          suppressCount: true,
+        },
       },
       rowHeight: this.rowHeight,
       headerHeight: this.rowHeight,
