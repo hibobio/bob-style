@@ -75,8 +75,7 @@ export abstract class BaseInputElement extends BaseFormElement {
         });
       }
     }
-    this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
-    this.inputFocused = false;
+    this.onInputBlur();
   }
 
   onInputKeyUp(event: KeyboardEvent) {
