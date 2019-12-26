@@ -2,6 +2,10 @@
 @import '../../../../../src/lib/style/icons';
 @import './table.mixin';
 
+$table-header-height: 57px;
+$table-overlay-height: 86px;
+$min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
+
 :host {
   --max-height: 450px;
   display: block;
@@ -181,6 +185,8 @@
   }
 
   .ag-overlay-wrapper {
+    display: block;
+    padding: ($table-header-height + times8(3)) times8(2) times8(3) times8(2);
     @include b-icon($icon: 'table', $size: x-large, $color: light);
 
     &:before {
@@ -192,5 +198,26 @@
   .ag-overlay-no-rows-center,
   .ag-overlay-loading-center {
     @include b-display-3($color: $grey-500);
+  }
+
+  .empty-table {
+    .ag-root {
+      min-height: $min-table-height;
+    }
+    .ag-header {
+      @include disabled-state;
+    }
+  }
+
+  .empty-table.no-column-defs {
+    .ag-header {
+      display: none;
+    }
+    .ag-root {
+      min-height: $min-table-height - $table-header-height;
+    }
+    .ag-overlay-wrapper {
+      padding: times8(3) times8(2);
+    }
   }
 }
