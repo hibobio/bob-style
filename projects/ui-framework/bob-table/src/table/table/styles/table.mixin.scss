@@ -1,0 +1,39 @@
+@mixin cell($height: auto) {
+  text-align: left;
+  padding: 0 15px;
+  color: $grey-700;
+  height: $height;
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  &:focus {
+    outline: none;
+  }
+
+  &[class*='b-icon'] {
+    &:before {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+}
+
+@mixin cell-border($align: center) {
+  background-image: linear-gradient($grey-500, $grey-500);
+  background-size: 1px 30px;
+  background-position: $align;
+}
+
+@mixin ag-icon($b-icon) {
+  margin-right: 5px;
+  background: none;
+  @include b-icon($icon: $b-icon, $size: small, $color: dark);
+  cursor: pointer;
+
+  &:before {
+    height: inherit;
+  }
+}
