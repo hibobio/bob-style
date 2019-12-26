@@ -175,7 +175,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
       this.zone.runOutsideAngular(() => {
         setTimeout(() => {
           this.addItemInput.nativeElement.focus();
-
           if (!this.cd['destroyed']) {
             this.cd.detectChanges();
           }
@@ -293,6 +292,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
 
   public onInputChange(): void {
     const value = this.addItemInput.nativeElement.value.trim();
+    this.addingItemLen = value.length;
     this.inputInvalid = false;
     this.sameItemIndex = null;
 
@@ -328,7 +328,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   public sortList(
     list: SelectOption[] = this.listState.list,
     order: ListSortType = null,
-    currentOrder: ListSortType = this.listState.sortType
+    currentOrder: ListSortType = this.listState.sortType,
   ): void {
     this.listState.sortType = this.srvc.sortList(list, order, currentOrder);
     this.addedItem = false;
@@ -339,15 +339,15 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     this.listState.order = this.listState.list.map(i => i.value);
 
     const itersection = this.listState.create.filter(i =>
-      this.listState.delete.includes(i)
+      this.listState.delete.includes(i),
     );
 
     if (isNotEmptyArray(itersection)) {
       this.listState.create = this.listState.create.filter(
-        i => !itersection.includes(i)
+        i => !itersection.includes(i),
       );
       this.listState.delete = this.listState.delete.filter(
-        i => !itersection.includes(i)
+        i => !itersection.includes(i),
       );
     }
 
