@@ -65,7 +65,7 @@ export abstract class BaseInputElement extends BaseFormElement {
     this.inputFocused = false;
   }
 
-  processValue(value: number) {
+  processValue(value: number | string) {
     if (this.inputType === InputTypes.number) {
       const parsed = parseToNumber(value);
       if ((this.min && parsed < this.min) || (this.max && parsed > this.max)) {
