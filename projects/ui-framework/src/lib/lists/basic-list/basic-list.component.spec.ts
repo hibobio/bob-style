@@ -18,9 +18,8 @@ describe('BasicListComponent', () => {
         MockComponent(BodyComponent),
         MockComponent(MenuComponent),
         MockComponent(SquareButtonComponent),
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

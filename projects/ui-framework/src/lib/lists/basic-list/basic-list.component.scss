@@ -3,13 +3,13 @@
 :host {
   display: block;
   text-align: left;
+  width: 100%;
 }
 
 .bbl-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  width: 100%;
   background-color: white;
+  border-collapse: separate;
   border: 1px solid $grey-300;
   border-radius: $border-radius;
 
@@ -17,27 +17,92 @@
     display: none;
   }
 
-  &-item {
-    display: flex;
-    align-items: center;
-    min-height: 44px;
-    border-bottom: 1px solid $grey-300;
+  td {
     padding: 0 8px;
+    vertical-align: middle;
+    align-items: center;
+    border-bottom: inherit;
+  }
 
-    &:last-of-type {
-      border-bottom: none;
+  &-item {
+    height: 44px;
+
+    & + & {
+      box-shadow: 0 -1px 0 0 $grey-300;
     }
   }
 
   &-icon {
-    margin-right: 8px;
-  }
-
-  &-label {
-    flex-grow: 1;
+    display: table-cell;
+    width: 36px;
   }
 
   &-action-container {
-    margin-left: 8px;
+    text-align: right;
+  }
+
+  &.single-label {
+    .bbl-list-icon + td {
+      padding-left: 0;
+    }
+  }
+}
+
+.is-a-table {
+  @include desktop {
+    .bbl-list-icon + .bbl-list-label,
+    .bbl-list-label:first-of-type {
+      width: 25%;
+    }
+  }
+}
+
+// when a table is not a table
+
+.not-a-table {
+  display: block;
+
+  .bbl-list-item {
+    display: flex;
+  }
+
+  td {
+    display: flex;
+  }
+
+  .bbl-list-icon {
+    display: inline-flex;
+  }
+
+  .bbl-list-action-container {
+    margin-left: auto;
+  }
+}
+
+// secondary type
+
+:host[data-type='secondary'] {
+  .bbl-list {
+    background-color: $grey-100;
+  }
+  .bbl-list-label {
+    color: $grey-700;
+  }
+}
+
+// show Action on hover
+
+.show-action-on-hover ::ng-deep {
+  .bbl-list-action-container {
+    :first-child {
+      visibility: hidden;
+    }
+  }
+
+  .bbl-list-action-container:hover,
+  .bbl-list-item:hover .bbl-list-action-container {
+    :first-child {
+      visibility: visible;
+    }
   }
 }

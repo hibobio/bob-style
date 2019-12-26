@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { withKnobs, object } from '@storybook/addon-knobs/angular';
+import {
+  withKnobs,
+  object,
+  select,
+  boolean,
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -8,15 +13,18 @@ import { BasicListModule } from './basic-list.module';
 import { MenuModule } from '../../navigation/menu/menu.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BasicListItem } from './basic-list.interface';
 import { ButtonType, ButtonSize } from '../../buttons/buttons.enum';
+import { basicListItems1, basicListItems2 } from './basic-list.mock';
+import { BasicListType } from './basic-list.enum';
+import { TypographyModule } from '../../typography/typography.module';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
 const withMenuTemplate = `
-  <b-basic-list [items]="items">
+  <b-basic-list [type]="type" [items]="items2"
+                [showActionOnHover]="showActionOnHover">
     <b-menu *bBasicListAction="let item=item" [menu]="item.menu">
       <b-square-button menu-trigger
                         [type]="buttonType.tertiary"
@@ -28,7 +36,8 @@ const withMenuTemplate = `
 `;
 
 const withButtonTemplate = `
-  <b-basic-list [items]="items">
+  <b-basic-list [type]="type" [items]="items1"
+                [showActionOnHover]="showActionOnHover">
     <b-button *bBasicListAction="let item=item"
               [type]="buttonType.secondary"
               [size]="buttonSize.small"
@@ -40,9 +49,14 @@ const withButtonTemplate = `
 
 const storyTemplate = `
   <b-story-book-layout [title]="'Basic List'">
-    <div style="max-width: 400px;">
+    <div style="max-width: 650px;">
+
+      <b-subheading style="margin-bottom: 16px;text-align: left;">Multiple labels</b-subheading>
       ${withMenuTemplate}
-      &nbsp;&nbsp;
+
+      <br><br>
+
+      <b-subheading style="margin-bottom: 16px;text-align: left;">Single label</b-subheading>
       ${withButtonTemplate}
     </div>
   </b-story-book-layout>
@@ -55,10 +69,16 @@ const note = `
   *BasicListModule*
 
   #### Properties
-  Name | Type | Description
-  --- | --- | ---
-  [items] | BasicListItem[] | List of items to display
-
+  Name | Type | Description | Default
+  --- | --- | --- | ---
+  [items] | BasicListItem[] | List of items to display | &nbsp;
+  [type] | BasicListType | primary (grey border), secondary (grey background) | primary
+  [showActionOnHover] | boolean | if true, will hide item Action when not hovering over item | false
+  &lt;elem \*bBasicListAction&gt; | ng-content | passing an element with \
+  <u>*bBasicListAction</u> directive attached will put it in the item \
+  action slot. If the element needs access to the item data, you can \
+  use: <u>*bBasicListAction="let item=item"</u> (item will be the \
+    corresponding item of your BasicListItem[] array) | &nbsp;
   ~~~
   ${withMenuTemplate}
   ~~~
@@ -66,38 +86,13 @@ const note = `
   ~~~
   ${withButtonTemplate}
   ~~~
-`;
 
-const items: BasicListItem[] = [
-  {
-    label: 'Item 1',
-    icon: Icons.doc,
-    menu: [
-      {
-        label: 'Menu item 1',
-        action: action(`List item Item 1,  Menu action 1`),
-      },
-      {
-        label: 'Menu item 2',
-        action: action(`List item Item 1,  Menu action 2`),
-      },
-    ],
-  },
-  {
-    label: 'Item 2',
-    icon: Icons.doc,
-    menu: [
-      {
-        label: 'Menu item 1',
-        action: action(`List item Item 2,  Menu action 1`),
-      },
-      {
-        label: 'Menu item 2',
-        action: action(`List item Item 2,  Menu action 2`),
-      },
-    ],
-  },
-];
+  #### interface: BasicListItem
+  Name | Type | Description
+  --- | --- | ---
+  label | string / string[] | item text
+  icon? | Icons | item icon
+`;
 
 story.add(
   'Basic list',
@@ -108,9 +103,19 @@ story.add(
       buttonSize: ButtonSize,
       icons: Icons,
       iconColor: IconColor,
-
       action,
-      items: object('items', items),
+
+      type: select(
+        'type',
+        Object.values(BasicListType),
+        BasicListType.primary,
+        'Props'
+      ),
+
+      showActionOnHover: boolean('showActionOnHover', false, 'Props'),
+
+      items1: object('items 1', basicListItems1, 'Data'),
+      items2: object('items 2', basicListItems2, 'Data'),
     },
     moduleMetadata: {
       imports: [
@@ -119,6 +124,7 @@ story.add(
         StoryBookLayoutModule,
         ButtonsModule,
         BrowserAnimationsModule,
+        TypographyModule,
       ],
     },
   }),
