@@ -56,6 +56,7 @@ export class EmployeesShowcaseComponent
   public avatarsToFit = 0;
   public avatarsToShow: EmployeeShowcase[] = [];
   public showThreeDotsButton = false;
+  public doShuffle = true;
 
   readonly icon = Icons;
   readonly panelClass = 'ee-showcase-panel';
@@ -113,10 +114,10 @@ export class EmployeesShowcaseComponent
 
   ngAfterViewInit(): void {
     // this.zone.runOutsideAngular(() => {
-    setTimeout(() => {
-      console.log('ngAfterViewInit');
-      this.initShowcase();
-    }, 1000);
+    // setTimeout(() => {
+    //   console.log('ngAfterViewInit');
+    //   this.initShowcase();
+    // }, 1000);
     // });
   }
 
@@ -176,6 +177,7 @@ export class EmployeesShowcaseComponent
     );
 
     if (
+      this.doShuffle &&
       this.avatarSize >= AvatarSize.medium &&
       this.avatarsToFit < this.employees.length
     ) {
