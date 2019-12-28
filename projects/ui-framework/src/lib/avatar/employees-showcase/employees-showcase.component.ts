@@ -78,13 +78,8 @@ export class EmployeesShowcaseComponent
 
     applyChanges(this, changes, {
       employees: [],
+      avatarSize: AvatarSize.mini,
     });
-
-    if (hasChanges(changes, ['avatarSize'], true)) {
-      this.DOM.setCssProps(this.host.nativeElement, {
-        '--avatar-gap': '-' + AvatarGap[this.avatarSize] + 'px',
-      });
-    }
 
     if (hasChanges(changes, ['employees'], true)) {
       this.panelListOptions = this.getPanelListOptions();
@@ -122,7 +117,6 @@ export class EmployeesShowcaseComponent
   }
 
   ngOnDestroy(): void {
-    console.log('ngOnDestroy');
     if (this.resizeEventSubscriber) {
       this.resizeEventSubscriber.unsubscribe();
       this.resizeEventSubscriber = null;
@@ -160,6 +154,7 @@ export class EmployeesShowcaseComponent
 
     this.DOM.setCssProps(this.host.nativeElement, {
       '--avatar-count': this.avatarsToFit,
+      '--avatar-gap': '-' + AvatarGap[this.avatarSize] + 'px',
     });
 
     this.showThreeDotsButton =

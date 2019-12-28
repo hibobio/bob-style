@@ -122,3 +122,9 @@ export const emitNativeEvent = (
 export const getPseudoContent = (elem: HTMLElement, pseudo = 'before') => {
   return getComputedStyle(elem, ':' + pseudo).getPropertyValue('content');
 };
+
+export const getCssVariable = (elem: HTMLElement, variable: string): string => {
+  return getComputedStyle(elem).getPropertyValue(
+    '--' + variable.replace('--', '')
+  );
+};

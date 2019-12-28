@@ -27,8 +27,8 @@ import {
   simpleChange,
   elementsFromFixture,
   elementFromFixture,
+  getCssVariable,
 } from '../../services/utils/test-helpers';
-import { cold, getTestScheduler } from 'jasmine-marbles';
 
 const showcaseMock = cloneDeep(EMPLOYEE_SHOWCASE_MOCK).slice(0, 25);
 
@@ -73,6 +73,59 @@ const getAvatarsToFit = (width: number, size: AvatarSize) => {
 const getWidthByAvatarCount = (size: AvatarSize, count: number) =>
   size * count - AvatarGap[size] * (count - 1) + 20;
 
+const testAvatarEls = (
+  fixture: ComponentFixture<EmployeesShowcaseComponent>,
+  size: AvatarSize,
+  expectedCount: number,
+  shouldHaveShowMore: boolean = false
+): any => {
+  fixture.detectChanges();
+  const showcaseAvatars = elementsFromFixture(
+    fixture,
+    '.showcase-avatar:not(.show-more)'
+  );
+  const moreIndicator = elementFromFixture(
+    fixture,
+    '.showcase-avatar.show-more'
+  );
+  const realGap =
+    showcaseAvatars.length &&
+    Math.abs(parseFloat(getComputedStyle(showcaseAvatars[1]).marginLeft));
+  const countVar = parseFloat(
+    getCssVariable(fixture.debugElement.nativeElement, 'avatar-count')
+  );
+  const gapVar = Math.abs(
+    parseFloat(getCssVariable(fixture.debugElement.nativeElement, 'avatar-gap'))
+  );
+
+  if (
+    (shouldHaveShowMore && !moreIndicator) ||
+    expectedCount !== showcaseAvatars.length ||
+    (shouldHaveShowMore ? countVar - 1 : countVar) !==
+      (expectedCount !== 0
+        ? expectedCount
+        : shouldHaveShowMore
+        ? countVar - 1
+        : countVar) ||
+    gapVar !== AvatarGap[size] ||
+    realGap !== (expectedCount !== 0 ? AvatarGap[size] : realGap)
+  ) {
+    return {
+      expectedSize: size,
+      expectedCount,
+      expectedGap: AvatarGap[size],
+      shouldHaveShowMore,
+      avatars: showcaseAvatars.length,
+      hasShowMore: !!moreIndicator,
+      countVar,
+      gapVar,
+      gap: realGap,
+    };
+  }
+
+  return true;
+};
+
 fdescribe('EmployeesShowcaseComponent', () => {
   let component: EmployeesShowcaseComponent;
   let fixture: ComponentFixture<EmployeesShowcaseComponent>;
@@ -110,220 +163,155 @@ fdescribe('EmployeesShowcaseComponent', () => {
   //   flush();
   // }));
 
-  // xdescribe('ngOnInit', () => {
-  //   it('should set avatarsToShow', fakeAsync(() => {
-  //     fixture.autoDetectChanges();
-  //     tick(1200);
+  describe('ngOnInit', () => {
+    it('should set avatarsToShow', fakeAsync(() => {
+      fixture.autoDetectChanges();
+      tick(1200);
 
-  //     expect(component.avatarsToShow).toEqual(
-  //       showcaseMock.slice(0, getAvatarsToFit(800, AvatarSize.large))
-  //     );
+      expect(component.avatarsToShow).toEqual(
+        showcaseMock.slice(0, getAvatarsToFit(800, AvatarSize.large))
+      );
 
-  //     flush();
-  //     component.ngOnDestroy();
-  //   }));
+      // flush();
+      // component.ngOnDestroy();
+    }));
 
-  //   it('should set panelListOptions', fakeAsync(() => {
-  //     fixture.autoDetectChanges();
-  //     tick(1200);
+    it('should set panelListOptions', fakeAsync(() => {
+      fixture.autoDetectChanges();
+      tick(1200);
 
-  //     updateEmployees(component, [showcaseMock[0], showcaseMock[1]]);
+      updateEmployees(component, [showcaseMock[0], showcaseMock[1]]);
 
-  //     expect(component.panelListOptions[0].options).toEqual(
-  //       [showcaseMock[0], showcaseMock[1]].map(
-  //         (employee: EmployeeShowcase) => ({
-  //           value: employee.displayName,
-  //           id: employee.id,
-  //           selected: false,
-  //           prefixComponent: {
-  //             component: AvatarComponent,
-  //             attributes: {
-  //               imageSource: employee.imageSource,
-  //             },
-  //           },
-  //         })
-  //       )
-  //     );
+      expect(component.panelListOptions[0].options).toEqual(
+        [showcaseMock[0], showcaseMock[1]].map(
+          (employee: EmployeeShowcase) => ({
+            value: employee.displayName,
+            id: employee.id,
+            selected: false,
+            prefixComponent: {
+              component: AvatarComponent,
+              attributes: {
+                imageSource: employee.imageSource,
+              },
+            },
+          })
+        )
+      );
 
-  //     flush();
-  //     component.ngOnDestroy();
-  //   }));
-  // });
+      // flush();
+      // component.ngOnDestroy();
+    }));
+  });
 
-  // xdescribe('ngOnChanges', () => {
-  //   const startAvatarOrder = showcaseMock.slice(0, 5);
+  describe('Shuffle avatars', () => {
+    const startAvatarOrder = showcaseMock.slice(0, 5);
 
-  //   beforeEach(fakeAsync(() => {
-  //     console.log('beforeEach');
-  //     fixture.autoDetectChanges();
-  //     updateEmployees(component, startAvatarOrder);
-  //     tick(1200);
-  //   }));
+    beforeEach(fakeAsync(() => {
+      component.doShuffle = true;
+      fixture.autoDetectChanges();
+      updateEmployees(component, startAvatarOrder);
+      tick(1200);
+    }));
 
-  //   it('should not shuffle avatars if avatarSize > medium but width can contain all', fakeAsync(() => {
-  //     expect(component.avatarsToShow).toEqual(startAvatarOrder);
-  //     tick(3200);
-  //     expect(component.avatarsToShow).toEqual(startAvatarOrder);
-  //     flush();
-  //   }));
+    it('should not shuffle avatars if avatarSize > medium but width can contain all', fakeAsync(() => {
+      expect(component.avatarsToShow).toEqual(startAvatarOrder);
+      tick(3200);
+      expect(component.avatarsToShow).toEqual(startAvatarOrder);
+      flush();
+    }));
 
-  //   it('should shuffle avatars if avatarSize > medium and width cannot contain all', fakeAsync(() => {
-  //     console.log('medium and width cannot contain all');
+    it('should shuffle avatars if avatarSize > medium and width cannot contain all', fakeAsync(() => {
+      fixtureWidth(fixture, 300);
+      expect(component.avatarsToShow).toEqual(startAvatarOrder.slice(0, 2));
+      tick(3000);
 
-  //     fixtureWidth(fixture, 300);
-  //     expect(component.avatarsToShow).toEqual(startAvatarOrder.slice(0, 2));
-  //     tick(3000);
+      expect(component.avatarsToShow).not.toEqual(startAvatarOrder.slice(0, 2));
+      component.ngOnDestroy();
+      tick();
+    }));
 
-  //     expect(component.avatarsToShow).not.toEqual(startAvatarOrder.slice(0, 2));
-  //     component.ngOnDestroy();
-  //     tick();
-  //   }));
+    it('should not shuffle avatars if avatarSize !> medium', fakeAsync(() => {
+      resizeAvatar(component, AvatarSize.small);
+      expect(component.avatarsToShow).toEqual(startAvatarOrder);
+      tick(3000);
+      expect(component.avatarsToShow).toEqual(startAvatarOrder);
+      flush();
+    }));
+  });
 
-  //   it('should not shuffle avatars if avatarSize !> medium', fakeAsync(() => {
-  //     resizeAvatar(component, AvatarSize.small);
-  //     expect(component.avatarsToShow).toEqual(startAvatarOrder);
-  //     tick(3000);
-  //     expect(component.avatarsToShow).toEqual(startAvatarOrder);
-  //     flush();
-  //   }));
-  // });
+  describe('onSelectChange', () => {
+    it('should emit selectChange with listChange', () => {
+      const listChange = new ListChange(component.panelListOptions);
+      const selectChange = spyOn(component.selectChange, 'emit');
+      component.onSelectChange(listChange);
+      expect(selectChange).toHaveBeenCalledWith(listChange);
+    });
+  });
 
-  // xdescribe('onSelectChange', () => {
-  //   it('should emit selectChange with listChange', () => {
-  //     const listChange = new ListChange(component.panelListOptions);
-  //     const selectChange = spyOn(component.selectChange, 'emit');
-  //     component.onSelectChange(listChange);
-  //     expect(selectChange).toHaveBeenCalledWith(listChange);
-  //   });
-  // });
+  describe('Avatars count', () => {
+    it('should display 0 mini avatars', fakeAsync(() => {
+      updateEmployees(component, []);
+      tick(1200);
 
-  fdescribe('template', () => {
-    let showcaseAvatars: HTMLElement[];
-    let moreIndicator: HTMLElement;
+      expect(testAvatarEls(fixture, AvatarSize.mini, 0, false)).toEqual(true);
+    }));
 
-    // it('should display 0 mini avatars', () => {
-    //   updateEmployees(component, []);
+    it('should display 2 medium avatars and hide show-more-indicator', fakeAsync(() => {
+      fixtureWidth(fixture, getWidthByAvatarCount(AvatarSize.medium, 2), true);
+      resizeAvatar(component, AvatarSize.medium);
 
-    //   showcaseAvatars = elementsFromFixture(
-    //     fixture,
-    //     '.showcase-avatar:not(.show-more)'
-    //   );
-    //   moreIndicator = elementFromFixture(fixture, '.showcase-avatar.show-more');
+      expect(testAvatarEls(fixture, AvatarSize.medium, 2, false)).toEqual(true);
+    }));
 
-    //   expect(showcaseAvatars.length).toBe(0);
-    //   expect(moreIndicator).toBeFalsy();
-    // });
-
-    // it('should display 2 medium avatars and hide show-more-indicator', () => {
-    //   fixtureWidth(fixture, 180);
-    //   resizeAvatar(component, AvatarSize.medium);
-
-    //   showcaseAvatars = elementsFromFixture(
-    //     fixture,
-    //     '.showcase-avatar:not(.show-more)'
-    //   );
-    //   moreIndicator = elementFromFixture(fixture, '.showcase-avatar.show-more');
-
-    //   expect(showcaseAvatars.length).toBe(2);
-    //   expect(moreIndicator).toBeFalsy();
-    // });
-
-    it('should display 2 mini avatars and correct gap  + show-more-indicator', fakeAsync(() => {
+    it('should display 2 mini avatars and correct gap + show-more-indicator', fakeAsync(() => {
       fixtureWidth(fixture, getWidthByAvatarCount(AvatarSize.mini, 2), true);
       resizeAvatar(component, AvatarSize.mini);
 
-      showcaseAvatars = elementsFromFixture(
-        fixture,
-        '.showcase-avatar:not(.show-more)'
-      );
-      moreIndicator = elementFromFixture(fixture, '.showcase-avatar.show-more');
-
-      expect(showcaseAvatars.length).toBe(2);
-      expect(moreIndicator).toBeTruthy();
-
-      expect(getComputedStyle(showcaseAvatars[1]).marginLeft).toEqual(
-        '-' + AvatarGap[AvatarSize.mini] + 'px'
-      );
+      expect(testAvatarEls(fixture, AvatarSize.mini, 2, true)).toEqual(true);
     }));
 
-    it('should display 2 large avatars  and no show-more-indicator', fakeAsync(() => {
+    it('should display 2 large avatars and no show-more-indicator', fakeAsync(() => {
       fixtureWidth(fixture, getWidthByAvatarCount(AvatarSize.large, 2), true);
       updateEmployees(component, [showcaseMock[0], showcaseMock[1]]);
 
-      showcaseAvatars = elementsFromFixture(
-        fixture,
-        '.showcase-avatar:not(.show-more)'
-      );
-      moreIndicator = elementFromFixture(fixture, '.showcase-avatar.show-more');
-
-      expect(showcaseAvatars.length).toBe(2);
-      expect(moreIndicator).toBeFalsy();
+      expect(testAvatarEls(fixture, AvatarSize.large, 2, false)).toEqual(true);
     }));
 
-    it('should display 1 large avatar + show-more-indicator', fakeAsync(() => {
+    it('should display 1 large avatar and no show-more-indicator', fakeAsync(() => {
       fixtureWidth(fixture, getWidthByAvatarCount(AvatarSize.large, 1), false);
 
-      // fixture.detectChanges();
-      // tick(1000);
-
-      showcaseAvatars = elementsFromFixture(
-        fixture,
-        '.showcase-avatar:not(.show-more)'
-      );
-      moreIndicator = elementFromFixture(fixture, '.showcase-avatar.show-more');
-
-      expect(showcaseAvatars.length).toBe(1);
-      expect(moreIndicator).toBeTruthy();
-
-      // flush();
+      expect(testAvatarEls(fixture, AvatarSize.large, 1, false)).toEqual(true);
     }));
 
-    // >>>>>>>>
-    // it('should display 9 mini avatars', () => {
-    //   showcaseAvatars = elementsFromFixture(
-    //     fixture,
-    //     '.showcase-avatar:not(.show-more)'
-    //   );
-    //   moreIndicator = elementFromFixture(fixture, '.showcase-avatar.show-more');
+    it('should display 9 mini avatars', fakeAsync(() => {
+      fixtureWidth(fixture, getWidthByAvatarCount(AvatarSize.mini, 9), true);
+      resizeAvatar(component, AvatarSize.mini);
 
-    //   expect(showcaseAvatars.length).toBe(9);
-    //   expect(moreIndicator).toBeFalsy();
-    // });
+      expect(testAvatarEls(fixture, AvatarSize.mini, 9, false)).toEqual(true);
+    }));
 
-    // // >>>>>>>>
-    // it('should display 9 medium avatars and correct gap', () => {
-    //   fixtureWidth(fixture, 1000);
-    //   resizeAvatar(component, AvatarSize.medium);
+    it('should display 9 medium avatars and correct gap', () => {
+      fixtureWidth(fixture, getWidthByAvatarCount(AvatarSize.medium, 9), false);
+      resizeAvatar(component, AvatarSize.medium);
 
-    //   showcaseAvatars = elementsFromFixture(
-    //     fixture,
-    //     '.showcase-avatar:not(.show-more)'
-    //   );
-    //   moreIndicator = elementFromFixture(fixture, '.showcase-avatar.show-more');
-
-    //   expect(showcaseAvatars.length).toBe(9);
-    //   expect(moreIndicator).toBeFalsy();
-    //   expect(getComputedStyle(showcaseAvatars[1]).marginLeft).toEqual(
-    //     '-' + AvatarGap[AvatarSize.medium] + 'px'
-    //   );
-    // });
+      expect(testAvatarEls(fixture, AvatarSize.medium, 9, false)).toEqual(true);
+    });
   });
 
-  // describe('OnDestroy', () => {
-  //   it('should unsubscribe from resize and interval subscribers', fakeAsync(() => {
-  //     fixture.autoDetectChanges();
-  //     resizeAvatar(component, AvatarSize.large);
-  //     tick(1200);
+  describe('OnDestroy', () => {
+    it('should unsubscribe from resize and interval subscribers', fakeAsync(() => {
+      component.doShuffle = true;
+      resizeAvatar(component, AvatarSize.large);
+      fixture.detectChanges();
+      tick(1200);
 
-  //     expect(component['resizeEventSubscriber'].closed).toBe(false);
-  //     expect(component['intervalSubscriber'].closed).toBe(false);
+      expect(component['resizeEventSubscriber'].closed).toBe(false);
+      expect(component['intervalSubscriber'].closed).toBe(false);
 
-  //     component.ngOnDestroy();
+      component.ngOnDestroy();
 
-  //     expect(component['resizeEventSubscriber']).toBeFalsy();
-  //     expect(component['intervalSubscriber']).toBeFalsy();
-
-  //     flush();
-  //   }));
-  // });
+      expect(component['resizeEventSubscriber']).toBeFalsy();
+      expect(component['intervalSubscriber']).toBeFalsy();
+    }));
+  });
 });
