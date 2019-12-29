@@ -32,6 +32,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   public eventType = InputEventType;
   readonly inputTypes = InputTypes;
 
+  @Input() step: number;
   @Input() value = '';
   @Input() inputType: InputTypes = InputTypes.text;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
@@ -45,9 +46,9 @@ export abstract class BaseInputElement extends BaseFormElement {
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  onInputChange(event) {
-    if (event.target.value !== this.value) {
-      this.writeValue(event.target.value);
+  onInputChange(value: string) {
+    if (value !== this.value) {
+      this.writeValue(value);
       this.transmitValue(this.value, {
         eventType: [InputEventType.onChange],
       });
@@ -59,24 +60,21 @@ export abstract class BaseInputElement extends BaseFormElement {
     this.inputFocused = true;
   }
 
-  onInputBlur(event) {
+  onInputBlur() {
+    this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
+    this.inputFocused = false;
+  }
+  processValue(value: number | string) {
     if (this.inputType === InputTypes.number) {
-      const value = (<HTMLInputElement>event.target).value;
       const parsed = parseToNumber(value);
-
-      if (
-        (value !== '' && (this.min && parsed < this.min)) ||
-        (this.max && parsed > this.max)
-      ) {
+      if ((this.min && parsed < this.min) || (this.max && parsed > this.max)) {
         this.writeValue(parsed < this.min ? this.min : this.max);
         this.transmitValue(this.value, {
           eventType: [InputEventType.onChange],
         });
       }
     }
-
-    this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
-    this.inputFocused = false;
+    this.onInputBlur();
   }
 
   onInputKeyUp(event: KeyboardEvent) {
