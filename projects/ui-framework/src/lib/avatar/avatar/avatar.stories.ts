@@ -75,6 +75,7 @@ const note = `
   [disabled] | boolean | disabled state | false
   [isClickable] | boolean | flag for indicating if the avatar is clickable or not | false
   (clicked) | EventEmitter<wbr>&lt;MouseEvent&gt; | emitted on avatar click | &nbsp;
+  ng-content | element | you can pass stuff to be placed inside Avatar as ng-content | &nbsp;
 
   ~~~
   <b-avatar

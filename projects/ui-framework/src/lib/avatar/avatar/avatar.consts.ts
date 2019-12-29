@@ -14,7 +14,7 @@ export const AvatarIconSize: { [key in AvatarSize]: IconSize } = {
   [AvatarSize.mini]: IconSize.medium,
   [AvatarSize.small]: IconSize.large,
   [AvatarSize.medium]: IconSize.xLarge,
-  [AvatarSize.large]: IconSize.xxLarge,
+  [AvatarSize.large]: IconSize.xLarge,
   [AvatarSize.xlarge]: IconSize.xxLarge,
 };
 

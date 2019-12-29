@@ -82,6 +82,7 @@ const note = `
   pending or rejected / or Icon {icon, color} object  | &nbsp;
   [disabled] | boolean | disabled state | false
   (clicked) | EventEmitter<wbr>&lt;MouseEvent&gt; | emitted on avatar click | &nbsp;
+  ng-content | element | you can pass stuff to be placed inside Avatar as ng-content | &nbsp;
 
   ~~~
   ${template}
