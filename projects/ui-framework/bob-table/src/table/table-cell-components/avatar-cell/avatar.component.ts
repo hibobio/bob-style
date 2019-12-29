@@ -9,10 +9,12 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
     <b-table-actions-wrapper [menuItems]="params && params['menuItems']">
         <b-avatar [imageSource]='params.value'
                   [isClickable]="true"
+                  [title]="'Ishai Borovoy'"
                   (clicked)='clicked($event)'>
         </b-avatar>
     </b-table-actions-wrapper>
     `,
+  styles: [':host {width: 100%}']
 })
 export class AvatarCellComponent implements ICellRendererAngularComp {
   public params: any;
