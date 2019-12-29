@@ -9,18 +9,23 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
     <b-table-actions-wrapper [menuItems]="params && params['menuItems']">
         <b-avatar [imageSource]='params.value'
                   [isClickable]="true"
-                  [title]="'Ishai Borovoy'"
                   (clicked)='clicked($event)'>
         </b-avatar>
     </b-table-actions-wrapper>
     `,
-  styles: [':host {width: 100%}']
+  styles: [':host {width: 100%; display: block}']
 })
 export class AvatarCellComponent implements ICellRendererAngularComp {
   public params: any;
 
   agInit(params: any): void {
     this.params = params;
+   /* this.params.menuItems = [
+      {
+        label: 'save',
+        action: $event => console.log('save clicked', $event)
+      },
+    ];*/
   }
 
   refresh(): boolean {
