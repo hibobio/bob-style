@@ -4,6 +4,7 @@
 
   .actionable-item {
     flex-grow: 1;
+    min-width: 0;
   }
 
   /* &:hover b-menu, &:hover b-button {
