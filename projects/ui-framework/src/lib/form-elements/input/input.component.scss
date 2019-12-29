@@ -2,10 +2,18 @@
 
 @include bFormElement();
 
+.bfe-wrap{
+  border: 1px solid #ccc;
+}
+.bfe-buttons-wrap {
+  border-left: 1px solid lightgrey;
+}
 .b-icon {
   background-color: white;
-  padding: 1px;
   border: none;
+  width: 100%;
+  padding: 0;
+  height: auto;
 }
 .b-icon:focus {outline:0;}
 
@@ -14,9 +22,8 @@
 }
 .b-icon-chevron-up {
   border-bottom: 1px solid lightgrey;
+  border-top-right-radius: 4px;
 }
-
-.bfe-buttons-wrap {
-  background-color: white;
-  border-left: 1px solid lightgrey;
+.b-icon-chevron-down {
+  border-bottom-right-radius: 4px;
 }
