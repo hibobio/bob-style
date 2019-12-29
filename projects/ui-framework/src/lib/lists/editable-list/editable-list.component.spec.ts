@@ -8,7 +8,7 @@ import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
 import {
   ButtonsModule,
   EventManagerPlugins,
-  inputValue,
+  inputValue, ListSortType,
   MenuModule, randomNumber,
   SelectOption,
   simpleChange,
@@ -18,7 +18,7 @@ import { EditableListService } from './editable-list.service';
 import { editableListMock } from './editable-list.mock';
 import { getTestScheduler } from 'jasmine-marbles';
 
-fdescribe('EditableListComponent', () => {
+  describe('EditableListComponent', () => {
   let fixture: ComponentFixture<EditableListComponent>;
   let component: EditableListComponent;
   let selectOptionsMock: SelectOption[];
@@ -114,7 +114,6 @@ fdescribe('EditableListComponent', () => {
       done.nativeElement.click();
       fixture.detectChanges();
       const list3 = fixture.debugElement.queryAll(By.css('.bel-item.b-icon-drag-alt'));
-      console.log(list3);
       expect(list3.length).toEqual(4);
     });
     it('check if an item is deleted from the onListUpdate', fakeAsync(() => {
@@ -203,6 +202,86 @@ fdescribe('EditableListComponent', () => {
       const sort = fixture.debugElement.query(By.css('.bel-sort-button button'));
       sort.nativeElement.click();
       sort.nativeElement.click();
+      fixture.detectChanges();
+      const expectedParam = {
+        'delete': [],
+        'create': [],
+        'order': [
+          'Martial arts',
+          'Football',
+          'Climbing',
+        ],
+        'sortType': 'Desc',
+        'list': [
+          {
+            'id': 1,
+            'value': 'Martial arts',
+            'selected': false,
+          },
+          {
+            'id': 3,
+            'value': 'Football',
+            'selected': true,
+          },
+          {
+            'id': 2,
+            'value': 'Climbing',
+            'selected': false,
+          },
+        ],
+      };
+      expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
+    });
+    it('check the Asc Input button ', () => {
+      spyOn(component.changed, 'emit');
+
+      component.sortType = ListSortType.Asc;
+
+
+      component.ngOnChanges(
+        simpleChange({
+          sortType: ListSortType.Asc,
+        }),
+      );
+      const expectedParam = {
+        'delete': [],
+        'create': [],
+        'order': [
+          'Climbing',
+          'Football',
+          'Martial arts',
+        ],
+        'sortType': 'Asc',
+        'list': [
+          {
+            'id': 2,
+            'value': 'Climbing',
+            'selected': false,
+          },
+          {
+            'id': 3,
+            'value': 'Football',
+            'selected': true,
+          },
+          {
+            'id': 1,
+            'value': 'Martial arts',
+            'selected': false,
+          },
+        ],
+      };
+      expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
+    });
+    it('check the Desc Input button ', () => {
+      spyOn(component.changed, 'emit');
+
+      component.sortType = ListSortType.Desc;
+
+      component.ngOnChanges(
+        simpleChange({
+          sortType: ListSortType.Desc,
+        }),
+      );
       fixture.detectChanges();
       const expectedParam = {
         'delete': [],

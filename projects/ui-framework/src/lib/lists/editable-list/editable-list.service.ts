@@ -45,11 +45,11 @@ export class EditableListService {
       list,
       'value',
       order === ListSortType.Asc ||
-        (currentOrder && currentOrder !== ListSortType.Asc)
+        (!order  && currentOrder && currentOrder !== ListSortType.Asc)
     );
 
     return order === ListSortType.Asc ||
-      (currentOrder && currentOrder !== ListSortType.Asc)
+      (!order  && currentOrder && currentOrder !== ListSortType.Asc)
       ? ListSortType.Asc
       : ListSortType.Desc;
   }
