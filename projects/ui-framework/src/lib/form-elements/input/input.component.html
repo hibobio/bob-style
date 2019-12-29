@@ -41,9 +41,9 @@
 
   <div class="bfe-buttons-wrap"
        *ngIf="inputType === inputTypes.number &&  step>0">
-    <button class="b-icon b-icon-chevron-up b-icon-large has-hover"
+    <button type="button" class="b-icon b-icon-chevron-up b-icon-large has-hover b-icon-normal"
             (click)="onIncrement()"></button>
-    <button class="b-icon b-icon-chevron-down b-icon-large has-hover"
+    <button type="button" class="b-icon b-icon-chevron-down b-icon-large has-hover b-icon-normal"
             (click)="
             onDecrement()"></button>
   </div>

@@ -3,27 +3,31 @@
 @include bFormElement();
 
 .bfe-wrap{
-  border: 1px solid #ccc;
+  border: 1px solid $input-border-color;
 }
 .bfe-buttons-wrap {
-  border-left: 1px solid lightgrey;
-}
-.b-icon {
-  background-color: white;
-  border: none;
-  width: 100%;
-  padding: 0;
-  height: auto;
-}
-.b-icon:focus {outline:0;}
+  border-left: 1px solid $input-border-color;
+  background-image: linear-gradient($input-border-color, $input-border-color);
+  background-size: 100% 1px;
+  background-position: center;
 
-.b-icon:before{
-  color: #aaa;
-}
-.b-icon-chevron-up {
-  border-bottom: 1px solid lightgrey;
-  border-top-right-radius: 4px;
-}
-.b-icon-chevron-down {
-  border-bottom-right-radius: 4px;
+  .b-icon {
+    background-color: white;
+    border: none;
+    padding: 0;
+    &:focus{
+      outline: 0;
+    }
+    &:before{
+      height: ($input-height / 2);
+      line-height: ($input-height / 2);
+    }
+  }
+  .b-icon-chevron-up {
+    border-bottom: 1px solid $input-border-color;
+    border-top-right-radius: $border-radius;
+  }
+  .b-icon-chevron-down {
+    border-bottom-right-radius: $border-radius;
+  }
 }
