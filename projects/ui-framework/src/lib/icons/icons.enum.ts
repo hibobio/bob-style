@@ -135,4 +135,5 @@ export enum Icons {
   person_manager = 'b-icon-person-manager',
   person_peer = 'b-icon-person-peer',
   doc_description = 'b-icon-doc-description',
+  notification = 'b-icon-notification',
 }

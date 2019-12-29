@@ -13,12 +13,19 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
         </b-avatar>
     </b-table-actions-wrapper>
     `,
+  styles: [':host {width: 100%; display: block}']
 })
 export class AvatarCellComponent implements ICellRendererAngularComp {
   public params: any;
 
   agInit(params: any): void {
     this.params = params;
+   /* this.params.menuItems = [
+      {
+        label: 'save',
+        action: $event => console.log('save clicked', $event)
+      },
+    ];*/
   }
 
   refresh(): boolean {
