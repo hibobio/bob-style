@@ -52,13 +52,13 @@ const icons = [
 
 const template = `
 <b-avatar-image
-  [size]="size"
-  [imageSource]="imageSource"
-  [backgroundColor]="backgroundColor"
-  [icon]="icon"
-  [badge]="badge"
-  [disabled]="disabled"
-  (clicked)="onClick($event)">
+    [size]="size"
+    [imageSource]="imageSource"
+    [backgroundColor]="backgroundColor"
+    [icon]="icon"
+    [badge]="badge"
+    [disabled]="disabled"
+    (clicked)="onClick($event)">
 </b-avatar-image>
 `;
 
@@ -74,8 +74,13 @@ const note = `
   **Important!** <br>\
   use **EmployeeAvatarService<wbr>.getOptimizedAvatarImage<wbr>(employee.about.avatar, AvatarSize)** <br>\
   to get correct avatar image | &nbsp;
-  [backgroundColor] | string | background color | &nbsp;
+  [backgroundColor] | string | background color | grey-200
   [size] | AvatarSize | enum for setting the avatar size | mini
+  [icon] | Icons / Icon | Icons enum or Icon {icon, color, size} object.\
+  If just the Icons enum is provided, size & color is automatic.  | &nbsp;
+  [badge] | AvatarBadge / Icon | AvatarBadge enum of approved, \
+  pending or rejected / or Icon {icon, color} object  | &nbsp;
+  [disabled] | boolean | disabled state | false
   (clicked) | EventEmitter<wbr>&lt;MouseEvent&gt; | emitted on avatar click | &nbsp;
 
   ~~~

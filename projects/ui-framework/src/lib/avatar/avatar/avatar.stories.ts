@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { zipObject } from 'lodash';
 import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
@@ -11,10 +16,16 @@ import { IconsModule } from '../../icons/icons.module';
 import { ChipType } from '../../chips/chips.enum';
 import { mockNames, mockJobs, mockAvatar } from '../../mock.const';
 
-const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
+  withKnobs
+);
 
-const sizeOptionsKeys = Object.values(AvatarSize).filter(key => typeof key === 'string') as string[];
-const sizeOptionsValues = Object.values(AvatarSize).filter(key => typeof key === 'number') as number[];
+const sizeOptionsKeys = Object.values(AvatarSize).filter(
+  key => typeof key === 'string'
+) as string[];
+const sizeOptionsValues = Object.values(AvatarSize).filter(
+  key => typeof key === 'number'
+) as number[];
 const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
 
 const orientationOptions = Object.keys(AvatarOrientation);
@@ -61,7 +72,7 @@ const note = `
   [badge] | AvatarBadge / BadgeConfig | AvatarBadge enum of approved, \
   pending or rejected / or BadgeConfig {icon, color} object  | &nbsp;
   [chip] | Chip | object describing the chip chip (should have type & text properties) | &nbsp;
-  [disabled] | boolean | disabled avatar | false
+  [disabled] | boolean | disabled state | false
   [isClickable] | boolean | flag for indicating if the avatar is clickable or not | false
   (clicked) | EventEmitter<wbr>&lt;MouseEvent&gt; | emitted on avatar click | &nbsp;
 
@@ -97,7 +108,11 @@ story.add(
       props: {
         imageSource: text('imageSource', mockAvatar()),
         size: select('size', sizeOptions, AvatarSize.large),
-        orientation: select('orientation', orientationOptions, AvatarOrientation.horizontal),
+        orientation: select(
+          'orientation',
+          orientationOptions,
+          AvatarOrientation.horizontal
+        ),
         isClickable: boolean('isClickable', false),
         clickHandler: action('Avatar Clicked'),
         title: text('title', mockNames(1)),
@@ -108,12 +123,17 @@ story.add(
         backgroundColor: select('background color', ['#fff', 'red', 'black']),
         chip: {
           type: select('chip type', chips, ChipType.success),
-          text: text('chip text', 'Employed')
-        }
+          text: text('chip text', 'Employed'),
+        },
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, StoryBookLayoutModule, AvatarModule, IconsModule]
-      }
+        imports: [
+          BrowserAnimationsModule,
+          StoryBookLayoutModule,
+          AvatarModule,
+          IconsModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }
