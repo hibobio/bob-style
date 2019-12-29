@@ -2,9 +2,6 @@
 
 @include bFormElement();
 
-.bfe-wrap{
-  border: 1px solid $input-border-color;
-}
 .bfe-buttons-wrap {
   border-left: 1px solid $input-border-color;
   background-image: linear-gradient($input-border-color, $input-border-color);
