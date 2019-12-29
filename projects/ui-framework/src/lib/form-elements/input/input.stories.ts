@@ -63,7 +63,7 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | ---
-  [inputType] | InputTypes | type of input field (inputType number is required to render ticker buttons)
+  [inputType] | InputTypes | type of input field
   [value] | string/number | value of input field
   [label] | string | label text (above input)
   [description] | string | description text (above icon)
@@ -72,7 +72,7 @@ const note = `
    input, label text (if present) will be used as placeholder
   [minChars] | number | minimum length
   [maxChars] | number | maximum length
-  [step] | number | (required for input to render ticker buttons) defines the ticker step
+  [step] | number | Step value for number input step buttons. Buttons will not be displayed, if step value is not provided
   [min] | number | (only relevent for number inputs) minimum value (value will be corrected on blur)
   [max] | number | (only relevent for number inputs) maximum value (value will be corrected on blur)
   [readonly] | boolean | disables input
@@ -95,8 +95,7 @@ story.add(
       template: storyTemplate,
       props: {
         inputEvents: action('Input event'),
-
-        inputType: select('inputType', inputTypes, InputTypes.number),
+        inputType: select('inputType', inputTypes, InputTypes.text),
         value: text('value', ''),
         label: text('label', 'Input label'),
         description: text('description', mockText(30)),
