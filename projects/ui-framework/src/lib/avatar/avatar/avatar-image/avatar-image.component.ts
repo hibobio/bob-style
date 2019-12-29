@@ -89,69 +89,39 @@ export class AvatarImageComponent implements OnChanges, OnInit {
   }
 
   private setAttributes(): void {
-    console.log('setAttributes icons', this.icon);
     this.DOM.setCssProps(this.host, {
       '--avatar-size': this.size + 'px',
       '--bg-color': this.backgroundColor || null,
       '--avatar-image': this.imageSource ? `url(${this.imageSource})` : null,
     });
 
-    this.host.setAttribute(
-      'data-size',
-      getKeyByValue(AvatarSize, this.size || AvatarSize.mini)
-    );
-
-    this.host.setAttribute(
-      'data-icon-before-size',
-      (this.icon as Icon).size ||
+    this.DOM.setAttributes(this.host, {
+      'data-size': getKeyByValue(AvatarSize, this.size || AvatarSize.mini),
+      'data-icon-before-size':
+        (this.icon && (this.icon as Icon).size) ||
         AvatarIconSize[this.size] ||
-        AvatarIconSize[AvatarSize.mini]
-    );
+        AvatarIconSize[AvatarSize.mini],
 
-    if (this.icon) {
-      this.host.setAttribute(
-        'data-icon-before',
-        ((this.icon as Icon).icon || (this.icon as string)).replace(
-          'b-icon-',
-          ''
-        )
-      );
-
-      this.host.setAttribute(
-        'data-icon-before-color',
-        (this.icon as Icon).color || this.imageSource
+      'data-icon-before': this.icon
+        ? ((this.icon as Icon).icon || (this.icon as string)).replace(
+            'b-icon-',
+            ''
+          )
+        : !this.imageSource && !this.icon
+        ? Icons.person.replace('b-icon-', '')
+        : null,
+      'data-icon-before-color':
+        (this.icon && (this.icon as Icon).color) || this.imageSource
           ? IconColor.white
-          : IconColor.dark
-      );
-    } else {
-      this.host.removeAttribute('data-icon-before');
-      this.host.removeAttribute('data-icon-before-color');
-    }
+          : IconColor.dark,
 
-    if (this.disabled) {
-      this.host.setAttribute('data-disabled', 'true');
-    } else {
-      this.host.removeAttribute('data-disabled');
-    }
+      'data-disabled': this.disabled || null,
+    });
 
-    if (this.clicked.observers.length > 0) {
-      this.host.classList.add('has-hover');
-    } else {
-      this.host.classList.remove('has-hover');
-    }
-
-    if (this.imageSource && this.icon) {
-      this.host.classList.add('icon-on-hover');
-    } else {
-      this.host.classList.remove('icon-on-hover');
-    }
-
-    if (!this.imageSource && !this.icon) {
-      this.host.setAttribute(
-        'data-icon-before',
-        Icons.person.replace('b-icon-', '')
-      );
-    }
+    this.DOM.bindClasses(this.host, {
+      'has-hover': this.clicked.observers.length > 0,
+      'icon-on-hover': Boolean(this.imageSource && this.icon),
+    });
 
     if (!this.host.className) {
       this.host.removeAttribute('class');
