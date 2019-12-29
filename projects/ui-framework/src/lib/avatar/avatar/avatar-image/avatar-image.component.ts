@@ -2,7 +2,6 @@ import {
   Component,
   ElementRef,
   Input,
-  HostBinding,
   ChangeDetectionStrategy,
   SimpleChanges,
   OnChanges,
@@ -20,7 +19,7 @@ import {
   notFirstChanges,
   getKeyByValue,
 } from '../../../services/utils/functional-utils';
-import { AvatarIconSize, AvatarBadges } from '../avatar.consts';
+import { AvatarIconSize, AvatarBadges, BadgeSize } from '../avatar.consts';
 import { BadgeConfig } from '../avatar.interface';
 import { Icon } from '../../../icons/icon.interface';
 
@@ -43,15 +42,13 @@ export class AvatarImageComponent implements OnChanges, OnInit {
   }
 
   private host: HTMLElement;
-  private badgeConfig: BadgeConfig;
+
   @Input() size: AvatarSize = AvatarSize.mini;
   @Input() imageSource: string;
   @Input() backgroundColor?: string;
   @Input() icon: Icons | Icon;
   @Input() badge: AvatarBadge | Icon;
   @Input() disabled = false;
-
-  @HostBinding('attr.role') role = 'img';
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
@@ -79,12 +76,6 @@ export class AvatarImageComponent implements OnChanges, OnInit {
   }
 
   ngOnInit() {
-    this.badgeConfig =
-      this.badge &&
-      ((this.badge as BadgeConfig).icon
-        ? (this.badge as BadgeConfig)
-        : AvatarBadges[this.badge as AvatarBadge]);
-
     this.setAttributes();
   }
 
@@ -96,11 +87,13 @@ export class AvatarImageComponent implements OnChanges, OnInit {
     });
 
     this.DOM.setAttributes(this.host, {
-      'data-size': getKeyByValue(AvatarSize, this.size || AvatarSize.mini),
+      role: 'img',
+      'data-disabled': this.disabled || null,
+
+      'data-size': getKeyByValue(AvatarSize, this.size),
       'data-icon-before-size':
-        (this.icon && (this.icon as Icon).size) ||
-        AvatarIconSize[this.size] ||
-        AvatarIconSize[AvatarSize.mini],
+        (this.icon && (this.icon as Icon).size) || AvatarIconSize[this.size],
+      'data-icon-after-size': BadgeSize[this.size],
 
       'data-icon-before': this.icon
         ? ((this.icon as Icon).icon || (this.icon as string)).replace(
@@ -113,12 +106,22 @@ export class AvatarImageComponent implements OnChanges, OnInit {
       'data-icon-before-color':
         (this.icon && (this.icon as Icon).color) || this.imageSource
           ? IconColor.white
-          : IconColor.dark,
+          : IconColor.normal,
 
-      'data-disabled': this.disabled || null,
+      'data-icon-after': this.badge
+        ? (
+            (this.badge as BadgeConfig).icon ||
+            AvatarBadges[this.badge as AvatarBadge].icon
+          ).replace('b-icon-', '')
+        : null,
+      'data-icon-after-color': this.badge
+        ? (this.badge as BadgeConfig).color ||
+          AvatarBadges[this.badge as AvatarBadge].color
+        : null,
     });
 
     this.DOM.bindClasses(this.host, {
+      avatar: true,
       'has-hover': this.clicked.observers.length > 0,
       'icon-on-hover': Boolean(this.imageSource && this.icon),
     });

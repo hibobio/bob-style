@@ -226,7 +226,7 @@ export class DOMhelpers {
         .join(' ');
 
       if (currentClassesAsArray.join(' ') !== newClassesString) {
-        element.className = newClassesString;
+        element.className = newClassesString.trim();
       }
     }
 

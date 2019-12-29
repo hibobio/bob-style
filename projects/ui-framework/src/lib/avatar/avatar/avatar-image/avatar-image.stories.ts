@@ -56,6 +56,7 @@ const template = `
   [imageSource]="imageSource"
   [backgroundColor]="backgroundColor"
   [icon]="icon"
+  [badge]="badge"
   [disabled]="disabled"
   (clicked)="onClick($event)">
 </b-avatar-image>
@@ -103,6 +104,11 @@ story.add(
           'black',
         ]),
         icon: select('icon', [0, ...icons]),
+        badge: select(
+          'badge',
+          [0, ...Object.keys(AvatarBadge)],
+          AvatarBadge.approved
+        ),
         disabled: boolean('disabled', false),
         onClick: action('Avatar Clicked'),
       },

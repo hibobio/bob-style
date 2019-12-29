@@ -11,10 +11,10 @@ export const BadgeSize: { [key in AvatarSize]: IconSize } = {
 };
 
 export const AvatarIconSize: { [key in AvatarSize]: IconSize } = {
-  [AvatarSize.mini]: IconSize.small,
+  [AvatarSize.mini]: IconSize.medium,
   [AvatarSize.small]: IconSize.large,
   [AvatarSize.medium]: IconSize.xLarge,
-  [AvatarSize.large]: IconSize.xLarge,
+  [AvatarSize.large]: IconSize.xxLarge,
   [AvatarSize.xlarge]: IconSize.xxLarge,
 };
 

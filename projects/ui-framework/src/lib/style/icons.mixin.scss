@@ -157,38 +157,25 @@ $icon-colors: (
   ),
   positive: (
     color: var(--positive-500),
-    hover: var(--positive-700),
+    hover: var(--positive-600),
   ),
 );
 
-@mixin icon-size($size: large, $elem: '&:before', $extended: false) {
-  $sel: $elem;
-  @if $extended {
-    $sel: '#{$elem}, &[data-icon-before]:before, &[data-icon-after]:after';
-  }
-  #{$sel} {
+@mixin icon-size($size: large, $elem: '&:before') {
+  #{$elem} {
     @include size(map-get($icon-sizes, $size));
     font-size: map-get($icon-sizes, $size);
     line-height: map-get($icon-sizes, $size);
   }
 }
 
-@mixin icon-color(
-  $color: dark,
-  $hover: true,
-  $elem: '&:before',
-  $extended: false
-) {
-  $sel: $elem;
-  @if $extended {
-    $sel: '#{$elem}, &[data-icon-before]:before, &[data-icon-after]:after';
-  }
-  #{$sel} {
+@mixin icon-color($color: dark, $hover: true, $elem: '&:before') {
+  #{$elem} {
     color: map-get-deep($icon-colors, $color, color);
   }
   @if $hover {
     &.has-hover:hover {
-      #{$sel} {
+      #{$elem} {
         color: map-get-deep($icon-colors, $color, hover);
       }
     }
@@ -201,13 +188,7 @@ $icon-colors: (
   }
 }
 
-@mixin b-icon(
-  $icon,
-  $size: large,
-  $color: dark,
-  $elem: '&:before',
-  $extended: false
-) {
+@mixin b-icon($icon, $size: large, $color: dark, $elem: '&:before') {
   #{$elem} {
     display: block;
     font-family: 'bicons' !important;
@@ -226,8 +207,8 @@ $icon-colors: (
     flex-shrink: 0;
   }
 
-  @include icon-size($size, $elem, $extended: $extended);
-  @include icon-color($color, $elem, $extended: $extended);
+  @include icon-size($size, $elem);
+  @include icon-color($color, $elem);
 
   @if $icon {
     @include icon-class($icon, $elem);
