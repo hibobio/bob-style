@@ -1,0 +1,33 @@
+.b-icon,
+[class*='b-icon'] {
+  display: block;
+
+  @include b-icon(null, large, dark);
+}
+
+[data-icon-before] {
+  @include b-icon(null, large, dark, $elem: '&:before');
+}
+
+[data-icon-after] {
+  @include b-icon(null, large, dark, $elem: '&:after');
+}
+
+@each $sizeKey, $size in $icon-sizes {
+  .b-icon-#{$sizeKey} {
+    @include icon-size($sizeKey, $extended: true);
+  }
+}
+
+@each $colorKey, $colors in $icon-colors {
+  .b-icon-#{'' + $colorKey} {
+    @include icon-color($colorKey, true, $extended: true);
+  }
+}
+
+@each $icon, $char in $icon-chars {
+  [data-icon-before='#{$icon}']:before,
+  [data-icon-after='#{$icon}']:after {
+    content: $char;
+  }
+}

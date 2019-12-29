@@ -1,0 +1,104 @@
+@import '../../../style/common-imports';
+@import '../avatar.mixin';
+
+$avatarSizeMap: (
+  mini: (
+    '*': (
+      box-shadow: 0 1px 2px 0 $boxShadowColor,
+      border-width: 2px,
+    ),
+    '.has-hover:hover': (
+      box-shadow: 0 3px 6px 0 $boxShadowColor,
+    ),
+  ),
+  small: (
+    '*': (
+      box-shadow: 0 1px 2px 0 $boxShadowColor,
+      border-width: 2px,
+    ),
+    '.has-hover:hover': (
+      box-shadow: 0 3px 6px 0 $boxShadowColor,
+    ),
+  ),
+  medium: (
+    '*': (
+      box-shadow: 0 2px 4px 0 $boxShadowColor,
+      border-width: 3px,
+    ),
+    '.has-hover:hover': (
+      box-shadow: 0 6px 12px 0 $boxShadowColor,
+    ),
+  ),
+  large: (
+    '*': (
+      box-shadow: 0 2px 4px 0 $boxShadowColor,
+      border-width: 3px,
+    ),
+    '.has-hover:hover': (
+      box-shadow: 0 6px 12px 0 $boxShadowColor,
+    ),
+  ),
+  xlarge: (
+    '*': (
+      box-shadow: 0 2px 4px 0 $boxShadowColor,
+      border-width: 3px,
+    ),
+    '.has-hover:hover': (
+      box-shadow: 0 6px 12px 0 $boxShadowColor,
+    ),
+  ),
+);
+
+:host {
+  --avatar-size: #{map-get($avatarSizes, mini)};
+  --avatar-image: none;
+  --bg-color: #{$grey-200};
+
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  flex-grow: 0;
+  position: relative;
+  border-radius: 50%;
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: 2px solid $white;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  @include size(var(--avatar-size));
+  background-color: var(--bg-color);
+  background-image: var(--avatar-image);
+
+  &.has-hover {
+    cursor: pointer;
+  }
+
+  &.icon-on-hover {
+    &:before {
+      transition: opacity 0.2s;
+      opacity: 0;
+    }
+    &:hover:before {
+      opacity: 1;
+    }
+  }
+
+  @each $size, $sizeElems in $avatarSizeMap {
+    @each $elem, $props in $sizeElems {
+      $sel: '&[data-size="' + $size + '"]';
+
+      @if $elem != '*' {
+        $sel: '#{$sel}#{$elem}';
+      }
+
+      #{$sel} {
+        @each $prop, $value in $props {
+          #{$prop}: $value;
+        }
+      }
+    }
+  }
+}
