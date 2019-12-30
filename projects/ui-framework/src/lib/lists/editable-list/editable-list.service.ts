@@ -10,8 +10,7 @@ import { ListSortType } from './editable-list.enum';
 
 @Injectable()
 export class EditableListService {
-  constructor() {
-  }
+  constructor() {}
 
   onDrop(list: SelectOption[], dropResult: DropResult): SelectOption[] {
     const { removedIndex, addedIndex } = dropResult;
@@ -36,7 +35,7 @@ export class EditableListService {
   sortList(
     list: SelectOption[],
     order: ListSortType = null,
-    currentOrder: ListSortType = null,
+    currentOrder: ListSortType = null
   ): ListSortType {
     if (order === ListSortType.UserDefined) {
       return ListSortType.UserDefined;
@@ -46,10 +45,10 @@ export class EditableListService {
       list,
       'value',
       order === ListSortType.Asc ||
-      (!order && currentOrder && currentOrder !== ListSortType.Asc),
+        (!order && currentOrder && currentOrder !== ListSortType.Asc)
     );
     return order === ListSortType.Asc ||
-    (!order && currentOrder && currentOrder !== ListSortType.Asc)
+      (!order && currentOrder && currentOrder !== ListSortType.Asc)
       ? ListSortType.Asc
       : ListSortType.Desc;
   }
@@ -58,7 +57,7 @@ export class EditableListService {
     const length = list.length;
     return !list.find(
       (itm, indx) =>
-        indx + 2 <= length && list[indx].value > list[indx + 1].value,
+        indx + 2 <= length && list[indx].value > list[indx + 1].value
     );
   }
 
@@ -66,7 +65,7 @@ export class EditableListService {
     const length = list.length;
     return !list.find(
       (itm, indx) =>
-        indx + 2 <= length && list[indx].value < list[indx + 1].value,
+        indx + 2 <= length && list[indx].value < list[indx + 1].value
     );
   }
 
@@ -74,7 +73,7 @@ export class EditableListService {
     return this.isListAscending(list)
       ? ListSortType.Asc
       : this.isListDescending(list)
-        ? ListSortType.Desc
-        : ListSortType.UserDefined;
+      ? ListSortType.Desc
+      : ListSortType.UserDefined;
   }
 }

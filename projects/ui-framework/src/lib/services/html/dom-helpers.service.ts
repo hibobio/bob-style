@@ -21,6 +21,37 @@ import { GenericObject } from '../../types';
 export class DOMhelpers {
   constructor() {}
 
+  public injectStyles(
+    styles: string = '',
+    elem: HTMLElement | Document = document
+  ): void {
+    let styleEl: HTMLStyleElement, existingStyles: string;
+    if (elem === document) {
+      elem = document.head;
+    }
+    styleEl = elem.querySelector(`style[data-injected="true"]`);
+    if (styleEl) {
+      existingStyles = styleEl.innerHTML.replace(/\s*/gim, '');
+    }
+    if (!styleEl && styles) {
+      styleEl = document.createElement('style');
+      styleEl.setAttribute('data-injected', 'true');
+      elem.appendChild(styleEl);
+    }
+    if (
+      styles &&
+      (!existingStyles ||
+        (existingStyles &&
+          styleEl.innerHTML.replace(/\s*/gim, '') !== existingStyles))
+    ) {
+      styleEl.innerHTML = styles;
+      return;
+    }
+    if (styleEl && !styles) {
+      styleEl.remove();
+    }
+  }
+
   public isTextNode(element: any) {
     return element.nodeType === Node.TEXT_NODE;
   }

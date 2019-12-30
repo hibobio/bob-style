@@ -1,4 +1,10 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { EditableListComponent } from './editable-list.component';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { IconsModule } from '../../icons/icons.module';
@@ -8,17 +14,16 @@ import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
 import {
   ButtonsModule,
   EventManagerPlugins,
-  inputValue, ListSortType,
-  MenuModule, randomNumber,
+  inputValue,
+  ListSortType,
+  MenuModule,
   SelectOption,
   simpleChange,
-  simpleUID,
+  DOMhelpers,
 } from 'bob-style';
 import { EditableListService } from './editable-list.service';
-import { editableListMock } from './editable-list.mock';
-import { getTestScheduler } from 'jasmine-marbles';
 
-  describe('EditableListComponent', () => {
+describe('EditableListComponent', () => {
   let fixture: ComponentFixture<EditableListComponent>;
   let component: EditableListComponent;
   let selectOptionsMock: SelectOption[];
@@ -44,14 +49,14 @@ import { getTestScheduler } from 'jasmine-marbles';
 
     TestBed.configureTestingModule({
       declarations: [EditableListComponent],
-      imports: [CommonModule,
+      imports: [
+        CommonModule,
         IconsModule,
         NgxSmoothDnDModule,
         MenuModule,
         ButtonsModule,
       ],
       providers: [EditableListService, EventManagerPlugins[0]],
-
     })
       .overrideComponent(EditableListComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -62,14 +67,23 @@ import { getTestScheduler } from 'jasmine-marbles';
         component = fixture.componentInstance;
         component.ngOnChanges(
           simpleChange({
-            // list: editableListMock,
             list: selectOptionsMock,
-          }),
+          })
         );
-        //
-        fixture.detectChanges();
-        component.inputChanged.subscribe(() => {
-        });
+
+        component.inputChanged.subscribe(() => {});
+
+        DOMhelpers.prototype.injectStyles(`
+          .html-reporter .result-message {
+            white-space: pre-line !important;
+            margin-bottom: 14px;
+            line-height: 2;
+            max-width: 700px;
+          }
+          .html-reporter .stack-trace {
+            white-space: pre-line !important;
+          }
+        `);
       });
   }));
 
@@ -84,76 +98,94 @@ import { getTestScheduler } from 'jasmine-marbles';
       const input = fixture.debugElement.query(By.css('.bel-item-input'));
       inputValue(input.nativeElement, component.list[0].value.toUpperCase());
       fixture.detectChanges();
-      const done = fixture.debugElement.query(By.css('.bel-done-button'));
-      done.componentInstance.clicked.emit(null);
+      const done = fixture.debugElement.query(
+        By.css('.bel-done-button button')
+      );
       done.nativeElement.click();
       fixture.detectChanges();
-      const error = fixture.debugElement.query(By.css('.b-input-message.error'));
-      expect(error.nativeElement.innerText).toContain(`"${selectOptionsMock[0].value}" already exists`);
+      const error = fixture.debugElement.query(
+        By.css('.b-input-message.error')
+      );
+      expect(error.nativeElement.innerText).toContain(
+        `"${selectOptionsMock[0].value}" already exists`
+      );
     });
     it('check if has all items on the list', () => {
-      const list = fixture.debugElement.queryAll(By.css('.bel-item.b-icon-drag-alt'));
+      const list = fixture.debugElement.queryAll(
+        By.css('.bel-item.b-icon-drag-alt')
+      );
       expect(list.length).toEqual(3);
     });
     it('check if an item list is deleted from the list', fakeAsync(() => {
-      const del = fixture.debugElement.query(By.css('.bel-trash-button button'));
+      const del = fixture.debugElement.query(
+        By.css('.bel-trash-button button')
+      );
       del.nativeElement.click();
       fixture.detectChanges();
-      const remove = fixture.debugElement.query(By.css('.bel-remove-button button'));
+      const remove = fixture.debugElement.query(
+        By.css('.bel-remove-button button')
+      );
       remove.nativeElement.click();
       tick(300);
       fixture.detectChanges();
-      const list3 = fixture.debugElement.queryAll(By.css('.bel-item.b-icon-drag-alt'));
+      const list3 = fixture.debugElement.queryAll(
+        By.css('.bel-item.b-icon-drag-alt')
+      );
       expect(list3.length).toEqual(2);
     }));
     it('check if an item list is added to the list', () => {
       const input = fixture.debugElement.query(By.css('.bel-item-input'));
       inputValue(input.nativeElement, 'Drawing');
       fixture.detectChanges();
-      const done = fixture.debugElement.query(By.css('.bel-done-button button'));
+      const done = fixture.debugElement.query(
+        By.css('.bel-done-button button')
+      );
       done.nativeElement.click();
       fixture.detectChanges();
-      const list3 = fixture.debugElement.queryAll(By.css('.bel-item.b-icon-drag-alt'));
+      const list3 = fixture.debugElement.queryAll(
+        By.css('.bel-item.b-icon-drag-alt')
+      );
       expect(list3.length).toEqual(4);
     });
     it('check if an item is deleted from the onListUpdate', fakeAsync(() => {
       spyOn(component.changed, 'emit');
-      const del = fixture.debugElement.queryAll(By.css('.bel-trash-button button'));
+      const del = fixture.debugElement.queryAll(
+        By.css('.bel-trash-button button')
+      );
       del[2].nativeElement.click();
       fixture.detectChanges();
-      const remove = fixture.debugElement.queryAll(By.css('.bel-remove-button button'));
+      const remove = fixture.debugElement.queryAll(
+        By.css('.bel-remove-button button')
+      );
       remove[2].nativeElement.click();
       tick(300);
       fixture.detectChanges();
       const expectedParam = {
-        'delete': [
-          'Football',
-        ],
-        'create': [],
-        'order': [
-          'Martial arts',
-          'Climbing',
-        ],
-        'sortType': 'UserDefined',
-        'list': [
+        delete: ['Football'],
+        create: [],
+        order: ['Martial arts', 'Climbing'],
+        sortType: 'UserDefined',
+        list: [
           {
-            'id': 1,
-            'value': 'Martial arts',
-            'selected': false,
+            id: 1,
+            value: 'Martial arts',
+            selected: false,
           },
           {
-            'id': 2,
-            'value': 'Climbing',
-            'selected': false,
+            id: 2,
+            value: 'Climbing',
+            selected: false,
           },
         ],
       };
       expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
     }));
-    it('check if an item is added to the onListUpdate', (done) => {
+    it('check if an item is added to the onListUpdate', done => {
       const input = fixture.debugElement.query(By.css('.bel-item-input'));
-      const doneButton = fixture.debugElement.query(By.css('.bel-done-button button'));
-      component.changed.subscribe((data) => {
+      const doneButton = fixture.debugElement.query(
+        By.css('.bel-done-button button')
+      );
+      component.changed.subscribe(data => {
         expect(data.create[0]).toEqual('abc');
         expect(data.order[0]).toEqual('abc');
         done();
@@ -165,33 +197,31 @@ import { getTestScheduler } from 'jasmine-marbles';
     });
     it('check the ASC button ', () => {
       spyOn(component.changed, 'emit');
-      const sort = fixture.debugElement.query(By.css('.bel-sort-button button'));
+      const sort = fixture.debugElement.query(
+        By.css('.bel-sort-button button')
+      );
       sort.nativeElement.click();
       fixture.detectChanges();
       const expectedParam = {
-        'delete': [],
-        'create': [],
-        'order': [
-          'Climbing',
-          'Football',
-          'Martial arts',
-        ],
-        'sortType': 'Asc',
-        'list': [
+        delete: [],
+        create: [],
+        order: ['Climbing', 'Football', 'Martial arts'],
+        sortType: 'Asc',
+        list: [
           {
-            'id': 2,
-            'value': 'Climbing',
-            'selected': false,
+            id: 2,
+            value: 'Climbing',
+            selected: false,
           },
           {
-            'id': 3,
-            'value': 'Football',
-            'selected': true,
+            id: 3,
+            value: 'Football',
+            selected: true,
           },
           {
-            'id': 1,
-            'value': 'Martial arts',
-            'selected': false,
+            id: 1,
+            value: 'Martial arts',
+            selected: false,
           },
         ],
       };
@@ -199,34 +229,32 @@ import { getTestScheduler } from 'jasmine-marbles';
     });
     it('check the DSC button ', () => {
       spyOn(component.changed, 'emit');
-      const sort = fixture.debugElement.query(By.css('.bel-sort-button button'));
+      const sort = fixture.debugElement.query(
+        By.css('.bel-sort-button button')
+      );
       sort.nativeElement.click();
       sort.nativeElement.click();
       fixture.detectChanges();
       const expectedParam = {
-        'delete': [],
-        'create': [],
-        'order': [
-          'Martial arts',
-          'Football',
-          'Climbing',
-        ],
-        'sortType': 'Desc',
-        'list': [
+        delete: [],
+        create: [],
+        order: ['Martial arts', 'Football', 'Climbing'],
+        sortType: 'Desc',
+        list: [
           {
-            'id': 1,
-            'value': 'Martial arts',
-            'selected': false,
+            id: 1,
+            value: 'Martial arts',
+            selected: false,
           },
           {
-            'id': 3,
-            'value': 'Football',
-            'selected': true,
+            id: 3,
+            value: 'Football',
+            selected: true,
           },
           {
-            'id': 2,
-            'value': 'Climbing',
-            'selected': false,
+            id: 2,
+            value: 'Climbing',
+            selected: false,
           },
         ],
       };
@@ -237,32 +265,28 @@ import { getTestScheduler } from 'jasmine-marbles';
       component.ngOnChanges(
         simpleChange({
           sortType: ListSortType.Asc,
-        }),
+        })
       );
       const expectedParam = {
-        'delete': [],
-        'create': [],
-        'order': [
-          'Climbing',
-          'Football',
-          'Martial arts',
-        ],
-        'sortType': 'Asc',
-        'list': [
+        delete: [],
+        create: [],
+        order: ['Climbing', 'Football', 'Martial arts'],
+        sortType: 'Asc',
+        list: [
           {
-            'id': 2,
-            'value': 'Climbing',
-            'selected': false,
+            id: 2,
+            value: 'Climbing',
+            selected: false,
           },
           {
-            'id': 3,
-            'value': 'Football',
-            'selected': true,
+            id: 3,
+            value: 'Football',
+            selected: true,
           },
           {
-            'id': 1,
-            'value': 'Martial arts',
-            'selected': false,
+            id: 1,
+            value: 'Martial arts',
+            selected: false,
           },
         ],
       };
@@ -273,33 +297,29 @@ import { getTestScheduler } from 'jasmine-marbles';
       component.ngOnChanges(
         simpleChange({
           sortType: ListSortType.Desc,
-        }),
+        })
       );
-      fixture.detectChanges();
+
       const expectedParam = {
-        'delete': [],
-        'create': [],
-        'order': [
-          'Martial arts',
-          'Football',
-          'Climbing',
-        ],
-        'sortType': 'Desc',
-        'list': [
+        delete: [],
+        create: [],
+        order: ['Martial arts', 'Football', 'Climbing'],
+        sortType: 'Desc',
+        list: [
           {
-            'id': 1,
-            'value': 'Martial arts',
-            'selected': false,
+            id: 1,
+            value: 'Martial arts',
+            selected: false,
           },
           {
-            'id': 3,
-            'value': 'Football',
-            'selected': true,
+            id: 3,
+            value: 'Football',
+            selected: true,
           },
           {
-            'id': 2,
-            'value': 'Climbing',
-            'selected': false,
+            id: 2,
+            value: 'Climbing',
+            selected: false,
           },
         ],
       };
@@ -307,6 +327,3 @@ import { getTestScheduler } from 'jasmine-marbles';
     });
   });
 });
-
-
-

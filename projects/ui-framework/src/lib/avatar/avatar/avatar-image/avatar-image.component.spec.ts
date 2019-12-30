@@ -16,12 +16,6 @@ import { AvatarSize, AvatarBadge } from '../avatar.enum';
 import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
 import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
 
-const docInjectStyles = (styles: string = '') => {
-  const styleEl = document.createElement('style');
-  styleEl.innerHTML = styles;
-  document.head.appendChild(styleEl);
-};
-
 interface AttrCheck {
   role: string;
   disabled: string;
@@ -115,12 +109,15 @@ describe('AvatarImageComponent', () => {
         component = fixture.componentInstance;
         componentElem = fixture.nativeElement;
 
-        docInjectStyles(`
+        DOMhelpers.prototype.injectStyles(`
           .html-reporter .result-message {
             white-space: pre-line !important;
             margin-bottom: 14px;
             line-height: 2;
             max-width: 700px;
+          }
+          .html-reporter .stack-trace {
+            white-space: pre-line !important;
           }
         `);
       });
