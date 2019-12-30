@@ -64,6 +64,7 @@ const note = `
    (button titles, etc) | EDITABLE-LIST-TRANSLATION
   (changed) | EventEmitter<wbr>&lt;EditableListState&gt; | emits updated list | &nbsp;
   (inputChanged) | EventEmitter&lt;string&gt; | Outputs input value (for external validation) | &nbsp;
+  [maxChars]|number|maximum length of text for option input| 100
 
 
   ~~~

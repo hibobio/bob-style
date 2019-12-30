@@ -232,12 +232,8 @@ import { getTestScheduler } from 'jasmine-marbles';
       };
       expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
     });
-    it('check the Asc Input button ', () => {
+    it('check the Asc sort type Input ', () => {
       spyOn(component.changed, 'emit');
-
-      component.sortType = ListSortType.Asc;
-
-
       component.ngOnChanges(
         simpleChange({
           sortType: ListSortType.Asc,
@@ -272,11 +268,8 @@ import { getTestScheduler } from 'jasmine-marbles';
       };
       expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
     });
-    it('check the Desc Input button ', () => {
+    it('check the Desc sort type Input ', () => {
       spyOn(component.changed, 'emit');
-
-      component.sortType = ListSortType.Desc;
-
       component.ngOnChanges(
         simpleChange({
           sortType: ListSortType.Desc,

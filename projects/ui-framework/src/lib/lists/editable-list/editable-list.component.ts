@@ -54,20 +54,21 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   constructor(
     private srvc: EditableListService,
     private zone: NgZone,
-    private cd: ChangeDetectorRef
-  ) {}
+    private cd: ChangeDetectorRef,
+  ) {
+  }
 
   @ViewChild('addItemInput', { static: false }) addItemInput: ElementRef;
 
   @Input() list: SelectOption[] = [];
   @Input() sortType: ListSortType;
   @Input() allowedActions: EditableListActions = cloneObject(
-    EDITABLE_LIST_ALLOWED_ACTIONS_DEF
+    EDITABLE_LIST_ALLOWED_ACTIONS_DEF,
   );
   @Input() translation: EditableListTranslation = cloneObject(
-    EDITABLE_LIST_TRANSLATION
+    EDITABLE_LIST_TRANSLATION,
   );
-  @Input() maxChars: number;
+  @Input() maxChars = 100;
   @Output() changed: EventEmitter<EditableListState> = new EventEmitter<EditableListState>();
   @Output() inputChanged: EventEmitter<string> = new EventEmitter<string>();
 
@@ -92,7 +93,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   public sameItemIndex: number = null;
   public removingIndex: number = null;
   public removedItem = false;
-
   private inputChangeDbncr: Subject<string> = new Subject<string>();
   private inputChangeSbscr: Subscription;
 
@@ -137,7 +137,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
         translation: cloneObject(EDITABLE_LIST_TRANSLATION),
       },
       [],
-      true
+      true,
     );
 
     if (hasChanges(changes, ['list'])) {
@@ -149,7 +149,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
       this.sortList(
         this.listState.list,
         this.sortType,
-        this.listState.sortType
+        this.listState.sortType,
       );
     }
 
@@ -195,7 +195,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
                 .replace(/[./\\()\"':,.;<>~!@#$%^&*|+=[\]{}`~\?-]/g, '') ===
               value
                 .toLowerCase()
-                .replace(/[./\\()\"':,.;<>~!@#$%^&*|+=[\]{}`~\?-]/g, '')
+                .replace(/[./\\()\"':,.;<>~!@#$%^&*|+=[\]{}`~\?-]/g, ''),
           );
 
         if (this.sameItemIndex > -1) {
@@ -228,7 +228,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     if (
       !relatedTarget ||
       !relatedTarget.matches(
-        '.bel-done-button button, .bel-item-confirm, .bel-item-input'
+        '.bel-done-button button, .bel-item-confirm, .bel-item-input',
       )
     ) {
       this.addingItem = false;
@@ -253,7 +253,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public removeItem(index: number, confirm = false): void {
-    console.log('removeItem', index, confirm)
     if (!confirm) {
       this.removingIndex = index;
     } else {
@@ -337,7 +336,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
 
   private transmit(): void {
     this.listState.order = this.listState.list.map(i => i.value);
-
     const itersection = this.listState.create.filter(i =>
       this.listState.delete.includes(i),
     );
@@ -354,7 +352,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     this.changed.emit(
       Object.assign({}, this.listState, {
         list: cloneArray(this.listState.list),
-      })
+      }),
     );
   }
 
