@@ -21,6 +21,7 @@
              type="text"
              class="bfe-input bel-item-input"
              autocomplete="off"
+             [attr.maxLength]="maxChars || null"
              (input.outside-zone)="onInputChange()">
 
       <div class="bel-item-confirm"
@@ -37,14 +38,21 @@
                   (clicked)="addItem(true)">
         </b-button>
       </div>
-    </div>
 
+    </div>
+  </div>
+
+
+  <div class="input-message">
     <p *ngIf="inputInvalid"
        class="b-input-message error">
       "{{listState.list[sameItemIndex].value}}"
       {{translation.alreadyExists}}
     </p>
-
+    <p *ngIf="addingItem && maxChars"
+       class="b-input-message">
+      {{addingItemLen}}/{{maxChars}}
+    </p>
   </div>
 
   <div class="bel-header-bottom">

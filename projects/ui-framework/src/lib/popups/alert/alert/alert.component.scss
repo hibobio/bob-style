@@ -34,5 +34,6 @@ $alert_width: 400px;
   }
   p {
     margin: 4px 0 0;
+    @include text-hyphenate();
   }
 }
