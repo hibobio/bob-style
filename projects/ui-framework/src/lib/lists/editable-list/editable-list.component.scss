@@ -34,23 +34,12 @@ $bel-item-dragged-border-color: $grey-400;
   }
 }
 
-.b-input-message {
-  @include b-caption($addCssVars: false);
-  margin: $label-hint-margin 0 0;
-  margin-left: auto;
-  @include animate(slide-down, 0.15s, $val: 5px, $keyframes: true);
-  &.error {
-    color: $color-error;
-    margin-left: 0;
-  }
-
+.bel-header-bottom {
+  margin-top: times8(2);
 }
 
-.input-message
-{
-  display: flex;
-  justify-content: space-between;
-  margin: 8px 0px 8px 0px;
+[b-input-message] {
+  @include animate(slide-down, 0.15s, $val: 5px, $keyframes: true);
 }
 
 :host ::ng-deep .bel-sort-button {

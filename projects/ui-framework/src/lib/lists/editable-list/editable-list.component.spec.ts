@@ -11,17 +11,14 @@ import { IconsModule } from '../../icons/icons.module';
 import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
-import {
-  ButtonsModule,
-  EventManagerPlugins,
-  inputValue,
-  ListSortType,
-  MenuModule,
-  SelectOption,
-  simpleChange,
-  DOMhelpers,
-} from 'bob-style';
 import { EditableListService } from './editable-list.service';
+import { SelectOption } from '../list.interface';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { simpleChange, inputValue } from '../../services/utils/test-helpers';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { ListSortType } from './editable-list.enum';
 
 describe('EditableListComponent', () => {
   let fixture: ComponentFixture<EditableListComponent>;
@@ -53,7 +50,7 @@ describe('EditableListComponent', () => {
         CommonModule,
         IconsModule,
         NgxSmoothDnDModule,
-        MenuModule,
+        InputMessageModule,
         ButtonsModule,
       ],
       providers: [EditableListService, EventManagerPlugins[0]],
@@ -87,35 +84,23 @@ describe('EditableListComponent', () => {
       });
   }));
 
-  describe(' maxChars', () => {
+  describe('maxChars', () => {
     it('should accept 10 chars if max chars is 10', () => {
       component.maxChars = 10;
       fixture.detectChanges();
       const input = fixture.debugElement.query(By.css('.bel-item-input'));
       expect(input.attributes.maxLength).toEqual('10');
     });
-    it('should get an error if the item on the list already', () => {
-      const input = fixture.debugElement.query(By.css('.bel-item-input'));
-      inputValue(input.nativeElement, component.list[0].value.toUpperCase());
-      fixture.detectChanges();
-      const done = fixture.debugElement.query(
-        By.css('.bel-done-button button')
-      );
-      done.nativeElement.click();
-      fixture.detectChanges();
-      const error = fixture.debugElement.query(
-        By.css('.b-input-message.error')
-      );
-      expect(error.nativeElement.innerText).toContain(
-        `"${selectOptionsMock[0].value}" already exists`
-      );
-    });
+  });
+
+  describe('Adding/Deleting items', () => {
     it('check if has all items on the list', () => {
       const list = fixture.debugElement.queryAll(
         By.css('.bel-item.b-icon-drag-alt')
       );
       expect(list.length).toEqual(3);
     });
+
     it('check if an item list is deleted from the list', fakeAsync(() => {
       const del = fixture.debugElement.query(
         By.css('.bel-trash-button button')
@@ -133,6 +118,7 @@ describe('EditableListComponent', () => {
       );
       expect(list3.length).toEqual(2);
     }));
+
     it('check if an item list is added to the list', () => {
       const input = fixture.debugElement.query(By.css('.bel-item-input'));
       inputValue(input.nativeElement, 'Drawing');
@@ -147,6 +133,7 @@ describe('EditableListComponent', () => {
       );
       expect(list3.length).toEqual(4);
     });
+
     it('check if an item is deleted from the onListUpdate', fakeAsync(() => {
       spyOn(component.changed, 'emit');
       const del = fixture.debugElement.queryAll(
@@ -180,6 +167,7 @@ describe('EditableListComponent', () => {
       };
       expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
     }));
+
     it('check if an item is added to the onListUpdate', done => {
       const input = fixture.debugElement.query(By.css('.bel-item-input'));
       const doneButton = fixture.debugElement.query(
@@ -195,7 +183,33 @@ describe('EditableListComponent', () => {
       doneButton.nativeElement.click();
       fixture.detectChanges();
     });
-    it('check the ASC button ', () => {
+
+    it('should get an error if the item on the list already', fakeAsync(() => {
+      const input = fixture.debugElement.query(By.css('.bel-item-input'));
+      inputValue(
+        input.nativeElement,
+        component.list[0].value.toUpperCase(),
+        false,
+        false
+      );
+      fixture.detectChanges();
+      const done = fixture.debugElement.query(
+        By.css('.bel-done-button button')
+      );
+      done.nativeElement.click();
+      fixture.detectChanges();
+      tick(100);
+      const error = fixture.debugElement.query(
+        By.css('[b-input-message] .error')
+      );
+      expect(error.nativeElement.innerText).toContain(
+        `"${selectOptionsMock[0].value}" already exists`
+      );
+    }));
+  });
+
+  describe('Sorting', () => {
+    it('check  Asc button ', () => {
       spyOn(component.changed, 'emit');
       const sort = fixture.debugElement.query(
         By.css('.bel-sort-button button')
@@ -227,7 +241,8 @@ describe('EditableListComponent', () => {
       };
       expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
     });
-    it('check the DSC button ', () => {
+
+    it('check Desc button ', () => {
       spyOn(component.changed, 'emit');
       const sort = fixture.debugElement.query(
         By.css('.bel-sort-button button')
@@ -260,7 +275,8 @@ describe('EditableListComponent', () => {
       };
       expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
     });
-    it('check the Asc sort type Input ', () => {
+
+    it('check Asc sortType input ', () => {
       spyOn(component.changed, 'emit');
       component.ngOnChanges(
         simpleChange({
@@ -292,7 +308,8 @@ describe('EditableListComponent', () => {
       };
       expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
     });
-    it('check the Desc sort type Input ', () => {
+
+    it('check  Desc sortType input ', () => {
       spyOn(component.changed, 'emit');
       component.ngOnChanges(
         simpleChange({

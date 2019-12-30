@@ -113,13 +113,13 @@ story.add(
         ),
 
         sortType: select('sortType', [0, 'Asc', 'Desc'], 0, 'Props'),
+        maxChars: number('maxChars', 50, {}, 'Props'),
         allowSort: boolean('allowSort', true, 'Props'),
         allowAdd: boolean('allowAdd', true, 'Props'),
         allowRemove: boolean('allowRemove', true, 'Props'),
 
         onListUpdate: action('onListUpdate'),
         onInputChange: action('onInputChange'),
-        maxChars: number('maxChars', 0, {}, 'Props'),
       },
       moduleMetadata: {
         imports: [

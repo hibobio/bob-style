@@ -122,7 +122,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     if (isNumber(this.removingIndex)) {
       this.removeCancel(event);
     }
-
+    console.log('focusout');
     if (this.addingItem) {
       this.addItemCancel(event);
     }
@@ -170,6 +170,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public addItem(confirm = false): void {
+    console.log('addItem');
     if (!confirm) {
       this.addingItem = true;
 
@@ -212,6 +213,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
           this.transmit();
           this.listState.sortType = ListSortType.UserDefined;
           this.addItemInput.nativeElement.value = '';
+          this.addingItemLen = 0;
         }
       } else {
         this.addItemCancel();
@@ -250,6 +252,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
       (relatedTarget && relatedTarget.matches('.bel-cancel-button button'))
     ) {
       this.addItemInput.nativeElement.value = '';
+      this.addingItemLen = 0;
     }
   }
 
@@ -291,6 +294,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public onInputChange(): void {
+    console.log('onInputChange');
     const value = this.addItemInput.nativeElement.value.trim();
     this.addingItemLen = value.length;
     this.inputInvalid = false;
