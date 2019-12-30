@@ -9,7 +9,6 @@ import { DialogSize } from '../dialog.enum';
   providedIn: 'root',
 })
 export class DialogService {
-
   readonly dialogSizeToWidth = {
     [DialogSize.small]: 480,
     [DialogSize.medium]: 720,
