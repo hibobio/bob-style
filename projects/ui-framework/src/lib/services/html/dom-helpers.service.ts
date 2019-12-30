@@ -102,6 +102,10 @@ export class DOMhelpers {
     };
   }
 
+  public getElementCSSvar(element: HTMLElement, cssVar: string): string {
+    return getComputedStyle(element, '::after').getPropertyValue(cssVar);
+  }
+
   // returns deepest element that has text
   // or multiple children with text
   // or combination of above

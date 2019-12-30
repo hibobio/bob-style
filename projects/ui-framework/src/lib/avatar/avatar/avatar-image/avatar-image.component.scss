@@ -80,6 +80,7 @@ $avatarSizeMap: (
   align-items: center;
   flex-shrink: 0;
   flex-grow: 0;
+  text-align: center;
   position: relative;
   border-radius: 50%;
   transition: box-shadow 0.2s, transform 0.2s;
@@ -106,6 +107,8 @@ $avatarSizeMap: (
       transition: opacity 0.2s;
       opacity: 0;
     }
+
+    &:focus:before,
     &:hover:before {
       opacity: 1;
     }
