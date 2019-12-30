@@ -122,7 +122,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     if (isNumber(this.removingIndex)) {
       this.removeCancel(event);
     }
-    console.log('focusout');
     if (this.addingItem) {
       this.addItemCancel(event);
     }
@@ -170,7 +169,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public addItem(confirm = false): void {
-    console.log('addItem');
     if (!confirm) {
       this.addingItem = true;
 
@@ -294,7 +292,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public onInputChange(): void {
-    console.log('onInputChange');
     const value = this.addItemInput.nativeElement.value.trim();
     this.addingItemLen = value.length;
     this.inputInvalid = false;
