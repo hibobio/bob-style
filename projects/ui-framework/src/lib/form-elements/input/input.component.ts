@@ -14,6 +14,7 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { InputTypes } from './input.enum';
 import { BaseFormElement } from '../base-form-element';
+import { parseToNumber } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-input',
@@ -63,6 +64,16 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
         }
       }, 0);
     });
+  }
+
+  onIncrement() {
+    this.writeValue(parseToNumber(this.input.nativeElement.value) + this.step);
+    this.processValue(this.value);
+  }
+
+  onDecrement() {
+    this.writeValue(parseToNumber(this.input.nativeElement.value) - this.step);
+    this.processValue(this.value);
   }
 
   public onInputKeydown(event: KeyboardEvent) {

@@ -7,7 +7,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { InputTypes } from './input.enum';
-import { inputValue, emitNativeEvent } from '../../services/utils/test-helpers';
+import { elementFromFixture, emitNativeEvent, inputValue } from '../../services/utils/test-helpers';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { Keys, NativeEvents } from '../../enums';
 import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
@@ -16,6 +16,8 @@ describe('InputComponent', () => {
   let component: InputComponent;
   let fixture: ComponentFixture<InputComponent>;
   let inputElement: any;
+  let buttonUpElement: any;
+  let buttonDownElement: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -111,5 +113,75 @@ describe('InputComponent', () => {
       });
       expect(component.propagateChange).toHaveBeenCalledWith(500);
     });
+  });
+ describe('Numeric input limits: user input', () => {
+    beforeEach(() => {
+      component.inputType = InputTypes.number;
+      component.max = 30;
+      component.min = 5;
+      inputElement = elementFromFixture(fixture, '.bfe-input');
+      fixture.detectChanges();
+    });
+
+    it('should return upper limit if the input value is bigger, and bottom limit if it was smaller', () => {
+      expect(component.value as any).not.toEqual(30);
+      inputValue(inputElement, 500);
+      expect(component.value as any).toEqual(30);
+    });
+    it('should return bottom limit if the input value is less than min', () => {
+      expect(component.value as any).not.toEqual(5);
+      inputValue(inputElement, 2);
+      expect(component.value as any).toEqual(5);
+    });
+  });
+  describe('Numeric limits: tickers', () => {
+
+    beforeEach(() => {
+      component.inputType = InputTypes.number;
+      fixture.detectChanges();
+      inputElement = fixture.debugElement.query(By.css('input')).nativeElement;
+      component.step = 3;
+      component.max = 6;
+      component.min = 5;
+      fixture.detectChanges();
+    });
+
+    it('should return the bottom limit on any tick that sets the value to be below min', () => {
+      buttonDownElement = elementFromFixture(fixture, '.b-icon-chevron-down');
+      emitNativeEvent(buttonDownElement);
+      fixture.detectChanges();
+      expect(component.value as any).toEqual(5);
+      emitNativeEvent(buttonDownElement);
+      expect(component.value as any).toEqual(5);
+    });
+
+    it('should return the upper limit on any tick that sets the value to be above max', () => {
+      buttonUpElement = elementFromFixture(fixture, '.b-icon-chevron-up');
+      emitNativeEvent(buttonUpElement);
+      expect(component.value as any).toEqual(5);
+      emitNativeEvent(buttonUpElement);
+      expect(component.value as any).toEqual(6);
+    });
+  });
+
+  describe('Ticker buttons', () => {
+   it('should render ticker buttons if the inputType is number and step greater than 0', () => {
+     component.inputType = InputTypes.number;
+     component.step = 5;
+     fixture.detectChanges();
+     expect(elementFromFixture(fixture, '.bfe-buttons-wrap')).toBeTruthy();
+   });
+   it('should not render if step is not greater than 0', () => {
+     component.inputType = InputTypes.number;
+     component.step = 0;
+     fixture.detectChanges();
+     expect(elementFromFixture(fixture, '.bfe-buttons-wrap')).toBeFalsy();
+   });
+   it('should not render if input type is not number', () => {
+     component.inputType = InputTypes.text;
+     component.step = 5;
+     fixture.detectChanges();
+     expect(elementFromFixture(fixture, '.bfe-buttons-wrap')).toBeFalsy();
+   });
   });
 });

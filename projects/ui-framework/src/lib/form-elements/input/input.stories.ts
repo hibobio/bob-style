@@ -32,6 +32,7 @@ const template = `
         [hideLabelOnFocus]="hideLabelOnFocus"
         [minChars]="minChars"
         [maxChars]="maxChars"
+        [step]="step"
         [min]="min"
         [max]="max"
         [readonly]="readonly"
@@ -41,7 +42,8 @@ const template = `
         [warnMessage]="warnMessage"
         [errorMessage]="errorMessage"
         [enableBrowserAutoComplete]="enableBrowserAutoComplete"
-        (inputEvents)="inputEvents($event)">
+        (inputEvents)="inputEvents($event)"
+        >
 </b-input>
 `;
 
@@ -70,6 +72,7 @@ const note = `
    input, label text (if present) will be used as placeholder
   [minChars] | number | minimum length
   [maxChars] | number | maximum length
+  [step] | number | Step value for number input step buttons. Buttons will not be displayed, if step value is not provided
   [min] | number | (only relevent for number inputs) minimum value (value will be corrected on blur)
   [max] | number | (only relevent for number inputs) maximum value (value will be corrected on blur)
   [readonly] | boolean | disables input
@@ -102,6 +105,7 @@ story.add(
         maxChars: number('maxChars', 30),
         min: number('min', 5),
         max: number('max', 30),
+        step: number('step', 3),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         readonly: boolean('readonly', false),
