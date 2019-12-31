@@ -1,15 +1,4 @@
 :host[data-size='mini'] {
-  .avatar {
-    box-shadow: 0 1px 2px 0 $boxShadowColor;
-    border-width: 2px;
-  }
-  &[data-clickable='true'] .avatar:hover {
-    box-shadow: 0 3px 6px 0 $boxShadowColor;
-  }
-  .avatar-badge {
-    top: 0px;
-    right: -1px;
-  }
   .avatar-text {
     line-height: 1.35;
   }
@@ -37,17 +26,6 @@
 }
 
 :host[data-size='small'] {
-  .avatar {
-    box-shadow: 0 1px 2px 0 $boxShadowColor;
-    border-width: 2px;
-  }
-  &[data-clickable='true'] .avatar:hover {
-    box-shadow: 0 3px 6px 0 $boxShadowColor;
-  }
-  .avatar-badge {
-    top: 2px;
-    right: 1px;
-  }
   .avatar-text {
     line-height: 1.35;
   }
@@ -75,13 +53,6 @@
 }
 
 :host[data-size='medium'] {
-  .avatar {
-    box-shadow: 0 2px 4px 0 $boxShadowColor;
-    border-width: 3px;
-  }
-  &[data-clickable='true'] .avatar:hover {
-    box-shadow: 0 6px 12px 0 $boxShadowColor;
-  }
   b-chip {
     margin-top: 6px;
   }
@@ -118,19 +89,8 @@
 
 :host[data-size='xlarge'],
 :host[data-size='large'] {
-  .avatar {
-    box-shadow: 0 2px 4px 0 $boxShadowColor;
-    border-width: 3px;
-  }
-  &[data-clickable='true'] .avatar:hover {
-    box-shadow: 0 6px 12px 0 $boxShadowColor;
-  }
   b-chip {
     margin-top: 8px;
-  }
-  .avatar-badge {
-    top: 3px;
-    right: 3px;
   }
   .slot1-big {
     @include b-display-1($lineHeight: 1.12, $addCssVars: true);

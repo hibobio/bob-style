@@ -12,9 +12,9 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { AvatarModule } from './avatar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { IconsModule } from '../../icons/icons.module';
 import { ChipType } from '../../chips/chips.enum';
 import { mockNames, mockJobs, mockAvatar } from '../../mock.const';
+import { Icons } from '../../icons/icons.enum';
 
 const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
   withKnobs
@@ -32,6 +32,27 @@ const orientationOptions = Object.keys(AvatarOrientation);
 const badges = [0, ...Object.keys(AvatarBadge)];
 const chips = Object.values(ChipType).filter(o => o !== ChipType.avatar);
 
+const icons = [
+  Icons.calendar,
+  Icons.chat,
+  Icons.doc_add,
+  Icons.doc_icon,
+  Icons.email,
+  Icons.harmonise,
+  Icons.home_main,
+  Icons.home,
+  Icons.infinite,
+  Icons.lock,
+  Icons.megaphone,
+  Icons.note,
+  Icons.department_icon,
+  Icons.person,
+  Icons.person_check,
+  Icons.print,
+  Icons.success,
+  Icons.tag,
+];
+
 const template = `
 <b-avatar
   [imageSource]="imageSource"
@@ -41,13 +62,13 @@ const template = `
   [title]="title"
   [subtitle]="subtitle"
   [caption]="caption"
+  [icon]="icon"
   [badge]="badge"
   [chip]="chip"
   [isClickable]="isClickable"
   [disabled]="disabled"
   [expectChanges]="true"
-  (clicked)="clickHandler($event)"
-  >
+  (clicked)="clickHandler($event)">
 </b-avatar>
 `;
 
@@ -69,6 +90,8 @@ const note = `
   [title] | string | main title of the avatar | &nbsp;
   [subtitle] | string | subtitle of the avatar | &nbsp;
   [caption] | string | caption & site | &nbsp;
+  [icon] | Icons / Icon | Icons enum or Icon {icon, color, size} object.\
+  If just the Icons enum is provided, size & color is automatic.  | &nbsp;
   [badge] | AvatarBadge / BadgeConfig | AvatarBadge enum of approved, \
   pending or rejected / or BadgeConfig {icon, color} object  | &nbsp;
   [chip] | Chip | object describing the chip chip (should have type & text properties) | &nbsp;
@@ -86,6 +109,7 @@ const note = `
     [title]="title"
     [subtitle]="subtitle"
     [caption]="caption"
+    [icon]="icon"
     [badge]="badge"
     [chip]="chip"
     [isClickable]="isClickable"
@@ -120,6 +144,7 @@ story.add(
         subtitle: text('subtitle', mockJobs(1)),
         caption: text('caption', 'Product, Israel'),
         disabled: boolean('disabled', false),
+        icon: select('icon', [0, ...icons]),
         badge: select('badge', badges, AvatarBadge.approved),
         backgroundColor: select('background color', ['#fff', 'red', 'black']),
         chip: {
@@ -128,12 +153,7 @@ story.add(
         },
       },
       moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          StoryBookLayoutModule,
-          AvatarModule,
-          IconsModule,
-        ],
+        imports: [BrowserAnimationsModule, StoryBookLayoutModule, AvatarModule],
       },
     };
   },

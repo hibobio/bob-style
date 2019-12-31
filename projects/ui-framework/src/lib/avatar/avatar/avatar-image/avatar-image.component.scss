@@ -12,7 +12,7 @@ $avatarSizeMap: (
     ),
     ':after': (
       top: -2px,
-      right: -7px,
+      right: -4px,
     ),
   ),
   small: (
@@ -100,21 +100,40 @@ $avatarSizeMap: (
 
   &.has-hover {
     cursor: pointer;
+
+    &:hover,
+    &:focus {
+      transform: scale(1.05);
+    }
   }
 
   &.icon-on-hover {
+    &.has-content {
+      &:before {
+        content: '';
+        @include position(0 0 0 0);
+      }
+    }
+
     &:before {
       @include size(100%);
       @include flex-align;
       border-radius: 50%;
       background-color: black(0.4);
+    }
+
+    &:before,
+    ::ng-deep > :first-child {
       transition: opacity 0.2s;
       opacity: 0;
     }
 
-    &:focus:before,
-    &:hover:before {
-      opacity: 1;
+    &:focus,
+    &:hover {
+      &:before,
+      ::ng-deep > :first-child {
+        opacity: 1;
+      }
     }
   }
 

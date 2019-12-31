@@ -1,21 +1,14 @@
-<div class="avatar"
-     [ngClass]="avatarClass"
-     [ngStyle]="avatarStyle"
-     (click.outside-zone)="onClick($event)">
-
-  <b-icon *ngIf="badge"
-          class="avatar-badge"
-          [size]="badgeSize[size]"
-          [icon]="badgeConfig.icon"
-          [color]="badgeConfig.color">
-  </b-icon>
-
-  <div class="avatar-content"
-       #content
-       *ngIf="hasContent">
-    <ng-content></ng-content>
-  </div>
-</div>
+<b-avatar-image class="avatar"
+                [size]="size"
+                [imageSource]="imageSource"
+                [backgroundColor]="backgroundColor"
+                [icon]="icon"
+                [badge]="badge"
+                [disabled]="disabled"
+                [isClickable]="isClickable"
+                (click.outside-zone)="onClick($event)">
+  <ng-content></ng-content>
+</b-avatar-image>
 
 <div *ngIf="title || subtitle"
      class="avatar-text">

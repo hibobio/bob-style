@@ -51,6 +51,7 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   @Input() icon: Icons | Icon;
   @Input() badge: AvatarBadge | Icon;
   @Input() disabled = false;
+  @Input() isClickable = false;
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
@@ -93,7 +94,7 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   private setAttributes(): void {
-    const isClickable = this.clicked.observers.length > 0;
+    const isClickable = this.isClickable || this.clicked.observers.length > 0;
 
     if (
       this.imageSource &&
@@ -108,7 +109,10 @@ to get the right avatar image.`);
     this.DOM.setCssProps(this.host, {
       '--avatar-size': this.size + 'px',
       '--bg-color': this.backgroundColor || null,
-      '--avatar-image': this.imageSource ? `url(${this.imageSource})` : null,
+      '--avatar-image':
+        this.imageSource && !this.imageSource.includes('emptyAvatar')
+          ? `url(${this.imageSource})`
+          : null,
     });
 
     this.DOM.setAttributes(this.host, {
@@ -152,7 +156,10 @@ to get the right avatar image.`);
     this.DOM.bindClasses(this.host, {
       avatar: true,
       'has-hover': isClickable && !this.disabled,
-      'icon-on-hover': Boolean(this.imageSource && this.icon),
+      'icon-on-hover': Boolean(
+        this.imageSource && (this.icon || this.hasContent)
+      ),
+      'has-content': this.hasContent,
     });
 
     if (!this.host.className) {
