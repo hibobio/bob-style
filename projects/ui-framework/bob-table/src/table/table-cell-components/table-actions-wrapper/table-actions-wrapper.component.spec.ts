@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TableActionsWrapperComponent } from './table-actions-wrapper.component';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
-import { ButtonComponent, ButtonType, MenuComponent, SquareButtonComponent, } from 'bob-style';
+import { ButtonComponent, ButtonType, IconComponent, Icons, MenuComponent, SquareButtonComponent, } from 'bob-style';
 
 describe('TableActionsWrapperComponent', () => {
   let component: TableActionsWrapperComponent;
@@ -16,6 +16,7 @@ describe('TableActionsWrapperComponent', () => {
         MockComponent(SquareButtonComponent),
         MockComponent(MenuComponent),
         MockComponent(ButtonComponent),
+        MockComponent(IconComponent),
       ],
     })
       .compileComponents()
@@ -56,7 +57,7 @@ describe('TableActionsWrapperComponent', () => {
       const menuItems = fixture.debugElement.query(By.css('b-menu'));
       const button = fixture.debugElement.query(By.css('b-button'))
         .componentInstance;
-      expect(menuItems).toBe(null);
+      expect(menuItems).toBeNull();
       expect(button.text).toBe('save');
       expect(button.type).toBe(ButtonType.primary);
     });
@@ -79,6 +80,23 @@ describe('TableActionsWrapperComponent', () => {
       const button = fixture.debugElement.query(By.css('b-button'));
       expect(menuItems).toBe(null);
       expect(button).toBe(null);
+    });
+    it('Should not display icon by default', () => {
+      fixture.detectChanges();
+      const icon = fixture.debugElement.query(By.css('b-icon'));
+      expect(icon).toBeNull();
+    });
+    it('Should not display icon', () => {
+      component.menuItems = [
+        {
+          label: 'save',
+          action: $event => console.log('save clicked', $event),
+        },
+      ];
+      component.icon = Icons.person_reports;
+      fixture.detectChanges();
+      const icon = fixture.debugElement.query(By.css('b-icon'));
+      expect(icon).not.toBeNull();
     });
   });
 });
