@@ -9,7 +9,7 @@ import {
   ChartLegendAlignEnum,
   ChartLegendLayoutEnum,
   ChartLegendPositionEnum,
-  ChartLegendVerticalAlignEnum
+  ChartLegendVerticalAlignEnum, HighChartOptions
 } from './chart.interface';
 
 declare var require: any;
@@ -53,7 +53,7 @@ export abstract class ChartCore implements AfterViewInit  {
   @Input() legend = false;
   @Input() showDataLabels = false;
   @Input() pointFormat = '{series.name}: <b>{point.percentage:.1f}%</b>';
-  @Input() extraOptions: Options = {};
+  @Input() extraOptions: HighChartOptions = {};
   @Output() legendChanged = new EventEmitter();
   @Input() tooltipTemplate = <ChartTooltipTemplateFormatter>
   (component: ChartCore, chartPoint: ChartFormatterThis) => `<div class="chart-tooltip">

@@ -2,6 +2,7 @@ import {ChangeDetectorRef, Component, Input, NgZone, OnChanges, SimpleChanges, V
 import {ChartCore} from '../chart/chart-core';
 import {ChartTypesEnum} from '../chart/chart.enum';
 import {SeriesPieDataOptions} from 'highcharts';
+import {merge} from 'lodash';
 
 export const minDonutWidth = 3, pieLegendHeight = 37, piePadding = 50;
 @Component({
@@ -28,7 +29,7 @@ export class PieChartComponent extends ChartCore implements OnChanges {
   }
 
   updateChartOptions() {
-    this.chartOptions = {
+    this.chartOptions = merge({
       chart: {
         height: Math.abs(this.height)
       },
@@ -48,7 +49,7 @@ export class PieChartComponent extends ChartCore implements OnChanges {
           data: this.data
         }
       ]
-    };
+    }, this.extraOptions);
     if (this.donut) {
       this.chartOptions.plotOptions.pie.innerSize = Math.min(
         Math.abs(this.donutInnerSize),
