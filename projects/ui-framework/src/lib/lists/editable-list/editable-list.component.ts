@@ -145,7 +145,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
       this.listState.sortType = this.srvc.getListSortType(this.listState.list);
     }
 
-    if ((hasChanges(changes, ['sortType']), true)) {
+    if (hasChanges(changes, ['sortType'], true)) {
       this.sortList(
         this.listState.list,
         this.sortType,

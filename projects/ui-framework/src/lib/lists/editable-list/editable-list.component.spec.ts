@@ -19,31 +19,31 @@ import { ButtonsModule } from '../../buttons/buttons.module';
 import { simpleChange, inputValue } from '../../services/utils/test-helpers';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { ListSortType } from './editable-list.enum';
+import { cloneDeep } from 'lodash';
 
 describe('EditableListComponent', () => {
   let fixture: ComponentFixture<EditableListComponent>;
   let component: EditableListComponent;
-  let selectOptionsMock: SelectOption[];
+
+  const selectOptionsMock: SelectOption[] = [
+    {
+      id: 1,
+      value: 'Martial arts',
+      selected: false,
+    },
+    {
+      id: 2,
+      value: 'Climbing',
+      selected: false,
+    },
+    {
+      id: 3,
+      value: 'Football',
+      selected: true,
+    },
+  ];
 
   beforeEach(async(() => {
-    selectOptionsMock = [
-      {
-        id: 1,
-        value: 'Martial arts',
-        selected: false,
-      },
-      {
-        id: 2,
-        value: 'Climbing',
-        selected: false,
-      },
-      {
-        id: 3,
-        value: 'Football',
-        selected: true,
-      },
-    ];
-
     TestBed.configureTestingModule({
       declarations: [EditableListComponent],
       imports: [
@@ -64,11 +64,9 @@ describe('EditableListComponent', () => {
         component = fixture.componentInstance;
         component.ngOnChanges(
           simpleChange({
-            list: selectOptionsMock,
+            list: cloneDeep(selectOptionsMock),
           })
         );
-
-        component.inputChanged.subscribe(() => {});
 
         DOMhelpers.prototype.injectStyles(`
           .html-reporter .result-message {
@@ -94,14 +92,15 @@ describe('EditableListComponent', () => {
   });
 
   describe('Adding/Deleting items', () => {
-    it('check if has all items on the list', () => {
+    it('should have all items in the list', () => {
       const list = fixture.debugElement.queryAll(
         By.css('.bel-item.b-icon-drag-alt')
       );
       expect(list.length).toEqual(3);
+      expect(component.listState.list).toEqual(selectOptionsMock);
     });
 
-    it('check if an item list is deleted from the list', fakeAsync(() => {
+    it('should delete item from the list', fakeAsync(() => {
       const del = fixture.debugElement.query(
         By.css('.bel-trash-button button')
       );
@@ -119,22 +118,7 @@ describe('EditableListComponent', () => {
       expect(list3.length).toEqual(2);
     }));
 
-    it('check if an item list is added to the list', () => {
-      const input = fixture.debugElement.query(By.css('.bel-item-input'));
-      inputValue(input.nativeElement, 'Drawing');
-      fixture.detectChanges();
-      const done = fixture.debugElement.query(
-        By.css('.bel-done-button button')
-      );
-      done.nativeElement.click();
-      fixture.detectChanges();
-      const list3 = fixture.debugElement.queryAll(
-        By.css('.bel-item.b-icon-drag-alt')
-      );
-      expect(list3.length).toEqual(4);
-    });
-
-    it('check if an item is deleted from the onListUpdate', fakeAsync(() => {
+    it('should emit the right event when item was deleted', fakeAsync(() => {
       spyOn(component.changed, 'emit');
       const del = fixture.debugElement.queryAll(
         By.css('.bel-trash-button button')
@@ -168,7 +152,22 @@ describe('EditableListComponent', () => {
       expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
     }));
 
-    it('check if an item is added to the onListUpdate', done => {
+    it('should add item to the list', () => {
+      const input = fixture.debugElement.query(By.css('.bel-item-input'));
+      inputValue(input.nativeElement, 'Drawing');
+      fixture.detectChanges();
+      const done = fixture.debugElement.query(
+        By.css('.bel-done-button button')
+      );
+      done.nativeElement.click();
+      fixture.detectChanges();
+      const list3 = fixture.debugElement.queryAll(
+        By.css('.bel-item.b-icon-drag-alt')
+      );
+      expect(list3.length).toEqual(4);
+    });
+
+    it('should emit the right event when item was added', done => {
       const input = fixture.debugElement.query(By.css('.bel-item-input'));
       const doneButton = fixture.debugElement.query(
         By.css('.bel-done-button button')
@@ -184,7 +183,7 @@ describe('EditableListComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should get an error if the item on the list already', fakeAsync(() => {
+    it('should show an error if item is in the list already', fakeAsync(() => {
       const input = fixture.debugElement.query(By.css('.bel-item-input'));
       inputValue(
         input.nativeElement,
@@ -209,7 +208,7 @@ describe('EditableListComponent', () => {
   });
 
   describe('Sorting', () => {
-    it('check  Asc button ', () => {
+    it('should sort ascending when pressing Asc button ', () => {
       spyOn(component.changed, 'emit');
       const sort = fixture.debugElement.query(
         By.css('.bel-sort-button button')
@@ -242,7 +241,7 @@ describe('EditableListComponent', () => {
       expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
     });
 
-    it('check Desc button ', () => {
+    it('should sort descending when pressing Desc button', () => {
       spyOn(component.changed, 'emit');
       const sort = fixture.debugElement.query(
         By.css('.bel-sort-button button')
@@ -276,7 +275,7 @@ describe('EditableListComponent', () => {
       expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
     });
 
-    it('check Asc sortType input ', () => {
+    it('should sort ascending with sortType input ', () => {
       spyOn(component.changed, 'emit');
       component.ngOnChanges(
         simpleChange({
@@ -309,7 +308,7 @@ describe('EditableListComponent', () => {
       expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
     });
 
-    it('check  Desc sortType input ', () => {
+    it('should sort descending with sortType input', () => {
       spyOn(component.changed, 'emit');
       component.ngOnChanges(
         simpleChange({
