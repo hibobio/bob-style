@@ -10,28 +10,22 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
-  HostListener,
+  HostListener
 } from '@angular/core';
-import { AgGridNg2 } from 'ag-grid-angular';
+import {AgGridNg2} from 'ag-grid-angular';
 import {
   CellClickedEvent,
   Column,
   DragStoppedEvent,
   GridColumnsChangedEvent,
   GridOptions,
-  GridReadyEvent,
+  GridReadyEvent
 } from 'ag-grid-community';
-import { cloneDeep, get, has, map } from 'lodash';
-import { TableUtilsService } from '../table-utils-service/table-utils.service';
-import { AgGridWrapper } from './ag-grid-wrapper';
-import { RowSelection, TableType } from './table.enum';
-import {
-  ColumnDef,
-  ColumnsOrderChangedEvent,
-  RowClickedEvent,
-  SortChangedEvent,
-} from './table.interface';
-import { TreeConfig, defaultTreeConfig } from './tree-able';
+import {cloneDeep, get, has, map} from 'lodash';
+import {TableUtilsService} from '../table-utils-service/table-utils.service';
+import {AgGridWrapper} from './ag-grid-wrapper';
+import {RowSelection, TableType} from './table.enum';
+import {ColumnDef, ColumnsOrderChangedEvent, RowClickedEvent, SortChangedEvent} from './table.interface';
 
 const CLOSE_BUTTON_DIAMETER = 20;
 const CLOSE_MARGIN_OFFSET = 6;
@@ -47,6 +41,12 @@ const CLOSE_MARGIN_OFFSET = 6;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
+
+  /**
+   * @internal - use "addClass"
+   */
+  public _externalClasses = '';
+
   constructor(
     private tableUtilsService: TableUtilsService,
     private elRef: ElementRef,
@@ -58,12 +58,6 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @ViewChild('agGrid', { static: true }) agGrid: AgGridNg2;
 
   @Input() type: TableType = TableType.Primary;
-
-  public treeConfig: TreeConfig = defaultTreeConfig;
-
-  @Input('treeConfig') set setTreeConfig(treeConfig: TreeConfig) {
-    this.treeConfig = { ...defaultTreeConfig, ...treeConfig };
-  }
 
   @Input() rowData: any[] = [];
   @Input() columnDefs: ColumnDef[] = [];
@@ -177,11 +171,6 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       suppressDragLeaveHidesColumns: this.suppressDragLeaveHidesColumns,
       autoSizePadding: this.autoSizePadding,
       suppressColumnVirtualisation: this.suppressColumnVirtualisation,
-      autoGroupColumnDef: {
-        cellRendererParams: {
-          suppressCount: true,
-        },
-      },
       rowHeight: this.rowHeight,
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,
@@ -208,5 +197,10 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         that.cellClicked.emit(event);
       },
     };
+  }
+
+  addClass(className: string) {
+    this._externalClasses += ` ${className}`;
+    this.cdr.detectChanges();
   }
 }

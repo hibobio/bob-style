@@ -1,22 +1,21 @@
-import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
-import { TableComponent } from './table.component';
-import { CommonModule } from '@angular/common';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { AvatarModule } from 'bob-style';
-import { TableModule } from '../table.module';
-import { AvatarCellComponent } from '../table-cell-components/avatar-cell/avatar.component';
-import {AgGridModule, AgGridNg2} from 'ag-grid-angular';
-import { ColumnDef } from './table.interface';
-import { TableUtilsService } from '../table-utils-service/table-utils.service';
-import { cloneDeep, keys, pick } from 'lodash';
-import { COLUMN_DEFS_MOCK, ROW_DATA_MOCK } from '../table-mocks/table-test.mock';
-import { RowSelection, TableType } from './table.enum';
-import { By } from '@angular/platform-browser';
-import { ChangeDetectorRef } from '@angular/core';
-import {TreeConfig, defaultTreeConfig} from './tree-able';
-import SpyObj = jasmine.SpyObj;
+import {CommonModule} from '@angular/common';
+import {ChangeDetectorRef} from '@angular/core';
+import {async, ComponentFixture, fakeAsync, flush, TestBed, tick} from '@angular/core/testing';
+import {By} from '@angular/platform-browser';
+import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {AgGridModule} from 'ag-grid-angular';
+import {AvatarModule} from 'bob-style';
+import {cloneDeep, keys, pick} from 'lodash';
+import {AvatarCellComponent} from '../table-cell-components/avatar-cell/avatar.component';
+import {COLUMN_DEFS_MOCK, ROW_DATA_MOCK} from '../table-mocks/table-test.mock';
+import {TableUtilsService} from '../table-utils-service/table-utils.service';
+import {TableModule} from '../table.module';
+import {TableComponent} from './table.component';
+import {RowSelection, TableType} from './table.enum';
+import {ColumnDef} from './table.interface';
 import createSpyObj = jasmine.createSpyObj;
+import SpyObj = jasmine.SpyObj;
 
 describe('TableComponent', () => {
   let component: TableComponent;
@@ -339,30 +338,6 @@ describe('TableComponent', () => {
     });
   });
 
-  describe('treeAble', () => {
-    let grid: AgGridNg2;
-    const defaultConfigMock = {...defaultTreeConfig, treeData: true};
-    function setup(treeConfig: TreeConfig = defaultConfigMock) {
-      component.treeConfig = treeConfig;
-      fixture.detectChanges();
-      const gridElem = fixture.debugElement.query(By.css('ag-grid-angular'));
-      grid = gridElem.componentInstance;
-    }
-    it('should pass the treeData', () => {
-      setup();
-      expect(grid.treeData).toBeTruthy();
-    });
-    it('should pass getDataPath', () => {
-      const getPathMock = (data) => [];
-      setup({...defaultConfigMock, getDataPath: getPathMock});
-      expect(grid.getDataPath).toBe(getPathMock);
-    });
-    it('should pass groupDefaultExpanded', () => {
-      setup();
-      expect(grid.groupDefaultExpanded).toBe(defaultConfigMock.groupDefaultExpanded);
-
-    });
-  });
 
   describe('getDisplayedRowCount', () => {
     xit('Should return the column names', () => {
