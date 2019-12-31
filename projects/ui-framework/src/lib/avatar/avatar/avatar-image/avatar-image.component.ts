@@ -106,6 +106,12 @@ you should be using EmployeeAvatarService.getOptimizedAvatarImage
 to get the right avatar image.`);
     }
 
+    if (this.host.getAttribute('data-tooltip')) {
+      console.warn(`AvatarImageComponent: You can not use data-tooltip attribute
+on b-avatar-image element.`);
+      this.host.removeAttribute('data-tooltip');
+    }
+
     this.DOM.setCssProps(this.host, {
       '--avatar-size': this.size + 'px',
       '--bg-color': this.backgroundColor || null,

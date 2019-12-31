@@ -3,7 +3,7 @@ import {
   select,
   text,
   withKnobs,
-  boolean
+  boolean,
 } from '@storybook/addon-knobs/angular';
 import { LightboxModule } from './lightbox.module';
 import { ComponentGroupType } from '../../consts';
@@ -11,10 +11,9 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { LightboxExampleModule } from './lightbox-example.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 
-const story = storiesOf(
-  ComponentGroupType.Popups,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
+  withKnobs
+);
 
 const template = `<b-lightbox-example
                   [imageLink]="imageLink"
@@ -50,7 +49,8 @@ const note = `
   <i>interface</i>   | **LightboxData** | service call will return an    object containing:
   overlayRef | OverlayRef | reference to the the overlay instance
   lightboxComponentRef | ComponentRef&lt;LightboxComponent&gt; | reference to the Lightbox component
-  config | LightboxConfig | the original configuration, with which the service was called, but with sanitized video/image links (if any)
+  config | LightboxConfig | the original configuration, with\
+   which the service was called, but with sanitized video/image links (if any)
 
   #### Example call
 
@@ -91,22 +91,23 @@ story.add(
         ),
         imageLink: text(
           'imageLink',
+          // tslint:disable-next-line: max-line-length
           'https://prod-cdn.wetransfer.net/assets/curated/wallpaper/one_thumbnail_large-99b8c8faf500513d369d009ee036c7ac0b1e1c9eff85cc784e2e10f3a24970ae.jpg'
         ),
         videoLink: text(
           'videoLink',
           'https://www.youtube.com/embed/p3j2NYZ8FKs'
         ),
-        fillScreen: boolean('fillScreen', false)
+        fillScreen: boolean('fillScreen', false),
       },
       moduleMetadata: {
         imports: [
           LightboxModule,
           LightboxExampleModule,
           StoryBookLayoutModule,
-          ButtonsModule
-        ]
-      }
+          ButtonsModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

@@ -14,7 +14,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { MultiSelectModule } from './multi-select.module';
 import { SelectGroupOption } from '../list.interface';
-import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { mockText } from '../../mock.const';
 import { cloneDeep } from 'lodash';
@@ -22,6 +21,7 @@ import { optionsMock, optionsMockDef } from '../multi-list/multi-list.mock';
 import { ListModelService } from '../list-service/list-model.service';
 
 import listInterfaceDoc from '../list.interface.md';
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -178,7 +178,7 @@ const toAdd = () => ({
       StoryBookLayoutModule,
       AvatarModule,
     ],
-    entryComponents: [AvatarComponent],
+    entryComponents: [AvatarImageComponent],
   },
 });
 

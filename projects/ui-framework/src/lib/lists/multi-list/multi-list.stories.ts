@@ -8,12 +8,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { MultiListModule } from './multi-list.module';
 import { SelectGroupOption } from '../list.interface';
-import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { optionsMock, optionsMockDef } from './multi-list.mock';
 import { cloneDeep } from 'lodash';
 
 import listInterfaceDoc from '../list.interface.md';
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -103,7 +103,7 @@ story.add(
         StoryBookLayoutModule,
         AvatarModule,
       ],
-      entryComponents: [AvatarComponent],
+      entryComponents: [AvatarImageComponent],
     },
   }),
   { notes: { markdown: note } }
