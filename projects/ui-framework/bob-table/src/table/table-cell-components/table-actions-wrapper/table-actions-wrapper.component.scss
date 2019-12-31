@@ -1,3 +1,4 @@
+@import '../../../../../src/lib/style/common-imports';
 :host {
   display: flex;
   align-items: center;
@@ -11,12 +12,8 @@
     }
   }
 
-  /* &:hover b-menu, &:hover b-button {
-    visibility: visible;
+  b-icon {
+    margin-right: times8(2);
   }
-
-  b-menu, b-button {
-    visibility: hidden;
-  }*/
 }
 
