@@ -1,18 +1,31 @@
 import { storiesOf } from '@storybook/angular';
-import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  text,
+  select,
+  boolean,
+  withKnobs,
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ChipModule } from './chip.module';
 import { ChipType } from '../chips.enum';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { mockHobbies, mockAvatar, mockNames, mockThings, mockAnimals } from '../../mock.const';
+import {
+  mockHobbies,
+  mockAvatar,
+  mockNames,
+  mockThings,
+  mockAnimals,
+} from '../../mock.const';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { IconsModule } from '../../icons/icons.module';
 import { IconSize, Icons } from '../../icons/icons.enum';
 import { randomFromArray } from '../../services/utils/functional-utils';
 
-const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
+  withKnobs
+);
 
 const template = `
   <b-chip
@@ -24,9 +37,9 @@ const template = `
     [selected]="selected"
     (removed)="onRemove($event)">
 
-    <b-avatar *ngIf="type === chipType.avatar"
+    <b-avatar-image *ngIf="type === chipType.avatar"
                 [imageSource]="imageSource"
-                [size]="avatarSize.mini"></b-avatar>
+                [size]="avatarSize.mini"></b-avatar-image>
   </b-chip>
 `;
 
@@ -140,7 +153,7 @@ const icons = [
   Icons.person_check,
   Icons.print,
   Icons.success,
-  Icons.tag
+  Icons.tag,
 ];
 
 story.add(
@@ -167,11 +180,11 @@ story.add(
       selected: boolean('selected', false),
       imageSource: text('imageSource', mockAvatar()),
       icon: select('icon', icons, Icons.person),
-      onRemove: action('Chip removed')
+      onRemove: action('Chip removed'),
     },
     moduleMetadata: {
-      imports: [ChipModule, StoryBookLayoutModule, AvatarModule, IconsModule]
-    }
+      imports: [ChipModule, StoryBookLayoutModule, AvatarModule, IconsModule],
+    },
   }),
   { notes: { markdown: note } }
 );

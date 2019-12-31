@@ -10,7 +10,7 @@ import { MockComponent } from 'ng-mocks';
 import { ChipComponent } from '../../chips/chip/chip.component';
 import { TruncateTooltipComponent } from '../../popups/truncate-tooltip/truncate-tooltip.component';
 
-fdescribe('AvatarComponent', () => {
+describe('AvatarComponent', () => {
   let component: AvatarComponent;
   let fixture: ComponentFixture<AvatarComponent>;
   let avatarElement: HTMLElement;

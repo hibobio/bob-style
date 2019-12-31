@@ -161,22 +161,17 @@ $chipStateMap: (
 }
 
 :host[data-type='avatar']::ng-deep {
-  b-avatar {
+  .avatar {
     margin-right: 5px;
     margin-left: -10px;
-
-    .avatar.avatar {
-      box-shadow: none;
-    }
+    box-shadow: none;
   }
 }
 
 :host[data-type='avatar'][data-disabled='true']::ng-deep {
-  b-avatar {
-    .avatar {
-      filter: grayscale(1);
-      opacity: 0.3;
-    }
+  .avatar {
+    filter: grayscale(1);
+    opacity: 0.3;
   }
 }
 

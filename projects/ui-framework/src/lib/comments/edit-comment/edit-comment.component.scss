@@ -5,9 +5,11 @@
 
   ::ng-deep b-textarea {
     position: relative;
+
     .bfe-wrap.focused[class] {
       border-color: $grey-500;
     }
+
     textarea.bfe-input.bfe-textarea {
       resize: none;
       height: times8(5);

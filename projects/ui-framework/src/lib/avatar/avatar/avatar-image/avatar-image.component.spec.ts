@@ -336,7 +336,7 @@ describe('AvatarImageComponent', () => {
         checkAttrubutes(componentElem, {
           ...defaultAttrsWithImg,
           iconBefore: null,
-          class: 'avatar icon-on-hover',
+          class: 'avatar has-content icon-on-hover',
         })
       ).toEqual(true);
     }));

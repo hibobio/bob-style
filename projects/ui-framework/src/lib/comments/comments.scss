@@ -7,32 +7,33 @@
   justify-content: flex-start;
   width: 100%;
 
-  ::ng-deep b-avatar {
+  ::ng-deep .avatar {
     margin-top: 4px;
     margin-right: times8(2);
   }
+}
 
-  .text-section {
-    position: relative;
-    flex-grow: 1;
-    text-align: left;
-    &:before,
-    &:after {
-      content: '';
-      position: absolute;
-      display: inline-block;
-      width: 0;
-      height: 0;
-      border: times8(1) solid transparent;
-      border-right-color: #fff;
-      left: times8(-2) + 1px;
-      top: 14px;
-      z-index: 2;
-    }
-    &:before {
-      border-right-color: $grey-500;
-      left: times8(-2);
-      z-index: 1;
-    }
+.text-section {
+  position: relative;
+  flex-grow: 1;
+  text-align: left;
+
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border: times8(1) solid transparent;
+    border-right-color: #fff;
+    left: times8(-2) + 1px;
+    top: 14px;
+    z-index: 2;
+  }
+  &:before {
+    border-right-color: $grey-500;
+    left: times8(-2);
+    z-index: 1;
   }
 }

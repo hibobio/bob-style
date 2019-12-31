@@ -10,7 +10,9 @@ import { AvatarModule } from '../avatar/avatar.module';
 import { mockAvatar, mockNames } from '../../mock.const';
 import { AvatarOrientation, AvatarSize } from '../avatar/avatar.enum';
 
-const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-avatar-layout
@@ -18,10 +20,10 @@ const template = `
   [align]="align">
 
     <b-avatar *ngFor="let item of items"
-      [size]="avatarSize"
+      [size]="avatarSize.small"
       [title]="item.name"
       [imageSource]="item.avatar"
-      [orientation]="avatarOrientation"></b-avatar>
+      [orientation]="avatarOrientation.vertical"></b-avatar>
 
 </b-avatar-layout>
 `;
@@ -55,23 +57,28 @@ story.add(
       template: storyTemplate,
       props: {
         itemsInRowChange: action('items in row changed', {
-          clearOnStoryChange: true
+          clearOnStoryChange: true,
         }),
-        avatarSize: AvatarSize.small,
-        avatarOrientation: AvatarOrientation.vertical,
+        avatarSize: AvatarSize,
+        avatarOrientation: AvatarOrientation,
         align: select('align', alignOptions, alignOptions[0]),
         items: object(
           'items',
           new Array(11).fill(0).map(x => ({
             avatar: mockAvatar(),
-            name: mockNames(1)
+            name: mockNames(1),
           }))
-        )
+        ),
       },
       moduleMetadata: {
         providers: [UtilsService],
-        imports: [BrowserAnimationsModule, StoryBookLayoutModule, AvatarLayoutModule, AvatarModule]
-      }
+        imports: [
+          BrowserAnimationsModule,
+          StoryBookLayoutModule,
+          AvatarLayoutModule,
+          AvatarModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }
