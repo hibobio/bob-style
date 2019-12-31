@@ -114,7 +114,7 @@ to get the right avatar image.`);
     this.DOM.setAttributes(this.host, {
       role: 'img',
       'data-disabled': this.disabled || null,
-      tabindex: isClickable ? '0' : null,
+      tabindex: isClickable && !this.disabled ? '0' : null,
 
       'data-size': getKeyByValue(AvatarSize, this.size),
       'data-icon-before-size':
@@ -151,7 +151,7 @@ to get the right avatar image.`);
 
     this.DOM.bindClasses(this.host, {
       avatar: true,
-      'has-hover': isClickable,
+      'has-hover': isClickable && !this.disabled,
       'icon-on-hover': Boolean(this.imageSource && this.icon),
     });
 

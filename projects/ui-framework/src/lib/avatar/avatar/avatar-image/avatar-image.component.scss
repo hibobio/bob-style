@@ -94,6 +94,10 @@ $avatarSizeMap: (
   background-color: var(--bg-color);
   background-image: var(--avatar-image);
 
+  &:focus {
+    outline: 0;
+  }
+
   &.has-hover {
     cursor: pointer;
   }
@@ -141,6 +145,10 @@ $avatarSizeMap: (
 
       @if $elem != '*' {
         $sel: '#{$sel}#{$elem}';
+      }
+
+      @if (contains($elem, ':hover')) {
+        $sel: '#{$sel}, #{str-replace($sel, ":hover", ":focus")}';
       }
 
       #{$sel} {
