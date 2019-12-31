@@ -41,16 +41,14 @@ export class EditableListService {
       return ListSortType.UserDefined;
     }
 
-    arrOfObjSortByProp(
-      list,
-      'value',
+    const shouldBeAscending =
       order === ListSortType.Asc ||
-        (!order && currentOrder && currentOrder !== ListSortType.Asc)
-    );
-    return order === ListSortType.Asc ||
-      (!order && currentOrder && currentOrder !== ListSortType.Asc)
-      ? ListSortType.Asc
-      : ListSortType.Desc;
+      (!order && currentOrder && currentOrder !== ListSortType.Asc) ||
+      (!order && !currentOrder && !this.isListAscending(list));
+
+    arrOfObjSortByProp(list, 'value', shouldBeAscending);
+
+    return shouldBeAscending ? ListSortType.Asc : ListSortType.Desc;
   }
 
   isListAscending(list: SelectOption[]): boolean {
