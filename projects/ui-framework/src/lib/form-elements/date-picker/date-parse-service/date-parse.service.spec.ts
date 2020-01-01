@@ -1,7 +1,7 @@
 import { DateParseService } from './date-parse.service';
 import { DateParseServiceTest } from './date-parse.service.mock';
 
-xdescribe('DateParseService', () => {
+describe('DateParseService', () => {
   const parser = new DateParseService();
 
   describe('parseDate', () => {
