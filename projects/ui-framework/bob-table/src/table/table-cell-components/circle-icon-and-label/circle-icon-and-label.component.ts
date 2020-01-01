@@ -8,15 +8,15 @@ import { CircleIconAndLabelParams } from './circle-icon-and-label.interface';
   template: `
     <div
       class="circle-icon-wrapper"
-      *ngIf="params && params.value && params.value.icon !== null"
-    >
+      *ngIf="params && params.value && params.value.icon !== null">
       <b-avatar-image
         [isClickable]="false"
-        [icon]="params.value.icon"
-      ></b-avatar-image>
-      <span class="circle-icon-label" *ngIf="params.value.label">{{
-        params.value.label
-      }}</span>
+        [icon]="params.value.icon">
+      </b-avatar-image>
+      <span class="circle-icon-label"
+            *ngIf="params.value.label"
+            innerHTML="{{params.value.label}}">
+      </span>
     </div>
   `,
   styleUrls: ['./circle-icon-and-label.component.scss'],
