@@ -20,7 +20,7 @@ import {
   AvatarGap,
   SHUFFLE_EMPLOYEES_INTERVAL,
 } from './employees-showcase.const';
-import { Icons } from '../../icons/icons.enum';
+import { Icons, IconColor } from '../../icons/icons.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { interval, Subscription } from 'rxjs';
 import { SelectGroupOption } from '../../lists/list.interface';
@@ -53,14 +53,19 @@ export class EmployeesShowcaseComponent
   >();
 
   public panelListOptions: SelectGroupOption[];
-  public avatarsToFit = 0;
+
+  public avatarsLeft = 0;
   public avatarsToShow: EmployeeShowcase[] = [];
   public showThreeDotsButton = false;
   public doShuffle = true;
 
-  readonly icon = Icons;
   readonly panelClass = 'ee-showcase-panel';
+  readonly dotsIcon = {
+    icon: Icons.three_dots,
+    color: IconColor.dark,
+  };
 
+  private avatarsToFit = 0;
   private clientWidth = 0;
   private resizeEventSubscriber: Subscription;
   private intervalSubscriber: Subscription;
@@ -162,6 +167,7 @@ export class EmployeesShowcaseComponent
       this.avatarsToFit < this.employees.length;
 
     this.avatarsToShow = this.getAvatarsToShow();
+    this.avatarsLeft = this.avatarsToShow.length;
 
     console.log(
       'initShowcase',

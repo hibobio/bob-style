@@ -6,19 +6,16 @@
   <div class="avatar-showcase"
        [ngClass]="{'clickable': expandOnClick}">
 
-    <b-avatar *ngFor="let avatar of avatarsToShow; trackBy: trackBy"
-              class="showcase-avatar"
-              [imageSource]="avatar.imageSource"
-              [size]="avatarSize"
-              [isClickable]="false">
-    </b-avatar>
+    <b-avatar-image *ngFor="let avatar of avatarsToShow; trackBy: trackBy"
+                    [imageSource]="avatar.imageSource"
+                    [size]="avatarSize">
+    </b-avatar-image>
 
-    <b-avatar class="showcase-avatar show-more"
-              *ngIf="showThreeDotsButton"
-              [size]="avatarSize"
-              [isClickable]="false">
-      <b-icon [icon]="icon.three_dots"></b-icon>
-    </b-avatar>
+    <b-avatar-image class="how-more"
+                    *ngIf="showThreeDotsButton"
+                    [size]="avatarSize"
+                    [icon]="dotsIcon">
+    </b-avatar-image>
 
   </div>
 

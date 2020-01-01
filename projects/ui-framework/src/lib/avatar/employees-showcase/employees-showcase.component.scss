@@ -10,11 +10,8 @@
   display: flex;
 }
 
-.showcase-avatar {
+.avatar {
   margin-left: var(--avatar-gap);
-  background-color: white;
-  border-radius: 50%;
-  position: relative;
 
   &:first-child {
     margin-left: 0;

@@ -1,4 +1,5 @@
 <table class="bbl-list"
+       role="list"
        [ngClass]="{
          'is-a-table': isTable,
          'not-a-table': !isTable,
@@ -6,6 +7,7 @@
          'show-action-on-hover': showActionOnHover
         }">
   <tr class="bbl-list-item"
+      role="listitem"
       *ngFor="let item of items; index as i">
 
     <td *ngIf="item.icon"
