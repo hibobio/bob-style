@@ -1,9 +1,9 @@
 import { SelectGroupOption } from '../list.interface';
 import { makeArray, simpleUID } from '../../services/utils/functional-utils';
 import { mockAvatar, mockNames, mockJobs } from '../../mock.const';
-import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { randomNumber } from '../../services/utils/functional-utils';
 import { cloneDeep } from 'lodash';
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
 export const selectSome = (options: SelectGroupOption[]): SelectGroupOption[] =>
   cloneDeep(options).map(group => ({
@@ -53,7 +53,7 @@ export const optionsMock: SelectGroupOption[] = makeArray(groupNum).map(
           selected: false,
           disabled: false,
           prefixComponent: {
-            component: AvatarComponent,
+            component: AvatarImageComponent,
             attributes: {
               imageSource: mockAvatar(),
             },

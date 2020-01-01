@@ -8,11 +8,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { SingleListModule } from './single-list.module';
 import { SelectGroupOption } from '../list.interface';
-import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { optionsMock } from './single-list.mock';
 import { cloneDeep } from 'lodash';
-import { ListChange } from '../list-change/list-change';
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
 import listInterfaceDoc from '../list.interface.md';
 
@@ -95,7 +94,7 @@ story.add(
         StoryBookLayoutModule,
         AvatarModule,
       ],
-      entryComponents: [AvatarComponent],
+      entryComponents: [AvatarImageComponent],
     },
   }),
   { notes: { markdown: note } }

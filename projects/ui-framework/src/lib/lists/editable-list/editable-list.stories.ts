@@ -1,10 +1,9 @@
 import { storiesOf } from '@storybook/angular';
 import {
-  text,
-  object,
   withKnobs,
   boolean,
   select,
+  number,
 } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,15 +21,17 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 );
 
 const componentTemplate1 = `
-<b-editable-list [list]="list === 'Ascending' ?listMockAsc : list === 'Descending' ? listMockDesc : listMock"
-                  [sortType]="sortType !== 0 ? sortType : undefined"
+<b-editable-list [list]="list === 'Ascending' ? listMockAsc : list === 'Descending' ? listMockDesc : listMock"
+                 [sortType]="sortType !== 0 ? sortType : undefined"
                  [allowedActions]="{
                    sort: allowSort,
                    add: allowAdd,
                    remove: allowRemove
                  }"
+                 [maxChars]="maxChars"
                  (changed)="onListUpdate($event)"
-                 (inputChanged)="onInputChange($event)">
+                 (inputChanged)="onInputChange($event)"
+                 >
 </b-editable-list>
 `;
 
@@ -59,7 +60,8 @@ const note = `
    **Note**:  you don't need to provide [sortType] input to describe list sorting, \
    it checks sorting automatically. | &nbsp;
   [translation] | EditableListTranslation | object with texts used in the component\
-   (button titles, etc) | EDITABLE-LIST-TRANSLATION
+  (button titles, etc) | EDITABLE-LIST-TRANSLATION
+  [maxChars] | number | Maximum length of text for option input | 100
   (changed) | EventEmitter<wbr>&lt;EditableListState&gt; | emits updated list | &nbsp;
   (inputChanged) | EventEmitter&lt;string&gt; | Outputs input value (for external validation) | &nbsp;
 
@@ -111,6 +113,7 @@ story.add(
         ),
 
         sortType: select('sortType', [0, 'Asc', 'Desc'], 0, 'Props'),
+        maxChars: number('maxChars', 50, {}, 'Props'),
         allowSort: boolean('allowSort', true, 'Props'),
         allowAdd: boolean('allowAdd', true, 'Props'),
         allowRemove: boolean('allowRemove', true, 'Props'),

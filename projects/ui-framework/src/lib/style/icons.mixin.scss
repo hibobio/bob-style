@@ -1,0 +1,221 @@
+$icon-chars: (
+  megaphone: '\e965',
+  doc-description: '\e973',
+  person-reports: '\e971',
+  person-manager: '\e972',
+  person-peer: '\e970',
+  sort-asc: '\e96e',
+  sort-desc: '\e96f',
+  at: '\e96c',
+  infinite: '\e964',
+  field-add: '\e96a',
+  bob-b: '\e95e',
+  note-edit: '\e95f',
+  enter: '\e95d',
+  docs: '\e936',
+  text-size: '\e937',
+  doc-outline: '\e938',
+  success: '\e939',
+  arrow-right-alt: '\e93a',
+  company: '\e93b',
+  question-mark: '\e93c',
+  calendar: '\e93d',
+  todos: '\e93e',
+  benefits: '\e93f',
+  reports: '\e940',
+  surveys: '\e941',
+  timeoff: '\e942',
+  slack: '\e943',
+  pin: '\e944',
+  doc-add-alt: '\e945',
+  performance: '\e946',
+  settings-alt: '\e947',
+  harmonise: '\e948',
+  attendance: '\e949',
+  analytics: '\e94a',
+  phone-alt: '\e94b',
+  timeline-alt: '\e94c',
+  people-alt: '\e94d',
+  home-alt: '\e94e',
+  folder-no: '\e94f',
+  linkedin: '\e950',
+  twitter: '\e951',
+  skype: '\e952',
+  youtube: '\e953',
+  facebook: '\e954',
+  survey: '\e957',
+  doc-chart: '\e958',
+  employee-ref: '\e959',
+  attendance-alt: '\e95a',
+  tick-double: '\e95b',
+  doc-no: '\e95c',
+  plus: '\e900',
+  photo-add: '\e901',
+  circle-add: '\e902',
+  photo-add-alt: '\e903',
+  arrow-left: '\e904',
+  arrow-right: '\e905',
+  arrow-right-alt2: '\e906',
+  assignment: '\e907',
+  attachment: '\e962',
+  cake: '\e908',
+  circle-cancel: '\e909',
+  chat: '\e96b',
+  close: '\e90a',
+  edit: '\e90b',
+  folder-add: '\e90c',
+  date: '\e90d',
+  drag-alt: '\e96d',
+  delete: '\e90e',
+  tick: '\e90f',
+  drag: '\e910',
+  email: '\e911',
+  error: '\e912',
+  file-copy: '\e913',
+  file-download: '\e914',
+  file-upload: '\e966',
+  folder: '\e915',
+  folder-shared: '\e916',
+  dir-ltr: '\e968',
+  dir-rtl: '\e969',
+  help: '\e917',
+  home: '\e918',
+  person-check: '\e919',
+  lock: '\e960',
+  info: '\e91a',
+  info-outline: '\e967',
+  chart: '\e91b',
+  doc: '\e91c',
+  chevron-down: '\e91d',
+  chevron-left: '\e91e',
+  chevron-right: '\e91f',
+  chevron-up: '\e920',
+  more-horiz: '\e921',
+  tag: '\e955',
+  print: '\e963',
+  location: '\e922',
+  more-vert: '\e923',
+  note: '\e961',
+  doc-add: '\e956',
+  notification: '\e974',
+  people: '\e924',
+  person: '\e925',
+  person-add: '\e926',
+  phone: '\e927',
+  refresh: '\e928',
+  visibility-on: '\e929',
+  reply: '\e92a',
+  save: '\e92b',
+  search: '\e92c',
+  settings: '\e92d',
+  restore: '\e92e',
+  swap-horiz: '\e92f',
+  swap-vert: '\e930',
+  table: '\e931',
+  graph-timeline: '\e932',
+  visibility-off: '\e933',
+  watch: '\e934',
+  zoom-out: '\e935',
+);
+
+$icon-sizes: (
+  small: 16px,
+  medium: 20px,
+  large: 24px,
+  x-large: 46px,
+  xx-large: 60px,
+);
+
+$icon-colors: (
+  dark: (
+    color: $grey-700,
+    hover: $grey-800,
+  ),
+  normal: (
+    color: $grey-600,
+    hover: $grey-700,
+  ),
+  light: (
+    color: $grey-500,
+    hover: $grey-600,
+  ),
+  white: (
+    color: $white,
+    hover: $white,
+  ),
+  primary: (
+    color: var(--primary-500),
+    hover: var(--primary-700),
+  ),
+  inform: (
+    color: var(--inform-500),
+    hover: var(--inform-700),
+  ),
+  negative: (
+    color: var(--negative-500),
+    hover: var(--negative-700),
+  ),
+  positive: (
+    color: var(--positive-500),
+    hover: var(--positive-600),
+  ),
+);
+
+@mixin icon-size($size: large, $elem: '&:before') {
+  #{$elem} {
+    @include size(map-get($icon-sizes, $size));
+    font-size: map-get($icon-sizes, $size);
+    line-height: map-get($icon-sizes, $size);
+  }
+}
+
+@mixin icon-color($color: dark, $hover: true, $elem: '&:before') {
+  #{$elem} {
+    color: map-get-deep($icon-colors, $color, color);
+  }
+  @if $hover {
+    &.has-hover:hover,
+    &.has-hover:focus {
+      #{$elem} {
+        color: map-get-deep($icon-colors, $color, hover);
+      }
+    }
+  }
+}
+
+@mixin icon-class($class, $elem: '&:before') {
+  #{$elem} {
+    content: map-get($icon-chars, $class);
+  }
+}
+
+@mixin b-icon($icon, $size: large, $color: dark, $elem: '&:before') {
+  #{$elem} {
+    display: block;
+    font-family: 'bicons' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    text-decoration: none !important;
+    text-align: center;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: color 0.1s ease;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  @include icon-size($size, $elem);
+  @include icon-color($color, $elem);
+
+  @if $icon {
+    @include icon-class($icon, $elem);
+  }
+
+  #{$elem} {
+    @content;
+  }
+}

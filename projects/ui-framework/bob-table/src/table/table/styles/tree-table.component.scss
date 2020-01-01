@@ -1,5 +1,5 @@
 @import './../../../../../src/lib/style/common-imports';
-@import './../../../../../src/lib/style/icons';
+@import './../../../../../src/lib/style/icons.mixin';
 @import './table.mixin';
 
 $toolpanel-indent-size: 35px;
@@ -47,5 +47,8 @@ $toolpanel-indent-size: 35px;
     &:after {
       display: none !important;
     }
+  }
+  [class*="ag-row-group-indent-"] {
+    display: flex;
   }
 }

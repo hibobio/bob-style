@@ -8,7 +8,6 @@ import { QuickFilterLayoutModule } from './quick-filter-layout.module';
 import { MultiSelectModule } from '../../lists/multi-select/multi-select.module';
 import { SingleSelectModule } from '../../lists/single-select/single-select.module';
 import { DateRangePickerModule } from '../../form-elements/date-picker/date-range-picker/date-range-picker.module';
-import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import {
   mockThings,
@@ -29,6 +28,7 @@ import { LinkColor } from '../../indicators/link/link.enum';
 import { DatepickerType } from '../../form-elements/date-picker/datepicker.enum';
 
 import { BDateAdapterMock } from '../../form-elements/date-picker/dateadapter.mock';
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
 const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
   withKnobs
@@ -281,7 +281,7 @@ story.add(
           TimePickerModule,
           SplitInputSingleSelectModule,
         ],
-        entryComponents: [AvatarComponent],
+        entryComponents: [AvatarImageComponent],
       },
     };
   },

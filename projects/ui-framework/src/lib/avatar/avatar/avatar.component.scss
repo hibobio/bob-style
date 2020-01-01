@@ -5,48 +5,6 @@
   align-items: center;
   text-align: left;
   max-width: 100%;
-
-  &::ng-deep {
-    .b-icon {
-      position: relative;
-    }
-  }
-}
-
-.avatar {
-  box-sizing: border-box;
-  flex-shrink: 0;
-  flex-grow: 0;
-  position: relative;
-  border-radius: 50%;
-  background-color: $grey-200;
-  transition: box-shadow 0.2s, transform 0.2s;
-  border: 2px solid $white;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  @include size(var(--avatar-size));
-
-  &.emptyAvatar {
-    background-size: 60% auto;
-  }
-}
-
-.avatar-badge {
-  display: block;
-  border-radius: 50%;
-  position: absolute;
-  z-index: 2;
-  pointer-events: none;
-
-  &:before {
-    @include pseudo;
-    @include size(76%);
-    @include position(12% 12% 12% 12%);
-    border-radius: 50%;
-    background-color: white;
-    z-index: 0;
-  }
 }
 
 .avatar-content {
@@ -59,14 +17,6 @@
   opacity: 0;
   transition: opacity 0.2s;
   z-index: 1;
-}
-
-.avatar.noAvatar {
-  background-image: none !important;
-
-  .avatar-content {
-    opacity: 1;
-  }
 }
 
 .slot1-big,
@@ -96,22 +46,10 @@
 }
 
 :host {
-  &[data-clickable='true'] {
-    .avatar {
-      cursor: pointer;
-
-      &:hover {
-        transform: scale(1.05);
-
-        .avatar-content {
-          opacity: 1;
-        }
-      }
-    }
-  }
-
   &[data-disabled='true'] {
-    @include disabled-state;
+    .avatar-text {
+      @include disabled-state;
+    }
   }
 
   &[data-orientation='horizontal'] {

@@ -1,16 +1,19 @@
+@import '../../../../../src/lib/style/common-imports';
 :host {
   display: flex;
+  align-items: center;
 
   .actionable-item {
     flex-grow: 1;
+    min-width: 0;
+
+    &:empty {
+      display: none;
+    }
   }
 
-  &:hover b-menu {
-    visibility: visible;
-  }
-
-  b-menu {
-    visibility: hidden;
+  b-icon {
+    margin-right: times8(2);
   }
 }
 

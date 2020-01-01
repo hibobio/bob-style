@@ -1,7 +1,4 @@
-import {
-  SelectGroupOption,
-  SelectOption,
-} from '../../lists/list.interface';
+import { SelectGroupOption, SelectOption } from '../../lists/list.interface';
 import {
   simpleUID,
   randomNumber,
@@ -9,7 +6,7 @@ import {
   arrayDifference,
 } from '../../services/utils/functional-utils';
 import { mockHobbies, mockNames, mockAvatar } from '../../mock.const';
-import { AvatarComponent } from '../../avatar/avatar/avatar.component';
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
 const maxOpts = 10;
 
@@ -66,7 +63,7 @@ export const MultiListAndAvatarChipsOptionsMock: SelectGroupOption[] = [
         selected: false,
         disabled: false,
         prefixComponent: {
-          component: AvatarComponent,
+          component: AvatarImageComponent,
           attributes: {
             imageSource: mockAvatar(),
           },

@@ -1,0 +1,180 @@
+@import '../../../style/common-imports';
+@import '../avatar.mixin';
+
+$avatarSizeMap: (
+  mini: (
+    '*': (
+      box-shadow: 0 1px 2px 0 $boxShadowColor,
+      border-width: 2px,
+    ),
+    '.has-hover:hover': (
+      box-shadow: 0 3px 6px 0 $boxShadowColor,
+    ),
+    ':after': (
+      top: -2px,
+      right: -4px,
+    ),
+  ),
+  small: (
+    '*': (
+      box-shadow: 0 1px 2px 0 $boxShadowColor,
+      border-width: 2px,
+    ),
+    '.has-hover:hover': (
+      box-shadow: 0 3px 6px 0 $boxShadowColor,
+    ),
+    ':after': (
+      top: -1px,
+      right: -5px,
+    ),
+  ),
+  medium: (
+    '*': (
+      box-shadow: 0 2px 4px 0 $boxShadowColor,
+      border-width: 3px,
+    ),
+    '.has-hover:hover': (
+      box-shadow: 0 6px 12px 0 $boxShadowColor,
+    ),
+    ':after': (
+      top: 3px,
+      right: -4px,
+    ),
+  ),
+  large: (
+    '*': (
+      box-shadow: 0 2px 4px 0 $boxShadowColor,
+      border-width: 3px,
+    ),
+    '.has-hover:hover': (
+      box-shadow: 0 6px 12px 0 $boxShadowColor,
+    ),
+    ':after': (
+      top: 3px,
+      right: 1px,
+    ),
+  ),
+  xlarge: (
+    '*': (
+      box-shadow: 0 2px 4px 0 $boxShadowColor,
+      border-width: 3px,
+    ),
+    '.has-hover:hover': (
+      box-shadow: 0 6px 12px 0 $boxShadowColor,
+    ),
+    ':after': (
+      top: 6px,
+      right: 12px,
+    ),
+  ),
+);
+
+:host {
+  --avatar-size: #{map-get($avatarSizes, mini)};
+  --avatar-image: none;
+  --bg-color: #{$grey-200};
+
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  flex-grow: 0;
+  text-align: center;
+  position: relative;
+  border-radius: 50%;
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: 2px solid $white;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  user-select: none;
+
+  @include size(var(--avatar-size));
+  background-color: var(--bg-color);
+  background-image: var(--avatar-image);
+
+  &:focus {
+    outline: 0;
+  }
+
+  &.has-hover {
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      transform: scale(1.05);
+    }
+  }
+
+  &.icon-on-hover {
+    &.has-content {
+      &:before {
+        content: '';
+        @include position(0 0 0 0);
+      }
+    }
+
+    &:before {
+      @include size(100%);
+      @include flex-align;
+      border-radius: 50%;
+      background-color: black(0.4);
+    }
+
+    &:before,
+    ::ng-deep > :first-child {
+      transition: opacity 0.2s;
+      opacity: 0;
+    }
+
+    &:focus,
+    &:hover {
+      &:before,
+      ::ng-deep > :first-child {
+        opacity: 1;
+      }
+    }
+  }
+
+  &[data-disabled='true'] {
+    @include disabled-state;
+  }
+
+  // badge
+  &:after {
+    display: block;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 2;
+
+    background-image: radial-gradient(
+      white 0%,
+      white 49%,
+      transparent 51%,
+      transparent 100%
+    );
+    background-position: center;
+    background-size: 100%;
+  }
+
+  @each $size, $sizeElems in $avatarSizeMap {
+    @each $elem, $props in $sizeElems {
+      $sel: '&[data-size="' + $size + '"]';
+
+      @if $elem != '*' {
+        $sel: '#{$sel}#{$elem}';
+      }
+
+      @if (contains($elem, ':hover')) {
+        $sel: '#{$sel}, #{str-replace($sel, ":hover", ":focus")}';
+      }
+
+      #{$sel} {
+        @each $prop, $value in $props {
+          #{$prop}: $value;
+        }
+      }
+    }
+  }
+}

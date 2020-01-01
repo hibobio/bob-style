@@ -3,10 +3,10 @@ import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-to
 import { CardEmployeeComponent } from './card-employee.component';
 import { TypographyModule } from '../../typography/typography.module';
 import { MockComponent } from 'ng-mocks';
-import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { CardType } from '../cards.enum';
 import { By } from '@angular/platform-browser';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
 describe('CardEmployeeComponent', () => {
   let fixture: ComponentFixture<CardEmployeeComponent>;
@@ -14,8 +14,11 @@ describe('CardEmployeeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CardEmployeeComponent, MockComponent(AvatarComponent)],
-      imports: [TruncateTooltipModule, TypographyModule]
+      declarations: [
+        CardEmployeeComponent,
+        MockComponent(AvatarImageComponent),
+      ],
+      imports: [TruncateTooltipModule, TypographyModule],
     })
       .compileComponents()
       .then(() => {
@@ -29,7 +32,7 @@ describe('CardEmployeeComponent', () => {
     beforeEach(() => {
       component.card = {
         imageSource: 'employee_image.png',
-        title: 'test'
+        title: 'test',
       };
     });
     it('should be of type primary by default', () => {
@@ -51,25 +54,25 @@ describe('CardEmployeeComponent', () => {
     beforeEach(() => {
       component.card = {
         imageSource: 'employee_image.png',
-        title: 'test'
+        title: 'test',
       };
     });
     it('should set avatar image', () => {
       fixture.detectChanges();
-      const avatar = fixture.debugElement.query(By.css('b-avatar'));
+      const avatar = fixture.debugElement.query(By.css('b-avatar-image'));
       expect(avatar.componentInstance.imageSource).toEqual(
         'employee_image.png'
       );
     });
     it('should set avatar size to medium if type is not small', () => {
       fixture.detectChanges();
-      const avatar = fixture.debugElement.query(By.css('b-avatar'));
+      const avatar = fixture.debugElement.query(By.css('b-avatar-image'));
       expect(avatar.componentInstance.size).toEqual(AvatarSize.medium);
     });
     it('should set avatar size to small if type is small', () => {
       component.type = CardType.small;
       fixture.detectChanges();
-      const avatar = fixture.debugElement.query(By.css('b-avatar'));
+      const avatar = fixture.debugElement.query(By.css('b-avatar-image'));
       expect(avatar.componentInstance.size).toEqual(AvatarSize.small);
     });
   });
@@ -78,7 +81,7 @@ describe('CardEmployeeComponent', () => {
     beforeEach(() => {
       component.card = {
         imageSource: 'employee_image.png',
-        title: 'test'
+        title: 'test',
       };
     });
     it('should set title', () => {
@@ -92,7 +95,7 @@ describe('CardEmployeeComponent', () => {
     it('should not display social elements if none are provided', () => {
       component.card = {
         imageSource: 'employee_image.png',
-        title: 'test'
+        title: 'test',
       };
       fixture.detectChanges();
       const social = fixture.debugElement.query(By.css('.social'));
@@ -104,8 +107,8 @@ describe('CardEmployeeComponent', () => {
         title: 'test',
         social: {
           facebook: 'facebook_url',
-          twitter: 'twitter_url'
-        }
+          twitter: 'twitter_url',
+        },
       };
       fixture.detectChanges();
       const socialLinks = fixture.debugElement.queryAll(By.css('.social a'));
@@ -121,8 +124,8 @@ describe('CardEmployeeComponent', () => {
         social: {
           linkedin: 'linkedin_url',
           facebook: 'facebook_url',
-          twitter: 'twitter_url'
-        }
+          twitter: 'twitter_url',
+        },
       };
       fixture.detectChanges();
       const socialLinks = fixture.debugElement.queryAll(By.css('.social a'));

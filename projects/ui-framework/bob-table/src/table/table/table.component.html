@@ -3,17 +3,14 @@
                   'grid-ready': gridReady,
                   'secondary': type === tableType.Secondary,
                   'remove-column-button': removeColumnButtonEnabled,
-                  'tree-table': !!treeConfig,
                   'empty-table': !rowData || !rowData.length,
                   'no-column-defs': !gridColumnDefs
                   }"
-                 [treeData]="treeConfig.treeData"
+                 [class]="_externalClasses"
                  [rowData]="rowData"
                  [columnDefs]="gridColumnDefs"
                  [animateRows]="false"
                  [gridOptions]="gridOptions"
-                 [getDataPath]="treeConfig.getDataPath"
-                 [groupDefaultExpanded]="treeConfig.groupDefaultExpanded"
                  (rowClicked)="onRowClicked($event)"
                  (selectionChanged)="onSelectionChanged($event)"
                  (sortChanged)="onSortChanged($event)">

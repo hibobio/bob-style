@@ -708,7 +708,7 @@ export const DateParseServiceTest = {
     },
     '2010': {
       result: '01',
-      resultStrict: '01', //thisMonth(),
+      resultStrict: '01',
     },
     '2010 feb 10': {
       result: '02',
@@ -723,7 +723,7 @@ export const DateParseServiceTest = {
   },
   'dd.MM.yyyy': {
     '999': {
-      result: '01.01.2019',
+      result: '01.01.' + thisYear(),
       resultStrict: null,
     },
     '31 02 2019': {
@@ -731,15 +731,15 @@ export const DateParseServiceTest = {
       resultStrict: '28.02.2019',
     },
     '02 04 9999': {
-      result: '02.04.2019',
-      resultStrict: '02.04.2019',
+      result: '02.04.' + thisYear(),
+      resultStrict: '02.04.' + thisYear(),
     },
     '2 3 81': {
       result: '02.03.1981',
       resultStrict: '02.03.1981',
     },
     '81 21': {
-      result: '21.12.1981',
+      result: '21.' + thisMonth() + '.1981',
       resultStrict: null,
     },
   },

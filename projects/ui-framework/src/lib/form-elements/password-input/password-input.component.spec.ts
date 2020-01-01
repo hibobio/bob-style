@@ -46,8 +46,9 @@ describe('PasswordInputComponent', () => {
     component.changed.complete();
   });
 
-  describe('emit InputEvent', () => {
-    it('should emitInputEvent on model change with input value', () => {
+
+  describe('InputEvent', () => {
+    it('should adjust text', () => {
       inputValue(inputElement, 'text', false);
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
@@ -79,6 +80,7 @@ describe('PasswordInputComponent', () => {
       fixture.detectChanges();
       expect(inputElement.getAttribute('type')).toEqual('password');
     });
+    // tslint:disable-next-line:max-line-length
     it('should switch to input type text, when input has text and show button is clicked; icon should change to class .b-icon-visibility-off', () => {
       inputValue(inputElement, 'text', false);
       fixture.detectChanges();

@@ -1,0 +1,40 @@
+.b-icon,
+[class*='b-icon'] {
+  display: block;
+
+  @include b-icon(null, large, dark);
+}
+
+[data-icon-before]:before,
+[data-icon-after]:after {
+  @include b-icon(null, large, dark, $elem: '&');
+}
+
+@each $sizeKey, $size in $icon-sizes {
+  .b-icon-#{$sizeKey} {
+    @include icon-size($sizeKey);
+  }
+  [data-icon-before-size='#{$sizeKey}']:before,
+  [data-icon-after-size='#{$sizeKey}']:after {
+    @include icon-size($sizeKey, $elem: '&');
+  }
+}
+
+@each $colorKey, $colors in $icon-colors {
+  .b-icon-#{'' + $colorKey} {
+    @include icon-color($colorKey, true);
+  }
+  [data-icon-before-color='#{$colorKey}'] {
+    @include icon-color($colorKey, true, $elem: '&:before');
+  }
+  [data-icon-after-color='#{$colorKey}'] {
+    @include icon-color($colorKey, true, $elem: '&:after');
+  }
+}
+
+@each $icon, $char in $icon-chars {
+  [data-icon-before='#{$icon}']:before,
+  [data-icon-after='#{$icon}']:after {
+    content: $char;
+  }
+}

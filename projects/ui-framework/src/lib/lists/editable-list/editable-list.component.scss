@@ -25,7 +25,7 @@ $bel-item-dragged-border-color: $grey-400;
 
 .bel-header-top {
   min-height: $bel-item-height;
-  margin-bottom: times8(2);
+  margin-bottom: 3px;
   flex-wrap: wrap;
 
   .bel-item {
@@ -34,10 +34,11 @@ $bel-item-dragged-border-color: $grey-400;
   }
 }
 
-.b-input-message {
-  width: 100%;
-  @include b-caption($color: $color-error, $addCssVars: false);
-  margin: $label-hint-margin 0 0;
+.bel-header-bottom {
+  margin-top: times8(2);
+}
+
+[b-input-message] {
   @include animate(slide-down, 0.15s, $val: 5px, $keyframes: true);
 }
 

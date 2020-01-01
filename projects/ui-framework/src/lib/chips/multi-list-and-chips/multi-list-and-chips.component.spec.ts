@@ -9,7 +9,6 @@ import { MultiListAndChipsComponent } from './multi-list-and-chips.component';
 import { Icons } from '../../icons/icons.enum';
 import { MockComponent } from 'ng-mocks';
 import { EmptyStateComponent } from '../../indicators/empty-state/empty-state.component';
-import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { IconComponent } from '../../icons/icon.component';
 import { CommonModule } from '@angular/common';
 import { ChipComponent } from '../chip/chip.component';
@@ -20,6 +19,7 @@ import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../../lists/list-change/list-change';
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
 describe('MultiListAndChipsComponent', () => {
   let component: MultiListAndChipsComponent;
@@ -35,7 +35,7 @@ describe('MultiListAndChipsComponent', () => {
         ChipListComponent,
         ChipComponent,
         EmptyStateComponent,
-        AvatarComponent,
+        AvatarImageComponent,
         MockComponent(IconComponent),
       ],
       imports: [CommonModule, MultiListModule],
@@ -44,7 +44,7 @@ describe('MultiListAndChipsComponent', () => {
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
-          entryComponents: [AvatarComponent],
+          entryComponents: [AvatarImageComponent],
         },
       })
       .overrideComponent(MultiListAndChipsComponent, {
@@ -217,7 +217,7 @@ describe('MultiListAndChipsComponent', () => {
                 value: 'Option' + ind,
                 selected: true,
                 prefixComponent: {
-                  component: AvatarComponent,
+                  component: AvatarImageComponent,
                   attributes: {
                     imageSource: 'image' + ind,
                   },

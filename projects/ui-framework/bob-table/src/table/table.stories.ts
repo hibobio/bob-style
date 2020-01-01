@@ -21,6 +21,7 @@ import {
   treeRowDataMock,
 } from './table-mocks/table-story.mock';
 import { TableModule } from './table.module';
+import { TreeConfig } from './table/extensions/tree.config';
 import { TableComponent } from './table/table.component';
 import { RowSelection, TableType } from './table/table.enum';
 import { ColumnDef } from './table/table.interface';
@@ -30,6 +31,22 @@ const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(
 );
 
 const template = `
+<b-table
+  [type]="type"
+  [rowData]="rowData"
+  [columnDefs]="columnDefs"
+  [maxHeight]="maxHeight"
+  [rowSelection]="rowSelection"
+  [removeColumnButtonEnabled]="removeColumnButtonEnabled"
+  (rowClicked)="rowClicked($event)"
+  (cellClicked)="cellClicked($event)"
+  (selectionChanged)="selectionChanged($event)"
+  (sortChanged)="sortChanged($event)"
+  (columnsOrderChanged)="columnsOrderChanged($event)"
+  (columnRemoved)="columnRemoved($event)">
+</b-table>
+`;
+const treeTemplate = `
 <b-table
   [type]="type"
   [treeConfig]="treeConfig"
@@ -111,6 +128,29 @@ const note = `
   ~~~
 `;
 
+const treeNotes = `
+  ## Auto complete Element
+
+  #### Module
+  *TableModule*
+  from <u>'bob-style/bob-table'</u>
+
+  \`\`\`
+  import { TreeConfig } from 'bob-style/bob-table';
+  \`\`\`
+
+  #### Properties
+  Name | Type | Description | default value
+  --- | --- | --- | ---
+  [treeConfig] | TreeConfig | the tree configuration of the table | &nbsp;
+
+  ~~~
+  <b-table
+    [treeConfig]="treeConfig"
+  ></b-table>
+  ~~~
+`;
+
 export interface TableStory {
   title: string;
   HTMLTemplate: string;
@@ -124,7 +164,7 @@ function tableStoryFactory({
   HTMLTemplate,
   tableData,
   tableCols,
-  props,
+  props
 }: TableStory) {
   const defaultProps = {
     type: select('type', type, TableType.Primary, 'Props'),
@@ -184,17 +224,20 @@ story.add(
   () =>
     tableStoryFactory({
       title: 'Tree Table',
-      HTMLTemplate: storyTemplate,
+      HTMLTemplate: treeTemplate,
       tableCols: treeColumnDefsMock,
       tableData: treeRowDataMock,
       props: {
         treeConfig: {
-          treeData: true,
-          getDataPath: data => {
+          colDef: {
+            headerName: 'Hierarchy Tree'
+          },
+          cellTemplate: value => `<b>${value}</b>`,
+          hierarchyGetter: data => {
             return data.orgHierarchy;
           },
-        },
+        } as TreeConfig,
       } as any,
     }),
-  { notes: { markdown: note } }
+  { notes: { markdown: treeNotes } }
 );

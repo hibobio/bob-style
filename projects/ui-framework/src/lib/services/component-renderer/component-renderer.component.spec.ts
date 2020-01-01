@@ -28,28 +28,28 @@ describe('ComponentRendererComponent', () => {
         attributes: {
           imageSource: 'hello.jpg',
           size: AvatarSize.mini,
-          isClickable: true
+          isClickable: true,
         },
         handlers: {
           clicked: () => {
             testVar = 'bye';
-          }
-        }
+          },
+        },
       },
-      'Hello'
-    ]
+      'Hello',
+    ],
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ComponentRendererComponent],
       imports: [BrowserAnimationsModule, MockComponentModule, AvatarModule],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
-          entryComponents: [AvatarComponent, MockComponent]
-        }
+          entryComponents: [AvatarComponent, MockComponent],
+        },
       })
       .compileComponents()
       .then(() => {
@@ -58,7 +58,7 @@ describe('ComponentRendererComponent', () => {
 
         component.render = renderData;
         component.ngOnChanges({
-          render: new SimpleChange(null, renderData, true)
+          render: new SimpleChange(null, renderData, true),
         });
         fixture.detectChanges();
 
@@ -67,7 +67,7 @@ describe('ComponentRendererComponent', () => {
         avatarComponent = fixture.debugElement.query(By.css('.slot-1 b-avatar'))
           .componentInstance;
         avatarNativeElement = fixture.debugElement.query(
-          By.css('b-avatar[data-clickable="true"] .avatar')
+          By.css('b-avatar .avatar')
         ).nativeElement;
         textElement = fixture.debugElement.query(By.css('.slot-2'))
           .nativeElement;

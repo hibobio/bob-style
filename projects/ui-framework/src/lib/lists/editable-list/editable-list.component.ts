@@ -67,7 +67,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   @Input() translation: EditableListTranslation = cloneObject(
     EDITABLE_LIST_TRANSLATION
   );
-
+  @Input() maxChars = 100;
   @Output() changed: EventEmitter<EditableListState> = new EventEmitter<
     EditableListState
   >();
@@ -88,12 +88,12 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
 
   public isDragged = false;
   public addingItem = false;
+  public addingItemLen = 0;
   public addedItem = false;
   public inputInvalid = false;
   public sameItemIndex: number = null;
   public removingIndex: number = null;
   public removedItem = false;
-
   private inputChangeDbncr: Subject<string> = new Subject<string>();
   private inputChangeSbscr: Subscription;
 
@@ -122,7 +122,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     if (isNumber(this.removingIndex)) {
       this.removeCancel(event);
     }
-
     if (this.addingItem) {
       this.addItemCancel(event);
     }
@@ -146,7 +145,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
       this.listState.sortType = this.srvc.getListSortType(this.listState.list);
     }
 
-    if (hasChanges(changes, ['sortType'])) {
+    if (hasChanges(changes, ['sortType'], true)) {
       this.sortList(
         this.listState.list,
         this.sortType,
@@ -176,7 +175,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
       this.zone.runOutsideAngular(() => {
         setTimeout(() => {
           this.addItemInput.nativeElement.focus();
-
           if (!this.cd['destroyed']) {
             this.cd.detectChanges();
           }
@@ -213,6 +211,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
           this.transmit();
           this.listState.sortType = ListSortType.UserDefined;
           this.addItemInput.nativeElement.value = '';
+          this.addingItemLen = 0;
         }
       } else {
         this.addItemCancel();
@@ -251,6 +250,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
       (relatedTarget && relatedTarget.matches('.bel-cancel-button button'))
     ) {
       this.addItemInput.nativeElement.value = '';
+      this.addingItemLen = 0;
     }
   }
 
@@ -293,6 +293,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
 
   public onInputChange(): void {
     const value = this.addItemInput.nativeElement.value.trim();
+    this.addingItemLen = value.length;
     this.inputInvalid = false;
     this.sameItemIndex = null;
 
@@ -337,7 +338,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
 
   private transmit(): void {
     this.listState.order = this.listState.list.map(i => i.value);
-
     const itersection = this.listState.create.filter(i =>
       this.listState.delete.includes(i)
     );

@@ -1,5 +1,5 @@
 @import '../../../../../src/lib/style/common-imports';
-@import '../../../../../src/lib/style/icons';
+@import '../../../../../src/lib/style/icons.mixin';
 @import './table.mixin';
 
 $table-header-height: 57px;
@@ -162,13 +162,10 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 :host ::ng-deep .remove-column-button {
   .ag-header-viewport {
     .ag-header-cell {
-      @include b-icon($icon: 'close', $size: small, $elem: '&:hover:after');
+      @include b-icon($icon: 'circle-cancel', $size: small, $elem: '&:hover:after');
 
-      &:hover:after {
-        font-size: 14px;
+      &:after {
         text-align: right;
-        color: black;
-        font-weight: 600;
         cursor: pointer;
         margin-right: -6px;
       }

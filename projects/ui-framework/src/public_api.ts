@@ -67,7 +67,7 @@ export {
 } from './lib/avatar/avatar/avatar.component';
 export {
   AvatarImageComponent
-} from './lib/avatar/avatar/avatar-image.component';
+} from './lib/avatar/avatar/avatar-image/avatar-image.component';
 export * from './lib/avatar/avatar/avatar.enum';
 export * from './lib/avatar/avatar/avatar.interface';
 // Employees Showcase Module
@@ -497,7 +497,8 @@ export * from './lib/table/card-table/card-table.interface';
 // Icons Module
 export { IconsModule } from './lib/icons/icons.module';
 export { IconComponent } from './lib/icons/icon.component';
-export { IconSize, IconColor, Icons } from './lib/icons/icons.enum';
+export * from './lib/icons/icons.enum';
+export * from './lib/icons/icon.interface';
 // Filter Module
 export { FiltersModule } from './lib/services/filters/filters.module';
 export { LinkifyPipe } from './lib/services/filters/linkify.pipe';

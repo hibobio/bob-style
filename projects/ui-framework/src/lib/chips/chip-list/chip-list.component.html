@@ -12,9 +12,9 @@
         (removed)="onChipRemove(chip)"
         [attr.data-clickable]="(clicked.observers.length > 0 || !!config.selectable) || null">
 
-  <b-avatar *ngIf="(chip.type === chipType.avatar || config.type === chipType.avatar) && chip.imageSource"
-            [imageSource]="chip.imageSource"
-            [size]="avatarSize.mini"></b-avatar>
+  <b-avatar-image *ngIf="(chip.type === chipType.avatar || config.type === chipType.avatar) && chip.imageSource"
+                  [imageSource]="chip.imageSource"
+                  [size]="avatarSize.mini"></b-avatar-image>
 </b-chip>
 
 <ng-content></ng-content>

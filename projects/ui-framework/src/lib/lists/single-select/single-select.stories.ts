@@ -16,10 +16,10 @@ import { SingleSelectModule } from './single-select.module';
 import { SelectGroupOption } from '../list.interface';
 import { mockText } from '../../mock.const';
 import { optionsMock } from '../single-list/single-list.mock';
-import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { cloneDeep } from 'lodash';
 import { ListModelService } from '../list-service/list-model.service';
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
 import listInterfaceDoc from '../list.interface.md';
 
@@ -146,7 +146,7 @@ const toAdd = () => ({
       StoryBookLayoutModule,
       AvatarModule,
     ],
-    entryComponents: [AvatarComponent],
+    entryComponents: [AvatarImageComponent],
   },
 });
 

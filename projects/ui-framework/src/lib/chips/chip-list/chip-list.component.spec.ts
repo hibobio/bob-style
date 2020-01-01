@@ -286,13 +286,12 @@ describe('ChipListComponent', () => {
 
       expect(
         chipsElements.filter(
-          elem => elem.children[0].tagName === 'b-avatar'.toUpperCase()
+          elem => elem.children[0].tagName === 'b-avatar-image'.toUpperCase()
         ).length
       ).toEqual(3);
 
       expect(
-        (chipsElements[0].children[0].children[0] as HTMLElement).style
-          .backgroundImage
+        (chipsElements[0].children[0] as HTMLElement).getAttribute('style')
       ).toContain('iVBORw0KGgoAAAANSUhEUgAAA');
     });
   });

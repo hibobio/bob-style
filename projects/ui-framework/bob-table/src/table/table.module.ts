@@ -12,6 +12,7 @@ import { AvatarModule, ButtonsModule, IconsModule, MenuModule, } from 'bob-style
 import { TableActionsWrapperComponent } from './table-cell-components/table-actions-wrapper/table-actions-wrapper.component';
 // tslint:disable-next-line:max-line-length
 import { CircleIconAndLabelComponent } from './table-cell-components/circle-icon-and-label/circle-icon-and-label.component';
+import { TreeDirective } from './table/extensions/tree.directive';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { CircleIconAndLabelComponent } from './table-cell-components/circle-icon
     ActionsCellComponent,
     TableActionsWrapperComponent,
     CircleIconAndLabelComponent,
+    TreeDirective,
   ],
   providers: [TableUtilsService],
   imports: [
@@ -40,6 +42,7 @@ import { CircleIconAndLabelComponent } from './table-cell-components/circle-icon
   ],
   exports: [
     TableComponent,
+    TreeDirective,
     AvatarCellComponent,
     ActionsCellComponent,
     TableActionsWrapperComponent,

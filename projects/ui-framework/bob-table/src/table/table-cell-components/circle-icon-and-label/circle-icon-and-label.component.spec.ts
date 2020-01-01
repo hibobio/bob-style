@@ -38,8 +38,9 @@ describe('CircleIconAndLabelComponent', () => {
     } as CircleIconAndLabelParams;
     component.agInit(circleIconAndLabelParams);
     fixture.detectChanges();
+
     const circleIconElement = fixture.debugElement.query(
-      By.css('b-icon')
+      By.css('b-avatar-image')
     );
     const labelElement = fixture.debugElement.query(
       By.css('.circle-icon-label')
@@ -55,12 +56,14 @@ describe('CircleIconAndLabelComponent', () => {
     component.agInit(circleIconAndLabelParams);
     fixture.detectChanges();
     const circleIconElement = fixture.debugElement.query(
-      By.css('b-icon')
+      By.css('b-avatar-image')
     );
     const labelElement = fixture.debugElement.query(
       By.css('.circle-icon-label')
     );
-    expect(circleIconElement.componentInstance.icon).toBe(Icons.department_icon);
+    expect(circleIconElement.componentInstance.icon).toBe(
+      Icons.department_icon
+    );
     expect(labelElement.nativeElement.textContent).toBe('label');
   });
 });

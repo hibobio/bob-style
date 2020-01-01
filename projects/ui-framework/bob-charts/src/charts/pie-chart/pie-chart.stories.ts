@@ -35,6 +35,7 @@ const template = `
     [postTooltipValue]="postTooltipValue"
     [donut]="donut"
     [showDataLabels]="showDataLabels"
+    [extraOptions]="extraOptions"
     [legend]="legend"
     [legendPosition]="legendPosition"
     [colorPalette]="colorPalette"
@@ -87,6 +88,7 @@ const note = `
   height (optional) | number | height of chart | 500
   title (optional) | string | title of chart | &nbsp;
   legendPosition (optional) | ChartLegendPositionEnum | where the legend should be set relative to the chart | ChartLegendPositionEnum.BOTTOM
+  extraOptions (optional) | HighChartOptions | extra highcharts options for customize options that are not currently supported with other inputs | {}
 
 
   ### Methods
@@ -140,6 +142,7 @@ story.add(
         showDataLabels: boolean('showDataLabels', false),
         donut: boolean('donut', false),
         legend: boolean('legend', true),
+        extraOptions: object('extraOptions', {}),
         legendPosition: select(
           'legendPosition',
           Object.values(ChartLegendPositionEnum),

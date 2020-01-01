@@ -5,6 +5,7 @@
 // Table Module
 
 export * from './table/table/table.interface';
+export * from './table/table/table.interface';
 export * from './table/table/table.enum';
 export { TableComponent } from './table/table/table.component';
 export { AvatarCellComponent } from './table/table-cell-components/avatar-cell/avatar.component';

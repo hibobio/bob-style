@@ -1,10 +1,10 @@
 <div class="card-top"
      [ngClass]="{'card-top-with-image': false}">
-  <b-avatar [size]="type === cardType.small ? avatarSize.small : avatarSize.medium"
-            [imageSource]="card.imageSource"
-            [isClickable]="isClickableCard()"
-            (clicked)="onClick($event)">
-  </b-avatar>
+  <b-avatar-image [size]="type === cardType.small ? avatarSize.small : avatarSize.medium"
+                  [imageSource]="card.imageSource"
+                  [isClickable]="isClickableCard()"
+                  (clicked)="onClick($event)">
+  </b-avatar-image>
 </div>
 
 <h4 class="card-title"

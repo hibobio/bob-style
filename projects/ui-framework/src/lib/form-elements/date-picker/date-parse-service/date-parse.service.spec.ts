@@ -12,12 +12,14 @@ describe('DateParseService', () => {
 
           const parsedStrict = parser.parseDate(format as any, date, true);
 
-          expect(parsed.value).toEqual(
-            DateParseServiceTest[format][date].result
+          expect(parsed.value).toBe(
+            DateParseServiceTest[format][date].result,
+            `(${format}: ${date})`
           );
 
-          expect(parsedStrict.value).toEqual(
-            DateParseServiceTest[format][date].resultStrict
+          expect(parsedStrict.value).toBe(
+            DateParseServiceTest[format][date].resultStrict,
+            `(${format}: ${date}, strict mode)`
           );
         });
       });

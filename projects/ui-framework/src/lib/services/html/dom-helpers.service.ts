@@ -7,13 +7,50 @@ import {
   isNotEmptyString,
   isNotEmptyArray,
   isNotEmptyObject,
-  isNullOrUndefined
+  isNullOrUndefined,
 } from '../utils/functional-utils';
-import { Styles, TextProps, NotEmptyChildren, NgClass } from './html-helpers.interface';
+import {
+  Styles,
+  TextProps,
+  NotEmptyChildren,
+  NgClass,
+} from './html-helpers.interface';
+import { GenericObject } from '../../types';
 
 @Injectable({ providedIn: 'root' })
 export class DOMhelpers {
   constructor() {}
+
+  public injectStyles(
+    styles: string = '',
+    elem: HTMLElement | Document = document
+  ): void {
+    let styleEl: HTMLStyleElement, existingStyles: string;
+    if (elem === document) {
+      elem = document.head;
+    }
+    styleEl = elem.querySelector(`style[data-injected="true"]`);
+    if (styleEl) {
+      existingStyles = styleEl.innerHTML.replace(/\s*/gim, '');
+    }
+    if (!styleEl && styles) {
+      styleEl = document.createElement('style');
+      styleEl.setAttribute('data-injected', 'true');
+      elem.appendChild(styleEl);
+    }
+    if (
+      styles &&
+      (!existingStyles ||
+        (existingStyles &&
+          styleEl.innerHTML.replace(/\s*/gim, '') !== existingStyles))
+    ) {
+      styleEl.innerHTML = styles;
+      return;
+    }
+    if (styleEl && !styles) {
+      styleEl.remove();
+    }
+  }
 
   public isTextNode(element: any) {
     return element.nodeType === Node.TEXT_NODE;
@@ -38,7 +75,8 @@ export class DOMhelpers {
           const hasText = this.hasInnerText(node as HTMLElement);
           return {
             total: hasText ? acc.total + 1 : acc.total,
-            firstIndex: hasText && acc.firstIndex === null ? index : acc.firstIndex
+            firstIndex:
+              hasText && acc.firstIndex === null ? index : acc.firstIndex,
           };
         }, defAcc)
       : defAcc;
@@ -63,6 +101,18 @@ export class DOMhelpers {
     for (const prop of Object.keys(props)) {
       if (!isNullOrUndefined(props[prop])) {
         element.style.setProperty(prop, props[prop] as string);
+      } else {
+        element.style.removeProperty(prop);
+      }
+    }
+  }
+
+  public setAttributes(element: HTMLElement, attrs: GenericObject): void {
+    for (const attr of Object.keys(attrs)) {
+      if (!isNullOrUndefined(attrs[attr])) {
+        element.setAttribute(attr, attrs[attr] as string);
+      } else {
+        element.removeAttribute(attr);
       }
     }
   }
@@ -79,8 +129,12 @@ export class DOMhelpers {
           : undefined;
     return {
       fontSize: fontSize,
-      lineHeight: lineHeight
+      lineHeight: lineHeight,
     };
+  }
+
+  public getElementCSSvar(element: HTMLElement, cssVar: string): string {
+    return getComputedStyle(element, '::after').getPropertyValue(cssVar);
   }
 
   // returns deepest element that has text
@@ -96,7 +150,10 @@ export class DOMhelpers {
   }
 
   public getDeepTextNode(element: HTMLElement): Node {
-    return this.hasInnerText(element) && this.getTextNode(this.getDeepTextElement(element));
+    return (
+      this.hasInnerText(element) &&
+      this.getTextNode(this.getDeepTextElement(element))
+    );
   }
 
   public getInnerWidth(element: HTMLElement, hardcore = false) {
@@ -125,7 +182,8 @@ export class DOMhelpers {
 
   public isInView(element: HTMLElement) {
     const { top, height } = element.getBoundingClientRect();
-    const vpHeight = window.innerHeight || document.documentElement.clientHeight;
+    const vpHeight =
+      window.innerHeight || document.documentElement.clientHeight;
 
     return top <= vpHeight && top + height >= 0;
   }
@@ -133,7 +191,11 @@ export class DOMhelpers {
   // TODO: Add Test
   // find closest parent either by CSS selector or by test function
   // can return element or test result
-  public getClosest(element: HTMLElement, test: string | Function, rtrn: 'element' | 'result' = 'element'): any {
+  public getClosest(
+    element: HTMLElement,
+    test: string | Function,
+    rtrn: 'element' | 'result' = 'element'
+  ): any {
     if (typeof test === 'string') {
       const sel = test as string;
       if (!element.matches(sel + ' ' + element.tagName)) {
@@ -141,7 +203,11 @@ export class DOMhelpers {
       }
       test = (el: HTMLElement): boolean => el.matches(sel);
     }
-    while (!test(element) && element !== document.documentElement && element.parentElement) {
+    while (
+      !test(element) &&
+      element !== document.documentElement &&
+      element.parentElement
+    ) {
       element = element.parentElement;
     }
     test = test(element);
@@ -153,7 +219,10 @@ export class DOMhelpers {
   // and adds/removes relative classes.
   // Usecase - to use on component host element,
   // as Hostbinding('ngClass') is not available
-  public bindClasses(element: HTMLElement, classes: string | string[] | NgClass): NgClass {
+  public bindClasses(
+    element: HTMLElement,
+    classes: string | string[] | NgClass
+  ): NgClass {
     if (!element || !this.isElement(element)) {
       return {};
     }
@@ -164,7 +233,11 @@ export class DOMhelpers {
     const classStringToArray = (cls: string): string[] => cls.split(' ').sort();
 
     const classesAsArray = (cls: string | string[]): string[] => {
-      return isString(cls) ? classStringToArray(cls as string) : isArray(cls) ? (cls as string[]).slice().sort() : [];
+      return isString(cls)
+        ? classStringToArray(cls as string)
+        : isArray(cls)
+        ? (cls as string[]).slice().sort()
+        : [];
     };
 
     const arrayToNgClass = (cls: string[], value = true): NgClass =>
@@ -173,7 +246,12 @@ export class DOMhelpers {
         return acc;
       }, {});
 
-    if (classes && (isNotEmptyString(classes) || isNotEmptyArray(classes) || isNotEmptyObject(classes))) {
+    if (
+      classes &&
+      (isNotEmptyString(classes) ||
+        isNotEmptyArray(classes) ||
+        isNotEmptyObject(classes))
+    ) {
       const currentClassesAsArray = classStringToArray(element.className);
       let newClassesString: string;
 
@@ -181,20 +259,28 @@ export class DOMhelpers {
         removeClasses = Object.keys(classes)
           .filter(c => !classes[c])
           .sort();
-        addClasses = joinArrays(currentClassesAsArray, Object.keys(classes).filter(c => classes[c])).sort();
+        addClasses = joinArrays(
+          currentClassesAsArray,
+          Object.keys(classes).filter(c => classes[c])
+        ).sort();
       } else {
-        addClasses = joinArrays(currentClassesAsArray, classesAsArray(classes as string | string[])).sort();
+        addClasses = joinArrays(
+          currentClassesAsArray,
+          classesAsArray(classes as string | string[])
+        ).sort();
       }
-      newClassesString = addClasses.filter(c => !removeClasses.includes(c)).join(' ');
+      newClassesString = addClasses
+        .filter(c => !removeClasses.includes(c))
+        .join(' ');
 
       if (currentClassesAsArray.join(' ') !== newClassesString) {
-        element.className = newClassesString;
+        element.className = newClassesString.trim();
       }
     }
 
     return {
       ...arrayToNgClass(classStringToArray(element.className), true),
-      ...arrayToNgClass(removeClasses, false)
+      ...arrayToNgClass(removeClasses, false),
     };
   }
 }
