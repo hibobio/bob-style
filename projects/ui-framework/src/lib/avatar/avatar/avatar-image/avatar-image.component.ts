@@ -52,6 +52,7 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   @Input() badge: AvatarBadge | Icon;
   @Input() disabled = false;
   @Input() isClickable = false;
+  @Input() supressWarnings = false;
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
@@ -97,9 +98,10 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
     const isClickable = this.isClickable || this.clicked.observers.length > 0;
 
     if (
+      !this.supressWarnings &&
       this.imageSource &&
       this.imageSource.indexOf('filestack') > -1 &&
-      this.imageSource.indexOf('align=faces') === -1
+      !/align\W{1,2}faces/g.test(this.imageSource)
     ) {
       console.warn(`AvatarImageComponent: Please check your imageSource -
 you should be using EmployeeAvatarService.getOptimizedAvatarImage
