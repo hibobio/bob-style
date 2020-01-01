@@ -243,4 +243,8 @@ export class ChipListComponent implements OnChanges {
       chipComp.chip.nativeElement.focus();
     }
   }
+
+  public chipsTrackBy(index: number, chip: Chip): string | number {
+    return chip.id || chip.text || JSON.stringify(chip);
+  }
 }

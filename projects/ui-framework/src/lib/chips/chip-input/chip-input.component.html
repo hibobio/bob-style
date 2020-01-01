@@ -26,11 +26,11 @@
            [required]="required"
            [matAutocomplete]="auto"
            [matAutocompleteConnectedTo]="wrapper"
-           (focus)="onInputFocus()"
-           (blur)="onInputBlur()"
-           (input)="onInputChange($event)"
-           (keydown)="onInputKeydown($event)"
-           (keyup)="onInputKeyup($event)">
+           (focus.outside-zone)="onInputFocus()"
+           (blur.outside-zone)="onInputBlur()"
+           (input.outside-zone)="onInputChange($event)"
+           (keydown.outside-zone)="onInputKeydown($event)"
+           (keyup.outside-zone)="onInputKeyup($event)">
   </b-chip-list>
 
 </div>
@@ -40,7 +40,7 @@
                   (closed)="onAutoClosed()"
                   [class]="'chip-input-autocomplete'"
                   disableRipple="true">
-  <mat-option *ngFor="let chip of filteredChips"
+  <mat-option *ngFor="let chip of filteredChips; trackBy: chipsTrackBy"
               [value]="chip">
     {{chip}}
   </mat-option>
