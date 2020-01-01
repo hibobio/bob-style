@@ -16,6 +16,7 @@
       min-height: times8(5);
       transition: height, min-height 0.3s;
       will-change: height, min-height;
+
       &:hover {
         transition-duration: 0.3s;
       }
