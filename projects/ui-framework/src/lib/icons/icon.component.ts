@@ -7,7 +7,7 @@ import {
   ChangeDetectorRef,
   SimpleChanges,
 } from '@angular/core';
-import { IconColor, Icons, IconSize } from './icons.enum';
+import { IconColor, Icons, IconSize, IconType } from './icons.enum';
 import {
   notFirstChanges,
   applyChanges,
@@ -25,16 +25,19 @@ export class IconComponent implements OnChanges {
   constructor(private cd: ChangeDetectorRef) {}
 
   @Input() icon: Icons;
-  @Input() size: IconSize = IconSize.medium;
   @Input() color: IconColor = IconColor.dark;
   @Input() hasHoverState = false;
 
+  @HostBinding('attr.data-size') @Input() size: IconSize = IconSize.medium;
+  @HostBinding('attr.data-type') @Input() type: IconType = IconType.regular;
   @HostBinding('attr.data-tooltip') @Input() toolTipSummary: string = null;
 
   public iconClass: string = null;
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes);
+    applyChanges(this, changes, {
+      color: IconColor.dark,
+    });
 
     this.iconClass =
       this.icon +
