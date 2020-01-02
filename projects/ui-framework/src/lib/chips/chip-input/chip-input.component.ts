@@ -84,9 +84,6 @@ export class ChipInputComponent extends BaseFormElement
   private ignoreAutoClosedEvent = false;
 
   @ViewChild('chips', { static: true }) public chips: ChipListComponent;
-  @ViewChild('input', { static: true }) private input: ElementRef<
-    HTMLInputElement
-  >;
   @ViewChild('input', { read: MatAutocompleteTrigger, static: true })
   private autocompleteTrigger: MatAutocompleteTrigger;
   @ViewChild('auto', { static: true })

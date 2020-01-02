@@ -82,7 +82,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     };
   }
 
-  @ViewChild('triggerInput', { static: true })
+  @ViewChild('input', { static: true })
   truncate: TruncateTooltipComponent;
 
   @Output() selectModified: EventEmitter<ListChange> = new EventEmitter<

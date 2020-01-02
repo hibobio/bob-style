@@ -184,8 +184,8 @@ export class TimePickerComponent extends BaseFormElement {
   onHoursFocus() {
     this.hoursFocused = true;
     this.minutesFocused = false;
-    this.inputHours.nativeElement.select();
     this.cd.detectChanges();
+    this.inputHours.nativeElement.select();
   }
 
   onMinutesFocus() {

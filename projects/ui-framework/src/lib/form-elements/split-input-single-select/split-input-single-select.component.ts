@@ -6,6 +6,9 @@ import {
   SimpleChanges,
   forwardRef,
   ChangeDetectorRef,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
 } from '@angular/core';
 import { SelectGroupOption } from '../../lists/list.interface';
 import { InputTypes } from '../input/input.enum';
@@ -19,6 +22,7 @@ import { BaseFormElement } from '../base-form-element';
 import { FormEvents } from '../form-elements.enum';
 import { objectHasKeyOrFail } from '../../services/utils/transformers';
 import { cloneObject } from '../../services/utils/functional-utils';
+import { InputComponent } from '../input/input.component';
 
 const BSISS_VALUE_DEF = {
   inputValue: null,
@@ -43,7 +47,8 @@ const BSISS_VALUE_DEF = {
     { provide: BaseFormElement, useExisting: SplitInputSingleSelectComponent },
   ],
 })
-export class SplitInputSingleSelectComponent extends BaseFormElement {
+export class SplitInputSingleSelectComponent extends BaseFormElement
+  implements AfterViewInit {
   constructor(cd: ChangeDetectorRef) {
     super(cd);
 
@@ -53,6 +58,9 @@ export class SplitInputSingleSelectComponent extends BaseFormElement {
     this.wrapEvent = false;
     this.baseValue = cloneObject(BSISS_VALUE_DEF);
   }
+
+  @ViewChild('bInput', { static: true }) bInput: InputComponent;
+  public input: ElementRef<HTMLInputElement>;
 
   @Input() value: InputSingleSelectValue = cloneObject(BSISS_VALUE_DEF);
   @Input() inputType: InputTypes;
@@ -71,6 +79,10 @@ export class SplitInputSingleSelectComponent extends BaseFormElement {
         ? this.enrichOptionsWithSelection(this.selectOptions)
         : this.selectOptions;
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.input = this.bInput.input;
   }
 
   private enrichOptionsWithSelection(

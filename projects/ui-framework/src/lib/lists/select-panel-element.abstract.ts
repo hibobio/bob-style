@@ -56,6 +56,7 @@ import { ListChangeService } from './list-change/list-change.service';
 import { selectValueOrFail } from '../services/utils/transformers';
 import { ListModelService } from './list-service/list-model.service';
 import { ScrollEvent } from '../services/utils/utils.interface';
+import { TruncateTooltipComponent } from '../popups/truncate-tooltip/truncate-tooltip.component';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements OnChanges, AfterViewInit, OnDestroy {
@@ -196,7 +197,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   }
 
   openPanel(): void {
-    if (!this.overlayRef && !this.disabled) {
+    if (!this.overlayRef && !this.disabled && !this.panelOpen) {
       this.panelOpen = true;
       this.panelConfig = this.getConfig();
       this.overlayRef = this.overlay.create(this.panelConfig);

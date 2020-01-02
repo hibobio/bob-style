@@ -8,6 +8,7 @@ import {
   ViewChild,
   OnChanges,
   OnInit,
+  ElementRef,
 } from '@angular/core';
 import { merge, cloneDeep } from 'lodash';
 
@@ -90,6 +91,7 @@ export abstract class RTEbaseElement extends BaseFormElement
   protected editorDirective: FroalaEditorDirective;
   @ViewChild('placeholderPanel', { static: false })
   protected placeholderPanel: SingleSelectPanelComponent;
+  public input: ElementRef<HTMLElement>;
 
   @Input() public value: string;
   @Input() public minChars = 0;

@@ -11,6 +11,7 @@ import {
   OnChanges,
   ElementRef,
   ChangeDetectorRef,
+  AfterViewInit,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { IconColor, IconSize } from '../../icons/icons.enum';
@@ -42,7 +43,8 @@ import { URLutils } from '../../services/url/url-utils.service';
     { provide: BaseFormElement, useExisting: SocialComponent },
   ],
 })
-export class SocialComponent extends BaseFormElement implements OnInit {
+export class SocialComponent extends BaseFormElement
+  implements OnInit, AfterViewInit {
   constructor(
     protected cd: ChangeDetectorRef,
     private URL: URLutils,
@@ -74,6 +76,7 @@ export class SocialComponent extends BaseFormElement implements OnInit {
   }
 
   @ViewChild('bInput', { static: true }) bInput: InputComponent;
+  public input: ElementRef<HTMLInputElement>;
 
   @Input() type: Social;
   @Input() placeholder = 'username';
@@ -100,8 +103,8 @@ export class SocialComponent extends BaseFormElement implements OnInit {
       (this.host.nativeElement as HTMLElement).offsetWidth < 300;
   }
 
-  focusInput(): void {
-    this.bInput.input.nativeElement.focus();
+  ngAfterViewInit(): void {
+    this.input = this.bInput.input;
   }
 
   onInputEvents(event: InputEvent): void {

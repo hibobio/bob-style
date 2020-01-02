@@ -7,6 +7,10 @@ import {
   SimpleChanges,
   OnChanges,
   ChangeDetectorRef,
+  ViewChildren,
+  ElementRef,
+  QueryList,
+  AfterViewInit,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
@@ -43,7 +47,8 @@ import {
     },
   ],
 })
-export class RadioButtonComponent extends BaseFormElement implements OnChanges {
+export class RadioButtonComponent extends BaseFormElement
+  implements OnChanges, AfterViewInit {
   constructor(cd: ChangeDetectorRef) {
     super(cd);
 
@@ -61,6 +66,10 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
     this.baseValue = {};
     this.wrapEvent = false;
   }
+
+  @ViewChildren('input', { read: ElementRef })
+  public inputs: QueryList<ElementRef>;
+  public input: ElementRef<HTMLInputElement>;
 
   @Input() value: RadioConfig;
   // tslint:disable-next-line: no-input-rename
@@ -94,6 +103,10 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.input = this.inputs.toArray()[0];
   }
 
   public onRadioChange(key): void {
