@@ -84,9 +84,6 @@ export class ChipInputComponent extends BaseFormElement
   private ignoreAutoClosedEvent = false;
 
   @ViewChild('chips', { static: true }) public chips: ChipListComponent;
-  @ViewChild('input', { static: true }) private input: ElementRef<
-    HTMLInputElement
-  >;
   @ViewChild('input', { read: MatAutocompleteTrigger, static: true })
   private autocompleteTrigger: MatAutocompleteTrigger;
   @ViewChild('auto', { static: true })
@@ -196,13 +193,8 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   public onInputChange(event: any): void {
-    this.filteredChips =
-      this.filterChips(event.target.value) || this.possibleChips;
-
-    if (this.filteredChips === this.possibleChips) {
-      this.ignoreAutoClosedEvent = true;
-      this.autocompleteTrigger.closePanel();
-    }
+    this.filteredChips = this.filterChips(event.target.value) || [];
+    this.cd.detectChanges();
   }
 
   public optionSelected(event: MatAutocompleteSelectedEvent): void {
@@ -210,8 +202,8 @@ export class ChipInputComponent extends BaseFormElement
     this.commitChip(chipToAdd);
   }
 
-  public remove(event: Chip): void {
-    const name = event.text;
+  public remove(chip: Chip): void {
+    const name = chip.text;
     this.value = this.removeChip(name, this.value);
     this.updatePossibleChips();
     this.transmit({ removed: name });
@@ -248,6 +240,7 @@ export class ChipInputComponent extends BaseFormElement
 
   public onInputFocus(): void {
     this.inputFocused = true;
+    this.cd.detectChanges();
   }
 
   public onInputBlur(): void {
@@ -255,6 +248,7 @@ export class ChipInputComponent extends BaseFormElement
     if (!this.autocompletePanel.isOpen) {
       this.addChipFromInput();
     }
+    this.cd.detectChanges();
   }
 
   public onInputKeyup(event: KeyboardEvent): void {
@@ -262,9 +256,11 @@ export class ChipInputComponent extends BaseFormElement
       if (this.input.nativeElement.value === '' && this.chips.list.last) {
         if (this.chips.list.last.chip.nativeElement.dataset.aboutToDelete) {
           const lastChipName = this.value.slice(-1)[0];
-          this.value = this.value.slice(0, -1);
-          this.updatePossibleChips();
-          this.transmit({ removed: lastChipName });
+          this.zone.run(() => {
+            this.value = this.value.slice(0, -1);
+            this.updatePossibleChips();
+            this.transmit({ removed: lastChipName });
+          });
         } else {
           this.chips.list.last.chip.nativeElement.classList.add('focused');
           this.chips.list.last.chip.nativeElement.dataset.aboutToDelete =
@@ -278,8 +274,10 @@ export class ChipInputComponent extends BaseFormElement
         });
       }
     } else if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.comma)) {
-      this.addChipFromInput();
-      this.autocompleteTrigger.closePanel();
+      this.zone.run(() => {
+        this.addChipFromInput();
+        this.autocompleteTrigger.closePanel();
+      });
     } else {
       this.unSelectLastChip();
     }
@@ -289,5 +287,9 @@ export class ChipInputComponent extends BaseFormElement
     if (isKey(event.key, Keys.enter)) {
       event.preventDefault();
     }
+  }
+
+  public chipsTrackBy(index: number, chip: string): string {
+    return chip + index;
   }
 }

@@ -6,6 +6,8 @@ import {
   Output,
   EventEmitter,
   ChangeDetectorRef,
+  ViewChild,
+  ElementRef,
 } from '@angular/core';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
 import {
@@ -26,6 +28,9 @@ import { IGNORE_EVENTS_DEF, TRANSMIT_OPTIONS_DEF } from './form-elements.const';
 export abstract class BaseFormElement
   implements ControlValueAccessor, OnChanges {
   protected constructor(protected cd: ChangeDetectorRef) {}
+
+  @ViewChild('input', { static: true, read: ElementRef })
+  public input: ElementRef;
 
   @Input() id: string = simpleUID('bfe-');
   @Input() label: string;
@@ -189,6 +194,12 @@ export abstract class BaseFormElement
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
+    }
+  }
+
+  public focus(): void {
+    if (this.input && this.input.nativeElement) {
+      this.input.nativeElement.focus();
     }
   }
 }

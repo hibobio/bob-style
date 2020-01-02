@@ -1,9 +1,30 @@
 @import '../style/common-imports';
+@import '../style/icons.mixin';
 
+// prettier-ignore
+$circularIconSizes: (
+  small: map-get($icon-sizes, small) + 6px, // 16 - 22
+  medium: map-get($icon-sizes, medium) + 12px, // 20 - 32
+  large: map-get($icon-sizes, large) + 16px, // 24 - 40
+  x-large: map-get($icon-sizes, x-large) + 16px, // 46 - 62
+  xx-large: map-get($icon-sizes, xx-large) + 30px // 60 - 90
+);
 
 :host {
   display: inline-flex;
   vertical-align: middle;
+  justify-content: center;
   align-items: center;
   position: relative;
+
+  &[data-type='circular'] {
+    border-radius: 50%;
+    background-color: $grey-300;
+
+    @each $sizeKey, $size in $circularIconSizes {
+      &[data-size='#{$sizeKey}'] {
+        @include size($size);
+      }
+    }
+  }
 }

@@ -1,4 +1,5 @@
-<b-input (inputEvents)="onInputChange($event)"
+<b-input #bInput
+         (inputEvents)="onInputChange($event)"
          [value]="value?.inputValue"
          [inputType]="inputType"
          [label]="label"

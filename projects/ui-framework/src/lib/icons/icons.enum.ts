@@ -1,3 +1,8 @@
+export enum IconType {
+  regular = 'regular',
+  circular = 'circular',
+}
+
 export enum IconSize {
   small = 'small',
   medium = 'medium',

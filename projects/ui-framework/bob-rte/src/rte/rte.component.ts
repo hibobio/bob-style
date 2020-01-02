@@ -111,6 +111,13 @@ export class RichTextEditorComponent extends RTEbaseElement
             this.editor.events.disableBlur();
           }
         );
+
+        // implementing baseFormElement input ref and focus method
+        this.input = {
+          nativeElement: {
+            focus: this.editor.events.focus,
+          },
+        } as ElementRef;
       },
 
       contentChanged: () => {

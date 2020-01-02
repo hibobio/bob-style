@@ -1,5 +1,5 @@
 <b-chip #list
-        *ngFor="let chip of chips; let index = index;"
+        *ngFor="let chip of chips; let index = index; trackBy: chipsTrackBy"
         role="listitem"
         [text]="chip.text"
         [type]="chip.type || config.type"

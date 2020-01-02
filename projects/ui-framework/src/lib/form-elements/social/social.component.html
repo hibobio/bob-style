@@ -23,7 +23,7 @@
          [doPropagate]="false">
   <span input-prefix
         *ngIf="type"
-        (click.outside-zone)="focusInput()">
+        (click.outside-zone)="focus()">
     <b-icon *ngIf="hideLabelOnFocus || label"
             class="social-icon"
             [color]="iconColor.normal"

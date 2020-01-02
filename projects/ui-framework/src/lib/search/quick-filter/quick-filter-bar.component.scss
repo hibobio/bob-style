@@ -143,6 +143,7 @@
 
   .bar-filters > * {
     flex: 1;
+    min-width: 0;
   }
 
   .bar-content:not(.has-prefix) {

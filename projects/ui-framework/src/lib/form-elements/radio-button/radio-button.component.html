@@ -8,6 +8,7 @@
 
   <ng-container *ngFor="let radio of options; let i = index;">
     <input type="radio"
+           #input
            class="brd-input"
            [attr.id]="id+'-'+i"
            [attr.name]="id"

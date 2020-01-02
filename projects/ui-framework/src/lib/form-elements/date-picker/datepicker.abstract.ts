@@ -96,6 +96,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   @ViewChildren(MatDatepicker) public pickers: QueryList<MatDatepicker<any>>;
   @ViewChildren('input', { read: ElementRef })
   public inputs: QueryList<ElementRef>;
+  public input: ElementRef<HTMLInputElement>;
 
   @Input() id: string = simpleUID('bdp-');
 
@@ -167,7 +168,9 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
+    this.input = this.inputs.toArray()[0];
+
     if (!this.doneFirstChange) {
       this.ngOnChanges({});
     }

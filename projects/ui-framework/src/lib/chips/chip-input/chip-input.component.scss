@@ -29,16 +29,16 @@
       border-right: 0;
     }
 
-    .bfe-input {
-      transition: all 0s;
-      transition-delay: 0.05s;
+    ::ng-deep .bfe-input {
+      align-self: center;
+      transition: all 0.001s 0.1s;
 
       &:only-child {
         transition: none;
       }
     }
 
-    &:not(.focused):not(.empty) {
+    &:not(.focused):not(.empty) ::ng-deep {
       .bfe-input.empty {
         max-height: 0;
         margin-top: 0;

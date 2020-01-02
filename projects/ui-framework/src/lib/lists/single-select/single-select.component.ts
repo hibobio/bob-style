@@ -1,7 +1,6 @@
 import {
   Component,
   forwardRef,
-  SimpleChanges,
   ViewContainerRef,
   NgZone,
   ChangeDetectorRef,
@@ -21,11 +20,7 @@ import {
   BELOW_END,
 } from '../../popups/panel/panel-position-service/panel-position.const';
 import { BaseFormElement } from '../../form-elements/base-form-element';
-import {
-  isArray,
-  hasChanges,
-  arrayFlatten,
-} from '../../services/utils/functional-utils';
+import { isArray, arrayFlatten } from '../../services/utils/functional-utils';
 import { ListModelService } from '../list-service/list-model.service';
 import { SelectOption } from '../list.interface';
 

@@ -1,8 +1,6 @@
 import {
   Component,
-  ElementRef,
   forwardRef,
-  ViewChild,
   NgZone,
   ChangeDetectorRef,
 } from '@angular/core';
@@ -47,8 +45,6 @@ export class PasswordInputComponent extends BaseInputElement {
   readonly iconColor = IconColor;
   readonly inputTypes = InputTypes;
   public inputType = InputTypes.password;
-
-  @ViewChild('input', { static: true }) input: ElementRef;
 
   isInputEmpty(): boolean {
     return !this.value || this.value.trim() === '';

@@ -8,6 +8,7 @@
   @include gridLayout12Cols;
   > * {
     grid-column: span 12;
+    min-width: 0;
   }
 }
 
