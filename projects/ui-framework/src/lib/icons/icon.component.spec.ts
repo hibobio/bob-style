@@ -1,7 +1,7 @@
 import { IconComponent } from './icon.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { IconColor, Icons, IconSize } from './icons.enum';
+import { IconColor, Icons, IconSize, IconType } from './icons.enum';
 import { By } from '@angular/platform-browser';
 import { simpleChange } from '../services/utils/test-helpers';
 
@@ -50,6 +50,22 @@ describe('IconElementComponent', () => {
 
     it('Should put tooltip text in attribute', () => {
       expect(componentElement.dataset.tooltip).toEqual('tooltip text');
+    });
+  });
+
+  describe('attributes', () => {
+    it('should set type attribute', () => {
+      expect(componentElement.getAttribute('data-type')).toEqual('regular');
+      component.type = IconType.circular;
+      fixture.detectChanges();
+      expect(componentElement.getAttribute('data-type')).toEqual('circular');
+    });
+
+    it('should set size attribute', () => {
+      expect(componentElement.getAttribute('data-size')).toEqual('medium');
+      component.size = IconSize.large;
+      fixture.detectChanges();
+      expect(componentElement.getAttribute('data-size')).toEqual('large');
     });
   });
 });
