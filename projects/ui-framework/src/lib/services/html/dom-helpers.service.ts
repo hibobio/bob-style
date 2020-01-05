@@ -65,7 +65,9 @@ export class DOMhelpers {
   }
 
   public hasInnerText(element: HTMLElement): boolean {
-    return !!(element && element.textContent && element.textContent.trim());
+    return Boolean(
+      element && element.textContent && element.textContent.trim()
+    );
   }
 
   public hasChildrenWithText(element: HTMLElement): NotEmptyChildren {
@@ -91,7 +93,7 @@ export class DOMhelpers {
   }
 
   public isEmpty(element: HTMLElement): boolean {
-    return element && !this.hasChildren(element) && !this.hasTextNodes(element);
+    return element && !this.hasChildren(element) && !this.hasInnerText(element);
   }
 
   // set any css properties

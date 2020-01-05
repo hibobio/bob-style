@@ -86,6 +86,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
 
   protected setDisplayValue(): void {
     this.displayValue = this.getDisplayValue(this.value) || null;
+    this.cd.detectChanges();
   }
 
   private getDisplayValue(selectedIDs: (string | number)[]): string {

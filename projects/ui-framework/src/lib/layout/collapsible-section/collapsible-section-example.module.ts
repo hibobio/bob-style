@@ -30,6 +30,7 @@ import { LabelValueModule } from '../../typography/label-value/label-value.modul
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { InputModule } from '../../form-elements/input/input.module';
 import { ColorService } from '../../services/color-service/color.service';
+import { MatTooltipModule } from '@angular/material';
 
 @Component({
   selector: 'b-collapsible-section-example-1',
@@ -44,7 +45,7 @@ import { ColorService } from '../../services/color-service/color.service';
     >
       <div header class="row row-spread">
         <div class="cell cell-valign">
-          <b-avatar [imageSource]="avatar.imageSource"></b-avatar>
+          <b-avatar-image [imageSource]="avatar.imageSource"></b-avatar-image>
           <b-label-value
             [type]="labelValueType.three"
             [label]="avatar.label"
@@ -136,12 +137,12 @@ import { ColorService } from '../../services/color-service/color.service';
               [label]="outHoliday.label"
             >
               <div class="row avatars">
-                <b-avatar
+                <b-avatar-image
                   *ngFor="let avatar of outHoliday.avatars"
                   [imageSource]="avatar.imageSource"
-                  [attr.data-tooltip]="avatar.tooltip"
-                  data-tooltip-wrap="pre"
-                ></b-avatar>
+                  [matTooltip]="avatar.tooltip"
+                  [matTooltipClass]="'pre-wrap'"
+                ></b-avatar-image>
               </div>
             </b-label-value>
           </div>
@@ -149,12 +150,12 @@ import { ColorService } from '../../services/color-service/color.service';
           <div class="cell">
             <b-label-value [type]="labelValueType.two" [label]="outWork.label">
               <div class="row avatars">
-                <b-avatar
+                <b-avatar-image
                   *ngFor="let avatar of outWork.avatars"
                   [imageSource]="avatar.imageSource"
-                  [attr.data-tooltip]="avatar.tooltip"
-                  data-tooltip-wrap="pre"
-                ></b-avatar>
+                  [matTooltip]="avatar.tooltip"
+                  [matTooltipClass]="'pre-wrap'"
+                ></b-avatar-image>
               </div>
             </b-label-value>
           </div>
@@ -165,12 +166,12 @@ import { ColorService } from '../../services/color-service/color.service';
               [label]="outMilitary.label"
             >
               <div class="row avatars">
-                <b-avatar
+                <b-avatar-image
                   *ngFor="let avatar of outMilitary.avatars"
                   [imageSource]="avatar.imageSource"
-                  [attr.data-tooltip]="avatar.tooltip"
-                  data-tooltip-wrap="pre"
-                ></b-avatar>
+                  [matTooltip]="avatar.tooltip"
+                  [matTooltipClass]="'pre-wrap'"
+                ></b-avatar-image>
               </div>
             </b-label-value>
           </div>
@@ -186,13 +187,13 @@ import { ColorService } from '../../services/color-service/color.service';
     ':host::ng-deep .cell-valign { align-items: center; }',
     ':host::ng-deep .cell:last-child { margin-right: 0; }',
     ':host::ng-deep .cell.buttons { flex-grow: 0; min-width: 72px; margin-right: -16px; }',
-    ':host::ng-deep [header] b-avatar { margin-right: 8px; }',
+    ':host::ng-deep [header] .avatar { margin-right: 8px; }',
     ':host::ng-deep .panel h5 { margin-top: 32px; margin-bottom: 8px; }',
     ':host::ng-deep .panel .cell { margin-right: 48px; }',
     ':host::ng-deep .avatars { margin-top: 4px; }',
-    ':host::ng-deep .avatars b-avatar { margin-right: 16px; }',
-    ':host::ng-deep .avatars b-avatar:last-child { margin-right: 0; }',
-    ':host::ng-deep .avatars b-avatar:after {min-width: 200px; text-align: center; }',
+    ':host::ng-deep .avatars .avatar { margin-right: 16px; }',
+    ':host::ng-deep .avatars .avatar:last-child { margin-right: 0; }',
+    ':host::ng-deep .avatars .avatar:after {min-width: 200px; text-align: center; }',
   ],
 })
 export class CollapsibleSectionExample1Component implements OnChanges {
@@ -390,6 +391,7 @@ export class CollapsibleSectionExample2Component implements OnChanges {
     TypographyModule,
     ButtonsModule,
     InputModule,
+    MatTooltipModule,
   ],
   exports: [
     CollapsibleSectionExample1Component,

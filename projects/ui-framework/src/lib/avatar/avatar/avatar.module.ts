@@ -12,7 +12,7 @@ import { AvatarImageComponent } from './avatar-image/avatar-image.component';
   declarations: [AvatarComponent, AvatarImageComponent],
   imports: [CommonModule, IconsModule, TruncateTooltipModule, ChipModule],
   exports: [AvatarComponent, AvatarImageComponent],
-  entryComponents: [AvatarComponent],
+  entryComponents: [AvatarComponent, AvatarImageComponent],
   providers: [DOMhelpers, EventManagerPlugins[0]],
 })
 export class AvatarModule {}

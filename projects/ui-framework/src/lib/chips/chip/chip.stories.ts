@@ -116,8 +116,8 @@ const storyTemplate = `
         [selected]="selected"
         (removed)="onRemove($event)">
 
-        <b-avatar [imageSource]="avatar1"
-                    [size]="avatarSize.mini"></b-avatar>
+        <b-avatar-image [imageSource]="avatar1"
+                    [size]="avatarSize.mini"></b-avatar-image>
       </b-chip>
 
       <b-chip style="margin: 10px;"
