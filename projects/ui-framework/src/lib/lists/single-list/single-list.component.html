@@ -63,7 +63,7 @@
                               class="comp-prefix"
                               [render]="option.prefixComponent"></b-component-renderer>
 
-        <span *ngIf="!option.isPlaceHolder"
+        <span *ngIf="!option.isPlaceHolder && option.value"
               class="option-value"
               data-max-lines='3'
               [innerHTML]="option.value | highlight: searchValue">

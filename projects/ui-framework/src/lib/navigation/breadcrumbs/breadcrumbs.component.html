@@ -31,8 +31,8 @@
         (click)="onStepClick(i)"></span>
 </div>
 
-<div class="buttons"
-     *ngIf="!isMobile">
+<div *ngIf="!isMobile"
+     class="buttons">
   <b-button *ngIf="buttons?.backBtn?.isVisible"
             (clicked)="onPrevClick()"
             [size]="buttonSize.medium"

@@ -120,9 +120,14 @@
     align-items: center;
     max-width: 100%;
     cursor: default;
+  }
 
-    .comp-prefix {
-      margin-right: 8px;
+  .comp-prefix {
+    margin-right: 8px;
+
+    &:last-child {
+      flex-grow: 1;
+      margin: 0;
     }
   }
 

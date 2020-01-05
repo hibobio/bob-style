@@ -9,7 +9,7 @@ import {
   HostBinding,
   OnDestroy,
   NgZone,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import { has } from 'lodash';
 import { Subscription } from 'rxjs';
@@ -24,7 +24,7 @@ import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 @Component({
   selector: 'b-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
-  styleUrls: ['./breadcrumbs.component.scss']
+  styleUrls: ['./breadcrumbs.component.scss'],
 })
 export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
   @HostBinding('attr.data-type')
@@ -51,7 +51,11 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
   readonly breadcrumbsType = BreadcrumbsType;
   private mediaEventSubscriber: Subscription;
 
-  constructor(private mobileService: MobileService, private zone: NgZone, private cd: ChangeDetectorRef) {}
+  constructor(
+    private mobileService: MobileService,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.mediaEventSubscriber = this.mobileService
@@ -76,10 +80,13 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   showTitle(i: number) {
-    return this.toggleStrategy === BreadcrumbsToggleStrategy.alwaysOpen || i === this.activeIndex;
+    return (
+      this.toggleStrategy === BreadcrumbsToggleStrategy.alwaysOpen ||
+      i === this.activeIndex
+    );
   }
 
-  onStepClick(stepIndex): void {
+  onStepClick(stepIndex: number): void {
     this.stepClick.emit(stepIndex);
   }
 
