@@ -10,6 +10,7 @@ import {
   OnDestroy,
   NgZone,
   ChangeDetectorRef,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { has } from 'lodash';
 import { Subscription } from 'rxjs';
@@ -25,6 +26,7 @@ import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
   selector: 'b-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
   @HostBinding('attr.data-type')
@@ -45,6 +47,8 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
   readonly buttonSize = ButtonSize;
   readonly buttonType = ButtonType;
   readonly icons = Icons;
+  readonly iconChevronRight = Icons.chevron_right.replace('b-icon-', '');
+  readonly iconCSuccess = Icons.success.replace('b-icon-', '');
   readonly iconColor = IconColor;
   readonly iconSize = IconSize;
   readonly linkColor = LinkColor;
@@ -81,6 +85,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
 
   showTitle(i: number) {
     return (
+      this.type === BreadcrumbsType.vertical ||
       this.toggleStrategy === BreadcrumbsToggleStrategy.alwaysOpen ||
       i === this.activeIndex
     );

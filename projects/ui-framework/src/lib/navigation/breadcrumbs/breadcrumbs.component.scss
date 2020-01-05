@@ -1,4 +1,5 @@
 @import '../../style/common-imports';
+@import '../../style/icons.mixin';
 
 $breadcrumbs-height: base8(64);
 
@@ -10,55 +11,48 @@ $breadcrumbs-height: base8(64);
   user-select: none;
 }
 
-.steps,
 .buttons,
 .step {
   display: flex;
   align-items: center;
 }
 
+.steps {
+  display: flex;
+  margin: 0;
+}
+
+.step-index {
+  color: white;
+  text-align: center;
+  @include size(times8(3));
+  line-height: times8(3);
+  flex-shrink: 0;
+  background-color: var(--primary-600);
+  border-radius: 100%;
+}
+
 .step {
-  .index,
-  .title,
-  b-icon {
-    display: inline-block;
-    vertical-align: middle;
-  }
-
-  .index {
-    color: white;
-    text-align: center;
-    @include size(times8(3));
-    line-height: times8(3);
-    flex-shrink: 0;
-    background-color: var(--primary-600);
-    border-radius: 100%;
-  }
-
-  &.clickable .index {
-    &:hover {
-      background-color: var(--primary-500);
-    }
-    &:active {
-      background-color: var(--primary-700);
-    }
-  }
-
-  .title {
-    color: var(--primary-600);
-    margin-left: times8(1);
-  }
-
-  b-icon {
+  // chevron icon
+  &:after {
     margin: 0 times8(1);
   }
 
-  &.clickable {
+  &.visited {
     cursor: pointer;
+
+    .step-index {
+      &:hover {
+        background-color: var(--primary-500);
+      }
+      &:active {
+        background-color: var(--primary-700);
+      }
+    }
   }
 
   &.disabled {
-    .index {
+    .step-index {
       background-color: $grey-300;
       color: $grey-700;
       cursor: default;
@@ -71,14 +65,33 @@ b-text-button {
   margin-left: times8(2);
 }
 
+// Primary Desktop
+
+:host[data-type='primary'] ::ng-deep {
+  .steps {
+    align-items: center;
+  }
+
+  .step-title {
+    color: var(--primary-600);
+    margin-left: times8(1);
+  }
+
+  [data-icon-after] {
+    @include icon-size(medium, '&:after');
+    @include icon-color(normal, '&:after');
+  }
+}
+
 // Secondary Desktop
 
 @include desktop {
-  :host[data-type='secondary'] {
+  :host[data-type='secondary'] ::ng-deep {
     position: relative;
     justify-content: flex-end;
 
     .steps {
+      align-items: center;
       @include size(100%);
       @include position;
       z-index: 0;
@@ -94,7 +107,7 @@ b-text-button {
 
 // Secondary & Mobile
 
-.steps-circles {
+.steps-circles ::ng-deep {
   .step {
     @include size(6px);
     background-color: $grey-500;
@@ -106,6 +119,7 @@ b-text-button {
       background-color: var(--primary-500);
       @include size(times8(1));
     }
+
     &:last-child {
       margin-right: 0;
     }
@@ -115,4 +129,17 @@ b-text-button {
 b-text-button {
   text-transform: uppercase;
   font-size: 16px;
+}
+
+// Vertical
+
+:host[data-type='vertical'] ::ng-deep {
+  .steps {
+    flex-direction: column;
+  }
+
+  [data-icon-before] {
+    @include icon-size(large, '&:before');
+    @include icon-color(negative, '&:before');
+  }
 }
