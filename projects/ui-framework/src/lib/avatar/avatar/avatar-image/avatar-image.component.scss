@@ -80,7 +80,7 @@ $avatarSizeMap: (
   --bg-color: #{$grey-200};
 
   box-sizing: border-box;
-  display: inline-flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;

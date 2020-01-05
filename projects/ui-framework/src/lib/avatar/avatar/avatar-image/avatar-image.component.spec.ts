@@ -15,6 +15,7 @@ import {
 import { AvatarSize, AvatarBadge } from '../avatar.enum';
 import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
 import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
+import { stringify } from '../../../services/utils/functional-utils';
 
 interface AttrCheck {
   role: string;
@@ -124,13 +125,17 @@ describe('AvatarImageComponent', () => {
   }));
 
   describe('Default view, no inputs', () => {
-    it('Should display mini icon with Person icon, no badge and other default attributes', () => {
-      expect(checkAttrubutes(componentElem, defautlAttrs)).toEqual(true);
-    });
+    it('Should display mini icon with Person icon, no badge and other default attributes', fakeAsync(() => {
+      flush();
+      expect(checkAttrubutes(componentElem, defautlAttrs)).toBe(
+        true,
+        'Should contain: ' + stringify(defautlAttrs)
+      );
+    }));
   });
 
   describe('Avatar imageSource & size', () => {
-    it('Should display large Avatar with testImage', () => {
+    it('Should display large Avatar with testImage', fakeAsync(() => {
       component.ngOnChanges(
         simpleChange({
           size: AvatarSize.large,
@@ -138,20 +143,25 @@ describe('AvatarImageComponent', () => {
         })
       );
 
-      expect(
-        checkAttrubutes(componentElem, {
-          ...defaultAttrsWithImg,
-          size: 'large',
-          varSize: '120px',
-          iconBeforeSize: 'x-large',
-          iconAfterSize: 'large',
-        })
-      ).toEqual(true);
-    });
+      flush();
+
+      const expected = {
+        ...defaultAttrsWithImg,
+        size: 'large',
+        varSize: '120px',
+        iconBeforeSize: 'x-large',
+        iconAfterSize: 'large',
+      };
+
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
+    }));
   });
 
   describe('Avatar backgroundColor & disabled', () => {
-    it('Should display medium Avatar with testImage and bgcolor red', () => {
+    it('Should display medium Avatar with testImage and bgcolor red', fakeAsync(() => {
       component.ngOnChanges(
         simpleChange({
           size: AvatarSize.medium,
@@ -162,37 +172,48 @@ describe('AvatarImageComponent', () => {
         })
       );
 
-      expect(
-        checkAttrubutes(componentElem, {
-          ...defaultAttrsWithImg,
-          size: 'medium',
-          varSize: '90px',
-          varBgColor: 'red',
-          disabled: 'true',
-          iconBeforeSize: 'x-large',
-          iconAfterSize: 'large',
-        })
-      ).toEqual(true);
-    });
+      flush();
+
+      const expected = {
+        ...defaultAttrsWithImg,
+        size: 'medium',
+        varSize: '90px',
+        varBgColor: 'red',
+        disabled: 'true',
+        iconBeforeSize: 'x-large',
+        iconAfterSize: 'large',
+      };
+
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
+    }));
   });
 
   describe('Avatar icon', () => {
-    it('Should display mini Avatar with no image and Save icon in normal color', () => {
+    it('Should display mini Avatar with no image and Save icon in normal color', fakeAsync(() => {
       component.ngOnChanges(
         simpleChange({
           icon: Icons.save,
         })
       );
 
-      expect(
-        checkAttrubutes(componentElem, {
-          iconBefore: 'save',
-          iconBeforeColor: 'normal',
-        })
-      ).toEqual(true);
-    });
+      flush();
 
-    it('Should display mini Avatar with test image, Settings icon in white color and icon-on-hover class', () => {
+      const expected = {
+        iconBefore: 'save',
+        iconBeforeColor: 'normal',
+      };
+
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
+    }));
+
+    // tslint:disable-next-line: max-line-length
+    it('Should display mini Avatar with test image, Settings icon in white color and icon-on-hover class', fakeAsync(() => {
       component.ngOnChanges(
         simpleChange({
           imageSource: imgMock,
@@ -200,17 +221,22 @@ describe('AvatarImageComponent', () => {
         })
       );
 
-      expect(
-        checkAttrubutes(componentElem, {
-          ...defaultAttrsWithImg,
-          iconBefore: 'settings',
-          iconBeforeColor: 'white',
-          class: 'avatar icon-on-hover',
-        })
-      ).toEqual(true);
-    });
+      flush();
 
-    it('Should display mini Avatar with no image and custom icon', () => {
+      const expected = {
+        ...defaultAttrsWithImg,
+        iconBefore: 'settings',
+        iconBeforeColor: 'white',
+        class: 'avatar icon-on-hover',
+      };
+
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
+    }));
+
+    it('Should display mini Avatar with no image and custom icon', fakeAsync(() => {
       component.ngOnChanges(
         simpleChange({
           icon: {
@@ -221,16 +247,22 @@ describe('AvatarImageComponent', () => {
         })
       );
 
-      expect(
-        checkAttrubutes(componentElem, {
-          iconBefore: 'search',
-          iconBeforeSize: 'large',
-          iconBeforeColor: 'negative',
-        })
-      ).toEqual(true);
-    });
+      flush();
 
-    it('Should display mini Avatar with test image, custom icon NOT in white color and icon-on-hover class', () => {
+      const expected = {
+        iconBefore: 'search',
+        iconBeforeSize: 'large',
+        iconBeforeColor: 'negative',
+      };
+
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
+    }));
+
+    // tslint:disable-next-line: max-line-length
+    it('Should display mini Avatar with test image, custom icon NOT in white color and icon-on-hover class', fakeAsync(() => {
       component.ngOnChanges(
         simpleChange({
           imageSource: imgMock,
@@ -242,20 +274,25 @@ describe('AvatarImageComponent', () => {
         })
       );
 
-      expect(
-        checkAttrubutes(componentElem, {
-          ...defaultAttrsWithImg,
-          iconBefore: 'success',
-          iconBeforeSize: 'large',
-          iconBeforeColor: 'negative',
-          class: 'avatar icon-on-hover',
-        })
-      ).toEqual(true);
-    });
+      flush();
+
+      const expected = {
+        ...defaultAttrsWithImg,
+        iconBefore: 'success',
+        iconBeforeSize: 'large',
+        iconBeforeColor: 'negative',
+        class: 'avatar icon-on-hover',
+      };
+
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
+    }));
   });
 
   describe('Avatar badge', () => {
-    it('Should display mini Avatar with testImage and Pending badge', () => {
+    it('Should display mini Avatar with testImage and Pending badge', fakeAsync(() => {
       component.ngOnChanges(
         simpleChange({
           imageSource: imgMock,
@@ -263,16 +300,21 @@ describe('AvatarImageComponent', () => {
         })
       );
 
-      expect(
-        checkAttrubutes(componentElem, {
-          ...defaultAttrsWithImg,
-          iconAfter: 'watch',
-          iconAfterColor: 'primary',
-        })
-      ).toEqual(true);
-    });
+      flush();
 
-    it('Should display mini Avatar with testImage and custom badge icon', () => {
+      const expected = {
+        ...defaultAttrsWithImg,
+        iconAfter: 'watch',
+        iconAfterColor: 'primary',
+      };
+
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
+    }));
+
+    it('Should display mini Avatar with testImage and custom badge icon', fakeAsync(() => {
       component.ngOnChanges(
         simpleChange({
           imageSource: imgMock,
@@ -283,40 +325,51 @@ describe('AvatarImageComponent', () => {
         })
       );
 
-      expect(
-        checkAttrubutes(componentElem, {
-          ...defaultAttrsWithImg,
-          iconAfter: 'question-mark',
-          iconAfterColor: 'positive',
-        })
-      ).toEqual(true);
-    });
+      flush();
+
+      const expected = {
+        ...defaultAttrsWithImg,
+        iconAfter: 'question-mark',
+        iconAfterColor: 'positive',
+      };
+
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
+    }));
   });
 
   describe('Avatar clickable', () => {
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       component.clicked.subscribe(() => {});
+
       component.ngOnChanges(
         simpleChange({
           imageSource: undefined,
         })
       );
+      flush();
+
       spyOn(component.clicked, 'emit');
-    });
+    }));
 
     it('Should emit Clicked event on click', () => {
       emitNativeEvent(componentElem);
       expect(component.clicked.emit).toHaveBeenCalled();
     });
 
-    it('Should add has-hover class and tabindex attribute', () => {
-      expect(
-        checkAttrubutes(componentElem, {
-          class: 'avatar has-hover',
-          tabindex: '0',
-        })
-      ).toEqual(true);
-    });
+    it('Should add has-hover class and tabindex attribute', fakeAsync(() => {
+      const expected = {
+        class: 'avatar has-hover',
+        tabindex: '0',
+      };
+
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
+    }));
   });
 
   describe('Ng-content', () => {
@@ -332,13 +385,16 @@ describe('AvatarImageComponent', () => {
       component.ngAfterViewInit();
       flush();
 
-      expect(
-        checkAttrubutes(componentElem, {
-          ...defaultAttrsWithImg,
-          iconBefore: null,
-          class: 'avatar has-content icon-on-hover',
-        })
-      ).toEqual(true);
+      const expected = {
+        ...defaultAttrsWithImg,
+        iconBefore: null,
+        class: 'avatar has-content icon-on-hover',
+      };
+
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
     }));
   });
 });
