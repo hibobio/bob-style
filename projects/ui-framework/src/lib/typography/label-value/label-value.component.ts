@@ -17,6 +17,7 @@ import {
   isKey,
   applyChanges,
   notFirstChanges,
+  hasChanges,
 } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
@@ -31,6 +32,9 @@ export class LabelValueComponent implements OnChanges {
   constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
 
   public iconAfter = false;
+  public iconClass: string;
+  public labelClass: string;
+  public valueClass: string;
 
   readonly iconPositions = IconPosition;
   readonly iconSizes = IconSize;
@@ -67,8 +71,8 @@ export class LabelValueComponent implements OnChanges {
 
   @HostBinding('attr.data-icon-position') get iconPos() {
     return this.icon &&
-      this.iconPosition !== this.iconPositions.label &&
-      this.iconPosition !== this.iconPositions.value
+      this.iconPosition !== IconPosition.label &&
+      this.iconPosition !== IconPosition.value
       ? this.iconPosition
       : null;
   }
@@ -103,6 +107,28 @@ export class LabelValueComponent implements OnChanges {
           : this.iconPosition === this.iconPositions.value_after
           ? this.iconPositions.value
           : this.iconPosition;
+    }
+
+    if (hasChanges(changes, ['icon', 'iconSize', 'iconPosition'])) {
+      this.iconClass =
+        this.icon +
+        (this.iconSize ? ' b-icon-' + this.iconSize : ' b-icon-large');
+
+      this.labelClass =
+        this.icon && this.iconPosition === IconPosition.label
+          ? this.icon +
+            (this.iconSize ? ' b-icon-' + this.iconSize : ' b-icon-small') +
+            (this.labelClicked.observers.length ? ' has-hover' : '') +
+            (this.iconAfter ? ' icon-after' : '')
+          : null;
+
+      this.valueClass =
+        this.icon && this.iconPosition === IconPosition.value
+          ? this.icon +
+            (this.iconSize ? ' b-icon-' + this.iconSize : ' b-icon-small') +
+            (this.valueClicked.observers.length ? ' has-hover' : '') +
+            (this.iconAfter ? ' icon-after' : '')
+          : null;
     }
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {

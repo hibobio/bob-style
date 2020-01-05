@@ -30,6 +30,10 @@
     & + & {
       box-shadow: 0 -1px 0 0 $grey-300;
     }
+
+    &.has-hover {
+      cursor: pointer;
+    }
   }
 
   &-icon {
@@ -45,12 +49,6 @@
     .bbl-list-icon + .bbl-list-label {
       padding-left: 0;
       flex-grow: 1;
-    }
-  }
-
-  &.clickable ::ng-deep {
-    .bbl-list-item {
-      cursor: pointer;
     }
   }
 }

@@ -13,14 +13,17 @@
          class="headers-group">
       <div (click)="headerClick(header)"
            [ngClass]="{
-           'clickable': options.length > 1,
-           'collapsed': header.isCollapsed,
-           'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header)}"
+            'clickable': options.length > 1,
+            'collapsed': header.isCollapsed,
+            'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header)
+           }"
            class="option-select header">
         <span *ngIf="options.length > 1"
               class="chevron b-icon-medium"
-              [ngClass]="{'b-icon-chevron-down': !header.isCollapsed, 'b-icon-chevron-right':
-              header.isCollapsed}"></span>
+              [ngClass]="{
+                'b-icon-chevron-down': !header.isCollapsed,
+                'b-icon-chevron-right': header.isCollapsed
+              }"></span>
         <span [innerHTML]="header.groupName | highlight: searchValue"></span>
         <span *ngIf="header.selectedCount > 0"
               class="header-selected-count">

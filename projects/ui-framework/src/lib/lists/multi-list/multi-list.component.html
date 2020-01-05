@@ -11,18 +11,21 @@
     <div *ngFor="let header of listHeaders; let headerIndex =  index;"
          class="headers-group">
       <div [ngClass]="{
-           'clickable': options.length > 1,
-           'collapsed': header.isCollapsed,
-           'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header),
-            hidden: header.hidden}"
+            'clickable': options.length > 1,
+            'collapsed': header.isCollapsed,
+            'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header),
+            hidden: header.hidden
+          }"
            class="option-select header has-hover">
         <span (click)="headerClick(header, headerIndex)"
               class="header-collapse-trigger">
         </span>
         <span *ngIf="options.length > 1"
               class="chevron b-icon-medium"
-              [ngClass]="{'b-icon-chevron-down': !header.isCollapsed, 'b-icon-chevron-right':
-              header.isCollapsed}"></span>
+              [ngClass]="{
+                'b-icon-chevron-down': !header.isCollapsed,
+                'b-icon-chevron-right': header.isCollapsed
+              }"></span>
         <div class="header-option">
           <b-checkbox [hidden]="searchValue"
                       class="checkbox"
