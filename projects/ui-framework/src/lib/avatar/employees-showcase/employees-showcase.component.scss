@@ -18,6 +18,18 @@
   }
 }
 
+.showcase-avatar {
+  &:before {
+    content: '';
+    @include size(auto);
+    @include position(-2px -2px -2px -2px);
+    border-radius: 50%;
+    background-color: white;
+    @include animate(fade-in, 1s, $keyframes: true);
+    animation-direction: reverse;
+  }
+}
+
 .clickable {
   cursor: pointer;
 }
@@ -25,14 +37,5 @@
 :host ::ng-deep {
   b-single-select-panel {
     display: block;
-  }
-
-  .avatar {
-    @include animate(fade-in, 1s, $keyframes: true);
-
-    .avatar-content {
-      @include flex-align;
-      opacity: 1;
-    }
   }
 }

@@ -7,16 +7,17 @@
        [ngClass]="{'clickable': expandOnClick}">
 
     <b-avatar-image *ngFor="let avatar of avatarsToShow; trackBy: trackBy"
+                    class="showcase-avatar"
                     [imageSource]="avatar.imageSource"
                     [size]="avatarSize">
     </b-avatar-image>
 
-    <b-avatar-image class="how-more"
+    <b-avatar-image class="show-more"
                     *ngIf="showThreeDotsButton"
                     [size]="avatarSize"
-                    [icon]="dotsIcon">
+                    [icon]="dotsIcon"
+                    [text]="avatarsLeft < 11 ? '+' + avatarsLeft: null">
     </b-avatar-image>
-
   </div>
 
 </b-single-select-panel>

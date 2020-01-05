@@ -167,7 +167,11 @@ export class EmployeesShowcaseComponent
       this.avatarsToFit < this.employees.length;
 
     this.avatarsToShow = this.getAvatarsToShow();
-    this.avatarsLeft = this.avatarsToShow.length;
+
+    this.avatarsLeft = Math.max(
+      this.employees.length - this.avatarsToShow.length,
+      0
+    );
 
     console.log(
       'initShowcase',
