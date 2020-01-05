@@ -6,6 +6,7 @@
                 [badge]="badge"
                 [disabled]="disabled"
                 [isClickable]="isClickable"
+                [supressWarnings]="supressWarnings"
                 (click.outside-zone)="onClick($event)">
   <ng-content></ng-content>
 </b-avatar-image>
@@ -14,25 +15,25 @@
      class="avatar-text">
 
   <h4 *ngIf="title"
+      class="slot1-big title"
       [b-truncate-tooltip]="orientation === orient.horizontal ? 1 : 2"
       [type]="tooltipType.css"
       [trustCssVars]="true"
       [expectChanges]="expectChanges"
-      class="slot1-big title"
       [innerHTML]="title">
   </h4>
 
   <p *ngIf="subtitle && (orientation === orient.horizontal || size > avatarSize.small)"
+     class="slot2-medium subtitle"
      [b-truncate-tooltip]="orientation === orient.horizontal ? 1 : 2"
      [type]="tooltipType.css"
      [trustCssVars]="true"
      [expectChanges]="expectChanges"
-     class="slot2-medium subtitle"
      [innerHTML]="subtitle">
   </p>
 
-  <p class="slot3-small caption"
-     *ngIf="caption && size > avatarSize.small"
+  <p *ngIf="caption && size > avatarSize.small"
+     class="slot3-small caption"
      [innerHTML]="caption">
   </p>
 

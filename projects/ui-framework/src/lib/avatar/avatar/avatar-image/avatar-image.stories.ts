@@ -82,6 +82,8 @@ const note = `
   pending or rejected / or Icon {icon, color} object  | &nbsp;
   [text] | string | text to put inside (will disable icon) | &nbsp;
   [disabled] | boolean | disabled state | false
+  [supressWarnings] | boolean | suppress warnings about not using \
+  getOptimizedAvatarImage for imageSource (set to true if using images that are not avatars) | false
   (clicked) | EventEmitter<wbr>&lt;MouseEvent&gt; | emitted on avatar click | &nbsp;
   ng-content | element | you can pass stuff to be placed inside Avatar as ng-content | &nbsp;
 
