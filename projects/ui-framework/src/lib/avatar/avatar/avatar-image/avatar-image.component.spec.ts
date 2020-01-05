@@ -397,4 +397,30 @@ describe('AvatarImageComponent', () => {
       );
     }));
   });
+
+  describe('Text input', () => {
+    it('Should add text and not show icon', fakeAsync(() => {
+      component.ngOnChanges(
+        simpleChange({
+          text: 'Some text',
+          imageSource: imgMock,
+          icon: Icons.settings,
+        })
+      );
+
+      flush();
+
+      const expected = {
+        ...defaultAttrsWithImg,
+        iconBefore: null,
+        class: 'avatar has-content icon-on-hover',
+      };
+
+      expect(componentElem.innerHTML).toContain('Some text');
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
+    }));
+  });
 });

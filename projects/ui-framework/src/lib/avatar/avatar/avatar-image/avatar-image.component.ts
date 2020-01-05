@@ -11,6 +11,7 @@ import {
   Output,
   NgZone,
   AfterViewInit,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { AvatarSize, AvatarBadge } from '../avatar.enum';
@@ -38,7 +39,8 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   constructor(
     private elRef: ElementRef,
     private DOM: DOMhelpers,
-    private zone: NgZone
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
   ) {
     this.host = this.elRef.nativeElement;
   }
@@ -76,6 +78,10 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
       []
     );
     if (notFirstChanges(changes)) {
+      if (changes.text) {
+        this.cd.detectChanges();
+      }
+
       this.zone.runOutsideAngular(() => {
         setTimeout(() => {
           this.setAttributes();
