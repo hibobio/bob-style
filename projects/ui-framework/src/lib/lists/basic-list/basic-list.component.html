@@ -1,12 +1,16 @@
 <table class="bbl-list"
+       role="list"
        [ngClass]="{
          'is-a-table': isTable,
          'not-a-table': !isTable,
          'single-label': singleLabel,
-         'show-action-on-hover': showActionOnHover
+         'show-action-on-hover': showActionOnHover,
+         'clickable': clicked.observers.length
         }">
-  <tr class="bbl-list-item"
-      *ngFor="let item of items; index as i">
+  <tr *ngFor="let item of items; index as i"
+      class="bbl-list-item"
+      role="listitem"
+      (click.outside-zone)="onItemClick(item, $event)">
 
     <td *ngIf="item.icon"
         b-icon
