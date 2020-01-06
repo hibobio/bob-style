@@ -1,4 +1,3 @@
-<!-- *ngIf="(!isMobile && type === breadcrumbsType.primary) || type === breadcrumbsType.vertical" -->
 <ul class="steps"
     [ngClass]="{
                 'steps-circles': (isMobile && type === breadcrumbsType.primary) || type ===
@@ -12,17 +11,18 @@
         visited: i < activeIndex,
         disabled: step.disabled
       }"
+      [attr.role]="i < activeIndex ? 'button' : null"
       (click)="onStepClick(i)">
 
-    <!-- *ngIf="type === breadcrumbsType.primary" -->
-    <span class="step-index"
+    <span *ngIf="!isMobile && type === breadcrumbsType.primary"
+          class="step-index"
           [attr.data-tooltip]="!showTitle(i) ? step.title : null">
       {{ i + 1 }}
     </span>
 
-    <!-- *ngIf="showTitle(i)" -->
     <span class="step-title"
           [ngClass]="{
+            hidden: isMobile || !showTitle(i),
             'b-bold-body': type === breadcrumbsType.primary,
             'b-big-body': type === breadcrumbsType.vertical
           }">
@@ -33,58 +33,36 @@
 
 </ul>
 
-<!-- <div *ngIf="(isMobile && type === breadcrumbsType.primary) || type === breadcrumbsType.secondary"
-     class="steps steps-circles">
-  <span *ngFor="let step of breadcrumbs; let i = index"
-        class="step"
-        [ngClass]="{
-          active: i == activeIndex,
-          visited: i < activeIndex
-        }"
-        (click)="onStepClick(i)"></span>
-</div> -->
-
-<!--
-
-
-
-
-
-
-
-
-
-
- -->
-
-
-<div *ngIf="!isMobile && type !== breadcrumbsType.vertical"
+<div *ngIf="type !== breadcrumbsType.vertical && (buttons?.backBtn?.isVisible || buttons?.nextBtn?.isVisible)"
      class="buttons">
-  <b-button *ngIf="buttons?.backBtn?.isVisible"
-            (clicked)="onPrevClick()"
-            [size]="buttonSize.medium"
-            [type]="buttonType.secondary">
-    {{ buttons?.backBtn?.label }}
-  </b-button>
 
-  <b-button *ngIf="buttons?.nextBtn?.isVisible"
-            (clicked)="onNextClick()"
-            [size]="buttonSize.medium"
-            [type]="buttonType.primary">
-    {{ buttons?.nextBtn?.label }}
-  </b-button>
-</div>
+  <ng-container *ngIf="!isMobile">
+    <b-button *ngIf="buttons?.backBtn?.isVisible"
+              (clicked)="onPrevClick()"
+              [size]="buttonSize.medium"
+              [type]="buttonType.secondary"
+              [text]="buttons?.backBtn?.label">
+    </b-button>
 
-<div *ngIf="isMobile && type !== breadcrumbsType.vertical"
-     class="buttons">
-  <b-text-button *ngIf="buttons?.backBtn?.isVisible"
-                 (clicked)="onPrevClick()"
-                 [text]="buttons?.backBtn?.label">
-  </b-text-button>
+    <b-button *ngIf="buttons?.nextBtn?.isVisible"
+              (clicked)="onNextClick()"
+              [size]="buttonSize.medium"
+              [type]="buttonType.primary"
+              [text]="buttons?.nextBtn?.label">
+    </b-button>
+  </ng-container>
 
-  <b-text-button *ngIf="buttons?.nextBtn?.isVisible"
-                 [color]="linkColor.primary"
-                 (clicked)="onNextClick()"
-                 [text]="buttons?.nextBtn?.label">
-  </b-text-button>
+  <ng-container *ngIf="isMobile">
+    <b-text-button *ngIf="buttons?.backBtn?.isVisible"
+                   (clicked)="onPrevClick()"
+                   [text]="buttons?.backBtn?.label">
+    </b-text-button>
+
+    <b-text-button *ngIf="buttons?.nextBtn?.isVisible"
+                   [color]="linkColor.primary"
+                   (clicked)="onNextClick()"
+                   [text]="buttons?.nextBtn?.label">
+    </b-text-button>
+  </ng-container>
+
 </div>

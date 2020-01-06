@@ -37,6 +37,10 @@ b-text-button {
   cursor: pointer;
 }
 
+.hidden {
+  @include visually-hidden;
+}
+
 // Primary Desktop
 
 .step-index {
@@ -105,13 +109,6 @@ b-text-button {
   @include desktop {
     position: relative;
     justify-content: flex-end;
-
-    .step-index {
-      display: none;
-    }
-    .step-title {
-      @include visually-hidden;
-    }
 
     .steps {
       align-items: center;

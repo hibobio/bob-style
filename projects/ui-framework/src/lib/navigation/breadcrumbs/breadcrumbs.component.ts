@@ -16,11 +16,11 @@ import { has } from 'lodash';
 import { Subscription } from 'rxjs';
 import { LinkColor } from '../../indicators/link/link.enum';
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import { BreadcrumbsType, BreadcrumbsToggleStrategy } from './breadcrumbs.enum';
 import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
+import { notFirstChanges } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-breadcrumbs',
@@ -77,18 +77,25 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
     if (has(changes, 'buttons')) {
       this.buttons = changes.buttons.currentValue;
     }
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
-  showTitle(i: number) {
+  showTitle(i: number): boolean {
     return (
-      this.type === BreadcrumbsType.vertical ||
-      this.toggleStrategy === BreadcrumbsToggleStrategy.alwaysOpen ||
-      i === this.activeIndex
+      this.type !== BreadcrumbsType.secondary &&
+      (this.type === BreadcrumbsType.vertical ||
+        this.toggleStrategy === BreadcrumbsToggleStrategy.alwaysOpen ||
+        i === this.activeIndex)
     );
   }
 
   onStepClick(stepIndex: number): void {
-    this.stepClick.emit(stepIndex);
+    if (stepIndex < this.activeIndex) {
+      this.stepClick.emit(stepIndex);
+    }
   }
 
   onNextClick(): void {
