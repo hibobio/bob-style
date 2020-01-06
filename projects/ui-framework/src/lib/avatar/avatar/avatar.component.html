@@ -19,8 +19,8 @@
       [b-truncate-tooltip]="orientation === orient.horizontal ? 1 : 2"
       [type]="tooltipType.css"
       [trustCssVars]="true"
-      [expectChanges]="expectChanges"
-      [innerHTML]="title">
+      [expectChanges]="expectChanges">
+    {{title}}
   </h4>
 
   <p *ngIf="subtitle && (orientation === orient.horizontal || size > avatarSize.small)"
@@ -28,8 +28,8 @@
      [b-truncate-tooltip]="orientation === orient.horizontal ? 1 : 2"
      [type]="tooltipType.css"
      [trustCssVars]="true"
-     [expectChanges]="expectChanges"
-     [innerHTML]="subtitle">
+     [expectChanges]="expectChanges">
+    {{subtitle}}
   </p>
 
   <p *ngIf="caption && size > avatarSize.small"

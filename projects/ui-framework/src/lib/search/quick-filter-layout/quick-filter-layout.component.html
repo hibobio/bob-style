@@ -1,11 +1,12 @@
 <b-icon [@reset]
         *ngIf="showResetButt()"
         class="reset-filters"
-        (click)="onReset()"
-        [hasHoverState]="true"
+        role="button"
         [icon]="icons.refresh"
         [color]="iconColor.normal"
-        [size]="iconSize.large">
+        [size]="iconSize.large"
+        [hasHoverState]="true"
+        (click)="onReset()">
 </b-icon>
 
 <div class="bar-content"
