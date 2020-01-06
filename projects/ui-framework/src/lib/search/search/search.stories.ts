@@ -14,7 +14,8 @@ const template = `
 <b-search [value]="value"
           [label]="label"
           [placeholder]="placeholder"
-          (searchChange)="searchChange($event)">
+          (searchChange)="searchChange($event)"
+          (searchFocus)="searchFocus($event)">
 </b-search>
 `;
 
@@ -35,9 +36,13 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  value | string/number/float | type of input field | &nbsp;
-  label | string | label text | &nbsp;
-  searchChange | action | searchChange output string | &nbsp;
+  [value] | string | input value | &nbsp;
+  [label] | string | label text | &nbsp;
+  [placeholder] | string | placeholder text | &nbsp;
+  [hideLabelOnFocus] | boolean | make label behave as placeholder | true
+  [enableBrowserAutoComplete] | InputAutoCompleteOptions | enable/disable autocomplete | off
+  (searchFocus) | EventEmitter<wbr>&lt;string&gt;  | emits on input focus | &nbsp;
+  (searchChange) | EventEmitter<wbr>&lt;string&gt;  | emits on input value change | &nbsp;
 
   ~~~
   ${template}
@@ -52,11 +57,12 @@ story.add(
         value: text('value', ''),
         label: text('label', ''),
         placeholder: text('placeholder', 'Search'),
-        searchChange: action('searchChange')
+        searchChange: action('searchChange'),
+        searchFocus: action('searchFocus'),
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, SearchModule, StoryBookLayoutModule]
-      }
+        imports: [BrowserAnimationsModule, SearchModule, StoryBookLayoutModule],
+      },
     };
   },
   { notes: { markdown: note } }

@@ -72,7 +72,8 @@ const note = `
   --- | --- | --- | ---
   [imageSource] | string | URL of the avatar image<br>\
   **Important!** <br>\
-  use **EmployeeAvatarService<wbr>.getOptimizedAvatarImage<wbr>(employee.about.avatar, AvatarSize)** <br>\
+  use **EmployeeAvatarService<wbr>.getOptimizedAvatarImage<wbr>\
+  (employee.about.avatar, AvatarSize)** <br>\
   to get correct avatar image | &nbsp;
   [backgroundColor] | string | background color | grey-200
   [size] | AvatarSize | enum for setting the avatar size | mini
