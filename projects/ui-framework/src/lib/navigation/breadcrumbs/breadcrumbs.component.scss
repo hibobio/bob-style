@@ -4,11 +4,15 @@
 $breadcrumbs-height: base8(64);
 
 :host {
-  height: $breadcrumbs-height;
   display: flex;
   justify-content: space-between;
   align-items: center;
   user-select: none;
+
+  &[data-type='primary'],
+  &[data-type='secondary'] {
+    height: $breadcrumbs-height;
+  }
 }
 
 .buttons,
@@ -18,9 +22,22 @@ $breadcrumbs-height: base8(64);
 }
 
 .steps {
+  list-style: none;
   display: flex;
   margin: 0;
+  padding: 0;
 }
+
+b-button,
+b-text-button {
+  margin-left: times8(2);
+}
+
+.visited {
+  cursor: pointer;
+}
+
+// Primary Desktop
 
 .step-index {
   color: white;
@@ -33,14 +50,7 @@ $breadcrumbs-height: base8(64);
 }
 
 .step {
-  // chevron icon
-  &:after {
-    margin: 0 times8(1);
-  }
-
   &.visited {
-    cursor: pointer;
-
     .step-index {
       &:hover {
         background-color: var(--primary-500);
@@ -60,13 +70,6 @@ $breadcrumbs-height: base8(64);
   }
 }
 
-b-button,
-b-text-button {
-  margin-left: times8(2);
-}
-
-// Primary Desktop
-
 :host[data-type='primary'] ::ng-deep {
   .steps {
     align-items: center;
@@ -77,18 +80,38 @@ b-text-button {
     margin-left: times8(1);
   }
 
-  [data-icon-after] {
-    @include icon-size(medium, '&:after');
-    @include icon-color(normal, '&:after');
+  @include desktop {
+    .step {
+      @include b-icon(
+        $icon: chevron-right,
+        $size: medium,
+        $color: normal,
+        $elem: '&:after',
+        $hover: false
+      ) {
+        margin: 0 times8(1);
+      }
+
+      &:last-child:after {
+        display: none;
+      }
+    }
   }
 }
 
 // Secondary Desktop
 
-@include desktop {
-  :host[data-type='secondary'] ::ng-deep {
+:host[data-type='secondary'] ::ng-deep {
+  @include desktop {
     position: relative;
     justify-content: flex-end;
+
+    .step-index {
+      display: none;
+    }
+    .step-title {
+      @include visually-hidden;
+    }
 
     .steps {
       align-items: center;
@@ -108,6 +131,8 @@ b-text-button {
 // Secondary & Mobile
 
 .steps-circles ::ng-deep {
+  align-items: center;
+
   .step {
     @include size(6px);
     background-color: $grey-500;
@@ -134,12 +159,25 @@ b-text-button {
 // Vertical
 
 :host[data-type='vertical'] ::ng-deep {
+  width: $sidebar-width;
+
   .steps {
     flex-direction: column;
   }
 
-  [data-icon-before] {
-    @include icon-size(large, '&:before');
-    @include icon-color(negative, '&:before');
+  .step {
+    @include b-icon(
+      $icon: success,
+      $size: large,
+      $color: negative,
+      $elem: '&:before',
+      $hover: false
+    ) {
+      margin: 0 times8(1);
+    }
+
+    &:last-child:after {
+      display: none;
+    }
   }
 }

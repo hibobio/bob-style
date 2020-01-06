@@ -162,7 +162,12 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 :host ::ng-deep .remove-column-button {
   .ag-header-viewport {
     .ag-header-cell {
-      @include b-icon($icon: 'circle-cancel', $size: small, $elem: '&:hover:after');
+      @include b-icon(
+        $icon: 'circle-cancel',
+        $size: small,
+        $elem: '&:hover:after',
+        $hover: false
+      );
 
       &:after {
         text-align: right;
@@ -183,7 +188,12 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
   .ag-overlay-wrapper {
     display: block;
     padding: ($table-header-height + times8(3)) times8(2) times8(3) times8(2);
-    @include b-icon($icon: 'table', $size: x-large, $color: light);
+    @include b-icon(
+      $icon: 'table',
+      $size: x-large,
+      $color: light,
+      $hover: false
+    );
 
     &:before {
       margin: 0 auto 8px auto;

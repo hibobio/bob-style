@@ -30,7 +30,7 @@
 @mixin ag-icon($b-icon) {
   margin-right: 5px;
   background: none;
-  @include b-icon($icon: $b-icon, $size: small, $color: dark);
+  @include b-icon($icon: $b-icon, $size: small, $color: dark, $hover: false);
   cursor: pointer;
 
   &:before {

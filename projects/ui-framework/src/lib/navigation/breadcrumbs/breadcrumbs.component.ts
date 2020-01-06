@@ -46,11 +46,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
   isMobile = false;
   readonly buttonSize = ButtonSize;
   readonly buttonType = ButtonType;
-  readonly icons = Icons;
-  readonly iconChevronRight = Icons.chevron_right.replace('b-icon-', '');
-  readonly iconCSuccess = Icons.success.replace('b-icon-', '');
-  readonly iconColor = IconColor;
-  readonly iconSize = IconSize;
+
   readonly linkColor = LinkColor;
   readonly breadcrumbsType = BreadcrumbsType;
   private mediaEventSubscriber: Subscription;
