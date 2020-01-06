@@ -17,7 +17,7 @@
     display: none;
   }
 
-  td {
+  ::ng-deep td {
     padding: 0 8px;
     vertical-align: middle;
     align-items: center;
@@ -30,6 +30,10 @@
     & + & {
       box-shadow: 0 -1px 0 0 $grey-300;
     }
+
+    &.has-hover {
+      cursor: pointer;
+    }
   }
 
   &-icon {
@@ -41,14 +45,15 @@
     text-align: right;
   }
 
-  &.single-label {
-    .bbl-list-icon + td {
+  &.single-label ::ng-deep {
+    .bbl-list-icon + .bbl-list-label {
       padding-left: 0;
+      flex-grow: 1;
     }
   }
 }
 
-.is-a-table {
+.is-a-table ::ng-deep {
   @include desktop {
     .bbl-list-icon + .bbl-list-label,
     .bbl-list-label:first-of-type {
@@ -62,26 +67,26 @@
 .not-a-table {
   display: block;
 
-  .bbl-list-item {
+  ::ng-deep .bbl-list-item {
     display: flex;
   }
 
-  td {
+  ::ng-deep td {
     display: flex;
   }
 
-  .bbl-list-icon {
+  ::ng-deep .bbl-list-icon {
     display: inline-flex;
   }
 
-  .bbl-list-action-container {
+  ::ng-deep .bbl-list-action-container {
     margin-left: auto;
   }
 }
 
 // secondary type
 
-:host[data-type='secondary'] {
+:host[data-type='secondary'] ::ng-deep {
   .bbl-list {
     background-color: $grey-100;
   }
