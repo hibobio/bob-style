@@ -1,52 +1,79 @@
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
-import assign from 'lodash/assign';
 import { DialogConfig } from '../dialog.interface';
 import { DialogSize } from '../dialog.enum';
+import { DocumentRef } from '../../../services/utils/document-ref.service';
+import { WindowRef } from '../../../services/utils/window-ref.service';
+
+const DIALOG_SIZE_TO_WIDTH = {
+  [DialogSize.small]: 480,
+  [DialogSize.medium]: 720,
+  [DialogSize.large]: 960,
+  [DialogSize.xLarge]: '90vw',
+};
+
+const DIALOG_CONFIG_DEF = {
+  closeOnNavigation: true,
+  backdropClass: 'b-dialog-backdrop',
+  hasBackdrop: true,
+  disableClose: false,
+  maxWidth: '90vw',
+  autoFocus: false,
+};
 
 @Injectable({
   providedIn: 'root',
 })
 export class DialogService {
-  readonly dialogSizeToWidth = {
-    [DialogSize.small]: 480,
-    [DialogSize.medium]: 720,
-    [DialogSize.large]: 960,
-    [DialogSize.xLarge]: '90vw',
-  };
-
   constructor(
     private dialog: MatDialog,
-  ) {
-  }
+    private windowRef: WindowRef,
+    private documentRef: DocumentRef
+  ) {}
 
   openDialog(
     dialogComponent: ComponentType<any>,
-    config: DialogConfig,
+    config: DialogConfig
   ): MatDialogRef<any> {
-    const scrollBarGap = window.innerWidth - document.documentElement.clientWidth;
-    document.body.style.paddingRight = `${ scrollBarGap }px`;
-
     if (!config.panelClass) {
-      console.warn('panelClass must be provided');
+      console.warn('DialogService: panelClass must be provided');
       return;
     }
 
-    const dialogConfig: MatDialogConfig = assign(config, {
-      width: this.dialogSizeToWidth[config.size],
-      closeOnNavigation: true,
-      backdropClass: 'b-dialog-backdrop',
-      panelClass: ['b-dialog-panel', `size-${ config.size }`, config.panelClass],
-      hasBackdrop: true,
-      disableClose: false,
-      maxWidth: '90vw',
-    });
+    const scrollBarGap =
+      this.windowRef.nativeWindow.innerWidth -
+      this.documentRef.nativeDocument.documentElement.clientWidth;
+
+    this.documentRef.nativeDocument.body.style.paddingRight = `${scrollBarGap}px`;
+
+    const dialogConfig: MatDialogConfig = Object.assign(
+      {},
+      DIALOG_CONFIG_DEF,
+      config,
+      {
+        width: DIALOG_SIZE_TO_WIDTH[config.size],
+        panelClass: [
+          'b-dialog-panel',
+          `size-${config.size}`,
+          config.panelClass,
+        ],
+      }
+    );
 
     const dialogRef = this.dialog.open(dialogComponent, dialogConfig);
 
-    dialogRef.afterClosed()
-      .subscribe(() => document.body.style.paddingRight = '0');
+    dialogRef
+      .afterClosed()
+      .subscribe(() =>
+        this.documentRef.nativeDocument.body.style.removeProperty(
+          'padding-right'
+        )
+      );
 
     return dialogRef;
   }
