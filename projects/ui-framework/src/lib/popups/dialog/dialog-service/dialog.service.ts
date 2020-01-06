@@ -6,25 +6,9 @@ import {
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { DialogConfig } from '../dialog.interface';
-import { DialogSize } from '../dialog.enum';
 import { DocumentRef } from '../../../services/utils/document-ref.service';
 import { WindowRef } from '../../../services/utils/window-ref.service';
-
-const DIALOG_SIZE_TO_WIDTH = {
-  [DialogSize.small]: 480,
-  [DialogSize.medium]: 720,
-  [DialogSize.large]: 960,
-  [DialogSize.xLarge]: '90vw',
-};
-
-const DIALOG_CONFIG_DEF = {
-  closeOnNavigation: true,
-  backdropClass: 'b-dialog-backdrop',
-  hasBackdrop: true,
-  disableClose: false,
-  maxWidth: '90vw',
-  autoFocus: false,
-};
+import { DIALOG_CONFIG_DEF, DIALOG_SIZE_TO_WIDTH } from '../dialog.const';
 
 @Injectable({
   providedIn: 'root',

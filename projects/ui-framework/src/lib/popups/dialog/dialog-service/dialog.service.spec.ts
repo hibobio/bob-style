@@ -7,14 +7,15 @@ import { DialogConfig } from '../dialog.interface';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 import { of } from 'rxjs';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import { DIALOG_CONFIG_DEF } from '../dialog.const';
 
 @Component({
   selector: 'b-comp-mock',
-  template: '<div>mock dialog component</div>'
+  template: '<div>mock dialog component</div>',
 })
 export class CompMockComponent {
-  constructor() {
-  }
+  constructor() {}
 }
 
 describe('DialogService', () => {
@@ -25,6 +26,18 @@ describe('DialogService', () => {
   const comp = CompMockComponent;
   let config: DialogConfig;
 
+  DOMhelpers.prototype.injectStyles(`
+    .html-reporter .result-message {
+      white-space: pre-line !important;
+      margin-bottom: 14px;
+      line-height: 2;
+      max-width: 700px;
+    }
+    .html-reporter .stack-trace {
+      white-space: pre-line !important;
+    }
+  `);
+
   beforeEach(() => {
     config = {
       size: DialogSize.medium,
@@ -32,7 +45,10 @@ describe('DialogService', () => {
       data: {},
     };
 
-    dialogRefMock = createSpyObj('dialogRefMock', ['afterClosed', 'beforeClosed']);
+    dialogRefMock = createSpyObj('dialogRefMock', [
+      'afterClosed',
+      'beforeClosed',
+    ]);
     dialogRefMock.afterClosed.and.returnValue(of({}));
 
     spyMatDialog = createSpyObj('spyMatDialog', ['open']);
@@ -41,7 +57,7 @@ describe('DialogService', () => {
     TestBed.configureTestingModule({
       providers: [
         DialogService,
-        { provide: MatDialog, useValue: spyMatDialog }
+        { provide: MatDialog, useValue: spyMatDialog },
       ],
     });
 
@@ -55,17 +71,15 @@ describe('DialogService', () => {
         panelClass: 'test-class',
         data: {},
       };
+
       const expectedConfig = {
+        ...DIALOG_CONFIG_DEF,
         size: DialogSize.small,
         data: {},
         width: 480,
-        closeOnNavigation: true,
-        backdropClass: 'b-dialog-backdrop',
         panelClass: ['b-dialog-panel', 'size-small', 'test-class'],
-        hasBackdrop: true,
-        disableClose: false,
-        maxWidth: '90vw',
       };
+
       dialogService.openDialog(comp, config);
       expect(spyMatDialog.open).toHaveBeenCalledWith(comp, expectedConfig);
     });
@@ -75,17 +89,15 @@ describe('DialogService', () => {
         panelClass: 'test-class',
         data: {},
       };
+
       const expectedConfig = {
+        ...DIALOG_CONFIG_DEF,
         size: DialogSize.medium,
         data: {},
         width: 720,
-        closeOnNavigation: true,
-        backdropClass: 'b-dialog-backdrop',
         panelClass: ['b-dialog-panel', 'size-medium', 'test-class'],
-        hasBackdrop: true,
-        disableClose: false,
-        maxWidth: '90vw',
       };
+
       dialogService.openDialog(comp, config);
       expect(spyMatDialog.open).toHaveBeenCalledWith(comp, expectedConfig);
     });
@@ -95,17 +107,15 @@ describe('DialogService', () => {
         panelClass: 'test-class',
         data: {},
       };
+
       const expectedConfig = {
+        ...DIALOG_CONFIG_DEF,
         size: DialogSize.large,
         data: {},
         width: 960,
-        closeOnNavigation: true,
-        backdropClass: 'b-dialog-backdrop',
         panelClass: ['b-dialog-panel', 'size-large', 'test-class'],
-        hasBackdrop: true,
-        disableClose: false,
-        maxWidth: '90vw',
       };
+
       dialogService.openDialog(comp, config);
       expect(spyMatDialog.open).toHaveBeenCalledWith(comp, expectedConfig);
     });

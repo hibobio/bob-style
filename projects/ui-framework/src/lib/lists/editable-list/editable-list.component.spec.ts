@@ -43,6 +43,18 @@ describe('EditableListComponent', () => {
     },
   ];
 
+  DOMhelpers.prototype.injectStyles(`
+    .html-reporter .result-message {
+      white-space: pre-line !important;
+      margin-bottom: 14px;
+      line-height: 2;
+      max-width: 700px;
+    }
+    .html-reporter .stack-trace {
+      white-space: pre-line !important;
+    }
+  `);
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EditableListComponent],
@@ -67,18 +79,6 @@ describe('EditableListComponent', () => {
             list: cloneDeep(selectOptionsMock),
           })
         );
-
-        DOMhelpers.prototype.injectStyles(`
-          .html-reporter .result-message {
-            white-space: pre-line !important;
-            margin-bottom: 14px;
-            line-height: 2;
-            max-width: 700px;
-          }
-          .html-reporter .stack-trace {
-            white-space: pre-line !important;
-          }
-        `);
       });
   }));
 
