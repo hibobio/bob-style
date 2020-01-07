@@ -97,6 +97,18 @@ describe('AvatarImageComponent', () => {
   let fixture: ComponentFixture<AvatarImageComponent>;
   let componentElem: HTMLElement;
 
+  DOMhelpers.prototype.injectStyles(`
+    .html-reporter .result-message {
+      white-space: pre-line !important;
+      margin-bottom: 14px;
+      line-height: 2;
+      max-width: 700px;
+    }
+    .html-reporter .stack-trace {
+      white-space: pre-line !important;
+    }
+  `);
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AvatarImageComponent],
@@ -109,22 +121,11 @@ describe('AvatarImageComponent', () => {
         fixture.detectChanges();
         component = fixture.componentInstance;
         componentElem = fixture.nativeElement;
-
-        DOMhelpers.prototype.injectStyles(`
-          .html-reporter .result-message {
-            white-space: pre-line !important;
-            margin-bottom: 14px;
-            line-height: 2;
-            max-width: 700px;
-          }
-          .html-reporter .stack-trace {
-            white-space: pre-line !important;
-          }
-        `);
       });
   }));
 
   describe('Default view, no inputs', () => {
+    // tslint:disable-next-line: max-line-length
     it('Should display mini icon with Person icon, no badge and other default attributes', fakeAsync(() => {
       flush();
       expect(checkAttrubutes(componentElem, defautlAttrs)).toBe(

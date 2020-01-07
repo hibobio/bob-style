@@ -21,6 +21,8 @@ export interface ColumnDef {
   cellClass?: (Icons | string)[];
   cellStyle?: any;
   getQuickFilterText?: Function;
+  flex?: number;
+  colSpan?: Function;
 }
 
 export interface RowClickedEvent {
