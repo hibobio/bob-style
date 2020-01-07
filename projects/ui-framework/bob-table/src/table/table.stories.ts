@@ -1,12 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { action } from '@storybook/addon-actions';
-import {
-  boolean,
-  number,
-  object,
-  select,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { boolean, number, object, select, withKnobs, } from '@storybook/addon-knobs/angular';
 import { storiesOf } from '@storybook/angular';
 import { AgGridModule } from 'ag-grid-angular';
 import { AvatarModule, ComponentGroupType } from 'bob-style';
@@ -14,12 +8,7 @@ import { values } from 'lodash';
 import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
 import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
-import {
-  mockColumnsDefs,
-  mockRowData,
-  treeColumnDefsMock,
-  treeRowDataMock,
-} from './table-mocks/table-story.mock';
+import { mockColumnsDefs, mockRowData, treeColumnDefsMock, treeRowDataMock, } from './table-mocks/table-story.mock';
 import { TableModule } from './table.module';
 import { TreeConfig } from './table/extensions/tree.config';
 import { TableComponent } from './table/table.component';
@@ -38,6 +27,7 @@ const template = `
   [maxHeight]="maxHeight"
   [rowSelection]="rowSelection"
   [removeColumnButtonEnabled]="removeColumnButtonEnabled"
+  [shouldAutoSizeColumns]="shouldAutoSizeColumns"
   (rowClicked)="rowClicked($event)"
   (cellClicked)="cellClicked($event)"
   (selectionChanged)="selectionChanged($event)"
@@ -55,6 +45,7 @@ const treeTemplate = `
   [maxHeight]="maxHeight"
   [rowSelection]="rowSelection"
   [removeColumnButtonEnabled]="removeColumnButtonEnabled"
+  [shouldAutoSizeColumns]="shouldAutoSizeColumns"
   (rowClicked)="rowClicked($event)"
   (cellClicked)="cellClicked($event)"
   (selectionChanged)="selectionChanged($event)"
@@ -100,6 +91,7 @@ const note = `
   [tableGridOptions] | GridOptions - Partial | extra options that are added on grid | {}
   [suppressDragLeaveHidesColumns] | boolean | disables 'dragging column out to remove it' behaviour | false
   [removeColumnButtonEnabled] | boolean | adds (x) button to column header | false
+  [shouldAutoSizeColumns] | boolean | enable auto size | true
   (rowClicked) | EventEmitter<wbr>&lt;RowClickedEvent&gt; | Row clicked event | &nbsp;
   (gridInit) | EventEmitter<wbr>&lt;void&gt;  | Grid init event | &nbsp;
   (selectionChanged) | EventEmitter<wbr>&lt;any[]&gt; | All selected rows | &nbsp;
@@ -177,6 +169,11 @@ function tableStoryFactory({
     ),
     removeColumnButtonEnabled: boolean(
       'removeColumnButtonEnabled',
+      true,
+      'Props'
+    ),
+    shouldAutoSizeColumns: boolean(
+      'shouldAutoSizeColumns',
       true,
       'Props'
     ),

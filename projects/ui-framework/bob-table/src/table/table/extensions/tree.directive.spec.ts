@@ -1,13 +1,12 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing';
-import {By} from '@angular/platform-browser';
-import {AgGridNg2} from 'ag-grid-angular';
-import {Tab} from 'bob-style';
-import {TableModule} from '../../table.module';
-import {TableComponent} from '../table.component';
-import {defaultTreeConfig, TreeConfig} from './tree.config';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { AgGridAngular } from 'ag-grid-angular';
+import { TableModule } from '../../table.module';
+import { TableComponent } from '../table.component';
+import { defaultTreeConfig, TreeConfig } from './tree.config';
 import { TreeDirective } from './tree.directive';
 
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector   : 'b-table-tree-test',
@@ -39,11 +38,12 @@ describe('TreeDirective', () => {
   });
 
   describe('treeAble', () => {
-    let grid: AgGridNg2;
+    let grid: AgGridAngular;
     const defaultConfigMock = {...defaultTreeConfig, hierarchyGetter: () => []};
     function setup(treeConfig: TreeConfig = defaultConfigMock) {
       component.treeConfig = treeConfig;
       fixture.detectChanges();
+      // tslint:disable-next-line:max-line-length
       const gridElem: TableComponent = fixture.debugElement.query(By.css('b-table')).componentInstance;
       grid = gridElem.agGrid;
     }
