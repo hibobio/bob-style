@@ -85,20 +85,33 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     .ag-header-cell-resize {
       right: -3px;
       width: 5px;
+      cursor: move;
 
-      background-image: linear-gradient($grey-500, $grey-500);
-      background-size: 1px 30px;
-      background-position: center;
+      &:after {
+        content: '';
+        position: absolute;
+        top: calc(50% - 15px);
+        left: 0;
+        width: 1px;
+        height: 30px;
+        background-color: $grey-500;
+      }
     }
 
     .ag-header-icon {
       display: flex;
       margin-left: 2px;
-      opacity: 0.73;
     }
 
-    .ag-icon-asc {
-      margin-top: -2px;
+    .ag-icon-asc, .ag-icon-desc {
+      transform: rotate(90deg);
+      @include b-icon($icon: 'arrow-right-alt2', $size: small) {
+        font-weight: bold;
+      }
+    }
+
+    .ag-icon-desc {
+      transform: rotate(-90deg);
     }
   }
 
