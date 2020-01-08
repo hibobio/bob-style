@@ -33,12 +33,20 @@ b-text-button {
   margin-left: times8(2);
 }
 
-.visited {
+[data-state='open'] {
   cursor: pointer;
 }
 
-.hidden {
+.invisible {
   @include visually-hidden;
+}
+
+[hidden] {
+  display: none;
+}
+
+[data-tooltip]:after {
+  min-width: 100px;
 }
 
 // Primary Desktop
@@ -54,9 +62,10 @@ b-text-button {
 }
 
 .step {
-  &.visited {
+  &[data-state='open'] {
     .step-index {
-      &:hover {
+      &:hover,
+      &:focus {
         background-color: var(--primary-500);
       }
       &:active {
@@ -65,7 +74,7 @@ b-text-button {
     }
   }
 
-  &.disabled {
+  &[data-state='closed'] {
     .step-index {
       background-color: $grey-300;
       color: $grey-700;
@@ -137,7 +146,7 @@ b-text-button {
     display: inline-block;
     border-radius: 100%;
 
-    &.active {
+    &[data-state='active'] {
       background-color: var(--primary-500);
       @include size(times8(1));
     }

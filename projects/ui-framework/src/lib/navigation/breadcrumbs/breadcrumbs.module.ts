@@ -6,6 +6,7 @@ import { TypographyModule } from '../../typography/typography.module';
 import { UtilsService } from '../../services/utils/utils.service';
 import { UtilsModule } from '../../services/utils/utils.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 @NgModule({
   declarations: [BreadcrumbsComponent],
@@ -14,9 +15,9 @@ import { ButtonsModule } from '../../buttons/buttons.module';
     IconsModule,
     TypographyModule,
     UtilsModule,
-    ButtonsModule
+    ButtonsModule,
   ],
   exports: [BreadcrumbsComponent],
-  providers: [UtilsService]
+  providers: [UtilsService, EventManagerPlugins[0]],
 })
 export class BreadcrumbsModule {}

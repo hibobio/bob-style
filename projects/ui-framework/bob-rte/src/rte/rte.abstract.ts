@@ -150,7 +150,7 @@ export abstract class RTEbaseElement extends BaseFormElement
       true
     );
 
-    if (changes.options) {
+    if (hasChanges(changes, ['options'], true)) {
       this.updateEditorOptions(
         merge(RTE_OPTIONS_DEF, this.options, changes.options.currentValue)
       );

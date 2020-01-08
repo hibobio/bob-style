@@ -4,25 +4,21 @@
                 breadcrumbsType.secondary
               }">
 
-  <li *ngFor="let step of breadcrumbs; let i = index"
+  <li *ngFor="let step of steps; let i = index; trackBy: stepsTrackBy"
       class="step"
-      [ngClass]="{
-        active: i == activeIndex,
-        visited: i < activeIndex,
-        disabled: step.disabled
-      }"
-      [attr.role]="i < activeIndex ? 'button' : null"
-      (click)="onStepClick(i)">
+      [attr.data-state]="stepState(step)"
+      [attr.role]="step.state === stepStates.open ? 'button' : null"
+      (click.outside-zone)="step.state === stepStates.open && goToStep(i)">
 
     <span *ngIf="!isMobile && type === breadcrumbsType.primary"
           class="step-index"
-          [attr.data-tooltip]="!showTitle(i) ? step.title : null">
+          [attr.data-tooltip]="!showTitle(step, i) ? step.title : null">
       {{ i + 1 }}
     </span>
 
     <span class="step-title"
           [ngClass]="{
-            hidden: isMobile || !showTitle(i),
+            invisible: isMobile || !showTitle(step, i),
             'b-bold-body': type === breadcrumbsType.primary,
             'b-big-body': type === breadcrumbsType.vertical
           }">
@@ -38,30 +34,38 @@
 
   <ng-container *ngIf="!isMobile">
     <b-button *ngIf="buttons?.backBtn?.isVisible"
-              (clicked)="onPrevClick()"
+              (clicked)="goToStep(activeStep - 1)"
               [size]="buttonSize.medium"
               [type]="buttonType.secondary"
-              [text]="buttons?.backBtn?.label">
+              [text]="buttons?.backBtn?.label"
+              [disabled]="buttonDisabled(0)"
+              [hidden]="buttonHidden(0)">
     </b-button>
 
     <b-button *ngIf="buttons?.nextBtn?.isVisible"
-              (clicked)="onNextClick()"
+              (clicked)="goToStep(activeStep + 1)"
               [size]="buttonSize.medium"
               [type]="buttonType.primary"
-              [text]="buttons?.nextBtn?.label">
+              [text]="buttons?.nextBtn?.label"
+              [disabled]="buttonDisabled(steps.length - 1)"
+              [hidden]="buttonHidden(steps.length - 1)">
     </b-button>
   </ng-container>
 
   <ng-container *ngIf="isMobile">
     <b-text-button *ngIf="buttons?.backBtn?.isVisible"
-                   (clicked)="onPrevClick()"
-                   [text]="buttons?.backBtn?.label">
+                   (clicked)="goToStep(activeStep - 1)"
+                   [text]="buttons?.backBtn?.label"
+                   [disabled]="buttonDisabled(0)"
+                   [hidden]="buttonHidden(0)">
     </b-text-button>
 
     <b-text-button *ngIf="buttons?.nextBtn?.isVisible"
                    [color]="linkColor.primary"
-                   (clicked)="onNextClick()"
-                   [text]="buttons?.nextBtn?.label">
+                   (clicked)="goToStep(activeStep + 1)"
+                   [text]="buttons?.nextBtn?.label"
+                   [disabled]="buttonDisabled(steps.length - 1)"
+                   [hidden]="buttonHidden(steps.length - 1)">
     </b-text-button>
   </ng-container>
 

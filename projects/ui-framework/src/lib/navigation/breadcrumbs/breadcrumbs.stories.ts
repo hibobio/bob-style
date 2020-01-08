@@ -3,7 +3,8 @@ import {
   number,
   object,
   select,
-  withKnobs
+  withKnobs,
+  boolean,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -11,22 +12,25 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BreadcrumbsModule } from './breadcrumbs.module';
 import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import {BreadcrumbsType, BreadcrumbsToggleStrategy} from './breadcrumbs.enum';
+import { BreadcrumbsType, BreadcrumbsStepState } from './breadcrumbs.enum';
 
-const story = storiesOf(
-  ComponentGroupType.Navigation,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(
+  withKnobs
+);
 
 const componmentTemplate = `
 <b-breadcrumbs [type]="type"
-               [toggleStrategy]="toggleStrategy"
-               [breadcrumbs]="breadcrumbs"
+               [steps]="breadcrumbs"
+               [activeStep]="activeIndex"
                [buttons]="buttons"
-               [activeIndex]="activeIndex"
-               (stepClick)="stepClick($event)"
-               (nextClick)="nextClick($event)"
-               (prevClick)="prevClick($event)">
+               [config]="{
+                 isOpen: configIsOpen,
+                 alwaysShowTitle: configAlwaysShowTitle,
+                 autoChangeSteps: configAutoChangeSteps,
+                 autoDisableButtons: configAutoDisableButtons,
+                 autoHideButtons: configAutoHideButtons
+               }"
+               (stepChange)="stepChange($event)">
 </b-breadcrumbs>
 `;
 
@@ -62,15 +66,15 @@ const note = `
 `;
 
 const breadcrumbsMock = [
-  { title: 'Details', disabled: false },
-  { title: 'Avatar', disabled: false },
-  { title: 'To dos', disabled: false },
-  { title: 'Summary', disabled: true }
+  { title: 'Details', state: BreadcrumbsStepState.active },
+  { title: 'Avatar', state: BreadcrumbsStepState.closed },
+  { title: 'To dos', state: BreadcrumbsStepState.closed },
+  { title: 'Summary', state: BreadcrumbsStepState.closed },
 ];
 
 const breadcrumbsButtons = {
   nextBtn: { label: 'Next', isVisible: true },
-  backBtn: { label: 'Back', isVisible: true }
+  backBtn: { label: 'Back', isVisible: true },
 };
 
 story.add(
@@ -84,25 +88,31 @@ story.add(
           Object.values(BreadcrumbsType),
           BreadcrumbsType.primary
         ),
-        toggleStrategy: select(
-          'toggleStrategy',
-          Object.values(BreadcrumbsToggleStrategy),
-          BreadcrumbsToggleStrategy.auto
-        ),
-        breadcrumbs: object<Breadcrumb>('breadcrumbs', breadcrumbsMock),
-        buttons: object<BreadcrumbNavButtons>('buttons', breadcrumbsButtons),
-        activeIndex: number('activeIndex', 2),
-        stepClick: action('stepClick'),
-        nextClick: action('nextClick'),
-        prevClick: action('prevClick')
+
+        activeIndex: number('activeIndex', 0),
+
+        configIsOpen: boolean('configIsOpen', false),
+
+        configAlwaysShowTitle: boolean('configAlwaysShowTitle', false),
+
+        configAutoChangeSteps: boolean('configAutoChangeSteps', true),
+
+        configAutoDisableButtons: boolean('configAutoDisableButtons', false),
+        configAutoHideButtons: boolean('configAutoHideButtons', true),
+
+        breadcrumbs: object('breadcrumbs', breadcrumbsMock),
+
+        buttons: object('buttons', breadcrumbsButtons),
+
+        stepChange: action('stepChange'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           BreadcrumbsModule,
-          StoryBookLayoutModule
-        ]
-      }
+          StoryBookLayoutModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

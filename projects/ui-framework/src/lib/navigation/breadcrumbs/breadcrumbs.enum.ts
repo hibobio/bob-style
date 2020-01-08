@@ -4,9 +4,13 @@ export enum BreadcrumbsType {
   vertical = 'vertical',
 }
 
-export enum BreadcrumbsToggleStrategy {
-  // will display labels according to the active step
-  auto = 'auto',
-  // will display labels always
-  alwaysOpen = 'alwaysOpen',
+export enum BreadcrumbsStepState {
+  open = 'open',
+  closed = 'closed',
+  active = 'active',
 }
+
+// export enum BreadcrumbsButtonState {
+//   disabled = 'disabled',
+//   hidden = 'closed',
+// }
