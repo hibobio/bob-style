@@ -8,6 +8,7 @@ import { CardTableModule } from '../card-table.module';
 import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
 
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+// tslint:disable-next-line: max-line-length
 import { ComponentRendererComponent } from '../../../services/component-renderer/component-renderer.component';
 import { ButtonComponent } from '../../../buttons/button/button.component';
 import { ButtonsModule } from '../../../buttons/buttons.module';
@@ -28,21 +29,21 @@ describe('CardTableComponent', () => {
   const CardTableMockMetaData = [
     {
       name: 'title1',
-      width: 25
+      width: 25,
     },
     {
       name: 'title2',
       textStyle: {
-        fontWeight: '500'
-      }
+        fontWeight: '500',
+      },
     },
     { name: 'title3' },
     { name: 'title4' },
     {
       name: 'title5',
       width: 15,
-      align: 'right'
-    }
+      align: 'right',
+    },
   ];
 
   const CardTableMockData = [
@@ -55,17 +56,17 @@ describe('CardTableComponent', () => {
         data: {
           component: ButtonComponent,
           attributes: {
-            type: 'secondary'
+            type: 'secondary',
           },
           content: 'Button',
           handlers: {
             clicked: () => {
               testVar = 'bye';
-            }
-          }
-        }
-      }
-    ]
+            },
+          },
+        },
+      },
+    ],
   ];
 
   beforeEach(async(() => {
@@ -75,18 +76,18 @@ describe('CardTableComponent', () => {
         BrowserAnimationsModule,
         CardTableModule,
         ButtonsModule,
-        TruncateTooltipModule
+        TruncateTooltipModule,
       ],
       providers: [CellWidthsService],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
-          entryComponents: [ButtonComponent]
-        }
+          entryComponents: [ButtonComponent],
+        },
       })
       .overrideComponent(CardTableComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default }
+        set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents()
       .then(() => {
