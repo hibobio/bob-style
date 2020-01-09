@@ -108,7 +108,7 @@ $chipTypeMap: (
       ),
       '[data-selected="true"]:not([data-disabled="true"])': (
         color: white,
-        background-color: var(--negative-600),
+        background-color: $color-select-red,
       ),
       '[data-selected="true"]:not([data-disabled="true"]):before': (
         color: white,
@@ -129,7 +129,7 @@ $chipTypeMap: (
   ),
   button: (
     '*': (
-      height: $button-size-large,
+      height: $button-size-large - 2px,
       border-radius: $border-radius,
     ),
   ),
@@ -203,6 +203,10 @@ $chipStateMap: (
   .b-icon:before {
     transition: none;
   }
+}
+
+:host[data-icon-before]:before {
+  transition: none;
 }
 
 :host {

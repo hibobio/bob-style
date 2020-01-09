@@ -18,7 +18,6 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
   selector: 'b-chip, [b-chip]',
   templateUrl: './chip.component.html',
   styleUrls: ['./chip.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChipComponent implements OnChanges {
   constructor(public elRef: ElementRef, private DOM: DOMhelpers) {
