@@ -7,8 +7,6 @@ import {
   ViewChild,
   OnInit,
   NgZone,
-  SimpleChanges,
-  OnChanges,
   ElementRef,
   ChangeDetectorRef,
   AfterViewInit,
@@ -16,7 +14,6 @@ import {
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { IconColor, IconSize } from '../../icons/icons.enum';
 import { InputEvent } from '../input/input.interface';
-import { InputTypes } from '../input/input.enum';
 import { SocialTypes } from './social.const';
 import { Social } from './social.enum';
 import { BaseFormElement } from '../base-form-element';
@@ -87,9 +84,9 @@ export class SocialComponent extends BaseFormElement
 
   public inputId: string | number;
   public narrowInput = false;
+
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
-  readonly inputTypes = InputTypes;
   readonly socialTypes = SocialTypes;
   readonly socialLabelMap = {
     [Social.facebook]: 'Facebook',

@@ -18,10 +18,10 @@
             [readonly]="readonly"
             [attr.minlength]="minChars || null"
             [attr.maxlength]="maxChars || null"
-            (input)="onInputChange($event.target.value)"
-            (blur)="onInputBlur()"
-            (focus)="onInputFocus()"
-            (keyup.outside-zone)="onInputKeyUp($event)"></textarea>
+            (input)="onInputChange($event)"
+            (blur)="onInputBlur($event)"
+            (focus)="onInputFocus($event)"
+            (keydown.outside-zone)="onInputKeydown($event)"></textarea>
 </div>
 <p b-input-message
    *ngIf="hintMessage || warnMessage || errorMessage || minChars || maxChars"

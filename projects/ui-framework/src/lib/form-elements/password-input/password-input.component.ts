@@ -43,7 +43,7 @@ export class PasswordInputComponent extends BaseInputElement {
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
-  readonly inputTypes = InputTypes;
+
   public inputType = InputTypes.password;
 
   isInputEmpty(): boolean {

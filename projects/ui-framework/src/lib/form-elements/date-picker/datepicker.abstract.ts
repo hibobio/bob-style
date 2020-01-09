@@ -18,7 +18,6 @@ import { BaseFormElement } from '../base-form-element';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
 import { Subscription, fromEvent, interval } from 'rxjs';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
-import { InputTypes } from '../input/input.enum';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import {
   simpleUID,
@@ -130,11 +129,10 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   private resizeSubscription: Subscription;
   private mediaEventSubscription: Subscription;
 
+  readonly types = DatepickerType;
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
-  readonly inputTypes = InputTypes;
-  readonly types = DatepickerType;
   readonly panelPos = PanelDefaultPosVer;
   readonly dateAdjust = DateAdjust;
 

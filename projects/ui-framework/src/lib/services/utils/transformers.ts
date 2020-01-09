@@ -297,7 +297,7 @@ export const logValue = <T = any>(value: T): T => {
   return value;
 };
 
-export const logValueComment = (comment: string) => <T = any>(value: T): T => {
+export const logValueComment = <T = any>(comment: string) => (value: T): T => {
   console.log(comment + ': ', value);
   return value;
 };

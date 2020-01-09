@@ -21,7 +21,6 @@ import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import { ChipType } from '../chips.enum';
 import { ChipInputChange, ChipListConfig, Chip } from '../chips.interface';
-import { InputTypes } from '../../form-elements/input/input.enum';
 import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { InputEventType } from '../../form-elements/form-elements.enum';
@@ -70,8 +69,6 @@ export class ChipInputComponent extends BaseFormElement
 
   private possibleChips: string[] = [];
   public filteredChips: string[] = this.options;
-  public readonly inputTypes = InputTypes;
-
   public maxChars = 50;
 
   readonly chipListConfig: ChipListConfig = {

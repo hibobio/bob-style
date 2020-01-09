@@ -15,6 +15,7 @@ import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.serv
 import { InputTypes } from './input.enum';
 import { BaseFormElement } from '../base-form-element';
 import { parseToNumber } from '../../services/utils/functional-utils';
+import { InputEventType } from '../form-elements.enum';
 
 @Component({
   selector: 'b-input',
@@ -65,19 +66,60 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     });
   }
 
-  onIncrement() {
-    this.writeValue(parseToNumber(this.input.nativeElement.value) + this.step);
-    this.processValue(this.value);
+  public onInputBlur(event: FocusEvent = null) {
+    if (this.inputType === InputTypes.number && (this.value + '').length) {
+      this.processNumberValue(this.value);
+    }
+
+    const relatedTarget = event.relatedTarget as HTMLButtonElement;
+
+    if (
+      this.inputType !== InputTypes.number ||
+      !relatedTarget ||
+      (relatedTarget && !relatedTarget.classList.contains('step-button'))
+    ) {
+      super.onInputBlur(event);
+    }
   }
 
-  onDecrement() {
-    this.writeValue(parseToNumber(this.input.nativeElement.value) - this.step);
-    this.processValue(this.value);
+  public onIncrement() {
+    this.processNumberValue(
+      parseToNumber(this.input.nativeElement.value) + this.step,
+      true
+    );
+    this.focus(true);
   }
 
-  public onInputKeydown(event: KeyboardEvent) {
-    if (this.inputType === InputTypes.number) {
-      this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9.]/);
+  public onDecrement() {
+    this.processNumberValue(
+      parseToNumber(this.input.nativeElement.value) - this.step,
+      true
+    );
+    this.focus(true);
+  }
+
+  private checkMinMax(value: number | string): number {
+    const parsed = parseToNumber(value);
+
+    return this.min && parsed < this.min
+      ? this.min
+      : this.max && parsed > this.max
+      ? this.max
+      : parsed;
+  }
+
+  private processNumberValue(value = this.value, emit = false): void {
+    const valueUpd = this.checkMinMax(value);
+
+    // tslint:disable-next-line: triple-equals
+    if (valueUpd != this.value) {
+      this.writeValue(valueUpd, true);
+
+      if (emit) {
+        this.transmitValue(this.value, {
+          eventType: [InputEventType.onChange],
+        });
+      }
     }
   }
 }
