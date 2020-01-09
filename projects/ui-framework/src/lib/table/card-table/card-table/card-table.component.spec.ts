@@ -14,7 +14,7 @@ import { ButtonComponent } from '../../../buttons/button/button.component';
 import { ButtonsModule } from '../../../buttons/buttons.module';
 import { TruncateTooltipModule } from '../../../popups/truncate-tooltip/truncate-tooltip.module';
 
-fdescribe('CardTableComponent', () => {
+describe('CardTableComponent', () => {
   let fixture: ComponentFixture<CardTableComponent>;
   let component: CardTableComponent;
 
