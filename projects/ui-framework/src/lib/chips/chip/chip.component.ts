@@ -7,18 +7,25 @@ import {
   HostBinding,
   SimpleChanges,
   OnChanges,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { ChipType } from '../chips.enum';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { applyChanges } from '../../services/utils/functional-utils';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
 @Component({
   selector: 'b-chip, [b-chip]',
   templateUrl: './chip.component.html',
   styleUrls: ['./chip.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChipComponent implements OnChanges {
-  constructor(public chip: ElementRef) {}
+  constructor(public elRef: ElementRef, private DOM: DOMhelpers) {
+    this.chip = this.elRef.nativeElement;
+  }
+
+  public chip: HTMLElement;
 
   @Input() text: string;
   @Input() removable = false;
@@ -48,27 +55,16 @@ export class ChipComponent implements OnChanges {
     );
 
     if (changes.type || changes.icon) {
-      const chipEl = this.chip.nativeElement as HTMLElement;
-
-      if (this.icon || (changes.icon && changes.icon.previousValue)) {
-        chipEl.className = chipEl.className
-          .split(' ')
-          .filter((c: string) => Boolean(c.trim()) && !c.includes('b-icon'))
-          .join(' ');
-        if (!chipEl.className) {
-          chipEl.removeAttribute('class');
-        }
-      }
-      if (
-        this.icon &&
-        (this.type === ChipType.icon || this.type === ChipType.tab)
-      ) {
-        chipEl.classList.add('b-icon-large', this.icon);
-      }
+      this.DOM.setAttributes(this.chip, {
+        'data-icon-before': this.iconAllowed()
+          ? this.icon.replace('b-icon-', '')
+          : null,
+        'data-icon-before-size': this.iconAllowed() ? IconSize.large : null,
+      });
     }
 
     if (changes.type || changes.removable) {
-      this.removable = this.type !== ChipType.tab ? this.removable : false;
+      this.removable = this.removableAllowed() ? this.removable : false;
     }
 
     if (changes.type || changes.selected) {
@@ -89,5 +85,18 @@ export class ChipComponent implements OnChanges {
     if (this.removed.observers.length > 0) {
       this.removed.emit(event);
     }
+  }
+
+  private iconAllowed(): boolean {
+    return (
+      this.icon &&
+      (this.type === ChipType.icon ||
+        this.type === ChipType.tab ||
+        this.type === ChipType.button)
+    );
+  }
+
+  private removableAllowed(): boolean {
+    return this.type !== ChipType.tab && this.type !== ChipType.button;
   }
 }

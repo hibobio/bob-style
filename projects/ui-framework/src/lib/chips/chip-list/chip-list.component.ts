@@ -240,7 +240,7 @@ export class ChipListComponent implements OnChanges {
   private focusChipElByIndex(index: number): void {
     const chipComp = this.list.toArray()[index];
     if (chipComp) {
-      chipComp.chip.nativeElement.focus();
+      chipComp.chip.focus();
     }
   }
 
