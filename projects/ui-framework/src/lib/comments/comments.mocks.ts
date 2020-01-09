@@ -1,5 +1,5 @@
-import {Icons} from '../icons/icons.enum';
-import {mockAvatar, mockDate, mockNames, mockText} from '../mock.const';
+import { Icons } from '../icons/icons.enum';
+import { mockAvatar, mockDate, mockNames, mockText } from '../mock.const';
 
 export const COMMENT_ITEM = {
   avatar: mockAvatar(),
@@ -9,12 +9,16 @@ export const COMMENT_ITEM = {
   menuConfig: [
     {
       label: 'duplicate',
-      action: function(event) { console.log('duplicate', event); }
+      action: function(event) {
+        console.log('duplicate', event);
+      },
     },
     {
       label: 'delete',
-      action: function (event) { console.log('delete', event); }
-    }
+      action: function(event) {
+        console.log('delete', event);
+      },
+    },
   ],
 };
 export const LONG_COMMENT_ITEM = {
@@ -25,10 +29,17 @@ export const LONG_COMMENT_ITEM = {
   actionConfig: {
     icon: Icons.delete,
     tooltip: 'Delete',
-    action: (event) => console.log('delete', event)
-  }
+    action: event => console.log('delete', event),
+  },
 };
 
-export const eventEnterShiftKey = (shiftKey: boolean) => {
-  return {shiftKey: shiftKey, keyCode: '13', key: 'Enter', code: 'Enter'};
+export const eventEnterShiftKey = (shiftKey: boolean): KeyboardEvent => {
+  return ({
+    shiftKey: shiftKey,
+    meta: shiftKey,
+    keyCode: 13,
+    key: 'Enter',
+    code: 'Enter',
+    preventDefault: () => {},
+  } as any) as KeyboardEvent;
 };

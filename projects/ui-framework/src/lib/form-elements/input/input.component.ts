@@ -20,7 +20,7 @@ import { InputEventType } from '../form-elements.enum';
 @Component({
   selector: 'b-input',
   templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss'],
+  styleUrls: ['./input.component.scss', './input-number-step-buttons.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
