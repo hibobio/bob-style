@@ -68,7 +68,7 @@
     background-color: white(0.7);
 
     &::ng-deep button {
-      @include size($sizeSmall);
+      @include size($button-size-small);
 
       &:before {
         font-size: 20px;

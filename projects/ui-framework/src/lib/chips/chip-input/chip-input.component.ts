@@ -170,9 +170,8 @@ export class ChipInputComponent extends BaseFormElement
         .toArray()
         .find(
           ch =>
-            ch.chip.nativeElement.textContent.trim().toLowerCase() ===
-            chipToAdd.toLowerCase()
-        ).chip.nativeElement;
+            ch.chip.textContent.trim().toLowerCase() === chipToAdd.toLowerCase()
+        ).chip;
       if (existingChipElemnent) {
         existingChipElemnent.classList.add('blink');
         this.zone.runOutsideAngular(() => {
@@ -209,10 +208,10 @@ export class ChipInputComponent extends BaseFormElement
   private unSelectLastChip(): void {
     if (
       this.chips.list.last &&
-      this.chips.list.last.chip.nativeElement.dataset.aboutToDelete
+      this.chips.list.last.chip.dataset.aboutToDelete
     ) {
-      delete this.chips.list.last.chip.nativeElement.dataset.aboutToDelete;
-      this.chips.list.last.chip.nativeElement.classList.remove('focused');
+      delete this.chips.list.last.chip.dataset.aboutToDelete;
+      this.chips.list.last.chip.classList.remove('focused');
     }
   }
 
@@ -250,7 +249,7 @@ export class ChipInputComponent extends BaseFormElement
   public onInputKeyup(event: KeyboardEvent): void {
     if (isKey(event.key, Keys.backspace)) {
       if (this.input.nativeElement.value === '' && this.chips.list.last) {
-        if (this.chips.list.last.chip.nativeElement.dataset.aboutToDelete) {
+        if (this.chips.list.last.chip.dataset.aboutToDelete) {
           const lastChipName = this.value.slice(-1)[0];
           this.zone.run(() => {
             this.value = this.value.slice(0, -1);
@@ -258,9 +257,8 @@ export class ChipInputComponent extends BaseFormElement
             this.transmit({ removed: lastChipName });
           });
         } else {
-          this.chips.list.last.chip.nativeElement.classList.add('focused');
-          this.chips.list.last.chip.nativeElement.dataset.aboutToDelete =
-            'true';
+          this.chips.list.last.chip.classList.add('focused');
+          this.chips.list.last.chip.dataset.aboutToDelete = 'true';
         }
         this.zone.runOutsideAngular(() => {
           setTimeout(() => {
