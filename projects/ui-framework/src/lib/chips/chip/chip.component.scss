@@ -20,6 +20,10 @@ $chipTypeMap: (
       font-weight: $font-weight-body,
     ),
   ),
+  info warning error success:
+    (
+      font-weight: 500,
+    ),
   info: (
     '*': (
       background-color: var(--inform-500),
@@ -62,6 +66,9 @@ $chipTypeMap: (
       '::ng-deep .remove-button': (
         margin-right: -5px,
         margin-left: 6px,
+      ),
+      '[data-selected="true"]:not([data-disabled="true"])': (
+        font-weight: 500,
       ),
     ),
   avatar: (
@@ -109,6 +116,7 @@ $chipTypeMap: (
       '[data-selected="true"]:not([data-disabled="true"])': (
         color: white,
         background-color: $color-select-red,
+        font-weight: 700,
       ),
       '[data-selected="true"]:not([data-disabled="true"]):before': (
         color: white,
@@ -159,7 +167,6 @@ $chipStateMap: (
   border: 1px solid transparent;
 
   font-size: $font-size-body;
-  font-weight: 500;
 
   height: 20px;
   padding: 0 10px;
