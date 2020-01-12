@@ -95,11 +95,11 @@ export const simpleUID = (
   suffix: string = ''
 ): string => {
   return (
-    prefix +
+    prefix.replace(/\s+/g, '_') +
     Math.random()
       .toString(16)
       .substr(2, length) +
-    suffix
+    suffix.replace(/\s+/g, '_')
   );
 };
 

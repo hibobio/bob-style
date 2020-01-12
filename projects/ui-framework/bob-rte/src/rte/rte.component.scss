@@ -54,7 +54,7 @@
   border-top-width: 0;
   border-right-width: 0;
   border-top-right-radius: $border-radius;
-  background-color: white;
+  background-color: $grey-200;
 
   &::ng-deep button {
     transition: width 0.2s, height 0.2s, opacity 0.2s;
@@ -65,7 +65,7 @@
   }
 
   &:not(:hover):not(.focused) {
-    background-color: white(0.7);
+    background-color: rgba($grey-200, 0.7);
 
     &::ng-deep button {
       @include size($button-size-small);

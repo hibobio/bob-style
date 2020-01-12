@@ -15,7 +15,7 @@ export const selectSome = (options: SelectGroupOption[]): SelectGroupOption[] =>
     })),
   }));
 
-const groupNum = 6;
+const groupNum = 8;
 const optionsNum = 4;
 
 const groupNames: string[] = mockJobs(30);
