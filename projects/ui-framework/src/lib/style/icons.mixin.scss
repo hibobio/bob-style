@@ -222,7 +222,7 @@ $icon-colors: (
       @include icon-size($size, $elem: '&');
     }
     @if $color {
-      @include icon-color($color, $elem: '&');
+      @include icon-color($color, $elem: '&', $hover: $hover));
     }
 
     speak: none;
