@@ -58,6 +58,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
       display: flex;
       align-items: center;
       cursor: default;
+      overflow: visible;
     }
 
     .ag-header-cell-sortable .ag-header-cell-label {
@@ -85,20 +86,29 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     .ag-header-cell-resize {
       right: -3px;
       width: 5px;
-
-      background-image: linear-gradient($grey-500, $grey-500);
-      background-size: 1px 30px;
-      background-position: center;
+      cursor: move;
+      @include cell-border;
     }
 
     .ag-header-icon {
       display: flex;
       margin-left: 2px;
-      opacity: 0.73;
+    }
+
+    .ag-icon-asc,
+    .ag-icon-desc {
+      @include b-icon($icon: 'arrow-left-alt', $size: 14px) {
+        font-weight: bold;
+      }
     }
 
     .ag-icon-asc {
-      margin-top: -2px;
+      transform: rotate(-90deg);
+      margin-bottom: -1px;
+    }
+
+    .ag-icon-desc {
+      transform: rotate(90deg);
     }
   }
 
@@ -121,7 +131,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     }
 
     .ag-cell {
-      @include cell(null);
+      @include cell(auto);
 
       &.row-select {
         position: relative;
@@ -167,9 +177,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
         $size: small,
         $elem: '&:hover:after',
         $hover: false
-      );
-
-      &:after {
+      ) {
         text-align: right;
         cursor: pointer;
         margin-right: -6px;
@@ -193,9 +201,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
       $size: x-large,
       $color: light,
       $hover: false
-    );
-
-    &:before {
+    ) {
       margin: 0 auto 8px auto;
     }
   }

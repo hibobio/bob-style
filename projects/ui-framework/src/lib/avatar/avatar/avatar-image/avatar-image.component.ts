@@ -20,10 +20,12 @@ import {
   applyChanges,
   notFirstChanges,
   getKeyByValue,
+  hasChanges,
 } from '../../../services/utils/functional-utils';
 import { AvatarIconSize, AvatarBadges, BadgeSize } from '../avatar.consts';
 import { BadgeConfig } from '../avatar.interface';
 import { Icon } from '../../../icons/icon.interface';
+import { valueAsNumber } from '../../../services/utils/transformers';
 
 @Component({
   selector: 'b-avatar-image',
@@ -77,6 +79,11 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
       },
       []
     );
+
+    if (hasChanges(changes, ['size'], true)) {
+      this.size = valueAsNumber(true, this.size, AvatarSize.mini);
+    }
+
     if (notFirstChanges(changes)) {
       if (changes.text) {
         this.cd.detectChanges();

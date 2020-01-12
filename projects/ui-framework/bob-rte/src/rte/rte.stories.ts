@@ -134,8 +134,10 @@ const note = `
    Try \`{ toolbarInline:true }\` to get inline toolbar (regular toolbar will be hidden)
   [minChars] | number | minimum (plain) text length | 0
   [maxChars] | number | maximum (plain) text length | &nbsp;
-  [minHeight] | number | minimum height of editor (including toolbar). Set to **0** to disable min-height | 185
-  [maxHeight] | number | maximum height of editor (including toolbar). Set to **0** to disable max-height | 350
+  [minHeight] | number | minimum height of editor (including toolbar). \
+  Set to **0** to disable min-height | 185
+  [maxHeight] | number | maximum height of editor (including toolbar). \
+  Set to **0** to disable max-height | 350
   [label] | string | label text (above editor) | &nbsp;
   [placeholder] | string | placeholder text (inside editor) | &nbsp;
   [description] | string | description text (icon tooltip) | &nbsp;
@@ -146,6 +148,7 @@ const note = `
   [warnMessage] | string | adds a warning message below editor | &nbsp;
   [errorMessage] | string | adds 'invalid' style, \
   hides hint/warn message and displays error message below editor | &nbsp;
+  [translation] | RteTranslation | translations for button titles, etc | RTE-TRANSLATION-DEF
   (changed) | EventEmitter<wbr>&lt;string&gt; | emits in text change | &nbsp;
   (focused) | EventEmitter<wbr>&lt;string&gt; | emits latest value on editor focus | &nbsp;
   (blurred) | EventEmitter<wbr>&lt;string&gt; | emits latest value on editor blur | &nbsp;
@@ -155,7 +158,8 @@ const note = `
   #### Mentions properties
   Name | Type | Description | default
   --- | --- | --- | ---
-  [mentionsList] | RteMentionsOption[] | pass an array of { avatar, displayName, link, attributes? } \
+  [mentionsList] | RteMentionsOption[] | pass an array of \
+  { avatar, displayName, link, attributes? } \
   objects for mentions functionality | &nbsp;
 
   <strong>Important!</strong>   \`\`\`.link  \`\`\` should be a full \

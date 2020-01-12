@@ -6,3 +6,7 @@ export interface RteMentionsOption {
   link: string;
   attributes?: GenericObject;
 }
+
+export interface RteTranslation {
+  add_variable: string;
+}

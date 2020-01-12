@@ -19,7 +19,10 @@ import {
   cloneObject,
   simpleUID,
 } from '../../../services/utils/functional-utils';
-import { BaseDatepickerElement } from '../datepicker.abstract';
+import {
+  BaseDatepickerElement,
+  CLOSE_SCROLL_STRATEGY_FACTORY,
+} from '../datepicker.abstract';
 import { MobileService } from '../../../services/utils/mobile.service';
 import { DateParseService } from '../date-parse-service/date-parse.service';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
@@ -45,11 +48,6 @@ const DATERANGE_VALUE_DEF: DateRangePickerValueLocal = {
   startDate: undefined,
   endDate: undefined,
 };
-
-export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
-  const strategy = () => overlay.scrollStrategies.close();
-  return strategy;
-}
 
 @Component({
   selector: 'b-date-range-picker',

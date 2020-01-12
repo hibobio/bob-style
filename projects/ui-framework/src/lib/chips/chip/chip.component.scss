@@ -13,57 +13,133 @@
 
 $chipTypeMap: (
   tag: (
-    background-color: $grey-300,
-    color: $grey-700,
-    border-color: $grey-300,
-    font-weight: $font-weight-body,
+    '*': (
+      background-color: $grey-300,
+      color: $grey-700,
+      border-color: $grey-300,
+      font-weight: $font-weight-body,
+    ),
   ),
+  info warning error success:
+    (
+      font-weight: 500,
+    ),
   info: (
-    background-color: var(--inform-500),
-    color: white,
-    border-color: var(--inform-500),
+    '*': (
+      background-color: var(--inform-500),
+      color: white,
+      border-color: var(--inform-500),
+    ),
   ),
   warning: (
-    background-color: $color-warn,
-    color: white,
-    border-color: $color-warn,
+    '*': (
+      background-color: $color-warn,
+      color: white,
+      border-color: $color-warn,
+    ),
   ),
   error: (
-    background-color: $color-error,
-    color: white,
-    border-color: $color-error,
+    '*': (
+      background-color: $color-error,
+      color: white,
+      border-color: $color-error,
+    ),
   ),
   success: (
-    background-color: var(--positive-500),
-    color: white,
-    border-color: var(--positive-500),
-  ),
-  avatar: (
-    background-color: white,
-    color: $grey-800,
-    border-color: $grey-300,
-    height: map-get($avatarSizes, mini) + 2px,
-    border-radius: (
-      (map-get($avatarSizes, mini) + 2px) / 2,
+    '*': (
+      background-color: var(--positive-500),
+      color: white,
+      border-color: var(--positive-500),
     ),
-    padding: 0 16px 0 10px,
+  ),
+  avatar icon:
+    (
+      '*': (
+        background-color: white,
+        color: $grey-800,
+        border-color: $grey-300,
+        height: map-get($avatarSizes, mini) + 2px,
+        border-radius: (
+          (map-get($avatarSizes, mini) + 2px) / 2,
+        ),
+      ),
+      '::ng-deep .remove-button': (
+        margin-right: -5px,
+        margin-left: 6px,
+      ),
+      '[data-selected="true"]:not([data-disabled="true"])': (
+        font-weight: 500,
+      ),
+    ),
+  avatar: (
+    '*': (
+      padding: 0 16px 0 10px,
+    ),
+    '::ng-deep .avatar': (
+      margin-right: 5px,
+      margin-left: -10px,
+      box-shadow: none,
+    ),
+    '[data-disabled="true"]::ng-deep .avatar': (
+      filter: grayscale(1),
+      opacity: 0.3,
+    ),
   ),
   icon: (
-    background-color: white,
-    color: $grey-800,
-    border-color: $grey-300,
-    height: map-get($avatarSizes, mini) + 2px,
-    border-radius: (
-      (map-get($avatarSizes, mini) + 2px) / 2,
+    '*': (
+      padding: 0 16px,
     ),
-    padding: 0 16px,
+    '[data-selected="true"]:not([data-disabled="true"])': (
+      color: $grey-800,
+      background-color: $color-option-selected,
+      border-color: $color-option-selected,
+    ),
   ),
+  icon tab button:
+    (
+      ':before': (
+        margin-right: 8px,
+        margin-left: -4px,
+      ),
+      '[data-disabled="true"]:before': (
+        opacity: 0.3,
+      ),
+    ),
+  tab button:
+    (
+      '*': (
+        background-color: white,
+        color: $grey-800,
+        border: 0,
+        padding: 0 16px,
+      ),
+      '[data-selected="true"]:not([data-disabled="true"])': (
+        color: white,
+        background-color: $color-select-red,
+        font-weight: 700,
+      ),
+      '[data-selected="true"]:not([data-disabled="true"]):before': (
+        color: white,
+      ),
+      '[data-selected="false"]:not([data-disabled="true"])[data-clickable="true"]:hover':
+      (
+        background-color: $grey-100,
+      ),
+      ':focus:after': (
+        display: none,
+      ),
+    ),
   tab: (
-    color: $grey-800,
-    border: 0,
-    height: 32px,
-    border-radius: 16px,
-    padding: 0 16px,
+    '*': (
+      height: 32px,
+      border-radius: 16px,
+    ),
+  ),
+  button: (
+    '*': (
+      height: $button-size-large - 2px,
+      border-radius: $border-radius,
+    ),
   ),
 );
 
@@ -91,7 +167,6 @@ $chipStateMap: (
   border: 1px solid transparent;
 
   font-size: $font-size-body;
-  font-weight: 500;
 
   height: 20px;
   padding: 0 10px;
@@ -120,11 +195,54 @@ $chipStateMap: (
       z-index: 0;
     }
   }
+}
 
-  @each $type, $typeProps in $chipTypeMap {
-    &[data-type='#{$type}'] {
-      @each $prop, $value in $typeProps {
-        #{$prop}: $value;
+.chip-text {
+  pointer-events: none;
+}
+
+:host ::ng-deep .remove-button {
+  margin-left: 5px;
+  margin-right: -9px;
+  display: block;
+  cursor: pointer;
+
+  .b-icon:before {
+    transition: none;
+  }
+}
+
+:host[data-icon-before]:before {
+  transition: none;
+}
+
+:host {
+  @each $types, $typeElems in $chipTypeMap {
+    @each $elem, $props in $typeElems {
+      $selector: '';
+
+      @each $type in $types {
+        @if $selector != '' {
+          $selector: $selector + ',';
+        }
+
+        $sel: '&[data-type="' + $type + '"]';
+
+        @if $elem != '*' {
+          $sel: '#{$sel}#{$elem}';
+        }
+
+        @if (contains($elem, ':hover')) {
+          $sel: '#{$sel}, #{str-replace($sel, ":hover", ":focus")}';
+        }
+
+        $selector: $selector + $sel;
+      }
+
+      #{$selector} {
+        @each $prop, $value in $props {
+          #{$prop}: $value;
+        }
       }
     }
   }
@@ -136,78 +254,4 @@ $chipStateMap: (
       }
     }
   }
-}
-
-.chip-text {
-  pointer-events: none;
-}
-
-.remove-button {
-  margin-left: 5px;
-  margin-right: -9px;
-  display: block;
-  cursor: pointer;
-}
-
-// additional styles for Avatar, Icon & Tab chips
-
-:host[data-type='tab']::ng-deep,
-:host[data-type='icon']::ng-deep,
-:host[data-type='avatar']::ng-deep {
-  .remove-button {
-    margin-right: -5px;
-    margin-left: 6px;
-  }
-}
-
-:host[data-type='avatar']::ng-deep {
-  .avatar {
-    margin-right: 5px;
-    margin-left: -10px;
-    box-shadow: none;
-  }
-}
-
-:host[data-type='avatar'][data-disabled='true']::ng-deep {
-  .avatar {
-    filter: grayscale(1);
-    opacity: 0.3;
-  }
-}
-
-:host[data-type='tab']:before,
-:host[data-type='icon']:before {
-  margin-right: 8px;
-  margin-left: -4px;
-}
-
-:host[data-type='icon'][data-selected='true']:not([data-disabled='true']) {
-  color: $grey-800;
-  background-color: $color-option-selected;
-  border-color: $color-option-selected;
-}
-
-:host[data-type='tab'][data-disabled='true']:before,
-:host[data-type='icon'][data-disabled='true']:before {
-  opacity: 0.3;
-}
-
-:host[data-type='tab'][data-selected='true']:not([data-disabled='true']) {
-  color: white;
-  background-color: var(--negative-600);
-
-  &:before {
-    color: white;
-  }
-}
-
-:host[data-type='tab'][data-selected='false']:not([data-disabled='true'])[data-clickable='true'] {
-  &:hover,
-  &:focus {
-    background-color: $grey-100;
-  }
-}
-
-:host[data-type='tab']:focus:after {
-  display: none;
 }

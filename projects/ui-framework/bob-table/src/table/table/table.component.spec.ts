@@ -1,19 +1,19 @@
-import {CommonModule} from '@angular/common';
-import {ChangeDetectorRef} from '@angular/core';
-import {async, ComponentFixture, fakeAsync, flush, TestBed, tick} from '@angular/core/testing';
-import {By} from '@angular/platform-browser';
-import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {AgGridModule} from 'ag-grid-angular';
-import {AvatarModule} from 'bob-style';
-import {cloneDeep, keys, pick} from 'lodash';
-import {AvatarCellComponent} from '../table-cell-components/avatar-cell/avatar.component';
-import {COLUMN_DEFS_MOCK, ROW_DATA_MOCK} from '../table-mocks/table-test.mock';
-import {TableUtilsService} from '../table-utils-service/table-utils.service';
-import {TableModule} from '../table.module';
-import {TableComponent} from './table.component';
-import {RowSelection, TableType} from './table.enum';
-import {ColumnDef} from './table.interface';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
+import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { AgGridModule } from 'ag-grid-angular';
+import { AvatarModule } from 'bob-style';
+import { cloneDeep, keys, pick } from 'lodash';
+import { AvatarCellComponent } from '../table-cell-components/avatar-cell/avatar.component';
+import { COLUMN_DEFS_MOCK, ROW_DATA_MOCK } from '../table-mocks/table-test.mock';
+import { TableUtilsService } from '../table-utils-service/table-utils.service';
+import { TableModule } from '../table.module';
+import { TableComponent } from './table.component';
+import { RowSelection, TableType } from './table.enum';
+import { ColumnDef } from './table.interface';
 import createSpyObj = jasmine.createSpyObj;
 import SpyObj = jasmine.SpyObj;
 
@@ -207,6 +207,15 @@ describe('TableComponent', () => {
           expect(
             component.gridOptions.columnApi.autoSizeAllColumns
           ).toHaveBeenCalled();
+        }));
+        it('should call autoSizeAllColumns when onGridReady is triggered', fakeAsync(() => {
+          component.shouldAutoSizeColumns = false;
+          fixture.autoDetectChanges();
+          spyOn(component.gridOptions.columnApi, 'autoSizeAllColumns');
+          flush();
+          expect(
+            component.gridOptions.columnApi.autoSizeAllColumns
+          ).not.toHaveBeenCalled();
         }));
         it('should emit gridInit event when onGridReady is triggered', fakeAsync(() => {
           fixture.autoDetectChanges();

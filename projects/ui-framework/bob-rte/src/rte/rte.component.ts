@@ -18,6 +18,7 @@ import {
   ListChange,
   cloneArray,
   chainCall,
+  eventHasMetaKey,
 } from 'bob-style';
 
 import { RTEbaseElement } from './rte.abstract';
@@ -169,7 +170,7 @@ export class RichTextEditorComponent extends RTEbaseElement
 
         // prevent mentions link clicks
         if (
-          !event.metaKey &&
+          !eventHasMetaKey(event) &&
           (target.className.includes('mention') ||
             target
               .getAttributeNames()

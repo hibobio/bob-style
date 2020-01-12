@@ -215,6 +215,13 @@ $input-focus-border-color: $grey-700;
       border-color: $input-focus-border-color;
       box-shadow: none;
     }
+
+    .bfe-wrap.focused {
+      .bfe-input::placeholder,
+      .bfe-input [data-placeholder]:before {
+        opacity: 0;
+      }
+    }
   }
 
   :host.disabled {

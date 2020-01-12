@@ -1,5 +1,7 @@
 $icon-chars: (
   megaphone: '\e965',
+  in-progress: '\e979',
+  placeholder-add: '\e975',
   doc-description: '\e973',
   person-reports: '\e971',
   person-manager: '\e972',
@@ -61,6 +63,7 @@ $icon-chars: (
   cake: '\e908',
   circle-cancel: '\e909',
   chat: '\e96b',
+  success-alt: '\e976',
   close: '\e90a',
   edit: '\e90b',
   folder-add: '\e90c',
@@ -78,6 +81,7 @@ $icon-chars: (
   folder-shared: '\e916',
   dir-ltr: '\e968',
   dir-rtl: '\e969',
+  people-alt2: '\e977',
   help: '\e917',
   home: '\e918',
   person-check: '\e919',
@@ -90,6 +94,7 @@ $icon-chars: (
   chevron-left: '\e91e',
   chevron-right: '\e91f',
   chevron-up: '\e920',
+  arrow-left-alt: '\e978',
   more-horiz: '\e921',
   tag: '\e955',
   print: '\e963',
@@ -163,17 +168,24 @@ $icon-colors: (
 
 @mixin icon-size($size: large, $elem: '&:before') {
   #{$elem} {
-    @include size(map-get($icon-sizes, $size));
-    font-size: map-get($icon-sizes, $size);
-    line-height: map-get($icon-sizes, $size);
+    @if map-has-key($icon-sizes, $size) {
+      $size: map-get($icon-sizes, $size);
+    }
+    @include size($size);
+    font-size: $size;
+    line-height: $size;
   }
 }
 
 @mixin icon-color($color: dark, $hover: true, $elem: '&:before') {
   #{$elem} {
-    color: map-get-deep($icon-colors, $color, color);
+    @if map-has-key($icon-colors, $color) {
+      color: map-get-deep($icon-colors, $color, color);
+    } @else {
+      color: $color;
+    }
   }
-  @if $hover {
+  @if ($hover and map-has-key($icon-colors, $color)) {
     .has-hover:hover &,
     .has-hover:focus &,
     &.has-hover:hover,
@@ -187,7 +199,9 @@ $icon-colors: (
 
 @mixin icon-class($class, $elem: '&:before') {
   #{$elem} {
-    content: map-get($icon-chars, $class);
+    @if map-has-key($icon-chars, $class) {
+      content: map-get($icon-chars, $class);
+    }
   }
 }
 
@@ -204,8 +218,12 @@ $icon-colors: (
     @if $icon {
       @include icon-class($icon, '&');
     }
-    @include icon-size($size, $elem: '&');
-    @include icon-color($color, $elem: '&', $hover: $hover);
+    @if $size {
+      @include icon-size($size, $elem: '&');
+    }
+    @if $color {
+      @include icon-color($color, $elem: '&');
+    }
 
     speak: none;
     font-style: normal;

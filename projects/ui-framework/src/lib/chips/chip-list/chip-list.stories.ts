@@ -48,18 +48,18 @@ const icons = randomFromArray(
   null
 );
 
-const tabIcons = randomFromArray(
-  [
-    Icons.department_icon,
-    Icons.person,
-    Icons.person_check,
-    Icons.person_add,
-    Icons.person_manager,
-    Icons.person_peer,
-    Icons.person_reports,
-  ],
-  null
-);
+const tabIconsArray = [
+  Icons.department_icon,
+  Icons.person,
+  Icons.person_check,
+  Icons.person_add,
+  Icons.person_manager,
+  Icons.person_peer,
+  Icons.person_reports,
+];
+
+const tabIcons = randomFromArray([tabIconsArray], null);
+const tabButtonIcons = randomFromArray([tabIconsArray], null);
 
 const chips = mockNames(10).map((chip, index) => ({
   text: chip,
@@ -69,12 +69,17 @@ const chips = mockNames(10).map((chip, index) => ({
   disabled: randomNumber() > 90,
   icon: icons[index],
 }));
-chips[2].selected = true;
 
 const chipTabs = mockCities(3).map((chip, index) => ({
   text: chip,
   id: simpleUID(),
   icon: tabIcons[index],
+}));
+
+const chipButtonTabs = mockCities(3).map((chip, index) => ({
+  text: chip,
+  id: simpleUID(),
+  icon: tabButtonIcons[index],
 }));
 
 const template = `
@@ -97,9 +102,19 @@ const template = `
 
 const templateTabs = `
   <b-chip-list [chips]="chipTabs"
-               [activeIndex]="activeIndex"
+               [activeIndex]="activeTabIndex"
                [config]="{
                   type: chipType.tab
+                }"
+                (selected)="onChipSelected($event)">
+  </b-chip-list>
+`;
+
+const templateButtonTabs = `
+  <b-chip-list [chips]="chipButtonTabs"
+               [activeIndex]="activeTabButtonIndex"
+               [config]="{
+                  type: chipType.button
                 }"
                 (selected)="onChipSelected($event)">
   </b-chip-list>
@@ -117,11 +132,14 @@ const note = `
   [chips] | Chip[] / string[] | Array of Chip objects (will also accept an array of strings)
   **[config]** | ChipListConfig | list configuration (options common to all \
     chips, including: type, removable, selectable, focusable, disabled, align)
-  [activeIndex] | number | index of selected chip (can be used to select chip in single-selectable mode)
+  [activeIndex] | number | index of selected chip (can be used to select chip \
+    in single-selectable mode)
   (removed) | EventEmitter<wbr>&lt;Chip&gt; | emited on chip removed event
   (clicked) | EventEmitter<wbr>&lt;Chip&gt; | emited on chip clicked event
-  (selected) | EventEmitter<wbr>&lt;Chip&gt; | emited on chip selected event (fired only if chip is selectable)
-  (keyPressed) | EventEmitter<wbr>&lt;{chip: Chip, event: KeyboardEvent}&gt; | emited on chip KeyDown event
+  (selected) | EventEmitter<wbr>&lt;Chip&gt; | emited on chip selected event \
+  (fired only if chip is selectable)
+  (keyPressed) | EventEmitter<wbr>&lt;{chip: Chip, event: KeyboardEvent}&gt; \
+  | emited on chip KeyDown event
 
   ~~~
   ${template}
@@ -135,7 +153,8 @@ const note = `
   type | ChipType | chip type (tag, tab, avatar, icon, info, warning, error, success) | tag
   removable | boolean | if chip has remove (x) button | false
   selectable | boolean / ChipListSelectable | single (only 1 chip \
-     selected at a time), multi (multiple chips can be selected). setting to true equals <u>multi</u> | false
+     selected at a time), multi (multiple chips can be selected). \
+     setting to true equals <u>multi</u> | false
   focusable | boolean | if true, focused chip will be indicated via a \
    slightly darker background color (usefull for keyboard navigation) | false
   disabled | boolean | disables chip list | false
@@ -146,6 +165,13 @@ const note = `
   #### Tabs view example
   ~~~
   ${templateTabs}
+  ~~~
+
+  <br>
+
+  #### "Button Tabs" view example
+  ~~~
+  ${templateButtonTabs}
   ~~~
 
 `;
@@ -163,9 +189,13 @@ const storyTemplate = `
 
   <hr style="margin: 60px 0 50px 0; border: 0; height: 0; border-top: 2px dashed #d2d2d2;">
 
-
   <h4>Tabs view: </h4>
   ${templateTabs}
+
+  <hr style="margin: 60px 0 50px 0; border: 0; height: 0; border-top: 2px dashed #d2d2d2;">
+
+  <h4>"Button Tabs" view: </h4>
+  ${templateButtonTabs}
 
 </div>
 </b-story-book-layout>
@@ -177,7 +207,10 @@ story.add(
     template: storyTemplate,
     props: {
       chipTabs: chipTabs,
+      chipButtonTabs: chipButtonTabs,
       chipType: ChipType,
+      activeTabIndex: 1,
+      activeTabButtonIndex: 0,
       type: select('type', Object.values(ChipType), ChipType.tag),
       align: select('align', Object.values(ChipListAlign), ChipListAlign.left),
       removable: boolean('removable', true),

@@ -4,28 +4,21 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild,
-  HostListener
+  ViewChild
 } from '@angular/core';
-import {AgGridNg2} from 'ag-grid-angular';
-import {
-  CellClickedEvent,
-  Column,
-  DragStoppedEvent,
-  GridColumnsChangedEvent,
-  GridOptions,
-  GridReadyEvent
-} from 'ag-grid-community';
-import {cloneDeep, get, has, map} from 'lodash';
-import {TableUtilsService} from '../table-utils-service/table-utils.service';
-import {AgGridWrapper} from './ag-grid-wrapper';
-import {RowSelection, TableType} from './table.enum';
-import {ColumnDef, ColumnsOrderChangedEvent, RowClickedEvent, SortChangedEvent} from './table.interface';
+import { AgGridAngular } from 'ag-grid-angular';
+import { CellClickedEvent, Column, DragStoppedEvent, GridColumnsChangedEvent, GridOptions, GridReadyEvent } from 'ag-grid-community';
+import { cloneDeep, get, has, map } from 'lodash';
+import { TableUtilsService } from '../table-utils-service/table-utils.service';
+import { AgGridWrapper } from './ag-grid-wrapper';
+import { RowSelection, TableType } from './table.enum';
+import { ColumnDef, ColumnsOrderChangedEvent, RowClickedEvent, SortChangedEvent } from './table.interface';
 
 const CLOSE_BUTTON_DIAMETER = 20;
 const CLOSE_MARGIN_OFFSET = 6;
@@ -55,7 +48,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     super();
   }
 
-  @ViewChild('agGrid', { static: true }) agGrid: AgGridNg2;
+  @ViewChild('agGrid', { static: true }) agGrid: AgGridAngular;
 
   @Input() type: TableType = TableType.Primary;
 
@@ -67,6 +60,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Input() tableGridOptions: Partial<GridOptions> = {};
   @Input() suppressDragLeaveHidesColumns = false;
   @Input() removeColumnButtonEnabled = false;
+  @Input() shouldAutoSizeColumns = true;
 
   @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<SortChangedEvent>();
   @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
@@ -179,13 +173,17 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         get(params.data, 'isClickable', false) ? 'row-clickable' : '',
       onGridReady: (event: GridReadyEvent) => {
         this.gridReady = true;
-        event.columnApi.autoSizeAllColumns();
+        if (this.shouldAutoSizeColumns) {
+          event.columnApi.autoSizeAllColumns();
+        }
         this.setOrderedColumns(event.columnApi.getAllGridColumns());
         this.cdr.markForCheck();
         this.gridInit.emit();
       },
       onGridColumnsChanged: (event: GridColumnsChangedEvent) => {
-        event.columnApi.autoSizeAllColumns();
+        if (this.shouldAutoSizeColumns) {
+          event.columnApi.autoSizeAllColumns();
+        }
         this.setOrderedColumns(event.columnApi.getAllGridColumns());
         this.cdr.markForCheck();
         this.columnsChanged.emit();

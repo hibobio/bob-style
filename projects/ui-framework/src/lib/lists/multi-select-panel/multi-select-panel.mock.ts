@@ -1,5 +1,10 @@
 import { SelectGroupOption } from '../list.interface';
-import { randomNumber } from '../../services/utils/functional-utils';
+import {
+  randomNumber,
+  simpleUID,
+  makeArray,
+} from '../../services/utils/functional-utils';
+import { mockText } from '../../mock.const';
 
 export const selectOptionsMock: SelectGroupOption[] = [
   {
@@ -101,6 +106,21 @@ export const selectOptionsMock: SelectGroupOption[] = [
       },
     ],
   },
+  ...makeArray(3).map(g => {
+    const groupname = mockText(2);
+    return {
+      groupName: groupname,
+      key: simpleUID(groupname + '-'),
+      options: makeArray(5).map(o => {
+        const optioname = mockText(2);
+        return {
+          value: optioname,
+          id: simpleUID(optioname + '-'),
+          selected: false,
+        };
+      }),
+    };
+  }),
 ];
 
 export const selectOptionsMockDef: SelectGroupOption[] = selectOptionsMock.map(

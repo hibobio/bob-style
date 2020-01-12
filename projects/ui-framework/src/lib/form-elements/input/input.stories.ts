@@ -72,7 +72,8 @@ const note = `
    input, label text (if present) will be used as placeholder
   [minChars] | number | minimum length
   [maxChars] | number | maximum length
-  [step] | number | Step value for number input step buttons. Buttons will not be displayed, if step value is not provided
+  [step] | number | Step value for number input step buttons.\
+   Buttons will not be displayed, if step value is not provided
   [min] | number | (only relevent for number inputs) minimum value (value will be corrected on blur)
   [max] | number | (only relevent for number inputs) maximum value (value will be corrected on blur)
   [readonly] | boolean | disables input

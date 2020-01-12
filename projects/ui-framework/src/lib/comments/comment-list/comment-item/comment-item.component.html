@@ -2,7 +2,7 @@
                 [imageSource]="comment?.avatar"
                 [matTooltip]="comment?.name"></b-avatar-image>
 
-<div class="text-section">
+<div class="text-section b-body">
   <div class="comment-menu"
        [class.focused]="menuOpen">
     <b-menu class="card-menu"
@@ -31,8 +31,9 @@
   </div>
   <div class="comment-content">
     <div class="comment-header">
-      <b-bold-body class="name">{{comment?.name}}</b-bold-body>
-      <b-caption class="date">{{comment?.date}}</b-caption>
+      <span *ngIf="comment?.name"
+            class="b-bold-body name">{{comment?.name}}</span>
+      <span class="b-caption date">{{comment?.date}}</span>
     </div>
     <div *ngIf="comment?.content"
          class="comment-body"

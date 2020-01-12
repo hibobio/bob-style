@@ -3,9 +3,10 @@
                 [matTooltip]="comment?.name">
 </b-avatar-image>
 
-<div class="text-section">
-  <b-textarea [placeholder]="placeholder"
-              #commentInput
-              [value]="comment?.content"
-              (keydown.enter)="enterPress($event)"></b-textarea>
+<div class="bfe-wrap text-section">
+  <textarea #commentInput
+            class="bfe-input bfe-textarea"
+            [attr.placeholder]="placeholder || null"
+            [value]="comment?.content"
+            (keydown)="enterPress($event)"></textarea>
 </div>

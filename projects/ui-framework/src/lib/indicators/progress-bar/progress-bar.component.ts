@@ -59,7 +59,7 @@ export class ProgressBarComponent implements OnChanges, OnInit {
 
     if (changes.data) {
       this.data.value = numberMinMax(
-        valueAsNumber(InputTypes.number, this.data.value, 0),
+        valueAsNumber(true, this.data.value, 0),
         0,
         100
       );

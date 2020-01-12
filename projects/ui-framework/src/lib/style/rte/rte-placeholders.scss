@@ -28,6 +28,15 @@
       font-weight: 500;
     }
   }
+
+  span [data-placeholder-id],
+  strong [data-placeholder-id] {
+    @include b-body($lineHeight: $rte-lineheight, $font-family: null);
+  }
+
+  span[style*='font'] [data-placeholder-id] {
+    vertical-align: middle;
+  }
 }
 
 .b-select-panel.placeholder-panel {
