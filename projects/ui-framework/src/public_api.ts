@@ -383,12 +383,8 @@ export {
 export {
   BreadcrumbsComponent
 } from './lib/navigation/breadcrumbs/breadcrumbs.component';
-export {
-  Breadcrumb,
-  BreadcrumbNavButtons,
-  BreadcrumbNavButton
-} from './lib/navigation/breadcrumbs/breadcrumbs.interface';
-export { BreadcrumbsType } from './lib/navigation/breadcrumbs/breadcrumbs.enum';
+export * from './lib/navigation/breadcrumbs/breadcrumbs.interface';
+export * from './lib/navigation/breadcrumbs/breadcrumbs.enum';
 // Action Bar
 export { ActionBarModule } from './lib/navigation/action-bar/action-bar.module';
 export { ActionBarComponent } from './lib/navigation/action-bar/action-bar.component';

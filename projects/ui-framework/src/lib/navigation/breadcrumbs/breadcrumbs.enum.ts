@@ -9,8 +9,3 @@ export enum BreadcrumbsStepState {
   closed = 'closed',
   active = 'active',
 }
-
-// export enum BreadcrumbsButtonState {
-//   disabled = 'disabled',
-//   hidden = 'closed',
-// }
