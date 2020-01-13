@@ -41,6 +41,7 @@ const withButtonTemplate = `
                 [showActionOnHover]="showActionOnHover"
                 (clicked)="onItemClick($event)">
     <b-button *bBasicListAction="let item=item"
+              [disabled]="item.disabled"
               [type]="buttonType.secondary"
               [size]="buttonSize.small"
               (clicked)="action('List item button clicked with item')(item)">

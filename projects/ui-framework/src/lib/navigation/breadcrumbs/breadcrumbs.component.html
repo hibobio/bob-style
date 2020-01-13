@@ -1,16 +1,16 @@
 <ul class="steps">
 
   <li *ngFor="let step of steps; let i = index; trackBy: stepsTrackBy"
-      class="step">
+      class="step"
+      [attr.data-state]="step.state || stepStates.closed">
 
     <span class="step-wrap"
-          [attr.data-state]="step.state || stepStates.closed"
-          [attr.role]="step.state===stepStates.open ? 'button' : null"
-          [attr.tabindex]="step.state===stepStates.open ? 0 : -1"
-          (click.outside-zone)="step.state === stepStates.open && onStepClick(i)">
+          [attr.data-tooltip]="type === breadcrumbsType.primary && !alwaysShowTitle ? step.title : null"
+          [attr.role]="isClickable(step) ? 'button' : null"
+          [attr.tabindex]="isClickable(step) ? 0 : -1"
+          (click.outside-zone)="isClickable(step) && onStepClick(i)">
 
-      <span class="step-index"
-            [attr.data-tooltip]="type === breadcrumbsType.primary ? step.title : null">
+      <span class="step-index">
         {{ i + 1 }}
       </span>
 

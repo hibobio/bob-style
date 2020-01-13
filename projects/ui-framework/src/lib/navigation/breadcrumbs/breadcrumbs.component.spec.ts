@@ -5,10 +5,8 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MobileService } from '../../services/utils/mobile.service';
 import { BreadcrumbsComponent } from './breadcrumbs.component';
-import { BreadcrumbsToggleStrategy } from './breadcrumbs.enum';
 import { Breadcrumb } from './breadcrumbs.interface';
 import { mobileServiceStub } from '../../tests/services.stub.spec';
-import { of } from 'rxjs';
 
 describe('BreadcrumbsComponent', () => {
   let component: BreadcrumbsComponent;
@@ -17,10 +15,10 @@ describe('BreadcrumbsComponent', () => {
 
   beforeEach(async(() => {
     breadCrumbsMock = [
-      { title: 'details', disabled: false },
-      { title: 'avatar', disabled: false },
-      { title: 'to dos', disabled: false },
-      { title: 'summary', disabled: true },
+      { title: 'details' },
+      { title: 'avatar' },
+      { title: 'to dos' },
+      { title: 'summary' },
     ];
 
     TestBed.configureTestingModule({
@@ -33,19 +31,8 @@ describe('BreadcrumbsComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(BreadcrumbsComponent);
         component = fixture.componentInstance;
-        component.breadcrumbs = breadCrumbsMock;
-        component.activeIndex = 2;
-        component.isMobile = false;
-        component.buttons = {
-          nextBtn: {
-            label: 'Next',
-            isVisible: true,
-          },
-          backBtn: {
-            label: 'Back',
-            isVisible: true,
-          },
-        };
+        component.steps = breadCrumbsMock;
+
         spyOn(component.stepClick, 'emit');
       });
   }));
@@ -91,46 +78,16 @@ describe('BreadcrumbsComponent', () => {
 
   describe('toggleStrategy', () => {
     it('should display all titles', () => {
-      component.toggleStrategy = BreadcrumbsToggleStrategy.alwaysOpen;
+      component.alwaysShowTitle = true;
       fixture.detectChanges();
       const titles = fixture.debugElement.queryAll(By.css('.title'));
       expect(titles.length).toEqual(4);
     });
     it('should display only active title', () => {
-      component.toggleStrategy = BreadcrumbsToggleStrategy.auto;
+      component.alwaysShowTitle = false;
       fixture.detectChanges();
       const titles = fixture.debugElement.queryAll(By.css('.title'));
       expect(titles.length).toEqual(1);
-    });
-  });
-
-  describe('mobile', () => {
-    beforeEach(() => {
-      mobileServiceStub.getMediaEvent.and.returnValue(
-        of({ matchMobile: true })
-      );
-      component.isMobile = true;
-      fixture.detectChanges();
-    });
-    it('should show text buttons and not regular buttons', () => {
-      const regularButtons = fixture.debugElement.queryAll(By.css('b-button'));
-      const textButtons = fixture.debugElement.queryAll(
-        By.css('b-text-button')
-      );
-      expect(regularButtons.length).toEqual(0);
-      expect(textButtons.length).toEqual(2);
-    });
-    it('should add active class to active step', () => {
-      const stepsElements = fixture.debugElement.queryAll(By.css('.step'));
-      for (let i = 0; i < stepsElements.length; i++) {
-        if (i === 2) {
-          expect(stepsElements[i].nativeElement.classList).toContain('active');
-        } else {
-          expect(stepsElements[i].nativeElement.classList).not.toContain(
-            'active'
-          );
-        }
-      }
     });
   });
 });

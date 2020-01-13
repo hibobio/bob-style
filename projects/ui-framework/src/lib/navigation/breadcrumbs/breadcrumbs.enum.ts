@@ -8,4 +8,6 @@ export enum BreadcrumbsStepState {
   open = 'open',
   closed = 'closed',
   active = 'active',
+  success = 'success',
+  warning = 'warning',
 }

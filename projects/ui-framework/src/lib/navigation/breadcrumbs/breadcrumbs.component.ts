@@ -21,7 +21,7 @@ export class BreadcrumbsComponent {
 
   @HostBinding('attr.data-always-show-title')
   @Input()
-  alwaysShowTitle = false;
+  alwaysShowTitle = true;
 
   @Input() steps: Breadcrumb[];
 
@@ -38,5 +38,13 @@ export class BreadcrumbsComponent {
 
   public onStepClick(index: number): void {
     this.stepClick.emit(index);
+  }
+
+  public isClickable(step: Breadcrumb) {
+    return (
+      step.state === BreadcrumbsStepState.open ||
+      step.state === BreadcrumbsStepState.success ||
+      step.state === BreadcrumbsStepState.warning
+    );
   }
 }

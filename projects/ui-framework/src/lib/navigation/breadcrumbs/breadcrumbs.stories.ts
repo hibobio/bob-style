@@ -26,12 +26,12 @@ const componmentTemplate = `
                (stepClick)="onStepClick($event)">
 
   <div *ngIf="type !== types.vertical" class="buttons" style="display: flex">
-    <b-button [size]="buttonSize.medium"
+    <b-button [size]="buttonSize.small"
               [type]="buttonType.secondary"
-              [text]="'Back'"
+              [text]="'Previous'"
               style="margin-left: 16px">
     </b-button>
-    <b-button [size]="buttonSize.medium"
+    <b-button [size]="buttonSize.small"
               [type]="buttonType.primary"
               [text]="'Next'"
               style="margin-left: 16px">
@@ -70,8 +70,9 @@ const note = `
 `;
 
 const breadcrumbsMock = [
-  { title: 'Details', state: BreadcrumbsStepState.open },
-  { title: 'Avatar', state: BreadcrumbsStepState.active },
+  { title: 'Welcome', state: BreadcrumbsStepState.success },
+  { title: 'Details', state: BreadcrumbsStepState.active },
+  { title: 'Avatar', state: BreadcrumbsStepState.closed },
   { title: 'To dos', state: BreadcrumbsStepState.closed },
   { title: 'Summary', state: BreadcrumbsStepState.closed },
 ];
@@ -91,7 +92,7 @@ story.add(
           Object.values(BreadcrumbsType),
           BreadcrumbsType.primary
         ),
-        alwaysShowTitle: boolean('alwaysShowTitle', false),
+        alwaysShowTitle: boolean('alwaysShowTitle', true),
 
         breadcrumbs: object('breadcrumbs', breadcrumbsMock),
         onStepClick: action('onStepClick'),
