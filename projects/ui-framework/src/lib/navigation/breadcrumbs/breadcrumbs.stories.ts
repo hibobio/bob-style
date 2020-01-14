@@ -92,7 +92,7 @@ story.add(
           Object.values(BreadcrumbsType),
           BreadcrumbsType.primary
         ),
-        alwaysShowTitle: boolean('alwaysShowTitle', true),
+        alwaysShowTitle: boolean('alwaysShowTitle', false),
 
         breadcrumbs: object('breadcrumbs', breadcrumbsMock),
         onStepClick: action('onStepClick'),

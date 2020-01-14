@@ -5,6 +5,7 @@ $brdcrb-height: base8(64);
 $vertical-brdcrb-height: 74px;
 $vertical-brdcrb-line-length: 42px;
 $brdcrb-circle-size: 18px;
+$brdcrb-active-color: var(--negative-500);
 
 @mixin hide-tooltip {
   &:before,
@@ -26,17 +27,17 @@ $brdcrb-circle-size: 18px;
   }
 }
 
+.steps,
+.step,
+.step-wrap {
+  display: flex;
+}
+
 .steps {
   list-style: none;
   display: flex;
   margin: 0;
   padding: 0;
-}
-
-.step,
-.step-wrap {
-  display: flex;
-  align-items: center;
 }
 
 [data-tooltip]:after {
@@ -92,7 +93,7 @@ $brdcrb-circle-size: 18px;
 
 [data-state='open'] ::ng-deep {
   .step-index {
-    border: 4px solid var(--negative-500);
+    border: 4px solid $brdcrb-active-color;
   }
 }
 
@@ -102,7 +103,7 @@ $brdcrb-circle-size: 18px;
   }
 
   .step-index {
-    background-color: var(--negative-500);
+    background-color: $brdcrb-active-color;
   }
 
   .step-title {
@@ -131,18 +132,27 @@ $brdcrb-circle-size: 18px;
     @include b-icon(
       $icon: success-alt,
       $size: null,
-      $color: $negative-500,
+      $color: $brdcrb-active-color,
       $hover: false
     ) {
       font-size: 21px;
       line-height: $brdcrb-circle-size;
       overflow: visible;
     }
-    box-shadow: inset 0 0 0 1px $negative-500;
+    box-shadow: inset 0 0 0 1px $brdcrb-active-color;
   }
 }
 
 // Primary & Secondary
+
+:host[data-type='primary']::ng-deep,
+:host[data-type='secondary'] ::ng-deep {
+  .steps,
+  .step-wrap,
+  .step {
+    align-items: center;
+  }
+}
 
 @mixin circle-view-common {
   .step {
@@ -168,7 +178,7 @@ $brdcrb-circle-size: 18px;
     .step-index {
       border: 0;
       @include size(times8(1));
-      background-color: var(--negative-500);
+      background-color: $brdcrb-active-color;
     }
   }
 }
@@ -176,10 +186,6 @@ $brdcrb-circle-size: 18px;
 // Primary
 
 :host[data-type='primary']::ng-deep {
-  .steps {
-    align-items: center;
-  }
-
   .step {
     @include desktop {
       @include b-icon(
@@ -217,10 +223,6 @@ $brdcrb-circle-size: 18px;
 :host[data-type='secondary'] ::ng-deep {
   @include circle-view-common;
 
-  .steps {
-    align-items: center;
-  }
-
   @include desktop {
     position: relative;
     justify-content: flex-end;
@@ -242,16 +244,33 @@ $brdcrb-circle-size: 18px;
     flex-direction: column;
   }
 
+  .step,
+  .step-wrap {
+    align-items: flex-start;
+  }
+
   .step {
     height: $vertical-brdcrb-height;
     position: relative;
+
+    &:last-child {
+      height: auto;
+    }
 
     &:after {
       @include pseudo;
       @include size(2px, $vertical-brdcrb-line-length);
       position: absolute;
       left: $brdcrb-circle-size / 2 - 1px;
-      bottom: -1 * $vertical-brdcrb-line-length / 2;
+
+      top: (
+        $brdcrb-circle-size +
+          (
+            $vertical-brdcrb-height - $vertical-brdcrb-line-length -
+              $brdcrb-circle-size
+          ) / 2
+      );
+
       background-color: $grey-500;
     }
 
@@ -275,6 +294,22 @@ $brdcrb-circle-size: 18px;
         @include pseudo;
         @include size(12px);
         border-radius: 50%;
+        background-color: $grey-500;
+      }
+    }
+  }
+
+  [data-state='success'] {
+    &:after {
+      background-color: $brdcrb-active-color;
+    }
+  }
+
+  [data-state='warning'],
+  [data-state='open'],
+  [data-state='closed'] {
+    & ~ [data-state='success'] {
+      &:after {
         background-color: $grey-500;
       }
     }

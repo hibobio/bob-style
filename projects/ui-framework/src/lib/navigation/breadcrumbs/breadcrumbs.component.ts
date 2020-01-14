@@ -21,7 +21,7 @@ export class BreadcrumbsComponent {
 
   @HostBinding('attr.data-always-show-title')
   @Input()
-  alwaysShowTitle = true;
+  alwaysShowTitle = false;
 
   @Input() steps: Breadcrumb[];
 
