@@ -216,11 +216,21 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     * {
       overflow: hidden;
     }
+    .ag-header-container,
+    .ag-header-cell {
+      width: auto !important;
+    }
+    .ag-header-row {
+      min-width: 100%;
+    }
     .ag-root {
       min-height: $min-table-height;
     }
     .ag-header {
       @include disabled-state;
+    }
+    .ag-icon {
+      display: none !important;
     }
   }
 
