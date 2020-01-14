@@ -175,7 +175,8 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
       @include b-icon(
         $icon: 'circle-cancel',
         $size: small,
-        $elem: '&:hover:after'
+        $elem: '&:hover:after',
+        $hover: false
       ) {
         text-align: right;
         cursor: pointer;
@@ -195,9 +196,12 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
   .ag-overlay-wrapper {
     display: block;
     padding: ($table-header-height + times8(3)) times8(2) times8(3) times8(2);
-    @include b-icon($icon: 'table', $size: x-large, $color: light);
-
-    &:before {
+    @include b-icon(
+      $icon: 'table',
+      $size: x-large,
+      $color: light,
+      $hover: false
+    ) {
       margin: 0 auto 8px auto;
     }
   }
@@ -212,11 +216,21 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     * {
       overflow: hidden;
     }
+    .ag-header-container,
+    .ag-header-cell {
+      width: auto !important;
+    }
+    .ag-header-row {
+      min-width: 100%;
+    }
     .ag-root {
       min-height: $min-table-height;
     }
     .ag-header {
       @include disabled-state;
+    }
+    .ag-icon {
+      display: none !important;
     }
   }
 

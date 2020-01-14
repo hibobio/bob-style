@@ -620,12 +620,22 @@ $empticons-panel-max-width: 235px;
 
 .fr-toolbar {
   [data-cmd='leftToRight'] {
-    @include b-icon($icon: 'dir-rtl', $size: small, $color: null);
+    @include b-icon(
+      $icon: 'dir-rtl',
+      $size: small,
+      $color: null,
+      $hover: false
+    );
     display: none;
   }
 
   [data-cmd='rightToLeft'] {
-    @include b-icon($icon: 'dir-ltr', $size: small, $color: null);
+    @include b-icon(
+      $icon: 'dir-ltr',
+      $size: small,
+      $color: null,
+      $hover: false
+    );
 
     &.fr-active {
       display: none;

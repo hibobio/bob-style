@@ -12,7 +12,12 @@ import { BaseButtonElement } from '../button.abstract';
 @Component({
   selector: 'b-text-button',
   template: `
-    <span class="text-button" [ngClass]="buttonClass">
+    <span
+      role="button"
+      class="text-button"
+      [ngClass]="buttonClass"
+      (click)="onClick($event)"
+    >
       {{ text }}
       <ng-content></ng-content>
     </span>
@@ -27,11 +32,6 @@ export class TextButtonComponent extends BaseButtonElement {
   }
 
   @Input() color: LinkColor = LinkColor.none;
-
-  @HostListener('click', ['$event'])
-  onLinkClick($event: MouseEvent) {
-    this.onClick($event);
-  }
 
   getButtonClass(): string {
     return (

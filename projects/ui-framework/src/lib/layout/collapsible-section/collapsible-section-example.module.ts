@@ -31,6 +31,7 @@ import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { InputModule } from '../../form-elements/input/input.module';
 import { ColorService } from '../../services/color-service/color.service';
 import { MatTooltipModule } from '@angular/material';
+import { IconsModule } from '../../icons/icons.module';
 
 @Component({
   selector: 'b-collapsible-section-example-1',
@@ -307,12 +308,9 @@ export class CollapsibleSectionExample1Component implements OnChanges {
       (closed)="onClosed()"
       [options]="options"
     >
-      <div header class="row">
-        <b-button [type]="'secondary'" [text]="buttonText1"></b-button>
-        <b-button class="cell" [text]="buttonText2"></b-button>
-      </div>
+      <b-icon header size="x-large" icon="b-icon-infinite"></b-icon>
 
-      <div class="row row-wrap">
+      <div class="row row-spread row-wrap">
         <div class="cell" *ngFor="let cell of formCells">
           <b-input
             [label]="cell.label"
@@ -321,12 +319,19 @@ export class CollapsibleSectionExample1Component implements OnChanges {
           ></b-input>
         </div>
       </div>
+
+      <div footer class="row justify-right">
+        <b-button [type]="'secondary'" [text]="buttonText1"></b-button>
+        <b-button [text]="buttonText2"></b-button>
+      </div>
     </b-collapsible-section>
   `,
   styles: [
     ':host {display: block;}',
-    '.row { display: flex; justify-content: space-between; }',
+    '.row { display: flex; }',
+    '.row-spread { justify-content: space-between; }',
     '.row-wrap { flex-wrap: wrap; }',
+    '.justify-right { justify-content: flex-end; }',
     '.cell { width: 48%; margin-bottom: 16px; }',
     '.cell:nth-last-child(1), .cell:nth-last-child(2) { margin-bottom: 0; }',
     'b-button {margin-right: 8px;}',
@@ -392,6 +397,7 @@ export class CollapsibleSectionExample2Component implements OnChanges {
     ButtonsModule,
     InputModule,
     MatTooltipModule,
+    IconsModule,
   ],
   exports: [
     CollapsibleSectionExample1Component,

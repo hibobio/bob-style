@@ -205,10 +205,26 @@ $icon-colors: (
   }
 }
 
-@mixin b-icon($icon, $size: large, $color: dark, $elem: '&:before') {
+@mixin b-icon(
+  $icon,
+  $size: large,
+  $color: dark,
+  $elem: '&:before',
+  $hover: true
+) {
   #{$elem} {
     display: block;
     font-family: 'bicons' !important;
+    @if $icon {
+      @include icon-class($icon, '&');
+    }
+    @if $size {
+      @include icon-size($size, $elem: '&');
+    }
+    @if $color {
+      @include icon-color($color, $elem: '&', $hover: $hover);
+    }
+
     speak: none;
     font-style: normal;
     font-weight: normal;
@@ -222,17 +238,9 @@ $icon-colors: (
     transition: color 0.1s ease;
     overflow: hidden;
     flex-shrink: 0;
+  }
 
-    @if $size {
-      @include icon-size($size, $elem: '&');
-    }
-    @if $color {
-      @include icon-color($color, $elem: '&');
-    }
-    @if $icon {
-      @include icon-class($icon, $elem: '&');
-    }
-
+  #{$elem} {
     @content;
   }
 }

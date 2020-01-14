@@ -234,7 +234,7 @@ describe('MultiSelectComponent', () => {
       fixture.autoDetectChanges();
 
       const clearButton = overlayContainerElement.querySelector(
-        'b-list-footer .clear-button'
+        'b-list-footer .clear-button [role="button"]'
       ) as HTMLElement;
       clearButton.click();
 
@@ -262,7 +262,7 @@ describe('MultiSelectComponent', () => {
       )[3] as HTMLElement).click();
       fixture.autoDetectChanges();
       const clearButton = overlayContainerElement.querySelector(
-        'b-list-footer .clear-button'
+        'b-list-footer .clear-button [role="button"]'
       ) as HTMLElement;
       clearButton.click();
       const applyButton = overlayContainerElement.querySelector(
@@ -425,7 +425,7 @@ describe('MultiSelectComponent', () => {
       fixture.autoDetectChanges();
 
       const clearButton = overlayContainerElement.querySelector(
-        'b-list-footer .clear-button'
+        'b-list-footer .clear-button [role="button"]'
       ) as HTMLElement;
       clearButton.click();
 
@@ -451,7 +451,7 @@ describe('MultiSelectComponent', () => {
       fixture.autoDetectChanges();
 
       const clearButton = overlayContainerElement.querySelector(
-        'b-list-footer .clear-button'
+        'b-list-footer .clear-button [role="button"]'
       ) as HTMLElement;
       clearButton.click();
 

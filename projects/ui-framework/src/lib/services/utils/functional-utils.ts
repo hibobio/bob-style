@@ -327,6 +327,9 @@ export const cloneValue = (value: any) =>
     ? cloneArray(value)
     : value;
 
+export const cloneDeepSimpleObject = <T = any>(obj: T): T =>
+  JSON.parse(JSON.stringify(obj));
+
 export const isIterable = (smth: any): boolean => {
   if (!smth || isNumber(smth) || isString(smth)) {
     return false;
