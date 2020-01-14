@@ -7,12 +7,13 @@ import {
   emitNativeEvent,
 } from '../../services/utils/test-helpers';
 
-fdescribe('BreadcrumbsComponent', () => {
+describe('BreadcrumbsComponent', () => {
   let component: BreadcrumbsComponent;
   let fixture: ComponentFixture<BreadcrumbsComponent>;
   let breadCrumbsMock: Breadcrumb[];
   let stepsElements: HTMLElement[];
   let titleElements: HTMLElement[];
+  let stepWrapElements: HTMLElement[];
 
   beforeEach(async(() => {
     breadCrumbsMock = [
@@ -32,7 +33,7 @@ fdescribe('BreadcrumbsComponent', () => {
         fixture = TestBed.createComponent(BreadcrumbsComponent);
         component = fixture.componentInstance;
         component.type = BreadcrumbsType.primary;
-        component.alwaysShowTitle = true;
+        component.alwaysShowTitle = false;
         component.steps = breadCrumbsMock;
         fixture.detectChanges();
 
@@ -44,6 +45,7 @@ fdescribe('BreadcrumbsComponent', () => {
     beforeEach(() => {
       stepsElements = elementsFromFixture(fixture, '.step');
       titleElements = elementsFromFixture(fixture, '.step-title');
+      stepWrapElements = elementsFromFixture(fixture, '.step-wrap');
     });
 
     it('should generate 4 steps', () => {
@@ -64,20 +66,19 @@ fdescribe('BreadcrumbsComponent', () => {
     });
 
     it('should make step with status success clickable', () => {
-      expect(titleElements[0].getAttribute('role')).toEqual('button');
-      expect(titleElements[0].getAttribute('tabindex')).toEqual('0');
+      expect(stepWrapElements[0].getAttribute('role')).toEqual('button');
+      expect(stepWrapElements[0].getAttribute('tabindex')).toEqual('0');
     });
 
     it('should make stepы with status closed not clickable', () => {
-      expect(titleElements[2].getAttribute('role')).not.toEqual('button');
-      expect(titleElements[2].getAttribute('tabindex')).not.toEqual('0');
+      expect(stepWrapElements[2].getAttribute('role')).not.toEqual('button');
+      expect(stepWrapElements[2].getAttribute('tabindex')).not.toEqual('0');
     });
 
     it('should set type attribute to primary', () => {
       expect(
         fixture.debugElement.nativeElement.getAttribute('data-type')
       ).toEqual('primary');
-      expect(titleElements[2].getAttribute('tabindex')).not.toEqual('0');
     });
 
     it('should set data-always-show-title attribute', () => {
@@ -90,14 +91,16 @@ fdescribe('BreadcrumbsComponent', () => {
   });
 
   describe('onStepClick', () => {
+    beforeEach(() => {
+      stepWrapElements = elementsFromFixture(fixture, '.step-wrap');
+    });
     it('should emit value with index, if step is clickable', () => {
-      const step = stepsElements[0].querySelector('.step-wrap');
-      emitNativeEvent(step);
+      stepWrapElements[0].click();
+      emitNativeEvent(stepWrapElements[0]);
       expect(component.stepClick.emit).toHaveBeenCalledWith(0);
     });
     it('should not emit, if step is not clickable', () => {
-      const step = stepsElements[2].querySelector('.step-wrap');
-      emitNativeEvent(step);
+      stepWrapElements[2].click();
       expect(component.stepClick.emit).not.toHaveBeenCalled();
     });
   });
