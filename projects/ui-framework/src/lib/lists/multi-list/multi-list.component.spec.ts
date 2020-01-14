@@ -755,7 +755,7 @@ describe('MultiListComponent', () => {
       clearButton = elementFromFixture(fixture, '.clear-button');
       resetButton = elementFromFixture(
         fixture,
-        '.reset-button'
+        '.reset-button [role="button"]'
       ) as HTMLButtonElement;
     });
 
@@ -784,7 +784,7 @@ describe('MultiListComponent', () => {
         component['optionsDefaultIDs'].sort()
       );
 
-      expect(resetButton.getAttributeNames()).toContain('hidden');
+      expect(resetButton.parentElement.getAttributeNames()).toContain('hidden');
     });
   });
 });
