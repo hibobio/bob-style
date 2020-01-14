@@ -14,19 +14,19 @@ export const mockColumnsDefs: ColumnDef[] = [
     lockPosition: true,
     resizable: false,
     sortable: false,
-    flex: 1
+    flex: 1,
   },
   {
     headerName: 'Display Name',
     field: 'fullName',
     sort: SortDirections.Asc,
-    flex: 2
+    flex: 2,
   },
   {
     headerName: 'Email',
     field: 'email',
     icon: Icons.email,
-    flex: 1
+    flex: 1,
   },
   {
     headerName: 'Status',
@@ -52,8 +52,16 @@ export const mockColumnsDefs: ColumnDef[] = [
 ];
 
 export const treeColumnDefsMock: ColumnDef[] = [
-  { field: 'jobTitle', headerName: 'Job Title', sortable: true },
-  { field: 'employmentType', headerName: 'Employment Type', sortable: true }
+  {
+    field: 'jobTitle',
+    headerName: 'Job Title',
+    sortable: true,
+  },
+  {
+    field: 'employmentType',
+    headerName: 'Employment Type',
+    sortable: true,
+  }
 ];
 export const treeRowDataMock = [
   {

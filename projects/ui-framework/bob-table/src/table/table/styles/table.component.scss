@@ -54,7 +54,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     }
 
     .ag-header-cell {
-      @include cell(null);
+      @include cell();
       display: flex;
       align-items: center;
       cursor: default;
@@ -131,7 +131,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     }
 
     .ag-cell {
-      @include cell(auto);
+      @include cell();
 
       &.row-select {
         position: relative;
