@@ -4,7 +4,7 @@ import {
   ComponentFixture,
   fakeAsync,
   TestBed,
-  tick
+  tick,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
@@ -26,9 +26,9 @@ describe('CardComponent', () => {
         CardComponent,
         MockComponent(MenuComponent),
         MockComponent(SquareButtonComponent),
-        MockComponent(TextButtonComponent)
+        MockComponent(TextButtonComponent),
       ],
-      imports: [TruncateTooltipModule, TypographyModule]
+      imports: [TruncateTooltipModule, TypographyModule],
     })
       .compileComponents()
       .then(() => {
@@ -41,7 +41,7 @@ describe('CardComponent', () => {
   describe('Type', () => {
     beforeEach(() => {
       component.card = {
-        title: 'test title'
+        title: 'test title',
       };
     });
     it('should be of type primary by default', () => {
@@ -62,7 +62,7 @@ describe('CardComponent', () => {
   describe('Title', () => {
     it('should set .card-title text', () => {
       component.card = {
-        title: 'test title'
+        title: 'test title',
       };
       fixture.detectChanges();
       const title = fixture.debugElement.query(By.css('.card-title'));
@@ -72,7 +72,7 @@ describe('CardComponent', () => {
     it('should add truncate-tooltip to long .card-content text', () => {
       component.card = {
         title: `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
       };
       fixture.detectChanges();
       const title = fixture.debugElement.query(By.css('.card-title'));
@@ -86,8 +86,8 @@ describe('CardComponent', () => {
       component.card = {
         title: 'test',
         menuConfig: [
-          { label: 'action 1', action: () => console.log('action 1') }
-        ]
+          { label: 'action 1', action: () => console.log('action 1') },
+        ],
       };
       fixture.detectChanges();
       const menu = fixture.debugElement.query(By.css('.card-menu'));
@@ -96,7 +96,7 @@ describe('CardComponent', () => {
     });
     it('should not create menu element if no menuConfig is passed', () => {
       component.card = {
-        title: 'test'
+        title: 'test',
       };
       const menu = fixture.debugElement.query(By.css('.card-menu'));
 
@@ -106,12 +106,12 @@ describe('CardComponent', () => {
       component.card = {
         title: 'test',
         menuConfig: [
-          { label: 'action 1', action: () => console.log('action 1') }
+          { label: 'action 1', action: () => console.log('action 1') },
         ],
         actionConfig: {
           icon: Icons.file_copy,
-          action: () => console.log('action button')
-        }
+          action: () => console.log('action button'),
+        },
       };
       fixture.detectChanges();
 
@@ -125,8 +125,8 @@ describe('CardComponent', () => {
       component.card = {
         title: 'test',
         menuConfig: [
-          { label: 'action 1', action: () => console.log('action 1') }
-        ]
+          { label: 'action 1', action: () => console.log('action 1') },
+        ],
       };
       fixture.detectChanges();
       const menu = fixture.debugElement.query(By.css('.card-menu'));
@@ -142,8 +142,8 @@ describe('CardComponent', () => {
       component.card = {
         title: 'test',
         menuConfig: [
-          { label: 'action 1', action: () => console.log('action 1') }
-        ]
+          { label: 'action 1', action: () => console.log('action 1') },
+        ],
       };
       fixture.detectChanges();
       const menu = fixture.debugElement.query(By.css('.card-menu'));
@@ -169,8 +169,8 @@ describe('CardComponent', () => {
         title: 'test',
         actionConfig: {
           icon: Icons.file_copy,
-          action: () => console.log('action button')
-        }
+          action: () => console.log('action button'),
+        },
       };
       fixture.detectChanges();
       const action = fixture.debugElement.query(By.css('.card-action'));
@@ -181,8 +181,8 @@ describe('CardComponent', () => {
         title: 'test',
         actionConfig: {
           icon: Icons.file_copy,
-          action: () => console.log('action button')
-        }
+          action: () => console.log('action button'),
+        },
       };
       fixture.detectChanges();
       const action = fixture.debugElement.query(By.css('.card-action'));
@@ -194,7 +194,7 @@ describe('CardComponent', () => {
   describe('cta', () => {
     it('should not show cta button if not in config', () => {
       component.card = {
-        title: 'test'
+        title: 'test',
       };
       fixture.detectChanges();
       const ctaButton = fixture.debugElement.query(By.css('.cta-button'));
@@ -203,7 +203,7 @@ describe('CardComponent', () => {
     it('should not show cta button if not in config', () => {
       component.card = {
         title: 'test',
-        footerCtaLabel: 'click here'
+        footerCtaLabel: 'click here',
       };
       fixture.detectChanges();
       const ctaButton = fixture.debugElement.query(By.css('.cta-button'));
@@ -214,7 +214,7 @@ describe('CardComponent', () => {
       spyOn(component.clicked, 'emit');
       component.card = {
         title: 'test',
-        footerCtaLabel: 'click here'
+        footerCtaLabel: 'click here',
       };
       fixture.detectChanges();
       const ctaButton = fixture.debugElement.query(By.css('.cta-button'));
@@ -226,7 +226,7 @@ describe('CardComponent', () => {
   describe('cover image', () => {
     it('should not show cover image when no image is supplied', () => {
       component.card = {
-        title: 'test'
+        title: 'test',
       };
       fixture.detectChanges();
       const image = fixture.debugElement.query(By.css('.image-holder'));
@@ -235,7 +235,7 @@ describe('CardComponent', () => {
     it('should show image if supplied', () => {
       component.card = {
         title: 'test',
-        imageUrl: 'some_image.png'
+        imageUrl: 'some_image.png',
       };
       fixture.detectChanges();
       const image = fixture.debugElement.query(By.css('.card-top'))
@@ -248,8 +248,8 @@ describe('CardComponent', () => {
         imageUrl: 'some_image.png',
         actionConfig: {
           icon: Icons.file_copy,
-          action: () => console.log('action button')
-        }
+          action: () => console.log('action button'),
+        },
       };
       fixture.detectChanges();
       const action = fixture.debugElement.query(By.css('.card-action'));
