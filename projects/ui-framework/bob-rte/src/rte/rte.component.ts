@@ -19,6 +19,7 @@ import {
   cloneArray,
   chainCall,
   eventHasMetaKey,
+  eventHasCntrlKey,
 } from 'bob-style';
 
 import { RTEbaseElement } from './rte.abstract';
@@ -73,6 +74,22 @@ export class RichTextEditorComponent extends RTEbaseElement
         }
 
         this.updateToolbar();
+
+        // cancel Ctrl+C events if selection is empty
+        this.editor.events.on(
+          'keydown',
+          (event: KeyboardEvent) => {
+            if (eventHasCntrlKey(event) && isKey(event.key, 'c')) {
+              const selection = this.getNativeRange();
+              if (selection.startOffset === selection.endOffset) {
+                event.preventDefault();
+                console.log('Copy prevented, because selection is empty');
+                return false;
+              }
+            }
+          },
+          true
+        );
 
         // init mentions
         if (this.mentionsEnabled()) {
@@ -185,18 +202,23 @@ export class RichTextEditorComponent extends RTEbaseElement
       },
 
       'window.copy': (event: ClipboardEvent) => {
+        if (!this.inputFocused) {
+          return;
+        }
         event.preventDefault();
+        this.editor.selection.save();
 
         const clipboardData: DataTransfer =
           event.clipboardData || event['originalEvent'].clipboardData;
-
-        const html = chainCall(
-          this.outputTransformers,
-          this.editor.html.getSelected()
+        const content = this.parserService.removeElements(
+          this.editor.html.getSelected(),
+          '.fr-marker'
         );
-
+        const html = chainCall(this.outputTransformers, content);
         clipboardData.setData('text/plain', html);
         clipboardData.setData('text/html', html);
+
+        this.editor.selection.restore();
       },
 
       'paste.afterCleanup': (html: string): string =>

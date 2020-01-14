@@ -54,7 +54,7 @@ export class PlaceholdersConverterService {
     return name
       ? // prettier-ignore
         // tslint:disable-next-line: max-line-length
-        ` <span contenteditable="false" class="fr-deletable" data-placeholder-id="${id}"><em>{{&nbsp;</em>${(group ? '<strong>' + group + '</strong><em>&nbsp;-&nbsp;</em>' : '') + name}<em>&nbsp;}}</em></span> `
+        ` <span contenteditable="false" class="fr-deletable" data-placeholder-id="${id}" data-before="${group || ''}" data-after="${(group ? ' - ' : ' ') + name}"><em>—</em></span> `
       : id;
   }
 

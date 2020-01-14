@@ -11,21 +11,35 @@
     letter-spacing: normal;
     background-color: $grey-300;
     box-shadow: inset 0 0 0 1px white;
+    padding: 0 11px;
+    position: relative;
+    user-select: all;
 
     em {
-      &:first-child,
-      &:last-child {
-        letter-spacing: -1.5px;
+      @include size;
+      @include position(0 0 0 0);
+      text-align: center;
+      letter-spacing: 200px;
+      overflow: hidden;
+      color: transparent;
 
-        &,
-        &::selection {
-          color: transparent;
-        }
+      &::selection {
+        color: transparent;
       }
     }
 
-    strong {
+    &:before,
+    &:after {
+      pointer-events: none;
+      user-select: none;
+    }
+
+    &:before {
+      content: attr(data-before);
       font-weight: 500;
+    }
+    &:after {
+      content: attr(data-after);
     }
   }
 
