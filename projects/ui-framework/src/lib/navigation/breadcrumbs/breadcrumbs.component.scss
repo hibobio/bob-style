@@ -58,8 +58,13 @@ $brdcrb-circle-size: 18px;
 }
 
 .step-title {
-  font-size: $font-size-body;
-  line-height: 1.3;
+  @include b-body(
+    $lineHeight: 1.3,
+    $weight: null,
+    $addCssVars: true,
+    $font-family: null
+  );
+
   margin-left: times8(1);
 }
 
@@ -257,6 +262,7 @@ $brdcrb-circle-size: 18px;
 
   .step-title {
     font-size: $font-size-big-body;
+    --font-size: #{$font-size-big-body};
   }
 
   [data-state='closed'] {
