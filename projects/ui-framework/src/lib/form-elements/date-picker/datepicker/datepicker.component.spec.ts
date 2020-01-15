@@ -110,7 +110,7 @@ describe('DatepickerComponent', () => {
       expect(picker.startView).toEqual('month');
     });
     it('should display date icon', () => {
-      iconElem = elementFromFixture(fixture, '.open-picker .b-icon');
+      iconElem = elementFromFixture(fixture, '.input-icon .b-icon');
       expect(iconElem).toBeTruthy();
       expect(iconElem.classList).toContain('b-icon-date');
     });
