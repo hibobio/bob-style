@@ -9,7 +9,7 @@ import {
   SimpleChanges,
   OnChanges,
   AfterViewInit,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { SimpleBarChartItem } from './simple-bar-chart.interface';
 import {
@@ -17,7 +17,7 @@ import {
   randomNumber,
   applyChanges,
   notFirstChanges,
-  numberMinMax
+  numberMinMax,
 } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -31,7 +31,7 @@ import { InputTypes } from '../../form-elements/input/input.enum';
   selector: 'b-simple-bar-chart',
   templateUrl: './simple-bar-chart.component.html',
   styleUrls: ['./simple-bar-chart.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
   constructor(
@@ -57,7 +57,7 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
     if (changes.data) {
       this.data = this.data.map(item => ({
         ...item,
-        value: numberMinMax(valueAsNumber(InputTypes.number, item.value, 0), 0, 100)
+        value: numberMinMax(valueAsNumber(true, item.value, 0), 0, 100),
       }));
     }
 
@@ -98,15 +98,22 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
       const item: SimpleBarChartItem = this.data[index];
 
       this.DOM.setCssProps(this.host.nativeElement, {
-        '--bsbc-item-count': this.data.length
+        '--bsbc-item-count': this.data.length,
       });
       this.DOM.setCssProps(barElmnt, {
-        '--bsbc-value': this.wasInView || this.config.disableAnimation ? item.value + '%' : null,
+        '--bsbc-value':
+          this.wasInView || this.config.disableAnimation
+            ? item.value + '%'
+            : null,
         '--bsbc-color': item.color || null,
         '--bsbc-trans': this.config.disableAnimation
           ? '0s'
-          : (item.value > 50 ? randomNumber(750, 1500) : randomNumber(250, 500)) + 'ms',
-        '--bsbc-trans-delay': this.config.disableAnimation ? '0s' : randomNumber(50, 200) + 'ms'
+          : (item.value > 50
+              ? randomNumber(750, 1500)
+              : randomNumber(250, 500)) + 'ms',
+        '--bsbc-trans-delay': this.config.disableAnimation
+          ? '0s'
+          : randomNumber(50, 200) + 'ms',
       });
     });
   }

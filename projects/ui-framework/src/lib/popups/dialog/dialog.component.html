@@ -1,10 +1,3 @@
-<b-square-button (clicked)="closeDialog()"
-                 [type]="buttonType.tertiary"
-                 [icon]="icons.close"
-                 [disabled]="showProgress"
-                 class="close-button">
-</b-square-button>
-
 <div #dialogHeader
      mat-dialog-title>
   <ng-content select="[b-dialog-above-header]"></ng-content>
@@ -67,3 +60,10 @@
   </div>
 
 </div>
+
+<b-square-button (clicked)="closeDialog()"
+                 [type]="buttonType.tertiary"
+                 [icon]="icons.close"
+                 [disabled]="showProgress"
+                 class="close-button">
+</b-square-button>

@@ -1,37 +1,48 @@
 import { storiesOf } from '@storybook/angular';
 import {
-  number,
   object,
   select,
-  withKnobs
+  withKnobs,
+  boolean,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BreadcrumbsModule } from './breadcrumbs.module';
-import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import {BreadcrumbsType, BreadcrumbsToggleStrategy} from './breadcrumbs.enum';
 
-const story = storiesOf(
-  ComponentGroupType.Navigation,
-  module
-).addDecorator(withKnobs);
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { BreadcrumbsType, BreadcrumbsStepState } from './breadcrumbs.enum';
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
+
+const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(
+  withKnobs
+);
 
 const componmentTemplate = `
 <b-breadcrumbs [type]="type"
-               [toggleStrategy]="toggleStrategy"
-               [breadcrumbs]="breadcrumbs"
-               [buttons]="buttons"
-               [activeIndex]="activeIndex"
-               (stepClick)="stepClick($event)"
-               (nextClick)="nextClick($event)"
-               (prevClick)="prevClick($event)">
+               [alwaysShowTitle]="alwaysShowTitle"
+               [steps]="breadcrumbs"
+               (stepClick)="onStepClick($event)">
+
+  <div *ngIf="type !== types.vertical" class="buttons" style="display: flex">
+    <b-button [size]="buttonSize.small"
+              [type]="buttonType.secondary"
+              [text]="'Previous'"
+              style="margin-left: 16px">
+    </b-button>
+    <b-button [size]="buttonSize.small"
+              [type]="buttonType.primary"
+              [text]="'Next'"
+              style="margin-left: 16px">
+    </b-button>
+  </div>
+
 </b-breadcrumbs>
 `;
 
 const template = `
-<b-story-book-layout [title]="'breadcrumbs'">
+<b-story-book-layout [title]="'Breadcrumbs'">
   <div style="max-width: 900px;">
     ${componmentTemplate}
   </div>
@@ -48,13 +59,10 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   type | BreadcrumbsType | breadcrumbs type
-  toggleStrategy | BreadcrumbsToggleStrategy | determine the title toggle behaviour
   breadcrumbs | Breadcrumb[] | breadcrumbs steps model
-  buttons | BreadcrumbNavButtons | breadcrumbs navigation buttons model
-  activeIndex | number | the active breadcrumb index
-  stepClick | EventEmitter | returns step index
-  nextClick | EventEmitter | returns the next step index
-  prevClick | EventEmitter | returns the previous step index
+  alwaysShowTitle | boolean | if titles are always shown (for 'primary' type)
+  stepClick | EventEmitter<wbr>&lt;number&gt; | emits clicked step index
+
 
   ~~~
   ${componmentTemplate}
@@ -62,16 +70,12 @@ const note = `
 `;
 
 const breadcrumbsMock = [
-  { title: 'Details', disabled: false },
-  { title: 'Avatar', disabled: false },
-  { title: 'To dos', disabled: false },
-  { title: 'Summary', disabled: true }
+  { title: 'Welcome', state: BreadcrumbsStepState.success },
+  { title: 'Details', state: BreadcrumbsStepState.active },
+  { title: 'Avatar', state: BreadcrumbsStepState.closed },
+  { title: 'To dos', state: BreadcrumbsStepState.closed },
+  { title: 'Summary', state: BreadcrumbsStepState.closed },
 ];
-
-const breadcrumbsButtons = {
-  nextBtn: { label: 'Next', isVisible: true },
-  backBtn: { label: 'Back', isVisible: true }
-};
 
 story.add(
   'Breadcrumbs',
@@ -79,30 +83,28 @@ story.add(
     return {
       template,
       props: {
+        types: BreadcrumbsType,
+        buttonSize: ButtonSize,
+        buttonType: ButtonType,
+
         type: select(
           'type',
           Object.values(BreadcrumbsType),
           BreadcrumbsType.primary
         ),
-        toggleStrategy: select(
-          'toggleStrategy',
-          Object.values(BreadcrumbsToggleStrategy),
-          BreadcrumbsToggleStrategy.auto
-        ),
-        breadcrumbs: object<Breadcrumb>('breadcrumbs', breadcrumbsMock),
-        buttons: object<BreadcrumbNavButtons>('buttons', breadcrumbsButtons),
-        activeIndex: number('activeIndex', 2),
-        stepClick: action('stepClick'),
-        nextClick: action('nextClick'),
-        prevClick: action('prevClick')
+        alwaysShowTitle: boolean('alwaysShowTitle', false),
+
+        breadcrumbs: object('breadcrumbs', breadcrumbsMock),
+        onStepClick: action('onStepClick'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           BreadcrumbsModule,
-          StoryBookLayoutModule
-        ]
-      }
+          StoryBookLayoutModule,
+          ButtonsModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

@@ -21,7 +21,7 @@ const story2 = storiesOf(ComponentGroupType.Chips, module).addDecorator(
 );
 
 const options = mockHobbies();
-const value = [...mockHobbies(3), 'Rimming'];
+const value = mockHobbies(4);
 
 const template = `
   <b-chip-input [options]="options"
@@ -82,7 +82,7 @@ const toAdd = () => ({
     placeholder: text('placehodler', 'Add tags and press ‘Enter’'),
     disabled: boolean('disabled', false),
     required: boolean('required', false),
-    hintMessage: text('hintMessage', 'Stick something in me'),
+    hintMessage: text('hintMessage', 'Add something'),
     warnMessage: text('warnMessage', ''),
     errorMessage: text('errorMessage', ''),
     options: array('options', options, ','),

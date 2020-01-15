@@ -74,10 +74,9 @@ describe('TextButtonComponent', () => {
     );
   });
 
-  it('should emit clicked when clicking the component', () => {
+  it('should emit clicked when clicking the span', () => {
     fixture.detectChanges();
-    const host = fixture.debugElement;
-    host.triggerEventHandler('click', null);
+    (element.children[0] as HTMLElement).click();
     expect(component.clicked.emit).toHaveBeenCalled();
   });
 

@@ -47,6 +47,7 @@ export class AvatarComponent implements OnChanges {
   @Input() caption: string;
   @Input() isClickable = false;
   @Input() expectChanges = false;
+  @Input() supressWarnings = false;
 
   @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 

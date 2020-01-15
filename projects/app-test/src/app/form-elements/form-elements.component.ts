@@ -18,6 +18,7 @@ import {
   getType,
   makeArray,
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
+// tslint:disable-next-line: max-line-length
 import { BlotType } from '../../../../ui-framework/src/lib/form-elements/rich-text-editor/rte-core/rte.enum';
 import { AvatarComponent } from '../../../../ui-framework/src/lib/avatar/avatar/avatar.component';
 import {
@@ -241,7 +242,7 @@ export class FormElementsTestComponent
   bChipinput_EventCounter = 0;
   bChipinput_label = 'Chip Input label';
   bChipinput_placeholder = 'Chip Input placeholder';
-  bChipinput_value = ['petting', 'fisting', 'rimming']; // 'petting, fisting, rimming';
+  bChipinput_value = mockHobbies(3);
   bChipinput_options = mockHobbies();
   bChipinput_acceptNew = true;
   bChipinput_disabled = this.global_disabled;
@@ -654,6 +655,7 @@ export class FormElementsTestComponent
 
   ///////////////////////////////////
 
+  // tslint:disable-next-line: max-line-length
   RTEvalueMock = `<div> <span style="color: red;">Hello</span> <a href="http://www.google.com">World</a>!</div>
 <div>Some <em>initial</em> <strong>bold</strong> text</div> {{/work/title}}`;
 
@@ -820,7 +822,7 @@ export class FormElementsTestComponent
   onSelectValueInput(name, event = null) {
     const value = event.target.value
       ? stringListToArray(event.target.value).map(val =>
-          valueAsNumber(InputTypes.number, val)
+          valueAsNumber(true, val)
         )
       : null;
 

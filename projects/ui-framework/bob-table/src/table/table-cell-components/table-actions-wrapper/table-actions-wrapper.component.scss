@@ -4,6 +4,8 @@
   align-items: center;
 
   .actionable-item {
+    display: flex;
+    align-items: center;
     flex-grow: 1;
     min-width: 0;
 
@@ -16,4 +18,3 @@
     margin-right: times8(2);
   }
 }
-

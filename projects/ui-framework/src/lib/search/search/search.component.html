@@ -3,13 +3,15 @@
        [attr.for]="id">{{label}}</label>
 
 <div class="bfe-wrap has-prefix has-suffix"
-     [ngClass]="{focused: inputFocused}">
-  <div class="bfe-prefix">
-    <b-icon [icon]="icons.search"
-            [color]="searchIconColor"
-            [size]="iconSize.medium">
-    </b-icon>
-  </div>
+     [ngClass]="{focused: inputFocused}"
+     (click.outside-zone)="input.focus()">
+
+  <b-icon class="bfe-prefix input-icon"
+          [hasHoverState]="true"
+          [icon]="icons.search"
+          [color]="!inputFocused ? iconColor.normal : iconColor.dark"
+          [size]="iconSize.medium">
+  </b-icon>
 
   <input #input
          class="bfe-input"
@@ -22,13 +24,16 @@
          (focus)="onFocus()"
          (blur)="onBlur()">
 
-  <div *ngIf="value && value.length > 0"
-       class="bfe-suffix">
-    <b-icon class="reset-button"
+  <span *ngIf="value && value.length > 0"
+        class="bfe-suffix">
+    <b-icon class="clear-input"
+            role="button"
             [icon]="icons.reset_x"
-            (click)="onResetClick()"
-            [size]="iconSize.medium"
+            [size]="iconSize.small"
             [color]="iconColor.normal"
-            [hasHoverState]="true">
+            [hasHoverState]="true"
+            (click)="$event.stopPropagation(); onResetClick()">
     </b-icon>
-  </div>
+  </span>
+
+</div>

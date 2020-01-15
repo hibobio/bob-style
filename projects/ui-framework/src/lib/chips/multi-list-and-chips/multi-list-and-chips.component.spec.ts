@@ -4,7 +4,7 @@ import {
   simpleChange,
   elementsFromFixture,
 } from '../../services/utils/test-helpers';
-import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { MultiListAndChipsComponent } from './multi-list-and-chips.component';
 import { Icons } from '../../icons/icons.enum';
 import { MockComponent } from 'ng-mocks';
@@ -20,6 +20,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../../lists/list-change/list-change';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { ButtonComponent } from '../../buttons/button/button.component';
 
 describe('MultiListAndChipsComponent', () => {
   let component: MultiListAndChipsComponent;
@@ -35,12 +36,12 @@ describe('MultiListAndChipsComponent', () => {
         ChipListComponent,
         ChipComponent,
         EmptyStateComponent,
+        MockComponent(ButtonComponent),
         AvatarImageComponent,
         MockComponent(IconComponent),
       ],
       imports: [CommonModule, MultiListModule],
       providers: [EventManagerPlugins[0]],
-      schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
@@ -174,7 +175,7 @@ describe('MultiListAndChipsComponent', () => {
 
       const clearButt = elementFromFixture(
         fixture,
-        'b-multi-list .clear-button'
+        'b-multi-list .clear-button [role="button"]'
       );
       clearButt.click();
 

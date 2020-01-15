@@ -24,6 +24,7 @@ import {
 import { InputEventType } from './form-elements.enum';
 import { TransmitOptions } from './form-elements.interface';
 import { IGNORE_EVENTS_DEF, TRANSMIT_OPTIONS_DEF } from './form-elements.const';
+import { InputTypes } from './input/input.enum';
 
 export abstract class BaseFormElement
   implements ControlValueAccessor, OnChanges {
@@ -42,14 +43,16 @@ export abstract class BaseFormElement
   @Input() errorMessage: string;
   @Input() warnMessage: string;
   @Input() doPropagate = true;
+  @Input() ignoreEvents: InputEventType[] = cloneArray(IGNORE_EVENTS_DEF);
 
   public inputFocused: boolean | boolean[] = false;
   public inputTransformers: Func[] = [];
   public outputTransformers: Func[] = [];
   public baseValue: any;
   public wrapEvent = true;
-  public ignoreEvents: InputEventType[] = cloneArray(IGNORE_EVENTS_DEF);
   protected writingValue = false;
+  protected skipFocusEvent = false;
+  readonly inputTypes = InputTypes;
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
 
@@ -98,7 +101,7 @@ export abstract class BaseFormElement
     return this.validateFn(c);
   }
 
-  writeValue(value: any): void {
+  public writeValue(value: any, forceElementValue: any = false): void {
     this.writingValue = true;
 
     if (value !== undefined) {
@@ -113,6 +116,16 @@ export abstract class BaseFormElement
     }
 
     this.cd.detectChanges();
+
+    if (
+      forceElementValue === true &&
+      this.input &&
+      this.input.nativeElement &&
+      (this.input.nativeElement.nodeName.toUpperCase() === 'INPUT' ||
+        this.input.nativeElement.nodeName.toUpperCase() === 'TEXTAREA')
+    ) {
+      this.input.nativeElement.value = this.value;
+    }
 
     this.writingValue = false;
   }
@@ -197,7 +210,8 @@ export abstract class BaseFormElement
     }
   }
 
-  public focus(): void {
+  public focus(skipFocusEvent = false): void {
+    this.skipFocusEvent = skipFocusEvent;
     if (this.input && this.input.nativeElement) {
       this.input.nativeElement.focus();
     }

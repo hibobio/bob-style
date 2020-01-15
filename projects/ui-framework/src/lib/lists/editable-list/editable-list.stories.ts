@@ -21,7 +21,11 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 );
 
 const componentTemplate1 = `
-<b-editable-list [list]="list === 'Ascending' ? listMockAsc : list === 'Descending' ? listMockDesc : listMock"
+<b-editable-list [list]="list === 'Ascending'
+                        ? listMockAsc
+                        : list === 'Descending'
+                        ? listMockDesc
+                        : listMock"
                  [sortType]="sortType !== 0 ? sortType : undefined"
                  [allowedActions]="{
                    sort: allowSort,
@@ -63,7 +67,8 @@ const note = `
   (button titles, etc) | EDITABLE-LIST-TRANSLATION
   [maxChars] | number | Maximum length of text for option input | 100
   (changed) | EventEmitter<wbr>&lt;EditableListState&gt; | emits updated list | &nbsp;
-  (inputChanged) | EventEmitter&lt;string&gt; | Outputs input value (for external validation) | &nbsp;
+  (inputChanged) | EventEmitter&lt;string&gt; | Outputs input value \
+  (for external validation) | &nbsp;
 
 
   ~~~

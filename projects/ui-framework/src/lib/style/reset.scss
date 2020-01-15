@@ -64,6 +64,13 @@ button,
   outline: none !important;
 }
 
+:focus {
+  outline: 0;
+}
+::-moz-focus-inner {
+  border: 0;
+}
+
 input,
 button,
 select,

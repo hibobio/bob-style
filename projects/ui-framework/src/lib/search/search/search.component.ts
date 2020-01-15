@@ -14,6 +14,7 @@ import {
   InputAutoCompleteOptions,
 } from '../../form-elements/input/input.enum';
 import { simpleUID } from '../../services/utils/functional-utils';
+import { DOMInputEvent } from '../../types';
 
 @Component({
   selector: 'b-search',
@@ -37,11 +38,13 @@ export class SearchComponent implements OnChanges {
 
   public id = simpleUID('bsrch-');
   public inputFocused = false;
-  public searchIconColor: String = IconColor.normal;
-  public readonly icons = Icons;
-  public readonly iconSize = IconSize;
-  public readonly iconColor = IconColor;
-  public readonly inputTypes = InputTypes;
+
+  readonly icons = Icons;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
+  readonly inputTypes = InputTypes;
+
+  private skipFocusEvent = false;
 
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() searchFocus: EventEmitter<string> = new EventEmitter<string>();
@@ -54,21 +57,24 @@ export class SearchComponent implements OnChanges {
 
   onFocus(): void {
     this.inputFocused = true;
-    this.searchIconColor = IconColor.dark;
-    this.searchFocus.emit();
+
+    if (!this.skipFocusEvent && this.searchFocus.observers) {
+      this.searchFocus.emit(this.value);
+    }
+    this.skipFocusEvent = false;
   }
 
   onBlur(): void {
     this.inputFocused = false;
-    this.searchIconColor = IconColor.normal;
   }
 
-  onInput(event): void {
-    this.value = (event.target as HTMLInputElement).value;
+  onInput(event: DOMInputEvent): void {
+    this.value = event.target.value;
     this.searchChange.emit(this.value);
   }
 
   onResetClick(): void {
+    this.skipFocusEvent = true;
     this.value = '';
     this.searchChange.emit(this.value);
   }

@@ -1,9 +1,10 @@
 @import '../../style/common-imports';
+
 :host {
   display: flex;
   flex-direction: column;
+}
 
-  .comment-item {
-    margin-bottom: times8(2);
-  }
+.comment-item {
+  margin-bottom: times8(2);
 }

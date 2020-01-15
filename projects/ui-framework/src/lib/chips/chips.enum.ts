@@ -7,6 +7,7 @@ export enum ChipType {
   avatar = 'avatar',
   icon = 'icon',
   tab = 'tab',
+  button = 'button',
 }
 
 export enum ChipListAlign {

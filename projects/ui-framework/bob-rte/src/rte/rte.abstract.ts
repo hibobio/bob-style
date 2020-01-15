@@ -36,6 +36,7 @@ import {
   isNotEmptyObject,
   isEmptyArray,
   chainCall,
+  cloneObject,
 } from 'bob-style';
 
 import {
@@ -46,9 +47,10 @@ import {
   RTE_MAXHEIGHT_DEF,
   RTE_TOOLBAR_HEIGHT,
   RTE_MENTIONS_OPTIONS_DEF,
+  RTE_TRANSLATION_DEF,
 } from './rte.const';
 import { BlotType, RTEType } from './rte.enum';
-import { RteMentionsOption } from './rte.interface';
+import { RteMentionsOption, RteTranslation } from './rte.interface';
 import { PlaceholdersConverterService } from './placeholders.service';
 
 import { FroalaEditorDirective } from 'angular-froala-wysiwyg';
@@ -109,6 +111,8 @@ export abstract class RTEbaseElement extends BaseFormElement
   @Input() public mentionsList: RteMentionsOption[];
   @Input() public placeholderList: SelectGroupOption[];
 
+  @Input() translation: RteTranslation = cloneObject(RTE_TRANSLATION_DEF);
+
   @Output() blurred: EventEmitter<string> = new EventEmitter<string>();
   @Output() focused: EventEmitter<string> = new EventEmitter<string>();
   @Output() changed: EventEmitter<string> = new EventEmitter<string>();
@@ -145,12 +149,13 @@ export abstract class RTEbaseElement extends BaseFormElement
         maxHeight: RTE_MAXHEIGHT_DEF,
         controls: RTE_CONTROLS_DEF,
         disableControls: RTE_DISABLE_CONTROLS_DEF,
+        translation: cloneObject(RTE_TRANSLATION_DEF),
       },
       ['options', 'value'],
       true
     );
 
-    if (changes.options) {
+    if (hasChanges(changes, ['options'], true)) {
       this.updateEditorOptions(
         merge(RTE_OPTIONS_DEF, this.options, changes.options.currentValue)
       );
@@ -460,5 +465,12 @@ export abstract class RTEbaseElement extends BaseFormElement
       }
     }
     return this.length;
+  }
+
+  protected getNativeRange(): Range {
+    const selection = document.getSelection();
+    return selection == null || selection.rangeCount <= 0
+      ? null
+      : selection.getRangeAt(0);
   }
 }

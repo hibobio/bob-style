@@ -7,7 +7,12 @@ import { AgGridModule } from 'ag-grid-angular';
 import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
 import { TableUtilsService } from './table-utils-service/table-utils.service';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
-import { AvatarModule, ButtonsModule, IconsModule, MenuModule, } from 'bob-style';
+import {
+  AvatarModule,
+  ButtonsModule,
+  IconsModule,
+  MenuModule,
+} from 'bob-style';
 // tslint:disable-next-line:max-line-length
 import { TableActionsWrapperComponent } from './table-cell-components/table-actions-wrapper/table-actions-wrapper.component';
 // tslint:disable-next-line:max-line-length
@@ -31,6 +36,7 @@ import { TreeDirective } from './table/extensions/tree.directive';
     AvatarModule,
     AgGridModule,
     ButtonsModule,
+    IconsModule,
     MenuModule,
     AgGridModule.withComponents([
       AvatarCellComponent,

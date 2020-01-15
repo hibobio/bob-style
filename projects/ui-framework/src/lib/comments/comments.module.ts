@@ -5,7 +5,6 @@ import { CommentListComponent } from './comment-list/comment-list.component';
 import { InputModule } from '../form-elements/input/input.module';
 import { AvatarModule } from '../avatar/avatar/avatar.module';
 import { MatTooltipModule } from '@angular/material';
-import { TextareaModule } from '../form-elements/textarea/textarea.module';
 import { CommentItemComponent } from './comment-list/comment-item/comment-item.component';
 import { ButtonsModule } from '../buttons/buttons.module';
 import { MenuModule } from '../navigation/menu/menu.module';
@@ -16,7 +15,7 @@ import { FiltersModule } from '../services/filters/filters.module';
   declarations: [
     EditCommentComponent,
     CommentListComponent,
-    CommentItemComponent
+    CommentItemComponent,
   ],
   imports: [
     FiltersModule,
@@ -25,13 +24,9 @@ import { FiltersModule } from '../services/filters/filters.module';
     InputModule,
     AvatarModule,
     MatTooltipModule,
-    TextareaModule,
     ButtonsModule,
-    MenuModule
+    MenuModule,
   ],
-  exports: [
-    EditCommentComponent,
-    CommentListComponent
-  ]
+  exports: [EditCommentComponent, CommentListComponent],
 })
-export class CommentsModule { }
+export class CommentsModule {}

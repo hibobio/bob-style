@@ -3,16 +3,7 @@ import { AvatarCellComponent } from '../table-cell-components/avatar-cell/avatar
 import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
 import { GridActions } from '../table-cell-components/actions-cell/actions-cell.interface';
 import { PinDirection, SortDirections } from '../table/table.enum';
-import {
-  Icons,
-  makeArray,
-  mockText,
-  mockNames,
-  simpleUID,
-  mockAvatar,
-  mockDate,
-  randomFromArray, randomNumber
-} from 'bob-style';
+import { Icons, makeArray, mockAvatar, mockDate, mockNames, mockText, randomFromArray, randomNumber, simpleUID } from 'bob-style';
 
 export const mockColumnsDefs: ColumnDef[] = [
   {
@@ -22,26 +13,31 @@ export const mockColumnsDefs: ColumnDef[] = [
     pinned: PinDirection.Left,
     lockPosition: true,
     resizable: false,
-    sortable: false
+    sortable: false,
+    flex: 1,
   },
   {
     headerName: 'Display Name',
     field: 'fullName',
-    sort: SortDirections.Asc
+    sort: SortDirections.Asc,
+    flex: 2,
   },
   {
     headerName: 'Email',
     field: 'email',
-    icon: Icons.email
+    icon: Icons.email,
+    flex: 1,
   },
   {
     headerName: 'Status',
-    field: 'internal.status'
+    field: 'internal.status',
+    flex: 1
   },
   {
     headerName: 'Hired Date',
     field: 'hiredDate',
-    icon: Icons.date
+    icon: Icons.date,
+    flex: 1
   },
   {
     headerName: '',
@@ -50,13 +46,22 @@ export const mockColumnsDefs: ColumnDef[] = [
     pinned: PinDirection.Right,
     lockPosition: true,
     resizable: false,
-    sortable: false
+    sortable: false,
+    flex: 1
   }
 ];
 
 export const treeColumnDefsMock: ColumnDef[] = [
-  { field: 'jobTitle', headerName: 'Job Title', sortable: true },
-  { field: 'employmentType', headerName: 'Employment Type', sortable: true }
+  {
+    field: 'jobTitle',
+    headerName: 'Job Title',
+    sortable: true,
+  },
+  {
+    field: 'employmentType',
+    headerName: 'Employment Type',
+    sortable: true,
+  }
 ];
 export const treeRowDataMock = [
   {

@@ -18,6 +18,7 @@ import {
 import { format, parseISO } from 'date-fns';
 import { InputTypes } from '../../form-elements/input/input.enum';
 import { SERVER_DATE_FORMAT } from '../../consts';
+import { GenericObject } from '../../types';
 
 // -------------------------------
 // Transformers
@@ -46,33 +47,35 @@ export const stringListToArray = (
   );
 };
 
-export const arrayOfStringsOrArrayFromString = value =>
+export const arrayOfStringsOrArrayFromString = (value: any): string[] =>
   isArray(value) ? value : isString(value) ? stringListToArray(value) : [];
 
 export const valueToObjectWithKeyOfValueFromArray = (
   value: any,
   key: string,
-  array: object[]
-) => {
+  array: GenericObject[]
+): GenericObject => {
   if (isNullOrUndefined(value) || isNullOrUndefined(array)) {
     return undefined;
   }
   return array.find(i => compareAsStrings(i[key], value));
 };
 
-export const stringToDate = date => {
+export const stringToDate = (date: string | Date): Date => {
   if (isDate(date) || isNullOrUndefined(date)) {
-    return date;
+    return date as Date;
   }
-  let converted = parseISO(date);
+  let converted = parseISO(date as string);
   if (String(converted) === 'Invalid Date') {
     converted = new Date(date);
   }
   return String(converted) !== 'Invalid Date' ? converted : undefined;
 };
 
-export const dateToString = (date, frmt = SERVER_DATE_FORMAT) =>
-  isDate(date) ? format(date, frmt) : date;
+export const dateToString = (
+  date: Date | string,
+  frmt: string = SERVER_DATE_FORMAT
+): string => (isDate(date) ? format(date as Date, frmt) : date) as string;
 
 export const valueToObjectKey = (key: string) => (value: any) => {
   return hasProp(value, key) ? value : { [key]: value };
@@ -89,11 +92,11 @@ export const arrayOfValuesToArrayOfObjects = (key: string) => (
 };
 
 export const valueAsNumber = (
-  inputType: InputTypes,
+  inputType: InputTypes | boolean,
   value: any,
   def: any = undefined
-) => {
-  if (inputType !== InputTypes.number || !value) {
+): number => {
+  if (!value || (inputType !== InputTypes.number && inputType !== true)) {
     return value;
   }
   const parsed = parseToNumber(value);
@@ -107,7 +110,7 @@ export const valueAsNumber = (
 // Typecheckers
 // -------------------------------
 
-export const booleanOrFail = value => {
+export const booleanOrFail = (value: any): boolean => {
   if (isNullOrUndefined(value)) {
     return value;
   }
@@ -121,7 +124,7 @@ export const booleanOrFail = value => {
   return value;
 };
 
-export const arrayOrFail = value => {
+export const arrayOrFail = <T = any>(value: any): T[] => {
   if (isNullOrUndefined(value)) {
     return value;
   }
@@ -152,6 +155,9 @@ export const objectOrFail = value => {
 export const stringyOrFail = value => {
   if (isNullOrUndefined(value)) {
     return value;
+  }
+  if (value !== value) {
+    return undefined;
   }
   if (!(isString(value) || isNumber(value))) {
     throw new Error(
@@ -279,5 +285,19 @@ export const valueInArrayOrFail = (
     );
   }
 
+  return value;
+};
+
+// -------------------------------
+// Helpers
+// -------------------------------
+
+export const logValue = <T = any>(value: T): T => {
+  console.log(value);
+  return value;
+};
+
+export const logValueComment = <T = any>(comment: string) => (value: T): T => {
+  console.log(comment + ': ', value);
   return value;
 };

@@ -1,4 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  flush,
+} from '@angular/core/testing';
 import { AvatarComponent } from './avatar.component';
 import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
 import { By } from '@angular/platform-browser';
@@ -93,14 +99,15 @@ describe('AvatarComponent', () => {
   });
 
   describe('Avatar size', () => {
-    it('Should set the right size of the avatar with css variable', () => {
+    it('Should set the right size of the avatar with css variable', fakeAsync(() => {
       component.size = AvatarSize.large;
       fixture.detectChanges();
+      flush();
 
       expect(getComputedStyle(avatarElement).width).toEqual(
         AvatarSize.large + 'px'
       );
-    });
+    }));
   });
 
   describe('Text', () => {
@@ -145,14 +152,15 @@ describe('AvatarComponent', () => {
   });
 
   describe('Badge', () => {
-    it('Should add badge icon', () => {
+    it('Should add badge icon', fakeAsync(() => {
       component.size = AvatarSize.small;
       component.badge = AvatarBadge.pending;
       fixture.detectChanges();
+      flush();
 
       expect(avatarElement.dataset.iconAfter).toContain('watch');
       expect(avatarElement.dataset.iconAfterColor).toContain('primary');
-    });
+    }));
   });
 
   describe('Status', () => {

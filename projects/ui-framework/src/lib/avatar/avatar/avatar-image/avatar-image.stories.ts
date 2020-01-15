@@ -56,6 +56,7 @@ const template = `
     [backgroundColor]="backgroundColor"
     [icon]="icon"
     [badge]="badge"
+    [text]="text"
     [disabled]="disabled"
     (clicked)="onClick($event)">
 </b-avatar-image>
@@ -71,7 +72,8 @@ const note = `
   --- | --- | --- | ---
   [imageSource] | string | URL of the avatar image<br>\
   **Important!** <br>\
-  use **EmployeeAvatarService<wbr>.getOptimizedAvatarImage<wbr>(employee.about.avatar, AvatarSize)** <br>\
+  use **EmployeeAvatarService<wbr>.getOptimizedAvatarImage<wbr>\
+  (employee.about.avatar, AvatarSize)** <br>\
   to get correct avatar image | &nbsp;
   [backgroundColor] | string | background color | grey-200
   [size] | AvatarSize | enum for setting the avatar size | mini
@@ -79,7 +81,10 @@ const note = `
   If just the Icons enum is provided, size & color is automatic.  | &nbsp;
   [badge] | AvatarBadge / Icon | AvatarBadge enum of approved, \
   pending or rejected / or Icon {icon, color} object  | &nbsp;
+  [text] | string | text to put inside (will disable icon) | &nbsp;
   [disabled] | boolean | disabled state | false
+  [supressWarnings] | boolean | suppress warnings about not using \
+  getOptimizedAvatarImage for imageSource (set to true if using images that are not avatars) | false
   (clicked) | EventEmitter<wbr>&lt;MouseEvent&gt; | emitted on avatar click | &nbsp;
   ng-content | element | you can pass stuff to be placed inside Avatar as ng-content | &nbsp;
 
@@ -114,6 +119,7 @@ story.add(
           [0, ...Object.keys(AvatarBadge)],
           AvatarBadge.approved
         ),
+        text: text('text'),
         disabled: boolean('disabled', false),
         onClick: action('Avatar Clicked'),
       },

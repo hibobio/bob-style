@@ -6,32 +6,35 @@ $avatarSizeMap: (
     '*': (
       box-shadow: 0 1px 2px 0 $boxShadowColor,
       border-width: 2px,
+      font-size: $font-size-caption,
     ),
     '.has-hover:hover': (
       box-shadow: 0 3px 6px 0 $boxShadowColor,
     ),
     ':after': (
       top: -2px,
-      right: -4px,
+      right: -5px,
     ),
   ),
   small: (
     '*': (
       box-shadow: 0 1px 2px 0 $boxShadowColor,
       border-width: 2px,
+      font-size: $font-size-big-body,
     ),
     '.has-hover:hover': (
       box-shadow: 0 3px 6px 0 $boxShadowColor,
     ),
     ':after': (
-      top: -1px,
-      right: -5px,
+      top: 0,
+      right: -4px,
     ),
   ),
   medium: (
     '*': (
       box-shadow: 0 2px 4px 0 $boxShadowColor,
       border-width: 3px,
+      font-size: $font-size-display-4,
     ),
     '.has-hover:hover': (
       box-shadow: 0 6px 12px 0 $boxShadowColor,
@@ -45,26 +48,28 @@ $avatarSizeMap: (
     '*': (
       box-shadow: 0 2px 4px 0 $boxShadowColor,
       border-width: 3px,
-    ),
-    '.has-hover:hover': (
-      box-shadow: 0 6px 12px 0 $boxShadowColor,
-    ),
-    ':after': (
-      top: 3px,
-      right: 1px,
-    ),
-  ),
-  xlarge: (
-    '*': (
-      box-shadow: 0 2px 4px 0 $boxShadowColor,
-      border-width: 3px,
+      font-size: $font-size-display-3,
     ),
     '.has-hover:hover': (
       box-shadow: 0 6px 12px 0 $boxShadowColor,
     ),
     ':after': (
       top: 6px,
-      right: 12px,
+      right: 2px,
+    ),
+  ),
+  xlarge: (
+    '*': (
+      box-shadow: 0 2px 4px 0 $boxShadowColor,
+      border-width: 3px,
+      font-size: $font-size-display-2,
+    ),
+    '.has-hover:hover': (
+      box-shadow: 0 6px 12px 0 $boxShadowColor,
+    ),
+    ':after': (
+      top: 0,
+      right: -5px,
     ),
   ),
 );
@@ -75,7 +80,7 @@ $avatarSizeMap: (
   --bg-color: #{$grey-200};
 
   box-sizing: border-box;
-  display: inline-flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
@@ -89,6 +94,7 @@ $avatarSizeMap: (
   background-position: center;
   background-repeat: no-repeat;
   user-select: none;
+  font-weight: 700;
 
   @include size(var(--avatar-size));
   background-color: var(--bg-color);
@@ -108,10 +114,13 @@ $avatarSizeMap: (
   }
 
   &.icon-on-hover {
+    color: white;
+
     &.has-content {
       &:before {
         content: '';
         @include position(0 0 0 0);
+        z-index: -1;
       }
     }
 

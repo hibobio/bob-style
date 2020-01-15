@@ -118,6 +118,8 @@ export const mockNamesList = [
   'Claudie Redick',
   'Dorthey Tollison',
   'Manual Dedios',
+  'Manure Inspector',
+  'Vomit Collector',
   'Melania Burruel',
   'Nida Audia',
   'Shawanna Petree',
@@ -177,6 +179,67 @@ export const mockFirstNamesList = mockNamesList.map(name => name.split(' ')[0]);
 export const mockSecondNamesList = mockNamesList.map(
   name => name.split(' ')[1]
 );
+
+export const badJobsList = [
+  'Assembly Worker',
+  'Bank Teller',
+  'Coal Miner',
+  'Farm Worker',
+  'Fast Food Cook',
+  'Fishing Worker',
+  'Logger',
+  'Medical Transcriptionist',
+  'Newspaper Reporter',
+  'Postal Service Worker',
+  'Retail Sales Associate',
+  'Taxi Driver',
+  'Telemarketer',
+  'Cleaner',
+  'Lorry Driver',
+  'Soldier',
+  'Customer Service Advisor',
+  'Social Worker',
+  'Miner',
+  'Slaughter House Worker',
+  'Roofer',
+  'Promotional Mascot',
+  'Welder',
+  'Water transportation worker',
+  'Traffic Warden',
+  'Animal Food Taster',
+  'Snake Milker',
+  'Professional Mourner',
+  'Drying Paint Watcher',
+  'Rat catcher',
+  'Whipping boy',
+  'Food server',
+  'Port-a-loo Toilet Cleaner',
+  'Brickmason',
+  'Road Kill Remover',
+  'Animal Masturbator',
+  'Crime Scene Cleaner',
+  'Sewer Cleaner',
+  'Truck driver',
+  'Dockworker',
+  'Odour Tester',
+  'Automobile mechanic',
+  'Broadcaster',
+  'Bus driver',
+  'Construction Worker',
+  'Paint Dry Watcher',
+  'Guard at Buckingham Palace',
+  'Sewer Swimmer',
+  'Head Lice Remover',
+  'Pest Controller',
+  'Grave Digger',
+  'Festival Litter Picker',
+  'Children’s Holiday Mascot',
+  'Corrections officer',
+  'Disc jockey',
+  'Firefighter',
+  'Clinical Waste Disposal Worker',
+  'Hazmat Diver',
+];
 
 export const mockJobsList = [
   'A/B tester',
@@ -1052,6 +1115,8 @@ export const mockNames = (num = null) => {
 };
 
 export const mockJobs = (num = null) => randomFromArray(mockJobsList, num);
+
+export const mockBadJobs = (num = null) => randomFromArray(badJobsList, num);
 
 export const mockHobbies = (num = null) =>
   randomFromArray(mockHobbiesList, num);

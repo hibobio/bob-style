@@ -52,7 +52,8 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   [text] | string | chip text | ''
-  [type] | ChipType | enum for setting the chip type (tag, info, warning, error, success, avatar) | tag
+  [type] | ChipType | enum for setting the chip type \
+  (tag, info, warning, error, success, avatar) | tag
   [icon] | Icons | icon (for Icon type chip) | &nbsp;
   [removable] | boolean | if chip has a 'x' button | false
   [disabled] | boolean | disables chip | false
@@ -72,7 +73,7 @@ const note = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Chip'">
+<b-story-book-layout [title]="'Chip'" style="background-color: rgb(250,250,250);">
   <div>
     ${template}
 
@@ -116,8 +117,8 @@ const storyTemplate = `
         [selected]="selected"
         (removed)="onRemove($event)">
 
-        <b-avatar [imageSource]="avatar1"
-                    [size]="avatarSize.mini"></b-avatar>
+        <b-avatar-image [imageSource]="avatar1"
+                    [size]="avatarSize.mini"></b-avatar-image>
       </b-chip>
 
       <b-chip style="margin: 10px;"

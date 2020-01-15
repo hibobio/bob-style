@@ -78,11 +78,9 @@ describe('PlachholderRteConverterService', () => {
       );
 
       expect(converted).toContain(
-        'data-placeholder-id="work' + separator + 'title">'
+        'data-placeholder-id="work' + separator + 'title"'
       );
-      expect(converted).toContain(
-        '{{&nbsp;</em><strong>Work</strong><em>&nbsp;-&nbsp;</em>Title<em>&nbsp;}}'
-      );
+      expect(converted).toContain('data-before="Work" data-after=" - Title"');
     });
   });
 
@@ -93,17 +91,15 @@ describe('PlachholderRteConverterService', () => {
       expect(converted).not.toContain('{{root' + separator + 'firstName}}');
       expect(converted).not.toContain('{{work' + separator + 'title}}');
       expect(converted).toContain(
-        // tslint:disable-next-line: max-line-length
-        'data-placeholder-id="root' +
-          separator +
-          'firstName"><em>{{&nbsp;</em><strong>Basic</strong><em>&nbsp;-&nbsp;</em>First name<em>&nbsp;}}'
+        'data-placeholder-id="root' + separator + 'firstName"'
       );
       expect(converted).toContain(
-        // tslint:disable-next-line: max-line-length
-        'data-placeholder-id="work' +
-          separator +
-          'title"><em>{{&nbsp;</em><strong>Work</strong><em>&nbsp;-&nbsp;</em>Title<em>&nbsp;}}'
+        'data-before="Basic" data-after=" - First name"'
       );
+      expect(converted).toContain(
+        'data-placeholder-id="work' + separator + 'title"'
+      );
+      expect(converted).toContain('data-before="Work" data-after=" - Title"');
     });
   });
 

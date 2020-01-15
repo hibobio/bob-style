@@ -41,6 +41,8 @@ $color-warn: $primary-500;
 
 $color-option-selected: rgb(255, 243, 192); // #fff3c0;
 
+$color-select-red: var(--negative-600);
+
 @function black($opacity) {
   @return rgba(0, 0, 0, $opacity);
 }

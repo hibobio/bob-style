@@ -17,11 +17,12 @@
      #inputWrap>
 
   <div class="bfe-wrap start-date-wrap"
-       [ngClass]="{focused: inputFocused[0],
-                  'has-suffix': !isInputEmpty(0),
-                  'panel-above': panelPosition === panelPos.above,
-                  'panel-below': panelPosition === panelPos.below
-                }">
+       [ngClass]="{
+              focused: inputFocused[0],
+              'has-suffix': !isInputEmpty(0),
+              'panel-above': panelPosition === panelPos.above,
+              'panel-below': panelPosition === panelPos.below
+       }">
 
     <input #input
            class="bfe-input start-date-input"
@@ -56,22 +57,27 @@
            [min]="minDate || null"
            [max]="value?.endDate || maxDate || null">
 
-    <b-icon *ngIf="!isInputEmpty(0)"
-            class="bfe-suffix"
-            role="button"
-            [hasHoverState]="true"
-            [icon]="icons.reset_x"
-            [color]="inputFocused[0] ? iconColor.dark : iconColor.normal"
-            [size]="iconSize.small"
-            (click)="clearInput(0, 'value.startDate')">
-    </b-icon>
+    <span *ngIf="!isInputEmpty(0)"
+          class="bfe-suffix">
+      <b-icon *ngIf="!isInputEmpty(0)"
+              class="clear-input"
+              role="button"
+              [icon]="icons.reset_x"
+              [size]="iconSize.small"
+              [color]="iconColor.normal"
+              [hasHoverState]="true"
+              (click)="$event.stopPropagation(); clearInput(0, 'value.startDate')">
+      </b-icon>
+    </span>
   </div>
 
   <div class="bfe-wrap end-date-wrap"
-       [ngClass]="{focused: inputFocused[1],
-                  'has-suffix': !isInputEmpty(1),
-                  'panel-above': panelPosition === panelPos.above,
-                  'panel-below': panelPosition === panelPos.below}">
+       [ngClass]="{
+              focused: inputFocused[1],
+              'has-suffix': !isInputEmpty(1),
+              'panel-above': panelPosition === panelPos.above,
+              'panel-below': panelPosition === panelPos.below
+       }">
 
     <input #input
            class="bfe-input end-date-input"
@@ -107,15 +113,17 @@
            [min]="value?.startDate || minDate || null"
            [max]="maxDate || null">
 
-    <b-icon *ngIf="!isInputEmpty(1)"
-            class="bfe-suffix"
-            role="button"
-            [hasHoverState]="true"
-            [icon]="icons.reset_x"
-            [color]="inputFocused[1] ? iconColor.dark : iconColor.normal"
-            [size]="iconSize.small"
-            (click)="clearInput(1, 'value.endDate')">
-    </b-icon>
+    <span *ngIf="!isInputEmpty(1)"
+          class="bfe-suffix">
+      <b-icon class="clear-input"
+              role="button"
+              [icon]="icons.reset_x"
+              [size]="iconSize.small"
+              [color]="iconColor.normal"
+              [hasHoverState]="true"
+              (click)="$event.stopPropagation(); clearInput(1, 'value.endDate')">
+      </b-icon>
+    </span>
   </div>
 </div>
 

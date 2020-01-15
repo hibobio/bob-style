@@ -6,9 +6,13 @@
          'single-label': singleLabel,
          'show-action-on-hover': showActionOnHover
         }">
-  <tr class="bbl-list-item"
+  <tr *ngFor="let item of items; index as i"
+      class="bbl-list-item"
       role="listitem"
-      *ngFor="let item of items; index as i">
+      [ngClass]="{
+        'has-hover': clicked.observers.length > 0
+      }"
+      (click.outside-zone)="onItemClick(item, $event)">
 
     <td *ngIf="item.icon"
         b-icon

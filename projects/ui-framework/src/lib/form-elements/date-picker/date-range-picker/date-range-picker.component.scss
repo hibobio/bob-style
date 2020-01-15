@@ -11,26 +11,9 @@
   width: 50%;
 }
 
-.bfe-suffix {
-  transition: opacity 0.1s;
-  transition-delay: 0.1s;
-}
-
 .bfe-wrap {
   .bfe-suffix {
     padding-right: 11px;
-  }
-
-  @include desktop {
-    &:not(:hover):not(.focused) {
-      .bfe-suffix {
-        display: none;
-        opacity: 0;
-      }
-      .bfe-input {
-        padding-right: $input-padding;
-      }
-    }
   }
 }
 

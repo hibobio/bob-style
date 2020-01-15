@@ -5,9 +5,14 @@
 $toolpanel-indent-size: 35px;
 
 :host ::ng-deep .tree-table {
+
+  .ag-cell-wrapper.ag-row-group {
+    align-items: inherit;
+  }
+
   .ag-row-animation .ag-row {
     transition: transform 0.4s, top 0.4s, height 0.4s, background-color 0.1s,
-      opacity 0.2s;
+    opacity 0.2s;
   }
 
   @for $i from 1 to 50 {
@@ -20,12 +25,15 @@ $toolpanel-indent-size: 35px;
     background: gray;
   }
 
-  .ag-icon.ag-icon-contracted {
-    @include ag-icon('chevron-down');
-  }
+  .ag-icon {
+    display: block;
+    &.ag-icon-contracted {
+      @include ag-icon('chevron-right');
+    }
 
-  .ag-icon.ag-icon-expanded {
-    @include ag-icon('chevron-right');
+    &.ag-icon-expanded {
+      @include ag-icon('chevron-down');
+    }
   }
 
   .ag-cell .ag-group-expanded,

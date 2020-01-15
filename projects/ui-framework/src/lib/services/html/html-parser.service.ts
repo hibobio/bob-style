@@ -157,4 +157,15 @@ export class HtmlParserHelpers {
 
     return elm.innerHTML;
   }
+
+  public removeElements(value: string, selector: string): string {
+    if (!value || !selector) {
+      return value;
+    }
+    const elm: HTMLElement = document.createElement('div');
+    elm.innerHTML = value;
+
+    elm.querySelectorAll(selector).forEach(el => el.remove());
+    return elm.innerHTML;
+  }
 }

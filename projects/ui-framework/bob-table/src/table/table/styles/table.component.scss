@@ -54,10 +54,11 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     }
 
     .ag-header-cell {
-      @include cell(null);
+      @include cell();
       display: flex;
       align-items: center;
       cursor: default;
+      overflow: visible;
     }
 
     .ag-header-cell-sortable .ag-header-cell-label {
@@ -85,20 +86,29 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     .ag-header-cell-resize {
       right: -3px;
       width: 5px;
-
-      background-image: linear-gradient($grey-500, $grey-500);
-      background-size: 1px 30px;
-      background-position: center;
+      cursor: move;
+      @include cell-border;
     }
 
     .ag-header-icon {
       display: flex;
       margin-left: 2px;
-      opacity: 0.73;
+    }
+
+    .ag-icon-asc,
+    .ag-icon-desc {
+      @include b-icon($icon: 'arrow-left-alt', $size: 14px) {
+        font-weight: bold;
+      }
     }
 
     .ag-icon-asc {
-      margin-top: -2px;
+      transform: rotate(-90deg);
+      margin-bottom: -1px;
+    }
+
+    .ag-icon-desc {
+      transform: rotate(90deg);
     }
   }
 
@@ -121,7 +131,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     }
 
     .ag-cell {
-      @include cell(null);
+      @include cell();
 
       &.row-select {
         position: relative;
@@ -162,9 +172,12 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 :host ::ng-deep .remove-column-button {
   .ag-header-viewport {
     .ag-header-cell {
-      @include b-icon($icon: 'circle-cancel', $size: small, $elem: '&:hover:after');
-
-      &:after {
+      @include b-icon(
+        $icon: 'circle-cancel',
+        $size: small,
+        $elem: '&:hover:after',
+        $hover: false
+      ) {
         text-align: right;
         cursor: pointer;
         margin-right: -6px;
@@ -183,9 +196,12 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
   .ag-overlay-wrapper {
     display: block;
     padding: ($table-header-height + times8(3)) times8(2) times8(3) times8(2);
-    @include b-icon($icon: 'table', $size: x-large, $color: light);
-
-    &:before {
+    @include b-icon(
+      $icon: 'table',
+      $size: x-large,
+      $color: light,
+      $hover: false
+    ) {
       margin: 0 auto 8px auto;
     }
   }
@@ -200,11 +216,21 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     * {
       overflow: hidden;
     }
+    .ag-header-container,
+    .ag-header-cell {
+      width: auto !important;
+    }
+    .ag-header-row {
+      min-width: 100%;
+    }
     .ag-root {
       min-height: $min-table-height;
     }
     .ag-header {
       @include disabled-state;
+    }
+    .ag-icon {
+      display: none !important;
     }
   }
 
