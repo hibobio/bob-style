@@ -2,9 +2,18 @@
        class="bfe-label"
        [attr.for]="id">{{label}}</label>
 
-<div class="bfe-wrap has-suffix"
-     [ngClass]="{focused: hoursFocused || minutesFocused}"
+<div class="bfe-wrap has-prefix"
+     [ngClass]="{
+        focused: hoursFocused || minutesFocused,
+        'has-suffix': !isInputEmpty()
+     }"
      (click.outside-zone)="inputHours.focus()">
+
+  <b-icon class="bfe-prefix input-icon"
+          [icon]="icons.timeline"
+          [color]="(hoursFocused || minutesFocused) ? iconColor.dark : iconColor.normal"
+          [size]="iconSize.medium">
+  </b-icon>
 
   <span class="bfe-input"
         [attr.id]="id">
@@ -44,21 +53,17 @@
 
   </span>
 
-  <b-icon class="bfe-suffix input-icon"
-          [icon]="icons.timeline"
-          [color]="(hoursFocused || minutesFocused) ? iconColor.dark : iconColor.normal"
-          [size]="iconSize.medium">
-  </b-icon>
-
-  <b-icon *ngIf="isInputEmpty()"
-          class="bfe-suffix clear-input"
-          role="button"
-          [hasHoverState]="true"
-          [icon]="icons.reset_x"
-          [color]="inputFocused[0] ? iconColor.dark : iconColor.normal"
-          [size]="iconSize.medium"
-          (click)="$event.stopPropagation(); clearInput()">
-  </b-icon>
+  <span *ngIf="!isInputEmpty()"
+        class="bfe-suffix">
+    <b-icon class="clear-input"
+            role="button"
+            [icon]="icons.reset_x"
+            [size]="iconSize.small"
+            [color]="iconColor.normal"
+            [hasHoverState]="true"
+            (click)="$event.stopPropagation(); clearInput()">
+    </b-icon>
+  </span>
 </div>
 
 <p b-input-message

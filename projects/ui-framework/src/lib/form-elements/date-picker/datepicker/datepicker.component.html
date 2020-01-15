@@ -5,11 +5,21 @@
                       [fieldId]="id">
 </b-form-element-label>
 
-<div class="bfe-wrap has-suffix"
+<div class="bfe-wrap has-prefix has-suffix"
      #inputWrap
-     [ngClass]="{focused: inputFocused[0],
-                'panel-above': panelPosition === panelPos.above,
-                'panel-below': panelPosition === panelPos.below}">
+     [ngClass]="{
+        focused: inputFocused[0],
+        'has-suffix': !isInputEmpty(),
+        'panel-above': panelPosition === panelPos.above,
+        'panel-below': panelPosition === panelPos.below
+     }"
+     (click.outside-zone)="input.focus()">
+
+  <b-icon class="bfe-prefix input-icon"
+          [icon]="icons.date"
+          [color]="!inputFocused[0] ? iconColor.normal : iconColor.dark"
+          [size]="iconSize.medium">
+  </b-icon>
 
   <input #input
          class="bfe-input"
@@ -43,24 +53,17 @@
          [min]="minDate || null"
          [max]="maxDate || null">
 
-  <b-icon class="bfe-suffix open-picker"
-          role="button"
-          [hasHoverState]="true"
-          [icon]="icons.date"
-          [color]="inputFocused[0] ? iconColor.dark : iconColor.normal"
-          [size]="iconSize.medium"
-          (click)="openPicker()">
-  </b-icon>
-
-  <b-icon *ngIf="!isInputEmpty()"
-          class="bfe-suffix clear-input"
-          role="button"
-          [hasHoverState]="true"
-          [icon]="icons.reset_x"
-          [color]="inputFocused[0] ? iconColor.dark : iconColor.normal"
-          [size]="iconSize.medium"
-          (click)="clearInput()">
-  </b-icon>
+  <span *ngIf="!isInputEmpty()"
+        class="bfe-suffix">
+    <b-icon class="clear-input"
+            role="button"
+            [icon]="icons.reset_x"
+            [size]="iconSize.small"
+            [color]="iconColor.normal"
+            [hasHoverState]="true"
+            (click)="$event.stopPropagation(); clearInput()">
+    </b-icon>
+  </span>
 
 </div>
 

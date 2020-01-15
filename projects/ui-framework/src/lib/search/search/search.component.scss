@@ -1,19 +1,7 @@
+@import '../../style/common-imports';
+
 :host {
   margin: 0;
 }
 
-.bfe-wrap {
-  cursor: text;
-}
-
-.bfe-prefix {
-  pointer-events: none;
-}
-
-.bfe-suffix {
-  cursor: default;
-}
-
-.reset-button {
-  cursor: pointer;
-}
+@include clear-input-suffix;

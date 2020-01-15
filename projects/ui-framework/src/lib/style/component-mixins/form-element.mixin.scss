@@ -173,18 +173,6 @@ $input-focus-border-color: $grey-700;
 
     // prefix-suffix
 
-    .has-prefix {
-      .bfe-input {
-        padding-left: 0;
-      }
-    }
-
-    .has-suffix {
-      .bfe-input {
-        padding-right: 0;
-      }
-    }
-
     .bfe-prefix,
     .bfe-suffix {
       display: flex;
@@ -192,6 +180,12 @@ $input-focus-border-color: $grey-700;
 
       &:empty:not([class*='b-icon']) {
         display: none;
+      }
+    }
+
+    .has-prefix {
+      .bfe-input {
+        padding-left: 0;
       }
     }
 
@@ -205,6 +199,16 @@ $input-focus-border-color: $grey-700;
 
     .bfe-suffix {
       padding: 0 16px 0 10px;
+    }
+
+    .has-suffix {
+      .bfe-input {
+        padding-right: 0;
+
+        &:last-child {
+          padding-right: $input-padding;
+        }
+      }
     }
 
     // states
@@ -244,37 +248,33 @@ $input-focus-border-color: $grey-700;
 }
 
 @mixin clear-input-suffix {
+  .bfe-wrap {
+    cursor: text;
+  }
+
   .input-icon {
     pointer-events: none;
   }
 
+  .bfe-suffix {
+    cursor: default;
+  }
+
   .clear-input {
-    @include position(50% 0 null null);
-    margin-top: -10px;
-    background-color: white;
+    outline: 0;
+    cursor: pointer;
+
+    @include desktop {
+      opacity: 0;
+      transition: opacity 0.1s;
+      transition-delay: 0.1s;
+    }
   }
 
   .bfe-wrap {
-    position: relative;
-  }
-
-  :host {
-    .bfe-suffix.clear-input {
-      cursor: pointer;
-      outline: 0;
-
-      @include desktop {
-        display: none;
-        opacity: 0;
-        transition: opacity 0.1s;
-        transition-delay: 0.1s;
-      }
-    }
-
-    .bfe-wrap:hover,
-    .bfe-wrap.focused {
-      .bfe-suffix.clear-input {
-        display: block;
+    &:hover,
+    &.focused {
+      .clear-input {
         opacity: 1;
       }
     }

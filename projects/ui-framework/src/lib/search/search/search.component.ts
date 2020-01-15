@@ -38,11 +38,12 @@ export class SearchComponent implements OnChanges {
 
   public id = simpleUID('bsrch-');
   public inputFocused = false;
-  public searchIconColor: String = IconColor.normal;
-  public readonly icons = Icons;
-  public readonly iconSize = IconSize;
-  public readonly iconColor = IconColor;
-  public readonly inputTypes = InputTypes;
+
+  readonly icons = Icons;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
+  readonly inputTypes = InputTypes;
+
   private skipFocusEvent = false;
 
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
@@ -56,7 +57,7 @@ export class SearchComponent implements OnChanges {
 
   onFocus(): void {
     this.inputFocused = true;
-    this.searchIconColor = IconColor.dark;
+
     if (!this.skipFocusEvent && this.searchFocus.observers) {
       this.searchFocus.emit(this.value);
     }
@@ -65,7 +66,6 @@ export class SearchComponent implements OnChanges {
 
   onBlur(): void {
     this.inputFocused = false;
-    this.searchIconColor = IconColor.normal;
   }
 
   onInput(event: DOMInputEvent): void {
