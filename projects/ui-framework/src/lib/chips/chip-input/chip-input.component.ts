@@ -66,10 +66,10 @@ export class ChipInputComponent extends BaseFormElement
   @Input() value: string[] = [];
   @Input() options: string[] = [];
   @Input() acceptNew = true;
+  @Input() maxChars = 50;
 
   private possibleChips: string[] = [];
   public filteredChips: string[] = this.options;
-  public maxChars = 50;
 
   readonly chipListConfig: ChipListConfig = {
     type: ChipType.tag,

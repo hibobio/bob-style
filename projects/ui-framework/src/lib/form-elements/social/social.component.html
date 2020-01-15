@@ -19,6 +19,8 @@
          [errorMessage]="errorMessage"
          [disabled]="disabled"
          [required]="required"
+         [maxChars]="50"
+         [showCharCounter]="false"
          (inputEvents)="onInputEvents($event)"
          [doPropagate]="false">
   <span input-prefix

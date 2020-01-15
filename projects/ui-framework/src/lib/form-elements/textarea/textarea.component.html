@@ -29,7 +29,7 @@
    [warnMessage]="warnMessage"
    [errorMessage]="errorMessage"
    [disabled]="disabled"
-   [minChars]="minChars"
-   [maxChars]="maxChars"
+   [minChars]="showCharCounter && minChars"
+   [maxChars]="showCharCounter && maxChars"
    [length]="value?.length">
 </p>
