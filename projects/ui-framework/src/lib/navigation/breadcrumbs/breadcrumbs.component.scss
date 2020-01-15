@@ -1,11 +1,19 @@
 @import '../../style/common-imports';
 @import '../../style/icons.mixin';
 
+$brdcrb-active-color: var(--negative-500);
+$brdcrb-inactive-color: $grey-500;
+
 $brdcrb-height: base8(64);
+$brdcrb-circle-size: 18px;
+$brdcrb-small-circle-size: 12px;
+$brdcrb-circle-size-mobile: 6px;
+
 $vertical-brdcrb-height: 74px;
 $vertical-brdcrb-line-length: 42px;
-$brdcrb-circle-size: 18px;
-$brdcrb-active-color: var(--negative-500);
+$vertical-brdcrb-line-width: 2px;
+
+$brdcrb-show-step-numbers: false;
 
 @mixin hide-tooltip {
   &:before,
@@ -51,11 +59,11 @@ $brdcrb-active-color: var(--negative-500);
 }
 
 .step-index {
-  @include text-hide;
   @include size($brdcrb-circle-size);
   flex-shrink: 0;
   border-radius: 50%;
   @include flex-align;
+  @include text-hide;
 }
 
 .step-title {
@@ -83,7 +91,7 @@ $brdcrb-active-color: var(--negative-500);
 
 [data-state='closed'] ::ng-deep {
   .step-index {
-    background-color: $grey-500;
+    background-color: $brdcrb-inactive-color;
   }
 
   .step-title {
@@ -165,8 +173,8 @@ $brdcrb-active-color: var(--negative-500);
   }
 
   .step-index {
-    @include size(6px);
-    background-color: $grey-500;
+    @include size($brdcrb-circle-size-mobile);
+    background-color: $brdcrb-inactive-color;
     box-shadow: none;
 
     &:before {
@@ -177,7 +185,7 @@ $brdcrb-active-color: var(--negative-500);
   [data-state='active'] {
     .step-index {
       border: 0;
-      @include size(times8(1));
+      @include size($brdcrb-circle-size-mobile + 2px);
       background-color: $brdcrb-active-color;
     }
   }
@@ -204,12 +212,33 @@ $brdcrb-active-color: var(--negative-500);
     }
   }
 
+  @if $brdcrb-show-step-numbers {
+    [data-state='closed'],
+    [data-state='active'] {
+      .step-index {
+        @include desktop {
+          @include b-body(
+            $lineHeight: $brdcrb-circle-size,
+            $weight: null,
+            $color: white
+          );
+          text-align: center;
+        }
+      }
+    }
+  }
+
   @include mobile {
     @include circle-view-common;
   }
 }
 
 :host[data-type='primary'][data-always-show-title='false']::ng-deep {
+  .step-title {
+    @include desktop {
+      font-size: $font-size-big-body;
+    }
+  }
   .step:not([data-state='active']) {
     .step-title {
       @include text-hide;
@@ -229,7 +258,7 @@ $brdcrb-active-color: var(--negative-500);
 
     .steps {
       @include size(100%);
-      @include position;
+      @include position(0 0 0 0);
       z-index: 0;
       justify-content: center;
     }
@@ -259,9 +288,9 @@ $brdcrb-active-color: var(--negative-500);
 
     &:after {
       @include pseudo;
-      @include size(2px, $vertical-brdcrb-line-length);
+      @include size($vertical-brdcrb-line-width, $vertical-brdcrb-line-length);
       position: absolute;
-      left: $brdcrb-circle-size / 2 - 1px;
+      left: $brdcrb-circle-size / 2 - $vertical-brdcrb-line-width / 2;
 
       top: (
         $brdcrb-circle-size +
@@ -271,7 +300,7 @@ $brdcrb-active-color: var(--negative-500);
           ) / 2
       );
 
-      background-color: $grey-500;
+      background-color: $brdcrb-inactive-color;
     }
 
     &:last-child:after {
@@ -286,15 +315,15 @@ $brdcrb-active-color: var(--negative-500);
 
   [data-state='closed'] {
     .step-index {
-      padding: 4px;
+      padding: ($brdcrb-circle-size - $brdcrb-small-circle-size) / 2;
       background-color: transparent;
 
       &:before {
         flex-shrink: 0;
         @include pseudo;
-        @include size(12px);
+        @include size($brdcrb-small-circle-size);
         border-radius: 50%;
-        background-color: $grey-500;
+        background-color: $brdcrb-inactive-color;
       }
     }
   }
@@ -310,7 +339,7 @@ $brdcrb-active-color: var(--negative-500);
   [data-state='closed'] {
     & ~ [data-state='success'] {
       &:after {
-        background-color: $grey-500;
+        background-color: $brdcrb-inactive-color;
       }
     }
   }
