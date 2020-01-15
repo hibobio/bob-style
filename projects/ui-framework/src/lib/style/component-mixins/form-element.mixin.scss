@@ -190,7 +190,7 @@ $input-focus-border-color: $grey-700;
     }
 
     .bfe-prefix {
-      padding: 0 10px 0 16px;
+      padding: 0 10px 0 $input-padding;
 
       &:empty + .bfe-input {
         padding-left: $input-padding;
@@ -198,7 +198,7 @@ $input-focus-border-color: $grey-700;
     }
 
     .bfe-suffix {
-      padding: 0 16px 0 10px;
+      padding: 0 $input-padding 0 10px;
     }
 
     .has-suffix {
@@ -254,6 +254,7 @@ $input-focus-border-color: $grey-700;
 
   .input-icon {
     pointer-events: none;
+    padding-left: $input-padding - 2px;
   }
 
   .bfe-suffix {
