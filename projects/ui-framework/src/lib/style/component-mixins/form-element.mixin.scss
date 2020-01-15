@@ -269,6 +269,7 @@ $input-focus-border-color: $grey-700;
       opacity: 0;
       transition: opacity 0.1s;
       transition-delay: 0.1s;
+      pointer-events: none;
     }
   }
 
