@@ -121,7 +121,12 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
       this.imageSource.indexOf('filestack') > -1 &&
       !/align\W{1,2}faces/g.test(this.imageSource)
     ) {
-      console.warn(`AvatarImageComponent: Please check your imageSource -
+      const imgref = this.imageSource.split(
+        /(?:filestackcontent\W{1,2}com\W{1,2})|(?:\W{0,1}\?)/i
+      )[1];
+      console.warn(`AvatarImageComponent: Please check your imageSource ${
+        imgref ? '(' + imgref + ')' : ''
+      } -
 you should be using EmployeeAvatarService.getOptimizedAvatarImage
 to get the right avatar image.`);
     }
