@@ -10,7 +10,7 @@ import {
   ChangeDetectionStrategy,
   NgZone,
 } from '@angular/core';
-import { Tab } from './tabs.interface';
+import { Tab, TabChangeEvent } from './tabs.interface';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { TabsType } from './tabs.enum';
 
@@ -29,11 +29,11 @@ export class TabsComponent implements AfterViewInit {
   @Input() public tabs: Tab[] = [];
   @Input() public selectedIndex = 0;
 
-  @Output() selectChange: EventEmitter<MatTabChangeEvent> = new EventEmitter<
-    MatTabChangeEvent
+  @Output() selectChange: EventEmitter<TabChangeEvent> = new EventEmitter<
+    TabChangeEvent
   >();
-  @Output() selectClick: EventEmitter<MatTabChangeEvent> = new EventEmitter<
-    MatTabChangeEvent
+  @Output() selectClick: EventEmitter<TabChangeEvent> = new EventEmitter<
+    TabChangeEvent
   >();
 
   constructor(private zone: NgZone) {}
@@ -51,7 +51,7 @@ export class TabsComponent implements AfterViewInit {
     }
     if (this.selectClick.observers.length > 0) {
       this.zone.run(() => {
-        this.selectClick.emit({ tab, index } as any);
+        this.selectClick.emit({ tab, index });
       });
     }
   }
@@ -60,6 +60,6 @@ export class TabsComponent implements AfterViewInit {
     this.selectChange.emit({
       index: $event.index,
       tab: this.tabs[$event.index],
-    } as any);
+    });
   }
 }
