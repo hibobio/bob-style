@@ -466,4 +466,11 @@ export abstract class RTEbaseElement extends BaseFormElement
     }
     return this.length;
   }
+
+  protected getNativeRange(): Range {
+    const selection = document.getSelection();
+    return selection == null || selection.rangeCount <= 0
+      ? null
+      : selection.getRangeAt(0);
+  }
 }

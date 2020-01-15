@@ -37,6 +37,10 @@ const template = `
       <p>{{ content[1] }}</p>
       <p>{{ content[2] }}</p>
 
+      <div footer>
+        Something to put in the footer
+      </div>
+
   </b-collapsible-section>
 `;
 
@@ -101,11 +105,13 @@ const note = `
   (opened) |  EventEmitter | emits when collapsible panel was opened | &nbsp;
   (closed) |  EventEmitter | emits when collapsible panel was closed | &nbsp;
 
-  Content marked with [header] attribute will be projected into the  header (if Title text \
+  <u>Content marked with [header] attribute</u> will be projected into the  header (if Title text \
     is present, the [header] content will be placed to the right of the Title, if no Title \
     is present, [header] content will take the full width of header).
 
-  Other content will be transcluded in the section body (panel).
+  <u>Content marked with [footer] attribute</u> will be projected into the panel footer.
+
+  <u>Other content</u> will be transcluded in the section body (panel).
 
   ~~~
   ${template}
