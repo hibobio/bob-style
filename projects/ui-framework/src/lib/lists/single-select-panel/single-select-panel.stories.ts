@@ -30,16 +30,18 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 const componentTemplate1 = `
 <b-single-select-panel [chevronButtonText]="chevronButtonText"
                        [options]="options"
-                       [disabled]="disabled"
                        [panelClass]="panelClass"
+                       [disabled]="disabled"
+                       [readonly]="readonly"
                        (selectChange)="selectChange($event)">
 </b-single-select-panel>
 `;
 
 const componentTemplate2 = `
 <b-single-select-panel [options]="options"
-                       [disabled]="disabled"
                        [panelClass]="panelClass"
+                       [disabled]="disabled"
+                       [readonly]="readonly"
                        (selectChange)="selectChange($event)">
     <b-square-button [disabled]="disabled"
                      type="${ButtonType.secondary}"
@@ -71,6 +73,7 @@ const note = `
    chevron-button | null - can use transclude instead
   [options] | SelectGroupOptions[] | select option | null
   [disabled] | boolean | if panel is disabled | false
+  [readonly] | boolean | if true, will not emit events and not allow selection | false
   (selectChange) | ListChange | output on select change | &nbsp;
   (opened) | EventEmitter<wbr>&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
   (closed) | EventEmitter<wbr>&lt;void&gt; | Emits panel Closed event | &nbsp;
@@ -128,6 +131,7 @@ story.add(
           'Props'
         ),
         disabled: boolean('disabled', false, 'Props'),
+        readonly: boolean('readonly', false, 'Props'),
         panelClass: text('panelClass', 'some-class', 'Props'),
         options: object('options', optionsMock, 'Options'),
         selectChange: action('Single select panel change'),
