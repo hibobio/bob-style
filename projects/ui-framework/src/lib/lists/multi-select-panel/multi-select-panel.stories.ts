@@ -31,6 +31,7 @@ const componentTemplate1 = `
                       [disabled]="disabled"
                       [options]="options"
                       [optionsDefault]="optionsDefault"
+                      [readonly]="readonly"
                       (selectChange)="selectChange($event)">
 </b-multi-select-panel>
 `;
@@ -42,6 +43,7 @@ const componentTemplate2 = `
                         clear: 'Clear selection',
                         apply: 'Lets go'
                       }"
+                      [readonly]="readonly"
                       (selectChange)="selectChange($event)">
     <b-square-button  [disabled]="disabled"
                       type="${ButtonType.secondary}"
@@ -78,6 +80,7 @@ const note = `
    (clear, apply, reset). If you provide a string, \
    it will be used for button text, instead of default. | { clear:&nbsp;true, apply:&nbsp;true }
   [disabled] | boolean | if panel is disabled | false
+  [readonly] | boolean | if true, will not emit events and not allow selection | false
   (selectChange) | ListChange | output on select change | &nbsp;
   (opened) | EventEmitter<wbr>&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
   (closed) | EventEmitter<wbr>&lt;void&gt; | Emits panel Closed event | &nbsp;
@@ -108,6 +111,7 @@ story.add(
       props: {
         chevronButtonText: text('chevronButtonText', 'Select field', 'Props'),
         disabled: boolean('disabled', false, 'Props'),
+        readonly: boolean('readonly', false, 'Props'),
         options: object<SelectGroupOption>('options', optionsMock, 'Options'),
         optionsDefault: object<SelectGroupOption>(
           'optionsDefault',

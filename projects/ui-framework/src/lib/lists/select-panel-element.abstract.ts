@@ -56,7 +56,6 @@ import { ListChangeService } from './list-change/list-change.service';
 import { selectValueOrFail } from '../services/utils/transformers';
 import { ListModelService } from './list-service/list-model.service';
 import { ScrollEvent } from '../services/utils/utils.interface';
-import { TruncateTooltipComponent } from '../popups/truncate-tooltip/truncate-tooltip.component';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements OnChanges, AfterViewInit, OnDestroy {
