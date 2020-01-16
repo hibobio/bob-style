@@ -10,7 +10,10 @@ import {
 } from '@angular/core';
 import { ChipType } from '../chips.enum';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
-import { applyChanges } from '../../services/utils/functional-utils';
+import {
+  applyChanges,
+  hasChanges,
+} from '../../services/utils/functional-utils';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
 @Component({
@@ -62,7 +65,7 @@ export class ChipComponent implements OnChanges {
       });
     }
 
-    if (changes.class) {
+    if (hasChanges(changes, ['class'], true)) {
       this.DOM.bindClasses(this.chip, this.class);
     }
 
