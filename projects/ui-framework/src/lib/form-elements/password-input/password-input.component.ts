@@ -3,6 +3,7 @@ import {
   forwardRef,
   NgZone,
   ChangeDetectorRef,
+  Input,
 } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { InputTypes } from '../input/input.enum';
@@ -39,6 +40,9 @@ export class PasswordInputComponent extends BaseInputElement {
     super(cd, zone, kbrdCntrlSrvc);
     this.outputTransformers = [];
   }
+
+  @Input() minChars = 4;
+  @Input() maxChars = 30;
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
