@@ -24,6 +24,7 @@ const template = `
               [optionsDefault]="optionsDefault"
               [showSingleGroupHeader]="showSingleGroupHeader"
               [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+              [readonly]="readonly"
               (selectChange)="selectChange($event)">
 
       <b-text-button footerAction *ngIf="options.length>1"
@@ -57,6 +58,7 @@ const note = `
   to optionsDefault | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | false
   [startWithGroupsCollapsed] | boolean | if should start with groups closed | true
+  [readonly] | boolean | if true, will not emit events and not allow selection | false
   [maxHeight] | number | component max height | 352 (8 rows)
   [listActions] | ListFooterActions / string | enable/disable footer action buttons\
    (clear, apply, reset). If you provide a string, \
@@ -87,6 +89,7 @@ story.add(
         true,
         'Props'
       ),
+      readonly: boolean('readonly', false, 'Props'),
       options: object<SelectGroupOption>('options', options, 'Options'),
       optionsDefault: object<SelectGroupOption>(
         'optionsDefault',
