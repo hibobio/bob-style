@@ -167,6 +167,7 @@ export class EmployeesShowcaseComponent
     );
 
     this.avatarsToFit = Math.min(
+      30,
       this.max,
       Math.max(this.min, maxFit),
       this.totalAvatars
