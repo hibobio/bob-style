@@ -8,6 +8,7 @@ import {
   asArray,
   isArray,
   randomNumber,
+  hasProp,
 } from '../../services/utils/functional-utils';
 import { AvatarImageComponent } from '../avatar/avatar-image/avatar-image.component';
 import { AvatarSize } from '../avatar/avatar.enum';
@@ -115,7 +116,7 @@ export class EmployeesShowcaseService {
     return Boolean(
       option.prefixComponent &&
         option.prefixComponent.attributes &&
-        option.prefixComponent.attributes.imageSource
+        hasProp(option.prefixComponent.attributes, 'imageSource')
     );
   }
 
@@ -134,7 +135,8 @@ export class EmployeesShowcaseService {
     employees: EmployeeShowcase[] | SelectGroupOption[]
   ): boolean {
     return Boolean(
-      isArray(employees) && (employees as EmployeeShowcase[])[0].imageSource
+      isArray(employees) &&
+        hasProp((employees as EmployeeShowcase[])[0], 'imageSource')
     );
   }
 }

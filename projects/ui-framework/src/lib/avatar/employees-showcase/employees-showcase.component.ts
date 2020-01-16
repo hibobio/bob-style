@@ -54,8 +54,11 @@ export class EmployeesShowcaseComponent
 
   @Input() employees: EmployeeShowcase[] | SelectGroupOption[] = [];
   @Input() avatarSize: AvatarSize = AvatarSize.mini;
+  @Input() min = 3;
+  @Input() max = 15;
 
   @Input() doShuffle = true;
+  @Input() showMoreIcon = true;
 
   @HostBinding('attr.data-clickable')
   @Input()
@@ -68,6 +71,10 @@ export class EmployeesShowcaseComponent
   @HostBinding('attr.data-fade-out')
   @Input()
   fadeOut = false;
+
+  @HostBinding('attr.data-zoom-on-hover')
+  @Input()
+  zoomOnHover = false;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
@@ -85,23 +92,22 @@ export class EmployeesShowcaseComponent
     color: IconColor.dark,
   };
 
+  private totalAvatars = 0;
   private avatarsToFit = 0;
   private clientWidth = 0;
   private resizeEventSubscriber: Subscription;
   private intervalSubscriber: Subscription;
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('ngOnChanges', changes);
-
     applyChanges(this, changes, {
+      min: 3,
+      max: 15,
       employees: [],
       avatarSize: AvatarSize.mini,
     });
 
     if (hasChanges(changes, ['employees'], true)) {
-      this.employeeListOptions = this.showcaseSrvc.getEmployeeListOptions(
-        this.employees
-      );
+      this.setEmployeeListOptions();
     }
 
     if (notFirstChanges(changes)) {
@@ -110,21 +116,17 @@ export class EmployeesShowcaseComponent
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit');
     this.initShowcase();
 
     this.resizeEventSubscriber = this.utilsService
       .getResizeEvent()
       .pipe(outsideZone(this.zone))
       .subscribe(() => {
-        console.log('getResizeEvent');
         this.initShowcase();
       });
 
     if (!this.employeeListOptions) {
-      this.employeeListOptions = this.showcaseSrvc.getEmployeeListOptions(
-        this.employees
-      );
+      this.setEmployeeListOptions();
     }
   }
 
@@ -159,10 +161,16 @@ export class EmployeesShowcaseComponent
       'result'
     );
 
-    this.avatarsToFit = Math.floor(
+    const maxFit = Math.floor(
       (this.clientWidth - this.avatarSize) /
         (this.avatarSize - AvatarGap[this.avatarSize]) +
         1
+    );
+
+    this.avatarsToFit = Math.min(
+      this.max,
+      Math.max(this.min, maxFit),
+      this.totalAvatars
     );
 
     this.DOM.setCssProps(this.host.nativeElement, {
@@ -171,14 +179,15 @@ export class EmployeesShowcaseComponent
     });
 
     this.showThreeDotsButton =
+      this.showMoreIcon &&
+      !this.fadeOut &&
       this.avatarSize < AvatarSize.medium &&
-      this.avatarsToFit < this.employeeListOptions[0].options.length;
+      this.avatarsToFit < this.totalAvatars;
 
-    this.showcaseViewModel = this.getShowcaseViewModel();
+    this.setShowcaseViewModel();
 
     this.avatarsLeft = Math.max(
-      this.employeeListOptions[0].options.length -
-        this.showcaseViewModel.length,
+      this.totalAvatars - this.showcaseViewModel.length,
       0
     );
 
@@ -193,7 +202,7 @@ export class EmployeesShowcaseComponent
     if (
       this.doShuffle &&
       this.avatarSize >= AvatarSize.medium &&
-      this.avatarsToFit < this.employeeListOptions[0].options.length
+      this.avatarsToFit < this.totalAvatars
     ) {
       if (!this.intervalSubscriber) {
         this.zone.runOutsideAngular(() => {
@@ -214,8 +223,15 @@ export class EmployeesShowcaseComponent
     }
   }
 
-  private getShowcaseViewModel(): Avatar[] {
-    return this.showcaseSrvc.getShowcaseViewModel(
+  private setEmployeeListOptions(): void {
+    this.employeeListOptions = this.showcaseSrvc.getEmployeeListOptions(
+      this.employees
+    );
+    this.totalAvatars = this.employeeListOptions[0].options.length;
+  }
+
+  private setShowcaseViewModel(): void {
+    this.showcaseViewModel = this.showcaseSrvc.getShowcaseViewModel(
       this.employeeListOptions,
       !this.showThreeDotsButton ? this.avatarsToFit : this.avatarsToFit - 1
     );
@@ -226,7 +242,7 @@ export class EmployeesShowcaseComponent
       this.employeeListOptions,
       this.avatarsToFit,
       () => {
-        this.showcaseViewModel = this.getShowcaseViewModel();
+        this.setShowcaseViewModel();
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
         }

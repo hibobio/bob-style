@@ -4,13 +4,13 @@ import {
   select,
   boolean,
   withKnobs,
+  number,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EmployeesShowcaseModule } from './employees-showcase.module';
-import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarSize } from '../avatar/avatar.enum';
 import zipObject from 'lodash/zipObject';
 import {
@@ -37,10 +37,14 @@ const template = `
   <b-employees-showcase
             [employees]="employees"
             [avatarSize]="avatarSize"
+            [min]="min"
+            [max]="max"
+            [showMoreIcon]="showMoreIcon"
             [expandOnClick]="expandOnClick"
             [doShuffle]="doShuffle"
             [inverseStack]="inverseStack"
             [fadeOut]="fadeOut"
+            [zoomOnHover]="zoomOnHover"
             (selectChange)="selectChange($event)"
             (clicked)="onAvatarClick($event)">
   </b-employees-showcase>
@@ -85,10 +89,14 @@ story.add(
           AvatarSize.medium,
           'Props'
         ),
+        min: number('min', 3, {}, 'Props'),
+        max: number('max', 15, {}, 'Props'),
         expandOnClick: boolean('expandOnClick', true, 'Props'),
+        showMoreIcon: boolean('showMoreIcon', true, 'Props'),
         doShuffle: boolean('doShuffle', true, 'Props'),
         inverseStack: boolean('inverseStack', false, 'Props'),
         fadeOut: boolean('fadeOut', false, 'Props'),
+        zoomOnHover: boolean('zoomOnHover', false, 'Props'),
 
         // employees: object<EmployeeShowcase>('employees', EMPLOYEE_SHOWCASE_MOCK),
         employees: object<SelectGroupOption>(
