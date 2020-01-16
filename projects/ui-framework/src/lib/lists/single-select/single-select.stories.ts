@@ -41,6 +41,7 @@ const template = `
                  [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                  [disabled]="disabled"
                  [required]="required"
+                 [readonly]="readonly"
                  [errorMessage]="errorMessage"
                  [hintMessage]="hintMessage"
                  (selectChange)="selectChange($event)"
@@ -81,8 +82,9 @@ const note = `
   [label] | string | label text | &nbsp;
   [description] | string | description text (above icon) | &nbsp;
   [placeholder] | string | placeholder text | &nbsp;
-  [disabled] | boolean | is field disabled | &nbsp;
-  [required] | boolean | is field required | &nbsp;
+  [disabled] | boolean | is field disabled | false
+  [required] | boolean | is field required | false
+  [readonly] | boolean | if true, will not emit events and not allow selection | false
   [hintMessage] | text | hint text | &nbsp;
   [errorMessage] | text | error text | &nbsp;
 
@@ -125,6 +127,7 @@ const toAdd = () => ({
     placeholder: text('placeholder', 'placeholder text', 'Props'),
     disabled: boolean('disabled', false, 'Props'),
     required: boolean('required', false, 'Props'),
+    readonly: boolean('readonly', false, 'Props'),
     hintMessage: text(
       'hintMessage',
       'This field should contain something',

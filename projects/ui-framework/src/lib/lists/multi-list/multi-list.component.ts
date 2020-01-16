@@ -46,7 +46,7 @@ export class MultiListComponent extends BaseListElement {
   headerClick(header: ListHeader, index: number): void {
     if (this.options.length > 1) {
       this.toggleGroupCollapse(header);
-    } else {
+    } else if (!this.readonly) {
       this.selectGroup(header, index);
     }
   }

@@ -2,8 +2,14 @@
           (searchChange)="searchChange($event)">
 </b-search>
 
-<div [ngStyle]="{height: listOptions && (listOptions.length * listElHeight + 'px'), maxHeight: maxHeight + 'px'}"
-     [ngClass]="{'no-group-header': noGroupHeaders}"
+<div [ngStyle]="{
+        height: listOptions && (listOptions.length * listElHeight + 'px'),
+        maxHeight: maxHeight + 'px'
+      }"
+     [attr.aria-readonly]="readonly || null"
+     [ngClass]="{
+       'no-group-header': noGroupHeaders
+      }"
      class="v-scroll-wrapper">
   <div #headers
        class="headers"
@@ -27,7 +33,8 @@
                 'b-icon-chevron-right': header.isCollapsed
               }"></span>
         <div class="header-option">
-          <b-checkbox [hidden]="searchValue"
+          <b-checkbox *ngIf="!readonly"
+                      [hidden]="searchValue"
                       class="checkbox"
                       [value]="header.selected"
                       [indeterminate]="header.indeterminate"
@@ -37,7 +44,7 @@
           <span class="header-option-value"
                 data-max-lines='3'
                 [innerHTML]="header.groupName | highlight: searchValue"></span>
-          <span *ngIf="header.selectedCount > 0"
+          <span *ngIf="!readonly && header.selectedCount > 0"
                 class="header-selected-count">
             ({{header.selectedCount}})
           </span>
@@ -59,14 +66,14 @@
            [ngClass]="{
             'header-placeholder': option.isPlaceHolder,
             'option': !option.isPlaceHolder,
+            'selected': readonly && option.selected,
             'focus': option.id===focusOption?.id,
             'disabled': option.disabled,
-            'single-group-option': options.length === 1,
-            hidden: option.hidden
+            'single-group-option': options.length === 1
            }"
            class="option-select">
 
-        <b-checkbox *ngIf="!option.isPlaceHolder"
+        <b-checkbox *ngIf="!option.isPlaceHolder && !readonly"
                     class="checkbox"
                     [value]="option.selected"
                     [doPropagate]="false">
@@ -91,8 +98,8 @@
 
 <b-list-footer #footer
                *ngIf="hasFooter"
-               [listActions]="listActions"
-               [listActionsState]="listActionsState"
+               [listActions]="!readonly ? listActions : {}"
+               [listActionsState]="!readonly ? listActionsState : {}"
                (clear)="clearList()"
                (apply)="onApply()"
                (reset)="resetList()">
