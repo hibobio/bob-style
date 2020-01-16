@@ -7,7 +7,6 @@ import {
   HostBinding,
   SimpleChanges,
   OnChanges,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { ChipType } from '../chips.enum';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
@@ -29,6 +28,7 @@ export class ChipComponent implements OnChanges {
   @Input() text: string;
   @Input() removable = false;
   @Input() icon: Icons;
+  @Input() class: string;
 
   @HostBinding('attr.data-type') @Input() type: ChipType = ChipType.tag;
   @HostBinding('attr.data-disabled') @Input() disabled = false;
@@ -60,6 +60,10 @@ export class ChipComponent implements OnChanges {
           : null,
         'data-icon-before-size': this.iconAllowed() ? IconSize.large : null,
       });
+    }
+
+    if (changes.class) {
+      this.DOM.bindClasses(this.chip, this.class);
     }
 
     if (changes.type || changes.removable) {
