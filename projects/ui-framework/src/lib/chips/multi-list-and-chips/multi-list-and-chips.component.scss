@@ -47,6 +47,18 @@ b-chip-list {
   position: relative;
 }
 
+:host ::ng-deep b-chip {
+  &.all-group {
+    .chip-text {
+      font-weight: 700;
+      &:after {
+        content: '(all)';
+        font-weight: 400;
+      }
+    }
+  }
+}
+
 :host ::ng-deep b-list-footer {
   margin-top: auto;
 }

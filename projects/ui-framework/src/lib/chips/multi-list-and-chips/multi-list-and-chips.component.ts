@@ -8,10 +8,7 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { LIST_EL_HEIGHT } from '../../lists/list.consts';
-import {
-  SelectGroupOption,
-  SelectOption,
-} from '../../lists/list.interface';
+import { SelectGroupOption, SelectOption } from '../../lists/list.interface';
 import { ChipListConfig, Chip } from '../chips.interface';
 import { ChipType } from '../chips.enum';
 import { ListChange } from '../../lists/list-change/list-change';
@@ -89,12 +86,12 @@ export class MultiListAndChipsComponent implements OnChanges {
         group.options.every((option: SelectOption) => option.selected)
       ) {
         chips.push({
-          text: group.groupName + ' (all)',
+          text: group.groupName,
           group: {
             key: group.key,
             name: group.groupName,
           },
-          type: ChipType.info,
+          class: 'all-group',
         });
       } else {
         group.options.forEach((option: SelectOption) => {
