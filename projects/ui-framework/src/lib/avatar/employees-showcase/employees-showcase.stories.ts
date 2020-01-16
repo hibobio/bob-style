@@ -13,7 +13,11 @@ import { EmployeesShowcaseModule } from './employees-showcase.module';
 import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarSize } from '../avatar/avatar.enum';
 import zipObject from 'lodash/zipObject';
-import { EMPLOYEE_SHOWCASE_MOCK } from './employees-showcase.mock';
+import {
+  EMPLOYEE_SHOWCASE_MOCK,
+  EMPLOYEE_SHOWCASE_OPTIONS_MOCK,
+} from './employees-showcase.mock';
+import { SelectGroupOption } from '../../lists/list.interface';
 
 const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
   withKnobs
@@ -34,6 +38,9 @@ const template = `
             [employees]="employees"
             [avatarSize]="avatarSize"
             [expandOnClick]="expandOnClick"
+            [doShuffle]="doShuffle"
+            [inverseStack]="inverseStack"
+            [fadeOut]="fadeOut"
             (selectChange)="selectChange($event)"
             (clicked)="onAvatarClick($event)">
   </b-employees-showcase>
@@ -72,9 +79,24 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        avatarSize: select('avatarSize', sizeOptions, AvatarSize.medium),
-        expandOnClick: boolean('expandOnClick', true),
-        employees: object<EmployeeShowcase>('employees', employeesMock),
+        avatarSize: select(
+          'avatarSize',
+          sizeOptions,
+          AvatarSize.medium,
+          'Props'
+        ),
+        expandOnClick: boolean('expandOnClick', true, 'Props'),
+        doShuffle: boolean('doShuffle', true, 'Props'),
+        inverseStack: boolean('inverseStack', false, 'Props'),
+        fadeOut: boolean('fadeOut', false, 'Props'),
+
+        // employees: object<EmployeeShowcase>('employees', EMPLOYEE_SHOWCASE_MOCK),
+        employees: object<SelectGroupOption>(
+          'employees',
+          EMPLOYEE_SHOWCASE_OPTIONS_MOCK,
+          'Data'
+        ),
+
         selectChange: action('Showcase list change'),
         onAvatarClick: action('Avatar clicked'),
       },

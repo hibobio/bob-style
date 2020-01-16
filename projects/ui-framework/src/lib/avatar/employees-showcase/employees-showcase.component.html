@@ -1,15 +1,17 @@
-<b-single-select-panel [options]="panelListOptions"
+<b-single-select-panel [options]="employeeListOptions"
                        [disabled]="!expandOnClick"
                        [panelClass]="panelClass"
                        (selectChange)="onSelectChange($event)">
 
-  <div class="avatar-showcase"
-       [ngClass]="{'clickable': expandOnClick}">
+  <div class="avatar-showcase">
 
-    <b-avatar-image *ngFor="let avatar of avatarsToShow; trackBy: trackBy"
+    <b-avatar-image *ngFor="let avatar of showcaseViewModel; trackBy: trackBy"
                     class="showcase-avatar"
                     [imageSource]="avatar.imageSource"
-                    [size]="avatarSize">
+                    [size]="avatarSize || avatar.size"
+                    [backgroundColor]="avatar.backgroundColor"
+                    [icon]="avatar.icon"
+                    [badge]="avatar.badge">
     </b-avatar-image>
 
     <b-avatar-image class="show-more"

@@ -4,6 +4,16 @@
   width: 100%;
   display: block;
   --avatar-gap: -22px;
+  --avatar-count: 3;
+}
+
+@keyframes fade-white-out {
+  0% {
+    background-color: white(1);
+  }
+  100% {
+    background-color: white(0);
+  }
 }
 
 .avatar-showcase {
@@ -20,22 +30,66 @@
 
 .showcase-avatar {
   &:before {
-    content: '';
+    @include pseudo;
     @include size(auto);
     @include position(-2px -2px -2px -2px);
     border-radius: 50%;
     background-color: white;
-    @include animate(fade-in, 1s, $keyframes: true);
-    animation-direction: reverse;
+    @include animate(fade-white-out, 1s);
   }
-}
-
-.clickable {
-  cursor: pointer;
 }
 
 :host ::ng-deep {
   b-single-select-panel {
     display: block;
+  }
+}
+
+:host[data-clickable='true']::ng-deep {
+  .avatar-showcase {
+    cursor: pointer;
+  }
+}
+
+:host[data-inverse-stack='true']::ng-deep {
+  .avatar {
+    position: relative;
+  }
+  @for $i from 0 to 30 {
+    .avatar:nth-child(#{$i + 1}) {
+      z-index: 30 - $i;
+    }
+  }
+}
+
+:host[data-fade-out='true']::ng-deep {
+  .avatar {
+    &:before {
+      background-size: 100% 100%;
+    }
+  }
+}
+:host[data-fade-out='true'][data-inverse-stack='false']::ng-deep {
+  @for $i from 1 to 15 {
+    .avatar:nth-child(#{$i}) {
+      &:before {
+        background-image: linear-gradient(
+          rgba(255, 255, 255, calc(1 - #{$i} / var(--avatar-count))),
+          rgba(255, 255, 255, calc(1 - #{$i} / var(--avatar-count)))
+        );
+      }
+    }
+  }
+}
+:host[data-fade-out='true'][data-inverse-stack='true']::ng-deep {
+  @for $i from 0 to 14 {
+    .avatar:nth-child(#{$i + 1}) {
+      &:before {
+        background-image: linear-gradient(
+          rgba(255, 255, 255, calc(#{$i} / var(--avatar-count))),
+          rgba(255, 255, 255, calc(#{$i} / var(--avatar-count)))
+        );
+      }
+    }
   }
 }

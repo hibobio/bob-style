@@ -182,7 +182,7 @@ export const stringify = (smth: any): string =>
   isString(smth)
     ? smth
     : isArray(smth)
-    ? smth.join(', ')
+    ? smth.map(i => stringify(i)).join(', ')
     : isObject(smth)
     ? JSON.stringify(smth)
     : String(smth);
