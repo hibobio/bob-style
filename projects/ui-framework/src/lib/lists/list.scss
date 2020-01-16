@@ -30,7 +30,7 @@
   z-index: 2;
   pointer-events: none;
 
-  .headers-group .header {
+  .header {
     z-index: 2;
     pointer-events: all;
     position: sticky;
@@ -76,5 +76,16 @@
         margin-right: 7px;
       }
     }
+  }
+}
+
+[aria-readonly='true'] ::ng-deep {
+  .option:not(.selected):hover,
+  .option:not(.selected).focus {
+    background-color: transparent;
+  }
+  .headers .headers-group .header:hover,
+  .headers .headers-group .header.focus {
+    background-color: white;
   }
 }

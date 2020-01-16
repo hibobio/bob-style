@@ -1,6 +1,5 @@
 import {
   Component,
-  Input,
   Renderer2,
   ChangeDetectorRef,
   NgZone,
@@ -45,7 +44,8 @@ export class SingleListComponent extends BaseListElement {
 
   getListHeight(): number {
     return (
-      (this.listOptions.length + (this.showNoneOption ? 1 : 0)) *
+      (this.listOptions.length +
+        (!this.readonly && this.showNoneOption ? 1 : 0)) *
       this.listElHeight
     );
   }

@@ -23,7 +23,9 @@ const template = `
 <b-single-list #list [options]="options"
                (selectChange)="selectChange($event)"
                [showSingleGroupHeader]="showSingleGroupHeader"
-               [showNoneOption]="showNoneOption">
+               [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+               [showNoneOption]="showNoneOption"
+               [readonly]="readonly">
 
       <b-text-button footerAction *ngIf="options.length>1"
               [text]="list.allGroupsCollapsed ? 'Expand' : 'Collapse'"
@@ -55,7 +57,9 @@ const note = `
   if present, the Clear button (if enabled) will be replaced with Reset button, that will set the state \
   to optionsDefault | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | false
+  [startWithGroupsCollapsed] | boolean | if should start with groups closed | true
   [showNoneOption] | boolean | show -None- list option | false
+  [readonly] | boolean | if true, will not emit events and not allow selection | false
   [maxHeight] | number | component max height | 352 (8 rows)
   [listActions] | ListFooterActions / string | enable/disable footer action buttons\
    (clear, apply, reset). If you provide a string, \
@@ -82,7 +86,13 @@ story.add(
     props: {
       selectChange: action('Single list change'),
       showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
+      startWithGroupsCollapsed: boolean(
+        'startWithGroupsCollapsed',
+        true,
+        'Props'
+      ),
       showNoneOption: boolean('showNoneOption', false, 'Props'),
+      readonly: boolean('readonly', false, 'Props'),
       options: object<SelectGroupOption>('options', options, 'Options'),
     },
     moduleMetadata: {

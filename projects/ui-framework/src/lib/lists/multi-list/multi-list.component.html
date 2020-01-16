@@ -3,7 +3,10 @@
 </b-search>
 
 <div [ngStyle]="{height: listOptions && (listOptions.length * listElHeight + 'px'), maxHeight: maxHeight + 'px'}"
-     [ngClass]="{'no-group-header': noGroupHeaders}"
+     [attr.aria-readonly]="readonly || null"
+     [ngClass]="{
+       'no-group-header': noGroupHeaders
+      }"
      class="v-scroll-wrapper">
   <div #headers
        class="headers"
