@@ -116,7 +116,7 @@ export class EmployeesShowcaseComponent
   }
 
   ngOnInit(): void {
-    this.initShowcase();
+    // this.initShowcase();
 
     this.resizeEventSubscriber = this.utilsService
       .getResizeEvent()
@@ -125,18 +125,17 @@ export class EmployeesShowcaseComponent
         this.initShowcase();
       });
 
-    if (!this.employeeListOptions) {
-      this.setEmployeeListOptions();
-    }
+    // if (!this.employeeListOptions) {
+    //   this.setEmployeeListOptions();
+    // }
   }
 
   ngAfterViewInit(): void {
-    // this.zone.runOutsideAngular(() => {
-    // setTimeout(() => {
-    //   console.log('ngAfterViewInit');
-    //   this.initShowcase();
-    // }, 1000);
-    // });
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.initShowcase();
+      }, 1000);
+    });
   }
 
   ngOnDestroy(): void {
@@ -183,6 +182,12 @@ export class EmployeesShowcaseComponent
       !this.fadeOut &&
       this.avatarSize < AvatarSize.medium &&
       this.avatarsToFit < this.totalAvatars;
+
+    //////
+    if (!this.employeeListOptions) {
+      this.setEmployeeListOptions();
+    }
+    /////
 
     this.setShowcaseViewModel();
 
