@@ -18,12 +18,11 @@ import {
   EMPLOYEE_SHOWCASE_OPTIONS_MOCK,
 } from './employees-showcase.mock';
 import { SelectGroupOption } from '../../lists/list.interface';
+import { EmployeeShowcase } from './employees-showcase.interface';
 
 const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
   withKnobs
 );
-
-const employeesMock = EMPLOYEE_SHOWCASE_MOCK;
 
 const sizeOptionsKeys = Object.values(AvatarSize).filter(
   key => typeof key === 'string'
@@ -33,7 +32,7 @@ const sizeOptionsValues = Object.values(AvatarSize).filter(
 ) as number[];
 const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
 
-const template = `
+const template1 = `
   <b-employees-showcase
             [employees]="employees"
             [avatarSize]="avatarSize"
@@ -46,8 +45,23 @@ const template = `
             [fadeOut]="fadeOut"
             [zoomOnHover]="zoomOnHover"
             [readonly]="readonly"
-            (selectChange)="selectChange($event)"
-            (clicked)="onAvatarClick($event)">
+            (selectChange)="selectChange($event)">
+  </b-employees-showcase>
+`;
+
+const template2 = `
+  <b-employees-showcase
+            [employees]="employeeOptions"
+            [avatarSize]="avatarSizes.small"
+            [min]="3"
+            [max]="8"
+            [showMoreIcon]="true"
+            [expandOnClick]="true"
+            [doShuffle]="false"
+            [inverseStack]="true"
+            [fadeOut]="true"
+            [zoomOnHover]="false"
+            [readonly]="true">
   </b-employees-showcase>
 `;
 
@@ -85,14 +99,21 @@ const note = `
 
 
   ~~~
-  ${template}
+  ${template1}
   ~~~
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Employees Showcase'">
-<div style="max-width: 500px">
-    ${template}
+<b-story-book-layout [title]="'Employees Showcase'" style=" background: rgb(247,247,247);">
+<div style="max-width: 500px; text-align: left;">
+    ${template1}
+
+    <hr style="margin: 60px 0 50px 0; border: 0; height: 0; border-top: 2px dashed #d2d2d2;">
+
+    <h4>SelectGroupOption[] - AvtarImage component with badges; <br>
+    avatarSize small, inverseStack, fadeOut, readonly</h4>
+    ${template2}
+
 </div>
 </b-story-book-layout>
 `;
@@ -103,14 +124,15 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        avatarSizes: AvatarSize,
         avatarSize: select(
           'avatarSize',
           sizeOptions,
-          AvatarSize.small,
+          AvatarSize.medium,
           'Props'
         ),
         min: number('min', 3, {}, 'Props'),
-        max: number('max', 10, {}, 'Props'),
+        max: number('max', 15, {}, 'Props'),
         expandOnClick: boolean('expandOnClick', true, 'Props'),
         showMoreIcon: boolean('showMoreIcon', true, 'Props'),
         doShuffle: boolean('doShuffle', false, 'Props'),
@@ -119,9 +141,12 @@ story.add(
         zoomOnHover: boolean('zoomOnHover', false, 'Props'),
         readonly: boolean('readonly', false, 'Props'),
 
-        // employees: object<EmployeeShowcase>('employees', EMPLOYEE_SHOWCASE_MOCK),
-        employees: object<SelectGroupOption>(
+        employees: object<EmployeeShowcase>(
           'employees',
+          EMPLOYEE_SHOWCASE_MOCK
+        ),
+        employeeOptions: object<SelectGroupOption>(
+          'employeeOptions',
           EMPLOYEE_SHOWCASE_OPTIONS_MOCK,
           'Data'
         ),
