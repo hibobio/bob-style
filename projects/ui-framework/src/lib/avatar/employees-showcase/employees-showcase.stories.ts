@@ -65,6 +65,22 @@ const template2 = `
   </b-employees-showcase>
 `;
 
+const template3 = `
+  <b-employees-showcase
+            [employees]="employees.reverse()"
+            [avatarSize]="avatarSizes.mini"
+            [min]="3"
+            [max]="6"
+            [showMoreIcon]="true"
+            [expandOnClick]="true"
+            [doShuffle]="false"
+            [inverseStack]="false"
+            [fadeOut]="false"
+            [zoomOnHover]="false"
+            [readonly]="true">
+  </b-employees-showcase>
+`;
+
 const note = `
   ## Employees Showcase
   #### Module
@@ -113,6 +129,9 @@ const storyTemplate = `
     <h4>SelectGroupOption[] - AvtarImage component with badges; <br>
     avatarSize small, inverseStack, fadeOut, readonly</h4>
     ${template2}
+
+    <h4>avatarSize mini, readonly</h4>
+    ${template3}
 
 </div>
 </b-story-book-layout>
