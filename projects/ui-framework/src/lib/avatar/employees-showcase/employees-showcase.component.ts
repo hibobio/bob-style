@@ -57,8 +57,9 @@ export class EmployeesShowcaseComponent
   @Input() min = 3;
   @Input() max = 15;
 
-  @Input() doShuffle = true;
+  @Input() doShuffle = false;
   @Input() showMoreIcon = true;
+  @Input() readonly = false;
 
   @HostBinding('attr.data-clickable')
   @Input()
@@ -82,6 +83,7 @@ export class EmployeesShowcaseComponent
 
   public employeeListOptions: SelectGroupOption[];
   public showcaseViewModel: Avatar[] = [];
+  public avatarsToShow: Avatar[] = [];
 
   public avatarsLeft = 0;
   public showThreeDotsButton = false;
@@ -107,7 +109,7 @@ export class EmployeesShowcaseComponent
     });
 
     if (hasChanges(changes, ['employees'], true)) {
-      this.setEmployeeListOptions();
+      this.setViewModels();
     }
 
     if (notFirstChanges(changes)) {
@@ -116,7 +118,7 @@ export class EmployeesShowcaseComponent
   }
 
   ngOnInit(): void {
-    // this.initShowcase();
+    this.initShowcase();
 
     this.resizeEventSubscriber = this.utilsService
       .getResizeEvent()
@@ -125,9 +127,9 @@ export class EmployeesShowcaseComponent
         this.initShowcase();
       });
 
-    // if (!this.employeeListOptions) {
-    //   this.setEmployeeListOptions();
-    // }
+    if (!this.employeeListOptions) {
+      this.setViewModels();
+    }
   }
 
   ngAfterViewInit(): void {
@@ -184,25 +186,15 @@ export class EmployeesShowcaseComponent
       this.avatarSize < AvatarSize.medium &&
       this.avatarsToFit < this.totalAvatars;
 
-    //////
     if (!this.employeeListOptions) {
-      this.setEmployeeListOptions();
+      this.setViewModels();
     }
-    /////
 
-    this.setShowcaseViewModel();
+    this.setAvatarsToShow();
 
     this.avatarsLeft = Math.max(
-      this.totalAvatars - this.showcaseViewModel.length,
+      this.totalAvatars - this.avatarsToShow.length,
       0
-    );
-
-    console.log(
-      'initShowcase',
-      this.clientWidth,
-      this.avatarSize,
-      AvatarGap[this.avatarSize],
-      this.avatarsToFit
     );
 
     if (
@@ -229,26 +221,31 @@ export class EmployeesShowcaseComponent
     }
   }
 
-  private setEmployeeListOptions(): void {
+  private setViewModels(): void {
     this.employeeListOptions = this.showcaseSrvc.getEmployeeListOptions(
-      this.employees
+      this.employees,
+      false
     );
-    this.totalAvatars = this.employeeListOptions[0].options.length;
+    this.showcaseViewModel = this.showcaseSrvc.getShowcaseViewModel(
+      this.employeeListOptions
+    );
+    this.totalAvatars = this.showcaseViewModel.length;
   }
 
-  private setShowcaseViewModel(): void {
-    this.showcaseViewModel = this.showcaseSrvc.getShowcaseViewModel(
-      this.employeeListOptions,
+  private setAvatarsToShow(): void {
+    this.avatarsToShow = this.showcaseViewModel.slice(
+      0,
       !this.showThreeDotsButton ? this.avatarsToFit : this.avatarsToFit - 1
     );
   }
 
   private shuffleAvatars(): void {
-    this.showcaseSrvc.shuffleEmployeeListOptions(
-      this.employeeListOptions,
+    this.showcaseSrvc.shuffleShowcaseViewModel(
+      this.showcaseViewModel,
       this.avatarsToFit,
       () => {
-        this.setShowcaseViewModel();
+        this.setAvatarsToShow();
+
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
         }

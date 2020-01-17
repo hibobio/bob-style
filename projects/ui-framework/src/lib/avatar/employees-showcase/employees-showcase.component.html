@@ -1,23 +1,25 @@
 <b-single-select-panel [options]="employeeListOptions"
                        [disabled]="!expandOnClick"
                        [panelClass]="panelClass"
+                       [readonly]="readonly || !selectChange.observers.length"
                        (selectChange)="onSelectChange($event)">
 
   <div class="avatar-showcase">
 
-    <b-avatar-image *ngFor="let avatar of showcaseViewModel; trackBy: trackBy"
+    <b-avatar-image *ngFor="let avatar of avatarsToShow; trackBy: trackBy"
                     class="showcase-avatar"
                     [imageSource]="avatar.imageSource"
                     [size]="avatarSize || avatar.size"
                     [backgroundColor]="avatar.backgroundColor"
-                    [badge]="avatar.badge">
+                    [badge]="avatar.badge"
+                    [icon]="avatar.icon">
     </b-avatar-image>
 
     <b-avatar-image class="show-more"
                     *ngIf="showThreeDotsButton"
                     [size]="avatarSize"
                     [icon]="dotsIcon"
-                    [text]="avatarsLeft < 11 ? '+' + avatarsLeft: null">
+                    [text]="avatarsLeft < 100 ? '+' + avatarsLeft: null">
     </b-avatar-image>
   </div>
 

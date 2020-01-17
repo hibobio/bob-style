@@ -45,6 +45,7 @@ const template = `
             [inverseStack]="inverseStack"
             [fadeOut]="fadeOut"
             [zoomOnHover]="zoomOnHover"
+            [readonly]="readonly"
             (selectChange)="selectChange($event)"
             (clicked)="onAvatarClick($event)">
   </b-employees-showcase>
@@ -58,11 +59,30 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [employees] | EmployeeShowcase[] | employees list | []
+  [employees] | <s>EmployeeShowcase[]</s> / SelectGroupOption[] | Employees list. \
+  EmployeeShowcase[] interface is deprecated\
+   in favor of Select/list compatible SelectGroupOption[] (that can have badges &\
+     icons in AvatarImage prefixcomponent object) | []
   [avatarSize] | AvatarSize | avatar size | 'mini'
+  [min] | number | minimum number of avatars to show | 3
+  [max] | number | maximum number of avatars to show \
+  (values > 30 are not allowed and will be cut to 15). probably more aggressive limiting will boost overal page\
+   performace. consider limiting to no more than 10 | 15
   [expandOnClick] | boolean | expands panel on click | true
-  (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | list select change | &nbsp;
-  (clicked) | EventEmitter<wbr>&lt;EmployeeShowcase&gt; | emits when avatar is clicked | &nbsp;
+  [showMoreIcon] | boolean | show the counter / 3 dots \
+  circle - only valid for avatar size < medium; will be disabled if [fadeOut] is true) | true
+  [doShuffle] | boolean | will shuffle and show random\
+   avatars that dont fit - only if avatar size > medium.\
+    this is resource intensive, so disabled by default  | <u>false</u>
+  [inverseStack] | boolean | the 'front', uppermost avatar \
+  will be on the left, and not on the right, as in defauult mode | false
+  [fadeOut] | boolean | make avatars fade out, from front to back | false
+  [zoomOnHover] | boolean | bring avatar to front and zoom on hover | false
+  [readonly] | boolean | will display avatars select panel in readonly mode (no selection possible) | false
+  (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | list select change<br>\
+  **Note** if there are no observers of (selectChange) event,\
+   the select/list will be displayed in readonly mode  | &nbsp;
+
 
   ~~~
   ${template}
@@ -86,17 +106,18 @@ story.add(
         avatarSize: select(
           'avatarSize',
           sizeOptions,
-          AvatarSize.medium,
+          AvatarSize.small,
           'Props'
         ),
         min: number('min', 3, {}, 'Props'),
-        max: number('max', 15, {}, 'Props'),
+        max: number('max', 10, {}, 'Props'),
         expandOnClick: boolean('expandOnClick', true, 'Props'),
         showMoreIcon: boolean('showMoreIcon', true, 'Props'),
-        doShuffle: boolean('doShuffle', true, 'Props'),
+        doShuffle: boolean('doShuffle', false, 'Props'),
         inverseStack: boolean('inverseStack', false, 'Props'),
         fadeOut: boolean('fadeOut', false, 'Props'),
         zoomOnHover: boolean('zoomOnHover', false, 'Props'),
+        readonly: boolean('readonly', false, 'Props'),
 
         // employees: object<EmployeeShowcase>('employees', EMPLOYEE_SHOWCASE_MOCK),
         employees: object<SelectGroupOption>(

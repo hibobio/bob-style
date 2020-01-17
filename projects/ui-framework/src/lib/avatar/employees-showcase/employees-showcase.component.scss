@@ -30,7 +30,7 @@
 }
 
 .showcase-avatar {
-  &:before {
+  &:not(.icon-on-hover):before {
     @include flex-align;
     @include size(auto);
     @include position(-2px -2px -2px -2px);
@@ -39,8 +39,19 @@
     @include animate(fade-white-out, 1s);
   }
 
-  &:not([data-icon-before='person']):before {
+  &:not([data-icon-before]):before {
     content: '';
+  }
+}
+
+.show-more {
+  letter-spacing: -0.5px;
+  &:after {
+    content: '';
+    position: static;
+    width: 3px;
+    height: 1px;
+    background: none;
   }
 }
 

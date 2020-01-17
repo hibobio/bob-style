@@ -20,14 +20,15 @@ export class EmployeesShowcaseService {
   constructor() {}
 
   public getEmployeeListOptions(
-    employees: EmployeeShowcase[] | SelectGroupOption[]
+    employees: EmployeeShowcase[] | SelectGroupOption[],
+    clone = false
   ): SelectGroupOption[] {
     if (!employees || isEmptyArray(employees)) {
       return [{ groupName: 'empty', options: [] }];
     }
 
     if (this.isCorrectGroupOptions(employees)) {
-      return cloneDeep(employees) as SelectGroupOption[];
+      return (clone ? cloneDeep(employees) : employees) as SelectGroupOption[];
     }
 
     if (this.isCorrectViewModel(employees)) {
@@ -64,42 +65,36 @@ export class EmployeesShowcaseService {
   }
 
   public getShowcaseViewModel(
-    employeeListOptions: SelectGroupOption[],
-    length: number
+    employeeListOptions: SelectGroupOption[]
   ): Avatar[] {
     if (!this.isCorrectGroupOptions(employeeListOptions)) {
       return [];
     }
-    return employeeListOptions[0].options
-      .slice(0, length)
-      .map(option => option.prefixComponent.attributes);
+    return employeeListOptions[0].options.map(
+      option => option.prefixComponent.attributes
+    );
   }
 
-  public shuffleEmployeeListOptions(
-    employeeListOptions: SelectGroupOption[],
+  public shuffleShowcaseViewModel(
+    showcaseViewModel: Avatar[],
     avatarsToFit: number,
     doOnSuccess = () => {}
-  ): SelectGroupOption[] {
+  ): Avatar[] {
     const firstIndex = randomNumber(0, avatarsToFit > 1 ? avatarsToFit - 1 : 0);
     const secondIndex = randomNumber(
       avatarsToFit,
-      employeeListOptions[0].options.length > 1
-        ? employeeListOptions[0].options.length - 1
-        : 0
+      showcaseViewModel.length > 1 ? showcaseViewModel.length - 1 : 0
     );
 
     if (firstIndex !== secondIndex) {
-      const firstEmployee = cloneDeep(
-        employeeListOptions[0].options[firstIndex]
-      );
-      employeeListOptions[0].options[firstIndex] =
-        employeeListOptions[0].options[secondIndex];
-      employeeListOptions[0].options[secondIndex] = firstEmployee;
+      const firstEmployee = cloneDeep(showcaseViewModel[firstIndex]);
+      showcaseViewModel[firstIndex] = showcaseViewModel[secondIndex];
+      showcaseViewModel[secondIndex] = firstEmployee;
 
       doOnSuccess();
     }
 
-    return employeeListOptions;
+    return showcaseViewModel;
   }
 
   private isGroupOptions(

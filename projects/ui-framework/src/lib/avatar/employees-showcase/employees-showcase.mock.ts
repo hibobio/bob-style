@@ -4,12 +4,12 @@ import {
   makeArray,
   randomFromArray,
 } from '../../services/utils/functional-utils';
-import { mockNames, mockAvatar } from '../../mock.const';
+import { mockNames, mockAvatar, randomIcon } from '../../mock.const';
 import { SelectGroupOption } from '../../lists/list.interface';
 import { AvatarImageComponent } from '../avatar/avatar-image/avatar-image.component';
 import { AvatarSize, AvatarBadge } from '../avatar/avatar.enum';
 
-const maxEEs = 20;
+const maxEEs = 50;
 const groupID = simpleUID();
 const badges = Object.values(AvatarBadge);
 
@@ -36,6 +36,7 @@ export const EMPLOYEE_SHOWCASE_OPTIONS_MOCK: SelectGroupOption[] = [
           imageSource: mockAvatar(),
           size: AvatarSize.mini,
           badge: randomFromArray(badges),
+          // icon: randomIcon(),
         },
       },
     })),
