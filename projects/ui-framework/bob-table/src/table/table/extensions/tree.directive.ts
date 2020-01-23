@@ -1,6 +1,7 @@
 import {Directive, Input, OnInit, Host} from '@angular/core';
 import {TableComponent} from '../table.component';
 import {TreeConfig, defaultTreeConfig} from './tree.config';
+import { merge } from 'lodash';
 
 function getFileCellRenderer(treeConfig: TreeConfig) {
   function FileCellRenderer() {}
@@ -28,7 +29,7 @@ export class TreeDirective implements OnInit {
   }
 
   @Input('treeConfig') set setTreeConfig(treeConfig: TreeConfig) {
-    this.treeConfig = { ...defaultTreeConfig, ...treeConfig };
+    this.treeConfig = merge(defaultTreeConfig, treeConfig);
     this.applyTreeConfig(this.treeConfig);
   }
 
