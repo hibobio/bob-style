@@ -1,12 +1,11 @@
 @import '../../../style/common-imports';
 
-b-icon,
 :host .bfe-input[readonly] {
   cursor: pointer;
 }
 
-b-icon {
-  outline: 0;
+.bfe-wrap {
+  position: relative;
 }
 
 @include clear-input-suffix;

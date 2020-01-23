@@ -24,7 +24,8 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 
 const withMenuTemplate = `
   <b-basic-list [type]="type" [items]="items2"
-                [showActionOnHover]="showActionOnHover">
+                [showActionOnHover]="showActionOnHover"
+                (clicked)="onItemClick($event)">
     <b-menu *bBasicListAction="let item=item" [menu]="item.menu">
       <b-square-button menu-trigger
                         [type]="buttonType.tertiary"
@@ -37,8 +38,10 @@ const withMenuTemplate = `
 
 const withButtonTemplate = `
   <b-basic-list [type]="type" [items]="items1"
-                [showActionOnHover]="showActionOnHover">
+                [showActionOnHover]="showActionOnHover"
+                (clicked)="onItemClick($event)">
     <b-button *bBasicListAction="let item=item"
+              [disabled]="item.disabled"
               [type]="buttonType.secondary"
               [size]="buttonSize.small"
               (clicked)="action('List item button clicked with item')(item)">
@@ -74,6 +77,7 @@ const note = `
   [items] | BasicListItem[] | List of items to display | &nbsp;
   [type] | BasicListType | primary (grey border), secondary (grey background) | primary
   [showActionOnHover] | boolean | if true, will hide item Action when not hovering over item | false
+  (clicked) | EventEmitter<wbr>&lt;BasicListItem&gt; | Emitted on item (row) click | &nbsp;
   &lt;elem \*bBasicListAction&gt; | ng-content | passing an element with \
   <u>*bBasicListAction</u> directive attached will put it in the item \
   action slot. If the element needs access to the item data, you can \
@@ -116,6 +120,8 @@ story.add(
 
       items1: object('items 1', basicListItems1, 'Data'),
       items2: object('items 2', basicListItems2, 'Data'),
+
+      onItemClick: action('Item clicked'),
     },
     moduleMetadata: {
       imports: [

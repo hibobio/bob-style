@@ -1,6 +1,11 @@
 import { ComponentGroupType } from '../../consts';
 import { storiesOf } from '@storybook/angular';
-import { withKnobs, object, text } from '@storybook/addon-knobs/angular';
+import {
+  withKnobs,
+  object,
+  text,
+  boolean,
+} from '@storybook/addon-knobs/angular';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { action } from '@storybook/addon-actions';
 import { CommentsModule } from '../comments.module';
@@ -12,9 +17,10 @@ const story = storiesOf(ComponentGroupType.Comments, module).addDecorator(
 );
 
 const template = `
-  <b-edit-comment
+<b-edit-comment
   [comment]="comment"
   [placeholder]="placeholder"
+  [autoFocus]="autoFocus"
   (sendComment)="sendComment($event)"></b-edit-comment>
 `;
 
@@ -44,19 +50,20 @@ story.add(
       props: {
         sendComment: action('Send comment click'),
         placeholder: text('placeholder', 'Write your comment here.'),
+        autoFocus: boolean('autoFocus', true),
         comment: object('comment', {
           content: 'input value',
           avatar: mockAvatar(),
-          name: mockNames(1)
-        })
+          name: mockNames(1),
+        }),
       },
       moduleMetadata: {
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
-          CommentsModule
-        ]
-      }
+          CommentsModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

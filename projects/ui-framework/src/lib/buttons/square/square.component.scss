@@ -12,15 +12,15 @@ button {
   @include button-basic-types;
 
   &.small {
-    height: $sizeSmall;
-    width: $sizeSmall;
+    height: $button-size-small;
+    width: $button-size-small;
   }
   &.medium {
-    height: $sizeMedium;
-    width: $sizeMedium;
+    height: $button-size-medium;
+    width: $button-size-medium;
   }
   &.large {
-    height: $sizeLarge;
-    width: $sizeLarge;
+    height: $button-size-large;
+    width: $button-size-large;
   }
 }

@@ -1,6 +1,7 @@
 import { ChipType, ChipListAlign, ChipListSelectable } from './chips.enum';
 import { InputEventType } from '../form-elements/form-elements.enum';
 import { Icons } from '../icons/icons.enum';
+import { NgClass } from '../services/html/html-helpers.interface';
 
 export interface Chip {
   text: string;
@@ -11,6 +12,7 @@ export interface Chip {
   disabled?: boolean;
   selected?: boolean;
   icon?: Icons;
+  class?: string | string[] | NgClass;
 }
 
 export interface ChipListConfig {

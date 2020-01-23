@@ -375,6 +375,7 @@ export {
 export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { TabsComponent } from './lib/navigation/tabs/tabs.component';
 export { Tab } from './lib/navigation/tabs/tabs.interface';
+export { TabChangeEvent } from './lib/navigation/tabs/tabs.interface';
 export { TabsType } from './lib/navigation/tabs/tabs.enum';
 // Breadcrumbs Module
 export {
@@ -383,12 +384,8 @@ export {
 export {
   BreadcrumbsComponent
 } from './lib/navigation/breadcrumbs/breadcrumbs.component';
-export {
-  Breadcrumb,
-  BreadcrumbNavButtons,
-  BreadcrumbNavButton
-} from './lib/navigation/breadcrumbs/breadcrumbs.interface';
-export { BreadcrumbsType } from './lib/navigation/breadcrumbs/breadcrumbs.enum';
+export * from './lib/navigation/breadcrumbs/breadcrumbs.interface';
+export * from './lib/navigation/breadcrumbs/breadcrumbs.enum';
 // Action Bar
 export { ActionBarModule } from './lib/navigation/action-bar/action-bar.module';
 export { ActionBarComponent } from './lib/navigation/action-bar/action-bar.component';

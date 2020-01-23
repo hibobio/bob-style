@@ -6,19 +6,19 @@ import { CircleIconAndLabelParams } from './circle-icon-and-label.interface';
 @Component({
   selector: 'b-circle-icon-and-lable',
   template: `
-    <div
-      class="circle-icon-wrapper"
+    <b-table-actions-wrapper [menuItems]="params?.value?.menuItems">
+      <div class="circle-icon-wrapper"
       *ngIf="params && params.value && params.value.icon !== null">
-      <b-avatar-image
-        [isClickable]="false"
-        [icon]="params.value.icon">
-      </b-avatar-image>
-      <span class="circle-icon-label"
-            *ngIf="params.value.label"
-            innerHTML="{{params.value.label}}">
-      </span>
+        <b-avatar-image
+          [isClickable]="false"
+          [icon]="params.value.icon">
+        </b-avatar-image>
+        <span class="circle-icon-label"
+              *ngIf="params.value.label"
+              innerHTML="{{params.value.label}}">
+        </span>
     </div>
-  `,
+  </b-table-actions-wrapper>`,
   styleUrls: ['./circle-icon-and-label.component.scss'],
 })
 export class CircleIconAndLabelComponent implements ICellRendererAngularComp {

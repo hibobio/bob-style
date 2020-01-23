@@ -14,8 +14,12 @@ import { SelectGroupOption } from '../list.interface';
 import { SingleSelectPanelModule } from './single-select-panel.module';
 import { ButtonType } from '../../buttons/buttons.enum';
 import { action } from '@storybook/addon-actions';
-import { mockJobs } from '../../mock.const';
-import { simpleUID } from '../../services/utils/functional-utils';
+import { mockBadJobs } from '../../mock.const';
+import {
+  simpleUID,
+  randomFromArray,
+  makeArray,
+} from '../../services/utils/functional-utils';
 
 import listInterfaceDoc from '../list.interface.md';
 
@@ -26,16 +30,18 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 const componentTemplate1 = `
 <b-single-select-panel [chevronButtonText]="chevronButtonText"
                        [options]="options"
-                       [disabled]="disabled"
                        [panelClass]="panelClass"
+                       [disabled]="disabled"
+                       [readonly]="readonly"
                        (selectChange)="selectChange($event)">
 </b-single-select-panel>
 `;
 
 const componentTemplate2 = `
 <b-single-select-panel [options]="options"
-                       [disabled]="disabled"
                        [panelClass]="panelClass"
+                       [disabled]="disabled"
+                       [readonly]="readonly"
                        (selectChange)="selectChange($event)">
     <b-square-button [disabled]="disabled"
                      type="${ButtonType.secondary}"
@@ -63,9 +69,11 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | ---
-  [chevronButtonText] | string | text to be displayed in chevron-button | null - can use transclude instead
+  [chevronButtonText] | string | text to be displayed in\
+   chevron-button | null - can use transclude instead
   [options] | SelectGroupOptions[] | select option | null
   [disabled] | boolean | if panel is disabled | false
+  [readonly] | boolean | if true, will not emit events and not allow selection | false
   (selectChange) | ListChange | output on select change | &nbsp;
   (opened) | EventEmitter<wbr>&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
   (closed) | EventEmitter<wbr>&lt;void&gt; | Emits panel Closed event | &nbsp;
@@ -81,32 +89,33 @@ const note = `
   ${listInterfaceDoc}
 `;
 
-const jobs = mockJobs(40);
+const groupCount = 7;
 
-const optionsMock: SelectGroupOption[] = [
-  {
-    groupName: 'Categories',
+const jobs = mockBadJobs(5 * groupCount);
 
-    options: jobs.slice(0, 20).map(category => {
-      return {
-        value: category,
-        id: simpleUID(category + '-'),
-        selected: false,
-      };
-    }),
-  },
-  {
-    groupName: 'Categories',
+const jobTypes = randomFromArray(
+  [
+    'Stressful jobs',
+    'Boring jobs',
+    'Sad jobs',
+    'Low-paid jobs',
+    'Dead-end jobs',
+    'Monotonous jobs',
+    'Dangerous jobs',
+  ],
+  7
+);
 
-    options: jobs.slice(20, 40).map(category => {
-      return {
-        value: category,
-        id: simpleUID(category + '-'),
-        selected: false,
-      };
-    }),
-  },
-];
+const optionsMock: SelectGroupOption[] = makeArray(groupCount).map(
+  (group, index) => ({
+    groupName: jobTypes[index],
+    options: jobs.slice(index * 5, index * 5 + 5).map(option => ({
+      value: option,
+      id: simpleUID(option + '-'),
+      selected: false,
+    })),
+  })
+);
 
 optionsMock[0].options[1].selected = true;
 
@@ -122,6 +131,7 @@ story.add(
           'Props'
         ),
         disabled: boolean('disabled', false, 'Props'),
+        readonly: boolean('readonly', false, 'Props'),
         panelClass: text('panelClass', 'some-class', 'Props'),
         options: object('options', optionsMock, 'Options'),
         selectChange: action('Single select panel change'),

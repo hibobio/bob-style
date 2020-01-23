@@ -1,30 +1,26 @@
 @import '../../style/common-imports';
 
 .text-section {
+  position: relative;
   min-width: 0;
+}
 
-  ::ng-deep b-textarea {
-    position: relative;
+.bfe-input.bfe-textarea {
+  resize: none;
+  height: times8(5);
+  min-height: times8(5);
+  line-height: $line-height-body;
+  padding: 11px 15px;
+  transition: height, min-height 0.3s;
+  will-change: height, min-height;
 
-    .bfe-wrap.focused[class] {
-      border-color: $grey-500;
-    }
+  &:hover {
+    transition-duration: 0.3s;
+  }
 
-    textarea.bfe-input.bfe-textarea {
-      resize: none;
-      height: times8(5);
-      min-height: times8(5);
-      transition: height, min-height 0.3s;
-      will-change: height, min-height;
-
-      &:hover {
-        transition-duration: 0.3s;
-      }
-      &:focus {
-        height: times8(10);
-        min-height: times8(10);
-        max-height: times8(10);
-      }
-    }
+  &:focus {
+    height: times8(10);
+    min-height: times8(10);
+    max-height: times8(10);
   }
 }

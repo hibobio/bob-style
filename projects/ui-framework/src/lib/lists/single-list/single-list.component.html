@@ -2,8 +2,15 @@
           (searchChange)="searchChange($event)">
 </b-search>
 
-<div [ngStyle]="{height: listOptions && (getListHeight() + 'px'), maxHeight: maxHeight + 'px'}"
-     [ngClass]="{'no-group-header': noGroupHeaders, 'show-none-option': showNoneOption}"
+<div [ngStyle]="{
+        height: listOptions && (getListHeight() + 'px'),
+        maxHeight: maxHeight + 'px'
+      }"
+     [attr.aria-readonly]="readonly || null"
+     [ngClass]="{
+       'no-group-header': noGroupHeaders,
+       'show-none-option': !readonly && showNoneOption
+      }"
      class="v-scroll-wrapper">
 
   <div #headers
@@ -13,14 +20,17 @@
          class="headers-group">
       <div (click)="headerClick(header)"
            [ngClass]="{
-           'clickable': options.length > 1,
-           'collapsed': header.isCollapsed,
-           'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header)}"
+            'clickable': options.length > 1,
+            'collapsed': header.isCollapsed,
+            'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header)
+           }"
            class="option-select header">
         <span *ngIf="options.length > 1"
               class="chevron b-icon-medium"
-              [ngClass]="{'b-icon-chevron-down': !header.isCollapsed, 'b-icon-chevron-right':
-              header.isCollapsed}"></span>
+              [ngClass]="{
+                'b-icon-chevron-down': !header.isCollapsed,
+                'b-icon-chevron-right': header.isCollapsed
+              }"></span>
         <span [innerHTML]="header.groupName | highlight: searchValue"></span>
         <span *ngIf="header.selectedCount > 0"
               class="header-selected-count">
@@ -38,7 +48,7 @@
                                maxBufferPx="{{8*listElHeight}}"
                                minBufferPx="{{8*listElHeight}}">
 
-    <button *ngIf="showNoneOption"
+    <button *ngIf="showNoneOption && !readonly"
             type="button"
             class="clear-selection"
             (click)="clearList()">
@@ -63,7 +73,7 @@
                               class="comp-prefix"
                               [render]="option.prefixComponent"></b-component-renderer>
 
-        <span *ngIf="!option.isPlaceHolder"
+        <span *ngIf="!option.isPlaceHolder && option.value"
               class="option-value"
               data-max-lines='3'
               [innerHTML]="option.value | highlight: searchValue">
@@ -77,8 +87,8 @@
 
 <b-list-footer #footer
                *ngIf="hasFooter"
-               [listActions]="listActions"
-               [listActionsState]="listActionsState"
+               [listActions]="!readonly ? listActions : {}"
+               [listActionsState]="!readonly ? listActionsState : {}"
                (clear)="clearList()"
                (apply)="onApply()"
                (reset)="resetList()">

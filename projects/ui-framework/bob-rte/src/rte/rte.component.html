@@ -27,8 +27,9 @@
                      [ngClass]="{ focused: plchldrPnlTrgrFocused }"
                      [type]="buttonType.tertiary"
                      [size]="buttonSize.large"
-                     [icon]="icons.field_add"
+                     [icon]="icons.placeholder_add"
                      [color]="iconColor.normal"
+                     [toolTipSummary]="translation.add_variable"
                      (clicked)="onPlaceholderPanelOpen()">
     </b-square-button>
   </b-single-select-panel>

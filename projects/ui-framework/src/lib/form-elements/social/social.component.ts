@@ -7,15 +7,13 @@ import {
   ViewChild,
   OnInit,
   NgZone,
-  SimpleChanges,
-  OnChanges,
   ElementRef,
   ChangeDetectorRef,
+  AfterViewInit,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { IconColor, IconSize } from '../../icons/icons.enum';
 import { InputEvent } from '../input/input.interface';
-import { InputTypes } from '../input/input.enum';
 import { SocialTypes } from './social.const';
 import { Social } from './social.enum';
 import { BaseFormElement } from '../base-form-element';
@@ -42,7 +40,8 @@ import { URLutils } from '../../services/url/url-utils.service';
     { provide: BaseFormElement, useExisting: SocialComponent },
   ],
 })
-export class SocialComponent extends BaseFormElement implements OnInit {
+export class SocialComponent extends BaseFormElement
+  implements OnInit, AfterViewInit {
   constructor(
     protected cd: ChangeDetectorRef,
     private URL: URLutils,
@@ -74,6 +73,7 @@ export class SocialComponent extends BaseFormElement implements OnInit {
   }
 
   @ViewChild('bInput', { static: true }) bInput: InputComponent;
+  public input: ElementRef<HTMLInputElement>;
 
   @Input() type: Social;
   @Input() placeholder = 'username';
@@ -84,9 +84,9 @@ export class SocialComponent extends BaseFormElement implements OnInit {
 
   public inputId: string | number;
   public narrowInput = false;
+
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
-  readonly inputTypes = InputTypes;
   readonly socialTypes = SocialTypes;
   readonly socialLabelMap = {
     [Social.facebook]: 'Facebook',
@@ -100,8 +100,8 @@ export class SocialComponent extends BaseFormElement implements OnInit {
       (this.host.nativeElement as HTMLElement).offsetWidth < 300;
   }
 
-  focusInput(): void {
-    this.bInput.input.nativeElement.focus();
+  ngAfterViewInit(): void {
+    this.input = this.bInput.input;
   }
 
   onInputEvents(event: InputEvent): void {

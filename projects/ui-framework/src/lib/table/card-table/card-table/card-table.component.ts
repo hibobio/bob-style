@@ -5,7 +5,10 @@ import {
   OnInit,
   Output,
   EventEmitter,
-  ChangeDetectionStrategy, ViewChildren, QueryList, ElementRef
+  ChangeDetectionStrategy,
+  ViewChildren,
+  QueryList,
+  ElementRef,
 } from '@angular/core';
 
 import {
@@ -13,20 +16,21 @@ import {
   cardTableAllowedCellStyles,
   CardTableCellData,
   CardTableRowClickEvent,
-  CardTableCellClickEvent
+  CardTableCellClickEvent,
 } from '../card-table.interface';
 import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
-import {TableCardComponent} from './../table-card/table-card.component';
+import { TableCardComponent } from './../table-card/table-card.component';
 
 @Component({
   selector: 'b-card-table',
   templateUrl: './card-table.component.html',
   styleUrls: ['./card-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardTableComponent implements OnInit {
   constructor(private widthsService: CellWidthsService) {}
-  @ViewChildren(TableCardComponent, { read: ElementRef }) public cardsElRefs: QueryList<TableCardComponent>;
+  @ViewChildren(TableCardComponent, { read: ElementRef })
+  public cardsElRefs: QueryList<TableCardComponent>;
   @Input() meta: CardTableCellMeta[];
   @Input() table: CardTableCellData[][];
   @Input() default = 'No data to display';
@@ -52,7 +56,7 @@ export class CardTableComponent implements OnInit {
     this.cellsStyle = this.meta.map((cell, index) => ({
       maxWidth: cellsWidths[index] + '%',
       alignItems: cell.align === 'right' ? 'flex-end' : null,
-      ...cell.textStyle
+      ...cell.textStyle,
     }));
   }
 

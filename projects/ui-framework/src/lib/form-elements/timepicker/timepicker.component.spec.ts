@@ -78,7 +78,7 @@ describe('TimePickerComponent', () => {
     });
 
     it('should display time icon', () => {
-      iconElem = elementFromFixture(fixture, '.bfe-suffix .b-icon');
+      iconElem = elementFromFixture(fixture, '.input-icon .b-icon');
       expect(iconElem).toBeTruthy();
       expect(iconElem.classList).toContain('b-icon-watch');
     });

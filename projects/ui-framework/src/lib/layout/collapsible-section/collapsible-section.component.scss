@@ -28,7 +28,25 @@ p {
   }
 }
 
+.bcp-header-content,
+.bcp-panel-footer {
+  &:empty {
+    display: none;
+  }
+}
+
+// footer
+
+.bcp-panel-footer {
+  padding: times8(3) times8(4);
+  border-top: 1px solid $border-color;
+}
+
 // header
+
+.bcp-header {
+  padding: times8(2) times8(4);
+}
 
 .bcp-header,
 .bcp-title-wrap {
@@ -61,7 +79,6 @@ p {
 }
 
 .bcp-header {
-  padding: times8(2) times8(4);
   justify-content: space-between;
 
   &:before {
@@ -117,6 +134,10 @@ p {
 
 .bcp-panel {
   border-top: 1px solid $border-color;
+
+  &:first-child {
+    border-top: 0;
+  }
 
   &::ng-deep {
     p {
@@ -212,5 +233,8 @@ p {
   }
   .bcp-panel {
     border-top: 0;
+  }
+  .bcp-footer {
+    border: 0;
   }
 }

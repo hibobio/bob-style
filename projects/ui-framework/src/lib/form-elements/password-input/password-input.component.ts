@@ -1,10 +1,9 @@
 import {
   Component,
-  ElementRef,
   forwardRef,
-  ViewChild,
   NgZone,
   ChangeDetectorRef,
+  Input,
 } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { InputTypes } from '../input/input.enum';
@@ -42,13 +41,14 @@ export class PasswordInputComponent extends BaseInputElement {
     this.outputTransformers = [];
   }
 
+  @Input() minChars = 4;
+  @Input() maxChars = 30;
+
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
-  readonly inputTypes = InputTypes;
-  public inputType = InputTypes.password;
 
-  @ViewChild('input', { static: true }) input: ElementRef;
+  public inputType = InputTypes.password;
 
   isInputEmpty(): boolean {
     return !this.value || this.value.trim() === '';

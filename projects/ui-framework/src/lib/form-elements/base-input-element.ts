@@ -4,15 +4,17 @@ import {
   Output,
   NgZone,
   ChangeDetectorRef,
+  SimpleChanges,
 } from '@angular/core';
 import { InputEvent } from './input/input.interface';
 import { BaseFormElement } from './base-form-element';
 import { InputAutoCompleteOptions, InputTypes } from './input/input.enum';
 import { FormEvents, InputEventType } from './form-elements.enum';
-import { isKey, parseToNumber } from '../services/utils/functional-utils';
+import { isKey, notFirstChanges } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
 import { valueAsNumber, stringyOrFail } from '../services/utils/transformers';
 import { FormElementKeyboardCntrlService } from './services/keyboard-cntrl.service';
+import { DOMInputEvent } from '../types';
 
 export abstract class BaseInputElement extends BaseFormElement {
   protected constructor(
@@ -25,18 +27,20 @@ export abstract class BaseInputElement extends BaseFormElement {
       stringyOrFail,
       value => valueAsNumber(this.inputType, value),
     ];
-    this.outputTransformers = [value => valueAsNumber(this.inputType, value)];
+    this.outputTransformers = [
+      value => valueAsNumber(this.inputType, value, 0),
+    ];
     this.baseValue = '';
   }
 
-  public eventType = InputEventType;
-  readonly inputTypes = InputTypes;
+  readonly eventType = InputEventType;
 
   @Input() step: number;
-  @Input() value = '';
+  @Input() value: any = '';
   @Input() inputType: InputTypes = InputTypes.text;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
+  @Input() showCharCounter = true;
   @Input() minChars: number;
   @Input() maxChars: number;
   @Input() min: number;
@@ -46,38 +50,42 @@ export abstract class BaseInputElement extends BaseFormElement {
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  onInputChange(value: string) {
-    if (value !== this.value) {
-      this.writeValue(value);
+  onNgChanges(changes: SimpleChanges): void {
+    if (notFirstChanges(changes, ['inputType'])) {
+      this.value = this.baseValue;
+    }
+  }
+
+  public onInputChange(event: DOMInputEvent) {
+    const value = event.target.value;
+
+    // tslint:disable-next-line: triple-equals
+    if (value != this.value) {
+      this.writeValue(value, true);
       this.transmitValue(this.value, {
         eventType: [InputEventType.onChange],
       });
     }
   }
 
-  onInputFocus() {
-    this.transmitValue(this.value, { eventType: [InputEventType.onFocus] });
+  public onInputFocus(event: FocusEvent) {
+    if (!this.skipFocusEvent) {
+      this.transmitValue(this.value, { eventType: [InputEventType.onFocus] });
+    }
     this.inputFocused = true;
+    this.skipFocusEvent = false;
   }
 
-  onInputBlur() {
+  public onInputBlur(event: FocusEvent) {
     this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
     this.inputFocused = false;
   }
-  processValue(value: number | string) {
-    if (this.inputType === InputTypes.number) {
-      const parsed = parseToNumber(value);
-      if ((this.min && parsed < this.min) || (this.max && parsed > this.max)) {
-        this.writeValue(parsed < this.min ? this.min : this.max);
-        this.transmitValue(this.value, {
-          eventType: [InputEventType.onChange],
-        });
-      }
-    }
-    this.onInputBlur();
-  }
 
-  onInputKeyUp(event: KeyboardEvent) {
+  public onInputKeydown(event: KeyboardEvent) {
+    if (this.inputType === InputTypes.number) {
+      this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9.]/);
+    }
+
     if (
       (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) &&
       this.changed.observers.length > 0

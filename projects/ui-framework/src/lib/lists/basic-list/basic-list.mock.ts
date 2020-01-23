@@ -33,6 +33,7 @@ export const basicListItems1: BasicListItem[] = makeArray(numberOfItems).map(
   (i, index) => ({
     label: mockHobbies(1),
     icon: icon1,
+    disabled: randomNumber() > 70,
     menu: [
       {
         label: mockText(randomNumber(1, 2)),

@@ -91,6 +91,7 @@ export abstract class BaseListElement
   @Input() showSingleGroupHeader = false;
   @Input() startWithGroupsCollapsed = true;
   @Input() showNoneOption = false;
+  @Input() readonly = false;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
@@ -242,7 +243,7 @@ export abstract class BaseListElement
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
         this.hasFooter =
-          objectHasTruthyValue(this.listActions) ||
+          (!this.readonly && objectHasTruthyValue(this.listActions)) ||
           !this.DOM.isEmpty(this.footer.nativeElement);
 
         if (!this.cd['destroyed']) {
@@ -266,7 +267,7 @@ export abstract class BaseListElement
   }
 
   optionClick(option: ListOption, allowMultiple = false): void {
-    if (!option.disabled) {
+    if (!option.disabled && !this.readonly) {
       option.selected = !option.selected;
 
       this.selectedIDs = allowMultiple

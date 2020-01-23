@@ -97,6 +97,8 @@ const note = `
   [chip] | Chip | object describing the chip chip (should have type & text properties) | &nbsp;
   [disabled] | boolean | disabled state | false
   [isClickable] | boolean | flag for indicating if the avatar is clickable or not | false
+  [supressWarnings] | boolean | suppress warnings about not using \
+getOptimizedAvatarImage for imageSource (set to true if using images that are not avatars) | false
   (clicked) | EventEmitter<wbr>&lt;MouseEvent&gt; | emitted on avatar click | &nbsp;
   ng-content | element | you can pass stuff to be placed inside Avatar as ng-content | &nbsp;
 

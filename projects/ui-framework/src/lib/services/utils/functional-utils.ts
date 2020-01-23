@@ -95,11 +95,11 @@ export const simpleUID = (
   suffix: string = ''
 ): string => {
   return (
-    prefix +
+    prefix.replace(/\s+/g, '_') +
     Math.random()
       .toString(16)
       .substr(2, length) +
-    suffix
+    suffix.replace(/\s+/g, '_')
   );
 };
 
@@ -110,6 +110,12 @@ export const isKey = (key: string, expected: string): boolean =>
 
 export const isMetaKey = (key: string): boolean =>
   metaKeys.includes(key as any);
+
+export const eventHasCntrlKey = (event: KeyboardEvent | MouseEvent): boolean =>
+  event.metaKey || event.ctrlKey;
+
+export const eventHasMetaKey = (event: KeyboardEvent | MouseEvent): boolean =>
+  event.metaKey || event.shiftKey || event.ctrlKey || event.altKey;
 
 export const asArray = <T = any>(smth: T | T[]): T[] =>
   !isNullOrUndefined(smth)
@@ -188,6 +194,8 @@ export const getType = (smth: any): string =>
     ? 'array'
     : smth instanceof Date
     ? 'date'
+    : smth !== smth
+    ? 'NaN'
     : String(typeof smth);
 
 export const arrayDifference = <T = any>(arrA: T[], arrB: T[]): T[] => {
@@ -318,6 +326,9 @@ export const cloneValue = (value: any) =>
     : isArray(value)
     ? cloneArray(value)
     : value;
+
+export const cloneDeepSimpleObject = <T = any>(obj: T): T =>
+  JSON.parse(JSON.stringify(obj));
 
 export const isIterable = (smth: any): boolean => {
   if (!smth || isNumber(smth) || isString(smth)) {

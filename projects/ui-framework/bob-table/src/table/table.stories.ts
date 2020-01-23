@@ -38,6 +38,7 @@ const template = `
   [maxHeight]="maxHeight"
   [rowSelection]="rowSelection"
   [removeColumnButtonEnabled]="removeColumnButtonEnabled"
+  [shouldAutoSizeColumns]="shouldAutoSizeColumns"
   (rowClicked)="rowClicked($event)"
   (cellClicked)="cellClicked($event)"
   (selectionChanged)="selectionChanged($event)"
@@ -55,6 +56,7 @@ const treeTemplate = `
   [maxHeight]="maxHeight"
   [rowSelection]="rowSelection"
   [removeColumnButtonEnabled]="removeColumnButtonEnabled"
+  [shouldAutoSizeColumns]="shouldAutoSizeColumns"
   (rowClicked)="rowClicked($event)"
   (cellClicked)="cellClicked($event)"
   (selectionChanged)="selectionChanged($event)"
@@ -73,11 +75,20 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
+const streeSoryTemplate = `
+<b-story-book-layout [title]="'Data Table'">
+  <div style="max-width: calc(100% - 60px);">
+    ${treeTemplate}
+  </div>
+
+</b-story-book-layout>
+`;
+
 const type = values(TableType);
 const rowSelection = values(RowSelection);
 
 const note = `
-  ## Auto complete Element
+  ## Data Table
 
   #### Module
   *TableModule*
@@ -100,6 +111,7 @@ const note = `
   [tableGridOptions] | GridOptions - Partial | extra options that are added on grid | {}
   [suppressDragLeaveHidesColumns] | boolean | disables 'dragging column out to remove it' behaviour | false
   [removeColumnButtonEnabled] | boolean | adds (x) button to column header | false
+  [shouldAutoSizeColumns] | boolean | enable auto size | true
   (rowClicked) | EventEmitter<wbr>&lt;RowClickedEvent&gt; | Row clicked event | &nbsp;
   (gridInit) | EventEmitter<wbr>&lt;void&gt;  | Grid init event | &nbsp;
   (selectionChanged) | EventEmitter<wbr>&lt;any[]&gt; | All selected rows | &nbsp;
@@ -129,7 +141,7 @@ const note = `
 `;
 
 const treeNotes = `
-  ## Auto complete Element
+  ## Tree Table
 
   #### Module
   *TableModule*
@@ -164,7 +176,7 @@ function tableStoryFactory({
   HTMLTemplate,
   tableData,
   tableCols,
-  props
+  props,
 }: TableStory) {
   const defaultProps = {
     type: select('type', type, TableType.Primary, 'Props'),
@@ -180,6 +192,7 @@ function tableStoryFactory({
       true,
       'Props'
     ),
+    shouldAutoSizeColumns: boolean('shouldAutoSizeColumns', true, 'Props'),
     columnDefs: object(`${title} columnDefs`, tableCols, 'Data'),
     rowData: object(`${title} rowData`, tableData, 'Data'),
     rowClicked: action('Row clicked'),
@@ -224,13 +237,13 @@ story.add(
   () =>
     tableStoryFactory({
       title: 'Tree Table',
-      HTMLTemplate: treeTemplate,
+      HTMLTemplate: streeSoryTemplate,
       tableCols: treeColumnDefsMock,
       tableData: treeRowDataMock,
       props: {
         treeConfig: {
           colDef: {
-            headerName: 'Hierarchy Tree'
+            headerName: 'Hierarchy Tree',
           },
           cellTemplate: value => `<b>${value}</b>`,
           hierarchyGetter: data => {

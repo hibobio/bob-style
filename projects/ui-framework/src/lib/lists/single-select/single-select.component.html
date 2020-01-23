@@ -22,12 +22,15 @@
     <ng-content select="[input-prefix]"></ng-content>
   </div>
 
-  <span class="bfe-input trigger-input"
+  <span #input
+        class="bfe-input trigger-input"
+        tabindex="0"
         [b-truncate-tooltip]="1"
         [expectChanges]="true"
         [trustCssVars]="true"
         [type]="tooltipType"
-        [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ? label : placeholder) : null">
+        [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ? label : placeholder) : null"
+        (focus)="openPanel()">
     {{displayValue}}
   </span>
 
@@ -54,6 +57,7 @@
                    [showSingleGroupHeader]="showSingleGroupHeader"
                    [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                    [showNoneOption]="!required"
+                   [readonly]="readonly"
                    [listActions]="listActions"
                    (selectChange)="onSelect($event)">
       <ng-content footerAction

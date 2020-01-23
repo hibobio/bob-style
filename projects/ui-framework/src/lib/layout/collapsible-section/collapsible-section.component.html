@@ -7,8 +7,8 @@
           'bcp-section-not-divided': !divided
          }">
 
-  <header class="
-         bcp-header"
+  <header *ngIf="title || hasHeaderContent"
+          class="bcp-header"
           [attr.id]="panelID+'-header'"
           [attr.aria-controls]="(collapsible && panelID) || null"
           [attr.aria-expanded]="(collapsible && expanded) || null"
@@ -52,6 +52,12 @@
          #panelContent>
       <ng-content></ng-content>
     </div>
+
+    <footer *ngIf="hasFooterContent"
+            #footerContent
+            class="bcp-panel-footer">
+      <ng-content select="[footer]"></ng-content>
+    </footer>
   </div>
 
 </section>

@@ -27,11 +27,10 @@
          [readonly]="readonly"
          [attr.minlength]="minChars || null"
          [attr.maxlength]="maxChars || null"
-         (input)="onInputChange($event.target.value)"
-         (blur)="processValue($event.target.value);"
-         (focus)="onInputFocus()"
-         (keydown.outside-zone)="onInputKeydown($event)"
-         (keyup.outside-zone)="onInputKeyUp($event)">
+         (input)="onInputChange($event)"
+         (blur)="onInputBlur($event);"
+         (focus)="onInputFocus($event)"
+         (keydown.outside-zone)="onInputKeydown($event)">
 
   <div *ngIf="hasSuffix || showSuffix"
        class="bfe-suffix"
@@ -40,12 +39,17 @@
   </div>
 
   <div class="bfe-buttons-wrap"
-       *ngIf="inputType === inputTypes.number &&  step>0">
-    <button type="button" class="b-icon b-icon-chevron-up b-icon-large has-hover b-icon-normal"
+       *ngIf="inputType === inputTypes.number && step > 0">
+    <button type="button"
+            class="step-button b-icon-chevron-up b-icon-large has-hover"
+            [ngClass]="{ 'b-icon-normal': !inputFocused }"
+            [disabled]="disabled || value >= max"
             (click)="onIncrement()"></button>
-    <button type="button" class="b-icon b-icon-chevron-down b-icon-large has-hover b-icon-normal"
-            (click)="
-            onDecrement()"></button>
+    <button type="button"
+            class="step-button b-icon-chevron-down b-icon-large has-hover"
+            [ngClass]="{ 'b-icon-normal': !inputFocused }"
+            [disabled]="disabled || value <= min || value == 0"
+            (click)="onDecrement()"></button>
   </div>
 
 </div>
@@ -56,7 +60,7 @@
    [warnMessage]="warnMessage"
    [errorMessage]="errorMessage"
    [disabled]="disabled"
-   [minChars]="minChars"
-   [maxChars]="maxChars"
-   [length]="value?.length">
+   [minChars]="showCharCounter && minChars"
+   [maxChars]="showCharCounter && maxChars"
+   [length]="value ? (value+'').length : 0">
 </p>

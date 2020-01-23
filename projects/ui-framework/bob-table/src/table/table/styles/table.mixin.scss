@@ -1,8 +1,7 @@
-@mixin cell($height: auto) {
+@mixin cell() {
   text-align: left;
   padding: 0 15px;
   color: $grey-700;
-  height: $height;
   width: 100%;
   display: flex;
   align-items: center;
@@ -30,7 +29,7 @@
 @mixin ag-icon($b-icon) {
   margin-right: 5px;
   background: none;
-  @include b-icon($icon: $b-icon, $size: small, $color: dark);
+  @include b-icon($icon: $b-icon, $size: small, $color: dark, $hover: false);
   cursor: pointer;
 
   &:before {

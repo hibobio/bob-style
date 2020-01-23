@@ -184,8 +184,8 @@ export class TimePickerComponent extends BaseFormElement {
   onHoursFocus() {
     this.hoursFocused = true;
     this.minutesFocused = false;
-    this.inputHours.nativeElement.select();
     this.cd.detectChanges();
+    this.inputHours.nativeElement.select();
   }
 
   onMinutesFocus() {
@@ -214,7 +214,7 @@ export class TimePickerComponent extends BaseFormElement {
   }
 
   isInputEmpty() {
-    return (
+    return !(
       (this.valueHours && this.valueHours !== '00') ||
       (this.valueMinutes && this.valueMinutes !== '00')
     );

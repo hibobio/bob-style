@@ -18,7 +18,6 @@ import { BaseFormElement } from '../base-form-element';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
 import { Subscription, fromEvent, interval } from 'rxjs';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
-import { InputTypes } from '../input/input.enum';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import {
   simpleUID,
@@ -49,6 +48,12 @@ import {
 } from '../../consts';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { LocaleFormat, DateFormatFullDate, DateFormat } from '../../types';
+import { Overlay } from '@angular/cdk/overlay';
+
+export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
+  const strategy = () => overlay.scrollStrategies.close();
+  return strategy;
+}
 
 export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, AfterViewInit, OnDestroy {
@@ -96,6 +101,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   @ViewChildren(MatDatepicker) public pickers: QueryList<MatDatepicker<any>>;
   @ViewChildren('input', { read: ElementRef })
   public inputs: QueryList<ElementRef>;
+  public input: ElementRef<HTMLInputElement>;
 
   @Input() id: string = simpleUID('bdp-');
 
@@ -123,11 +129,10 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   private resizeSubscription: Subscription;
   private mediaEventSubscription: Subscription;
 
+  readonly types = DatepickerType;
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
-  readonly inputTypes = InputTypes;
-  readonly types = DatepickerType;
   readonly panelPos = PanelDefaultPosVer;
   readonly dateAdjust = DateAdjust;
 
@@ -167,7 +172,9 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
+    this.input = this.inputs.toArray()[0];
+
     if (!this.doneFirstChange) {
       this.ngOnChanges({});
     }

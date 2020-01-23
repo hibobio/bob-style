@@ -52,6 +52,7 @@ export class CollapsibleSectionComponent
   public panelID = simpleUID('bcp-');
   public hasHeaderContent = true;
   public hasPanelContent = true;
+  public hasFooterContent = true;
   public contentLoaded = false;
   public startsExpanded = false;
   private contentHeight = 0;
@@ -73,6 +74,7 @@ export class CollapsibleSectionComponent
 
   @ViewChild('headerContent', { static: false }) headerContent: ElementRef;
   @ViewChild('panelContent', { static: false }) panelContent: ElementRef;
+  @ViewChild('footerContent', { static: false }) footerContent: ElementRef;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.options) {
@@ -150,6 +152,17 @@ export class CollapsibleSectionComponent
       if (!this.contentLoaded) {
         this.contentLoaded = true;
         this.cd.detectChanges();
+
+        this.zone.runOutsideAngular(() => {
+          setTimeout(() => {
+            this.hasFooterContent = !this.DOM.isEmpty(
+              this.footerContent.nativeElement
+            );
+            if (!this.cd['destroyed']) {
+              this.cd.detectChanges();
+            }
+          }, 0);
+        });
       }
 
       if (!this.contentHeight) {
@@ -170,7 +183,7 @@ export class CollapsibleSectionComponent
     }
   }
 
-  setCssVars(repeat = false): void {
+  private setCssVars(repeat = false): void {
     if (this.panelContent) {
       this.contentHeight =
         this.panelContent.nativeElement.scrollHeight > 100
@@ -190,7 +203,7 @@ export class CollapsibleSectionComponent
     }
   }
 
-  emitEvent(): void {
+  private emitEvent(): void {
     if (this.expanded) {
       this.opened.emit();
     } else {

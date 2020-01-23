@@ -196,7 +196,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   }
 
   openPanel(): void {
-    if (!this.overlayRef && !this.disabled) {
+    if (!this.overlayRef && !this.disabled && !this.panelOpen) {
       this.panelOpen = true;
       this.panelConfig = this.getConfig();
       this.overlayRef = this.overlay.create(this.panelConfig);

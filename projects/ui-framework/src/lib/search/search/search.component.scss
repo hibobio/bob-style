@@ -1,7 +1,7 @@
+@import '../../style/common-imports';
+
 :host {
   margin: 0;
 }
 
-.reset-button {
-  cursor: pointer;
-}
+@include clear-input-suffix;

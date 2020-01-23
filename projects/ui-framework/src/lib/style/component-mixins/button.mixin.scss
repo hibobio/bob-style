@@ -1,6 +1,6 @@
-$sizeSmall: 30px;
-$sizeMedium: 36px;
-$sizeLarge: 44px;
+$button-size-small: 30px;
+$button-size-medium: 36px;
+$button-size-large: 44px;
 
 @mixin Button($type: null, $basics: true) {
   @if $basics {

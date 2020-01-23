@@ -4,8 +4,6 @@ import {
   forwardRef,
   Input,
   Output,
-  ElementRef,
-  ViewChild,
   SimpleChanges,
   ChangeDetectorRef,
   OnChanges,
@@ -43,7 +41,6 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
     this.baseValue = false;
   }
 
-  @ViewChild('input', { static: true }) public input: ElementRef;
   @Input() public value = false;
   @Input() public indeterminate = false;
 

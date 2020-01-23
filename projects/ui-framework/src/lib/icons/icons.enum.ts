@@ -1,3 +1,8 @@
+export enum IconType {
+  regular = 'regular',
+  circular = 'circular',
+}
+
 export enum IconSize {
   small = 'small',
   medium = 'medium',
@@ -136,4 +141,9 @@ export enum Icons {
   person_peer = 'b-icon-person-peer',
   doc_description = 'b-icon-doc-description',
   notification = 'b-icon-notification',
+  placeholder_add = 'b-icon-placeholder-add',
+  success_alt = 'b-icon-success-alt',
+  people_alt2 = 'b-icon-people-alt2',
+  arrow_left_alt = 'b-icon-arrow-left-alt',
+  in_progress = 'b-icon-in-progress',
 }

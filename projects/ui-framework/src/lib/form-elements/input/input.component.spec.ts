@@ -7,7 +7,11 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { InputTypes } from './input.enum';
-import { elementFromFixture, emitNativeEvent, inputValue } from '../../services/utils/test-helpers';
+import {
+  elementFromFixture,
+  emitNativeEvent,
+  inputValue,
+} from '../../services/utils/test-helpers';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { Keys, NativeEvents } from '../../enums';
 import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
@@ -78,9 +82,10 @@ describe('InputComponent', () => {
       );
     });
 
-    it('should emit InputEvent on keyup, if there is a subscriber to the event; Should not propagateChange.', () => {
+    it(`should emit InputEvent on keydown, if there is a subscriber to the event; \
+    Should not propagateChange.`, () => {
       component.value = 'change input value';
-      emitNativeEvent(inputElement, NativeEvents.keyup, {
+      emitNativeEvent(inputElement, NativeEvents.keydown, {
         key: Keys.enter,
       });
       expect(component.changed.emit).toHaveBeenCalledWith({
@@ -91,9 +96,9 @@ describe('InputComponent', () => {
       expect(component.propagateChange).not.toHaveBeenCalled();
     });
 
-    it('should NOT emit InputEvent on keyup, if there are no subscribers to the event', () => {
+    it('should NOT emit InputEvent on keydown, if there are no subscribers to the event', () => {
       component.changed.complete();
-      emitNativeEvent(inputElement, NativeEvents.keyup, {
+      emitNativeEvent(inputElement, NativeEvents.keydown, {
         key: Keys.enter,
       });
       expect(component.changed.emit).not.toHaveBeenCalled();
@@ -114,7 +119,7 @@ describe('InputComponent', () => {
       expect(component.propagateChange).toHaveBeenCalledWith(500);
     });
   });
- describe('Numeric input limits: user input', () => {
+  describe('Numeric input limits: user input', () => {
     beforeEach(() => {
       component.inputType = InputTypes.number;
       component.max = 30;
@@ -123,7 +128,8 @@ describe('InputComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should return upper limit if the input value is bigger, and bottom limit if it was smaller', () => {
+    it(`should return upper limit if the input value is bigger, and bottom limit \
+    if it was smaller`, () => {
       expect(component.value as any).not.toEqual(30);
       inputValue(inputElement, 500);
       expect(component.value as any).toEqual(30);
@@ -135,7 +141,6 @@ describe('InputComponent', () => {
     });
   });
   describe('Numeric limits: tickers', () => {
-
     beforeEach(() => {
       component.inputType = InputTypes.number;
       fixture.detectChanges();
@@ -147,11 +152,10 @@ describe('InputComponent', () => {
     });
 
     it('should return the bottom limit on any tick that sets the value to be below min', () => {
+      inputValue(inputElement, 7, false);
       buttonDownElement = elementFromFixture(fixture, '.b-icon-chevron-down');
       emitNativeEvent(buttonDownElement);
       fixture.detectChanges();
-      expect(component.value as any).toEqual(5);
-      emitNativeEvent(buttonDownElement);
       expect(component.value as any).toEqual(5);
     });
 
@@ -165,23 +169,23 @@ describe('InputComponent', () => {
   });
 
   describe('Ticker buttons', () => {
-   it('should render ticker buttons if the inputType is number and step greater than 0', () => {
-     component.inputType = InputTypes.number;
-     component.step = 5;
-     fixture.detectChanges();
-     expect(elementFromFixture(fixture, '.bfe-buttons-wrap')).toBeTruthy();
-   });
-   it('should not render if step is not greater than 0', () => {
-     component.inputType = InputTypes.number;
-     component.step = 0;
-     fixture.detectChanges();
-     expect(elementFromFixture(fixture, '.bfe-buttons-wrap')).toBeFalsy();
-   });
-   it('should not render if input type is not number', () => {
-     component.inputType = InputTypes.text;
-     component.step = 5;
-     fixture.detectChanges();
-     expect(elementFromFixture(fixture, '.bfe-buttons-wrap')).toBeFalsy();
-   });
+    it('should render ticker buttons if the inputType is number and step greater than 0', () => {
+      component.inputType = InputTypes.number;
+      component.step = 5;
+      fixture.detectChanges();
+      expect(elementFromFixture(fixture, '.bfe-buttons-wrap')).toBeTruthy();
+    });
+    it('should not render if step is not greater than 0', () => {
+      component.inputType = InputTypes.number;
+      component.step = 0;
+      fixture.detectChanges();
+      expect(elementFromFixture(fixture, '.bfe-buttons-wrap')).toBeFalsy();
+    });
+    it('should not render if input type is not number', () => {
+      component.inputType = InputTypes.text;
+      component.step = 5;
+      fixture.detectChanges();
+      expect(elementFromFixture(fixture, '.bfe-buttons-wrap')).toBeFalsy();
+    });
   });
 });

@@ -119,17 +119,15 @@ export class ChipListComponent implements OnChanges {
     }
 
     if (hasChanges(changes, ['config'], true)) {
-      this.config.selectable =
-        this.config.type === ChipType.tab
-          ? ChipListSelectable.single
-          : this.config.selectable;
+      this.config.selectable = this.isTypeTabs()
+        ? ChipListSelectable.single
+        : this.config.selectable;
 
-      this.config.focusable =
-        this.config.type === ChipType.tab ? true : this.config.focusable;
+      this.config.focusable = this.isTypeTabs() ? true : this.config.focusable;
 
       this.chipListSelectable =
         this.config.selectable !== ChipListSelectable.single &&
-        this.config.type !== ChipType.tab
+        !this.isTypeTabs()
           ? ChipListSelectable.multi
           : ChipListSelectable.single;
     }
@@ -240,7 +238,17 @@ export class ChipListComponent implements OnChanges {
   private focusChipElByIndex(index: number): void {
     const chipComp = this.list.toArray()[index];
     if (chipComp) {
-      chipComp.chip.nativeElement.focus();
+      chipComp.chip.focus();
     }
+  }
+
+  public chipsTrackBy(index: number, chip: Chip): string | number {
+    return chip.id || chip.text || JSON.stringify(chip);
+  }
+
+  private isTypeTabs() {
+    return (
+      this.config.type === ChipType.tab || this.config.type === ChipType.button
+    );
   }
 }

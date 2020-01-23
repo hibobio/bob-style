@@ -13,8 +13,9 @@
   min-height: 36px;
 }
 
-.menu-options-wrapper, .menu-header {
-  width: 240px;
+.menu-options-wrapper,
+.menu-header {
+  width: $sidebar-width;
 }
 
 .header-label {
