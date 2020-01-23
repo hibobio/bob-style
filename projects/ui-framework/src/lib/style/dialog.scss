@@ -58,13 +58,10 @@ html.cdk-global-scrollblock {
       }
     }
     .mat-dialog-content {
-      padding: 0 times8(5);
+      padding: 0 times8(5) times8(2);
       max-height: 60vh;
       position: relative;
       overflow-x: hidden;
-      &.show-scrolling-top {
-        border-top: 1px solid $grey-300;
-      }
       &.show-scrolling-bottom {
         border-bottom: 1px solid $grey-300;
       }
@@ -100,6 +97,7 @@ html.cdk-global-scrollblock {
 
     .dialog-footer {
       position: relative;
+      border-top: 1px solid $grey-300;
 
       .confirmation-message {
         position: absolute;
@@ -120,11 +118,14 @@ html.cdk-global-scrollblock {
         position: relative;
         z-index: 2;
         display: flex;
-        justify-content: flex-end;
         height: 100%;
+        .action-buttons {
+          justify-self: flex-end;
+          margin-left: auto;
+        }
         .dialog-button {
           &:nth-child(2) {
-            margin-left: times8(1);
+            margin-left: times8(2);
           }
         }
       }
