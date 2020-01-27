@@ -4,6 +4,7 @@ import {
   TestBed,
   fakeAsync,
   tick,
+  flush,
 } from '@angular/core/testing';
 import {
   Component,
@@ -219,6 +220,11 @@ describe('QuickFilterLayoutComponent', () => {
   }));
 
   describe('Initial render', () => {
+    afterEach(fakeAsync(() => {
+      flush();
+      QFLcomponent.ngOnDestroy();
+    }));
+
     it('Should display 2 form elements', () => {
       fixture.detectChanges();
       expect(QFLcomponent.formComponents.length).toEqual(2);
@@ -262,6 +268,11 @@ describe('QuickFilterLayoutComponent', () => {
   });
 
   describe('Dynamic [quickFilters]', () => {
+    afterEach(fakeAsync(() => {
+      flush();
+      QFLcomponent.ngOnDestroy();
+    }));
+
     it('Should update label and value from QuickFilterConfig', () => {
       const newQFconfig = cloneDeep(QFconfig);
       newQFconfig[0].value = 'Some other text';
@@ -287,6 +298,11 @@ describe('QuickFilterLayoutComponent', () => {
   });
 
   describe('Dynamic ng-content form elements', () => {
+    afterEach(fakeAsync(() => {
+      flush();
+      QFLcomponent.ngOnDestroy();
+    }));
+
     beforeEach(() => {
       testComponent.showTimePicker = false;
       testComponent.showSocial = true;
@@ -313,6 +329,11 @@ describe('QuickFilterLayoutComponent', () => {
   });
 
   describe('Change emitter', () => {
+    afterEach(fakeAsync(() => {
+      flush();
+      QFLcomponent.ngOnDestroy();
+    }));
+
     it('Should emit initial aggregated values on every element added', () => {
       expect(QFLcomponent.filtersChange.emit).toHaveBeenCalledTimes(1);
 
