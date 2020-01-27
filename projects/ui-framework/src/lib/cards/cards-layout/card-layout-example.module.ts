@@ -6,7 +6,7 @@ import {
   OnInit,
   ViewChild,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { CardsModule } from '../cards.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -18,12 +18,12 @@ import {
   mockImage,
   mockNames,
   mockHobbies,
-  mockText
+  mockText,
 } from '../../mock.const';
 import {
   AddCardMockData,
   getEmployeeCardsMockData,
-  getCardsMockData
+  getCardsMockData,
 } from '../cards.mock';
 import { SliderModule } from '../../indicators/slider/slider.module';
 import { CardsLayoutComponent } from './cards-layout.component';
@@ -68,7 +68,7 @@ import { randomNumber } from '../../services/utils/functional-utils';
       </b-card>
     </b-cards>
   `,
-  styles: [':host {display: block;}']
+  styles: [':host {display: block;}'],
 })
 export class CardLayoutExample1Component implements OnChanges {
   constructor() {}
@@ -90,7 +90,7 @@ export class CardLayoutExample1Component implements OnChanges {
         ...card,
         text: mockText(randomNumber(10, 25)) + '.',
         avatarImgUrl: mockAvatar(),
-        avatarDisplayName: mockNames(1)
+        avatarDisplayName: mockNames(1),
       }));
     }
   }
@@ -125,7 +125,7 @@ export class CardLayoutExample1Component implements OnChanges {
       </b-card-employee>
     </b-cards>
   `,
-  styles: [':host {display: block;}']
+  styles: [':host {display: block;}'],
 })
 export class CardLayoutExample2Component implements OnChanges {
   constructor() {}
@@ -142,7 +142,7 @@ export class CardLayoutExample2Component implements OnChanges {
 
       this.cards = getEmployeeCardsMockData(this.maxCards).map(card => ({
         ...card,
-        hobbies: mockHobbies(4).join(', ')
+        hobbies: mockHobbies(4).join(', '),
       }));
     }
   }
@@ -170,7 +170,7 @@ export class CardLayoutExample2Component implements OnChanges {
       </b-card-employee>
     </b-cards>
   `,
-  styles: [':host {display: block;}']
+  styles: [':host {display: block;}'],
 })
 export class CardLayoutExample3Component implements OnChanges, OnDestroy {
   @ViewChild(CardsLayoutComponent, { static: false })
@@ -200,7 +200,7 @@ export class CardLayoutExample3Component implements OnChanges, OnDestroy {
 
       this.cards = getEmployeeCardsMockData(this.maxCards).map(card => ({
         ...card,
-        date: mockDate()
+        date: mockDate(),
       }));
     }
   }
@@ -240,7 +240,7 @@ export class CardLayoutExample3Component implements OnChanges, OnDestroy {
         <div card-top class="top">
           <b-icon
             [icon]="icons.person"
-            [size]="iconSize.small"
+            [size]="iconSize.medium"
             [color]="iconColor.white"
           >
           </b-icon>
@@ -282,9 +282,9 @@ export class CardLayoutExample3Component implements OnChanges, OnDestroy {
         color: #9d9d9d;
       }
     `,
-    ''
+    '',
   ],
-  providers: []
+  providers: [],
 })
 export class CardLayoutExample4Component implements OnChanges {
   constructor() {}
@@ -311,7 +311,7 @@ export class CardLayoutExample4Component implements OnChanges {
         imageUrl: mockImage(400, 300),
         provider: mockText(1),
         date: mockDate(),
-        number: randomNumber(1, 1000)
+        number: randomNumber(1, 1000),
       }));
     }
   }
@@ -331,7 +331,7 @@ export class CardLayoutExample4Component implements OnChanges {
     CardLayoutExample1Component,
     CardLayoutExample2Component,
     CardLayoutExample3Component,
-    CardLayoutExample4Component
+    CardLayoutExample4Component,
   ],
   imports: [
     BrowserModule,
@@ -339,13 +339,13 @@ export class CardLayoutExample4Component implements OnChanges {
     AvatarModule,
     SliderModule,
     TypographyModule,
-    IconsModule
+    IconsModule,
   ],
   exports: [
     CardLayoutExample1Component,
     CardLayoutExample2Component,
     CardLayoutExample3Component,
-    CardLayoutExample4Component
-  ]
+    CardLayoutExample4Component,
+  ],
 })
 export class CardLayoutExampleModule {}
