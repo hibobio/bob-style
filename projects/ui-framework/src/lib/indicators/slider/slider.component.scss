@@ -1,9 +1,13 @@
 @import '../../style/common-imports';
 
+$slider-thumb-size: 16px;
+
 :host ::ng-deep {
   display: block;
   position: relative;
   width: 100%;
+  padding: 4px 0;
+  overflow: visible !important;
 
   .slider-label {
     text-align: right;
@@ -36,9 +40,11 @@
         box-sizing: border-box;
         height: 100%;
         border-radius: 5px;
+
         .mat-slider-track-background {
           display: none;
         }
+
         .mat-slider-track-fill {
           height: 100%;
           position: relative;
@@ -52,20 +58,23 @@
 
       .mat-slider-thumb-container {
         height: auto;
+
         .mat-slider-thumb {
           cursor: ew-resize;
           transform: scale(1) !important;
           border: 1px solid $grey-500 !important;
           background-color: $white !important;
           box-sizing: border-box;
-          width: 16px;
-          height: 16px;
-          bottom: -8px;
-          right: -8px;
+          @include size($slider-thumb-size);
+
+          bottom: ($slider-thumb-size / -2);
+          right: ($slider-thumb-size / -2);
           box-shadow: 0 2px 4px $boxShadowColor;
+
           &:hover {
-            transform: scale(1.2) !important;
-            box-shadow: 0 3px 6px $boxShadowColor;
+            @include size($slider-thumb-size + 2px);
+            right: (($slider-thumb-size + 2px) / -2);
+            bottom: (($slider-thumb-size + 2px) / -2);
           }
         }
       }
