@@ -13,12 +13,18 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
   template: `
     <b-card [card]="cardMockData" [type]="type" (clicked)="onCardClick($event)">
       <div card-top class="top">
-        <b-icon [icon]="icons.surveys" [size]="iconSize.small" [color]="iconColor.normal"> </b-icon>
+        <b-icon
+          [icon]="icons.surveys"
+          [size]="iconSize.medium"
+          [color]="iconColor.normal"
+        >
+        </b-icon>
         <span>12 questions</span>
       </div>
       <div card-content>
         <p>
-          Dig deeper into your employees experience to fully understand their perspectives, attitudes and needs
+          Dig deeper into your employees experience to fully understand their
+          perspectives, attitudes and needs
         </p>
       </div>
     </b-card>
@@ -40,8 +46,8 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
       }
     `,
     ':host {display: block; width: 100%;}',
-    '.single-card {margin: auto;}'
-  ]
+    '.single-card {margin: auto;}',
+  ],
 })
 export class CardExample1Component {
   readonly icons = Icons;
@@ -55,14 +61,14 @@ export class CardExample1Component {
     menuConfig: [
       {
         label: 'duplicate',
-        action: () => console.log('duplicate')
+        action: () => console.log('duplicate'),
       },
       {
         label: 'delete',
-        action: () => console.log('delete')
-      }
+        action: () => console.log('delete'),
+      },
     ],
-    footerCtaLabel: 'MANAGE'
+    footerCtaLabel: 'MANAGE',
   };
 
   constructor() {}
@@ -77,7 +83,12 @@ export class CardExample1Component {
   template: `
     <b-card [card]="cardMockData" [type]="type" (clicked)="onCardClick($event)">
       <div card-top class="top">
-        <b-icon [icon]="icons.person" [size]="iconSize.small" [color]="iconColor.white"> </b-icon>
+        <b-icon
+          [icon]="icons.person"
+          [size]="iconSize.medium"
+          [color]="iconColor.white"
+        >
+        </b-icon>
         <span>4 people</span>
       </div>
     </b-card>
@@ -95,8 +106,8 @@ export class CardExample1Component {
       }
     `,
     ':host {display: block; width: 100%;}',
-    '.single-card {margin: auto;}'
-  ]
+    '.single-card {margin: auto;}',
+  ],
 })
 export class CardExample2Component {
   readonly icons = Icons;
@@ -113,9 +124,9 @@ export class CardExample2Component {
     actionConfig: {
       icon: Icons.edit_field_pencil,
       tooltip: 'Edit',
-      action: $event => console.log('edit')
+      action: $event => console.log('edit'),
     },
-    footerCtaLabel: 'EDIT'
+    footerCtaLabel: 'EDIT',
   };
 
   constructor() {}
@@ -130,7 +141,12 @@ export class CardExample2Component {
   template: `
     <b-card [card]="cardMockData" [type]="type" (clicked)="onCardClick($event)">
       <div card-top class="top">
-        <b-icon [icon]="icons.person" [size]="iconSize.small" [color]="iconColor.white"> </b-icon>
+        <b-icon
+          [icon]="icons.person"
+          [size]="iconSize.medium"
+          [color]="iconColor.white"
+        >
+        </b-icon>
         <span>1 enrolled</span>
       </div>
       <div card-content>
@@ -170,8 +186,8 @@ export class CardExample2Component {
       }
     `,
     ':host {display: block; width: 100%;}',
-    '.single-card {margin: auto;}'
-  ]
+    '.single-card {margin: auto;}',
+  ],
 })
 export class CardExample3Component {
   readonly icons = Icons;
@@ -189,14 +205,14 @@ export class CardExample3Component {
     menuConfig: [
       {
         label: 'duplicate',
-        action: () => console.log('duplicate')
+        action: () => console.log('duplicate'),
       },
       {
         label: 'delete',
-        action: () => console.log('delete')
-      }
+        action: () => console.log('delete'),
+      },
     ],
-    footerCtaLabel: 'REQUEST'
+    footerCtaLabel: 'REQUEST',
   };
 
   constructor() {}
@@ -210,21 +226,20 @@ export class CardExample3Component {
   selector: 'b-card-example-4-component',
   template: `
     <b-card [card]="cardMockData" [type]="type">
-      <b-avatar card-top imageSource="https://randomuser.me/api/portraits/women/46.jpg" title="Amy Tulin Miles">
+      <b-avatar
+        card-top
+        imageSource="https://randomuser.me/api/portraits/women/46.jpg"
+        title="Amy Tulin Miles"
+      >
       </b-avatar>
 
       <b-slider card-content [value]="25" [readOnly]="false"> </b-slider>
     </b-card>
   `,
   styles: [
-    `
-      b-slider {
-        margin: 8px 0 8px;
-      }
-    `,
     ':host {display: block; width: 100%;}',
-    '.single-card {margin: auto;}'
-  ]
+    '.single-card {margin: auto;}',
+  ],
 })
 export class CardExample4Component {
   readonly icons = Icons;
@@ -234,20 +249,31 @@ export class CardExample4Component {
   type: CardType = CardType.small;
 
   cardMockData: Card = {
-    title: 'This is a very long title for a goal card and some of the text will be truncated',
+    title:
+      'This is a very long title for a goal card and some of the text will be truncated',
     actionConfig: {
       icon: Icons.delete,
       tooltip: 'Delete',
-      action: $event => console.log('delete')
-    }
+      action: $event => console.log('delete'),
+    },
   };
 
   constructor() {}
 }
 
 @NgModule({
-  declarations: [CardExample1Component, CardExample2Component, CardExample3Component, CardExample4Component],
+  declarations: [
+    CardExample1Component,
+    CardExample2Component,
+    CardExample3Component,
+    CardExample4Component,
+  ],
   imports: [CommonModule, CardsModule, IconsModule, SliderModule, AvatarModule],
-  exports: [CardExample1Component, CardExample2Component, CardExample3Component, CardExample4Component]
+  exports: [
+    CardExample1Component,
+    CardExample2Component,
+    CardExample3Component,
+    CardExample4Component,
+  ],
 })
 export class CardExampleModule {}

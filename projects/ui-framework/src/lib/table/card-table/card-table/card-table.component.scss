@@ -21,9 +21,7 @@
 }
 
 .table-header-cell {
-  color: $grey-800;
-  font-weight: 700;
-  @include cell-style;
+  @include cell-style($grey-800, 700);
 }
 
 .text {

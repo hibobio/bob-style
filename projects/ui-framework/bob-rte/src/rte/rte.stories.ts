@@ -53,14 +53,14 @@ const value = `<br><br> <br><br> <span> <br> </span> <div><br></div> <span><br><
 
 <ul>
   <li> <br> <br>
-  Watch artist <b>Jim lee</b> drawing <span style="font-size: 18px;">🦇👨 & 🐱👩</span> from his studio
+  Watch artist <a href="https://www.youtube.com/watch?v=k2JPwJuM8fE" \
+  mention-employee-id="777">@Jim lee</a> drawing \
+  <span style="font-size: 18px;">🦇👨 & 🐱👩</span> from his studio
   <a href="https://www.youtube.com/watch?v=k2JPwJuM8fE" \
-  target="_blank" mention-employee-id="666">here!</a></li>
+  target="_blank">here!</a></li>
   <li>All <b>bold</b> and <u>underline</u> emphasis.</li>
   <li>танцуй пока молодой <span style="font-size: 18px;">💃</span></li>
   <li>אם תרצו אין זו אגדה</li>
-  <li style="direction: rtl; text-align: right;">beware the \
-  <a href="https://youtu.be/hOHvMqAgcmc?t=11" mention-employee-id="777">@Right Hook</a></li>
 </ul>
 
 <div><br></div> <span><br></span>

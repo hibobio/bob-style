@@ -1,5 +1,5 @@
-@mixin cell-style {
-  @include b-body($addCssVars: true);
+@mixin cell-style($color: null, $weight: $font-weight-body) {
+  @include b-body($addCssVars: true, $color: $color, $weight: $weight);
   flex: 1;
   display: flex;
   flex-direction: column;
