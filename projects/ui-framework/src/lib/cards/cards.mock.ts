@@ -7,7 +7,7 @@ import {
   mockJobs,
   mockNames,
   mockText,
-  mockUrl
+  mockUrl,
 } from '../mock.const';
 import { Icons } from '../icons/icons.enum';
 import { makeArray, randomNumber } from '../services/utils/functional-utils';
@@ -15,27 +15,27 @@ import { makeArray, randomNumber } from '../services/utils/functional-utils';
 const menuMock: MenuItem[] = [
   {
     label: 'Do this',
-    action: $event => console.log('Do this', $event)
+    action: $event => console.log('Do this', $event),
   },
   {
     label: 'Do that',
-    action: $event => console.log('Do that', $event)
+    action: $event => console.log('Do that', $event),
   },
   {
     label: 'Do something else',
-    action: $event => console.log('Do something else', $event)
-  }
+    action: $event => console.log('Do something else', $event),
+  },
 ];
 
 const actionConfigMock = {
   icon: Icons.file_copy,
-  action: $event => console.log('copy file')
+  action: $event => console.log('copy file'),
 };
 
 export const AddCardMockData: AddCard = {
   title: 'Add a new flow',
   subtitle: 'Right now',
-  action: () => console.log('Add Card was clicked')
+  action: () => console.log('Add Card was clicked'),
 };
 
 export const getCardsMockData = (number = 10) => {
@@ -49,7 +49,7 @@ export const getCardsMockData = (number = 10) => {
           : mockText(randomNumber(2, 5)),
       menuConfig: dice > 50 ? menuMock : null,
       actionConfig: dice <= 50 ? actionConfigMock : null,
-      footerCtaLabel: 'EDIT'
+      footerCtaLabel: 'EDIT',
     };
   });
 };
@@ -64,12 +64,12 @@ export const getEmployeeCardsMockData = (number = 10) => {
     social: {
       linkedin: mockUrl('linkedin'),
       facebook: mockUrl('facebook'),
-      twitter: mockUrl('twitter')
+      twitter: mockUrl('twitter'),
     },
     coverColors: {
       color1: '#fea54a',
-      color2: '#fe4a4a'
-    }
+      color2: '#fea54a',
+    },
   }));
 };
 

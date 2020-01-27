@@ -65,7 +65,7 @@ const note = `
 
   export interface CardEmployeeCoverColors {
     color1: string;
-    color2: string;
+    color2: string;  // provide same as color1 for solid color, otherwise it will be gradient
   }
   ~~~
 `;

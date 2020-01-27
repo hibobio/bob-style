@@ -15,7 +15,7 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
       <div card-top class="top">
         <b-icon
           [icon]="icons.surveys"
-          [size]="iconSize.small"
+          [size]="iconSize.medium"
           [color]="iconColor.normal"
         >
         </b-icon>
@@ -85,7 +85,7 @@ export class CardExample1Component {
       <div card-top class="top">
         <b-icon
           [icon]="icons.person"
-          [size]="iconSize.small"
+          [size]="iconSize.medium"
           [color]="iconColor.white"
         >
         </b-icon>
@@ -143,7 +143,7 @@ export class CardExample2Component {
       <div card-top class="top">
         <b-icon
           [icon]="icons.person"
-          [size]="iconSize.small"
+          [size]="iconSize.medium"
           [color]="iconColor.white"
         >
         </b-icon>
