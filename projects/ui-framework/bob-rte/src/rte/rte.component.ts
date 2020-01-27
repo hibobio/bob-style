@@ -187,15 +187,16 @@ export class RichTextEditorComponent extends RTEbaseElement
 
         // prevent mentions link clicks
         if (
-          !eventHasMetaKey(event) &&
-          (target.className.includes('mention') ||
-            target
-              .getAttributeNames()
-              .join(' ')
-              .includes('mention'))
+          target.className.includes('mention') ||
+          target
+            .getAttributeNames()
+            .join(' ')
+            .includes('mention')
         ) {
+          if (!eventHasMetaKey(event)) {
+            event.preventDefault();
+          }
           this.editor.selection.save();
-          event.preventDefault();
           this.editor.toolbar.enable();
           this.editor.selection.restore();
         }
