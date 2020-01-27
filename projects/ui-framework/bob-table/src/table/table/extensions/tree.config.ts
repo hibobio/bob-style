@@ -13,5 +13,8 @@ export interface TreeConfig<D = any> {
 
 export const defaultTreeConfig: Partial<TreeConfig> = {
   groupDefaultExpanded: -1,
-  suppressCount: true
+  suppressCount: true,
+  colDef: {
+    resizable: true
+  }
 };
