@@ -146,4 +146,9 @@ export enum Icons {
   people_alt2 = 'b-icon-people-alt2',
   arrow_left_alt = 'b-icon-arrow-left-alt',
   in_progress = 'b-icon-in-progress',
+  signed = 'b-icon-signed',
+  doc_shared = 'b-icon-doc-shared',
+  filter = 'b-icon-filter',
+  send = 'b-icon-send',
+  share = 'b-icon-share',
 }

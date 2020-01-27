@@ -15,7 +15,7 @@
   (click)="$event.stopPropagation()">
   <b-square-button
     menu-trigger
-    [type]="buttonType.tertiary"
+    [type]="squareButtonType.tertiary"
     [icon]="buttonIcon"
     [color]="buttonColor">
   </b-square-button>
@@ -24,6 +24,6 @@
   *ngIf="menuItems && menuItems.length === 1"
   [size]="buttonSize.small"
   [text]="menuItems[0].label"
-  [type]="primary ? buttonType.primary : buttonType.secondary"
+  [type]="buttonType ? buttonType : null"
   (clicked)="menuItems[0].action($event)">
 </b-button>

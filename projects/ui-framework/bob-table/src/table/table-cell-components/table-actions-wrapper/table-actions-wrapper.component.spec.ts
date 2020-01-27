@@ -1,9 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { TableActionsWrapperComponent } from './table-actions-wrapper.component';
-import { By } from '@angular/platform-browser';
-import { MockComponent } from 'ng-mocks';
-import { ButtonComponent, ButtonType, IconComponent, Icons, MenuComponent, SquareButtonComponent, } from 'bob-style';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {TableActionsWrapperComponent} from './table-actions-wrapper.component';
+import {By} from '@angular/platform-browser';
+import {MockComponent} from 'ng-mocks';
+import {ButtonComponent, ButtonType, IconComponent, Icons, MenuComponent, SquareButtonComponent} from 'bob-style';
 
 describe('TableActionsWrapperComponent', () => {
   let component: TableActionsWrapperComponent;
@@ -62,7 +61,7 @@ describe('TableActionsWrapperComponent', () => {
       expect(button.type).toBe(ButtonType.primary);
     });
     it('Should display button', () => {
-      component.primary = false;
+      component.buttonType = ButtonType.secondary;
       component.menuItems = [
         {
           label: 'save',

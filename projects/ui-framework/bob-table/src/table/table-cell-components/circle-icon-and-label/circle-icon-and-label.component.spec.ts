@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {CircleIconAndLabelComponent} from './circle-icon-and-label.component';
 import {By} from '@angular/platform-browser';
 import {CircleIconAndLabelParams} from './circle-icon-and-label.interface';
-import {AvatarModule, Icons, IconsModule} from 'bob-style';
+import {AvatarModule, ButtonType, Icons, IconsModule} from 'bob-style';
 import {MockComponent} from 'ng-mocks';
 import {TableActionsWrapperComponent} from '../table-actions-wrapper/table-actions-wrapper.component';
 
@@ -74,11 +74,12 @@ describe('CircleIconAndLabelComponent', () => {
 
   it('Should wrap component with table actions wrapper', () => {
     const circleIconAndLabelParams: CircleIconAndLabelParams = {
-      value: { icon: Icons.department_icon, label: 'label', menuItems: [] },
+      value: { icon: Icons.department_icon, label: 'label', menuItems: [], buttonType: ButtonType.primary, },
     } as CircleIconAndLabelParams;
     component.agInit(circleIconAndLabelParams);
     fixture.detectChanges();
     const actionsWrapper = fixture.debugElement.query(By.css('b-table-actions-wrapper'));
     expect(actionsWrapper.componentInstance.menuItems).toEqual([]);
+    expect(actionsWrapper.componentInstance.buttonType).toEqual(ButtonType.primary);
   });
 });
