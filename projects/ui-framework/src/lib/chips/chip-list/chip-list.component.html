@@ -6,9 +6,9 @@
         [icon]="chip.icon"
         [class]="chip.class"
         [disabled]="chip.disabled || config.disabled"
-        [removable]="chip.removable || config.removable"
+        [removable]="chip.removable || (chip.removable !== false && config.removable)"
         [selected]="chip.selected"
-        [attr.tabindex]="!(chip.disabled || config.disabled) && config.focusable ? 0 : -1"
+        [attr.tabindex]="!(chip.disabled || config.disabled || chip.removable === false) && config.focusable ? 0 : -1"
         [attr.data-index]="index"
         (removed)="onChipRemove(chip)"
         [attr.data-clickable]="(clicked.observers.length > 0 || !!config.selectable) || null">

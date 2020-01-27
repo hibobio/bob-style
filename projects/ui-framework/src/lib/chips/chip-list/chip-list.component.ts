@@ -78,7 +78,7 @@ export class ChipListComponent implements OnChanges {
       const index = parseInt(target.dataset.index, 10);
       const chip = this.chips[index];
 
-      if (!chip.disabled) {
+      if (!chip.disabled && chip.removable !== false) {
         this.zone.run(() => {
           this.onChipClick($event, chip, index);
         });
@@ -93,7 +93,7 @@ export class ChipListComponent implements OnChanges {
       const index = parseInt(target.dataset.index, 10);
       const chip = this.chips[index];
 
-      if (!chip.disabled) {
+      if (!chip.disabled && chip.removable !== false) {
         this.zone.run(() => {
           this.onChipKeydown($event, chip, index);
         });
@@ -198,6 +198,7 @@ export class ChipListComponent implements OnChanges {
 
     if (
       this.config.removable &&
+      chip.removable !== false &&
       (isKey(event.key, Keys.backspace) || isKey(event.key, Keys.delete))
     ) {
       event.stopPropagation();

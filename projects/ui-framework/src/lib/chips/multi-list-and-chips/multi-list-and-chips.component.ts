@@ -103,7 +103,7 @@ export class MultiListAndChipsComponent implements OnChanges {
                 this.chipListConfig.type === ChipType.avatar &&
                 option.prefixComponent.attributes.imageSource,
               type: this.chipListConfig.type,
-              disabled: option.disabled,
+              removable: !option.disabled,
             });
           }
         });
