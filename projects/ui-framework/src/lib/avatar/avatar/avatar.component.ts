@@ -34,7 +34,7 @@ export class AvatarComponent implements OnChanges {
   readonly avatarSize = AvatarSize;
   readonly chipType = ChipType;
   readonly orient = AvatarOrientation;
-  readonly tooltipType = TruncateTooltipType;
+  readonly tooltipTypes = TruncateTooltipType;
 
   @Input() size: AvatarSize = AvatarSize.mini;
   @Input() imageSource: string;
@@ -48,6 +48,7 @@ export class AvatarComponent implements OnChanges {
   @Input() isClickable = false;
   @Input() expectChanges = false;
   @Input() supressWarnings = false;
+  @Input() tooltipType = TruncateTooltipType.css;
 
   @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 

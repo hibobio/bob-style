@@ -1,8 +1,8 @@
 @import '../../style/common-imports';
 
-$transition-length: 0.35s;
-$transition-easing: cubic-bezier(0.645, 0.045, 0.355, 1);
-$border-color: $grey-300;
+$bcp-transition-length: 0.35s;
+$bcp-transition-easing: cubic-bezier(0.645, 0.045, 0.355, 1);
+$bcp-border-color: $grey-300;
 
 :host {
   display: block;
@@ -20,7 +20,7 @@ p {
 
   @include desktop {
     border-radius: $border-radius;
-    border: 1px solid $border-color;
+    border: 1px solid $bcp-border-color;
   }
 
   &[aria-disabled='true'] {
@@ -39,7 +39,7 @@ p {
 
 .bcp-panel-footer {
   padding: times8(3) times8(4);
-  border-top: 1px solid $border-color;
+  border-top: 1px solid $bcp-border-color;
 }
 
 // header
@@ -133,7 +133,7 @@ p {
 // Panel
 
 .bcp-panel {
-  border-top: 1px solid $border-color;
+  border-top: 1px solid $bcp-border-color;
 
   &:first-child {
     border-top: 0;
@@ -146,7 +146,7 @@ p {
   }
 }
 
-.bcp-section-not-collapsible {
+.bcp-section-not-collapsible::ng-deep {
   .bcp-panel-content-wrap {
     padding: times8(4);
 
@@ -157,28 +157,29 @@ p {
   }
 }
 
-.bcp-section-collapsible {
+.bcp-section-collapsible::ng-deep {
   .bcp-header {
     cursor: pointer;
   }
 
   .bcp-panel {
     padding: times8(3) times8(4);
-    transition: padding $transition-length, border-width $transition-length;
+    transition: padding $bcp-transition-length,
+      border-width $bcp-transition-length;
     will-change: padding, border-width;
-    transition-timing-function: $transition-easing;
+    transition-timing-function: $bcp-transition-easing;
   }
 
   .bcp-panel-content-wrap {
     overflow: hidden;
-    transition: max-height $transition-length, opacity $transition-length,
-      min-height $transition-length;
+    transition: max-height $bcp-transition-length,
+      opacity $bcp-transition-length, min-height $bcp-transition-length;
     will-change: max-height, opacity, min-height;
-    transition-timing-function: $transition-easing;
+    transition-timing-function: $bcp-transition-easing;
     opacity: 1;
     max-height: var(--panel-height, none);
     min-height: 0;
-    animation-duration: $transition-length;
+    animation-duration: $bcp-transition-length;
     animation-fill-mode: both;
 
     &:empty {
@@ -218,16 +219,37 @@ p {
   }
 }
 
-.bcp-section:not(.bcp-section-collapsible),
+@include desktop {
+  .bcp-section-collapsible {
+    transition: border-color 0.1s, transform 0.1s, box-shadow 0.1s;
+    will-change: border-color, transform, box-shadow;
+  }
+
+  .bcp-section-collapsed {
+    transition-delay: 0.1s;
+  }
+
+  .bcp-section-collapsed {
+    &:hover {
+      box-shadow: 0 3px 7px 0 $boxShadowColor;
+      @include desktop {
+        border-color: $grey-400;
+      }
+      transform: translateY(-1px);
+    }
+  }
+}
+
+.bcp-section-not-collapsible,
 .bcp-section.bcp-section-expanded {
-  .bcp-header {
-    box-shadow: 0 1px 0 0 $border-color;
+  ::ng-deep .bcp-header {
+    box-shadow: 0 1px 0 0 $bcp-border-color;
   }
 }
 
 // Options
 
-.bcp-section.bcp-section-not-divided {
+.bcp-section.bcp-section-not-divided::ng-deep {
   .bcp-header {
     box-shadow: none;
   }

@@ -47,9 +47,18 @@
 }
 
 [b-table-card] {
-  &:hover {
-    box-shadow: 0 3px 7px 1px $boxShadowColor;
+  @include desktop {
+    transition: border-color 0.1s, transform 0.1s, box-shadow 0.1s;
+    will-change: border-color, transform, box-shadow;
+    transition-delay: 0.1s;
+
+    &:hover {
+      box-shadow: 0 3px 7px 0 $boxShadowColor;
+      border-color: $grey-400;
+      transform: translateY(-1px);
+    }
   }
+
   & + & {
     margin-top: 10px;
   }
