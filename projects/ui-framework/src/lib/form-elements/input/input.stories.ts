@@ -23,7 +23,7 @@ const inputTypes = values(InputTypes);
 const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
 
 const template = `
-<b-input    [inputType]="'number'"
+<b-input    [inputType]="inputType"
             [value]="value"
             [label]="label"
             [description]="description"

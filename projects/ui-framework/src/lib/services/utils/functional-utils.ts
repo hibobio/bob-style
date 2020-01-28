@@ -104,7 +104,7 @@ export const asNumber = (smth: any, roundToDcmls = null): number => {
   if (!isNumber(smth)) {
     smth = parseFloat(smth);
   }
-  return smth !== smth || isNumber(roundToDcmls)
+  return smth !== smth || !isNumber(roundToDcmls)
     ? smth
     : roundToDecimals(smth, roundToDcmls);
 };

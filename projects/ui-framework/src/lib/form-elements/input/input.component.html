@@ -6,7 +6,11 @@
 </b-form-element-label>
 
 <div class="bfe-wrap"
-     [ngClass]="{focused: inputFocused, 'has-prefix': hasPrefix || showPrefix, 'has-suffix': hasSuffix || showSuffix}">
+     [ngClass]="{
+       focused: inputFocused,
+       'has-prefix': hasPrefix || showPrefix,
+       'has-suffix': hasSuffix || showSuffix
+      }">
 
   <div *ngIf="hasPrefix || showPrefix"
        class="bfe-prefix"
@@ -28,7 +32,7 @@
          [attr.minlength]="minChars || null"
          [attr.maxlength]="maxChars || null"
          (input)="onInputChange($event)"
-         (blur)="onInputBlur($event);"
+         (blur)="onInputBlur($event)"
          (focus)="onInputFocus($event)"
          (keydown.outside-zone)="onInputKeydown($event)">
 
