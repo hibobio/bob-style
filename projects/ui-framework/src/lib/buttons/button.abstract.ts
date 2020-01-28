@@ -8,6 +8,7 @@ import {
   SimpleChanges,
   ChangeDetectorRef,
   OnInit,
+  HostBinding,
 } from '@angular/core';
 import { ButtonType, ButtonSize, BackButtonType } from './buttons.enum';
 import { Icons, IconColor, IconSize } from '../icons/icons.enum';
@@ -23,7 +24,6 @@ export abstract class BaseButtonElement implements OnChanges, OnInit {
 
   @Input() text: string;
   @Input() disabled = false;
-  @Input() type: ButtonType | BackButtonType;
   @Input() size: ButtonSize;
   @Input() icon: Icons;
   @Input() active = false;
@@ -38,6 +38,10 @@ export abstract class BaseButtonElement implements OnChanges, OnInit {
   readonly iconColor = IconColor;
 
   public buttonClass: string = null;
+
+  @HostBinding('attr.data-type') @Input() public type:
+    | ButtonType
+    | BackButtonType;
 
   ngOnInit(): void {
     if (!this.buttonClass) {

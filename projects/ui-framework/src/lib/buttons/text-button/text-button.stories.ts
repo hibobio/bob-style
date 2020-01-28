@@ -7,23 +7,21 @@ import {
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
-import { values } from 'lodash';
 import { Icons } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { LinkColor } from '../../indicators/link/link.enum';
+import { ButtonType } from '../buttons.enum';
 
 const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
   withKnobs
 );
 
-const color = values(LinkColor);
-const icons = values(Icons);
-
 const button1 = `
 <b-text-button (clicked)="onClick($event)"
                [text]="text"
+               [type]="type"
                [color]="color"
                [disabled]="disabled">
 </b-text-button>
@@ -32,6 +30,7 @@ const button1 = `
 const button2 = `
 <b-text-button (clicked)="onClick($event)"
                [text]="text"
+               [type]="type"
                [icon]="icon"
                [color]="color"
                [disabled]="disabled">
@@ -47,6 +46,7 @@ const note = `
   --- | --- | --- | ---
   [text] | text | Button text | &nbsp;
   [icon] | Icons | Icon enum value | &nbsp;
+  [type] | ButtonType | enum for setting the button type | secondary
   [color] | LinkColor | color of text and icon | dark
   [disabled] | boolean | disabled | false
   (clicked) | EventEmitter | button click event  | &nbsp;
@@ -74,8 +74,9 @@ story.add(
     template: storyTemplate,
     props: {
       text: text('text', 'Click here!'),
-      icon: select('icon', icons, Icons.phone_link),
-      color: select('color', color, LinkColor.none),
+      icon: select('icon', Object.values(Icons), Icons.phone_link),
+      type: select('type', Object.values(ButtonType), ButtonType.secondary),
+      color: select('color', Object.values(LinkColor), LinkColor.none),
       disabled: boolean('disabled', false),
       onClick: action('Text button'),
     },

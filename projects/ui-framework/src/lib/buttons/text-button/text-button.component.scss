@@ -24,10 +24,6 @@
     @include disabled-state;
   }
 
-  &.color-primary {
-    color: var(--primary-500);
-  }
-
   &:before {
     overflow: hidden;
     margin-right: 4px;
@@ -35,4 +31,21 @@
     top: -1px;
     padding-bottom: 1px;
   }
+}
+
+:host[data-type='primary'],
+.color-primary {
+  color: var(--primary-500);
+}
+
+:host[data-type='secondary'] {
+  color: $grey-700;
+}
+
+:host[data-type='tertiary'] {
+  color: $grey-600;
+}
+
+:host[data-type='negative'] {
+  color: var(--negative-600);
 }
