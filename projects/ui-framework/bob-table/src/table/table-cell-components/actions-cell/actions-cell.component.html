@@ -1,4 +1,5 @@
-<div class="b-actions-cell">
+<div class="b-actions-cell"
+     *ngIf="menuItems && menuItems.length">
   <b-menu [menu]="menuItems"
           [openLeft]="openLeft"
           (click)="$event.stopPropagation()">
@@ -9,4 +10,3 @@
     </b-square-button>
   </b-menu>
 </div>
-
