@@ -8,28 +8,28 @@
   text-align: left;
   @include b-caption($color: $grey-600, $addCssVars: false);
 
-  &::ng-deep .warn {
-    color: $color-warn;
-  }
-
-  &::ng-deep .error {
-    color: $color-error;
-  }
-
   &:empty {
     display: none;
   }
-}
 
-:host::ng-deep {
-  .length-indicator,
-  [footerAction] {
-    margin-left: 6px;
-    white-space: nowrap;
-    flex-shrink: 0;
+  &::ng-deep {
+    .warn {
+      color: $color-warn;
+    }
 
-    &:only-child {
-      margin-left: auto;
+    .error {
+      color: $color-error;
+    }
+
+    .length-indicator,
+    [footerAction] {
+      margin-left: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+
+      &:only-child {
+        margin-left: auto;
+      }
     }
   }
 }
