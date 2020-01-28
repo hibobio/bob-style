@@ -1,6 +1,5 @@
 import {
   Component,
-  HostListener,
   Input,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,6 +7,7 @@ import {
 import { IconColor, IconSize } from '../../icons/icons.enum';
 import { LinkColor } from '../../indicators/link/link.enum';
 import { BaseButtonElement } from '../button.abstract';
+import { ButtonType } from '../buttons.enum';
 
 @Component({
   selector: 'b-text-button',
@@ -31,7 +31,15 @@ export class TextButtonComponent extends BaseButtonElement {
     super(cd);
   }
 
+  @Input() type: ButtonType = ButtonType.secondary;
   @Input() color: LinkColor = LinkColor.none;
+
+  private readonly iconColorMap = {
+    [ButtonType.primary]: 'b-icon-' + IconColor.primary,
+    [ButtonType.secondary]: 'b-icon-' + IconColor.dark,
+    [ButtonType.tertiary]: 'b-icon-' + IconColor.normal,
+    [ButtonType.negative]: 'b-icon-' + IconColor.negative,
+  };
 
   getButtonClass(): string {
     return (
@@ -41,8 +49,10 @@ export class TextButtonComponent extends BaseButtonElement {
         ? this.icon +
           ' b-icon-' +
           IconSize.medium +
-          ' b-icon-' +
-          (this.color === LinkColor.none ? IconColor.dark : IconColor.primary)
+          ' ' +
+          (this.color === LinkColor.primary
+            ? 'b-icon-' + IconColor.primary
+            : this.iconColorMap[this.type])
         : '')
     );
   }

@@ -1,4 +1,4 @@
-import { storiesOf, moduleMetadata } from '@storybook/angular';
+import { storiesOf } from '@storybook/angular';
 import {
   text,
   select,
@@ -51,14 +51,6 @@ const note = `
   [size] | ButtonSize | enum for setting the button size | medium
   [disabled] | boolean | disabled | false
   (clicked) | EventEmitter | button click event | &nbsp;
-
-  #### Style customization
-
-  property name | Description
-  --- | ---
-  primary-color | the color of the primary button
-  primary-color-dark | the hover color of the primary button
-  primary-color-darker | the pressed color of the primary button
 
   ~~~
   ${template}
