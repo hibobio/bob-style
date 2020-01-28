@@ -96,11 +96,15 @@ export const valueAsNumber = (
   value: any,
   def: any = undefined
 ): number => {
-  if (!value || (inputType !== InputTypes.number && inputType !== true)) {
+  if (
+    !value ||
+    (inputType !== InputTypes.number && inputType !== true) ||
+    ((inputType === InputTypes.number || inputType === true) && value === '-')
+  ) {
     return value;
   }
   const parsed = parseToNumber(value);
-  if (parsed !== parsed) {
+  if (parsed !== parsed && value !== '--') {
     console.warn(`Value (${stringify(value)}) is not parseable to number.`);
   }
   return parsed === parsed ? parsed : def;

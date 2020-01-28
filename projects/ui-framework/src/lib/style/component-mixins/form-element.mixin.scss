@@ -105,6 +105,10 @@ $input-focus-border-color: $grey-700;
   min-width: 0;
   user-select: none;
   @include form-element-margins;
+
+  &[hidden] {
+    display: none;
+  }
 }
 
 @mixin bFormElement {

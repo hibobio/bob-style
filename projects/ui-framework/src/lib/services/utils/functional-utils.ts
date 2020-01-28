@@ -3,38 +3,12 @@ import { metaKeys } from '../../enums';
 import { GenericObject } from '../../types';
 import { isEqual } from 'lodash';
 
-export function MixIn(baseCtors: Function[]) {
-  return function(derivedCtor: Function) {
-    baseCtors.forEach(baseCtor => {
-      Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
-        derivedCtor.prototype[name] = baseCtor.prototype[name];
-      });
-    });
-  };
-}
-
-export const randomNumber = (min = 0, max = 100): number =>
-  Math.floor(Math.random() * (max - min + 1)) + min;
-
-export const randomFromArray = (array: any[] = [], num: number = 1) => {
-  if (!num) {
-    num = array.length;
-  }
-  const random = array
-    .slice()
-    .sort(() => 0.5 - Math.random())
-    .slice(0, num);
-  return num === 1 ? random[0] : random;
-};
+// ----------------------
+// TYPES
+// ----------------------
 
 export const isNullOrUndefined = (val: any): boolean =>
   val === undefined || val === null;
-
-export const keysFromArrayOrObject = (smth: string[] | {}): string[] =>
-  Array.isArray(smth) ? smth : Object.keys(smth);
-
-export const getKeyByValue = (object: GenericObject, value: any) =>
-  Object.keys(object).find(key => object[key] === value);
 
 export const isString = (val: any): boolean => typeof val === 'string';
 
@@ -64,15 +38,6 @@ export const isEmptyArray = (val: any): boolean =>
 export const isObject = (val: any): boolean =>
   val && !isArray(val) && typeof val !== 'function' && val === Object(val);
 
-export const hasProp = (
-  obj: GenericObject,
-  key: string,
-  strict = true
-): boolean =>
-  isObject(obj) &&
-  ((strict && Object.prototype.hasOwnProperty.call(obj, key)) ||
-    (!strict && typeof obj[key] !== 'undefined'));
-
 export const isNotEmptyObject = (val: any): boolean =>
   isObject(val) && Object.keys(val).length > 0;
 
@@ -86,107 +51,6 @@ export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
   isEmptyArray(smth) ||
   (isEmptyObject(smth) && !isDate(smth));
 
-export const isRenderedComponent = (obj: any): boolean =>
-  hasProp(obj, 'component');
-
-export const simpleUID = (
-  prefix: string = '',
-  length: number = 5,
-  suffix: string = ''
-): string => {
-  return (
-    prefix.replace(/\s+/g, '_') +
-    Math.random()
-      .toString(16)
-      .substr(2, length) +
-    suffix.replace(/\s+/g, '_')
-  );
-};
-
-export const pass = (a: any): any => a;
-
-export const isKey = (key: string, expected: string): boolean =>
-  key && expected && key.toUpperCase() === expected.toUpperCase();
-
-export const isMetaKey = (key: string): boolean =>
-  metaKeys.includes(key as any);
-
-export const eventHasCntrlKey = (event: KeyboardEvent | MouseEvent): boolean =>
-  event.metaKey || event.ctrlKey;
-
-export const eventHasMetaKey = (event: KeyboardEvent | MouseEvent): boolean =>
-  event.metaKey || event.shiftKey || event.ctrlKey || event.altKey;
-
-export const asArray = <T = any>(smth: T | T[]): T[] =>
-  !isNullOrUndefined(smth)
-    ? isArray(smth)
-      ? (smth as T[])
-      : ([smth] as T[])
-    : [];
-
-export const asNumber = (smth: any): number => (smth ? parseFloat(smth) : 0);
-
-export const parseToNumber = asNumber;
-
-export const compareAsNumbers = (
-  a: string | number,
-  b: string | number
-): boolean => asNumber(a) === asNumber(b);
-
-export const compareAsStrings = (a: any, b: any): boolean =>
-  String(a) === String(b);
-
-export const countChildren = (parentSelector, parent) => {
-  parent = parentSelector ? document.querySelector(parentSelector) : parent;
-  if (!parent) {
-    return 0;
-  }
-  let relevantChildren = 0;
-  for (const child of parent.childNodes) {
-    if (child.nodeType !== 3 && child.nodeType !== 8) {
-      if (child.tagName && child.tagName.toLowerCase() !== 'svg') {
-        relevantChildren += countChildren(null, child);
-      }
-      relevantChildren++;
-    }
-  }
-  return relevantChildren;
-};
-
-import {
-  compose as _compose,
-  isArray as _isArray,
-  isPlainObject as _isPlainObject,
-  merge as _merge,
-  reduce as _reduce,
-  set as _set,
-  toPairs as _toPairs,
-} from 'lodash/fp';
-
-export const flatten = (obj, path = []) => {
-  return _isPlainObject(obj) || _isArray(obj)
-    ? _reduce(
-        (acc, [k, v]) => _merge(acc, flatten(v, [...path, k])),
-        {},
-        _toPairs(obj)
-      )
-    : { [path.join('.')]: obj };
-};
-
-export const unflatten = _compose(
-  _reduce((acc, [k, v]) => _set(k, v, acc), {}),
-  _toPairs
-);
-
-export const stringify = (smth: any): string =>
-  isString(smth)
-    ? smth
-    : isArray(smth)
-    ? smth.map(i => stringify(i)).join(', ')
-    : isObject(smth)
-    ? JSON.stringify(smth)
-    : String(smth);
-
 export const getType = (smth: any): string =>
   smth === null
     ? 'null'
@@ -197,6 +61,111 @@ export const getType = (smth: any): string =>
     : smth !== smth
     ? 'NaN'
     : String(typeof smth);
+
+// ----------------------
+// NUMBERS
+// ----------------------
+
+export const numberMinMax = (
+  number: number,
+  min: number = 0,
+  max: number = 100
+): number => Math.max(Math.min(max, number), min);
+
+export const countDecimals = (value: number): number => {
+  if (isNullOrUndefined(value) || Math.floor(value) === value) {
+    return 0;
+  }
+  return value.toString().split('.')[1].length || 0;
+};
+
+export const roundToDecimals = (num: number, decmls: number = 2): number => {
+  return (
+    Math.round((num + Number.EPSILON) * Math.pow(10, decmls)) /
+    Math.pow(10, decmls)
+  );
+};
+
+// ----------------------
+// CONVERTERS
+// ----------------------
+
+export const asArray = <T = any>(smth: T | T[]): T[] =>
+  !isNullOrUndefined(smth)
+    ? isArray(smth)
+      ? (smth as T[])
+      : ([smth] as T[])
+    : [];
+
+export const asNumber = (smth: any, roundToDcmls = null): number => {
+  if (!smth) {
+    return 0;
+  }
+  if (!isNumber(smth)) {
+    smth = parseFloat(smth);
+  }
+  return smth !== smth || isNumber(roundToDcmls)
+    ? smth
+    : roundToDecimals(smth, roundToDcmls);
+};
+
+export const parseToNumber = asNumber;
+
+// ----------------------
+// OBJECTS
+// ----------------------
+
+export const hasProp = (
+  obj: GenericObject,
+  key: string,
+  strict = true
+): boolean =>
+  isObject(obj) &&
+  ((strict && Object.prototype.hasOwnProperty.call(obj, key)) ||
+    (!strict && typeof obj[key] !== 'undefined'));
+
+export const objectHasTruthyValue = (obj: GenericObject): boolean =>
+  isNotEmptyObject(obj) && Boolean(Object.values(obj).find(v => Boolean(v)));
+
+export const keysFromArrayOrObject = (smth: string[] | {}): string[] =>
+  Array.isArray(smth) ? smth : Object.keys(smth);
+
+export const getKeyByValue = (object: GenericObject, value: any) =>
+  Object.keys(object).find(key => object[key] === value);
+
+export const onlyUpdatedProps = (
+  oldObj: GenericObject,
+  newObj: GenericObject
+): GenericObject => {
+  if (isEmptyObject(oldObj)) {
+    return newObj;
+  }
+
+  if (!newObj) {
+    return {};
+  }
+
+  return Object.keys(newObj)
+    .filter(
+      (key: string) =>
+        !hasProp(oldObj, key) || !isEqual(oldObj[key], newObj[key])
+    )
+    .reduce((updObj, key) => {
+      updObj[key] = newObj[key];
+      return updObj;
+    }, {});
+};
+
+// ----------------------
+// ARRAYS
+// ----------------------
+
+export const isIterable = (smth: any): boolean => {
+  if (!smth || isNumber(smth) || isString(smth)) {
+    return false;
+  }
+  return typeof smth[Symbol.iterator] === 'function';
+};
 
 export const arrayDifference = <T = any>(arrA: T[], arrB: T[]): T[] => {
   return arrA
@@ -225,121 +194,6 @@ export const arrayOfNumbers = (
     (e, i) => i + start + ((asStrings ? '' : 0) as any)
   );
 
-export const padWith0 = (number: string | number, digits = 2): string => {
-  if (isNullOrUndefined(number) || isNaN(parseInt(number as string, 10))) {
-    return number as any;
-  }
-
-  return String(number).padStart(digits, '0');
-};
-
-export const hasChanges = (
-  changes: SimpleChanges,
-  keys: string[] = null,
-  discardAllFalsey = false
-): boolean => {
-  if (!keys) {
-    keys = Object.keys(changes);
-  }
-  return !!keys.find(
-    i =>
-      changes[i] !== undefined &&
-      (changes[i].currentValue !== undefined ||
-        changes[i].previousValue !== undefined) &&
-      (!discardAllFalsey ||
-        (discardAllFalsey && Boolean(changes[i].currentValue)))
-  );
-};
-
-export const firstChanges = (
-  changes: SimpleChanges,
-  keys: string[] = null
-): boolean => {
-  if (!keys) {
-    keys = Object.keys(changes);
-  }
-  return !!keys.find(i => changes[i] && changes[i].firstChange);
-};
-
-export const notFirstChanges = (
-  changes: SimpleChanges,
-  keys: string[] = null
-): boolean => {
-  if (!keys) {
-    keys = Object.keys(changes);
-  }
-  return !!keys.find(i => changes[i] && !changes[i].firstChange);
-};
-
-export const applyChanges = (
-  target: any,
-  changes: SimpleChanges,
-  defaults: GenericObject = {},
-  skip: string[] = [],
-  discardAllFalsey = false
-): void => {
-  Object.keys(changes).forEach((change: string) => {
-    if (!skip.includes(change)) {
-      target[change] =
-        defaults[change] &&
-        ((!discardAllFalsey &&
-          isNullOrUndefined(changes[change].currentValue)) ||
-          (discardAllFalsey && !Boolean(changes[change].currentValue)))
-          ? defaults[change]
-          : changes[change].currentValue;
-    }
-  });
-};
-
-export const onlyUpdatedProps = (
-  oldObj: GenericObject,
-  newObj: GenericObject
-): GenericObject => {
-  if (isEmptyObject(oldObj)) {
-    return newObj;
-  }
-
-  if (!newObj) {
-    return {};
-  }
-
-  return Object.keys(newObj)
-    .filter(
-      (key: string) =>
-        !hasProp(oldObj, key) || !isEqual(oldObj[key], newObj[key])
-    )
-    .reduce((updObj, key) => {
-      updObj[key] = newObj[key];
-      return updObj;
-    }, {});
-};
-
-export const cloneObject = <T = any>(value: T): T =>
-  isObject(value) ? Object.assign({}, value) : value;
-
-export const cloneArray = <T = any>(value: T[]): T[] =>
-  isArray(value) ? value.slice() : value;
-
-export const cloneValue = (value: any) =>
-  isObject(value)
-    ? cloneObject(value)
-    : isArray(value)
-    ? cloneArray(value)
-    : value;
-
-export const cloneDeepSimpleObject = <T = any>(obj: T): T =>
-  JSON.parse(JSON.stringify(obj));
-
-export const isIterable = (smth: any): boolean => {
-  if (!smth || isNumber(smth) || isString(smth)) {
-    return false;
-  }
-  return typeof smth[Symbol.iterator] === 'function';
-};
-
-export const lastItem = <T = any>(arr: T[]): T =>
-  !isIterable(arr) ? ((arr as any) as T) : arr[arr.length - 1];
-
 export const arrayInsertAt = <T = any>(
   arr: T[],
   val: any | any[],
@@ -351,32 +205,11 @@ export const arrayInsertAt = <T = any>(
     .concat(val, arr.slice(!overwrite ? index : index + 1));
 };
 
-export const capitalize = (smth: string): string =>
-  smth.charAt(0).toUpperCase() + smth.slice(1);
-
-export const objectHasTruthyValue = (obj: GenericObject): boolean =>
-  isNotEmptyObject(obj) && Boolean(Object.values(obj).find(v => Boolean(v)));
-
-export type Func<A = any, B = A> = (val: A, ...args: any[]) => B;
-
-export const chainCall = <A = any>(
-  funcs: Func<A>[],
-  value: A,
-  ...args: any[]
-): A => {
-  return funcs.reduce(
-    (previousResult, fn) => fn(previousResult, ...args),
-    value
-  );
-};
+export const lastItem = <T = any>(arr: T[]): T =>
+  !isIterable(arr) ? ((arr as any) as T) : arr[arr.length - 1];
 
 export const arrayFlatten = <T = any>(arr: any[]): T[] =>
   asArray(arr).reduce((acc, val) => acc.concat(val), []);
-
-export const getEventPath = (event: Event): HTMLElement[] =>
-  ((event['path'] as any[]) ||
-    (event.composedPath && (event.composedPath() as any[])) ||
-    []) as HTMLElement[];
 
 export const arrOfObjSortByProp = (
   arr: GenericObject[],
@@ -396,12 +229,6 @@ export const arrOfObjSortByProp = (
   return arr;
 };
 
-export const numberMinMax = (
-  number: number,
-  min: number = 0,
-  max: number = 100
-): number => Math.max(Math.min(max, number), min);
-
 export const arrayMode = <T = any>(arr: T[]): T =>
   isArray(arr) &&
   arr
@@ -411,7 +238,52 @@ export const arrayMode = <T = any>(arr: T[]): T =>
     )
     .pop();
 
+// ----------------------
+// STRINGS
+// ----------------------
+
+export const stringify = (smth: any): string =>
+  isString(smth)
+    ? smth
+    : isArray(smth)
+    ? smth.map(i => stringify(i)).join(', ')
+    : isObject(smth)
+    ? JSON.stringify(smth)
+    : String(smth);
+
+export const capitalize = (smth: string): string =>
+  smth.charAt(0).toUpperCase() + smth.slice(1);
+
+export const padWith0 = (number: string | number, digits = 2): string => {
+  if (isNullOrUndefined(number) || isNaN(parseInt(number as string, 10))) {
+    return number as any;
+  }
+
+  return String(number).padStart(digits, '0');
+};
+
+// ----------------------
+// FUNCTIONS
+// ----------------------
+
+export type Func<A = any, B = A> = (val: A, ...args: any[]) => B;
+
+export const pass = (a: any): any => a;
+
+export const chainCall = <A = any>(
+  funcs: Func<A>[],
+  value: A,
+  ...args: any[]
+): A => {
+  return funcs.reduce(
+    (previousResult, fn) => fn(previousResult, ...args),
+    value
+  );
+};
+
+// ----------------------
 // DATES
+// ----------------------
 
 export const monthShortNames = [
   'Jan',
@@ -483,3 +355,213 @@ export const monthIndex = (month: number | string, minusOne = true): number => {
   }
   return Math.max(0, Math.min(11, num));
 };
+
+// ----------------------
+// RONDOMIZERS
+// ----------------------
+
+export const randomNumber = (min = 0, max = 100): number =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
+
+export const randomFromArray = (array: any[] = [], num: number = 1) => {
+  if (!num) {
+    num = array.length;
+  }
+  const random = array
+    .slice()
+    .sort(() => 0.5 - Math.random())
+    .slice(0, num);
+  return num === 1 ? random[0] : random;
+};
+
+// ----------------------
+// COMPARATORS
+// ----------------------
+
+export const compareAsNumbers = (
+  a: string | number,
+  b: string | number
+): boolean => asNumber(a) === asNumber(b);
+
+export const compareAsStrings = (a: any, b: any): boolean =>
+  String(a) === String(b);
+
+// ----------------------
+// CLONES
+// ----------------------
+
+export const cloneObject = <T = any>(value: T): T =>
+  isObject(value) ? Object.assign({}, value) : value;
+
+export const cloneArray = <T = any>(value: T[]): T[] =>
+  isArray(value) ? value.slice() : value;
+
+export const cloneValue = (value: any) =>
+  isObject(value)
+    ? cloneObject(value)
+    : isArray(value)
+    ? cloneArray(value)
+    : value;
+
+export const cloneDeepSimpleObject = <T = any>(obj: T): T =>
+  JSON.parse(JSON.stringify(obj));
+
+// ----------------------
+// EVENTS
+// ----------------------
+
+export const isKey = (key: string, expected: string): boolean =>
+  key && expected && key.toUpperCase() === expected.toUpperCase();
+
+export const isMetaKey = (key: string): boolean =>
+  metaKeys.includes(key as any);
+
+export const eventHasCntrlKey = (event: KeyboardEvent | MouseEvent): boolean =>
+  event.metaKey || event.ctrlKey;
+
+export const eventHasMetaKey = (event: KeyboardEvent | MouseEvent): boolean =>
+  event.metaKey || event.shiftKey || event.ctrlKey || event.altKey;
+
+export const getEventPath = (event: Event): HTMLElement[] =>
+  ((event['path'] as any[]) ||
+    (event.composedPath && (event.composedPath() as any[])) ||
+    []) as HTMLElement[];
+
+// ----------------------
+// DOM
+// ----------------------
+
+export const countChildren = (parentSelector, parent) => {
+  parent = parentSelector ? document.querySelector(parentSelector) : parent;
+  if (!parent) {
+    return 0;
+  }
+  let relevantChildren = 0;
+  for (const child of parent.childNodes) {
+    if (child.nodeType !== 3 && child.nodeType !== 8) {
+      if (child.tagName && child.tagName.toLowerCase() !== 'svg') {
+        relevantChildren += countChildren(null, child);
+      }
+      relevantChildren++;
+    }
+  }
+  return relevantChildren;
+};
+
+// ----------------------
+// NGONCHANGES HELPERS
+// ----------------------
+
+export const hasChanges = (
+  changes: SimpleChanges,
+  keys: string[] = null,
+  discardAllFalsey = false
+): boolean => {
+  if (!keys) {
+    keys = Object.keys(changes);
+  }
+  return !!keys.find(
+    i =>
+      changes[i] !== undefined &&
+      (changes[i].currentValue !== undefined ||
+        changes[i].previousValue !== undefined) &&
+      (!discardAllFalsey ||
+        (discardAllFalsey && Boolean(changes[i].currentValue)))
+  );
+};
+
+export const firstChanges = (
+  changes: SimpleChanges,
+  keys: string[] = null
+): boolean => {
+  if (!keys) {
+    keys = Object.keys(changes);
+  }
+  return !!keys.find(i => changes[i] && changes[i].firstChange);
+};
+
+export const notFirstChanges = (
+  changes: SimpleChanges,
+  keys: string[] = null
+): boolean => {
+  if (!keys) {
+    keys = Object.keys(changes);
+  }
+  return !!keys.find(i => changes[i] && !changes[i].firstChange);
+};
+
+export const applyChanges = (
+  target: any,
+  changes: SimpleChanges,
+  defaults: GenericObject = {},
+  skip: string[] = [],
+  discardAllFalsey = false
+): void => {
+  Object.keys(changes).forEach((change: string) => {
+    if (!skip.includes(change)) {
+      target[change] =
+        defaults[change] &&
+        ((!discardAllFalsey &&
+          isNullOrUndefined(changes[change].currentValue)) ||
+          (discardAllFalsey && !Boolean(changes[change].currentValue)))
+          ? defaults[change]
+          : changes[change].currentValue;
+    }
+  });
+};
+
+// ----------------------
+// MISC HELPERS
+// ----------------------
+
+export function MixIn(baseCtors: Function[]) {
+  return function(derivedCtor: Function) {
+    baseCtors.forEach(baseCtor => {
+      Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+        derivedCtor.prototype[name] = baseCtor.prototype[name];
+      });
+    });
+  };
+}
+
+export const simpleUID = (
+  prefix: string = '',
+  length: number = 5,
+  suffix: string = ''
+): string => {
+  return (
+    prefix.replace(/\s+/g, '_') +
+    Math.random()
+      .toString(16)
+      .substr(2, length) +
+    suffix.replace(/\s+/g, '_')
+  );
+};
+
+export const isRenderedComponent = (obj: any): boolean =>
+  hasProp(obj, 'component');
+
+import {
+  compose as _compose,
+  isArray as _isArray,
+  isPlainObject as _isPlainObject,
+  merge as _merge,
+  reduce as _reduce,
+  set as _set,
+  toPairs as _toPairs,
+} from 'lodash/fp';
+
+export const flatten = (obj, path = []) => {
+  return _isPlainObject(obj) || _isArray(obj)
+    ? _reduce(
+        (acc, [k, v]) => _merge(acc, flatten(v, [...path, k])),
+        {},
+        _toPairs(obj)
+      )
+    : { [path.join('.')]: obj };
+};
+
+export const unflatten = _compose(
+  _reduce((acc, [k, v]) => _set(k, v, acc), {}),
+  _toPairs
+);

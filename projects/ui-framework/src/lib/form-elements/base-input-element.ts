@@ -5,6 +5,7 @@ import {
   NgZone,
   ChangeDetectorRef,
   SimpleChanges,
+  HostBinding,
 } from '@angular/core';
 import { InputEvent } from './input/input.interface';
 import { BaseFormElement } from './base-form-element';
@@ -43,12 +44,16 @@ export abstract class BaseInputElement extends BaseFormElement {
   @Input() showCharCounter = true;
   @Input() minChars: number;
   @Input() maxChars: number;
-  @Input() min: number;
+  @Input() min = 0;
   @Input() max: number;
 
   @Output(FormEvents.inputEvents) changed: EventEmitter<
     InputEvent
   > = new EventEmitter<InputEvent>();
+
+  @HostBinding('attr.hidden') get isHidden() {
+    return this.inputType === InputTypes.hidden ? true : null;
+  }
 
   onNgChanges(changes: SimpleChanges): void {
     if (notFirstChanges(changes, ['inputType'])) {
@@ -83,7 +88,7 @@ export abstract class BaseInputElement extends BaseFormElement {
 
   public onInputKeydown(event: KeyboardEvent) {
     if (this.inputType === InputTypes.number) {
-      this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9.]/);
+      this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9.-]/);
     }
 
     if (

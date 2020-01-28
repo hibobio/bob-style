@@ -17,13 +17,13 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
 );
 
 const template = `
-<b-textarea
-            [value]="value"
+<b-textarea [value]="value"
             [label]="label"
             [description]="description"
             [placeholder]="placeholder"
             [maxChars]="maxChars"
             [minChars]="minChars"
+            [showCharCounter]="showCharCounter"
             [readonly]="readonly"
             [disabled]="disabled"
             [required]="required"
@@ -48,21 +48,22 @@ const note = `
   *TextareaModule* or *FormElementsModule*
 
   #### Properties
-  Name | Type | Description
-  --- | --- | ---
-  [value] | string/number/float | type of input field
-  [label] | string | label text
-  [description] | string | description text (above icon)
-  [placeholder] | string | placeholder text (inside input)
-  [minChars] | number | minimum length
-  [maxChars] | number | maximum characters
-  [readonly] | boolean | disables input
-  [disabled] | boolean | is field disabled
-  [required] | boolean | is field required
-  [hintMessage] | text | hint text
-  [warnMessage] | string | warning text
-  [errorMessage] | text | error text
-  (inputEvents) | EventEmitter<wbr>&lt;InputEvent&gt; | input events emitter
+  Name | Type | Description | Default
+  --- | --- | --- | ---
+  [value] | string/number/float | type of input field | &nbsp;
+  [label] | string | label text | &nbsp;
+  [description] | string | description text (above icon) | &nbsp;
+  [placeholder] | string | placeholder text (inside input) | &nbsp;
+  [minChars] | number | minimum length | &nbsp;
+  [maxChars] | number | maximum characters | &nbsp;
+  [showCharCounter] | boolean | set to false to hide character counter | true
+  [readonly] | boolean | disables input | false
+  [disabled] | boolean | is field disabled | false
+  [required] | boolean | is field required | false
+  [hintMessage] | text | hint text | &nbsp;
+  [warnMessage] | string | warning text | &nbsp;
+  [errorMessage] | text | error text | &nbsp;
+  (inputEvents) | EventEmitter<wbr>&lt;InputEvent&gt; | input events emitter | &nbsp;
 
   ~~~
   ${template}
@@ -79,8 +80,9 @@ story.add(
         label: text('label', 'Input label'),
         description: text('description', mockText(30)),
         placeholder: text('placeholder', 'Input placeholder'),
-        maxChars: number('maxChars', ''),
-        minChars: number('minChars', ''),
+        maxChars: number('maxChars', 100),
+        minChars: number('minChars', 0),
+        showCharCounter: boolean('showCharCounter', true),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         readonly: boolean('readonly', false),

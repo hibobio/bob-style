@@ -14,7 +14,11 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { InputTypes } from './input.enum';
 import { BaseFormElement } from '../base-form-element';
-import { parseToNumber } from '../../services/utils/functional-utils';
+import {
+  parseToNumber,
+  isNumber,
+  countDecimals,
+} from '../../services/utils/functional-utils';
 import { InputEventType } from '../form-elements.enum';
 
 @Component({
@@ -68,7 +72,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
 
   public onInputBlur(event: FocusEvent = null) {
     if (this.inputType === InputTypes.number && (this.value + '').length) {
-      this.processNumberValue(this.value);
+      this.processNumberValue(this.value, false, false);
     }
 
     const relatedTarget = event.relatedTarget as HTMLButtonElement;
@@ -84,7 +88,8 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
 
   public onIncrement() {
     this.processNumberValue(
-      parseToNumber(this.input.nativeElement.value) + this.step,
+      parseToNumber(this.input.nativeElement.value) + parseToNumber(this.step),
+      true,
       true
     );
     this.focus(true);
@@ -92,24 +97,32 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
 
   public onDecrement() {
     this.processNumberValue(
-      parseToNumber(this.input.nativeElement.value) - this.step,
+      parseToNumber(this.input.nativeElement.value) - parseToNumber(this.step),
+      true,
       true
     );
     this.focus(true);
   }
 
-  private checkMinMax(value: number | string): number {
-    const parsed = parseToNumber(value);
-
-    return this.min && parsed < this.min
+  private checkMinMax(value: number): number {
+    return isNumber(this.min) && value < this.min
       ? this.min
-      : this.max && parsed > this.max
+      : isNumber(this.max) && value > this.max
       ? this.max
-      : parsed;
+      : value;
   }
 
-  private processNumberValue(value = this.value, emit = false): void {
-    const valueUpd = this.checkMinMax(value);
+  private processNumberValue(
+    value: number | string = this.value,
+    round = false,
+    emit = false
+  ): void {
+    const valueUpd = this.checkMinMax(
+      parseToNumber(
+        value,
+        round && isNumber(this.step) ? countDecimals(this.step) : null
+      )
+    );
 
     // tslint:disable-next-line: triple-equals
     if (valueUpd != this.value) {

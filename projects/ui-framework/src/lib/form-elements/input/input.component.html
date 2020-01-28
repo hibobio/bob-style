@@ -48,7 +48,7 @@
     <button type="button"
             class="step-button b-icon-chevron-down b-icon-large has-hover"
             [ngClass]="{ 'b-icon-normal': !inputFocused }"
-            [disabled]="disabled || value <= min || value == 0"
+            [disabled]="disabled || value <= min"
             (click)="onDecrement()"></button>
   </div>
 
@@ -60,7 +60,7 @@
    [warnMessage]="warnMessage"
    [errorMessage]="errorMessage"
    [disabled]="disabled"
-   [minChars]="showCharCounter && minChars"
-   [maxChars]="showCharCounter && maxChars"
+   [minChars]="inputType !== inputTypes.date && showCharCounter && minChars"
+   [maxChars]="inputType !== inputTypes.date && showCharCounter && maxChars"
    [length]="value ? (value+'').length : 0">
 </p>
