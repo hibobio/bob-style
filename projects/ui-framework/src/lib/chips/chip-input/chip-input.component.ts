@@ -11,8 +11,6 @@ import {
   ChangeDetectionStrategy,
   NgZone,
   ChangeDetectorRef,
-  ElementRef,
-  AfterViewInit,
 } from '@angular/core';
 import {
   MatAutocompleteSelectedEvent,
@@ -31,7 +29,6 @@ import { ChipListComponent } from '../chip-list/chip-list.component';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
 @Component({
   selector: 'b-chip-input',
@@ -55,12 +52,11 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChipInputComponent extends BaseFormElement
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, OnDestroy {
   constructor(
     protected cd: ChangeDetectorRef,
     private utilsService: UtilsService,
-    private zone: NgZone,
-    private DOM: DOMhelpers
+    private zone: NgZone
   ) {
     super(cd);
     this.inputTransformers = [arrayOrFail];
@@ -71,9 +67,6 @@ export class ChipInputComponent extends BaseFormElement
   @Input() options: string[] = [];
   @Input() acceptNew = true;
   @Input() maxChars = 50;
-
-  @Input() hasSuffix = false;
-  public showSuffix = true;
 
   private possibleChips: string[] = [];
   public filteredChips: string[] = this.options;
@@ -86,7 +79,6 @@ export class ChipInputComponent extends BaseFormElement
 
   private ignoreAutoClosedEvent = false;
 
-  @ViewChild('suffix', { static: false }) suffix: ElementRef;
   @ViewChild('chips', { static: true }) public chips: ChipListComponent;
   @ViewChild('input', { read: MatAutocompleteTrigger, static: true })
   private autocompleteTrigger: MatAutocompleteTrigger;
@@ -97,21 +89,6 @@ export class ChipInputComponent extends BaseFormElement
   @Output() changed: EventEmitter<ChipInputChange> = new EventEmitter<
     ChipInputChange
   >();
-
-  @Input() hasPrefix = false;
-  public showPrefix = true;
-
-  ngAfterViewInit(): void {
-    this.zone.runOutsideAngular(() => {
-      setTimeout(() => {
-        this.showSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
-
-        if (!this.cd['destroyed']) {
-          this.cd.detectChanges();
-        }
-      }, 0);
-    });
-  }
 
   // extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {

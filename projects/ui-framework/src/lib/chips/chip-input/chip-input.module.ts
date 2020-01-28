@@ -8,7 +8,7 @@ import { ChipModule } from '../chip/chip.module';
 import { ChipListModule } from '../chip-list/chip-list.module';
 import { UtilsService } from '../../services/utils/utils.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { ButtonsModule } from '../../buttons/buttons.module';
 
 @NgModule({
   declarations: [ChipInputComponent],
@@ -19,8 +19,9 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
     MatAutocompleteModule,
     IconsModule,
     InputMessageModule,
+    ButtonsModule,
   ],
   exports: [ChipInputComponent],
-  providers: [UtilsService, DOMhelpers, EventManagerPlugins[0]],
+  providers: [UtilsService, EventManagerPlugins[0]],
 })
 export class ChipInputModule {}

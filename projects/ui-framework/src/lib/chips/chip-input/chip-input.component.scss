@@ -19,10 +19,6 @@
     border-radius: 0;
     background: transparent;
 
-    &.autocomplete-open {
-      border-color: transparent;
-    }
-
     &.focused {
       border-top: 0;
       border-left: 0;
@@ -46,13 +42,6 @@
       }
     }
   }
-
-  .bfe-suffix {
-    align-self: flex-start;
-    padding-right: 0;
-    padding-top: 4px;
-    padding-bottom: 4px;
-  }
 }
 
 // Chips
@@ -67,9 +56,9 @@
 
 ::ng-deep .chip-input-autocomplete {
   &.mat-autocomplete-panel {
-    margin-top: -1px;
     border: 1px solid $grey-500;
     box-shadow: 0 2px 3px 0 $boxShadowColor;
+    border-top-width: 0;
   }
   .mat-option {
     @include b-body($color: $body-text-color, $addCssVars: false);
@@ -83,4 +72,8 @@
   .mat-option-ripple {
     display: none !important;
   }
+}
+
+::ng-deep .mat-autocomplete-panel-above .chip-input-autocomplete {
+  border-top-width: 1px;
 }

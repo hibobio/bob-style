@@ -1,4 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  discardPeriodicTasks,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CardsLayoutComponent } from './cards-layout.component';
@@ -80,6 +85,10 @@ describe('CardsLayoutComponent', () => {
   });
 
   describe('cards in a row calculation', () => {
+    afterEach(() => {
+      discardPeriodicTasks();
+    });
+
     it(`should have 5 cards on ${calcNeededWidth(
       5,
       CardType.small
@@ -92,6 +101,7 @@ describe('CardsLayoutComponent', () => {
       );
       expect(component.cardsInRow).toEqual(5);
     });
+
     it(`should have 6 cards on ${calcNeededWidth(
       6,
       CardType.regular
@@ -104,6 +114,7 @@ describe('CardsLayoutComponent', () => {
       );
       expect(component.cardsInRow).toEqual(6);
     });
+
     it(`should have 3 cards on ${calcNeededWidth(
       3,
       CardType.large
@@ -117,14 +128,14 @@ describe('CardsLayoutComponent', () => {
       expect(component.cardsInRow).toEqual(3);
     });
 
-    it('should transmit cardsInRow as cardsInRow$', async done => {
+    it('should transmit cardsInRow as cardsInRow$', done => {
       component.getCardsInRow$().subscribe(numberOfCards => {
         expect(numberOfCards).toEqual(4);
         done();
       });
     });
 
-    xit('should call next on cardsInRow$ if type (width) of card changed, if cardsInRow changed', async done => {
+    it('should call next on cardsInRow$ if type (width) of card changed, if cardsInRow changed', done => {
       let cardsInRowSubscribeCalled = 0;
       component.getCardsInRow$().subscribe(numberOfCards => {
         if (cardsInRowSubscribeCalled === 0) {
@@ -141,7 +152,7 @@ describe('CardsLayoutComponent', () => {
       });
     });
 
-    xit('should call next on cardsInRow$ after window resize, if cardsInRow changed', async done => {
+    it('should call next on cardsInRow$ after window resize, if cardsInRow changed', done => {
       let cardsInRowSubscribeCalled = 0;
       component.getCardsInRow$().subscribe(numberOfCards => {
         if (cardsInRowSubscribeCalled === 0) {
