@@ -15,6 +15,11 @@ describe('ActionsCellComponent', () => {
   let component: ActionsCellComponent;
   let fixture: ComponentFixture<ActionsCellComponent>;
 
+  const mockGridActions: GridActions = {
+    menuItems: [{ label: 'first action' }, { label: 'second action' }],
+    openLeft: true,
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -22,26 +27,20 @@ describe('ActionsCellComponent', () => {
         MockComponent(SquareButtonComponent),
         MockComponent(MenuComponent),
       ],
-      imports: [
-        NoopAnimationsModule,
-      ],
-      schemas: [
-        NO_ERRORS_SCHEMA,
-      ],
+      imports: [NoopAnimationsModule],
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(ActionsCellComponent);
         component = fixture.componentInstance;
+        component.agInit({ value: mockGridActions });
         fixture.detectChanges();
       });
   }));
 
   it('should get menu items data', () => {
-    const mockGridActions: GridActions = {
-      menuItems: [{label: 'first action'}, {label: 'second action'}], openLeft: true};
-    component.agInit({value: mockGridActions});
-    component.menuItems = map (component.menuItems, (item) => {
+    component.menuItems = map(component.menuItems, item => {
       delete item.action;
       return item;
     });
@@ -49,32 +48,41 @@ describe('ActionsCellComponent', () => {
   });
 
   it('should check menu element in template', () => {
-    const mockGridActions: GridActions = {
-      menuItems: [{label: 'first action'}, {label: 'second action'}] };
-    component.agInit({value: mockGridActions});
+    component.agInit({
+      value: {
+        menuItems: [{ label: 'first action' }, { label: 'second action' }],
+      },
+    });
     fixture.detectChanges();
     const menuElement = fixture.debugElement.query(By.css('b-menu'));
-    component.menuItems = map (component.menuItems, (item) => {
+    component.menuItems = map(component.menuItems, item => {
       delete item.action;
       return item;
     });
-    expect(menuElement.componentInstance.menu).toEqual(mockGridActions.menuItems);
+    expect(menuElement.componentInstance.menu).toEqual(
+      mockGridActions.menuItems
+    );
     expect(menuElement.componentInstance.openLeft).toEqual(false);
   });
 
   it('should check if menu opened to left', () => {
-    const mockGridActions: GridActions = {
-      menuItems: [{label: 'first action'}, {label: 'second action'}], openLeft: true };
-    component.agInit({value: mockGridActions});
     fixture.detectChanges();
     const menuElement = fixture.debugElement.query(By.css('b-menu'));
     expect(menuElement.componentInstance.openLeft).toEqual(true);
   });
 
   it('should check b-square-button element', () => {
-    const triggerButtonElement = fixture.debugElement.query(By.css('b-square-button'));
-    expect(triggerButtonElement.componentInstance.color).toEqual(IconColor.normal);
-    expect(triggerButtonElement.componentInstance.type).toEqual(ButtonType.tertiary);
-    expect(triggerButtonElement.componentInstance.icon).toEqual(Icons.three_dots_vert);
+    const triggerButtonElement = fixture.debugElement.query(
+      By.css('b-square-button')
+    );
+    expect(triggerButtonElement.componentInstance.color).toEqual(
+      IconColor.normal
+    );
+    expect(triggerButtonElement.componentInstance.type).toEqual(
+      ButtonType.tertiary
+    );
+    expect(triggerButtonElement.componentInstance.icon).toEqual(
+      Icons.three_dots_vert
+    );
   });
 });
