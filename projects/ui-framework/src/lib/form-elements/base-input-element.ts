@@ -52,7 +52,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   > = new EventEmitter<InputEvent>();
 
   @HostBinding('attr.hidden') get isHidden() {
-    return this.inputType === InputTypes.hidden ? true : null;
+    return this.inputType === InputTypes.hidden ? 'hidden' : null;
   }
 
   onNgChanges(changes: SimpleChanges): void {
