@@ -222,7 +222,6 @@ describe('QuickFilterLayoutComponent', () => {
   describe('Initial render', () => {
     afterEach(fakeAsync(() => {
       flush();
-      QFLcomponent.ngOnDestroy();
     }));
 
     it('Should display 2 form elements', () => {
@@ -270,7 +269,6 @@ describe('QuickFilterLayoutComponent', () => {
   describe('Dynamic [quickFilters]', () => {
     afterEach(fakeAsync(() => {
       flush();
-      QFLcomponent.ngOnDestroy();
     }));
 
     it('Should update label and value from QuickFilterConfig', () => {
@@ -300,7 +298,6 @@ describe('QuickFilterLayoutComponent', () => {
   describe('Dynamic ng-content form elements', () => {
     afterEach(fakeAsync(() => {
       flush();
-      QFLcomponent.ngOnDestroy();
     }));
 
     beforeEach(() => {
@@ -331,7 +328,6 @@ describe('QuickFilterLayoutComponent', () => {
   describe('Change emitter', () => {
     afterEach(fakeAsync(() => {
       flush();
-      QFLcomponent.ngOnDestroy();
     }));
 
     it('Should emit initial aggregated values on every element added', () => {
