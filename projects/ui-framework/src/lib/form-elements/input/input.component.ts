@@ -18,6 +18,7 @@ import {
   parseToNumber,
   isNumber,
   countDecimals,
+  isNullOrUndefined,
 } from '../../services/utils/functional-utils';
 import { InputEventType } from '../form-elements.enum';
 
@@ -120,7 +121,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     const valueUpd = this.checkMinMax(
       parseToNumber(
         value,
-        round && isNumber(this.step) ? countDecimals(this.step) : null
+        round && !isNullOrUndefined(this.step) ? countDecimals(this.step) : null
       )
     );
 
