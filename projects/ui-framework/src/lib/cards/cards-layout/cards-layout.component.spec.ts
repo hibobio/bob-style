@@ -3,6 +3,7 @@ import {
   ComponentFixture,
   TestBed,
   discardPeriodicTasks,
+  fakeAsync,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -16,7 +17,7 @@ import {
 } from '../../services/utils/test-helpers';
 import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
 
-fdescribe('CardsLayoutComponent', () => {
+describe('CardsLayoutComponent', () => {
   let fixture: ComponentFixture<CardsLayoutComponent>;
   let component: CardsLayoutComponent;
   let cardsListElement: HTMLElement;
@@ -85,9 +86,9 @@ fdescribe('CardsLayoutComponent', () => {
   });
 
   describe('cards in a row calculation', () => {
-    afterEach(() => {
+    afterEach(fakeAsync(() => {
       discardPeriodicTasks();
-    });
+    }));
 
     it(`should have 5 cards on ${calcNeededWidth(
       5,

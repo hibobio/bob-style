@@ -21,10 +21,15 @@
   }
 }
 
-.length-indicator {
-  margin-left: 6px;
+:host::ng-deep {
+  .length-indicator,
+  [footerAction] {
+    margin-left: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
 
-  &:only-child {
-    margin-left: auto;
+    &:only-child {
+      margin-left: auto;
+    }
   }
 }

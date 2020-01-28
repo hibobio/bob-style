@@ -62,5 +62,6 @@
    [warnMessage]="warnMessage"
    [errorMessage]="errorMessage"
    [disabled]="disabled">
-  <b-text-button>Edit List</b-text-button>
+
+  <ng-content select="[footerAction]"></ng-content>
 </p>

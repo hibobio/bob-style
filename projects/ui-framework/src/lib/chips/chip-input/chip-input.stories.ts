@@ -11,6 +11,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipInputModule } from './chip-input.module';
 import { mockHobbies } from '../../mock.const';
+import { ButtonsModule } from '../../buttons/buttons.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -35,6 +36,9 @@ const template = `
                 [warnMessage]="warnMessage"
                 [errorMessage]="errorMessage"
                 (changed)="chipInputChangeHandler($event)">
+      <b-text-button footerAction
+          [text]="'Edit List'">
+      </b-text-button>
   </b-chip-input>
 `;
 
@@ -56,6 +60,7 @@ const note = `
   [errorMessage] | string | error text | &nbsp;
   [required] | boolean | if input is required | false
   [disabled] | boolean | if input is disabled | false
+  &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
   (changed) | EventEmitter<wbr>&lt;ChipInputChange&gt; | emits on change: {value, added, removed} | &nbsp;
 
 
@@ -89,7 +94,12 @@ const toAdd = () => ({
     chipInputChangeHandler: action('Chip input changed'),
   },
   moduleMetadata: {
-    imports: [ChipInputModule, StoryBookLayoutModule, BrowserAnimationsModule],
+    imports: [
+      ChipInputModule,
+      ButtonsModule,
+      StoryBookLayoutModule,
+      BrowserAnimationsModule,
+    ],
   },
 });
 

@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChipInputComponent } from './chip-input.component';
 
@@ -7,17 +7,18 @@ import {
   elementFromFixture,
   inputValue,
 } from '../../services/utils/test-helpers';
-import { ChipListModule } from '../chip-list/chip-list.module';
 import {
   MatAutocompleteModule,
   MatAutocompleteSelectedEvent,
 } from '@angular/material/autocomplete';
-import { ChipModule } from '../chip/chip.module';
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
 import { ChipComponent } from '../chip/chip.component';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
-import { UtilsService } from '../../services/utils/utils.service';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { MockComponent } from 'ng-mocks';
+import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { ChipListComponent } from '../chip-list/chip-list.component';
+import { IconComponent } from '../../icons/icon.component';
 
 describe('ChipInputComponent', () => {
   let component: ChipInputComponent;
@@ -32,14 +33,16 @@ describe('ChipInputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ChipInputComponent],
-      imports: [
-        ChipListModule,
-        ChipModule,
-        MatAutocompleteModule,
-        InputMessageModule,
+      declarations: [
+        ChipInputComponent,
+        ChipListComponent,
+        ChipComponent,
+        MockComponent(TextButtonComponent),
+        MockComponent(IconComponent),
+        MockComponent(AvatarImageComponent),
       ],
-      providers: [UtilsService, EventManagerPlugins[0]],
+      imports: [MatAutocompleteModule, InputMessageModule],
+      providers: [EventManagerPlugins[0]],
     })
       .overrideComponent(ChipInputComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
