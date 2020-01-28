@@ -16,7 +16,7 @@ import {
 } from '../../services/utils/test-helpers';
 import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
 
-describe('CardsLayoutComponent', () => {
+fdescribe('CardsLayoutComponent', () => {
   let fixture: ComponentFixture<CardsLayoutComponent>;
   let component: CardsLayoutComponent;
   let cardsListElement: HTMLElement;

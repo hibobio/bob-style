@@ -36,6 +36,13 @@
            (keyup.outside-zone)="onInputKeyup($event)">
   </b-chip-list>
 
+
+  <div *ngIf="hasSuffix || showSuffix"
+       class="bfe-suffix"
+       #suffix
+       (click)="$event.stopPropagation()">
+    <ng-content select="[input-suffix]"></ng-content>
+  </div>
 </div>
 
 <mat-autocomplete #auto="matAutocomplete"
