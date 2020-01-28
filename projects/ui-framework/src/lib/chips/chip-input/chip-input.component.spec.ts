@@ -17,6 +17,7 @@ import { InputMessageModule } from '../../form-elements/input-message/input-mess
 import { ChipComponent } from '../chip/chip.component';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { UtilsService } from '../../services/utils/utils.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
 describe('ChipInputComponent', () => {
   let component: ChipInputComponent;
@@ -38,7 +39,7 @@ describe('ChipInputComponent', () => {
         MatAutocompleteModule,
         InputMessageModule,
       ],
-      providers: [UtilsService, EventManagerPlugins[0]],
+      providers: [UtilsService, DOMhelpers, EventManagerPlugins[0]],
       schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(ChipInputComponent, {
