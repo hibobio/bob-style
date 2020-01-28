@@ -6,7 +6,7 @@ import { CircleIconAndLabelParams } from './circle-icon-and-label.interface';
 @Component({
   selector: 'b-circle-icon-and-lable',
   template: `
-    <b-table-actions-wrapper [menuItems]="params?.value?.menuItems">
+    <b-table-actions-wrapper [menuItems]="params?.value?.menuItems" [buttonType]="params?.value?.buttonType">
       <div class="circle-icon-wrapper"
       *ngIf="params && params.value && params.value.icon !== null">
         <b-avatar-image
