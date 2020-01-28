@@ -124,7 +124,7 @@ describe('CardsLayoutComponent', () => {
       });
     });
 
-    it('should call next on cardsInRow$ if type (width) of card changed, if cardsInRow changed', async done => {
+    xit('should call next on cardsInRow$ if type (width) of card changed, if cardsInRow changed', async done => {
       let cardsInRowSubscribeCalled = 0;
       component.getCardsInRow$().subscribe(numberOfCards => {
         if (cardsInRowSubscribeCalled === 0) {
@@ -141,7 +141,7 @@ describe('CardsLayoutComponent', () => {
       });
     });
 
-    it('should call next on cardsInRow$ after window resize, if cardsInRow changed', async done => {
+    xit('should call next on cardsInRow$ after window resize, if cardsInRow changed', async done => {
       let cardsInRowSubscribeCalled = 0;
       component.getCardsInRow$().subscribe(numberOfCards => {
         if (cardsInRowSubscribeCalled === 0) {
