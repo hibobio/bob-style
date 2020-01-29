@@ -61,7 +61,7 @@ export abstract class BaseInputElement extends BaseFormElement {
     }
   }
 
-  public onInputChange(event: DOMInputEvent) {
+  public onInputChange(event: DOMInputEvent): void {
     const value = event.target.value;
 
     // tslint:disable-next-line: triple-equals
@@ -73,7 +73,7 @@ export abstract class BaseInputElement extends BaseFormElement {
     }
   }
 
-  public onInputFocus(event: FocusEvent) {
+  public onInputFocus(event: FocusEvent): void {
     if (!this.skipFocusEvent) {
       this.transmitValue(this.value, { eventType: [InputEventType.onFocus] });
     }
@@ -81,12 +81,12 @@ export abstract class BaseInputElement extends BaseFormElement {
     this.skipFocusEvent = false;
   }
 
-  public onInputBlur(event: FocusEvent) {
+  public onInputBlur(event: FocusEvent): void {
     this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
     this.inputFocused = false;
   }
 
-  public onInputKeydown(event: KeyboardEvent) {
+  public onInputKeydown(event: KeyboardEvent): void {
     if (this.inputType === InputTypes.number) {
       this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9.-]/);
     }

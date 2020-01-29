@@ -143,6 +143,12 @@ export class DateRangePickerComponent extends BaseDatepickerElement
 
       this.doOnPickerOpen(this.getPicker(isStartDate ? 0 : 1));
     }
+
+    if (target.matches('.start-date-picker .mat-calendar-body-cell-content')) {
+      setTimeout(() => {
+        this.openPicker(1);
+      }, 0);
+    }
   }
 
   ngAfterViewInit(): void {

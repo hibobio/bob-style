@@ -50,15 +50,16 @@ export class PasswordInputComponent extends BaseInputElement {
 
   public inputType = InputTypes.password;
 
-  isInputEmpty(): boolean {
+  public isInputEmpty(): boolean {
     return !this.value || this.value.trim() === '';
   }
 
-  switchInputType(): void {
+  public switchInputType(): void {
     this.inputType =
       this.inputType === InputTypes.password
         ? InputTypes.text
         : InputTypes.password;
     this.cd.detectChanges();
+    this.focus(true);
   }
 }

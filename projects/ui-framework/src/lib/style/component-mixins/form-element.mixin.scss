@@ -251,7 +251,7 @@ $input-focus-border-color: $grey-700;
   }
 }
 
-@mixin clear-input-suffix {
+@mixin clear-input-suffix($hoverClasses: null) {
   .bfe-wrap {
     cursor: text;
   }
@@ -276,12 +276,20 @@ $input-focus-border-color: $grey-700;
     }
   }
 
+  $hoverSelector: '&:hover';
+  @if ($hoverClasses) {
+    $hoverSelector: $hoverSelector + ',' + $hoverClasses;
+  }
+
   .bfe-wrap {
-    &:hover,
-    &.focused {
+    #{$hoverSelector} {
       .clear-input {
         opacity: 1;
       }
     }
+  }
+
+  [hidden] {
+    display: none;
   }
 }
