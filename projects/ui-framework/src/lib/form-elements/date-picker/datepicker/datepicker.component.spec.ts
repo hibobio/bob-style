@@ -115,8 +115,8 @@ describe('DatepickerComponent', () => {
       expect(iconElem.classList).toContain('b-icon-date');
     });
     it('should not display clear icon, when component has no value', () => {
-      iconElem = elementFromFixture(fixture, '.clear-input .b-icon');
-      expect(iconElem).toBeFalsy();
+      iconElem = elementFromFixture(fixture, '.bfe-suffix');
+      expect(iconElem.hidden).toBeTruthy();
     });
   });
 

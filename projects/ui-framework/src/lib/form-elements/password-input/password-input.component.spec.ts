@@ -24,9 +24,9 @@ describe('PasswordInputComponent', () => {
         NoopAnimationsModule,
         CommonModule,
         InputMessageModule,
-        IconsModule
+        IconsModule,
       ],
-      providers: [EventManagerPlugins[0]]
+      providers: [EventManagerPlugins[0]],
     })
       .compileComponents()
       .then(() => {
@@ -37,7 +37,7 @@ describe('PasswordInputComponent', () => {
           .nativeElement;
 
         spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => { });
+        component.changed.subscribe(() => {});
         spyOn(component, 'propagateChange');
       });
   }));
@@ -46,13 +46,12 @@ describe('PasswordInputComponent', () => {
     component.changed.complete();
   });
 
-
   describe('InputEvent', () => {
     it('should adjust text', () => {
       inputValue(inputElement, 'text', false);
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
-        value: 'text'
+        value: 'text',
       });
       expect(component.propagateChange).toHaveBeenCalledWith('text');
     });
@@ -61,7 +60,7 @@ describe('PasswordInputComponent', () => {
   describe('show button', () => {
     it('should start with show button hidden', () => {
       showButtonElement = fixture.debugElement.query(By.css('.bfe-suffix'));
-      expect(showButtonElement).toBeFalsy();
+      expect(showButtonElement.nativeElement.hidden).toBeTruthy();
     });
     it('should show the button when input has text; icon should have class .b-icon-visibility-on', () => {
       inputValue(inputElement, 'text', false);
