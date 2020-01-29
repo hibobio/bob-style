@@ -555,7 +555,7 @@ describe('DateRangePickerComponent', () => {
         endDate: endOfMonth(parseISO('2019-02-28')),
       });
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'onBlur',
+        event: InputEventType.onBlur,
         date: {
           startDate: parseISO('2019-01-01'),
           endDate: endOfMonth(parseISO('2019-02-28')),
