@@ -47,7 +47,9 @@ const storyTemplate = `<b-story-book-layout [title]="'Material Tooltip'">
     <div style="text-align:left; max-width: 400px; margin: 0 auto;">
       <p>Material Tooltip should be used in cases when CSS Tooltip does not look good.
 
-      <p><strong>When to use:</strong> For long tooltip text; when inside  <u>overflow: hidden</u> or <u>overflow: auto</u> container; when CSS Tooltip does not look good for whatever reason.</p>
+      <p><strong>When to use:</strong> For long tooltip text; when inside  \
+      <u>overflow: hidden</u> or <u>overflow: auto</u> container; \
+      when CSS Tooltip does not look good for whatever reason.</p>
 
       <p><strong>When not to use:</strong> For short (1-3) words text; If CSS Tooltip looks good, stay with CSS.</p>
     </div>
@@ -65,19 +67,20 @@ story.add(
     props: {
       tooltipText: text(
         'tooltipText',
-        'Works best for long text text. \n Automatically positions itself above or below \n depending on available space.'
+        'Works best for long text text. \n Automatically positions itself above \
+        or below \n depending on available space.'
       ),
 
       tooltipPosition: radios(
         'tooltipPosition',
-        TooltipPosition,
-        TooltipPosition.above
+        Object.values(TooltipPosition) as any[],
+        TooltipPosition.above as any
       ),
 
       tooltipClass: radios(
         'tooltipClass',
-        TooltipClass,
-        TooltipClass.TextCenter
+        Object.values(TooltipClass) as any[],
+        TooltipClass.TextCenter as any
       ),
     },
     moduleMetadata: {

@@ -35,7 +35,8 @@ const note = `
 
   #### How-to
 
-  By adding \`\`\`data-tooltip="text"\`\`\` atrribute to any element you will get a simple tooltip with text - on hover or on focus (click).
+  By adding \`\`\`data-tooltip="text"\`\`\` atrribute to any element you will get\
+   a simple tooltip with text - on hover or on focus (click).
 
 
   #### HTML Attributes
@@ -44,8 +45,11 @@ const note = `
   [attr.data-tooltip] | string | tooltip text | &nbsp;
   [attr.data-tooltip-position] | TooltipPosition | above or below | 'above'
   [attr.data-tooltip-align] | CSSTooltipTextAlign | text alignment | 'center'
-  [attr.data-tooltip-show] | CSSTooltipShowOn | show on hover or on focus (click) - if using on focus, be sure to add tabindex="0" attribute to non-focusable elements | 'hover'
-  [attr.data-tooltip-wrap] | CSSTooltipWrap | white-space CSS property - 'normal', 'nowrap' (single line, only use for predictably short tooltips) or 'pre' (will respect line-break symbols \`\`\`\\n\`\`\` in text!) | 'normal'
+  [attr.data-tooltip-show] | CSSTooltipShowOn | show on hover or on focus (click) - \
+  if using on focus, be sure to add tabindex="0" attribute to non-focusable elements | 'hover'
+  [attr.data-tooltip-wrap] | CSSTooltipWrap | white-space CSS property - 'normal',\
+   'nowrap' (single line, only use for predictably short tooltips) or 'pre' \
+   (will respect line-break symbols \`\`\`\\n\`\`\` in text!) | 'normal'
 
   ~~~
   ${template}
@@ -72,7 +76,8 @@ const storyTemplate = `<b-story-book-layout [title]="'CSS Tooltip'">
 
       <p><strong>When to use:</strong> For short tooltips</p>
 
-      <p><strong>When not to use:</strong> For <u>longer</u> text, or if inside  <u>overflow: hidden</u> or <u>overflow: auto</u> container - in this cases, use <u>Material Tooltip</u></p>
+      <p><strong>When not to use:</strong> For <u>longer</u> text, or if inside \
+       <u>overflow: hidden</u> or <u>overflow: auto</u> container - in this cases, use <u>Material Tooltip</u></p>
     </div>
 
     <b-divider></b-divider>
@@ -89,19 +94,23 @@ story.add(
       tooltipText: text('tooltipText', 'Works best for \n short text'),
       tooltipPosition: radios(
         'tooltipPosition',
-        TooltipPosition,
-        TooltipPosition.above
+        Object.values(TooltipPosition) as any[],
+        TooltipPosition.above as any
       ),
       tooltipTextAlign: radios(
         'tooltipTextAlign',
-        CSSTooltipTextAlign,
-        CSSTooltipTextAlign.center
+        Object.values(CSSTooltipTextAlign) as any[],
+        CSSTooltipTextAlign.center as any
       ),
-      tooltipWrap: radios('tooltipWrap', CSSTooltipWrap, CSSTooltipWrap.normal),
+      tooltipWrap: radios(
+        'tooltipWrap',
+        Object.values(CSSTooltipWrap) as any[],
+        CSSTooltipWrap.normal as any
+      ),
       tooltipShowOn: radios(
         'tooltipShowOn',
-        CSSTooltipShowOn,
-        CSSTooltipShowOn.hover
+        Object.values(CSSTooltipShowOn) as any[],
+        CSSTooltipShowOn.hover as any
       ),
     },
     moduleMetadata: {
