@@ -1,9 +1,9 @@
 import { DialogSize } from './dialog.enum';
 
 export const DIALOG_SIZE_TO_WIDTH = {
-  [DialogSize.small]: 480,
-  [DialogSize.medium]: 720,
-  [DialogSize.large]: 960,
+  [DialogSize.small]: '480px',
+  [DialogSize.medium]: '720px',
+  [DialogSize.large]: '960px',
   [DialogSize.xLarge]: '90vw',
 };
 

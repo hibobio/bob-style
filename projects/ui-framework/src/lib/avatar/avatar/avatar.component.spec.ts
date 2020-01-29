@@ -81,7 +81,7 @@ describe('AvatarComponent', () => {
       component.isClickable = true;
       component.clicked.subscribe(() => {});
       component.onClick('click' as any);
-      expect(component.clicked.emit).toHaveBeenCalledWith('click');
+      expect(component.clicked.emit).toHaveBeenCalledWith('click' as any);
       component.clicked.complete();
     });
   });

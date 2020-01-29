@@ -135,7 +135,7 @@ describe('EditableListComponent', () => {
         delete: ['Football'],
         create: [],
         order: ['Martial arts', 'Climbing'],
-        sortType: 'UserDefined',
+        sortType: ListSortType.UserDefined,
         list: [
           {
             id: 1,
@@ -219,7 +219,7 @@ describe('EditableListComponent', () => {
         delete: [],
         create: [],
         order: ['Climbing', 'Football', 'Martial arts'],
-        sortType: 'Asc',
+        sortType: ListSortType.Asc,
         list: [
           {
             id: 2,
@@ -253,7 +253,7 @@ describe('EditableListComponent', () => {
         delete: [],
         create: [],
         order: ['Martial arts', 'Football', 'Climbing'],
-        sortType: 'Desc',
+        sortType: ListSortType.Desc,
         list: [
           {
             id: 1,
@@ -286,7 +286,7 @@ describe('EditableListComponent', () => {
         delete: [],
         create: [],
         order: ['Climbing', 'Football', 'Martial arts'],
-        sortType: 'Asc',
+        sortType: ListSortType.Asc,
         list: [
           {
             id: 2,
@@ -320,7 +320,7 @@ describe('EditableListComponent', () => {
         delete: [],
         create: [],
         order: ['Martial arts', 'Football', 'Climbing'],
-        sortType: 'Desc',
+        sortType: ListSortType.Desc,
         list: [
           {
             id: 1,

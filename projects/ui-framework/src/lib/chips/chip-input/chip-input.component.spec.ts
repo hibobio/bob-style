@@ -19,6 +19,7 @@ import { TextButtonComponent } from '../../buttons/text-button/text-button.compo
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { ChipListComponent } from '../chip-list/chip-list.component';
 import { IconComponent } from '../../icons/icon.component';
+import { InputEventType } from '../../form-elements/form-elements.enum';
 
 describe('ChipInputComponent', () => {
   let component: ChipInputComponent;
@@ -130,7 +131,7 @@ describe('ChipInputComponent', () => {
       expect(chipsComponents().length).toEqual(1);
       expect(inputElement.value).toEqual('');
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'onChange',
+        event: InputEventType.onChange,
         added: 'ABC',
         value: ['ABC'],
       });
@@ -159,7 +160,7 @@ describe('ChipInputComponent', () => {
       expect(chipsComponents().length).toEqual(1);
       expect(inputElement.value).toEqual('');
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'onChange',
+        event: InputEventType.onChange,
         added: 'XYZ',
         value: ['XYZ'],
       });
@@ -191,7 +192,7 @@ describe('ChipInputComponent', () => {
       expect(chipsComponents().length).toEqual(1);
       expect(component.value.length).toEqual(1);
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'onChange',
+        event: InputEventType.onChange,
         removed: 'ABC',
         value: ['ACB'],
       });
@@ -215,7 +216,7 @@ describe('ChipInputComponent', () => {
       expect(component.value).toEqual(['ABC']);
       expect(chipsComponents().length).toEqual(1);
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'onChange',
+        event: InputEventType.onChange,
         added: 'ABC',
         value: ['ABC'],
       });

@@ -76,7 +76,7 @@ describe('DialogService', () => {
         ...DIALOG_CONFIG_DEF,
         size: DialogSize.small,
         data: {},
-        width: 480,
+        width: '480px',
         panelClass: ['b-dialog-panel', 'size-small', 'test-class'],
       };
 
@@ -94,7 +94,7 @@ describe('DialogService', () => {
         ...DIALOG_CONFIG_DEF,
         size: DialogSize.medium,
         data: {},
-        width: 720,
+        width: '720px',
         panelClass: ['b-dialog-panel', 'size-medium', 'test-class'],
       };
 
@@ -112,7 +112,7 @@ describe('DialogService', () => {
         ...DIALOG_CONFIG_DEF,
         size: DialogSize.large,
         data: {},
-        width: 960,
+        width: '960px',
         panelClass: ['b-dialog-panel', 'size-large', 'test-class'],
       };
 

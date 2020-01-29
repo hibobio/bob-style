@@ -29,6 +29,7 @@ import {
   utilsServiceStub,
   mobileServiceStub,
 } from '../../../tests/services.stub.spec';
+import { InputEventType } from '../../form-elements.enum';
 
 describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
@@ -191,7 +192,7 @@ describe('DatepickerComponent', () => {
 
     it('should emit changed event', () => {
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'onWrite',
+        event: InputEventType.onWrite,
         value: '2019-09-15',
       });
       expect(component.propagateChange).toHaveBeenCalledWith('2019-09-15');
@@ -249,7 +250,7 @@ describe('DatepickerComponent', () => {
       iconElem.click();
       expect(component.value).toBeNull();
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'onBlur',
+        event: InputEventType.onBlur,
         value: null,
         date: null,
       });
@@ -302,7 +303,7 @@ describe('DatepickerComponent', () => {
       expect((component.value as Date).getMonth()).toEqual(10);
       expect((component.value as Date).getDate()).toEqual(1);
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'onBlur',
+        event: InputEventType.onBlur,
         date: component.value,
         value: '2019-11-01',
       });
