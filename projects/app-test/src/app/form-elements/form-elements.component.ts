@@ -18,9 +18,6 @@ import {
   getType,
   makeArray,
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
-// tslint:disable-next-line: max-line-length
-import { BlotType } from '../../../../ui-framework/src/lib/form-elements/rich-text-editor/rte-core/rte.enum';
-import { AvatarComponent } from '../../../../ui-framework/src/lib/avatar/avatar/avatar.component';
 import {
   truthyOrFalse,
   arrayOfStringsOrArrayFromString,
@@ -35,7 +32,7 @@ import {
 } from '../../../../ui-framework/src/lib/mock.const';
 import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { isEqual } from 'lodash';
-import { InputTypes } from '../../../../ui-framework/src/lib/form-elements/input/input.enum';
+import { BlotType } from '../../../../ui-framework/bob-rte/src/rte/rte.enum';
 
 @Component({
   selector: 'app-form-elements-test',

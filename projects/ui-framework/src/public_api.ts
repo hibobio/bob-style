@@ -281,16 +281,6 @@ export {
 export {
   ChainSelectModule
 } from './lib/lists/chain-select/chain-select.module';
-// Rich Text Editor
-export {
-  RichTextEditorModule
-} from './lib/form-elements/rich-text-editor/rte.module';
-export {
-  RTEType, BlotType, RTEchangeEvent
-} from './lib/form-elements/rich-text-editor/rte-core/rte.enum';
-export {
-  RichTextEditorComponent
-} from './lib/form-elements/rich-text-editor/rte.component';
 // Radio Buttons
 export {
   RadioButtonModule

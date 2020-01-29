@@ -20,8 +20,6 @@ import { RadioButtonModule } from './radio-button/radio-button.module';
 import { RadioButtonComponent } from './radio-button/radio-button.component';
 import { SplitInputSingleSelectModule } from './split-input-single-select/split-input-single-select.module';
 import { SplitInputSingleSelectComponent } from './split-input-single-select/split-input-single-select.component';
-import { RichTextEditorModule } from './rich-text-editor/rte.module';
-import { RichTextEditorComponent } from './rich-text-editor/rte.component';
 import { PasswordInputModule } from './password-input/password-input.module';
 import { PasswordInputComponent } from './password-input/password-input.component';
 import { TimePickerModule } from './timepicker/timepicker.module';
@@ -44,7 +42,6 @@ import { DateRangePickerModule } from './date-picker/date-range-picker/date-rang
     ChipInputModule,
     SocialModule,
     SplitInputSingleSelectModule,
-    RichTextEditorModule,
     InputMessageModule,
     PasswordInputModule,
     TimePickerModule,
@@ -61,7 +58,6 @@ import { DateRangePickerModule } from './date-picker/date-range-picker/date-rang
     MultiSelectComponent,
     SingleSelectComponent,
     SplitInputSingleSelectComponent,
-    RichTextEditorComponent,
     ChipInputComponent,
     SocialComponent,
     PasswordInputComponent,
