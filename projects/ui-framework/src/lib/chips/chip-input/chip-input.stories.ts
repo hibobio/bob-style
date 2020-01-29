@@ -35,6 +35,7 @@ const template = `
                 [hintMessage]="hintMessage"
                 [warnMessage]="warnMessage"
                 [errorMessage]="errorMessage"
+                [hasFooterAction]="true"
                 (changed)="chipInputChangeHandler($event)">
       <b-text-button footerAction
           [text]="'Edit List'">
