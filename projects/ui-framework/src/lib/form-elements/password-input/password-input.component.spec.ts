@@ -58,16 +58,17 @@ describe('PasswordInputComponent', () => {
   });
 
   describe('show button', () => {
-    it('should start with show button hidden', () => {
+    beforeEach(() => {
       showButtonElement = fixture.debugElement.query(By.css('.bfe-suffix'));
+    });
+    it('should start with show button hidden', () => {
       expect(showButtonElement.nativeElement.hidden).toBeTruthy();
     });
     it('should show the button when input has text; icon should have class .b-icon-visibility-on', () => {
       inputValue(inputElement, 'text', false);
       fixture.detectChanges();
-      showButtonElement = fixture.debugElement.query(By.css('.bfe-suffix'));
       showButtonIconElement = fixture.debugElement.query(By.css('.b-icon'));
-      expect(showButtonElement).toBeTruthy();
+      expect(showButtonElement.nativeElement.hidden).toBeFalsy();
       expect(showButtonIconElement.nativeElement.classList).toContain(
         'b-icon-visibility-on'
       );
@@ -84,7 +85,7 @@ describe('PasswordInputComponent', () => {
       inputValue(inputElement, 'text', false);
       fixture.detectChanges();
       expect(inputElement.getAttribute('type')).toEqual('password');
-      showButtonElement = fixture.debugElement.query(By.css('.bfe-suffix'));
+      showButtonElement = fixture.debugElement.query(By.css('.show-passwrd'));
       showButtonIconElement = fixture.debugElement.query(By.css('.b-icon'));
       showButtonElement.nativeElement.click();
       fixture.detectChanges();
