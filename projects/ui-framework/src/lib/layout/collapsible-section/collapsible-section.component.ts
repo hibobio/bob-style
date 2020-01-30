@@ -133,9 +133,9 @@ export class CollapsibleSectionComponent
           this.headerContent.nativeElement
         );
         if (!this.collapsible) {
-          this.hasFooterContent = !this.DOM.isEmpty(
-            this.footerContent.nativeElement
-          );
+          this.hasFooterContent =
+            this.footerContent &&
+            !this.DOM.isEmpty(this.footerContent.nativeElement);
         }
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
@@ -160,9 +160,9 @@ export class CollapsibleSectionComponent
 
         this.zone.runOutsideAngular(() => {
           setTimeout(() => {
-            this.hasFooterContent = !this.DOM.isEmpty(
-              this.footerContent.nativeElement
-            );
+            this.hasFooterContent =
+              this.footerContent &&
+              !this.DOM.isEmpty(this.footerContent.nativeElement);
             if (!this.cd['destroyed']) {
               this.cd.detectChanges();
             }

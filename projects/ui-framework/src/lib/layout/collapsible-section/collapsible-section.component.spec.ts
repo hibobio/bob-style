@@ -1,9 +1,12 @@
-import { ComponentFixture, async, TestBed } from '@angular/core/testing';
 import {
-  NO_ERRORS_SCHEMA,
-  Component,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+  ComponentFixture,
+  async,
+  TestBed,
+  fakeAsync,
+  tick,
+  flush,
+} from '@angular/core/testing';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { CollapsibleSectionComponent } from './collapsible-section.component';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -56,11 +59,13 @@ describe('CollapsibleSectionComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(TestComponent);
         component = fixture.componentInstance;
-        fixture.detectChanges();
 
         collapsibleComponent = fixture.debugElement.query(
           By.css('b-collapsible-section')
         ).componentInstance;
+
+        collapsibleComponent.title = 'Section title';
+        fixture.detectChanges();
 
         collapsibleSection = elementFromFixture(fixture, '.bcp-section');
         collapsibleHeader = elementFromFixture(fixture, '.bcp-header');
@@ -73,7 +78,6 @@ describe('CollapsibleSectionComponent', () => {
     let descElement: HTMLElement;
 
     beforeEach(() => {
-      collapsibleComponent.title = 'Title';
       collapsibleComponent.description = 'Description';
       fixture.detectChanges();
 
@@ -165,8 +169,9 @@ describe('CollapsibleSectionComponent', () => {
       expect(collapsibleComponent.opened.emit).toHaveBeenCalled();
     });
 
-    it('should expand panel on header click and emit Opened event', () => {
+    it('should expand panel on header click and emit Opened event', fakeAsync(() => {
       emitNativeEvent(collapsibleHeader, 'click');
+      tick(500);
       fixture.detectChanges();
       collapsiblePanel = elementFromFixture(fixture, '.bcp-panel');
 
@@ -174,7 +179,9 @@ describe('CollapsibleSectionComponent', () => {
       expect(collapsibleSection.classList).toContain('bcp-section-expanded');
       expect(collapsiblePanel.classList).toContain('bcp-panel-expanded');
       expect(collapsibleComponent.opened.emit).toHaveBeenCalled();
-    });
+
+      flush();
+    }));
 
     it('should collapse panel on header click and emit Closed event', () => {
       emitNativeEvent(collapsibleHeader, 'click');
