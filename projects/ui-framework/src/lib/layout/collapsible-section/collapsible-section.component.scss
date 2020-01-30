@@ -16,7 +16,6 @@ p {
 
 .bcp-section {
   background-color: white;
-  overflow: hidden;
 
   @include desktop {
     border-radius: $border-radius;
@@ -46,6 +45,11 @@ p {
 
 .bcp-header {
   padding: times8(2) times8(4);
+
+  @include desktop {
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+  }
 }
 
 .bcp-header,
@@ -134,6 +138,11 @@ p {
 
 .bcp-panel {
   border-top: 1px solid $bcp-border-color;
+
+  @include desktop {
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+  }
 
   &:first-child {
     border-top: 0;
