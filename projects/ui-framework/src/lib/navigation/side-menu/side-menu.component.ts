@@ -10,12 +10,22 @@ export class SideMenuComponent {
   @Input() options: SideMenuOption[];
   @Input() selectedId: number | string = null;
   @Input() headerLabel: string;
-  @Output() selectOption: EventEmitter<number> = new EventEmitter<number>();
+
+  @Output() selectOption: EventEmitter<number | string> = new EventEmitter<
+    number | string
+  >();
 
   constructor() {}
 
-  onSelectOption(id: number): void {
+  public onSelectOption(id: number | string): void {
     this.selectedId = id;
     this.selectOption.emit(id);
+  }
+
+  public trackBy(index: number, item: SideMenuOption): string {
+    return (
+      (item.id !== undefined && item.id + '') ||
+      (item.displayName || '') + index
+    );
   }
 }

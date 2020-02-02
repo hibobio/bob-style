@@ -1,32 +1,42 @@
 @import '../../style/common-imports';
 
 :host {
+  display: block;
   text-align: left;
-  --font-size: #{$font-size-body};
-  --line-height: #{$line-height-body};
+  @include b-body($weight: null, $addCssVars: true, $font-family: null);
 }
 
-.menu-header {
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid $grey-500;
-  min-height: 36px;
-}
-
-.menu-options-wrapper,
+.menu-options,
 .menu-header {
   width: $sidebar-width;
 }
 
-.header-label {
+.menu-header,
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+.menu-header {
+  border-bottom: 1px solid $grey-500;
+  min-height: 36px;
+}
+
+.header-title {
   flex-grow: 1;
   text-transform: uppercase;
   font-weight: 700;
   margin: 0;
 }
 
-.header-actions-wrapper {
+.header-actions {
   justify-self: end;
+}
+
+.menu-options {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 :host ::ng-deep .option-display-name {

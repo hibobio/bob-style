@@ -1,13 +1,15 @@
 <div class="menu-header">
-  <h4 class="header-label">{{ headerLabel }}</h4>
-  <div class="header-actions-wrapper">
+  <h4 class="header-title">{{ headerLabel }}</h4>
+  <div class="header-actions">
     <ng-content></ng-content>
   </div>
 </div>
-<div class="menu-options-wrapper">
-  <b-side-menu-option *ngFor="let option of options"
-                      [option]="option"
-                      [selected]="option.id === selectedId"
-                      (selectOption)="onSelectOption($event)">
-  </b-side-menu-option>
-</div>
+
+<ul class="menu-options">
+  <li b-side-menu-option
+      *ngFor="let option of options; trackBy: trackBy"
+      [option]="option"
+      [ngClass]="{'selected': option.id === selectedId}"
+      (click)="onSelectOption(option)">
+  </li>
+</ul>

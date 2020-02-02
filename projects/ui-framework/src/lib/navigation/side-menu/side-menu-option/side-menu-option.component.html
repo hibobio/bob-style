@@ -1,8 +1,4 @@
-<div class="side-menu-option-container"
-     [ngClass]="{'selected': selected}"
-     (click)="onSelectOption()"
-     (mouseenter)="setShowActions(true)"
-     (mouseleave)="setShowActions(false)">
+<div class="side-menu-option-container">
 
   <b-icon *ngIf="option.icon"
           [icon]="option.icon"
@@ -15,22 +11,20 @@
     {{option.displayName}}
   </b-truncate-tooltip>
 
-  <div class="option-actions"
-       *ngIf="option.actions?.length"
-       [ngStyle]="{'opacity': (showActions || selected || menuOpened) ? 1 : 0}">
+  <b-menu class="option-actions"
+          *ngIf="option.actions?.length"
+          [ngStyle]="{'opacity': (showActions || selected || menuOpened) ? 1 : 0}"
+          [menu]="option.actions"
+          (click)="$event.stopPropagation(); menuOpened = true"
+          (closeMenu)="menuOpened = false">
 
-    <b-menu [menu]="option.actions"
-            (click)="$event.stopPropagation(); menuOpened = true"
-            (closeMenu)="menuOpened = false">
+    <b-square-button menu-trigger
+                     [type]="types.tertiary"
+                     [icon]="icons.three_dots_vert"
+                     [color]="colors.normal">
+    </b-square-button>
 
-      <b-square-button menu-trigger
-                       [type]="types.tertiary"
-                       [icon]="icons.three_dots_vert"
-                       [color]="colors.normal">
-      </b-square-button>
+  </b-menu>
 
-    </b-menu>
-
-  </div>
 
 </div>

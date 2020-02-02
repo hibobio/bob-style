@@ -4,7 +4,7 @@ import { IconColor, Icons } from '../../../icons/icons.enum';
 import { ButtonType } from '../../../buttons/buttons.enum';
 
 @Component({
-  selector: 'b-side-menu-option',
+  selector: 'b-side-menu-option, [b-side-menu-option]',
   templateUrl: './side-menu-option.component.html',
   styleUrls: ['./side-menu-option.component.scss'],
 })
