@@ -1,12 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  boolean,
-  select,
-  text,
-  array,
-  object,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { CollapsibleSectionModule } from './collapsible-section.module';

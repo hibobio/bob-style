@@ -53,7 +53,7 @@
 
   </span>
 
-  <span *ngIf="!isInputEmpty()"
+  <span [hidden]="isInputEmpty()"
         class="bfe-suffix">
     <b-icon class="clear-input"
             role="button"

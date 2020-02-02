@@ -97,7 +97,8 @@ describe('DateRangePickerComponent', () => {
 
   describe('OnInit', () => {
     it('should not display clear buttons when inputs are empty', () => {
-      expect(iconElems.length).toEqual(0);
+      expect(iconElems[0].parentElement.parentElement.hidden).toBeTruthy();
+      expect(iconElems[1].parentElement.parentElement.hidden).toBeTruthy();
     });
   });
 

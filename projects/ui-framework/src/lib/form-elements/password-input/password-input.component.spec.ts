@@ -24,9 +24,9 @@ describe('PasswordInputComponent', () => {
         NoopAnimationsModule,
         CommonModule,
         InputMessageModule,
-        IconsModule
+        IconsModule,
       ],
-      providers: [EventManagerPlugins[0]]
+      providers: [EventManagerPlugins[0]],
     })
       .compileComponents()
       .then(() => {
@@ -37,7 +37,7 @@ describe('PasswordInputComponent', () => {
           .nativeElement;
 
         spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => { });
+        component.changed.subscribe(() => {});
         spyOn(component, 'propagateChange');
       });
   }));
@@ -46,29 +46,29 @@ describe('PasswordInputComponent', () => {
     component.changed.complete();
   });
 
-
   describe('InputEvent', () => {
     it('should adjust text', () => {
       inputValue(inputElement, 'text', false);
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
-        value: 'text'
+        value: 'text',
       });
       expect(component.propagateChange).toHaveBeenCalledWith('text');
     });
   });
 
   describe('show button', () => {
-    it('should start with show button hidden', () => {
+    beforeEach(() => {
       showButtonElement = fixture.debugElement.query(By.css('.bfe-suffix'));
-      expect(showButtonElement).toBeFalsy();
+    });
+    it('should start with show button hidden', () => {
+      expect(showButtonElement.nativeElement.hidden).toBeTruthy();
     });
     it('should show the button when input has text; icon should have class .b-icon-visibility-on', () => {
       inputValue(inputElement, 'text', false);
       fixture.detectChanges();
-      showButtonElement = fixture.debugElement.query(By.css('.bfe-suffix'));
       showButtonIconElement = fixture.debugElement.query(By.css('.b-icon'));
-      expect(showButtonElement).toBeTruthy();
+      expect(showButtonElement.nativeElement.hidden).toBeFalsy();
       expect(showButtonIconElement.nativeElement.classList).toContain(
         'b-icon-visibility-on'
       );
@@ -85,7 +85,7 @@ describe('PasswordInputComponent', () => {
       inputValue(inputElement, 'text', false);
       fixture.detectChanges();
       expect(inputElement.getAttribute('type')).toEqual('password');
-      showButtonElement = fixture.debugElement.query(By.css('.bfe-suffix'));
+      showButtonElement = fixture.debugElement.query(By.css('.show-passwrd'));
       showButtonIconElement = fixture.debugElement.query(By.css('.b-icon'));
       showButtonElement.nativeElement.click();
       fixture.detectChanges();

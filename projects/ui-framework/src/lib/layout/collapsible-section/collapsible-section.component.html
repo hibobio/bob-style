@@ -1,4 +1,4 @@
-<section class="bcp-section"
+<section class="{{panelID}} bcp-section"
          [attr.aria-disabled]="disabled || null"
          [ngClass]="{
           'bcp-section-collapsible': collapsible,
@@ -9,7 +9,7 @@
          }">
 
   <header *ngIf="title || hasHeaderContent"
-          class="bcp-header"
+          class="{{panelID}} bcp-header"
           [attr.id]="panelID+'-header'"
           [attr.aria-controls]="(collapsible && panelID) || null"
           [attr.aria-expanded]="(collapsible && expanded) || null"
@@ -20,7 +20,7 @@
           (click)="togglePanel()">
 
     <div *ngIf="title"
-         class="bcp-title-wrap"
+         class="{{panelID}} bcp-title-wrap"
          [ngClass]="{'bcp-title-wrap-column': options?.titlesAsColumn}">
 
       <h4 class="bcp-title"
@@ -40,7 +40,7 @@
 
   </header>
 
-  <div class="bcp-panel"
+  <div class="{{panelID}} bcp-panel"
        *ngIf="!collapsible || expanded || contentLoaded"
        [ngClass]="{
          'bcp-panel-collapsed': collapsible && !expanded,
@@ -49,14 +49,14 @@
        }"
        [attr.id]="panelID"
        [attr.aria-labelledby]="panelID+'-header'">
-    <div class="bcp-panel-content-wrap"
+    <div class="{{panelID}} bcp-panel-content-wrap"
          #panelContent>
       <ng-content></ng-content>
     </div>
 
     <footer *ngIf="hasFooterContent"
             #footerContent
-            class="bcp-panel-footer">
+            class="{{panelID}} bcp-panel-footer">
       <ng-content select="[footer]"></ng-content>
     </footer>
   </div>

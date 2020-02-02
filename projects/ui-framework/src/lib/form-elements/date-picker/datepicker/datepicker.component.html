@@ -37,9 +37,10 @@
          [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
          [disabled]="disabled"
          [required]="required"
-         (click)="openPicker()"
+         (click)="$event.stopPropagation(); openPicker()"
          (focus)="onInputFocus()"
          (blur)="onInputBlur()"
+         (mousedown.outside-zone)="onInputMouseDown($event)"
          (keydown.outside-zone)="onInputKeydown($event)">
 
   <input type="text"
@@ -53,7 +54,7 @@
          [min]="minDate || null"
          [max]="maxDate || null">
 
-  <span *ngIf="!isInputEmpty()"
+  <span [hidden]="isInputEmpty()"
         class="bfe-suffix">
     <b-icon class="clear-input"
             role="button"

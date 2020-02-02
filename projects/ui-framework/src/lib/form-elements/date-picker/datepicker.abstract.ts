@@ -139,7 +139,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   private doneFirstChange = false;
   private useFormatForPlaceholder = false;
 
-  protected doOnPickerOpen(picker: MatDatepicker<any>): void {}
+  protected doOnPickerOpen(picker: MatDatepicker<any>): void { }
 
   ngOnInit(): void {
     this.resizeSubscription = fromEvent(this.windowRef.nativeWindow, 'resize')
@@ -322,6 +322,12 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       this.inputFocused[index] = false;
     }
     this.allowInputBlur = false;
+  }
+
+  public onInputMouseDown(event: MouseEvent): void {
+    if (event.button === 2) {
+      event.preventDefault();
+    }
   }
 
   public onInputKeydown(event: KeyboardEvent, index: number = 0): void {

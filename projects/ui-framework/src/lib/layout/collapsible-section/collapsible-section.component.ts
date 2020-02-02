@@ -49,7 +49,6 @@ export class CollapsibleSectionComponent
     private colorService: ColorService
   ) {}
 
-  public panelID = simpleUID('bcp-');
   public hasHeaderContent = true;
   public hasPanelContent = true;
   public hasFooterContent = true;
@@ -58,6 +57,7 @@ export class CollapsibleSectionComponent
   private contentHeight = 0;
   private resizeSubscription: Subscription;
 
+  @Input() panelID = simpleUID('bcp-');
   @Input() collapsible = false;
 
   @Input() expanded = false;
@@ -132,6 +132,11 @@ export class CollapsibleSectionComponent
         this.hasHeaderContent = !this.DOM.isEmpty(
           this.headerContent.nativeElement
         );
+        if (!this.collapsible) {
+          this.hasFooterContent =
+            this.footerContent &&
+            !this.DOM.isEmpty(this.footerContent.nativeElement);
+        }
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
         }
@@ -155,9 +160,9 @@ export class CollapsibleSectionComponent
 
         this.zone.runOutsideAngular(() => {
           setTimeout(() => {
-            this.hasFooterContent = !this.DOM.isEmpty(
-              this.footerContent.nativeElement
-            );
+            this.hasFooterContent =
+              this.footerContent &&
+              !this.DOM.isEmpty(this.footerContent.nativeElement);
             if (!this.cd['destroyed']) {
               this.cd.detectChanges();
             }

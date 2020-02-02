@@ -44,7 +44,8 @@
            (click)="openPicker(0)"
            (focus)="onInputFocus(0)"
            (blur)="onInputBlur(0)"
-           (keydown.outside-zone)="onInputKeydown($event,0)">
+           (mousedown.outside-zone)="onInputMouseDown($event)"
+           (keydown.outside-zone)="onInputKeydown($event, 0)">
 
     <input type="text"
            class="dpi-ghost-input"
@@ -57,10 +58,9 @@
            [min]="minDate || null"
            [max]="value?.endDate || maxDate || null">
 
-    <span *ngIf="!isInputEmpty(0)"
+    <span [hidden]="isInputEmpty(0)"
           class="bfe-suffix">
-      <b-icon *ngIf="!isInputEmpty(0)"
-              class="clear-input"
+      <b-icon class="clear-input"
               role="button"
               [icon]="icons.reset_x"
               [size]="iconSize.small"
@@ -100,7 +100,8 @@
            (click)="openPicker(1)"
            (focus)="onInputFocus(1)"
            (blur)="onInputBlur(1)"
-           (keydown.outside-zone)="onInputKeydown($event,1)">
+           (mousedown.outside-zone)="onInputMouseDown($event)"
+           (keydown.outside-zone)="onInputKeydown($event, 1)">
 
     <input type="text"
            class="dpi-ghost-input"
@@ -113,7 +114,7 @@
            [min]="value?.startDate || minDate || null"
            [max]="maxDate || null">
 
-    <span *ngIf="!isInputEmpty(1)"
+    <span [hidden]="isInputEmpty(1)"
           class="bfe-suffix">
       <b-icon class="clear-input"
               role="button"
