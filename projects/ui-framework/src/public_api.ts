@@ -17,6 +17,16 @@ export * from './lib/consts';
 
 // Typography Module
 export { TypographyModule } from './lib/typography/typography.module';
+export { Display1Component } from './lib/typography/display-1/display-1.component';
+export { Display2Component } from './lib/typography/display-2/display-2.component';
+export { Display3Component } from './lib/typography/display-3/display-3.component';
+export { Display4Component } from './lib/typography/display-4/display-4.component';
+export { HeadingComponent } from './lib/typography/heading/heading.component';
+export { SubHeadingComponent } from './lib/typography/subheading/subheading.component';
+export { CaptionComponent } from './lib/typography/caption/caption.component';
+export { BigBodyComponent } from './lib/typography/big-body/big-body.component';
+export { BoldBodyComponent } from './lib/typography/bold-body/bold-body.component';
+export { BodyComponent } from './lib/typography/body/body.component';
 // LabelValue Module
 export { LabelValueModule } from './lib/typography/label-value/label-value.module';
 export { LabelValueComponent } from './lib/typography/label-value/label-value.component';
