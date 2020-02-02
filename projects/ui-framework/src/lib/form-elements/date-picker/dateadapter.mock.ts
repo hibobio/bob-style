@@ -107,6 +107,10 @@ export class BDateAdapterMock extends NativeDateAdapter {
         return date.toDateString();
     }
   }
+
+  getFirstDayOfWeek(): number {
+    return 1;
+  }
 }
 
 export const B_DATE_FORMATS = {
