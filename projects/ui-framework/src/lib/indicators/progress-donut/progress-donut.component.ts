@@ -21,17 +21,20 @@ import {
 import { valueAsNumber } from '../../services/utils/transformers';
 import { UtilsService } from '../../services/utils/utils.service';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { ProgressBarType, ProgressBarSize } from './progress-bar.enum';
+import { ProgressDonutType, ProgressDonutSize } from './progress-donut.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { ProgressBarData, ProgressBarConfig } from './progress-bar.interface';
+import {
+  ProgressDonutData,
+  ProgressDonutConfig,
+} from './progress-donut.interface';
 
 @Component({
-  selector: 'b-progress-bar',
-  templateUrl: './progress-bar.component.html',
-  styleUrls: ['./progress-bar.component.scss'],
+  selector: 'b-progress-donut',
+  templateUrl: './progress-donut.component.html',
+  styleUrls: ['./progress-donut.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProgressBarComponent implements OnChanges, OnInit {
+export class ProgressDonutComponent implements OnChanges, OnInit {
   constructor(
     private host: ElementRef,
     private utilsService: UtilsService,
@@ -40,18 +43,22 @@ export class ProgressBarComponent implements OnChanges, OnInit {
     private cd: ChangeDetectorRef
   ) {}
 
-  @HostBinding('attr.data-type') @Input() type: ProgressBarType =
-    ProgressBarType.primary;
-  @HostBinding('attr.data-size') @Input() size: ProgressBarSize =
-    ProgressBarSize.medium;
+  @HostBinding('attr.data-type') @Input() type: ProgressDonutType =
+    ProgressDonutType.primary;
+  @HostBinding('attr.data-size') @Input() size: ProgressDonutSize =
+    ProgressDonutSize.medium;
 
-  @Input() data: ProgressBarData = {} as ProgressBarData;
-  @Input() config: ProgressBarConfig = {};
+  @Input() data: ProgressDonutData = {} as ProgressDonutData;
+  @Input() config: ProgressDonutConfig = {};
 
   private wasInView = false;
 
   readonly id = simpleUID('bpb-');
-  readonly barType = ProgressBarType;
+  readonly barType = ProgressDonutType;
+
+  readonly diameter = 60;
+  readonly stroke = 4;
+  readonly dasharray = 2 * Math.PI * (this.diameter / 2 - 10);
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
@@ -98,7 +105,7 @@ export class ProgressBarComponent implements OnChanges, OnInit {
           ? this.data.value + '%'
           : null,
       '--bpb-color':
-        (this.type !== ProgressBarType.secondary && this.data.color) || null,
+        (this.type !== ProgressDonutType.secondary && this.data.color) || null,
       '--bpb-trans': this.config.disableAnimation
         ? '0s'
         : (this.data.value > 50

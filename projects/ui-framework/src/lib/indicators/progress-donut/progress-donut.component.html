@@ -1,0 +1,12 @@
+<svg class="count-down-progress"
+     [attr.height]="diameter"
+     [attr.width]="diameter"
+     [attr.viewbox]="'0 0 ' + diameter + ' ' + diameter">
+  <circle class="count-down-progress-circle"
+          [attr.cx]="diameter/2"
+          [attr.cy]="diameter/2"
+          [attr.r]="(diameter/2 -10)"
+          [attr.stroke-dasharray]="dasharray"
+          [attr.stroke-dashoffset]="dasharray"
+          [attr.stroke-width]="stroke"></circle>
+</svg>
