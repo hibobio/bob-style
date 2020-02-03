@@ -9,7 +9,7 @@ export interface BadgeConfig {
 }
 
 export interface Avatar {
-  imageSource: string;
+  imageSource?: string;
   backgroundColor?: string;
   size?: AvatarSize;
   title?: string;

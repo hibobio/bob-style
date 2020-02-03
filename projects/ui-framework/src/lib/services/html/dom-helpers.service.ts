@@ -198,22 +198,28 @@ export class DOMhelpers {
     test: string | Function,
     rtrn: 'element' | 'result' = 'element'
   ): any {
-    if (typeof test === 'string') {
-      const sel = test as string;
-      if (!element.matches(sel + ' ' + element.tagName)) {
-        return null;
-      }
-      test = (el: HTMLElement): boolean => el.matches(sel);
+    if (!element || !test) {
+      return null;
+    }
+    if (isString(test)) {
+      return element.closest(test as string);
     }
     while (
-      !test(element) &&
+      !(test as Function)(element) &&
       element !== document.documentElement &&
       element.parentElement
     ) {
       element = element.parentElement;
     }
-    test = test(element);
+    test = (test as Function)(element);
     return { element: test ? element : null, result: test }[rtrn];
+  }
+
+  // TODO: Add Test
+  public getElementIndex(element: HTMLElement): number {
+    return (
+      element && Array.from(element.parentElement.children).indexOf(element)
+    );
   }
 
   // Similar to [ngClass] binding.

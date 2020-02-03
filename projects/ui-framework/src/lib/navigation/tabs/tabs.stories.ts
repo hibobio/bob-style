@@ -3,7 +3,7 @@ import {
   number,
   object,
   select,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { TabsModule } from './tabs.module';
@@ -13,27 +13,26 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { Tab } from './tabs.interface';
 import { TabsType } from './tabs.enum';
 
-const story = storiesOf(
-  ComponentGroupType.Navigation,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(
+  withKnobs
+);
 
 const tabs: Tab[] = [
   {
     label: 'Add new hire',
-    key: 'add.new.hire'
+    key: 'add.new.hire',
   },
   {
     label: 'Employee changes',
-    key: 'employee.changes'
+    key: 'employee.changes',
   },
   {
     label: 'Leave',
-    key: 'leave'
+    key: 'leave',
   },
   {
-    label: 'Termination'
-  }
+    label: 'Termination',
+  },
 ];
 const template = `
 <b-tabs
@@ -85,11 +84,11 @@ story.add(
           selectClick(e);
         },
         selectChange: action('selectChange'),
-        selectedIndex: number('selectedIndex', 0, 0)
+        selectedIndex: number('selectedIndex', 0, 0),
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, TabsModule, StoryBookLayoutModule]
-      }
+        imports: [BrowserAnimationsModule, TabsModule, StoryBookLayoutModule],
+      },
     };
   },
   { notes: { markdown: note } }

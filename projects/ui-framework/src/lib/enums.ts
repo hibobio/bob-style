@@ -88,6 +88,7 @@ export enum NativeEvents {
   touchenter = 'touchenter',
   touchleave = 'touchleave',
   touchcancel = 'touchcancel',
+  focusin = 'focusin',
   focusout = 'focusout',
 }
 

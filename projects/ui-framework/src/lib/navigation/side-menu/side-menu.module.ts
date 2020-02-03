@@ -1,21 +1,23 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Directive, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SideMenuComponent } from './side-menu.component';
-import { SideMenuOptionComponent } from './side-menu-option/side-menu-option.component';
 import { MenuModule } from '../menu/menu.module';
 import { IconsModule } from '../../icons/icons.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
 
 @NgModule({
-  declarations: [SideMenuComponent, SideMenuOptionComponent],
+  declarations: [SideMenuComponent],
   imports: [
     CommonModule,
-    IconsModule,
     MenuModule,
     TruncateTooltipModule,
     ButtonsModule,
+    AvatarModule,
   ],
   exports: [SideMenuComponent],
+  providers: [EventManagerPlugins[0]],
 })
 export class SideMenuModule {}

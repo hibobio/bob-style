@@ -1,5 +1,9 @@
 @import '../../style/common-imports';
 
+$side-menu-item-height: 36px;
+$side-menu-avatar-height: 50px;
+$side-menu-selected-border: 4px;
+
 :host {
   display: block;
   text-align: left;
@@ -39,6 +43,83 @@
   margin: 0;
 }
 
-:host ::ng-deep .option-display-name {
+// Option
+
+.menu-option {
+  min-height: $side-menu-item-height;
+  padding: 0 8px 0 (16px - $side-menu-selected-border);
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  border-left: $side-menu-selected-border solid transparent;
+  user-select: none;
+
+  &:hover,
+  &:focus,
+  &.focused {
+    background-color: $grey-200;
+  }
+
+  &.selected {
+    border-left-color: $color-select-red;
+    background-color: $grey-300;
+
+    .option-display-name {
+      font-weight: 700;
+    }
+  }
+
+  &.has-menu {
+    padding-right: 0;
+  }
+}
+
+.option-display-name {
+  margin: 0;
   flex-grow: 1;
+}
+
+.option-actions {
+  margin-left: auto;
+}
+
+.disabled {
+  @include disabled-state;
+}
+
+// Icon
+
+.menu-option:before {
+  margin-right: 8px;
+}
+
+// Avatar
+
+.option-avatar {
+  min-height: $side-menu-avatar-height;
+}
+
+:host::ng-deep .menu-option:not(.selected) {
+  .option-avatar {
+    .title {
+      font-weight: 400;
+    }
+    .subtitle {
+      color: $grey-600;
+    }
+  }
+}
+
+// menu
+
+.option-actions {
+  opacity: 0;
+}
+
+:host ::ng-deep {
+  .menu-option:hover .option-actions,
+  .menu-option.selected .option-actions,
+  .menu-option.focused .option-actions {
+    opacity: 1;
+  }
 }
