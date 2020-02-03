@@ -121,6 +121,12 @@ export class SideMenuComponent implements OnChanges {
     }
   }
 
+  public onMenuClose(menuItem: HTMLElement) {
+    this.focusedId = null;
+    this.cd.detectChanges();
+    menuItem.focus();
+  }
+
   public trackBy(index: number, item: SideMenuOption): string {
     return (
       (item.id !== undefined && item.id + '') ||

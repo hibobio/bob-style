@@ -13,7 +13,7 @@
 
   <li class="menu-option"
       *ngFor="let option of options; trackBy: trackBy"
-      #item
+      #menuItem
       [ngClass]="{
         'disabled': option.disabled,
         'focused': option.id === focusedId,
@@ -45,7 +45,7 @@
     <b-menu class="option-actions"
             *ngIf="option.actions?.length && !option.disabled"
             [menu]="option.actions"
-            (closeMenu)="focusedId = null; item.focus()">
+            (closeMenu)="onMenuClose(menuItem)">
       <b-square-button menu-trigger
                        [type]="buttonType.tertiary"
                        [icon]="icons.three_dots_vert"
