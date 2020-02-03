@@ -21,7 +21,7 @@ import {
 } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { ProgressBarConfig } from '../progress-bar/progress-bar.interface';
+import { ProgressBarConfig } from '../progress/progress-bar/progress-bar.interface';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import { filter, take } from 'rxjs/operators';
 import { valueAsNumber } from '../../services/utils/transformers';

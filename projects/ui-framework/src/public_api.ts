@@ -128,10 +128,10 @@ export { EmptyStateModule } from './lib/indicators/empty-state/empty-state.modul
 export { EmptyStateComponent } from './lib/indicators/empty-state/empty-state.component';
 export { EmptyStateConfig } from './lib/indicators/empty-state/empty-state.interface';
 // Progress Bar
-export * from './lib/indicators/progress-bar/progress-bar.enum';
-export * from './lib/indicators/progress-bar/progress-bar.interface';
-export { ProgressBarModule } from './lib/indicators/progress-bar/progress-bar.module';
-export { ProgressBarComponent } from './lib/indicators/progress-bar/progress-bar.component';
+export * from './lib/indicators/progress/progress-bar/progress-bar.enum';
+export * from './lib/indicators/progress/progress-bar/progress-bar.interface';
+export { ProgressBarModule } from './lib/indicators/progress/progress-bar/progress-bar.module';
+export { ProgressBarComponent } from './lib/indicators/progress/progress-bar/progress-bar.component';
 // Simple Bar Chart
 export * from './lib/indicators/simple-bar-chart/simple-bar-chart.interface';
 export { SimpleBarChartModule } from './lib/indicators/simple-bar-chart/simple-bar-chart.module';

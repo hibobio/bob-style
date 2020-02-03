@@ -17,12 +17,12 @@ import {
   simpleUID,
   numberMinMax,
   randomNumber,
-} from '../../services/utils/functional-utils';
-import { valueAsNumber } from '../../services/utils/transformers';
-import { UtilsService } from '../../services/utils/utils.service';
-import { outsideZone } from '../../services/utils/rxjs.operators';
+} from '../../../services/utils/functional-utils';
+import { valueAsNumber } from '../../../services/utils/transformers';
+import { UtilsService } from '../../../services/utils/utils.service';
+import { outsideZone } from '../../../services/utils/rxjs.operators';
 import { ProgressBarType, ProgressBarSize } from './progress-bar.enum';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { ProgressBarData, ProgressBarConfig } from './progress-bar.interface';
 
 @Component({

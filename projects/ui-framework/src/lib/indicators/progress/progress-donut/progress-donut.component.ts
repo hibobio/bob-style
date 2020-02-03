@@ -21,7 +21,7 @@ import {
 import { valueAsNumber } from '../../services/utils/transformers';
 import { UtilsService } from '../../services/utils/utils.service';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { ProgressDonutType, ProgressDonutSize } from './progress-donut.enum';
+import { ProgressDonutSize } from './progress-donut.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import {
   ProgressDonutData,
@@ -43,8 +43,6 @@ export class ProgressDonutComponent implements OnChanges, OnInit {
     private cd: ChangeDetectorRef
   ) {}
 
-  @HostBinding('attr.data-type') @Input() type: ProgressDonutType =
-    ProgressDonutType.primary;
   @HostBinding('attr.data-size') @Input() size: ProgressDonutSize =
     ProgressDonutSize.medium;
 
@@ -54,11 +52,10 @@ export class ProgressDonutComponent implements OnChanges, OnInit {
   private wasInView = false;
 
   readonly id = simpleUID('bpb-');
-  readonly barType = ProgressDonutType;
 
   readonly diameter = 60;
   readonly stroke = 4;
-  readonly dasharray = 2 * Math.PI * (this.diameter / 2 - 10);
+  readonly circumference = 2 * Math.PI * (this.diameter / 2);
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
@@ -104,8 +101,7 @@ export class ProgressDonutComponent implements OnChanges, OnInit {
         this.wasInView || this.config.disableAnimation
           ? this.data.value + '%'
           : null,
-      '--bpb-color':
-        (this.type !== ProgressDonutType.secondary && this.data.color) || null,
+      '--bpb-color': this.data.color || null,
       '--bpb-trans': this.config.disableAnimation
         ? '0s'
         : (this.data.value > 50

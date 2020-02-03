@@ -6,18 +6,18 @@ import {
   withKnobs,
   number,
 } from '@storybook/addon-knobs/angular';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { ComponentGroupType } from '../../../consts';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { ProgressBarModule } from './progress-bar.module';
 import {
   randomNumber,
   randomFromArray,
-} from '../../services/utils/functional-utils';
+} from '../../../services/utils/functional-utils';
 import { ProgressBarType, ProgressBarSize } from './progress-bar.enum';
-import { ColorService } from '../../services/color-service/color.service';
+import { ColorService } from '../../../services/color-service/color.service';
 
-import { Icons } from '../../icons/icons.enum';
-import { ButtonsModule } from '../../buttons/buttons.module';
+import { Icons } from '../../../icons/icons.enum';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs

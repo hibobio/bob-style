@@ -1,4 +1,4 @@
-import { Icons } from '../../icons/icons.enum';
+import { Icons } from '../../../icons/icons.enum';
 
 export interface ProgressBarData {
   value: number;
