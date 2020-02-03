@@ -1,8 +1,7 @@
-import { NgModule, Directive, OnInit } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SideMenuComponent } from './side-menu.component';
 import { MenuModule } from '../menu/menu.module';
-import { IconsModule } from '../../icons/icons.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
