@@ -216,6 +216,50 @@ export class DOMhelpers {
   }
 
   // TODO: Add Test
+  public getSibling(
+    element: HTMLElement,
+    selector: string = null,
+    which: 'next' | 'prev' = 'next'
+  ): HTMLElement {
+    if (!element) {
+      return null;
+    }
+    let sibling: HTMLElement =
+      which === 'prev'
+        ? (element.previousElementSibling as HTMLElement)
+        : (element.nextElementSibling as HTMLElement);
+    if (!selector) {
+      return sibling;
+    }
+    while (sibling) {
+      if (sibling.matches(selector)) {
+        return sibling;
+      }
+      sibling =
+        which === 'prev'
+          ? (sibling.previousElementSibling as HTMLElement)
+          : (sibling.nextElementSibling as HTMLElement);
+    }
+    return null;
+  }
+
+  // TODO: Add Test
+  public getNextSibling(
+    element: HTMLElement,
+    selector: string = null
+  ): HTMLElement {
+    return this.getSibling(element, selector, 'next');
+  }
+
+  // TODO: Add Test
+  public getPrevSibling(
+    element: HTMLElement,
+    selector: string = null
+  ): HTMLElement {
+    return this.getSibling(element, selector, 'prev');
+  }
+
+  // TODO: Add Test
   public getElementIndex(element: HTMLElement): number {
     return (
       element && Array.from(element.parentElement.children).indexOf(element)

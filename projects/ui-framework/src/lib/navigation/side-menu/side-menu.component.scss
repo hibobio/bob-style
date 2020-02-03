@@ -72,6 +72,11 @@ $side-menu-selected-border: 4px;
   &.has-menu {
     padding-right: 0;
   }
+
+  &.disabled {
+    background-color: none;
+    @include disabled-state;
+  }
 }
 
 .option-display-name {
@@ -81,10 +86,6 @@ $side-menu-selected-border: 4px;
 
 .option-actions {
   margin-left: auto;
-}
-
-.disabled {
-  @include disabled-state;
 }
 
 // Icon
