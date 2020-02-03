@@ -4,26 +4,19 @@ import {
   Input,
   ElementRef,
   NgZone,
-  SimpleChanges,
   OnChanges,
   HostBinding,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { filter, take } from 'rxjs/operators';
 import {
-  applyChanges,
-  notFirstChanges,
   simpleUID,
-  numberMinMax,
   randomNumber,
 } from '../../../services/utils/functional-utils';
-import { valueAsNumber } from '../../../services/utils/transformers';
 import { UtilsService } from '../../../services/utils/utils.service';
-import { outsideZone } from '../../../services/utils/rxjs.operators';
-import { ProgressBarType, ProgressBarSize } from './progress-bar.enum';
+import { ProgressBarType } from '../progress.enum';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
-import { ProgressBarData, ProgressBarConfig } from './progress-bar.interface';
+import { BaseProgressElement } from '../progress-element.abstract';
 
 @Component({
   selector: 'b-progress-bar',
@@ -31,67 +24,25 @@ import { ProgressBarData, ProgressBarConfig } from './progress-bar.interface';
   styleUrls: ['./progress-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProgressBarComponent implements OnChanges, OnInit {
+export class ProgressBarComponent extends BaseProgressElement
+  implements OnChanges, OnInit {
   constructor(
-    private host: ElementRef,
-    private utilsService: UtilsService,
-    private DOM: DOMhelpers,
-    private zone: NgZone,
-    private cd: ChangeDetectorRef
-  ) {}
+    protected host: ElementRef,
+    protected utilsService: UtilsService,
+    protected DOM: DOMhelpers,
+    protected zone: NgZone,
+    protected cd: ChangeDetectorRef
+  ) {
+    super(host, utilsService, DOM, zone, cd);
+  }
 
   @HostBinding('attr.data-type') @Input() type: ProgressBarType =
     ProgressBarType.primary;
-  @HostBinding('attr.data-size') @Input() size: ProgressBarSize =
-    ProgressBarSize.medium;
-
-  @Input() data: ProgressBarData = {} as ProgressBarData;
-  @Input() config: ProgressBarConfig = {};
-
-  private wasInView = false;
 
   readonly id = simpleUID('bpb-');
   readonly barType = ProgressBarType;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes);
-
-    if (changes.data) {
-      this.data.value = numberMinMax(
-        valueAsNumber(true, this.data.value, 0),
-        0,
-        100
-      );
-    }
-
-    if (notFirstChanges(changes)) {
-      this.setCssProps();
-    }
-
-    if (notFirstChanges(changes) && !this.cd['destroyed']) {
-      this.cd.detectChanges();
-    }
-  }
-
-  ngOnInit() {
-    if (!this.config.disableAnimation) {
-      this.utilsService
-        .getElementInViewEvent(this.host.nativeElement)
-        .pipe(
-          outsideZone(this.zone),
-          filter(i => Boolean(i)),
-          take(1)
-        )
-        .subscribe(() => {
-          this.wasInView = true;
-          this.setCssProps();
-        });
-    } else {
-      this.setCssProps();
-    }
-  }
-
-  private setCssProps(): void {
+  protected setCssProps(): void {
     this.DOM.setCssProps(this.host.nativeElement, {
       '--bpb-value':
         this.wasInView || this.config.disableAnimation

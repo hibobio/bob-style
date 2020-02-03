@@ -3,7 +3,7 @@ export enum ProgressBarType {
   secondary = 'secondary',
 }
 
-export enum ProgressBarSize {
+export enum ProgressSize {
   small = 'small',
   medium = 'medium',
   large = 'large',

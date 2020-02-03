@@ -13,7 +13,7 @@ import {
   randomNumber,
   randomFromArray,
 } from '../../../services/utils/functional-utils';
-import { ProgressBarType, ProgressBarSize } from './progress-bar.enum';
+import { ProgressBarType, ProgressSize } from '../progress.enum';
 import { ColorService } from '../../../services/color-service/color.service';
 
 import { Icons } from '../../../icons/icons.enum';
@@ -112,7 +112,7 @@ const examples2 = `
 
 const template3 = `
   <b-progress-bar [type]="progressBarType.primary"
-                  [size]="progressBarSize.large"
+                  [size]="progressSize.large"
                   [data]="{
                     color: color4,
                     value: value4
@@ -159,7 +159,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   [type] | ProgressBarType | theme | primary
-  [size] | ProgressBarSize | theme size | medium
+  [size] | ProgressSize | theme size | medium
   [data] | ProgressBarData | \`\`\`color: string\`\`\` - bar color,<br>\
   \`\`\`value: number\`\`\` -  progress value (0-100),<br>\
   \`\`\`headerTextPrimary: string / boolean\`\`\` - text \
@@ -239,7 +239,7 @@ headerTextPrimary = false
 hideValue = true`,
 
         progressBarType: ProgressBarType,
-        progressBarSize: ProgressBarSize,
+        progressSize: ProgressSize,
 
         color1: ColorService.prototype.randomColor(),
         color2: ColorService.prototype.randomColor(),
@@ -266,11 +266,7 @@ hideValue = true`,
           Object.values(ProgressBarType),
           ProgressBarType.primary
         ),
-        size: select(
-          'size',
-          Object.values(ProgressBarSize),
-          ProgressBarSize.medium
-        ),
+        size: select('size', Object.values(ProgressSize), ProgressSize.medium),
         color: select(
           'color',
           ['#9d9d9d', '#ff962b', '#f8bc20', '#17b456', '#e52c51', '#4b95ec'],

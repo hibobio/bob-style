@@ -1,13 +1,20 @@
 import { storiesOf } from '@storybook/angular';
-import { text, select, boolean, withKnobs, number, object } from '@storybook/addon-knobs/angular';
+import { boolean, withKnobs, object } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { SimpleBarChartModule } from './simple-bar-chart.module';
-import { simpleBarChartMockData, simpleBarChartMockData2 } from './simple-bar-chart.mock';
+import {
+  simpleBarChartMockData,
+  simpleBarChartMockData2,
+} from './simple-bar-chart.mock';
 
-const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
+  withKnobs
+);
 
-const story2 = storiesOf(ComponentGroupType.Charts, module).addDecorator(withKnobs);
+const story2 = storiesOf(ComponentGroupType.Charts, module).addDecorator(
+  withKnobs
+);
 
 const template = `
   <b-simple-bar-chart [data]="data"
@@ -47,7 +54,7 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   [data] | SimpleBarChartItem[] | array of items data
-  [config] | ProgressBarConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation
+  [config] | ProgressConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation
 
   ~~~
   ${template}
@@ -71,11 +78,11 @@ const toAdd = () => ({
   props: {
     data2: simpleBarChartMockData2,
     data: object('data', simpleBarChartMockData),
-    disableAnimation: boolean('disableAnimation', false)
+    disableAnimation: boolean('disableAnimation', false),
   },
   moduleMetadata: {
-    imports: [StoryBookLayoutModule, SimpleBarChartModule]
-  }
+    imports: [StoryBookLayoutModule, SimpleBarChartModule],
+  },
 });
 
 story.add('Simple Bar Chart', toAdd, { notes: { markdown: note } });

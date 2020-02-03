@@ -6,25 +6,25 @@ import {
   withKnobs,
   number,
 } from '@storybook/addon-knobs/angular';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { ComponentGroupType } from '../../../consts';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { ProgressDonutModule } from './progress-donut.module';
 import {
   randomNumber,
   randomFromArray,
-} from '../../services/utils/functional-utils';
-import { ProgressDonutType, ProgressDonutSize } from './progress-donut.enum';
-import { ColorService } from '../../services/color-service/color.service';
+} from '../../../services/utils/functional-utils';
+import { ProgressSize } from '../progress.enum';
+import { ColorService } from '../../../services/color-service/color.service';
 
-import { Icons } from '../../icons/icons.enum';
-import { ButtonsModule } from '../../buttons/buttons.module';
+import { Icons } from '../../../icons/icons.enum';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
 );
 
 const template = `
-  <b-progress-donut [type]="type"
+  <b-progress-donut
                   [size]="size"
                   [data]="{
                     color: color,
@@ -41,7 +41,7 @@ const template = `
 `;
 
 const examples = `
-<b-progress-donut [type]="'primary'"
+<b-progress-donut
                 [size]="'medium'"
                 [data]="{
                   color: color2,
@@ -56,7 +56,7 @@ const examples = `
                 }">
 </b-progress-donut>
 <br><br>
-<b-progress-donut [type]="'primary'"
+<b-progress-donut
                 [size]="'large'"
                 [data]="{
                   color: color1,
@@ -73,7 +73,7 @@ const examples = `
 `;
 
 const examples2 = `
-  <b-progress-donut [type]="'secondary'"
+  <b-progress-donut
                   [data]="{
                     value: value3
                   }"
@@ -91,7 +91,7 @@ const examples2 = `
   <b-progress-donut style="max-width: 300px;"
                 [attr.data-tooltip]="smallBarTooltip"
                 data-tooltip-wrap="pre"
-                [type]="'primary'"
+
                 [size]="'small'"
                 [data]="{
                   color: color5,
@@ -112,7 +112,7 @@ const examples2 = `
 
 const template3 = `
   <b-progress-donut [type]="ProgressDonutType.primary"
-                  [size]="ProgressDonutSize.large"
+                  [size]="ProgressSize.large"
                   [data]="{
                     color: color4,
                     value: value4
@@ -158,8 +158,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [type] | ProgressDonutType | theme | primary
-  [size] | ProgressDonutSize | theme size | medium
+  [size] | ProgressSize | theme size | medium
   [data] | ProgressDonutData | \`\`\`color: string\`\`\` - bar color,<br>\
   \`\`\`value: number\`\`\` -  progress value (0-100),<br>\
   \`\`\`headerTextPrimary: string / boolean\`\`\` - text \
@@ -238,8 +237,7 @@ size = small
 headerTextPrimary = false
 hideValue = true`,
 
-        ProgressDonutType: ProgressDonutType,
-        ProgressDonutSize: ProgressDonutSize,
+        ProgressSize: ProgressSize,
 
         color1: ColorService.prototype.randomColor(),
         color2: ColorService.prototype.randomColor(),
@@ -261,16 +259,7 @@ hideValue = true`,
         icon2: randomFromArray(icons, 1),
         icon3: randomFromArray(icons, 1),
 
-        type: select(
-          'type',
-          Object.values(ProgressDonutType),
-          ProgressDonutType.primary
-        ),
-        size: select(
-          'size',
-          Object.values(ProgressDonutSize),
-          ProgressDonutSize.medium
-        ),
+        size: select('size', Object.values(ProgressSize), ProgressSize.medium),
         color: select(
           'color',
           ['#9d9d9d', '#ff962b', '#f8bc20', '#17b456', '#e52c51', '#4b95ec'],
