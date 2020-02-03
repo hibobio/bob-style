@@ -540,28 +540,3 @@ export const simpleUID = (
 
 export const isRenderedComponent = (obj: any): boolean =>
   hasProp(obj, 'component');
-
-import {
-  compose as _compose,
-  isArray as _isArray,
-  isPlainObject as _isPlainObject,
-  merge as _merge,
-  reduce as _reduce,
-  set as _set,
-  toPairs as _toPairs,
-} from 'lodash/fp';
-
-export const flatten = (obj, path = []) => {
-  return _isPlainObject(obj) || _isArray(obj)
-    ? _reduce(
-        (acc, [k, v]) => _merge(acc, flatten(v, [...path, k])),
-        {},
-        _toPairs(obj)
-      )
-    : { [path.join('.')]: obj };
-};
-
-export const unflatten = _compose(
-  _reduce((acc, [k, v]) => _set(k, v, acc), {}),
-  _toPairs
-);
