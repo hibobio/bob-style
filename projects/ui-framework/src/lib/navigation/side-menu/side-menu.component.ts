@@ -22,14 +22,14 @@ export class SideMenuComponent implements OnChanges {
   constructor(private DOM: DOMhelpers, private cd: ChangeDetectorRef) {}
 
   @Input() options: SideMenuOption[];
-  @Input() selectedId: number | string = null;
+  @Input() selectedId: number | string;
   @Input() headerLabel: string;
 
   readonly icons = Icons;
   readonly iconColor = IconColor;
   readonly buttonType = ButtonType;
 
-  public focusedId: number | string = null;
+  public focusedId: number | string;
 
   @Output() selectOption: EventEmitter<number | string> = new EventEmitter<
     number | string
