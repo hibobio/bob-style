@@ -64,8 +64,8 @@ export class MenuComponent implements OnChanges {
   }
 
   onCloseMenu(): void {
-    // if (this.closeMenu.observers.length > 0) {
-    this.closeMenu.emit(this.id || null);
-    // }
+    if (this.closeMenu.observers.length > 0) {
+      this.closeMenu.emit(this.id || null);
+    }
   }
 }
