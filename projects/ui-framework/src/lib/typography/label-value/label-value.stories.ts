@@ -13,7 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LabelValueType, TextAlign, IconPosition } from './label-value.enum';
 import { randomNumber } from '../../services/utils/functional-utils';
 import { mockText } from '../../mock.const';
-import { Icons, IconSize } from '../../icons/icons.enum';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { LabelValueModule } from './label-value.module';
 
 const story = storiesOf(ComponentGroupType.Typography, module).addDecorator(
@@ -31,7 +31,8 @@ const template = `
         [expectChanges]="true"
         [icon]="icon"
         [iconPosition]="iconPosition"
-        [iconSize]="iconSize"></b-label-value>
+        [iconSize]="iconSize"
+        [iconColor]="iconColor"></b-label-value>
 `;
 
 const template3 = `
@@ -246,6 +247,7 @@ const note = `
   and also 'label', 'value', 'label_after', 'value_after' \
   which allow to put the icon inside label or value | left
   [iconSize] | IconSize | icon size | large (small if positioned inside label or value)
+  [iconColor] | IconColor | icon color | null
   (clicked) | EventEmitter | emits when component is clicked
   (labelClicked) | EventEmitter | emits when label is clicked
   (valueClicked) | EventEmitter | emits when value is clicked
@@ -286,6 +288,7 @@ story.add(
           IconPosition.left
         ),
         iconSize: select('iconSize', [0, ...Object.values(IconSize)], 0),
+        iconColor: select('iconColor', IconColor, IconColor.dark)
       },
       moduleMetadata: {
         imports: [
