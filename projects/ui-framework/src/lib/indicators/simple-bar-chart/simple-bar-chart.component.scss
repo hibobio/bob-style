@@ -6,7 +6,7 @@ $bsbc-bar-width: 40px;
 $bsbc-item-width: 150px;
 
 :host {
-  @include progress-bar-host('bsbc');
+  @include progress-host('bsbc');
   text-align: center;
   --bsbc-item-count: 10;
 }

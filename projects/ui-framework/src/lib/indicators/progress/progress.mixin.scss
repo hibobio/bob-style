@@ -1,6 +1,24 @@
+@mixin progress-host(
+  $slctr-prfx: '',
+  $display: block,
+  $width: 100%,
+  $colorDef: var(--primary-600)
+) {
+  display: $display;
+  width: $width;
+  --#{$slctr-prfx}-value: 0%;
+  --#{$slctr-prfx}-color: #{$colorDef};
+  --#{$slctr-prfx}-trans: 1s;
+  --#{$slctr-prfx}-trans-delay: 0.2s;
+  @include b-body($addCssVars: true, $font-family: null);
+}
+
 @mixin progress-bar($orient: horizontal, $slctr-prfx: '') {
   background-color: $grey-100;
-  background-image: linear-gradient(var(--#{$slctr-prfx}-color), var(--#{$slctr-prfx}-color));
+  background-image: linear-gradient(
+    var(--#{$slctr-prfx}-color),
+    var(--#{$slctr-prfx}-color)
+  );
   background-repeat: no-repeat;
   transition: background-size var(--#{$slctr-prfx}-trans);
   transition-delay: var(--#{$slctr-prfx}-trans-delay);
@@ -19,12 +37,22 @@
   }
 }
 
-@mixin progress-bar-host($slctr-prfx: '') {
-  display: block;
-  width: 100%;
-  --#{$slctr-prfx}-value: 0%;
-  --#{$slctr-prfx}-color: #{$grey-600};
-  --#{$slctr-prfx}-trans: 1s;
-  --#{$slctr-prfx}-trans-delay: 0.2s;
-  @include b-body($addCssVars: true, $font-family: null);
+@mixin progress-donut($slctr-prfx: '', $trackColor: $grey-400) {
+  circle {
+    fill: transparent;
+  }
+  .#{$slctr-prfx}-track-circle {
+    stroke: $trackColor;
+  }
+  .#{$slctr-prfx}-progress-circle {
+    stroke: var(--#{$slctr-prfx}-color);
+    stroke-dashoffset: calc(
+      var(--#{$slctr-prfx}-circumference) *
+        var(--#{$slctr-prfx}-value-multiplier)
+    );
+    fill: transparent;
+    transition: stroke-dashoffset var(--#{$slctr-prfx}-trans);
+    transition-delay: var(--#{$slctr-prfx}-trans-delay);
+    transition-timing-function: ease-in-out;
+  }
 }

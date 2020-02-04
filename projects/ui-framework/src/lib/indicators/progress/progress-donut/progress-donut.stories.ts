@@ -33,31 +33,46 @@ const template = `
 `;
 
 const examples = `
-<b-progress-donut
-                [size]="'medium'"
+
+<b-progress-donut style="margin: 0 30px 30px 0;"
+                [size]="'small'"
                 [data]="{
-                  color: color2,
-                  value: value2,
-                  headerTextPrimary: 'Primary medium',
-                  headerTextSecondary: textRight2
+                  color: 'orange',
+                  value: 17,
+                  headerTextPrimary: null,
+                  headerTextSecondary: 'Want candy'
                 }"
                 [config]="{
                   disableAnimation: disableAnimation,
-                  hideValue: hideValue
+                  hideValue: false
                 }">
 </b-progress-donut>
-<br><br>
-<b-progress-donut
-                [size]="'large'"
+
+<b-progress-donut style="margin: 0 30px 30px 0;"
+                [size]="'medium'"
                 [data]="{
-                  color: color1,
-                  value: value1,
-                  headerTextPrimary: 'Primary large',
-                  headerTextSecondary: textRight1
+                  color: 'green',
+                  value: 24,
+                  headerTextPrimary: null,
+                  headerTextSecondary: 'Want cake'
                 }"
                 [config]="{
                   disableAnimation: disableAnimation,
-                  hideValue: hideValue
+                  hideValue: false
+                }">
+</b-progress-donut>
+
+<b-progress-donut style="margin: 0 30px 30px 0;"
+                [size]="'large'"
+                [data]="{
+                  color: 'red',
+                  value: 59,
+                  headerTextPrimary: null,
+                  headerTextSecondary: 'Want a hug'
+                }"
+                [config]="{
+                  disableAnimation: disableAnimation,
+                  hideValue: false
                 }">
 </b-progress-donut>
 `;
@@ -67,7 +82,17 @@ const storyTemplate = `
   <div>
     ${template}
     <hr style="margin: 60px 0 50px 0; border: 0; height: 0; border-top: 2px dashed #d2d2d2;">
-    ${examples}
+
+    <div style="display:flex; flex-wrap: wrap; align-items: center;">
+      ${examples}
+    </div>
+
+    <div style="margin-top: 100vh; padding-bottom: 100px;">
+    <h3 style="text-align: left; margin-bottom: 50px;">Progress donuts animate as they come into view</h3>
+    <div style="display:flex; flex-wrap: wrap; align-items: center;">
+      ${examples}
+    </div>
+    </div>
   </div>
 </b-story-book-layout>
 `;
@@ -119,38 +144,16 @@ story.add(
       props: {
         ProgressSize: ProgressSize,
 
-        color1: ColorService.prototype.randomColor(),
-        color2: ColorService.prototype.randomColor(),
-        color3: ColorService.prototype.randomColor(),
-        color4: ColorService.prototype.randomColor(),
-        color5: ColorService.prototype.randomColor(),
-
-        value1: randomNumber(20, 80),
-        value2: randomNumber(20, 80),
-        value3: randomNumber(20, 80),
-        value4: randomNumber(20, 80),
-        value5: randomNumber(20, 80),
-
-        textRight1: randomNumber(1, 20) + '/' + randomNumber(20, 30),
-        textRight2: randomNumber(1, 20) + '/' + randomNumber(20, 30),
-        textRight3: randomNumber(1, 20) + '/' + randomNumber(20, 30),
-
         size: select('size', Object.values(ProgressSize), ProgressSize.medium),
         color: select(
           'color',
           ['#9d9d9d', '#ff962b', '#f8bc20', '#17b456', '#e52c51', '#4b95ec'],
-          '#17b456'
+          '#4b95ec'
         ),
         value: number('value', randomNumber(20, 80)),
 
-        headerTextPrimary: text(
-          'headerTextPrimary',
-          'Make America great again!'
-        ),
-        headerTextSecondary: text(
-          'headerTextSecondary',
-          randomNumber(1, 20) + '/' + randomNumber(20, 30)
-        ),
+        headerTextPrimary: text('headerTextPrimary', ''),
+        headerTextSecondary: text('headerTextSecondary', 'Have voted'),
 
         disableAnimation: boolean('disableAnimation', false),
         hideValue: boolean('hideValue', false),

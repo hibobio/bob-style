@@ -68,7 +68,7 @@ $BPBtypeMap: (
 );
 
 :host {
-  @include progress-bar-host('bpb');
+  @include progress-host('bpb');
   text-align: left;
 }
 

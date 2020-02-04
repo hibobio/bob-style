@@ -7,12 +7,19 @@ import {
   SimpleChanges,
   OnInit,
 } from '@angular/core';
-import { simpleUID } from '../../../services/utils/functional-utils';
+import {
+  simpleUID,
+  randomNumber,
+  roundToDecimals,
+} from '../../../services/utils/functional-utils';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 
 import { BaseProgressElement } from '../progress-element.abstract';
-import { ProgressDonutDiameter } from '../progress.const';
+import {
+  ProgressDonutDiameter,
+  ProgressDonutStrokeWidth,
+} from '../progress.const';
 
 @Component({
   selector: 'b-progress-donut',
@@ -35,11 +42,11 @@ export class ProgressDonutComponent extends BaseProgressElement
   readonly id = simpleUID('bpd-');
 
   public diameter: number;
+  public strokeWidth: number;
   public circumference: number;
-  readonly stroke = 4;
 
   onNgChanges(changes: SimpleChanges): void {
-    if (changes.size) {
+    if (changes.size && this.host) {
       this.setCircleLengths();
     }
   }
@@ -53,10 +60,33 @@ export class ProgressDonutComponent extends BaseProgressElement
 
   private setCircleLengths(): void {
     this.diameter = ProgressDonutDiameter[this.size];
-    this.circumference = 2 * Math.PI * (this.diameter / 2);
+    this.strokeWidth = ProgressDonutStrokeWidth[this.size];
+    this.circumference = roundToDecimals(
+      2 * 3.142 * (this.diameter / 2 - this.strokeWidth / 2),
+      3
+    );
+
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--bpd-circumference': this.circumference + 'px',
+    });
   }
 
   protected setCssProps(): void {
-    this.DOM.setCssProps(this.host.nativeElement, {});
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--bpd-value-multiplier':
+        this.wasInView || this.config.disableAnimation
+          ? (100 - this.data.value) / 100
+          : 1,
+
+      '--bpd-color': this.data.color || null,
+      '--bpd-trans': this.config.disableAnimation
+        ? '0s'
+        : (this.data.value > 50
+            ? randomNumber(1000, 2000)
+            : randomNumber(500, 1000)) + 'ms',
+      '--bpd-trans-delay': this.config.disableAnimation
+        ? '0s'
+        : randomNumber(70, 250) + 'ms',
+    });
   }
 }
