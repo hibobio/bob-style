@@ -1,0 +1,30 @@
+@mixin progress-bar($orient: horizontal, $slctr-prfx: '') {
+  background-color: $grey-100;
+  background-image: linear-gradient(var(--#{$slctr-prfx}-color), var(--#{$slctr-prfx}-color));
+  background-repeat: no-repeat;
+  transition: background-size var(--#{$slctr-prfx}-trans);
+  transition-delay: var(--#{$slctr-prfx}-trans-delay);
+  transition-timing-function: ease-in-out;
+  overflow: hidden;
+
+  @if ($orient == horizontal) {
+    width: 100%;
+    background-size: var(--#{$slctr-prfx}-value) 100%;
+    background-position: left center;
+  }
+
+  @if ($orient == vertical) {
+    background-size: 100% var(--#{$slctr-prfx}-value);
+    background-position: center bottom;
+  }
+}
+
+@mixin progress-bar-host($slctr-prfx: '') {
+  display: block;
+  width: 100%;
+  --#{$slctr-prfx}-value: 0%;
+  --#{$slctr-prfx}-color: #{$grey-600};
+  --#{$slctr-prfx}-trans: 1s;
+  --#{$slctr-prfx}-trans-delay: 0.2s;
+  @include b-body($addCssVars: true, $font-family: null);
+}
