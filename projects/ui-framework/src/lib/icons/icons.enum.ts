@@ -151,4 +151,6 @@ export enum Icons {
   filter = 'b-icon-filter',
   send = 'b-icon-send',
   share = 'b-icon-share',
+  arrow_dir_left = 'b-icon-arrow-dir-left',
+  arrow_dir_right = 'b-icon-arrow-dir-right',
 }
