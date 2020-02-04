@@ -161,11 +161,12 @@ const note = `
   [type] | ProgressType | theme | primary
   [size] | ProgressSize | theme size | medium
   [data] | ProgressBarData | \`\`\`color: string\`\`\` - bar color,<br>\
-  \`\`\`value: number\`\`\` -  progress value (0-100),<br>\
+  \`\`\`value: number\`\`\` -  progress value (0-100) **&lt;= number indicating percentage**,<br>\
   \`\`\`headerTextPrimary: string / boolean\`\`\` - text \
-   for the left part of header <u>(set to false to hide it)</u>,<br>\
+   for the left part of header,<br>\
    \`\`\`headerTextSecondary: string / boolean\`\`\` - text for the right part of header,<br>\
-    \`\`\`iconHeaderRight: Icons\`\`\` - icon for the right part of header |  &nbsp;
+    \`\`\`iconHeaderRight: Icons\`\`\` - icon for the right part of header<br><br>\
+    **Note:** You can set header texts to falsy values to hide them |  &nbsp;
   [config] | ProgressBarConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation <br>\
   \`\`\`hideValue: boolean\`\`\` - hides value text |  &nbsp;
   &lt;elem header-left&gt; | ng-content | content for the left part of header | &nbsp;

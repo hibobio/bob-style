@@ -11,7 +11,6 @@ import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-lay
 import { ProgressDonutModule } from './progress-donut.module';
 import { randomNumber } from '../../../services/utils/functional-utils';
 import { ProgressSize } from '../progress.enum';
-import { ColorService } from '../../../services/color-service/color.service';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
@@ -102,7 +101,7 @@ const note = `
   #### Module
   *ProgressDonutModule*
 
-  *Note*: Progress bar animates when it appears in viewport. <br>
+  *Note*: Progress donut animates when it appears in viewport. <br>
   To disable this behaviour (and all animation in general), \
   pass \`\`\`{ disableAnimation: true }\`\`\` as [config].
 
@@ -111,15 +110,15 @@ const note = `
   --- | --- | --- | ---
   [size] | ProgressSize | theme size | medium
   [data] | ProgressDonutData | \`\`\`color: string\`\`\` - bar color,<br>\
-  \`\`\`value: number\`\`\` -  progress value (0-100),<br>\
-  \`\`\`headerTextPrimary: string / boolean\`\`\` - text \
-   for the left part of header <u>(set to false to hide it)</u>,<br>\
-   \`\`\`headerTextSecondary: string / boolean\`\`\` - text for the right part of header,<br>\
-    \`\`\`iconHeaderRight: Icons\`\`\` - icon for the right part of header |  &nbsp;
+  \`\`\`value: number\`\`\` -  progress value (0-100) **&lt;= number indicating percentage**,<br>\
+  \`\`\`headerTextPrimary: string / boolean\`\`\` - \
+   text for the top line of the header (headings font-family),<br>\
+   \`\`\`headerTextSecondary: string / boolean\`\`\` - \
+   text for the bottom line of the header (smaller font-size &amp; lighter grey color)<br><br>\
+   **Note**: If \`headerTextPrimary\` is not provided (set to falsy value), value (in %) will be put in its place. \
+   To hide primary text slot completely, also set \`hideValue\` to true in \`config\` |  &nbsp;
   [config] | ProgressDonutConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation <br>\
   \`\`\`hideValue: boolean\`\`\` - hides value text |  &nbsp;
-  &lt;elem header-left&gt; | ng-content | content for the left part of header | &nbsp;
-  &lt;elem header-right&gt; | ng-content | content for the right part of header | &nbsp;
 
   ~~~
   ${template}
@@ -130,8 +129,15 @@ const note = `
 data = {
       color: '#926296',
       value: 73,
-      headerTextPrimary: 'Strongly disagree',
-      headerTextSecondary: '12/32',
+      headerTextPrimary: '$68,500',
+      headerTextSecondary: 'Total budget',
+    }
+  ~~~
+  ~~~
+data = {
+      color: '#926296',
+      value: 87,
+      headerTextSecondary: 'Complete',
     }
   ~~~
 `;
