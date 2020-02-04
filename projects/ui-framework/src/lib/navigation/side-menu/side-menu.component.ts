@@ -6,6 +6,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   OnChanges,
+  HostBinding,
 } from '@angular/core';
 import { Icons, IconColor } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
@@ -23,6 +24,8 @@ import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 })
 export class SideMenuComponent implements OnChanges {
   constructor(private DOM: DOMhelpers, private cd: ChangeDetectorRef) {}
+
+  @HostBinding('attr.role') role = 'navigation';
 
   @Input() options: SideMenuOption[];
   @Input() selectedId: number | string;
