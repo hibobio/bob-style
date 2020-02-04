@@ -19,7 +19,7 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { filter, take } from 'rxjs/operators';
 import { ProgressData, ProgressConfig } from './progress.interface';
-import { ProgressSize } from './progress.enum';
+import { ProgressSize, ProgressType } from './progress.enum';
 
 export abstract class BaseProgressElement implements OnChanges, OnInit {
   constructor(
@@ -34,10 +34,13 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
   @Input() config: ProgressConfig = {};
 
   readonly id: string;
+  readonly progressType = ProgressType;
   protected wasInView = false;
 
   @HostBinding('attr.data-size') @Input() size: ProgressSize =
     ProgressSize.medium;
+  @HostBinding('attr.data-type') @Input() type: ProgressType =
+    ProgressType.primary;
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);

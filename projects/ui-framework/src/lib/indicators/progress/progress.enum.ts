@@ -1,4 +1,4 @@
-export enum ProgressBarType {
+export enum ProgressType {
   primary = 'primary',
   secondary = 'secondary',
 }

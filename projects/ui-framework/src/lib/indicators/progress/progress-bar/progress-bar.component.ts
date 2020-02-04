@@ -1,11 +1,9 @@
 import {
   Component,
   OnInit,
-  Input,
   ElementRef,
   NgZone,
   OnChanges,
-  HostBinding,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
@@ -14,7 +12,7 @@ import {
   randomNumber,
 } from '../../../services/utils/functional-utils';
 import { UtilsService } from '../../../services/utils/utils.service';
-import { ProgressBarType } from '../progress.enum';
+import { ProgressType } from '../progress.enum';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { BaseProgressElement } from '../progress-element.abstract';
 
@@ -36,11 +34,7 @@ export class ProgressBarComponent extends BaseProgressElement
     super(host, utilsService, DOM, zone, cd);
   }
 
-  @HostBinding('attr.data-type') @Input() type: ProgressBarType =
-    ProgressBarType.primary;
-
   readonly id = simpleUID('bpb-');
-  readonly barType = ProgressBarType;
 
   protected setCssProps(): void {
     this.DOM.setCssProps(this.host.nativeElement, {
@@ -49,7 +43,7 @@ export class ProgressBarComponent extends BaseProgressElement
           ? this.data.value + '%'
           : null,
       '--bpb-color':
-        (this.type !== ProgressBarType.secondary && this.data.color) || null,
+        (this.type !== ProgressType.secondary && this.data.color) || null,
       '--bpb-trans': this.config.disableAnimation
         ? '0s'
         : (this.data.value > 50
