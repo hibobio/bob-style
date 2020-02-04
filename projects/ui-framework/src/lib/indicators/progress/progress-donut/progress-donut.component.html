@@ -1,0 +1,32 @@
+<svg class="bpd-donut"
+     [attr.viewbox]="'0 0 ' + diameter + ' ' + diameter">
+  <circle class="bpd-donut-circle"
+          [attr.cx]="diameter/2"
+          [attr.cy]="diameter/2"
+          [attr.r]="diameter/2"
+          [attr.stroke-dasharray]="circumference"
+          [attr.stroke-dashoffset]="circumference"
+          [attr.stroke-width]="stroke"></circle>
+</svg>
+
+<div class="bpd-header">
+
+  <h5 *ngIf="!config.hideValue"
+      class="bpd-value"
+      [id]="id+'-val'">{{data.value}}%</h5>
+
+  <p *ngIf="data.headerTextPrimary"
+     class="bpd-text bpd-text-prmr"
+     [id]="id+'-dsc1'"
+     data-max-lines='1'>
+    {{data.headerTextPrimary}}
+  </p>
+
+  <p *ngIf="data.headerTextSecondary"
+     class="bpd-text bpd-text-scndr"
+     [id]="id+'-dsc2'"
+     data-max-lines='1'>
+    {{data.headerTextSecondary}}
+  </p>
+
+</div>
