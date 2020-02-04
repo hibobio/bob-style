@@ -42,6 +42,9 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
   @HostBinding('attr.data-type') @Input() type: ProgressType =
     ProgressType.primary;
 
+  protected onNgChanges(changes: SimpleChanges): void {}
+  protected setCssProps(): void {}
+
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
 
@@ -53,6 +56,8 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
       );
     }
 
+    this.onNgChanges(changes);
+
     if (notFirstChanges(changes)) {
       this.setCssProps();
     }
@@ -62,7 +67,7 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (!this.config.disableAnimation) {
       this.utilsService
         .getElementInViewEvent(this.host.nativeElement)
@@ -79,6 +84,4 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
       this.setCssProps();
     }
   }
-
-  protected setCssProps(): void {}
 }
