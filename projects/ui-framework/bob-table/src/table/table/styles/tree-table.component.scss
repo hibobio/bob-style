@@ -47,7 +47,7 @@ $toolpanel-indent-size: 35px;
         pointer-events: none;
       }
       .ag-row:not(.ag-row-level-0) {
-        :first-child {
+        > :first-child {
           .ag-cell-wrapper {
             margin-left:  times8(-3);
 
