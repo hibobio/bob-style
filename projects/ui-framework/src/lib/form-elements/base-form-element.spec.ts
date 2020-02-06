@@ -1,5 +1,9 @@
 import { BaseFormElement } from './base-form-element';
-import { simpleChange, eventEmitterMock, changeDetectorMock } from '../services/utils/test-helpers';
+import {
+  simpleChange,
+  eventEmitterMock,
+  changeDetectorMock,
+} from '../services/utils/test-helpers';
 import { InputEventType, FormEvents } from './form-elements.enum';
 import { cloneObject } from '../services/utils/functional-utils';
 
@@ -42,13 +46,12 @@ describe('BaseFormElement', () => {
   });
 
   describe('WriteValue', () => {
-    let testString = 'Some text';
-
     beforeEach(() => {
       baseFormElement.wrapEvent = false;
     });
 
     it('Should set value to input and emit change', () => {
+      const testString = 'Some text';
       baseFormElement.ngOnChanges(
         simpleChange({
           value: testString,
@@ -58,6 +61,7 @@ describe('BaseFormElement', () => {
     });
 
     it('Should emit/propagate change with input value', () => {
+      const testString = 'Some text';
       baseFormElement.ngOnChanges(
         simpleChange({
           value: testString,
@@ -69,7 +73,7 @@ describe('BaseFormElement', () => {
     });
 
     it('Should set value to baseValue if null or undefined input is passed', () => {
-      testString = undefined;
+      const testString = undefined;
 
       baseFormElement.ngOnChanges(
         simpleChange({
@@ -86,7 +90,9 @@ describe('BaseFormElement', () => {
     beforeEach(() => {
       baseFormElement.wrapEvent = false;
 
-      baseFormElement.outputTransformers.push((value: string): string => value + outTransAddedString);
+      baseFormElement.outputTransformers.push(
+        (value: string): string => value + outTransAddedString
+      );
 
       baseFormElement.ngOnChanges(
         simpleChange({
@@ -100,8 +106,12 @@ describe('BaseFormElement', () => {
     });
 
     it('Should transform output value', () => {
-      expect(baseFormElement.changed.emit).toHaveBeenCalledWith(testString + outTransAddedString);
-      expect(baseFormElement.propagateChange).toHaveBeenCalledWith(testString + outTransAddedString);
+      expect(baseFormElement.changed.emit).toHaveBeenCalledWith(
+        testString + outTransAddedString
+      );
+      expect(baseFormElement.propagateChange).toHaveBeenCalledWith(
+        testString + outTransAddedString
+      );
     });
   });
 
@@ -186,7 +196,9 @@ describe('BaseFormElement', () => {
 
     it('Should update value with (output-)transformed value, if updateValue option is true', () => {
       baseFormElement.value = testString;
-      baseFormElement.outputTransformers.push((value: string): string => value + outTransAddedString);
+      baseFormElement.outputTransformers.push(
+        (value: string): string => value + outTransAddedString
+      );
 
       baseFormElement['transmitValue']('DEF 456', {
         eventType: [InputEventType.onKey],
