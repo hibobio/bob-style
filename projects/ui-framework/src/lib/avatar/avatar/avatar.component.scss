@@ -8,22 +8,14 @@
   min-width: 0;
 }
 
-.avatar-content {
-  @include size(100%);
-  border-radius: 50%;
-  @include flex-align;
-  position: relative;
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s;
-  z-index: 1;
-}
-
 .slot1-big,
 .slot2-medium,
 .slot3-small {
   margin: 0;
+}
+
+.slot3-small {
+  letter-spacing: 0.2px;
 }
 
 .avatar-text {
@@ -43,8 +35,12 @@
   }
 }
 
-.slot3-small {
-  letter-spacing: 0.2px;
+:host::ng-deep [avatar-text] {
+  margin-right: auto;
+
+  &:only-child {
+    margin: 0;
+  }
 }
 
 :host {
@@ -80,6 +76,10 @@
 
     [data-max-lines] {
       max-width: 100%;
+    }
+
+    ::ng-deep [avatar-text] {
+      margin-left: auto;
     }
   }
 }

@@ -1,4 +1,7 @@
 :host[data-size='mini'] {
+  ::ng-deep [avatar-text] {
+    margin-top: 0px;
+  }
   .avatar-text {
     line-height: 1.35;
   }
@@ -26,6 +29,9 @@
 }
 
 :host[data-size='small'] {
+  ::ng-deep [avatar-text] {
+    margin-top: 4px;
+  }
   .avatar-text {
     line-height: 1.35;
   }
@@ -54,6 +60,9 @@
 
 :host[data-size='medium'] {
   b-chip {
+    margin-top: 6px;
+  }
+  ::ng-deep [avatar-text] {
     margin-top: 6px;
   }
   .avatar-badge {
@@ -90,6 +99,9 @@
 :host[data-size='xlarge'],
 :host[data-size='large'] {
   b-chip {
+    margin-top: 8px;
+  }
+  ::ng-deep [avatar-text] {
     margin-top: 8px;
   }
   .slot1-big {

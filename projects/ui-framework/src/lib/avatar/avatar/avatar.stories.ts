@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipType } from '../../chips/chips.enum';
 import { mockNames, mockJobs, mockAvatar } from '../../mock.const';
 import { Icons } from '../../icons/icons.enum';
+import { ButtonsModule } from '../../buttons/buttons.module';
 
 const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
   withKnobs
@@ -64,11 +65,13 @@ const template = `
   [caption]="caption"
   [icon]="icon"
   [badge]="badge"
-  [chip]="chip"
+  [chip]="chipType && chipText ? {type: chipType, text: chipText} : undefined"
   [isClickable]="isClickable"
   [disabled]="disabled"
   [expectChanges]="true"
   (clicked)="clickHandler($event)">
+
+  <b-text-button *ngIf="!(chipType && chipText)" avatar-text type="primary" text="View goals"></b-text-button>
 </b-avatar>
 `;
 
@@ -87,22 +90,29 @@ const note = `
   [backgroundColor] | string | background color | &nbsp;
   [size] | AvatarSize | enum for setting the avatar size | mini
   [orientation] | AvatarOrientation | vertical or horizontal | horizontal
+  &nbsp; | &nbsp; | &nbsp; | &nbsp;
   [title] | string | main title of the avatar | &nbsp;
   [subtitle] | string | subtitle of the avatar | &nbsp;
   [caption] | string | caption & site | &nbsp;
+  &nbsp; | &nbsp; | &nbsp; | &nbsp;
   [icon] | Icons / Icon | Icons enum or Icon {icon, color, size} object.\
   If just the Icons enum is provided, size & color is automatic.  | &nbsp;
   [badge] | AvatarBadge / BadgeConfig | AvatarBadge enum of approved, \
   pending or rejected / or BadgeConfig {icon, color} object  | &nbsp;
   [chip] | Chip | object describing the chip chip (should have type & text properties) | &nbsp;
+  &nbsp; | &nbsp; | &nbsp; | &nbsp;
   [disabled] | boolean | disabled state | false
   [isClickable] | boolean | flag for indicating if the avatar is clickable or not | false
   [tooltipType] | TruncateTooltipType | css or material | css
   [expectChanges] | boolean | set to true if texts are expected to change dynamically | false
   [supressWarnings] | boolean | suppress warnings about not using \
 getOptimizedAvatarImage for imageSource (set to true if using images that are not avatars) | false
+  &nbsp; | &nbsp; | &nbsp; | &nbsp;
   (clicked) | EventEmitter<wbr>&lt;MouseEvent&gt; | emitted on avatar click | &nbsp;
-  ng-content | element | you can pass stuff to be placed inside Avatar as ng-content | &nbsp;
+  &nbsp; | &nbsp; | &nbsp; | &nbsp;
+  &lt;element&gt; | ng-content | you can pass stuff to be placed inside Avatar as ng-content | &nbsp;
+  &lt;element avatar-text&gt; | ng-content | element with attribute \`[avatar-text]\` \
+  will be displayed below texts | &nbsp;
 
   ~~~
   <b-avatar
@@ -119,6 +129,8 @@ getOptimizedAvatarImage for imageSource (set to true if using images that are no
     [isClickable]="isClickable"
     [disabled]="disabled"
     (clicked)="clickHandler($event)">
+
+    <b-text-button avatar-text type="primary" text="View goals"></b-text-button>
   </b-avatar>
   ~~~
 `;
@@ -151,13 +163,16 @@ story.add(
         icon: select('icon', [0, ...icons]),
         badge: select('badge', badges, AvatarBadge.approved),
         backgroundColor: select('background color', ['#fff', 'red', 'black']),
-        chip: {
-          type: select('chip type', chips, ChipType.success),
-          text: text('chip text', 'Employed'),
-        },
+        chipType: select('chip type', [0, ...chips], ChipType.success),
+        chipText: text('chip text', 'Employed'),
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, StoryBookLayoutModule, AvatarModule],
+        imports: [
+          BrowserAnimationsModule,
+          StoryBookLayoutModule,
+          AvatarModule,
+          ButtonsModule,
+        ],
       },
     };
   },
