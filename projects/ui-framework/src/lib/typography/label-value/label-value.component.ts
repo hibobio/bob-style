@@ -12,7 +12,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { LabelValueType, TextAlign, IconPosition } from './label-value.enum';
-import { Icons, IconSize } from '../../icons/icons.enum';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import {
   isKey,
   applyChanges,
@@ -49,6 +49,7 @@ export class LabelValueComponent implements OnChanges {
   @Input() icon: Icons;
   @Input() iconPosition: IconPosition = IconPosition.left;
   @Input() iconSize: IconSize;
+  @Input() iconColor: IconColor;
 
   @Output() clicked: EventEmitter<
     MouseEvent | KeyboardEvent

@@ -1,0 +1,45 @@
+<svg class="bpd-donut"
+     role="progressbar"
+     [id]="id"
+     [attr.aria-labelledby]="id+'-dsc1 '+id+'-dsc2'"
+     [attr.aria-valuenow]="data.value || null"
+     aria-valuemin="0"
+     aria-valuemax="100"
+     [attr.height]="diameter"
+     [attr.width]="diameter"
+     [attr.viewbox]="'0 0 ' + diameter + ' ' + diameter">
+
+  <circle class="bpd-track-circle"
+          [attr.cx]="diameter/2"
+          [attr.cy]="diameter/2"
+          [attr.r]="diameter/2 - strokeWidth/2"
+          [attr.stroke-width]="strokeWidth"></circle>
+
+  <circle class="bpd-progress-circle"
+          [attr.transform]="'rotate(-90 ' + (diameter/2) + ' ' + (diameter/2)+')'"
+          [attr.cx]="diameter/2"
+          [attr.cy]="diameter/2"
+          [attr.r]="diameter/2 - strokeWidth/2"
+          [attr.stroke-width]="strokeWidth"
+          [attr.stroke-dasharray]="circumference"
+          [attr.stroke-dashoffset]="circumference"></circle>
+</svg>
+
+<div *ngIf="!config.hideValue || data.headerTextPrimary || data.headerTextSecondary"
+     class="bpd-header">
+
+  <h5 *ngIf="data.headerTextPrimary || !config.hideValue"
+      class="bpd-text bpd-value bpd-text-prmr"
+      [id]="id+'-dsc1'"
+      data-max-lines='1'>
+    {{data.headerTextPrimary || (data.value + '%')}}
+  </h5>
+
+  <p *ngIf="data.headerTextSecondary"
+     class="bpd-text bpd-text-scndr"
+     [id]="id+'-dsc2'"
+     data-max-lines='1'>
+    {{data.headerTextSecondary}}
+  </p>
+
+</div>

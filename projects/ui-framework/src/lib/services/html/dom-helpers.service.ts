@@ -198,22 +198,72 @@ export class DOMhelpers {
     test: string | Function,
     rtrn: 'element' | 'result' = 'element'
   ): any {
-    if (typeof test === 'string') {
-      const sel = test as string;
-      if (!element.matches(sel + ' ' + element.tagName)) {
-        return null;
-      }
-      test = (el: HTMLElement): boolean => el.matches(sel);
+    if (!element || !test) {
+      return null;
+    }
+    if (isString(test)) {
+      return element.closest(test as string);
     }
     while (
-      !test(element) &&
+      !(test as Function)(element) &&
       element !== document.documentElement &&
       element.parentElement
     ) {
       element = element.parentElement;
     }
-    test = test(element);
+    test = (test as Function)(element);
     return { element: test ? element : null, result: test }[rtrn];
+  }
+
+  // TODO: Add Test
+  public getSibling(
+    element: HTMLElement,
+    selector: string = null,
+    which: 'next' | 'prev' = 'next'
+  ): HTMLElement {
+    if (!element) {
+      return null;
+    }
+    let sibling: HTMLElement =
+      which === 'prev'
+        ? (element.previousElementSibling as HTMLElement)
+        : (element.nextElementSibling as HTMLElement);
+    if (!selector) {
+      return sibling;
+    }
+    while (sibling) {
+      if (sibling.matches(selector)) {
+        return sibling;
+      }
+      sibling =
+        which === 'prev'
+          ? (sibling.previousElementSibling as HTMLElement)
+          : (sibling.nextElementSibling as HTMLElement);
+    }
+    return null;
+  }
+
+  // TODO: Add Test
+  public getNextSibling(
+    element: HTMLElement,
+    selector: string = null
+  ): HTMLElement {
+    return this.getSibling(element, selector, 'next');
+  }
+
+  // TODO: Add Test
+  public getPrevSibling(
+    element: HTMLElement,
+    selector: string = null
+  ): HTMLElement {
+    return this.getSibling(element, selector, 'prev');
+  }
+
+  // TODO: Add Test
+  public getElementIndex(element: HTMLElement): number {
+    return (
+      element && Array.from(element.parentElement.children).indexOf(element)
+    );
   }
 
   // Similar to [ngClass] binding.

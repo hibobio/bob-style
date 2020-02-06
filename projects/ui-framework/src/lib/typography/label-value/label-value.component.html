@@ -1,11 +1,13 @@
 <i *ngIf="icon && iconPosition !== iconPositions.label && iconPosition !== iconPositions.value"
    class="blv-icon"
    [ngClass]="iconClass"
+   [attr.data-icon-before-color]="iconColor || null"
    [attr.tabindex]="iconClicked.observers.length ? 0 : null"></i>
 
 <h6 *ngIf="label"
     class="blv-label"
     [ngClass]="labelClass"
+    [attr.data-icon-before-color]="iconColor || null"
     [attr.tabindex]="labelClicked.observers.length ? 0 : null">
   <b-truncate-tooltip *ngIf="labelMaxLines"
                       [maxLines]="labelMaxLines"
@@ -20,6 +22,7 @@
 <p *ngIf="value"
    class="blv-value"
    [ngClass]="valueClass"
+   [attr.data-icon-before-color]="iconColor || null"
    [attr.tabindex]="valueClicked.observers.length ? 0 : null">
   <b-truncate-tooltip *ngIf="valueMaxLines"
                       [maxLines]="valueMaxLines"

@@ -14,7 +14,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import {
   isString,
   countChildren,
-  flatten,
   getType,
   makeArray,
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
@@ -30,9 +29,34 @@ import {
   mockJobs,
   mockNames,
 } from '../../../../ui-framework/src/lib/mock.const';
-import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { isEqual } from 'lodash';
 import { BlotType } from '../../../../ui-framework/bob-rte/src/rte/rte.enum';
+
+import {
+  compose as _compose,
+  isArray as _isArray,
+  isPlainObject as _isPlainObject,
+  merge as _merge,
+  reduce as _reduce,
+  set as _set,
+  toPairs as _toPairs,
+} from 'lodash/fp';
+
+export const flatten = (obj, path = []) => {
+  return _isPlainObject(obj) || _isArray(obj)
+    ? _reduce(
+        (acc, [k, v]) => _merge(acc, flatten(v, [...path, k])),
+        {},
+        _toPairs(obj)
+      )
+    : { [path.join('.')]: obj };
+};
+
+export const unflatten = _compose(
+  _reduce((acc, [k, v]) => _set(k, v, acc), {}),
+  _toPairs
+);
 
 @Component({
   selector: 'app-form-elements-test',

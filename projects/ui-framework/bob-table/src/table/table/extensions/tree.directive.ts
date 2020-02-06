@@ -1,4 +1,4 @@
-import {Directive, Input, OnInit, Host} from '@angular/core';
+import {Directive, Input, OnInit, Host } from '@angular/core';
 import {TableComponent} from '../table.component';
 import {TreeConfig, defaultTreeConfig} from './tree.config';
 import { merge } from 'lodash';
@@ -32,12 +32,16 @@ export class TreeDirective implements OnInit {
     this.treeConfig = merge(defaultTreeConfig, treeConfig);
     this.applyTreeConfig(this.treeConfig);
   }
+  @Input() isCollapsable = true;
 
   constructor(@Host() private tableComponent: TableComponent) {
   }
 
   public ngOnInit(): void {
     this.tableComponent.addClass('tree-table');
+    if (!this.isCollapsable) {
+      this.tableComponent.addClass('tree-no-collapse');
+    }
   }
 
   private applyTreeConfig(treeConfig: TreeConfig) {
@@ -48,6 +52,8 @@ export class TreeDirective implements OnInit {
       ...treeConfig.colDef,
       cellRendererParams: {
         suppressCount: treeConfig.suppressCount,
+        suppressDoubleClickExpand: true,
+        suppressEnterExpand: true,
         innerRenderer: getFileCellRenderer(treeConfig)
       },
       valueGetter: treeConfig.dataGetter

@@ -6,18 +6,18 @@ import {
   withKnobs,
   number,
 } from '@storybook/addon-knobs/angular';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { ComponentGroupType } from '../../../consts';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { ProgressBarModule } from './progress-bar.module';
 import {
   randomNumber,
   randomFromArray,
-} from '../../services/utils/functional-utils';
-import { ProgressBarType, ProgressBarSize } from './progress-bar.enum';
-import { ColorService } from '../../services/color-service/color.service';
+} from '../../../services/utils/functional-utils';
+import { ProgressType, ProgressSize } from '../progress.enum';
+import { ColorService } from '../../../services/color-service/color.service';
 
-import { Icons } from '../../icons/icons.enum';
-import { ButtonsModule } from '../../buttons/buttons.module';
+import { Icons } from '../../../icons/icons.enum';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
@@ -111,8 +111,8 @@ const examples2 = `
 `;
 
 const template3 = `
-  <b-progress-bar [type]="progressBarType.primary"
-                  [size]="progressBarSize.large"
+  <b-progress-bar [type]="progressType.primary"
+                  [size]="progressSize.large"
                   [data]="{
                     color: color4,
                     value: value4
@@ -158,14 +158,15 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [type] | ProgressBarType | theme | primary
-  [size] | ProgressBarSize | theme size | medium
+  [type] | ProgressType | theme | primary
+  [size] | ProgressSize | theme size | medium
   [data] | ProgressBarData | \`\`\`color: string\`\`\` - bar color,<br>\
-  \`\`\`value: number\`\`\` -  progress value (0-100),<br>\
+  \`\`\`value: number\`\`\` -  progress value (0-100) **&lt;= number indicating percentage**,<br>\
   \`\`\`headerTextPrimary: string / boolean\`\`\` - text \
-   for the left part of header <u>(set to false to hide it)</u>,<br>\
+   for the left part of header,<br>\
    \`\`\`headerTextSecondary: string / boolean\`\`\` - text for the right part of header,<br>\
-    \`\`\`iconHeaderRight: Icons\`\`\` - icon for the right part of header |  &nbsp;
+    \`\`\`iconHeaderRight: Icons\`\`\` - icon for the right part of header<br><br>\
+    **Note:** You can set header texts to falsy values to hide them |  &nbsp;
   [config] | ProgressBarConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation <br>\
   \`\`\`hideValue: boolean\`\`\` - hides value text |  &nbsp;
   &lt;elem header-left&gt; | ng-content | content for the left part of header | &nbsp;
@@ -238,8 +239,8 @@ size = small
 headerTextPrimary = false
 hideValue = true`,
 
-        progressBarType: ProgressBarType,
-        progressBarSize: ProgressBarSize,
+        progressType: ProgressType,
+        progressSize: ProgressSize,
 
         color1: ColorService.prototype.randomColor(),
         color2: ColorService.prototype.randomColor(),
@@ -261,16 +262,8 @@ hideValue = true`,
         icon2: randomFromArray(icons, 1),
         icon3: randomFromArray(icons, 1),
 
-        type: select(
-          'type',
-          Object.values(ProgressBarType),
-          ProgressBarType.primary
-        ),
-        size: select(
-          'size',
-          Object.values(ProgressBarSize),
-          ProgressBarSize.medium
-        ),
+        type: select('type', Object.values(ProgressType), ProgressType.primary),
+        size: select('size', Object.values(ProgressSize), ProgressSize.medium),
         color: select(
           'color',
           ['#9d9d9d', '#ff962b', '#f8bc20', '#17b456', '#e52c51', '#4b95ec'],

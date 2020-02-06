@@ -1,6 +1,6 @@
 <div class="bpb-header">
 
-  <h5 *ngIf="type === barType.primary && !config.hideValue"
+  <h5 *ngIf="type === progressType.primary && !config.hideValue"
       class="bpb-value"
       [id]="id+'-val'">{{data.value}}%</h5>
 
@@ -12,7 +12,7 @@
     <ng-content select="[header-left]"></ng-content>
   </p>
 
-  <p *ngIf="type === barType.primary"
+  <p *ngIf="type === progressType.primary"
      class="bpb-text bpb-text-scndr"
      [id]="id+'-dsc2'"
      [ngClass]="data && data.iconHeaderRight ? data.iconHeaderRight + ' b-icon-medium b-icon-normal' : ''">
@@ -31,7 +31,7 @@
        aria-valuemin="0"
        aria-valuemax="100"></div>
 
-  <h5 *ngIf="type === barType.secondary && !config.hideValue"
+  <h5 *ngIf="type === progressType.secondary && !config.hideValue"
       class="bpb-value"
       [id]="id+'-val'">{{data.value}}%</h5>
 </div>

@@ -211,7 +211,7 @@ const note = `
 `;
 
 story.add(
-  'Rich text editor (NEW!)',
+  'Rich text editor',
   () => {
     return {
       template: storyTemplate,

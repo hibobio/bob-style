@@ -53,6 +53,7 @@ const treeTemplate = `
   [treeConfig]="treeConfig"
   [rowData]="rowData"
   [columnDefs]="columnDefs"
+  [isCollapsable]="isCollapsable"
   [maxHeight]="maxHeight"
   [rowSelection]="rowSelection"
   [removeColumnButtonEnabled]="removeColumnButtonEnabled"
@@ -241,6 +242,7 @@ story.add(
       tableCols: treeColumnDefsMock,
       tableData: treeRowDataMock,
       props: {
+        isCollapsable: boolean('isCollapsable', false),
         treeConfig: {
           colDef: {
             headerName: 'Hierarchy Tree',

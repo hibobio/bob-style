@@ -21,11 +21,10 @@ import {
 } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { ProgressBarConfig } from '../progress-bar/progress-bar.interface';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import { filter, take } from 'rxjs/operators';
 import { valueAsNumber } from '../../services/utils/transformers';
-import { InputTypes } from '../../form-elements/input/input.enum';
+import { ProgressConfig } from '../progress/progress.interface';
 
 @Component({
   selector: 'b-simple-bar-chart',
@@ -45,7 +44,7 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
   @ViewChildren('bar') public bars: QueryList<ElementRef>;
 
   @Input() data: SimpleBarChartItem[] = [];
-  @Input() config: ProgressBarConfig = {};
+  @Input() config: ProgressConfig = {};
 
   private wasInView = false;
 

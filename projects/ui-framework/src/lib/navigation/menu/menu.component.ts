@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { MenuItem } from './menu.interface';
 import { MenuPositionX } from '@angular/material/menu';
 import { has } from 'lodash';
@@ -6,7 +14,7 @@ import { has } from 'lodash';
 @Component({
   selector: 'b-menu',
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss']
+  styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnChanges {
   @Input() id: string;
@@ -14,8 +22,12 @@ export class MenuComponent implements OnChanges {
   @Input() openLeft = false;
   @Input() disabled: boolean;
   @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter<MenuItem>();
-  @Output() openMenu: EventEmitter<string | void> = new EventEmitter<string | void>();
-  @Output() closeMenu: EventEmitter<string | void> = new EventEmitter<string | void>();
+  @Output() openMenu: EventEmitter<string | void> = new EventEmitter<
+    string | void
+  >();
+  @Output() closeMenu: EventEmitter<string | void> = new EventEmitter<
+    string | void
+  >();
 
   @ViewChild('childMenu', { static: true }) public childMenu;
 

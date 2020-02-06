@@ -17,6 +17,16 @@ export * from './lib/consts';
 
 // Typography Module
 export { TypographyModule } from './lib/typography/typography.module';
+export { Display1Component } from './lib/typography/display-1/display-1.component';
+export { Display2Component } from './lib/typography/display-2/display-2.component';
+export { Display3Component } from './lib/typography/display-3/display-3.component';
+export { Display4Component } from './lib/typography/display-4/display-4.component';
+export { HeadingComponent } from './lib/typography/heading/heading.component';
+export { SubHeadingComponent } from './lib/typography/subheading/subheading.component';
+export { CaptionComponent } from './lib/typography/caption/caption.component';
+export { BigBodyComponent } from './lib/typography/big-body/big-body.component';
+export { BoldBodyComponent } from './lib/typography/bold-body/bold-body.component';
+export { BodyComponent } from './lib/typography/body/body.component';
 // LabelValue Module
 export { LabelValueModule } from './lib/typography/label-value/label-value.module';
 export { LabelValueComponent } from './lib/typography/label-value/label-value.component';
@@ -118,10 +128,10 @@ export { EmptyStateModule } from './lib/indicators/empty-state/empty-state.modul
 export { EmptyStateComponent } from './lib/indicators/empty-state/empty-state.component';
 export { EmptyStateConfig } from './lib/indicators/empty-state/empty-state.interface';
 // Progress Bar
-export * from './lib/indicators/progress-bar/progress-bar.enum';
-export * from './lib/indicators/progress-bar/progress-bar.interface';
-export { ProgressBarModule } from './lib/indicators/progress-bar/progress-bar.module';
-export { ProgressBarComponent } from './lib/indicators/progress-bar/progress-bar.component';
+export * from './lib/indicators/progress/progress.enum';
+export * from './lib/indicators/progress/progress.interface';
+export { ProgressBarModule } from './lib/indicators/progress/progress-bar/progress-bar.module';
+export { ProgressBarComponent } from './lib/indicators/progress/progress-bar/progress-bar.component';
 // Simple Bar Chart
 export * from './lib/indicators/simple-bar-chart/simple-bar-chart.interface';
 export { SimpleBarChartModule } from './lib/indicators/simple-bar-chart/simple-bar-chart.module';
@@ -360,7 +370,7 @@ export {
 } from './lib/navigation/side-menu/side-menu.component';
 export {
   SideMenuOption
-} from './lib/navigation/side-menu/side-menu-option/side-menu-option.interface';
+} from './lib/navigation/side-menu/side-menu.interface';
 // Tabs Module
 export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { TabsComponent } from './lib/navigation/tabs/tabs.component';

@@ -5,7 +5,6 @@
 $toolpanel-indent-size: 35px;
 
 :host ::ng-deep .tree-table {
-
   .ag-cell-wrapper.ag-row-group {
     align-items: inherit;
   }
@@ -36,6 +35,38 @@ $toolpanel-indent-size: 35px;
     }
   }
 
+  &.tree-no-collapse {
+    .ag-icon {
+      display: block;
+      &.ag-icon-contracted, &.ag-icon-expanded {
+        display: none;
+      }
+    }
+    .ag-center-cols-clipper {
+      .ag-row[role="row"] > :first-child {
+        pointer-events: none;
+      }
+      .ag-row:not(.ag-row-level-0) {
+        > :first-child {
+          .ag-cell-wrapper {
+            margin-left:  times8(-3);
+
+          }
+          .ag-group-value {
+            @include ag-icon('arrow-dir-right');
+            &:before {
+              display: inline-block;
+              vertical-align: middle;
+              color: $grey-600;
+              transform: translateY(-3px);
+              margin-right: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+
   .ag-cell .ag-group-expanded,
   .ag-cell .ag-group-contracted {
     &:before {
@@ -51,7 +82,6 @@ $toolpanel-indent-size: 35px;
 
   .ag-header-viewport .ag-header-cell:not(.ag-header-cell-sortable) {
     @include cell-border(right center);
-
     &:after {
       display: none !important;
     }

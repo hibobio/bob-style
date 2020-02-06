@@ -1,13 +1,58 @@
 <div class="menu-header">
-  <h4 class="header-label">{{ headerLabel }}</h4>
-  <div class="header-actions-wrapper">
+  <h4 class="header-title">{{ headerLabel }}</h4>
+  <div class="header-actions">
     <ng-content></ng-content>
   </div>
 </div>
-<div class="menu-options-wrapper">
-  <b-side-menu-option *ngFor="let option of options"
-                      [option]="option"
-                      [selected]="option.id === selectedId"
-                      (selectOption)="onSelectOption($event)">
-  </b-side-menu-option>
-</div>
+
+<ul class="menu-options"
+    (click.outside-zone)="onClick($event)"
+    (keydown.outside-zone)="onKey($event)"
+    (focusin.outside-zone)="onFocus($event)"
+    (focusout.outside-zone)="onBlur($event)">
+
+  <li class="menu-option"
+      *ngFor="let option of options; trackBy: trackBy"
+      #menuItem
+      [ngClass]="{
+        'disabled': option.disabled,
+        'focused': option.id === focusedId,
+        'selected': option.id === selectedId && !option.disabled,
+        'has-menu': option.actions?.length
+      }"
+      [attr.tabindex]="!option.disabled ? 0 : null"
+      [attr.role]="!option.disabled ? 'button' : null"
+      [attr.data-icon-before]="option.icon && !option.avatar ? getIconData(option.icon) : null"
+      [attr.data-icon-before-color]="option.id === selectedId && !option.disabled ? iconColor.dark : iconColor.normal">
+
+    <p class="option-display-name"
+       *ngIf="option.displayName && !option.avatar"
+       [b-truncate-tooltip]="1"
+       [trustCssVars]="true">
+      {{option.displayName}}
+    </p>
+
+    <b-avatar class="option-avatar"
+              *ngIf="option.avatar"
+              [size]="avatarSize.mini"
+              [imageSource]="option.avatar.imageSource"
+              [title]="option.avatar.title"
+              [subtitle]="option.avatar.subtitle"
+              [badge]="option.avatar.badge"
+              [icon]="option.avatar.icon">
+    </b-avatar>
+
+    <b-menu class="option-actions"
+            *ngIf="option.actions?.length && !option.disabled"
+            [menu]="option.actions"
+            (closeMenu)="onMenuClose(menuItem)">
+      <b-square-button menu-trigger
+                       [type]="buttonType.tertiary"
+                       [icon]="icons.three_dots_vert"
+                       [color]="iconColor.normal">
+      </b-square-button>
+    </b-menu>
+
+  </li>
+
+</ul>

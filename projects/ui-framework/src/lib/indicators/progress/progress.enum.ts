@@ -1,9 +1,9 @@
-export enum ProgressBarType {
+export enum ProgressType {
   primary = 'primary',
   secondary = 'secondary',
 }
 
-export enum ProgressBarSize {
+export enum ProgressSize {
   small = 'small',
   medium = 'medium',
   large = 'large',

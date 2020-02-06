@@ -1,5 +1,5 @@
-@import '../../style/common-imports';
-@import './progress-bar.mixin';
+@import '../../../style/common-imports';
+@import '../progress.mixin';
 
 $BPBtypeMap: (
   'primary': (
@@ -68,7 +68,7 @@ $BPBtypeMap: (
 );
 
 :host {
-  @include progress-bar-host('bpb');
+  @include progress-host('bpb');
   text-align: left;
 }
 
