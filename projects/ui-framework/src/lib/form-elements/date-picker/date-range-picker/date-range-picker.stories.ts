@@ -15,6 +15,10 @@ import { thisMonth, thisYear } from '../../../services/utils/functional-utils';
 import { DatepickerType } from '../datepicker.enum';
 import { BDateAdapterMock, UserLocaleServiceMock } from '../dateadapter.mock';
 
+import formElemsPropsDoc from '../../form-elements.properties.md';
+import datepickerPropsDoc from '../datepicker.properties.md';
+import datepickerInterfaceDoc from '../datepicker.interface.md';
+
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
@@ -34,8 +38,9 @@ const template = `
               [errorMessage]="errorMessage"
               [disabled]="disabled"
               [required]="required"
+              [readonly]="readonly"
               (dateChange)="dateChange($event)">
-</b-date-range-picker>
+              </b-date-range-picker>
 `;
 
 const storyTemplate = `
@@ -52,38 +57,31 @@ const note = `
   #### Module
   *DateRangePickerModule*
 
-  #### Properties
-
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  [type] | DatepickerType | date or month picker | date
-  [value] | DateRangePickerValue <br> ({from: Date / string (YYYY-MM-DD),\
-     <br>to: Date / string (YYYY-MM-DD)} | start and end dates | &nbsp;
-  [minDate] | Date / string (YYYY-MM-DD) | minimum date | &nbsp;
-  [maxDate] | Date / string (YYYY-MM-DD) | maximum date | &nbsp;
-  [label] | string | label text (above input) | &nbsp;
-  [startDateLabel] | string | first datepicker label | &nbsp;
-  [endDateLabel] | string | second datepicker label | &nbsp;
-  [placeholder] | string | placeholder text (inside input) | &nbsp;
-  [dateFormat] | string | string, representing date format (will also be used as default placeholder) | &nbsp;
-  [hideLabelOnFocus] | boolean | places label in placeholder position | false
-  [disabled] | boolean | is field disabled | false
-  [required] | boolean | is field required | false
-  [hintMessage] | string | hint text | &nbsp;
-  [warnMessage] | string | warning text | &nbsp;
-  [errorMessage] | string | error text | &nbsp;
-  (dateChange) | EventEmitter<wbr>&lt;InputEvent&gt; | Emited on date change | &nbsp;
-
-  #### Notes
-
-  - In \`[type]="'month'"\` mode, the output start date \`.from\` will be\
-   1st of month, and the end date \`.to\` will be the last day of month (28-31).
-  - the output event object also contains \`.date\` property that contains
-   \`.startDate\` and \`.endDate\` as Date objects.
+  **Note:** When importing DateRangePickerModule, you have to initialize it with <u>DateAdapter</u>:
+  \`\`\`
+  imports: [
+    DateRangePickerModule.init(UserLocaleDateAdapter)
+  ]
+  \`\`\`
 
   ~~~
   ${template}
   ~~~
+
+  #### Properties
+
+  Name | Type | Description
+  --- | --- | ---
+  [value] | DateRangePickerValue <br> ({from: Date / string (YYYY-MM-DD),\
+     <br>to: Date / string (YYYY-MM-DD)} | start and end dates
+  [startDateLabel] | string | first datepicker label
+  [endDateLabel] | string | second datepicker label
+
+  ${datepickerPropsDoc}
+
+  ${formElemsPropsDoc}
+
+  ${datepickerInterfaceDoc}
 `;
 
 const mockValues = [
@@ -137,6 +135,7 @@ story.add(
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
+        readonly: boolean('readonly', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),

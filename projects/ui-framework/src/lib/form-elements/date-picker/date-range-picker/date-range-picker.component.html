@@ -18,10 +18,11 @@
 
   <div class="bfe-wrap start-date-wrap"
        [ngClass]="{
-              focused: inputFocused[0],
-              'has-suffix': !isInputEmpty(0),
+              focused: inputFocused[0] && !readonly,
+              'has-suffix': !isInputEmpty(0) && !readonly,
               'panel-above': panelPosition === panelPos.above,
-              'panel-below': panelPosition === panelPos.below
+              'panel-below': panelPosition === panelPos.below,
+              readonly: readonly
        }">
 
     <input #input
@@ -32,14 +33,14 @@
            [max]="value?.endDate || maxDate || null"
            [setTo]="type === types.month ? dateAdjust.startOfMonth : null"
            (parsed)="onInputChange($event,0)"
-           [readonly]="!allowKeyInput"
+           [readonly]="!allowKeyInput || readonly"
            autocomplete="off"
            [attr.id]="idSD"
            [attr.name]="idSD"
            [type]="inputTypes.text"
            [attr.placeholder]="hideLabelOnFocus && (startDateLabel || label) ? (!required ? (startDateLabel || label) :
            (startDateLabel || label) + '*') : !hideLabelOnFocus && label && startDateLabel ? startDateLabel : placeholder"
-           [disabled]="disabled"
+           [disabled]="disabled || readonly"
            [required]="required"
            (click)="openPicker(0)"
            (focus)="onInputFocus(0)"
@@ -52,13 +53,13 @@
            readonly
            tabindex="-1"
            aria-hidden="true"
-           [disabled]="disabled"
+           [disabled]="disabled || readonly"
            [matDatepicker]="startDatePicker"
            (dateChange)="transmit($event.value, 'value.startDate')"
            [min]="minDate || null"
            [max]="value?.endDate || maxDate || null">
 
-    <span [hidden]="isInputEmpty(0)"
+    <span [hidden]="isInputEmpty(0) || readonly"
           class="bfe-suffix">
       <b-icon class="clear-input"
               role="button"
@@ -73,10 +74,11 @@
 
   <div class="bfe-wrap end-date-wrap"
        [ngClass]="{
-              focused: inputFocused[1],
-              'has-suffix': !isInputEmpty(1),
+              focused: inputFocused[1] && !readonly,
+              'has-suffix': !isInputEmpty(1) && !readonly,
               'panel-above': panelPosition === panelPos.above,
-              'panel-below': panelPosition === panelPos.below
+              'panel-below': panelPosition === panelPos.below,
+              readonly: readonly
        }">
 
     <input #input
@@ -87,7 +89,7 @@
            [max]="maxDate || null"
            [setTo]="type === types.month ? dateAdjust.endOfMonth : null"
            (parsed)="onInputChange($event,1)"
-           [readonly]="!allowKeyInput"
+           [readonly]="!allowKeyInput || readonly"
            autocomplete="off"
            [attr.id]="idED"
            [attr.name]="idED"
@@ -95,7 +97,7 @@
            [attr.placeholder]="hideLabelOnFocus && (endDateLabel || label) ? (!required ? ((label && null) ||
            endDateLabel) : ((label && ' ') || endDateLabel + '*')) :
            !hideLabelOnFocus && label && endDateLabel ? endDateLabel : placeholder"
-           [disabled]="disabled"
+           [disabled]="disabled || readonly"
            [required]="required"
            (click)="openPicker(1)"
            (focus)="onInputFocus(1)"
@@ -108,13 +110,13 @@
            readonly
            tabindex="-1"
            aria-hidden="true"
-           [disabled]="disabled"
+           [disabled]="disabled || readonly"
            [matDatepicker]="endDatePicker"
            (dateChange)="transmit($event.value, 'value.endDate')"
            [min]="value?.startDate || minDate || null"
            [max]="maxDate || null">
 
-    <span [hidden]="isInputEmpty(1)"
+    <span [hidden]="isInputEmpty(1) || readonly"
           class="bfe-suffix">
       <b-icon class="clear-input"
               role="button"
@@ -130,7 +132,7 @@
 
 <mat-datepicker #startDatePicker
                 [startView]="type === types.month ? 'year' : 'month'"
-                [disabled]="disabled"
+                [disabled]="disabled || readonly"
                 [touchUi]="isMobile"
                 [panelClass]="'b-datepicker-panel start-date-picker type-' + type + (panelClass ? ' ' + panelClass :
                 '')"
@@ -141,7 +143,7 @@
 </mat-datepicker>
 <mat-datepicker #endDatePicker
                 [startView]="type === types.month ? 'year' : 'month'"
-                [disabled]="disabled"
+                [disabled]="disabled || readonly"
                 [touchUi]="isMobile"
                 [panelClass]="'b-datepicker-panel end-date-picker type-' + type + (panelClass ? ' ' + panelClass : '')"
                 [dateClass]="getDateClass"

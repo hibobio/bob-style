@@ -139,7 +139,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   private doneFirstChange = false;
   private useFormatForPlaceholder = false;
 
-  protected doOnPickerOpen(picker: MatDatepicker<any>): void { }
+  protected doOnPickerOpen(picker: MatDatepicker<any>): void {}
 
   ngOnInit(): void {
     this.resizeSubscription = fromEvent(this.windowRef.nativeWindow, 'resize')
@@ -244,6 +244,10 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     ) {
       this.placeholder = this.dateFormats[this.type].format.toLowerCase();
       this.useFormatForPlaceholder = true;
+    }
+
+    if (hasChanges(changes, ['readonly'])) {
+      this.inputFocused = this.inputFocused.map(() => false);
     }
 
     this.doneFirstChange = true;

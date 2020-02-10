@@ -16,6 +16,9 @@ import { DatepickerType } from '../datepicker.enum';
 import { mockText } from '../../../mock.const';
 import { BDateAdapterMock, UserLocaleServiceMock } from '../dateadapter.mock';
 
+import formElemsPropsDoc from '../../form-elements.properties.md';
+import datepickerPropsDoc from '../datepicker.properties.md';
+
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
@@ -34,6 +37,7 @@ const template = `
               [errorMessage]="errorMessage"
               [disabled]="disabled"
               [required]="required"
+              [readonly]="readonly"
               (dateChange)="dateChange($event)">
 </b-datepicker>
 `;
@@ -52,34 +56,26 @@ const note = `
   #### Module
   *DatepickerModule*
 
-  #### Properties
-
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  [type] | DatepickerType | date or month picker | date
-  [value] | Date / string (YYYY-MM-DD) | date | &nbsp;
-  [minDate] | Date / string (YYYY-MM-DD) | minimum date | &nbsp;
-  [maxDate] | Date / string (YYYY-MM-DD) | maximum date | &nbsp;
-  [label] | string | label text (above input) | &nbsp;
-  [description] | string | description text (above icon) | &nbsp;
-  [placeholder] | string | placeholder text (inside input) | &nbsp;
-  [dateFormat] | string | string, representing date format (will also be used as default placeholder) | &nbsp;
-  [hideLabelOnFocus] | boolean | places label in placeholder position | false
-  [disabled] | boolean | is field disabled | false
-  [required] | boolean | is field required | false
-  [hintMessage] | string | hint text | &nbsp;
-  [warnMessage] | string | warning text | &nbsp;
-  [errorMessage] | string | error text | &nbsp;
-  (dateChange) | EventEmitter<wbr>&lt;InputEvent&gt; |  Emited on date change | &nbsp;
-
-  #### Notes
-
-  - In \`[type]="'month'"\` mode, the output date will be 1st of month.
-  - the output event object also contains \`.date\` property that contains value as Date object.
+  **Note:** When importing DateRangePickerModule, you have to initialize it with <u>DateAdapter</u>:
+  \`\`\`
+  imports: [
+    DatepickerModule.init(UserLocaleDateAdapter)
+  ]
+  \`\`\`
 
   ~~~
   ${template}
   ~~~
+
+  #### Properties
+
+  Name | Type | Description
+  --- | --- | ---
+  [value] | Date / string (YYYY-MM-DD) | date
+
+  ${datepickerPropsDoc}
+
+  ${formElemsPropsDoc}
 `;
 
 story.add(
@@ -133,6 +129,7 @@ story.add(
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
+        readonly: boolean('readonly', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),

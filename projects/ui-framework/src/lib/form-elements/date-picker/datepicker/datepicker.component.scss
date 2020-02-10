@@ -1,9 +1,5 @@
 @import '../../../style/common-imports';
 
-:host .bfe-input[readonly] {
-  cursor: pointer;
-}
-
 .bfe-wrap {
   position: relative;
 }
@@ -35,6 +31,18 @@
   &.panel-below {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+  }
+}
+
+:host .bfe-input[readonly] {
+  cursor: pointer;
+}
+
+.bfe-wrap.readonly {
+  cursor: default;
+
+  .bfe-input {
+    pointer-events: none;
   }
 }
 

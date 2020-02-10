@@ -8,10 +8,11 @@
 <div class="bfe-wrap has-prefix has-suffix"
      #inputWrap
      [ngClass]="{
-        focused: inputFocused[0],
-        'has-suffix': !isInputEmpty(),
+        focused: inputFocused[0] && !readonly,
+        'has-suffix': !isInputEmpty() && !readonly,
         'panel-above': panelPosition === panelPos.above,
-        'panel-below': panelPosition === panelPos.below
+        'panel-below': panelPosition === panelPos.below,
+        readonly: readonly
      }"
      (click.outside-zone)="input.focus()">
 
@@ -29,13 +30,13 @@
          [max]="maxDate || null"
          [setTo]="type === types.month ? dateAdjust.startOfMonth : null"
          (parsed)="onInputChange($event)"
-         [readonly]="!allowKeyInput"
+         [readonly]="!allowKeyInput || readonly"
          autocomplete="off"
          [attr.id]="id"
          [attr.name]="id"
          [type]="inputTypes.text"
          [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
-         [disabled]="disabled"
+         [disabled]="disabled || readonly"
          [required]="required"
          (click)="$event.stopPropagation(); openPicker()"
          (focus)="onInputFocus()"
@@ -48,13 +49,13 @@
          readonly
          tabindex="-1"
          aria-hidden="true"
-         [disabled]="disabled"
+         [disabled]="disabled || readonly"
          [matDatepicker]="picker"
          (dateChange)="transmit($event.value)"
          [min]="minDate || null"
          [max]="maxDate || null">
 
-  <span [hidden]="isInputEmpty()"
+  <span [hidden]="isInputEmpty() || readonly"
         class="bfe-suffix">
     <b-icon class="clear-input"
             role="button"
@@ -70,7 +71,7 @@
 
 <mat-datepicker #picker
                 [startView]="type === types.month ? 'year' : 'month'"
-                [disabled]="disabled"
+                [disabled]="disabled || readonly"
                 [touchUi]="isMobile"
                 [panelClass]="'b-datepicker-panel ' + ' type-' + type + (panelClass ? ' ' + panelClass : '')"
                 (opened)="onPickerOpen()"

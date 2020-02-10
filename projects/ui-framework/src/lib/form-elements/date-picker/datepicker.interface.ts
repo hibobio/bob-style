@@ -1,4 +1,4 @@
-import { DateFormat } from '../../types';
+import { DateFormat, LocaleFormat, DateLocaleFormatKeys } from '../../types';
 
 export interface DateRangePickerValue {
   from: string;
@@ -34,4 +34,15 @@ export interface DateParseResult {
   format: DateFormat;
   value: string;
   date: Date;
+}
+
+export interface BDateAdapter {
+  getFormat: (displayFormat: LocaleFormat) => FormatParserResult;
+  getLocaleFormat: (
+    key: DateLocaleFormatKeys,
+    frmt: LocaleFormat
+  ) => DateFormat;
+  parse: (value: any) => Date | null;
+  format: (date: Date, displayFormat: string) => string;
+  getFirstDayOfWeek: () => number;
 }

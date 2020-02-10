@@ -9,7 +9,7 @@ import {
 import { get } from 'lodash';
 import { format, parseISO } from 'date-fns';
 import { DateParseService } from './date-parse-service/date-parse.service';
-import { FormatParserResult } from './datepicker.interface';
+import { FormatParserResult, BDateAdapter } from './datepicker.interface';
 
 const mockUser: {
   dateFormat: DateLocaleFormatKeys;
@@ -34,9 +34,7 @@ export const UserLocaleServiceMock = {
 
     if (dateFormat === undefined) {
       throw new Error(
-        `${
-          UserLocaleServiceMock.dateFormat
-        } is not a valid User Locale date format.`
+        `${UserLocaleServiceMock.dateFormat} is not a valid User Locale date format.`
       );
     }
 
@@ -50,7 +48,8 @@ export const UserLocaleServiceMock = {
 @Injectable({
   providedIn: 'root',
 })
-export class BDateAdapterMock extends NativeDateAdapter {
+export class BDateAdapterMock extends NativeDateAdapter
+  implements BDateAdapter {
   public static readonly formatMonthYearLabel = 'MMM yyyy';
 
   public static readonly formatFullDate: FormatParserResult = DateParseService.prototype.parseFormat(
