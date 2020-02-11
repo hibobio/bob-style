@@ -11,6 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxModule } from './checkbox.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
+import formElemsPropsDoc from '../form-elements.properties.md';
+
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
@@ -23,6 +25,7 @@ const template = `
             [indeterminate]="indeterminate"
             [disabled]="disabled"
             [required]="required"
+            [readonly]="readonly"
             [hintMessage]="hintMessage"
             [warnMessage]="warnMessage"
             [errorMessage]="errorMessage">
@@ -40,23 +43,19 @@ const note = `
   #### Module
   *CheckboxModule* or *FormElementsModule*
 
+  ~~~
+  ${template}
+  ~~~
+
   #### Properties
   Name | Type | Description
   --- | --- | ---
   [value] | boolean | start checkbox state
-  [label] | string | label text (above input)
-  [placeholder] | string | placeholder text (next to input)
-  [disabled] | boolean | is field disabled
-  [required] | boolean | is field required
   [indeterminate] | boolean | indeterminate state
-  [hintMessage] | string | hint text
-  [warnMessage] | string | warning text
-  [errorMessage] | string | error text
   (checkboxChange) | EventEmitter<wbr>&lt;InputEvent&gt; | checkboxChange emitter
 
-  ~~~
-  ${template}
-  ~~~
+  ${formElemsPropsDoc}
+
 `;
 story.add(
   'Checkbox',
@@ -71,6 +70,7 @@ story.add(
         indeterminate: boolean('indeterminate', false),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
+        readonly: boolean('readonly', false),
         hintMessage: text('hintMessage', 'Usefull hint'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),

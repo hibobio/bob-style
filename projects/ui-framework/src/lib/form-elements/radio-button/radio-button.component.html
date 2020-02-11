@@ -15,7 +15,8 @@
            [value]="radio[key]"
            [checked]="(value && value[key] === radio[key]) || value == radio[key]"
            [required]="required"
-           [disabled]="disabled"
+           [readonly]="readonly"
+           [disabled]="disabled || readonly"
            (change)="onRadioChange(radio[key])" />
     <label class="brd-label"
            [attr.for]="id+'-'+i">{{radio.label || radio[key] || radio}}</label>

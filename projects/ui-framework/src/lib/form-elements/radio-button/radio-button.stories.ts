@@ -1,6 +1,5 @@
 import { storiesOf } from '@storybook/angular';
 import {
-  array,
   boolean,
   select,
   text,
@@ -15,6 +14,8 @@ import values from 'lodash/values';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { RadioDirection } from './radio-button.enum';
 
+import formElemsPropsDoc from '../form-elements.properties.md';
+
 const direction = values(RadioDirection);
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -27,6 +28,7 @@ const template = `
                 [direction]="direction"
                 [disabled]="disabled"
                 [required]="required"
+                [readonly]="readonly"
                 [hintMessage]="hintMessage"
                 [warnMessage]="warnMessage"
                 [errorMessage]="errorMessage"
@@ -44,24 +46,20 @@ const note = `
   #### Module
   *RadioButtonModule*
 
-  #### Properties
+  ~~~
+  ${template}
+  ~~~
 
+  #### Properties
   Name | Type | Description
   --- | --- | ---
   [radioConfig] | RadioConfig[] | list of RadioConfig ({id, label}) objects
   [value] | RadioConfig | selected option
   [direction] | RadioDirection | column or row, default=row
-  [label] | string | label text
-  [hintMessage] | string | hint text
-  [warnMessage] | string | warning text
-  [errorMessage] | string | error text
-  [disabled] | boolean | is field disabled
-  [required] | boolean | is field required
   (radioChange) | EventEmitter<wbr>&lt;string/number&gt; | fired on radio change, returns option ID
 
-  ~~~
-  ${template}
-  ~~~
+  ${formElemsPropsDoc}
+
 `;
 
 story.add(
@@ -76,6 +74,7 @@ story.add(
         label: text('label', 'Radio label'),
         required: boolean('required', false),
         disabled: boolean('disabled', false),
+        readonly: boolean('readonly', false),
 
         hintMessage: text('hintMessage', 'Useful hint'),
         warnMessage: text('warnMessage', ''),

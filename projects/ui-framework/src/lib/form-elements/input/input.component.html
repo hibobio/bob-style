@@ -26,7 +26,7 @@
          [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
          [value]="value"
          [autocomplete]="enableBrowserAutoComplete"
-         [disabled]="disabled"
+         [disabled]="disabled || readonly"
          [required]="required"
          [readonly]="readonly"
          [attr.minlength]="minChars || null"
@@ -47,12 +47,12 @@
     <button type="button"
             class="step-button b-icon-chevron-up b-icon-large has-hover"
             [ngClass]="{ 'b-icon-normal': !inputFocused }"
-            [disabled]="disabled || value >= max"
+            [disabled]="disabled || readonly || value >= max"
             (click)="onIncrement()"></button>
     <button type="button"
             class="step-button b-icon-chevron-down b-icon-large has-hover"
             [ngClass]="{ 'b-icon-normal': !inputFocused }"
-            [disabled]="disabled || value <= min"
+            [disabled]="disabled || readonly || value <= min"
             (click)="onDecrement()"></button>
   </div>
 

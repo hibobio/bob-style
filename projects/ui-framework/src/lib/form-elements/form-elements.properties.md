@@ -1,8 +1,8 @@
 #### Form Elements common properties
 Name | Type | Description | Default
 --- | --- | --- | ---
-[label] | string | label text | &nbsp;
-[placeholder] | string | placeholder text | &nbsp;
+[label] | string | label text (above input)| &nbsp;
+[placeholder] | string | placeholder text (inside input) | &nbsp;
 [hideLabelOnFocus] | boolean | if true, label text (if present) will be used as placeholder (there will be no label above input) | false
 [description] | string | description text (above <i>i</i> icon) | &nbsp;
 [hintMessage] | string | hint text | &nbsp;

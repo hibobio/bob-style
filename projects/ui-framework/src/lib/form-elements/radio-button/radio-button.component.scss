@@ -67,3 +67,10 @@
     pointer-events: none;
   }
 }
+
+[readonly] + .brd-label {
+  &,
+  &:before {
+    pointer-events: none;
+  }
+}

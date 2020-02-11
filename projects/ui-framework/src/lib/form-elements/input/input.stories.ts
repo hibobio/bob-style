@@ -15,6 +15,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { mockText } from '../../mock.const';
 
+import formElemsPropsDoc from '../form-elements.properties.md';
+import inputElemsPropsDoc from '../input.properties.md';
+
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
@@ -59,21 +62,14 @@ const note = `
   #### Module
   *InputModule* or *FormElementsModule*
 
+  ~~~
+  ${template}
+  ~~~
+
   #### Properties
   Name | Type | Description | Default
   --- | --- | --- | ---
   [inputType] | InputTypes | type of input field | text
-  [value] | string/number | value of input field | &nbsp;
-  [label] | string | label text (above input) | &nbsp;
-  [description] | string | description text (above icon) | &nbsp;
-  [placeholder] | string | placeholder text (inside input) | &nbsp;
-  [hideLabelOnFocus] | boolean | if true: there will be no label above\
-   input, label text (if present) will be used as placeholder | false
-  [minChars] | number | minimum length | &nbsp;
-  [maxChars] | number | maximum length.<br> \
-  *Note:* It might not make sense to provide minChars/maxChars for number-type inputs, but if you do, \
-  the input will be limited by number of digits.  | &nbsp;
-  [showCharCounter] | boolean | set to false to hide character counter | true
   [min] | number | (only relevant for number inputs) minimum value (value will be corrected on blur). \
   *Note*: Defaults to 0, so negative numbers are discarded. \
   Set to null, undefined or some negative value to allow negative numbers | <u>0</u>
@@ -82,18 +78,10 @@ const note = `
    Buttons will not be displayed, if step value is not provided.<br> \
    *Note:* When using the step buttons, the number value will be rounded to the decimal places \
    of the step (if step is 3, value of 5.5 + 3 will be rounded to 9). | &nbsp;
-  [readonly] | boolean | disables input | false
-  [disabled] | boolean | is field disabled | false
-  [required] | boolean | is field required | false
-  [hintMessage] | string | hint text | &nbsp;
-  [warnMessage] | string | warning text | &nbsp;
-  [errorMessage] | string | error text | &nbsp;
-  [enableBrowserAutoComplete] | InputAutoCompleteOptions | shows browser autocomplete options | off
-  (inputEvents) | EventEmitter<wbr>&lt;InputEvent&gt; | input events emitter | &nbsp;
 
-  ~~~
-  ${template}
-  ~~~
+  ${inputElemsPropsDoc}
+
+  ${formElemsPropsDoc}
 `;
 story.add(
   'Input',

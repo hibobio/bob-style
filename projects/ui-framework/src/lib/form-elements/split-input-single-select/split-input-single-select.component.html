@@ -8,6 +8,7 @@
          [hideLabelOnFocus]="hideLabelOnFocus"
          [required]="required"
          [disabled]="disabled"
+         [readonly]="readonly"
          [maxChars]="50"
          [showCharCounter]="false"
          [hintMessage]="hintMessage"
@@ -18,7 +19,9 @@
 
 <b-single-select (selectChange)="onSelectChange($event)"
                  [disabled]="disabled"
+                 [readonly]="readonly"
                  [options]="options"
                  [showSingleGroupHeader]="false"
+                 [panelClass]="'bsiss-panel'"
                  [doPropagate]="false">
 </b-single-select>

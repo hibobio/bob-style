@@ -51,3 +51,15 @@
     pointer-events: none;
   }
 }
+
+[readonly] + .bchk-label {
+  &:before {
+    pointer-events: none;
+  }
+  &:hover,
+  &:focus {
+    &:before {
+      box-shadow: none;
+    }
+  }
+}

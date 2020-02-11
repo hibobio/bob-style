@@ -46,6 +46,10 @@ b-single-select {
   }
 }
 
+::ng-deep .cdk-overlay-pane.b-select-panel.bsiss-panel {
+  min-width: 0;
+}
+
 :host {
   &.error {
     b-single-select::ng-deep .bfe-wrap {

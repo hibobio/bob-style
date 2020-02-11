@@ -1,7 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import {
   boolean,
-  number,
   object,
   select,
   text,
@@ -18,6 +17,8 @@ import map from 'lodash/map';
 import { InputSingleSelectValue } from './split-input-single-select.interface';
 import { mockText } from '../../mock.const';
 
+import formElemsPropsDoc from '../form-elements.properties.md';
+
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
@@ -32,6 +33,7 @@ const template = `
                              [errorMessage]="errorMessage"
                              [disabled]="disabled"
                              [required]="required"
+                             [readonly]="readonly"
                              (elementChange)="elementChange($event)">
 </b-split-input-single-select>
 `;
@@ -47,23 +49,19 @@ const storyTemplate = `
 const note = `
   ## Split input single select
 
-  #### Properties
+  ~~~
+  ${template}
+  ~~~
 
+  #### Properties
   Name | Type | Description
   --- | --- | ---
   [value] | SplitInputSingleSelectValue | value of the input and select
   [selectOptions] | SelectGroupOption[] | the options model for the select element
-  [label] | string | label text
-  [description] | string | description text (above icon)
-  [disabled] | boolean | is field disabled
-  [required] | boolean | is field required
-  [hintMessage] | text | hint text
-  [errorMessage] | text | error text
   (elementChange) | EventEmitter<wbr>&lt;InputSingleSelectValue&gt; |  change emitter
 
-  ~~~
-  ${template}
-  ~~~
+  ${formElemsPropsDoc}
+
 `;
 
 const currencies = [
@@ -143,16 +141,21 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        value: object('value', value),
-        inputType: select('type', InputTypes, InputTypes.number),
-        label: text('label', 'Base salary'),
-        description: text('description', mockText(30)),
-        disabled: boolean('disabled', false),
-        required: boolean('required', false),
-        hintMessage: text('hintMessage', 'This field should contain something'),
-        errorMessage: text('errorMessage', ''),
+        value: object('value', value, 'Props'),
+        inputType: select('type', InputTypes, InputTypes.number, 'Props'),
+        label: text('label', 'Base salary', 'Props'),
+        description: text('description', mockText(30), 'Props'),
+        disabled: boolean('disabled', false, 'Props'),
+        required: boolean('required', false, 'Props'),
+        readonly: boolean('readonly', false, 'Props'),
+        hintMessage: text(
+          'hintMessage',
+          'This field should contain something',
+          'Props'
+        ),
+        errorMessage: text('errorMessage', '', 'Props'),
         elementChange: action('Split input single select change'),
-        selectOptions: object('selectOptions', optionsMock),
+        selectOptions: object('selectOptions', optionsMock, 'Options'),
       },
       moduleMetadata: {
         imports: [

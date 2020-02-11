@@ -5,7 +5,7 @@
 <div class="bfe-wrap has-prefix"
      [ngClass]="{
         focused: hoursFocused || minutesFocused,
-        'has-suffix': !isInputEmpty()
+        'has-suffix': !isInputEmpty() && !readonly
      }"
      (click.outside-zone)="inputHours.focus()">
 
@@ -26,8 +26,9 @@
            maxlength="2"
            placeholder="00"
            [value]="valueHours || null"
-           [disabled]="disabled"
+           [disabled]="disabled || readonly"
            [required]="required"
+           [readonly]="readonly"
            (blur)="onHoursBlur($event)"
            (keydown.outside-zone)="onInputKeydown($event)"
            (input.outside-zone)="onHoursChange($event)"
@@ -43,8 +44,9 @@
            maxlength="2"
            placeholder="00"
            [value]="valueMinutes || null"
-           [disabled]="disabled"
+           [disabled]="disabled || readonly"
            [required]="required"
+           [readonly]="readonly"
            (blur)="onMinutesBlur($event);"
            (keydown.outside-zone)="onInputKeydown($event)"
            (input.outside-zone)="onMinutesChange($event)"
@@ -53,7 +55,7 @@
 
   </span>
 
-  <span [hidden]="isInputEmpty()"
+  <span [hidden]="isInputEmpty() || readonly"
         class="bfe-suffix">
     <b-icon class="clear-input"
             role="button"

@@ -13,6 +13,8 @@ import { SocialModule } from './social.module';
 import { SearchModule } from '../../search/search/search.module';
 import { Social } from './social.enum';
 
+import formElemsPropsDoc from '../form-elements.properties.md';
+
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
@@ -24,6 +26,7 @@ const template = `
           [placeholder]="placeholder"
           [disabled]="disabled"
           [required]="required"
+          [readonly]="readonly"
           [hintMessage]="hintMessage"
           [warnMessage]="warnMessage"
           [errorMessage]="errorMessage"
@@ -45,6 +48,10 @@ const note = `
   #### Module
   *SocialModule*
 
+  ~~~
+  ${template}
+  ~~~
+
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
@@ -54,16 +61,10 @@ const note = `
   but if [label] is passed, it will be displayed instead, \
   and the Social icon will be placed in placeholder (inside input) | &nbsp;
   [placeholder] | string | placeholder text (inside input) | 'username'
-  [disabled] | boolean | is field disabled | false
-  [required] | boolean | is field required | false
-  [hintMessage] | string | hint text | &nbsp;
-  [warnMessage] | string | warning text | &nbsp;
-  [errorMessage] | string | error text | &nbsp;
   (socialInputChange) |  EventEmitter<wbr>&lt;InputEvent&gt; | input events emitter | &nbsp;
 
-  ~~~
-  ${template}
-  ~~~
+  ${formElemsPropsDoc}
+
 `;
 
 story.add(
@@ -81,6 +82,7 @@ story.add(
         errorMessage: text('errorMessage', ''),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
+        readonly: boolean('readonly', false),
         socialInputChange: action('social'),
       },
       moduleMetadata: {

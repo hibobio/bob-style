@@ -7,6 +7,8 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
+import formElemsPropsDoc from '../form-elements.properties.md';
+
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
@@ -17,6 +19,7 @@ const template = `
         [label]="label"
         [disabled]="disabled"
         [required]="required"
+        [readonly]="readonly"
         [hintMessage]="hintMessage"
         [warnMessage]="warnMessage"
         [errorMessage]="errorMessage"
@@ -37,21 +40,17 @@ const note = `
   #### Module
   *InputModule* or *FormElementsModule*
 
+  ~~~
+  ${template}
+  ~~~
+
   #### Properties
   Name | Type | Description
   --- | --- | ---
   [value] | string | value of input field ('HH:MM')
-  [label] | string | label text (above input)
-  [disabled] | boolean | is field disabled
-  [required] | boolean | is field required
-  [hintMessage] | string | hint text
-  [warnMessage] | string | warning text
-  [errorMessage] | string | error text
   (changed) | InputEvent | change emitter
 
-  ~~~
-  ${template}
-  ~~~
+  ${formElemsPropsDoc}
 `;
 story.add(
   'Timepicker',
@@ -66,6 +65,7 @@ story.add(
 
         disabled: boolean('disabled', false),
         required: boolean('required', false),
+        readonly: boolean('readonly', false),
 
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),

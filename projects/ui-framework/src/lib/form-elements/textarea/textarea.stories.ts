@@ -12,6 +12,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { mockText } from '../../mock.const';
 
+import formElemsPropsDoc from '../form-elements.properties.md';
+import inputElemsPropsDoc from '../input.properties.md';
+
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
@@ -47,27 +50,13 @@ const note = `
   #### Module
   *TextareaModule* or *FormElementsModule*
 
-  #### Properties
-  Name | Type | Description | Default
-  --- | --- | --- | ---
-  [value] | string/number/float | type of input field | &nbsp;
-  [label] | string | label text | &nbsp;
-  [description] | string | description text (above icon) | &nbsp;
-  [placeholder] | string | placeholder text (inside input) | &nbsp;
-  [minChars] | number | minimum length | &nbsp;
-  [maxChars] | number | maximum characters | &nbsp;
-  [showCharCounter] | boolean | set to false to hide character counter | true
-  [readonly] | boolean | disables input | false
-  [disabled] | boolean | is field disabled | false
-  [required] | boolean | is field required | false
-  [hintMessage] | text | hint text | &nbsp;
-  [warnMessage] | string | warning text | &nbsp;
-  [errorMessage] | text | error text | &nbsp;
-  (inputEvents) | EventEmitter<wbr>&lt;InputEvent&gt; | input events emitter | &nbsp;
-
   ~~~
   ${template}
   ~~~
+
+  ${inputElemsPropsDoc}
+
+  ${formElemsPropsDoc}
 `;
 story.add(
   'Textarea',

@@ -12,10 +12,13 @@
        [attr.name]="id"
        [checked]="value === true"
        [required]="required"
-       [disabled]="disabled"
+       [disabled]="disabled || readonly"
+       [readonly]="readonly"
        (change)="toggleCheckbox()" />
 <label class="bchk-label"
-       [ngClass]="{'empty-label': !placeholder && !label}"
+       [ngClass]="{
+         'empty-label': !placeholder && !label
+        }"
        [attr.for]="id">
   {{ placeholder || label }}
 </label>
