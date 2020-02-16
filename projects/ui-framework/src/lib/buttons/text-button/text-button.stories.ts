@@ -14,16 +14,18 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { LinkColor } from '../../indicators/link/link.enum';
 import { ButtonType } from '../buttons.enum';
 
+import buttonsProps from '../button.properties.md';
+
 const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
   withKnobs
 );
 
 const button1 = `
-<b-text-button (clicked)="onClick($event)"
+<b-text-button [type]="type"
                [text]="text"
-               [type]="type"
                [color]="color"
-               [disabled]="disabled">
+               [disabled]="disabled"
+               (clicked)="onClick($event)">
 </b-text-button>
 `;
 
@@ -36,24 +38,32 @@ const button2 = `
                [disabled]="disabled">
 </b-text-button>
 `;
+
+const buttonNote = `<b-text-button [type]="type"
+               [text]="text"
+               [icon]="icon"
+               [disabled]="disabled"
+               (clicked)="onClick($event)">
+    Click
+</b-text-button>`;
+
 const note = `
   ## Text Button Element
   #### Module
   *ButtonsModule*
-  #### Properties
 
+  ~~~
+  ${buttonNote}
+  ~~~
+
+  #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [text] | text | Button text | &nbsp;
+  [type] | ButtonType |  button type | secondary
   [icon] | Icons | Icon enum value | &nbsp;
-  [type] | ButtonType | enum for setting the button type | secondary
-  [color] | LinkColor | color of text and icon | dark
-  [disabled] | boolean | disabled | false
-  (clicked) | EventEmitter | button click event  | &nbsp;
+  <s>[color]</s> | <s>LinkColor</s> | <s>color of text and icon</s><br> Use [type] to control color | <s>dark</s>
 
-  ~~~
-  ${button1}
-  ~~~
+  ${buttonsProps}
 `;
 
 const storyTemplate = `

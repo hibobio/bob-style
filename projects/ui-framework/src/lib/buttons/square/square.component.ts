@@ -34,12 +34,12 @@ export class SquareButtonComponent extends BaseButtonElement {
   @Input() toolTipSummary: string = null;
 
   @HostBinding('attr.data-tooltip') get getTooltipText(): string {
-    return (!this.disabled && this.toolTipSummary) || null;
+    return (!this.disabled && (this.toolTipSummary || this.text)) || null;
   }
 
   getButtonClass(): string {
     return (
-      (this.type || ButtonType.primary) +
+      (this.type || ButtonType.secondary) +
       ' ' +
       (this.size || ButtonSize.medium) +
       ' ' +
@@ -48,7 +48,7 @@ export class SquareButtonComponent extends BaseButtonElement {
           ' b-icon-' +
           (this.size === ButtonSize.small ? IconSize.medium : IconSize.large) +
           ' b-icon-' +
-          this.color +
+          (this.color || IconColor.dark) +
           (this.type === ButtonType.tertiary ? ' has-hover' : '')
         : '')
     );

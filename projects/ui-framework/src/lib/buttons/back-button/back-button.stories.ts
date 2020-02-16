@@ -6,42 +6,48 @@ import {
   withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { BackButtonType } from '../buttons.enum';
-import { values } from 'lodash';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
+import buttonsProps from '../button.properties.md';
+
 const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
   withKnobs
 );
 
-const typeOptions = values(BackButtonType);
-
 const template = `
-<b-back-button
-  (clicked)="onClick($event)"
-  [type]="type"
-  [disabled]="disabled">
-    {{label}}
+<b-back-button [type]="type"
+                  [size]="size"
+                  [text]="text"
+                  [disabled]="disabled"
+                  (clicked)="onClick($event)">
 </b-back-button>
 `;
+
+const templForNotes = `<b-back-button [type]="type"
+                 [text]="text"
+                 [disabled]="disabled"
+                 (clicked)="onClick($event)">
+    Back
+</b-back-button>`;
 
 const note = `
   ## Back Button Element
   #### Module
   *ButtonsModule*
 
-  #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  [type] | BackButtonType | enum for setting the button type | secondary
-  [disabled] | boolean | disabled | false
-  (clicked) | EventEmitter | back button click event | &nbsp;
+  ~~~
+  ${templForNotes}
+  ~~~
 
-  ~~~
-  ${template}
-  ~~~
+  #### Properties
+  Name | Type | Description | Default
+  --- | --- | --- | ---
+  [type] | BackButtonType | back button type | secondary
+
+  ${buttonsProps}
 `;
 
 const storyTemplate = `
@@ -56,8 +62,12 @@ story.add(
     template: storyTemplate,
     props: {
       onClick: action('onClick'),
-      label: text('label', 'Back'),
-      type: select('type', typeOptions, BackButtonType.secondary),
+      text: text('text', 'Back'),
+      type: select(
+        'type',
+        Object.values(BackButtonType),
+        BackButtonType.secondary
+      ),
       disabled: boolean('disabled', false),
     },
     moduleMetadata: {
