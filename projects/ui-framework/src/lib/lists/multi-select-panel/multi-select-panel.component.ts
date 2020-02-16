@@ -64,15 +64,17 @@ export class MultiSelectPanelComponent extends BaseSelectPanelElement {
     this.listChange = listChange;
   }
 
-  onCancel(): void {
-    this.listChange = undefined;
-    this.destroyPanel();
-  }
+  // onCancel(): void {
+  //   this.listChange = undefined;
+  //   this.destroyPanel();
+  // }
 
   onApply(): void {
-    this.options = this.listChange.getSelectGroupOptions();
-    this.selectChange.emit(this.listChange);
-    this.listChange = undefined;
-    this.destroyPanel();
+    if (this.listChange) {
+      this.options = this.listChange.getSelectGroupOptions();
+      this.selectChange.emit(this.listChange);
+      this.listChange = undefined;
+      this.destroyPanel();
+    }
   }
 }
