@@ -6,7 +6,7 @@ import {
   SimpleChanges,
   OnDestroy,
   ElementRef,
-  HostBinding
+  HostBinding,
 } from '@angular/core';
 import { URLutils } from '../../../services/url/url-utils.service';
 import { VideoData } from '../../../services/url/url.interface';
@@ -16,13 +16,15 @@ import { MediaType } from './media-embed.enum';
 import {
   imageLinkTest,
   base64imageTest,
-  filestackTest
+  filestackTest,
+  allowedDomainsTest,
 } from '../../../services/url/url.const';
+import { stringify } from '../../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-media-embed',
   template: '',
-  styleUrls: ['./media-embed.component.scss']
+  styleUrls: ['./media-embed.component.scss'],
 })
 export class MediaEmbedComponent implements OnChanges, OnDestroy {
   constructor(
@@ -46,7 +48,7 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
         this.mediaType === MediaType.video &&
         this.videoData &&
         this.videoData.url,
-      image: this.mediaType === MediaType.image && this.url
+      image: this.mediaType === MediaType.image && this.url,
     });
   }
 
@@ -71,6 +73,16 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
 
       if (this.mediaType === MediaType.video) {
         this.videoData = this.URL.parseVideoURL(this.url);
+        if (!this.videoData) {
+          console.error(
+            `[MediaEmbedComponent]: URL (${
+              this.url
+            }) is not allowed. Allowed URLs are [${stringify(
+              Object.keys(allowedDomainsTest)
+            )}]`
+          );
+          return;
+        }
         this.host.nativeElement.style.backgroundImage = this.videoData
           ? `url(${this.videoData.thumb})`
           : null;

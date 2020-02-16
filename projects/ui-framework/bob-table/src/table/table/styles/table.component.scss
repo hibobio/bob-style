@@ -85,16 +85,10 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     }
 
     .ag-header-cell-resize {
-      right: -3px;
+      right: -2px;
       width: 5px;
       cursor: move;
       @include cell-border;
-    }
-
-    .ag-header-cell:last-child {
-      .ag-header-cell-resize {
-        right: 0;
-      }
     }
 
     .ag-header-icon {
