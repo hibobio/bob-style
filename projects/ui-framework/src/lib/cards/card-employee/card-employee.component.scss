@@ -20,6 +20,10 @@
     min-height: 200px;
     background-size: 100% 60px;
   }
+
+  &[data-type='regular'] {
+    min-height: 300px;
+  }
 }
 
 .card-subtitle {
