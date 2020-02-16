@@ -11,7 +11,9 @@ import {
 import { VideoData } from './url.interface';
 import { URLtype } from './url.enum';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class URLutils {
   constructor(private sanitizer: DomSanitizer) {}
 
@@ -122,5 +124,35 @@ export class URLutils {
     }
 
     return undefined;
+  }
+
+  isValidImageURL(url: string): boolean {
+    if (base64imageTest.test(url)) {
+      return true;
+    }
+
+    const urlData = this.getData(url);
+    if (!urlData) {
+      return false;
+    }
+
+    return (
+      filestackTest.test(urlData.href) || imageLinkTest.test(urlData.pathname)
+    );
+  }
+
+  isValidVideoURL(url: string): boolean {
+    const urlData = this.getData(url);
+    if (!urlData) {
+      return false;
+    }
+
+    for (const key of Object.keys(allowedDomainsTest)) {
+      if (allowedDomainsTest[key].test(urlData.hostname)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
