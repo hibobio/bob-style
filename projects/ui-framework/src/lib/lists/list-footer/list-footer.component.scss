@@ -1,5 +1,7 @@
 @import '../../style/common-imports';
 
+$blf-apply-cancel-button-width: 80px;
+
 :host {
   display: flex;
   align-items: center;
@@ -24,8 +26,22 @@
 
 .cancel-apply {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   min-width: 0;
+  flex-grow: 1;
+  max-width: ($blf-apply-cancel-button-width * 2 + times8(1));
+
+  ::ng-deep {
+    .cancel-button,
+    .apply-button {
+      flex-basis: $blf-apply-cancel-button-width;
+
+      button {
+        min-width: 0;
+        padding: 0 times8(1);
+      }
+    }
+  }
 }
 
 :host ::ng-deep {
