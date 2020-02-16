@@ -52,7 +52,7 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   constructor(
-    private srvc: EditableListService,
+    private editableListService: EditableListService,
     private zone: NgZone,
     private cd: ChangeDetectorRef
   ) {}
@@ -142,7 +142,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
 
     if (hasChanges(changes, ['list'])) {
       this.listState.list = cloneDeep(this.list);
-      this.listState.sortType = this.srvc.getListSortType(this.listState.list);
+      this.listState.sortType = this.editableListService.getListSortType(this.listState.list);
     }
 
     if (hasChanges(changes, ['sortType'], true)) {
@@ -206,7 +206,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
         if (this.sameItemIndex === -1) {
           this.addingItem = false;
           this.addedItem = true;
-          this.srvc.addItem(this.listState.list, value);
+          this.editableListService.addItem(this.listState.list, value);
           this.listState.create.push(value);
           this.transmit();
           this.listState.sortType = ListSortType.UserDefined;
@@ -320,7 +320,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
 
   public onDrop(dropResult: DropResult): void {
     this.isDragged = false;
-    if (this.srvc.onDrop(this.listState.list, dropResult)) {
+    if (this.editableListService.onDrop(this.listState.list, dropResult)) {
       this.listState.sortType = ListSortType.UserDefined;
       this.transmit();
     }
@@ -331,7 +331,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     order: ListSortType = null,
     currentOrder: ListSortType = this.listState.sortType
   ): void {
-    this.listState.sortType = this.srvc.sortList(list, order, currentOrder);
+    this.listState.sortType = this.editableListService.sortList(list, order, currentOrder);
     this.addedItem = false;
     this.transmit();
   }

@@ -101,7 +101,7 @@
         {{ item.value }}
       </span>
 
-      <b-square-button *ngIf="allowedActions.remove"
+      <b-square-button *ngIf="allowedActions.remove && item.canBeDeleted!==false"
                        class="bel-trash-button"
                        [hidden]="removingIndex === index"
                        [type]="buttonType.tertiary"

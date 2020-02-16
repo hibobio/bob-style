@@ -24,24 +24,14 @@ import { cloneDeep } from 'lodash';
 describe('EditableListComponent', () => {
   let fixture: ComponentFixture<EditableListComponent>;
   let component: EditableListComponent;
-
-  const selectOptionsMock: SelectOption[] = [
-    {
-      id: 1,
-      value: 'Martial arts',
-      selected: false,
-    },
-    {
-      id: 2,
-      value: 'Climbing',
-      selected: false,
-    },
-    {
-      id: 3,
-      value: 'Football',
-      selected: true,
-    },
-  ];
+  let selectOptionsMock: SelectOption[];
+  const triggerChanges = () => {
+    component.ngOnChanges(
+      simpleChange({
+        list: cloneDeep(selectOptionsMock),
+      })
+    );
+  };
 
   DOMhelpers.prototype.injectStyles(`
     .html-reporter .result-message {
@@ -56,8 +46,28 @@ describe('EditableListComponent', () => {
   `);
 
   beforeEach(async(() => {
+    selectOptionsMock = [
+      {
+        id: 1,
+        value: 'Martial arts',
+        selected: false,
+      },
+      {
+        id: 2,
+        value: 'Climbing',
+        selected: false,
+      },
+      {
+        id: 3,
+        value: 'Football',
+        selected: true,
+      },
+    ];
+
     TestBed.configureTestingModule({
-      declarations: [EditableListComponent],
+      declarations: [
+        EditableListComponent
+      ],
       imports: [
         CommonModule,
         IconsModule,
@@ -74,18 +84,13 @@ describe('EditableListComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(EditableListComponent);
         component = fixture.componentInstance;
-        component.ngOnChanges(
-          simpleChange({
-            list: cloneDeep(selectOptionsMock),
-          })
-        );
       });
   }));
 
   describe('maxChars', () => {
     it('should accept 10 chars if max chars is 10', () => {
       component.maxChars = 10;
-      fixture.detectChanges();
+      triggerChanges();
       const input = fixture.debugElement.query(By.css('.bel-item-input'));
       expect(input.attributes.maxLength).toEqual('10');
     });
@@ -93,18 +98,50 @@ describe('EditableListComponent', () => {
 
   describe('Adding/Deleting items', () => {
     it('should have all items in the list', () => {
+      triggerChanges();
       const list = fixture.debugElement.queryAll(
         By.css('.bel-item.b-icon-drag-alt')
       );
       expect(list.length).toEqual(3);
       expect(component.listState.list).toEqual(selectOptionsMock);
     });
-
-    it('should delete item from the list', fakeAsync(() => {
-      const del = fixture.debugElement.query(
+    it('should have trash button if allowedActions.remove is true', () => {
+      component.allowedActions = {
+        remove: true,
+      };
+      triggerChanges();
+      const del = fixture.debugElement.queryAll(
         By.css('.bel-trash-button button')
       );
-      del.nativeElement.click();
+      expect(del.length).toEqual(3);
+    });
+    it('should not have trash button if allowedActions.remove is false', () => {
+      component.allowedActions = {
+        remove: false,
+      };
+      triggerChanges();
+      const del = fixture.debugElement.queryAll(
+        By.css('.bel-trash-button button')
+      );
+      expect(del.length).toEqual(0);
+    });
+    it('should not have trash button if item has canBeDeleted=false', () => {
+      selectOptionsMock[0].canBeDeleted = false;
+      component.allowedActions = {
+        remove: true,
+      };
+      triggerChanges();
+      const del = fixture.debugElement.queryAll(
+        By.css('.bel-trash-button button')
+      );
+      expect(del.length).toEqual(2);
+    });
+    it('should delete item from the list', fakeAsync(() => {
+      triggerChanges();
+      const del = fixture.debugElement.queryAll(
+        By.css('.bel-trash-button button')
+      );
+      del[0].nativeElement.click();
       fixture.detectChanges();
       const remove = fixture.debugElement.query(
         By.css('.bel-remove-button button')
@@ -120,6 +157,7 @@ describe('EditableListComponent', () => {
 
     it('should emit the right event when item was deleted', fakeAsync(() => {
       spyOn(component.changed, 'emit');
+      triggerChanges();
       const del = fixture.debugElement.queryAll(
         By.css('.bel-trash-button button')
       );
@@ -153,6 +191,7 @@ describe('EditableListComponent', () => {
     }));
 
     it('should add item to the list', () => {
+      triggerChanges();
       const input = fixture.debugElement.query(By.css('.bel-item-input'));
       inputValue(input.nativeElement, 'Drawing');
       fixture.detectChanges();
@@ -168,6 +207,7 @@ describe('EditableListComponent', () => {
     });
 
     it('should emit the right event when item was added', done => {
+      triggerChanges();
       const input = fixture.debugElement.query(By.css('.bel-item-input'));
       const doneButton = fixture.debugElement.query(
         By.css('.bel-done-button button')
@@ -184,6 +224,7 @@ describe('EditableListComponent', () => {
     });
 
     it('should show an error if item is in the list already', fakeAsync(() => {
+      triggerChanges();
       const input = fixture.debugElement.query(By.css('.bel-item-input'));
       inputValue(
         input.nativeElement,
@@ -202,12 +243,15 @@ describe('EditableListComponent', () => {
         By.css('[b-input-message] .error')
       );
       expect(error.nativeElement.innerText).toContain(
-        `"${selectOptionsMock[0].value}" already exists`
+        `"${ selectOptionsMock[0].value }" already exists`
       );
     }));
   });
 
   describe('Sorting', () => {
+    beforeEach(() => {
+      triggerChanges();
+    });
     it('should sort ascending when pressing Asc button ', () => {
       spyOn(component.changed, 'emit');
       const sort = fixture.debugElement.query(

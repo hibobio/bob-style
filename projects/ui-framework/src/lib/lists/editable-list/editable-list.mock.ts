@@ -5,10 +5,11 @@ import { mockHobbies } from '../../mock.const';
 const listItems = 10;
 
 export const editableListMock: SelectOption[] = mockHobbies()
-  .filter(i => i.split(' ').length > 1)
+  .filter(v => v.split(' ').length > 1)
   .slice(0, listItems)
-  .map(i => ({
+  .map((v, index) => ({
     id: simpleUID(),
-    value: i,
+    value: v,
     selected: randomNumber() > 90,
+    canBeDeleted: index !== 0
   }));
