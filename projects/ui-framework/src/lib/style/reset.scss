@@ -56,8 +56,7 @@ button,
 .button,
 [role='button'],
 [type='reset'],
-[type='submit'],
-[tabindex='0'] {
+[type='submit'] {
   cursor: pointer;
 }
 

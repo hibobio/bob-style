@@ -29,7 +29,7 @@ export abstract class BaseCardElement {
     return this.isClickableCard() ? '0' : '-1';
   }
 
-  private isClickableCard() {
+  public isClickableCard() {
     return this.isClickable || this.clicked.observers.length > 0;
   }
 }

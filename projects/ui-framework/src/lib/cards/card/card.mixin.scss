@@ -38,7 +38,6 @@ $cardPadding-small: times8(2);
     padding: $cardPadding;
     border: 1px solid $grey-500;
     border-radius: $border-radius;
-    transition: transform 0.2s, box-shadow 0.2s;
     text-align: left;
     background-color: white;
     @include b-body($addCssVars: true);
@@ -53,12 +52,16 @@ $cardPadding-small: times8(2);
     }
 
     @if $doHover {
-      &.clickable {
-        @include desktop {
+      @include desktop {
+        transition: transform 0s, box-shadow 0.1s;
+        will-change: transform, box-shadow;
+
+        &.clickable {
           &:hover,
           &:focus,
           &[data-focus-inside='true'] {
             box-shadow: 0 2px 12px 0 $grey-500;
+            transform: translateY(-1px);
           }
         }
       }
