@@ -3,7 +3,7 @@ import {
   Output,
   EventEmitter,
   HostBinding,
-  ElementRef
+  ElementRef,
 } from '@angular/core';
 import { Card } from './card.interface';
 import { CardType } from '../cards.enum';
@@ -22,10 +22,14 @@ export abstract class BaseCardElement {
   @HostBinding('attr.data-type') @Input() type: CardType = CardType.regular;
   @HostBinding('attr.role') role = 'listitem';
   @HostBinding('class.single-card') singleCard = true;
-  @HostBinding('class.clickable') isClickableCard() {
-    return this.isClickable || this.clicked.observers.length > 0;
+  @HostBinding('class.clickable') get clickable() {
+    return this.isClickableCard();
   }
   @HostBinding('attr.tabindex') get tabindex() {
     return this.isClickableCard() ? '0' : '-1';
+  }
+
+  private isClickableCard() {
+    return this.isClickable || this.clicked.observers.length > 0;
   }
 }
