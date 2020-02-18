@@ -2,7 +2,7 @@
 @import './../../../../../src/lib/style/icons.mixin';
 @import './table.mixin';
 
-$toolpanel-indent-size: 35px;
+$toolpanel-indent-size: times8(4);
 
 :host ::ng-deep .tree-table {
   .ag-cell-wrapper.ag-row-group {
@@ -49,18 +49,18 @@ $toolpanel-indent-size: 35px;
       .ag-row:not(.ag-row-level-0) {
         > :first-child {
           .ag-cell-wrapper {
-            margin-left:  times8(-3);
+            @include ag-icon('arrow-dir-right');
+            overflow: visible;
+            position: relative;
+            &:before {
+              position: absolute;
+              color: #9d9d9d;
+              transform: translate(calc(-100% - 10px), -3px);
+              height: auto;
+            }
 
           }
           .ag-group-value {
-            @include ag-icon('arrow-dir-right');
-            &:before {
-              display: inline-block;
-              vertical-align: middle;
-              color: $grey-600;
-              transform: translateY(-3px);
-              margin-right: 10px;
-            }
           }
         }
       }
