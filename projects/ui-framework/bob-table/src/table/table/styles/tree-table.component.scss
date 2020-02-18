@@ -54,13 +54,10 @@ $toolpanel-indent-size: times8(4);
             position: relative;
             &:before {
               position: absolute;
-              color: #9d9d9d;
+              color: $grey-600;
               transform: translate(calc(-100% - 10px), -3px);
               height: auto;
             }
-
-          }
-          .ag-group-value {
           }
         }
       }
