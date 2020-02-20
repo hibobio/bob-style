@@ -20,8 +20,8 @@ const optionsNum = 4;
 
 const groupNames: string[] = mockJobs(30);
 
-export const optionsMock: SelectGroupOption[] = makeArray(groupNum).map(
-  (group, index) => {
+export const optionsMock: SelectGroupOption[] = [
+  ...makeArray(groupNum).map((group, index) => {
     const groupId = simpleUID(
       groupNames[index]
         .replace(/\s+/g, '')
@@ -61,5 +61,9 @@ export const optionsMock: SelectGroupOption[] = makeArray(groupNum).map(
         };
       }),
     };
-  }
-);
+  }),
+  {
+    groupName: 'Group with empty options',
+    options: [],
+  },
+];

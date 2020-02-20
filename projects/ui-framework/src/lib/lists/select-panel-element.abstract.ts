@@ -139,12 +139,18 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       this.destroyPanel();
     }
 
+    if (hasChanges(changes, ['options'])) {
+      this.options = this.options.filter((group: SelectGroupOption) =>
+        Boolean(group.options && group.options.length)
+      );
+    }
+
     if (hasChanges(changes, ['options']) && !this.fitOptionsToValue) {
       this.value = this.modelSrvc.getSelectedIDs(this.options);
     }
 
     if (hasChanges(changes, ['options']) && this.fitOptionsToValue) {
-      this.writeValue(this.value, changes.options.currentValue);
+      this.writeValue(this.value, this.options);
     }
 
     if (hasChanges(changes, ['value'])) {

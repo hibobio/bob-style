@@ -237,6 +237,7 @@ $brdcrb-show-step-numbers: false;
   .step-title {
     @include desktop {
       font-size: $font-size-big-body;
+      --font-size: $font-size-big-body;
     }
   }
   .step:not([data-state='active']) {

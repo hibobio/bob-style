@@ -14,6 +14,7 @@ import { ChipType } from '../chips.enum';
 import { ListChange } from '../../lists/list-change/list-change';
 import { simpleUID, cloneArray } from '../../services/utils/functional-utils';
 import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
+import get from 'lodash/get';
 
 @Component({
   selector: 'b-multi-list-and-chips',
@@ -49,19 +50,20 @@ export class MultiListAndChipsComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.options) {
-      this.options = this.listOptions = changes.options.currentValue;
-
+      this.options = this.listOptions = changes.options.currentValue.filter(
+        (group: SelectGroupOption) =>
+          Boolean(group.options && group.options.length)
+      );
       this.chipListConfig.type = this.detectChipType(this.options);
       this.optionsToChips(this.options);
     }
   }
 
   public detectChipType(options: SelectGroupOption[] = this.options): ChipType {
-    return options &&
-      options[0].options &&
-      options[0].options[0].prefixComponent &&
-      options[0].options[0].prefixComponent.attributes &&
-      options[0].options[0].prefixComponent.attributes.imageSource
+    return get(
+      'options[0].options.prefixComponent.attributes.imageSource',
+      false
+    )
       ? ChipType.avatar
       : ChipType.tag;
   }

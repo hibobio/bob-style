@@ -1,13 +1,13 @@
 import { SelectGroupOption } from '../list.interface';
 import {
   selectSome,
-  optionsMock as SingleListPptionsMock,
+  optionsMock as SingleListOptionsMock,
 } from '../single-list/single-list.mock';
 
 export const optionsMock: SelectGroupOption[] = selectSome(
-  SingleListPptionsMock
+  SingleListOptionsMock
 );
 
 export const optionsMockDef: SelectGroupOption[] = selectSome(
-  SingleListPptionsMock
+  SingleListOptionsMock
 );

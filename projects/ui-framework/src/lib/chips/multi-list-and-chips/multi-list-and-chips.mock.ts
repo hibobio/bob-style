@@ -51,6 +51,10 @@ export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
       selected: mayBeSelected(),
     })),
   },
+  {
+    groupName: 'Group with empty options',
+    options: [],
+  },
 ];
 
 export const MultiListAndAvatarChipsOptionsMock: SelectGroupOption[] = [
