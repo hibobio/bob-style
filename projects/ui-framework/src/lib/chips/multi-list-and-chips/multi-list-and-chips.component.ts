@@ -12,7 +12,11 @@ import { SelectGroupOption, SelectOption } from '../../lists/list.interface';
 import { ChipListConfig, Chip } from '../chips.interface';
 import { ChipType } from '../chips.enum';
 import { ListChange } from '../../lists/list-change/list-change';
-import { simpleUID, cloneArray } from '../../services/utils/functional-utils';
+import {
+  simpleUID,
+  cloneArray,
+  isNotEmptyArray,
+} from '../../services/utils/functional-utils';
 import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
 import get from 'lodash/get';
 
@@ -51,8 +55,7 @@ export class MultiListAndChipsComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.options) {
       this.options = this.listOptions = changes.options.currentValue.filter(
-        (group: SelectGroupOption) =>
-          Boolean(group.options && group.options.length)
+        (group: SelectGroupOption) => isNotEmptyArray(group.options)
       );
       this.chipListConfig.type = this.detectChipType(this.options);
       this.optionsToChips(this.options);

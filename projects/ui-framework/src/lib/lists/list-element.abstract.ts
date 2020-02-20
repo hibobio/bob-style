@@ -110,7 +110,7 @@ export abstract class BaseListElement
 
     if (hasChanges(changes, ['options'])) {
       this.options = this.options.filter((group: SelectGroupOption) =>
-        Boolean(group.options && group.options.length)
+        isNotEmptyArray(group.options)
       );
       this.allGroupsCollapsed =
         this.startWithGroupsCollapsed && isNotEmptyArray(this.options, 1);

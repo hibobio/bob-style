@@ -141,7 +141,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
     if (hasChanges(changes, ['options'])) {
       this.options = this.options.filter((group: SelectGroupOption) =>
-        Boolean(group.options && group.options.length)
+        isNotEmptyArray(group.options)
       );
     }
 
