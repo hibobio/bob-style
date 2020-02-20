@@ -85,7 +85,7 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
     }
 
     if (notFirstChanges(changes)) {
-      if (changes.text) {
+      if (changes.text && !this.cd['destroyed']) {
         this.cd.detectChanges();
       }
 
