@@ -42,7 +42,7 @@ const note = `
   video | string | embedable youtube or vimeo link to show in lightbox (other URLs will throw error)
   fillScreen | boolean | if content should fill most of the screen (may be important for components)
 
-  #### Return object properties
+  #### Returned object properties
 
   Name | Type | Description
   --- | --- | ---
@@ -51,6 +51,8 @@ const note = `
   lightboxComponentRef | ComponentRef&lt;LightboxComponent&gt; | reference to the Lightbox component
   config | LightboxConfig | the original configuration, with\
    which the service was called, but with sanitized video/image links (if any)
+  close() | Function | method to close ligtbox
+  closed$ | Observable<wbr>&lt;void&gt; | observable that emits when the lightbox was closed
 
   #### Example call
 

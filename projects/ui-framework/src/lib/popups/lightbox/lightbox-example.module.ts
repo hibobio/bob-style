@@ -58,6 +58,9 @@ export class LightboxExampleComponent implements OnDestroy {
         : null;
 
     this.lightbox = this.lightboxService.showLightbox(config);
+    this.lightbox.closed$.subscribe(() => {
+      console.log('Lightbox was closed!', this.lightbox);
+    });
   }
 
   ngOnDestroy(): void {
