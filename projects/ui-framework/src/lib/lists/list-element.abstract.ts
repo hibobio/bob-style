@@ -292,7 +292,10 @@ export abstract class BaseListElement
       });
 
       this.updateActionButtonsState();
-      this.cd.detectChanges();
+
+      if (!this.cd['destroyed']) {
+        this.cd.detectChanges();
+      }
     }
   }
 
