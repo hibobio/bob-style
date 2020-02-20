@@ -4,7 +4,6 @@ import {
   simpleChange,
   elementsFromFixture,
 } from '../../services/utils/test-helpers';
-import { ChangeDetectionStrategy } from '@angular/core';
 import { MultiListAndChipsComponent } from './multi-list-and-chips.component';
 import { Icons } from '../../icons/icons.enum';
 import { MockComponent } from 'ng-mocks';
@@ -47,9 +46,6 @@ describe('MultiListAndChipsComponent', () => {
         set: {
           entryComponents: [AvatarImageComponent],
         },
-      })
-      .overrideComponent(MultiListAndChipsComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents()
       .then(() => {
@@ -113,11 +109,8 @@ describe('MultiListAndChipsComponent', () => {
           ],
         })
       );
-
       fixture.detectChanges();
-
       emptyStateEl = elementFromFixture(fixture, 'b-chip-list b-empty-state');
-
       expect(emptyStateEl).toBeFalsy();
     });
   });
@@ -203,6 +196,64 @@ describe('MultiListAndChipsComponent', () => {
     });
   });
 
+  describe('Select all', () => {
+    let listOptions: HTMLElement[];
+    let chipEls: HTMLElement[];
+
+    it('Should display single All chip, if all options of group are selected', () => {
+      component.ngOnChanges(
+        simpleChange({
+          options: [
+            {
+              groupName: 'Group1',
+              options: makeArray(3).map((itm, ind) => ({
+                id: ind,
+                value: 'Option' + ind,
+                selected: true,
+              })),
+            },
+          ],
+        })
+      );
+      fixture.detectChanges();
+      chipEls = elementsFromFixture(fixture, 'b-chip-list b-chip');
+
+      expect(chipEls.length).toEqual(1);
+      expect(chipEls[0].innerText.trim()).toEqual('Group1');
+    });
+
+    it('Should display single All chip, if all options of group were selected by user', () => {
+      component.ngOnChanges(
+        simpleChange({
+          options: [
+            {
+              groupName: 'Group1',
+              options: makeArray(3).map((itm, ind) => ({
+                id: ind,
+                value: 'Option' + ind,
+                selected: false,
+              })),
+            },
+          ],
+        })
+      );
+      fixture.detectChanges();
+      listOptions = elementsFromFixture(
+        fixture,
+        '.mlac-list .option-select.option'
+      );
+      chipEls = elementsFromFixture(fixture, 'b-chip-list b-chip');
+      expect(listOptions.length).toEqual(3);
+      expect(chipEls.length).toEqual(0);
+      listOptions.forEach(o => o.click());
+      fixture.detectChanges();
+
+      chipEls = elementsFromFixture(fixture, 'b-chip-list b-chip');
+      expect(chipEls.length).toEqual(1);
+      expect(chipEls[0].innerText.trim()).toEqual('Group1');
+    });
+  });
+
   describe('Avatar Chips', () => {
     let listOptions: HTMLElement[];
     let chipEls: HTMLElement[];
@@ -216,7 +267,7 @@ describe('MultiListAndChipsComponent', () => {
               options: makeArray(5).map((itm, ind) => ({
                 id: ind,
                 value: 'Option' + ind,
-                selected: true,
+                selected: ind !== 4,
                 prefixComponent: {
                   component: AvatarImageComponent,
                   attributes: {
@@ -240,7 +291,7 @@ describe('MultiListAndChipsComponent', () => {
     it('Should display avatar chips', () => {
       chipEls = elementsFromFixture(fixture, 'b-chip-list b-chip');
 
-      expect(chipEls.length).toEqual(5);
+      expect(chipEls.length).toEqual(4);
 
       expect(chipEls[2].innerHTML).toContain('image2');
       expect(chipEls[2].innerHTML).toContain('Option2');

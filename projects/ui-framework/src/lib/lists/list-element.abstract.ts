@@ -292,6 +292,7 @@ export abstract class BaseListElement
       });
 
       this.updateActionButtonsState();
+      this.cd.detectChanges();
     }
   }
 

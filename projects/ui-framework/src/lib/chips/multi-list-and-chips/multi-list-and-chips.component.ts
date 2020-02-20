@@ -6,6 +6,7 @@ import {
   Output,
   EventEmitter,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { LIST_EL_HEIGHT } from '../../lists/list.consts';
 import { SelectGroupOption, SelectOption } from '../../lists/list.interface';
@@ -16,6 +17,7 @@ import {
   simpleUID,
   cloneArray,
   isNotEmptyArray,
+  applyChanges,
 } from '../../services/utils/functional-utils';
 import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
 import get from 'lodash/get';
@@ -27,7 +29,7 @@ import get from 'lodash/get';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiListAndChipsComponent implements OnChanges {
-  constructor() {}
+  constructor(private cd: ChangeDetectorRef) {}
 
   @Input() options: SelectGroupOption[] = [];
   @Input() listLabel: string;
@@ -53,18 +55,27 @@ export class MultiListAndChipsComponent implements OnChanges {
   readonly chipListID: string = simpleUID('mlacc-');
 
   ngOnChanges(changes: SimpleChanges) {
+    applyChanges(this, changes, {
+      options: [],
+    });
+
     if (changes.options) {
-      this.options = this.listOptions = changes.options.currentValue.filter(
+      this.options = this.listOptions = this.options.filter(
         (group: SelectGroupOption) => isNotEmptyArray(group.options)
       );
       this.chipListConfig.type = this.detectChipType(this.options);
       this.optionsToChips(this.options);
     }
+
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
   public detectChipType(options: SelectGroupOption[] = this.options): ChipType {
     return get(
-      'options[0].options.prefixComponent.attributes.imageSource',
+      options,
+      '[0].options[0].prefixComponent.attributes.imageSource',
       false
     )
       ? ChipType.avatar
