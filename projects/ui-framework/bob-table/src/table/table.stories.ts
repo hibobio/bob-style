@@ -108,6 +108,7 @@ const note = `
   [columnDefs] | json | Columns definition | &nbsp;
   [rowSelection] | RowSelection | single multiple | null
   suppressColumnVirtualisation | boolean | disables virtual scroll on columns | true
+  suppressRowVirtualisation | boolean | disables virtual scroll on rows | false
   [maxHeight] | number | grid max height | 450
   [tableGridOptions] | GridOptions - Partial | extra options that are added on grid | {}
   [suppressDragLeaveHidesColumns] | boolean | disables 'dragging column out to remove it' behaviour | false
