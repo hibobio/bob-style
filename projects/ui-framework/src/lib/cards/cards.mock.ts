@@ -5,9 +5,9 @@ import { CardEmployee } from './card-employee/card-employee.interface';
 import {
   mockAvatar,
   mockJobs,
-  mockNames,
   mockText,
   mockUrl,
+  mockName,
 } from '../mock.const';
 import { Icons } from '../icons/icons.enum';
 import { makeArray, randomNumber } from '../services/utils/functional-utils';
@@ -59,7 +59,7 @@ export const CardsMockData: Card[] = getCardsMockData(5);
 export const getEmployeeCardsMockData = (number = 10) => {
   return makeArray(number).map(i => ({
     imageSource: mockAvatar(),
-    title: mockNames(1),
+    title: mockName(),
     subtitle: mockJobs(1),
     social: {
       linkedin: mockUrl('linkedin'),

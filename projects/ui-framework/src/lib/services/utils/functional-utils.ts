@@ -62,6 +62,9 @@ export const getType = (smth: any): string =>
     ? 'NaN'
     : String(typeof smth);
 
+export const isRegExp = (val: any): val is RegExp =>
+  !!val && typeof val === 'object' && val instanceof RegExp;
+
 // ----------------------
 // NUMBERS
 // ----------------------
@@ -156,6 +159,26 @@ export const onlyUpdatedProps = (
     }, {});
 };
 
+export const objectRemoveKey = (
+  object: GenericObject,
+  key: string
+): GenericObject => {
+  const { [key]: deletedKey, ...otherKeys } = object;
+  return otherKeys;
+};
+
+export const objectRemoveKeys = (
+  object: GenericObject,
+  keys: string[]
+): GenericObject => {
+  return Object.keys(object)
+    .filter(key => !keys.includes(key))
+    .reduce((acc, key) => {
+      acc[key] = object[key];
+      return acc;
+    }, {});
+};
+
 // ----------------------
 // ARRAYS
 // ----------------------
@@ -242,14 +265,19 @@ export const arrayMode = <T = any>(arr: T[]): T =>
 // STRINGS
 // ----------------------
 
-export const stringify = (smth: any): string =>
-  isString(smth)
+export const stringify = (smth: any, limit: number = undefined): string => {
+  const stringified = isString(smth)
     ? smth
     : isArray(smth)
     ? smth.map(i => stringify(i)).join(', ')
     : isObject(smth)
     ? JSON.stringify(smth)
     : String(smth);
+
+  return limit && stringified.length > limit
+    ? stringified.slice(0, limit) + '...'
+    : stringified;
+};
 
 export const capitalize = (smth: string): string =>
   smth.charAt(0).toUpperCase() + smth.slice(1);
@@ -357,7 +385,19 @@ export const monthIndex = (month: number | string, minusOne = true): number => {
 };
 
 // ----------------------
-// RONDOMIZERS
+// REGEX
+// ----------------------
+
+export const escapeRegExp = (value: string): string => {
+  return value.replace(/[.*+?^${}()|[\]\\\/]/g, '\\$&');
+};
+
+export const stringToRegex = (value: string, options = 'i'): RegExp => {
+  return new RegExp(escapeRegExp(value), options);
+};
+
+// ----------------------
+// RANDOMIZERS
 // ----------------------
 
 export const randomNumber = (min = 0, max = 100): number =>

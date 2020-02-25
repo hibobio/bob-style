@@ -1,0 +1,14 @@
+@import '../../style/common-imports';
+
+:host {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+::ng-deep {
+  .cdk-overlay-pane.b-select-panel.b-tree-list-panel {
+    @include desktop {
+      min-width: 500px;
+    }
+  }
+}

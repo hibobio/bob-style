@@ -119,7 +119,7 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
       !this.supressWarnings &&
       this.imageSource &&
       this.imageSource.indexOf('filestack') > -1 &&
-      !/align\W{1,2}faces/g.test(this.imageSource)
+      !/align\W{1,2}faces/.test(this.imageSource)
     ) {
       const imgref = this.imageSource.split(
         /(?:filestackcontent\W{1,2}com\W{1,2})|(?:\W{0,1}\?)/i

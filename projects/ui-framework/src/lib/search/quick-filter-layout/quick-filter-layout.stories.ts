@@ -12,7 +12,7 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import {
   mockThings,
   mockAnimals,
-  mockNames,
+  mockName,
   mockHobbies,
 } from '../../mock.const';
 import { simpleUID } from '../../services/utils/functional-utils';
@@ -215,7 +215,7 @@ const quickFilters: QuickFilterConfig[] = [
     key: 'name',
     label: 'Your name',
     placeholder: 'Enter your name',
-    value: mockNames(1),
+    value: mockName(),
   },
   {
     key: 'social',

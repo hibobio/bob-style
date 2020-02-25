@@ -13,7 +13,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { AvatarModule } from './avatar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipType } from '../../chips/chips.enum';
-import { mockNames, mockJobs, mockAvatar } from '../../mock.const';
+import { mockJobs, mockAvatar, mockName } from '../../mock.const';
 import { Icons } from '../../icons/icons.enum';
 import { ButtonsModule } from '../../buttons/buttons.module';
 
@@ -156,7 +156,7 @@ story.add(
         ),
         isClickable: boolean('isClickable', false),
         clickHandler: action('Avatar Clicked'),
-        title: text('title', mockNames(1)),
+        title: text('title', mockName()),
         subtitle: text('subtitle', mockJobs(1)),
         caption: text('caption', 'Product, Israel'),
         disabled: boolean('disabled', false),

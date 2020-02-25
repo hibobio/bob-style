@@ -175,58 +175,9 @@ export { MultiListAndChipsComponent } from './lib/chips/multi-list-and-chips/mul
 
 
 /*
- * Form Elements
+ * Lists & Selects
  */
 
-// FormElements Module
-export { FormElementsModule } from './lib/form-elements/form-elements.module';
-export * from './lib/form-elements/form-elements.enum';
-export * from './lib/form-elements/form-elements.const';
-export { BaseFormElement } from './lib/form-elements/base-form-element';
-// Textarea Module
-export { TextareaModule } from './lib/form-elements/textarea/textarea.module';
-export {
-  TextareaComponent
-} from './lib/form-elements/textarea/textarea.component';
-// Checkbox Module
-export { CheckboxModule } from './lib/form-elements/checkbox/checkbox.module';
-export {
-  CheckboxComponent
-} from './lib/form-elements/checkbox/checkbox.component';
-// DatePicker Module
-export * from './lib/form-elements/date-picker/datepicker.enum';
-export * from './lib/form-elements/date-picker/datepicker.interface';
-export { DateParseService } from './lib/form-elements/date-picker/date-parse-service/date-parse.service';
-// tslint:disable-next-line: max-line-length
-export { DateInputDirectiveModule } from './lib/form-elements/date-picker/date-input-directive/dateinput.directive.module';
-export { DateInputDirective } from './lib/form-elements/date-picker/date-input-directive/dateinput.directive';
-export {
-  DatepickerModule
-} from './lib/form-elements/date-picker/datepicker/datepicker.module';
-export {
-  DatepickerComponent
-} from './lib/form-elements/date-picker/datepicker/datepicker.component';
-// DateRangePickerModule
-export { DateRangePickerModule } from './lib/form-elements/date-picker/date-range-picker/date-range-picker.module';
-// tslint:disable-next-line: max-line-length
-export { DateRangePickerComponent } from './lib/form-elements/date-picker/date-range-picker/date-range-picker.component';
-// Input Module
-export { InputModule } from './lib/form-elements/input/input.module';
-export { InputComponent } from './lib/form-elements/input/input.component';
-export { InputEvent } from './lib/form-elements/input/input.interface';
-export {
-  InputTypes, InputAutoCompleteOptions
-} from './lib/form-elements/input/input.enum';
-// Split input + single select Module
-export {
-  SplitInputSingleSelectModule
-} from './lib/form-elements/split-input-single-select/split-input-single-select.module';
-export {
-  SplitInputSingleSelectComponent
-} from './lib/form-elements/split-input-single-select/split-input-single-select.component';
-export {
-  InputSingleSelectValue
-} from './lib/form-elements/split-input-single-select/split-input-single-select.interface';
 // Lists Module
 export {
   SingleListModule
@@ -281,6 +232,16 @@ export { MultiSelectPanelModule } from './lib/lists/multi-select-panel/multi-sel
 export {
   MultiSelectPanelComponent,
 } from './lib/lists/multi-select-panel/multi-select-panel.component';
+// Tree  list
+export * from './lib/lists/tree-list/tree-list.interface';
+export * from './lib/lists/tree-list/tree-list.const';
+export { TreeListModule } from './lib/lists/tree-list/tree-list.module';
+export { TreeListComponent } from './lib/lists/tree-list/tree-list.component';
+export {TreeListPanelModule}from './lib/lists/tree-list-panel/tree-list-panel.module';
+export { TreeListPanelComponent } from './lib/lists/tree-list-panel/tree-list-panel.component';
+export { TreeSelectModule } from './lib/lists/tree-select/tree-select.module';
+export {TreeSelectComponent} from './lib/lists/tree-select/tree-select.component';
+
 // Chain select
 export {
   ChainSelectEventEnum
@@ -294,19 +255,61 @@ export {
 export {
   ChainSelectModule
 } from './lib/lists/chain-select/chain-select.module';
-// Radio Buttons
+
+
+/*
+ * Form Elements
+ */
+
+// FormElements Module
+export { FormElementsModule } from './lib/form-elements/form-elements.module';
+export * from './lib/form-elements/form-elements.enum';
+export * from './lib/form-elements/form-elements.const';
+export { BaseFormElement } from './lib/form-elements/base-form-element';
+// Textarea Module
+export { TextareaModule } from './lib/form-elements/textarea/textarea.module';
 export {
-  RadioButtonModule
-} from './lib/form-elements/radio-button/radio-button.module';
+  TextareaComponent
+} from './lib/form-elements/textarea/textarea.component';
+// Checkbox Module
+export { CheckboxModule } from './lib/form-elements/checkbox/checkbox.module';
 export {
-  RadioButtonComponent
-} from './lib/form-elements/radio-button/radio-button.component';
+  CheckboxComponent
+} from './lib/form-elements/checkbox/checkbox.component';
+// DatePicker Module
+export * from './lib/form-elements/date-picker/datepicker.enum';
+export * from './lib/form-elements/date-picker/datepicker.interface';
+export { DateParseService } from './lib/form-elements/date-picker/date-parse-service/date-parse.service';
+// tslint:disable-next-line: max-line-length
+export { DateInputDirectiveModule } from './lib/form-elements/date-picker/date-input-directive/dateinput.directive.module';
+export { DateInputDirective } from './lib/form-elements/date-picker/date-input-directive/dateinput.directive';
 export {
-  RadioDirection
-} from './lib/form-elements/radio-button/radio-button.enum';
+  DatepickerModule
+} from './lib/form-elements/date-picker/datepicker/datepicker.module';
 export {
-  RadioConfig
-} from './lib/form-elements/radio-button/radio-button.interface';
+  DatepickerComponent
+} from './lib/form-elements/date-picker/datepicker/datepicker.component';
+// DateRangePickerModule
+export { DateRangePickerModule } from './lib/form-elements/date-picker/date-range-picker/date-range-picker.module';
+// tslint:disable-next-line: max-line-length
+export { DateRangePickerComponent } from './lib/form-elements/date-picker/date-range-picker/date-range-picker.component';
+// Input Module
+export { InputModule } from './lib/form-elements/input/input.module';
+export { InputComponent } from './lib/form-elements/input/input.component';
+export { InputEvent } from './lib/form-elements/input/input.interface';
+export {
+  InputTypes, InputAutoCompleteOptions
+} from './lib/form-elements/input/input.enum';
+// Split input + single select Module
+export {
+  SplitInputSingleSelectModule
+} from './lib/form-elements/split-input-single-select/split-input-single-select.module';
+export {
+  SplitInputSingleSelectComponent
+} from './lib/form-elements/split-input-single-select/split-input-single-select.component';
+export {
+  InputSingleSelectValue
+} from './lib/form-elements/split-input-single-select/split-input-single-select.interface';
 // Social Module
 export { SocialModule } from './lib/form-elements/social/social.module';
 export { SocialComponent } from './lib/form-elements/social/social.component';
@@ -323,6 +326,20 @@ export { FormElementLabelComponent } from './lib/form-elements/form-element-labe
 // Input Message
 export { InputMessageModule } from './lib/form-elements/input-message/input-message.module';
 export { InputMessageComponent } from './lib/form-elements/input-message/input-message.component';
+// Radio Buttons
+export {
+  RadioButtonModule
+} from './lib/form-elements/radio-button/radio-button.module';
+export {
+  RadioButtonComponent
+} from './lib/form-elements/radio-button/radio-button.component';
+export {
+  RadioDirection
+} from './lib/form-elements/radio-button/radio-button.enum';
+export {
+  RadioConfig
+} from './lib/form-elements/radio-button/radio-button.interface';
+
 
 /*
  * Search

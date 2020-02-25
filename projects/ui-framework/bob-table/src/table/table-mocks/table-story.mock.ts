@@ -3,7 +3,17 @@ import { AvatarCellComponent } from '../table-cell-components/avatar-cell/avatar
 import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
 import { GridActions } from '../table-cell-components/actions-cell/actions-cell.interface';
 import { PinDirection, SortDirections } from '../table/table.enum';
-import { Icons, makeArray, mockAvatar, mockDate, mockNames, mockText, randomFromArray, randomNumber, simpleUID } from 'bob-style';
+import {
+  Icons,
+  makeArray,
+  mockAvatar,
+  mockDate,
+  mockNames,
+  mockText,
+  randomFromArray,
+  randomNumber,
+  simpleUID,
+} from 'bob-style';
 
 export const mockColumnsDefs: ColumnDef[] = [
   {
@@ -31,13 +41,13 @@ export const mockColumnsDefs: ColumnDef[] = [
   {
     headerName: 'Status',
     field: 'internal.status',
-    flex: 1
+    flex: 1,
   },
   {
     headerName: 'Hired Date',
     field: 'hiredDate',
     icon: Icons.date,
-    flex: 1
+    flex: 1,
   },
   {
     headerName: '',
@@ -47,8 +57,8 @@ export const mockColumnsDefs: ColumnDef[] = [
     lockPosition: true,
     resizable: false,
     sortable: false,
-    flex: 1
-  }
+    flex: 1,
+  },
 ];
 
 export const treeColumnDefsMock: ColumnDef[] = [
@@ -61,82 +71,82 @@ export const treeColumnDefsMock: ColumnDef[] = [
     field: 'employmentType',
     headerName: 'Employment Type',
     sortable: true,
-  }
+  },
 ];
 export const treeRowDataMock = [
   {
     orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers']},
     jobTitle: 'CEO',
-    employmentType: 'Permanent'
+    employmentType: 'Permanent',
   },
   {
     orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett']},
     jobTitle: 'Exec. Vice President',
-    employmentType: 'Permanent'
+    employmentType: 'Permanent',
   },
   {
     orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Esther Baker']},
     jobTitle: 'Director of Operations',
-    employmentType: 'Permanent'
+    employmentType: 'Permanent',
   },
   {
     orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Esther Baker', 'Brittany Hanson']},
     jobTitle: 'Fleet Coordinator',
-    employmentType: 'Permanent'
+    employmentType: 'Permanent',
   },
   {
     orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Esther Baker', 'Brittany Hanson', 'Leah Flowers']},
     jobTitle: 'Parts Technician',
-    employmentType: 'Contract'
+    employmentType: 'Contract',
   },
   {
     orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Esther Baker', 'Brittany Hanson', 'Tammy Sutton']},
     jobTitle: 'Service Technician',
-    employmentType: 'Contract'
+    employmentType: 'Contract',
   },
   {
     orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Esther Baker', 'Derek Paul']},
     jobTitle: 'Inventory Control',
-    employmentType: 'Permanent'
+    employmentType: 'Permanent',
   },
   {
     orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Francis Strickland']},
     jobTitle: 'VP Sales',
-    employmentType: 'Permanent'
+    employmentType: 'Permanent',
   },
   {
     orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Francis Strickland', 'Morris Hanson']},
     jobTitle: 'Sales Manager',
-    employmentType: 'Permanent'
+    employmentType: 'Permanent',
   },
   {
     orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Francis Strickland', 'Todd Tyler']},
     jobTitle: 'Sales Executive',
-    employmentType: 'Contract'
+    employmentType: 'Contract',
   },
   {
     orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Francis Strickland', 'Bennie Wise']},
     jobTitle: 'Sales Executive',
-    employmentType: 'Contract'
+    employmentType: 'Contract',
   },
   {
     orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Francis Strickland', 'Joel Cooper']},
     jobTitle: 'Sales Executive',
-    employmentType: 'Permanent'
-  }
+    employmentType: 'Permanent',
+  },
 ];
 
 const gridActions: GridActions = {
   menuItems: [
     {
       label: 'menu item 1',
-      action: $event => console.log('menu item 1 clicked', $event)
+      action: $event => console.log('menu item 1 clicked', $event),
     },
     {
       label: 'menu item 2',
-      action: $event => console.log('menu item 2 clicked', $event)
-    }
-  ]
+      action: $event => console.log('menu item 2 clicked', $event),
+    },
+  ],
 };
 
 export const mockRowData = makeArray(100).map((i, index) => ({
@@ -150,21 +160,23 @@ export const mockRowData = makeArray(100).map((i, index) => ({
       'Divorsed',
       'Engaged',
       'Separated',
-      'Diceased'
-    ])
+      'Diceased',
+    ]),
   },
   about: {
     avatar: {
-      imageSource: mockAvatar()
-    }
+      imageSource: mockAvatar(),
+    },
   },
   hiredDate: mockDate(),
   actions: gridActions,
-  isClickable: true
+  isClickable: true,
 }));
 
 function makeBranch(names: string[]) {
-  return makeArray(randomNumber(1, names.length)).map(() => names[randomNumber(1, names.length)]);
+  return makeArray(randomNumber(1, names.length)).map(
+    () => names[randomNumber(1, names.length)]
+  );
 }
 
 function generateTree() {
@@ -184,19 +196,18 @@ export const mockRowDataTree = makeArray(200).map(i => ({
       'Divorsed',
       'Engaged',
       'Separated',
-      'Diceased'
-    ])
+      'Diceased',
+    ]),
   },
   about: {
     avatar: {
-      imageSource: mockAvatar()
-    }
+      imageSource: mockAvatar(),
+    },
   },
   hiredDate: mockDate(),
   actions: gridActions,
-  isClickable: true
+  isClickable: true,
 }));
-
 
 // For test performance
 /*

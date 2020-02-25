@@ -13,9 +13,9 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import {
   mockHobbies,
   mockAvatar,
-  mockNames,
   mockThings,
   mockAnimals,
+  mockName,
 } from '../../mock.const';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
@@ -163,7 +163,7 @@ story.add(
     template: storyTemplate,
     props: {
       avatar1: mockAvatar(),
-      name1: mockNames(1),
+      name1: mockName(),
       text1: mockThings().find(i => i.split(' ').length > 1),
       icon1: randomFromArray(icons, 1),
 
@@ -175,7 +175,7 @@ story.add(
       avatarSize: AvatarSize,
       iconSize: IconSize,
       type: select('type', Object.values(ChipType), ChipType.tag),
-      text: text('text', mockNames(1)),
+      text: text('text', mockName()),
       removable: boolean('removable', false),
       disabled: boolean('disabled', false),
       selected: boolean('selected', false),

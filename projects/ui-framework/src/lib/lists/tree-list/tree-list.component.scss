@@ -1,0 +1,288 @@
+@import '../../style/common-imports';
+@import '../../style/icons.mixin';
+
+$bhl-item-height: $wrap-height;
+$bhl-item-indent: base8(30);
+$bhl-item-padding: $input-padding;
+$bhl-icon-margin: 10px;
+$bhl-max-depth: 5;
+
+//-------DEV---------
+.dev {
+  position: absolute;
+  top: 105%;
+  left: 0;
+  right: 0;
+
+  p {
+    margin: 0 0 5px 0;
+  }
+}
+:host {
+  overflow: visible !important;
+}
+//----------------
+
+:host {
+  display: block;
+  position: relative;
+  text-align: left;
+  user-select: none;
+  overflow: hidden;
+  @include b-body($color: $grey-700, $addCssVars: false, $lineHeight: 1.2);
+  background-color: white;
+  --list-max-items: 8;
+  border-radius: $border-radius;
+
+  &[data-embedded='false'] {
+    border: 1px solid $border-color;
+    box-shadow: 0 2px 3px 0 $boxShadowColor;
+  }
+}
+
+.bhl-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  max-height: calc(var(--list-max-items) * #{$bhl-item-height} - 1px);
+  overflow-y: auto;
+  will-change: scroll-position, transform;
+}
+
+// Item
+
+.bhl-item {
+  height: $bhl-item-height;
+  display: flex;
+  align-items: center;
+  padding: 0 $bhl-item-padding;
+  position: relative;
+  background-color: white;
+}
+
+:host ::ng-deep {
+  .bhl-item-name {
+    min-width: 0;
+
+    strong {
+      text-decoration: underline;
+    }
+  }
+}
+
+.bhl-item-name,
+.bhl-selected-count {
+  pointer-events: none;
+}
+
+@for $i from 2 through $bhl-max-depth {
+  [data-level='#{$i}'] {
+    padding-left: ($bhl-item-padding + $bhl-item-indent * ($i - 1));
+  }
+}
+
+.bhl-item-option {
+  &.next-is-group {
+    box-shadow: inset 0 -1px 0 0 $border-color-light;
+  }
+
+  @for $i from 1 through $bhl-max-depth {
+    &[data-level='#{$i}'] + .bhl-item-option:not([data-level='#{$i}']) {
+      box-shadow: inset 0 1px 0 0 $border-color-light;
+
+      &.next-is-group {
+        box-shadow: inset 0 1px 0 0 $border-color-light,
+          inset 0 -1px 0 0 $border-color-light;
+      }
+    }
+  }
+}
+
+// Group
+
+.bhl-item-group {
+  box-shadow: 0 -1px 0 0 $border-color-light,
+    inset 0 -1px 0 0 $border-color-light;
+
+  &:first-child {
+    box-shadow: inset 0 -1px 0 0 $border-color-light;
+  }
+
+  &:last-child {
+    box-shadow: 0 -1px 0 0 $border-color-light;
+  }
+}
+
+:host ::ng-deep {
+  .bhl-item-group.expanded {
+    position: sticky;
+    top: 0;
+
+    @for $i from 1 through $bhl-max-depth {
+      &[data-level='#{$i}'] {
+        top: $bhl-item-height * ($i - 1);
+        z-index: $bhl-max-depth * 10 - $i * 10 - 1;
+
+        & ~ .bhl-item-option[data-level='#{$i}'],
+        & ~ .bhl-item-group.collapsed[data-level='#{$i}'] {
+          z-index: $bhl-max-depth * 10 - $i * 10;
+        }
+
+        &
+          ~ .bhl-item-group.expanded[data-level='#{$i+1}']
+          ~ .bhl-item-option[data-level='#{$i+1}'],
+        &
+          ~ .bhl-item-group.expanded[data-level='#{$i+1}']
+          ~ .bhl-item-group.collapsed[data-level='#{$i+1}'] {
+          z-index: $bhl-max-depth * 10 - $i * 10 - 2;
+        }
+
+        & ~ .bhl-item-group.expanded[data-level='#{$i+1}'] {
+          z-index: $bhl-max-depth * 10 - $i * 10 - 3;
+        }
+      }
+    }
+  }
+
+  .bhl-item-group {
+    .bhl-item-name {
+      font-weight: $font-weight-bold-body;
+    }
+  }
+}
+
+// Controls
+
+.bhl-item-chevron {
+  display: block;
+  margin-right: $bhl-icon-margin - 2px;
+
+  &:before {
+    font-size: map-get($icon-sizes, 'medium');
+    @include size($b-checkbox-size);
+    line-height: $b-checkbox-size;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+:host ::ng-deep {
+  .collapsed .bhl-item-chevron {
+    @include b-icon(chevron-right, $size: null);
+  }
+
+  .expanded .bhl-item-chevron {
+    @include b-icon(chevron-down, $size: null);
+  }
+
+  .all-options-hidden .bhl-item-chevron {
+    @include disabled-state;
+  }
+}
+
+:host ::ng-deep {
+  @include checkbox(
+    $input-selector: null,
+    $checkbox-selector: '.bhl-item-checkbox',
+    $checked-selector: '.selected .bhl-item-checkbox',
+    $disabled-selector: null,
+    $required-selector: null,
+    $indeterminate-selector: '.indeterminate .bhl-item-checkbox',
+    $hover-selector:
+      '.bhl-item-option:hover .bhl-item-checkbox, .bhl-item-checkbox:hover, .bhl-item-checkbox:focus'
+  ) {
+    position: relative;
+    margin-right: $bhl-icon-margin;
+  }
+}
+
+// Elements
+
+:host ::ng-deep {
+  .bhl-search {
+    .bfe-wrap {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+
+      &,
+      &.focused {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+      }
+
+      &.focused {
+        border-color: $border-color;
+      }
+    }
+
+    &.no-results .bfe-wrap {
+      border-bottom-left-radius: $border-radius;
+      border-bottom-right-radius: $border-radius;
+      border-width: 0;
+    }
+  }
+}
+
+.bhl-footer {
+  margin: 0;
+}
+
+.bhl-selected-count {
+  margin-left: 5px;
+  font-weight: 400;
+}
+
+// States
+
+.bhl-item {
+  &:hover,
+  &:focus,
+  &.focus {
+    background-color: $grey-100;
+  }
+}
+
+:host::ng-deep {
+  [aria-readonly='true'],
+  [aria-disabled='true'],
+  .disabled {
+    .bhl-item-checkbox,
+    .bhl-item-checkbox:before,
+    .bhl-item-name,
+    .bhl-selected-count {
+      pointer-events: none;
+      cursor: default;
+    }
+  }
+  [aria-disabled='true'],
+  .disabled {
+    .bhl-item-checkbox,
+    .bhl-item-name,
+    .bhl-selected-count {
+      opacity: 0.5;
+    }
+  }
+}
+
+:host::ng-deep {
+  [data-type='single'] {
+    .bhl-item.selected {
+      background-color: $color-option-selected;
+      font-weight: $font-weight-bold-body;
+    }
+  }
+  [aria-readonly='true'] {
+    .bhl-item {
+      &:hover,
+      &.focus {
+        background-color: none;
+      }
+    }
+  }
+}
+
+[hidden] {
+  display: none;
+}

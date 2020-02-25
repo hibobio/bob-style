@@ -27,7 +27,7 @@ import {
 import {
   mockHobbies,
   mockJobs,
-  mockNames,
+  mockName,
 } from '../../../../ui-framework/src/lib/mock.const';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { isEqual } from 'lodash';
@@ -440,7 +440,7 @@ export class FormElementsTestComponent
 
       options: makeArray(this.optionsNum).map((option, index) => ({
         id: groupId * this.optionsNum + index,
-        value: mockNames(1),
+        value: mockName(),
         selected: false,
         disabled: false,
       })),
@@ -509,7 +509,7 @@ export class FormElementsTestComponent
         options: makeArray(this.bMultiSelect_optionsNum).map(
           (option, index) => ({
             id: groupId * this.bMultiSelect_optionsNum + index,
-            value: mockNames(1),
+            value: mockName(),
             selected: false,
             disabled: false,
           })

@@ -69,8 +69,11 @@ export class SearchComponent implements OnChanges {
   }
 
   onInput(event: DOMInputEvent): void {
-    this.value = event.target.value;
-    this.searchChange.emit(this.value);
+    const newValue = event.target.value.trim();
+    if (this.value !== newValue) {
+      this.value = newValue;
+      this.searchChange.emit(this.value);
+    }
   }
 
   onResetClick(): void {

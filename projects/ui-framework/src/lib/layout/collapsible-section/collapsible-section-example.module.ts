@@ -13,7 +13,7 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { TypographyModule } from '../../typography/typography.module';
 import {
   mockAvatar,
-  mockNames,
+  mockName,
   mockJobs,
   mockText,
   mockDateRange,
@@ -214,7 +214,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   public daysNum = randomNumber(2, 10);
   public avatar = {
     imageSource: mockAvatar(),
-    label: mockNames(1),
+    label: mockName(),
     value: mockJobs(1),
   };
   public holiday = {
@@ -259,7 +259,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
     avatars: makeArray(this.outHolidayNum).map(i => ({
       imageSource: mockAvatar(),
       size: AvatarSize.mini,
-      tooltip: mockNames(1) + '\n' + mockDateRange() + '\n' + 'Approved',
+      tooltip: mockName() + '\n' + mockDateRange() + '\n' + 'Approved',
     })),
   };
   public outWorkNum = 5;
@@ -268,7 +268,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
     avatars: makeArray(this.outWorkNum).map(i => ({
       imageSource: mockAvatar(),
       size: AvatarSize.mini,
-      tooltip: mockNames(1) + '\n' + mockDateRange() + '\n' + 'Approved',
+      tooltip: mockName() + '\n' + mockDateRange() + '\n' + 'Approved',
     })),
   };
   public outMilitaryNum = 2;
@@ -277,7 +277,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
     avatars: makeArray(this.outMilitaryNum).map(i => ({
       imageSource: mockAvatar(),
       size: AvatarSize.mini,
-      tooltip: mockNames(1) + '\n' + mockDateRange() + '\n' + 'Approved',
+      tooltip: mockName() + '\n' + mockDateRange() + '\n' + 'Approved',
     })),
   };
 

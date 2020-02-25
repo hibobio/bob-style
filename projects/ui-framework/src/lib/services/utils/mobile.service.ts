@@ -21,6 +21,13 @@ export interface MediaEvent {
   matchDesktop: boolean;
   isTouchDevice: boolean;
   isMobileBrowser: boolean;
+  mobileOS: MobileOS;
+}
+
+export enum MobileOS {
+  iOS = 'iOS',
+  windowsPhone = 'windowsPhone',
+  android = 'android'
 }
 
 class DocumentTouch {}
@@ -32,12 +39,14 @@ export class MobileService {
   mediaEvent$: Observable<MediaEvent>;
   isMobBrowser: boolean;
   isTouchDevice: boolean;
+  mobileOS: MobileOS;
 
   constructor(
     private windowRef: WindowRef,
     private utilsService: UtilsService
   ) {
     this.isMobBrowser = this.checkForMobileBrowser();
+    this.mobileOS = this.getMobileOperatingSystem();
     this.isTouchDevice = this.checkForTouchDevice();
     this.mediaEvent$ = this.utilsService.getResizeEvent().pipe(
       startWith(this.getMediaData()),
@@ -66,9 +75,29 @@ export class MobileService {
     return this.isMobBrowser;
   }
 
+  private getMobileOperatingSystem(): MobileOS {
+    const userAgent = this.getUserAgent();
+
+    if (/windows phone/i.test(userAgent)) {
+      return MobileOS.windowsPhone;
+    }
+
+    if (/android/i.test(userAgent)) {
+      return MobileOS.android;
+    }
+
+    // iOS detection from: http://stackoverflow.com/a/9039885/177710
+    // @ts-ignore
+    if (/ipad|iphone|ipod/i.test(userAgent) && !window.MSStream) {
+      return MobileOS.iOS;
+    }
+
+    return null;
+  }
+
   private checkForMobileBrowser(): boolean {
     // @ts-ignore
-    const a = navigator.userAgent || navigator.vendor || window.opera;
+    const a = this.getUserAgent();
     return (
       // tslint:disable-next-line: max-line-length
       /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(
@@ -79,6 +108,11 @@ export class MobileService {
         a.substr(0, 4)
       )
     );
+  }
+
+  private getUserAgent() {
+    // @ts-ignore
+    return navigator.userAgent || navigator.vendor || window.opera;
   }
 
   private checkForTouchDevice(): boolean {
@@ -103,6 +137,7 @@ export class MobileService {
       matchDesktop: this.matchBreakpoint(mobileBreakpoint + 1, WidthMode.min),
       isTouchDevice: this.isTouchDevice,
       isMobileBrowser: this.isMobBrowser,
+      mobileOS: this.mobileOS
     };
   }
 }

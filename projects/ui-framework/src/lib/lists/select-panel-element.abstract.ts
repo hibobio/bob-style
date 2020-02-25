@@ -235,7 +235,6 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
         (this.panelConfig
           .positionStrategy as FlexibleConnectedPositionStrategy).positionChanges
           .pipe(
-            outsideZone(this.zone),
             throttleTime(200, undefined, {
               leading: true,
               trailing: true,

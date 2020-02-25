@@ -1,0 +1,34 @@
+<div [ngClass]="{'panel-open': panelOpen, 'panel-above':
+     positionClassList['panel-above'],
+     'panel-below': positionClassList['panel-below']}"
+     (click)="openPanel()"
+     cdkOverlayOrigin>
+  <ng-content></ng-content>
+</div>
+
+<ng-template #templateRef>
+  <div class="b-select-panel"
+       [ngClass]="positionClassList">
+    <b-tree-list class="b-select-list"
+                 [embedded]="true"
+                 [focusOnInit]="true"
+                 [type]="type"
+                 [list]="list"
+                 [value]="value"
+                 [viewFilter]="viewFilter"
+                 [keyMap]="keyMap"
+                 [valueSeparatorChar]="valueSeparatorChar"
+                 [maxHeightItems]="maxHeightItems"
+                 [showSingleGroupHeader]="showSingleGroupHeader"
+                 [startCollapsed]="startCollapsed"
+                 [readonly]="readonly"
+                 [disabled]="disabled"
+                 [listActions]="listActions"
+                 (changed)="onSelect($event)"
+                 (apply)="onApply()"
+                 (cancel)="onCancel()">
+      <ng-content footerAction
+                  select="[footerAction],[footerActionRight]"></ng-content>
+    </b-tree-list>
+  </div>
+</ng-template>

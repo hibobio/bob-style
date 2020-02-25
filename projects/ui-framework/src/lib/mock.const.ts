@@ -4,6 +4,7 @@ import {
   padWith0,
   simpleUID,
   capitalize,
+  dedupeArray,
 } from './services/utils/functional-utils';
 import { Icons } from './icons/icons.enum';
 
@@ -101,7 +102,7 @@ export const mockCitiesList = [
   'Brazilia',
   'Jeddah',
   'Phoenix',
-  'Ji\'nan',
+  "Ji'nan",
   'Montréal',
   'Shantou',
   'Nairobi',
@@ -1102,16 +1103,25 @@ export const mockAvatar = () =>
 export const mockImage = (width, height) =>
   `https://picsum.photos/id/${randomNumber(0, 99)}/${width}/${height}`;
 
-export const mockNames = (num = null) => {
-  if (num === 1) {
-    return `${randomFromArray(mockFirstNamesList, num)} ${randomFromArray(
-      mockSecondNamesList,
-      num
-    )}`;
+export const mockName = (num = 1): string => {
+  if (num > 1) {
+    return mockNames(num) as any;
   }
-  const fns = randomFromArray(mockFirstNamesList, num);
-  const sns = randomFromArray(mockSecondNamesList, num);
-  return fns.map((n, i) => `${n} ${sns[i]}`);
+  return `${randomFromArray(mockFirstNamesList, 1)} ${randomFromArray(
+    mockSecondNamesList,
+    1
+  )}` as string;
+};
+
+export const mockNames = (num: number = null) => {
+  if (num === 1) {
+    return mockName() as any;
+  }
+  const fns = randomFromArray(mockFirstNamesList, null);
+  const sns = randomFromArray(mockSecondNamesList, null);
+  const ns = dedupeArray(fns.map((n, i) => `${n} ${sns[i]}`));
+
+  return (num ? ns.slice(0, num) : ns) as string[];
 };
 
 export const mockJobs = (num = null) => randomFromArray(mockJobsList, num);
@@ -1174,8 +1184,9 @@ export const mockText = (words = 100) => {
     .sort(() => 0.5 - Math.random())
     .slice(0, words)
     .join(' ')
-    .replace(/,/g, '')
-    .replace(/\./g, '');
+    .replace(/[\W\s]+/g, ' ')
+    .trim();
+
   text = text.charAt(0).toUpperCase() + text.toLocaleLowerCase().slice(1);
 
   if (text.length < 5) {

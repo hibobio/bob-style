@@ -1,13 +1,13 @@
 import { action } from '@storybook/addon-actions';
 import { CardTableCellMeta, CardTableCellData } from './card-table.interface';
 import { AvatarComponent } from '../../avatar/avatar/avatar.component';
-import { mockAvatar, mockNames, mockJobs, mockDate } from '../../mock.const';
+import { mockAvatar, mockName, mockJobs, mockDate } from '../../mock.const';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { ChipComponent } from '../../chips/chip/chip.component';
 import { ChipType } from '../../chips/chips.enum';
 import {
   randomFromArray,
-  makeArray
+  makeArray,
 } from '../../services/utils/functional-utils';
 import { ButtonComponent } from '../../buttons/button/button.component';
 import { ButtonType } from '../../buttons/buttons.enum';
@@ -18,14 +18,14 @@ const getMockAvatar = () => ({
   component: AvatarComponent,
   attributes: {
     imageSource: mockAvatar(),
-    title: mockNames(1),
+    title: mockName(),
     subtitle: mockJobs(1),
     size: AvatarSize.small,
-    isClickable: false
+    isClickable: false,
   },
   handlers: {
-    clicked: action('Avatar was clicked')
-  }
+    clicked: action('Avatar was clicked'),
+  },
 });
 
 const getMockStatusChip = () => {
@@ -38,9 +38,9 @@ const getMockStatusChip = () => {
           ? ChipType.error
           : status === 'Pending'
           ? ChipType.warning
-          : ChipType.success
+          : ChipType.success,
     },
-    content: status
+    content: status,
   };
 };
 
@@ -49,33 +49,33 @@ export const CardTableMockMetaData: CardTableCellMeta[] = [
     id: 5,
     name: 'Status',
     width: 16,
-    sortable: true
+    sortable: true,
   },
   {
     id: 1,
     name: 'Requested For',
     width: 25,
-    sortable: false
+    sortable: false,
   },
   {
     id: 2,
     name: 'Subject',
     textStyle: {
-      fontWeight: '500'
+      fontWeight: '500',
     },
     width: 18,
-    sortable: false
+    sortable: false,
   },
   {
     id: 3,
     name: 'Requested by',
-    sortable: false
+    sortable: false,
   },
   {
     id: 4,
     name: 'Assignee',
-    sortable: false
-  }
+    sortable: false,
+  },
 ];
 
 const firstLine = [
@@ -83,53 +83,53 @@ const firstLine = [
     data: {
       component: ButtonComponent,
       attributes: {
-        type: ButtonType.secondary
+        type: ButtonType.secondary,
       },
       content: 'Approve',
       handlers: {
-        clicked: action('Button was clicked')
-      }
-    }
+        clicked: action('Button was clicked'),
+      },
+    },
   },
   {
-    data: getMockAvatar()
+    data: getMockAvatar(),
   },
   {
-    data: 'UK Product Team Salary Change'
+    data: 'UK Product Team Salary Change',
   },
   {
-    data: [mockNames(1), mockDate()]
+    data: [mockName(), mockDate()],
   },
   {
-    data: [mockNames(1), '(You)'],
-    class: 'highlight-second-line'
-  }
+    data: [mockName(), '(You)'],
+    class: 'highlight-second-line',
+  },
 ];
 
 const texts = [
   'Personal Information Update',
   'NYC Employee Promotion',
   'UK Design Team Salary Change',
-  'Single line of some very long text that should truncate after two lines with an ellipsis'
+  'Single line of some very long text that should truncate after two lines with an ellipsis',
 ];
 
 export const CardTableMockData: CardTableCellData[][] = [
   firstLine,
   ...makeArray(numberOfLines).map(i => [
     {
-      data: getMockStatusChip()
+      data: getMockStatusChip(),
     },
     {
-      data: getMockAvatar()
+      data: getMockAvatar(),
     },
     {
-      data: randomFromArray(texts)
+      data: randomFromArray(texts),
     },
     {
-      data: [mockNames(1), mockDate()]
+      data: [mockName(), mockDate()],
     },
     {
-      data: [mockNames(1), mockJobs(1)]
-    }
-  ])
+      data: [mockName(), mockJobs(1)],
+    },
+  ]),
 ];

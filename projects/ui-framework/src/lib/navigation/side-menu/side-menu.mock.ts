@@ -2,9 +2,8 @@ import { Icons, IconColor } from '../../icons/icons.enum';
 import {
   makeArray,
   randomFromArray,
-  simpleUID,
 } from '../../services/utils/functional-utils';
-import { mockText, mockAvatar, mockNames, mockJobs } from '../../mock.const';
+import { mockText, mockAvatar, mockName, mockJobs } from '../../mock.const';
 import { SideMenuOption } from './side-menu.interface';
 import { AvatarBadge } from '../../avatar/avatar/avatar.enum';
 import { MenuItem } from '../menu/menu.interface';
@@ -32,7 +31,7 @@ export const sideMenuMock2: SideMenuOption[] = makeArray(3)
     id: index,
     avatar: {
       imageSource: mockAvatar(),
-      title: mockNames(1),
+      title: mockName(),
       subtitle: mockJobs(1),
       badge: randomFromArray(Object.keys(AvatarBadge)) as AvatarBadge,
     },

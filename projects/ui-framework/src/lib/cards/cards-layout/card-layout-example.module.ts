@@ -16,9 +16,9 @@ import {
   mockAvatar,
   mockDate,
   mockImage,
-  mockNames,
   mockHobbies,
   mockText,
+  mockName,
 } from '../../mock.const';
 import {
   AddCardMockData,
@@ -90,7 +90,7 @@ export class CardLayoutExample1Component implements OnChanges {
         ...card,
         text: mockText(randomNumber(10, 25)) + '.',
         avatarImgUrl: mockAvatar(),
-        avatarDisplayName: mockNames(1),
+        avatarDisplayName: mockName(),
       }));
     }
   }

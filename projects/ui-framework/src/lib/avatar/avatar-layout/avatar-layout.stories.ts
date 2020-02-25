@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AvatarLayoutModule } from './avatar-layout.module';
 import { UtilsService } from '../../services/utils/utils.service';
 import { AvatarModule } from '../avatar/avatar.module';
-import { mockAvatar, mockNames } from '../../mock.const';
+import { mockAvatar, mockName } from '../../mock.const';
 import { AvatarOrientation, AvatarSize } from '../avatar/avatar.enum';
 
 const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
@@ -66,7 +66,7 @@ story.add(
           'items',
           new Array(11).fill(0).map(x => ({
             avatar: mockAvatar(),
-            name: mockNames(1),
+            name: mockName(),
           }))
         ),
       },

@@ -1,7 +1,9 @@
 $checkmark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12.73 9.9' width='12.73' height='9.9'%3E%3Cpath fill='white' d='M4.6 6.36L1.77 3.54 0 5.3l4.6 4.6 8.13-8.13L10.96 0z'/%3E%3C/svg%3E");
 
+$b-checkbox-size: 16px;
+
 @mixin checkbox(
-  $size: 16px,
+  $size: $b-checkbox-size,
   $checkmark-size: 9px,
   $indeterminate-check-size: 8px 2px,
   $border-radius: 2px,

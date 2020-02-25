@@ -9,7 +9,7 @@ import {
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { action } from '@storybook/addon-actions';
 import { CommentsModule } from '../comments.module';
-import { mockAvatar, mockNames } from '../../mock.const';
+import { mockAvatar, mockName } from '../../mock.const';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const story = storiesOf(ComponentGroupType.Comments, module).addDecorator(
@@ -54,7 +54,7 @@ story.add(
         comment: object('comment', {
           content: 'input value',
           avatar: mockAvatar(),
-          name: mockNames(1),
+          name: mockName(),
         }),
       },
       moduleMetadata: {

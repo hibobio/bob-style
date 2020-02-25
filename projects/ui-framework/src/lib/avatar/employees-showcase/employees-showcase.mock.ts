@@ -4,7 +4,7 @@ import {
   makeArray,
   randomFromArray,
 } from '../../services/utils/functional-utils';
-import { mockNames, mockAvatar, randomIcon } from '../../mock.const';
+import { mockAvatar, mockName } from '../../mock.const';
 import { SelectGroupOption } from '../../lists/list.interface';
 import { AvatarImageComponent } from '../avatar/avatar-image/avatar-image.component';
 import { AvatarSize, AvatarBadge } from '../avatar/avatar.enum';
@@ -16,7 +16,7 @@ const badges = Object.values(AvatarBadge);
 export const EMPLOYEE_SHOWCASE_MOCK: EmployeeShowcase[] = makeArray(maxEEs).map(
   i => ({
     id: simpleUID(),
-    displayName: mockNames(1),
+    displayName: mockName(),
     imageSource: mockAvatar(),
   })
 );
@@ -27,7 +27,7 @@ export const EMPLOYEE_SHOWCASE_OPTIONS_MOCK: SelectGroupOption[] = [
     key: groupID,
     options: makeArray(maxEEs).map((o, i) => ({
       id: groupID + '_' + i,
-      value: mockNames(1),
+      value: mockName(),
       selected: false,
       disabled: false,
       prefixComponent: {

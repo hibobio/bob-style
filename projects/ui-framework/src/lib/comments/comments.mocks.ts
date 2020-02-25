@@ -1,9 +1,9 @@
 import { Icons } from '../icons/icons.enum';
-import { mockAvatar, mockDate, mockNames, mockText } from '../mock.const';
+import { mockAvatar, mockDate, mockName, mockText } from '../mock.const';
 
 export const COMMENT_ITEM = {
   avatar: mockAvatar(),
-  name: mockNames(1),
+  name: mockName(),
   date: mockDate(),
   content: mockText(5) + ' www.a-link.com ' + mockText(5),
   menuConfig: [
@@ -23,7 +23,7 @@ export const COMMENT_ITEM = {
 };
 export const LONG_COMMENT_ITEM = {
   avatar: mockAvatar(),
-  name: mockNames(1),
+  name: mockName(),
   date: mockDate(),
   content: mockText(10) + ' email@gmail.com ' + mockText(5),
   actionConfig: {

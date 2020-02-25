@@ -1,0 +1,91 @@
+<ng-template #listItem
+             let-index="index"
+             let-item="item"
+             let-groupSelected="groupSelected"
+             let-nextInViewIsGroup="nextInViewIsGroup">
+
+  <li class="bhl-item"
+      #itemElements
+      [id]="item.id"
+      [attr.data-index]="index"
+      [ngClass]="{
+        'bhl-item-option': !item.childrenCount,
+        'bhl-item-group': item.childrenCount,
+        disabled: item.disabled || groupSelected,
+        selected: item.selected || groupSelected,
+        indeterminate: item.indeterminate,
+        expanded: item.childrenCount && !item.collapsed,
+        collapsed: item.collapsed,
+        'next-is-group': nextInViewIsGroup,
+        'all-options-hidden': item.allOptionsHidden
+      }"
+      [attr.tabIndex]="!readonly && !item.disabled ? 0 : null"
+      [attr.data-level]="item.parentCount || 1">
+
+    <span *ngIf="item.childrenIDs"
+          class="bhl-item-chevron"></span>
+
+    <span *ngIf="showCheckbox(item)"
+          class="bhl-item-checkbox"
+          role="checkbox"
+          [attr.aria-checked]="item.selected"></span>
+
+    <span class="bhl-item-name"
+          data-max-lines='3'
+          [innerHTML]="item.name | highlight: searchValue">
+      {{item.name}}
+    </span>
+
+    <span *ngIf="item.selectedCount"
+          class="bhl-selected-count">
+      ({{item.selectedCount}})
+    </span>
+  </li>
+
+</ng-template>
+
+
+<b-search *ngIf="showSearch"
+          #search
+          class="bhl-search"
+          [ngClass]="{
+            'no-results': !listViewModel.length
+          }"
+          (searchChange)="searchChange($event)">
+</b-search>
+
+<ul #listElement
+    class="bhl-list"
+    [attr.data-type]="type"
+    [attr.aria-readonly]="readonly || null"
+    [attr.aria-disabled]="disabled || null"
+    (click)="onListClick($event)"
+    (keydown)="onListKeyDown($event)">
+
+  <ng-container *ngFor="let itemID of listViewModel; let index = index; trackBy: trackBy">
+    <ng-container *ngTemplateOutlet="listItem; context: getItemViewContext(itemID,index)"></ng-container>
+  </ng-container>
+
+</ul>
+
+<b-list-footer #footer
+               *ngIf="hasFooter"
+               class="bhl-footer"
+               [listActions]="!readonly ? listActions : {}"
+               [listActionsState]="!readonly ? listActionsState : {}"
+               (apply)="onApply()"
+               (cancel)="onCancel()"
+               (clear)="clearList()"
+               (reset)="resetList()">
+  <ng-content footerAction
+              select="[footerAction],[footerActionRight]"></ng-content>
+</b-list-footer>
+
+
+<div class="dev">
+  <p>Total items: {{ itemsMap.size }}</p>
+  <p>Total items in view: {{ listViewModel.length }}</p>
+  <p>Total selected: {{ itemsMap.get('#root') && itemsMap.get('#root').selectedCount }}</p>
+  <button type="button"
+          (click)="log()">Log data</button>
+</div>

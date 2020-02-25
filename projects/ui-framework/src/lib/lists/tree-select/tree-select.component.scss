@@ -1,0 +1,59 @@
+@import '../../style/common-imports';
+
+:host ::ng-deep {
+  .panel-open.panel-below {
+    .bfe-wrap {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+  .panel-open.panel-above {
+    .bfe-wrap {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+}
+
+::ng-deep {
+  .b-tree-select-panel {
+    .b-select-panel {
+      position: relative;
+      &:after {
+        @include pseudo;
+        @include size(calc(var(--input-width, 100%) - 1px), 1px);
+        position: absolute;
+        background-color: $input-focus-border-color;
+      }
+
+      &.panel-below {
+        margin-top: -1px;
+        border-top-width: 1px;
+
+        &:after {
+          top: -1px;
+        }
+      }
+
+      &.panel-above {
+        margin-bottom: -1px;
+        border-bottom-width: 1px;
+
+        &:after {
+          bottom: -1px;
+        }
+      }
+
+      &.panel-after {
+        &:after {
+          left: 0;
+        }
+      }
+      &.panel-before {
+        &:after {
+          right: 0;
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import { SelectGroupOption } from '../list.interface';
 import { makeArray, simpleUID } from '../../services/utils/functional-utils';
-import { mockAvatar, mockNames, mockJobs } from '../../mock.const';
+import { mockAvatar, mockName, mockJobs } from '../../mock.const';
 import { randomNumber } from '../../services/utils/functional-utils';
 import { cloneDeep } from 'lodash';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
@@ -35,7 +35,7 @@ export const optionsMock: SelectGroupOption[] = [
       key: groupId,
 
       options: makeArray(optionsNum).map(option => {
-        const optVal = mockNames(1);
+        const optVal = mockName();
         const optId = simpleUID(
           groupId +
             '/' +
