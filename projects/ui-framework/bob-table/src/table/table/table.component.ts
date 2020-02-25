@@ -57,6 +57,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Input() rowSelection: RowSelection = null;
   @Input() maxHeight = 450;
   @Input() suppressColumnVirtualisation = true;
+  @Input() suppressRowVirtualisation = false;
   @Input() tableGridOptions: Partial<GridOptions> = {};
   @Input() suppressDragLeaveHidesColumns = true;
   @Input() removeColumnButtonEnabled = false;
@@ -169,6 +170,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,
       suppressContextMenu: true,
+      rowBuffer: this.suppressRowVirtualisation ? 99999 : 20,
       getRowClass: params =>
         get(params.data, 'isClickable', false) ? 'row-clickable' : '',
       onGridReady: (event: GridReadyEvent) => {
