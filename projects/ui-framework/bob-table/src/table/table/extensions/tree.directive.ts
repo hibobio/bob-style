@@ -1,9 +1,9 @@
-import {Directive, Input, OnInit, Host, ComponentFactoryResolver, Injector} from '@angular/core';
+import {Directive, Input, OnInit, Host, ComponentFactoryResolver, Injector, ViewContainerRef} from '@angular/core';
 import {merge} from 'lodash';
 import {TableComponent} from '../table.component';
 import {TreeConfig, defaultTreeConfig, TreeCellRendererComponent} from './tree.config';
 
-function getTreeCellRenderer(treeConfig: TreeConfig, cfr: ComponentFactoryResolver) {
+function getTreeCellRenderer(treeConfig: TreeConfig, cfr: ComponentFactoryResolver, vcr: ViewContainerRef) {
   return class TreeCellRenderer {
     private value: any;
 
@@ -21,9 +21,8 @@ function getTreeCellRenderer(treeConfig: TreeConfig, cfr: ComponentFactoryResolv
     }
 
     private renderComponent() {
-      const injector: Injector = Injector.create({providers: []});
       const cmpFactory = cfr.resolveComponentFactory<TreeCellRendererComponent>(treeConfig.cellComponent);
-      const cmpRef = cmpFactory.create(injector);
+      const cmpRef = vcr.createComponent(cmpFactory);
       if (typeof cmpRef.instance.init === 'function') {
         cmpRef.instance.init(this.value);
       }
@@ -56,7 +55,7 @@ export class TreeDirective implements OnInit {
   }
   @Input() isCollapsable = true;
 
-  constructor(@Host() private tableComponent: TableComponent, private cfr: ComponentFactoryResolver) { }
+  constructor(@Host() private tableComponent: TableComponent, private cfr: ComponentFactoryResolver, public vcr: ViewContainerRef) { }
 
   public ngOnInit(): void {
     this.tableComponent.addClass('tree-table');
@@ -75,7 +74,7 @@ export class TreeDirective implements OnInit {
         suppressCount: treeConfig.suppressCount,
         suppressDoubleClickExpand: true,
         suppressEnterExpand: true,
-        innerRenderer: getTreeCellRenderer(treeConfig, this.cfr)
+        innerRenderer: getTreeCellRenderer(treeConfig, this.cfr, this.vcr)
       },
       valueGetter: treeConfig.dataGetter
     };
