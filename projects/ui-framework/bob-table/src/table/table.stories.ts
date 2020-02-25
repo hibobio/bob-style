@@ -1,30 +1,33 @@
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { action } from '@storybook/addon-actions';
-import {
-  boolean,
-  number,
-  object,
-  select,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
-import { storiesOf } from '@storybook/angular';
-import { AgGridModule } from 'ag-grid-angular';
-import { AvatarModule, ComponentGroupType } from 'bob-style';
-import { values } from 'lodash';
-import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
-import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
-import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
-import {
-  mockColumnsDefs,
-  mockRowData,
-  treeColumnDefsMock,
-  treeRowDataMock,
-} from './table-mocks/table-story.mock';
-import { TableModule } from './table.module';
-import { TreeConfig } from './table/extensions/tree.config';
-import { TableComponent } from './table/table.component';
-import { RowSelection, TableType } from './table/table.enum';
-import { ColumnDef } from './table/table.interface';
+import {Component} from '@angular/core';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {action} from '@storybook/addon-actions';
+import {boolean, number, object, select, withKnobs} from '@storybook/addon-knobs/angular';
+import {storiesOf} from '@storybook/angular';
+import {AgGridModule} from 'ag-grid-angular';
+import {AvatarModule, ComponentGroupType} from 'bob-style';
+import {values} from 'lodash';
+import {StoryBookLayoutModule} from '../../../src/lib/story-book-layout/story-book-layout.module';
+import {ActionsCellComponent} from './table-cell-components/actions-cell/actions-cell.component';
+import {AvatarCellComponent} from './table-cell-components/avatar-cell/avatar.component';
+import {mockColumnsDefs, mockRowData, treeColumnDefsMock, treeRowDataMock,} from './table-mocks/table-story.mock';
+import {TableModule} from './table.module';
+import {TreeConfig, TreeCellRendererComponent} from './table/extensions/tree.config';
+import {TableComponent} from './table/table.component';
+import {RowSelection, TableType} from './table/table.enum';
+import {ColumnDef} from './table/table.interface';
+
+@Component({
+  selector   : 'b-tree-cell-avatar',
+  template: '<b-avatar [imageSource]="props.imageSource"></b-avatar>'
+})
+export class TreeCellAvatarComponent implements TreeCellRendererComponent {
+  props;
+  constructor() {
+  }
+  init(props) {
+    this.props = props;
+  }
+}
 
 const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(
   withKnobs
@@ -209,7 +212,8 @@ function tableStoryFactory({
     template: HTMLTemplate,
     props: { ...defaultProps, ...props },
     moduleMetadata: {
-      entryComponents: [AvatarCellComponent, ActionsCellComponent],
+      declarations: [TreeCellAvatarComponent],
+      entryComponents: [AvatarCellComponent, ActionsCellComponent, TreeCellAvatarComponent],
       imports: [
         BrowserAnimationsModule,
         StoryBookLayoutModule,
@@ -248,10 +252,9 @@ story.add(
           colDef: {
             headerName: 'Hierarchy Tree',
           },
-          cellTemplate: value => `<b>${value}</b>`,
-          hierarchyGetter: data => {
-            return data.orgHierarchy;
-          },
+          cellComponent: TreeCellAvatarComponent,
+          dataGetter: data => data.data.orgHierarchy.data,
+          hierarchyGetter: data => data.orgHierarchy.hierarchy
         } as TreeConfig,
       } as any,
     }),

@@ -1,19 +1,41 @@
-import {Directive, Input, OnInit, Host } from '@angular/core';
+import {Directive, Input, OnInit, Host, ComponentFactoryResolver, Injector} from '@angular/core';
+import {merge} from 'lodash';
 import {TableComponent} from '../table.component';
-import {TreeConfig, defaultTreeConfig} from './tree.config';
-import { merge } from 'lodash';
+import {TreeConfig, defaultTreeConfig, TreeCellRendererComponent} from './tree.config';
 
-function getFileCellRenderer(treeConfig: TreeConfig) {
-  function FileCellRenderer() {}
-  FileCellRenderer.prototype.init = function({value}) {
-    this.value = value;
+function getTreeCellRenderer(treeConfig: TreeConfig, cfr: ComponentFactoryResolver) {
+  return class TreeCellRenderer {
+    private value: any;
+
+    init({value}) {
+      this.value = value;
+    }
+
+    getGui(): string {
+      if (treeConfig.cellComponent) {
+        return this.renderComponent();
+      } else if (treeConfig.cellTemplate) {
+        return this.renderTemplate();
+      }
+      return this.value;
+    }
+
+    private renderComponent() {
+      const injector: Injector = Injector.create({providers: []});
+      const cmpFactory = cfr.resolveComponentFactory<TreeCellRendererComponent>(treeConfig.cellComponent);
+      const cmpRef = cmpFactory.create(injector);
+      if (typeof cmpRef.instance.init === 'function') {
+        cmpRef.instance.init(this.value);
+      }
+      cmpRef.changeDetectorRef.detectChanges();
+      return (cmpRef.hostView as any).rootNodes[0];
+    }
+
+    private renderTemplate() {
+      return treeConfig.cellTemplate(this.value);
+    }
   };
-  FileCellRenderer.prototype.getGui = function() {
-    return treeConfig.cellTemplate ?
-      treeConfig.cellTemplate(this.value) :
-      this.value;
-  };
-  return FileCellRenderer;
+
 }
 
 
@@ -34,8 +56,7 @@ export class TreeDirective implements OnInit {
   }
   @Input() isCollapsable = true;
 
-  constructor(@Host() private tableComponent: TableComponent) {
-  }
+  constructor(@Host() private tableComponent: TableComponent, private cfr: ComponentFactoryResolver) { }
 
   public ngOnInit(): void {
     this.tableComponent.addClass('tree-table');
@@ -54,7 +75,7 @@ export class TreeDirective implements OnInit {
         suppressCount: treeConfig.suppressCount,
         suppressDoubleClickExpand: true,
         suppressEnterExpand: true,
-        innerRenderer: getFileCellRenderer(treeConfig)
+        innerRenderer: getTreeCellRenderer(treeConfig, this.cfr)
       },
       valueGetter: treeConfig.dataGetter
     };

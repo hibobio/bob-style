@@ -1,6 +1,11 @@
+import {ComponentType} from '@angular/cdk/overlay';
 import {ColDef} from 'ag-grid-community';
 
 export type HTML = string;
+
+export interface TreeCellRendererComponent<D = any> {
+  init(data: D): void;
+}
 
 export interface TreeConfig<D = any> {
   colDef?: ColDef;
@@ -8,6 +13,7 @@ export interface TreeConfig<D = any> {
   dataGetter?: (data) => D;
   groupDefaultExpanded?: number;
   suppressCount?: boolean;
+  cellComponent?: ComponentType<TreeCellRendererComponent<D>>;
   cellTemplate?: (data: D) => HTML; // TODO: support components/templates.
 }
 
