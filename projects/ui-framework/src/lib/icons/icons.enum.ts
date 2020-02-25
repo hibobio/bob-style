@@ -153,4 +153,5 @@ export enum Icons {
   share = 'b-icon-share',
   arrow_dir_left = 'b-icon-arrow-dir-left',
   arrow_dir_right = 'b-icon-arrow-dir-right',
+  comment_add = 'b-icon-comment-add',
 }
