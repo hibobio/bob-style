@@ -1,21 +1,11 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  withKnobs,
-  object,
-  select,
-  boolean,
-  number,
-} from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
+import { withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TreeListModule } from './tree-list.module';
-import { HListMock, HListMockSimple } from './tree-list.mock';
-import { SelectType } from '../list.enum';
-import { text } from '@storybook/addon-knobs';
-import { BTL_KEYMAP_SERVER } from './tree-list.const';
 import { TreeListStoriesCommonProps } from './tree-list.stories.common';
+import { boolean } from '@storybook/addon-knobs';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -25,8 +15,17 @@ const template = `
 <b-tree-list
       [type]="type"
       [keyMap]="options === 'simple' ? serverKeyMap : null"
-      [list]="options === 'simple' ? listSimple : listRandom"
+      [list]="options === 'simple' ? listSimple : options === 'single group' ? listSingleGroup : options === 'big' ? listHuge : listRandom"
       [value]="options === 'simple' ? valueSimple : valueRandom"
+      [viewFilter]="hideSelected ? {
+        hide: {
+          prop: { selected: true }
+        }
+      } : externalSearch ? {
+        show: {
+          search: externalSearch
+        }
+      } : undefined"
       [maxHeightItems]="maxHeightItems"
       [valueSeparatorChar]="valueSeparatorChar"
       [startCollapsed]="startCollapsed"
@@ -35,7 +34,8 @@ const template = `
       [disabled]="disabled"
       (changed)="changed($event)"
       (apply)="apply($event)"
-      (cancel)="cancel($event)">
+      (cancel)="cancel($event)"
+      [debug]="debug">
 
 </b-tree-list>
 `;
@@ -63,6 +63,7 @@ story.add(
     template: storyTemplate,
     props: {
       ...TreeListStoriesCommonProps(),
+      debug: boolean('debug', true, 'Props'),
     },
     moduleMetadata: {
       imports: [BrowserAnimationsModule, StoryBookLayoutModule, TreeListModule],

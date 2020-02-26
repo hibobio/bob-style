@@ -40,7 +40,7 @@ export interface SelectOption {
   prefixComponent?: ListComponentPrefix | RenderedComponent;
   disabled?: boolean;
   hidden?: boolean;
-  canBeDeleted?: boolean
+  canBeDeleted?: boolean;
   [key: string]: any;
 }
 

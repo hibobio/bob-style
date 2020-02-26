@@ -15,6 +15,7 @@
                  [type]="type"
                  [list]="list"
                  [value]="value"
+                 [valueDefault]="valueDefault"
                  [viewFilter]="viewFilter"
                  [keyMap]="keyMap"
                  [valueSeparatorChar]="valueSeparatorChar"
@@ -26,7 +27,8 @@
                  [listActions]="listActions"
                  (changed)="onSelect($event)"
                  (apply)="onApply()"
-                 (cancel)="onCancel()">
+                 (cancel)="onCancel()"
+                 [debug]="debug">
       <ng-content footerAction
                   select="[footerAction],[footerActionRight]"></ng-content>
     </b-tree-list>

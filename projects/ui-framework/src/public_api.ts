@@ -203,13 +203,7 @@ export {
 export {
   MultiSelectComponent
 } from './lib/lists/multi-select/multi-select.component';
-export {
-  SelectGroupOption,
-  SelectOption,
-  ListComponentPrefix,
-  ListFooterActions,
-  ListFooterActionsState
-} from './lib/lists/list.interface';
+export * from './lib/lists/list.interface';
 export { ListChange } from './lib/lists/list-change/list-change';
 // Editable list
 export * from './lib/lists/editable-list/editable-list.const';

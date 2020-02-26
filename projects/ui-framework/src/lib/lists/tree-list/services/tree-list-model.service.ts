@@ -22,49 +22,73 @@ interface TreeListConverterConfig {
   keyMap: TreeListKeyMap;
   separator: string;
   collapsed: boolean;
+  removeKeys?: string[];
+  onlyValue?: boolean;
 }
 
 @Injectable()
 export class TreeListModelService {
   private counter = 0;
   private errorCounter = 0;
-  private maxItems = 10000;
+  private maxItems = 5000;
+
+  public getIDtoValueMap(
+    list: TreeListOption[],
+    keyMap: TreeListKeyMap = BTL_KEYMAP_DEF,
+    separator: string = ' / '
+  ): Map<itemID, string> {
+    const map = (this.getListItemsMap(list, new Map(), {
+      keyMap,
+      separator,
+      collapsed: false,
+      onlyValue: true,
+    }) as any) as Map<itemID, string>;
+    map.delete(BTL_ROOT_ID);
+    return map;
+  }
 
   public getListViewModel(
     list: TreeListOption[],
-    map: TreeListItemMap,
-    viewFilter: ViewFilter = {},
+    itemsMap: TreeListItemMap,
     config: {
+      viewFilter: ViewFilter;
       keyMap: TreeListKeyMap;
       expand: boolean;
     } = {
+      viewFilter: {},
       keyMap: BTL_KEYMAP_DEF,
       expand: false,
     }
   ): itemID[] {
-    const { keyMap, expand } = config;
+    const { keyMap, expand, viewFilter } = config;
+
+    if (!list || !itemsMap) {
+      return [];
+    }
 
     const addIDs = (items: TreeListOption[]): itemID[] => {
       let model = [];
 
       for (const item of items) {
-        const itemData = map.get(this.getItemId(item, keyMap));
+        const itemData = itemsMap.get(this.getItemId(item, keyMap));
 
         if (!itemData) {
           console.error(
-            `[TreeListModelService]: Cannot find item data for ${stringify(
-              item
-            )}`
+            `[TreeListModelService.getListViewModel]:
+            Cannot find item data for ${stringify(item, 70)}.`
           );
-          break;
+          continue;
         }
+
+        itemData.nextInViewIsGroup = false;
 
         const filterResult = this.itemFilter(itemData, viewFilter);
 
         if (filterResult !== false) {
-          model.push(itemData.id);
+          const itemIndexInView = model.push(itemData.id) - 1;
+          const itemIsGroup = isNotEmptyArray(item[keyMap.children]);
 
-          if (item[keyMap.children] && (!itemData.collapsed || expand)) {
+          if (itemIsGroup && (!itemData.collapsed || expand)) {
             const childrenModel = addIDs(item[keyMap.children]);
 
             if (childrenModel.length) {
@@ -74,10 +98,17 @@ export class TreeListModelService {
             } else {
               if (!filterResult) {
                 model.pop();
+                continue;
               } else {
                 itemData.collapsed = true;
                 itemData.allOptionsHidden = true;
               }
+            }
+          }
+          if (itemIsGroup) {
+            const prevInViewItem = itemsMap.get(model[itemIndexInView - 1]);
+            if (prevInViewItem) {
+              prevInViewItem.nextInViewIsGroup = true;
             }
           }
         }
@@ -91,67 +122,54 @@ export class TreeListModelService {
 
   public getListItemsMap(
     list: TreeListOption[],
-    map: TreeListItemMap = new Map(),
+    itemsMap: TreeListItemMap = new Map(),
     config: TreeListConverterConfig = {
       keyMap: BTL_KEYMAP_DEF,
       separator: ' / ',
       collapsed: false,
+      onlyValue: false,
     }
   ): TreeListItemMap {
-    const { keyMap, separator, collapsed } = config;
+    const { keyMap, separator, collapsed, onlyValue } = config;
     this.counter = 0;
     this.errorCounter = 0;
 
+    const removeKeys = [...Object.values(keyMap), 'selected', 'disabled'];
+
     if (isEmptyArray(list)) {
-      return map;
+      return itemsMap;
     }
 
-    const rootItem: TreeListItem = {
-      id: BTL_ROOT_ID,
-      name: BTL_ROOT_ID,
-      parentIDs: null,
-      childrenIDs: [],
-      parentCount: 0,
-      groupsCount: 0,
-      selectedCount: 0,
-    };
-
-    for (const item of list) {
-      ++this.counter;
-
-      const itemId = this.getItemId(item, keyMap);
-
-      const converted = this.convertItem(
-        item,
-        map,
-        {
-          id: itemId,
-          value: this.concatValue(this.getItemName(item, keyMap)),
-          parentIDs: [rootItem.id],
-        },
-        { keyMap, separator, collapsed }
-      );
-
-      if (!converted) {
-        break;
+    this.convertItem(
+      // item
+      {
+        [keyMap.children]: list,
+      },
+      // map
+      itemsMap,
+      // set
+      {
+        id: BTL_ROOT_ID,
+        name: BTL_ROOT_ID,
+        parentIDs: null,
+        parentCount: 0,
+      },
+      // config
+      {
+        keyMap,
+        separator,
+        collapsed,
+        removeKeys,
+        onlyValue,
       }
+    );
 
-      rootItem.childrenIDs.push(itemId);
-      if (converted.childrenCount) {
-        ++rootItem.groupsCount;
-      }
-      this.updateMap(map, itemId, converted);
-    }
-
-    rootItem.childrenCount = rootItem.childrenIDs.length;
-    this.updateMap(map, rootItem.id, rootItem);
-
-    return map;
+    return itemsMap;
   }
 
   private convertItem(
     item: TreeListOption,
-    map: TreeListItemMap,
+    itemsMap: TreeListItemMap,
     set: Partial<TreeListItem> = {
       parentIDs: null,
     },
@@ -159,26 +177,25 @@ export class TreeListModelService {
       keyMap: BTL_KEYMAP_DEF,
       separator: ' / ',
       collapsed: false,
+      removeKeys: [],
+      onlyValue: false,
     }
   ): TreeListItem {
     if (this.counter > this.maxItems) {
       console.error(
-        `[TreeListModelService]: List too complex! List with more than ${this.maxItems} items are not supported. Truncating to first ${this.maxItems} items.`
+        `[TreeListModelService.convertItem]:
+        List too complex! List with more than ${this.maxItems} items are not supported. Truncating to first ${this.maxItems} items.`
       );
       return;
     }
 
-    const { keyMap, separator, collapsed } = config;
+    const { keyMap, separator, collapsed, removeKeys, onlyValue } = config;
 
     const converted: TreeListItem = {
-      ...objectRemoveKeys(item, [
-        ...Object.values(keyMap),
-        'selected',
-        'disabled',
-      ]),
+      ...objectRemoveKeys(item, removeKeys),
       ...set,
       id: set.id || this.getItemId(item, keyMap),
-      name: this.getItemName(item, keyMap),
+      name: set.name || this.getItemName(item, keyMap),
       childrenIDs: null,
       groupsCount: 0,
     };
@@ -191,7 +208,8 @@ export class TreeListModelService {
 
         const cnvrtd = this.convertItem(
           itm,
-          map,
+          itemsMap,
+          // set
           {
             value: this.concatValue(
               set.value || '',
@@ -200,10 +218,13 @@ export class TreeListModelService {
             ),
             parentIDs: [...(set.parentIDs || []), converted.id],
           },
+          // config
           {
             keyMap,
             separator,
             collapsed,
+            removeKeys,
+            onlyValue,
           }
         );
 
@@ -213,15 +234,30 @@ export class TreeListModelService {
 
         cnvrtd.parentCount = cnvrtd.parentIDs.length;
         converted.childrenIDs.push(cnvrtd.id);
-        this.updateMap(map, cnvrtd.id, cnvrtd);
+
+        if (cnvrtd.childrenCount) {
+          ++converted.groupsCount;
+        }
+
+        this.updateMap(itemsMap, cnvrtd.id, cnvrtd, onlyValue);
       }
 
-      ++converted.groupsCount;
       converted.collapsed = collapsed;
       converted.childrenCount = converted.childrenIDs.length;
     }
 
+    this.updateMap(itemsMap, converted.id, converted, onlyValue);
+
     return converted;
+  }
+
+  public getSearchViewFilter(searchValue: string): ViewFilter {
+    return {
+      show: {
+        search: searchValue,
+        searchBy: 'name',
+      },
+    };
   }
 
   private itemFilter(item: TreeListItem, viewFilter: ViewFilter = {}): boolean {
@@ -279,30 +315,27 @@ export class TreeListModelService {
     return result;
   }
 
-  public getSearchViewFilter(searchValue: string): ViewFilter {
-    return {
-      show: {
-        search: searchValue,
-        searchBy: 'name',
-      },
-    };
-  }
-
-  private updateMap(
-    map: TreeListItemMap,
+  private updateMap<T = TreeListItem>(
+    itemsMap: Map<itemID, T>,
     key: itemID,
-    value: TreeListItem
-  ): TreeListItemMap {
-    return map.set(key, Object.assign(map.get(key) || {}, value));
+    item: TreeListItem,
+    onlyValue = false
+  ): Map<itemID, T> {
+    return itemsMap.set(
+      key,
+      ((!onlyValue
+        ? Object.assign(itemsMap.get(key) || {}, item)
+        : item.value) as any) as T
+    );
   }
 
   private getItemId(item: TreeListOption, keyMap: TreeListKeyMap): itemID {
     if (isNullOrUndefined(item[keyMap.id]) && this.errorCounter < 5) {
       console.error(
-        `[TreeListModelService]:
+        `[TreeListModelService.getItemId]:
         Item ${stringify(item, 70)} does not have a unique ID (${keyMap.id})!
         Or your KeyMap (${stringify(keyMap)}) is wrong.
-        Every item list should have unique one. Item name will be used in place of ID, but proper behaviour is not guaranteed.`
+        Every item list should have unique ID. Item Name will be used in place of ID, but proper behaviour is not guaranteed.`
       );
       ++this.errorCounter;
     }
@@ -315,8 +348,8 @@ export class TreeListModelService {
   private getItemName(item: TreeListOption, keyMap: TreeListKeyMap): string {
     if (isNullOrUndefined(item[keyMap.name])) {
       throw new Error(
-        `[TreeListModelService]:
-        Item ${stringify(item, 70)} does not have a name (${keyMap.name})!
+        `[TreeListModelService.getItemName]:
+        Item ${stringify(item, 70)} does not have a Name (${keyMap.name})!
         Or your KeyMap (${stringify(keyMap)}) is wrong.
         Cannot continue.`
       );

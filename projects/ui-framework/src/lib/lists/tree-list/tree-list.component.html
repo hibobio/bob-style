@@ -1,8 +1,7 @@
 <ng-template #listItem
              let-index="index"
              let-item="item"
-             let-groupSelected="groupSelected"
-             let-nextInViewIsGroup="nextInViewIsGroup">
+             let-groupSelected="groupSelected">
 
   <li class="bhl-item"
       #itemElements
@@ -16,7 +15,7 @@
         indeterminate: item.indeterminate,
         expanded: item.childrenCount && !item.collapsed,
         collapsed: item.collapsed,
-        'next-is-group': nextInViewIsGroup,
+        'next-is-group': item.nextInViewIsGroup,
         'all-options-hidden': item.allOptionsHidden
       }"
       [attr.tabIndex]="!readonly && !item.disabled ? 0 : null"
@@ -83,9 +82,15 @@
 
 
 <div class="dev">
-  <p>Total items: {{ itemsMap.size }}</p>
+  <p>Total items: {{ itemsMap.size - 1 }}</p>
   <p>Total items in view: {{ listViewModel.length }}</p>
   <p>Total selected: {{ itemsMap.get('#root') && itemsMap.get('#root').selectedCount }}</p>
   <button type="button"
-          (click)="log()">Log data</button>
+          (click)="log('Data')">Log data</button>
+  <button type="button"
+          (click)="log('ValuesMap')">Log ID to Values map</button>
+  <button type="button"
+          (click)="log('ViewContext')">Log items View Context</button>
+  <button type="button"
+          (click)="log('Value')">Log Value</button>
 </div>

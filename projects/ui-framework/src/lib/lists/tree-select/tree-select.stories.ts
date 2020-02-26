@@ -1,20 +1,10 @@
 import { storiesOf } from '@storybook/angular';
 import { ComponentGroupType } from '../../consts';
-import {
-  withKnobs,
-  select,
-  number,
-  text,
-  boolean,
-  object,
-} from '@storybook/addon-knobs';
+import { withKnobs, text, boolean } from '@storybook/addon-knobs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { SelectType } from '../list.enum';
-import { HListMock, HListMockSimple } from '../tree-list/tree-list.mock';
 import { TreeSelectModule } from './tree-select.module';
 import { mockText } from '../../mock.const';
-import { BTL_KEYMAP_SERVER } from '../tree-list/tree-list.const';
 import { TreeListStoriesCommonProps } from '../tree-list/tree-list.stories.common';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
@@ -26,7 +16,7 @@ const componentTemplate = `
       [type]="type"
       [list]="options === 'simple' ? listSimple : listRandom"
       [keyMap]="options === 'simple' ? serverKeyMap : null"
-      [value]="value"
+      [value]="options === 'simple' ? valueSimple : valueRandom"
       [label]="label"
       [placeholder]="placeholder"
       [description]="description"
@@ -38,7 +28,8 @@ const componentTemplate = `
       [required]="required"
       [readonly]="readonly"
       [hintMessage]="hintMessage"
-      [errorMessage]="errorMessage">
+      [errorMessage]="errorMessage"
+      [debug]="debug">
 
 </b-tree-select>
 `;

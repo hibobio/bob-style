@@ -4,41 +4,50 @@ import {
   randomNumber,
   simpleUID,
 } from '../../services/utils/functional-utils';
-import { mockText, mockAnimals } from '../../mock.const';
+import { mockText, mockBadJobs } from '../../mock.const';
 
-const groupProbability = 40;
-const maxDepth = 5;
-const groupItemsMinMax: [number, number] = [4, 8];
+export const makeRandomList = (
+  rootItems = 5,
+  groupProbability = 40,
+  maxDepth = 5,
+  groupItemsMinMax: [number, number] = [4, 8]
+): TreeListOption[] => {
+  const genOption = () =>
+    ({
+      id: simpleUID('opt-', 7),
+      name: mockText(randomNumber(1, 3)),
+    } as TreeListOption);
 
-const genOption = () =>
-  ({
-    id: simpleUID('opt-', 7),
-    name: mockText(randomNumber(1, 3)),
-  } as TreeListOption);
+  const genGroup = (depthCounter = 0) =>
+    ({
+      id: simpleUID('grp-', 7),
+      name: mockText(randomNumber(1, 3)),
+      children: makeArray(randomNumber(...groupItemsMinMax)).map(() =>
+        // tslint:disable-next-line: no-use-before-declare
+        genGroupOrOption(depthCounter + 1)
+      ) as TreeListOption[],
+    } as TreeListOption);
 
-const genGroup = (depthCounter = 0) =>
-  ({
-    id: simpleUID('grp-', 7),
-    name: mockText(randomNumber(1, 3)),
-    children: makeArray(randomNumber(...groupItemsMinMax)).map(() =>
-      genGroupOrOption(depthCounter + 1)
-    ) as TreeListOption[],
-  } as TreeListOption);
+  const genGroupOrOption = (depthCounter = 0) => {
+    const doGroup = randomNumber() > 100 - groupProbability;
 
-const genGroupOrOption = (depthCounter = 0) => {
-  const doGroup = randomNumber() > 100 - groupProbability;
+    return doGroup && depthCounter <= maxDepth - 1
+      ? genGroup(depthCounter)
+      : genOption();
+  };
 
-  return doGroup && depthCounter <= maxDepth - 1
-    ? genGroup(depthCounter)
-    : genOption();
+  const list: TreeListOption[] = makeArray(rootItems).map(() =>
+    genGroupOrOption(1)
+  );
+
+  if (!list.find(i => i.children)) {
+    list[0] = genGroup(1);
+  }
+
+  return list;
 };
 
-export const HListMock: TreeListOption[] = makeArray(5).map(() =>
-  genGroupOrOption(1)
-);
-if (!HListMock.find(i => i.children)) {
-  HListMock[0] = genGroup(1);
-}
+export const HListMock: TreeListOption[] = makeRandomList(5);
 
 const mxRootOptns = 3;
 const mxInsdOptns = 3;
@@ -62,7 +71,7 @@ export const HListMockSimple: TreeListOption[] = makeArray(mxRootOptns).map(
             value: `O${indx + 1} G${indx} O2 Group ${indx + 1}`,
             canBeDeleted: true,
             children: makeArray(mxInsdOptns).map(
-              (i, ndx) =>
+              (_i, ndx) =>
                 ({
                   serverId: `option-${indx +
                     1}-group-${indx}-option-2-group-${indx + 1}-option-${ndx +
@@ -74,7 +83,7 @@ export const HListMockSimple: TreeListOption[] = makeArray(mxRootOptns).map(
             ),
           } as TreeListOption,
           ...makeArray(mxInsdOptns - 2).map(
-            (i, ndx) =>
+            (_i, ndx) =>
               ({
                 serverId: `option-${indx + 1}-group-${indx}-option-${ndx + 3}`,
                 value: `02 G${indx} Option ${ndx + 3}`,
@@ -92,3 +101,14 @@ export const HListMockSimple: TreeListOption[] = makeArray(mxRootOptns).map(
     } as TreeListOption;
   }
 );
+
+export const HListMockSingleGroup: TreeListOption[] = [
+  {
+    id: simpleUID(),
+    name: 'Bad jobs',
+    children: makeArray(10).map(() => ({
+      id: simpleUID(),
+      name: mockBadJobs(1),
+    })),
+  },
+];

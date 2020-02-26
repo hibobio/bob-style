@@ -8,6 +8,7 @@ export type itemID = string | number;
 export interface TreeListComponentIO {
   list: TreeListOption[];
   value: itemID[];
+  valueDefault: itemID[];
   viewFilter: ViewFilter;
   keyMap: TreeListKeyMap;
 
@@ -39,7 +40,7 @@ export interface TreeListKeyMap {
   id: string;
   name: string;
   children?: string;
-  [key: string]: string;
+  [targetKey: string]: string;
 }
 
 export type TreeListItemMap = Map<itemID, TreeListItem>;
@@ -55,7 +56,7 @@ export interface TreeListItem {
   indeterminate?: boolean;
   disabled?: boolean;
 
-  parentIDs?: itemID[] | null; // path
+  parentIDs?: itemID[] | null;
   childrenIDs?: itemID[] | null;
 
   // stats
@@ -66,6 +67,7 @@ export interface TreeListItem {
 
   // context
   allOptionsHidden?: boolean;
+  nextInViewIsGroup?: boolean;
 
   [key: string]: any;
 }

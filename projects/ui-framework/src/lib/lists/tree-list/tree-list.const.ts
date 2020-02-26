@@ -1,8 +1,4 @@
-import {
-  ViewFilter,
-  TreeListOption,
-  TreeListKeyMap,
-} from './tree-list.interface';
+import { ViewFilter, TreeListKeyMap } from './tree-list.interface';
 
 export const BTL_ROOT_ID = '#root';
 

@@ -77,6 +77,7 @@ export class TreeListPanelComponent
 
   @Input() list: TreeListOption[];
   @Input() value: itemID[];
+  @Input() valueDefault: itemID[];
   @Input() viewFilter: ViewFilter;
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
 
@@ -96,6 +97,7 @@ export class TreeListPanelComponent
   @Input() panelPosition: PanelDefaultPosVer | ConnectedPosition[];
   @Input() panelClass: string;
   @Input() hasArrow = true;
+  @Input() debug = false;
 
   @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();

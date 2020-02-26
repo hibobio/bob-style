@@ -6,11 +6,16 @@ import { FiltersModule } from '../../services/filters/filters.module';
 import { SearchModule } from '../../search/search/search.module';
 import { ListFooterModule } from '../list-footer/list-footer.module';
 import { TreeListControlsService } from './services/tree-list-controls.service';
+import { TreeListViewService } from './services/tree-list-view.service';
 
 @NgModule({
   declarations: [TreeListComponent],
   imports: [CommonModule, FiltersModule, SearchModule, ListFooterModule],
   exports: [TreeListComponent],
-  providers: [TreeListModelService, TreeListControlsService],
+  providers: [
+    TreeListModelService,
+    TreeListViewService,
+    TreeListControlsService,
+  ],
 })
 export class TreeListModule {}

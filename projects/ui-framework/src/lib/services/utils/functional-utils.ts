@@ -535,19 +535,27 @@ export const applyChanges = (
   changes: SimpleChanges,
   defaults: GenericObject = {},
   skip: string[] = [],
-  discardAllFalsey = false
-): void => {
-  Object.keys(changes).forEach((change: string) => {
-    if (!skip.includes(change)) {
-      target[change] =
-        defaults[change] &&
+  discardAllFalsey = false,
+  keyMap: { [targetKey: string]: string } = {}
+): SimpleChanges => {
+  Object.keys(keyMap).forEach((targetKey: string) => {
+    changes[targetKey] = changes[keyMap[targetKey]];
+    skip.push(keyMap[targetKey]);
+  });
+
+  Object.keys(changes).forEach((changeKey: string) => {
+    if (!skip.includes(changeKey)) {
+      target[changeKey] =
+        defaults[changeKey] &&
         ((!discardAllFalsey &&
-          isNullOrUndefined(changes[change].currentValue)) ||
-          (discardAllFalsey && !Boolean(changes[change].currentValue)))
-          ? defaults[change]
-          : changes[change].currentValue;
+          isNullOrUndefined(changes[changeKey].currentValue)) ||
+          (discardAllFalsey && !Boolean(changes[changeKey].currentValue)))
+          ? defaults[changeKey]
+          : changes[changeKey].currentValue;
     }
   });
+
+  return changes;
 };
 
 // ----------------------
