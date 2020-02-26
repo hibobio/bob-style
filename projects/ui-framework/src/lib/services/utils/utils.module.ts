@@ -4,11 +4,10 @@ import { UtilsService } from './utils.service';
 import { WindowRef } from './window-ref.service';
 import { DOMhelpers } from '../html/dom-helpers.service';
 import { DocumentRef } from './document-ref.service';
-import { SpyDirective } from './spy.directive';
 
 @NgModule({
-  declarations: [SpyDirective],
-  exports: [SpyDirective],
+  declarations: [],
+  exports: [],
   imports: [CommonModule],
   providers: [UtilsService, WindowRef, DocumentRef, DOMhelpers],
 })
