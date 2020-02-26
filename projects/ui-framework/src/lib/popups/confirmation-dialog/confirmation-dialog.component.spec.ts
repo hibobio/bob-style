@@ -2,12 +2,16 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmationDialogComponent } from './confirmation-dialog.component';
 import { MockComponent } from 'ng-mocks';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
 import { By } from '@angular/platform-browser';
 import { ConfirmationDialogConfig } from './confirmation-dialog.interface';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+} from '@angular/material/dialog';
 
 describe('ConfirmationDialogComponent', () => {
   let component: ConfirmationDialogComponent;
@@ -25,7 +29,7 @@ describe('ConfirmationDialogComponent', () => {
         ok: {
           label: 'Ok',
           action: () => true,
-        }
+        },
       },
       message: 'Confirm dialog message',
     };
@@ -35,10 +39,7 @@ describe('ConfirmationDialogComponent', () => {
         ConfirmationDialogComponent,
         MockComponent(DialogComponent),
       ],
-      imports: [
-        NoopAnimationsModule,
-        MatDialogModule,
-      ],
+      imports: [NoopAnimationsModule, MatDialogModule],
       providers: [
         { provide: MatDialogRef, useValue: spyMatDialogRef },
         { provide: MAT_DIALOG_DATA, useValue: config },
@@ -55,15 +56,21 @@ describe('ConfirmationDialogComponent', () => {
   describe('config', () => {
     it('should set dialog title', () => {
       const dialog = fixture.debugElement.query(By.css('b-dialog'));
-      expect(dialog.componentInstance.dialogTitle).toEqual('Confirm dialog title');
+      expect(dialog.componentInstance.dialogTitle).toEqual(
+        'Confirm dialog title'
+      );
     });
     it('should set dialog buttonConfig', () => {
       const dialog = fixture.debugElement.query(By.css('b-dialog'));
-      expect(dialog.componentInstance.dialogButtons).toEqual(config.buttonConfig);
+      expect(dialog.componentInstance.dialogButtons).toEqual(
+        config.buttonConfig
+      );
     });
     it('should render message', () => {
       const message = fixture.debugElement.query(By.css('.message'));
-      expect(message.nativeElement.innerText).toContain('Confirm dialog message');
+      expect(message.nativeElement.innerText).toContain(
+        'Confirm dialog message'
+      );
     });
   });
 

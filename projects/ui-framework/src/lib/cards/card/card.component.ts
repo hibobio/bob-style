@@ -29,8 +29,8 @@ export class CardComponent extends BaseCardElement implements AfterViewInit {
     super(cardElRef);
   }
 
-  @ViewChild('cardTop', { static: false }) cardTop: ElementRef;
-  @ViewChild('cardContent', { static: false }) cardContent: ElementRef;
+  @ViewChild('cardTop') cardTop: ElementRef;
+  @ViewChild('cardContent') cardContent: ElementRef;
 
   readonly buttonType = ButtonType;
   readonly icons = Icons;

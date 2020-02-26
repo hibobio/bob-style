@@ -1,15 +1,21 @@
-import {ChangeDetectorRef, Component, Input, NgZone, OnChanges, SimpleChanges} from '@angular/core';
-import {ChartTypesEnum} from '../../chart/chart.enum';
-import {SeriesColumnOptions} from 'highcharts';
-import {ChartCore} from '../../chart/chart-core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
+import { ChartTypesEnum } from '../../chart/chart.enum';
+import { SeriesColumnOptions } from 'highcharts';
+import { ChartCore } from '../../chart/chart-core';
 
 @Component({
   selector: 'b-stacked-bar-chart',
   templateUrl: '../../chart/chart.component.html',
   styleUrls: [
     '../../chart/chart.component.scss',
-    './stacked-bar-chart.component.scss'
-  ]
+    './stacked-bar-chart.component.scss',
+  ],
 })
 export class StackedBarChartComponent extends ChartCore implements OnChanges {
   type = ChartTypesEnum.Column;
@@ -17,11 +23,8 @@ export class StackedBarChartComponent extends ChartCore implements OnChanges {
   @Input() data: SeriesColumnOptions[];
   @Input() stackedDataLabels = true;
   @Input() name: string;
-  constructor(
-    public zone: NgZone,
-    public cdr: ChangeDetectorRef
-  ) {
-    super(zone, cdr);
+  constructor(public cdr: ChangeDetectorRef) {
+    super(cdr);
     this.height = 450;
   }
 
@@ -33,29 +36,28 @@ export class StackedBarChartComponent extends ChartCore implements OnChanges {
   private updateChartOptions() {
     this.chartOptions = {
       chart: {
-        height: Math.abs(this.height)
+        height: Math.abs(this.height),
       },
       xAxis: {
-        categories: this.categories
+        categories: this.categories,
       },
       yAxis: {
         stackLabels: {
           enabled: this.stackedDataLabels,
           style: {
             fontWeight: 'bold',
-            color: '#535353'
-          }
-        }
+            color: '#535353',
+          },
+        },
       },
       plotOptions: {
         column: {
           pointPadding: 0.15,
           groupPadding: 0,
-          stacking: 'normal'
-        }
+          stacking: 'normal',
+        },
       },
-      series: this.data
+      series: this.data,
     };
   }
-
 }

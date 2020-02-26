@@ -19,8 +19,9 @@ import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { WindowRef } from '../../../services/utils/window-ref.service';
 import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.service';
 import { BaseFormElement } from '../../base-form-element';
-import { DateAdapter, MAT_DATEPICKER_SCROLL_STRATEGY } from '@angular/material';
 import { Overlay } from '@angular/cdk/overlay';
+import { MAT_DATEPICKER_SCROLL_STRATEGY } from '@angular/material/datepicker';
+import { DateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'b-datepicker',

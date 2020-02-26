@@ -48,8 +48,8 @@ export class DonutChartTextComponent {
     '#FF9655',
     '#FFF263',
     '#6AF9C4'];
-  @ViewChild('chart', {static: false, read: ElementRef}) chartComponent: ElementRef;
-  @ViewChild('text', {static: false, read: ElementRef}) textContainer: ElementRef;
+  @ViewChild('chart', { read: ElementRef }) chartComponent: ElementRef;
+  @ViewChild('text', { read: ElementRef }) textContainer: ElementRef;
   @Input() tooltipValueFormatter: Function = (val) => val;
   constructor(
     private cdr: ChangeDetectorRef

@@ -28,16 +28,16 @@ import { DateParseService } from '../date-parse-service/date-parse.service';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { WindowRef } from '../../../services/utils/window-ref.service';
 import { DateRangePickerValue } from '../datepicker.interface';
-import {
-  MAT_DATEPICKER_SCROLL_STRATEGY,
-  MatDatepicker,
-  DateAdapter,
-} from '@angular/material';
 import { Overlay } from '@angular/cdk/overlay';
 import { DatepickerType } from '../datepicker.enum';
 import { startOfMonth } from 'date-fns';
 import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.service';
 import { BaseFormElement } from '../../base-form-element';
+import {
+  MAT_DATEPICKER_SCROLL_STRATEGY,
+  MatDatepicker,
+} from '@angular/material/datepicker';
+import { DateAdapter } from '@angular/material/core';
 
 interface DateRangePickerValueLocal {
   startDate: Date | string;

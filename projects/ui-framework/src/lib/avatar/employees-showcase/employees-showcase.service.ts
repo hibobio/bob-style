@@ -12,7 +12,7 @@ import {
 } from '../../services/utils/functional-utils';
 import { AvatarImageComponent } from '../avatar/avatar-image/avatar-image.component';
 import { AvatarSize } from '../avatar/avatar.enum';
-import cloneDeep from 'lodash/cloneDeep';
+import { cloneDeep } from 'lodash';
 import { Avatar } from '../avatar/avatar.interface';
 
 @Injectable()

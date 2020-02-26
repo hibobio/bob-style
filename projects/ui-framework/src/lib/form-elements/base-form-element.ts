@@ -1,14 +1,4 @@
-import {
-  Input,
-  HostBinding,
-  SimpleChanges,
-  OnChanges,
-  Output,
-  EventEmitter,
-  ChangeDetectorRef,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
+import { Input, HostBinding, SimpleChanges, OnChanges, Output, EventEmitter, ChangeDetectorRef, ViewChild, ElementRef, Directive } from '@angular/core';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
 import {
   simpleUID,
@@ -26,6 +16,7 @@ import { TransmitOptions } from './form-elements.interface';
 import { IGNORE_EVENTS_DEF, TRANSMIT_OPTIONS_DEF } from './form-elements.const';
 import { InputTypes } from './input/input.enum';
 
+@Directive()
 export abstract class BaseFormElement
   implements ControlValueAccessor, OnChanges {
   protected constructor(protected cd: ChangeDetectorRef) {}

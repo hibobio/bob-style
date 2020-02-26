@@ -68,7 +68,7 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
 
   public options: SelectGroupOption[] = [];
 
-  @Output(FormEvents.elementChange) changed: EventEmitter<
+  @Output('elementChange') changed: EventEmitter<
     InputSingleSelectValue
   > = new EventEmitter<InputSingleSelectValue>();
 

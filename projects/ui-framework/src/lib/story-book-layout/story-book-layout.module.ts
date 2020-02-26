@@ -5,7 +5,7 @@ import { TypographyModule } from '../typography/typography.module';
 import { StatsModule } from '../services/util-components/stats.module';
 import { UtilsService } from '../services/utils/utils.service';
 import 'zone.js/dist/zone-patch-rxjs';
-import { MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material';
+import { MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [StoryBookLayoutComponent],

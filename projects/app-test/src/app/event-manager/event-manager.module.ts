@@ -324,7 +324,7 @@ export class ClickForwarerComponent2 {
 export class EventManagerTesterComponent {
   constructor(private cd: ChangeDetectorRef, private zone: NgZone) {}
 
-  @ViewChild('logger', { static: false }) private loggerDiv: ElementRef;
+  @ViewChild('logger') private loggerDiv: ElementRef;
 
   show = true;
   randID = simpleUID();

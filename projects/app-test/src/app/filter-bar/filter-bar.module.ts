@@ -291,7 +291,7 @@ QFconfig[1].options = selectOneRandom(SSoptionsMock);
 export class FilterBarTestComponent implements OnInit {
   constructor(private cd: ChangeDetectorRef) {}
 
-  @ViewChild('qfl', { static: false }) private qfl: QuickFilterLayoutComponent;
+  @ViewChild('qfl') private qfl: QuickFilterLayoutComponent;
 
   public quickFilters: QuickFilterConfig[] = QFconfig;
 

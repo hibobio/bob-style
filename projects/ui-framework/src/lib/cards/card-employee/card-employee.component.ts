@@ -31,8 +31,8 @@ export class CardEmployeeComponent extends BaseCardElement
     super(cardElRef);
   }
 
-  @ViewChild('cardContent', { static: false }) cardContent: ElementRef;
-  @ViewChild('cardBottom', { static: false }) cardBottom: ElementRef;
+  @ViewChild('cardContent') cardContent: ElementRef;
+  @ViewChild('cardBottom') cardBottom: ElementRef;
 
   readonly avatarSize = AvatarSize;
   public hasContent = true;

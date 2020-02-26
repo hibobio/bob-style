@@ -2,7 +2,6 @@ import {
   ChangeDetectorRef,
   Component,
   Input,
-  NgZone,
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
@@ -23,8 +22,8 @@ export class BarLineChartComponent extends ChartCore implements OnChanges {
   @Input() stackedPercent = false;
   @Input() data: SeriesOptionsType[];
   @Input() name: string;
-  constructor(public zone: NgZone, public cdr: ChangeDetectorRef) {
-    super(zone, cdr);
+  constructor(public cdr: ChangeDetectorRef) {
+    super(cdr);
     this.height = 450;
   }
 
@@ -36,11 +35,11 @@ export class BarLineChartComponent extends ChartCore implements OnChanges {
   private updateChartOptions() {
     const COLUMN_BAR_WIDTH = {
       pointPadding: 0.1,
-      groupPadding: 0.08
+      groupPadding: 0.08,
     };
     const MULTI_COLUMN_WIDTH = {
       pointPadding: 0.1,
-      groupPadding: 0.2
+      groupPadding: 0.2,
     };
 
     this.chartOptions = merge(
@@ -60,11 +59,11 @@ export class BarLineChartComponent extends ChartCore implements OnChanges {
         }),
         plotOptions: {
           column: this.stacked
-              ? this.stackedPercent
-                ? {...COLUMN_BAR_WIDTH, stacking: 'percent'}
-                : {...COLUMN_BAR_WIDTH, stacking: 'normal'}
-              : {...MULTI_COLUMN_WIDTH, stacking: undefined}
-          }
+            ? this.stackedPercent
+              ? { ...COLUMN_BAR_WIDTH, stacking: 'percent' }
+              : { ...COLUMN_BAR_WIDTH, stacking: 'normal' }
+            : { ...MULTI_COLUMN_WIDTH, stacking: undefined },
+        },
       },
       this.extraOptions
     );

@@ -15,11 +15,13 @@ import { makeArray } from '../../services/utils/functional-utils';
 import { MultiListModule } from '../../lists/multi-list/multi-list.module';
 import { ChipListComponent } from '../chip-list/chip-list.component';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../../lists/list-change/list-change';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { ButtonComponent } from '../../buttons/button/button.component';
+import { ChipModule } from '../chip/chip.module';
+import { ChipListModule } from '../chip-list/chip-list.module';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 describe('MultiListAndChipsComponent', () => {
   let component: MultiListAndChipsComponent;
@@ -32,15 +34,12 @@ describe('MultiListAndChipsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         MultiListAndChipsComponent,
-        ChipListComponent,
-        ChipComponent,
         EmptyStateComponent,
         MockComponent(ButtonComponent),
-        AvatarImageComponent,
         MockComponent(IconComponent),
       ],
-      imports: [CommonModule, MultiListModule],
-      providers: [EventManagerPlugins[0]],
+      imports: [CommonModule, MultiListModule, ChipModule, ChipListModule],
+      providers: [],
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {

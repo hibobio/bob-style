@@ -30,8 +30,8 @@ import { LabelValueModule } from '../../typography/label-value/label-value.modul
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { InputModule } from '../../form-elements/input/input.module';
 import { ColorService } from '../../services/color-service/color.service';
-import { MatTooltipModule } from '@angular/material';
 import { IconsModule } from '../../icons/icons.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'b-collapsible-section-example-1',

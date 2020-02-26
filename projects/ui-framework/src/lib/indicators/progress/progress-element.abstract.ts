@@ -1,13 +1,4 @@
-import {
-  OnChanges,
-  SimpleChanges,
-  ChangeDetectorRef,
-  OnInit,
-  ElementRef,
-  NgZone,
-  Input,
-  HostBinding,
-} from '@angular/core';
+import { OnChanges, SimpleChanges, ChangeDetectorRef, OnInit, ElementRef, NgZone, Input, HostBinding, Directive } from '@angular/core';
 import {
   applyChanges,
   numberMinMax,
@@ -21,6 +12,7 @@ import { filter, take } from 'rxjs/operators';
 import { ProgressData, ProgressConfig } from './progress.interface';
 import { ProgressSize, ProgressType } from './progress.enum';
 
+@Directive()
 export abstract class BaseProgressElement implements OnChanges, OnInit {
   constructor(
     protected host: ElementRef,

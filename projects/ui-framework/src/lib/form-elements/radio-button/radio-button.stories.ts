@@ -10,7 +10,7 @@ import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RadioButtonModule } from './radio-button.module';
-import values from 'lodash/values';
+import { values } from 'lodash';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { RadioDirection } from './radio-button.enum';
 

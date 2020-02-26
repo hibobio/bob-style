@@ -4,11 +4,6 @@ import { UtilsService } from '../../../services/utils/utils.service';
 import { MobileService } from '../../../services/utils/mobile.service';
 import { DateParseService } from '../date-parse-service/date-parse.service';
 import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
-import {
-  MatDatepicker,
-  MatDatepickerModule,
-  MatNativeDateModule,
-} from '@angular/material';
 import { IconsModule } from '../../../icons/icons.module';
 import { InputMessageModule } from '../../input-message/input-message.module';
 import {
@@ -31,6 +26,11 @@ import {
   mobileServiceStub,
 } from '../../../tests/services.stub.spec';
 import { InputEventType } from '../../form-elements.enum';
+import {
+  MatDatepicker,
+  MatDatepickerModule,
+} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 describe('DateRangePickerComponent', () => {
   let fixture: ComponentFixture<DateRangePickerComponent>;

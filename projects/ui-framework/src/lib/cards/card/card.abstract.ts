@@ -4,11 +4,13 @@ import {
   EventEmitter,
   HostBinding,
   ElementRef,
+  Directive,
 } from '@angular/core';
 import { Card } from './card.interface';
 import { CardType } from '../cards.enum';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 
+@Directive()
 export abstract class BaseCardElement {
   constructor(public cardElRef: ElementRef) {}
 

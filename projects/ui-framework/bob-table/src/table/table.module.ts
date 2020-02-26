@@ -29,7 +29,6 @@ import {TableComponent} from './table/table.component';
     DragDropModule,
     CdkTableModule,
     AvatarModule,
-    AgGridModule,
     ButtonsModule,
     IconsModule,
     MenuModule,

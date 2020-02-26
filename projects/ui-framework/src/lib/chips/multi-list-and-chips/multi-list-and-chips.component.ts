@@ -65,6 +65,7 @@ export class MultiListAndChipsComponent implements OnChanges {
       );
       this.chipListConfig.type = this.detectChipType(this.options);
       this.optionsToChips(this.options);
+      this.cd.detectChanges();
     }
 
     if (!this.cd['destroyed']) {
@@ -126,7 +127,8 @@ export class MultiListAndChipsComponent implements OnChanges {
       }
     });
 
-    return (this.chips = chips);
+    this.chips = chips;
+    return this.chips;
   }
 
   private removeChipAndOption(chip: Chip) {
@@ -145,7 +147,8 @@ export class MultiListAndChipsComponent implements OnChanges {
         }
       });
 
-      this.chips = this.optionsToChips(options);
+      // this.chips = this.optionsToChips(options);
+      this.optionsToChips(options);
     } else {
       options.find((group: SelectGroupOption) => {
         const opt = group.options.find((o: SelectOption) => o.id === chip.id);

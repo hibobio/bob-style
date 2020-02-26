@@ -165,6 +165,7 @@ export {
 export { ChipListModule } from './lib/chips/chip-list/chip-list.module';
 export { EmojiChipListModule } from './lib/chips/emoji-chip-list/emoji-chip-list.module';
 export { EmojiChipListComponent } from './lib/chips/emoji-chip-list/emoji-chip-list.component';
+export { EmojiFromCodePipe } from './lib/chips/emoji-chip-list/emoji-from-code.pipe';
 export { ChipListComponent } from './lib/chips/chip-list/chip-list.component';
 // Chip Input
 export { ChipInputModule } from './lib/chips/chip-input/chip-input.module';
@@ -215,6 +216,7 @@ export { EditableListComponent } from './lib/lists/editable-list/editable-list.c
 // Basic list
 export { BasicListModule } from './lib/lists/basic-list/basic-list.module';
 export { BasicListComponent } from './lib/lists/basic-list/basic-list.component';
+export { BasicListActionDirective } from './lib/lists/basic-list/basic-list-action.directive';
 export * from './lib/lists/basic-list/basic-list.interface';
 export * from './lib/lists/basic-list/basic-list.enum';
 // Single select panel
@@ -518,6 +520,7 @@ export { LinkifyPipe } from './lib/services/filters/linkify.pipe';
 export { HighlightPipe } from './lib/services/filters/highlight.pipe';
 // Utils Module
 export { UtilsModule } from './lib/services/utils/utils.module';
+export { SpyDirective } from './lib/services/utils/spy.directive';
 export { UtilsService } from './lib/services/utils/utils.service';
 export { ScrollEvent } from './lib/services/utils/utils.interface';
 export { WindowRef } from './lib/services/utils/window-ref.service';
