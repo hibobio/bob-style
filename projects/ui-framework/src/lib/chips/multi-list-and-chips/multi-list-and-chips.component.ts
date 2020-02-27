@@ -20,7 +20,7 @@ import {
   applyChanges,
 } from '../../services/utils/functional-utils';
 import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
-import get from 'lodash/get';
+import { get } from 'lodash';
 
 @Component({
   selector: 'b-multi-list-and-chips',
