@@ -4,6 +4,7 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
+  NgZone,
 } from '@angular/core';
 import { ChartTypesEnum } from '../../chart/chart.enum';
 import { SeriesColumnOptions } from 'highcharts';
@@ -22,8 +23,8 @@ export class MultiBarChartComponent extends ChartCore implements OnChanges {
   @Input() categories: string[];
   @Input() data: SeriesColumnOptions[];
   @Input() name: string;
-  constructor(public cdr: ChangeDetectorRef) {
-    super(cdr);
+  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
+    super(cdr, zone);
     this.height = 450;
   }
 

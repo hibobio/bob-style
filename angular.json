@@ -161,5 +161,8 @@
       }
     }
   },
-  "defaultProject": "ui-framework"
+  "defaultProject": "ui-framework",
+  "cli": {
+    "analytics": false
+  }
 }

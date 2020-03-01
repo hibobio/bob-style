@@ -4,6 +4,7 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
+  NgZone,
 } from '@angular/core';
 import { ChartCore } from '../../chart/chart-core';
 import { SeriesOptionsType } from 'highcharts';
@@ -22,8 +23,8 @@ export class BarLineChartComponent extends ChartCore implements OnChanges {
   @Input() stackedPercent = false;
   @Input() data: SeriesOptionsType[];
   @Input() name: string;
-  constructor(public cdr: ChangeDetectorRef) {
-    super(cdr);
+  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
+    super(cdr, zone);
     this.height = 450;
   }
 

@@ -4,6 +4,7 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
+  NgZone,
 } from '@angular/core';
 import { ChartCore } from '../chart/chart-core';
 import { SeriesLineOptions } from 'highcharts';
@@ -18,8 +19,8 @@ export class LineChartComponent extends ChartCore implements OnChanges {
   type: LineChartTypes;
   @Input() data: SeriesLineOptions[];
   @Input() name: string;
-  constructor(public cdr: ChangeDetectorRef) {
-    super(cdr);
+  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
+    super(cdr, zone);
     this.height = 450;
   }
 

@@ -4,6 +4,7 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
+  NgZone,
 } from '@angular/core';
 import { ChartTypesEnum } from '../../chart/chart.enum';
 import { SeriesColumnOptions } from 'highcharts';
@@ -23,8 +24,8 @@ export class StackedBarChartComponent extends ChartCore implements OnChanges {
   @Input() data: SeriesColumnOptions[];
   @Input() stackedDataLabels = true;
   @Input() name: string;
-  constructor(public cdr: ChangeDetectorRef) {
-    super(cdr);
+  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
+    super(cdr, zone);
     this.height = 450;
   }
 

@@ -39,8 +39,8 @@ export abstract class ChartCore implements AfterViewInit {
   containerId: string = simpleUID();
   chartOptions: Options;
   options: Options;
-  private formatter = (function(component) {
-    return function() {
+  private formatter = (function (component) {
+    return function () {
       return component.tooltipFormatter(this, component);
     };
   })(this);
@@ -78,7 +78,7 @@ export abstract class ChartCore implements AfterViewInit {
     </div>`;
   @Input() tooltipValueFormatter = (val: number): number | string => val;
 
-  constructor(public cdr: ChangeDetectorRef) {}
+  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) { }
 
   tooltipFormatter(chartThis: ChartFormatterThis, component: ChartCore) {
     return this.tooltipTemplate(component, chartThis);
@@ -87,7 +87,7 @@ export abstract class ChartCore implements AfterViewInit {
   formatValue(value: number): string {
     return `${this.preTooltipValue}${this.tooltipValueFormatter(value)}${
       this.postTooltipValue
-    }`;
+      }`;
   }
 
   exportChart(type: ExportingMimeTypeValue) {
@@ -153,21 +153,19 @@ export abstract class ChartCore implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initialOptions();
-    this.highChartRef = Highcharts.chart(this.containerId, this.options);
-    // this.highChartRef = Highcharts.chart(this.containerId, this.options);this.zone.runOutsideAngular(() => {
-    //   this.highChartRef = Highcharts.chart(this.containerId, this.options);
-    // });
+
+    this.zone.runOutsideAngular(() => {
+      this.highChartRef = Highcharts.chart(this.containerId, this.options);
+    });
   }
 
   applyOnChange() {
     if (this.highChartRef) {
       this.cdr.markForCheck();
       this.initialOptions();
-
-      this.highChartRef.update(this.options, true, true);
-      // this.zone.runOutsideAngular(() => {
-      //   this.highChartRef.update(this.options, true, true);
-      // });
+      this.zone.runOutsideAngular(() => {
+        this.highChartRef.update(this.options, true, true);
+      });
     }
   }
   private getLegendPositioning(

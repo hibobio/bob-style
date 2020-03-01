@@ -28,8 +28,8 @@ export class PieChartComponent extends ChartCore implements OnChanges {
   @Input() donut = false;
   @Input() donutInnerSize = 60;
   @Input() donutWidth: number;
-  constructor(public cdr: ChangeDetectorRef) {
-    super(cdr);
+  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
+    super(cdr, zone);
     this.height = 150;
   }
 
