@@ -3,7 +3,6 @@
              let-item="item">
 
   <li class="bhl-item"
-      #itemElements
       [id]="item.id"
       [attr.data-index]="index"
       [ngClass]="{
@@ -23,7 +22,7 @@
     <span *ngIf="item.childrenIDs"
           class="bhl-item-chevron has-hover"></span>
 
-    <span *ngIf="showCheckbox(item)"
+    <span *ngIf="showCheckbox()"
           class="bhl-item-checkbox"
           role="checkbox"
           [attr.aria-checked]="item.selected"></span>

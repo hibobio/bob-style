@@ -76,7 +76,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   protected onNgChanges(changes: SimpleChanges): void {}
 
   public ngOnChanges(changes: SimpleChanges): void {
-    console.log('---------------', 'Tree LIST ngOnChanges', changes);
+    console.log('---------------\nTree LIST ngOnChanges', changes);
 
     console.time('ngOnChanges');
 
@@ -106,20 +106,22 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
     }
 
     if (
-      hasChanges(changes, ['list', 'valueDefault'], true) ||
+      hasChanges(changes, ['valueDefault'], true) ||
       hasChanges(changes, ['value'])
     ) {
       this.updateActionButtonsState();
     }
 
-    if (hasChanges(changes, ['maxHeightItems', 'list'], true)) {
+    if (hasChanges(changes, ['maxHeightItems', 'list', 'itemsMap'], true)) {
+      this.maxHeightItems = Math.max(
+        this.itemsMap.size > 0
+          ? this.itemsMap.get(BTL_ROOT_ID).groupsCount + 3
+          : 0,
+        this.maxHeightItems
+      );
+
       this.DOM.setCssProps(this.host.nativeElement, {
-        '--list-max-items': Math.max(
-          this.itemsMap.size > 0
-            ? this.itemsMap.get(BTL_ROOT_ID).groupsCount + 3
-            : 0,
-          this.maxHeightItems
-        ),
+        '--list-max-items': this.maxHeightItems,
       });
     }
 
@@ -127,11 +129,15 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
       this.hasFooter = !this.readonly && objectHasTruthyValue(this.listActions);
     }
 
+    console.timeEnd('ngOnChanges');
+
+    console.time('ngOnChanges detectChanges');
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
     }
+    console.timeEnd('ngOnChanges detectChanges');
 
-    console.timeEnd('ngOnChanges');
+    console.log('Tree LIST ngOnChanges END\n---------------');
   }
 
   ngAfterViewInit(): void {
@@ -261,7 +267,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
         !arrayDifference(this.value, this.valueDefault).length;
   }
 
-  public showCheckbox(item: TreeListItem): boolean {
+  public showCheckbox(): boolean {
     return this.type === SelectType.multi && !this.readonly && !this.disabled;
   }
 

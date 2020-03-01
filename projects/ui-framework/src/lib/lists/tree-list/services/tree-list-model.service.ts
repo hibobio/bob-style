@@ -6,6 +6,7 @@ import {
   itemID,
   ViewFilter,
   TreeListKeyMap,
+  TreeListValue,
 } from '../tree-list.interface';
 import {
   isNotEmptyArray,
@@ -16,6 +17,8 @@ import {
   objectRemoveKeys,
   stringify,
   isBoolean,
+  isNotEmptyMap,
+  asArray,
 } from '../../../services/utils/functional-utils';
 import { BTL_ROOT_ID, BTL_KEYMAP_DEF } from '../tree-list.const';
 
@@ -136,8 +139,13 @@ export class TreeListModelService {
     const { keyMap, separator, collapsed, onlyValue } = config;
     this.counter = -1;
     this.errorCounter = 0;
-
-    const removeKeys = [...Object.values(keyMap), 'selected', 'disabled'];
+    if (isNullOrUndefined(keyMap)) {
+      console.error(
+        `[TreeListModelService.getListItemsMap]:
+        keyMap is ${keyMap}`
+      );
+    }
+    const removeKeys = [...Object.values(keyMap || {}), 'selected', 'disabled'];
 
     if (isEmptyArray(list)) {
       return itemsMap;
@@ -265,6 +273,19 @@ export class TreeListModelService {
     });
   }
 
+  public deselectAllExcept(
+    selectedIDs: itemID[],
+    keepIDs: itemID[],
+    itemsMap: TreeListItemMap
+  ): void {
+    selectedIDs
+      .filter(id => !keepIDs.includes(id))
+      .forEach(id => {
+        const item = itemsMap.get(id);
+        item.selected = false;
+      });
+  }
+
   public toggleCollapseAllItemsInMap(
     itemsMap: TreeListItemMap,
     force: boolean = null
@@ -341,8 +362,8 @@ export class TreeListModelService {
   }
 
   public sortIDlistByItemIndex(
-    itemsMap: TreeListItemMap,
-    IDlist: itemID[]
+    IDlist: itemID[],
+    itemsMap: TreeListItemMap
   ): itemID[] {
     return IDlist.sort((idA, idB) =>
       itemsMap.get(idA).originalIndex > itemsMap.get(idB).originalIndex ? 1 : -1
@@ -358,9 +379,26 @@ export class TreeListModelService {
     return itemsMap.set(
       key,
       ((!onlyValue
-        ? Object.assign(itemsMap.get(key) || {}, item)
+        ? // ? Object.assign(itemsMap.get(key) || {}, item)
+          item
         : item.value) as any) as T
     );
+  }
+
+  public getDisplayValuesFromValue(
+    value: TreeListValue | itemID[],
+    itemsMap: TreeListItemMap
+  ): string[] {
+    return value && (value as TreeListValue).selectedValues
+      ? (value as TreeListValue).selectedValues
+      : value && isNotEmptyMap(itemsMap)
+      ? asArray(value as itemID[])
+          .map(id => {
+            const item = itemsMap.get(id);
+            return item ? item.value : null;
+          })
+          .filter(Boolean)
+      : [];
   }
 
   private getItemId(item: TreeListOption, keyMap: TreeListKeyMap): itemID {

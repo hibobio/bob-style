@@ -3,18 +3,21 @@ import { TreeListItem, itemID, TreeListItemMap } from '../tree-list.interface';
 import { isEmptyArray } from '../../../services/utils/functional-utils';
 import { LIST_EL_HEIGHT } from '../../list.consts';
 
-interface TreeListScrollToItemConfig {
-  listViewModel: itemID[];
-  listElement: HTMLElement;
-  itemsMap: TreeListItemMap;
-  updateListViewModel: (expand: boolean) => void;
-}
+// interface TreeListScrollToItemConfig {
+//   listViewModel: itemID[];
+//   listElement: HTMLElement;
+//   itemsMap: TreeListItemMap;
+//   updateListViewModel: (expand: boolean) => void;
+// }
 
 @Injectable()
 export class TreeListViewService {
   //
   //
-  public expandAllSelected(selectedIDs: itemID[], itemsMap: TreeListItemMap) {
+  public expandAllSelected(
+    selectedIDs: itemID[],
+    itemsMap: TreeListItemMap
+  ): void {
     selectedIDs.forEach(id => {
       const item = itemsMap.get(id);
 
@@ -26,54 +29,42 @@ export class TreeListViewService {
     });
   }
 
-  //
-  // returns true if listViewModel was updated
   public scrollToItem(
     item: TreeListItem,
-    config: TreeListScrollToItemConfig
-  ): boolean {
-    const {
-      listViewModel,
-      listElement,
-      itemsMap,
-      updateListViewModel,
-    } = config;
-
-    let viewModelWasUpdated = false;
-
+    listViewModel: itemID[],
+    listElement: HTMLElement,
+    maxHeightItems: number
+  ): void {
     if (isEmptyArray(listViewModel)) {
-      return viewModelWasUpdated;
+      return;
     }
 
-    let indexInView = listViewModel.findIndex(id => id === item.id);
-
-    if (indexInView === -1 && item.parentCount > 1) {
-      this.expandAllSelected([item.id], itemsMap);
-
-      updateListViewModel(false);
-      viewModelWasUpdated = true;
-
-      indexInView = listViewModel.findIndex(id => {
-        return id === item.id;
-      });
-    }
+    const indexInView = listViewModel.findIndex(id => id === item.id);
 
     if (indexInView === -1) {
       console.error(
         `[TreeListViewService.scrollToItem]:
         Item ${item.id} was not found in view.`
       );
-      return viewModelWasUpdated;
+      return;
     }
 
     setTimeout(() => {
       const itemElement = listElement.children[indexInView] as HTMLElement;
-      listElement.scrollTop =
+      const listElScrollTopMax =
         itemElement.offsetTop - (item.parentCount - 1) * LIST_EL_HEIGHT;
-      console.log('actual scrollTop 2', listElement.scrollTop);
-    }, 0);
+      const listElScrollTopMin =
+        listElScrollTopMax -
+        (maxHeightItems - item.parentCount) * LIST_EL_HEIGHT;
 
-    return viewModelWasUpdated;
+      if (
+        listElement.scrollTop < listElScrollTopMin ||
+        listElement.scrollTop > listElScrollTopMax
+      ) {
+        listElement.scrollTop =
+          itemElement.offsetTop - (item.parentCount - 1) * LIST_EL_HEIGHT;
+      }
+    }, 0);
   }
 
   // private isGroupSelected(

@@ -3,6 +3,7 @@ import { Keys } from '../../../enums';
 import { isKey } from '../../../services/utils/functional-utils';
 import { TreeListItem, TreeListItemMap, itemID } from '../tree-list.interface';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import { TreeListViewService } from './tree-list-view.service';
 
 interface TreeListClickConfig {
   itemsMap: TreeListItemMap;
@@ -118,6 +119,12 @@ export class TreeListControlsService {
     ) {
       const nextItemElement = this.DOM.getNextSibling(itemElement);
       if (nextItemElement) {
+        TreeListViewService.prototype.scrollToItem(
+          itemsMap.get(listViewModel[index + 1]),
+          listViewModel,
+          itemElement.closest('.bhl-list'),
+          8
+        );
         nextItemElement.focus();
       }
       return;
@@ -131,6 +138,12 @@ export class TreeListControlsService {
     ) {
       const prevItemElement = this.DOM.getPrevSibling(itemElement);
       if (prevItemElement) {
+        TreeListViewService.prototype.scrollToItem(
+          itemsMap.get(listViewModel[index - 1]),
+          listViewModel,
+          itemElement.closest('.bhl-list'),
+          8
+        );
         prevItemElement.focus();
       }
       return;

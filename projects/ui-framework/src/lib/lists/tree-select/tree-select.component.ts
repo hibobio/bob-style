@@ -38,7 +38,6 @@ import {
   hasChanges,
   isNotEmptyArray,
   isNotEmptyMap,
-  asArray,
   notFirstChanges,
   applyChanges,
 } from '../../services/utils/functional-utils';
@@ -122,21 +121,32 @@ export class TreeSelectComponent extends BaseFormElement
   public touched = false;
 
   public ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes, {}, ['value'], false, {
-      keyMap: { value: 'setValue' },
-    });
+    applyChanges(
+      this,
+      changes,
+      {
+        keyMap: BTL_KEYMAP_DEF,
+      },
+      ['value'],
+      false,
+      {
+        keyMap: { value: 'setValue' },
+      }
+    );
 
     if (hasChanges(changes, ['disabled', 'errorMessage', 'warnMessage'])) {
       this.closePanel();
     }
 
     if (hasChanges(changes, ['list'], true)) {
+      console.time('TreeSelectComponent getListItemsMap');
       this.itemsMap.clear();
       this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
         keyMap: this.keyMap,
         separator: this.valueSeparatorChar,
         collapsed: this.startCollapsed,
       });
+      console.timeEnd('TreeSelectComponent getListItemsMap');
 
       if (isNotEmptyArray(this.value) && !changes.value) {
         this.setDisplayValue(this.value);
@@ -149,9 +159,10 @@ export class TreeSelectComponent extends BaseFormElement
 
     if (notFirstChanges(changes, ['type']) && this.type === SelectType.single) {
       const newValue = isNotEmptyArray(this.value) ? [this.value[0]] : [];
-      this.deselectAllExcept(
+      this.modelSrvc.deselectAllExcept(
         this.treeListValue ? this.treeListValue.selectedIDs : this.value,
-        newValue
+        newValue,
+        this.itemsMap
       );
       this.value = newValue;
       this.setDisplayValue(this.value);
@@ -182,7 +193,11 @@ export class TreeSelectComponent extends BaseFormElement
 
   public onCancel(): void {
     if (this.treeListValue) {
-      this.deselectAllExcept(this.treeListValue.selectedIDs, this.value);
+      this.modelSrvc.deselectAllExcept(
+        this.treeListValue.selectedIDs,
+        this.value,
+        this.itemsMap
+      );
       this.setDisplayValue(this.value);
       this.treeListValue = undefined;
     }
@@ -190,7 +205,10 @@ export class TreeSelectComponent extends BaseFormElement
   }
 
   private setDisplayValue(value: TreeListValue | itemID[] = null): void {
-    const selectedValues = this.getDisplayValuesFromValue(value);
+    const selectedValues = this.modelSrvc.getDisplayValuesFromValue(
+      value,
+      this.itemsMap
+    );
     this.displayValue =
       (this.type === SelectType.single
         ? selectedValues[0]
@@ -198,11 +216,14 @@ export class TreeSelectComponent extends BaseFormElement
   }
 
   public writeValue(value: itemID[]) {
+    console.time('<====== TreeSelectComponent writeValue');
+
     super.writeValue(value);
 
     if (isNotEmptyMap(this.itemsMap)) {
       this.setDisplayValue(this.value);
     }
+    console.timeEnd('<====== TreeSelectComponent writeValue');
   }
 
   private emitChange(value: TreeListValue): void {
@@ -244,27 +265,5 @@ export class TreeSelectComponent extends BaseFormElement
     if (this.closed.observers.length) {
       this.closed.emit();
     }
-  }
-
-  private getDisplayValuesFromValue(value: TreeListValue | itemID[]): string[] {
-    return value && (value as TreeListValue).selectedValues
-      ? (value as TreeListValue).selectedValues
-      : value && isNotEmptyMap(this.itemsMap)
-      ? asArray(value as itemID[])
-          .map(id => {
-            const item = this.itemsMap.get(id);
-            return item ? item.value : null;
-          })
-          .filter(Boolean)
-      : [];
-  }
-
-  private deselectAllExcept(selectedIDs: itemID[], keepIDs: itemID[]): void {
-    selectedIDs
-      .filter(id => !keepIDs.includes(id))
-      .forEach(id => {
-        const item = this.itemsMap.get(id);
-        item.selected = false;
-      });
   }
 }
