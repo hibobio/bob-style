@@ -110,4 +110,24 @@ export class UtilsService {
       delay(100)
     );
   }
+
+  public scrollToTop(offset = 0): void {
+    this.windowRef.nativeWindow.scrollTo(0, offset);
+  }
+
+  public scrollToBottom(offset = 0): void {
+    this.windowRef.nativeWindow.scrollTo(
+      0,
+      this.windowRef.nativeWindow.document.body.scrollHeight - offset
+    );
+  }
+
+  public scrollToElement(element: HTMLElement, offset = 0): void {
+    this.windowRef.nativeWindow.scrollTo(
+      0,
+      element.getBoundingClientRect().top +
+        this.windowRef.nativeWindow.scrollY +
+        offset
+    );
+  }
 }
