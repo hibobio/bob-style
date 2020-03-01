@@ -1,15 +1,4 @@
-import {
-  AfterViewInit,
-  OnDestroy,
-  ChangeDetectorRef,
-  NgZone,
-  ElementRef,
-  ViewChild,
-  Input,
-  HostBinding,
-  SimpleChanges,
-  OnChanges,
-} from '@angular/core';
+import { AfterViewInit, OnDestroy, ChangeDetectorRef, NgZone, ElementRef, ViewChild, Input, HostBinding, SimpleChanges, OnChanges, Directive } from '@angular/core';
 import { SearchComponent } from '../../search/search/search.component';
 import {
   cloneDeepSimpleObject,
@@ -33,6 +22,7 @@ import { TreeListControlsService } from './services/tree-list-controls.service';
 import { LIST_ACTIONS_STATE_DEF } from '../list-footer/list-footer.const';
 import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from './tree-list.const';
 
+@Directive()
 export abstract class BaseTreeListElement extends TreeListInputOutput
   implements OnChanges, AfterViewInit, OnDestroy {
   constructor(
@@ -47,11 +37,11 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
     super();
   }
 
-  @ViewChild('search', { static: false, read: SearchComponent })
+  @ViewChild('search', { read: SearchComponent })
   protected search: SearchComponent;
   @ViewChild('listElement', { static: true, read: ElementRef })
   protected listElement: ElementRef;
-  @ViewChild('footer', { static: false, read: ElementRef })
+  @ViewChild('footer', { read: ElementRef })
   protected footer: ElementRef;
 
   @HostBinding('attr.data-embedded') @Input() embedded = false;

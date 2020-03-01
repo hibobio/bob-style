@@ -1,4 +1,4 @@
-import { Input, Output, EventEmitter } from '@angular/core';
+import { Input, Output, EventEmitter, Directive } from '@angular/core';
 import {
   TreeListComponentIO,
   TreeListOption,
@@ -12,6 +12,7 @@ import { BTL_KEYMAP_DEF } from './tree-list.const';
 import { SelectType } from '../list.enum';
 import { ListFooterActions } from '../list.interface';
 
+@Directive()
 export abstract class TreeListInputOutput implements TreeListComponentIO {
   @Input() list: TreeListOption[];
   @Input() value: itemID[];
