@@ -13,7 +13,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { SplitInputSingleSelectModule } from './split-input-single-select.module';
 import { SelectGroupOption } from '../../lists/list.interface';
 import { InputTypes } from '../input/input.enum';
-import map from 'lodash/map';
+import { map } from 'lodash';
 import { InputSingleSelectValue } from './split-input-single-select.interface';
 import { mockText } from '../../mock.const';
 

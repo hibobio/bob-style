@@ -34,7 +34,7 @@ import { FormsModule } from '@angular/forms';
 export class ClassBinderTesterComponent implements AfterViewInit {
   constructor(private DOM: DOMhelpers) {}
 
-  @ViewChild('testDiv', { static: false }) private testDiv: ElementRef;
+  @ViewChild('testDiv') private testDiv: ElementRef;
 
   classes = '';
 

@@ -1,10 +1,13 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {ChangeDetectorRef, NgZone} from '@angular/core';
+import { ChangeDetectorRef, NgZone } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import {PieChartComponent} from '../../../bob-charts/src/charts/pie-chart/pie-chart.component';
-import {LINE_CHART_DATA_MOCK, TOOLTIP_FORMATTER_MOCK_RESULT} from '../../../bob-charts/src/charts/chart.mock';
-import {ChartCore} from '../../../bob-charts/src/charts/chart/chart-core';
+import { PieChartComponent } from '../../../bob-charts/src/charts/pie-chart/pie-chart.component';
+import {
+  LINE_CHART_DATA_MOCK,
+  TOOLTIP_FORMATTER_MOCK_RESULT,
+} from '../../../bob-charts/src/charts/chart.mock';
+import { ChartCore } from '../../../bob-charts/src/charts/chart/chart-core';
 
 export class MockNgZone extends NgZone {
   run(fn: Function): any {
@@ -20,7 +23,7 @@ describe('ChartComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PieChartComponent],
-      providers: [{ provide: [NgZone, ChangeDetectorRef] }]
+      providers: [ChangeDetectorRef],
     })
       .compileComponents()
       .then(() => {
@@ -77,7 +80,7 @@ describe('ChartComponent', () => {
           {
             color: 'red',
             y: 48000,
-            key: 'balloons'
+            key: 'balloons',
           },
           component
         )
@@ -86,20 +89,29 @@ describe('ChartComponent', () => {
     describe('export chart', () => {
       it('should export chart call chart ref with type', () => {
         component.highChartRef = {
-          exportChart: (exportObj) => {}
+          exportChart: exportObj => {},
         } as any;
-        const spyHighChartRefExport = spyOn((component.highChartRef as any), 'exportChart');
+        const spyHighChartRefExport = spyOn(
+          component.highChartRef as any,
+          'exportChart'
+        );
 
         component.exportChart('image/svg+xml');
         expect(spyHighChartRefExport).toHaveBeenCalledWith({
-          type: 'image/svg+xml'
+          type: 'image/svg+xml',
         });
       });
     });
     describe('ngOnChanges', () => {
       beforeEach(() => {
-        updateChartOptionsSpy = spyOn(component, 'updateChartOptions').and.callThrough();
-        applyOnChangeSpy = spyOn(ChartCore.prototype, 'applyOnChange').and.callThrough();
+        updateChartOptionsSpy = spyOn(
+          component,
+          'updateChartOptions'
+        ).and.callThrough();
+        applyOnChangeSpy = spyOn(
+          ChartCore.prototype,
+          'applyOnChange'
+        ).and.callThrough();
         highchartRefSpy.and.callThrough();
         fixture.detectChanges();
         component.ngOnChanges.call(component);

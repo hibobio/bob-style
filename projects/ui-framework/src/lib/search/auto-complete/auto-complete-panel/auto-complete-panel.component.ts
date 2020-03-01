@@ -28,7 +28,7 @@ import { getEventPath } from '../../../services/utils/functional-utils';
 })
 export class AutoCompletePanelComponent
   implements OnChanges, OnInit, OnDestroy {
-  @ViewChild('vScroll', { static: false }) vScroll: CdkVirtualScrollViewport;
+  @ViewChild('vScroll') vScroll: CdkVirtualScrollViewport;
 
   @Input() options: AutoCompleteOption[];
   @Input() searchInput: SearchComponent;

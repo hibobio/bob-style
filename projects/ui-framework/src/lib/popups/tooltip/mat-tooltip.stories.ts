@@ -6,8 +6,8 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { TooltipPosition, TooltipClass } from './tooltip.enum';
 import { DividerModule } from '../../layout/divider/divider.module';
 import { TypographyModule } from '../../typography/typography.module';
-import { MatTooltipModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
   withKnobs

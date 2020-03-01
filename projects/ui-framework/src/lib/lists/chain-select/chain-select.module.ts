@@ -6,18 +6,8 @@ import { ChainSelectComponent } from './chain-select.component';
 import { ChainSelectDirective } from './chain-select.directive';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    IconsModule,
-    ButtonsModule,
-  ],
-  declarations: [
-    ChainSelectComponent,
-    ChainSelectDirective,
-  ],
-  exports: [
-    ChainSelectComponent,
-    ChainSelectDirective,
-  ],
+  imports: [CommonModule, IconsModule, ButtonsModule],
+  declarations: [ChainSelectComponent, ChainSelectDirective],
+  exports: [ChainSelectComponent, ChainSelectDirective],
 })
-export class ChainSelectModule { }
+export class ChainSelectModule {}

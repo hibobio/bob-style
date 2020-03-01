@@ -173,7 +173,7 @@ export class CardLayoutExample2Component implements OnChanges {
   styles: [':host {display: block;}'],
 })
 export class CardLayoutExample3Component implements OnChanges, OnDestroy {
-  @ViewChild(CardsLayoutComponent, { static: false })
+  @ViewChild(CardsLayoutComponent)
   set amountOfCardsFn(bCardsComponent: CardsLayoutComponent) {
     this.numberOfCardsSubscription = bCardsComponent
       .getCardsInRow$()

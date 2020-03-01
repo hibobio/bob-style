@@ -29,5 +29,13 @@
         "projects/ui-framework/bob-table/public_api.ts"
       ]
     }
-  }
+  },
+  "angularCompilerOptions": {
+    "skipTemplateCodegen": true,
+    "strictMetadataEmit": true,
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "enableResourceInlining": true,
+    "enableIvy": false
+  },
 }

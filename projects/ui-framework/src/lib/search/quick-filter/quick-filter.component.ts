@@ -13,7 +13,7 @@ import {
   QuickFilterConfig,
 } from './quick-filter.interface';
 import { QuickFilterSelectType } from './quick-filter.enum';
-import has from 'lodash/has';
+import { has } from 'lodash';
 import { SingleSelectComponent } from '../../lists/single-select/single-select.component';
 import { MultiSelectComponent } from '../../lists/multi-select/multi-select.component';
 import { ListChange } from '../../lists/list-change/list-change';

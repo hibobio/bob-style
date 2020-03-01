@@ -78,7 +78,7 @@ export class SocialComponent extends BaseFormElement
   @Input() type: Social;
   @Input() placeholder = 'username';
 
-  @Output(FormEvents.socialInputChange) changed: EventEmitter<
+  @Output('socialInputChange') changed: EventEmitter<
     InputEvent
   > = new EventEmitter<InputEvent>();
 

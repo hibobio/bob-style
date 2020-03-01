@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EditCommentComponent } from './edit-comment.component';
 import { COMMENT_ITEM, eventEnterShiftKey } from '../comments.mocks';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
-import { MatTooltipModule } from '@angular/material';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('EditCommentComponent', () => {

@@ -1,17 +1,25 @@
-import {ChangeDetectorRef, Component, Input, NgZone, OnChanges, SimpleChanges, ViewEncapsulation} from '@angular/core';
-import {ChartCore} from '../chart/chart-core';
-import {ChartTypesEnum} from '../chart/chart.enum';
-import {SeriesPieDataOptions} from 'highcharts';
-import {merge} from 'lodash';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  NgZone,
+  OnChanges,
+  SimpleChanges,
+  ViewEncapsulation,
+} from '@angular/core';
+import { ChartCore } from '../chart/chart-core';
+import { ChartTypesEnum } from '../chart/chart.enum';
+import { SeriesPieDataOptions } from 'highcharts';
+import { merge } from 'lodash';
 
-export const minDonutWidth = 3, pieLegendHeight = 37, piePadding = 50;
+export const minDonutWidth = 3,
+  pieLegendHeight = 37,
+  piePadding = 50;
 @Component({
   selector: 'b-pie-chart',
   templateUrl: '../chart/chart.component.html',
-  styleUrls: [
-    '../chart/chart.component.scss',
-  ],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['../chart/chart.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class PieChartComponent extends ChartCore implements OnChanges {
   type = ChartTypesEnum.Pie;
@@ -20,36 +28,36 @@ export class PieChartComponent extends ChartCore implements OnChanges {
   @Input() donut = false;
   @Input() donutInnerSize = 60;
   @Input() donutWidth: number;
-  constructor(
-    public zone: NgZone,
-    public cdr: ChangeDetectorRef
-  ) {
-    super(zone, cdr);
+  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
+    super(cdr, zone);
     this.height = 150;
   }
 
   updateChartOptions() {
-    this.chartOptions = merge({
-      chart: {
-        height: Math.abs(this.height)
+    this.chartOptions = merge(
+      {
+        chart: {
+          height: Math.abs(this.height),
+        },
+        plotOptions: {
+          pie: {
+            innerSize: null,
+            depth: null,
+          },
+        },
+        lang: {
+          noData: '',
+        },
+        series: [
+          {
+            type: 'pie',
+            name: this.name,
+            data: this.data,
+          },
+        ],
       },
-      plotOptions: {
-        pie: {
-          innerSize: null,
-          depth: null
-        }
-      },
-      lang: {
-        noData: ''
-      },
-      series: [
-        {
-          type: 'pie',
-          name: this.name,
-          data: this.data
-        }
-      ]
-    }, this.extraOptions);
+      this.extraOptions
+    );
     if (this.donut) {
       this.chartOptions.plotOptions.pie.innerSize = Math.min(
         Math.abs(this.donutInnerSize),
@@ -59,7 +67,9 @@ export class PieChartComponent extends ChartCore implements OnChanges {
     if (this.donut && this.donutWidth) {
       this.chartOptions.plotOptions.pie.innerSize = Math.max(
         0,
-          this.setInnerSize(piePadding - minDonutWidth + Math.abs(this.donutWidth))
+        this.setInnerSize(
+          piePadding - minDonutWidth + Math.abs(this.donutWidth)
+        )
       );
     }
   }

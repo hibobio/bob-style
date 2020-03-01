@@ -5,7 +5,7 @@ import {
   ElementRef,
   AfterViewInit,
   ChangeDetectorRef,
-  NgZone
+  NgZone,
 } from '@angular/core';
 import { DOMhelpers } from '../html/dom-helpers.service';
 
@@ -25,10 +25,9 @@ import { DOMhelpers } from '../html/dom-helpers.service';
       <div #slot4 class="slot-4" [ngStyle]="slot4css" *ngIf="hasSlots[3]">
         <ng-content select="[slot4]"></ng-content>
       </div>
-      <ng-content></ng-content>
     </div>
   `,
-  styles: [':host {display: block;}']
+  styles: [':host {display: block;}'],
 })
 export class MockComponent implements AfterViewInit {
   constructor(
@@ -43,10 +42,10 @@ export class MockComponent implements AfterViewInit {
   @Input() slot3css = {};
   @Input() slot4css = {};
 
-  @ViewChild('slot1', { static: false }) slot1: ElementRef;
-  @ViewChild('slot2', { static: false }) slot2: ElementRef;
-  @ViewChild('slot3', { static: false }) slot3: ElementRef;
-  @ViewChild('slot4', { static: false }) slot4: ElementRef;
+  @ViewChild('slot1') slot1: ElementRef;
+  @ViewChild('slot2') slot2: ElementRef;
+  @ViewChild('slot3') slot3: ElementRef;
+  @ViewChild('slot4') slot4: ElementRef;
 
   hasSlots = [true, true, true, true];
 

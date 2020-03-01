@@ -40,7 +40,7 @@ import { DateInputDirectiveModule } from '../date-input-directive/dateinput.dire
   ],
 })
 export class DatepickerModule {
-  static init(dateAdapter: any): ModuleWithProviders {
+  static init(dateAdapter: any): ModuleWithProviders<DatepickerModule> {
     return {
       ngModule: DatepickerModule,
       providers: [

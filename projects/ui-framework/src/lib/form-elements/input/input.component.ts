@@ -50,8 +50,8 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     super(cd, zone, kbrdCntrlSrvc);
   }
 
-  @ViewChild('prefix', { static: false }) prefix: ElementRef;
-  @ViewChild('suffix', { static: false }) suffix: ElementRef;
+  @ViewChild('prefix') prefix: ElementRef;
+  @ViewChild('suffix') suffix: ElementRef;
 
   @Input() hasPrefix = false;
   public showPrefix = true;

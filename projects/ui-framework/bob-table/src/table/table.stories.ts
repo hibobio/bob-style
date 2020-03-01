@@ -218,7 +218,6 @@ function tableStoryFactory({
         BrowserAnimationsModule,
         StoryBookLayoutModule,
         TableModule,
-        AgGridModule,
         AvatarModule,
         AgGridModule.withComponents([AvatarCellComponent]),
       ],

@@ -74,9 +74,9 @@ export class CollapsibleSectionComponent
   @Output() openedFirst: EventEmitter<void> = new EventEmitter<void>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
-  @ViewChild('headerContent', { static: false }) headerContent: ElementRef;
-  @ViewChild('panelContent', { static: false }) panelContent: ElementRef;
-  @ViewChild('footerContent', { static: false }) footerContent: ElementRef;
+  @ViewChild('headerContent') headerContent: ElementRef;
+  @ViewChild('panelContent') panelContent: ElementRef;
+  @ViewChild('footerContent') footerContent: ElementRef;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.options) {

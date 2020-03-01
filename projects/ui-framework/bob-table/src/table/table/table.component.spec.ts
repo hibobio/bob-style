@@ -1,6 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -8,7 +15,10 @@ import { AgGridModule } from 'ag-grid-angular';
 import { AvatarModule } from 'bob-style';
 import { cloneDeep, keys, pick } from 'lodash';
 import { AvatarCellComponent } from '../table-cell-components/avatar-cell/avatar.component';
-import { COLUMN_DEFS_MOCK, ROW_DATA_MOCK } from '../table-mocks/table-test.mock';
+import {
+  COLUMN_DEFS_MOCK,
+  ROW_DATA_MOCK,
+} from '../table-mocks/table-test.mock';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { TableModule } from '../table.module';
 import { TableComponent } from './table.component';
@@ -30,32 +40,29 @@ describe('TableComponent', () => {
     rowDataMock = cloneDeep(ROW_DATA_MOCK);
 
     spyTableUtilsService = createSpyObj('spyTableUtilsService', [
-      'getGridColumnDef'
+      'getGridColumnDef',
     ]);
     spyTableUtilsService.getGridColumnDef.and.returnValue(columnDefsMock);
 
-    spyCdr = createSpyObj('spyCdr', [
-      'markForChange'
-    ]);
+    spyCdr = createSpyObj('spyCdr', ['markForChange']);
 
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,
         CommonModule,
         TableModule,
-        AgGridModule,
         AvatarModule,
-        AgGridModule.withComponents([AvatarCellComponent])
+        AgGridModule.withComponents([AvatarCellComponent]),
       ],
       providers: [
         { provide: TableUtilsService, useValue: spyTableUtilsService },
         { provide: ChangeDetectorRef, useValue: spyCdr },
-      ]
+      ],
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
-          entryComponents: [AvatarCellComponent]
-        }
+          entryComponents: [AvatarCellComponent],
+        },
       })
       .compileComponents()
       .then(() => {
@@ -104,8 +111,8 @@ describe('TableComponent', () => {
             previousValue: undefined,
             currentValue: 200,
             firstChange: false,
-            isFirstChange: () => false
-          }
+            isFirstChange: () => false,
+          },
         });
         expect(getComputedStyle(agRoot).maxHeight).toEqual('200px');
       });
@@ -117,20 +124,20 @@ describe('TableComponent', () => {
             previousValue: undefined,
             currentValue: columnDefsMock,
             firstChange: false,
-            isFirstChange: () => false
+            isFirstChange: () => false,
           },
           rowData: {
             previousValue: undefined,
             currentValue: rowDataMock,
             firstChange: false,
-            isFirstChange: () => false
+            isFirstChange: () => false,
           },
           rowSelection: {
             previousValue: undefined,
             currentValue: RowSelection.Single,
             firstChange: false,
-            isFirstChange: () => false
-          }
+            isFirstChange: () => false,
+          },
         });
       });
       describe('onSortChanged', () => {
@@ -139,13 +146,13 @@ describe('TableComponent', () => {
           component.agGrid.api.setSortModel([
             {
               colId: 'fullName',
-              sort: 'asc'
-            }
+              sort: 'asc',
+            },
           ]);
           tick();
           expect(component.sortChanged.emit).toHaveBeenCalledWith({
             colId: 'fullName',
-            sort: 'asc'
+            sort: 'asc',
           });
           flush();
         }));
@@ -169,12 +176,16 @@ describe('TableComponent', () => {
         });
         it('should set suppressColumnVirtualisation to true by default', () => {
           fixture.autoDetectChanges();
-          expect(component.gridOptions.suppressColumnVirtualisation).toEqual(true);
+          expect(component.gridOptions.suppressColumnVirtualisation).toEqual(
+            true
+          );
         });
         it('should set suppressColumnVirtualisation to input value', () => {
           component.suppressColumnVirtualisation = false;
           fixture.autoDetectChanges();
-          expect(component.gridOptions.suppressColumnVirtualisation).toEqual(false);
+          expect(component.gridOptions.suppressColumnVirtualisation).toEqual(
+            false
+          );
         });
         it('should define gridOptions with input values and readonly values', () => {
           fixture.autoDetectChanges();
@@ -184,7 +195,7 @@ describe('TableComponent', () => {
             suppressRowClickSelection: true,
             rowHeight: 56,
             headerHeight: 56,
-            rowSelection: null
+            rowSelection: null,
           };
           const actualPartialOptions = pick(
             component.gridOptions,
@@ -221,9 +232,7 @@ describe('TableComponent', () => {
           fixture.autoDetectChanges();
           spyOn(component.gridInit, 'emit');
           flush();
-          expect(
-            component.gridInit.emit
-          ).toHaveBeenCalled();
+          expect(component.gridInit.emit).toHaveBeenCalled();
         }));
       });
       describe('onRowClicked', () => {
@@ -240,15 +249,18 @@ describe('TableComponent', () => {
           expect(component.rowClicked.emit).toHaveBeenCalledWith({
             rowIndex: 0,
             data: ROW_DATA_MOCK[0],
-            agGridId: '0'
+            agGridId: '0',
           });
           flush();
         }));
 
         it('clickable row should have "row-clickable" selector', fakeAsync(() => {
           fixture.autoDetectChanges();
-          const shadowRoot: DocumentFragment = fixture.debugElement.nativeElement;
-          const firstRow = shadowRoot.querySelectorAll('.ag-row')[0] as HTMLElement;
+          const shadowRoot: DocumentFragment =
+            fixture.debugElement.nativeElement;
+          const firstRow = shadowRoot.querySelectorAll(
+            '.ag-row'
+          )[0] as HTMLElement;
           expect(firstRow.className.includes('row-clickable')).toBeTruthy();
           flush();
         }));
@@ -262,7 +274,7 @@ describe('TableComponent', () => {
       component.agGrid.api.selectIndex(0, false, true);
       tick();
       expect(component.selectionChanged.emit).toHaveBeenCalledWith([
-        ROW_DATA_MOCK[0]
+        ROW_DATA_MOCK[0],
       ]);
       flush();
     }));
@@ -272,7 +284,7 @@ describe('TableComponent', () => {
       component.agGrid.api.selectIndex(1, false, true);
       tick();
       expect(component.selectionChanged.emit).toHaveBeenCalledWith([
-        ROW_DATA_MOCK[1]
+        ROW_DATA_MOCK[1],
       ]);
 
       component.agGrid.api.deselectIndex(1, true);
@@ -289,7 +301,7 @@ describe('TableComponent', () => {
       spyOn(component.agGrid.api, 'updateRowData');
       component.addRows([{ 'test:': 1 }]);
       expect(component.agGrid.api.updateRowData).toHaveBeenCalledWith({
-        add: [{ 'test:': 1 }]
+        add: [{ 'test:': 1 }],
       });
     });
     it('should update rows', () => {
@@ -298,7 +310,7 @@ describe('TableComponent', () => {
       const rowData = { 'test:': 2 };
       component.updateRows([rowData]);
       expect(component.agGrid.api.updateRowData).toHaveBeenCalledWith({
-        update: [{ 'test:': 2 }]
+        update: [{ 'test:': 2 }],
       });
     });
     it('should remove rows', () => {
@@ -306,7 +318,7 @@ describe('TableComponent', () => {
       spyOn(component.agGrid.api, 'updateRowData');
       component.removeRows([{ 'test:': 3 }]);
       expect(component.agGrid.api.updateRowData).toHaveBeenCalledWith({
-        remove: [{ 'test:': 3 }]
+        remove: [{ 'test:': 3 }],
       });
     });
   });
@@ -347,11 +359,14 @@ describe('TableComponent', () => {
     });
   });
 
-
   describe('getDisplayedRowCount', () => {
     xit('Should return the column names', () => {
       component.ngOnInit();
-      component.gridOptions.columnDefs = [{field: '1'}, {field: '2'}, {field: '3'}];
+      component.gridOptions.columnDefs = [
+        { field: '1' },
+        { field: '2' },
+        { field: '3' },
+      ];
       fixture.autoDetectChanges();
       expect(component.getOrderedColumnFields()).toEqual(['1', '2', '3']);
     });

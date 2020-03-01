@@ -9,6 +9,7 @@ import {
   OnChanges,
   OnInit,
   ElementRef,
+  Directive,
 } from '@angular/core';
 import { merge, cloneDeep } from 'lodash';
 
@@ -52,15 +53,15 @@ import {
 import { BlotType, RTEType } from './rte.enum';
 import { RteMentionsOption, RteTranslation } from './rte.interface';
 import { PlaceholdersConverterService } from './placeholders.service';
-
-import { FroalaEditorDirective } from 'angular-froala-wysiwyg';
 import { FroalaEditorInstance, FroalaOptions } from './froala.interface';
 import Tribute from 'tributejs';
 import { TributeInstance, TributeItem } from './tribute.interface';
 
 import { initDirectionControl } from './rte.direction';
 import { initMentionsControl } from './rte.mentions';
+import { FroalaEditorDirective } from './froala/editor.directive';
 
+@Directive()
 export abstract class RTEbaseElement extends BaseFormElement
   implements OnChanges, OnInit {
   constructor(
@@ -91,7 +92,7 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   @ViewChild('editor', { read: FroalaEditorDirective, static: true })
   protected editorDirective: FroalaEditorDirective;
-  @ViewChild('placeholderPanel', { static: false })
+  @ViewChild('placeholderPanel')
   protected placeholderPanel: SingleSelectPanelComponent;
   public input: ElementRef<HTMLElement>;
 
@@ -367,9 +368,8 @@ export abstract class RTEbaseElement extends BaseFormElement
     ];
 
     if (this.placeholdersEnabled()) {
-      this.inputTransformers.push(
-        (value: string): string =>
-          this.placeholdersConverter.toRte(value, this.placeholderList)
+      this.inputTransformers.push((value: string): string =>
+        this.placeholdersConverter.toRte(value, this.placeholderList)
       );
 
       this.outputTransformers.unshift(this.placeholdersConverter.fromRte);

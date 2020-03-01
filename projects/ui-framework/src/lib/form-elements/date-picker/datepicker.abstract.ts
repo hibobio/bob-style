@@ -13,6 +13,7 @@ import {
   EventEmitter,
   HostBinding,
   AfterViewInit,
+  Directive,
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
@@ -28,7 +29,6 @@ import {
   hasChanges,
 } from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
-import { MatDatepicker } from '@angular/material';
 import { DateParseService } from './date-parse-service/date-parse.service';
 import { Keys } from '../../enums';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -49,12 +49,14 @@ import {
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { LocaleFormat, DateFormatFullDate, DateFormat } from '../../types';
 import { Overlay } from '@angular/cdk/overlay';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
   const strategy = () => overlay.scrollStrategies.close();
   return strategy;
 }
 
+@Directive()
 export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, AfterViewInit, OnDestroy {
   constructor(
@@ -114,9 +116,9 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   @Input() dateFormat: DateFormatFullDate;
   @Input() panelClass: string;
 
-  @Output(FormEvents.dateChange) changed: EventEmitter<
+  @Output('dateChange') changed: EventEmitter<InputEvent> = new EventEmitter<
     InputEvent
-  > = new EventEmitter<InputEvent>();
+  >();
 
   public isMobile = false;
   public inputFocused: boolean[] = [];

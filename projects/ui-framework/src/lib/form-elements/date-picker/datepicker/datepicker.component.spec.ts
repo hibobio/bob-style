@@ -1,11 +1,6 @@
 import { DatepickerComponent } from './datepicker.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {
-  MatDatepicker,
-  MatDatepickerModule,
-  MatNativeDateModule,
-} from '@angular/material';
-import {
   elementFromFixture,
   getPseudoContent,
   inputValue,
@@ -30,6 +25,11 @@ import {
   mobileServiceStub,
 } from '../../../tests/services.stub.spec';
 import { InputEventType } from '../../form-elements.enum';
+import {
+  MatDatepickerModule,
+  MatDatepicker,
+} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;

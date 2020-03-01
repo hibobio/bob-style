@@ -6,6 +6,7 @@ import {
   ChangeDetectorRef,
   SimpleChanges,
   HostBinding,
+  Directive,
 } from '@angular/core';
 import { InputEvent } from './input/input.interface';
 import { BaseFormElement } from './base-form-element';
@@ -17,6 +18,7 @@ import { valueAsNumber, stringyOrFail } from '../services/utils/transformers';
 import { FormElementKeyboardCntrlService } from './services/keyboard-cntrl.service';
 import { DOMInputEvent } from '../types';
 
+@Directive()
 export abstract class BaseInputElement extends BaseFormElement {
   protected constructor(
     protected cd: ChangeDetectorRef,
@@ -47,9 +49,9 @@ export abstract class BaseInputElement extends BaseFormElement {
   @Input() min = 0;
   @Input() max: number;
 
-  @Output(FormEvents.inputEvents) changed: EventEmitter<
+  @Output('inputEvents') changed: EventEmitter<InputEvent> = new EventEmitter<
     InputEvent
-  > = new EventEmitter<InputEvent>();
+  >();
 
   @HostBinding('attr.hidden') get isHidden() {
     return this.inputType === InputTypes.hidden ? 'hidden' : null;

@@ -1,18 +1,4 @@
-import {
-  AfterViewInit,
-  OnDestroy,
-  OnInit,
-  Renderer2,
-  ViewChild,
-  ChangeDetectorRef,
-  Input,
-  Output,
-  EventEmitter,
-  ElementRef,
-  NgZone,
-  SimpleChanges,
-  OnChanges,
-} from '@angular/core';
+import { AfterViewInit, OnDestroy, OnInit, Renderer2, ViewChild, ChangeDetectorRef, Input, Output, EventEmitter, ElementRef, NgZone, SimpleChanges, OnChanges, Directive } from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Subscription } from 'rxjs';
 import {
@@ -47,6 +33,7 @@ import { simpleChange } from '../services/utils/test-helpers';
 import { LIST_ACTIONS_STATE_DEF } from './list-footer/list-footer.const';
 import { SelectType, SelectMode } from './list.enum';
 
+@Directive()
 export abstract class BaseListElement
   implements OnChanges, OnInit, OnDestroy, AfterViewInit {
   protected constructor(
@@ -60,10 +47,9 @@ export abstract class BaseListElement
     protected host: ElementRef
   ) {}
 
-  @ViewChild('vScroll', { static: true })
-  vScroll: CdkVirtualScrollViewport;
-  @ViewChild('headers', { static: false }) headers;
-  @ViewChild('footer', { static: false, read: ElementRef })
+  @ViewChild('vScroll', { static: true }) vScroll: CdkVirtualScrollViewport;
+  @ViewChild('headers') headers;
+  @ViewChild('footer', { read: ElementRef })
   private footer: ElementRef;
 
   @Input() options: SelectGroupOption[] = [];

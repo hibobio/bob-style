@@ -27,7 +27,7 @@ export class EmojiComponent implements OnInit {
   @Input() title: string;
   @Output() toggleClick = new EventEmitter<boolean>();
   @Output() emojiSelect = new EventEmitter<Emoji>();
-  @ViewChild('overlayRef', {static: false}) panelElement: any;
+  @ViewChild('overlayRef') panelElement: any;
 
   constructor(
     private cdr: ChangeDetectorRef) {

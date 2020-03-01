@@ -36,7 +36,7 @@ import { DateInputDirectiveModule } from '../date-input-directive/dateinput.dire
   ],
 })
 export class DateRangePickerModule {
-  static init(dateAdapter: any): ModuleWithProviders {
+  static init(dateAdapter: any): ModuleWithProviders<DateRangePickerModule> {
     return {
       ngModule: DateRangePickerModule,
       providers: [

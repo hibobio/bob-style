@@ -79,9 +79,9 @@ export class RadioButtonComponent extends BaseFormElement
   readonly dir = RadioDirection;
   readonly key = 'id';
 
-  @Output(FormEvents.radioChange) changed: EventEmitter<
+  @Output('radioChange') changed: EventEmitter<InputEvent> = new EventEmitter<
     InputEvent
-  > = new EventEmitter<InputEvent>();
+  >();
 
   private transmit(event: InputEventType): void {
     this.transmitValue(this.value, {

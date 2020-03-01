@@ -57,7 +57,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     private cd: ChangeDetectorRef
   ) {}
 
-  @ViewChild('addItemInput', { static: false }) addItemInput: ElementRef;
+  @ViewChild('addItemInput') addItemInput: ElementRef;
 
   @Input() list: SelectOption[] = [];
   @Input() sortType: ListSortType;

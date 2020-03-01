@@ -12,6 +12,7 @@ import {
   Output,
   OnChanges,
   SimpleChanges,
+  Directive,
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
@@ -28,7 +29,7 @@ import { PanelPositionService } from '../popups/panel/panel-position-service/pan
 import { BaseFormElement } from '../form-elements/base-form-element';
 import { DOMhelpers } from '../services/html/dom-helpers.service';
 import { TruncateTooltipType } from '../popups/truncate-tooltip/truncate-tooltip.enum';
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'lodash';
 import {
   distinctUntilChanged,
   filter,
@@ -58,6 +59,7 @@ import { ScrollEvent } from '../services/utils/utils.interface';
 import { SelectType, SelectMode } from './list.enum';
 import { FormEvents } from '../form-elements/form-elements.enum';
 
+@Directive()
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements OnChanges, AfterViewInit, OnDestroy {
   protected constructor(
@@ -77,7 +79,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @ViewChild(CdkOverlayOrigin, { static: true })
   overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
-  @ViewChild('prefix', { static: false }) prefix: ElementRef;
+  @ViewChild('prefix') prefix: ElementRef;
 
   @Input() value: (number | string)[];
   @Input() options: SelectGroupOption[] = [];

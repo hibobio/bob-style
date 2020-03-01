@@ -12,7 +12,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EmployeesShowcaseModule } from './employees-showcase.module';
 import { AvatarSize } from '../avatar/avatar.enum';
-import zipObject from 'lodash/zipObject';
+import { zipObject } from 'lodash';
 import {
   EMPLOYEE_SHOWCASE_MOCK,
   EMPLOYEE_SHOWCASE_OPTIONS_MOCK,

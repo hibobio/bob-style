@@ -7,6 +7,7 @@ import {
   PositionStrategy,
   ScrollStrategy,
   ScrollStrategyOptions,
+  ConnectedPosition,
 } from '@angular/cdk/overlay';
 import {
   ABOVE_CENTER,
@@ -16,7 +17,6 @@ import {
   BELOW_END,
   BELOW_START,
 } from './panel-position.const';
-import { ConnectedPosition } from '@angular/cdk/typings/overlay';
 import { PanelDefaultPosVer } from '../panel.enum';
 import { OverlayPositionClasses } from '../../../types';
 import { isArray } from '../../../services/utils/functional-utils';
