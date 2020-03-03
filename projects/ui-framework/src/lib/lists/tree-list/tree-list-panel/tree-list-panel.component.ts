@@ -20,20 +20,20 @@ import {
   OverlayRef,
   OverlayConfig,
 } from '@angular/cdk/overlay';
-import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
+import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import { PanelDefaultPosVer } from '../../../popups/panel/panel.enum';
 import { Subscription } from 'rxjs';
-import { OverlayPositionClasses } from '../../types';
+import { OverlayPositionClasses } from '../../../types';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { UtilsService } from '../../services/utils/utils.service';
+import { UtilsService } from '../../../services/utils/utils.service';
 import {
   hasChanges,
   notFirstChanges,
-} from '../../services/utils/functional-utils';
-import { TreeListValue } from '../tree-list/tree-list.interface';
-import { TreeListInputOutput } from '../tree-list/tree-list-IO.abstract';
-import { ListPanelService } from '../list-panel.service';
+} from '../../../services/utils/functional-utils';
+import { TreeListValue } from '../tree-list.interface';
+import { TreeListInputOutput } from '../tree-list-IO.abstract';
+import { ListPanelService } from '../../list-panel.service';
 import { TreeListPanelIO } from './tree-list-panel.interface';
 
 @Component({

@@ -11,7 +11,7 @@ import {
   OnChanges,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { BaseFormElement } from '../../form-elements/base-form-element';
+import { BaseFormElement } from '../../../form-elements/base-form-element';
 import {
   TreeListOption,
   itemID,
@@ -20,19 +20,19 @@ import {
   TreeListKeyMap,
   TreeListValue,
   TreeListItemMap,
-} from '../tree-list/tree-list.interface';
-import { SelectType } from '../list.enum';
-import { ListFooterActions } from '../list.interface';
-import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+} from '../tree-list.interface';
+import { SelectType } from '../../list.enum';
+import { ListFooterActions } from '../../list.interface';
+import { TruncateTooltipType } from '../../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { TreeListPanelComponent } from '../tree-list-panel/tree-list-panel.component';
-import { BTL_KEYMAP_DEF } from '../tree-list/tree-list.const';
+import { BTL_KEYMAP_DEF } from '../tree-list.const';
 import {
   BELOW_START,
   ABOVE_START,
   BELOW_END,
   ABOVE_END,
-} from '../../popups/panel/panel-position-service/panel-position.const';
+} from '../../../popups/panel/panel-position-service/panel-position.const';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import {
   hasChanges,
@@ -40,20 +40,20 @@ import {
   isNotEmptyMap,
   notFirstChanges,
   applyChanges,
-} from '../../services/utils/functional-utils';
-import { TooltipClass } from '../../popups/tooltip/tooltip.enum';
+} from '../../../services/utils/functional-utils';
+import { TooltipClass } from '../../../popups/tooltip/tooltip.enum';
 import { TreeListPanelIO } from '../tree-list-panel/tree-list-panel.interface';
-import { TreeListModelService } from '../tree-list/services/tree-list-model.service';
+import { TreeListModelService } from '../services/tree-list-model.service';
 import {
   selectValueOrFail,
   SelectValueMultiOrSingle,
-} from '../../services/utils/transformers';
+} from '../../../services/utils/transformers';
 
 @Component({
   selector: 'b-tree-select',
   templateUrl: './tree-select.component.html',
   styleUrls: [
-    '../../form-elements/input/input.component.scss',
+    '../../../form-elements/input/input.component.scss',
     './tree-select.component.scss',
   ],
   providers: [

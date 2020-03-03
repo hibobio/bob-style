@@ -17,7 +17,6 @@ import {
   objectRemoveKeys,
   stringify,
   isBoolean,
-  isNotEmptyMap,
   asArray,
 } from '../../../services/utils/functional-utils';
 import { BTL_ROOT_ID, BTL_KEYMAP_DEF } from '../tree-list.const';

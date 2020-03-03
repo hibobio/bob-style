@@ -1,13 +1,13 @@
 import { storiesOf } from '@storybook/angular';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType } from '../../../consts';
 import { withKnobs } from '@storybook/addon-knobs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { TreeListPanelModule } from './tree-list-panel.module';
-import { ButtonsModule } from '../../buttons/buttons.module';
-import { Icons } from '../../icons/icons.enum';
-import { ButtonType } from '../../buttons/buttons.enum';
-import { TreeListStoriesCommonProps } from '../tree-list/tree-list.stories.common';
+import { ButtonsModule } from '../../../buttons/buttons.module';
+import { Icons } from '../../../icons/icons.enum';
+import { ButtonType } from '../../../buttons/buttons.enum';
+import { TreeListStoriesCommonProps } from '../tree-list.stories.common';
 import { action } from '@storybook/addon-actions';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(

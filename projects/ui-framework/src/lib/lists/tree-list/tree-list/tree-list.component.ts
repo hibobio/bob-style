@@ -7,7 +7,7 @@ import {
   SimpleChanges,
   Input,
 } from '@angular/core';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import {
   joinArrays,
   stringify,
@@ -18,18 +18,18 @@ import {
   notFirstChanges,
   isNotEmptyMap,
   isEmptyArray,
-} from '../../services/utils/functional-utils';
-import { selectValueOrFail } from '../../services/utils/transformers';
-import { SelectType } from '../list.enum';
+} from '../../../services/utils/functional-utils';
+import { selectValueOrFail } from '../../../services/utils/transformers';
+import { SelectType } from '../../list.enum';
 import {
   itemID,
   TreeListItem,
   TreeListOption,
   TreeListItemMap,
-} from './tree-list.interface';
-import { TreeListModelService } from './services/tree-list-model.service';
-import { TreeListControlsService } from './services/tree-list-controls.service';
-import { TreeListViewService } from './services/tree-list-view.service';
+} from '../tree-list.interface';
+import { TreeListModelService } from '../services/tree-list-model.service';
+import { TreeListControlsService } from '../services/tree-list-controls.service';
+import { TreeListViewService } from '../services/tree-list-view.service';
 import { BaseTreeListElement } from './tree-list.abstract';
 
 @Component({

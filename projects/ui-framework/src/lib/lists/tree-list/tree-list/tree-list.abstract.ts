@@ -11,7 +11,7 @@ import {
   OnChanges,
   Directive,
 } from '@angular/core';
-import { SearchComponent } from '../../search/search/search.component';
+import { SearchComponent } from '../../../search/search/search.component';
 import {
   cloneDeepSimpleObject,
   objectHasTruthyValue,
@@ -22,17 +22,17 @@ import {
   applyChanges,
   hasChanges,
   isNotEmptyArray,
-} from '../../services/utils/functional-utils';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { SelectType } from '../list.enum';
-import { ListFooterActionsState } from '../list.interface';
-import { itemID, TreeListItemMap, TreeListItem } from './tree-list.interface';
-import { TreeListInputOutput } from './tree-list-IO.abstract';
-import { TreeListViewService } from './services/tree-list-view.service';
-import { TreeListModelService } from './services/tree-list-model.service';
-import { TreeListControlsService } from './services/tree-list-controls.service';
-import { LIST_ACTIONS_STATE_DEF } from '../list-footer/list-footer.const';
-import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from './tree-list.const';
+} from '../../../services/utils/functional-utils';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import { SelectType } from '../../list.enum';
+import { ListFooterActionsState } from '../../list.interface';
+import { itemID, TreeListItemMap, TreeListItem } from '../tree-list.interface';
+import { TreeListInputOutput } from '../tree-list-IO.abstract';
+import { TreeListViewService } from '../services/tree-list-view.service';
+import { TreeListModelService } from '../services/tree-list-model.service';
+import { TreeListControlsService } from '../services/tree-list-controls.service';
+import { LIST_ACTIONS_STATE_DEF } from '../../list-footer/list-footer.const';
+import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from '../tree-list.const';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
