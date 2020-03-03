@@ -76,10 +76,7 @@ $bhl-max-depth: 5;
   padding: 0 $bhl-item-padding;
   position: relative;
   background-color: white;
-
-  // &:last-child {
-  //   margin-bottom: 100vh;
-  // }
+  will-change: box-shadow, z-index;
 }
 
 :host ::ng-deep {
@@ -264,22 +261,34 @@ $bhl-max-depth: 5;
 
 .bhl-item {
   &:hover,
-  &:focus,
-  &.focus {
+  &:focus {
     background-color: $grey-100;
   }
 }
 
 :host::ng-deep {
+  [aria-readonly='true'] .bhl-item,
+  [aria-disabled='true'] .bhl-item,
+  .bhl-item.disabled {
+    &:hover {
+      background: none;
+    }
+  }
+
+  [aria-readonly='true'] .bhl-item-option,
+  [aria-disabled='true'].bhl-item-option,
+  .bhl-item-option.disabled {
+    pointer-events: none;
+  }
+
   [aria-readonly='true'],
   [aria-disabled='true'],
-  .disabled {
+  .bhl-item.disabled {
     .bhl-item-checkbox,
-    .bhl-item-checkbox:before,
-    .bhl-item-name,
-    .bhl-selected-count {
+    .bhl-item-checkbox:before {
       pointer-events: none;
       cursor: default;
+      box-shadow: none;
     }
   }
   [aria-disabled='true'],
@@ -297,14 +306,6 @@ $bhl-max-depth: 5;
     .bhl-item.selected {
       background-color: $color-option-selected;
       font-weight: $font-weight-bold-body;
-    }
-  }
-  [aria-readonly='true'] {
-    .bhl-item {
-      &:hover,
-      &.focus {
-        background-color: none;
-      }
     }
   }
 }

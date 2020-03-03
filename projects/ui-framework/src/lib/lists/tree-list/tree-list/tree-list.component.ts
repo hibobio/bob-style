@@ -125,7 +125,6 @@ export class TreeListComponent extends BaseTreeListElement {
 
   protected updateListViewModel(expand = false): void {
     console.time('===> updateListViewModel');
-
     this.listViewModel = this.modelSrvc.getListViewModel(
       this.list,
       this.itemsMap,
@@ -135,7 +134,6 @@ export class TreeListComponent extends BaseTreeListElement {
         keyMap: this.keyMap,
       }
     );
-
     console.timeEnd('===> updateListViewModel');
 
     console.time('updateListViewModel detectChanges');
@@ -177,8 +175,6 @@ export class TreeListComponent extends BaseTreeListElement {
     item.selected = newSelectedValue;
 
     if (this.type === SelectType.single) {
-      item.selected = newSelectedValue;
-
       if (item.selected) {
         if (this.value.length && this.value[0] !== item.id) {
           this.itemsMap.get(this.value[0]).selected = false;
@@ -233,12 +229,12 @@ export class TreeListComponent extends BaseTreeListElement {
     //
     //
     //
+    let viewModelWasUpdated = false;
     let affectedIDs: itemID[] = this.value || [];
     this.value = selectValueOrFail(newValue);
     if (this.value && this.type === SelectType.single) {
       this.value = this.value.slice(0, 1);
     }
-    let viewModelWasUpdated = false;
     console.log('<=== applyValue:', this.value);
 
     if (!this.itemsMap.size) {
@@ -269,21 +265,21 @@ export class TreeListComponent extends BaseTreeListElement {
     });
 
     if (firstSelectedItem) {
-      this.viewSrvc.expandAllSelected(this.value, this.itemsMap);
+      this.viewSrvc.expandTillItemsByID(this.value, this.itemsMap);
+
       this.updateListViewModel();
       viewModelWasUpdated = true;
 
-      this.viewSrvc.scrollToItem(
-        firstSelectedItem,
-        this.listViewModel,
-        this.listElement.nativeElement,
-        this.maxHeightItems
-      );
+      this.viewSrvc.scrollToItem({
+        item: firstSelectedItem,
+        listElement: this.listElement.nativeElement,
+        listViewModel: this.listViewModel,
+        maxHeightItems: this.maxHeightItems,
+      });
     } else {
       console.time('applyValue, toggleCollapseAll');
-      this.toggleCollapseAll(this.startCollapsed); // TODO: maybe Update false?
+      this.toggleCollapseAll(this.startCollapsed, false);
       this.listElement.nativeElement.scrollTop = 0;
-      viewModelWasUpdated = true;
       console.timeEnd('applyValue, toggleCollapseAll');
     }
 
@@ -295,7 +291,6 @@ export class TreeListComponent extends BaseTreeListElement {
     this.listActionsState.apply.disabled = false;
 
     if (isEmptyArray(this.value)) {
-      console.log('List EMIT: empty value');
       this.changed.emit({
         selectedIDs: [],
         selectedValues: [],
@@ -315,7 +310,7 @@ export class TreeListComponent extends BaseTreeListElement {
       selectedValues:
         this.type === SelectType.single
           ? [this.itemsMap.get(this.value[0]).value]
-          : this.value.map(id => this.itemsMap.get(id).value),
+          : this.modelSrvc.getDisplayValuesFromValue(this.value, this.itemsMap),
     });
   }
 }

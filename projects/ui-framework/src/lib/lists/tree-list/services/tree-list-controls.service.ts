@@ -26,7 +26,7 @@ interface TreeListKeydownConfig {
 
 @Injectable()
 export class TreeListControlsService {
-  constructor(private DOM: DOMhelpers) {}
+  constructor(private DOM: DOMhelpers, private viewSrvc: TreeListViewService) {}
 
   public onListClick(event: MouseEvent, config: TreeListClickConfig): void {
     const {
@@ -119,12 +119,13 @@ export class TreeListControlsService {
     ) {
       const nextItemElement = this.DOM.getNextSibling(itemElement);
       if (nextItemElement) {
-        TreeListViewService.prototype.scrollToItem(
-          itemsMap.get(listViewModel[index + 1]),
+        this.viewSrvc.scrollToItem({
+          item: itemsMap.get(listViewModel[index + 1]),
+          itemElement: nextItemElement,
+          itemsMap,
           listViewModel,
-          itemElement.closest('.bhl-list'),
-          8
-        );
+          maxHeightItems: 8,
+        });
         nextItemElement.focus();
       }
       return;
@@ -138,12 +139,13 @@ export class TreeListControlsService {
     ) {
       const prevItemElement = this.DOM.getPrevSibling(itemElement);
       if (prevItemElement) {
-        TreeListViewService.prototype.scrollToItem(
-          itemsMap.get(listViewModel[index - 1]),
+        this.viewSrvc.scrollToItem({
+          item: itemsMap.get(listViewModel[index - 1]),
+          itemElement: prevItemElement,
+          itemsMap,
           listViewModel,
-          itemElement.closest('.bhl-list'),
-          8
-        );
+          maxHeightItems: 8,
+        });
         prevItemElement.focus();
       }
       return;

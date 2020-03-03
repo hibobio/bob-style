@@ -413,16 +413,31 @@ export class TreeListModelService {
     });
   }
 
-  public setPropToTree(
-    rootItem: TreeListItem,
+  public setPropToTreeDown(
+    topItem: TreeListItem,
     set: Partial<TreeListItem> = {},
     itemsMap: TreeListItemMap
   ): void {
-    Object.assign(rootItem, set);
-    if (rootItem.childrenCount) {
-      rootItem.childrenIDs.forEach(id => {
+    Object.assign(topItem, set);
+    if (topItem.childrenCount) {
+      topItem.childrenIDs.forEach(id => {
         const child = itemsMap.get(id);
-        this.setPropToTree(child, set, itemsMap);
+        this.setPropToTreeDown(child, set, itemsMap);
+      });
+    }
+  }
+
+  public setPropToTreeUp(
+    deepItem: TreeListItem,
+    set: Partial<TreeListItem> = {},
+    itemsMap: TreeListItemMap
+  ): void {
+    Object.assign(deepItem, set);
+
+    if (deepItem.parentCount > 1) {
+      deepItem.parentIDs.forEach(id => {
+        const parent = itemsMap.get(id);
+        this.setPropToTreeUp(parent, set, itemsMap);
       });
     }
   }

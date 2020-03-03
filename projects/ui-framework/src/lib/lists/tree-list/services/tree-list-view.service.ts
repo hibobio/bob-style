@@ -1,56 +1,75 @@
 import { Injectable } from '@angular/core';
 import { TreeListItem, itemID, TreeListItemMap } from '../tree-list.interface';
-import { isEmptyArray } from '../../../services/utils/functional-utils';
+import {
+  isEmptyArray,
+  isEmptyMap,
+} from '../../../services/utils/functional-utils';
 import { LIST_EL_HEIGHT } from '../../list.consts';
-
-// interface TreeListScrollToItemConfig {
-//   listViewModel: itemID[];
-//   listElement: HTMLElement;
-//   itemsMap: TreeListItemMap;
-//   updateListViewModel: (expand: boolean) => void;
-// }
+import { TreeListModelService } from './tree-list-model.service';
 
 @Injectable()
 export class TreeListViewService {
-  //
-  //
-  public expandAllSelected(
-    selectedIDs: itemID[],
-    itemsMap: TreeListItemMap
-  ): void {
-    selectedIDs.forEach(id => {
-      const item = itemsMap.get(id);
+  constructor(private modelSrvc: TreeListModelService) {}
 
-      if (item.parentCount > 1) {
-        item.parentIDs.forEach(groupID => {
-          itemsMap.get(groupID).collapsed = false;
-        });
-      }
+  public expandTillItemsByID(IDs: itemID[] = [], itemsMap: TreeListItemMap) {
+    IDs.forEach(id => {
+      const item = itemsMap.get(id);
+      this.modelSrvc.setPropToTreeUp(item, { collapsed: false }, itemsMap);
     });
   }
 
-  public scrollToItem(
-    item: TreeListItem,
-    listViewModel: itemID[],
-    listElement: HTMLElement,
-    maxHeightItems: number
-  ): void {
-    if (isEmptyArray(listViewModel)) {
+  public scrollToItem(config: {
+    item?: TreeListItem;
+    itemElement?: HTMLElement;
+    listElement?: HTMLElement;
+    indexInView?: number;
+    listViewModel?: itemID[];
+    itemsMap?: TreeListItemMap;
+    maxHeightItems: number;
+  }): void {
+    let { item, itemElement, listElement, indexInView } = config;
+    const { listViewModel, itemsMap, maxHeightItems } = config;
+
+    if (
+      (!itemElement &&
+        (!item || !listElement || isEmptyArray(listViewModel))) ||
+      (itemElement && (isEmptyMap(itemsMap) || isEmptyArray(listViewModel)))
+    ) {
       return;
     }
 
-    const indexInView = listViewModel.findIndex(id => id === item.id);
+    if (itemElement && !item) {
+      const index = parseInt(itemElement.getAttribute('data-index'), 10);
+      item = itemsMap.get(listViewModel[index]);
 
-    if (indexInView === -1) {
-      console.error(
-        `[TreeListViewService.scrollToItem]:
+      if (!item) {
+        console.error(
+          `[TreeListViewService.scrollToItem]:
+        Data for item ${itemElement.getAttribute('id')} was not found.`
+        );
+        return;
+      }
+    }
+
+    if (itemElement && !listElement) {
+      listElement = itemElement.closest('.bhl-list');
+    }
+
+    if (!itemElement) {
+      indexInView = listViewModel.findIndex(id => id === item.id);
+
+      if (indexInView === -1) {
+        console.error(
+          `[TreeListViewService.scrollToItem]:
         Item ${item.id} was not found in view.`
-      );
-      return;
+        );
+        return;
+      }
+
+      itemElement = listElement.children[indexInView] as HTMLElement;
     }
 
     setTimeout(() => {
-      const itemElement = listElement.children[indexInView] as HTMLElement;
       const listElScrollTopMax =
         itemElement.offsetTop - (item.parentCount - 1) * LIST_EL_HEIGHT;
       const listElScrollTopMin =
@@ -66,11 +85,4 @@ export class TreeListViewService {
       }
     }, 0);
   }
-
-  // private isGroupSelected(
-  //   item: TreeListItem,
-  //   itemsMap: TreeListItemMap
-  // ): boolean {
-  //   return item.parentIDs.some(groupID => itemsMap.get(groupID).selected);
-  // }
 }

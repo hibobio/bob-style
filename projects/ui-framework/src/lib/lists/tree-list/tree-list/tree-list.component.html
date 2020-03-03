@@ -16,7 +16,7 @@
         'next-is-group': item.nextInViewIsGroup,
         'all-options-hidden': item.allOptionsHidden
       }"
-      [attr.tabIndex]="!readonly && !item.disabled ? 0 : null"
+      tabindex="0"
       [attr.data-level]="item.parentCount || 1">
 
     <span *ngIf="item.childrenIDs"
