@@ -30,6 +30,13 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
         border-right: none;
       }
     }
+
+    &.tertiary {
+      .ag-root {
+        border-radius: 0;
+        border: none;
+      }
+    }
   }
 
   .ag-root-wrapper-body.ag-layout-normal {

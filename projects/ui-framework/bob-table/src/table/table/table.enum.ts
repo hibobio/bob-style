@@ -1,6 +1,7 @@
 export enum TableType {
   Primary = 'primary',
   Secondary = 'secondary',
+  Tertiary = 'tertiary'
 }
 
 export enum SortDirections {
