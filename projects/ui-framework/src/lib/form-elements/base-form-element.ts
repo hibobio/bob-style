@@ -118,7 +118,9 @@ export abstract class BaseFormElement
       this.value = cloneValue(this.baseValue);
     }
 
+    console.time('write value detectChanges');
     this.cd.detectChanges();
+    console.timeEnd('write value detectChanges');
 
     if (
       forceElementValue === true &&

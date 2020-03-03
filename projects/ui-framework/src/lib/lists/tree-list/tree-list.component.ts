@@ -167,11 +167,7 @@ export class TreeListComponent extends BaseTreeListElement {
     this.updateListViewModel();
   }
 
-  protected toggleItemSelect(
-    item: TreeListItem,
-    force: boolean = null,
-    set: Partial<TreeListItem> = {}
-  ): void {
+  protected toggleItemSelect(item: TreeListItem, force: boolean = null): void {
     const newSelectedValue = isBoolean(force) ? force : !item.selected;
     if (newSelectedValue === item.selected) {
       return;
@@ -180,59 +176,56 @@ export class TreeListComponent extends BaseTreeListElement {
 
     if (this.type === SelectType.single) {
       if (item.selected) {
-        console.log('single select');
-
-        if (this.value && this.value[0] && this.value[0] !== item.id) {
-          console.log('deselecting', this.value[0]);
+        if (this.value.length && this.value[0] !== item.id) {
           this.itemsMap.get(this.value[0]).selected = false;
         }
         this.value = [item.id];
       } else {
         this.value = [];
       }
-
-      this.emitChange();
+      console.log('set value to', this.value);
     }
 
-    // this.cd.detectChanges();
+    if (this.type === SelectType.multi) {
+      // multi / group
 
-    if (this.type !== SelectType.multi) {
-      return;
-    }
+      const operation = (value: boolean) => (
+        acc: itemID[] = [],
+        id: itemID
+      ) => {
+        const child = this.itemsMap.get(id);
 
-    item.selected = newSelectedValue;
+        if (child.selected && !value) {
+          acc.push(id);
+          child.selected = false;
+        }
 
-    // if group
+        child.parentSelected = !value;
 
-    if (item.childrenCount) {
-      if (item.selected && item.selectedCount) {
-        item.selectedIDs.forEach(id => {
-          this.toggleItemSelect(this.itemsMap.get(id), false, {
-            parentSelected: true,
-          });
+        if (child.childrenCount) {
+          return child.childrenIDs.reduce(operation(value), acc);
+        }
+
+        return acc;
+      };
+
+      if (item.childrenCount) {
+        const deselectedIDs = item.childrenIDs.reduce(
+          operation(!item.selected),
+          []
+        );
+
+        console.log('deselectedIDs', deselectedIDs);
+
+        this.value = this.value.filter(id => !deselectedIDs.includes(id));
+
+        deselectedIDs.forEach((id: itemID) => {
+          const itm = this.itemsMap.get(id);
+          this.modelSrvc.updateItemParentsSelectedCount(itm, this.itemsMap);
         });
       }
-    }
 
-    // update parent counters
-
-    item.parentIDs.forEach(groupID => {
-      const parent = this.itemsMap.get(groupID);
-      parent.selectedCount = Math.max(
-        0,
-        (parent.selectedCount || 0) + (item.selected ? 1 : -1)
-      );
-
-      if (item.selected) {
-        parent.selectedIDs.push(item.id);
-      } else {
-        parent.selectedIDs = parent.selectedIDs.filter(id => id !== item.id);
-      }
-    });
-
-    // if option
-
-    if (!item.childrenCount) {
+      // update value
       if (item.selected) {
         this.value.push(item.id);
       } else {
@@ -240,16 +233,8 @@ export class TreeListComponent extends BaseTreeListElement {
       }
     }
 
-    // item.selected = !item.selected;
-
-    // for (const groupID of item.parentIDs) {
-    //   const parent = this.itemsMap.get(groupID);
-    //   parent.selectedCount = parent.selectedCount + (item.selected ? 1 : -1);
-
-    //   parent.selected = parent.selectedCount === parent.childrenCount;
-
-    //   parent.indeterminate = !parent.selected && !!parent.selectedCount;
-    // }
+    // multi / group / option - update parent counters
+    this.modelSrvc.updateItemParentsSelectedCount(item, this.itemsMap);
 
     this.updateActionButtonsState();
     this.cd.detectChanges();
@@ -308,7 +293,7 @@ export class TreeListComponent extends BaseTreeListElement {
       );
     } else {
       console.time('applyValue, toggleCollapseAll');
-      this.toggleCollapseAll(this.startCollapsed);
+      this.toggleCollapseAll(this.startCollapsed); // TODO: maybe Update false?
       this.listElement.nativeElement.scrollTop = 0;
       viewModelWasUpdated = true;
       console.timeEnd('applyValue, toggleCollapseAll');

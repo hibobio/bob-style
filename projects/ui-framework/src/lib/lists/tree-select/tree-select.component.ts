@@ -44,7 +44,10 @@ import {
 import { TooltipClass } from '../../popups/tooltip/tooltip.enum';
 import { TreeListPanelIO } from '../tree-list-panel/tree-list-panel.interface';
 import { TreeListModelService } from '../tree-list/services/tree-list-model.service';
-import { selectValueOrFail } from '../../services/utils/transformers';
+import {
+  selectValueOrFail,
+  SelectValueMultiOrSingle,
+} from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-tree-select',
@@ -229,9 +232,12 @@ export class TreeSelectComponent extends BaseFormElement
   private emitChange(value: TreeListValue): void {
     console.log('====> Select emitChange', value);
 
-    this.transmitValue(value.selectedIDs, {
+    this.transmitValue(SelectValueMultiOrSingle(this.type, value.selectedIDs), {
       addToEventObj: {
-        selectedValues: value.selectedValues,
+        selectedValues: SelectValueMultiOrSingle(
+          this.type,
+          value.selectedValues
+        ),
       },
       eventObjValueKey: 'selectedIDs',
       eventObjOmitEventType: true,

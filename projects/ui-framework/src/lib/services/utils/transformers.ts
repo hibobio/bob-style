@@ -13,12 +13,16 @@ import {
   isString,
   parseToNumber,
   stringify,
+  isEmptyArray,
+  pass,
 } from './functional-utils';
 
 import { format, parseISO } from 'date-fns';
 import { InputTypes } from '../../form-elements/input/input.enum';
 import { SERVER_DATE_FORMAT } from '../../consts';
 import { GenericObject } from '../../types';
+import { SelectType } from '../../lists/list.enum';
+import { itemID } from '../../lists/tree-list/tree-list.interface';
 
 // -------------------------------
 // Transformers
@@ -108,6 +112,19 @@ export const valueAsNumber = (
     console.warn(`Value (${stringify(value)}) is not parseable to number.`);
   }
   return parsed === parsed ? parsed : def;
+};
+
+export const arrayToFirstItemOrNull = <T>(value: T[]): T => {
+  return isEmptyArray(value) ? null : !Array.isArray(value) ? value : value[0];
+};
+
+export const SelectValueMultiOrSingle = (
+  type: SelectType,
+  value: itemID[]
+): itemID | itemID[] => {
+  return type === SelectType.single
+    ? arrayToFirstItemOrNull<itemID>(value)
+    : value;
 };
 
 // -------------------------------

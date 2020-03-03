@@ -307,7 +307,7 @@ export const padWith0 = (number: string | number, digits = 2): string => {
 
 export type Func<A = any, B = A> = (val: A, ...args: any[]) => B;
 
-export const pass = (a: any): any => a;
+export const pass = <T = any>(a: T): T => a;
 
 export const chainCall = <A = any>(
   funcs: Func<A>[],

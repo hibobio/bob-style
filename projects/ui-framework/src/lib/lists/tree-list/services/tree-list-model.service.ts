@@ -370,6 +370,39 @@ export class TreeListModelService {
     );
   }
 
+  public updateItemParentsSelectedCount(
+    item: TreeListItem,
+    itemsMap: TreeListItemMap
+  ): void {
+    (item.parentIDs || []).forEach(groupID => {
+      const parent = itemsMap.get(groupID);
+      parent.selectedCount = Math.max(
+        0,
+        (parent.selectedCount || 0) + (item.selected ? 1 : -1)
+      );
+
+      if (item.selected) {
+        parent.selectedIDs.push(item.id);
+      } else {
+        parent.selectedIDs = parent.selectedIDs.filter(id => id !== item.id);
+      }
+    });
+  }
+
+  public setPropToTree(
+    rootItem: TreeListItem,
+    set: Partial<TreeListItem> = {},
+    itemsMap: TreeListItemMap
+  ): void {
+    Object.assign(rootItem, set);
+    if (rootItem.childrenCount) {
+      rootItem.childrenIDs.forEach(id => {
+        const child = itemsMap.get(id);
+        this.setPropToTree(child, set, itemsMap);
+      });
+    }
+  }
+
   private updateMap<T = TreeListItem>(
     itemsMap: Map<itemID, T>,
     key: itemID,
