@@ -86,7 +86,6 @@ $lightbox-padding-mob: times8(3);
   @include flex-align;
   min-width: 320px;
   min-height: 320px;
-  padding: 20px;
   border-radius: $border-radius;
   background-color: white;
 }

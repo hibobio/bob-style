@@ -66,6 +66,7 @@ export class DateInputDirective implements OnChanges, OnInit {
       changes,
       {
         dateFormat: DISPLAY_DATE_FORMAT_DEF,
+        date: null,
       },
       [],
       true
@@ -77,7 +78,7 @@ export class DateInputDirective implements OnChanges, OnInit {
       this.process(!isNullOrUndefined(this.date), true);
     }
 
-    if (hasChanges(changes, ['date']) && changes.date.currentValue !== '') {
+    if (hasChanges(changes, ['date'])) {
       this.process(true);
     }
 

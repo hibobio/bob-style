@@ -74,7 +74,7 @@ $side-menu-selected-border: 4px;
   }
 
   &.disabled {
-    background-color: none;
+    background: none;
     @include disabled-state;
   }
 }

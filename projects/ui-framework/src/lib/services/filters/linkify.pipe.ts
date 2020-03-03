@@ -12,7 +12,7 @@ export class LinkifyPipe implements PipeTransform {
 
     const mailRegex = /((?:[a-zA-Z0-9\-_.])+@[a-zA-Z_]+?(?:\.[a-zA-Z]{2,6})+)(?![^<>]*>|[^"]*?<\/a)/gim;
 
-    const linksWithoutProtocolRegex = /(href=")(?!(ftp|https?|mailto|tel))/gim;
+    const linksWithoutProtocolRegex = /(href=")(?!(\/|ftp|https?|mailto|tel))/gim;
 
     // tslint:disable-next-line: max-line-length
     const linkWithTooLongTextRegex = /(>(?:\s+)?)(?:(?:(?:(?:ftp|https?):\/\/)(www\.)?)|(www\.))?([^\s]{15})([^\s]{10,256})([^\s]{6}(?:\s+)?<\/a>)/gim;

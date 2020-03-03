@@ -2,19 +2,18 @@
 
 :host {
   position: relative;
-  .b-info-strip {
-    padding: 10px;
-    background-color: $grey-100;
-    border-radius: 4px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-align: left;
-    .icon {
-      margin-right: 10px;
-    }
-    p {
-      margin: 0;
-    }
-  }
+  text-align: left;
+  padding: 10px;
+  background-color: rgba($grey-800, 0.04);
+  border-radius: $border-radius;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  margin-right: 10px;
+}
+
+p {
+  margin: 0;
 }
