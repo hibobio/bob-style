@@ -117,7 +117,7 @@ export {
 // InfoStrip Module
 export { InfoStripModule } from './lib/indicators/info-strip/info-strip.module';
 export { InfoStripComponent } from './lib/indicators/info-strip/info-strip.component';
-export { InfoStripIconType } from './lib/indicators/info-strip/info-strip.enum';
+export * from './lib/indicators/info-strip/info-strip.enum';
 // Link Module
 export { LinkModule } from './lib/indicators/link/link.module';
 export { LinkComponent } from './lib/indicators/link/link.component';

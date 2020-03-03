@@ -77,8 +77,12 @@ export class DateInputDirective implements OnChanges, OnInit {
       this.process(!isNullOrUndefined(this.date), true);
     }
 
-    if (hasChanges(changes, ['date']) && changes.date.currentValue !== '') {
-      this.process(true);
+    if (hasChanges(changes, ['date'])) {
+      if (changes.date.currentValue) {
+        this.process(true);
+      } else if (this.input) {
+        this.input.value = '';
+      }
     }
 
     if (hasChanges(changes, ['min', 'max'], true)) {
