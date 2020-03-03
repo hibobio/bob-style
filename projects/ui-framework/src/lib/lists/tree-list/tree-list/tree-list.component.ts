@@ -175,6 +175,8 @@ export class TreeListComponent extends BaseTreeListElement {
     item.selected = newSelectedValue;
 
     if (this.type === SelectType.single) {
+      item.selected = newSelectedValue;
+
       if (item.selected) {
         if (this.value.length && this.value[0] !== item.id) {
           this.itemsMap.get(this.value[0]).selected = false;
