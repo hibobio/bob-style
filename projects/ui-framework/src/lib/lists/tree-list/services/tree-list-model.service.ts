@@ -370,6 +370,31 @@ export class TreeListModelService {
     );
   }
 
+  public childrenToggleSelectReducer(
+    parentSelected: boolean,
+    itemsMap: TreeListItemMap
+  ) {
+    return (acc: itemID[] = [], id: itemID) => {
+      const item = itemsMap.get(id);
+
+      if (item.selected && parentSelected) {
+        acc.push(id);
+        item.selected = false;
+      }
+
+      item.parentSelected = parentSelected;
+
+      if (item.childrenCount) {
+        return item.childrenIDs.reduce(
+          this.childrenToggleSelectReducer(parentSelected, itemsMap),
+          acc
+        );
+      }
+
+      return acc;
+    };
+  }
+
   public updateItemParentsSelectedCount(
     item: TreeListItem,
     itemsMap: TreeListItemMap
@@ -420,18 +445,52 @@ export class TreeListModelService {
 
   public getDisplayValuesFromValue(
     value: TreeListValue | itemID[],
-    itemsMap: TreeListItemMap
+    itemsMap: TreeListItemMap,
+    topLevelGroups = false
   ): string[] {
-    return value && (value as TreeListValue).selectedValues
-      ? (value as TreeListValue).selectedValues
-      : value && isNotEmptyMap(itemsMap)
-      ? asArray(value as itemID[])
-          .map(id => {
-            const item = itemsMap.get(id);
-            return item ? item.value : null;
-          })
-          .filter(Boolean)
-      : [];
+    if (!value) {
+      return [];
+    }
+
+    if (!topLevelGroups) {
+      if ((value as TreeListValue).selectedValues) {
+        return (value as TreeListValue).selectedValues;
+      }
+
+      return asArray(value as itemID[]).reduce((acc, id) => {
+        const item = itemsMap.get(id);
+        if (item) {
+          acc.push(item.value);
+        }
+        return acc;
+      }, []);
+    }
+
+    if (topLevelGroups) {
+      const IDs: itemID[] = (value as TreeListValue).selectedIDs
+        ? (value as TreeListValue).selectedIDs
+        : asArray(value as itemID[]);
+
+      return Array.from(
+        IDs.reduce((acc, id) => {
+          const item = itemsMap.get(id);
+
+          if (item) {
+            const topGroup =
+              isNotEmptyArray(item.parentIDs, 1) &&
+              itemsMap.get(item.parentIDs[1]);
+
+            if (topGroup) {
+              acc.add(`${topGroup.value} (${topGroup.selectedCount})`);
+            } else {
+              acc.add(item.value);
+            }
+          }
+
+          return acc;
+        }, new Set() as Set<string>)
+      );
+    }
   }
 
   private getItemId(item: TreeListOption, keyMap: TreeListKeyMap): itemID {

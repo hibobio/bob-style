@@ -208,14 +208,17 @@ export class TreeSelectComponent extends BaseFormElement
   }
 
   private setDisplayValue(value: TreeListValue | itemID[] = null): void {
-    const selectedValues = this.modelSrvc.getDisplayValuesFromValue(
+    console.time('select setDisplayValue');
+    const displayValues = this.modelSrvc.getDisplayValuesFromValue(
       value,
-      this.itemsMap
+      this.itemsMap,
+      this.type === SelectType.multi
     );
     this.displayValue =
       (this.type === SelectType.single
-        ? selectedValues[0]
-        : selectedValues.join(',\n')) || '';
+        ? displayValues[0]
+        : displayValues.join(',\n')) || '';
+    console.timeEnd('select setDisplayValue');
   }
 
   public writeValue(value: itemID[]) {
