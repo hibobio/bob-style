@@ -66,6 +66,7 @@ export class DateInputDirective implements OnChanges, OnInit {
       changes,
       {
         dateFormat: DISPLAY_DATE_FORMAT_DEF,
+        date: null,
       },
       [],
       true
@@ -78,11 +79,7 @@ export class DateInputDirective implements OnChanges, OnInit {
     }
 
     if (hasChanges(changes, ['date'])) {
-      if (changes.date.currentValue) {
-        this.process(true);
-      } else if (this.input) {
-        this.input.value = '';
-      }
+      this.process(true);
     }
 
     if (hasChanges(changes, ['min', 'max'], true)) {
@@ -129,11 +126,14 @@ export class DateInputDirective implements OnChanges, OnInit {
       );
     }
 
+    console.log('processed 1', parsed.date);
+
     if (!this.dateConformsMinMax(parsed.date)) {
       parsed.valid = false;
       parsed.value = null;
       parsed.date = null;
     }
+    console.log('processed 2', parsed.date);
 
     this.lastDate = this.date = parsed.date;
 

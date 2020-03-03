@@ -594,7 +594,7 @@ export const applyChanges = (
   Object.keys(changes).forEach((changeKey: string) => {
     if (!skip.includes(changeKey)) {
       target[changeKey] =
-        defaults[changeKey] &&
+        typeof defaults[changeKey] !== 'undefined' &&
         ((!discardAllFalsey &&
           isNullOrUndefined(changes[changeKey].currentValue)) ||
           (discardAllFalsey && !falseyCheck(changes[changeKey].currentValue)))
