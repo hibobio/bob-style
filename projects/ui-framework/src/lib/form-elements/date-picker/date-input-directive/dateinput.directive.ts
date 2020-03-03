@@ -126,14 +126,11 @@ export class DateInputDirective implements OnChanges, OnInit {
       );
     }
 
-    console.log('processed 1', parsed.date);
-
     if (!this.dateConformsMinMax(parsed.date)) {
       parsed.valid = false;
       parsed.value = null;
       parsed.date = null;
     }
-    console.log('processed 2', parsed.date);
 
     this.lastDate = this.date = parsed.date;
 
