@@ -264,6 +264,8 @@ export class TreeListComponent extends BaseTreeListElement {
       if (!firstSelectedItem && item.selected) {
         firstSelectedItem = item;
       }
+
+      this.modelSrvc.updateItemParentsSelectedCount(item, this.itemsMap);
     });
 
     if (firstSelectedItem) {
