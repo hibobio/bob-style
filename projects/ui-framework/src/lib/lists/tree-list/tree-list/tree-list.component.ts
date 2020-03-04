@@ -59,14 +59,16 @@ export class TreeListComponent extends BaseTreeListElement {
   public list: TreeListOption[];
   @Input('value') set setValue(value: itemID[]) {}
   public value: itemID[];
-  @Input('itemsMap') set setItemsMap(map: TreeListItemMap) {
-    if (isNotEmptyMap(map)) {
-      this.itemsMap = map;
+  @Input('itemsMap') set setItemsMap(itmsMap: TreeListItemMap) {
+    if (isNotEmptyMap(itmsMap)) {
+      this.itemsMap = itmsMap;
       this.itemsMapFromAbove = true;
     }
   }
 
-  public $listViewModel = new BehaviorSubject<itemID[]>(undefined);
+  public $listViewModel: BehaviorSubject<itemID[]> = new BehaviorSubject<
+    itemID[]
+  >([]);
 
   public onNgChanges(changes: SimpleChanges): void {
     let viewModelWasUpdated = false;
@@ -143,10 +145,12 @@ export class TreeListComponent extends BaseTreeListElement {
     console.timeEnd('===> updateListViewModel');
 
     console.time('updateListViewModel detectChanges');
-    if (!this.cd['destroyed']) {
-      this.cd.detectChanges();
-      this.$listViewModel.next(this.listViewModel);
-    }
+
+    this.$listViewModel.next(this.listViewModel);
+
+    // if (!this.cd['destroyed']) {
+    //   this.cd.detectChanges();
+    // }
     console.timeEnd('updateListViewModel detectChanges');
   }
 

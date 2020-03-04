@@ -59,7 +59,7 @@
     (click)="onListClick($event)"
     (keydown)="onListKeyDown($event)">
 
-  <ng-container *ngFor="let itemID of listViewModel; let index = index; trackBy: trackBy">
+  <ng-container *ngFor="let itemID of $listViewModel | async; let index = index; trackBy: trackBy">
     <ng-container *ngTemplateOutlet="listItem; context: {
       index: index,
       item: itemsMap.get(itemID)
