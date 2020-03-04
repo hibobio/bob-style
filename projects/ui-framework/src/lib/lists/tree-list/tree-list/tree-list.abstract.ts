@@ -184,6 +184,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
       toggleItemSelect: this.toggleItemSelect.bind(this),
       readonly: this.readonly,
       disabled: this.disabled,
+      maxHeightItems: this.maxHeightItems,
     });
   }
 

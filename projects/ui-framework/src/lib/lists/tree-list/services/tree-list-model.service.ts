@@ -29,6 +29,11 @@ interface TreeListConverterConfig {
   onlyValue?: boolean;
 }
 
+export interface TreeListChildrenToggleSelectReducerResult {
+  IDs: itemID[];
+  items: TreeListItem[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -373,11 +378,15 @@ export class TreeListModelService {
     parentSelected: boolean,
     itemsMap: TreeListItemMap
   ) {
-    return (acc: itemID[] = [], id: itemID) => {
+    return (
+      acc: TreeListChildrenToggleSelectReducerResult = { IDs: [], items: [] },
+      id: itemID
+    ) => {
       const item = itemsMap.get(id);
 
       if (item.selected && parentSelected) {
-        acc.push(id);
+        acc.IDs.push(id);
+        acc.items.push(item);
         item.selected = false;
       }
 

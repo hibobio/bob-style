@@ -22,6 +22,7 @@ interface TreeListKeydownConfig {
   toggleItemSelect: (item: TreeListItem, index: number) => void;
   readonly: boolean;
   disabled: boolean;
+  maxHeightItems: number;
 }
 
 @Injectable()
@@ -83,6 +84,7 @@ export class TreeListControlsService {
       toggleItemSelect,
       readonly,
       disabled,
+      maxHeightItems,
     } = config;
 
     if (
@@ -122,9 +124,7 @@ export class TreeListControlsService {
         this.viewSrvc.scrollToItem({
           item: itemsMap.get(listViewModel[index + 1]),
           itemElement: nextItemElement,
-          itemsMap,
-          listViewModel,
-          maxHeightItems: 8,
+          maxHeightItems,
         });
         nextItemElement.focus();
       }
@@ -142,9 +142,7 @@ export class TreeListControlsService {
         this.viewSrvc.scrollToItem({
           item: itemsMap.get(listViewModel[index - 1]),
           itemElement: prevItemElement,
-          itemsMap,
-          listViewModel,
-          maxHeightItems: 8,
+          maxHeightItems,
         });
         prevItemElement.focus();
       }

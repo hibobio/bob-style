@@ -7,6 +7,16 @@ import {
 import { LIST_EL_HEIGHT } from '../../list.consts';
 import { TreeListModelService } from './tree-list-model.service';
 
+interface TreeListScrollToItemConfig {
+  item?: TreeListItem;
+  itemElement?: HTMLElement;
+  listElement?: HTMLElement;
+  indexInView?: number;
+  listViewModel?: itemID[];
+  itemsMap?: TreeListItemMap;
+  maxHeightItems?: number;
+}
+
 @Injectable()
 export class TreeListViewService {
   constructor(private modelSrvc: TreeListModelService) {}
@@ -18,22 +28,16 @@ export class TreeListViewService {
     });
   }
 
-  public scrollToItem(config: {
-    item?: TreeListItem;
-    itemElement?: HTMLElement;
-    listElement?: HTMLElement;
-    indexInView?: number;
-    listViewModel?: itemID[];
-    itemsMap?: TreeListItemMap;
-    maxHeightItems: number;
-  }): void {
+  public scrollToItem(config: TreeListScrollToItemConfig): void {
     let { item, itemElement, listElement, indexInView } = config;
     const { listViewModel, itemsMap, maxHeightItems } = config;
 
     if (
       (!itemElement &&
         (!item || !listElement || isEmptyArray(listViewModel))) ||
-      (itemElement && (isEmptyMap(itemsMap) || isEmptyArray(listViewModel)))
+      (itemElement &&
+        !item &&
+        (isEmptyMap(itemsMap) || isEmptyArray(listViewModel)))
     ) {
       return;
     }
@@ -74,7 +78,7 @@ export class TreeListViewService {
         itemElement.offsetTop - (item.parentCount - 1) * LIST_EL_HEIGHT;
       const listElScrollTopMin =
         listElScrollTopMax -
-        (maxHeightItems - item.parentCount) * LIST_EL_HEIGHT;
+        ((maxHeightItems || 8) - item.parentCount) * LIST_EL_HEIGHT;
 
       if (
         listElement.scrollTop < listElScrollTopMin ||

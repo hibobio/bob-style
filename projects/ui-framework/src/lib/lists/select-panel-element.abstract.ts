@@ -365,7 +365,9 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   protected setDisplayValue(): void {
     this.displayValue = this.getDisplayValue() || null;
     this.displayValueCount = this.value ? this.value.length : 0;
-    this.cd.detectChanges();
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
   protected getDisplayValue(): string {
