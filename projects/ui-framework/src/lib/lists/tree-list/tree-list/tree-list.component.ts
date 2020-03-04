@@ -179,10 +179,6 @@ export class TreeListComponent extends BaseTreeListElement {
       return;
     }
 
-    let itemIDsToUpdateCounters: TreeListItem[] = this.value
-      .map(id => this.itemsMap.get(id))
-      .concat(item);
-
     item.selected = newSelectedValue;
 
     if (this.type === SelectType.single) {
@@ -190,7 +186,13 @@ export class TreeListComponent extends BaseTreeListElement {
 
       if (item.selected) {
         if (this.value.length && this.value[0] !== item.id) {
-          this.itemsMap.get(this.value[0]).selected = false;
+          const prevSelectedItem = this.itemsMap.get(this.value[0]);
+          prevSelectedItem.selected = false;
+
+          this.modelSrvc.updateItemParentsSelectedCount(
+            prevSelectedItem,
+            this.itemsMap
+          );
         }
         this.value = [item.id];
       } else {
@@ -210,10 +212,9 @@ export class TreeListComponent extends BaseTreeListElement {
 
         this.value = this.value.filter(id => !deselected.IDs.includes(id));
 
-        itemIDsToUpdateCounters = joinArrays(
-          itemIDsToUpdateCounters,
-          deselected.items
-        );
+        deselected.items.forEach((itm: TreeListItem) => {
+          this.modelSrvc.updateItemParentsSelectedCount(itm, this.itemsMap);
+        });
       }
 
       if (item.selected) {
@@ -223,9 +224,7 @@ export class TreeListComponent extends BaseTreeListElement {
       }
     }
 
-    itemIDsToUpdateCounters.forEach((itm: TreeListItem) => {
-      this.modelSrvc.updateItemParentsSelectedCount(itm, this.itemsMap);
-    });
+    this.modelSrvc.updateItemParentsSelectedCount(item, this.itemsMap);
 
     this.updateActionButtonsState();
     console.timeEnd('toggleItemSelect');
