@@ -19,14 +19,24 @@ import {
   isBoolean,
   asArray,
 } from '../../../services/utils/functional-utils';
-import { BTL_ROOT_ID, BTL_KEYMAP_DEF } from '../tree-list.const';
+import {
+  BTL_ROOT_ID,
+  BTL_KEYMAP_DEF,
+  BTL_VALUE_SEPARATOR_DEF,
+} from '../tree-list.const';
 
 interface TreeListConverterConfig {
   keyMap: TreeListKeyMap;
-  separator: string;
-  collapsed: boolean;
+  separator?: string;
+  collapsed?: boolean;
   removeKeys?: string[];
   onlyValue?: boolean;
+}
+
+interface TreeListGetListViewModelConfig {
+  keyMap: TreeListKeyMap;
+  viewFilter?: ViewFilter;
+  expand?: boolean;
 }
 
 export interface TreeListChildrenToggleSelectReducerResult {
@@ -45,7 +55,7 @@ export class TreeListModelService {
   public getIDtoValueMap(
     list: TreeListOption[],
     keyMap: TreeListKeyMap = BTL_KEYMAP_DEF,
-    separator: string = ' / '
+    separator: string = BTL_VALUE_SEPARATOR_DEF
   ): Map<itemID, string> {
     const map = (this.getListItemsMap(list, new Map(), {
       keyMap,
@@ -60,11 +70,7 @@ export class TreeListModelService {
   public getListViewModel(
     list: TreeListOption[],
     itemsMap: TreeListItemMap,
-    config: {
-      viewFilter: ViewFilter;
-      keyMap: TreeListKeyMap;
-      expand: boolean;
-    } = {
+    config: TreeListGetListViewModelConfig = {
       viewFilter: {},
       keyMap: BTL_KEYMAP_DEF,
       expand: false,
@@ -135,7 +141,7 @@ export class TreeListModelService {
     itemsMap: TreeListItemMap = new Map(),
     config: TreeListConverterConfig = {
       keyMap: BTL_KEYMAP_DEF,
-      separator: ' / ',
+      separator: BTL_VALUE_SEPARATOR_DEF,
       collapsed: false,
       onlyValue: false,
     }
@@ -192,7 +198,7 @@ export class TreeListModelService {
     },
     config: TreeListConverterConfig = {
       keyMap: BTL_KEYMAP_DEF,
-      separator: ' / ',
+      separator: BTL_VALUE_SEPARATOR_DEF,
       collapsed: false,
       removeKeys: [],
       onlyValue: false,
@@ -206,7 +212,11 @@ export class TreeListModelService {
       return;
     }
 
-    const { keyMap, separator, collapsed, removeKeys, onlyValue } = config;
+    const { keyMap, collapsed, removeKeys, onlyValue } = config;
+    let { separator } = config;
+    if (separator === undefined) {
+      separator = BTL_VALUE_SEPARATOR_DEF;
+    }
 
     const converted: TreeListItem = {
       ...objectRemoveKeys(item, removeKeys),
@@ -547,7 +557,7 @@ export class TreeListModelService {
   private concatValue(
     start: string,
     current: string = null,
-    separator = ' / '
+    separator = BTL_VALUE_SEPARATOR_DEF
   ): string {
     const sprtrReg = stringToRegex(separator, 'gi');
 

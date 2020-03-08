@@ -56,7 +56,7 @@ export class TreeListViewService {
     }
 
     if (itemElement && !listElement) {
-      listElement = itemElement.closest('.bhl-list');
+      listElement = itemElement.closest('.btl-list');
     }
 
     if (!itemElement) {

@@ -41,7 +41,7 @@ export class TreeListControlsService {
     } = config;
 
     const target = event.target as HTMLElement;
-    const itemElement = target.closest('.bhl-item') as HTMLElement;
+    const itemElement = target.closest('.btl-item') as HTMLElement;
     if (!itemElement) {
       return;
     }
@@ -56,14 +56,14 @@ export class TreeListControlsService {
       itemElement.classList.contains('disabled');
 
     if (
-      (target.matches('.bhl-item-chevron') && !item.allOptionsHidden) ||
+      (target.matches('.btl-item-chevron') && !item.allOptionsHidden) ||
       (isDisabled && item.childrenCount)
     ) {
       event.stopPropagation();
       return toggleItemCollapsed(item, itemElement);
     }
 
-    if (target.matches('.bhl-item-checkbox') && !isDisabled) {
+    if (target.matches('.btl-item-checkbox') && !isDisabled) {
       event.stopPropagation();
       return toggleItemSelect(item, index);
     }
@@ -105,7 +105,7 @@ export class TreeListControlsService {
     event.stopPropagation();
 
     const target = event.target as HTMLElement;
-    const itemElement = target.closest('.bhl-item') as HTMLElement;
+    const itemElement = target.closest('.btl-item') as HTMLElement;
     if (!itemElement) {
       return;
     }

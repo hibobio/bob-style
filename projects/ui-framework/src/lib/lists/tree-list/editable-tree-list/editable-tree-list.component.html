@@ -1,0 +1,77 @@
+<ng-template #listItem
+             let-index="index"
+             let-item="item">
+
+  <!-- <li class="betl-item"
+      [id]="item.id"
+      [attr.data-index]="index"
+      [attr.data-level]="item.parentCount || 1">
+
+    <span *ngIf="item.childrenIDs"
+          class="btl-item-chevron has-hover"></span>
+
+    <input [(ngModel)]="item.name"
+           class="betl-item-input"
+           type="text">
+  </li> -->
+
+  <smooth-dnd-draggable role="listitem"
+                        class="betl-item"
+                        [id]="item.id"
+                        [attr.data-index]="index"
+                        [attr.data-level]="item.parentCount || 1">
+
+    <span *ngIf="item.childrenIDs"
+          class="btl-item-chevron has-hover"></span>
+
+    <input [(ngModel)]="item.name"
+           class="betl-item-input"
+           type="text">
+  </smooth-dnd-draggable>
+
+</ng-template>
+
+<smooth-dnd-container role="list"
+                      class="betl-list"
+                      [orientation]="'vertical'"
+                      [lockAxis]="'y'"
+                      [animationDuration]="0"
+                      [shouldAnimateDrop]="dndShouldAnimateDrop"
+                      [getChildPayload]="dndGetChildPayload(item)"
+                      (click)="onListClick($event)"
+                      (keydown)="onListKeyDown($event)">
+
+  <ng-container *ngFor="let itemID of $listViewModel | async; let index = index; trackBy: trackBy">
+    <ng-container *ngTemplateOutlet="listItem; context: {
+      index: index,
+      item: itemsMap.get(itemID)
+    }"></ng-container>
+  </ng-container>
+
+</smooth-dnd-container>
+
+<!-- <ul #listElement
+    class="betl-list"
+    (click)="onListClick($event)"
+    (keydown)="onListKeyDown($event)">
+
+  <ng-container *ngFor="let itemID of $listViewModel | async; let index = index; trackBy: trackBy">
+    <ng-container *ngTemplateOutlet="listItem; context: {
+      index: index,
+      item: itemsMap.get(itemID)
+    }"></ng-container>
+  </ng-container>
+
+</ul> -->
+
+<div class="dev">
+  <p>Total items: {{ itemsMap.size - 1 }}</p>
+  <p>Total items in view: {{ listViewModel.length }}</p>
+
+  <button type="button"
+          (click)="log('Data')">Log data</button>
+
+  <button type="button"
+          (click)="log('ViewContext')">Log items View Context</button>
+
+</div>

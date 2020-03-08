@@ -22,3 +22,5 @@ export const BTL_KEYMAP_SERVER: TreeListKeyMap = {
   name: 'value',
   children: 'children',
 };
+
+export const BTL_VALUE_SEPARATOR_DEF = ' / ';

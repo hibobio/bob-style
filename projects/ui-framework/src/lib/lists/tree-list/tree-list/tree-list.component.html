@@ -2,12 +2,12 @@
              let-index="index"
              let-item="item">
 
-  <li class="bhl-item"
+  <li class="btl-item"
       [id]="item.id"
       [attr.data-index]="index"
       [ngClass]="{
-        'bhl-item-option': !item.childrenCount,
-        'bhl-item-group': item.childrenCount,
+        'btl-item-option': !item.childrenCount,
+        'btl-item-group': item.childrenCount,
         disabled: item.disabled || (type === selectType.multi && item.parentSelected),
         selected: item.selected || (type === selectType.multi && item.parentSelected),
         indeterminate: item.indeterminate,
@@ -20,21 +20,21 @@
       [attr.data-level]="item.parentCount || 1">
 
     <span *ngIf="item.childrenIDs"
-          class="bhl-item-chevron has-hover"></span>
+          class="btl-item-chevron has-hover"></span>
 
     <span *ngIf="showCheckbox()"
-          class="bhl-item-checkbox"
+          class="btl-item-checkbox"
           role="checkbox"
           [attr.aria-checked]="item.selected"></span>
 
-    <span class="bhl-item-name"
+    <span class="btl-item-name"
           data-max-lines='3'
           [innerHTML]="item.name | highlight: searchValue">
       {{item.name}}
     </span>
 
     <span *ngIf="item.selectedCount"
-          class="bhl-selected-count">
+          class="btl-selected-count">
       ({{item.selectedCount}})
     </span>
   </li>
@@ -44,7 +44,7 @@
 
 <b-search *ngIf="showSearch"
           #search
-          class="bhl-search"
+          class="btl-search"
           [ngClass]="{
             'no-results': !listViewModel.length
           }"
@@ -52,7 +52,7 @@
 </b-search>
 
 <ul #listElement
-    class="bhl-list"
+    class="btl-list"
     [attr.data-type]="type"
     [attr.aria-readonly]="readonly || null"
     [attr.aria-disabled]="disabled || null"
@@ -70,7 +70,7 @@
 
 <b-list-footer #footer
                *ngIf="hasFooter"
-               class="bhl-footer"
+               class="btl-footer"
                [listActions]="!readonly ? listActions : {}"
                [listActionsState]="!readonly ? listActionsState : {}"
                (apply)="onApply()"

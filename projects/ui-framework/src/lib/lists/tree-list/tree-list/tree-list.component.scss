@@ -1,11 +1,11 @@
 @import '../../../style/common-imports';
 @import '../../../style/icons.mixin';
 
-$bhl-item-height: $wrap-height;
-$bhl-item-indent: base8(30);
-$bhl-item-padding: $input-padding;
-$bhl-icon-margin: 10px;
-$bhl-max-depth: 5;
+$btl-item-height: $wrap-height;
+$btl-item-indent: base8(30);
+$btl-item-padding: $input-padding;
+$btl-icon-margin: 10px;
+$btl-max-depth: 5;
 
 //-------DEV---------
 .dev {
@@ -50,37 +50,37 @@ $bhl-max-depth: 5;
     border: 0 !important;
     box-shadow: none !important;
 
-    .bhl-footer,
+    .btl-footer,
     .dev {
       display: none;
     }
   }
 }
 
-.bhl-list {
+.btl-list {
   list-style: none;
   padding: 0;
   margin: 0;
   position: relative;
-  max-height: calc(var(--list-max-items) * #{$bhl-item-height} - 1px);
+  max-height: calc(var(--list-max-items) * #{$btl-item-height} - 1px);
   overflow-y: auto;
   will-change: scroll-position, transform;
 }
 
 // Item
 
-.bhl-item {
-  height: $bhl-item-height;
+.btl-item {
+  height: $btl-item-height;
   display: flex;
   align-items: center;
-  padding: 0 $bhl-item-padding;
+  padding: 0 $btl-item-padding;
   position: relative;
   background-color: white;
   will-change: box-shadow, z-index;
 }
 
 :host ::ng-deep {
-  .bhl-item-name {
+  .btl-item-name {
     min-width: 0;
 
     strong {
@@ -89,24 +89,24 @@ $bhl-max-depth: 5;
   }
 }
 
-.bhl-item-name,
-.bhl-selected-count {
+.btl-item-name,
+.btl-selected-count {
   pointer-events: none;
 }
 
-@for $i from 2 through $bhl-max-depth {
+@for $i from 2 through $btl-max-depth {
   [data-level='#{$i}'] {
-    padding-left: ($bhl-item-padding + $bhl-item-indent * ($i - 1));
+    padding-left: ($btl-item-padding + $btl-item-indent * ($i - 1));
   }
 }
 
-.bhl-item-option {
+.btl-item-option {
   &.next-is-group {
     box-shadow: inset 0 -1px 0 0 $border-color-light;
   }
 
-  @for $i from 1 through $bhl-max-depth {
-    &[data-level='#{$i}'] + .bhl-item-option:not([data-level='#{$i}']) {
+  @for $i from 1 through $btl-max-depth {
+    &[data-level='#{$i}'] + .btl-item-option:not([data-level='#{$i}']) {
       box-shadow: inset 0 1px 0 0 $border-color-light;
 
       &.next-is-group {
@@ -119,7 +119,7 @@ $bhl-max-depth: 5;
 
 // Group
 
-.bhl-item-group {
+.btl-item-group {
   box-shadow: 0 -1px 0 0 $border-color-light,
     inset 0 -1px 0 0 $border-color-light;
 
@@ -133,38 +133,38 @@ $bhl-max-depth: 5;
 }
 
 :host ::ng-deep {
-  .bhl-item-group.expanded {
+  .btl-item-group.expanded {
     position: sticky;
     top: 0;
 
-    @for $i from 1 through $bhl-max-depth {
+    @for $i from 1 through $btl-max-depth {
       &[data-level='#{$i}'] {
-        top: $bhl-item-height * ($i - 1);
-        z-index: $bhl-max-depth * 10 - $i * 10 - 1;
+        top: $btl-item-height * ($i - 1);
+        z-index: $btl-max-depth * 10 - $i * 10 - 1;
 
-        & ~ .bhl-item-option[data-level='#{$i}'],
-        & ~ .bhl-item-group.collapsed[data-level='#{$i}'] {
-          z-index: $bhl-max-depth * 10 - $i * 10;
+        & ~ .btl-item-option[data-level='#{$i}'],
+        & ~ .btl-item-group.collapsed[data-level='#{$i}'] {
+          z-index: $btl-max-depth * 10 - $i * 10;
         }
 
         &
-          ~ .bhl-item-group.expanded[data-level='#{$i+1}']
-          ~ .bhl-item-option[data-level='#{$i+1}'],
+          ~ .btl-item-group.expanded[data-level='#{$i+1}']
+          ~ .btl-item-option[data-level='#{$i+1}'],
         &
-          ~ .bhl-item-group.expanded[data-level='#{$i+1}']
-          ~ .bhl-item-group.collapsed[data-level='#{$i+1}'] {
-          z-index: $bhl-max-depth * 10 - $i * 10 - 2;
+          ~ .btl-item-group.expanded[data-level='#{$i+1}']
+          ~ .btl-item-group.collapsed[data-level='#{$i+1}'] {
+          z-index: $btl-max-depth * 10 - $i * 10 - 2;
         }
 
-        & ~ .bhl-item-group.expanded[data-level='#{$i+1}'] {
-          z-index: $bhl-max-depth * 10 - $i * 10 - 3;
+        & ~ .btl-item-group.expanded[data-level='#{$i+1}'] {
+          z-index: $btl-max-depth * 10 - $i * 10 - 3;
         }
       }
     }
   }
 
-  .bhl-item-group {
-    .bhl-item-name {
+  .btl-item-group {
+    .btl-item-name {
       font-weight: $font-weight-bold-body;
     }
   }
@@ -172,9 +172,9 @@ $bhl-max-depth: 5;
 
 // Controls
 
-.bhl-item-chevron {
+.btl-item-chevron {
   display: block;
-  margin-right: $bhl-icon-margin - 2px;
+  margin-right: $btl-icon-margin - 2px;
 
   &:before {
     font-size: map-get($icon-sizes, 'medium');
@@ -187,19 +187,19 @@ $bhl-max-depth: 5;
 }
 
 :host ::ng-deep {
-  .collapsed .bhl-item-chevron {
+  .collapsed .btl-item-chevron {
     @include b-icon(chevron-right, $size: null, $color: false, $hover: false) {
       display: flex;
     }
   }
 
-  .expanded .bhl-item-chevron {
+  .expanded .btl-item-chevron {
     @include b-icon(chevron-down, $size: null, $color: false, $hover: false) {
       display: flex;
     }
   }
 
-  .all-options-hidden .bhl-item-chevron {
+  .all-options-hidden .btl-item-chevron {
     @include disabled-state;
   }
 }
@@ -207,23 +207,23 @@ $bhl-max-depth: 5;
 :host ::ng-deep {
   @include checkbox(
     $input-selector: null,
-    $checkbox-selector: '.bhl-item-checkbox',
-    $checked-selector: '.selected .bhl-item-checkbox',
+    $checkbox-selector: '.btl-item-checkbox',
+    $checked-selector: '.selected .btl-item-checkbox',
     $disabled-selector: null,
     $required-selector: null,
-    $indeterminate-selector: '.indeterminate .bhl-item-checkbox',
+    $indeterminate-selector: '.indeterminate .btl-item-checkbox',
     $hover-selector:
-      '.bhl-item-option:hover .bhl-item-checkbox, .bhl-item-checkbox:hover, .bhl-item-checkbox:focus'
+      '.btl-item-option:hover .btl-item-checkbox, .btl-item-checkbox:hover, .btl-item-checkbox:focus'
   ) {
     position: relative;
-    margin-right: $bhl-icon-margin;
+    margin-right: $btl-icon-margin;
   }
 }
 
 // Elements
 
 :host ::ng-deep {
-  .bhl-search {
+  .btl-search {
     .bfe-wrap {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
@@ -248,18 +248,18 @@ $bhl-max-depth: 5;
   }
 }
 
-.bhl-footer {
+.btl-footer {
   margin: 0;
 }
 
-.bhl-selected-count {
+.btl-selected-count {
   margin-left: 5px;
   font-weight: 400;
 }
 
 // States
 
-.bhl-item {
+.btl-item {
   &:hover,
   &:focus {
     background-color: $grey-100;
@@ -267,25 +267,25 @@ $bhl-max-depth: 5;
 }
 
 :host::ng-deep {
-  [aria-readonly='true'] .bhl-item,
-  [aria-disabled='true'] .bhl-item,
-  .bhl-item.disabled {
+  [aria-readonly='true'] .btl-item,
+  [aria-disabled='true'] .btl-item,
+  .btl-item.disabled {
     &:hover {
       background: none;
     }
   }
 
-  [aria-readonly='true'] .bhl-item-option,
-  [aria-disabled='true'].bhl-item-option,
-  .bhl-item-option.disabled {
+  [aria-readonly='true'] .btl-item-option,
+  [aria-disabled='true'].btl-item-option,
+  .btl-item-option.disabled {
     pointer-events: none;
   }
 
   [aria-readonly='true'],
   [aria-disabled='true'],
-  .bhl-item.disabled {
-    .bhl-item-checkbox,
-    .bhl-item-checkbox:before {
+  .btl-item.disabled {
+    .btl-item-checkbox,
+    .btl-item-checkbox:before {
       pointer-events: none;
       cursor: default;
       box-shadow: none;
@@ -293,9 +293,9 @@ $bhl-max-depth: 5;
   }
   [aria-disabled='true'],
   .disabled {
-    .bhl-item-checkbox,
-    .bhl-item-name,
-    .bhl-selected-count {
+    .btl-item-checkbox,
+    .btl-item-name,
+    .btl-selected-count {
       opacity: 0.5;
     }
   }
@@ -303,7 +303,7 @@ $bhl-max-depth: 5;
 
 :host::ng-deep {
   [data-type='single'] {
-    .bhl-item.selected {
+    .btl-item.selected {
       background-color: $color-option-selected;
       font-weight: $font-weight-bold-body;
     }
@@ -318,7 +318,7 @@ $bhl-max-depth: 5;
 
 :host ::ng-deep {
   [data-type='single'] {
-    .bhl-item-chevron {
+    .btl-item-chevron {
       cursor: pointer;
 
       &:hover:before {

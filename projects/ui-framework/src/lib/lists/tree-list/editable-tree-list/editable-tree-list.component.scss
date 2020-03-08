@@ -1,0 +1,48 @@
+@import '../../../style/common-imports';
+@import '../../../style/icons.mixin';
+
+$betl-max-depth: 5;
+$betl-item-height: 36px;
+$betl-item-padding: $input-padding;
+$betl-item-indent: base8(30);
+
+.dev {
+  padding: 10px;
+  border: 1px solid silver;
+  margin-top: 30px;
+  display: block;
+
+  p {
+    margin: 0 0 5px 0;
+  }
+}
+
+:host {
+  display: block;
+  max-width: 100%;
+  min-width: 0;
+  text-align: left;
+}
+
+.betl-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.betl-item {
+  height: $betl-item-height;
+  display: flex;
+  align-items: center;
+}
+
+.betl-item-input {
+  flex-grow: 1;
+  height: inherit;
+}
+
+@for $i from 2 through $betl-max-depth {
+  [data-level='#{$i}'] {
+    padding-left: ($betl-item-padding + $betl-item-indent * ($i - 1));
+  }
+}
