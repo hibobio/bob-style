@@ -215,15 +215,26 @@ export class RichTextEditorComponent extends RTEbaseElement
           this.editor.html.getSelected(),
           '.fr-marker'
         );
-        const html = chainCall(this.outputTransformers, content);
+        const html =
+          chainCall(this.outputTransformers, content) +
+          '<span data-bob-rte="true"></span>';
+
         clipboardData.setData('text/plain', html);
         clipboardData.setData('text/html', html);
 
         this.editor.selection.restore();
       },
 
-      'paste.afterCleanup': (html: string): string =>
-        chainCall(this.inputTransformers, html),
+      'paste.afterCleanup': (html: string): string => {
+        if (html.includes('data-bob-rte')) {
+          return this.parserService.removeElements(html, '[data-bob-rte]');
+        }
+
+        return chainCall(this.inputTransformers, html).replace(
+          /style="[^"]+"/gi,
+          ''
+        );
+      },
 
       'charCounter.update': () => {
         this.updateLength();

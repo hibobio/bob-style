@@ -295,7 +295,7 @@ export abstract class BaseListElement
       }
 
       if (this.mode === SelectMode.radioGroups && allowMultiple) {
-        newValue = true;
+        newValue = !option.selected;
 
         if (newValue !== option.selected) {
           const groupIDsInSelected = this.options[option.groupIndex].options
@@ -304,7 +304,7 @@ export abstract class BaseListElement
 
           this.selectedIDs = this.selectedIDs
             .filter(id => !groupIDsInSelected.includes(id))
-            .concat(option.id);
+            .concat(newValue ? option.id : []);
         }
       }
 

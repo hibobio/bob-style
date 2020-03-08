@@ -33,20 +33,32 @@ export const RTE_TRANSLATION_DEF: RteTranslation = {
   add_variable: 'Add variable',
 };
 
-const RTE_ALLOWED_STYLE_PROPS = [
-  'font-family',
+export const RTE_ALLOWED_STYLE_PROPS = [
   'font-size',
   'font-weight',
-  'font-style',
   'text-align',
   'direction',
+];
+
+const RTE_DISALLOWED_STYLE_PROPS = [
+  'font-family',
+  'font-style',
+  'text-decoration',
+];
+
+export const RTE_ALLOWED_FONTSIZES = [11, 12, 18, 28];
+export const RTE_ALLOWED_FONTSIZE_KEYWORDS = [
+  'small',
+  'medium',
+  'large',
+  'x-large',
 ];
 
 export const RTE_OPTIONS_DEF: FroalaOptions = {
   key: 'DUA2yE3G1A1A5B8B1pZGCTRSAPJWTLPLZHTQQe1JGZxC4B3A3B2B5B1C1E4I1B3==',
   attribution: false,
 
-  enter: 1,
+  enter: 1, // div; use 2 for br
   initOnClick: false,
   theme: 'royal',
   fontFamily: {
@@ -67,7 +79,6 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   shortcutsHint: false,
   placeholderText: '',
 
-  imagePaste: false,
   imageDefaultAlign: 'left',
   imageDefaultWidth: 600,
   imageMaxSize: 1024 * 1024 * 3,
@@ -96,13 +107,6 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'spellcheck',
     'tabindex',
     '.*mention.*',
-
-    // 'align',
-    // 'border',
-    // 'cellpadding',
-    // 'cellspacing',
-    // 'colspan',
-    // 'rowspan',
   ],
   htmlAllowedEmptyTags: ['.fa', '.fr-emoticon', '.fr-inner'],
   htmlAllowedStyleProps: RTE_ALLOWED_STYLE_PROPS,
@@ -123,6 +127,8 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'span',
     'u',
     'strike',
+    'sub',
+    'sup',
 
     'h1',
     'h2',
@@ -132,13 +138,14 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'h6',
   ],
   htmlExecuteScripts: false,
-  htmlIgnoreCSSProperties: [],
+  htmlIgnoreCSSProperties: RTE_DISALLOWED_STYLE_PROPS,
   htmlRemoveTags: ['script', 'style'],
-  htmlUntouched: true,
+  htmlUntouched: false,
 
   pasteAllowedStyleProps: RTE_ALLOWED_STYLE_PROPS,
-  pasteDeniedAttrs: ['^on.*', 'type', 'value'],
-  pasteDeniedTags: ['script', 'style'],
+  pasteDeniedAttrs: ['^on.*', 'type', 'value', 'id'],
+  pasteDeniedTags: ['script', 'style', 'img'],
+  imagePaste: false,
   pastePlain: false,
 
   wordDeniedTags: ['script', 'style'],
@@ -150,8 +157,9 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   linkInsertButtons: [],
 
   fontSizeSelection: false,
-  fontSize: ['11', '12', '18', '28'],
-  fontSizeDefaultSelection: '12',
+  fontSize: RTE_ALLOWED_FONTSIZES as any,
+  fontSizeUnit: 'px',
+  fontSizeDefaultSelection: 12 as any,
 
   colorsText: [],
 
@@ -219,9 +227,7 @@ export const RTE_MENTIONS_OPTIONS_DEF: TributeOptions = {
 
   menuItemTemplate: function(item: TributeItem) {
     return item.original.avatar
-      ? `<span class="brte-mention-avatar" aria-hidden="true" style="background-image:url(${
-          item.original.avatar
-        })"></span><span>${item.string}</span>`
+      ? `<span class="brte-mention-avatar" aria-hidden="true" style="background-image:url(${item.original.avatar})"></span><span>${item.string}</span>`
       : item.string;
   },
 
