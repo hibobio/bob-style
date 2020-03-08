@@ -87,8 +87,9 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 
     .ag-header-cell-text {
       min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: normal;
+      @include line-clamp(2, $useCssVars: true);
+      @include text-hyphenate;
     }
 
     .ag-header-cell-resize {
