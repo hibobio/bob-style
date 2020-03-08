@@ -27,14 +27,16 @@ import {
   TreeListOption,
   TreeListItemMap,
 } from '../tree-list.interface';
-import {
-  TreeListModelService,
-  TreeListChildrenToggleSelectReducerResult,
-} from '../services/tree-list-model.service';
+import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
-import { TreeListViewService } from '../services/tree-list-view.service';
+import {
+  TreeListViewService,
+  TreeListChildrenToggleSelectReducerResult,
+} from '../services/tree-list-view.service';
 import { BaseTreeListElement } from './tree-list.abstract';
 import { BehaviorSubject } from 'rxjs';
+import { TreeListValueService } from '../services/tree-list-value.service';
+import { TreeListSearchService } from '../services/tree-list-search.service';
 
 @Component({
   selector: 'b-tree-list',
@@ -47,12 +49,24 @@ export class TreeListComponent extends BaseTreeListElement {
     modelSrvc: TreeListModelService,
     cntrlsSrvc: TreeListControlsService,
     viewSrvc: TreeListViewService,
+    valueSrvc: TreeListValueService,
+    searchSrvc: TreeListSearchService,
     DOM: DOMhelpers,
     cd: ChangeDetectorRef,
     zone: NgZone,
     host: ElementRef
   ) {
-    super(modelSrvc, cntrlsSrvc, viewSrvc, DOM, cd, zone, host);
+    super(
+      modelSrvc,
+      cntrlsSrvc,
+      viewSrvc,
+      valueSrvc,
+      searchSrvc,
+      DOM,
+      cd,
+      zone,
+      host
+    );
   }
 
   @Input('list') set setList(list: TreeListOption[]) {}
@@ -118,7 +132,7 @@ export class TreeListComponent extends BaseTreeListElement {
 
     if (notFirstChanges(changes, ['type']) && this.type === SelectType.single) {
       const newValue = isNotEmptyArray(this.value) ? [this.value[0]] : [];
-      this.modelSrvc.deselectAllExcept(this.value, newValue, this.itemsMap);
+      this.viewSrvc.deselectAllExcept(this.value, newValue, this.itemsMap);
       this.value = newValue;
     }
 
@@ -193,7 +207,7 @@ export class TreeListComponent extends BaseTreeListElement {
           const prevSelectedItem = this.itemsMap.get(this.value[0]);
           prevSelectedItem.selected = false;
 
-          this.modelSrvc.updateItemParentsSelectedCount(
+          this.viewSrvc.updateItemParentsSelectedCount(
             prevSelectedItem,
             this.itemsMap
           );
@@ -207,7 +221,7 @@ export class TreeListComponent extends BaseTreeListElement {
     if (this.type === SelectType.multi) {
       if (item.childrenCount) {
         const deselected: TreeListChildrenToggleSelectReducerResult = item.childrenIDs.reduce(
-          this.modelSrvc.childrenToggleSelectReducer(
+          this.viewSrvc.childrenToggleSelectReducer(
             item.selected,
             this.itemsMap
           ),
@@ -217,7 +231,7 @@ export class TreeListComponent extends BaseTreeListElement {
         this.value = this.value.filter(id => !deselected.IDs.includes(id));
 
         deselected.items.forEach((itm: TreeListItem) => {
-          this.modelSrvc.updateItemParentsSelectedCount(itm, this.itemsMap);
+          this.viewSrvc.updateItemParentsSelectedCount(itm, this.itemsMap);
         });
       }
 
@@ -228,7 +242,7 @@ export class TreeListComponent extends BaseTreeListElement {
       }
     }
 
-    this.modelSrvc.updateItemParentsSelectedCount(item, this.itemsMap);
+    this.viewSrvc.updateItemParentsSelectedCount(item, this.itemsMap);
 
     this.updateActionButtonsState();
     console.timeEnd('toggleItemSelect');
@@ -277,7 +291,7 @@ export class TreeListComponent extends BaseTreeListElement {
         firstSelectedItem = item;
       }
 
-      this.modelSrvc.updateItemParentsSelectedCount(item, this.itemsMap);
+      this.viewSrvc.updateItemParentsSelectedCount(item, this.itemsMap);
     });
 
     if (firstSelectedItem) {
@@ -315,7 +329,7 @@ export class TreeListComponent extends BaseTreeListElement {
     }
 
     if (this.type === SelectType.multi) {
-      this.value = this.modelSrvc.sortIDlistByItemIndex(
+      this.value = this.valueSrvc.sortIDlistByItemIndex(
         this.value,
         this.itemsMap
       );
@@ -326,7 +340,7 @@ export class TreeListComponent extends BaseTreeListElement {
       selectedValues:
         this.type === SelectType.single
           ? [this.itemsMap.get(this.value[0]).value]
-          : this.modelSrvc.getDisplayValuesFromValue(this.value, this.itemsMap),
+          : this.valueSrvc.getDisplayValuesFromValue(this.value, this.itemsMap),
     });
   }
 }

@@ -48,6 +48,8 @@ import {
   selectValueOrFail,
   SelectValueMultiOrSingle,
 } from '../../../services/utils/transformers';
+import { TreeListViewService } from '../services/tree-list-view.service';
+import { TreeListValueService } from '../services/tree-list-value.service';
 
 @Component({
   selector: 'b-tree-select',
@@ -73,7 +75,12 @@ import {
 })
 export class TreeSelectComponent extends BaseFormElement
   implements TreeListComponentIO, TreeListPanelIO, OnChanges, OnDestroy {
-  constructor(private modelSrvc: TreeListModelService, cd: ChangeDetectorRef) {
+  constructor(
+    private modelSrvc: TreeListModelService,
+    private viewSrvc: TreeListViewService,
+    private valueSrvc: TreeListValueService,
+    cd: ChangeDetectorRef
+  ) {
     super(cd);
     this.baseValue = [];
     this.inputTransformers = [selectValueOrFail];
@@ -142,14 +149,12 @@ export class TreeSelectComponent extends BaseFormElement
     }
 
     if (hasChanges(changes, ['list'], true)) {
-      console.time('TreeSelectComponent getListItemsMap');
       this.itemsMap.clear();
       this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
         keyMap: this.keyMap,
         separator: this.valueSeparatorChar,
         collapsed: this.startCollapsed,
       });
-      console.timeEnd('TreeSelectComponent getListItemsMap');
 
       if (isNotEmptyArray(this.value) && !changes.value) {
         this.setDisplayValue(this.value);
@@ -162,7 +167,7 @@ export class TreeSelectComponent extends BaseFormElement
 
     if (notFirstChanges(changes, ['type']) && this.type === SelectType.single) {
       const newValue = isNotEmptyArray(this.value) ? [this.value[0]] : [];
-      this.modelSrvc.deselectAllExcept(
+      this.viewSrvc.deselectAllExcept(
         this.treeListValue ? this.treeListValue.selectedIDs : this.value,
         newValue,
         this.itemsMap
@@ -196,7 +201,7 @@ export class TreeSelectComponent extends BaseFormElement
 
   public onCancel(): void {
     if (this.treeListValue) {
-      this.modelSrvc.deselectAllExcept(
+      this.viewSrvc.deselectAllExcept(
         this.treeListValue.selectedIDs,
         this.value,
         this.itemsMap
@@ -208,8 +213,7 @@ export class TreeSelectComponent extends BaseFormElement
   }
 
   private setDisplayValue(value: TreeListValue | itemID[] = null): void {
-    console.time('select setDisplayValue');
-    const displayValues = this.modelSrvc.getDisplayValuesFromValue(
+    const displayValues = this.valueSrvc.getDisplayValuesFromValue(
       value,
       this.itemsMap,
       this.type === SelectType.multi
@@ -218,23 +222,17 @@ export class TreeSelectComponent extends BaseFormElement
       (this.type === SelectType.single
         ? displayValues[0]
         : displayValues.join(',\n')) || '';
-    console.timeEnd('select setDisplayValue');
   }
 
   public writeValue(value: itemID[]) {
-    console.time('<====== TreeSelectComponent writeValue');
-
     super.writeValue(value);
 
     if (isNotEmptyMap(this.itemsMap)) {
       this.setDisplayValue(this.value);
     }
-    console.timeEnd('<====== TreeSelectComponent writeValue');
   }
 
   private emitChange(value: TreeListValue): void {
-    console.log('====> Select emitChange', value);
-
     this.transmitValue(SelectValueMultiOrSingle(this.type, value.selectedIDs), {
       addToEventObj: {
         selectedValues: SelectValueMultiOrSingle(

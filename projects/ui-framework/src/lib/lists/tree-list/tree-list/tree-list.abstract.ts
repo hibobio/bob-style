@@ -33,6 +33,8 @@ import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
 import { LIST_ACTIONS_STATE_DEF } from '../../list-footer/list-footer.const';
 import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from '../tree-list.const';
+import { TreeListValueService } from '../services/tree-list-value.service';
+import { TreeListSearchService } from '../services/tree-list-search.service';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -42,6 +44,8 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
     protected modelSrvc: TreeListModelService,
     protected cntrlsSrvc: TreeListControlsService,
     protected viewSrvc: TreeListViewService,
+    protected valueSrvc: TreeListValueService,
+    protected searchSrvc: TreeListSearchService,
     protected DOM: DOMhelpers,
     protected cd: ChangeDetectorRef,
     protected zone: NgZone,
@@ -207,7 +211,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   }
 
   public toggleCollapseAll(force: boolean = null, updateModel = true): void {
-    this.modelSrvc.toggleCollapseAllItemsInMap(this.itemsMap, force);
+    this.viewSrvc.toggleCollapseAllItemsInMap(this.itemsMap, force);
     if (updateModel) {
       this.updateListViewModel();
     }
@@ -220,7 +224,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
       this.searchValue = newSearchValue;
 
       this.viewFilter = this.searchValue
-        ? this.modelSrvc.getSearchViewFilter(this.searchValue)
+        ? this.searchSrvc.getSearchViewFilter(this.searchValue)
         : undefined;
 
       this.updateListViewModel(true);

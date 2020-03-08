@@ -6,20 +6,26 @@ import {
   itemID,
   ViewFilter,
   TreeListKeyMap,
-  TreeListValue,
 } from '../tree-list.interface';
 import {
   isNotEmptyArray,
   isNullOrUndefined,
-  isRegExp,
-  stringToRegex,
   isEmptyArray,
   objectRemoveKeys,
   stringify,
-  isBoolean,
-  asArray,
 } from '../../../services/utils/functional-utils';
-import { BTL_ROOT_ID, BTL_KEYMAP_DEF } from '../tree-list.const';
+import {
+  BTL_ROOT_ID,
+  BTL_KEYMAP_DEF,
+  BTL_VALUE_SEPARATOR_DEF,
+} from '../tree-list.const';
+import { TreeListSearchService } from './tree-list-search.service';
+
+interface TreeListGetListViewModelConfig {
+  keyMap: TreeListKeyMap;
+  viewFilter?: ViewFilter;
+  expand?: boolean;
+}
 
 interface TreeListConverterConfig {
   keyMap: TreeListKeyMap;
@@ -29,42 +35,20 @@ interface TreeListConverterConfig {
   onlyValue?: boolean;
 }
 
-export interface TreeListChildrenToggleSelectReducerResult {
-  IDs: itemID[];
-  items: TreeListItem[];
-}
-
 @Injectable({
   providedIn: 'root',
 })
 export class TreeListModelService {
+  constructor(private searchSrvc: TreeListSearchService) {}
+
   private counter = 0;
   private errorCounter = 0;
   private maxItems = 5000;
 
-  public getIDtoValueMap(
-    list: TreeListOption[],
-    keyMap: TreeListKeyMap = BTL_KEYMAP_DEF,
-    separator: string = ' / '
-  ): Map<itemID, string> {
-    const map = (this.getListItemsMap(list, new Map(), {
-      keyMap,
-      separator,
-      collapsed: false,
-      onlyValue: true,
-    }) as any) as Map<itemID, string>;
-    map.delete(BTL_ROOT_ID);
-    return map;
-  }
-
   public getListViewModel(
     list: TreeListOption[],
     itemsMap: TreeListItemMap,
-    config: {
-      viewFilter: ViewFilter;
-      keyMap: TreeListKeyMap;
-      expand: boolean;
-    } = {
+    config: TreeListGetListViewModelConfig = {
       viewFilter: {},
       keyMap: BTL_KEYMAP_DEF,
       expand: false,
@@ -92,7 +76,8 @@ export class TreeListModelService {
 
         itemData.nextInViewIsGroup = false;
 
-        const filterResult = this.itemFilter(itemData, viewFilter);
+        // null if group name does not match, false if option name does not match
+        const filterResult = this.searchSrvc.itemFilter(itemData, viewFilter);
 
         if (filterResult !== false) {
           const itemIndexInView = model.push(itemData.id) - 1;
@@ -135,7 +120,7 @@ export class TreeListModelService {
     itemsMap: TreeListItemMap = new Map(),
     config: TreeListConverterConfig = {
       keyMap: BTL_KEYMAP_DEF,
-      separator: ' / ',
+      separator: BTL_VALUE_SEPARATOR_DEF,
       collapsed: false,
       onlyValue: false,
     }
@@ -192,7 +177,7 @@ export class TreeListModelService {
     },
     config: TreeListConverterConfig = {
       keyMap: BTL_KEYMAP_DEF,
-      separator: ' / ',
+      separator: BTL_VALUE_SEPARATOR_DEF,
       collapsed: false,
       removeKeys: [],
       onlyValue: false,
@@ -271,155 +256,36 @@ export class TreeListModelService {
     return converted;
   }
 
-  public deselectAllItemsInMap(itemsMap: TreeListItemMap) {
-    itemsMap.forEach(item => {
-      item.selected = false;
-    });
+  // -------------------------------
+  // Outside use methods
+  // -------------------------------
+
+  public getIDtoValueMap(
+    list: TreeListOption[],
+    keyMap: TreeListKeyMap = BTL_KEYMAP_DEF,
+    separator: string = BTL_VALUE_SEPARATOR_DEF
+  ): Map<itemID, string> {
+    const map = (this.getListItemsMap(list, new Map(), {
+      keyMap,
+      separator,
+      collapsed: false,
+      onlyValue: true,
+    }) as any) as Map<itemID, string>;
+    map.delete(BTL_ROOT_ID);
+    return map;
   }
 
-  public deselectAllExcept(
-    selectedIDs: itemID[],
-    keepIDs: itemID[],
-    itemsMap: TreeListItemMap
-  ): void {
-    selectedIDs
-      .filter(id => !keepIDs.includes(id))
-      .forEach(id => {
-        const item = itemsMap.get(id);
-        item.selected = false;
-      });
-  }
+  // -------------------------------
+  // Utility methods
+  // -------------------------------
 
-  public toggleCollapseAllItemsInMap(
-    itemsMap: TreeListItemMap,
-    force: boolean = null
-  ) {
-    itemsMap.forEach(item => {
-      if (item.childrenCount && item.id !== BTL_ROOT_ID) {
-        item.collapsed = isBoolean(force) ? force : !item.collapsed;
-      }
-    });
-  }
-
-  public getSearchViewFilter(searchValue: string): ViewFilter {
-    return {
-      show: {
-        search: searchValue,
-        searchBy: 'name',
-      },
-    };
-  }
-
-  private itemFilter(item: TreeListItem, viewFilter: ViewFilter = {}): boolean {
-    let result = true;
-
-    if (viewFilter.hide) {
-      if (viewFilter.hide.id && viewFilter.hide.id.includes(item.id)) {
-        result = false;
-      }
-
-      if (
-        viewFilter.hide.prop &&
-        item[viewFilter.hide.prop.key] === viewFilter.hide.prop.value
-      ) {
-        result = false;
-      }
-    }
-
-    if (viewFilter.show) {
-      if (viewFilter.show.id && !viewFilter.show.id.includes(item.id)) {
-        result = false;
-      }
-
-      if (
-        viewFilter.show.prop &&
-        item[viewFilter.show.prop.key] !== viewFilter.show.prop.value
-      ) {
-        result = false;
-      }
-    }
-
-    if (
-      (viewFilter.hide && viewFilter.hide.search) ||
-      (viewFilter.show && viewFilter.show.search)
-    ) {
-      const regex: RegExp = isRegExp(viewFilter.show.search)
-        ? viewFilter.show.search
-        : stringToRegex(viewFilter.show.search);
-
-      const searchBy =
-        (viewFilter.show && viewFilter.show.searchBy) ||
-        (viewFilter.hide && viewFilter.hide.searchBy) ||
-        'name';
-
-      const matches = regex.test(item[searchBy]);
-
-      if (
-        (viewFilter.show && viewFilter.show.search && !matches) ||
-        (viewFilter.hide && viewFilter.hide.search && matches)
-      ) {
-        result = item.childrenCount ? null : false;
-      }
-    }
-
-    return result;
-  }
-
-  public sortIDlistByItemIndex(
-    IDlist: itemID[],
-    itemsMap: TreeListItemMap
-  ): itemID[] {
-    return IDlist.sort((idA, idB) =>
-      itemsMap.get(idA).originalIndex > itemsMap.get(idB).originalIndex ? 1 : -1
-    );
-  }
-
-  public childrenToggleSelectReducer(
-    parentSelected: boolean,
-    itemsMap: TreeListItemMap
-  ) {
-    return (
-      acc: TreeListChildrenToggleSelectReducerResult = { IDs: [], items: [] },
-      id: itemID
-    ) => {
-      const item = itemsMap.get(id);
-
-      if (item.selected && parentSelected) {
-        acc.IDs.push(id);
-        acc.items.push(item);
-        item.selected = false;
-      }
-
-      item.parentSelected = parentSelected;
-
-      if (item.childrenCount) {
-        return item.childrenIDs.reduce(
-          this.childrenToggleSelectReducer(parentSelected, itemsMap),
-          acc
-        );
-      }
-
-      return acc;
-    };
-  }
-
-  public updateItemParentsSelectedCount(
+  private updateMap<T = TreeListItem>(
+    itemsMap: Map<itemID, T>,
+    key: itemID,
     item: TreeListItem,
-    itemsMap: TreeListItemMap
-  ): void {
-    (item.parentIDs || []).forEach(groupID => {
-      const parent = itemsMap.get(groupID);
-      parent.selectedCount = Math.max(
-        0,
-        (parent.selectedCount || 0) + (item.selected ? 1 : -1)
-      );
-
-      if (item.selected) {
-        parent.selectedIDs.push(item.id);
-      } else {
-        parent.selectedIDs = parent.selectedIDs.filter(id => id !== item.id);
-      }
-    });
+    onlyValue = false
+  ): Map<itemID, T> {
+    return itemsMap.set(key, ((!onlyValue ? item : item.value) as any) as T);
   }
 
   public setPropToTreeDown(
@@ -442,77 +308,11 @@ export class TreeListModelService {
     itemsMap: TreeListItemMap
   ): void {
     Object.assign(deepItem, set);
-
     if (deepItem.parentCount > 1) {
       deepItem.parentIDs.forEach(id => {
         const parent = itemsMap.get(id);
         this.setPropToTreeUp(parent, set, itemsMap);
       });
-    }
-  }
-
-  private updateMap<T = TreeListItem>(
-    itemsMap: Map<itemID, T>,
-    key: itemID,
-    item: TreeListItem,
-    onlyValue = false
-  ): Map<itemID, T> {
-    return itemsMap.set(
-      key,
-      ((!onlyValue
-        ? // ? Object.assign(itemsMap.get(key) || {}, item)
-          item
-        : item.value) as any) as T
-    );
-  }
-
-  public getDisplayValuesFromValue(
-    value: TreeListValue | itemID[],
-    itemsMap: TreeListItemMap,
-    topLevelGroups = false
-  ): string[] {
-    if (!value) {
-      return [];
-    }
-
-    if (!topLevelGroups) {
-      if ((value as TreeListValue).selectedValues) {
-        return (value as TreeListValue).selectedValues;
-      }
-
-      return asArray(value as itemID[]).reduce((acc, id) => {
-        const item = itemsMap.get(id);
-        if (item) {
-          acc.push(item.value);
-        }
-        return acc;
-      }, []);
-    }
-
-    if (topLevelGroups) {
-      const IDs: itemID[] = (value as TreeListValue).selectedIDs
-        ? (value as TreeListValue).selectedIDs
-        : asArray(value as itemID[]);
-
-      return Array.from(
-        IDs.reduce((acc, id) => {
-          const item = itemsMap.get(id);
-
-          if (item) {
-            const topGroup =
-              isNotEmptyArray(item.parentIDs, 1) &&
-              itemsMap.get(item.parentIDs[1]);
-
-            if (topGroup) {
-              acc.add(`${topGroup.value} (${topGroup.selectedCount})`);
-            } else {
-              acc.add(item.value);
-            }
-          }
-
-          return acc;
-        }, new Set() as Set<string>)
-      );
     }
   }
 
@@ -547,17 +347,10 @@ export class TreeListModelService {
   private concatValue(
     start: string,
     current: string = null,
-    separator = ' / '
+    separator = BTL_VALUE_SEPARATOR_DEF
   ): string {
-    const sprtrReg = stringToRegex(separator, 'gi');
-
     return (
       (start ? start : '') + (current ? (start ? separator : '') + current : '')
     );
-
-    // return (
-    //   (start ? start.replace(sprtrReg, '-') : '') +
-    //   (current ? (start ? separator : '') + current.replace(sprtrReg, '-') : '')
-    // );
   }
 }
