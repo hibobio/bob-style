@@ -73,10 +73,8 @@
            class="option-select">
 
         <span *ngIf="!option.isPlaceHolder && !readonly"
-              class="checkbox"
+              class="checkbox bml-checkbox"
               [ngClass]="{
-                'bml-checkbox': mode !== modes.radioGroups,
-                'bml-radio': mode === modes.radioGroups,
                 'selected': option.selected
               }"></span>
 
