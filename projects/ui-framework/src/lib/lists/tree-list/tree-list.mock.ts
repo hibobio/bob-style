@@ -5,6 +5,7 @@ import {
   simpleUID,
 } from '../../services/utils/functional-utils';
 import { mockText, mockBadJobs } from '../../mock.const';
+import { ArrayES } from '../../types';
 
 export const makeRandomList = (
   rootItems = 5,
@@ -48,6 +49,17 @@ export const makeRandomList = (
 };
 
 export const HListMock: TreeListOption[] = makeRandomList(5);
+
+export const HListMockValues = (HListMock.filter(
+  option => option.children
+) as ArrayES<TreeListOption>)
+  .flatMap(group => group.children)
+  .filter(option => option.children)
+  .sort(() => 0.5 - Math.random())
+  .slice(0, 5)
+  .map(
+    option => option.children[randomNumber(0, option.children.length - 1)].id
+  );
 
 const mxRootOptns = 3;
 const mxInsdOptns = 3;

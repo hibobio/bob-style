@@ -160,12 +160,6 @@ export class TreeListViewService {
         0,
         (parent.selectedCount || 0) + (item.selected ? 1 : -1)
       );
-
-      if (item.selected) {
-        parent.selectedIDs.push(item.id);
-      } else {
-        parent.selectedIDs = parent.selectedIDs.filter(id => id !== item.id);
-      }
     });
   }
 }

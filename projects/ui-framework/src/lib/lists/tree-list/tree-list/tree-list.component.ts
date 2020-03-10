@@ -18,6 +18,7 @@ import {
   notFirstChanges,
   isNotEmptyMap,
   isEmptyArray,
+  isValuevy,
 } from '../../../services/utils/functional-utils';
 import { selectValueOrFail } from '../../../services/utils/transformers';
 import { SelectType } from '../../list.enum';
@@ -91,14 +92,12 @@ export class TreeListComponent extends BaseTreeListElement {
       this.list = changes.list.currentValue || [];
 
       if (!this.itemsMapFromAbove) {
-        console.time('getListItemsMap');
         this.itemsMap.clear();
         this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
           keyMap: this.keyMap,
           separator: this.valueSeparatorChar,
           collapsed: this.startCollapsed,
         });
-        console.timeEnd('getListItemsMap');
       }
     }
 
@@ -107,16 +106,17 @@ export class TreeListComponent extends BaseTreeListElement {
       this.showSearch = this.itemsMap.size > 10;
     }
 
-    if (firstChanges(changes, ['list', 'itemsMap'])) {
-      console.log('first change updateListViewModel');
+    if (firstChanges(changes, ['list', 'itemsMap'], true)) {
       this.updateListViewModel();
       viewModelWasUpdated = true;
     }
 
     if (
-      hasChanges(changes, ['list', 'itemsMap'], true) ||
-      hasChanges(changes, ['value'])
+      hasChanges(changes, ['list', 'itemsMap', 'value'], true, {
+        falseyCheck: isValuevy,
+      })
     ) {
+
       viewModelWasUpdated =
         this.applyValue(
           (changes.value ? changes.value.currentValue : this.value) || []
@@ -124,13 +124,17 @@ export class TreeListComponent extends BaseTreeListElement {
     }
 
     if (
-      notFirstChanges(changes, ['startCollapsed']) &&
-      isBoolean(this.startCollapsed)
+      notFirstChanges(changes, ['startCollapsed'], true, {
+        falseyCheck: isBoolean,
+      })
     ) {
       this.toggleCollapseAll(this.startCollapsed, false);
     }
 
-    if (notFirstChanges(changes, ['type']) && this.type === SelectType.single) {
+    if (
+      notFirstChanges(changes, ['type'], true) &&
+      this.type === SelectType.single
+    ) {
       const newValue = isNotEmptyArray(this.value) ? [this.value[0]] : [];
       this.viewSrvc.deselectAllExcept(this.value, newValue, this.itemsMap);
       this.value = newValue;
@@ -138,15 +142,20 @@ export class TreeListComponent extends BaseTreeListElement {
 
     if (
       !viewModelWasUpdated &&
-      (hasChanges(changes, ['list', 'itemsMap', 'viewFilter'], true) ||
-        hasChanges(changes, ['value', 'startCollapsed']))
+      hasChanges(
+        changes,
+        ['list', 'itemsMap', 'viewFilter', 'value', 'startCollapsed'],
+        true,
+        {
+          falseyCheck: isValuevy,
+        }
+      )
     ) {
       this.updateListViewModel();
     }
   }
 
   protected updateListViewModel(expand = false): void {
-    console.time('===> updateListViewModel');
     this.listViewModel = this.modelSrvc.getListViewModel(
       this.list,
       this.itemsMap,
@@ -156,16 +165,8 @@ export class TreeListComponent extends BaseTreeListElement {
         keyMap: this.keyMap,
       }
     );
-    console.timeEnd('===> updateListViewModel');
-
-    console.time('updateListViewModel detectChanges');
 
     this.$listViewModel.next(this.listViewModel);
-
-    // if (!this.cd['destroyed']) {
-    //   this.cd.detectChanges();
-    // }
-    console.timeEnd('updateListViewModel detectChanges');
   }
 
   protected toggleItemCollapsed(
@@ -191,7 +192,6 @@ export class TreeListComponent extends BaseTreeListElement {
   }
 
   protected toggleItemSelect(item: TreeListItem, force: boolean = null): void {
-    console.time('toggleItemSelect');
     const newSelectedValue = isBoolean(force) ? force : !item.selected;
     if (newSelectedValue === item.selected) {
       return;
@@ -200,8 +200,6 @@ export class TreeListComponent extends BaseTreeListElement {
     item.selected = newSelectedValue;
 
     if (this.type === SelectType.single) {
-      item.selected = newSelectedValue;
-
       if (item.selected) {
         if (this.value.length && this.value[0] !== item.id) {
           const prevSelectedItem = this.itemsMap.get(this.value[0]);
@@ -245,34 +243,30 @@ export class TreeListComponent extends BaseTreeListElement {
     this.viewSrvc.updateItemParentsSelectedCount(item, this.itemsMap);
 
     this.updateActionButtonsState();
-    console.timeEnd('toggleItemSelect');
-
-    console.time('toggleItemSelect detectChanges');
     this.cd.detectChanges();
-    console.timeEnd('toggleItemSelect detectChanges');
     this.emitChange();
   }
 
   // returns true if listViewModel was updated
   protected applyValue(newValue: itemID[]): boolean {
-    console.time('applyValue');
-    //
-    //
-    //
-    let viewModelWasUpdated = false;
-    let affectedIDs: itemID[] = this.value || [];
+    let viewModelWasUpdated = false,
+      affectedIDs: itemID[] = joinArrays(
+        this.value || [],
+        this.previousValue || []
+      ),
+      firstSelectedItem: TreeListItem;
+
+
     this.value = selectValueOrFail(newValue);
     if (this.value && this.type === SelectType.single) {
       this.value = this.value.slice(0, 1);
     }
-    console.log('<=== applyValue:', this.value);
 
     if (!this.itemsMap.size) {
       return viewModelWasUpdated;
     }
     affectedIDs = joinArrays(affectedIDs, this.value || []);
 
-    let firstSelectedItem: TreeListItem;
 
     affectedIDs.forEach(id => {
       const item = this.itemsMap.get(id);
@@ -299,6 +293,10 @@ export class TreeListComponent extends BaseTreeListElement {
 
       this.updateListViewModel();
       viewModelWasUpdated = true;
+      console.time('dch');
+      this.cd.detectChanges();
+      console.timeEnd('dch');
+
 
       this.viewSrvc.scrollToItem({
         item: firstSelectedItem,
@@ -307,13 +305,10 @@ export class TreeListComponent extends BaseTreeListElement {
         maxHeightItems: this.maxHeightItems,
       });
     } else {
-      console.time('applyValue, toggleCollapseAll');
       this.toggleCollapseAll(this.startCollapsed, false);
       this.listElement.nativeElement.scrollTop = 0;
-      console.timeEnd('applyValue, toggleCollapseAll');
     }
 
-    console.timeEnd('applyValue');
     return viewModelWasUpdated;
   }
 

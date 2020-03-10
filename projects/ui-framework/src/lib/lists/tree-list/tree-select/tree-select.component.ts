@@ -40,6 +40,7 @@ import {
   isNotEmptyMap,
   notFirstChanges,
   applyChanges,
+  isValuevy,
 } from '../../../services/utils/functional-utils';
 import { TooltipClass } from '../../../popups/tooltip/tooltip.enum';
 import { TreeListPanelIO } from '../tree-list-panel/tree-list-panel.interface';
@@ -93,6 +94,7 @@ export class TreeSelectComponent extends BaseFormElement
   @Input() list: TreeListOption[];
   @Input('value') set setValue(value: itemID[]) {}
   public value: itemID[];
+  public previousValue: itemID[];
   @Input() valueDefault: itemID[];
   @Input() viewFilter: ViewFilter;
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
@@ -138,7 +140,7 @@ export class TreeSelectComponent extends BaseFormElement
         keyMap: BTL_KEYMAP_DEF,
       },
       ['value'],
-      false,
+      true,
       {
         keyMap: { value: 'setValue' },
       }
@@ -161,7 +163,11 @@ export class TreeSelectComponent extends BaseFormElement
       }
     }
 
-    if (hasChanges(changes, ['value'])) {
+    if (
+      hasChanges(changes, ['value'], true, {
+        falseyCheck: isValuevy,
+      })
+    ) {
       this.writeValue(changes.value.currentValue);
     }
 
@@ -176,7 +182,12 @@ export class TreeSelectComponent extends BaseFormElement
       this.setDisplayValue(this.value);
     }
 
-    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+    if (
+      hasChanges(changes, null, true, {
+        falseyCheck: isValuevy,
+      }) &&
+      !this.cd['destroyed']
+    ) {
       this.cd.detectChanges();
     }
   }
@@ -225,6 +236,7 @@ export class TreeSelectComponent extends BaseFormElement
   }
 
   public writeValue(value: itemID[]) {
+    this.previousValue = this.value || [];
     super.writeValue(value);
 
     if (isNotEmptyMap(this.itemsMap)) {

@@ -205,7 +205,6 @@ export class TreeListModelService {
 
     if (isNotEmptyArray(item[keyMap.children])) {
       converted.childrenIDs = [];
-      converted.selectedIDs = [];
       converted.selectedCount = 0;
 
       for (const itm of item[keyMap.children]) {

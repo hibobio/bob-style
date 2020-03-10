@@ -224,7 +224,7 @@ story.add(
         description: text('description', mockText(30), 'Props'),
 
         minChars: number('minChars', 20, {}, 'Props'),
-        maxChars: number('maxChars', 400, {}, 'Props'),
+        maxChars: number('maxChars', undefined, {}, 'Props'),
         minHeight: number('minHeight', 185, {}, 'Props'),
         maxHeight: number('maxHeight', 350, {}, 'Props'),
 

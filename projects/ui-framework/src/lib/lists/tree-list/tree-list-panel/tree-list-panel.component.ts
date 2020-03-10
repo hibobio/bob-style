@@ -30,6 +30,7 @@ import { UtilsService } from '../../../services/utils/utils.service';
 import {
   hasChanges,
   notFirstChanges,
+  isValuevy,
 } from '../../../services/utils/functional-utils';
 import { TreeListValue } from '../tree-list.interface';
 import { TreeListInputOutput } from '../tree-list-IO.abstract';
@@ -86,7 +87,12 @@ export class TreeListPanelComponent extends TreeListInputOutput
       this.destroyPanel();
     }
 
-    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+    if (
+      notFirstChanges(changes, null, true, {
+        falseyCheck: isValuevy,
+      }) &&
+      !this.cd['destroyed']
+    ) {
       this.cd.detectChanges();
     }
   }

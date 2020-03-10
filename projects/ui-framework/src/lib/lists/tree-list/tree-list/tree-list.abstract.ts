@@ -22,6 +22,7 @@ import {
   applyChanges,
   hasChanges,
   isNotEmptyArray,
+  isValuevy,
 } from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { SelectType } from '../../list.enum';
@@ -80,10 +81,6 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   protected onNgChanges(changes: SimpleChanges): void {}
 
   public ngOnChanges(changes: SimpleChanges): void {
-    console.log('---------------\nTree LIST ngOnChanges', changes);
-
-    console.time('ngOnChanges');
-
     applyChanges(
       this,
       changes,
@@ -91,7 +88,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
         keyMap: BTL_KEYMAP_DEF,
       },
       ['list', 'value', 'itemsMap'],
-      false,
+      true,
       {
         keyMap: { list: 'setList', value: 'setValue', itemsMap: 'setItemsMap' },
       }
@@ -110,8 +107,9 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
     }
 
     if (
-      hasChanges(changes, ['valueDefault'], true) ||
-      hasChanges(changes, ['value'])
+      hasChanges(changes, ['value', 'valueDefault'], true, {
+        falseyCheck: isValuevy,
+      })
     ) {
       this.updateActionButtonsState();
     }
@@ -129,19 +127,18 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
       });
     }
 
-    if (notFirstChanges(changes, ['listActions'])) {
+    if (notFirstChanges(changes, ['listActions'], true)) {
       this.hasFooter = !this.readonly && objectHasTruthyValue(this.listActions);
     }
 
-    console.timeEnd('ngOnChanges');
-
-    console.time('ngOnChanges detectChanges');
-    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+    if (
+      notFirstChanges(changes, null, true, {
+        falseyCheck: isValuevy,
+      }) &&
+      !this.cd['destroyed']
+    ) {
       this.cd.detectChanges();
     }
-    console.timeEnd('ngOnChanges detectChanges');
-
-    console.log('Tree LIST ngOnChanges END\n---------------');
   }
 
   ngAfterViewInit(): void {

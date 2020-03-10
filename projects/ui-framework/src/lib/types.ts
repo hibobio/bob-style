@@ -2,6 +2,11 @@ export interface GenericObject {
   [key: string]: any;
 }
 
+export interface ArrayES<T> extends Array<T> {
+  flat(): Array<T>;
+  flatMap(func: (x: T) => T): Array<T>;
+}
+
 export interface OverlayPositionClasses {
   'panel-below'?: boolean;
   'panel-above'?: boolean;
@@ -121,7 +126,7 @@ export interface DateLocaleFormat {
 }
 
 export type DateLocaleFormats = {
-  [key in DateLocaleFormatKeys]: DateLocaleFormat
+  [key in DateLocaleFormatKeys]: DateLocaleFormat;
 };
 
-export type Constructor<T> = new(...args: any[]) => T;
+export type Constructor<T> = new (...args: any[]) => T;

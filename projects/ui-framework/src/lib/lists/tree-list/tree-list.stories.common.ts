@@ -7,6 +7,7 @@ import {
   HListMock,
   HListMockSingleGroup,
   makeRandomList,
+  HListMockValues,
 } from './tree-list.mock';
 
 export const TreeListStoriesCommonProps = (
@@ -54,10 +55,11 @@ export const TreeListStoriesCommonProps = (
         HListMockSimple[2].children[2].serverId,
       ],
     ],
-    0,
+    // 0,
+    HListMockSimple[0].serverId,
     'Data'
   ),
-  valueRandom: select('random list value', [], undefined, 'Data'),
+  valueRandom: select('random list value', [0, ...HListMockValues], 0, 'Data'),
 
   footerActions: object('footerActions', footerActions, 'Props'),
 

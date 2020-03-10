@@ -10,7 +10,6 @@
         'bhl-item-group': item.childrenCount,
         disabled: item.disabled || (type === selectType.multi && item.parentSelected),
         selected: item.selected || (type === selectType.multi && item.parentSelected),
-        indeterminate: item.indeterminate,
         expanded: item.childrenCount && !item.collapsed,
         collapsed: item.collapsed,
         'next-is-group': item.nextInViewIsGroup,
