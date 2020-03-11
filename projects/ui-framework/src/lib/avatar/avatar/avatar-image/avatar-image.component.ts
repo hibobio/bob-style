@@ -70,15 +70,10 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    applyChanges(
-      this,
-      changes,
-      {
-        size: AvatarSize.mini,
-        disabled: false,
-      },
-      []
-    );
+    applyChanges(this, changes, {
+      size: AvatarSize.mini,
+      disabled: false,
+    });
 
     if (hasChanges(changes, ['size'], true)) {
       this.size = valueAsNumber(true, this.size, AvatarSize.mini);

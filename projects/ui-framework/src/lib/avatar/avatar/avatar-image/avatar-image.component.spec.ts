@@ -347,7 +347,7 @@ describe('AvatarImageComponent', () => {
 
       component.ngOnChanges(
         simpleChange({
-          imageSource: undefined,
+          imageSource: null,
         })
       );
       flush();
