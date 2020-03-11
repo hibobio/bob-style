@@ -1,17 +1,17 @@
 <div mat-tab-nav-bar
+     role="navigation"
      [ngClass]="'tabs-'+type"
      [disableRipple]="true"
      (click.outside-zone)="onNavBarClick($event)"
      (keydown.outside-zone)="onNavBarKeydown($event)">
 
-  <span *ngFor="let tab of tabs; let i = index; trackBy: tabTrackBy"
-        mat-tab-link
-        [disableRipple]="true"
-        class="mat-tab-label"
-        [attr.data-index]="i"
-        [active]="i === selectedIndex">
-    <span #tabLabels
-          class="tab-label {{tab?.key}}">{{tab.label}}</span>
-  </span>
+  <a *ngFor="let tab of tabs; let i = index; trackBy: tabTrackBy"
+     mat-tab-link
+     [disableRipple]="true"
+     class="mat-tab-label {{tab?.key}}"
+     [attr.data-index]="i"
+     [active]="i === selectedIndex">
+    {{tab.label}}
+  </a>
 
 </div>

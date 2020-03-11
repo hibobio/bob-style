@@ -48,34 +48,33 @@
   }
 
   .mat-tab-label {
-    cursor: pointer !important;
-    text-align: center;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    white-space: nowrap;
     position: relative;
 
     height: 30px;
     min-width: 0;
     padding: 0;
-    color: $grey-700;
     opacity: 1;
+
+    line-height: 28px;
+    padding: 0 15px;
+    outline: 0;
+    text-align: center;
+    text-decoration: none;
     text-transform: uppercase;
     font-weight: 400;
+    white-space: nowrap;
+    color: $grey-700;
 
-    .tab-label {
-      line-height: 28px;
-      padding: 0 15px;
-
-      &[style] {
-        padding: 0 10px;
-      }
+    &[style] {
+      padding: 0 10px;
     }
+  }
 
-    &.mat-tab-label-active {
-      font-weight: 700;
-    }
+  .mat-tab-label-active {
+    font-weight: 700;
   }
 
   .mat-tab-nav-bar.mat-primary .mat-ink-bar {

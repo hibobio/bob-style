@@ -15,7 +15,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { Tab, TabChangeEvent } from './tabs.interface';
-import { MatTabNav } from '@angular/material/tabs';
+import { MatTabNav, MatTabLink } from '@angular/material/tabs';
 import { TabsType } from './tabs.enum';
 import { notFirstChanges, isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
@@ -30,7 +30,7 @@ export class TabsComponent implements OnChanges, AfterViewInit {
   constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
 
   @ViewChild(MatTabNav) matTabNav: MatTabNav;
-  @ViewChildren('tabLabels')
+  @ViewChildren(MatTabLink, { read: ElementRef })
   tabLabels: QueryList<ElementRef>;
 
   @Input() public type: TabsType = TabsType.primary;
