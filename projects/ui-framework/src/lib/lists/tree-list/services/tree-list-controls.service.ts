@@ -41,13 +41,16 @@ export class TreeListControlsService {
     } = config;
 
     const target = event.target as HTMLElement;
-    const itemElement = target.closest('.bhl-item') as HTMLElement;
-    if (!itemElement) {
+
+    const { itemElement, index, item } = this.getItemFromEl(
+      target,
+      itemsMap,
+      listViewModel
+    );
+
+    if (!item) {
       return;
     }
-
-    const index = parseInt(itemElement.getAttribute('data-index'), 10);
-    const item: TreeListItem = itemsMap.get(listViewModel[index]);
 
     const isDisabled =
       readonly ||
@@ -105,13 +108,16 @@ export class TreeListControlsService {
     event.stopPropagation();
 
     const target = event.target as HTMLElement;
-    const itemElement = target.closest('.bhl-item') as HTMLElement;
-    if (!itemElement) {
+
+    const { itemElement, index, item } = this.getItemFromEl(
+      target,
+      itemsMap,
+      listViewModel
+    );
+
+    if (!item) {
       return;
     }
-
-    const index = parseInt(itemElement.getAttribute('data-index'), 10);
-    const item: TreeListItem = itemsMap.get(listViewModel[index]);
 
     if (
       isKey(event.key, Keys.arrowdown) ||
@@ -174,5 +180,20 @@ export class TreeListControlsService {
     ) {
       return !isDisabled && toggleItemSelect(item, index);
     }
+  }
+
+  private getItemFromEl(
+    itemElement: HTMLElement,
+    itemsMap: TreeListItemMap,
+    listViewModel: itemID[]
+  ): { itemElement: HTMLElement; index: number; item: TreeListItem } {
+    itemElement = itemElement.closest('.bhl-item');
+
+    const index: number =
+      itemElement && parseInt(itemElement.getAttribute('data-index'), 10);
+    const item: TreeListItem =
+      itemElement && itemsMap.get(listViewModel[index]);
+
+    return { itemElement, index, item };
   }
 }

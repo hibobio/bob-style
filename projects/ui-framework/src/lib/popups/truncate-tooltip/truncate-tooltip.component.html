@@ -1,10 +1,10 @@
-<i *ngIf="type === types.material && tooltipAllowed && tooltipEnabled"
+<i *ngIf="type !== types.none && type === types.material && tooltipAllowed && tooltipEnabled"
    class="tooltip-trigger"
    [matTooltip]="tooltipText"
    [matTooltipShowDelay]="delay"
    [matTooltipPosition]="position"
    [matTooltipClass]="tooltipClass"></i>
-<i *ngIf="type === types.css && tooltipEnabled"
+<i *ngIf="type !== types.none && type === types.css && tooltipEnabled"
    class="tooltip-trigger"
    [ngClass]="tooltipClass"
    [attr.data-tooltip]="tooltipText"

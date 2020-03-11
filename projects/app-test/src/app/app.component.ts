@@ -43,6 +43,6 @@ export class AppComponent {
 
   setFormValTo(val) {
     console.log('should set value to', val);
-    this.testForm.get('treeSelect').setValue(val, { emitEvent: false });
+    this.testForm.get('treeSelect').setValue(val, { emitEvent: true });
   }
 }

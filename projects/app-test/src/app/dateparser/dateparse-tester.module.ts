@@ -7,16 +7,14 @@ import {
   OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  DateParseService,
-  DateInputDirectiveModule,
-} from '../../../../ui-framework/src/public_api';
 // tslint:disable-next-line: max-line-length
 import { DateParseServiceTest } from '../../../../ui-framework/src/lib/form-elements/date-picker/date-parse-service/date-parse.service.mock';
 // tslint:disable-next-line: max-line-length
 import { DateInputDirective } from '../../../../ui-framework/src/lib/form-elements/date-picker/date-input-directive/dateinput.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { DateParseService } from '../../../../ui-framework/src/lib/form-elements/date-picker/date-parse-service/date-parse.service';
+import { DateInputDirectiveModule } from '../../../../ui-framework/src/lib/form-elements/date-picker/date-input-directive/dateinput.directive.module';
 
 @Component({
   // tslint:disable-next-line: component-selector

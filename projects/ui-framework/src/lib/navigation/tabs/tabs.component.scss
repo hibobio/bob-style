@@ -1,20 +1,19 @@
 @import '../../style/common-imports';
 
 :host {
-  display: block;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   position: relative;
+  flex-direction: row;
+  justify-content: center;
+  font-family: inherit;
   z-index: 0;
+  user-select: none;
 }
 
 :host ::ng-deep {
-  .mat-tab-group {
-    width: 100%;
-    position: relative;
-    flex-direction: row;
-    justify-content: center;
-    font-family: inherit;
-  }
-
   .mat-tab-header {
     border: 0;
     max-width: 100%;
@@ -28,7 +27,8 @@
     }
   }
 
-  .mat-tab-label-container {
+  .mat-tab-label-container,
+  .mat-tab-link-container {
     box-shadow: inset 0 -1px 0 0 $grey-500;
     flex-grow: 0;
   }
@@ -49,6 +49,13 @@
 
   .mat-tab-label {
     cursor: pointer !important;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    position: relative;
+
     height: 30px;
     min-width: 0;
     padding: 0;
@@ -60,6 +67,10 @@
     .tab-label {
       line-height: 28px;
       padding: 0 15px;
+
+      &[style] {
+        padding: 0 10px;
+      }
     }
 
     &.mat-tab-label-active {
@@ -67,13 +78,8 @@
     }
   }
 
-  .mat-tab-group.mat-primary .mat-ink-bar {
+  .mat-tab-nav-bar.mat-primary .mat-ink-bar {
     transition-duration: 0.15s;
-  }
-
-  .mat-tab-body-wrapper,
-  .mat-tab-body {
-    display: none;
   }
 
   .tabs-primary {
@@ -89,7 +95,8 @@
   }
 
   .tabs-secondary {
-    .mat-tab-label-container {
+    .mat-tab-label-container,
+    .mat-tab-link-container {
       width: 100%;
     }
 

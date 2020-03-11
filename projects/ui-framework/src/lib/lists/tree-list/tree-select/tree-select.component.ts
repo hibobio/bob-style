@@ -50,7 +50,7 @@ import {
   SelectValueMultiOrSingle,
 } from '../../../services/utils/transformers';
 import { TreeListViewService } from '../services/tree-list-view.service';
-import { TreeListValueService } from '../services/tree-list-value.service';
+import { TreeListValueUtils } from '../services/tree-list-value.static';
 
 @Component({
   selector: 'b-tree-select',
@@ -79,7 +79,6 @@ export class TreeSelectComponent extends BaseFormElement
   constructor(
     private modelSrvc: TreeListModelService,
     private viewSrvc: TreeListViewService,
-    private valueSrvc: TreeListValueService,
     cd: ChangeDetectorRef
   ) {
     super(cd);
@@ -224,7 +223,7 @@ export class TreeSelectComponent extends BaseFormElement
   }
 
   private setDisplayValue(value: TreeListValue | itemID[] = null): void {
-    const displayValues = this.valueSrvc.getDisplayValuesFromValue(
+    const displayValues = TreeListValueUtils.getDisplayValuesFromValue(
       value,
       this.itemsMap,
       this.type === SelectType.multi

@@ -36,8 +36,7 @@ import {
 } from '../services/tree-list-view.service';
 import { BaseTreeListElement } from './tree-list.abstract';
 import { BehaviorSubject } from 'rxjs';
-import { TreeListValueService } from '../services/tree-list-value.service';
-import { TreeListSearchService } from '../services/tree-list-search.service';
+import { TreeListValueUtils } from '../services/tree-list-value.static';
 
 @Component({
   selector: 'b-tree-list',
@@ -50,24 +49,12 @@ export class TreeListComponent extends BaseTreeListElement {
     modelSrvc: TreeListModelService,
     cntrlsSrvc: TreeListControlsService,
     viewSrvc: TreeListViewService,
-    valueSrvc: TreeListValueService,
-    searchSrvc: TreeListSearchService,
     DOM: DOMhelpers,
     cd: ChangeDetectorRef,
     zone: NgZone,
     host: ElementRef
   ) {
-    super(
-      modelSrvc,
-      cntrlsSrvc,
-      viewSrvc,
-      valueSrvc,
-      searchSrvc,
-      DOM,
-      cd,
-      zone,
-      host
-    );
+    super(modelSrvc, cntrlsSrvc, viewSrvc, DOM, cd, zone, host);
   }
 
   @Input('list') set setList(list: TreeListOption[]) {}
@@ -116,7 +103,6 @@ export class TreeListComponent extends BaseTreeListElement {
         falseyCheck: isValuevy,
       })
     ) {
-
       viewModelWasUpdated =
         this.applyValue(
           (changes.value ? changes.value.currentValue : this.value) || []
@@ -256,7 +242,6 @@ export class TreeListComponent extends BaseTreeListElement {
       ),
       firstSelectedItem: TreeListItem;
 
-
     this.value = selectValueOrFail(newValue);
     if (this.value && this.type === SelectType.single) {
       this.value = this.value.slice(0, 1);
@@ -266,7 +251,6 @@ export class TreeListComponent extends BaseTreeListElement {
       return viewModelWasUpdated;
     }
     affectedIDs = joinArrays(affectedIDs, this.value || []);
-
 
     affectedIDs.forEach(id => {
       const item = this.itemsMap.get(id);
@@ -297,7 +281,6 @@ export class TreeListComponent extends BaseTreeListElement {
       this.cd.detectChanges();
       console.timeEnd('dch');
 
-
       this.viewSrvc.scrollToItem({
         item: firstSelectedItem,
         listElement: this.listElement.nativeElement,
@@ -324,7 +307,7 @@ export class TreeListComponent extends BaseTreeListElement {
     }
 
     if (this.type === SelectType.multi) {
-      this.value = this.valueSrvc.sortIDlistByItemIndex(
+      this.value = TreeListValueUtils.sortIDlistByItemIndex(
         this.value,
         this.itemsMap
       );
@@ -335,7 +318,10 @@ export class TreeListComponent extends BaseTreeListElement {
       selectedValues:
         this.type === SelectType.single
           ? [this.itemsMap.get(this.value[0]).value]
-          : this.valueSrvc.getDisplayValuesFromValue(this.value, this.itemsMap),
+          : TreeListValueUtils.getDisplayValuesFromValue(
+              this.value,
+              this.itemsMap
+            ),
     });
   }
 }

@@ -19,7 +19,7 @@ import {
   BTL_KEYMAP_DEF,
   BTL_VALUE_SEPARATOR_DEF,
 } from '../tree-list.const';
-import { TreeListSearchService } from './tree-list-search.service';
+import { TreeListSearchUtils } from './tree-list-search.static';
 
 interface TreeListGetListViewModelConfig {
   keyMap: TreeListKeyMap;
@@ -39,7 +39,7 @@ interface TreeListConverterConfig {
   providedIn: 'root',
 })
 export class TreeListModelService {
-  constructor(private searchSrvc: TreeListSearchService) {}
+  constructor() {}
 
   private counter = 0;
   private errorCounter = 0;
@@ -77,7 +77,10 @@ export class TreeListModelService {
         itemData.nextInViewIsGroup = false;
 
         // null if group name does not match, false if option name does not match
-        const filterResult = this.searchSrvc.itemFilter(itemData, viewFilter);
+        const filterResult = TreeListSearchUtils.itemFilter(
+          itemData,
+          viewFilter
+        );
 
         if (filterResult !== false) {
           const itemIndexInView = model.push(itemData.id) - 1;

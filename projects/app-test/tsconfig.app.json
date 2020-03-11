@@ -9,5 +9,9 @@
   "files": [
     "src/main.ts",
     "src/polyfills.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "enableResourceInlining": false,
+    "enableIvy": false
+  }
 }

@@ -1,15 +1,11 @@
-import { Injectable } from '@angular/core';
 import { ViewFilter, TreeListItem } from '../tree-list.interface';
 import {
   isRegExp,
   stringToRegex,
 } from '../../../services/utils/functional-utils';
 
-@Injectable()
-export class TreeListSearchService {
-  constructor() {}
-
-  public getSearchViewFilter(searchValue: string): ViewFilter {
+export class TreeListSearchUtils {
+  public static getSearchViewFilter(searchValue: string): ViewFilter {
     return {
       show: {
         search: searchValue,
@@ -18,7 +14,10 @@ export class TreeListSearchService {
     };
   }
 
-  public itemFilter(item: TreeListItem, viewFilter: ViewFilter = {}): boolean {
+  public static itemFilter(
+    item: TreeListItem,
+    viewFilter: ViewFilter = {}
+  ): boolean {
     let result = true;
 
     if (viewFilter.hide) {
