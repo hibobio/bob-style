@@ -36,7 +36,7 @@ describe('TabsComponent', () => {
     component.tabs = [
       {
         label: 'tab 1',
-        key: 'tab.one',
+        key: 'tab-one',
       },
       {
         label: 'tab 2',
@@ -56,8 +56,8 @@ describe('TabsComponent', () => {
 
   describe('tabs', () => {
     it('should have 3 tabs', () => {
-      const progressEl = fixture.debugElement.query(By.css('.mat-tab-header'));
-      expect(progressEl.childNodes.length).toEqual(3);
+      const tabEls = fixture.debugElement.queryAll(By.css('.mat-tab-label'));
+      expect(tabEls.length).toEqual(3);
     });
 
     it('should to set type (style)', () => {
@@ -83,8 +83,9 @@ describe('TabsComponent', () => {
       component.selectChange.subscribe(() => {});
       component.selectedIndex = 1;
       fixture.detectChanges();
-      const label = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[0]
-        .nativeElement;
+      const label = fixture.debugElement.query(
+        By.css('.mat-tab-label:nth-child(1)')
+      ).nativeElement;
       label.click();
       fixture.detectChanges();
       tick(500);
@@ -96,8 +97,9 @@ describe('TabsComponent', () => {
       component.controlled = true;
       component.selectedIndex = 1;
       fixture.detectChanges();
-      const label = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[0]
-        .nativeElement;
+      const label = fixture.debugElement.query(
+        By.css('.mat-tab-label:nth-child(1)')
+      ).nativeElement;
       label.click();
       fixture.detectChanges();
       tick(500);
@@ -108,8 +110,9 @@ describe('TabsComponent', () => {
       component.selectedIndex = 1;
       component.selectClick.subscribe(() => {});
       fixture.detectChanges();
-      const label = fixture.debugElement.queryAll(By.css('.tab-label'))[1]
-        .nativeElement;
+      const label = fixture.debugElement.query(
+        By.css('.mat-tab-label:nth-child(2)')
+      ).nativeElement;
       label.click();
       expect(component.selectClick.emit).toHaveBeenCalledTimes(1);
       expect(component.selectClick.emit).toHaveBeenCalledWith({
@@ -123,10 +126,10 @@ describe('TabsComponent', () => {
 
     it('should add class from key param when exists in model', () => {
       fixture.detectChanges();
-      const tabSpan = fixture.debugElement.queryAll(
-        By.css('.mat-tab-label span')
-      );
-      expect(tabSpan[0].nativeElement.classList).toContain('tab.one');
+      const label = fixture.debugElement.query(
+        By.css('.mat-tab-label:nth-child(1)')
+      ).nativeElement;
+      expect(label.classList).toContain('tab-one');
     });
   });
 });
