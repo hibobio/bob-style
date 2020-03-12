@@ -103,7 +103,6 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
           };
 
           testImg.src = this.videoData.thumb;
-          return;
         }
       }
     }
