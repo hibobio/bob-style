@@ -65,11 +65,11 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
           : MediaType.video;
 
       if (this.mediaType === MediaType.image) {
-        this.url = !base64imageTest.test(this.url)
-          ? this.URL.reconstruct(this.url)
-          : this.url;
-
-        this.setThumImg(this.url ? `url(${this.url})` : null);
+        this.setThumImg(
+          !base64imageTest.test(this.url)
+            ? this.URL.reconstruct(this.url)
+            : this.url
+        );
       }
 
       if (this.mediaType === MediaType.video) {
@@ -86,25 +86,25 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
           return;
         }
 
+        this.setThumImg(this.videoData.thumb);
+
         if (this.videoData.thumbAlt && this.videoData.thumbMinWidth) {
           let testImg = new Image();
+
           testImg.onerror = () => {
             this.setThumImg(this.videoData.thumbAlt);
             testImg = testImg.onload = testImg.onerror = null;
           };
           testImg.onload = () => {
-            this.setThumImg(
-              testImg.naturalWidth > this.videoData.thumbMinWidth
-                ? this.videoData.thumb
-                : this.videoData.thumbAlt
-            );
+            if (testImg.naturalWidth <= this.videoData.thumbMinWidth) {
+              this.setThumImg(this.videoData.thumbAlt);
+            }
             testImg = testImg.onload = testImg.onerror = null;
           };
+
           testImg.src = this.videoData.thumb;
           return;
         }
-
-        this.setThumImg(this.videoData.thumb);
       }
     }
   }
