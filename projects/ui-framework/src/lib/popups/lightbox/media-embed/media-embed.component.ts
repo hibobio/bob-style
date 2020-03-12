@@ -19,7 +19,10 @@ import {
   filestackTest,
   allowedDomainsTest,
 } from '../../../services/url/url.const';
-import { stringify } from '../../../services/utils/functional-utils';
+import {
+  stringify,
+  hasChanges,
+} from '../../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-media-embed',
@@ -53,7 +56,7 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.url) {
+    if (hasChanges(changes, ['url'], true)) {
       this.url = changes.url.currentValue;
 
       this.mediaType =
@@ -66,13 +69,12 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
           ? this.URL.reconstruct(this.url)
           : this.url;
 
-        this.host.nativeElement.style.backgroundImage = this.url
-          ? `url(${this.url})`
-          : null;
+        this.setThumImg(this.url ? `url(${this.url})` : null);
       }
 
       if (this.mediaType === MediaType.video) {
         this.videoData = this.URL.parseVideoURL(this.url);
+
         if (!this.videoData) {
           console.error(
             `[MediaEmbedComponent]: URL (${
@@ -83,9 +85,24 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
           );
           return;
         }
-        this.host.nativeElement.style.backgroundImage = this.videoData
-          ? `url(${this.videoData.thumb})`
-          : null;
+
+        if (this.videoData.thumbAlt && this.videoData.thumbMinWidth) {
+          const testImg = new Image();
+          testImg.onerror = () => {
+            this.setThumImg(this.videoData.thumbAlt);
+          };
+          testImg.onload = () => {
+            this.setThumImg(
+              testImg.naturalWidth > this.videoData.thumbMinWidth
+                ? this.videoData.thumb
+                : this.videoData.thumbAlt
+            );
+          };
+          testImg.src = this.videoData.thumb;
+          return;
+        }
+
+        this.setThumImg(this.videoData.thumb);
       }
     }
   }
@@ -93,6 +110,12 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
   ngOnDestroy(): void {
     if (this.lightbox) {
       this.lightbox.close();
+    }
+  }
+
+  private setThumImg(imgUrl: string) {
+    if (imgUrl) {
+      this.host.nativeElement.style.backgroundImage = `url(${imgUrl})`;
     }
   }
 }
