@@ -8,10 +8,92 @@ import {
 import {
   isNullOrUndefined,
   stringify,
+  isBoolean,
 } from '../../../services/utils/functional-utils';
-import { BTL_VALUE_SEPARATOR_DEF } from '../tree-list.const';
+import { BTL_VALUE_SEPARATOR_DEF, BTL_ROOT_ID } from '../tree-list.const';
+
+export interface TreeListChildrenToggleSelectReducerResult {
+  IDs: itemID[];
+  items: TreeListItem[];
+}
+
+export type ChildrenToggleSelectReducer = (
+  acc: TreeListChildrenToggleSelectReducerResult,
+  id: itemID
+) => TreeListChildrenToggleSelectReducerResult;
 
 export class TreeListModelUtils {
+  public static deselectAllExcept(
+    selectedIDs: itemID[],
+    keepIDs: itemID[],
+    itemsMap: TreeListItemMap
+  ): void {
+    selectedIDs
+      .filter(id => !keepIDs.includes(id))
+      .forEach(id => {
+        const item = itemsMap.get(id);
+        item.selected = false;
+      });
+  }
+
+  public static toggleCollapseAllItemsInMap(
+    itemsMap: TreeListItemMap,
+    force: boolean = null
+  ): void {
+    itemsMap.forEach(item => {
+      if (item.childrenCount && item.id !== BTL_ROOT_ID) {
+        item.collapsed = isBoolean(force) ? force : !item.collapsed;
+      }
+    });
+  }
+
+  public static childrenToggleSelectReducer(
+    parentSelected: boolean,
+    itemsMap: TreeListItemMap
+  ): ChildrenToggleSelectReducer {
+    const reducer: ChildrenToggleSelectReducer = (
+      acc = {
+        IDs: [],
+        items: [],
+      },
+      id
+    ) => {
+      const item = itemsMap.get(id);
+
+      if (item.selected && parentSelected) {
+        acc.IDs.push(id);
+        acc.items.push(item);
+        item.selected = false;
+      }
+
+      item.parentSelected = parentSelected;
+
+      if (item.childrenCount) {
+        return item.childrenIDs.reduce(
+          this.childrenToggleSelectReducer(parentSelected, itemsMap),
+          acc
+        );
+      }
+
+      return acc;
+    };
+
+    return reducer;
+  }
+
+  public static updateItemParentsSelectedCount(
+    item: TreeListItem,
+    itemsMap: TreeListItemMap
+  ): void {
+    (item.parentIDs || []).forEach(groupID => {
+      const parent = itemsMap.get(groupID);
+      parent.selectedCount = Math.max(
+        0,
+        (parent.selectedCount || 0) + (item.selected ? 1 : -1)
+      );
+    });
+  }
+
   public static updateMap<T = TreeListItem>(
     itemsMap: Map<itemID, T>,
     key: itemID,

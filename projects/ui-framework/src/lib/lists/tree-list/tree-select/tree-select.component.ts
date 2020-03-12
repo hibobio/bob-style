@@ -51,6 +51,7 @@ import {
 } from '../../../services/utils/transformers';
 import { TreeListViewService } from '../services/tree-list-view.service';
 import { TreeListValueUtils } from '../services/tree-list-value.static';
+import { TreeListModelUtils } from '../services/tree-list-model.static';
 
 @Component({
   selector: 'b-tree-select',
@@ -169,7 +170,7 @@ export class TreeSelectComponent extends BaseFormElement
 
     if (notFirstChanges(changes, ['type']) && this.type === SelectType.single) {
       const newValue = isNotEmptyArray(this.value) ? [this.value[0]] : [];
-      this.viewSrvc.deselectAllExcept(
+      TreeListModelUtils.deselectAllExcept(
         this.treeListValue ? this.treeListValue.selectedIDs : this.value,
         newValue,
         this.itemsMap
@@ -208,7 +209,7 @@ export class TreeSelectComponent extends BaseFormElement
 
   public onCancel(): void {
     if (this.treeListValue) {
-      this.viewSrvc.deselectAllExcept(
+      TreeListModelUtils.deselectAllExcept(
         this.treeListValue.selectedIDs,
         this.value,
         this.itemsMap

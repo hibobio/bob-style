@@ -35,6 +35,7 @@ import { TreeListControlsService } from '../services/tree-list-controls.service'
 import { LIST_ACTIONS_STATE_DEF } from '../../list-footer/list-footer.const';
 import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from '../tree-list.const';
 import { TreeListSearchUtils } from '../services/tree-list-search.static';
+import { TreeListModelUtils } from '../services/tree-list-model.static';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -205,7 +206,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   }
 
   public toggleCollapseAll(force: boolean = null, updateModel = true): void {
-    this.viewSrvc.toggleCollapseAllItemsInMap(this.itemsMap, force);
+    TreeListModelUtils.toggleCollapseAllItemsInMap(this.itemsMap, force);
     if (updateModel) {
       this.updateListViewModel();
     }

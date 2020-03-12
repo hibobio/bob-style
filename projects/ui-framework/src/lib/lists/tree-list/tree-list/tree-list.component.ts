@@ -30,13 +30,14 @@ import {
 } from '../tree-list.interface';
 import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
-import {
-  TreeListViewService,
-  TreeListChildrenToggleSelectReducerResult,
-} from '../services/tree-list-view.service';
+import { TreeListViewService } from '../services/tree-list-view.service';
 import { BaseTreeListElement } from './tree-list.abstract';
 import { BehaviorSubject } from 'rxjs';
 import { TreeListValueUtils } from '../services/tree-list-value.static';
+import {
+  TreeListModelUtils,
+  TreeListChildrenToggleSelectReducerResult,
+} from '../services/tree-list-model.static';
 
 @Component({
   selector: 'b-tree-list',
@@ -122,7 +123,7 @@ export class TreeListComponent extends BaseTreeListElement {
       this.type === SelectType.single
     ) {
       const newValue = isNotEmptyArray(this.value) ? [this.value[0]] : [];
-      this.viewSrvc.deselectAllExcept(this.value, newValue, this.itemsMap);
+      TreeListModelUtils.deselectAllExcept(this.value, newValue, this.itemsMap);
       this.value = newValue;
     }
 
@@ -191,7 +192,7 @@ export class TreeListComponent extends BaseTreeListElement {
           const prevSelectedItem = this.itemsMap.get(this.value[0]);
           prevSelectedItem.selected = false;
 
-          this.viewSrvc.updateItemParentsSelectedCount(
+          TreeListModelUtils.updateItemParentsSelectedCount(
             prevSelectedItem,
             this.itemsMap
           );
@@ -205,7 +206,7 @@ export class TreeListComponent extends BaseTreeListElement {
     if (this.type === SelectType.multi) {
       if (item.childrenCount) {
         const deselected: TreeListChildrenToggleSelectReducerResult = item.childrenIDs.reduce(
-          this.viewSrvc.childrenToggleSelectReducer(
+          TreeListModelUtils.childrenToggleSelectReducer(
             item.selected,
             this.itemsMap
           ),
@@ -215,7 +216,7 @@ export class TreeListComponent extends BaseTreeListElement {
         this.value = this.value.filter(id => !deselected.IDs.includes(id));
 
         deselected.items.forEach((itm: TreeListItem) => {
-          this.viewSrvc.updateItemParentsSelectedCount(itm, this.itemsMap);
+          TreeListModelUtils.updateItemParentsSelectedCount(itm, this.itemsMap);
         });
       }
 
@@ -226,7 +227,7 @@ export class TreeListComponent extends BaseTreeListElement {
       }
     }
 
-    this.viewSrvc.updateItemParentsSelectedCount(item, this.itemsMap);
+    TreeListModelUtils.updateItemParentsSelectedCount(item, this.itemsMap);
 
     this.updateActionButtonsState();
     this.cd.detectChanges();
@@ -270,7 +271,7 @@ export class TreeListComponent extends BaseTreeListElement {
         firstSelectedItem = item;
       }
 
-      this.viewSrvc.updateItemParentsSelectedCount(item, this.itemsMap);
+      TreeListModelUtils.updateItemParentsSelectedCount(item, this.itemsMap);
     });
 
     if (firstSelectedItem) {
