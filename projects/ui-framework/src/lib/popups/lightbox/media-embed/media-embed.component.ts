@@ -87,9 +87,10 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
         }
 
         if (this.videoData.thumbAlt && this.videoData.thumbMinWidth) {
-          const testImg = new Image();
+          let testImg = new Image();
           testImg.onerror = () => {
             this.setThumImg(this.videoData.thumbAlt);
+            testImg = testImg.onload = testImg.onerror = null;
           };
           testImg.onload = () => {
             this.setThumImg(
@@ -97,6 +98,7 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
                 ? this.videoData.thumb
                 : this.videoData.thumbAlt
             );
+            testImg = testImg.onload = testImg.onerror = null;
           };
           testImg.src = this.videoData.thumb;
           return;
