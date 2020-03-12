@@ -5,9 +5,9 @@ import {
   isEmptyMap,
   isBoolean,
 } from '../../../services/utils/functional-utils';
-import { TreeListModelService } from './tree-list-model.service';
 import { LIST_EL_HEIGHT } from '../../list.consts';
 import { BTL_ROOT_ID } from '../tree-list.const';
+import { TreeListModelUtils } from './tree-list-model.static';
 
 interface TreeListScrollToItemConfig {
   item?: TreeListItem;
@@ -26,12 +26,12 @@ export interface TreeListChildrenToggleSelectReducerResult {
 
 @Injectable()
 export class TreeListViewService {
-  constructor(private modelSrvc: TreeListModelService) {}
+  constructor() {}
 
   public expandTillItemsByID(IDs: itemID[] = [], itemsMap: TreeListItemMap) {
     IDs.forEach(id => {
       const item = itemsMap.get(id);
-      this.modelSrvc.setPropToTreeUp(item, { collapsed: false }, itemsMap);
+      TreeListModelUtils.setPropToTreeUp(item, { collapsed: false }, itemsMap);
     });
   }
 

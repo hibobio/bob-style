@@ -132,6 +132,7 @@ export class TreeSelectComponent extends BaseFormElement
   public touched = false;
 
   public ngOnChanges(changes: SimpleChanges): void {
+    console.log('ngOnChanges', changes);
     applyChanges(
       this,
       changes,
@@ -162,11 +163,7 @@ export class TreeSelectComponent extends BaseFormElement
       }
     }
 
-    if (
-      hasChanges(changes, ['value'], true, {
-        falseyCheck: isValuevy,
-      })
-    ) {
+    if (hasChanges(changes, ['value'])) {
       this.writeValue(changes.value.currentValue);
     }
 
@@ -236,11 +233,18 @@ export class TreeSelectComponent extends BaseFormElement
 
   public writeValue(value: itemID[]) {
     this.previousValue = this.value || [];
-    super.writeValue(value);
-
-    if (isNotEmptyMap(this.itemsMap)) {
-      this.setDisplayValue(this.value);
-    }
+    super.writeValue(value, false, () => {
+      if (isNotEmptyMap(this.itemsMap)) {
+        this.setDisplayValue(this.value);
+        console.log(
+          'writeValue',
+          'old value',
+          this.previousValue,
+          'new value',
+          this.value
+        );
+      }
+    });
   }
 
   private emitChange(value: TreeListValue): void {

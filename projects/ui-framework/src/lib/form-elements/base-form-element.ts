@@ -21,6 +21,7 @@ import {
   chainCall,
   Func,
   cloneArray,
+  pass,
 } from '../services/utils/functional-utils';
 import { InputEventType } from './form-elements.enum';
 import { TransmitOptions } from './form-elements.interface';
@@ -104,7 +105,11 @@ export abstract class BaseFormElement
     return this.validateFn(c);
   }
 
-  public writeValue(value: any, forceElementValue: any = false): void {
+  public writeValue(
+    value: any,
+    forceElementValue: any = false,
+    doAfter: Function = pass
+  ): void {
     this.writingValue = true;
 
     if (value !== undefined) {
@@ -117,6 +122,8 @@ export abstract class BaseFormElement
     ) {
       this.value = cloneValue(this.baseValue);
     }
+
+    doAfter();
 
     this.cd.detectChanges();
 
