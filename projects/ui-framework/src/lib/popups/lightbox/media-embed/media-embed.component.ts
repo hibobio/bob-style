@@ -65,7 +65,7 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
           : MediaType.video;
 
       if (this.mediaType === MediaType.image) {
-        this.setThumImg(
+        this.setThumbImg(
           !base64imageTest.test(this.url)
             ? this.URL.reconstruct(this.url)
             : this.url
@@ -86,18 +86,18 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
           return;
         }
 
-        this.setThumImg(this.videoData.thumb);
+        this.setThumbImg(this.videoData.thumb);
 
         if (this.videoData.thumbAlt && this.videoData.thumbMinWidth) {
           let testImg = new Image();
 
           testImg.onerror = () => {
-            this.setThumImg(this.videoData.thumbAlt);
+            this.setThumbImg(this.videoData.thumbAlt);
             testImg = testImg.onload = testImg.onerror = null;
           };
           testImg.onload = () => {
             if (testImg.naturalWidth <= this.videoData.thumbMinWidth) {
-              this.setThumImg(this.videoData.thumbAlt);
+              this.setThumbImg(this.videoData.thumbAlt);
             }
             testImg = testImg.onload = testImg.onerror = null;
           };
@@ -114,7 +114,7 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
     }
   }
 
-  private setThumImg(imgUrl: string) {
+  private setThumbImg(imgUrl: string) {
     if (imgUrl) {
       this.host.nativeElement.style.backgroundImage = `url(${imgUrl})`;
     }
