@@ -246,7 +246,9 @@ export class ChipInputComponent extends BaseFormElement
   public onInputBlur(): void {
     this.inputFocused = false;
     if (!this.autocompletePanel.isOpen) {
-      this.addChipFromInput();
+      this.zone.run(() => {
+        this.addChipFromInput();
+      });
     }
     this.cd.detectChanges();
   }
