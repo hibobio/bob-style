@@ -17,7 +17,7 @@ describe('InfoTooltipComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [InfoTooltipComponent, MockComponent(IconComponent)],
-      imports: [PanelModule, TypographyModule, LinkModule]
+      imports: [PanelModule, TypographyModule, LinkModule],
     }).compileComponents();
   }));
 
@@ -26,11 +26,12 @@ describe('InfoTooltipComponent', () => {
     component = fixture.componentInstance;
     component.text = 'tooltip text';
     component.title = 'tooltip title';
+    component.icon = Icons.baseline_info_icon;
     component.link = {
       text: 'click here',
       url: 'https://app.hibob.com',
       target: LinkTarget.blank,
-      color: LinkColor.primary
+      color: LinkColor.primary,
     };
     fixture.detectChanges();
   });
