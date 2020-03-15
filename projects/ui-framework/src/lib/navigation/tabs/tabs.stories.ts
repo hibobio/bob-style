@@ -36,7 +36,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Tabs'">
-  <div style="max-width: 900px;">
+  <div style="max-width: 900px; min-width: 0;">
     ${template}
   </div>
 </b-story-book-layout>

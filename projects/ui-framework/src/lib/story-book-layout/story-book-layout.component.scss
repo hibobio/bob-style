@@ -38,7 +38,6 @@ b-display-3 {
   & > div {
     flex: 1;
     max-width: 600px;
-    min-width: 0;
 
     @include mobile(550px) {
       max-width: 100% !important;

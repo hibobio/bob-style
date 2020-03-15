@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { IconColor, Icons } from '../../icons/icons.enum';
 import { Link } from './../link/link.types';
 import { InfoStripIconSize, InfoStripIconType } from './info-strip.enum';
@@ -15,6 +15,7 @@ export class InfoStripComponent {
   @Input() link: Link;
   @Input() text: string;
   @Input() iconSize: InfoStripIconSize = InfoStripIconSize.large;
+  @Output() linkClicked: EventEmitter<void> = new EventEmitter<void>();
 
   readonly iconsDic: Dictionary<InfoStripIcon> = {
     warning: { color: IconColor.primary, icon: Icons.warning },

@@ -1,9 +1,9 @@
 export enum LinkColor {
-  none = 'none',
+  none = '',
   primary = 'primary',
 }
 
 export enum LinkTarget {
   blank = '_blank',
-  self = '_self,'
+  self = '_self,',
 }
