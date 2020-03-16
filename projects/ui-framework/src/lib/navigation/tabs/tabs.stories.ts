@@ -48,13 +48,14 @@ const note = `
   *TabsModule*
 
   #### Properties
-  Name | Type | Description
-  --- | --- | ---
-  [tabs] | Tab[] | tabs metadata
-  [type] | TabsType | tabs style (defaults to 'primary')
-  [selectedIndex] | number | the selected tab index
-  (selectClick) | EventEmitter<wbr>&lt;TabChangeEvent&gt; | emits Tab and tab index, when tab was clicked
-  (selectChange) | EventEmitter<wbr>&lt;TabChangeEvent&gt; | emits Tab and tab index, when tab was changed
+  Name | Type | Description | Default
+  --- | --- | --- | ---
+  [tabs] | Tab[] | tabs metadata | &nbsp;
+  [type] | TabsType | tabs style | 'primary
+  [selectedIndex] | number | the selected tab index | &nbsp;
+  [controlled] | boolean | set to true to <u>disable</u> automatic tab change on click (when u need to control it from outside) | false
+  (selectClick) | EventEmitter<wbr>&lt;TabChangeEvent&gt; | emits Tab and tab index, when tab was clicked.<br>**Note:** This output is mostly usefull when setting \`\`\`[controlled]="true"\`\`\` | &nbsp;
+  (selectChange) | EventEmitter<wbr>&lt;TabChangeEvent&gt; | emits Tab and tab index, when tab was changed<br>**Note:** In most cases, use this output. | &nbsp;
 
   ~~~
   ${template}
@@ -74,7 +75,7 @@ story.add(
           selectClick(e);
         },
         selectChange: action('selectChange'),
-        selectedIndex: number('selectedIndex', 0),
+        selectedIndex: number('selectedIndex', undefined),
       },
       moduleMetadata: {
         imports: [BrowserAnimationsModule, TabsModule, StoryBookLayoutModule],

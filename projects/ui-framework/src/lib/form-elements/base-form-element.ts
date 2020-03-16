@@ -21,6 +21,7 @@ import {
   chainCall,
   Func,
   cloneArray,
+  stringify,
 } from '../services/utils/functional-utils';
 import { InputEventType } from './form-elements.enum';
 import { TransmitOptions } from './form-elements.interface';
@@ -47,6 +48,8 @@ export abstract class BaseFormElement
   @Input() warnMessage: string;
   @Input() doPropagate = true;
   @Input() ignoreEvents: InputEventType[] = cloneArray(IGNORE_EVENTS_DEF);
+
+  @Input() formControlName: string;
 
   public inputFocused: boolean | boolean[] = false;
   public inputTransformers: Func[] = [];
@@ -108,7 +111,12 @@ export abstract class BaseFormElement
     this.writingValue = true;
 
     if (value !== undefined) {
-      this.value = chainCall(this.inputTransformers, value);
+      try {
+        this.value = chainCall(this.inputTransformers, value);
+      } catch (error) {
+        console.error(`${this.getElementIDdata()} threw an error:\n`, error);
+        return;
+      }
     }
 
     if (
@@ -220,5 +228,13 @@ export abstract class BaseFormElement
     if (this.input && this.input.nativeElement) {
       this.input.nativeElement.focus();
     }
+  }
+
+  protected getElementIDdata() {
+    return `[${
+      this.formControlName ? 'formControl: ' + this.formControlName + ', ' : ''
+    }element id: ${this.id}${
+      this.value ? ', value: ' + stringify(this.value) : ''
+    }]`;
   }
 }
