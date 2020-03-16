@@ -23,8 +23,11 @@ utilsServiceStub.getElementInViewEvent.and.returnValue(of(true));
 
 export const mobileServiceStub: spyObj<MobileService> = createSpyObj(
   'MobileService',
-  ['getMediaEvent']
+  ['getMediaEvent', 'getMediaData']
 );
 mobileServiceStub.getMediaEvent.and.returnValue(
   of({ matchMobile: false } as MediaEvent)
 );
+mobileServiceStub.getMediaData.and.returnValue({
+  matchMobile: false,
+} as MediaEvent);
