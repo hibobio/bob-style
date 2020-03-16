@@ -5,4 +5,6 @@ export interface VideoData {
   id: string;
   url: string;
   thumb: string;
+  thumbAlt?: string;
+  thumbMinWidth?: number;
 }

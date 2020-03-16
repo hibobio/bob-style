@@ -3,6 +3,8 @@ export enum IconType {
   circular = 'circular',
 }
 
+export type IconRotate = '90' | '-90' | '180';
+
 export enum IconSize {
   small = 'small',
   medium = 'medium',

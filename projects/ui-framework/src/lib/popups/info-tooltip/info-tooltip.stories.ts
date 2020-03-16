@@ -4,12 +4,17 @@ import { InfoTooltipModule } from './info-tooltip.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { LinkColor, LinkTarget } from '../../indicators/link/link.enum';
+import { action } from '@storybook/addon-actions';
 
 const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
   withKnobs
 );
 
-const template = `<b-info-tooltip [text]="text" [link]="link" [title]="title"></b-info-tooltip>`;
+const template = `<b-info-tooltip
+              [title]="title"
+              [text]="text"
+              [link]="link"
+              (linkClicked)="onLinkClick()"></b-info-tooltip>`;
 
 const note = `
   ## Switch toggle element
@@ -19,9 +24,12 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | ---
-  title | string | tooltip title
-  text | string | tooltip text
-  link | Link | tooltip link
+  [icon] | Icons | icon to use for trigger (most of the time, omit this input to keep to default)
+  [title] | string | tooltip title
+  [text] | string | tooltip text
+  [link] | Link | tooltip link config
+  (linkClicked) | EventEmitter<wbr>&lt;void&gt; | emitted on link click (use to attach methods to links - vs. urls)
+
   ~~~
   ${template}
   ~~~
@@ -47,6 +55,7 @@ story.add(
         color: LinkColor.primary,
         target: LinkTarget.blank,
       }),
+      onLinkClick: action('Link clicked'),
     },
     moduleMetadata: {
       imports: [InfoTooltipModule, StoryBookLayoutModule],

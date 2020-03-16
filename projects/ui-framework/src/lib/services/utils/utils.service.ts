@@ -112,27 +112,14 @@ export class UtilsService {
   }
 
   public scrollToTop(offset = 0, smooth = false): void {
-    this.windowRef.nativeWindow.scrollTo(
-      0,
-      offset,
-      smooth
-        ? {
-            behavior: 'smooth',
-          }
-        : undefined
-    );
+    this.windowScrollTo(offset, smooth);
   }
 
   public scrollToBottom(offset = 0, smooth = false): void {
-    this.windowRef.nativeWindow.scrollTo(
-      0,
-      this.windowRef.nativeWindow.document.body.scrollHeight - offset,
-      smooth
-        ? {
-            behavior: 'smooth',
-          }
-        : undefined
-    );
+    const scrollToTop =
+      this.windowRef.nativeWindow.document.body.scrollHeight - offset;
+
+    this.windowScrollTo(scrollToTop, smooth);
   }
 
   public scrollToElement(
@@ -140,16 +127,22 @@ export class UtilsService {
     offset = 0,
     smooth = false
   ): void {
-    this.windowRef.nativeWindow.scrollTo(
-      0,
+    const scrollToTop =
       element.getBoundingClientRect().top +
-        this.windowRef.nativeWindow.scrollY +
-        offset,
-      smooth
-        ? {
-            behavior: 'smooth',
-          }
-        : undefined
-    );
+      this.windowRef.nativeWindow.scrollY +
+      offset;
+    this.windowScrollTo(scrollToTop, smooth);
+  }
+
+  private windowScrollTo(scrollToTop = 0, smooth = false) {
+    if ('scrollBehavior' in document.documentElement.style) {
+      this.windowRef.nativeWindow.scrollTo({
+        left: 0,
+        top: scrollToTop,
+        behavior: smooth ? 'smooth' : undefined,
+      });
+    } else {
+      this.windowRef.nativeWindow.scrollTo(0, scrollToTop);
+    }
   }
 }

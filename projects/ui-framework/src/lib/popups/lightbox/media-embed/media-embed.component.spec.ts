@@ -86,7 +86,7 @@ describe('MediaEmbedComponent', () => {
       expect(component.mediaType).toEqual(MediaType.image);
     });
 
-    it('should set video as thumbnail', () => {
+    it('should set thumbnail image', () => {
       expect(compElement.style.backgroundImage).toContain(emptyImgTestString);
     });
 

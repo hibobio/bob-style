@@ -11,6 +11,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { values } from 'lodash';
 import { LinkColor, LinkTarget } from '../link/link.enum';
 import { InfoStripIconSize, InfoStripIconType } from './info-strip.enum';
+import { action } from '@storybook/addon-actions';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
@@ -18,12 +19,12 @@ const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
 const iconTypes = values(InfoStripIconType);
 const iconSizes = values(InfoStripIconSize);
 
-const template = `
-<b-info-strip
-  [iconType]="iconType"
-  [iconSize]="iconSize"
-  [link]="link"
-  [text]="text"></b-info-strip>
+const template = `<b-info-strip
+        [iconType]="iconType"
+        [iconSize]="iconSize"
+        [link]="link"
+        [text]="text"
+        (linkClicked)="onLinkClick()"></b-info-strip>
 `;
 
 const storyTemplate = `<b-story-book-layout [title]="'Info Strip'">
@@ -40,10 +41,12 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | --- | ---
-  iconType | InfoStripIconType | icon type - information, error, warning, success
-  iconSize | InfoStripIconSize | icon size - normal, large
-  text | string | The text inside the strip
-  link | Link | link definition - text, url, color, target
+  [iconType] | InfoStripIconType | icon type - information, error, warning, success
+  [iconSize] | InfoStripIconSize | icon size - normal, large
+  [text] | string | The text inside the strip
+  [link] | Link | link definition - text, url, color, target
+  (linkClicked) | EventEmitter<wbr>&lt;void&gt; | emitted on link click (use to attach methods to links - vs. urls)
+
   ~~~
   ${template}
   ~~~
@@ -64,6 +67,7 @@ story.add(
           target: LinkTarget.blank,
           color: LinkColor.none,
         }),
+        onLinkClick: action('Link clicked'),
       },
       moduleMetadata: {
         imports: [InfoStripModule, StoryBookLayoutModule],

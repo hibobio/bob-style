@@ -35,9 +35,12 @@ export class TabsComponent implements OnChanges, AfterViewInit {
 
   @Input() public type: TabsType = TabsType.primary;
   @Input() public tabs: Tab[] = [];
-  @Input() public selectedIndex: number;
+  @Input('selectedIndex') set setSelectedIndex(index: number) {
+    this.selectedIndex = index || 0;
+  }
+  public selectedIndex = 0;
 
-  // This input determine if the tabs will be changed automatically on click.
+  // This input determines if the tabs will be changed automatically on click.
   @Input() controlled = false;
 
   @Output() selectChange: EventEmitter<TabChangeEvent> = new EventEmitter<
@@ -52,7 +55,7 @@ export class TabsComponent implements OnChanges, AfterViewInit {
       this.cd.detectChanges();
     }
 
-    if (notFirstChanges(changes, ['tabs'], true)) {
+    if (notFirstChanges(changes, ['tabs', 'type'], true)) {
       this.zone.runOutsideAngular(() => {
         setTimeout(() => {
           this.updateTabWidths();
@@ -87,15 +90,13 @@ export class TabsComponent implements OnChanges, AfterViewInit {
   }
 
   private onTabChange(tab: Tab, index: number): void {
-    if (
-      tab &&
-      !this.controlled &&
-      this.selectedIndex !== index &&
-      this.selectChange.observers.length > 0
-    ) {
+    if (tab && !this.controlled && this.selectedIndex !== index) {
       this.selectedIndex = index;
       this.cd.detectChanges();
-      this.selectChange.emit({ tab, index });
+
+      if (this.selectChange.observers.length > 0) {
+        this.selectChange.emit({ tab, index });
+      }
     }
 
     if (tab && this.selectClick.observers.length > 0) {

@@ -107,6 +107,8 @@ export class URLutils {
           id +
           '?autoplay=1&rel=0&color=white&iv_load_policy=3&modestbranding=1',
         thumb: 'https://img.youtube.com/vi/' + id + '/maxresdefault.jpg',
+        thumbAlt: 'https://img.youtube.com/vi/' + id + '/hqdefault.jpg',
+        thumbMinWidth: 120,
       };
     }
 

@@ -72,6 +72,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   ) {
     super(cd);
 
+    this.isMobile = this.mobileService.getMediaData().matchMobile;
+
     if (hasProp(this.dateAdapter, 'getFormat', false)) {
       this.dateFormats = {
         [DatepickerType.date]: this.dateAdapter.getFormat(
@@ -131,7 +133,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   private allowInputBlur = !this.allowKeyInput;
   private resizeSubscription: Subscription;
-  private mediaEventSubscription: Subscription;
 
   readonly types = DatepickerType;
   readonly icons = Icons;
@@ -152,19 +153,16 @@ export abstract class BaseDatepickerElement extends BaseFormElement
         throttle(val => interval(1000))
       )
       .subscribe(() => {
-        if (!this.isMobile) {
-          this.allPickers(picker => this.closePicker(picker));
+        const matchMobile = this.mobileService.getMediaData().matchMobile;
+
+        if (matchMobile !== this.isMobile) {
+          this.isMobile = matchMobile;
           this.cd.detectChanges();
         }
-      });
 
-    this.mediaEventSubscription = this.mobileService
-      .getMediaEvent()
-      .pipe(outsideZone(this.zone))
-      .subscribe((media: MediaEvent) => {
-        this.allPickers(picker => this.closePicker(picker));
-        this.isMobile = media.matchMobile;
-        this.cd.detectChanges();
+        if (!this.isMobile) {
+          this.allPickers(picker => this.closePicker(picker));
+        }
       });
 
     if (this.value) {
@@ -187,9 +185,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   ngOnDestroy(): void {
     if (this.resizeSubscription) {
       this.resizeSubscription.unsubscribe();
-    }
-    if (this.mediaEventSubscription) {
-      this.mediaEventSubscription.unsubscribe();
     }
   }
 
@@ -248,6 +243,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     ) {
       this.placeholder = this.dateFormats[this.type].format.toLowerCase();
       this.useFormatForPlaceholder = true;
+      this.cd.detectChanges();
     }
 
     if (hasChanges(changes, ['readonly'])) {
@@ -479,8 +475,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     };
 
     // desktop
-    if (picker._popupRef) {
-      panel.popup = picker._popupRef.overlayElement;
+    if (picker['_popupRef']) {
+      panel.popup = picker['_popupRef'].overlayElement;
     }
     // mobile
     if (

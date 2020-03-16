@@ -27,4 +27,20 @@ $circularIconSizes: (
       }
     }
   }
+
+  &[data-rotate='90'] {
+    .b-icon {
+      transform: rotate(90deg);
+    }
+  }
+  &[data-rotate='180'] {
+    .b-icon {
+      transform: rotate(180deg);
+    }
+  }
+  &[data-rotate='-90'] {
+    .b-icon {
+      transform: rotate(-90deg);
+    }
+  }
 }
