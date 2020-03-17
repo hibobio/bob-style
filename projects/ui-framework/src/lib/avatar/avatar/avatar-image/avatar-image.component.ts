@@ -56,7 +56,7 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   @Input() badge: AvatarBadge | Icon;
   @Input() text: string;
   @Input() disabled = false;
-  @Input() isClickable = false;
+  @Input() isClickable: boolean;
   @Input() supressWarnings = false;
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();

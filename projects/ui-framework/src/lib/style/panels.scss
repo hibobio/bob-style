@@ -243,7 +243,7 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
     box-shadow: 0 2px 5px $boxShadowColor;
 
     &:after {
-      background-color: $input-border-color;
+      display: none;
     }
   }
 

@@ -11,7 +11,6 @@ import { isEqual } from 'lodash';
 import {
   simpleChange,
   emitNativeEvent,
-  emptyImg,
   emptyFilestackImg,
 } from '../../../services/utils/test-helpers';
 import { AvatarSize, AvatarBadge } from '../avatar.enum';
