@@ -182,6 +182,12 @@ export abstract class BaseListElement
       this.toggleCollapseAll(this.startWithGroupsCollapsed);
     }
 
+    if (hasChanges(changes, ['maxHeight', 'options'], true)) {
+      this.DOM.setCssProps(this.host.nativeElement, {
+        '--list-max-items': this.maxHeight / LIST_EL_HEIGHT,
+      });
+    }
+
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
     }

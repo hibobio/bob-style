@@ -4,8 +4,7 @@
 </b-search>
 
 <div [ngStyle]="{
-        height: listOptions && (listOptions.length * listElHeight + 'px'),
-        maxHeight: maxHeight + 'px'
+        height: listOptions && (listOptions.length * listElHeight + 'px')
       }"
      [attr.aria-readonly]="readonly || null"
      [ngClass]="{

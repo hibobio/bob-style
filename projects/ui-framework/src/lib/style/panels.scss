@@ -194,6 +194,10 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
     &:before {
       border-color: transparent transparent $grey-500 $grey-500 !important;
     }
+
+    &:after {
+      background: none;
+    }
   }
 
   .panel-below {
