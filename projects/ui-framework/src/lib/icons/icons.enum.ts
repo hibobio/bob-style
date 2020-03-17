@@ -156,4 +156,5 @@ export enum Icons {
   arrow_dir_left = 'b-icon-arrow-dir-left',
   arrow_dir_right = 'b-icon-arrow-dir-right',
   comment_add = 'b-icon-comment-add',
+  online = 'b-icon-online',
 }

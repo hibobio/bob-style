@@ -16,6 +16,7 @@ import {
   joinArrays,
 } from '../../services/utils/functional-utils';
 import { SelectType } from '../list.enum';
+import { MobileService } from '../../services/utils/mobile.service';
 
 @Component({
   selector: 'b-multi-list',
@@ -31,12 +32,23 @@ export class MultiListComponent extends BaseListElement {
     keybrdSrvc: ListKeyboardService,
     modelSrvc: ListModelService,
     listChangeSrvc: ListChangeService,
+    mobileService: MobileService,
     cd: ChangeDetectorRef,
     zone: NgZone,
     DOM: DOMhelpers,
     host: ElementRef
   ) {
-    super(renderer, keybrdSrvc, modelSrvc, listChangeSrvc, cd, zone, DOM, host);
+    super(
+      renderer,
+      keybrdSrvc,
+      modelSrvc,
+      listChangeSrvc,
+      mobileService,
+      cd,
+      zone,
+      DOM,
+      host
+    );
     this.type = SelectType.multi;
     this.listActions = {
       apply: false,

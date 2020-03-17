@@ -26,6 +26,8 @@ import { ListModelService } from '../list-service/list-model.service';
 import { SelectOption } from '../list.interface';
 import { SelectType } from '../list.enum';
 import { FormEvents } from '../../form-elements/form-elements.enum';
+import { ListPanelService } from '../list-panel.service';
+import { MobileService } from '../../services/utils/mobile.service';
 
 @Component({
   selector: 'b-single-select',
@@ -52,27 +54,32 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
   constructor(
     listChangeSrvc: ListChangeService,
     modelSrvc: ListModelService,
+    listPanelSrvc: ListPanelService,
+    mobileService: MobileService,
+    DOM: DOMhelpers,
+    zone: NgZone,
+    cd: ChangeDetectorRef,
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
-    utilsService: UtilsService,
-    DOM: DOMhelpers,
-    zone: NgZone,
-    cd: ChangeDetectorRef
+    utilsService: UtilsService
   ) {
     super(
       listChangeSrvc,
       modelSrvc,
+      listPanelSrvc,
+      mobileService,
+      DOM,
+      zone,
+      cd,
       overlay,
       viewContainerRef,
       panelPositionService,
-      utilsService,
-      DOM,
-      zone,
-      cd
+      utilsService
     );
     this.type = SelectType.single;
     this.value = null;
+    this.hasArrow = false;
     this.panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
     this.listActions = {
       apply: false,

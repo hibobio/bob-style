@@ -11,6 +11,7 @@ import {
   filter,
   map,
   pairwise,
+  tap,
 } from 'rxjs/operators';
 import { race } from 'rxjs';
 import { outsideZone } from '../services/utils/rxjs.operators';
@@ -18,12 +19,13 @@ import isEqual from 'lodash/isEqual';
 import { isKey } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
 import { ScrollEvent } from '../services/utils/utils.interface';
+import { MobileService } from '../services/utils/mobile.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ListPanelService {
-  constructor() {}
+  constructor(private mobileService: MobileService) {}
 
   public openPanel(self: any): void {
     if (!self.overlayRef && !self.disabled && !self.panelOpen) {
@@ -82,9 +84,16 @@ export class ListPanelService {
             outsideZone(self.zone),
             filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
           ),
-          self.utilsService.getResizeEvent().pipe(outsideZone(self.zone)),
+          self.utilsService.getResizeEvent().pipe(
+            outsideZone(self.zone),
+            tap(() => {
+              self.isMobile = this.mobileService.getMediaData().isMobile;
+            }),
+            filter(() => !self.isMobile)
+          ),
           self.utilsService.getScrollEvent().pipe(
             outsideZone(self.zone),
+            filter(() => !self.isMobile),
             throttleTime(50, undefined, {
               leading: true,
               trailing: true,

@@ -13,41 +13,29 @@ import {
   OnChanges,
   SimpleChanges,
   Directive,
+  OnInit,
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
-  FlexibleConnectedPositionStrategy,
   Overlay,
   OverlayConfig,
   OverlayRef,
   ConnectedPosition,
-  ConnectedOverlayPositionChange,
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Subscription, race } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { PanelPositionService } from '../popups/panel/panel-position-service/panel-position.service';
 import { BaseFormElement } from '../form-elements/base-form-element';
 import { DOMhelpers } from '../services/html/dom-helpers.service';
 import { TruncateTooltipType } from '../popups/truncate-tooltip/truncate-tooltip.enum';
-import { isEqual } from 'lodash';
-import {
-  distinctUntilChanged,
-  filter,
-  throttleTime,
-  pairwise,
-  map,
-} from 'rxjs/operators';
 import { OverlayPositionClasses } from '../types';
 import { UtilsService } from '../services/utils/utils.service';
-import { outsideZone } from '../services/utils/rxjs.operators';
 import {
-  isKey,
   hasChanges,
   applyChanges,
   notFirstChanges,
   isNotEmptyArray,
 } from '../services/utils/functional-utils';
-import { Keys } from '../enums';
 import { SelectGroupOption, ListFooterActions } from './list.interface';
 import { ListChange } from './list-change/list-change';
 import { PanelDefaultPosVer } from '../popups/panel/panel.enum';
@@ -55,24 +43,28 @@ import { LIST_EL_HEIGHT } from './list.consts';
 import { ListChangeService } from './list-change/list-change.service';
 import { selectValueOrFail } from '../services/utils/transformers';
 import { ListModelService } from './list-service/list-model.service';
-import { ScrollEvent } from '../services/utils/utils.interface';
 import { SelectType, SelectMode } from './list.enum';
 import { FormEvents } from '../form-elements/form-elements.enum';
+import { ListPanelService } from './list-panel.service';
+import { MobileService } from '../services/utils/mobile.service';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseSelectPanelElement extends BaseFormElement
-  implements OnChanges, AfterViewInit, OnDestroy {
+  implements OnChanges, OnInit, AfterViewInit, OnDestroy {
   protected constructor(
     protected listChangeSrvc: ListChangeService,
     protected modelSrvc: ListModelService,
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
-    private panelPositionService: PanelPositionService,
-    protected utilsService: UtilsService,
-    public DOM: DOMhelpers,
+    protected listPanelSrvc: ListPanelService,
+    protected mobileService: MobileService,
+    protected DOM: DOMhelpers,
     protected zone: NgZone,
-    protected cd: ChangeDetectorRef
+    protected cd: ChangeDetectorRef,
+    // Used by ListPanelService:
+    protected overlay: Overlay,
+    protected viewContainerRef: ViewContainerRef,
+    protected panelPositionService: PanelPositionService,
+    protected utilsService: UtilsService
   ) {
     super(cd);
   }
@@ -86,22 +78,14 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @Input() options: SelectGroupOption[] = [];
   @Input() optionsDefault: SelectGroupOption[];
   @Input() mode: SelectMode = SelectMode.classic;
-  @Input() panelClass: string;
+
   @Input() isQuickFilter = false;
   @Input() hasPrefix = false;
+
   @Input() panelPosition: PanelDefaultPosVer | ConnectedPosition[];
-  @Input('hasArrow') set setPanelArrowClass(hasArrow: boolean) {
-    if (hasArrow === false) {
-      this.panelClassList =
-        hasArrow === false
-          ? (this.panelClassList = this.panelClassList.filter(
-              c => c !== 'b-select-panel-with-arrow'
-            ))
-          : hasArrow === true
-          ? [...(this.panelClassList || []), 'b-select-panel-with-arrow']
-          : this.panelClassList || [];
-    }
-  }
+  @Input() panelClass: string;
+  @Input() hasArrow = true;
+
   @Input() showSingleGroupHeader = false;
   @Input() startWithGroupsCollapsed = true;
   @Input() tooltipType: TruncateTooltipType = TruncateTooltipType.auto;
@@ -115,21 +99,26 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
   protected type: SelectType;
   public showPrefix = true;
+  public focusOnInit = true;
   public displayValue: string;
   public displayValueCount: number;
   protected listChange: ListChange;
-  private subscribtions: Subscription[] = [];
+
   private fitOptionsToValue = false;
   readonly listElHeight = LIST_EL_HEIGHT;
 
-  public panelClassList: string[] = [];
+  public touched = false;
+  public dirty = false;
+  public isMobile = false;
+
+  // Used by ListPanelService:
+  private subscribtions: Subscription[] = [];
+  public panelClassList: string[] = ['b-select-panel'];
   public positionClassList: OverlayPositionClasses = {};
   public overlayRef: OverlayRef;
   private panelConfig: OverlayConfig;
   private templatePortal: TemplatePortal;
   public panelOpen = false;
-  public touched = false;
-  public dirty = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(
@@ -189,8 +178,14 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     });
   }
 
+  ngOnInit() {
+    if (this.isQuickFilter) {
+      this.panelClassList.push('b-quick-filter-panel');
+    }
+  }
+
   ngOnDestroy(): void {
-    this.destroyPanel();
+    this.destroyPanel(true);
   }
 
   writeValue(value: any, options: SelectGroupOption[] = this.options): void {
@@ -212,82 +207,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   }
 
   openPanel(): void {
-    if (!this.overlayRef && !this.disabled && !this.panelOpen) {
-      this.panelOpen = true;
-      this.panelConfig = this.getConfig();
-      this.overlayRef = this.overlay.create(this.panelConfig);
-      this.templatePortal = new TemplatePortal(
-        this.templateRef,
-        this.viewContainerRef
-      );
-
-      this.overlayRef.attach(this.templatePortal);
-      this.overlayRef.updatePosition();
-      this.overlayRef.updateSize({
-        width: this.overlayOrigin.elementRef.nativeElement.offsetWidth,
-        height: 360,
-      });
-
-      const searchInput = this.overlayRef.overlayElement.querySelector(
-        'b-search .bfe-input'
-      ) as HTMLElement;
-      if (searchInput) {
-        searchInput.focus();
-      }
-
-      if (this.opened.observers.length > 0) {
-        this.opened.emit(this.overlayRef);
-      }
-
-      this.subscribtions.push(
-        (this.panelConfig
-          .positionStrategy as FlexibleConnectedPositionStrategy).positionChanges
-          .pipe(
-            throttleTime(200, undefined, {
-              leading: true,
-              trailing: true,
-            }),
-            distinctUntilChanged(isEqual)
-          )
-          .subscribe((change: ConnectedOverlayPositionChange) => {
-            this.positionClassList = this.panelPositionService.getPositionClassList(
-              change
-            );
-
-            if (!this.cd['destroyed']) {
-              this.cd.detectChanges();
-            }
-          })
-      );
-
-      this.subscribtions.push(
-        race(
-          this.overlayRef.backdropClick(),
-          this.utilsService.getWindowKeydownEvent().pipe(
-            outsideZone(this.zone),
-            filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
-          ),
-          this.utilsService.getResizeEvent().pipe(outsideZone(this.zone)),
-          this.utilsService.getScrollEvent().pipe(
-            outsideZone(this.zone),
-            throttleTime(50, undefined, {
-              leading: true,
-              trailing: true,
-            }),
-            map((e: ScrollEvent) => e.scrollY),
-            pairwise(),
-            filter(
-              (scrollArr: number[]) =>
-                Math.abs(scrollArr[0] - scrollArr[1]) > 20
-            )
-          )
-        ).subscribe(() => {
-          this.zone.run(() => {
-            this.onApply();
-          });
-        })
-      );
-    }
+    this.listPanelSrvc.openPanel(this);
   }
 
   closePanel(): void {
@@ -314,52 +234,16 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     );
   }
 
-  protected destroyPanel(): void {
+  protected destroyPanel(skipEmit = false): void {
     if (this.overlayRef) {
-      this.panelOpen = false;
       this.touched = true;
-      this.overlayRef.dispose();
-      this.panelConfig = {};
-      this.templatePortal = null;
-      this.overlayRef = null;
-
-      this.subscribtions.forEach(sub => {
-        sub.unsubscribe();
-        sub = null;
-      });
-      this.subscribtions = [];
-
-      if (this.closed.observers.length > 0) {
-        this.closed.emit();
-      }
-
-      if (!this.cd['destroyed']) {
-        this.cd.detectChanges();
-      }
     }
-  }
 
-  private getPanelClass(): string[] {
-    return [
-      ...this.panelClassList,
-      'b-select-panel',
-      this.panelClass,
-      this.isQuickFilter ? 'b-quick-filter-panel' : null,
-    ].filter(Boolean);
-  }
+    this.listPanelSrvc.destroyPanel(this, skipEmit);
 
-  private getConfig(): OverlayConfig {
-    return {
-      disposeOnNavigation: true,
-      hasBackdrop: true,
-      backdropClass: 'b-select-backdrop',
-      panelClass: this.getPanelClass(),
-      positionStrategy: this.panelPositionService.getPanelPositionStrategy(
-        this.overlayOrigin,
-        this.panelPosition
-      ),
-      scrollStrategy: this.panelPositionService.getScrollStrategy(),
-    };
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
   protected setDisplayValue(): void {

@@ -37,6 +37,7 @@ import {
 import { BaseTreeListElement } from './tree-list.abstract';
 import { BehaviorSubject } from 'rxjs';
 import { TreeListValueUtils } from '../services/tree-list-value.static';
+import { MobileService } from '../../../services/utils/mobile.service';
 
 @Component({
   selector: 'b-tree-list',
@@ -49,12 +50,13 @@ export class TreeListComponent extends BaseTreeListElement {
     modelSrvc: TreeListModelService,
     cntrlsSrvc: TreeListControlsService,
     viewSrvc: TreeListViewService,
+    mobileService: MobileService,
     DOM: DOMhelpers,
     cd: ChangeDetectorRef,
     zone: NgZone,
     host: ElementRef
   ) {
-    super(modelSrvc, cntrlsSrvc, viewSrvc, DOM, cd, zone, host);
+    super(modelSrvc, cntrlsSrvc, viewSrvc, mobileService, DOM, cd, zone, host);
   }
 
   @Input('list') set setList(list: TreeListOption[]) {}

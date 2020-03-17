@@ -47,6 +47,8 @@ import { ListChangeService } from './list-change/list-change.service';
 import { simpleChange } from '../services/utils/test-helpers';
 import { LIST_ACTIONS_STATE_DEF } from './list-footer/list-footer.const';
 import { SelectType, SelectMode } from './list.enum';
+import { SearchComponent } from '../search/search/search.component';
+import { MobileService } from '../services/utils/mobile.service';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -57,16 +59,21 @@ export abstract class BaseListElement
     private keybrdSrvc: ListKeyboardService,
     protected modelSrvc: ListModelService,
     protected listChangeSrvc: ListChangeService,
+    protected mobileService: MobileService,
     protected cd: ChangeDetectorRef,
     protected zone: NgZone,
     protected DOM: DOMhelpers,
     protected host: ElementRef
-  ) {}
+  ) {
+    this.isMobile = this.mobileService.getMediaData().isMobile;
+  }
 
   @ViewChild('vScroll', { static: true }) vScroll: CdkVirtualScrollViewport;
   @ViewChild('headers') headers;
   @ViewChild('footer', { read: ElementRef })
   private footer: ElementRef;
+  @ViewChild('search', { read: SearchComponent })
+  protected search: SearchComponent;
 
   @Input() options: SelectGroupOption[] = [];
   @Input() optionsDefault: SelectGroupOption[];
@@ -77,6 +84,7 @@ export abstract class BaseListElement
   @Input() startWithGroupsCollapsed = true;
   @Input() showNoneOption = false;
   @Input() readonly = false;
+  @Input() focusOnInit = false;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
@@ -99,6 +107,7 @@ export abstract class BaseListElement
   );
   public hasFooter = true;
   public allGroupsCollapsed: boolean;
+  public isMobile = false;
 
   public selectedIDs: (string | number)[];
   protected optionsDefaultIDs: (string | number)[];
@@ -260,6 +269,10 @@ export abstract class BaseListElement
 
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
+        }
+
+        if (this.focusOnInit && this.search && !this.isMobile) {
+          this.search.input.nativeElement.focus();
         }
       }, 0);
     });
