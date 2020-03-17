@@ -87,11 +87,32 @@ export class TreeListModelUtils {
   ): void {
     (item.parentIDs || []).forEach(groupID => {
       const parent = itemsMap.get(groupID);
-      parent.selectedCount = Math.max(
-        0,
-        (parent.selectedCount || 0) + (item.selected ? 1 : -1)
-      );
+
+      if (item.selected) {
+        parent.selectedIDs.add(item.id);
+      } else {
+        parent.selectedIDs.delete(item.id);
+      }
+
+      parent.selectedCount = parent.selectedIDs.size;
     });
+
+    if (!item.selected && item.childrenCount) {
+      item.childrenIDs.forEach(id => (itemsMap.get(id).parentSelected = false));
+    }
+  }
+
+  public static updateChildrenParentSelected(
+    item: TreeListItem,
+    itemsMap: TreeListItemMap
+  ): void {
+    this.setPropToTreeDown(
+      item,
+      {
+        parentSelected: item.selected,
+      },
+      itemsMap
+    );
   }
 
   public static updateMap<T = TreeListItem>(

@@ -236,7 +236,12 @@ export class TreeListComponent extends BaseTreeListElement {
 
   // returns true if listViewModel was updated
   protected applyValue(newValue: itemID[]): boolean {
-    console.log('===> applyValue', newValue, this.previousValue);
+    console.log(
+      '===> applyValue; new value:',
+      newValue,
+      'prev value:',
+      this.previousValue
+    );
     let viewModelWasUpdated = false,
       affectedIDs: itemID[] = joinArrays(
         this.value || [],

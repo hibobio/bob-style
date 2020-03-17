@@ -220,7 +220,10 @@ export class TreeSelectComponent extends BaseFormElement
     this.closePanel();
   }
 
-  private setDisplayValue(value: TreeListValue | itemID[] = null): void {
+  private setDisplayValue(
+    value: TreeListValue | itemID[] = null,
+    updateCount = false
+  ): void {
     const displayValues = TreeListValueUtils.getDisplayValuesFromValue(
       value,
       this.itemsMap,
