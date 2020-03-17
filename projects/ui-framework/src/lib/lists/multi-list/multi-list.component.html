@@ -35,7 +35,7 @@
                 'b-icon-chevron-right': header.isCollapsed
               }"></span>
         <div class="header-option">
-          <span *ngIf="!readonly && mode !== modes.radioGroups"
+          <span *ngIf="!readonly && mode === modes.classic"
                 [hidden]="searchValue"
                 class="checkbox bml-checkbox"
                 (click)="selectGroup(header, headerIndex)"></span>
@@ -73,8 +73,10 @@
            class="option-select">
 
         <span *ngIf="!option.isPlaceHolder && !readonly"
-              class="checkbox bml-checkbox"
+              class="checkbox"
               [ngClass]="{
+                 'bml-checkbox': mode !== modes.radioGroups,
+                 'bml-radio': mode === modes.radioGroups,
                 'selected': option.selected
               }"></span>
 

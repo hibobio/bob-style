@@ -19,18 +19,13 @@ import { SelectOption } from '../list.interface';
 import { TruncateTooltipComponent } from '../../popups/truncate-tooltip/truncate-tooltip.component';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { UtilsService } from '../../services/utils/utils.service';
-import {
-  BELOW_START,
-  ABOVE_START,
-  BELOW_END,
-  ABOVE_END,
-} from '../../popups/panel/panel-position-service/panel-position.const';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import { FormEvents } from '../../form-elements/form-elements.enum';
 import { arrayFlatten } from '../../services/utils/functional-utils';
 import { SelectType } from '../list.enum';
 import { ListPanelService } from '../list-panel.service';
 import { MobileService } from '../../services/utils/mobile.service';
+import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 
 @Component({
   selector: 'b-multi-select',
@@ -83,7 +78,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     );
     this.type = SelectType.multi;
     this.hasArrow = false;
-    this.panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
+    this.panelPosition = PanelDefaultPosVer.belowLeftRight;
     this.listActions = {
       apply: true,
       cancel: true,

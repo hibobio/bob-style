@@ -29,6 +29,7 @@ export class ChipComponent implements OnChanges {
   public chip: HTMLElement;
 
   @Input() text: string;
+  @Input() textStrong: string;
   @Input() removable = false;
   @Input() icon: Icons;
   @Input() class: string;

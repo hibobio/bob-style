@@ -27,12 +27,6 @@ import { TruncateTooltipType } from '../../../popups/truncate-tooltip/truncate-t
 import { OverlayRef } from '@angular/cdk/overlay';
 import { TreeListPanelComponent } from '../tree-list-panel/tree-list-panel.component';
 import { BTL_KEYMAP_DEF } from '../tree-list.const';
-import {
-  BELOW_START,
-  ABOVE_START,
-  BELOW_END,
-  ABOVE_END,
-} from '../../../popups/panel/panel-position-service/panel-position.const';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import {
   hasChanges,
@@ -51,6 +45,7 @@ import {
 } from '../../../services/utils/transformers';
 import { TreeListViewService } from '../services/tree-list-view.service';
 import { TreeListValueUtils } from '../services/tree-list-value.static';
+import { PanelDefaultPosVer } from '../../../popups/panel/panel.enum';
 
 @Component({
   selector: 'b-tree-select',
@@ -124,7 +119,7 @@ export class TreeSelectComponent extends BaseFormElement
   public panelOpen = false;
   public displayValue: string;
   public displayValueCount: number;
-  public panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
+  public panelPosition = PanelDefaultPosVer.belowLeftRight;
   public panelClass = 'b-tree-select-panel';
   public treeListValue: TreeListValue;
   readonly tooltipClass = [TooltipClass.PreWrap];

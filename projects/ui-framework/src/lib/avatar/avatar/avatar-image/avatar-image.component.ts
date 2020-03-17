@@ -107,7 +107,9 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   private setAttributes(): void {
-    const isClickable = this.isClickable || this.clicked.observers.length > 0;
+    const isClickable =
+      this.isClickable !== false &&
+      (this.isClickable || this.clicked.observers.length > 0);
     const hasContent = !this.DOM.isEmpty(this.host);
 
     if (

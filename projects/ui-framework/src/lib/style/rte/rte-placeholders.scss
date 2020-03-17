@@ -61,4 +61,8 @@
   .panel-below {
     border-top-right-radius: 0;
   }
+
+  .b-select-panel:after {
+    display: none;
+  }
 }

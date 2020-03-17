@@ -130,8 +130,10 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
   }
 }
 
-.b-select-panel {
-  .b-select-panel {
+.b-select-panel,
+.b-auto-complete-panel {
+  .b-select-panel,
+  .panel-position {
     position: relative;
 
     &:after {
@@ -230,26 +232,29 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
 }
 
 .b-auto-complete-panel {
-  display: block;
+  flex-direction: column;
+  justify-content: inherit;
+  min-width: 280px;
 
   .panel-position {
     overflow: hidden;
     border: 1px solid $grey-500;
     border-radius: $border-radius;
     box-shadow: 0 2px 5px $boxShadowColor;
+
+    &:after {
+      background-color: $input-border-color;
+    }
   }
 
   .panel-below {
-    border-top-width: 0;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
   }
 
   .panel-above {
-    border-bottom-width: 0;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
-
     box-shadow: 0 -2px 5px $boxShadowColor;
   }
 }
@@ -260,4 +265,8 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
 .b-select-panel.b-quick-filter-panel {
   position: relative !important;
   min-width: 300px;
+
+  .b-select-panel:after {
+    background-color: $input-border-color;
+  }
 }

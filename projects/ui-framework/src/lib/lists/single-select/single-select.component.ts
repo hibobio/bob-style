@@ -14,12 +14,6 @@ import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { UtilsService } from '../../services/utils/utils.service';
-import {
-  BELOW_START,
-  ABOVE_START,
-  ABOVE_END,
-  BELOW_END,
-} from '../../popups/panel/panel-position-service/panel-position.const';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import { isArray, arrayFlatten } from '../../services/utils/functional-utils';
 import { ListModelService } from '../list-service/list-model.service';
@@ -28,6 +22,7 @@ import { SelectType } from '../list.enum';
 import { FormEvents } from '../../form-elements/form-elements.enum';
 import { ListPanelService } from '../list-panel.service';
 import { MobileService } from '../../services/utils/mobile.service';
+import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 
 @Component({
   selector: 'b-single-select',
@@ -80,7 +75,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
     this.type = SelectType.single;
     this.value = null;
     this.hasArrow = false;
-    this.panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
+    this.panelPosition = PanelDefaultPosVer.belowLeftRight;
     this.listActions = {
       apply: false,
       cancel: false,

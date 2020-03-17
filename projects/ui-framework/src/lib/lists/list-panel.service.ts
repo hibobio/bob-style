@@ -53,7 +53,7 @@ export class ListPanelService {
         '--input-width': inputWidth + 'px',
       });
 
-      if (self.opened.observers.length) {
+      if (self.opened?.observers.length) {
         self.opened.emit(self.overlayRef);
       }
 
@@ -107,7 +107,7 @@ export class ListPanelService {
           )
         ).subscribe(() => {
           self.zone.run(() => {
-            self.onApply();
+            self[self.onApply ? 'onApply' : 'destroyPanel']();
           });
         })
       );
@@ -128,7 +128,7 @@ export class ListPanelService {
       });
       self.subscribtions = [];
 
-      if (self.closed.observers.length && !skipEmit) {
+      if (self.closed?.observers.length && !skipEmit) {
         self.closed.emit();
       }
     }

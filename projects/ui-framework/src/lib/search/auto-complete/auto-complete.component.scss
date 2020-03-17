@@ -8,6 +8,10 @@
   &.panel-open ::ng-deep {
     position: relative;
     z-index: 10000;
+
+    .bfe-wrap {
+      border-color: $input-focus-border-color;
+    }
   }
 
   &.panel-open.panel-above ::ng-deep {

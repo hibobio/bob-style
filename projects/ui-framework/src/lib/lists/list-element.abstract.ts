@@ -301,7 +301,7 @@ export abstract class BaseListElement
     if (!option.disabled && !this.readonly) {
       let newValue;
 
-      if (this.mode !== SelectMode.radioGroups || !allowMultiple) {
+      if (this.mode === SelectMode.classic || !allowMultiple) {
         newValue = !option.selected;
 
         if (newValue !== option.selected) {
@@ -313,8 +313,9 @@ export abstract class BaseListElement
         }
       }
 
-      if (this.mode === SelectMode.radioGroups && allowMultiple) {
-        newValue = !option.selected;
+      if (this.mode !== SelectMode.classic && allowMultiple) {
+        newValue =
+          this.mode === SelectMode.radioGroups ? true : !option.selected;
 
         if (newValue !== option.selected) {
           const groupIDsInSelected = this.options[option.groupIndex].options
@@ -323,7 +324,9 @@ export abstract class BaseListElement
 
           this.selectedIDs = this.selectedIDs
             .filter(id => !groupIDsInSelected.includes(id))
-            .concat(newValue ? option.id : []);
+            .concat(
+              newValue || this.mode === SelectMode.radioGroups ? option.id : []
+            );
         }
       }
 

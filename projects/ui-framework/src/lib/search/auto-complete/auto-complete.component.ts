@@ -12,33 +12,23 @@ import {
   NgZone,
   ChangeDetectorRef,
 } from '@angular/core';
-import { escapeRegExp, invoke, has, isEqual } from 'lodash';
+import { escapeRegExp, has } from 'lodash';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Subscription, race } from 'rxjs';
 import {
   CdkOverlayOrigin,
-  FlexibleConnectedPositionStrategy,
   Overlay,
   OverlayConfig,
   OverlayRef,
-  ConnectedOverlayPositionChange,
 } from '@angular/cdk/overlay';
 import { AutoCompleteOption } from './auto-complete.interface';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
 import { OverlayPositionClasses } from '../../types';
 import { UtilsService } from '../../services/utils/utils.service';
-import { outsideZone } from '../../services/utils/rxjs.operators';
-import {
-  throttleTime,
-  map,
-  pairwise,
-  filter,
-  distinctUntilChanged,
-} from 'rxjs/operators';
-import { ScrollEvent } from '../../services/utils/utils.interface';
-import { isKey } from '../../services/utils/functional-utils';
-import { Keys } from '../../enums';
+import { ListPanelService } from '../../lists/list-panel.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 
 @Component({
   selector: 'b-auto-complete',
@@ -47,12 +37,16 @@ import { Keys } from '../../enums';
 })
 export class AutoCompleteComponent implements OnChanges, OnDestroy {
   constructor(
+    private cd: ChangeDetectorRef,
+    private listPanelSrvc: ListPanelService,
+
+    // Used by ListPanelService:
+    private zone: NgZone,
+    private DOM: DOMhelpers,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService,
-    private utilsService: UtilsService,
-    private zone: NgZone,
-    protected cd: ChangeDetectorRef
+    private utilsService: UtilsService
   ) {}
 
   @ViewChild(CdkOverlayOrigin, { static: true })
@@ -72,17 +66,18 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     AutoCompleteOption
   >();
 
-  positionClassList: OverlayPositionClasses = {};
   searchValue = '';
-  panelOpen = false;
-
   filteredOptions: AutoCompleteOption[];
 
+  // Used by ListPanelService:
+  private subscribtions: Subscription[] = [];
+  public panelPosition = PanelDefaultPosVer.belowLeftRight;
+  private panelClassList: string[] = ['b-auto-complete-panel'];
+  public positionClassList: OverlayPositionClasses = {};
   private panelConfig: OverlayConfig;
   private overlayRef: OverlayRef;
   private templatePortal: TemplatePortal;
-
-  private subscribtions: Subscription[] = [];
+  public panelOpen = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'options')) {
@@ -120,7 +115,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroyPanel();
+    this.destroyPanel(true);
   }
 
   private updateFilteredList(): void {
@@ -131,99 +126,13 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   }
 
   private openPanel(): void {
-    if (!this.panelOpen && this.options.length > 0) {
-      this.panelOpen = true;
-      this.panelConfig = this.getConfig();
-      this.overlayRef = this.overlay.create(this.panelConfig);
-      this.templatePortal = new TemplatePortal(
-        this.templateRef,
-        this.viewContainerRef
-      );
-      this.overlayRef.attach(this.templatePortal);
-
-      this.overlayRef.updatePosition();
-      this.overlayRef.updateSize({
-        width: this.overlayOrigin.elementRef.nativeElement.offsetWidth,
-        height: 360,
-      });
-
-      this.subscribtions.push(
-        (this.panelConfig
-          .positionStrategy as FlexibleConnectedPositionStrategy).positionChanges
-          .pipe(
-            throttleTime(200, undefined, {
-              leading: true,
-              trailing: true,
-            }),
-            distinctUntilChanged(isEqual)
-          )
-          .subscribe((change: ConnectedOverlayPositionChange) => {
-            this.positionClassList = this.panelPositionService.getPositionClassList(
-              change
-            );
-
-            if (!this.cd['destroyed']) {
-              this.cd.detectChanges();
-            }
-          })
-      );
-
-      this.subscribtions.push(
-        race(
-          this.overlayRef.backdropClick().pipe(outsideZone(this.zone)),
-          this.utilsService.getWindowKeydownEvent().pipe(
-            outsideZone(this.zone),
-            filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
-          ),
-          this.utilsService.getResizeEvent().pipe(outsideZone(this.zone)),
-          this.utilsService.getScrollEvent().pipe(
-            outsideZone(this.zone),
-            throttleTime(300, undefined, {
-              leading: true,
-              trailing: true,
-            }),
-            map((e: ScrollEvent) => e.scrollY),
-            pairwise(),
-            filter(
-              (scrollArr: number[]) =>
-                Math.abs(scrollArr[0] - scrollArr[1]) > 150
-            )
-          )
-        ).subscribe(() => {
-          this.zone.run(() => {
-            this.destroyPanel();
-          });
-        })
-      );
+    if (this.options.length > 0) {
+      this.listPanelSrvc.openPanel(this);
     }
   }
 
-  private destroyPanel(): void {
-    if (this.panelOpen) {
-      this.panelOpen = false;
-      invoke(this.overlayRef, 'dispose');
-      this.panelConfig = {};
-      this.templatePortal = null;
-
-      this.subscribtions.forEach(sub => {
-        sub.unsubscribe();
-        sub = null;
-      });
-      this.subscribtions = [];
-    }
-  }
-
-  private getConfig(): OverlayConfig {
-    return {
-      disposeOnNavigation: true,
-      hasBackdrop: true,
-      backdropClass: 'b-select-backdrop',
-      panelClass: ['b-auto-complete-panel'],
-      positionStrategy: this.panelPositionService.getCenterPanelPositionStrategy(
-        this.overlayOrigin
-      ),
-      scrollStrategy: this.panelPositionService.getScrollStrategy(),
-    };
+  private destroyPanel(skipEmit = false): void {
+    this.listPanelSrvc.destroyPanel(this, skipEmit);
   }
 
   private getFilteredOptions(): AutoCompleteOption[] {
