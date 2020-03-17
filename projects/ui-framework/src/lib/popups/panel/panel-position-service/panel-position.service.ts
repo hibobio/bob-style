@@ -11,11 +11,9 @@ import {
 } from '@angular/cdk/overlay';
 import {
   ABOVE_CENTER,
-  ABOVE_END,
   ABOVE_START,
   BELOW_CENTER,
-  BELOW_END,
-  BELOW_START,
+  PANEL_POSITIONS_MAP,
 } from './panel-position.const';
 import { PanelDefaultPosVer } from '../panel.enum';
 import { OverlayPositionClasses } from '../../../types';
@@ -34,25 +32,10 @@ export class PanelPositionService {
   ): FlexibleConnectedPositionStrategy {
     const panelPosition: ConnectedPosition[] = isArray(position)
       ? (position as ConnectedPosition[])
-      : position === PanelDefaultPosVer.below
-      ? [
-          BELOW_CENTER,
-          BELOW_START,
-          BELOW_END,
-          ABOVE_CENTER,
-          ABOVE_START,
-          ABOVE_END,
-        ]
-      : position === PanelDefaultPosVer.above
-      ? [
-          ABOVE_CENTER,
-          ABOVE_START,
-          ABOVE_END,
-          BELOW_CENTER,
-          BELOW_START,
-          BELOW_END,
-        ]
-      : [BELOW_CENTER, ABOVE_CENTER];
+      : Object.values(PanelDefaultPosVer).includes(position)
+      ? PANEL_POSITIONS_MAP[position]
+      : // default
+        [BELOW_CENTER, ABOVE_CENTER];
 
     return this.overlay
       .position()

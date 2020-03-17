@@ -19,16 +19,13 @@ import { SelectOption } from '../list.interface';
 import { TruncateTooltipComponent } from '../../popups/truncate-tooltip/truncate-tooltip.component';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { UtilsService } from '../../services/utils/utils.service';
-import {
-  BELOW_START,
-  ABOVE_START,
-  BELOW_END,
-  ABOVE_END,
-} from '../../popups/panel/panel-position-service/panel-position.const';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import { FormEvents } from '../../form-elements/form-elements.enum';
 import { arrayFlatten } from '../../services/utils/functional-utils';
 import { SelectType } from '../list.enum';
+import { ListPanelService } from '../list-panel.service';
+import { MobileService } from '../../services/utils/mobile.service';
+import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 
 @Component({
   selector: 'b-multi-select',
@@ -56,27 +53,32 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
   constructor(
     listChangeSrvc: ListChangeService,
     modelSrvc: ListModelService,
+    listPanelSrvc: ListPanelService,
+    mobileService: MobileService,
+    DOM: DOMhelpers,
+    zone: NgZone,
+    cd: ChangeDetectorRef,
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
-    utilsService: UtilsService,
-    DOM: DOMhelpers,
-    zone: NgZone,
-    cd: ChangeDetectorRef
+    utilsService: UtilsService
   ) {
     super(
       listChangeSrvc,
       modelSrvc,
+      listPanelSrvc,
+      mobileService,
+      DOM,
+      zone,
+      cd,
       overlay,
       viewContainerRef,
       panelPositionService,
-      utilsService,
-      DOM,
-      zone,
-      cd
+      utilsService
     );
     this.type = SelectType.multi;
-    this.panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
+    this.hasArrow = false;
+    this.panelPosition = PanelDefaultPosVer.belowLeftRight;
     this.listActions = {
       apply: true,
       cancel: true,

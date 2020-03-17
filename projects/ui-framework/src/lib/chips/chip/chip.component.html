@@ -1,6 +1,7 @@
  <ng-content select="b-avatar, b-avatar-image, b-icon"></ng-content>
 
  <span class="chip-text">
+   <strong *ngIf="textStrong">{{ textStrong }}</strong>
    {{ text }}
    <ng-content></ng-content>
  </span>

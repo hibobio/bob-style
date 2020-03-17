@@ -5,6 +5,7 @@ import { NgClass } from '../services/html/html-helpers.interface';
 
 export interface Chip {
   text: string;
+  textStrong?: string;
   id?: string | number;
   type?: ChipType;
   imageSource?: string;

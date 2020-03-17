@@ -109,7 +109,6 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
   }
 
   .panel-below {
-    border-top-width: 0;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
 
@@ -118,16 +117,59 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
       border-top-left-radius: 0;
     }
   }
+
   .panel-above {
-    border-bottom-width: 0;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
-
     box-shadow: 0 -2px 5px $boxShadowColor;
 
     b-list-footer {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
+    }
+  }
+}
+
+.b-select-panel,
+.b-auto-complete-panel {
+  .b-select-panel,
+  .panel-position {
+    position: relative;
+
+    &:after {
+      @include pseudo;
+      @include size(calc(var(--input-width, 100%) - 1px), 1px);
+      position: absolute;
+      background-color: $input-focus-border-color;
+    }
+  }
+
+  .panel-below {
+    margin-top: -1px;
+
+    &:after {
+      top: -1px;
+    }
+  }
+
+  .panel-above {
+    margin-bottom: -1px;
+    border-bottom-width: 1px;
+
+    &:after {
+      bottom: -1px;
+    }
+  }
+
+  .panel-after {
+    &:after {
+      left: 0;
+    }
+  }
+
+  .panel-before {
+    &:after {
+      right: 0;
     }
   }
 }
@@ -153,6 +195,10 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
 
     &:before {
       border-color: transparent transparent $grey-500 $grey-500 !important;
+    }
+
+    &:after {
+      background: none;
     }
   }
 
@@ -186,26 +232,29 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
 }
 
 .b-auto-complete-panel {
-  display: block;
+  flex-direction: column;
+  justify-content: inherit;
+  min-width: 280px;
 
   .panel-position {
     overflow: hidden;
     border: 1px solid $grey-500;
     border-radius: $border-radius;
     box-shadow: 0 2px 5px $boxShadowColor;
+
+    &:after {
+      display: none;
+    }
   }
 
   .panel-below {
-    border-top-width: 0;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
   }
 
   .panel-above {
-    border-bottom-width: 0;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
-
     box-shadow: 0 -2px 5px $boxShadowColor;
   }
 }
@@ -216,4 +265,8 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
 .b-select-panel.b-quick-filter-panel {
   position: relative !important;
   min-width: 300px;
+
+  .b-select-panel:after {
+    background-color: $input-border-color;
+  }
 }

@@ -31,4 +31,8 @@ export const AvatarBadges: { [key in AvatarBadge]: BadgeConfig } = {
     icon: Icons.error,
     color: IconColor.negative,
   },
+  [AvatarBadge.online]: {
+    icon: Icons.online,
+    color: IconColor.positive,
+  },
 };

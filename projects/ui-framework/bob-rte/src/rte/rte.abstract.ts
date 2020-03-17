@@ -31,13 +31,12 @@ import {
   ButtonType,
   ButtonSize,
   SingleSelectPanelComponent,
-  BELOW_END,
-  ABOVE_END,
   IconColor,
   isNotEmptyObject,
   isEmptyArray,
   chainCall,
   cloneObject,
+  PanelDefaultPosVer,
 } from 'bob-style';
 
 import {
@@ -87,7 +86,7 @@ export abstract class RTEbaseElement extends BaseFormElement
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
   readonly iconColor = IconColor;
-  readonly plchldrPanelPosition = [BELOW_END, ABOVE_END];
+  readonly plchldrPanelPosition = PanelDefaultPosVer.belowRight;
 
   private cntrlsInited = false;
 

@@ -56,7 +56,7 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   @Input() badge: AvatarBadge | Icon;
   @Input() text: string;
   @Input() disabled = false;
-  @Input() isClickable = false;
+  @Input() isClickable: boolean;
   @Input() supressWarnings = false;
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
@@ -107,7 +107,9 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   private setAttributes(): void {
-    const isClickable = this.isClickable || this.clicked.observers.length > 0;
+    const isClickable =
+      this.isClickable !== false &&
+      (this.isClickable || this.clicked.observers.length > 0);
     const hasContent = !this.DOM.isEmpty(this.host);
 
     if (

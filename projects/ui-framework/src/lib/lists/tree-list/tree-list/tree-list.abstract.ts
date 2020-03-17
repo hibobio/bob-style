@@ -36,6 +36,7 @@ import { LIST_ACTIONS_STATE_DEF } from '../../list-footer/list-footer.const';
 import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from '../tree-list.const';
 import { TreeListSearchUtils } from '../services/tree-list-search.static';
 import { TreeListModelUtils } from '../services/tree-list-model.static';
+import { MobileService } from '../../../services/utils/mobile.service';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -45,12 +46,14 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
     protected modelSrvc: TreeListModelService,
     protected cntrlsSrvc: TreeListControlsService,
     protected viewSrvc: TreeListViewService,
+    protected mobileService: MobileService,
     protected DOM: DOMhelpers,
     protected cd: ChangeDetectorRef,
     protected zone: NgZone,
     protected host: ElementRef
   ) {
     super();
+    this.isMobile = this.mobileService.getMediaData().isMobile;
   }
 
   @ViewChild('search', { read: SearchComponent })
@@ -69,6 +72,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   public searchValue = '';
   protected minSearchLength = 1;
   public showSearch = false;
+  public isMobile = false;
   public hasFooter = true;
   public listActionsState: ListFooterActionsState = cloneDeepSimpleObject(
     LIST_ACTIONS_STATE_DEF
@@ -150,7 +154,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
           this.cd.detectChanges();
         }
 
-        if (this.focusOnInit && this.search) {
+        if (this.focusOnInit && this.search && !this.isMobile) {
           this.search.input.nativeElement.focus();
         }
       }, 0);

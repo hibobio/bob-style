@@ -25,6 +25,7 @@ import listInterfaceDoc from '../list.interface.md';
 import selectsPropsDoc from '../selects.properties.md';
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 import listSelectsPropsDoc from '../lists-selects.properties.md';
+import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -111,6 +112,8 @@ const note = `
   ${listSelectsPropsDoc}
 
   ${selectsPropsDoc}
+
+  ${selectsSelectPanelsPropsDoc}
 
   ${formElemsPropsDoc}
 

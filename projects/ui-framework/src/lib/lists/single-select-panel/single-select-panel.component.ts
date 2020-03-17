@@ -14,6 +14,8 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListModelService } from '../list-service/list-model.service';
 import { SelectType } from '../list.enum';
+import { ListPanelService } from '../list-panel.service';
+import { MobileService } from '../../services/utils/mobile.service';
 
 @Component({
   selector: 'b-single-select-panel',
@@ -27,29 +29,33 @@ export class SingleSelectPanelComponent extends BaseSelectPanelElement {
   constructor(
     listChangeSrvc: ListChangeService,
     modelSrvc: ListModelService,
+    listPanelSrvc: ListPanelService,
+    mobileService: MobileService,
+    DOM: DOMhelpers,
+    zone: NgZone,
+    cd: ChangeDetectorRef,
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
-    utilsService: UtilsService,
-    DOM: DOMhelpers,
-    zone: NgZone,
-    cd: ChangeDetectorRef
+    utilsService: UtilsService
   ) {
     super(
       listChangeSrvc,
       modelSrvc,
+      listPanelSrvc,
+      mobileService,
+      DOM,
+      zone,
+      cd,
       overlay,
       viewContainerRef,
       panelPositionService,
-      utilsService,
-      DOM,
-      zone,
-      cd
+      utilsService
     );
     this.type = SelectType.single;
     this.wrapEvent = false;
     this.doPropagate = false;
-    this.panelClassList = ['b-select-panel-with-arrow'];
+    this.hasArrow = true;
     this.listActions = {
       apply: false,
       cancel: false,

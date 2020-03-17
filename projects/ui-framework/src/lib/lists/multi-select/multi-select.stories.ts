@@ -20,13 +20,14 @@ import { cloneDeep } from 'lodash';
 import { optionsMock, optionsMockDef } from '../multi-list/multi-list.mock';
 import { ListModelService } from '../list-service/list-model.service';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { SelectMode } from '../list.enum';
+import { SSPjobsOptionsMock } from '../single-select-panel/single-select-panel.stories';
 
 import listInterfaceDoc from '../list.interface.md';
 import listSelectsPropsDoc from '../lists-selects.properties.md';
 import selectsPropsDoc from '../selects.properties.md';
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
-import { SelectMode } from '../list.enum';
-import { SSPjobsOptionsMock } from '../single-select-panel/single-select-panel.stories';
+import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -120,6 +121,8 @@ const note = `
   ${listSelectsPropsDoc}
 
   ${selectsPropsDoc}
+
+  ${selectsSelectPanelsPropsDoc}
 
   ${formElemsPropsDoc}
 
