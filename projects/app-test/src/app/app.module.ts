@@ -20,6 +20,7 @@ import { CommonModule } from '@angular/common';
 import { TreeSelectModule } from '../../../ui-framework/src/lib/lists/tree-list/tree-select/tree-select.module';
 import { CardTableModule } from '../../../ui-framework/src/lib/table/card-table/card-table.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CardTableSortableModule } from '../../../ui-framework/src/lib/table/card-table-sortable/card-table-sortable.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -45,7 +46,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     // DateParseTesterModule,
     TreeSelectModule,
     CardTableModule,
-    DragDropModule
+    DragDropModule,
+    CardTableSortableModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

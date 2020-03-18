@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 import {
   CardTableCellData,
   CardTableCellDataType
-} from '../card-table.interface';
+} from '../../card-table/card-table.interface';
 import {
   isString,
   isArray,

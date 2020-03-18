@@ -10,7 +10,6 @@ import {
   QueryList,
   ElementRef,
 } from '@angular/core';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 import {
   CardTableCellMeta,
@@ -20,7 +19,7 @@ import {
   CardTableCellClickEvent,
 } from '../card-table.interface';
 import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
-import { TableCardComponent } from './../table-card/table-card.component';
+import { TableCardComponent } from './../../table-card/table-card/table-card.component';
 
 @Component({
   selector: 'b-card-table',
@@ -29,15 +28,13 @@ import { TableCardComponent } from './../table-card/table-card.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardTableComponent implements OnInit {
-  constructor(private widthsService: CellWidthsService) {}
+  constructor(protected widthsService: CellWidthsService) {}
   @ViewChildren(TableCardComponent, { read: ElementRef })
   public cardsElRefs: QueryList<TableCardComponent>;
   @Input() meta: CardTableCellMeta[];
   @Input() table: CardTableCellData[][];
   @Input() default = 'No data to display';
   @Input() minCellWidth = 5;
-  @Input() draggable = false;
-  @Input() useDragHandle = false;
 
   @HostBinding('attr.role') string = 'table';
 
@@ -50,7 +47,7 @@ export class CardTableComponent implements OnInit {
 
   cellsStyle: cardTableAllowedCellStyles[];
 
-  private setCellsStyle(): void {
+  protected setCellsStyle(): void {
     const cellsWidths = this.widthsService.getCellsWidth(
       this.meta,
       this.minCellWidth
@@ -64,23 +61,6 @@ export class CardTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.draggable && this.useDragHandle) {
-      this.meta.unshift({
-        id: 9999,
-        name: '',
-        width: 5,
-        sortable: false,
-      });
-      //     data: {
-      //       component: SquareButtonComponent,
-      //       attributes: {
-      //         type: ButtonType.tertiary,
-      //         icon: Icons.drag_alt,
-      //         color: IconColor.dark,
-      //         size: IconSize.small
-      //       }
-      //     }
-    }
     this.setCellsStyle();
   }
 
@@ -91,10 +71,5 @@ export class CardTableComponent implements OnInit {
 
   onCellClicked($event: CardTableCellClickEvent): void {
     this.cellClicked.emit($event);
-  }
-
-  onDrop(event: CdkDragDrop<CardTableCellData[][]>) {
-    console.log('onDrop');
-    moveItemInArray(this.table, event.previousIndex, event.currentIndex);
   }
 }

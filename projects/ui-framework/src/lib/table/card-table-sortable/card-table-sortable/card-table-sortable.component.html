@@ -14,10 +14,14 @@
 </header>
 
 <ul class="card-table-body"
+    cdkDropList
+    [cdkDropListData]="table"
+    (cdkDropListDropped)="onDrop($event)"
     *ngIf="table && table.length > 0"
     role="rowgroup">
   <li *ngFor="let row of table; index as index;"
       b-table-card
+      cdkDrag
       [row]="row"
       [rowIndex]="index"
       [meta]="meta"
@@ -26,6 +30,7 @@
       (click)="onRowClicked(row, index)"
       (cellClicked)="onCellClicked($event)"
       role="row">
+    <div *ngIf="useDragHandle" cdkDragHandle style="cursor: move; color: gray;">[x]</div>
   </li>
 </ul>
 
