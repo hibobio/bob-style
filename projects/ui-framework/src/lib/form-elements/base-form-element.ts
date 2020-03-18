@@ -107,11 +107,7 @@ export abstract class BaseFormElement
     return this.validateFn(c);
   }
 
-  public writeValue(
-    value: any,
-    forceElementValue: any = false,
-    doAfter: () => void = () => {}
-  ): void {
+  public writeValue(value: any, forceElementValue: any = false): void {
     this.writingValue = true;
 
     if (value !== undefined) {
@@ -129,8 +125,6 @@ export abstract class BaseFormElement
     ) {
       this.value = cloneValue(this.baseValue);
     }
-
-    doAfter();
 
     this.cd.detectChanges();
 
