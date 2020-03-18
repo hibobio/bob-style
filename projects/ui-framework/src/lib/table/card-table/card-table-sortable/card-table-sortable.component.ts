@@ -6,16 +6,8 @@ import {
 import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
 import { CardTableComponent } from '../card-table/card-table.component';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-
-//     data: {
-//       component: SquareButtonComponent,
-//       attributes: {
-//         type: ButtonType.tertiary,
-//         icon: Icons.drag_alt,
-//         color: IconColor.dark,
-//         size: IconSize.small
-//       }
-//     }
+import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
+import { ButtonType } from '../../../buttons/buttons.enum';
 
 @Component({
   selector: 'b-card-table-sortable',
@@ -36,20 +28,16 @@ export class CardTableSortableComponent extends CardTableComponent
     super(widthsService);
   }
 
+  public readonly icons = Icons;
+  public readonly iconSize = IconSize;
+  public readonly iconColor = IconColor;
+  public readonly buttons = ButtonType;
+
   ngOnInit(): void {
-    if (this.useDragHandle) {
-      this.meta.unshift({
-        id: 9999,
-        name: '',
-        width: 5,
-        sortable: false,
-      });
-    }
     this.setCellsStyle();
   }
 
   onDrop(event: CdkDragDrop<CardTableCellData[][]>) {
-    console.log('onDrop');
     moveItemInArray(this.table, event.previousIndex, event.currentIndex);
     this.rowChangedOrder.emit({
       previousIndex: event.previousIndex,

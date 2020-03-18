@@ -10,6 +10,7 @@ import { ComponentRendererModule } from '../../services/component-renderer/compo
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CardTableSortableComponent } from './card-table-sortable/card-table-sortable.component';
+import { ButtonsModule } from '../../buttons/buttons.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { CardTableSortableComponent } from './card-table-sortable/card-table-sor
     TypographyModule,
     ComponentRendererModule,
     TruncateTooltipModule,
-    DragDropModule
+    DragDropModule,
+    ButtonsModule,
   ],
   exports: [CardTableComponent, CardTableSortableComponent],
   providers: [CellWidthsService]
