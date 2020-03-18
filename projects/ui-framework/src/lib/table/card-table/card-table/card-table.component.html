@@ -13,24 +13,45 @@
   </ul>
 </header>
 
-<div class="card-table-body"
-    cdkDropList
-    [cdkDropListData]="table"
-    (cdkDropListDropped)="drop($event)"
-    *ngIf="table && table.length > 0"
-    role="rowgroup">
-  <div *ngFor="let row of table; index as index;"
-      b-table-card
-      cdkDrag
-      [row]="row"
-      [rowIndex]="index"
-      [meta]="meta"
-      [style]="cellsStyle"
-      [ngClass]="{'clickable': cellClicked.observers.length > 0 || rowClicked.observers.length > 0}"
-      (cellClicked)="onCellClicked($event)"
-      role="row">
-  </div>
-</div>
+<ng-container *ngIf="!draggable else draggableVersion">
+  <ul class="card-table-body"
+      *ngIf="table && table.length > 0"
+      role="rowgroup">
+    <li *ngFor="let row of table; index as index;"
+        b-table-card
+        [row]="row"
+        [rowIndex]="index"
+        [meta]="meta"
+        [style]="cellsStyle"
+        [ngClass]="{'clickable': cellClicked.observers.length > 0 || rowClicked.observers.length > 0}"
+        (click)="onRowClicked(row, index)"
+        (cellClicked)="onCellClicked($event)"
+        role="row">
+    </li>
+  </ul>
+</ng-container>
+<ng-template #draggableVersion>
+  <ul class="card-table-body"
+      cdkDropList
+      [cdkDropListData]="table"
+      (cdkDropListDropped)="onDrop($event)"
+      *ngIf="table && table.length > 0"
+      role="rowgroup">
+    <li *ngFor="let row of table; index as index;"
+        b-table-card
+        cdkDrag
+        [row]="row"
+        [rowIndex]="index"
+        [meta]="meta"
+        [style]="cellsStyle"
+        [ngClass]="{'clickable': cellClicked.observers.length > 0 || rowClicked.observers.length > 0}"
+        (click)="onRowClicked(row, index)"
+        (cellClicked)="onCellClicked($event)"
+        role="row">
+      <div *ngIf="useDragHandle" cdkDragHandle style="cursor: move; color: gray;">DRAG</div>
+    </li>
+  </ul>
+</ng-template>
 
 <div class="card-table-body"
      *ngIf="default && !(table && table.length > 0)">

@@ -7,6 +7,8 @@ import { HListMockSimple } from '../../../ui-framework/src/lib/lists/tree-list/t
 import { BTL_KEYMAP_SERVER } from '../../../ui-framework/src/lib/lists/tree-list/tree-list.const';
 import { FormGroup, FormControl } from '@angular/forms';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { SquareButtonComponent } from '../../../ui-framework/src/lib/buttons/square/square.component';
+import { ButtonType, IconColor, Icons, IconSize } from 'bob-style';
 
 @Component({
   selector: 'app-root',

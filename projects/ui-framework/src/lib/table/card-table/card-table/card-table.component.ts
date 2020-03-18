@@ -36,6 +36,8 @@ export class CardTableComponent implements OnInit {
   @Input() table: CardTableCellData[][];
   @Input() default = 'No data to display';
   @Input() minCellWidth = 5;
+  @Input() draggable = false;
+  @Input() useDragHandle = false;
 
   @HostBinding('attr.role') string = 'table';
 
@@ -62,10 +64,28 @@ export class CardTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.draggable && this.useDragHandle) {
+      this.meta.unshift({
+        id: 9999,
+        name: '',
+        width: 5,
+        sortable: false,
+      });
+      //     data: {
+      //       component: SquareButtonComponent,
+      //       attributes: {
+      //         type: ButtonType.tertiary,
+      //         icon: Icons.drag_alt,
+      //         color: IconColor.dark,
+      //         size: IconSize.small
+      //       }
+      //     }
+    }
     this.setCellsStyle();
   }
 
   onRowClicked(row: CardTableCellData[], index: number): void {
+    console.log('click', row, index);
     this.rowClicked.emit({ row: row, rowIndex: index });
   }
 
@@ -73,8 +93,8 @@ export class CardTableComponent implements OnInit {
     this.cellClicked.emit($event);
   }
 
-  drop(event: CdkDragDrop<string[]>) {
-    console.log(event);
+  onDrop(event: CdkDragDrop<CardTableCellData[][]>) {
+    console.log('onDrop');
     moveItemInArray(this.table, event.previousIndex, event.currentIndex);
   }
 }
