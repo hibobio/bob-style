@@ -120,6 +120,7 @@ export abstract class BaseListElement
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes, {
       options: [],
+      mode: SelectMode.classic,
     });
 
     if (hasChanges(changes, ['options'])) {
@@ -301,7 +302,7 @@ export abstract class BaseListElement
     if (!option.disabled && !this.readonly) {
       let newValue;
 
-      if (this.mode === SelectMode.classic || !allowMultiple) {
+      if (!this.mode || this.mode === SelectMode.classic || !allowMultiple) {
         newValue = !option.selected;
 
         if (newValue !== option.selected) {
@@ -313,7 +314,7 @@ export abstract class BaseListElement
         }
       }
 
-      if (this.mode !== SelectMode.classic && allowMultiple) {
+      if (this.mode && this.mode !== SelectMode.classic && allowMultiple) {
         newValue =
           this.mode === SelectMode.radioGroups ? true : !option.selected;
 
