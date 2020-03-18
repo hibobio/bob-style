@@ -35,7 +35,7 @@
                 'b-icon-chevron-right': header.isCollapsed
               }"></span>
         <div class="header-option">
-          <span *ngIf="!readonly && mode === modes.classic"
+          <span *ngIf="!readonly && (!mode || mode === modes.classic)"
                 [hidden]="searchValue"
                 class="checkbox bml-checkbox"
                 (click)="selectGroup(header, headerIndex)"></span>

@@ -126,6 +126,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       changes,
       {
         options: [],
+        mode: SelectMode.classic,
       },
       ['value']
     );
