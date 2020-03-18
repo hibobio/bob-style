@@ -5,7 +5,7 @@ import {
   CardTableCellData,
   cardTableAllowedCellStyles,
   CardTableCellClickEvent
-} from '../../card-table/card-table.interface';
+} from '../card-table.interface';
 
 @Component({
   selector: 'b-table-card, [b-table-card]',

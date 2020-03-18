@@ -15,7 +15,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 @Component({
   selector: 'b-card-table-sortable',
   templateUrl: './card-table-sortable.component.html',
-  styleUrls: ['./card-table-sortable.component.scss']
+  styleUrls: ['./card-table-sortable.component.scss', './../card-table/card-table.component.scss']
 })
 export class CardTableSortableComponent extends CardTableComponent implements OnInit {
   @Input() useDragHandle = false;

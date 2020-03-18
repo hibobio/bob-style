@@ -19,7 +19,7 @@ import {
   CardTableCellClickEvent,
 } from '../card-table.interface';
 import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
-import { TableCardComponent } from './../../table-card/table-card/table-card.component';
+import { TableCardComponent } from './../table-card/table-card.component';
 
 @Component({
   selector: 'b-card-table',
