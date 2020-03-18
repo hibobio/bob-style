@@ -42,3 +42,7 @@ export interface CardTableRowClickEvent {
   rowIndex: number;
   row: CardTableCellData[];
 }
+export interface CardTableRowOrderChangeEvent {
+  previousIndex: number;
+  currentIndex: number;
+}

@@ -6,9 +6,6 @@ import {
 import { HListMockSimple } from '../../../ui-framework/src/lib/lists/tree-list/tree-list.mock';
 import { BTL_KEYMAP_SERVER } from '../../../ui-framework/src/lib/lists/tree-list/tree-list.const';
 import { FormGroup, FormControl } from '@angular/forms';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import { SquareButtonComponent } from '../../../ui-framework/src/lib/buttons/square/square.component';
-import { ButtonType, IconColor, Icons, IconSize } from 'bob-style';
 
 @Component({
   selector: 'app-root',
@@ -77,5 +74,9 @@ export class AppComponent {
     this[formName === 'testForm2' ? 'testForm2' : 'testForm']
       .get(formName === 'testForm2' ? 'treeSelect2' : 'treeSelect')
       .setValue(val, { emitEvent: true });
+  }
+
+  onRowChangedOrder($event: any) {
+    console.log($event);
   }
 }
