@@ -35,4 +35,8 @@ export const AvatarBadges: { [key in AvatarBadge]: BadgeConfig } = {
     icon: Icons.online,
     color: IconColor.positive,
   },
+  [AvatarBadge.offline]: {
+    icon: Icons.online,
+    color: IconColor.light,
+  },
 };
