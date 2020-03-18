@@ -19,6 +19,8 @@ import {
   isNotEmptyMap,
   isEmptyArray,
   isValuevy,
+  arrayDifference,
+  simpleArraysEqual,
 } from '../../../services/utils/functional-utils';
 import { selectValueOrFail } from '../../../services/utils/transformers';
 import { SelectType } from '../../list.enum';
@@ -39,6 +41,7 @@ import {
   TreeListChildrenToggleSelectReducerResult,
 } from '../services/tree-list-model.static';
 import { MobileService } from '../../../services/utils/mobile.service';
+import { BTL_ROOT_ID } from '../tree-list.const';
 
 @Component({
   selector: 'b-tree-list',
@@ -140,6 +143,7 @@ export class TreeListComponent extends BaseTreeListElement {
         }
       )
     ) {
+      console.log('ngOnChanges updateListViewModel');
       this.updateListViewModel();
     }
   }
@@ -238,57 +242,94 @@ export class TreeListComponent extends BaseTreeListElement {
 
   // returns true if listViewModel was updated
   protected applyValue(newValue: itemID[]): boolean {
-    console.log(
-      '===> applyValue; new value:',
-      newValue,
-      'prev value:',
-      this.previousValue
-    );
-    let viewModelWasUpdated = false,
-      affectedIDs: itemID[] = joinArrays(
-        this.value || [],
-        this.previousValue || []
-      ),
-      firstSelectedItem: TreeListItem;
+    // console.log(
+    //   '===> applyValue; new value:',
+    //   newValue,
+    //   'prev value:',
 
-    this.value = selectValueOrFail(newValue);
-    if (this.value && this.type === SelectType.single) {
-      this.value = this.value.slice(0, 1);
-    }
+    //   Array.from(this.itemsMap.get(BTL_ROOT_ID).selectedIDs)
+    // );
+
+    let viewModelWasUpdated = false;
+    // , firstSelectedItem: TreeListItem;
+
+    // this.value = selectValueOrFail(newValue) || [];
+    // if (this.type === SelectType.single) {
+    //   this.value = this.value.slice(0, 1);
+    // }
 
     if (!this.itemsMap.size) {
+      console.log('no map');
       return viewModelWasUpdated;
     }
-    affectedIDs = joinArrays(affectedIDs, this.value || []);
 
-    affectedIDs.forEach(id => {
-      const item = this.itemsMap.get(id);
+    // const previousValue = Array.from(
+    //   this.itemsMap.get(BTL_ROOT_ID).selectedIDs
+    // );
 
-      if (!item) {
-        console.error(
-          `[TreeListComponent.applyValue]:
-          No item data for ID: "${stringify(id)}". Removing ID from value.`
-        );
-        this.value = this.value.filter(valId => valId !== id);
-        return;
-      }
+    // console.log('value difference', arrayDifference(previousValue, this.value));
 
-      item.selected = !!newValue && this.value.includes(item.id);
-      if (!firstSelectedItem && item.selected) {
-        firstSelectedItem = item;
-      }
+    // const isSameValue = simpleArraysEqual(previousValue, this.value);
 
-      TreeListModelUtils.updateItemParentsSelectedCount(item, this.itemsMap);
-    });
+    // if (isSameValue) {
+    //   console.log('same value!');
+    // }
 
-    if (firstSelectedItem) {
-      this.viewSrvc.expandTillItemsByID(this.value, this.itemsMap);
+    // if (isSameValue) {
+    //   firstSelectedItem = this.itemsMap.get(this.value[0]);
+    // } else {
+    //   const affectedIDs: itemID[] = TreeListValueUtils.sortIDlistByItemIndex(
+    //     joinArrays(previousValue, this.value),
+    //     this.itemsMap
+    //   );
 
+    //   affectedIDs.forEach(id => {
+    //     const item = this.itemsMap.get(id);
+
+    //     if (!item) {
+    //       console.error(
+    //         `[TreeListComponent.applyValue]:
+    //         No item data for ID: "${stringify(id)}". Removing ID from value.`
+    //       );
+    //       this.value = this.value.filter(valId => valId !== id);
+    //       return;
+    //     }
+
+    //     item.selected = !!newValue && this.value.includes(item.id);
+    //     if (!firstSelectedItem && item.selected) {
+    //       firstSelectedItem = item;
+    //     }
+
+    //     TreeListModelUtils.updateItemParentsSelectedCount(item, this.itemsMap);
+    //   });
+    // }
+    console.log('\n----------- LIST -----------\n');
+
+    const mapUpdateResult = this.modelSrvc.applyValueToMap(
+      newValue,
+      this.itemsMap,
+      this.type
+    );
+
+    console.log('mapUpdateResult', mapUpdateResult);
+
+    this.value = mapUpdateResult.value;
+    const {
+      previousValue,
+      isSameValue,
+      firstSelectedItem,
+      shouldUpdateViewModel,
+    } = mapUpdateResult;
+
+    if (shouldUpdateViewModel) {
+      // this.viewSrvc.expandTillItemsByID(this.value, this.itemsMap);
       this.updateListViewModel();
       viewModelWasUpdated = true;
-      console.time('dch');
+    }
+
+    if (firstSelectedItem) {
+      console.log('firstSelectedItem', firstSelectedItem);
       this.cd.detectChanges();
-      console.timeEnd('dch');
 
       this.viewSrvc.scrollToItem({
         item: firstSelectedItem,
@@ -297,9 +338,12 @@ export class TreeListComponent extends BaseTreeListElement {
         maxHeightItems: this.maxHeightItems,
       });
     } else {
-      this.toggleCollapseAll(this.startCollapsed, false);
+      console.log('no firstSelectedItem, should collapse');
+      // this.toggleCollapseAll(this.startCollapsed, false);
       this.listElement.nativeElement.scrollTop = 0;
     }
+
+    console.log('applyValue viewModelWasUpdated', viewModelWasUpdated);
 
     return viewModelWasUpdated;
   }

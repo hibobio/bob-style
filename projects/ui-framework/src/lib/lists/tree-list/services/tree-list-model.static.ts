@@ -97,9 +97,9 @@ export class TreeListModelUtils {
       parent.selectedCount = parent.selectedIDs.size;
     });
 
-    if (!item.selected && item.childrenCount) {
-      item.childrenIDs.forEach(id => (itemsMap.get(id).parentSelected = false));
-    }
+    // if (!item.selected && item.childrenCount) {
+    //   item.childrenIDs.forEach(id => (itemsMap.get(id).parentSelected = false));
+    // }
   }
 
   public static updateChildrenParentSelected(

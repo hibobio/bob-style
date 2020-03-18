@@ -89,7 +89,6 @@ export class TreeSelectComponent extends BaseFormElement
   @Input() list: TreeListOption[];
   @Input('value') set setValue(value: itemID[]) {}
   public value: itemID[];
-  public previousValue: itemID[];
   @Input() valueDefault: itemID[];
   @Input() viewFilter: ViewFilter;
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
@@ -231,17 +230,36 @@ export class TreeSelectComponent extends BaseFormElement
   }
 
   public writeValue(value: itemID[]) {
-    this.previousValue = this.value || [];
+    const previousValue = this.value || [];
+
     super.writeValue(value, false, () => {
       if (isNotEmptyMap(this.itemsMap)) {
-        this.setDisplayValue(this.value);
+        //
+        // need to
+        //
+        // (this.value || []).forEach(id => {
+        //   const item = this.itemsMap.get(id);
+        //   item.selected = true;
+
+        //   console.log('update count', item);
+        //   TreeListModelUtils.updateItemParentsSelectedCount(
+        //     item,
+        //     this.itemsMap
+        //   );
+        // });
+
         console.log(
+          '\n----------- SELECT -----------\n',
           'writeValue',
           'old value',
-          this.previousValue,
+          previousValue,
           'new value',
           this.value
         );
+
+        this.modelSrvc.applyValueToMap(this.value, this.itemsMap, this.type);
+
+        this.setDisplayValue(this.value);
       }
     });
   }

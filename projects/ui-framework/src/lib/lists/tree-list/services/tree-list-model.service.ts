@@ -13,6 +13,9 @@ import {
   isEmptyArray,
   objectRemoveKeys,
   stringify,
+  simpleArraysEqual,
+  joinArrays,
+  arrayDifference,
 } from '../../../services/utils/functional-utils';
 import {
   BTL_ROOT_ID,
@@ -21,6 +24,9 @@ import {
 } from '../tree-list.const';
 import { TreeListSearchUtils } from './tree-list-search.static';
 import { TreeListModelUtils } from './tree-list-model.static';
+import { SelectType } from '../../list.enum';
+import { selectValueOrFail } from '../../../services/utils/transformers';
+import { TreeListValueUtils } from './tree-list-value.static';
 
 interface TreeListGetListViewModelConfig {
   keyMap: TreeListKeyMap;
@@ -274,5 +280,95 @@ export class TreeListModelService {
     }) as any) as Map<itemID, string>;
     map.delete(BTL_ROOT_ID);
     return map;
+  }
+
+  public applyValueToMap(
+    value: itemID[],
+    itemsMap: TreeListItemMap,
+    selectType: SelectType
+  ) {
+    value = selectValueOrFail(value) || [];
+    if (selectType === SelectType.single) {
+      value = value.slice(0, 1);
+    }
+
+    if (!itemsMap.size) {
+      return { value };
+    }
+
+    const previousValue = Array.from(itemsMap.get(BTL_ROOT_ID).selectedIDs);
+
+    console.log(
+      '===> applyValue; new value:',
+      value,
+      'prev value:',
+
+      previousValue
+    );
+
+    console.log('value difference', arrayDifference(previousValue, value));
+
+    const isSameValue = simpleArraysEqual(previousValue, value);
+    let firstSelectedItem: TreeListItem,
+      shouldUpdateViewModel = false;
+
+    console.log('value[0] === previousValue[0]', value[0] === previousValue[0]);
+
+    if (isSameValue) {
+      console.log('same value!');
+
+      firstSelectedItem = itemsMap.get(
+        selectType === SelectType.single || value.length === 1
+          ? value[0]
+          : TreeListValueUtils.sortIDlistByItemIndex(value, itemsMap)[0]
+      );
+    } else {
+      const affectedIDs: itemID[] = TreeListValueUtils.sortIDlistByItemIndex(
+        joinArrays(previousValue, value),
+        itemsMap
+      );
+
+      console.log('affectedIDs', affectedIDs);
+
+      affectedIDs.forEach(id => {
+        const item = itemsMap.get(id);
+
+        if (!item) {
+          console.error(
+            `[TreeListComponent.applyValue]:
+            No item data for ID: "${stringify(id)}". Removing ID from value.`
+          );
+          value = value.filter(valId => valId !== id);
+          return;
+        }
+
+        item.selected = value.includes(item.id);
+
+        if (!firstSelectedItem && item.selected) {
+          firstSelectedItem = item;
+        }
+
+        TreeListModelUtils.updateItemParentsSelectedCount(item, itemsMap);
+
+        const expanded = Boolean(
+          !item.collapsed ||
+            item.selectedCount ||
+            (item.selected && item.childrenCount)
+        );
+
+        if (item.collapsed !== !expanded) {
+          item.collapsed = !expanded;
+          shouldUpdateViewModel = true;
+        }
+      });
+    }
+
+    return {
+      value,
+      previousValue,
+      isSameValue,
+      firstSelectedItem,
+      shouldUpdateViewModel,
+    };
   }
 }
