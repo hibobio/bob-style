@@ -9,8 +9,6 @@ import {
 } from '@angular/core';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import {
-  joinArrays,
-  stringify,
   isBoolean,
   isNotEmptyArray,
   hasChanges,
@@ -19,10 +17,7 @@ import {
   isNotEmptyMap,
   isEmptyArray,
   isValuevy,
-  arrayDifference,
-  simpleArraysEqual,
 } from '../../../services/utils/functional-utils';
-import { selectValueOrFail } from '../../../services/utils/transformers';
 import { SelectType } from '../../list.enum';
 import {
   itemID,
@@ -36,12 +31,8 @@ import { TreeListViewService } from '../services/tree-list-view.service';
 import { BaseTreeListElement } from './tree-list.abstract';
 import { BehaviorSubject } from 'rxjs';
 import { TreeListValueUtils } from '../services/tree-list-value.static';
-import {
-  TreeListModelUtils,
-  TreeListChildrenToggleSelectReducerResult,
-} from '../services/tree-list-model.static';
+import { TreeListModelUtils } from '../services/tree-list-model.static';
 import { MobileService } from '../../../services/utils/mobile.service';
-import { BTL_ROOT_ID } from '../tree-list.const';
 
 @Component({
   selector: 'b-tree-list',
@@ -61,6 +52,12 @@ export class TreeListComponent extends BaseTreeListElement {
     host: ElementRef
   ) {
     super(modelSrvc, cntrlsSrvc, viewSrvc, mobileService, DOM, cd, zone, host);
+    this.listActions = {
+      apply: false,
+      cancel: false,
+      clear: false,
+      reset: false,
+    };
   }
 
   @Input('list') set setList(list: TreeListOption[]) {}
@@ -127,9 +124,9 @@ export class TreeListComponent extends BaseTreeListElement {
       notFirstChanges(changes, ['type'], true) &&
       this.type === SelectType.single
     ) {
-      const newValue = isNotEmptyArray(this.value) ? [this.value[0]] : [];
-      TreeListModelUtils.deselectAllExcept(this.value, newValue, this.itemsMap);
-      this.value = newValue;
+      viewModelWasUpdated =
+        this.applyValue(isNotEmptyArray(this.value) ? [this.value[0]] : []) ||
+        viewModelWasUpdated;
     }
 
     if (
@@ -143,7 +140,6 @@ export class TreeListComponent extends BaseTreeListElement {
         }
       )
     ) {
-      console.log('ngOnChanges updateListViewModel');
       this.updateListViewModel();
     }
   }
@@ -211,12 +207,9 @@ export class TreeListComponent extends BaseTreeListElement {
 
     if (this.type === SelectType.multi) {
       if (item.childrenCount) {
-        const deselected: TreeListChildrenToggleSelectReducerResult = item.childrenIDs.reduce(
-          TreeListModelUtils.childrenToggleSelectReducer(
-            item.selected,
-            this.itemsMap
-          ),
-          undefined
+        const deselected = TreeListModelUtils.updateChildrenParentSelected(
+          item,
+          this.itemsMap
         );
 
         this.value = this.value.filter(id => !deselected.IDs.includes(id));
@@ -242,68 +235,11 @@ export class TreeListComponent extends BaseTreeListElement {
 
   // returns true if listViewModel was updated
   protected applyValue(newValue: itemID[]): boolean {
-    // console.log(
-    //   '===> applyValue; new value:',
-    //   newValue,
-    //   'prev value:',
-
-    //   Array.from(this.itemsMap.get(BTL_ROOT_ID).selectedIDs)
-    // );
-
     let viewModelWasUpdated = false;
-    // , firstSelectedItem: TreeListItem;
-
-    // this.value = selectValueOrFail(newValue) || [];
-    // if (this.type === SelectType.single) {
-    //   this.value = this.value.slice(0, 1);
-    // }
 
     if (!this.itemsMap.size) {
-      console.log('no map');
       return viewModelWasUpdated;
     }
-
-    // const previousValue = Array.from(
-    //   this.itemsMap.get(BTL_ROOT_ID).selectedIDs
-    // );
-
-    // console.log('value difference', arrayDifference(previousValue, this.value));
-
-    // const isSameValue = simpleArraysEqual(previousValue, this.value);
-
-    // if (isSameValue) {
-    //   console.log('same value!');
-    // }
-
-    // if (isSameValue) {
-    //   firstSelectedItem = this.itemsMap.get(this.value[0]);
-    // } else {
-    //   const affectedIDs: itemID[] = TreeListValueUtils.sortIDlistByItemIndex(
-    //     joinArrays(previousValue, this.value),
-    //     this.itemsMap
-    //   );
-
-    //   affectedIDs.forEach(id => {
-    //     const item = this.itemsMap.get(id);
-
-    //     if (!item) {
-    //       console.error(
-    //         `[TreeListComponent.applyValue]:
-    //         No item data for ID: "${stringify(id)}". Removing ID from value.`
-    //       );
-    //       this.value = this.value.filter(valId => valId !== id);
-    //       return;
-    //     }
-
-    //     item.selected = !!newValue && this.value.includes(item.id);
-    //     if (!firstSelectedItem && item.selected) {
-    //       firstSelectedItem = item;
-    //     }
-
-    //     TreeListModelUtils.updateItemParentsSelectedCount(item, this.itemsMap);
-    //   });
-    // }
-    console.log('\n----------- LIST -----------\n');
 
     const mapUpdateResult = this.modelSrvc.applyValueToMap(
       newValue,
@@ -311,24 +247,14 @@ export class TreeListComponent extends BaseTreeListElement {
       this.type
     );
 
-    console.log('mapUpdateResult', mapUpdateResult);
-
     this.value = mapUpdateResult.value;
-    const {
-      previousValue,
-      isSameValue,
-      firstSelectedItem,
-      shouldUpdateViewModel,
-    } = mapUpdateResult;
 
-    if (shouldUpdateViewModel) {
-      // this.viewSrvc.expandTillItemsByID(this.value, this.itemsMap);
-      this.updateListViewModel();
-      viewModelWasUpdated = true;
-    }
+    const { firstSelectedItem } = mapUpdateResult;
 
     if (firstSelectedItem) {
-      console.log('firstSelectedItem', firstSelectedItem);
+      this.viewSrvc.expandTillItemsByID(this.value, this.itemsMap);
+      this.updateListViewModel();
+      viewModelWasUpdated = true;
       this.cd.detectChanges();
 
       this.viewSrvc.scrollToItem({
@@ -338,12 +264,8 @@ export class TreeListComponent extends BaseTreeListElement {
         maxHeightItems: this.maxHeightItems,
       });
     } else {
-      console.log('no firstSelectedItem, should collapse');
-      // this.toggleCollapseAll(this.startCollapsed, false);
       this.listElement.nativeElement.scrollTop = 0;
     }
-
-    console.log('applyValue viewModelWasUpdated', viewModelWasUpdated);
 
     return viewModelWasUpdated;
   }

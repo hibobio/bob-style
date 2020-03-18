@@ -26,7 +26,7 @@ import { ListFooterActions } from '../../list.interface';
 import { TruncateTooltipType } from '../../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { TreeListPanelComponent } from '../tree-list-panel/tree-list-panel.component';
-import { BTL_KEYMAP_DEF } from '../tree-list.const';
+import { BTL_KEYMAP_DEF, BTL_VALUE_SEPARATOR_DEF } from '../tree-list.const';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import {
   hasChanges,
@@ -43,9 +43,7 @@ import {
   selectValueOrFail,
   SelectValueMultiOrSingle,
 } from '../../../services/utils/transformers';
-import { TreeListViewService } from '../services/tree-list-view.service';
 import { TreeListValueUtils } from '../services/tree-list-value.static';
-import { TreeListModelUtils } from '../services/tree-list-model.static';
 import { PanelDefaultPosVer } from '../../../popups/panel/panel.enum';
 
 @Component({
@@ -72,15 +70,17 @@ import { PanelDefaultPosVer } from '../../../popups/panel/panel.enum';
 })
 export class TreeSelectComponent extends BaseFormElement
   implements TreeListComponentIO, TreeListPanelIO, OnChanges, OnDestroy {
-  constructor(
-    private modelSrvc: TreeListModelService,
-    private viewSrvc: TreeListViewService,
-    cd: ChangeDetectorRef
-  ) {
+  constructor(private modelSrvc: TreeListModelService, cd: ChangeDetectorRef) {
     super(cd);
     this.baseValue = [];
     this.inputTransformers = [selectValueOrFail];
     this.wrapEvent = true;
+    this.listActions = {
+      apply: true,
+      cancel: true,
+      clear: true,
+      reset: false,
+    };
   }
 
   @ViewChild(TreeListPanelComponent, { static: true })
@@ -93,18 +93,13 @@ export class TreeSelectComponent extends BaseFormElement
   @Input() viewFilter: ViewFilter;
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
 
-  @Input() type: SelectType = SelectType.single;
-  @Input() valueSeparatorChar = '/';
+  @Input() type: SelectType = SelectType.multi;
+  @Input() valueSeparatorChar = BTL_VALUE_SEPARATOR_DEF;
   @Input() maxHeightItems = 8;
   @Input() startCollapsed = true;
   @Input() readonly = false;
   @Input() disabled = false;
-  @Input() listActions: ListFooterActions = {
-    apply: true,
-    cancel: true,
-    clear: true,
-    reset: false,
-  };
+  @Input() listActions: ListFooterActions;
   @Input() tooltipType: TruncateTooltipType = TruncateTooltipType.auto;
   @Input() debug = false;
 
@@ -127,12 +122,15 @@ export class TreeSelectComponent extends BaseFormElement
   public touched = false;
 
   public ngOnChanges(changes: SimpleChanges): void {
-    console.log('ngOnChanges', changes);
     applyChanges(
       this,
       changes,
       {
         keyMap: BTL_KEYMAP_DEF,
+        type: SelectType.multi,
+        valueSeparatorChar: BTL_VALUE_SEPARATOR_DEF,
+        maxHeightItems: 8,
+        tooltipType: TruncateTooltipType.auto,
       },
       ['value'],
       true,
@@ -163,14 +161,7 @@ export class TreeSelectComponent extends BaseFormElement
     }
 
     if (notFirstChanges(changes, ['type']) && this.type === SelectType.single) {
-      const newValue = isNotEmptyArray(this.value) ? [this.value[0]] : [];
-      TreeListModelUtils.deselectAllExcept(
-        this.treeListValue ? this.treeListValue.selectedIDs : this.value,
-        newValue,
-        this.itemsMap
-      );
-      this.value = newValue;
-      this.setDisplayValue(this.value);
+      this.writeValue(isNotEmptyArray(this.value) ? [this.value[0]] : []);
     }
 
     if (
@@ -203,21 +194,13 @@ export class TreeSelectComponent extends BaseFormElement
 
   public onCancel(): void {
     if (this.treeListValue) {
-      TreeListModelUtils.deselectAllExcept(
-        this.treeListValue.selectedIDs,
-        this.value,
-        this.itemsMap
-      );
-      this.setDisplayValue(this.value);
+      this.writeValue(this.value);
       this.treeListValue = undefined;
     }
     this.closePanel();
   }
 
-  private setDisplayValue(
-    value: TreeListValue | itemID[] = null,
-    updateCount = false
-  ): void {
+  private setDisplayValue(value: TreeListValue | itemID[] = null): void {
     const displayValues = TreeListValueUtils.getDisplayValuesFromValue(
       value,
       this.itemsMap,
@@ -230,38 +213,19 @@ export class TreeSelectComponent extends BaseFormElement
   }
 
   public writeValue(value: itemID[]) {
-    const previousValue = this.value || [];
+    if (isNotEmptyMap(this.itemsMap)) {
+      const mapUpdateResult = this.modelSrvc.applyValueToMap(
+        value,
+        this.itemsMap,
+        this.type
+      );
 
-    super.writeValue(value, false, () => {
-      if (isNotEmptyMap(this.itemsMap)) {
-        //
-        // need to
-        //
-        // (this.value || []).forEach(id => {
-        //   const item = this.itemsMap.get(id);
-        //   item.selected = true;
-
-        //   console.log('update count', item);
-        //   TreeListModelUtils.updateItemParentsSelectedCount(
-        //     item,
-        //     this.itemsMap
-        //   );
-        // });
-
-        console.log(
-          '\n----------- SELECT -----------\n',
-          'writeValue',
-          'old value',
-          previousValue,
-          'new value',
-          this.value
-        );
-
-        this.modelSrvc.applyValueToMap(this.value, this.itemsMap, this.type);
-
-        this.setDisplayValue(this.value);
-      }
-    });
+      this.value = mapUpdateResult.value;
+      this.cd.detectChanges();
+      this.setDisplayValue(this.value);
+    } else {
+      super.writeValue(value);
+    }
   }
 
   private emitChange(value: TreeListValue): void {

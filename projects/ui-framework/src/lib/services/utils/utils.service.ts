@@ -134,7 +134,7 @@ export class UtilsService {
     this.windowScrollTo(scrollToTop, smooth);
   }
 
-  private windowScrollTo(scrollToTop = 0, smooth = false) {
+  public windowScrollTo(scrollToTop = 0, smooth = false) {
     if ('scrollBehavior' in document.documentElement.style) {
       this.windowRef.nativeWindow.scrollTo({
         left: 0,

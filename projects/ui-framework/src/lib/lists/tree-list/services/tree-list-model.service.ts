@@ -297,26 +297,10 @@ export class TreeListModelService {
     }
 
     const previousValue = Array.from(itemsMap.get(BTL_ROOT_ID).selectedIDs);
-
-    console.log(
-      '===> applyValue; new value:',
-      value,
-      'prev value:',
-
-      previousValue
-    );
-
-    console.log('value difference', arrayDifference(previousValue, value));
-
     const isSameValue = simpleArraysEqual(previousValue, value);
-    let firstSelectedItem: TreeListItem,
-      shouldUpdateViewModel = false;
-
-    console.log('value[0] === previousValue[0]', value[0] === previousValue[0]);
+    let firstSelectedItem: TreeListItem;
 
     if (isSameValue) {
-      console.log('same value!');
-
       firstSelectedItem = itemsMap.get(
         selectType === SelectType.single || value.length === 1
           ? value[0]
@@ -327,8 +311,6 @@ export class TreeListModelService {
         joinArrays(previousValue, value),
         itemsMap
       );
-
-      console.log('affectedIDs', affectedIDs);
 
       affectedIDs.forEach(id => {
         const item = itemsMap.get(id);
@@ -350,15 +332,15 @@ export class TreeListModelService {
 
         TreeListModelUtils.updateItemParentsSelectedCount(item, itemsMap);
 
-        const expanded = Boolean(
-          !item.collapsed ||
-            item.selectedCount ||
-            (item.selected && item.childrenCount)
-        );
+        if (item.childrenCount) {
+          const deselected = TreeListModelUtils.updateChildrenParentSelected(
+            item,
+            itemsMap
+          );
 
-        if (item.collapsed !== !expanded) {
-          item.collapsed = !expanded;
-          shouldUpdateViewModel = true;
+          deselected.items.forEach((itm: TreeListItem) => {
+            TreeListModelUtils.updateItemParentsSelectedCount(itm, itemsMap);
+          });
         }
       });
     }
@@ -368,7 +350,6 @@ export class TreeListModelService {
       previousValue,
       isSameValue,
       firstSelectedItem,
-      shouldUpdateViewModel,
     };
   }
 }

@@ -23,19 +23,6 @@ export type ChildrenToggleSelectReducer = (
 ) => TreeListChildrenToggleSelectReducerResult;
 
 export class TreeListModelUtils {
-  public static deselectAllExcept(
-    selectedIDs: itemID[],
-    keepIDs: itemID[],
-    itemsMap: TreeListItemMap
-  ): void {
-    selectedIDs
-      .filter(id => !keepIDs.includes(id))
-      .forEach(id => {
-        const item = itemsMap.get(id);
-        item.selected = false;
-      });
-  }
-
   public static toggleCollapseAllItemsInMap(
     itemsMap: TreeListItemMap,
     force: boolean = null
@@ -47,7 +34,34 @@ export class TreeListModelUtils {
     });
   }
 
-  public static childrenToggleSelectReducer(
+  public static updateItemParentsSelectedCount(
+    item: TreeListItem,
+    itemsMap: TreeListItemMap
+  ): void {
+    (item.parentIDs || []).forEach(groupID => {
+      const parent = itemsMap.get(groupID);
+
+      if (item.selected) {
+        parent.selectedIDs.add(item.id);
+      } else {
+        parent.selectedIDs.delete(item.id);
+      }
+
+      parent.selectedCount = parent.selectedIDs.size;
+    });
+  }
+
+  public static updateChildrenParentSelected(
+    item: TreeListItem,
+    itemsMap: TreeListItemMap
+  ): TreeListChildrenToggleSelectReducerResult {
+    return item.childrenIDs.reduce(
+      this.childrenToggleSelectReducer(item.selected, itemsMap),
+      undefined
+    );
+  }
+
+  private static childrenToggleSelectReducer(
     parentSelected: boolean,
     itemsMap: TreeListItemMap
   ): ChildrenToggleSelectReducer {
@@ -79,40 +93,6 @@ export class TreeListModelUtils {
     };
 
     return reducer;
-  }
-
-  public static updateItemParentsSelectedCount(
-    item: TreeListItem,
-    itemsMap: TreeListItemMap
-  ): void {
-    (item.parentIDs || []).forEach(groupID => {
-      const parent = itemsMap.get(groupID);
-
-      if (item.selected) {
-        parent.selectedIDs.add(item.id);
-      } else {
-        parent.selectedIDs.delete(item.id);
-      }
-
-      parent.selectedCount = parent.selectedIDs.size;
-    });
-
-    // if (!item.selected && item.childrenCount) {
-    //   item.childrenIDs.forEach(id => (itemsMap.get(id).parentSelected = false));
-    // }
-  }
-
-  public static updateChildrenParentSelected(
-    item: TreeListItem,
-    itemsMap: TreeListItemMap
-  ): void {
-    this.setPropToTreeDown(
-      item,
-      {
-        parentSelected: item.selected,
-      },
-      itemsMap
-    );
   }
 
   public static updateMap<T = TreeListItem>(

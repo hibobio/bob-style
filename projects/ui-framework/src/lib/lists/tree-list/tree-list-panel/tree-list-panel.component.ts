@@ -60,6 +60,12 @@ export class TreeListPanelComponent extends TreeListInputOutput
   ) {
     super();
     this.focusOnInit = true;
+    this.listActions = {
+      apply: true,
+      cancel: true,
+      clear: true,
+      reset: false,
+    };
   }
 
   @ViewChild(CdkOverlayOrigin, { static: true })
