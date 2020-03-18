@@ -18,6 +18,8 @@ import { FilterBarTestModule } from './filter-bar/filter-bar.module';
 import { DateParseTesterModule } from './dateparser/dateparse-tester.module';
 import { CommonModule } from '@angular/common';
 import { TreeSelectModule } from '../../../ui-framework/src/lib/lists/tree-list/tree-select/tree-select.module';
+import { CardTableModule } from '../../../ui-framework/src/lib/table/card-table/card-table.module';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,6 +44,8 @@ import { TreeSelectModule } from '../../../ui-framework/src/lib/lists/tree-list/
     // DatepickerModule,
     // DateParseTesterModule,
     TreeSelectModule,
+    CardTableModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent],

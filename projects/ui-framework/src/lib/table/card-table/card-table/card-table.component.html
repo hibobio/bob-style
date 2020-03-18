@@ -13,21 +13,24 @@
   </ul>
 </header>
 
-<ul class="card-table-body"
+<div class="card-table-body"
+    cdkDropList
+    [cdkDropListData]="table"
+    (cdkDropListDropped)="drop($event)"
     *ngIf="table && table.length > 0"
     role="rowgroup">
-  <li *ngFor="let row of table; index as index;"
+  <div *ngFor="let row of table; index as index;"
       b-table-card
+      cdkDrag
       [row]="row"
       [rowIndex]="index"
       [meta]="meta"
       [style]="cellsStyle"
       [ngClass]="{'clickable': cellClicked.observers.length > 0 || rowClicked.observers.length > 0}"
-      (click)="onRowClicked(row, index)"
       (cellClicked)="onCellClicked($event)"
       role="row">
-  </li>
-</ul>
+  </div>
+</div>
 
 <div class="card-table-body"
      *ngIf="default && !(table && table.length > 0)">

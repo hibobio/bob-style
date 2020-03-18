@@ -6,6 +6,7 @@ import {
 import { HListMockSimple } from '../../../ui-framework/src/lib/lists/tree-list/tree-list.mock';
 import { BTL_KEYMAP_SERVER } from '../../../ui-framework/src/lib/lists/tree-list/tree-list.const';
 import { FormGroup, FormControl } from '@angular/forms';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-root',

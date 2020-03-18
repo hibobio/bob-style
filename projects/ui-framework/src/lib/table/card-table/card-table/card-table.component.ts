@@ -10,6 +10,7 @@ import {
   QueryList,
   ElementRef,
 } from '@angular/core';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 import {
   CardTableCellMeta,
@@ -70,5 +71,10 @@ export class CardTableComponent implements OnInit {
 
   onCellClicked($event: CardTableCellClickEvent): void {
     this.cellClicked.emit($event);
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    console.log(event);
+    moveItemInArray(this.table, event.previousIndex, event.currentIndex);
   }
 }

@@ -8,6 +8,7 @@ import { CellWidthsService } from './cell-widths-service/cell-widths.service';
 import { TypographyModule } from '../../typography/typography.module';
 import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-to
     CommonModule,
     TypographyModule,
     ComponentRendererModule,
-    TruncateTooltipModule
+    TruncateTooltipModule,
+    DragDropModule
   ],
   exports: [CardTableComponent],
   providers: [CellWidthsService]
