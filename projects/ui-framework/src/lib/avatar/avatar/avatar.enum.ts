@@ -16,4 +16,5 @@ export enum AvatarBadge {
   pending = 'pending',
   rejected = 'rejected',
   online = 'online',
+  offline = 'offline',
 }
