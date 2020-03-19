@@ -147,6 +147,10 @@ on b-avatar-image element.`);
       role: 'img',
       'data-disabled': this.disabled || null,
       tabindex: isClickable && !this.disabled ? '0' : null,
+      'data-badge-align':
+        this.badge === AvatarBadge.online || this.badge === AvatarBadge.offline
+          ? 'bottom-right'
+          : null,
 
       'data-size': getKeyByValue(AvatarSize, this.size),
       'data-icon-before-size':
