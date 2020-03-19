@@ -3,7 +3,6 @@ import {
   EventEmitter,
   HostBinding,
   Input,
-  OnInit,
   Output,
 } from '@angular/core';
 import {
@@ -23,8 +22,7 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
     './../card-table/card-table.component.scss',
   ],
 })
-export class CardTableSortableComponent extends CardTableComponent
-  implements OnInit {
+export class CardTableSortableComponent extends CardTableComponent {
   @HostBinding('attr.data-has-drag-handle') @Input() useDragHandle = false;
   @Output() rowOrderChanged: EventEmitter<
     CardTableRowOrderChangeEvent
