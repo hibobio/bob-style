@@ -1,4 +1,11 @@
-import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   CardTableCellData,
   CardTableRowOrderChangeEvent,
@@ -39,7 +46,7 @@ export class CardTableSortableComponent extends CardTableComponent
     moveItemInArray(this.table, event.previousIndex, event.currentIndex);
     this.rowChangedOrder.emit({
       previousIndex: event.previousIndex,
-      currentIndex: event.currentIndex
+      currentIndex: event.currentIndex,
     });
   }
 }
