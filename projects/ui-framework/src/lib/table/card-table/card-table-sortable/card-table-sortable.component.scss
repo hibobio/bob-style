@@ -1,3 +1,26 @@
+:host[data-has-drag-handle='true'] {
+  .card-table-header,
+  [b-table-card] {
+    padding-left: 50px;
+  }
+}
+[b-table-card],
+.table-card-empty {
+  min-height: 55px !important;
+}
+[b-table-card] {
+  position: relative;
+}
+[cdkDragHandle] {
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  cursor: move;
+}
+.cdk-drag-preview {
+  padding-left: 50px !important;
+}
 .cdk-drag-placeholder {
   opacity: 0;
 }
@@ -6,11 +29,4 @@
 }
 .card-table-body.cdk-drop-list-dragging li:not(.cdk-drag-placeholder) {
   transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
-}
-:host[data-has-drag-handle="true"] .card-table-header .table-header-cell:first-of-type {
-  margin-left: 50px;
-}
-[cdkDragHandle] {
-  width: 50px;
-  cursor: move;
 }
