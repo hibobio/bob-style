@@ -7,8 +7,11 @@
 .card-table-body.cdk-drop-list-dragging li:not(.cdk-drag-placeholder) {
   transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
 }
-:host[data-has-drag-handle="true"] .card-table-header .table-header-cell:first-of-type {
-  margin-left: 50px;
+//:host[data-has-drag-handle="true"] .card-table-header .table-header-cell:first-of-type {
+//  margin-left: 50px;
+//}
+:host[data-has-drag-handle="true"] .card-table-header {
+  padding-left: 60px;
 }
 [cdkDragHandle] {
   width: 50px;

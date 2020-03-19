@@ -26,7 +26,7 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 export class CardTableSortableComponent extends CardTableComponent
   implements OnInit {
   @HostBinding('attr.data-has-drag-handle') @Input() useDragHandle = false;
-  @Output() rowChangedOrder: EventEmitter<
+  @Output() rowOrderChanged: EventEmitter<
     CardTableRowOrderChangeEvent
   > = new EventEmitter<CardTableRowOrderChangeEvent>();
 
@@ -38,13 +38,9 @@ export class CardTableSortableComponent extends CardTableComponent
   public readonly iconSize = IconSize;
   public readonly iconColor = IconColor;
 
-  ngOnInit(): void {
-    this.setCellsStyle();
-  }
-
   onDrop(event: CdkDragDrop<CardTableCellData[][]>): void {
     moveItemInArray(this.table, event.previousIndex, event.currentIndex);
-    this.rowChangedOrder.emit({
+    this.rowOrderChanged.emit({
       previousIndex: event.previousIndex,
       currentIndex: event.currentIndex,
     });

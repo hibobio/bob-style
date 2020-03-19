@@ -76,7 +76,7 @@ export class AppComponent {
       .setValue(val, { emitEvent: true });
   }
 
-  onRowChangedOrder($event: any) {
+  onRowOrderChanged($event: any) {
     console.log($event);
   }
 }

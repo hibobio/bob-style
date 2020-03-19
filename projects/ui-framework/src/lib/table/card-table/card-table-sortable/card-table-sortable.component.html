@@ -15,7 +15,6 @@
 
 <ul class="card-table-body"
     cdkDropList
-    [cdkDropListData]="table"
     (cdkDropListDropped)="onDrop($event)"
     *ngIf="table && table.length > 0"
     role="rowgroup">
