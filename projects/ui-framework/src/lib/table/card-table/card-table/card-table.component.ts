@@ -65,7 +65,6 @@ export class CardTableComponent implements OnInit {
   }
 
   onRowClicked(row: CardTableCellData[], index: number): void {
-    console.log('click', row, index);
     this.rowClicked.emit({ row: row, rowIndex: index });
   }
 
