@@ -5,6 +5,8 @@
   <li class="btl-item"
       [id]="item.id"
       [attr.data-index]="index"
+      [attr.data-level]="item.parentCount || 1"
+      tabindex="0"
       [ngClass]="{
         'btl-item-option': !item.childrenCount,
         'btl-item-group': item.childrenCount,
@@ -14,11 +16,9 @@
         collapsed: item.collapsed,
         'next-is-group': item.nextInViewIsGroup,
         'all-options-hidden': item.allOptionsHidden
-      }"
-      tabindex="0"
-      [attr.data-level]="item.parentCount || 1">
+      }">
 
-    <span *ngIf="item.childrenIDs"
+    <span *ngIf="item.childrenCount"
           class="btl-item-chevron has-hover"></span>
 
     <span *ngIf="showCheckbox()"

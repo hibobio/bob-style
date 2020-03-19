@@ -5,6 +5,7 @@ $betl-max-depth: 5;
 $betl-item-height: 36px;
 $betl-item-padding: $input-padding;
 $betl-item-indent: base8(30);
+$betl-icon-margin: 10px;
 
 .dev {
   padding: 10px;
@@ -45,4 +46,53 @@ $betl-item-indent: base8(30);
   [data-level='#{$i}'] {
     padding-left: ($betl-item-padding + $betl-item-indent * ($i - 1));
   }
+}
+
+// Controls
+
+.betl-item-chevron {
+  display: block;
+  margin-right: $betl-icon-margin - 2px;
+
+  &:before {
+    font-size: map-get($icon-sizes, 'medium');
+    color: map-get-deep($icon-colors, 'dark', color);
+    @include size($b-checkbox-size);
+    line-height: $b-checkbox-size;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+:host ::ng-deep {
+  .collapsed .betl-item-chevron {
+    @include b-icon(chevron-right, $size: null, $color: false, $hover: false) {
+      display: flex;
+    }
+  }
+
+  .expanded .betl-item-chevron {
+    @include b-icon(chevron-down, $size: null, $color: false, $hover: false) {
+      display: flex;
+    }
+  }
+}
+
+b-icon[data-type='circular'] {
+  background-color: $grey-500;
+
+  &:hover,
+  &:focus {
+    background-color: darken($grey-500, 10%);
+  }
+
+  .b-icon:before {
+    font-weight: 600;
+  }
+}
+
+.betl-item-menu-trigger {
+}
+
+.betl-list-add-item {
 }

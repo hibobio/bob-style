@@ -70,7 +70,7 @@ export const HListMockSimple: TreeListOption[] = makeArray(mxRootOptns).map(
       return ({
         serverId: `option-${indx + 1}-group-${indx}`,
         value: `0${indx + 1} Group ${indx}`,
-        canBeDeleted: true,
+        canBeDeleted: false,
         children: [
           {
             serverId: `option-${indx + 1}-group-${indx}-option-1`,

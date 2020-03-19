@@ -1,16 +1,18 @@
 import { Icons } from '../../icons/icons.enum';
+import { boolean } from '@storybook/addon-knobs';
 
-export interface MenuItem {
+export interface MenuItem<T = any> {
   children?: MenuItem[];
   label: string;
-  disabled?: boolean;
+  disabled?: boolean | ((item?: MenuItem) => boolean);
   key?: string;
   id?: string;
-  action?($event): void;
+  data?: T;
+  action?: (item?: MenuItem) => void;
 }
 
 export interface CommonActionButton {
   icon: Icons;
   tooltip?: string;
-  action?($event): void;
+  action?: (item?: MenuItem) => void;
 }

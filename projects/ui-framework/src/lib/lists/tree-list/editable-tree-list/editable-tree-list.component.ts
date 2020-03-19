@@ -18,9 +18,17 @@ import {
   TreeListItemMap,
   itemID,
   TreeListItem,
+  ViewFilter,
 } from '../tree-list.interface';
 import { BTL_KEYMAP_DEF } from '../tree-list.const';
 import { TreeListModelService } from '../services/tree-list-model.service';
+import { MenuItem } from '../../../navigation/menu/menu.interface';
+import {
+  Icons,
+  IconType,
+  IconSize,
+  IconColor,
+} from '../../../icons/icons.enum';
 
 @Component({
   selector: 'b-editable-tree-list',
@@ -40,10 +48,37 @@ export class EditableTreeListComponent implements OnChanges {
 
   public itemsMap: TreeListItemMap = new Map();
   public listViewModel: itemID[] = [];
+  private viewFilter: ViewFilter = {
+    hide: { prop: { key: 'deleted', value: true } },
+  };
+
+  public itemMenu: MenuItem[] = [
+    {
+      label: 'Add item',
+      key: 'addItemAfter',
+      action: (item: MenuItem) => {
+        this.addItemAfter(item.data);
+      },
+    },
+    {
+      label: 'Delete',
+      key: 'delete',
+      disabled: (item: MenuItem) =>
+        item.data && item.data.canBeDeleted === false,
+      action: (item: MenuItem) => {
+        this.deleteItem(item.data);
+      },
+    },
+  ];
 
   public $listViewModel: BehaviorSubject<itemID[]> = new BehaviorSubject<
     itemID[]
   >([]);
+
+  readonly icons = Icons;
+  readonly iconType = IconType;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
 
   public ngOnChanges(changes: SimpleChanges): void {
     applyChanges(
@@ -80,6 +115,8 @@ export class EditableTreeListComponent implements OnChanges {
       this.list,
       this.itemsMap,
       {
+        viewFilter: this.viewFilter,
+        expand: true,
         keyMap: this.keyMap,
       }
     );
@@ -99,12 +136,19 @@ export class EditableTreeListComponent implements OnChanges {
     return id;
   }
 
-  public dndShouldAnimateDrop() {
-    return false;
+  // ---------MENU----------
+
+  public addItemAfter(item: TreeListItem): void {
+    console.log('addItemAfter', item);
+
+    const parent = item.parentIDs[item.parentCount - 1];
   }
 
-  public dndGetChildPayload(item: TreeListItem) {
-    return (index: number) => item;
+  public deleteItem(item: TreeListItem): void {
+    console.log('deleteItem', item);
+
+    item.deleted = true;
+    this.updateListViewModel();
   }
 
   // Dev / Debug

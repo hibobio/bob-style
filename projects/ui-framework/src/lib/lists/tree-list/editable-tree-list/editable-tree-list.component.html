@@ -2,55 +2,46 @@
              let-index="index"
              let-item="item">
 
-  <!-- <li class="betl-item"
+  <li role="listitem"
+      class="betl-item"
       [id]="item.id"
       [attr.data-index]="index"
-      [attr.data-level]="item.parentCount || 1">
+      [attr.data-level]="item.parentCount || 1"
+      tabindex="0"
+      [ngClass]="{
+        'btl-item-option': !item.childrenCount,
+        'btl-item-group': item.childrenCount,
+        expanded: item.childrenCount && !item.collapsed,
+        collapsed: item.collapsed
+      }">
 
-    <span *ngIf="item.childrenIDs"
-          class="btl-item-chevron has-hover"></span>
+    <span *ngIf="item.childrenCount"
+          class="betl-item-chevron has-hover"></span>
+
+    <b-menu [id]="item.id"
+            [data]="item"
+            [menu]="itemMenu">
+
+      <b-icon menu-trigger
+              role="button"
+              class="betl-item-menu-trigger"
+              [type]="iconType.circular"
+              [size]="iconSize.small"
+              [color]="iconColor.white"
+              [icon]="icons.three_dots">
+      </b-icon>
+
+    </b-menu>
 
     <input [(ngModel)]="item.name"
            class="betl-item-input"
            type="text">
-  </li> -->
-
-  <smooth-dnd-draggable role="listitem"
-                        class="betl-item"
-                        [id]="item.id"
-                        [attr.data-index]="index"
-                        [attr.data-level]="item.parentCount || 1">
-
-    <span *ngIf="item.childrenIDs"
-          class="btl-item-chevron has-hover"></span>
-
-    <input [(ngModel)]="item.name"
-           class="betl-item-input"
-           type="text">
-  </smooth-dnd-draggable>
+  </li>
 
 </ng-template>
 
-<smooth-dnd-container role="list"
-                      class="betl-list"
-                      [orientation]="'vertical'"
-                      [lockAxis]="'y'"
-                      [animationDuration]="0"
-                      [shouldAnimateDrop]="dndShouldAnimateDrop"
-                      [getChildPayload]="dndGetChildPayload(item)"
-                      (click)="onListClick($event)"
-                      (keydown)="onListKeyDown($event)">
-
-  <ng-container *ngFor="let itemID of $listViewModel | async; let index = index; trackBy: trackBy">
-    <ng-container *ngTemplateOutlet="listItem; context: {
-      index: index,
-      item: itemsMap.get(itemID)
-    }"></ng-container>
-  </ng-container>
-
-</smooth-dnd-container>
-
-<!-- <ul #listElement
+<ul #listElement
+    role="list"
     class="betl-list"
     (click)="onListClick($event)"
     (keydown)="onListKeyDown($event)">
@@ -62,7 +53,17 @@
     }"></ng-container>
   </ng-container>
 
-</ul> -->
+</ul>
+
+<b-icon role="button"
+        class="betl-list-add-item"
+        [type]="iconType.circular"
+        [size]="iconSize.small"
+        [color]="iconColor.white"
+        [icon]="icons.add"
+        (click)="addItemAfter(listViewModel[listViewModel.length-1])">
+</b-icon>
+
 
 <div class="dev">
   <p>Total items: {{ itemsMap.size - 1 }}</p>
