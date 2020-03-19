@@ -15,6 +15,10 @@ $avatarSizeMap: (
       top: -2px,
       right: -5px,
     ),
+    '[data-badge-align="bottom-right"]:after': (
+      top: auto,
+      bottom: 2px,
+    ),
   ),
   small: (
     '*': (
@@ -28,6 +32,10 @@ $avatarSizeMap: (
     ':after': (
       top: 0,
       right: -4px,
+    ),
+    '[data-badge-align="bottom-right"]:after': (
+      top: auto,
+      bottom: 0,
     ),
   ),
   medium: (
@@ -43,6 +51,10 @@ $avatarSizeMap: (
       top: 3px,
       right: -4px,
     ),
+    '[data-badge-align="bottom-right"]:after': (
+      top: auto,
+      bottom: 3px,
+    ),
   ),
   large: (
     '*': (
@@ -57,6 +69,10 @@ $avatarSizeMap: (
       top: 6px,
       right: 2px,
     ),
+    '[data-badge-align="bottom-right"]:after': (
+      top: auto,
+      bottom: 6px,
+    ),
   ),
   xlarge: (
     '*': (
@@ -70,6 +86,10 @@ $avatarSizeMap: (
     ':after': (
       top: 0,
       right: -5px,
+    ),
+    '[data-badge-align="bottom-right"]:after': (
+      top: auto,
+      bottom: 0,
     ),
   ),
 );
@@ -156,12 +176,7 @@ $avatarSizeMap: (
     border-radius: 50%;
     position: absolute;
 
-    background-image: radial-gradient(
-      white 0%,
-      white 49%,
-      transparent 51%,
-      transparent 100%
-    );
+    background-color: white;
     background-position: center;
     background-size: 100%;
   }
