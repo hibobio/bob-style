@@ -1,7 +1,6 @@
 <header role="rowgroup">
   <ul class="card-table-header"
       role="row">
-    <div class="drag-handle-container" *ngIf="useDragHandle"></div>
     <li class="table-header-cell"
         *ngFor="let cell of meta; index as index;"
         [ngStyle]="{
@@ -32,12 +31,10 @@
       (click)="onRowClicked(row, index)"
       (cellClicked)="onCellClicked($event)"
       role="row">
-    <div class="drag-handle-container" *ngIf="useDragHandle" cdkDragHandle>
-      <b-square-button [type]="buttons.tertiary"
-                       [icon]="icons.drag_alt"
-                       [color]="iconColor.dark"
-                       [size]="iconSize.small"></b-square-button>
-    </div>
+    <b-icon *ngIf="useDragHandle" cdkDragHandle
+            [icon]="icons.drag_alt"
+            [color]="iconColor.dark"
+            [size]="iconSize.small"></b-icon>
   </li>
 </ul>
 
