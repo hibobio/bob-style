@@ -13,6 +13,9 @@ import { action } from '@storybook/addon-actions';
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
+const story2 = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
 const componentTemplate = `
 <b-tree-select
@@ -76,41 +79,34 @@ const note = `
   ${formElemsPropsDoc}
 `;
 
-story.add(
-  'Tree Select',
-  () => {
-    return {
-      template,
-      props: {
-        ...TreeListStoriesCommonProps({
-          apply: true,
-          cancel: true,
-          clear: true,
-          reset: false,
-        }),
+const toAdd = () => ({
+  template,
+  props: {
+    ...TreeListStoriesCommonProps({
+      apply: true,
+      cancel: true,
+      clear: true,
+      reset: false,
+    }),
 
-        label: text('label', 'label text', 'Props'),
-        description: text('description', mockText(30), 'Props'),
-        placeholder: text('placeholder', 'placeholder text', 'Props'),
-        required: boolean('required', false, 'Props'),
-        hintMessage: text(
-          'hintMessage',
-          'This field should contain something',
-          'Props'
-        ),
-        errorMessage: text('errorMessage', '', 'Props'),
+    label: text('label', 'label text', 'Props'),
+    description: text('description', mockText(30), 'Props'),
+    placeholder: text('placeholder', 'placeholder text', 'Props'),
+    required: boolean('required', false, 'Props'),
+    hintMessage: text(
+      'hintMessage',
+      'This field should contain something',
+      'Props'
+    ),
+    errorMessage: text('errorMessage', '', 'Props'),
 
-        opened: action('List opened'),
-        closed: action('List closed'),
-      },
-      moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          StoryBookLayoutModule,
-          TreeSelectModule,
-        ],
-      },
-    };
+    opened: action('List opened'),
+    closed: action('List closed'),
   },
-  { notes: { markdown: note } }
-);
+  moduleMetadata: {
+    imports: [BrowserAnimationsModule, StoryBookLayoutModule, TreeSelectModule],
+  },
+});
+
+story.add('Tree Select', toAdd, { notes: { markdown: note } });
+story2.add('Tree Select', toAdd, { notes: { markdown: note } });

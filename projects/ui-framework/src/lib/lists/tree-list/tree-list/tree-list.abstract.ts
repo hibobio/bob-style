@@ -33,8 +33,13 @@ import { TreeListViewService } from '../services/tree-list-view.service';
 import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
 import { LIST_ACTIONS_STATE_DEF } from '../../list-footer/list-footer.const';
-import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from '../tree-list.const';
+import {
+  BTL_KEYMAP_DEF,
+  BTL_ROOT_ID,
+  BTL_VALUE_SEPARATOR_DEF,
+} from '../tree-list.const';
 import { TreeListSearchUtils } from '../services/tree-list-search.static';
+import { TreeListModelUtils } from '../services/tree-list-model.static';
 import { MobileService } from '../../../services/utils/mobile.service';
 
 @Directive()
@@ -87,6 +92,9 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
       changes,
       {
         keyMap: BTL_KEYMAP_DEF,
+        type: SelectType.multi,
+        valueSeparatorChar: BTL_VALUE_SEPARATOR_DEF,
+        maxHeightItems: 8,
       },
       ['list', 'value', 'itemsMap'],
       true,
@@ -209,7 +217,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   }
 
   public toggleCollapseAll(force: boolean = null, updateModel = true): void {
-    this.viewSrvc.toggleCollapseAllItemsInMap(this.itemsMap, force);
+    TreeListModelUtils.toggleCollapseAllItemsInMap(this.itemsMap, force);
     if (updateModel) {
       this.updateListViewModel();
     }

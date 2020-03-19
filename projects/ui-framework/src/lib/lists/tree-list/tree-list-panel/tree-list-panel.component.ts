@@ -36,7 +36,6 @@ import { TreeListValue } from '../tree-list.interface';
 import { TreeListInputOutput } from '../tree-list-IO.abstract';
 import { ListPanelService } from '../../list-panel.service';
 import { TreeListPanelIO } from './tree-list-panel.interface';
-import { MobileService } from '../../../services/utils/mobile.service';
 
 @Component({
   selector: 'b-tree-list-panel',
@@ -50,7 +49,6 @@ export class TreeListPanelComponent extends TreeListInputOutput
     public DOM: DOMhelpers,
     protected zone: NgZone,
     protected cd: ChangeDetectorRef,
-    private mobileService: MobileService,
     private listPanelSrvc: ListPanelService,
     // Used by ListPanelService:
     private overlay: Overlay,
@@ -60,6 +58,12 @@ export class TreeListPanelComponent extends TreeListInputOutput
   ) {
     super();
     this.focusOnInit = true;
+    this.listActions = {
+      apply: true,
+      cancel: true,
+      clear: true,
+      reset: false,
+    };
   }
 
   @ViewChild(CdkOverlayOrigin, { static: true })

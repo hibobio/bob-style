@@ -58,6 +58,7 @@ export interface TreeListItem {
 
   parentIDs?: itemID[] | null;
   childrenIDs?: itemID[] | null;
+  selectedIDs?: Set<itemID> | null;
 
   // stats
   parentCount?: number;

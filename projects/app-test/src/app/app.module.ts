@@ -28,7 +28,7 @@ import { TreeSelectModule } from '../../../ui-framework/src/lib/lists/tree-list/
     FormsModule,
     ReactiveFormsModule,
     EventManagerModule,
-    RouterModule,
+    // RouterModule,
     UtilsModule,
     StatsModule,
     // AppRoutingModule,

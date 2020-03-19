@@ -16,9 +16,14 @@ export class TreeListValueUtils {
     IDlist: itemID[],
     itemsMap: TreeListItemMap
   ): itemID[] {
-    const sorted = IDlist.sort((idA, idB) =>
-      itemsMap.get(idA).originalIndex > itemsMap.get(idB).originalIndex ? 1 : -1
-    );
+    const sorted = IDlist.sort((idA, idB) => {
+      const itemA = itemsMap.get(idA),
+        itemB = itemsMap.get(idB);
+      if (!itemA || !itemB) {
+        return 0;
+      }
+      return itemA.originalIndex > itemB.originalIndex ? 1 : -1;
+    });
     return sorted;
   }
 

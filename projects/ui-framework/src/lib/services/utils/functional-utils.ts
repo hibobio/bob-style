@@ -219,6 +219,17 @@ export const arrayDifference = <T = any>(arrA: T[], arrB: T[]): T[] => {
 export const arrayIntersection = <T = any>(arrA: T[], arrB: T[]): T[] =>
   arrA.filter(x => arrB.includes(x));
 
+export const simpleArraysEqual = <T>(arr1: T[], arr2: T[]) => {
+  if (!isArray(arr1) || !isArray(arr2) || arr1.length !== arr2.length) {
+    return false;
+  }
+  if (arr1 === arr2) {
+    return true;
+  }
+
+  return arrayDifference(arr1, arr2).length === 0;
+};
+
 export const dedupeArray = <T = any>(arr: T[]): T[] => Array.from(new Set(arr));
 
 export const joinArrays = <T = any>(arr1: T[], ...rest): T[] =>
