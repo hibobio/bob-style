@@ -1,12 +1,12 @@
 {
   "name": "bob-style",
-  "version": "4.0.24",
+  "version": "4.0.25",
   "peerDependencies": {
     "@angular/animations": "^9.0.0",
     "@angular/cdk": "^9.0.0",
     "@angular/common": "^9.0.0",
     "@angular/core": "^9.0.0",
-    "@angular/material": "^9.0.0",
+    "@angular/material": "^9.1.2",
     "lodash": "^4.17.15",
     "@types/node": "^13.5.0",
     "@types/highcharts": "^5.0.44",

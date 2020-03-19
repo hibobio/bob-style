@@ -17,7 +17,6 @@ import { ListFooterActions } from '../list.interface';
 export abstract class TreeListInputOutput implements TreeListComponentIO {
   @Input() list: TreeListOption[];
   @Input() value: itemID[];
-  @Input() previousValue: itemID[];
   @Input() valueDefault: itemID[];
   @Input() viewFilter: ViewFilter;
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;

@@ -9,8 +9,6 @@ import {
 } from '@angular/core';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import {
-  joinArrays,
-  stringify,
   isBoolean,
   isNotEmptyArray,
   hasChanges,
@@ -20,7 +18,6 @@ import {
   isEmptyArray,
   isValuevy,
 } from '../../../services/utils/functional-utils';
-import { selectValueOrFail } from '../../../services/utils/transformers';
 import { SelectType } from '../../list.enum';
 import {
   itemID,
@@ -30,13 +27,11 @@ import {
 } from '../tree-list.interface';
 import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
-import {
-  TreeListViewService,
-  TreeListChildrenToggleSelectReducerResult,
-} from '../services/tree-list-view.service';
+import { TreeListViewService } from '../services/tree-list-view.service';
 import { BaseTreeListElement } from './tree-list.abstract';
 import { BehaviorSubject } from 'rxjs';
 import { TreeListValueUtils } from '../services/tree-list-value.static';
+import { TreeListModelUtils } from '../services/tree-list-model.static';
 import { MobileService } from '../../../services/utils/mobile.service';
 
 @Component({
@@ -57,6 +52,12 @@ export class TreeListComponent extends BaseTreeListElement {
     host: ElementRef
   ) {
     super(modelSrvc, cntrlsSrvc, viewSrvc, mobileService, DOM, cd, zone, host);
+    this.listActions = {
+      apply: false,
+      cancel: false,
+      clear: false,
+      reset: false,
+    };
   }
 
   @Input('list') set setList(list: TreeListOption[]) {}
@@ -123,9 +124,9 @@ export class TreeListComponent extends BaseTreeListElement {
       notFirstChanges(changes, ['type'], true) &&
       this.type === SelectType.single
     ) {
-      const newValue = isNotEmptyArray(this.value) ? [this.value[0]] : [];
-      this.viewSrvc.deselectAllExcept(this.value, newValue, this.itemsMap);
-      this.value = newValue;
+      viewModelWasUpdated =
+        this.applyValue(isNotEmptyArray(this.value) ? [this.value[0]] : []) ||
+        viewModelWasUpdated;
     }
 
     if (
@@ -188,39 +189,10 @@ export class TreeListComponent extends BaseTreeListElement {
     item.selected = newSelectedValue;
 
     if (this.type === SelectType.single) {
-      if (item.selected) {
-        if (this.value.length && this.value[0] !== item.id) {
-          const prevSelectedItem = this.itemsMap.get(this.value[0]);
-          prevSelectedItem.selected = false;
-
-          this.viewSrvc.updateItemParentsSelectedCount(
-            prevSelectedItem,
-            this.itemsMap
-          );
-        }
-        this.value = [item.id];
-      } else {
-        this.value = [];
-      }
+      this.value = item.selected ? [item.id] : [];
     }
 
     if (this.type === SelectType.multi) {
-      if (item.childrenCount) {
-        const deselected: TreeListChildrenToggleSelectReducerResult = item.childrenIDs.reduce(
-          this.viewSrvc.childrenToggleSelectReducer(
-            item.selected,
-            this.itemsMap
-          ),
-          undefined
-        );
-
-        this.value = this.value.filter(id => !deselected.IDs.includes(id));
-
-        deselected.items.forEach((itm: TreeListItem) => {
-          this.viewSrvc.updateItemParentsSelectedCount(itm, this.itemsMap);
-        });
-      }
-
       if (item.selected) {
         this.value.push(item.id);
       } else {
@@ -228,7 +200,7 @@ export class TreeListComponent extends BaseTreeListElement {
       }
     }
 
-    this.viewSrvc.updateItemParentsSelectedCount(item, this.itemsMap);
+    this.applyValue(this.value, false);
 
     this.updateActionButtonsState();
     this.cd.detectChanges();
@@ -236,62 +208,39 @@ export class TreeListComponent extends BaseTreeListElement {
   }
 
   // returns true if listViewModel was updated
-  protected applyValue(newValue: itemID[]): boolean {
-    let viewModelWasUpdated = false,
-      affectedIDs: itemID[] = joinArrays(
-        this.value || [],
-        this.previousValue || []
-      ),
-      firstSelectedItem: TreeListItem;
+  protected applyValue(newValue: itemID[], adjustView = true): boolean {
+    let viewModelWasUpdated = false;
 
-    this.value = selectValueOrFail(newValue);
-    if (this.value && this.type === SelectType.single) {
-      this.value = this.value.slice(0, 1);
-    }
-
-    if (!this.itemsMap.size) {
+    if (!this.itemsMap.size || newValue === undefined) {
       return viewModelWasUpdated;
     }
-    affectedIDs = joinArrays(affectedIDs, this.value || []);
 
-    affectedIDs.forEach(id => {
-      const item = this.itemsMap.get(id);
+    const mapUpdateResult = this.modelSrvc.applyValueToMap(
+      newValue,
+      this.itemsMap,
+      this.type
+    );
 
-      if (!item) {
-        console.error(
-          `[TreeListComponent.applyValue]:
-          No item data for ID: "${stringify(id)}". Removing ID from value.`
-        );
-        this.value = this.value.filter(valId => valId !== id);
-        return;
+    this.value = mapUpdateResult.value;
+
+    if (adjustView) {
+      const { firstSelectedItem } = mapUpdateResult;
+
+      if (firstSelectedItem) {
+        this.viewSrvc.expandTillItemsByID(this.value, this.itemsMap);
+        this.updateListViewModel();
+        viewModelWasUpdated = true;
+        this.cd.detectChanges();
+
+        this.viewSrvc.scrollToItem({
+          item: firstSelectedItem,
+          listElement: this.listElement.nativeElement,
+          listViewModel: this.listViewModel,
+          maxHeightItems: this.maxHeightItems,
+        });
+      } else {
+        this.listElement.nativeElement.scrollTop = 0;
       }
-
-      item.selected = !!newValue && this.value.includes(item.id);
-      if (!firstSelectedItem && item.selected) {
-        firstSelectedItem = item;
-      }
-
-      this.viewSrvc.updateItemParentsSelectedCount(item, this.itemsMap);
-    });
-
-    if (firstSelectedItem) {
-      this.viewSrvc.expandTillItemsByID(this.value, this.itemsMap);
-
-      this.updateListViewModel();
-      viewModelWasUpdated = true;
-      console.time('dch');
-      this.cd.detectChanges();
-      console.timeEnd('dch');
-
-      this.viewSrvc.scrollToItem({
-        item: firstSelectedItem,
-        listElement: this.listElement.nativeElement,
-        listViewModel: this.listViewModel,
-        maxHeightItems: this.maxHeightItems,
-      });
-    } else {
-      this.toggleCollapseAll(this.startCollapsed, false);
-      this.listElement.nativeElement.scrollTop = 0;
     }
 
     return viewModelWasUpdated;

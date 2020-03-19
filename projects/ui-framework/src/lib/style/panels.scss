@@ -178,8 +178,11 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
 
 .cdk-overlay-pane.b-select-panel {
   min-width: 280px;
+  pointer-events: none !important;
 
-  .b-select-panel {
+  .b-select-panel,
+  .panel-position {
+    pointer-events: all;
     width: 100%;
   }
 }
