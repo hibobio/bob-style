@@ -25,3 +25,13 @@
     justify-content: center;
   }
 }
+
+:host ::ng-deep {
+  .bfe-prefix b-avatar-image {
+    margin-left: -12px;
+  }
+
+  .option-select b-avatar-image {
+    margin-left: -2px;
+  }
+}

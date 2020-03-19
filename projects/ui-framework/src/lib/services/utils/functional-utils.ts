@@ -62,6 +62,15 @@ export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
   isEmptyArray(smth) ||
   (isEmptyObject(smth) && !isDate(smth));
 
+// truthy, string, number or null
+export const isValuevy = (smth: any): boolean =>
+  smth !== undefined &&
+  (Boolean(smth) ||
+    smth === null ||
+    isBoolean(smth) ||
+    isString(smth) ||
+    isNumber(smth));
+
 export const getType = (smth: any): string =>
   smth === null
     ? 'null'
@@ -550,7 +559,11 @@ export const firstChanges = (
   if (!keys) {
     keys = Object.keys(changes);
   }
-  return !!keys.find(i => changes[i] && changes[i].firstChange);
+  return !!keys.find(
+    i =>
+      simpleChangeFilter(changes[i], discardAllFalsey, falseyCheck) &&
+      changes[i].firstChange
+  );
 };
 
 export const notFirstChanges = (
@@ -563,7 +576,11 @@ export const notFirstChanges = (
   if (!keys) {
     keys = Object.keys(changes);
   }
-  return !!keys.find(i => changes[i] && !changes[i].firstChange);
+  return !!keys.find(
+    i =>
+      simpleChangeFilter(changes[i], discardAllFalsey, falseyCheck) &&
+      !changes[i].firstChange
+  );
 };
 
 export interface ApplyChangesConfig {

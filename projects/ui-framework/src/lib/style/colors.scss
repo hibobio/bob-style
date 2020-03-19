@@ -39,8 +39,8 @@ $boxShadowColor: rgba($grey-700, 0.2);
 $color-error: $negative-600;
 $color-warn: $primary-500;
 
-$color-option-selected: $grey-300; // rgb(255, 243, 192); // #fff3c0;
-
+$color-option-selected: $grey-300;
+$color-select-yellow: #fdf4d2; // rgb(253, 244, 210)
 $color-select-red: var(--negative-600);
 
 @function black($opacity) {

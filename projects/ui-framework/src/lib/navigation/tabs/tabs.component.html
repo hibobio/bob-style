@@ -1,16 +1,17 @@
-<mat-tab-group [ngClass]="'tabs-'+type"
-               (selectedTabChange)="onSelectChange($event)"
-               [selectedIndex]="selectedIndex"
-               [disableRipple]="true">
+<div mat-tab-nav-bar
+     role="navigation"
+     [ngClass]="'tabs-'+type"
+     [disableRipple]="true"
+     (click.outside-zone)="onNavBarClick($event)"
+     (keydown.outside-zone)="onNavBarKeydown($event)">
 
-  <ng-container *ngFor="let tab of tabs; let i = index;">
-    <mat-tab [label]="tab.label" disabled>
-      <ng-template mat-tab-label>
-        <span #matLabels
-              (click.outside-zone)="tabClick(tab, i)"
-              class="tab-label {{tab?.key}}">{{tab.label}}</span>
-      </ng-template>
-    </mat-tab>
-  </ng-container>
+  <a *ngFor="let tab of tabs; let i = index; trackBy: tabTrackBy"
+     mat-tab-link
+     [disableRipple]="true"
+     class="mat-tab-label {{tab?.key}}"
+     [attr.data-index]="i"
+     [active]="i === selectedIndex">
+    {{tab.label}}
+  </a>
 
-</mat-tab-group>
+</div>

@@ -84,19 +84,21 @@ export class TruncateTooltipComponent
       'b-truncate-tooltip'
     );
 
-    if (this.lazyness !== 0 && this.type !== TruncateTooltipType.css) {
-      this.addMouseListeners();
-    }
+    if (this.type !== TruncateTooltipType.none) {
+      if (this.lazyness !== 0 && this.type !== TruncateTooltipType.css) {
+        this.addMouseListeners();
+      }
 
-    this.resizeSubscription = this.utilsService
-      .getResizeEvent()
-      .pipe(outsideZone(this.zone))
-      .subscribe(() => {
-        this.checkTooltipNecessity();
-        if (!this.cd['destroyed']) {
-          this.cd.detectChanges();
-        }
-      });
+      this.resizeSubscription = this.utilsService
+        .getResizeEvent()
+        .pipe(outsideZone(this.zone))
+        .subscribe(() => {
+          this.checkTooltipNecessity();
+          if (!this.cd['destroyed']) {
+            this.cd.detectChanges();
+          }
+        });
+    }
   }
 
   ngAfterViewInit(): void {
@@ -108,24 +110,27 @@ export class TruncateTooltipComponent
 
         this.setCssVars();
         this.setMaxLinesAttr();
-        this.checkTooltipNecessity();
 
-        this.initialized = true;
-        if (this.type === TruncateTooltipType.css || this.lazyness === 0) {
-          this.tooltipAllowed = true;
-          this.stopHoverTimer();
-          this.removeMouseListeners();
-        }
+        if (this.type !== TruncateTooltipType.none) {
+          this.checkTooltipNecessity();
 
-        if (!this.cd['destroyed']) {
-          this.cd.detectChanges();
+          this.initialized = true;
+          if (this.type === TruncateTooltipType.css || this.lazyness === 0) {
+            this.tooltipAllowed = true;
+            this.stopHoverTimer();
+            this.removeMouseListeners();
+          }
+
+          if (!this.cd['destroyed']) {
+            this.cd.detectChanges();
+          }
         }
       }, 0);
     });
   }
 
   ngDoCheck(): void {
-    if (this.expectChanges) {
+    if (this.expectChanges && this.type !== TruncateTooltipType.none) {
       this.zone.runOutsideAngular(() => {
         setTimeout(() => {
           if (

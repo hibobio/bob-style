@@ -1,12 +1,13 @@
 import { select, number, text, boolean, object } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
-import { BTL_KEYMAP_SERVER } from './tree-list.const';
+import { BTL_KEYMAP_SERVER, BTL_VALUE_SEPARATOR_DEF } from './tree-list.const';
 import { SelectType } from '../list.enum';
 import {
   HListMockSimple,
   HListMock,
   HListMockSingleGroup,
   makeRandomList,
+  HListMockValues,
 } from './tree-list.mock';
 
 export const TreeListStoriesCommonProps = (
@@ -20,7 +21,11 @@ export const TreeListStoriesCommonProps = (
   serverKeyMap: BTL_KEYMAP_SERVER,
   type: select('type', Object.values(SelectType), SelectType.single, 'Props'),
   maxHeightItems: number('maxHeightItems', 8, {}, 'Props'),
-  valueSeparatorChar: text('valueSeparatorChar', ' / ', 'Props'),
+  valueSeparatorChar: text(
+    'valueSeparatorChar',
+    BTL_VALUE_SEPARATOR_DEF,
+    'Props'
+  ),
   startCollapsed: boolean('startCollapsed', true, 'Props'),
   readonly: boolean('readonly', false, 'Props'),
   disabled: boolean('disabled', false, 'Props'),
@@ -50,10 +55,11 @@ export const TreeListStoriesCommonProps = (
         HListMockSimple[2].children[2].serverId,
       ],
     ],
-    0,
+    // 0,
+    HListMockSimple[0].serverId,
     'Data'
   ),
-  valueRandom: select('random list value', [], undefined, 'Data'),
+  valueRandom: select('random list value', [0, ...HListMockValues], 0, 'Data'),
 
   footerActions: object('footerActions', footerActions, 'Props'),
 

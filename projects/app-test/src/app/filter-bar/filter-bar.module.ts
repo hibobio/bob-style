@@ -32,18 +32,18 @@ import {
   mockISOdate,
   mockTime,
 } from '../../../../ui-framework/src/lib/mock.const';
-import {
-  randomNumber,
-  QuickFilterLayoutComponent,
-  randomFromArray,
-  DatepickerType,
-  InputTypes,
-} from '../../../../ui-framework/src/public_api';
 // tslint:disable-next-line: max-line-length
 import { optionsMock as SSoptionsMock } from '../../../../ui-framework/src/lib/lists/single-list/single-list.mock';
 // tslint:disable-next-line: max-line-length
 import { optionsMock as MSoptionsMock } from '../../../../ui-framework/src/lib/lists/multi-list/multi-list.mock';
 import { Social } from '../../../../ui-framework/src/lib/form-elements/social/social.enum';
+import {
+  randomNumber,
+  randomFromArray,
+} from '../../../../ui-framework/src/lib/services/utils/functional-utils';
+import { QuickFilterLayoutComponent } from '../../../../ui-framework/src/lib/search/quick-filter-layout/quick-filter-layout.component';
+import { DatepickerType } from '../../../../ui-framework/src/lib/form-elements/date-picker/datepicker.enum';
+import { InputTypes } from '../../../../ui-framework/src/lib/form-elements/input/input.enum';
 
 const deselectOptions = options =>
   options.map(g => ({

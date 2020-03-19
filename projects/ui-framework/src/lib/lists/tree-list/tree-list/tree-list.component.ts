@@ -18,6 +18,7 @@ import {
   notFirstChanges,
   isNotEmptyMap,
   isEmptyArray,
+  isValuevy,
 } from '../../../services/utils/functional-utils';
 import { selectValueOrFail } from '../../../services/utils/transformers';
 import { SelectType } from '../../list.enum';
@@ -27,14 +28,16 @@ import {
   TreeListOption,
   TreeListItemMap,
 } from '../tree-list.interface';
-import {
-  TreeListModelService,
-  TreeListChildrenToggleSelectReducerResult,
-} from '../services/tree-list-model.service';
+import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
-import { TreeListViewService } from '../services/tree-list-view.service';
+import {
+  TreeListViewService,
+  TreeListChildrenToggleSelectReducerResult,
+} from '../services/tree-list-view.service';
 import { BaseTreeListElement } from './tree-list.abstract';
 import { BehaviorSubject } from 'rxjs';
+import { TreeListValueUtils } from '../services/tree-list-value.static';
+import { MobileService } from '../../../services/utils/mobile.service';
 
 @Component({
   selector: 'b-tree-list',
@@ -47,12 +50,13 @@ export class TreeListComponent extends BaseTreeListElement {
     modelSrvc: TreeListModelService,
     cntrlsSrvc: TreeListControlsService,
     viewSrvc: TreeListViewService,
+    mobileService: MobileService,
     DOM: DOMhelpers,
     cd: ChangeDetectorRef,
     zone: NgZone,
     host: ElementRef
   ) {
-    super(modelSrvc, cntrlsSrvc, viewSrvc, DOM, cd, zone, host);
+    super(modelSrvc, cntrlsSrvc, viewSrvc, mobileService, DOM, cd, zone, host);
   }
 
   @Input('list') set setList(list: TreeListOption[]) {}
@@ -77,14 +81,12 @@ export class TreeListComponent extends BaseTreeListElement {
       this.list = changes.list.currentValue || [];
 
       if (!this.itemsMapFromAbove) {
-        console.time('getListItemsMap');
         this.itemsMap.clear();
         this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
           keyMap: this.keyMap,
           separator: this.valueSeparatorChar,
           collapsed: this.startCollapsed,
         });
-        console.timeEnd('getListItemsMap');
       }
     }
 
@@ -93,15 +95,15 @@ export class TreeListComponent extends BaseTreeListElement {
       this.showSearch = this.itemsMap.size > 10;
     }
 
-    if (firstChanges(changes, ['list', 'itemsMap'])) {
-      console.log('first change updateListViewModel');
+    if (firstChanges(changes, ['list', 'itemsMap'], true)) {
       this.updateListViewModel();
       viewModelWasUpdated = true;
     }
 
     if (
-      hasChanges(changes, ['list', 'itemsMap'], true) ||
-      hasChanges(changes, ['value'])
+      hasChanges(changes, ['list', 'itemsMap', 'value'], true, {
+        falseyCheck: isValuevy,
+      })
     ) {
       viewModelWasUpdated =
         this.applyValue(
@@ -110,29 +112,38 @@ export class TreeListComponent extends BaseTreeListElement {
     }
 
     if (
-      notFirstChanges(changes, ['startCollapsed']) &&
-      isBoolean(this.startCollapsed)
+      notFirstChanges(changes, ['startCollapsed'], true, {
+        falseyCheck: isBoolean,
+      })
     ) {
       this.toggleCollapseAll(this.startCollapsed, false);
     }
 
-    if (notFirstChanges(changes, ['type']) && this.type === SelectType.single) {
+    if (
+      notFirstChanges(changes, ['type'], true) &&
+      this.type === SelectType.single
+    ) {
       const newValue = isNotEmptyArray(this.value) ? [this.value[0]] : [];
-      this.modelSrvc.deselectAllExcept(this.value, newValue, this.itemsMap);
+      this.viewSrvc.deselectAllExcept(this.value, newValue, this.itemsMap);
       this.value = newValue;
     }
 
     if (
       !viewModelWasUpdated &&
-      (hasChanges(changes, ['list', 'itemsMap', 'viewFilter'], true) ||
-        hasChanges(changes, ['value', 'startCollapsed']))
+      hasChanges(
+        changes,
+        ['list', 'itemsMap', 'viewFilter', 'value', 'startCollapsed'],
+        true,
+        {
+          falseyCheck: isValuevy,
+        }
+      )
     ) {
       this.updateListViewModel();
     }
   }
 
   protected updateListViewModel(expand = false): void {
-    console.time('===> updateListViewModel');
     this.listViewModel = this.modelSrvc.getListViewModel(
       this.list,
       this.itemsMap,
@@ -142,16 +153,8 @@ export class TreeListComponent extends BaseTreeListElement {
         keyMap: this.keyMap,
       }
     );
-    console.timeEnd('===> updateListViewModel');
-
-    console.time('updateListViewModel detectChanges');
 
     this.$listViewModel.next(this.listViewModel);
-
-    // if (!this.cd['destroyed']) {
-    //   this.cd.detectChanges();
-    // }
-    console.timeEnd('updateListViewModel detectChanges');
   }
 
   protected toggleItemCollapsed(
@@ -177,7 +180,6 @@ export class TreeListComponent extends BaseTreeListElement {
   }
 
   protected toggleItemSelect(item: TreeListItem, force: boolean = null): void {
-    console.time('toggleItemSelect');
     const newSelectedValue = isBoolean(force) ? force : !item.selected;
     if (newSelectedValue === item.selected) {
       return;
@@ -186,14 +188,12 @@ export class TreeListComponent extends BaseTreeListElement {
     item.selected = newSelectedValue;
 
     if (this.type === SelectType.single) {
-      item.selected = newSelectedValue;
-
       if (item.selected) {
         if (this.value.length && this.value[0] !== item.id) {
           const prevSelectedItem = this.itemsMap.get(this.value[0]);
           prevSelectedItem.selected = false;
 
-          this.modelSrvc.updateItemParentsSelectedCount(
+          this.viewSrvc.updateItemParentsSelectedCount(
             prevSelectedItem,
             this.itemsMap
           );
@@ -207,7 +207,7 @@ export class TreeListComponent extends BaseTreeListElement {
     if (this.type === SelectType.multi) {
       if (item.childrenCount) {
         const deselected: TreeListChildrenToggleSelectReducerResult = item.childrenIDs.reduce(
-          this.modelSrvc.childrenToggleSelectReducer(
+          this.viewSrvc.childrenToggleSelectReducer(
             item.selected,
             this.itemsMap
           ),
@@ -217,7 +217,7 @@ export class TreeListComponent extends BaseTreeListElement {
         this.value = this.value.filter(id => !deselected.IDs.includes(id));
 
         deselected.items.forEach((itm: TreeListItem) => {
-          this.modelSrvc.updateItemParentsSelectedCount(itm, this.itemsMap);
+          this.viewSrvc.updateItemParentsSelectedCount(itm, this.itemsMap);
         });
       }
 
@@ -228,37 +228,31 @@ export class TreeListComponent extends BaseTreeListElement {
       }
     }
 
-    this.modelSrvc.updateItemParentsSelectedCount(item, this.itemsMap);
+    this.viewSrvc.updateItemParentsSelectedCount(item, this.itemsMap);
 
     this.updateActionButtonsState();
-    console.timeEnd('toggleItemSelect');
-
-    console.time('toggleItemSelect detectChanges');
     this.cd.detectChanges();
-    console.timeEnd('toggleItemSelect detectChanges');
     this.emitChange();
   }
 
   // returns true if listViewModel was updated
   protected applyValue(newValue: itemID[]): boolean {
-    console.time('applyValue');
-    //
-    //
-    //
-    let viewModelWasUpdated = false;
-    let affectedIDs: itemID[] = this.value || [];
+    let viewModelWasUpdated = false,
+      affectedIDs: itemID[] = joinArrays(
+        this.value || [],
+        this.previousValue || []
+      ),
+      firstSelectedItem: TreeListItem;
+
     this.value = selectValueOrFail(newValue);
     if (this.value && this.type === SelectType.single) {
       this.value = this.value.slice(0, 1);
     }
-    console.log('<=== applyValue:', this.value);
 
     if (!this.itemsMap.size) {
       return viewModelWasUpdated;
     }
     affectedIDs = joinArrays(affectedIDs, this.value || []);
-
-    let firstSelectedItem: TreeListItem;
 
     affectedIDs.forEach(id => {
       const item = this.itemsMap.get(id);
@@ -277,7 +271,7 @@ export class TreeListComponent extends BaseTreeListElement {
         firstSelectedItem = item;
       }
 
-      this.modelSrvc.updateItemParentsSelectedCount(item, this.itemsMap);
+      this.viewSrvc.updateItemParentsSelectedCount(item, this.itemsMap);
     });
 
     if (firstSelectedItem) {
@@ -285,6 +279,9 @@ export class TreeListComponent extends BaseTreeListElement {
 
       this.updateListViewModel();
       viewModelWasUpdated = true;
+      console.time('dch');
+      this.cd.detectChanges();
+      console.timeEnd('dch');
 
       this.viewSrvc.scrollToItem({
         item: firstSelectedItem,
@@ -293,13 +290,10 @@ export class TreeListComponent extends BaseTreeListElement {
         maxHeightItems: this.maxHeightItems,
       });
     } else {
-      console.time('applyValue, toggleCollapseAll');
       this.toggleCollapseAll(this.startCollapsed, false);
       this.listElement.nativeElement.scrollTop = 0;
-      console.timeEnd('applyValue, toggleCollapseAll');
     }
 
-    console.timeEnd('applyValue');
     return viewModelWasUpdated;
   }
 
@@ -315,7 +309,7 @@ export class TreeListComponent extends BaseTreeListElement {
     }
 
     if (this.type === SelectType.multi) {
-      this.value = this.modelSrvc.sortIDlistByItemIndex(
+      this.value = TreeListValueUtils.sortIDlistByItemIndex(
         this.value,
         this.itemsMap
       );
@@ -326,7 +320,10 @@ export class TreeListComponent extends BaseTreeListElement {
       selectedValues:
         this.type === SelectType.single
           ? [this.itemsMap.get(this.value[0]).value]
-          : this.modelSrvc.getDisplayValuesFromValue(this.value, this.itemsMap),
+          : TreeListValueUtils.getDisplayValuesFromValue(
+              this.value,
+              this.itemsMap
+            ),
     });
   }
 }

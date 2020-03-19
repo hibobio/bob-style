@@ -8,5 +8,6 @@
   <p *ngIf="text">{{text}}</p>
   <ng-content></ng-content>
   <b-link *ngIf="link"
-          [config]="link"></b-link>
+          [config]="link"
+          (clicked)="linkClicked.emit()"></b-link>
 </div>

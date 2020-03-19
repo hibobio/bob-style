@@ -103,14 +103,18 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
       this.removeCancel();
     }
     if (isNumber(this.removingIndex) && isKey(event.key, Keys.enter)) {
-      this.removeItem(this.removingIndex, true);
+      this.zone.run(() => {
+        this.removeItem(this.removingIndex, true);
+      });
     }
 
     if (
       this.addingItem &&
       (isKey(event.key, Keys.enter) || isKey(event.key, Keys.tab))
     ) {
-      this.addItem(true);
+      this.zone.run(() => {
+        this.addItem(true);
+      });
     }
     if (this.addingItem && isKey(event.key, Keys.escape)) {
       this.addItemCancel();
@@ -142,7 +146,9 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
 
     if (hasChanges(changes, ['list'])) {
       this.listState.list = cloneDeep(this.list);
-      this.listState.sortType = this.editableListService.getListSortType(this.listState.list);
+      this.listState.sortType = this.editableListService.getListSortType(
+        this.listState.list
+      );
     }
 
     if (hasChanges(changes, ['sortType'], true)) {
@@ -302,7 +308,9 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     }
 
     if (this.inputChangeSbscr) {
-      this.inputChangeDbncr.next(value);
+      this.zone.run(() => {
+        this.inputChangeDbncr.next(value);
+      });
     }
   }
 
@@ -331,7 +339,11 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     order: ListSortType = null,
     currentOrder: ListSortType = this.listState.sortType
   ): void {
-    this.listState.sortType = this.editableListService.sortList(list, order, currentOrder);
+    this.listState.sortType = this.editableListService.sortList(
+      list,
+      order,
+      currentOrder
+    );
     this.addedItem = false;
     this.transmit();
   }

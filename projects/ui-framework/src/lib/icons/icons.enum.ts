@@ -3,6 +3,8 @@ export enum IconType {
   circular = 'circular',
 }
 
+export type IconRotate = '90' | '-90' | '180';
+
 export enum IconSize {
   small = 'small',
   medium = 'medium',
@@ -154,4 +156,5 @@ export enum Icons {
   arrow_dir_left = 'b-icon-arrow-dir-left',
   arrow_dir_right = 'b-icon-arrow-dir-right',
   comment_add = 'b-icon-comment-add',
+  online = 'b-icon-online',
 }

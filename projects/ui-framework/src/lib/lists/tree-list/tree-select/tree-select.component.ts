@@ -27,12 +27,6 @@ import { TruncateTooltipType } from '../../../popups/truncate-tooltip/truncate-t
 import { OverlayRef } from '@angular/cdk/overlay';
 import { TreeListPanelComponent } from '../tree-list-panel/tree-list-panel.component';
 import { BTL_KEYMAP_DEF } from '../tree-list.const';
-import {
-  BELOW_START,
-  ABOVE_START,
-  BELOW_END,
-  ABOVE_END,
-} from '../../../popups/panel/panel-position-service/panel-position.const';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import {
   hasChanges,
@@ -40,6 +34,7 @@ import {
   isNotEmptyMap,
   notFirstChanges,
   applyChanges,
+  isValuevy,
 } from '../../../services/utils/functional-utils';
 import { TooltipClass } from '../../../popups/tooltip/tooltip.enum';
 import { TreeListPanelIO } from '../tree-list-panel/tree-list-panel.interface';
@@ -48,6 +43,9 @@ import {
   selectValueOrFail,
   SelectValueMultiOrSingle,
 } from '../../../services/utils/transformers';
+import { TreeListViewService } from '../services/tree-list-view.service';
+import { TreeListValueUtils } from '../services/tree-list-value.static';
+import { PanelDefaultPosVer } from '../../../popups/panel/panel.enum';
 
 @Component({
   selector: 'b-tree-select',
@@ -73,7 +71,11 @@ import {
 })
 export class TreeSelectComponent extends BaseFormElement
   implements TreeListComponentIO, TreeListPanelIO, OnChanges, OnDestroy {
-  constructor(private modelSrvc: TreeListModelService, cd: ChangeDetectorRef) {
+  constructor(
+    private modelSrvc: TreeListModelService,
+    private viewSrvc: TreeListViewService,
+    cd: ChangeDetectorRef
+  ) {
     super(cd);
     this.baseValue = [];
     this.inputTransformers = [selectValueOrFail];
@@ -86,6 +88,7 @@ export class TreeSelectComponent extends BaseFormElement
   @Input() list: TreeListOption[];
   @Input('value') set setValue(value: itemID[]) {}
   public value: itemID[];
+  public previousValue: itemID[];
   @Input() valueDefault: itemID[];
   @Input() viewFilter: ViewFilter;
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
@@ -116,7 +119,7 @@ export class TreeSelectComponent extends BaseFormElement
   public panelOpen = false;
   public displayValue: string;
   public displayValueCount: number;
-  public panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
+  public panelPosition = PanelDefaultPosVer.belowLeftRight;
   public panelClass = 'b-tree-select-panel';
   public treeListValue: TreeListValue;
   readonly tooltipClass = [TooltipClass.PreWrap];
@@ -131,7 +134,7 @@ export class TreeSelectComponent extends BaseFormElement
         keyMap: BTL_KEYMAP_DEF,
       },
       ['value'],
-      false,
+      true,
       {
         keyMap: { value: 'setValue' },
       }
@@ -142,27 +145,29 @@ export class TreeSelectComponent extends BaseFormElement
     }
 
     if (hasChanges(changes, ['list'], true)) {
-      console.time('TreeSelectComponent getListItemsMap');
       this.itemsMap.clear();
       this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
         keyMap: this.keyMap,
         separator: this.valueSeparatorChar,
         collapsed: this.startCollapsed,
       });
-      console.timeEnd('TreeSelectComponent getListItemsMap');
 
       if (isNotEmptyArray(this.value) && !changes.value) {
         this.setDisplayValue(this.value);
       }
     }
 
-    if (hasChanges(changes, ['value'])) {
+    if (
+      hasChanges(changes, ['value'], true, {
+        falseyCheck: isValuevy,
+      })
+    ) {
       this.writeValue(changes.value.currentValue);
     }
 
     if (notFirstChanges(changes, ['type']) && this.type === SelectType.single) {
       const newValue = isNotEmptyArray(this.value) ? [this.value[0]] : [];
-      this.modelSrvc.deselectAllExcept(
+      this.viewSrvc.deselectAllExcept(
         this.treeListValue ? this.treeListValue.selectedIDs : this.value,
         newValue,
         this.itemsMap
@@ -171,7 +176,12 @@ export class TreeSelectComponent extends BaseFormElement
       this.setDisplayValue(this.value);
     }
 
-    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+    if (
+      hasChanges(changes, null, true, {
+        falseyCheck: isValuevy,
+      }) &&
+      !this.cd['destroyed']
+    ) {
       this.cd.detectChanges();
     }
   }
@@ -196,7 +206,7 @@ export class TreeSelectComponent extends BaseFormElement
 
   public onCancel(): void {
     if (this.treeListValue) {
-      this.modelSrvc.deselectAllExcept(
+      this.viewSrvc.deselectAllExcept(
         this.treeListValue.selectedIDs,
         this.value,
         this.itemsMap
@@ -208,8 +218,7 @@ export class TreeSelectComponent extends BaseFormElement
   }
 
   private setDisplayValue(value: TreeListValue | itemID[] = null): void {
-    console.time('select setDisplayValue');
-    const displayValues = this.modelSrvc.getDisplayValuesFromValue(
+    const displayValues = TreeListValueUtils.getDisplayValuesFromValue(
       value,
       this.itemsMap,
       this.type === SelectType.multi
@@ -218,23 +227,18 @@ export class TreeSelectComponent extends BaseFormElement
       (this.type === SelectType.single
         ? displayValues[0]
         : displayValues.join(',\n')) || '';
-    console.timeEnd('select setDisplayValue');
   }
 
   public writeValue(value: itemID[]) {
-    console.time('<====== TreeSelectComponent writeValue');
-
+    this.previousValue = this.value || [];
     super.writeValue(value);
 
     if (isNotEmptyMap(this.itemsMap)) {
       this.setDisplayValue(this.value);
     }
-    console.timeEnd('<====== TreeSelectComponent writeValue');
   }
 
   private emitChange(value: TreeListValue): void {
-    console.log('====> Select emitChange', value);
-
     this.transmitValue(SelectValueMultiOrSingle(this.type, value.selectedIDs), {
       addToEventObj: {
         selectedValues: SelectValueMultiOrSingle(

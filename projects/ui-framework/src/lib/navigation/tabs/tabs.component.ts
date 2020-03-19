@@ -9,10 +9,16 @@ import {
   ElementRef,
   ChangeDetectionStrategy,
   NgZone,
+  ViewChild,
+  SimpleChanges,
+  OnChanges,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { Tab, TabChangeEvent } from './tabs.interface';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatTabNav, MatTabLink } from '@angular/material/tabs';
 import { TabsType } from './tabs.enum';
+import { notFirstChanges, isKey } from '../../services/utils/functional-utils';
+import { Keys } from '../../enums';
 
 @Component({
   selector: 'b-tabs',
@@ -20,14 +26,22 @@ import { TabsType } from './tabs.enum';
   styleUrls: ['./tabs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TabsComponent implements AfterViewInit {
-  @ViewChildren('matLabels') matLabels: QueryList<ElementRef>;
+export class TabsComponent implements OnChanges, AfterViewInit {
+  constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
 
-  // This input determine if the tabs will be changed automatically on click.
-  @Input() controlled: boolean;
+  @ViewChild(MatTabNav) matTabNav: MatTabNav;
+  @ViewChildren(MatTabLink, { read: ElementRef })
+  tabLabels: QueryList<ElementRef>;
+
   @Input() public type: TabsType = TabsType.primary;
   @Input() public tabs: Tab[] = [];
-  @Input() public selectedIndex = 0;
+  @Input('selectedIndex') set setSelectedIndex(index: number) {
+    this.selectedIndex = index || 0;
+  }
+  public selectedIndex = 0;
+
+  // This input determines if the tabs will be changed automatically on click.
+  @Input() controlled = false;
 
   @Output() selectChange: EventEmitter<TabChangeEvent> = new EventEmitter<
     TabChangeEvent
@@ -36,30 +50,82 @@ export class TabsComponent implements AfterViewInit {
     TabChangeEvent
   >();
 
-  constructor(private zone: NgZone) {}
-
-  ngAfterViewInit() {
-    this.matLabels.toArray().forEach(label => {
-      const element = label.nativeElement;
-      element.style.minWidth = element.scrollWidth + 10 + 'px';
-    });
-  }
-
-  tabClick(tab: Tab, index: number): void {
-    if (!this.controlled) {
-      this.selectedIndex = index;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (notFirstChanges(changes)) {
+      this.cd.detectChanges();
     }
-    if (this.selectClick.observers.length > 0) {
-      this.zone.run(() => {
-        this.selectClick.emit({ tab, index });
+
+    if (notFirstChanges(changes, ['tabs', 'type'], true)) {
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.updateTabWidths();
+        }, 0);
       });
     }
   }
 
-  onSelectChange($event: MatTabChangeEvent): void {
-    this.selectChange.emit({
-      index: $event.index,
-      tab: this.tabs[$event.index],
+  ngAfterViewInit(): void {
+    this.updateTabWidths();
+  }
+
+  public onNavBarClick($event: MouseEvent): void {
+    const { index, tab } = this.getTabFromEl($event.target as HTMLElement);
+
+    this.zone.run(() => {
+      this.onTabChange(tab, index);
     });
+  }
+
+  public onNavBarKeydown($event: KeyboardEvent): void {
+    if (isKey($event.key, Keys.enter) || isKey($event.key, Keys.space)) {
+      $event.preventDefault();
+      $event.stopPropagation();
+
+      const { index, tab } = this.getTabFromEl($event.target as HTMLElement);
+
+      this.zone.run(() => {
+        this.onTabChange(tab, index);
+      });
+    }
+  }
+
+  private onTabChange(tab: Tab, index: number): void {
+    if (tab && !this.controlled && this.selectedIndex !== index) {
+      this.selectedIndex = index;
+      this.cd.detectChanges();
+
+      if (this.selectChange.observers.length > 0) {
+        this.selectChange.emit({ tab, index });
+      }
+    }
+
+    if (tab && this.selectClick.observers.length > 0) {
+      this.selectClick.emit({ tab, index });
+    }
+  }
+
+  private getTabFromEl(
+    tabEl: HTMLElement
+  ): { tabEl: HTMLElement; index: number; tab: Tab } {
+    tabEl = tabEl?.closest('.mat-tab-label');
+    const index = tabEl && parseInt(tabEl.getAttribute('data-index'), 10);
+    const tab = tabEl && this.tabs[index];
+
+    return {
+      tabEl,
+      index,
+      tab,
+    };
+  }
+
+  private updateTabWidths(): void {
+    this.tabLabels.toArray().forEach(label => {
+      const element = label.nativeElement;
+      element.style.minWidth = element.scrollWidth + 'px';
+    });
+  }
+
+  public tabTrackBy(index: number, tab: Tab): string {
+    return tab.key || tab.label;
   }
 }

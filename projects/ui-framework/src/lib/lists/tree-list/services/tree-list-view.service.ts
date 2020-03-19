@@ -3,9 +3,11 @@ import { TreeListItem, itemID, TreeListItemMap } from '../tree-list.interface';
 import {
   isEmptyArray,
   isEmptyMap,
+  isBoolean,
 } from '../../../services/utils/functional-utils';
-import { LIST_EL_HEIGHT } from '../../list.consts';
 import { TreeListModelService } from './tree-list-model.service';
+import { LIST_EL_HEIGHT } from '../../list.consts';
+import { BTL_ROOT_ID } from '../tree-list.const';
 
 interface TreeListScrollToItemConfig {
   item?: TreeListItem;
@@ -15,6 +17,11 @@ interface TreeListScrollToItemConfig {
   listViewModel?: itemID[];
   itemsMap?: TreeListItemMap;
   maxHeightItems?: number;
+}
+
+export interface TreeListChildrenToggleSelectReducerResult {
+  IDs: itemID[];
+  items: TreeListItem[];
 }
 
 @Injectable()
@@ -88,5 +95,71 @@ export class TreeListViewService {
           itemElement.offsetTop - (item.parentCount - 1) * LIST_EL_HEIGHT;
       }
     }, 0);
+  }
+
+  public deselectAllExcept(
+    selectedIDs: itemID[],
+    keepIDs: itemID[],
+    itemsMap: TreeListItemMap
+  ): void {
+    selectedIDs
+      .filter(id => !keepIDs.includes(id))
+      .forEach(id => {
+        const item = itemsMap.get(id);
+        item.selected = false;
+      });
+  }
+
+  public toggleCollapseAllItemsInMap(
+    itemsMap: TreeListItemMap,
+    force: boolean = null
+  ) {
+    itemsMap.forEach(item => {
+      if (item.childrenCount && item.id !== BTL_ROOT_ID) {
+        item.collapsed = isBoolean(force) ? force : !item.collapsed;
+      }
+    });
+  }
+
+  public childrenToggleSelectReducer(
+    parentSelected: boolean,
+    itemsMap: TreeListItemMap
+  ) {
+    return (
+      acc: TreeListChildrenToggleSelectReducerResult = { IDs: [], items: [] },
+      id: itemID
+    ) => {
+      const item = itemsMap.get(id);
+
+      if (item.selected && parentSelected) {
+        acc.IDs.push(id);
+        acc.items.push(item);
+        item.selected = false;
+      }
+
+      item.parentSelected = parentSelected;
+
+      if (item.childrenCount) {
+        return item.childrenIDs.reduce(
+          this.childrenToggleSelectReducer(parentSelected, itemsMap),
+          acc
+        );
+      }
+
+      return acc;
+    };
+  }
+
+  public updateItemParentsSelectedCount(
+    item: TreeListItem,
+    itemsMap: TreeListItemMap
+  ): void {
+    (item.parentIDs || []).forEach(groupID => {
+      const parent = itemsMap.get(groupID);
+      parent.selectedCount = Math.max(
+        0,
+        (parent.selectedCount || 0) + (item.selected ? 1 : -1)
+      );
+    });
   }
 }

@@ -8,3 +8,4 @@ Name | Type | Description | Default
 **(selectChange)** | EventEmitter<wbr>&lt;ListChange&gt; | emits on select change (in case of MultiSelectPanel - after Apply) | &nbsp;
 (opened) | EventEmitter<wbr>&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
 (closed) | EventEmitter<wbr>&lt;void&gt; | Emits panel Closed event | &nbsp;
+

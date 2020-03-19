@@ -7,7 +7,7 @@ import {
   ChangeDetectorRef,
   SimpleChanges,
 } from '@angular/core';
-import { IconColor, Icons, IconSize, IconType } from './icons.enum';
+import { IconColor, Icons, IconSize, IconType, IconRotate } from './icons.enum';
 import {
   notFirstChanges,
   applyChanges,
@@ -31,6 +31,7 @@ export class IconComponent implements OnChanges {
   @HostBinding('attr.data-size') @Input() size: IconSize = IconSize.medium;
   @HostBinding('attr.data-type') @Input() type: IconType = IconType.regular;
   @HostBinding('attr.data-tooltip') @Input() toolTipSummary: string = null;
+  @HostBinding('attr.data-rotate') @Input() rotate: IconRotate = null;
 
   public iconClass: string = null;
 

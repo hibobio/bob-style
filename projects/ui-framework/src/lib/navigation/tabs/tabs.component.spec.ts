@@ -1,4 +1,10 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 
 import { TabsComponent } from './tabs.component';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -30,7 +36,7 @@ describe('TabsComponent', () => {
     component.tabs = [
       {
         label: 'tab 1',
-        key: 'tab.one',
+        key: 'tab-one',
       },
       {
         label: 'tab 2',
@@ -50,15 +56,16 @@ describe('TabsComponent', () => {
 
   describe('tabs', () => {
     it('should have 3 tabs', () => {
-      const progressEl = fixture.debugElement.query(By.css('.mat-tab-header'));
-      expect(progressEl.childNodes.length).toEqual(3);
+      const tabEls = fixture.debugElement.queryAll(By.css('.mat-tab-label'));
+      expect(tabEls.length).toEqual(3);
     });
 
     it('should to set type (style)', () => {
       component.type = TabsType.secondary;
       fixture.detectChanges();
 
-      const tabsGroupEl = fixture.debugElement.query(By.css('.mat-tab-group')).nativeElement;
+      const tabsGroupEl = fixture.debugElement.query(By.css('.mat-tab-nav-bar'))
+        .nativeElement;
       expect(tabsGroupEl.classList).not.toContain('tabs-primary');
       expect(tabsGroupEl.classList).toContain('tabs-secondary');
     });
@@ -66,26 +73,34 @@ describe('TabsComponent', () => {
     it('should to set selected tab via selectedIndex', () => {
       component.selectedIndex = 2;
       fixture.detectChanges();
-      const labelEl = fixture.debugElement.query(By.css('.mat-tab-label:nth-child(3)')).nativeElement;
+      const labelEl = fixture.debugElement.query(
+        By.css('.mat-tab-label:nth-child(3)')
+      ).nativeElement;
       expect(labelEl.classList).toContain('mat-tab-label-active');
     });
 
     it('should output selectChange event', fakeAsync(() => {
+      component.selectChange.subscribe(() => {});
       component.selectedIndex = 1;
       fixture.detectChanges();
-      const matTabLabel = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[0];
-      matTabLabel.triggerEventHandler('click', null);
+      const label = fixture.debugElement.query(
+        By.css('.mat-tab-label:nth-child(1)')
+      ).nativeElement;
+      label.click();
       fixture.detectChanges();
       tick(500);
       expect(component.selectChange.emit).toHaveBeenCalledTimes(1);
+      component.selectChange.complete();
     }));
 
     it('should not change the selected index if the tab is controlled', fakeAsync(() => {
       component.controlled = true;
       component.selectedIndex = 1;
       fixture.detectChanges();
-      const matTabLabel = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[0];
-      matTabLabel.triggerEventHandler('click', null);
+      const label = fixture.debugElement.query(
+        By.css('.mat-tab-label:nth-child(1)')
+      ).nativeElement;
+      label.click();
       fixture.detectChanges();
       tick(500);
       expect(component.selectedIndex).toEqual(1);
@@ -95,7 +110,9 @@ describe('TabsComponent', () => {
       component.selectedIndex = 1;
       component.selectClick.subscribe(() => {});
       fixture.detectChanges();
-      const label = fixture.debugElement.queryAll(By.css('.tab-label'))[1].nativeElement;
+      const label = fixture.debugElement.query(
+        By.css('.mat-tab-label:nth-child(2)')
+      ).nativeElement;
       label.click();
       expect(component.selectClick.emit).toHaveBeenCalledTimes(1);
       expect(component.selectClick.emit).toHaveBeenCalledWith({
@@ -109,8 +126,10 @@ describe('TabsComponent', () => {
 
     it('should add class from key param when exists in model', () => {
       fixture.detectChanges();
-      const tabSpan = fixture.debugElement.queryAll(By.css('.mat-tab-label span'));
-      expect(tabSpan[0].nativeElement.classList).toContain('tab.one');
+      const label = fixture.debugElement.query(
+        By.css('.mat-tab-label:nth-child(1)')
+      ).nativeElement;
+      expect(label.classList).toContain('tab-one');
     });
   });
 });

@@ -1,8 +1,6 @@
-### Single/Multi Select common properties
+#### Single/Multi Select common properties
 Name | Type | Description | Default
 --- | --- | --- | ---
-[panelClass] | string | class to be added to select panel | &nbsp;
-[panelPosition] | PanelDefaultPosVer / ConnectedPosition[] | defines the location of the select's panel | &nbsp;
 [tooltipType] | TruncateTooltipType | you can use CSS or Material tooltip for truncated value text | CSS
 [hasPrefix] | boolean | if you are providing `input-prefix` ng-content, set this to true | false
 &nbsp; | &nbsp; | &nbsp; | &nbsp;

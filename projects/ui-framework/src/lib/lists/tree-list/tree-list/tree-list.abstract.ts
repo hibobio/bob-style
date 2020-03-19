@@ -22,6 +22,7 @@ import {
   applyChanges,
   hasChanges,
   isNotEmptyArray,
+  isValuevy,
 } from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { SelectType } from '../../list.enum';
@@ -33,6 +34,8 @@ import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
 import { LIST_ACTIONS_STATE_DEF } from '../../list-footer/list-footer.const';
 import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from '../tree-list.const';
+import { TreeListSearchUtils } from '../services/tree-list-search.static';
+import { MobileService } from '../../../services/utils/mobile.service';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -42,12 +45,14 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
     protected modelSrvc: TreeListModelService,
     protected cntrlsSrvc: TreeListControlsService,
     protected viewSrvc: TreeListViewService,
+    protected mobileService: MobileService,
     protected DOM: DOMhelpers,
     protected cd: ChangeDetectorRef,
     protected zone: NgZone,
     protected host: ElementRef
   ) {
     super();
+    this.isMobile = this.mobileService.getMediaData().isMobile;
   }
 
   @ViewChild('search', { read: SearchComponent })
@@ -66,6 +71,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   public searchValue = '';
   protected minSearchLength = 1;
   public showSearch = false;
+  public isMobile = false;
   public hasFooter = true;
   public listActionsState: ListFooterActionsState = cloneDeepSimpleObject(
     LIST_ACTIONS_STATE_DEF
@@ -76,10 +82,6 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   protected onNgChanges(changes: SimpleChanges): void {}
 
   public ngOnChanges(changes: SimpleChanges): void {
-    console.log('---------------\nTree LIST ngOnChanges', changes);
-
-    console.time('ngOnChanges');
-
     applyChanges(
       this,
       changes,
@@ -87,7 +89,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
         keyMap: BTL_KEYMAP_DEF,
       },
       ['list', 'value', 'itemsMap'],
-      false,
+      true,
       {
         keyMap: { list: 'setList', value: 'setValue', itemsMap: 'setItemsMap' },
       }
@@ -106,8 +108,9 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
     }
 
     if (
-      hasChanges(changes, ['valueDefault'], true) ||
-      hasChanges(changes, ['value'])
+      hasChanges(changes, ['value', 'valueDefault'], true, {
+        falseyCheck: isValuevy,
+      })
     ) {
       this.updateActionButtonsState();
     }
@@ -125,19 +128,18 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
       });
     }
 
-    if (notFirstChanges(changes, ['listActions'])) {
+    if (notFirstChanges(changes, ['listActions'], true)) {
       this.hasFooter = !this.readonly && objectHasTruthyValue(this.listActions);
     }
 
-    console.timeEnd('ngOnChanges');
-
-    console.time('ngOnChanges detectChanges');
-    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+    if (
+      notFirstChanges(changes, null, true, {
+        falseyCheck: isValuevy,
+      }) &&
+      !this.cd['destroyed']
+    ) {
       this.cd.detectChanges();
     }
-    console.timeEnd('ngOnChanges detectChanges');
-
-    console.log('Tree LIST ngOnChanges END\n---------------');
   }
 
   ngAfterViewInit(): void {
@@ -151,7 +153,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
           this.cd.detectChanges();
         }
 
-        if (this.focusOnInit && this.search) {
+        if (this.focusOnInit && this.search && !this.isMobile) {
           this.search.input.nativeElement.focus();
         }
       }, 0);
@@ -207,7 +209,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   }
 
   public toggleCollapseAll(force: boolean = null, updateModel = true): void {
-    this.modelSrvc.toggleCollapseAllItemsInMap(this.itemsMap, force);
+    this.viewSrvc.toggleCollapseAllItemsInMap(this.itemsMap, force);
     if (updateModel) {
       this.updateListViewModel();
     }
@@ -220,7 +222,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
       this.searchValue = newSearchValue;
 
       this.viewFilter = this.searchValue
-        ? this.modelSrvc.getSearchViewFilter(this.searchValue)
+        ? TreeListSearchUtils.getSearchViewFilter(this.searchValue)
         : undefined;
 
       this.updateListViewModel(true);

@@ -38,7 +38,8 @@ const template = `
         [icon]="icon"
         [size]="size"
         [color]="color"
-        [hasHoverState]="hasHoverState">
+        [hasHoverState]="hasHoverState"
+        [rotate]="rotate">
 </b-icon>
 `;
 
@@ -56,6 +57,7 @@ const note = `
   [color] | IconColor | enum for the available icon colors | dark
   [toolTipSummary] | String | Tooltip text (uses simple CSS tooltip. if it looks bad, use matTooltip instead)  | &nbsp;
   [hasHoverState] | boolean | if icon has hover state | false
+  [rotate] | '90', '-90', '180' | icon transform/rotate | &nbsp;
 
   ~~~
   ${template}
@@ -80,6 +82,7 @@ story.add(
         color: select('color', color, IconColor.normal),
         hasHoverState: boolean('hasHoverState', true),
         toolTipSummary: text('toolTipSummary', 'This is the icon element'),
+        rotate: select('rotate', ['0', '90', '180', '-90'], '0'),
       },
       moduleMetadata: {
         imports: [BrowserAnimationsModule, IconsModule, StoryBookLayoutModule],

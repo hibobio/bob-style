@@ -31,13 +31,12 @@ import {
   ButtonType,
   ButtonSize,
   SingleSelectPanelComponent,
-  BELOW_END,
-  ABOVE_END,
   IconColor,
   isNotEmptyObject,
   isEmptyArray,
   chainCall,
   cloneObject,
+  PanelDefaultPosVer,
 } from 'bob-style';
 
 import {
@@ -87,7 +86,7 @@ export abstract class RTEbaseElement extends BaseFormElement
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
   readonly iconColor = IconColor;
-  readonly plchldrPanelPosition = [BELOW_END, ABOVE_END];
+  readonly plchldrPanelPosition = PanelDefaultPosVer.belowRight;
 
   private cntrlsInited = false;
 
@@ -124,7 +123,12 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   public writeValue(value: any, onChanges = false): void {
     if (value !== undefined) {
-      this.editorValue = chainCall(this.inputTransformers, value);
+      try {
+        this.editorValue = chainCall(this.inputTransformers, value);
+      } catch (error) {
+        console.error(`${this.getElementIDdata()} threw an error:\n`, error);
+        return;
+      }
     }
     if (
       (value === undefined || isNullOrUndefined(this.editorValue)) &&
@@ -236,7 +240,10 @@ export abstract class RTEbaseElement extends BaseFormElement
       changes.value ||
       (changes.placeholderList && this.editorValue !== undefined)
     ) {
-      this.writeValue(changes.value ? this.value : this.editorValue, true);
+      this.writeValue(
+        changes.value ? changes.value.currentValue : this.editorValue,
+        true
+      );
 
       this.transmitValue(this.editorValue, {
         eventType: [InputEventType.onWrite],

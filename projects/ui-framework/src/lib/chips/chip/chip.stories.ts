@@ -30,6 +30,7 @@ const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
 const template = `
   <b-chip
     [type]="type"
+    [textStrong]="textStrong"
     [text]="text"
     [icon]="icon"
     [removable]="removable"
@@ -51,7 +52,8 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [text] | string | chip text | ''
+  [text] | string | chip text | &nbsp;
+  [textStrong] | string | bold text (displayed before [text]) | &nbsp;
   [type] | ChipType | enum for setting the chip type \
   (tag, info, warning, error, success, avatar) | tag
   [icon] | Icons | icon (for Icon type chip) | &nbsp;
@@ -176,6 +178,7 @@ story.add(
       iconSize: IconSize,
       type: select('type', Object.values(ChipType), ChipType.tag),
       text: text('text', mockName()),
+      textStrong: text('textStrong', undefined),
       removable: boolean('removable', false),
       disabled: boolean('disabled', false),
       selected: boolean('selected', false),

@@ -4,6 +4,7 @@ import {
   object,
   withKnobs,
   boolean,
+  select,
 } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,12 +20,12 @@ import {
 } from './multi-select-panel.mock';
 import { cloneDeep } from 'lodash';
 import { SelectGroupOption } from '../list.interface';
+import { SelectMode } from '../list.enum';
 
 import listInterfaceDoc from '../list.interface.md';
 import listSelectsPropsDoc from '../lists-selects.properties.md';
 import selectPanelsPropsDoc from '../select-panels.properties.md';
-import { select } from '@storybook/addon-knobs';
-import { SelectMode } from '../list.enum';
+import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -80,6 +81,8 @@ const note = `
   ~~~
 
   ${selectPanelsPropsDoc}
+
+  ${selectsSelectPanelsPropsDoc}
 
   ${listSelectsPropsDoc}
 

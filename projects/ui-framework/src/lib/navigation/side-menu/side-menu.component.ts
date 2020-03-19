@@ -7,6 +7,7 @@ import {
   ChangeDetectorRef,
   OnChanges,
   HostBinding,
+  NgZone,
 } from '@angular/core';
 import { Icons, IconColor } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
@@ -23,7 +24,11 @@ import { AvatarSize } from '../../avatar/avatar/avatar.enum';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SideMenuComponent implements OnChanges {
-  constructor(private DOM: DOMhelpers, private cd: ChangeDetectorRef) {}
+  constructor(
+    private DOM: DOMhelpers,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
+  ) {}
 
   @HostBinding('attr.role') role = 'navigation';
 
@@ -88,7 +93,9 @@ export class SideMenuComponent implements OnChanges {
     ) {
       this.selectedId = this.options[index].id;
       this.cd.detectChanges();
-      this.selectOption.emit(this.selectedId);
+      this.zone.run(() => {
+        this.selectOption.emit(this.selectedId);
+      });
     }
   }
 

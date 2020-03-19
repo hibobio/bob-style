@@ -9,32 +9,55 @@ describe('LinkComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LinkComponent ]
+      declarations: [LinkComponent],
     })
-    .compileComponents();
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(LinkComponent);
+        component = fixture.componentInstance;
+        component.config = {
+          url: 'https://app.hibob.com',
+          text: 'Learn more',
+          color: LinkColor.primary,
+          target: LinkTarget.blank,
+        };
+      });
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LinkComponent);
-    component = fixture.componentInstance;
-    component.config = {
-      url: 'https://app.hibob.com', text: 'Learn more', color: LinkColor.primary, target: LinkTarget.blank };
-    fixture.detectChanges();
-  });
+  describe('Link', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
 
-  it('link should be with the right url and text', () => {
-    const aElement = fixture.debugElement.query(By.css('a'));
-    expect(aElement.componentInstance.config.text).toEqual('Learn more');
-    expect(aElement.componentInstance.config.url).toEqual('https://app.hibob.com');
-  });
+    it('should be with the right url and text', () => {
+      const aElement = fixture.debugElement.query(By.css('a'));
+      expect(aElement.componentInstance.config.text).toEqual('Learn more');
+      expect(aElement.componentInstance.config.url).toEqual(
+        'https://app.hibob.com'
+      );
+    });
 
-  it('link should open in new window', () => {
-    const aElement = fixture.debugElement.query(By.css('a'));
-    expect(aElement.properties.target).toEqual('_blank');
-  });
+    it('should open in new window', () => {
+      const aElement = fixture.debugElement.query(By.css('a'));
+      expect(aElement.nativeElement.getAttribute('target')).toEqual('_blank');
+    });
 
-  it('link color should be primary', () => {
-    const aElement = fixture.debugElement.query(By.css('a'));
-    expect(aElement.classes.primary).toBeTruthy();
+    it('should have color primary', () => {
+      const aElement = fixture.debugElement.query(By.css('a'));
+      expect(aElement.classes.primary).toBeTruthy();
+    });
+
+    it('shout output link clicked event', () => {
+      component.config = {
+        url: '',
+        text: 'Learn more',
+      };
+      spyOn(component.clicked, 'emit');
+      fixture.detectChanges();
+
+      const aElement = fixture.debugElement.query(By.css('a')).nativeElement;
+      aElement.click();
+      expect(component.clicked.emit).toHaveBeenCalled();
+    });
   });
 });

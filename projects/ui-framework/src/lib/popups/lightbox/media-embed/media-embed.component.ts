@@ -19,7 +19,10 @@ import {
   filestackTest,
   allowedDomainsTest,
 } from '../../../services/url/url.const';
-import { stringify } from '../../../services/utils/functional-utils';
+import {
+  stringify,
+  hasChanges,
+} from '../../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-media-embed',
@@ -53,7 +56,7 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.url) {
+    if (hasChanges(changes, ['url'], true)) {
       this.url = changes.url.currentValue;
 
       this.mediaType =
@@ -62,17 +65,16 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
           : MediaType.video;
 
       if (this.mediaType === MediaType.image) {
-        this.url = !base64imageTest.test(this.url)
-          ? this.URL.reconstruct(this.url)
-          : this.url;
-
-        this.host.nativeElement.style.backgroundImage = this.url
-          ? `url(${this.url})`
-          : null;
+        this.setThumbImg(
+          !base64imageTest.test(this.url)
+            ? this.URL.reconstruct(this.url)
+            : this.url
+        );
       }
 
       if (this.mediaType === MediaType.video) {
         this.videoData = this.URL.parseVideoURL(this.url);
+
         if (!this.videoData) {
           console.error(
             `[MediaEmbedComponent]: URL (${
@@ -83,9 +85,25 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
           );
           return;
         }
-        this.host.nativeElement.style.backgroundImage = this.videoData
-          ? `url(${this.videoData.thumb})`
-          : null;
+
+        this.setThumbImg(this.videoData.thumb);
+
+        if (this.videoData.thumbAlt && this.videoData.thumbMinWidth) {
+          let testImg = new Image();
+
+          testImg.onerror = () => {
+            this.setThumbImg(this.videoData.thumbAlt);
+            testImg = testImg.onload = testImg.onerror = null;
+          };
+          testImg.onload = () => {
+            if (testImg.naturalWidth <= this.videoData.thumbMinWidth) {
+              this.setThumbImg(this.videoData.thumbAlt);
+            }
+            testImg = testImg.onload = testImg.onerror = null;
+          };
+
+          testImg.src = this.videoData.thumb;
+        }
       }
     }
   }
@@ -93,6 +111,12 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
   ngOnDestroy(): void {
     if (this.lightbox) {
       this.lightbox.close();
+    }
+  }
+
+  private setThumbImg(imgUrl: string) {
+    if (imgUrl) {
+      this.host.nativeElement.style.backgroundImage = `url(${imgUrl})`;
     }
   }
 }

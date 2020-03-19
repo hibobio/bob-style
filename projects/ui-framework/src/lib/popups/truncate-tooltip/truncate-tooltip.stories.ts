@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  number,
-  text,
-  withKnobs,
-  select,
-} from '@storybook/addon-knobs/angular';
+import { number, withKnobs, select } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -121,7 +116,9 @@ const note = `
   [maxLines] | number | maximum lines. the overflowing text will be truncated and tooltip with \
   full text will be shown. \to disable truncation, set to 0 or null. | 1
   [type] | TruncateTooltipType | Use Material tooltip or CSS tooltip. Defaut 'auto' type will \
-  use Material for text longer than 130 chars, otherwise CSS | auto
+  use Material for text longer than 130 chars, otherwise CSS. \
+  Set to 'none' to disable tooltip. \n
+  **Note:** type can not be changed dynamically, it's can be set only once. | auto
   [position] | TruncateTooltipPosition | above or below | above
   [trustCssVars] | boolean | performance can be optimised, if --line-height and --font-size \
   CSS variables exist on the element | false

@@ -118,7 +118,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'strong',
     'em',
     'i',
-    'hr',
+    // 'hr',
     'img',
     'li',
     'ol',
@@ -143,8 +143,8 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   htmlUntouched: false,
 
   pasteAllowedStyleProps: RTE_ALLOWED_STYLE_PROPS,
-  pasteDeniedAttrs: ['^on.*', 'type', 'value', 'id'],
-  pasteDeniedTags: ['script', 'style', 'img'],
+  pasteDeniedAttrs: ['^on.*', 'type', 'value', 'id', 'class'],
+  pasteDeniedTags: ['script', 'style', 'img', 'hr'],
   imagePaste: false,
   pastePlain: false,
 

@@ -6,4 +6,5 @@ export enum SelectType {
 export enum SelectMode {
   classic = 'classic',
   radioGroups = 'radioGroups',
+  checkGroups = 'checkGroups',
 }

@@ -1,10 +1,14 @@
 export enum PanelSize {
   small = 'small',
   medium = 'medium',
-  large = 'large'
+  large = 'large',
 }
 
 export enum PanelDefaultPosVer {
   above = 'above',
-  below = 'below'
+  below = 'below',
+  belowRight = 'belowRight',
+  belowLeft = 'belowLeft',
+  belowLeftRight = 'belowLeftRight',
+  belowRightLeft = 'belowRightLeft',
 }

@@ -3,16 +3,18 @@ export enum AvatarSize {
   small = 60,
   medium = 90,
   large = 120,
-  xlarge = 160
+  xlarge = 160,
 }
 
 export enum AvatarOrientation {
   horizontal = 'horizontal',
-  vertical = 'vertical'
+  vertical = 'vertical',
 }
 
 export enum AvatarBadge {
   approved = 'approved',
   pending = 'pending',
-  rejected = 'rejected'
+  rejected = 'rejected',
+  online = 'online',
+  offline = 'offline',
 }

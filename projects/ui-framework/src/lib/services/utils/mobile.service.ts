@@ -22,12 +22,13 @@ export interface MediaEvent {
   isTouchDevice: boolean;
   isMobileBrowser: boolean;
   mobileOS: MobileOS;
+  isMobile: boolean;
 }
 
 export enum MobileOS {
   iOS = 'iOS',
   windowsPhone = 'windowsPhone',
-  android = 'android'
+  android = 'android',
 }
 
 class DocumentTouch {}
@@ -132,12 +133,14 @@ export class MobileService {
   }
 
   public getMediaData(): MediaEvent {
+    const matchMobile = this.matchBreakpoint(mobileBreakpoint, WidthMode.max);
     return {
-      matchMobile: this.matchBreakpoint(mobileBreakpoint, WidthMode.max),
+      matchMobile,
       matchDesktop: this.matchBreakpoint(mobileBreakpoint + 1, WidthMode.min),
       isTouchDevice: this.isTouchDevice,
       isMobileBrowser: this.isMobBrowser,
-      mobileOS: this.mobileOS
+      mobileOS: this.mobileOS,
+      isMobile: Boolean(matchMobile || this.isMobBrowser || this.mobileOS),
     };
   }
 }

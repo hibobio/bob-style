@@ -227,7 +227,10 @@ export class RichTextEditorComponent extends RTEbaseElement
 
       'paste.afterCleanup': (html: string): string => {
         if (html.includes('data-bob-rte')) {
-          return this.parserService.removeElements(html, '[data-bob-rte]');
+          return chainCall(
+            this.inputTransformers,
+            this.parserService.removeElements(html, '[data-bob-rte]')
+          );
         }
 
         return chainCall(this.inputTransformers, html).replace(

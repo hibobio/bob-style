@@ -30,11 +30,13 @@ import { UtilsService } from '../../../services/utils/utils.service';
 import {
   hasChanges,
   notFirstChanges,
+  isValuevy,
 } from '../../../services/utils/functional-utils';
 import { TreeListValue } from '../tree-list.interface';
 import { TreeListInputOutput } from '../tree-list-IO.abstract';
 import { ListPanelService } from '../../list-panel.service';
 import { TreeListPanelIO } from './tree-list-panel.interface';
+import { MobileService } from '../../../services/utils/mobile.service';
 
 @Component({
   selector: 'b-tree-list-panel',
@@ -48,6 +50,7 @@ export class TreeListPanelComponent extends TreeListInputOutput
     public DOM: DOMhelpers,
     protected zone: NgZone,
     protected cd: ChangeDetectorRef,
+    private mobileService: MobileService,
     private listPanelSrvc: ListPanelService,
     // Used by ListPanelService:
     private overlay: Overlay,
@@ -73,8 +76,8 @@ export class TreeListPanelComponent extends TreeListInputOutput
   public treeListValue: TreeListValue;
 
   // Used by ListPanelService:
-  private panelClassList: string[] = ['b-select-panel', 'b-tree-list-panel'];
   private subscribtions: Subscription[] = [];
+  private panelClassList: string[] = ['b-select-panel'];
   public positionClassList: OverlayPositionClasses = {};
   public overlayRef: OverlayRef;
   private panelConfig: OverlayConfig;
@@ -86,7 +89,12 @@ export class TreeListPanelComponent extends TreeListInputOutput
       this.destroyPanel();
     }
 
-    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+    if (
+      notFirstChanges(changes, null, true, {
+        falseyCheck: isValuevy,
+      }) &&
+      !this.cd['destroyed']
+    ) {
       this.cd.detectChanges();
     }
   }

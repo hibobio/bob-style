@@ -24,6 +24,7 @@ import {
 import listInterfaceDoc from '../list.interface.md';
 import listSelectsPropsDoc from '../lists-selects.properties.md';
 import selectPanelsPropsDoc from '../select-panels.properties.md';
+import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -75,6 +76,8 @@ const note = `
   ~~~
 
   ${selectPanelsPropsDoc}
+
+  ${selectsSelectPanelsPropsDoc}
 
   ${listSelectsPropsDoc}
 

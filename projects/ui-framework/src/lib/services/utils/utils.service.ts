@@ -111,23 +111,38 @@ export class UtilsService {
     );
   }
 
-  public scrollToTop(offset = 0): void {
-    this.windowRef.nativeWindow.scrollTo(0, offset);
+  public scrollToTop(offset = 0, smooth = false): void {
+    this.windowScrollTo(offset, smooth);
   }
 
-  public scrollToBottom(offset = 0): void {
-    this.windowRef.nativeWindow.scrollTo(
-      0,
-      this.windowRef.nativeWindow.document.body.scrollHeight - offset
-    );
+  public scrollToBottom(offset = 0, smooth = false): void {
+    const scrollToTop =
+      this.windowRef.nativeWindow.document.body.scrollHeight - offset;
+
+    this.windowScrollTo(scrollToTop, smooth);
   }
 
-  public scrollToElement(element: HTMLElement, offset = 0): void {
-    this.windowRef.nativeWindow.scrollTo(
-      0,
+  public scrollToElement(
+    element: HTMLElement,
+    offset = 0,
+    smooth = false
+  ): void {
+    const scrollToTop =
       element.getBoundingClientRect().top +
-        this.windowRef.nativeWindow.scrollY +
-        offset
-    );
+      this.windowRef.nativeWindow.scrollY +
+      offset;
+    this.windowScrollTo(scrollToTop, smooth);
+  }
+
+  private windowScrollTo(scrollToTop = 0, smooth = false) {
+    if ('scrollBehavior' in document.documentElement.style) {
+      this.windowRef.nativeWindow.scrollTo({
+        left: 0,
+        top: scrollToTop,
+        behavior: smooth ? 'smooth' : undefined,
+      });
+    } else {
+      this.windowRef.nativeWindow.scrollTo(0, scrollToTop);
+    }
   }
 }
