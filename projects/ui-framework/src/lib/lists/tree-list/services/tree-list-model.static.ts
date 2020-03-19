@@ -55,10 +55,11 @@ export class TreeListModelUtils {
     item: TreeListItem,
     itemsMap: TreeListItemMap
   ): TreeListChildrenToggleSelectReducerResult {
-    return item.childrenIDs.reduce(
+    const result = item.childrenIDs.reduce(
       this.childrenToggleSelectReducer(item.selected, itemsMap),
       undefined
     );
+    return result;
   }
 
   private static childrenToggleSelectReducer(

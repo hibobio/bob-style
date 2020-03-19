@@ -206,6 +206,7 @@ export class TreeSelectComponent extends BaseFormElement
       this.itemsMap,
       this.type === SelectType.multi
     );
+
     this.displayValue =
       (this.type === SelectType.single
         ? displayValues[0]
@@ -213,6 +214,9 @@ export class TreeSelectComponent extends BaseFormElement
   }
 
   public writeValue(value: itemID[]) {
+    if (value === undefined) {
+      return;
+    }
     if (isNotEmptyMap(this.itemsMap)) {
       const mapUpdateResult = this.modelSrvc.applyValueToMap(
         value,
@@ -221,8 +225,8 @@ export class TreeSelectComponent extends BaseFormElement
       );
 
       this.value = mapUpdateResult.value;
-      this.cd.detectChanges();
       this.setDisplayValue(this.value);
+      this.cd.detectChanges();
     } else {
       super.writeValue(value);
     }

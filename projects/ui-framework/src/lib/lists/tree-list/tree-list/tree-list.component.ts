@@ -189,36 +189,10 @@ export class TreeListComponent extends BaseTreeListElement {
     item.selected = newSelectedValue;
 
     if (this.type === SelectType.single) {
-      if (item.selected) {
-        if (this.value.length && this.value[0] !== item.id) {
-          const prevSelectedItem = this.itemsMap.get(this.value[0]);
-          prevSelectedItem.selected = false;
-
-          TreeListModelUtils.updateItemParentsSelectedCount(
-            prevSelectedItem,
-            this.itemsMap
-          );
-        }
-        this.value = [item.id];
-      } else {
-        this.value = [];
-      }
+      this.value = item.selected ? [item.id] : [];
     }
 
     if (this.type === SelectType.multi) {
-      if (item.childrenCount) {
-        const deselected = TreeListModelUtils.updateChildrenParentSelected(
-          item,
-          this.itemsMap
-        );
-
-        this.value = this.value.filter(id => !deselected.IDs.includes(id));
-
-        deselected.items.forEach((itm: TreeListItem) => {
-          TreeListModelUtils.updateItemParentsSelectedCount(itm, this.itemsMap);
-        });
-      }
-
       if (item.selected) {
         this.value.push(item.id);
       } else {
@@ -226,7 +200,7 @@ export class TreeListComponent extends BaseTreeListElement {
       }
     }
 
-    TreeListModelUtils.updateItemParentsSelectedCount(item, this.itemsMap);
+    this.applyValue(this.value, false);
 
     this.updateActionButtonsState();
     this.cd.detectChanges();
@@ -234,10 +208,10 @@ export class TreeListComponent extends BaseTreeListElement {
   }
 
   // returns true if listViewModel was updated
-  protected applyValue(newValue: itemID[]): boolean {
+  protected applyValue(newValue: itemID[], adjustView = true): boolean {
     let viewModelWasUpdated = false;
 
-    if (!this.itemsMap.size) {
+    if (!this.itemsMap.size || newValue === undefined) {
       return viewModelWasUpdated;
     }
 
@@ -249,22 +223,24 @@ export class TreeListComponent extends BaseTreeListElement {
 
     this.value = mapUpdateResult.value;
 
-    const { firstSelectedItem } = mapUpdateResult;
+    if (adjustView) {
+      const { firstSelectedItem } = mapUpdateResult;
 
-    if (firstSelectedItem) {
-      this.viewSrvc.expandTillItemsByID(this.value, this.itemsMap);
-      this.updateListViewModel();
-      viewModelWasUpdated = true;
-      this.cd.detectChanges();
+      if (firstSelectedItem) {
+        this.viewSrvc.expandTillItemsByID(this.value, this.itemsMap);
+        this.updateListViewModel();
+        viewModelWasUpdated = true;
+        this.cd.detectChanges();
 
-      this.viewSrvc.scrollToItem({
-        item: firstSelectedItem,
-        listElement: this.listElement.nativeElement,
-        listViewModel: this.listViewModel,
-        maxHeightItems: this.maxHeightItems,
-      });
-    } else {
-      this.listElement.nativeElement.scrollTop = 0;
+        this.viewSrvc.scrollToItem({
+          item: firstSelectedItem,
+          listElement: this.listElement.nativeElement,
+          listViewModel: this.listViewModel,
+          maxHeightItems: this.maxHeightItems,
+        });
+      } else {
+        this.listElement.nativeElement.scrollTop = 0;
+      }
     }
 
     return viewModelWasUpdated;
