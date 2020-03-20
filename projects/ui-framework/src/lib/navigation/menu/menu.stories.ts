@@ -51,12 +51,13 @@ const note = `
   *MenuModule*
 
   #### Properties
-  Name | Type | Description | Default value
+  Name | Type | Description | Default
   --- | --- | --- | ---
   [id] | string | menu id (can be used to reference the item, that has the menu) | &nbsp;
   [menu] | MenuItem[] | array of menu items | &nbsp;
   [data] | any | any data that will be included with each MenuItem (can be used for menu items actions etc) | &nbsp;
   [openLeft] | boolean | open left by default | false
+  [panelClass] | string | class to be added to menu panel | &nbsp;
   [disabled] | boolean | disables menu | &nbsp;
   (actionClick) | &lt;MenuItem&gt; | notifies on action click, emits menu item, \
   enriched with menu id (if present) | &nbsp;
@@ -137,6 +138,22 @@ menu = [
     this[actionKey](itemID);
   }
 ~~~
+
+  #### interface: MenuItem&lt;T&gt;
+
+  Name | Type | Description | Default
+  --- | --- | --- | ---
+  label | string | menu item display name | &nbsp;
+  key? | string | menu item id | &nbsp;
+  id? | string | menu id | &nbsp;
+  disabled? | boolean | if menu item is disabled | false
+  data? | T | MenuItem will be enriched with any data from [data] input | &nbsp;
+  clickToOpenSub? | boolean | child menu to open on click (vs on hover, as by default) | false
+  openLeft? | boolean | child menu should open to the left | false
+  panelClass? | string | class to be added to child menu | &nbsp;
+  action? |  (item?: MenuItem) => void | function to be called on item click | &nbsp;
+  children | MenuItem[] | sub-menu items | &nbsp;
+
 `;
 
 const menuMock: MenuItem[] = [

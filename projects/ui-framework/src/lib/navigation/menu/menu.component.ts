@@ -34,6 +34,7 @@ export class MenuComponent implements OnChanges, OnInit {
   @Input() openLeft = false;
   @Input() panelClass: string;
   @Input() disabled: boolean;
+
   @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter<MenuItem>();
   @Output() openMenu: EventEmitter<string | void> = new EventEmitter<
     string | void

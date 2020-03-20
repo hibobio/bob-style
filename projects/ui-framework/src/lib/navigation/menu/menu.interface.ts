@@ -1,16 +1,16 @@
 import { Icons } from '../../icons/icons.enum';
 
 export interface MenuItem<T = any> {
-  children?: MenuItem[];
   label: string;
-  disabled?: boolean | ((item?: MenuItem) => boolean);
   key?: string;
   id?: string;
+  disabled?: boolean | ((item?: MenuItem) => boolean);
   data?: T;
   clickToOpenSub?: boolean;
   openLeft?: boolean;
   panelClass?: string;
   action?: (item?: MenuItem) => void;
+  children?: MenuItem[];
 }
 
 export interface CommonActionButton {
