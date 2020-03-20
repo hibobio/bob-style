@@ -17,6 +17,9 @@ export const isNumber = (val: any): boolean =>
 
 export const isBoolean = (val: any): boolean => typeof val === 'boolean';
 
+export const isFunction = (val: any): val is Function =>
+  !!val && typeof val === 'function';
+
 export const isNotEmptyString = (val: any): boolean =>
   isString(val) && val.trim() !== '';
 
