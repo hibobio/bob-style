@@ -29,48 +29,17 @@ export class TreeListViewService {
   }
 
   public scrollToItem(config: TreeListScrollToItemConfig): void {
-    let { item, itemElement, listElement, indexInView } = config;
-    const { listViewModel, itemsMap, maxHeightItems } = config;
-
-    if (
-      (!itemElement &&
-        (!item || !listElement || isEmptyArray(listViewModel))) ||
-      (itemElement &&
-        !item &&
-        (isEmptyMap(itemsMap) || isEmptyArray(listViewModel)))
-    ) {
-      return;
-    }
-
-    if (itemElement && !item) {
-      const index = parseInt(itemElement.getAttribute('data-index'), 10);
-      item = itemsMap.get(listViewModel[index]);
-
-      if (!item) {
-        console.error(
-          `[TreeListViewService.scrollToItem]:
-        Data for item ${itemElement.getAttribute('id')} was not found.`
-        );
-        return;
-      }
-    }
-
-    if (itemElement && !listElement) {
-      listElement = itemElement.closest('.btl-list');
-    }
+    const {
+      item,
+      itemElement,
+      listElement,
+      maxHeightItems,
+    } = this.findItemElement(config);
 
     if (!itemElement) {
-      indexInView = listViewModel.findIndex(id => id === item.id);
-
-      if (indexInView === -1) {
-        console.error(
-          `[TreeListViewService.scrollToItem]:
-        Item ${item.id} was not found in view.`
-        );
-        return;
-      }
-
-      itemElement = listElement.children[indexInView] as HTMLElement;
+      console.error(`[TreeListViewService.scrollToItem]:
+      No element to scroll to.`);
+      return;
     }
 
     setTimeout(() => {
@@ -88,5 +57,82 @@ export class TreeListViewService {
           itemElement.offsetTop - (item.parentCount - 1) * LIST_EL_HEIGHT;
       }
     }, 0);
+  }
+
+  public findItemElement(
+    config: TreeListScrollToItemConfig
+  ): TreeListScrollToItemConfig {
+    let { item, itemElement, listElement, indexInView } = config;
+    const { listViewModel, itemsMap } = config;
+
+    if (
+      (!itemElement &&
+        (!item || !listElement || isEmptyArray(listViewModel))) ||
+      (itemElement &&
+        !item &&
+        (isEmptyMap(itemsMap) || isEmptyArray(listViewModel)))
+    ) {
+      console.error(`[TreeListViewService.findItemElement]:
+          Not enough data to find item/element`);
+      return;
+    }
+
+    if (itemElement && !indexInView) {
+      indexInView = parseInt(itemElement.getAttribute('data-index'), 10);
+    }
+
+    if (itemElement && !item) {
+      item = itemsMap.get(listViewModel[indexInView]);
+
+      if (!item) {
+        console.error(
+          `[TreeListViewService.scrollToItem]:
+        Data for item ${itemElement.getAttribute('id')} was not found.`
+        );
+        return;
+      }
+    }
+
+    if (item && !indexInView) {
+      indexInView = listViewModel.findIndex(id => id === item.id);
+
+      if (indexInView === -1) {
+        console.error(
+          `[TreeListViewService.scrollToItem]:
+        Item ${item.id} was not found in view.`
+        );
+        return;
+      }
+    }
+
+    if (itemElement && !listElement) {
+      listElement = itemElement.closest('.btl-list');
+    }
+
+    if (!itemElement) {
+      itemElement = listElement.children[indexInView] as HTMLElement;
+    }
+
+    return {
+      item,
+      itemElement,
+      listElement,
+      indexInView,
+    };
+  }
+
+  public getItemFromEl(
+    itemElement: HTMLElement,
+    itemsMap: TreeListItemMap,
+    listViewModel: itemID[]
+  ): { itemElement: HTMLElement; index: number; item: TreeListItem } {
+    itemElement = itemElement.closest('.btl-item');
+
+    const index: number =
+      itemElement && parseInt(itemElement.getAttribute('data-index'), 10);
+    const item: TreeListItem =
+      itemElement && itemsMap.get(listViewModel[index]);
+
+    return { itemElement, index, item };
   }
 }

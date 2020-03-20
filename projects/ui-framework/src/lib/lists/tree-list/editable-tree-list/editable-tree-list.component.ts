@@ -1,3 +1,4 @@
+//#region
 import {
   Component,
   ChangeDetectionStrategy,
@@ -6,11 +7,14 @@ import {
   ElementRef,
   SimpleChanges,
   OnChanges,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {
   applyChanges,
   hasChanges,
+  arrayInsertAt,
+  simpleUID,
 } from '../../../services/utils/functional-utils';
 import {
   TreeListOption,
@@ -20,7 +24,7 @@ import {
   TreeListItem,
   ViewFilter,
 } from '../tree-list.interface';
-import { BTL_KEYMAP_DEF } from '../tree-list.const';
+import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from '../tree-list.const';
 import { TreeListModelService } from '../services/tree-list-model.service';
 import { MenuItem } from '../../../navigation/menu/menu.interface';
 import {
@@ -29,6 +33,8 @@ import {
   IconSize,
   IconColor,
 } from '../../../icons/icons.enum';
+import { TreeListModelUtils } from '../services/tree-list-model.static';
+//#endregion
 
 @Component({
   selector: 'b-editable-tree-list',
@@ -37,8 +43,12 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditableTreeListComponent implements OnChanges {
-  constructor(private modelSrvc: TreeListModelService) {}
+  constructor(
+    private modelSrvc: TreeListModelService,
+    private cd: ChangeDetectorRef
+  ) {}
 
+  //#region
   @Input('list') set setList(list: TreeListOption[]) {}
   public list: TreeListOption[];
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
@@ -52,12 +62,16 @@ export class EditableTreeListComponent implements OnChanges {
     hide: { prop: { key: 'deleted', value: true } },
   };
 
-  public itemMenu: MenuItem[] = [
+  public itemMenu: MenuItem<TreeListItem>[] = [
     {
       label: 'Add item',
-      key: 'addItemAfter',
+      key: 'insertItem',
       action: (item: MenuItem) => {
-        this.addItemAfter(item.data);
+        if (item.data.childrenCount) {
+          this.insertItem('firstChildOf', item.data);
+        } else {
+          this.insertItem('after', item.data);
+        }
       },
     },
     {
@@ -65,11 +79,24 @@ export class EditableTreeListComponent implements OnChanges {
       key: 'delete',
       disabled: (item: MenuItem) =>
         item.data && item.data.canBeDeleted === false,
-      action: (item: MenuItem) => {
-        this.deleteItem(item.data);
-      },
+      clickToOpenSub: true,
+      panelClass: 'betl-del-confirm',
+      children: [
+        {
+          label: 'Yes, delete',
+          key: 'deleteConfirm',
+          action: (item: MenuItem) => {
+            this.deleteItem(item.data);
+          },
+        },
+        {
+          label: `No, don't delete`,
+          key: 'deleteCancel',
+        },
+      ],
     },
   ];
+  public rootItem: TreeListItem;
 
   public $listViewModel: BehaviorSubject<itemID[]> = new BehaviorSubject<
     itemID[]
@@ -79,6 +106,7 @@ export class EditableTreeListComponent implements OnChanges {
   readonly iconType = IconType;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
+  //#endregion
 
   public ngOnChanges(changes: SimpleChanges): void {
     applyChanges(
@@ -105,12 +133,13 @@ export class EditableTreeListComponent implements OnChanges {
       this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
         keyMap: this.keyMap,
       });
+      this.rootItem = this.itemsMap.get(BTL_ROOT_ID);
 
-      this.updateListViewModel();
+      this.listToListViewModel();
     }
   }
 
-  private updateListViewModel(): void {
+  private listToListViewModel(): void {
     this.listViewModel = this.modelSrvc.getListViewModel(
       this.list,
       this.itemsMap,
@@ -124,6 +153,13 @@ export class EditableTreeListComponent implements OnChanges {
     this.$listViewModel.next(this.listViewModel);
   }
 
+  private updateListViewModel(): void {
+    this.listViewModel = this.listViewModel.filter(
+      id => !this.itemsMap.get(id).deleted
+    );
+  }
+
+  //#region
   private emitChange(): void {}
 
   public toggleItemCollapsed(item: TreeListItem, element: HTMLElement): void {}
@@ -135,20 +171,98 @@ export class EditableTreeListComponent implements OnChanges {
   public trackBy(index: number, id: itemID): itemID {
     return id;
   }
+  //#endregion
 
   // ---------MENU----------
 
-  public addItemAfter(item: TreeListItem): void {
-    console.log('addItemAfter', item);
+  public insertItem(
+    where: 'after' | 'firstChildOf' | 'lastChildOf',
+    item: TreeListItem
+  ): void {
+    const parent =
+      where === 'after'
+        ? this.itemsMap.get(item.parentIDs[item.parentCount - 1])
+        : item;
 
-    const parent = item.parentIDs[item.parentCount - 1];
+    const sibling = this.itemsMap.get(
+      parent.childrenIDs.find(id => !this.itemsMap.get(id).childrenCount)
+    );
+
+    const insertionIndexInParent =
+      where === 'after'
+        ? parent.childrenIDs.findIndex(id => id === item.id) + 1
+        : where === 'lastChildOf'
+        ? parent.childrenCount
+        : 0;
+
+    const insertionIndexInViewModel =
+      where === 'after'
+        ? this.listViewModel.findIndex(id => id === item.id) + 1
+        : where === 'lastChildOf'
+        ? this.listViewModel.findIndex(
+            id =>
+              id === parent.childrenIDs[Math.max(0, parent.childrenCount - 1)]
+          ) + 1
+        : this.listViewModel.findIndex(id => id === parent.childrenIDs[0]);
+
+    console.log('parent', parent.id, 'sibling', sibling.id);
+    console.log(
+      'insertionIndexInParent',
+      insertionIndexInParent,
+      'insertionIndexInViewModel',
+      insertionIndexInViewModel
+    );
+
+    const newItemID = simpleUID('etlni-');
+    const newItem = {
+      id: newItemID,
+      name: '',
+      value: '',
+      parentIDs: sibling.parentIDs.slice(),
+      parentCount: sibling.parentCount,
+      childrenIDs: null,
+      newitem: true,
+      collapsed: false,
+    };
+
+    TreeListModelUtils.updateMap(this.itemsMap, newItemID, newItem);
+
+    parent.childrenIDs = arrayInsertAt(
+      parent.childrenIDs,
+      newItemID,
+      insertionIndexInParent
+    );
+
+    this.listViewModel = arrayInsertAt(
+      this.listViewModel,
+      newItemID,
+      insertionIndexInViewModel
+    );
+
+    this.cd.detectChanges();
+
+    this.$listViewModel.next(this.listViewModel);
+
+    const itemInput = this.listElement.nativeElement.children[
+      insertionIndexInViewModel
+    ].querySelector('.betl-item-input');
+
+    itemInput.focus();
+
+    // this.updateListViewModel();
   }
 
   public deleteItem(item: TreeListItem): void {
-    console.log('deleteItem', item);
+    TreeListModelUtils.setPropToTreeDown(
+      item,
+      { deleted: true },
+      this.itemsMap
+    );
 
-    item.deleted = true;
-    this.updateListViewModel();
+    // this.updateListViewModel();
+    this.listViewModel = this.listViewModel.filter(
+      id => !this.itemsMap.get(id).deleted
+    );
   }
 
   // Dev / Debug

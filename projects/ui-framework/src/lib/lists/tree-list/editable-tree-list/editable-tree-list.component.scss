@@ -40,6 +40,9 @@ $betl-icon-margin: 10px;
 .betl-item-input {
   flex-grow: 1;
   height: inherit;
+  border: 0;
+  padding: 0;
+  margin: 0 0 0 16px;
 }
 
 @for $i from 2 through $betl-max-depth {
@@ -95,4 +98,12 @@ b-icon[data-type='circular'] {
 }
 
 .betl-list-add-item {
+}
+
+// Menu
+
+::ng-deep {
+  .betl-del-confirm {
+    left: -50%;
+  }
 }

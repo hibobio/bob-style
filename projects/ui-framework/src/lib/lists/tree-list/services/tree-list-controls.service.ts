@@ -42,7 +42,7 @@ export class TreeListControlsService {
 
     const target = event.target as HTMLElement;
 
-    const { itemElement, index, item } = this.getItemFromEl(
+    const { itemElement, index, item } = this.viewSrvc.getItemFromEl(
       target,
       itemsMap,
       listViewModel
@@ -109,7 +109,7 @@ export class TreeListControlsService {
 
     const target = event.target as HTMLElement;
 
-    const { itemElement, index, item } = this.getItemFromEl(
+    const { itemElement, index, item } = this.viewSrvc.getItemFromEl(
       target,
       itemsMap,
       listViewModel
@@ -180,20 +180,5 @@ export class TreeListControlsService {
     ) {
       return !isDisabled && toggleItemSelect(item, index);
     }
-  }
-
-  private getItemFromEl(
-    itemElement: HTMLElement,
-    itemsMap: TreeListItemMap,
-    listViewModel: itemID[]
-  ): { itemElement: HTMLElement; index: number; item: TreeListItem } {
-    itemElement = itemElement.closest('.bhl-item');
-
-    const index: number =
-      itemElement && parseInt(itemElement.getAttribute('data-index'), 10);
-    const item: TreeListItem =
-      itemElement && itemsMap.get(listViewModel[index]);
-
-    return { itemElement, index, item };
   }
 }

@@ -46,7 +46,8 @@
     (click)="onListClick($event)"
     (keydown)="onListKeyDown($event)">
 
-  <ng-container *ngFor="let itemID of $listViewModel | async; let index = index; trackBy: trackBy">
+  <!-- of $listViewModel | async -->
+  <ng-container *ngFor="let itemID of listViewModel; let index = index; trackBy: trackBy">
     <ng-container *ngTemplateOutlet="listItem; context: {
       index: index,
       item: itemsMap.get(itemID)
@@ -61,7 +62,7 @@
         [size]="iconSize.small"
         [color]="iconColor.white"
         [icon]="icons.add"
-        (click)="addItemAfter(listViewModel[listViewModel.length-1])">
+        (click)="insertItem('lastChildOf', rootItem)">
 </b-icon>
 
 

@@ -31,7 +31,6 @@ import { TreeListViewService } from '../services/tree-list-view.service';
 import { BaseTreeListElement } from './tree-list.abstract';
 import { BehaviorSubject } from 'rxjs';
 import { TreeListValueUtils } from '../services/tree-list-value.static';
-import { TreeListModelUtils } from '../services/tree-list-model.static';
 import { MobileService } from '../../../services/utils/mobile.service';
 
 @Component({
