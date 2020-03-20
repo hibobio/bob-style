@@ -1,13 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  array,
-  boolean,
-  number,
-  object,
-  select,
-  text,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { boolean, object, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { ButtonType } from '../../buttons/buttons.enum';
@@ -33,6 +25,7 @@ const template = `
         (openMenu)="onMenuOpen($event)"
         (closeMenu)="onMenuClose($event)">
   <b-square-button menu-trigger
+                   [disabled]="disabled"
                    type="${ButtonType.secondary}"
                    icon="${Icons.three_dots}">
   </b-square-button>

@@ -4,6 +4,10 @@
 
 .menu-trigger-wrapper {
   display: inline-block;
+
+  &.disabled {
+    pointer-events: none;
+  }
 }
 
 .menu-trigger-guard[tabindex='0'] {
