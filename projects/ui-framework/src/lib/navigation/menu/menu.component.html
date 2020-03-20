@@ -32,6 +32,7 @@
               [menu]="child.children"
               [openLeft]="openLeft || child.openLeft"
               [panelClass]="child.panelClass"
+              [clickToOpenSub]="clickToOpenSub"
               (actionClick)="onClick($event, false)">
       </b-menu>
     </ng-container>

@@ -27,6 +27,7 @@ const template = `
 <b-menu [id]="'employee-menu'"
         [menu]="menu"
         [openLeft]="openLeft"
+        [clickToOpenSub]="clickToOpenSub"
         [disabled]="disabled"
         (actionClick)="onActionClick($event)"
         (openMenu)="onMenuOpen($event)"
@@ -57,6 +58,7 @@ const note = `
   [menu] | MenuItem[] | array of menu items | &nbsp;
   [data] | any | any data that will be included with each MenuItem (can be used for menu items actions etc) | &nbsp;
   [openLeft] | boolean | open left by default | false
+  [clickToOpenSub] | boolean | if true, sub-menus will open on click, not on hover | false
   [panelClass] | string | class to be added to menu panel | &nbsp;
   [disabled] | boolean | disables menu | &nbsp;
   (actionClick) | &lt;MenuItem&gt; | notifies on action click, emits menu item, \
@@ -238,6 +240,7 @@ story.add(
       template: storyTemplate,
       props: {
         openLeft: boolean('openLeft', false),
+        clickToOpenSub: boolean('clickToOpenSub', false),
         disabled: boolean('disabled', false),
         menu: object('menu', menuMock),
         onActionClick: action('action click'),

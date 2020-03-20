@@ -17,6 +17,7 @@ import {
   hasChanges,
   applyChanges,
   notFirstChanges,
+  isValuevy,
 } from '../../services/utils/functional-utils';
 
 @Component({
@@ -32,6 +33,7 @@ export class MenuComponent implements OnChanges, OnInit {
   @Input() data: any;
   @Input() menu: MenuItem[];
   @Input() openLeft = false;
+  @Input() clickToOpenSub = false;
   @Input() panelClass: string;
   @Input() disabled: boolean;
 
@@ -55,7 +57,11 @@ export class MenuComponent implements OnChanges, OnInit {
       this.menuDir = this.openLeft ? 'before' : 'after';
     }
 
-    if (hasChanges(changes, ['menu'], true)) {
+    if (
+      hasChanges(changes, ['menu', 'id', 'data', 'clickToOpenSub'], true, {
+        falseyCheck: isValuevy,
+      })
+    ) {
       this.setViewModel();
     }
 
@@ -111,6 +117,7 @@ export class MenuComponent implements OnChanges, OnInit {
         ...item,
         ...(this.id && { id: this.id }),
         ...(this.data && { data: this.data }),
+        clickToOpenSub: Boolean(this.clickToOpenSub),
       };
       enrichedItem.disabled = this.itemIsDisabled(enrichedItem);
       return enrichedItem;
