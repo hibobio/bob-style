@@ -9,6 +9,8 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  ViewChildren,
+  QueryList,
 } from '@angular/core';
 import { MenuItem } from './menu.interface';
 import { MenuPositionX, MatMenu } from '@angular/material/menu';
@@ -46,6 +48,8 @@ export class MenuComponent implements OnChanges, OnInit {
   >();
 
   @ViewChild('childMenu', { static: true }) public childMenu: MatMenu;
+  @ViewChildren(MenuComponent)
+  public submenus: QueryList<MenuComponent>;
 
   public menuDir: MenuPositionX = 'after';
   public menuViewModel: MenuItem[];
