@@ -7,6 +7,9 @@ export interface MenuItem<T = any> {
   key?: string;
   id?: string;
   data?: T;
+  clickToOpenSub?: boolean;
+  openLeft?: boolean;
+  panelClass?: string;
   action?: (item?: MenuItem) => void;
 }
 

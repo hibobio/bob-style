@@ -7,24 +7,31 @@
 </div>
 
 <mat-menu #childMenu="matMenu"
-          [xPosition]="menuDir">
+          [xPosition]="menuDir"
+          [class]="panelClass">
   <ng-container *ngFor="let child of menuViewModel; trackBy: trackBy">
 
     <!-- Handle branch node menu menu -->
     <ng-container *ngIf="child.children?.length > 0">
-      <button mat-menu-item
-              type="button"
-              class="{{child?.key}}"
-              [disabled]="itemIsDisabled(child)"
-              [matMenuTriggerFor]="menu.childMenu"
-              [disableRipple]="true">
-        <span>{{child.label}}</span>
-      </button>
+
+      <span class="menu-trigger-guard"
+            [attr.tabindex]="!child.disabled && child.clickToOpenSub ? 0 : null"
+            (click.outside-zone)="!child.disabled && child.clickToOpenSub && $event.stopPropagation()">
+        <button mat-menu-item
+                type="button"
+                class="{{child?.key}}"
+                [disabled]="child.disabled"
+                [matMenuTriggerFor]="menu.childMenu"
+                [disableRipple]="true">
+          <span>{{child.label}}</span>
+        </button>
+      </span>
       <b-menu #menu
               [id]="id"
               [data]="data"
               [menu]="child.children"
-              [openLeft]="openLeft"
+              [openLeft]="openLeft || child.openLeft"
+              [panelClass]="child.panelClass"
               (actionClick)="onClick($event, false)">
       </b-menu>
     </ng-container>
@@ -35,7 +42,7 @@
             type="button"
             class="{{child?.key}}"
             (click)="onClick(child)"
-            [disabled]="itemIsDisabled(child)"
+            [disabled]="child.disabled"
             [disableRipple]="true">
       <span>{{child.label}}</span>
     </button>

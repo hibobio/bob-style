@@ -32,6 +32,7 @@ export class MenuComponent implements OnChanges, OnInit {
   @Input() data: any;
   @Input() menu: MenuItem[];
   @Input() openLeft = false;
+  @Input() panelClass: string;
   @Input() disabled: boolean;
   @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter<MenuItem>();
   @Output() openMenu: EventEmitter<string | void> = new EventEmitter<
@@ -104,10 +105,14 @@ export class MenuComponent implements OnChanges, OnInit {
   }
 
   private setViewModel(): void {
-    this.menuViewModel = this.menu.map(item => ({
-      ...item,
-      ...(this.id && { id: this.id }),
-      ...(this.data && { data: this.data }),
-    }));
+    this.menuViewModel = this.menu.map(item => {
+      const enrichedItem = {
+        ...item,
+        ...(this.id && { id: this.id }),
+        ...(this.data && { data: this.data }),
+      };
+      enrichedItem.disabled = this.itemIsDisabled(enrichedItem);
+      return enrichedItem;
+    });
   }
 }
