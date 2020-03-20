@@ -1,27 +1,28 @@
-<content [matMenuTriggerFor]="childMenu"
-         (menuOpened)="onOpenMenu()"
-         (menuClosed)="onCloseMenu()"
-         [ngClass]="{'disabled': disabled}"
-         class="menu-trigger-wrapper">
+<div [matMenuTriggerFor]="childMenu"
+     (menuOpened)="onOpenMenu()"
+     (menuClosed)="onCloseMenu()"
+     [ngClass]="{'disabled': disabled}"
+     class="menu-trigger-wrapper">
   <ng-content select="[menu-trigger]"></ng-content>
-</content>
+</div>
 
 <mat-menu #childMenu="matMenu"
           [xPosition]="menuDir">
-  <ng-container *ngFor="let child of menu">
+  <ng-container *ngFor="let child of menuViewModel; trackBy: trackBy">
 
     <!-- Handle branch node menu menu -->
-    <ng-container *ngIf="child.children && child.children.length > 0">
+    <ng-container *ngIf="child.children?.length > 0">
       <button mat-menu-item
               type="button"
               class="{{child?.key}}"
-              [ngClass]="{'disabled': child.disabled}"
+              [disabled]="itemIsDisabled(child)"
               [matMenuTriggerFor]="menu.childMenu"
               [disableRipple]="true">
         <span>{{child.label}}</span>
       </button>
       <b-menu #menu
               [id]="id"
+              [data]="data"
               [menu]="child.children"
               [openLeft]="openLeft"
               (actionClick)="onClick($event, false)">
@@ -34,7 +35,7 @@
             type="button"
             class="{{child?.key}}"
             (click)="onClick(child)"
-            [ngClass]="{'disabled': child.disabled}"
+            [disabled]="itemIsDisabled(child)"
             [disableRipple]="true">
       <span>{{child.label}}</span>
     </button>

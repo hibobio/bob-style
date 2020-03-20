@@ -18,8 +18,23 @@
       padding: 10px 0;
     }
 
+    .menu-trigger-wrapper {
+      &.disabled {
+        pointer-events: none;
+      }
+    }
+
     .mat-menu-item-submenu-trigger {
       padding: 0;
+    }
+
+    .mat-menu-item-submenu-trigger::after {
+      position: absolute;
+      right: 12px;
+      top: auto;
+      transform: none;
+      left: auto;
+      bottom: auto;
     }
 
     .mat-menu-item {
@@ -37,15 +52,10 @@
       &.disabled {
         color: $grey-600;
         pointer-events: none;
-      }
 
-      &.mat-menu-item-submenu-trigger::after {
-        position: absolute;
-        right: 12px;
-        top: auto;
-        transform: none;
-        left: auto;
-        bottom: auto;
+        &:after {
+          display: none;
+        }
       }
     }
   }
