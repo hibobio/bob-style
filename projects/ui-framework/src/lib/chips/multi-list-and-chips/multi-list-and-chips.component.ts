@@ -18,6 +18,7 @@ import {
   cloneArray,
   isNotEmptyArray,
   applyChanges,
+  hasChanges,
 } from '../../services/utils/functional-utils';
 import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
 import { get } from 'lodash';
@@ -55,14 +56,21 @@ export class MultiListAndChipsComponent implements OnChanges {
   readonly chipListID: string = simpleUID('mlacc-');
 
   ngOnChanges(changes: SimpleChanges) {
-    applyChanges(this, changes, {
-      options: [],
-    });
+    applyChanges(
+      this,
+      changes,
+      {
+        options: [],
+      },
+      [],
+      true
+    );
 
-    if (changes.options) {
-      this.options = this.listOptions = this.options.filter(
-        (group: SelectGroupOption) => isNotEmptyArray(group.options)
-      );
+    if (hasChanges(changes, ['options'])) {
+      this.options = this.listOptions =
+        this.options?.filter((group: SelectGroupOption) =>
+          isNotEmptyArray(group.options)
+        ) || [];
       this.chipListConfig.type = this.detectChipType(this.options);
       this.optionsToChips(this.options);
       this.cd.detectChanges();
