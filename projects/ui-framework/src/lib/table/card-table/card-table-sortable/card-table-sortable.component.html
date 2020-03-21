@@ -3,6 +3,7 @@
       role="row">
     <li class="table-header-cell"
         *ngFor="let cell of meta; index as index;"
+        [ngClass]="{'has-drag-handle': useDragHandle}"
         [ngStyle]="{
           'maxWidth': cellsStyle[index].maxWidth,
           'alignItems': cellsStyle[index].alignItems
@@ -26,7 +27,7 @@
       [rowIndex]="index"
       [meta]="meta"
       [style]="cellsStyle"
-      [ngClass]="{'clickable': cellClicked.observers.length > 0 || rowClicked.observers.length > 0}"
+      [ngClass]="{'clickable': cellClicked.observers.length > 0 || rowClicked.observers.length > 0, 'has-drag-handle': useDragHandle}"
       (click)="onRowClicked(row, index)"
       (cellClicked)="onCellClicked($event)"
       role="row">

@@ -1,25 +1,26 @@
-:host[data-has-drag-handle='true'] {
-  .card-table-header,
-  [b-table-card] {
-    padding-left: 50px;
-  }
-}
+@import '../../../style/common-imports';
+
 [b-table-card],
 .table-card-empty {
   min-height: 55px !important;
+}
+.has-drag-handle {
+  padding-left: 50px !important;
 }
 [b-table-card] {
   position: relative;
 }
 [cdkDragHandle] {
   position: absolute;
-  left: 10px;
+  left: 15px;
   top: 0;
   bottom: 0;
   cursor: move;
 }
 .cdk-drag-preview {
-  padding-left: 50px !important;
+  box-shadow: 0 3px 7px 0 $boxShadowColor;
+  border-color: $grey-400;
+  transform: translateY(-1px);
 }
 .cdk-drag-placeholder {
   opacity: 0;

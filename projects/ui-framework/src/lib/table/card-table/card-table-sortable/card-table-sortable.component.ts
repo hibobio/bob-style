@@ -1,7 +1,6 @@
 import {
   Component,
   EventEmitter,
-  HostBinding,
   Input,
   Output,
 } from '@angular/core';
@@ -23,7 +22,7 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
   ],
 })
 export class CardTableSortableComponent extends CardTableComponent {
-  @HostBinding('attr.data-has-drag-handle') @Input() useDragHandle = false;
+  @Input() useDragHandle = false;
   @Output() rowOrderChanged: EventEmitter<
     CardTableRowOrderChangeEvent
   > = new EventEmitter<CardTableRowOrderChangeEvent>();
