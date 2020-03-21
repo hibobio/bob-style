@@ -9,6 +9,8 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  ViewChildren,
+  QueryList,
 } from '@angular/core';
 import { MenuItem } from './menu.interface';
 import { MenuPositionX, MatMenu } from '@angular/material/menu';
@@ -17,6 +19,7 @@ import {
   hasChanges,
   applyChanges,
   notFirstChanges,
+  isValuevy,
 } from '../../services/utils/functional-utils';
 
 @Component({
@@ -32,7 +35,10 @@ export class MenuComponent implements OnChanges, OnInit {
   @Input() data: any;
   @Input() menu: MenuItem[];
   @Input() openLeft = false;
+  @Input() clickToOpenSub = false;
+  @Input() panelClass: string;
   @Input() disabled: boolean;
+
   @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter<MenuItem>();
   @Output() openMenu: EventEmitter<string | void> = new EventEmitter<
     string | void
@@ -42,6 +48,8 @@ export class MenuComponent implements OnChanges, OnInit {
   >();
 
   @ViewChild('childMenu', { static: true }) public childMenu: MatMenu;
+  @ViewChildren(MenuComponent)
+  public submenus: QueryList<MenuComponent>;
 
   public menuDir: MenuPositionX = 'after';
   public menuViewModel: MenuItem[];
@@ -53,7 +61,11 @@ export class MenuComponent implements OnChanges, OnInit {
       this.menuDir = this.openLeft ? 'before' : 'after';
     }
 
-    if (hasChanges(changes, ['menu'], true)) {
+    if (
+      hasChanges(changes, ['menu', 'id', 'data', 'clickToOpenSub'], true, {
+        falseyCheck: isValuevy,
+      })
+    ) {
       this.setViewModel();
     }
 
@@ -104,10 +116,15 @@ export class MenuComponent implements OnChanges, OnInit {
   }
 
   private setViewModel(): void {
-    this.menuViewModel = this.menu.map(item => ({
-      ...item,
-      ...(this.id && { id: this.id }),
-      ...(this.data && { data: this.data }),
-    }));
+    this.menuViewModel = this.menu.map(item => {
+      const enrichedItem = {
+        ...item,
+        ...(this.id && { id: this.id }),
+        ...(this.data && { data: this.data }),
+        clickToOpenSub: Boolean(this.clickToOpenSub),
+      };
+      enrichedItem.disabled = this.itemIsDisabled(enrichedItem);
+      return enrichedItem;
+    });
   }
 }

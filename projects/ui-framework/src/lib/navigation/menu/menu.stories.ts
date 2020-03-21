@@ -1,13 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  array,
-  boolean,
-  number,
-  object,
-  select,
-  text,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { boolean, object, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { ButtonType } from '../../buttons/buttons.enum';
@@ -27,11 +19,13 @@ const template = `
 <b-menu [id]="'employee-menu'"
         [menu]="menu"
         [openLeft]="openLeft"
+        [clickToOpenSub]="clickToOpenSub"
         [disabled]="disabled"
         (actionClick)="onActionClick($event)"
         (openMenu)="onMenuOpen($event)"
         (closeMenu)="onMenuClose($event)">
   <b-square-button menu-trigger
+                   [disabled]="disabled"
                    type="${ButtonType.secondary}"
                    icon="${Icons.three_dots}">
   </b-square-button>
@@ -51,12 +45,14 @@ const note = `
   *MenuModule*
 
   #### Properties
-  Name | Type | Description | Default value
+  Name | Type | Description | Default
   --- | --- | --- | ---
   [id] | string | menu id (can be used to reference the item, that has the menu) | &nbsp;
   [menu] | MenuItem[] | array of menu items | &nbsp;
   [data] | any | any data that will be included with each MenuItem (can be used for menu items actions etc) | &nbsp;
   [openLeft] | boolean | open left by default | false
+  [clickToOpenSub] | boolean | if true, sub-menus will open on click, not on hover | false
+  [panelClass] | string | class to be added to menu panel | &nbsp;
   [disabled] | boolean | disables menu | &nbsp;
   (actionClick) | &lt;MenuItem&gt; | notifies on action click, emits menu item, \
   enriched with menu id (if present) | &nbsp;
@@ -137,6 +133,22 @@ menu = [
     this[actionKey](itemID);
   }
 ~~~
+
+  #### interface: MenuItem&lt;T&gt;
+
+  Name | Type | Description | Default
+  --- | --- | --- | ---
+  label | string | menu item display name | &nbsp;
+  key? | string | menu item id | &nbsp;
+  id? | string | menu id | &nbsp;
+  disabled? | boolean | if menu item is disabled | false
+  data? | T | MenuItem will be enriched with any data from [data] input | &nbsp;
+  clickToOpenSub? | boolean | child menu to open on click (vs on hover, as by default) | false
+  openLeft? | boolean | child menu should open to the left | false
+  panelClass? | string | class to be added to child menu | &nbsp;
+  action? |  (item?: MenuItem) => void | function to be called on item click | &nbsp;
+  children | MenuItem[] | sub-menu items | &nbsp;
+
 `;
 
 const menuMock: MenuItem[] = [
@@ -221,6 +233,7 @@ story.add(
       template: storyTemplate,
       props: {
         openLeft: boolean('openLeft', false),
+        clickToOpenSub: boolean('clickToOpenSub', false),
         disabled: boolean('disabled', false),
         menu: object('menu', menuMock),
         onActionClick: action('action click'),

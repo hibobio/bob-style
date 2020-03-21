@@ -9,3 +9,27 @@
     pointer-events: none;
   }
 }
+
+.menu-trigger-guard[tabindex='0'] {
+  display: block;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  .mat-menu-item-submenu-trigger {
+    background: none;
+    pointer-events: none;
+
+    &:after {
+      display: none;
+    }
+  }
+
+  &:focus {
+    .mat-menu-item-submenu-trigger {
+      pointer-events: all;
+    }
+  }
+}

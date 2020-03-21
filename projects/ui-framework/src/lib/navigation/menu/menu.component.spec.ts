@@ -5,52 +5,61 @@ import { MatMenuModule } from '@angular/material/menu';
 import { By } from '@angular/platform-browser';
 import { MenuItem } from './menu.interface';
 import { CommonModule } from '@angular/common';
+import { simpleChange } from '../../services/utils/test-helpers';
+import { arrayInsertAt } from '../../services/utils/functional-utils';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
   let fixture: ComponentFixture<MenuComponent>;
-  let menuMock: MenuItem[];
+
+  const menuMock: MenuItem[] = [
+    {
+      label: 'button 0',
+      key: 'button.zero',
+      action: $event => {},
+    },
+    {
+      label: 'button 1',
+      action: $event => {},
+    },
+    {
+      label: 'button 2',
+      children: [
+        {
+          label: 'button 3',
+          action: $event => {},
+        },
+        {
+          label: 'button 4',
+          action: $event => {},
+        },
+      ],
+    },
+  ];
 
   beforeEach(async(() => {
-    menuMock = [
-      {
-        label: 'button 0',
-        key: 'button.zero',
-        action: $event => console.log('button 0', $event)
-      },
-      {
-        label: 'button 1',
-        action: $event => console.log('button 1', $event)
-      },
-      {
-        label: 'button 2',
-        children: [
-          {
-            label: 'button 3',
-            action: $event => console.log('button 3', $event)
-          },
-          {
-            label: 'button 4',
-            action: $event => console.log('button 4', $event)
-          }
-        ]
-      }
-    ];
-
     TestBed.configureTestingModule({
       declarations: [MenuComponent],
-      imports: [CommonModule, NoopAnimationsModule, MatMenuModule]
+      imports: [CommonModule, NoopAnimationsModule, MatMenuModule],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(MenuComponent);
         component = fixture.componentInstance;
-        component.id = 'menu_id';
-        component.menu = menuMock;
+
+        component.ngOnChanges(
+          simpleChange({
+            menu: menuMock,
+            id: 'menu_id',
+          })
+        );
+
         component.actionClick.subscribe(() => {});
         component.openMenu.subscribe(() => {});
         component.closeMenu.subscribe(() => {});
+
         fixture.detectChanges();
+
         spyOn(component.actionClick, 'emit');
         spyOn(component.openMenu, 'emit');
         spyOn(component.closeMenu, 'emit');
@@ -65,8 +74,10 @@ describe('MenuComponent', () => {
 
   describe('menu', () => {
     const openMenu = () => {
-      const menuTrigger = fixture.debugElement.query(By.css('.menu-trigger-wrapper'));
-      menuTrigger.triggerEventHandler('click', null);
+      const menuTrigger = fixture.debugElement.query(
+        By.css('.menu-trigger-wrapper')
+      ).nativeElement;
+      menuTrigger.click();
     };
 
     it('should open menu on menuTrigger click', () => {
@@ -85,13 +96,17 @@ describe('MenuComponent', () => {
 
     it('should have 3 options in menu', () => {
       openMenu();
-      const menuOptions = fixture.debugElement.queryAll(By.css('.mat-menu-item'));
+      const menuOptions = fixture.debugElement.queryAll(
+        By.css('.mat-menu-item')
+      );
       expect(menuOptions.length).toEqual(3);
     });
 
     it('should display label in option', () => {
       openMenu();
-      const menuOptions = fixture.debugElement.queryAll(By.css('.mat-menu-item span'));
+      const menuOptions = fixture.debugElement.queryAll(
+        By.css('.mat-menu-item span')
+      );
       expect(menuOptions[0].nativeElement.innerText).toEqual('button 0');
       expect(menuOptions[1].nativeElement.innerText).toEqual('button 1');
       expect(menuOptions[2].nativeElement.innerText).toEqual('button 2');
@@ -99,7 +114,9 @@ describe('MenuComponent', () => {
 
     it('should display deep options', () => {
       openMenu();
-      let menuOptions = fixture.debugElement.queryAll(By.css('.mat-menu-item span'));
+      let menuOptions = fixture.debugElement.queryAll(
+        By.css('.mat-menu-item span')
+      );
 
       menuOptions[2].nativeElement.click();
       menuOptions = fixture.debugElement.queryAll(By.css('.mat-menu-item'));
@@ -109,101 +126,133 @@ describe('MenuComponent', () => {
     });
 
     it('should invoke the action from the config', () => {
-      spyOn(component.menu[1], 'action');
-      openMenu();
-      const menuOption = fixture.debugElement.queryAll(By.css('.mat-menu-item'))[1];
-      menuOption.triggerEventHandler('click', null);
-      expect(component.menu[1].action).toHaveBeenCalledTimes(1);
-    });
-
-    it('should invoke actionClick on menu action click, should output menu item, enriched with menu id', () => {
-      spyOn(component.menu[1], 'action');
-      openMenu();
-      const menuOption = fixture.debugElement.queryAll(By.css('.mat-menu-item'))[1];
-
-      menuOption.triggerEventHandler('click', null);
-
-      expect(component.actionClick.emit).toHaveBeenCalledWith({
-        ...component.menu[1],
-        id: 'menu_id'
-      });
-      expect(component.menu[1].action).toHaveBeenCalledTimes(1);
-    });
-
-    it('should invoke actionClick on deep menu action click, should output menu item, enriched with menu id', () => {
-      spyOn(component.menu[2].children[1], 'action');
-      openMenu();
-
-      let menuOptions = fixture.debugElement.queryAll(By.css('.mat-menu-item'));
-
-      menuOptions[2].nativeElement.click();
-      menuOptions = fixture.debugElement.queryAll(By.css('.mat-menu-item'));
-      menuOptions[4].triggerEventHandler('click', null);
-
-      menuOptions[1].triggerEventHandler('click', null);
-
-      expect(component.actionClick.emit).toHaveBeenCalledWith({
-        ...component.menu[2].children[1],
-        id: 'menu_id'
-      });
-      expect(component.menu[2].children[1].action).toHaveBeenCalledTimes(1);
-    });
-
-    it('should disable option when config has disabled=true', () => {
-      component.menu[1] = {
-        label: 'button 2',
-        action: $event => console.log('button 2', $event),
-        disabled: true
-      };
+      spyOn(component.menuViewModel[1], 'action');
       fixture.detectChanges();
 
       openMenu();
-      const menuOption = fixture.debugElement.queryAll(By.css('.mat-menu-item'))[1];
-      expect(menuOption.nativeElement.classList).toContain('disabled');
+
+      const menuOption = fixture.debugElement.queryAll(
+        By.css('.mat-menu-item')
+      )[1].nativeElement;
+      menuOption.click();
+
+      expect(component.menuViewModel[1].action).toHaveBeenCalledTimes(1);
+    });
+
+    // tslint:disable-next-line: max-line-length
+    it('should invoke actionClick on menu action click, should output menu item, enriched with menu id', () => {
+      spyOn(component.menuViewModel[1], 'action');
+      fixture.detectChanges();
+
+      openMenu();
+
+      const menuOption = fixture.debugElement.queryAll(
+        By.css('.mat-menu-item')
+      )[1].nativeElement;
+      menuOption.click();
+
+      expect(component.menuViewModel[1].action).toHaveBeenCalledTimes(1);
+
+      expect(component.actionClick.emit).toHaveBeenCalledWith({
+        ...component.menuViewModel[1],
+        id: 'menu_id',
+        clickToOpenSub: false,
+        disabled: false,
+      });
+    });
+
+    // tslint:disable-next-line: max-line-length
+    it('should invoke actionClick on deep menu action click, should output menu item, enriched with menu id', () => {
+      console.log(component);
+      spyOn(component.submenus.first.menuViewModel[1], 'action');
+      fixture.detectChanges();
+
+      openMenu();
+
+      let menuOptions = fixture.debugElement.queryAll(By.css('.mat-menu-item'));
+      menuOptions[2].nativeElement.click();
+      menuOptions = fixture.debugElement.queryAll(By.css('.mat-menu-item'));
+      menuOptions[4].nativeElement.click();
+
+      expect(
+        component.submenus.first.menuViewModel[1].action
+      ).toHaveBeenCalledTimes(1);
+
+      expect(component.actionClick.emit).toHaveBeenCalledWith({
+        ...component.submenus.first.menuViewModel[1],
+        id: 'menu_id',
+        clickToOpenSub: false,
+        disabled: false,
+      });
+    });
+
+    it('should disable option when config has disabled=true', () => {
+      component.ngOnChanges(
+        simpleChange({
+          menu: arrayInsertAt(
+            menuMock,
+            {
+              label: 'button 2',
+              action: $event => console.log('button 2', $event),
+              disabled: true,
+            },
+            1,
+            true
+          ),
+        })
+      );
+
+      fixture.detectChanges();
+
+      openMenu();
+      const menuOption = fixture.debugElement.queryAll(
+        By.css('.mat-menu-item')
+      )[1].nativeElement;
+      expect(menuOption.getAttribute('disabled')).toBeTruthy();
     });
 
     it('should add class from config key', () => {
       openMenu();
-      const menuOption = fixture.debugElement.queryAll(By.css('.mat-menu-item'))[0];
+      const menuOption = fixture.debugElement.queryAll(
+        By.css('.mat-menu-item')
+      )[0];
       expect(menuOption.nativeElement.classList).toContain('button.zero');
     });
   });
 
   describe('OnChanges', () => {
     it('should update menuDir with before', () => {
-      component.ngOnChanges({
-        openLeft: {
-          previousValue: undefined,
-          currentValue: true,
-          firstChange: true,
-          isFirstChange: () => true
-        }
-      });
+      component.ngOnChanges(
+        simpleChange({
+          openLeft: true,
+        })
+      );
       expect(component.menuDir).toEqual('before');
     });
+
     it('should update menuDir with after', () => {
       component.ngOnChanges({
         openLeft: {
           previousValue: true,
           currentValue: false,
           firstChange: false,
-          isFirstChange: () => false
-        }
+          isFirstChange: () => false,
+        },
       });
       expect(component.menuDir).toEqual('after');
     });
+
     it('should disable menu trigger', () => {
-      component.ngOnChanges({
-        disabled: {
-          previousValue: undefined,
-          currentValue: true,
-          firstChange: true,
-          isFirstChange: () => true
-        }
-      });
+      component.ngOnChanges(
+        simpleChange({
+          disabled: true,
+        })
+      );
       fixture.detectChanges();
-      const menuTrigger = fixture.debugElement.query(By.css('.menu-trigger-wrapper'));
-      expect(menuTrigger.nativeElement.classList).toContain('disabled');
+      const menuTrigger = fixture.debugElement.query(
+        By.css('.menu-trigger-wrapper')
+      ).nativeElement;
+      expect(menuTrigger.classList).toContain('disabled');
     });
   });
 
