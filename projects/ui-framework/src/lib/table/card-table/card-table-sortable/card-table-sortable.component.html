@@ -1,9 +1,9 @@
 <header role="rowgroup">
   <ul class="card-table-header"
+      [ngClass]="{'has-drag-handle': useDragHandle}"
       role="row">
     <li class="table-header-cell"
         *ngFor="let cell of meta; index as index;"
-        [ngClass]="{'has-drag-handle': useDragHandle}"
         [ngStyle]="{
           'maxWidth': cellsStyle[index].maxWidth,
           'alignItems': cellsStyle[index].alignItems
