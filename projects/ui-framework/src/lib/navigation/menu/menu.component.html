@@ -41,8 +41,8 @@
     <button *ngIf="!item.children || item.children.length === 0"
             mat-menu-item
             type="button"
-            class="{{child?.key}}"
-            (click)="onClick(child)"
+            class="{{item.key}}"
+            (click)="onClick(item)"
             [disabled]="item.disabled"
             [disableRipple]="true">
       <span>{{item.label}}</span>
