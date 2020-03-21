@@ -43,7 +43,8 @@
       align-items: center;
       text-transform: capitalize;
 
-      &.disabled {
+      &.disabled,
+      &[disabled] {
         color: $grey-600;
         pointer-events: none;
 
