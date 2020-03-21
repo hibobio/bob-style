@@ -81,13 +81,13 @@ export class MenuComponent implements OnChanges, OnInit {
     }
   }
 
-  public onClick(child: MenuItem, triggerAction = true): void {
+  public onClick(item: MenuItem, triggerAction = true): void {
     if (this.actionClick.observers.length > 0) {
-      this.actionClick.emit(child);
+      this.actionClick.emit(item);
     }
 
-    if (child.action && triggerAction) {
-      child.action(child);
+    if (item.action && triggerAction) {
+      item.action(item);
     }
   }
 
@@ -121,7 +121,7 @@ export class MenuComponent implements OnChanges, OnInit {
         ...item,
         ...(this.id && { id: this.id }),
         ...(this.data && { data: this.data }),
-        clickToOpenSub: Boolean(this.clickToOpenSub),
+        clickToOpenSub: Boolean(this.clickToOpenSub || item.clickToOpenSub),
       };
       enrichedItem.disabled = this.itemIsDisabled(enrichedItem);
       return enrichedItem;
