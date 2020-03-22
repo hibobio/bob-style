@@ -177,10 +177,17 @@ export class EditableTreeListComponent implements OnChanges {
   public toggleItemCollapsed(item: TreeListItem, element: HTMLElement): void {
     item.collapsed = !item.collapsed;
 
-    TreeListModelUtils.setPropToTreeDown(
+    TreeListModelUtils.withEachItemOfTreeDown(
       item,
-      {
-        hidden: item.collapsed,
+      (itm: TreeListItem) => {
+        if (
+          !itm.parentIDs.find(id => {
+            const i = this.itemsMap.get(id);
+            return i !== item && i.collapsed;
+          })
+        ) {
+          itm.hidden = item.collapsed;
+        }
       },
       this.itemsMap
     );

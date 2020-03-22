@@ -119,6 +119,20 @@ export class TreeListModelUtils {
     return itemsMap.set(key, ((!onlyValue ? item : item.value) as any) as T);
   }
 
+  public static withEachItemOfTreeDown(
+    topItem: TreeListItem,
+    process: (item: TreeListItem) => void,
+    itemsMap: TreeListItemMap
+  ): void {
+    process(topItem);
+    if (topItem.childrenCount) {
+      topItem.childrenIDs.forEach(id => {
+        const child = itemsMap.get(id);
+        this.withEachItemOfTreeDown(child, process, itemsMap);
+      });
+    }
+  }
+
   public static setPropToTreeDown(
     topItem: TreeListItem,
     set: Partial<TreeListItem> = {},
