@@ -31,7 +31,6 @@ export class TreeListSearchUtils {
         !!asArray(viewFilter.hide.prop).find(
           filter => item[filter.key] === filter.value
         )
-
         // item[viewFilter.hide.prop.key] === viewFilter.hide.prop.value
       ) {
         result = false;
@@ -48,7 +47,6 @@ export class TreeListSearchUtils {
         !!asArray(viewFilter.hide.prop).find(
           filter => item[filter.key] !== filter.value
         )
-
         // item[viewFilter.show.prop.key] !== viewFilter.show.prop.value
       ) {
         result = false;

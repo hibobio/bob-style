@@ -125,7 +125,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
 
     if (hasChanges(changes, ['maxHeightItems', 'list', 'itemsMap'], true)) {
       this.maxHeightItems = Math.max(
-        this.itemsMap.size > 0
+        this.itemsMap.size > 1
           ? this.itemsMap.get(BTL_ROOT_ID).groupsCount + 3
           : 0,
         this.maxHeightItems

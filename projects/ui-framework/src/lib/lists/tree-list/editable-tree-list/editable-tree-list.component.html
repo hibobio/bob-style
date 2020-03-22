@@ -56,7 +56,8 @@
     role="list"
     class="betl-list"
     (click)="onListClick($event)"
-    (keydown)="onListKeyDown($event)">
+    (keydown)="onListKeyDown($event)"
+    (focusout)="onListBlur($event)">
 
   <ng-container *ngFor="let itemID of listViewModel; let index = index; trackBy: trackBy">
     <ng-container *ngTemplateOutlet="listItem; context: {
@@ -95,6 +96,9 @@
 
   <button type="button"
           (click)="log('Deleted')">Log deleted</button>
+
+          <button type="button"
+                  (click)="emitChange()">Emit</button>
 
   <!-- <button type="button"
           (click)="log('ViewContext')">Log items View Context</button> -->

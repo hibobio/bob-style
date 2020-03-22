@@ -14,6 +14,8 @@ import {
   makeRandomList,
   HListMockSingleGroup,
 } from '../tree-list.mock';
+import { action } from '@storybook/addon-actions';
+import { TreeListModule } from '../tree-list/tree-list.module';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -21,18 +23,31 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 
 const template = `
 <b-editable-tree-list
-[menuLoc]="menuLoc === 'expand' ? 1 : menuLoc === 'dot' ? 2 : 3"
-[menuHov]="menuHov === 'item hover' ? 2 : 1"
-     [keyMap]="options === 'simple' ? serverKeyMap : null"
-      [list]="options === 'simple' ? listSimple : options === 'single group' ? listSingleGroup : options === 'big' ? listHuge : listRandom"
+
+    [menuLoc]="menuLoc === 'expand' ? 1 : menuLoc === 'dot' ? 2 : 3"
+    [menuHov]="menuHov === 'item hover' ? 2 : 1"
+
+     [keyMap]="options === 'simple' || options === 'primitive' ? serverKeyMap : null"
+
+      [list]="options === 'simple' ? listSimple : options === 'primitive' ? list : options === 'single group' ? listSingleGroup : options === 'big' ? listHuge : listRandom"
+
+      [startCollapsed]="startCollapsed"
+      (changed)="listOut = $event; changed($event);"
      [debug]="debug">
 </b-editable-tree-list>
+
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Editable Tree List'" style="background-color: rgb(245,245,245);">
   <div style="max-width: 500px;">
     ${template}
+
+    <h4>Result:</h4>
+
+    <b-tree-list [type]="'single'" [readonly]="true" [list]="listOut"
+    [keyMap]="options === 'simple' || options === 'primitive' ? serverKeyMap : null" [startCollapsed]="startCollapsed" [debug]="debug"></b-tree-list>
+
   </div>
 </b-story-book-layout>
 `;
@@ -80,6 +95,10 @@ const mock = [
       },
     ],
   },
+  {
+    serverId: simpleUID(),
+    value: 'UK',
+  },
 ];
 
 story.add(
@@ -87,6 +106,7 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
+      listOut: [],
       list: mock,
       serverKeyMap: BTL_KEYMAP_SERVER,
 
@@ -106,24 +126,27 @@ story.add(
 
       startCollapsed: boolean('startCollapsed', true, 'Props'),
 
-      debug: boolean('debug', true, 'Props'),
+      debug: boolean('debug', false, 'Props'),
 
       options: select(
         'list',
-        ['simple', 'random', 'big', 'single group'],
-        'simple',
+        ['primitive', 'simple', 'random', 'big', 'single group'],
+        'primitive',
         'Data'
       ),
       listRandom: HListMock,
       listSimple: HListMockSimple,
       listHuge: makeRandomList(5, 65, 4, [8, 15]),
       listSingleGroup: HListMockSingleGroup,
+
+      changed: action('List change'),
     },
     moduleMetadata: {
       imports: [
         BrowserAnimationsModule,
         StoryBookLayoutModule,
         EditableTreeListModule,
+        TreeListModule,
       ],
       entryComponents: [],
     },

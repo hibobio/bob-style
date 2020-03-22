@@ -28,7 +28,11 @@ $betl-bgcolor: white;
   border: 1px solid $border-color;
   border-radius: $border-radius;
   padding: 12px;
-  overflow: auto;
+
+  &[data-embedded='false'] {
+    border: 1px solid $border-color;
+    box-shadow: 0 2px 3px 0 $boxShadowColor;
+  }
 }
 
 // List
@@ -37,20 +41,25 @@ $betl-bgcolor: white;
   list-style: none;
   padding: 0;
   margin: 0;
+  overflow: auto;
+  will-change: scroll-position, transform;
 
   $line-width: 1px;
-  background-image: linear-gradient(
-    to right,
-    transparent 0,
-    transparent #{$betl-item-indent + $betl-item-indent / 2 - $line-width / 2},
-    $grey-500 #{$betl-item-indent + $betl-item-indent / 2 - $line-width / 2},
-    $grey-500 #{$betl-item-indent + $betl-item-indent / 2 + $line-width / 2},
-    transparent #{$betl-item-indent + $betl-item-indent / 2 + $line-width / 2},
-    transparent #{$betl-item-indent * 2}
-  );
-  background-size: ($betl-item-indent * 2) 100%;
-  background-repeat: repeat-x;
-  background-position: left top;
+
+  background-image: linear-gradient(to right, white 0, white 100%),
+    linear-gradient(
+      to right,
+      transparent 0,
+      transparent #{$betl-item-indent - $line-width/2},
+      $grey-500 #{$betl-item-indent - $line-width/2},
+      $grey-500 #{$betl-item-indent + $line-width/2},
+      transparent #{$betl-item-indent + $line-width/2},
+      transparent #{$betl-item-indent * 2}
+    );
+
+  background-size: 0 100%, ($betl-item-indent * 2) 100%;
+  background-repeat: no-repeat, repeat-x;
+  background-position: left 0 top 0, left ($betl-item-indent / 2) top 0;
 
   &:empty {
     min-height: 20px;
@@ -232,32 +241,9 @@ $betl-bgcolor: white;
 }
 
 :host[data-menu-loc='3'] ::ng-deep {
-  .betl-list:not(:empty) {
-    $line-width: 1px;
-    background-image: linear-gradient(to right, white 0, white 100%),
-      linear-gradient(
-        to right,
-        transparent 0,
-        transparent #{$betl-item-indent / 2 - $line-width / 2},
-        $grey-500 #{$betl-item-indent / 2 - $line-width / 2},
-        $grey-500 #{$betl-item-indent / 2 + $line-width / 2},
-        transparent #{$betl-item-indent / 2 + $line-width / 2},
-        transparent #{$betl-item-indent * 1}
-      );
+  .betl-list {
+    background-position: left 0 top 0, left ($betl-item-indent * 1.5) top 0;
     background-size: ($betl-item-indent * 2) 100%, ($betl-item-indent * 2) 100%;
-    background-repeat: no-repeat, repeat-x;
-
-    // background-image: linear-gradient(
-    //   to right,
-    //   transparent 0,
-    //   transparent #{$betl-item-indent / 2 - $line-width / 2},
-    //   $grey-500 #{$betl-item-indent / 2 - $line-width / 2},
-    //   $grey-500 #{$betl-item-indent / 2 + $line-width / 2},
-    //   transparent #{$betl-item-indent / 2 + $line-width / 2},
-    //   transparent #{$betl-item-indent * 1}
-    // );
-    // background-size: ($betl-item-indent * 2) 100%;
-    // background-repeat: repeat-x;
   }
 
   .betl-item,
@@ -279,13 +265,6 @@ $betl-bgcolor: white;
   .betl-item-input-wrap {
     grid-column: 4;
   }
-
-  // .betl-list-footer {
-  //   &:before {
-  //     width: $betl-item-indent * 3;
-  //     // display: none;
-  //   }
-  // }
 
   .betl-list-add-item {
     grid-column: 3;

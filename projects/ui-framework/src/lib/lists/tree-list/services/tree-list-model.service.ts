@@ -161,6 +161,7 @@ export class TreeListModelService {
         parentCount: 0,
         selectedCount: 0,
         childrenCount: 0,
+        selectedIDs: new Set(),
       },
       // config
       {
@@ -291,11 +292,13 @@ export class TreeListModelService {
       value = value.slice(0, 1);
     }
 
-    if (!itemsMap.size) {
+    if (itemsMap.size < 2) {
       return { value };
     }
 
-    const previousValue = Array.from(itemsMap.get(BTL_ROOT_ID).selectedIDs);
+    const previousValue = Array.from(
+      itemsMap.get(BTL_ROOT_ID).selectedIDs || []
+    );
     const isSameValue = simpleArraysEqual(previousValue, value);
     let firstSelectedItem: TreeListItem;
 

@@ -137,12 +137,13 @@ export class TreeListViewService {
   }
 
   public findInputInElement(itemElement: HTMLElement): HTMLInputElement {
-    return itemElement.querySelector('.betl-item-input') as HTMLInputElement;
+    return itemElement?.querySelector('.betl-item-input') as HTMLInputElement;
   }
 
   public findAndFocusInput(element: HTMLElement, at: 'start' | 'end'): void {
     const input = this.findInputInElement(element);
     if (!input) {
+      console.warn('cant find input in element', element);
       return;
     }
     const loc = at === 'start' ? 0 : input.value.length;

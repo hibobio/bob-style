@@ -64,7 +64,9 @@ export class EditableTreeListComponent implements OnChanges {
   public list: TreeListOption[];
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
 
-  @Input() debug = false;
+  @Input() startCollapsed = true;
+  @HostBinding('attr.data-embedded') @Input() embedded = false;
+  @HostBinding('attr.data-debug') @Input() debug = false;
 
   @HostBinding('attr.data-menu-loc') @Input() menuLoc = 1;
   @HostBinding('attr.data-menu-hover') @Input() menuHov = 1;
@@ -80,10 +82,7 @@ export class EditableTreeListComponent implements OnChanges {
   public listViewModel: itemID[] = [];
   private viewFilter: ViewFilter = {
     hide: {
-      prop: [
-        { key: 'deleted', value: true },
-        { key: 'hidden', value: true },
-      ],
+      prop: { key: 'deleted', value: true },
     },
   };
 
@@ -159,8 +158,8 @@ export class EditableTreeListComponent implements OnChanges {
     }
   }
 
-  private listToListViewModel(): void {
-    this.listViewModel = this.modelSrvc.getListViewModel(
+  private listToListViewModel(): itemID[] {
+    return (this.listViewModel = this.modelSrvc.getListViewModel(
       this.list,
       this.itemsMap,
       {
@@ -168,11 +167,45 @@ export class EditableTreeListComponent implements OnChanges {
         expand: true,
         keyMap: this.keyMap,
       }
-    );
+    ));
+  }
+
+  private listViewModelToList(
+    listViewModel: itemID[] = this.listViewModel
+  ): TreeListOption[] {
+    const processed: Set<itemID> = new Set();
+
+    const reducer = (acc: TreeListOption[], id: itemID) => {
+      const item = this.itemsMap.get(id);
+
+      if (processed.has(item.id) || !item.name.trim()) {
+        return acc;
+      }
+
+      processed.add(item.id);
+
+      const itemOut: TreeListOption = {
+        [this.keyMap.id]: item.id,
+        [this.keyMap.name]: item.name,
+      };
+
+      if (item.childrenCount) {
+        itemOut[this.keyMap.children] = item.childrenIDs.reduce(reducer, []);
+      }
+
+      acc.push(itemOut);
+
+      return acc;
+    };
+
+    return listViewModel.reduce(reducer, []);
   }
 
   //#region
-  private emitChange(): void {}
+  private emitChange(): void {
+    this.list = this.listViewModelToList();
+    this.changed.emit(this.list);
+  }
 
   public toggleItemCollapsed(item: TreeListItem, element: HTMLElement): void {
     item.collapsed = !item.collapsed;
@@ -206,7 +239,7 @@ export class EditableTreeListComponent implements OnChanges {
     });
   }
 
-  public onListKeyDown(event: KeyboardEvent) {
+  public onListKeyDown(event: KeyboardEvent): void {
     this.cntrlsSrvc.onEditableListKeyDown(event, {
       itemsMap: this.itemsMap,
       listViewModel: this.listViewModel,
@@ -214,6 +247,13 @@ export class EditableTreeListComponent implements OnChanges {
       deleteItem: this.deleteItem.bind(this),
       makeItemPreviouSiblingChild: this.makeItemPreviouSiblingChild.bind(this),
     });
+  }
+
+  public onListBlur(event: FocusEvent): void {
+    const target = event.target as HTMLInputElement;
+    if (target.matches('.betl-item-input.ng-dirty') && target.value.trim()) {
+      this.emitChange();
+    }
   }
 
   public trackBy(index: number, id: itemID): itemID {
@@ -292,6 +332,10 @@ export class EditableTreeListComponent implements OnChanges {
       id => !this.itemsMap.get(id).deleted
     );
 
+    this.cd.detectChanges();
+
+    this.emitChange();
+
     return item;
   }
 
@@ -316,6 +360,8 @@ export class EditableTreeListComponent implements OnChanges {
 
     this.insertItem(newItem, where, target, context);
 
+    this.emitChange();
+
     return newItem;
   }
 
@@ -328,8 +374,6 @@ export class EditableTreeListComponent implements OnChanges {
 
     const { parent } = context;
 
-    // remove from prev arrays
-
     parent.childrenIDs = parent.childrenIDs?.filter(id => id !== item.id) || [];
     parent.childrenCount = TreeListModelUtils.filteredChildrenCount(
       parent,
@@ -338,8 +382,6 @@ export class EditableTreeListComponent implements OnChanges {
     );
 
     this.listViewModel = this.listViewModel.filter(id => id !== item.id);
-
-    // insert in new place
 
     this.insertItem(item, where, target, context);
     item.moved = true;
@@ -363,6 +405,8 @@ export class EditableTreeListComponent implements OnChanges {
     this.moveItem(item, 'lastChildOf', prevItem);
 
     this.cd.detectChanges();
+
+    this.emitChange();
 
     return item;
   }

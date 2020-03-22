@@ -91,8 +91,8 @@ export class TreeListComponent extends BaseTreeListElement {
     }
 
     if (hasChanges(changes, ['list', 'itemsMap'], true)) {
-      this.hidden = this.itemsMap.size === 0;
-      this.showSearch = this.itemsMap.size > 10;
+      this.hidden = this.itemsMap.size < 2;
+      this.showSearch = this.itemsMap.size > 11;
     }
 
     if (firstChanges(changes, ['list', 'itemsMap'], true)) {
@@ -210,7 +210,7 @@ export class TreeListComponent extends BaseTreeListElement {
   protected applyValue(newValue: itemID[], adjustView = true): boolean {
     let viewModelWasUpdated = false;
 
-    if (!this.itemsMap.size || newValue === undefined) {
+    if (this.itemsMap.size < 2 || newValue === undefined) {
       return viewModelWasUpdated;
     }
 

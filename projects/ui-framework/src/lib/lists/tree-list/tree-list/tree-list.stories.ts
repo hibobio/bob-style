@@ -63,7 +63,6 @@ story.add(
     template: storyTemplate,
     props: {
       ...TreeListStoriesCommonProps(),
-      debug: boolean('debug', true, 'Props'),
     },
     moduleMetadata: {
       imports: [BrowserAnimationsModule, StoryBookLayoutModule, TreeListModule],

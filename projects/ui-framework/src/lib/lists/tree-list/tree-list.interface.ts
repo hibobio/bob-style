@@ -86,7 +86,7 @@ export interface TreeListValue {
 
 export interface ViewFilterOptions {
   id?: itemID[];
-  prop?: { key: string; value: any }[];
+  prop?: { key: string; value: any } | { key: string; value: any }[];
   search?: string | RegExp;
   searchBy?: 'name' | 'value';
 }
