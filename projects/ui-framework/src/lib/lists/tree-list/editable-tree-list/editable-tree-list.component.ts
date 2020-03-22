@@ -79,7 +79,12 @@ export class EditableTreeListComponent implements OnChanges {
   public itemsMap: TreeListItemMap = new Map();
   public listViewModel: itemID[] = [];
   private viewFilter: ViewFilter = {
-    hide: { prop: { key: 'deleted', value: true } },
+    hide: {
+      prop: [
+        { key: 'deleted', value: true },
+        { key: 'hidden', value: true },
+      ],
+    },
   };
 
   public itemMenu: MenuItem<TreeListItem>[] = [
@@ -169,9 +174,30 @@ export class EditableTreeListComponent implements OnChanges {
   //#region
   private emitChange(): void {}
 
-  public toggleItemCollapsed(item: TreeListItem, element: HTMLElement): void {}
+  public toggleItemCollapsed(item: TreeListItem, element: HTMLElement): void {
+    item.collapsed = !item.collapsed;
 
-  public onListClick(event: MouseEvent): void {}
+    TreeListModelUtils.setPropToTreeDown(
+      item,
+      {
+        hidden: item.collapsed,
+      },
+      this.itemsMap
+    );
+
+    item.hidden = false;
+
+    this.cd.detectChanges();
+  }
+
+  public onListClick(event: MouseEvent): void {
+    this.cntrlsSrvc.onListClick(event, {
+      itemsMap: this.itemsMap,
+      listViewModel: this.listViewModel,
+      toggleItemCollapsed: this.toggleItemCollapsed.bind(this),
+      disabled: true,
+    });
+  }
 
   public onListKeyDown(event: KeyboardEvent) {
     this.cntrlsSrvc.onEditableListKeyDown(event, {

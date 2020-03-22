@@ -51,6 +51,12 @@ $betl-bgcolor: white;
   background-size: ($betl-item-indent * 2) 100%;
   background-repeat: repeat-x;
   background-position: left top;
+
+  &:empty {
+    min-height: 20px;
+    background-repeat: no-repeat;
+    background-position: $betl-item-indent 0;
+  }
 }
 
 .betl-list-footer {
@@ -125,6 +131,9 @@ $betl-bgcolor: white;
     line-height: map-get($icon-sizes, 'medium');
     display: flex;
     justify-content: center;
+  }
+  &:hover:before {
+    color: $grey-900;
   }
 }
 
@@ -223,7 +232,7 @@ $betl-bgcolor: white;
 }
 
 :host[data-menu-loc='3'] ::ng-deep {
-  .betl-list {
+  .betl-list:not(:empty) {
     $line-width: 1px;
     background-image: linear-gradient(to right, white 0, white 100%),
       linear-gradient(
@@ -237,6 +246,18 @@ $betl-bgcolor: white;
       );
     background-size: ($betl-item-indent * 2) 100%, ($betl-item-indent * 2) 100%;
     background-repeat: no-repeat, repeat-x;
+
+    // background-image: linear-gradient(
+    //   to right,
+    //   transparent 0,
+    //   transparent #{$betl-item-indent / 2 - $line-width / 2},
+    //   $grey-500 #{$betl-item-indent / 2 - $line-width / 2},
+    //   $grey-500 #{$betl-item-indent / 2 + $line-width / 2},
+    //   transparent #{$betl-item-indent / 2 + $line-width / 2},
+    //   transparent #{$betl-item-indent * 1}
+    // );
+    // background-size: ($betl-item-indent * 2) 100%;
+    // background-repeat: repeat-x;
   }
 
   .betl-item,
@@ -259,10 +280,16 @@ $betl-bgcolor: white;
     grid-column: 4;
   }
 
-  .betl-list-footer {
-    &:before {
-      width: $betl-item-indent * 2;
-    }
+  // .betl-list-footer {
+  //   &:before {
+  //     width: $betl-item-indent * 3;
+  //     // display: none;
+  //   }
+  // }
+
+  .betl-list-add-item {
+    grid-column: 3;
+    grid-row: 1;
   }
 }
 

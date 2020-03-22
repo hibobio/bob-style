@@ -3,6 +3,7 @@
              let-item="item">
 
   <li role="listitem"
+      *ngIf="!item.hidden"
       class="betl-item"
       [id]="item.id"
       [attr.data-index]="index"
@@ -17,7 +18,7 @@
 
     <span *ngIf="item.childrenCount"
           class="betl-item-elmnt betl-item-chevron has-hover"
-          aria-hidden="true"></span>
+          role="button"></span>
 
     <b-menu class="betl-item-elmnt betl-item-menu"
             [id]="item.id"

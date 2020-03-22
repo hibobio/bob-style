@@ -11,10 +11,10 @@ interface TreeListClickConfig {
   itemsMap: TreeListItemMap;
   listViewModel: itemID[];
   toggleItemCollapsed: (item: TreeListItem, element: HTMLElement) => void;
-  toggleItemSelect: (item: TreeListItem, force?: boolean) => void;
-  itemClick: (item: TreeListItem, element: HTMLElement) => void;
-  readonly: boolean;
-  disabled: boolean;
+  toggleItemSelect?: (item: TreeListItem, force?: boolean) => void;
+  itemClick?: (item: TreeListItem, element: HTMLElement) => void;
+  readonly?: boolean;
+  disabled?: boolean;
 }
 
 interface TreeListKeydownConfig {

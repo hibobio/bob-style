@@ -93,14 +93,14 @@ story.add(
       menuLoc: select(
         'menu location',
         ['expand', 'dot', 'line'],
-        'dot',
+        'line',
         'Props'
       ),
 
       menuHov: select(
         'show menu on',
         ['item hover', 'menu hover'],
-        'menu hover',
+        'item hover',
         'Props'
       ),
 

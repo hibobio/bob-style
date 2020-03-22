@@ -2,6 +2,7 @@ import { ViewFilter, TreeListItem } from '../tree-list.interface';
 import {
   isRegExp,
   stringToRegex,
+  asArray,
 } from '../../../services/utils/functional-utils';
 
 export class TreeListSearchUtils {
@@ -27,7 +28,11 @@ export class TreeListSearchUtils {
 
       if (
         viewFilter.hide.prop &&
-        item[viewFilter.hide.prop.key] === viewFilter.hide.prop.value
+        !!asArray(viewFilter.hide.prop).find(
+          filter => item[filter.key] === filter.value
+        )
+
+        // item[viewFilter.hide.prop.key] === viewFilter.hide.prop.value
       ) {
         result = false;
       }
@@ -40,7 +45,11 @@ export class TreeListSearchUtils {
 
       if (
         viewFilter.show.prop &&
-        item[viewFilter.show.prop.key] !== viewFilter.show.prop.value
+        !!asArray(viewFilter.hide.prop).find(
+          filter => item[filter.key] !== filter.value
+        )
+
+        // item[viewFilter.show.prop.key] !== viewFilter.show.prop.value
       ) {
         result = false;
       }

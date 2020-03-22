@@ -59,6 +59,7 @@ export interface TreeListItem {
   deleted?: boolean;
   moved?: boolean;
   newitem?: boolean;
+  hidden?: boolean;
 
   parentIDs?: itemID[] | null;
   childrenIDs?: itemID[] | null;
@@ -85,7 +86,7 @@ export interface TreeListValue {
 
 export interface ViewFilterOptions {
   id?: itemID[];
-  prop?: { key: string; value: any };
+  prop?: { key: string; value: any }[];
   search?: string | RegExp;
   searchBy?: 'name' | 'value';
 }
