@@ -75,4 +75,8 @@ export class AppComponent {
       .get(formName === 'testForm2' ? 'treeSelect2' : 'treeSelect')
       .setValue(val, { emitEvent: true });
   }
+
+  onRowOrderChanged($event: any) {
+    console.log($event);
+  }
 }

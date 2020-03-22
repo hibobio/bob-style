@@ -1,0 +1,46 @@
+<header role="rowgroup">
+  <ul class="card-table-header"
+      [ngClass]="{'has-drag-handle': useDragHandle}"
+      role="row">
+    <li class="table-header-cell"
+        *ngFor="let cell of meta; index as index;"
+        [ngStyle]="{
+          'maxWidth': cellsStyle[index].maxWidth,
+          'alignItems': cellsStyle[index].alignItems
+        }"
+        role="columnheader">
+      <span class="text">{{ cell.name }}</span>
+    </li>
+  </ul>
+</header>
+
+<ul class="card-table-body"
+    cdkDropList
+    (cdkDropListDropped)="onDrop($event)"
+    *ngIf="table && table.length > 0"
+    role="rowgroup">
+  <li *ngFor="let row of table; index as index;"
+      b-table-card
+      cdkDrag
+      cdkDragLockAxis="y"
+      [row]="row"
+      [rowIndex]="index"
+      [meta]="meta"
+      [style]="cellsStyle"
+      [ngClass]="{'clickable': cellClicked.observers.length > 0 || rowClicked.observers.length > 0, 'has-drag-handle': useDragHandle}"
+      (click)="onRowClicked(row, index)"
+      (cellClicked)="onCellClicked($event)"
+      role="row">
+    <b-icon *ngIf="useDragHandle" cdkDragHandle
+            [icon]="icons.drag_alt"
+            [color]="iconColor.dark"
+            [size]="iconSize.small"></b-icon>
+  </li>
+</ul>
+
+<div class="card-table-body"
+     *ngIf="default && !(table && table.length > 0)">
+  <p class="table-card-empty b-display-3">
+    {{ default }}
+  </p>
+</div>

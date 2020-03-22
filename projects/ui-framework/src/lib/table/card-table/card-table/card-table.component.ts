@@ -28,7 +28,7 @@ import { TableCardComponent } from './../table-card/table-card.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardTableComponent implements OnInit {
-  constructor(private widthsService: CellWidthsService) {}
+  constructor(protected widthsService: CellWidthsService) {}
   @ViewChildren(TableCardComponent, { read: ElementRef })
   public cardsElRefs: QueryList<TableCardComponent>;
   @Input() meta: CardTableCellMeta[];
@@ -47,7 +47,7 @@ export class CardTableComponent implements OnInit {
 
   cellsStyle: cardTableAllowedCellStyles[];
 
-  private setCellsStyle(): void {
+  protected setCellsStyle(): void {
     const cellsWidths = this.widthsService.getCellsWidth(
       this.meta,
       this.minCellWidth

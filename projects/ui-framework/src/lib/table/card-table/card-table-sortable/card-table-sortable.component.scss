@@ -1,0 +1,33 @@
+@import '../../../style/common-imports';
+
+[b-table-card],
+.table-card-empty {
+  min-height: 55px !important;
+}
+.has-drag-handle {
+  padding-left: 50px !important;
+}
+[b-table-card] {
+  position: relative;
+}
+[cdkDragHandle] {
+  position: absolute;
+  left: 15px;
+  top: 0;
+  bottom: 0;
+  cursor: move;
+}
+.cdk-drag-preview {
+  box-shadow: 0 3px 7px 0 $boxShadowColor;
+  border-color: $grey-400;
+  transform: translateY(-1px);
+}
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+.cdk-drag-animating {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) !important;
+}
+.card-table-body.cdk-drop-list-dragging li:not(.cdk-drag-placeholder) {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
