@@ -232,13 +232,19 @@ export {
 // Tree  list
 export * from './lib/lists/tree-list/tree-list.interface';
 export * from './lib/lists/tree-list/tree-list.const';
+export * from './lib/lists/tree-list/services/tree-list-search.static';
+export * from './lib/lists/tree-list/services/tree-list-model.static';
+export * from './lib/lists/tree-list/services/tree-list-value.static';
+export { TreeListModelService } from './lib/lists/tree-list/services/tree-list-model.service';
 export { TreeListModule } from './lib/lists/tree-list/tree-list/tree-list.module';
 export { TreeListComponent } from './lib/lists/tree-list/tree-list/tree-list.component';
 export {TreeListPanelModule}from './lib/lists/tree-list/tree-list-panel/tree-list-panel.module';
 export { TreeListPanelComponent } from './lib/lists/tree-list/tree-list-panel/tree-list-panel.component';
 export { TreeSelectModule } from './lib/lists/tree-list/tree-select/tree-select.module';
 export { TreeSelectComponent } from './lib/lists/tree-list/tree-select/tree-select.component';
-export { TreeListModelService } from './lib/lists/tree-list/services/tree-list-model.service';
+export { EditableTreeListModule } from './lib/lists/tree-list/editable-tree-list/editable-tree-list.module';
+export { EditableTreeListComponent } from './lib/lists/tree-list/editable-tree-list/editable-tree-list.component';
+
 
 // Chain select
 export {
