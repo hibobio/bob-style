@@ -23,7 +23,8 @@
     <b-menu class="betl-item-elmnt betl-item-menu"
             [id]="item.id"
             [data]="item"
-            [menu]="itemMenu">
+            [menu]="itemMenu"
+            (click.outside-zone)="$event.stopPropagation()">
 
       <b-icon menu-trigger
               role="button"
