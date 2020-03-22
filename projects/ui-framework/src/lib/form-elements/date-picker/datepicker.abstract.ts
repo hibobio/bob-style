@@ -16,7 +16,7 @@ import {
   Directive,
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
-import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
+import { MobileService } from '../../services/utils/mobile.service';
 import { Subscription, fromEvent, interval } from 'rxjs';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { outsideZone } from '../../services/utils/rxjs.operators';
@@ -34,7 +34,7 @@ import { Keys } from '../../enums';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { throttle } from 'rxjs/operators';
 import { WindowRef } from '../../services/utils/window-ref.service';
-import { InputEventType, FormEvents } from '../form-elements.enum';
+import { InputEventType } from '../form-elements.enum';
 import { InputEvent } from '../input/input.interface';
 import { set, get } from 'lodash';
 import { DatepickerType, DateAdjust } from './datepicker.enum';
