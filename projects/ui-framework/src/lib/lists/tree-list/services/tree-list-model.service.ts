@@ -15,7 +15,6 @@ import {
   stringify,
   simpleArraysEqual,
   joinArrays,
-  arrayDifference,
 } from '../../../services/utils/functional-utils';
 import {
   BTL_ROOT_ID,
@@ -147,14 +146,10 @@ export class TreeListModelService {
     }
     const removeKeys = [...Object.values(keyMap || {}), 'selected', 'disabled'];
 
-    if (isEmptyArray(list)) {
-      return itemsMap;
-    }
-
     this.convertItem(
       // item
       {
-        [keyMap.children]: list,
+        [keyMap.children]: list || [],
       },
       // map
       itemsMap,
@@ -162,7 +157,7 @@ export class TreeListModelService {
       {
         id: BTL_ROOT_ID,
         name: BTL_ROOT_ID,
-        parentIDs: null,
+        parentIDs: [],
         parentCount: 0,
         selectedCount: 0,
         childrenCount: 0,
@@ -184,7 +179,7 @@ export class TreeListModelService {
     item: TreeListOption,
     itemsMap: TreeListItemMap,
     set: Partial<TreeListItem> = {
-      parentIDs: null,
+      parentIDs: [],
     },
     config: TreeListConverterConfig = {
       keyMap: BTL_KEYMAP_DEF,

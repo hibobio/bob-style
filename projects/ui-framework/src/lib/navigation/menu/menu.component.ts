@@ -11,6 +11,7 @@ import {
   ChangeDetectorRef,
   ViewChildren,
   QueryList,
+  HostBinding,
 } from '@angular/core';
 import { MenuItem } from './menu.interface';
 import { MenuPositionX, MatMenu } from '@angular/material/menu';
@@ -54,6 +55,8 @@ export class MenuComponent implements OnChanges, OnInit {
   public menuDir: MenuPositionX = 'after';
   public menuViewModel: MenuItem[];
 
+  @HostBinding('attr.data-menu-open') menuOpen = false;
+
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
 
@@ -92,12 +95,14 @@ export class MenuComponent implements OnChanges, OnInit {
   }
 
   public onOpenMenu(): void {
+    this.menuOpen = true;
     if (this.openMenu.observers.length > 0) {
       this.openMenu.emit(this.id || null);
     }
   }
 
   public onCloseMenu(): void {
+    this.menuOpen = false;
     if (this.closeMenu.observers.length > 0) {
       this.closeMenu.emit(this.id || null);
     }

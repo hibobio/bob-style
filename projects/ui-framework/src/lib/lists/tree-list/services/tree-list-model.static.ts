@@ -4,6 +4,7 @@ import {
   TreeListItemMap,
   TreeListOption,
   TreeListKeyMap,
+  ViewFilter,
 } from '../tree-list.interface';
 import {
   isNullOrUndefined,
@@ -11,6 +12,7 @@ import {
   isBoolean,
 } from '../../../services/utils/functional-utils';
 import { BTL_VALUE_SEPARATOR_DEF, BTL_ROOT_ID } from '../tree-list.const';
+import { TreeListSearchUtils } from './tree-list-search.static';
 
 export interface TreeListChildrenToggleSelectReducerResult {
   IDs: itemID[];
@@ -49,6 +51,18 @@ export class TreeListModelUtils {
 
       parent.selectedCount = parent.selectedIDs.size;
     });
+  }
+
+  public static filteredChildrenCount(
+    item: TreeListItem,
+    itemsMap: TreeListItemMap,
+    viewFilter: ViewFilter
+  ): number {
+    return (
+      item.childrenIDs?.filter(id =>
+        TreeListSearchUtils.itemFilter(itemsMap.get(id), viewFilter)
+      ).length || 0
+    );
   }
 
   public static updateChildrenParentSelected(

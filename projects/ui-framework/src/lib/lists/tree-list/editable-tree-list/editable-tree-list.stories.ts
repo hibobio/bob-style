@@ -3,9 +3,17 @@ import { withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
-import { boolean } from '@storybook/addon-knobs';
+import { boolean, select } from '@storybook/addon-knobs';
 import { EditableTreeListModule } from './editable-tree-list.module';
-import { TreeListStoriesCommonProps } from '../tree-list.stories.common';
+
+import { simpleUID } from '../../../services/utils/functional-utils';
+import { BTL_KEYMAP_SERVER } from '../tree-list.const';
+import {
+  HListMock,
+  HListMockSimple,
+  makeRandomList,
+  HListMockSingleGroup,
+} from '../tree-list.mock';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -13,16 +21,14 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 
 const template = `
 <b-editable-tree-list
-
-      [keyMap]="options === 'simple' ? serverKeyMap : null"
+     [keyMap]="options === 'simple' ? serverKeyMap : null"
       [list]="options === 'simple' ? listSimple : options === 'single group' ? listSingleGroup : options === 'big' ? listHuge : listRandom"
-    >
-
+     [debug]="debug">
 </b-editable-tree-list>
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Editable Tree List'">
+<b-story-book-layout [title]="'Editable Tree List'" style="background-color: rgb(245,245,245);">
   <div style="max-width: 500px;">
     ${template}
   </div>
@@ -38,13 +44,64 @@ const note = `
 
 `;
 
+const mock = [
+  {
+    serverId: simpleUID(),
+    value: 'TLV',
+  },
+  {
+    serverId: simpleUID(),
+    value: 'London',
+  },
+  {
+    serverId: simpleUID(),
+    value: 'New York',
+
+    children: [
+      {
+        serverId: simpleUID(),
+        value: 'R&D',
+
+        children: [
+          {
+            serverId: simpleUID(),
+            value: 'Product',
+
+            children: [
+              {
+                serverId: simpleUID(),
+                value: 'Design',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
+
 story.add(
   'Editable Tree List',
   () => ({
     template: storyTemplate,
     props: {
-      ...TreeListStoriesCommonProps(),
+      list: mock,
+      serverKeyMap: BTL_KEYMAP_SERVER,
+
+      startCollapsed: boolean('startCollapsed', true, 'Props'),
+
       debug: boolean('debug', true, 'Props'),
+
+      options: select(
+        'list',
+        ['simple', 'random', 'big', 'single group'],
+        'simple',
+        'Data'
+      ),
+      listRandom: HListMock,
+      listSimple: HListMockSimple,
+      listHuge: makeRandomList(5, 65, 4, [8, 15]),
+      listSingleGroup: HListMockSingleGroup,
     },
     moduleMetadata: {
       imports: [

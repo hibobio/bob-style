@@ -1,3 +1,5 @@
+// vscode-fold=1
+
 //#region
 import {
   Component,
@@ -9,7 +11,6 @@ import {
   OnChanges,
   ChangeDetectorRef,
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import {
   applyChanges,
   hasChanges,
@@ -34,6 +35,10 @@ import {
   IconColor,
 } from '../../../icons/icons.enum';
 import { TreeListModelUtils } from '../services/tree-list-model.static';
+import { TreeListControlsService } from '../services/tree-list-controls.service';
+import { InsertItemLocation } from './editable-tree-list.enum';
+import { simpleChange } from '../../../services/utils/test-helpers';
+import { TreeListViewService } from '../services/tree-list-view.service';
 //#endregion
 
 @Component({
@@ -45,6 +50,8 @@ import { TreeListModelUtils } from '../services/tree-list-model.static';
 export class EditableTreeListComponent implements OnChanges {
   constructor(
     private modelSrvc: TreeListModelService,
+    private cntrlsSrvc: TreeListControlsService,
+    private viewSrvc: TreeListViewService,
     private cd: ChangeDetectorRef
   ) {}
 
@@ -52,6 +59,8 @@ export class EditableTreeListComponent implements OnChanges {
   @Input('list') set setList(list: TreeListOption[]) {}
   public list: TreeListOption[];
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
+
+  @Input() debug = false;
 
   @ViewChild('listElement', { static: true, read: ElementRef })
   protected listElement: ElementRef;
@@ -65,20 +74,19 @@ export class EditableTreeListComponent implements OnChanges {
   public itemMenu: MenuItem<TreeListItem>[] = [
     {
       label: 'Add item',
-      key: 'insertItem',
+      key: 'insertNewItem',
       action: (item: MenuItem) => {
         if (item.data.childrenCount) {
-          this.insertItem('firstChildOf', item.data);
+          this.insertNewItem('firstChildOf', item.data);
         } else {
-          this.insertItem('after', item.data);
+          this.insertNewItem('after', item.data);
         }
       },
     },
     {
       label: 'Delete',
       key: 'delete',
-      disabled: (item: MenuItem) =>
-        item.data && item.data.canBeDeleted === false,
+      disabled: (item: MenuItem) => item.data?.canBeDeleted === false,
       clickToOpenSub: true,
       panelClass: 'betl-del-confirm',
       children: [
@@ -97,10 +105,6 @@ export class EditableTreeListComponent implements OnChanges {
     },
   ];
   public rootItem: TreeListItem;
-
-  public $listViewModel: BehaviorSubject<itemID[]> = new BehaviorSubject<
-    itemID[]
-  >([]);
 
   readonly icons = Icons;
   readonly iconType = IconType;
@@ -149,14 +153,6 @@ export class EditableTreeListComponent implements OnChanges {
         keyMap: this.keyMap,
       }
     );
-
-    this.$listViewModel.next(this.listViewModel);
-  }
-
-  private updateListViewModel(): void {
-    this.listViewModel = this.listViewModel.filter(
-      id => !this.itemsMap.get(id).deleted
-    );
   }
 
   //#region
@@ -166,106 +162,205 @@ export class EditableTreeListComponent implements OnChanges {
 
   public onListClick(event: MouseEvent): void {}
 
-  public onListKeyDown(event: KeyboardEvent) {}
+  public onListKeyDown(event: KeyboardEvent) {
+    this.cntrlsSrvc.onEditableListKeyDown(event, {
+      itemsMap: this.itemsMap,
+      listViewModel: this.listViewModel,
+      insertNewItem: this.insertNewItem.bind(this),
+      deleteItem: this.deleteItem.bind(this),
+    });
+  }
 
   public trackBy(index: number, id: itemID): itemID {
     return id;
   }
   //#endregion
 
-  // ---------MENU----------
+  // -------------------
+
+  // -------------------
 
   public insertItem(
-    where: 'after' | 'firstChildOf' | 'lastChildOf',
-    item: TreeListItem
-  ): void {
-    const parent =
-      where === 'after'
-        ? this.itemsMap.get(item.parentIDs[item.parentCount - 1])
-        : item;
-
-    const sibling = this.itemsMap.get(
-      parent.childrenIDs.find(id => !this.itemsMap.get(id).childrenCount)
-    );
-
-    const insertionIndexInParent =
-      where === 'after'
-        ? parent.childrenIDs.findIndex(id => id === item.id) + 1
-        : where === 'lastChildOf'
-        ? parent.childrenCount
-        : 0;
-
-    const insertionIndexInViewModel =
-      where === 'after'
-        ? this.listViewModel.findIndex(id => id === item.id) + 1
-        : where === 'lastChildOf'
-        ? this.listViewModel.findIndex(
-            id =>
-              id === parent.childrenIDs[Math.max(0, parent.childrenCount - 1)]
-          ) + 1
-        : this.listViewModel.findIndex(id => id === parent.childrenIDs[0]);
-
-    console.log('parent', parent.id, 'sibling', sibling.id);
-    console.log(
-      'insertionIndexInParent',
-      insertionIndexInParent,
-      'insertionIndexInViewModel',
-      insertionIndexInViewModel
-    );
-
-    const newItemID = simpleUID('etlni-');
-    const newItem = {
-      id: newItemID,
-      name: '',
-      value: '',
-      parentIDs: sibling.parentIDs.slice(),
-      parentCount: sibling.parentCount,
-      childrenIDs: null,
-      newitem: true,
-      collapsed: false,
-    };
-
-    TreeListModelUtils.updateMap(this.itemsMap, newItemID, newItem);
+    item: TreeListItem,
+    where: InsertItemLocation,
+    target: TreeListItem,
+    context = null
+  ): TreeListItem {
+    const { parent, insertionIndexInParent, insertionIndexInViewModel } =
+      context || this.getItemContext(where, target);
 
     parent.childrenIDs = arrayInsertAt(
       parent.childrenIDs,
-      newItemID,
+      item.id,
       insertionIndexInParent
+    );
+
+    parent.childrenCount = TreeListModelUtils.filteredChildrenCount(
+      parent,
+      this.itemsMap,
+      this.viewFilter
     );
 
     this.listViewModel = arrayInsertAt(
       this.listViewModel,
-      newItemID,
+      item.id,
       insertionIndexInViewModel
     );
 
     this.cd.detectChanges();
 
-    this.$listViewModel.next(this.listViewModel);
+    this.viewSrvc.findAndFocusInput(
+      this.listElement.nativeElement.children[insertionIndexInViewModel],
+      'start'
+    );
 
-    const itemInput = this.listElement.nativeElement.children[
-      insertionIndexInViewModel
-    ].querySelector('.betl-item-input');
-
-    itemInput.focus();
-
-    // this.updateListViewModel();
+    return item;
   }
 
-  public deleteItem(item: TreeListItem): void {
+  public deleteItem(item: TreeListItem, context = null): TreeListItem {
+    const parent =
+      context?.parent ||
+      this.itemsMap.get(item.parentIDs[item.parentCount - 1]);
+
     TreeListModelUtils.setPropToTreeDown(
       item,
       { deleted: true },
       this.itemsMap
     );
 
-    // this.updateListViewModel();
+    parent.childrenCount = TreeListModelUtils.filteredChildrenCount(
+      parent,
+      this.itemsMap,
+      this.viewFilter
+    );
+
     this.listViewModel = this.listViewModel.filter(
       id => !this.itemsMap.get(id).deleted
     );
+
+    return item;
+  }
+
+  public insertNewItem(
+    where: InsertItemLocation,
+    target: TreeListItem
+  ): TreeListItem {
+    const context = this.getItemContext(where, target);
+
+    const newItem = this.newItem(
+      context.sibling && {
+        parentIDs: context.sibling.parentIDs.slice(),
+        parentCount: context.sibling.parentCount,
+      }
+    );
+
+    TreeListModelUtils.updateMap(this.itemsMap, newItem.id, newItem);
+
+    this.insertItem(newItem, where, target, context);
+
+    return newItem;
+  }
+
+  public moveItem(
+    item: TreeListItem,
+    where: InsertItemLocation,
+    target: TreeListItem
+  ): TreeListItem {
+    const context = this.getItemContext(where, target);
+
+    return item;
+  }
+
+  private newItem(set: Partial<TreeListItem> = {}): TreeListItem {
+    return {
+      id: simpleUID('etlni-'),
+      name: '',
+      value: '',
+      parentIDs: [BTL_ROOT_ID],
+      parentCount: 1,
+      childrenIDs: null,
+      newitem: true,
+      collapsed: false,
+      ...(set || {}),
+    };
+  }
+
+  private getItemContext(
+    where: InsertItemLocation,
+    target: TreeListItem
+  ): {
+    parent: TreeListItem;
+    sibling: TreeListItem;
+    insertionIndexInParent: number;
+    insertionIndexInViewModel: number;
+  } {
+    const parent =
+      where === 'after'
+        ? this.itemsMap.get(target.parentIDs[target.parentCount - 1])
+        : target;
+
+    const sibling =
+      this.itemsMap.get(parent.childrenIDs && parent.childrenIDs[0]) ||
+      ({
+        parentIDs: [BTL_ROOT_ID],
+        parentCount: 1,
+      } as TreeListItem);
+
+    const insertionIndexInParent =
+      where === 'after'
+        ? parent.childrenIDs.findIndex(id => id === target.id) + 1
+        : where === 'lastChildOf'
+        ? parent.childrenCount
+        : 0;
+
+    const targetIndexInViewModel = this.listViewModel.findIndex(
+      id => id === target.id
+    );
+
+    const insertionIndexInViewModel =
+      where === 'after'
+        ? targetIndexInViewModel + 1
+        : where === 'lastChildOf'
+        ? function() {
+            const modelLength = this.listViewModel.length;
+            if (target.id === BTL_ROOT_ID || modelLength === 0) {
+              return modelLength;
+            }
+            return (
+              this.listViewModel
+                .slice(targetIndexInViewModel + 1)
+                .findIndex(
+                  (id: itemID) =>
+                    !this.itemsMap.get(id).parentIDs.includes(target.id)
+                ) +
+              targetIndexInViewModel +
+              1
+            );
+          }.bind(this)()
+        : this.listViewModel.findIndex(id => id === parent.childrenIDs[0]);
+
+    if (!parent || !sibling) {
+      console.error(`Something's wrong!`);
+      return;
+    }
+
+    return {
+      parent,
+      sibling,
+      insertionIndexInParent,
+      insertionIndexInViewModel,
+    };
   }
 
   // Dev / Debug
+
+  clear() {
+    this.ngOnChanges(
+      simpleChange({
+        setList: [],
+      })
+    );
+  }
 
   log(what = 'Data') {
     switch (what) {

@@ -257,9 +257,9 @@ export const arrayInsertAt = <T = any>(
   index = 0,
   overwrite = false
 ): T[] => {
-  return arr
+  return (arr || [])
     .slice(0, index)
-    .concat(val, arr.slice(!overwrite ? index : index + 1));
+    .concat(val, (arr || []).slice(!overwrite ? index : index + 1));
 };
 
 export const lastItem = <T = any>(arr: T[]): T =>

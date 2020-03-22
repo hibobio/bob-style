@@ -3,7 +3,7 @@
              let-item="item">
 
   <li role="listitem"
-      class="betl-item"
+      class="betl-item "
       [id]="item.id"
       [attr.data-index]="index"
       [attr.data-level]="item.parentCount || 1"
@@ -16,9 +16,11 @@
       }">
 
     <span *ngIf="item.childrenCount"
-          class="betl-item-chevron has-hover"></span>
+          class="betl-item-elmnt betl-item-chevron has-hover"
+          aria-hidden="true"></span>
 
-    <b-menu [id]="item.id"
+    <b-menu class="betl-item-elmnt betl-item-menu"
+            [id]="item.id"
             [data]="item"
             [menu]="itemMenu">
 
@@ -33,9 +35,17 @@
 
     </b-menu>
 
-    <input [(ngModel)]="item.name"
-           class="betl-item-input"
-           type="text">
+    <span class="betl-item-elmnt betl-item-dot"
+          aria-hidden="true"
+          (click.outside-zone)="input.select()"></span>
+
+    <span class="betl-item-elmnt betl-item-input-wrap">
+      <input [(ngModel)]="item.name"
+             #input
+             class="betl-item-input"
+             type="text">
+    </span>
+
   </li>
 
 </ng-template>
@@ -46,7 +56,6 @@
     (click)="onListClick($event)"
     (keydown)="onListKeyDown($event)">
 
-  <!-- of $listViewModel | async -->
   <ng-container *ngFor="let itemID of listViewModel; let index = index; trackBy: trackBy">
     <ng-container *ngTemplateOutlet="listItem; context: {
       index: index,
@@ -56,19 +65,25 @@
 
 </ul>
 
-<b-icon role="button"
-        class="betl-list-add-item"
-        [type]="iconType.circular"
-        [size]="iconSize.small"
-        [color]="iconColor.white"
-        [icon]="icons.add"
-        (click)="insertItem('lastChildOf', rootItem)">
-</b-icon>
+<div class="betl-list-footer">
+  <b-icon role="button"
+          class="betl-item-elmnt betl-list-add-item"
+          [type]="iconType.circular"
+          [size]="iconSize.small"
+          [color]="iconColor.white"
+          [icon]="icons.add"
+          (click)="insertNewItem('lastChildOf', rootItem)">
+  </b-icon>
+</div>
 
 
-<div class="dev">
+<div *ngIf="debug"
+     class="dev">
   <p>Total items: {{ itemsMap.size - 1 }}</p>
   <p>Total items in view: {{ listViewModel.length }}</p>
+
+  <button type="button"
+          (click)="clear()">Clear</button>
 
   <button type="button"
           (click)="log('Data')">Log data</button>

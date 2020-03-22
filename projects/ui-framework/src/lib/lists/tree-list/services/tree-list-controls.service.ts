@@ -4,6 +4,7 @@ import { isKey } from '../../../services/utils/functional-utils';
 import { TreeListItem, TreeListItemMap, itemID } from '../tree-list.interface';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { TreeListViewService } from './tree-list-view.service';
+import { InsertItemLocation } from '../editable-tree-list/editable-tree-list.enum';
 
 interface TreeListClickConfig {
   itemsMap: TreeListItemMap;
@@ -18,12 +19,34 @@ interface TreeListClickConfig {
 interface TreeListKeydownConfig {
   itemsMap: TreeListItemMap;
   listViewModel: itemID[];
-  toggleItemCollapsed: (item: TreeListItem, element: HTMLElement) => void;
-  toggleItemSelect: (item: TreeListItem, index: number) => void;
-  readonly: boolean;
-  disabled: boolean;
-  maxHeightItems: number;
+  toggleItemCollapsed?: (item: TreeListItem, element: HTMLElement) => void;
+  toggleItemSelect?: (item: TreeListItem, index: number) => void;
+  readonly?: boolean;
+  disabled?: boolean;
+  maxHeightItems?: number;
+  insertNewItem?: (where: InsertItemLocation, item: TreeListItem) => void;
+  deleteItem?: (item: TreeListItem) => void;
 }
+
+const TREELIST_KEYCONTROL_KEYS = [
+  Keys.arrowup,
+  Keys.arrowdown,
+  Keys.arrowleft,
+  Keys.arrowright,
+  Keys.space,
+  Keys.enter,
+  Keys.tab,
+];
+
+const TREELIST_EDIT_KEYCONTROL_KEYS = [
+  Keys.arrowup,
+  Keys.arrowdown,
+  Keys.arrowleft,
+  Keys.arrowright,
+  Keys.enter,
+  Keys.tab,
+  Keys.backspace,
+];
 
 @Injectable()
 export class TreeListControlsService {
@@ -90,17 +113,7 @@ export class TreeListControlsService {
       maxHeightItems,
     } = config;
 
-    if (
-      ![
-        Keys.arrowup,
-        Keys.arrowdown,
-        Keys.arrowleft,
-        Keys.arrowright,
-        Keys.space,
-        Keys.enter,
-        Keys.tab,
-      ].includes(event.key as Keys)
-    ) {
+    if (!TREELIST_KEYCONTROL_KEYS.includes(event.key as Keys)) {
       return;
     }
 
@@ -179,6 +192,77 @@ export class TreeListControlsService {
       (isKey(event.key, Keys.space) || isKey(event.key, Keys.enter))
     ) {
       return !isDisabled && toggleItemSelect(item, index);
+    }
+  }
+
+  public onEditableListKeyDown(
+    event: KeyboardEvent,
+    config: TreeListKeydownConfig
+  ): void {
+    const { itemsMap, listViewModel, insertNewItem, deleteItem } = config;
+
+    if (!TREELIST_EDIT_KEYCONTROL_KEYS.includes(event.key as Keys)) {
+      return;
+    }
+
+    event.stopPropagation();
+
+    const target = event.target as HTMLElement;
+
+    const { itemElement, index, item } = this.viewSrvc.getItemFromEl(
+      target,
+      itemsMap,
+      listViewModel
+    );
+
+    if (!item) {
+      return;
+    }
+
+    const itemInput = this.viewSrvc.findInputInElement(itemElement);
+    const nextItemElement = this.DOM.getNextSibling(itemElement);
+    const prevItemElement = this.DOM.getPrevSibling(itemElement);
+
+    if (
+      nextItemElement &&
+      (isKey(event.key, Keys.arrowdown) ||
+        (isKey(event.key, Keys.arrowright) &&
+          itemInput.selectionStart === itemInput.value.length))
+    ) {
+      event.preventDefault();
+      this.viewSrvc.findAndFocusInput(nextItemElement, 'start');
+      return;
+    }
+
+    if (
+      prevItemElement &&
+      (isKey(event.key, Keys.arrowup) ||
+        (isKey(event.key, Keys.arrowleft) && itemInput.selectionEnd === 0))
+    ) {
+      event.preventDefault();
+      this.viewSrvc.findAndFocusInput(
+        prevItemElement,
+        isKey(event.key, Keys.arrowup) ? 'start' : 'end'
+      );
+      return;
+    }
+
+    if (isKey(event.key, Keys.enter)) {
+      event.preventDefault();
+      insertNewItem('after', item);
+    }
+
+    if (
+      isKey(event.key, Keys.backspace) &&
+      !itemInput.value.trim() &&
+      itemInput.selectionEnd === 0
+    ) {
+      event.preventDefault();
+      deleteItem(item);
+
+      if (prevItemElement) {
+        this.viewSrvc.findAndFocusInput(prevItemElement, 'end');
+      }
     }
   }
 }

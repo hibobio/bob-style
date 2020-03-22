@@ -126,7 +126,7 @@ export class TreeListViewService {
     itemsMap: TreeListItemMap,
     listViewModel: itemID[]
   ): { itemElement: HTMLElement; index: number; item: TreeListItem } {
-    itemElement = itemElement.closest('.btl-item');
+    itemElement = itemElement.closest('[data-index]');
 
     const index: number =
       itemElement && parseInt(itemElement.getAttribute('data-index'), 10);
@@ -134,5 +134,20 @@ export class TreeListViewService {
       itemElement && itemsMap.get(listViewModel[index]);
 
     return { itemElement, index, item };
+  }
+
+  public findInputInElement(itemElement: HTMLElement): HTMLInputElement {
+    return itemElement.querySelector('.betl-item-input') as HTMLInputElement;
+  }
+
+  public findAndFocusInput(element: HTMLElement, at: 'start' | 'end'): void {
+    const input = this.findInputInElement(element);
+    if (!input) {
+      return;
+    }
+    const loc = at === 'start' ? 0 : input.value.length;
+
+    input.focus();
+    input.setSelectionRange(loc, loc);
   }
 }
