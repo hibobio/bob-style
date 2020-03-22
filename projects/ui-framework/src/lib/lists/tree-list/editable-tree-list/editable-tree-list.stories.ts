@@ -21,6 +21,8 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 
 const template = `
 <b-editable-tree-list
+[menuLoc]="menuLoc === 'expand' ? 1 : menuLoc === 'dot' ? 2 : 3"
+[menuHov]="menuHov === 'item hover' ? 2 : 1"
      [keyMap]="options === 'simple' ? serverKeyMap : null"
       [list]="options === 'simple' ? listSimple : options === 'single group' ? listSingleGroup : options === 'big' ? listHuge : listRandom"
      [debug]="debug">
@@ -87,6 +89,20 @@ story.add(
     props: {
       list: mock,
       serverKeyMap: BTL_KEYMAP_SERVER,
+
+      menuLoc: select(
+        'menu location',
+        ['expand', 'dot', 'line'],
+        'dot',
+        'Props'
+      ),
+
+      menuHov: select(
+        'show menu on',
+        ['item hover', 'menu hover'],
+        'menu hover',
+        'Props'
+      ),
 
       startCollapsed: boolean('startCollapsed', true, 'Props'),
 

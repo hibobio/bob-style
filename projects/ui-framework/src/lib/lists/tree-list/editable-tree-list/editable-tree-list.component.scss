@@ -75,15 +75,15 @@ $betl-bgcolor: white;
   @include flex-align;
 }
 
-.betl-item-chevron,
-.betl-item-menu {
-  grid-column: 1;
-  grid-row: 1;
-}
+// .betl-item-chevron,
+// .betl-item-menu {
+//   grid-column: 1;
+//   grid-row: 1;
+// }
 
 .betl-item-dot {
-  grid-column: 2;
-  grid-row: 1;
+  // grid-column: 2;
+  // grid-row: 1;
   background-color: $betl-bgcolor;
 
   &:before {
@@ -102,8 +102,11 @@ $betl-bgcolor: white;
 
 // Input
 
+.betl-item-input-wrap {
+  // grid-column: 3;
+}
+
 .betl-item-input {
-  grid-column: 3;
   flex-grow: 1;
   height: inherit;
   border: 0;
@@ -154,8 +157,6 @@ $betl-bgcolor: white;
 
   &.betl-list-add-item {
     .b-icon {
-      // margin-left: 1px;
-
       &:before {
         font-weight: 600;
       }
@@ -165,11 +166,13 @@ $betl-bgcolor: white;
 
 // Menu
 
-.betl-item-menu {
-  opacity: 0;
+:host ::ng-deep .betl-item-menu {
+  .menu-trigger-wrapper {
+    opacity: 0;
+  }
 
-  &:hover,
-  &[data-menu-open='true'] {
+  .menu-trigger-wrapper:hover,
+  &[data-menu-open='true'] .menu-trigger-wrapper {
     opacity: 1;
   }
 }
@@ -183,6 +186,90 @@ $betl-bgcolor: white;
     .betl-del-confirm {
       left: auto;
       right: -50%;
+    }
+  }
+}
+
+// menu position
+
+:host[data-menu-loc='1'] ::ng-deep {
+  .betl-item-chevron,
+  .betl-item-menu {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .betl-item-dot {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .betl-item-input-wrap {
+    grid-column: 3;
+  }
+}
+
+:host[data-menu-loc='2'] ::ng-deep {
+  .betl-item-chevron {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .betl-item-dot,
+  .betl-item-menu {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .betl-item-input-wrap {
+    grid-column: 3;
+  }
+}
+
+:host[data-menu-loc='3'] ::ng-deep {
+  .betl-list {
+    $line-width: 1px;
+    background-image: linear-gradient(to right, white 0, white 100%),
+      linear-gradient(
+        to right,
+        transparent 0,
+        transparent #{$betl-item-indent / 2 - $line-width / 2},
+        $grey-500 #{$betl-item-indent / 2 - $line-width / 2},
+        $grey-500 #{$betl-item-indent / 2 + $line-width / 2},
+        transparent #{$betl-item-indent / 2 + $line-width / 2},
+        transparent #{$betl-item-indent * 1}
+      );
+    background-size: ($betl-item-indent * 2) 100%, ($betl-item-indent * 2) 100%;
+    background-repeat: no-repeat, repeat-x;
+  }
+
+  .betl-item,
+  .betl-list-footer {
+    grid-template-columns: $betl-item-indent $betl-item-indent $betl-item-indent auto;
+  }
+  .betl-item-menu {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .betl-item-chevron {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .betl-item-dot {
+    grid-column: 3;
+    grid-row: 1;
+  }
+  .betl-item-input-wrap {
+    grid-column: 4;
+  }
+
+  .betl-list-footer {
+    &:before {
+      width: $betl-item-indent * 2;
+    }
+  }
+}
+
+:host[data-menu-hover='2'] ::ng-deep {
+  .betl-item:hover .betl-item-menu {
+    .menu-trigger-wrapper {
+      opacity: 1;
     }
   }
 }

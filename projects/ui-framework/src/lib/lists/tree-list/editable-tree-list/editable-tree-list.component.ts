@@ -10,6 +10,9 @@ import {
   SimpleChanges,
   OnChanges,
   ChangeDetectorRef,
+  Output,
+  EventEmitter,
+  HostBinding,
 } from '@angular/core';
 import {
   applyChanges,
@@ -39,6 +42,7 @@ import { TreeListControlsService } from '../services/tree-list-controls.service'
 import { InsertItemLocation } from './editable-tree-list.enum';
 import { simpleChange } from '../../../services/utils/test-helpers';
 import { TreeListViewService } from '../services/tree-list-view.service';
+import { TreeListGetItemEditContext } from './editable-tree-list.interface';
 //#endregion
 
 @Component({
@@ -61,6 +65,13 @@ export class EditableTreeListComponent implements OnChanges {
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
 
   @Input() debug = false;
+
+  @HostBinding('attr.data-menu-loc') @Input() menuLoc = 1;
+  @HostBinding('attr.data-menu-hover') @Input() menuHov = 1;
+
+  @Output() changed: EventEmitter<TreeListOption[]> = new EventEmitter<
+    TreeListOption[]
+  >();
 
   @ViewChild('listElement', { static: true, read: ElementRef })
   protected listElement: ElementRef;
@@ -185,10 +196,10 @@ export class EditableTreeListComponent implements OnChanges {
     item: TreeListItem,
     where: InsertItemLocation,
     target: TreeListItem,
-    context = null
+    context: TreeListGetItemEditContext = null
   ): TreeListItem {
     const { parent, insertionIndexInParent, insertionIndexInViewModel } =
-      context || this.getItemContext(where, target);
+      context || this.getItemEditContext(where, target);
 
     parent.childrenIDs = arrayInsertAt(
       parent.childrenIDs,
@@ -218,7 +229,10 @@ export class EditableTreeListComponent implements OnChanges {
     return item;
   }
 
-  public deleteItem(item: TreeListItem, context = null): TreeListItem {
+  public deleteItem(
+    item: TreeListItem,
+    context: TreeListGetItemEditContext = null
+  ): TreeListItem {
     const parent =
       context?.parent ||
       this.itemsMap.get(item.parentIDs[item.parentCount - 1]);
@@ -252,7 +266,7 @@ export class EditableTreeListComponent implements OnChanges {
     where: InsertItemLocation,
     target: TreeListItem
   ): TreeListItem {
-    const context = this.getItemContext(where, target);
+    const context = this.getItemEditContext(where, target);
 
     if (where === 'after' && !target.name.trim()) {
       return;
@@ -277,7 +291,7 @@ export class EditableTreeListComponent implements OnChanges {
     where: InsertItemLocation,
     target: TreeListItem
   ): TreeListItem {
-    const context = this.getItemContext(where, target);
+    const context = this.getItemEditContext(where, target);
 
     const { parent } = context;
 
@@ -334,15 +348,10 @@ export class EditableTreeListComponent implements OnChanges {
     };
   }
 
-  private getItemContext(
+  private getItemEditContext(
     where: InsertItemLocation,
     target: TreeListItem
-  ): {
-    parent: TreeListItem;
-    sibling: TreeListItem;
-    insertionIndexInParent: number;
-    insertionIndexInViewModel: number;
-  } {
+  ): TreeListGetItemEditContext {
     const parent =
       where === 'after'
         ? this.itemsMap.get(target.parentIDs[target.parentCount - 1])

@@ -5,6 +5,7 @@ import { TreeListItem, TreeListItemMap, itemID } from '../tree-list.interface';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { TreeListViewService } from './tree-list-view.service';
 import { InsertItemLocation } from '../editable-tree-list/editable-tree-list.enum';
+import { TreeListGetItemEditContext } from '../editable-tree-list/editable-tree-list.interface';
 
 interface TreeListClickConfig {
   itemsMap: TreeListItemMap;
@@ -24,8 +25,11 @@ interface TreeListKeydownConfig {
   readonly?: boolean;
   disabled?: boolean;
   maxHeightItems?: number;
-  insertNewItem?: (where: InsertItemLocation, item: TreeListItem) => any;
-  deleteItem?: (item: TreeListItem) => any;
+  insertNewItem?: (where: InsertItemLocation, target: TreeListItem) => any;
+  deleteItem?: (
+    item: TreeListItem,
+    context?: TreeListGetItemEditContext
+  ) => any;
   makeItemPreviouSiblingChild?: (
     item: TreeListItem,
     indexInView: number
