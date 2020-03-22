@@ -125,15 +125,15 @@ export class TreeListViewService {
     itemElement: HTMLElement,
     itemsMap: TreeListItemMap,
     listViewModel: itemID[]
-  ): { itemElement: HTMLElement; index: number; item: TreeListItem } {
+  ): { itemElement: HTMLElement; indexInView: number; item: TreeListItem } {
     itemElement = itemElement.closest('[data-index]');
 
-    const index: number =
+    const indexInView: number =
       itemElement && parseInt(itemElement.getAttribute('data-index'), 10);
     const item: TreeListItem =
-      itemElement && itemsMap.get(listViewModel[index]);
+      itemElement && itemsMap.get(listViewModel[indexInView]);
 
-    return { itemElement, index, item };
+    return { itemElement, indexInView, item };
   }
 
   public findInputInElement(itemElement: HTMLElement): HTMLInputElement {

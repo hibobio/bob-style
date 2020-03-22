@@ -168,6 +168,7 @@ export class EditableTreeListComponent implements OnChanges {
       listViewModel: this.listViewModel,
       insertNewItem: this.insertNewItem.bind(this),
       deleteItem: this.deleteItem.bind(this),
+      makeItemPreviouSiblingChild: this.makeItemPreviouSiblingChild.bind(this),
     });
   }
 
@@ -224,9 +225,15 @@ export class EditableTreeListComponent implements OnChanges {
 
     TreeListModelUtils.setPropToTreeDown(
       item,
-      { deleted: true },
+      {
+        deleted: true,
+        parentCount: 0,
+        parentIDs: [],
+      },
       this.itemsMap
     );
+
+    parent.childrenIDs = parent.childrenIDs.filter(id => id !== item.id);
 
     parent.childrenCount = TreeListModelUtils.filteredChildrenCount(
       parent,
@@ -246,6 +253,10 @@ export class EditableTreeListComponent implements OnChanges {
     target: TreeListItem
   ): TreeListItem {
     const context = this.getItemContext(where, target);
+
+    if (where === 'after' && !target.name.trim()) {
+      return;
+    }
 
     const newItem = this.newItem(
       context.sibling && {
@@ -268,6 +279,44 @@ export class EditableTreeListComponent implements OnChanges {
   ): TreeListItem {
     const context = this.getItemContext(where, target);
 
+    const { parent } = context;
+
+    // remove from prev arrays
+
+    parent.childrenIDs = parent.childrenIDs?.filter(id => id !== item.id) || [];
+    parent.childrenCount = TreeListModelUtils.filteredChildrenCount(
+      parent,
+      this.itemsMap,
+      this.viewFilter
+    );
+
+    this.listViewModel = this.listViewModel.filter(id => id !== item.id);
+
+    // insert in new place
+
+    this.insertItem(item, where, target, context);
+    item.moved = true;
+    item.parentIDs.push(parent.id);
+    ++item.parentCount;
+
+    return item;
+  }
+
+  public makeItemPreviouSiblingChild(
+    item: TreeListItem,
+    indexInView: number
+  ): TreeListItem {
+    const previtemID = this.listViewModel[indexInView - 1];
+    const prevItem = this.itemsMap.get(previtemID);
+
+    if (!prevItem || item.parentIDs.includes(previtemID)) {
+      return;
+    }
+
+    this.moveItem(item, 'lastChildOf', prevItem);
+
+    this.cd.detectChanges();
+
     return item;
   }
 
@@ -278,7 +327,7 @@ export class EditableTreeListComponent implements OnChanges {
       value: '',
       parentIDs: [BTL_ROOT_ID],
       parentCount: 1,
-      childrenIDs: null,
+      childrenIDs: [],
       newitem: true,
       collapsed: false,
       ...(set || {}),
@@ -300,7 +349,10 @@ export class EditableTreeListComponent implements OnChanges {
         : target;
 
     const sibling =
-      this.itemsMap.get(parent.childrenIDs && parent.childrenIDs[0]) ||
+      this.itemsMap.get(
+        parent.childrenIDs && parent.childrenIDs[0]
+        // parent.childrenID.find(id => !this.itemsMap.get(id)?.deleted)
+      ) ||
       ({
         parentIDs: [BTL_ROOT_ID],
         parentCount: 1,
@@ -369,6 +421,22 @@ export class EditableTreeListComponent implements OnChanges {
         console.log('---------LIST---------\n', this.list);
         console.log('---------MAP---------\n', this.itemsMap);
         console.log('---------VIEWMODEL---------\n', this.listViewModel);
+        break;
+
+      case 'New':
+        console.log(
+          '------------------\n',
+          'New items:\n',
+          Array.from(this.itemsMap.values()).filter(item => item.newitem)
+        );
+        break;
+
+      case 'Deleted':
+        console.log(
+          '------------------\n',
+          'Deleted items:\n',
+          Array.from(this.itemsMap.values()).filter(item => item.deleted)
+        );
         break;
 
       case 'ViewContext':

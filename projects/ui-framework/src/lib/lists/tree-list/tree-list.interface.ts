@@ -57,6 +57,8 @@ export interface TreeListItem {
   parentSelected?: boolean;
   disabled?: boolean;
   deleted?: boolean;
+  moved?: boolean;
+  newitem?: boolean;
 
   parentIDs?: itemID[] | null;
   childrenIDs?: itemID[] | null;

@@ -299,11 +299,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
     element: HTMLElement
   ): void {}
 
-  protected toggleItemSelect(
-    item: TreeListItem,
-    force: boolean = null,
-    set: Partial<TreeListItem> = {}
-  ): void {}
+  protected toggleItemSelect(item: TreeListItem, force: boolean = null): void {}
 
   // Dev / Debug
 

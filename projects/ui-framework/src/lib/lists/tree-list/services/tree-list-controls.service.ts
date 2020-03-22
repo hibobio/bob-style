@@ -10,7 +10,7 @@ interface TreeListClickConfig {
   itemsMap: TreeListItemMap;
   listViewModel: itemID[];
   toggleItemCollapsed: (item: TreeListItem, element: HTMLElement) => void;
-  toggleItemSelect: (item: TreeListItem, index: number) => void;
+  toggleItemSelect: (item: TreeListItem, force?: boolean) => void;
   itemClick: (item: TreeListItem, element: HTMLElement) => void;
   readonly: boolean;
   disabled: boolean;
@@ -20,12 +20,16 @@ interface TreeListKeydownConfig {
   itemsMap: TreeListItemMap;
   listViewModel: itemID[];
   toggleItemCollapsed?: (item: TreeListItem, element: HTMLElement) => void;
-  toggleItemSelect?: (item: TreeListItem, index: number) => void;
+  toggleItemSelect?: (item: TreeListItem, force?: boolean) => void;
   readonly?: boolean;
   disabled?: boolean;
   maxHeightItems?: number;
-  insertNewItem?: (where: InsertItemLocation, item: TreeListItem) => void;
-  deleteItem?: (item: TreeListItem) => void;
+  insertNewItem?: (where: InsertItemLocation, item: TreeListItem) => any;
+  deleteItem?: (item: TreeListItem) => any;
+  makeItemPreviouSiblingChild?: (
+    item: TreeListItem,
+    indexInView: number
+  ) => any;
 }
 
 const TREELIST_KEYCONTROL_KEYS = [
@@ -65,7 +69,7 @@ export class TreeListControlsService {
 
     const target = event.target as HTMLElement;
 
-    const { itemElement, index, item } = this.viewSrvc.getItemFromEl(
+    const { itemElement, item } = this.viewSrvc.getItemFromEl(
       target,
       itemsMap,
       listViewModel
@@ -91,7 +95,7 @@ export class TreeListControlsService {
 
     if (target.matches('.btl-item-checkbox') && !isDisabled) {
       event.stopPropagation();
-      return toggleItemSelect(item, index);
+      return toggleItemSelect(item);
     }
 
     if (!isDisabled) {
@@ -122,7 +126,7 @@ export class TreeListControlsService {
 
     const target = event.target as HTMLElement;
 
-    const { itemElement, index, item } = this.viewSrvc.getItemFromEl(
+    const { itemElement, indexInView, item } = this.viewSrvc.getItemFromEl(
       target,
       itemsMap,
       listViewModel
@@ -141,7 +145,7 @@ export class TreeListControlsService {
       const nextItemElement = this.DOM.getNextSibling(itemElement);
       if (nextItemElement) {
         this.viewSrvc.scrollToItem({
-          item: itemsMap.get(listViewModel[index + 1]),
+          item: itemsMap.get(listViewModel[indexInView + 1]),
           itemElement: nextItemElement,
           maxHeightItems,
         });
@@ -159,7 +163,7 @@ export class TreeListControlsService {
       const prevItemElement = this.DOM.getPrevSibling(itemElement);
       if (prevItemElement) {
         this.viewSrvc.scrollToItem({
-          item: itemsMap.get(listViewModel[index - 1]),
+          item: itemsMap.get(listViewModel[indexInView - 1]),
           itemElement: prevItemElement,
           maxHeightItems,
         });
@@ -191,7 +195,7 @@ export class TreeListControlsService {
       !isDisabled &&
       (isKey(event.key, Keys.space) || isKey(event.key, Keys.enter))
     ) {
-      return !isDisabled && toggleItemSelect(item, index);
+      return !isDisabled && toggleItemSelect(item);
     }
   }
 
@@ -199,7 +203,13 @@ export class TreeListControlsService {
     event: KeyboardEvent,
     config: TreeListKeydownConfig
   ): void {
-    const { itemsMap, listViewModel, insertNewItem, deleteItem } = config;
+    const {
+      itemsMap,
+      listViewModel,
+      insertNewItem,
+      deleteItem,
+      makeItemPreviouSiblingChild,
+    } = config;
 
     if (!TREELIST_EDIT_KEYCONTROL_KEYS.includes(event.key as Keys)) {
       return;
@@ -209,7 +219,7 @@ export class TreeListControlsService {
 
     const target = event.target as HTMLElement;
 
-    const { itemElement, index, item } = this.viewSrvc.getItemFromEl(
+    const { itemElement, indexInView, item } = this.viewSrvc.getItemFromEl(
       target,
       itemsMap,
       listViewModel
@@ -263,6 +273,11 @@ export class TreeListControlsService {
       if (prevItemElement) {
         this.viewSrvc.findAndFocusInput(prevItemElement, 'end');
       }
+    }
+
+    if (isKey(event.key, Keys.tab)) {
+      event.preventDefault();
+      makeItemPreviouSiblingChild(item, indexInView);
     }
   }
 }

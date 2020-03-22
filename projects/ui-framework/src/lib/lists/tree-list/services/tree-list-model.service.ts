@@ -208,7 +208,7 @@ export class TreeListModelService {
       ...set,
       id: set.id || TreeListModelUtils.getItemId(item, keyMap),
       name: set.name || TreeListModelUtils.getItemName(item, keyMap),
-      childrenIDs: null,
+      childrenIDs: [],
       groupsCount: 0,
       originalIndex: this.counter,
     };

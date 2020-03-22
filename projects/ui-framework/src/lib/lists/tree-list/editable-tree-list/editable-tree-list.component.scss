@@ -1,7 +1,7 @@
 @import '../../../style/common-imports';
 @import '../../../style/icons.mixin';
 
-$betl-max-depth: 5;
+$betl-max-depth: 10;
 $betl-item-height: 32px;
 $betl-item-indent: 20px;
 
@@ -28,6 +28,7 @@ $betl-bgcolor: white;
   border: 1px solid $border-color;
   border-radius: $border-radius;
   padding: 12px;
+  overflow: auto;
 }
 
 // List
@@ -176,5 +177,12 @@ $betl-bgcolor: white;
 ::ng-deep {
   .betl-del-confirm {
     left: -50%;
+  }
+
+  .cdk-overlay-connected-position-bounding-box[style*='flex-end'] {
+    .betl-del-confirm {
+      left: auto;
+      right: -50%;
+    }
   }
 }
