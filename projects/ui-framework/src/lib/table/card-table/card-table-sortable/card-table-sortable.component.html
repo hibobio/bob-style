@@ -1,6 +1,6 @@
 <header role="rowgroup">
   <ul class="card-table-header"
-      [ngClass]="{'has-drag-handle': useDragHandle}"
+      [ngClass]="{'has-drag-handle': useDragHandle && !disableDragging}"
       role="row">
     <li class="table-header-cell"
         *ngFor="let cell of meta; index as index;"
@@ -23,15 +23,16 @@
       b-table-card
       cdkDrag
       cdkDragLockAxis="y"
+      [cdkDragDisabled]="disableDragging"
       [row]="row"
       [rowIndex]="index"
       [meta]="meta"
       [style]="cellsStyle"
-      [ngClass]="{'clickable': cellClicked.observers.length > 0 || rowClicked.observers.length > 0, 'has-drag-handle': useDragHandle}"
+      [ngClass]="{'clickable': cellClicked.observers.length > 0 || rowClicked.observers.length > 0, 'has-drag-handle': useDragHandle && !disableDragging}"
       (click)="onRowClicked(row, index)"
       (cellClicked)="onCellClicked($event)"
       role="row">
-    <b-icon *ngIf="useDragHandle" cdkDragHandle
+    <b-icon *ngIf="useDragHandle && !disableDragging" cdkDragHandle
             [icon]="icons.drag_alt"
             [color]="iconColor.dark"
             [size]="iconSize.small"></b-icon>
