@@ -90,7 +90,8 @@ export class TreeListControlsService {
       itemElement.classList.contains('disabled');
 
     if (
-      (target.matches('.btl-item-chevron') && !item.allOptionsHidden) ||
+      (target.matches('.btl-item-chevron,.betl-item-chevron') &&
+        !item.allOptionsHidden) ||
       (isDisabled && item.childrenCount)
     ) {
       event.stopPropagation();
@@ -263,7 +264,12 @@ export class TreeListControlsService {
 
     if (isKey(event.key, Keys.enter)) {
       event.preventDefault();
-      insertNewItem('after', item);
+
+      if (item.childrenCount) {
+        insertNewItem('firstChildOf', item);
+      } else {
+        insertNewItem('after', item);
+      }
     }
 
     if (

@@ -43,6 +43,7 @@ import { InsertItemLocation } from './editable-tree-list.enum';
 import { simpleChange } from '../../../services/utils/test-helpers';
 import { TreeListViewService } from '../services/tree-list-view.service';
 import { TreeListGetItemEditContext } from './editable-tree-list.interface';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 //#endregion
 
 @Component({
@@ -235,7 +236,7 @@ export class EditableTreeListComponent implements OnChanges {
       itemsMap: this.itemsMap,
       listViewModel: this.listViewModel,
       toggleItemCollapsed: this.toggleItemCollapsed.bind(this),
-      disabled: true,
+      itemClick: () => {},
     });
   }
 
@@ -254,6 +255,10 @@ export class EditableTreeListComponent implements OnChanges {
     if (target.matches('.betl-item-input.ng-dirty') && target.value.trim()) {
       this.emitChange();
     }
+  }
+
+  public onItemDrop(event: CdkDragDrop<any>): void {
+    console.log(event);
   }
 
   public trackBy(index: number, id: itemID): itemID {

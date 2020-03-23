@@ -182,6 +182,10 @@ $betl-bgcolor: white;
   }
 }
 
+.betl-item-dot {
+  cursor: move;
+}
+
 // Menu
 
 :host ::ng-deep .betl-item-menu {
@@ -208,7 +212,7 @@ $betl-bgcolor: white;
   }
 }
 
-// menu position
+// Menu position
 
 :host[data-menu-loc='1'] ::ng-deep {
   .betl-item-chevron,

@@ -1,60 +1,8 @@
-<ng-template #listItem
-             let-index="index"
-             let-item="item">
-
-  <li role="listitem"
-      *ngIf="!item.hidden"
-      class="betl-item"
-      [id]="item.id"
-      [attr.data-index]="index"
-      [attr.data-level]="item.parentCount || 1"
-      tabindex="0"
-      [ngClass]="{
-        'btl-item-option': !item.childrenCount,
-        'btl-item-group': item.childrenCount,
-        expanded: item.childrenCount && !item.collapsed,
-        collapsed: item.collapsed
-      }">
-
-    <span *ngIf="item.childrenCount"
-          class="betl-item-elmnt betl-item-chevron has-hover"
-          role="button"></span>
-
-    <b-menu class="betl-item-elmnt betl-item-menu"
-            [id]="item.id"
-            [data]="item"
-            [menu]="itemMenu"
-            (click.outside-zone)="$event.stopPropagation()">
-
-      <b-icon menu-trigger
-              role="button"
-              class="betl-item-menu-trigger"
-              [type]="iconType.circular"
-              [size]="iconSize.small"
-              [color]="iconColor.white"
-              [icon]="icons.three_dots">
-      </b-icon>
-
-    </b-menu>
-
-    <span class="betl-item-elmnt betl-item-dot"
-          aria-hidden="true"
-          (click.outside-zone)="input.select()"></span>
-
-    <span class="betl-item-elmnt betl-item-input-wrap">
-      <input [(ngModel)]="item.name"
-             #input
-             class="betl-item-input"
-             type="text">
-    </span>
-
-  </li>
-
-</ng-template>
-
 <ul #listElement
     role="list"
     class="betl-list"
+    cdkDropList
+    (cdkDropListDropped)="onItemDrop($event)"
     (click)="onListClick($event)"
     (keydown)="onListKeyDown($event)"
     (focusout)="onListBlur($event)">
@@ -64,6 +12,61 @@
       index: index,
       item: itemsMap.get(itemID)
     }"></ng-container>
+
+    <ng-template #listItem
+                 let-index="index"
+                 let-item="item">
+
+      <li role="listitem"
+          *ngIf="!item.hidden"
+          class="betl-item"
+          cdkDrag
+          [cdkDragData]="item"
+          cdkDragLockAxis="y"
+          [cdkDragBoundary]="listElement"
+          [id]="item.id"
+          [attr.data-index]="index"
+          [attr.data-level]="item.parentCount || 1"
+          tabindex="0"
+          [ngClass]="{
+        'btl-item-option': !item.childrenCount,
+        'btl-item-group': item.childrenCount,
+        expanded: item.childrenCount && !item.collapsed,
+        collapsed: item.collapsed
+      }">
+
+        <span *ngIf="item.childrenCount"
+              class="betl-item-elmnt betl-item-chevron has-hover"
+              role="button"></span>
+
+        <b-menu class="betl-item-elmnt betl-item-menu"
+                [id]="item.id"
+                [data]="item"
+                [menu]="itemMenu">
+          <b-icon menu-trigger
+                  role="button"
+                  class="betl-item-menu-trigger"
+                  [type]="iconType.circular"
+                  [size]="iconSize.small"
+                  [color]="iconColor.white"
+                  [icon]="icons.three_dots">
+          </b-icon>
+        </b-menu>
+
+        <span class="betl-item-elmnt betl-item-dot"
+              cdkDragHandle
+              aria-hidden="true"></span>
+
+        <span class="betl-item-elmnt betl-item-input-wrap">
+          <input [(ngModel)]="item.name"
+                 #input
+                 class="betl-item-input"
+                 type="text">
+        </span>
+
+      </li>
+
+    </ng-template>
   </ng-container>
 
 </ul>
@@ -97,10 +100,7 @@
   <button type="button"
           (click)="log('Deleted')">Log deleted</button>
 
-          <button type="button"
-                  (click)="emitChange()">Emit</button>
-
-  <!-- <button type="button"
-          (click)="log('ViewContext')">Log items View Context</button> -->
+  <button type="button"
+          (click)="emitChange()">Emit</button>
 
 </div>
