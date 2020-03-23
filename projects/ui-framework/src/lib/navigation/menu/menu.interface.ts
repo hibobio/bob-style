@@ -1,5 +1,4 @@
 import { Icons } from '../../icons/icons.enum';
-import { boolean } from '@storybook/addon-knobs';
 
 export interface MenuItem<T = any> {
   label: string;
@@ -10,12 +9,12 @@ export interface MenuItem<T = any> {
   clickToOpenSub?: boolean;
   openLeft?: boolean;
   panelClass?: string;
-  action?: (item?: MenuItem) => void;
   children?: MenuItem[];
+  action?($event): void;
 }
 
 export interface CommonActionButton {
   icon: Icons;
   tooltip?: string;
-  action?: (item?: MenuItem) => void;
+  action?($event): void;
 }
