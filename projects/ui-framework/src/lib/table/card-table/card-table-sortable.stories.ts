@@ -24,6 +24,7 @@ const template = `
   [meta]="CardTableMetaData"
   [table]="CardTableData"
   [useDragHandle]="true"
+  [disableDragging]="false"
   default="There are no pending requests for your approval"
   (rowClicked)="rowClickHandler($event)"
   (cellClicked)="cellClickHandler($event)"
@@ -45,6 +46,7 @@ const storyTemplate = `
       [meta]="CardTableMetaData"
       [table]="tableData ? tableData : CardTableData"
       [useDragHandle]="useDragHandle ? useDragHandle : false"
+      [disableDragging]="disableDragging ? disableDragging : false"
       default="There are no pending requests for your approval"
       (rowClicked)="rowClickHandler($event)"
       (cellClicked)="cellClickHandler($event)"
@@ -101,6 +103,8 @@ const note = `
   [minCellWidth] | number | number representing minimal cell width in percents | 5
   [useDragHandle] | boolean | allow dragging rows only by using drag handle \
   (icon in the beginning of the row) | false
+  [disableDragging] | boolean | turn off/on drag'n'drop functionality. \
+  Can be used for viewMode/editMode | false
   [default] | string | text to display if table is empty | 'No data to display'
   (rowClicked) | EventEmitter<wbr>&lt;CardTableRowClickEvent&gt; | row click\
    event transmits: {row: CardTableCellData[], rowIndex: number} | &nbsp;
@@ -223,7 +227,8 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        useDragHandle: boolean('useDragHandle', true),
+        useDragHandle: boolean('useDragHandle', false),
+        disableDragging: boolean('disableDragging', false),
         CardTableMetaData: object('meta', CardTableMockMetaData),
         CardTableData: object('table', CardTableMockData),
 

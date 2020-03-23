@@ -23,6 +23,7 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 })
 export class CardTableSortableComponent extends CardTableComponent {
   @Input() useDragHandle = false;
+  @Input() disableDragging = false;
   @Output() rowOrderChanged: EventEmitter<
     CardTableRowOrderChangeEvent
   > = new EventEmitter<CardTableRowOrderChangeEvent>();
