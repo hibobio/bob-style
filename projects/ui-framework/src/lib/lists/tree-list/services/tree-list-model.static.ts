@@ -27,13 +27,42 @@ export type ChildrenToggleSelectReducer = (
 export class TreeListModelUtils {
   public static toggleCollapseAllItemsInMap(
     itemsMap: TreeListItemMap,
-    force: boolean = null
+    force: boolean = null,
+    setHidden = false
   ): void {
     itemsMap.forEach(item => {
       if (item.childrenCount && item.id !== BTL_ROOT_ID) {
-        item.collapsed = isBoolean(force) ? force : !item.collapsed;
+        this.toggleItemCollapsed(item, itemsMap, force, setHidden);
       }
     });
+  }
+
+  public static toggleItemCollapsed(
+    item: TreeListItem,
+    itemsMap: TreeListItemMap,
+    force: boolean = null,
+    setHidden = false
+  ): void {
+    item.collapsed = isBoolean(force) ? force : !item.collapsed;
+
+    if (setHidden) {
+      this.withEachItemOfTreeDown(
+        item,
+        (itm: TreeListItem) => {
+          if (
+            !itm.parentIDs.find(id => {
+              const i = itemsMap.get(id);
+              return i !== item && i.collapsed;
+            })
+          ) {
+            itm.hidden = item.collapsed;
+          }
+        },
+        itemsMap
+      );
+
+      item.hidden = false;
+    }
   }
 
   public static updateItemParentsSelectedCount(

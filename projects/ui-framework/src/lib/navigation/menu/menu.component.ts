@@ -58,7 +58,15 @@ export class MenuComponent implements OnChanges, OnInit {
   @HostBinding('attr.data-menu-open') menuOpen = false;
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes);
+    applyChanges(
+      this,
+      changes,
+      {
+        menu: [],
+      },
+      [],
+      true
+    );
 
     if (hasChanges(changes, ['openLeft'])) {
       this.menuDir = this.openLeft ? 'before' : 'after';

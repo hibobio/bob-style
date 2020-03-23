@@ -10,7 +10,6 @@ import {
 import {
   isNotEmptyArray,
   isNullOrUndefined,
-  isEmptyArray,
   objectRemoveKeys,
   stringify,
   simpleArraysEqual,

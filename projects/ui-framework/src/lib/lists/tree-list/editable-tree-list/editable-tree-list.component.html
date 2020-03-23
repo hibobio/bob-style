@@ -2,6 +2,7 @@
     role="list"
     class="betl-list"
     cdkDropList
+    [cdkDropListDisabled]="disableDragAndDrop"
     (cdkDropListDropped)="onItemDrop($event)"
     (click)="onListClick($event)"
     (keydown)="onListKeyDown($event)"
@@ -17,23 +18,24 @@
                  let-index="index"
                  let-item="item">
 
-      <li role="listitem"
+      <li role="listitem" #dddddd
           *ngIf="!item.hidden"
           class="betl-item"
           cdkDrag
+          [cdkDragDisabled]="disableDragAndDrop"
           [cdkDragData]="item"
           cdkDragLockAxis="y"
           [cdkDragBoundary]="listElement"
-          [id]="item.id"
+          [attr.data-id]="item.id"
           [attr.data-index]="index"
           [attr.data-level]="item.parentCount || 1"
           tabindex="0"
           [ngClass]="{
-        'btl-item-option': !item.childrenCount,
-        'btl-item-group': item.childrenCount,
-        expanded: item.childrenCount && !item.collapsed,
-        collapsed: item.collapsed
-      }">
+            'btl-item-option': !item.childrenCount,
+            'btl-item-group': item.childrenCount,
+            expanded: item.childrenCount && !item.collapsed,
+            collapsed: item.collapsed
+          }">
 
         <span *ngIf="item.childrenCount"
               class="betl-item-elmnt betl-item-chevron has-hover"

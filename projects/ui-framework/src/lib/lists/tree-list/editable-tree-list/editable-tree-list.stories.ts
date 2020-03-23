@@ -63,30 +63,30 @@ const note = `
 
 const mock = [
   {
-    serverId: simpleUID(),
+    serverId: simpleUID('TLV-'),
     value: 'TLV',
   },
   {
-    serverId: simpleUID(),
+    serverId: simpleUID('London-'),
     value: 'London',
   },
   {
-    serverId: simpleUID(),
+    serverId: simpleUID('NewYork-'),
     value: 'New York',
 
     children: [
       {
-        serverId: simpleUID(),
+        serverId: simpleUID('R&D-'),
         value: 'R&D',
 
         children: [
           {
-            serverId: simpleUID(),
+            serverId: simpleUID('Product-'),
             value: 'Product',
 
             children: [
               {
-                serverId: simpleUID(),
+                serverId: simpleUID('Design-'),
                 value: 'Design',
               },
             ],
@@ -96,7 +96,7 @@ const mock = [
     ],
   },
   {
-    serverId: simpleUID(),
+    serverId: simpleUID('UK-'),
     value: 'UK',
   },
 ];
@@ -106,8 +106,8 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
-      listOut: [],
-      list: mock,
+      listOut: mock.slice(),
+      list: mock.slice(),
       serverKeyMap: BTL_KEYMAP_SERVER,
 
       menuLoc: select(

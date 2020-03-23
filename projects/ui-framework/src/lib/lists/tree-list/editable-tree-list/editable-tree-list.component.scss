@@ -283,3 +283,11 @@ $betl-bgcolor: white;
     }
   }
 }
+
+// Drag and drop
+
+:host[data-dnd-disabled='true'] {
+  .betl-item-dot {
+    cursor: default;
+  }
+}
