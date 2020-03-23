@@ -152,6 +152,7 @@ export class EditableTreeListComponent implements OnChanges {
       this.itemsMap.clear();
       this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
         keyMap: this.keyMap,
+        collapsed: false,
       });
       this.rootItem = this.itemsMap.get(BTL_ROOT_ID);
 
@@ -203,7 +204,7 @@ export class EditableTreeListComponent implements OnChanges {
   }
 
   //#region
-  private emitChange(): void {
+  public emitChange(): void {
     this.list = this.listViewModelToList();
     this.changed.emit(this.list);
   }
@@ -252,8 +253,18 @@ export class EditableTreeListComponent implements OnChanges {
 
   public onListBlur(event: FocusEvent): void {
     const target = event.target as HTMLInputElement;
-    if (target.matches('.betl-item-input.ng-dirty') && target.value.trim()) {
-      this.emitChange();
+
+    if (target.matches('.betl-item-input')) {
+      if (target.value.trim()) {
+        this.emitChange();
+      } else {
+        const { item } = this.viewSrvc.getItemFromEl(
+          target,
+          this.itemsMap,
+          this.listViewModel
+        );
+        this.deleteItem(item);
+      }
     }
   }
 
