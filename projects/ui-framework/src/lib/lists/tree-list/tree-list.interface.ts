@@ -70,13 +70,14 @@ export interface TreeListItem {
   childrenCount?: number;
   groupsCount?: number;
   selectedCount?: number;
+  depth?: number;
 
   // context
   allOptionsHidden?: boolean;
   nextInViewIsGroup?: boolean;
   originalIndex?: number;
 
-  [key: string]: any;
+  // [key: string]: any;
 }
 
 export interface TreeListValue {

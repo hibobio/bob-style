@@ -36,3 +36,34 @@
     max-height: none;
   }
 }
+
+@keyframes b-hide {
+  0% {
+    overflow: hidden;
+    max-height: var(--panel-height, 500px);
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes b-show {
+  0% {
+    overflow: hidden;
+    max-height: 0px;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  99% {
+    max-height: var(--panel-height, 500px);
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    overflow: visible;
+  }
+}

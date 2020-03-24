@@ -31,6 +31,7 @@ const template = `
 
       [list]="options === 'simple' ? listSimple : options === 'primitive' ? list : options === 'single group' ? listSingleGroup : options === 'big' ? listHuge : listRandom"
 
+
       [startCollapsed]="startCollapsed"
       (changed)="listOut = $event; changed($event);"
      [debug]="debug">

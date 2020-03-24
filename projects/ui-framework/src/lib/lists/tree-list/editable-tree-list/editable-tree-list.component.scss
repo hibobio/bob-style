@@ -25,7 +25,6 @@ $betl-bgcolor: white;
   min-width: 0;
   text-align: left;
   background-color: $betl-bgcolor;
-  border: 1px solid $border-color;
   border-radius: $border-radius;
   padding: 12px;
 
@@ -77,8 +76,7 @@ $betl-bgcolor: white;
 
 // Item
 
-.betl-item,
-.betl-list-footer {
+.betl-item-grid {
   height: $betl-item-height;
   display: grid;
   grid-template-columns: $betl-item-indent $betl-item-indent auto;
@@ -86,7 +84,7 @@ $betl-bgcolor: white;
 }
 
 .betl-item-elmnt {
-  height: inherit;
+  height: $betl-item-height;
   @include flex-align;
 }
 
@@ -119,15 +117,17 @@ $betl-bgcolor: white;
 
 .betl-item-input-wrap {
   // grid-column: 3;
+  color: $body-text-color;
+  background-color: $betl-bgcolor;
 }
 
 .betl-item-input {
   flex-grow: 1;
-  height: inherit;
+  height: $betl-item-height;
   border: 0;
   padding: 0 10px;
-  background-color: $betl-bgcolor;
-  color: $body-text-color;
+  color: inherit;
+  background: none;
 }
 
 // Controls
@@ -180,10 +180,6 @@ $betl-bgcolor: white;
       }
     }
   }
-}
-
-.betl-item-dot {
-  cursor: move;
 }
 
 // Menu
@@ -250,8 +246,7 @@ $betl-bgcolor: white;
     background-size: ($betl-item-indent * 2) 100%, ($betl-item-indent * 2) 100%;
   }
 
-  .betl-item,
-  .betl-list-footer {
+  .betl-item-grid {
     grid-template-columns: $betl-item-indent $betl-item-indent $betl-item-indent auto;
   }
   .betl-item-menu {
@@ -286,8 +281,91 @@ $betl-bgcolor: white;
 
 // Drag and drop
 
+:host ::ng-deep {
+  .betl-item {
+    position: relative;
+
+    &.isDragged {
+      z-index: 1;
+    }
+  }
+
+  [cdkdrag] {
+    width: 100%;
+    @include position(0 0 0 0);
+    pointer-events: none;
+    user-select: none;
+
+    .betl-item-input-wrap {
+      padding: 0 10px;
+      background: none;
+    }
+
+    &:not(.cdk-drag-placeholder) {
+      .betl-item-input-wrap {
+        @include text-hide;
+      }
+    }
+
+    &.cdk-drag-placeholder {
+      box-shadow: inset 0 -2px 0 $grey-500;
+
+      .betl-item-input-wrap {
+        justify-content: flex-end;
+        opacity: 0.5;
+      }
+
+      & ~ .betl-item-input-wrap {
+        .betl-item-input {
+          @include disabled-state;
+        }
+      }
+
+      & ~ .betl-item-dot:before {
+        opacity: 0.5;
+      }
+    }
+  }
+
+  [cdkdraghandle] {
+    pointer-events: all;
+    cursor: grab;
+    background: none;
+
+    &:before {
+      display: none;
+    }
+
+    &[disabled='true'] {
+      cursor: default;
+    }
+  }
+
+  [cdkdrag][style*='tap-highlight'],
+  .cdk-drag-placeholder {
+    pointer-events: all;
+
+    &,
+    [cdkdraghandle] {
+      cursor: grabbing;
+    }
+  }
+
+  .betl-list.cdk-drop-list-dragging {
+    .menu-trigger-wrapper {
+      visibility: hidden;
+    }
+  }
+}
+
 :host[data-dnd-disabled='true'] {
-  .betl-item-dot {
+  [cdkDragHandle] {
     cursor: default;
+  }
+}
+
+::ng-deep {
+  .betl-item-grid.cdk-drag-preview {
+    display: none;
   }
 }

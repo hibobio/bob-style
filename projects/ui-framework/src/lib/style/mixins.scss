@@ -122,6 +122,18 @@
   backface-visibility: hidden;
 }
 
+@mixin animate-collapse() {
+  animation-name: b-hide;
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+}
+
+@mixin animate-expand() {
+  animation-name: b-show;
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+}
+
 @mixin breakout-underlay(
   $brdr-loc: top bottom,
   $bg-color: null,

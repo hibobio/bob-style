@@ -34,8 +34,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     super(modelSrvc, cntrlsSrvc, viewSrvc, cd);
   }
 
-  @ViewChildren('dddddd', { read: ElementRef })
-  public listElements: QueryList<ElementRef>;
+  public isDragging = [];
 
   protected listToListViewModel(): itemID[] {
     this.listViewModel = this.modelSrvc.getListViewModel(
@@ -130,6 +129,8 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
 
   public onItemDrop(event: CdkDragDrop<any>): void {
     console.log(event);
+
+    const item: TreeListItem = event.item.data;
   }
 
   public insertItem(

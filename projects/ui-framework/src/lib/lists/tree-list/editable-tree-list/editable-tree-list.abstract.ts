@@ -57,7 +57,7 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
   @Input() startCollapsed = true;
   @HostBinding('attr.data-embedded') @Input() embedded = false;
   @HostBinding('attr.data-debug') @Input() debug = false;
-  @HostBinding('attr.data-dnd-disabled') disableDragAndDrop = true;
+  @HostBinding('attr.data-dnd-disabled') disableDragAndDrop = false;
 
   @HostBinding('attr.data-menu-loc') @Input() menuLoc = 1;
   @HostBinding('attr.data-menu-hover') @Input() menuHov = 1;

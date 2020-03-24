@@ -9,71 +9,88 @@
     (focusout)="onListBlur($event)">
 
   <ng-container *ngFor="let itemID of listViewModel; let index = index; trackBy: trackBy">
+
     <ng-container *ngTemplateOutlet="listItem; context: {
       index: index,
       item: itemsMap.get(itemID)
     }"></ng-container>
 
-    <ng-template #listItem
-                 let-index="index"
-                 let-item="item">
+  </ng-container>
 
-      <li role="listitem" #dddddd
-          *ngIf="!item.hidden"
-          class="betl-item"
-          cdkDrag
-          [cdkDragDisabled]="disableDragAndDrop"
-          [cdkDragData]="item"
-          cdkDragLockAxis="y"
-          [cdkDragBoundary]="listElement"
-          [attr.data-id]="item.id"
-          [attr.data-index]="index"
-          [attr.data-level]="item.parentCount || 1"
-          tabindex="0"
-          [ngClass]="{
+  <ng-template #listItem
+               let-index="index"
+               let-item="item">
+
+    <li role="listitem"
+        *ngIf="!item.hidden"
+        class="betl-item betl-item-grid"
+        [attr.data-id]="item.id"
+        [attr.data-index]="index"
+        [attr.data-level]="item.parentCount || 1"
+        tabindex="0"
+        [ngClass]="{
             'btl-item-option': !item.childrenCount,
             'btl-item-group': item.childrenCount,
             expanded: item.childrenCount && !item.collapsed,
-            collapsed: item.collapsed
+            collapsed: item.collapsed,
+            isDragged: isDragging[index]
           }">
 
-        <span *ngIf="item.childrenCount"
-              class="betl-item-elmnt betl-item-chevron has-hover"
-              role="button"></span>
-
-        <b-menu class="betl-item-elmnt betl-item-menu"
-                [id]="item.id"
-                [data]="item"
-                [menu]="itemMenu">
-          <b-icon menu-trigger
-                  role="button"
-                  class="betl-item-menu-trigger"
-                  [type]="iconType.circular"
-                  [size]="iconSize.small"
-                  [color]="iconColor.white"
-                  [icon]="icons.three_dots">
-          </b-icon>
-        </b-menu>
+      <span cdkDrag
+            [cdkDragDisabled]="disableDragAndDrop"
+            [cdkDragData]="item"
+            cdkDragLockAxis="y"
+            [cdkDragBoundary]="listElement"
+            (cdkDragStarted)="isDragging[index] = true"
+            (cdkDragEnded)="isDragging[index] = false"
+            class="betl-item-grid"
+            [attr.data-level]="item.parentCount || 1">
 
         <span class="betl-item-elmnt betl-item-dot"
               cdkDragHandle
+              [cdkDragHandleDisabled]="!!item.childrenCount"
+              [attr.disabled]="!!item.childrenCount || null"
               aria-hidden="true"></span>
 
         <span class="betl-item-elmnt betl-item-input-wrap">
-          <input [(ngModel)]="item.name"
-                 #input
-                 class="betl-item-input"
-                 type="text">
+          {{item.name}}
         </span>
+      </span>
 
-      </li>
+      <span *ngIf="item.childrenCount"
+            class="betl-item-elmnt betl-item-chevron has-hover"
+            role="button"></span>
 
-    </ng-template>
-  </ng-container>
+      <b-menu class="betl-item-elmnt betl-item-menu"
+              [id]="item.id"
+              [data]="item"
+              [menu]="itemMenu">
+        <b-icon menu-trigger
+                role="button"
+                class="betl-item-menu-trigger"
+                [type]="iconType.circular"
+                [size]="iconSize.small"
+                [color]="iconColor.white"
+                [icon]="icons.three_dots">
+        </b-icon>
+      </b-menu>
 
+      <span class="betl-item-elmnt betl-item-dot"
+            aria-hidden="true"></span>
+
+      <span class="betl-item-elmnt betl-item-input-wrap">
+        <input [(ngModel)]="item.name"
+               #input
+               class="betl-item-input"
+               type="text">
+      </span>
+
+    </li>
+
+  </ng-template>
 </ul>
 
-<div class="betl-list-footer">
+<div class="betl-list-footer betl-item-grid">
   <b-icon role="button"
           class="betl-item-elmnt betl-list-add-item"
           [type]="iconType.circular"
