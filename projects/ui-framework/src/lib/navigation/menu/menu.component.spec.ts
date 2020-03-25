@@ -157,7 +157,6 @@ describe('MenuComponent', () => {
         ...component.menuViewModel[1],
         id: 'menu_id',
         clickToOpenSub: false,
-        disabled: false,
       });
     });
 
@@ -182,7 +181,6 @@ describe('MenuComponent', () => {
         ...component.submenus.first.menuViewModel[1],
         id: 'menu_id',
         clickToOpenSub: false,
-        disabled: false,
       });
     });
 

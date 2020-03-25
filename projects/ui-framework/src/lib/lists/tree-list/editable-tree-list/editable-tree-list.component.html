@@ -43,8 +43,8 @@
             [cdkDragData]="{origIndex: index, item: item}"
             cdkDragLockAxis="y"
             [cdkDragBoundary]="listElement"
-            (cdkDragStarted)="onDragstart(index, item);"
-            (cdkDragEnded)="onDragEnd();"
+            (cdkDragStarted)="onDragstart(item, index);"
+            (cdkDragEnded)="onDragEnd(item);"
             class="betl-item-grid"
             [attr.data-level]="item.parentCount || 1">
 

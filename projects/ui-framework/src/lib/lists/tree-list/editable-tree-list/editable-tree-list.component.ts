@@ -4,7 +4,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { arrayInsertAt } from '../../../services/utils/functional-utils';
-import { CdkDragDrop, CdkDragStart, CdkDragEnd } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { BaseEditableTreeListElement } from './editable-tree-list.abstract';
 import { TreeListOption, itemID, TreeListItem } from '../tree-list.interface';
 import { TreeListModelService } from '../services/tree-list-model.service';
@@ -103,20 +103,26 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     }
   }
 
-  public onDragstart(indexInView: number, item: TreeListItem) {
+  public onDragstart(item: TreeListItem, indexInView: number) {
     if (item.childrenCount && !item.collapsed) {
       this.listElement.nativeElement.style.minHeight =
         this.listElement.nativeElement.offsetHeight + 'px';
       this.toggleItemCollapsed(item, null, true);
+      item.expandMe = true;
     }
 
     this.draggingIndex = indexInView;
     this.dragHoverIndex = indexInView;
   }
 
-  public onDragEnd() {
-    this.listElement.nativeElement.style.cssText = '';
+  public onDragEnd(item: TreeListItem) {
     this.draggingIndex = this.dragHoverIndex = undefined;
+
+    if (item.expandMe) {
+      this.toggleItemCollapsed(item, null, false);
+      this.listElement.nativeElement.style.cssText = '';
+      delete item.expandMe;
+    }
   }
 
   public onListHover(event: MouseEvent): void {

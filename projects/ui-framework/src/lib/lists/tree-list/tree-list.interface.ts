@@ -77,7 +77,7 @@ export interface TreeListItem {
   nextInViewIsGroup?: boolean;
   originalIndex?: number;
 
-  // [key: string]: any;
+  [key: string]: any;
 }
 
 export interface TreeListValue {
