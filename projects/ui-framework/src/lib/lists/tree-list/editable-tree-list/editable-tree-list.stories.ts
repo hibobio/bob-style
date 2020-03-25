@@ -3,7 +3,7 @@ import { withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
-import { boolean, select } from '@storybook/addon-knobs';
+import { boolean, select, number } from '@storybook/addon-knobs';
 import { EditableTreeListModule } from './editable-tree-list.module';
 
 import { simpleUID } from '../../../services/utils/functional-utils';
@@ -24,7 +24,7 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 const template = `
 <b-editable-tree-list
 
-    [menuLoc]="menuLoc === 'expand' ? 1 : menuLoc === 'dot' ? 2 : 3"
+    [menuLoc]="menuLoc === 'dot' ? 2 : 3"
     [menuHov]="menuHov === 'item hover' ? 2 : 1"
 
      [keyMap]="options === 'simple' || options === 'primitive' ? serverKeyMap : null"
@@ -33,6 +33,7 @@ const template = `
 
 
       [startCollapsed]="startCollapsed"
+      [maxHeightItems]="maxHeightItems"
       (changed)="listOut = $event; changed($event);"
      [debug]="debug">
 </b-editable-tree-list>
@@ -111,12 +112,7 @@ story.add(
       list: mock.slice(),
       serverKeyMap: BTL_KEYMAP_SERVER,
 
-      menuLoc: select(
-        'menu location',
-        ['expand', 'dot', 'line'],
-        'line',
-        'Props'
-      ),
+      menuLoc: select('menu location', ['dot', 'line'], 'line', 'Props'),
 
       menuHov: select(
         'show menu on',
@@ -126,6 +122,7 @@ story.add(
       ),
 
       startCollapsed: boolean('startCollapsed', true, 'Props'),
+      maxHeightItems: number('maxHeightItems', 12, {}, 'Props'),
 
       debug: boolean('debug', false, 'Props'),
 

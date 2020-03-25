@@ -4,8 +4,8 @@
 $betl-max-depth: 10;
 $betl-item-height: 32px;
 $betl-item-indent: 20px;
-
 $betl-bgcolor: white;
+$betl-bg-line-width: 1px;
 
 //-------DEV---------
 .dev {
@@ -25,11 +25,12 @@ $betl-bgcolor: white;
   max-width: 100%;
   min-width: 0;
   text-align: left;
-  background-color: $betl-bgcolor;
+
   border-radius: $border-radius;
   padding: 12px;
 
   &[data-embedded='false'] {
+    background-color: $betl-bgcolor;
     border: 1px solid $border-color;
     box-shadow: 0 2px 3px 0 $boxShadowColor;
   }
@@ -41,39 +42,51 @@ $betl-bgcolor: white;
   list-style: none;
   padding: 0;
   margin: 0;
-  overflow: auto;
+
   will-change: scroll-position, transform, min-height;
   display: flex;
   flex-direction: column;
 
-  $line-width: 1px;
+  height: var(--list-min-height, auto);
 
-  background-image: linear-gradient(to right, white 0, white 100%),
-    linear-gradient(
-      to right,
-      transparent 0,
-      transparent #{$betl-item-indent - $line-width/2},
-      $grey-500 #{$betl-item-indent - $line-width/2},
-      $grey-500 #{$betl-item-indent + $line-width/2},
-      transparent #{$betl-item-indent + $line-width/2},
-      transparent #{$betl-item-indent * 2}
-    );
+  max-height: calc(var(--list-max-items, 15) * #{$betl-item-height});
+  overflow: auto;
+}
 
-  background-size: 0 100%, ($betl-item-indent * 2) 100%;
-  background-repeat: no-repeat, repeat-x;
-  background-position: left 0 top 0, left ($betl-item-indent / 2) top 0;
+.betl-item {
+  min-width: var(--list-min-width, 0);
+}
 
-  &:empty {
+.betl-item.filler {
+  flex-grow: 1;
+  min-height: var(--list-filler-height, 0);
+
+  &:only-child {
     min-height: 20px;
-    background-repeat: no-repeat;
-    background-position: $betl-item-indent 0;
   }
 }
 
-.betl-list-footer {
-  &:before {
-    @include pseudo;
-    width: $betl-item-indent;
+// BG lines & identation
+
+.betl-item {
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0,
+    transparent #{$betl-item-indent/2 - $betl-bg-line-width/2},
+    $grey-500 #{$betl-item-indent/2 - $betl-bg-line-width/2},
+    $grey-500 #{$betl-item-indent/2 + $betl-bg-line-width/2},
+    transparent #{$betl-item-indent/2 + $betl-bg-line-width/2},
+    transparent #{$betl-item-indent * 2}
+  );
+  background-position: left ($betl-item-indent * 2) top 0;
+  background-size: 0 100%;
+  background-repeat: no-repeat;
+}
+
+@for $i from 2 through $betl-max-depth {
+  [data-level='#{$i}'] {
+    padding-left: ($betl-item-indent * 2 * ($i - 1));
+    background-size: ($betl-item-indent * 2 * ($i - 1)) 100%;
   }
 }
 
@@ -91,19 +104,6 @@ $betl-bgcolor: white;
   @include flex-align;
 }
 
-.betl-item.filler {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  padding-left: $betl-item-indent * 3;
-
-  &:before {
-    @include pseudo;
-    flex-grow: 1;
-    background-color: white;
-  }
-}
-
 // .betl-item-chevron,
 // .betl-item-menu {
 //   grid-column: 1;
@@ -113,7 +113,6 @@ $betl-bgcolor: white;
 .betl-item-dot {
   // grid-column: 2;
   // grid-row: 1;
-  background-color: $betl-bgcolor;
 
   &:before {
     @include pseudo;
@@ -123,18 +122,11 @@ $betl-bgcolor: white;
   }
 }
 
-@for $i from 2 through $betl-max-depth {
-  [data-level='#{$i}'] {
-    padding-left: ($betl-item-indent * 2 * ($i - 1));
-  }
-}
-
 // Input
 
 .betl-item-input-wrap {
   // grid-column: 3;
   color: $body-text-color;
-  background-color: $betl-bgcolor;
 }
 
 .betl-item-input {
@@ -222,6 +214,48 @@ $betl-bgcolor: white;
 }
 
 ::ng-deep {
+  .cdk-overlay-container .betl-menu {
+    .mat-menu-item {
+      display: flex;
+      padding: 0 15px;
+
+      span {
+        flex-grow: 1;
+        display: flex;
+        justify-content: space-between;
+
+        &:after {
+          opacity: 0.7;
+        }
+      }
+
+      &.insertNewItem span {
+        &:after {
+          content: ' ↵';
+        }
+      }
+
+      &.increaseIndent span {
+        &:after {
+          content: ' ⇥';
+        }
+      }
+
+      &.decreaseIndent span {
+        &:after {
+          content: ' ⇧⇥';
+        }
+      }
+
+      &.delete span {
+        &:after {
+          font-size: 90%;
+          content: ' ⌘⌫';
+        }
+      }
+    }
+  }
+
   .betl-del-confirm {
     left: -50%;
   }
@@ -236,22 +270,11 @@ $betl-bgcolor: white;
 
 // Menu position
 
-:host[data-menu-loc='1'] ::ng-deep {
-  .betl-item-chevron,
-  .betl-item-menu {
-    grid-column: 1;
-    grid-row: 1;
-  }
-  .betl-item-dot {
-    grid-column: 2;
-    grid-row: 1;
-  }
-  .betl-item-input-wrap {
-    grid-column: 3;
-  }
-}
-
 :host[data-menu-loc='2'] ::ng-deep {
+  .betl-item {
+    background-position: left $betl-item-indent top 0;
+  }
+
   .betl-item-chevron {
     grid-column: 1;
     grid-row: 1;
@@ -267,11 +290,6 @@ $betl-bgcolor: white;
 }
 
 :host[data-menu-loc='3'] ::ng-deep {
-  .betl-list {
-    background-position: left 0 top 0, left ($betl-item-indent * 1.5) top 0;
-    background-size: ($betl-item-indent * 2) 100%, ($betl-item-indent * 2) 100%;
-  }
-
   .betl-item-grid {
     grid-template-columns: $betl-item-indent $betl-item-indent $betl-item-indent auto;
   }

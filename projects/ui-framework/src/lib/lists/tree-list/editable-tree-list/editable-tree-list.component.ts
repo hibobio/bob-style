@@ -2,6 +2,7 @@ import {
   Component,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  ElementRef,
 } from '@angular/core';
 import { arrayInsertAt } from '../../../services/utils/functional-utils';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
@@ -16,6 +17,7 @@ import {
   InsertItemLocation,
 } from './editable-tree-list.interface';
 import { TreeListEditUtils } from '../services/tree-list-edit.static';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 
 @Component({
   selector: 'b-editable-tree-list',
@@ -28,27 +30,18 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     modelSrvc: TreeListModelService,
     cntrlsSrvc: TreeListControlsService,
     viewSrvc: TreeListViewService,
-
-    cd: ChangeDetectorRef
+    DOM: DOMhelpers,
+    cd: ChangeDetectorRef,
+    host: ElementRef
   ) {
-    super(modelSrvc, cntrlsSrvc, viewSrvc, cd);
+    super(modelSrvc, cntrlsSrvc, viewSrvc, DOM, cd, host);
   }
 
   public draggingIndex: number;
   public dragHoverIndex: number;
 
-  protected listToListViewModel(): itemID[] {
-    this.listViewModel = this.modelSrvc.getListViewModel(
-      this.list,
-      this.itemsMap,
-      {
-        expand: true,
-        keyMap: this.keyMap,
-      }
-    );
-
-    return this.listViewModel;
-  }
+  public maxDepth = 10;
+  public depth = 0;
 
   protected listViewModelToList(
     listViewModel: itemID[] = this.listViewModel
@@ -105,8 +98,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
 
   public onDragstart(item: TreeListItem, indexInView: number) {
     if (item.childrenCount && !item.collapsed) {
-      this.listElement.nativeElement.style.minHeight =
-        this.listElement.nativeElement.offsetHeight + 'px';
+      this.setListCSS('height');
       this.toggleItemCollapsed(item, null, true);
       item.expandMe = true;
     }
@@ -120,7 +112,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
 
     if (item.expandMe) {
       this.toggleItemCollapsed(item, null, false);
-      this.listElement.nativeElement.style.cssText = '';
+      this.setListCSS('remove-height');
       delete item.expandMe;
     }
   }
@@ -136,20 +128,20 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
       return;
     }
 
-    const indexInView = parseInt(itemElement.getAttribute('data-index'), 10);
-
-    this.dragHoverIndex = indexInView;
+    this.dragHoverIndex = parseInt(itemElement.getAttribute('data-index'), 10);
   }
 
   public getDragState(index: number) {
-    return this.draggingIndex === undefined ||
-      (this.draggingIndex !== index && this.dragHoverIndex !== index)
-      ? null
-      : this.draggingIndex === index
+    return this.draggingIndex === index
       ? 'dragged'
-      : this.draggingIndex > index && this.dragHoverIndex === index
+      : (this.draggingIndex < index && this.dragHoverIndex === index) ||
+        (this.draggingIndex > index + 1 && this.dragHoverIndex === index + 1)
+      ? 'drag-hover-below'
+      : this.draggingIndex > index &&
+        this.dragHoverIndex === index &&
+        index === 0
       ? 'drag-hover-above'
-      : 'drag-hover-below';
+      : null;
   }
 
   public onItemDrop(event: CdkDragDrop<any>): void {
@@ -205,6 +197,8 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
       this.listElement.nativeElement.querySelector(`[data-id="${item.id}"]`),
       'start'
     );
+
+    this.setListCSS('width');
 
     return item;
   }

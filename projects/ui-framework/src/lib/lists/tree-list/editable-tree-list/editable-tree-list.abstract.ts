@@ -43,6 +43,8 @@ import {
 } from './editable-tree-list.interface';
 import { EDITABLE_TREELIST_TRANSLATION_DEF } from './editable-tree-list.const';
 import { TreeListEditUtils } from '../services/tree-list-edit.static';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import { Styles } from '../../../services/html/html-helpers.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -51,14 +53,15 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
     protected modelSrvc: TreeListModelService,
     protected cntrlsSrvc: TreeListControlsService,
     protected viewSrvc: TreeListViewService,
-
-    protected cd: ChangeDetectorRef
+    protected DOM: DOMhelpers,
+    protected cd: ChangeDetectorRef,
+    protected host: ElementRef
   ) {}
 
   @Input('list') set setList(list: TreeListOption[]) {}
   public list: TreeListOption[];
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
-
+  @Input() maxHeightItems = 8;
   @Input() startCollapsed = true;
   @Input()
   translation: EditableTreeListTranslation = EDITABLE_TREELIST_TRANSLATION_DEF;
@@ -155,6 +158,7 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
       {
         keyMap: BTL_KEYMAP_DEF,
         translation: EDITABLE_TREELIST_TRANSLATION_DEF,
+        maxHeightItems: 15,
       },
       ['list'],
       false,
@@ -165,6 +169,10 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
 
     if (hasChanges(changes, ['keyMap'], true)) {
       this.keyMap = { ...BTL_KEYMAP_DEF, ...this.keyMap };
+    }
+
+    if (hasChanges(changes, ['maxHeightItems'], true)) {
+      this.setListCSS('max-items');
     }
 
     if (hasChanges(changes, ['list'], true)) {
@@ -200,6 +208,19 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
     ) {
       this.cd.detectChanges();
     }
+  }
+
+  protected listToListViewModel(): itemID[] {
+    this.listViewModel = this.modelSrvc.getListViewModel(
+      this.list,
+      this.itemsMap,
+      {
+        expand: true,
+        keyMap: this.keyMap,
+      }
+    );
+
+    return this.listViewModel;
   }
 
   public toggleItemCollapsed(
@@ -255,8 +276,40 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
     return id;
   }
 
-  protected listToListViewModel(): itemID[] {
-    return [];
+  protected setListCSS(
+    styles: Styles | 'width' | 'height' | 'max-items' | 'remove-height'
+  ): void {
+    const hostEl: HTMLElement = this.host.nativeElement;
+    const listEl: HTMLElement = this.listElement.nativeElement;
+
+    if (styles === 'max-items') {
+      this.DOM.setCssProps(hostEl, {
+        '--list-max-items': this.maxHeightItems,
+      });
+      return;
+    }
+
+    if (styles === 'remove-height' || styles === 'height') {
+      this.DOM.setCssProps(hostEl, {
+        '--list-min-height': null,
+      });
+    }
+
+    if (styles === 'height') {
+      this.DOM.setCssProps(hostEl, {
+        '--list-min-height': listEl.offsetHeight + 'px',
+      });
+      return;
+    }
+
+    if (styles === 'width') {
+      this.DOM.setCssProps(hostEl, {
+        '--list-min-width': listEl.scrollWidth + 'px',
+      });
+      return;
+    }
+
+    this.DOM.setCssProps(listEl, styles as Styles);
   }
 
   protected listViewModelToList(
