@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { TreeListModule } from './tree-list.module';
 import { TreeListStoriesCommonProps } from '../tree-list.stories.common';
-import { boolean } from '@storybook/addon-knobs';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs

@@ -262,6 +262,30 @@ export const arrayInsertAt = <T = any>(
     .concat(val, (arr || []).slice(!overwrite ? index : index + 1));
 };
 
+export const arrayRemoveAtIndexMutate = <T = any>(
+  arr: T[],
+  index: number,
+  itemsCount = 1
+): T[] => {
+  arr.splice(index, itemsCount);
+  return arr;
+};
+
+export const arrayRemoveItemMutate = <T = any>(arr: T[], item: T): T[] => {
+  arrayRemoveAtIndexMutate(
+    arr,
+    arr.findIndex(i => i === item)
+  );
+  return arr;
+};
+
+export const arrayRemoveItemsMutate = <T = any>(arr: T[], items: T[]): T[] => {
+  const arrCopy = arr.slice();
+  arr.length = 0;
+  arr.push(...arrCopy.filter(id => !items.includes(id)));
+  return arr;
+};
+
 export const lastItem = <T = any>(arr: T[]): T =>
   !isIterable(arr) ? ((arr as any) as T) : arr[arr.length - 1];
 

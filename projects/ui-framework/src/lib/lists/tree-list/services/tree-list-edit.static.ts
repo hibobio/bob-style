@@ -1,19 +1,44 @@
+import { TreeListItem, TreeListItemMap, itemID } from '../tree-list.interface';
 import {
-  TreeListItem,
-  TreeListItemMap,
-  itemID,
-  ViewFilter,
-} from '../tree-list.interface';
-import { InsertItemLocation } from '../editable-tree-list/editable-tree-list.enum';
-import { TreeListGetItemEditContext } from '../editable-tree-list/editable-tree-list.interface';
+  TreeListGetItemEditContext,
+  InsertItemLocation,
+} from '../editable-tree-list/editable-tree-list.interface';
 import { BTL_ROOT_ID } from '../tree-list.const';
 import {
   simpleUID,
-  arrayInsertAt,
+  isNumber,
+  arrayRemoveItemsMutate,
 } from '../../../services/utils/functional-utils';
 import { TreeListModelUtils } from './tree-list-model.static';
 
 export class TreeListEditUtils {
+  //
+
+  public static deleteItem(
+    item: TreeListItem,
+    context: TreeListGetItemEditContext = null,
+    itemsMap: TreeListItemMap,
+    listViewModel: itemID[]
+  ): TreeListItem {
+    const parent =
+      context?.parent || itemsMap.get(item.parentIDs[item.parentCount - 1]);
+
+    const deletedItemIDs = TreeListModelUtils.withEachItemOfTreeDown(
+      item,
+      itm => {
+        itemsMap.delete(itm.id);
+      },
+      itemsMap
+    );
+
+    parent.childrenIDs = parent.childrenIDs.filter(id => id !== item.id);
+    parent.childrenCount = parent.childrenIDs.length;
+
+    arrayRemoveItemsMutate(listViewModel, deletedItemIDs);
+
+    return item;
+  }
+
   public static newItem(set: Partial<TreeListItem> = {}): TreeListItem {
     return {
       id: simpleUID('etlni-'),
@@ -34,24 +59,47 @@ export class TreeListEditUtils {
     itemsMap: TreeListItemMap,
     listViewModel: itemID[]
   ): TreeListGetItemEditContext {
+    if (isNumber(where)) {
+      if (where === 0) {
+        target = itemsMap.get(BTL_ROOT_ID);
+      } else {
+        target = itemsMap.get(listViewModel[(where as number) - 1]);
+      }
+
+      if (!target.childrenCount) {
+        where = 'after';
+      }
+
+      if (target.childrenCount) {
+        where = 'firstChildOf';
+      }
+    }
+
+    if (!target) {
+      console.error(`[TreeListEditUtils.getItemEditContext]:
+          Something's wrong!`);
+      return;
+    }
+
     const parent =
       where === 'after'
         ? itemsMap.get(target.parentIDs[target.parentCount - 1])
         : target;
 
     const sibling =
-      itemsMap.get(
-        parent.childrenIDs && parent.childrenIDs[0]
-        // parent.childrenID.find(id => !itemsMap.get(id)?.deleted)
-      ) ||
+      itemsMap.get(parent.childrenIDs && parent.childrenIDs[0]) ||
       ({
         parentIDs: [BTL_ROOT_ID],
         parentCount: 1,
       } as TreeListItem);
 
+    const targetIndexInParent = parent.childrenIDs.findIndex(
+      id => id === target.id
+    );
+
     const insertionIndexInParent =
       where === 'after'
-        ? parent.childrenIDs.findIndex(id => id === target.id) + 1
+        ? targetIndexInParent + 1
         : where === 'lastChildOf'
         ? parent.childrenCount
         : 0;
@@ -82,8 +130,9 @@ export class TreeListEditUtils {
           }.bind(this)()
         : listViewModel.findIndex(id => id === parent.childrenIDs[0]);
 
-    if (!parent || !sibling) {
-      console.error(`Something's wrong!`);
+    if (!target) {
+      console.error(`[TreeListEditUtils.getItemEditContext]:
+          Something's wrong!`);
       return;
     }
 
@@ -92,6 +141,8 @@ export class TreeListEditUtils {
       sibling,
       insertionIndexInParent,
       insertionIndexInViewModel,
+      targetIndexInParent,
+      targetIndexInViewModel,
     };
   }
 }

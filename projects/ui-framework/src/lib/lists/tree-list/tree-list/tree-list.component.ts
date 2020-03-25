@@ -32,6 +32,7 @@ import { BaseTreeListElement } from './tree-list.abstract';
 import { BehaviorSubject } from 'rxjs';
 import { TreeListValueUtils } from '../services/tree-list-value.static';
 import { MobileService } from '../../../services/utils/mobile.service';
+import { TreeListModelUtils } from '../services/tree-list-model.static';
 
 @Component({
   selector: 'b-tree-list',
@@ -91,7 +92,7 @@ export class TreeListComponent extends BaseTreeListElement {
     }
 
     if (hasChanges(changes, ['list', 'itemsMap'], true)) {
-      this.hidden = this.itemsMap.size < 2;
+      this.empty = this.itemsMap.size < 2;
       this.showSearch = this.itemsMap.size > 11;
     }
 
@@ -159,7 +160,8 @@ export class TreeListComponent extends BaseTreeListElement {
 
   protected toggleItemCollapsed(
     item: TreeListItem,
-    element: HTMLElement
+    element: HTMLElement,
+    force: boolean = null
   ): void {
     let elOffset: number;
 
@@ -167,7 +169,7 @@ export class TreeListComponent extends BaseTreeListElement {
       elOffset = element.offsetTop;
     }
 
-    item.collapsed = !item.collapsed;
+    TreeListModelUtils.toggleItemCollapsed(item, this.itemsMap, force, false);
 
     if (item.collapsed) {
       this.cd.detectChanges();

@@ -8,16 +8,13 @@ $btl-icon-margin: 10px;
 $btl-max-depth: 10;
 
 //-------DEV---------
-.dev {
-  display: none;
-}
 :host[data-debug='true'] {
   overflow: visible !important;
 
   .dev {
     display: block;
     position: absolute;
-    top: 105%;
+    top: calc(100% + 20px);
     left: 0;
     right: 0;
 
@@ -46,11 +43,14 @@ $btl-max-depth: 10;
     box-shadow: 0 2px 3px 0 $boxShadowColor;
   }
 
-  &[hidden] {
-    border: 0 !important;
-    box-shadow: none !important;
+  &[data-empty='true'] ::ng-deep {
+    .btl-footer {
+      border: 0;
 
-    .btl-footer,
+      .cancel-apply {
+        visibility: hidden;
+      }
+    }
     .dev {
       display: none;
     }

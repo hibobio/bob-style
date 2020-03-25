@@ -68,7 +68,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   protected footer: ElementRef;
 
   @HostBinding('attr.data-embedded') @Input() embedded = false;
-  @HostBinding('hidden') @Input() hidden = true;
+  @HostBinding('attr.data-empty') empty = true;
   @HostBinding('attr.data-debug') @Input() debug = false;
 
   public itemsMap: TreeListItemMap = new Map();

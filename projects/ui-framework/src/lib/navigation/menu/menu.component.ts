@@ -130,15 +130,11 @@ export class MenuComponent implements OnChanges, OnInit {
 
   private setViewModel(): void {
     this.menuViewModel =
-      this.menu?.map(item => {
-        const enrichedItem = {
-          ...item,
-          ...(this.id && { id: this.id }),
-          ...(this.data && { data: this.data }),
-          clickToOpenSub: Boolean(this.clickToOpenSub || item.clickToOpenSub),
-        };
-        enrichedItem.disabled = this.itemIsDisabled(enrichedItem);
-        return enrichedItem;
-      }) || [];
+      this.menu?.map(item => ({
+        ...item,
+        ...(this.id && { id: this.id }),
+        ...(this.data && { data: this.data }),
+        clickToOpenSub: Boolean(this.clickToOpenSub || item.clickToOpenSub),
+      })) || [];
   }
 }

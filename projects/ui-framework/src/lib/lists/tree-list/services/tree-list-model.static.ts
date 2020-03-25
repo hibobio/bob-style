@@ -45,6 +45,8 @@ export class TreeListModelUtils {
   ): void {
     item.collapsed = isBoolean(force) ? force : !item.collapsed;
 
+    console.log('model static item collapsed', item.collapsed);
+
     if (setHidden) {
       this.withEachItemOfTreeDown(
         item,
@@ -151,15 +153,20 @@ export class TreeListModelUtils {
   public static withEachItemOfTreeDown(
     topItem: TreeListItem,
     process: (item: TreeListItem) => void,
-    itemsMap: TreeListItemMap
-  ): void {
+    itemsMap: TreeListItemMap,
+    affectedIDs: itemID[] = []
+  ): itemID[] {
     process(topItem);
+    affectedIDs.push(topItem.id);
+
     if (topItem.childrenCount) {
       topItem.childrenIDs.forEach(id => {
         const child = itemsMap.get(id);
-        this.withEachItemOfTreeDown(child, process, itemsMap);
+        this.withEachItemOfTreeDown(child, process, itemsMap, affectedIDs);
       });
     }
+
+    return affectedIDs;
   }
 
   public static setPropToTreeDown(

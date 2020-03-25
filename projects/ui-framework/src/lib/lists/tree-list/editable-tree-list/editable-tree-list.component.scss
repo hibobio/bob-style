@@ -7,6 +7,7 @@ $betl-item-indent: 20px;
 
 $betl-bgcolor: white;
 
+//-------DEV---------
 .dev {
   display: block;
   padding: 12px;
@@ -41,7 +42,9 @@ $betl-bgcolor: white;
   padding: 0;
   margin: 0;
   overflow: auto;
-  will-change: scroll-position, transform;
+  will-change: scroll-position, transform, min-height;
+  display: flex;
+  flex-direction: column;
 
   $line-width: 1px;
 
@@ -88,6 +91,19 @@ $betl-bgcolor: white;
   @include flex-align;
 }
 
+.betl-item.filler {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding-left: $betl-item-indent * 3;
+
+  &:before {
+    @include pseudo;
+    flex-grow: 1;
+    background-color: white;
+  }
+}
+
 // .betl-item-chevron,
 // .betl-item-menu {
 //   grid-column: 1;
@@ -124,10 +140,20 @@ $betl-bgcolor: white;
 .betl-item-input {
   flex-grow: 1;
   height: $betl-item-height;
+  line-height: $betl-item-height;
   border: 0;
   padding: 0 10px;
   color: inherit;
   background: none;
+  text-overflow: ellipsis;
+
+  &::placeholder {
+    color: $grey-600;
+    transition: opacity 0.2s;
+  }
+  &:focus::placeholder {
+    opacity: 0;
+  }
 }
 
 // Controls
@@ -285,8 +311,16 @@ $betl-bgcolor: white;
   .betl-item {
     position: relative;
 
-    &.isDragged {
+    &[data-drag-state='dragged'] {
       z-index: 1;
+    }
+
+    &[data-drag-state='drag-hover-below'] > .betl-item-input-wrap {
+      box-shadow: inset 0 -2px 0 $grey-500;
+    }
+
+    &[data-drag-state='drag-hover-above'] > .betl-item-input-wrap {
+      box-shadow: inset 0 2px 0 $grey-500;
     }
   }
 
@@ -308,8 +342,6 @@ $betl-bgcolor: white;
     }
 
     &.cdk-drag-placeholder {
-      box-shadow: inset 0 -2px 0 $grey-500;
-
       .betl-item-input-wrap {
         justify-content: flex-end;
         opacity: 0.5;
@@ -335,10 +367,6 @@ $betl-bgcolor: white;
     &:before {
       display: none;
     }
-
-    &[disabled='true'] {
-      cursor: default;
-    }
   }
 
   [cdkdrag][style*='tap-highlight'],
@@ -352,7 +380,13 @@ $betl-bgcolor: white;
   }
 
   .betl-list.cdk-drop-list-dragging {
-    .menu-trigger-wrapper {
+    cursor: grabbing;
+
+    .betl-item-elmnt,
+    [cdkdrag] {
+      pointer-events: none;
+    }
+    .betl-item-menu {
       visibility: hidden;
     }
   }

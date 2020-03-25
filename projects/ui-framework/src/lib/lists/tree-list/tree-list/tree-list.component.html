@@ -82,7 +82,8 @@
 </b-list-footer>
 
 
-<div class="dev">
+<div class="dev"
+     *ngIf="debug">
   <p>Total items: {{ itemsMap.size - 1 }}</p>
   <p>Total items in view: {{ listViewModel.length }}</p>
   <p>Total selected: {{ itemsMap.get('#root') && itemsMap.get('#root').selectedCount }}</p>

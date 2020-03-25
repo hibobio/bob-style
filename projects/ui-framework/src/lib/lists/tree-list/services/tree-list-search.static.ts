@@ -21,6 +21,10 @@ export class TreeListSearchUtils {
   ): boolean {
     let result = true;
 
+    if (!viewFilter) {
+      return result;
+    }
+
     if (viewFilter.hide) {
       if (viewFilter.hide.id && viewFilter.hide.id.includes(item.id)) {
         result = false;

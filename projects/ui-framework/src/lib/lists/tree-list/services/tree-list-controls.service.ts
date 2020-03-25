@@ -1,16 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Keys } from '../../../enums';
-import { isKey } from '../../../services/utils/functional-utils';
+import {
+  isKey,
+  eventHasCntrlKey,
+} from '../../../services/utils/functional-utils';
 import { TreeListItem, TreeListItemMap, itemID } from '../tree-list.interface';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { TreeListViewService } from './tree-list-view.service';
-import { InsertItemLocation } from '../editable-tree-list/editable-tree-list.enum';
-import { TreeListGetItemEditContext } from '../editable-tree-list/editable-tree-list.interface';
+import {
+  TreeListGetItemEditContext,
+  InsertItemLocation,
+} from '../editable-tree-list/editable-tree-list.interface';
 
 interface TreeListClickConfig {
   itemsMap: TreeListItemMap;
   listViewModel: itemID[];
-  toggleItemCollapsed: (item: TreeListItem, element: HTMLElement) => void;
+  toggleItemCollapsed: (
+    item: TreeListItem,
+    element: HTMLElement,
+    force?: boolean
+  ) => void;
   toggleItemSelect?: (item: TreeListItem, force?: boolean) => void;
   itemClick?: (item: TreeListItem, element: HTMLElement) => void;
   readonly?: boolean;
@@ -20,7 +29,11 @@ interface TreeListClickConfig {
 interface TreeListKeydownConfig {
   itemsMap: TreeListItemMap;
   listViewModel: itemID[];
-  toggleItemCollapsed?: (item: TreeListItem, element: HTMLElement) => void;
+  toggleItemCollapsed?: (
+    item: TreeListItem,
+    element: HTMLElement,
+    force?: boolean
+  ) => void;
   toggleItemSelect?: (item: TreeListItem, force?: boolean) => void;
   readonly?: boolean;
   disabled?: boolean;
@@ -30,10 +43,7 @@ interface TreeListKeydownConfig {
     item: TreeListItem,
     context?: TreeListGetItemEditContext
   ) => any;
-  makeItemPreviouSiblingChild?: (
-    item: TreeListItem,
-    indexInView: number
-  ) => any;
+  increaseIndent?: (item: TreeListItem, indexInView: number) => any;
 }
 
 const TREELIST_KEYCONTROL_KEYS = [
@@ -213,7 +223,8 @@ export class TreeListControlsService {
       listViewModel,
       insertNewItem,
       deleteItem,
-      makeItemPreviouSiblingChild,
+      increaseIndent,
+      toggleItemCollapsed,
     } = config;
 
     if (!TREELIST_EDIT_KEYCONTROL_KEYS.includes(event.key as Keys)) {
@@ -240,6 +251,7 @@ export class TreeListControlsService {
 
     if (
       nextItemElement &&
+      !eventHasCntrlKey(event) &&
       (isKey(event.key, Keys.arrowdown) ||
         (isKey(event.key, Keys.arrowright) &&
           itemInput.selectionStart === itemInput.value.length))
@@ -251,6 +263,7 @@ export class TreeListControlsService {
 
     if (
       prevItemElement &&
+      !eventHasCntrlKey(event) &&
       (isKey(event.key, Keys.arrowup) ||
         (isKey(event.key, Keys.arrowleft) && itemInput.selectionEnd === 0))
     ) {
@@ -262,6 +275,25 @@ export class TreeListControlsService {
       return;
     }
 
+    if (
+      item.collapsed &&
+      isKey(event.key, Keys.arrowdown) &&
+      eventHasCntrlKey(event)
+    ) {
+      event.preventDefault();
+      return toggleItemCollapsed(item, itemElement, false);
+    }
+
+    if (
+      !item.collapsed &&
+      item.childrenCount &&
+      isKey(event.key, Keys.arrowup) &&
+      eventHasCntrlKey(event)
+    ) {
+      event.preventDefault();
+      return toggleItemCollapsed(item, itemElement, true);
+    }
+
     if (isKey(event.key, Keys.enter)) {
       event.preventDefault();
 
@@ -270,24 +302,29 @@ export class TreeListControlsService {
       } else {
         insertNewItem('after', item);
       }
+      return;
     }
 
     if (
       isKey(event.key, Keys.backspace) &&
-      !itemInput.value.trim() &&
-      itemInput.selectionEnd === 0
+      !item.childrenCount &&
+      ((!itemInput.value.trim() && itemInput.selectionEnd === 0) ||
+        eventHasCntrlKey(event))
     ) {
       event.preventDefault();
+
       deleteItem(item);
+
+      console.log('delete, prevItemElement', prevItemElement);
 
       if (prevItemElement) {
         this.viewSrvc.findAndFocusInput(prevItemElement, 'end');
       }
     }
 
-    if (isKey(event.key, Keys.tab)) {
+    if (isKey(event.key, Keys.tab) && !eventHasCntrlKey(event)) {
       event.preventDefault();
-      makeItemPreviouSiblingChild(item, indexInView);
+      increaseIndent(item, indexInView);
     }
   }
 }

@@ -4,9 +4,11 @@
     cdkDropList
     [cdkDropListDisabled]="disableDragAndDrop"
     (cdkDropListDropped)="onItemDrop($event)"
+    [cdkDropListSortingDisabled]="true"
     (click)="onListClick($event)"
     (keydown)="onListKeyDown($event)"
-    (focusout)="onListBlur($event)">
+    (focusout)="onListBlur($event)"
+    (mouseover)="onListHover($event)">
 
   <ng-container *ngFor="let itemID of listViewModel; let index = index; trackBy: trackBy">
 
@@ -28,31 +30,30 @@
         [attr.data-index]="index"
         [attr.data-level]="item.parentCount || 1"
         tabindex="0"
+        [attr.data-drag-state]="getDragState(index)"
         [ngClass]="{
             'btl-item-option': !item.childrenCount,
             'btl-item-group': item.childrenCount,
             expanded: item.childrenCount && !item.collapsed,
-            collapsed: item.collapsed,
-            isDragged: isDragging[index]
+            collapsed: item.collapsed
           }">
 
       <span cdkDrag
             [cdkDragDisabled]="disableDragAndDrop"
-            [cdkDragData]="item"
+            [cdkDragData]="{origIndex: index, item: item}"
             cdkDragLockAxis="y"
             [cdkDragBoundary]="listElement"
-            (cdkDragStarted)="isDragging[index] = true"
-            (cdkDragEnded)="isDragging[index] = false"
+            (cdkDragStarted)="onDragstart(index, item);"
+            (cdkDragEnded)="onDragEnd();"
             class="betl-item-grid"
             [attr.data-level]="item.parentCount || 1">
 
         <span class="betl-item-elmnt betl-item-dot"
               cdkDragHandle
-              [cdkDragHandleDisabled]="!!item.childrenCount"
-              [attr.disabled]="!!item.childrenCount || null"
               aria-hidden="true"></span>
 
-        <span class="betl-item-elmnt betl-item-input-wrap">
+        <span *ngIf="false"
+              class="betl-item-elmnt betl-item-input-wrap">
           {{item.name}}
         </span>
       </span>
@@ -80,7 +81,7 @@
 
       <span class="betl-item-elmnt betl-item-input-wrap">
         <input [(ngModel)]="item.name"
-               #input
+               [placeholder]="translation.untitled"
                class="betl-item-input"
                type="text">
       </span>
@@ -88,6 +89,10 @@
     </li>
 
   </ng-template>
+
+  <li aria-hidden="true"
+      class="betl-item filler"
+      data-level="1"></li>
 </ul>
 
 <div class="betl-list-footer betl-item-grid">
