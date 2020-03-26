@@ -81,6 +81,8 @@
             aria-hidden="true"></span>
 
       <span class="betl-item-elmnt betl-item-input-wrap">
+        <span *ngIf="debug"
+              style="font-size:80%;">{{index}}</span>
         <input [(ngModel)]="item.name"
                [placeholder]="translation.untitled"
                class="betl-item-input"

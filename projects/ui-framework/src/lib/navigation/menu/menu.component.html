@@ -9,23 +9,23 @@
 <mat-menu #childMenu="matMenu"
           [xPosition]="menuDir"
           [class]="panelClass">
-  <ng-container *ngFor="let item of menuViewModel; trackBy: trackBy">
+  <div *ngFor="let item of menuViewModel; trackBy: trackBy"
+       [ngClass]="{'separator-after': item.separatorAfter}">
 
     <!-- Handle branch node menu menu -->
-    <ng-container *ngIf="item.children?.length > 0">
+    <span *ngIf="item.children?.length > 0"
+          class="menu-trigger-guard"
+          [attr.tabindex]="!itemIsDisabled(item) && item.clickToOpenSub ? 0 : null"
+          (click.outside-zone)="!itemIsDisabled(item) && item.clickToOpenSub && $event.stopPropagation()">
+      <button mat-menu-item
+              type="button"
+              class="{{item.key}}"
+              [disabled]="itemIsDisabled(item)"
+              [matMenuTriggerFor]="menu.childMenu"
+              [disableRipple]="true">
+        <span>{{item.label}}</span>
+      </button>
 
-      <span class="menu-trigger-guard"
-            [attr.tabindex]="!itemIsDisabled(item) && item.clickToOpenSub ? 0 : null"
-            (click.outside-zone)="!itemIsDisabled(item) && item.clickToOpenSub && $event.stopPropagation()">
-        <button mat-menu-item
-                type="button"
-                class="{{item.key}}"
-                [disabled]="itemIsDisabled(item)"
-                [matMenuTriggerFor]="menu.childMenu"
-                [disableRipple]="true">
-          <span>{{item.label}}</span>
-        </button>
-      </span>
       <b-menu #menu
               [id]="id"
               [data]="data"
@@ -35,7 +35,8 @@
               [clickToOpenSub]="clickToOpenSub"
               (actionClick)="onClick($event, false)">
       </b-menu>
-    </ng-container>
+    </span>
+
 
     <!-- Handle leaf node menu menu -->
     <button *ngIf="!item.children || item.children.length === 0"
@@ -48,5 +49,5 @@
       <span>{{item.label}}</span>
     </button>
 
-  </ng-container>
+  </div>
 </mat-menu>

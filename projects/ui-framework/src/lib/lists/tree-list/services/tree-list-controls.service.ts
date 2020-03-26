@@ -3,6 +3,8 @@ import { Keys } from '../../../enums';
 import {
   isKey,
   eventHasCntrlKey,
+  eventHasShiftlKey,
+  eventHasMetaKey,
 } from '../../../services/utils/functional-utils';
 import { TreeListItem, TreeListItemMap, itemID } from '../tree-list.interface';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
@@ -44,6 +46,7 @@ interface TreeListKeydownConfig {
     context?: TreeListGetItemEditContext
   ) => any;
   increaseIndent?: (item: TreeListItem, indexInView: number) => any;
+  decreaseIndent?: (item: TreeListItem) => any;
 }
 
 const TREELIST_KEYCONTROL_KEYS = [
@@ -224,6 +227,7 @@ export class TreeListControlsService {
       insertNewItem,
       deleteItem,
       increaseIndent,
+      decreaseIndent,
       toggleItemCollapsed,
     } = config;
 
@@ -305,26 +309,44 @@ export class TreeListControlsService {
       return;
     }
 
-    if (
-      isKey(event.key, Keys.backspace) &&
-      !item.childrenCount &&
-      ((!itemInput.value.trim() && itemInput.selectionEnd === 0) ||
-        eventHasCntrlKey(event))
-    ) {
+    if (isKey(event.key, Keys.backspace)) {
+      const noValue = !itemInput.value.trim();
+      const cursorAt0 = itemInput.selectionEnd === 0;
+
+      if (
+        !(
+          (!item.childrenCount &&
+            ((noValue && cursorAt0) || eventHasCntrlKey(event))) ||
+          (item.childrenCount &&
+            ((noValue && cursorAt0 && eventHasCntrlKey(event)) ||
+              (eventHasCntrlKey(event) && eventHasShiftlKey(event))))
+        )
+      ) {
+        console.log('will exit');
+        return;
+      }
+
       event.preventDefault();
 
       deleteItem(item);
-
-      console.log('delete, prevItemElement', prevItemElement);
 
       if (prevItemElement) {
         this.viewSrvc.findAndFocusInput(prevItemElement, 'end');
       }
     }
 
-    if (isKey(event.key, Keys.tab) && !eventHasCntrlKey(event)) {
+    if (isKey(event.key, Keys.tab) && !eventHasMetaKey(event)) {
       event.preventDefault();
       increaseIndent(item, indexInView);
+    }
+
+    if (
+      item.parentCount > 1 &&
+      isKey(event.key, Keys.tab) &&
+      eventHasMetaKey(event)
+    ) {
+      event.preventDefault();
+      decreaseIndent(item);
     }
   }
 }

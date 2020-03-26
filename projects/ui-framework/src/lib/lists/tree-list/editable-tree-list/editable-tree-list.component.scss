@@ -145,6 +145,7 @@ $betl-bg-line-width: 1px;
   }
   &:focus::placeholder {
     opacity: 0;
+    transition: none;
   }
 }
 
@@ -229,6 +230,13 @@ $betl-bg-line-width: 1px;
         }
       }
 
+      &.toggleCollapsed span {
+        &:after {
+          font-size: 90%;
+          content: ' ⌘↓ ⌘↑';
+        }
+      }
+
       &.insertNewItem span {
         &:after {
           content: ' ↵';
@@ -250,7 +258,7 @@ $betl-bg-line-width: 1px;
       &.delete span {
         &:after {
           font-size: 90%;
-          content: ' ⌘⌫';
+          content: ' ⇧⌘⌫';
         }
       }
     }

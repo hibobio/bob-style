@@ -85,6 +85,60 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
 
   public itemMenu: MenuItem<TreeListItem>[] = [
     {
+      label: this.translation.toggle_collapsed,
+      key: 'toggleCollapsed',
+      disabled: (menuItem: MenuItem) => {
+        const item = menuItem.data;
+        return !item.childrenCount;
+      },
+      action: (menuItem: MenuItem) => {
+        const item = menuItem.data;
+        if (item.childrenCount) {
+          this.toggleItemCollapsed(item);
+        }
+      },
+    },
+    {
+      label: this.translation.expand_all,
+      key: 'expandAll',
+      action: () => {
+        this.toggleCollapseAll(false);
+      },
+    },
+    {
+      label: this.translation.collapse_all,
+      key: 'collapseAll',
+      separatorAfter: true,
+      action: () => {
+        this.toggleCollapseAll(true);
+      },
+    },
+    {
+      label: this.translation.increase_indent,
+      key: 'increaseIndent',
+      disabled: (menuItem: MenuItem) => {
+        return !TreeListEditUtils.findPossibleParentAmongPrevSiblings(
+          menuItem.data,
+          this.listViewModel,
+          this.itemsMap
+        );
+      },
+      action: (menuItem: MenuItem) => {
+        this.increaseIndent(menuItem.data);
+      },
+    },
+    {
+      label: this.translation.decrease_indent,
+      key: 'decreaseIndent',
+      separatorAfter: true,
+      disabled: (menuItem: MenuItem) => {
+        return menuItem.data.parentCount < 2;
+      },
+      action: (menuItem: MenuItem) => {
+        this.decreaseIndent(menuItem.data);
+      },
+    },
+    {
       label: this.translation.add_item,
       key: 'insertNewItem',
       action: (menuItem: MenuItem) => {
@@ -95,34 +149,6 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
           this.insertNewItem('after', item);
         }
       },
-    },
-    {
-      label: this.translation.increase_indent,
-      key: 'increaseIndent',
-      disabled: (menuItem: MenuItem) => {
-        const item = menuItem.data;
-        if (!item) {
-          return true;
-        }
-
-        const indexInView =
-          this.listViewModel.findIndex(id => id === item.id) || 0;
-        if (indexInView === 0) {
-          return true;
-        }
-
-        const previtemID = this.listViewModel[indexInView - 1];
-        return item.parentIDs.includes(previtemID);
-      },
-      action: (item: MenuItem) => {
-        this.increaseIndent(item.data);
-      },
-    },
-    {
-      label: this.translation.decrease_indent,
-      key: 'decreaseIndent',
-      disabled: true,
-      action: (menuItem: MenuItem) => {},
     },
     {
       label: this.translation.delete_item,
@@ -146,6 +172,12 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
     },
   ];
   public rootItem: TreeListItem;
+
+  public draggingIndex: number;
+  public dragHoverIndex: number;
+  public maxDepth = 10;
+  public depth = 0;
+
   readonly icons = Icons;
   readonly iconType = IconType;
   readonly iconSize = IconSize;
@@ -191,13 +223,8 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
         falseyCheck: isValuevy,
       })
     ) {
-      this.listToListViewModel();
-
-      TreeListModelUtils.toggleCollapseAllItemsInMap(
-        this.itemsMap,
-        this.startCollapsed,
-        true
-      );
+      this.listViewModel = this.listToListViewModel();
+      this.toggleCollapseAll(this.startCollapsed);
     }
 
     if (
@@ -210,17 +237,45 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
     }
   }
 
-  protected listToListViewModel(): itemID[] {
-    this.listViewModel = this.modelSrvc.getListViewModel(
-      this.list,
-      this.itemsMap,
-      {
-        expand: true,
-        keyMap: this.keyMap,
-      }
-    );
+  protected listToListViewModel(list: TreeListOption[] = this.list): itemID[] {
+    return this.modelSrvc.getListViewModel(list, this.itemsMap, {
+      expand: true,
+      keyMap: this.keyMap,
+    });
+  }
 
-    return this.listViewModel;
+  protected listViewModelToList(
+    listViewModel: itemID[] = this.listViewModel
+  ): TreeListOption[] {
+    const processed: Set<itemID> = new Set();
+
+    const reducer = (acc: TreeListOption[], id: itemID) => {
+      const item = this.itemsMap.get(id);
+
+      if (
+        processed.has(item.id) ||
+        (!item.childrenCount && !item.name.trim())
+      ) {
+        return acc;
+      }
+
+      processed.add(item.id);
+
+      const itemOut: TreeListOption = {
+        [this.keyMap.id]: item.id,
+        [this.keyMap.name]: item.name.trim() || 'Untitled',
+      };
+
+      if (item.childrenCount) {
+        itemOut[this.keyMap.children] = item.childrenIDs.reduce(reducer, []);
+      }
+
+      acc.push(itemOut);
+
+      return acc;
+    };
+
+    return listViewModel.reduce(reducer, []);
   }
 
   public toggleItemCollapsed(
@@ -230,6 +285,10 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
   ): void {
     TreeListModelUtils.toggleItemCollapsed(item, this.itemsMap, force, true);
     this.cd.detectChanges();
+  }
+
+  public toggleCollapseAll(force: boolean = null): void {
+    TreeListModelUtils.toggleCollapseAllItemsInMap(this.itemsMap, force, true);
   }
 
   public onListClick(event: MouseEvent): void {
@@ -248,28 +307,27 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
       insertNewItem: this.insertNewItem.bind(this),
       deleteItem: this.deleteItem.bind(this),
       increaseIndent: this.increaseIndent.bind(this),
+      decreaseIndent: this.decreaseIndent.bind(this),
       toggleItemCollapsed: this.toggleItemCollapsed.bind(this),
     });
-  }
-
-  public deleteItem(
-    item: TreeListItem,
-    context: TreeListGetItemEditContext = null
-  ): void {
-    TreeListEditUtils.deleteItem(
-      item,
-      context,
-      this.itemsMap,
-      this.listViewModel
-    );
-
-    this.cd.detectChanges();
-    this.emitChange();
   }
 
   public emitChange(): void {
     this.list = this.listViewModelToList();
     this.changed.emit(this.list);
+  }
+
+  public getDragState(index: number) {
+    return this.draggingIndex === index
+      ? 'dragged'
+      : (this.draggingIndex < index && this.dragHoverIndex === index) ||
+        (this.draggingIndex > index + 1 && this.dragHoverIndex === index + 1)
+      ? 'drag-hover-below'
+      : this.draggingIndex > index &&
+        this.dragHoverIndex === index &&
+        index === 0
+      ? 'drag-hover-above'
+      : null;
   }
 
   public trackBy(index: number, id: itemID): itemID {
@@ -312,12 +370,6 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
     this.DOM.setCssProps(listEl, styles as Styles);
   }
 
-  protected listViewModelToList(
-    listViewModel: itemID[] = this.listViewModel
-  ): TreeListOption[] {
-    return [];
-  }
-
   public insertNewItem(
     where: InsertItemLocation,
     target: TreeListItem
@@ -325,10 +377,19 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
     return target;
   }
 
+  public deleteItem(
+    item: TreeListItem,
+    context: TreeListGetItemEditContext = null
+  ): void {}
+
   public increaseIndent(
     item: TreeListItem,
     indexInView: number = null
   ): TreeListItem {
+    return item;
+  }
+
+  public decreaseIndent(item: TreeListItem): TreeListItem {
     return item;
   }
 

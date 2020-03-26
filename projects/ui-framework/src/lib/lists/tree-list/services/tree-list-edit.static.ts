@@ -110,24 +110,25 @@ export class TreeListEditUtils {
 
     const insertionIndexInViewModel =
       where === 'after'
-        ? targetIndexInViewModel + 1
+        ? this.findViewIndexOfNextSibling(
+            target,
+            listViewModel,
+            itemsMap,
+            targetIndexInViewModel + 1
+          )
         : where === 'lastChildOf'
-        ? function() {
+        ? (() => {
             const modelLength = listViewModel.length;
             if (target.id === BTL_ROOT_ID || modelLength === 0) {
               return modelLength;
             }
-            return (
-              listViewModel
-                .slice(targetIndexInViewModel + 1)
-                .findIndex(
-                  (id: itemID) =>
-                    !itemsMap.get(id).parentIDs.includes(target.id)
-                ) +
-              targetIndexInViewModel +
-              1
+            return this.findViewIndexOfNextSibling(
+              target,
+              listViewModel,
+              itemsMap,
+              targetIndexInViewModel + 1
             );
-          }.bind(this)()
+          })()
         : listViewModel.findIndex(id => id === parent.childrenIDs[0]);
 
     if (!target) {
@@ -144,5 +145,68 @@ export class TreeListEditUtils {
       targetIndexInParent,
       targetIndexInViewModel,
     };
+  }
+
+  public static findViewIndexOfNextSibling(
+    item: TreeListItem,
+    listViewModel: itemID[],
+    itemsMap: TreeListItemMap,
+    startIndex = 0
+  ): number {
+    if (listViewModel.length === startIndex || !item.childrenCount) {
+      return startIndex;
+    }
+    return (
+      // skips children of target
+      listViewModel
+        .slice(startIndex)
+        .findIndex(
+          (id: itemID) => !itemsMap.get(id).parentIDs.includes(item.id)
+        ) + startIndex
+    );
+  }
+
+  public static findPossibleParentAmongPrevSiblings(
+    item: TreeListItem,
+    listViewModel: itemID[],
+    itemsMap: TreeListItemMap,
+    indexInView: number = null
+  ): TreeListItem {
+    if (indexInView === null) {
+      indexInView = listViewModel.findIndex(id => id === item.id) || 0;
+    }
+    console.log(
+      'findPossibleParentAmongPrevSiblings',
+      'item',
+      item.name,
+      'indexInView',
+      indexInView
+    );
+
+    if (indexInView === 0) {
+      return null;
+    }
+
+    let counter = 1;
+    let previtemID = listViewModel[indexInView - counter];
+    let prevItem = itemsMap.get(previtemID);
+
+    console.log('findPossibleParentAmongPrevSiblings prevItem 1', prevItem.id);
+
+    while (
+      indexInView - counter > 0 &&
+      prevItem.parentCount > item.parentCount
+    ) {
+      previtemID = listViewModel[indexInView - ++counter];
+      prevItem = itemsMap.get(previtemID);
+    }
+
+    console.log(
+      'findPossibleParentAmongPrevSiblings prevItem 2',
+      prevItem.id,
+      prevItem
+    );
+
+    return !prevItem || item.parentIDs.includes(previtemID) ? null : prevItem;
   }
 }

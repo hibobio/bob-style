@@ -10,6 +10,7 @@ export interface MenuItem<T = any> {
   openLeft?: boolean;
   panelClass?: string;
   children?: MenuItem[];
+  separatorAfter?: boolean;
   action?($event): void;
 }
 

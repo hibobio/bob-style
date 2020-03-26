@@ -53,5 +53,11 @@
         }
       }
     }
+
+    .separator-after {
+      border-bottom: 1px solid $border-color-light;
+      padding-bottom: 5px;
+      margin-bottom: 5px;
+    }
   }
 }

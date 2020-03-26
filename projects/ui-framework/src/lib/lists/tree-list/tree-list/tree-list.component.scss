@@ -270,12 +270,12 @@ $btl-max-depth: 10;
   [aria-readonly='true'] .btl-item,
   [aria-disabled='true'] .btl-item,
   .btl-item.disabled {
-    &:hover {
+    &:hover:not(:focus) {
       background: none;
     }
   }
 
-  [aria-readonly='true'] .btl-item-option,
+  // [aria-readonly='true'] .btl-item-option,
   [aria-disabled='true'].btl-item-option,
   .btl-item-option.disabled {
     pointer-events: none;

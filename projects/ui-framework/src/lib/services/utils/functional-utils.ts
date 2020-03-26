@@ -517,6 +517,9 @@ export const isMetaKey = (key: string): boolean =>
 export const eventHasCntrlKey = (event: KeyboardEvent | MouseEvent): boolean =>
   event.metaKey || event.ctrlKey;
 
+export const eventHasShiftlKey = (event: KeyboardEvent | MouseEvent): boolean =>
+  event.shiftKey;
+
 export const eventHasMetaKey = (event: KeyboardEvent | MouseEvent): boolean =>
   event.metaKey || event.shiftKey || event.ctrlKey || event.altKey;
 

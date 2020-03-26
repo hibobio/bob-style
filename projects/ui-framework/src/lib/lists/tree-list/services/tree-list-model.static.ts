@@ -45,8 +45,6 @@ export class TreeListModelUtils {
   ): void {
     item.collapsed = isBoolean(force) ? force : !item.collapsed;
 
-    console.log('model static item collapsed', item.collapsed);
-
     if (setHidden) {
       this.withEachItemOfTreeDown(
         item,

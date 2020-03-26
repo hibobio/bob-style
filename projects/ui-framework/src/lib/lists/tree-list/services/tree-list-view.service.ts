@@ -3,6 +3,7 @@ import { TreeListItem, itemID, TreeListItemMap } from '../tree-list.interface';
 import {
   isEmptyArray,
   isEmptyMap,
+  isNullOrUndefined,
 } from '../../../services/utils/functional-utils';
 import { LIST_EL_HEIGHT } from '../../list.consts';
 import { TreeListModelUtils } from './tree-list-model.static';
@@ -65,6 +66,8 @@ export class TreeListViewService {
     let { item, itemElement, listElement, indexInView } = config;
     const { listViewModel, itemsMap } = config;
 
+    console.log('findItemElement', config);
+
     if (
       (!itemElement &&
         (!item || !listElement || isEmptyArray(listViewModel))) ||
@@ -77,7 +80,7 @@ export class TreeListViewService {
       return;
     }
 
-    if (itemElement && !indexInView) {
+    if (itemElement && isNullOrUndefined(indexInView)) {
       indexInView = parseInt(itemElement.getAttribute('data-index'), 10);
     }
 
@@ -93,7 +96,7 @@ export class TreeListViewService {
       }
     }
 
-    if (item && !indexInView) {
+    if (item && isNullOrUndefined(indexInView)) {
       indexInView = listViewModel.findIndex(id => id === item.id);
 
       if (indexInView === -1) {

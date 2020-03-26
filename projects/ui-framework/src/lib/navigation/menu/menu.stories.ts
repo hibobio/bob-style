@@ -146,6 +146,7 @@ menu = [
   clickToOpenSub? | boolean | child menu to open on click (vs on hover, as by default) | false
   openLeft? | boolean | child menu should open to the left | false
   panelClass? | string | class to be added to child menu | &nbsp;
+  separatorAfter? | boolean | if true, will add a divider line after item | false
   action? |  (item?: MenuItem) => void | function to be called on item click | &nbsp;
   children | MenuItem[] | sub-menu items | &nbsp;
 
