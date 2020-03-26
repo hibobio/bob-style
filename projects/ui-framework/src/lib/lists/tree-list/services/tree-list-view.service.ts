@@ -66,8 +66,6 @@ export class TreeListViewService {
     let { item, itemElement, listElement, indexInView } = config;
     const { listViewModel, itemsMap } = config;
 
-    console.log('findItemElement', config);
-
     if (
       (!itemElement &&
         (!item || !listElement || isEmptyArray(listViewModel))) ||

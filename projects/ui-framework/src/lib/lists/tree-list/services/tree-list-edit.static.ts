@@ -93,15 +93,14 @@ export class TreeListEditUtils {
         parentCount: 1,
       } as TreeListItem);
 
-    const targetIndexInParent = parent.childrenIDs.findIndex(
-      id => id === target.id
-    );
+    const targetIndexInParent =
+      parent.childrenIDs.findIndex(id => id === target.id) || 0;
 
     const insertionIndexInParent =
       where === 'after'
         ? targetIndexInParent + 1
         : where === 'lastChildOf'
-        ? parent.childrenCount
+        ? parent.childrenCount || 0
         : 0;
 
     const targetIndexInViewModel = listViewModel.findIndex(
@@ -175,13 +174,6 @@ export class TreeListEditUtils {
     if (indexInView === null) {
       indexInView = listViewModel.findIndex(id => id === item.id) || 0;
     }
-    console.log(
-      'findPossibleParentAmongPrevSiblings',
-      'item',
-      item.name,
-      'indexInView',
-      indexInView
-    );
 
     if (indexInView === 0) {
       return null;
@@ -191,8 +183,6 @@ export class TreeListEditUtils {
     let previtemID = listViewModel[indexInView - counter];
     let prevItem = itemsMap.get(previtemID);
 
-    console.log('findPossibleParentAmongPrevSiblings prevItem 1', prevItem.id);
-
     while (
       indexInView - counter > 0 &&
       prevItem.parentCount > item.parentCount
@@ -200,12 +190,6 @@ export class TreeListEditUtils {
       previtemID = listViewModel[indexInView - ++counter];
       prevItem = itemsMap.get(previtemID);
     }
-
-    console.log(
-      'findPossibleParentAmongPrevSiblings prevItem 2',
-      prevItem.id,
-      prevItem
-    );
 
     return !prevItem || item.parentIDs.includes(previtemID) ? null : prevItem;
   }

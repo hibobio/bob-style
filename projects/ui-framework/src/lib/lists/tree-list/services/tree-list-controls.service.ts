@@ -322,7 +322,6 @@ export class TreeListControlsService {
               (eventHasCntrlKey(event) && eventHasShiftlKey(event))))
         )
       ) {
-        console.log('will exit');
         return;
       }
 

@@ -89,8 +89,6 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
       this.listViewModel
     );
 
-    console.log('insertNewItem', where, context);
-
     if (where === 'after' && !target.name.trim()) {
       return;
     }
@@ -130,12 +128,18 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
       this.listViewModel
     );
 
+    console.log('moveItem', item, where, target, context);
+
     const { parent } = context;
 
+    // remove item from parent, just in case
     parent.childrenIDs = parent.childrenIDs?.filter(id => id !== item.id) || [];
     parent.childrenCount = parent.childrenIDs.length;
 
+    // remove item from viewmodel
     this.listViewModel = this.listViewModel.filter(id => id !== item.id);
+
+    // clear
 
     this.insertItem(item, where, target, context);
     item.moved = true;
@@ -176,7 +180,6 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     }
 
     if (parent.collapsed) {
-      console.log('should expand');
       this.toggleItemCollapsed(parent, null, false);
     }
 
