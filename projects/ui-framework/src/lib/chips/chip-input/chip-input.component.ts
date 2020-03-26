@@ -208,6 +208,7 @@ export class ChipInputComponent extends BaseFormElement
     this.updatePossibleChips();
     this.transmit({ removed: name });
     this.autocompleteTrigger.closePanel();
+    this.cd.detectChanges();
   }
 
   private unSelectLastChip(): void {
@@ -246,9 +247,7 @@ export class ChipInputComponent extends BaseFormElement
   public onInputBlur(): void {
     this.inputFocused = false;
     if (!this.autocompletePanel.isOpen) {
-      this.zone.run(() => {
-        this.addChipFromInput();
-      });
+      this.addChipFromInput();
     }
     this.cd.detectChanges();
   }

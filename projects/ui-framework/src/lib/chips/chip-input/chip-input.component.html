@@ -30,8 +30,8 @@
            [matAutocomplete]="auto"
            [matAutocompleteConnectedTo]="wrapper"
            (focus.outside-zone)="onInputFocus()"
-           (blur.outside-zone)="onInputBlur()"
-           (input.outside-zone)="onInputChange($event)"
+           (blur)="onInputBlur()"
+           (input)="onInputChange($event)"
            (keydown.outside-zone)="onInputKeydown($event)"
            (keyup.outside-zone)="onInputKeyup($event)">
   </b-chip-list>
