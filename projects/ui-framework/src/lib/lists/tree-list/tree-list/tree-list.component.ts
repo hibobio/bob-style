@@ -27,7 +27,7 @@ import {
 } from '../tree-list.interface';
 import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
-import { TreeListViewService } from '../services/tree-list-view.service';
+import { TreeListViewUtils } from '../services/tree-list-view.static';
 import { BaseTreeListElement } from './tree-list.abstract';
 import { BehaviorSubject } from 'rxjs';
 import { TreeListValueUtils } from '../services/tree-list-value.static';
@@ -44,14 +44,13 @@ export class TreeListComponent extends BaseTreeListElement {
   constructor(
     modelSrvc: TreeListModelService,
     cntrlsSrvc: TreeListControlsService,
-    viewSrvc: TreeListViewService,
     mobileService: MobileService,
     DOM: DOMhelpers,
     cd: ChangeDetectorRef,
     zone: NgZone,
     host: ElementRef
   ) {
-    super(modelSrvc, cntrlsSrvc, viewSrvc, mobileService, DOM, cd, zone, host);
+    super(modelSrvc, cntrlsSrvc, mobileService, DOM, cd, zone, host);
     this.listActions = {
       apply: false,
       cancel: false,
@@ -228,12 +227,12 @@ export class TreeListComponent extends BaseTreeListElement {
       const { firstSelectedItem } = mapUpdateResult;
 
       if (firstSelectedItem) {
-        this.viewSrvc.expandTillItemsByID(this.value, this.itemsMap);
+        TreeListViewUtils.expandTillItemsByID(this.value, this.itemsMap);
         this.updateListViewModel();
         viewModelWasUpdated = true;
         this.cd.detectChanges();
 
-        this.viewSrvc.scrollToItem({
+        TreeListViewUtils.scrollToItem({
           item: firstSelectedItem,
           listElement: this.listElement.nativeElement,
           listViewModel: this.listViewModel,

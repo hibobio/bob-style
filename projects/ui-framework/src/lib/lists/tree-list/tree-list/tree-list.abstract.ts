@@ -29,7 +29,6 @@ import { SelectType } from '../../list.enum';
 import { ListFooterActionsState } from '../../list.interface';
 import { itemID, TreeListItemMap, TreeListItem } from '../tree-list.interface';
 import { TreeListInputOutput } from '../tree-list-IO.abstract';
-import { TreeListViewService } from '../services/tree-list-view.service';
 import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
 import { LIST_ACTIONS_STATE_DEF } from '../../list-footer/list-footer.const';
@@ -49,7 +48,6 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   constructor(
     protected modelSrvc: TreeListModelService,
     protected cntrlsSrvc: TreeListControlsService,
-    protected viewSrvc: TreeListViewService,
     protected mobileService: MobileService,
     protected DOM: DOMhelpers,
     protected cd: ChangeDetectorRef,

@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { MenuModule } from '../../../navigation/menu/menu.module';
 import { IconsModule } from '../../../icons/icons.module';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
-import { TreeListViewService } from '../services/tree-list-view.service';
 import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
@@ -16,7 +15,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
   exports: [EditableTreeListComponent],
   providers: [
     TreeListModelService,
-    TreeListViewService,
     TreeListControlsService,
     EventManagerPlugins[0],
   ],

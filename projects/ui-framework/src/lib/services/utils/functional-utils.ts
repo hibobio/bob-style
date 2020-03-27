@@ -222,6 +222,8 @@ export const arrayDifference = <T = any>(arrA: T[], arrB: T[]): T[] => {
 export const arrayIntersection = <T = any>(arrA: T[], arrB: T[]): T[] =>
   arrA.filter(x => arrB.includes(x));
 
+export const arrayCommon = arrayIntersection;
+
 export const simpleArraysEqual = <T>(arr1: T[], arr2: T[]) => {
   if (!isArray(arr1) || !isArray(arr2) || arr1.length !== arr2.length) {
     return false;

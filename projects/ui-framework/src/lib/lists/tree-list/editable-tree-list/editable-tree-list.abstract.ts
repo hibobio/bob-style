@@ -34,7 +34,6 @@ import {
 } from '../../../icons/icons.enum';
 import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
-import { TreeListViewService } from '../services/tree-list-view.service';
 import { simpleChange } from '../../../services/utils/test-helpers';
 import {
   TreeListGetItemEditContext,
@@ -52,7 +51,6 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
   constructor(
     protected modelSrvc: TreeListModelService,
     protected cntrlsSrvc: TreeListControlsService,
-    protected viewSrvc: TreeListViewService,
     protected DOM: DOMhelpers,
     protected cd: ChangeDetectorRef,
     protected host: ElementRef

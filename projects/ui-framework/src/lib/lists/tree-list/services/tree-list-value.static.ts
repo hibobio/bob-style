@@ -3,7 +3,13 @@ import {
   asArray,
   isNotEmptyArray,
 } from '../../../services/utils/functional-utils';
-import { TreeListValue, itemID, TreeListItemMap } from '../tree-list.interface';
+import {
+  TreeListValue,
+  itemID,
+  TreeListItemMap,
+  TreeListOption,
+} from '../tree-list.interface';
+import { BTL_VALUE_SEPARATOR_DEF } from '../tree-list.const';
 
 export class TreeListValueUtils {
   private static isTreeListValue(
@@ -79,5 +85,45 @@ export class TreeListValueUtils {
 
       return displayValues;
     }
+  }
+
+  public static getTreeValueFromOptionListByID(
+    list: TreeListOption[],
+    id: itemID,
+    separator = BTL_VALUE_SEPARATOR_DEF
+  ): string {
+    const listToValuesReducer = (
+      parentValue: string | string[],
+      stopAtId: itemID = null
+    ) => (
+      valuesMap: Map<itemID, string[]>,
+      item: TreeListOption,
+      index: number,
+      array: TreeListOption[]
+    ) => {
+      valuesMap.set(
+        item.serverId,
+        (valuesMap.get(item.serverId) || []).concat(
+          (parentValue !== null && parentValue) || [],
+          item.value
+        )
+      );
+      if (stopAtId !== null && item.serverId === stopAtId) {
+        array.splice(1);
+      }
+      if (item.children) {
+        const childrenCopy = item.children.slice();
+        childrenCopy.reduce(
+          listToValuesReducer(valuesMap.get(item.serverId), stopAtId),
+          valuesMap
+        );
+      }
+      return valuesMap;
+    };
+    const listCopy = list.slice();
+    return listCopy
+      .reduce(listToValuesReducer(null, id), new Map())
+      .get(id)
+      .join(separator);
   }
 }

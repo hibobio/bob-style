@@ -11,7 +11,7 @@ import { TreeListItem } from '../tree-list.interface';
 import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListModelUtils } from '../services/tree-list-model.static';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
-import { TreeListViewService } from '../services/tree-list-view.service';
+import { TreeListViewUtils } from '../services/tree-list-view.static';
 import {
   TreeListGetItemEditContext,
   InsertItemLocation,
@@ -29,12 +29,11 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
   constructor(
     modelSrvc: TreeListModelService,
     cntrlsSrvc: TreeListControlsService,
-    viewSrvc: TreeListViewService,
     DOM: DOMhelpers,
     cd: ChangeDetectorRef,
     host: ElementRef
   ) {
-    super(modelSrvc, cntrlsSrvc, viewSrvc, DOM, cd, host);
+    super(modelSrvc, cntrlsSrvc, DOM, cd, host);
   }
 
   public insertItem(
@@ -68,7 +67,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
 
     this.cd.detectChanges();
 
-    this.viewSrvc.findAndFocusInput(
+    TreeListViewUtils.findAndFocusInput(
       this.listElement.nativeElement.querySelector(`[data-id="${item.id}"]`),
       'start'
     );
@@ -106,7 +105,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
       (where === 'firstChildOf' || where === 'lastChildOf') &&
       context.parent.collapsed
     ) {
-      this.toggleItemCollapsed(context.parent);
+      this.toggleItemCollapsed(context.parent, null, false);
     }
 
     this.insertItem(newItem, where, target, context);
@@ -265,7 +264,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
       if (target.value.trim()) {
         this.emitChange();
       } else {
-        const { item } = this.viewSrvc.getItemFromEl(
+        const { item } = TreeListViewUtils.getItemFromElement(
           target,
           this.itemsMap,
           this.listViewModel

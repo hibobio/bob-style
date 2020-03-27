@@ -14,6 +14,7 @@ import {
   stringify,
   simpleArraysEqual,
   joinArrays,
+  arrayIntersection,
 } from '../../../services/utils/functional-utils';
 import {
   BTL_ROOT_ID,
@@ -298,6 +299,11 @@ export class TreeListModelService {
     const previousValue = Array.from(
       itemsMap.get(BTL_ROOT_ID).selectedIDs || []
     );
+
+    value = value.filter(
+      id => !arrayIntersection(value, itemsMap.get(id).parentIDs).length
+    );
+
     const isSameValue = simpleArraysEqual(previousValue, value);
     let firstSelectedItem: TreeListItem;
 
@@ -334,7 +340,7 @@ export class TreeListModelService {
         TreeListModelUtils.updateItemParentsSelectedCount(item, itemsMap);
 
         if (item.childrenCount) {
-          const deselected = TreeListModelUtils.updateChildrenParentSelected(
+          const deselected = TreeListModelUtils.updateItemChildrenParentSelected(
             item,
             itemsMap
           );
@@ -352,45 +358,5 @@ export class TreeListModelService {
       isSameValue,
       firstSelectedItem,
     };
-  }
-
-  public getTreeValueFromOptionListByID(
-    list: TreeListOption[],
-    id: itemID,
-    separator = BTL_VALUE_SEPARATOR_DEF
-  ): string {
-    const listToValuesReducer = (
-      parentValue: string | string[],
-      stopAtId: itemID = null
-    ) => (
-      valuesMap: Map<itemID, string[]>,
-      item: TreeListOption,
-      index: number,
-      array: TreeListOption[]
-    ) => {
-      valuesMap.set(
-        item.serverId,
-        (valuesMap.get(item.serverId) || []).concat(
-          (parentValue !== null && parentValue) || [],
-          item.value
-        )
-      );
-      if (stopAtId !== null && item.serverId === stopAtId) {
-        array.splice(1);
-      }
-      if (item.children) {
-        const childrenCopy = item.children.slice();
-        childrenCopy.reduce(
-          listToValuesReducer(valuesMap.get(item.serverId), stopAtId),
-          valuesMap
-        );
-      }
-      return valuesMap;
-    };
-    const listCopy = list.slice();
-    return listCopy
-      .reduce(listToValuesReducer(null, id), new Map())
-      .get(id)
-      .join(separator);
   }
 }

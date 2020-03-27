@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import { TreeListItem, itemID, TreeListItemMap } from '../tree-list.interface';
 import {
   isEmptyArray,
@@ -8,37 +7,45 @@ import {
 import { LIST_EL_HEIGHT } from '../../list.consts';
 import { TreeListModelUtils } from './tree-list-model.static';
 
-interface TreeListScrollToItemConfig {
-  item?: TreeListItem;
-  itemElement?: HTMLElement;
-  listElement?: HTMLElement;
-  indexInView?: number;
+interface TreeListItemElementContext {
+  item: TreeListItem;
+  itemElement: HTMLElement;
+  indexInView: number;
+  listElement: HTMLElement;
   listViewModel?: itemID[];
   itemsMap?: TreeListItemMap;
   maxHeightItems?: number;
 }
 
-@Injectable()
-export class TreeListViewService {
-  constructor() {}
-
-  public expandTillItemsByID(IDs: itemID[] = [], itemsMap: TreeListItemMap) {
+export class TreeListViewUtils {
+  //
+  public static expandTillItemsByID(
+    IDs: itemID[] = [],
+    itemsMap: TreeListItemMap
+  ) {
     IDs.forEach(id => {
       const item = itemsMap.get(id);
-      TreeListModelUtils.setPropToTreeUp(item, { collapsed: false }, itemsMap);
+      TreeListModelUtils.walkTree(
+        'up',
+        item,
+        itm => (itm.collapsed = false),
+        itemsMap
+      );
     });
   }
 
-  public scrollToItem(config: TreeListScrollToItemConfig): void {
+  public static scrollToItem(
+    config: Partial<TreeListItemElementContext>
+  ): void {
     const {
       item,
       itemElement,
       listElement,
       maxHeightItems,
-    } = this.findItemElement(config);
+    } = this.getItemElementContext(config);
 
     if (!itemElement) {
-      console.error(`[TreeListViewService.scrollToItem]:
+      console.error(`[TreeListViewUtils.scrollToItem]:
       No element to scroll to.`);
       return;
     }
@@ -60,9 +67,9 @@ export class TreeListViewService {
     }, 0);
   }
 
-  public findItemElement(
-    config: TreeListScrollToItemConfig
-  ): TreeListScrollToItemConfig {
+  public static getItemElementContext(
+    config: Partial<TreeListItemElementContext>
+  ): TreeListItemElementContext {
     let { item, itemElement, listElement, indexInView } = config;
     const { listViewModel, itemsMap } = config;
 
@@ -73,7 +80,7 @@ export class TreeListViewService {
         !item &&
         (isEmptyMap(itemsMap) || isEmptyArray(listViewModel)))
     ) {
-      console.error(`[TreeListViewService.findItemElement]:
+      console.error(`[TreeListViewUtils.getItemElementContext]:
           Not enough data to find item/element`);
       return;
     }
@@ -87,7 +94,7 @@ export class TreeListViewService {
 
       if (!item) {
         console.error(
-          `[TreeListViewService.scrollToItem]:
+          `[TreeListViewUtils.scrollToItem]:
         Data for item ${itemElement.getAttribute('id')} was not found.`
         );
         return;
@@ -99,7 +106,7 @@ export class TreeListViewService {
 
       if (indexInView === -1) {
         console.error(
-          `[TreeListViewService.scrollToItem]:
+          `[TreeListViewUtils.scrollToItem]:
         Item ${item.id} was not found in view.`
         );
         return;
@@ -122,11 +129,11 @@ export class TreeListViewService {
     };
   }
 
-  public getItemFromEl(
+  public static getItemFromElement(
     itemElement: HTMLElement,
     itemsMap: TreeListItemMap,
     listViewModel: itemID[]
-  ): { itemElement: HTMLElement; indexInView: number; item: TreeListItem } {
+  ): Partial<TreeListItemElementContext> {
     itemElement = itemElement.closest('[data-index]');
 
     const indexInView: number =
@@ -137,11 +144,14 @@ export class TreeListViewService {
     return { itemElement, indexInView, item };
   }
 
-  public findInputInElement(itemElement: HTMLElement): HTMLInputElement {
+  public static findInputInElement(itemElement: HTMLElement): HTMLInputElement {
     return itemElement?.querySelector('.betl-item-input') as HTMLInputElement;
   }
 
-  public findAndFocusInput(element: HTMLElement, at: 'start' | 'end'): void {
+  public static findAndFocusInput(
+    element: HTMLElement,
+    at: 'start' | 'end'
+  ): void {
     const input = this.findInputInElement(element);
     if (!input) {
       console.warn('cant find input in element', element);

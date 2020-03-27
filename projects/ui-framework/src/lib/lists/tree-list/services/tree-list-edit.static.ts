@@ -13,7 +13,6 @@ import { TreeListModelUtils } from './tree-list-model.static';
 
 export class TreeListEditUtils {
   //
-
   public static deleteItem(
     item: TreeListItem,
     context: TreeListGetItemEditContext = null,
@@ -23,11 +22,10 @@ export class TreeListEditUtils {
     const parent =
       context?.parent || itemsMap.get(item.parentIDs[item.parentCount - 1]);
 
-    const deletedItemIDs = TreeListModelUtils.withEachItemOfTreeDown(
+    const deletedItemIDs = TreeListModelUtils.walkTree(
+      'down',
       item,
-      itm => {
-        itemsMap.delete(itm.id);
-      },
+      itm => itemsMap.delete(itm.id),
       itemsMap
     );
 

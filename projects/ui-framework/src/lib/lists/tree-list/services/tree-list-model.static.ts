@@ -4,7 +4,6 @@ import {
   TreeListItemMap,
   TreeListOption,
   TreeListKeyMap,
-  ViewFilter,
 } from '../tree-list.interface';
 import {
   isNullOrUndefined,
@@ -12,11 +11,10 @@ import {
   isBoolean,
 } from '../../../services/utils/functional-utils';
 import { BTL_VALUE_SEPARATOR_DEF, BTL_ROOT_ID } from '../tree-list.const';
-import { TreeListSearchUtils } from './tree-list-search.static';
 
 export interface TreeListChildrenToggleSelectReducerResult {
-  IDs: itemID[];
-  items: TreeListItem[];
+  IDs: Set<itemID>;
+  items: Set<TreeListItem>;
 }
 
 export type ChildrenToggleSelectReducer = (
@@ -25,6 +23,44 @@ export type ChildrenToggleSelectReducer = (
 ) => TreeListChildrenToggleSelectReducerResult;
 
 export class TreeListModelUtils {
+  public static walkTree(
+    direction: 'up' | 'down',
+    startItem: TreeListItem,
+    process: (item: TreeListItem) => void,
+    itemsMap: TreeListItemMap,
+    affectedIDs: itemID[] = []
+  ): itemID[] {
+    process(startItem);
+    affectedIDs.push(startItem.id);
+
+    if (startItem[direction === 'up' ? 'parentCount' : 'childrenCount']) {
+      startItem[direction === 'up' ? 'parentIDs' : 'childrenIDs'].forEach(
+        id => {
+          const item = itemsMap.get(id);
+          this.walkTree(direction, item, process, itemsMap, affectedIDs);
+        }
+      );
+    }
+
+    return affectedIDs;
+  }
+
+  public static walkTreeAndAssign(
+    direction: 'up' | 'down',
+    startItem: TreeListItem,
+    set: Partial<TreeListItem> = {},
+    itemsMap: TreeListItemMap,
+    affectedIDs: itemID[] = []
+  ): itemID[] {
+    this.walkTree(
+      direction,
+      startItem,
+      item => Object.assign(item, set),
+      itemsMap
+    );
+    return affectedIDs;
+  }
+
   public static toggleCollapseAllItemsInMap(
     itemsMap: TreeListItemMap,
     force: boolean = null,
@@ -46,9 +82,10 @@ export class TreeListModelUtils {
     item.collapsed = isBoolean(force) ? force : !item.collapsed;
 
     if (setHidden) {
-      this.withEachItemOfTreeDown(
+      this.walkTree(
+        'down',
         item,
-        (itm: TreeListItem) => {
+        itm => {
           if (
             !itm.parentIDs.find(id => {
               const i = itemsMap.get(id);
@@ -82,19 +119,52 @@ export class TreeListModelUtils {
     });
   }
 
-  public static filteredChildrenCount(
-    item: TreeListItem,
-    itemsMap: TreeListItemMap,
-    viewFilter: ViewFilter
-  ): number {
-    return (
-      item.childrenIDs?.filter(id =>
-        TreeListSearchUtils.itemFilter(itemsMap.get(id), viewFilter)
-      ).length || 0
+  public static updateItemChildrenParentSelected(
+    parentGroupItem: TreeListItem,
+    itemsMap: TreeListItemMap
+  ): TreeListChildrenToggleSelectReducerResult {
+    //
+    const childrenToggleSelectReducer = (
+      parentSelected: boolean
+    ): ChildrenToggleSelectReducer => (
+      deselected = {
+        IDs: new Set(),
+        items: new Set(),
+      },
+      id
+    ) => {
+      const itm = itemsMap.get(id);
+
+      if (itm.selected && parentSelected) {
+        deselected.IDs.add(id);
+        deselected.items.add(itm);
+        itm.selected = false;
+      }
+
+      itm.parentSelected = parentSelected;
+
+      if (itm.childrenCount) {
+        return itm.childrenIDs.reduce(
+          childrenToggleSelectReducer(parentSelected),
+          deselected
+        );
+      }
+
+      return deselected;
+    };
+
+    const result = (parentGroupItem.childrenIDs || []).reduce(
+      childrenToggleSelectReducer(parentGroupItem.selected),
+      undefined
     );
+    return result;
   }
 
-  public static updateChildrenParentSelected(
+  //
+  //
+  //
+
+  public static updateItemChildrenParentSelected2(
     item: TreeListItem,
     itemsMap: TreeListItemMap
   ): TreeListChildrenToggleSelectReducerResult {
@@ -109,18 +179,19 @@ export class TreeListModelUtils {
     parentSelected: boolean,
     itemsMap: TreeListItemMap
   ): ChildrenToggleSelectReducer {
+    //
     const reducer: ChildrenToggleSelectReducer = (
       acc = {
-        IDs: [],
-        items: [],
+        IDs: new Set(),
+        items: new Set(),
       },
       id
     ) => {
       const item = itemsMap.get(id);
 
       if (item.selected && parentSelected) {
-        acc.IDs.push(id);
-        acc.items.push(item);
+        acc.IDs.add(id);
+        acc.items.add(item);
         item.selected = false;
       }
 
@@ -139,6 +210,10 @@ export class TreeListModelUtils {
     return reducer;
   }
 
+  //
+  //
+  //
+
   public static updateMap<T = TreeListItem>(
     itemsMap: Map<itemID, T>,
     key: itemID,
@@ -146,53 +221,6 @@ export class TreeListModelUtils {
     onlyValue = false
   ): Map<itemID, T> {
     return itemsMap.set(key, ((!onlyValue ? item : item.value) as any) as T);
-  }
-
-  public static withEachItemOfTreeDown(
-    topItem: TreeListItem,
-    process: (item: TreeListItem) => void,
-    itemsMap: TreeListItemMap,
-    affectedIDs: itemID[] = []
-  ): itemID[] {
-    process(topItem);
-    affectedIDs.push(topItem.id);
-
-    if (topItem.childrenCount) {
-      topItem.childrenIDs.forEach(id => {
-        const child = itemsMap.get(id);
-        this.withEachItemOfTreeDown(child, process, itemsMap, affectedIDs);
-      });
-    }
-
-    return affectedIDs;
-  }
-
-  public static setPropToTreeDown(
-    topItem: TreeListItem,
-    set: Partial<TreeListItem> = {},
-    itemsMap: TreeListItemMap
-  ): void {
-    Object.assign(topItem, set);
-    if (topItem.childrenCount) {
-      topItem.childrenIDs.forEach(id => {
-        const child = itemsMap.get(id);
-        this.setPropToTreeDown(child, set, itemsMap);
-      });
-    }
-  }
-
-  public static setPropToTreeUp(
-    deepItem: TreeListItem,
-    set: Partial<TreeListItem> = {},
-    itemsMap: TreeListItemMap
-  ): void {
-    Object.assign(deepItem, set);
-    if (deepItem.parentCount > 1) {
-      deepItem.parentIDs.forEach(id => {
-        const parent = itemsMap.get(id);
-        this.setPropToTreeUp(parent, set, itemsMap);
-      });
-    }
   }
 
   public static getItemId(
