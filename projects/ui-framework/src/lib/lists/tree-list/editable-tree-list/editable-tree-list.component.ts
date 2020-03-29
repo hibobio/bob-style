@@ -59,7 +59,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
       'insertItem',
       item.name || 'untitled',
       where,
-      target.name,
+      target?.name,
       'insertionIndexInParent',
       insertionIndexInParent,
       'insertionIndexInViewModel',
@@ -166,10 +166,14 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     console.log('moveItem', item.id);
     const allItemDescendants = this.collectAllChildren([item.id]);
 
-    console.log(target.id, item.parentIDs[item.parentCount - 1]);
+    console.log(target?.id, item.parentIDs[item.parentCount - 1]);
 
-    [target.id, item.parentIDs[item.parentCount - 1]].forEach(id => {
+    [target?.id, item.parentIDs[item.parentCount - 1]].forEach(id => {
       const itm = this.itemsMap.get(id);
+
+      if (!itm) {
+        return;
+      }
 
       itm.childrenIDs = itm.childrenIDs?.filter(i => i !== item.id) || [];
       itm.childrenCount = itm.childrenIDs.length;
@@ -192,7 +196,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
       'moveItem',
       item.name,
       where,
-      target.name,
+      target?.name,
       'insertionIndexInParent',
       context.insertionIndexInParent,
       'insertionIndexInViewModel',
@@ -324,7 +328,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
 
     const item: TreeListItem = event.item.data.item;
 
-    console.log(`DROP ${item.id}: ${prevIndex} => ${newIndex}`);
+    console.log(`DROP ${item?.id}: ${prevIndex} => ${newIndex}`);
 
     this.moveItem(item, newIndex, null);
 
