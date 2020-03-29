@@ -8,6 +8,7 @@ import {
   simpleUID,
   isNumber,
   arrayRemoveItemsMutate,
+  stringify,
 } from '../../../services/utils/functional-utils';
 import { TreeListModelUtils } from './tree-list-model.static';
 
@@ -105,7 +106,8 @@ export class TreeListEditUtils {
         ? targetIndexInParent + 1
         : where === 'lastChildOf'
         ? parent.childrenCount || 0
-        : 0;
+        : // firstChildOf
+          0;
 
     const targetIndexInViewModel = listViewModel.findIndex(
       id => id === target.id
@@ -132,7 +134,8 @@ export class TreeListEditUtils {
               targetIndexInViewModel + 1
             );
           })()
-        : listViewModel.findIndex(id => id === parent.childrenIDs[0]);
+        : // firstChildOf
+          listViewModel.findIndex(id => id === parent.childrenIDs[0]);
 
     if (!target) {
       console.error(`[TreeListEditUtils.getItemEditContext]:
@@ -156,17 +159,29 @@ export class TreeListEditUtils {
     itemsMap: TreeListItemMap,
     startIndex = 0
   ): number {
-    if (listViewModel.length === startIndex || !item.childrenCount) {
-      return startIndex;
-    }
-    return (
-      // skips children of target
+    console.log(
+      'findViewIndexOfNextSibling',
+      item.name,
+      startIndex,
+      stringify(listViewModel),
       listViewModel
         .slice(startIndex)
         .findIndex(
           (id: itemID) => !itemsMap.get(id).parentIDs.includes(item.id)
         ) + startIndex
     );
+    if (listViewModel.length === startIndex || !item.childrenCount) {
+      return startIndex;
+    }
+
+    // skips children of target
+    let nextSiblingIndex = listViewModel
+      .slice(startIndex)
+      .findIndex((id: itemID) => !itemsMap.get(id).parentIDs.includes(item.id));
+    if (nextSiblingIndex === -1) {
+      nextSiblingIndex = item.childrenCount;
+    }
+    return nextSiblingIndex + startIndex;
   }
 
   public static findPossibleParentAmongPrevSiblings(

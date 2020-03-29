@@ -205,7 +205,8 @@ export class TruncateTooltipComponent
   private checkTooltipNecessity(): void {
     if (
       this.tooltipText &&
-      (this.type === TruncateTooltipType.auto ||
+      (!this.type ||
+        this.type === TruncateTooltipType.auto ||
         (this.type === TruncateTooltipType.css && this.expectChanges))
     ) {
       this.type =

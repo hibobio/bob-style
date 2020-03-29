@@ -15,6 +15,7 @@ import {
   hasChanges,
   isValuevy,
   notFirstChanges,
+  joinArrays,
 } from '../../../services/utils/functional-utils';
 import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from '../tree-list.const';
 import {
@@ -241,6 +242,21 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
       keyMap: this.keyMap,
     });
   }
+
+  // protected itemsMapToListViewModel(list) {
+  //   const reducer = (list, id) => {
+  //     const item = this.itemsMap.get(id);
+  //     list = list.filter(i => i !== id).concat([id]);
+  //     //joinArrays(list, [id]);
+  //     // list.push(id);
+  //     if (item.childrenCount) {
+  //       item.childrenIDs.reduce(reducer, list);
+  //     }
+  //     return list;
+  //   };
+
+  //   return list.reduce(reducer, []);
+  // }
 
   protected listViewModelToList(
     listViewModel: itemID[] = this.listViewModel

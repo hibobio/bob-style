@@ -8,6 +8,7 @@ import {
 import {
   isNullOrUndefined,
   stringify,
+  joinArrays,
 } from '../../../services/utils/functional-utils';
 import { BTL_VALUE_SEPARATOR_DEF } from '../tree-list.const';
 
@@ -127,6 +128,8 @@ export class TreeListModelUtils {
   ): number {
     let maxDepth = 0;
 
+    console.log('updateItemAndChildrenParentsIDs', stringify(topParentIDs));
+
     const parentsUpdateReducer = (
       parentIDs: itemID[],
       id: itemID
@@ -139,7 +142,8 @@ export class TreeListModelUtils {
       maxDepth = Math.max(maxDepth, itm.parentCount);
 
       if (itm.childrenCount) {
-        parentIDs.push(itm.id);
+        parentIDs = parentIDs.filter(i => i !== itm.id).concat([itm.id]);
+        //joinArrays(parentIDs, [itm.id]); //.push(itm.id);
         itm.childrenIDs.reduce(parentsUpdateReducer, parentIDs);
       }
 

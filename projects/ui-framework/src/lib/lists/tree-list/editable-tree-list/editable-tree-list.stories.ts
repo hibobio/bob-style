@@ -65,6 +65,21 @@ const note = `
 
 const mock = [
   {
+    serverId: simpleUID('aaa-', 3),
+    value: 'AAA',
+  },
+  {
+    serverId: simpleUID('bbb-', 3),
+    value: 'BBB',
+  },
+  {
+    serverId: simpleUID('ccc-', 3),
+    value: 'CCC',
+  },
+];
+
+const mock2 = [
+  {
     serverId: simpleUID('TLV-'),
     value: 'TLV',
   },
@@ -124,7 +139,7 @@ story.add(
       startCollapsed: boolean('startCollapsed', true, 'Props'),
       maxHeightItems: number('maxHeightItems', 12, {}, 'Props'),
 
-      debug: boolean('debug', false, 'Props'),
+      debug: boolean('debug', true, 'Props'),
 
       options: select(
         'list',

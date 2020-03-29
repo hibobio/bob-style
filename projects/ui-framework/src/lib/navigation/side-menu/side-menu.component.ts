@@ -16,6 +16,7 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 
 @Component({
   selector: 'b-side-menu',
@@ -35,6 +36,7 @@ export class SideMenuComponent implements OnChanges {
   @Input() options: SideMenuOption[];
   @Input() selectedId: number | string;
   @Input() headerLabel: string;
+  @Input() tooltipType: TruncateTooltipType = TruncateTooltipType.auto;
 
   readonly icons = Icons;
   readonly iconColor = IconColor;

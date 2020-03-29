@@ -18,6 +18,8 @@ import { ButtonsModule } from '../../../lib/buttons/buttons.module';
 import { SideMenuOption } from './side-menu.interface';
 import { Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
+import { select } from '@storybook/addon-knobs';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 
 const story = storiesOf(ComponentGroupType.Navigation, module)
   .addDecorator(withNotes)
@@ -27,6 +29,7 @@ const template = `
 <b-side-menu [options]="options"
              [headerLabel]="headerLabel"
              [selectedId]="selectedId"
+             [tooltipType]="tooltipType"
              (selectOption)="selectOption($event)">
     <b-square-button [icon]="icons.download"
                      [type]="buttonType.tertiary">
@@ -42,6 +45,7 @@ const storyTemplate = `
     <b-side-menu [options]="menuWithIcons"
                 [headerLabel]="headerLabel || 'Menu with icons'"
                 [selectedId]="selectedId"
+                [tooltipType]="tooltipType"
                 (selectOption)="selectOption($event)">
         <b-square-button [icon]="icons.download"
                         [type]="buttonType.tertiary">
@@ -57,6 +61,7 @@ const storyTemplate = `
     <b-side-menu [options]="menuWithAvatars"
                 [headerLabel]="headerLabel || 'Menu with avatars'"
                 [selectedId]="selectedId"
+                [tooltipType]="tooltipType"
                 (selectOption)="selectOption($event)">
         <b-square-button [icon]="icons.download"
                         [type]="buttonType.tertiary">
@@ -88,6 +93,7 @@ const note = `
   [headerLabel] | string | header of menu
   [options] | SideMenuOption[] | array of options
   [selectedId] | number / string | selected menu item index
+  [tooltipType] | TruncateTooltipType | tooltip type for the Avatar title/subtitle (css, material or none; defaults to 'css')
   (selectOption) | EventEmitter<wbr>&lt;number/string&gt; | emits on option select
   - | ng-content | add actions to the header of the menu
 
@@ -156,6 +162,12 @@ story.add(
           'Data'
         ),
         selectedId: number('selectedId', 2, {}, 'Props'),
+        tooltipType: select(
+          'tooltipType',
+          Object.values(TruncateTooltipType),
+          TruncateTooltipType.auto,
+          'Props'
+        ),
         selectOption: action('Side menu select'),
       },
       moduleMetadata: {
