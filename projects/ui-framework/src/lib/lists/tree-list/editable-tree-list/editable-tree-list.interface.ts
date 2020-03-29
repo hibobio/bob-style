@@ -1,6 +1,6 @@
 import { TreeListItem } from '../tree-list.interface';
 
-export interface TreeListGetItemEditContext {
+export interface TreeListItemEditContext {
   parent: TreeListItem;
   sibling: TreeListItem;
   insertionIndexInParent: number;

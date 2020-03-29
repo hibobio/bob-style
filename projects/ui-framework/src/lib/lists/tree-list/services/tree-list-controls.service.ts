@@ -10,7 +10,7 @@ import { TreeListItem, TreeListItemMap, itemID } from '../tree-list.interface';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { TreeListViewUtils } from './tree-list-view.static';
 import {
-  TreeListGetItemEditContext,
+  TreeListItemEditContext,
   InsertItemLocation,
 } from '../editable-tree-list/editable-tree-list.interface';
 
@@ -41,10 +41,7 @@ interface TreeListKeydownConfig {
   disabled?: boolean;
   maxHeightItems?: number;
   insertNewItem?: (where: InsertItemLocation, target: TreeListItem) => any;
-  deleteItem?: (
-    item: TreeListItem,
-    context?: TreeListGetItemEditContext
-  ) => any;
+  deleteItem?: (item: TreeListItem, context?: TreeListItemEditContext) => any;
   increaseIndent?: (item: TreeListItem, indexInView: number) => any;
   decreaseIndent?: (item: TreeListItem) => any;
 }

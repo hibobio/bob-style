@@ -127,10 +127,12 @@ $betl-bg-line-width: 1px;
 .betl-item-input-wrap {
   // grid-column: 3;
   color: $body-text-color;
+  min-width: 0;
 }
 
 .betl-item-input {
   flex-grow: 1;
+  min-width: 0;
   height: $betl-item-height;
   line-height: $betl-item-height;
   border: 0;

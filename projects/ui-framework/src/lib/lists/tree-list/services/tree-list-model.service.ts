@@ -41,6 +41,13 @@ interface TreeListConverterConfig {
   onlyValue?: boolean;
 }
 
+interface TreeListValueToMapResult {
+  value: itemID[];
+  previousValue: itemID[];
+  isSameValue: boolean;
+  firstSelectedItem: TreeListItem;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -286,14 +293,14 @@ export class TreeListModelService {
     value: itemID[],
     itemsMap: TreeListItemMap,
     selectType: SelectType
-  ) {
+  ): TreeListValueToMapResult {
     value = selectValueOrFail(value) || [];
     if (selectType === SelectType.single) {
       value = value.slice(0, 1);
     }
 
     if (itemsMap.size < 2) {
-      return { value };
+      return { value } as TreeListValueToMapResult;
     }
 
     const previousValue = Array.from(

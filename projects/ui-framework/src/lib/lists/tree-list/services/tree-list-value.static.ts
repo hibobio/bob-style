@@ -12,6 +12,7 @@ import {
 import { BTL_VALUE_SEPARATOR_DEF } from '../tree-list.const';
 
 export class TreeListValueUtils {
+  //
   private static isTreeListValue(
     value: TreeListValue | itemID[]
   ): value is TreeListValue {

@@ -6,6 +6,7 @@ import {
 } from '../../../services/utils/functional-utils';
 
 export class TreeListSearchUtils {
+  //
   public static getSearchViewFilter(searchValue: string): ViewFilter {
     return {
       show: {

@@ -168,7 +168,7 @@ export class TreeListComponent extends BaseTreeListElement {
       elOffset = element.offsetTop;
     }
 
-    TreeListModelUtils.toggleItemCollapsed(item, this.itemsMap, force, false);
+    TreeListViewUtils.toggleItemCollapsed(item, this.itemsMap, force, false);
 
     if (item.collapsed) {
       this.cd.detectChanges();

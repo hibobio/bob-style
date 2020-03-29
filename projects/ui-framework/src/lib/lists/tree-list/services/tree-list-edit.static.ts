@@ -1,6 +1,6 @@
 import { TreeListItem, TreeListItemMap, itemID } from '../tree-list.interface';
 import {
-  TreeListGetItemEditContext,
+  TreeListItemEditContext,
   InsertItemLocation,
 } from '../editable-tree-list/editable-tree-list.interface';
 import { BTL_ROOT_ID } from '../tree-list.const';
@@ -15,7 +15,7 @@ export class TreeListEditUtils {
   //
   public static deleteItem(
     item: TreeListItem,
-    context: TreeListGetItemEditContext = null,
+    context: TreeListItemEditContext = null,
     itemsMap: TreeListItemMap,
     listViewModel: itemID[]
   ): TreeListItem {
@@ -56,7 +56,7 @@ export class TreeListEditUtils {
     target: TreeListItem,
     itemsMap: TreeListItemMap,
     listViewModel: itemID[]
-  ): TreeListGetItemEditContext {
+  ): TreeListItemEditContext {
     if (isNumber(where)) {
       if (where === 0) {
         target = itemsMap.get(BTL_ROOT_ID);
@@ -84,15 +84,21 @@ export class TreeListEditUtils {
         ? itemsMap.get(target.parentIDs[target.parentCount - 1])
         : target;
 
-    const sibling =
-      itemsMap.get(parent.childrenIDs && parent.childrenIDs[0]) ||
-      ({
-        parentIDs: [BTL_ROOT_ID],
-        parentCount: 1,
-      } as TreeListItem);
+    const sibling = parent.childrenCount
+      ? itemsMap.get(parent.childrenIDs[0])
+      : where === 'after'
+      ? ({
+          parentIDs: [BTL_ROOT_ID],
+          parentCount: 1,
+        } as TreeListItem)
+      : ({
+          parentIDs: (parent?.parentIDs || []).concat(parent.id),
+          parentCount: (parent.parentCount || 0) + 1,
+        } as TreeListItem);
 
-    const targetIndexInParent =
-      parent.childrenIDs.findIndex(id => id === target.id) || 0;
+    const targetIndexInParent = parent.childrenIDs.findIndex(
+      id => id === target.id
+    );
 
     const insertionIndexInParent =
       where === 'after'
