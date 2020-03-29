@@ -69,9 +69,28 @@ export class TreeListEditUtils {
         where = 'after';
       }
 
-      if (target.childrenCount) {
+      if (target.childrenCount && !target.collapsed) {
         where = 'firstChildOf';
       }
+
+      if (target.childrenCount && target.collapsed) {
+        console.log('target', target.name, 'is collapsed!');
+
+        target = itemsMap.get(
+          listViewModel[
+            this.findViewIndexOfNextSibling(
+              target,
+              listViewModel,
+              itemsMap,
+              Math.max(0, (where as number) - 1)
+            )
+          ]
+        );
+
+        where = 'after';
+      }
+
+      console.log('getItemEditContext, update where:', where, target?.name);
     }
 
     if (!target) {

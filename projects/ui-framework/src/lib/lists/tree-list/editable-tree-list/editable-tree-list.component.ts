@@ -263,8 +263,8 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
 
     this.moveItem(item, 'lastChildOf', parent);
 
-    // this.listViewModel = this.collectAllChildren(this.rootItem.childrenIDs);
-    // console.log('new viewmodel:', stringify(this.listViewModel));
+    this.listViewModel = this.collectAllChildren(this.rootItem.childrenIDs);
+    console.log('new viewmodel:', stringify(this.listViewModel));
     this.cd.detectChanges();
 
     this.emitChange();
@@ -283,8 +283,8 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
 
     this.moveItem(item, 'after', parent);
 
-    // this.listViewModel = this.collectAllChildren(this.rootItem.childrenIDs);
-    // console.log('new viewmodel:', stringify(this.listViewModel));
+    this.listViewModel = this.collectAllChildren(this.rootItem.childrenIDs);
+    console.log('new viewmodel:', stringify(this.listViewModel));
     this.cd.detectChanges();
 
     this.emitChange();
@@ -304,7 +304,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
   }
 
   public onDragEnd(item: TreeListItem): void {
-    this.draggingIndex = this.dragHoverIndex = undefined;
+    // this.draggingIndex = this.dragHoverIndex = undefined;
 
     if (item.expandMe) {
       this.toggleItemCollapsed(item, null, false);
@@ -331,22 +331,45 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     // console.log('onItemDrop', event);
     const prevIndex = event.item.data.origIndex;
     const newIndex = event.currentIndex;
+    const item: TreeListItem = event.item.data.item;
 
-    if (prevIndex === newIndex) {
+    const droppedOnItem = this.itemsMap.get(this.listViewModel[newIndex]);
+
+    let insertionIndex = newIndex;
+
+    console.log(`DROP: ${item?.id}: ${prevIndex} => ${newIndex}
+    drop on item: ${droppedOnItem.name}
+    draggingIndex: ${this.draggingIndex}, dragHoverIndex: ${
+      this.dragHoverIndex
+    },
+    current viewmodel: ${stringify(this.listViewModel)}`);
+
+    // if (droppedOnItem.childrenCount) {
+    //   while (
+    //     this.itemsMap.get(this.listViewModel[insertionIndex + 1])?.hidden
+    //   ) {
+    //     insertionIndex++;
+    //   }
+    // }
+
+    if (prevIndex === insertionIndex) {
       return;
     }
 
-    const item: TreeListItem = event.item.data.item;
+    if (newIndex !== insertionIndex) {
+      insertionIndex++;
+      console.log('real newIndex', insertionIndex);
+    }
 
-    console.log(`DROP: ${item?.id}: ${prevIndex} => ${newIndex}`);
-
-    this.moveItem(item, newIndex, null);
+    this.moveItem(item, insertionIndex, null);
 
     this.listViewModel = this.collectAllChildren(this.rootItem.childrenIDs);
     console.log('new viewmodel:', stringify(this.listViewModel));
     this.cd.detectChanges();
 
     this.emitChange();
+
+    this.draggingIndex = this.dragHoverIndex = undefined;
   }
 
   public onListBlur(event: FocusEvent): void {

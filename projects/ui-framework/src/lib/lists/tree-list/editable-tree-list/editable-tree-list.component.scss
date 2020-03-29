@@ -18,6 +18,11 @@ $betl-bg-line-width: 1px;
     margin: 0 0 5px 0;
   }
 }
+[class='2cols'] {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 // --------------
 
 :host {

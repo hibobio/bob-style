@@ -82,7 +82,7 @@
 
       <span class="betl-item-elmnt betl-item-input-wrap">
         <span *ngIf="debug"
-              style="font-size:80%;">{{index+1}}</span>
+              style="font-size:80%;">{{index}}</span>
         <input [(ngModel)]="item.name"
                [placeholder]="translation.untitled"
                class="betl-item-input"
@@ -114,8 +114,16 @@
 
 <div *ngIf="debug"
      class="dev">
-  <p>Total items: {{ itemsMap.size - 1 }}</p>
-  <p>Total items in view: {{ listViewModel.length }}</p>
+  <div class="2cols">
+    <div>
+      <p>Total items: {{ itemsMap.size - 1 }}</p>
+      <p>Total items in view: {{ listViewModel.length }}</p>
+    </div>
+    <div [hidden]="!draggingIndex && !dragHoverIndex">
+      <p>draggingIndex: {{ draggingIndex >= 0 ? draggingIndex : '-' }}</p>
+      <p>dragHoverIndex: {{ dragHoverIndex >= 0 ? dragHoverIndex : '-' }}</p>
+    </div>
+  </div>
 
   <button type="button"
           (click)="clear()">Clear</button>
