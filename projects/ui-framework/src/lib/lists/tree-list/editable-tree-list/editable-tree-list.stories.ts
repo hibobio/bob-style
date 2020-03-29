@@ -63,7 +63,7 @@ const note = `
 
 `;
 
-const mock = [
+const mock2 = [
   {
     serverId: simpleUID('aaa-', 3),
     value: 'AAA',
@@ -78,32 +78,32 @@ const mock = [
   },
 ];
 
-const mock2 = [
+const mock = [
   {
-    serverId: simpleUID('TLV-'),
+    serverId: simpleUID('TLV-', 3),
     value: 'TLV',
   },
   {
-    serverId: simpleUID('London-'),
+    serverId: simpleUID('London-', 3),
     value: 'London',
   },
   {
-    serverId: simpleUID('NewYork-'),
+    serverId: simpleUID('NewYork-', 3),
     value: 'New York',
 
     children: [
       {
-        serverId: simpleUID('R&D-'),
+        serverId: simpleUID('R&D-', 3),
         value: 'R&D',
 
         children: [
           {
-            serverId: simpleUID('Product-'),
+            serverId: simpleUID('Product-', 3),
             value: 'Product',
 
             children: [
               {
-                serverId: simpleUID('Design-'),
+                serverId: simpleUID('Design-', 3),
                 value: 'Design',
               },
             ],
@@ -113,7 +113,7 @@ const mock2 = [
     ],
   },
   {
-    serverId: simpleUID('UK-'),
+    serverId: simpleUID('UK-', 3),
     value: 'UK',
   },
 ];

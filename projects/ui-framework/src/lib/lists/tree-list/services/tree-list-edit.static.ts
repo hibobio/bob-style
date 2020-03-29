@@ -26,11 +26,11 @@ export class TreeListEditUtils {
     const deletedItemIDs = TreeListModelUtils.walkTree(
       'down',
       item,
-      itm => itemsMap.delete(itm.id),
+      (itm) => itemsMap.delete(itm.id),
       itemsMap
     );
 
-    parent.childrenIDs = parent.childrenIDs.filter(id => id !== item.id);
+    parent.childrenIDs = parent.childrenIDs.filter((id) => id !== item.id);
     parent.childrenCount = parent.childrenIDs.length;
 
     arrayRemoveItemsMutate(listViewModel, deletedItemIDs);
@@ -98,7 +98,7 @@ export class TreeListEditUtils {
         } as TreeListItem);
 
     const targetIndexInParent = parent.childrenIDs.findIndex(
-      id => id === target.id
+      (id) => id === target.id
     );
 
     const insertionIndexInParent =
@@ -110,7 +110,7 @@ export class TreeListEditUtils {
           0;
 
     const targetIndexInViewModel = listViewModel.findIndex(
-      id => id === target.id
+      (id) => id === target.id
     );
 
     const insertionIndexInViewModel =
@@ -135,7 +135,7 @@ export class TreeListEditUtils {
             );
           })()
         : // firstChildOf
-          listViewModel.findIndex(id => id === parent.childrenIDs[0]);
+          listViewModel.findIndex((id) => id === parent.childrenIDs[0]);
 
     if (!target) {
       console.error(`[TreeListEditUtils.getItemEditContext]:
@@ -159,17 +159,6 @@ export class TreeListEditUtils {
     itemsMap: TreeListItemMap,
     startIndex = 0
   ): number {
-    console.log(
-      'findViewIndexOfNextSibling',
-      item.name,
-      startIndex,
-      stringify(listViewModel),
-      listViewModel
-        .slice(startIndex)
-        .findIndex(
-          (id: itemID) => !itemsMap.get(id).parentIDs.includes(item.id)
-        ) + startIndex
-    );
     if (listViewModel.length === startIndex || !item.childrenCount) {
       return startIndex;
     }
@@ -181,6 +170,18 @@ export class TreeListEditUtils {
     if (nextSiblingIndex === -1) {
       nextSiblingIndex = item.childrenCount;
     }
+
+    console.log(
+      'findViewIndexOfNextSibling',
+      item.name,
+      'startIndex:',
+      startIndex,
+      'current listViewModel:',
+      stringify(listViewModel),
+      'nextSiblingIndex:',
+      nextSiblingIndex
+    );
+
     return nextSiblingIndex + startIndex;
   }
 
@@ -191,7 +192,7 @@ export class TreeListEditUtils {
     indexInView: number = null
   ): TreeListItem {
     if (indexInView === null) {
-      indexInView = listViewModel.findIndex(id => id === item.id) || 0;
+      indexInView = listViewModel.findIndex((id) => id === item.id) || 0;
     }
 
     if (indexInView === 0) {

@@ -56,9 +56,11 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
       );
 
     console.log(
-      'insertItem',
+      'insertItem:',
       item.name || 'untitled',
+      'where:',
       where,
+      'target:',
       target?.name,
       'insertionIndexInParent',
       insertionIndexInParent,
@@ -131,23 +133,25 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
   }
 
   public collectAllChildren(list: itemID[] | itemID): itemID[] {
+    //
     const collector = (collection: itemID[], id: itemID) => {
       const item = this.itemsMap.get(id);
-      collection = collection.filter(i => i !== id).concat([id]);
+      collection = collection.filter((i) => i !== id).concat(id);
       //joinArrays(list, [id]);
       // list.push(id);
       if (item.childrenCount) {
-        item.childrenIDs.reduce(collector, collection);
+        collection = item.childrenIDs.reduce(collector, collection);
       }
       return collection;
     };
+    //
     return asArray(list).reduce(collector, []);
   }
 
   public collectAllParents(list: itemID[] | itemID): itemID[] {
     const collector = (collection: itemID[], id: itemID) => {
       const item = this.itemsMap.get(id);
-      collection = collection.filter(i => i !== id).concat([id]);
+      collection = collection.filter((i) => i !== id).concat([id]);
       //joinArrays(list, [id]);
       // list.push(id);
       if (item.parentCount) {
@@ -163,26 +167,32 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     where: InsertItemLocation,
     target: TreeListItem // parent
   ): TreeListItem {
-    console.log('moveItem', item.id);
+    console.log(
+      'moveItem:',
+      item.id,
+      'target:',
+      target?.id,
+      'parent:',
+      item.parentIDs[item.parentCount - 1]
+    );
+
     const allItemDescendants = this.collectAllChildren([item.id]);
 
-    console.log(target?.id, item.parentIDs[item.parentCount - 1]);
-
-    [target?.id, item.parentIDs[item.parentCount - 1]].forEach(id => {
+    [target?.id, item.parentIDs[item.parentCount - 1]].forEach((id) => {
       const itm = this.itemsMap.get(id);
 
       if (!itm) {
         return;
       }
 
-      itm.childrenIDs = itm.childrenIDs?.filter(i => i !== item.id) || [];
+      itm.childrenIDs = itm.childrenIDs?.filter((i) => i !== item.id) || [];
       itm.childrenCount = itm.childrenIDs.length;
 
-      console.log('===== parent id', id, stringify(itm.childrenIDs));
+      // console.log('===== parent id', id, stringify(itm.childrenIDs));
     });
 
     this.listViewModel = this.listViewModel.filter(
-      id => !allItemDescendants.includes(id)
+      (id) => !allItemDescendants.includes(id)
     );
 
     const context = TreeListEditUtils.getItemEditContext(
@@ -192,16 +202,16 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
       this.listViewModel
     );
 
-    console.log(
-      'moveItem',
-      item.name,
-      where,
-      target?.name,
-      'insertionIndexInParent',
-      context.insertionIndexInParent,
-      'insertionIndexInViewModel',
-      context.insertionIndexInViewModel
-    );
+    // console.log(
+    //   'moveItem',
+    //   item.name,
+    //   where,
+    //   target?.name,
+    //   'insertionIndexInParent',
+    //   context.insertionIndexInParent,
+    //   'insertionIndexInViewModel',
+    //   context.insertionIndexInViewModel
+    // );
 
     const { parent, sibling } = context;
 
@@ -254,7 +264,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     this.moveItem(item, 'lastChildOf', parent);
 
     // this.listViewModel = this.collectAllChildren(this.rootItem.childrenIDs);
-    // console.log('new viewmodel', stringify(this.listViewModel));
+    // console.log('new viewmodel:', stringify(this.listViewModel));
     this.cd.detectChanges();
 
     this.emitChange();
@@ -269,12 +279,12 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
 
     const parent = this.itemsMap.get(item.parentIDs[item.parentCount - 1]);
 
-    console.log('decreaseIndent', 'item', item.name, 'parent', parent.name);
+    console.log('decreaseIndent:', item.name, 'parent:', parent.name);
 
     this.moveItem(item, 'after', parent);
 
     // this.listViewModel = this.collectAllChildren(this.rootItem.childrenIDs);
-    // console.log('new viewmodel', stringify(this.listViewModel));
+    // console.log('new viewmodel:', stringify(this.listViewModel));
     this.cd.detectChanges();
 
     this.emitChange();
@@ -328,11 +338,15 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
 
     const item: TreeListItem = event.item.data.item;
 
-    console.log(`DROP ${item?.id}: ${prevIndex} => ${newIndex}`);
+    console.log(`DROP: ${item?.id}: ${prevIndex} => ${newIndex}`);
 
     this.moveItem(item, newIndex, null);
 
-    // this.cd.detectChanges();
+    this.listViewModel = this.collectAllChildren(this.rootItem.childrenIDs);
+    console.log('new viewmodel:', stringify(this.listViewModel));
+    this.cd.detectChanges();
+
+    this.emitChange();
   }
 
   public onListBlur(event: FocusEvent): void {
