@@ -8,7 +8,7 @@ import {
   arrayInsertAt,
   asArray,
 } from '../../../services/utils/functional-utils';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDragStart } from '@angular/cdk/drag-drop';
 import { BaseEditableTreeListElement } from './editable-tree-list.abstract';
 import { TreeListItem, itemID } from '../tree-list.interface';
 import { TreeListModelService } from '../services/tree-list-model.service';
@@ -209,7 +209,14 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     this.emitChange();
   }
 
-  public onDragstart(item: TreeListItem, indexInView: number): void {
+  public onDragstart(
+    event: CdkDragStart,
+    item: TreeListItem,
+    indexInView: number
+  ): void {
+    this.dragRef = event.source._dragRef;
+    this.cancelDrop = false;
+
     if (item.childrenCount && !item.collapsed) {
       this.setListCSS('height');
       this.toggleItemCollapsed(item, null, true);
@@ -221,7 +228,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
   }
 
   public onDragEnd(item: TreeListItem): void {
-    this.draggingIndex = this.dragHoverIndex = undefined;
+    this.dragRef = this.draggingIndex = this.dragHoverIndex = undefined;
 
     if (item.expandMe) {
       this.toggleItemCollapsed(item, null, false);
@@ -231,6 +238,8 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
   }
 
   public onListHover(event: MouseEvent): void {
+    window.clearTimeout(this.dragHoverTimer);
+
     if (this.draggingIndex === undefined) {
       return;
     }
@@ -242,9 +251,22 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     }
 
     this.dragHoverIndex = parseInt(itemElement.getAttribute('data-index'), 10);
+
+    window.setTimeout(() => {
+      const hoverItem = this.itemsMap.get(
+        this.listViewModel[this.dragHoverIndex]
+      );
+      if (hoverItem?.collapsed) {
+        this.toggleItemCollapsed(hoverItem, null, false);
+      }
+    }, 1000);
   }
 
   public onItemDrop(event: CdkDragDrop<any>): void {
+    if (this.cancelDrop) {
+      this.cancelDrop = false;
+      return;
+    }
     const prevIndex = event.previousIndex;
     const newIndex = event.currentIndex;
     const item: TreeListItem = event.item.data;
