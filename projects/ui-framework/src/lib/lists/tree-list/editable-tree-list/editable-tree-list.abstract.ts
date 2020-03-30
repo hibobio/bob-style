@@ -15,14 +15,20 @@ import {
   hasChanges,
   notFirstChanges,
   isValuevy,
+  isKey,
 } from '../../../services/utils/functional-utils';
-import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from '../tree-list.const';
+import {
+  BTL_KEYMAP_DEF,
+  BTL_ROOT_ID,
+  EDITABLE_TREELIST_TRANSLATION_DEF,
+} from '../tree-list.const';
 import {
   TreeListOption,
   TreeListKeyMap,
   TreeListItemMap,
   itemID,
   TreeListItem,
+  EditableTreeListTranslation,
 } from '../tree-list.interface';
 import { MenuItem } from '../../../navigation/menu/menu.interface';
 import {
@@ -37,13 +43,13 @@ import { simpleChange } from '../../../services/utils/test-helpers';
 import {
   TreeListItemEditContext,
   InsertItemLocation,
-  EditableTreeListTranslation,
 } from './editable-tree-list.interface';
-import { EDITABLE_TREELIST_TRANSLATION_DEF } from './editable-tree-list.const';
 import { TreeListEditUtils } from '../services/tree-list-edit.static';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { Styles } from '../../../services/html/html-helpers.interface';
 import { TreeListViewUtils } from '../services/tree-list-view.static';
+import { DragRef } from '@angular/cdk/drag-drop';
+import { Keys } from '../../../enums';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -59,7 +65,7 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
   @Input('list') set setList(list: TreeListOption[]) {}
   public list: TreeListOption[];
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
-  @Input() maxHeightItems = 8;
+  @Input() maxHeightItems = 15;
   @Input() startCollapsed = true;
   @Input()
   translation: EditableTreeListTranslation = EDITABLE_TREELIST_TRANSLATION_DEF;
@@ -172,10 +178,12 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
   ];
   public rootItem: TreeListItem;
 
+  public maxDepth = 10;
   public draggingIndex: number;
   public dragHoverIndex: number;
-  public maxDepth = 10;
-  public depth = 0;
+  protected dragHoverTimer;
+  protected dragRef: DragRef<any>;
+  protected cancelDrop = false;
 
   readonly icons = Icons;
   readonly iconType = IconType;
@@ -340,6 +348,11 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
       decreaseIndent: this.decreaseIndent.bind(this),
       toggleItemCollapsed: this.toggleItemCollapsed.bind(this),
     });
+
+    if (this.dragRef && isKey(event.key, Keys.escape)) {
+      this.cancelDrop = true;
+      document.dispatchEvent(new Event('mouseup'));
+    }
   }
 
   public emitChange(): void {
