@@ -48,8 +48,8 @@ export abstract class BaseFormElement
   @Input() warnMessage: string;
   @Input() doPropagate = true;
   @Input() ignoreEvents: InputEventType[] = cloneArray(IGNORE_EVENTS_DEF);
-
   @Input() formControlName: string;
+  @Input() showCharCounter = true;
 
   public inputFocused: boolean | boolean[] = false;
   public inputTransformers: Func[] = [];
@@ -177,11 +177,11 @@ export abstract class BaseFormElement
       }
 
       const allowedEvents = asArray(eventType).filter(
-        event => !this.ignoreEvents.includes(event)
+        (event) => !this.ignoreEvents.includes(event)
       );
 
       if (emitterName && this[emitterName].observers.length > 0) {
-        allowedEvents.forEach(event => {
+        allowedEvents.forEach((event) => {
           this[emitterName].emit(
             this.wrapEvent
               ? {
@@ -196,8 +196,8 @@ export abstract class BaseFormElement
 
       if (
         doPropagate &&
-        allowedEvents.filter(event => event !== InputEventType.onFocus).length >
-          0
+        allowedEvents.filter((event) => event !== InputEventType.onFocus)
+          .length > 0
       ) {
         this.propagateChange(value);
       }
@@ -209,7 +209,15 @@ export abstract class BaseFormElement
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes, {}, ['value', 'options']);
+    applyChanges(
+      this,
+      changes,
+      {
+        showCharCounter: true,
+        ignoreEvents: cloneArray(IGNORE_EVENTS_DEF),
+      },
+      ['value', 'options']
+    );
 
     if (changes.value) {
       this.writeValue(changes.value.currentValue);

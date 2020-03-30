@@ -72,6 +72,7 @@ export abstract class RTEbaseElement extends BaseFormElement
     super(cd);
     this.baseValue = '';
     this.wrapEvent = false;
+    this.showCharCounter = false;
   }
 
   public tribute: TributeInstance;
@@ -431,7 +432,7 @@ export abstract class RTEbaseElement extends BaseFormElement
       if (isEmptyArray(this.controls)) {
         this.editor.toolbar.hide();
       } else {
-        this.toolbarButtons.forEach(b => {
+        this.toolbarButtons.forEach((b) => {
           const cmd = b.getAttribute('data-cmd') as BlotType;
           if (!this.controls.includes(cmd)) {
             b.setAttribute('hidden', 'true');

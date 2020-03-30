@@ -36,12 +36,12 @@
 </div>
 
 <p b-input-message
-   *ngIf="hintMessage || warnMessage || errorMessage || minChars || maxChars > 0"
+   *ngIf="hintMessage || warnMessage || errorMessage || (showCharCounter && (minChars || maxChars > 0))"
    [hintMessage]="hintMessage"
    [warnMessage]="warnMessage"
    [errorMessage]="errorMessage"
    [disabled]="disabled"
-   [minChars]="minChars"
-   [maxChars]="maxChars"
+   [minChars]="showCharCounter && minChars"
+   [maxChars]="showCharCounter && maxChars"
    [length]="length">
 </p>

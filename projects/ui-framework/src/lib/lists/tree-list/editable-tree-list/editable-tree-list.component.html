@@ -1,5 +1,4 @@
 <ul #listElement
-    role="list"
     class="betl-list"
     cdkDropList
     [cdkDropListDisabled]="disableDragAndDrop"
@@ -23,9 +22,7 @@
                let-index="index"
                let-item="item">
 
-    <li role="listitem"
-        *ngIf="!item.hidden"
-        class="betl-item betl-item-grid"
+    <li class="betl-item betl-item-grid"
         [attr.data-id]="item.id"
         [attr.data-index]="index"
         [attr.data-level]="item.parentCount || 1"
@@ -42,18 +39,15 @@
             [cdkDragDisabled]="disableDragAndDrop"
             [cdkDragData]="item"
             cdkDragLockAxis="y"
-            [cdkDragBoundary]="listElement"
             (cdkDragStarted)="onDragstart($event, item, index);"
             (cdkDragEnded)="onDragEnd(item);"
             class="betl-item-grid"
             [attr.data-level]="item.parentCount || 1">
 
         <span class="betl-item-elmnt betl-item-dot"
-              cdkDragHandle
-              aria-hidden="true"></span>
+              cdkDragHandle></span>
 
-        <span *ngIf="!disableDragAndDrop"
-              class="betl-item-elmnt betl-item-input-wrap">
+        <span class="betl-item-elmnt betl-item-input-wrap">
           {{item.name}}
         </span>
       </span>

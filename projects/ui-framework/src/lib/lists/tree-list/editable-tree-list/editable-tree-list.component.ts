@@ -4,10 +4,7 @@ import {
   ChangeDetectorRef,
   ElementRef,
 } from '@angular/core';
-import {
-  arrayInsertAt,
-  asArray,
-} from '../../../services/utils/functional-utils';
+import { arrayInsertAt } from '../../../services/utils/functional-utils';
 import { CdkDragDrop, CdkDragStart } from '@angular/cdk/drag-drop';
 import { BaseEditableTreeListElement } from './editable-tree-list.abstract';
 import { TreeListItem, itemID } from '../tree-list.interface';
@@ -107,27 +104,15 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     this.emitChange();
   }
 
-  public collectAllChildren(list: itemID[] | itemID): itemID[] {
-    const collector = (collection: itemID[], id: itemID) => {
-      const item = this.itemsMap.get(id);
-      // collection = collection.filter((i) => i !== id).concat(id);
-      collection.push(id);
-
-      if (item.childrenCount) {
-        collection = item.childrenIDs.reduce(collector, collection);
-      }
-      return collection;
-    };
-
-    return asArray(list).reduce(collector, []);
-  }
-
   public moveItem(
     item: TreeListItem,
     where: InsertItemLocation,
     target: TreeListItem // parent
   ): void {
-    const allItemDescendants = this.collectAllChildren([item.id]);
+    const allItemDescendants = TreeListModelUtils.collectAllChildren(
+      [item.id],
+      this.itemsMap
+    );
 
     [target?.id, item.parentIDs[item.parentCount - 1]].forEach((id) => {
       const itm = this.itemsMap.get(id);
@@ -229,6 +214,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
 
   public onDragEnd(item: TreeListItem): void {
     this.dragRef = this.draggingIndex = this.dragHoverIndex = undefined;
+    this.expandedWhileDragging.length = 0;
 
     if (item.expandMe) {
       this.toggleItemCollapsed(item, null, false);
@@ -258,6 +244,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
       );
       if (hoverItem?.collapsed) {
         this.toggleItemCollapsed(hoverItem, null, false);
+        this.expandedWhileDragging.push(hoverItem);
       }
     }, 1000);
   }

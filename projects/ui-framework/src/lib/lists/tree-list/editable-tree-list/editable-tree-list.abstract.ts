@@ -9,6 +9,7 @@ import {
   ViewChild,
   ElementRef,
   ChangeDetectorRef,
+  OnInit,
 } from '@angular/core';
 import {
   applyChanges,
@@ -53,7 +54,7 @@ import { Keys } from '../../../enums';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class BaseEditableTreeListElement implements OnChanges {
+export abstract class BaseEditableTreeListElement implements OnChanges, OnInit {
   constructor(
     protected modelSrvc: TreeListModelService,
     protected cntrlsSrvc: TreeListControlsService,
@@ -74,7 +75,7 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
   @HostBinding('attr.data-debug') @Input() debug = false;
   @HostBinding('attr.data-dnd-disabled') disableDragAndDrop = false;
 
-  @HostBinding('attr.data-menu-loc') @Input() menuLoc = 1;
+  @HostBinding('attr.data-menu-loc') @Input() menuLoc = 3;
   @HostBinding('attr.data-menu-hover') @Input() menuHov = 1;
 
   @Output() changed: EventEmitter<TreeListOption[]> = new EventEmitter<
@@ -87,95 +88,7 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
   public itemsMap: TreeListItemMap = new Map();
   public listViewModel: itemID[] = [];
 
-  public itemMenu: MenuItem<TreeListItem>[] = [
-    {
-      label: this.translation.toggle_collapsed,
-      key: 'toggleCollapsed',
-      disabled: (menuItem: MenuItem) => {
-        const item = menuItem.data;
-        return !item.childrenCount;
-      },
-      action: (menuItem: MenuItem) => {
-        const item = menuItem.data;
-        if (item.childrenCount) {
-          this.toggleItemCollapsed(item);
-        }
-      },
-    },
-    {
-      label: this.translation.expand_all,
-      key: 'expandAll',
-      action: () => {
-        this.toggleCollapseAll(false);
-      },
-    },
-    {
-      label: this.translation.collapse_all,
-      key: 'collapseAll',
-      separatorAfter: true,
-      action: () => {
-        this.toggleCollapseAll(true);
-      },
-    },
-    {
-      label: this.translation.increase_indent,
-      key: 'increaseIndent',
-      disabled: (menuItem: MenuItem) => {
-        // TODO
-        return !TreeListEditUtils.findPossibleParentAmongPrevSiblings(
-          menuItem.data,
-          this.listViewModel,
-          this.itemsMap
-        );
-      },
-      action: (menuItem: MenuItem) => {
-        this.increaseIndent(menuItem.data);
-      },
-    },
-    {
-      label: this.translation.decrease_indent,
-      key: 'decreaseIndent',
-      separatorAfter: true,
-      disabled: (menuItem: MenuItem) => {
-        return menuItem.data.parentCount < 2;
-      },
-      action: (menuItem: MenuItem) => {
-        this.decreaseIndent(menuItem.data);
-      },
-    },
-    {
-      label: this.translation.add_item,
-      key: 'insertNewItem',
-      action: (menuItem: MenuItem) => {
-        const item = menuItem.data;
-        if (item.childrenCount) {
-          this.insertNewItem('firstChildOf', item);
-        } else {
-          this.insertNewItem('after', item);
-        }
-      },
-    },
-    {
-      label: this.translation.delete_item,
-      key: 'delete',
-      disabled: (menuItem: MenuItem) => menuItem.data?.canBeDeleted === false,
-      clickToOpenSub: true,
-      panelClass: 'betl-del-confirm',
-      children: [
-        {
-          label: this.translation.delete_confirm,
-          key: 'deleteConfirm',
-          action: (menuItem: MenuItem) => {
-            this.deleteItem(menuItem.data);
-          },
-        },
-        {
-          label: this.translation.delete_cancel,
-          key: 'deleteCancel',
-        },
-      ],
-    },
-  ];
+  public itemMenu: MenuItem<TreeListItem>[];
   public rootItem: TreeListItem;
 
   public maxDepth = 10;
@@ -184,6 +97,7 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
   protected dragHoverTimer;
   protected dragRef: DragRef<any>;
   protected cancelDrop = false;
+  protected expandedWhileDragging: TreeListItem[] = [];
 
   readonly icons = Icons;
   readonly iconType = IconType;
@@ -205,6 +119,10 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
         keyMap: { list: 'setList' },
       }
     );
+
+    if (hasChanges(changes, ['translation'], true)) {
+      this.setTranslation();
+    }
 
     if (hasChanges(changes, ['keyMap'], true)) {
       this.keyMap = { ...BTL_KEYMAP_DEF, ...this.keyMap };
@@ -235,7 +153,7 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
         falseyCheck: isValuevy,
       })
     ) {
-      this.listViewModel = this.listToListViewModel();
+      this.listViewModel = this.itemsMapToListViewModel();
       this.toggleCollapseAll(this.startCollapsed);
     }
 
@@ -249,10 +167,10 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
     }
   }
 
-  protected listToListViewModel(list: TreeListOption[] = this.list): itemID[] {
-    return this.modelSrvc.getListViewModel(list, this.itemsMap, {
-      keyMap: this.keyMap,
-    });
+  ngOnInit(): void {
+    if (!this.itemMenu) {
+      this.setTranslation();
+    }
   }
 
   protected itemsMapToListViewModel(
@@ -350,8 +268,13 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
     });
 
     if (this.dragRef && isKey(event.key, Keys.escape)) {
+      event.stopPropagation();
       this.cancelDrop = true;
       document.dispatchEvent(new Event('mouseup'));
+      this.expandedWhileDragging.forEach((item) => {
+        this.toggleItemCollapsed(item, null, true);
+      });
+      this.expandedWhileDragging.length = 0;
     }
   }
 
@@ -426,6 +349,82 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
   public increaseIndent(item: TreeListItem, indexInView: number = null): void {}
 
   public decreaseIndent(item: TreeListItem): void {}
+
+  private setTranslation(): void {
+    this.itemMenu = [
+      {
+        label: this.translation.toggle_collapsed,
+        key: 'toggleCollapsed',
+        disabled: (menuItem: MenuItem<TreeListItem>) =>
+          !menuItem.data.childrenCount,
+        action: (menuItem: MenuItem) => {
+          const item = menuItem.data;
+          if (item.childrenCount) {
+            this.toggleItemCollapsed(item);
+          }
+        },
+      },
+      {
+        label: this.translation.expand_all,
+        key: 'expandAll',
+        action: () => this.toggleCollapseAll(false),
+      },
+      {
+        label: this.translation.collapse_all,
+        key: 'collapseAll',
+        separatorAfter: true,
+        action: () => this.toggleCollapseAll(true),
+      },
+      {
+        label: this.translation.increase_indent,
+        key: 'increaseIndent',
+        disabled: (menuItem: MenuItem) =>
+          !TreeListEditUtils.findPossibleParentAmongPrevSiblings(
+            menuItem.data,
+            this.listViewModel,
+            this.itemsMap
+          ),
+        action: (menuItem: MenuItem) => this.increaseIndent(menuItem.data),
+      },
+      {
+        label: this.translation.decrease_indent,
+        key: 'decreaseIndent',
+        separatorAfter: true,
+        disabled: (menuItem: MenuItem) => menuItem.data.parentCount < 2,
+        action: (menuItem: MenuItem) => this.decreaseIndent(menuItem.data),
+      },
+      {
+        label: this.translation.add_item,
+        key: 'insertNewItem',
+        action: (menuItem: MenuItem) => {
+          const item = menuItem.data;
+          if (item.childrenCount) {
+            this.insertNewItem('firstChildOf', item);
+          } else {
+            this.insertNewItem('after', item);
+          }
+        },
+      },
+      {
+        label: this.translation.delete_item,
+        key: 'delete',
+        disabled: (menuItem: MenuItem) => menuItem.data?.canBeDeleted === false,
+        clickToOpenSub: true,
+        panelClass: 'betl-del-confirm',
+        children: [
+          {
+            label: this.translation.delete_confirm,
+            key: 'deleteConfirm',
+            action: (menuItem: MenuItem) => this.deleteItem(menuItem.data),
+          },
+          {
+            label: this.translation.delete_cancel,
+            key: 'deleteCancel',
+          },
+        ],
+      },
+    ];
+  }
 
   // Dev / Debug
 

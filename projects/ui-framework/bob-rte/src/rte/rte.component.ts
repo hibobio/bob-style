@@ -67,7 +67,7 @@ export class RichTextEditorComponent extends RTEbaseElement
         this.editor = this.getEditor();
 
         if (this.options.tooltips === false && this.toolbarButtons) {
-          this.toolbarButtons.forEach(b => {
+          this.toolbarButtons.forEach((b) => {
             b.setAttribute('aria-label', b.getAttribute('title'));
             b.removeAttribute('title');
           });
@@ -188,10 +188,7 @@ export class RichTextEditorComponent extends RTEbaseElement
         // prevent mentions link clicks
         if (
           target.className.includes('mention') ||
-          target
-            .getAttributeNames()
-            .join(' ')
-            .includes('mention')
+          target.getAttributeNames().join(' ').includes('mention')
         ) {
           if (!eventHasMetaKey(event)) {
             event.preventDefault();

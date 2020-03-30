@@ -24,7 +24,7 @@
             (keydown.outside-zone)="onInputKeydown($event)"></textarea>
 </div>
 <p b-input-message
-   *ngIf="hintMessage || warnMessage || errorMessage || minChars || maxChars"
+   *ngIf="hintMessage || warnMessage || errorMessage || (showCharCounter && (minChars || maxChars))"
    [hintMessage]="hintMessage"
    [warnMessage]="warnMessage"
    [errorMessage]="errorMessage"

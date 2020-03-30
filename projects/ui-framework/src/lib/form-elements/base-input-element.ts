@@ -29,10 +29,10 @@ export abstract class BaseInputElement extends BaseFormElement {
     super(cd);
     this.inputTransformers = [
       stringyOrFail,
-      value => valueAsNumber(this.inputType, value),
+      (value) => valueAsNumber(this.inputType, value),
     ];
     this.outputTransformers = [
-      value => valueAsNumber(this.inputType, value, 0),
+      (value) => valueAsNumber(this.inputType, value, 0),
     ];
     this.baseValue = '';
   }
@@ -44,7 +44,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   @Input() inputType: InputTypes = InputTypes.text;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
-  @Input() showCharCounter = true;
+
   @Input() minChars: number;
   @Input() maxChars: number;
   @Input() min = 0;
