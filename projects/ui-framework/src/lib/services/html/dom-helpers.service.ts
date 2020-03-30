@@ -100,6 +100,9 @@ export class DOMhelpers {
   // (provided as JSON with props in kebab-case),
   // including css variables ('--color-red')
   public setCssProps(element: HTMLElement, props: Styles): void {
+    if (!element) {
+      return;
+    }
     for (const prop of Object.keys(props)) {
       if (!isNullOrUndefined(props[prop])) {
         element.style.setProperty(prop, props[prop] as string);
@@ -309,11 +312,11 @@ export class DOMhelpers {
 
       if (isObject(classes)) {
         removeClasses = Object.keys(classes)
-          .filter(c => !classes[c])
+          .filter((c) => !classes[c])
           .sort();
         addClasses = joinArrays(
           currentClassesAsArray,
-          Object.keys(classes).filter(c => classes[c])
+          Object.keys(classes).filter((c) => classes[c])
         ).sort();
       } else {
         addClasses = joinArrays(
@@ -322,7 +325,7 @@ export class DOMhelpers {
         ).sort();
       }
       newClassesString = addClasses
-        .filter(c => !removeClasses.includes(c))
+        .filter((c) => !removeClasses.includes(c))
         .join(' ');
 
       if (currentClassesAsArray.join(' ') !== newClassesString) {
