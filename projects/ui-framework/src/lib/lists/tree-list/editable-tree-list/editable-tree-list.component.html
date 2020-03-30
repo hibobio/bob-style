@@ -3,8 +3,8 @@
     class="betl-list"
     cdkDropList
     [cdkDropListDisabled]="disableDragAndDrop"
+    [cdkDropListSortingDisabled]="disableDragAndDrop"
     (cdkDropListDropped)="onItemDrop($event)"
-    [cdkDropListSortingDisabled]="false"
     (click)="onListClick($event)"
     (keydown)="onListKeyDown($event)"
     (focusout)="onListBlur($event)"
@@ -40,7 +40,7 @@
 
       <span cdkDrag
             [cdkDragDisabled]="disableDragAndDrop"
-            [cdkDragData]="{origIndex: index, item: item}"
+            [cdkDragData]="item"
             cdkDragLockAxis="y"
             [cdkDragBoundary]="listElement"
             (cdkDragStarted)="onDragstart(item, index);"
@@ -52,7 +52,7 @@
               cdkDragHandle
               aria-hidden="true"></span>
 
-        <span *ngIf="false"
+        <span *ngIf="!disableDragAndDrop"
               class="betl-item-elmnt betl-item-input-wrap">
           {{item.name}}
         </span>
@@ -82,7 +82,7 @@
 
       <span class="betl-item-elmnt betl-item-input-wrap">
         <span *ngIf="debug"
-              style="font-size:80%;">{{index}}</span>
+              style="font-size:80%;white-space:nowrap;">L{{item.parentCount || 1}} i{{index}}</span>
         <input [(ngModel)]="item.name"
                [placeholder]="translation.untitled"
                class="betl-item-input"

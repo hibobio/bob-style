@@ -265,7 +265,7 @@ export class TreeListModelService {
         TreeListModelUtils.updateMap(itemsMap, cnvrtd.id, cnvrtd, onlyValue);
       }
 
-      converted.collapsed = collapsed;
+      converted.collapsed = collapsed && converted.id !== BTL_ROOT_ID;
       converted.childrenCount = converted.childrenIDs.length;
     }
 
@@ -308,7 +308,7 @@ export class TreeListModelService {
     );
 
     value = value.filter(
-      id => !arrayIntersection(value, itemsMap.get(id).parentIDs).length
+      (id) => !arrayIntersection(value, itemsMap.get(id).parentIDs).length
     );
 
     const isSameValue = simpleArraysEqual(previousValue, value);
@@ -326,7 +326,7 @@ export class TreeListModelService {
         itemsMap
       );
 
-      affectedIDs.forEach(id => {
+      affectedIDs.forEach((id) => {
         const item = itemsMap.get(id);
 
         if (!item) {
@@ -334,7 +334,7 @@ export class TreeListModelService {
             `[TreeListComponent.applyValue]:
             No item data for ID: "${stringify(id)}". Removing ID from value.`
           );
-          value = value.filter(valId => valId !== id);
+          value = value.filter((valId) => valId !== id);
           return;
         }
 

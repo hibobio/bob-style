@@ -13,9 +13,8 @@ import {
 import {
   applyChanges,
   hasChanges,
-  isValuevy,
   notFirstChanges,
-  joinArrays,
+  isValuevy,
 } from '../../../services/utils/functional-utils';
 import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from '../tree-list.const';
 import {
@@ -116,6 +115,7 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
       label: this.translation.increase_indent,
       key: 'increaseIndent',
       disabled: (menuItem: MenuItem) => {
+        // TODO
         return !TreeListEditUtils.findPossibleParentAmongPrevSiblings(
           menuItem.data,
           this.listViewModel,
@@ -207,12 +207,17 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
     }
 
     if (hasChanges(changes, ['list'], true)) {
+      this.DOM.setCssProps(this.host?.nativeElement, {
+        '--list-min-width': null,
+        '--list-min-height': null,
+      });
+
       this.list = changes.list.currentValue || [];
 
       this.itemsMap.clear();
       this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
         keyMap: this.keyMap,
-        collapsed: false,
+        collapsed: this.startCollapsed,
       });
       this.rootItem = this.itemsMap.get(BTL_ROOT_ID);
     }
@@ -238,42 +243,47 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
 
   protected listToListViewModel(list: TreeListOption[] = this.list): itemID[] {
     return this.modelSrvc.getListViewModel(list, this.itemsMap, {
-      expand: true,
       keyMap: this.keyMap,
     });
   }
 
-  // protected itemsMapToListViewModel(list) {
-  //   const reducer = (list, id) => {
-  //     const item = this.itemsMap.get(id);
-  //     list = list.filter(i => i !== id).concat([id]);
-  //     //joinArrays(list, [id]);
-  //     // list.push(id);
-  //     if (item.childrenCount) {
-  //       item.childrenIDs.reduce(reducer, list);
-  //     }
-  //     return list;
-  //   };
-
-  //   return list.reduce(reducer, []);
-  // }
-
-  protected listViewModelToList(
-    listViewModel: itemID[] = this.listViewModel
-  ): TreeListOption[] {
-    const processed: Set<itemID> = new Set();
-
-    const reducer = (acc: TreeListOption[], id: itemID) => {
+  protected itemsMapToListViewModel(
+    itemsMap: TreeListItemMap = this.itemsMap,
+    expand = false
+  ): itemID[] {
+    const reducer = (list: itemID[], id: itemID): itemID[] => {
       const item = this.itemsMap.get(id);
 
-      if (
-        processed.has(item.id) ||
-        (!item.childrenCount && !item.name.trim())
-      ) {
-        return acc;
+      if (!item) {
+        return list;
       }
 
-      processed.add(item.id);
+      list.push(item.id);
+
+      if (item.childrenCount && item.collapsed && !expand) {
+        return list;
+      }
+
+      if (item.childrenCount) {
+        item.collapsed = false;
+        return item.childrenIDs.reduce(reducer, list);
+      }
+
+      return list;
+    };
+
+    return itemsMap.get(BTL_ROOT_ID)?.childrenIDs?.reduce(reducer, []) || [];
+  }
+
+  protected itemsMapToOptionList(
+    itemsMap: TreeListItemMap = this.itemsMap
+  ): TreeListOption[] {
+    const reducer = (list: TreeListOption[], id: itemID): TreeListOption[] => {
+      const item = this.itemsMap.get(id);
+
+      if (!item.childrenCount && !item.name.trim()) {
+        return list;
+      }
 
       const itemOut: TreeListOption = {
         [this.keyMap.id]: item.id,
@@ -284,12 +294,12 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
         itemOut[this.keyMap.children] = item.childrenIDs.reduce(reducer, []);
       }
 
-      acc.push(itemOut);
+      list.push(itemOut);
 
-      return acc;
+      return list;
     };
 
-    return listViewModel.reduce(reducer, []);
+    return itemsMap.get(BTL_ROOT_ID)?.childrenIDs?.reduce(reducer, []) || [];
   }
 
   public toggleItemCollapsed(
@@ -297,12 +307,18 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
     element: HTMLElement = null,
     force: boolean = null
   ): void {
-    TreeListViewUtils.toggleItemCollapsed(item, this.itemsMap, force, true);
+    if (item.id === BTL_ROOT_ID) {
+      return;
+    }
+    TreeListViewUtils.toggleItemCollapsed(item, force);
+    this.listViewModel = this.itemsMapToListViewModel();
     this.cd.detectChanges();
   }
 
   public toggleCollapseAll(force: boolean = null): void {
-    TreeListViewUtils.toggleCollapseAllItemsInMap(this.itemsMap, force, true);
+    TreeListViewUtils.toggleCollapseAllItemsInMap(this.itemsMap, force);
+    this.listViewModel = this.itemsMapToListViewModel();
+    this.cd.detectChanges();
   }
 
   public onListClick(event: MouseEvent): void {
@@ -327,7 +343,7 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
   }
 
   public emitChange(): void {
-    this.list = this.listViewModelToList();
+    this.list = this.itemsMapToOptionList();
     this.changed.emit(this.list);
   }
 
@@ -387,28 +403,16 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
     this.DOM.setCssProps(listEl, styles as Styles);
   }
 
-  public insertNewItem(
-    where: InsertItemLocation,
-    target: TreeListItem
-  ): TreeListItem {
-    return target;
-  }
+  public insertNewItem(where: InsertItemLocation, target: TreeListItem): void {}
 
   public deleteItem(
     item: TreeListItem,
     context: TreeListItemEditContext = null
   ): void {}
 
-  public increaseIndent(
-    item: TreeListItem,
-    indexInView: number = null
-  ): TreeListItem {
-    return item;
-  }
+  public increaseIndent(item: TreeListItem, indexInView: number = null): void {}
 
-  public decreaseIndent(item: TreeListItem): TreeListItem {
-    return item;
-  }
+  public decreaseIndent(item: TreeListItem): void {}
 
   // Dev / Debug
 
@@ -433,7 +437,7 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
         console.log(
           '------------------\n',
           'New items:\n',
-          Array.from(this.itemsMap.values()).filter(item => item.newitem)
+          Array.from(this.itemsMap.values()).filter((item) => item.newitem)
         );
         break;
 
@@ -441,7 +445,7 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
         console.log(
           '------------------\n',
           'Deleted items:\n',
-          Array.from(this.itemsMap.values()).filter(item => item.deleted)
+          Array.from(this.itemsMap.values()).filter((item) => item.deleted)
         );
         break;
 
@@ -449,7 +453,7 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
         console.log(
           '------------------\n',
           'Items view context:\n',
-          this.listViewModel.map(id => {
+          this.listViewModel.map((id) => {
             const item = this.itemsMap.get(id);
             return {
               id: item.id,

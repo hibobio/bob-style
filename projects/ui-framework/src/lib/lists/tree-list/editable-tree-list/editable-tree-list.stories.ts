@@ -63,18 +63,91 @@ const note = `
 
 `;
 
-const mock2 = [
+const mock3 = [
+  {
+    serverId: simpleUID('000-', 3),
+    value: '000',
+  },
   {
     serverId: simpleUID('aaa-', 3),
     value: 'AAA',
+    children: [
+      {
+        serverId: simpleUID('ddd-', 3),
+        value: 'DDD',
+      },
+      {
+        serverId: simpleUID('eee-', 3),
+        value: 'EEE',
+      },
+      {
+        serverId: simpleUID('fff-', 3),
+        value: 'FFF',
+      },
+    ],
   },
   {
     serverId: simpleUID('bbb-', 3),
     value: 'BBB',
+    children: [
+      {
+        serverId: simpleUID('hhh-', 3),
+        value: 'HHH',
+      },
+      {
+        serverId: simpleUID('iii-', 3),
+        value: 'III',
+      },
+      {
+        serverId: simpleUID('jjj-', 3),
+        value: 'JJJ',
+      },
+    ],
   },
   {
     serverId: simpleUID('ccc-', 3),
     value: 'CCC',
+    children: [
+      {
+        serverId: simpleUID('kkk-', 3),
+        value: 'KKK',
+      },
+      {
+        serverId: simpleUID('lll-', 3),
+        value: 'LLL',
+      },
+      {
+        serverId: simpleUID('mmm-', 3),
+        value: 'MMM',
+      },
+    ],
+  },
+  {
+    serverId: simpleUID('111-', 3),
+    value: '111',
+  },
+];
+
+const mock2 = [
+  {
+    serverId: simpleUID('AAA-', 3),
+    value: 'AAA',
+  },
+  {
+    serverId: simpleUID('BBB-', 3),
+    value: 'BBB',
+  },
+  {
+    serverId: simpleUID('CCC-', 3),
+    value: 'CCC',
+  },
+  {
+    serverId: simpleUID('DDD-', 3),
+    value: 'DDD',
+  },
+  {
+    serverId: simpleUID('EEE-', 3),
+    value: 'EEE',
   },
 ];
 
@@ -139,7 +212,7 @@ story.add(
       startCollapsed: boolean('startCollapsed', true, 'Props'),
       maxHeightItems: number('maxHeightItems', 12, {}, 'Props'),
 
-      debug: boolean('debug', true, 'Props'),
+      debug: boolean('debug', false, 'Props'),
 
       options: select(
         'list',

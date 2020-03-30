@@ -8,7 +8,6 @@ import {
 import {
   isNullOrUndefined,
   stringify,
-  joinArrays,
 } from '../../../services/utils/functional-utils';
 import { BTL_VALUE_SEPARATOR_DEF } from '../tree-list.const';
 
@@ -36,7 +35,7 @@ export class TreeListModelUtils {
 
     if (startItem[direction === 'up' ? 'parentCount' : 'childrenCount']) {
       startItem[direction === 'up' ? 'parentIDs' : 'childrenIDs'].forEach(
-        id => {
+        (id) => {
           const item = itemsMap.get(id);
           this.walkTree(direction, item, process, itemsMap, affectedIDs);
         }
@@ -56,7 +55,7 @@ export class TreeListModelUtils {
     this.walkTree(
       direction,
       startItem,
-      item => Object.assign(item, set),
+      (item) => Object.assign(item, set),
       itemsMap
     );
     return affectedIDs;
@@ -66,7 +65,7 @@ export class TreeListModelUtils {
     item: TreeListItem,
     itemsMap: TreeListItemMap
   ): void {
-    (item.parentIDs || []).forEach(groupID => {
+    (item.parentIDs || []).forEach((groupID) => {
       const parent = itemsMap.get(groupID);
 
       if (item.selected) {
@@ -128,8 +127,6 @@ export class TreeListModelUtils {
   ): number {
     let maxDepth = 0;
 
-    console.log('updateItemAndChildrenParentsIDs', stringify(topParentIDs));
-
     const parentsUpdateReducer = (
       parentIDs: itemID[],
       id: itemID
@@ -142,7 +139,7 @@ export class TreeListModelUtils {
       maxDepth = Math.max(maxDepth, itm.parentCount);
 
       if (itm.childrenCount) {
-        parentIDs = parentIDs.filter(i => i !== itm.id).concat([itm.id]);
+        parentIDs = parentIDs.filter((i) => i !== itm.id).concat([itm.id]);
         //joinArrays(parentIDs, [itm.id]); //.push(itm.id);
         itm.childrenIDs.reduce(parentsUpdateReducer, parentIDs);
       }

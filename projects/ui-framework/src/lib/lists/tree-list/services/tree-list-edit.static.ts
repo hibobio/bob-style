@@ -8,7 +8,6 @@ import {
   simpleUID,
   isNumber,
   arrayRemoveItemsMutate,
-  stringify,
 } from '../../../services/utils/functional-utils';
 import { TreeListModelUtils } from './tree-list-model.static';
 
@@ -65,32 +64,13 @@ export class TreeListEditUtils {
         target = itemsMap.get(listViewModel[(where as number) - 1]);
       }
 
-      if (!target.childrenCount) {
+      if (!target.childrenCount || (target.childrenCount && target.collapsed)) {
         where = 'after';
       }
 
       if (target.childrenCount && !target.collapsed) {
         where = 'firstChildOf';
       }
-
-      if (target.childrenCount && target.collapsed) {
-        console.log('target', target.name, 'is collapsed!');
-
-        target = itemsMap.get(
-          listViewModel[
-            this.findViewIndexOfNextSibling(
-              target,
-              listViewModel,
-              itemsMap,
-              Math.max(0, (where as number) - 1)
-            )
-          ]
-        );
-
-        where = 'after';
-      }
-
-      console.log('getItemEditContext, update where:', where, target?.name);
     }
 
     if (!target) {
@@ -154,13 +134,11 @@ export class TreeListEditUtils {
             );
           })()
         : // firstChildOf
-          listViewModel.findIndex((id) => id === parent.childrenIDs[0]);
-
-    if (!target) {
-      console.error(`[TreeListEditUtils.getItemEditContext]:
-          Something's wrong!`);
-      return;
-    }
+          (() => {
+            return parent.collapsed
+              ? targetIndexInViewModel + 1
+              : listViewModel.findIndex((id) => id === parent.childrenIDs[0]);
+          })();
 
     return {
       parent,
@@ -189,17 +167,6 @@ export class TreeListEditUtils {
     if (nextSiblingIndex === -1) {
       nextSiblingIndex = item.childrenCount;
     }
-
-    console.log(
-      'findViewIndexOfNextSibling',
-      item.name,
-      'startIndex:',
-      startIndex,
-      'current listViewModel:',
-      stringify(listViewModel),
-      'nextSiblingIndex:',
-      nextSiblingIndex
-    );
 
     return nextSiblingIndex + startIndex;
   }

@@ -23,55 +23,35 @@ export class TreeListViewUtils {
   //
   public static toggleCollapseAllItemsInMap(
     itemsMap: TreeListItemMap,
-    force: boolean = null,
-    setHidden = false
+    force: boolean = null
   ): void {
-    itemsMap.forEach(item => {
+    itemsMap.forEach((item) => {
       if (item.childrenCount && item.id !== BTL_ROOT_ID) {
-        this.toggleItemCollapsed(item, itemsMap, force, setHidden);
+        this.toggleItemCollapsed(item, force);
       }
     });
   }
 
   public static toggleItemCollapsed(
     item: TreeListItem,
-    itemsMap: TreeListItemMap,
-    force: boolean = null,
-    setHidden = false
+    force: boolean = null
   ): void {
+    // if (item.id === BTL_ROOT_ID) {
+    //   return;
+    // }
     item.collapsed = isBoolean(force) ? force : !item.collapsed;
-
-    if (setHidden) {
-      TreeListModelUtils.walkTree(
-        'down',
-        item,
-        itm => {
-          if (
-            !itm.parentIDs.find(id => {
-              const i = itemsMap.get(id);
-              return i !== item && i.collapsed;
-            })
-          ) {
-            itm.hidden = item.collapsed;
-          }
-        },
-        itemsMap
-      );
-
-      item.hidden = false;
-    }
   }
 
   public static expandTillItemsByID(
     IDs: itemID[] = [],
     itemsMap: TreeListItemMap
   ) {
-    IDs.forEach(id => {
+    IDs.forEach((id) => {
       const item = itemsMap.get(id);
       TreeListModelUtils.walkTree(
         'up',
         item,
-        itm => (itm.collapsed = false),
+        (itm) => (itm.collapsed = false),
         itemsMap
       );
     });
@@ -145,7 +125,7 @@ export class TreeListViewUtils {
     }
 
     if (item && isNullOrUndefined(indexInView)) {
-      indexInView = listViewModel.findIndex(id => id === item.id);
+      indexInView = listViewModel.findIndex((id) => id === item.id);
 
       if (indexInView === -1) {
         console.error(
