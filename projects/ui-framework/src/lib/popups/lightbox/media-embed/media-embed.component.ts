@@ -23,6 +23,7 @@ import {
   stringify,
   hasChanges,
 } from '../../../services/utils/functional-utils';
+import { URLtype } from '../../../services/url/url.enum';
 
 @Component({
   selector: 'b-media-embed',
@@ -86,9 +87,31 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
           return;
         }
 
+        if (this.videoData.type === URLtype.vimeo) {
+          (async () => {
+            const response = await fetch(
+              `http://vimeo.com/api/v2/video/${this.videoData.id}.json`
+            );
+            const videMeta = await response.json();
+
+            const thumb =
+              videMeta && videMeta[0]?.thumbnail_large?.split('_640')[0];
+            this.videoData.thumb =
+              (thumb && thumb + '_1280x720.jpg') || this.videoData.thumb;
+
+            this.setThumbImg(this.videoData.thumb);
+          })();
+
+          return;
+        }
+
         this.setThumbImg(this.videoData.thumb);
 
-        if (this.videoData.thumbAlt && this.videoData.thumbMinWidth) {
+        if (
+          this.videoData.type === URLtype.youtube &&
+          this.videoData.thumbAlt &&
+          this.videoData.thumbMinWidth
+        ) {
           let testImg = new Image();
 
           testImg.onerror = () => {
