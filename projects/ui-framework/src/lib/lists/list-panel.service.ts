@@ -15,7 +15,7 @@ import {
 } from 'rxjs/operators';
 import { race } from 'rxjs';
 import { outsideZone } from '../services/utils/rxjs.operators';
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'lodash';
 import { isKey } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
 import { ScrollEvent } from '../services/utils/utils.interface';
@@ -122,7 +122,7 @@ export class ListPanelService {
       self.templatePortal = null;
       self.overlayRef = null;
 
-      self.subscribtions.forEach(sub => {
+      self.subscribtions.forEach((sub) => {
         sub.unsubscribe();
         sub = null;
       });
