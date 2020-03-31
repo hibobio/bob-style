@@ -151,13 +151,13 @@ export const hasProp = (
     (!strict && typeof obj[key] !== 'undefined'));
 
 export const objectHasTruthyValue = (obj: GenericObject): boolean =>
-  isNotEmptyObject(obj) && Boolean(Object.values(obj).find(v => Boolean(v)));
+  isNotEmptyObject(obj) && Boolean(Object.values(obj).find((v) => Boolean(v)));
 
 export const keysFromArrayOrObject = (smth: string[] | {}): string[] =>
   Array.isArray(smth) ? smth : Object.keys(smth);
 
 export const getKeyByValue = (object: GenericObject, value: any) =>
-  Object.keys(object).find(key => object[key] === value);
+  Object.keys(object).find((key) => object[key] === value);
 
 export const onlyUpdatedProps = (
   oldObj: GenericObject,
@@ -195,7 +195,7 @@ export const objectRemoveKeys = (
   keys: string[]
 ): GenericObject => {
   return Object.keys(object)
-    .filter(key => !keys.includes(key))
+    .filter((key) => !keys.includes(key))
     .reduce((acc, key) => {
       acc[key] = object[key];
       return acc;
@@ -215,12 +215,12 @@ export const isIterable = (smth: any): boolean => {
 
 export const arrayDifference = <T = any>(arrA: T[], arrB: T[]): T[] => {
   return arrA
-    .filter(x => !arrB.includes(x))
-    .concat(arrB.filter(x => !arrA.includes(x)));
+    .filter((x) => !arrB.includes(x))
+    .concat(arrB.filter((x) => !arrA.includes(x)));
 };
 
 export const arrayIntersection = <T = any>(arrA: T[], arrB: T[]): T[] =>
-  arrA.filter(x => arrB.includes(x));
+  arrA.filter((x) => arrB.includes(x));
 
 export const arrayCommon = arrayIntersection;
 
@@ -239,6 +239,9 @@ export const dedupeArray = <T = any>(arr: T[]): T[] => Array.from(new Set(arr));
 
 export const joinArrays = <T = any>(arr1: T[], ...rest): T[] =>
   dedupeArray(arr1.concat(...rest));
+
+export const simpleArrayAddItemUnique = <T = any>(arr: T[], item: T): T[] =>
+  arr.filter((i) => i !== item).concat(item);
 
 export const makeArray = (length: number, fill: any = undefined): any[] =>
   Array(length).fill(fill);
@@ -276,7 +279,7 @@ export const arrayRemoveAtIndexMutate = <T = any>(
 export const arrayRemoveItemMutate = <T = any>(arr: T[], item: T): T[] => {
   arrayRemoveAtIndexMutate(
     arr,
-    arr.findIndex(i => i === item)
+    arr.findIndex((i) => i === item)
   );
   return arr;
 };
@@ -284,7 +287,7 @@ export const arrayRemoveItemMutate = <T = any>(arr: T[], item: T): T[] => {
 export const arrayRemoveItemsMutate = <T = any>(arr: T[], items: T[]): T[] => {
   const arrCopy = arr.slice();
   arr.length = 0;
-  arr.push(...arrCopy.filter(id => !items.includes(id)));
+  arr.push(...arrCopy.filter((id) => !items.includes(id)));
   return arr;
 };
 
@@ -317,7 +320,7 @@ export const arrayMode = <T = any>(arr: T[]): T =>
   arr
     .sort(
       (a, b) =>
-        arr.filter(v => v === a).length - arr.filter(v => v === b).length
+        arr.filter((v) => v === a).length - arr.filter((v) => v === b).length
     )
     .pop();
 
@@ -329,7 +332,7 @@ export const stringify = (smth: any, limit: number = undefined): string => {
   const stringified = isString(smth)
     ? smth
     : isArray(smth)
-    ? smth.map(i => stringify(i)).join(', ')
+    ? smth.map((i) => stringify(i)).join(', ')
     : isObject(smth)
     ? JSON.stringify(smth)
     : String(smth);
@@ -402,9 +405,9 @@ export const isDateFormat = (frmt: string): boolean => {
 
   return (
     split.length > 1 &&
-    (!!split.find(i => i === 'DD') ||
-      !!split.find(i => i === 'YYYY') ||
-      !!split.find(i => i.includes('MM')))
+    (!!split.find((i) => i === 'DD') ||
+      !!split.find((i) => i === 'YYYY') ||
+      !!split.find((i) => i.includes('MM')))
   );
 };
 
@@ -433,7 +436,7 @@ export const monthIndex = (month: number | string, minusOne = true): number => {
   let num = parseInt(month as string, 10);
   if (isNaN(num)) {
     num = monthShortNames.findIndex(
-      i => i.toLowerCase() === (month as string).toLowerCase()
+      (i) => i.toLowerCase() === (month as string).toLowerCase()
     );
     if (num === -1) {
       return month as any;
@@ -587,7 +590,7 @@ export const hasChanges = (
   if (!keys) {
     keys = Object.keys(changes);
   }
-  return !!keys.find(i =>
+  return !!keys.find((i) =>
     simpleChangeFilter(changes[i], discardAllFalsey, falseyCheck)
   );
 };
@@ -603,7 +606,7 @@ export const firstChanges = (
     keys = Object.keys(changes);
   }
   return !!keys.find(
-    i =>
+    (i) =>
       simpleChangeFilter(changes[i], discardAllFalsey, falseyCheck) &&
       changes[i].firstChange
   );
@@ -620,7 +623,7 @@ export const notFirstChanges = (
     keys = Object.keys(changes);
   }
   return !!keys.find(
-    i =>
+    (i) =>
       simpleChangeFilter(changes[i], discardAllFalsey, falseyCheck) &&
       !changes[i].firstChange
   );
@@ -671,9 +674,9 @@ export const applyChanges = (
 // ----------------------
 
 export function MixIn(baseCtors: Function[]) {
-  return function(derivedCtor: Function) {
-    baseCtors.forEach(baseCtor => {
-      Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+  return function (derivedCtor: Function) {
+    baseCtors.forEach((baseCtor) => {
+      Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) => {
         derivedCtor.prototype[name] = baseCtor.prototype[name];
       });
     });
@@ -687,9 +690,7 @@ export const simpleUID = (
 ): string => {
   return (
     prefix.replace(/\s+/g, '_') +
-    Math.random()
-      .toString(16)
-      .substr(2, length) +
+    Math.random().toString(16).substr(2, length) +
     suffix.replace(/\s+/g, '_')
   );
 };

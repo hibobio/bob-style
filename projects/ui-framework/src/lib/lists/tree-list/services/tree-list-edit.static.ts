@@ -64,11 +64,14 @@ export class TreeListEditUtils {
         target = itemsMap.get(listViewModel[(where as number) - 1]);
       }
 
-      if (!target.childrenCount || (target.childrenCount && target.collapsed)) {
+      if (
+        !target?.childrenCount ||
+        (target.childrenCount && target.collapsed)
+      ) {
         where = 'after';
       }
 
-      if (target.childrenCount && !target.collapsed) {
+      if (target?.childrenCount && !target.collapsed) {
         where = 'firstChildOf';
       }
     }
@@ -98,6 +101,12 @@ export class TreeListEditUtils {
 
     const targetIndexInParent = parent.childrenIDs.findIndex(
       (id) => id === target.id
+    );
+
+    console.log(
+      `getItemEditContext: parent: ${parent.name}, sibling: ${
+        sibling.name || sibling.id || sibling
+      }`
     );
 
     const insertionIndexInParent =

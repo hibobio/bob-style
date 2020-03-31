@@ -17,6 +17,7 @@ import {
   notFirstChanges,
   isValuevy,
   isKey,
+  simpleArrayAddItemUnique,
 } from '../../../services/utils/functional-utils';
 import {
   BTL_KEYMAP_DEF,
@@ -97,7 +98,7 @@ export abstract class BaseEditableTreeListElement implements OnChanges, OnInit {
   protected dragHoverTimer;
   protected dragRef: DragRef<any>;
   protected cancelDrop = false;
-  protected expandedWhileDragging: TreeListItem[] = [];
+  protected expandedWhileDragging: Set<TreeListItem> = new Set();
 
   readonly icons = Icons;
   readonly iconType = IconType;
@@ -184,7 +185,8 @@ export abstract class BaseEditableTreeListElement implements OnChanges, OnInit {
         return list;
       }
 
-      list.push(item.id);
+      // list.push(item.id);
+      list = simpleArrayAddItemUnique(list, id);
 
       if (item.childrenCount && item.collapsed && !expand) {
         return list;
@@ -207,7 +209,7 @@ export abstract class BaseEditableTreeListElement implements OnChanges, OnInit {
     const reducer = (list: TreeListOption[], id: itemID): TreeListOption[] => {
       const item = this.itemsMap.get(id);
 
-      if (!item.childrenCount && !item.name.trim()) {
+      if (!item || (!item.childrenCount && !item.name.trim())) {
         return list;
       }
 
@@ -271,10 +273,10 @@ export abstract class BaseEditableTreeListElement implements OnChanges, OnInit {
       event.stopPropagation();
       this.cancelDrop = true;
       document.dispatchEvent(new Event('mouseup'));
-      this.expandedWhileDragging.forEach((item) => {
-        this.toggleItemCollapsed(item, null, true);
-      });
-      this.expandedWhileDragging.length = 0;
+      // this.expandedWhileDragging.forEach((item) => {
+      //   this.toggleItemCollapsed(item, null, true);
+      // });
+      this.expandedWhileDragging.clear();
     }
   }
 
@@ -356,11 +358,10 @@ export abstract class BaseEditableTreeListElement implements OnChanges, OnInit {
         label: this.translation.toggle_collapsed,
         key: 'toggleCollapsed',
         disabled: (menuItem: MenuItem<TreeListItem>) =>
-          !menuItem.data.childrenCount,
+          !menuItem.data?.childrenCount,
         action: (menuItem: MenuItem) => {
-          const item = menuItem.data;
-          if (item.childrenCount) {
-            this.toggleItemCollapsed(item);
+          if (menuItem.data.childrenCount) {
+            this.toggleItemCollapsed(menuItem.data);
           }
         },
       },
@@ -397,11 +398,10 @@ export abstract class BaseEditableTreeListElement implements OnChanges, OnInit {
         label: this.translation.add_item,
         key: 'insertNewItem',
         action: (menuItem: MenuItem) => {
-          const item = menuItem.data;
-          if (item.childrenCount) {
-            this.insertNewItem('firstChildOf', item);
+          if (menuItem.data.childrenCount) {
+            this.insertNewItem('firstChildOf', menuItem.data);
           } else {
-            this.insertNewItem('after', item);
+            this.insertNewItem('after', menuItem.data);
           }
         },
       },

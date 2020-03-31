@@ -9,6 +9,7 @@ import {
   isNullOrUndefined,
   stringify,
   asArray,
+  simpleArrayAddItemUnique,
 } from '../../../services/utils/functional-utils';
 import { BTL_VALUE_SEPARATOR_DEF } from '../tree-list.const';
 
@@ -134,15 +135,25 @@ export class TreeListModelUtils {
     ): itemID[] => {
       const itm = itemsMap.get(id);
 
+      console.log(`updateItemAndChildrenParentsIDs: item: ${itm.name},
+      parentIDs: ${stringify(itm.parentIDs)},
+      new parentIDs: ${stringify(parentIDs)}
+      `);
+
       itm.parentIDs = parentIDs.slice();
       itm.parentCount = itm.parentIDs.length;
 
       maxDepth = Math.max(maxDepth, itm.parentCount);
 
       if (itm.childrenCount) {
-        // parentIDs = parentIDs.filter((i) => i !== itm.id).concat([itm.id]);
-        parentIDs.push(itm.id);
-        itm.childrenIDs.reduce(parentsUpdateReducer, parentIDs);
+        //
+        // parentIDs.push(itm.id);
+        // parentIDs = simpleArrayAddItemUnique(parentIDs, id);
+
+        itm.childrenIDs.reduce(
+          parentsUpdateReducer,
+          simpleArrayAddItemUnique(parentIDs, id)
+        );
       }
 
       return parentIDs;
@@ -159,7 +170,9 @@ export class TreeListModelUtils {
   ): itemID[] {
     const collector = (collection: itemID[], id: itemID) => {
       const item = itemsMap.get(id);
+
       collection.push(id);
+      // collection = simpleArrayAddItemUnique(collection, id);
 
       if (item.childrenCount) {
         collection = item.childrenIDs.reduce(collector, collection);

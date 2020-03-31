@@ -37,7 +37,7 @@
 
       <span cdkDrag
             [cdkDragDisabled]="disableDragAndDrop"
-            [cdkDragData]="item"
+            [cdkDragData]="{item: item, index: index}"
             cdkDragLockAxis="y"
             (cdkDragStarted)="onDragstart($event, item, index);"
             (cdkDragEnded)="onDragEnd(item);"

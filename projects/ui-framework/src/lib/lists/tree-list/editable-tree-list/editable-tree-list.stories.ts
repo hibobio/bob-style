@@ -63,61 +63,61 @@ const note = `
 
 `;
 
-const mock3 = [
+const mock = [
   {
     serverId: simpleUID('000-', 3),
     value: '000',
   },
   {
-    serverId: simpleUID('aaa-', 3),
+    serverId: simpleUID('AAA-', 3),
     value: 'AAA',
     children: [
       {
-        serverId: simpleUID('ddd-', 3),
+        serverId: simpleUID('DDD-', 3),
         value: 'DDD',
       },
       {
-        serverId: simpleUID('eee-', 3),
+        serverId: simpleUID('EEE-', 3),
         value: 'EEE',
       },
       {
-        serverId: simpleUID('fff-', 3),
+        serverId: simpleUID('FFF-', 3),
         value: 'FFF',
       },
     ],
   },
   {
-    serverId: simpleUID('bbb-', 3),
+    serverId: simpleUID('BBB-', 3),
     value: 'BBB',
     children: [
       {
-        serverId: simpleUID('hhh-', 3),
+        serverId: simpleUID('HHH-', 3),
         value: 'HHH',
       },
       {
-        serverId: simpleUID('iii-', 3),
+        serverId: simpleUID('III-', 3),
         value: 'III',
       },
       {
-        serverId: simpleUID('jjj-', 3),
+        serverId: simpleUID('JJJ-', 3),
         value: 'JJJ',
       },
     ],
   },
   {
-    serverId: simpleUID('ccc-', 3),
+    serverId: simpleUID('CCC-', 3),
     value: 'CCC',
     children: [
       {
-        serverId: simpleUID('kkk-', 3),
+        serverId: simpleUID('KKK-', 3),
         value: 'KKK',
       },
       {
-        serverId: simpleUID('lll-', 3),
+        serverId: simpleUID('LLL-', 3),
         value: 'LLL',
       },
       {
-        serverId: simpleUID('mmm-', 3),
+        serverId: simpleUID('MMM-', 3),
         value: 'MMM',
       },
     ],
@@ -151,7 +151,7 @@ const mock2 = [
   },
 ];
 
-const mock = [
+const mock3 = [
   {
     serverId: simpleUID('TLV-', 3),
     value: 'TLV',
