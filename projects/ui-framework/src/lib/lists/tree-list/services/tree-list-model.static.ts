@@ -135,10 +135,10 @@ export class TreeListModelUtils {
     ): itemID[] => {
       const itm = itemsMap.get(id);
 
-      console.log(`updateItemAndChildrenParentsIDs: item: ${itm.name},
-      parentIDs: ${stringify(itm.parentIDs)},
-      new parentIDs: ${stringify(parentIDs)}
-      `);
+      // console.log(`updateItemAndChildrenParentsIDs: item: ${itm.name},
+      // parentIDs: ${stringify(itm.parentIDs)},
+      // new parentIDs: ${stringify(parentIDs)}
+      // `);
 
       itm.parentIDs = parentIDs.slice();
       itm.parentCount = itm.parentIDs.length;
