@@ -220,7 +220,7 @@ export const arrayDifference = <T = any>(arrA: T[], arrB: T[]): T[] => {
 };
 
 export const arrayIntersection = <T = any>(arrA: T[], arrB: T[]): T[] =>
-  arrA.filter((x) => arrB.includes(x));
+  (arrA && arrB && arrA.filter((x) => arrB.includes(x))) || [];
 
 export const arrayCommon = arrayIntersection;
 

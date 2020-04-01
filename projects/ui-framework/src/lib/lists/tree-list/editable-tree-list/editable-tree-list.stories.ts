@@ -47,8 +47,9 @@ const storyTemplate = `
 
     <h4>Result:</h4>
 
-    <b-tree-list [type]="'single'" [readonly]="true" [list]="listOut"
-    [keyMap]="options === 'simple' || options === 'primitive' ? serverKeyMap : null" [startCollapsed]="startCollapsed" [debug]="debug"></b-tree-list>
+    <b-tree-list [type]="'single'" [readonly]="true"
+    [list]="listOut"
+    [keyMap]="options === 'simple' || options === 'primitive' || listOut[0]?.serverId ? serverKeyMap : null" [startCollapsed]="startCollapsed" [debug]="debug"></b-tree-list>
 
   </div>
 </b-story-book-layout>
@@ -63,7 +64,7 @@ const note = `
 
 `;
 
-const mock = [
+const mock3 = [
   {
     serverId: simpleUID('000-', 3),
     value: '000',
@@ -151,7 +152,7 @@ const mock2 = [
   },
 ];
 
-const mock3 = [
+const mock = [
   {
     serverId: simpleUID('TLV-', 3),
     value: 'TLV',
@@ -210,7 +211,7 @@ story.add(
       ),
 
       startCollapsed: boolean('startCollapsed', true, 'Props'),
-      maxHeightItems: number('maxHeightItems', 12, {}, 'Props'),
+      maxHeightItems: number('maxHeightItems', 15, {}, 'Props'),
 
       debug: boolean('debug', false, 'Props'),
 

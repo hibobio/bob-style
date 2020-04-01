@@ -7,7 +7,8 @@
     (click)="onListClick($event)"
     (keydown)="onListKeyDown($event)"
     (focusout)="onListBlur($event)"
-    (mouseover)="onListHover($event)">
+    (mouseover)="onListHover($event)"
+    (input.outside-zone)="onListInput($event)">
 
   <ng-container *ngFor="let itemID of listViewModel; let index = index; trackBy: trackBy">
 
@@ -32,7 +33,8 @@
             'btl-item-option': !item.childrenCount,
             'btl-item-group': item.childrenCount,
             expanded: item.childrenCount && !item.collapsed,
-            collapsed: item.collapsed
+            collapsed: item.collapsed,
+            'drag-hover': index === dragHoverIndex
           }">
 
       <span cdkDrag
@@ -82,7 +84,7 @@
                class="betl-item-input"
                type="text">
         <span *ngIf="debug"
-              style="font-size:80%;">{{item.id}}</span>
+              style="font-size:80%;">{{getDragState(index)}} {{item.id}}</span>
       </span>
 
     </li>
@@ -121,16 +123,14 @@
 
   <button type="button"
           (click)="clear()">Clear</button>
-
+  <button type="button"
+          (click)="reset()">Reset</button>
   <button type="button"
           (click)="log('Data')">Log data</button>
-
   <button type="button"
           (click)="log('New')">Log new</button>
-
   <button type="button"
           (click)="log('Deleted')">Log deleted</button>
-
   <button type="button"
           (click)="emitChange()">Emit</button>
 

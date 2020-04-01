@@ -1,47 +1,3 @@
-<ng-template #listItem
-             let-index="index"
-             let-item="item">
-
-  <li class="btl-item"
-      [id]="item.id"
-      [attr.data-index]="index"
-      [attr.data-level]="item.parentCount || 1"
-      tabindex="0"
-      [ngClass]="{
-        'btl-item-option': !item.childrenCount,
-        'btl-item-group': item.childrenCount,
-        disabled: item.disabled || (type === selectType.multi && item.parentSelected),
-        selected: item.selected || (type === selectType.multi && item.parentSelected),
-        expanded: item.childrenCount && !item.collapsed,
-        collapsed: item.collapsed,
-        'next-is-group': item.nextInViewIsGroup,
-        'all-options-hidden': item.allOptionsHidden
-      }">
-
-    <span *ngIf="item.childrenCount"
-          class="btl-item-chevron has-hover"
-          role="button"></span>
-
-    <span *ngIf="showCheckbox()"
-          class="btl-item-checkbox"
-          role="checkbox"
-          [attr.aria-checked]="item.selected"></span>
-
-    <span class="btl-item-name"
-          data-max-lines='3'
-          [innerHTML]="item.name | highlight: searchValue">
-      {{item.name}}
-    </span>
-
-    <span *ngIf="item.selectedCount"
-          class="btl-selected-count">
-      ({{item.selectedCount}})
-    </span>
-  </li>
-
-</ng-template>
-
-
 <b-search *ngIf="showSearch"
           #search
           class="btl-search"
@@ -65,6 +21,50 @@
       item: itemsMap.get(itemID)
     }"></ng-container>
   </ng-container>
+
+
+  <ng-template #listItem
+               let-index="index"
+               let-item="item">
+
+    <li class="btl-item"
+        [id]="item.id"
+        [attr.data-index]="index"
+        [attr.data-level]="item.parentCount || 1"
+        tabindex="0"
+        [ngClass]="{
+        'btl-item-option': !item.childrenCount,
+        'btl-item-group': item.childrenCount,
+        disabled: item.disabled || (type === selectType.multi && item.parentSelected),
+        selected: item.selected || (type === selectType.multi && item.parentSelected),
+        expanded: item.childrenCount && !item.collapsed,
+        collapsed: item.collapsed,
+        'next-is-group': item.nextInViewIsGroup,
+        'all-options-hidden': item.allOptionsHidden
+      }">
+
+      <span *ngIf="item.childrenCount"
+            class="btl-item-chevron has-hover"
+            role="button"></span>
+
+      <span *ngIf="showCheckbox()"
+            class="btl-item-checkbox"
+            role="checkbox"
+            [attr.aria-checked]="item.selected"></span>
+
+      <span class="btl-item-name"
+            data-max-lines='3'
+            [innerHTML]="item.name | highlight: searchValue">
+        {{item.name}}
+      </span>
+
+      <span *ngIf="item.selectedCount"
+            class="btl-selected-count">
+        ({{item.selectedCount}})
+      </span>
+    </li>
+
+  </ng-template>
 
 </ul>
 

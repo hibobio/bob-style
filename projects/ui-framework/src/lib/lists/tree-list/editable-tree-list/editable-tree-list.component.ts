@@ -3,21 +3,22 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   ElementRef,
+  NgZone,
 } from '@angular/core';
-import { arrayInsertAt } from '../../../services/utils/functional-utils';
+import { isNumber } from '../../../services/utils/functional-utils';
 import { CdkDragDrop, CdkDragStart } from '@angular/cdk/drag-drop';
 import { BaseEditableTreeListElement } from './editable-tree-list.abstract';
-import { TreeListItem, itemID } from '../tree-list.interface';
+import { TreeListItem } from '../tree-list.interface';
 import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListModelUtils } from '../services/tree-list-model.static';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
-import { TreeListViewUtils } from '../services/tree-list-view.static';
 import {
   TreeListItemEditContext,
   InsertItemLocation,
 } from './editable-tree-list.interface';
 import { TreeListEditUtils } from '../services/tree-list-edit.static';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import { UtilsService } from '../../../services/utils/utils.service';
 
 @Component({
   selector: 'b-editable-tree-list',
@@ -30,53 +31,18 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     modelSrvc: TreeListModelService,
     cntrlsSrvc: TreeListControlsService,
     DOM: DOMhelpers,
+    utilsService: UtilsService,
+    zone: NgZone,
     cd: ChangeDetectorRef,
     host: ElementRef
   ) {
-    super(modelSrvc, cntrlsSrvc, DOM, cd, host);
-  }
-
-  public insertItem(
-    item: TreeListItem,
-    where: InsertItemLocation,
-    target: TreeListItem,
-    context: TreeListItemEditContext = null
-  ): void {
-    const { parent, insertionIndexInParent, insertionIndexInViewModel } =
-      context ||
-      TreeListEditUtils.getItemEditContext(
-        where,
-        target,
-        this.itemsMap,
-        this.listViewModel
-      );
-
-    console.log(`insertItem ${item.name || item.id}, where: ${where}, target: ${
-      target?.id || null
-    },
-    parent: ${parent.name}, insertionIndexInParent: ${insertionIndexInParent}`);
-
-    parent.childrenIDs = arrayInsertAt(
-      parent.childrenIDs,
-      item.id,
-      insertionIndexInParent
-    );
-
-    parent.childrenCount = parent.childrenIDs.length;
-
-    this.listViewModel = this.itemsMapToListViewModel();
-
-    this.cd.detectChanges();
-
-    TreeListViewUtils.findAndFocusInput(
-      this.listElement.nativeElement.querySelector(`[data-id="${item.id}"]`),
-      'start'
-    );
-
-    this.setListCSS('width');
+    super(modelSrvc, cntrlsSrvc, DOM, utilsService, zone, cd, host);
   }
 
   public insertNewItem(where: InsertItemLocation, target: TreeListItem): void {
+    //
+    this.saveUndoState();
+
     const context: TreeListItemEditContext = TreeListEditUtils.getItemEditContext(
       where,
       target,
@@ -114,6 +80,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     where: InsertItemLocation,
     target: TreeListItem // parent
   ): void {
+    //
     const allItemDescendants = TreeListModelUtils.collectAllChildren(
       [item.id],
       this.itemsMap
@@ -127,10 +94,8 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
       }
 
       parent.childrenIDs =
-        parent.childrenIDs?.filter(
-          // (i) => i !== item.id
-          (id) => !allItemDescendants.includes(id)
-        ) || [];
+        parent.childrenIDs?.filter((id) => !allItemDescendants.includes(id)) ||
+        [];
       parent.childrenCount = parent.childrenIDs.length;
     });
 
@@ -155,22 +120,10 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     );
   }
 
-  public deleteItem(
-    item: TreeListItem,
-    context: TreeListItemEditContext = null
-  ): void {
-    TreeListEditUtils.deleteItem(
-      item,
-      context,
-      this.itemsMap,
-      this.listViewModel
-    );
-
-    this.cd.detectChanges();
-    this.emitChange();
-  }
-
   public increaseIndent(item: TreeListItem, indexInView: number = null): void {
+    //
+    this.saveUndoState();
+
     const parent = TreeListEditUtils.findPossibleParentAmongPrevSiblings(
       item,
       this.listViewModel,
@@ -192,6 +145,9 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
   }
 
   public decreaseIndent(item: TreeListItem): void {
+    //
+    this.saveUndoState();
+
     if (!item.parentCount || item.parentCount < 2) {
       return;
     }
@@ -208,6 +164,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     item: TreeListItem,
     indexInView: number
   ): void {
+    //
     this.dragRef = event.source._dragRef;
     this.cancelDrop = false;
 
@@ -219,18 +176,6 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
 
     this.draggingIndex = indexInView;
     this.dragHoverIndex = indexInView;
-  }
-
-  public onDragEnd(item: TreeListItem): void {
-    this.dragRef = this.draggingIndex = this.dragHoverIndex = undefined;
-    this.expandedWhileDragging.clear();
-
-    if (item.expandMe) {
-      // console.log('will expand item', item.name);
-      //   this.toggleItemCollapsed(item, null, false);
-      this.setListCSS('remove-height');
-      delete item.expandMe;
-    }
   }
 
   public onListHover(event: MouseEvent): void {
@@ -246,17 +191,34 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
       return;
     }
 
+    this.draggingIndex = this.dragRef
+      ? this.dragRef.data.data.index
+      : this.draggingIndex;
+
     this.dragHoverIndex = parseInt(itemElement.getAttribute('data-index'), 10);
 
-    // window.setTimeout(() => {
-    //   const hoverItem = this.itemsMap.get(
-    //     this.listViewModel[this.dragHoverIndex]
-    //   );
-    //   if (hoverItem?.collapsed && this.dragHoverIndex !== this.draggingIndex) {
-    //     this.toggleItemCollapsed(hoverItem, null, false);
-    //     this.expandedWhileDragging.add(hoverItem);
-    //   }
-    // }, 1000);
+    this.dragHoverTimer = window.setTimeout(() => {
+      const hoverItem = this.itemsMap.get(
+        this.listViewModel[this.dragHoverIndex]
+      );
+      if (hoverItem?.collapsed && this.dragHoverIndex !== this.draggingIndex) {
+        this.expandedWhileDragging.add(hoverItem);
+        this.toggleItemCollapsed(hoverItem, null, false, false);
+
+        this.draggingIndex = this.dragRef
+          ? this.dragRef.data.data.index
+          : this.draggingIndex;
+        this.cd.detectChanges();
+      }
+    }, 1000);
+  }
+
+  public onDragEnd(item: TreeListItem): void {
+    if (item.expandMe) {
+      // this.toggleItemCollapsed(item, null, false);
+      this.setListCSS('remove-height');
+      // delete item.expandMe;
+    }
   }
 
   public onItemDrop(event: CdkDragDrop<any>): void {
@@ -264,48 +226,36 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
       this.cancelDrop = false;
       return;
     }
-    const prevIndex = event.previousIndex;
-    const newIndex = event.currentIndex;
 
     const item: TreeListItem = event.item.data.item;
-    const itemIndexInView = event.item.data.index;
+    const prevIndex = isNumber(event.item.data?.index)
+      ? event.item.data.index
+      : event.previousIndex;
+    const newIndex = isNumber(this.dragHoverIndex)
+      ? this.dragHoverIndex
+      : event.currentIndex;
 
     const droppedOnItem = this.itemsMap.get(this.listViewModel[newIndex]);
 
-    console.log(
-      `dropped "${item.name || 'untitled'}" on "${droppedOnItem.name}";
-      prevIndex: ${prevIndex}, newIndex: ${newIndex}, itemIndexInView: ${itemIndexInView};`
-    );
+    if (this.debug) {
+      console.log(
+        `dropped "${item.name || 'untitled'}" on "${droppedOnItem.name}";
+        prevIndex: ${prevIndex}, newIndex: ${newIndex}`
+      );
+    }
+
+    this.finishDrag();
 
     if (prevIndex === newIndex || droppedOnItem.parentIDs.includes(item.id)) {
-      console.log('will not move');
       return;
     }
 
+    this.saveUndoState();
     this.moveItem(item, newIndex, droppedOnItem);
 
-    this.listViewModel = this.itemsMapToListViewModel();
+    this.updateListViewModel();
     this.cd.detectChanges();
 
     this.emitChange();
-  }
-
-  public onListBlur(event: FocusEvent): void {
-    const target = event.target as HTMLInputElement;
-
-    if (target.matches('.betl-item-input')) {
-      if (target.value.trim()) {
-        this.emitChange();
-      } else {
-        const { item } = TreeListViewUtils.getItemFromElement(
-          target,
-          this.itemsMap,
-          this.listViewModel
-        );
-        if (item && !item.childrenCount) {
-          this.deleteItem(item);
-        }
-      }
-    }
   }
 }

@@ -36,9 +36,6 @@ export class TreeListViewUtils {
     item: TreeListItem,
     force: boolean = null
   ): void {
-    // if (item.id === BTL_ROOT_ID) {
-    //   return;
-    // }
     item.collapsed = isBoolean(force) ? force : !item.collapsed;
   }
 

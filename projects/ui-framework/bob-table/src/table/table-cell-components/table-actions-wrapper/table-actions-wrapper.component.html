@@ -1,29 +1,28 @@
 <div class="actionable-item">
   <ng-content></ng-content>
 </div>
-<b-icon
-  *ngIf="icon"
-  [color]="iconColor.normal"
-  [size]="iconSize.medium"
-  [type]="iconType"
-  [icon]="icon">
+
+<b-icon *ngIf="icon"
+        [color]="iconColor.normal"
+        [size]="iconSize.medium"
+        [type]="iconType"
+        [icon]="icon">
 </b-icon>
-<b-menu
-  *ngIf="menuItems && menuItems.length > 1"
-  [menu]="menuItems"
-  [openLeft]="openLeft"
-  (click)="$event.stopPropagation()">
-  <b-square-button
-    menu-trigger
-    [type]="squareButtonType.tertiary"
-    [icon]="buttonIcon"
-    [color]="buttonColor">
+
+<b-menu *ngIf="menuItems && menuItems.length > 1"
+        [menu]="menuItems"
+        [openLeft]="openLeft"
+        (click)="$event.stopPropagation()">
+  <b-square-button menu-trigger
+                   [type]="squareButtonType.tertiary"
+                   [icon]="buttonIcon"
+                   [color]="buttonColor">
   </b-square-button>
 </b-menu>
-<b-button
-  *ngIf="menuItems && menuItems.length === 1"
-  [size]="buttonSize.small"
-  [text]="menuItems[0].label"
-  [type]="buttonType ? buttonType : null"
-  (clicked)="menuItems[0].action($event)">
+
+<b-button *ngIf="menuItems && menuItems.length === 1"
+          [size]="buttonSize.small"
+          [text]="menuItems[0].label"
+          [type]="buttonType ? buttonType : null"
+          (clicked)="menuItems[0].action($event)">
 </b-button>

@@ -1,12 +1,14 @@
-import { TreeListItem } from '../tree-list.interface';
+import {
+  TreeListItem,
+  TreeListItemMap,
+  TreeListOption,
+  itemID,
+} from '../tree-list.interface';
 
 export interface TreeListItemEditContext {
   parent: TreeListItem;
   sibling: TreeListItem;
   insertionIndexInParent: number;
-  insertionIndexInViewModel: number;
-  targetIndexInParent?: number;
-  targetIndexInViewModel?: number;
 }
 
 export type InsertItemLocation =
@@ -14,3 +16,9 @@ export type InsertItemLocation =
   | 'firstChildOf'
   | 'lastChildOf'
   | number;
+
+export interface UndoState {
+  itemsMap: TreeListItemMap;
+  list: TreeListOption[];
+  listViewModel: itemID[];
+}

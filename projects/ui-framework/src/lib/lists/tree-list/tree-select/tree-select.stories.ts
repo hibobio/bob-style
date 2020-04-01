@@ -27,7 +27,6 @@ const componentTemplate = `
       [label]="label"
       [placeholder]="placeholder"
       [description]="description"
-      [maxHeightItems]="maxHeightItems"
       [valueSeparatorChar]="valueSeparatorChar"
       [startCollapsed]="startCollapsed"
       [disabled]="disabled"
@@ -82,12 +81,15 @@ const note = `
 const toAdd = () => ({
   template,
   props: {
-    ...TreeListStoriesCommonProps({
-      apply: true,
-      cancel: true,
-      clear: true,
-      reset: false,
-    }),
+    ...TreeListStoriesCommonProps(
+      {
+        apply: true,
+        cancel: true,
+        clear: true,
+        reset: false,
+      },
+      null
+    ),
 
     label: text('label', 'label text', 'Props'),
     description: text('description', mockText(30), 'Props'),

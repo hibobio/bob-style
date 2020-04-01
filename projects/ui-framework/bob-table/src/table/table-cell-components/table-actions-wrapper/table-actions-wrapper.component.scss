@@ -1,20 +1,30 @@
 @import '../../../../../src/lib/style/common-imports';
+
 :host {
   display: flex;
   align-items: center;
+}
 
-  .actionable-item {
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-    min-width: 0;
+.actionable-item {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  min-width: 0;
 
-    &:empty {
-      display: none;
-    }
+  &:empty {
+    display: none;
+  }
+}
+
+b-icon {
+  margin: 0 times8(2);
+  flex-shrink: 0;
+
+  .actionable-item:empty + & {
+    margin-left: 0;
   }
 
-  b-icon {
-    margin-right: times8(2);
+  &:last-child {
+    margin-right: 0;
   }
 }

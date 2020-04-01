@@ -8,11 +8,40 @@ import {
   simpleUID,
   isNumber,
   arrayRemoveItemsMutate,
+  arrayInsertAt,
 } from '../../../services/utils/functional-utils';
 import { TreeListModelUtils } from './tree-list-model.static';
 
 export class TreeListEditUtils {
   //
+  public static insertItem(
+    item: TreeListItem,
+    where: InsertItemLocation,
+    target: TreeListItem,
+    context: TreeListItemEditContext = null,
+    itemsMap: TreeListItemMap,
+    listViewModel: itemID[]
+  ): void {
+    const { parent, insertionIndexInParent } =
+      context ||
+      this.getItemEditContext(where, target, itemsMap, listViewModel);
+
+    console.log(`insertItem ${item.name || item.id}, where: ${where}, target: ${
+      target?.id || null
+    },
+      parent: ${
+        parent.name
+      }, insertionIndexInParent: ${insertionIndexInParent}`);
+
+    parent.childrenIDs = arrayInsertAt(
+      parent.childrenIDs,
+      item.id,
+      insertionIndexInParent
+    );
+
+    parent.childrenCount = parent.childrenIDs.length;
+  }
+
   public static deleteItem(
     item: TreeListItem,
     context: TreeListItemEditContext = null,
@@ -103,12 +132,6 @@ export class TreeListEditUtils {
       (id) => id === target.id
     );
 
-    console.log(
-      `getItemEditContext: parent: ${parent.name}, sibling: ${
-        sibling.name || sibling.id || sibling
-      }`
-    );
-
     const insertionIndexInParent =
       where === 'after'
         ? targetIndexInParent + 1
@@ -117,67 +140,11 @@ export class TreeListEditUtils {
         : // firstChildOf
           0;
 
-    const targetIndexInViewModel = listViewModel.findIndex(
-      (id) => id === target.id
-    );
-
-    const insertionIndexInViewModel =
-      where === 'after'
-        ? this.findViewIndexOfNextSibling(
-            target,
-            listViewModel,
-            itemsMap,
-            targetIndexInViewModel + 1
-          )
-        : where === 'lastChildOf'
-        ? (() => {
-            const modelLength = listViewModel.length;
-            if (target.id === BTL_ROOT_ID || modelLength === 0) {
-              return modelLength;
-            }
-            return this.findViewIndexOfNextSibling(
-              target,
-              listViewModel,
-              itemsMap,
-              targetIndexInViewModel + 1
-            );
-          })()
-        : // firstChildOf
-          (() => {
-            return parent.collapsed
-              ? targetIndexInViewModel + 1
-              : listViewModel.findIndex((id) => id === parent.childrenIDs[0]);
-          })();
-
     return {
       parent,
       sibling,
       insertionIndexInParent,
-      insertionIndexInViewModel,
-      targetIndexInParent,
-      targetIndexInViewModel,
     };
-  }
-
-  public static findViewIndexOfNextSibling(
-    item: TreeListItem,
-    listViewModel: itemID[],
-    itemsMap: TreeListItemMap,
-    startIndex = 0
-  ): number {
-    if (listViewModel.length === startIndex || !item.childrenCount) {
-      return startIndex;
-    }
-
-    // skips children of target
-    let nextSiblingIndex = listViewModel
-      .slice(startIndex)
-      .findIndex((id: itemID) => !itemsMap.get(id).parentIDs.includes(item.id));
-    if (nextSiblingIndex === -1) {
-      nextSiblingIndex = item.childrenCount;
-    }
-
-    return nextSiblingIndex + startIndex;
   }
 
   public static findPossibleParentAmongPrevSiblings(

@@ -16,11 +16,14 @@ export const TreeListStoriesCommonProps = (
     cancel: false,
     clear: false,
     reset: false,
-  }
+  },
+  maxHeightItems = 8
 ) => ({
   serverKeyMap: BTL_KEYMAP_SERVER,
   type: select('type', Object.values(SelectType), SelectType.single, 'Props'),
-  maxHeightItems: number('maxHeightItems', 8, {}, 'Props'),
+  ...(maxHeightItems && {
+    maxHeightItems: number('maxHeightItems', maxHeightItems, {}, 'Props'),
+  }),
   valueSeparatorChar: text(
     'valueSeparatorChar',
     BTL_VALUE_SEPARATOR_DEF,

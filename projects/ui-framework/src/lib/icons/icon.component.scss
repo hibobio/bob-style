@@ -16,6 +16,7 @@ $circularIconSizes: (
   justify-content: center;
   align-items: center;
   position: relative;
+  flex-shrink: 0;
 
   &[data-type='circular'] {
     border-radius: 50%;

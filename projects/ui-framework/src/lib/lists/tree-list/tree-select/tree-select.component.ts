@@ -95,7 +95,6 @@ export class TreeSelectComponent extends BaseFormElement
 
   @Input() type: SelectType = SelectType.multi;
   @Input() valueSeparatorChar = BTL_VALUE_SEPARATOR_DEF;
-  @Input() maxHeightItems = 8;
   @Input() startCollapsed = true;
   @Input() readonly = false;
   @Input() disabled = false;
@@ -120,6 +119,7 @@ export class TreeSelectComponent extends BaseFormElement
   readonly tooltipClass = [TooltipClass.PreWrap];
   public dirty = false;
   public touched = false;
+  public maxHeightItems = 6;
 
   public ngOnChanges(changes: SimpleChanges): void {
     applyChanges(
@@ -129,7 +129,6 @@ export class TreeSelectComponent extends BaseFormElement
         keyMap: BTL_KEYMAP_DEF,
         type: SelectType.multi,
         valueSeparatorChar: BTL_VALUE_SEPARATOR_DEF,
-        maxHeightItems: 8,
         tooltipType: TruncateTooltipType.auto,
       },
       ['value'],

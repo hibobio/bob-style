@@ -308,7 +308,7 @@ export class TreeListModelService {
     );
 
     value = value.filter(
-      (id) => !arrayIntersection(value, itemsMap.get(id).parentIDs).length
+      (id) => !arrayIntersection(value, itemsMap.get(id)?.parentIDs).length
     );
 
     const isSameValue = simpleArraysEqual(previousValue, value);
@@ -365,5 +365,62 @@ export class TreeListModelService {
       isSameValue,
       firstSelectedItem,
     };
+  }
+
+  public itemsMapToListViewModel(
+    itemsMap: TreeListItemMap,
+    expand = false
+  ): itemID[] {
+    const reducer = (list: itemID[], id: itemID): itemID[] => {
+      const item = itemsMap.get(id);
+
+      if (!item) {
+        return list;
+      }
+
+      list.push(item.id);
+      // list = simpleArrayAddItemUnique(list, id);
+
+      if (item.childrenCount && item.collapsed && !expand) {
+        return list;
+      }
+
+      if (item.childrenCount) {
+        item.collapsed = false;
+        return item.childrenIDs.reduce(reducer, list);
+      }
+
+      return list;
+    };
+
+    return itemsMap.get(BTL_ROOT_ID)?.childrenIDs?.reduce(reducer, []) || [];
+  }
+
+  public itemsMapToOptionList(
+    itemsMap: TreeListItemMap,
+    keyMap: TreeListKeyMap = BTL_KEYMAP_DEF
+  ): TreeListOption[] {
+    const reducer = (list: TreeListOption[], id: itemID): TreeListOption[] => {
+      const item = itemsMap.get(id);
+
+      if (!item || (!item.childrenCount && !item.name.trim())) {
+        return list;
+      }
+
+      const itemOut: TreeListOption = {
+        [keyMap.id]: item.id,
+        [keyMap.name]: item.name.trim() || 'Untitled',
+      };
+
+      if (item.childrenCount) {
+        itemOut[keyMap.children] = item.childrenIDs.reduce(reducer, []);
+      }
+
+      list.push(itemOut);
+
+      return list;
+    };
+
+    return itemsMap.get(BTL_ROOT_ID)?.childrenIDs?.reduce(reducer, []) || [];
   }
 }
