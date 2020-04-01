@@ -157,4 +157,9 @@ export enum Icons {
   arrow_dir_right = 'b-icon-arrow-dir-right',
   comment_add = 'b-icon-comment-add',
   online = 'b-icon-online',
+  arrow_down = 'b-icon-arrow-down',
+  arrow_up = 'b-icon-arrow-up',
+  check_circle_outline = 'b-icon-check-circle-outline',
+  filter_list = 'b-icon-filter-list',
+  height = 'b-icon-height'
 }
