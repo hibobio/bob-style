@@ -141,6 +141,7 @@ export abstract class BaseEditableTreeListElement
       this.cancelFocus = false;
       return;
     }
+
     const listLength = this.listViewModel?.length || 0;
     this.focus(
       event.target !== this.hostElement || listLength < 2
@@ -315,7 +316,9 @@ export abstract class BaseEditableTreeListElement
       itemsMap: this.itemsMap,
       listViewModel: this.listViewModel,
       toggleItemCollapsed: this.toggleItemCollapsed.bind(this),
-      itemClick: () => {},
+      itemClick: (item, itemElement) => {
+        TreeListViewUtils.findAndFocusInput(itemElement, 'end');
+      },
     });
   }
 
@@ -363,7 +366,7 @@ export abstract class BaseEditableTreeListElement
 
     TreeListViewUtils.findAndFocusInput(
       this.listElement.querySelector(`[data-id="${item.id}"]`),
-      'start'
+      'end'
     );
 
     this.isTyping = false;
