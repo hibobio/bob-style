@@ -136,10 +136,11 @@ export abstract class BaseEditableTreeListElement
   protected listBackup: TreeListOption[];
 
   @HostListener('click', ['$event']) onHostClick(event: MouseEvent) {
+    const listLength = this.listViewModel?.length || 0;
     this.focus(
-      event.target !== this.hostElement
+      event.target !== this.hostElement || listLength < 2
         ? 'first'
-        : event.offsetY > (this.listViewModel?.length || 0) * LIST_EL_HEIGHT
+        : event.offsetY > listLength * LIST_EL_HEIGHT
         ? 'last'
         : Math.max(Math.round(event.offsetY / LIST_EL_HEIGHT) - 1, 0)
     );
@@ -301,11 +302,6 @@ export abstract class BaseEditableTreeListElement
       toggleItemCollapsed: this.toggleItemCollapsed.bind(this),
       itemClick: () => {},
     });
-
-    if (clickedElement?.matches('.betl-item.filler')) {
-      event.stopPropagation();
-      this.focus();
-    }
   }
 
   public onListKeyDown(event: KeyboardEvent): void {
@@ -439,7 +435,7 @@ export abstract class BaseEditableTreeListElement
   }
 
   public focus(whichInput: 'first' | 'last' | number = 'first'): void {
-    if (this.itemsMap && this.itemsMap.size > 2) {
+    if (this.itemsMap && this.itemsMap.size > 1) {
       TreeListViewUtils.findAndFocusInput(this.listElement, 'end', whichInput);
     } else if (this.rootItem) {
       this.insertNewItem('lastChildOf', this.rootItem);

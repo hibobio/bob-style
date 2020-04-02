@@ -73,6 +73,7 @@ $betl-bg-line-width: 1px;
 }
 
 .betl-item.filler {
+  pointer-events: none;
   flex-grow: 1;
   min-height: var(--list-filler-height, 0);
 
