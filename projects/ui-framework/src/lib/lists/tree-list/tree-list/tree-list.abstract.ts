@@ -212,13 +212,17 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
     });
   }
 
-  protected itemClick(item: TreeListItem, element: HTMLElement): void {
+  protected itemClick(
+    item: TreeListItem,
+    itemElement: HTMLElement,
+    target: HTMLElement
+  ): void {
     if (
       item.childrenCount &&
       !item.allOptionsHidden &&
       this.type !== SelectType.single
     ) {
-      this.toggleItemCollapsed(item, element);
+      this.toggleItemCollapsed(item, itemElement);
       return;
     }
     if (

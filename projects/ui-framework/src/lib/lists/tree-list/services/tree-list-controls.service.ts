@@ -23,7 +23,11 @@ interface TreeListClickConfig {
     force?: boolean
   ) => void;
   toggleItemSelect?: (item: TreeListItem, force?: boolean) => void;
-  itemClick?: (item: TreeListItem, element: HTMLElement) => void;
+  itemClick?: (
+    item: TreeListItem,
+    itemElement: HTMLElement,
+    clickTarget: HTMLElement
+  ) => void;
   readonly?: boolean;
   disabled?: boolean;
 }
@@ -120,7 +124,7 @@ export class TreeListControlsService {
 
     if (!isDisabled) {
       event.stopPropagation();
-      itemClick(item, itemElement);
+      itemClick(item, itemElement, target);
       return itemElement;
     }
   }

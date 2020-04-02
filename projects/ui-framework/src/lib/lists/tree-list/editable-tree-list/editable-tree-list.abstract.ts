@@ -143,10 +143,12 @@ export abstract class BaseEditableTreeListElement
     }
 
     const listLength = this.listViewModel?.length || 0;
+    const listHeight = this.listElement?.offsetHeight || 0;
+
     this.focus(
       event.target !== this.hostElement || listLength < 2
         ? 'first'
-        : event.offsetY > listLength * LIST_EL_HEIGHT
+        : event.offsetY > listHeight
         ? 'last'
         : Math.max(Math.round(event.offsetY / LIST_EL_HEIGHT) - 1, 0)
     );
@@ -316,10 +318,18 @@ export abstract class BaseEditableTreeListElement
       itemsMap: this.itemsMap,
       listViewModel: this.listViewModel,
       toggleItemCollapsed: this.toggleItemCollapsed.bind(this),
-      itemClick: (item, itemElement) => {
-        TreeListViewUtils.findAndFocusInput(itemElement, 'end');
-      },
+      itemClick: this.onItemClick.bind(this),
     });
+  }
+
+  public onItemClick(
+    item: TreeListItem,
+    itemElement: HTMLElement,
+    clickTarget: HTMLElement
+  ): void {
+    if (!clickTarget.matches('.betl-item-input')) {
+      TreeListViewUtils.findAndFocusInput(itemElement, 'end');
+    }
   }
 
   public onListKeyDown(event: KeyboardEvent): void {
