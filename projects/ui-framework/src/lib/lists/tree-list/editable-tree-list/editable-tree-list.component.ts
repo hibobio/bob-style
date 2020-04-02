@@ -55,7 +55,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     }
 
     const newItem = TreeListEditUtils.newItem(
-      context.sibling && {
+      context?.sibling && {
         parentIDs: context.sibling.parentIDs.slice(),
         parentCount: context.sibling.parentCount,
       }
@@ -65,7 +65,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
 
     if (
       (where === 'firstChildOf' || where === 'lastChildOf') &&
-      context.parent.collapsed
+      context?.parent.collapsed
     ) {
       this.toggleItemCollapsed(context.parent, null, false);
     }

@@ -85,7 +85,7 @@ export abstract class BaseEditableTreeListElement
   }
 
   @Input('list') set setList(list: TreeListOption[]) {}
-  public list: TreeListOption[];
+  public list: TreeListOption[] = [];
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
   @Input() maxHeightItems = 15;
   @Input() startCollapsed = true;
@@ -180,18 +180,13 @@ export abstract class BaseEditableTreeListElement
         '--list-min-height': null,
       });
 
-      this.itemsMap.clear();
       this.list = changes.list.currentValue || [];
 
       if (this.debug && !changes.skipBackup?.currentValue) {
         this.listBackup = cloneDeep(this.list);
       }
 
-      this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
-        keyMap: this.keyMap,
-        collapsed: this.startCollapsed,
-      });
-      this.rootItem = this.itemsMap.get(BTL_ROOT_ID);
+      this.initItemsMap();
     }
 
     if (
@@ -217,6 +212,10 @@ export abstract class BaseEditableTreeListElement
   }
 
   ngOnInit(): void {
+    if (!this.itemsMap.size) {
+      this.initItemsMap();
+    }
+
     if (!this.itemMenu) {
       this.setTranslation();
     }
@@ -255,6 +254,16 @@ export abstract class BaseEditableTreeListElement
 
   ngOnDestroy(): void {
     this.windowKeydownSubscriber?.unsubscribe();
+  }
+
+  private initItemsMap(): void {
+    this.itemsMap.clear();
+
+    this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
+      keyMap: this.keyMap,
+      collapsed: this.startCollapsed,
+    });
+    this.rootItem = this.itemsMap.get(BTL_ROOT_ID);
   }
 
   protected updateListViewModel(expand = false): void {
@@ -389,8 +398,8 @@ export abstract class BaseEditableTreeListElement
   protected saveUndoState(): void {
     this.savestate = {
       itemsMap: cloneDeep(this.itemsMap),
-      list: this.list.slice(),
-      listViewModel: this.listViewModel.slice(),
+      list: this.list?.slice() || [],
+      listViewModel: this.listViewModel?.slice() || [],
     };
   }
 

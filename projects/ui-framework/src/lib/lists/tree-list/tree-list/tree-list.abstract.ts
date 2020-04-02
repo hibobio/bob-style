@@ -10,6 +10,7 @@ import {
   SimpleChanges,
   OnChanges,
   Directive,
+  OnInit,
 } from '@angular/core';
 import { SearchComponent } from '../../../search/search/search.component';
 import {
@@ -44,7 +45,7 @@ import { TreeListViewUtils } from '../services/tree-list-view.static';
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseTreeListElement extends TreeListInputOutput
-  implements OnChanges, AfterViewInit, OnDestroy {
+  implements OnChanges, OnInit, AfterViewInit, OnDestroy {
   constructor(
     protected modelSrvc: TreeListModelService,
     protected cntrlsSrvc: TreeListControlsService,
@@ -148,6 +149,12 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
     }
   }
 
+  ngOnInit() {
+    if (!this.itemsMap.size) {
+      this.initItemsMap();
+    }
+  }
+
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
@@ -170,6 +177,15 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
     if (!this.itemsMapFromAbove) {
       this.itemsMap.clear();
     }
+  }
+
+  protected initItemsMap(): void {
+    this.itemsMap.clear();
+    this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
+      keyMap: this.keyMap,
+      separator: this.valueSeparatorChar,
+      collapsed: this.startCollapsed,
+    });
   }
 
   public onListClick(event: MouseEvent): void {
@@ -338,7 +354,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
         console.log(
           '------------------\n',
           'Items view context:\n',
-          this.listViewModel.map(id => {
+          this.listViewModel.map((id) => {
             const item = this.itemsMap.get(id);
             return {
               id: item.id,

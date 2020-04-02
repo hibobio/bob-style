@@ -659,10 +659,10 @@ export const applyChanges = (
       target[changeKey] =
         defaults.hasOwnProperty(changeKey) &&
         ((!discardAllFalsey &&
-          isNullOrUndefined(changes[changeKey].currentValue)) ||
+          isNullOrUndefined(changes[changeKey]?.currentValue)) ||
           (discardAllFalsey && !falseyCheck(changes[changeKey].currentValue)))
           ? defaults[changeKey]
-          : changes[changeKey].currentValue;
+          : changes[changeKey]?.currentValue;
     }
   });
 

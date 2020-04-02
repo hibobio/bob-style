@@ -59,7 +59,7 @@ export class TreeListComponent extends BaseTreeListElement {
   }
 
   @Input('list') set setList(list: TreeListOption[]) {}
-  public list: TreeListOption[];
+  public list: TreeListOption[] = [];
   @Input('value') set setValue(value: itemID[]) {}
   public value: itemID[];
   @Input('itemsMap') set setItemsMap(itmsMap: TreeListItemMap) {
@@ -80,12 +80,7 @@ export class TreeListComponent extends BaseTreeListElement {
       this.list = changes.list.currentValue || [];
 
       if (!this.itemsMapFromAbove) {
-        this.itemsMap.clear();
-        this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
-          keyMap: this.keyMap,
-          separator: this.valueSeparatorChar,
-          collapsed: this.startCollapsed,
-        });
+        this.initItemsMap();
       }
     }
 
