@@ -444,7 +444,7 @@ export abstract class BaseEditableTreeListElement
   }
 
   public focus(whichInput: 'first' | 'last' | number = 'first'): void {
-    if (this.itemsMap && this.itemsMap.size > 1) {
+    if (this.itemsMap?.size > 1) {
       TreeListViewUtils.findAndFocusInput(this.listElement, 'end', whichInput);
     } else if (this.rootItem) {
       this.insertNewItem('lastChildOf', this.rootItem);
