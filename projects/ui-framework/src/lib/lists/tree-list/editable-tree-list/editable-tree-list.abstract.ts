@@ -12,6 +12,8 @@ import {
   OnInit,
   NgZone,
   OnDestroy,
+  AfterViewInit,
+  HostListener,
 } from '@angular/core';
 import {
   applyChanges,
@@ -64,10 +66,12 @@ import { filter, delay } from 'rxjs/operators';
 import cloneDeep from 'lodash/cloneDeep';
 import { DOMInputEvent } from '../../../types';
 
+const LIST_EL_HEIGHT = 32;
+
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseEditableTreeListElement
-  implements OnChanges, OnInit, OnDestroy {
+  implements OnChanges, OnInit, AfterViewInit, OnDestroy {
   constructor(
     protected modelSrvc: TreeListModelService,
     protected cntrlsSrvc: TreeListControlsService,
@@ -76,7 +80,9 @@ export abstract class BaseEditableTreeListElement
     protected zone: NgZone,
     protected cd: ChangeDetectorRef,
     protected host: ElementRef
-  ) {}
+  ) {
+    this.hostElement = this.host.nativeElement;
+  }
 
   @Input('list') set setList(list: TreeListOption[]) {}
   public list: TreeListOption[];
@@ -85,6 +91,7 @@ export abstract class BaseEditableTreeListElement
   @Input() startCollapsed = true;
   @Input()
   translation: EditableTreeListTranslation = EDITABLE_TREELIST_TRANSLATION_DEF;
+  @Input() focusOnInit = false;
 
   @HostBinding('attr.data-embedded') @Input() embedded = false;
   @HostBinding('attr.data-debug') @Input() debug = false;
@@ -98,7 +105,11 @@ export abstract class BaseEditableTreeListElement
   >();
 
   @ViewChild('listElement', { static: true, read: ElementRef })
-  protected listElement: ElementRef;
+  set setListEl(elem: ElementRef) {
+    this.listElement = elem.nativeElement;
+  }
+  protected listElement: HTMLElement;
+  protected hostElement: HTMLElement;
 
   public itemsMap: TreeListItemMap = new Map();
   public listViewModel: itemID[] = [];
@@ -122,8 +133,17 @@ export abstract class BaseEditableTreeListElement
   readonly iconColor = IconColor;
 
   protected savestate: UndoState;
-
   protected listBackup: TreeListOption[];
+
+  @HostListener('click', ['$event']) onHostClick(event: MouseEvent) {
+    this.focus(
+      event.target !== this.hostElement
+        ? 'first'
+        : event.offsetY > (this.listViewModel?.length || 0) * LIST_EL_HEIGHT
+        ? 'last'
+        : Math.max(Math.round(event.offsetY / LIST_EL_HEIGHT) - 1, 0)
+    );
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(
@@ -208,7 +228,7 @@ export abstract class BaseEditableTreeListElement
           (event: KeyboardEvent) =>
             event.key === 'z' &&
             eventHasCntrlKey(event) &&
-            getEventPath(event).includes(this.host.nativeElement)
+            getEventPath(event).includes(this.hostElement)
         ),
         delay(0)
       )
@@ -224,6 +244,12 @@ export abstract class BaseEditableTreeListElement
           });
         }
       });
+  }
+
+  ngAfterViewInit(): void {
+    if (this.focusOnInit) {
+      this.focus();
+    }
   }
 
   ngOnDestroy(): void {
@@ -269,12 +295,17 @@ export abstract class BaseEditableTreeListElement
   }
 
   public onListClick(event: MouseEvent): void {
-    this.cntrlsSrvc.onListClick(event, {
+    const clickedElement: HTMLElement = this.cntrlsSrvc.onListClick(event, {
       itemsMap: this.itemsMap,
       listViewModel: this.listViewModel,
       toggleItemCollapsed: this.toggleItemCollapsed.bind(this),
       itemClick: () => {},
     });
+
+    if (clickedElement?.matches('.betl-item.filler')) {
+      event.stopPropagation();
+      this.focus();
+    }
   }
 
   public onListKeyDown(event: KeyboardEvent): void {
@@ -320,7 +351,7 @@ export abstract class BaseEditableTreeListElement
     this.cd.detectChanges();
 
     TreeListViewUtils.findAndFocusInput(
-      this.listElement.nativeElement.querySelector(`[data-id="${item.id}"]`),
+      this.listElement.querySelector(`[data-id="${item.id}"]`),
       'start'
     );
 
@@ -407,6 +438,14 @@ export abstract class BaseEditableTreeListElement
     }
   }
 
+  public focus(whichInput: 'first' | 'last' | number = 'first'): void {
+    if (this.itemsMap && this.itemsMap.size > 2) {
+      TreeListViewUtils.findAndFocusInput(this.listElement, 'end', whichInput);
+    } else if (this.rootItem) {
+      this.insertNewItem('lastChildOf', this.rootItem);
+    }
+  }
+
   public trackBy(index: number, id: itemID): itemID {
     return id;
   }
@@ -414,40 +453,37 @@ export abstract class BaseEditableTreeListElement
   protected setListCSS(
     styles: Styles | 'width' | 'height' | 'max-items' | 'remove-height'
   ): void {
-    const hostEl: HTMLElement = this.host.nativeElement;
-    const listEl: HTMLElement = this.listElement.nativeElement;
-
     if (styles === 'max-items') {
-      this.DOM.setCssProps(hostEl, {
+      this.DOM.setCssProps(this.hostElement, {
         '--list-max-items': this.maxHeightItems,
       });
       return;
     }
 
     if (styles === 'remove-height' || styles === 'height') {
-      this.DOM.setCssProps(hostEl, {
+      this.DOM.setCssProps(this.hostElement, {
         '--list-min-height': null,
       });
     }
 
     if (styles === 'height') {
-      this.DOM.setCssProps(hostEl, {
-        '--list-min-height': listEl.offsetHeight + 'px',
+      this.DOM.setCssProps(this.hostElement, {
+        '--list-min-height': this.listElement.offsetHeight + 'px',
       });
       return;
     }
 
     if (styles === 'width') {
-      this.DOM.setCssProps(hostEl, {
+      this.DOM.setCssProps(this.hostElement, {
         '--list-min-width': null,
       });
-      this.DOM.setCssProps(hostEl, {
-        '--list-min-width': listEl.scrollWidth + 'px',
+      this.DOM.setCssProps(this.hostElement, {
+        '--list-min-width': this.listElement.scrollWidth + 'px',
       });
       return;
     }
 
-    this.DOM.setCssProps(listEl, styles as Styles);
+    this.DOM.setCssProps(this.listElement, styles as Styles);
   }
 
   public insertNewItem(where: InsertItemLocation, target: TreeListItem): void {}

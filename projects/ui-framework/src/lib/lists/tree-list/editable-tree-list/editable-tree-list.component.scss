@@ -79,6 +79,13 @@ $betl-bg-line-width: 1px;
   }
 }
 
+.betl-list-footer {
+  pointer-events: none;
+}
+.betl-list-add-item {
+  pointer-events: all;
+}
+
 // BG lines & identation
 
 .betl-item {

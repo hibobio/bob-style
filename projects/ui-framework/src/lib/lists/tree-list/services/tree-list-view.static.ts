@@ -4,6 +4,7 @@ import {
   isEmptyMap,
   isNullOrUndefined,
   isBoolean,
+  isNumber,
 } from '../../../services/utils/functional-utils';
 import { LIST_EL_HEIGHT } from '../../list.consts';
 import { TreeListModelUtils } from './tree-list-model.static';
@@ -164,17 +165,32 @@ export class TreeListViewUtils {
     return { itemElement, indexInView, item };
   }
 
-  public static findInputInElement(itemElement: HTMLElement): HTMLInputElement {
-    return itemElement?.querySelector('.betl-item-input') as HTMLInputElement;
+  public static findInputInElement(
+    itemElement: HTMLElement | Element,
+    whichInput: 'first' | 'last' | number = 'first'
+  ): HTMLInputElement {
+    if (!itemElement) {
+      return itemElement as HTMLInputElement;
+    }
+    const inputs = Array.from(
+      itemElement?.querySelectorAll('.betl-item-input')
+    );
+
+    return isNumber(whichInput)
+      ? inputs[whichInput]
+      : whichInput === 'last'
+      ? inputs[inputs.length - 1]
+      : inputs[0];
   }
 
   public static findAndFocusInput(
-    element: HTMLElement,
-    at: 'start' | 'end'
+    element: HTMLElement | Element,
+    at: 'start' | 'end',
+    whichInput: 'first' | 'last' | number = 'first'
   ): void {
-    const input = this.findInputInElement(element);
+    const input = this.findInputInElement(element, whichInput);
+
     if (!input) {
-      console.warn('cant find input in element', element);
       return;
     }
     const loc = at === 'start' ? 0 : input.value.length;

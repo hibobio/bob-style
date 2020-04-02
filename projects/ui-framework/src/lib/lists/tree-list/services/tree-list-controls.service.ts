@@ -70,7 +70,10 @@ const TREELIST_EDIT_KEYCONTROL_KEYS = [
 export class TreeListControlsService {
   constructor(private DOM: DOMhelpers) {}
 
-  public onListClick(event: MouseEvent, config: TreeListClickConfig): void {
+  public onListClick(
+    event: MouseEvent,
+    config: TreeListClickConfig
+  ): HTMLElement {
     const {
       itemsMap,
       listViewModel,
@@ -90,7 +93,7 @@ export class TreeListControlsService {
     );
 
     if (!item) {
-      return;
+      return target;
     }
 
     const isDisabled =
@@ -105,16 +108,20 @@ export class TreeListControlsService {
       (isDisabled && item.childrenCount)
     ) {
       event.stopPropagation();
-      return toggleItemCollapsed(item, itemElement);
+      toggleItemCollapsed(item, itemElement);
+      return itemElement;
     }
 
     if (target.matches('.btl-item-checkbox') && !isDisabled) {
       event.stopPropagation();
-      return toggleItemSelect(item);
+      toggleItemSelect(item);
+      return itemElement;
     }
 
     if (!isDisabled) {
+      event.stopPropagation();
       itemClick(item, itemElement);
+      return itemElement;
     }
   }
 

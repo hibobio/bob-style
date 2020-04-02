@@ -34,7 +34,9 @@ const template = `
 
       [startCollapsed]="startCollapsed"
       [maxHeightItems]="maxHeightItems"
+      [focusOnInit]="focusOnInit"
       (changed)="listOut = $event; changed($event);"
+
      [debug]="debug">
 </b-editable-tree-list>
 
@@ -212,6 +214,7 @@ story.add(
 
       startCollapsed: boolean('startCollapsed', true, 'Props'),
       maxHeightItems: number('maxHeightItems', 15, {}, 'Props'),
+      focusOnInit: boolean('focusOnInit', true, 'Props'),
 
       debug: boolean('debug', false, 'Props'),
 

@@ -103,13 +103,14 @@
           [size]="iconSize.small"
           [color]="iconColor.white"
           [icon]="icons.add"
-          (click)="insertNewItem('lastChildOf', rootItem)">
+          (click)="$event.stopPropagation(); insertNewItem('lastChildOf', rootItem)">
   </b-icon>
 </div>
 
 
 <div *ngIf="debug"
-     class="dev">
+     class="dev"
+     (click)="$event.stopPropagation();">
   <div class="2cols">
     <div>
       <p>Total items: {{ itemsMap.size - 1 }}</p>
