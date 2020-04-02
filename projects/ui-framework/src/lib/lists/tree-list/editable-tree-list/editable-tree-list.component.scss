@@ -35,7 +35,8 @@ $betl-bg-line-width: 1px;
 // --------------
 
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   max-width: 100%;
   min-width: 0;
   min-height: 0;
@@ -62,7 +63,7 @@ $betl-bg-line-width: 1px;
   will-change: scroll-position, transform, min-height;
   display: flex;
   flex-direction: column;
-
+  min-height: 0;
   height: var(--list-min-height, auto);
   max-height: calc(var(--list-max-items, 15) * #{$betl-item-height});
   overflow: auto;

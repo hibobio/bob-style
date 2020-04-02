@@ -124,6 +124,7 @@ export abstract class BaseEditableTreeListElement
   protected dragHoverTimer;
   protected dragRef: DragRef<any>;
   protected cancelDrop = false;
+  protected cancelFocus = false;
   protected expandedWhileDragging: Set<TreeListItem> = new Set();
   private windowKeydownSubscriber: Subscription;
 
@@ -136,6 +137,10 @@ export abstract class BaseEditableTreeListElement
   protected listBackup: TreeListOption[];
 
   @HostListener('click', ['$event']) onHostClick(event: MouseEvent) {
+    if (this.cancelFocus) {
+      this.cancelFocus = false;
+      return;
+    }
     const listLength = this.listViewModel?.length || 0;
     this.focus(
       event.target !== this.hostElement || listLength < 2
@@ -305,7 +310,8 @@ export abstract class BaseEditableTreeListElement
   }
 
   public onListClick(event: MouseEvent): void {
-    const clickedElement: HTMLElement = this.cntrlsSrvc.onListClick(event, {
+    this.cancelFocus = false;
+    this.cntrlsSrvc.onListClick(event, {
       itemsMap: this.itemsMap,
       listViewModel: this.listViewModel,
       toggleItemCollapsed: this.toggleItemCollapsed.bind(this),
@@ -436,11 +442,18 @@ export abstract class BaseEditableTreeListElement
           this.itemsMap,
           this.listViewModel
         );
-        if (item && !item.childrenCount) {
+        if (item && !item.childrenCount && this.listViewModel.length > 1) {
           this.deleteItem(item);
         }
+        this.cancelFocus = true;
       }
     }
+
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.cancelFocus = false;
+      }, 100);
+    });
   }
 
   public focus(whichInput: 'first' | 'last' | number = 'first'): void {
