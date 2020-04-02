@@ -38,6 +38,8 @@ $betl-bg-line-width: 1px;
   display: block;
   max-width: 100%;
   min-width: 0;
+  min-height: 0;
+  flex-grow: 1;
   text-align: left;
 
   border-radius: $border-radius;
