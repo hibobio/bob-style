@@ -23,20 +23,12 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 
 const template = `
 <b-editable-tree-list
-
-    [menuLoc]="menuLoc === 'dot' ? 2 : 3"
-    [menuHov]="menuHov === 'item hover' ? 2 : 1"
-
      [keyMap]="options === 'simple' || options === 'primitive' ? serverKeyMap : null"
-
       [list]="options === 'simple' ? listSimple : options === 'primitive' ? list : options === 'single group' ? listSingleGroup : options === 'big' ? listHuge : listRandom"
-
-
       [startCollapsed]="startCollapsed"
       [maxHeightItems]="maxHeightItems"
       [focusOnInit]="focusOnInit"
       (changed)="listOut = $event; changed($event);"
-
      [debug]="debug">
 </b-editable-tree-list>
 
@@ -202,15 +194,6 @@ story.add(
       listOut: mock.slice(),
       list: mock.slice(),
       serverKeyMap: BTL_KEYMAP_SERVER,
-
-      menuLoc: select('menu location', ['dot', 'line'], 'line', 'Props'),
-
-      menuHov: select(
-        'show menu on',
-        ['item hover', 'menu hover'],
-        'item hover',
-        'Props'
-      ),
 
       startCollapsed: boolean('startCollapsed', true, 'Props'),
       maxHeightItems: number('maxHeightItems', 15, {}, 'Props'),

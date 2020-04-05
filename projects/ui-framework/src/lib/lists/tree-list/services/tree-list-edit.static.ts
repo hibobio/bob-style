@@ -20,18 +20,21 @@ export class TreeListEditUtils {
     target: TreeListItem,
     context: TreeListItemEditContext = null,
     itemsMap: TreeListItemMap,
-    listViewModel: itemID[]
-  ): void {
+    listViewModel: itemID[],
+    debug = false
+  ): TreeListItem {
     const { parent, insertionIndexInParent } =
       context ||
       this.getItemEditContext(where, target, itemsMap, listViewModel);
 
-    console.log(`insertItem ${item.name || item.id}, where: ${where}, target: ${
-      target?.id || null
-    },
+    if (debug) {
+      console.log(`insertItem ${
+        item.name || item.id
+      }, where: ${where}, target: ${target?.id || null},
       parent: ${
         parent.name
       }, insertionIndexInParent: ${insertionIndexInParent}`);
+    }
 
     parent.childrenIDs = arrayInsertAt(
       parent.childrenIDs,
@@ -40,6 +43,8 @@ export class TreeListEditUtils {
     );
 
     parent.childrenCount = parent.childrenIDs.length;
+
+    return item;
   }
 
   public static deleteItem(
@@ -48,8 +53,10 @@ export class TreeListEditUtils {
     itemsMap: TreeListItemMap,
     listViewModel: itemID[]
   ): TreeListItem {
+    console.log('deleteItem', item.name, item);
+    //
     const parent =
-      context?.parent || itemsMap.get(item.parentIDs[item.parentCount - 1]);
+      context?.parent || TreeListModelUtils.getParent(item, itemsMap);
 
     const deletedItemIDs = TreeListModelUtils.walkTree(
       'down',
@@ -113,7 +120,7 @@ export class TreeListEditUtils {
 
     const parent =
       where === 'after'
-        ? itemsMap.get(target.parentIDs[target.parentCount - 1])
+        ? TreeListModelUtils.getParent(target, itemsMap)
         : target;
 
     const sibling = parent.childrenCount

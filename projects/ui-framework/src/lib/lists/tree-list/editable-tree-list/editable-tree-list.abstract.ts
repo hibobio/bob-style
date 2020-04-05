@@ -23,6 +23,7 @@ import {
   isKey,
   eventHasCntrlKey,
   getEventPath,
+  compareAsStrings,
 } from '../../../services/utils/functional-utils';
 import {
   BTL_KEYMAP_DEF,
@@ -65,8 +66,9 @@ import { filter, delay } from 'rxjs/operators';
 
 import cloneDeep from 'lodash/cloneDeep';
 import { DOMInputEvent } from '../../../types';
+import { TreeListModelUtils } from '../services/tree-list-model.static';
 
-const LIST_EL_HEIGHT = 32;
+const LISTITEM_EL_HEIGHT = 32;
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -89,16 +91,16 @@ export abstract class BaseEditableTreeListElement
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
   @Input() maxHeightItems = 15;
   @Input() startCollapsed = true;
-  @Input()
+  @Input() set setTranslation(trnsltn: EditableTreeListTranslation) {
+    this.translation = { ...EDITABLE_TREELIST_TRANSLATION_DEF, ...trnsltn };
+    this.initItemsMenu();
+  }
   translation: EditableTreeListTranslation = EDITABLE_TREELIST_TRANSLATION_DEF;
   @Input() focusOnInit = false;
 
   @HostBinding('attr.data-embedded') @Input() embedded = false;
   @HostBinding('attr.data-debug') @Input() debug = false;
   @HostBinding('attr.data-dnd-disabled') @Input() disableDragAndDrop = false;
-
-  @HostBinding('attr.data-menu-loc') @Input() menuLoc = 3;
-  @HostBinding('attr.data-menu-hover') @Input() menuHov = 1;
 
   @Output() changed: EventEmitter<TreeListOption[]> = new EventEmitter<
     TreeListOption[]
@@ -125,6 +127,7 @@ export abstract class BaseEditableTreeListElement
   protected dragRef: DragRef<any>;
   protected cancelDrop = false;
   protected cancelFocus = false;
+  protected hasChanges = false;
   protected expandedWhileDragging: Set<TreeListItem> = new Set();
   private windowKeydownSubscriber: Subscription;
 
@@ -144,13 +147,20 @@ export abstract class BaseEditableTreeListElement
 
     const listLength = this.listViewModel?.length || 0;
     const listHeight = this.listElement?.offsetHeight || 0;
+    const listScrollTop = this.listElement?.scrollTop || 0;
 
     this.focus(
       event.target !== this.hostElement || listLength < 2
         ? 'first'
         : event.offsetY > listHeight
         ? 'last'
-        : Math.max(Math.round(event.offsetY / LIST_EL_HEIGHT) - 1, 0)
+        : Math.max(
+            Math.round(
+              event.offsetY / LISTITEM_EL_HEIGHT +
+                listScrollTop / LISTITEM_EL_HEIGHT
+            ) - 1,
+            0
+          )
     );
   }
 
@@ -169,10 +179,6 @@ export abstract class BaseEditableTreeListElement
         keyMap: { list: 'setList' },
       }
     );
-
-    if (hasChanges(changes, ['translation'], true)) {
-      this.setTranslation();
-    }
 
     if (hasChanges(changes, ['keyMap'], true)) {
       this.keyMap = { ...BTL_KEYMAP_DEF, ...this.keyMap };
@@ -214,6 +220,7 @@ export abstract class BaseEditableTreeListElement
       this.cd.detectChanges();
 
       if (this.debug) {
+        this.hasChanges = true;
         this.emitChange();
       }
     }
@@ -225,7 +232,7 @@ export abstract class BaseEditableTreeListElement
     }
 
     if (!this.itemMenu) {
-      this.setTranslation();
+      this.initItemsMenu();
     }
 
     this.windowKeydownSubscriber = this.utilsService
@@ -282,8 +289,12 @@ export abstract class BaseEditableTreeListElement
   }
 
   public emitChange(): void {
+    if (!this.hasChanges) {
+      return;
+    }
     this.list = this.modelSrvc.itemsMapToOptionList(this.itemsMap, this.keyMap);
     this.changed.emit(this.list);
+    this.hasChanges = false;
   }
 
   public toggleItemCollapsed(
@@ -398,6 +409,7 @@ export abstract class BaseEditableTreeListElement
     );
 
     this.cd.detectChanges();
+    this.hasChanges = true;
     this.emitChange();
   }
 
@@ -428,6 +440,8 @@ export abstract class BaseEditableTreeListElement
       this.savestate = undefined;
       this.rootItem = this.itemsMap.get(BTL_ROOT_ID);
       this.cd.detectChanges();
+      this.hasChanges = true;
+      this.emitChange();
     }
   }
 
@@ -438,6 +452,7 @@ export abstract class BaseEditableTreeListElement
   }
 
   public onListInput(event: DOMInputEvent): void {
+    this.hasChanges = true;
     this.isTyping = true;
   }
 
@@ -447,26 +462,48 @@ export abstract class BaseEditableTreeListElement
     if (target.matches('.betl-item-input')) {
       this.isTyping = false;
 
-      if (target.value.trim()) {
-        this.emitChange();
-      } else {
-        const { item } = TreeListViewUtils.getItemFromElement(
-          target,
-          this.itemsMap,
-          this.listViewModel
-        );
-        if (item && !item.childrenCount && this.listViewModel.length > 1) {
+      const { item } = TreeListViewUtils.getItemFromElement(
+        target,
+        this.itemsMap,
+        this.listViewModel
+      );
+
+      if (!item) {
+        return;
+      }
+      if (this.hasChanges) {
+        item.value = target.value.trim();
+      }
+      if (this.hasChanges && item.value) {
+        if (this.countItemDuplicatesInGroup(item) > 1) {
+          item.value = '';
+        } else {
+          this.emitChange();
+        }
+      }
+      if (!item.value) {
+        if (!item.childrenCount && this.listViewModel.length > 1) {
           this.deleteItem(item);
         }
         this.cancelFocus = true;
+
+        this.zone.runOutsideAngular(() => {
+          setTimeout(() => {
+            this.cancelFocus = false;
+          }, 100);
+        });
       }
     }
+  }
 
-    this.zone.runOutsideAngular(() => {
-      setTimeout(() => {
-        this.cancelFocus = false;
-      }, 100);
-    });
+  protected countItemDuplicatesInGroup(item: TreeListItem): number {
+    return (
+      (item.name &&
+        TreeListModelUtils.getAllSiblingsIDs(item, this.itemsMap).filter((id) =>
+          compareAsStrings(item.name, this.itemsMap.get(id).name, false)
+        ).length) ||
+      0
+    );
   }
 
   public focus(whichInput: 'first' | 'last' | number = 'first'): void {
@@ -523,7 +560,7 @@ export abstract class BaseEditableTreeListElement
 
   public decreaseIndent(item: TreeListItem): void {}
 
-  private setTranslation(): void {
+  private initItemsMenu(): void {
     this.itemMenu = [
       {
         label: this.translation.toggle_collapsed,

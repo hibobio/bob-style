@@ -103,7 +103,7 @@
           [size]="iconSize.small"
           [color]="iconColor.white"
           [icon]="icons.add"
-          (click)="$event.stopPropagation(); insertNewItem('lastChildOf', rootItem)">
+          (click)="$event.stopPropagation(); insertNewItem('lastChildOf', rootItem, false)">
   </b-icon>
 </div>
 
@@ -121,7 +121,6 @@
       <p>dragHoverIndex: {{ dragHoverIndex >= 0 ? dragHoverIndex : '-' }}</p>
     </div>
   </div>
-
   <button type="button"
           (click)="clear()">Clear</button>
   <button type="button"
@@ -134,5 +133,4 @@
           (click)="log('Deleted')">Log deleted</button>
   <button type="button"
           (click)="emitChange()">Emit</button>
-
 </div>

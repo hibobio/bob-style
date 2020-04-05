@@ -486,8 +486,18 @@ export const compareAsNumbers = (
   b: string | number
 ): boolean => asNumber(a) === asNumber(b);
 
-export const compareAsStrings = (a: any, b: any): boolean =>
-  String(a) === String(b);
+export const compareAsStrings = (a: any, b: any, strict = true): boolean => {
+  return strict
+    ? String(a) === String(b)
+    : String(a)
+        .trim()
+        .toLowerCase()
+        .replace(/[./\\()\"':,.;<>~!@#$%^&*|+=[\]{}`~\?-]/g, '') ===
+        String(b)
+          .trim()
+          .toLowerCase()
+          .replace(/[./\\()\"':,.;<>~!@#$%^&*|+=[\]{}`~\?-]/g, '');
+};
 
 // ----------------------
 // CLONES

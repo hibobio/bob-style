@@ -12,16 +12,24 @@ import {
   ViewChildren,
   QueryList,
   HostBinding,
+  NgZone,
+  OnDestroy,
 } from '@angular/core';
 import { MenuItem } from './menu.interface';
-import { MenuPositionX, MatMenu } from '@angular/material/menu';
+import { MenuPositionX, MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import {
   isFunction,
   hasChanges,
   applyChanges,
   notFirstChanges,
   isValuevy,
+  isKey,
 } from '../../services/utils/functional-utils';
+import { UtilsService } from '../../services/utils/utils.service';
+import { Subscription } from 'rxjs';
+import { outsideZone } from '../../services/utils/rxjs.operators';
+import { filter } from 'rxjs/operators';
+import { Keys } from '../../enums';
 
 @Component({
   selector: 'b-menu',
@@ -29,8 +37,15 @@ import {
   styleUrls: ['./menu.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MenuComponent implements OnChanges, OnInit {
-  constructor(private cd: ChangeDetectorRef) {}
+export class MenuComponent implements OnChanges, OnInit, OnDestroy {
+  constructor(
+    private utilsService: UtilsService,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
+  ) {}
+
+  @ViewChild(MatMenuTrigger, { static: true })
+  public matMenuTrigger: MatMenuTrigger;
 
   @Input() id: string;
   @Input() data: any;
@@ -54,6 +69,7 @@ export class MenuComponent implements OnChanges, OnInit {
 
   public menuDir: MenuPositionX = 'after';
   public menuViewModel: MenuItem[];
+  private windowKeydownSubscriber: Subscription;
 
   @HostBinding('attr.data-menu-open') menuOpen = false;
 
@@ -90,6 +106,30 @@ export class MenuComponent implements OnChanges, OnInit {
       this.setViewModel();
       this.cd.detectChanges();
     }
+
+    this.windowKeydownSubscriber = this.utilsService
+      .getWindowKeydownEvent()
+      .pipe(
+        outsideZone(this.zone),
+        filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
+      )
+      .subscribe(() => {
+        this.zone.run(() => {
+          this.close();
+        });
+      });
+  }
+
+  ngOnDestroy() {
+    this.windowKeydownSubscriber?.unsubscribe();
+  }
+
+  public close(): void {
+    this.matMenuTrigger?.closeMenu();
+  }
+
+  public open(): void {
+    this.matMenuTrigger?.openMenu();
   }
 
   public onClick(item: MenuItem, triggerAction = true): void {
@@ -130,7 +170,7 @@ export class MenuComponent implements OnChanges, OnInit {
 
   private setViewModel(): void {
     this.menuViewModel =
-      this.menu?.map(item => ({
+      this.menu?.map((item) => ({
         ...item,
         ...(this.id && { id: this.id }),
         ...(this.data && { data: this.data }),

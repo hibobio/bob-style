@@ -8,7 +8,6 @@ import {
 import {
   isNullOrUndefined,
   stringify,
-  asArray,
   simpleArrayAddItemUnique,
 } from '../../../services/utils/functional-utils';
 import { BTL_VALUE_SEPARATOR_DEF } from '../tree-list.const';
@@ -155,22 +154,44 @@ export class TreeListModelUtils {
     return maxDepth;
   }
 
-  public static collectAllChildren(
-    list: itemID[] | itemID,
+  public static getAllDescendantsIDs(
+    item: TreeListItem,
     itemsMap: TreeListItemMap
   ): itemID[] {
     const collector = (collection: itemID[], id: itemID) => {
-      const item = itemsMap.get(id);
+      const child = itemsMap.get(id);
 
       collection.push(id);
 
-      if (item.childrenCount) {
-        collection = item.childrenIDs.reduce(collector, collection);
+      if (child.childrenCount) {
+        collection = child.childrenIDs.reduce(collector, collection);
       }
       return collection;
     };
 
-    return asArray(list).reduce(collector, []);
+    return (item.childrenIDs || []).reduce(collector, []);
+  }
+
+  public static getAllSiblingsIDs(
+    item: TreeListItem,
+    itemsMap: TreeListItemMap
+  ): itemID[] {
+    return this.getParent(item, itemsMap).childrenIDs || [];
+  }
+
+  public static getParent(
+    item: TreeListItem,
+    itemsMap: TreeListItemMap
+  ): TreeListItem {
+    return item && itemsMap.get(item.parentIDs[item.parentCount - 1]);
+  }
+
+  public static isTreeListItem(thing: any): thing is TreeListItem {
+    return Boolean(
+      thing &&
+        typeof thing.id !== 'undefined' &&
+        typeof thing.name !== 'undefined'
+    );
   }
 
   public static updateMap<T = TreeListItem>(

@@ -28,20 +28,20 @@
                let-item="item">
 
     <li class="btl-item"
-        [id]="item.id"
+        [attr.data-id]="item.id"
         [attr.data-index]="index"
         [attr.data-level]="item.parentCount || 1"
         tabindex="0"
         [ngClass]="{
-        'btl-item-option': !item.childrenCount,
-        'btl-item-group': item.childrenCount,
-        disabled: item.disabled || (type === selectType.multi && item.parentSelected),
-        selected: item.selected || (type === selectType.multi && item.parentSelected),
-        expanded: item.childrenCount && !item.collapsed,
-        collapsed: item.collapsed,
-        'next-is-group': item.nextInViewIsGroup,
-        'all-options-hidden': item.allOptionsHidden
-      }">
+          'btl-item-option': !item.childrenCount,
+          'btl-item-group': item.childrenCount,
+          disabled: item.disabled || (type === selectType.multi && item.parentSelected),
+          selected: item.selected || (type === selectType.multi && item.parentSelected),
+          expanded: item.childrenCount && !item.collapsed,
+          collapsed: item.collapsed,
+          'next-is-group': item.nextInViewIsGroup,
+          'all-options-hidden': item.allOptionsHidden
+        }">
 
       <span *ngIf="item.childrenCount"
             class="btl-item-chevron has-hover"

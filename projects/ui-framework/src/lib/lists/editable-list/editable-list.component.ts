@@ -32,6 +32,7 @@ import {
   cloneArray,
   isKey,
   isNumber,
+  compareAsStrings,
 } from '../../services/utils/functional-utils';
 import { cloneDeep } from 'lodash';
 import {
@@ -168,7 +169,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     if (this.inputChanged.observers.length) {
       this.inputChangeSbscr = this.inputChangeDbncr
         .pipe(debounceTime(300))
-        .subscribe(value => {
+        .subscribe((value) => {
           this.inputChanged.emit(value);
         });
     }
@@ -193,16 +194,8 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
 
       if (value) {
         this.sameItemIndex = this.listState.list
-          .map(i => i.value)
-          .findIndex(
-            i =>
-              i
-                .toLowerCase()
-                .replace(/[./\\()\"':,.;<>~!@#$%^&*|+=[\]{}`~\?-]/g, '') ===
-              value
-                .toLowerCase()
-                .replace(/[./\\()\"':,.;<>~!@#$%^&*|+=[\]{}`~\?-]/g, '')
-          );
+          .map((i) => i.value)
+          .findIndex((i) => compareAsStrings(i, value, false));
 
         if (this.sameItemIndex > -1) {
           this.inputInvalid = true;
@@ -349,17 +342,17 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   private transmit(): void {
-    this.listState.order = this.listState.list.map(i => i.value);
-    const itersection = this.listState.create.filter(i =>
+    this.listState.order = this.listState.list.map((i) => i.value);
+    const itersection = this.listState.create.filter((i) =>
       this.listState.delete.includes(i)
     );
 
     if (isNotEmptyArray(itersection)) {
       this.listState.create = this.listState.create.filter(
-        i => !itersection.includes(i)
+        (i) => !itersection.includes(i)
       );
       this.listState.delete = this.listState.delete.filter(
-        i => !itersection.includes(i)
+        (i) => !itersection.includes(i)
       );
     }
 

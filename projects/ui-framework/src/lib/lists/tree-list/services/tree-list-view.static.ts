@@ -5,6 +5,7 @@ import {
   isNullOrUndefined,
   isBoolean,
   isNumber,
+  compareAsStrings,
 } from '../../../services/utils/functional-utils';
 import { LIST_EL_HEIGHT } from '../../list.consts';
 import { TreeListModelUtils } from './tree-list-model.static';
@@ -156,11 +157,15 @@ export class TreeListViewUtils {
     listViewModel: itemID[]
   ): Partial<TreeListItemElementContext> {
     itemElement = itemElement.closest('[data-index]');
+    if (!itemElement) {
+      return { itemElement };
+    }
 
-    const indexInView: number =
-      itemElement && parseInt(itemElement.getAttribute('data-index'), 10);
-    const item: TreeListItem =
-      itemElement && itemsMap.get(listViewModel[indexInView]);
+    const itemElementId = itemElement.getAttribute('data-id');
+    const indexInView = parseInt(itemElement.getAttribute('data-index'), 10);
+
+    let item = itemsMap.get(listViewModel[indexInView]);
+    item = (compareAsStrings(item.id, itemElementId) && item) || undefined;
 
     return { itemElement, indexInView, item };
   }

@@ -252,6 +252,14 @@ $betl-bg-line-width: 1px;
   }
 }
 
+:host ::ng-deep {
+  .betl-item:hover .betl-item-menu {
+    .menu-trigger-wrapper {
+      opacity: 1;
+    }
+  }
+}
+
 ::ng-deep {
   .cdk-overlay-container .betl-menu {
     .mat-menu-item {
