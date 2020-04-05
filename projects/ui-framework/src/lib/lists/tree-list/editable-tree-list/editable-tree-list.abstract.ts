@@ -91,11 +91,13 @@ export abstract class BaseEditableTreeListElement
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
   @Input() maxHeightItems = 15;
   @Input() startCollapsed = true;
-  @Input() set setTranslation(trnsltn: EditableTreeListTranslation) {
+  @Input('translation') set setTranslation(
+    trnsltn: EditableTreeListTranslation
+  ) {
     this.translation = { ...EDITABLE_TREELIST_TRANSLATION_DEF, ...trnsltn };
     this.initItemsMenu();
   }
-  translation: EditableTreeListTranslation = EDITABLE_TREELIST_TRANSLATION_DEF;
+  public translation: EditableTreeListTranslation = EDITABLE_TREELIST_TRANSLATION_DEF;
   @Input() focusOnInit = false;
 
   @HostBinding('attr.data-embedded') @Input() embedded = false;

@@ -14,8 +14,10 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
-const componentTemplate = `
-<b-tree-list-panel
+import treeListPropsDoc from '../tree-list.properties.md';
+import treeListPanelPropsDoc from '../tree-list-panel.properties.md';
+
+const componentTemplate = `<b-tree-list-panel
       [type]="type"
       [keyMap]="options === 'simple' ? serverKeyMap : null"
       [list]="options === 'simple' ? listSimple : listRandom"
@@ -38,8 +40,31 @@ const componentTemplate = `
                       [icon]="icons.table">
     </b-square-button>
 
-</b-tree-list-panel>
-`;
+</b-tree-list-panel>`;
+
+const templateForNotes = `<b-tree-list-panel
+      [type]="type"
+      [list]="list"
+      [keyMap]="keyMap"
+      [value]="value"
+      [listActions]="footerActions"
+      [maxHeightItems]="maxHeightItems"
+      [valueSeparatorChar]="valueSeparatorChar"
+      [startCollapsed]="startCollapsed"
+      [readonly]="readonly"
+      [disabled]="disabled"
+      (changed)="changed($event)"
+      (apply)="onApply()"
+      (cancel)="onCancel()"
+      (opened)="onOpened()"
+      (closed)="onClosed()">
+
+    <b-square-button  [disabled]="disabled"
+                      [type]="buttonType.secondary"
+                      [icon]="icons.table">
+    </b-square-button>
+
+</b-tree-list-panel>`;
 
 const template = `
 <b-story-book-layout [title]="'Tree List Panel'">
@@ -56,17 +81,12 @@ const note = `
   *TreeListPanelModule*
 
   ~~~
-  ${componentTemplate}
+  ${templateForNotes}
   ~~~
 
-  ### Properties
-  Name | Type | Description | Default
-  --- | --- | --- | ---
-  [disabled] | boolean | if panel is disabled | false
-  [readonly] | boolean | if true, will not emit events and not allow selection | false
-  (opened) | EventEmitter<wbr>&lt;OverlayRef&gt; | emits OverlayRef on panel open | &nbsp;
-  (closed) | EventEmitter<wbr>&lt;void&gt; | emits on panel close | &nbsp;
-  &nbsp; | &nbsp; | &nbsp; | &nbsp;
+  ${treeListPanelPropsDoc}
+
+  ${treeListPropsDoc}
 `;
 
 story.add(

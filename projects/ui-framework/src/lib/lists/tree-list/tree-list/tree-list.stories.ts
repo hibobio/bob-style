@@ -10,8 +10,9 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
-const template = `
-<b-tree-list
+import treeListPropsDoc from '../tree-list.properties.md';
+
+const template = `<b-tree-list
       [type]="type"
       [keyMap]="options === 'simple' ? serverKeyMap : null"
       [list]="options === 'simple' ? listSimple : options === 'single group' ? listSingleGroup : options === 'big' ? listHuge : listRandom"
@@ -36,8 +37,23 @@ const template = `
       (cancel)="cancel()"
       [debug]="debug">
 
-</b-tree-list>
-`;
+</b-tree-list>`;
+
+const templateForNotes = `<b-tree-list
+      [type]="type"
+      [keyMap]="keyMap"
+      [list]="list"
+      [value]="value"
+      [listActions]="footerActions"
+      [maxHeightItems]="maxHeightItems"
+      [valueSeparatorChar]="valueSeparatorChar"
+      [startCollapsed]="startCollapsed"
+      [readonly]="readonly"
+      [disabled]="disabled"
+      (changed)="changed($event)"
+      (apply)="onApply()"
+      (cancel)="onCancel()">
+</b-tree-list>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Tree List'">
@@ -53,6 +69,11 @@ const note = `
   #### Module
   *TreeListModule*
 
+  ~~~
+  ${templateForNotes}
+  ~~~
+
+  ${treeListPropsDoc}
 
 `;
 

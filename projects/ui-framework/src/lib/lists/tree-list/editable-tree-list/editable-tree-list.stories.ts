@@ -21,30 +21,39 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
-const template = `
-<b-editable-tree-list
-     [keyMap]="options === 'simple' || options === 'primitive' ? serverKeyMap : null"
-      [list]="options === 'simple' ? listSimple : options === 'primitive' ? list : options === 'single group' ? listSingleGroup : options === 'big' ? listHuge : listRandom"
-      [startCollapsed]="startCollapsed"
-      [maxHeightItems]="maxHeightItems"
-      [focusOnInit]="focusOnInit"
-      (changed)="listOut = $event; changed($event);"
+const template = `<b-editable-tree-list
+     [keyMap]="options === 'simple' ? serverKeyMap : null"
+     [list]="optionsMap[options]"
+     [maxHeightItems]="maxHeightItems"
+     [startCollapsed]="startCollapsed"
+     [focusOnInit]="focusOnInit"
+     (changed)="listOut = $event; changed($event);"
      [debug]="debug">
-</b-editable-tree-list>
+</b-editable-tree-list>`;
 
-`;
+const templateForNotes = `<b-editable-tree-list
+     [list]="list"
+     [keyMap]="keyMap"
+     [maxHeightItems]="maxHeightItems"
+     [startCollapsed]="startCollapsed"
+     [focusOnInit]="focusOnInit"
+     (changed)="changed($event);">
+</b-editable-tree-list>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Editable Tree List'" style="background-color: rgb(245,245,245);">
   <div style="max-width: 500px;">
     ${template}
 
-    <h4>Result:</h4>
+    <ng-container *ngIf="listOut">
+      <h4>Result:</h4>
 
-    <b-tree-list [type]="'single'" [readonly]="true"
-    [list]="listOut"
-    [keyMap]="options === 'simple' || options === 'primitive' || listOut[0]?.serverId ? serverKeyMap : null" [startCollapsed]="startCollapsed" [debug]="debug"></b-tree-list>
-
+      <b-tree-list
+      [type]="'single'"
+      [readonly]="true"
+      [list]="listOut || optionsMap[options]"
+      [keyMap]="options === 'simple' ? serverKeyMap : null" [startCollapsed]="startCollapsed" [debug]="debug"></b-tree-list>
+    </ng-container>
   </div>
 </b-story-book-layout>
 `;
@@ -55,124 +64,138 @@ const note = `
   #### Module
   *EditableTreeListModule*
 
+  ~~~
+  ${templateForNotes}
+  ~~~
 
+  #### Properties
+  Name | Type | Description | Default
+  --- | --- | --- | ---
+  [list] | TreeListOption[] | options list. <br>**Note:** if your list does not conform to TreeListOption interface, provide \`\`\`[keyMap]\`\`\` to convert it | &nbsp;
+  [keyMap] | TreeListKeyMap | keymap to convert [list] to  TreeListOption interface (for tree list options coming from the server, use BTL<sub>-</sub>KEYMAP<sub>-</sub>SERVER const) | BTL<sub>-</sub>KEYMAP<sub>-</sub>DEF
+  [translation] | EditableTreeListTranslation | object with translation strings | EDITABLE<sub>-</sub>TREELIST<wbr><sub>-</sub>TRANSLATION<sub>-</sub>DEF
+  [maxHeightItems] | number | max number of items before scroll | 15
+  [startCollapsed] | boolean | if true, will start with groups closed | true
+  [focusOnInit] | boolean | if true will focus first item on init | false
+  [disableDragAndDrop] | boolean | what it says | false
+  (changed) | EventEmitter<TreeListOption[]> | emits list (same format as was input) on every change | &nbsp;
 `;
 
 const mock3 = [
   {
-    serverId: simpleUID('000-', 3),
-    value: '000',
+    id: simpleUID('000-', 3),
+    name: '000',
   },
   {
-    serverId: simpleUID('AAA-', 3),
-    value: 'AAA',
+    id: simpleUID('AAA-', 3),
+    name: 'AAA',
     children: [
       {
-        serverId: simpleUID('DDD-', 3),
-        value: 'DDD',
+        id: simpleUID('DDD-', 3),
+        name: 'DDD',
       },
       {
-        serverId: simpleUID('EEE-', 3),
-        value: 'EEE',
+        id: simpleUID('EEE-', 3),
+        name: 'EEE',
       },
       {
-        serverId: simpleUID('FFF-', 3),
-        value: 'FFF',
+        id: simpleUID('FFF-', 3),
+        name: 'FFF',
       },
     ],
   },
   {
-    serverId: simpleUID('BBB-', 3),
-    value: 'BBB',
+    id: simpleUID('BBB-', 3),
+    name: 'BBB',
     children: [
       {
-        serverId: simpleUID('HHH-', 3),
-        value: 'HHH',
+        id: simpleUID('HHH-', 3),
+        name: 'HHH',
       },
       {
-        serverId: simpleUID('III-', 3),
-        value: 'III',
+        id: simpleUID('III-', 3),
+        name: 'III',
       },
       {
-        serverId: simpleUID('JJJ-', 3),
-        value: 'JJJ',
+        id: simpleUID('JJJ-', 3),
+        name: 'JJJ',
       },
     ],
   },
   {
-    serverId: simpleUID('CCC-', 3),
-    value: 'CCC',
+    id: simpleUID('CCC-', 3),
+    name: 'CCC',
     children: [
       {
-        serverId: simpleUID('KKK-', 3),
-        value: 'KKK',
+        id: simpleUID('KKK-', 3),
+        name: 'KKK',
       },
       {
-        serverId: simpleUID('LLL-', 3),
-        value: 'LLL',
+        id: simpleUID('LLL-', 3),
+        name: 'LLL',
       },
       {
-        serverId: simpleUID('MMM-', 3),
-        value: 'MMM',
+        id: simpleUID('MMM-', 3),
+        name: 'MMM',
       },
     ],
   },
   {
-    serverId: simpleUID('111-', 3),
-    value: '111',
+    id: simpleUID('111-', 3),
+    name: '111',
   },
 ];
 
 const mock2 = [
   {
-    serverId: simpleUID('AAA-', 3),
-    value: 'AAA',
+    id: simpleUID('AAA-', 3),
+    name: 'AAA',
   },
   {
-    serverId: simpleUID('BBB-', 3),
-    value: 'BBB',
+    id: simpleUID('BBB-', 3),
+    name: 'BBB',
   },
   {
-    serverId: simpleUID('CCC-', 3),
-    value: 'CCC',
+    id: simpleUID('CCC-', 3),
+    name: 'CCC',
   },
   {
-    serverId: simpleUID('DDD-', 3),
-    value: 'DDD',
+    id: simpleUID('DDD-', 3),
+    name: 'DDD',
   },
   {
-    serverId: simpleUID('EEE-', 3),
-    value: 'EEE',
+    id: simpleUID('EEE-', 3),
+    name: 'EEE',
   },
 ];
 
 const mock = [
   {
-    serverId: simpleUID('TLV-', 3),
-    value: 'TLV',
+    id: simpleUID('TLV-', 3),
+    name: 'TLV',
   },
   {
-    serverId: simpleUID('London-', 3),
-    value: 'London',
+    id: simpleUID('London-', 3),
+    name: 'London',
   },
   {
-    serverId: simpleUID('NewYork-', 3),
-    value: 'New York',
+    id: simpleUID('NewYork-', 3),
+    name: 'New York',
 
     children: [
       {
-        serverId: simpleUID('R&D-', 3),
-        value: 'R&D',
+        id: simpleUID('R&D-', 3),
+        name: 'R&D',
 
         children: [
           {
-            serverId: simpleUID('Product-', 3),
-            value: 'Product',
+            id: simpleUID('Product-', 3),
+            name: 'Product',
 
             children: [
               {
-                serverId: simpleUID('Design-', 3),
-                value: 'Design',
+                id: simpleUID('Design-', 3),
+                name: 'Design',
               },
             ],
           },
@@ -181,8 +204,8 @@ const mock = [
     ],
   },
   {
-    serverId: simpleUID('UK-', 3),
-    value: 'UK',
+    id: simpleUID('UK-', 3),
+    name: 'UK',
   },
 ];
 
@@ -191,7 +214,7 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
-      listOut: mock.slice(),
+      listOut: undefined,
       list: mock.slice(),
       serverKeyMap: BTL_KEYMAP_SERVER,
 
@@ -201,16 +224,29 @@ story.add(
 
       debug: boolean('debug', false, 'Props'),
 
+      optionsMap: {
+        'primitive 1': mock,
+        'primitive 2': mock2,
+        'primitive 3': mock3,
+        simple: HListMockSimple,
+        random: HListMock,
+        big: makeRandomList(5, 65, 4, [8, 15]),
+        'single group': HListMockSingleGroup,
+      },
       options: select(
         'list',
-        ['primitive', 'simple', 'random', 'big', 'single group'],
-        'primitive',
+        [
+          'primitive 1',
+          'primitive 2',
+          'primitive 3',
+          'simple',
+          'random',
+          'big',
+          'single group',
+        ],
+        'primitive 1',
         'Data'
       ),
-      listRandom: HListMock,
-      listSimple: HListMockSimple,
-      listHuge: makeRandomList(5, 65, 4, [8, 15]),
-      listSingleGroup: HListMockSingleGroup,
 
       changed: action('List change'),
     },

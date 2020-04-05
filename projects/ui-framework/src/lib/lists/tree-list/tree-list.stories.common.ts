@@ -33,8 +33,8 @@ export const TreeListStoriesCommonProps = (
   readonly: boolean('readonly', false, 'Props'),
   disabled: boolean('disabled', false, 'Props'),
 
-  hideSelected: boolean('hideSelected', false, 'viewFilter'),
-  externalSearch: text('externalSearch', '', 'viewFilter'),
+  // hideSelected: boolean('hideSelected', false, 'viewFilter'),
+  // externalSearch: text('externalSearch', '', 'viewFilter'),
 
   options: select(
     'list',

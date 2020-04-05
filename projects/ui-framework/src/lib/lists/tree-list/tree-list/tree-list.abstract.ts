@@ -98,7 +98,11 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
       ['list', 'value', 'itemsMap'],
       true,
       {
-        keyMap: { list: 'setList', value: 'setValue', itemsMap: 'setItemsMap' },
+        keyMap: {
+          list: 'setList',
+          value: 'setValue',
+          itemsMap: 'setItemsMap',
+        },
       }
     );
 

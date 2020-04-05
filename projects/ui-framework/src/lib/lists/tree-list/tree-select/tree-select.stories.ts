@@ -6,9 +6,11 @@ import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-lay
 import { TreeSelectModule } from './tree-select.module';
 import { mockText } from '../../../mock.const';
 import { TreeListStoriesCommonProps } from '../tree-list.stories.common';
+import { action } from '@storybook/addon-actions';
 
 import formElemsPropsDoc from '../../../form-elements/form-elements.properties.md';
-import { action } from '@storybook/addon-actions';
+import treeListPropsDoc from '../tree-list.properties.md';
+import treeListPanelPropsDoc from '../tree-list-panel.properties.md';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -17,8 +19,7 @@ const story2 = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
 
-const componentTemplate = `
-<b-tree-select
+const componentTemplate = `<b-tree-select
       [type]="type"
       [list]="options === 'simple' ? listSimple : listRandom"
       [keyMap]="options === 'simple' ? serverKeyMap : null"
@@ -38,9 +39,29 @@ const componentTemplate = `
       (opened)="opened()"
       (closed)="closed()"
       [debug]="debug">
+</b-tree-select>`;
 
-</b-tree-select>
-`;
+const templateForNotes = `<b-tree-select
+      [type]="type"
+      [list]="list"
+      [keyMap]="keyMap"
+      [value]="value"
+      [listActions]="footerActions"
+      [label]="label"
+      [placeholder]="placeholder"
+      [description]="description"
+      [valueSeparatorChar]="valueSeparatorChar"
+      [startCollapsed]="startCollapsed"
+      [disabled]="disabled"
+      [required]="required"
+      [readonly]="readonly"
+      [hintMessage]="hintMessage"
+      [errorMessage]="errorMessage"
+      (changed)="changed($event)"
+      (opened)="onOpened()"
+      (closed)="onClosed()">
+
+</b-tree-select>`;
 
 const template = `
 <b-story-book-layout [title]="'Tree Select'">
@@ -57,23 +78,12 @@ const note = `
   *TreeSelectModule*
 
   ~~~
-  ${componentTemplate}
+  ${templateForNotes}
   ~~~
 
-  ### Properties
-  Name | Type | Description | Default
-  --- | --- | --- | ---
-  [panelClass] | string | class to be added to select panel | &nbsp;
-  [panelPosition] | PanelDefaultPosVer / ConnectedPosition[] | defines the location of the select's panel | &nbsp;
-  [tooltipType] | TruncateTooltipType | you can use CSS or Material tooltip for truncated value text | CSS
-  &lt;elem footerAction&gt; | ng-content | element with attribute \`\`\`footerAction\`\`\` will be placed in the footer of the panel | &nbsp;
-  &lt;elem footerActionRight&gt; | ng-content | element with attribute \`\`\`footerActionRight\`\`\` will be placed in the footer and aligned to the right | &nbsp;
+  ${treeListPanelPropsDoc}
 
-  #### Methods
-  Name | Description
-  --- | ---
-  openPanel() | will open select panel
-  closePanel() | will close (destroy) select panel
+  ${treeListPropsDoc}
 
   ${formElemsPropsDoc}
 `;
