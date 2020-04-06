@@ -25,7 +25,7 @@ export interface DialogButton {
 export interface DialogConfirmation {
   title?: string;
   subTitle?: string;
-  buttonLabel: string;
+  buttonLabel?: string;
   buttonClass?: string;
   buttonType?: ButtonType;
 }

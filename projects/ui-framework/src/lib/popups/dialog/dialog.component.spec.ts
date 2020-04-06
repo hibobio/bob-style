@@ -17,7 +17,7 @@ import { SquareButtonComponent } from '../../buttons/square/square.component';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
-fdescribe('DialogComponent', () => {
+describe('DialogComponent', () => {
   let component: DialogComponent;
   let fixture: ComponentFixture<DialogComponent>;
   let spyMatDialogRef: SpyObj<MatDialogRef<any>>;
@@ -130,6 +130,7 @@ fdescribe('DialogComponent', () => {
 
   describe('okButton', () => {
     beforeEach(() => fixture.detectChanges());
+
     it('should display preload message if exists', () => {
       component.dialogButtons.preloaderMessage = 'preload message';
       let progressIndicator = fixture.debugElement.query(
@@ -152,6 +153,7 @@ fdescribe('DialogComponent', () => {
         'preload message'
       );
     });
+
     it('should not show preload message if none exists', () => {
       const okButton = fixture.debugElement.query(By.css('.ok-button'))
         .componentInstance;
@@ -163,6 +165,7 @@ fdescribe('DialogComponent', () => {
       expect(progressIndicator.children.length).toBe(1);
       expect(progressIndicator.children[0].name).toBe('b-mini-preloader');
     });
+
     it('should invoke ok button action method', () => {
       spyOn(component.dialogButtons.ok, 'action');
       const okButton = fixture.debugElement.query(By.css('.ok-button'))
@@ -170,6 +173,7 @@ fdescribe('DialogComponent', () => {
       okButton.clicked.emit();
       expect(component.dialogButtons.ok.action).toHaveBeenCalled();
     });
+
     it('should close dialog after method is resolved', fakeAsync(() => {
       const okButton = fixture.debugElement.query(By.css('.ok-button'))
         .componentInstance;
@@ -177,6 +181,7 @@ fdescribe('DialogComponent', () => {
       tick();
       expect(spyMatDialogRef.close).toHaveBeenCalled();
     }));
+
     it('should leave dialog open if action resolves false', () => {
       fakeAsync(() => {
         let closeButton;
@@ -290,6 +295,49 @@ fdescribe('DialogComponent', () => {
           .componentInstance;
         expect(okButton.disabled).toBeTruthy();
       });
+    });
+  });
+
+  describe('extras', () => {
+    it('should not call button action if someone subscribed to button events ouputs', () => {
+      component.clickedOK.subscribe(() => {});
+      fixture.detectChanges();
+      spyOn(component.dialogButtons.ok, 'action');
+
+      const okButton = fixture.debugElement.query(By.css('.ok-button'))
+        .componentInstance;
+      okButton.clicked.emit();
+
+      expect(component.dialogButtons.ok.action).not.toHaveBeenCalled();
+      component.clickedOK.complete();
+    });
+
+    it('should close dialog if closeDialog input is set to true', () => {
+      component.doCloseDialog = true;
+      fixture.detectChanges();
+
+      expect(spyMatDialogRef.close).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not change showConfirmation on actions, if showConfirmation input has a boolean value', () => {
+      component.dialogButtons.confirmation = {
+        title: 'are you sure?',
+      };
+      component.setConfirmationControl = false;
+      fixture.detectChanges();
+
+      expect(component.showConfirmation).toEqual(false);
+
+      const okButton = fixture.debugElement.query(By.css('.ok-button'))
+        .componentInstance;
+      okButton.clicked.emit();
+      fixture.detectChanges();
+
+      const confirmationMessage = fixture.debugElement.query(
+        By.css('.confirmation-message')
+      );
+      expect(confirmationMessage).toBeFalsy();
+      expect(component.showConfirmation).toEqual(false);
     });
   });
 
