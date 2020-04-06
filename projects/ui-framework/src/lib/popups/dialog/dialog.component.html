@@ -1,26 +1,31 @@
 <div #dialogHeader
      mat-dialog-title>
   <ng-content select="[b-dialog-above-header]"></ng-content>
-  <b-display-2>{{dialogTitle}}</b-display-2>
+  <b-display-2 *ngIf="dialogTitle">{{dialogTitle}}</b-display-2>
   <ng-content select="[b-dialog-sub-title]"></ng-content>
 </div>
 
 <div #dialogContent
      (scroll)="onScroll($event)"
      class="dialog-content-wrapper"
-     [ngClass]="{'show-scrolling-top': showScrolling==dialogScrollDir.top, 'show-scrolling-bottom': showScrolling==dialogScrollDir.bottom, 'no-footer': !dialogButtons}"
+     [ngClass]="{
+       'show-scrolling-top': showScrolling==dialogScrollDir.top,
+       'show-scrolling-bottom': showScrolling==dialogScrollDir.bottom,
+       'no-footer': !dialogButtons,
+       'show-progress': showProgress,
+       'show-confirmation': showConfirmation
+     }"
      mat-dialog-content>
 
-  <div [ngClass]="{'show-progress': showProgress}"
-       class="dialog-content">
+  <div class="dialog-content">
     <ng-content select="[b-dialog-content]"></ng-content>
   </div>
-
   <div *ngIf="showProgress"
        class="progress-indicator">
     <b-mini-preloader></b-mini-preloader>
     <span *ngIf="dialogButtons.preloaderMessage"
           class="preloader-message">{{dialogButtons.preloaderMessage}}</span>
+    <ng-content select="[b-dialog-preloader-message]"></ng-content>
   </div>
 
 </div>
@@ -31,10 +36,10 @@
   <div *ngIf="showConfirmation"
        [@confirmMessage]
        class="confirmation-message">
-    <b-subheading *ngIf="dialogButtons.confirmation.title">
+    <b-subheading *ngIf="dialogButtons.confirmation?.title">
       {{dialogButtons.confirmation.title}}
     </b-subheading>
-    <div *ngIf="dialogButtons.confirmation.subTitle">
+    <div *ngIf="dialogButtons.confirmation?.subTitle">
       {{dialogButtons.confirmation.subTitle}}
     </div>
     <ng-content select="[b-dialog-confirmation]"></ng-content>
@@ -51,20 +56,21 @@
                 (clicked)="onCancel()"
                 [disabled]="showProgress"
                 [size]="buttonSize.medium"
-                [type]="buttonType.secondary"
-                class="dialog-button cancel-button{{dialogButtons.cancel.class ? ' ' + dialogButtons.cancel.class : ''}}">
-        {{dialogButtons.cancel.label}}
+                [type]="dialogButtons.cancel?.type || buttonType.secondary"
+                class="dialog-button cancel-button{{dialogButtons.cancel?.class ? ' ' + dialogButtons.cancel.class : ''}}">
+        {{dialogButtons.cancel?.label || 'Cancel'}}
       </b-button>
       <b-button (clicked)="onOk()"
                 [disabled]="showProgress || dialogButtons.ok.disabled"
                 [size]="buttonSize.medium"
-                [type]="(showConfirmation ? dialogButtons.confirmation.buttonType : dialogButtons.ok.type) || buttonType.primary"
+                [type]="(showConfirmation && dialogButtons.confirmation?.buttonType ?
+                dialogButtons.confirmation.buttonType : dialogButtons.ok?.type) || buttonType.primary"
                 class="dialog-button ok-button{{
                 !showConfirmation && dialogButtons.ok.class ?
                 ' ' + dialogButtons.ok.class :
-               showConfirmation && dialogButtons.confirmation.buttonClass ?
+               showConfirmation && dialogButtons.confirmation?.buttonClass ?
                 ' ' + dialogButtons.confirmation.buttonClass : ''}}">
-        {{showConfirmation ? dialogButtons.confirmation.buttonLabel : dialogButtons.ok.label}}
+        {{showConfirmation && dialogButtons.confirmation?.buttonLabel ? dialogButtons.confirmation.buttonLabel : dialogButtons.ok?.label || 'OK'}}
       </b-button>
     </div>
 

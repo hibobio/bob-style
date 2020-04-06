@@ -17,7 +17,7 @@ import { SquareButtonComponent } from '../../buttons/square/square.component';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
-describe('DialogComponent', () => {
+fdescribe('DialogComponent', () => {
   let component: DialogComponent;
   let fixture: ComponentFixture<DialogComponent>;
   let spyMatDialogRef: SpyObj<MatDialogRef<any>>;
@@ -201,6 +201,7 @@ describe('DialogComponent', () => {
         expect(progressIndicator).toBeFalsy();
       });
     });
+
     describe('confirmation', () => {
       beforeEach(() => {
         component.dialogButtons.confirmation = {
@@ -209,6 +210,7 @@ describe('DialogComponent', () => {
           subTitle: 'click confirm to invoke method',
         };
       });
+
       it('should show confirm message if exists', () => {
         const okButton = fixture.debugElement.query(By.css('.ok-button'))
           .componentInstance;
@@ -225,6 +227,7 @@ describe('DialogComponent', () => {
           'click confirm to invoke method'
         );
       });
+
       it('should change ok label to the confirmation label', () => {
         const okButton = fixture.debugElement.query(By.css('.ok-button'))
           .componentInstance;
@@ -233,6 +236,7 @@ describe('DialogComponent', () => {
         const okButtonEl = fixture.debugElement.query(By.css('.ok-button'));
         expect(okButtonEl.nativeElement.innerText).toContain('confirm');
       });
+
       it('should remove confirmation when clicking cancel and not close dialog', () => {
         const okButton = fixture.debugElement.query(By.css('.ok-button'))
           .componentInstance;
@@ -253,6 +257,7 @@ describe('DialogComponent', () => {
         expect(confirmationMessage).toBeFalsy();
         expect(spyMatDialogRef.close).not.toHaveBeenCalled();
       });
+
       it('should invoke ok button action method on second click', () => {
         spyOn(component.dialogButtons.ok, 'action');
         const okButton = fixture.debugElement.query(By.css('.ok-button'))
@@ -262,6 +267,7 @@ describe('DialogComponent', () => {
         okButton.clicked.emit();
         expect(component.dialogButtons.ok.action).toHaveBeenCalled();
       });
+
       it('should close dialog after method is resolved after 2nd click', fakeAsync(() => {
         const okButton = fixture.debugElement.query(By.css('.ok-button'))
           .componentInstance;
@@ -270,6 +276,7 @@ describe('DialogComponent', () => {
         tick();
         expect(spyMatDialogRef.close).toHaveBeenCalled();
       }));
+
       it('should disable ok button if configured to be disabled', () => {
         component.dialogButtons = {
           ok: {

@@ -18,7 +18,7 @@ export class CompMockComponent {
   constructor() {}
 }
 
-describe('DialogService', () => {
+fdescribe('DialogService', () => {
   let dialogService: DialogService;
   let spyMatDialog: SpyObj<MatDialog>;
   let dialogRefMock;

@@ -33,11 +33,7 @@ html.cdk-global-scrollblock {
     position: relative;
     overflow: hidden;
     color: inherit;
-    .close-button {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-    }
+
     .mat-dialog-title,
     .mat-dialog-content,
     .mat-dialog-actions {
@@ -48,8 +44,11 @@ html.cdk-global-scrollblock {
       min-height: 0;
       font: inherit;
     }
+
     .mat-dialog-title {
       padding: times8(5) times8(5) times8(2);
+      user-select: none;
+
       div[b-dialog-sub-title] {
         margin-top: 5px;
       }
@@ -57,77 +56,114 @@ html.cdk-global-scrollblock {
         overflow-wrap: break-word;
       }
     }
-    .mat-dialog-content {
+
+    .dialog-content-wrapper {
       padding: 0 times8(5) times8(2);
       max-height: 60vh;
       position: relative;
       overflow-x: hidden;
+
       &.show-scrolling-bottom {
         border-bottom: 1px solid $grey-300;
       }
+
       &.no-footer {
         padding-bottom: times8(5);
       }
-      .dialog-content {
-        position: relative;
-        &.show-progress {
+
+      &.show-progress {
+        overflow: hidden;
+
+        .dialog-content {
           visibility: hidden;
         }
       }
-      .progress-indicator {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        z-index: 2;
-        align-items: center;
-        justify-content: center;
-        b-mini-preloader {
-          display: block;
+
+      &.show-confirmation {
+        user-select: none;
+        pointer-events: none;
+
+        &:before {
+          @include pseudo;
+          @include position(0 0 0 0);
+          pointer-events: all;
+          background-color: white(0.4);
+          z-index: 1;
         }
-        .preloader-message {
-          color: $grey-600;
-          margin-top: times8(1);
+
+        & + .dialog-footer .mat-dialog-actions {
+          box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.1);
         }
+      }
+
+      .dialog-content {
+        position: relative;
       }
     }
 
-    .dialog-footer {
-      position: relative;
-      border-top: 1px solid $grey-300;
+    .progress-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      z-index: 1;
+      align-items: center;
+      justify-content: center;
 
-      .confirmation-message {
-        position: absolute;
-        z-index: 1;
-        left: 0;
-        width: 100%;
-        box-sizing: border-box;
-        padding: times8(2) times8(3);
-        background-color: $white;
-        box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.2),
-          0 -3px 5px rgba(0, 0, 0, 0.1) inset;
-        transform: translateY(-100%);
+      b-mini-preloader {
+        display: block;
       }
 
-      .mat-dialog-actions {
-        padding: times8(3);
-        background-color: $white;
-        text-align: center;
-        position: relative;
-        z-index: 2;
-        display: flex;
-        height: 100%;
-        .action-buttons {
-          justify-self: flex-end;
-          margin-left: auto;
-        }
-        .dialog-button {
-          &:nth-child(2) {
-            margin-left: times8(2);
-          }
+      .preloader-message {
+        display: block;
+        color: $grey-600;
+        margin-top: times8(1.5);
+      }
+    }
+
+    .close-button {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+    }
+  }
+
+  .dialog-footer {
+    position: relative;
+    border-top: 1px solid $grey-300;
+
+    .confirmation-message {
+      position: absolute;
+      z-index: 1;
+      left: 0;
+      width: 100%;
+      box-sizing: border-box;
+      padding: times8(2) times8(3);
+      background-color: $white;
+      box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.2);
+      transform: translateY(-100%);
+    }
+
+    .mat-dialog-actions {
+      padding: times8(3);
+      background-color: $white;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      height: 100%;
+
+      .action-buttons {
+        justify-self: flex-end;
+        margin-left: auto;
+      }
+
+      .dialog-button {
+        &:nth-child(2) {
+          margin-left: times8(2);
         }
       }
     }
