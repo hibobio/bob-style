@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import {
   simpleUID,
   arrOfObjSortByProp,
@@ -8,11 +7,12 @@ import { DropResult } from 'ngx-smooth-dnd';
 import { SelectOption } from '../list.interface';
 import { ListSortType } from './editable-list.enum';
 
-@Injectable()
-export class EditableListService {
-  constructor() {}
-
-  onDrop(list: SelectOption[], dropResult: DropResult): SelectOption[] {
+export class EditableListUtils {
+  //
+  public static onDrop(
+    list: SelectOption[],
+    dropResult: DropResult
+  ): SelectOption[] {
     const { removedIndex, addedIndex } = dropResult;
     if (removedIndex === addedIndex) {
       return null;
@@ -22,7 +22,7 @@ export class EditableListService {
     return list;
   }
 
-  addItem(list: SelectOption[], value: string): SelectOption[] {
+  public static addItem(list: SelectOption[], value: string): SelectOption[] {
     if (value) {
       list.unshift({
         id: simpleUID('new-'),
@@ -32,7 +32,7 @@ export class EditableListService {
     return list;
   }
 
-  sortList(
+  public static sortList(
     list: SelectOption[],
     order: ListSortType = null,
     currentOrder: ListSortType = null
@@ -51,7 +51,7 @@ export class EditableListService {
     return shouldBeAscending ? ListSortType.Asc : ListSortType.Desc;
   }
 
-  isListAscending(list: SelectOption[]): boolean {
+  public static isListAscending(list: SelectOption[]): boolean {
     const length = list.length;
     return !list.find(
       (itm, indx) =>
@@ -59,7 +59,7 @@ export class EditableListService {
     );
   }
 
-  isListDescending(list: SelectOption[]): boolean {
+  public static isListDescending(list: SelectOption[]): boolean {
     const length = list.length;
     return !list.find(
       (itm, indx) =>
@@ -67,7 +67,7 @@ export class EditableListService {
     );
   }
 
-  getListSortType(list: SelectOption[]): ListSortType {
+  public static getListSortType(list: SelectOption[]): ListSortType {
     return this.isListAscending(list)
       ? ListSortType.Asc
       : this.isListDescending(list)

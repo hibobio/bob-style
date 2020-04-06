@@ -1,11 +1,11 @@
-import { EditableListService } from './editable-list.service';
 import { cloneDeep } from 'lodash';
 import { ListSortType } from './editable-list.enum';
+import { EditableListUtils } from './editable-list.static';
 
-const stringOrder = (list: any[]): string => list.map(i => i.value).join('');
+const stringOrder = (list: any[]): string => list.map((i) => i.value).join('');
 
 describe('DateParseService', () => {
-  const service = new EditableListService();
+  const service = EditableListUtils;
 
   const ascList = [
     { id: 34, value: 'A' },

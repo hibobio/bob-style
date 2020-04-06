@@ -12,9 +12,9 @@ import { cloneDeep } from 'lodash';
 import { EditableListModule } from './editable-list.module';
 import { editableListMock } from './editable-list.mock';
 import { action } from '@storybook/addon-actions';
-import { EditableListService } from './editable-list.service';
 import { ListSortType } from './editable-list.enum';
 import { CommonModule } from '@angular/common';
+import { EditableListUtils } from './editable-list.static';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -97,8 +97,8 @@ const listMock = cloneDeep(editableListMock);
 const listMockAsc = cloneDeep(editableListMock);
 const listMockDesc = cloneDeep(editableListMock);
 
-EditableListService.prototype.sortList(listMockAsc, ListSortType.Asc);
-EditableListService.prototype.sortList(listMockDesc, ListSortType.Desc);
+EditableListUtils.sortList(listMockAsc, ListSortType.Asc);
+EditableListUtils.sortList(listMockDesc, ListSortType.Desc);
 
 story.add(
   'Editable List',

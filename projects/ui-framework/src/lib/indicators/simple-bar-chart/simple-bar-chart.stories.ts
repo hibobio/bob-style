@@ -7,6 +7,7 @@ import {
   simpleBarChartMockData,
   simpleBarChartMockData2,
 } from './simple-bar-chart.mock';
+import { action } from '@storybook/addon-actions';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
@@ -20,7 +21,8 @@ const template = `
   <b-simple-bar-chart [data]="data"
                       [config]="{
                         disableAnimation: disableAnimation
-                      }">
+                      }"
+                      (clicked)="onBarClick($event)">
   </b-simple-bar-chart>
 `;
 
@@ -55,6 +57,7 @@ const note = `
   --- | --- | ---
   [data] | SimpleBarChartItem[] | array of items data
   [config] | ProgressConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation
+  (clicked) | EventEmitter<wbr>&lt;SimpleBarChartItem&gt; | emits on bar click
 
   ~~~
   ${template}
@@ -79,6 +82,7 @@ const toAdd = () => ({
     data2: simpleBarChartMockData2,
     data: object('data', simpleBarChartMockData),
     disableAnimation: boolean('disableAnimation', false),
+    onBarClick: action('Bar clicked'),
   },
   moduleMetadata: {
     imports: [StoryBookLayoutModule, SimpleBarChartModule],

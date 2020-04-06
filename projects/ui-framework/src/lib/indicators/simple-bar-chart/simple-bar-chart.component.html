@@ -1,15 +1,20 @@
-<div class="bsbc-chart">
+<div class="bsbc-chart"
+     (click)="onBarClick($event)"
+     [ngClass]="{clickable: isClickable}">
   <div class="bsbc-bar-wrap"
        *ngFor="let item of data; let index = index">
 
-    <div #bar
-         class="bsbc-bar"
-         [id]="id+'-'+index"
-         role="progressbar"
-         [attr.aria-labelledby]="id+'-'+index+'-val '+id+'-'+index+'-dsc'"
-         [attr.aria-valuenow]="item.value || null"
-         aria-valuemin="0"
-         aria-valuemax="100">
+    <div class="bsbc-bar-box"
+         [attr.data-index]="index">
+      <div #bar
+           class="bsbc-bar"
+           [id]="id+'-'+index"
+           role="progressbar"
+           [attr.aria-labelledby]="id+'-'+index+'-val '+id+'-'+index+'-dsc'"
+           [attr.aria-valuenow]="item.value || null"
+           aria-valuemin="0"
+           aria-valuemax="100">
+      </div>
     </div>
 
     <p class="bsbc-bar-value"

@@ -40,10 +40,10 @@ import {
   EDITABLE_LIST_ALLOWED_ACTIONS_DEF,
 } from './editable-list.const';
 import { ListSortType } from './editable-list.enum';
-import { EditableListService } from './editable-list.service';
 import { Keys } from '../../enums';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { EditableListUtils } from './editable-list.static';
 
 @Component({
   selector: 'b-editable-list',
@@ -52,11 +52,7 @@ import { debounceTime } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
-  constructor(
-    private editableListService: EditableListService,
-    private zone: NgZone,
-    private cd: ChangeDetectorRef
-  ) {}
+  constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
 
   @ViewChild('addItemInput') addItemInput: ElementRef;
 
@@ -132,7 +128,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     applyChanges(
       this,
       changes,
@@ -147,7 +143,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
 
     if (hasChanges(changes, ['list'])) {
       this.listState.list = cloneDeep(this.list);
-      this.listState.sortType = this.editableListService.getListSortType(
+      this.listState.sortType = EditableListUtils.getListSortType(
         this.listState.list
       );
     }
@@ -165,13 +161,20 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     if (this.inputChanged.observers.length) {
       this.inputChangeSbscr = this.inputChangeDbncr
         .pipe(debounceTime(300))
         .subscribe((value) => {
           this.inputChanged.emit(value);
         });
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.inputChangeSbscr) {
+      this.inputChangeDbncr.complete();
+      this.inputChangeSbscr.unsubscribe();
     }
   }
 
@@ -205,7 +208,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
         if (this.sameItemIndex === -1) {
           this.addingItem = false;
           this.addedItem = true;
-          this.editableListService.addItem(this.listState.list, value);
+          EditableListUtils.addItem(this.listState.list, value);
           this.listState.create.push(value);
           this.transmit();
           this.listState.sortType = ListSortType.UserDefined;
@@ -307,13 +310,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  public ngOnDestroy(): void {
-    if (this.inputChangeSbscr) {
-      this.inputChangeDbncr.complete();
-      this.inputChangeSbscr.unsubscribe();
-    }
-  }
-
   public onDragStart(): void {
     this.isDragged = true;
     this.addedItem = false;
@@ -321,7 +317,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
 
   public onDrop(dropResult: DropResult): void {
     this.isDragged = false;
-    if (this.editableListService.onDrop(this.listState.list, dropResult)) {
+    if (EditableListUtils.onDrop(this.listState.list, dropResult)) {
       this.listState.sortType = ListSortType.UserDefined;
       this.transmit();
     }
@@ -332,7 +328,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     order: ListSortType = null,
     currentOrder: ListSortType = this.listState.sortType
   ): void {
-    this.listState.sortType = this.editableListService.sortList(
+    this.listState.sortType = EditableListUtils.sortList(
       list,
       order,
       currentOrder

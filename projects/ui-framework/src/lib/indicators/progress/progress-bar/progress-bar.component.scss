@@ -70,6 +70,10 @@ $BPBtypeMap: (
 :host {
   @include progress-host('bpb');
   text-align: left;
+
+  &[data-type='secondary'] {
+    --bpb-color: #{$grey-600};
+  }
 }
 
 h5,

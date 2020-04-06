@@ -2,7 +2,7 @@
 
   <h5 *ngIf="type === progressType.primary && !config.hideValue"
       class="bpb-value"
-      [id]="id+'-val'">{{data.value}}%</h5>
+      [id]="id+'-val'">{{data?.value || 0}}%</h5>
 
   <p *ngIf="data.headerTextPrimary !== false"
      class="bpb-text bpb-text-prmr"
@@ -33,5 +33,5 @@
 
   <h5 *ngIf="type === progressType.secondary && !config.hideValue"
       class="bpb-value"
-      [id]="id+'-val'">{{data.value}}%</h5>
+      [id]="id+'-val'">{{data?.value || 0}}%</h5>
 </div>

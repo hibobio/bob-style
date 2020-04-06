@@ -30,14 +30,34 @@ p {
   max-width: $bsbc-item-width;
 }
 
+.bsbc-bar-box {
+  margin-bottom: 12px;
+  border-radius: $border-radius;
+}
+
 .bsbc-bar {
   @include progress-bar(vertical, 'bsbc');
   height: $bsbc-bar-height;
   width: $bsbc-bar-width;
   border-radius: $border-radius;
-  margin-bottom: 12px;
 }
 
 .bsbc-bar-value {
   font-weight: 600;
+}
+
+.clickable ::ng-deep .bsbc-bar-box {
+  cursor: pointer;
+  padding: 5px;
+  will-change: box-shadow, transform;
+
+  &:hover {
+    background-color: white;
+    box-shadow: 0 2px 4px 1px $boxShadowColor;
+    transform: translateY(-1px);
+  }
+
+  .bsbc-bar {
+    pointer-events: none;
+  }
 }

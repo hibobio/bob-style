@@ -11,7 +11,6 @@ import { IconsModule } from '../../icons/icons.module';
 import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
-import { EditableListService } from './editable-list.service';
 import { SelectOption } from '../list.interface';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
@@ -65,9 +64,7 @@ describe('EditableListComponent', () => {
     ];
 
     TestBed.configureTestingModule({
-      declarations: [
-        EditableListComponent
-      ],
+      declarations: [EditableListComponent],
       imports: [
         CommonModule,
         IconsModule,
@@ -75,7 +72,7 @@ describe('EditableListComponent', () => {
         InputMessageModule,
         ButtonsModule,
       ],
-      providers: [EditableListService, EventManagerPlugins[0]],
+      providers: [EventManagerPlugins[0]],
     })
       .overrideComponent(EditableListComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -206,13 +203,13 @@ describe('EditableListComponent', () => {
       expect(list3.length).toEqual(4);
     });
 
-    it('should emit the right event when item was added', done => {
+    it('should emit the right event when item was added', (done) => {
       triggerChanges();
       const input = fixture.debugElement.query(By.css('.bel-item-input'));
       const doneButton = fixture.debugElement.query(
         By.css('.bel-done-button button')
       );
-      component.changed.subscribe(data => {
+      component.changed.subscribe((data) => {
         expect(data.create[0]).toEqual('abc');
         expect(data.order[0]).toEqual('abc');
         done();
@@ -243,7 +240,7 @@ describe('EditableListComponent', () => {
         By.css('[b-input-message] .error')
       );
       expect(error.nativeElement.innerText).toContain(
-        `"${ selectOptionsMock[0].value }" already exists`
+        `"${selectOptionsMock[0].value}" already exists`
       );
     }));
   });

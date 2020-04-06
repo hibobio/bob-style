@@ -39,17 +39,16 @@ export class ProgressBarComponent extends BaseProgressElement
   protected setCssProps(): void {
     this.DOM.setCssProps(this.host.nativeElement, {
       '--bpb-value':
-        this.wasInView || this.config.disableAnimation
-          ? this.data.value + '%'
+        this.wasInView || this.config?.disableAnimation
+          ? this.data?.value && this.data.value + '%'
           : null,
-      '--bpb-color':
-        (this.type !== ProgressType.secondary && this.data.color) || null,
-      '--bpb-trans': this.config.disableAnimation
+      '--bpb-color': this.data?.color || null,
+      '--bpb-trans': this.config?.disableAnimation
         ? '0s'
-        : (this.data.value > 50
+        : (this.data?.value > 50
             ? randomNumber(1000, 2000)
             : randomNumber(500, 1000)) + 'ms',
-      '--bpb-trans-delay': this.config.disableAnimation
+      '--bpb-trans-delay': this.config?.disableAnimation
         ? '0s'
         : randomNumber(70, 250) + 'ms',
     });

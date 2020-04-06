@@ -4,7 +4,6 @@ import { EditableListComponent } from './editable-list.component';
 import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
 import { IconsModule } from '../../icons/icons.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
-import { EditableListService } from './editable-list.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
 
@@ -18,6 +17,6 @@ import { InputMessageModule } from '../../form-elements/input-message/input-mess
   ],
   declarations: [EditableListComponent],
   exports: [EditableListComponent],
-  providers: [EditableListService, EventManagerPlugins[0]],
+  providers: [EventManagerPlugins[0]],
 })
 export class EditableListModule {}

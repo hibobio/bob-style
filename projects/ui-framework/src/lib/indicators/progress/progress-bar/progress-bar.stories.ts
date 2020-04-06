@@ -228,6 +228,31 @@ const icons = [
   Icons.tag,
 ];
 
+const randomStuff = {
+  progressType: ProgressType,
+  progressSize: ProgressSize,
+
+  color1: ColorService.prototype.randomColor(),
+  color2: ColorService.prototype.randomColor(),
+  color3: ColorService.prototype.randomColor(),
+  color4: ColorService.prototype.randomColor(),
+  color5: ColorService.prototype.randomColor(),
+
+  value1: randomNumber(20, 80),
+  value2: randomNumber(20, 80),
+  value3: randomNumber(20, 80),
+  value4: randomNumber(20, 80),
+  value5: randomNumber(20, 80),
+
+  textRight1: randomNumber(1, 20) + '/' + randomNumber(20, 30),
+  textRight2: randomNumber(1, 20) + '/' + randomNumber(20, 30),
+  textRight3: randomNumber(1, 20) + '/' + randomNumber(20, 30),
+
+  icon1: randomFromArray(icons, 1),
+  icon2: randomFromArray(icons, 1),
+  icon3: randomFromArray(icons, 1),
+};
+
 story.add(
   'Progress Bar',
   () => {
@@ -239,35 +264,14 @@ size = small
 headerTextPrimary = false
 hideValue = true`,
 
-        progressType: ProgressType,
-        progressSize: ProgressSize,
-
-        color1: ColorService.prototype.randomColor(),
-        color2: ColorService.prototype.randomColor(),
-        color3: ColorService.prototype.randomColor(),
-        color4: ColorService.prototype.randomColor(),
-        color5: ColorService.prototype.randomColor(),
-
-        value1: randomNumber(20, 80),
-        value2: randomNumber(20, 80),
-        value3: randomNumber(20, 80),
-        value4: randomNumber(20, 80),
-        value5: randomNumber(20, 80),
-
-        textRight1: randomNumber(1, 20) + '/' + randomNumber(20, 30),
-        textRight2: randomNumber(1, 20) + '/' + randomNumber(20, 30),
-        textRight3: randomNumber(1, 20) + '/' + randomNumber(20, 30),
-
-        icon1: randomFromArray(icons, 1),
-        icon2: randomFromArray(icons, 1),
-        icon3: randomFromArray(icons, 1),
+        ...randomStuff,
 
         type: select('type', Object.values(ProgressType), ProgressType.primary),
         size: select('size', Object.values(ProgressSize), ProgressSize.medium),
         color: select(
           'color',
-          ['#9d9d9d', '#ff962b', '#f8bc20', '#17b456', '#e52c51', '#4b95ec'],
-          '#17b456'
+          [0, '#9d9d9d', '#ff962b', '#f8bc20', '#17b456', '#e52c51', '#4b95ec'],
+          0
         ),
         value: number('value', randomNumber(20, 80)),
 
