@@ -68,10 +68,11 @@ export class EditableListUtils {
   }
 
   public static getListSortType(list: SelectOption[]): ListSortType {
-    return this.isListAscending(list)
+    const result = this.isListAscending(list)
       ? ListSortType.Asc
       : this.isListDescending(list)
       ? ListSortType.Desc
       : ListSortType.UserDefined;
+    return result;
   }
 }

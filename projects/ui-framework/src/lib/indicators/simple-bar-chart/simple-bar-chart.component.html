@@ -19,7 +19,7 @@
 
     <p class="bsbc-bar-value"
        [id]="id+'-'+index+'-val'">
-      <span>{{ item.value }}%</span>
+      <span>{{ item.value || 0 }}%</span>
       <span *ngIf="item.count">&nbsp;({{ item.count }})</span>
     </p>
     <p *ngIf="item.text"
