@@ -5,7 +5,7 @@
     position: relative;
     cursor: pointer;
     z-index: 1;
-    margin: 0 2px;
+    margin: 2px;
     display: inline-flex;
     line-height: 28px;
     height: 27px;
@@ -29,5 +29,10 @@
       font-family: var(--emoji-font-family);
       line-height: inherit;
     }
+  }
+  .selected {
+    border-radius: 15px;
+    height: 30px;
+    border: 2px solid $negative-600;
   }
 }

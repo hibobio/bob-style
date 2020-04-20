@@ -1,4 +1,5 @@
 <div class="emoji-chip-item" *ngFor="let chip of chips"
+     [ngClass]="{'selected': chip.isSelected}"
      (click)="chipClick(chip)" [matTooltip]="chip.tooltip" matTooltipPosition="above">
   <span class="reaction-emoji">
     {{chip.emoji | emojiFromCode}}

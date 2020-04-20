@@ -4,6 +4,7 @@ import { EmojiChipListComponent } from './emoji-chip-list.component';
 import { MockPipe } from 'ng-mocks';
 import { EmojiFromCodePipe } from './emoji-from-code.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { By } from '@angular/platform-browser';
 
 describe('EmojiChipListComponent', () => {
   let component: EmojiChipListComponent;
@@ -42,5 +43,26 @@ describe('EmojiChipListComponent', () => {
       emoji: '1F45F',
       number: 245,
     });
+  });
+  it('should add selected class to a chip when isSelected is true', () => {
+    const chipsData = [
+      {
+        emoji: '1F600',
+        tooltip: 'happy',
+        number: 355,
+        isSelected: true
+      },
+      {
+        emoji: '1F45F',
+        tooltip: 'shoe',
+        number: 280
+      }
+    ];
+    component.chips = chipsData;
+    fixture.detectChanges();
+    const chips = fixture.debugElement.queryAll(By.css('.emoji-chip-item'));
+    expect(chips.length).toEqual(2);
+    expect(chips[0].nativeElement.classList).toContain('selected');
+    expect(chips[1].nativeElement.classList).not.toContain('selected');
   });
 });
