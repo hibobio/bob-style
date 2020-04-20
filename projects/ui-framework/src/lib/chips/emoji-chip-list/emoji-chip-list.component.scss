@@ -1,38 +1,42 @@
 @import '../../style/common-imports';
 :host {
-  //noinspection ALL
-  .emoji-chip-item {
-    position: relative;
-    cursor: pointer;
-    z-index: 1;
-    margin: 2px;
-    display: inline-flex;
-    line-height: 28px;
-    height: 27px;
-    padding: 0 5px;
-    border-radius: 13px;
-    background-color: $grey-200;
-    transition: transform 0.1s;
-    &:hover {
-      background-color: $grey-400;
-      z-index: 2;
-    }
-    .reaction-number {
-      margin-right: 4px;
-      font-size: 11px;
-      font-weight: bold;
-    }
+  display: block;
+}
 
-    .reaction-emoji {
-      font-size: 18px;
-      display: inline-flex;
-      font-family: var(--emoji-font-family);
-      line-height: inherit;
-    }
+.emoji-chip-item {
+  position: relative;
+  cursor: pointer;
+  z-index: 1;
+  display: inline-flex;
+  line-height: 28px;
+  height: 27px;
+  padding: 0 5px;
+  border-radius: 13px;
+  background-color: $grey-200;
+  transition: transform 0.1s;
+
+  &:hover {
+    background-color: $grey-400;
+    z-index: 2;
   }
-  .selected {
-    border-radius: 15px;
-    height: 30px;
-    border: 2px solid $negative-600;
+
+  margin: 4px 2px;
+
+  &.selected {
+    box-shadow: 0 0 0 2px $color-select-red;
+    margin: 4px;
   }
+}
+
+.reaction-number {
+  margin-right: 4px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.reaction-emoji {
+  font-size: 18px;
+  display: inline-flex;
+  font-family: var(--emoji-font-family);
+  line-height: inherit;
 }

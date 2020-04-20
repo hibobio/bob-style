@@ -1,6 +1,6 @@
 export interface EmojiChip {
   emoji?: string;
-  tooltip?: string;
+  tooltip?: string | number;
   number?: number;
-  isSelected?: boolean;
+  selected?: boolean;
 }
