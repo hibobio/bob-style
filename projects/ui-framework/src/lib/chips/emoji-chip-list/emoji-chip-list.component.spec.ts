@@ -15,7 +15,7 @@ describe('EmojiChipListComponent', () => {
       imports: [MatTooltipModule],
       declarations: [
         EmojiChipListComponent,
-        MockPipe(EmojiFromCodePipe, val => `${val}`),
+        MockPipe(EmojiFromCodePipe, (val) => `${val}`),
       ],
     }).compileComponents();
   }));
@@ -31,7 +31,7 @@ describe('EmojiChipListComponent', () => {
   });
   it('should call formatterFunction if exists and return value if it doesnt', () => {
     expect(component.valueFormatterFn(42)).toEqual(42);
-    component.valueFormatter = val => {
+    component.valueFormatter = (val) => {
       return val * 2;
     };
     expect(component.valueFormatterFn(42)).toEqual(84);
@@ -44,19 +44,19 @@ describe('EmojiChipListComponent', () => {
       number: 245,
     });
   });
-  it('should add selected class to a chip when isSelected is true', () => {
+  it('should add selected class to a chip when selected is true', () => {
     const chipsData = [
       {
         emoji: '1F600',
         tooltip: 'happy',
         number: 355,
-        isSelected: true
+        selected: true,
       },
       {
         emoji: '1F45F',
         tooltip: 'shoe',
-        number: 280
-      }
+        number: 280,
+      },
     ];
     component.chips = chipsData;
     fixture.detectChanges();
