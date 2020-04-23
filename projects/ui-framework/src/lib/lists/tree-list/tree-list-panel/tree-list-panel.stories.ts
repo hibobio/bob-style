@@ -19,6 +19,7 @@ import treeListPanelPropsDoc from '../tree-list-panel.properties.md';
 
 const componentTemplate = `<b-tree-list-panel
       [type]="type"
+      [mode]="mode"
       [keyMap]="options === 'simple' ? serverKeyMap : null"
       [list]="options === 'simple' ? listSimple : listRandom"
       [value]="options === 'simple' ? valueSimple : valueRandom"
@@ -44,6 +45,7 @@ const componentTemplate = `<b-tree-list-panel
 
 const templateForNotes = `<b-tree-list-panel
       [type]="type"
+      [mode]="mode"
       [list]="list"
       [keyMap]="keyMap"
       [value]="value"

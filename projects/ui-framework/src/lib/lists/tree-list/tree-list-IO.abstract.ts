@@ -9,7 +9,7 @@ import {
   TreeListItemMap,
 } from './tree-list.interface';
 import { BTL_KEYMAP_DEF, BTL_VALUE_SEPARATOR_DEF } from './tree-list.const';
-import { SelectType } from '../list.enum';
+import { SelectType, SelectMode } from '../list.enum';
 import { ListFooterActions } from '../list.interface';
 
 @Directive()
@@ -23,6 +23,7 @@ export abstract class TreeListInputOutput implements TreeListComponentIO {
   @Input() itemsMap: TreeListItemMap = new Map();
 
   @Input() type: SelectType = SelectType.multi;
+  @Input() mode: SelectMode = SelectMode.tree;
   @Input() valueSeparatorChar = BTL_VALUE_SEPARATOR_DEF;
   @Input() maxHeightItems = 8;
   @Input() startCollapsed = true;

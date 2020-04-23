@@ -67,6 +67,7 @@ import { filter, delay } from 'rxjs/operators';
 import cloneDeep from 'lodash/cloneDeep';
 import { DOMInputEvent } from '../../../types';
 import { TreeListModelUtils } from '../services/tree-list-model.static';
+import { SelectMode } from '../../list.enum';
 
 const LISTITEM_EL_HEIGHT = 32;
 
@@ -332,6 +333,7 @@ export abstract class BaseEditableTreeListElement
       listViewModel: this.listViewModel,
       toggleItemCollapsed: this.toggleItemCollapsed.bind(this),
       itemClick: this.onItemClick.bind(this),
+      mode: SelectMode.tree,
     });
   }
 

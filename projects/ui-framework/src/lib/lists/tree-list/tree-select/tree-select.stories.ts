@@ -21,6 +21,7 @@ const story2 = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
 
 const componentTemplate = `<b-tree-select
       [type]="type"
+      [mode]="mode"
       [list]="options === 'simple' ? listSimple : listRandom"
       [keyMap]="options === 'simple' ? serverKeyMap : null"
       [value]="options === 'simple' ? valueSimple : valueRandom"
@@ -43,6 +44,7 @@ const componentTemplate = `<b-tree-select
 
 const templateForNotes = `<b-tree-select
       [type]="type"
+      [mode]="mode"
       [list]="list"
       [keyMap]="keyMap"
       [value]="value"

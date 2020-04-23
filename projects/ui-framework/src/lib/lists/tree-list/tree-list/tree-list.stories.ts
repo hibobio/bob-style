@@ -14,6 +14,7 @@ import treeListPropsDoc from '../tree-list.properties.md';
 
 const template = `<b-tree-list
       [type]="type"
+      [mode]="mode"
       [keyMap]="options === 'simple' ? serverKeyMap : null"
       [list]="options === 'simple' ? listSimple : options === 'single group' ? listSingleGroup : options === 'big' ? listHuge : listRandom"
       [value]="options === 'simple' ? valueSimple : valueRandom"
@@ -41,6 +42,7 @@ const template = `<b-tree-list
 
 const templateForNotes = `<b-tree-list
       [type]="type"
+      [mode]="mode"
       [keyMap]="keyMap"
       [list]="list"
       [value]="value"

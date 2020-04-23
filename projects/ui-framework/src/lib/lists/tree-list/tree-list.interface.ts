@@ -1,4 +1,4 @@
-import { SelectType } from '../list.enum';
+import { SelectType, SelectMode } from '../list.enum';
 import { ListFooterActions } from '../list.interface';
 import { EventEmitter } from '@angular/core';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
@@ -14,6 +14,7 @@ export interface TreeListComponentIO {
   itemsMap: TreeListItemMap;
 
   type: SelectType;
+  mode: SelectMode;
   valueSeparatorChar: string;
   listActions: ListFooterActions;
   maxHeightItems: number;

@@ -123,6 +123,10 @@ export abstract class BaseListElement
       mode: SelectMode.classic,
     });
 
+    if (this.mode === SelectMode.tree) {
+      this.mode = SelectMode.classic;
+    }
+
     if (hasChanges(changes, ['options'])) {
       this.options = this.options.filter((group: SelectGroupOption) =>
         isNotEmptyArray(group.options)
@@ -309,7 +313,7 @@ export abstract class BaseListElement
           this.selectedIDs = allowMultiple
             ? newValue
               ? this.selectedIDs.concat(option.id)
-              : this.selectedIDs.filter(id => id !== option.id)
+              : this.selectedIDs.filter((id) => id !== option.id)
             : [option.id];
         }
       }
@@ -320,11 +324,11 @@ export abstract class BaseListElement
 
         if (newValue !== option.selected) {
           const groupIDsInSelected = this.options[option.groupIndex].options
-            .map(optn => optn.id)
-            .filter(id => this.selectedIDs.includes(id));
+            .map((optn) => optn.id)
+            .filter((id) => this.selectedIDs.includes(id));
 
           this.selectedIDs = this.selectedIDs
-            .filter(id => !groupIDsInSelected.includes(id))
+            .filter((id) => !groupIDsInSelected.includes(id))
             .concat(
               newValue || this.mode === SelectMode.radioGroups ? option.id : []
             );

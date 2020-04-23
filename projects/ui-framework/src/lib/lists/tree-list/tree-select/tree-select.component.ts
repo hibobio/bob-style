@@ -21,7 +21,7 @@ import {
   TreeListValue,
   TreeListItemMap,
 } from '../tree-list.interface';
-import { SelectType } from '../../list.enum';
+import { SelectType, SelectMode } from '../../list.enum';
 import { ListFooterActions } from '../../list.interface';
 import { TruncateTooltipType } from '../../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { OverlayRef } from '@angular/cdk/overlay';
@@ -94,6 +94,7 @@ export class TreeSelectComponent extends BaseFormElement
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
 
   @Input() type: SelectType = SelectType.multi;
+  @Input() mode: SelectMode = SelectMode.tree;
   @Input() valueSeparatorChar = BTL_VALUE_SEPARATOR_DEF;
   @Input() startCollapsed = true;
   @Input() readonly = false;
@@ -130,6 +131,7 @@ export class TreeSelectComponent extends BaseFormElement
         type: SelectType.multi,
         valueSeparatorChar: BTL_VALUE_SEPARATOR_DEF,
         tooltipType: TruncateTooltipType.auto,
+        mode: SelectMode.tree,
       },
       ['value'],
       true,
@@ -137,6 +139,13 @@ export class TreeSelectComponent extends BaseFormElement
         keyMap: { value: 'setValue' },
       }
     );
+
+    if (
+      this.mode === SelectMode.radioGroups ||
+      this.mode === SelectMode.checkGroups
+    ) {
+      this.mode = SelectMode.tree;
+    }
 
     if (hasChanges(changes, ['disabled', 'errorMessage', 'warnMessage'])) {
       this.closePanel();

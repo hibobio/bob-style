@@ -13,6 +13,7 @@ import {
   TreeListItemEditContext,
   InsertItemLocation,
 } from '../editable-tree-list/editable-tree-list.interface';
+import { SelectMode } from '../../list.enum';
 
 interface TreeListClickConfig {
   itemsMap: TreeListItemMap;
@@ -30,6 +31,7 @@ interface TreeListClickConfig {
   ) => void;
   readonly?: boolean;
   disabled?: boolean;
+  mode?: SelectMode;
 }
 
 interface TreeListKeydownConfig {
@@ -44,6 +46,7 @@ interface TreeListKeydownConfig {
   readonly?: boolean;
   disabled?: boolean;
   maxHeightItems?: number;
+  mode?: SelectMode;
   insertNewItem?: (where: InsertItemLocation, target: TreeListItem) => any;
   deleteItem?: (item: TreeListItem, context?: TreeListItemEditContext) => any;
   increaseIndent?: (item: TreeListItem, indexInView: number) => any;
@@ -86,6 +89,7 @@ export class TreeListControlsService {
       itemClick,
       readonly,
       disabled,
+      mode,
     } = config;
 
     const target = event.target as HTMLElement;
@@ -109,7 +113,7 @@ export class TreeListControlsService {
     if (
       (target.matches('.btl-item-chevron,.betl-item-chevron') &&
         !item.allOptionsHidden) ||
-      (isDisabled && item.childrenCount)
+      ((isDisabled || mode !== SelectMode.tree) && item.childrenCount)
     ) {
       event.stopPropagation();
       toggleItemCollapsed(item, itemElement);
@@ -141,6 +145,7 @@ export class TreeListControlsService {
       readonly,
       disabled,
       maxHeightItems,
+      mode,
     } = config;
 
     if (!TREELIST_KEYCONTROL_KEYS.includes(event.key as Keys)) {
@@ -205,14 +210,11 @@ export class TreeListControlsService {
       itemElement.classList.contains('disabled');
 
     if (
-      (isKey(event.key, Keys.arrowright) &&
-        item.childrenCount &&
-        item.collapsed) ||
-      (isKey(event.key, Keys.arrowleft) &&
-        item.childrenCount &&
-        !item.collapsed) ||
-      (isDisabled &&
-        (isKey(event.key, Keys.space) || isKey(event.key, Keys.enter)))
+      item.childrenCount &&
+      ((isKey(event.key, Keys.arrowright) && item.collapsed) ||
+        (isKey(event.key, Keys.arrowleft) && !item.collapsed) ||
+        ((isDisabled || mode !== SelectMode.tree) &&
+          (isKey(event.key, Keys.space) || isKey(event.key, Keys.enter))))
     ) {
       return toggleItemCollapsed(item, itemElement);
     }

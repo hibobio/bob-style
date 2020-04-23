@@ -1,7 +1,7 @@
 import { select, number, text, boolean, object } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { BTL_KEYMAP_SERVER, BTL_VALUE_SEPARATOR_DEF } from './tree-list.const';
-import { SelectType } from '../list.enum';
+import { SelectType, SelectMode } from '../list.enum';
 import {
   HListMockSimple,
   HListMock,
@@ -21,6 +21,12 @@ export const TreeListStoriesCommonProps = (
 ) => ({
   serverKeyMap: BTL_KEYMAP_SERVER,
   type: select('type', Object.values(SelectType), SelectType.single, 'Props'),
+  mode: select(
+    'mode',
+    [SelectMode.tree, SelectMode.classic],
+    SelectMode.tree,
+    'Props'
+  ),
   ...(maxHeightItems && {
     maxHeightItems: number('maxHeightItems', maxHeightItems, {}, 'Props'),
   }),

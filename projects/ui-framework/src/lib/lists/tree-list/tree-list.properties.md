@@ -2,6 +2,7 @@
 Name | Type | Description | Default
 --- | --- | --- | ---
 [type] | SelectType | single or multi select | multi
+[mode] | SelectMode | select mode. only 'classic' (only leafs can be selected) and 'tree' (groups can also be selected) supported, 'radioGroups' and 'checkGroups' are not valid | tree
 [list] | TreeListOption[] | options list. <br>**Note:** if your list does not conform to TreeListOption interface, provide ```keyMap``` to convert it | &nbsp;
 [keyMap] | TreeListKeyMap | keymap to convert [list] to  TreeListOption interface (for tree list options coming from the server, use BTL<sub>-</sub>KEYMAP<sub>-</sub>SERVER const) | BTL<sub>-</sub>KEYMAP<sub>-</sub>DEF
 [value] | number / string / (number / string)[] | selected option's ID(s). | &nbsp;

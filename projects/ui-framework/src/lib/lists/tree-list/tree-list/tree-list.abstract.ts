@@ -26,7 +26,7 @@ import {
   isValuevy,
 } from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
-import { SelectType } from '../../list.enum';
+import { SelectType, SelectMode } from '../../list.enum';
 import { ListFooterActionsState } from '../../list.interface';
 import { itemID, TreeListItemMap, TreeListItem } from '../tree-list.interface';
 import { TreeListInputOutput } from '../tree-list-IO.abstract';
@@ -94,6 +94,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
         type: SelectType.multi,
         valueSeparatorChar: BTL_VALUE_SEPARATOR_DEF,
         maxHeightItems: 8,
+        mode: SelectMode.tree,
       },
       ['list', 'value', 'itemsMap'],
       true,
@@ -105,6 +106,13 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
         },
       }
     );
+
+    if (
+      this.mode === SelectMode.radioGroups ||
+      this.mode === SelectMode.checkGroups
+    ) {
+      this.mode = SelectMode.tree;
+    }
 
     if (hasChanges(changes, ['keyMap'], true)) {
       this.keyMap = { ...BTL_KEYMAP_DEF, ...this.keyMap };
@@ -201,6 +209,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
       itemClick: this.itemClick.bind(this),
       readonly: this.readonly,
       disabled: this.disabled,
+      mode: this.mode,
     });
   }
 
@@ -213,6 +222,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
       readonly: this.readonly,
       disabled: this.disabled,
       maxHeightItems: this.maxHeightItems,
+      mode: this.mode,
     });
   }
 
