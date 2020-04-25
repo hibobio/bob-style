@@ -10,9 +10,7 @@ import {
   emptyImgTestString,
 } from '../../services/utils/test-helpers';
 import { ChipComponent } from '../chip/chip.component';
-import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
-import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { cloneDeep } from 'lodash';
 
 describe('ChipListComponent', () => {
@@ -61,18 +59,15 @@ describe('ChipListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ChipListComponent],
       imports: [ChipModule, AvatarModule],
-      providers: [EventManagerPlugins[0]],
-      schemas: [NO_ERRORS_SCHEMA],
+      providers: [],
+      schemas: [],
     })
-      .overrideComponent(ChipListComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
-      })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(ChipListComponent);
         component = fixture.componentInstance;
         componentEl = fixture.debugElement.nativeElement;
-        component.config = {};
+
         component.chips = cloneDeep(chips);
         spyOn(component.clicked, 'emit');
         spyOn(component.removed, 'emit');
@@ -90,11 +85,11 @@ describe('ChipListComponent', () => {
     it('should display 3 regular chips with default config', () => {
       expect(chipsElements.length).toEqual(3);
       expect(
-        chipsComponents.filter(comp => comp.type === ChipType.tag).length
+        chipsComponents.filter((comp) => comp.type === ChipType.tag).length
       ).toEqual(3);
       expect(listElement.dataset.align).toEqual(ChipListAlign.left);
       expect(
-        chipsElements.filter(elem => elem.getAttribute('tabindex') === '-1')
+        chipsElements.filter((elem) => elem.getAttribute('tabindex') === '-1')
           .length
       ).toEqual(3);
     });
@@ -102,32 +97,47 @@ describe('ChipListComponent', () => {
 
   describe('Config & Attributes', () => {
     it('should change Chip type', () => {
-      component.config = {
-        type: ChipType.info,
-      };
+      component.ngOnChanges(
+        simpleChange({
+          config: {
+            type: ChipType.info,
+          },
+        })
+      );
+
       fixture.detectChanges();
       expect(
-        chipsComponents.filter(comp => comp.type === ChipType.info).length
+        chipsComponents.filter((comp) => comp.type === ChipType.info).length
       ).toEqual(3);
     });
 
     it('should set disabled attribute', () => {
-      component.config = {
-        disabled: true,
-      };
+      component.ngOnChanges(
+        simpleChange({
+          config: {
+            disabled: true,
+          },
+        })
+      );
+
       fixture.detectChanges();
       expect(
-        chipsComponents.filter(comp => comp.disabled === true).length
+        chipsComponents.filter((comp) => comp.disabled === true).length
       ).toEqual(3);
     });
 
     it('should enable focusable', () => {
-      component.config = {
-        focusable: true,
-      };
+      component.ngOnChanges(
+        simpleChange({
+          config: {
+            focusable: true,
+          },
+        })
+      );
+
       fixture.detectChanges();
       expect(
-        chipsElements.filter(elem => elem.getAttribute('tabindex') === '0')
+        chipsElements.filter((elem) => elem.getAttribute('tabindex') === '0')
           .length
       ).toEqual(2);
     });
@@ -138,16 +148,21 @@ describe('ChipListComponent', () => {
       it('should chip list selectable single nothing if not passed active index.', () => {
         expect(
           chipsElements.filter(
-            elem => elem.getAttribute('data-selected') === 'true'
+            (elem) => elem.getAttribute('data-selected') === 'true'
           ).length
         ).toEqual(0);
       });
     });
     describe('chipListSelectable = single', () => {
       beforeEach(() => {
-        component.config = {
-          selectable: true,
-        };
+        component.ngOnChanges(
+          simpleChange({
+            config: {
+              selectable: true,
+            },
+          })
+        );
+
         component.chipListSelectable = ChipListSelectable.single;
         chipsElements[0].click();
         fixture.detectChanges();
@@ -157,18 +172,18 @@ describe('ChipListComponent', () => {
       it('should have only 1 selected chip', () => {
         expect(
           chipsElements.filter(
-            elem => elem.getAttribute('data-selected') === 'true'
+            (elem) => elem.getAttribute('data-selected') === 'true'
           ).length
         ).toEqual(1);
-        expect(component.chips.filter(i => i.selected).length).toEqual(1);
+        expect(component.chips.filter((i) => i.selected).length).toEqual(1);
       });
       it('should have second chip selected', () => {
         expect(
           chipsElements.findIndex(
-            elem => elem.getAttribute('data-selected') === 'true'
+            (elem) => elem.getAttribute('data-selected') === 'true'
           )
         ).toEqual(1);
-        expect(component.chips.findIndex(i => i.selected)).toEqual(1);
+        expect(component.chips.findIndex((i) => i.selected)).toEqual(1);
       });
       it('should select chip with activeIndex index', () => {
         component.ngOnChanges(
@@ -179,24 +194,28 @@ describe('ChipListComponent', () => {
         fixture.detectChanges();
         expect(
           chipsElements.findIndex(
-            elem => elem.getAttribute('data-selected') === 'true'
+            (elem) => elem.getAttribute('data-selected') === 'true'
           )
         ).toEqual(0);
-        expect(component.chips.findIndex(i => i.selected)).toEqual(0);
+        expect(component.chips.findIndex((i) => i.selected)).toEqual(0);
       });
     });
 
     it('should enable removable', () => {
-      component.config = {
-        removable: true,
-      };
+      component.ngOnChanges(
+        simpleChange({
+          config: {
+            removable: true,
+          },
+        })
+      );
       fixture.detectChanges();
       expect(
-        chipsComponents.filter(comp => comp.removable === true).length
+        chipsComponents.filter((comp) => comp.removable === true).length
       ).toEqual(3);
       expect(
         chipsElements.filter(
-          elem =>
+          (elem) =>
             elem.children.length > 0 &&
             elem.children[elem.children.length - 1].className ===
               'remove-button'
@@ -205,9 +224,14 @@ describe('ChipListComponent', () => {
     });
 
     it('should set align attribute', () => {
-      component.config = {
-        align: ChipListAlign.right,
-      };
+      component.ngOnChanges(
+        simpleChange({
+          config: {
+            align: ChipListAlign.right,
+          },
+        })
+      );
+
       fixture.detectChanges();
       expect(listElement.dataset.align).toEqual(ChipListAlign.right);
     });
@@ -222,17 +246,27 @@ describe('ChipListComponent', () => {
 
   describe('Removable chips', () => {
     it('should emit removed event when Chip remove button is clicked', () => {
-      component.config = {
-        removable: true,
-      };
+      component.ngOnChanges(
+        simpleChange({
+          config: {
+            removable: true,
+          },
+        })
+      );
+
       fixture.detectChanges();
       (chipsElements[0].querySelector('.remove-button') as HTMLElement).click();
       expect(component.removed.emit).toHaveBeenCalled();
     });
     it('should not have remove event if chip is disabled', () => {
-      component.config = {
-        removable: true,
-      };
+      component.ngOnChanges(
+        simpleChange({
+          config: {
+            removable: true,
+          },
+        })
+      );
+
       fixture.detectChanges();
       expect(chipsElements[1].querySelector('.remove-button')).toBeTruthy(); // remove button
       expect(chipsElements[2].querySelector('.remove-button')).toBeFalsy(0);
@@ -241,9 +275,14 @@ describe('ChipListComponent', () => {
 
   describe('Selectable chips', () => {
     it('should set Chip selected atrribute on click', () => {
-      component.config = {
-        selectable: true,
-      };
+      component.ngOnChanges(
+        simpleChange({
+          config: {
+            selectable: true,
+          },
+        })
+      );
+
       fixture.detectChanges();
       expect(chipsComponents[0].selected).toBeFalsy();
       chipsElements[0].click();
@@ -251,9 +290,14 @@ describe('ChipListComponent', () => {
       expect(chipsComponents[0].selected).toEqual(true);
     });
     it('should emit selected event when Chip is selected', () => {
-      component.config = {
-        selectable: true,
-      };
+      component.ngOnChanges(
+        simpleChange({
+          config: {
+            selectable: true,
+          },
+        })
+      );
+
       fixture.detectChanges();
       chipsElements[0].click();
       expect(component.selected.emit).toHaveBeenCalled();
@@ -270,21 +314,25 @@ describe('ChipListComponent', () => {
 
   describe('Avatar chips', () => {
     it('should display avatar Chips', () => {
-      component.config = {
-        type: ChipType.avatar,
-      };
-      fixture.detectChanges();
-      component.chips = cloneDeep(avatarChips);
+      component.ngOnChanges(
+        simpleChange({
+          config: {
+            type: ChipType.avatar,
+          },
+          chips: cloneDeep(avatarChips),
+        })
+      );
+
       fixture.detectChanges();
       chipsElements = elementsFromFixture(fixture, 'b-chip');
 
       expect(
-        chipsComponents.filter(comp => comp.type === ChipType.avatar).length
+        chipsComponents.filter((comp) => comp.type === ChipType.avatar).length
       ).toEqual(3);
 
       expect(
         chipsElements.filter(
-          elem => elem.children[0].tagName === 'b-avatar-image'.toUpperCase()
+          (elem) => elem.children[0].tagName === 'b-avatar-image'.toUpperCase()
         ).length
       ).toEqual(3);
 

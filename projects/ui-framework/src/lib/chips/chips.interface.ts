@@ -14,6 +14,7 @@ export interface Chip {
   selected?: boolean;
   icon?: Icons;
   class?: string | string[] | NgClass;
+  [key: string]: any;
 }
 
 export interface ChipListConfig {
