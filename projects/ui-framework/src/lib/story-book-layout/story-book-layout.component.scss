@@ -69,6 +69,9 @@ b-display-3 {
   }
 
   .doc-page {
+    justify-self: flex-start;
+    align-self: flex-start;
+    min-width: 0;
     text-align: left;
 
     b-heading {
@@ -154,8 +157,6 @@ b-display-3 {
 
     pre {
       font-size: 90%;
-      // display: inline-block;
-      vertical-align: middle;
 
       code {
         padding: 3px 6px;

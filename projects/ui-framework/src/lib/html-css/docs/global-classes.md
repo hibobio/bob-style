@@ -13,7 +13,7 @@
 
     <tr>
       <td style="white-space: nowrap;">preloading</td>
-      <td>while element has this class, its children (if any) will be hidden and a <u>mini-preloader</u> will be shown
+      <td>While element has this class, its children (if any) will be hidden (invisible, but dimentions are kept) and a <u>mini-preloader</u> will be shown
         instead
       </td>
       <td>
@@ -22,6 +22,19 @@
 &lt;/div&gt;</code></pre>
       </td>
     </tr>
+
+<tr>
+  <td style="white-space: nowrap;">preloading-collapsed</td>
+  <td>Same as .preloading, but will also collapse the contents (invisible and height 0).
+  </td>
+  <td>
+    <pre><code>&lt;div [ngClass]="{{ '{' }}
+        'preloading-collapsed': isLoading
+      {{ '}' }}"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+  </td>
+</tr>
 
   </tbody>
 
@@ -42,7 +55,7 @@
 
     <tr>
       <td style="white-space: nowrap;">b-mobile</td>
-      <td>element with this class will be hidden on devices wider than 768px</td>
+      <td>Element with this class will be hidden on devices wider than 768px</td>
       <td>
         <pre><code>&lt;b-button class="b-mobile"&gt;
   Call Me
@@ -52,7 +65,7 @@
 
     <tr>
       <td style="white-space: nowrap;">b-desktop</td>
-      <td>element with this class will be hidden on devices with screen width less than 768px</td>
+      <td>Element with this class will be hidden on devices with screen width less than 768px</td>
       <td>
         <pre><code>&lt;b-button class="b-desktop"&gt;
   Print Me
@@ -79,7 +92,7 @@
 
     <tr>
       <td style="white-space: nowrap;">b-body</td>
-      <td>equivalent of using <u>b-body</u> component</td>
+      <td>Equivalent of using <u>b-body</u> component</td>
       <td>
         <pre><code>&lt;p class="b-body"&gt;
   Some text
@@ -89,7 +102,7 @@
 
     <tr>
       <td style="white-space: nowrap;">b-big-body</td>
-      <td>equivalent of using <u>b-big-body</u> component</td>
+      <td>Equivalent of using <u>b-big-body</u> component</td>
       <td>
         <pre><code>&lt;p class="b-big-body"&gt;
   Bigger text
@@ -99,7 +112,7 @@
 
     <tr>
       <td style="white-space: nowrap;">b-bold-body</td>
-      <td>equivalent of using <u>b-bold-body</u> component</td>
+      <td>Equivalent of using <u>b-bold-body</u> component</td>
       <td>
         <pre><code>&lt;strong class="b-bold-body"&gt;
   Bold text
@@ -109,7 +122,7 @@
 
     <tr>
       <td style="white-space: nowrap;">b-caption</td>
-      <td>equivalent of using <u>b-caption</u> component</td>
+      <td>Equivalent of using <u>b-caption</u> component</td>
       <td>
         <pre><code>&lt;p class="b-big-body"&gt;
   Smaller text
@@ -119,7 +132,7 @@
 
     <tr>
       <td style="white-space: nowrap;">b-display-1</td>
-      <td>equivalent of using <u>b-display-1</u> component</td>
+      <td>Equivalent of using <u>b-display-1</u> component</td>
       <td>
         <pre><code>&lt;h1 class="b-display-1"&gt;
   Page title
@@ -129,7 +142,7 @@
 
     <tr>
       <td style="white-space: nowrap;">b-display-2</td>
-      <td>equivalent of using <u>b-display-2</u> component</td>
+      <td>Equivalent of using <u>b-display-2</u> component</td>
       <td>
         <pre><code>&lt;h2 class="b-display-2"&gt;
   Section title
@@ -139,7 +152,7 @@
 
     <tr>
       <td style="white-space: nowrap;">b-display-3</td>
-      <td>equivalent of using <u>b-display-3</u> component</td>
+      <td>Equivalent of using <u>b-display-3</u> component</td>
       <td>
         <pre><code>&lt;h3 class="b-display-3"&gt;
   Article title
@@ -149,7 +162,7 @@
 
     <tr>
       <td style="white-space: nowrap;">b-display-4</td>
-      <td>equivalent of using <u>b-display-4</u> component</td>
+      <td>Equivalent of using <u>b-display-4</u> component</td>
       <td>
         <pre><code>&lt;h4 class="b-display-4"&gt;
   Item title
@@ -159,7 +172,7 @@
 
     <tr>
       <td style="white-space: nowrap;">b-heading</td>
-      <td>equivalent of using <u>b-heading</u> component</td>
+      <td>Equivalent of using <u>b-heading</u> component</td>
       <td>
         <pre><code>&lt;h5 class="b-heading"&gt;
   Subtitle
