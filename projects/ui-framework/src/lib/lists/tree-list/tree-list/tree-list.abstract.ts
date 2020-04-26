@@ -310,8 +310,14 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
         !arrayDifference(this.value, this.valueDefault).length;
   }
 
-  public showCheckbox(): boolean {
-    return this.type === SelectType.multi && !this.readonly && !this.disabled;
+  public showCheckbox(item: TreeListItem): boolean {
+    return (
+      this.type === SelectType.multi &&
+      !this.readonly &&
+      !this.disabled &&
+      (this.mode !== SelectMode.classic ||
+        (this.mode === SelectMode.classic && !item.childrenCount))
+    );
   }
 
   public trackBy(index: number, id: itemID): itemID {
