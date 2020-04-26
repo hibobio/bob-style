@@ -66,9 +66,9 @@ export abstract class ChipListBaseElement {
     }
   }
 
-  protected onChipRemove(chip: Chip): void {}
+  public onChipRemove(chip: Chip): void {}
 
-  protected onChipClick(event: MouseEvent, chip: Chip, index: number): void {
+  public onChipClick(event: MouseEvent, chip: Chip, index: number): void {
     if (this.config.selectable) {
       this.selectChip(chip, index);
     }

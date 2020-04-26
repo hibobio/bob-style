@@ -94,13 +94,13 @@ export class ChipListComponent extends ChipListBaseElement
     }
   }
 
-  protected onChipRemove(chip: Chip): void {
+  public onChipRemove(chip: Chip): void {
     if (this.removed.observers) {
       this.removed.emit(chip);
     }
   }
 
-  protected onChipClick(event: MouseEvent, chip: Chip, index: number): void {
+  public onChipClick(event: MouseEvent, chip: Chip, index: number): void {
     super.onChipClick(event, chip, index);
 
     if (this.clicked.observers) {
