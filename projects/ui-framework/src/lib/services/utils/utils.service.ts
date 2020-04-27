@@ -80,7 +80,7 @@ export class UtilsService {
       !('IntersectionObserverEntry' in this.windowRef.nativeWindow) ||
       !(
         'intersectionRatio' in
-        this.windowRef.nativeWindow.IntersectionObserverEntry.prototype
+        (this.windowRef.nativeWindow as any).IntersectionObserverEntry.prototype
       )
     ) {
       return merge(this.winScroll$, this.winResize$).pipe(
@@ -95,7 +95,7 @@ export class UtilsService {
     }
 
     return new Observable((observer: Observer<IntersectionObserverEntry[]>) => {
-      const intersectionObserver = new IntersectionObserver(entries => {
+      const intersectionObserver = new IntersectionObserver((entries) => {
         observer.next(entries);
       });
       intersectionObserver.observe(element);
