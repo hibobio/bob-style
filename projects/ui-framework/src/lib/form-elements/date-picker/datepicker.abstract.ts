@@ -147,10 +147,13 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   protected doOnPickerOpen(picker: MatDatepicker<any>): void {}
 
   ngOnInit(): void {
-    this.resizeSubscription = fromEvent(this.windowRef.nativeWindow, 'resize')
+    this.resizeSubscription = fromEvent(
+      this.windowRef.nativeWindow as Window,
+      'resize'
+    )
       .pipe(
         outsideZone(this.zone),
-        throttle(val => interval(1000))
+        throttle((val) => interval(1000))
       )
       .subscribe(() => {
         const matchMobile = this.mobileService.getMediaData().matchMobile;
@@ -161,7 +164,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
         }
 
         if (!this.isMobile) {
-          this.allPickers(picker => this.closePicker(picker));
+          this.allPickers((picker) => this.closePicker(picker));
         }
       });
 
@@ -190,7 +193,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   // extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
-    this.allPickers(picker => this.closePicker(picker));
+    this.allPickers((picker) => this.closePicker(picker));
 
     if (hasChanges(changes, ['minDate'])) {
       this.minDate = dateOrFail(changes.minDate.currentValue);
