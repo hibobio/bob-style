@@ -13,11 +13,9 @@ import { ChipListSelectable, ChipListAlign, ChipType } from '../chips.enum';
 import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 
-@Directive({
-  selector: '[bChipListBaseElement]',
-})
+@Directive()
 // tslint:disable-next-line: directive-class-suffix
-export class ChipListBaseElement {
+export abstract class ChipListBaseElement {
   constructor(protected zone: NgZone, protected cd: ChangeDetectorRef) {}
 
   @ViewChildren('list') public list: QueryList<ChipComponent>;

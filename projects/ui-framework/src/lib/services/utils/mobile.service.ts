@@ -121,7 +121,7 @@ export class MobileService {
     if (
       this.matchMedia('(any-pointer: coarse)') ||
       'ontouchstart' in this.windowRef.nativeWindow ||
-      (this.windowRef.nativeWindow['DocumentTouch'] &&
+      (this.windowRef.nativeWindow.DocumentTouch &&
         document instanceof DocumentTouch)
     ) {
       return true;
