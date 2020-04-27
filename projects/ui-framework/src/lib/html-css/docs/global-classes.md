@@ -12,116 +12,134 @@
   <tbody>
 
     <tr>
-      <td style="white-space: nowrap;">mrg-8, mrg-16, mrg-24, mrg-32, mrg-40</td>
+      <td>mrg-8, mrg-16, mrg-24, mrg-32, mrg-40</td>
       <td>Add <u>margin</u> on all sides:<br> 8px, 16px, 24px, 32px, 40px
       </td>
       <td>
-        <pre><code>&lt;div class="box mrg-16"&gt;
+        <pre><code>&lt;div class="mrg-16"&gt;
   Something
 &lt;/div&gt;</code></pre>
       </td>
     </tr>
 
     <tr>
-      <td style="white-space: nowrap;">mrg-l-8, mrg-l-16, mrg-l-24, mrg-l-32, mrg-l-40<br>
+      <td>mrg-l-8, mrg-l-16, mrg-l-24, mrg-l-32, mrg-l-40
+        <hr>
         mrg-r-8, mrg-r-16, mrg-r-24, mrg-r-32, mrg-r-40
       </td>
       <td>Add <u>margin</u> left or right:<br> 8px, 16px, 24px, 32px, 40px
       </td>
       <td>
-        <pre><code>&lt;div class="box mrg-l-8 mrg-r-8"&gt;
+        <pre><code>&lt;div class="mrg-l-8 mrg-r-8"&gt;
   Something
 &lt;/div&gt;</code></pre>
       </td>
     </tr>
 
     <tr>
-      <td style="white-space: nowrap;">mrg-t-8, mrg-t-16, mrg-t-24, mrg-t-32, mrg-t-40<br>
+      <td>mrg-t-8, mrg-t-16, mrg-t-24, mrg-t-32, mrg-t-40
+        <hr>
         mrg-b-8, mrg-b-16, mrg-b-24, mrg-b-32, mrg-b-40
       </td>
       <td>Add <u>margin</u> top or bottom:<br> 8px, 16px, 24px, 32px, 40px
       </td>
       <td>
-        <pre><code>&lt;div class="box mrg-t-8 mrg-b-16"&gt;
+        <pre><code>&lt;div class="mrg-t-8 mrg-b-16"&gt;
   Something
 &lt;/div&gt;</code></pre>
       </td>
     </tr>
 
     <tr>
-      <td style="white-space: nowrap;">pad-8, pad-16, pad-24, pad-32, pad-40</td>
+      <td>pad-8, pad-16, pad-24, pad-32, pad-40</td>
       <td>Add <u>padding</u> on all sides:<br> 8px, 16px, 24px, 32px, 40px
       </td>
       <td>
-        <pre><code>&lt;div class="box pad-16"&gt;
+        <pre><code>&lt;div class="pad-16"&gt;
   Something
 &lt;/div&gt;</code></pre>
       </td>
     </tr>
 
     <tr>
-      <td style="white-space: nowrap;">pad-l-8, pad-l-16, pad-l-24, pad-l-32, pad-l-40<br>
+      <td>pad-l-8, pad-l-16, pad-l-24, pad-l-32, pad-l-40
+        <hr>
         pad-r-8, pad-r-16, pad-r-24, pad-r-32, pad-r-40
       </td>
       <td>Add <u>padding</u> left or right:<br> 8px, 16px, 24px, 32px, 40px
       </td>
       <td>
-        <pre><code>&lt;div class="box pad-l-8 pad-r-8"&gt;
+        <pre><code>&lt;div class="pad-l-8 pad-r-8"&gt;
   Something
 &lt;/div&gt;</code></pre>
       </td>
     </tr>
 
     <tr>
-      <td style="white-space: nowrap;">pad-t-8, pad-t-16, pad-t-24, pad-t-32, pad-t-40<br>
+      <td>pad-t-8, pad-t-16, pad-t-24, pad-t-32, pad-t-40
+        <hr>
         pad-b-8, pad-b-16, pad-b-24, pad-b-32, pad-b-40
       </td>
       <td>Add <u>padding</u> top or bottom:<br> 8px, 16px, 24px, 32px, 40px
       </td>
       <td>
-        <pre><code>&lt;div class="box pad-t-8 pad-b-16"&gt;
+        <pre><code>&lt;div class="pad-t-8 pad-b-16"&gt;
   Something
 &lt;/div&gt;</code></pre>
       </td>
     </tr>
 
     <tr>
-      <td style="white-space: nowrap;">brd, brd-l, brd-r, brd-t, brd-b
+      <td>brd, brd-l, brd-r, brd-t, brd-b
       </td>
       <td>Adds border: on all sides, left, right, top, bottom
       </td>
       <td>
-        <pre><code>&lt;div class="box brd-r"&gt;
+        <pre><code>&lt;div class="brd-r"&gt;
   Something
 &lt;/div&gt;</code></pre>
       </td>
     </tr>
 
     <tr>
-      <td style="white-space: nowrap;">brd-alt, brd-alt-l, brd-alt-r, brd-alt-t, brd-alt-b
+      <td>brd-alt, brd-alt-l, brd-alt-r, brd-alt-t, brd-alt-b
       </td>
       <td>Adds lighter-color border: on all sides, left, right, top, bottom
       </td>
       <td>
-        <pre><code>&lt;div class="box brd-alt-r"&gt;
+        <pre><code>&lt;div class="brd-alt-r"&gt;
   Something
 &lt;/div&gt;</code></pre>
       </td>
     </tr>
 
     <tr>
-      <td style="white-space: nowrap;">rounded
+      <td>rounded
       </td>
       <td>Add border-radius of 4px
       </td>
       <td>
-        <pre><code>&lt;div class="box brd-b rounded"&gt;
+        <pre><code>&lt;div class="brd-b rounded"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
+      <td>shadow
+      </td>
+      <td>Add box-shadow
+        <pre><code>0 2px 5px rgba(83,83,83, 0.2)</code></pre>
+      </td>
+      <td>
+        <pre><code>&lt;div class="shadow"&gt;
   Something
 &lt;/div&gt;</code></pre>
       </td>
     </tr>
 
   </tbody>
+
 
 </table>
 

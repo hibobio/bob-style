@@ -1,0 +1,55 @@
+$acss-sizes: 8 16 24 32 40;
+$acss-dirs: top right bottom left;
+
+// Margin & Padding
+
+@each $size in $acss-sizes {
+  .mrg-#{$size} {
+    margin: $size * 1px;
+  }
+  .pad-#{$size} {
+    margin: $size * 1px;
+  }
+}
+
+@each $dir in $acss-dirs {
+  $dir-short: str-slice($dir, 0, 1);
+
+  @each $size in $acss-sizes {
+    .mrg-#{$dir-short}-#{$size} {
+      margin-#{$dir}: $size * 1px;
+    }
+    .pad-#{$dir-short}-#{$size} {
+      margin-#{$dir}: $size * 1px;
+    }
+  }
+}
+
+// Border
+
+.brd {
+  border: 1px solid $border-color;
+}
+.brd-alt {
+  border: 1px solid $border-color;
+}
+@each $dir in $acss-dirs {
+  $dir-short: str-slice($dir, 0, 1);
+
+  .brd-#{$dir-short} {
+    border-#{$dir}: 1px solid $border-color;
+  }
+  .brd-alt-#{$dir-short} {
+    border-#{$dir}: 1px solid $border-color-light;
+  }
+}
+
+// Misc
+
+.rounded {
+  border-radius: $border-radius;
+}
+
+.shadow {
+  box-shadow: 0 2px 5px $boxShadowColor;
+}
