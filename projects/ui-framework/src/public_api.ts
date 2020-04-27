@@ -163,9 +163,7 @@ export {
 } from './lib/chips/chip/chip.component';
 // Chip List
 export { ChipListModule } from './lib/chips/chip-list/chip-list.module';
-export { EmojiChipListModule } from './lib/chips/emoji-chip-list/emoji-chip-list.module';
-export { EmojiChipListComponent } from './lib/chips/emoji-chip-list/emoji-chip-list.component';
-export { EmojiFromCodePipe } from './lib/chips/emoji-chip-list/emoji-from-code.pipe';
+export { ChipListBaseElement } from './lib/chips/chip-list/chip-list.abstract';
 export { ChipListComponent } from './lib/chips/chip-list/chip-list.component';
 // Chip Input
 export { ChipInputModule } from './lib/chips/chip-input/chip-input.module';
@@ -173,7 +171,10 @@ export { ChipInputComponent } from './lib/chips/chip-input/chip-input.component'
 // Multi List and Chips
 export { MultiListAndChipsModule } from './lib/chips/multi-list-and-chips/multi-list-and-chips.module';
 export { MultiListAndChipsComponent } from './lib/chips/multi-list-and-chips/multi-list-and-chips.component';
-
+// Emoji chips
+export { EmojiChipListModule } from './lib/chips/emoji-chip-list/emoji-chip-list.module';
+export { EmojiChipListComponent } from './lib/chips/emoji-chip-list/emoji-chip-list.component';
+export { EmojiFromCodePipe } from './lib/chips/emoji-chip-list/emoji-from-code.pipe';
 
 /*
  * Lists & Selects
