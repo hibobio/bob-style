@@ -531,7 +531,7 @@ export { UtilsModule } from './lib/services/utils/utils.module';
 export { SpyDirective } from './lib/services/utils/spy.directive';
 export { UtilsService } from './lib/services/utils/utils.service';
 export { ScrollEvent } from './lib/services/utils/utils.interface';
-export { WindowRef } from './lib/services/utils/window-ref.service';
+export * from './lib/services/utils/window-ref.service';
 export { DocumentRef } from './lib/services/utils/document-ref.service';
 export { MobileService, WidthMode, MediaEvent, MobileOS } from './lib/services/utils/mobile.service';
 export { simpleUID, isString, isArray, isRenderedComponent } from './lib/services/utils/functional-utils';
