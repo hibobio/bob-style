@@ -64,7 +64,7 @@ const checkAttrubutes = (
 ): boolean => {
   expected = Object.assign({}, defautlAttrs, expected);
 
-  const trim = smth => (smth ? smth.trim().replace(/\\/g, '') : smth);
+  const trim = (smth) => (smth ? smth.trim().replace(/\\/g, '') : smth);
 
   const reality = {
     role: trim(elem.getAttribute('role')) || null,
@@ -305,7 +305,7 @@ describe('AvatarImageComponent', () => {
       const expected = {
         ...defaultAttrsWithImg,
         iconAfter: 'watch',
-        iconAfterColor: 'primary',
+        iconAfterColor: 'normal',
       };
 
       expect(checkAttrubutes(componentElem, expected)).toBe(
