@@ -709,4 +709,17 @@
     text-transform: capitalize;
   }
 
+  .sidebar-container [title="HTML-CSS"]+div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-container [title="HTML-CSS"]+div>[title="Guidelines"] {
+    order: 1;
+  }
+
+  .sidebar-container [title="HTML-CSS"]+div>a:not([title="Guidelines"]) {
+    order: 2;
+  }
+
 </style>

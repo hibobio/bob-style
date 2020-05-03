@@ -1,3 +1,5 @@
+<!-- // code: language=html -->
+
 <table class="doc-table">
   <thead>
     <tr>

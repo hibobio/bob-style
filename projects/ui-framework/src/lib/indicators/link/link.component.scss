@@ -1,13 +1,5 @@
+@import '../../style/common-imports';
+
 a {
-  text-decoration: none;
-  color: inherit;
-  font-weight: 600;
-
-  &.primary {
-    color: var(--primary-700);
-  }
-
-  &:hover {
-    text-decoration: underline;
-  }
+  @include b-link;
 }

@@ -1,0 +1,13 @@
+@mixin b-link {
+  text-decoration: none;
+  color: inherit;
+  font-weight: 600;
+
+  &.primary {
+    color: var(--primary-700);
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

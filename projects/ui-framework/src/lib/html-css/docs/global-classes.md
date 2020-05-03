@@ -1,3 +1,5 @@
+<!-- // code: language=html -->
+
 <b-heading>Utility</b-heading>
 
 <table class="doc-table">
@@ -92,7 +94,7 @@
     <tr>
       <td>brd, brd-l, brd-r, brd-t, brd-b
       </td>
-      <td>Adds border: on all sides, left, right, top, bottom
+      <td>Add <u>border</u>: on all sides, left, right, top, bottom
       </td>
       <td>
         <pre><code>&lt;div class="brd-r"&gt;
@@ -104,7 +106,7 @@
     <tr>
       <td>brd-alt, brd-alt-l, brd-alt-r, brd-alt-t, brd-alt-b
       </td>
-      <td>Adds lighter-color border: on all sides, left, right, top, bottom
+      <td>Add lighter-color <u>border</u>: on all sides, left, right, top, bottom
       </td>
       <td>
         <pre><code>&lt;div class="brd-alt-r"&gt;
@@ -222,6 +224,35 @@
   </tbody>
 
 </table>
+
+<b-heading>Components</b-heading>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>class</th>
+      <th>description</th>
+      <th>example</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr>
+      <td style="white-space: nowrap;">b-link</td>
+      <td>Adds link style (same as b-link component). Add 'primary' class to make it color primary.
+      </td>
+      <td>
+        <pre><code>&lt;a class="b-link primary" href="somewhere"&gt;
+  take me
+&lt;/a&gt;</code></pre>
+      </td>
+    </tr>
+
+  </tbody>
+
+</table>
+
 
 <b-heading>Typography</b-heading>
 

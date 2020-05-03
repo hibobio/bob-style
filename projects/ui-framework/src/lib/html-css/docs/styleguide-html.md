@@ -1,3 +1,5 @@
+<!-- // code: language=html -->
+
 <style>
   table,
   thead,
