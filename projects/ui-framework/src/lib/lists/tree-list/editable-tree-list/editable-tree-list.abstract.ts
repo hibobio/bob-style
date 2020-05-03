@@ -63,8 +63,7 @@ import { Subscription } from 'rxjs';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { outsideZone } from '../../../services/utils/rxjs.operators';
 import { filter, delay } from 'rxjs/operators';
-
-import cloneDeep from 'lodash/cloneDeep';
+import { cloneDeep } from 'lodash';
 import { DOMInputEvent } from '../../../types';
 import { TreeListModelUtils } from '../services/tree-list-model.static';
 import { SelectMode } from '../../list.enum';

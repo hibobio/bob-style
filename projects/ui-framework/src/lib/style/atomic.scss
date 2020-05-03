@@ -8,7 +8,7 @@ $acss-dirs: top right bottom left;
     margin: $size * 1px;
   }
   .pad-#{$size} {
-    margin: $size * 1px;
+    padding: $size * 1px;
   }
 }
 
@@ -20,7 +20,7 @@ $acss-dirs: top right bottom left;
       margin-#{$dir}: $size * 1px;
     }
     .pad-#{$dir-short}-#{$size} {
-      margin-#{$dir}: $size * 1px;
+      padding-#{$dir}: $size * 1px;
     }
   }
 }
