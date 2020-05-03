@@ -163,7 +163,7 @@ describe('AvatarComponent', () => {
       flush();
 
       expect(avatarElement.dataset.iconAfter).toContain('watch');
-      expect(avatarElement.dataset.iconAfterColor).toContain('primary');
+      expect(avatarElement.dataset.iconAfterColor).toContain('normal');
     }));
   });
 
