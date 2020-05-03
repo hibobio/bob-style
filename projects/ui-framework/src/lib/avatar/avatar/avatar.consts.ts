@@ -25,7 +25,7 @@ export const AvatarBadges: { [key in AvatarBadge]: BadgeConfig } = {
   },
   [AvatarBadge.pending]: {
     icon: Icons.timeline,
-    color: IconColor.primary,
+    color: IconColor.normal,
   },
   [AvatarBadge.rejected]: {
     icon: Icons.error,
