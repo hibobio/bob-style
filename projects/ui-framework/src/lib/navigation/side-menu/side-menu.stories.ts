@@ -93,7 +93,7 @@ const note = `
   [headerLabel] | string | header of menu
   [options] | SideMenuOption[] | array of options
   [selectedId] | number / string | selected menu item index
-  [tooltipType] | TruncateTooltipType | tooltip type for the Avatar title/subtitle (css, material or none; defaults to 'css')
+  [tooltipType] | TruncateTooltipType | tooltip type (for when the option name or Avatar title/subtitle does not fit - css, material or none; defaults to 'auto')
   (selectOption) | EventEmitter<wbr>&lt;number/string&gt; | emits on option select
   - | ng-content | add actions to the header of the menu
 
