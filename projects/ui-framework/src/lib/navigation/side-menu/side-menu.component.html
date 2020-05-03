@@ -28,7 +28,8 @@
     <p class="option-display-name"
        *ngIf="option.displayName && !option.avatar"
        [b-truncate-tooltip]="1"
-       [trustCssVars]="true">
+       [trustCssVars]="true"
+       [type]="tooltipType">
       {{option.displayName}}
     </p>
 
