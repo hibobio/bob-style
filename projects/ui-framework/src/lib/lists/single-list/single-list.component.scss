@@ -37,6 +37,12 @@ $list-item-height: $wrap-height;
       }
     }
   }
+
+  &.no-result:nth-last-child(2) ::ng-deep {
+    .bfe-wrap {
+      border: 0;
+    }
+  }
 }
 
 :host ::ng-deep {

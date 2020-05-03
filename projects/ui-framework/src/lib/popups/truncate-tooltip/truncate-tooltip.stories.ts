@@ -117,7 +117,7 @@ const note = `
   full text will be shown. \to disable truncation, set to 0 or null. | 1
   [type] | TruncateTooltipType | Use Material tooltip or CSS tooltip. Defaut 'auto' type will \
   use Material for text longer than 130 chars, otherwise CSS. \
-  Set to 'none' to disable tooltip. \n
+  Set to 'none' to disable tooltip. \
   **Note:** type can not be changed dynamically, it's can be set only once. | auto
   [position] | TruncateTooltipPosition | above or below | above
   [trustCssVars] | boolean | performance can be optimised, if --line-height and --font-size \
