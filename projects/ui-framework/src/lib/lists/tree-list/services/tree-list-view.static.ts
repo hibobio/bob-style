@@ -181,11 +181,11 @@ export class TreeListViewUtils {
       itemElement?.querySelectorAll('.betl-item-input')
     );
 
-    return isNumber(whichInput)
+    return (isNumber(whichInput)
       ? inputs[whichInput]
       : whichInput === 'last'
       ? inputs[inputs.length - 1]
-      : inputs[0];
+      : inputs[0]) as HTMLInputElement;
   }
 
   public static findAndFocusInput(
