@@ -11,7 +11,7 @@ describe('CardAddComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CardAddComponent],
-      imports: [TruncateTooltipModule]
+      imports: [TruncateTooltipModule],
     })
       .compileComponents()
       .then(() => {
@@ -24,7 +24,7 @@ describe('CardAddComponent', () => {
   describe('Type', () => {
     beforeEach(() => {
       component.card = {
-        title: 'test'
+        title: 'test',
       };
     });
     it('should be of type primary by default', () => {
@@ -45,7 +45,7 @@ describe('CardAddComponent', () => {
   describe('texts', () => {
     it('should set title text', () => {
       component.card = {
-        title: 'test'
+        title: 'test',
       };
       fixture.detectChanges();
       const title = fixture.debugElement.query(By.css('.card-title'));
@@ -54,7 +54,7 @@ describe('CardAddComponent', () => {
     it('should set subtitle text', () => {
       component.card = {
         title: 'test',
-        subtitle: 'subtitle test'
+        subtitle: 'subtitle test',
       };
       fixture.detectChanges();
       const subtitle = fixture.debugElement.query(By.css('.card-title'));
@@ -64,12 +64,14 @@ describe('CardAddComponent', () => {
 
   describe('onClick', () => {
     it('should emit Clicked event', () => {
+      component.clicked.subscribe(() => {});
       spyOn(component.clicked, 'emit');
       component.card = {
-        title: 'test'
+        title: 'test',
       };
-      component.onClick('hello' as any);
-      expect(component.clicked.emit).toHaveBeenCalledWith('hello');
+      component.cardElRef.nativeElement.click();
+      expect(component.clicked.emit).toHaveBeenCalled();
+      component.clicked.complete();
     });
   });
 });
