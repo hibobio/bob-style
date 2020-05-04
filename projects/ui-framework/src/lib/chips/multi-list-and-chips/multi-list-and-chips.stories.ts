@@ -35,6 +35,7 @@ const template = `
         [listLabel]="listLabel"
         [chipsLabel]="chipsLabel"
         [showSingleGroupHeader]="showSingleGroupHeader"
+        [startWithGroupsCollapsed]="startWithGroupsCollapsed"
         [emptyState]="emptyStateConfig"
         (selectChange)="onSelectChange($event)">
   </b-multi-list-and-chips>
@@ -63,6 +64,7 @@ const note = `
   [listLabel] | string | label text for the Multi List component | &nbsp;
   [chipsLabel] | string | label text for the Chips List component | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | **false**
+  [startWithGroupsCollapsed] | boolean |  if true, will start with groups closed | true
   [emptyState] | EmptyStateConfig | config for the EmptyStateComponent to\
    be displayed when no options are selected | &nbsp;
   (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits on list change | &nbsp;
@@ -105,6 +107,11 @@ const toAdd = () => ({
     listLabel: text('chipsLabel', 'Select fields', 'Props'),
     chipsLabel: text('listLabel', 'Selected fields', 'Props'),
     showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
+    startWithGroupsCollapsed: boolean(
+      'startWithGroupsCollapsed',
+      true,
+      'Props'
+    ),
     listOpts: object('listOpts', listOpts, 'Data'),
     avatarListOpts: object('avatarListOpts', avatarListOpts, 'Data'),
     emptyStateConfig: object(

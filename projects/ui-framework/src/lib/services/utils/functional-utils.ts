@@ -10,12 +10,12 @@ import { isEqual } from 'lodash';
 export const isNullOrUndefined = (val: any): boolean =>
   val === undefined || val === null;
 
-export const isString = (val: any): boolean => typeof val === 'string';
+export const isString = (val: any): val is string => typeof val === 'string';
 
-export const isNumber = (val: any): boolean =>
+export const isNumber = (val: any): val is number =>
   typeof val === 'number' && val === val;
 
-export const isBoolean = (val: any): boolean => typeof val === 'boolean';
+export const isBoolean = (val: any): val is boolean => typeof val === 'boolean';
 
 export const isFunction = (val: any): val is Function =>
   !!val && typeof val === 'function';
@@ -391,11 +391,15 @@ export const monthShortNames = [
   'Dec',
 ];
 
-export const isDateISO8601 = (date: string): boolean =>
-  isString(date) &&
-  date.split('-').length === 3 &&
-  date.split('-')[0].length === 4 &&
-  parseInt(date.split('-')[1], 10) < 13;
+export const isDateISO8601 = (date: string): boolean => {
+  const parts = date.split('-');
+  return (
+    isString(date) &&
+    parts.length === 3 &&
+    parts[0].length === 4 &&
+    parseInt(parts[1], 10) < 13
+  );
+};
 
 export const isDateFormat = (frmt: string): boolean => {
   if (!isString(frmt)) {

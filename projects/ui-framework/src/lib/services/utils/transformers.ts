@@ -14,7 +14,6 @@ import {
   parseToNumber,
   stringify,
   isEmptyArray,
-  pass,
 } from './functional-utils';
 
 import { format, parseISO } from 'date-fns';
@@ -28,7 +27,7 @@ import { itemID } from '../../lists/tree-list/tree-list.interface';
 // Transformers
 // -------------------------------
 
-export const truthyOrFalse = value => {
+export const truthyOrFalse = (value) => {
   const truthy = ['true', '1', 1, 'on', 'yes'];
   if (typeof value !== 'boolean') {
     value = truthy.includes(value) ? true : false;
@@ -46,7 +45,7 @@ export const stringListToArray = (
   if (!isString(list)) {
     return [list];
   }
-  return Array.from(new Set(list.split(test).map(i => i.trim()))).filter(
+  return Array.from(new Set(list.split(test).map((i) => i.trim()))).filter(
     Boolean
   );
 };
@@ -62,7 +61,7 @@ export const valueToObjectWithKeyOfValueFromArray = (
   if (isNullOrUndefined(value) || isNullOrUndefined(array)) {
     return undefined;
   }
-  return array.find(i => compareAsStrings(i[key], value));
+  return array.find((i) => compareAsStrings(i[key], value));
 };
 
 export const stringToDate = (date: string | Date): Date => {
@@ -159,7 +158,7 @@ export const arrayOrFail = <T = any>(value: any): T[] => {
   return value;
 };
 
-export const objectOrFail = value => {
+export const objectOrFail = (value) => {
   if (isNullOrUndefined(value)) {
     return value;
   }
@@ -173,7 +172,7 @@ export const objectOrFail = value => {
   return value;
 };
 
-export const stringyOrFail = value => {
+export const stringyOrFail = (value) => {
   if (isNullOrUndefined(value)) {
     return value;
   }
@@ -190,7 +189,7 @@ export const stringyOrFail = value => {
   return value + '';
 };
 
-export const dateOrFail = value => {
+export const dateOrFail = (value) => {
   if (isDate(value) || isNullOrUndefined(value)) {
     return value;
   }
@@ -205,7 +204,7 @@ export const dateOrFail = value => {
   return stringToDate(value);
 };
 
-export const dateFormatOrFail = value => {
+export const dateFormatOrFail = (value) => {
   if (isNullOrUndefined(value)) {
     return value;
   }
@@ -220,7 +219,7 @@ export const dateFormatOrFail = value => {
   return value;
 };
 
-export const timeyOrFail = value => {
+export const timeyOrFail = (value) => {
   if (isNullOrUndefined(value)) {
     return value;
   }
@@ -233,7 +232,7 @@ export const timeyOrFail = value => {
   return value;
 };
 
-export const selectValueOrFail = value => {
+export const selectValueOrFail = (value) => {
   if (isNullOrUndefined(value)) {
     return value;
   }
@@ -254,7 +253,7 @@ export const selectValueOrFail = value => {
 // Validators
 // -------------------------------
 
-export const defaultValue = def => value =>
+export const defaultValue = (def) => (value) =>
   isNullOrUndefined(value) ? def : value;
 
 export const objectHasKeyOrFail = (
@@ -296,11 +295,11 @@ export const valueInArrayOrFail = (
     return undefined;
   }
   if (
-    (key && !array.find(i => i[key] === value[key])) ||
+    (key && !array.find((i) => i[key] === value[key])) ||
     (!key && !array.includes(value))
   ) {
     value = stringify(value);
-    array = array.map(i => stringify(i));
+    array = array.map((i) => stringify(i));
     throw new Error(
       `Value (${stringify(value)}) is not part of array (${stringify(array)}).`
     );

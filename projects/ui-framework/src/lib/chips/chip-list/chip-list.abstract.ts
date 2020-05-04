@@ -46,7 +46,7 @@ export abstract class ChipListBaseElement {
       const index = parseInt(target.dataset.index, 10);
       const chip = this.chips[index];
 
-      if (!chip.disabled && chip.removable !== false) {
+      if (chip && !chip.disabled && chip.removable !== false) {
         $event.stopPropagation();
         this.onChipClick($event, chip, index);
       }
@@ -60,7 +60,7 @@ export abstract class ChipListBaseElement {
       const index = parseInt(target.dataset.index, 10);
       const chip = this.chips[index];
 
-      if (!chip.disabled && chip.removable !== false) {
+      if (chip && !chip.disabled && chip.removable !== false) {
         this.onChipKeydown($event, chip, index);
       }
     }
