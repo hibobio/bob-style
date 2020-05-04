@@ -121,11 +121,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select(
-          'type',
-          Object.values({ ...CardType, default: null }),
-          null
-        ),
+        type: select('type', Object.values(CardType), CardType.regular),
         alignCenter: boolean('alignCenter', false),
         mobileSwiper: boolean('mobileSwiper', true),
         maxCards: number('maxCards', 6),

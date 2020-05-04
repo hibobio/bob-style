@@ -4,25 +4,46 @@
 @include card-common($doHover: false);
 
 :host {
-  background-color: $grey-200;
+  background-color: transparent;
   border-style: dashed;
+  border-width: 2px;
   user-select: none;
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 
-  &:after {
+  &:before {
     @include pseudo;
-    @include size(20px);
-    @include cross($grey-600, 20px, 2px);
-    margin-top: auto;
+    @include size(21px);
+    @include cross($grey-600, 21px, 3px);
   }
 
   &:hover,
   &:focus {
-    background-color: $grey-300;
+    background-color: white;
   }
 }
 
+.card-title,
 .card-subtitle {
-  color: $grey-700;
+  color: $grey-600;
+}
+
+:host {
+  &[data-type='regular'],
+  &[data-type='large'] {
+    .card-title {
+      font-size: $font-size-display-3;
+      --font-size: #{$font-size-display-3};
+    }
+  }
+}
+
+.card-title {
+  margin-top: base8(20);
+}
+
+.card-subtitle {
   margin-top: times8(1);
 }

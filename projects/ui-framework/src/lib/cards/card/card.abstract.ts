@@ -9,6 +9,7 @@ import {
 import { Card } from './card.interface';
 import { CardType } from '../cards.enum';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { isFunction } from '../../services/utils/functional-utils';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -33,6 +34,10 @@ export abstract class BaseCardElement {
   }
 
   public isClickableCard() {
-    return this.isClickable || this.clicked.observers.length > 0;
+    return (
+      this.isClickable ||
+      this.clicked.observers.length > 0 ||
+      isFunction(this.card['action'])
+    );
   }
 }

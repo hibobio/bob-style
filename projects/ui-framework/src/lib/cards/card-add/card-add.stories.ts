@@ -7,20 +7,25 @@ import { CardsModule } from '../cards.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { CardType } from '../cards.enum';
+import { text } from '@storybook/addon-knobs';
 
 const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs
 );
 
 const template = `
-  <b-card-add [card]="addCard"
+  <b-card-add [card]="{
+                title: title,
+                subtitle: subtitle,
+                action: onAction
+              }"
               [type]="type"
               (clicked)="onClick($event)">
   </b-card-add>
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Add new Card'">
+<b-story-book-layout [title]="'Add new Card'" style=" background: rgb(247,247,247);">
   <div style="max-width:260px;">
     ${template}
   </div>
@@ -53,12 +58,6 @@ const note = `
 
 `;
 
-const AddCardMockData = {
-  title: 'Add a new flow',
-  subtitle: 'Right now',
-  action: action('Add Card was clicked'),
-};
-
 story.add(
   'Add Card',
   () => {
@@ -68,12 +67,14 @@ story.add(
         type: select(
           'type',
           Object.values(CardType).filter(
-            t => t === CardType.regular || t === CardType.large
+            (t) => t === CardType.regular || t === CardType.large
           ),
           CardType.regular
         ),
-        addCard: object('addCard', AddCardMockData),
+        title: text('title', 'Add new'),
+        subtitle: text('subtitle', ''),
         onClick: action('Card clicked'),
+        onAction: action('Action called'),
       },
       moduleMetadata: {
         imports: [StoryBookLayoutModule, BrowserAnimationsModule, CardsModule],
