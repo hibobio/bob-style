@@ -6,6 +6,7 @@ import { IconsModule } from '../../icons/icons.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { InputMessageModule } from '../../form-elements/input-message/input-mess
     NgxSmoothDnDModule,
     ButtonsModule,
     InputMessageModule,
+    TranslateModule,
   ],
   declarations: [EditableListComponent],
   exports: [EditableListComponent],

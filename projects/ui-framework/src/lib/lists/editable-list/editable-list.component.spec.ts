@@ -19,6 +19,8 @@ import { simpleChange, inputValue } from '../../services/utils/test-helpers';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { ListSortType } from './editable-list.enum';
 import { cloneDeep } from 'lodash';
+import { MockPipe } from 'ng-mocks';
+import { TranslatePipe } from '@ngx-translate/core';
 
 describe('EditableListComponent', () => {
   let fixture: ComponentFixture<EditableListComponent>;
@@ -64,7 +66,7 @@ describe('EditableListComponent', () => {
     ];
 
     TestBed.configureTestingModule({
-      declarations: [EditableListComponent],
+      declarations: [EditableListComponent, MockPipe(TranslatePipe, (v) => v)],
       imports: [
         CommonModule,
         IconsModule,

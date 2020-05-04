@@ -15,6 +15,7 @@ import { action } from '@storybook/addon-actions';
 import { ListSortType } from './editable-list.enum';
 import { CommonModule } from '@angular/common';
 import { EditableListUtils } from './editable-list.static';
+import { StorybookTranslateModule } from '../../i18n/i18n.module';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -129,6 +130,7 @@ story.add(
       moduleMetadata: {
         imports: [
           CommonModule,
+          StorybookTranslateModule,
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           EditableListModule,
