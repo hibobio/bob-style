@@ -1,29 +1,42 @@
-import {Component} from '@angular/core';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {action} from '@storybook/addon-actions';
-import {boolean, number, object, select, withKnobs} from '@storybook/addon-knobs/angular';
-import {storiesOf} from '@storybook/angular';
-import {AgGridModule} from 'ag-grid-angular';
-import {AvatarModule, ComponentGroupType} from 'bob-style';
-import {values} from 'lodash';
-import {StoryBookLayoutModule} from '../../../src/lib/story-book-layout/story-book-layout.module';
-import {ActionsCellComponent} from './table-cell-components/actions-cell/actions-cell.component';
-import {AvatarCellComponent} from './table-cell-components/avatar-cell/avatar.component';
-import {mockColumnsDefs, mockRowData, treeColumnDefsMock, treeRowDataMock,} from './table-mocks/table-story.mock';
-import {TableModule} from './table.module';
-import {TreeConfig, TreeCellRendererComponent} from './table/extensions/tree.config';
-import {TableComponent} from './table/table.component';
-import {RowSelection, TableType} from './table/table.enum';
-import {ColumnDef} from './table/table.interface';
+import { Component } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { action } from '@storybook/addon-actions';
+import {
+  boolean,
+  number,
+  object,
+  select,
+  withKnobs,
+} from '@storybook/addon-knobs/angular';
+import { storiesOf } from '@storybook/angular';
+import { AgGridModule } from 'ag-grid-angular';
+import { AvatarModule, ComponentGroupType } from 'bob-style';
+import { values } from 'lodash';
+import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
+import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
+import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
+import {
+  mockColumnsDefs,
+  mockRowData,
+  treeColumnDefsMock,
+  treeRowDataMock,
+} from './table-mocks/table-story.mock';
+import { TableModule } from './table.module';
+import {
+  TreeConfig,
+  TreeCellRendererComponent,
+} from './table/extensions/tree.config';
+import { TableComponent } from './table/table.component';
+import { RowSelection, TableType } from './table/table.enum';
+import { ColumnDef } from './table/table.interface';
 
 @Component({
-  selector   : 'b-tree-cell-avatar',
-  template: '<b-avatar [imageSource]="props.imageSource"></b-avatar>'
+  selector: 'b-tree-cell-avatar',
+  template: '<b-avatar [imageSource]="props.imageSource"></b-avatar>',
 })
 export class TreeCellAvatarComponent implements TreeCellRendererComponent {
   props;
-  constructor() {
-  }
+  constructor() {}
   init(props) {
     this.props = props;
   }
@@ -50,25 +63,23 @@ const template = `
   (columnRemoved)="columnRemoved($event)">
 </b-table>
 `;
-const treeTemplate = `
-<b-table
-  [type]="type"
-  [treeConfig]="treeConfig"
-  [rowData]="rowData"
-  [columnDefs]="columnDefs"
-  [isCollapsable]="isCollapsable"
-  [maxHeight]="maxHeight"
-  [rowSelection]="rowSelection"
-  [removeColumnButtonEnabled]="removeColumnButtonEnabled"
-  [shouldAutoSizeColumns]="shouldAutoSizeColumns"
-  (rowClicked)="rowClicked($event)"
-  (cellClicked)="cellClicked($event)"
-  (selectionChanged)="selectionChanged($event)"
-  (sortChanged)="sortChanged($event)"
-  (columnsOrderChanged)="columnsOrderChanged($event)"
-  (columnRemoved)="columnRemoved($event)">
-</b-table>
-`;
+const treeTemplate = `<b-table
+    [type]="type"
+    [treeConfig]="treeConfig"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    [isCollapsable]="isCollapsable"
+    [maxHeight]="maxHeight"
+    [rowSelection]="rowSelection"
+    [removeColumnButtonEnabled]="removeColumnButtonEnabled"
+    [shouldAutoSizeColumns]="shouldAutoSizeColumns"
+    (rowClicked)="rowClicked($event)"
+    (cellClicked)="cellClicked($event)"
+    (selectionChanged)="selectionChanged($event)"
+    (sortChanged)="sortChanged($event)"
+    (columnsOrderChanged)="columnsOrderChanged($event)"
+    (columnRemoved)="columnRemoved($event)">
+  </b-table>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Data Table'">
@@ -101,6 +112,10 @@ const note = `
   \`\`\`
   import { TableModule, TableType, RowSelection, ColumnDef, RowClickedEvent, GridActions } from 'bob-style/bob-table';
   \`\`\`
+
+  ~~~
+  ${template}
+  ~~~
 
   #### Properties
   Name | Type | Description | default value
@@ -139,10 +154,6 @@ const note = `
   getDisplayedRowCount | (): number | get displayed rows number
   getRow | (rowIndex: string): RowNode | returns row by index
   deselectAll | (): void | deselects all
-
-  ~~~
-  ${template}
-  ~~~
 `;
 
 const treeNotes = `
@@ -213,7 +224,11 @@ function tableStoryFactory({
     props: { ...defaultProps, ...props },
     moduleMetadata: {
       declarations: [TreeCellAvatarComponent],
-      entryComponents: [AvatarCellComponent, ActionsCellComponent, TreeCellAvatarComponent],
+      entryComponents: [
+        AvatarCellComponent,
+        ActionsCellComponent,
+        TreeCellAvatarComponent,
+      ],
       imports: [
         BrowserAnimationsModule,
         StoryBookLayoutModule,
@@ -252,8 +267,8 @@ story.add(
             headerName: 'Hierarchy Tree',
           },
           cellComponent: TreeCellAvatarComponent,
-          dataGetter: data => data.data.orgHierarchy.data,
-          hierarchyGetter: data => data.orgHierarchy.hierarchy
+          dataGetter: (data) => data.data.orgHierarchy.data,
+          hierarchyGetter: (data) => data.orgHierarchy.hierarchy,
         } as TreeConfig,
       } as any,
     }),

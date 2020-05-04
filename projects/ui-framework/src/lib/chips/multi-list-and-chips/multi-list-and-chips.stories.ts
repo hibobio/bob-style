@@ -29,8 +29,7 @@ const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 const listOpts = MultiListAndChipsOptionsMock;
 const avatarListOpts = MultiListAndAvatarChipsOptionsMock;
 
-const template = `
-  <b-multi-list-and-chips
+const template = `<b-multi-list-and-chips
         [options]="options || listOpts"
         [listLabel]="listLabel"
         [chipsLabel]="chipsLabel"
@@ -38,24 +37,17 @@ const template = `
         [startWithGroupsCollapsed]="startWithGroupsCollapsed"
         [emptyState]="emptyStateConfig"
         (selectChange)="onSelectChange($event)">
-  </b-multi-list-and-chips>
-
-  <br><br>
-
-        <b-radio-button [radioConfig]="[
-          {id: 1, label: 'Hobbies'},
-          {id: 2, label: 'People'}
-        ]"
-        [value]="{id: 1}"
-        (radioChange)="options = $event === 1 ? listOpts : avatarListOpts">
-      </b-radio-button>
-`;
+  </b-multi-list-and-chips>`;
 
 const note = `
   ## Multi List And Chips
 
   #### Module
   *MultiListAndChipsModule*
+
+  ~~~
+  ${template}
+  ~~~
 
   #### Properties
   Name | Type | Description | Default value
@@ -68,10 +60,6 @@ const note = `
   [emptyState] | EmptyStateConfig | config for the EmptyStateComponent to\
    be displayed when no options are selected | &nbsp;
   (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits on list change | &nbsp;
-
-  ~~~
-  ${template}
-  ~~~
 
   #### Example of SelectGroupOption[]
 \`\`\`
@@ -97,6 +85,15 @@ const storyTemplate = `
 <b-story-book-layout [title]="'Multi List And Chips'" style=" background: rgb(247,247,247);">
   <div style="max-width:900px;">
     ${template}
+
+    <br><br>
+    <b-radio-button [radioConfig]="[
+        {id: 1, label: 'Hobbies'},
+        {id: 2, label: 'People'}
+      ]"
+      [value]="{id: 1}"
+      (radioChange)="options = $event === 1 ? listOpts : avatarListOpts">
+    </b-radio-button>
   </div>
 </b-story-book-layout>
 `;
