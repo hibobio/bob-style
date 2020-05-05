@@ -11,10 +11,10 @@ import { AvatarSize, AvatarBadge } from '../avatar/avatar.enum';
 
 const maxEEs = 50;
 const groupID = simpleUID();
-const badges = Object.values(AvatarBadge);
+const badges = ['approved', 'pending', 'rejected'];
 
 export const EMPLOYEE_SHOWCASE_MOCK: EmployeeShowcase[] = makeArray(maxEEs).map(
-  i => ({
+  (i) => ({
     id: simpleUID(),
     displayName: mockName(),
     imageSource: mockAvatar(),
