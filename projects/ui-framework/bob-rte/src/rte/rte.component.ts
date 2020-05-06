@@ -96,10 +96,11 @@ export class RichTextEditorComponent extends RTEbaseElement
         );
 
         // init emojis
-        this.editor.opts.emoticonsSet.forEach((set, index) => {
-          set.code = EMOJI_DATA[index].code;
-        });
+
         if (this.editor.opts.emoticonsSet[6]['id'] === 'symbols') {
+          this.editor.opts.emoticonsSet.forEach((set, index) => {
+            set.code = EMOJI_DATA[index].code;
+          });
           this.editor.opts.emoticonsSet.splice(6, 1);
         }
 
