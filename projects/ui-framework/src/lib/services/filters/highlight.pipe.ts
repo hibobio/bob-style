@@ -1,13 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Pipe({
   name: 'highlight',
 })
 export class HighlightPipe implements PipeTransform {
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor() {}
 
-  transform(value: string, args: string): string | SafeHtml {
+  transform(value: string, args: string): string {
     if (!args || !value) {
       return value || '';
     }
@@ -18,7 +17,6 @@ export class HighlightPipe implements PipeTransform {
       return value;
     }
 
-    const replacedValue = value.replace(re, str => `<strong>${str}</strong>`);
-    return this.sanitizer.bypassSecurityTrustHtml(replacedValue);
+    return value.replace(re, str => `<strong>${str}</strong>`);
   }
 }
