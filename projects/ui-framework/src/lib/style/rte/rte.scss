@@ -336,7 +336,7 @@ $rte-link-color: var(--primary-700);
   flex-direction: column;
   top: auto !important;
   bottom: 75%;
-  max-height: var(--max-height, 350px);
+  max-height: var(--popup-max-height, 350px);
 
   &.fr-active {
     display: flex;

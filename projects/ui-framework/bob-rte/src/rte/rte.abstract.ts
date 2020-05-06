@@ -214,7 +214,7 @@ export abstract class RTEbaseElement extends BaseFormElement
         }
       );
       this.DOM.setCssProps(this.host.nativeElement, {
-        '--max-height':
+        '--popup-max-height':
           Math.max(150, this.maxHeight || RTE_MAXHEIGHT_DEF) + 'px',
       });
     }
