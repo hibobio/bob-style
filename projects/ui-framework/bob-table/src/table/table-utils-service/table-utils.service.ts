@@ -78,6 +78,7 @@ export class TableUtilsService {
     return rowSelection
       ? assign({}, SELECTION_COLUMN_DEF, {
         headerCheckboxSelection: rowSelection === RowSelection.Multiple ? true : false,
+        headerCheckboxSelectionFilteredOnly: true,
         menuTabs: []
       })
       : null;
