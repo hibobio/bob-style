@@ -21,6 +21,7 @@ import {
   eventHasMetaKey,
   eventHasCntrlKey,
   DOMhelpers,
+  EMOJI_DATA,
 } from 'bob-style';
 
 import { RTEbaseElement } from './rte.abstract';
@@ -99,6 +100,14 @@ export class RichTextEditorComponent extends RTEbaseElement
           },
           true
         );
+
+        // init emojis
+        this.editor.opts.emoticonsSet.forEach((set, index) => {
+          set.code = EMOJI_DATA[index].code;
+        });
+        if (this.editor.opts.emoticonsSet[6]['id'] === 'symbols') {
+          this.editor.opts.emoticonsSet.splice(6, 1);
+        }
 
         // init mentions
         if (this.mentionsEnabled()) {

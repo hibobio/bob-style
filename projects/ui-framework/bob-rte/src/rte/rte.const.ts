@@ -1,5 +1,5 @@
 import { BlotType } from './rte.enum';
-import { joinArrays, EmojiCategory, Emoji, EMOJI_DATA } from 'bob-style';
+import { joinArrays } from 'bob-style';
 import { FroalaOptions } from './froala.interface';
 import { TributeOptions, TributeItem } from './tribute.interface';
 import { RteTranslation } from './rte.interface';
@@ -206,17 +206,6 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
 
   emoticonsUseImage: false,
   emoticonsButtons: [],
-
-  emoticonsSet: EMOJI_DATA.map((cat: EmojiCategory) => ({
-    name: cat.name,
-    id: cat.name,
-    code: cat.code || cat.data[0].code,
-    emoticons: cat.data.map((icn: Emoji) => ({
-      code: icn.code,
-      desc: icn.description,
-      icon: icn.icon,
-    })),
-  })) as any,
 };
 
 export const RTE_MENTIONS_OPTIONS_DEF: TributeOptions = {
@@ -225,7 +214,7 @@ export const RTE_MENTIONS_OPTIONS_DEF: TributeOptions = {
   requireLeadingSpace: false,
   allowSpaces: true,
 
-  menuItemTemplate: function(item: TributeItem) {
+  menuItemTemplate: function (item: TributeItem) {
     return item.original.avatar
       ? `<span class="brte-mention-avatar" aria-hidden="true" style="background-image:url(${item.original.avatar})"></span><span>${item.string}</span>`
       : item.string;

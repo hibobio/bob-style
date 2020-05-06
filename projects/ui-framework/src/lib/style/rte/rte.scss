@@ -502,7 +502,8 @@ $empticons-panel-max-width: 235px;
 
 .fr-popup .fr-tabs .fr-btn[data-cmd='setEmoticonCategory'] {
   padding: 0;
-  width: (100% / 8);
+  width: auto;
+  flex: 1;
 
   &.fr-active-tab:hover,
   &.fr-active-tab:focus {
