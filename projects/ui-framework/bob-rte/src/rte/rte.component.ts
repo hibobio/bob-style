@@ -63,7 +63,7 @@ export class RichTextEditorComponent extends RTEbaseElement
     super.ngOnInit();
 
     this.DOM.setCssProps(this.host.nativeElement, {
-      '--max-height': (this.maxHeight || RTE_MAXHEIGHT_DEF) + 'px',
+      '--max-height': Math.max(150, this.maxHeight || RTE_MAXHEIGHT_DEF) + 'px',
     });
 
     this.options.events = {
