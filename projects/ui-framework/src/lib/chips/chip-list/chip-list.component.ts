@@ -80,6 +80,14 @@ export class ChipListComponent extends ChipListBaseElement
           : ChipListSelectable.single;
     }
 
+    // this corrects the automatically set chipListSelectable to the input value
+    if (
+      hasChanges(changes, ['chipListSelectable'], true) &&
+      this.chipListSelectable !== changes.chipListSelectable.currentValue
+    ) {
+      this.chipListSelectable = changes.chipListSelectable.currentValue;
+    }
+
     if (
       changes.activeIndex &&
       isNumber(this.activeIndex) &&
