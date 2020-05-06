@@ -6,10 +6,16 @@ import { StatsModule } from '../services/util-components/stats.module';
 import { UtilsService } from '../services/utils/utils.service';
 import 'zone.js/dist/zone-patch-rxjs';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
+import { StorybookTranslateModule } from '../i18n/i18n.module';
 
 @NgModule({
   declarations: [StoryBookLayoutComponent],
-  imports: [CommonModule, TypographyModule, StatsModule],
+  imports: [
+    CommonModule,
+    StorybookTranslateModule,
+    TypographyModule,
+    StatsModule,
+  ],
   exports: [StoryBookLayoutComponent],
   providers: [
     UtilsService,

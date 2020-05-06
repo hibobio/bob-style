@@ -29,12 +29,12 @@
         <b-button class="bel-cancel-button"
                   [type]="buttonType.tertiary"
                   [size]="buttonSize.small"
-                  [text]="translation.cancel">
+                  [text]="'common.cancel' | translate">
         </b-button>
         <b-button class="bel-done-button"
                   [type]="buttonType.secondary"
                   [size]="buttonSize.small"
-                  [text]="translation.done"
+                  [text]="'common.done' | translate"
                   (clicked)="addItem(true)">
         </b-button>
       </div>
