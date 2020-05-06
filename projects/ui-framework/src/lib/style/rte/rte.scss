@@ -327,7 +327,16 @@ $link-color: var(--primary-700);
 // popups
 
 .fr-popup {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  flex-direction: column;
+  top: auto !important;
+  bottom: 75%;
+  max-height: var(--max-height, 350px);
+
+  &.fr-active {
+    display: flex;
+  }
 }
 
 .fr-toolbar.fr-inline,
@@ -469,6 +478,8 @@ $empticons-panel-max-width: 235px;
   width: $empticons-panel-max-width;
   overflow: hidden;
   min-width: 0;
+  height: $toolbar-height;
+  flex-shrink: 0;
 }
 
 .fr-tabs.fr-tabs-scroll {

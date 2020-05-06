@@ -34,7 +34,7 @@ $BPBtypeMap: (
     ),
     'small': (
       '.bpb-header': (
-        margin-bottom: 4px,
+        margin-bottom: 5px,
       ),
       '.bpb-bar': (
         height: times8(1),
@@ -50,7 +50,7 @@ $BPBtypeMap: (
   'secondary': (
     '*': (
       '.bpb-header': (
-        margin-bottom: 5px,
+        margin-bottom: 6px,
       ),
       '.bpb-bar': (
         height: times8(3),
@@ -168,5 +168,25 @@ p {
         }
       }
     }
+  }
+}
+
+:host[data-clickable='true']::ng-deep {
+  .bpb-bar-wrap {
+    cursor: pointer;
+    padding: 3px;
+    margin: -3px;
+    border-radius: times8(1) / 2;
+
+    @include progress-bar-hover;
+  }
+}
+
+:host[data-size='large'][data-clickable='true']::ng-deep,
+:host[data-type='secondary'][data-clickable='true']::ng-deep {
+  .bpb-bar-wrap {
+    padding: 5px;
+    margin: -5px;
+    border-radius: $border-radius;
   }
 }

@@ -18,6 +18,7 @@ import { ColorService } from '../../../services/color-service/color.service';
 
 import { Icons } from '../../../icons/icons.enum';
 import { ButtonsModule } from '../../../buttons/buttons.module';
+import { action } from '@storybook/addon-actions';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
@@ -35,8 +36,10 @@ const template = `
                   }"
                   [config]="{
                     disableAnimation: disableAnimation,
-                    hideValue: hideValue
-                  }">
+                    hideValue: hideValue,
+                    clickable: clickable
+                  }"
+                  (clicked)="onClick($event)">
   </b-progress-bar>
 `;
 
@@ -52,8 +55,10 @@ const examples = `
                 }"
                 [config]="{
                   disableAnimation: disableAnimation,
-                  hideValue: hideValue
-                }">
+                  hideValue: hideValue,
+                  clickable: clickable
+                }"
+                (clicked)="onClick($event)">
 </b-progress-bar>
 <br><br>
 <b-progress-bar [type]="'primary'"
@@ -67,8 +72,10 @@ const examples = `
                 }"
                 [config]="{
                   disableAnimation: disableAnimation,
-                  hideValue: hideValue
-                }">
+                  hideValue: hideValue,
+                  clickable: clickable
+                }"
+                (clicked)="onClick($event)">
 </b-progress-bar>
 `;
 
@@ -79,8 +86,10 @@ const examples2 = `
                   }"
                   [config]="{
                     disableAnimation: disableAnimation,
-                    hideValue: hideValue
-                  }">
+                    hideValue: hideValue,
+                    clickable: clickable
+                  }"
+                  (clicked)="onClick($event)">
       <span header-left>
         <strong style="margin-right: 16px;">Secondary</strong> 1 size, 1 color
       </span>
@@ -102,8 +111,10 @@ const examples2 = `
                 }"
                 [config]="{
                   disableAnimation: disableAnimation,
-                  hideValue: true
-                }">
+                  hideValue: true,
+                  clickable: clickable
+                }"
+                (clicked)="onClick($event)">
   </b-progress-bar>
   <span class="b-caption">
 
@@ -119,8 +130,10 @@ const template3 = `
                   }"
                   [config]="{
                     disableAnimation: disableAnimation,
-                    hideValue: hideValue
-                  }">
+                    hideValue: hideValue,
+                    clickable: clickable
+                  }"
+                  (clicked)="onClick($event)">
       <span header-left>
        Can also transclude passed ng-content
       </span>
@@ -168,7 +181,8 @@ const note = `
     \`\`\`iconHeaderRight: Icons\`\`\` - icon for the right part of header<br><br>\
     **Note:** You can set header texts to falsy values to hide them |  &nbsp;
   [config] | ProgressBarConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation <br>\
-  \`\`\`hideValue: boolean\`\`\` - hides value text |  &nbsp;
+  \`\`\`clickable: boolean\`\`\` - will add hover style to the bars\
+   (sets to true automatically if \`(clicked)\` listener exists) |  &nbsp;
   &lt;elem header-left&gt; | ng-content | content for the left part of header | &nbsp;
   &lt;elem header-right&gt; | ng-content | content for the right part of header | &nbsp;
 
@@ -286,6 +300,8 @@ hideValue = true`,
         iconHeaderRight: select('iconHeaderRight', icons, Icons.doc_icon),
         disableAnimation: boolean('disableAnimation', false),
         hideValue: boolean('hideValue', false),
+        clickable: boolean('clickable', false),
+        onClick: action('bar clicked'),
       },
       moduleMetadata: {
         imports: [StoryBookLayoutModule, ProgressBarModule, ButtonsModule],

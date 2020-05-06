@@ -56,7 +56,9 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   [data] | SimpleBarChartItem[] | array of items data
-  [config] | ProgressConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation
+  [config] | ProgressConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation<br>\
+  \`\`\`clickable: boolean\`\`\` - will add hover style to the bars\
+   (sets to true automatically if \`(clicked)\` listener exists)
   (clicked) | EventEmitter<wbr>&lt;SimpleBarChartItem&gt; | emits on bar click
 
   ~~~

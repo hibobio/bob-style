@@ -20,10 +20,12 @@ import {
   chainCall,
   eventHasMetaKey,
   eventHasCntrlKey,
+  DOMhelpers,
 } from 'bob-style';
 
 import { RTEbaseElement } from './rte.abstract';
 import { PlaceholdersConverterService } from './placeholders.service';
+import { RTE_MAXHEIGHT_DEF } from './rte.const';
 
 @Component({
   selector: 'b-rich-text-editor',
@@ -49,13 +51,20 @@ export class RichTextEditorComponent extends RTEbaseElement
     public cd: ChangeDetectorRef,
     public placeholdersConverter: PlaceholdersConverterService,
     public parserService: HtmlParserHelpers,
+    private DOM: DOMhelpers,
     private host: ElementRef
   ) {
     super(cd, placeholdersConverter, parserService);
+
+    this.options.scrollableContainer = '.bfe-wrap#' + this.id;
   }
 
   public ngOnInit(): void {
     super.ngOnInit();
+
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--max-height': (this.maxHeight || RTE_MAXHEIGHT_DEF) + 'px',
+    });
 
     this.options.events = {
       //

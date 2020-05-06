@@ -56,3 +56,13 @@
     transition-timing-function: ease-in-out;
   }
 }
+
+@mixin progress-bar-hover {
+  will-change: box-shadow, transform;
+
+  &:hover {
+    background-color: white;
+    box-shadow: 0 2px 4px 1px $boxShadowColor;
+    transform: translateY(-1px);
+  }
+}

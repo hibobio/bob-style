@@ -106,7 +106,7 @@ export const valueAsNumber = (
   ) {
     return value;
   }
-  const parsed = parseToNumber(value);
+  const parsed = parseToNumber(value, 3);
   if (parsed !== parsed && value !== '--') {
     console.warn(`Value (${stringify(value)}) is not parseable to number.`);
   }

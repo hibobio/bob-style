@@ -15,31 +15,31 @@ import { makeArray, randomNumber } from '../services/utils/functional-utils';
 const menuMock: MenuItem[] = [
   {
     label: 'Do this',
-    action: $event => console.log('Do this', $event),
+    action: ($event) => console.log('Do this', $event),
   },
   {
     label: 'Do that',
-    action: $event => console.log('Do that', $event),
+    action: ($event) => console.log('Do that', $event),
   },
   {
     label: 'Do something else',
-    action: $event => console.log('Do something else', $event),
+    action: ($event) => console.log('Do something else', $event),
   },
 ];
 
 const actionConfigMock = {
   icon: Icons.file_copy,
-  action: $event => console.log('copy file'),
+  action: ($event) => console.log('copy file'),
 };
 
 export const AddCardMockData: AddCard = {
-  title: 'Add a new flow',
-  subtitle: 'Right now',
+  title: 'Add new',
+  subtitle: null,
   action: () => console.log('Add Card was clicked'),
 };
 
 export const getCardsMockData = (number = 10) => {
-  return makeArray(number).map(i => {
+  return makeArray(number).map((i) => {
     const dice = randomNumber();
 
     return {
@@ -57,7 +57,7 @@ export const getCardsMockData = (number = 10) => {
 export const CardsMockData: Card[] = getCardsMockData(5);
 
 export const getEmployeeCardsMockData = (number = 10) => {
-  return makeArray(number).map(i => ({
+  return makeArray(number).map((i) => ({
     imageSource: mockAvatar(),
     title: mockName(),
     subtitle: mockJobs(1),

@@ -44,20 +44,19 @@ p {
 
 .bsbc-bar-value {
   font-weight: 600;
+  font-family: var(--display-font-family);
+  line-height: 1;
 }
 
-.clickable ::ng-deep .bsbc-bar-box {
-  cursor: pointer;
-  padding: 5px;
-  will-change: box-shadow, transform;
+:host[data-clickable='true']::ng-deep {
+  .bsbc-bar-box {
+    cursor: pointer;
+    padding: 5px;
 
-  &:hover {
-    background-color: white;
-    box-shadow: 0 2px 4px 1px $boxShadowColor;
-    transform: translateY(-1px);
-  }
+    @include progress-bar-hover;
 
-  .bsbc-bar {
-    pointer-events: none;
+    .bsbc-bar {
+      pointer-events: none;
+    }
   }
 }

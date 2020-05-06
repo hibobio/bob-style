@@ -8,6 +8,8 @@ import {
   Input,
   HostBinding,
   Directive,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import {
   applyChanges,
@@ -35,6 +37,9 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
 
   @Input() data: ProgressData = {} as ProgressData;
   @Input() config: ProgressConfig = {};
+  @Output() clicked: EventEmitter<ProgressData> = new EventEmitter<
+    ProgressData
+  >();
 
   readonly id: string;
   readonly progressType = ProgressType;
@@ -44,6 +49,14 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
     ProgressSize.medium;
   @HostBinding('attr.data-type') @Input() type: ProgressType =
     ProgressType.primary;
+  @HostBinding('attr.data-clickable') get isClickable(): boolean {
+    return (
+      Boolean(
+        this.config?.clickable ||
+          (this.config.clickable !== false && this.clicked.observers)
+      ) || null
+    );
+  }
 
   protected onNgChanges(changes: SimpleChanges): void {}
   protected setCssProps(): void {}
@@ -76,7 +89,7 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
         .getElementInViewEvent(this.host.nativeElement)
         .pipe(
           outsideZone(this.zone),
-          filter(i => Boolean(i)),
+          filter((i) => Boolean(i)),
           take(1)
         )
         .subscribe(() => {
@@ -85,6 +98,12 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
         });
     } else {
       this.setCssProps();
+    }
+  }
+
+  public onClick(): void {
+    if (this.clicked.observers.length > 0) {
+      this.clicked.emit(this.data);
     }
   }
 }

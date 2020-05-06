@@ -12,7 +12,7 @@ import {
   ChangeDetectionStrategy,
   EventEmitter,
   Output,
-  OnInit,
+  HostBinding,
 } from '@angular/core';
 import { SimpleBarChartItem } from './simple-bar-chart.interface';
 import {
@@ -28,6 +28,7 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 import { filter, take } from 'rxjs/operators';
 import { valueAsNumber } from '../../services/utils/transformers';
 import { ProgressConfig } from '../progress/progress.interface';
+import { ProgressSize } from '../progress/progress.enum';
 
 @Component({
   selector: 'b-simple-bar-chart',
@@ -35,8 +36,7 @@ import { ProgressConfig } from '../progress/progress.interface';
   styleUrls: ['./simple-bar-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SimpleBarChartComponent
-  implements OnChanges, OnInit, AfterViewInit {
+export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
   constructor(
     private host: ElementRef,
     private utilsService: UtilsService,
@@ -47,6 +47,15 @@ export class SimpleBarChartComponent
 
   @ViewChildren('bar') public bars: QueryList<ElementRef>;
 
+  @HostBinding('attr.data-size') @Input() size: ProgressSize =
+    ProgressSize.medium;
+  @HostBinding('attr.data-clickable') get isClickable(): boolean {
+    return Boolean(
+      this.config?.clickable ||
+        (this.config.clickable !== false && this.clicked.observers)
+    );
+  }
+
   @Input() data: SimpleBarChartItem[] = [];
   @Input() config: ProgressConfig = {};
 
@@ -56,7 +65,6 @@ export class SimpleBarChartComponent
 
   private wasInView = false;
   readonly id = simpleUID('bsbc-');
-  public isClickable = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
@@ -66,8 +74,6 @@ export class SimpleBarChartComponent
         ...item,
         value: numberMinMax(valueAsNumber(true, item.value, 0), 0, 100),
       }));
-
-      console.log(this.data);
     }
 
     if (notFirstChanges(changes)) {
@@ -80,12 +86,6 @@ export class SimpleBarChartComponent
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
-    }
-  }
-
-  ngOnInit(): void {
-    if (this.clicked.observers.length) {
-      this.isClickable = true;
     }
   }
 

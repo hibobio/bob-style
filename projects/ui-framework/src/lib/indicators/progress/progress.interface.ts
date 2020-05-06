@@ -11,6 +11,7 @@ export interface ProgressData {
 export interface ProgressConfig {
   disableAnimation?: boolean;
   hideValue?: boolean;
+  clickable?: boolean;
 }
 
 // tslint:disable-next-line: no-empty-interface
