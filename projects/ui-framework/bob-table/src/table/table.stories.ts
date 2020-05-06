@@ -228,7 +228,10 @@ function tableStoryFactory({
 
   return {
     template: HTMLTemplate,
-    props: { ...defaultProps, ...props },
+    props: {
+      ...defaultProps,
+      ...props
+    },
     moduleMetadata: {
       declarations: [TreeCellAvatarComponent],
       entryComponents: [
