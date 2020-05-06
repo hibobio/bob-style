@@ -10,7 +10,7 @@ import {
 } from '@storybook/addon-knobs/angular';
 import { storiesOf } from '@storybook/angular';
 import { AgGridModule } from 'ag-grid-angular';
-import { AvatarModule, ComponentGroupType } from 'bob-style';
+import { AvatarModule, ComponentGroupType, SearchModule } from 'bob-style';
 import { values } from 'lodash';
 import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
@@ -47,7 +47,7 @@ const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(
 );
 
 const template = `
-<b-table
+<b-table #table
   [type]="type"
   [rowData]="rowData"
   [columnDefs]="columnDefs"
@@ -57,7 +57,7 @@ const template = `
   [shouldAutoSizeColumns]="shouldAutoSizeColumns"
   (rowClicked)="rowClicked($event)"
   (cellClicked)="cellClicked($event)"
-  (selectionChanged)="selectionChanged($event)"
+  (selectionChanged)="selectionChanged($event); onSelectionChanged($event)"
   (sortChanged)="sortChanged($event)"
   (columnsOrderChanged)="columnsOrderChanged($event)"
   (columnRemoved)="columnRemoved($event)">
@@ -83,14 +83,16 @@ const treeTemplate = `<b-table
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Data Table'">
-  <div style="max-width: calc(100% - 60px);">
+  <div style="max-width: calc(100% - 60px); text-align: left">
+<b-search style="display: block; width: 250px; margin-bottom: 8px;" (searchChange)="onSearchChange($event, table)"></b-search>
+<div style="margin-bottom: 16px;">total selected: {{totalSelected}}</div>
     ${template}
   </div>
 
 </b-story-book-layout>
 `;
 
-const streeSoryTemplate = `
+const treeStoryTemplate = `
 <b-story-book-layout [title]="'Data Table'">
   <div style="max-width: calc(100% - 60px);">
     ${treeTemplate}
@@ -217,6 +219,11 @@ function tableStoryFactory({
     sortChanged: action('Sort changed'),
     columnsOrderChanged: action('Column order changed'),
     columnRemoved: action('Column remove button clicked'),
+    totalSelected: 0,
+    onSearchChange: (str, table) => table.gridOptions.api.setQuickFilter(str),
+    onSelectionChanged: function($event) {
+      this.totalSelected = $event.length;
+    }
   };
 
   return {
@@ -234,6 +241,7 @@ function tableStoryFactory({
         StoryBookLayoutModule,
         TableModule,
         AvatarModule,
+        SearchModule,
         AgGridModule.withComponents([AvatarCellComponent]),
       ],
     },
@@ -257,7 +265,7 @@ story.add(
   () =>
     tableStoryFactory({
       title: 'Tree Table',
-      HTMLTemplate: streeSoryTemplate,
+      HTMLTemplate: treeStoryTemplate,
       tableCols: treeColumnDefsMock,
       tableData: treeRowDataMock,
       props: {
