@@ -37,6 +37,7 @@ import {
   chainCall,
   cloneObject,
   PanelDefaultPosVer,
+  DOMhelpers,
 } from 'bob-style';
 
 import {
@@ -67,12 +68,15 @@ export abstract class RTEbaseElement extends BaseFormElement
   constructor(
     protected cd: ChangeDetectorRef,
     protected placeholdersConverter: PlaceholdersConverterService,
-    protected parserService: HtmlParserHelpers
+    protected parserService: HtmlParserHelpers,
+    protected DOM: DOMhelpers,
+    protected host: ElementRef
   ) {
     super(cd);
     this.baseValue = '';
     this.wrapEvent = false;
     this.showCharCounter = false;
+    this.options.scrollableContainer = '.bfe-wrap#' + this.id;
   }
 
   public tribute: TributeInstance;
@@ -209,6 +213,10 @@ export abstract class RTEbaseElement extends BaseFormElement
           this.editor.size.refresh();
         }
       );
+      this.DOM.setCssProps(this.host.nativeElement, {
+        '--max-height':
+          Math.max(150, this.maxHeight || RTE_MAXHEIGHT_DEF) + 'px',
+      });
     }
 
     if (hasChanges(changes, ['controls', 'disableControls'])) {

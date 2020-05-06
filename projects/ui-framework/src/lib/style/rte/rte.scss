@@ -1,16 +1,17 @@
 $rte-lineheight: 1.7;
 
-$toolbar-height: 40px;
-$icon-size: 17px;
+$rte-toolbar-height: 40px;
+$rte-icon-size: 17px;
 
-$icon-color: darken($grey-600, 5%);
-$icon-color-hover: darken($grey-700, 5%);
+$rte-icon-color: darken($grey-600, 5%);
+$rte-icon-color-hover: darken($grey-700, 5%);
 
-$placeholder-color: $icon-color;
+$rte-placeholder-color: $rte-icon-color;
 
-$label-to-placeholder: false;
+$rte-label-to-placeholder: false;
+$rte-hide-label: true;
 
-$link-color: var(--primary-700);
+$rte-link-color: var(--primary-700);
 
 .fr-toolbar,
 .fr-wrapper,
@@ -39,7 +40,7 @@ $link-color: var(--primary-700);
   }
 
   a {
-    color: $link-color;
+    color: $rte-link-color;
     text-decoration: underline;
 
     &:focus {
@@ -139,12 +140,12 @@ $link-color: var(--primary-700);
   a
   svg {
   transition: none;
-  fill: $icon-color;
-  @include size($icon-size);
+  fill: $rte-icon-color;
+  @include size($rte-icon-size);
   margin: 0;
 
   &:hover {
-    fill: $icon-color-hover;
+    fill: $rte-icon-color-hover;
   }
 }
 
@@ -174,19 +175,19 @@ $link-color: var(--primary-700);
   li
   a {
   font-size: $font-size-body;
-  color: $icon-color;
+  color: $rte-icon-color;
 
   &:hover,
   &:focus,
   &[aria-selected='true'] {
-    color: $icon-color-hover;
+    color: $rte-icon-color-hover;
     font-weight: $font-weight-bold-body;
   }
 }
 
 .fr-toolbar .fr-btn-grp {
   float: none;
-  height: $toolbar-height - 1px;
+  height: $rte-toolbar-height - 1px;
   display: flex;
   align-items: center;
   margin: 0;
@@ -205,10 +206,10 @@ $link-color: var(--primary-700);
   margin: 0;
   padding: 4px;
   transition: none;
-  width: $icon-size + 8px;
+  width: $rte-icon-size + 8px;
 
   &:before {
-    color: $icon-color !important;
+    color: $rte-icon-color !important;
   }
 
   &.fr-btn-active-popup {
@@ -227,11 +228,11 @@ $link-color: var(--primary-700);
     }
 
     &:before {
-      color: $icon-color-hover !important;
+      color: $rte-icon-color-hover !important;
     }
 
     & > svg {
-      fill: $icon-color-hover;
+      fill: $rte-icon-color-hover;
     }
   }
 }
@@ -252,7 +253,7 @@ $link-color: var(--primary-700);
   li
   a:focus
   svg {
-  fill: $icon-color-hover;
+  fill: $rte-icon-color-hover;
 }
 
 .fr-command.fr-btn
@@ -265,7 +266,7 @@ $link-color: var(--primary-700);
   background-color: transparent;
 
   & > svg {
-    fill: $icon-color-hover;
+    fill: $rte-icon-color-hover;
   }
 }
 
@@ -327,7 +328,10 @@ $link-color: var(--primary-700);
 // popups
 
 .fr-popup {
-  overflow-x: hidden;
+  overflow: hidden;
+}
+
+.fr-toolbar .fr-popup {
   overflow-y: auto;
   flex-direction: column;
   top: auto !important;
@@ -360,7 +364,7 @@ $link-color: var(--primary-700);
 }
 
 .fr-popup .fr-command.fr-btn svg.fr-svg {
-  @include size($icon-size + 3px);
+  @include size($rte-icon-size + 3px);
   margin: 3px;
 }
 
@@ -406,7 +410,7 @@ $link-color: var(--primary-700);
 
     // label
 
-    @if not $label-to-placeholder {
+    @if not $rte-label-to-placeholder {
       input + label,
       input.fr-not-empty + label {
         position: static;
@@ -418,7 +422,7 @@ $link-color: var(--primary-700);
 
     // label placeholder
 
-    @if $label-to-placeholder {
+    @if $rte-label-to-placeholder {
       input + label,
       input.fr-not-empty + label {
         @include b-body($lineHeight: $input-height, $color: $grey-600);
@@ -431,9 +435,14 @@ $link-color: var(--primary-700);
         pointer-events: none;
       }
 
-      input.fr-not-empty + label,
-      input:focus + label {
+      input.fr-not-empty + label {
         opacity: 0;
+      }
+    }
+
+    @if $rte-hide-label {
+      input + label {
+        display: none !important;
       }
     }
   }
@@ -478,7 +487,7 @@ $empticons-panel-max-width: 235px;
   width: $empticons-panel-max-width;
   overflow: hidden;
   min-width: 0;
-  height: $toolbar-height;
+  height: $rte-toolbar-height;
   flex-shrink: 0;
 }
 
