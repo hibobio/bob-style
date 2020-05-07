@@ -392,7 +392,7 @@ export const monthShortNames = [
 ];
 
 export const isDateISO8601 = (date: string): boolean => {
-  if (!date || !isString(date)) {
+  if (!isString(date)) {
     return false;
   }
 
