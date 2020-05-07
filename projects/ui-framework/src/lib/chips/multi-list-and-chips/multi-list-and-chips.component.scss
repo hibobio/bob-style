@@ -40,6 +40,7 @@ b-multi-list {
 }
 
 b-chip-list {
+  background-color: white;
   border: 1px solid $grey-500;
   border-radius: $border-radius;
   margin: 0;
@@ -48,6 +49,10 @@ b-chip-list {
 }
 
 :host ::ng-deep b-chip {
+  &[data-removable='false'] {
+    @include disabled-state;
+  }
+
   &.all-group {
     .chip-text {
       font-weight: 700;

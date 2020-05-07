@@ -30,13 +30,13 @@ export class ChipComponent implements OnChanges {
 
   @Input() text: string;
   @Input() textStrong: string;
-  @Input() removable = false;
   @Input() icon: Icons;
   @Input() class: string;
 
   @HostBinding('attr.data-type') @Input() type: ChipType = ChipType.tag;
-  @HostBinding('attr.data-disabled') @Input() disabled = false;
+  @HostBinding('attr.data-removable') @Input() removable = false;
   @HostBinding('attr.data-selected') @Input() selected = false;
+  @HostBinding('attr.data-disabled') @Input() disabled = false;
 
   @Output() removed: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 

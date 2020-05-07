@@ -161,5 +161,7 @@ export enum Icons {
   arrow_up = 'b-icon-arrow-up',
   check_circle_outline = 'b-icon-check-circle-outline',
   filter_list = 'b-icon-filter-list',
-  height = 'b-icon-height'
+  height = 'b-icon-height',
+  compensation = 'b-icon-compensation',
+  benefits_alt = 'b-icon-benefits-alt',
 }

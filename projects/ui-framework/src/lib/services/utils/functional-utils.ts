@@ -392,12 +392,13 @@ export const monthShortNames = [
 ];
 
 export const isDateISO8601 = (date: string): boolean => {
+  if (!date || !isString(date)) {
+    return false;
+  }
+
   const parts = date.split('-');
   return (
-    isString(date) &&
-    parts.length === 3 &&
-    parts[0].length === 4 &&
-    parseInt(parts[1], 10) < 13
+    parts.length === 3 && parts[0].length === 4 && parseInt(parts[1], 10) < 13
   );
 };
 
