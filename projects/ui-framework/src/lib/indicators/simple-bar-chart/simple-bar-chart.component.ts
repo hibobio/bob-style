@@ -52,7 +52,7 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
   @HostBinding('attr.data-clickable') get isClickable(): boolean {
     return Boolean(
       this.config?.clickable ||
-        (this.config.clickable !== false && this.clicked.observers)
+        (this.config.clickable !== false && this.clicked.observers.length > 0)
     );
   }
 

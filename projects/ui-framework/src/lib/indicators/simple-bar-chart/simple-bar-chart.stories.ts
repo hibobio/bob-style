@@ -20,7 +20,8 @@ const story2 = storiesOf(ComponentGroupType.Charts, module).addDecorator(
 const template = `
   <b-simple-bar-chart [data]="data"
                       [config]="{
-                        disableAnimation: disableAnimation
+                        disableAnimation: disableAnimation,
+                        clickable: clickable
                       }"
                       (clicked)="onBarClick($event)">
   </b-simple-bar-chart>
@@ -35,7 +36,8 @@ const storyTemplate = `
     <h3 style="text-align: left; margin-bottom: 50px;">Bar chart animates as it comes into view</h3>
         <b-simple-bar-chart [data]="data2"
                       [config]="{
-                        disableAnimation: disableAnimation
+                        disableAnimation: disableAnimation,
+                        clickable: clickable
                       }">
         </b-simple-bar-chart>
     </div>
@@ -84,6 +86,7 @@ const toAdd = () => ({
     data2: simpleBarChartMockData2,
     data: object('data', simpleBarChartMockData),
     disableAnimation: boolean('disableAnimation', false),
+    clickable: boolean('clickable', false),
     onBarClick: action('Bar clicked'),
   },
   moduleMetadata: {
