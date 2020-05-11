@@ -9,6 +9,7 @@ import {
   isArray,
   randomNumber,
   hasProp,
+  isNotEmptyArray,
 } from '../../services/utils/functional-utils';
 import { AvatarImageComponent } from '../avatar/avatar-image/avatar-image.component';
 import { AvatarSize } from '../avatar/avatar.enum';
@@ -71,7 +72,7 @@ export class EmployeesShowcaseService {
       return [];
     }
     return employeeListOptions[0].options.map(
-      option => option.prefixComponent.attributes
+      (option) => option.prefixComponent.attributes
     );
   }
 
@@ -101,7 +102,7 @@ export class EmployeesShowcaseService {
     employees: EmployeeShowcase[] | SelectGroupOption[]
   ): boolean {
     return Boolean(
-      isArray(employees) &&
+      isNotEmptyArray(employees) &&
         employees[0] &&
         isArray((employees as SelectGroupOption[])[0].options)
     );
@@ -109,8 +110,7 @@ export class EmployeesShowcaseService {
 
   private optionHasAvatarComponent(option: any): boolean {
     return Boolean(
-      option.prefixComponent &&
-        option.prefixComponent.attributes &&
+      option?.prefixComponent?.attributes &&
         hasProp(option.prefixComponent.attributes, 'imageSource')
     );
   }
