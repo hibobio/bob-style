@@ -1,5 +1,6 @@
 export enum ChipType {
   tag = 'tag',
+  normal = 'normal',
   info = 'info',
   warning = 'warning',
   error = 'error',

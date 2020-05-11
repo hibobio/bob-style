@@ -20,10 +20,17 @@ $chipTypeMap: (
       font-weight: $font-weight-body,
     ),
   ),
-  info warning error success:
+  normal info warning error success:
     (
       font-weight: 500,
     ),
+  normal: (
+    '*': (
+      background-color: $grey-600,
+      color: white,
+      border-color: $grey-600,
+    ),
+  ),
   info: (
     '*': (
       background-color: var(--inform-500),
