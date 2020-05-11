@@ -56,7 +56,6 @@ export class EmployeesShowcaseComponent
   @Input() avatarSize: AvatarSize = AvatarSize.mini;
   @Input() min = 3;
   @Input() max = 15;
-  @Input() total: number;
 
   @Input() doShuffle = false;
   @Input() showMoreIcon = true;
@@ -194,7 +193,7 @@ export class EmployeesShowcaseComponent
     this.setAvatarsToShow();
 
     this.avatarsLeft = Math.max(
-      Math.max(this.total || 0, this.totalAvatars) - this.avatarsToShow.length,
+      this.totalAvatars - this.avatarsToShow.length,
       0
     );
 
