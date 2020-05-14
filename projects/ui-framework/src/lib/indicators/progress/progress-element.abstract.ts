@@ -53,7 +53,7 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
     return (
       Boolean(
         this.config?.clickable ||
-          (this.config.clickable !== false && this.clicked.observers)
+          (this.config.clickable !== false && this.clicked.observers.length > 0)
       ) || null
     );
   }

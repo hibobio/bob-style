@@ -70,7 +70,7 @@ const note = `
   ## Multi list panel
 
   #### Module
-  *MultiListMenuModule*
+  *MultiSelectPanelModule*
 
   ~~~
   ${componentTemplate1}
