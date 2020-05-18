@@ -1,7 +1,8 @@
 @import '../../style/common-imports';
 
 :host {
-  margin: 0 -4px;
+  margin-left: -4px;
+  margin-right: -4px;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;

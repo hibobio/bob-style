@@ -1,6 +1,71 @@
 $acss-sizes: 8 16 24 32 40;
 $acss-dirs: top right bottom left;
 
+// Typography
+
+.b-body {
+  @include b-body($weight: null, $addCssVars: true) {
+    margin: 0;
+    font-weight: inherit;
+  }
+}
+
+.b-big-body {
+  @include b-big-body($weight: null, $addCssVars: true) {
+    margin: 0;
+    font-weight: inherit;
+  }
+}
+
+.b-bold-body {
+  @include b-bold-body($size: null, $addCssVars: true) {
+    margin: 0;
+    font-size: inherit;
+  }
+}
+
+.b-caption {
+  @include b-caption($color: $caption-text-color, $addCssVars: true) {
+    margin: 0;
+  }
+}
+
+.b-display-1 {
+  @include b-display-1($addCssVars: true) {
+    margin: 0;
+  }
+}
+
+.b-display-2 {
+  @include b-display-2($addCssVars: true) {
+    margin: 0;
+  }
+}
+
+.b-display-3 {
+  @include b-display-3($addCssVars: true) {
+    margin: 0;
+  }
+}
+
+.b-display-4 {
+  @include b-display-4($addCssVars: true) {
+    margin: 0;
+  }
+}
+
+.b-heading {
+  @include b-heading($addCssVars: true) {
+    margin: 0;
+  }
+}
+
+.b-subheading {
+  @include b-subheading($addCssVars: true) {
+    margin: 0;
+  }
+}
+
 // Margin & Padding
 
 @each $size in $acss-sizes {
@@ -50,6 +115,20 @@ $acss-dirs: top right bottom left;
   background-color: $grey-100;
 }
 
+// Responsive
+
+.b-mobile {
+  @include desktop {
+    display: none !important;
+  }
+}
+
+.b-desktop {
+  @include mobile {
+    display: none !important;
+  }
+}
+
 // Misc
 
 .rounded {
@@ -58,4 +137,8 @@ $acss-dirs: top right bottom left;
 
 .shadow {
   box-shadow: 0 2px 5px $boxShadowColor;
+}
+
+.b-link {
+  @include b-link;
 }
