@@ -18,7 +18,11 @@ import { PanelPositionService } from '../../popups/panel/panel-position-service/
 import { MultiListModule } from '../multi-list/multi-list.module';
 import { ListChange } from '../list-change/list-change';
 import { UtilsService } from '../../services/utils/utils.service';
-import { utilsServiceStub } from '../../tests/services.stub';
+import {
+  utilsServiceStub,
+  mockTranslatePipe,
+  TranslateServiceProvideMock,
+} from '../../tests/services.stub';
 
 describe('MultiSelectPanelComponent', () => {
   let component: MultiSelectPanelComponent;
@@ -51,6 +55,7 @@ describe('MultiSelectPanelComponent', () => {
       declarations: [
         MultiSelectPanelComponent,
         MockComponent(ChevronButtonComponent),
+        mockTranslatePipe,
       ],
       imports: [
         MultiListModule,
@@ -61,6 +66,7 @@ describe('MultiSelectPanelComponent', () => {
       providers: [
         PanelPositionService,
         { provide: UtilsService, useValue: utilsServiceStub },
+        TranslateServiceProvideMock(),
       ],
     })
       .compileComponents()

@@ -21,7 +21,10 @@ import {
   elementFromFixture,
 } from '../../services/utils/test-helpers';
 import { cloneDeep } from 'lodash';
-import { mockTranslatePipe } from '../../tests/services.stub';
+import {
+  mockTranslatePipe,
+  TranslateServiceProvideMock,
+} from '../../tests/services.stub';
 
 describe('MultiListComponent', () => {
   let component: MultiListComponent;
@@ -58,7 +61,12 @@ describe('MultiListComponent', () => {
         MockComponent(CheckboxComponent),
         mockTranslatePipe,
       ],
-      providers: [ListModelService, ListChangeService, ListKeyboardService],
+      providers: [
+        ListModelService,
+        ListChangeService,
+        ListKeyboardService,
+        TranslateServiceProvideMock(),
+      ],
       imports: [
         CommonModule,
         SearchModule,
