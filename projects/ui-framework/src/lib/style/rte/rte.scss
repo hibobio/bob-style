@@ -578,20 +578,20 @@ $empticons-panel-max-width: 235px;
   }
 
   &[title='11']:before {
-    content: 'Small';
+    content: var(--translation-small, 'Small');
     font-size: var(--rte-font-size-small, $font-size-caption);
   }
   &[title='12']:before {
-    content: 'Normal';
+    content: var(--translation-normal, 'Normal');
     font-size: var(--rte-font-size-normal, $font-size-body);
   }
   &[title='18']:before {
-    content: 'Large';
+    content: var(--translation-large, 'Large');
     font-size: var(--rte-font-size-large, $font-size-display-4);
     line-height: 1;
   }
   &[title='28']:before {
-    content: 'Huge';
+    content: var(--translation-huge, 'Huge');
     font-size: var(--rte-font-size-xlarge, $font-size-display-2);
     line-height: 1;
   }

@@ -13,11 +13,12 @@ export class StorybookTranslateModule {
     translateService: TranslateService,
     private httpClient: HttpClient
   ) {
-    console.log('Translations: ', translateService.translations);
     this.httpClient.get(`${translationFilePrefix}en.json`).subscribe((data) => {
       translateService.setTranslation('en', data, true);
       translateService.setDefaultLang('en');
       translateService.use('en');
+
+      console.log('Translations: ', translateService.translations);
     });
   }
 }

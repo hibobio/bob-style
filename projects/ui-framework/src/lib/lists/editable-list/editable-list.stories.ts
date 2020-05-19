@@ -63,8 +63,6 @@ const note = `
    (provided sortType will be applied to current list). <br>\
    **Note**:  you don't need to provide [sortType] input to describe list sorting, \
    it checks sorting automatically. | &nbsp;
-  [translation] | EditableListTranslation | object with texts used in the component\
-  (button titles, etc) | EDITABLE-LIST-TRANSLATION
   [maxChars] | number | Maximum length of text for option input | 100
   (changed) | EventEmitter<wbr>&lt;EditableListState&gt; | emits updated list | &nbsp;
   (inputChanged) | EventEmitter&lt;string&gt; | Outputs input value \
@@ -75,7 +73,6 @@ const note = `
 <b-editable-list [list]="list"
                  [sortType]="sortType"
                  [allowedActions]="allowedActions"
-                 [translation]="translation"
                  (changed)="onListUpdate($event)"
                  (inputChanged)="onInputChange($event)>
 </b-editable-list>

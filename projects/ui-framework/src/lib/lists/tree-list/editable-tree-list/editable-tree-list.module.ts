@@ -8,10 +8,18 @@ import { IconsModule } from '../../../icons/icons.module';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
 import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [EditableTreeListComponent],
-  imports: [CommonModule, FormsModule, MenuModule, IconsModule, DragDropModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MenuModule,
+    IconsModule,
+    DragDropModule,
+    TranslateModule,
+  ],
   exports: [EditableTreeListComponent],
   providers: [
     TreeListModelService,

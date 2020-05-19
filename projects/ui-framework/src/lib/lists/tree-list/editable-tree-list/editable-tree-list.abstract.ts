@@ -25,18 +25,13 @@ import {
   getEventPath,
   compareAsStrings,
 } from '../../../services/utils/functional-utils';
-import {
-  BTL_KEYMAP_DEF,
-  BTL_ROOT_ID,
-  EDITABLE_TREELIST_TRANSLATION_DEF,
-} from '../tree-list.const';
+import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from '../tree-list.const';
 import {
   TreeListOption,
   TreeListKeyMap,
   TreeListItemMap,
   itemID,
   TreeListItem,
-  EditableTreeListTranslation,
 } from '../tree-list.interface';
 import { MenuItem } from '../../../navigation/menu/menu.interface';
 import {
@@ -47,7 +42,6 @@ import {
 } from '../../../icons/icons.enum';
 import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
-import { simpleChange } from '../../../services/utils/test-helpers';
 import {
   TreeListItemEditContext,
   InsertItemLocation,
@@ -67,6 +61,8 @@ import { cloneDeep } from 'lodash';
 import { DOMInputEvent } from '../../../types';
 import { TreeListModelUtils } from '../services/tree-list-model.static';
 import { SelectMode } from '../../list.enum';
+import { TranslateService } from '@ngx-translate/core';
+import { simpleChange } from '../../../services/utils/test-helpers';
 
 const LISTITEM_EL_HEIGHT = 32;
 
@@ -81,7 +77,8 @@ export abstract class BaseEditableTreeListElement
     protected utilsService: UtilsService,
     protected zone: NgZone,
     protected cd: ChangeDetectorRef,
-    protected host: ElementRef
+    protected host: ElementRef,
+    protected translate: TranslateService
   ) {
     this.hostElement = this.host.nativeElement;
   }
@@ -91,13 +88,6 @@ export abstract class BaseEditableTreeListElement
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
   @Input() maxHeightItems = 15;
   @Input() startCollapsed = true;
-  @Input('translation') set setTranslation(
-    trnsltn: EditableTreeListTranslation
-  ) {
-    this.translation = { ...EDITABLE_TREELIST_TRANSLATION_DEF, ...trnsltn };
-    this.initItemsMenu();
-  }
-  public translation: EditableTreeListTranslation = EDITABLE_TREELIST_TRANSLATION_DEF;
   @Input() focusOnInit = false;
 
   @HostBinding('attr.data-embedded') @Input() embedded = false;
@@ -172,7 +162,6 @@ export abstract class BaseEditableTreeListElement
       changes,
       {
         keyMap: BTL_KEYMAP_DEF,
-        translation: EDITABLE_TREELIST_TRANSLATION_DEF,
         maxHeightItems: 15,
       },
       ['list'],
@@ -229,12 +218,10 @@ export abstract class BaseEditableTreeListElement
   }
 
   ngOnInit(): void {
+    this.itemMenu = this.getMenuItems();
+
     if (!this.itemsMap.size) {
       this.initItemsMap();
-    }
-
-    if (!this.itemMenu) {
-      this.initItemsMenu();
     }
 
     this.windowKeydownSubscriber = this.utilsService
@@ -563,10 +550,12 @@ export abstract class BaseEditableTreeListElement
 
   public decreaseIndent(item: TreeListItem): void {}
 
-  private initItemsMenu(): void {
-    this.itemMenu = [
+  protected getMenuItems(): MenuItem<TreeListItem>[] {
+    return [
       {
-        label: this.translation.toggle_collapsed,
+        label: this.translate.instant(
+          'tree-list-editor.shortcuts.toggle-collapsed'
+        ),
         key: 'toggleCollapsed',
         disabled: (menuItem: MenuItem<TreeListItem>) =>
           !menuItem.data?.childrenCount,
@@ -577,18 +566,22 @@ export abstract class BaseEditableTreeListElement
         },
       },
       {
-        label: this.translation.expand_all,
+        label: this.translate.instant('tree-list-editor.shortcuts.expand-all'),
         key: 'expandAll',
         action: () => this.toggleCollapseAll(false),
       },
       {
-        label: this.translation.collapse_all,
+        label: this.translate.instant(
+          'tree-list-editor.shortcuts.collapse-all'
+        ),
         key: 'collapseAll',
         separatorAfter: true,
         action: () => this.toggleCollapseAll(true),
       },
       {
-        label: this.translation.increase_indent,
+        label: this.translate.instant(
+          'tree-list-editor.shortcuts.increase-indent'
+        ),
         key: 'increaseIndent',
         disabled: (menuItem: MenuItem) =>
           !TreeListEditUtils.findPossibleParentAmongPrevSiblings(
@@ -599,14 +592,16 @@ export abstract class BaseEditableTreeListElement
         action: (menuItem: MenuItem) => this.increaseIndent(menuItem.data),
       },
       {
-        label: this.translation.decrease_indent,
+        label: this.translate.instant(
+          'tree-list-editor.shortcuts.decrease-indent'
+        ),
         key: 'decreaseIndent',
         separatorAfter: true,
         disabled: (menuItem: MenuItem) => menuItem.data.parentCount < 2,
         action: (menuItem: MenuItem) => this.decreaseIndent(menuItem.data),
       },
       {
-        label: this.translation.add_item,
+        label: this.translate.instant('tree-list-editor.shortcuts.add-item'),
         key: 'insertNewItem',
         action: (menuItem: MenuItem) => {
           if (menuItem.data.childrenCount) {
@@ -617,19 +612,23 @@ export abstract class BaseEditableTreeListElement
         },
       },
       {
-        label: this.translation.delete_item,
+        label: this.translate.instant('tree-list-editor.shortcuts.delete-item'),
         key: 'delete',
         disabled: (menuItem: MenuItem) => menuItem.data?.canBeDeleted === false,
         clickToOpenSub: true,
         panelClass: 'betl-del-confirm',
         children: [
           {
-            label: this.translation.delete_confirm,
+            label: this.translate.instant(
+              'tree-list-editor.shortcuts.delete-confirm'
+            ),
             key: 'deleteConfirm',
             action: (menuItem: MenuItem) => this.deleteItem(menuItem.data),
           },
           {
-            label: this.translation.delete_cancel,
+            label: this.translate.instant(
+              'tree-list-editor.shortcuts.delete-cancel'
+            ),
             key: 'deleteCancel',
           },
         ],

@@ -7,18 +7,6 @@ export interface EditableListActions {
   remove?: boolean;
 }
 
-export interface EditableListTranslation {
-  add: string;
-  remove: string;
-  done: string;
-  cancel: string;
-  sortAsc: string;
-  sortDesc: string;
-  sortCustom: string;
-  total: string;
-  alreadyExists: string;
-}
-
 export interface EditableListState {
   delete: string[];
   create: string[];

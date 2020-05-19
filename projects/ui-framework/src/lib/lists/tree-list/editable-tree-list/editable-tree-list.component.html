@@ -80,7 +80,7 @@
         <span *ngIf="debug"
               style="font-size:80%;white-space:nowrap;">L{{item.parentCount || 1}} i{{index}}</span>
         <input [(ngModel)]="item.name"
-               [placeholder]="translation.untitled"
+               [placeholder]="('tree-list-editor.shortcuts.untitled' | translate)"
                class="betl-item-input"
                type="text">
         <span *ngIf="debug"

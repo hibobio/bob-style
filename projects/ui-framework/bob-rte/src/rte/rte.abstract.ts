@@ -35,7 +35,6 @@ import {
   isNotEmptyObject,
   isEmptyArray,
   chainCall,
-  cloneObject,
   PanelDefaultPosVer,
   DOMhelpers,
 } from 'bob-style';
@@ -48,10 +47,9 @@ import {
   RTE_MAXHEIGHT_DEF,
   RTE_TOOLBAR_HEIGHT,
   RTE_MENTIONS_OPTIONS_DEF,
-  RTE_TRANSLATION_DEF,
 } from './rte.const';
 import { BlotType, RTEType } from './rte.enum';
-import { RteMentionsOption, RteTranslation } from './rte.interface';
+import { RteMentionsOption } from './rte.interface';
 import { PlaceholdersConverterService } from './placeholders.service';
 import { FroalaEditorInstance, FroalaOptions } from './froala.interface';
 import Tribute from 'tributejs';
@@ -60,6 +58,7 @@ import { TributeInstance, TributeItem } from './tribute.interface';
 import { initDirectionControl } from './rte.direction';
 import { initMentionsControl } from './rte.mentions';
 import { FroalaEditorDirective } from './froala/editor.directive';
+import { TranslateService } from '@ngx-translate/core';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -70,7 +69,8 @@ export abstract class RTEbaseElement extends BaseFormElement
     protected placeholdersConverter: PlaceholdersConverterService,
     protected parserService: HtmlParserHelpers,
     protected DOM: DOMhelpers,
-    protected host: ElementRef
+    protected host: ElementRef,
+    protected translate: TranslateService
   ) {
     super(cd);
     this.baseValue = '';
@@ -117,8 +117,6 @@ export abstract class RTEbaseElement extends BaseFormElement
   @Input() public mentionsList: RteMentionsOption[];
   @Input() public placeholderList: SelectGroupOption[];
 
-  @Input() translation: RteTranslation = cloneObject(RTE_TRANSLATION_DEF);
-
   @Output() blurred: EventEmitter<string> = new EventEmitter<string>();
   @Output() focused: EventEmitter<string> = new EventEmitter<string>();
   @Output() changed: EventEmitter<string> = new EventEmitter<string>();
@@ -160,7 +158,6 @@ export abstract class RTEbaseElement extends BaseFormElement
         maxHeight: RTE_MAXHEIGHT_DEF,
         controls: RTE_CONTROLS_DEF,
         disableControls: RTE_DISABLE_CONTROLS_DEF,
-        translation: cloneObject(RTE_TRANSLATION_DEF),
       },
       ['options', 'value'],
       true
@@ -277,6 +274,21 @@ export abstract class RTEbaseElement extends BaseFormElement
     if (this.inputTransformers.length === 0) {
       this.initTransformers();
     }
+
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--translation-small': `'(${this.translate.instant(
+        'bob-style.rte.font-size.small'
+      )})'`,
+      '--translation-normal': `'(${this.translate.instant(
+        'bob-style.rte.font-size.normal'
+      )})'`,
+      '--translation-large': `'(${this.translate.instant(
+        'bob-style.rte.font-size.large'
+      )})'`,
+      '--translation-huge': `'(${this.translate.instant(
+        'bob-style.rte.font-size.huge'
+      )})'`,
+    });
   }
 
   public placeholdersEnabled(): boolean {

@@ -9,7 +9,7 @@
               [type]="buttonType.secondary"
               [size]="buttonSize.small"
               [icon]="icons.add"
-              [text]="allowedActions.add!==true ? allowedActions.add : translation.add"
+              [text]="allowedActions.add!==true ? allowedActions.add : ('common.add' | translate)"
               (clicked)="addItem()">
     </b-button>
 
@@ -29,12 +29,12 @@
         <b-button class="bel-cancel-button"
                   [type]="buttonType.tertiary"
                   [size]="buttonSize.small"
-                  [text]="'common.cancel' | translate">
+                  [text]="('common.cancel' | translate)">
         </b-button>
         <b-button class="bel-done-button"
                   [type]="buttonType.secondary"
                   [size]="buttonSize.small"
-                  [text]="'common.done' | translate"
+                  [text]="('common.done' | translate)"
                   (clicked)="addItem(true)">
         </b-button>
       </div>
@@ -45,9 +45,7 @@
   <p b-input-message
      *ngIf="addingItemLen"
      [hidden]="!addingItem || !(inputInvalid || maxChars - addingItemLen < 15)"
-     [errorMessage]="inputInvalid ? '&#34;' + listState.list[sameItemIndex].value + '&#34; ' + translation.alreadyExists
-     :
-     null"
+     [errorMessage]="inputInvalid ? '&#34;' + listState.list[sameItemIndex].value + '&#34; ' + ('list-editor.editor.already-exists' | translate) : null"
      [maxChars]="maxChars - addingItemLen < 15 ? maxChars : null"
      [length]="addingItemLen">
   </p>
@@ -55,7 +53,7 @@
   <div class="bel-header-bottom">
 
     <span class="bel-total b-big-body">
-      {{translation.total}}: {{listState.list.length || 0}}
+      {{('common.total' | translate)}}: {{listState.list.length || 0}}
     </span>
 
     <b-button *ngIf="allowedActions.sort"
@@ -67,10 +65,10 @@
               [ngClass]="{'custom-sorting': listState.sortType === order.UserDefined}"
               (clicked)="sortList()"
               [text]="listState.sortType === order.Asc
-                ? translation.sortAsc :
+                ? ('list-editor.editor.sortAsc' | translate) :
                   listState.sortType === order.Desc ?
-                  translation.sortDesc :
-                  translation.sortCustom">
+                  ('list-editor.editor.sortDesc' | translate) :
+                  ('list-editor.editor.sortCustom' | translate)">
     </b-button>
 
   </div>
@@ -118,13 +116,13 @@
         <b-button class="bel-cancel-button"
                   [type]="buttonType.tertiary"
                   [size]="buttonSize.small"
-                  [text]="translation.cancel">
+                  [text]="('common.cancel' | translate)">
         </b-button>
 
         <b-button class="bel-remove-button"
                   [type]="buttonType.negative"
                   [size]="buttonSize.small"
-                  [text]="translation.remove"
+                  [text]="('common.remove' | translate)"
                   (clicked)="removeItem(index,true)">
         </b-button>
       </div>

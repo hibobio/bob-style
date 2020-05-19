@@ -6,6 +6,7 @@ $gap: 20px;
   display: flex;
   justify-content: space-between;
   text-align: left;
+  --translation-all: '(all)';
 }
 
 .mlac-list,
@@ -57,8 +58,9 @@ b-chip-list {
     .chip-text {
       font-weight: 700;
       &:after {
-        content: '(all)';
+        content: var(--translation-all);
         font-weight: 400;
+        text-transform: lowercase;
       }
     }
   }

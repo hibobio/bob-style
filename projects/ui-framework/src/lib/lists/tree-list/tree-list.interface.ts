@@ -97,16 +97,3 @@ export interface ViewFilter {
   show?: ViewFilterOptions;
   hide?: ViewFilterOptions;
 }
-
-export interface EditableTreeListTranslation {
-  add_item: string;
-  delete_item: string;
-  delete_confirm: string;
-  delete_cancel: string;
-  increase_indent: string;
-  decrease_indent: string;
-  untitled: string;
-  toggle_collapsed: string;
-  collapse_all: string;
-  expand_all: string;
-}

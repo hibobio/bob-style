@@ -73,7 +73,6 @@ const note = `
   --- | --- | --- | ---
   [list] | TreeListOption[] | options list. <br>**Note:** if your list does not conform to TreeListOption interface, provide \`\`\`[keyMap]\`\`\` to convert it | &nbsp;
   [keyMap] | TreeListKeyMap | keymap to convert [list] to  TreeListOption interface (for tree list options coming from the server, use BTL<sub>-</sub>KEYMAP<sub>-</sub>SERVER const) | BTL<sub>-</sub>KEYMAP<sub>-</sub>DEF
-  [translation] | EditableTreeListTranslation | object with translation strings | EDITABLE<sub>-</sub>TREELIST<wbr><sub>-</sub>TRANSLATION<sub>-</sub>DEF
   [maxHeightItems] | number | max number of items before scroll | 15
   [startCollapsed] | boolean | if true, will start with groups closed | true
   [focusOnInit] | boolean | if true will focus first item on init | false

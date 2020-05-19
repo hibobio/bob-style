@@ -19,6 +19,7 @@ import {
 import { TreeListEditUtils } from '../services/tree-list-edit.static';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { UtilsService } from '../../../services/utils/utils.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'b-editable-tree-list',
@@ -34,9 +35,10 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     utilsService: UtilsService,
     zone: NgZone,
     cd: ChangeDetectorRef,
-    host: ElementRef
+    host: ElementRef,
+    translate: TranslateService
   ) {
-    super(modelSrvc, cntrlsSrvc, DOM, utilsService, zone, cd, host);
+    super(modelSrvc, cntrlsSrvc, DOM, utilsService, zone, cd, host, translate);
   }
 
   public insertNewItem(

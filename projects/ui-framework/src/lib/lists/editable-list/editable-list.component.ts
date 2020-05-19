@@ -20,7 +20,6 @@ import { Icons } from '../../icons/icons.enum';
 import { ButtonType, ButtonSize } from '../../buttons/buttons.enum';
 import {
   EditableListActions,
-  EditableListTranslation,
   EditableListState,
 } from './editable-list.interface';
 import {
@@ -35,10 +34,7 @@ import {
   compareAsStrings,
 } from '../../services/utils/functional-utils';
 import { cloneDeep } from 'lodash';
-import {
-  EDITABLE_LIST_TRANSLATION,
-  EDITABLE_LIST_ALLOWED_ACTIONS_DEF,
-} from './editable-list.const';
+import { EDITABLE_LIST_ALLOWED_ACTIONS_DEF } from './editable-list.const';
 import { ListSortType } from './editable-list.enum';
 import { Keys } from '../../enums';
 import { Subject, Subscription } from 'rxjs';
@@ -60,9 +56,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   @Input() sortType: ListSortType;
   @Input() allowedActions: EditableListActions = cloneObject(
     EDITABLE_LIST_ALLOWED_ACTIONS_DEF
-  );
-  @Input() translation: EditableListTranslation = cloneObject(
-    EDITABLE_LIST_TRANSLATION
   );
   @Input() maxChars = 100;
   @Output() changed: EventEmitter<EditableListState> = new EventEmitter<
@@ -135,7 +128,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
       {
         list: [],
         allowedActions: cloneObject(EDITABLE_LIST_ALLOWED_ACTIONS_DEF),
-        translation: cloneObject(EDITABLE_LIST_TRANSLATION),
       },
       [],
       true

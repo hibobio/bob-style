@@ -7,6 +7,8 @@ import {
   EventEmitter,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  OnInit,
+  ElementRef,
 } from '@angular/core';
 import { LIST_EL_HEIGHT } from '../../lists/list.consts';
 import { SelectGroupOption, SelectOption } from '../../lists/list.interface';
@@ -22,6 +24,8 @@ import {
 } from '../../services/utils/functional-utils';
 import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
 import { get } from 'lodash';
+import { TranslateService } from '@ngx-translate/core';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
 @Component({
   selector: 'b-multi-list-and-chips',
@@ -29,8 +33,13 @@ import { get } from 'lodash';
   styleUrls: ['./multi-list-and-chips.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MultiListAndChipsComponent implements OnChanges {
-  constructor(private cd: ChangeDetectorRef) {}
+export class MultiListAndChipsComponent implements OnChanges, OnInit {
+  constructor(
+    private cd: ChangeDetectorRef,
+    public host: ElementRef,
+    private translate: TranslateService,
+    private DOM: DOMhelpers
+  ) {}
 
   @Input() options: SelectGroupOption[] = [];
   @Input() listLabel: string;
@@ -80,6 +89,12 @@ export class MultiListAndChipsComponent implements OnChanges {
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
     }
+  }
+
+  ngOnInit(): void {
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--translation-all': `'(${this.translate.instant('common.all')})'`,
+    });
   }
 
   public detectChipType(options: SelectGroupOption[] = this.options): ChipType {
@@ -156,7 +171,6 @@ export class MultiListAndChipsComponent implements OnChanges {
         }
       });
 
-      // this.chips = this.optionsToChips(options);
       this.optionsToChips(options);
     } else {
       options.find((group: SelectGroupOption) => {

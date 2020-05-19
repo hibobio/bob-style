@@ -3,14 +3,16 @@
                (clicked)="onClear()"
                [disabled]="listActionsState.clear.disabled"
                [hidden]="listActionsState.clear.hidden"
-               [text]="(listActions.clear !== true && listActions.clear) || 'Clear'"></b-text-button>
+               [text]="(listActions.clear !== true && listActions.clear) || ('common.clear' | translate)">
+</b-text-button>
 
 <b-text-button *ngIf="listActions.reset"
                class="reset-button"
                (clicked)="onReset()"
                [disabled]="listActionsState.reset.disabled"
                [hidden]="listActionsState.reset.hidden"
-               [text]="(listActions.reset !== true && listActions.reset) || 'Reset'"></b-text-button>
+               [text]="(listActions.reset !== true && listActions.reset) || ('common.reset' | translate)">
+</b-text-button>
 
 <ng-content select="[footerAction],[footerActionRight]"></ng-content>
 
@@ -24,7 +26,7 @@
             [hidden]="listActionsState.cancel.hidden"
             [size]="buttonSize.small"
             [type]="buttonType.secondary"
-            [text]="(listActions.cancel !== true && listActions.cancel) || 'Cancel'">
+            [text]="(listActions.cancel !== true && listActions.cancel) || ('common.cancel' | translate)">
   </b-button>
 
   <b-button *ngIf="listActions.apply"
@@ -34,5 +36,5 @@
             [hidden]="listActionsState.apply.hidden"
             [size]="buttonSize.small"
             [type]="buttonType.primary"
-            [text]="(listActions.apply !== true && listActions.apply) || 'Apply'"></b-button>
+            [text]="(listActions.apply !== true && listActions.apply) || ('common.apply' | translate)"></b-button>
 </div>

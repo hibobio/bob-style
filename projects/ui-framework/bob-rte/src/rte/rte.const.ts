@@ -2,7 +2,6 @@ import { BlotType } from './rte.enum';
 import { joinArrays } from 'bob-style';
 import { FroalaOptions } from './froala.interface';
 import { TributeOptions, TributeItem } from './tribute.interface';
-import { RteTranslation } from './rte.interface';
 
 export const RTE_CONTROLS_DEF = joinArrays(
   [
@@ -28,10 +27,6 @@ export const RTE_DISABLE_CONTROLS_DEF: BlotType[] = [BlotType.placeholder];
 export const RTE_MINHEIGHT_DEF = 185;
 export const RTE_MAXHEIGHT_DEF = 350;
 export const RTE_TOOLBAR_HEIGHT = 41;
-
-export const RTE_TRANSLATION_DEF: RteTranslation = {
-  add_variable: 'Add variable',
-};
 
 export const RTE_ALLOWED_STYLE_PROPS = [
   'font-size',

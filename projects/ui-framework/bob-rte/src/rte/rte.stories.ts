@@ -26,7 +26,7 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
 
 const disableControlsDef = [];
 const controlsDef = dedupeArray(Object.values(BlotType)).filter(
-  cntrl => !disableControlsDef.includes(cntrl)
+  (cntrl) => !disableControlsDef.includes(cntrl)
 );
 
 const value = `<br><br> <br><br> <span> <br> </span> <div><br></div> <span><br></span>
@@ -148,7 +148,6 @@ const note = `
   [warnMessage] | string | adds a warning message below editor | &nbsp;
   [errorMessage] | string | adds 'invalid' style, \
   hides hint/warn message and displays error message below editor | &nbsp;
-  [translation] | RteTranslation | translations for button titles, etc | RTE-TRANSLATION-DEF
   (changed) | EventEmitter<wbr>&lt;string&gt; | emits in text change | &nbsp;
   (focused) | EventEmitter<wbr>&lt;string&gt; | emits latest value on editor focus | &nbsp;
   (blurred) | EventEmitter<wbr>&lt;string&gt; | emits latest value on editor blur | &nbsp;
