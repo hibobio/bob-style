@@ -4,6 +4,8 @@ import { of } from 'rxjs';
 import { UtilsService } from '../services/utils/utils.service';
 import { MobileService, MediaEvent } from '../services/utils/mobile.service';
 import { ScrollEvent } from '../services/utils/utils.interface';
+import { MockPipe } from 'ng-mocks';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export const utilsServiceStub: spyObj<UtilsService> = createSpyObj(
   'UtilsService',
@@ -31,3 +33,5 @@ mobileServiceStub.getMediaEvent.and.returnValue(
 mobileServiceStub.getMediaData.and.returnValue({
   matchMobile: false,
 } as MediaEvent);
+
+export const mockTranslatePipe = MockPipe(TranslatePipe, (v) => v);

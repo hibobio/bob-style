@@ -7,6 +7,7 @@ import { By } from '@angular/platform-browser';
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
 import { elementFromFixture } from '../../services/utils/test-helpers';
+import { mockTranslatePipe } from '../../tests/services.stub';
 
 describe('ListFooterComponent', () => {
   let component: ListFooterComponent;
@@ -15,6 +16,7 @@ describe('ListFooterComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        mockTranslatePipe,
         ListFooterComponent,
         MockComponent(ButtonComponent),
         MockComponent(TextButtonComponent),

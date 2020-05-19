@@ -18,7 +18,7 @@ import { PanelPositionService } from '../../popups/panel/panel-position-service/
 import { MultiListModule } from '../multi-list/multi-list.module';
 import { ListChange } from '../list-change/list-change';
 import { UtilsService } from '../../services/utils/utils.service';
-import { utilsServiceStub } from '../../tests/services.stub.spec';
+import { utilsServiceStub } from '../../tests/services.stub';
 
 describe('MultiSelectPanelComponent', () => {
   let component: MultiSelectPanelComponent;

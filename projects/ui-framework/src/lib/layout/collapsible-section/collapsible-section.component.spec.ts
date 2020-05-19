@@ -18,7 +18,7 @@ import {
   simpleChange,
 } from '../../services/utils/test-helpers';
 import { ColorService } from '../../services/color-service/color.service';
-import { utilsServiceStub } from '../../tests/services.stub.spec';
+import { utilsServiceStub } from '../../tests/services.stub';
 
 @Component({
   template: `

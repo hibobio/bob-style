@@ -23,7 +23,7 @@ import { DateInputDirectiveModule } from '../date-input-directive/dateinput.dire
 import {
   utilsServiceStub,
   mobileServiceStub,
-} from '../../../tests/services.stub.spec';
+} from '../../../tests/services.stub';
 import { InputEventType } from '../../form-elements.enum';
 import {
   MatDatepickerModule,

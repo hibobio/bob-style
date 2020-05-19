@@ -18,7 +18,7 @@ import { PanelPositionService } from '../../popups/panel/panel-position-service/
 import { SelectGroupOption } from '../list.interface';
 import { ListChange } from '../list-change/list-change';
 import { UtilsService } from '../../services/utils/utils.service';
-import { utilsServiceStub } from '../../tests/services.stub.spec';
+import { utilsServiceStub } from '../../tests/services.stub';
 
 describe('SingleSelectPanelComponent', () => {
   let component: SingleSelectPanelComponent;
