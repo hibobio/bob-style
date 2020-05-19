@@ -21,6 +21,7 @@ import {
   elementFromFixture,
 } from '../../services/utils/test-helpers';
 import { cloneDeep } from 'lodash';
+import { mockTranslatePipe } from '../../tests/services.stub';
 
 describe('MultiListComponent', () => {
   let component: MultiListComponent;
@@ -55,6 +56,7 @@ describe('MultiListComponent', () => {
         MultiListComponent,
         ListFooterComponent,
         MockComponent(CheckboxComponent),
+        mockTranslatePipe,
       ],
       providers: [ListModelService, ListChangeService, ListKeyboardService],
       imports: [
@@ -706,9 +708,9 @@ describe('MultiListComponent', () => {
     it('should set hidden attribute on the Clear button if no options are selected', () => {
       component.ngOnChanges(
         simpleChange({
-          options: optionsMock.map(group => ({
+          options: optionsMock.map((group) => ({
             ...group,
-            options: group.options.map(option => ({
+            options: group.options.map((option) => ({
               ...option,
               selected: false,
             })),
