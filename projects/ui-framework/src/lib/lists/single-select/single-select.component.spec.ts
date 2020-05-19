@@ -23,7 +23,7 @@ import {
   listKeyboardServiceStub,
   MobileServiceProvideMock,
   mockHighlightPipe,
-} from '../../tests/services.stub';
+} from '../../tests/services.stub.spec';
 import { ListFooterComponent } from '../list-footer/list-footer.component';
 import { ListModelService } from '../list-service/list-model.service';
 import { ListChangeService } from '../list-change/list-change.service';

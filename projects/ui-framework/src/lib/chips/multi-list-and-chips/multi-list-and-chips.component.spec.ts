@@ -19,7 +19,7 @@ import {
   mockHighlightPipe,
   listKeyboardServiceStub,
   MobileServiceProvideMock,
-} from '../../tests/services.stub';
+} from '../../tests/services.stub.spec';
 import { ChipListComponent } from '../chip-list/chip-list.component';
 import { ChipComponent } from '../chip/chip.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

@@ -10,6 +10,8 @@ import { PipeTransform, Pipe } from '@angular/core';
 import { ListKeyboardService } from '../lists/list-service/list-keyboard.service';
 import { HighlightPipe } from '../services/filters/highlight.pipe';
 
+// This file is intentionally named .spec.ts - to fix build problems due to missing jasmine namespace
+
 export const utilsServiceStub: spyObj<UtilsService> = createSpyObj(
   'UtilsService',
   [

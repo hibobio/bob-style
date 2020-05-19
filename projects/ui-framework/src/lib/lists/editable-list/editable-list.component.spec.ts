@@ -16,7 +16,7 @@ import { simpleChange, inputValue } from '../../services/utils/test-helpers';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { ListSortType } from './editable-list.enum';
 import { cloneDeep } from 'lodash';
-import { mockTranslatePipe } from '../../tests/services.stub';
+import { mockTranslatePipe } from '../../tests/services.stub.spec';
 import { ButtonComponent } from '../../buttons/button/button.component';
 import { InputMessageComponent } from '../../form-elements/input-message/input-message.component';
 import { SquareButtonComponent } from '../../buttons/square/square.component';

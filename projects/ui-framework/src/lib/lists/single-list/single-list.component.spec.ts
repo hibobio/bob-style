@@ -15,7 +15,7 @@ import {
   listKeyboardServiceStub,
   mockHighlightPipe,
   MobileServiceProvideMock,
-} from '../../tests/services.stub';
+} from '../../tests/services.stub.spec';
 import { ListFooterComponent } from '../list-footer/list-footer.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { IconComponent } from '../../icons/icon.component';

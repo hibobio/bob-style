@@ -25,7 +25,7 @@ import {
   mockHighlightPipe,
   listKeyboardServiceStub,
   MobileServiceProvideMock,
-} from '../../tests/services.stub';
+} from '../../tests/services.stub.spec';
 import { MockComponent } from 'ng-mocks';
 import { MultiListComponent } from '../multi-list/multi-list.component';
 import { ListFooterComponent } from '../list-footer/list-footer.component';

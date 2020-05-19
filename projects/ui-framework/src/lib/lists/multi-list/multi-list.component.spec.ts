@@ -22,7 +22,7 @@ import {
   mockHighlightPipe,
   listKeyboardServiceStub,
   MobileServiceProvideMock,
-} from '../../tests/services.stub';
+} from '../../tests/services.stub.spec';
 import { ButtonComponent } from '../../buttons/button/button.component';
 import { IconComponent } from '../../icons/icon.component';
 import { SearchComponent } from '../../search/search/search.component';

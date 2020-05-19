@@ -24,7 +24,7 @@ import {
   mockHighlightPipe,
   listKeyboardServiceStub,
   MobileServiceProvideMock,
-} from '../../tests/services.stub';
+} from '../../tests/services.stub.spec';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MultiSelectComponent } from '../multi-select/multi-select.component';
 import { MultiListComponent } from '../multi-list/multi-list.component';

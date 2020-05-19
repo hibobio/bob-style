@@ -7,7 +7,7 @@ import { By } from '@angular/platform-browser';
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
 import { elementFromFixture } from '../../services/utils/test-helpers';
-import { mockTranslatePipe } from '../../tests/services.stub';
+import { mockTranslatePipe } from '../../tests/services.stub.spec';
 
 describe('ListFooterComponent', () => {
   let component: ListFooterComponent;

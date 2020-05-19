@@ -22,7 +22,7 @@ import {
   MobileServiceProvideMock,
   TranslateServiceProvideMock,
   listKeyboardServiceStub,
-} from '../../tests/services.stub';
+} from '../../tests/services.stub.spec';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
