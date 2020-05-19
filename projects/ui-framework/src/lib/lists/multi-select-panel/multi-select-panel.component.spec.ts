@@ -15,14 +15,27 @@ import { ChevronButtonComponent } from '../../buttons/chevron-button/chevron-but
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
-import { MultiListModule } from '../multi-list/multi-list.module';
 import { ListChange } from '../list-change/list-change';
 import { UtilsService } from '../../services/utils/utils.service';
 import {
   utilsServiceStub,
   mockTranslatePipe,
   TranslateServiceProvideMock,
+  mockHighlightPipe,
+  listKeyboardServiceStub,
+  MobileServiceProvideMock,
 } from '../../tests/services.stub';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MultiSelectComponent } from '../multi-select/multi-select.component';
+import { MultiListComponent } from '../multi-list/multi-list.component';
+import { ListFooterComponent } from '../list-footer/list-footer.component';
+import { ListModelService } from '../list-service/list-model.service';
+import { ListChangeService } from '../list-change/list-change.service';
+import { ListKeyboardService } from '../list-service/list-keyboard.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { CheckboxComponent } from '../../form-elements/checkbox/checkbox.component';
+import { ButtonComponent } from '../../buttons/button/button.component';
+import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
 
 describe('MultiSelectPanelComponent', () => {
   let component: MultiSelectPanelComponent;
@@ -55,24 +68,38 @@ describe('MultiSelectPanelComponent', () => {
       declarations: [
         MultiSelectPanelComponent,
         MockComponent(ChevronButtonComponent),
+        MultiSelectComponent,
+        MultiListComponent,
+        ListFooterComponent,
         mockTranslatePipe,
+        mockHighlightPipe,
+        MockComponent(CheckboxComponent),
+        ButtonComponent,
+        TextButtonComponent,
       ],
       imports: [
-        MultiListModule,
-        OverlayModule,
-        NoopAnimationsModule,
         CommonModule,
+        NoopAnimationsModule,
+        ScrollingModule,
+        OverlayModule,
       ],
       providers: [
         PanelPositionService,
+        ListModelService,
+        ListChangeService,
         { provide: UtilsService, useValue: utilsServiceStub },
+        { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
+        MobileServiceProvideMock(),
         TranslateServiceProvideMock(),
       ],
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(MultiSelectPanelComponent);
         component = fixture.componentInstance;
+        component.ngAfterViewInit = () => {};
+
         spyOn(component as any, 'destroyPanel');
         spyOn(component.selectChange, 'emit');
         component.chevronButtonText = 'Click';

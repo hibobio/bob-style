@@ -7,18 +7,28 @@ import {
   tick,
 } from '@angular/core/testing';
 import { SingleSelectPanelComponent } from './single-select-panel.component';
-import { MockComponent } from 'ng-mocks';
-import { ChevronButtonComponent } from '../../buttons/chevron-button/chevron-button.component';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { SingleListModule } from '../single-list/single-list.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { SelectGroupOption } from '../list.interface';
 import { ListChange } from '../list-change/list-change';
 import { UtilsService } from '../../services/utils/utils.service';
-import { utilsServiceStub } from '../../tests/services.stub';
+import {
+  utilsServiceStub,
+  mockTranslatePipe,
+  mockHighlightPipe,
+  MobileServiceProvideMock,
+  TranslateServiceProvideMock,
+  listKeyboardServiceStub,
+} from '../../tests/services.stub';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ListModelService } from '../list-service/list-model.service';
+import { ListChangeService } from '../list-change/list-change.service';
+import { ListKeyboardService } from '../list-service/list-keyboard.service';
+import { SingleListComponent } from '../single-list/single-list.component';
 
 describe('SingleSelectPanelComponent', () => {
   let component: SingleSelectPanelComponent;
@@ -50,23 +60,32 @@ describe('SingleSelectPanelComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         SingleSelectPanelComponent,
-        MockComponent(ChevronButtonComponent),
+        SingleListComponent,
+        mockTranslatePipe,
+        mockHighlightPipe,
       ],
       imports: [
-        SingleListModule,
-        OverlayModule,
-        NoopAnimationsModule,
         CommonModule,
+        NoopAnimationsModule,
+        ScrollingModule,
+        OverlayModule,
       ],
       providers: [
+        ListModelService,
+        ListChangeService,
+        { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
+        MobileServiceProvideMock(),
+        TranslateServiceProvideMock(),
         PanelPositionService,
         { provide: UtilsService, useValue: utilsServiceStub },
       ],
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(SingleSelectPanelComponent);
         component = fixture.componentInstance;
+        component.ngAfterViewInit = () => {};
         spyOn(component as any, 'destroyPanel');
         spyOn(component.selectChange, 'emit');
         component.chevronButtonText = 'Click';

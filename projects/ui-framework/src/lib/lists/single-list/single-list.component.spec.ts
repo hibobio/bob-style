@@ -1,23 +1,27 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { SearchModule } from '../../search/search/search.module';
-import { ButtonsModule } from '../../buttons/buttons.module';
-import { IconsModule } from '../../icons/icons.module';
-
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { SingleListComponent } from './single-list.component';
 import { ListModelService } from '../list-service/list-model.service';
 import { SelectGroupOption } from '../list.interface';
 import { By } from '@angular/platform-browser';
-import { FiltersModule } from '../../services/filters/filters.module';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
-import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
-import { ListFooterModule } from '../list-footer/list-footer.module';
 import { simpleChange } from '../../services/utils/test-helpers';
+import {
+  mockTranslatePipe,
+  TranslateServiceProvideMock,
+  listKeyboardServiceStub,
+  mockHighlightPipe,
+  MobileServiceProvideMock,
+} from '../../tests/services.stub';
+import { ListFooterComponent } from '../list-footer/list-footer.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { IconComponent } from '../../icons/icon.component';
+import { MockComponent } from 'ng-mocks';
+import { ButtonComponent } from '../../buttons/button/button.component';
+import { SearchComponent } from '../../search/search/search.component';
 
 describe('SingleListComponent', () => {
   let component: SingleListComponent;
@@ -44,34 +48,37 @@ describe('SingleListComponent', () => {
     ];
 
     TestBed.configureTestingModule({
-      declarations: [SingleListComponent],
-      providers: [ListModelService, ListChangeService, ListKeyboardService],
-      imports: [
-        NoopAnimationsModule,
-        CommonModule,
-        FormsModule,
-        SearchModule,
-        ButtonsModule,
-        IconsModule,
-        ScrollingModule,
-        FiltersModule,
-        ComponentRendererModule,
-        ListFooterModule,
+      declarations: [
+        SingleListComponent,
+        ListFooterComponent,
+        mockTranslatePipe,
+        mockHighlightPipe,
+        MockComponent(ButtonComponent),
+        MockComponent(IconComponent),
+        MockComponent(SearchComponent),
       ],
+      imports: [CommonModule, NoopAnimationsModule, ScrollingModule],
+      providers: [
+        ListModelService,
+        ListChangeService,
+        { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
+        MobileServiceProvideMock(),
+        TranslateServiceProvideMock(),
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(SingleListComponent);
         component = fixture.componentInstance;
+        component.ngOnInit = () => {};
         component.startWithGroupsCollapsed = false;
-        spyOn(component.selectChange, 'emit');
-
         component.ngOnChanges(
           simpleChange({
             options: optionsMock,
           })
         );
-        fixture.autoDetectChanges();
+        fixture.detectChanges();
       });
   }));
 
@@ -180,7 +187,7 @@ describe('SingleListComponent', () => {
           options: changedOptions,
         })
       );
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       options = fixture.debugElement.queryAll(By.css('.option'));
       expect(options.length).toEqual(2);
     });
@@ -207,7 +214,7 @@ describe('SingleListComponent', () => {
           options: changedOptions,
         })
       );
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       options = fixture.debugElement.queryAll(By.css('.option'));
       headers = fixture.debugElement.queryAll(By.css('.header'));
       headerPlaceholder = fixture.debugElement.queryAll(
@@ -233,7 +240,7 @@ describe('SingleListComponent', () => {
           options: changedOptions,
         })
       );
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       expect(component.noGroupHeaders).toBe(false);
       const options = fixture.debugElement.queryAll(By.css('.option'));
       const headerPlaceholder = fixture.debugElement.queryAll(
@@ -274,7 +281,7 @@ describe('SingleListComponent', () => {
           options: testOptionsMock,
         })
       );
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeTruthy();
     });
@@ -294,7 +301,7 @@ describe('SingleListComponent', () => {
           options: testOptionsMock,
         })
       );
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeFalsy();
     });
@@ -328,11 +335,11 @@ describe('SingleListComponent', () => {
           options: testOptionsMock,
         })
       );
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       let searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeTruthy();
       component['searchChange']('no possible options');
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       expect(component.listOptions.length).toEqual(0);
       searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeTruthy();
@@ -341,17 +348,18 @@ describe('SingleListComponent', () => {
 
   describe('header collapse', () => {
     it('should render 2 options if 1 group is collapsed', () => {
-      const header = fixture.debugElement.queryAll(By.css('.header'))[0];
-      header.triggerEventHandler('click', null);
-      fixture.autoDetectChanges();
+      const header = fixture.debugElement.queryAll(By.css('.header'))[0]
+        .nativeElement;
+      header.click();
+      fixture.detectChanges();
       const options = fixture.debugElement.queryAll(By.css('.option'));
       expect(options.length).toEqual(2);
     });
     it('should not render options if 2 group are collapsed', () => {
       const headers = fixture.debugElement.queryAll(By.css('.header'));
-      headers[0].triggerEventHandler('click', null);
-      headers[1].triggerEventHandler('click', null);
-      fixture.autoDetectChanges();
+      headers[0].nativeElement.click();
+      headers[1].nativeElement.click();
+      fixture.detectChanges();
       const options = fixture.debugElement.queryAll(By.css('.option'));
       expect(options.length).toEqual(0);
     });
@@ -360,14 +368,15 @@ describe('SingleListComponent', () => {
   describe('option click', () => {
     it('should update value when option is clicked with the option id', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
-      options[3].triggerEventHandler('click', null);
+      options[3].nativeElement.click();
       fixture.detectChanges();
       expect(component.selectedIDs).toEqual([12]);
     });
 
     it('should emit event when selecting an option', () => {
+      spyOn(component.selectChange, 'emit').and.callThrough();
       const options = fixture.debugElement.queryAll(By.css('.option'));
-      options[3].triggerEventHandler('click', null);
+      options[3].nativeElement.click();
       const listChange = component[
         'listChangeSrvc'
       ].getListChange(component.options, [12]);
@@ -375,8 +384,9 @@ describe('SingleListComponent', () => {
     });
 
     it('should not do anything when clicked on disabled option', () => {
+      spyOn(component.selectChange, 'emit').and.callThrough();
       const options = fixture.debugElement.queryAll(By.css('.option'));
-      options[2].triggerEventHandler('click', null);
+      options[2].nativeElement.click();
       fixture.detectChanges();
       expect(component.selectedIDs).not.toEqual([11]);
       expect(component.selectChange.emit).not.toHaveBeenCalled();
@@ -418,7 +428,7 @@ describe('SingleListComponent', () => {
   describe('searchChange', () => {
     it('should show group header and option that match the search', () => {
       component['searchChange']('info 1');
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       const options = fixture.debugElement.queryAll(By.css('.option'));
       const headers = fixture.debugElement.queryAll(By.css('.header'));
       expect(options.length).toEqual(1);
@@ -448,7 +458,7 @@ describe('SingleListComponent', () => {
           options: testOptionsMock,
         })
       );
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       const clearSelection = fixture.debugElement.query(
         By.css('.clear-selection')
       );
@@ -456,7 +466,7 @@ describe('SingleListComponent', () => {
       expect(clearSelection.nativeElement.innerText).toEqual('— None —');
     });
     it('should call clearList method  on click', () => {
-      spyOn(component, 'clearList');
+      spyOn(component, 'clearList').and.callThrough();
 
       component.showNoneOption = true;
       const testOptionsMock = [
@@ -470,11 +480,11 @@ describe('SingleListComponent', () => {
           options: testOptionsMock,
         })
       );
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       const clearSelection = fixture.debugElement.query(
         By.css('.clear-selection')
       );
-      clearSelection.triggerEventHandler('click', null);
+      clearSelection.nativeElement.click();
       expect(component.clearList).toHaveBeenCalled();
     });
   });
@@ -495,7 +505,7 @@ describe('SingleListComponent', () => {
           options: testOptionsMock,
         })
       );
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
     };
     it('should return options.length * listElHeight', () => {
       updateList();

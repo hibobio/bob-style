@@ -7,20 +7,30 @@ import {
 } from '../../services/utils/test-helpers';
 import { MultiListAndChipsComponent } from './multi-list-and-chips.component';
 import { Icons } from '../../icons/icons.enum';
-import { MockComponent } from 'ng-mocks';
-import { EmptyStateComponent } from '../../indicators/empty-state/empty-state.component';
-import { IconComponent } from '../../icons/icon.component';
 import { CommonModule } from '@angular/common';
 import { makeArray } from '../../services/utils/functional-utils';
-import { MultiListModule } from '../../lists/multi-list/multi-list.module';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../../lists/list-change/list-change';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
-import { ButtonComponent } from '../../buttons/button/button.component';
-import { ChipModule } from '../chip/chip.module';
-import { ChipListModule } from '../chip-list/chip-list.module';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { TranslateServiceProvideMock } from '../../tests/services.stub';
+import {
+  TranslateServiceProvideMock,
+  mockTranslatePipe,
+  mockHighlightPipe,
+  listKeyboardServiceStub,
+  MobileServiceProvideMock,
+} from '../../tests/services.stub';
+import { ChipListComponent } from '../chip-list/chip-list.component';
+import { ChipComponent } from '../chip/chip.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MultiListComponent } from '../../lists/multi-list/multi-list.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { ListModelService } from '../../lists/list-service/list-model.service';
+import { ListChangeService } from '../../lists/list-change/list-change.service';
+import { ListKeyboardService } from '../../lists/list-service/list-keyboard.service';
+import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
+import { ListFooterComponent } from '../../lists/list-footer/list-footer.component';
 
 describe('MultiListAndChipsComponent', () => {
   let component: MultiListAndChipsComponent;
@@ -33,12 +43,24 @@ describe('MultiListAndChipsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         MultiListAndChipsComponent,
-        EmptyStateComponent,
-        MockComponent(ButtonComponent),
-        MockComponent(IconComponent),
+        ChipComponent,
+        ChipListComponent,
+        AvatarImageComponent,
+        MultiListComponent,
+        ListFooterComponent,
+        mockTranslatePipe,
+        mockHighlightPipe,
+        TextButtonComponent,
       ],
-      imports: [CommonModule, MultiListModule, ChipModule, ChipListModule],
-      providers: [TranslateServiceProvideMock()],
+      imports: [CommonModule, NoopAnimationsModule, ScrollingModule],
+      providers: [
+        ListModelService,
+        ListChangeService,
+        { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
+        MobileServiceProvideMock(),
+        TranslateServiceProvideMock(),
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {

@@ -6,20 +6,20 @@ import {
   tick,
 } from '@angular/core/testing';
 import { EditableListComponent } from './editable-list.component';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { IconsModule } from '../../icons/icons.module';
+import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
 import { SelectOption } from '../list.interface';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
-import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
-import { ButtonsModule } from '../../buttons/buttons.module';
 import { simpleChange, inputValue } from '../../services/utils/test-helpers';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { ListSortType } from './editable-list.enum';
 import { cloneDeep } from 'lodash';
 import { mockTranslatePipe } from '../../tests/services.stub';
+import { ButtonComponent } from '../../buttons/button/button.component';
+import { InputMessageComponent } from '../../form-elements/input-message/input-message.component';
+import { SquareButtonComponent } from '../../buttons/square/square.component';
 
 describe('EditableListComponent', () => {
   let fixture: ComponentFixture<EditableListComponent>;
@@ -65,15 +65,16 @@ describe('EditableListComponent', () => {
     ];
 
     TestBed.configureTestingModule({
-      declarations: [EditableListComponent, mockTranslatePipe],
-      imports: [
-        CommonModule,
-        IconsModule,
-        NgxSmoothDnDModule,
-        InputMessageModule,
-        ButtonsModule,
+      declarations: [
+        EditableListComponent,
+        mockTranslatePipe,
+        ButtonComponent,
+        SquareButtonComponent,
+        InputMessageComponent,
       ],
+      imports: [CommonModule, NgxSmoothDnDModule],
       providers: [EventManagerPlugins[0]],
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(EditableListComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -82,6 +83,7 @@ describe('EditableListComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(EditableListComponent);
         component = fixture.componentInstance;
+        component.ngOnInit = () => {};
       });
   }));
 
@@ -241,8 +243,9 @@ describe('EditableListComponent', () => {
         By.css('[b-input-message] .error')
       );
       expect(error.nativeElement.innerText).toContain(
-        `"${selectOptionsMock[0].value}" already exists`
+        selectOptionsMock[0].value
       );
+      expect(error.nativeElement.innerText).toContain('already');
     }));
   });
 

@@ -1,20 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
-import { ButtonsModule } from '../../buttons/buttons.module';
-import { IconsModule } from '../../icons/icons.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ListModelService } from '../list-service/list-model.service';
 import { SelectGroupOption } from '../list.interface';
 import { By } from '@angular/platform-browser';
 import { MultiListComponent } from './multi-list.component';
-import { FiltersModule } from '../../services/filters/filters.module';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { MockComponent } from 'ng-mocks';
 import { ListFooterComponent } from '../list-footer/list-footer.component';
-import { SearchModule } from '../../search/search/search.module';
 import { CheckboxComponent } from '../../form-elements/checkbox/checkbox.component';
-import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
 import {
   simpleChange,
   elementsFromFixture,
@@ -24,7 +19,16 @@ import { cloneDeep } from 'lodash';
 import {
   mockTranslatePipe,
   TranslateServiceProvideMock,
+  mockHighlightPipe,
+  listKeyboardServiceStub,
+  MobileServiceProvideMock,
 } from '../../tests/services.stub';
+import { ButtonComponent } from '../../buttons/button/button.component';
+import { IconComponent } from '../../icons/icon.component';
+import { SearchComponent } from '../../search/search/search.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
 
 describe('MultiListComponent', () => {
   let component: MultiListComponent;
@@ -58,29 +62,29 @@ describe('MultiListComponent', () => {
       declarations: [
         MultiListComponent,
         ListFooterComponent,
-        MockComponent(CheckboxComponent),
         mockTranslatePipe,
+        mockHighlightPipe,
+        MockComponent(CheckboxComponent),
+        ButtonComponent,
+        TextButtonComponent,
+        MockComponent(IconComponent),
+        MockComponent(SearchComponent),
       ],
+      imports: [CommonModule, NoopAnimationsModule, ScrollingModule],
       providers: [
         ListModelService,
         ListChangeService,
-        ListKeyboardService,
+        { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
+        MobileServiceProvideMock(),
         TranslateServiceProvideMock(),
       ],
-      imports: [
-        CommonModule,
-        SearchModule,
-        ButtonsModule,
-        IconsModule,
-        ScrollingModule,
-        FiltersModule,
-        ComponentRendererModule,
-      ],
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(MultiListComponent);
         component = fixture.componentInstance;
+        component.ngOnInit = () => {};
         component.startWithGroupsCollapsed = false;
 
         component.ngOnChanges(
@@ -91,7 +95,7 @@ describe('MultiListComponent', () => {
 
         spyOn(component.selectChange, 'emit');
         spyOn(component.apply, 'emit');
-        fixture.autoDetectChanges();
+        fixture.detectChanges();
       });
   }));
 
@@ -215,7 +219,7 @@ describe('MultiListComponent', () => {
         })
       );
 
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       options = fixture.debugElement.queryAll(By.css('.option'));
       expect(options.length).toEqual(2);
     });
@@ -271,7 +275,7 @@ describe('MultiListComponent', () => {
           options: changedOptions,
         })
       );
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       expect(component.noGroupHeaders).toBe(false);
       const options = fixture.debugElement.queryAll(By.css('.option'));
       const headerPlaceholder = fixture.debugElement.queryAll(
@@ -312,7 +316,7 @@ describe('MultiListComponent', () => {
           options: testOptionsMock,
         })
       );
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeTruthy();
     });
@@ -332,7 +336,7 @@ describe('MultiListComponent', () => {
           options: testOptionsMock,
         })
       );
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeFalsy();
     });
@@ -366,11 +370,11 @@ describe('MultiListComponent', () => {
           options: testOptionsMock,
         })
       );
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       let searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeTruthy();
       component['searchChange']('no possible options');
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       expect(component.listOptions.length).toEqual(0);
       searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeTruthy();
@@ -383,7 +387,7 @@ describe('MultiListComponent', () => {
         By.css('.header-collapse-trigger')
       )[0];
       headerCollapseTrigger.triggerEventHandler('click', null);
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       const options = fixture.debugElement.queryAll(By.css('.option'));
       expect(options.length).toEqual(2);
     });
@@ -393,7 +397,7 @@ describe('MultiListComponent', () => {
       );
       headerCollapseTrigger[0].triggerEventHandler('click', null);
       headerCollapseTrigger[1].triggerEventHandler('click', null);
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       const options = fixture.debugElement.queryAll(By.css('.option'));
       expect(options.length).toEqual(0);
     });
@@ -429,7 +433,7 @@ describe('MultiListComponent', () => {
         By.css('.header .checkbox')
       ).nativeElement;
       headerCheckbox.click();
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       expect(component.selectedIDs).toEqual([1, 2]);
     });
     it('should deselect all options in group when deselecting header', () => {
@@ -437,10 +441,10 @@ describe('MultiListComponent', () => {
         By.css('.header .checkbox')
       ).nativeElement;
       headerCheckbox.click();
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       expect(component.selectedIDs).toEqual([1, 2]);
       headerCheckbox.click();
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       expect(component.selectedIDs).toEqual([]);
     });
     it('should concat options that are selected and disabled and deselect the rest', () => {
@@ -466,16 +470,16 @@ describe('MultiListComponent', () => {
           options: testOptionsMock,
         })
       );
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
 
       const headerCheckbox = fixture.debugElement.queryAll(
         By.css('.header .checkbox')
       )[1].nativeElement;
       headerCheckbox.click();
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       expect(component.selectedIDs).toEqual([12, 11, 13]);
       headerCheckbox.click();
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       expect(component.selectedIDs).toEqual([12]);
     });
 
@@ -534,13 +538,13 @@ describe('MultiListComponent', () => {
         By.css('.header-collapse-trigger')
       ).nativeElement;
       headerCollapseTrigger.click();
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
 
       const headerCheckbox = fixture.debugElement.query(
         By.css('.header .checkbox')
       ).nativeElement;
       headerCheckbox.click();
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
 
       expect(component.listHeaders).toEqual(expectedHeaderModel);
       expect(component.listOptions).toEqual(expectedOptionsModel as any);
@@ -551,7 +555,7 @@ describe('MultiListComponent', () => {
         By.css('.header .checkbox')
       ).nativeElement;
       headerCheckbox.click();
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       const listChange = component[
         'listChangeSrvc'
       ].getListChange(component.options, [1, 2]);
@@ -593,7 +597,7 @@ describe('MultiListComponent', () => {
   describe('searchChange', () => {
     it('should show group header and option that match the search', () => {
       component['searchChange']('info 1');
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       const options = fixture.debugElement.queryAll(By.css('.option'));
       const headers = fixture.debugElement.queryAll(By.css('.header'));
       expect(options.length).toEqual(1);
@@ -615,7 +619,7 @@ describe('MultiListComponent', () => {
         clear: true,
         apply: true,
       };
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
       expect(listFooter.componentInstance.listActions).toEqual({
         clear: true,
@@ -627,7 +631,7 @@ describe('MultiListComponent', () => {
       component.listActions = {
         apply: true,
       };
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
       listFooter.componentInstance.apply.emit();
       expect(component.apply.emit).toHaveBeenCalled();
@@ -668,7 +672,7 @@ describe('MultiListComponent', () => {
           options: testOptionsMock,
         })
       );
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
       listFooter.componentInstance.clear.emit();
       fixture.detectChanges();

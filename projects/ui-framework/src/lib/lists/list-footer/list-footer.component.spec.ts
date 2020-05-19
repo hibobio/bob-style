@@ -7,10 +7,7 @@ import { By } from '@angular/platform-browser';
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
 import { elementFromFixture } from '../../services/utils/test-helpers';
-import {
-  mockTranslatePipe,
-  TranslateServiceProvideMock,
-} from '../../tests/services.stub';
+import { mockTranslatePipe } from '../../tests/services.stub';
 
 describe('ListFooterComponent', () => {
   let component: ListFooterComponent;
@@ -25,7 +22,7 @@ describe('ListFooterComponent', () => {
         MockComponent(TextButtonComponent),
         MockComponent(IconComponent),
       ],
-      providers: [TranslateServiceProvideMock()],
+      providers: [],
     })
       .compileComponents()
       .then(() => {
@@ -60,7 +57,9 @@ describe('ListFooterComponent', () => {
       });
 
       it('should show clear with the right config', () => {
-        expect(clearButton.componentInstance.text).toEqual('Clear');
+        expect(clearButton.componentInstance.text.toLowerCase()).toContain(
+          'clear'
+        );
       });
 
       it('should emit clear on clear click', () => {
@@ -83,7 +82,9 @@ describe('ListFooterComponent', () => {
       it('should show apply with the right config', () => {
         expect(applyButton.componentInstance.type).toEqual(ButtonType.primary);
         expect(applyButton.componentInstance.size).toEqual(ButtonSize.small);
-        expect(applyButton.componentInstance.text).toEqual('Apply');
+        expect(applyButton.componentInstance.text.toLowerCase()).toContain(
+          'apply'
+        );
       });
 
       it('should emit apply on apply click', () => {

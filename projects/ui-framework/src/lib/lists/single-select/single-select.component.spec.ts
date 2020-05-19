@@ -10,19 +10,28 @@ import {
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SingleSelectComponent } from './single-select.component';
-import { ButtonsModule } from '../../buttons/buttons.module';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { By } from '@angular/platform-browser';
 import { SelectGroupOption } from '../list.interface';
 import { cloneDeep } from 'lodash';
-import { ListFooterModule } from '../list-footer/list-footer.module';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
-import { SingleListModule } from '../single-list/single-list.module';
-import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
-import { FormElementLabelModule } from '../../form-elements/form-element-label/form-element-label.module';
-import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
 import { simpleChange } from '../../services/utils/test-helpers';
+import {
+  mockTranslatePipe,
+  TranslateServiceProvideMock,
+  listKeyboardServiceStub,
+  MobileServiceProvideMock,
+  mockHighlightPipe,
+} from '../../tests/services.stub';
+import { ListFooterComponent } from '../list-footer/list-footer.component';
+import { ListModelService } from '../list-service/list-model.service';
+import { ListChangeService } from '../list-change/list-change.service';
+import { ListKeyboardService } from '../list-service/list-keyboard.service';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { SingleListComponent } from '../single-list/single-list.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 
 describe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;
@@ -51,25 +60,37 @@ describe('SingleSelectComponent', () => {
     ];
 
     TestBed.configureTestingModule({
-      declarations: [SingleSelectComponent],
-      providers: [PanelPositionService],
-      imports: [
-        SingleListModule,
-        OverlayModule,
-        NoopAnimationsModule,
-        CommonModule,
-        ButtonsModule,
-        ListFooterModule,
-        TruncateTooltipModule,
-        FormElementLabelModule,
-        InputMessageModule,
+      declarations: [
+        SingleSelectComponent,
+        SingleListComponent,
+        ListFooterComponent,
+        mockTranslatePipe,
+        mockHighlightPipe,
       ],
+      imports: [
+        CommonModule,
+        NoopAnimationsModule,
+        ScrollingModule,
+        OverlayModule,
+        TruncateTooltipModule,
+      ],
+      providers: [
+        ListModelService,
+        ListChangeService,
+        { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
+        MobileServiceProvideMock(),
+        TranslateServiceProvideMock(),
+        PanelPositionService,
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(SingleSelectComponent);
         component = fixture.componentInstance;
         component.startWithGroupsCollapsed = false;
+        component.ngAfterViewInit = () => {};
+
         component.ngOnChanges(
           simpleChange(
             {

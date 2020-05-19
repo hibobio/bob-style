@@ -9,21 +9,36 @@ import {
 } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ButtonsModule } from '../../buttons/buttons.module';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { MultiSelectComponent } from './multi-select.component';
-import { MultiListModule } from '../multi-list/multi-list.module';
 import { By } from '@angular/platform-browser';
 import { SelectGroupOption } from '../list.interface';
 import { ListModelService } from '../list-service/list-model.service';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../list-change/list-change';
-import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
-import { FormElementLabelModule } from '../../form-elements/form-element-label/form-element-label.module';
 import { simpleChange } from '../../services/utils/test-helpers';
-import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
+import {
+  mockTranslatePipe,
+  TranslateServiceProvideMock,
+  mockHighlightPipe,
+  listKeyboardServiceStub,
+  MobileServiceProvideMock,
+} from '../../tests/services.stub';
+import { MockComponent } from 'ng-mocks';
+import { MultiListComponent } from '../multi-list/multi-list.component';
+import { ListFooterComponent } from '../list-footer/list-footer.component';
+import { CheckboxComponent } from '../../form-elements/checkbox/checkbox.component';
+import { ButtonComponent } from '../../buttons/button/button.component';
+import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
+import { IconComponent } from '../../icons/icon.component';
+import { SearchComponent } from '../../search/search/search.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { ListChangeService } from '../list-change/list-change.service';
+import { ListKeyboardService } from '../list-service/list-keyboard.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 
 describe('MultiSelectComponent', () => {
   let component: MultiSelectComponent;
@@ -52,24 +67,45 @@ describe('MultiSelectComponent', () => {
     ];
 
     TestBed.configureTestingModule({
-      declarations: [MultiSelectComponent],
-      providers: [PanelPositionService, ListModelService],
-      imports: [
-        MultiListModule,
-        OverlayModule,
-        NoopAnimationsModule,
-        CommonModule,
-        ButtonsModule,
-        TruncateTooltipModule,
-        FormElementLabelModule,
-        InputMessageModule,
+      declarations: [
+        MultiSelectComponent,
+        MultiListComponent,
+        ListFooterComponent,
+        mockTranslatePipe,
+        mockHighlightPipe,
+        MockComponent(CheckboxComponent),
+        ButtonComponent,
+        TextButtonComponent,
+        MockComponent(IconComponent),
+        MockComponent(SearchComponent),
       ],
+
+      imports: [
+        CommonModule,
+        NoopAnimationsModule,
+        ScrollingModule,
+        OverlayModule,
+        TruncateTooltipModule,
+      ],
+
+      providers: [
+        PanelPositionService,
+        ListModelService,
+        ListChangeService,
+        { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
+        MobileServiceProvideMock(),
+        TranslateServiceProvideMock(),
+      ],
+
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(MultiSelectComponent);
         component = fixture.componentInstance;
         component.startWithGroupsCollapsed = false;
+        component.ngAfterViewInit = () => {};
+
         component.ngOnChanges(
           simpleChange({
             options: optionsMock,
@@ -370,7 +406,7 @@ describe('MultiSelectComponent', () => {
         By.css('.total-values')
       ).nativeElement;
 
-      expect(tooltipEl).not.toBe(null);
+      expect(tooltipEl).not.toBeFalsy();
       expect(totalValuesCounter.innerText).toEqual('(4)');
       flush();
     }));
