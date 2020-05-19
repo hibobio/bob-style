@@ -20,6 +20,7 @@ import { ButtonComponent } from '../../buttons/button/button.component';
 import { ChipModule } from '../chip/chip.module';
 import { ChipListModule } from '../chip-list/chip-list.module';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { TranslateServiceProvideMock } from '../../tests/services.stub';
 
 describe('MultiListAndChipsComponent', () => {
   let component: MultiListAndChipsComponent;
@@ -37,7 +38,7 @@ describe('MultiListAndChipsComponent', () => {
         MockComponent(IconComponent),
       ],
       imports: [CommonModule, MultiListModule, ChipModule, ChipListModule],
-      providers: [],
+      providers: [TranslateServiceProvideMock()],
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
@@ -242,7 +243,7 @@ describe('MultiListAndChipsComponent', () => {
       chipEls = elementsFromFixture(fixture, 'b-chip-list b-chip');
       expect(listOptions.length).toEqual(3);
       expect(chipEls.length).toEqual(0);
-      listOptions.forEach(o => o.click());
+      listOptions.forEach((o) => o.click());
       fixture.detectChanges();
 
       chipEls = elementsFromFixture(fixture, 'b-chip-list b-chip');
