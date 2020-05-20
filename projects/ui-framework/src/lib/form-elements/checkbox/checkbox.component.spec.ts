@@ -5,6 +5,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxComponent } from './checkbox.component';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { InputEventType } from '../form-elements.enum';
+import { IconsModule } from 'bob-style';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 describe('CheckboxComponent', () => {
   let component: CheckboxComponent;
@@ -14,7 +16,13 @@ describe('CheckboxComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CheckboxComponent],
-      imports: [NoopAnimationsModule, CommonModule, InputMessageModule]
+      imports: [
+        NoopAnimationsModule,
+        CommonModule,
+        InputMessageModule,
+        IconsModule,
+        MatTooltipModule
+      ]
     })
       .compileComponents()
       .then(() => {
@@ -22,7 +30,8 @@ describe('CheckboxComponent', () => {
         component = fixture.componentInstance;
         component.wrapEvent = true;
         spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => { });
+        component.changed.subscribe(() => {
+        });
         fixture.detectChanges();
         checkboxLabel = fixture.debugElement.query(By.css('.bchk-label'))
           .nativeElement;

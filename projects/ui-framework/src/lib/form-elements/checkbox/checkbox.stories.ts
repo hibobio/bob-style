@@ -26,6 +26,7 @@ const template = `
             [disabled]="disabled"
             [required]="required"
             [readonly]="readonly"
+            [description]="description"
             [hintMessage]="hintMessage"
             [warnMessage]="warnMessage"
             [errorMessage]="errorMessage">
@@ -74,6 +75,7 @@ story.add(
         hintMessage: text('hintMessage', 'Usefull hint'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
+        description: text('description', ''),
       },
       moduleMetadata: {
         imports: [
