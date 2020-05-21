@@ -57,7 +57,7 @@ export class SocialComponent extends BaseFormElement
           return '';
         }
         if (SocialTypes[this.type].parseReplace) {
-          SocialTypes[this.type].parseReplace.forEach(rplc => {
+          SocialTypes[this.type].parseReplace.forEach((rplc) => {
             value = value.replace(rplc.a, rplc.b);
           });
         }
@@ -66,7 +66,7 @@ export class SocialComponent extends BaseFormElement
     ];
     this.outputTransformers = [
       (value: string): string =>
-        value ? `http://${SocialTypes[this.type].prefix}${value}` : '',
+        value ? `https://${SocialTypes[this.type].prefix}${value}` : '',
     ];
     this.baseValue = '';
     this.wrapEvent = false;

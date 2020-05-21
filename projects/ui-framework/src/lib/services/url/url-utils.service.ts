@@ -23,7 +23,7 @@ export class URLutils {
     }
     const rec = url.split(/(https?:\/\/)/i);
     return rec.length < 3
-      ? `http://${rec[rec.length - 1]}`
+      ? `https://${rec[rec.length - 1]}`
       : `${rec[1]}${rec[2]}`;
   }
 

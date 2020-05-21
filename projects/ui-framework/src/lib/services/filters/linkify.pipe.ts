@@ -26,7 +26,7 @@ export class LinkifyPipe implements PipeTransform {
         mailRegex,
         '<a href="mailto:$1"' + (add ? ' ' + add : '') + '>$1</a>'
       )
-      .replace(linksWithoutProtocolRegex, 'href="http://')
+      .replace(linksWithoutProtocolRegex, 'href="https://')
       .replace(linkWithTooLongTextRegex, '$1$2$3$4…$6');
   }
 }

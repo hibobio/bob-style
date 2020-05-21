@@ -10,7 +10,7 @@ describe('LinkifyPipe', () => {
         456
     `;
     expect(pipe.transform(testString)).toContain(
-      '<a href="http://www.hibob.com" target="_blank">www.hibob.com</a>'
+      '<a href="https://www.hibob.com" target="_blank">www.hibob.com</a>'
     );
   });
 
@@ -42,7 +42,7 @@ describe('LinkifyPipe', () => {
         </a>
     def`;
 
-    expect(pipe.transform(testString)).toContain('href="http://www.link.com"');
+    expect(pipe.transform(testString)).toContain('href="https://www.link.com"');
   });
 
   it('Should not put http in tag text, only in href', () => {
