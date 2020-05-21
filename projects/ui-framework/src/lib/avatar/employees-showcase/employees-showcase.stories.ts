@@ -25,10 +25,10 @@ const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
 );
 
 const sizeOptionsKeys = Object.values(AvatarSize).filter(
-  key => typeof key === 'string'
+  (key) => typeof key === 'string'
 ) as string[];
 const sizeOptionsValues = Object.values(AvatarSize).filter(
-  key => typeof key === 'number'
+  (key) => typeof key === 'number'
 ) as number[];
 const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
 
@@ -38,7 +38,7 @@ const template1 = `
             [avatarSize]="avatarSize"
             [min]="min"
             [max]="max"
-            [showMoreIcon]="showMoreIcon"
+            [showTotal]="showTotal"
             [expandOnClick]="expandOnClick"
             [doShuffle]="doShuffle"
             [inverseStack]="inverseStack"
@@ -55,7 +55,7 @@ const template2 = `
             [avatarSize]="avatarSizes.small"
             [min]="3"
             [max]="8"
-            [showMoreIcon]="true"
+            [showTotal]="true"
             [expandOnClick]="true"
             [doShuffle]="false"
             [inverseStack]="true"
@@ -71,7 +71,7 @@ const template3 = `
             [avatarSize]="avatarSizes.mini"
             [min]="3"
             [max]="6"
-            [showMoreIcon]="true"
+            [showTotal]="true"
             [expandOnClick]="true"
             [doShuffle]="false"
             [inverseStack]="false"
@@ -99,8 +99,8 @@ const note = `
   (values > 30 are not allowed and will be cut to 15). probably more aggressive limiting will boost overal page\
    performace. consider limiting to no more than 10 | 15
   [expandOnClick] | boolean | expands panel on click | true
-  [showMoreIcon] | boolean | show the counter / 3 dots \
-  circle - only valid for avatar size < medium; will be disabled if [fadeOut] is true) | true
+  [showTotal] | boolean | show the total counter circle \
+   - only valid for avatar size < medium; will be disabled if [fadeOut] is true) | true
   [doShuffle] | boolean | will shuffle and show random\
    avatars that dont fit - only if avatar size > medium.\
     this is resource intensive, so disabled by default  | <u>false</u>
@@ -153,7 +153,7 @@ story.add(
         min: number('min', 3, {}, 'Props'),
         max: number('max', 15, {}, 'Props'),
         expandOnClick: boolean('expandOnClick', true, 'Props'),
-        showMoreIcon: boolean('showMoreIcon', true, 'Props'),
+        showTotal: boolean('showTotal', true, 'Props'),
         doShuffle: boolean('doShuffle', false, 'Props'),
         inverseStack: boolean('inverseStack', false, 'Props'),
         fadeOut: boolean('fadeOut', false, 'Props'),

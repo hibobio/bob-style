@@ -58,7 +58,7 @@ export class EmployeesShowcaseComponent
   @Input() max = 15;
 
   @Input() doShuffle = false;
-  @Input() showMoreIcon = true;
+  @Input() showTotal = true;
   @Input() readonly = false;
 
   @HostBinding('attr.data-clickable')
@@ -84,9 +84,8 @@ export class EmployeesShowcaseComponent
   public employeeListOptions: SelectGroupOption[];
   public showcaseViewModel: Avatar[] = [];
   public avatarsToShow: Avatar[] = [];
-
-  public avatarsLeft = 0;
-  public showThreeDotsButton = false;
+  public totalAvatars = 0;
+  public showTotalButton = false;
 
   readonly panelClass = 'ee-showcase-panel';
   readonly dotsIcon = {
@@ -94,7 +93,6 @@ export class EmployeesShowcaseComponent
     color: IconColor.dark,
   };
 
-  private totalAvatars = 0;
   private avatarsToFit = 0;
   private clientWidth = 0;
   private resizeEventSubscriber: Subscription;
@@ -180,8 +178,8 @@ export class EmployeesShowcaseComponent
       '--avatar-gap': '-' + AvatarGap[this.avatarSize] + 'px',
     });
 
-    this.showThreeDotsButton =
-      this.showMoreIcon &&
+    this.showTotalButton =
+      this.showTotal !== false &&
       !this.fadeOut &&
       this.avatarSize < AvatarSize.medium &&
       this.avatarsToFit < this.totalAvatars;
@@ -191,11 +189,6 @@ export class EmployeesShowcaseComponent
     }
 
     this.setAvatarsToShow();
-
-    this.avatarsLeft = Math.max(
-      this.totalAvatars - this.avatarsToShow.length,
-      0
-    );
 
     if (
       this.doShuffle &&
@@ -235,7 +228,7 @@ export class EmployeesShowcaseComponent
   private setAvatarsToShow(): void {
     this.avatarsToShow = this.showcaseViewModel.slice(
       0,
-      !this.showThreeDotsButton ? this.avatarsToFit : this.avatarsToFit - 1
+      !this.showTotalButton ? this.avatarsToFit : this.avatarsToFit - 1
     );
   }
 

@@ -325,6 +325,51 @@ export const arrayMode = <T = any>(arr: T[]): T =>
     .pop();
 
 // ----------------------
+// MAPS
+// ----------------------
+
+export const mapSplice = <K = any, V = any>(
+  map: Map<K, V>,
+  startindex: number,
+  deleteCount?: number,
+  ...elementsToInsert: [K, V][]
+): Map<K, V> => {
+  const deletedElementsMap: Map<K, V> = new Map();
+
+  if (!isMap(map) || map.size === 0) {
+    return deletedElementsMap;
+  }
+
+  let i = startindex;
+  for (const k of map.keys()) {
+    if (i++ > Math.min(startindex + (deleteCount || map.size), map.size)) {
+      break;
+    }
+
+    deletedElementsMap.set(k, map.get(k));
+    map.delete(k);
+  }
+
+  return deletedElementsMap;
+};
+
+export const withMapItemsInIndexRange = <K = any, V = any>(
+  map: Map<K, V>,
+  startindex: number,
+  endindex: number,
+  callback: (key: K, value: V) => void
+): void => {
+  let i = startindex;
+  for (const k of map.keys()) {
+    if (i++ > Math.min(endindex, map.size)) {
+      break;
+    }
+
+    callback(k, map.get(k));
+  }
+};
+
+// ----------------------
 // STRINGS
 // ----------------------
 
