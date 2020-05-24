@@ -36,6 +36,7 @@ import { TreeListValue } from '../tree-list.interface';
 import { TreeListInputOutput } from '../tree-list-IO.abstract';
 import { ListPanelService } from '../../list-panel.service';
 import { TreeListPanelIO } from './tree-list-panel.interface';
+import { LIST_ACTIONS_DEF } from '../../list-footer/list-footer.const';
 
 @Component({
   selector: 'b-tree-list-panel',
@@ -58,12 +59,7 @@ export class TreeListPanelComponent extends TreeListInputOutput
   ) {
     super();
     this.focusOnInit = true;
-    this.listActions = {
-      apply: true,
-      cancel: true,
-      clear: true,
-      reset: false,
-    };
+    this.listActions = { ...LIST_ACTIONS_DEF };
   }
 
   @ViewChild(CdkOverlayOrigin, { static: true })

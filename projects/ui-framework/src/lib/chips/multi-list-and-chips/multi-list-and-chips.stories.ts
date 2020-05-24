@@ -8,7 +8,6 @@ import {
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import {
   MultiListAndChipsOptionsMock,
   MultiListAndAvatarChipsOptionsMock,
@@ -17,6 +16,9 @@ import { MultiListAndChipsModule } from './multi-list-and-chips.module';
 import { action } from '@storybook/addon-actions';
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 import { Icons } from '../../icons/icons.enum';
+
+import listInterfaceDoc from '../../lists/list.interface.md';
+import listSelectsPropsDoc from '../../lists/lists-selects.properties.md';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
@@ -52,33 +54,15 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [options] | SelectGroupOption[] | model of selection group | &nbsp;
   [listLabel] | string | label text for the Multi List component | &nbsp;
   [chipsLabel] | string | label text for the Chips List component | &nbsp;
-  [showSingleGroupHeader] | boolean | displays single group with group header | **false**
-  [startWithGroupsCollapsed] | boolean |  if true, will start with groups closed | true
   [emptyState] | EmptyStateConfig | config for the EmptyStateComponent to\
    be displayed when no options are selected | &nbsp;
   (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits on list change | &nbsp;
 
-  #### Example of SelectGroupOption[]
-\`\`\`
-  [
-    {
-      "groupName": "For kids",
-      "options": [
-        {
-          "value": "Lego Building/Assembling",
-          "id": "85d78",
-          "selected": false
-        },
-        ....
-      ]
-    },
-    .....
-  ]
-\`\`\`
+  ${listSelectsPropsDoc}
 
+  ${listInterfaceDoc}
 `;
 
 const storyTemplate = `

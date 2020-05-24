@@ -23,6 +23,7 @@ import { FormEvents } from '../../form-elements/form-elements.enum';
 import { ListPanelService } from '../list-panel.service';
 import { MobileService } from '../../services/utils/mobile.service';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
+import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 
 @Component({
   selector: 'b-single-select',
@@ -76,12 +77,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
     this.value = null;
     this.hasArrow = false;
     this.panelPosition = PanelDefaultPosVer.belowLeftRight;
-    this.listActions = {
-      apply: false,
-      cancel: false,
-      clear: false,
-      reset: false,
-    };
+    this.listActions = { ...SINGLE_LIST_LIST_ACTIONS_DEF };
   }
 
   @Input() showNoneOption = true;
@@ -91,7 +87,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
       this.value &&
       this.options &&
       arrayFlatten(
-        this.options.map(group => group.options)
+        this.options.map((group) => group.options)
       ).find((opt: SelectOption) => this.value.includes(opt.id));
     return option && option.value;
   }

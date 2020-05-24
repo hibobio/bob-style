@@ -26,6 +26,7 @@ import { SelectType } from '../list.enum';
 import { ListPanelService } from '../list-panel.service';
 import { MobileService } from '../../services/utils/mobile.service';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
+import { LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 
 @Component({
   selector: 'b-multi-select',
@@ -79,12 +80,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     this.type = SelectType.multi;
     this.hasArrow = false;
     this.panelPosition = PanelDefaultPosVer.belowLeftRight;
-    this.listActions = {
-      apply: true,
-      cancel: true,
-      clear: true,
-      reset: false,
-    };
+    this.listActions = { ...LIST_ACTIONS_DEF };
   }
 
   @ViewChild('input', { static: true, read: TruncateTooltipComponent })
@@ -123,7 +119,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     return (
       this.value &&
       this.options &&
-      arrayFlatten(this.options.map(group => group.options))
+      arrayFlatten(this.options.map((group) => group.options))
         .filter((option: SelectOption) => this.value.includes(option.id))
         .map((option: SelectOption) => option.value)
         .join(', ')

@@ -77,6 +77,10 @@ const treeTemplate = `<b-table
     [rowSelection]="rowSelection"
     [removeColumnButtonEnabled]="removeColumnButtonEnabled"
     [shouldAutoSizeColumns]="shouldAutoSizeColumns"
+    [styleConfig]="{
+        disableRowHoverBgColor: disableRowHoverBgColor,
+        showColumnBorders: showColumnBorders
+    }"
     (rowClicked)="rowClicked($event)"
     (cellClicked)="cellClicked($event)"
     (selectionChanged)="selectionChanged($event)"

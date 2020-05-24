@@ -11,7 +11,7 @@ $toolpanel-indent-size: times8(4);
 
   .ag-row-animation .ag-row {
     transition: transform 0.4s, top 0.4s, height 0.4s, background-color 0.1s,
-    opacity 0.2s;
+      opacity 0.2s;
   }
 
   @for $i from 1 to 50 {
@@ -38,12 +38,13 @@ $toolpanel-indent-size: times8(4);
   &.tree-no-collapse {
     .ag-icon {
       display: block;
-      &.ag-icon-contracted, &.ag-icon-expanded {
+      &.ag-icon-contracted,
+      &.ag-icon-expanded {
         display: none;
       }
     }
     .ag-center-cols-clipper {
-      .ag-row[role="row"] > :first-child {
+      .ag-row[role='row'] > :first-child {
         pointer-events: none;
       }
       .ag-row:not(.ag-row-level-0) {
@@ -55,7 +56,7 @@ $toolpanel-indent-size: times8(4);
             &:before {
               position: absolute;
               color: $grey-600;
-              transform: translate(calc(-100% - 10px), -3px);
+              transform: translate(calc(-100% - 2px), -3px);
               height: auto;
             }
           }
@@ -83,7 +84,7 @@ $toolpanel-indent-size: times8(4);
       display: none !important;
     }
   }
-  [class*="ag-row-group-indent-"] {
+  [class*='ag-row-group-indent-'] {
     display: flex;
   }
 }

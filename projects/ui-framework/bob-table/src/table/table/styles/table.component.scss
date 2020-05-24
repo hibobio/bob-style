@@ -168,6 +168,10 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     &.row-clickable {
       cursor: pointer;
     }
+
+    .ag-group-value {
+      padding: 2px 0;
+    }
   }
 }
 

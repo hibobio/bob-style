@@ -17,6 +17,7 @@ import {
 } from '../../services/utils/functional-utils';
 import { SelectType } from '../list.enum';
 import { MobileService } from '../../services/utils/mobile.service';
+import { MULTI_LIST_LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 
 @Component({
   selector: 'b-multi-list',
@@ -50,12 +51,7 @@ export class MultiListComponent extends BaseListElement {
       host
     );
     this.type = SelectType.multi;
-    this.listActions = {
-      apply: false,
-      cancel: false,
-      clear: true,
-      reset: false,
-    };
+    this.listActions = { ...MULTI_LIST_LIST_ACTIONS_DEF };
   }
 
   headerClick(header: ListHeader, index: number): void {
@@ -68,12 +64,12 @@ export class MultiListComponent extends BaseListElement {
 
   selectGroup(header: ListHeader, index: number): void {
     header.selected = this.options[index].options
-      .filter(option => !(option.disabled && !option.selected))
-      .some(option => !option.selected);
+      .filter((option) => !(option.disabled && !option.selected))
+      .some((option) => !option.selected);
 
     const groupOptionsNotDisabledIDs = this.options[index].options
-      .filter(option => !option.disabled)
-      .map(option => option.id);
+      .filter((option) => !option.disabled)
+      .map((option) => option.id);
 
     const groupOptionsSelectedDisabledIDs = this.getSelectedIDs(
       this.options,

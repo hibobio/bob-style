@@ -49,7 +49,7 @@
        *ngIf="dialogButtons"
        [ngClass]="{'single-button': !dialogButtons.cancel}">
 
-    <ng-content mat-dialog-footer-left></ng-content>
+    <ng-content select="[mat-dialog-footer-left]"></ng-content>
 
     <div class="action-buttons">
       <b-button *ngIf="dialogButtons.cancel"

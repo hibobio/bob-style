@@ -45,6 +45,7 @@ import {
 } from '../../../services/utils/transformers';
 import { TreeListValueUtils } from '../services/tree-list-value.static';
 import { PanelDefaultPosVer } from '../../../popups/panel/panel.enum';
+import { LIST_ACTIONS_DEF } from '../../list-footer/list-footer.const';
 
 @Component({
   selector: 'b-tree-select',
@@ -75,12 +76,7 @@ export class TreeSelectComponent extends BaseFormElement
     this.baseValue = [];
     this.inputTransformers = [selectValueOrFail];
     this.wrapEvent = true;
-    this.listActions = {
-      apply: true,
-      cancel: true,
-      clear: true,
-      reset: false,
-    };
+    this.listActions = { ...LIST_ACTIONS_DEF };
   }
 
   @ViewChild(TreeListPanelComponent, { static: true })

@@ -13,6 +13,7 @@ import { ListChangeService } from '../list-change/list-change.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { SelectType } from '../list.enum';
 import { MobileService } from '../../services/utils/mobile.service';
+import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 
 @Component({
   selector: 'b-single-list',
@@ -43,12 +44,7 @@ export class SingleListComponent extends BaseListElement {
       host
     );
     this.type = SelectType.single;
-    this.listActions = {
-      apply: false,
-      cancel: false,
-      clear: false,
-      reset: false,
-    };
+    this.listActions = { ...SINGLE_LIST_LIST_ACTIONS_DEF };
   }
 
   headerClick(header: ListHeader): void {

@@ -32,6 +32,7 @@ import { BaseTreeListElement } from './tree-list.abstract';
 import { BehaviorSubject } from 'rxjs';
 import { TreeListValueUtils } from '../services/tree-list-value.static';
 import { MobileService } from '../../../services/utils/mobile.service';
+import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../../list-footer/list-footer.const';
 
 @Component({
   selector: 'b-tree-list',
@@ -50,12 +51,7 @@ export class TreeListComponent extends BaseTreeListElement {
     host: ElementRef
   ) {
     super(modelSrvc, cntrlsSrvc, mobileService, DOM, cd, zone, host);
-    this.listActions = {
-      apply: false,
-      cancel: false,
-      clear: false,
-      reset: false,
-    };
+    this.listActions = { ...SINGLE_LIST_LIST_ACTIONS_DEF };
   }
 
   @Input('list') set setList(list: TreeListOption[]) {}

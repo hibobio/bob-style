@@ -111,8 +111,12 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
     const target = event.target as HTMLElement;
 
     if (this.clicked.observers.length && target.matches('.bsbc-bar-box')) {
+      event.stopPropagation();
       const index = parseInt(target.getAttribute('data-index'), 10);
-      this.clicked.emit(this.data[index]);
+
+      this.zone.run(() => {
+        this.clicked.emit(this.data[index]);
+      });
     }
   }
 
@@ -140,5 +144,9 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
           : randomNumber(50, 200) + 'ms',
       });
     });
+  }
+
+  public trackBy(index: number, item: SimpleBarChartItem): string {
+    return index + '' + item.value + (item.text || '');
   }
 }

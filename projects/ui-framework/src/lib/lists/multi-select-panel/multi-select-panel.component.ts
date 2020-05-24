@@ -16,6 +16,7 @@ import { ListModelService } from '../list-service/list-model.service';
 import { SelectType } from '../list.enum';
 import { ListPanelService } from '../list-panel.service';
 import { MobileService } from '../../services/utils/mobile.service';
+import { LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 
 @Component({
   selector: 'b-multi-select-panel',
@@ -56,12 +57,7 @@ export class MultiSelectPanelComponent extends BaseSelectPanelElement {
     this.wrapEvent = false;
     this.doPropagate = false;
     this.hasArrow = true;
-    this.listActions = {
-      apply: true,
-      cancel: true,
-      clear: true,
-      reset: false,
-    };
+    this.listActions = { ...LIST_ACTIONS_DEF };
   }
 
   @Input() chevronButtonText: string;

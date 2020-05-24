@@ -6,7 +6,10 @@
 
   <b-multi-list #list
                 [attr.aria-labelledby]="listLabel ? listID : null"
+                [mode]="mode"
+                [listActions]="listActions"
                 [options]="listOptions"
+                [optionsDefault]="optionsDefault"
                 [maxHeight]="listElHeight*6"
                 [showSingleGroupHeader]="showSingleGroupHeader"
                 [startWithGroupsCollapsed]="startWithGroupsCollapsed"

@@ -1,7 +1,7 @@
 <div class="bsbc-chart"
-     (click)="onBarClick($event)">
+     (click.outside-zone)="onBarClick($event)">
   <div class="bsbc-bar-wrap"
-       *ngFor="let item of data; let index = index">
+       *ngFor="let item of data; let index = index; trackBy: trackBy">
 
     <div class="bsbc-bar-box"
          [attr.data-index]="index">

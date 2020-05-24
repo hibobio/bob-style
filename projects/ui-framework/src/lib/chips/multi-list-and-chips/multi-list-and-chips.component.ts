@@ -11,7 +11,11 @@ import {
   ElementRef,
 } from '@angular/core';
 import { LIST_EL_HEIGHT } from '../../lists/list.consts';
-import { SelectGroupOption, SelectOption } from '../../lists/list.interface';
+import {
+  SelectGroupOption,
+  SelectOption,
+  ListFooterActions,
+} from '../../lists/list.interface';
 import { ChipListConfig, Chip } from '../chips.interface';
 import { ChipType } from '../chips.enum';
 import { ListChange } from '../../lists/list-change/list-change';
@@ -26,6 +30,8 @@ import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.inter
 import { get } from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { SelectMode } from '../../lists/list.enum';
+import { MULTI_LIST_LIST_ACTIONS_DEF } from '../../lists/list-footer/list-footer.const';
 
 @Component({
   selector: 'b-multi-list-and-chips',
@@ -39,14 +45,19 @@ export class MultiListAndChipsComponent implements OnChanges, OnInit {
     public host: ElementRef,
     private translate: TranslateService,
     private DOM: DOMhelpers
-  ) {}
+  ) {
+    this.listActions = { ...MULTI_LIST_LIST_ACTIONS_DEF };
+  }
 
+  @Input() mode: SelectMode = SelectMode.classic;
   @Input() options: SelectGroupOption[] = [];
+  @Input() optionsDefault: SelectGroupOption[];
   @Input() listLabel: string;
   @Input() chipsLabel: string;
   @Input() showSingleGroupHeader = false;
   @Input() startWithGroupsCollapsed = true;
   @Input() emptyState: EmptyStateConfig;
+  @Input() listActions: ListFooterActions;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
