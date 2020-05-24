@@ -6,6 +6,7 @@ import {
   inject,
   TestBed,
   tick,
+  resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AutoCompleteComponent } from './auto-complete.component';
@@ -26,6 +27,10 @@ describe('AutoCompleteComponent', () => {
   let overlayContainerElement: HTMLElement;
   let platform: Platform;
   let optionsMock: AutoCompleteOption[];
+
+  beforeEach(() => {
+    resetFakeAsyncZone();
+  });
 
   beforeEach(async(() => {
     optionsMock = Array.from(Array(12), (_, k) => {

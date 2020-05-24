@@ -17,8 +17,16 @@ import {
 import { Tab, TabChangeEvent } from './tabs.interface';
 import { MatTabNav, MatTabLink } from '@angular/material/tabs';
 import { TabsType } from './tabs.enum';
-import { notFirstChanges, isKey } from '../../services/utils/functional-utils';
+import {
+  notFirstChanges,
+  isKey,
+  isObject,
+} from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
+import { IconSize, IconColor } from '../../icons/icons.enum';
+import { BadgeConfig } from '../../avatar/avatar/avatar.interface';
+import { AvatarBadges } from '../../avatar/avatar/avatar.consts';
+import { AvatarBadge } from '../../avatar/avatar/avatar.enum';
 
 @Component({
   selector: 'b-tabs',
@@ -34,7 +42,15 @@ export class TabsComponent implements OnChanges, AfterViewInit {
   tabLabels: QueryList<ElementRef>;
 
   @Input() public type: TabsType = TabsType.primary;
-  @Input() public tabs: Tab[] = [];
+
+  @Input('tabs') set setTabs(tabs: Tab[]) {
+    this.tabs = (tabs || []).map((tab) => ({
+      ...tab,
+      badge: this.processBadge(tab.badge),
+    }));
+  }
+  public tabs: Tab[] = [];
+
   @Input('selectedIndex') set setSelectedIndex(index: number) {
     this.selectedIndex = index || 0;
   }
@@ -49,6 +65,9 @@ export class TabsComponent implements OnChanges, AfterViewInit {
   @Output() selectClick: EventEmitter<TabChangeEvent> = new EventEmitter<
     TabChangeEvent
   >();
+
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (notFirstChanges(changes)) {
@@ -119,7 +138,7 @@ export class TabsComponent implements OnChanges, AfterViewInit {
   }
 
   private updateTabWidths(): void {
-    this.tabLabels.toArray().forEach(label => {
+    this.tabLabels.toArray().forEach((label) => {
       const element = label.nativeElement;
       element.style.minWidth = element.scrollWidth + 'px';
     });
@@ -127,5 +146,19 @@ export class TabsComponent implements OnChanges, AfterViewInit {
 
   public tabTrackBy(index: number, tab: Tab): string {
     return tab.key || tab.label;
+  }
+
+  private processBadge(badge: Tab['badge']): BadgeConfig {
+    return badge
+      ? ({
+          ...(isObject(badge)
+            ? badge
+            : AvatarBadges[badge as AvatarBadge] || {}),
+          iconAttribute: (
+            (badge as BadgeConfig).icon ||
+            AvatarBadges[badge as AvatarBadge].icon
+          ).replace('b-icon-', ''),
+        } as BadgeConfig)
+      : null;
   }
 }

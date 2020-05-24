@@ -4,6 +4,7 @@ import {
   fakeAsync,
   TestBed,
   tick,
+  resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogComponent } from './dialog.component';
@@ -23,6 +24,10 @@ describe('DialogComponent', () => {
   let spyMatDialogRef: SpyObj<MatDialogRef<any>>;
 
   const dialogTitle = 'Dialog title';
+
+  beforeEach(() => {
+    resetFakeAsyncZone();
+  });
 
   beforeEach(async(() => {
     const dialogButtonsConfig: DialogButtons = {

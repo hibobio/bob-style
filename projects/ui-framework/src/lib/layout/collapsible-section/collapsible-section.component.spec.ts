@@ -5,6 +5,7 @@ import {
   fakeAsync,
   tick,
   flush,
+  resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -40,6 +41,10 @@ describe('CollapsibleSectionComponent', () => {
   let collapsibleSection: HTMLElement;
   let collapsibleHeader: HTMLElement;
   let collapsiblePanel: HTMLElement;
+
+  beforeEach(() => {
+    resetFakeAsyncZone();
+  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

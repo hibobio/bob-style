@@ -5,6 +5,7 @@ import {
   discardPeriodicTasks,
   fakeAsync,
   flush,
+  resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -36,6 +37,10 @@ describe('CardsLayoutComponent', () => {
   const calcNeededWidth = (cards, type) => {
     return CARD_TYPE_WIDTH[type] * cards + GAP_SIZE * (cards - 1) + 15 + 'px';
   };
+
+  beforeEach(() => {
+    resetFakeAsyncZone();
+  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

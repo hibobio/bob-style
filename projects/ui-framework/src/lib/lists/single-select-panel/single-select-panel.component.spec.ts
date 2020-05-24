@@ -5,6 +5,7 @@ import {
   inject,
   TestBed,
   tick,
+  resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { SingleSelectPanelComponent } from './single-select-panel.component';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
@@ -37,6 +38,10 @@ describe('SingleSelectPanelComponent', () => {
   let overlayContainerElement: HTMLElement;
   let platform: Platform;
   let optionsMock: SelectGroupOption[];
+
+  beforeEach(() => {
+    resetFakeAsyncZone();
+  });
 
   beforeEach(async(() => {
     optionsMock = [

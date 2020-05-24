@@ -152,7 +152,7 @@ export class SideMenuComponent implements OnChanges {
     );
   }
 
-  public getIconData(icon: Icons) {
+  public getIconData(icon: Icons): string {
     return icon.replace('b-icon-', '');
   }
 }

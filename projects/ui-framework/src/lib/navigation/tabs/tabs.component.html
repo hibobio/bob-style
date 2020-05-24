@@ -12,6 +12,12 @@
      [attr.data-index]="i"
      [active]="i === selectedIndex">
     {{tab.label}}
+
+    <span *ngIf="tab.badge"
+          class="tab-badge"
+          [attr.data-icon-before]="tab.badge['iconAttribute']"
+          [attr.data-icon-before-size]="iconSize.small"
+          [attr.data-icon-before-color]="tab.badge['color'] || iconColor.normal"></span>
   </a>
 
 </div>

@@ -6,6 +6,7 @@ import {
   tick,
   flush,
   discardPeriodicTasks,
+  resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA, Component, Input } from '@angular/core';
@@ -73,6 +74,10 @@ describe('TruncateTooltipComponent', () => {
   let bttComp2: TruncateTooltipComponent;
   let bttComp1textContainer: HTMLElement;
   let bttComp2textContainer: HTMLElement;
+
+  beforeEach(() => {
+    resetFakeAsyncZone();
+  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

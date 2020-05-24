@@ -3,7 +3,8 @@ import {
   ComponentFixture,
   fakeAsync,
   TestBed,
-  tick
+  tick,
+  resetFakeAsyncZone,
 } from '@angular/core/testing';
 
 import { EmojiComponent } from './emoji.component';
@@ -19,10 +20,14 @@ describe('EmojiComponent', () => {
   let fixture: ComponentFixture<EmojiComponent>;
   let emojiSelect;
 
+  beforeEach(() => {
+    resetFakeAsyncZone();
+  });
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TypographyModule, TruncateTooltipModule, PanelModule],
-      declarations: [EmojiComponent]
+      declarations: [EmojiComponent],
     })
       .compileComponents()
       .then(() => {
@@ -36,14 +41,14 @@ describe('EmojiComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  describe('ngOnInit', function() {
+  describe('ngOnInit', function () {
     it('should render emojis', () => {
       component.panelElement.onTriggerClick();
       const catListObj = fixture.debugElement.query(By.css('.emojis'));
       expect(catListObj).toBeTruthy();
     });
   });
-  describe('toggleMenu', function() {
+  describe('toggleMenu', function () {
     it(
       'should update menu state when using toggle menu,' +
         'and toggle menu function with force state',
@@ -81,7 +86,10 @@ describe('EmojiComponent', () => {
   });
   describe('selectEmoji', () => {
     it('should select emoji trigger output with input string / emoji', fakeAsync(() => {
-      const selectedEmoji = find(EMOJI_DATA.find(cat => cat.name === 'people').data, { shortname: 'grinning' });
+      const selectedEmoji = find(
+        EMOJI_DATA.find((cat) => cat.name === 'people').data,
+        { shortname: 'grinning' }
+      );
       component.selectEmoji(selectedEmoji);
       fixture.detectChanges();
       tick();

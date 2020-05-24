@@ -4,6 +4,7 @@ import {
   fakeAsync,
   TestBed,
   tick,
+  resetFakeAsyncZone,
 } from '@angular/core/testing';
 
 import { TabsComponent } from './tabs.component';
@@ -13,6 +14,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TabsType } from './tabs.enum';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { AvatarBadge } from '../../avatar/avatar/avatar.enum';
+import { Icons, IconColor } from '../../icons/icons.enum';
 
 describe('TabsComponent', () => {
   let component: TabsComponent;
@@ -31,15 +34,19 @@ describe('TabsComponent', () => {
   }));
 
   beforeEach(() => {
+    resetFakeAsyncZone();
+
     fixture = TestBed.createComponent(TabsComponent);
     component = fixture.componentInstance;
-    component.tabs = [
+    component.setTabs = [
       {
         label: 'tab 1',
         key: 'tab-one',
+        badge: AvatarBadge.error,
       },
       {
         label: 'tab 2',
+        badge: { icon: Icons.warning, color: IconColor.negative },
       },
       {
         label: 'tab 3',
@@ -119,6 +126,11 @@ describe('TabsComponent', () => {
         index: 1,
         tab: {
           label: 'tab 2',
+          badge: {
+            icon: Icons.warning,
+            color: IconColor.negative,
+            iconAttribute: 'error',
+          },
         },
       });
       component.selectClick.complete();
@@ -130,6 +142,19 @@ describe('TabsComponent', () => {
         By.css('.mat-tab-label:nth-child(1)')
       ).nativeElement;
       expect(label.classList).toContain('tab-one');
+    });
+
+    it('should have badges', () => {
+      const tabEls = fixture.debugElement.queryAll(
+        By.css('.mat-tab-label .tab-badge')
+      );
+      expect(tabEls[0].nativeElement.getAttribute('data-icon-before')).toEqual(
+        'error'
+      );
+      expect(
+        tabEls[1].nativeElement.getAttribute('data-icon-before-color')
+      ).toEqual('negative');
+      expect(tabEls[2]).toBeFalsy();
     });
   });
 });

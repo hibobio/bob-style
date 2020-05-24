@@ -4,6 +4,7 @@ import {
   TestBed,
   fakeAsync,
   flush,
+  resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { AvatarComponent } from './avatar.component';
 import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
@@ -26,6 +27,10 @@ describe('AvatarComponent', () => {
   let avatarElement: HTMLElement;
   let titleElement: HTMLElement;
   let componentElem: HTMLElement;
+
+  beforeEach(() => {
+    resetFakeAsyncZone();
+  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

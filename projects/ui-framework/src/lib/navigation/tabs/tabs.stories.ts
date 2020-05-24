@@ -14,6 +14,7 @@ import { Tab } from './tabs.interface';
 import { TabsType } from './tabs.enum';
 import { makeArray, simpleUID } from '../../services/utils/functional-utils';
 import { mockHobbies } from '../../mock.const';
+import { AvatarBadge } from '../../avatar/avatar/avatar.enum';
 
 const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(
   withKnobs
@@ -24,14 +25,15 @@ const tabs: Tab[] = makeArray(15).map(() => ({
   key: simpleUID(),
 }));
 
-const template = `
-<b-tabs
-  [tabs]="tabs"
-  [type]="type"
-  [selectedIndex]="selectedIndex"
-  [controlled]="false"
-  (selectClick)="selectClick($event)"
-  (selectChange)="selectChange($event)">
+tabs[1].badge = AvatarBadge.error;
+
+const template = `<b-tabs
+    [tabs]="tabs"
+    [type]="type"
+    [selectedIndex]="selectedIndex"
+    [controlled]="false"
+    (selectClick)="selectClick($event)"
+    (selectChange)="selectChange($event)">
 </b-tabs>`;
 
 const storyTemplate = `
@@ -47,6 +49,10 @@ const note = `
   #### Module
   *TabsModule*
 
+  ~~~
+  ${template}
+  ~~~
+
   #### Properties
   Name | Type | Description | Default
   --- | --- | --- | ---
@@ -57,9 +63,13 @@ const note = `
   (selectClick) | EventEmitter<wbr>&lt;TabChangeEvent&gt; | emits Tab and tab index, when tab was clicked.<br>**Note:** This output is mostly usefull when setting \`\`\`[controlled]="true"\`\`\` | &nbsp;
   (selectChange) | EventEmitter<wbr>&lt;TabChangeEvent&gt; | emits Tab and tab index, when tab was changed<br>**Note:** In most cases, use this output. | &nbsp;
 
-  ~~~
-  ${template}
-  ~~~
+
+  #### interface: Tab
+  Name | Type | Description | Default
+  --- | --- | ---
+  label | string | tab title
+  key? | string | tab id
+  badge? | AvatarBadge / BadgeConfig | tab badge
 `;
 const selectClick = action('selectClick');
 story.add(
@@ -70,7 +80,7 @@ story.add(
       props: {
         tabs: object<Tab>('tabs', tabs),
         type: select('type', Object.values(TabsType), TabsType.primary),
-        selectClick: function(e) {
+        selectClick: function (e) {
           this.selectedIndex = e.index;
           selectClick(e);
         },

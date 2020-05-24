@@ -140,10 +140,29 @@
       </td>
     </tr>
 
+  </tbody>
+
+
+</table>
+
+<b-heading>Colors</b-heading>
+
+<table class="doc-table">
+  <thead>
     <tr>
-      <td>bg-grey-100
+      <th>class</th>
+      <th>description</th>
+      <th>example</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr>
+      <td>bg-white,
+        bg-grey-100, bg-grey-300, bg-grey-500, bg-grey-600, bg-grey-700
       </td>
-      <td>Common background colors
+      <td>Common background grey colors
       </td>
       <td>
         <pre><code>&lt;div class="bg-grey-100"&gt;
@@ -152,8 +171,19 @@
       </td>
     </tr>
 
-  </tbody>
+    <tr>
+      <td>bg-primary-500, bg-secondary-500, bg-inform-500, bg-negative-500, bg-positive-500
+      </td>
+      <td>Common background brand colors
+      </td>
+      <td>
+        <pre><code>&lt;div class="bg-primary-500"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
 
+  </tbody>
 
 </table>
 

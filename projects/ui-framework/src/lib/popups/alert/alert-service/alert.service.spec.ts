@@ -5,6 +5,8 @@ import {
   tick,
   discardPeriodicTasks,
   flush,
+  resetFakeAsyncZone,
+  async,
 } from '@angular/core/testing';
 import { AlertService } from './alert.service';
 import { AlertConfig } from '../alert.interface';
@@ -32,7 +34,12 @@ const ALERT_CONFIG: AlertConfig = {
 describe('AlertService', () => {
   let alertService: AlertService;
   let overlayElement: HTMLElement;
+
   beforeEach(() => {
+    resetFakeAsyncZone();
+  });
+
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [OverlayModule, ButtonsModule, BrowserAnimationsModule],
       declarations: [AlertComponent, MockComponent(IconComponent)],
@@ -50,7 +57,7 @@ describe('AlertService', () => {
 
     alertService = TestBed.get(AlertService);
     alertService['alertDuration'] = ALERT_DURATION_TICK - 1;
-  });
+  }));
 
   describe('Alert Service', () => {
     afterEach(fakeAsync(() => {

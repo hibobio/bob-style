@@ -5,6 +5,7 @@ import {
   inject,
   TestBed,
   tick,
+  resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { MultiSelectPanelComponent } from './multi-select-panel.component';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
@@ -44,6 +45,10 @@ describe('MultiSelectPanelComponent', () => {
   let overlayContainerElement: HTMLElement;
   let platform: Platform;
   let optionsMock: SelectGroupOption[];
+
+  beforeEach(() => {
+    resetFakeAsyncZone();
+  });
 
   beforeEach(async(() => {
     optionsMock = [

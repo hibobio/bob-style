@@ -111,8 +111,40 @@ $acss-dirs: top right bottom left;
 
 // Colors
 
+.bg-white {
+  background-color: white;
+}
+
 .bg-grey-100 {
   background-color: $grey-100;
+}
+.bg-grey-300 {
+  background-color: $grey-300;
+}
+.bg-grey-500 {
+  background-color: $grey-500;
+}
+.bg-grey-600 {
+  background-color: $grey-600;
+}
+.bg-grey-700 {
+  background-color: $grey-700;
+}
+
+.bg-primary-500 {
+  background-color: var(--primary-500);
+}
+.bg-secondary-500 {
+  background-color: var(--secondary-500);
+}
+.bg-inform-500 {
+  background-color: var(--inform-500);
+}
+.bg-negative-500 {
+  background-color: var(--negative-500);
+}
+.bg-positive-500 {
+  background-color: var(--positive-500);
 }
 
 // Responsive

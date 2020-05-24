@@ -5,6 +5,7 @@ import {
   fakeAsync,
   tick,
   flush,
+  resetFakeAsyncZone,
 } from '@angular/core/testing';
 import {
   Component,
@@ -188,6 +189,10 @@ describe('QuickFilterLayoutComponent', () => {
   let testComponent: TestComponent;
 
   let QFLcomponent: QuickFilterLayoutComponent;
+
+  beforeEach(() => {
+    resetFakeAsyncZone();
+  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

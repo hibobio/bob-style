@@ -17,4 +17,5 @@ export enum AvatarBadge {
   rejected = 'rejected',
   online = 'online',
   offline = 'offline',
+  error = 'error',
 }

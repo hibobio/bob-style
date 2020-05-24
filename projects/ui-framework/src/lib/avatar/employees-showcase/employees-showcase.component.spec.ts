@@ -5,6 +5,7 @@ import {
   TestBed,
   tick,
   flush,
+  resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { EmployeesShowcaseComponent } from './employees-showcase.component';
 import { UtilsService } from '../../services/utils/utils.service';
@@ -130,6 +131,10 @@ const testAvatarEls = (
 xdescribe('EmployeesShowcaseComponent', () => {
   let component: EmployeesShowcaseComponent;
   let fixture: ComponentFixture<EmployeesShowcaseComponent>;
+
+  beforeEach(() => {
+    resetFakeAsyncZone();
+  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

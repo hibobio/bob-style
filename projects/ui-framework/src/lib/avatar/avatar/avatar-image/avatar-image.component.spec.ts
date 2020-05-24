@@ -4,6 +4,7 @@ import {
   TestBed,
   fakeAsync,
   flush,
+  resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { AvatarImageComponent } from './avatar-image.component';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
@@ -107,6 +108,10 @@ describe('AvatarImageComponent', () => {
       white-space: pre-line !important;
     }
   `);
+
+  beforeEach(() => {
+    resetFakeAsyncZone();
+  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

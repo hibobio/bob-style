@@ -7,6 +7,7 @@ import {
   flush,
   TestBed,
   tick,
+  resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
@@ -34,6 +35,10 @@ describe('TableComponent', () => {
   let rowDataMock = [];
   let spyTableUtilsService: SpyObj<TableUtilsService>;
   let spyCdr: SpyObj<ChangeDetectorRef>;
+
+  beforeEach(() => {
+    resetFakeAsyncZone();
+  });
 
   beforeEach(async(() => {
     columnDefsMock = cloneDeep(COLUMN_DEFS_MOCK);

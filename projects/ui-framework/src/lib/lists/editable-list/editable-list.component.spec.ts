@@ -6,6 +6,7 @@ import {
   tick,
   discardPeriodicTasks,
   flush,
+  resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { EditableListComponent } from './editable-list.component';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -46,6 +47,10 @@ describe('EditableListComponent', () => {
       white-space: pre-line !important;
     }
   `);
+
+  beforeEach(() => {
+    resetFakeAsyncZone();
+  });
 
   beforeEach(async(() => {
     selectOptionsMock = [

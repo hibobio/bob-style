@@ -40,7 +40,7 @@ export const isNotEmptyArray = (val: any, min = 0): boolean =>
 export const isEmptyArray = (val: any): boolean =>
   isNullOrUndefined(val) || (Array.isArray(val) && val.length === 0);
 
-export const isObject = (val: any): boolean =>
+export const isObject = (val: any): val is object =>
   !!val && val === Object(val) && typeof val !== 'function' && !isArray(val);
 
 export const isNotEmptyObject = (val: any): boolean =>
