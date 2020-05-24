@@ -1,52 +1,52 @@
 import {
-  SimpleChanges,
-  Input,
-  HostBinding,
-  Output,
-  EventEmitter,
   ChangeDetectorRef,
-  ViewChild,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Input,
   OnChanges,
   OnInit,
-  ElementRef,
-  Directive,
+  Output,
+  SimpleChanges,
+  ViewChild,
 } from '@angular/core';
-import { merge, cloneDeep } from 'lodash';
+import { cloneDeep, merge } from 'lodash';
 
 import {
-  BaseFormElement,
-  cloneArray,
-  hasChanges,
-  notFirstChanges,
   applyChanges,
-  joinArrays,
-  isNullOrUndefined,
-  cloneValue,
-  isNotEmptyArray,
-  stringyOrFail,
-  InputEventType,
-  HtmlParserHelpers,
-  SelectGroupOption,
-  Icons,
-  ButtonType,
+  BaseFormElement,
   ButtonSize,
-  SingleSelectPanelComponent,
-  IconColor,
-  isNotEmptyObject,
-  isEmptyArray,
+  ButtonType,
   chainCall,
-  PanelDefaultPosVer,
+  cloneArray,
+  cloneValue,
   DOMhelpers,
+  hasChanges,
+  HtmlParserHelpers,
+  IconColor,
+  Icons,
+  InputEventType,
+  isEmptyArray,
+  isNotEmptyArray,
+  isNotEmptyObject,
+  isNullOrUndefined,
+  joinArrays,
+  notFirstChanges,
+  PanelDefaultPosVer,
+  SelectGroupOption,
+  SingleSelectPanelComponent,
+  stringyOrFail,
 } from 'bob-style';
 
 import {
-  RTE_OPTIONS_DEF,
   RTE_CONTROLS_DEF,
   RTE_DISABLE_CONTROLS_DEF,
-  RTE_MINHEIGHT_DEF,
   RTE_MAXHEIGHT_DEF,
-  RTE_TOOLBAR_HEIGHT,
   RTE_MENTIONS_OPTIONS_DEF,
+  RTE_MINHEIGHT_DEF,
+  RTE_OPTIONS_DEF,
+  RTE_TOOLBAR_HEIGHT,
 } from './rte.const';
 import { BlotType, RTEType } from './rte.enum';
 import { RteMentionsOption } from './rte.interface';
@@ -54,11 +54,11 @@ import { PlaceholdersConverterService } from './placeholders.service';
 import { FroalaEditorInstance, FroalaOptions } from './froala.interface';
 import Tribute from 'tributejs';
 import { TributeInstance, TributeItem } from './tribute.interface';
-
 import { initDirectionControl } from './rte.direction';
 import { initMentionsControl } from './rte.mentions';
 import { FroalaEditorDirective } from './froala/editor.directive';
 import { TranslateService } from '@ngx-translate/core';
+import { RteUtilsService } from './rte-utils.service';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -70,7 +70,8 @@ export abstract class RTEbaseElement extends BaseFormElement
     protected parserService: HtmlParserHelpers,
     protected DOM: DOMhelpers,
     protected host: ElementRef,
-    protected translate: TranslateService
+    protected translate: TranslateService,
+    protected rteUtilsService: RteUtilsService
   ) {
     super(cd);
     this.baseValue = '';
@@ -129,7 +130,7 @@ export abstract class RTEbaseElement extends BaseFormElement
       try {
         this.editorValue = chainCall(this.inputTransformers, value);
       } catch (error) {
-        console.error(`${this.getElementIDdata()} threw an error:\n`, error);
+        console.error(`${ this.getElementIDdata() } threw an error:\n`, error);
         return;
       }
     }
@@ -180,8 +181,8 @@ export abstract class RTEbaseElement extends BaseFormElement
           placeholderText:
             this.hideLabelOnFocus && this.label
               ? !this.required
-                ? this.label
-                : this.label + '*'
+              ? this.label
+              : this.label + '*'
               : this.placeholder || ' ',
         },
         () => {
@@ -276,18 +277,18 @@ export abstract class RTEbaseElement extends BaseFormElement
     }
 
     this.DOM.setCssProps(this.host.nativeElement, {
-      '--translation-small': `'(${this.translate.instant(
+      '--translation-small': `'(${ this.translate.instant(
         'bob-style.rte.font-size.small'
-      )})'`,
-      '--translation-normal': `'(${this.translate.instant(
+      ) })'`,
+      '--translation-normal': `'(${ this.translate.instant(
         'bob-style.rte.font-size.normal'
-      )})'`,
-      '--translation-large': `'(${this.translate.instant(
+      ) })'`,
+      '--translation-large': `'(${ this.translate.instant(
         'bob-style.rte.font-size.large'
-      )})'`,
-      '--translation-huge': `'(${this.translate.instant(
+      ) })'`,
+      '--translation-huge': `'(${ this.translate.instant(
         'bob-style.rte.font-size.huge'
-      )})'`,
+      ) })'`,
     });
   }
 
@@ -409,7 +410,7 @@ export abstract class RTEbaseElement extends BaseFormElement
     this.tribute = new Tribute({
       ...RTE_MENTIONS_OPTIONS_DEF,
 
-      values: this.mentionsList,
+      values: this.rteUtilsService.getSanitizeMentions(this.mentionsList),
 
       selectTemplate: (item: TributeItem) => {
         // prettier-ignore

@@ -28,6 +28,7 @@ import {
 import { RTEbaseElement } from './rte.abstract';
 import { PlaceholdersConverterService } from './placeholders.service';
 import { TranslateService } from '@ngx-translate/core';
+import { RteUtilsService } from './rte-utils.service';
 
 @Component({
   selector: 'b-rich-text-editor',
@@ -55,9 +56,10 @@ export class RichTextEditorComponent extends RTEbaseElement
     protected parserService: HtmlParserHelpers,
     protected DOM: DOMhelpers,
     protected host: ElementRef,
-    protected translate: TranslateService
+    protected translate: TranslateService,
+    protected rteUtilsService: RteUtilsService
   ) {
-    super(cd, placeholdersConverter, parserService, DOM, host, translate);
+    super(cd, placeholdersConverter, parserService, DOM, host, translate, rteUtilsService);
   }
 
   ngOnInit(): void {
