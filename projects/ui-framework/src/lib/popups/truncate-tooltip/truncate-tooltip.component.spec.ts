@@ -5,6 +5,7 @@ import {
   fakeAsync,
   tick,
   flush,
+  discardPeriodicTasks,
 } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA, Component, Input } from '@angular/core';
@@ -122,6 +123,11 @@ describe('TruncateTooltipComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(fakeAsync(() => {
+    flush();
+    discardPeriodicTasks();
+  }));
+
   describe('Text truncation (1 line)', () => {
     it('should display a single truncated line of text', fakeAsync(() => {
       const textContainerStyle = getComputedStyle(bttComp1textContainer);
@@ -168,6 +174,7 @@ describe('TruncateTooltipComponent', () => {
   });
 
   describe('Structural directive', () => {
+    // tslint:disable-next-line: max-line-length
     it('should wrap element in b-truncate-tooltip component and display a single truncated line of text', fakeAsync(() => {
       const textContainerStyle = getComputedStyle(bttComp2textContainer);
       const testElement = bttComp2textContainer.querySelector('.test2');
