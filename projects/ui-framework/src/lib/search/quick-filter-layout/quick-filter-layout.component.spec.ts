@@ -387,7 +387,7 @@ describe('QuickFilterLayoutComponent', () => {
       expect(QFLcomponent.filtersChange.emit).toHaveBeenCalledWith({
         input: 'Some text',
         timePicker: '00:30',
-        social: 'http://www.twitter.com/donald-trump',
+        social: 'https://www.twitter.com/donald-trump',
       });
     }));
   });

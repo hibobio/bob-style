@@ -90,7 +90,7 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
         if (this.videoData.type === URLtype.vimeo) {
           (async () => {
             const response = await fetch(
-              `http://vimeo.com/api/v2/video/${this.videoData.id}.json`
+              `https://vimeo.com/api/v2/video/${this.videoData.id}.json`
             );
             const videMeta = await response.json();
 

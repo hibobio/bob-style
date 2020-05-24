@@ -13,12 +13,12 @@ describe('SocialComponent', () => {
   let component: SocialComponent;
   let fixture: ComponentFixture<SocialComponent>;
 
-  const assignSocialSelection = type => {
+  const assignSocialSelection = (type) => {
     const socialTypesRes = SocialTypes;
     const res = {
       facebook: 'www.facebook.com/AlanTulin',
       linkedin: 'www.linkedin.com/in/AlanTulin',
-      twitter: 'www.twitter.com/AlanTulin'
+      twitter: 'www.twitter.com/AlanTulin',
     };
     expect(`${socialTypesRes[type].prefix}AlanTulin`).toEqual(res[type]);
   };
@@ -27,7 +27,7 @@ describe('SocialComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SocialComponent],
       imports: [NoopAnimationsModule, InputModule, IconsModule],
-      providers: [URLutils]
+      providers: [URLutils],
     })
       .compileComponents()
       .then(() => {
@@ -35,7 +35,7 @@ describe('SocialComponent', () => {
         component = fixture.componentInstance;
         component.wrapEvent = true;
         spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => { });
+        component.changed.subscribe(() => {});
         component.type = Social.facebook;
       });
   }));
@@ -84,7 +84,7 @@ describe('SocialComponent', () => {
       fixture.detectChanges();
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
-        value: 'http://www.facebook.com/AlanTulin'
+        value: 'https://www.facebook.com/AlanTulin',
       });
     });
   });

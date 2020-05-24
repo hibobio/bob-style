@@ -92,7 +92,7 @@ describe('LightboxService', () => {
       expect(lightContainerEl.children.length).toEqual(1);
       expect(videoEl).toBeTruthy();
       expect(videoEl.getAttribute('src')).toEqual(
-        'http://youtube.com/imagination/123'
+        'https://youtube.com/imagination/123'
       );
       lightboxService.closeLightbox();
     });

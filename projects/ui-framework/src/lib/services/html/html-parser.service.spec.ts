@@ -205,7 +205,7 @@ describe('HtmlParserHelpers', () => {
   describe('linkify', () => {
     it('Should linkify and add passed string to tag', () => {
       expect(parser.linkify('abc www.link.com 123', 'class="link"')).toContain(
-        '<a href="http://www.link.com" target="_blank" class="link">www.link.com</a>'
+        '<a href="https://www.link.com" target="_blank" class="link">www.link.com</a>'
       );
     });
   });
