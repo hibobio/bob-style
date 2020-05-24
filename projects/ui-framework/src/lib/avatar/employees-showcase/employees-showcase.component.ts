@@ -65,9 +65,11 @@ export class EmployeesShowcaseComponent
   @Input()
   expandOnClick = true;
 
-  @HostBinding('attr.data-inverse-stack')
-  @Input()
-  inverseStack = false;
+  @Input() inverseStack = false;
+
+  @HostBinding('attr.data-stack-order') get stackOrder() {
+    return this.inverseStack === true ? 'rtl' : 'ltr';
+  }
 
   @HostBinding('attr.data-fade-out')
   @Input()

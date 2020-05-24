@@ -19,7 +19,9 @@
                     *ngIf="showTotalButton"
                     [size]="avatarSize"
                     [icon]="dotsIcon"
-                    [text]="totalAvatars">
+                    [text]="totalAvatars < 10000
+                      ?
+                      totalAvatars : null">
     </b-avatar-image>
   </div>
 

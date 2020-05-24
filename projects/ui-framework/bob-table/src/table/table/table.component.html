@@ -14,5 +14,7 @@
                  [gridOptions]="gridOptions"
                  (rowClicked)="onRowClicked($event)"
                  (selectionChanged)="onSelectionChanged($event)"
-                 (sortChanged)="onSortChanged($event)">
+                 (sortChanged)="onSortChanged($event)"
+                 [attr.data-row-hover]="styleConfig?.disableRowHoverBgColor ? false : true"
+                 [attr.data-column-borders]="styleConfig?.showColumnBorders ? true : null">
 </ag-grid-angular>

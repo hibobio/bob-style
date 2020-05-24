@@ -54,7 +54,7 @@
   }
 }
 
-:host[data-inverse-stack='false']::ng-deep {
+:host[data-stack-order='ltr']::ng-deep {
   position: relative;
 
   .avatar {
@@ -82,7 +82,7 @@
     }
   }
 }
-:host[data-fade-out='true'][data-inverse-stack='true']::ng-deep {
+:host[data-fade-out='true'][data-stack-order='rtl']::ng-deep {
   @for $i from 1 to 30 {
     .showcase-avatar:nth-child(#{$i}) {
       &:before {
@@ -95,7 +95,7 @@
     }
   }
 }
-:host[data-fade-out='true'][data-inverse-stack='false']::ng-deep {
+:host[data-fade-out='true'][data-stack-order='ltr']::ng-deep {
   @for $i from 0 to 29 {
     .showcase-avatar:nth-child(#{$i + 1}) {
       &:before {

@@ -47,3 +47,8 @@ export interface RowNodeDef {
 export interface ColumnsOrderChangedEvent {
   columns: string[];
 }
+
+export interface TableStyleConfig {
+  disableRowHoverBgColor?: boolean;
+  showColumnBorders?: boolean;
+}

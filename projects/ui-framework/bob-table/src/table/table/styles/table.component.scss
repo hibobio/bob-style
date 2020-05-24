@@ -46,7 +46,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 
   .ag-root {
     background-color: white;
-    border: 1px solid $grey-500;
+    border: 1px solid $border-color;
     border-radius: 4px;
     max-height: var(--max-height);
   }
@@ -129,10 +129,6 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     border-bottom: 1px solid $grey-300;
     display: flex;
     align-items: center;
-
-    &.ag-row-hover {
-      background-color: $grey-100;
-    }
 
     &.ag-row-selected {
       background-color: $color-select-yellow;
@@ -252,5 +248,25 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     .ag-overlay-wrapper {
       padding: times8(3) times8(2);
     }
+  }
+}
+
+// style options
+
+[data-column-borders='true'] ::ng-deep {
+  .ag-center-cols-viewport {
+    .ag-cell {
+      border-right: 1px solid $border-color-light;
+
+      &:last-child {
+        border-right: 0;
+      }
+    }
+  }
+}
+
+[data-row-hover='true'] ::ng-deep {
+  .ag-row.ag-row-hover {
+    background-color: $grey-100;
   }
 }

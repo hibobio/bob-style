@@ -10,15 +10,28 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
-import { CellClickedEvent, Column, DragStoppedEvent, GridColumnsChangedEvent, GridOptions, GridReadyEvent } from 'ag-grid-community';
+import {
+  CellClickedEvent,
+  Column,
+  DragStoppedEvent,
+  GridColumnsChangedEvent,
+  GridOptions,
+  GridReadyEvent,
+} from 'ag-grid-community';
 import { cloneDeep, get, has, map } from 'lodash';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { AgGridWrapper } from './ag-grid-wrapper';
 import { RowSelection, TableType } from './table.enum';
-import { ColumnDef, ColumnsOrderChangedEvent, RowClickedEvent, SortChangedEvent } from './table.interface';
+import {
+  ColumnDef,
+  ColumnsOrderChangedEvent,
+  RowClickedEvent,
+  SortChangedEvent,
+  TableStyleConfig,
+} from './table.interface';
 
 const CLOSE_BUTTON_DIAMETER = 20;
 const CLOSE_MARGIN_OFFSET = 6;
@@ -34,7 +47,6 @@ const CLOSE_MARGIN_OFFSET = 6;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
-
   /**
    * @internal - use "addClass"
    */
@@ -63,13 +75,23 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Input() removeColumnButtonEnabled = false;
   @Input() shouldAutoSizeColumns = true;
 
-  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<SortChangedEvent>();
-  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
+  @Input() styleConfig: TableStyleConfig = {};
+
+  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
+    SortChangedEvent
+  >();
+  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<
+    RowClickedEvent
+  >();
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() gridInit: EventEmitter<void> = new EventEmitter<void>();
   @Output() columnsChanged: EventEmitter<void> = new EventEmitter<void>();
-  @Output() columnsOrderChanged: EventEmitter<ColumnsOrderChangedEvent> = new EventEmitter<ColumnsOrderChangedEvent>();
-  @Output() cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter<CellClickedEvent>();
+  @Output() columnsOrderChanged: EventEmitter<
+    ColumnsOrderChangedEvent
+  > = new EventEmitter<ColumnsOrderChangedEvent>();
+  @Output() cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter<
+    CellClickedEvent
+  >();
   @Output() columnRemoved: EventEmitter<string> = new EventEmitter<string>();
 
   readonly rowHeight: number = 56;
@@ -95,7 +117,11 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       const paddingRight = parseFloat(getComputedStyle(target).paddingRight);
       if (
         event.offsetX <= outerWidth - paddingRight + CLOSE_MARGIN_OFFSET &&
-        event.offsetX >= outerWidth - paddingRight + CLOSE_MARGIN_OFFSET - CLOSE_BUTTON_DIAMETER &&
+        event.offsetX >=
+          outerWidth -
+            paddingRight +
+            CLOSE_MARGIN_OFFSET -
+            CLOSE_BUTTON_DIAMETER &&
         event.offsetY >= (outerHeight - CLOSE_BUTTON_DIAMETER) / 2 &&
         event.offsetY <= (outerHeight + CLOSE_BUTTON_DIAMETER) / 2
       ) {
@@ -146,12 +172,12 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   }
 
   private setOrderedColumns(columns: Column[]): void {
-    this.columns = map(columns, col => col.colDef.field);
+    this.columns = map(columns, (col) => col.colDef.field);
     this.columnsOrderChanged.emit({ columns: cloneDeep(this.columns) });
   }
 
   private setGridHeight(height: number): void {
-    this.elRef.nativeElement.style.setProperty('--max-height', `${ height }px`);
+    this.elRef.nativeElement.style.setProperty('--max-height', `${height}px`);
   }
 
   public getOrderedColumnFields(): string[] {
@@ -171,7 +197,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       rowSelection: this.rowSelection,
       suppressContextMenu: true,
       rowBuffer: this.suppressRowVirtualisation ? 99999 : 20,
-      getRowClass: params =>
+      getRowClass: (params) =>
         get(params.data, 'isClickable', false) ? 'row-clickable' : '',
       onGridReady: (event: GridReadyEvent) => {
         this.gridReady = true;
@@ -196,7 +222,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       onCellClicked(event: CellClickedEvent): void {
         that.cellClicked.emit(event);
       },
-      accentedSort: true
+      accentedSort: true,
     };
   }
 

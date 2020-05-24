@@ -48,19 +48,23 @@ const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(
 
 const template = `
 <b-table #table
-  [type]="type"
-  [rowData]="rowData"
-  [columnDefs]="columnDefs"
-  [maxHeight]="maxHeight"
-  [rowSelection]="rowSelection"
-  [removeColumnButtonEnabled]="removeColumnButtonEnabled"
-  [shouldAutoSizeColumns]="shouldAutoSizeColumns"
-  (rowClicked)="rowClicked($event)"
-  (cellClicked)="cellClicked($event)"
-  (selectionChanged)="selectionChanged($event); onSelectionChanged($event)"
-  (sortChanged)="sortChanged($event)"
-  (columnsOrderChanged)="columnsOrderChanged($event)"
-  (columnRemoved)="columnRemoved($event)">
+    [type]="type"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    [maxHeight]="maxHeight"
+    [rowSelection]="rowSelection"
+    [removeColumnButtonEnabled]="removeColumnButtonEnabled"
+    [shouldAutoSizeColumns]="shouldAutoSizeColumns"
+    [styleConfig]="{
+        disableRowHoverBgColor: disableRowHoverBgColor,
+        showColumnBorders: showColumnBorders
+    }"
+    (rowClicked)="rowClicked($event)"
+    (cellClicked)="cellClicked($event)"
+    (selectionChanged)="selectionChanged($event); onSelectionChanged($event)"
+    (sortChanged)="sortChanged($event)"
+    (columnsOrderChanged)="columnsOrderChanged($event)"
+    (columnRemoved)="columnRemoved($event)">
 </b-table>
 `;
 const treeTemplate = `<b-table
@@ -134,6 +138,7 @@ const note = `
   [suppressDragLeaveHidesColumns] | boolean | disables 'dragging column out to remove it' behaviour | false
   [removeColumnButtonEnabled] | boolean | adds (x) button to column header | false
   [shouldAutoSizeColumns] | boolean | enable auto size | true
+  [styleConfig] | TableStyleConfig | style config (disableRowHoverBgColor, showColumnBorders) | {}
   (rowClicked) | EventEmitter<wbr>&lt;RowClickedEvent&gt; | Row clicked event | &nbsp;
   (gridInit) | EventEmitter<wbr>&lt;void&gt;  | Grid init event | &nbsp;
   (selectionChanged) | EventEmitter<wbr>&lt;any[]&gt; | All selected rows | &nbsp;
@@ -211,6 +216,8 @@ function tableStoryFactory({
       'Props'
     ),
     shouldAutoSizeColumns: boolean('shouldAutoSizeColumns', true, 'Props'),
+    disableRowHoverBgColor: boolean('disableRowHoverBgColor', false, 'Props'),
+    showColumnBorders: boolean('showColumnBorders', false, 'Props'),
     columnDefs: object(`${title} columnDefs`, tableCols, 'Data'),
     rowData: object(`${title} rowData`, tableData, 'Data'),
     rowClicked: action('Row clicked'),
@@ -221,16 +228,16 @@ function tableStoryFactory({
     columnRemoved: action('Column remove button clicked'),
     totalSelected: 0,
     onSearchChange: (str, table) => table.gridOptions.api.setQuickFilter(str),
-    onSelectionChanged: function($event) {
+    onSelectionChanged: function ($event) {
       this.totalSelected = $event.length;
-    }
+    },
   };
 
   return {
     template: HTMLTemplate,
     props: {
       ...defaultProps,
-      ...props
+      ...props,
     },
     moduleMetadata: {
       declarations: [TreeCellAvatarComponent],
