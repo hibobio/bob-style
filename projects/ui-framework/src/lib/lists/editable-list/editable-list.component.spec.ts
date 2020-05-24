@@ -4,6 +4,8 @@ import {
   fakeAsync,
   TestBed,
   tick,
+  discardPeriodicTasks,
+  flush,
 } from '@angular/core/testing';
 import { EditableListComponent } from './editable-list.component';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -97,6 +99,11 @@ describe('EditableListComponent', () => {
   });
 
   describe('Adding/Deleting items', () => {
+    afterEach(fakeAsync(() => {
+      flush();
+      discardPeriodicTasks();
+    }));
+
     it('should have all items in the list', () => {
       triggerChanges();
       const list = fixture.debugElement.queryAll(

@@ -71,6 +71,7 @@ describe('QuickFilterBarComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(QuickFilterBarComponent);
         component = fixture.componentInstance;
+        component.ngAfterViewInit = () => {};
         spyOn(component.filtersChange, 'emit');
         spyOn(component.resetFilters, 'emit');
       });

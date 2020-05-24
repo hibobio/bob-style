@@ -28,6 +28,7 @@ describe('CardEmployeeComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(CardEmployeeComponent);
         component = fixture.componentInstance;
+        component.ngAfterViewInit = () => {};
         fixture.nativeElement.style.width = '300px';
       });
   }));

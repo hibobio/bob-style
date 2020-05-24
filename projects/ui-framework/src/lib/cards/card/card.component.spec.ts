@@ -38,6 +38,7 @@ describe('CardComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(CardComponent);
         component = fixture.componentInstance;
+        component.ngAfterViewInit = () => {};
         fixture.debugElement.nativeElement.style.width = '300px';
       });
   }));

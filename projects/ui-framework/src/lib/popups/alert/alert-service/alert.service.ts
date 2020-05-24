@@ -1,11 +1,9 @@
-import { ComponentRef, Injectable, Injector } from '@angular/core';
+import { ComponentRef, Injectable } from '@angular/core';
 import { AlertConfig } from '../alert.interface';
 import { AlertComponent } from '../alert/alert.component';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { cloneDeep, bind, invoke } from 'lodash';
-
-const ALERT_DURATION = 7000;
+import { cloneDeep, bind } from 'lodash';
 
 @Injectable()
 export class AlertService {
@@ -14,6 +12,7 @@ export class AlertService {
   public overlayRef: OverlayRef;
   public isOpen: boolean;
   private timeRef: NodeJS.Timer;
+  private alertDuration = 7000;
 
   constructor(private overlay: Overlay) {}
 
@@ -25,10 +24,16 @@ export class AlertService {
       const alertPortal = new ComponentPortal(AlertComponent, null);
       this.alertComponentRef = this.overlayRef.attach(alertPortal);
       this.alertComponentRef.instance.alertConfig = cloneDeep(config);
-      this.alertComponentRef.instance.closeAlertCallback = bind(this.closeAlertCallback, this);
+      this.alertComponentRef.instance.closeAlertCallback = bind(
+        this.closeAlertCallback,
+        this
+      );
       this.isOpen = true;
       this.alertComponentRef.instance.animationState = 'enter';
-      this.timeRef = setTimeout(() => this.alertComponentRef.instance.closeAlert(), ALERT_DURATION);
+      this.timeRef = setTimeout(
+        () => this.alertComponentRef.instance.closeAlert(),
+        this.alertDuration
+      );
       return this.alertComponentRef;
     }
   }
@@ -44,7 +49,7 @@ export class AlertService {
       disposeOnNavigation: true,
       hasBackdrop: false,
       panelClass,
-      positionStrategy
+      positionStrategy,
     };
   }
 

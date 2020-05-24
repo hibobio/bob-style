@@ -30,6 +30,7 @@ import {
   MatDatepicker,
 } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
@@ -62,12 +63,15 @@ describe('DatepickerComponent', () => {
         DateParseService,
         EventManagerPlugins[0],
       ],
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(DatepickerComponent);
         component = fixture.componentInstance;
         componentElem = fixture.nativeElement;
+
+        component.ngOnInit = () => {};
 
         component.ignoreEvents = [];
         component.label = 'Label';

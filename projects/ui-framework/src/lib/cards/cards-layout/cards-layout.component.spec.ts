@@ -4,18 +4,18 @@ import {
   TestBed,
   discardPeriodicTasks,
   fakeAsync,
+  flush,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CardsLayoutComponent } from './cards-layout.component';
-import { CardsModule } from '../cards.module';
 import { CardType } from '../cards.enum';
-import { MockComponent } from 'ng-mocks';
 import {
   simpleChange,
   emitNativeEvent,
 } from '../../services/utils/test-helpers';
 import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 describe('CardsLayoutComponent', () => {
   let fixture: ComponentFixture<CardsLayoutComponent>;
@@ -39,8 +39,9 @@ describe('CardsLayoutComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MockComponent(CardsLayoutComponent)],
-      imports: [CardsModule],
+      declarations: [CardsLayoutComponent],
+      imports: [],
+      providers: [EventManagerPlugins[0]],
       schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(CardsLayoutComponent, {
@@ -87,6 +88,7 @@ describe('CardsLayoutComponent', () => {
 
   describe('cards in a row calculation', () => {
     afterEach(fakeAsync(() => {
+      flush();
       discardPeriodicTasks();
     }));
 
@@ -129,16 +131,16 @@ describe('CardsLayoutComponent', () => {
       expect(component.cardsInRow).toEqual(3);
     });
 
-    it('should transmit cardsInRow as cardsInRow$', done => {
-      component.getCardsInRow$().subscribe(numberOfCards => {
+    it('should transmit cardsInRow as cardsInRow$', (done) => {
+      component.getCardsInRow$().subscribe((numberOfCards) => {
         expect(numberOfCards).toEqual(4);
         done();
       });
     });
 
-    it('should call next on cardsInRow$ if type (width) of card changed, if cardsInRow changed', done => {
+    it('should call next on cardsInRow$ if type (width) of card changed, if cardsInRow changed', (done) => {
       let cardsInRowSubscribeCalled = 0;
-      component.getCardsInRow$().subscribe(numberOfCards => {
+      component.getCardsInRow$().subscribe((numberOfCards) => {
         if (cardsInRowSubscribeCalled === 0) {
           cardsInRowSubscribeCalled++;
           component.ngOnChanges(
@@ -153,9 +155,9 @@ describe('CardsLayoutComponent', () => {
       });
     });
 
-    it('should call next on cardsInRow$ after window resize, if cardsInRow changed', done => {
+    it('should call next on cardsInRow$ after window resize, if cardsInRow changed', (done) => {
       let cardsInRowSubscribeCalled = 0;
-      component.getCardsInRow$().subscribe(numberOfCards => {
+      component.getCardsInRow$().subscribe((numberOfCards) => {
         if (cardsInRowSubscribeCalled === 0) {
           cardsInRowSubscribeCalled++;
           cardsHostElement.style.width = calcNeededWidth(3, CardType.regular);

@@ -39,6 +39,7 @@ describe('InputComponent', () => {
         fixture = TestBed.createComponent(InputComponent);
         component = fixture.componentInstance;
         component.ignoreEvents = [];
+        component.ngAfterViewInit = () => {};
 
         spyOn(component.changed, 'emit');
         component.changed.subscribe(() => {});
