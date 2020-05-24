@@ -610,9 +610,6 @@ describe('MultiListComponent', () => {
   describe('list footer', () => {
     it('should show clear option only by default', () => {
       const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
-
-      console.log(listFooter.componentInstance);
-
       expect(listFooter.componentInstance.listActions.clear).toBeTruthy();
       expect(listFooter.componentInstance.listActions.apply).toBeFalsy();
     });
