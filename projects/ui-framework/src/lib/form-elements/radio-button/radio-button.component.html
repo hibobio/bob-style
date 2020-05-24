@@ -6,7 +6,7 @@
      [attr.id]="id"
      [ngClass]="{'direction-row': !direction || direction === dir.row, 'direction-column': direction === dir.column}">
 
-  <ng-container *ngFor="let radio of options; let i = index;">
+  <ng-container *ngFor="let radio of options; let i = index; trackBy: trackByID">
     <input type="radio"
            #input
            class="brd-input"

@@ -3,7 +3,7 @@
       [ngClass]="{'has-drag-handle': useDragHandle && !disableDragging}"
       role="row">
     <li class="table-header-cell"
-        *ngFor="let cell of meta; index as index;"
+        *ngFor="let cell of meta; index as index; trackBy: metaTrackBy;"
         [ngStyle]="{
           'maxWidth': cellsStyle[index].maxWidth,
           'alignItems': cellsStyle[index].alignItems
@@ -19,7 +19,7 @@
     (cdkDropListDropped)="onDrop($event)"
     *ngIf="table && table.length > 0"
     role="rowgroup">
-  <li *ngFor="let row of table; index as index;"
+  <li *ngFor="let row of table; index as index; trackBy: rowTrackBy;"
       b-table-card
       cdkDrag
       cdkDragLockAxis="y"
@@ -32,7 +32,8 @@
       (click)="onRowClicked(row, index)"
       (cellClicked)="onCellClicked($event)"
       role="row">
-    <b-icon *ngIf="useDragHandle && !disableDragging" cdkDragHandle
+    <b-icon *ngIf="useDragHandle && !disableDragging"
+            cdkDragHandle
             [icon]="icons.drag_alt"
             [color]="iconColor.dark"
             [size]="iconSize.small"></b-icon>

@@ -23,7 +23,7 @@
 
   <div class="bar-filters">
 
-    <b-quick-filter *ngFor="let quickFilterConfig of quickFilters"
+    <b-quick-filter *ngFor="let quickFilterConfig of quickFilters; trackBy: trackBy"
                     class="quick-filter-holder"
                     [ngStyle]="{width: 100/quickFilters.length + '%'}"
                     [quickFilterConfig]="quickFilterConfig"

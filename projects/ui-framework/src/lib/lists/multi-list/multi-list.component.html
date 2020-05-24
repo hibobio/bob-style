@@ -15,7 +15,7 @@
   <div #headers
        class="headers"
        *ngIf="!noGroupHeaders">
-    <div *ngFor="let header of listHeaders; let headerIndex =  index;"
+    <div *ngFor="let header of listHeaders; let headerIndex =  index; trackBy: headerTrackBy"
          class="headers-group">
       <div [ngClass]="{
             'clickable': options.length > 1,

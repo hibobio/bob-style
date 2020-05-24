@@ -147,6 +147,6 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
   }
 
   public trackBy(index: number, item: SimpleBarChartItem): string {
-    return index + '' + item.value + (item.text || '');
+    return index + (item.text || '');
   }
 }

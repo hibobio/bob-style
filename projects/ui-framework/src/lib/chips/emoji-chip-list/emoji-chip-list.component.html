@@ -1,10 +1,14 @@
-<div class="emoji-chip-item" *ngFor="let chip of chips"
+<div class="emoji-chip-item"
+     *ngFor="let chip of chips; trackBy: trackBy"
      [ngClass]="{'selected': chip.selected}"
-     (click)="chipClick(chip)" [matTooltip]="chip.tooltip" matTooltipPosition="above">
+     (click)="chipClick(chip)"
+     [matTooltip]="chip.tooltip"
+     matTooltipPosition="above">
   <span class="reaction-emoji">
     {{chip.emoji | emojiFromCode}}
   </span>
-  <span class="reaction-number" *ngIf="chip.number">
+  <span class="reaction-number"
+        *ngIf="chip.number">
     {{valueFormatterFn(chip.number)}}
   </span>
 </div>

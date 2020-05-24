@@ -20,6 +20,7 @@ import {
 } from '../card-table.interface';
 import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
 import { TableCardComponent } from './../table-card/table-card.component';
+import { isRenderedComponent } from '../../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-card-table',
@@ -70,5 +71,21 @@ export class CardTableComponent implements OnInit {
 
   onCellClicked($event: CardTableCellClickEvent): void {
     this.cellClicked.emit($event);
+  }
+
+  metaTrackBy(index: number, meta: CardTableCellMeta): string {
+    return index + '' + (meta.id || meta.name);
+  }
+
+  rowTrackBy(index: number, row: CardTableCellData[]): string {
+    const rowStringValue = row
+      .map((cell) =>
+        isRenderedComponent(cell.data)
+          ? JSON.stringify(cell.data.attributes)
+          : JSON.stringify(cell.data)
+      )
+      .join();
+
+    return rowStringValue;
   }
 }

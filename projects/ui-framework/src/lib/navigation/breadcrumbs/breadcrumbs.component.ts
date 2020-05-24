@@ -25,6 +25,8 @@ export class BreadcrumbsComponent {
 
   @Input() steps: Breadcrumb[];
 
+  @Input() clickable = true;
+
   @Output() stepClick: EventEmitter<number> = new EventEmitter<number>();
 
   readonly breadcrumbsType = BreadcrumbsType;
@@ -42,9 +44,10 @@ export class BreadcrumbsComponent {
 
   public isClickable(step: Breadcrumb) {
     return (
-      step.state === BreadcrumbsStepState.open ||
-      step.state === BreadcrumbsStepState.success ||
-      step.state === BreadcrumbsStepState.warning
+      this.clickable !== false &&
+      (step.state === BreadcrumbsStepState.open ||
+        step.state === BreadcrumbsStepState.success ||
+        step.state === BreadcrumbsStepState.warning)
     );
   }
 }

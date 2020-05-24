@@ -2,8 +2,7 @@
          #overlayRef
          [showBackdrop]="false"
          (opened)="toggleMenu(true)"
-         (closed)="toggleMenu(false)"
-         >
+         (closed)="toggleMenu(false)">
   <div class="button-wrapper"
        [class.active]="panelActive"
        panel-trigger>
@@ -20,12 +19,13 @@
 
     <div class="emojis">
 
-      <div class="emoji-category" *ngFor="let category of emojis">
+      <div class="emoji-category"
+           *ngFor="let category of emojis; trackBy: categoryTrackBy">
         <h4 class="emoji-cat-title b-big-body">{{category.name}}</h4>
 
         <ul class="emoji-list">
           <li class="icon"
-              *ngFor="let emoji of category.data"
+              *ngFor="let emoji of category.data; trackBy: emojiTrackBy"
               title="{{emoji?.description}}"
               (click)="selectEmoji(emoji)">
             {{emoji?.icon}}
@@ -37,7 +37,7 @@
 
     <ul class="emoji-footer">
       <li class="icon"
-          *ngFor="let emoji of commonEmojis"
+          *ngFor="let emoji of commonEmojis; trackBy: emojiTrackBy"
           title="{{emoji?.description}}"
           (click)="selectEmoji(emoji)">
         {{emoji?.icon}}

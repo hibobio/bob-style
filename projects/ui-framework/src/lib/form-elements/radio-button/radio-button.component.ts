@@ -54,10 +54,10 @@ export class RadioButtonComponent extends BaseFormElement
     this.inputTransformers = [
       valueToObjectKey(this.key),
       objectHasKeyOrFail(this.key),
-      value => valueInArrayOrFail(value, this.options, this.key),
+      (value) => valueInArrayOrFail(value, this.options, this.key),
     ];
     this.outputTransformers = [
-      value =>
+      (value) =>
         !isNullOrUndefined(value) && hasProp(value, 'id')
           ? value.id
           : undefined,
@@ -110,7 +110,11 @@ export class RadioButtonComponent extends BaseFormElement
   }
 
   public onRadioChange(key): void {
-    this.writeValue(this.options.find(o => o[this.key] === key));
+    this.writeValue(this.options.find((o) => o[this.key] === key));
     this.transmit(InputEventType.onBlur);
+  }
+
+  public trackByID(index: number, item: RadioConfig): string | number {
+    return item.id;
   }
 }

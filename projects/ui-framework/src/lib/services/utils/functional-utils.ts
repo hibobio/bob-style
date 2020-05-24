@@ -2,6 +2,7 @@ import { SimpleChanges, SimpleChange } from '@angular/core';
 import { metaKeys } from '../../enums';
 import { GenericObject } from '../../types';
 import { isEqual } from 'lodash';
+import { RenderedComponent } from '../component-renderer/component-renderer.interface';
 
 // ----------------------
 // TYPES
@@ -710,5 +711,5 @@ export const simpleUID = (
   );
 };
 
-export const isRenderedComponent = (obj: any): boolean =>
+export const isRenderedComponent = (obj: any): obj is RenderedComponent =>
   hasProp(obj, 'component');

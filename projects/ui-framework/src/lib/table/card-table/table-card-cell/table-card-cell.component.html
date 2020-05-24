@@ -5,7 +5,7 @@
       class="text">{{ cell.data || '—' }}</span>
 
 <ng-container *ngIf="ifArray(cell.data)">
-  <span *ngFor="let line of cell.data"
+  <span *ngFor="let line of cell.data; trackBy: trackByIndex"
         [b-truncate-tooltip]="1"
         [type]="tooltipType.css"
         [trustCssVars]="true"

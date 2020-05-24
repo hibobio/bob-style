@@ -2,12 +2,12 @@ import { Component, Input } from '@angular/core';
 
 import {
   CardTableCellData,
-  CardTableCellDataType
+  CardTableCellDataType,
 } from '../card-table.interface';
 import {
   isString,
   isArray,
-  isRenderedComponent
+  isRenderedComponent,
 } from '../../../services/utils/functional-utils';
 import { TruncateTooltipType } from '../../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { RenderedComponent } from '../../../services/component-renderer/component-renderer.interface';
@@ -15,7 +15,7 @@ import { RenderedComponent } from '../../../services/component-renderer/componen
 @Component({
   selector: 'b-table-card-cell, [b-table-card-cell]',
   templateUrl: './table-card-cell.component.html',
-  styleUrls: ['./table-card-cell.component.scss']
+  styleUrls: ['./table-card-cell.component.scss'],
 })
 export class TableCardCellComponent {
   constructor() {}
@@ -32,5 +32,9 @@ export class TableCardCellComponent {
     if ((cell as RenderedComponent).handlers) {
       $event.stopPropagation();
     }
+  }
+
+  trackByIndex(index: number, data: string): number {
+    return index;
   }
 }

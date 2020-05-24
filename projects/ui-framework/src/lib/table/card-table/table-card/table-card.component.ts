@@ -4,13 +4,13 @@ import {
   CardTableCellMeta,
   CardTableCellData,
   cardTableAllowedCellStyles,
-  CardTableCellClickEvent
+  CardTableCellClickEvent,
 } from '../card-table.interface';
 
 @Component({
   selector: 'b-table-card, [b-table-card]',
   templateUrl: './table-card.component.html',
-  styleUrls: ['./table-card.component.scss']
+  styleUrls: ['./table-card.component.scss'],
 })
 export class TableCardComponent {
   constructor() {}
@@ -27,7 +27,11 @@ export class TableCardComponent {
     this.cellClicked.emit({
       cell: cell,
       cellIndex: index,
-      rowIndex: this.rowIndex
+      rowIndex: this.rowIndex,
     });
+  }
+
+  trackByIndex(index: number, cell: CardTableCellData): number {
+    return index;
   }
 }

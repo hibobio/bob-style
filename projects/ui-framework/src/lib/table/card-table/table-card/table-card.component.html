@@ -1,5 +1,5 @@
 <ng-content></ng-content>
-<p *ngFor="let cell of row; index as index;"
+<p *ngFor="let cell of row; index as index; trackBy: trackByIndex;"
    b-table-card-cell
    [index]="index"
    [cell]="cell"

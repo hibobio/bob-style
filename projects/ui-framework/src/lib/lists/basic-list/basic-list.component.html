@@ -6,7 +6,7 @@
          'single-label': singleLabel,
          'show-action-on-hover': showActionOnHover
         }">
-  <tr *ngFor="let item of items; index as i"
+  <tr *ngFor="let item of items; index as i; trackBy: itemTrackBy"
       class="bbl-list-item"
       role="listitem"
       [ngClass]="{
@@ -20,7 +20,7 @@
         [icon]="item.icon"
         [color]="iconColor.normal"></td>
 
-    <td *ngFor="let label of asArray(item.label)"
+    <td *ngFor="let label of item.label"
         class="bbl-list-label">
       <span data-max-lines="2">{{label}}</span>
     </td>

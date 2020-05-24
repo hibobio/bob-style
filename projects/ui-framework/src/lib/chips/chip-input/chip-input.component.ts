@@ -132,9 +132,9 @@ export class ChipInputComponent extends BaseFormElement
 
   private updatePossibleChips(): void {
     this.possibleChips = this.options
-      ? this.options.filter(ch =>
+      ? this.options.filter((ch) =>
           this.value
-            ? !this.value.find(c => c.toLowerCase() === ch.toLowerCase())
+            ? !this.value.find((c) => c.toLowerCase() === ch.toLowerCase())
             : true
         )
       : [];
@@ -143,14 +143,14 @@ export class ChipInputComponent extends BaseFormElement
   private findChip(name: string, chipsSource = this.possibleChips): string {
     return (
       chipsSource &&
-      chipsSource.find(chip => chip.toLowerCase() === name.toLowerCase())
+      chipsSource.find((chip) => chip.toLowerCase() === name.toLowerCase())
     );
   }
 
   private removeChip(name: string, chipsSource = this.possibleChips): string[] {
     return (
       chipsSource &&
-      chipsSource.filter(chip => chip.toLowerCase() !== name.toLowerCase())
+      chipsSource.filter((chip) => chip.toLowerCase() !== name.toLowerCase())
     );
   }
 
@@ -159,7 +159,7 @@ export class ChipInputComponent extends BaseFormElement
     chipsSource = this.possibleChips
   ): string[] {
     const filtered = chipsSource.filter(
-      chip => chip.toLowerCase().indexOf(name.toLowerCase()) > -1
+      (chip) => chip.toLowerCase().indexOf(name.toLowerCase()) > -1
     );
     return filtered.length > 0 && filtered;
   }
@@ -174,7 +174,7 @@ export class ChipInputComponent extends BaseFormElement
       const existingChipElemnent = this.chips.list
         .toArray()
         .find(
-          ch =>
+          (ch) =>
             ch.chip.textContent.trim().toLowerCase() === chipToAdd.toLowerCase()
         ).chip;
       if (existingChipElemnent) {
@@ -290,6 +290,6 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   public chipsTrackBy(index: number, chip: string): string {
-    return chip + index;
+    return chip;
   }
 }

@@ -5,13 +5,13 @@ import {
   DEFAULT_COLORS,
   DEFAULT_FONT_SIZES,
   DEFAULT_FONT_STYLES,
-  DEFAULT_FONT_WEIGHTS
+  DEFAULT_FONT_WEIGHTS,
 } from '../text-colored-links.interface';
 
 @Component({
   selector: 'b-text-colored-links',
   templateUrl: './text-colored-links.component.html',
-  styleUrls: ['./text-colored-links.component.scss']
+  styleUrls: ['./text-colored-links.component.scss'],
 })
 export class TextColoredLinksComponent implements OnChanges {
   @Input() colorTextItems: ColorTextItem[] = [];
@@ -35,10 +35,10 @@ export class TextColoredLinksComponent implements OnChanges {
             fontSize: colorTextItem.label
               ? this.getSizeRandomAccordingToLengthOfText(colorTextItem.label)
               : this.sizes[0],
-            fontStyle: this.randomizeList(this.fontStyle),
-            fontWeight: `${this.randomizeList(this.fontWeight)}`
+            fontStyle: this.randomFromList(this.fontStyle),
+            fontWeight: `${this.randomFromList(this.fontWeight)}`,
           },
-          ...colorTextItem
+          ...colorTextItem,
         };
         return infoGraphicItem;
       }
@@ -51,23 +51,23 @@ export class TextColoredLinksComponent implements OnChanges {
     }
   }
 
-  trackByText(idx, item: InfoGraphicItem): string {
+  trackByText(index: number, item: InfoGraphicItem): string {
     return item.label;
   }
 
   private getSizeRandomAccordingToLengthOfText(text) {
     let textSizeClass: string;
     if (text.length > 25 && text.length < 35) {
-      textSizeClass = this.randomizeList(this.sizes.slice(0, 2));
+      textSizeClass = this.randomFromList(this.sizes.slice(0, 2));
     } else if (text.length >= 35) {
-      textSizeClass = this.randomizeList(this.sizes.slice(0, 1));
+      textSizeClass = this.randomFromList(this.sizes.slice(0, 1));
     } else {
-      textSizeClass = this.randomizeList(this.sizes);
+      textSizeClass = this.randomFromList(this.sizes);
     }
     return textSizeClass;
   }
 
-  private randomizeList(list): string {
+  private randomFromList<T = any>(list: T[]): T {
     return list[Math.floor(Math.random() * list.length)];
   }
 }

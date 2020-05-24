@@ -28,7 +28,6 @@ export class BasicListComponent {
   contentChild!: BasicListActionDirective;
 
   readonly iconColor = IconColor;
-  readonly asArray = asArray;
 
   public items: BasicListItem[];
   public isTable = true;
@@ -40,19 +39,20 @@ export class BasicListComponent {
   @Input() public showActionOnHover = false;
 
   @Input('items') set setItems(items: BasicListItem[]) {
-    this.items = items || [];
+    this.items = (items || []).map((item) => ({
+      ...item,
+      label: asArray(item.label),
+    }));
 
     if (isEmptyArray(this.items)) {
       return;
     }
 
-    const expectedLabelsCount = asArray(this.items[0].label).length;
+    const expectedLabelsCount = this.items[0].label.length;
     this.singleLabel = expectedLabelsCount === 1;
     this.isTable = expectedLabelsCount > 1;
 
-    if (
-      this.items.find(itm => asArray(itm.label).length !== expectedLabelsCount)
-    ) {
+    if (this.items.find((itm) => itm.label.length !== expectedLabelsCount)) {
       console.warn(
         'BasicListComponent: BasicListItems should have the same number of label texts.'
       );
@@ -66,7 +66,7 @@ export class BasicListComponent {
     BasicListItem
   >();
 
-  onItemClick(item: BasicListItem, $event: MouseEvent): void {
+  public onItemClick(item: BasicListItem, $event: MouseEvent): void {
     const target = $event.target as HTMLElement;
     if (
       this.clicked.observers &&
@@ -77,5 +77,9 @@ export class BasicListComponent {
         this.clicked.emit(item);
       });
     }
+  }
+
+  public itemTrackBy(index: number, item: BasicListItem): string {
+    return index + item.label[0];
   }
 }

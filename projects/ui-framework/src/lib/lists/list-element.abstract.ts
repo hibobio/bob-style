@@ -474,10 +474,14 @@ export abstract class BaseListElement
           isEqual(this.selectedIDs.sort(), this.optionsDefaultIDs.sort());
   }
 
-  isSameGroup(
+  public isSameGroup(
     group1: Partial<SelectGroupOption> | Partial<ListHeader>,
     group2: Partial<SelectGroupOption> | Partial<ListHeader>
   ): boolean {
     return this.modelSrvc.isSameGroup(group1, group2);
+  }
+
+  public headerTrackBy(index: number, listHeader: ListHeader): string {
+    return index + listHeader.groupName;
   }
 }

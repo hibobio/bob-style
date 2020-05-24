@@ -79,7 +79,7 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
     if (has(changes, 'quickFilters')) {
       this.quickFilters = changes.quickFilters.currentValue;
       this.quickFiltersChanges = chain(this.quickFilters)
-        .map(qf => ({
+        .map((qf) => ({
           key: qf.key,
           listChange: this.listChangeService.getListChange(
             qf.options,
@@ -110,5 +110,9 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
         }
       }, 0);
     });
+  }
+
+  trackBy(index: number, quickFilter: QuickFilterConfig): string {
+    return index + quickFilter.key;
   }
 }

@@ -23,6 +23,7 @@ const componmentTemplate = `
 <b-breadcrumbs [type]="type"
                [alwaysShowTitle]="alwaysShowTitle"
                [steps]="breadcrumbs"
+               [clickable]="clickable"
                (stepClick)="onStepClick($event)">
 
   <div *ngIf="type !== types.vertical" class="buttons" style="display: flex">
@@ -58,10 +59,11 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | ---
-  type | BreadcrumbsType | breadcrumbs type
-  breadcrumbs | Breadcrumb[] | breadcrumbs steps model
-  alwaysShowTitle | boolean | if titles are always shown (for 'primary' type)
-  stepClick | EventEmitter<wbr>&lt;number&gt; | emits clicked step index
+  [type] | BreadcrumbsType | breadcrumbs type
+  [steps] | Breadcrumb[] | breadcrumbs steps model
+  [alwaysShowTitle] | boolean | if titles are always shown (for 'primary' type)
+  [clickable] | if 'open' steps are clickable | true
+  (stepClick) | EventEmitter<wbr>&lt;number&gt; | emits clicked step index
 
 
   ~~~
@@ -93,6 +95,7 @@ story.add(
           BreadcrumbsType.primary
         ),
         alwaysShowTitle: boolean('alwaysShowTitle', false),
+        clickable: boolean('clickable', true),
 
         breadcrumbs: object('breadcrumbs', breadcrumbsMock),
         onStepClick: action('onStepClick'),

@@ -77,9 +77,7 @@ $brdcrb-show-step-numbers: false;
   margin-left: times8(1);
 }
 
-[data-state='open'] ::ng-deep,
-[data-state='warning'] ::ng-deep,
-[data-state='success'] ::ng-deep {
+[tabindex='0'] ::ng-deep {
   .step-index {
     cursor: pointer;
   }
@@ -129,9 +127,10 @@ $brdcrb-show-step-numbers: false;
     ) {
       font-size: 21px;
       line-height: $brdcrb-circle-size;
+      height: $brdcrb-circle-size;
       overflow: visible;
     }
-    box-shadow: inset 0 0 0 1px $color-warn;
+    box-shadow: inset 0 0 0 2px $color-warn;
   }
 }
 
@@ -145,9 +144,10 @@ $brdcrb-show-step-numbers: false;
     ) {
       font-size: 21px;
       line-height: $brdcrb-circle-size;
+      height: $brdcrb-circle-size;
       overflow: visible;
     }
-    box-shadow: inset 0 0 0 1px $brdcrb-active-color;
+    box-shadow: inset 0 0 0 2px $brdcrb-active-color;
   }
 }
 
