@@ -3,7 +3,6 @@ import {
   flush,
   flushMicrotasks,
   discardPeriodicTasks,
-  resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SimpleChange, Type, SimpleChanges } from '@angular/core';
@@ -156,5 +155,4 @@ export const fakeAsyncFlush = () => {
   flush();
   flushMicrotasks();
   discardPeriodicTasks();
-  resetFakeAsyncZone();
 };
