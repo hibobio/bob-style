@@ -1,4 +1,4 @@
-import { escapeSafe } from '../../../src/lib/services/utils/security-utils';
+import { escapeSafe } from 'bob-style';
 import { RteMentionsOption } from './rte.interface';
 import { Injectable, Sanitizer, SecurityContext } from '@angular/core';
 
