@@ -8,15 +8,19 @@
                   [label]="quickFilterConfig.label"
                   [placeholder]="quickFilterConfig.placeholder || null"
                   [options]="quickFilterConfig.options"
+                  [optionsDefault]="quickFilterConfig.optionsDefault"
                   [value]="quickFilterConfig.value"
                   (selectChange)="selectChange($event)"
                   (selectModified)="multiSelectModified($event)"
                   (selectCancelled)="multiSelectModified($event)"
                   [disabled]="false"
                   [required]="false"
-                  [showSingleGroupHeader]="showSingleGroupHeader"
+                  [mode]="quickFilterConfig.selectMode"
+                  [showSingleGroupHeader]="quickFilterConfig.showSingleGroupHeader"
+                  [startWithGroupsCollapsed]="quickFilterConfig.startWithGroupsCollapsed"
                   [tooltipType]="tooltipType.material"
-                  [isQuickFilter]="true">
+                  [isQuickFilter]="true"
+                  [doPropagate]="false">
   </b-multi-select>
 </ng-template>
 
@@ -26,11 +30,15 @@
                    [label]="quickFilterConfig.label"
                    [placeholder]="quickFilterConfig.placeholder || null"
                    [options]="quickFilterConfig.options"
+                   [optionsDefault]="quickFilterConfig.optionsDefault"
                    (selectChange)="selectChange($event)"
                    [disabled]="false"
                    [required]="false"
-                   [showSingleGroupHeader]="showSingleGroupHeader"
+                   [showSingleGroupHeader]="quickFilterConfig.showSingleGroupHeader"
+                   [startWithGroupsCollapsed]="quickFilterConfig.startWithGroupsCollapsed"
+                   [showNoneOption]="quickFilterConfig.showNoneOption"
                    [tooltipType]="tooltipType.material"
-                   [isQuickFilter]="true">
+                   [isQuickFilter]="true"
+                   [doPropagate]="false">
   </b-single-select>
 </ng-template>

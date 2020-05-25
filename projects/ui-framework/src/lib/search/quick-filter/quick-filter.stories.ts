@@ -12,19 +12,19 @@ import { mockCities, mockDepartments, mockJobs } from '../../mock.const';
 import { simpleUID } from '../../services/utils/functional-utils';
 import { LinkColor } from '../../indicators/link/link.enum';
 
-const story = storiesOf(ComponentGroupType.Search, module).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
+  withKnobs
+);
 
-const template = `
-<b-quick-filter-bar [quickFilters]="quickFilters"
-                    [showResetFilter]="showResetFilter"
-                    (filtersChange)="filtersChange($event)"
-                    (resetFilters)="resetFilters()">
-  <b-text-button bar-suffix
-                 [text]="'More'"
-                 [color]="linkColor.primary">
-  </b-text-button>
-</b-quick-filter-bar>
-`;
+const template = `<b-quick-filter-bar [quickFilters]="quickFilters"
+                      [showResetFilter]="showResetFilter"
+                      (filtersChange)="filtersChange($event)"
+                      (resetFilters)="resetFilters()">
+    <b-text-button bar-suffix
+                  [text]="'More'"
+                  [color]="linkColor.primary">
+    </b-text-button>
+</b-quick-filter-bar>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Quick Filter Bar'" style="background-color: rgb(247,247,247);">
@@ -50,13 +50,34 @@ const note = `
   ~~~
   ${template}
   ~~~
+
+  #### interface: QuickFilterConfig
+  Name | Type | Description
+  --- | --- | ---
+  key | string | filter id
+  selectType | QuickFilterSelectType | single or multi
+  selectMode? | SelectMode | select mode (classic, radioGroups, checkGroups) - for multi select
+  options | SelectGroupOption[] | select options
+  [optionsDefault] | SelectGroupOption[] | default options for 'Reset' action
+  value? | any | select value
+  showSingleGroupHeader? | boolean | hide or show single group header
+  showNoneOption? | boolean | hide 'None' option - for single select
+  startWithGroupsCollapsed? | boolean | start with groups open or closed
+  label? | string | label (above select)
+  placeholder? | string | placeholder (inside select)
+
+  #### interface: QuickFilterChangeEvent
+  Name | Type | Description
+  --- | --- | ---
+  key | string | filter id
+  listChange | ListChange | ListChange instance
 `;
 
 const optionsFromList = (list, key = 'Stuff') => [
   {
     groupName: key,
-    options: list.map(c => ({ value: c, id: simpleUID() }))
-  }
+    options: list.map((c) => ({ value: c, id: simpleUID() })),
+  },
 ];
 
 const quickFilters: QuickFilterConfig[] = [
@@ -66,7 +87,7 @@ const quickFilters: QuickFilterConfig[] = [
     placeholder: 'No sites',
     key: 'site',
     showSingleGroupHeader: false,
-    options: optionsFromList(mockCities(), 'All sites')
+    options: optionsFromList(mockCities(), 'All sites'),
   },
   {
     selectType: QuickFilterSelectType.multiSelect,
@@ -74,7 +95,7 @@ const quickFilters: QuickFilterConfig[] = [
     placeholder: 'No departments',
     key: 'department',
     showSingleGroupHeader: false,
-    options: optionsFromList(mockDepartments(), 'All departments')
+    options: optionsFromList(mockDepartments(), 'All departments'),
   },
   {
     selectType: QuickFilterSelectType.singleSelect,
@@ -82,8 +103,8 @@ const quickFilters: QuickFilterConfig[] = [
     placeholder: 'Select job type',
     key: 'employment',
     showSingleGroupHeader: false,
-    options: optionsFromList(mockJobs(), 'All jobs')
-  }
+    options: optionsFromList(mockJobs(), 'All jobs'),
+  },
 ];
 
 story.add(
@@ -96,11 +117,16 @@ story.add(
         showResetFilter: boolean('showResetFilter', false),
         quickFilters: object('quickFilters', quickFilters),
         filtersChange: action('Quick filter bar change'),
-        resetFilters: action('Reset Filters click')
+        resetFilters: action('Reset Filters click'),
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, StoryBookLayoutModule, QuickFilterModule, ButtonsModule]
-      }
+        imports: [
+          BrowserAnimationsModule,
+          StoryBookLayoutModule,
+          QuickFilterModule,
+          ButtonsModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

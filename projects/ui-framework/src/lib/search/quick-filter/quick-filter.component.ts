@@ -19,6 +19,14 @@ import { MultiSelectComponent } from '../../lists/multi-select/multi-select.comp
 import { ListChange } from '../../lists/list-change/list-change';
 import { ListModelService } from '../../lists/list-service/list-model.service';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { SelectMode } from '../../lists/list.enum';
+
+const QUICK_FILTER_CONFIG_DEF = {
+  selectMode: SelectMode.classic,
+  showSingleGroupHeader: false,
+  showNoneOption: true,
+  startWithGroupsCollapsed: true,
+};
 
 @Component({
   selector: 'b-quick-filter',
@@ -37,17 +45,17 @@ export class QuickFilterComponent implements OnChanges {
     QuickFilterChangeEvent
   > = new EventEmitter<QuickFilterChangeEvent>();
 
-  showSingleGroupHeader: boolean;
-  hasValue = false;
+  public hasValue = false;
   readonly tooltipType = TruncateTooltipType;
 
   constructor(private listModelService: ListModelService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'quickFilterConfig')) {
-      this.quickFilterConfig = changes.quickFilterConfig.currentValue;
-      this.showSingleGroupHeader =
-        this.quickFilterConfig.showSingleGroupHeader || false;
+      this.quickFilterConfig = {
+        ...QUICK_FILTER_CONFIG_DEF,
+        ...changes.quickFilterConfig.currentValue,
+      };
       this.hasValue =
         this.listModelService.getSelectedIDs(this.quickFilterConfig.options)
           .length > 0;
