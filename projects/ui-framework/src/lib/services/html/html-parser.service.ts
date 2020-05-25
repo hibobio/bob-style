@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { LinkifyPipe } from '../filters/linkify.pipe';
 import { GenericObject } from '../../types';
 import { isString, isObject, isEmptyObject } from '../utils/functional-utils';
-import { Xtb } from '@angular/compiler';
 
 export interface CleanupHtmlConfig {
   removeNbsp?: boolean;
