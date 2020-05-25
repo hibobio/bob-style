@@ -116,7 +116,7 @@ describe('HtmlParserHelpers', () => {
 
   describe('enforceAttributes', () => {
     const origClass = 'mydiv rem-oveme rem-ovemetoo';
-    const testString = `
+    const testString2 = `
       <div class="${origClass}">text</div>
       <a href="link" class="mylink">link</a>
       <span data-blah="blah">text2</span>
@@ -124,7 +124,7 @@ describe('HtmlParserHelpers', () => {
 
     it('Should add class', () => {
       expect(
-        parser.enforceAttributes(testString, {
+        parser.enforceAttributes(testString2, {
           div: { class: 'hello' },
         })
       ).toContain(`<div class="${origClass} hello">`);
@@ -132,7 +132,7 @@ describe('HtmlParserHelpers', () => {
 
     it('Should add multiple classes', () => {
       expect(
-        parser.enforceAttributes(testString, {
+        parser.enforceAttributes(testString2, {
           div: {
             class: {
               hello: true,
@@ -145,7 +145,7 @@ describe('HtmlParserHelpers', () => {
 
     it('Should remove class', () => {
       expect(
-        parser.enforceAttributes(testString, {
+        parser.enforceAttributes(testString2, {
           div: {
             class: {
               mydiv: false,
@@ -157,7 +157,7 @@ describe('HtmlParserHelpers', () => {
 
     it('Should remove wildcard classes', () => {
       expect(
-        parser.enforceAttributes(testString, {
+        parser.enforceAttributes(testString2, {
           div: {
             class: {
               'rem-.*': false,
@@ -171,7 +171,7 @@ describe('HtmlParserHelpers', () => {
 
     it('Should remove attribute', () => {
       expect(
-        parser.enforceAttributes(testString, {
+        parser.enforceAttributes(testString2, {
           span: {
             'data-blah': null,
           },
@@ -180,7 +180,7 @@ describe('HtmlParserHelpers', () => {
     });
 
     it('Should add/remove multiple attributes', () => {
-      const parsed = parser.enforceAttributes(testString, {
+      const parsed = parser.enforceAttributes(testString2, {
         span: {
           'data-blah': null,
           'data-bruh': 'bro',
@@ -193,7 +193,7 @@ describe('HtmlParserHelpers', () => {
 
     it('Should add attribute', () => {
       expect(
-        parser.enforceAttributes(testString, {
+        parser.enforceAttributes(testString2, {
           a: {
             target: '_blank',
           },

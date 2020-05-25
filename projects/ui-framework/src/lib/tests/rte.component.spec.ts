@@ -247,6 +247,7 @@
 //     });
 
 //     // tslint:disable-next-line: max-line-length
+// tslint:disable-next-line: max-line-length
 //     it('should add * to label text, and not placeholder, when required is true and both label and placeholder provided', () => {
 //       RTEComponent.ngOnChanges(
 //         simpleChange({
