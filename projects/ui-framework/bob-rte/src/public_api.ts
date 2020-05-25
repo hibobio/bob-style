@@ -9,3 +9,4 @@ export * from './rte/rte.interface';
 
 export { RichTextEditorModule } from './rte/rte.module';
 export { RichTextEditorComponent } from './rte/rte.component';
+export { RteUtilsService } from './rte/rte-utils.service';

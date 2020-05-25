@@ -534,7 +534,8 @@ export { ScrollEvent } from './lib/services/utils/utils.interface';
 export * from './lib/services/utils/window-ref.service';
 export { DocumentRef } from './lib/services/utils/document-ref.service';
 export { MobileService, WidthMode, MediaEvent, MobileOS } from './lib/services/utils/mobile.service';
-export { simpleUID, isString, isArray, isRenderedComponent } from './lib/services/utils/functional-utils';
+export * from './lib/services/utils/functional-utils';
+export * from './lib/services/utils/security-utils';
 // URL utils
 export { UrlUtilsModule } from './lib/services/url/url-utils.module';
 export { URLutils } from './lib/services/url/url-utils.service';
@@ -569,8 +570,6 @@ export {
 export { ColorTextItem } from './lib/eye-candy/text-colored-links/text-colored-links.interface';
 // Mocks
 export * from './lib/mock.const';
-// Misc helper methods
-export * from './lib/services/utils/functional-utils';
 // Test helpers
 export * from './lib/services/utils/test-helpers';
 // Util components
