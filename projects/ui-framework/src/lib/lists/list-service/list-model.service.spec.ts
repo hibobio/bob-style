@@ -28,7 +28,7 @@ describe('ListModelService', () => {
       providers: [ListModelService],
     });
 
-    listModelService = TestBed.get(ListModelService);
+    listModelService = TestBed.inject(ListModelService);
   });
 
   describe('getHeadersModel', () => {

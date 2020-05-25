@@ -223,15 +223,18 @@ export class RichTextEditorComponent extends RTEbaseElement
 
         const clipboardData: DataTransfer =
           event.clipboardData || event['originalEvent'].clipboardData;
-        const content = this.parserService.removeElements(
-          this.editor.html.getSelected(),
-          '.fr-marker'
-        );
-        const html =
-          chainCall(this.outputTransformers, content) +
-          '<span data-bob-rte="true"></span>';
 
-        clipboardData.setData('text/plain', html);
+        const content = this.editor.html.getSelected();
+
+        const html =
+          chainCall(
+            this.outputTransformers,
+            this.parserService.removeElements(content, '.fr-marker')
+          ) + '<span data-bob-rte="true"></span>';
+
+        const plainText = this.parserService.getPlainText(content);
+
+        clipboardData.setData('text/plain', plainText);
         clipboardData.setData('text/html', html);
 
         this.editor.selection.restore();

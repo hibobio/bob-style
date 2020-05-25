@@ -2,9 +2,7 @@ import {
   async,
   ComponentFixture,
   TestBed,
-  discardPeriodicTasks,
   fakeAsync,
-  flush,
   resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -14,6 +12,7 @@ import { CardType } from '../cards.enum';
 import {
   simpleChange,
   emitNativeEvent,
+  fakeAsyncFlush,
 } from '../../services/utils/test-helpers';
 import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
@@ -93,8 +92,7 @@ describe('CardsLayoutComponent', () => {
 
   describe('cards in a row calculation', () => {
     afterEach(fakeAsync(() => {
-      flush();
-      discardPeriodicTasks();
+      fakeAsyncFlush();
     }));
 
     it(`should have 5 cards on ${calcNeededWidth(

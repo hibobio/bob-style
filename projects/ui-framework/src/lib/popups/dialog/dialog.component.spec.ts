@@ -17,6 +17,7 @@ import { ButtonComponent } from '../../buttons/button/button.component';
 import { SquareButtonComponent } from '../../buttons/square/square.component';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import { fakeAsyncFlush } from '../../services/utils/test-helpers';
 
 describe('DialogComponent', () => {
   let component: DialogComponent;
@@ -110,6 +111,7 @@ describe('DialogComponent', () => {
       cancelButton.clicked.emit();
       tick();
       expect(spyMatDialogRef.close).toHaveBeenCalled();
+      fakeAsyncFlush();
     }));
     it('should close dialog immediately if no cancel action exists', () => {
       component.dialogButtons.cancel = {
@@ -185,6 +187,7 @@ describe('DialogComponent', () => {
       okButton.clicked.emit();
       tick();
       expect(spyMatDialogRef.close).toHaveBeenCalled();
+      fakeAsyncFlush();
     }));
 
     it('should leave dialog open if action resolves false', () => {
@@ -209,6 +212,7 @@ describe('DialogComponent', () => {
           By.css('.progress-indicator')
         );
         expect(progressIndicator).toBeFalsy();
+        fakeAsyncFlush();
       });
     });
 
@@ -285,6 +289,7 @@ describe('DialogComponent', () => {
         okButton.clicked.emit();
         tick();
         expect(spyMatDialogRef.close).toHaveBeenCalled();
+        fakeAsyncFlush();
       }));
 
       it('should disable ok button if configured to be disabled', () => {

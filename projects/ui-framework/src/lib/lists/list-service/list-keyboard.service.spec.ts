@@ -8,10 +8,10 @@ describe('ListModelService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ListKeyboardService]
+      providers: [ListKeyboardService],
     });
 
-    listKeyboardService = TestBed.get(ListKeyboardService);
+    listKeyboardService = TestBed.inject(ListKeyboardService);
   });
 
   describe('getKeyboardNavigationObservable', () => {

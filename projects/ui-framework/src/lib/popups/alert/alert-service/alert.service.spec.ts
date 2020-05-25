@@ -3,8 +3,6 @@ import {
   inject,
   TestBed,
   tick,
-  discardPeriodicTasks,
-  flush,
   resetFakeAsyncZone,
   async,
 } from '@angular/core/testing';
@@ -23,6 +21,7 @@ import { IconComponent } from '../../../icons/icon.component';
 import { AlertComponent } from '../alert/alert.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { fakeAsyncFlush } from '../../../services/utils/test-helpers';
 
 const ALERT_DURATION_TICK = 11;
 const ALERT_CONFIG: AlertConfig = {
@@ -55,16 +54,11 @@ describe('AlertService', () => {
       overlayElement = oc.getContainerElement();
     })();
 
-    alertService = TestBed.get(AlertService);
+    alertService = TestBed.inject(AlertService);
     alertService['alertDuration'] = ALERT_DURATION_TICK - 1;
   }));
 
   describe('Alert Service', () => {
-    afterEach(fakeAsync(() => {
-      flush();
-      discardPeriodicTasks();
-    }));
-
     it('should create the alert component and init its configuration', fakeAsync(() => {
       const alertComponentRef: ComponentRef<AlertComponent> = alertService.showAlert(
         ALERT_CONFIG
@@ -81,6 +75,8 @@ describe('AlertService', () => {
       );
       expect(alertService.isOpen).toBeFalsy();
       alertComponentRef.instance.onAnimationDone({ toState: 'leave' });
+
+      fakeAsyncFlush();
     }));
 
     it('should dispose alert if one is open before opening a new one', () => {
@@ -105,6 +101,8 @@ describe('AlertService', () => {
       expect(alertService.overlayRef.hasAttached()).toBeFalsy();
       expect(alertService.isOpen).toBeFalsy();
       tick(ALERT_DURATION_TICK);
+
+      fakeAsyncFlush();
     }));
 
     it('should close the alert after 7 seconds', fakeAsync(() => {
@@ -117,6 +115,8 @@ describe('AlertService', () => {
       expect(alertService.overlayRef.hostElement).toBeNull();
       expect(alertService.overlayRef.hasAttached()).toBeFalsy();
       expect(alertService.isOpen).toBeFalsy();
+
+      fakeAsyncFlush();
     }));
   });
 });

@@ -2,7 +2,11 @@ import { TestBed } from '@angular/core/testing';
 import { TableUtilsService } from './table-utils.service';
 import { ColumnDef } from '../table/table.interface';
 import { concat } from 'lodash';
-import { PinDirection, RowSelection, SortDirections } from '../table/table.enum';
+import {
+  PinDirection,
+  RowSelection,
+  SortDirections,
+} from '../table/table.enum';
 import { IconColor, Icons } from 'bob-style';
 
 describe('TableUtilsService', () => {
@@ -43,7 +47,7 @@ describe('TableUtilsService', () => {
         menuTabs: [],
         cellClass: [],
         cellStyle: {},
-      }
+      },
     ];
     tableColumnsMock = [
       {
@@ -57,19 +61,19 @@ describe('TableUtilsService', () => {
       {
         colId: 'email',
         colDef: columnDefsMock[2],
-      }
+      },
     ];
     gridOptionsMock = {
       columnApi: {
-        getAllColumns: () => tableColumnsMock
-      }
+        getAllColumns: () => tableColumnsMock,
+      },
     };
 
     TestBed.configureTestingModule({
-      providers: [TableUtilsService]
+      providers: [TableUtilsService],
     });
 
-    tableUtilsService = TestBed.get(TableUtilsService);
+    tableUtilsService = TestBed.inject(TableUtilsService);
   });
 
   describe('getAllColFields', () => {

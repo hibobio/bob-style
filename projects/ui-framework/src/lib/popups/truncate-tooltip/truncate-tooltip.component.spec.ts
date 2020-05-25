@@ -4,8 +4,6 @@ import {
   TestBed,
   fakeAsync,
   tick,
-  flush,
-  discardPeriodicTasks,
   resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
@@ -19,6 +17,7 @@ import { TruncateTooltipType } from './truncate-tooltip.enum';
 import { UtilsModule } from '../../services/utils/utils.module';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { UtilsService } from '../../services/utils/utils.service';
+import { fakeAsyncFlush } from '../../services/utils/test-helpers';
 
 @Component({
   template: `
@@ -128,11 +127,6 @@ describe('TruncateTooltipComponent', () => {
     fixture.detectChanges();
   });
 
-  afterEach(fakeAsync(() => {
-    flush();
-    discardPeriodicTasks();
-  }));
-
   describe('Text truncation (1 line)', () => {
     it('should display a single truncated line of text', fakeAsync(() => {
       const textContainerStyle = getComputedStyle(bttComp1textContainer);
@@ -141,7 +135,7 @@ describe('TruncateTooltipComponent', () => {
       expect(
         parseInt(textContainerStyle.height, 10) <= 20 * 1.5 * 1
       ).toBeTruthy();
-      flush();
+      fakeAsyncFlush();
     }));
     it('should display tooltip with full text', () => {
       const tooltipElem = document.querySelector(
@@ -174,7 +168,7 @@ describe('TruncateTooltipComponent', () => {
       tick();
       expect(tooltipElem.innerText).toContain('TEST2');
       expect(tooltipElem.innerText).toContain('TEXTEND1');
-      flush();
+      fakeAsyncFlush();
     }));
   });
 
@@ -188,7 +182,7 @@ describe('TruncateTooltipComponent', () => {
       expect(
         parseInt(textContainerStyle.height, 10) <= 20 * 1.5 * 1
       ).toBeTruthy();
-      flush();
+      fakeAsyncFlush();
     }));
 
     it('should also update on maxLines or text changes', fakeAsync(() => {
@@ -206,7 +200,7 @@ describe('TruncateTooltipComponent', () => {
       ).toBeTruthy();
       expect(tooltipElem.innerText).toContain('TEST4');
       expect(tooltipElem.innerText).toContain('TEXTEND2');
-      flush();
+      fakeAsyncFlush();
     }));
   });
 });

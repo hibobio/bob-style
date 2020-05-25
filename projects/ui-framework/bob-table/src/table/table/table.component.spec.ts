@@ -13,7 +13,7 @@ import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AgGridModule } from 'ag-grid-angular';
-import { AvatarModule } from 'bob-style';
+import { AvatarModule, fakeAsyncFlush } from 'bob-style';
 import { cloneDeep, keys, pick } from 'lodash';
 import { AvatarCellComponent } from '../table-cell-components/avatar-cell/avatar.component';
 import {
@@ -159,7 +159,7 @@ describe('TableComponent', () => {
             colId: 'fullName',
             sort: 'asc',
           });
-          flush();
+          fakeAsyncFlush();
         }));
       });
       it('should get table columnDef from tableUtilsService', fakeAsync(() => {
@@ -170,6 +170,7 @@ describe('TableComponent', () => {
           null
         );
         expect(component.gridColumnDefs).toEqual(columnDefsMock);
+        fakeAsyncFlush();
       }));
       describe('GridOptions', () => {
         it('should set rowSelection as option if provided', () => {
@@ -215,6 +216,7 @@ describe('TableComponent', () => {
           fixture.autoDetectChanges();
           flush();
           expect(component.gridReady).toBe(true);
+          fakeAsyncFlush();
         }));
         it('should call autoSizeAllColumns when onGridReady is triggered', fakeAsync(() => {
           fixture.autoDetectChanges();
@@ -223,6 +225,7 @@ describe('TableComponent', () => {
           expect(
             component.gridOptions.columnApi.autoSizeAllColumns
           ).toHaveBeenCalled();
+          fakeAsyncFlush();
         }));
         it('should call autoSizeAllColumns when onGridReady is triggered', fakeAsync(() => {
           component.shouldAutoSizeColumns = false;
@@ -232,12 +235,14 @@ describe('TableComponent', () => {
           expect(
             component.gridOptions.columnApi.autoSizeAllColumns
           ).not.toHaveBeenCalled();
+          fakeAsyncFlush();
         }));
         it('should emit gridInit event when onGridReady is triggered', fakeAsync(() => {
           fixture.autoDetectChanges();
           spyOn(component.gridInit, 'emit');
           flush();
           expect(component.gridInit.emit).toHaveBeenCalled();
+          fakeAsyncFlush();
         }));
       });
       describe('onRowClicked', () => {
@@ -256,7 +261,7 @@ describe('TableComponent', () => {
             data: ROW_DATA_MOCK[0],
             agGridId: '0',
           });
-          flush();
+          fakeAsyncFlush();
         }));
 
         it('clickable row should have "row-clickable" selector', fakeAsync(() => {
@@ -267,7 +272,7 @@ describe('TableComponent', () => {
             '.ag-row'
           )[0] as HTMLElement;
           expect(firstRow.className.includes('row-clickable')).toBeTruthy();
-          flush();
+          fakeAsyncFlush();
         }));
       });
     });
@@ -281,8 +286,9 @@ describe('TableComponent', () => {
       expect(component.selectionChanged.emit).toHaveBeenCalledWith([
         ROW_DATA_MOCK[0],
       ]);
-      flush();
+      fakeAsyncFlush();
     }));
+
     it('should unselect row', fakeAsync(() => {
       fixture.autoDetectChanges();
 
@@ -296,7 +302,7 @@ describe('TableComponent', () => {
       tick();
       expect(component.selectionChanged.emit).toHaveBeenCalledWith([]);
 
-      flush();
+      fakeAsyncFlush();
     }));
   });
 

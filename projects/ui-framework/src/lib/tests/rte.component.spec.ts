@@ -103,7 +103,7 @@
 //         fixture = TestBed.createComponent(TestComponent);
 //         testComponent = fixture.componentInstance;
 
-//         rteUtils = TestBed.get(RteUtilsService);
+//         rteUtils = TestBed.inject(RteUtilsService);
 
 //         fixture.detectChanges();
 

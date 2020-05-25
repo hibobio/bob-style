@@ -40,7 +40,7 @@ import { elementFromFixture } from '../utils/test-helpers';
       style="box-sizing:border-box; width:300px; padding:20px; border:2px solid red;"
     ></div>
   `,
-  providers: [DOMhelpers]
+  providers: [DOMhelpers],
 })
 class TestComponent {
   constructor() {}
@@ -60,13 +60,13 @@ describe('DOMhelpers', () => {
       declarations: [TestComponent],
       imports: [CommonModule, UtilsModule],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [DOMhelpers]
+      providers: [DOMhelpers],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(TestComponent);
         testComponent = fixture.componentInstance;
-        DOM = TestBed.get(DOMhelpers);
+        DOM = TestBed.inject(DOMhelpers);
 
         testDiv1 = elementFromFixture(fixture, '.test1');
         testDiv2 = elementFromFixture(fixture, '.test2');
@@ -80,7 +80,7 @@ describe('DOMhelpers', () => {
       DOM.setCssProps(testDiv2, {
         '--test': 'passed1',
         '--test2': 'passed2',
-        '--test3': 'passed3'
+        '--test3': 'passed3',
       });
       expect(getComputedStyle(testDiv2).getPropertyValue('--test2')).toEqual(
         'passed2'
@@ -198,7 +198,7 @@ describe('DOMhelpers', () => {
         class1: true,
         class2: true,
         class3: true,
-        test4: true
+        test4: true,
       });
     });
     it('should bind 3 classes passed as a string[]', () => {
@@ -210,7 +210,7 @@ describe('DOMhelpers', () => {
         class1: true,
         class2: true,
         class3: true,
-        test4: true
+        test4: true,
       });
     });
     it('should bind 3 classes passed as an NgClass object', () => {
@@ -222,7 +222,7 @@ describe('DOMhelpers', () => {
         class1: true,
         class2: true,
         class3: true,
-        test4: true
+        test4: true,
       });
     });
     it('should not bind class from NgClass object that has falsey value', () => {
@@ -233,7 +233,7 @@ describe('DOMhelpers', () => {
         class1: true,
         class2: true,
         class3: false,
-        test4: true
+        test4: true,
       });
     });
     it('should not do anythinig if empty classes passed', () => {
@@ -257,7 +257,7 @@ describe('DOMhelpers', () => {
         class1: true,
         class2: false,
         test: true,
-        test4: true
+        test4: true,
       });
       DOM.bindClasses(testDiv4, ['class2', 'class3']);
       const result = DOM.bindClasses(testDiv4, { test: false, test4: false });
@@ -267,7 +267,7 @@ describe('DOMhelpers', () => {
         class2: true,
         class3: true,
         test: false,
-        test4: false
+        test4: false,
       });
     });
   });

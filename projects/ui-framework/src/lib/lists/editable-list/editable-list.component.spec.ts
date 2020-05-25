@@ -4,8 +4,6 @@ import {
   fakeAsync,
   TestBed,
   tick,
-  discardPeriodicTasks,
-  flush,
   resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { EditableListComponent } from './editable-list.component';
@@ -15,7 +13,11 @@ import { CommonModule } from '@angular/common';
 import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
 import { SelectOption } from '../list.interface';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
-import { simpleChange, inputValue } from '../../services/utils/test-helpers';
+import {
+  simpleChange,
+  inputValue,
+  fakeAsyncFlush,
+} from '../../services/utils/test-helpers';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { ListSortType } from './editable-list.enum';
 import { cloneDeep } from 'lodash';
@@ -104,11 +106,6 @@ describe('EditableListComponent', () => {
   });
 
   describe('Adding/Deleting items', () => {
-    afterEach(fakeAsync(() => {
-      flush();
-      discardPeriodicTasks();
-    }));
-
     it('should have all items in the list', () => {
       triggerChanges();
       const list = fixture.debugElement.queryAll(
@@ -165,6 +162,7 @@ describe('EditableListComponent', () => {
         By.css('.bel-item.b-icon-drag-alt')
       );
       expect(list3.length).toEqual(2);
+      fakeAsyncFlush();
     }));
 
     it('should emit the right event when item was deleted', fakeAsync(() => {
@@ -200,6 +198,7 @@ describe('EditableListComponent', () => {
         ],
       };
       expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
+      fakeAsyncFlush();
     }));
 
     it('should add item to the list', () => {
@@ -258,6 +257,7 @@ describe('EditableListComponent', () => {
         selectOptionsMock[0].value
       );
       expect(error.nativeElement.innerText).toContain('already');
+      fakeAsyncFlush();
     }));
   });
 

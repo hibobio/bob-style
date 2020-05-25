@@ -61,7 +61,7 @@ describe('DialogService', () => {
       ],
     });
 
-    dialogService = TestBed.get(DialogService);
+    dialogService = TestBed.inject(DialogService);
   });
 
   describe('openDialog', () => {

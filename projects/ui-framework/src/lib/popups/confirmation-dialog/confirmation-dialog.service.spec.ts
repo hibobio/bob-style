@@ -14,19 +14,20 @@ describe('ConfirmationDialogService', () => {
   let dialogRefMock;
 
   beforeEach(() => {
-    dialogRefMock = createSpyObj('dialogRefMock', ['afterClosed', 'beforeClosed']);
+    dialogRefMock = createSpyObj('dialogRefMock', [
+      'afterClosed',
+      'beforeClosed',
+    ]);
     dialogRefMock.afterClosed.and.returnValue(of({}));
 
     dialogServiceMock = createSpyObj('dialogServiceMock', ['openDialog']);
     dialogServiceMock.openDialog.and.returnValue(dialogRefMock);
 
     TestBed.configureTestingModule({
-      providers: [
-        { provide: DialogService, useValue: dialogServiceMock },
-      ],
+      providers: [{ provide: DialogService, useValue: dialogServiceMock }],
     });
 
-    confimationDialogService = TestBed.get(ConfirmationDialogService);
+    confimationDialogService = TestBed.inject(ConfirmationDialogService);
   });
 
   describe('openDialog', () => {
@@ -38,7 +39,7 @@ describe('ConfirmationDialogService', () => {
           ok: {
             label: 'Ok',
             action: () => true,
-          }
+          },
         },
       };
       confimationDialogService.openDialog(config);
@@ -48,7 +49,8 @@ describe('ConfirmationDialogService', () => {
           size: DialogSize.small,
           panelClass: config.class,
           data: config,
-        });
+        }
+      );
     });
   });
 });

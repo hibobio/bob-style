@@ -28,10 +28,10 @@ describe('CellWidthsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CellWidthsService]
+      providers: [CellWidthsService],
     });
 
-    cellWidthsService = TestBed.get(CellWidthsService);
+    cellWidthsService = TestBed.inject(CellWidthsService);
   });
 
   describe('getCellsWidth', () => {
@@ -41,7 +41,7 @@ describe('CellWidthsService', () => {
         { name: '2' },
         { name: '3' },
         { name: '4' },
-        { name: '5', width: 15 }
+        { name: '5', width: 15 },
       ];
       const expectedWidths = [25, 20, 20, 20, 15];
       const cellWidths = cellWidthsService.getCellsWidth(
@@ -59,7 +59,7 @@ describe('CellWidthsService', () => {
         { name: '2', width: -1000 },
         { name: '3', width: 70 },
         { name: '4', width: 4 },
-        { name: '5', width: 16 }
+        { name: '5', width: 16 },
       ];
       const expectedWidths = [18, 5, 63, 5, 9];
       const cellWidths = cellWidthsService.getCellsWidth(

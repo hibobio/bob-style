@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { LinkifyPipe } from '../filters/linkify.pipe';
 import { GenericObject } from '../../types';
 import { isString, isObject, isEmptyObject } from '../utils/functional-utils';
+import { Xtb } from '@angular/compiler';
 
 export interface CleanupHtmlConfig {
   removeNbsp?: boolean;
@@ -109,15 +110,15 @@ export class HtmlParserHelpers {
 
       Array.from(elm.querySelectorAll(selector)).forEach(
         (elem: HTMLElement): void => {
-          Object.keys(attributes).forEach(attr => {
+          Object.keys(attributes).forEach((attr) => {
             if (attributes[attr] === null) {
               if (!/[.*+^]/.test(attr)) {
                 elem.removeAttribute(attr);
               } else {
                 Array.from(elem.attributes)
-                  .map(a => a.name)
-                  .filter(a => new RegExp(attr, 'i').test(a))
-                  .forEach(a => {
+                  .map((a) => a.name)
+                  .filter((a) => new RegExp(attr, 'i').test(a))
+                  .forEach((a) => {
                     elem.removeAttribute(a);
                   });
               }
@@ -126,7 +127,7 @@ export class HtmlParserHelpers {
                 let classes = attributes[attr];
 
                 if (isObject(classes)) {
-                  Object.keys(classes).forEach(c => {
+                  Object.keys(classes).forEach((c) => {
                     if (classes[c]) {
                       elem.classList.add(c);
                     } else {
@@ -173,7 +174,22 @@ export class HtmlParserHelpers {
     const elm: HTMLElement = document.createElement('div');
     elm.innerHTML = value;
 
-    elm.querySelectorAll(selector).forEach(el => el.remove());
+    elm.querySelectorAll(selector).forEach((el) => el.remove());
     return elm.innerHTML;
+  }
+
+  public getPlainText(html: string | HTMLElement): string {
+    if (!html) {
+      return '';
+    }
+    if (isString(html)) {
+      const elm: HTMLElement = document.createElement('div');
+      elm.innerHTML = html;
+      return elm.innerText;
+    }
+    if (html.nodeType === Node.ELEMENT_NODE) {
+      return html.innerText;
+    }
+    return String(html.textContent || html || '');
   }
 }

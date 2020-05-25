@@ -57,7 +57,7 @@ describe('LightboxService', () => {
       }
     )();
 
-    lightboxService = TestBed.get(LightboxService);
+    lightboxService = TestBed.inject(LightboxService);
   }));
 
   describe('Lightbox Service', () => {

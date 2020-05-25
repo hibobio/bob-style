@@ -7,7 +7,7 @@ import {
   PositionStrategy,
   ScrollStrategy,
   ScrollStrategyOptions,
-  ConnectedPosition
+  ConnectedPosition,
 } from '@angular/cdk/overlay';
 import { PanelDefaultPosVer } from '../panel.enum';
 import {
@@ -16,7 +16,7 @@ import {
   ABOVE_START,
   BELOW_CENTER,
   BELOW_END,
-  BELOW_START
+  BELOW_START,
 } from './panel-position.const';
 import createSpyObj = jasmine.createSpyObj;
 
@@ -28,13 +28,13 @@ describe('PanelPositionService', () => {
 
   beforeEach(() => {
     cdkOverlayOriginMock = {
-      elementRef: {}
+      elementRef: {},
     } as CdkOverlayOrigin;
 
     scrollStrategyMock = 'material scroll strategy';
 
     scrollStrategyOptions = createSpyObj('scrollStrategyOptions', [
-      'reposition'
+      'reposition',
     ]);
     scrollStrategyOptions.reposition.and.returnValue(scrollStrategyMock);
 
@@ -42,11 +42,11 @@ describe('PanelPositionService', () => {
       providers: [
         PanelPositionService,
         Overlay,
-        { provide: ScrollStrategyOptions, useValue: scrollStrategyOptions }
-      ]
+        { provide: ScrollStrategyOptions, useValue: scrollStrategyOptions },
+      ],
     });
 
-    panelPositionService = TestBed.get(PanelPositionService);
+    panelPositionService = TestBed.inject(PanelPositionService);
   });
 
   describe('getPanelPositionStrategy', () => {
@@ -62,7 +62,7 @@ describe('PanelPositionService', () => {
         ABOVE_END,
         BELOW_CENTER,
         BELOW_START,
-        BELOW_END
+        BELOW_END,
       ]);
     });
 
@@ -78,7 +78,7 @@ describe('PanelPositionService', () => {
         BELOW_END,
         ABOVE_CENTER,
         ABOVE_START,
-        ABOVE_END
+        ABOVE_END,
       ]);
     });
 
@@ -111,68 +111,68 @@ describe('PanelPositionService', () => {
   describe('getPositionClassList', () => {
     it('should return panel-below as true', () => {
       const change: ConnectedOverlayPositionChange = {
-        connectionPair: BELOW_CENTER
+        connectionPair: BELOW_CENTER,
       } as ConnectedOverlayPositionChange;
       expect(panelPositionService.getPositionClassList(change)).toEqual({
         'panel-below': true,
         'panel-above': false,
         'panel-after': false,
-        'panel-before': false
+        'panel-before': false,
       });
     });
     it('should return panel-below and panel-after as true', () => {
       const change: ConnectedOverlayPositionChange = {
-        connectionPair: BELOW_START
+        connectionPair: BELOW_START,
       } as ConnectedOverlayPositionChange;
       expect(panelPositionService.getPositionClassList(change)).toEqual({
         'panel-below': true,
         'panel-above': false,
         'panel-after': true,
-        'panel-before': false
+        'panel-before': false,
       });
     });
     it('should return panel-below and panel-before as true', () => {
       const change: ConnectedOverlayPositionChange = {
-        connectionPair: BELOW_END
+        connectionPair: BELOW_END,
       } as ConnectedOverlayPositionChange;
       expect(panelPositionService.getPositionClassList(change)).toEqual({
         'panel-below': true,
         'panel-above': false,
         'panel-after': false,
-        'panel-before': true
+        'panel-before': true,
       });
     });
     it('should return panel-above as true', () => {
       const change: ConnectedOverlayPositionChange = {
-        connectionPair: ABOVE_CENTER
+        connectionPair: ABOVE_CENTER,
       } as ConnectedOverlayPositionChange;
       expect(panelPositionService.getPositionClassList(change)).toEqual({
         'panel-below': false,
         'panel-above': true,
         'panel-after': false,
-        'panel-before': false
+        'panel-before': false,
       });
     });
     it('should return panel-above and panel-after as true', () => {
       const change: ConnectedOverlayPositionChange = {
-        connectionPair: ABOVE_START
+        connectionPair: ABOVE_START,
       } as ConnectedOverlayPositionChange;
       expect(panelPositionService.getPositionClassList(change)).toEqual({
         'panel-below': false,
         'panel-above': true,
         'panel-after': true,
-        'panel-before': false
+        'panel-before': false,
       });
     });
     it('should return panel-above and panel-before as true', () => {
       const change: ConnectedOverlayPositionChange = {
-        connectionPair: ABOVE_END
+        connectionPair: ABOVE_END,
       } as ConnectedOverlayPositionChange;
       expect(panelPositionService.getPositionClassList(change)).toEqual({
         'panel-below': false,
         'panel-above': true,
         'panel-after': false,
-        'panel-before': true
+        'panel-before': true,
       });
     });
   });

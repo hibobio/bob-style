@@ -11,7 +11,7 @@ describe('ColorService', () => {
       schemas: [NO_ERRORS_SCHEMA],
     });
 
-    colorService = TestBed.get(ColorService);
+    colorService = TestBed.inject(ColorService);
   });
 
   describe('parseToRGB', () => {
