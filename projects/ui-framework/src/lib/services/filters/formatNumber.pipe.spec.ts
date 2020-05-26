@@ -1,6 +1,6 @@
 import { FormatNumberPipe } from './formatNumber.pipe';
 
-fdescribe('FormatNumberPipe', () => {
+describe('FormatNumberPipe', () => {
   const pipe = new FormatNumberPipe();
 
   it('should format number', () => {
