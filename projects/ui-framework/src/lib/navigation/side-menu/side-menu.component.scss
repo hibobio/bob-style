@@ -97,17 +97,93 @@ $side-menu-selected-border: 4px;
 // Avatar
 
 .option-avatar {
+  max-width: 100%;
   min-height: $side-menu-avatar-height;
+  display: flex;
+  align-items: center;
+}
+
+.avatar-text {
+  max-width: calc(100% - 36px - 5px);
+  margin-left: 5px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.avatar-title {
+  font-size: $font-size-body;
+  font-weight: $font-weight-bold-body;
+  margin: 0;
+}
+
+.avatar-subtitle {
+  margin: 0;
+}
+
+.avatar-text-icon {
+  width: 16px;
+}
+
+[data-icon-position='label'] {
+  .avatar-text-icon {
+    order: 1;
+    margin-right: 5px;
+  }
+  .avatar-title {
+    order: 2;
+  }
+}
+
+[data-icon-position='label_after'] {
+  .avatar-text-icon {
+    order: 2;
+    margin-left: 5px;
+  }
+  .avatar-title {
+    order: 1;
+  }
+}
+
+[data-icon-position*='label'] {
+  .avatar-subtitle {
+    order: 3;
+    width: 100%;
+  }
+}
+
+[data-icon-position='value'] {
+  .avatar-text-icon {
+    order: 2;
+    margin-right: 5px;
+  }
+  .avatar-subtitle {
+    order: 3;
+  }
+}
+
+[data-icon-position='value_after'] {
+  .avatar-text-icon {
+    order: 3;
+    margin-left: 5px;
+  }
+  .avatar-subtitle {
+    order: 2;
+  }
+}
+
+[data-icon-position*='value'] {
+  .avatar-title {
+    order: 1;
+    width: 100%;
+  }
 }
 
 :host::ng-deep .menu-option:not(.selected) {
-  .option-avatar {
-    .title {
-      font-weight: 400;
-    }
-    .subtitle {
-      color: $grey-600;
-    }
+  .avatar-title {
+    font-weight: 400;
+  }
+  .avatar-subtitle {
+    color: $grey-600;
   }
 }
 

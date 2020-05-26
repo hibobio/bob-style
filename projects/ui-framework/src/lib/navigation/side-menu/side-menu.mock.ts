@@ -7,6 +7,7 @@ import { mockText, mockAvatar, mockName, mockJobs } from '../../mock.const';
 import { SideMenuOption } from './side-menu.interface';
 import { AvatarBadge } from '../../avatar/avatar/avatar.enum';
 import { MenuItem } from '../menu/menu.interface';
+import { IconPosition } from '../../typography/label-value/label-value.enum';
 
 const menuMock: MenuItem[] = makeArray(4).map(() => ({
   label: mockText(1),
@@ -34,6 +35,11 @@ export const sideMenuMock2: SideMenuOption[] = makeArray(3)
       title: mockName(),
       subtitle: mockJobs(1),
       badge: randomFromArray(Object.keys(AvatarBadge)) as AvatarBadge,
+
+      textIcon: index === 0 ? Icons.person_reports : Icons.person_manager,
+      textIconTooltip: index === 0 ? 'Raising to the top' : 'Going down',
+      textIconPosition:
+        index === 0 ? IconPosition.label_after : IconPosition.value_after,
     },
     actions: menuMock,
   }))

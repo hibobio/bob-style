@@ -393,9 +393,7 @@ export { SideMenuModule } from './lib/navigation/side-menu/side-menu.module';
 export {
   SideMenuComponent
 } from './lib/navigation/side-menu/side-menu.component';
-export {
-  SideMenuOption
-} from './lib/navigation/side-menu/side-menu.interface';
+export * from './lib/navigation/side-menu/side-menu.interface';
 // Tabs Module
 export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { TabsComponent } from './lib/navigation/tabs/tabs.component';

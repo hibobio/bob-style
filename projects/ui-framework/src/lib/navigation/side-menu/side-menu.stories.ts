@@ -101,42 +101,73 @@ const note = `
   ${template}
   ~~~
 
+  #### interface: SideMenuOption
+  Name | Type | Description
+  --- | --- | --- | ---
+  id | number / string | option id
+  displayName | string | option text
+  icon? | Icons | main option icon
+  avatar? | SideMenuOptionAvatar | data for avatar component
+  actions? | MenuItem[] | data for menu
+  disabled? | boolean | disabled state
+
+  #### interface: SideMenuOptionAvatar
+  Name | Type | Description
+  --- | --- | --- | ---
+  imageSource | string | avatar image url
+  backgroundColor? | string | avatar bg color
+  size? | AvatarSize | size
+  title? | string | avatar title (name)
+  subtitle? | string | subtitle
+  badge? | AvatarBadge / BadgeConfig | avatar badge
+  disabled? | boolean | disabled state
+  icon? | Icons | icon (in place of avatar image)
+  textIcon? | Icons | icon to be placed in the title/subtitle
+  textIconPosition? | IconPosition | valid values are: <br>\
+  'label',  'label<sub>-</sub>after' (to the left or right of title) and <br>\
+  'value', 'value<sub>-</sub>after' (to the left or right of subtitle)
+  textIconTooltip? | string | tooltip for the text icon
+
+
   #### Options data examples
   ~~~
   [
     {
-      "id": "e0d65",
-      "displayName": "Exercitationem",
-      "icon": Icons.folder,
-      "actions": [...]
+      id: 'e0d65',
+      displayName: 'Exercitationem',
+      icon: Icons.folder,
+      actions: [...]
     },
 
     ...
 
     {
-      "id": "07cc6",
-      "avatar": {
-        "imageSource": "https://randomuser.me/api/portraits/men/94.jpg",
-        "title": "Claudie Adrian",
-        "subtitle": "Information systems technician",
-        "badge": AvatarBadge.rejected
+      id: '07cc6',
+      avatar: {
+        imageSource: 'https://randomuser.me/api/portraits/men/94.jpg',
+        title: 'Claudie Adrian',
+        subtitle: 'Information systems technician',
+        badge: 'AvatarBadge.rejected',
+        textIcon: Icons.person_add,
+        textIconTooltip: 'Added by John',
+        textIconPosition: IconPosition.label_after
       },
-      "actions": [...]
+      actions: [...]
     },
 
     ...
 
     {
-      "id": "50e67",
-      "avatar": {
-        "icon": {
-          "icon": Icons.person_reports,
-          "color": IconColor.dark
+      id: '50e67',
+      avatar: {
+        icon: {
+          icon: Icons.person_reports,
+          color: IconColor.dark
         },
-        "title": "Reports 2"
+        title: 'Reports 2'
       },
-      "actions": [...],
-      "disabled": true
+      actions: [...],
+      disabled: true
     }
   ]
   ~~~

@@ -11,7 +11,7 @@
     [attr.tabindex]="labelClicked.observers.length ? 0 : null">
   <b-truncate-tooltip *ngIf="labelMaxLines"
                       [maxLines]="labelMaxLines"
-                      [type]="tooltipType.css"
+                      [type]="tooltipType"
                       [trustCssVars]="true"
                       [expectChanges]="expectChanges">
     {{label}}
@@ -26,7 +26,7 @@
    [attr.tabindex]="valueClicked.observers.length ? 0 : null">
   <b-truncate-tooltip *ngIf="valueMaxLines"
                       [maxLines]="valueMaxLines"
-                      [type]="tooltipType.css"
+                      [type]="tooltipType"
                       [trustCssVars]="true"
                       [expectChanges]="expectChanges">
     {{value}}

@@ -38,13 +38,13 @@ export class LabelValueComponent implements OnChanges {
 
   readonly iconPositions = IconPosition;
   readonly iconSizes = IconSize;
-  readonly tooltipType = TruncateTooltipType;
 
   @Input() label: string | number;
   @Input() value: string | number;
   @Input() labelMaxLines: number;
   @Input() valueMaxLines: number;
   @Input() expectChanges = false;
+  @Input() tooltipType = TruncateTooltipType.css;
 
   @Input() icon: Icons;
   @Input() iconPosition: IconPosition = IconPosition.left;

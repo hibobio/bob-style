@@ -1,5 +1,6 @@
 <div class="menu-header">
   <h4 class="header-title">{{ headerLabel }}</h4>
+
   <div class="header-actions">
     <ng-content></ng-content>
   </div>
@@ -20,9 +21,9 @@
         'selected': option.id === selectedId && !option.disabled,
         'has-menu': option.actions?.length
       }"
+      class="{{option.icon && !option.avatar ? option.icon : null}}"
       [attr.tabindex]="!option.disabled ? 0 : null"
       [attr.role]="!option.disabled ? 'button' : null"
-      [attr.data-icon-before]="option.icon && !option.avatar ? getIconData(option.icon) : null"
       [attr.data-icon-before-color]="option.id === selectedId && !option.disabled ? iconColor.dark : iconColor.normal">
 
     <p class="option-display-name"
@@ -33,16 +34,37 @@
       {{option.displayName}}
     </p>
 
-    <b-avatar class="option-avatar"
-              *ngIf="option.avatar"
-              [size]="avatarSize.mini"
-              [imageSource]="option.avatar.imageSource"
-              [title]="option.avatar.title"
-              [subtitle]="option.avatar.subtitle"
-              [badge]="option.avatar.badge"
-              [icon]="option.avatar.icon"
-              [tooltipType]="tooltipType">
-    </b-avatar>
+    <div *ngIf="option.avatar"
+         class="option-avatar">
+      <b-avatar-image class="avatar"
+                      [size]="avatarSize.mini"
+                      [imageSource]="option.avatar.imageSource"
+                      [badge]="option.avatar.badge"
+                      [icon]="option.avatar.icon">
+      </b-avatar-image>
+
+      <div class="avatar-text"
+           [attr.data-icon-position]="option.avatar.textIconPosition || null">
+        <h6 class="avatar-title"
+            [b-truncate-tooltip]="1"
+            [trustCssVars]="true"
+            [type]="tooltipType">{{option.avatar.title}}</h6>
+        <p *ngIf="option.avatar.subtitle"
+           class="avatar-subtitle"
+           [b-truncate-tooltip]="1"
+           [trustCssVars]="true"
+           [type]="tooltipType">{{option.avatar.subtitle}}</p>
+
+        <b-icon *ngIf="option.avatar.textIcon"
+                class="avatar-text-icon"
+                [icon]="option.avatar.textIcon"
+                [size]="iconSize.small"
+                [color]="option.avatar.textIconPosition.includes('label') ? iconColor.dark :
+                iconColor.normal"
+                [toolTipSummary]="option.avatar.textIconTooltip">
+        </b-icon>
+      </div>
+    </div>
 
     <b-menu class="option-actions"
             *ngIf="option.actions?.length && !option.disabled"

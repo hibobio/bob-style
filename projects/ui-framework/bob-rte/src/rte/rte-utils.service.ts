@@ -7,22 +7,25 @@ import { DomSanitizer } from '@angular/platform-browser';
   providedIn: 'root',
 })
 export class RteUtilsService {
-  constructor(private sanitizer: DomSanitizer) {
-  }
+  constructor(private sanitizer: DomSanitizer) {}
 
   getSanitizeMentions(mentionsList: RteMentionsOption[]): RteMentionsOption[] {
-    return mentionsList.map(mentionListItem => {
+    return mentionsList.map((mentionListItem) => {
       return {
         displayName: escapeSafe(mentionListItem.displayName),
-        link: mentionListItem.link && this.sanitizer.sanitize(SecurityContext.URL, mentionListItem.link),
-        avatar: escapeSafe(mentionListItem.avatar),
-        attributes: mentionListItem.attributes &&
+        link:
+          mentionListItem.link &&
+          this.sanitizer.sanitize(SecurityContext.URL, mentionListItem.link),
+        avatar:
+          mentionListItem.avatar &&
+          this.sanitizer.sanitize(SecurityContext.URL, mentionListItem.avatar),
+        attributes:
+          mentionListItem.attributes &&
           Object.keys(mentionListItem.attributes).reduce((acc, key) => {
             acc[key] = escapeSafe(mentionListItem.attributes[key]);
             return acc;
-          }, {})
+          }, {}),
       };
     });
   }
-
 }

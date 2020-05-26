@@ -58,7 +58,7 @@ const note = `
   selectType | QuickFilterSelectType | single or multi
   selectMode? | SelectMode | select mode (classic, radioGroups, checkGroups) - for multi select
   options | SelectGroupOption[] | select options
-  [optionsDefault] | SelectGroupOption[] | default options for 'Reset' action
+  optionsDefault | SelectGroupOption[] | default options for 'Reset' action
   value? | any | select value
   showSingleGroupHeader? | boolean | hide or show single group header
   showNoneOption? | boolean | hide 'None' option - for single select

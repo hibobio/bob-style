@@ -6,6 +6,7 @@ import { ButtonsModule } from '../../buttons/buttons.module';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
+import { IconsModule } from '../../icons/icons.module';
 
 @NgModule({
   declarations: [SideMenuComponent],
@@ -15,6 +16,7 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
     TruncateTooltipModule,
     ButtonsModule,
     AvatarModule,
+    IconsModule,
   ],
   exports: [SideMenuComponent],
   providers: [EventManagerPlugins[0]],

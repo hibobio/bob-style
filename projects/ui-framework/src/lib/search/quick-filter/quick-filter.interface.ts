@@ -8,6 +8,7 @@ export interface QuickFilterConfig {
   selectType?: QuickFilterSelectType;
   selectMode?: SelectMode;
   options?: SelectGroupOption[];
+  optionsDefault?: SelectGroupOption[];
   value?: any;
   showSingleGroupHeader?: boolean;
   showNoneOption?: boolean;

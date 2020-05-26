@@ -9,7 +9,7 @@ import {
   HostBinding,
   NgZone,
 } from '@angular/core';
-import { Icons, IconColor } from '../../icons/icons.enum';
+import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
 import { SideMenuOption } from './side-menu.interface';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -17,6 +17,7 @@ import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { IconPosition } from '../../typography/label-value/label-value.enum';
 
 @Component({
   selector: 'b-side-menu',
@@ -40,8 +41,12 @@ export class SideMenuComponent implements OnChanges {
 
   readonly icons = Icons;
   readonly iconColor = IconColor;
+  readonly iconSize = IconSize;
+
   readonly buttonType = ButtonType;
   readonly avatarSize = AvatarSize;
+
+  readonly iconPosition = IconPosition;
 
   public focusedId: number | string;
 
@@ -150,9 +155,5 @@ export class SideMenuComponent implements OnChanges {
     return this.DOM.getElementIndex(
       this.DOM.getClosest(element, '.menu-option')
     );
-  }
-
-  public getIconData(icon: Icons): string {
-    return icon.replace('b-icon-', '');
   }
 }
