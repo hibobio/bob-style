@@ -42,11 +42,8 @@ export class SideMenuComponent implements OnChanges {
   readonly icons = Icons;
   readonly iconColor = IconColor;
   readonly iconSize = IconSize;
-
   readonly buttonType = ButtonType;
   readonly avatarSize = AvatarSize;
-
-  readonly iconPosition = IconPosition;
 
   public focusedId: number | string;
 
