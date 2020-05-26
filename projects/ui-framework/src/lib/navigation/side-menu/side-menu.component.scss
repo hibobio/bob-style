@@ -97,7 +97,7 @@ $side-menu-selected-border: 4px;
 // Avatar
 
 .option-avatar {
-  max-width: 100%;
+  min-width: 0;
   min-height: $side-menu-avatar-height;
   display: flex;
   align-items: center;
@@ -122,11 +122,19 @@ $side-menu-selected-border: 4px;
 
 .avatar-text-icon {
   width: 16px;
+  margin-left: 5px;
 }
 
-[data-icon-position='label'] {
+[data-icon-position] ::ng-deep {
+  .avatar-subtitle {
+    max-width: calc(100% - 16px - 5px);
+  }
+}
+
+[data-icon-position='label'] ::ng-deep {
   .avatar-text-icon {
     order: 1;
+    margin-left: 0;
     margin-right: 5px;
   }
   .avatar-title {
@@ -134,26 +142,30 @@ $side-menu-selected-border: 4px;
   }
 }
 
-[data-icon-position='label_after'] {
+[data-icon-position='label_after'] ::ng-deep {
   .avatar-text-icon {
     order: 2;
-    margin-left: 5px;
   }
   .avatar-title {
     order: 1;
   }
 }
 
-[data-icon-position*='label'] {
+[data-icon-position*='label'] ::ng-deep {
+  .avatar-title {
+    max-width: calc(100% - 16px - 5px);
+  }
   .avatar-subtitle {
     order: 3;
     width: 100%;
+    max-width: none;
   }
 }
 
-[data-icon-position='value'] {
+[data-icon-position='value'] ::ng-deep {
   .avatar-text-icon {
     order: 2;
+    margin-left: 0;
     margin-right: 5px;
   }
   .avatar-subtitle {
@@ -161,17 +173,16 @@ $side-menu-selected-border: 4px;
   }
 }
 
-[data-icon-position='value_after'] {
+[data-icon-position='value_after'] ::ng-deep {
   .avatar-text-icon {
     order: 3;
-    margin-left: 5px;
   }
   .avatar-subtitle {
     order: 2;
   }
 }
 
-[data-icon-position*='value'] {
+[data-icon-position*='value'] ::ng-deep {
   .avatar-title {
     order: 1;
     width: 100%;
