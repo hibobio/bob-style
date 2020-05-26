@@ -15,6 +15,7 @@ import {
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { Keys, NativeEvents } from '../../enums';
 import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
+import { mockFormatNumberPipe } from '../../tests/services.stub.spec';
 
 describe('InputComponent', () => {
   let component: InputComponent;
@@ -25,7 +26,7 @@ describe('InputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [InputComponent],
+      declarations: [InputComponent, mockFormatNumberPipe],
       imports: [
         NoopAnimationsModule,
         CommonModule,

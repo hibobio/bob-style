@@ -9,6 +9,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { PipeTransform, Pipe } from '@angular/core';
 import { ListKeyboardService } from '../lists/list-service/list-keyboard.service';
 import { HighlightPipe } from '../services/filters/highlight.pipe';
+import { FormatNumberPipe } from '../services/filters/formatNumber.pipe';
 
 // This file is intentionally named .spec.ts - to fix build problems due to missing jasmine namespace
 
@@ -53,6 +54,8 @@ listKeyboardServiceStub.getKeyboardNavigationObservable.and.returnValue(
 );
 
 export const mockHighlightPipe = MockPipe(HighlightPipe, (v) => v);
+
+export const mockFormatNumberPipe = MockPipe(FormatNumberPipe, (v) => v as any);
 
 @Pipe({ name: 'translate' })
 export class TranslatePipeStub implements PipeTransform {
