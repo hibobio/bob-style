@@ -17,7 +17,6 @@ import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
-import { IconPosition } from '../../typography/label-value/label-value.enum';
 
 @Component({
   selector: 'b-side-menu',
