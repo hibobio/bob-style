@@ -12,21 +12,26 @@ const storyTemplate = `
 
 const note = `
   ## Filters
+
   #### Module
   *FiltersModule*
-  #### Filters
 
   ##### HighlightPipe
   highlights chars in string
-
   ~~~
   <span [innerHTML]="string | highlight: chars"></span>
   ~~~
+
   ##### LinkifyPipe
   wraps links with a tag with href, target blank if a link and mailto: prefix if email.
-
   ~~~
   <span [innerHTML]="string | linkify"></span>
+  ~~~
+
+  ##### FormatNumberPipe
+  formats number by separating every 3 digits with comma (123456.78 => 123,456.78)
+  ~~~
+  <span>{{ someNumber | formatNumber }}</span>
   ~~~
 
 `;
@@ -37,8 +42,8 @@ story.add(
     return {
       template: storyTemplate,
       moduleMetadata: {
-        imports: [StoryBookLayoutModule]
-      }
+        imports: [StoryBookLayoutModule],
+      },
     };
   },
   { notes: { markdown: note } }

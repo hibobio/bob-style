@@ -18,30 +18,23 @@
     <ng-content select="[input-prefix]"></ng-content>
   </div>
 
-  <div class="bfe-input-wrap">
-
-    <input #input
-           class="bfe-input real-input"
-           [attr.id]="id"
-           [attr.name]="id"
-           [type]="inputType === inputTypes.number ? inputTypes.tel : inputType"
-           [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
-           [value]="value"
-           [autocomplete]="enableBrowserAutoComplete"
-           [disabled]="disabled || readonly"
-           [required]="required"
-           [readonly]="readonly"
-           [attr.minlength]="minChars || null"
-           [attr.maxlength]="maxChars || null"
-           (input)="onInputChange($event)"
-           (blur)="onInputBlur($event)"
-           (focus)="onInputFocus($event)"
-           (keydown.outside-zone)="onInputKeydown($event)">
-
-    <span *ngIf="inputType === inputTypes.number"
-          [hidden]="!value"
-          class="bfe-input display-input">{{ value | formatNumber }}</span>
-  </div>
+  <input #input
+         class="bfe-input"
+         [attr.id]="id"
+         [attr.name]="id"
+         [type]="inputType === inputTypes.number ? inputTypes.tel : inputType"
+         [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
+         [value]="value"
+         [autocomplete]="enableBrowserAutoComplete"
+         [disabled]="disabled || readonly"
+         [required]="required"
+         [readonly]="readonly"
+         [attr.minlength]="minChars || null"
+         [attr.maxlength]="maxChars || null"
+         (input)="onInputChange($event)"
+         (blur)="onInputBlur($event)"
+         (focus)="onInputFocus($event)"
+         (keydown.outside-zone)="onInputKeydown($event)">
 
   <div *ngIf="hasSuffix || showSuffix"
        class="bfe-suffix"

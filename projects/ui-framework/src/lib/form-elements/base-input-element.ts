@@ -7,6 +7,7 @@ import {
   SimpleChanges,
   HostBinding,
   Directive,
+  ElementRef,
 } from '@angular/core';
 import { InputEvent } from './input/input.interface';
 import { BaseFormElement } from './base-form-element';
@@ -15,7 +16,6 @@ import { InputEventType } from './form-elements.enum';
 import { isKey, notFirstChanges } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
 import { valueAsNumber, stringyOrFail } from '../services/utils/transformers';
-import { FormElementKeyboardCntrlService } from './services/keyboard-cntrl.service';
 import { DOMInputEvent } from '../types';
 
 @Directive()
@@ -23,8 +23,7 @@ import { DOMInputEvent } from '../types';
 export abstract class BaseInputElement extends BaseFormElement {
   protected constructor(
     protected cd: ChangeDetectorRef,
-    protected zone: NgZone,
-    protected kbrdCntrlSrvc: FormElementKeyboardCntrlService
+    protected zone: NgZone
   ) {
     super(cd);
     this.inputTransformers = [
@@ -36,8 +35,6 @@ export abstract class BaseInputElement extends BaseFormElement {
     ];
     this.baseValue = '';
   }
-
-  readonly eventType = InputEventType;
 
   @Input() step: number;
   @Input() value: any = '';
@@ -59,18 +56,24 @@ export abstract class BaseInputElement extends BaseFormElement {
     return this.inputType === InputTypes.hidden ? 'hidden' : null;
   }
 
+  readonly eventType = InputEventType;
+  public input: ElementRef<HTMLInputElement>;
+
   onNgChanges(changes: SimpleChanges): void {
-    if (notFirstChanges(changes, ['inputType'])) {
+    if (notFirstChanges(changes, ['inputType'], true)) {
       this.value = this.baseValue;
     }
   }
 
-  public onInputChange(event: DOMInputEvent): void {
+  public onInputChange(
+    event: DOMInputEvent,
+    forceElementValue: any = true
+  ): void {
     const value = event.target.value;
 
     // tslint:disable-next-line: triple-equals
     if (value != this.value) {
-      this.writeValue(value, true);
+      this.writeValue(value, forceElementValue);
       this.transmitValue(this.value, {
         eventType: [InputEventType.onChange],
       });
@@ -91,10 +94,6 @@ export abstract class BaseInputElement extends BaseFormElement {
   }
 
   public onInputKeydown(event: KeyboardEvent): void {
-    if (this.inputType === InputTypes.number) {
-      this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9.-]/);
-    }
-
     if (
       (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) &&
       this.changed.observers.length > 0
