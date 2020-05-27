@@ -162,7 +162,12 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
       ) {
         this.lastCursorState = {
           ...cursorState,
-          ...(isKey(event.key, Keys.delete) && { positionMod: 1 }),
+
+          positionMod:
+            (isKey(event.key, Keys.delete)
+              ? cursorState.selectionLength + 1
+              : cursorState.selectionLength) -
+            (cursorState.selection.split(',').length - 1),
         };
       }
     }
@@ -171,7 +176,12 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   }
 
   public onInputChange(event: DOMInputEvent): void {
-    if (this.inputType === InputTypes.number && event.data !== '.') {
+    if (this.inputType !== InputTypes.number) {
+      super.onInputChange(event);
+      return;
+    }
+
+    if (event.data !== '.') {
       super.onInputChange(event, this.formatNumberValueForDisplay);
 
       if (this.lastCursorState !== null) {
@@ -184,10 +194,8 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
         );
         this.lastCursorState = null;
       }
-    } else if (this.inputType === InputTypes.number && event.data === '.') {
-      super.onInputChange(event, false);
     } else {
-      super.onInputChange(event);
+      super.onInputChange(event, false);
     }
   }
 

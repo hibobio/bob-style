@@ -14,7 +14,6 @@ export interface InputCursorState {
   prevChar: string;
   selection: string;
   selectionLength: number;
-  deleteFrwrd: boolean;
   positionMod: number;
 }
 
@@ -79,7 +78,6 @@ export class FormElementKeyboardCntrlService {
       prevChar,
       selection,
       selectionLength: selection.length,
-      deleteFrwrd: false,
       positionMod: 0,
     };
   }
