@@ -9,7 +9,6 @@ import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { InputTypes } from '../input/input.enum';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseInputElement } from '../base-input-element';
-import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 
 @Component({
   selector: 'b-password-input',
@@ -32,12 +31,8 @@ import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.serv
   ],
 })
 export class PasswordInputComponent extends BaseInputElement {
-  constructor(
-    cd: ChangeDetectorRef,
-    zone: NgZone,
-    kbrdCntrlSrvc: FormElementKeyboardCntrlService
-  ) {
-    super(cd, zone, kbrdCntrlSrvc);
+  constructor(cd: ChangeDetectorRef, zone: NgZone) {
+    super(cd, zone);
     this.outputTransformers = [];
   }
 

@@ -22,6 +22,7 @@ import {
   Func,
   cloneArray,
   stringify,
+  isFunction,
 } from '../services/utils/functional-utils';
 import { InputEventType } from './form-elements.enum';
 import { TransmitOptions } from './form-elements.interface';
@@ -107,7 +108,10 @@ export abstract class BaseFormElement
     return this.validateFn(c);
   }
 
-  public writeValue(value: any, forceElementValue: any = false): void {
+  public writeValue(
+    value: any,
+    forceElementValue: any | ((v: any) => any) = false
+  ): void {
     this.writingValue = true;
 
     if (value !== undefined) {
@@ -129,13 +133,14 @@ export abstract class BaseFormElement
     this.cd.detectChanges();
 
     if (
-      forceElementValue === true &&
-      this.input &&
-      this.input.nativeElement &&
-      (this.input.nativeElement.nodeName.toUpperCase() === 'INPUT' ||
-        this.input.nativeElement.nodeName.toUpperCase() === 'TEXTAREA')
+      (forceElementValue === true || isFunction(forceElementValue)) &&
+      ['INPUT', 'TEXTAREA'].includes(
+        this.input?.nativeElement?.nodeName.toUpperCase()
+      )
     ) {
-      this.input.nativeElement.value = this.value;
+      this.input.nativeElement.value = isFunction(forceElementValue)
+        ? forceElementValue(this.value)
+        : this.value;
     }
 
     this.writingValue = false;

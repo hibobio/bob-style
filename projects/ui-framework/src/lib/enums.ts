@@ -53,6 +53,8 @@ export const arrowKeys = [
 
 export const clickKeys = [Keys.enter, Keys.space];
 
+export const deleteKeys = [Keys.backspace, Keys.delete];
+
 export enum NativeEvents {
   click = 'click',
   dblclick = 'dblclick',

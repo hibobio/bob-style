@@ -524,6 +524,7 @@ export * from './lib/icons/icon.interface';
 export { FiltersModule } from './lib/services/filters/filters.module';
 export { LinkifyPipe } from './lib/services/filters/linkify.pipe';
 export { HighlightPipe } from './lib/services/filters/highlight.pipe';
+export { FormatNumberPipe } from './lib/services/filters/formatNumber.pipe';
 // Utils Module
 export { UtilsModule } from './lib/services/utils/utils.module';
 export { SpyDirective } from './lib/services/utils/spy.directive';

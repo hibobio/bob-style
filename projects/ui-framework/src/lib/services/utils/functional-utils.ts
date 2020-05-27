@@ -113,6 +113,10 @@ export const roundToDecimals = (num: number, decmls: number = 2): number => {
   );
 };
 
+export const isInteger = (num: number): boolean => {
+  return isNumber(num) && Math.floor(num) === num;
+};
+
 // ----------------------
 // CONVERTERS
 // ----------------------
@@ -129,7 +133,7 @@ export const asNumber = (smth: any, roundToDcmls = null): number => {
     return 0;
   }
   if (!isNumber(smth)) {
-    smth = parseFloat(smth);
+    smth = isString(smth) ? parseFloat(smth.replace(/[,\s]/g, '')) : NaN;
   }
   return smth !== smth || !isNumber(roundToDcmls)
     ? smth

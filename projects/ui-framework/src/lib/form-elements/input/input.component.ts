@@ -7,11 +7,15 @@ import {
   Input,
   NgZone,
   ChangeDetectorRef,
+  SimpleChanges,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseInputElement } from '../base-input-element';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
+import {
+  FormElementKeyboardCntrlService,
+  InputCursorState,
+} from '../services/keyboard-cntrl.service';
 import { InputTypes } from './input.enum';
 import { BaseFormElement } from '../base-form-element';
 import {
@@ -19,8 +23,13 @@ import {
   isNumber,
   countDecimals,
   isNullOrUndefined,
+  firstChanges,
+  hasChanges,
+  isKey,
 } from '../../services/utils/functional-utils';
 import { InputEventType } from '../form-elements.enum';
+import { DOMInputEvent } from '../../types';
+import { Keys, controlKeys, deleteKeys } from '../../enums';
 
 @Component({
   selector: 'b-input',
@@ -44,10 +53,10 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   constructor(
     cd: ChangeDetectorRef,
     zone: NgZone,
-    kbrdCntrlSrvc: FormElementKeyboardCntrlService,
+    private kbrdCntrlSrvc: FormElementKeyboardCntrlService,
     private DOM: DOMhelpers
   ) {
-    super(cd, zone, kbrdCntrlSrvc);
+    super(cd, zone);
   }
 
   @ViewChild('prefix') prefix: ElementRef;
@@ -57,6 +66,36 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   public showPrefix = true;
   @Input() hasSuffix = false;
   public showSuffix = true;
+
+  private lastCursorState: InputCursorState = null;
+
+  private readonly numberDisplayFormatter = new Intl.NumberFormat('en', {
+    style: 'decimal',
+    useGrouping: true,
+    maximumFractionDigits: 2,
+  });
+
+  private readonly formatNumberValueForDisplay = (value: number): string => {
+    return value ? this.numberDisplayFormatter.format(value) : '';
+  };
+
+  onNgChanges(changes: SimpleChanges): void {
+    super.onNgChanges(changes);
+
+    if (
+      this.inputType === InputTypes.number &&
+      firstChanges(changes, ['inputType'], true)
+    ) {
+      this.showCharCounter = Boolean(this.minChars && this.maxChars);
+    }
+
+    if (
+      this.inputType === InputTypes.number &&
+      hasChanges(changes, ['inputType', 'maxChars'])
+    ) {
+      this.maxChars = Math.min(21, this.maxChars || 0);
+    }
+  }
 
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
@@ -69,6 +108,87 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
         }
       }, 0);
     });
+  }
+
+  public onInputKeydown(event: KeyboardEvent): void {
+    if (this.inputType === InputTypes.number) {
+      this.lastCursorState = null;
+
+      if (this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9.-]/)) {
+        return;
+      }
+
+      const input = this.input.nativeElement;
+      const cursorState = this.kbrdCntrlSrvc.getInputCursorState(input);
+
+      if (event.key === '.' && (!input.value || input.value.includes('.'))) {
+        event.preventDefault();
+        return;
+      }
+
+      if (
+        isKey(event.key, Keys.backspace) &&
+        cursorState.prevChar === ',' &&
+        !cursorState.selectionLength
+      ) {
+        event.preventDefault();
+
+        this.kbrdCntrlSrvc.setCursorAtIndex(
+          input,
+          cursorState.selectionStart - 1
+        );
+
+        return;
+      }
+
+      if (
+        isKey(event.key, Keys.delete) &&
+        cursorState.nextChar === ',' &&
+        !cursorState.selectionLength
+      ) {
+        event.preventDefault();
+
+        this.kbrdCntrlSrvc.setCursorAtIndex(
+          input,
+          cursorState.selectionStart + 1
+        );
+
+        return;
+      }
+
+      if (
+        !controlKeys.includes(event.key as Keys) ||
+        deleteKeys.includes(event.key as Keys)
+      ) {
+        this.lastCursorState = {
+          ...cursorState,
+          ...(isKey(event.key, Keys.delete) && { positionMod: 1 }),
+        };
+      }
+    }
+
+    super.onInputKeydown(event);
+  }
+
+  public onInputChange(event: DOMInputEvent): void {
+    if (this.inputType === InputTypes.number && event.data !== '.') {
+      super.onInputChange(event, this.formatNumberValueForDisplay);
+
+      if (this.lastCursorState !== null) {
+        const input = this.input.nativeElement;
+        this.kbrdCntrlSrvc.setCursorAtIndex(
+          input,
+          this.lastCursorState.selectionStart +
+            (input.value.length - this.lastCursorState.valueLength) +
+            this.lastCursorState.positionMod
+        );
+        this.lastCursorState = null;
+      }
+    } else if (this.inputType === InputTypes.number && event.data === '.') {
+      super.onInputChange(event, false);
+    } else {
+      super.onInputChange(event);
+    }
   }
 
   public onInputBlur(event: FocusEvent = null) {
@@ -127,7 +247,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
 
     // tslint:disable-next-line: triple-equals
     if (valueUpd != this.value) {
-      this.writeValue(valueUpd, true);
+      this.writeValue(valueUpd, this.formatNumberValueForDisplay);
 
       if (emit) {
         this.transmitValue(this.value, {
