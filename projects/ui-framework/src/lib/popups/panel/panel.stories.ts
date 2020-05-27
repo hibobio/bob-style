@@ -72,6 +72,7 @@ const note = `
   [defaultPosVer] | PanelDefaultPosVer | default vertical position | PanelDefaultPosVer.above
   [showBackdrop] | boolean | show backdrop | true
   [openOnHover] | boolean | trigger panel open on hover (delay 300ms) | false
+  [hoverTriggerDelay] | number | delay (in ms) before hover triggers panel open | 300
   [disabled] | boolean | will not open panel on trigger | false
   (opened) | EventEmitter<wbr>&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
   (closed) | EventEmitter<wbr>&lt;void&gt; | Emits panel Closed event | &nbsp;

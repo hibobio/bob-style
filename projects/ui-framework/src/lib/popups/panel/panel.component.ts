@@ -9,6 +9,7 @@ import {
   Output,
   NgZone,
   ChangeDetectorRef,
+  OnInit,
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
@@ -36,7 +37,7 @@ const HOVER_DELAY_DURATION = 300;
   templateUrl: 'panel.component.html',
   styleUrls: ['panel.component.scss'],
 })
-export class PanelComponent implements OnDestroy {
+export class PanelComponent implements OnInit, OnDestroy {
   @ViewChild(CdkOverlayOrigin, { static: true })
   overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
@@ -48,6 +49,7 @@ export class PanelComponent implements OnDestroy {
   @Input() defaultPosVer = PanelDefaultPosVer.above;
   @Input() openOnHover = false;
   @Input() disabled = false;
+  @Input() hoverTriggerDelay: number;
 
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
   @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
@@ -62,8 +64,8 @@ export class PanelComponent implements OnDestroy {
   private positionChangeSubscriber: Subscription;
   private windowKeydownSubscriber: Subscription;
   public positionClassList: OverlayPositionClasses = {};
-  readonly mouseEnterDebounce: any;
-  readonly mouseLeaveDebounce: any;
+  private mouseEnterDebounce: any;
+  private mouseLeaveDebounce: any;
 
   constructor(
     private overlay: Overlay,
@@ -72,8 +74,13 @@ export class PanelComponent implements OnDestroy {
     private utilsService: UtilsService,
     private zone: NgZone,
     private cd: ChangeDetectorRef
-  ) {
-    this.mouseEnterDebounce = debounce(this.openPanel, HOVER_DELAY_DURATION);
+  ) {}
+
+  ngOnInit() {
+    this.mouseEnterDebounce = debounce(
+      this.openPanel,
+      this.hoverTriggerDelay || HOVER_DELAY_DURATION
+    );
     this.mouseLeaveDebounce = debounce(this.closePanel, HOVER_DELAY_DURATION);
   }
 
