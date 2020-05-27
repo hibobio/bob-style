@@ -47,12 +47,12 @@
     <button type="button"
             class="step-button b-icon-chevron-up b-icon-large has-hover"
             [ngClass]="{ 'b-icon-normal': !inputFocused }"
-            [disabled]="disabled || readonly || value >= max"
+            [disabled]="disabled || readonly || (max && value >= max)"
             (click)="onIncrement()"></button>
     <button type="button"
             class="step-button b-icon-chevron-down b-icon-large has-hover"
             [ngClass]="{ 'b-icon-normal': !inputFocused }"
-            [disabled]="disabled || readonly || value <= min"
+            [disabled]="disabled || readonly || (min && value <= min)"
             (click)="onDecrement()"></button>
   </div>
 
