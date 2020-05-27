@@ -108,6 +108,8 @@ export class PanelComponent implements OnInit, OnDestroy {
 
   openPanel(): void {
     if (!this.disabled && !this.overlayRef) {
+      this.cd.markForCheck();
+
       this.panelConfig = this.getConfig();
       this.overlayRef = this.overlay.create(this.panelConfig);
       this.templatePortal = new TemplatePortal(

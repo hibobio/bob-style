@@ -22,8 +22,7 @@ const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
 
 const panelSize = values(PanelSize);
 
-const template = `
-  <b-panel [panelClass]="panelClass"
+const template = `<b-panel [panelClass]="panelClass"
           [size]="panelSize"
           [defaultPosVer]="defaultPosVer"
           [showBackdrop]="showBackdrop"
@@ -47,16 +46,13 @@ const template = `
       </p>
     </div>
 
-  </b-panel>
-`;
+</b-panel>`;
 
-const storyTemplate = `
-<b-story-book-layout [title]="'Overlay panel'">
+const storyTemplate = `<b-story-book-layout [title]="'Overlay panel'">
   <div style="max-width: none; text-align: left;">
     ${template}
   </div>
-</b-story-book-layout>
-`;
+</b-story-book-layout>`;
 
 const note = `
   ## Panel
@@ -83,6 +79,23 @@ const note = `
   ~~~
   ${template}
   ~~~
+
+  ### Trick to load panel content only on panel open
+  By default, whatever you put into panel-content will initialize immidiately. You can overcome this with the following trick:
+
+  ~~~
+<b-panel #panel (opened)="opened = 1" ....>
+    <b-button panel-trigger>My Trigger</b-button>
+
+    <div panel-content>
+      <my-component *ngIf="opened === 1">
+        ...
+      </my-component>
+    </div>
+</b-panel>
+  ~~~
+
+  **Note**: you will have layout issues that you will need to overcome, basically [panel-content] element needs some dimentions set in css.
 `;
 story.add(
   'Panel',
