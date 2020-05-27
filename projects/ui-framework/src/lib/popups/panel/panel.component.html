@@ -1,6 +1,6 @@
-<content (click)="openOnHover ? null : onTriggerClick()"
-         (mouseenter)="openOnHover ? onMouseEnter() : null"
-         (mouseleave)="openOnHover ? onMouseLeave() : null"
+<content (click)="!openOnHover && !disabled && onTriggerClick()"
+         (mouseenter)="openOnHover && !disabled && onMouseEnter()"
+         (mouseleave)="openOnHover && !disabled && onMouseLeave()"
          cdkOverlayOrigin
          class="panel-trigger">
   <ng-content select="[panel-trigger]"></ng-content>
@@ -10,8 +10,8 @@
   <div class="panel-position"
        [ngClass]="positionClassList">
     <div class="panel-wrapper {{size}}"
-         (mouseenter)="openOnHover ? onMouseEnter() : null"
-         (mouseleave)="openOnHover ? onMouseLeave() : null">
+         (mouseenter)="openOnHover && !disabled && onMouseEnter()"
+         (mouseleave)="openOnHover && !disabled && onMouseLeave()">
       <ng-content select="[panel-content]"></ng-content>
     </div>
   </div>
