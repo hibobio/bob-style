@@ -47,6 +47,7 @@ export class PanelComponent implements OnDestroy {
   @Input() showBackdrop = true;
   @Input() defaultPosVer = PanelDefaultPosVer.above;
   @Input() openOnHover = false;
+  @Input() disabled = false;
 
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
   @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
@@ -99,7 +100,7 @@ export class PanelComponent implements OnDestroy {
   }
 
   openPanel(): void {
-    if (!this.overlayRef) {
+    if (!this.disabled && !this.overlayRef) {
       this.panelConfig = this.getConfig();
       this.overlayRef = this.overlay.create(this.panelConfig);
       this.templatePortal = new TemplatePortal(
@@ -183,7 +184,7 @@ export class PanelComponent implements OnDestroy {
   ): void {
     this.positionChangeSubscriber = positionStrategy.positionChanges
       .pipe(distinctUntilChanged(isEqual))
-      .subscribe(change => {
+      .subscribe((change) => {
         this.positionClassList = this.panelPositionService.getPositionClassList(
           change
         );

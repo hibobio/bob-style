@@ -28,6 +28,7 @@ const template = `
           [defaultPosVer]="defaultPosVer"
           [showBackdrop]="showBackdrop"
           [openOnHover]="openOnHover"
+          [disabled]="disabled"
           (closed)="onPanelDestroyed()"
           (opened)="onPanelOpened()">
 
@@ -71,6 +72,7 @@ const note = `
   [defaultPosVer] | PanelDefaultPosVer | default vertical position | PanelDefaultPosVer.above
   [showBackdrop] | boolean | show backdrop | true
   [openOnHover] | boolean | trigger panel open on hover (delay 300ms) | false
+  [disabled] | boolean | will not open panel on trigger | false
   (opened) | EventEmitter<wbr>&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
   (closed) | EventEmitter<wbr>&lt;void&gt; | Emits panel Closed event | &nbsp;
   (positionChanged) | EventEmitter<wbr>&lt;OverlayPositionClasses&gt; | Emits\
@@ -95,6 +97,7 @@ story.add(
       ),
       showBackdrop: boolean('showBackdrop', true),
       openOnHover: boolean('openOnHover', false),
+      disabled: boolean('disabled', false),
       onPanelDestroyed: action('Panel destroyed'),
       onPanelOpened: action('Panel opened'),
     },
