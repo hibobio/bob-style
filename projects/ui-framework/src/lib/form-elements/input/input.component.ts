@@ -57,6 +57,14 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     private DOM: DOMhelpers
   ) {
     super(cd, zone);
+
+    this.forceElementValue = (value: number | string): string => {
+      return isNullOrUndefined(value)
+        ? ''
+        : this.inputType === InputTypes.number
+        ? this.numberDisplayFormatter.format(value as number)
+        : (value as string);
+    };
   }
 
   @ViewChild('prefix') prefix: ElementRef;
@@ -74,10 +82,6 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     useGrouping: true,
     maximumFractionDigits: 2,
   });
-
-  private readonly formatNumberValueForDisplay = (value: number): string => {
-    return value ? this.numberDisplayFormatter.format(value) : '';
-  };
 
   onNgChanges(changes: SimpleChanges): void {
     super.onNgChanges(changes);
@@ -182,7 +186,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     }
 
     if (event.data !== '.') {
-      super.onInputChange(event, this.formatNumberValueForDisplay);
+      super.onInputChange(event);
 
       if (this.lastCursorState !== null) {
         const input = this.input.nativeElement;
@@ -255,7 +259,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
 
     // tslint:disable-next-line: triple-equals
     if (valueUpd != this.value) {
-      this.writeValue(valueUpd, this.formatNumberValueForDisplay);
+      this.writeValue(valueUpd);
 
       if (emit) {
         this.transmitValue(this.value, {

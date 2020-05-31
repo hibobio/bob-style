@@ -34,6 +34,7 @@ export abstract class BaseInputElement extends BaseFormElement {
       (value) => valueAsNumber(this.inputType, value, 0),
     ];
     this.baseValue = '';
+    this.forceElementValue = true;
   }
 
   @Input() step: number;
@@ -67,7 +68,7 @@ export abstract class BaseInputElement extends BaseFormElement {
 
   public onInputChange(
     event: DOMInputEvent,
-    forceElementValue: any = true
+    forceElementValue: any = this.forceElementValue
   ): void {
     const value = event.target.value;
 

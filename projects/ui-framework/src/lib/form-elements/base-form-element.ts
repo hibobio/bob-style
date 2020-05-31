@@ -25,7 +25,7 @@ import {
   isFunction,
 } from '../services/utils/functional-utils';
 import { InputEventType } from './form-elements.enum';
-import { TransmitOptions } from './form-elements.interface';
+import { TransmitOptions, ForceElementValue } from './form-elements.interface';
 import { IGNORE_EVENTS_DEF, TRANSMIT_OPTIONS_DEF } from './form-elements.const';
 import { InputTypes } from './input/input.enum';
 
@@ -59,6 +59,7 @@ export abstract class BaseFormElement
   public wrapEvent = true;
   protected writingValue = false;
   protected skipFocusEvent = false;
+  protected forceElementValue: ForceElementValue = false;
   readonly inputTypes = InputTypes;
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
@@ -110,7 +111,7 @@ export abstract class BaseFormElement
 
   public writeValue(
     value: any,
-    forceElementValue: any | ((v: any) => any) = false
+    forceElementValue: ForceElementValue = this.forceElementValue
   ): void {
     this.writingValue = true;
 

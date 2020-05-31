@@ -1,4 +1,5 @@
 import { InputEventType, FormEvents } from './form-elements.enum';
+import { type } from 'os';
 
 export interface TransmitOptions {
   eventType: InputEventType[];
@@ -9,3 +10,5 @@ export interface TransmitOptions {
   eventObjOmitEventType?: boolean;
   updateValue?: boolean;
 }
+
+export type ForceElementValue = any | ((v: any) => any);
