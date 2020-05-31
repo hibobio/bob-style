@@ -1,5 +1,4 @@
 import { InputEventType, FormEvents } from './form-elements.enum';
-import { type } from 'os';
 
 export interface TransmitOptions {
   eventType: InputEventType[];
