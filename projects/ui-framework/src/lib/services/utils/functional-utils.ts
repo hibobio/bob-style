@@ -1,12 +1,16 @@
 import { SimpleChanges, SimpleChange } from '@angular/core';
 import { metaKeys } from '../../enums';
 import { GenericObject } from '../../types';
-import { isEqual } from 'lodash';
+import { isEqual, cloneDeep } from 'lodash';
 import { RenderedComponent } from '../component-renderer/component-renderer.interface';
 
 // ----------------------
 // TYPES
 // ----------------------
+
+export const isPrimitive = (val: any): boolean => {
+  return val !== Object(val);
+};
 
 export const isNullOrUndefined = (val: any): boolean =>
   val === undefined || val === null;
@@ -43,6 +47,11 @@ export const isEmptyArray = (val: any): boolean =>
 export const isObject = (val: any): val is object =>
   !!val && val === Object(val) && typeof val !== 'function' && !isArray(val);
 
+export const isPlainObject = (val: any): val is object =>
+  isObject(val) &&
+  val.constructor === Object &&
+  Object.getPrototypeOf(val) === Object.prototype;
+
 export const isNotEmptyObject = (val: any): boolean =>
   isObject(val) && Object.keys(val).length > 0;
 
@@ -58,6 +67,26 @@ export const isNotEmptyMap = (val: any, min = 0): boolean =>
 
 export const isEmptyMap = (val: any): boolean =>
   isNullOrUndefined(val) || (isMap(val) && val.size === 0);
+
+export const isSet = (val: any): boolean => {
+  return !!val && val instanceof Set;
+};
+
+export const isRegExp = (val: any): val is RegExp =>
+  !!val && typeof val === 'object' && val instanceof RegExp;
+
+export const isNode = (val: any, nodeType: number = null): val is Node =>
+  !!val &&
+  typeof val === 'object' &&
+  typeof val.nodeName === 'string' &&
+  ((nodeType !== null && val.nodeType === nodeType) ||
+    (nodeType === null && typeof val.nodeType === 'number'));
+
+export const isTextNode = (val: any): val is Node =>
+  isNode(val, Node.TEXT_NODE);
+
+export const isDomElement = (val: any): val is HTMLElement =>
+  isNode(val, Node.ELEMENT_NODE);
 
 export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
   isNullOrUndefined(smth) ||
@@ -80,14 +109,19 @@ export const getType = (smth: any): string =>
     ? 'null'
     : isArray(smth)
     ? 'array'
-    : smth instanceof Date
+    : isMap(smth)
+    ? 'map'
+    : isSet(smth)
+    ? 'set'
+    : isDate(smth)
     ? 'date'
+    : isRegExp(smth)
+    ? 'regex'
     : smth !== smth
     ? 'NaN'
+    : isNode(smth)
+    ? 'DOM node'
     : String(typeof smth);
-
-export const isRegExp = (val: any): val is RegExp =>
-  !!val && typeof val === 'object' && val instanceof RegExp;
 
 // ----------------------
 // NUMBERS
@@ -575,8 +609,17 @@ export const cloneValue = (value: any) =>
     ? cloneArray(value)
     : value;
 
-export const cloneDeepSimpleObject = <T = any>(obj: T): T =>
-  JSON.parse(JSON.stringify(obj));
+export const cloneDeepSimpleObject = <T = any>(obj: T): T => {
+  if (!obj || obj !== obj || isPrimitive(obj)) {
+    return obj;
+  }
+  if (!isPlainObject(obj) && !isArray(obj)) {
+    console.warn(`[cloneDeepSimpleObject]:
+    ${getType(obj)} (${stringify(obj, 100)}) is not a simple object`);
+    return cloneDeep(obj);
+  }
+  return JSON.parse(JSON.stringify(obj));
+};
 
 // ----------------------
 // EVENTS

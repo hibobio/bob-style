@@ -8,6 +8,8 @@ import {
   isNotEmptyArray,
   isNotEmptyObject,
   isNullOrUndefined,
+  isDomElement,
+  isTextNode,
 } from '../utils/functional-utils';
 import {
   Styles,
@@ -53,11 +55,11 @@ export class DOMhelpers {
   }
 
   public isTextNode(element: any) {
-    return element.nodeType === Node.TEXT_NODE;
+    return isTextNode(element);
   }
 
   public isElement(element: any) {
-    return element.nodeType === Node.ELEMENT_NODE;
+    return isDomElement(element);
   }
 
   public hasChildren(element: HTMLElement): boolean {

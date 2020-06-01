@@ -277,13 +277,14 @@ export abstract class BaseEditableTreeListElement
     );
   }
 
-  public emitChange(): void {
+  public emitChange(keepChanges = false): void {
     if (!this.hasChanges) {
       return;
     }
     this.list = this.modelSrvc.itemsMapToOptionList(this.itemsMap, this.keyMap);
     this.changed.emit(this.list);
-    this.hasChanges = false;
+
+    this.hasChanges = keepChanges;
   }
 
   public toggleItemCollapsed(
@@ -462,16 +463,16 @@ export abstract class BaseEditableTreeListElement
         return;
       }
       if (this.hasChanges) {
-        item.value = target.value.trim();
+        item.name = target.value.trim();
       }
-      if (this.hasChanges && item.value) {
+      if (this.hasChanges && item.name) {
         if (this.countItemDuplicatesInGroup(item) > 1) {
-          item.value = '';
+          item.name = '';
         } else {
           this.emitChange();
         }
       }
-      if (!item.value) {
+      if (!item.name) {
         if (!item.childrenCount && this.listViewModel.length > 1) {
           this.deleteItem(item);
         }

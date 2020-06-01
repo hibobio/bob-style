@@ -148,10 +148,12 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
       this.toggleItemCollapsed(parent, null, false);
     }
 
+    const wasTyping = this.isTyping;
+
     this.moveItem(item, 'lastChildOf', parent);
 
     this.hasChanges = true;
-    this.emitChange();
+    this.emitChange(wasTyping);
   }
 
   public decreaseIndent(item: TreeListItem): void {
