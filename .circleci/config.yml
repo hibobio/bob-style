@@ -22,7 +22,7 @@ jobs:
       #npm run to run ng because @angular/cli is not installed globally.
 
       - run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadless
-      - run: npm run build-storybook
+      # - run: npm run build-storybook
       - store_test_results:
           path: ~/repo/test-results/
       - store_artifacts:

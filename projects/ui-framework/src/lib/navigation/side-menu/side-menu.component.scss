@@ -106,8 +106,11 @@ $side-menu-selected-border: 4px;
 .avatar-text {
   max-width: calc(100% - 36px - 5px);
   margin-left: 5px;
-  display: flex;
-  flex-wrap: wrap;
+
+  &[data-icon-position] {
+    display: flex;
+    flex-wrap: wrap;
+  }
 }
 
 .avatar-title {
