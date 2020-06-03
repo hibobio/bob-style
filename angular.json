@@ -22,7 +22,9 @@
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/ui-framework/tsconfig.lib.prod.json"
+              "tsConfig": "projects/ui-framework/tsconfig.lib.prod.json",
+              "sourceMap": false,
+              "buildOptimizer": true
             }
           }
         },
