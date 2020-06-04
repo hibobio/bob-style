@@ -3,10 +3,9 @@ import { RadioButtonComponent } from './radio-button.component';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
-import { SimpleChanges, SimpleChange } from '@angular/core';
+import { SimpleChanges, SimpleChange, NO_ERRORS_SCHEMA } from '@angular/core';
 import { RadioDirection } from './radio-button.enum';
 import { RadioConfig } from './radio-button.interface';
-import { InputMessageModule } from '../input-message/input-message.module';
 import { InputEventType } from '../form-elements.enum';
 
 describe('RadioButtonComponent', () => {
@@ -18,11 +17,12 @@ describe('RadioButtonComponent', () => {
     radioConfigMock = [
       { id: 11, label: 'option one' },
       { id: 12, label: 'option two' },
-      { id: 13, label: 'option three' }
+      { id: 13, label: 'option three' },
     ];
     TestBed.configureTestingModule({
       declarations: [RadioButtonComponent],
-      imports: [NoopAnimationsModule, CommonModule, InputMessageModule]
+      imports: [NoopAnimationsModule, CommonModule],
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
@@ -30,10 +30,10 @@ describe('RadioButtonComponent', () => {
         component = fixture.componentInstance;
         component.wrapEvent = true;
         component.ngOnChanges({
-          radioConfig: new SimpleChange(null, radioConfigMock, true)
+          radioConfig: new SimpleChange(null, radioConfigMock, true),
         });
         spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => { });
+        component.changed.subscribe(() => {});
         spyOn(component, 'propagateChange');
         fixture.detectChanges();
       });
@@ -59,7 +59,7 @@ describe('RadioButtonComponent', () => {
       fixture.detectChanges();
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onBlur,
-        value: 13
+        value: 13,
       });
     });
     it('should invoke propagateChange', () => {
@@ -94,8 +94,8 @@ describe('RadioButtonComponent', () => {
           previousValue: undefined,
           currentValue: { id: 12 },
           firstChange: true,
-          isFirstChange: () => true
-        }
+          isFirstChange: () => true,
+        },
       };
       component.ngOnChanges(changes);
       fixture.detectChanges();
@@ -115,8 +115,8 @@ describe('RadioButtonComponent', () => {
           previousValue: undefined,
           currentValue: { id: 12 },
           firstChange: true,
-          isFirstChange: () => true
-        }
+          isFirstChange: () => true,
+        },
       };
       component.ngOnChanges(changes);
       fixture.detectChanges();
