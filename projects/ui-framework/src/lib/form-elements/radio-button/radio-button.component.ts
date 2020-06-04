@@ -28,6 +28,12 @@ import {
   hasProp,
   notFirstChanges,
 } from '../../services/utils/functional-utils';
+import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
+import {
+  TooltipClass,
+  TooltipPosition,
+} from '../../popups/tooltip/tooltip.enum';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 
 @Component({
   selector: 'b-radio-button',
@@ -82,6 +88,17 @@ export class RadioButtonComponent extends BaseFormElement
   @Output('radioChange') changed: EventEmitter<InputEvent> = new EventEmitter<
     InputEvent
   >();
+
+  readonly icons = Icons;
+  readonly iconColor = IconColor;
+  readonly iconSize = IconSize;
+  readonly delay = 300;
+  readonly tooltipPosition = TooltipPosition;
+  readonly tooltipClass: TooltipClass[] = [
+    TooltipClass.TextLeft,
+    TooltipClass.PreWrap,
+  ];
+  readonly truncateTooltipType = TruncateTooltipType;
 
   private transmit(event: InputEventType): void {
     this.transmitValue(this.value, {

@@ -102,7 +102,7 @@ const toAdd = () => ({
     tooltipTextAlign: radios(
       'tooltipTextAlign',
       Object.values(CSSTooltipTextAlign) as any[],
-      CSSTooltipTextAlign.center as any
+      CSSTooltipTextAlign.left as any
     ),
     tooltipWrap: radios(
       'tooltipWrap',

@@ -15,6 +15,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { RadioDirection } from './radio-button.enum';
 
 import formElemsPropsDoc from '../form-elements.properties.md';
+import { mockAnimals, mockText } from '../../mock.const';
 
 const direction = values(RadioDirection);
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
@@ -58,6 +59,13 @@ const note = `
   [direction] | RadioDirection | column or row, default=row
   (radioChange) | EventEmitter<wbr>&lt;string/number&gt; | fired on radio change, returns option ID
 
+  #### interface RadioConfig
+  Name | Type | Description
+  --- | --- | ---
+  id | number / string | option id (will also be used for label, if label is missing)
+  label | string | option label
+  describtion | string | text for describtion tooltip (for (i) icon)
+
   ${formElemsPropsDoc}
 
 `;
@@ -83,9 +91,9 @@ story.add(
         radioChange: action('radioChange'),
 
         options: object('radioConfig', [
-          { id: 0, label: 'Option one' },
-          { id: 1, label: 'Option two' },
-          { id: 2, label: 'Option three' },
+          { id: 0, label: mockAnimals(1), description: mockText(15) },
+          { id: 1, label: mockAnimals(1) },
+          { id: 2, label: mockAnimals(1) },
         ]),
       },
       moduleMetadata: {

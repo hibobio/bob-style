@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: column;
   text-align: left;
+  min-width: 0;
 
   @include form-element-margins;
   @include input-border-colors($add: ' .brd-label:before');
@@ -19,6 +20,7 @@
 
   .brd-label {
     margin-right: 20px;
+
     &:last-child {
       margin-right: 0;
     }
@@ -73,4 +75,10 @@
   &:before {
     pointer-events: none;
   }
+}
+
+b-icon {
+  margin-left: 6px;
+  margin-top: -2px;
+  pointer-events: all;
 }

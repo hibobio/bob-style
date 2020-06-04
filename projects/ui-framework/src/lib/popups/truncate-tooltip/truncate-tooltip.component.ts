@@ -12,16 +12,13 @@ import {
   ChangeDetectorRef,
   HostListener,
 } from '@angular/core';
-import {
-  TruncateTooltipType,
-  TruncateTooltipPosition,
-} from './truncate-tooltip.enum';
+import { TruncateTooltipType } from './truncate-tooltip.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { TextProps } from '../../services/html/html-helpers.interface';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { TooltipClass } from '../tooltip/tooltip.enum';
+import { TooltipClass, TooltipPosition } from '../tooltip/tooltip.enum';
 import { asArray } from '../../services/utils/functional-utils';
 
 @Component({
@@ -55,7 +52,7 @@ export class TruncateTooltipComponent
   @Input() expectChanges = false;
   @Input() trustCssVars = false;
   @Input() type: TruncateTooltipType = TruncateTooltipType.auto;
-  @Input() position = TruncateTooltipPosition.above;
+  @Input() position: TooltipPosition = TooltipPosition.above;
 
   @Input() tooltipClass: TooltipClass | string | (TooltipClass | string)[];
 

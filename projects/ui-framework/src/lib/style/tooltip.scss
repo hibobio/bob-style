@@ -11,7 +11,7 @@ $toolti-offset: 10px;
   margin: $toolti-offset 0;
   border-radius: $border-radius;
   @include b-body($color: white, $style: normal, $addCssVars: false);
-  text-align: center;
+  text-align: left;
   white-space: normal;
 
   @media (max-width: 400px) {
@@ -52,8 +52,8 @@ $toolti-offset: 10px;
 
   // text align
 
-  &.text-left {
-    text-align: left;
+  &.text-center {
+    text-align: center;
   }
 
   &.text-right {
@@ -191,10 +191,10 @@ $toolti-offset: 10px;
 
   // text align
 
-  &.text-left,
-  &[data-tooltip-align='left'] {
+  &.text-center,
+  &[data-tooltip-align='center'] {
     &:after {
-      text-align: left;
+      text-align: center;
     }
   }
 

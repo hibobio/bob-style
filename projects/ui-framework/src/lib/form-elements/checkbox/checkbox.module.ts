@@ -4,6 +4,7 @@ import { CheckboxComponent } from './checkbox.component';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { IconsModule } from '../../icons/icons.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 
 @NgModule({
   declarations: [CheckboxComponent],
@@ -11,9 +12,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     CommonModule,
     InputMessageModule,
     IconsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    TruncateTooltipModule,
   ],
-  exports: [CheckboxComponent]
+  exports: [CheckboxComponent],
 })
-export class CheckboxModule {
-}
+export class CheckboxModule {}

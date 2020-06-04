@@ -15,8 +15,11 @@ import { InputEventType } from '../form-elements.enum';
 import { booleanOrFail } from '../../services/utils/transformers';
 import { notFirstChanges } from '../../services/utils/functional-utils';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { TruncateTooltipPosition } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
-import { TooltipClass } from '../../popups/tooltip/tooltip.enum';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import {
+  TooltipClass,
+  TooltipPosition,
+} from '../../popups/tooltip/tooltip.enum';
 
 @Component({
   selector: 'b-checkbox',
@@ -55,11 +58,12 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
   readonly iconColor = IconColor;
   readonly iconSize = IconSize;
   readonly delay = 300;
-  readonly tooltipPosition = TruncateTooltipPosition;
+  readonly tooltipPosition = TooltipPosition;
   readonly tooltipClass: TooltipClass[] = [
     TooltipClass.TextLeft,
     TooltipClass.PreWrap,
   ];
+  readonly truncateTooltipType = TruncateTooltipType;
 
   private transmit(event: InputEventType): void {
     this.transmitValue(this.value, {

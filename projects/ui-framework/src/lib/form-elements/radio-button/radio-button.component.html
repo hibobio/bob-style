@@ -7,6 +7,7 @@
      [ngClass]="{'direction-row': !direction || direction === dir.row, 'direction-column': direction === dir.column}">
 
   <ng-container *ngFor="let radio of options; let i = index; trackBy: trackByID">
+
     <input type="radio"
            #input
            class="brd-input"
@@ -18,8 +19,25 @@
            [readonly]="readonly"
            [disabled]="disabled || readonly"
            (change)="onRadioChange(radio[key])" />
+
     <label class="brd-label"
-           [attr.for]="id+'-'+i">{{radio.label || radio[key] || radio}}</label>
+           [attr.for]="id+'-'+i">
+
+      <span [b-truncate-tooltip]="1"
+            [trustCssVars]="true"
+            [type]="truncateTooltipType.material">{{ radio.label || radio[key] || radio }}</span>
+
+      <b-icon *ngIf="radio.description"
+              [icon]="icons.info_outline"
+              [color]="iconColor.normal"
+              [size]="iconSize.small"
+              [hasHoverState]="true"
+              [matTooltip]="radio.description"
+              [matTooltipClass]="tooltipClass"
+              [matTooltipShowDelay]="delay"
+              [matTooltipPosition]="tooltipPosition.above">
+      </b-icon>
+    </label>
   </ng-container>
 </div>
 

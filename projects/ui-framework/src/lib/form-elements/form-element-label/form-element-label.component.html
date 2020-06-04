@@ -1,5 +1,6 @@
 <label [b-truncate-tooltip]="1"
        [trustCssVars]="true"
+       [type]="truncateTooltipType.material"
        [attr.for]="fieldId !== undefined ? fieldId : null"
        [ngClass]="{'has-description': description}">
   {{label}}
@@ -13,5 +14,5 @@
         [matTooltip]="description"
         [matTooltipClass]="tooltipClass"
         [matTooltipShowDelay]="delay"
-        [matTooltipPosition]="truncateTooltipPosition.above">
+        [matTooltipPosition]="tooltipPosition.above">
 </b-icon>

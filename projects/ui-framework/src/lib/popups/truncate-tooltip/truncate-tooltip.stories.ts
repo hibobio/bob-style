@@ -1,16 +1,13 @@
 import { storiesOf } from '@storybook/angular';
 import { number, withKnobs, select } from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
 import { TruncateTooltipModule } from './truncate-tooltip.module';
-import {
-  TruncateTooltipType,
-  TruncateTooltipPosition,
-} from './truncate-tooltip.enum';
+import { TruncateTooltipType } from './truncate-tooltip.enum';
 import { boolean } from '@storybook/addon-knobs';
+import { TooltipPosition } from '../tooltip/tooltip.enum';
 
 const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
   withKnobs
@@ -119,7 +116,7 @@ const note = `
   use Material for text longer than 130 chars, otherwise CSS. \
   Set to 'none' to disable tooltip. \
   **Note:** type can not be changed dynamically, it's can be set only once. | auto
-  [position] | TruncateTooltipPosition | above or below | above
+  [position] | TooltipPosition | above or below | above
   [trustCssVars] | boolean | performance can be optimised, if --line-height and --font-size \
   CSS variables exist on the element | false
   [expectChanges] | boolean | if text inside truncate-tooltip component will be changing, set to true | false
@@ -196,8 +193,8 @@ story.add(
         ),
         position: select(
           'position',
-          Object.values(TruncateTooltipPosition),
-          TruncateTooltipPosition.above,
+          Object.values(TooltipPosition),
+          TooltipPosition.above,
           'Props'
         ),
 
