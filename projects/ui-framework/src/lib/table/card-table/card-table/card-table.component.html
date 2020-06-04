@@ -1,11 +1,12 @@
-<header role="rowgroup">
+<header role="rowgroup"
+        *ngIf="meta?.length">
   <ul class="card-table-header"
       role="row">
     <li class="table-header-cell"
         *ngFor="let cell of meta; index as index; trackBy: metaTrackBy;"
         [ngStyle]="{
-          'maxWidth': cellsStyle[index].maxWidth,
-          'alignItems': cellsStyle[index].alignItems
+          'maxWidth': cellsStyle ? cellsStyle[index].maxWidth : null,
+          'alignItems': cellsStyle ? cellsStyle[index].alignItems : null
         }"
         role="columnheader">
       <span class="text">{{ cell.name }}</span>
@@ -14,7 +15,7 @@
 </header>
 
 <ul class="card-table-body"
-    *ngIf="table && table.length > 0"
+    *ngIf="table?.length"
     role="rowgroup">
   <li *ngFor="let row of table; index as index; trackBy: rowTrackBy;"
       b-table-card
@@ -30,7 +31,7 @@
 </ul>
 
 <div class="card-table-body"
-     *ngIf="default && !(table && table.length > 0)">
+     *ngIf="default && !(table?.length)">
   <p class="table-card-empty b-display-3">
     {{ default }}
   </p>

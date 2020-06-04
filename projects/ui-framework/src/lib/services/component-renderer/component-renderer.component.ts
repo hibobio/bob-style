@@ -27,9 +27,7 @@ import {
 
 @Component({
   selector: 'b-component-renderer',
-  template: `
-    <ng-template #componentHost></ng-template>
-  `,
+  template: ` <ng-template #componentHost></ng-template> `,
   styles: [],
 })
 export class ComponentRendererComponent implements OnChanges, OnDestroy {
@@ -71,7 +69,7 @@ export class ComponentRendererComponent implements OnChanges, OnDestroy {
     if (!Array.isArray(content)) {
       content = [content];
     }
-    const elements = content.map(cntnt => {
+    const elements = content.map((cntnt) => {
       if (typeof cntnt === 'string') {
         return [this.document.createTextNode(cntnt)];
       }
@@ -168,9 +166,7 @@ export class ComponentRendererComponent implements OnChanges, OnDestroy {
   private destroyComponent(): void {
     if (this.destroy$ && !this.destroy$.isStopped) {
       this.destroy$.next(true);
-    }
-    if (this.destroy$) {
-      this.destroy$.unsubscribe();
+      this.destroy$.complete();
     }
     if (this.componentRef) {
       this.componentRef.destroy();
