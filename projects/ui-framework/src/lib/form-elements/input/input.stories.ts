@@ -49,6 +49,30 @@ const template = `
 </b-input>
 `;
 
+const templateForNotes = `
+<b-input    [inputType]="inputType"
+            [value]="value"
+            [label]="label"
+            [description]="description"
+            [placeholder]="placeholder"
+            [hideLabelOnFocus]="hideLabelOnFocus"
+            [minChars]="minChars"
+            [maxChars]="maxChars"
+            [showCharCounter]="showCharCounter"
+            [step]="step"
+            [min]="min"
+            [max]="max"
+            [readonly]="readonly"
+            [disabled]="disabled"
+            [required]="required"
+            [hintMessage]="hintMessage"
+            [warnMessage]="warnMessage"
+            [errorMessage]="errorMessage"
+            [enableBrowserAutoComplete]="enableBrowserAutoComplete"
+            (inputEvents)="inputEvents($event)">
+</b-input>
+`;
+
 const storyTemplate = `
 <b-story-book-layout [title]="'Input'">
   <div style="max-width: 300px;">
@@ -63,15 +87,15 @@ const note = `
   *InputModule* or *FormElementsModule*
 
   ~~~
-  ${template}
+  ${templateForNotes}
   ~~~
 
   #### Properties
   Name | Type | Description | Default
   --- | --- | --- | ---
   [inputType] | InputTypes | type of input field | text
-  [min] | number | (only relevant for number inputs) minimum value (value will be corrected on blur). \
-  *Note*: Defaults to 0, so negative numbers are discarded. \
+  [min] | number | (only relevant for number inputs) minimum value (value will be corrected on blur).<br> \
+  *Note:* Defaults to 0, so negative numbers are discarded. \
   Set to null, undefined or some negative value to allow negative numbers | <u>0</u>
   [max] | number | (only relevant for number inputs) maximum value (value will be corrected on blur) | &nbsp;
   [step] | number | Step value for number input step buttons.\
