@@ -30,6 +30,7 @@ import {
 import { InputEventType } from '../form-elements.enum';
 import { DOMInputEvent } from '../../types';
 import { Keys, controlKeys, deleteKeys } from '../../enums';
+import { valueAsNumber } from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-input',
@@ -57,6 +58,13 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     private DOM: DOMhelpers
   ) {
     super(cd, zone);
+
+    this.inputTransformers.push((value) =>
+      valueAsNumber(this.inputType, value)
+    );
+    this.outputTransformers.push((value) =>
+      valueAsNumber(this.inputType, value, 0)
+    );
 
     this.forceElementValue = (value: number | string): string => {
       return isNullOrUndefined(value) || value === ''
@@ -97,7 +105,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
       this.inputType === InputTypes.number &&
       hasChanges(changes, ['inputType', 'maxChars'])
     ) {
-      this.maxChars = Math.min(21, this.maxChars || 0);
+      this.maxChars = Math.max(21, this.maxChars || 0);
     }
   }
 
@@ -125,7 +133,12 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
       const input = this.input.nativeElement;
       const cursorState = this.kbrdCntrlSrvc.getInputCursorState(input);
 
-      if (event.key === '.' && (!input.value || input.value.includes('.'))) {
+      if (
+        (event.key === '.' && (!input.value || input.value.includes('.'))) ||
+        (event.key === '-' &&
+          cursorState.selectionLength !== cursorState.valueLength &&
+          (cursorState.selectionStart > 0 || input.value.includes('-')))
+      ) {
         event.preventDefault();
         return;
       }
@@ -171,7 +184,9 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
             (isKey(event.key, Keys.delete)
               ? cursorState.selectionLength + 1
               : cursorState.selectionLength) -
-            (cursorState.selection.split(',').length - 1),
+            (cursorState.selectionLength === cursorState.valueLength
+              ? 0
+              : cursorState.selection.split(',').length - 1),
         };
       }
     }

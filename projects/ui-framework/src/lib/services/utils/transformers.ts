@@ -102,7 +102,7 @@ export const valueAsNumber = (
   if (
     !value ||
     (inputType !== InputTypes.number && inputType !== true) ||
-    ((inputType === InputTypes.number || inputType === true) && value === '-')
+    value === '-'
   ) {
     return value;
   }

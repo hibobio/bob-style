@@ -140,15 +140,15 @@ export const countDecimals = (value: number): number => {
   return value.toString().split('.')[1].length || 0;
 };
 
-export const roundToDecimals = (num: number, decmls: number = 2): number => {
-  return (
-    Math.round((num + Number.EPSILON) * Math.pow(10, decmls)) /
-    Math.pow(10, decmls)
-  );
-};
-
 export const isInteger = (num: number): boolean => {
   return isNumber(num) && Math.floor(num) === num;
+};
+
+export const roundToDecimals = (num: number, decmls: number = 2): number => {
+  return isInteger(num)
+    ? num
+    : Math.round((num + Number.EPSILON) * Math.pow(10, decmls)) /
+        Math.pow(10, decmls);
 };
 
 // ----------------------
@@ -167,7 +167,9 @@ export const asNumber = (smth: any, roundToDcmls = null): number => {
     return 0;
   }
   if (!isNumber(smth)) {
-    smth = isString(smth) ? parseFloat(smth.replace(/[,\s]/g, '')) : NaN;
+    smth = isString(smth)
+      ? parseFloat(smth.replace(/[,\s]/g, '').slice(0, 16))
+      : NaN;
   }
   return smth !== smth || !isNumber(roundToDcmls)
     ? smth

@@ -15,7 +15,7 @@ import { InputAutoCompleteOptions, InputTypes } from './input/input.enum';
 import { InputEventType } from './form-elements.enum';
 import { isKey, notFirstChanges } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
-import { valueAsNumber, stringyOrFail } from '../services/utils/transformers';
+import { stringyOrFail } from '../services/utils/transformers';
 import { DOMInputEvent } from '../types';
 
 @Directive()
@@ -26,13 +26,8 @@ export abstract class BaseInputElement extends BaseFormElement {
     protected zone: NgZone
   ) {
     super(cd);
-    this.inputTransformers = [
-      stringyOrFail,
-      (value) => valueAsNumber(this.inputType, value),
-    ];
-    this.outputTransformers = [
-      (value) => valueAsNumber(this.inputType, value, 0),
-    ];
+    this.inputTransformers = [stringyOrFail];
+
     this.baseValue = '';
     this.forceElementValue = true;
   }

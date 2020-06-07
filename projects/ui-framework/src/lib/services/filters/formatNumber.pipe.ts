@@ -15,6 +15,6 @@ export class FormatNumberPipe implements PipeTransform {
   });
 
   transform(value: string | number): string {
-    return this.formatter.format(valueAsNumber(true, value, 0));
+    return this.formatter.format(valueAsNumber(true, value, ''));
   }
 }
