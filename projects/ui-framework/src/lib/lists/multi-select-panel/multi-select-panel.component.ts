@@ -61,6 +61,7 @@ export class MultiSelectPanelComponent extends BaseSelectPanelElement {
   }
 
   @Input() chevronButtonText: string;
+  @Input() max: number;
 
   onSelect(listChange: ListChange): void {
     this.listChange = listChange;

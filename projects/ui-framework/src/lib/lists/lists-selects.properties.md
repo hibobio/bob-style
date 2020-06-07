@@ -8,3 +8,4 @@ Name | Type | Description | Default
 [startWithGroupsCollapsed] | boolean | if true, will start with groups closed | true
 [listActions] | ListFooterActions | enable/disable footer action buttons (clear, apply, reset).<br> **Note:** If you provide strings as truthy values, they will be used for button texts, instead of defaults.<br>See interface doc below. |  &nbsp;
 [maxHeight] | number | component max height | 352<wbr>(8&nbsp;rows)
+[max] | number | (relevant only for multi-select) maximum allowed selected items | &nbsp;

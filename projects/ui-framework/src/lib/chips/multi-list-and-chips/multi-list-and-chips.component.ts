@@ -58,6 +58,7 @@ export class MultiListAndChipsComponent implements OnChanges, OnInit {
   @Input() startWithGroupsCollapsed = true;
   @Input() emptyState: EmptyStateConfig;
   @Input() listActions: ListFooterActions;
+  @Input() max: number;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange

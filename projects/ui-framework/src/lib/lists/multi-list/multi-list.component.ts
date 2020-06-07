@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
   NgZone,
   ElementRef,
+  Input,
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { ListHeader } from '../list.interface';
@@ -53,6 +54,8 @@ export class MultiListComponent extends BaseListElement {
     this.type = SelectType.multi;
     this.listActions = { ...MULTI_LIST_LIST_ACTIONS_DEF };
   }
+
+  @Input() max: number;
 
   headerClick(header: ListHeader, index: number): void {
     if (this.options.length > 1) {

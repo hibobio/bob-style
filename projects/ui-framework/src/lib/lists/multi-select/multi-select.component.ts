@@ -7,6 +7,7 @@ import {
   ViewChild,
   NgZone,
   ChangeDetectorRef,
+  Input,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
@@ -85,6 +86,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
 
   @ViewChild('input', { static: true, read: TruncateTooltipComponent })
   truncate: TruncateTooltipComponent;
+
+  @Input() max: number;
 
   @Output() selectModified: EventEmitter<ListChange> = new EventEmitter<
     ListChange
