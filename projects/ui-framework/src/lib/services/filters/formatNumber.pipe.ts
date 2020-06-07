@@ -11,7 +11,7 @@ export class FormatNumberPipe implements PipeTransform {
   private formatter = new Intl.NumberFormat('en', {
     style: 'decimal',
     useGrouping: true,
-    maximumFractionDigits: 2,
+    maximumFractionDigits: 3,
   });
 
   transform(value: string | number): string {

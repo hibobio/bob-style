@@ -59,9 +59,9 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     super(cd, zone);
 
     this.forceElementValue = (value: number | string): string => {
-      return isNullOrUndefined(value)
+      return isNullOrUndefined(value) || value === ''
         ? ''
-        : this.inputType === InputTypes.number
+        : this.inputType === InputTypes.number && value !== '-'
         ? this.numberDisplayFormatter.format(value as number)
         : (value as string);
     };
@@ -80,7 +80,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   private readonly numberDisplayFormatter = new Intl.NumberFormat('en', {
     style: 'decimal',
     useGrouping: true,
-    maximumFractionDigits: 2,
+    maximumFractionDigits: 3,
   });
 
   onNgChanges(changes: SimpleChanges): void {

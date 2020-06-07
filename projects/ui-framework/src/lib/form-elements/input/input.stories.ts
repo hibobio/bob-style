@@ -27,7 +27,7 @@ const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
 
 const template = `
 <b-input    [inputType]="inputType"
-            [value]="value"
+            [value]="(inputType === inputTypes.number ? valueNum : value) || nullValue"
             [label]="label"
             [description]="description"
             [placeholder]="placeholder"
@@ -89,9 +89,12 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        inputTypes: InputTypes,
+        nullValue: null,
         inputEvents: action('Input event'),
-        inputType: select('inputType', inputTypes, InputTypes.text),
-        value: text('value', ''),
+        inputType: select('inputType', inputTypes, InputTypes.number),
+        value: text('value (text input)', ''),
+        valueNum: number('value (number input)', ''),
         label: text('label', 'Input label'),
         description: text('description', mockText(30)),
         placeholder: text('placeholder', 'Input placeholder'),
@@ -99,8 +102,8 @@ story.add(
         minChars: number('minChars', ''),
         maxChars: number('maxChars', ''),
         showCharCounter: boolean('showCharCounter', true),
-        min: number('min', 5),
-        max: number('max', ''),
+        min: number('min', undefined),
+        max: number('max', undefined),
         step: number('step', 1),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
