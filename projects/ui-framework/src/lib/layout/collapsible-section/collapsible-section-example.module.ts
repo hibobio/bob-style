@@ -6,6 +6,7 @@ import {
   OnChanges,
   Output,
   EventEmitter,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CollapsibleSectionModule } from './collapsible-section.module';
@@ -32,6 +33,7 @@ import { InputModule } from '../../form-elements/input/input.module';
 import { ColorService } from '../../services/color-service/color.service';
 import { IconsModule } from '../../icons/icons.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CollapsibleOptions } from './collapsible-section.interface';
 
 @Component({
   selector: 'b-collapsible-section-example-1',
@@ -41,6 +43,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
       [expanded]="expanded"
       [disabled]="disabled"
       [divided]="divided"
+      [options]="options"
       (openedFirst)="onOpenedFirst()"
       (opened)="onOpened()"
       (closed)="onClosed()"
@@ -199,12 +202,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   ],
 })
 export class CollapsibleSectionExample1Component implements OnChanges {
-  constructor() {}
+  constructor(private cd: ChangeDetectorRef) {}
 
   @Input() collapsible = true;
   @Input() expanded = false;
   @Input() disabled = false;
   @Input() divided = true;
+  @Input() disableAnimation = false;
+
   @Output() opened: EventEmitter<void> = new EventEmitter<void>();
   @Output() openedFirst: EventEmitter<void> = new EventEmitter<void>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
@@ -256,7 +261,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   public outHolidayNum = 3;
   public outHoliday = {
     label: 'Holiday (' + this.outHolidayNum + ')',
-    avatars: makeArray(this.outHolidayNum).map(i => ({
+    avatars: makeArray(this.outHolidayNum).map((i) => ({
       imageSource: mockAvatar(),
       size: AvatarSize.mini,
       tooltip: mockName() + '\n' + mockDateRange() + '\n' + 'Approved',
@@ -265,7 +270,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   public outWorkNum = 5;
   public outWork = {
     label: 'Work travel (' + this.outWorkNum + ')',
-    avatars: makeArray(this.outWorkNum).map(i => ({
+    avatars: makeArray(this.outWorkNum).map((i) => ({
       imageSource: mockAvatar(),
       size: AvatarSize.mini,
       tooltip: mockName() + '\n' + mockDateRange() + '\n' + 'Approved',
@@ -274,17 +279,21 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   public outMilitaryNum = 2;
   public outMilitary = {
     label: 'Military (' + this.outMilitaryNum + ')',
-    avatars: makeArray(this.outMilitaryNum).map(i => ({
+    avatars: makeArray(this.outMilitaryNum).map((i) => ({
       imageSource: mockAvatar(),
       size: AvatarSize.mini,
       tooltip: mockName() + '\n' + mockDateRange() + '\n' + 'Approved',
     })),
   };
 
+  public options: CollapsibleOptions = {};
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.collapsible && changes.collapsible.firstChange) {
       this.collapsible = true;
     }
+    this.options = { ...this.options, disableAnimation: this.disableAnimation };
+    this.cd.detectChanges();
   }
 
   onOpened(): void {
@@ -348,12 +357,13 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   ],
 })
 export class CollapsibleSectionExample2Component implements OnChanges {
-  constructor() {}
+  constructor(private cd: ChangeDetectorRef) {}
 
   @Input() collapsible = true;
   @Input() expanded = false;
   @Input() disabled = false;
   @Input() divided = true;
+  @Input() disableAnimation = false;
 
   @Input() title = mockText(randomNumber(2, 5));
   @Input() description = mockText(randomNumber(3, 6));
@@ -366,12 +376,12 @@ export class CollapsibleSectionExample2Component implements OnChanges {
 
   public buttonText1 = mockText(1);
   public buttonText2 = mockText(1);
-  public options = {
-    headerContentClickable: false,
+  public options: CollapsibleOptions = {
+    headerTranscludeStopPropagation: true,
     indicatorColor: ColorService.prototype.randomColor(),
   };
 
-  public formCells = makeArray(6).map(i => ({
+  public formCells = makeArray(6).map((i) => ({
     label: mockText(randomNumber(1, 2)),
     placeholder: mockText(randomNumber(2, 4)),
     hint: mockText(randomNumber(3, 6)),
@@ -381,6 +391,8 @@ export class CollapsibleSectionExample2Component implements OnChanges {
     if (changes.collapsible && changes.collapsible.firstChange) {
       this.collapsible = false;
     }
+    this.options = { ...this.options, disableAnimation: this.disableAnimation };
+    this.cd.detectChanges();
   }
 
   onOpened(): void {

@@ -54,6 +54,7 @@ const storyTemplate = `
       [expanded]="expanded"
       [disabled]="disabled"
       [divided]="divided"
+      [disableAnimation]="disableAnimation"
       (openedFirst)="loadData()"
       (closed)="onPanelClosed()"
       (opened)="onPanelOpened()">
@@ -66,6 +67,7 @@ const storyTemplate = `
       [expanded]="expanded"
       [disabled]="disabled"
       [divided]="divided"
+      [disableAnimation]="disableAnimation"
       (openedFirst)="loadData()"
       (closed)="onPanelClosed()"
       (opened)="onPanelOpened()">
@@ -125,6 +127,7 @@ story.add(
         expanded: boolean('expanded', false),
         disabled: boolean('disabled', false),
         divided: boolean('divided', true),
+        disableAnimation: boolean('disableAnimation', false),
         title: text('title', mockText(randomNumber(2, 5))),
         description: text('description', mockText(randomNumber(3, 6))),
         loadData: action('Panel opened FIRST'),

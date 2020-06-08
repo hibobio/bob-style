@@ -3,4 +3,5 @@ export interface CollapsibleOptions {
   titlesAsColumn?: boolean;
   headerTranscludeStopPropagation?: boolean;
   indicatorColor?: string;
+  disableAnimation?: boolean;
 }

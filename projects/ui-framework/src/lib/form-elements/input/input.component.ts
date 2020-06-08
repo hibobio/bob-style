@@ -69,7 +69,9 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     this.forceElementValue = (value: number | string): string => {
       return isNullOrUndefined(value) || value === ''
         ? ''
-        : this.inputType === InputTypes.number && value !== '-'
+        : this.inputType === InputTypes.number &&
+          !this.disableNumberFormat &&
+          value !== '-'
         ? this.numberDisplayFormatter.format(value as number)
         : (value as string);
     };
@@ -83,6 +85,8 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   @Input() hasSuffix = false;
   public showSuffix = true;
 
+  @Input() disableNumberFormat = false;
+
   private lastCursorState: InputCursorState = null;
 
   private readonly numberDisplayFormatter = new Intl.NumberFormat('en', {
@@ -94,18 +98,20 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   onNgChanges(changes: SimpleChanges): void {
     super.onNgChanges(changes);
 
-    if (
-      this.inputType === InputTypes.number &&
-      firstChanges(changes, ['inputType'], true)
-    ) {
+    if (this.inputType !== InputTypes.number) {
+      return;
+    }
+
+    if (firstChanges(changes, ['inputType'], true)) {
       this.showCharCounter = Boolean(this.minChars && this.maxChars);
     }
 
-    if (
-      this.inputType === InputTypes.number &&
-      hasChanges(changes, ['inputType', 'maxChars'])
-    ) {
+    if (hasChanges(changes, ['inputType', 'maxChars'])) {
       this.maxChars = Math.max(21, this.maxChars || 0);
+    }
+
+    if (hasChanges(changes, ['disableNumberFormat'])) {
+      this.writeValue(this.value);
     }
   }
 
@@ -140,6 +146,11 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
           (cursorState.selectionStart > 0 || input.value.includes('-')))
       ) {
         event.preventDefault();
+        return;
+      }
+
+      if (this.disableNumberFormat) {
+        super.onInputKeydown(event);
         return;
       }
 
@@ -195,7 +206,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   }
 
   public onInputChange(event: DOMInputEvent): void {
-    if (this.inputType !== InputTypes.number) {
+    if (this.inputType !== InputTypes.number || this.disableNumberFormat) {
       super.onInputChange(event);
       return;
     }
