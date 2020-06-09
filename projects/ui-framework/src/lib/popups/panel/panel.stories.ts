@@ -54,7 +54,7 @@ const customUseTemplate = `<b-panel #panel
           [openOnHover]="true"
           [showBackdrop]="false"
           [hoverTriggerDelay]="600"
-          [overlayOrigin]="{elementRef: panelOrigin}">
+          [overlayOrigin]="panelOrigin">
 
     <div panel-content>
      My fancy panel
@@ -98,7 +98,7 @@ const note = `
   [showBackdrop] | boolean | show backdrop | true
   [openOnHover] | boolean | trigger panel open on hover (delay 300ms) | false
   [hoverTriggerDelay] | number | delay (in ms) before hover triggers panel open | 300
-  [overlayOrigin] | CdkOverlayOrigin | you can provide your own element for the OverlayOrigin:<br>\
+  [overlayOrigin] | HTMLElement / ElementRef | you can provide your own element for the OverlayOrigin:<br>\
    \`\`\`[overlayOrigin]="{ elementRef: elementToAttachPanelTo }"\`\`\`
   [disabled] | boolean | will not open panel on trigger | false
   (opened) | EventEmitter<wbr>&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;

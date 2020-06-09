@@ -10,6 +10,7 @@ import {
   NgZone,
   ChangeDetectorRef,
   OnInit,
+  ElementRef,
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
@@ -24,7 +25,7 @@ import { Subscription } from 'rxjs';
 import { PanelDefaultPosVer, PanelSize } from './panel.enum';
 import { concat, compact, get, invoke, debounce, isEqual } from 'lodash';
 import { UtilsService } from '../../services/utils/utils.service';
-import { isKey } from '../../services/utils/functional-utils';
+import { isKey, isDomElement } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { filter, distinctUntilChanged } from 'rxjs/operators';
 import { OverlayPositionClasses } from '../../types';
@@ -38,10 +39,20 @@ const HOVER_DELAY_DURATION = 300;
   styleUrls: ['panel.component.scss'],
 })
 export class PanelComponent implements OnInit, OnDestroy {
+  constructor(
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef,
+    private panelPositionService: PanelPositionService,
+    private utilsService: UtilsService,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
+  ) {}
+
   @ViewChild(CdkOverlayOrigin, { static: true })
-  @Input()
   overlayOrigin: CdkOverlayOrigin;
-  @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
+
+  @ViewChild('templateRef', { static: true })
+  templateRef: TemplateRef<any>;
 
   @Input() panelClass: string;
   @Input() backdropClass: string;
@@ -68,14 +79,15 @@ export class PanelComponent implements OnInit, OnDestroy {
   public mouseEnterDebounce: any;
   public mouseLeaveDebounce: any;
 
-  constructor(
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
-    private panelPositionService: PanelPositionService,
-    private utilsService: UtilsService,
-    private zone: NgZone,
-    private cd: ChangeDetectorRef
-  ) {}
+  @Input('overlayOrigin') set setOverlayOrigin(
+    overlayOrigin: HTMLElement | ElementRef
+  ) {
+    this.overlayOrigin = {
+      elementRef: isDomElement(overlayOrigin)
+        ? new ElementRef(overlayOrigin)
+        : overlayOrigin,
+    };
+  }
 
   ngOnInit() {
     this.mouseEnterDebounce = debounce(
