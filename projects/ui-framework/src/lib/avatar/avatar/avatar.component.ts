@@ -9,6 +9,7 @@ import {
   ChangeDetectorRef,
   NgZone,
   ChangeDetectionStrategy,
+  ViewChild,
 } from '@angular/core';
 import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
 import { ChipType } from '../../chips/chips.enum';
@@ -21,6 +22,7 @@ import {
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { Icons } from '../../icons/icons.enum';
 import { Icon } from '../../icons/icon.interface';
+import { AvatarImageComponent } from './avatar-image/avatar-image.component';
 
 @Component({
   selector: 'b-avatar',
@@ -30,6 +32,8 @@ import { Icon } from '../../icons/icon.interface';
 })
 export class AvatarComponent implements OnChanges {
   constructor(private cd: ChangeDetectorRef, private zone: NgZone) {}
+
+  @ViewChild(AvatarImageComponent) avatarImage: AvatarImageComponent;
 
   readonly avatarSize = AvatarSize;
   readonly chipType = ChipType;

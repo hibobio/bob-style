@@ -112,7 +112,8 @@ const note = `
   (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | list select change<br>\
   **Note** if there are no observers of (selectChange) event,\
    the select/list will be displayed in readonly mode  | &nbsp;
-
+  (selectPanelOpened) | EventEmitter<wbr>&lt;void&gt; | emits when select panel opens (on showcase click) | &nbsp;
+  (selectPanelClosed) | EventEmitter<wbr>&lt;void&gt; | emits when select panel closes | &nbsp;
 
   ~~~
   ${template1}
