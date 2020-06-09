@@ -1,0 +1,60 @@
+<ul class="sections"
+    [ngClass]="{'dragging': dragging}"
+    (cdkDropListDropped)="onDrop($event)"
+    cdkDropList>
+
+  <li *ngFor="let section of UISections; trackBy: trackId; let index=index"
+      class="draggable-section"
+      cdkDrag
+      cdkDragLockAxis="y"
+      cdkDragStartDelay="5"
+      cdkDragBoundary="sections"
+      (cdkDragStarted)="dragStart.emit(index); draggedSection=section"
+      (cdkDragEnded)="dragEnd.emit(index)">
+
+    <b-collapsible-section class="section"
+                           [collapsible]="true"
+                           [expanded]="section.expanded || false"
+                           [title]="section.title"
+                           [description]="section.description"
+                           [options]="section.collapsibleOptions"
+                           (closed)="onClosed(index); section.expanded=false"
+                           (opened)="opened.emit(index); dragging=false"
+                           (openedFirst)="onContentLoad(index); openedFirst.emit(index)">
+
+      <ng-container header>
+        <div cdkDragHandle
+             class="drag-handler"
+             (click)="$event.stopPropagation()"
+             (mousedown)="onDragHandlerMouseDown()">
+        </div>
+        <ng-container *ngTemplateOutlet="collapsibleHeader?.tpl; context: { data: section.headerData, index: index }">
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="contentLoadedMap.get(index)">
+        <ng-container *ngTemplateOutlet="collapsibleContent?.tpl; context: { data: section.contentData, index: index }">
+        </ng-container>
+      </ng-container>
+
+    </b-collapsible-section>
+
+  </li>
+
+  <ng-template cdkDragPreview
+               [data]="draggedSection">
+    <b-collapsible-section class="section"
+                           [collapsible]="true"
+                           [expanded]="false"
+                           [title]="draggedSection.title"
+                           [description]="draggedSection.description">
+
+      <ng-container header>
+        <ng-container
+          *ngTemplateOutlet="collapsibleHeader?.tpl; context: { data: draggedSection.headerData, index: -1 }">
+        </ng-container>
+      </ng-container>
+    </b-collapsible-section>
+  </ng-template>
+
+</ul>
