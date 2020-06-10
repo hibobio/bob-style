@@ -20,7 +20,7 @@
                            [options]="section.collapsibleOptions"
                            (closed)="onClosed(index); section.expanded=false"
                            (opened)="opened.emit(index); dragging=false"
-                           (openedFirst)="onContentLoad(index); openedFirst.emit(index)">
+                           (openedFirst)="onOpenedFirst(section); openedFirst.emit(index)">
 
       <ng-container header>
         <div cdkDragHandle
@@ -32,7 +32,7 @@
         </ng-container>
       </ng-container>
 
-      <ng-container *ngIf="contentLoadedMap.get(index)">
+      <ng-container *ngIf="contentLoadedMap.get(section.id)">
         <ng-container *ngTemplateOutlet="collapsibleContent?.tpl; context: { data: section.contentData, index: index }">
         </ng-container>
       </ng-container>

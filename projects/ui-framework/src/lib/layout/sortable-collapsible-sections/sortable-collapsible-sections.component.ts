@@ -16,7 +16,7 @@ import { SortableCollapsibleDropped, SortableCollapsibleSection } from './sortab
 import { CollapsibleHeaderDirective } from './collapsible-header.directive';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CollapsibleSectionComponent } from '../collapsible-section/collapsible-section.component';
-import { cloneArray } from '../../services/utils/functional-utils';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'b-sortable-collapsible-sections',
@@ -43,8 +43,8 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
 
   UISections: SortableCollapsibleSection[];
   dragging: boolean;
-  contentLoadedMap: Map<number, boolean>;
   draggedSection: SortableCollapsibleSection;
+  contentLoadedMap: Map<number | string, boolean> = new Map();
 
   constructor(
     private cdr: ChangeDetectorRef
@@ -53,10 +53,13 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.sections && changes.sections.currentValue) {
-      this.UISections = cloneArray(this.sections);
-      this.contentLoadedMap = new Map(
-        this.UISections.map((section, index) => [index, section.expanded])
-      );
+      this.UISections = cloneDeep(this.sections);
+      this.UISections.forEach(section => {
+        if (section.expanded) {
+          this.contentLoadedMap.set(section.id, true);
+        }
+      });
+      this.cdr.detectChanges();
     }
   }
 
@@ -86,13 +89,13 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
     });
   }
 
-  onContentLoad(index: number) {
-    this.contentLoadedMap.set(index, true);
-  }
-
   onClosed(index: number): void {
     if (!this.dragging) {
       this.closed.emit(index);
     }
+  }
+
+  onOpenedFirst(section: SortableCollapsibleSection) {
+    this.contentLoadedMap.set(section.id, true);
   }
 }
