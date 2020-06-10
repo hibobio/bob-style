@@ -1,4 +1,4 @@
-import { CollapsibleOptions } from 'bob-style';
+import { CollapsibleOptions } from '../collapsible-section/collapsible-section.interface';
 
 export interface SortableCollapsibleSection {
   id: string | number;
