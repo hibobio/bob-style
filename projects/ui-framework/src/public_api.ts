@@ -480,6 +480,12 @@ export { DividerComponent } from './lib/layout/divider/divider.component';
 export { CollapsibleSectionModule } from './lib/layout/collapsible-section/collapsible-section.module';
 export { CollapsibleSectionComponent } from './lib/layout/collapsible-section/collapsible-section.component';
 export { CollapsibleOptions } from './lib/layout/collapsible-section/collapsible-section.interface';
+// Draggable Collapsible Sections
+export { SortableCollapsibleSectionsModule } from './lib/layout/sortable-collapsible-sections/sortable-collapsible-sections.module';
+export { SortableCollapsibleSectionsComponent } from './lib/layout/sortable-collapsible-sections/sortable-collapsible-sections.component';
+export { SortableCollapsibleSection, SortableCollapsibleDropped } from './lib/layout/sortable-collapsible-sections/sortable-collapsible-sections.interface';
+export { CollapsibleHeaderDirective } from './lib/layout/sortable-collapsible-sections/collapsible-header.directive';
+export { CollapsibleContentDirective } from './lib/layout/sortable-collapsible-sections/collapsible-content.directive';
 
 /*
  * Cards
