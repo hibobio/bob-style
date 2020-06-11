@@ -19,9 +19,15 @@ import { DateParseTesterModule } from './dateparser/dateparse-tester.module';
 import { CommonModule } from '@angular/common';
 import { TreeSelectModule } from '../../../ui-framework/src/lib/lists/tree-list/tree-select/tree-select.module';
 import { CardTableModule } from '../../../ui-framework/src/lib/table/card-table/card-table.module';
+import { TreeListComponent } from './tree-list/tree-list.component';
+import { TestTableModule } from './test-table/test-table.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    TreeListComponent
+  ],
   imports: [
     BrowserModule,
     CommonModule,
@@ -32,7 +38,7 @@ import { CardTableModule } from '../../../ui-framework/src/lib/table/card-table/
     // RouterModule,
     UtilsModule,
     StatsModule,
-    // AppRoutingModule,
+    AppRoutingModule,
     // FormElementsTestModule,
     // UrlTesterModule,
     // TooltipTesterModule,
@@ -44,6 +50,9 @@ import { CardTableModule } from '../../../ui-framework/src/lib/table/card-table/
     // DateParseTesterModule,
     TreeSelectModule,
     CardTableModule,
+    TestTableModule,
+    RouterModule,
+    TranslateModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],

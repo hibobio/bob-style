@@ -1,65 +1,10 @@
-<b-stats [rootElem]="'b-story-book-layout'"
-         [countChildren]="true"></b-stats>
+<nav>
+  <a routerLink="table">table</a>
+  <a routerLink="form">form</a>
+  <a routerLink="utils">utils</a>
+  <a routerLink="tree-list">tree-list</a>
+</nav>
 
+<router-outlet></router-outlet>
 
-<form [formGroup]="testForm"
-      style="margin: 50px auto; max-width: 400px;">
-  <b-tree-select formControlName="treeSelect"
-                 [type]="'single'"
-                 [list]="list"
-                 [value]="listVal"
-                 [keyMap]="keymap"
-                 [label]="'Select stuff'"
-                 [placeholder]="'Placeholder'"
-                 [hintMessage]="'Please make it work'"
-                 (changed)="onListChanged($event)"
-                 [debug]="true">
-  </b-tree-select>
-  <button type="button"
-          (click)="setListValTo(null)">value = null</button>
-  <button type="button"
-          (click)="setListValTo(undefined)">value = undefined</button>
-  <button type="button"
-          (click)="setListValTo('option-2-group-1')">value = "option-2-group-1"</button>
-  <br><br>
-
-  <button type="button"
-          (click)="setFormValTo(null)">setValue = null</button>
-  <button type="button"
-          (click)="setFormValTo(undefined)">setValue = undefined</button>
-  <button type="button"
-          (click)="setFormValTo('option-2-group-1')">setValue = "option-2-group-1"</button>
-</form>
-
-<form [formGroup]="testForm2"
-      style="margin: 50px auto; max-width: 400px;">
-  <b-tree-select formControlName="treeSelect2"
-                 [type]="'multi'"
-                 [list]="list"
-                 [value]="listVal2"
-                 [keyMap]="keymap"
-                 [label]="'Select stuff'"
-                 [placeholder]="'Placeholder'"
-                 [hintMessage]="'Please make it work'"
-                 (changed)="onListChanged($event,'testForm2')"
-                 [debug]="true">
-  </b-tree-select>
-  <button type="button"
-          (click)="setListValTo(null,'testForm2')">value = null</button>
-  <button type="button"
-          (click)="setListValTo(undefined,'testForm2')">value = undefined</button>
-  <button type="button"
-          (click)="setListValTo('option-2-group-1','testForm2')">value = "option-2-group-1"</button>
-  <button type="button"
-          (click)="setListValTo(multiListTestValue,'testForm2')">value = multi options</button>
-  <br><br>
-
-  <button type="button"
-          (click)="setFormValTo(null,'testForm2')">setValue = null</button>
-  <button type="button"
-          (click)="setFormValTo(undefined,'testForm2')">setValue = undefined</button>
-  <button type="button"
-          (click)="setFormValTo('option-2-group-1','testForm2')">setValue = "option-2-group-1"</button>
-  <button type="button"
-          (click)="setFormValTo(multiListTestValue,'testForm2')">setValue = multi options</button>
-</form>
+<b-stats></b-stats>
