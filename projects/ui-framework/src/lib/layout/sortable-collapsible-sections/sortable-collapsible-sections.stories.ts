@@ -19,7 +19,7 @@ const template = `
 <b-sortable-collapsible-sections [sections]="sections"
                                  (dragStart)="onDragStart($event)"
                                  (dragEnd)="onDragEnd($event)"
-                                 (dropped)="onDropped($event)"
+                                 (orderChanged)="onDropped($event)"
                                  (openedFirst)="onOpenedFirst($event)"
                                  (opened)="onOpened($event)"
                                  (closed)="onClosed($event)">
@@ -69,7 +69,7 @@ const note = `
   [sections] | SortableCollapsibleSection[] | configuration for the sections the collapsible iterates over |
   (dragStart) | EventEmitter<number> | drag start event with the index of the dragged section
   (dragEnd) | EventEmitter<number> | drag end event with the index of the dragged section
-  (dropped) | EventEmitter<SortableCollapsibleDropped> | drop event with the material drop event and the current state of the sections
+  (orderChanged) | EventEmitter<SortableCollapsibleDropped> | drop event with the material drop event and the current state of the sections
   (openedFirst) | EventEmitter<number> | collapsible openedFirst event with the index of the section
   (opened) | EventEmitter<number> | collapsible opened event with the index of the section
   (closed) | EventEmitter<number> | collapsible closed event with the index of the section
@@ -138,7 +138,7 @@ story.add(
         onPanelClosed: action('Panel closed'),
         onDragStart: action('dragStart'),
         onDragEnd: action('dragEnd'),
-        onDropped: action('dropped'),
+        onDropped: action('orderChanged'),
         onOpenedFirst: action('openedFirst'),
         onOpened: action('opened'),
         onClosed: action('closed')
