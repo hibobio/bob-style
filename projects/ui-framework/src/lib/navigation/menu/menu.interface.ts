@@ -2,8 +2,8 @@ import { Icons } from '../../icons/icons.enum';
 
 export interface MenuItem<T = any> {
   label: string;
-  key?: string;
-  id?: string;
+  key?: string; // menu item ID
+  id?: string; // menu (or connected data T) ID
   disabled?: boolean | ((item?: MenuItem) => boolean);
   data?: T;
   clickToOpenSub?: boolean;

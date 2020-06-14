@@ -5,13 +5,14 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { MultiSearchModule } from './multi-search.module';
+import { mockSearchData } from './multi-search.mock';
 
 const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-multi-search>
+<b-multi-search [options]="options">
 </b-multi-search>
 `;
 
@@ -50,11 +51,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        value: text('value', ''),
-        label: text('label', ''),
-        placeholder: text('placeholder', 'Search'),
-        searchChange: action('searchChange'),
-        searchFocus: action('searchFocus'),
+        options: mockSearchData,
       },
       moduleMetadata: {
         imports: [

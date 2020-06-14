@@ -1,21 +1,44 @@
 import { SelectGroupOption, SelectOption } from '../../lists/list.interface';
 import { MenuItem } from '../../navigation/menu/menu.interface';
+import { Icons } from '../../icons/icons.enum';
 
-export interface MultiSearchOption extends SelectOption {}
+export interface MultiSearchKeyMap {
+  key?: string;
+  groupName?: string;
+  options?: string;
+  id?: string;
+  value?: string;
+}
 
 export interface MultiSearchOptionMenuItem extends MenuItem<MultiSearchOption> {
-  key: string;
-  id: string;
-  data: MultiSearchOption;
+  id: string; // menu ID
+  key: string; // menu item ID
+  data?: MultiSearchOption;
   action?: never;
 }
 
-export interface MultiSearchGroupOption extends SelectGroupOption {
-  key: string | number;
-  options: MultiSearchOption[];
-  translation: {
-    showMore: string;
+export interface MultiSearchOption extends Partial<SelectOption> {
+  id?: string | number;
+  value?: string;
+  label?: string;
+  icon?: Icons;
+  menu?: MultiSearchOptionMenuItem[];
+}
+
+export interface MultiSearchGroupOption
+  extends Omit<SelectGroupOption, 'options'> {
+  keyMap?: MultiSearchKeyMap;
+  key?: string | number; // group ID
+  groupName?: string;
+  icon?: Icons;
+  options?: SelectOption[] | MultiSearchOption[];
+  translation?: {
+    showMore?: string;
   };
   menu?: MultiSearchOptionMenuItem[];
-  menuHandler?: any;
+  clickHandler?: (option: MultiSearchGroupOption) => void;
+  menuHandler?: (
+    option: MultiSearchGroupOption,
+    menuItem: MultiSearchOptionMenuItem
+  ) => void;
 }

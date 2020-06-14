@@ -1,3 +1,14 @@
-<p>
-  multi-search works!
-</p>
+<ul *ngFor="let group of options">
+
+  <li>
+    <h3>{{ group[group.keyMap?.groupName || keyMapDef.groupName] }}</h3>
+
+    <ul>
+      <li *ngFor="let option of group[group.keyMap?.options || keyMapDef.options].slice(0,10)"
+          [attr.id]="option[group.keyMap?.id || keyMapDef.id]">
+        {{ option[group.keyMap?.value || keyMapDef.value] }}
+      </li>
+    </ul>
+  </li>
+
+</ul>
