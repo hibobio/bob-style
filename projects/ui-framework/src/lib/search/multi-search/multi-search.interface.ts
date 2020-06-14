@@ -42,3 +42,8 @@ export interface MultiSearchGroupOption
     menuItem: MultiSearchOptionMenuItem
   ) => void;
 }
+
+export interface MultiSearchClickedEvent {
+  group: MultiSearchGroupOption;
+  option: MultiSearchOption;
+}
