@@ -13,6 +13,7 @@ import {
   SimpleChanges,
   ChangeDetectionStrategy,
   HostBinding,
+  ViewChild,
 } from '@angular/core';
 import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarSize } from '../avatar/avatar.enum';
@@ -34,6 +35,7 @@ import {
 } from '../../services/utils/functional-utils';
 import { EmployeesShowcaseService } from './employees-showcase.service';
 import { Avatar } from '../avatar/avatar.interface';
+import { SingleSelectPanelComponent } from '../../lists/single-select-panel/single-select-panel.component';
 
 @Component({
   selector: 'b-employees-showcase',
@@ -51,6 +53,9 @@ export class EmployeesShowcaseComponent
     private zone: NgZone,
     private cd: ChangeDetectorRef
   ) {}
+
+  @ViewChild(SingleSelectPanelComponent)
+  selectPanel: SingleSelectPanelComponent;
 
   @Input() employees: EmployeeShowcase[] | SelectGroupOption[] = [];
   @Input() avatarSize: AvatarSize = AvatarSize.mini;
@@ -82,6 +87,9 @@ export class EmployeesShowcaseComponent
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
+
+  @Output() selectPanelOpened: EventEmitter<void> = new EventEmitter<void>();
+  @Output() selectPanelClosed: EventEmitter<void> = new EventEmitter<void>();
 
   public employeeListOptions: SelectGroupOption[];
   public showcaseViewModel: Avatar[] = [];

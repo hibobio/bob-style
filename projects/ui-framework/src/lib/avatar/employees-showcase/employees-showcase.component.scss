@@ -54,13 +54,17 @@
   }
 }
 
-:host[data-stack-order='ltr']::ng-deep {
+:host[data-stack-order='ltr']::ng-deep,
+:host[data-zoom-on-hover='true']::ng-deep {
   position: relative;
+  z-index: 0;
 
   .avatar {
     position: relative;
   }
+}
 
+:host[data-stack-order='ltr']::ng-deep {
   @for $i from 0 to 30 {
     .showcase-avatar:nth-child(#{$i + 1}) {
       z-index: 30 - $i;
@@ -110,12 +114,6 @@
 }
 
 :host[data-zoom-on-hover='true']::ng-deep {
-  position: relative;
-
-  .avatar {
-    position: relative;
-  }
-
   .showcase-avatar {
     &:hover {
       transform: scale(1.075);

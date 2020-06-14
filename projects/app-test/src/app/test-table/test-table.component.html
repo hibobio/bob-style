@@ -1,0 +1,10 @@
+<b-multi-select [options]="selectOptions"
+                [value]="selectValues"
+                (selectChange)="onSelectChanged($event)">
+</b-multi-select>
+
+<button (click)="onReset()">reset</button>
+
+<b-table [columnDefs]="columnDefs"
+         [rowData]="rowData">
+</b-table>

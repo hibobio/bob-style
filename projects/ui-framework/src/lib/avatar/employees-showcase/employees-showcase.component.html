@@ -1,7 +1,9 @@
-<b-single-select-panel [options]="employeeListOptions"
+<b-single-select-panel #selectPanel [options]="employeeListOptions"
                        [disabled]="!expandOnClick"
                        [panelClass]="panelClass"
                        [readonly]="readonly || !selectChange.observers.length"
+                       (opened)="selectPanelOpened.emit()"
+                       (closed)="selectPanelClosed.emit()"
                        (selectChange)="onSelectChange($event)">
 
   <div class="avatar-showcase">

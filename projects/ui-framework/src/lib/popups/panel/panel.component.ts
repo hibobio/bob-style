@@ -10,6 +10,7 @@ import {
   NgZone,
   ChangeDetectorRef,
   OnInit,
+  ElementRef,
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
@@ -24,7 +25,7 @@ import { Subscription } from 'rxjs';
 import { PanelDefaultPosVer, PanelSize } from './panel.enum';
 import { concat, compact, get, invoke, debounce, isEqual } from 'lodash';
 import { UtilsService } from '../../services/utils/utils.service';
-import { isKey } from '../../services/utils/functional-utils';
+import { isKey, isDomElement } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { filter, distinctUntilChanged } from 'rxjs/operators';
 import { OverlayPositionClasses } from '../../types';
@@ -38,9 +39,20 @@ const HOVER_DELAY_DURATION = 300;
   styleUrls: ['panel.component.scss'],
 })
 export class PanelComponent implements OnInit, OnDestroy {
+  constructor(
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef,
+    private panelPositionService: PanelPositionService,
+    private utilsService: UtilsService,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
+  ) {}
+
   @ViewChild(CdkOverlayOrigin, { static: true })
   overlayOrigin: CdkOverlayOrigin;
-  @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
+
+  @ViewChild('templateRef', { static: true })
+  templateRef: TemplateRef<any>;
 
   @Input() panelClass: string;
   @Input() backdropClass: string;
@@ -64,24 +76,25 @@ export class PanelComponent implements OnInit, OnDestroy {
   private positionChangeSubscriber: Subscription;
   private windowKeydownSubscriber: Subscription;
   public positionClassList: OverlayPositionClasses = {};
-  private mouseEnterDebounce: any;
-  private mouseLeaveDebounce: any;
+  public mouseEnterDebounce: any;
+  public mouseLeaveDebounce: any;
 
-  constructor(
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
-    private panelPositionService: PanelPositionService,
-    private utilsService: UtilsService,
-    private zone: NgZone,
-    private cd: ChangeDetectorRef
-  ) {}
+  @Input('overlayOrigin') set setOverlayOrigin(
+    overlayOrigin: HTMLElement | ElementRef
+  ) {
+    this.overlayOrigin = {
+      elementRef: isDomElement(overlayOrigin)
+        ? new ElementRef(overlayOrigin)
+        : overlayOrigin,
+    };
+  }
 
   ngOnInit() {
     this.mouseEnterDebounce = debounce(
       this.openPanel,
       this.hoverTriggerDelay || HOVER_DELAY_DURATION
     );
-    this.mouseLeaveDebounce = debounce(this.closePanel, HOVER_DELAY_DURATION);
+    this.mouseLeaveDebounce = debounce(this.destroyPanel, HOVER_DELAY_DURATION);
   }
 
   ngOnDestroy(): void {
@@ -134,7 +147,7 @@ export class PanelComponent implements OnInit, OnDestroy {
         )
         .subscribe(() => {
           this.zone.run(() => {
-            this.closePanel();
+            this.destroyPanel();
           });
         });
     }
@@ -145,6 +158,8 @@ export class PanelComponent implements OnInit, OnDestroy {
   }
 
   private destroyPanel(): void {
+    this.mouseEnterDebounce.cancel();
+    this.mouseLeaveDebounce.cancel();
     if (this.overlayRef) {
       invoke(this.overlayRef, 'dispose');
       invoke(this.backdropClickSubscriber, 'unsubscribe');

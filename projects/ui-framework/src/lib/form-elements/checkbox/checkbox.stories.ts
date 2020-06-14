@@ -12,6 +12,7 @@ import { CheckboxModule } from './checkbox.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
 import formElemsPropsDoc from '../form-elements.properties.md';
+import { mockText } from '../../mock.const';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -75,7 +76,7 @@ story.add(
         hintMessage: text('hintMessage', 'Usefull hint'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
-        description: text('description', ''),
+        description: text('description', mockText(15)),
       },
       moduleMetadata: {
         imports: [

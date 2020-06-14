@@ -35,7 +35,8 @@
               [matTooltip]="radio.description"
               [matTooltipClass]="tooltipClass"
               [matTooltipShowDelay]="delay"
-              [matTooltipPosition]="tooltipPosition.above">
+              [matTooltipPosition]="tooltipPosition.above"
+              (click)="$event.preventDefault()">
       </b-icon>
     </label>
   </ng-container>
