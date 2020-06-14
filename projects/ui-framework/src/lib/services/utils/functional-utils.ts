@@ -414,6 +414,20 @@ export const mapSplice = <K = any, V = any>(
   return deletedElementsMap;
 };
 
+export const recursiveFilter = <T = any>(
+  array: T[],
+  childrenKey: string,
+  fn: (item: T) => boolean
+): T[] => {
+  return array.reduce((acc: T[], o) => {
+    if (fn(o)) {
+      const children = recursiveFilter(o[childrenKey] || [], childrenKey, fn);
+      acc.push(Object.assign({}, o, children.length && { children }));
+    }
+    return acc;
+  }, []);
+};
+
 // ----------------------
 // STRINGS
 // ----------------------
