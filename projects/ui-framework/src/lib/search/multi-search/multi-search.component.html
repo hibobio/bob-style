@@ -1,11 +1,13 @@
 <ul *ngFor="let group of options">
 
-  <li>
+  <li class="bms-group">
     <h3>{{ group[group.keyMap?.groupName || keyMapDef.groupName] }}</h3>
 
     <ul>
       <li *ngFor="let option of group[group.keyMap?.options || keyMapDef.options].slice(0,10)"
-          [attr.id]="option[group.keyMap?.id || keyMapDef.id]">
+          class="bms-option"
+          [attr.id]="option[group.keyMap?.id || keyMapDef.id]"
+          (click)="onOptionClick(group,option)">
         {{ option[group.keyMap?.value || keyMapDef.value] }}
       </li>
     </ul>

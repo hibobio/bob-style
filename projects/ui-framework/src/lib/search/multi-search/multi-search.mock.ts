@@ -11,6 +11,9 @@ export const mockSearchData: MultiSearchGroupOption[] = [
       id: animal,
       value: animal,
     })),
+    clickHandler: (option: MultiSearchGroupOption) => {
+      console.log(`Handler for: ${option.value}`);
+    },
   },
   {
     keyMap: {
@@ -24,11 +27,17 @@ export const mockSearchData: MultiSearchGroupOption[] = [
       id: hobby,
       name: hobby,
     })),
+    clickHandler: (option: MultiSearchGroupOption) => {
+      console.log(`Handler for: ${option.name}`);
+    },
   },
   {
     groupName: 'People',
     key: 'people',
     options: [...optionsMock[0].options, ...optionsMock[1].options],
+    clickHandler: (option: MultiSearchGroupOption) => {
+      console.log(`Handler for: ${option.value}`);
+    },
   },
   {
     keyMap: {
@@ -38,5 +47,8 @@ export const mockSearchData: MultiSearchGroupOption[] = [
       value: 'name',
     },
     ...HListMockSingleGroup[0],
+    clickHandler: (option: MultiSearchGroupOption) => {
+      console.log(`Handler for: ${option.name}`);
+    },
   },
 ];

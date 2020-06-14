@@ -31,7 +31,7 @@ export interface MultiSearchGroupOption
   key?: string | number; // group ID
   groupName?: string;
   icon?: Icons;
-  options?: SelectOption[] | MultiSearchOption[];
+  options?: MultiSearchOption[];
   translation?: {
     showMore?: string;
   };
