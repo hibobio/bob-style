@@ -14,15 +14,16 @@
 <ng-template #templateRef>
   <div class="b-select-panel"
        [ngClass]="positionClassList">
-    <div class="bms-select-list">
-      <ul *ngFor="let group of options; let groupIndex = index; trackBy: groupTrackBy">
+    <div class="bms-panel-scroll-container">
+      <ul *ngFor="let group of options; let groupIndex = index; trackBy: groupTrackBy"
+          class="bms-group-list">
 
         <li class="bms-group">
-          <h3>
+          <h4 class="bms-group-title">
             {{ group[group.keyMap?.groupName || keyMapDef.groupName] }}
-          </h3>
+          </h4>
 
-          <ul>
+          <ul class="bms-option-list">
             <li *ngFor="let option of group[group.keyMap?.options || keyMapDef.options].slice(0,10); let optionIndex = index; trackBy: optionTrackBy(groupIndex, group)"
                 class="bms-option"
                 [attr.id]="option[group.keyMap?.id || keyMapDef.id]"

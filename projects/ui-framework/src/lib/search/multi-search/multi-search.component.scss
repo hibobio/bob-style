@@ -16,26 +16,35 @@ ul {
   list-style: none;
   margin: 0;
   padding: 0;
-
-  & + ul {
-    border-top: 1px solid black;
-    padding-top: 8px;
-    margin-top: 8px;
-  }
 }
 
-h3 {
-  margin: 0;
-}
-
+.bms-group-title,
 .bms-option {
   height: $bms-option-height;
   display: flex;
   align-items: center;
   padding: 0 $bms-option-padding;
-  position: relative;
   background-color: white;
   white-space: nowrap;
+}
+
+.bms-group-title {
+  color: $grey-600;
+  font-weight: 700;
+  margin: 0;
+  border-top: 1px solid $border-color;
+  margin-top: times8(1);
+}
+
+.bms-group-list:first-child {
+  .bms-group-title {
+    border-top: 0;
+    margin-top: 0;
+  }
+}
+
+.bms-option {
+  position: relative;
   cursor: pointer;
 }
 
@@ -76,13 +85,14 @@ h3 {
   }
 }
 
-.bms-select-list {
+.bms-panel-scroll-container {
   position: relative;
   max-height: calc(
     var(--list-max-items, #{$bms-max-items}) * #{$bms-option-height} - 1px
   );
   overflow-y: auto;
   will-change: scroll-position, transform;
+  border-radius: $border-radius;
 }
 
 ::ng-deep {
