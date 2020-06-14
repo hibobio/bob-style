@@ -1,14 +1,46 @@
-<ul *ngFor="let group of options">
+<b-search [id]="id"
+          [label]="label"
+          [placeholder]="placeholder"
+          (searchFocus)="onSearchFocus()"
+          (searchChange)="onSearchChange($event)"></b-search>
+
+<ul *ngFor="let group of options; let groupIndex = index; trackBy: groupTrackBy">
 
   <li class="bms-group">
-    <h3>{{ group[group.keyMap?.groupName || keyMapDef.groupName] }}</h3>
+    <h3>
+      {{ group[group.keyMap?.groupName || keyMapDef.groupName] }}
+    </h3>
 
     <ul>
-      <li *ngFor="let option of group[group.keyMap?.options || keyMapDef.options].slice(0,10)"
+      <li *ngFor="let option of group[group.keyMap?.options || keyMapDef.options].slice(0,10); let optionIndex = index; trackBy: optionTrackBy(groupIndex, group)"
           class="bms-option"
           [attr.id]="option[group.keyMap?.id || keyMapDef.id]"
           (click)="onOptionClick(group,option)">
-        {{ option[group.keyMap?.value || keyMapDef.value] }}
+
+
+        <b-component-renderer *ngIf="option.prefixComponent?.component"
+                              class="bms-option-prefix"
+                              [render]="option.prefixComponent"></b-component-renderer>
+
+        <b-avatar-image *ngIf="option.icon && !option.prefixComponent"
+                        class="bms-option-icon"
+                        [icon]="{
+                          icon: option.icon,
+                          color: iconColor.white,
+                          hasHoverState: true
+                        }"
+                        [size]="avatarSize.mini"
+                        [backgroundColor]="iconBgColor">
+        </b-avatar-image>
+
+        <span class="bms-option-label"
+              *ngIf="option[group.keyMap?.label || keyMapDef.label]">
+          {{ option[group.keyMap?.label || keyMapDef.label] }}
+        </span>
+
+        <span class="bms-option-value">
+          {{ option[group.keyMap?.value || keyMapDef.value] }}
+        </span>
       </li>
     </ul>
   </li>

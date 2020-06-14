@@ -1,6 +1,7 @@
 import { SelectGroupOption, SelectOption } from '../../lists/list.interface';
 import { MenuItem } from '../../navigation/menu/menu.interface';
 import { Icons } from '../../icons/icons.enum';
+import { Icon } from '../../icons/icon.interface';
 
 export interface MultiSearchKeyMap {
   key?: string;
@@ -8,6 +9,7 @@ export interface MultiSearchKeyMap {
   options?: string;
   id?: string;
   value?: string;
+  label?: string;
 }
 
 export interface MultiSearchOptionMenuItem extends MenuItem<MultiSearchOption> {
@@ -21,7 +23,7 @@ export interface MultiSearchOption extends Partial<SelectOption> {
   id?: string | number;
   value?: string;
   label?: string;
-  icon?: Icons;
+  icon?: Icons | Icon;
   menu?: MultiSearchOptionMenuItem[];
 }
 
@@ -36,8 +38,8 @@ export interface MultiSearchGroupOption
     showMore?: string;
   };
   menu?: MultiSearchOptionMenuItem[];
-  clickHandler?: (option: MultiSearchGroupOption) => void;
-  menuHandler?: (
+  optionClickHandler?: (option: MultiSearchOption) => void;
+  menuClickHandler?: (
     option: MultiSearchGroupOption,
     menuItem: MultiSearchOptionMenuItem
   ) => void;

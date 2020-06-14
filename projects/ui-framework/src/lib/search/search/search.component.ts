@@ -35,8 +35,8 @@ export class SearchComponent implements OnChanges {
   @Input() hideLabelOnFocus = true;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
+  @Input() id = simpleUID('bsrch-');
 
-  public id = simpleUID('bsrch-');
   public inputFocused = false;
 
   readonly icons = Icons;

@@ -1,3 +1,10 @@
+@import '../../style/common-imports';
+@import '../../style/icons.mixin';
+@import '../../lists/list';
+
+$bms-option-height: $wrap-height;
+$bms-option-padding: $input-padding;
+
 :host {
   display: block;
   text-align: left;
@@ -22,5 +29,32 @@ h3 {
 }
 
 .bms-option {
+  height: $bms-option-height;
+  display: flex;
+  align-items: center;
+  padding: 0 $bms-option-padding;
+  position: relative;
+  background-color: white;
+  white-space: nowrap;
+
   cursor: pointer;
+}
+
+.bms-option-prefix,
+.bms-option-icon {
+  margin-right: times8(1);
+}
+
+.bms-option-label {
+  display: flex;
+  align-items: center;
+  color: $grey-600;
+
+  @include b-icon(
+    $icon: 'chevron-right',
+    $size: 16px,
+    $color: 'normal',
+    $elem: '&:after',
+    $hover: true
+  );
 }

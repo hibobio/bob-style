@@ -4,4 +4,5 @@ export const MULTI_SEARCH_KEYMAP_DEF = {
   options: 'options',
   id: 'id',
   value: 'value',
+  label: 'label',
 };

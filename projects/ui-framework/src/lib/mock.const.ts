@@ -176,9 +176,11 @@ export const mockNamesList = [
   'Stefania Dollinger',
 ];
 
-export const mockFirstNamesList = mockNamesList.map(name => name.split(' ')[0]);
+export const mockFirstNamesList = mockNamesList.map(
+  (name) => name.split(' ')[0]
+);
 export const mockSecondNamesList = mockNamesList.map(
-  name => name.split(' ')[1]
+  (name) => name.split(' ')[1]
 );
 
 export const badJobsList = [
@@ -827,7 +829,7 @@ export const randomItems = [
   'coasters',
   'thermostat',
   'zipper',
-].map(i => capitalize(i));
+].map((i) => capitalize(i));
 
 export const randomAnimals = [
   'meerkat',
@@ -1018,7 +1020,7 @@ export const randomAnimals = [
   'yak',
   'zebra',
   'zebu',
-].map(i => capitalize(i));
+].map((i) => capitalize(i));
 
 const lorem =
   // tslint:disable-next-line: max-line-length
@@ -1094,13 +1096,16 @@ const uselessURLs = [
   'http://nooooooooooooooo.com/',
 ];
 
-export const mockAvatar = () =>
+export const mockAvatar = (): string =>
   `https://randomuser.me/api/portraits/${randomFromArray([
     'men',
     'women',
   ])}/${randomNumber(0, 99)}.jpg`;
 
-export const mockImage = (width, height) =>
+export const adorableAvatar = (): string =>
+  `https://api.adorable.io/avatars/100/${simpleUID()}.png`;
+
+export const mockImage = (width: number, height: number): string =>
   `https://picsum.photos/id/${randomNumber(0, 99)}/${width}/${height}`;
 
 export const mockName = (num = 1): string => {
@@ -1170,10 +1175,7 @@ export const mockDateRange = (length = 0) => {
 
 export const loremText = (words = null) => {
   if (typeof words === 'number') {
-    return lorem
-      .split(' ')
-      .slice(0, words)
-      .join(' ');
+    return lorem.split(' ').slice(0, words).join(' ');
   }
   return lorem;
 };

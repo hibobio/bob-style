@@ -41,7 +41,7 @@ export const makeRandomList = (
     genGroupOrOption(1)
   );
 
-  if (!list.find(i => i.children)) {
+  if (!list.find((i) => i.children)) {
     list[0] = genGroup(1);
   }
 
@@ -51,14 +51,14 @@ export const makeRandomList = (
 export const HListMock: TreeListOption[] = makeRandomList(5);
 
 export const HListMockValues = (HListMock.filter(
-  option => option.children
+  (option) => option.children
 ) as ArrayES<TreeListOption>)
-  .flatMap(group => group.children)
-  .filter(option => option.children)
+  .flatMap((group) => group.children)
+  .filter((option) => option.children)
   .sort(() => 0.5 - Math.random())
   .slice(0, 5)
   .map(
-    option => option.children[randomNumber(0, option.children.length - 1)].id
+    (option) => option.children[randomNumber(0, option.children.length - 1)].id
   );
 
 const mxRootOptns = 3;
@@ -78,18 +78,20 @@ export const HListMockSimple: TreeListOption[] = makeArray(mxRootOptns).map(
             canBeDeleted: true,
           },
           {
-            serverId: `option-${indx + 1}-group-${indx}-option-2-group-${indx +
-              1}`,
+            serverId: `option-${indx + 1}-group-${indx}-option-2-group-${
+              indx + 1
+            }`,
             value: `O${indx + 1} G${indx} O2 Group ${indx + 1}`,
             canBeDeleted: true,
             children: makeArray(mxInsdOptns).map(
               (_i, ndx) =>
                 ({
-                  serverId: `option-${indx +
-                    1}-group-${indx}-option-2-group-${indx + 1}-option-${ndx +
-                    1}`,
-                  value: `O${indx + 1} G${indx} O2 G${indx + 1} Option ${ndx +
-                    1}`,
+                  serverId: `option-${indx + 1}-group-${indx}-option-2-group-${
+                    indx + 1
+                  }-option-${ndx + 1}`,
+                  value: `O${indx + 1} G${indx} O2 G${indx + 1} Option ${
+                    ndx + 1
+                  }`,
                   canBeDeleted: true,
                 } as TreeListOption)
             ),
@@ -114,13 +116,15 @@ export const HListMockSimple: TreeListOption[] = makeArray(mxRootOptns).map(
   }
 );
 
+export const badJobs = mockBadJobs();
+
 export const HListMockSingleGroup: TreeListOption[] = [
   {
     id: simpleUID(),
     name: 'Bad jobs',
-    children: makeArray(10).map(() => ({
+    children: makeArray(10).map((i, index) => ({
       id: simpleUID(),
-      name: mockBadJobs(1),
+      name: badJobs[index],
     })),
   },
 ];
