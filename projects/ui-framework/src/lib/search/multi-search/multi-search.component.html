@@ -1,48 +1,62 @@
 <b-search [id]="id"
           [label]="label"
           [placeholder]="placeholder"
-          (searchFocus)="onSearchFocus()"
-          (searchChange)="onSearchChange($event)"></b-search>
+          (click)="openPanel()"
+          (searchFocus)="openPanel()"
+          (searchChange)="onSearchChange($event)"
+          [ngClass]="{
+              'panel-open': panelOpen,
+              'panel-above': positionClassList['panel-above'],
+              'panel-below': positionClassList['panel-below']
+            }"
+          cdkOverlayOrigin></b-search>
 
-<ul *ngFor="let group of options; let groupIndex = index; trackBy: groupTrackBy">
+<ng-template #templateRef>
+  <div class="b-select-panel"
+       [ngClass]="positionClassList">
+    <div class="bms-select-list">
+      <ul *ngFor="let group of options; let groupIndex = index; trackBy: groupTrackBy">
 
-  <li class="bms-group">
-    <h3>
-      {{ group[group.keyMap?.groupName || keyMapDef.groupName] }}
-    </h3>
+        <li class="bms-group">
+          <h3>
+            {{ group[group.keyMap?.groupName || keyMapDef.groupName] }}
+          </h3>
 
-    <ul>
-      <li *ngFor="let option of group[group.keyMap?.options || keyMapDef.options].slice(0,10); let optionIndex = index; trackBy: optionTrackBy(groupIndex, group)"
-          class="bms-option"
-          [attr.id]="option[group.keyMap?.id || keyMapDef.id]"
-          (click)="onOptionClick(group,option)">
+          <ul>
+            <li *ngFor="let option of group[group.keyMap?.options || keyMapDef.options].slice(0,10); let optionIndex = index; trackBy: optionTrackBy(groupIndex, group)"
+                class="bms-option"
+                [attr.id]="option[group.keyMap?.id || keyMapDef.id]"
+                (click)="onOptionClick(group,option)">
 
 
-        <b-component-renderer *ngIf="option.prefixComponent?.component"
-                              class="bms-option-prefix"
-                              [render]="option.prefixComponent"></b-component-renderer>
+              <b-component-renderer *ngIf="option.prefixComponent?.component"
+                                    class="bms-option-prefix"
+                                    [render]="option.prefixComponent"></b-component-renderer>
 
-        <b-avatar-image *ngIf="option.icon && !option.prefixComponent"
-                        class="bms-option-icon"
-                        [icon]="{
+              <b-avatar-image *ngIf="option.icon && !option.prefixComponent"
+                              class="bms-option-icon"
+                              [icon]="{
                           icon: option.icon,
                           color: iconColor.white,
                           hasHoverState: true
                         }"
-                        [size]="avatarSize.mini"
-                        [backgroundColor]="iconBgColor">
-        </b-avatar-image>
+                              [size]="avatarSize.mini"
+                              [backgroundColor]="iconBgColor">
+              </b-avatar-image>
 
-        <span class="bms-option-label"
-              *ngIf="option[group.keyMap?.label || keyMapDef.label]">
-          {{ option[group.keyMap?.label || keyMapDef.label] }}
-        </span>
+              <span class="bms-option-label"
+                    *ngIf="option[group.keyMap?.label || keyMapDef.label]">
+                {{ option[group.keyMap?.label || keyMapDef.label] }}
+              </span>
 
-        <span class="bms-option-value">
-          {{ option[group.keyMap?.value || keyMapDef.value] }}
-        </span>
-      </li>
-    </ul>
-  </li>
+              <span class="bms-option-value"
+                    [innerHTML]="option[group.keyMap?.value || keyMapDef.value] | highlight: searchValue">
+              </span>
+            </li>
+          </ul>
+        </li>
 
-</ul>
+      </ul>
+    </div>
+  </div>
+</ng-template>

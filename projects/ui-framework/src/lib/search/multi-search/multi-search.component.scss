@@ -4,12 +4,12 @@
 
 $bms-option-height: $wrap-height;
 $bms-option-padding: $input-padding;
+$bms-max-items: 8;
 
 :host {
   display: block;
   text-align: left;
-  max-height: 350px;
-  overflow: auto;
+  --list-max-items: #{$bms-max-items};
 }
 
 ul {
@@ -36,7 +36,6 @@ h3 {
   position: relative;
   background-color: white;
   white-space: nowrap;
-
   cursor: pointer;
 }
 
@@ -57,4 +56,39 @@ h3 {
     $elem: '&:after',
     $hover: true
   );
+}
+
+// Panel
+
+:host ::ng-deep {
+  .panel-open.panel-below {
+    .bfe-wrap {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  .panel-open.panel-above {
+    .bfe-wrap {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+}
+
+.bms-select-list {
+  position: relative;
+  max-height: calc(
+    var(--list-max-items, #{$bms-max-items}) * #{$bms-option-height} - 1px
+  );
+  overflow-y: auto;
+  will-change: scroll-position, transform;
+}
+
+::ng-deep {
+  .cdk-overlay-pane.b-select-panel.bms-select-panel {
+    @include desktop {
+      min-width: 450px;
+    }
+  }
 }

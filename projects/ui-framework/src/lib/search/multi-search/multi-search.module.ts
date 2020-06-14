@@ -3,19 +3,23 @@ import { CommonModule } from '@angular/common';
 import { MultiSearchComponent } from './multi-search.component';
 import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
-import { IconsModule } from '../../icons/icons.module';
 import { SearchModule } from '../search/search.module';
+import { FiltersModule } from '../../services/filters/filters.module';
+import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
+import { ListPanelService } from '../../lists/list-panel.service';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [MultiSearchComponent],
   imports: [
     CommonModule,
+    SearchModule,
+    OverlayModule,
     ComponentRendererModule,
     AvatarModule,
-    IconsModule,
-    SearchModule,
+    FiltersModule,
   ],
   exports: [MultiSearchComponent],
-  providers: [],
+  providers: [PanelPositionService, ListPanelService],
 })
 export class MultiSearchModule {}

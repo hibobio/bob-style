@@ -5,6 +5,8 @@ import {
   EventEmitter,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  ViewContainerRef,
+  NgZone,
 } from '@angular/core';
 import {
   MultiSearchGroupOption,
@@ -12,9 +14,13 @@ import {
   MultiSearchClickedEvent,
 } from './multi-search.interface';
 import { MULTI_SEARCH_KEYMAP_DEF } from './multi-search.const';
-import { isFunction, simpleUID } from '../../services/utils/functional-utils';
-import { AvatarSize } from '../../avatar/avatar/avatar.enum';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { isFunction } from '../../services/utils/functional-utils';
+import { ListPanelService } from '../../lists/list-panel.service';
+import { Overlay } from '@angular/cdk/overlay';
+import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { UtilsService } from '../../services/utils/utils.service';
+import { MultiSearchBaseElement } from './multi-search.abstract';
 
 @Component({
   selector: 'b-multi-search',
@@ -22,31 +28,40 @@ import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
   styleUrls: ['./multi-search.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MultiSearchComponent {
-  constructor(private cd: ChangeDetectorRef) {}
+export class MultiSearchComponent extends MultiSearchBaseElement {
+  constructor(
+    protected cd: ChangeDetectorRef,
+    protected listPanelSrvc: ListPanelService,
+    // Used by ListPanelService:
+    protected zone: NgZone,
+    protected DOM: DOMhelpers,
+    protected utilsService: UtilsService,
+    protected overlay: Overlay,
+    protected viewContainerRef: ViewContainerRef,
+    protected panelPositionService: PanelPositionService
+  ) {
+    super(
+      cd,
+      listPanelSrvc,
+      zone,
+      DOM,
+      utilsService,
+      overlay,
+      viewContainerRef,
+      panelPositionService
+    );
+  }
 
   @Input() options: MultiSearchGroupOption[] = [];
-
-  @Input() label: string;
-  @Input() placeholder: string;
 
   @Output() clicked: EventEmitter<MultiSearchClickedEvent> = new EventEmitter<
     MultiSearchClickedEvent
   >();
 
-  public id = simpleUID('bms-');
-  public inputFocused: boolean;
-
-  readonly keyMapDef = { ...MULTI_SEARCH_KEYMAP_DEF };
-  readonly avatarSize = AvatarSize;
-  readonly icons = Icons;
-  readonly iconColor = IconColor;
-  readonly iconSize = IconSize;
-  readonly iconBgColor = '#f57738';
-
-  public onSearchFocus(): void {}
-
-  public onSearchChange(value: string): void {}
+  public onSearchChange(value: string): void {
+    this.searchValue = value;
+    this.openPanel();
+  }
 
   public onOptionClick(
     group: MultiSearchGroupOption,
@@ -68,23 +83,5 @@ export class MultiSearchComponent {
         option,
       });
     }
-  }
-
-  public groupTrackBy(index: number, group: MultiSearchGroupOption): string {
-    return (
-      group[group.keyMap?.key || MULTI_SEARCH_KEYMAP_DEF.key] ||
-      group[group.keyMap?.groupName || MULTI_SEARCH_KEYMAP_DEF.groupName] ||
-      index
-    );
-  }
-
-  public optionTrackBy(groupIndex: number, group: MultiSearchGroupOption) {
-    return (index: number, option: MultiSearchOption): string => {
-      return `${this.groupTrackBy(groupIndex, group)}__${
-        option[group.keyMap?.id || MULTI_SEARCH_KEYMAP_DEF.id] ||
-        option[group.keyMap?.value || MULTI_SEARCH_KEYMAP_DEF.value] ||
-        index
-      }`;
-    };
   }
 }
