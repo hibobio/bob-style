@@ -414,6 +414,32 @@ export const mapSplice = <K = any, V = any>(
   return deletedElementsMap;
 };
 
+/*
+const values = [
+  {
+    value: 'a',
+    archived: false,
+    children: [{ value: 'a-a', archived: true }, { value: 'a-b', archived: false }]
+  },
+  {
+    value: 'b',
+    archived: true,
+    children: [{ value: 'b-a', archived: false }]
+  }
+];
+
+output = recursiveFilter(values, 'children', (value) => !value.archived);
+
+// output = [
+//   {
+//     value: 'a',
+//     serverId: 1,
+//     archived: false,
+//     children: [{ value: 'a-b', serverId: 2, archived: false }]
+//   }
+// ];
+ */
+
 export const recursiveFilter = <T = any>(
   array: T[],
   childrenKey: string,
