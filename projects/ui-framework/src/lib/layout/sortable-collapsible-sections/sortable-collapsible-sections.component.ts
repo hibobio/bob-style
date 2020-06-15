@@ -37,7 +37,6 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
   @Output() dragStart: EventEmitter<number> = new EventEmitter<number>();
   @Output() dragEnd: EventEmitter<number> = new EventEmitter<number>();
   @Output() orderChanged: EventEmitter<SortableCollapsibleDropped> = new EventEmitter<SortableCollapsibleDropped>();
-  @Output() openedFirst: EventEmitter<number> = new EventEmitter<number>();
   @Output() opened: EventEmitter<number> = new EventEmitter<number>();
   @Output() closed: EventEmitter<number> = new EventEmitter<number>();
 
@@ -95,7 +94,8 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
     }
   }
 
-  onOpenedFirst(section: SortableCollapsibleSection) {
+  onOpened(section: SortableCollapsibleSection, index) {
     this.contentLoadedMap.set(section.id, true);
+    this.opened.emit(index);
   }
 }
