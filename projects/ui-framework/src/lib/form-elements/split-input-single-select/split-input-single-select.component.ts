@@ -65,8 +65,8 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
   @Input() inputType: InputTypes;
   @Input() selectOptions: SelectGroupOption[];
 
-  @Input() numberFormat = false;
-  @Input() onlyIntegers = false;
+  @Input() numberFormat: boolean;
+  @Input() onlyIntegers: boolean;
 
   public options: SelectGroupOption[] = [];
 
