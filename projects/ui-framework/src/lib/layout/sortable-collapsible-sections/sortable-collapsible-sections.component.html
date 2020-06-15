@@ -4,6 +4,7 @@
     cdkDropList>
 
   <li *ngFor="let section of UISections; trackBy: trackId; let index=index"
+      id="{{section.id}}"
       class="draggable-section"
       cdkDrag
       cdkDragLockAxis="y"
