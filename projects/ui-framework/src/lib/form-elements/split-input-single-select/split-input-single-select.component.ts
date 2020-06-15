@@ -65,6 +65,9 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
   @Input() inputType: InputTypes;
   @Input() selectOptions: SelectGroupOption[];
 
+  @Input() numberFormat = false;
+  @Input() onlyIntegers = false;
+
   public options: SelectGroupOption[] = [];
 
   // tslint:disable-next-line: no-output-rename
@@ -88,9 +91,9 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
   private enrichOptionsWithSelection(
     options: SelectGroupOption[]
   ): SelectGroupOption[] {
-    return map(options, g =>
+    return map(options, (g) =>
       assign({}, g, {
-        options: map(g.options, o =>
+        options: map(g.options, (o) =>
           assign({}, o, { selected: o.id === this.value.selectValue })
         ),
       })

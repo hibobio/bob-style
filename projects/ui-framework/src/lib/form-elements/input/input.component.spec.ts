@@ -189,4 +189,63 @@ describe('InputComponent', () => {
       expect(elementFromFixture(fixture, '.bfe-buttons-wrap')).toBeFalsy();
     });
   });
+
+  describe('Number format', () => {
+    beforeEach(() => {
+      component.inputType = InputTypes.number;
+      inputElement = component.input.nativeElement;
+    });
+    it('should not format number with commas, if numberFormat is not set', () => {
+      fixture.detectChanges();
+      component.writeValue(123456.78);
+      expect(inputElement.value).toEqual('123456.78');
+    });
+
+    it('should format number with commas, if numberFormat is true', () => {
+      component.numberFormat = true;
+      fixture.detectChanges();
+      component.writeValue(123456.78);
+      expect(inputElement.value).toEqual('123,456.78');
+    });
+
+    it('should not format number with commas, if numberFormat is not set', () => {
+      fixture.detectChanges();
+      inputValue(inputElement, '123456.78', false);
+      expect(inputElement.value).toEqual('123456.78');
+    });
+
+    it('should format number with commas, if numberFormat is true', () => {
+      component.numberFormat = true;
+      fixture.detectChanges();
+      inputValue(inputElement, '123456.78', false);
+      expect(inputElement.value).toEqual('123,456.78');
+    });
+  });
+
+  describe('onlyIntegers', () => {
+    beforeEach(() => {
+      component.inputType = InputTypes.number;
+      inputElement = component.input.nativeElement;
+    });
+
+    it('should round number, if onlyIntegers is true', () => {
+      component.onlyIntegers = true;
+      fixture.detectChanges();
+      component.writeValue(123.56);
+      expect(inputElement.value).toEqual('124');
+    });
+
+    it('should round number, if onlyIntegers is true', () => {
+      component.onlyIntegers = true;
+      fixture.detectChanges();
+      inputValue(inputElement, '123.56', false);
+      expect(inputElement.value).toEqual('124');
+    });
+
+    it('should not round number, if onlyIntegers is not set', () => {
+      fixture.detectChanges();
+      inputValue(inputElement, '123.56', false);
+      expect(inputElement.value).toEqual('123.56');
+    });
+  });
 });
