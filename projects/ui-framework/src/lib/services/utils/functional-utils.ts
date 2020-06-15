@@ -598,32 +598,15 @@ export const compareAsStrings = (a: any, b: any, strict = true): boolean => {
 // FILTERS
 // ----------------------
 
-/*
-const values = [
-  {
-    value: 'a',
-    archived: false,
-    children: [{ value: 'a-a', archived: true }, { value: 'a-b', archived: false }]
-  },
-  {
-    value: 'b',
-    archived: true,
-    children: [{ value: 'b-a', archived: false }]
-  }
-];
-
-output = recursiveFilter(values, 'children', (value) => !value.archived);
-
-// output = [
-//   {
-//     value: 'a',
-//     serverId: 1,
-//     archived: false,
-//     children: [{ value: 'a-b', serverId: 2, archived: false }]
-//   }
-// ];
+/**
+ *
+ * @param array The array the filter is applied on
+ * @param childrenKey The recursive key in the object, i.e: children
+ * @param fn The function predicate for the filter
+ * // returns a copy of the array
+ const array = [ { archived: false, children: [ {archived: true}, {archived: false } ] }, { archived: true, children: [ {archived: false} ] } ];
+ recursiveFilter(array, 'children', (value) => !value.archived); // [{ children: [{archived: false}]}]
  */
-
 export const recursiveFilter = <T = any>(
   array: T[],
   childrenKey: string,
