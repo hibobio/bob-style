@@ -220,6 +220,30 @@ export class DOMhelpers {
     return { element: test ? element : null, result: test }[rtrn];
   }
 
+  public getClosestUntil(
+    element: HTMLElement,
+    closestSelector: string,
+    until: string | HTMLElement
+  ): HTMLElement {
+    if (!this.isElement(element) || !closestSelector || !until) {
+      return null;
+    }
+
+    let parent = element;
+
+    while (
+      ((this.isElement(until) && until !== parent) ||
+        (isString(until) && !parent.matches(until))) &&
+      !parent.matches(closestSelector) &&
+      parent !== document.documentElement &&
+      parent.parentElement
+    ) {
+      parent = parent.parentElement;
+    }
+
+    return parent.matches(closestSelector) ? parent : null;
+  }
+
   // TODO: Add Test
   public getSibling(
     element: HTMLElement,

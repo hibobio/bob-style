@@ -48,6 +48,8 @@ export abstract class MultiSearchBaseElement {
   @Input() label: string;
   @Input() placeholder: string;
 
+  public searchOptionsViewModel: MultiSearchGroupOption[] = [];
+
   public id = simpleUID('bms-');
   public searchValue: string;
 
@@ -85,6 +87,33 @@ export abstract class MultiSearchBaseElement {
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
     }
+  }
+
+  protected getGroupAndOptionFromUIEvent(
+    event: MouseEvent | KeyboardEvent
+  ): { group: MultiSearchGroupOption; option: MultiSearchOption } {
+    const optionEl = this.DOM.getClosestUntil(
+      event.target as HTMLElement,
+      '.bms-option',
+      '.b-select-panel'
+    );
+
+    if (!optionEl) {
+      return null;
+    }
+
+    const groupIndex = parseInt(optionEl.getAttribute('data-group-index'), 10);
+    const optionIndex = parseInt(
+      optionEl.getAttribute('data-option-index'),
+      10
+    );
+    const group = this.searchOptionsViewModel[groupIndex];
+    const option =
+      group[group.keyMap?.options || MULTI_SEARCH_KEYMAP_DEF.options][
+        optionIndex
+      ];
+
+    return { group, option };
   }
 
   public groupTrackBy(index: number, group: MultiSearchGroupOption): string {

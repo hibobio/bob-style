@@ -34,6 +34,7 @@ ul {
   margin: 0;
   border-top: 1px solid $border-color;
   margin-top: times8(1);
+  pointer-events: none;
 }
 
 .bms-group-list:first-child {

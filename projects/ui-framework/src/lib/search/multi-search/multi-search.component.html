@@ -13,9 +13,11 @@
 
 <ng-template #templateRef>
   <div class="b-select-panel"
-       [ngClass]="positionClassList">
+       [ngClass]="positionClassList"
+       (click.outside-zone)="onListClick($event)">
     <div class="bms-panel-scroll-container">
-      <ul *ngFor="let group of options; let groupIndex = index; trackBy: groupTrackBy"
+
+      <ul *ngFor="let group of searchOptionsViewModel; let groupIndex = index; trackBy: groupTrackBy"
           class="bms-group-list">
 
         <li class="bms-group">
@@ -26,9 +28,8 @@
           <ul class="bms-option-list">
             <li *ngFor="let option of group[group.keyMap?.options || keyMapDef.options].slice(0,10); let optionIndex = index; trackBy: optionTrackBy(groupIndex, group)"
                 class="bms-option"
-                [attr.id]="option[group.keyMap?.id || keyMapDef.id]"
-                (click)="onOptionClick(group,option)">
-
+                [attr.data-group-index]="groupIndex"
+                [attr.data-option-index]="optionIndex">
 
               <b-component-renderer *ngIf="option.prefixComponent?.component"
                                     class="bms-option-prefix"
@@ -37,10 +38,10 @@
               <b-avatar-image *ngIf="option.icon && !option.prefixComponent"
                               class="bms-option-icon"
                               [icon]="{
-                          icon: option.icon,
-                          color: iconColor.white,
-                          hasHoverState: true
-                        }"
+                                icon: option.icon,
+                                color: iconColor.white,
+                                hasHoverState: true
+                              }"
                               [size]="avatarSize.mini"
                               [backgroundColor]="iconBgColor">
               </b-avatar-image>
@@ -58,6 +59,7 @@
         </li>
 
       </ul>
+
     </div>
   </div>
 </ng-template>

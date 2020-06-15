@@ -414,46 +414,6 @@ export const mapSplice = <K = any, V = any>(
   return deletedElementsMap;
 };
 
-/*
-const values = [
-  {
-    value: 'a',
-    archived: false,
-    children: [{ value: 'a-a', archived: true }, { value: 'a-b', archived: false }]
-  },
-  {
-    value: 'b',
-    archived: true,
-    children: [{ value: 'b-a', archived: false }]
-  }
-];
-
-output = recursiveFilter(values, 'children', (value) => !value.archived);
-
-// output = [
-//   {
-//     value: 'a',
-//     serverId: 1,
-//     archived: false,
-//     children: [{ value: 'a-b', serverId: 2, archived: false }]
-//   }
-// ];
- */
-
-export const recursiveFilter = <T = any>(
-  array: T[],
-  childrenKey: string,
-  fn: (item: T) => boolean
-): T[] => {
-  return array.reduce((acc: T[], o) => {
-    if (fn(o)) {
-      const children = recursiveFilter(o[childrenKey] || [], childrenKey, fn);
-      acc.push(Object.assign({}, o, children.length && { children }));
-    }
-    return acc;
-  }, []);
-};
-
 // ----------------------
 // STRINGS
 // ----------------------
@@ -632,6 +592,50 @@ export const compareAsStrings = (a: any, b: any, strict = true): boolean => {
           .trim()
           .toLowerCase()
           .replace(/[./\\()\"':,.;<>~!@#$%^&*|+=[\]{}`~\?-]/g, '');
+};
+
+// ----------------------
+// FILTERS
+// ----------------------
+
+/*
+const values = [
+  {
+    value: 'a',
+    archived: false,
+    children: [{ value: 'a-a', archived: true }, { value: 'a-b', archived: false }]
+  },
+  {
+    value: 'b',
+    archived: true,
+    children: [{ value: 'b-a', archived: false }]
+  }
+];
+
+output = recursiveFilter(values, 'children', (value) => !value.archived);
+
+// output = [
+//   {
+//     value: 'a',
+//     serverId: 1,
+//     archived: false,
+//     children: [{ value: 'a-b', serverId: 2, archived: false }]
+//   }
+// ];
+ */
+
+export const recursiveFilter = <T = any>(
+  array: T[],
+  childrenKey: string,
+  fn: (item: T) => boolean
+): T[] => {
+  return array.reduce((acc: T[], o) => {
+    if (fn(o)) {
+      const children = recursiveFilter(o[childrenKey] || [], childrenKey, fn);
+      acc.push(Object.assign({}, o, children.length && { children }));
+    }
+    return acc;
+  }, []);
 };
 
 // ----------------------

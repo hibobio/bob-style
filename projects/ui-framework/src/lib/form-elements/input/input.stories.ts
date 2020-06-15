@@ -38,7 +38,8 @@ const template = `
             [step]="step"
             [min]="min"
             [max]="max"
-            [disableNumberFormat]="disableNumberFormat"
+            [numberFormat]="numberFormat"
+            [onlyIntegers]="onlyIntegers"
             [readonly]="readonly"
             [disabled]="disabled"
             [required]="required"
@@ -63,7 +64,8 @@ const templateForNotes = `
             [step]="step"
             [min]="min"
             [max]="max"
-            [disableNumberFormat]="disableNumberFormat"
+            [numberFormat]="numberFormat"
+            [onlyIntegers]="onlyIntegers"
             [readonly]="readonly"
             [disabled]="disabled"
             [required]="required"
@@ -104,7 +106,8 @@ const note = `
    Buttons will not be displayed, if step value is not provided.<br> \
    *Note:* When using the step buttons, the number value will be rounded to the decimal places \
    of the step (if step is 3, value of 5.5 + 3 will be rounded to 9). | &nbsp;
-  [disableNumberFormat] | boolean | disables number formatting with commas ('1,234.05') | false
+  [numberFormat] | boolean | (for input type number only) enable number formatting with commas ('1,234.05') | false
+  [onlyIntegers] | boolean | (for input type number only) set to true to not allow fractions | false
 
   ${inputElemsPropsDoc}
 
@@ -132,7 +135,8 @@ story.add(
         min: number('min', undefined),
         max: number('max', undefined),
         step: number('step', 1),
-        disableNumberFormat: boolean('disableNumberFormat', false),
+        numberFormat: boolean('numberFormat', false),
+        onlyIntegers: boolean('onlyIntegers', false),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         readonly: boolean('readonly', false),

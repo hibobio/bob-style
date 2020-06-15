@@ -52,7 +52,9 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     );
   }
 
-  @Input() options: MultiSearchGroupOption[] = [];
+  @Input() set options(options: MultiSearchGroupOption[]) {
+    this.searchOptionsViewModel = options || [];
+  }
 
   @Output() clicked: EventEmitter<MultiSearchClickedEvent> = new EventEmitter<
     MultiSearchClickedEvent
@@ -61,6 +63,15 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
   public onSearchChange(value: string): void {
     this.searchValue = value;
     this.openPanel();
+  }
+
+  public onListClick(event: MouseEvent): void {
+    const { group, option } = this.getGroupAndOptionFromUIEvent(event) || {};
+    if (group && option) {
+      this.zone.run(() => {
+        this.onOptionClick(group, option);
+      });
+    }
   }
 
   public onOptionClick(
@@ -83,5 +94,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
         option,
       });
     }
+
+    this.closePanel();
   }
 }

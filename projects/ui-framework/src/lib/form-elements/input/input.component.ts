@@ -59,8 +59,16 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   ) {
     super(cd, zone);
 
-    this.inputTransformers.push((value) =>
-      valueAsNumber(this.inputType, value)
+    this.inputTransformers.push(
+      (value) => valueAsNumber(this.inputType, value),
+
+      (value) => {
+        return this.inputType === InputTypes.number &&
+          this.onlyIntegers &&
+          isNumber(value)
+          ? Math.round(value)
+          : value;
+      }
     );
     this.outputTransformers.push((value) =>
       valueAsNumber(this.inputType, value, 0)
@@ -70,7 +78,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
       return isNullOrUndefined(value) || value === ''
         ? ''
         : this.inputType === InputTypes.number &&
-          !this.disableNumberFormat &&
+          this.numberFormat &&
           value !== '-'
         ? this.numberDisplayFormatter.format(value as number)
         : (value as string);
@@ -85,7 +93,8 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   @Input() hasSuffix = false;
   public showSuffix = true;
 
-  @Input() disableNumberFormat = false;
+  @Input() numberFormat = false;
+  @Input() onlyIntegers = false;
 
   private lastCursorState: InputCursorState = null;
 
@@ -110,7 +119,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
       this.maxChars = Math.max(21, this.maxChars || 0);
     }
 
-    if (hasChanges(changes, ['disableNumberFormat'])) {
+    if (hasChanges(changes, ['numberFormat', 'onlyIntegers'])) {
       this.writeValue(this.value);
     }
   }
@@ -132,7 +141,12 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     if (this.inputType === InputTypes.number) {
       this.lastCursorState = null;
 
-      if (this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9.-]/)) {
+      if (
+        this.kbrdCntrlSrvc.filterAllowedKeys(
+          event,
+          this.onlyIntegers ? /[0-9-]/ : /[0-9.-]/
+        )
+      ) {
         return;
       }
 
@@ -149,7 +163,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
         return;
       }
 
-      if (this.disableNumberFormat) {
+      if (!this.numberFormat) {
         super.onInputKeydown(event);
         return;
       }
@@ -206,7 +220,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   }
 
   public onInputChange(event: DOMInputEvent): void {
-    if (this.inputType !== InputTypes.number || this.disableNumberFormat) {
+    if (this.inputType !== InputTypes.number || !this.numberFormat) {
       super.onInputChange(event);
       return;
     }

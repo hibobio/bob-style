@@ -8,6 +8,7 @@ import { FiltersModule } from '../../services/filters/filters.module';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { ListPanelService } from '../../lists/list-panel.service';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 @NgModule({
   declarations: [MultiSearchComponent],
@@ -20,6 +21,6 @@ import { OverlayModule } from '@angular/cdk/overlay';
     FiltersModule,
   ],
   exports: [MultiSearchComponent],
-  providers: [PanelPositionService, ListPanelService],
+  providers: [PanelPositionService, ListPanelService, EventManagerPlugins[0]],
 })
 export class MultiSearchModule {}
