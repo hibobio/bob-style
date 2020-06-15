@@ -19,8 +19,7 @@
                            [description]="section.description"
                            [options]="section.collapsibleOptions"
                            (closed)="onClosed(index); section.expanded=false"
-                           (opened)="opened.emit(index); dragging=false"
-                           (openedFirst)="onOpenedFirst(section); openedFirst.emit(index)">
+                           (opened)="onOpened(section, index); dragging=false">
 
       <ng-container header>
         <div cdkDragHandle

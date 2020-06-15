@@ -20,7 +20,6 @@ const template = `
                                  (dragStart)="onDragStart($event)"
                                  (dragEnd)="onDragEnd($event)"
                                  (orderChanged)="onDropped($event)"
-                                 (openedFirst)="onOpenedFirst($event)"
                                  (opened)="onOpened($event)"
                                  (closed)="onClosed($event)">
 
@@ -70,7 +69,6 @@ const note = `
   (dragStart) | EventEmitter<number> | drag start event with the index of the dragged section
   (dragEnd) | EventEmitter<number> | drag end event with the index of the dragged section
   (orderChanged) | EventEmitter<SortableCollapsibleDropped> | drop event with the material drop event and the current state of the sections
-  (openedFirst) | EventEmitter<number> | collapsible openedFirst event with the index of the section
   (opened) | EventEmitter<number> | collapsible opened event with the index of the section
   (closed) | EventEmitter<number> | collapsible closed event with the index of the section
 
@@ -139,7 +137,6 @@ story.add(
         onDragStart: action('dragStart'),
         onDragEnd: action('dragEnd'),
         onDropped: action('orderChanged'),
-        onOpenedFirst: action('openedFirst'),
         onOpened: action('opened'),
         onClosed: action('closed')
       },
