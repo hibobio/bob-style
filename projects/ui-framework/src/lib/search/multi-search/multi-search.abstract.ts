@@ -78,13 +78,38 @@ export abstract class MultiSearchBaseElement {
   protected templatePortal: TemplatePortal;
   public panelOpen = false;
 
-  public openPanel(): void {
-    this.listPanelSrvc.openPanel(this);
+  public onSearchBlur(event: FocusEvent): void {
+    const relatedTarget = event.relatedTarget as HTMLElement;
+
+    if (
+      relatedTarget &&
+      this.overlayRef &&
+      this.overlayRef.overlayElement.contains(relatedTarget)
+    ) {
+      this.search.inputFocused = true;
+    } else {
+      this.closePanel();
+    }
+  }
+
+  protected focusSearchInput(): void {
+    this.search['skipFocusEvent'] = true;
     this.search.input.nativeElement.focus();
   }
 
+  public openPanel(): void {
+    if (!this.overlayRef) {
+      this.listPanelSrvc.openPanel(this);
+      this.focusSearchInput();
+    }
+  }
+
   public closePanel(): void {
-    this.destroyPanel();
+    if (this.overlayRef) {
+      this.search.inputFocused = false;
+      this.search['skipFocusEvent'] = false;
+      this.destroyPanel();
+    }
   }
 
   protected destroyPanel(skipEmit = false): void {

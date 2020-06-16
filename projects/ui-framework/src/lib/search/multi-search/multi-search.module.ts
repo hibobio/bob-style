@@ -9,6 +9,7 @@ import { PanelPositionService } from '../../popups/panel/panel-position-service/
 import { ListPanelService } from '../../lists/list-panel.service';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 
 @NgModule({
   declarations: [MultiSearchComponent],
@@ -19,6 +20,7 @@ import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
     ComponentRendererModule,
     AvatarModule,
     FiltersModule,
+    TruncateTooltipModule,
   ],
   exports: [MultiSearchComponent],
   providers: [PanelPositionService, ListPanelService, EventManagerPlugins[0]],

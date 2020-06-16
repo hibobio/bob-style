@@ -8,6 +8,7 @@ import { MultiSearchModule } from './multi-search.module';
 import { mockSearchData } from './multi-search.mock';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
+import { boolean } from '@storybook/addon-knobs';
 
 const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
   withKnobs
@@ -16,7 +17,8 @@ const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
 const template = `
 <b-multi-search [options]="options"
                 [label]="label"
-                [placeholder]="placeholder">
+                [placeholder]="placeholder"
+                [showAll]="showAll">
 </b-multi-search>
 `;
 
@@ -58,6 +60,7 @@ story.add(
         options: mockSearchData,
         label: text('label', ''),
         placeholder: text('placeholder', 'Search me'),
+        showAll: boolean('showAll', false),
       },
       moduleMetadata: {
         imports: [

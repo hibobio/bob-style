@@ -18,6 +18,16 @@ ul {
   padding: 0;
 }
 
+.bms-group {
+  border-top: 1px solid $border-color;
+  margin-top: 8px;
+
+  &:first-child {
+    border-top: 0;
+    margin-top: 0;
+  }
+}
+
 .bms-group-title,
 .bms-option {
   height: $bms-option-height;
@@ -29,19 +39,15 @@ ul {
 }
 
 .bms-group-title {
-  color: $grey-600;
-  font-weight: 700;
-  margin: 0;
-  border-top: 1px solid $border-color;
-  margin-top: times8(1);
-  pointer-events: none;
-}
+  @include b-body(
+    $weight: 700,
+    $color: $grey-600,
+    $lineHeight: null,
+    $font-family: null
+  );
 
-.bms-group-list:first-child {
-  .bms-group-title {
-    border-top: 0;
-    margin-top: 0;
-  }
+  margin: 0;
+  pointer-events: none;
 }
 
 .bms-option {
@@ -49,6 +55,11 @@ ul {
   cursor: pointer;
   // @include animate-expand();
   // @include animate(slide-up, $keyframes: true);
+
+  &:focus,
+  &:hover {
+    background-color: $grey-100;
+  }
 }
 
 .bms-option-prefix,
@@ -56,9 +67,16 @@ ul {
   margin-right: times8(1);
 }
 
+.bms-option-text {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction: rtl;
+  text-align: left;
+}
+
 .bms-option-label {
-  display: flex;
-  align-items: center;
   color: $grey-600;
 
   margin-right: times8(0.5);
@@ -98,6 +116,7 @@ ul {
   overflow-y: auto;
   will-change: scroll-position, transform;
   border-radius: $border-radius;
+  user-select: none;
 }
 
 ::ng-deep {

@@ -22,7 +22,7 @@
          [autocomplete]="enableBrowserAutoComplete"
          (input)="onInput($event)"
          (focus)="onFocus()"
-         (blur)="onBlur()">
+         (blur)="onBlur($event)">
 
   <span *ngIf="value && value.length > 0"
         class="bfe-suffix">

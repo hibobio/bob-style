@@ -48,6 +48,9 @@ export class SearchComponent implements OnChanges {
 
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() searchFocus: EventEmitter<string> = new EventEmitter<string>();
+  @Output() searchBlur: EventEmitter<FocusEvent> = new EventEmitter<
+    FocusEvent
+  >();
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value) {
@@ -64,8 +67,11 @@ export class SearchComponent implements OnChanges {
     this.skipFocusEvent = false;
   }
 
-  onBlur(): void {
+  onBlur(event: FocusEvent): void {
     this.inputFocused = false;
+    if (this.searchBlur.observers) {
+      this.searchBlur.emit(event);
+    }
   }
 
   onInput(event: DOMInputEvent): void {

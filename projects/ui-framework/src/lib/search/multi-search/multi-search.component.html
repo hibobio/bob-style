@@ -3,6 +3,7 @@
           [placeholder]="placeholder"
           (click)="openPanel()"
           (searchFocus)="openPanel()"
+          (searchBlur)="onSearchBlur($event)"
           (searchChange)="onSearchChange($event)"
           [ngClass]="{
               'panel-open': panelOpen,
@@ -14,22 +15,26 @@
 <ng-template #templateRef>
   <div class="b-select-panel"
        [ngClass]="positionClassList"
-       (click.outside-zone)="onListClick($event)">
+       (click.outside-zone)="onListClick($event)"
+       [tabindex]="0">
     <div class="bms-panel-scroll-container">
 
-      <ul *ngFor="let group of searchOptions; let groupIndex = index; trackBy: groupTrackBy"
-          class="bms-group-list">
+      <ul class="bms-group-list">
 
-        <li class="bms-group">
+        <li class="bms-group"
+            *ngFor="let group of searchOptions; let groupIndex = index; trackBy: groupTrackBy">
+
           <h4 class="bms-group-title">
             {{ group[group.keyMap?.groupName || keyMapDef.groupName] }}
           </h4>
 
           <ul class="bms-option-list">
+
             <li *ngFor="let option of group[group.keyMap?.options || keyMapDef.options].slice(0,10); let optionIndex = index; trackBy: optionTrackBy(groupIndex, group)"
                 class="bms-option"
                 [attr.data-group-index]="groupIndex"
-                [attr.data-option-index]="optionIndex">
+                [attr.data-option-index]="optionIndex"
+                [tabindex]="0">
 
               <b-component-renderer *ngIf="option.prefixComponent?.component"
                                     class="bms-option-prefix"
@@ -46,15 +51,23 @@
                               [backgroundColor]="iconBgColor">
               </b-avatar-image>
 
-              <span class="bms-option-label"
-                    *ngIf="option[group.keyMap?.label || keyMapDef.label]">
-                {{ option[group.keyMap?.label || keyMapDef.label] + ' >' }}
-              </span>
+              <div class="bms-option-text"
+                   [b-truncate-tooltip]="1"
+                   [trustCssVars]="true"
+                   [type]="'material'">
 
-              <span class="bms-option-value"
-                    [innerHTML]="option[group.keyMap?.value || keyMapDef.value] | highlight: searchValue">
-              </span>
+                <span class="bms-option-label"
+                      *ngIf="option[group.keyMap?.label || keyMapDef.label]">
+                  {{ option[group.keyMap?.label || keyMapDef.label] }} >
+                </span>
+
+                <span class="bms-option-value"
+                      [innerHTML]="option[group.keyMap?.value || keyMapDef.value] | highlight: searchValue">
+                </span>
+
+              </div>
             </li>
+
           </ul>
         </li>
 

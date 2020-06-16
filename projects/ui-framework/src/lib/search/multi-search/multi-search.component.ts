@@ -17,6 +17,7 @@ import { MULTI_SEARCH_KEYMAP_DEF } from './multi-search.const';
 import {
   isFunction,
   escapeRegExp,
+  getEventPath,
 } from '../../services/utils/functional-utils';
 import { ListPanelService } from '../../lists/list-panel.service';
 import { Overlay } from '@angular/cdk/overlay';
@@ -55,11 +56,21 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     );
   }
 
+  @Input('showAll') set setShowAll(showAll: boolean) {
+    this.showAll = showAll;
+    if (showAll && this.options) {
+      this.searchOptions = this.options;
+    }
+  }
+  private showAll = false;
+
   @Input('options') set setOptions(groupOptions: MultiSearchGroupOption[]) {
     this.options = groupOptions || [];
     this.searchOptionsEmpty = undefined;
 
-    this.searchOptions = this.filterOptions(this.searchValue, this.options);
+    this.searchOptions = this.showAll
+      ? this.options
+      : this.filterOptions(this.searchValue, this.options);
   }
 
   @Output() clicked: EventEmitter<MultiSearchClickedEvent> = new EventEmitter<
@@ -73,7 +84,9 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
       this.searchValue = searchValue;
 
       this.searchOptions = this.filterOptions(this.searchValue, this.options);
-      this.cd.detectChanges();
+      if (!this.cd['destroyed']) {
+        this.cd.detectChanges();
+      }
     }
     this.openPanel();
   }
@@ -84,6 +97,9 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
       this.zone.run(() => {
         this.onOptionClick(group, option);
       });
+    } else {
+      event.preventDefault();
+      this.focusSearchInput();
     }
   }
 
