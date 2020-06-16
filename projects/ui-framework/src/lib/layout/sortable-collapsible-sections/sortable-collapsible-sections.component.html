@@ -4,7 +4,6 @@
     cdkDropList>
 
   <li *ngFor="let section of UISections; trackBy: trackId; let index=index"
-      id="{{section.id}}"
       class="draggable-section"
       cdkDrag
       cdkDragLockAxis="y"
@@ -13,7 +12,9 @@
       (cdkDragStarted)="dragStart.emit(index); draggedSection=section"
       (cdkDragEnded)="dragEnd.emit(index)">
 
-    <b-collapsible-section class="section"
+    <b-collapsible-section id="{{section.id}}"
+                           class="section"
+                           [panelID]="section.id"
                            [collapsible]="true"
                            [expanded]="section.expanded || false"
                            [title]="section.title"

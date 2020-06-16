@@ -98,4 +98,17 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
     this.contentLoadedMap.set(section.id, true);
     this.opened.emit(index);
   }
+
+  /**
+   *
+   * @param sectionId The section id you want to expand or collapse
+   * @param expand true=expand panel, false=collapse panel
+   */
+  togglePanel(sectionId: string | number, expand: boolean) {
+    const section = this.collapsibleSections
+      .toArray()
+      .filter(s => s.panelID === sectionId)
+      [0];
+    section.togglePanel(expand);
+  }
 }
