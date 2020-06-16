@@ -22,9 +22,7 @@
          }"
        [attr.for]="id">
 
-  <span [b-truncate-tooltip]="1"
-        [trustCssVars]="true"
-        [type]="truncateTooltipType.material">{{ placeholder || label }}</span>
+  <span>{{ placeholder || label }}</span>
 
   <b-icon *ngIf="description"
           [icon]="icons.info_outline"

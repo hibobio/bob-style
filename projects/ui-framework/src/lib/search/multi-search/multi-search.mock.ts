@@ -11,11 +11,13 @@ import {
   mockAvatar,
   mockNames,
   mockBadJobs,
+  mockText,
 } from '../../mock.const';
 import { Icons } from '../../icons/icons.enum';
 import {
   randomFromArray,
   makeArray,
+  randomNumber,
 } from '../../services/utils/functional-utils';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { AvatarBadge } from '../../avatar/avatar/avatar.enum';
@@ -72,12 +74,14 @@ const iconsThings = [
 
 const hobbies = mockHobbies().filter((h) => h.split(' ').length < 3);
 
+const items = 30;
+
 export const mockSearchData: MultiSearchGroupOption[] = [
   {
     groupName: 'People',
     key: 'people',
     icon: Icons.department_icon,
-    options: mockNames(15).map((name: string) => ({
+    options: mockNames(items).map((name: string) => ({
       value: name,
       id: name,
       prefixComponent: {
@@ -104,7 +108,7 @@ export const mockSearchData: MultiSearchGroupOption[] = [
     groupName: 'Animals',
     key: 'animals',
     icon: Icons.twitter,
-    options: mockAnimals(15).map((animal: string, index: number) => ({
+    options: mockAnimals(items).map((animal: string, index: number) => ({
       id: animal,
       value: animal,
       prefixComponent: {
@@ -130,7 +134,7 @@ export const mockSearchData: MultiSearchGroupOption[] = [
     name: 'Things',
     serverId: 'things',
     icon: Icons.attachment,
-    children: mockThings(15).map((thing: string, index: number) => ({
+    children: mockThings(items).map((thing: string, index: number) => ({
       serverId: thing,
       name: thing,
       icon: iconsThings[index],
@@ -149,10 +153,12 @@ export const mockSearchData: MultiSearchGroupOption[] = [
     name: 'Hobbies',
     id: 'hobbies',
 
-    children: makeArray(15).map((_, index: number) => ({
+    children: makeArray(items).map((_, index: number) => ({
       id: hobbies[index],
       name: hobbies[index],
-      label: hobbies[hobbies.length - index],
+      label: `${mockText(randomNumber(1, 3))} > ${mockText(
+        randomNumber(1, 3)
+      )}`,
     })),
     optionClickHandler: (option: MultiSearchOption) => {
       console.log(`Handler for: ${option.name}`);
@@ -167,7 +173,7 @@ export const mockSearchData: MultiSearchGroupOption[] = [
     },
     id: 'Jobs',
     name: 'Jobs',
-    children: mockBadJobs(10).map((job: string) => ({
+    children: mockBadJobs(items).map((job: string) => ({
       id: job,
       name: job,
       label: mockDepartments(1),
@@ -177,3 +183,5 @@ export const mockSearchData: MultiSearchGroupOption[] = [
     },
   },
 ];
+
+// ❯

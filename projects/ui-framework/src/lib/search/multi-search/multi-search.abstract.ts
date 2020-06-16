@@ -29,6 +29,7 @@ import { Subscription } from 'rxjs';
 import { OverlayPositionClasses } from '../../types';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { simpleUID } from '../../services/utils/functional-utils';
+import { SearchComponent } from '../search/search.component';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -48,7 +49,9 @@ export abstract class MultiSearchBaseElement {
   @Input() label: string;
   @Input() placeholder: string;
 
-  public searchOptionsViewModel: MultiSearchGroupOption[] = [];
+  public options: MultiSearchGroupOption[];
+  public searchOptions: MultiSearchGroupOption[];
+  public searchOptionsEmpty: MultiSearchGroupOption[];
 
   public id = simpleUID('bms-');
   public searchValue: string;
@@ -59,6 +62,8 @@ export abstract class MultiSearchBaseElement {
   readonly iconColor = IconColor;
   readonly iconSize = IconSize;
   readonly iconBgColor = '#f57738';
+
+  @ViewChild(SearchComponent, { static: true }) search: SearchComponent;
 
   // Used by ListPanelService:
   @ViewChild(CdkOverlayOrigin, { static: true })
@@ -75,6 +80,7 @@ export abstract class MultiSearchBaseElement {
 
   public openPanel(): void {
     this.listPanelSrvc.openPanel(this);
+    this.search.input.nativeElement.focus();
   }
 
   public closePanel(): void {
@@ -107,7 +113,7 @@ export abstract class MultiSearchBaseElement {
       optionEl.getAttribute('data-option-index'),
       10
     );
-    const group = this.searchOptionsViewModel[groupIndex];
+    const group = this.searchOptions[groupIndex];
     const option =
       group[group.keyMap?.options || MULTI_SEARCH_KEYMAP_DEF.options][
         optionIndex

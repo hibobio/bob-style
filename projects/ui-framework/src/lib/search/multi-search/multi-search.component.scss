@@ -47,6 +47,8 @@ ul {
 .bms-option {
   position: relative;
   cursor: pointer;
+  // @include animate-expand();
+  // @include animate(slide-up, $keyframes: true);
 }
 
 .bms-option-prefix,
@@ -59,13 +61,15 @@ ul {
   align-items: center;
   color: $grey-600;
 
-  @include b-icon(
-    $icon: 'chevron-right',
-    $size: 16px,
-    $color: 'normal',
-    $elem: '&:after',
-    $hover: true
-  );
+  margin-right: times8(0.5);
+
+  // @include b-icon(
+  //   $icon: 'chevron-right',
+  //   $size: 16px,
+  //   $color: 'normal',
+  //   $elem: '&:after',
+  //   $hover: true
+  // );
 }
 
 // Panel

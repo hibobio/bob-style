@@ -17,7 +17,7 @@
        (click.outside-zone)="onListClick($event)">
     <div class="bms-panel-scroll-container">
 
-      <ul *ngFor="let group of searchOptionsViewModel; let groupIndex = index; trackBy: groupTrackBy"
+      <ul *ngFor="let group of searchOptions; let groupIndex = index; trackBy: groupTrackBy"
           class="bms-group-list">
 
         <li class="bms-group">
@@ -48,7 +48,7 @@
 
               <span class="bms-option-label"
                     *ngIf="option[group.keyMap?.label || keyMapDef.label]">
-                {{ option[group.keyMap?.label || keyMapDef.label] }}
+                {{ option[group.keyMap?.label || keyMapDef.label] + ' >' }}
               </span>
 
               <span class="bms-option-value"
