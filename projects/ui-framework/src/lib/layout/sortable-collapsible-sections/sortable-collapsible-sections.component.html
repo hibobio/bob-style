@@ -12,7 +12,9 @@
       (cdkDragStarted)="dragStart.emit(index); draggedSection=section"
       (cdkDragEnded)="dragEnd.emit(index)">
 
-    <b-collapsible-section class="section"
+    <b-collapsible-section id="{{section.id}}"
+                           class="section"
+                           [panelID]="section.id"
                            [collapsible]="true"
                            [expanded]="section.expanded || false"
                            [title]="section.title"
