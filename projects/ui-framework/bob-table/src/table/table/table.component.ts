@@ -24,9 +24,10 @@ import {
 import { cloneDeep, get, has, map } from 'lodash';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { AgGridWrapper } from './ag-grid-wrapper';
-import { RowSelection, TableType } from './table.enum';
+import { ColumnOrderStrategy, RowSelection, TableType } from './table.enum';
 import {
   ColumnDef,
+  ColumnDefConfig,
   ColumnsOrderChangedEvent,
   RowClickedEvent,
   SortChangedEvent,
@@ -35,6 +36,7 @@ import {
 
 const CLOSE_BUTTON_DIAMETER = 20;
 const CLOSE_MARGIN_OFFSET = 6;
+const DEFAULT_COL_ORDER_STRATEGY = ColumnOrderStrategy.AppendNew;
 
 @Component({
   selector: 'b-table',
@@ -66,6 +68,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   @Input() rowData: any[] = [];
   @Input() columnDefs: ColumnDef[] = [];
+  @Input() columnDefConfig: ColumnDefConfig;
   @Input() rowSelection: RowSelection = null;
   @Input() maxHeight = 450;
   @Input() suppressColumnVirtualisation = true;
@@ -140,12 +143,36 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    let updateColumns = false;
+    let previousColumnDefValue: ColumnDef[];
     if (has(changes, 'columnDefs')) {
+      updateColumns = true;
+      this.columnDefConfig = {
+        columnDef: changes.columnDefs.currentValue,
+        orderStrategy: DEFAULT_COL_ORDER_STRATEGY,
+      };
+      previousColumnDefValue = changes.columnDefs.previousValue;
+    }
+    if (has(changes, 'columnDefConfig')) {
+      updateColumns = true;
+      this.columnDefConfig = changes.columnDefConfig.currentValue;
+      previousColumnDefValue = changes.columnDefConfig.previousValue?.columnDef;
+    }
+
+    if (updateColumns) {
+      const existingColumns = previousColumnDefValue ? previousColumnDefValue : this.columnDefs;
+      const columnDefs = this.columnDefConfig.orderStrategy === ColumnOrderStrategy.AppendNew
+        ? this.tableUtilsService.getOrderedFields(
+          existingColumns,
+          this.columnDefConfig.columnDef,
+          this.columns)
+        : this.columnDefConfig.columnDef;
       this.gridColumnDefs = this.tableUtilsService.getGridColumnDef(
-        this.columnDefs,
+        columnDefs,
         this.rowSelection
       );
     }
+
     if (has(changes, 'maxHeight')) {
       this.maxHeight = changes.maxHeight.currentValue;
       this.setGridHeight(this.maxHeight);

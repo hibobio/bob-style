@@ -4,7 +4,11 @@
 </b-multi-select>
 
 <button (click)="onReset()">reset</button>
-
+<div>With Column Def Config:</div>
+<b-table [columnDefConfig]="columnDefConfig"
+         [rowData]="rowData">
+</b-table>
+<div>With Column Def:</div>
 <b-table [columnDefs]="columnDefs"
          [rowData]="rowData">
 </b-table>

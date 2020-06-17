@@ -18,3 +18,8 @@ export enum PinDirection {
   Left = 'left',
   Right = 'right',
 }
+
+export enum ColumnOrderStrategy {
+  AppendNew = 'appendNew',
+  Reorder = 'reorder',
+}

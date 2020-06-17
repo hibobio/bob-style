@@ -23,7 +23,7 @@ import {
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { TableModule } from '../table.module';
 import { TableComponent } from './table.component';
-import { RowSelection, TableType } from './table.enum';
+import { ColumnOrderStrategy, RowSelection, TableType } from './table.enum';
 import { ColumnDef } from './table.interface';
 import createSpyObj = jasmine.createSpyObj;
 import SpyObj = jasmine.SpyObj;
@@ -32,6 +32,7 @@ describe('TableComponent', () => {
   let component: TableComponent;
   let fixture: ComponentFixture<TableComponent>;
   let columnDefsMock: ColumnDef[] = [];
+  let previousColumnDefsMock: ColumnDef[] = [];
   let rowDataMock = [];
   let spyTableUtilsService: SpyObj<TableUtilsService>;
   let spyCdr: SpyObj<ChangeDetectorRef>;
@@ -43,11 +44,20 @@ describe('TableComponent', () => {
   beforeEach(async(() => {
     columnDefsMock = cloneDeep(COLUMN_DEFS_MOCK);
     rowDataMock = cloneDeep(ROW_DATA_MOCK);
+    previousColumnDefsMock = [
+      {
+        headerName: 'Email',
+        field: 'email',
+        resizable: true,
+        sortable: true,
+      },
+    ];
 
     spyTableUtilsService = createSpyObj('spyTableUtilsService', [
-      'getGridColumnDef',
+      'getGridColumnDef', 'getOrderedFields'
     ]);
     spyTableUtilsService.getGridColumnDef.and.returnValue(columnDefsMock);
+    spyTableUtilsService.getOrderedFields.and.returnValue(columnDefsMock);
 
     spyCdr = createSpyObj('spyCdr', ['markForChange']);
 
@@ -274,6 +284,80 @@ describe('TableComponent', () => {
           expect(firstRow.className.includes('row-clickable')).toBeTruthy();
           fakeAsyncFlush();
         }));
+      });
+    });
+    describe('colDefOrder', () => {
+      describe('columnDefs', () => {
+        it('Should call getOrderedFields with current cols from current value if no previous value provided', () => {
+          component['columns'] = [];
+          component.ngOnChanges({
+            columnDefs: {
+              previousValue: undefined,
+              currentValue: columnDefsMock,
+              firstChange: false,
+              isFirstChange: () => false,
+            },
+          });
+          expect(spyTableUtilsService.getOrderedFields).toHaveBeenCalledWith(columnDefsMock, columnDefsMock, []);
+        });
+        it('Should call getOrderedFields with previous cols if previous value provided', () => {
+          component['columns'] = [];
+          component.ngOnChanges({
+            columnDefs: {
+              previousValue: previousColumnDefsMock,
+              currentValue: columnDefsMock,
+              firstChange: false,
+              isFirstChange: () => false,
+            },
+          });
+          expect(spyTableUtilsService.getOrderedFields).toHaveBeenCalledWith(
+            previousColumnDefsMock,
+            columnDefsMock,
+            [],
+          );
+        });
+      });
+      describe('columnDefConfig', () => {
+        it('Should call getOrderedFields with current cols from current value if no previous value provided', () => {
+          component['columns'] = [];
+          component.ngOnChanges({
+            columnDefConfig: {
+              previousValue: undefined,
+              currentValue: { columnDef: columnDefsMock, orderStrategy: ColumnOrderStrategy.AppendNew },
+              firstChange: false,
+              isFirstChange: () => false,
+            },
+          });
+          expect(spyTableUtilsService.getOrderedFields).toHaveBeenCalledWith(columnDefsMock, columnDefsMock, []);
+        });
+        it('Should call getOrderedFields with previous cols if previous value provided', () => {
+          component['columns'] = [];
+          component.ngOnChanges({
+            columnDefConfig: {
+              previousValue: { columnDef: previousColumnDefsMock, orderStrategy: ColumnOrderStrategy.AppendNew },
+              currentValue: { columnDef: columnDefsMock, orderStrategy: ColumnOrderStrategy.AppendNew },
+              firstChange: false,
+              isFirstChange: () => false,
+            },
+          });
+          expect(spyTableUtilsService.getOrderedFields).toHaveBeenCalledWith(
+            previousColumnDefsMock,
+            columnDefsMock,
+            [],
+          );
+        });
+        it('Should not call getOrderedFields when strategy is reorder', () => {
+          component['columns'] = [];
+          component.ngOnChanges({
+            columnDefConfig: {
+              previousValue: { columnDef: previousColumnDefsMock, orderStrategy: ColumnOrderStrategy.AppendNew },
+              currentValue: { columnDef: columnDefsMock, orderStrategy: ColumnOrderStrategy.Reorder },
+              firstChange: false,
+              isFirstChange: () => false,
+            },
+          });
+          expect(spyTableUtilsService.getOrderedFields).not.toHaveBeenCalled();
+        });
       });
     });
   });

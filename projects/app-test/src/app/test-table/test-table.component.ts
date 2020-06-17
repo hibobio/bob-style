@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ListChange, makeArray, SelectGroupOption } from 'bob-style';
 import { TestTableService } from './test-table.service';
-import { ColumnDef } from '../../../../ui-framework/bob-table/src/table/table/table.interface';
+import { ColumnDef, ColumnDefConfig } from '../../../../ui-framework/bob-table/src/table/table/table.interface';
+import { ColumnOrderStrategy } from '../../../../ui-framework/bob-table/src/table/table/table.enum';
 
 const FIELDS: string[] = makeArray(20)
   .map((_, index) => `field_${ index }`);
@@ -20,6 +21,7 @@ export class TestTableComponent implements OnInit {
   rowData: any;
   selectOptions: SelectGroupOption[];
   selectValues: string[];
+  columnDefConfig: ColumnDefConfig;
 
   constructor(
     private testTableService: TestTableService
@@ -40,17 +42,28 @@ export class TestTableComponent implements OnInit {
       }
     ];
     this.selectValues = this.fields;
-
+    this.columnDefConfig = {
+      columnDef: this.testTableService.getColumnDef(this.fields),
+      orderStrategy: ColumnOrderStrategy.AppendNew,
+    };
     this.updateTable();
   }
 
   onReset() {
     this.fields = this.defaultFields;
+    this.columnDefConfig = {
+      columnDef: this.testTableService.getColumnDef(this.fields),
+      orderStrategy: ColumnOrderStrategy.Reorder,
+    };
     this.updateTable();
   }
 
   onSelectChanged(listChange: ListChange) {
     this.fields = listChange.getSelectedIds() as string[];
+    this.columnDefConfig = {
+      columnDef: this.testTableService.getColumnDef(this.fields),
+      orderStrategy: ColumnOrderStrategy.AppendNew,
+    };
     this.updateTable();
   }
 

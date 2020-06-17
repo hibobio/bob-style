@@ -14,9 +14,15 @@ describe('TableUtilsService', () => {
   let gridOptionsMock = {};
   let rowSelectionMock = null;
   let columnDefsMock: ColumnDef[] = [];
+  let newColumnDefsMock;
   let tableColumnsMock = [];
+  let existingColsMock;
 
   beforeEach(() => {
+    existingColsMock = [
+      { field: 'about.avatar', }, { field: 'fullName', }, { field: 'email', },
+    ];
+
     columnDefsMock = [
       {
         headerName: '',
@@ -49,6 +55,7 @@ describe('TableUtilsService', () => {
         cellStyle: {},
       },
     ];
+    newColumnDefsMock = [{ field: 'fullName' }, { field: 'email' }, { field: 'site' }, { field: 'department' }];
     tableColumnsMock = [
       {
         colId: 'about.avatar',
@@ -187,6 +194,22 @@ describe('TableUtilsService', () => {
         rowSelectionMock
       );
       expect(columnDefs).toEqual(expectedColDefs);
+    });
+  });
+
+  describe('getOrderedFields', () => {
+    it('Should sort existing columns according to order', () => {
+      const columnOrder = ['about.avatar', 'email', 'fullName'];
+      const orderedColumns = tableUtilsService.getOrderedFields(existingColsMock, newColumnDefsMock, columnOrder);
+      expect(orderedColumns).toEqual([
+        { field: 'email' }, { field: 'fullName' }, { field: 'site' }, { field: 'department', }
+      ] as any);
+    });
+    it('Should kepp existing columns order is no order is passed', () => {
+      const orderedColumns = tableUtilsService.getOrderedFields(existingColsMock, newColumnDefsMock, null);
+      expect(orderedColumns).toEqual([
+        { field: 'fullName' }, { field: 'email' }, { field: 'site' }, { field: 'department' },
+      ] as any);
     });
   });
 });

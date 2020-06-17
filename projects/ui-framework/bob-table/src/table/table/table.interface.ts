@@ -1,4 +1,4 @@
-import { PinDirection, SortDirections } from './table.enum';
+import { ColumnOrderStrategy, PinDirection, SortDirections } from './table.enum';
 import { IconColor, Icons } from 'bob-style';
 
 export interface ColumnDef {
@@ -51,4 +51,9 @@ export interface ColumnsOrderChangedEvent {
 export interface TableStyleConfig {
   disableRowHoverBgColor?: boolean;
   showColumnBorders?: boolean;
+}
+
+export interface ColumnDefConfig {
+  columnDef: ColumnDef[];
+  orderStrategy: ColumnOrderStrategy;
 }
