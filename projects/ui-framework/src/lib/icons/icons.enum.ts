@@ -166,4 +166,9 @@ export enum Icons {
   benefits_alt = 'b-icon-benefits-alt',
   comment_add_alt = 'b-icon-comment-add-alt',
   tree_list = 'b-icon-tree-list',
+  analytics_alt = 'b-icon-analytics-alt',
+  compensation_alt = 'b-icon-compensation-alt',
+  payroll = 'b-icon-payroll',
+  text_fields = 'b-icon-text-fields',
+  sections = 'b-icon-sections',
 }
