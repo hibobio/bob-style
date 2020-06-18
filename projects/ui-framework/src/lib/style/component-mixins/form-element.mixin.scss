@@ -1,5 +1,7 @@
 $wrap-height: 44px;
 $input-height: 42px;
+$wrap-height-smaller: 36px;
+$input-height-smaller: 34px;
 $input-padding: 15px;
 $label-height: 18px;
 $label-color: $grey-800;
@@ -248,6 +250,18 @@ $input-focus-border-color: $grey-700;
 
   #{$sel} {
     @include input-border-colors($add: '::ng-deep .bfe-wrap');
+  }
+
+  // Options
+
+  #{$sel}[data-size='smaller'] ::ng-deep {
+    .bfe-wrap {
+      min-height: $wrap-height-smaller;
+    }
+    .bfe-input {
+      height: $input-height-smaller;
+      line-height: $input-height-smaller;
+    }
   }
 }
 

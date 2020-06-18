@@ -7,6 +7,7 @@ import {
   OnChanges,
   ViewChild,
   ElementRef,
+  HostBinding,
 } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import {
@@ -15,6 +16,7 @@ import {
 } from '../../form-elements/input/input.enum';
 import { simpleUID } from '../../services/utils/functional-utils';
 import { DOMInputEvent } from '../../types';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
 
 @Component({
   selector: 'b-search',
@@ -36,6 +38,8 @@ export class SearchComponent implements OnChanges {
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
   @Input() id = simpleUID('bsrch-');
+
+  @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
 
   public inputFocused = false;
 

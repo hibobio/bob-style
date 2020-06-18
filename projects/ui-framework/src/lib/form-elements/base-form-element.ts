@@ -24,7 +24,7 @@ import {
   stringify,
   isFunction,
 } from '../services/utils/functional-utils';
-import { InputEventType } from './form-elements.enum';
+import { InputEventType, FormElementSize } from './form-elements.enum';
 import { TransmitOptions, ForceElementValue } from './form-elements.interface';
 import { IGNORE_EVENTS_DEF, TRANSMIT_OPTIONS_DEF } from './form-elements.const';
 import { InputTypes } from './input/input.enum';
@@ -64,10 +64,10 @@ export abstract class BaseFormElement
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
 
+  @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
   @HostBinding('class.disabled') @Input() disabled = false;
   @HostBinding('class.required') @Input() required = false;
   @HostBinding('class.readonly') @Input() readonly = false;
-
   @HostBinding('class.error') get hasError(): boolean {
     return this.errorMessage && !this.disabled;
   }

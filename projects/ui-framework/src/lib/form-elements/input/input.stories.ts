@@ -17,6 +17,7 @@ import { mockText } from '../../mock.const';
 
 import formElemsPropsDoc from '../form-elements.properties.md';
 import inputElemsPropsDoc from '../input.properties.md';
+import { FormElementSize } from '../form-elements.enum';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -47,6 +48,7 @@ const template = `
             [warnMessage]="warnMessage"
             [errorMessage]="errorMessage"
             [enableBrowserAutoComplete]="enableBrowserAutoComplete"
+            [size]="size"
             (inputEvents)="inputEvents($event)">
 </b-input>
 `;
@@ -147,6 +149,11 @@ story.add(
           'enableBrowserAutoComplete',
           inputAutoCompleteOptions,
           InputAutoCompleteOptions.off
+        ),
+        size: select(
+          'size',
+          Object.values(FormElementSize),
+          FormElementSize.regular
         ),
       },
       moduleMetadata: {

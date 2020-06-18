@@ -10,7 +10,7 @@ export enum FormEvents {
   selectModified = 'selectModified',
   selectCancelled = 'selectCancelled',
   socialInputChange = 'socialInputChange',
-  elementChange = 'elementChange'
+  elementChange = 'elementChange',
 }
 
 export enum InputEventType {
@@ -19,5 +19,10 @@ export enum InputEventType {
   onChange = 'onChange',
   onWrite = 'onWrite',
   onKey = 'onKey',
-  onPaste = 'onPaste'
+  onPaste = 'onPaste',
+}
+
+export enum FormElementSize {
+  regular = 'regular',
+  smaller = 'smaller',
 }

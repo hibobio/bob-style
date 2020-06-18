@@ -12,6 +12,7 @@ Name | Type | Description | Default
 [disabled] | boolean | is field disabled | false
 [required] | boolean | is field required | false
 [readonly] | boolean | if true, will not emit events and not allow any changes | false
+[size] | FormElementSize | regular height (44px), smaller height (36px) | regular
 
 #### Form Elements common methods
 Name | Description

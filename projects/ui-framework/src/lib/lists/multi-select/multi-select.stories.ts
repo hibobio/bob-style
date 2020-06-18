@@ -28,6 +28,7 @@ import listSelectsPropsDoc from '../lists-selects.properties.md';
 import selectsPropsDoc from '../selects.properties.md';
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -52,6 +53,7 @@ const template = `
                 [readonly]="readonly"
                 [hintMessage]="hintMessage"
                 [errorMessage]="errorMessage"
+                [size]="size"
                 (opened)="opened()"
                 (closed)="closed()"
                 (selectChange)="selectChange($event)"
@@ -192,6 +194,12 @@ const toAdd = () => ({
       'Props'
     ),
     errorMessage: text('errorMessage', '', 'Props'),
+    size: select(
+      'size',
+      Object.values(FormElementSize),
+      FormElementSize.regular,
+      'Props'
+    ),
 
     optns: select(
       'options',

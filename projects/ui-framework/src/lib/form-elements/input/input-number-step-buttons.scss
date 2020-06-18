@@ -43,3 +43,14 @@
     );
   }
 }
+
+// Options
+
+:host[data-size='smaller'] ::ng-deep {
+  .step-button {
+    &:before {
+      height: ($input-height-smaller / 2);
+      line-height: ($input-height-smaller / 2);
+    }
+  }
+}

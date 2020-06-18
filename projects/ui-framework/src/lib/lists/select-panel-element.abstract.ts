@@ -14,6 +14,7 @@ import {
   SimpleChanges,
   Directive,
   OnInit,
+  HostBinding,
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
@@ -44,7 +45,10 @@ import { ListChangeService } from './list-change/list-change.service';
 import { selectValueOrFail } from '../services/utils/transformers';
 import { ListModelService } from './list-service/list-model.service';
 import { SelectType, SelectMode } from './list.enum';
-import { FormEvents } from '../form-elements/form-elements.enum';
+import {
+  FormEvents,
+  FormElementSize,
+} from '../form-elements/form-elements.enum';
 import { ListPanelService } from './list-panel.service';
 import { MobileService } from '../services/utils/mobile.service';
 
@@ -73,6 +77,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
   @ViewChild('prefix') prefix: ElementRef;
+
+  @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
 
   @Input() value: (number | string)[];
   @Input() options: SelectGroupOption[] = [];
