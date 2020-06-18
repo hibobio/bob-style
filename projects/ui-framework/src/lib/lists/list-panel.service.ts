@@ -26,7 +26,7 @@ import {
 import { race, Subscription } from 'rxjs';
 import { outsideZone } from '../services/utils/rxjs.operators';
 import { isEqual } from 'lodash';
-import { isKey } from '../services/utils/functional-utils';
+import { isKey, hasProp } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
 import { ScrollEvent } from '../services/utils/utils.interface';
 import { MobileService } from '../services/utils/mobile.service';
@@ -68,20 +68,24 @@ export interface OverlayEnabledComponent {
 
 type OEC = OverlayEnabledComponent;
 
+export interface PanelOptions {
+  hasBackdrop: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class ListPanelService {
   constructor(private mobileService: MobileService) {}
 
-  public openPanel(self: any): void {
+  public openPanel(self: any, options: PanelOptions = null): void {
     if (
       !(self as OEC).overlayRef &&
       !(self as OEC).disabled &&
       !(self as OEC).panelOpen
     ) {
       (self as OEC).panelOpen = true;
-      (self as OEC).panelConfig = this.getConfig(self);
+      (self as OEC).panelConfig = this.getConfig(self, options);
       (self as OEC).overlayRef = (self as OEC).overlay.create(
         (self as OEC).panelConfig
       );
@@ -195,10 +199,10 @@ export class ListPanelService {
     ].filter(Boolean);
   }
 
-  private getConfig(self: any): OverlayConfig {
+  private getConfig(self: any, options: PanelOptions = null): OverlayConfig {
     return {
       disposeOnNavigation: true,
-      hasBackdrop: true,
+      hasBackdrop: hasProp(options, 'hasBackdrop') ? options.hasBackdrop : true,
       backdropClass: 'b-select-backdrop',
       panelClass: this.getPanelClass(self),
       positionStrategy: (self as OEC).panelPositionService.getPanelPositionStrategy(

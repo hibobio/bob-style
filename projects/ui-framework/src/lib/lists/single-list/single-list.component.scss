@@ -83,8 +83,9 @@ $list-item-height: $wrap-height;
       top: $wrap-height;
     }
     .clear-selection {
-      border: none;
-      outline: none;
+      background: none;
+      border: 0;
+      outline: 0;
       width: 100%;
       @include listOption;
       border-bottom: 1px solid $grey-200;

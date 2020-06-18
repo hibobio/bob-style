@@ -13,11 +13,14 @@ import {
   MultiSearchOption,
   MultiSearchClickedEvent,
 } from './multi-search.interface';
-import { MULTI_SEARCH_KEYMAP_DEF } from './multi-search.const';
+import {
+  MULTI_SEARCH_KEYMAP_DEF,
+  MULTI_SEARCH_SHOW_ITEMS_DEF,
+  MULTI_SEARCH_MIN_SEARCH_LENGTH_DEF,
+} from './multi-search.const';
 import {
   isFunction,
   escapeRegExp,
-  getEventPath,
 } from '../../services/utils/functional-utils';
 import { ListPanelService } from '../../lists/list-panel.service';
 import { Overlay } from '@angular/cdk/overlay';
@@ -80,34 +83,56 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
   public onSearchChange(searchValue: string): void {
     searchValue = (searchValue || '').trim();
 
+    const shouldOpenPanel = this.searchValue !== searchValue && searchValue;
+
     if (this.searchValue !== searchValue) {
       this.searchValue = searchValue;
 
       this.searchOptions = this.filterOptions(this.searchValue, this.options);
+
       if (!this.cd['destroyed']) {
         this.cd.detectChanges();
       }
     }
-    this.openPanel();
+
+    if (shouldOpenPanel) {
+      this.openPanel();
+    } else {
+      this.search['skipFocusEvent'] = false;
+    }
   }
 
   public onListClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+
     const { group, option } = this.getGroupAndOptionFromUIEvent(event) || {};
+
     if (group && option) {
       this.zone.run(() => {
         this.onOptionClick(group, option);
       });
-    } else {
-      event.preventDefault();
-      this.focusSearchInput();
+      return;
     }
+
+    if (target.matches('.bms-show-more') && group) {
+      this.zone.run(() => {
+        this.onShowMoreClick(group);
+      });
+      return;
+    }
+
+    event.preventDefault();
+    this.focusSearchInput();
   }
 
   private filterOptions(
     searchValue: string = '',
     groupOptions: MultiSearchGroupOption[] = this.options
   ): MultiSearchGroupOption[] {
-    if (searchValue.length < 2) {
+    if (
+      searchValue.length <
+      (this.minSearchLength || MULTI_SEARCH_MIN_SEARCH_LENGTH_DEF)
+    ) {
       return (
         this.searchOptionsEmpty ||
         (this.searchOptionsEmpty = groupOptions.map((group) => ({
@@ -160,5 +185,13 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     }
 
     this.closePanel();
+  }
+
+  private onShowMoreClick(group: MultiSearchGroupOption): void {
+    group.showItems =
+      (group.showItems || this.showItems || MULTI_SEARCH_SHOW_ITEMS_DEF) +
+      (this.showItems || MULTI_SEARCH_SHOW_ITEMS_DEF);
+
+    this.focusSearchInput();
   }
 }

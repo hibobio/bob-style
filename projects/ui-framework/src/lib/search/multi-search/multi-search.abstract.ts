@@ -17,7 +17,11 @@ import {
   CdkOverlayOrigin,
 } from '@angular/cdk/overlay';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
-import { MULTI_SEARCH_KEYMAP_DEF } from './multi-search.const';
+import {
+  MULTI_SEARCH_KEYMAP_DEF,
+  MULTI_SEARCH_SHOW_ITEMS_DEF,
+  MULTI_SEARCH_MIN_SEARCH_LENGTH_DEF,
+} from './multi-search.const';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
 import {
@@ -48,6 +52,8 @@ export abstract class MultiSearchBaseElement {
 
   @Input() label: string;
   @Input() placeholder: string;
+  @Input() showItems: number;
+  @Input() minSearchLength: number;
 
   public options: MultiSearchGroupOption[];
   public searchOptions: MultiSearchGroupOption[];
@@ -62,6 +68,7 @@ export abstract class MultiSearchBaseElement {
   readonly iconColor = IconColor;
   readonly iconSize = IconSize;
   readonly iconBgColor = '#f57738';
+  readonly showItemsDef = MULTI_SEARCH_SHOW_ITEMS_DEF;
 
   @ViewChild(SearchComponent, { static: true }) search: SearchComponent;
 
@@ -82,13 +89,17 @@ export abstract class MultiSearchBaseElement {
     const relatedTarget = event.relatedTarget as HTMLElement;
 
     if (
-      relatedTarget &&
-      this.overlayRef &&
-      this.overlayRef.overlayElement.contains(relatedTarget)
+      !relatedTarget ||
+      !this.overlayRef?.overlayElement.contains(relatedTarget)
     ) {
-      this.search.inputFocused = true;
-    } else {
       this.closePanel();
+      return;
+    }
+
+    if (relatedTarget === this.overlayRef.overlayElement.children[0]) {
+      this.focusSearchInput();
+    } else {
+      this.search.inputFocused = true;
     }
   }
 
@@ -99,7 +110,7 @@ export abstract class MultiSearchBaseElement {
 
   public openPanel(): void {
     if (!this.overlayRef) {
-      this.listPanelSrvc.openPanel(this);
+      this.listPanelSrvc.openPanel(this, { hasBackdrop: false });
       this.focusSearchInput();
     }
   }

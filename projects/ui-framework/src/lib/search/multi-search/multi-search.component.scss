@@ -48,13 +48,16 @@ ul {
 
   margin: 0;
   pointer-events: none;
+
+  &:before {
+    margin-right: times8(1);
+    @include icon-size(18px, $elem: '&');
+  }
 }
 
 .bms-option {
   position: relative;
   cursor: pointer;
-  // @include animate-expand();
-  // @include animate(slide-up, $keyframes: true);
 
   &:focus,
   &:hover {
@@ -74,20 +77,39 @@ ul {
   text-overflow: ellipsis;
   direction: rtl;
   text-align: left;
+  color: $grey-600;
 }
 
 .bms-option-label {
-  color: $grey-600;
-
   margin-right: times8(0.5);
+}
 
-  // @include b-icon(
-  //   $icon: 'chevron-right',
-  //   $size: 16px,
-  //   $color: 'normal',
-  //   $elem: '&:after',
-  //   $hover: true
-  // );
+.bms-option-value {
+  color: $body-text-color;
+}
+
+.bms-group-list.empty {
+  .bms-group {
+    margin-top: 0;
+  }
+  .bms-group-title {
+    font-weight: 400;
+  }
+}
+
+.bms-show-more {
+  @include b-body(
+    $weight: 700,
+    $color: var(--primary-700),
+    $lineHeight: null,
+    $font-family: null
+  );
+
+  &:focus,
+  &:hover {
+    background-color: transparent;
+    text-decoration: underline;
+  }
 }
 
 // Panel

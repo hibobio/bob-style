@@ -39,6 +39,7 @@ const iconsAnimals = [
   Icons.harmonise,
   Icons.infinite,
 ];
+iconsAnimals.push(...iconsAnimals, ...iconsAnimals);
 
 const iconsThings = [
   Icons.assignment,
@@ -71,6 +72,7 @@ const iconsThings = [
   Icons.tag,
   Icons.timeline,
 ];
+iconsThings.push(...iconsThings);
 
 const hobbies = mockHobbies().filter((h) => h.split(' ').length < 3);
 
@@ -152,7 +154,7 @@ export const mockSearchData: MultiSearchGroupOption[] = [
     },
     name: 'Hobbies',
     id: 'hobbies',
-
+    icon: Icons.add_photo_camera_icon,
     children: makeArray(items).map((_, index: number) => ({
       id: hobbies[index],
       name: hobbies[index],
@@ -173,6 +175,7 @@ export const mockSearchData: MultiSearchGroupOption[] = [
     },
     id: 'Jobs',
     name: 'Jobs',
+    icon: Icons.notification,
     children: mockBadJobs(items).map((job: string) => ({
       id: job,
       name: job,
