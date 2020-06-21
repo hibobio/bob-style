@@ -10,11 +10,11 @@ type cardTableAllowedCellCssProps =
   | 'fontWeight';
 
 export type cardTableAllowedTextStyles = {
-  [key in cardTableAllowedTextCssProps]?: string
+  [key in cardTableAllowedTextCssProps]?: string;
 };
 
 export type cardTableAllowedCellStyles = {
-  [key in cardTableAllowedCellCssProps]?: string
+  [key in cardTableAllowedCellCssProps]?: string;
 };
 
 export type CardTableCellDataType = string | string[] | RenderedComponent;
@@ -29,6 +29,7 @@ export interface CardTableCellMeta {
 }
 
 export interface CardTableCellData {
+  id?: string | number;
   data?: CardTableCellDataType;
   class?: string | string[];
 }

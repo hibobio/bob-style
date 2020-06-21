@@ -20,7 +20,6 @@ import { PanelPositionService } from '../../popups/panel/panel-position-service/
 import {
   MULTI_SEARCH_KEYMAP_DEF,
   MULTI_SEARCH_SHOW_ITEMS_DEF,
-  MULTI_SEARCH_MIN_SEARCH_LENGTH_DEF,
 } from './multi-search.const';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
@@ -85,7 +84,7 @@ export abstract class MultiSearchBaseElement {
   protected templatePortal: TemplatePortal;
   public panelOpen = false;
 
-  public onSearchBlur(event: FocusEvent): void {
+  public onFocusOut(event: FocusEvent): void {
     const relatedTarget = event.relatedTarget as HTMLElement;
 
     if (
@@ -96,9 +95,7 @@ export abstract class MultiSearchBaseElement {
       return;
     }
 
-    if (relatedTarget === this.overlayRef.overlayElement.children[0]) {
-      this.focusSearchInput();
-    } else {
+    if (relatedTarget !== this.overlayRef.overlayElement.children[0]) {
       this.search.inputFocused = true;
     }
   }
@@ -156,6 +153,29 @@ export abstract class MultiSearchBaseElement {
       ];
 
     return { group, option };
+  }
+
+  protected findSiblingOptionEl(
+    optionEl: HTMLElement,
+    which: 'next' | 'prev' = 'next'
+  ): HTMLElement {
+    return (
+      this.DOM.getSibling(optionEl, '.bms-option', which) ||
+      (() => {
+        const siblingOptions = this.DOM.getSibling(
+          optionEl.closest('.bms-group'),
+          '.bms-group',
+          which
+        )?.querySelectorAll('.bms-option');
+
+        return (
+          siblingOptions &&
+          (siblingOptions[
+            which === 'prev' ? siblingOptions.length - 1 : 0
+          ] as HTMLElement)
+        );
+      })()
+    );
   }
 
   public groupTrackBy(index: number, group: MultiSearchGroupOption): string {

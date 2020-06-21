@@ -2,7 +2,7 @@
           [label]="label"
           [placeholder]="placeholder"
           (searchFocus)="openPanel()"
-          (searchBlur)="onSearchBlur($event)"
+          (searchBlur)="onFocusOut($event)"
           (searchChange)="onSearchChange($event)"
           [ngClass]="{
               'panel-open': panelOpen,
@@ -15,7 +15,9 @@
   <div class="b-select-panel"
        [ngClass]="positionClassList"
        (click.outside-zone)="onListClick($event)"
-       [tabindex]="0">
+       (keydown.outside-zone)="onListKeydown($event)"
+       (focusout)="onFocusOut($event)"
+       [tabindex]="1">
     <div class="bms-panel-scroll-container">
 
       <ul class="bms-group-list"
@@ -80,6 +82,7 @@
                 tabindex="0">
               {{ group.translation?.showMore || 'Show more ' + group[group.keyMap?.groupName || keyMapDef.groupName] }}
             </li>
+
           </ul>
         </li>
 

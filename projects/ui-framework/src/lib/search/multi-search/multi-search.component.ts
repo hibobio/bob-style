@@ -21,6 +21,7 @@ import {
 import {
   isFunction,
   escapeRegExp,
+  isKey,
 } from '../../services/utils/functional-utils';
 import { ListPanelService } from '../../lists/list-panel.service';
 import { Overlay } from '@angular/cdk/overlay';
@@ -28,6 +29,7 @@ import { PanelPositionService } from '../../popups/panel/panel-position-service/
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { MultiSearchBaseElement } from './multi-search.abstract';
+import { Keys, clickKeys, controlKeys } from '../../enums';
 
 @Component({
   selector: 'b-multi-search',
@@ -59,7 +61,8 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     );
   }
 
-  @Input('showAll') set setShowAll(showAll: boolean) {
+  @Input('showAll')
+  set setShowAll(showAll: boolean) {
     this.showAll = showAll;
     if (showAll && this.options) {
       this.searchOptions = this.options;
@@ -123,6 +126,42 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
 
     event.preventDefault();
     this.focusSearchInput();
+  }
+
+  public onListKeydown(event: KeyboardEvent): void {
+    const target = event.target as HTMLElement;
+
+    if (
+      !target.matches('.bms-option') ||
+      !controlKeys.includes(event.key as Keys)
+    ) {
+      return;
+    }
+
+    const { group, option } = this.getGroupAndOptionFromUIEvent(event) || {};
+
+    if (isKey(event.key, Keys.arrowdown) || isKey(event.key, Keys.arrowright)) {
+      event.preventDefault();
+      this.findSiblingOptionEl(target, 'next')?.focus();
+      return;
+    }
+
+    if (isKey(event.key, Keys.arrowup) || isKey(event.key, Keys.arrowleft)) {
+      event.preventDefault();
+      this.findSiblingOptionEl(target, 'prev')?.focus();
+      return;
+    }
+
+    if (clickKeys.includes(event.key as Keys)) {
+      if (group && option) {
+        this.onOptionClick(group, option);
+        return;
+      }
+
+      if (group) {
+        this.onShowMoreClick(group);
+      }
+    }
   }
 
   private filterOptions(

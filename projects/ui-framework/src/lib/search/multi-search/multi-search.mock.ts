@@ -142,7 +142,7 @@ export const mockSearchData: MultiSearchGroupOption[] = [
       icon: iconsThings[index],
     })),
     optionClickHandler: (option: MultiSearchOption) => {
-      console.log(`Handler for: ${option.value}`);
+      console.log(`Handler for: ${option.name}`);
     },
   },
   {

@@ -79,10 +79,22 @@ export class CardTableComponent implements OnInit {
 
   rowTrackBy(index: number, row: CardTableCellData[]): string {
     const rowStringValue = row
-      .map((cell) =>
-        isRenderedComponent(cell.data)
-          ? JSON.stringify(cell.data.attributes)
-          : JSON.stringify(cell.data)
+      .map(
+        (cell, indx) =>
+          indx +
+          (cell.id ||
+            (isRenderedComponent(cell.data)
+              ? cell.data.id ||
+                cell.data.attributes['id'] ||
+                cell.data.attributes['name'] ||
+                cell.data.attributes['value'] ||
+                cell.data.attributes['title'] ||
+                JSON.stringify(
+                  Object.values(cell.data.attributes).filter(
+                    (v) => typeof v === 'string' || typeof v === 'number'
+                  )
+                )
+              : JSON.stringify(cell.data)))
       )
       .join();
 

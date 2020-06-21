@@ -14,4 +14,5 @@ export interface RenderedComponent {
   attributes?: object;
   content?: RenderedComponentContent;
   handlers?: RenderedComponentHandlers;
+  id?: string | number;
 }
