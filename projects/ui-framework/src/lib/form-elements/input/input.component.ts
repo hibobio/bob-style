@@ -97,6 +97,15 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   @Input() numberFormat = false;
   @Input() onlyIntegers = false;
 
+  @Input('allowedKeys') set setAllowedKeys(allowedKeys: string | RegExp) {
+    this.allowedKeys = !allowedKeys
+      ? null
+      : isRegExp(allowedKeys)
+      ? allowedKeys
+      : new RegExp(`[${allowedKeys}]`.replace(/([\[\]]){2}/g, '$1'));
+  }
+  private allowedKeys: RegExp;
+
   private lastCursorState: InputCursorState = null;
 
   private readonly numberDisplayFormatter = new Intl.NumberFormat('en', {
@@ -140,12 +149,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
 
   public onInputKeydown(event: KeyboardEvent): void {
     if (this.allowedKeys) {
-      this.kbrdCntrlSrvc.filterAllowedKeys(
-        event,
-        isRegExp(this.allowedKeys)
-          ? this.allowedKeys
-          : new RegExp(`[${this.allowedKeys}]`.replace(/([\[\]]){2}/g, '$1'))
-      );
+      this.kbrdCntrlSrvc.filterAllowedKeys(event, this.allowedKeys);
     }
 
     if (this.inputType === InputTypes.number) {
