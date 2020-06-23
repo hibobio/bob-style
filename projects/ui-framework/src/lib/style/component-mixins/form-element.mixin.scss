@@ -10,7 +10,6 @@ $input-border-color: $border-color;
 $input-focus-border-color: $grey-700;
 
 @mixin form-element-margins {
-  margin: 0;
 }
 
 @mixin transfer-margins($from: 'b-input') {
@@ -18,7 +17,6 @@ $input-focus-border-color: $grey-700;
 
   &::ng-deep {
     #{$from} {
-      margin: 0;
     }
   }
 }

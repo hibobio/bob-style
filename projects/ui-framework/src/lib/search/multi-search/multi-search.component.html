@@ -35,7 +35,7 @@
 
           <ul class="bms-option-list">
 
-            <li *ngFor="let option of group[group.keyMap?.options || keyMapDef.options] | slice: 0 : (group.showItems || showItems || showItemsDef); let optionIndex = index; trackBy: optionTrackBy(groupIndex, group)"
+            <li *ngFor="let option of group[group.keyMap?.options || keyMapDef.options] | slice: 0 : (group.showItems || getOptionsSliceLength(group)); let optionIndex = index; trackBy: optionTrackBy(groupIndex, group)"
                 class="bms-option"
                 [attr.data-group-index]="groupIndex"
                 [attr.data-option-index]="optionIndex"
@@ -74,13 +74,12 @@
               </div>
             </li>
 
-            <li *ngIf="group[group.keyMap?.options || keyMapDef.options].length > (group.showItems || showItems ||
-                showItemsDef)"
+            <li *ngIf="group[group.keyMap?.options || keyMapDef.options].length > (group.showItems || getOptionsSliceLength(group))"
                 class="bms-option bms-show-more"
                 [attr.data-group-index]="groupIndex"
                 role="button"
                 tabindex="0">
-              {{ group.translation?.showMore || 'Show more ' + group[group.keyMap?.groupName || keyMapDef.groupName] }}
+              {{ group.translation?.showMore || ('common.show_more' | translate) + ' ' + group[group.keyMap?.groupName || keyMapDef.groupName] }}
             </li>
 
           </ul>

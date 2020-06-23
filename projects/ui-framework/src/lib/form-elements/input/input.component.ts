@@ -26,6 +26,7 @@ import {
   firstChanges,
   hasChanges,
   isKey,
+  isRegExp,
 } from '../../services/utils/functional-utils';
 import { InputEventType } from '../form-elements.enum';
 import { DOMInputEvent } from '../../types';
@@ -138,6 +139,15 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   }
 
   public onInputKeydown(event: KeyboardEvent): void {
+    if (this.allowedKeys) {
+      this.kbrdCntrlSrvc.filterAllowedKeys(
+        event,
+        isRegExp(this.allowedKeys)
+          ? this.allowedKeys
+          : new RegExp(`[${this.allowedKeys}]`.replace(/([\[\]]){2}/g, '$1'))
+      );
+    }
+
     if (this.inputType === InputTypes.number) {
       this.lastCursorState = null;
 

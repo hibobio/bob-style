@@ -67,7 +67,6 @@ export abstract class MultiSearchBaseElement {
   readonly iconColor = IconColor;
   readonly iconSize = IconSize;
   readonly iconBgColor = '#f57738';
-  readonly showItemsDef = MULTI_SEARCH_SHOW_ITEMS_DEF;
 
   @ViewChild(SearchComponent, { static: true }) search: SearchComponent;
 
@@ -176,6 +175,29 @@ export abstract class MultiSearchBaseElement {
         );
       })()
     );
+  }
+
+  protected groupShowItemsMapper = (
+    group: MultiSearchGroupOption
+  ): MultiSearchGroupOption => ({
+    ...group,
+    showItems: this.getOptionsSliceLength(group),
+    // tslint:disable-next-line: semicolon
+  });
+
+  public getOptionsSliceLength(
+    group: MultiSearchGroupOption,
+    options = null
+  ): number {
+    const optionsLength = (
+      options || group[group.keyMap?.options || MULTI_SEARCH_KEYMAP_DEF.options]
+    ).length;
+    const currentSliceLength = group.showItems || 0;
+    const step = this.showItems || MULTI_SEARCH_SHOW_ITEMS_DEF;
+
+    return optionsLength - currentSliceLength - step > step
+      ? currentSliceLength + step
+      : optionsLength;
   }
 
   public groupTrackBy(index: number, group: MultiSearchGroupOption): string {

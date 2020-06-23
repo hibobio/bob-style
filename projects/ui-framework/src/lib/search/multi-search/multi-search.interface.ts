@@ -34,6 +34,7 @@ export interface MultiSearchGroupOption
   groupName?: string;
   icon?: Icons;
   options?: MultiSearchOption[];
+  showItems?: number;
   translation?: {
     showMore?: string;
   };

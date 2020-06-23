@@ -15,7 +15,6 @@ import {
 } from './multi-search.interface';
 import {
   MULTI_SEARCH_KEYMAP_DEF,
-  MULTI_SEARCH_SHOW_ITEMS_DEF,
   MULTI_SEARCH_MIN_SEARCH_LENGTH_DEF,
 } from './multi-search.const';
 import {
@@ -65,7 +64,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
   set setShowAll(showAll: boolean) {
     this.showAll = showAll;
     if (showAll && this.options) {
-      this.searchOptions = this.options;
+      this.searchOptions = this.options.map(this.groupShowItemsMapper);
     }
   }
   private showAll = false;
@@ -75,7 +74,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     this.searchOptionsEmpty = undefined;
 
     this.searchOptions = this.showAll
-      ? this.options
+      ? this.options.map(this.groupShowItemsMapper)
       : this.filterOptions(this.searchValue, this.options);
   }
 
@@ -197,6 +196,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
           msgo.push({
             ...group,
             [group.keyMap?.options || MULTI_SEARCH_KEYMAP_DEF.options]: options,
+            showItems: this.getOptionsSliceLength(group, options),
           });
         }
 
@@ -227,10 +227,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
   }
 
   private onShowMoreClick(group: MultiSearchGroupOption): void {
-    group.showItems =
-      (group.showItems || this.showItems || MULTI_SEARCH_SHOW_ITEMS_DEF) +
-      (this.showItems || MULTI_SEARCH_SHOW_ITEMS_DEF);
-
+    group.showItems = this.getOptionsSliceLength(group);
     this.focusSearchInput();
   }
 }

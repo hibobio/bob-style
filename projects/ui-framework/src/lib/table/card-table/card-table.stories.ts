@@ -18,15 +18,13 @@ const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(
   withKnobs
 );
 
-const template = `
-<b-card-table
-  [meta]="CardTableMetaData"
-  [table]="CardTableData"
-  default="There are no pending requests for your approval"
-  (rowClicked)="rowClickHandler($event)"
-  (cellClicked)="cellClickHandler($event)">
-</b-card-table>
-`;
+const template = `<b-card-table
+    [meta]="CardTableMetaData"
+    [table]="CardTableData"
+    default="There are no pending requests for your approval"
+    (rowClicked)="rowClickHandler($event)"
+    (cellClicked)="cellClickHandler($event)">
+</b-card-table>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Card Table'" style="background-color: rgb(247,247,247);">
@@ -100,7 +98,7 @@ const note = `
   (cellClicked) | EventEmitter<wbr>&lt;CardTableCellClickEvent&gt; | cell click\
    event transmits: {cell: CardTableCellData, cellIndex: number, rowIndex: number} | &nbsp;
 
-  #### \`meta[0]\`: CardTableCellMeta - single column meta-data object properties
+  #### \`meta[0]\` | interface: CardTableCellMeta - single column meta-data object properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
   id | string / number | unique column id | &nbsp;
@@ -114,32 +112,32 @@ const note = `
 
   ##### [meta] example
 
-  \`\`\`
-[
-  {
-    id: 1,
-    name: 'Requested For'
-  },
-  {
-    id: 2,
-    name: 'Subject',
-    textStyle: {
-      fontWeight: '500'
+\`\`\`[
+    {
+      id: 1,
+      name: 'Requested For'
+    },
+    {
+      id: 2,
+      name: 'Subject',
+      textStyle: {
+        fontWeight: '500'
+      }
+    },
+    {
+      id: 3,
+      name: 'Status',
+      width: 15,
+      align: 'right',
+      sortable: true
     }
-  },
-  {
-    id: 3,
-    name: 'Status',
-    width: 15,
-    align: 'right',
-    sortable: true
-  }
-]
-  \`\`\`
+]\`\`\`
 
-  #### \`table[0][0]\`: CardTableCellData - single cell data object properties
+  #### \`table[0][0]\` | interface: CardTableCellData - single cell data object properties
   Name | Type | Description
   --- | --- | ---
+  id | string/number | unique id. <u>optional, but highly encouraged</u>, especially if you pass components to be rendered.<br>\
+  if your data is just strings, you can safely omit
   data | string | if string is provided, it is treated as text with automatic truncating after 2 lines
    - | string[] | if an array of strings is provided - each string is\
     displayed as separate line, truncated if it doesnt fit the width
@@ -153,11 +151,10 @@ const note = `
 
   ##### [data] example
 
-  \`\`\`
-
-  [
+\`\`\`[
     [
       {
+        id: 'abc123',
         data: {
           component: AvatarComponent,
           attributes: {
@@ -173,16 +170,20 @@ const note = `
         }
       },
       {
+        id: 'def456',
         data: 'UK Product Team Salary Change'
       },
       {
+        id: 'hij789',
         data: ['Elsie Hunter', '11/03/2019']
       },
       {
+        id: 'klm012',
         data: ['Madge Scott', '(You)'],
         class: 'highlight-second-line'
       },
       {
+        id: 'nop345',
         data: {
           component: ButtonComponent,
           attributes: {
@@ -197,9 +198,7 @@ const note = `
         }
       }
     ],
-  ]
-
-  \`\`\`
+]\`\`\`
 
 
   #### \`table[0][0].component\`: RenderedComponent - properties of object describing Component passed to cell

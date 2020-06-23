@@ -10,6 +10,7 @@ import { ListPanelService } from '../../lists/list-panel.service';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [MultiSearchComponent],
@@ -21,6 +22,7 @@ import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-to
     AvatarModule,
     FiltersModule,
     TruncateTooltipModule,
+    TranslateModule,
   ],
   exports: [MultiSearchComponent],
   providers: [PanelPositionService, ListPanelService, EventManagerPlugins[0]],

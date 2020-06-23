@@ -42,6 +42,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   @Input() maxChars: number;
   @Input() min = 0;
   @Input() max: number;
+  @Input() allowedKeys: string | RegExp;
 
   // tslint:disable-next-line: no-output-rename
   @Output('inputEvents') changed: EventEmitter<InputEvent> = new EventEmitter<
