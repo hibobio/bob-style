@@ -97,7 +97,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   @Input() numberFormat = false;
   @Input() onlyIntegers = false;
 
-  @Input('allowedKeys') set setAllowedKeys(allowedKeys: string | RegExp) {
+  @Input('allowedChars') set setAllowedKeys(allowedKeys: string | RegExp) {
     this.allowedKeys = !allowedKeys
       ? null
       : isRegExp(allowedKeys)

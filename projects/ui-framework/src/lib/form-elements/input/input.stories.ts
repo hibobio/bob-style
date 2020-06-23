@@ -49,7 +49,7 @@ const template = `
             [errorMessage]="errorMessage"
             [enableBrowserAutoComplete]="enableBrowserAutoComplete"
             [size]="size"
-            [allowedKeys]="allowedKeys"
+            [allowedChars]="allowedChars"
             (inputEvents)="inputEvents($event)">
 </b-input>
 `;
@@ -111,7 +111,7 @@ const note = `
    of the step (if step is 3, value of 5.5 + 3 will be rounded to 9). | &nbsp;
   [numberFormat] | boolean | (for input type number only) enable number formatting with commas ('1,234.05') | false
   [onlyIntegers] | boolean | (for input type number only) set to true to not allow fractions | false
-  [allowedKeys] | string/RegExp | regex-compatible string, representing a list of allowed characters (example: \`"\\w"\` - for only letters and numbers, \`"123"\` - for only 1, 2 and 3). <br>\
+  [allowedChars] | string/RegExp | regex-compatible string, representing a list of allowed characters (example: \`"\\w"\` - for only letters and numbers, \`"123"\` - for only 1, 2 and 3). <br>\
   every typed character will be matched against this list and all non-matching characters will be regected. | &nbsp;
 
   ${inputElemsPropsDoc}
@@ -158,7 +158,7 @@ story.add(
           Object.values(FormElementSize),
           FormElementSize.regular
         ),
-        allowedKeys: text('allowedKeys', ''),
+        allowedChars: text('allowedChars', ''),
       },
       moduleMetadata: {
         imports: [BrowserAnimationsModule, InputModule, StoryBookLayoutModule],
