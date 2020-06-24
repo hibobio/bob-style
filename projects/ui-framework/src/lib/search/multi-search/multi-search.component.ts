@@ -28,7 +28,7 @@ import { PanelPositionService } from '../../popups/panel/panel-position-service/
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { MultiSearchBaseElement } from './multi-search.abstract';
-import { Keys, clickKeys, controlKeys } from '../../enums';
+import { Keys, clickKeys, controlKeys, arrowKeys } from '../../enums';
 
 @Component({
   selector: 'b-multi-search',
@@ -118,7 +118,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
 
     if (target.matches('.bms-show-more') && group) {
       this.zone.run(() => {
-        this.onShowMoreClick(group);
+        this.onShowMoreClick(group, target);
       });
       return;
     }
@@ -139,27 +139,72 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
 
     const { group, option } = this.getGroupAndOptionFromUIEvent(event) || {};
 
-    if (isKey(event.key, Keys.arrowdown) || isKey(event.key, Keys.arrowright)) {
+    if (arrowKeys.includes(event.key as Keys)) {
       event.preventDefault();
-      this.findSiblingOptionEl(target, 'next')?.focus();
-      return;
-    }
-
-    if (isKey(event.key, Keys.arrowup) || isKey(event.key, Keys.arrowleft)) {
-      event.preventDefault();
-      this.findSiblingOptionEl(target, 'prev')?.focus();
+      this.findSiblingOptionEl(
+        target,
+        isKey(event.key, Keys.arrowdown) || isKey(event.key, Keys.arrowright)
+          ? 'next'
+          : 'prev'
+      )?.focus();
       return;
     }
 
     if (clickKeys.includes(event.key as Keys)) {
+      event.preventDefault();
+
       if (group && option) {
         this.onOptionClick(group, option);
         return;
       }
 
       if (group) {
-        this.onShowMoreClick(group);
+        this.onShowMoreClick(group, target);
       }
+    }
+  }
+
+  private onOptionClick(
+    group: MultiSearchGroupOption,
+    option: MultiSearchOption
+  ): void {
+    if (isFunction(group.optionClickHandler)) {
+      group.optionClickHandler(option);
+    }
+
+    if (this.clicked.observers.length) {
+      this.clicked.emit({
+        group,
+        option,
+      });
+    }
+
+    this.closePanel();
+    this.search.onResetClick();
+  }
+
+  private onShowMoreClick(
+    group: MultiSearchGroupOption,
+    target: HTMLElement = null
+  ): void {
+    const prevOptionEl = this.DOM.getPrevSibling(target, '.bms-option');
+
+    group.showItems = this.getOptionsSliceLength(group);
+
+    if (
+      group.showItems >=
+      group[group.keyMap?.options || MULTI_SEARCH_KEYMAP_DEF.options].length
+    ) {
+      this.ignoreFocusOut = true;
+    }
+    if (this.lastFocusedOption) {
+      this.lastFocusedOption.focus();
+    } else if (prevOptionEl) {
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          prevOptionEl.scrollIntoView({});
+        }, 0);
+      });
     }
   }
 
@@ -206,28 +251,5 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     );
 
     return filtered.length ? filtered : this.searchOptionsEmpty;
-  }
-
-  private onOptionClick(
-    group: MultiSearchGroupOption,
-    option: MultiSearchOption
-  ): void {
-    if (isFunction(group.optionClickHandler)) {
-      group.optionClickHandler(option);
-    }
-
-    if (this.clicked.observers.length) {
-      this.clicked.emit({
-        group,
-        option,
-      });
-    }
-
-    this.closePanel();
-  }
-
-  private onShowMoreClick(group: MultiSearchGroupOption): void {
-    group.showItems = this.getOptionsSliceLength(group);
-    this.focusSearchInput();
   }
 }

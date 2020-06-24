@@ -365,6 +365,14 @@ export const arrayMode = <T = any>(arr: T[]): T =>
     )
     .pop();
 
+export const joinWithAnd = (arr: string[], translation = 'and'): string => {
+  arr = asArray(arr).filter(Boolean);
+  const end = arr.pop() || '';
+  const start = arr.join(', ');
+
+  return start ? `${start} ${translation} ${end}` : end;
+};
+
 // ----------------------
 // MAPS
 // ----------------------

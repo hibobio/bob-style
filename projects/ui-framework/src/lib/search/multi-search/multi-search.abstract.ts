@@ -68,6 +68,9 @@ export abstract class MultiSearchBaseElement {
   readonly iconSize = IconSize;
   readonly iconBgColor = '#f57738';
 
+  protected lastFocusedOption: HTMLElement;
+  protected ignoreFocusOut = false;
+
   @ViewChild(SearchComponent, { static: true }) search: SearchComponent;
 
   // Used by ListPanelService:
@@ -84,6 +87,17 @@ export abstract class MultiSearchBaseElement {
   public panelOpen = false;
 
   public onFocusOut(event: FocusEvent): void {
+    if (this.ignoreFocusOut) {
+      this.ignoreFocusOut = false;
+
+      (
+        this.lastFocusedOption ||
+        (this.overlayRef?.overlayElement.children[0] as HTMLElement)
+      ).focus();
+
+      return;
+    }
+
     const relatedTarget = event.relatedTarget as HTMLElement;
 
     if (
@@ -94,13 +108,16 @@ export abstract class MultiSearchBaseElement {
       return;
     }
 
-    if (relatedTarget !== this.overlayRef.overlayElement.children[0]) {
-      this.search.inputFocused = true;
+    if (relatedTarget.matches('.bms-option:not(.bms-show-more)')) {
+      this.lastFocusedOption = relatedTarget;
     }
+
+    this.search.inputFocused = true;
   }
 
   protected focusSearchInput(): void {
     this.search['skipFocusEvent'] = true;
+    this.lastFocusedOption = undefined;
     this.search.input.nativeElement.focus();
   }
 
@@ -115,6 +132,7 @@ export abstract class MultiSearchBaseElement {
     if (this.overlayRef) {
       this.search.inputFocused = false;
       this.search['skipFocusEvent'] = false;
+      this.lastFocusedOption = undefined;
       this.destroyPanel();
     }
   }
