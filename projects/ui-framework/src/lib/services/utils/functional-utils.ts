@@ -630,7 +630,10 @@ export const recursiveFilter = <T = any>(
   return array.reduce((acc: T[], o) => {
     if (fn(o)) {
       const children = recursiveFilter(o[childrenKey] || [], childrenKey, fn);
-      acc.push(Object.assign({}, o, children.length && { children }));
+      acc.push(Object.assign({}, o, children.length
+        ? { [childrenKey]: children }
+        : { [childrenKey]: [] }
+      ));
     }
     return acc;
   }, []);
