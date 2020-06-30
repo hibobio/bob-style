@@ -16,11 +16,11 @@
                            class="section"
                            [panelID]="section.id"
                            [collapsible]="true"
-                           [expanded]="section.expanded || false"
+                           [expanded]="this.expandedMap.get(section.id) || false"
                            [title]="section.title"
                            [description]="section.description"
                            [options]="section.collapsibleOptions"
-                           (closed)="onClosed(index); section.expanded=false"
+                           (closed)="onClosed(section, index);"
                            (opened)="onOpened(section, index); dragging=false">
 
       <ng-container header>

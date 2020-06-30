@@ -6,7 +6,7 @@
           'bcp-section-expanded': collapsible && expanded,
           'bcp-section-collapsed': collapsible && !expanded,
           'bcp-section-not-divided': !divided,
-          'bcp-disable-animation': options?.disableAnimation
+          'bcp-disable-animation': options?.disableAnimation || disableAnimation
          }">
 
   <header *ngIf="title || hasHeaderContent"

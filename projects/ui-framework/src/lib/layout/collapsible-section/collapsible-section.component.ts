@@ -47,13 +47,15 @@ export class CollapsibleSectionComponent
     private zone: NgZone,
     private cd: ChangeDetectorRef,
     private colorService: ColorService
-  ) {}
+  ) {
+  }
 
   public hasHeaderContent = true;
   public hasPanelContent = true;
   public hasFooterContent = true;
   public contentLoaded = false;
   public startsExpanded = false;
+  public disableAnimation = false;
   private contentHeight = 0;
   private resizeSubscription: Subscription;
   private firstExpand = false;
@@ -107,6 +109,14 @@ export class CollapsibleSectionComponent
       } else {
         this.startsExpanded = changes.expanded.currentValue;
       }
+    }
+
+    if (changes.panelID && !changes.panelID.firstChange) {
+      this.disableAnimation = true;
+      this.cd.detectChanges();
+      setTimeout(() => {
+        this.disableAnimation = false;
+      });
     }
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {

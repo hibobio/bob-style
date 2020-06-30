@@ -44,6 +44,7 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
   dragging: boolean;
   draggedSection: SortableCollapsibleSection;
   contentLoadedMap: Map<number | string, boolean> = new Map();
+  expandedMap: Map<number | string, boolean> = new Map();
 
   constructor(
     private cdr: ChangeDetectorRef
@@ -56,6 +57,7 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
       this.UISections.forEach(section => {
         if (section.expanded) {
           this.contentLoadedMap.set(section.id, true);
+          this.expandedMap.set(section.id, true);
         }
       });
       this.cdr.detectChanges();
@@ -88,14 +90,16 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
     });
   }
 
-  onClosed(index: number): void {
+  onClosed(section: SortableCollapsibleSection, index: number): void {
+    this.expandedMap.delete(section.id);
     if (!this.dragging) {
       this.closed.emit(index);
     }
   }
 
-  onOpened(section: SortableCollapsibleSection, index) {
+  onOpened(section: SortableCollapsibleSection, index: number) {
     this.contentLoadedMap.set(section.id, true);
+    this.expandedMap.set(section.id, true);
     this.opened.emit(index);
   }
 
