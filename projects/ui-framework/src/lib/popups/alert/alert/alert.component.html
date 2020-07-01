@@ -3,6 +3,6 @@
   <b-icon class="icon" [icon]="iconsDic[alertConfig.alertType].icon" [color]="iconsDic[alertConfig.alertType].color" [size]="iconSize"></b-icon>
   <div class="content">
     <b-bold-body>{{alertConfig.title}}</b-bold-body>
-    <p>{{alertConfig.text}}</p>
+    <p [innerHTML]="alertConfig.text"></p>
   </div>
 </div>
