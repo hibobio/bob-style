@@ -17,7 +17,9 @@ import { BaseButtonElement } from '../button.abstract';
       [ngClass]="buttonClass"
       [attr.disabled]="disabled || null"
       (click)="onClick($event)"
-    ></button>
+    >
+      <ng-content></ng-content>
+    </button>
   `,
   styleUrls: ['./square.component.scss'],
   providers: [
