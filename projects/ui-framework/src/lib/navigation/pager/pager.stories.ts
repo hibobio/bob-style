@@ -102,9 +102,9 @@ story.add(
           sliceMax: 100,
           sliceSize: 50,
         }),
-        onSliceChange: action('onSliceChange'),
-        onPageChange: action('onPageChange'),
-        onSliceSizeChange: action('onSliceSizeChange'),
+        onSliceChange: action('sliceChange'),
+        onPageChange: action('pageChange'),
+        onSliceSizeChange: action('sliceSizeChange'),
       },
       moduleMetadata: {
         imports: [StoryBookLayoutModule, BrowserAnimationsModule, PagerModule],
