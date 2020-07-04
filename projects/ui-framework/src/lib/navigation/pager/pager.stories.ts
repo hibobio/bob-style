@@ -39,13 +39,13 @@ const note = `
   #### Properties
   Name | Type | Description | Default
   --- | --- | --- | ---
-  [config] | PagerConfig | config for sliceSize (current items per page), sliceMax (max items per page) and sliceStep (items per page step for items-per-page Select) | PAGER<sub>-</sub>CONFIG<sub>-</sub>DEF
+  [config] | PagerConfig | pages/slices config (see interface details below) | PAGER<sub>-</sub>CONFIG<sub>-</sub>DEF
   [items] | number / any[] | if number is provided, this is considered as 'items length';<br>\
   you can also provide your original data array | []
   [currentPage] | number | sets current page (by zero-based index) | 0
+  (pageChange) | number | emits current page zero-based index | &nbsp;
   (sliceChange) |  EventEmitter<wbr>&lt;number[] / any[]&gt; | if a number was provided for [items] (that is considered to be your items array length), the output emits current slice indexes;<br>\
   if you provided your data array as [items], the output emits a slice of your data array ('current page items') | &nbsp;
-  (pageChange) | number | emits current page zero-based index | &nbsp;
   (sliceSizeChange) | number | emits on slice size change (from the Select) | &nbsp;
 
   #### Usage examples
@@ -67,6 +67,24 @@ const note = `
 
   <b-pager [items]="itemsDataArray.length" (sliceChange)="currentSlice = $event"></b-pager>
   ~~~
+
+  #### interface: PagerConfig
+  Name | Type | Description
+  --- | --- | ---
+  sliceSize | number | current items per page
+  sliceMax | number | max items per page
+  sliceStep | number | items per page step for items-per-page Select
+
+  #### const: PAGER<sub>-</sub>CONFIG<sub>-</sub>DEF
+  ~~~
+  const PAGER_CONFIG_DEF: PagerConfig = {
+    sliceStep: 25,
+    sliceMax: 100,
+    sliceSize: 50,
+  };
+  ~~~
+
+
 `;
 
 const itemsMock: number[] = arrayOfNumbers(937) as number[];
