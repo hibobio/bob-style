@@ -25,6 +25,11 @@ export class PagerComponent<T = any> implements OnInit {
 
   @Input('config') set setConfig(config: PagerConfig) {
     this.initSliceConfigAndOptions(config);
+
+    if (this.pagesViewModel) {
+      this.initViewModel();
+      this.emitChange();
+    }
   }
   private config: PagerConfig;
 
@@ -46,11 +51,9 @@ export class PagerComponent<T = any> implements OnInit {
   }
   private items: number | T[];
 
-  @Input('currentPage') set setCurrentPage(currentPage: number) {
-    if (currentPage !== this.currentPage) {
-      this.changePage(currentPage);
-
-      this.setPagesViewModel();
+  @Input('currentPage') set setCurrentPage(newPage: number) {
+    if (newPage !== this.currentPage) {
+      this.changePage(newPage);
     }
   }
   public currentPage: number;
@@ -98,7 +101,6 @@ export class PagerComponent<T = any> implements OnInit {
     if (newPage === newPage) {
       this.zone.run(() => {
         this.changePage(newPage);
-        this.setPagesViewModel();
       });
     }
   }
@@ -113,13 +115,13 @@ export class PagerComponent<T = any> implements OnInit {
 
     this.changePage(newPage);
     this.emitChange('slicesize');
-    this.setPagesViewModel();
   }
 
   private changePage(newPage: number): void {
     if (newPage !== this.currentPage) {
       this.currentPage = newPage;
       this.emitChange('page');
+      this.setPagesViewModel();
     }
 
     this.currentSlice = this.pagerService.getSlice(

@@ -20,6 +20,7 @@ import {
   GridColumnsChangedEvent,
   GridOptions,
   GridReadyEvent,
+  GridApi,
 } from 'ag-grid-community';
 import { cloneDeep, get, has, map } from 'lodash';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
@@ -33,6 +34,7 @@ import {
   SortChangedEvent,
   TableStyleConfig,
 } from './table.interface';
+import { PagerConfig, PAGER_CONFIG_DEF } from 'bob-style';
 
 const CLOSE_BUTTON_DIAMETER = 20;
 const CLOSE_MARGIN_OFFSET = 6;
@@ -78,6 +80,8 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Input() removeColumnButtonEnabled = false;
   @Input() shouldAutoSizeColumns = true;
 
+  @Input() enablePager = false;
+  @Input() pagerConfig: PagerConfig = { ...PAGER_CONFIG_DEF };
   @Input() styleConfig: TableStyleConfig = {};
 
   @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
@@ -105,6 +109,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   gridColumnDefs: ColumnDef[];
 
   private columns: string[];
+  private gridApi: GridApi;
 
   @HostListener('click', ['$event'])
   onHostClick(event: MouseEvent) {
@@ -145,6 +150,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     let updateColumns = false;
     let previousColumnDefValue: ColumnDef[];
+
     if (has(changes, 'columnDefs')) {
       updateColumns = true;
       this.columnDefConfig = {
@@ -153,6 +159,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       };
       previousColumnDefValue = changes.columnDefs.previousValue;
     }
+
     if (has(changes, 'columnDefConfig')) {
       updateColumns = true;
       this.columnDefConfig = changes.columnDefConfig.currentValue;
@@ -160,13 +167,17 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     }
 
     if (updateColumns) {
-      const existingColumns = previousColumnDefValue ? previousColumnDefValue : this.columnDefs;
-      const columnDefs = this.columnDefConfig.orderStrategy === ColumnOrderStrategy.AppendNew
-        ? this.tableUtilsService.getOrderedFields(
-          existingColumns,
-          this.columnDefConfig.columnDef,
-          this.columns)
-        : this.columnDefConfig.columnDef;
+      const existingColumns = previousColumnDefValue
+        ? previousColumnDefValue
+        : this.columnDefs;
+      const columnDefs =
+        this.columnDefConfig.orderStrategy === ColumnOrderStrategy.AppendNew
+          ? this.tableUtilsService.getOrderedFields(
+              existingColumns,
+              this.columnDefConfig.columnDef,
+              this.columns
+            )
+          : this.columnDefConfig.columnDef;
       this.gridColumnDefs = this.tableUtilsService.getGridColumnDef(
         columnDefs,
         this.rowSelection
@@ -223,11 +234,19 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,
       suppressContextMenu: true,
-      rowBuffer: this.suppressRowVirtualisation ? 99999 : 20,
+      rowBuffer:
+        this.suppressRowVirtualisation || this.enablePager ? 99999 : 20,
+      animateRows: false,
+
+      pagination: this.enablePager,
+      paginationPageSize: this.pagerConfig.sliceSize,
+      suppressPaginationPanel: true,
+
       getRowClass: (params) =>
         get(params.data, 'isClickable', false) ? 'row-clickable' : '',
       onGridReady: (event: GridReadyEvent) => {
         this.gridReady = true;
+        this.gridApi = event.api;
         if (this.shouldAutoSizeColumns) {
           event.columnApi.autoSizeAllColumns();
         }
@@ -256,5 +275,13 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   addClass(className: string) {
     this._externalClasses += ` ${className}`;
     this.cdr.detectChanges();
+  }
+
+  onPageChange(page: number): void {
+    this.gridApi.paginationGoToPage(page);
+  }
+
+  onPageSizeChange(pageSize: number): void {
+    this.gridApi.paginationSetPageSize(pageSize);
   }
 }

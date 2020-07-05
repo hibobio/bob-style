@@ -59,6 +59,7 @@ const template = `
         disableRowHoverBgColor: disableRowHoverBgColor,
         showColumnBorders: showColumnBorders
     }"
+    [enablePager]="enablePager"
     (rowClicked)="rowClicked($event)"
     (cellClicked)="cellClicked($event)"
     (selectionChanged)="selectionChanged($event); onSelectionChanged($event)"
@@ -81,6 +82,7 @@ const treeTemplate = `<b-table
         disableRowHoverBgColor: disableRowHoverBgColor,
         showColumnBorders: showColumnBorders
     }"
+    [enablePager]="enablePager"
     (rowClicked)="rowClicked($event)"
     (cellClicked)="cellClicked($event)"
     (selectionChanged)="selectionChanged($event)"
@@ -143,6 +145,8 @@ const note = `
   [removeColumnButtonEnabled] | boolean | adds (x) button to column header | false
   [shouldAutoSizeColumns] | boolean | enable auto size | true
   [styleConfig] | TableStyleConfig | style config (disableRowHoverBgColor, showColumnBorders) | {}
+  [enablePager] | boolean | enable pagination
+  [pagerConfig] | PagerConfig | config for pagination (sliceStep, sliceMax, sliceSize)
   (rowClicked) | EventEmitter<wbr>&lt;RowClickedEvent&gt; | Row clicked event | &nbsp;
   (gridInit) | EventEmitter<wbr>&lt;void&gt;  | Grid init event | &nbsp;
   (selectionChanged) | EventEmitter<wbr>&lt;any[]&gt; | All selected rows | &nbsp;
@@ -222,6 +226,7 @@ function tableStoryFactory({
     shouldAutoSizeColumns: boolean('shouldAutoSizeColumns', true, 'Props'),
     disableRowHoverBgColor: boolean('disableRowHoverBgColor', false, 'Props'),
     showColumnBorders: boolean('showColumnBorders', false, 'Props'),
+    enablePager: boolean('enablePager', true, 'Props'),
     columnDefs: object(`${title} columnDefs`, tableCols, 'Data'),
     rowData: object(`${title} rowData`, tableData, 'Data'),
     rowClicked: action('Row clicked'),
