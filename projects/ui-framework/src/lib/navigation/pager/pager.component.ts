@@ -121,7 +121,6 @@ export class PagerComponent<T = any> implements OnInit {
     if (newPage !== this.currentPage) {
       this.currentPage = newPage;
       this.emitChange('page');
-      this.setPagesViewModel();
     }
 
     this.currentSlice = this.pagerService.getSlice(
@@ -130,6 +129,8 @@ export class PagerComponent<T = any> implements OnInit {
       this.config
     );
     this.emitChange('slice');
+
+    this.setPagesViewModel();
   }
 
   private setPagesViewModel() {
