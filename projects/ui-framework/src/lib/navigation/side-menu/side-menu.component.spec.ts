@@ -10,6 +10,8 @@ import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { MenuComponent } from '../menu/menu.component';
 import { TruncateTooltipComponent } from '../../popups/truncate-tooltip/truncate-tooltip.component';
 import { IconComponent } from '../../icons/icon.component';
+import { TooltipClass } from '../../popups/tooltip/tooltip.enum';
+import { By } from '@angular/platform-browser';
 
 describe('SideMenuComponent', () => {
   let component: SideMenuComponent;
@@ -93,6 +95,12 @@ describe('SideMenuComponent', () => {
 
     it('should display text icon tooltip', () => {
       expect(iconEls[0].getAttribute('data-tooltip')).toBeTruthy();
+    });
+    it('should display icon tooltip wrap', () => {
+      expect(
+        fixture.debugElement.query(By.css('.avatar-text-icon .b-icon'))
+          .nativeElement.className
+      ).toContain(TooltipClass.NoWrap);
     });
   });
 });

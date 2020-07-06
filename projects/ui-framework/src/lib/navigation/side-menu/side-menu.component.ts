@@ -17,6 +17,7 @@ import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { TooltipClass } from '../../popups/tooltip/tooltip.enum';
 
 @Component({
   selector: 'b-side-menu',
@@ -43,6 +44,7 @@ export class SideMenuComponent implements OnChanges {
   readonly iconSize = IconSize;
   readonly buttonType = ButtonType;
   readonly avatarSize = AvatarSize;
+  readonly tooltipClass = TooltipClass;
 
   public focusedId: number | string;
 

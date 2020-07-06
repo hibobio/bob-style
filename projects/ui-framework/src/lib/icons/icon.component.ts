@@ -11,7 +11,9 @@ import { IconColor, Icons, IconSize, IconType, IconRotate } from './icons.enum';
 import {
   notFirstChanges,
   applyChanges,
+  asArray
 } from '../services/utils/functional-utils';
+import { TooltipClass } from '../popups/tooltip/tooltip.enum';
 
 @Component({
   selector: 'b-icon, [b-icon]',
@@ -27,6 +29,7 @@ export class IconComponent implements OnChanges {
   @Input() icon: Icons;
   @Input() color: IconColor = IconColor.dark;
   @Input() hasHoverState = false;
+  @Input() tooltipClass: TooltipClass | TooltipClass[];
 
   @HostBinding('attr.data-size') @Input() size: IconSize = IconSize.medium;
   @HostBinding('attr.data-type') @Input() type: IconType = IconType.regular;
@@ -46,7 +49,8 @@ export class IconComponent implements OnChanges {
       this.size +
       ' b-icon-' +
       this.color +
-      (this.hasHoverState ? ' has-hover' : '');
+      (this.hasHoverState ? ' has-hover' : '') +
+      (this.tooltipClass ? ' ' + asArray(this.tooltipClass).join(' ') : '');
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();

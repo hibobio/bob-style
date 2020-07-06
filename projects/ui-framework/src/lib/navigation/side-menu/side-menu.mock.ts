@@ -8,6 +8,7 @@ import { SideMenuOption } from './side-menu.interface';
 import { AvatarBadge } from '../../avatar/avatar/avatar.enum';
 import { MenuItem } from '../menu/menu.interface';
 import { IconPosition } from '../../typography/label-value/label-value.enum';
+import { TooltipClass } from '../../popups/tooltip/tooltip.enum';
 
 const menuMock: MenuItem[] = makeArray(4).map(() => ({
   label: mockText(1),
@@ -38,6 +39,7 @@ export const sideMenuMock2: SideMenuOption[] = makeArray(3)
 
       textIcon: index === 0 ? Icons.person_reports : Icons.person_manager,
       textIconTooltip: index === 0 ? 'Raising to the top' : 'Going down',
+      tooltipClass: TooltipClass.NoWrap,
       textIconPosition:
         index === 0 ? IconPosition.label_after : IconPosition.value_after,
     },
