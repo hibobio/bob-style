@@ -41,7 +41,7 @@ import { TreeListPanelIO } from '../tree-list-panel/tree-list-panel.interface';
 import { TreeListModelService } from '../services/tree-list-model.service';
 import {
   selectValueOrFail,
-  SelectValueMultiOrSingle,
+  selectValueMultiOrSingle,
 } from '../../../services/utils/transformers';
 import { TreeListValueUtils } from '../services/tree-list-value.static';
 import { PanelDefaultPosVer } from '../../../popups/panel/panel.enum';
@@ -237,9 +237,9 @@ export class TreeSelectComponent extends BaseFormElement
   }
 
   private emitChange(value: TreeListValue): void {
-    this.transmitValue(SelectValueMultiOrSingle(this.type, value.selectedIDs), {
+    this.transmitValue(selectValueMultiOrSingle(this.type, value.selectedIDs), {
       addToEventObj: {
-        selectedValues: SelectValueMultiOrSingle(
+        selectedValues: selectValueMultiOrSingle(
           this.type,
           value.selectedValues
         ),
