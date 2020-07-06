@@ -29,6 +29,10 @@
 }
 
 :host {
+  @include mobile($breakpoint-device-lg) {
+    line-height: $line-height-body;
+  }
+
   &.b-big-body {
     --rte-font-size-small: 90%;
     --rte-font-size-normal: #{$font-size-big-body};
@@ -59,9 +63,32 @@
     --rte-font-size-normal: #{$font-size-display-4};
   }
 
+  .empty-line {
+    line-height: 1.2;
+  }
+
+  @include mobile($breakpoint-device-lg) {
+    .empty-line {
+      line-height: 1;
+    }
+  }
+
   ul,
   ol {
     line-height: inherit;
+
+    li {
+      @include desktop($breakpoint-device-lg) {
+        margin: 4px 0;
+      }
+    }
+  }
+
+  .empty-line {
+    & + ul,
+    & + ol {
+      margin-top: 0;
+    }
   }
 
   [data-placeholder-id] {

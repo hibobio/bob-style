@@ -39,3 +39,14 @@
   width: $button-size-medium;
   @include flex-align;
 }
+
+:host ::ng-deep {
+  button.tertiary {
+    &:focus {
+      text-decoration: underline;
+    }
+    &:active {
+      text-decoration: none;
+    }
+  }
+}
