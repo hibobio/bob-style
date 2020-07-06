@@ -1,0 +1,52 @@
+@import '../../style/common-imports';
+
+:host {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  user-select: none;
+}
+
+.bpgr-slice-info {
+  text-align: left;
+  @include text-truncate;
+}
+
+.bpgr-page-buttons {
+  display: flex;
+  text-align: center;
+}
+
+.bpgr-slice-size-select {
+  margin-left: auto;
+}
+
+.bpgr-page-buttons ::ng-deep {
+  button.negative {
+    font-weight: 700;
+    cursor: pointer;
+    pointer-events: none;
+
+    &:focus,
+    &:active {
+      background-color: var(--negative-600);
+    }
+  }
+}
+
+.bpgr-hidden-pages-indicator {
+  width: $button-size-medium;
+  @include flex-align;
+}
+
+:host ::ng-deep {
+  button.tertiary {
+    &:focus {
+      text-decoration: underline;
+    }
+    &:active {
+      text-decoration: none;
+    }
+  }
+}

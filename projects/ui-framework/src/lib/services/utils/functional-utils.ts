@@ -3,6 +3,7 @@ import { metaKeys } from '../../enums';
 import { GenericObject } from '../../types';
 import { isEqual, cloneDeep } from 'lodash';
 import { RenderedComponent } from '../component-renderer/component-renderer.interface';
+import { SelectGroupOption } from '../../lists/list.interface';
 
 // ----------------------
 // TYPES
@@ -630,10 +631,13 @@ export const recursiveFilter = <T = any>(
   return array.reduce((acc: T[], o) => {
     if (fn(o)) {
       const children = recursiveFilter(o[childrenKey] || [], childrenKey, fn);
-      acc.push(Object.assign({}, o, children.length
-        ? { [childrenKey]: children }
-        : { [childrenKey]: [] }
-      ));
+      acc.push(
+        Object.assign(
+          {},
+          o,
+          children.length ? { [childrenKey]: children } : { [childrenKey]: [] }
+        )
+      );
     }
     return acc;
   }, []);
@@ -733,7 +737,8 @@ const simpleChangeFilter = (
 ): boolean => {
   return (
     change !== undefined &&
-    (change.currentValue !== undefined || change.previousValue !== undefined) &&
+    // (change.currentValue !== undefined || change.previousValue !== undefined)
+    change.currentValue !== change.previousValue &&
     (!discardAllFalsey ||
       (discardAllFalsey && falseyCheck(change.currentValue)))
   );
@@ -766,8 +771,8 @@ export const firstChanges = (
   }
   return !!keys.find(
     (i) =>
-      simpleChangeFilter(changes[i], discardAllFalsey, falseyCheck) &&
-      changes[i].firstChange
+      changes[i]?.firstChange &&
+      simpleChangeFilter(changes[i], discardAllFalsey, falseyCheck)
   );
 };
 
@@ -783,8 +788,8 @@ export const notFirstChanges = (
   }
   return !!keys.find(
     (i) =>
-      simpleChangeFilter(changes[i], discardAllFalsey, falseyCheck) &&
-      !changes[i].firstChange
+      !changes[i]?.firstChange &&
+      simpleChangeFilter(changes[i], discardAllFalsey, falseyCheck)
   );
 };
 
@@ -856,3 +861,13 @@ export const simpleUID = (
 
 export const isRenderedComponent = (obj: any): obj is RenderedComponent =>
   hasProp(obj, 'component');
+
+export const isSelectGroupOptions = (
+  options: any[]
+): options is SelectGroupOption[] => {
+  return Boolean(
+    isNotEmptyArray(options) &&
+      options[0] &&
+      isArray((options as SelectGroupOption[])[0].options)
+  );
+};

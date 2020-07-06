@@ -417,7 +417,11 @@ export * from './lib/navigation/breadcrumbs/breadcrumbs.enum';
 // Action Bar
 export { ActionBarModule } from './lib/navigation/action-bar/action-bar.module';
 export { ActionBarComponent } from './lib/navigation/action-bar/action-bar.component';
-
+// Pager
+export * from './lib/navigation/pager/pager.interface';
+export * from './lib/navigation/pager/pager.const';
+export { PagerModule } from './lib/navigation/pager/pager.module';
+export { PagerComponent } from './lib/navigation/pager/pager.component';
 
 /*
  * Overlays & Popups

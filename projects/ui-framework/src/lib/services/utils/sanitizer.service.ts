@@ -112,6 +112,9 @@ export class SanitizerService {
       this.htmlParser.cleanupHtml(value, { removeNbsp: true }),
 
     (value: string): string =>
+      value.replace(/<div><br><\/div>/gi, '<div class="empty-line"><br></div>'),
+
+    (value: string): string =>
       this.htmlParser.enforceAttributes(value, {
         a: {
           target: '_blank',

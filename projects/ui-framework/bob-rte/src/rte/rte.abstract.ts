@@ -406,6 +406,11 @@ export abstract class RTEbaseElement extends BaseFormElement
           value,
           'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
         ),
+
+      (value: string): string =>
+        this.type === RTEType.singleLine
+          ? this.parserService.getPlainText(value)
+          : value,
     ];
 
     this.outputTransformers = [
@@ -425,6 +430,11 @@ export abstract class RTEbaseElement extends BaseFormElement
         HtmlParserHelpers.prototype.cleanupHtml(value, {
           removeNbsp: true,
         }),
+
+      (value: string): string =>
+        this.type === RTEType.singleLine
+          ? this.parserService.getPlainText(value)
+          : value,
     ];
 
     if (this.placeholdersEnabled()) {

@@ -10,7 +10,6 @@
                  [class]="_externalClasses"
                  [rowData]="rowData"
                  [columnDefs]="gridColumnDefs"
-                 [animateRows]="false"
                  [gridOptions]="gridOptions"
                  (rowClicked)="onRowClicked($event)"
                  (selectionChanged)="onSelectionChanged($event)"
@@ -18,3 +17,11 @@
                  [attr.data-row-hover]="styleConfig?.disableRowHoverBgColor ? false : true"
                  [attr.data-column-borders]="styleConfig?.showColumnBorders ? true : null">
 </ag-grid-angular>
+
+<b-pager *ngIf="enablePager && gridReady && rowData?.length > pagerConfig.sliceSize"
+         [items]="rowData.length"
+         [config]="pagerConfig"
+         (pageChange)="onPageChange($event)"
+         (sliceSizeChange)="onPageSizeChange($event)"
+         class="mrg-t-16">
+</b-pager>

@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { LinkifyPipe } from '../filters/linkify.pipe';
 import { GenericObject } from '../../types';
-import { isString, isObject, isEmptyObject } from '../utils/functional-utils';
+import {
+  isString,
+  isObject,
+  isEmptyObject,
+  isDomElement,
+} from '../utils/functional-utils';
 
 export interface CleanupHtmlConfig {
   removeNbsp?: boolean;
@@ -86,8 +91,11 @@ export class HtmlParserHelpers {
       )
 
       // add spaces between text and tag
-      .replace(/([^\s>])(<[^/])/gi, '$1 $2')
-      .replace(/(<\/[^>]+>)([^\s<])/gi, '$1 $2')
+      .replace(/([^\s>]{2})(<[^/])/gi, '$1 $2')
+      .replace(/(<\/[^>]+>)([^\s<]{2})/gi, '$1 $2')
+
+      // add spaces between tags
+      .replace(/(<\/[^>]+>)(<[^/])/gi, '$1 $2')
 
       .trim();
 
@@ -180,17 +188,17 @@ export class HtmlParserHelpers {
     return elm.innerHTML;
   }
 
-  public getPlainText(html: string | HTMLElement): string {
+  public getPlainText(html: string | HTMLElement | any): string {
     if (!html) {
       return '';
     }
     if (isString(html)) {
       const elm: HTMLElement = document.createElement('div');
       elm.innerHTML = html;
-      return elm.innerText;
+      return elm.innerText.replace(/\s+/gi, ' ');
     }
-    if (html.nodeType === Node.ELEMENT_NODE) {
-      return html.innerText;
+    if (isDomElement(html)) {
+      return html.innerText.replace(/\s+/gi, ' ');
     }
     return String(html.textContent || html || '');
   }
