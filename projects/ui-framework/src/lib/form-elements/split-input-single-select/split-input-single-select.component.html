@@ -20,7 +20,8 @@
            [showCharCounter]="false"
            [numberFormat]="numberFormat"
            [onlyIntegers]="onlyIntegers"
-           [doPropagate]="false">
+           [doPropagate]="false"
+           [size]="size">
   </b-input>
 
   <b-single-select (selectChange)="onSelectChange($event)"
@@ -29,7 +30,8 @@
                    [options]="options"
                    [showSingleGroupHeader]="false"
                    [panelClass]="'bsiss-panel'"
-                   [doPropagate]="false">
+                   [doPropagate]="false"
+                   [size]="size">
   </b-single-select>
 
 </div>

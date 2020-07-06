@@ -225,6 +225,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow-y: hidden;
+    @include hide-scrollbar;
 
     --rte-font-size-normal: #{$font-size-body};
     --rte-font-size-large: #{$font-size-body};

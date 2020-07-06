@@ -23,7 +23,8 @@
          [maxChars]="50"
          [showCharCounter]="false"
          (inputEvents)="onInputEvents($event)"
-         [doPropagate]="false">
+         [doPropagate]="false"
+         [size]="size">
   <span input-prefix
         *ngIf="type"
         (click.outside-zone)="focus()">

@@ -138,6 +138,9 @@ const note = `
   (focused) | EventEmitter<wbr>&lt;string&gt; | emits latest value on editor focus | &nbsp;
   (blurred) | EventEmitter<wbr>&lt;string&gt; | emits latest value on editor blur | &nbsp;
 
+  **Note about type 'singleLine':**
+  This displays RTE as a regular 1 line input - without toolbar and with no support for any styles, BUT with support for Placeholders. Also, it will output plain string, not html (and convert any incoming html to string)!
+
   ----------------
 
   #### Mentions properties

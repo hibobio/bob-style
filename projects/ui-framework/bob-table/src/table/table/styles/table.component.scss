@@ -9,6 +9,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 :host {
   --max-height: 450px;
   display: block;
+  overflow: hidden;
 }
 
 :host ::ng-deep {
@@ -18,6 +19,16 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     height: 100%;
     max-height: var(--max-height);
     visibility: hidden;
+
+    &,
+    .ag-root-wrapper,
+    .ag-center-cols-container {
+      overflow: hidden;
+    }
+
+    .ag-center-cols-viewport {
+      @include hide-scrollbar;
+    }
 
     &.grid-ready {
       visibility: visible;
