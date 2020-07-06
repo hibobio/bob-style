@@ -3,6 +3,7 @@ import { metaKeys } from '../../enums';
 import { GenericObject } from '../../types';
 import { isEqual, cloneDeep } from 'lodash';
 import { RenderedComponent } from '../component-renderer/component-renderer.interface';
+import { SelectGroupOption } from '../../lists/list.interface';
 
 // ----------------------
 // TYPES
@@ -860,3 +861,13 @@ export const simpleUID = (
 
 export const isRenderedComponent = (obj: any): obj is RenderedComponent =>
   hasProp(obj, 'component');
+
+export const isSelectGroupOptions = (
+  options: any[]
+): options is SelectGroupOption[] => {
+  return Boolean(
+    isNotEmptyArray(options) &&
+      options[0] &&
+      isArray((options as SelectGroupOption[])[0].options)
+  );
+};

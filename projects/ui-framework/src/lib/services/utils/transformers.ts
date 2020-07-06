@@ -113,13 +113,13 @@ export const valueAsNumber = (
   return parsed === parsed ? parsed : def;
 };
 
-export const arrayToFirstItemOrNull = <T>(value: T[]): T => {
+export const arrayToFirstItemOrNull = <T>(value: T[] | T): T => {
   return isEmptyArray(value) ? null : !Array.isArray(value) ? value : value[0];
 };
 
-export const SelectValueMultiOrSingle = (
+export const selectValueMultiOrSingle = (
   type: SelectType,
-  value: itemID[]
+  value: itemID | itemID[]
 ): itemID | itemID[] => {
   return type === SelectType.single
     ? arrayToFirstItemOrNull<itemID>(value)

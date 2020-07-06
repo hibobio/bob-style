@@ -9,7 +9,7 @@ import {
   isArray,
   randomNumber,
   hasProp,
-  isNotEmptyArray,
+  isSelectGroupOptions,
 } from '../../services/utils/functional-utils';
 import { AvatarImageComponent } from '../avatar/avatar-image/avatar-image.component';
 import { AvatarSize } from '../avatar/avatar.enum';
@@ -58,7 +58,7 @@ export class EmployeesShowcaseService {
 
     throw new Error(
       `Provided [employees] (${stringify(
-        this.isGroupOptions(employees)
+        isSelectGroupOptions(employees)
           ? (employees as SelectGroupOption[])[0].options.slice(0, 3)
           : asArray(employees as EmployeeShowcase[]).slice(0, 3)
       )}...) is missing required data.`
@@ -98,16 +98,6 @@ export class EmployeesShowcaseService {
     return showcaseViewModel;
   }
 
-  private isGroupOptions(
-    employees: EmployeeShowcase[] | SelectGroupOption[]
-  ): boolean {
-    return Boolean(
-      isNotEmptyArray(employees) &&
-        employees[0] &&
-        isArray((employees as SelectGroupOption[])[0].options)
-    );
-  }
-
   private optionHasAvatarComponent(option: any): boolean {
     return Boolean(
       option?.prefixComponent?.attributes &&
@@ -119,7 +109,7 @@ export class EmployeesShowcaseService {
     employees: EmployeeShowcase[] | SelectGroupOption[]
   ): boolean {
     return (
-      this.isGroupOptions(employees) &&
+      isSelectGroupOptions(employees) &&
       this.optionHasAvatarComponent(
         (employees as SelectGroupOption[])[0].options[0]
       )
