@@ -77,9 +77,15 @@
   ol {
     line-height: inherit;
 
-    li {
-      @include desktop($breakpoint-device-lg) {
+    @include desktop($breakpoint-device-lg) {
+      margin: 10px 0;
+
+      li {
         margin: 4px 0;
+      }
+
+      & + .empty-line {
+        margin-top: -10px;
       }
     }
   }
@@ -100,6 +106,10 @@
       $min-val: $font-size-body,
       $max-val: $font-size-big-body
     );
+  }
+
+  a {
+    color: var(--primary-500);
   }
 }
 

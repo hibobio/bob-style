@@ -76,7 +76,7 @@ export class HtmlParserHelpers {
 
       // too many <div><br></div>
       .replace(
-        /(<([^\/>\s]+)[^>]*>\s*<br[^>]*>\s*<\/\2>\s*){2,}/gi,
+        /((<([^\/>\s]+)[^>]*>)+\s*<br[^>]*>\s*(<\/\3>)+\s*){2,}/gi,
         '<div><br></div>'
       )
 
@@ -192,14 +192,17 @@ export class HtmlParserHelpers {
     if (!html) {
       return '';
     }
+
     if (isString(html)) {
       const elm: HTMLElement = document.createElement('div');
       elm.innerHTML = html;
       return elm.innerText.replace(/\s+/gi, ' ');
     }
+
     if (isDomElement(html)) {
       return html.innerText.replace(/\s+/gi, ' ');
     }
+
     return String(html.textContent || html || '');
   }
 }

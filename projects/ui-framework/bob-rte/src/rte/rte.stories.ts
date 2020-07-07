@@ -11,7 +11,7 @@ import {
 import { action } from '@storybook/addon-actions';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { values } from 'lodash';
-import { BlotType, RTEType } from './rte.enum';
+import { BlotType, RTEType, RTEMode } from './rte.enum';
 import { mentionsOptions, placeholderMock, rteMockHtml } from './rte.mocks';
 import { ComponentGroupType } from '../../../src/lib/consts';
 import { dedupeArray } from '../../../src/lib/services/utils/functional-utils';
@@ -36,6 +36,7 @@ const template = `
   <b-rich-text-editor
       [value]="html === 'rich text' ? rteMockHtml : xssTest"
       [type]="type"
+      [mode]="mode"
       [label]="label"
       [placeholder]="placeholder"
       [hideLabelOnFocus]="hideLabelOnFocus"
@@ -108,6 +109,7 @@ const note = `
   --- | --- | --- | ---
   [type] | RTEType | theme: primary (white bg, border), secondary \
   (transparent bg, no borders), tertiary (grey bg, no borders) | primary
+  [mode] | RTEMode | html (default), plantext (outputs simple string without formatting or styles, not html) or htmlInlineCSS (embeds some inline styles to be used in email) | html
   [value] | string | html content to be placed inside editor | &nbsp;
   [controls] | BlotType[] | array of toolbar controls \
   (check BlotType enum for all possible controls). \
@@ -204,11 +206,13 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        rteMockHtml: rteMockHtml,
-        xssTest: xssMock,
         html: select('value', ['rich text', 'xss test'], 'rich text', 'Props'),
 
         type: select('type', values(RTEType), RTEType.primary, 'Props'),
+        mode: select('mode', values(RTEMode), RTEMode.html, 'Props'),
+
+        rteMockHtml: text('html', rteMockHtml, 'Data'),
+        xssTest: xssMock,
 
         placeholder: text('placeholder', 'Compose an epic...', 'Props'),
         label: text('label', 'Edit rich textor', 'Props'),

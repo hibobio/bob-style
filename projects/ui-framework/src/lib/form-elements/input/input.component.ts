@@ -102,7 +102,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
       ? null
       : isRegExp(allowedKeys)
       ? allowedKeys
-      : new RegExp(`[${allowedKeys}]`.replace(/([\[\]]){2}/g, '$1'));
+      : new RegExp(`[${allowedKeys}]`.replace(/([\[\]]){2,}/g, '$1'));
   }
   private allowedKeys: RegExp;
 

@@ -81,10 +81,6 @@ $rte-link-color: var(--primary-700);
 }
 
 .fr-box[class] {
-  [style*='color'] {
-    color: inherit !important;
-  }
-
   a {
     color: $rte-link-color;
     text-decoration: underline;
@@ -623,6 +619,8 @@ $empticons-panel-max-width: 235px;
     margin: 5px 0;
     padding-left: 25px;
     line-height: $line-height-body;
+
+    @include normalize-par;
 
     li {
       width: 100%;

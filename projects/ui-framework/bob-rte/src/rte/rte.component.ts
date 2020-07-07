@@ -30,7 +30,7 @@ import { RTEbaseElement } from './rte.abstract';
 import { PlaceholdersConverterService } from './placeholders.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RteUtilsService } from './rte-utils.service';
-import { RTEType } from './rte.enum';
+import { RTEMode } from './rte.enum';
 
 @Component({
   selector: 'b-rich-text-editor',
@@ -282,7 +282,7 @@ export class RichTextEditorComponent extends RTEbaseElement
 
       'commands.before': (cmd: string, param1: string, param2: string) => {
         if (
-          this.type === RTEType.singleLine &&
+          this.mode === RTEMode.plainText &&
           cmd !== 'undo' &&
           cmd !== 'redo'
         ) {

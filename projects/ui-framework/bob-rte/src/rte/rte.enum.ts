@@ -5,6 +5,12 @@ export enum RTEType {
   singleLine = 'singleLine',
 }
 
+export enum RTEMode {
+  html = 'html',
+  htmlInlineCSS = 'htmlInlineCSS',
+  plainText = 'plainText',
+}
+
 export enum BlotType {
   size = 'fontSize',
   fontSize = 'fontSize',

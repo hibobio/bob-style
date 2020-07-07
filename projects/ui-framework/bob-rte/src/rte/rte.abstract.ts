@@ -50,7 +50,7 @@ import {
   RTE_OPTIONS_DEF,
   RTE_TOOLBAR_HEIGHT,
 } from './rte.const';
-import { BlotType, RTEType } from './rte.enum';
+import { BlotType, RTEType, RTEMode } from './rte.enum';
 import { RteMentionsOption } from './rte.interface';
 import { PlaceholdersConverterService } from './placeholders.service';
 import { FroalaEditorInstance, FroalaOptions } from './froala.interface';
@@ -127,18 +127,25 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   @HostBinding('attr.data-type') @Input() public type: RTEType =
     RTEType.primary;
+  @HostBinding('attr.data-mode') @Input() public mode: RTEMode = RTEMode.html;
 
-  public writeValue(value: any, onChanges = false): void {
-    if (value !== undefined && value !== this.editorValue) {
+  public writeValue(value: any, onChanges = false, force = false): void {
+    if (value !== undefined && (force || value !== this.editorValue)) {
       try {
         this.editorValue = chainCall(
           [
             (html: string) => this.sanitizer.filterXSS(html),
-            (html: string) =>
-              this.parserService.removeElements(
-                html,
-                'img:not([src]), img[src=""], a:not([href]), a[href=""]'
-              ),
+
+            ...(this.mode !== RTEMode.plainText
+              ? [
+                  (html: string) =>
+                    this.parserService.removeElements(
+                      html,
+                      'img:not([src]), img[src=""], a:not([href]), a[href=""]'
+                    ),
+                ]
+              : []),
+
             ...this.inputTransformers,
           ],
           value
@@ -178,11 +185,18 @@ export abstract class RTEbaseElement extends BaseFormElement
       true
     );
 
+    if (this.type === RTEType.singleLine) {
+      this.mode = RTEMode.plainText;
+    }
+
     if (hasChanges(changes, ['options'], true)) {
       this.updateEditorOptions(merge(RTE_OPTIONS_DEF, this.options));
     }
 
-    if (firstChanges(changes, ['type']) && this.type === RTEType.singleLine) {
+    if (
+      firstChanges(changes, ['type', 'mode']) &&
+      this.mode === RTEMode.plainText
+    ) {
       this.updateEditorOptions({
         shortcutsEnabled: [],
         pluginsEnabled: [],
@@ -242,14 +256,14 @@ export abstract class RTEbaseElement extends BaseFormElement
       });
     }
 
-    if (hasChanges(changes, ['controls', 'disableControls', 'type'])) {
+    if (hasChanges(changes, ['controls', 'disableControls', 'type', 'mode'])) {
       this.initControls();
       this.updateToolbar();
       this.cntrlsInited = true;
     }
 
     if (
-      changes.placeholderList ||
+      hasChanges(changes, ['placeholderList', 'mode']) ||
       (this.inputTransformers.length === 0 && !notFirstChanges(changes))
     ) {
       this.initTransformers();
@@ -269,13 +283,10 @@ export abstract class RTEbaseElement extends BaseFormElement
     }
 
     if (
-      changes.value ||
+      hasChanges(changes, ['value', 'mode']) ||
       (changes.placeholderList && this.editorValue !== undefined)
     ) {
-      this.writeValue(
-        changes.value ? changes.value.currentValue : this.editorValue,
-        true
-      );
+      this.writeValue(this.value, true, true);
 
       this.transmitValue(this.editorValue, {
         eventType: [InputEventType.onWrite],
@@ -332,9 +343,14 @@ export abstract class RTEbaseElement extends BaseFormElement
   }
 
   private initControls(): void {
-    if (this.type === RTEType.singleLine) {
+    if (this.mode === RTEMode.plainText) {
       this.controls = [BlotType.placeholder];
       return;
+    } else if (
+      this.controls.length === 1 &&
+      this.controls[0] === BlotType.placeholder
+    ) {
+      this.controls = Object.values(BlotType);
     }
 
     if (this.controls.includes(BlotType.list)) {
@@ -370,72 +386,80 @@ export abstract class RTEbaseElement extends BaseFormElement
     this.inputTransformers = [
       stringyOrFail,
 
-      (value: string): string =>
-        HtmlParserHelpers.prototype.enforceAttributes(value, {
-          '*': {
-            '^on.*': null,
-          },
-          br: {
-            '.*': null,
-          },
-        }),
+      ...(this.mode === RTEMode.plainText
+        ? [(value: string): string => this.parserService.getPlainText(value)]
+        : [
+            (value: string): string =>
+              HtmlParserHelpers.prototype.enforceAttributes(value, {
+                '*': {
+                  '^on.*': null,
+                },
+                br: {
+                  '.*': null,
+                },
+              }),
 
-      (value: string): string =>
-        HtmlParserHelpers.prototype.cleanupHtml(value, { removeNbsp: false }),
+            (value: string): string =>
+              HtmlParserHelpers.prototype.cleanupHtml(value, {
+                removeNbsp: false,
+              }),
 
-      (value: string): string =>
-        this.parserService.enforceAttributes(value, {
-          a: {
-            class: 'fr-deletable',
-            target: '_blank',
-            spellcheck: 'false',
-            rel: 'noopener noreferrer',
-            tabindex: '-1',
-          },
-          '[mention-employee-id],[class*="mention"]': {
-            class: 'fr-deletable',
-            target: null,
-            spellcheck: 'false',
-            rel: 'noopener noreferrer',
-            contenteditable: false,
-          },
-        }),
+            (value: string): string =>
+              this.parserService.enforceAttributes(value, {
+                a: {
+                  class: 'fr-deletable',
+                  target: '_blank',
+                  spellcheck: 'false',
+                  rel: 'noopener noreferrer',
+                  tabindex: '-1',
+                },
+                '[mention-employee-id],[class*="mention"]': {
+                  class: 'fr-deletable',
+                  target: null,
+                  spellcheck: 'false',
+                  rel: 'noopener noreferrer',
+                  contenteditable: false,
+                },
+              }),
 
-      (value: string): string =>
-        this.parserService.linkify(
-          value,
-          'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
-        ),
-
-      (value: string): string =>
-        this.type === RTEType.singleLine
-          ? this.parserService.getPlainText(value)
-          : value,
+            (value: string): string =>
+              this.parserService.linkify(
+                value,
+                'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
+              ),
+          ]),
     ];
 
-    this.outputTransformers = [
-      (value: string): string =>
-        this.parserService.enforceAttributes(value, {
-          'span,p,div,a': {
-            contenteditable: null,
-            tabindex: null,
-            spellcheck: null,
-            class: {
-              'fr-.*': false,
-            },
-          },
-        }),
+    this.outputTransformers =
+      this.mode === RTEMode.plainText
+        ? [(value: string): string => this.parserService.getPlainText(value)]
+        : [
+            (value: string): string =>
+              this.parserService.enforceAttributes(value, {
+                'span,p,div,a': {
+                  contenteditable: null,
+                  tabindex: null,
+                  spellcheck: null,
+                  class: {
+                    'fr-.*': false,
+                  },
+                },
 
-      (value: string): string =>
-        HtmlParserHelpers.prototype.cleanupHtml(value, {
-          removeNbsp: true,
-        }),
+                ...(this.mode === RTEMode.htmlInlineCSS
+                  ? {
+                      a: {
+                        style:
+                          'color: #fea54a; font-weight: 700; text-decoration: none;',
+                      },
+                    }
+                  : {}),
+              }),
 
-      (value: string): string =>
-        this.type === RTEType.singleLine
-          ? this.parserService.getPlainText(value)
-          : value,
-    ];
+            (value: string): string =>
+              HtmlParserHelpers.prototype.cleanupHtml(value, {
+                removeNbsp: true,
+              }),
+          ];
 
     if (this.placeholdersEnabled()) {
       this.inputTransformers.push((value: string): string =>
@@ -490,7 +514,7 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   protected updateToolbar(): void {
     if (this.toolbarButtons) {
-      if (isEmptyArray(this.controls) || this.type === RTEType.singleLine) {
+      if (isEmptyArray(this.controls) || this.mode === RTEMode.plainText) {
         this.editor.toolbar.hide();
       } else {
         this.toolbarButtons.forEach((b) => {
