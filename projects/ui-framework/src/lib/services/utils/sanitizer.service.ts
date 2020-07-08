@@ -3,9 +3,8 @@ import { isString, chainCall } from './functional-utils';
 import { HtmlParserHelpers } from '../html/html-parser.service';
 
 import * as xss from 'xss';
-import { ICSSFilter, IFilterXSSOptions } from 'xss';
 
-export interface FilterXSSOptions extends IFilterXSSOptions {
+export interface FilterXSSOptions extends XSS.IFilterXSSOptions {
   css?: { whiteList: { [key: string]: boolean } };
 }
 
@@ -102,7 +101,7 @@ export const SANITIZER_FILTER_XSS_OPTIONS: FilterXSSOptions = {
 export class SanitizerService {
   constructor(private htmlParser: HtmlParserHelpers) {}
 
-  private htmlSanitizer: ICSSFilter;
+  private htmlSanitizer: XSS.ICSSFilter;
 
   private htmlSanitizeChain = [
     //
