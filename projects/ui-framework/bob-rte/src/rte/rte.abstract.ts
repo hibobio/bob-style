@@ -450,7 +450,7 @@ export abstract class RTEbaseElement extends BaseFormElement
                   ? {
                       a: {
                         style:
-                          'color: #fea54a; font-weight: 700; text-decoration: none;',
+                          'color: #fea54a; font-weight: 600; text-decoration: none;',
                       },
                     }
                   : {}),
