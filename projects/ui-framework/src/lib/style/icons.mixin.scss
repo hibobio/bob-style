@@ -155,35 +155,35 @@ $icon-sizes: (
 );
 
 $icon-colors: (
-  dark: (
+  'dark': (
     color: $grey-700,
     hover: $grey-800,
   ),
-  normal: (
+  'normal': (
     color: $grey-600,
     hover: $grey-700,
   ),
-  light: (
+  'light': (
     color: $grey-500,
     hover: $grey-600,
   ),
-  white: (
+  'white': (
     color: $white,
     hover: $white,
   ),
-  primary: (
+  'primary': (
     color: var(--primary-500),
     hover: var(--primary-700),
   ),
-  inform: (
+  'inform': (
     color: var(--inform-500),
     hover: var(--inform-700),
   ),
-  negative: (
+  'negative': (
     color: var(--negative-500),
     hover: var(--negative-700),
   ),
-  positive: (
+  'positive': (
     color: var(--positive-500),
     hover: var(--positive-600),
   ),
