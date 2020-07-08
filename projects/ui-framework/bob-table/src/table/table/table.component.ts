@@ -234,8 +234,11 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,
       suppressContextMenu: true,
-      rowBuffer:
-        this.suppressRowVirtualisation || this.enablePager ? 99999 : 20,
+      rowBuffer: this.suppressRowVirtualisation
+        ? 99999
+        : this.enablePager
+        ? 10
+        : 20,
       animateRows: false,
 
       pagination: this.enablePager,
