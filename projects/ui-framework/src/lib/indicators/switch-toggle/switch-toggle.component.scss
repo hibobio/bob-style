@@ -1,52 +1,77 @@
 @import '../../style/common-imports';
 
+:host {
+  display: block;
+  min-width: 0;
+  text-align: left;
+}
+
 :host ::ng-deep {
   cursor: pointer;
+
+  .mat-slide-toggle-ripple.mat-ripple {
+    display: none;
+  }
+
   .mat-slide-toggle {
-    .mat-slide-toggle-bar {
-      box-sizing: border-box;
-      height: 18px;
-      border-radius: 10px;
-      background-color: $grey-500;
-      width: 32px;
-      .mat-slide-toggle-thumb-container {
-        cursor: pointer;
-        width: 14px;
-        height: 14px;
-        top: 2px;
-        left: 2px;
-        .mat-slide-toggle-thumb {
-          box-sizing: border-box;
-          background-color: white;
-          width: 14px;
-          height: 14px;
-          box-shadow: none;
-        }
+    height: auto;
+    display: block;
+  }
+
+  .mat-slide-toggle-label {
+    align-items: flex-start;
+  }
+
+  .mat-slide-toggle-content {
+    @include b-body($addCssVars: false);
+    white-space: normal;
+    overflow: visible;
+  }
+
+  .mat-slide-toggle-thumb-container {
+    cursor: pointer;
+    width: 14px;
+    height: 14px;
+    top: 2px;
+    left: 2px;
+  }
+
+  .mat-slide-toggle-thumb {
+    box-sizing: border-box;
+    background-color: white;
+    width: 14px;
+    height: 14px;
+    box-shadow: none;
+  }
+
+  .mat-slide-toggle-bar {
+    box-sizing: border-box;
+    height: 18px;
+    border-radius: 10px;
+    background-color: $grey-500;
+    width: 32px;
+
+    &:hover {
+      .mat-slide-toggle-thumb {
+        box-shadow: 3px 2px 5px $boxShadowColor;
       }
-      &:hover {
-        .mat-slide-toggle-thumb-container .mat-slide-toggle-thumb {
-          box-shadow: 3px 2px 5px $boxShadowColor;
-        }
-      }
     }
+  }
 
-    .mat-slide-toggle-content {
-      @include b-body($addCssVars: false);
-    }
-
-    .mat-slide-toggle-ripple.mat-ripple {
-      display: none;
-    }
-
+  .mat-slide-toggle {
     &.mat-checked {
+      .mat-slide-toggle-thumb-container {
+        transform: translate3d(14px, 0, 0);
+      }
+
+      .mat-slide-toggle-thumb {
+        border-color: transparent;
+        background-color: white;
+      }
+
       .mat-slide-toggle-bar {
         background-color: var(--primary-500) !important;
-        .mat-slide-toggle-thumb-container {
-          transform: translate3d(14px, 0, 0);
-          .mat-slide-toggle-thumb {
-            border-color: transparent;
-          }
-        }
+
         &:hover {
           .mat-slide-toggle-thumb-container .mat-slide-toggle-thumb {
             box-shadow: -3px 2px 5px $boxShadowColor;
@@ -57,23 +82,26 @@
 
     &.mat-disabled {
       opacity: 1;
+
       .mat-slide-toggle-bar {
         background-color: $grey-300 !important;
-        .mat-slide-toggle-thumb-container {
-          .mat-slide-toggle-thumb {
-            background-color: $white;
-            border: none;
-          }
-        }
       }
+
+      .mat-slide-toggle-thumb {
+        background-color: $white;
+        border: none;
+      }
+
       .mat-slide-toggle-content {
         color: $grey-500;
       }
+
       .mat-slide-toggle-label:hover {
-        .mat-slide-toggle-thumb-container .mat-slide-toggle-thumb {
+        .mat-slide-toggle-thumb {
           box-shadow: none;
         }
       }
+
       &.mat-checked {
         .mat-slide-toggle-bar {
           background-color: var(--primary-500) !important;
