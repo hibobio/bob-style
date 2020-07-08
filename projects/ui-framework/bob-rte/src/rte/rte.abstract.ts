@@ -413,11 +413,12 @@ export abstract class RTEbaseElement extends BaseFormElement
                   rel: 'noopener noreferrer',
                   tabindex: '-1',
                 },
-                '[mention-employee-id],[class*="mention"]': {
+                // '[mention-employee-id],[class*="mention"]'
+                '[href*="/employee-profile/"]': {
                   class: 'fr-deletable',
                   target: null,
                   spellcheck: 'false',
-                  rel: 'noopener noreferrer',
+                  rel: null,
                   contenteditable: false,
                 },
               }),
@@ -479,7 +480,7 @@ export abstract class RTEbaseElement extends BaseFormElement
       selectTemplate: (item: TributeItem) => {
         // prettier-ignore
         // tslint:disable-next-line: max-line-length
-        let html = `<a href="${item.original.link}" class="fr-deletable" spellcheck="false" rel="noopener noreferrer" contenteditable="false" tabindex="-1">@${item.original.displayName}</a>`;
+        let html = `<a href="${item.original.link}" class="fr-deletable" spellcheck="false" contenteditable="false" tabindex="-1">@${item.original.displayName}</a>`;
 
         if (isNotEmptyObject(item.original.attributes)) {
           html = this.parserService.enforceAttributes(html, {

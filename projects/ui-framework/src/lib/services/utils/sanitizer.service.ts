@@ -68,7 +68,7 @@ const SANITIZER_HTML_ALLOWED_ATTRS_TESTS: RegExp[] = SANITIZER_ALLOWED_ATTRS.red
   []
 );
 
-const SANITIZER_FILTER_XSS_OPTIONS: IFilterXSSOptions = {
+export const SANITIZER_FILTER_XSS_OPTIONS: IFilterXSSOptions = {
   whiteList: SANITIZER_ALLOWED_TAGS.reduce((listObj, tag) => {
     listObj[tag] = SANITIZER_ALLOWED_ATTRS;
     return listObj;
@@ -120,8 +120,9 @@ export class SanitizerService {
           target: '_blank',
           rel: 'noopener noreferrer',
         },
-        '[mention-employee-id],[class*="mention"]': {
+        '[href*="/employee-profile/"]': {
           target: null,
+          rel: null,
         },
       }),
 
@@ -129,18 +130,26 @@ export class SanitizerService {
       this.htmlParser.linkify(value, 'rel="noopener noreferrer"'),
   ];
 
-  public filterXSS(html: string): string {
+  public filterXSS(
+    html: string,
+    options: Partial<IFilterXSSOptions> = null
+  ): string {
     return !html || !isString(html)
       ? html
+      : options
+      ? xss.filterXSS(html, { ...SANITIZER_FILTER_XSS_OPTIONS, ...options })
       : (
           this.htmlSanitizer ||
           (this.htmlSanitizer = new xss.FilterXSS(SANITIZER_FILTER_XSS_OPTIONS))
         ).process(html);
   }
 
-  public sanitizeHtml(html: string): string {
+  public sanitizeHtml(
+    html: string,
+    options: Partial<IFilterXSSOptions> = null
+  ): string {
     return !html || !isString(html)
       ? html
-      : chainCall(this.htmlSanitizeChain, this.filterXSS(html));
+      : chainCall(this.htmlSanitizeChain, this.filterXSS(html, options));
   }
 }

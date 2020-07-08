@@ -599,7 +599,7 @@ export * from './lib/services/utils/transformers';
 // Mocks
 export { selectOptionsMock } from './lib/lists/multi-select-panel/multi-select-panel.mock';
 // Sanitizer
-export { SanitizerService } from './lib/services/utils/sanitizer.service';
+export * from './lib/services/utils/sanitizer.service';
 
 /*
 * Animation
