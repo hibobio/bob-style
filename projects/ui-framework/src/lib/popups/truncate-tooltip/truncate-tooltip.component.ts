@@ -214,7 +214,7 @@ export class TruncateTooltipComponent
 
     const compareHeight = this.trustCssVars
       ? this.textContainer.nativeElement.offsetHeight + 5
-      : this.textElementTextProps.maxHeight;
+      : this.textElementTextProps?.maxHeight;
 
     this.tooltipEnabled =
       (this.maxLines === 1 &&

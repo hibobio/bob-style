@@ -116,6 +116,7 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
       !this.supressWarnings &&
       this.imageSource &&
       this.imageSource.indexOf('filestack') > -1 &&
+      !/default-avatars/.test(this.imageSource) &&
       !/align\W{1,2}faces/.test(this.imageSource)
     ) {
       const imgref = this.imageSource.split(
