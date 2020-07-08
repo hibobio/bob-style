@@ -59,7 +59,7 @@ export class RteViewComponent implements OnChanges {
       const sanitized = this.sanitizer.sanitizeHtml(this.value, {
         css: {
           whiteList: {
-            ...SANITIZER_FILTER_XSS_OPTIONS.whiteList,
+            ...SANITIZER_FILTER_XSS_OPTIONS.css.whiteList,
             color: true,
             'text-decoration': true,
           },

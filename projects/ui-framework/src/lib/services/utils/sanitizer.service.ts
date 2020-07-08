@@ -5,6 +5,10 @@ import { HtmlParserHelpers } from '../html/html-parser.service';
 import * as xss from 'xss';
 import { ICSSFilter, IFilterXSSOptions } from 'xss';
 
+export interface FilterXSSOptions extends IFilterXSSOptions {
+  css?: { whiteList: { [key: string]: boolean } };
+}
+
 const SANITIZER_ALLOWED_TAGS = [
   'a',
   'br',
@@ -68,9 +72,9 @@ const SANITIZER_HTML_ALLOWED_ATTRS_TESTS: RegExp[] = SANITIZER_ALLOWED_ATTRS.red
   []
 );
 
-export const SANITIZER_FILTER_XSS_OPTIONS: IFilterXSSOptions = {
+export const SANITIZER_FILTER_XSS_OPTIONS: FilterXSSOptions = {
   whiteList: SANITIZER_ALLOWED_TAGS.reduce((listObj, tag) => {
-    listObj[tag] = SANITIZER_ALLOWED_ATTRS;
+    listObj[tag] = SANITIZER_ALLOWED_ATTRS.slice();
     return listObj;
   }, {}),
 
@@ -132,7 +136,7 @@ export class SanitizerService {
 
   public filterXSS(
     html: string,
-    options: Partial<IFilterXSSOptions> = null
+    options: Partial<FilterXSSOptions> = null
   ): string {
     return !html || !isString(html)
       ? html
@@ -146,7 +150,7 @@ export class SanitizerService {
 
   public sanitizeHtml(
     html: string,
-    options: Partial<IFilterXSSOptions> = null
+    options: Partial<FilterXSSOptions> = null
   ): string {
     return !html || !isString(html)
       ? html
