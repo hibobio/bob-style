@@ -155,7 +155,7 @@ p {
   }
 }
 
-.bcp-section-not-collapsible::ng-deep {
+.bcp-section-not-collapsible {
   .bcp-panel-content-wrap {
     padding: times8(4);
 
@@ -166,7 +166,7 @@ p {
   }
 }
 
-.bcp-section-collapsible::ng-deep {
+.bcp-section-collapsible {
   .bcp-header {
     cursor: pointer;
   }
@@ -251,14 +251,14 @@ p {
 
 .bcp-section-not-collapsible,
 .bcp-section.bcp-section-expanded {
-  ::ng-deep .bcp-header {
+  .bcp-header {
     box-shadow: 0 1px 0 0 $bcp-border-color;
   }
 }
 
 // Options
 
-.bcp-section.bcp-section-not-divided::ng-deep {
+.bcp-section.bcp-section-not-divided {
   .bcp-header {
     box-shadow: none;
   }
@@ -270,7 +270,7 @@ p {
   }
 }
 
-.bcp-disable-animation ::ng-deep {
+.bcp-disable-animation {
   .bcp-panel,
   .bcp-panel-content-wrap,
   .bcp-section-collapsible,
