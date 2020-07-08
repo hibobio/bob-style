@@ -98,7 +98,7 @@ describe('SideMenuComponent', () => {
     });
     it('should display icon tooltip wrap', () => {
       expect(
-        fixture.debugElement.query(By.css('.avatar-text-icon .b-icon'))
+        fixture.debugElement.query(By.css('.avatar-text-icon'))
           .nativeElement.className
       ).toContain(TooltipClass.NoWrap);
     });

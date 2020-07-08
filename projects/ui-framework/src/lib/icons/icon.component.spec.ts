@@ -58,7 +58,7 @@ describe('IconElementComponent', () => {
            tooltipClass: TooltipClass.NoWrap
          })
       );
-      expect(component.iconClass).toContain(TooltipClass.NoWrap);
+      expect(componentElement.className).toContain(TooltipClass.NoWrap);
     });
   });
 

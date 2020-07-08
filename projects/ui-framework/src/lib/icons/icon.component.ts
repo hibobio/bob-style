@@ -6,6 +6,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   SimpleChanges,
+  ElementRef
 } from '@angular/core';
 import { IconColor, Icons, IconSize, IconType, IconRotate } from './icons.enum';
 import {
@@ -14,6 +15,7 @@ import {
   asArray
 } from '../services/utils/functional-utils';
 import { TooltipClass } from '../popups/tooltip/tooltip.enum';
+import { DOMhelpers } from '../services/html/dom-helpers.service';
 
 @Component({
   selector: 'b-icon, [b-icon]',
@@ -24,7 +26,11 @@ import { TooltipClass } from '../popups/tooltip/tooltip.enum';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IconComponent implements OnChanges {
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor(
+    private host: ElementRef,
+    private DOM: DOMhelpers,
+    private cd: ChangeDetectorRef
+  ) {}
 
   @Input() icon: Icons;
   @Input() color: IconColor = IconColor.dark;
@@ -49,8 +55,11 @@ export class IconComponent implements OnChanges {
       this.size +
       ' b-icon-' +
       this.color +
-      (this.hasHoverState ? ' has-hover' : '') +
-      (this.tooltipClass ? ' ' + asArray(this.tooltipClass).join(' ') : '');
+      (this.hasHoverState ? ' has-hover' : '');
+
+    if (changes.tooltipClass) {
+      this.DOM.bindClasses(this.host.nativeElement, this.tooltipClass);
+    }
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
