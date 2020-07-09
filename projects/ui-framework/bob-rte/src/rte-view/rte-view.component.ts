@@ -10,10 +10,14 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { SanitizerService, SelectGroupOption, hasChanges } from 'bob-style';
+import {
+  SanitizerService,
+  SelectGroupOption,
+  hasChanges,
+  SANITIZER_FILTER_XSS_OPTIONS,
+} from 'bob-style';
 import { PlaceholdersConverterService } from '../rte/placeholders.service';
 import { RteViewType } from './rte-view.enum';
-import { SANITIZER_FILTER_XSS_OPTIONS } from '../../../src/lib/services/utils/sanitizer.service';
 
 @Component({
   selector: 'b-rich-text-view',
