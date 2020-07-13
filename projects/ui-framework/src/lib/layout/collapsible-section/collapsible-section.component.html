@@ -15,10 +15,10 @@
 
     <div *ngIf="title"
          class="bcp-title-wrap {{panelID}}"
-         [ngClass]="{'flx-col': options?.titlesAsColumn}">
+         [ngClass]="{'flx-col': options.titlesAsColumn}">
 
       <h4 class="bcp-title"
-          [ngClass]="{'b-display-3': !options?.smallTitle, 'b-bold-body': options?.smallTitle}">{{title}}</h4>
+          [ngClass]="{'b-display-3': !options.smallTitle, 'b-bold-body': options.smallTitle}">{{title}}</h4>
 
       <p *ngIf="description"
          class="bcp-description">{{description}}</p>
@@ -27,8 +27,8 @@
     <div *ngIf="hasHeaderContent"
          #headerContent
          class="bcp-header-content"
-         [attr.data-clickable]="(collapsible && options?.headerTranscludeStopPropagation !== true) || null"
-         (click.outside-zone)="options?.headerTranscludeStopPropagation && $event.stopPropagation()">
+         [attr.data-clickable]="(collapsible && options.headerTranscludeStopPropagation !== true) || null"
+         (click.outside-zone)="options.headerTranscludeStopPropagation && $event.stopPropagation()">
       <ng-content select="[header]"></ng-content>
     </div>
 
@@ -42,8 +42,8 @@
        [attr.data-expanded]="!collapsible || startsExpanded ? null : !!expanded">
 
     <div class="bcp-panel-content-wrap {{panelID}}"
-        [attr.data-collapsible]="!!collapsible"
-        [attr.data-expanded]="!collapsible ? null : !!expanded"
+         [attr.data-collapsible]="!!collapsible"
+         [attr.data-expanded]="!collapsible ? null : !!expanded"
          #panelContent>
       <ng-content></ng-content>
     </div>

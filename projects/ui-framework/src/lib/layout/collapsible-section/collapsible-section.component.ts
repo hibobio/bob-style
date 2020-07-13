@@ -84,11 +84,13 @@ export class CollapsibleSectionComponent
   @ViewChild('footerContent') footerContent: ElementRef;
 
   @HostBinding('attr.data-animation-disabled') get animationDisabled() {
-    return this.options?.disableAnimation || this.disableAnimation || null;
+    return this.options.disableAnimation || this.disableAnimation || null;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes);
+    applyChanges(this, changes, {
+      options: cloneObject(COLLAPSIBLE_OPTIONS_DEF),
+    });
 
     if (hasChanges(changes, ['options'])) {
       this.options = {
