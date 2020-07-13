@@ -20,31 +20,27 @@ import { ChartLegendPositionEnum } from '../../chart/chart.interface';
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
 );
-const template = `
-<div>
-  <b-multi-bar-chart
-    [data]="data"
-    [showDataLabels]="showDataLabels"
-    [legendPosition]="legendPosition"
-    [preTooltipValue]="preTooltipValue"
-    [postTooltipValue]="postTooltipValue"
-    [categories]="categories"
-    [legend]="legend"
-    [colorPalette]="colorPalette"
-    [name]="name"
-    [height]="height"
-    [title]="title"
-    [pointFormat]="pointFormat"
-    #chart
-  >
-  </b-multi-bar-chart>
-  <button (click)="chart.exportChart(downloadChart)">download</button>
-</div>
-`;
+const template = `<b-multi-bar-chart
+      [data]="data"
+      [showDataLabels]="showDataLabels"
+      [legendPosition]="legendPosition"
+      [preTooltipValue]="preTooltipValue"
+      [postTooltipValue]="postTooltipValue"
+      [categories]="categories"
+      [legend]="legend"
+      [colorPalette]="colorPalette"
+      [name]="name"
+      [height]="height"
+      [title]="title"
+      [pointFormat]="pointFormat"
+      #chart>
+</b-multi-bar-chart>
+
+<button (click)="chart.exportChart(downloadChart)">download</button>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Multi bar Chart'">
-    ${template}
+   <div> ${template} </div>
 </b-story-book-layout>
 `;
 
@@ -73,6 +69,19 @@ const note = `
   height (optional) | number | height of chart | 500
   title (optional) | string | title of chart | &nbsp;
   pointFormat (optional) | string | tooltip formatter | {series.name}: <b>{point.percentage:.1f}%</b>
+
+  #### Hiding left/bottom labels
+  To disable "Values" word on the left, you can use:
+
+  ~~~
+  [extraOptions]="{yAxis: {title: false}}"
+  ~~~
+
+  To hide the left/bottom labels completely, use:
+
+  ~~~
+  [extraOptions]="{yAxis: {visible: false}, xAxis: {visible: false}}"
+  ~~~
 `;
 
 story.add(
@@ -83,13 +92,9 @@ story.add(
       props: {
         downloadChart: select(
           'downloadChart',
-          [
-            'application/pdf',
-            'image/jpeg',
-            'image/png',
-            'image/svg+xml'
-          ],
-          'image/jpeg'),
+          ['application/pdf', 'image/jpeg', 'image/png', 'image/svg+xml'],
+          'image/jpeg'
+        ),
         legendPosition: select(
           'legendPosition',
           Object.values(ChartLegendPositionEnum),
