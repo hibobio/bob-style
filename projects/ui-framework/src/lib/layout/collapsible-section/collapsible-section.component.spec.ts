@@ -91,8 +91,8 @@ describe('CollapsibleSectionComponent', () => {
     });
 
     it('should default to non-collapsible section', () => {
-      expect(collapsibleSection.classList).not.toContain(
-        'bcp-section-collapsible'
+      expect(collapsibleSection.getAttribute('data-collapsible')).toEqual(
+        'false'
       );
       expect(collapsiblePanel).toBeTruthy();
     });
@@ -148,7 +148,9 @@ describe('CollapsibleSectionComponent', () => {
     });
 
     it('should start with panel collapsed', () => {
-      expect(collapsibleSection.classList).toContain('bcp-section-collapsible');
+      expect(collapsibleSection.getAttribute('data-collapsible')).toEqual(
+        'true'
+      );
       expect(collapsibleSection.classList).not.toContain(
         'bcp-section-expanded'
       );
@@ -169,8 +171,8 @@ describe('CollapsibleSectionComponent', () => {
       collapsiblePanel = elementFromFixture(fixture, '.bcp-panel');
 
       expect(collapsiblePanel).toBeTruthy();
-      expect(collapsibleSection.classList).toContain('bcp-section-expanded');
-      expect(collapsiblePanel.classList).toContain('bcp-panel-expanded');
+      expect(collapsibleSection.getAttribute('data-expanded')).toEqual('true');
+      expect(collapsiblePanel.getAttribute('data-expanded')).toEqual('true');
       expect(collapsibleComponent.opened.emit).toHaveBeenCalled();
     });
 
@@ -181,8 +183,8 @@ describe('CollapsibleSectionComponent', () => {
       collapsiblePanel = elementFromFixture(fixture, '.bcp-panel');
 
       expect(collapsiblePanel).toBeTruthy();
-      expect(collapsibleSection.classList).toContain('bcp-section-expanded');
-      expect(collapsiblePanel.classList).toContain('bcp-panel-expanded');
+      expect(collapsibleSection.getAttribute('data-expanded')).toEqual('true');
+      expect(collapsiblePanel.getAttribute('data-expanded')).toEqual('true');
       expect(collapsibleComponent.opened.emit).toHaveBeenCalled();
 
       flush();
@@ -192,26 +194,22 @@ describe('CollapsibleSectionComponent', () => {
       emitNativeEvent(collapsibleHeader, 'click');
       fixture.detectChanges();
 
-      expect(collapsibleSection.classList).toContain('bcp-section-expanded');
+      expect(collapsibleSection.getAttribute('data-expanded')).toEqual('true');
 
       emitNativeEvent(collapsibleHeader, 'click');
       fixture.detectChanges();
 
-      expect(collapsibleSection.classList).not.toContain(
-        'bcp-section-expanded'
-      );
+      expect(collapsibleSection.getAttribute('data-expanded')).toEqual('false');
       expect(collapsibleHeader.classList).not.toContain('no-shadow');
       expect(collapsiblePanel.classList).not.toContain('no-top-border');
       expect(collapsibleComponent.closed.emit).toHaveBeenCalled();
     });
 
     it('should not show divider when divided = false', () => {
-      expect(collapsibleSection.classList).not.toContain(
-        'bcp-section-not-divided'
-      );
+      expect(collapsibleSection.getAttribute('data-divided')).toEqual('true');
       collapsibleComponent.divided = false;
       fixture.detectChanges();
-      expect(collapsibleSection.classList).toContain('bcp-section-not-divided');
+      expect(collapsibleSection.getAttribute('data-divided')).toEqual('false');
     });
 
     it('should put CSS variable with content height on component host element', () => {
@@ -219,7 +217,7 @@ describe('CollapsibleSectionComponent', () => {
       fixture.detectChanges();
 
       expect(collapsibleHost.getAttribute('style')).toContain(
-        '--panel-height:300px;'
+        '--panel-height:3'
       );
     });
 
