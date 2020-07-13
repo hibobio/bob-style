@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { ChartCore } from '../../chart/chart-core';
 import { SeriesOptionsType } from 'highcharts';
-import { merge } from 'lodash';
 import { ChartTypesEnum } from '../../chart/chart.enum';
 
 @Component({
@@ -43,30 +42,27 @@ export class BarLineChartComponent extends ChartCore implements OnChanges {
       groupPadding: 0.2,
     };
 
-    this.chartOptions = merge(
-      {
-        chart: {
-          height: Math.abs(this.height),
-        },
-        xAxis: {
-          categories: this.categories,
-        },
-        series: this.data.map((dataSet: any) => {
-          dataSet.showInLegend = this.legend;
-          dataSet.dataLabels = {
-            enabled: this.showDataLabels,
-          };
-          return dataSet as SeriesOptionsType[];
-        }),
-        plotOptions: {
-          column: this.stacked
-            ? this.stackedPercent
-              ? { ...COLUMN_BAR_WIDTH, stacking: 'percent' }
-              : { ...COLUMN_BAR_WIDTH, stacking: 'normal' }
-            : { ...MULTI_COLUMN_WIDTH, stacking: undefined },
-        },
+    this.chartOptions = {
+      chart: {
+        height: Math.abs(this.height),
       },
-      this.extraOptions
-    );
+      xAxis: {
+        categories: this.categories,
+      },
+      series: this.data.map((dataSet: any) => {
+        dataSet.showInLegend = this.legend;
+        dataSet.dataLabels = {
+          enabled: this.showDataLabels,
+        };
+        return dataSet as SeriesOptionsType;
+      }),
+      plotOptions: {
+        column: this.stacked
+          ? this.stackedPercent
+            ? { ...COLUMN_BAR_WIDTH, stacking: 'percent' }
+            : { ...COLUMN_BAR_WIDTH, stacking: 'normal' }
+          : { ...MULTI_COLUMN_WIDTH, stacking: undefined },
+      },
+    };
   }
 }

@@ -40,8 +40,8 @@ export abstract class ChartCore implements AfterViewInit {
   containerId: string = simpleUID();
   chartOptions: Options;
   options: Options;
-  private formatter = (function(component) {
-    return function() {
+  private formatter = (function (component) {
+    return function () {
       return component.tooltipFormatter(this, component);
     };
   })(this);
@@ -103,7 +103,7 @@ export abstract class ChartCore implements AfterViewInit {
         colors: this.colorPalette,
         chart: {
           events: {
-            render: event => {
+            render: (event) => {
               this.legendChanged.emit();
             },
           },
@@ -148,7 +148,8 @@ export abstract class ChartCore implements AfterViewInit {
           enabled: false,
         },
       },
-      this.chartOptions
+      this.chartOptions,
+      this.extraOptions
     );
   }
 

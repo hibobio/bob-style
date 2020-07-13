@@ -10,7 +10,6 @@ import {
 import { ChartCore } from '../chart/chart-core';
 import { ChartTypesEnum } from '../chart/chart.enum';
 import { SeriesPieDataOptions } from 'highcharts';
-import { merge } from 'lodash';
 
 export const minDonutWidth = 3,
   pieLegendHeight = 37,
@@ -34,30 +33,27 @@ export class PieChartComponent extends ChartCore implements OnChanges {
   }
 
   updateChartOptions() {
-    this.chartOptions = merge(
-      {
-        chart: {
-          height: Math.abs(this.height),
-        },
-        plotOptions: {
-          pie: {
-            innerSize: null,
-            depth: null,
-          },
-        },
-        lang: {
-          noData: '',
-        },
-        series: [
-          {
-            type: 'pie',
-            name: this.name,
-            data: this.data,
-          },
-        ],
+    this.chartOptions = {
+      chart: {
+        height: Math.abs(this.height),
       },
-      this.extraOptions
-    );
+      plotOptions: {
+        pie: {
+          innerSize: null,
+          depth: null,
+        },
+      },
+      lang: {
+        noData: '',
+      },
+      series: [
+        {
+          type: 'pie',
+          name: this.name,
+          data: this.data,
+        },
+      ],
+    };
     if (this.donut) {
       this.chartOptions.plotOptions.pie.innerSize = Math.min(
         Math.abs(this.donutInnerSize),
