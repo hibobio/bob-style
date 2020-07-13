@@ -13,12 +13,15 @@ import {
   OnChanges,
   OnInit,
   OnDestroy,
+  HostBinding,
 } from '@angular/core';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import {
   simpleUID,
   notFirstChanges,
   cloneObject,
+  applyChanges,
+  hasChanges,
 } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
@@ -26,7 +29,7 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 import { CollapsibleOptions } from './collapsible-section.interface';
 import { ColorService } from '../../services/color-service/color.service';
 
-const collapsibleOptionsDef: CollapsibleOptions = {
+export const COLLAPSIBLE_OPTIONS_DEF: CollapsibleOptions = {
   smallTitle: false,
   titlesAsColumn: true,
   headerTranscludeStopPropagation: false,
@@ -47,15 +50,14 @@ export class CollapsibleSectionComponent
     private zone: NgZone,
     private cd: ChangeDetectorRef,
     private colorService: ColorService
-  ) {
-  }
+  ) {}
 
   public hasHeaderContent = true;
   public hasPanelContent = true;
   public hasFooterContent = true;
   public contentLoaded = false;
   public startsExpanded = false;
-  public disableAnimation = false;
+
   private contentHeight = 0;
   private resizeSubscription: Subscription;
   private firstExpand = false;
@@ -70,7 +72,8 @@ export class CollapsibleSectionComponent
   @Input() title: string;
   @Input() description?: string;
 
-  @Input() options: CollapsibleOptions = cloneObject(collapsibleOptionsDef);
+  @Input() options: CollapsibleOptions = cloneObject(COLLAPSIBLE_OPTIONS_DEF);
+  @Input() disableAnimation = false;
 
   @Output() opened: EventEmitter<void> = new EventEmitter<void>();
   @Output() openedFirst: EventEmitter<void> = new EventEmitter<void>();
@@ -80,11 +83,17 @@ export class CollapsibleSectionComponent
   @ViewChild('panelContent') panelContent: ElementRef;
   @ViewChild('footerContent') footerContent: ElementRef;
 
+  @HostBinding('attr.data-animation-disabled') get animationDisabled() {
+    return this.options?.disableAnimation || this.disableAnimation || null;
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.options) {
+    applyChanges(this, changes);
+
+    if (hasChanges(changes, ['options'])) {
       this.options = {
-        ...collapsibleOptionsDef,
-        ...changes.options.currentValue,
+        ...COLLAPSIBLE_OPTIONS_DEF,
+        ...this.options,
       };
 
       if (this.options.indicatorColor) {
@@ -103,19 +112,25 @@ export class CollapsibleSectionComponent
       }
     }
 
-    if (changes.expanded) {
+    if (hasChanges(changes, ['expanded'])) {
       if (!changes.expanded.firstChange) {
-        this.togglePanel(changes.expanded.currentValue);
+        this.togglePanel(this.expanded);
       } else {
-        this.startsExpanded = changes.expanded.currentValue;
+        this.startsExpanded = this.expanded;
       }
     }
 
-    if (changes.panelID && !changes.panelID.firstChange) {
+    if (notFirstChanges(changes, ['panelID'])) {
       this.disableAnimation = true;
       this.cd.detectChanges();
-      setTimeout(() => {
-        this.disableAnimation = false;
+
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.disableAnimation = false;
+          if (!this.cd['destroyed']) {
+            this.cd.detectChanges();
+          }
+        }, 0);
       });
     }
 
@@ -199,9 +214,10 @@ export class CollapsibleSectionComponent
   private setCssVars(repeat = false): void {
     if (this.panelContent) {
       this.contentHeight =
-        this.panelContent.nativeElement.scrollHeight > 100
-          ? this.panelContent.nativeElement.scrollHeight
-          : 500;
+        this.panelContent.nativeElement.scrollHeight +
+        (this.footerContent?.nativeElement.scrollHeight || 0);
+
+      this.contentHeight = this.contentHeight > 100 ? this.contentHeight : 500;
 
       this.DOM.setCssProps(this.host.nativeElement, {
         '--panel-height': this.contentHeight + 'px',

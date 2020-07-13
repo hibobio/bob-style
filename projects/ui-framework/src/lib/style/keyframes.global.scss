@@ -7,36 +7,6 @@
   }
 }
 
-@keyframes bcs-collapse {
-  0% {
-    overflow: visible;
-    max-height: none;
-  }
-  1% {
-    overflow: hidden;
-    max-height: var(--panel-height, 500px);
-  }
-  100% {
-    overflow: hidden;
-    max-height: 0px;
-  }
-}
-
-@keyframes bcs-expand {
-  0% {
-    overflow: hidden;
-    max-height: 0px;
-  }
-  99% {
-    overflow: hidden;
-    max-height: var(--panel-height, 500px);
-  }
-  100% {
-    overflow: visible;
-    max-height: none;
-  }
-}
-
 @keyframes b-hide {
   0% {
     overflow: hidden;

@@ -70,7 +70,7 @@
 }
 
 .sections.dragging ::ng-deep {
-  .bcp-panel, .bcp-panel-content-wrap, .bcp-section-collapsible, .bcp-section-collapsed {
+  [data-expanded] {
     transition-duration: 0s !important;
     transition-delay: 0s !important;
     animation-duration: 0s !important;

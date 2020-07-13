@@ -43,6 +43,8 @@ $color-option-selected: $grey-300;
 $color-select-yellow: #fdf4d2; // rgb(253, 244, 210)
 $color-select-red: var(--negative-600);
 
+$color-link-primary: var(--primary-700);
+
 @function black($opacity) {
   @return rgba(0, 0, 0, $opacity);
 }

@@ -6,16 +6,7 @@
   text-align: left;
 
   a {
-    @include b-link;
-  }
-
-  [mention-employee-id] {
-    color: var(--primary-500);
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
+    @include b-link($color-link-primary);
   }
 
   [data-placeholder-id] {
@@ -106,10 +97,6 @@
       $min-val: $font-size-body,
       $max-val: $font-size-big-body
     );
-  }
-
-  a {
-    color: var(--primary-500);
   }
 }
 

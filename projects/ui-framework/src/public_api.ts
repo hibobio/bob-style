@@ -487,7 +487,7 @@ export { DividerModule } from './lib/layout/divider/divider.module';
 export { DividerComponent } from './lib/layout/divider/divider.component';
 // Collapsible Section
 export { CollapsibleSectionModule } from './lib/layout/collapsible-section/collapsible-section.module';
-export { CollapsibleSectionComponent } from './lib/layout/collapsible-section/collapsible-section.component';
+export { CollapsibleSectionComponent, COLLAPSIBLE_OPTIONS_DEF } from './lib/layout/collapsible-section/collapsible-section.component';
 export { CollapsibleOptions } from './lib/layout/collapsible-section/collapsible-section.interface';
 // Draggable Collapsible Sections
 export { SortableCollapsibleSectionsModule } from './lib/layout/sortable-collapsible-sections/sortable-collapsible-sections.module';

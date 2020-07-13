@@ -1,28 +1,21 @@
-<section class="{{panelID}} bcp-section"
+<section class="bcp-section {{panelID}}"
          [attr.aria-disabled]="disabled || null"
-         [ngClass]="{
-          'bcp-section-collapsible': collapsible,
-          'bcp-section-not-collapsible': !collapsible,
-          'bcp-section-expanded': collapsible && expanded,
-          'bcp-section-collapsed': collapsible && !expanded,
-          'bcp-section-not-divided': !divided,
-          'bcp-disable-animation': options?.disableAnimation || disableAnimation
-         }">
+         [attr.data-collapsible]="!!collapsible"
+         [attr.data-expanded]="!collapsible ? null : !!expanded"
+         [attr.data-divided]="!!divided">
 
   <header *ngIf="title || hasHeaderContent"
-          class="{{panelID}} bcp-header"
+          class="bcp-header {{panelID}}"
           [attr.id]="panelID+'-header'"
+          [attr.data-collapsible]="!!collapsible"
           [attr.aria-controls]="(collapsible && panelID) || null"
-          [attr.aria-expanded]="(collapsible && expanded) || null"
-          [ngClass]="{
-            'b-icon-chevron-right': collapsible && !expanded,
-            'b-icon-chevron-down': collapsible && expanded
-          }"
+          [attr.aria-expanded]="!collapsible ? null : !!expanded"
+          [attr.data-icon-before]="!collapsible ? null : expanded ? 'chevron-down' : 'chevron-right'"
           (click)="togglePanel()">
 
     <div *ngIf="title"
-         class="{{panelID}} bcp-title-wrap"
-         [ngClass]="{'bcp-title-wrap-column': options?.titlesAsColumn}">
+         class="bcp-title-wrap {{panelID}}"
+         [ngClass]="{'flx-col': options?.titlesAsColumn}">
 
       <h4 class="bcp-title"
           [ngClass]="{'b-display-3': !options?.smallTitle, 'b-bold-body': options?.smallTitle}">{{title}}</h4>
@@ -34,30 +27,30 @@
     <div *ngIf="hasHeaderContent"
          #headerContent
          class="bcp-header-content"
-         [ngClass]="{'bcp-header-content-clickable': collapsible && !options.headerTranscludeStopPropagation}"
-         (click.outside-zone)="options.headerTranscludeStopPropagation && $event.stopPropagation()">
+         [attr.data-clickable]="(collapsible && options?.headerTranscludeStopPropagation !== true) || null"
+         (click.outside-zone)="options?.headerTranscludeStopPropagation && $event.stopPropagation()">
       <ng-content select="[header]"></ng-content>
     </div>
 
   </header>
 
-  <div class="{{panelID}} bcp-panel"
+  <div class="bcp-panel {{panelID}}"
        *ngIf="!collapsible || expanded || contentLoaded"
-       [ngClass]="{
-         'bcp-panel-collapsed': collapsible && !expanded,
-         'bcp-panel-expanded': collapsible && expanded,
-         'bcp-panel-starts-expanded': startsExpanded
-       }"
        [attr.id]="panelID"
-       [attr.aria-labelledby]="panelID+'-header'">
-    <div class="{{panelID}} bcp-panel-content-wrap"
+       [attr.aria-labelledby]="panelID+'-header'"
+       [attr.data-collapsible]="!!collapsible"
+       [attr.data-expanded]="!collapsible || startsExpanded ? null : !!expanded">
+
+    <div class="bcp-panel-content-wrap {{panelID}}"
+        [attr.data-collapsible]="!!collapsible"
+        [attr.data-expanded]="!collapsible ? null : !!expanded"
          #panelContent>
       <ng-content></ng-content>
     </div>
 
     <footer *ngIf="hasFooterContent"
             #footerContent
-            class="{{panelID}} bcp-panel-footer">
+            class="bcp-panel-footer {{panelID}}">
       <ng-content select="[footer]"></ng-content>
     </footer>
   </div>

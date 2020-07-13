@@ -161,6 +161,17 @@ $acss-dirs: top right bottom left;
   }
 }
 
+// Layout
+
+.flx {
+  display: flex;
+}
+
+.flx-col {
+  display: flex;
+  flex-direction: column;
+}
+
 // Misc
 
 .rounded {

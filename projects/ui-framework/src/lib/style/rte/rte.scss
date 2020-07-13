@@ -11,8 +11,6 @@ $rte-placeholder-color: $rte-icon-color;
 $rte-label-to-placeholder: false;
 $rte-hide-label: true;
 
-$rte-link-color: var(--primary-700);
-
 // font-sizes
 
 .fr-element,
@@ -80,15 +78,10 @@ $rte-link-color: var(--primary-700);
   }
 }
 
-.fr-box[class] {
+.fr-element,
+.fr-view {
   a {
-    color: $rte-link-color;
-    text-decoration: underline;
-
-    &:focus {
-      outline: 0;
-      filter: brightness(0.8);
-    }
+    @include b-link($color-link-primary);
   }
 }
 

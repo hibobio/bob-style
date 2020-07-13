@@ -4,14 +4,39 @@ $bcp-transition-length: 0.35s;
 $bcp-transition-easing: cubic-bezier(0.645, 0.045, 0.355, 1);
 $bcp-border-color: $border-color-light;
 
+@keyframes bcs-collapse {
+  0% {
+    overflow-y: visible;
+    max-height: none;
+  }
+  1% {
+    overflow-y: hidden;
+    max-height: var(--panel-height, 500px);
+  }
+  100% {
+    overflow: hidden;
+    max-height: 0px;
+  }
+}
+
+@keyframes bcs-expand {
+  0% {
+    overflow-y: hidden;
+    max-height: 0px;
+  }
+  99% {
+    overflow-y: hidden;
+    max-height: var(--panel-height, 500px);
+  }
+  100% {
+    overflow-y: visible;
+    max-height: none;
+  }
+}
+
 :host {
   display: block;
   text-align: left;
-}
-
-h4,
-p {
-  margin: 0;
 }
 
 .bcp-section {
@@ -34,21 +59,13 @@ p {
   }
 }
 
-// footer
-
-.bcp-panel-footer {
-  padding: times8(3) times8(4);
-  border-top: 1px solid $bcp-border-color;
-}
-
 // header
 
 .bcp-header {
   padding: times8(2) times8(4);
 
   @include desktop {
-    border-top-left-radius: $border-radius;
-    border-top-right-radius: $border-radius;
+    border-radius: $border-radius;
   }
 }
 
@@ -67,7 +84,7 @@ p {
   }
 }
 
-.bcp-title-wrap {
+.bcp-title-wrap::ng-deep {
   flex-wrap: wrap;
   user-select: none;
 
@@ -75,10 +92,14 @@ p {
     flex-direction: column;
     align-items: flex-start;
   }
+
+  h4,
+  p {
+    margin: 0;
+  }
 }
 
-.bcp-title-wrap-column {
-  flex-direction: column;
+.flx-col {
   align-items: flex-start;
 }
 
@@ -130,11 +151,22 @@ p {
   color: $grey-600;
 }
 
-.bcp-header-content-clickable {
+[data-clickable='true'] {
   cursor: pointer;
 }
 
+// footer
+
+.bcp-panel-footer {
+  border-top: 1px solid $bcp-border-color;
+  padding: times8(3);
+}
+
 // Panel
+
+.bcp-panel-content-wrap {
+  padding: times8(4);
+}
 
 .bcp-panel {
   border-top: 1px solid $bcp-border-color;
@@ -155,90 +187,90 @@ p {
   }
 }
 
-.bcp-section-not-collapsible {
-  .bcp-panel-content-wrap {
-    padding: times8(4);
-
-    &:empty {
-      padding: 0;
-      margin-top: -1px;
-    }
+.bcp-panel-content-wrap[data-collapsible='false'] {
+  &:empty {
+    margin-top: -1px;
   }
 }
 
-.bcp-section-collapsible {
-  .bcp-header {
-    cursor: pointer;
+// Collapse/expand animation
+
+.bcp-header[data-collapsible='true'] {
+  cursor: pointer;
+  transition-duration: $bcp-transition-length;
+}
+
+.bcp-panel[data-collapsible='true'] {
+  overflow-x: visible;
+  overflow-y: hidden;
+  @include hide-scrollbar;
+
+  will-change: padding, border-width, max-height, min-height;
+  transition-property: padding, border-top-width, max-height, min-height;
+  transition-duration: $bcp-transition-length;
+  transition-timing-function: $bcp-transition-easing;
+  animation-duration: $bcp-transition-length;
+  animation-fill-mode: both;
+
+  max-height: var(--panel-height, none);
+  min-height: 0;
+}
+
+.bcp-panel-content-wrap[data-collapsible='true'] {
+  will-change: opacity;
+  transition-property: opacity;
+  transition-duration: $bcp-transition-length;
+  transition-timing-function: $bcp-transition-easing;
+  opacity: 1;
+
+  &:empty {
+    @include mini-preloader($base-selector: '&');
+    min-height: 100px;
   }
+}
 
-  .bcp-panel {
-    padding: times8(3) times8(4);
-    transition: padding $bcp-transition-length,
-      border-width $bcp-transition-length;
-    will-change: padding, border-width;
-    transition-timing-function: $bcp-transition-easing;
+.bcp-panel[data-expanded='false'] {
+  animation-name: bcs-collapse;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-top-width: 0;
+  border-bottom-width: 0;
+  min-height: 0;
+  max-height: 0;
+}
+
+.bcp-panel-content-wrap[data-expanded='false'] {
+  opacity: 0;
+
+  &:before {
+    display: none;
   }
+}
 
-  .bcp-panel-content-wrap {
-    overflow: hidden;
-    transition: max-height $bcp-transition-length,
-      opacity $bcp-transition-length, min-height $bcp-transition-length;
-    will-change: max-height, opacity, min-height;
-    transition-timing-function: $bcp-transition-easing;
-    opacity: 1;
-    max-height: var(--panel-height, none);
-    min-height: 0;
-    animation-duration: $bcp-transition-length;
-    animation-fill-mode: both;
+.bcp-panel[data-expanded='true'] {
+  animation-name: bcs-expand;
+}
 
-    &:empty {
-      @include mini-preloader($base-selector: '&');
-      min-height: 100px;
-    }
-  }
-
-  .bcp-panel-collapsed {
-    padding-top: 0;
-    padding-bottom: 0;
-    border-top-width: 0;
-
-    .bcp-panel-content-wrap {
-      min-height: 0;
-      max-height: 0;
-      opacity: 0;
-      animation-name: bcs-collapse;
-
-      &:before {
-        display: none;
-      }
-    }
-  }
-
-  .bcp-panel-expanded {
-    .bcp-panel-content-wrap {
-      animation-name: bcs-expand;
-    }
-  }
-
-  .bcp-panel-starts-expanded {
-    .bcp-panel-content-wrap {
-      animation: none;
-      transition: none;
-    }
-  }
+.bcp-header[aria-expanded='false'] {
+  transition-duration: 0s;
+  transition-delay: $bcp-transition-length - 0.05s;
 }
 
 @include desktop {
-  .bcp-section-collapsible {
-    transition: border-color 0.1s, transform 0.1s, box-shadow 0.1s;
+  .bcp-section[data-collapsible='true'] {
+    transition-property: border-color, transform, box-shadow;
+    transition-duration: 0.1s;
     will-change: border-color, transform, box-shadow;
   }
 
-  .bcp-section-collapsed {
-    transition-delay: 0.1s;
+  .bcp-header[data-collapsible='true'] {
+    transition-property: border-radius;
+    will-change: border-radius;
   }
 
-  .bcp-section-collapsed {
+  .bcp-section[data-expanded='false'] {
+    transition-delay: 0.1s;
+
     &:hover {
       box-shadow: 0 3px 7px 0 $boxShadowColor;
       @include desktop {
@@ -249,37 +281,34 @@ p {
   }
 }
 
-.bcp-section-not-collapsible,
-.bcp-section.bcp-section-expanded {
-  .bcp-header {
-    box-shadow: 0 1px 0 0 $bcp-border-color;
-  }
+.bcp-header[data-collapsible='false'],
+.bcp-header[aria-expanded='true'] {
+  box-shadow: 0 1px 0 0 $bcp-border-color;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 // Options
 
-.bcp-section.bcp-section-not-divided {
-  .bcp-header {
+.bcp-section[data-divided='false']::ng-deep {
+  & > .bcp-header {
     box-shadow: none;
   }
-  .bcp-panel {
+
+  & > .bcp-panel {
     border-top: 0;
   }
-  .bcp-footer {
+
+  & > .bcp-panel > .bcp-panel-footer {
     border: 0;
   }
 }
 
-.bcp-disable-animation {
-  .bcp-panel,
-  .bcp-panel-content-wrap,
-  .bcp-section-collapsible,
-  .bcp-section-collapsed {
+:host[data-animation-disabled='true'] {
+  [data-expanded] {
     transition-duration: 0s !important;
     transition-delay: 0s !important;
-  }
-  .bcp-panel-content-wrap {
     animation-duration: 0s !important;
-    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
 }

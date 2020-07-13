@@ -99,7 +99,7 @@ const note = `
      variables, that you can use for custom color mods in your feature css, \
      for example: \`color: var(--bcp-color)\`, or for rgba color with opacity \
      - \`color: rgba(var(--bcp-color-rgb), 0.2)\` \
-     | collapsibleOptionsDef
+     | COLLAPSIBLE<sub>-</sub>OPTIONS<sub>-</sub>DEF
   **(openedFirst)** |  EventEmitter<wbr>&lt;void&gt; | emits when collapsible panel is *opened first time*. <br> Bind to this to fetch or init data. | &nbsp;
   (opened) |  EventEmitter<wbr>&lt;void&gt; | emits when collapsible panel is opened | &nbsp;
   (closed) |  EventEmitter<wbr>&lt;void&gt; | emits when collapsible panel is closed | &nbsp;

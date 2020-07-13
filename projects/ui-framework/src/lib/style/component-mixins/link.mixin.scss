@@ -1,10 +1,12 @@
-@mixin b-link {
-  text-decoration: none;
-  color: inherit;
+@mixin b-link($color: inherit) {
   font-weight: 600;
+  color: $color;
+  text-decoration: none;
 
-  &.primary {
-    color: var(--primary-700);
+  @if $color == inherit {
+    &.primary {
+      color: var(--primary-700);
+    }
   }
 
   &:hover {
