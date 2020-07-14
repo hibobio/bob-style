@@ -1,4 +1,4 @@
-$acss-sizes: 8 16 24 32 40;
+$acss-sizes: 0 8 16 24 32 40;
 $acss-dirs: top right bottom left;
 
 // Typography
@@ -90,6 +90,10 @@ $acss-dirs: top right bottom left;
   }
 }
 
+.uppercase {
+  text-transform: uppercase;
+}
+
 // Border
 
 .brd {
@@ -147,6 +151,42 @@ $acss-dirs: top right bottom left;
   background-color: var(--positive-500);
 }
 
+.clr-white {
+  color: white;
+}
+
+.clr-grey-100 {
+  color: $grey-100;
+}
+.clr-grey-300 {
+  color: $grey-300;
+}
+.clr-grey-500 {
+  color: $grey-500;
+}
+.clr-grey-600 {
+  color: $grey-600;
+}
+.clr-grey-700 {
+  color: $grey-700;
+}
+
+.clr-primary-500 {
+  color: var(--primary-500);
+}
+.clr-secondary-500 {
+  color: var(--secondary-500);
+}
+.clr-inform-500 {
+  color: var(--inform-500);
+}
+.clr-negative-500 {
+  color: var(--negative-500);
+}
+.clr-positive-500 {
+  color: var(--positive-500);
+}
+
 // Responsive
 
 .b-mobile {
@@ -167,9 +207,19 @@ $acss-dirs: top right bottom left;
   display: flex;
 }
 
+.flx-row {
+  display: flex;
+  flex-direction: row;
+}
+
 .flx-col {
   display: flex;
   flex-direction: column;
+}
+
+.flx-center {
+  align-items: center;
+  justify-content: center;
 }
 
 // Misc

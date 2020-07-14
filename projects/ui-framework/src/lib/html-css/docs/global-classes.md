@@ -14,7 +14,7 @@
   <tbody>
 
     <tr>
-      <td>mrg-8, mrg-16, mrg-24, mrg-32, mrg-40</td>
+      <td>mrg-0, mrg-8, mrg-16, mrg-24, mrg-32, mrg-40</td>
       <td>Add <u>margin</u> on all sides:<br> 8px, 16px, 24px, 32px, 40px
       </td>
       <td>
@@ -25,9 +25,9 @@
     </tr>
 
     <tr>
-      <td>mrg-l-8, mrg-l-16, mrg-l-24, mrg-l-32, mrg-l-40
+      <td>mrg-l-0, mrg-l-8, mrg-l-16, mrg-l-24, mrg-l-32, mrg-l-40
         <hr>
-        mrg-r-8, mrg-r-16, mrg-r-24, mrg-r-32, mrg-r-40
+        mrg-r-0, mrg-r-8, mrg-r-16, mrg-r-24, mrg-r-32, mrg-r-40
       </td>
       <td>Add <u>margin</u> left or right:<br> 8px, 16px, 24px, 32px, 40px
       </td>
@@ -39,9 +39,9 @@
     </tr>
 
     <tr>
-      <td>mrg-t-8, mrg-t-16, mrg-t-24, mrg-t-32, mrg-t-40
+      <td>mrg-t-0, mrg-t-8, mrg-t-16, mrg-t-24, mrg-t-32, mrg-t-40
         <hr>
-        mrg-b-8, mrg-b-16, mrg-b-24, mrg-b-32, mrg-b-40
+        mrg-b-0, mrg-b-8, mrg-b-16, mrg-b-24, mrg-b-32, mrg-b-40
       </td>
       <td>Add <u>margin</u> top or bottom:<br> 8px, 16px, 24px, 32px, 40px
       </td>
@@ -53,7 +53,7 @@
     </tr>
 
     <tr>
-      <td>pad-8, pad-16, pad-24, pad-32, pad-40</td>
+      <td>pad-0, pad-8, pad-16, pad-24, pad-32, pad-40</td>
       <td>Add <u>padding</u> on all sides:<br> 8px, 16px, 24px, 32px, 40px
       </td>
       <td>
@@ -64,9 +64,9 @@
     </tr>
 
     <tr>
-      <td>pad-l-8, pad-l-16, pad-l-24, pad-l-32, pad-l-40
+      <td>pad-l-0, pad-l-8, pad-l-16, pad-l-24, pad-l-32, pad-l-40
         <hr>
-        pad-r-8, pad-r-16, pad-r-24, pad-r-32, pad-r-40
+        pad-r-0, pad-r-8, pad-r-16, pad-r-24, pad-r-32, pad-r-40
       </td>
       <td>Add <u>padding</u> left or right:<br> 8px, 16px, 24px, 32px, 40px
       </td>
@@ -78,9 +78,9 @@
     </tr>
 
     <tr>
-      <td>pad-t-8, pad-t-16, pad-t-24, pad-t-32, pad-t-40
+      <td>pad-t-0, pad-t-8, pad-t-16, pad-t-24, pad-t-32, pad-t-40
         <hr>
-        pad-b-8, pad-b-16, pad-b-24, pad-b-32, pad-b-40
+        pad-b-0, pad-b-8, pad-b-16, pad-b-24, pad-b-32, pad-b-40
       </td>
       <td>Add <u>padding</u> top or bottom:<br> 8px, 16px, 24px, 32px, 40px
       </td>
@@ -178,6 +178,31 @@
       </td>
       <td>
         <pre><code>&lt;div class="bg-primary-500"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
+      <td>clr-white,
+        clr-grey-100, clr-grey-300, clr-grey-500, clr-grey-600, clr-grey-700
+      </td>
+      <td>Common grey text colors
+      </td>
+      <td>
+        <pre><code>&lt;div class="clr-grey-100"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
+      <td>clr-primary-500, clr-secondary-500, clr-inform-500, clr-negative-500, clr-positive-500
+      </td>
+      <td>Common brand text colors
+      </td>
+      <td>
+        <pre><code>&lt;div class="clr-primary-500"&gt;
   Something
 &lt;/div&gt;</code></pre>
       </td>
