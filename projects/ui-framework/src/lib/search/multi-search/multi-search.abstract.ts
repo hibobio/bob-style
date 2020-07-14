@@ -124,7 +124,7 @@ export abstract class MultiSearchBaseElement {
     this.search.inputFocused = true;
   }
 
-  protected focusSearchInput(): void {
+  public focusSearchInput(): void {
     this.search['skipFocusEvent'] = true;
     this.lastFocusedOption = undefined;
     this.search.input.nativeElement.focus();
