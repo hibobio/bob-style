@@ -40,6 +40,8 @@ export class CardComponent extends BaseCardElement implements AfterViewInit {
   public hasTop = true;
   public cardTopTextOnly = false;
 
+  public titleMaxLines = 2;
+
   @HostBinding('attr.data-focus-inside') menuIsOpened: boolean;
 
   onMenuOpen(): void {
@@ -66,10 +68,16 @@ export class CardComponent extends BaseCardElement implements AfterViewInit {
           this.cardTop.nativeElement.children.length === 1 &&
           this.cardTop.nativeElement.children[0].children.length === 0;
 
+        this.titleMaxLines = this.getTitleMaxLines();
+
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
         }
       }, 0);
     });
+  }
+
+  private getTitleMaxLines() {
+    return this.card.imageUrl || this.hasContent ? 2 : this.hasTop ? 4 : 6;
   }
 }

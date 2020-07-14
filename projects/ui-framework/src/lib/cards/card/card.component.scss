@@ -78,10 +78,16 @@
   }
 }
 
+.card-title {
+  margin-top: times8(2);
+}
+
+.card-content {
+  margin-top: times8(1);
+}
+
 .card-title,
 .card-content {
-  margin-top: times8(2);
-
   &:first-child {
     margin-top: 0;
   }

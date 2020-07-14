@@ -1,7 +1,4 @@
-$preloader-anim-duration: 1500ms;
-$preloader-color: $grey-600;
-
-$preloader-svg: url("data:image/svg+xml,%3Csvg viewBox='0 0 210 60' width='210' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='#{uri-encode-color($preloader-color)}'%3E%3Ccircle cx='30' cy='30' r='30'%3E%3Canimate attributeName='fill-opacity' dur='#{$preloader-anim-duration}' repeatCount='indefinite' values='0;.6;1;1;1;.6;0;0'/%3E%3Canimate attributeName='r' dur='#{$preloader-anim-duration}' repeatCount='indefinite' values='0;0;10;20;30;20;10;0'/%3E%3C/circle%3E%3Ccircle cx='105' cy='30' r='30'%3E%3Canimate attributeName='fill-opacity' dur='#{$preloader-anim-duration}' repeatCount='indefinite' values='0;0;.6;1;1;1;.6;0'/%3E%3Canimate attributeName='r' dur='#{$preloader-anim-duration}' repeatCount='indefinite' values='10;0;0;10;20;30;20;10'/%3E%3C/circle%3E%3Ccircle cx='180' cy='30' r='30'%3E%3Canimate attributeName='fill-opacity' dur='#{$preloader-anim-duration}' repeatCount='indefinite' values='.6;0;0;.6;1;1;1;.6'/%3E%3Canimate attributeName='r' dur='#{$preloader-anim-duration}' repeatCount='indefinite' values='20;10;0;0;10;20;30;20'/%3E%3C/circle%3E%3C/g%3E%3C/svg%3E");
+$preloader-svg: url("data:image/svg+xml,%3Csvg viewBox='0 0 210 60' width='210' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle fill='%23FFA32B' cx='30' cy='30' r='30'%3E%3Canimate attributeName='fill-opacity' dur='1500ms' repeatCount='indefinite' values='0;.6;1;1;1;.6;0;0' /%3E%3Canimate attributeName='r' dur='1500ms' repeatCount='indefinite' values='0;0;10;20;30;20;10;0' /%3E%3C/circle%3E%3Ccircle fill='%23E42C51' cx='105' cy='30' r='30'%3E%3Canimate attributeName='fill-opacity' dur='1500ms' repeatCount='indefinite' values='0;0;.6;1;1;1;.6;0' /%3E%3Canimate attributeName='r' dur='1500ms' repeatCount='indefinite' values='10;0;0;10;20;30;20;10' /%3E%3C/circle%3E%3Ccircle fill='%239C2442' cx='180' cy='30' r='30'%3E%3Canimate attributeName='fill-opacity' dur='1500ms' repeatCount='indefinite' values='.6;0;0;.6;1;1;1;.6' /%3E%3Canimate attributeName='r' dur='1500ms' repeatCount='indefinite' values='20;10;0;0;10;20;30;20' /%3E%3C/circle%3E%3C/svg%3E%0A");
 
 $preloader-size: 48px 12px;
 
@@ -22,12 +19,15 @@ $preloader-size: 48px 12px;
       overflow: hidden;
       @include size($size);
 
-      @include mask-image($img: $preloader-svg, $color: $color);
+      background-image: $preloader-svg;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
 
       @if $abs-pos-center {
         position: absolute;
-        top: calc(50% - 6px);
-        left: calc(50% - 24px);
+        top: calc(50% - #{nth($size, 2) / 2});
+        left: calc(50% - #{nth($size, 1) / 2});
         z-index: 0;
       }
       @content;
@@ -42,3 +42,45 @@ $preloader-size: 48px 12px;
     }
   }
 }
+
+// <svg viewBox="0 0 210 60"
+//      width="210"
+//      height="60"
+//      xmlns="http://www.w3.org/2000/svg">
+//     <circle fill="#FFA32B" cx="30"
+//             cy="30"
+//             r="30">
+//       <animate attributeName="fill-opacity"
+//                dur="1500ms"
+//                repeatCount="indefinite"
+//                values="0;.6;1;1;1;.6;0;0" />
+//       <animate attributeName="r"
+//                dur="1500ms"
+//                repeatCount="indefinite"
+//                values="0;0;10;20;30;20;10;0" />
+//     </circle>
+//     <circle fill="#E42C51" cx="105"
+//             cy="30"
+//             r="30">
+//       <animate attributeName="fill-opacity"
+//                dur="1500ms"
+//                repeatCount="indefinite"
+//                values="0;0;.6;1;1;1;.6;0" />
+//       <animate attributeName="r"
+//                dur="1500ms"
+//                repeatCount="indefinite"
+//                values="10;0;0;10;20;30;20;10" />
+//     </circle>
+//     <circle fill="#9C2442" cx="180"
+//             cy="30"
+//             r="30">
+//       <animate attributeName="fill-opacity"
+//                dur="1500ms"
+//                repeatCount="indefinite"
+//                values=".6;0;0;.6;1;1;1;.6" />
+//       <animate attributeName="r"
+//                dur="1500ms"
+//                repeatCount="indefinite"
+//                values="20;10;0;0;10;20;30;20" />
+//     </circle>
+// </svg>

@@ -237,11 +237,7 @@ export class TruncateTooltipComponent
   private setMaxLines(value: number | string): void {
     this.maxLines = this.parseMaxLines(value);
 
-    if (
-      this.maxLines !== this.maxLinesCache &&
-      this.initialized &&
-      this.expectChanges
-    ) {
+    if (this.maxLines !== this.maxLinesCache && this.initialized) {
       this.setMaxHeight();
       this.setMaxLinesAttr();
       this.checkTooltipNecessity();

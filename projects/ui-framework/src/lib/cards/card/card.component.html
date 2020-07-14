@@ -29,7 +29,7 @@
 </div>
 
 <h4 class="card-title"
-    [b-truncate-tooltip]="2"
+    [b-truncate-tooltip]="titleMaxLines"
     [type]="tooltipType.css"
     [trustCssVars]="true">
   {{ card.title }}
@@ -38,7 +38,7 @@
 <div *ngIf="hasContent"
      class="card-content"
      #cardContent>
-  <ng-content select="[card-content]"></ng-content>
+  <ng-content></ng-content>
 </div>
 
 <b-text-button *ngIf="card.footerCtaLabel"

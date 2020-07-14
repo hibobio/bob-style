@@ -12,7 +12,7 @@ import {
 import { Icons } from '../icons/icons.enum';
 import { makeArray, randomNumber } from '../services/utils/functional-utils';
 
-const menuMock: MenuItem[] = [
+export const menuMock: MenuItem[] = [
   {
     label: 'Do this',
     action: ($event) => console.log('Do this', $event),
