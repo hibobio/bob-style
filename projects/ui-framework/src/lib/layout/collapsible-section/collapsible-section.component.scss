@@ -222,12 +222,15 @@ $bcp-border-color: $border-color-light;
   transition-duration: $bcp-transition-length;
   transition-timing-function: $bcp-transition-easing;
   opacity: 1;
+}
 
-  &:empty,
-  & > :only-child:empty {
-    @include mini-preloader($base-selector: '&');
-    min-height: 100px;
-  }
+.bcp-panel-content-wrap[data-collapsible='true']:empty,
+.bcp-panel-content-wrap[data-collapsible='true']::ng-deep > :only-child:empty {
+  @include mini-preloader($base-selector: '&');
+}
+
+.bcp-panel-content-wrap[data-collapsible='true']:empty {
+  min-height: 100px;
 }
 
 .bcp-panel[data-expanded='false'] {
