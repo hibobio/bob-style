@@ -65,6 +65,10 @@ html.cdk-global-scrollblock {
 
       &.show-scrolling-bottom {
         border-bottom: 1px solid $grey-300;
+
+        & + .dialog-footer {
+          margin-top: -1px;
+        }
       }
 
       &.no-footer {

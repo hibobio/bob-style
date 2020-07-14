@@ -6,21 +6,18 @@ $acss-dirs: top right bottom left;
 .b-body {
   @include b-body($weight: null, $addCssVars: true) {
     margin: 0;
-    font-weight: inherit;
   }
 }
 
 .b-big-body {
   @include b-big-body($weight: null, $addCssVars: true) {
     margin: 0;
-    font-weight: inherit;
   }
 }
 
 .b-bold-body {
   @include b-bold-body($size: null, $addCssVars: true) {
     margin: 0;
-    font-size: inherit;
   }
 }
 
