@@ -7,8 +7,8 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { MultiSearchModule } from './multi-search.module';
 import { mockSearchData } from './multi-search.mock';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
-import { AvatarModule } from '../../avatar/avatar/avatar.module';
-import { boolean } from '@storybook/addon-knobs';
+import { boolean, select } from '@storybook/addon-knobs';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
 
 const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
   withKnobs
@@ -18,7 +18,12 @@ const template = `
 <b-multi-search [options]="options"
                 [label]="label"
                 [placeholder]="placeholder"
-                [showAll]="showAll">
+                [showAll]="showAll"
+                [size]="size"
+                (clicked)="onSelect($event)"
+                (opened)="onPanelOpen()"
+                (closed)="onPanelClose()"
+                #multisearch>
 </b-multi-search>
 `;
 
@@ -26,6 +31,7 @@ const storyTemplate = `
 <b-story-book-layout [title]="'Multi-Search'">
   <div style="max-width: 300px;">
     ${template}
+    <button (click)="multisearch.openPanel()" style="display: block; margin: 35px auto 0 0;">openPanel()</button>
   </div>
 </b-story-book-layout>
 `;
@@ -39,13 +45,16 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [value] | string | input value | &nbsp;
+
+  [options] | MultiSearchGroupOption[] | search options data | &nbsp;
   [label] | string | label text | &nbsp;
   [placeholder] | string | placeholder text | &nbsp;
-  [hideLabelOnFocus] | boolean | make label behave as placeholder | true
-  [enableBrowserAutoComplete] | InputAutoCompleteOptions | enable/disable autocomplete | off
-  (searchFocus) | EventEmitter<wbr>&lt;string&gt;  | emits on input focus | &nbsp;
-  (searchChange) | EventEmitter<wbr>&lt;string&gt;  | emits on input value change | &nbsp;
+  [size] | FormElementSize | regular height (44px), smaller height (36px) | regular
+  [minSearchLength] | number | min text length for options search | 2
+  [showAll] | boolean | show all available options | false
+  (clicked) | EventEmitter<wbr>&lt;MultiSearchClickedEvent&gt;  | emits on option click | &nbsp;
+  (opened) | EventEmitter<wbr>&lt;OverlayRef&gt; | emits on search pabel open | &nbsp;
+  (closed) | EventEmitter<wbr>&lt;void&gt; | emits on panel close | &nbsp;
 
   ~~~
   ${template}
@@ -61,13 +70,20 @@ story.add(
         label: text('label', ''),
         placeholder: text('placeholder', 'Search me'),
         showAll: boolean('showAll', false),
+        size: select(
+          'size',
+          Object.values(FormElementSize),
+          FormElementSize.regular
+        ),
+        onSelect: action('Option selected'),
+        onPanelOpen: action('Search panel opened'),
+        onPanelClose: action('Search panel closed'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           MultiSearchModule,
           StoryBookLayoutModule,
-          AvatarModule,
         ],
         entryComponents: [AvatarImageComponent],
       },

@@ -6,6 +6,9 @@ import {
   ViewChild,
   TemplateRef,
   Input,
+  HostBinding,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { ListPanelService } from '../../lists/list-panel.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -33,6 +36,7 @@ import { OverlayPositionClasses } from '../../types';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { simpleUID } from '../../services/utils/functional-utils';
 import { SearchComponent } from '../search/search.component';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -53,6 +57,11 @@ export abstract class MultiSearchBaseElement {
   @Input() placeholder: string;
   @Input() showItems: number;
   @Input() minSearchLength: number;
+
+  @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
+
+  @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
+  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
   public options: MultiSearchGroupOption[];
   public searchOptions: MultiSearchGroupOption[];
