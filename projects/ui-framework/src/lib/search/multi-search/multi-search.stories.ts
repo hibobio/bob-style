@@ -42,10 +42,13 @@ const note = `
   #### Module
   *MultiSearchModule*
 
+  ~~~
+  ${template}
+  ~~~
+
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-
   [options] | MultiSearchGroupOption[] | search options data | &nbsp;
   [label] | string | label text | &nbsp;
   [placeholder] | string | placeholder text | &nbsp;
@@ -56,8 +59,60 @@ const note = `
   (opened) | EventEmitter<wbr>&lt;OverlayRef&gt; | emits on search pabel open | &nbsp;
   (closed) | EventEmitter<wbr>&lt;void&gt; | emits on panel close | &nbsp;
 
+  #### Public methods
+  Name | Description
+  --- | ---
+  openPanel() | opens search panel, focuses input
+  closePanel() | closes search panel
+  focusSearchInput() | focuses input, without opening the panel
+
   ~~~
-  ${template}
+interface MultiSearchClickedEvent {
+    group: MultiSearchGroupOption;
+    option: MultiSearchOption;
+}
+
+interface MultiSearchGroupOption extends SelectGroupOption {
+    keyMap?: MultiSearchKeyMap;
+    key?: string | number; // group ID
+    groupName?: string;
+    icon?: Icons;
+    options?: MultiSearchOption[];
+    showItems?: number;
+    translation?: {
+      showMore?: string;
+    };
+    menu?: MultiSearchOptionMenuItem[];
+    optionClickHandler?: (option: MultiSearchOption) => void;
+    menuClickHandler?: (
+      option: MultiSearchGroupOption,
+      menuItem: MultiSearchOptionMenuItem
+    ) => void;
+}
+
+interface MultiSearchOption extends SelectOption {
+    id?: string | number;
+    value?: string;
+    label?: string;
+    icon?: Icons | Icon;
+    menu?: MultiSearchOptionMenuItem[];
+}
+
+interface MultiSearchOptionMenuItem extends MenuItem {
+    id: string; // menu ID
+    key: string; // menu item ID
+    data?: MultiSearchOption;
+    action?: never;
+}
+
+interface MultiSearchKeyMap {
+    key?: string;
+    groupName?: string;
+    options?: string;
+    id?: string;
+    value?: string;
+    label?: string;
+}
   ~~~
 `;
 story.add(
