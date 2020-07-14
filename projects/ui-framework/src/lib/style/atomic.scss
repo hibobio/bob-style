@@ -200,7 +200,13 @@ $acss-dirs: top right bottom left;
 
 // Layout
 
-.flx {
+.blk,
+.block {
+  display: block;
+}
+
+.flx,
+.flex {
   display: flex;
 }
 

@@ -69,6 +69,7 @@ export class HtmlParserHelpers {
       )
 
       // replace <br><br> with <div><br></div>
+      .replace(/(<br[^>]*>\s*){2,}/gi, '<div><br></div>')
       .replace(/([^<>])(<br[^>]*>\s*){2,}(?=[^<>\s])/gi, '$1<div><br></div>')
 
       // <br>'s at the start / end
