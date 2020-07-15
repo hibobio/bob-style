@@ -5,6 +5,7 @@
           (searchFocus)="openPanel()"
           (searchBlur)="onFocusOut($event)"
           (searchChange)="onSearchChange($event)"
+          (keydown.outside-zone)="onSearchKeydown($event)"
           [ngClass]="{
               'panel-open': panelOpen,
               'panel-above': positionClassList['panel-above'],

@@ -29,6 +29,7 @@ import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
 import {
   MultiSearchGroupOption,
   MultiSearchOption,
+  MultiSearchClickedEvent,
 } from './multi-search.interface';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { Subscription } from 'rxjs';
@@ -62,6 +63,9 @@ export abstract class MultiSearchBaseElement {
 
   @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
+  @Output() clicked: EventEmitter<MultiSearchClickedEvent> = new EventEmitter<
+    MultiSearchClickedEvent
+  >();
 
   public options: MultiSearchGroupOption[];
   public searchOptions: MultiSearchGroupOption[];
@@ -98,12 +102,7 @@ export abstract class MultiSearchBaseElement {
   public onFocusOut(event: FocusEvent): void {
     if (this.ignoreFocusOut) {
       this.ignoreFocusOut = false;
-
-      (
-        this.lastFocusedOption ||
-        (this.overlayRef?.overlayElement.children[0] as HTMLElement)
-      ).focus();
-
+      this.focusFirstOption(true);
       return;
     }
 
@@ -111,9 +110,15 @@ export abstract class MultiSearchBaseElement {
 
     if (
       !relatedTarget ||
-      !this.overlayRef?.overlayElement.contains(relatedTarget)
+      (!this.overlayRef?.overlayElement.contains(relatedTarget) &&
+        !relatedTarget.matches('.clear-input'))
     ) {
       this.closePanel();
+      return;
+    }
+
+    if (relatedTarget.matches('.clear-input')) {
+      this.focusSearchInput();
       return;
     }
 
@@ -130,6 +135,19 @@ export abstract class MultiSearchBaseElement {
     this.search.input.nativeElement.focus();
   }
 
+  protected focusFirstOption(focusList = false): HTMLElement {
+    const elToFocus = (this.lastFocusedOption ||
+      (!focusList &&
+        this.overlayRef?.overlayElement?.querySelector(
+          '.bms-option:not(.bms-show-more)'
+        )) ||
+      this.overlayRef?.overlayElement?.children[0]) as HTMLElement;
+
+    elToFocus?.focus();
+
+    return elToFocus;
+  }
+
   public openPanel(): void {
     if (!this.overlayRef) {
       this.listPanelSrvc.openPanel(this, { hasBackdrop: false });
@@ -143,6 +161,8 @@ export abstract class MultiSearchBaseElement {
       this.search['skipFocusEvent'] = false;
       this.lastFocusedOption = undefined;
       this.destroyPanel();
+    } else {
+      this.closed.emit();
     }
   }
 

@@ -31,7 +31,10 @@ const storyTemplate = `
 <b-story-book-layout [title]="'Multi-Search'">
   <div style="max-width: 300px;">
     ${template}
-    <button (click)="multisearch.openPanel()" style="display: block; margin: 35px auto 0 0;">openPanel()</button>
+     <div class="flx" style="margin: 25px auto 0 0; opacity: 0.5;">
+       <button style="padding: 0 3px; margin: 0 5px 0 0; font-size: 9px" (click)="multisearch.focusSearchInput()">focusSearchInput()</button>
+      <button style="padding: 0 3px; margin: 0 5px 0 0; font-size: 9px" (click)="multisearch.openPanel()">openPanel()</button>
+     </div>
   </div>
 </b-story-book-layout>
 `;

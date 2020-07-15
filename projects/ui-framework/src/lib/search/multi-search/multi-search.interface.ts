@@ -25,6 +25,7 @@ export interface MultiSearchOption extends Partial<SelectOption> {
   label?: string;
   icon?: Icons | Icon;
   menu?: MultiSearchOptionMenuItem[];
+  searchValue?: string | string[];
 }
 
 export interface MultiSearchGroupOption

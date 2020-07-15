@@ -1,8 +1,6 @@
 import {
   Component,
   Input,
-  Output,
-  EventEmitter,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   ViewContainerRef,
@@ -11,7 +9,6 @@ import {
 import {
   MultiSearchGroupOption,
   MultiSearchOption,
-  MultiSearchClickedEvent,
 } from './multi-search.interface';
 import {
   MULTI_SEARCH_KEYMAP_DEF,
@@ -78,10 +75,6 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
       : this.filterOptions(this.searchValue, this.options);
   }
 
-  @Output() clicked: EventEmitter<MultiSearchClickedEvent> = new EventEmitter<
-    MultiSearchClickedEvent
-  >();
-
   public onSearchChange(searchValue: string): void {
     searchValue = (searchValue || '').trim();
 
@@ -101,6 +94,25 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
       this.openPanel();
     } else {
       this.search['skipFocusEvent'] = false;
+    }
+  }
+
+  public onSearchKeydown(event: KeyboardEvent): void {
+    const target = event.target as HTMLInputElement;
+
+    if (target !== this.search.input.nativeElement) {
+      return;
+    }
+
+    if (
+      isKey(event.key, Keys.tab) ||
+      ((isKey(event.key, Keys.arrowdown) ||
+        isKey(event.key, Keys.arrowright)) &&
+        target.selectionStart === target.value.length)
+    ) {
+      if (this.focusFirstOption()) {
+        event.preventDefault();
+      }
     }
   }
 
@@ -141,12 +153,21 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
 
     if (arrowKeys.includes(event.key as Keys)) {
       event.preventDefault();
-      this.findSiblingOptionEl(
+      const sibling = this.findSiblingOptionEl(
         target,
         isKey(event.key, Keys.arrowdown) || isKey(event.key, Keys.arrowright)
           ? 'next'
           : 'prev'
-      )?.focus();
+      );
+      sibling?.focus();
+
+      if (
+        !sibling &&
+        (isKey(event.key, Keys.arrowup) || isKey(event.key, Keys.arrowleft))
+      ) {
+        this.focusSearchInput();
+      }
+
       return;
     }
 
@@ -191,21 +212,23 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
 
     group.showItems = this.getOptionsSliceLength(group);
 
-    if (
+    const allGroupOptionsShown = Boolean(
       group.showItems >=
-      group[group.keyMap?.options || MULTI_SEARCH_KEYMAP_DEF.options].length
-    ) {
-      this.ignoreFocusOut = true;
-    }
-    if (this.lastFocusedOption) {
-      this.lastFocusedOption.focus();
-    } else if (prevOptionEl) {
-      this.zone.runOutsideAngular(() => {
-        setTimeout(() => {
-          prevOptionEl.scrollIntoView({});
-        }, 0);
-      });
-    }
+        group[group.keyMap?.options || MULTI_SEARCH_KEYMAP_DEF.options].length
+    );
+
+    const elementToFocus =
+      this.lastFocusedOption ||
+      (allGroupOptionsShown && prevOptionEl) ||
+      undefined;
+
+    elementToFocus?.focus();
+
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        (elementToFocus || prevOptionEl)?.scrollIntoView({});
+      }, 0);
+    });
   }
 
   private filterOptions(
