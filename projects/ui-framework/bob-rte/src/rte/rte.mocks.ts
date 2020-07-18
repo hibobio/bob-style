@@ -70,7 +70,7 @@ export const rteMockHtml = `<br><br> <br><br> <span> <br> </span> <div><br></div
 
 <ul>
   <li> <br> <br>
-  Watch artist <a href="https://www.youtube.com/watch?v=k2JPwJuM8fE" \
+  Watch artist <a style="font-size: 20px; font-weight: 600; text-decoration: underline; color: red;" href="https://www.youtube.com/watch?v=k2JPwJuM8fE" \
   mention-employee-id="777">@Jim lee</a> drawing \
   <span style="font-size: 18px;">🦇👨 & 🐱👩</span> from his studio
   <a href="https://www.youtube.com/watch?v=k2JPwJuM8fE" \

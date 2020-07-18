@@ -9,7 +9,7 @@ export interface FilterXSSOptions extends IFilterXSSOptions {
   css?: { whiteList: { [key: string]: boolean } };
 }
 
-const SANITIZER_ALLOWED_TAGS = [
+export const SANITIZER_ALLOWED_TAGS = [
   'a',
   'br',
   'div',
@@ -35,7 +35,7 @@ const SANITIZER_ALLOWED_TAGS = [
   'h5',
   'h6',
 ];
-const SANITIZER_ALLOWED_ATTRS = [
+export const SANITIZER_ALLOWED_ATTRS = [
   'alt',
   'data-.*',
   'dir',
@@ -55,7 +55,7 @@ const SANITIZER_ALLOWED_ATTRS = [
   '.*mention.*',
 ];
 
-const SANITIZER_ALLOWED_STYLE_PROPS = [
+export const SANITIZER_ALLOWED_STYLE_PROPS = [
   'font-size',
   'font-weight',
   'text-align',

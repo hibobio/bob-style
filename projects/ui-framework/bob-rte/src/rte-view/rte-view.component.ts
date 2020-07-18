@@ -15,9 +15,18 @@ import {
   SelectGroupOption,
   hasChanges,
   SANITIZER_FILTER_XSS_OPTIONS,
+  SANITIZER_ALLOWED_ATTRS,
+  FilterXSSOptions,
 } from 'bob-style';
 import { PlaceholdersConverterService } from '../rte/placeholders.service';
 import { RteViewType } from './rte-view.enum';
+
+export const RTE_VIEW_SANITIZER_OPTIONS: Partial<FilterXSSOptions> = {
+  whiteList: {
+    ...SANITIZER_FILTER_XSS_OPTIONS.whiteList,
+    a: SANITIZER_ALLOWED_ATTRS.filter((a) => a !== 'style'),
+  },
+};
 
 @Component({
   selector: 'b-rich-text-view',
@@ -60,15 +69,10 @@ export class RteViewComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (hasChanges(changes, null, true)) {
-      const sanitized = this.sanitizer.sanitizeHtml(this.value, {
-        css: {
-          whiteList: {
-            ...SANITIZER_FILTER_XSS_OPTIONS.css.whiteList,
-            color: true,
-            'text-decoration': true,
-          },
-        },
-      });
+      const sanitized = this.sanitizer.sanitizeHtml(
+        this.value,
+        RTE_VIEW_SANITIZER_OPTIONS
+      );
 
       this.hostEl.innerHTML = !this.value
         ? ''

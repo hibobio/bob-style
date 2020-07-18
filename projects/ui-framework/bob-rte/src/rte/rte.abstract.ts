@@ -412,6 +412,7 @@ export abstract class RTEbaseElement extends BaseFormElement
                   spellcheck: 'false',
                   rel: 'noopener noreferrer',
                   tabindex: '-1',
+                  style: null,
                 },
                 // '[mention-employee-id],[class*="mention"]'
                 '[href*="/employee-profile/"]': {

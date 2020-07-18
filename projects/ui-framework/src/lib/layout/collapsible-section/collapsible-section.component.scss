@@ -190,6 +190,8 @@ $bcp-border-color: $border-color-light;
 .bcp-panel-content-wrap[data-collapsible='false'] {
   &:empty {
     margin-top: -1px;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }
 
