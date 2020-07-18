@@ -58,8 +58,7 @@ $cardPadding-small: times8(2);
 
         &.clickable {
           &:hover,
-          &:focus,
-          &[data-focus-inside='true'] {
+          &:focus {
             box-shadow: 0 2px 12px 0 $grey-500;
             transform: translateY(-1px);
           }

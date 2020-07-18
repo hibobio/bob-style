@@ -131,46 +131,6 @@ describe('CardComponent', () => {
       expect(menu).toBeTruthy();
       expect(action).toBeFalsy();
     });
-    it('should add focus-inside attribute on the host element on menu open', () => {
-      component.card = {
-        title: 'test',
-        menuConfig: [
-          { label: 'action 1', action: () => console.log('action 1') },
-        ],
-      };
-      fixture.detectChanges();
-      const menu = fixture.debugElement.query(By.css('.card-menu'));
-
-      menu.componentInstance.openMenu.emit();
-      fixture.detectChanges();
-      expect(fixture.debugElement.nativeElement.dataset.focusInside).toEqual(
-        'true'
-      );
-    });
-
-    it('should remove focus-inside class from host element after timeout on menu close', fakeAsync(() => {
-      component.card = {
-        title: 'test',
-        menuConfig: [
-          { label: 'action 1', action: () => console.log('action 1') },
-        ],
-      };
-      fixture.detectChanges();
-      const menu = fixture.debugElement.query(By.css('.card-menu'));
-
-      menu.componentInstance.openMenu.emit();
-      fixture.detectChanges();
-      menu.componentInstance.closeMenu.emit();
-      fixture.detectChanges();
-      expect(fixture.debugElement.nativeElement.dataset.focusInside).toEqual(
-        'true'
-      );
-      tick(300);
-      fixture.detectChanges();
-      expect(
-        fixture.debugElement.nativeElement.dataset.focusInside
-      ).not.toEqual('true');
-    }));
   });
 
   describe('Action Button', () => {
