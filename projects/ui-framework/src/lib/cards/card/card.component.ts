@@ -1,6 +1,5 @@
 import {
   Component,
-  HostBinding,
   ElementRef,
   ViewChild,
   NgZone,
@@ -42,18 +41,6 @@ export class CardComponent extends BaseCardElement implements AfterViewInit {
 
   public titleMaxLines = 2;
 
-  @HostBinding('attr.data-focus-inside') menuIsOpened: boolean;
-
-  onMenuOpen(): void {
-    this.menuIsOpened = true;
-  }
-
-  onMenuClose(): void {
-    setTimeout(() => {
-      this.menuIsOpened = false;
-    }, 150);
-  }
-
   onCtaClick(event: MouseEvent): void {
     this.clicked.emit(event);
   }
@@ -78,6 +65,6 @@ export class CardComponent extends BaseCardElement implements AfterViewInit {
   }
 
   private getTitleMaxLines() {
-    return this.card.imageUrl || this.hasContent ? 2 : this.hasTop ? 4 : 6;
+    return this.hasContent ? 2 : this.card.imageUrl ? 3 : this.hasTop ? 4 : 6;
   }
 }

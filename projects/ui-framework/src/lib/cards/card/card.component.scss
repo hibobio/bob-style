@@ -3,41 +3,14 @@
 
 @include card-common;
 
-:host {
-  &:hover,
-  &:focus,
-  &[data-focus-inside='true'] {
-    .card-menu,
-    .card-action {
-      pointer-events: all;
-      opacity: 1;
-    }
-  }
-
-  &:hover,
-  &:focus {
-    .card-content {
-      @include animate(enablePointer, 0s, 0.2s);
-    }
-  }
-}
-
-.card-menu,
-.card-action {
-  @include position(12px 10px null null);
-  transition: opacity 0.2s;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 1;
-}
+// Card top
 
 .card-top {
   position: relative;
 }
 
 .card-top-text-only {
-  max-height: height-from-text(3, $useCssVars: true);
-  overflow: hidden;
+  @include line-clamp(3, $useCssVars: true);
 }
 
 .card-top-with-image {
@@ -49,34 +22,36 @@
     z-index: 0;
     clear: both;
   }
-}
 
-:host ::ng-deep {
-  [card-top] {
+  & ::ng-deep [card-top] {
+    padding: $cardPadding $cardPadding 0 $cardPadding;
+    color: white;
     position: relative;
     z-index: 1;
   }
-  .card-top-with-image [card-top] {
-    padding: $cardPadding $cardPadding 0 $cardPadding;
-    color: white;
-  }
+}
 
+.card-top-regular,
+.card-top-text-only {
+  min-height: 20px;
+}
+
+:host ::ng-deep {
   .card-action,
   .card-menu {
-    + .card-top [card-top] {
+    & + .card-top-regular,
+    & + .card-top-text-only {
       max-width: calc(100% - 22px);
     }
-    + .card-top-with-image [card-top] {
+
+    & + .card-top-with-image [card-top] {
       max-width: calc(100% - #{$cardPadding + 22px});
       padding-right: 0;
     }
   }
-
-  [card-content] {
-    max-height: height-from-text(10, $useCssVars: true);
-    overflow: hidden;
-  }
 }
+
+// Title & Content
 
 .card-title {
   margin-top: times8(2);
@@ -84,6 +59,11 @@
 
 .card-content {
   margin-top: times8(1);
+}
+
+[card-content] {
+  max-height: height-from-text(10, $useCssVars: true);
+  overflow: hidden;
 }
 
 .card-title,
@@ -94,7 +74,7 @@
 }
 
 [card-top]:empty + .card-title {
-  margin-top: 0;
+  // margin-top: 0;
 }
 
 .card-action,
@@ -108,6 +88,34 @@
   & + .card-content {
     max-width: calc(100% - 22px);
   }
+}
+
+// Menu & Action
+
+:host {
+  &:hover,
+  &:focus {
+    .card-action {
+      pointer-events: all;
+      opacity: 1;
+    }
+
+    .card-content {
+      @include animate(enablePointer, 0s, 0.2s);
+    }
+  }
+}
+
+.card-menu,
+.card-action {
+  @include position(12px 10px null null);
+  z-index: 1;
+}
+
+.card-action {
+  transition: opacity 0.2s;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .cta-button {

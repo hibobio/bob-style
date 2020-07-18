@@ -21,27 +21,39 @@ $selector: '';
   $selector: $selector + '[data-max-lines="' + $lines + '"]';
 }
 
-#{$selector} {
-  mask-image: linear-gradient(
-      to right,
-      white 0%,
-      white 50%,
-      rgba(255, 255, 255, 0) 80%
-    ),
-    linear-gradient(white, white);
-  mask-size: 100% calc(var(--font-size) * var(--line-height)),
-    100% calc(100% - var(--font-size) * var(--line-height));
-  mask-position: center bottom, center top;
-  mask-repeat: no-repeat;
+$hyphenate-selector: '';
+@for $lines from 2 through 3 {
+  @if $hyphenate-selector != '' {
+    $hyphenate-selector: $hyphenate-selector + ',';
+  }
+  $hyphenate-selector: $hyphenate-selector +
+    '[data-max-lines="' +
+    $lines +
+    '"]';
+}
 
-  @supports (hyphens: auto) or (-webkit-hyphens: auto) {
-    @include text-hyphenate;
+#{$selector} {
+  @supports not (-webkit-line-clamp: 2) {
+    @include mask-image(
+      $img:
+        'linear-gradient(to right, white 0%, white 50%, rgba(255, 255, 255, 0) 80%), linear-gradient(white, white)',
+      $size:
+        '100% calc(var(--font-size) * var(--line-height)), 100% calc(100% - var(--font-size) * var(--line-height))',
+      $align: 'center bottom, center top',
+      $fallback: false
+    );
   }
 
   @supports (-webkit-line-clamp: 2) {
     display: -webkit-box !important;
     -webkit-box-orient: vertical;
     mask-image: none;
+  }
+}
+
+#{$hyphenate-selector} {
+  @supports (hyphens: auto) or (-webkit-hyphens: auto) {
+    @include text-hyphenate;
   }
 }
 

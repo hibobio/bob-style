@@ -40,7 +40,7 @@ const storyTemplate = `
               menuConfig: menu2,
               footerCtaLabel: 'really want to'
             }">
-            <span card-top>Precious kisses,<br> words that burn me.<br>
+            <span card-top>Precious kisses, words that burn me.
 Lovers never ask you why.</span>
     </b-card>
 
@@ -49,7 +49,7 @@ Lovers never ask you why.</span>
               menuConfig: menu3,
               footerCtaLabel: 'hurt me'
             }">
-            <span card-top>If it's love you want from me,<br>Then take it away.</span>
+            <span card-top>If it's love you want from me, Then take it away.</span>
             <span card-content>{{text4}}</span>
     </b-card>
   </div>

@@ -78,7 +78,7 @@ $cardPadding-small: times8(2);
 
   .card-title,
   .card-subtitle,
-  .card-top:not(.card-top-with-image),
+  // .card-top:not(.card-top-with-image),
   .card-content,
   .card-bottom {
     &:empty {

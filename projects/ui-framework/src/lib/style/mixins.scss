@@ -91,12 +91,12 @@
   overflow-wrap: break-word;
   word-wrap: break-word;
   hyphens: auto;
-  hyphenate-limit-before: 4;
-  hyphenate-limit-after: 4;
-  hyphenate-limit-lines: 2;
-  hyphenate-limit-last: always;
-  hyphenate-limit-zone: 8%;
-  hyphenate-limit-chars: 10 4 4;
+  // hyphenate-limit-before: 4;
+  // hyphenate-limit-after: 4;
+  // hyphenate-limit-lines: 2;
+  // hyphenate-limit-last: always;
+  // hyphenate-limit-zone: 8%;
+  // hyphenate-limit-chars: 10 4 4;
 }
 
 @mixin animate(
@@ -206,16 +206,33 @@
   appearance: none;
 }
 
-@mixin mask-image($img, $color: null, $align: center, $size: contain) {
-  @supports not ((-webkit-mask-image: url('')) or (mask-image: url(''))) {
-    background-image: $img;
-    background-repeat: no-repeat;
-    background-position: $align;
-    background-size: $size;
-  }
-  @supports (-webkit-mask-image: url('')) or (mask-image: url('')) {
-    background-image: none;
-    background-color: $color;
+@mixin mask-image(
+  $img,
+  $color: null,
+  $align: center,
+  $size: contain,
+  $fallback: true
+) {
+  @if $fallback {
+    @supports not ((-webkit-mask-image: url('')) or (mask-image: url(''))) {
+      background-image: $img;
+      background-repeat: no-repeat;
+      background-position: $align;
+      background-size: $size;
+    }
+    @supports (-webkit-mask-image: url('')) or (mask-image: url('')) {
+      background-image: none;
+      background-color: $color;
+      -webkit-mask-image: $img;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: $align;
+      -webkit-mask-size: $size;
+    }
+  } @else {
+    mask-image: $img;
+    mask-repeat: no-repeat;
+    mask-position: $align;
+    mask-size: $size;
     -webkit-mask-image: $img;
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-position: $align;

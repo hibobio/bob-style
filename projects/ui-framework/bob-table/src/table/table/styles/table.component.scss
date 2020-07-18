@@ -73,7 +73,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     }
 
     .ag-header-cell {
-      @include cell();
+      @include cell;
       display: flex;
       align-items: center;
       cursor: default;
@@ -141,12 +141,12 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     display: flex;
     align-items: center;
 
-    &.ag-row-selected {
-      background-color: $color-select-yellow;
-    }
-
     .ag-cell {
-      @include cell();
+      @include cell;
+
+      &[role='presentation'] {
+        overflow: visible;
+      }
 
       &.row-select {
         position: relative;
@@ -172,6 +172,18 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
       }
     }
 
+    .ag-group-value {
+      padding: 2px 0;
+    }
+
+    .ag-cell-value {
+      min-width: 0;
+      white-space: normal;
+      @include line-clamp(2, $useCssVars: true);
+      align-items: flex-start;
+      justify-content: center;
+    }
+
     &:last-child {
       border-bottom: none;
     }
@@ -180,8 +192,8 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
       cursor: pointer;
     }
 
-    .ag-group-value {
-      padding: 2px 0;
+    &.ag-row-selected {
+      background-color: $color-select-yellow;
     }
   }
 }
