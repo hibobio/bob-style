@@ -1,4 +1,5 @@
-<label [b-truncate-tooltip]="1"
+<label *ngIf="label.trim()"
+       [b-truncate-tooltip]="1"
        [trustCssVars]="true"
        [type]="truncateTooltipType.material"
        [attr.for]="fieldId !== undefined ? fieldId : null"

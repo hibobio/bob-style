@@ -14,23 +14,31 @@
   }
 }
 
-:host-context(.has-label.required) ::ng-deep {
-  .btt {
-    @include input-required;
+label {
+  display: flex;
+  align-items: center;
+  min-width: 0;
 
-    &:after {
-      margin-left: -3px;
-    }
+  &.has-description {
+    max-width: calc(100% - 24px);
+  }
+
+  &::ng-deep .btt {
+    min-width: 0;
   }
 }
 
-label {
-  &.has-description {
-    max-width: calc(100% - 24px);
+:host-context(.has-label.required) ::ng-deep {
+  label {
+    @include input-required;
   }
 }
 
 b-icon {
   margin-left: 6px;
   margin-top: -2px;
+
+  &:first-child {
+    margin-left: 0;
+  }
 }
