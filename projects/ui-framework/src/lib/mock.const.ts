@@ -1199,6 +1199,9 @@ export const mockText = (words = 100) => {
 
 export const uselessSite = () => randomFromArray(uselessURLs);
 
+export const uselessDomain = () =>
+  uselessSite().replace(/(http:)|(www.)|\//g, '');
+
 export const mockUrl = (type = 'any') => {
   const pref = 'http://www.';
   switch (type) {

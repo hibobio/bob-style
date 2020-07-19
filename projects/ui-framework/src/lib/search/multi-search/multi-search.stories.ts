@@ -7,7 +7,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { MultiSearchModule } from './multi-search.module';
 import { mockSearchData } from './multi-search.mock';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
-import { boolean, select } from '@storybook/addon-knobs';
+import { boolean, select, number } from '@storybook/addon-knobs';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
 
 const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
@@ -18,6 +18,7 @@ const template = `
 <b-multi-search [options]="options"
                 [label]="label"
                 [placeholder]="placeholder"
+                [minSearchLength]="minSearchLength"
                 [showAll]="showAll"
                 [size]="size"
                 (clicked)="onSelect($event)"
@@ -125,6 +126,7 @@ story.add(
       template: storyTemplate,
       props: {
         options: mockSearchData,
+        minSearchLength: number('minSearchLength', 2),
         label: text('label', ''),
         placeholder: text('placeholder', 'Search me'),
         showAll: boolean('showAll', false),

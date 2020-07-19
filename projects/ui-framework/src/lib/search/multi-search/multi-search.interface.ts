@@ -12,6 +12,12 @@ export interface MultiSearchKeyMap {
   label?: string;
 }
 
+export interface MultiSearchMatchResult {
+  index: [number, number];
+  highlightedValue?: string;
+  highlightedSearchValue?: string;
+}
+
 export interface MultiSearchOptionMenuItem extends MenuItem<MultiSearchOption> {
   id: string; // menu ID
   key: string; // menu item ID
@@ -26,6 +32,7 @@ export interface MultiSearchOption extends Partial<SelectOption> {
   icon?: Icons | Icon;
   menu?: MultiSearchOptionMenuItem[];
   searchValue?: string | string[];
+  searchMatch?: MultiSearchMatchResult;
 }
 
 export interface MultiSearchGroupOption
@@ -45,6 +52,7 @@ export interface MultiSearchGroupOption
     option: MultiSearchGroupOption,
     menuItem: MultiSearchOptionMenuItem
   ) => void;
+  searchMatchCount?: number;
 }
 
 export interface MultiSearchClickedEvent {
