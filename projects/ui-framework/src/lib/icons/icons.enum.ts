@@ -171,4 +171,6 @@ export enum Icons {
   payroll = 'b-icon-payroll',
   text_fields = 'b-icon-text-fields',
   sections = 'b-icon-sections',
+  contract = 'b-icon-contract',
+  expand = 'b-icon-expand',
 }
