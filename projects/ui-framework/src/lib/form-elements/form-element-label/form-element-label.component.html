@@ -1,4 +1,4 @@
-<label *ngIf="label.trim()"
+<label *ngIf="label && label.trim()"
        [b-truncate-tooltip]="1"
        [trustCssVars]="true"
        [type]="truncateTooltipType.material"
