@@ -37,6 +37,7 @@ describe('DatepickerComponent', () => {
   let component: DatepickerComponent;
   let componentElem: HTMLElement;
   let labelElem: HTMLElement;
+  let labelWrapElem: HTMLElement;
   let inputElem: HTMLInputElement;
   let iconElem: HTMLElement;
   let messageElem: HTMLElement;
@@ -81,6 +82,7 @@ describe('DatepickerComponent', () => {
         fixture.detectChanges();
 
         labelElem = elementFromFixture(fixture, '.bfe-label .btt');
+        labelWrapElem = elementFromFixture(fixture, '.bfe-label label');
         inputElem = elementFromFixture(
           fixture,
           '.bfe-input'
@@ -104,7 +106,7 @@ describe('DatepickerComponent', () => {
   describe('Init & Basic inputs', () => {
     it('should display label', () => {
       expect(labelElem.innerText).toContain('Label');
-      expect(getPseudoContent(labelElem, 'after')).toContain('*');
+      expect(getPseudoContent(labelWrapElem, 'after')).toContain('*');
     });
     it('should display hint message', () => {
       expect(messageElem.innerText).toContain('Hint');
