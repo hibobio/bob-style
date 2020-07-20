@@ -29,6 +29,7 @@ import selectsPropsDoc from '../selects.properties.md';
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { number } from '@storybook/addon-knobs';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -48,6 +49,8 @@ const template = `
                 [description]="description"
                 [showSingleGroupHeader]="showSingleGroupHeader"
                 [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+                [min]="min"
+                [max]="max"
                 [disabled]="disabled"
                 [required]="required"
                 [readonly]="readonly"
@@ -182,6 +185,8 @@ const toAdd = () => ({
       SelectMode.classic,
       'Props'
     ),
+    min: number('min', 0, {}, 'Props'),
+    max: number('max', 0, {}, 'Props'),
     label: text('label', 'label text', 'Props'),
     description: text('description', mockText(30), 'Props'),
     placeholder: text('placeholder', 'placeholder text', 'Props'),

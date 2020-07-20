@@ -19,6 +19,7 @@ import { Icons } from '../../icons/icons.enum';
 
 import listInterfaceDoc from '../../lists/list.interface.md';
 import listSelectsPropsDoc from '../../lists/lists-selects.properties.md';
+import { number } from '@storybook/addon-knobs';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
@@ -37,6 +38,8 @@ const template = `<b-multi-list-and-chips
         [chipsLabel]="chipsLabel"
         [showSingleGroupHeader]="showSingleGroupHeader"
         [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+        [min]="min"
+        [max]="max"
         [emptyState]="emptyStateConfig"
         (selectChange)="onSelectChange($event)">
   </b-multi-list-and-chips>`;
@@ -93,6 +96,8 @@ const toAdd = () => ({
       true,
       'Props'
     ),
+    min: number('min', 0, {}, 'Props'),
+    max: number('max', 0, {}, 'Props'),
     listOpts: object('listOpts', listOpts, 'Data'),
     avatarListOpts: object('avatarListOpts', avatarListOpts, 'Data'),
     emptyStateConfig: object(

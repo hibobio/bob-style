@@ -36,7 +36,7 @@
                 'b-icon-chevron-right': header.isCollapsed
               }"></span>
         <div class="header-option">
-          <span *ngIf="!readonly && (!mode || mode === modes.classic) && !max"
+          <span *ngIf="!readonly && (!mode || mode === modes.classic) && !max && !min"
                 [hidden]="searchValue"
                 class="checkbox bml-checkbox"
                 (click)="selectGroup(header, headerIndex)"></span>
@@ -68,7 +68,8 @@
             'option': !option.isPlaceHolder,
             'selected': readonly && option.selected,
             'focus': option.id===focusOption?.id,
-            'disabled': option.disabled || (!option.selected && max && selectedIDs?.length >= max),
+            'disabled': option.disabled || (!option.selected && max && selectedIDs?.length >= max) || (option.selected
+            && min && selectedIDs?.length <= min),
             'single-group-option': options.length === 1
            }"
            class="option-select">

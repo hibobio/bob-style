@@ -55,6 +55,7 @@ export class MultiListComponent extends BaseListElement {
     this.listActions = { ...MULTI_LIST_LIST_ACTIONS_DEF };
   }
 
+  @Input() min: number;
   @Input() max: number;
 
   headerClick(header: ListHeader, index: number): void {

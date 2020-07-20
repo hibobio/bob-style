@@ -16,7 +16,7 @@ import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-im
 import listInterfaceDoc from '../list.interface.md';
 import listSelectsPropsDoc from '../lists-selects.properties.md';
 import listsPropsDoc from '../lists.properties.md';
-import { select } from '@storybook/addon-knobs';
+import { select, number } from '@storybook/addon-knobs';
 import { SelectMode } from '../list.enum';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
@@ -28,6 +28,8 @@ const template = `
               [optionsDefault]="optionsDefault"
               [showSingleGroupHeader]="showSingleGroupHeader"
               [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+              [min]="min"
+              [max]="max"
               [mode]="selectMode"
               [readonly]="readonly"
               (selectChange)="selectChange($event)">
@@ -99,6 +101,8 @@ story.add(
         true,
         'Props'
       ),
+      min: number('min', 0, {}, 'Props'),
+      max: number('max', 0, {}, 'Props'),
       readonly: boolean('readonly', false, 'Props'),
       options: object<SelectGroupOption>('options', options, 'Options'),
       optionsDefault: object<SelectGroupOption>(
