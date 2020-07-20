@@ -9,8 +9,10 @@ import { inputValue } from '../../services/utils/test-helpers';
 import { ElementRef } from '@angular/core';
 import { InputEventType } from '../form-elements.enum';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { FormElementLabelComponent } from '../form-element-label/form-element-label.component';
+import { MockComponent } from 'ng-mocks';
 
-describe('PasswordInputComponent', () => {
+fdescribe('PasswordInputComponent', () => {
   let component: PasswordInputComponent;
   let fixture: ComponentFixture<PasswordInputComponent>;
   let inputElement: HTMLInputElement;
@@ -19,7 +21,10 @@ describe('PasswordInputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PasswordInputComponent],
+      declarations: [
+        PasswordInputComponent,
+        MockComponent(FormElementLabelComponent),
+      ],
       imports: [
         NoopAnimationsModule,
         CommonModule,

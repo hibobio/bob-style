@@ -20,8 +20,10 @@ import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-im
 import { ChipListComponent } from '../chip-list/chip-list.component';
 import { IconComponent } from '../../icons/icon.component';
 import { InputEventType } from '../../form-elements/form-elements.enum';
+import { FormElementLabelComponent } from '../../form-elements/form-element-label/form-element-label.component';
+import { By } from '@angular/platform-browser';
 
-describe('ChipInputComponent', () => {
+fdescribe('ChipInputComponent', () => {
   let component: ChipInputComponent;
   let fixture: ComponentFixture<ChipInputComponent>;
   let chipInputElem: HTMLElement;
@@ -41,6 +43,7 @@ describe('ChipInputComponent', () => {
         MockComponent(TextButtonComponent),
         MockComponent(IconComponent),
         MockComponent(AvatarImageComponent),
+        MockComponent(FormElementLabelComponent),
       ],
       imports: [MatAutocompleteModule, InputMessageModule],
       providers: [EventManagerPlugins[0]],
@@ -83,10 +86,11 @@ describe('ChipInputComponent', () => {
 
   describe('Component', () => {
     it('should create component with right label, placeholder etc', () => {
-      const labelElem = elementFromFixture(fixture, '.bfe-label');
+      const labelComp = fixture.debugElement.query(By.css('.bfe-label'))
+        .componentInstance;
       expect(chipsComponents().length).toEqual(0);
       expect(component.value.length).toEqual(0);
-      expect(labelElem.innerText).toEqual('label');
+      expect(labelComp.label).toEqual('label');
       expect(messageElement.innerText).toEqual('hintMessage');
       expect(inputElement.getAttribute('placeholder')).toEqual('placeholder');
     });
