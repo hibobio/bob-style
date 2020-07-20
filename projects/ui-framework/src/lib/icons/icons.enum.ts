@@ -173,4 +173,5 @@ export enum Icons {
   sections = 'b-icon-sections',
   contract = 'b-icon-contract',
   expand = 'b-icon-expand',
+  calendar_clock = 'b-icon-calendar-clock',
 }
