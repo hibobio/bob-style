@@ -17,6 +17,7 @@ const template = `
 <b-timepicker
         [value]="value"
         [label]="label"
+        [description]="description"
         [disabled]="disabled"
         [required]="required"
         [readonly]="readonly"
@@ -62,6 +63,7 @@ story.add(
 
         value: text('value', '4:20'),
         label: text('label', 'Input label'),
+        description: text('description', ''),
 
         disabled: boolean('disabled', false),
         required: boolean('required', false),

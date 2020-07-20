@@ -9,6 +9,7 @@ import { ChipListModule } from '../chip-list/chip-list.module';
 import { UtilsService } from '../../services/utils/utils.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { ButtonsModule } from '../../buttons/buttons.module';
+import { FormElementLabelModule } from '../../form-elements/form-element-label/form-element-label.module';
 
 @NgModule({
   declarations: [ChipInputComponent],
@@ -20,6 +21,7 @@ import { ButtonsModule } from '../../buttons/buttons.module';
     IconsModule,
     InputMessageModule,
     ButtonsModule,
+    FormElementLabelModule,
   ],
   exports: [ChipInputComponent],
   providers: [UtilsService, EventManagerPlugins[0]],
