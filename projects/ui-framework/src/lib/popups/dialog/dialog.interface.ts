@@ -1,7 +1,8 @@
 import { DialogSize } from './dialog.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
+import { MatDialogConfig } from '@angular/material/dialog';
 
-export interface DialogConfig {
+export interface DialogConfig extends MatDialogConfig {
   size: DialogSize;
   panelClass: string;
   data: any;
