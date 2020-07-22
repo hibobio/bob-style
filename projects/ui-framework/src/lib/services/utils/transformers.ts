@@ -97,7 +97,8 @@ export const arrayOfValuesToArrayOfObjects = (key: string) => (
 export const valueAsNumber = (
   inputType: InputTypes | boolean,
   value: any,
-  def: any = undefined
+  def: any = undefined,
+  decimals = 3
 ): number => {
   if (
     !value ||
@@ -106,7 +107,7 @@ export const valueAsNumber = (
   ) {
     return value;
   }
-  const parsed = parseToNumber(value, 3);
+  const parsed = parseToNumber(value, decimals);
   if (parsed !== parsed && value !== '--') {
     console.warn(`Value (${stringify(value)}) is not parseable to number.`);
   }

@@ -41,6 +41,7 @@ const template = `
             [max]="max"
             [numberFormat]="numberFormat"
             [onlyIntegers]="onlyIntegers"
+            [decimals]="decimals"
             [readonly]="readonly"
             [disabled]="disabled"
             [required]="required"
@@ -111,6 +112,7 @@ const note = `
    of the step (if step is 3, value of 5.5 + 3 will be rounded to 9). | &nbsp;
   [numberFormat] | boolean | (for input type number only) enable number formatting with commas ('1,234.05') | false
   [onlyIntegers] | boolean | (for input type number only) set to true to not allow fractions | false
+  [decimals] | number | max number of decimals | 3
   [allowedChars] | string/RegExp | regex-compatible string, representing a list of allowed characters (example: \`"\\w"\` - for only letters and numbers, \`"123"\` - for only 1, 2 and 3). <br>\
   every typed character will be matched against this list and all non-matching characters will be rejected. | &nbsp;
 
@@ -134,14 +136,15 @@ story.add(
         description: text('description', mockText(30)),
         placeholder: text('placeholder', 'Input placeholder'),
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
-        minChars: number('minChars', ''),
-        maxChars: number('maxChars', ''),
+        minChars: number('minChars', undefined),
+        maxChars: number('maxChars', undefined),
         showCharCounter: boolean('showCharCounter', true),
         min: number('min', undefined),
         max: number('max', undefined),
         step: number('step', 1),
         numberFormat: boolean('numberFormat', false),
         onlyIntegers: boolean('onlyIntegers', false),
+        decimals: number('decimals', 3),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         readonly: boolean('readonly', false),
