@@ -156,12 +156,12 @@ export const roundToDecimals = (num: number, decmls: number = 2): number => {
 // CONVERTERS
 // ----------------------
 
-export const asArray = <T = any>(smth: T | T[]): T[] =>
-  !isNullOrUndefined(smth)
-    ? isArray(smth)
-      ? (smth as T[])
-      : ([smth] as T[])
-    : [];
+export const asArray = <T = any>(smth: T | T[], castFalsey = true): T[] =>
+  isNullOrUndefined(smth) && castFalsey
+    ? []
+    : isArray(smth)
+    ? (smth as T[])
+    : ([smth] as T[]);
 
 export const asNumber = (smth: any, roundToDcmls = null): number => {
   if (!smth) {
@@ -242,6 +242,37 @@ export const objectRemoveKeys = (
       acc[key] = object[key];
       return acc;
     }, {});
+};
+
+export const objectStringID = (
+  obj: any,
+  config: {
+    key?: string;
+    limit?: number;
+    addId?: boolean;
+    primitives?: boolean;
+  } = { limit: 400, primitives: true }
+): string => {
+  const { key, limit, addId, primitives } = config;
+
+  const str = String(
+    primitives ? JSON.stringify(obj) : stringify(obj, null)
+  ).replace(/[\s\//'"\.,:\-_\+={}()\[\]]+/gi, '');
+  const len = str.length;
+  const slice =
+    limit && len > limit
+      ? [Math.floor((len - limit) / 2), Math.floor((len - limit) / 2) + limit]
+      : null;
+
+  const sliced = slice
+    ? str.slice(0, 30) + '__' + str.slice(...slice) + '__' + str.slice(-30)
+    : str;
+
+  return (
+    (key ? key + '__' : '') +
+    (sliced || typeof obj + (addId ? '__' + simpleUID() : '[empty]')) +
+    ('__' + len)
+  );
 };
 
 // ----------------------
@@ -339,24 +370,6 @@ export const lastItem = <T = any>(arr: T[]): T =>
 export const arrayFlatten = <T = any>(arr: any[]): T[] =>
   asArray(arr).reduce((acc, val) => acc.concat(val), []);
 
-export const arrOfObjSortByProp = (
-  arr: GenericObject[],
-  prop: string,
-  asc = true
-): GenericObject[] => {
-  arr.sort((a: GenericObject, b: GenericObject) => {
-    const x = a[prop].toLowerCase();
-    const y = b[prop].toLowerCase();
-    return x < y ? -1 : x > y ? 1 : 0;
-  });
-
-  if (!asc) {
-    arr.reverse();
-  }
-
-  return arr;
-};
-
 export const arrayMode = <T = any>(arr: T[]): T =>
   isArray(arr) &&
   arr
@@ -427,13 +440,33 @@ export const mapSplice = <K = any, V = any>(
 // STRINGS
 // ----------------------
 
-export const stringify = (smth: any, limit: number = undefined): string => {
+export const stringify = (smth: any, limit = 200): string => {
   const stringified = isString(smth)
     ? smth
     : isArray(smth)
-    ? smth.map((i) => stringify(i)).join(', ')
+    ? '[' +
+      smth
+        .reduce((str, i) => {
+          if (!limit || str.length < limit * 0.7) {
+            str += `${stringify(i, limit)}, `;
+          }
+          return str;
+        }, '')
+        .replace(/[\s,]+$/, '') +
+      ']'
+    : isFunction(smth)
+    ? String(smth).split('{')[0].trim().replace('function', 'fnc')
     : isObject(smth)
-    ? JSON.stringify(smth)
+    ? '{' +
+      Object.keys(smth)
+        .reduce((str, k) => {
+          if ((!limit || str.length < limit * 0.7) && smth[k] !== undefined) {
+            str += `${k}: ${stringify(smth[k], limit)}, `;
+          }
+          return str;
+        }, '')
+        .replace(/[\s,]+$/, '') +
+      '}'
     : String(smth);
 
   return limit && stringified.length > limit
@@ -582,6 +615,78 @@ export const randomFromArray = (array: any[] = [], num: number = 1) => {
 };
 
 // ----------------------
+// SORTERS
+// ----------------------
+
+export const arrOfObjSortByProp = (
+  arr: GenericObject[],
+  prop: string,
+  asc = true
+): GenericObject[] => {
+  arr.sort((a: GenericObject, b: GenericObject) => {
+    const x = a[prop].toLowerCase();
+    const y = b[prop].toLowerCase();
+    return x < y ? -1 : x > y ? 1 : 0;
+  });
+
+  if (!asc) {
+    arr.reverse();
+  }
+
+  return arr;
+};
+
+export const objectSortKeys = <T = any>(obj: T): T => {
+  if (!isPlainObject(obj)) {
+    return obj;
+  }
+  return Object.keys(obj)
+    .sort()
+    .reduce((newObj: T, key: string) => {
+      newObj[key] = obj[key];
+      return newObj;
+    }, {} as T);
+};
+
+export const dataDeepSort = <T = any>(data: T | T[]): T | T[] => {
+  const sortedData: T[] = asArray(data, false)
+    .map((di: T) => {
+      if (isArray(di)) {
+        return dataDeepSort(di) as T;
+      }
+
+      if (isPlainObject(di)) {
+        const srtd: T = objectSortKeys(di);
+        Object.keys(srtd).forEach((key) => {
+          srtd[key] = dataDeepSort(srtd[key]);
+        });
+        return srtd;
+      }
+
+      return di;
+    })
+    .sort((a: T, b: T) => {
+      if (isNumber(a) && isNumber(b)) {
+        return a - b;
+      }
+      if (isString(a) && isString(b)) {
+        return a.localeCompare(b);
+      }
+      return objectStringID(a, {
+        limit: 30,
+        primitives: true,
+      }).localeCompare(
+        objectStringID(b, {
+          limit: 30,
+          primitives: true,
+        })
+      );
+    });
+
+  return isArray(data) ? (sortedData as T[]) : (sortedData[0] as T);
+};
+
+// ----------------------
 // COMPARATORS
 // ----------------------
 
@@ -601,6 +706,38 @@ export const compareAsStrings = (a: any, b: any, strict = true): boolean => {
           .trim()
           .toLowerCase()
           .replace(/[./\\()\"':,.;<>~!@#$%^&*|+=[\]{}`~\?-]/g, '');
+};
+
+// ignores order in arrays, only cares about values
+export const isEqualByValues = (
+  dataA: any,
+  dataB: any,
+  config: {
+    key?: string;
+    limit?: number;
+    addId?: boolean;
+    primitives?: boolean;
+  } = { limit: 400, primitives: true }
+): boolean => {
+  const truthyA = Boolean(dataA),
+    truthyB = Boolean(dataB);
+
+  if (dataA === dataB) {
+    return true;
+  }
+  if (
+    truthyA !== truthyB ||
+    typeof dataA !== typeof dataB ||
+    dataA.constructor !== dataB.constructor ||
+    ((isPrimitive(dataA) || isPrimitive(dataB)) && dataA !== dataB)
+  ) {
+    return false;
+  }
+
+  return (
+    objectStringID(dataDeepSort(dataA), config) ===
+    objectStringID(dataDeepSort(dataB), config)
+  );
 };
 
 // ----------------------
