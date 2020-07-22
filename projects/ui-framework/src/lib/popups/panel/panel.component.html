@@ -2,7 +2,8 @@
          (mouseenter)="openOnHover && !disabled && onMouseEnter()"
          (mouseleave)="openOnHover && !disabled && onMouseLeave()"
          cdkOverlayOrigin
-         class="panel-trigger">
+         class="panel-trigger"
+         [ngClass]="positionClassList">
   <ng-content select="[panel-trigger]"></ng-content>
 </content>
 
