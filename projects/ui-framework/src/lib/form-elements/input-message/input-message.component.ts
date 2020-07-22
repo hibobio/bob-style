@@ -25,18 +25,14 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
       }}
     </span>
     <span
-      *ngIf="maxChars > 0 || (minChars && !(maxChars > 0) && length < minChars)"
+      *ngIf="maxChars > 0"
       class="length-indicator"
       [ngClass]="{
-        error: length < minChars || (maxChars && length > maxChars),
+        error: maxChars && length > maxChars,
         warn: maxChars && length < maxChars && maxChars - length < 15
       }"
     >
-      {{ length || 0 }}/{{
-        (minChars && !maxChars) || (minChars && maxChars && length < minChars)
-          ? minChars
-          : maxChars
-      }}
+      {{ length || 0 }}/{{ maxChars }}
     </span>
     <ng-content></ng-content>
   `,
