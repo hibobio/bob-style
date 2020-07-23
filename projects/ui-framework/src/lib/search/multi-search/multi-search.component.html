@@ -33,6 +33,9 @@
           <h4 class="bms-group-title"
               [ngClass]="group.icon ? (group.icon + ' b-icon-normal') : null">
             {{ group[group.keyMap?.groupName || keyMapDef.groupName] }}
+
+            <span *ngIf="group.searchMatchCount"
+                  class="bms-match-count">({{group.searchMatchCount}})</span>
           </h4>
 
           <ul class="bms-option-list">
@@ -70,10 +73,15 @@
                 </span>
 
                 <span class="bms-option-value"
-                      [innerHTML]="option[group.keyMap?.value || keyMapDef.value] | highlight: searchValue">
+                      [innerHTML]="option.searchMatch.highlightedValue || option[group.keyMap?.value || keyMapDef.value]">
                 </span>
-
               </div>
+
+              <div *ngIf="option.searchMatch.highlightedSearchValue"
+                   class="bms-search-match"
+                   [innerHTML]="option.searchMatch.highlightedSearchValue">
+              </div>
+
             </li>
 
             <li *ngIf="group[group.keyMap?.options || keyMapDef.options].length > (group.showItems || getOptionsSliceLength(group))"

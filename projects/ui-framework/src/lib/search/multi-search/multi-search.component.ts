@@ -16,8 +16,8 @@ import {
 } from './multi-search.const';
 import {
   isFunction,
-  escapeRegExp,
   isKey,
+  asArray,
 } from '../../services/utils/functional-utils';
 import { ListPanelService } from '../../lists/list-panel.service';
 import { Overlay } from '@angular/cdk/overlay';
@@ -241,31 +241,92 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     ) {
       return (
         this.searchOptionsEmpty ||
-        (this.searchOptionsEmpty = groupOptions.map((group) => ({
-          ...group,
-          [group.keyMap?.options || MULTI_SEARCH_KEYMAP_DEF.options]: [],
-        })))
+        (this.searchOptionsEmpty = groupOptions.map((group) => {
+          delete group.searchMatchCount;
+
+          return {
+            ...group,
+            [group.keyMap?.options || MULTI_SEARCH_KEYMAP_DEF.options]: [],
+          };
+        }))
       );
     }
 
-    const matcher = new RegExp(escapeRegExp(searchValue), 'i');
+    const matcher = new RegExp(
+      searchValue
+        .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\*\[\]\+><@\s]+/g, '')
+        .split('')
+        .join('[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\*\\[\\]\\+><@\\s]*'),
+      'i'
+    );
 
     const filtered = groupOptions.reduce(
       (msgo: MultiSearchGroupOption[], group) => {
-        const options = group[
+        const options: MultiSearchOption[] = group[
           group.keyMap?.options || MULTI_SEARCH_KEYMAP_DEF.options
-        ].filter((option: MultiSearchOption) =>
-          matcher.test(
+        ].filter((option: MultiSearchOption) => {
+          let searchValueIndex = 0,
+            valueToMatch =
+              option[group.keyMap?.value || MULTI_SEARCH_KEYMAP_DEF.value],
+            match: RegExpExecArray,
+            highlightedMatch: string;
+
+          if (option.searchValue) {
+            option.searchValue = asArray(option.searchValue);
+
+            searchValueIndex = option.searchValue.findIndex((sv) =>
+              matcher.test(String(sv))
+            );
+
+            if (searchValueIndex === -1) {
+              delete option.searchMatch;
+              return false;
+            }
+
+            valueToMatch = String(option.searchValue[searchValueIndex]);
+          }
+
+          match = matcher.exec(valueToMatch);
+
+          if (!match) {
+            delete option.searchMatch;
+            return false;
+          }
+
+          highlightedMatch =
+            valueToMatch.slice(0, match.index) +
+            '<strong>' +
+            valueToMatch.slice(match.index, match.index + match['0'].length) +
+            '</strong>' +
+            valueToMatch.slice(match.index + match['0'].length);
+
+          option.searchMatch = {
+            index: [searchValueIndex, match.index],
+            [valueToMatch ===
             option[group.keyMap?.value || MULTI_SEARCH_KEYMAP_DEF.value]
-          )
-        );
+              ? 'highlightedValue'
+              : 'highlightedSearchValue']: highlightedMatch,
+          };
+
+          return true;
+        });
 
         if (options.length) {
+          group.searchMatchCount = options.length;
+
+          options.sort((a, b) => {
+            return a.searchMatch.index[0] !== b.searchMatch.index[0]
+              ? a.searchMatch.index[0] - b.searchMatch.index[0]
+              : a.searchMatch.index[1] - b.searchMatch.index[1];
+          });
+
           msgo.push({
             ...group,
             [group.keyMap?.options || MULTI_SEARCH_KEYMAP_DEF.options]: options,
             showItems: this.getOptionsSliceLength(group, options),
           });
+        } else {
+          delete group.searchMatchCount;
         }
 
         return msgo;

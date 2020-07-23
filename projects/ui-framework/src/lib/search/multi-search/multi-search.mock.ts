@@ -12,6 +12,8 @@ import {
   mockNames,
   mockBadJobs,
   mockText,
+  mockJobs,
+  uselessDomain,
 } from '../../mock.const';
 import { Icons } from '../../icons/icons.enum';
 import {
@@ -83,9 +85,17 @@ export const mockSearchData: MultiSearchGroupOption[] = [
     groupName: 'People',
     key: 'people',
     icon: Icons.department_icon,
-    options: mockNames(items).map((name: string) => ({
+    options: mockNames(items).map((name: string, index) => ({
       value: name,
       id: name,
+
+      searchValue: [
+        name,
+        `${name.split(' ')[1]}, ${name.split(' ')[0]}`,
+        `${mockNames(1).toLowerCase().replace(/\s/g, '.')}@${uselessDomain()}`,
+        randomNumber(100000000, 999999999),
+      ],
+
       prefixComponent: {
         component: AvatarImageComponent,
         attributes: {
@@ -106,6 +116,7 @@ export const mockSearchData: MultiSearchGroupOption[] = [
       console.log(`Handler for: ${option.value}`);
     },
   },
+
   {
     groupName: 'Animals',
     key: 'animals',
@@ -113,6 +124,7 @@ export const mockSearchData: MultiSearchGroupOption[] = [
     options: mockAnimals(items).map((animal: string, index: number) => ({
       id: animal,
       value: animal,
+      searchValue: mockAnimals(1),
       prefixComponent: {
         component: AvatarImageComponent,
         attributes: {
@@ -125,6 +137,7 @@ export const mockSearchData: MultiSearchGroupOption[] = [
       console.log(`Handler for: ${option.value}`);
     },
   },
+
   {
     keyMap: {
       key: 'serverId',
@@ -145,6 +158,7 @@ export const mockSearchData: MultiSearchGroupOption[] = [
       console.log(`Handler for: ${option.name}`);
     },
   },
+
   {
     keyMap: {
       key: 'id',
@@ -161,11 +175,13 @@ export const mockSearchData: MultiSearchGroupOption[] = [
       label: `${mockText(randomNumber(1, 3))} > ${mockText(
         randomNumber(1, 3)
       )}`,
+      searchValue: [hobbies[index], mockJobs(1), mockText(1)],
     })),
     optionClickHandler: (option: MultiSearchOption) => {
       console.log(`Handler for: ${option.name}`);
     },
   },
+
   {
     keyMap: {
       key: 'id',
@@ -180,6 +196,7 @@ export const mockSearchData: MultiSearchGroupOption[] = [
       id: job,
       name: job,
       label: mockDepartments(1),
+      searchValue: [job, mockHobbies(1), mockText(2)],
     })),
     optionClickHandler: (option: MultiSearchOption) => {
       console.log(`Handler for: ${option.name}`);
