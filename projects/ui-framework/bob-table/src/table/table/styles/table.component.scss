@@ -161,6 +161,10 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
         hyphens: auto;
       }
 
+      &[style*='max-width'] {
+        max-width: none !important;
+      }
+
       &.row-select {
         position: relative;
         height: 100%;
