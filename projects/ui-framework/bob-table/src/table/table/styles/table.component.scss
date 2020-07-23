@@ -153,6 +153,14 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
         height: auto;
       }
 
+      &.multi-line-text-cell {
+        display: block;
+        height: auto;
+        white-space: normal;
+        overflow-wrap: break-word;
+        hyphens: auto;
+      }
+
       &.row-select {
         position: relative;
         height: 100%;
