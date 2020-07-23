@@ -87,7 +87,8 @@ const note = `
 
 `;
 
-const itemsMock: number[] = arrayOfNumbers(937) as number[];
+const itemsNumber = 937;
+const itemsMock: number[] = arrayOfNumbers(itemsNumber) as number[];
 
 story.add(
   'Pager',

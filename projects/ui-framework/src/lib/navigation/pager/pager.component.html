@@ -3,7 +3,9 @@
       [ngStyle]="{
         'width': sliceInfoWidth
       }">
-  {{currentSlice[0] + 1}}-{{currentSlice[1] }} {{'bob-style.pager.of' | translate}} {{totalItems}}
+  {{currentSlice[0] + 1}}-{{totalItems > currentSlice[1] ? currentSlice[1] : totalItems}}
+  {{'bob-style.pager.of' | translate}}
+  {{totalItems}}
 </span>
 
 <div class="bpgr-page-buttons"
@@ -16,8 +18,12 @@
   </b-square-button>
 
   <b-square-button *ngFor="let page of pagesViewModel; trackBy: pageButtonsTrackBy;"
-                   [type]="currentPage === page ? buttonType.negative : buttonType.tertiary"
-                   [disabled]="page !== page">
+                   [type]="totalPages > 1 && currentPage===page
+                     ?
+                     buttonType.negative
+                     :
+                     buttonType.tertiary"
+                   [disabled]="page !== page || totalPages === 1">
     {{page === page ? page + 1 : '...'}}
   </b-square-button>
 
@@ -27,11 +33,17 @@
   </b-square-button>
 </div>
 
-<b-single-select *ngIf="sliceOptions"
+<b-single-select *ngIf="sliceOptions && sliceOptions[0].options.length > 1"
                  class="bpgr-slice-size-select mrg-l-16"
                  [options]="sliceOptions"
+                 [disabled]="totalPages === 1"
                  [size]="formElementSize.smaller"
                  [showNoneOption]="false"
                  [doPropagate]="false"
                  (selectChange)="onSliceSizeChange($event)">
 </b-single-select>
+
+<span *ngIf="sliceOptions && sliceOptions[0].options.length === 1"
+      class="bpgr-slice-size-select clr-grey-600 mrg-l-16">
+  {{sliceOptions[0].options[0].value}}
+</span>
