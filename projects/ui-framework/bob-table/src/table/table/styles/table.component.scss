@@ -148,6 +148,23 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
         overflow: visible;
       }
 
+      &.text-cell {
+        display: block;
+        height: auto;
+      }
+
+      &.multi-line-text-cell {
+        display: block;
+        height: auto;
+        white-space: normal;
+        overflow-wrap: break-word;
+        hyphens: auto;
+      }
+
+      &[style*='max-width'] {
+        max-width: none !important;
+      }
+
       &.row-select {
         position: relative;
         height: 100%;
@@ -175,14 +192,6 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     .ag-group-value {
       padding: 2px 0;
     }
-
-    // .ag-cell-value {
-    //   min-width: 0;
-    //   white-space: normal;
-    //   @include line-clamp(2, $useCssVars: true);
-    //   align-items: flex-start;
-    //   justify-content: center;
-    // }
 
     &:last-child {
       border-bottom: none;

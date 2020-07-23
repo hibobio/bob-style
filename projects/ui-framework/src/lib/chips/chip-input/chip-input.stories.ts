@@ -10,7 +10,7 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipInputModule } from './chip-input.module';
-import { mockHobbies } from '../../mock.const';
+import { mockHobbies, mockText } from '../../mock.const';
 import { ButtonsModule } from '../../buttons/buttons.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
@@ -30,6 +30,7 @@ const template = `
                 [acceptNew]="acceptNew"
                 [label]="label"
                 [placeholder]="placeholder"
+                [description]="description"
                 [required]="required"
                 [disabled]="disabled"
                 [hintMessage]="hintMessage"
@@ -56,6 +57,7 @@ const note = `
   [acceptNew] | boolean | if the input accepts new entries | true
   [label] | string | label (on top of input) | &nbsp;
   [placeholder] | string | placeholder (inide input) | &nbsp;
+  [description] | string | description text (above <i>i</i> icon) | &nbsp;
   [hintMessage] | string | text below input | &nbsp;
   [warnMessage] | string | warning text | &nbsp;
   [errorMessage] | string | error text | &nbsp;
@@ -86,6 +88,7 @@ const toAdd = () => ({
     acceptNew: boolean('acceptNew', true),
     label: text('label', 'What are your hobbies?'),
     placeholder: text('placehodler', 'Add tags and press ‘Enter’'),
+    description: text('description', mockText(30)),
     disabled: boolean('disabled', false),
     required: boolean('required', false),
     hintMessage: text('hintMessage', 'Add something'),

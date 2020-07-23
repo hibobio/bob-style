@@ -1,8 +1,4 @@
-import {
-  MatDialog,
-  MatDialogConfig,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { DialogConfig } from '../dialog.interface';
@@ -35,7 +31,7 @@ export class DialogService {
 
     this.documentRef.nativeDocument.body.style.paddingRight = `${scrollBarGap}px`;
 
-    const dialogConfig: MatDialogConfig = Object.assign(
+    const dialogConfig: DialogConfig = Object.assign(
       {},
       DIALOG_CONFIG_DEF,
       config,

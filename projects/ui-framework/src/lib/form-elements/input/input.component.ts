@@ -61,7 +61,8 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     super(cd, zone);
 
     this.inputTransformers.push(
-      (value) => valueAsNumber(this.inputType, value),
+      (value) =>
+        valueAsNumber(this.inputType, value, undefined, this.decimals || 3),
 
       (value) => {
         return this.inputType === InputTypes.number &&
@@ -72,7 +73,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
       }
     );
     this.outputTransformers.push((value) =>
-      valueAsNumber(this.inputType, value, 0)
+      valueAsNumber(this.inputType, value, 0, this.decimals || 3)
     );
 
     this.forceElementValue = (value: number | string): string => {
@@ -81,7 +82,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
         : this.inputType === InputTypes.number &&
           this.numberFormat &&
           value !== '-'
-        ? this.numberDisplayFormatter.format(value as number)
+        ? this.formatNumberForDisplay(value as number)
         : (value as string);
     };
   }
@@ -96,6 +97,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
 
   @Input() numberFormat = false;
   @Input() onlyIntegers = false;
+  @Input() decimals = 3;
 
   @Input('allowedChars') set setAllowedKeys(allowedKeys: string | RegExp) {
     this.allowedKeys = !allowedKeys
@@ -108,11 +110,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
 
   private lastCursorState: InputCursorState = null;
 
-  private readonly numberDisplayFormatter = new Intl.NumberFormat('en', {
-    style: 'decimal',
-    useGrouping: true,
-    maximumFractionDigits: 3,
-  });
+  private numberDisplayFormatter: Intl.NumberFormat;
 
   onNgChanges(changes: SimpleChanges): void {
     super.onNgChanges(changes);
@@ -129,7 +127,8 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
       this.maxChars = Math.max(21, this.maxChars || 0);
     }
 
-    if (hasChanges(changes, ['numberFormat', 'onlyIntegers'])) {
+    if (hasChanges(changes, ['numberFormat', 'onlyIntegers', 'decimals'])) {
+      this.numberDisplayFormatter = undefined;
       this.writeValue(this.value);
     }
   }
@@ -321,5 +320,16 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
         });
       }
     }
+  }
+
+  private formatNumberForDisplay(number: number): string {
+    return (
+      this.numberDisplayFormatter ||
+      (this.numberDisplayFormatter = new Intl.NumberFormat('en', {
+        style: 'decimal',
+        useGrouping: true,
+        maximumFractionDigits: this.decimals || 3,
+      }))
+    ).format(number);
   }
 }

@@ -172,7 +172,7 @@ $input-focus-border-color: $grey-700;
     // label
 
     .bfe-label {
-      @include bFormElement-label;
+      @include bFormElement-label(false);
     }
 
     // prefix-suffix

@@ -13,25 +13,34 @@ const storyTemplate = `
 const note = `
   ## Filters
 
-  #### Module
+  ### Module
   *FiltersModule*
 
-  ##### HighlightPipe
+  #### HighlightPipe
   highlights chars in string
+
   ~~~
   <span [innerHTML]="string | highlight: chars"></span>
   ~~~
 
-  ##### LinkifyPipe
+  #### LinkifyPipe
   wraps links with a tag with href, target blank if a link and mailto: prefix if email.
+
   ~~~
   <span [innerHTML]="string | linkify"></span>
   ~~~
 
-  ##### FormatNumberPipe
+  #### FormatNumberPipe
   formats number by separating every 3 digits with comma (123456.78 => 123,456.78)
+
   ~~~
   <span>{{ someNumber | formatNumber }}</span>
+  ~~~
+
+  decimal digits number can be passed (default is 3 decimals):
+
+  ~~~
+  <span>{{ someNumber | formatNumber:decimals }}</span>
   ~~~
 
 `;

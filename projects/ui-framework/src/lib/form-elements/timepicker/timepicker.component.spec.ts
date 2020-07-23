@@ -12,12 +12,16 @@ import {
   inputValue,
 } from '../../services/utils/test-helpers';
 import { IconsModule } from '../../icons/icons.module';
+import { MockComponent } from 'ng-mocks';
+import { FormElementLabelComponent } from '../form-element-label/form-element-label.component';
+import { By } from '@angular/platform-browser';
 
-describe('TimePickerComponent', () => {
+fdescribe('TimePickerComponent', () => {
   let component: TimePickerComponent;
   let fixture: ComponentFixture<TimePickerComponent>;
   let componentElem: HTMLElement;
   let labelElem: HTMLElement;
+  let labelComp: FormElementLabelComponent;
   let hhInputElem: HTMLInputElement;
   let mmInputElem: HTMLInputElement;
   let iconElem: HTMLElement;
@@ -25,7 +29,10 @@ describe('TimePickerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TimePickerComponent],
+      declarations: [
+        TimePickerComponent,
+        MockComponent(FormElementLabelComponent),
+      ],
       imports: [NoopAnimationsModule, InputMessageModule, IconsModule],
       providers: [
         DateParseService,
@@ -47,6 +54,8 @@ describe('TimePickerComponent', () => {
         fixture.detectChanges();
 
         labelElem = elementFromFixture(fixture, '.bfe-label');
+        labelComp = fixture.debugElement.query(By.css('.bfe-label'))
+          .componentInstance;
         hhInputElem = elementFromFixture(
           fixture,
           '.bfe-input-hours'
@@ -69,7 +78,7 @@ describe('TimePickerComponent', () => {
 
   describe('Init & Basic inputs', () => {
     it('should display label', () => {
-      expect(labelElem.innerText).toContain('Label');
+      expect(labelComp.label).toEqual('Label');
       expect(getPseudoContent(labelElem, 'after')).toContain('*');
     });
 

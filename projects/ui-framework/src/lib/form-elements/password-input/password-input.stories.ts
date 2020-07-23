@@ -24,6 +24,7 @@ const template = `
               [value]="value"
               [label]="label"
               [placeholder]="placeholder"
+              [description]="description"
               [minChars]="minChars"
               [maxChars]="maxChars"
               [hintMessage]="hintMessage"
@@ -73,6 +74,7 @@ story.add(
         value: text('value', ''),
         label: text('label', 'Password input'),
         placeholder: text('placeholder', 'Enter password'),
+        description: text('description', ''),
         minChars: number('minChars', 8),
         maxChars: number('maxChars', 30),
         readonly: boolean('readonly', false),

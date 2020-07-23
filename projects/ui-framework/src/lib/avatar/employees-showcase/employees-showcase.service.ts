@@ -101,7 +101,8 @@ export class EmployeesShowcaseService {
   private optionHasAvatarComponent(option: any): boolean {
     return Boolean(
       option?.prefixComponent?.attributes &&
-        hasProp(option.prefixComponent.attributes, 'imageSource')
+      hasProp(option.prefixComponent.attributes, 'imageSource') ||
+      hasProp(option.prefixComponent.attributes, 'icon')
     );
   }
 

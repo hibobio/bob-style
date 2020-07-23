@@ -6,6 +6,7 @@ import { IconsModule } from '../../icons/icons.module';
 import { CommonModule } from '@angular/common';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
 
 @NgModule({
   declarations: [PasswordInputComponent],
@@ -14,10 +15,11 @@ import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
     MatDatepickerModule,
     MatNativeDateModule,
     IconsModule,
-    InputMessageModule
+    InputMessageModule,
+    FormElementLabelModule,
   ],
   exports: [PasswordInputComponent],
   entryComponents: [],
-  providers: [EventManagerPlugins[0]]
+  providers: [EventManagerPlugins[0]],
 })
 export class PasswordInputModule {}

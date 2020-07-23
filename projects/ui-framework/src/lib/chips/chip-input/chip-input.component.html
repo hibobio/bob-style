@@ -1,6 +1,9 @@
-<label *ngIf="label"
-       class="bfe-label"
-       [attr.for]="id">{{label}}</label>
+<b-form-element-label *ngIf="label"
+                      class="bfe-label"
+                      [label]="label"
+                      [description]="description"
+                      [fieldId]="id">
+</b-form-element-label>
 
 <div class="bfe-wrap"
      matAutocompleteOrigin

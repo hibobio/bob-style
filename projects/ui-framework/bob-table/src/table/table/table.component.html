@@ -18,7 +18,7 @@
                  [attr.data-column-borders]="styleConfig?.showColumnBorders ? true : null">
 </ag-grid-angular>
 
-<b-pager *ngIf="enablePager && gridReady && rowData?.length > pagerConfig.sliceSize"
+<b-pager *ngIf="enablePager && gridReady"
          [items]="rowData.length"
          [config]="pagerConfig"
          (pageChange)="onPageChange($event)"
