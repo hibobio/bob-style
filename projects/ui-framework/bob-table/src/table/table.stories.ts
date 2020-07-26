@@ -236,7 +236,7 @@ function tableStoryFactory({
     columnsOrderChanged: action('Column order changed'),
     columnRemoved: action('Column remove button clicked'),
     totalSelected: 0,
-    onSearchChange: (str, table) => table.gridOptions.api.setQuickFilter(str),
+    onSearchChange: (str, table) => table.filterRows(str),
     onSelectionChanged: function ($event) {
       this.totalSelected = $event.length;
     },

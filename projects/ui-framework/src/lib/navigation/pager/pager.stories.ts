@@ -12,12 +12,12 @@ const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(
   withKnobs
 );
 
-const template = `<b-pager [items]="items"
-         [config]="config"
-         [currentPage]="currentPage"
-         (pageChange)="onPageChange($event)"
-         (sliceChange)="onSliceChange($event)"
-         (sliceSizeChange)="onSliceSizeChange($event)">
+const template = `<b-pager  [items]="items"
+            [currentPage]="currentPage"
+            [config]="config"
+            (pageChange)="onPageChange($event)"
+            (sliceChange)="onSliceChange($event)"
+            (sliceSizeChange)="onSliceSizeChange($event)">
 </b-pager>`;
 
 const storyTemplate = `
@@ -87,7 +87,7 @@ const note = `
 
 `;
 
-const itemsNumber = 937;
+const itemsNumber = 45;
 const itemsMock: number[] = arrayOfNumbers(itemsNumber) as number[];
 
 story.add(
@@ -96,7 +96,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        currentPage: number('currentPage', 0),
+        currentPage: number('currentPage', 2),
         items: object('items', itemsMock),
         config: object('config', {
           sliceStep: 25,

@@ -32,6 +32,7 @@ import {
   ColumnsOrderChangedEvent,
   RowClickedEvent,
   SortChangedEvent,
+  TablePagerState,
   TableStyleConfig,
 } from './table.interface';
 import { PagerConfig, PAGER_CONFIG_DEF } from 'bob-style';
@@ -110,6 +111,8 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   private columns: string[];
   private gridApi: GridApi;
+
+  public pagerState: TablePagerState;
 
   @HostListener('click', ['$event'])
   onHostClick(event: MouseEvent) {
@@ -190,6 +193,12 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     }
   }
 
+  filterRows(filterQuery: string): void {
+    super.filterRows(filterQuery);
+    this.pagerState = this.getPagerState();
+    this.cdr.detectChanges();
+  }
+
   onSortChanged($event): void {
     this.sortChanged.emit({
       colId: get($event.api.getSortModel(), '[0].colId'),
@@ -254,6 +263,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
           event.columnApi.autoSizeAllColumns();
         }
         this.setOrderedColumns(event.columnApi.getAllGridColumns());
+        this.pagerState = this.getPagerState();
         this.cdr.markForCheck();
         this.gridInit.emit();
       },
@@ -286,5 +296,14 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   onPageSizeChange(pageSize: number): void {
     this.gridApi.paginationSetPageSize(pageSize);
+  }
+
+  private getPagerState(): TablePagerState {
+    return (
+      this.gridApi && {
+        totalItems: this.gridApi.getDisplayedRowCount(),
+        currentPage: this.gridApi.paginationGetCurrentPage(),
+      }
+    );
   }
 }

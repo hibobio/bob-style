@@ -26,7 +26,7 @@ export class PagerComponent<T = any> implements OnInit {
   @Input('config') set setConfig(config: PagerConfig) {
     this.initSliceConfigAndOptions(config);
 
-    if (this.pagesViewModel) {
+    if (this.items) {
       this.initViewModel();
       this.emitChange();
     }
@@ -117,10 +117,11 @@ export class PagerComponent<T = any> implements OnInit {
     this.emitChange('slicesize');
   }
 
-  private changePage(newPage: number): void {
-    if (newPage !== this.currentPage) {
-      this.currentPage = newPage;
-      this.emitChange('page');
+  private changePage(newPage: number, emit = true): void {
+    this.currentPage = newPage;
+
+    if (!this.items || !this.config) {
+      return;
     }
 
     this.currentSlice = this.pagerService.getSlice(
@@ -128,7 +129,10 @@ export class PagerComponent<T = any> implements OnInit {
       this.currentPage,
       this.config
     );
-    this.emitChange('slice');
+
+    if (emit) {
+      this.emitChange();
+    }
 
     this.setPagesViewModel();
   }
@@ -143,9 +147,6 @@ export class PagerComponent<T = any> implements OnInit {
   private initViewModel(): void {
     this.totalItems = isArray(this.items) ? this.items.length : this.items || 0;
     this.totalPages = Math.ceil(this.totalItems / this.config.sliceSize);
-    this.currentSlice = [0, this.config.sliceSize];
-    this.currentPage = 0;
-
     this.sliceInfoWidth =
       'calc(' +
       (this.totalItems + '').length * 3 +
@@ -153,7 +154,8 @@ export class PagerComponent<T = any> implements OnInit {
       (2 + 'of'.length) +
       'em)';
 
-    this.setPagesViewModel();
+    this.currentPage = Math.min(this.currentPage || 0, this.totalPages - 1);
+    this.changePage(this.currentPage, false);
   }
 
   private initSliceConfigAndOptions(config: PagerConfig = null) {

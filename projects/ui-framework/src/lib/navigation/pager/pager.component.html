@@ -1,5 +1,5 @@
 <span class="bpgr-slice-info b-body mrg-r-8"
-      *ngIf="currentSlice"
+      *ngIf="currentSlice && totalItems"
       [ngStyle]="{
         'width': sliceInfoWidth
       }">
@@ -10,6 +10,7 @@
 
 <div class="bpgr-page-buttons"
      role="navigation"
+     [hidden]="totalPages === 1 || !totalItems"
      (click.outside-zone)="onPageClick($event)">
 
   <b-square-button [type]="buttonType.tertiary"
@@ -36,7 +37,6 @@
 <b-single-select *ngIf="sliceOptions && sliceOptions[0].options.length > 1"
                  class="bpgr-slice-size-select mrg-l-16"
                  [options]="sliceOptions"
-                 [disabled]="totalPages === 1"
                  [size]="formElementSize.smaller"
                  [showNoneOption]="false"
                  [doPropagate]="false"
