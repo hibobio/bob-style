@@ -193,7 +193,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
       padding: 2px 0;
     }
 
-    &:last-child {
+    &.ag-row-last {
       border-bottom: none;
     }
 
