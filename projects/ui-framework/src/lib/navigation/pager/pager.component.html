@@ -1,16 +1,16 @@
 <span class="bpgr-slice-info b-body mrg-r-8"
-      *ngIf="currentSlice && totalItems"
+      *ngIf="currentSlice && totalItems > 1"
       [ngStyle]="{
         'width': sliceInfoWidth
       }">
-  {{currentSlice[0] + 1}}-{{totalItems > currentSlice[1] ? currentSlice[1] : totalItems}}
+  {{totalItems ? currentSlice[0] + 1 : totalItems}}-{{totalItems > currentSlice[1] ? currentSlice[1] : totalItems}}
   {{'bob-style.pager.of' | translate}}
   {{totalItems}}
 </span>
 
 <div class="bpgr-page-buttons"
      role="navigation"
-     [hidden]="totalPages === 1 || !totalItems"
+     [hidden]="totalPages < 2 || !(totalItems > 0)"
      (click.outside-zone)="onPageClick($event)">
 
   <b-square-button [type]="buttonType.tertiary"
@@ -24,7 +24,7 @@
                      buttonType.negative
                      :
                      buttonType.tertiary"
-                   [disabled]="page !== page || totalPages === 1">
+                   [disabled]="page !== page || totalPages < 2">
     {{page === page ? page + 1 : '...'}}
   </b-square-button>
 

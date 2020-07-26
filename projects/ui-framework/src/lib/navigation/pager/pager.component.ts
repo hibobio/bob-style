@@ -11,7 +11,11 @@ import { Icons } from '../../icons/icons.enum';
 import { SelectGroupOption } from '../../lists/list.interface';
 import { ListChange } from '../../lists/list-change/list-change';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
-import { isArray, isNumber } from '../../services/utils/functional-utils';
+import {
+  isArray,
+  isNumber,
+  numberMinMax,
+} from '../../services/utils/functional-utils';
 import { PagerConfig } from './pager.interface';
 import { PagerService } from './pager.service';
 
@@ -154,7 +158,12 @@ export class PagerComponent<T = any> implements OnInit {
       (2 + 'of'.length) +
       'em)';
 
-    this.currentPage = Math.min(this.currentPage || 0, this.totalPages - 1);
+    this.currentPage = numberMinMax(
+      this.currentPage || 0,
+      0,
+      this.totalPages - 1
+    );
+
     this.changePage(this.currentPage, false);
   }
 
