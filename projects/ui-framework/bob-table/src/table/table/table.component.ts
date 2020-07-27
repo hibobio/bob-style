@@ -35,7 +35,12 @@ import {
   TablePagerState,
   TableStyleConfig,
 } from './table.interface';
-import { PagerConfig, PAGER_CONFIG_DEF } from 'bob-style';
+import {
+  hasChanges,
+  notFirstChanges,
+  PagerConfig,
+  PAGER_CONFIG_DEF,
+} from 'bob-style';
 
 const CLOSE_BUTTON_DIAMETER = 20;
 const CLOSE_MARGIN_OFFSET = 6;
@@ -154,7 +159,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     let updateColumns = false;
     let previousColumnDefValue: ColumnDef[];
 
-    if (has(changes, 'columnDefs')) {
+    if (hasChanges(changes, ['columnDefs'])) {
       updateColumns = true;
       this.columnDefConfig = {
         columnDef: changes.columnDefs.currentValue,
@@ -163,7 +168,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       previousColumnDefValue = changes.columnDefs.previousValue;
     }
 
-    if (has(changes, 'columnDefConfig')) {
+    if (hasChanges(changes, ['columnDefConfig'])) {
       updateColumns = true;
       this.columnDefConfig = changes.columnDefConfig.currentValue;
       previousColumnDefValue = changes.columnDefConfig.previousValue?.columnDef;
@@ -187,9 +192,17 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       );
     }
 
-    if (has(changes, 'maxHeight')) {
+    if (hasChanges(changes, ['maxHeight'])) {
       this.maxHeight = changes.maxHeight.currentValue;
       this.setGridHeight(this.maxHeight);
+    }
+
+    if (hasChanges(changes, ['rowData'])) {
+      this.pagerState = this.getPagerState();
+    }
+
+    if (notFirstChanges(changes)) {
+      this.cdr.detectChanges();
     }
   }
 
@@ -300,9 +313,12 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   private getPagerState(): TablePagerState {
     return (
-      this.gridApi && {
+      (this.gridApi && {
         totalItems: this.gridApi.getDisplayedRowCount(),
         currentPage: this.gridApi.paginationGetCurrentPage(),
+      }) || {
+        totalItems: this.rowData.length,
+        currentPage: 0,
       }
     );
   }
