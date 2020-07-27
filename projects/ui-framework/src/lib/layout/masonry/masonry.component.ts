@@ -9,19 +9,14 @@ import {
 } from '@angular/core';
 import { MasonryConfig, MasonryState } from './masonry.interface';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { splitArrayToChunks } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
-import { throttleTime, filter, tap } from 'rxjs/operators';
+import { throttleTime, filter, tap, skip } from 'rxjs/operators';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import { InputObservable } from '../../services/utils/decorators';
-import { merge, Subscription, Subject, of, Observable } from 'rxjs';
-import {
-  WindowRef,
-  WindowLike,
-  ResizeObserverInstance,
-} from '../../services/utils/window-ref.service';
+import { merge, Subscription, Subject, Observable } from 'rxjs';
+import { WindowRef, WindowLike } from '../../services/utils/window-ref.service';
 import { MasonryService } from './masonry.service';
-import { MASONRY_CONFIG_DEF, MASONRY_ROW_DIVISION } from './masonry.const';
+import { MASONRY_CONFIG_DEF } from './masonry.const';
 
 @Component({
   selector: 'b-masonry-layout',
@@ -52,11 +47,11 @@ export class MasonryLayoutComponent
   private nativeWindow: WindowLike;
   private hostEl: HTMLElement;
   private config: MasonryConfig;
-  private state: MasonryState = {} as MasonryState;
-  private mutationObserver: MutationObserver;
-  private resizeObserver: ResizeObserverInstance;
+  private state: MasonryState = {};
+  private observer: MutationObserver;
   private updater: Subscription;
-  private animationRequestID;
+
+  private elementsToUpdate: Set<HTMLElement> = new Set();
 
   ngOnInit() {
     this.updater = merge(
@@ -65,117 +60,77 @@ export class MasonryLayoutComponent
           this.config = this.service.processConfig(config);
         })
       ),
-      this.changeDetection$,
-
-      this.nativeWindow.ResizeObserver
-        ? of(null)
-        : this.utilsService.getResizeEvent().pipe(outsideZone(this.zone))
+      this.utilsService.getResizeEvent().pipe(
+        outsideZone(this.zone),
+        skip(1),
+        filter(
+          () =>
+            this.hostEl &&
+            this.state.hostWidth &&
+            Math.abs(this.state.hostWidth - this.hostEl.offsetWidth) > 20
+        )
+      ),
+      this.changeDetection$
     )
       .pipe(
-        throttleTime(50, undefined, {
+        throttleTime(100, undefined, {
           leading: false,
           trailing: true,
-        }),
-        filter(() => {
-          return this.service.stateChanged(
-            this.hostEl,
-            this.config,
-            this.state
-          );
         })
       )
       .subscribe(() => {
+        if (!this.hostEl?.children.length) {
+          return;
+        }
+
         this.zone.runOutsideAngular(() => {
-          this.initMasonry(this.hostEl, this.config, this.state);
+          if (!this.state.config || this.elementsToUpdate.size === 0) {
+            this.elementsToUpdate.clear();
+            this.service.initMasonry(this.hostEl, this.config, this.state);
+            return;
+          }
+
+          const elements = Array.from(this.elementsToUpdate);
+          this.elementsToUpdate.clear();
+
+          this.service.updateElementsRowSpan(elements, this.config);
         });
       });
 
-    if (this.nativeWindow.ResizeObserver) {
-      this.resizeObserver = new this.nativeWindow.ResizeObserver(() => {
-        this.state = {} as MasonryState;
-        this.changeDetection$.next();
-      });
+    this.zone.runOutsideAngular(() => {
+      if (this.nativeWindow.MutationObserver) {
+        //
+        this.observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation: MutationRecord) => {
+            const target = this.DOM.getClosestUntil(
+              mutation.target,
+              'b-masonry-layout > *',
+              this.hostEl
+            );
 
-      this.resizeObserver.observe(this.hostEl);
-    }
+            if (target && target !== this.hostEl) {
+              this.elementsToUpdate.add(target);
+            }
+          });
+          this.changeDetection$.next();
+        });
 
-    if (this.nativeWindow.MutationObserver) {
-      this.mutationObserver = new MutationObserver(() => {
-        this.state = {} as MasonryState;
-        this.changeDetection$.next();
-      });
-
-      this.mutationObserver.observe(this.hostEl, {
-        childList: true,
-        subtree: true,
-        characterData: true,
-        attributes: false,
-      });
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.resizeObserver?.disconnect();
-    this.mutationObserver?.disconnect();
-    this.updater?.unsubscribe();
-    if (this.animationRequestID) {
-      this.nativeWindow.cancelAnimationFrame(this.animationRequestID);
-    }
+        this.observer.observe(this.hostEl, {
+          childList: true,
+          subtree: true,
+          characterData: true,
+          attributeFilter: ['src', 'data-loaded'],
+        });
+      }
+    });
   }
 
   ngAfterViewInit(): void {
     this.changeDetection$.next();
   }
 
-  private initMasonry(
-    element: HTMLElement,
-    config: MasonryConfig,
-    state: MasonryState
-  ): void {
-    if (this.animationRequestID) {
-      this.nativeWindow.cancelAnimationFrame(this.animationRequestID);
-      this.animationRequestID = undefined;
-    }
-
-    state.hostWidth = element.offsetWidth;
-    state.childrenCount = element.children.length;
-    state.config = config;
-
-    this.DOM.setCssProps(element, {
-      '--masonry-row-div': MASONRY_ROW_DIVISION + 'px',
-      '--masonry-gap': config.gap + 'px',
-      '--masonry-col-width': config.columns
-        ? `calc(100% / ${config.columns} - ${config.gap}px * ${
-            config.columns - 1
-          } / ${config.columns})`
-        : config.columnWidth && config.columnWidth + 'px',
-    });
-
-    const elementChunks: HTMLElement[][] = splitArrayToChunks(
-      Array.from(element.children) as HTMLElement[],
-      (config.columns || 5) * 3
-    );
-
-    let currentChunkIndex = 0;
-
-    const setElementsRowSpan = () => {
-      if (!elementChunks[currentChunkIndex]) {
-        return;
-      }
-
-      elementChunks[currentChunkIndex].forEach((el: HTMLElement) => {
-        this.service.setElementRowSpan(el, this.config);
-      });
-
-      ++currentChunkIndex;
-
-      this.animationRequestID = this.nativeWindow.requestAnimationFrame(() => {
-        setElementsRowSpan();
-      });
-    };
-
-    this.animationRequestID = this.nativeWindow.requestAnimationFrame(() => {
-      setElementsRowSpan();
-    });
+  ngOnDestroy(): void {
+    this.observer?.disconnect();
+    this.updater?.unsubscribe();
   }
 }

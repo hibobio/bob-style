@@ -221,18 +221,25 @@ export class DOMhelpers {
   }
 
   public getClosestUntil(
-    element: HTMLElement,
+    element: HTMLElement | Node,
     closestSelector: string,
     until: string | HTMLElement
   ): HTMLElement {
-    if (!this.isElement(element) || !closestSelector || !until) {
+    if (
+      !(isTextNode(element) || isDomElement(element)) ||
+      !closestSelector ||
+      !until
+    ) {
       return null;
     }
 
-    let parent = element;
+    let parent =
+      element.nodeType === Node.TEXT_NODE
+        ? element.parentElement
+        : (element as HTMLElement);
 
     while (
-      ((this.isElement(until) && until !== parent) ||
+      ((isDomElement(until) && until !== parent) ||
         (isString(until) && !parent.matches(until))) &&
       !parent.matches(closestSelector) &&
       parent !== document.documentElement &&

@@ -1,22 +1,90 @@
 import { Injectable } from '@angular/core';
 import { MasonryConfig, MasonryState } from './masonry.interface';
-import { isNumber } from '../../services/utils/functional-utils';
+import {
+  isNumber,
+  splitArrayToChunks,
+} from '../../services/utils/functional-utils';
 import {
   MASONRY_CONFIG_DEF,
   MASONRY_GAP_DEF,
   MASONRY_COLS_DEF,
   MASONRY_ROW_DIVISION,
 } from './masonry.const';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { WindowLike, WindowRef } from '../../services/utils/window-ref.service';
 
 @Injectable()
 export class MasonryService {
-  constructor() {}
+  constructor(private DOM: DOMhelpers, private windowRef: WindowRef) {
+    this.nativeWindow = this.windowRef.nativeWindow;
+  }
+  private nativeWindow: WindowLike;
+
+  public initMasonry(
+    host: HTMLElement,
+    config: MasonryConfig,
+    state: MasonryState
+  ): void {
+    state.hostWidth = host.offsetWidth;
+    state.childrenCount = host.children.length;
+    state.config = config;
+
+    this.DOM.setCssProps(host, {
+      '--masonry-row-div': MASONRY_ROW_DIVISION + 'px',
+      '--masonry-gap': config.gap + 'px',
+      '--masonry-col-width': config.columns
+        ? `calc(100% / ${config.columns} - ${config.gap}px * ${
+            config.columns - 1
+          } / ${config.columns})`
+        : config.columnWidth && config.columnWidth + 'px',
+    });
+
+    this.updateElementsRowSpan(
+      Array.from(host.children) as HTMLElement[],
+      config
+    );
+  }
+
+  public updateElementsRowSpan(
+    elements: HTMLElement[],
+    config: MasonryConfig
+  ): void {
+    const elementChunks: HTMLElement[][] = splitArrayToChunks(
+      elements,
+      (config.columns || 5) * 3
+    );
+
+    let currentChunkIndex = 0;
+
+    const setElementsRowSpan = () => {
+      if (!elementChunks[currentChunkIndex]) {
+        return;
+      }
+
+      elementChunks[currentChunkIndex].forEach((el: HTMLElement) => {
+        this.setElementRowSpan(el, config);
+      });
+
+      ++currentChunkIndex;
+
+      this.nativeWindow.requestAnimationFrame(() => {
+        setElementsRowSpan();
+      });
+    };
+
+    this.nativeWindow.requestAnimationFrame(() => {
+      setElementsRowSpan();
+    });
+  }
 
   public setElementRowSpan(
     element: HTMLElement,
     config: MasonryConfig,
     hardcore = false
   ): void {
+    if (!element) {
+      return;
+    }
     element.style.removeProperty('grid-row-end');
 
     let contentHeight = 0;
@@ -54,18 +122,5 @@ export class MasonryService {
       : null;
 
     return config;
-  }
-
-  public stateChanged(
-    element: HTMLElement,
-    config: MasonryConfig,
-    state: MasonryState
-  ): boolean {
-    return Boolean(
-      !state ||
-        state.config !== config ||
-        state.childrenCount !== element.children.length ||
-        Math.abs(state.hostWidth - element.offsetWidth) > 20
-    );
   }
 }

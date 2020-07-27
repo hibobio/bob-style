@@ -78,13 +78,15 @@ export class MasonryTestComponent implements OnInit {
     this.img$ = of(this.makeImageSrc()).pipe(
       delay(randomNumber(500, 2000)),
       tap(() => {
-        if (this.imgEl?.nativeElement) {
-          (this.imgEl.nativeElement as HTMLImageElement).addEventListener(
-            'error',
-            () => {
-              this.imgEl.nativeElement.setAttribute('src', this.makeImageSrc());
-            }
-          );
+        const imageEl = this.imgEl?.nativeElement as HTMLImageElement;
+
+        if (imageEl) {
+          imageEl.addEventListener('load', () => {
+            imageEl.setAttribute('data-loaded', 'true');
+          });
+          imageEl.addEventListener('error', () => {
+            imageEl.setAttribute('src', this.makeImageSrc());
+          });
         }
       })
     );
