@@ -298,7 +298,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         totalItems: this.getDisplayedRowCount(),
         currentPage: this.paginationGetCurrentPage(),
       }) || {
-        totalItems: this.rowData.length || 0,
+        totalItems: this.rowData?.length || 0,
         currentPage: 0,
       }
     );
