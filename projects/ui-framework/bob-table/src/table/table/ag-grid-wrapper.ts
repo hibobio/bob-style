@@ -1,4 +1,4 @@
-import { RowNode, GridOptions } from 'ag-grid-community';
+import { RowNode, GridOptions, GridApi } from 'ag-grid-community';
 import { LicenseManager } from 'ag-grid-enterprise';
 
 const LICENSE_KEY =
@@ -6,6 +6,7 @@ const LICENSE_KEY =
 
 export class AgGridWrapper {
   public gridOptions: GridOptions;
+  public gridApi: GridApi;
 
   constructor() {
     LicenseManager.setLicenseKey(LICENSE_KEY);
@@ -13,37 +14,50 @@ export class AgGridWrapper {
 
   public setGridOptions(gridOptions: GridOptions) {
     this.gridOptions = gridOptions;
+    this.gridApi = this.gridApi || this.gridOptions?.api;
   }
 
   public getDisplayedRowCount(): number {
-    return this.gridOptions?.api?.getDisplayedRowCount();
+    return this.gridApi?.getDisplayedRowCount();
+  }
+
+  public paginationGetCurrentPage(): number {
+    return this.gridApi?.paginationGetCurrentPage();
+  }
+
+  public paginationGoToPage(page: number): void {
+    this.gridApi?.paginationGoToPage(page);
+  }
+
+  public paginationSetPageSize(pageSize: number): void {
+    this.gridApi?.paginationSetPageSize(pageSize);
   }
 
   public addRows(rows: any[]): void {
-    this.gridOptions?.api?.updateRowData({ add: rows });
+    this.gridApi?.updateRowData({ add: rows });
   }
 
   public filterRows(filterQuery: string): void {
-    this.gridOptions?.api?.setQuickFilter(filterQuery);
+    this.gridApi?.setQuickFilter(filterQuery);
   }
 
   public resetFilter(): void {
-    this.gridOptions?.api?.resetQuickFilter();
+    this.gridApi?.resetQuickFilter();
   }
 
   public removeRows(rows: any[]): void {
-    this.gridOptions?.api?.updateRowData({ remove: rows });
+    this.gridApi?.updateRowData({ remove: rows });
   }
 
   public updateRows(rowsData: any[]): void {
-    this.gridOptions?.api?.updateRowData({ update: rowsData });
+    this.gridApi?.updateRowData({ update: rowsData });
   }
 
   public getRow(rowIndex: string): RowNode {
-    return this.gridOptions?.api?.getRowNode(rowIndex);
+    return this.gridApi?.getRowNode(rowIndex);
   }
 
   public deselectAll(): void {
-    this.gridOptions.api.deselectAll();
+    this.gridApi?.deselectAll();
   }
 }

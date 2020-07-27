@@ -22,7 +22,7 @@
          [items]="pagerState.totalItems"
          [currentPage]="pagerState.currentPage"
          [config]="pagerConfig"
-         (pageChange)="onPageChange($event)"
-         (sliceSizeChange)="onPageSizeChange($event)"
+         (pageChange)="paginationGoToPage($event)"
+         (sliceSizeChange)="paginationSetPageSize($event)"
          class="mrg-t-16">
 </b-pager>
