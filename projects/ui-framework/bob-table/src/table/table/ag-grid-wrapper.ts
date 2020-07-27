@@ -12,52 +12,56 @@ export class AgGridWrapper {
     LicenseManager.setLicenseKey(LICENSE_KEY);
   }
 
+  public getApi(): GridApi {
+    return this.gridApi || (this.gridApi = this.gridOptions?.api);
+  }
+
   public setGridOptions(gridOptions: GridOptions) {
     this.gridOptions = gridOptions;
     this.gridApi = this.gridApi || this.gridOptions?.api;
   }
 
   public getDisplayedRowCount(): number {
-    return this.gridApi?.getDisplayedRowCount();
+    return this.getApi()?.getDisplayedRowCount();
   }
 
   public paginationGetCurrentPage(): number {
-    return this.gridApi?.paginationGetCurrentPage();
+    return this.getApi()?.paginationGetCurrentPage();
   }
 
   public paginationGoToPage(page: number): void {
-    this.gridApi?.paginationGoToPage(page);
+    this.getApi()?.paginationGoToPage(page);
   }
 
   public paginationSetPageSize(pageSize: number): void {
-    this.gridApi?.paginationSetPageSize(pageSize);
+    this.getApi()?.paginationSetPageSize(pageSize);
   }
 
   public addRows(rows: any[]): void {
-    this.gridApi?.updateRowData({ add: rows });
+    this.getApi()?.updateRowData({ add: rows });
   }
 
   public filterRows(filterQuery: string): void {
-    this.gridApi?.setQuickFilter(filterQuery);
+    this.getApi()?.setQuickFilter(filterQuery);
   }
 
   public resetFilter(): void {
-    this.gridApi?.resetQuickFilter();
+    this.getApi()?.resetQuickFilter();
   }
 
   public removeRows(rows: any[]): void {
-    this.gridApi?.updateRowData({ remove: rows });
+    this.getApi()?.updateRowData({ remove: rows });
   }
 
   public updateRows(rowsData: any[]): void {
-    this.gridApi?.updateRowData({ update: rowsData });
+    this.getApi()?.updateRowData({ update: rowsData });
   }
 
   public getRow(rowIndex: string): RowNode {
-    return this.gridApi?.getRowNode(rowIndex);
+    return this.getApi()?.getRowNode(rowIndex);
   }
 
   public deselectAll(): void {
-    this.gridApi?.deselectAll();
+    this.getApi()?.deselectAll();
   }
 }

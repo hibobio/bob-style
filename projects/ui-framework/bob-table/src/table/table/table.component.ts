@@ -294,7 +294,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   private getPagerState(): TablePagerState {
     return (
-      (this.gridApi && {
+      (this.getApi() && {
         totalItems: this.getDisplayedRowCount(),
         currentPage: this.paginationGetCurrentPage(),
       }) || {
