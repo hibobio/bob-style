@@ -545,10 +545,11 @@ export { FiltersModule } from './lib/services/filters/filters.module';
 export { LinkifyPipe } from './lib/services/filters/linkify.pipe';
 export { HighlightPipe } from './lib/services/filters/highlight.pipe';
 export { FormatNumberPipe } from './lib/services/filters/formatNumber.pipe';
+
 // Utils Module
 export { UtilsModule } from './lib/services/utils/utils.module';
 export { SpyDirective } from './lib/services/utils/spy.directive';
-export { UtilsService } from './lib/services/utils/utils.service';
+export * from './lib/services/utils/utils.service';
 export { ScrollEvent } from './lib/services/utils/utils.interface';
 export * from './lib/services/utils/window-ref.service';
 export { DocumentRef } from './lib/services/utils/document-ref.service';
@@ -575,6 +576,9 @@ export {
 } from './lib/services/utils/eventManager.plugins';
 // Decorators
 export * from './lib/services/utils/decorators';
+// Mutation Observable
+export * from './lib/services/utils/mutation-observable';
+
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
 export * from './lib/eye-candy/floating-avatars/floating-avatars.interface';

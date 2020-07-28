@@ -155,8 +155,8 @@ export class MutationObservableService {
     if (!this.nativeWindow.ResizeObserver) {
       return new Observable((observer) => {
         let lastRect: Partial<DOMRectReadOnly> = {
-          width: element.offsetWidth,
-          height: element.offsetHeight,
+          width: 0,
+          height: 0,
         };
 
         const resizeSub = this.utilsService.getResizeEvent().subscribe(() => {
@@ -166,7 +166,7 @@ export class MutationObservableService {
           };
 
           if (this.compareDOMRects(lastRect, newRect, config)) {
-            observer.next(newRect);
+            observer.next({ ...newRect });
             lastRect = newRect;
           }
         });
@@ -187,7 +187,7 @@ export class MutationObservableService {
           const newRect = entries[entries.length - 1].contentRect;
 
           if (this.compareDOMRects(lastRect, newRect, config)) {
-            observer.next(newRect);
+            observer.next({ ...newRect });
             lastRect = newRect;
           }
         }
