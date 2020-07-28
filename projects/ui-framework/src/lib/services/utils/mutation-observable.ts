@@ -28,7 +28,7 @@ export const MUTATION_OBSERVABLE_CONFIG_DEF: MutationObservableConfig = {
 
 export const RESIZE_OBSERVERVABLE_CONFIG_DEF: ResizeObservableConfig = {
   watch: 'both',
-  threshold: 20,
+  threshold: 10,
 };
 
 @Injectable({
