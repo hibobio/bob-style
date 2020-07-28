@@ -7,6 +7,7 @@ import {
 } from './window-ref.service';
 import { isDomElement } from './functional-utils';
 import { DOMhelpers } from '../html/dom-helpers.service';
+import { UtilsService } from './utils.service';
 
 export interface MutationObservableConfig extends MutationObserverInit {
   mutations?: 'original' | 'processed';
@@ -35,7 +36,11 @@ export const RESIZE_OBSERVERVABLE_CONFIG_DEF: ResizeObservableConfig = {
   providedIn: 'root',
 })
 export class MutationObservableService {
-  constructor(private windowRef: WindowRef, private DOM: DOMhelpers) {
+  constructor(
+    private windowRef: WindowRef,
+    private DOM: DOMhelpers,
+    private utilsService: UtilsService
+  ) {
     this.nativeWindow = this.windowRef.nativeWindow;
   }
 
@@ -128,11 +133,52 @@ export class MutationObservableService {
     });
   }
 
+  private compareDOMRects(
+    rectA: Partial<DOMRectReadOnly>,
+    rectB: Partial<DOMRectReadOnly>,
+    config: ResizeObservableConfig = RESIZE_OBSERVERVABLE_CONFIG_DEF
+  ): boolean {
+    return (
+      (config.watch !== 'height' &&
+        Math.abs(rectA.width - rectB.width) > (config.threshold || 0)) ||
+      (config.watch !== 'width' &&
+        Math.abs(rectA.height - rectB.height) > (config.threshold || 0))
+    );
+  }
+
   public getResizeObservervable(
     element: HTMLElement,
     config: ResizeObservableConfig = RESIZE_OBSERVERVABLE_CONFIG_DEF
-  ): Observable<DOMRectReadOnly> {
+  ): Observable<Partial<DOMRectReadOnly>> {
     //
+
+    if (!this.nativeWindow.ResizeObserver) {
+      return new Observable((observer) => {
+        let lastRect: Partial<DOMRectReadOnly> = {
+          width: element.offsetWidth,
+          height: element.offsetHeight,
+        };
+
+        const resizeSub = this.utilsService.getResizeEvent().subscribe(() => {
+          const newRect = {
+            width: element.offsetWidth,
+            height: element.offsetHeight,
+          };
+
+          if (this.compareDOMRects(lastRect, newRect, config)) {
+            observer.next(newRect);
+            lastRect = newRect;
+          }
+        });
+
+        const unsubscribe = () => {
+          resizeSub.unsubscribe();
+        };
+
+        return unsubscribe;
+      });
+    }
+
     return new Observable((observer) => {
       let lastRect: Partial<DOMRectReadOnly> = { width: 0, height: 0 };
 
@@ -140,14 +186,7 @@ export class MutationObservableService {
         (entries) => {
           const newRect = entries[entries.length - 1].contentRect;
 
-          if (
-            (config.watch !== 'height' &&
-              Math.abs(lastRect.width - newRect.width) >
-                (config.threshold || 0)) ||
-            (config.watch !== 'width' &&
-              Math.abs(lastRect.height - newRect.height) >
-                (config.threshold || 0))
-          ) {
+          if (this.compareDOMRects(lastRect, newRect, config)) {
             observer.next(newRect);
             lastRect = newRect;
           }
