@@ -151,7 +151,7 @@ const note = `
   (gridInit) | EventEmitter<wbr>&lt;void&gt;  | Grid init event | &nbsp;
   (selectionChanged) | EventEmitter<wbr>&lt;any[]&gt; | All selected rows | &nbsp;
   (sortChanged) | EventEmitter<wbr>&lt;SortChangedEvent&gt; | Sort changed event | &nbsp;
-  (columnsChanged) | EventEmitter<wbr>&lt;void&gt; | emits when columns change | &nbsp;
+  (columnsChanged) | EventEmitter<wbr>&lt;ColumnsChangedEvent&gt; | emits when columns change | &nbsp;
   (columnsOrderChanged) | EventEmitter<wbr>&lt;ColumnsOrderChangedEvent&gt; | emits when column order changes | &nbsp;
   (cellClicked) | EventEmitter<wbr>&lt;CellClickedEvent&gt; | emits on cell click | &nbsp;
   (columnRemoved) | EventEmitter<wbr>&lt;string&gt; | Emits Cell ID,\

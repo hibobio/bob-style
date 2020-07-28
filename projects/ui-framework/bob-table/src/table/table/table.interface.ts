@@ -1,5 +1,5 @@
 import {
-  ColumnOrderStrategy,
+  ColumnOrderStrategy, ColumnsOrderChangedEventName,
   PinDirection,
   SortDirections,
 } from './table.enum';
@@ -49,6 +49,11 @@ export interface RowNodeDef {
 }
 
 export interface ColumnsOrderChangedEvent {
+  columns: string[];
+  eventName: ColumnsOrderChangedEventName;
+}
+
+export interface ColumnsChangedEvent {
   columns: string[];
 }
 
