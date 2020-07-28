@@ -24,7 +24,7 @@ import {
 import { cloneDeep, get, has, map } from 'lodash';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { AgGridWrapper } from './ag-grid-wrapper';
-import { ColumnOrderStrategy, ColumnsOrderChangedEventName, RowSelection, TableType } from './table.enum';
+import { ColumnOrderStrategy, TableEventName, RowSelection, TableType } from './table.enum';
 import {
   ColumnDef,
   ColumnDefConfig, ColumnsChangedEvent,
@@ -210,14 +210,14 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     });
   }
 
-  private setOrderedColumns(columns: Column[], eventName: ColumnsOrderChangedEventName): void {
+  private setOrderedColumns(columns: Column[], eventName: TableEventName): void {
     this.columns = map(columns, (col) => col.colDef.field);
-    this.columnsOrderChanged.emit({ columns: cloneDeep(this.columns), eventName });
+    this.columnsOrderChanged.emit({ columns: this.columns.slice(), eventName });
   }
 
   private emitColumnsChangedEvent(columns: Column[]): void {
     this.columns = map(columns, (col) => col.colDef.field);
-    this.columnsChanged.emit({ columns: cloneDeep(this.columns) });
+    this.columnsChanged.emit({ columns: this.columns.slice() });
   }
 
   private setGridHeight(height: number): void {
@@ -259,7 +259,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         if (this.shouldAutoSizeColumns) {
           event.columnApi.autoSizeAllColumns();
         }
-        this.setOrderedColumns(event.columnApi.getAllGridColumns(), ColumnsOrderChangedEventName.onGridReady);
+        this.setOrderedColumns(event.columnApi.getAllGridColumns(), TableEventName.onGridReady);
         this.cdr.markForCheck();
         this.gridInit.emit();
       },
@@ -267,12 +267,12 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         if (this.shouldAutoSizeColumns) {
           event.columnApi.autoSizeAllColumns();
         }
-        this.setOrderedColumns(event.columnApi.getAllGridColumns(), ColumnsOrderChangedEventName.onGridColumnsChanged);
+        this.setOrderedColumns(event.columnApi.getAllGridColumns(), TableEventName.onGridColumnsChanged);
         this.cdr.markForCheck();
         this.emitColumnsChangedEvent(event.columnApi.getAllGridColumns());
       },
       onDragStopped(event: DragStoppedEvent): void {
-        that.setOrderedColumns(event.columnApi.getAllGridColumns(), ColumnsOrderChangedEventName.onDragStopped);
+        that.setOrderedColumns(event.columnApi.getAllGridColumns(), TableEventName.onDragStopped);
       },
       onCellClicked(event: CellClickedEvent): void {
         that.cellClicked.emit(event);

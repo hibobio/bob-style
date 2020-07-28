@@ -24,7 +24,7 @@ export enum ColumnOrderStrategy {
   Reorder = 'reorder',
 }
 
-export enum ColumnsOrderChangedEventName {
+export enum TableEventName {
   onGridReady = 'onGridReady',
   onGridColumnsChanged = 'onGridColumnsChanged',
   onDragStopped = 'onDragStopped',
