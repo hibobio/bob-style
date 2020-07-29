@@ -33,7 +33,6 @@ const template = `
                              [errorMessage]="errorMessage"
                              [disabled]="disabled"
                              [selectDisabled]="selectDisabled"
-                             [selectDisplayValue]="selectDisplayValue"
                              [required]="required"
                              [readonly]="readonly"
                              (elementChange)="elementChange($event)">
@@ -61,8 +60,12 @@ const note = `
   [value] | SplitInputSingleSelectValue | value of the input and select
   [selectOptions] | SelectGroupOption[] | the options model for the select element
   [selectDisabled] | boolean | disables the select (but not the input)
-  [selectDisplayValue] | string | allows to pass some text to be put in place of select (if [options] is missing)
   (elementChange) | EventEmitter<wbr>&lt;InputSingleSelectValue&gt; |  change emitter
+
+  #### Note:
+
+  - If options[0].options has only 1 option, its value will be put (as text) in place of the select
+  - If [options] is missing (or options[0].options is empty), but [value] has .selectValue, it will be put (as text) in place of the select.
 
   ${formElemsPropsDoc}
 
@@ -136,7 +139,7 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(1), (_, i) => {
 
 const value: InputSingleSelectValue = {
   inputValue: 100,
-  selectValue: 'AED',
+  selectValue: 'USD',
 };
 
 story.add(
@@ -151,7 +154,6 @@ story.add(
         description: text('description', mockText(30), 'Props'),
         disabled: boolean('disabled', false, 'Props'),
         selectDisabled: boolean('selectDisabled', false, 'Props'),
-        selectDisplayValue: text('selectDisplayValue', '', 'Props'),
         required: boolean('required', false, 'Props'),
         readonly: boolean('readonly', false, 'Props'),
         hintMessage: text(

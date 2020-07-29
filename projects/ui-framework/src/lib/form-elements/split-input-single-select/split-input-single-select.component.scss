@@ -47,6 +47,11 @@ $selectFieldWidth: 140px;
     @include bFormElement-wrap;
     padding: 0 $input-padding;
     @include text-truncate;
+    background-color: $grey-100;
+
+    &.disabled {
+      @include disabled-state;
+    }
   }
 
   .bsiss-select .bfe-wrap,

@@ -11,7 +11,7 @@ import * as Highcharts from 'highcharts';
 import { ExportingMimeTypeValue, Options, Chart } from 'highcharts';
 import { ChartTypesEnum } from './chart.enum';
 import { merge } from 'lodash';
-import { simpleUID, isFunction } from 'bob-style';
+import { simpleUID } from 'bob-style';
 import {
   ChartFormatterThis,
   ChartLegendAlignEnum,
@@ -26,25 +26,28 @@ import Exporting from 'highcharts/modules/exporting';
 import noData from 'highcharts/modules/no-data-to-display';
 import More from 'highcharts/highcharts-more';
 
-Exporting(Highcharts);
-Boost(Highcharts);
-noData(Highcharts);
-More(Highcharts);
-
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class ChartCore implements AfterViewInit {
-  @Input() abstract type: ChartTypesEnum;
+  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
+    Exporting(Highcharts);
+    Boost(Highcharts);
+    noData(Highcharts);
+    More(Highcharts);
+  }
+
   highChartRef: Chart;
   containerId: string = simpleUID('bhc-', 7);
   chartOptions: Options;
   options: Options;
+
   private formatter = (function (component) {
     return function () {
       return component.tooltipFormatter(this, component);
     };
   })(this);
 
+  @Input() abstract type: ChartTypesEnum;
   @Input() legendPosition: ChartLegendPositionEnum =
     ChartLegendPositionEnum.BOTTOM;
   @Input() preTooltipValue = '';
@@ -78,8 +81,6 @@ export abstract class ChartCore implements AfterViewInit {
     </div>`;
   @Input() tooltipValueFormatter = (val: number): number | string => val;
 
-  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {}
-
   tooltipFormatter(chartThis: ChartFormatterThis, component: ChartCore) {
     return this.tooltipTemplate(component, chartThis);
   }
@@ -91,12 +92,7 @@ export abstract class ChartCore implements AfterViewInit {
   }
 
   exportChart(type: ExportingMimeTypeValue) {
-    this.getChartInstance()?.exportChart(
-      {
-        type: type,
-      },
-      undefined
-    );
+    this.highChartRef?.exportChart({ type: type }, undefined);
   }
 
   initialOptions(): void {
@@ -171,23 +167,6 @@ export abstract class ChartCore implements AfterViewInit {
         this.highChartRef.update(this.options, true, true);
       });
     }
-  }
-
-  getChartInstance(): Chart {
-    return this.highChartRef &&
-      isFunction(this.highChartRef.init) &&
-      isFunction(this.highChartRef.exportChart)
-      ? this.highChartRef
-      : (() => {
-          return Highcharts.charts[
-            parseInt(
-              document
-                .getElementById(this.containerId)
-                ?.getAttribute('data-highcharts-chart'),
-              10
-            )
-          ];
-        })();
   }
 
   private getLegendPositioning(

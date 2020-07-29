@@ -27,18 +27,22 @@
 
   <b-single-select *ngIf="options"
                    class="bsiss-select"
+                   [options]="options"
+                   [value]="value.selectValue"
                    (selectChange)="onSelectChange($event)"
                    [disabled]="disabled || selectDisabled"
                    [readonly]="readonly"
-                   [options]="options"
                    [showSingleGroupHeader]="false"
                    [panelClass]="'bsiss-panel'"
                    [doPropagate]="false"
                    [size]="size">
   </b-single-select>
 
-  <span *ngIf="!options && selectDisplayValue"
-        class="bsiss-select-value">{{selectDisplayValue}}</span>
+  <span *ngIf="!options && (selectDisplayValue || value?.selectValue)"
+        class="bsiss-select-value"
+        [ngClass]="{disabled: disabled}">
+    {{selectDisplayValue || value?.selectValue}}
+  </span>
 
 </div>
 

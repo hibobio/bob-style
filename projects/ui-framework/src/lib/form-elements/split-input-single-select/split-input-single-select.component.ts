@@ -10,7 +10,7 @@ import {
   ElementRef,
   AfterViewInit,
 } from '@angular/core';
-import { SelectGroupOption } from '../../lists/list.interface';
+import { SelectGroupOption, SelectOption } from '../../lists/list.interface';
 import { InputTypes } from '../input/input.enum';
 import { InputEventType } from '../form-elements.enum';
 import { InputSingleSelectValue } from './split-input-single-select.interface';
@@ -23,6 +23,7 @@ import { objectHasKeyOrFail } from '../../services/utils/transformers';
 import {
   cloneObject,
   isEmptyArray,
+  hasChanges,
 } from '../../services/utils/functional-utils';
 import { InputComponent } from '../input/input.component';
 
@@ -72,8 +73,8 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
   @Input() onlyIntegers: boolean;
 
   @Input() selectDisabled = false;
-  @Input() selectDisplayValue: string;
 
+  public selectDisplayValue: string;
   public options: SelectGroupOption[] = [];
 
   // tslint:disable-next-line: no-output-rename
@@ -83,18 +84,40 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
 
   // extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
-    if (changes.value || changes.selectOptions) {
+    if (
+      hasChanges(changes, [
+        'value',
+        'selectOptions',
+        'disabled',
+        'selectDisabled',
+      ])
+    ) {
       if (
         this.selectOptions?.length &&
         this.selectOptions[0].options?.length === 1
       ) {
         this.options = null;
         this.selectDisplayValue = this.selectOptions[0].options[0].value;
-      } else {
-        this.options = this.value
-          ? this.enrichOptionsWithSelection(this.selectOptions)
-          : this.selectOptions;
+
+        return;
       }
+
+      if (
+        this.selectOptions?.length &&
+        this.selectOptions[0].options?.length &&
+        (this.disabled || this.selectDisabled)
+      ) {
+        this.options = null;
+        this.selectDisplayValue = this.selectOptions[0].options.find(
+          (o: SelectOption) => o.id === this.value.selectValue || o.selected
+        )?.value;
+
+        return;
+      }
+
+      this.options = this.selectOptions;
+      this.selectDisplayValue = undefined;
+
       if (
         isEmptyArray(this.options) ||
         isEmptyArray(this.options && this.options[0].options)
@@ -106,18 +129,6 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
 
   ngAfterViewInit(): void {
     this.input = this.bInput.input;
-  }
-
-  private enrichOptionsWithSelection(
-    options: SelectGroupOption[]
-  ): SelectGroupOption[] {
-    return map(options, (g) =>
-      assign({}, g, {
-        options: map(g.options, (o) =>
-          assign({}, o, { selected: o.id === this.value.selectValue })
-        ),
-      })
-    );
   }
 
   onInputChange(event: InputEvent): void {
