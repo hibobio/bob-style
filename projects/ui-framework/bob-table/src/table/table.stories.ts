@@ -64,6 +64,7 @@ const template = `
     (cellClicked)="cellClicked($event)"
     (selectionChanged)="selectionChanged($event); onSelectionChanged($event)"
     (sortChanged)="sortChanged($event)"
+    (pagerPageSizeChange)="pagerPageSizeChange($event)"
     (columnsOrderChanged)="columnsOrderChanged($event)"
     (columnRemoved)="columnRemoved($event)">
 </b-table>
@@ -147,6 +148,7 @@ const note = `
   [styleConfig] | TableStyleConfig | style config (disableRowHoverBgColor, showColumnBorders) | {}
   [enablePager] | boolean | enable pagination
   [pagerConfig] | PagerConfig | config for pagination (sliceStep, sliceMax, sliceSize)
+  (pagerPageSizeChange) | EventEmitter<wbr>&lt;number&gt; | emits when page size changes | &nbsp;
   (rowClicked) | EventEmitter<wbr>&lt;RowClickedEvent&gt; | Row clicked event | &nbsp;
   (gridInit) | EventEmitter<wbr>&lt;void&gt;  | Grid init event | &nbsp;
   (selectionChanged) | EventEmitter<wbr>&lt;any[]&gt; | All selected rows | &nbsp;
@@ -233,6 +235,7 @@ function tableStoryFactory({
     cellClicked: action('Cell clicked'),
     selectionChanged: action('Selection changed'),
     sortChanged: action('Sort changed'),
+    pagerPageSizeChange: action('Page size changed'),
     columnsOrderChanged: action('Column order changed'),
     columnRemoved: action('Column remove button clicked'),
     totalSelected: 0,
