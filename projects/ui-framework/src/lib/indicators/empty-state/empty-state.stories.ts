@@ -30,8 +30,8 @@ const note = `
   --- | --- | --- | ---
   [config] | EmptyStateConfig | { text, buttonLabel, icon, iconSize, imgSrc } | &nbsp;
   (buttonClicked) | EventEmitter | emited on button click | &nbsp;
-  &lt;element top&gt;<wbr>&lt;/element&gt; | ng-content | to be put on top | &nbsp;
-  &lt;element bottom&gt;<wbr>&lt;/element&gt; | ng-content | to be put on top | &nbsp;
+  &lt;element top&gt;<wbr>&lt;/element&gt; | ng-content | to be put above icon and text (but below image) | &nbsp;
+  &lt;element bottom&gt;<wbr>&lt;/element&gt; | ng-content | to be put below the button | &nbsp;
 
   ~~~
   ${template}
