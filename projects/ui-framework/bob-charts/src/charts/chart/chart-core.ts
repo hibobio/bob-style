@@ -8,10 +8,10 @@ import {
   Directive,
 } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import { Chart, ExportingMimeTypeValue, Options } from 'highcharts';
+import { ExportingMimeTypeValue, Options } from 'highcharts';
 import { ChartTypesEnum } from './chart.enum';
 import { merge } from 'lodash';
-import { simpleUID } from 'bob-style';
+import { simpleUID, isFunction } from 'bob-style';
 import {
   ChartFormatterThis,
   ChartLegendAlignEnum,
@@ -19,13 +19,13 @@ import {
   ChartLegendPositionEnum,
   ChartLegendVerticalAlignEnum,
   HighChartOptions,
+  ChartGraph,
 } from './chart.interface';
 
-declare var require: any;
-const Boost = require('highcharts/modules/boost');
-const Exporting = require('highcharts/modules/exporting');
-const noData = require('highcharts/modules/no-data-to-display');
-const More = require('highcharts/highcharts-more');
+import Boost from 'highcharts/modules/boost';
+import Exporting from 'highcharts/modules/exporting';
+import noData from 'highcharts/modules/no-data-to-display';
+import More from 'highcharts/highcharts-more';
 
 Exporting(Highcharts);
 Boost(Highcharts);
@@ -36,8 +36,8 @@ More(Highcharts);
 // tslint:disable-next-line: directive-class-suffix
 export abstract class ChartCore implements AfterViewInit {
   @Input() abstract type: ChartTypesEnum;
-  highChartRef: Chart;
-  containerId: string = simpleUID();
+  highChartRef: ChartGraph;
+  containerId: string = simpleUID('bhc-', 7);
   chartOptions: Options;
   options: Options;
   private formatter = (function (component) {
@@ -92,7 +92,7 @@ export abstract class ChartCore implements AfterViewInit {
   }
 
   exportChart(type: ExportingMimeTypeValue) {
-    (this.highChartRef as any).exportChart({
+    this.getChartInstance()?.exportChart({
       type: type,
     });
   }
@@ -170,6 +170,24 @@ export abstract class ChartCore implements AfterViewInit {
       });
     }
   }
+
+  getChartInstance(): ChartGraph {
+    return this.highChartRef &&
+      isFunction(this.highChartRef.init) &&
+      isFunction(this.highChartRef.exportChart)
+      ? this.highChartRef
+      : (() => {
+          return Highcharts.charts[
+            parseInt(
+              document
+                .getElementById(this.containerId)
+                ?.getAttribute('data-highcharts-chart'),
+              10
+            )
+          ];
+        })();
+  }
+
   private getLegendPositioning(
     position: ChartLegendPositionEnum,
     offset = { x: 0, y: 0 }

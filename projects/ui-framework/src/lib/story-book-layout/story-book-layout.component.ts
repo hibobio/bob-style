@@ -3,7 +3,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 @Component({
   selector: 'b-story-book-layout',
   template: `
-    <div class="story-wrapper">
+    <div class="story-wrapper theme-bob">
       <b-display-3>{{ title }}</b-display-3>
       <div class="story-content">
         <ng-content></ng-content>
