@@ -8,7 +8,7 @@ import {
   Directive,
 } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import { ExportingMimeTypeValue, Options } from 'highcharts';
+import { ExportingMimeTypeValue, Options, Chart } from 'highcharts';
 import { ChartTypesEnum } from './chart.enum';
 import { merge } from 'lodash';
 import { simpleUID, isFunction } from 'bob-style';
@@ -19,7 +19,6 @@ import {
   ChartLegendPositionEnum,
   ChartLegendVerticalAlignEnum,
   HighChartOptions,
-  ChartGraph,
 } from './chart.interface';
 
 import Boost from 'highcharts/modules/boost';
@@ -36,7 +35,7 @@ More(Highcharts);
 // tslint:disable-next-line: directive-class-suffix
 export abstract class ChartCore implements AfterViewInit {
   @Input() abstract type: ChartTypesEnum;
-  highChartRef: ChartGraph;
+  highChartRef: Chart;
   containerId: string = simpleUID('bhc-', 7);
   chartOptions: Options;
   options: Options;
@@ -92,9 +91,12 @@ export abstract class ChartCore implements AfterViewInit {
   }
 
   exportChart(type: ExportingMimeTypeValue) {
-    this.getChartInstance()?.exportChart({
-      type: type,
-    });
+    this.getChartInstance()?.exportChart(
+      {
+        type: type,
+      },
+      undefined
+    );
   }
 
   initialOptions(): void {
@@ -171,7 +173,7 @@ export abstract class ChartCore implements AfterViewInit {
     }
   }
 
-  getChartInstance(): ChartGraph {
+  getChartInstance(): Chart {
     return this.highChartRef &&
       isFunction(this.highChartRef.init) &&
       isFunction(this.highChartRef.exportChart)

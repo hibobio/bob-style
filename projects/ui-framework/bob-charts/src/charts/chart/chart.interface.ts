@@ -2,13 +2,6 @@ import { Options, ExportingMimeTypeValue, Chart } from 'highcharts';
 import { ChartTypesEnum } from './chart.enum';
 import { ChartCore } from './chart-core';
 
-export interface ChartGraph extends Chart {
-  exportChart(
-    exportingOptions: Highcharts.ExportingOptions,
-    chartOptions?: Highcharts.Options
-  ): void;
-}
-
 export class HighChartOptions implements Options {}
 
 export type LineChartTypes =
