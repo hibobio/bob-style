@@ -111,6 +111,22 @@ $input-focus-border-color: $grey-700;
   }
 }
 
+@mixin bFormElement-wrap {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  background-color: $white;
+  min-height: $wrap-height;
+  border: 1px solid $input-border-color;
+  border-radius: $border-radius;
+  transition: box-shadow 0.2s, border-color 0.2s;
+  @include b-body($addCssVars: true);
+
+  &:only-child {
+    width: 100%;
+  }
+}
+
 @mixin bFormElement($sel: ':host') {
   #{$sel} {
     @include bFormElement-basics;
@@ -121,19 +137,7 @@ $input-focus-border-color: $grey-700;
     // wrap
 
     .bfe-wrap {
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      background-color: $white;
-      min-height: $wrap-height;
-      border: 1px solid $input-border-color;
-      border-radius: $border-radius;
-      transition: box-shadow 0.2s, border-color 0.2s;
-      @include b-body($addCssVars: true);
-
-      &:only-child {
-        width: 100%;
-      }
+      @include bFormElement-wrap;
     }
 
     // input

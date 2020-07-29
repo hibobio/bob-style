@@ -9,6 +9,7 @@
      [attr.id]="id">
 
   <b-input #bInput
+           class="bsiss-input"
            (inputEvents)="onInputChange($event)"
            [value]="value?.inputValue"
            [inputType]="inputType"
@@ -24,8 +25,10 @@
            [size]="size">
   </b-input>
 
-  <b-single-select (selectChange)="onSelectChange($event)"
-                   [disabled]="disabled"
+  <b-single-select *ngIf="options"
+                   class="bsiss-select"
+                   (selectChange)="onSelectChange($event)"
+                   [disabled]="disabled || selectDisabled"
                    [readonly]="readonly"
                    [options]="options"
                    [showSingleGroupHeader]="false"
@@ -33,6 +36,9 @@
                    [doPropagate]="false"
                    [size]="size">
   </b-single-select>
+
+  <span *ngIf="!options && selectDisplayValue"
+        class="bsiss-select-value">{{selectDisplayValue}}</span>
 
 </div>
 

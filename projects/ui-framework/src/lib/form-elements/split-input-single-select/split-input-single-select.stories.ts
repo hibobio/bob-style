@@ -32,6 +32,8 @@ const template = `
                              [hintMessage]="hintMessage"
                              [errorMessage]="errorMessage"
                              [disabled]="disabled"
+                             [selectDisabled]="selectDisabled"
+                             [selectDisplayValue]="selectDisplayValue"
                              [required]="required"
                              [readonly]="readonly"
                              (elementChange)="elementChange($event)">
@@ -58,6 +60,8 @@ const note = `
   --- | --- | ---
   [value] | SplitInputSingleSelectValue | value of the input and select
   [selectOptions] | SelectGroupOption[] | the options model for the select element
+  [selectDisabled] | boolean | disables the select (but not the input)
+  [selectDisplayValue] | string | allows to pass some text to be put in place of select (if [options] is missing)
   (elementChange) | EventEmitter<wbr>&lt;InputSingleSelectValue&gt; |  change emitter
 
   ${formElemsPropsDoc}
@@ -122,7 +126,7 @@ const currencies = [
 const optionsMock: SelectGroupOption[] = Array.from(Array(1), (_, i) => {
   return {
     groupName: 'all currencies',
-    options: map(currencies, currency => ({
+    options: map(currencies, (currency) => ({
       value: currency.value,
       id: currency.value,
       selected: null,
@@ -146,6 +150,8 @@ story.add(
         label: text('label', 'Base salary', 'Props'),
         description: text('description', mockText(30), 'Props'),
         disabled: boolean('disabled', false, 'Props'),
+        selectDisabled: boolean('selectDisabled', false, 'Props'),
+        selectDisplayValue: text('selectDisplayValue', '', 'Props'),
         required: boolean('required', false, 'Props'),
         readonly: boolean('readonly', false, 'Props'),
         hintMessage: text(

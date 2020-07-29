@@ -20,7 +20,10 @@ import { ListChange } from '../../lists/list-change/list-change';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
 import { objectHasKeyOrFail } from '../../services/utils/transformers';
-import { cloneObject } from '../../services/utils/functional-utils';
+import {
+  cloneObject,
+  isEmptyArray,
+} from '../../services/utils/functional-utils';
 import { InputComponent } from '../input/input.component';
 
 const BSISS_VALUE_DEF = {
@@ -68,6 +71,9 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
   @Input() numberFormat: boolean;
   @Input() onlyIntegers: boolean;
 
+  @Input() selectDisabled = false;
+  @Input() selectDisplayValue: string;
+
   public options: SelectGroupOption[] = [];
 
   // tslint:disable-next-line: no-output-rename
@@ -78,9 +84,23 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
   // extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
     if (changes.value || changes.selectOptions) {
-      this.options = this.value
-        ? this.enrichOptionsWithSelection(this.selectOptions)
-        : this.selectOptions;
+      if (
+        this.selectOptions?.length &&
+        this.selectOptions[0].options?.length === 1
+      ) {
+        this.options = null;
+        this.selectDisplayValue = this.selectOptions[0].options[0].value;
+      } else {
+        this.options = this.value
+          ? this.enrichOptionsWithSelection(this.selectOptions)
+          : this.selectOptions;
+      }
+      if (
+        isEmptyArray(this.options) ||
+        isEmptyArray(this.options && this.options[0].options)
+      ) {
+        this.options = null;
+      }
     }
   }
 
