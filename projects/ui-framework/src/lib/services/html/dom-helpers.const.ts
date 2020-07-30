@@ -1,0 +1,30 @@
+export const INLINE_EL_NODENAMES = [
+  'SPAN',
+  'STRONG',
+  'A',
+  'EM',
+  'U',
+  'B',
+  'I',
+  'SUB',
+  'SUP',
+];
+
+export const BLOCK_EL_NODENAMES = [
+  'DIV',
+  'P',
+  'UL',
+  'OL',
+  'LI',
+  'MAIN',
+  'SECTION',
+  'HEADER',
+  'FOOTER',
+  'ARTICLE',
+  'H1',
+  'H2',
+  'H3',
+  'H4',
+  'H5',
+  'H6',
+];

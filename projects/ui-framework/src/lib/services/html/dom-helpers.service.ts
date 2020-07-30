@@ -10,6 +10,10 @@ import {
   isNullOrUndefined,
   isDomElement,
   isTextNode,
+  isNode,
+  isEmptyArray,
+  asArray,
+  hasProp,
 } from '../utils/functional-utils';
 import {
   Styles,
@@ -18,6 +22,12 @@ import {
   NgClass,
 } from './html-helpers.interface';
 import { GenericObject } from '../../types';
+import { INLINE_EL_NODENAMES, BLOCK_EL_NODENAMES } from './dom-helpers.const';
+import { DOMtags, TreeWalkerTake } from './dom-helpers.enum';
+import {
+  GetElementStylesConfig,
+  TreeWalkerConfig,
+} from './dom-helpers.interface';
 
 @Injectable({ providedIn: 'root' })
 export class DOMhelpers {
@@ -54,12 +64,44 @@ export class DOMhelpers {
     }
   }
 
-  public isTextNode(element: any) {
+  public isTextNode(element: any): element is Node {
     return isTextNode(element);
   }
 
-  public isElement(element: any) {
+  public isElement(element: any): element is HTMLElement {
     return isDomElement(element);
+  }
+
+  public isNode(element: any): element is Node {
+    return isNode(element);
+  }
+
+  public isInlineElement(element: HTMLElement | Node): element is HTMLElement {
+    return (
+      isDomElement(element) && INLINE_EL_NODENAMES.includes(element.nodeName)
+    );
+  }
+
+  public isBlockElement(element: HTMLElement | Node): element is HTMLElement {
+    return (
+      isDomElement(element) && BLOCK_EL_NODENAMES.includes(element.nodeName)
+    );
+  }
+
+  public isTag(element: HTMLElement, tag: DOMtags): boolean {
+    return isDomElement(element) && (element as HTMLElement).tagName === tag;
+  }
+
+  public isSpan(element: HTMLElement | Node): element is HTMLElement {
+    return this.isTag(element as HTMLElement, DOMtags.span);
+  }
+
+  public isDiv(element: HTMLElement | Node): element is HTMLElement {
+    return this.isTag(element as HTMLElement, DOMtags.div);
+  }
+
+  public isRendered(element: HTMLElement | Node): boolean {
+    return this.isElement(element) && document.contains(element);
   }
 
   public hasChildren(element: HTMLElement): boolean {
@@ -87,7 +129,12 @@ export class DOMhelpers {
   }
 
   public getTextNode(element: HTMLElement): Node {
-    return element && Array.from(element.childNodes).find(this.isTextNode);
+    return (
+      element &&
+      Array.from(element.childNodes).find(
+        (node: HTMLElement) => this.isTextNode(node) && this.hasInnerText(node)
+      )
+    );
   }
 
   public hasTextNodes(element: HTMLElement): boolean {
@@ -112,6 +159,13 @@ export class DOMhelpers {
         element.style.removeProperty(prop);
       }
     }
+    const currStyleAttr = element.getAttribute('style');
+    if (currStyleAttr && currStyleAttr.trim() === '') {
+      element.removeAttribute('style');
+    }
+    if (currStyleAttr && currStyleAttr !== currStyleAttr.trim()) {
+      element.setAttribute('style', currStyleAttr.trim());
+    }
   }
 
   public setAttributes(element: HTMLElement, attrs: GenericObject): void {
@@ -123,6 +177,92 @@ export class DOMhelpers {
       }
     }
   }
+
+  // WIP----start------------------
+
+  // TODO: Add Test
+  public appendCssText(element: HTMLElement, cssText: string): void {
+    if (!this.isElement(element)) {
+      return;
+    }
+    element.style.cssText += ';' + cssText;
+  }
+
+  // TODO: Add Test
+  public stylesToCssText(
+    styles: GenericObject,
+    filter: (prop: string, val: string | number) => boolean = (p, v) => true
+  ): string {
+    return Object.keys(styles || {})
+      .reduce((result: string[], prop: string) => {
+        const value = styles[prop];
+        if (!isNullOrUndefined(styles[prop]) && filter(prop, value)) {
+          result.push(`${prop}: ${styles[prop]}`);
+        }
+        return result;
+      }, [])
+      .join(';');
+  }
+
+  // TODO: Add Test
+  public getElementStyles(
+    element: HTMLElement | Node,
+    config: GetElementStylesConfig = {
+      getStyles: 'inline',
+      rules: ['font-size', 'font-weight'],
+      ignoreValues: [12, 400],
+      removeStyleAttr: false,
+    },
+    collection: GenericObject = {}
+  ): GenericObject {
+    const { rules, ignoreValues, removeStyleAttr } = config;
+    if (!this.isElement(element) || isEmptyArray(rules)) {
+      return collection;
+    }
+    let { getStyles } = config;
+    if (!getStyles) {
+      getStyles = 'inline';
+    }
+    let computedStyle: CSSStyleDeclaration;
+
+    if (getStyles === 'computed') {
+      // TODO: should check if element is in rendered DOM (add it and check if document.getElementById finds it)
+      if (!this.isRendered(element)) {
+        console.error(
+          `[DOMhelpers.getElementStyles]:
+        element is not HTMLElement or is not in rendered DOM:`,
+          element
+        );
+        return collection;
+      }
+      computedStyle = getComputedStyle(element);
+    }
+
+    asArray(rules).forEach((rule) => {
+      let val =
+        getStyles === 'computed' ? computedStyle[rule] : element.style[rule];
+
+      if (val.indexOf(' ') !== -1 && val.indexOf('none') !== -1) {
+        val = undefined;
+      }
+
+      if (val && !hasProp(collection, rule)) {
+        collection[rule] =
+          isEmptyArray(ignoreValues) ||
+          (!ignoreValues.includes(val) &&
+            !ignoreValues.includes(parseFloat(val)))
+            ? val
+            : null;
+      }
+    });
+
+    if (removeStyleAttr) {
+      element.removeAttribute('style');
+    }
+    return collection;
+  }
+
+  // WIP----end------------------
 
   // returns line-height and font-size as unitless numbers
   public getElementTextProps(element: HTMLElement): TextProps {
@@ -295,12 +435,117 @@ export class DOMhelpers {
     return this.getSibling(element, selector, 'prev');
   }
 
+  public getTopLevelParent(element: HTMLElement): HTMLElement {
+    if (!element.parentElement) {
+      return element;
+    }
+    return this.getClosest(element, (elm: HTMLElement) => !elm.parentElement);
+  }
+
   // TODO: Add Test
   public getElementIndex(element: HTMLElement): number {
     return (
       element && Array.from(element.parentElement.children).indexOf(element)
     );
   }
+
+  // WIP----start------------------
+
+  // TODO: Add Test
+  public wrapChildren(element: HTMLElement, tag = 'span'): HTMLElement {
+    if (!this.isElement(element)) {
+      return element;
+    }
+    const wrapper = element.appendChild(document.createElement(tag));
+    wrapper.setAttribute('prcsd', '2');
+    Array.from(element.childNodes).forEach((node) => {
+      if (node !== wrapper) {
+        wrapper.appendChild(node);
+      }
+    });
+
+    return wrapper;
+  }
+
+  // TODO: Add Test
+  public wrapElement(
+    element: HTMLElement | Node,
+    tag = 'span',
+    useParentIfSameAsWrapperTag = false
+  ): HTMLElement {
+    if (!this.isNode(element)) {
+      return element as HTMLElement;
+    }
+
+    const parent = element.parentElement;
+
+    const wrapper = !parent
+      ? document.createElement(tag)
+      : useParentIfSameAsWrapperTag &&
+        parent.nodeName === tag.toUpperCase() &&
+        !this.hasTextNodes(parent)
+      ? parent
+      : parent.insertBefore(document.createElement('span'), element);
+
+    if (wrapper !== parent) {
+      wrapper.setAttribute('prcsd', '2');
+      wrapper.appendChild(element);
+    }
+
+    return wrapper;
+  }
+
+  public unwrap(element: HTMLElement): void {
+    if (!this.isElement(element)) {
+      return;
+    }
+
+    const parent = element.parentNode;
+
+    if (!parent) {
+      return;
+    }
+
+    while (element.firstChild) {
+      parent.insertBefore(element.firstChild, element);
+    }
+
+    parent.removeChild(element);
+  }
+
+  // TODO: Add Test
+  public walkNodeTree(
+    root: HTMLElement | Node,
+    config: TreeWalkerConfig = {}
+  ): (HTMLElement | Node)[] | void {
+    if (!this.isNode(root)) {
+      return;
+    }
+
+    const walker = document.createTreeWalker(
+      root,
+      config.take ? config.take : TreeWalkerTake.elements,
+      config.filter
+        ? {
+            acceptNode: config.filter,
+          }
+        : undefined
+    );
+
+    const nodes: (HTMLElement | Node)[] = [];
+    let n: HTMLElement | Node;
+
+    while ((n = walker.nextNode())) {
+      if (config.forEach) {
+        config.forEach(n);
+      }
+      nodes.push(n);
+    }
+
+    return nodes;
+  }
+
+  // WIP----end------------------
 
   // Similar to [ngClass] binding.
   // Takes a string of space-separated classes, string[] of classes or {[class]: boolean} object
