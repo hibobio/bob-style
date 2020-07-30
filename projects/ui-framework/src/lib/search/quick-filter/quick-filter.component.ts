@@ -26,6 +26,7 @@ const QUICK_FILTER_CONFIG_DEF = {
   showSingleGroupHeader: false,
   showNoneOption: true,
   startWithGroupsCollapsed: true,
+  disabled: false
 };
 
 @Component({
