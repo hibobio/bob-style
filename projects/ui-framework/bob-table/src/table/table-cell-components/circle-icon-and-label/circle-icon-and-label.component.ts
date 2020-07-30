@@ -8,8 +8,8 @@ import { CircleIconAndLabelParams } from './circle-icon-and-label.interface';
   template: `
     <b-table-actions-wrapper [menuItems]="params?.value?.menuItems" [buttonType]="params?.value?.buttonType">
       <div class="circle-icon-wrapper"
-      *ngIf="params && params.value && params.value.icon !== null">
-        <b-avatar-image
+      *ngIf="params && params.value">
+        <b-avatar-image *ngIf="params.value.icon !== null"
           [isClickable]="false"
           [icon]="params.value.icon">
         </b-avatar-image>
