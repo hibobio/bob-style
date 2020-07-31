@@ -8,8 +8,6 @@ import {
   isEmptyArray,
   closestNumber,
   asArray,
-  objectRemoveKeys,
-  arrayDifference,
   isDomElement,
 } from '../utils/functional-utils';
 import { DOMhelpers } from './dom-helpers.service';
