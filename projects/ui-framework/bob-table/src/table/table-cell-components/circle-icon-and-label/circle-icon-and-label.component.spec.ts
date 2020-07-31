@@ -26,15 +26,19 @@ describe('CircleIconAndLabelComponent', () => {
       });
   }));
 
-  it('Should not display nothing', () => {
+  it('Should display text without icon', () => {
     const circleIconAndLabelParams: CircleIconAndLabelParams = {
-      value: { icon: null },
+      value: { icon: null, label: 'label' },
     } as CircleIconAndLabelParams;
     component.agInit(circleIconAndLabelParams);
     const circleIconElement = fixture.debugElement.query(
-      By.css('.circle-icon-wrapper')
+      By.css('b-avatar-image')
+    );
+    const labelElement = fixture.debugElement.query(
+      By.css('.circle-icon-label')
     );
     expect(circleIconElement).toBeNull();
+    expect(labelElement).not.toBeNull();
   });
 
   it('Should display icon with no text', () => {
