@@ -172,7 +172,7 @@ export class HtmlParserHelpers {
       return value;
     }
 
-    const elm: HTMLElement = this.DOM.isElement(value)
+    const elm: HTMLElement = isDomElement(value)
       ? value
       : this.stringToDOM(value);
 
@@ -325,7 +325,7 @@ export class HtmlParserHelpers {
     enforce = asArray(enforce);
     remove = isEmptyArray(remove) ? null : asArray(remove);
 
-    const elm: HTMLElement = this.DOM.isElement(value)
+    const elm: HTMLElement = isDomElement(value)
       ? value
       : this.stringToDOM(value);
 
@@ -372,7 +372,7 @@ export class HtmlParserHelpers {
       return value;
     }
 
-    const elm: HTMLElement = this.DOM.isElement(value)
+    const elm: HTMLElement = isDomElement(value)
       ? value
       : this.stringToDOM(value);
     const docFrag = document.createDocumentFragment();
