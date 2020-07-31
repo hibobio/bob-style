@@ -1,7 +1,8 @@
 import { HtmlParserHelpers } from './html-parser.service';
+import { DOMhelpers } from './dom-helpers.service';
 
 describe('HtmlParserHelpers', () => {
-  const parser = new HtmlParserHelpers();
+  const parser = new HtmlParserHelpers(new DOMhelpers());
 
   const testEnforce = {
     'span,p,div,a': {
@@ -54,9 +55,7 @@ describe('HtmlParserHelpers', () => {
     <br>`;
 
   describe('cleanupHtml', () => {
-    const processedString = parser.cleanupHtml(testString, {
-      removeNbsp: true,
-    });
+    const processedString = parser.cleanupHtml(testString);
 
     it('Should replace Ps with DIVs', () => {
       expect(processedString).not.toContain('<p');
