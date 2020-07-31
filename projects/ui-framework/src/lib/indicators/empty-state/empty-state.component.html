@@ -1,4 +1,13 @@
-<b-icon class="empty-state-icon"
+<img *ngIf="config.imgSrc"
+     class="empty-state-image"
+     [src]="config.imgSrc"
+     border="0"
+     alt="">
+
+<ng-content selector="[top]"></ng-content>
+
+<b-icon *ngIf="!config.imgSrc && config.icon"
+        class="empty-state-icon"
         [icon]="config.icon"
         [color]="iconColor"
         [size]="config.iconSize || iconSize.xxLarge"></b-icon>
@@ -7,6 +16,9 @@
    class="empty-state-text">{{config.text}}</p>
 
 <b-button *ngIf="config.buttonLabel"
+          class="empty-state-button"
           (clicked)="buttonClick.emit()"
           [type]="buttonType"
           [size]="buttonSize">{{config.buttonLabel}}</b-button>
+
+<ng-content selector="[bottom]"></ng-content>

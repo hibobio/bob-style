@@ -9,13 +9,28 @@
   max-height: var(--max-height, 0px);
   overflow: hidden;
   position: relative;
+}
 
-  @include mask-image(
-    $img:
-      'linear-gradient(to right, white 0%, white 50%, rgba(255, 255, 255, 0) 80%), linear-gradient(white, white)',
-    $size:
-      '100% calc(var(--font-size) * var(--line-height)), 100% calc(100% - var(--font-size) * var(--line-height))',
-    $align: 'center bottom, center top',
-    $fallback: false
-  );
+:host {
+  &[data-readmore='true'] {
+    &[data-clickable='true'],
+    &[data-clickable='text'] {
+      ::ng-deep .container {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &[data-readmore='true'] ::ng-deep {
+    .container {
+      @include mask-image(
+        $img:
+          'linear-gradient(to right, white 0%, white 50%, rgba(255, 255, 255, 0) 80%), linear-gradient(white, white)',
+        $size:
+          '100% calc(var(--font-size) * var(--line-height)), 100% calc(100% - var(--font-size) * var(--line-height))',
+        $align: 'center bottom, center top',
+        $fallback: false
+      );
+    }
+  }
 }

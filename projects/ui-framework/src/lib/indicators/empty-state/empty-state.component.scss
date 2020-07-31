@@ -1,9 +1,13 @@
 @import '../../style/common-imports';
 
 :host {
-  align-items: center;
+  width: 100%;
+  min-height: 100px;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .empty-state-text {
@@ -11,8 +15,23 @@
   color: $grey-600;
 }
 
-b-button {
+.empty-state-button {
   margin-top: times8(3);
   display: flex;
   justify-content: center;
+}
+
+.empty-state-image {
+  display: block;
+  height: auto;
+  max-width: 500px;
+}
+
+[top],
+.empty-state-image {
+  margin-bottom: times8(2);
+}
+
+[bottom] {
+  margin-top: times8(2);
 }

@@ -13,11 +13,18 @@ import { WindowRef } from './window-ref.service';
 import { ScrollEvent } from './utils.interface';
 import { DOMhelpers } from '../html/dom-helpers.service';
 
+export interface WinResizeEvent {
+  innerWidth: number;
+  innerHeight: number;
+  outerHeight: number;
+  outerWidth: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class UtilsService {
-  winResize$: Observable<any>;
+  winResize$: Observable<WinResizeEvent>;
   winScroll$: Observable<ScrollEvent>;
   winClick$: Observable<MouseEvent>;
   winKey$: Observable<KeyboardEvent>;

@@ -1027,3 +1027,33 @@ export const isSelectGroupOptions = (
       isArray((options as SelectGroupOption[])[0].options)
   );
 };
+
+export const batchProcessWithAnimationFrame = <T = any>(
+  items: T[],
+  processItem: (arg: T) => void,
+  batchSize = 15
+): void => {
+  const chunks: T[][] = splitArrayToChunks(items, batchSize);
+
+  let currentChunkIndex = 0;
+
+  const processBatch = () => {
+    if (!chunks[currentChunkIndex]) {
+      return;
+    }
+
+    chunks[currentChunkIndex].forEach((el: T) => {
+      processItem(el);
+    });
+
+    ++currentChunkIndex;
+
+    window.requestAnimationFrame(() => {
+      processBatch();
+    });
+  };
+
+  window.requestAnimationFrame(() => {
+    processBatch();
+  });
+};

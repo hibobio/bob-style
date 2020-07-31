@@ -24,10 +24,16 @@ import {
 import { cloneDeep, get, has, map } from 'lodash';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { AgGridWrapper } from './ag-grid-wrapper';
-import { ColumnOrderStrategy, RowSelection, TableType } from './table.enum';
+import {
+  ColumnOrderStrategy,
+  TableEventName,
+  RowSelection,
+  TableType,
+} from './table.enum';
 import {
   ColumnDef,
   ColumnDefConfig,
+  ColumnsChangedEvent,
   ColumnsOrderChangedEvent,
   RowClickedEvent,
   SortChangedEvent,
@@ -92,7 +98,9 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   >();
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() gridInit: EventEmitter<void> = new EventEmitter<void>();
-  @Output() columnsChanged: EventEmitter<void> = new EventEmitter<void>();
+  @Output() columnsChanged: EventEmitter<
+    ColumnsChangedEvent
+  > = new EventEmitter<ColumnsChangedEvent>();
   @Output() columnsOrderChanged: EventEmitter<
     ColumnsOrderChangedEvent
   > = new EventEmitter<ColumnsOrderChangedEvent>();
@@ -100,6 +108,9 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     CellClickedEvent
   >();
   @Output() columnRemoved: EventEmitter<string> = new EventEmitter<string>();
+  @Output() pagerPageSizeChange: EventEmitter<number> = new EventEmitter<
+    number
+  >();
 
   readonly rowHeight: number = 56;
   readonly autoSizePadding: number = 30;
@@ -210,9 +221,17 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     });
   }
 
-  private setOrderedColumns(columns: Column[]): void {
+  private setOrderedColumns(
+    columns: Column[],
+    eventName: TableEventName
+  ): void {
     this.columns = map(columns, (col) => col.colDef.field);
-    this.columnsOrderChanged.emit({ columns: cloneDeep(this.columns) });
+    this.columnsOrderChanged.emit({ columns: this.columns.slice(), eventName });
+  }
+
+  private emitColumnsChangedEvent(columns: Column[]): void {
+    this.columns = map(columns, (col) => col.colDef.field);
+    this.columnsChanged.emit({ columns: this.columns.slice() });
   }
 
   private setGridHeight(height: number): void {
@@ -221,6 +240,11 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   public getOrderedColumnFields(): string[] {
     return this.columns;
+  }
+
+  public paginationPageSizeChange(pageSize: number) {
+    this.pagerPageSizeChange.emit(pageSize);
+    this.paginationSetPageSize(pageSize);
   }
 
   private initGridOptions(): GridOptions {
@@ -254,7 +278,10 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         if (this.shouldAutoSizeColumns) {
           event.columnApi.autoSizeAllColumns();
         }
-        this.setOrderedColumns(event.columnApi.getAllGridColumns());
+        this.setOrderedColumns(
+          event.columnApi.getAllGridColumns(),
+          TableEventName.onGridReady
+        );
         this.cdr.markForCheck();
         this.gridInit.emit();
       },
@@ -262,12 +289,18 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         if (this.shouldAutoSizeColumns) {
           event.columnApi.autoSizeAllColumns();
         }
-        this.setOrderedColumns(event.columnApi.getAllGridColumns());
+        this.setOrderedColumns(
+          event.columnApi.getAllGridColumns(),
+          TableEventName.onGridColumnsChanged
+        );
         this.cdr.markForCheck();
-        this.columnsChanged.emit();
+        this.emitColumnsChangedEvent(event.columnApi.getAllGridColumns());
       },
       onDragStopped(event: DragStoppedEvent): void {
-        that.setOrderedColumns(event.columnApi.getAllGridColumns());
+        that.setOrderedColumns(
+          event.columnApi.getAllGridColumns(),
+          TableEventName.onDragStopped
+        );
       },
       onCellClicked(event: CellClickedEvent): void {
         that.cellClicked.emit(event);

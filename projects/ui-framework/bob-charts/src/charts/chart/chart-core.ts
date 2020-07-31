@@ -8,7 +8,7 @@ import {
   Directive,
 } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import { Chart, ExportingMimeTypeValue, Options } from 'highcharts';
+import { ExportingMimeTypeValue, Options, Chart } from 'highcharts';
 import { ChartTypesEnum } from './chart.enum';
 import { merge } from 'lodash';
 import { simpleUID } from 'bob-style';
@@ -21,31 +21,33 @@ import {
   HighChartOptions,
 } from './chart.interface';
 
-declare var require: any;
-const Boost = require('highcharts/modules/boost');
-const Exporting = require('highcharts/modules/exporting');
-const noData = require('highcharts/modules/no-data-to-display');
-const More = require('highcharts/highcharts-more');
-
-Exporting(Highcharts);
-Boost(Highcharts);
-noData(Highcharts);
-More(Highcharts);
+import Boost from 'highcharts/modules/boost';
+import Exporting from 'highcharts/modules/exporting';
+import noData from 'highcharts/modules/no-data-to-display';
+import More from 'highcharts/highcharts-more';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class ChartCore implements AfterViewInit {
-  @Input() abstract type: ChartTypesEnum;
+  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
+    Exporting(Highcharts);
+    Boost(Highcharts);
+    noData(Highcharts);
+    More(Highcharts);
+  }
+
   highChartRef: Chart;
-  containerId: string = simpleUID();
+  containerId: string = simpleUID('bhc-', 7);
   chartOptions: Options;
   options: Options;
+
   private formatter = (function (component) {
     return function () {
       return component.tooltipFormatter(this, component);
     };
   })(this);
 
+  @Input() abstract type: ChartTypesEnum;
   @Input() legendPosition: ChartLegendPositionEnum =
     ChartLegendPositionEnum.BOTTOM;
   @Input() preTooltipValue = '';
@@ -79,8 +81,6 @@ export abstract class ChartCore implements AfterViewInit {
     </div>`;
   @Input() tooltipValueFormatter = (val: number): number | string => val;
 
-  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {}
-
   tooltipFormatter(chartThis: ChartFormatterThis, component: ChartCore) {
     return this.tooltipTemplate(component, chartThis);
   }
@@ -92,9 +92,7 @@ export abstract class ChartCore implements AfterViewInit {
   }
 
   exportChart(type: ExportingMimeTypeValue) {
-    (this.highChartRef as any).exportChart({
-      type: type,
-    });
+    this.highChartRef?.exportChart({ type: type }, undefined);
   }
 
   initialOptions(): void {
@@ -170,6 +168,7 @@ export abstract class ChartCore implements AfterViewInit {
       });
     }
   }
+
   private getLegendPositioning(
     position: ChartLegendPositionEnum,
     offset = { x: 0, y: 0 }

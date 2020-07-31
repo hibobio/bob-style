@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { text, number, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  text,
+  number,
+  withKnobs,
+  boolean,
+} from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -20,6 +25,7 @@ import {
   mockAnimals,
   mockThings,
 } from '../../mock.const';
+import { action } from '@storybook/addon-actions';
 
 const rteMockHtml =
   'Imagine ' +
@@ -59,7 +65,14 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
-const template1 = `<b-read-more [maxHeight]="maxHeight">
+const template1 = `<b-read-more [config]="{
+  maxLines: maxLines,
+  maxHeight: maxHeight,
+  expandable: expandable,
+  watchClicks: true,
+  dynamicFontSize: true
+}"
+(clicked)="onClick($event)">
 <b-rich-text-view [type]="'shoutout'"
           [value]="rteMockHtml">
 </b-rich-text-view>
@@ -69,7 +82,7 @@ const templateForNotes = ``;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Read More'">
-<div style="max-width: 450px">
+<div>
   ${template1}
 </div>
 </b-story-book-layout>
@@ -99,8 +112,10 @@ story.add(
       template: storyTemplate,
       props: {
         rteMockHtml: rteMockHtml,
+        expandable: boolean('expandable', false),
         maxLines: number('maxLines', 5),
         maxHeight: number('maxHeight', 300),
+        onClick: action('click'),
       },
       moduleMetadata: {
         imports: [

@@ -13,7 +13,11 @@ $selectFieldWidth: 140px;
 :host ::ng-deep {
   //
 
-  b-input {
+  .bsiss-input {
+    flex-grow: 1;
+  }
+
+  .bsiss-input:not(:last-child) {
     min-width: calc(100% - #{$selectFieldWidth});
 
     .bfe-wrap {
@@ -29,17 +33,31 @@ $selectFieldWidth: 140px;
     }
   }
 
-  b-single-select {
+  .bsiss-select {
     width: $selectFieldWidth;
 
     .bfe-wrap {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-
       &.panel-open {
         border-color: $input-focus-border-color;
       }
     }
+  }
+
+  .bsiss-select-value {
+    @include bFormElement-wrap;
+    padding: 0 $input-padding;
+    @include text-truncate;
+    background-color: $grey-100;
+
+    &.disabled {
+      @include disabled-state;
+    }
+  }
+
+  .bsiss-select .bfe-wrap,
+  .bsiss-select-value {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 }
 

@@ -32,6 +32,7 @@ const template = `
                              [hintMessage]="hintMessage"
                              [errorMessage]="errorMessage"
                              [disabled]="disabled"
+                             [selectDisabled]="selectDisabled"
                              [required]="required"
                              [readonly]="readonly"
                              (elementChange)="elementChange($event)">
@@ -58,7 +59,13 @@ const note = `
   --- | --- | ---
   [value] | SplitInputSingleSelectValue | value of the input and select
   [selectOptions] | SelectGroupOption[] | the options model for the select element
+  [selectDisabled] | boolean | disables the select (but not the input)
   (elementChange) | EventEmitter<wbr>&lt;InputSingleSelectValue&gt; |  change emitter
+
+  #### Note:
+
+  - If options[0].options has only 1 option, its value will be put (as text) in place of the select
+  - If [options] is missing (or options[0].options is empty), but [value] has .selectValue, it will be put (as text) in place of the select.
 
   ${formElemsPropsDoc}
 
@@ -122,7 +129,7 @@ const currencies = [
 const optionsMock: SelectGroupOption[] = Array.from(Array(1), (_, i) => {
   return {
     groupName: 'all currencies',
-    options: map(currencies, currency => ({
+    options: map(currencies, (currency) => ({
       value: currency.value,
       id: currency.value,
       selected: null,
@@ -132,7 +139,7 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(1), (_, i) => {
 
 const value: InputSingleSelectValue = {
   inputValue: 100,
-  selectValue: 'AED',
+  selectValue: 'USD',
 };
 
 story.add(
@@ -146,6 +153,7 @@ story.add(
         label: text('label', 'Base salary', 'Props'),
         description: text('description', mockText(30), 'Props'),
         disabled: boolean('disabled', false, 'Props'),
+        selectDisabled: boolean('selectDisabled', false, 'Props'),
         required: boolean('required', false, 'Props'),
         readonly: boolean('readonly', false, 'Props'),
         hintMessage: text(

@@ -1,27 +1,22 @@
 import { storiesOf } from '@storybook/angular';
-import { withKnobs, object } from '@storybook/addon-knobs/angular';
+import { withKnobs, select, text } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { EmptyStateModule } from './empty-state.module';
 import { Icons } from '../../icons/icons.enum';
-import { values } from 'lodash';
-import { EmptyStateConfig } from './empty-state.interface';
 
-const iconTypes = values(Icons);
+const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
+  withKnobs
+);
 
-const emptyStateConfig: EmptyStateConfig = {
-  text: 'Place your empty state text here',
-  icon: Icons.feedback_icon,
-  buttonLabel: 'CLICK HERE',
-};
-const story = storiesOf(
-  ComponentGroupType.Indicators,
-  module
-).addDecorator(withKnobs);
-
-const template = `<b-empty-state [config]="config"
-                  (buttonClick)="buttonClicked($event)"></b-empty-state>`;
+const template = `<b-empty-state [config]="{
+              text: text,
+              icon: icon,
+              buttonLabel: buttonLabel,
+              imgSrc: imgSrc
+            }"
+  (buttonClick)="buttonClicked($event)"></b-empty-state>`;
 
 const storyTemplate = `<b-story-book-layout [title]="'Empty State'">${template}</b-story-book-layout>`;
 
@@ -33,8 +28,11 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [config] | EmptyStateConfig | { text, buttonLabel, icon, iconSize } | &nbsp;
+  [config] | EmptyStateConfig | { text, buttonLabel, icon, iconSize, imgSrc } | &nbsp;
   (buttonClicked) | EventEmitter | emited on button click | &nbsp;
+  &lt;element top&gt;<wbr>&lt;/element&gt; | ng-content | to be put above icon and text (but below image) | &nbsp;
+  &lt;element bottom&gt;<wbr>&lt;/element&gt; | ng-content | to be put below the button | &nbsp;
+
   ~~~
   ${template}
   ~~~
@@ -46,8 +44,23 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        config: object('config', emptyStateConfig),
         buttonClicked: action('button clicked'),
+
+        text: text('text', 'Something empty here'),
+        icon: select(
+          'icon',
+          [0, ...Object.values(Icons).sort(), 0],
+          Icons.cake
+        ),
+        buttonLabel: text('buttonLabel', 'CLICK HERE'),
+        imgSrc: select(
+          'imgSrc',
+          [
+            0,
+            'https://raw.githubusercontent.com/hibobio/hibob-files/master/img/emptyState_ee_profile_summary.png?token=AAP3IOWBZDZ6CYVRQ2QNWXK7FJW5A',
+          ],
+          ''
+        ),
       },
       moduleMetadata: {
         imports: [EmptyStateModule, StoryBookLayoutModule],

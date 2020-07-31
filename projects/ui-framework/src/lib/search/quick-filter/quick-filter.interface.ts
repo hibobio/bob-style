@@ -15,6 +15,7 @@ export interface QuickFilterConfig {
   startWithGroupsCollapsed?: boolean;
   label?: string;
   placeholder?: string;
+  disabled?: boolean;
   [k: string]: any;
 }
 
