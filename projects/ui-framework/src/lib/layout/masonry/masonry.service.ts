@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MasonryConfig, MasonryState } from './masonry.interface';
 import {
   isNumber,
-  splitArrayToChunks,
+  batchProcessWithAnimationFrame,
 } from '../../services/utils/functional-utils';
 import {
   MASONRY_CONFIG_DEF,
@@ -57,32 +57,13 @@ export class MasonryService {
     elements: HTMLElement[],
     config: MasonryConfig
   ): void {
-    const elementChunks: HTMLElement[][] = splitArrayToChunks(
+    batchProcessWithAnimationFrame(
       elements,
+      (el: HTMLElement) => {
+        this.setElementRowSpan(el, config);
+      },
       (config.columns || 5) * 3
     );
-
-    let currentChunkIndex = 0;
-
-    const setElementsRowSpan = () => {
-      if (!elementChunks[currentChunkIndex]) {
-        return;
-      }
-
-      elementChunks[currentChunkIndex].forEach((el: HTMLElement) => {
-        this.setElementRowSpan(el, config);
-      });
-
-      ++currentChunkIndex;
-
-      this.nativeWindow.requestAnimationFrame(() => {
-        setElementsRowSpan();
-      });
-    };
-
-    this.nativeWindow.requestAnimationFrame(() => {
-      setElementsRowSpan();
-    });
   }
 
   public setElementRowSpan(
