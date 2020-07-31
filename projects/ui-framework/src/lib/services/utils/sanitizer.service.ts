@@ -112,23 +112,26 @@ export class SanitizerService {
         'img:not([src]), img[src=""], a:not([href]), a[href=""]'
       ),
 
-    (value: string): string =>
-      this.htmlParser.cleanupHtml(value, { removeNbsp: true }),
+    (value: string): string => this.htmlParser.cleanupHtml(value),
 
     (value: string): string =>
       value.replace(/<div><br><\/div>/gi, '<div class="empty-line"><br></div>'),
 
     (value: string): string =>
-      this.htmlParser.enforceAttributes(value, {
-        a: {
-          target: '_blank',
-          rel: 'noopener noreferrer',
+      this.htmlParser.enforceAttributes(
+        value,
+        {
+          a: {
+            target: '_blank',
+            rel: 'noopener noreferrer',
+          },
+          '[href*="/employee-profile/"]': {
+            target: null,
+            rel: null,
+          },
         },
-        '[href*="/employee-profile/"]': {
-          target: null,
-          rel: null,
-        },
-      }),
+        false
+      ) as string,
 
     (value: string): string =>
       this.htmlParser.linkify(value, 'rel="noopener noreferrer"'),

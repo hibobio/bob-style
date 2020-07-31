@@ -2,6 +2,10 @@ import { BlotType } from './rte.enum';
 import { joinArrays } from 'bob-style';
 import { FroalaOptions } from './froala.interface';
 import { TributeOptions, TributeItem } from './tribute.interface';
+import {
+  HTML_CLEANUP_REPLACERS,
+  HtmlCleanupReplacer,
+} from '../../../src/lib/services/html/html-parser.const';
 
 export const RTE_CONTROLS_DEF = joinArrays(
   [
@@ -47,6 +51,17 @@ export const RTE_ALLOWED_FONTSIZE_KEYWORDS = [
   'medium',
   'large',
   'x-large',
+];
+
+export const RTE_HTML_CLEANUP_REPLACERS_OUTPUT: HtmlCleanupReplacer[] = [
+  HTML_CLEANUP_REPLACERS.nbsp,
+  HTML_CLEANUP_REPLACERS.emptyDivs,
+  HTML_CLEANUP_REPLACERS.unnecessaryWrappers,
+  HTML_CLEANUP_REPLACERS.whiteSpace,
+  HTML_CLEANUP_REPLACERS.BRs,
+  HTML_CLEANUP_REPLACERS.emptyTags,
+  HTML_CLEANUP_REPLACERS.spacesBetweenTextAndTag,
+  HTML_CLEANUP_REPLACERS.spacesBetweenTags,
 ];
 
 export const RTE_OPTIONS_DEF: FroalaOptions = {
