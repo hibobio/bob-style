@@ -1,13 +1,5 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  ElementRef,
-  NgZone,
-  OnDestroy,
-} from '@angular/core';
+import { Component, OnInit, Input, ElementRef, OnDestroy } from '@angular/core';
 import { MasonryConfig, MasonryState } from './masonry.interface';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { throttleTime, filter, tap } from 'rxjs/operators';
 import { InputObservable } from '../../services/utils/decorators';
 import { merge, Subscription, Observable } from 'rxjs';
@@ -22,9 +14,7 @@ import { MutationObservableService } from '../../services/utils/mutation-observa
 })
 export class MasonryLayoutComponent implements OnInit, OnDestroy {
   constructor(
-    private DOM: DOMhelpers,
     private host: ElementRef,
-    private zone: NgZone,
     private mutationObservableService: MutationObservableService,
     private service: MasonryService
   ) {
@@ -44,8 +34,6 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
   private updater: Subscription;
 
   private elementsToUpdate: Set<HTMLElement> = new Set();
-
-  private disabled = false;
 
   ngOnInit() {
     this.updater = merge(
@@ -101,44 +89,37 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
         filter(() => Boolean(this.hostEl?.children.length))
       )
       .subscribe(() => {
-        // if (
-        //   this.config.columnWidth &&
-        //   this.state.hostWidth &&
-        //   this.disabled ===
-        //     this.config.columnWidth * 2 + this.config.gap > this.state.hostWidth
-        // ) {
-        //   if (this.debug) {
-        //     console.log(
-        //       `Masonry: hostWidth (${this.state.hostWidth}) too narrow for more than 1 column (of min-width ${this.config.columnWidth}), converting to single column`
-        //     );
-        //   }
-
-        //   this.observer?.disconnect();
-        //   this.service.cleanupMasonry(this.hostEl);
-
-        //   this.hostEl.classList.add('single-column');
-
-        //   return;
-        // }
-
-        this.zone.runOutsideAngular(() => {
-          if (!this.state.config || this.elementsToUpdate.size === 0) {
-            this.elementsToUpdate.clear();
-            this.init(this.config);
-            return;
-          }
-
+        if (
+          this.config.columnWidth &&
+          this.state.hostWidth &&
+          this.config.columnWidth * 2 + this.config.gap > this.state.hostWidth
+        ) {
           if (this.debug) {
             console.log(
-              'Masonry update: ' + this.elementsToUpdate.size + ' items.'
+              `Masonry: hostWidth (${this.state.hostWidth}) too narrow for more than 1 column (of min-width ${this.config.columnWidth}), converting to single column`
             );
           }
 
-          const elements = Array.from(this.elementsToUpdate);
-          this.elementsToUpdate.clear();
+          this.service.cleanupMasonry(this.hostEl);
+          return;
+        }
 
-          this.service.updateElementsRowSpan(elements, this.config);
-        });
+        if (!this.state.config || this.elementsToUpdate.size === 0) {
+          this.elementsToUpdate.clear();
+          this.init(this.config);
+          return;
+        }
+
+        if (this.debug) {
+          console.log(
+            'Masonry update: ' + this.elementsToUpdate.size + ' items.'
+          );
+        }
+
+        const elements = Array.from(this.elementsToUpdate);
+        this.elementsToUpdate.clear();
+
+        this.service.updateElementsRowSpan(elements, this.config);
       });
   }
 
