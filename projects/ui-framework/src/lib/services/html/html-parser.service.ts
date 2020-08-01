@@ -442,7 +442,7 @@ export class HtmlParserHelpers {
   }
 
   public DOMtoString(elm: HTMLElement): string {
-    if (!this.DOM.isElement(elm)) {
+    if (!isDomElement(elm)) {
       return elm as any;
     }
     return elm.innerHTML;
