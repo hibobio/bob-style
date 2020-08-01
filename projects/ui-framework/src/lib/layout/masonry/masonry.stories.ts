@@ -66,6 +66,11 @@ const note = `
     Note: If columns prop is provided, columnWidth is ignored. | &nbsp;
   gap | number | spacing between cells | 16
 
+  #### public methods (just is case)
+  Name | Description
+  --- | ---
+  init() | (re)initialize Masonry Layout
+  destroy() | This will add \`single-column\` class on host element (which will remove the masonry layout) + remove masonry-related inline CSS on items + stop all observers/listeners.
 
   #### How it works
 
