@@ -9,7 +9,7 @@ import { MutationObservableService } from '../../services/utils/mutation-observa
 
 @Component({
   selector: 'b-masonry-layout',
-  templateUrl: './masonry.component.html',
+  template: `<ng-content></ng-content>`,
   styleUrls: ['./masonry.component.scss'],
 })
 export class MasonryLayoutComponent implements OnInit, OnDestroy {
@@ -62,6 +62,8 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
               ...this.elementsToUpdate,
               ...elementsToUpdate,
             ]);
+
+            this.state.childrenCount = this.hostEl?.children.length;
           })
         ),
 
@@ -86,7 +88,7 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
           trailing: true,
         }),
 
-        filter(() => Boolean(this.hostEl?.children.length))
+        filter(() => Boolean(this.state.childrenCount))
       )
       .subscribe(() => {
         if (
@@ -94,6 +96,10 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
           this.state.hostWidth &&
           this.config.columnWidth * 2 + this.config.gap > this.state.hostWidth
         ) {
+          if (this.state.singleColumn) {
+            return;
+          }
+
           if (this.debug) {
             console.log(
               `Masonry: hostWidth (${this.state.hostWidth}) too narrow for more than 1 column (of min-width ${this.config.columnWidth}), converting to single column`
@@ -101,6 +107,8 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
           }
 
           this.service.cleanupMasonry(this.hostEl);
+          this.state.singleColumn = true;
+
           return;
         }
 

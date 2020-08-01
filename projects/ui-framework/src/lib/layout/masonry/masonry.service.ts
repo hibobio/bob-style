@@ -11,14 +11,10 @@ import {
   MASONRY_ROW_DIVISION,
 } from './masonry.const';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { WindowLike, WindowRef } from '../../services/utils/window-ref.service';
 
 @Injectable()
 export class MasonryService {
-  constructor(private DOM: DOMhelpers, private windowRef: WindowRef) {
-    this.nativeWindow = this.windowRef.nativeWindow;
-  }
-  private nativeWindow: WindowLike;
+  constructor(private DOM: DOMhelpers) {}
 
   public initMasonry(
     host: HTMLElement,
@@ -29,6 +25,7 @@ export class MasonryService {
       state.hostWidth = host.offsetWidth;
       state.childrenCount = host.children.length;
       state.config = config;
+      state.singleColumn = false;
     }
 
     if (!host) {
@@ -123,6 +120,7 @@ export class MasonryService {
       delete state.hostWidth;
       delete state.childrenCount;
       delete state.config;
+      delete state.singleColumn;
     }
 
     this.DOM.setCssProps(host, {
