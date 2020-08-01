@@ -390,7 +390,7 @@ export abstract class RTEbaseElement extends BaseFormElement
         ? [(value: string): string => this.parserService.getPlainText(value)]
         : [
             (value: string): string =>
-              HtmlParserHelpers.prototype.enforceAttributes(
+              this.parserService.enforceAttributes(
                 value,
                 {
                   '*': {
@@ -403,8 +403,7 @@ export abstract class RTEbaseElement extends BaseFormElement
                 false
               ) as string,
 
-            (value: string): string =>
-              HtmlParserHelpers.prototype.cleanupHtml(value),
+            (value: string): string => this.parserService.cleanupHtml(value),
 
             (value: string): string =>
               this.parserService.enforceAttributes(
@@ -467,8 +466,7 @@ export abstract class RTEbaseElement extends BaseFormElement
                 false
               ) as string,
 
-            (value: string): string =>
-              HtmlParserHelpers.prototype.cleanupHtml(value),
+            (value: string): string => this.parserService.cleanupHtml(value),
           ];
 
     if (this.placeholdersEnabled()) {
