@@ -143,9 +143,6 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
 
           const elements = Array.from(this.elementsToUpdate);
           this.elementsToUpdate.clear();
-          this.init(this.config);
-          return;
-        }
 
           this.service.updateElementsRowSpan(elements, this.config);
         });

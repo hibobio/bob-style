@@ -64,8 +64,6 @@ export class MasonryService {
         : config.columnWidth && config.columnWidth + 'px',
     });
 
-    host.classList.remove('single-column');
-
     this.updateElementsRowSpan(
       Array.from(host.children) as HTMLElement[],
       config,
@@ -150,31 +148,6 @@ export class MasonryService {
       '--masonry-row-div': null,
       '--masonry-col-width': null,
     });
-
-    (Array.from(host.children) as HTMLElement[]).forEach((el) => {
-      this.DOM.setCssProps(el, {
-        'grid-row-end': null,
-      });
-    });
-  }
-
-  public cleanupMasonry(host: HTMLElement, state: MasonryState = null): void {
-    if (!host) {
-      return;
-    }
-    if (state) {
-      delete state.hostWidth;
-      delete state.childrenCount;
-      delete state.config;
-      delete state.singleColumn;
-    }
-
-    this.DOM.setCssProps(host, {
-      '--masonry-row-div': null,
-      '--masonry-col-width': null,
-    });
-
-    host.classList.add('single-column');
 
     (Array.from(host.children) as HTMLElement[]).forEach((el) => {
       this.DOM.setCssProps(el, {

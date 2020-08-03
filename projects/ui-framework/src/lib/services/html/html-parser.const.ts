@@ -1,10 +1,10 @@
 export const FONTSIZE_KEY_TO_NUM_MAP = {
-  medium: 12, //16, body
+  medium: 12, // 16, body
   'xx-small': 9,
   'x-small': 10,
-  small: 11, //13, caption
+  small: 11, // 13, caption
   large: 18, // display4
-  'x-large': 28, //24, display2
+  'x-large': 28, // 24, display2
   'xx-large': 32,
   smaller: 10,
   larger: 14, // big-body

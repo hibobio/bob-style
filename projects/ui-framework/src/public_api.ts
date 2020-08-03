@@ -609,6 +609,8 @@ export { HtmlHelpersModule } from './lib/services/html/html-helpers.module';
 export * from './lib/services/html/html-helpers.interface';
 export { DOMhelpers } from './lib/services/html/dom-helpers.service';
 export { HtmlParserHelpers } from './lib/services/html/html-parser.service';
+export * from './lib/services/html/html-parser.const';
+export * from './lib/services/html/html-parser.interface';
 // Transformers
 export * from './lib/services/utils/transformers';
 // Mocks

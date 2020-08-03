@@ -1,11 +1,11 @@
 import { BlotType } from './rte.enum';
-import { joinArrays } from 'bob-style';
-import { FroalaOptions } from './froala.interface';
-import { TributeOptions, TributeItem } from './tribute.interface';
 import {
+  joinArrays,
   HTML_CLEANUP_REPLACERS,
   HtmlCleanupReplacer,
-} from '../../../src/lib/services/html/html-parser.const';
+} from 'bob-style';
+import { FroalaOptions } from './froala.interface';
+import { TributeOptions, TributeItem } from './tribute.interface';
 
 export const RTE_CONTROLS_DEF = joinArrays(
   [
