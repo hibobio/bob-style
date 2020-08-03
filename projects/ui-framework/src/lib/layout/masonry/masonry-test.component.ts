@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
   ElementRef,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable, BehaviorSubject, of } from 'rxjs';
@@ -50,6 +51,7 @@ import { mockImage } from '../../mock.const';
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MasonryTestComponent implements OnInit {
   // tslint:disable-next-line: no-input-rename

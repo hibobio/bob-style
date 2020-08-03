@@ -46,11 +46,12 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
     &:first-child:not(.first-in-range):not(.only-in-range) {
       &:after {
         width: 100vw;
+        left: auto;
         right: 100%;
       }
       &:last-child:after {
-        right: auto;
         left: 100%;
+        right: auto;
       }
     }
 
@@ -58,6 +59,7 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
       &:after {
         width: 100vw;
         left: 100%;
+        right: auto;
       }
       &:first-child:after {
         left: auto;
@@ -171,7 +173,8 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
   }
 
   .first-in-range {
-    .mat-calendar-body-cell-content {
+    .mat-calendar-body-cell-content,
+    &:after {
       border-top-left-radius: 100%;
       border-bottom-left-radius: 100%;
       border-top-right-radius: 0;
@@ -184,7 +187,8 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
   }
 
   .last-in-range {
-    .mat-calendar-body-cell-content {
+    .mat-calendar-body-cell-content,
+    &:after {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
       border-top-right-radius: 100%;

@@ -1,12 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MasonryLayoutComponent } from './masonry.component';
+import {
+  MasonryItemComponent,
+  MasonryLayoutComponent,
+} from './masonry.component';
 import { MasonryService } from './masonry.service';
 
 @NgModule({
   imports: [CommonModule],
-  declarations: [MasonryLayoutComponent],
-  exports: [MasonryLayoutComponent],
+  declarations: [MasonryLayoutComponent, MasonryItemComponent],
+  exports: [MasonryLayoutComponent, MasonryItemComponent],
   providers: [MasonryService],
 })
 export class MasonryLayoutModule {}

@@ -498,7 +498,7 @@ export { CollapsibleContentDirective } from './lib/layout/sortable-collapsible-s
 
 // Masonry
 export { MasonryLayoutModule } from './lib/layout/masonry/masonry.module';
-export { MasonryLayoutComponent } from './lib/layout/masonry/masonry.component';
+export { MasonryLayoutComponent, MasonryItemComponent } from './lib/layout/masonry/masonry.component';
 export * from './lib/layout/masonry/masonry.interface';
 
 // Read More

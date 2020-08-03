@@ -19,7 +19,8 @@ export class MasonryService {
   public initMasonry(
     host: HTMLElement,
     config: MasonryConfig,
-    state: MasonryState
+    state: MasonryState,
+    debug = false
   ): void {
     if (state) {
       state.hostWidth = host.offsetWidth;
@@ -30,6 +31,27 @@ export class MasonryService {
 
     if (!host) {
       return;
+    }
+
+    if (
+      host.children[0]?.tagName !== 'B-MASONRY-ITEM' ||
+      host.children[0]?.children.length !== 1
+    ) {
+      console.error(
+        `[MasonryLayoutComponent]: ${
+          host.children[0]?.tagName !== 'B-MASONRY-ITEM'
+            ? '<b-masonry-layout> should use <b-masonry-item> for children (you have ' +
+              host.children[0]?.tagName +
+              ')'
+            : ''
+        } ${
+          host.children[0]?.children.length !== 1
+            ? ' and <b-masonry-item> should have a single child (you have ' +
+              host.children[0]?.children.length +
+              ')'
+            : ''
+        }.`
+      );
     }
 
     this.DOM.setCssProps(host, {
@@ -46,52 +68,51 @@ export class MasonryService {
 
     this.updateElementsRowSpan(
       Array.from(host.children) as HTMLElement[],
-      config
+      config,
+      debug
     );
+
+    host.classList.remove('single-column');
   }
 
   public updateElementsRowSpan(
     elements: HTMLElement[],
-    config: MasonryConfig
-  ): void {
-    batchProcessWithAnimationFrame(
-      elements,
-      (el: HTMLElement) => {
-        this.setElementRowSpan(el, config);
-      },
-      (config.columns || 5) * 3
-    );
-  }
-
-  public setElementRowSpan(
-    element: HTMLElement,
     config: MasonryConfig,
-    hardcore = false
+    debug = false
   ): void {
-    if (!element) {
-      return;
-    }
-    element.style.removeProperty('grid-row-end');
-
-    let contentHeight = 0;
-
-    if (hardcore && element.children.length === 1) {
-      const elStyle = getComputedStyle(element);
-      contentHeight =
-        (element.children[0] as HTMLElement).scrollHeight +
-        (parseFloat(elStyle.paddingTop) +
-          parseFloat(elStyle.paddingBottom) +
-          parseFloat(elStyle.borderTopWidth) +
-          parseFloat(elStyle.borderBottomWidth));
+    if (debug) {
+      console.log(
+        `updateElementsRowSpan: will process in ${Math.ceil(
+          elements.length / Math.min(elements.length, 15)
+        )} batches of ${Math.min(elements.length, 15)} items`
+      );
     }
 
-    let rowSpan =
-      (Math.max(element.scrollHeight, element.offsetHeight, contentHeight) +
-        config.gap) /
-      (MASONRY_ROW_DIVISION + config.gap);
-    rowSpan = hardcore ? Math.round(rowSpan) : Math.ceil(rowSpan);
+    batchProcessWithAnimationFrame(elements, {
+      processBatch: (elbatch: HTMLElement[]) => {
+        elbatch
+          .map((el) => {
+            el.classList.add('recalc');
+            return {
+              offsetHeight: ((el.children[0] as HTMLElement) || el)
+                .offsetHeight,
+              scrollHeight: ((el.children[0] as HTMLElement) || el)
+                .scrollHeight,
+            };
+          })
+          .forEach((elHeight, i) => {
+            const el = elbatch[i];
 
-    element.style.gridRowEnd = 'span ' + rowSpan;
+            let rowSpan = Math.ceil(
+              (Math.max(elHeight.scrollHeight, elHeight.offsetHeight) +
+                config.gap) /
+                (MASONRY_ROW_DIVISION + config.gap)
+            );
+            el.classList.remove('recalc');
+            el.style.gridRowEnd = 'span ' + rowSpan;
+          });
+      },
+    });
   }
 
   public processConfig(config: MasonryConfig): MasonryConfig {
@@ -110,6 +131,31 @@ export class MasonryService {
       null;
 
     return config;
+  }
+
+  public cleanupMasonry(host: HTMLElement, state: MasonryState = null): void {
+    if (!host) {
+      return;
+    }
+    if (state) {
+      delete state.hostWidth;
+      delete state.childrenCount;
+      delete state.config;
+      delete state.singleColumn;
+    }
+
+    host.classList.add('single-column');
+
+    this.DOM.setCssProps(host, {
+      '--masonry-row-div': null,
+      '--masonry-col-width': null,
+    });
+
+    (Array.from(host.children) as HTMLElement[]).forEach((el) => {
+      this.DOM.setCssProps(el, {
+        'grid-row-end': null,
+      });
+    });
   }
 
   public cleanupMasonry(host: HTMLElement, state: MasonryState = null): void {

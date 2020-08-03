@@ -1043,30 +1043,56 @@ export const isSelectGroupOptions = (
 
 export const batchProcessWithAnimationFrame = <T = any>(
   items: T[],
-  processItem: (arg: T) => void,
-  batchSize = 15
+  config: {
+    batchSize?: number;
+    processItem?: (itm: T) => void;
+    processBatch?: (chnk: T[]) => void;
+    beforeAll?: (itms?: T[]) => void;
+    afterAll?: (itms?: T[]) => void;
+  }
 ): void => {
+  const processItem = isFunction(config.processItem)
+      ? config.processItem
+      : null,
+    processBatch = isFunction(config.processBatch) ? config.processBatch : null,
+    beforeAll = isFunction(config.beforeAll) ? config.beforeAll : null,
+    afterAll = isFunction(config.afterAll) ? config.afterAll : null,
+    batchSize = isNumber(config.batchSize) ? config.batchSize : 15;
+
   const chunks: T[][] = splitArrayToChunks(items, batchSize);
 
   let currentChunkIndex = 0;
 
-  const processBatch = () => {
+  if (beforeAll) {
+    beforeAll(items);
+  }
+
+  const process = () => {
     if (!chunks[currentChunkIndex]) {
+      if (afterAll) {
+        afterAll(items);
+      }
       return;
     }
 
-    chunks[currentChunkIndex].forEach((el: T) => {
-      processItem(el);
-    });
+    if (processBatch) {
+      processBatch(chunks[currentChunkIndex]);
+    }
+
+    if (!processBatch && processItem) {
+      chunks[currentChunkIndex].forEach((el: T) => {
+        processItem(el);
+      });
+    }
 
     ++currentChunkIndex;
 
     window.requestAnimationFrame(() => {
-      processBatch();
+      process();
     });
   };
 
   window.requestAnimationFrame(() => {
-    processBatch();
+    process();
   });
 };

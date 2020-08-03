@@ -68,7 +68,7 @@ const note = `
   Name | Type | Description | Default
   --- | --- | ---
   label | string | tab title
-  key? | string | tab id
+  key? | string | tab id - **Note**: this will also be added as css class to the tab (for tracking)
   badge? | AvatarBadge / BadgeConfig | tab badge
 `;
 const selectClick = action('selectClick');

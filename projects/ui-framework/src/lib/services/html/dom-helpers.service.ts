@@ -82,9 +82,15 @@ export class DOMhelpers {
     );
   }
 
-  public isBlockElement(element: HTMLElement | Node): element is HTMLElement {
+  public isBlockElement(
+    element: HTMLElement | Node,
+    includeAngularElements = false
+  ): element is HTMLElement {
     return (
-      isDomElement(element) && BLOCK_EL_NODENAMES.includes(element.nodeName)
+      isDomElement(element) &&
+      (BLOCK_EL_NODENAMES.includes(element.nodeName) ||
+        (includeAngularElements &&
+          element.getAttributeNames().join().includes('_nghost-')))
     );
   }
 
@@ -490,7 +496,7 @@ export class DOMhelpers {
         parent.nodeName === tag.toUpperCase() &&
         !this.hasTextNodes(parent)
       ? parent
-      : parent.insertBefore(document.createElement('span'), element);
+      : parent.insertBefore(document.createElement(tag), element);
 
     if (wrapper !== parent) {
       wrapper.setAttribute('prcsd', '2');
