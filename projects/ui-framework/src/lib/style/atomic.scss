@@ -97,7 +97,7 @@ $acss-dirs: top right bottom left;
   border: 1px solid $border-color;
 }
 .brd-alt {
-  border: 1px solid $border-color;
+  border: 1px solid $border-color-light;
 }
 @each $dir in $acss-dirs {
   $dir-short: str-slice($dir, 0, 1);
