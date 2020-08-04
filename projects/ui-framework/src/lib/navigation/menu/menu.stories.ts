@@ -10,6 +10,8 @@ import { Icons } from '../../icons/icons.enum';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { MenuItem } from './menu.interface';
+import { makeArray, simpleUID } from '../../services/utils/functional-utils';
+import { mockThings } from '../../mock.const';
 
 const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(
   withKnobs
@@ -147,12 +149,17 @@ menu = [
   openLeft? | boolean | child menu should open to the left | false
   panelClass? | string | class to be added to child menu | &nbsp;
   separatorAfter? | boolean | if true, will add a divider line after item | false
+  isTitle? | boolean | will make item a non-clickable 'title' | false
   action? |  (item?: MenuItem) => void | function to be called on item click | &nbsp;
   children | MenuItem[] | sub-menu items | &nbsp;
 
 `;
 
 const menuMock: MenuItem[] = [
+  {
+    label: 'Choose one',
+    isTitle: true,
+  },
   {
     label: 'Employee',
     key: 'employee',
@@ -224,7 +231,17 @@ const menuMock: MenuItem[] = [
     disabled: true,
     action: action('request time off'),
     key: 'request.timeoff',
+    separatorAfter: true,
   },
+
+  {
+    label: 'Choose two',
+    isTitle: true,
+  },
+  ...makeArray(3).map((_) => ({
+    label: mockThings(1),
+    key: simpleUID(),
+  })),
 ];
 
 story.add(

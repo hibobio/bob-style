@@ -31,10 +31,8 @@
       bottom: auto;
     }
 
+    .b-subheading,
     .mat-menu-item {
-      font-family: inherit;
-      font-size: inherit;
-      color: inherit;
       line-height: 36px;
       height: 36px;
       padding: 0 30px 0 15px;
@@ -42,6 +40,12 @@
       align-content: space-between;
       align-items: center;
       text-transform: capitalize;
+    }
+
+    .mat-menu-item {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
 
       &.disabled,
       &[disabled] {

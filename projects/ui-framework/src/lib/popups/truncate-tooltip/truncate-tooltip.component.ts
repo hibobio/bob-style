@@ -267,11 +267,17 @@ export class TruncateTooltipComponent
   private addMouseListeners() {
     this.textContainer.nativeElement.addEventListener(
       'mouseenter',
-      this.startHoverTimer
+      this.startHoverTimer,
+      {
+        passive: true,
+      }
     );
     this.textContainer.nativeElement.addEventListener(
       'mouseleave',
-      this.stopHoverTimer
+      this.stopHoverTimer,
+      {
+        passive: true,
+      }
     );
   }
 

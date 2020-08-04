@@ -15,7 +15,7 @@ const template1 = `<b-masonry-layout #masonry [config]="{
       columns: columns,
       columnWidth: columnWidth,
       gap: gap
-    }" [debug]="true">
+    }" [debug]="debug">
 
     <b-masonry-item *ngFor="let card of cards">
       <b-masonry-test-card  [card]="card">

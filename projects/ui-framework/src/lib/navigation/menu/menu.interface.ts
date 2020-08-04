@@ -11,6 +11,7 @@ export interface MenuItem<T = any> {
   panelClass?: string;
   children?: MenuItem[];
   separatorAfter?: boolean;
+  isTitle?: boolean;
   action?($event): void;
 }
 

@@ -32,7 +32,10 @@ export class UtilsService {
   constructor(private windowRef: WindowRef) {
     this.winResize$ = fromEvent(
       this.windowRef.nativeWindow as Window,
-      'resize'
+      'resize',
+      {
+        passive: true,
+      }
     ).pipe(
       throttleTime(500, undefined, {
         leading: true,
@@ -49,7 +52,10 @@ export class UtilsService {
 
     this.winScroll$ = fromEvent(
       this.windowRef.nativeWindow as Window,
-      'scroll'
+      'scroll',
+      {
+        passive: true,
+      }
     ).pipe(
       map((e: Event) => ({
         scrollY: (

@@ -91,9 +91,11 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
           })
           .pipe(
             tap(() => {
-              console.log(
-                `Masonry: host resized, prev hostWidth: ${this.state.hostWidth}, new hostWidth: ${this.hostEl.offsetWidth}`
-              );
+              if (this.debug) {
+                console.log(
+                  `Masonry: host resized, prev hostWidth: ${this.state.hostWidth}, new hostWidth: ${this.hostEl.offsetWidth}`
+                );
+              }
 
               this.state.hostWidth = this.hostEl.offsetWidth;
             })
