@@ -15,11 +15,12 @@
     <!-- Handle branch node menu menu -->
     <span *ngIf="item.children?.length > 0"
           class="menu-trigger-guard"
-          [attr.tabindex]="!itemIsDisabled(item) && item.clickToOpenSub ? 0 : null"
+          [attr.tabindex]="!item.isTitle && !itemIsDisabled(item) && item.clickToOpenSub ? 0 : null"
           (click.outside-zone)="!itemIsDisabled(item) && item.clickToOpenSub && $event.stopPropagation()">
 
       <span *ngIf="item.isTitle"
-            class="b-subheading {{item.key}}">{{item.label}}</span>
+            class="b-subheading {{item.key}}"
+            (click.outside-zone)="$event.stopPropagation()">{{item.label}}</span>
       <button *ngIf="!item.isTitle"
               mat-menu-item
               type="button"
@@ -45,7 +46,8 @@
     <!-- Handle leaf node menu menu -->
     <ng-container *ngIf="!item.children || item.children.length === 0">
       <span *ngIf="item.isTitle"
-            class="b-subheading {{item.key}}">{{item.label}}</span>
+            class="b-subheading {{item.key}}"
+            (click.outside-zone)="$event.stopPropagation()">{{item.label}}</span>
       <button *ngIf="!item.isTitle"
               mat-menu-item
               type="button"
