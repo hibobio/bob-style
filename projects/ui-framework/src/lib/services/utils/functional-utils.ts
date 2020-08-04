@@ -263,6 +263,17 @@ export const objectRemoveKeys = (
     }, {});
 };
 
+export const objectRemoveNullishKeys = (
+  object: GenericObject
+): GenericObject => {
+  return Object.keys(object)
+    .filter((key) => !isNullOrUndefined(object[key]))
+    .reduce((acc, key) => {
+      acc[key] = object[key];
+      return acc;
+    }, {});
+};
+
 export const objectStringID = (
   obj: any,
   config: {

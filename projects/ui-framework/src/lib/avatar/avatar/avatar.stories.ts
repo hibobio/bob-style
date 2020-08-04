@@ -22,16 +22,16 @@ const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
 );
 
 const sizeOptionsKeys = Object.values(AvatarSize).filter(
-  key => typeof key === 'string'
+  (key) => typeof key === 'string'
 ) as string[];
 const sizeOptionsValues = Object.values(AvatarSize).filter(
-  key => typeof key === 'number'
+  (key) => typeof key === 'number'
 ) as number[];
 const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
 
 const orientationOptions = Object.keys(AvatarOrientation);
 const badges = [0, ...Object.keys(AvatarBadge)];
-const chips = Object.values(ChipType).filter(o => o !== ChipType.avatar);
+const chips = Object.values(ChipType).filter((o) => o !== ChipType.avatar);
 
 const icons = [
   Icons.calendar,
@@ -63,6 +63,7 @@ const template = `
   [title]="title"
   [subtitle]="subtitle"
   [caption]="caption"
+  [afterChipText]="afterChipText"
   [icon]="icon"
   [badge]="badge"
   [chip]="chipType && chipText ? {type: chipType, text: chipText} : undefined"
@@ -75,14 +76,65 @@ const template = `
 </b-avatar>
 `;
 
+const template2 = `
+  <b-avatar
+    [avatar]="{
+      imageSource:imageSource,
+      backgroundColor:backgroundColor,
+      size:size,
+      orientation:orientation,
+      title:title,
+      subtitle:subtitle,
+      caption:caption,
+      afterChipText:afterChipText,
+      icon:icon,
+      badge:badge,
+      chip: chipType && chipText ? {type: chipType, text: chipText} : undefined,
+      isClickable:isClickable,
+      disabled:disabled,
+      expectChanges: true
+    }">
+      <b-text-button *ngIf="!(chipType && chipText)" avatar-text type="primary" text="View goals"></b-text-button>
+  </b-avatar>
+`;
+
 const note = `
   ## Avatar Element
   #### Module
   *AvatarModule*
 
+  ~~~
+  <b-avatar
+    [imageSource]="imageSource"
+    [backgroundColor]="backgroundColor"
+    [size]="size"
+    [orientation]="orientation"
+    [title]="title"
+    [subtitle]="subtitle"
+    [caption]="caption"
+    [icon]="icon"
+    [badge]="badge"
+    [chip]="chip"
+    [afterChipText]="afterChipText"
+    [isClickable]="isClickable"
+    [disabled]="disabled"
+    (clicked)="clickHandler($event)">
+
+    <b-text-button avatar-text type="primary" text="View goals"></b-text-button>
+  </b-avatar>
+  ~~~
+
+  ~~~
+  <b-avatar
+    [avatar]="avatar"
+    (clicked)="clickHandler($event)">
+  </b-avatar>
+  ~~~
+
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
+  [avatar] | Avatar | all properties of Avatar interface can be assigned with single input | &nbsp;
   [imageSource] | string | URL of the avatar image<br>\
   **Important!** <br>\
   use **EmployeeAvatarService<wbr>.getOptimizedAvatarImage<wbr>(employee.about.avatar, AvatarSize)** <br>\
@@ -100,6 +152,7 @@ const note = `
   [badge] | AvatarBadge / BadgeConfig | AvatarBadge enum of approved, \
   pending or rejected / or BadgeConfig {icon, color} object  | &nbsp;
   [chip] | Chip | object describing the chip chip (should have type & text properties) | &nbsp;
+  [afterChipText] | string | text to be placed to the right of the chip | &nbsp;
   &nbsp; | &nbsp; | &nbsp; | &nbsp;
   [disabled] | boolean | disabled state | false
   [isClickable] | boolean | flag for indicating if the avatar is clickable or not | false
@@ -113,31 +166,11 @@ getOptimizedAvatarImage for imageSource (set to true if using images that are no
   &lt;element&gt; | ng-content | you can pass stuff to be placed inside Avatar as ng-content | &nbsp;
   &lt;element avatar-text&gt; | ng-content | element with attribute \`[avatar-text]\` \
   will be displayed below texts | &nbsp;
-
-  ~~~
-  <b-avatar
-    [imageSource]="imageSource"
-    [backgroundColor]="backgroundColor"
-    [size]="size"
-    [orientation]="orientation"
-    [title]="title"
-    [subtitle]="subtitle"
-    [caption]="caption"
-    [icon]="icon"
-    [badge]="badge"
-    [chip]="chip"
-    [isClickable]="isClickable"
-    [disabled]="disabled"
-    (clicked)="clickHandler($event)">
-
-    <b-text-button avatar-text type="primary" text="View goals"></b-text-button>
-  </b-avatar>
-  ~~~
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Avatar'">
-    ${template}
+    ${template2}
 </b-story-book-layout>
 `;
 
@@ -159,6 +192,7 @@ story.add(
         title: text('title', mockName()),
         subtitle: text('subtitle', mockJobs(1)),
         caption: text('caption', 'Product, Israel'),
+        afterChipText: text('afterChipText', '(Active)'),
         disabled: boolean('disabled', false),
         icon: select('icon', [0, ...icons]),
         badge: select('badge', badges, AvatarBadge.approved),

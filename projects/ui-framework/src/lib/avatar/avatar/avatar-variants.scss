@@ -59,7 +59,7 @@
 }
 
 :host[data-size='medium'] {
-  b-chip {
+  .avatar-chip {
     margin-top: 6px;
   }
   ::ng-deep [avatar-text] {
@@ -98,7 +98,7 @@
 
 :host[data-size='xlarge'],
 :host[data-size='large'] {
-  b-chip {
+  .avatar-chip {
     margin-top: 8px;
   }
   ::ng-deep [avatar-text] {

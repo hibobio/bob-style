@@ -87,6 +87,25 @@ $acss-dirs: top right bottom left;
   }
 }
 
+@each $size in $acss-sizes {
+  .mrg-x-#{$size} {
+    margin-left: $size * 1px;
+    margin-right: $size * 1px;
+  }
+  .mrg-y-#{$size} {
+    margin-top: $size * 1px;
+    margin-bottom: $size * 1px;
+  }
+  .pad-x-#{$size} {
+    padding-left: $size * 1px;
+    padding-right: $size * 1px;
+  }
+  .pad-y-#{$size} {
+    padding-top: $size * 1px;
+    padding-bottom: $size * 1px;
+  }
+}
+
 .uppercase {
   text-transform: uppercase;
 }

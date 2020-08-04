@@ -14,10 +14,12 @@ import {
 import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
 import { ChipType } from '../../chips/chips.enum';
 import { Chip } from '../../chips/chips.interface';
-import { BadgeConfig } from './avatar.interface';
+import { Avatar, BadgeConfig } from './avatar.interface';
 import {
   getKeyByValue,
+  isObject,
   notFirstChanges,
+  objectRemoveNullishKeys,
 } from '../../services/utils/functional-utils';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { Icons } from '../../icons/icons.enum';
@@ -40,15 +42,22 @@ export class AvatarComponent implements OnChanges {
   readonly orient = AvatarOrientation;
   readonly tooltipTypes = TruncateTooltipType;
 
+  @Input('avatar') set setProps(avatar: Avatar) {
+    if (isObject(avatar)) {
+      Object.assign(this, objectRemoveNullishKeys(avatar));
+    }
+  }
+
   @Input() size: AvatarSize = AvatarSize.mini;
   @Input() imageSource: string;
   @Input() backgroundColor: string;
-  @Input() icon: Icons | Icon;
-  @Input() badge: AvatarBadge | BadgeConfig | Icon;
   @Input() title: string;
   @Input() subtitle: string;
-  @Input() chip: Chip;
   @Input() caption: string;
+  @Input() icon: Icons | Icon;
+  @Input() badge: AvatarBadge | BadgeConfig | Icon;
+  @Input() chip: Chip;
+  @Input() afterChipText: string;
   @Input() isClickable = false;
   @Input() expectChanges = false;
   @Input() supressWarnings = false;

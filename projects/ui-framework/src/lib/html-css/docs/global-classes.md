@@ -25,6 +25,20 @@
     </tr>
 
     <tr>
+      <td>mrg-x-0, mrg-x-8, mrg-x-16, mrg-x-24, mrg-x-32, mrg-x-40
+        <hr>
+        mrg-y-0, mrg-y-8, mrg-y-16, mrg-y-24, mrg-y-32, mrg-y-40
+      </td>
+      <td>Add <u>margin</u> on X (left + right) or Y (top + bottom) axis:<br> 8px, 16px, 24px, 32px, 40px
+      </td>
+      <td>
+        <pre><code>&lt;div class="mrg-x-16 mrg-y-24"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
       <td>mrg-l-0, mrg-l-8, mrg-l-16, mrg-l-24, mrg-l-32, mrg-l-40
         <hr>
         mrg-r-0, mrg-r-8, mrg-r-16, mrg-r-24, mrg-r-32, mrg-r-40
@@ -58,6 +72,20 @@
       </td>
       <td>
         <pre><code>&lt;div class="pad-16"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
+      <td>pad-x-0, pad-x-8, pad-x-16, pad-x-24, pad-x-32, pad-x-40
+        <hr>
+        pad-y-0, pad-y-8, pad-y-16, pad-y-24, pad-y-32, pad-y-40
+      </td>
+      <td>Add <u>padding</u> on X (left + right) or Y (top + bottom) axis:<br> 8px, 16px, 24px, 32px, 40px
+      </td>
+      <td>
+        <pre><code>&lt;div class="pad-x-16 pad-y-24"&gt;
   Something
 &lt;/div&gt;</code></pre>
       </td>

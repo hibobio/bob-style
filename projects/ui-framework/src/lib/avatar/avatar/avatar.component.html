@@ -37,10 +37,13 @@
      [innerHTML]="caption">
   </p>
 
-  <b-chip *ngIf="chip && !disabled && size > avatarSize.small"
-          [type]="chip.type"
-          [text]="chip.text">
-  </b-chip>
+  <span *ngIf="chip && !disabled && size > avatarSize.small"
+        class="avatar-chip">
+    <b-chip [type]="chip.type"
+            [text]="chip.text">
+    </b-chip>
+    {{afterChipText}}
+  </span>
 
   <ng-content select="[avatar-text]"></ng-content>
 </div>

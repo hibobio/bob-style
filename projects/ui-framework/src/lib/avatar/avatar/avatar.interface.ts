@@ -10,17 +10,19 @@ export interface BadgeConfig {
 }
 
 export interface Avatar {
+  size?: AvatarSize;
   imageSource?: string;
   backgroundColor?: string;
-  size?: AvatarSize;
   title?: string;
   subtitle?: string;
   caption?: string;
   icon?: Icons | Icon;
-  chip?: Chip;
   badge?: AvatarBadge | BadgeConfig;
+  chip?: Chip;
+  afterChipText?: string;
   orientation?: AvatarOrientation;
   disabled?: boolean;
   isClickable?: boolean;
+  expectChanges?: boolean;
   supressWarnings?: boolean;
 }

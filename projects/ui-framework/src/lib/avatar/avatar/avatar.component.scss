@@ -27,12 +27,21 @@
   .slot1-big,
   .slot2-medium,
   .slot3-small,
-  b-chip {
+  .avatar-chip {
     &:first-child,
     &:only-child {
       margin-top: 0;
     }
   }
+}
+
+.avatar-chip {
+  display: flex;
+  align-items: center;
+  color: $grey-700;
+}
+b-chip {
+  margin-right: 6px;
 }
 
 :host::ng-deep [avatar-text] {
@@ -51,7 +60,7 @@
   }
 
   &[data-orientation='horizontal'] {
-    b-chip {
+    .avatar-chip {
       margin-right: auto;
     }
   }
@@ -80,6 +89,14 @@
 
     ::ng-deep [avatar-text] {
       margin-left: auto;
+    }
+
+    .avatar-chip {
+      flex-direction: column;
+    }
+
+    b-chip {
+      margin-right: 0;
     }
   }
 }
