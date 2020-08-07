@@ -46,6 +46,19 @@ export const placeholderMock: SelectGroupOption[] = selectOptionsMock
     })
   );
 
+placeholderMock.splice(0, 0, {
+  groupName: 'Employee',
+  key: 'employee',
+  options: [
+    {
+      // prettier-ignore
+      value: 'מספר רישיון עו\“ד',
+      // prettier-ignore
+      id: 'employee##%%identification/custom/מספר רישיון עו\“ד_Tdncm'
+    },
+  ],
+});
+
 export const rteMockHtml = `<br><br> <br><br> <span> <br> </span> <div><br></div> <span><br></span>
 
 <div>
@@ -59,7 +72,7 @@ export const rteMockHtml = `<br><br> <br><br> <span> <br> </span> <div><br></div
 <h1><em>Hooray!</em></h1>
 
 <p><br>
- {{root##%%firstName}} is {{work##%%title}} of the month!
+ {{root##%%firstName}} is {{work##%%title}} of the month! <br>His {{employee##%%identification/custom/מספר רישיון עו\“ד_Tdncm}} is 1234567890.
  </p>
 
 <p>More details at: https://longlink.com/gohere/thenthere/onemore/page#hash?query=bigBen</p>

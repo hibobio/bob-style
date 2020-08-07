@@ -15,6 +15,7 @@
     position: relative;
     user-select: all;
     font-family: var(--body-font-family);
+    direction: ltr;
 
     em {
       @include size;

@@ -256,18 +256,39 @@ export const objectRemoveKeys = (
   keys: string[]
 ): GenericObject => {
   return Object.keys(object)
-    .filter((key) => !keys.includes(key))
+    .filter((key) => !asArray(keys).includes(key))
     .reduce((acc, key) => {
       acc[key] = object[key];
       return acc;
     }, {});
 };
 
-export const objectRemoveNullishKeys = (
-  object: GenericObject
+export const objectRemoveEntriesByValue = (
+  object: GenericObject,
+  values: any[]
 ): GenericObject => {
   return Object.keys(object)
-    .filter((key) => !isNullOrUndefined(object[key]))
+    .filter((key) => !asArray(values).includes(object[key]))
+    .reduce((acc, key) => {
+      acc[key] = object[key];
+      return acc;
+    }, {});
+};
+
+export const objectRemoveEntriesWithFalseyValue = (
+  object: GenericObject,
+  config: { remove?: any[]; allow?: any[] } = {}
+): GenericObject => {
+  const { allow, remove } = config;
+
+  return Object.keys(object)
+    .filter((key) => {
+      return remove
+        ? !asArray(remove).includes(object[key])
+        : allow
+        ? Boolean(object[key]) || asArray(allow).includes(object[key])
+        : Boolean(object[key]);
+    })
     .reduce((acc, key) => {
       acc[key] = object[key];
       return acc;

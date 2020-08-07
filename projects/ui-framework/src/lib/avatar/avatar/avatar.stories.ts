@@ -89,7 +89,7 @@ const template2 = `
       afterChipText:afterChipText,
       icon:icon,
       badge:badge,
-      chip: chipType && chipText ? {type: chipType, text: chipText} : undefined,
+      chip: chipType && chipText ? {type: chipType, text: chipText} : null,
       isClickable:isClickable,
       disabled:disabled,
       expectChanges: true

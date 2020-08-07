@@ -19,7 +19,7 @@ import {
   getKeyByValue,
   isObject,
   notFirstChanges,
-  objectRemoveNullishKeys,
+  objectRemoveEntriesByValue,
 } from '../../services/utils/functional-utils';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { Icons } from '../../icons/icons.enum';
@@ -44,7 +44,7 @@ export class AvatarComponent implements OnChanges {
 
   @Input('avatar') set setProps(avatar: Avatar) {
     if (isObject(avatar)) {
-      Object.assign(this, objectRemoveNullishKeys(avatar));
+      Object.assign(this, objectRemoveEntriesByValue(avatar, [undefined]));
     }
   }
 

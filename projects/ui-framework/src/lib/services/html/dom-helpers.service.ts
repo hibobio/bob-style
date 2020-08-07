@@ -389,6 +389,16 @@ export class DOMhelpers {
         ? element.parentElement
         : (element as HTMLElement);
 
+    if (!parent) {
+      console.warn(
+        '[getClosestUntil]: Something wrong here:',
+        element,
+        closestSelector,
+        until
+      );
+      return null;
+    }
+
     while (
       ((isDomElement(until) && until !== parent) ||
         (isString(until) && !parent.matches(until))) &&
@@ -399,7 +409,7 @@ export class DOMhelpers {
       parent = parent.parentElement;
     }
 
-    return parent.matches(closestSelector) ? parent : null;
+    return parent?.matches(closestSelector) ? parent : null;
   }
 
   // TODO: Add Test
