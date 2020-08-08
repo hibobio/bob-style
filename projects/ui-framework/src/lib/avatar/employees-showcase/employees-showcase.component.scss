@@ -4,6 +4,8 @@
   width: 100%;
   display: block;
   text-align: left;
+  backface-visibility: hidden;
+
   --avatar-gap: -22px;
   --avatar-count: 3;
 }

@@ -5,6 +5,8 @@ $b-masonry-row-division: 1px;
   width: 100%;
   flex-grow: 1;
   text-align: left;
+  backface-visibility: hidden;
+
   display: grid !important;
   grid-gap: var(--masonry-gap, #{$b-masonry-gap-def});
   grid-template-columns: repeat(

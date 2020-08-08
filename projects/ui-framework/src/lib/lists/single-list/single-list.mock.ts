@@ -6,9 +6,9 @@ import { cloneDeep } from 'lodash';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
 export const selectSome = (options: SelectGroupOption[]): SelectGroupOption[] =>
-  cloneDeep(options).map(group => ({
+  cloneDeep(options).map((group) => ({
     ...group,
-    options: group.options.map(option => ({
+    options: group.options.map((option) => ({
       ...option,
       selected: randomNumber() > 80,
       disabled: randomNumber() > 90,
@@ -23,10 +23,7 @@ const groupNames: string[] = mockJobs(30);
 export const optionsMock: SelectGroupOption[] = [
   ...makeArray(groupNum).map((group, index) => {
     const groupId = simpleUID(
-      groupNames[index]
-        .replace(/\s+/g, '')
-        .slice(0, 8)
-        .toUpperCase() + '-',
+      groupNames[index].replace(/\s+/g, '').slice(0, 8).toUpperCase() + '-',
       3
     );
 
@@ -34,15 +31,12 @@ export const optionsMock: SelectGroupOption[] = [
       groupName: groupNames[index],
       key: groupId,
 
-      options: makeArray(optionsNum).map(option => {
+      options: makeArray(optionsNum).map((option) => {
         const optVal = mockName();
         const optId = simpleUID(
           groupId +
             '/' +
-            optVal
-              .replace(/\s+/g, '')
-              .slice(0, 8)
-              .toUpperCase() +
+            optVal.replace(/\s+/g, '').slice(0, 8).toUpperCase() +
             '-',
           3
         );
@@ -58,8 +52,11 @@ export const optionsMock: SelectGroupOption[] = [
               imageSource: mockAvatar(),
             },
           },
+          someOptionData: simpleUID(),
         };
       }),
+
+      someGroupData: simpleUID(),
     };
   }),
   {

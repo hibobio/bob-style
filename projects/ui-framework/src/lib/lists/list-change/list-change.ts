@@ -1,4 +1,4 @@
-import { SelectGroupOption } from '../list.interface';
+import { SelectGroupOption, SelectOption } from '../list.interface';
 import { arrayFlatten } from '../../services/utils/functional-utils';
 
 export class ListChange {
@@ -22,24 +22,46 @@ export class ListChange {
   }
 
   getSelectedGroupOptions(): SelectGroupOption[] {
-    return this.selectGroupOptions
-      .map((group: SelectGroupOption) => ({
-        ...group,
-        options: group.options.filter(option => option.selected),
-      }))
-      .filter(group => group.options.length);
+    return this.selectGroupOptions.reduce(
+      (sgo: SelectGroupOption[], group: SelectGroupOption) => {
+        const groupSelectedOptions: SelectOption[] = [],
+          groupSelectedIDs: (number | string)[] = [],
+          groupSelectedValues: string[] = [];
+
+        group.options.forEach((option) => {
+          if (option.selected) {
+            groupSelectedOptions.push(option);
+            groupSelectedIDs.push(option.id);
+            groupSelectedValues.push(option.value);
+          }
+        });
+
+        if (groupSelectedOptions.length) {
+          sgo.push({
+            ...group,
+            options: groupSelectedOptions,
+            groupSelectedIDs,
+            groupSelectedValues,
+            selectedCount: groupSelectedOptions.length,
+          });
+        }
+
+        return sgo;
+      },
+      []
+    );
   }
 
   getDisplayValue(): string {
-    return arrayFlatten(this.selectGroupOptions.map(group => group.options))
-      .filter(option => option.selected)
-      .map(option => option.value)
+    return arrayFlatten(this.selectGroupOptions.map((group) => group.options))
+      .filter((option) => option.selected)
+      .map((option) => option.value)
       .join(', ');
   }
 
   private getSelIds(): (number | string)[] {
-    return arrayFlatten(this.selectGroupOptions.map(group => group.options))
-      .filter(option => option.selected)
-      .map(option => option.id);
+    return arrayFlatten(this.selectGroupOptions.map((group) => group.options))
+      .filter((option) => option.selected)
+      .map((option) => option.id);
   }
 }

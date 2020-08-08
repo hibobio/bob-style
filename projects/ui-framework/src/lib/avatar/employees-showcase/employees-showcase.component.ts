@@ -32,6 +32,7 @@ import {
   applyChanges,
   notFirstChanges,
   hasChanges,
+  isNumber,
 } from '../../services/utils/functional-utils';
 import { EmployeesShowcaseService } from './employees-showcase.service';
 import { Avatar } from '../avatar/avatar.interface';
@@ -164,35 +165,39 @@ export class EmployeesShowcaseComponent
   }
 
   public initShowcase(): void {
-    this.clientWidth = this.DOM.getClosest(
-      this.host.nativeElement,
-      this.DOM.getInnerWidth,
-      'result'
-    );
+    if (isNumber(this.min) && isNumber(this.max) && this.min === this.max) {
+      this.avatarsToFit = Math.min(this.max, this.totalAvatars);
+    } else {
+      this.clientWidth = this.DOM.getClosest(
+        this.host.nativeElement,
+        this.DOM.getInnerWidth,
+        'result'
+      );
 
-    const maxFit = Math.floor(
-      (this.clientWidth - this.avatarSize) /
-        (this.avatarSize - AvatarGap[this.avatarSize]) +
-        1
-    );
+      const maxFit = Math.floor(
+        (this.clientWidth - this.avatarSize) /
+          (this.avatarSize - AvatarGap[this.avatarSize]) +
+          1
+      );
 
-    this.avatarsToFit = Math.min(
-      30,
-      this.max,
-      Math.max(this.min, maxFit),
-      this.totalAvatars
-    );
-
-    this.DOM.setCssProps(this.host.nativeElement, {
-      '--avatar-count': this.avatarsToFit,
-      '--avatar-gap': '-' + AvatarGap[this.avatarSize] + 'px',
-    });
+      this.avatarsToFit = Math.min(
+        30,
+        this.max,
+        Math.max(this.min, maxFit),
+        this.totalAvatars
+      );
+    }
 
     this.showTotalButton =
       this.showTotal !== false &&
       !this.fadeOut &&
       this.avatarSize < AvatarSize.medium &&
       this.avatarsToFit < this.totalAvatars;
+
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--avatar-count': this.avatarsToFit,
+      '--avatar-gap': '-' + AvatarGap[this.avatarSize] + 'px',
+    });
 
     if (!this.employeeListOptions) {
       this.setViewModels();

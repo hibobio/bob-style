@@ -31,6 +31,9 @@ export interface SelectGroupOption {
   options: SelectOption[];
   selected?: boolean;
   hidden?: boolean;
+  groupSelectedIDs?: (number | string)[];
+  groupSelectedValues?: string[];
+  selectedCount?: number;
   [key: string]: any;
 }
 
