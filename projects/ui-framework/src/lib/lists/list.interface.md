@@ -29,6 +29,6 @@ reset | boolean | enable Reset button.<br> Defaults to <u>false</u>.<br> **Note:
 Name | Type | Description
 --- | --- | ---
 getSelectedIds | (): (number / string)[] | returns array of selected option **IDs**
-getSelectedGroupOptions | (): SelectGroupOption[] | returns **selected** options
-getSelectGroupOptions | (): SelectGroupOption[] | returns all options
-getDisplayValue | (): string | returns of selected options' values, joined with ',' (same as displayed in select input field)
+getSelectGroupOptions | (): SelectGroupOption[] | returns all groups/options
+getSelectedGroupOptions | (): SelectGroupOption[] | returns **selected** groups/options (with additional data per group: selectedCount, groupSelectedIDs, groupSelectedValues)
+getDisplayValue | (): string | returns selected options' values, joined with ',' (same as displayed in select input field)
