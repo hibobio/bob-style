@@ -582,6 +582,8 @@ export {
 export * from './lib/services/utils/decorators';
 // Mutation Observable
 export * from './lib/services/utils/mutation-observable';
+// Image Dimensions
+export { ImageDimensionsService } from './lib/services/utils/image-dimensions.service';
 
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
