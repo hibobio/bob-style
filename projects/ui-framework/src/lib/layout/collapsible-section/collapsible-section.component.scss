@@ -114,6 +114,8 @@ $bcp-border-color: $border-color-light;
 
 .bcp-title-wrap,
 .bcp-header-content {
+  min-width: 0;
+  
   &:only-child {
     width: 100%;
     flex: 1;
