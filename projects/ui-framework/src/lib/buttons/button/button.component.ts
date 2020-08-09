@@ -41,7 +41,9 @@ export class ButtonComponent extends BaseButtonElement {
           ' b-icon-' +
           (this.size === ButtonSize.large ? IconSize.large : IconSize.medium) +
           ' b-icon-' +
-          (this.type === ButtonType.primary || this.type === ButtonType.negative
+          (!this.type ||
+          this.type === ButtonType.primary ||
+          this.type === ButtonType.negative
             ? IconColor.white
             : IconColor.dark)
         : '')

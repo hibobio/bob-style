@@ -390,12 +390,6 @@ export class DOMhelpers {
         : (element as HTMLElement);
 
     if (!parent) {
-      console.warn(
-        '[getClosestUntil]: Something wrong here:',
-        element,
-        closestSelector,
-        until
-      );
       return null;
     }
 

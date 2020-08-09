@@ -91,6 +91,7 @@ export enum Icons {
   employee_ref = 'b-icon-employee-ref',
   enter = 'b-icon-enter',
   error = 'b-icon-circle-cancel',
+  error_alt = 'b-icon-error-alt',
   expand = 'b-icon-expand',
   facebook = 'b-icon-facebook',
   feedback_icon = 'b-icon-survey',
