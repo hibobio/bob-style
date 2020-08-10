@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,6 @@ export class ImageDimensionsService {
     height: number;
     error?: boolean;
   }> {
-    //
     return new Observable((observer) => {
       let img = new Image();
 
@@ -62,7 +61,25 @@ export class ImageDimensionsService {
 
   getImageDimensions$(
     imgUrl: string
-  ): Observable<{ width: number; height: number }> {
+  ): Observable<{
+    url: string;
+    width: number;
+    height: number;
+    error?: boolean;
+  }> {
     return this.createImageDimensions$(imgUrl).pipe(take(1));
+  }
+
+  onImageLoad$(
+    imgUrl: string
+  ): Observable<{ url: string; error: boolean; success: boolean }> {
+    return this.createImageDimensions$(imgUrl).pipe(
+      map((res) => ({
+        url: imgUrl,
+        error: Boolean(res.error),
+        success: Boolean(!res.error),
+      })),
+      take(1)
+    );
   }
 }
