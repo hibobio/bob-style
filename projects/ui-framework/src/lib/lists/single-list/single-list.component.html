@@ -17,16 +17,17 @@
   <div #headers
        class="headers"
        *ngIf="!noGroupHeaders">
-    <div *ngFor="let header of listHeaders; trackBy: headerTrackBy"
+    <div *ngFor="let header of listHeaders; let headerIndex =  index; trackBy: headerTrackBy"
          class="headers-group">
-      <div (click)="headerClick(header)"
+      <div (click)="headerClick(header, headerIndex)"
            [ngClass]="{
-            'clickable': options.length > 1,
+            'clickable': options.length > 1 || (header.groupIsOption && !readonly),
             'collapsed': header.isCollapsed,
-            'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header)
+            'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header),
+            'selected': header.groupIsOption && header.selected
            }"
            class="option-select header">
-        <span *ngIf="options.length > 1"
+        <span *ngIf="options.length > 1 && !header.groupIsOption"
               class="chevron b-icon-medium"
               [ngClass]="{
                 'b-icon-chevron-down': !header.isCollapsed,

@@ -55,11 +55,8 @@ export class MultiListComponent extends BaseListElement {
     this.listActions = { ...MULTI_LIST_LIST_ACTIONS_DEF };
   }
 
-  @Input() min: number;
-  @Input() max: number;
-
   headerClick(header: ListHeader, index: number): void {
-    if (this.options.length > 1) {
+    if (this.options.length > 1 && !header.groupIsOption) {
       this.toggleGroupCollapse(header);
     } else if (!this.readonly) {
       this.selectGroup(header, index);

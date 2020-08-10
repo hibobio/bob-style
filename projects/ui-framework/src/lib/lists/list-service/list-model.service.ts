@@ -23,28 +23,30 @@ export class ListModelService {
 
   getHeadersModel(
     options: SelectGroupOption[],
-    collapseHeaders = false
+    collapseHeaders = false,
+    hasCheckbox = true,
+    allowGroupIsOption = false
   ): ListHeader[] {
-    return options.map(group => {
+    return options.map((group) => {
       const selectedCount = this.countOptions(group.options, 'selected');
 
-      return Object.assign(
-        {
-          groupName: group.groupName,
-          isCollapsed: collapseHeaders,
-          placeHolderSize: group.options.length * LIST_EL_HEIGHT,
-          selected: isBoolean(group.selected)
-            ? group.selected
-            : selectedCount === group.options.length,
-          hidden: isBoolean(group.hidden)
-            ? group.hidden
-            : this.countOptions(group.options, 'hidden') ===
-              group.options.length,
-          indeterminate: this.isIndeterminate(group.options, selectedCount),
-          selectedCount: selectedCount,
-        },
-        !isNullOrUndefined(group.key) ? { key: group.key } : {}
-      );
+      const groupIsOption =
+        allowGroupIsOption &&
+        group.options.length === 1 &&
+        group.options[0].value === group.groupName;
+
+      return {
+        ...group,
+        isCollapsed: collapseHeaders || groupIsOption,
+        placeHolderSize: group.options.length * LIST_EL_HEIGHT,
+        selected: isBoolean(group.selected)
+          ? group.selected
+          : selectedCount === group.options.length,
+        indeterminate: this.isIndeterminate(group.options, selectedCount),
+        selectedCount: selectedCount,
+        hasCheckbox,
+        groupIsOption,
+      };
     });
   }
 
@@ -63,41 +65,28 @@ export class ListModelService {
         let virtualOptions: Partial<ListOption>[];
 
         if (noGroupHeaders) {
-          virtualOptions = group.options.map(option =>
-            Object.assign(
-              {},
-              option,
-              {
-                groupName: group.groupName,
-                isPlaceHolder: false,
-                groupIndex: index,
-                hidden: isBoolean(group.hidden)
-                  ? group.hidden
-                  : !!option.hidden,
-              },
-              !isNullOrUndefined(group.key) ? { key: group.key } : {}
-            )
-          );
-        } else if (listHeaders[index].isCollapsed) {
+          virtualOptions = group.options.map((option) => ({
+            ...option,
+            groupName: group.groupName,
+            key: group.key,
+            groupIndex: index,
+            isPlaceHolder: false,
+          }));
+        } else if (
+          listHeaders[index].isCollapsed ||
+          listHeaders[index].groupIsOption
+        ) {
           virtualOptions = [placeholder];
         } else {
           virtualOptions = [].concat(
             placeholder,
-            group.options.map(option =>
-              Object.assign(
-                {},
-                option,
-                {
-                  groupName: group.groupName,
-                  isPlaceHolder: false,
-                  groupIndex: index,
-                  hidden: isBoolean(group.hidden)
-                    ? group.hidden
-                    : !!option.hidden,
-                },
-                !isNullOrUndefined(group.key) ? { key: group.key } : {}
-              )
-            )
+            group.options.map((option) => ({
+              ...option,
+              groupName: group.groupName,
+              key: group.key,
+              groupIndex: index,
+              isPlaceHolder: false,
+            }))
           );
         }
         return virtualOptions;
@@ -130,9 +119,6 @@ export class ListModelService {
         groupOptions,
         header.selectedCount
       );
-      header.hidden = isBoolean(header.hidden)
-        ? header.hidden
-        : this.countOptions(groupOptions, 'hidden') === groupOptions.length;
     });
   }
 
@@ -164,7 +150,7 @@ export class ListModelService {
       return [];
     }
     return arrayFlatten<string | number>(
-      options.map(group =>
+      options.map((group) =>
         group.options
           .filter((option: SelectOption) => option.selected && option[mustBe])
           .map((opt: SelectOption) => opt.id)
@@ -194,7 +180,7 @@ export class ListModelService {
   }
 
   deselectAll<T = SelectGroupOption>(options: T[]): T[] {
-    options.forEach(option => {
+    options.forEach((option) => {
       if (isArray(option['options'])) {
         option['options'].forEach((opt: SelectOption) => {
           opt.selected = opt.disabled ? opt.selected : false;
@@ -224,7 +210,9 @@ export class ListModelService {
   }
 
   countOptions(options: SelectOption[], mustBe = null) {
-    return mustBe ? options.filter(opt => opt[mustBe]).length : options.length;
+    return mustBe
+      ? options.filter((opt) => opt[mustBe]).length
+      : options.length;
   }
 
   isIndeterminate(options: SelectOption[], selectedCount = null): boolean {
@@ -236,6 +224,6 @@ export class ListModelService {
   }
 
   totalOptionsCount(options: SelectGroupOption[]): number {
-    return arrayFlatten(options.map(group => group.options)).length;
+    return arrayFlatten(options.map((group) => group.options)).length;
   }
 }
