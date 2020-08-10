@@ -9,8 +9,8 @@ export interface ListHeader {
   indeterminate?: boolean;
   selectedCount?: number;
   hidden?: boolean;
-  groupIsOption: boolean;
-  hasCheckbox: boolean;
+  groupIsOption?: boolean;
+  hasCheckbox?: boolean;
 }
 
 export interface ListOption {
