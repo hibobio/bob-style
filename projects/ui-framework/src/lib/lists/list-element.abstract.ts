@@ -86,6 +86,9 @@ export abstract class BaseListElement
   @Input() readonly = false;
   @Input() focusOnInit = false;
 
+  @Input() min: number;
+  @Input() max: number;
+
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
@@ -131,8 +134,6 @@ export abstract class BaseListElement
       this.options = this.options.filter((group: SelectGroupOption) =>
         isNotEmptyArray(group.options)
       );
-      this.allGroupsCollapsed =
-        this.startWithGroupsCollapsed && isNotEmptyArray(this.options, 1);
     }
 
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
@@ -147,6 +148,27 @@ export abstract class BaseListElement
       this.noGroupHeaders =
         !this.options ||
         (this.options.length < 2 && !this.showSingleGroupHeader);
+    }
+
+    if (hasChanges(changes, ['startWithGroupsCollapsed', 'options'])) {
+      this.startWithGroupsCollapsed =
+        this.startWithGroupsCollapsed && this.options.length > 1;
+    }
+
+    if (
+      hasChanges(changes, [
+        'options',
+        'showSingleGroupHeader',
+        'startWithGroupsCollapsed',
+        'mode',
+        'min',
+        'max',
+      ]) &&
+      !hasChanges(changes, ['startWithGroupsCollapsed'])
+    ) {
+      this.allGroupsCollapsed =
+        this.allGroupsCollapsed ||
+        (this.startWithGroupsCollapsed && isNotEmptyArray(this.options, 1));
 
       this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
     }
@@ -172,18 +194,7 @@ export abstract class BaseListElement
       this.updateActionButtonsState();
     }
 
-    if (
-      hasChanges(changes, ['startWithGroupsCollapsed', 'options']) &&
-      typeof this.startWithGroupsCollapsed === 'boolean'
-    ) {
-      this.startWithGroupsCollapsed =
-        this.startWithGroupsCollapsed && this.options.length > 1;
-    }
-
-    if (
-      hasChanges(changes, ['startWithGroupsCollapsed']) &&
-      typeof this.startWithGroupsCollapsed === 'boolean'
-    ) {
+    if (hasChanges(changes, ['startWithGroupsCollapsed'])) {
       this.toggleCollapseAll(this.startWithGroupsCollapsed);
     }
 
@@ -373,6 +384,7 @@ export abstract class BaseListElement
     if (this.options && this.options.length > 1) {
       this.allGroupsCollapsed =
         force !== null ? force : !this.allGroupsCollapsed;
+
       this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
     }
   }
@@ -417,9 +429,18 @@ export abstract class BaseListElement
     };
 
     if (config.updateListHeaders) {
+      const isClassic =
+        (!this.mode || this.mode === SelectMode.classic) &&
+        !this.max &&
+        !this.min;
+
       this.listHeaders = this.modelSrvc.getHeadersModel(
         this.filteredOptions,
-        config.collapseHeaders
+        config.collapseHeaders,
+        this.type === SelectType.multi && isClassic,
+        isClassic &&
+          !this.noGroupHeaders &&
+          (this.options.length > 1 || this.showSingleGroupHeader)
       );
     }
 

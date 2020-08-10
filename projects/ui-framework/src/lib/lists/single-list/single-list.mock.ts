@@ -6,12 +6,12 @@ import { cloneDeep } from 'lodash';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
 export const selectSome = (options: SelectGroupOption[]): SelectGroupOption[] =>
-  cloneDeep(options).map((group) => ({
+  cloneDeep(options).map((group: SelectGroupOption) => ({
     ...group,
-    options: group.options.map((option) => ({
+    options: group.options.map((option, index) => ({
       ...option,
       selected: randomNumber() > 80,
-      disabled: randomNumber() > 90,
+      disabled: index !== 0 && randomNumber() > 90,
     })),
   }));
 
@@ -21,6 +21,16 @@ const optionsNum = 4;
 const groupNames: string[] = mockJobs(30);
 
 export const optionsMock: SelectGroupOption[] = [
+  {
+    groupName: 'All',
+    key: 'all',
+    options: [
+      {
+        id: 'all',
+        value: 'All',
+      },
+    ],
+  },
   ...makeArray(groupNum).map((group, index) => {
     const groupId = simpleUID(
       groupNames[index].replace(/\s+/g, '').slice(0, 8).toUpperCase() + '-',

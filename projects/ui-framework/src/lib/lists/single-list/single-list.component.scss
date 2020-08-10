@@ -96,13 +96,11 @@ $list-item-height: $wrap-height;
     }
   }
 
-  .header {
-    .header-option {
-      display: flex;
-      flex-direction: row;
-      align-content: flex-start;
-      align-items: center;
-    }
+  .header-option {
+    display: flex;
+    flex-direction: row;
+    align-content: flex-start;
+    align-items: center;
   }
 
   .options {
@@ -152,4 +150,23 @@ $list-item-height: $wrap-height;
 .header-selected-count {
   margin-left: 5px;
   font-weight: 400;
+}
+
+[aria-readonly='true'] ::ng-deep {
+  .option:not(.selected):hover,
+  .option:not(.selected).focus {
+    background-color: transparent;
+  }
+  .headers .header:hover,
+  .headers .header.focus {
+    background-color: white;
+  }
+
+  .option-select.selected {
+    &,
+    &:hover,
+    &:focus {
+      @include single-list-option-selected;
+    }
+  }
 }

@@ -18,10 +18,9 @@
     <div *ngFor="let header of listHeaders; let headerIndex =  index; trackBy: headerTrackBy"
          class="headers-group">
       <div [ngClass]="{
-            'clickable': options.length > 1,
+            'clickable': options.length > 1 || (header.groupIsOption && !readonly),
             'collapsed': header.isCollapsed,
             'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header),
-            hidden: header.hidden,
             'selected': header.selected,
             'indeterminate': header.indeterminate
           }"
@@ -29,14 +28,14 @@
         <span (click)="headerClick(header, headerIndex)"
               class="header-collapse-trigger">
         </span>
-        <span *ngIf="options.length > 1"
+        <span *ngIf="options.length > 1 && !header.groupIsOption"
               class="chevron b-icon-medium"
               [ngClass]="{
                 'b-icon-chevron-down': !header.isCollapsed,
                 'b-icon-chevron-right': header.isCollapsed
               }"></span>
         <div class="header-option">
-          <span *ngIf="!readonly && (!mode || mode === modes.classic) && !max && !min"
+          <span *ngIf="header.hasCheckbox && !readonly"
                 [hidden]="searchValue"
                 class="checkbox bml-checkbox"
                 (click)="selectGroup(header, headerIndex)"></span>
@@ -44,7 +43,7 @@
           <span class="header-option-value"
                 data-max-lines='3'
                 [innerHTML]="header.groupName | highlight: searchValue"></span>
-          <span *ngIf="!readonly && header.selectedCount > 0"
+          <span *ngIf="header.selectedCount > 0"
                 class="header-selected-count">
             ({{header.selectedCount}})
           </span>

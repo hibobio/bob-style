@@ -82,8 +82,8 @@ const note = `
 
 const options = cloneDeep(optionsMock);
 
-options[0].options[1].selected = true;
-options[0].options[3].disabled = true;
+options[1].options[1].selected = true;
+options[1].options[3].disabled = true;
 
 story.add(
   'Single list',

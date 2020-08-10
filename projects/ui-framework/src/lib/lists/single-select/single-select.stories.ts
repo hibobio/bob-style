@@ -123,7 +123,7 @@ const note = `
 `;
 
 const options = ListModelService.prototype.selectAll(cloneDeep(optionsMock));
-options[0].options[3].disabled = true;
+options[1].options[3].disabled = true;
 
 const toAdd = () => ({
   template: storyTemplate,
@@ -131,12 +131,12 @@ const toAdd = () => ({
     value: select(
       'value',
       [
-        options[0].options[0].id,
-        options[1].options[2].id,
+        options[1].options[0].id,
+        options[2].options[2].id,
         options[3].options[3].id,
-        options[0].options[2].id,
+        options[1].options[2].id,
       ],
-      options[0].options[2].id,
+      options[1].options[2].id,
       'Props'
     ),
 
