@@ -163,14 +163,15 @@ export abstract class BaseListElement
         'mode',
         'min',
         'max',
-      ]) &&
-      !hasChanges(changes, ['startWithGroupsCollapsed'])
+      ])
     ) {
       this.allGroupsCollapsed =
         this.allGroupsCollapsed ||
         (this.startWithGroupsCollapsed && isNotEmptyArray(this.options, 1));
 
-      this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
+      if (!hasChanges(changes, ['startWithGroupsCollapsed'])) {
+        this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
+      }
     }
 
     if (hasChanges(changes, ['optionsDefault'])) {
