@@ -351,7 +351,7 @@ export const arrayIntersection = <T = any>(arrA: T[], arrB: T[]): T[] =>
 export const arrayCommon = arrayIntersection;
 
 // compares by values, ignoring order and if !strict - letter case
-export const simpleArraysEqual = <T>(arr1: T[], arr2: T[], strict = false) => {
+export const simpleArraysEqual = <T>(arr1: T[], arr2: T[], strict = true) => {
   if (!isArray(arr1) || !isArray(arr2) || arr1.length !== arr2.length) {
     return false;
   }
