@@ -124,6 +124,8 @@ export abstract class BaseListElement
     applyChanges(this, changes, {
       options: [],
       mode: SelectMode.classic,
+      startWithGroupsCollapsed: true,
+      maxHeight: LIST_EL_HEIGHT * 8,
     });
 
     if (this.mode === SelectMode.tree) {
@@ -134,6 +136,11 @@ export abstract class BaseListElement
       this.options = this.options.filter((group: SelectGroupOption) =>
         isNotEmptyArray(group.options)
       );
+    }
+
+    if (hasChanges(changes, ['startWithGroupsCollapsed', 'options'])) {
+      this.startWithGroupsCollapsed =
+        this.startWithGroupsCollapsed && this.options.length > 1;
     }
 
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
@@ -150,16 +157,10 @@ export abstract class BaseListElement
         (this.options.length < 2 && !this.showSingleGroupHeader);
     }
 
-    if (hasChanges(changes, ['startWithGroupsCollapsed', 'options'])) {
-      this.startWithGroupsCollapsed =
-        this.startWithGroupsCollapsed && this.options.length > 1;
-    }
-
     if (
       hasChanges(changes, [
         'options',
         'showSingleGroupHeader',
-        'startWithGroupsCollapsed',
         'mode',
         'min',
         'max',
@@ -169,9 +170,9 @@ export abstract class BaseListElement
         this.allGroupsCollapsed ||
         (this.startWithGroupsCollapsed && isNotEmptyArray(this.options, 1));
 
-      if (!hasChanges(changes, ['startWithGroupsCollapsed'])) {
-        this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
-      }
+      this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
+    } else if (hasChanges(changes, ['startWithGroupsCollapsed'])) {
+      this.toggleCollapseAll(this.startWithGroupsCollapsed);
     }
 
     if (hasChanges(changes, ['optionsDefault'])) {
@@ -193,10 +194,6 @@ export abstract class BaseListElement
       ])
     ) {
       this.updateActionButtonsState();
-    }
-
-    if (hasChanges(changes, ['startWithGroupsCollapsed'])) {
-      this.toggleCollapseAll(this.startWithGroupsCollapsed);
     }
 
     if (hasChanges(changes, ['maxHeight', 'options'], true)) {
