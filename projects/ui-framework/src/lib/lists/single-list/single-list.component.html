@@ -1,7 +1,7 @@
 <b-search *ngIf="shouldDisplaySearch"
           #search
           (searchChange)="searchChange($event)"
-          [ngClass]="{ 'no-result': !listOptions.length }">
+          [ngClass]="{ 'no-result': !listOptions?.length }">
 </b-search>
 
 <div [ngStyle]="{
