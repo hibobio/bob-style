@@ -727,6 +727,10 @@ export const objectSortKeys = <T = any>(obj: T): T => {
 };
 
 export const dataDeepSort = <T = any>(data: T | T[]): T | T[] => {
+  if (isPrimitive(data) || isFalsyOrEmpty(data)) {
+    return data;
+  }
+
   const sortedData: T[] = asArray(data, false)
     .map((di: T) => {
       if (isArray(di)) {
@@ -750,11 +754,11 @@ export const dataDeepSort = <T = any>(data: T | T[]): T | T[] => {
       if (isNumber(a) && isNumber(b)) {
         return a - b;
       }
-      if (isString(a) && isString(b)) {
-        return a.localeCompare(b);
+      if (isPrimitive(a) && isPrimitive(b)) {
+        return String(a).localeCompare(String(b));
       }
       if (!a || !b) {
-        return (Boolean(a) ? 1 : 0) - (Boolean(b) ? 1 : 0);
+        return Boolean(a) ? 1 : -1;
       }
 
       return objectStringID(a, {
