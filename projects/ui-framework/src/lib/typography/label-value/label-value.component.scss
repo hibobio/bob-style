@@ -103,6 +103,21 @@ $BLVTypeMap: (
       line-height: $line-height-heading,
     ),
   ),
+  '9': (
+    '.blv-label': (
+      color: $body-text-color,
+      font-size: $font-size-body,
+      font-weight: $font-weight-bold-body,
+      text-transform: uppercase,
+      margin-bottom: 4px,
+    ),
+    '.blv-value': (
+      color: $body-text-color,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body,
+      white-space: pre-line,
+    ),
+  ),
 );
 
 .blv-icon {

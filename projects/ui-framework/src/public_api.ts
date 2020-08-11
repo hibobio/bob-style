@@ -31,6 +31,7 @@ export { BodyComponent } from './lib/typography/body/body.component';
 export { LabelValueModule } from './lib/typography/label-value/label-value.module';
 export { LabelValueComponent } from './lib/typography/label-value/label-value.component';
 export { LabelValueType, TextAlign, IconPosition } from './lib/typography/label-value/label-value.enum';
+export * from './lib/typography/label-value/label-value.interface';
 
 /*
  * Buttons
