@@ -23,6 +23,8 @@ export const isNumber = (val: any): val is number =>
 
 export const isBoolean = (val: any): val is boolean => typeof val === 'boolean';
 
+export const isFalsey = (val: any): boolean => !val;
+
 export const isFunction = (val: any): val is Function =>
   !!val && typeof val === 'function';
 
@@ -348,7 +350,8 @@ export const arrayIntersection = <T = any>(arrA: T[], arrB: T[]): T[] =>
 
 export const arrayCommon = arrayIntersection;
 
-export const simpleArraysEqual = <T>(arr1: T[], arr2: T[]) => {
+// compares by values, ignoring order and if !strict - letter case
+export const simpleArraysEqual = <T>(arr1: T[], arr2: T[], strict = false) => {
   if (!isArray(arr1) || !isArray(arr2) || arr1.length !== arr2.length) {
     return false;
   }
@@ -356,7 +359,18 @@ export const simpleArraysEqual = <T>(arr1: T[], arr2: T[]) => {
     return true;
   }
 
-  return arrayDifference(arr1, arr2).length === 0;
+  return strict
+    ? arrayDifference(arr1, arr2).length === 0
+    : arr1
+        .map((i) => stringify(i))
+        .sort()
+        .join('|')
+        .toLowerCase() ===
+        arr2
+          .map((i) => stringify(i))
+          .sort()
+          .join('|')
+          .toLowerCase();
 };
 
 export const dedupeArray = <T = any>(arr: T[]): T[] => Array.from(new Set(arr));
@@ -505,8 +519,8 @@ export const mapSplice = <K = any, V = any>(
 // ----------------------
 
 export const stringify = (smth: any, limit = 200): string => {
-  const stringified = isString(smth)
-    ? smth
+  const stringified = isPrimitive(smth)
+    ? String(smth)
     : isArray(smth)
     ? '[' +
       smth
@@ -730,12 +744,19 @@ export const dataDeepSort = <T = any>(data: T | T[]): T | T[] => {
       return di;
     })
     .sort((a: T, b: T) => {
+      if (a === b) {
+        return 0;
+      }
       if (isNumber(a) && isNumber(b)) {
         return a - b;
       }
       if (isString(a) && isString(b)) {
         return a.localeCompare(b);
       }
+      if (!a || !b) {
+        return (Boolean(a) ? 1 : 0) - (Boolean(b) ? 1 : 0);
+      }
+
       return objectStringID(a, {
         limit: 30,
         primitives: true,

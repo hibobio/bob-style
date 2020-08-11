@@ -1,4 +1,5 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, Operator } from 'rxjs';
+import { pass } from './functional-utils';
 
 /*
   Inspiration:
@@ -8,24 +9,27 @@ import { BehaviorSubject } from 'rxjs';
   Example:
   @InputSubject('Untitled') @Input('title') public title$: BehaviorSubject<string>;
 */
-export function InputSubject(defaultValue: any) {
+export function InputSubject<T = any>(
+  defaultValue: T,
+  operators: Operator<any, T>[] = [pass]
+) {
   const subjectSymbol = Symbol();
 
-  return (target, key) => {
+  return (target: any, key: string) => {
     Object.defineProperty(target, key, {
-      set: function (value) {
+      set: function (value: T) {
         if (!this[subjectSymbol]) {
-          this[subjectSymbol] = new BehaviorSubject(value);
+          this[subjectSymbol] = new BehaviorSubject<T>(value);
         }
         if (value !== this[subjectSymbol].getValue()) {
           this[subjectSymbol].next(value);
         }
       },
-      get: function () {
+      get: function (): BehaviorSubject<T> {
         if (!this[subjectSymbol]) {
-          this[subjectSymbol] = new BehaviorSubject(defaultValue);
+          this[subjectSymbol] = new BehaviorSubject<T>(defaultValue);
         }
-        return this[subjectSymbol];
+        return this[subjectSymbol].pipe(...operators);
       },
     });
   };
@@ -39,27 +43,30 @@ export function InputSubject(defaultValue: any) {
   Example:
   @InputObservable('Untitled') @Input('title') public title$: Observable<string>;
 */
-export function InputObservable(defaultValue: any) {
+export function InputObservable<T = any>(
+  defaultValue: T,
+  operators: Operator<any, T>[] = [pass]
+) {
   const subjectSymbol = Symbol();
   const subjectSymbolObservable = Symbol();
 
-  return (target, key) => {
+  return (target: any, key: string) => {
     Object.defineProperty(target, key, {
-      set: function (value) {
+      set: function (value: T) {
         if (!this[subjectSymbol]) {
-          this[subjectSymbol] = new BehaviorSubject(value);
+          this[subjectSymbol] = new BehaviorSubject<T>(value);
           this[subjectSymbolObservable] = this[subjectSymbol].asObservable();
         }
         if (value !== this[subjectSymbol].getValue()) {
           this[subjectSymbol].next(value);
         }
       },
-      get: function () {
+      get: function (): Observable<T> {
         if (!this[subjectSymbol]) {
-          this[subjectSymbol] = new BehaviorSubject(defaultValue);
+          this[subjectSymbol] = new BehaviorSubject<T>(defaultValue);
           this[subjectSymbolObservable] = this[subjectSymbol].asObservable();
         }
-        return this[subjectSymbolObservable];
+        return this[subjectSymbolObservable].pipe(...operators);
       },
     });
   };

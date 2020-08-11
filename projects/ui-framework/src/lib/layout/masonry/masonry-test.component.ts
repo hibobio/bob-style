@@ -8,7 +8,7 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable, BehaviorSubject, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { InputObservable } from '../../services/utils/decorators';
 import { map, delay, tap } from 'rxjs/operators';
 import { randomNumber } from '../../services/utils/functional-utils';
@@ -57,7 +57,7 @@ export class MasonryTestComponent implements OnInit {
   // tslint:disable-next-line: no-input-rename
   @InputObservable(undefined)
   @Input('card')
-  public card$: BehaviorSubject<{ title: string; text: string }>;
+  public card$: Observable<{ title: string; text: string }>;
 
   @ViewChild('imgEl') imgEl: ElementRef;
 
