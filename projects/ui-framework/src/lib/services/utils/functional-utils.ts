@@ -1030,7 +1030,7 @@ export const applyChanges = (
   target: any,
   changes: SimpleChanges,
   defaults: GenericObject = {},
-  skip: string[] = [],
+  skip: string[] = ['setProps'],
   discardAllFalsey = false,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): SimpleChanges => {
