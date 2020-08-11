@@ -252,13 +252,15 @@ export abstract class BaseListElement
             if (!this.focusOption) {
               break;
             }
-            this.focusOption.isPlaceHolder
-              ? this.headerClick(
-                  find(this.listHeaders, {
-                    groupName: this.focusOption.groupName,
-                  })
-                )
-              : this.optionClick(this.focusOption);
+            if (this.focusOption.isPlaceHolder) {
+              const headerIndex = this.listHeaders.findIndex(
+                (header) => header.groupName === this.focusOption.groupName
+              );
+              this.headerClick(this.listHeaders[headerIndex], headerIndex);
+            } else {
+              this.optionClick(this.focusOption);
+            }
+
             break;
           default:
             break;
@@ -311,9 +313,18 @@ export abstract class BaseListElement
     });
   }
 
-  optionClick(option: ListOption, allowMultiple = false): void {
+  optionClick(
+    option: ListOption,
+    allowMultiple = this.type === SelectType.multi
+  ): void {
     if (!option.disabled && !this.readonly) {
-      let newValue;
+      let newValue: boolean;
+
+      if (option.exclusive && !option.selected && allowMultiple) {
+        option.selected = true;
+        this.clearList([option.id]);
+        return;
+      }
 
       if (!this.mode || this.mode === SelectMode.classic || !allowMultiple) {
         newValue = !option.selected;
@@ -364,7 +375,16 @@ export abstract class BaseListElement
     }
   }
 
-  headerClick(header: ListHeader, ...args): void {}
+  headerClick(header: ListHeader, index: number): void {
+    if (header.groupIsOption && !this.readonly) {
+      this.optionClick({
+        ...this.options[index].options[0],
+        isPlaceHolder: false,
+        groupName: header.groupName,
+        groupIndex: index,
+      } as ListOption);
+    }
+  }
 
   toggleGroupCollapse(header: ListHeader): void {
     header.isCollapsed = !header.isCollapsed;
@@ -387,8 +407,10 @@ export abstract class BaseListElement
     }
   }
 
-  clearList(): void {
-    this.selectedIDs = this.getSelectedIDs(this.options, 'disabled');
+  clearList(setSelectedIDs: (string | number)[] = null): void {
+    this.selectedIDs = this.getSelectedIDs(this.options, 'disabled').concat(
+      setSelectedIDs || []
+    );
 
     this.emitChange();
 

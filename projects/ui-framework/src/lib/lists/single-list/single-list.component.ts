@@ -6,7 +6,7 @@ import {
   ElementRef,
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
-import { ListHeader, ListOption } from '../list.interface';
+import { ListHeader } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
@@ -18,7 +18,7 @@ import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 @Component({
   selector: 'b-single-list',
   templateUrl: 'single-list.component.html',
-  styleUrls: ['single-list.component.scss'],
+  styleUrls: ['single-list.component.scss', 'single-list-extended.scss'],
 })
 export class SingleListComponent extends BaseListElement {
   constructor(
@@ -48,17 +48,13 @@ export class SingleListComponent extends BaseListElement {
   }
 
   headerClick(header: ListHeader, index: number): void {
-    if (this.options.length > 1 && !header.groupIsOption) {
-      this.toggleGroupCollapse(header);
+    if (header.groupIsOption) {
+      super.headerClick(header, index);
+      return;
     }
 
-    if (header.groupIsOption && !this.readonly) {
-      this.optionClick({
-        ...this.options[index].options[0],
-        isPlaceHolder: false,
-        groupName: header.groupName,
-        groupIndex: index,
-      } as ListOption);
+    if (this.options.length > 1 && !header.groupIsOption) {
+      this.toggleGroupCollapse(header);
     }
   }
 

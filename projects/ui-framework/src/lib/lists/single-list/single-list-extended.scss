@@ -1,0 +1,14 @@
+@import '../../style/common-imports';
+@import '../list';
+
+.header.option-select.selected {
+  &,
+  &:hover,
+  &:focus {
+    @include single-list-option-selected;
+  }
+}
+
+.headers .groupIsOption.clickable {
+  cursor: default;
+}
