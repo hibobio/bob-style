@@ -1030,7 +1030,7 @@ export const applyChanges = (
   target: any,
   changes: SimpleChanges,
   defaults: GenericObject = {},
-  skip: string[] = [],
+  skip: string[] = ['setProps'],
   discardAllFalsey = false,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): SimpleChanges => {
@@ -1045,15 +1045,22 @@ export const applyChanges = (
   }
 
   Object.keys(changes).forEach((changeKey: string) => {
-    if (!skip.includes(changeKey)) {
-      target[changeKey] =
-        defaults.hasOwnProperty(changeKey) &&
-        ((!discardAllFalsey &&
-          isNullOrUndefined(changes[changeKey]?.currentValue)) ||
-          (discardAllFalsey && !falseyCheck(changes[changeKey].currentValue)))
-          ? defaults[changeKey]
-          : changes[changeKey]?.currentValue;
+    if (
+      skip?.includes(changeKey) ||
+      Object.getOwnPropertyDescriptor(target, changeKey)?.set ||
+      Object.getOwnPropertyDescriptor(Object.getPrototypeOf(target), changeKey)
+        ?.set
+    ) {
+      return;
     }
+
+    target[changeKey] =
+      defaults.hasOwnProperty(changeKey) &&
+      ((!discardAllFalsey &&
+        isNullOrUndefined(changes[changeKey]?.currentValue)) ||
+        (discardAllFalsey && !falseyCheck(changes[changeKey].currentValue)))
+        ? defaults[changeKey]
+        : changes[changeKey]?.currentValue;
   });
 
   return changes;

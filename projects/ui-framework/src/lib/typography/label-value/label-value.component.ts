@@ -18,9 +18,12 @@ import {
   applyChanges,
   notFirstChanges,
   hasChanges,
+  isObject,
+  objectRemoveEntriesByValue,
 } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { LabelValue } from './label-value.interface';
 
 @Component({
   selector: 'b-label-value',
@@ -38,6 +41,12 @@ export class LabelValueComponent implements OnChanges {
 
   readonly iconPositions = IconPosition;
   readonly iconSizes = IconSize;
+
+  @Input('labelValue') set setProps(labelValue: LabelValue) {
+    if (isObject(labelValue)) {
+      Object.assign(this, objectRemoveEntriesByValue(labelValue, [undefined]));
+    }
+  }
 
   @Input() label: string | number;
   @Input() value: string | number;

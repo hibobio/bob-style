@@ -20,6 +20,23 @@ const story = storiesOf(ComponentGroupType.Typography, module).addDecorator(
   withKnobs
 );
 
+const templateAlt = `
+  <b-label-value
+    [labelValue]="{
+      type:type,
+      textAlign:textAlign,
+      label:label,
+      value:value,
+      labelMaxLines:labelMaxLines,
+      valueMaxLines:valueMaxLines,
+      expectChanges: true,
+      icon:icon,
+      iconPosition:iconPosition,
+      iconSize:iconSize,
+      iconColor:iconColor
+    }"></b-label-value>
+`;
+
 const template = `
   <b-label-value
         [type]="type"
@@ -178,6 +195,16 @@ const template2 = `
 
     <div class="cell">
       <p class="hdr">
+        <span class="bx">LabelValueType.nine</span>
+      </p>
+      <b-label-value
+        [type]="'9'"
+        [label]="'Form section title'"
+        [value]="longtext"></b-label-value>
+    </div>
+
+    <div class="cell">
+      <p class="hdr">
         <span class="bx">icon example 1, icon clickable</span>
       </p>
       <b-label-value
@@ -222,7 +249,7 @@ const template2 = `
 const storyTemplate = `
 <b-story-book-layout [title]="'Label-Value'" style="background-color: rgb(247,247,247);">
     <div style="max-width: 1050px;">
-      <div style="display: inline-block; margin: 0 auto; max-width: 100%;">${template}</div>
+      <div style="display: inline-block; margin: 0 auto; max-width: 100%;">${templateAlt}</div>
       ${template2}
     </div>
 </b-story-book-layout>
@@ -234,9 +261,16 @@ const note = `
   #### Module
   *LabelValueModule*
 
+  ~~~
+  <b-label-value
+        [labelValue]="labelValue">
+  </b-label-value>
+  ~~~
+
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
+  [labelValue] | LabelValue | all properties of LabelValue interface can be assigned with single input | &nbsp;
   [type] | LabelValueType | type/theme | LabelValueType.one
   [label] | string | label/title text | &nbsp;
   [value] | string | value text | &nbsp;
@@ -264,6 +298,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        longtext: `Some description of form section. Can be quite long. And possibly  not related to the form section at all.\nCan have line-breaks via '\\n' character!`,
         onClicked: action('Component clicked'),
         onLabelClicked: action('Label clicked'),
         onValueClicked: action('Value clicked'),
