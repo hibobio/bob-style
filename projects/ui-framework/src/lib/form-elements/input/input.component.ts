@@ -238,7 +238,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
       return;
     }
 
-    if (event.data !== '.') {
+    if (event.data !== '.' && event.data !== '0') {
       super.onInputChange(event);
 
       if (this.lastCursorState !== null) {
