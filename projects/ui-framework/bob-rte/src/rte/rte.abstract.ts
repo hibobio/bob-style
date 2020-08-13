@@ -12,7 +12,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { cloneDeep, merge } from 'lodash';
-
 import {
   applyChanges,
   BaseFormElement,
@@ -49,6 +48,8 @@ import {
   RTE_MINHEIGHT_DEF,
   RTE_OPTIONS_DEF,
   RTE_TOOLBAR_HEIGHT,
+  RTE_HTML_CLEANUP_REPLACERS_OUTPUT,
+  RTE_HTML_CLEANUP_REPLACERS_INPUT,
 } from './rte.const';
 import { BlotType, RTEType, RTEMode } from './rte.enum';
 import { RteMentionsOption } from './rte.interface';
@@ -395,6 +396,7 @@ export abstract class RTEbaseElement extends BaseFormElement
                 {
                   '*': {
                     '^on.*': null,
+                    class: null,
                   },
                   br: {
                     '.*': null,
@@ -403,7 +405,11 @@ export abstract class RTEbaseElement extends BaseFormElement
                 false
               ) as string,
 
-            (value: string): string => this.parserService.cleanupHtml(value),
+            (value: string): string =>
+              this.parserService.cleanupHtml(
+                value,
+                RTE_HTML_CLEANUP_REPLACERS_INPUT
+              ),
 
             (value: string): string =>
               this.parserService.enforceAttributes(
@@ -466,7 +472,11 @@ export abstract class RTEbaseElement extends BaseFormElement
                 false
               ) as string,
 
-            (value: string): string => this.parserService.cleanupHtml(value),
+            (value: string): string =>
+              this.parserService.cleanupHtml(
+                value,
+                RTE_HTML_CLEANUP_REPLACERS_OUTPUT
+              ),
           ];
 
     if (this.placeholdersEnabled()) {
