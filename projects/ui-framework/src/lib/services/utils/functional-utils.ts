@@ -806,7 +806,7 @@ export const isEqualByValues = (
     limit?: number;
     addId?: boolean;
     primitives?: boolean;
-  } = { limit: 400, primitives: true }
+  } = { limit: 5000, primitives: true }
 ): boolean => {
   const truthyA = Boolean(dataA),
     truthyB = Boolean(dataB);

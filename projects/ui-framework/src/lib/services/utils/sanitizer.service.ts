@@ -60,6 +60,7 @@ export const SANITIZER_ALLOWED_STYLE_PROPS = [
   'font-weight',
   'text-align',
   'direction',
+  'text-decoration',
 ];
 
 const SANITIZER_HTML_ALLOWED_ATTRS_TESTS: RegExp[] = SANITIZER_ALLOWED_ATTRS.reduce(
