@@ -28,6 +28,7 @@ export const optionsMock: SelectGroupOption[] = [
       {
         id: 'all',
         value: 'All',
+        exclusive: true,
       },
     ],
   },
@@ -41,7 +42,7 @@ export const optionsMock: SelectGroupOption[] = [
       groupName: groupNames[index],
       key: groupId,
 
-      options: makeArray(optionsNum).map((option) => {
+      options: makeArray(optionsNum).map((_, index) => {
         const optVal = mockName();
         const optId = simpleUID(
           groupId +

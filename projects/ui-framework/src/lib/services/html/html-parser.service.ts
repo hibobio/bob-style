@@ -414,22 +414,34 @@ export class HtmlParserHelpers {
     return this.DOMtoString(elm);
   }
 
+  public deLinkify(value: string): string {
+    if (!value?.trim() || !isString(value)) {
+      return value;
+    }
+
+    const linkRegex = /<a[^>]*href="([^"]+)"[^>]*">([^<]+)<\/a>/gi;
+
+    const res = value.replace(linkRegex, '$1');
+
+    return res;
+  }
+
   public getPlainText(html: string | HTMLElement | any): string {
     if (!html) {
       return '';
     }
 
-    if (isString(html)) {
-      const elm: HTMLElement = document.createElement('div');
-      elm.innerHTML = html;
-      return elm.innerText.replace(/\s+/gi, ' ');
+    if (!isString(html) || isDomElement(html)) {
+      return String(html.textContent || html || '').replace(/\s+/gi, ' ');
     }
 
-    if (isDomElement(html)) {
-      return html.innerText.replace(/\s+/gi, ' ');
-    }
+    let elm: HTMLElement = isDomElement(html)
+      ? (html.cloneNode() as HTMLElement)
+      : this.stringToDOM(html);
 
-    return String(html.textContent || html || '');
+    elm.innerHTML = this.deLinkify(elm.innerHTML);
+
+    return elm.innerText.replace(/\s+/gi, ' ');
   }
 
   public stringToDOM(value: string): HTMLElement {

@@ -246,26 +246,46 @@ export class RichTextEditorComponent extends RTEbaseElement
             this.parserService.removeElements(content, '.fr-marker')
           ) + '<span data-bob-rte="true"></span>';
 
-        const plainText = this.parserService.getPlainText(content);
+        const plainText = this.parserService.getPlainText(html);
 
-        clipboardData.setData('text/plain', plainText);
         clipboardData.setData('text/html', html);
+        clipboardData.setData('text/plain', plainText);
 
         this.editor.selection.restore();
       },
 
-      'paste.afterCleanup': (html: string): string => {
-        if (html.includes('data-bob-rte')) {
-          return chainCall(
-            this.inputTransformers,
-            this.parserService.removeElements(html, '[data-bob-rte]')
-          );
-        }
+      'paste.before': (event: ClipboardEvent) => {
+        const clipboardData: DataTransfer =
+          event.clipboardData || event['originalEvent'].clipboardData;
 
-        return chainCall(this.inputTransformers, html).replace(
-          /style="[^"]+"/gi,
-          ''
+        let html = clipboardData.getData('text/html');
+        const isFromRte = html.indexOf('data-bob-rte') > -1;
+
+        event.preventDefault();
+
+        html = chainCall(
+          [
+            (value: string) =>
+              this.parserService.removeElements(
+                value,
+                '[data-bob-rte], head, meta, title, style'
+              ),
+
+            ...(!isFromRte
+              ? [
+                  (value: string) => value.replace(/style="[^"]+"/gi, ''),
+                  (value: string) => this.sanitizer.filterXSS(value),
+                ]
+              : []),
+
+            ...this.inputTransformers,
+          ],
+          html
         );
+
+        this.editor.html.insert(html, false);
+
+        return false;
       },
 
       'charCounter.update': () => {

@@ -24,6 +24,7 @@ export interface ListOption {
   prefixComponent?: ListComponentPrefix | RenderedComponent;
   disabled?: boolean;
   hidden?: boolean;
+  exclusive?: boolean;
   [key: string]: any;
 }
 

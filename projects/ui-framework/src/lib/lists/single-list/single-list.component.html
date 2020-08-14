@@ -21,7 +21,8 @@
          class="headers-group">
       <div (click)="headerClick(header, headerIndex)"
            [ngClass]="{
-            'clickable': options.length > 1 || (header.groupIsOption && !readonly),
+             'groupIsOption': header.groupIsOption,
+            'clickable': (!header.groupIsOption && options.length > 1) || (header.groupIsOption && !readonly),
             'collapsed': header.isCollapsed,
             'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header),
             'selected': header.groupIsOption && header.selected
