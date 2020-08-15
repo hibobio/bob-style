@@ -326,7 +326,7 @@ export const objectStringID = (
     (key ? key + '__' : '') +
     (sliced || typeof obj + (addId ? '__' + simpleUID() : '[empty]')) +
     ('__' + len)
-  );
+  ).toLowerCase();
 };
 
 // ----------------------

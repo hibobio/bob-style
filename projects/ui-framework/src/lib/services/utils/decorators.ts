@@ -10,7 +10,7 @@ import { pass } from './functional-utils';
   @InputSubject('Untitled') @Input('title') public title$: BehaviorSubject<string>;
 */
 export function InputSubject<T = any>(
-  defaultValue: T,
+  defaultValue: T = undefined,
   operators: Operator<any, T>[] = [pass]
 ) {
   const subjectSymbol = Symbol();
@@ -21,7 +21,7 @@ export function InputSubject<T = any>(
         if (!this[subjectSymbol]) {
           this[subjectSymbol] = new BehaviorSubject<T>(defaultValue);
         }
-        if (value !== this[subjectSymbol].getValue()) {
+        if (value !== undefined && value !== this[subjectSymbol].getValue()) {
           this[subjectSymbol].next(value);
         }
       },
@@ -29,7 +29,7 @@ export function InputSubject<T = any>(
         if (!this[subjectSymbol]) {
           this[subjectSymbol] = new BehaviorSubject<T>(defaultValue);
         }
-        return this[subjectSymbol].pipe(...operators);
+        return this[subjectSymbol].pipe(...operators) as BehaviorSubject<T>;
       },
     });
   };
@@ -44,7 +44,7 @@ export function InputSubject<T = any>(
   @InputObservable('Untitled') @Input('title') public title$: Observable<string>;
 */
 export function InputObservable<T = any>(
-  defaultValue: T,
+  defaultValue: T = undefined,
   operators: Operator<any, T>[] = [pass]
 ) {
   const subjectSymbol = Symbol();
@@ -57,7 +57,7 @@ export function InputObservable<T = any>(
           this[subjectSymbol] = new BehaviorSubject<T>(defaultValue);
           this[subjectSymbolObservable] = this[subjectSymbol].asObservable();
         }
-        if (value !== this[subjectSymbol].getValue()) {
+        if (value !== undefined && value !== this[subjectSymbol].getValue()) {
           this[subjectSymbol].next(value);
         }
       },
