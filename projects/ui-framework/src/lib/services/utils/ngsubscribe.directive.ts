@@ -4,13 +4,22 @@
  *
  * Directive alternative to subscribing with AsyncPipe via *ngIf just to get the data
  *
- * Instead of <div> *ngIf="data$ | as data> ..." use:
+ * Instead of <ng-container *ngIf="data$ | as data"> use:
  *
- * <div *ngSubscribe="data$ as data">
- * <div *ngSubscribe="[data1$, data2$] as allData">
- * <div *ngSubscribe="{data1: data1$, data2: data2$} as allData">
+ * <ng-container *ngSubscribe="data$ as data">
+ *    {{ data }}
+ * </ng-container>
+ *
+ * <ng-container *ngSubscribe="[data1$, data2$] as allData">
+ *    {{ allData[0] }} - {{ allData[1] }}
+ * </ng-container>
+ *
+ * <ng-container *ngSubscribe="{data1: data1$, data2: data2$} as allData">
+ *    {{ allData?.data1 }} - {{ allData?.data2 }}
+ * </ng-container>
  *
  */
+
 import {
   Directive,
   Input,
@@ -18,7 +27,8 @@ import {
   TemplateRef,
   OnInit,
   OnDestroy,
-  ChangeDetectorRef,, NgModule
+  ChangeDetectorRef,
+  NgModule,
 } from '@angular/core';
 import {
   combineLatest,

@@ -1,5 +1,16 @@
-// *ngLet directive from ngrx-utils
-// https://github.com/ngrx-utils/ngrx-utils/blob/master/libs/store/src/lib/directives/ngLet.ts
+/**
+ *  *ngLet directive from ngrx-utils
+ *  https://github.com/ngrx-utils/ngrx-utils/blob/master/libs/store/src/lib/directives/ngLet.ts
+ *
+ * <ng-container *ngLet="(someData$ | async) as someData">
+ *    {{ someData }}
+ * </ng-container>
+ *
+ * <ng-container *ngLet="{ one: someDataOne$ | async, two: someDataTwo$ | async } as data">
+ *    {{ data?.one }} - {{ data?.two }}
+ * </ng-container>
+ *
+ */
 
 import {
   NgModule,
