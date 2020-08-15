@@ -15,11 +15,11 @@ export function InputSubject<T = any>(
 ) {
   const subjectSymbol = Symbol();
 
-  return (target: any, key: string) => {
+  return function (target: any, key: string) {
     Object.defineProperty(target, key, {
       set: function (value: T) {
         if (!this[subjectSymbol]) {
-          this[subjectSymbol] = new BehaviorSubject<T>(value);
+          this[subjectSymbol] = new BehaviorSubject<T>(defaultValue);
         }
         if (value !== this[subjectSymbol].getValue()) {
           this[subjectSymbol].next(value);
@@ -50,11 +50,11 @@ export function InputObservable<T = any>(
   const subjectSymbol = Symbol();
   const subjectSymbolObservable = Symbol();
 
-  return (target: any, key: string) => {
+  return function (target: any, key: string) {
     Object.defineProperty(target, key, {
       set: function (value: T) {
         if (!this[subjectSymbol]) {
-          this[subjectSymbol] = new BehaviorSubject<T>(value);
+          this[subjectSymbol] = new BehaviorSubject<T>(defaultValue);
           this[subjectSymbolObservable] = this[subjectSymbol].asObservable();
         }
         if (value !== this[subjectSymbol].getValue()) {

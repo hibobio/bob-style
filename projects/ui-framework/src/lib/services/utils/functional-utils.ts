@@ -281,14 +281,15 @@ export const objectRemoveEntriesWithFalseyValue = (
   object: GenericObject,
   config: { remove?: any[]; allow?: any[] } = {}
 ): GenericObject => {
-  const { allow, remove } = config;
+  const allow = asArray(config?.allow, false);
+  const remove = asArray(config?.remove, false);
 
   return Object.keys(object)
     .filter((key) => {
       return remove
-        ? !asArray(remove).includes(object[key])
+        ? !remove.includes(object[key])
         : allow
-        ? Boolean(object[key]) || asArray(allow).includes(object[key])
+        ? Boolean(object[key]) || allow.includes(object[key])
         : Boolean(object[key]);
     })
     .reduce((acc, key) => {
