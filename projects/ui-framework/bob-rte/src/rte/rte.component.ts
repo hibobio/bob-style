@@ -283,9 +283,28 @@ export class RichTextEditorComponent extends RTEbaseElement
           html
         );
 
-        this.editor.html.insert(html, false);
+        try {
+          this.editor.html.insert(html, false);
+        } catch (error) {
+          return;
+        }
+        this.editor.undo.saveStep();
 
         return false;
+      },
+
+      'paste.afterCleanup': (html: string): string => {
+        if (html.includes('data-bob-rte')) {
+          return chainCall(
+            this.inputTransformers,
+            this.parserService.removeElements(html, '[data-bob-rte]')
+          );
+        }
+
+        return chainCall(this.inputTransformers, html).replace(
+          /style="[^"]+"/gi,
+          ''
+        );
       },
 
       'charCounter.update': () => {

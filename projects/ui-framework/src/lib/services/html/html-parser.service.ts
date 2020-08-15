@@ -419,9 +419,19 @@ export class HtmlParserHelpers {
       return value;
     }
 
-    const linkRegex = /<a[^>]*href="([^"]+)"[^>]*">([^<]+)<\/a>/gi;
+    const linkRegex = /<a[^>]*href="([^"]+)"[^>]*>([^<]+)<\/a>/gi;
 
-    const res = value.replace(linkRegex, '$1');
+    let res = value;
+    let match: RegExpExecArray;
+
+    while ((match = linkRegex.exec(value)) != null) {
+      res = res.replace(
+        match[0],
+        match[1].includes(match[2].split('…')[0])
+          ? match[1]
+          : `${match[2]} (${match[1]})`
+      );
+    }
 
     return res;
   }
@@ -441,7 +451,19 @@ export class HtmlParserHelpers {
 
     elm.innerHTML = this.deLinkify(elm.innerHTML);
 
-    return elm.innerText.replace(/\s+/gi, ' ');
+    elm.querySelectorAll('div, li, p, h1, h2, h3').forEach((e: HTMLElement) => {
+      if (!this.DOM.isEmpty(e)) {
+        e.prepend(this.DOM.isTag(e, DOMtags.li) ? '_±§±_' : '_§±§_');
+      }
+    });
+
+    return elm.innerText
+      .replace(/_§±§_/g, '\n')
+      .replace(/_±§±_/g, '\n- ')
+      .replace(/^[ \t]+/gim, '')
+      .replace(/[ \t]{2,}/g, ' ')
+      .replace(/([\r\n]){3,}/g, '\n\n')
+      .trim();
   }
 
   public stringToDOM(value: string): HTMLElement {

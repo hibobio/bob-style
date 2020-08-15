@@ -94,8 +94,11 @@ export class DOMhelpers {
     );
   }
 
-  public isTag(element: HTMLElement, tag: DOMtags): boolean {
-    return isDomElement(element) && (element as HTMLElement).tagName === tag;
+  public isTag(element: HTMLElement, tag: DOMtags | string): boolean {
+    return (
+      isDomElement(element) &&
+      (element as HTMLElement).tagName === tag.toUpperCase()
+    );
   }
 
   public isSpan(element: HTMLElement | Node): element is HTMLElement {
