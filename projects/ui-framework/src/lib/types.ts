@@ -1,5 +1,5 @@
-export interface GenericObject {
-  [key: string]: any;
+export interface GenericObject<T = any> {
+  [key: string]: T;
 }
 
 export interface ArrayES<T> extends Array<T> {

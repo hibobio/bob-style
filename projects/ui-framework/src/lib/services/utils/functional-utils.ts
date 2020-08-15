@@ -50,7 +50,7 @@ export const isEmptyArray = (val: any): boolean =>
 export const isObject = (val: any): val is object =>
   !!val && val === Object(val) && typeof val !== 'function' && !isArray(val);
 
-export const isPlainObject = (val: any): val is object =>
+export const isPlainObject = <T = any>(val: any): val is { [key: string]: T } =>
   isObject(val) &&
   val.constructor === Object &&
   Object.getPrototypeOf(val) === Object.prototype;
