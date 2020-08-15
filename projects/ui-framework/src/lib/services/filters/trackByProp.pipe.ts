@@ -26,7 +26,7 @@ export class TrackByPropPipe implements PipeTransform {
         ? index
         : asArray(propKeys)
             .map((key) => item[key])
-            .join('->');
+            .join('|');
     };
   }
 }

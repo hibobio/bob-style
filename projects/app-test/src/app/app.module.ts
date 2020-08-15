@@ -22,12 +22,10 @@ import { CardTableModule } from '../../../ui-framework/src/lib/table/card-table/
 import { TreeListComponent } from './tree-list/tree-list.component';
 import { TestTableModule } from './test-table/test-table.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { PipesDecoratorsModule } from './pipes-decorators/pipes-decorators.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    TreeListComponent
-  ],
+  declarations: [AppComponent, TreeListComponent],
   imports: [
     BrowserModule,
     CommonModule,
@@ -53,6 +51,7 @@ import { TranslateModule } from '@ngx-translate/core';
     TestTableModule,
     RouterModule,
     TranslateModule.forRoot(),
+    PipesDecoratorsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
