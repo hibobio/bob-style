@@ -144,7 +144,7 @@ story.add(
         step: number('step', 1),
         numberFormat: boolean('numberFormat', false),
         onlyIntegers: boolean('onlyIntegers', false),
-        decimals: number('decimals', 3),
+        decimals: number('decimals', 4),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         readonly: boolean('readonly', false),

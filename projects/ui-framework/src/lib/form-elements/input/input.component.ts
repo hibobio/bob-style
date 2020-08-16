@@ -62,7 +62,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
 
     this.inputTransformers.push(
       (value) =>
-        valueAsNumber(this.inputType, value, undefined, this.decimals || 3),
+        valueAsNumber(this.inputType, value, undefined, this.decimals || 4),
 
       (value) => {
         return this.inputType === InputTypes.number &&
@@ -73,7 +73,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
       }
     );
     this.outputTransformers.push((value) =>
-      valueAsNumber(this.inputType, value, 0, this.decimals || 3)
+      valueAsNumber(this.inputType, value, 0, this.decimals || 4)
     );
 
     this.forceElementValue = (value: number | string): string => {
@@ -97,7 +97,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
 
   @Input() numberFormat = false;
   @Input() onlyIntegers = false;
-  @Input() decimals = 3;
+  @Input() decimals = 4;
 
   @Input('allowedChars') set setAllowedKeys(allowedKeys: string | RegExp) {
     this.allowedKeys = !allowedKeys
@@ -328,7 +328,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
       (this.numberDisplayFormatter = new Intl.NumberFormat('en', {
         style: 'decimal',
         useGrouping: true,
-        maximumFractionDigits: this.decimals || 3,
+        maximumFractionDigits: this.decimals || 4,
       }))
     ).format(number);
   }

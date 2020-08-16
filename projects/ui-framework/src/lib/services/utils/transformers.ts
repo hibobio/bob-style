@@ -98,7 +98,7 @@ export const valueAsNumber = (
   inputType: InputTypes | boolean,
   value: any,
   def: any = undefined,
-  decimals = 3
+  decimals = 4
 ): number => {
   if (
     !value ||

@@ -9,7 +9,7 @@ import { isNumber } from '../utils/functional-utils';
 export class FormatNumberPipe implements PipeTransform {
   constructor() {}
 
-  private decimals = 3;
+  private decimals = 4;
   private formatter: Intl.NumberFormat;
 
   transform(value: string | number, decimals: number = null): string {

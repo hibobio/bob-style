@@ -148,7 +148,7 @@ export const isInteger = (num: number): boolean => {
   return isNumber(num) && Math.floor(num) === num;
 };
 
-export const roundToDecimals = (num: number, decmls: number = 2): number => {
+export const roundToDecimals = (num: number, decmls: number = 3): number => {
   return isInteger(num)
     ? num
     : Math.round((num + Number.EPSILON) * Math.pow(10, decmls)) /
