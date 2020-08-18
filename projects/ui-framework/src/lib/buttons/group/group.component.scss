@@ -1,3 +1,5 @@
+@import '../../style/common-imports';
+
 :host {
   display: inline-flex;
 }
@@ -20,6 +22,24 @@
     button {
       border-bottom-left-radius: 0 !important;
       border-top-left-radius: 0 !important;
+    }
+  }
+
+  [data-type='tertiary'] {
+    border: 1px solid $border-color;
+    border-radius: 0;
+
+    & + [data-type='tertiary'] {
+      border-left-width: 0;
+    }
+
+    &:first-child {
+      border-bottom-left-radius: $border-radius;
+      border-top-left-radius: $border-radius;
+    }
+    &:last-child {
+      border-bottom-right-radius: $border-radius;
+      border-top-right-radius: $border-radius;
     }
   }
 }
