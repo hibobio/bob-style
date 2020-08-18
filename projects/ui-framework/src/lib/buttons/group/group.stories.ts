@@ -14,23 +14,26 @@ const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
 
 const template = `
 <b-group>
-  <b-square-button [type]="type"
+  <b-square-button [type]="active === 0 ? type1 : type2"
                    [size]="size"
                    [icon]="icons.skype_link"
                    [color]="color"
-                   [disabled]="disabled">
+                   [disabled]="disabled"
+                   (clicked)="active = 0">
   </b-square-button>
-  <b-square-button [type]="type"
+  <b-square-button [type]="active === 1 ? type1 : type2"
                    [size]="size"
                    [icon]="icons.phone_link"
                    [color]="color"
-                   [disabled]="disabled">
+                   [disabled]="disabled"
+                   (clicked)="active = 1">
   </b-square-button>
-  <b-square-button [type]="type"
+  <b-square-button [type]="active === 2 ? type1 : type2"
                    [size]="size"
                    [icon]="icons.slack_link"
                    [color]="color"
-                   [disabled]="disabled">
+                   [disabled]="disabled"
+                   (clicked)="active = 2">
   </b-square-button>
 </b-group>
 `;
@@ -58,7 +61,10 @@ story.add(
     template: storyTemplate,
     props: {
       icons: Icons,
-      type: select('type', Object.values(ButtonType), ButtonType.secondary),
+      buttonType: ButtonType,
+      active: 0,
+      type1: select('type 1', Object.values(ButtonType), ButtonType.secondary),
+      type2: select('type 2', Object.values(ButtonType), ButtonType.tertiary),
       size: select('size', Object.values(ButtonSize), ButtonSize.medium),
       color: select('color', Object.values(IconColor), IconColor.dark),
       disabled: boolean('disabled', false),

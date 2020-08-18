@@ -25,11 +25,11 @@
     }
   }
 
-  [data-type='tertiary'] {
+  b-square-button {
     border: 1px solid $border-color;
     border-radius: 0;
 
-    & + [data-type='tertiary'] {
+    & + b-square-button {
       border-left-width: 0;
     }
 
@@ -37,6 +37,7 @@
       border-bottom-left-radius: $border-radius;
       border-top-left-radius: $border-radius;
     }
+
     &:last-child {
       border-bottom-right-radius: $border-radius;
       border-top-right-radius: $border-radius;
