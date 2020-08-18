@@ -8,7 +8,6 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
-
 import {
   InputEventType,
   FormEvents,
@@ -258,7 +257,9 @@ export class RichTextEditorComponent extends RTEbaseElement
         const clipboardData: DataTransfer =
           event.clipboardData || event['originalEvent'].clipboardData;
 
-        let html = clipboardData.getData('text/html');
+        let html =
+          clipboardData.getData('text/html') ||
+          clipboardData.getData('text/plain');
         const isFromRte = html.indexOf('data-bob-rte') > -1;
 
         event.preventDefault();
@@ -272,13 +273,14 @@ export class RichTextEditorComponent extends RTEbaseElement
               ),
 
             ...(!isFromRte
-              ? [
-                  (value: string) => value.replace(/style="[^"]+"/gi, ''),
-                  (value: string) => this.sanitizer.filterXSS(value),
-                ]
-              : []),
-
-            ...this.inputTransformers,
+              ? this.pasteTransformers
+              : [
+                  (value: string): string =>
+                    this.placeholdersConverter.toRte(
+                      value,
+                      this.placeholderList
+                    ),
+                ]),
           ],
           html
         );

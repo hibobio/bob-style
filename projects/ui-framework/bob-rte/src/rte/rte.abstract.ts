@@ -11,7 +11,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { cloneDeep, merge } from 'lodash';
+import { merge } from 'lodash';
 import {
   applyChanges,
   BaseFormElement,
@@ -38,6 +38,8 @@ import {
   stringyOrFail,
   SanitizerService,
   firstChanges,
+  Func,
+  cloneDeepSimpleObject,
 } from 'bob-style';
 
 import {
@@ -87,6 +89,7 @@ export abstract class RTEbaseElement extends BaseFormElement
   public tribute: TributeInstance;
   public editor: FroalaEditorInstance;
   protected toolbarButtons: HTMLElement[];
+  protected pasteTransformers: Func[] = [];
 
   public length = 0;
   public editorValue: string;
@@ -117,7 +120,9 @@ export abstract class RTEbaseElement extends BaseFormElement
   @Input() public minHeight = RTE_MINHEIGHT_DEF;
   @Input() public maxHeight = RTE_MAXHEIGHT_DEF;
 
-  @Input() public options: FroalaOptions = cloneDeep(RTE_OPTIONS_DEF);
+  @Input() public options: FroalaOptions = cloneDeepSimpleObject(
+    RTE_OPTIONS_DEF
+  );
 
   @Input() public mentionsList: RteMentionsOption[];
   @Input() public placeholderList: SelectGroupOption[];
@@ -384,6 +389,51 @@ export abstract class RTEbaseElement extends BaseFormElement
   }
 
   private initTransformers(): void {
+    this.pasteTransformers =
+      this.mode === RTEMode.plainText
+        ? [(value: string): string => this.parserService.getPlainText(value)]
+        : [
+            (value: string): string =>
+              this.parserService.cleanupHtml(
+                value,
+                RTE_HTML_CLEANUP_REPLACERS_INPUT
+              ),
+
+            (value: string) => this.sanitizer.filterXSS(value),
+
+            (value: string): string =>
+              this.parserService.enforceAttributes(
+                value,
+                {
+                  '*': {
+                    '.*': null,
+                  },
+                  a: {
+                    class: 'fr-deletable',
+                    target: '_blank',
+                    spellcheck: 'false',
+                    rel: 'noopener noreferrer',
+                    tabindex: '-1',
+                    style: null,
+                  },
+                  '[href*="/employee-profile/"]': {
+                    class: 'fr-deletable',
+                    target: null,
+                    spellcheck: 'false',
+                    rel: null,
+                    contenteditable: false,
+                  },
+                },
+                false
+              ) as string,
+
+            (value: string): string =>
+              this.parserService.linkify(
+                value,
+                'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
+              ),
+          ];
+
     this.inputTransformers = [
       stringyOrFail,
 
@@ -481,6 +531,10 @@ export abstract class RTEbaseElement extends BaseFormElement
 
     if (this.placeholdersEnabled()) {
       this.inputTransformers.push((value: string): string =>
+        this.placeholdersConverter.toRte(value, this.placeholderList)
+      );
+
+      this.pasteTransformers.push((value: string): string =>
         this.placeholdersConverter.toRte(value, this.placeholderList)
       );
 

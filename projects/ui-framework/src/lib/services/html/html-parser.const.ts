@@ -24,15 +24,20 @@ export const HTML_CLEANUP_REPLACERS: {
 } = {
   blockToDiv: {
     find: [
-      /(<p)|(<main)|(<section)|(<header)|(<article)|(<footer)/gi,
+      /(?:(<p)|(<main)|(<section)|(<header)|(<article)|(<footer))(?:>|(?: [^>]*>))/gi,
       /(<\/p>)|(\/main)|(\/section)|(\/header)|(\/article)|(\/footer)/gi,
     ],
-    replaceWith: ['<div', '</div>'],
+    replaceWith: ['<div>', '</div>'],
   },
 
   biToStrongEM: {
-    find: [/(<\/?)b>/gi, /(<\/?)i>/gi],
-    replaceWith: ['$1strong>', '$em>'],
+    find: [
+      /<b(?:>|(?: [^>]*>))/gi,
+      /<i(?:>|(?: [^>]*>))/gi,
+      /<\/b>/gi,
+      /<\/i>/gi,
+    ],
+    replaceWith: ['<strong>', '<em>', '</strong>', '</em>'],
   },
 
   headings: {
@@ -53,6 +58,11 @@ export const HTML_CLEANUP_REPLACERS: {
   nbsp: {
     find: [/\&nbsp;/gi],
     replaceWith: [' '],
+  },
+
+  blockStyleTagsUsedAsBR: {
+    find: [/(<(span)[^>]+style=["][^"]*display:\s*block[^"]*"[^>]*>)/gi],
+    replaceWith: ['<br>$1'], //'<div><br></div>$1'
   },
 
   emptyDivs: {
@@ -118,6 +128,7 @@ export const HTML_CLEANUP_REPLACERS_DEF: HtmlCleanupReplacer[] = [
   HTML_CLEANUP_REPLACERS.biToStrongEM,
   HTML_CLEANUP_REPLACERS.headings,
   HTML_CLEANUP_REPLACERS.nbsp,
+  HTML_CLEANUP_REPLACERS.blockStyleTagsUsedAsBR,
   // HTML_CLEANUP_REPLACERS.emptyDivs,
   HTML_CLEANUP_REPLACERS.emptyTags,
   HTML_CLEANUP_REPLACERS.unnecessaryWrappers,
