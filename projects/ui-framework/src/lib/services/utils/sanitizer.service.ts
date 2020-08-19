@@ -6,7 +6,7 @@ import * as xss from 'xss';
 import { IFilterXSSOptions, ICSSFilter } from 'xss';
 
 export interface FilterXSSOptions extends IFilterXSSOptions {
-  css?: { whiteList: { [key: string]: boolean } };
+  css?: { whiteList: { [key: string]: boolean } } | boolean;
 }
 
 export const SANITIZER_ALLOWED_TAGS = [

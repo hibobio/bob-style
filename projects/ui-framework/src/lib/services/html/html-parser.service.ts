@@ -9,6 +9,7 @@ import {
   closestNumber,
   asArray,
   isDomElement,
+  isFunction,
 } from '../utils/functional-utils';
 import { DOMhelpers } from './dom-helpers.service';
 import { EnforceFontSizeConfig, ProcessCSS } from './html-parser.interface';
@@ -113,6 +114,53 @@ export class HtmlParserHelpers {
               }
             }
           });
+        }
+      );
+    });
+
+    return returnDOM ? elm : this.DOMtoString(elm);
+  }
+
+  public replaceElements(
+    value: string | HTMLElement,
+    replace: {
+      [tag: string]: {
+        with?: string;
+        if?: (e: HTMLElement) => boolean;
+        withFnc?: (e: HTMLElement) => string;
+      };
+    } = null,
+    returnDOM = false
+  ): string | HTMLElement {
+    if (!value || isEmptyObject(replace)) {
+      return value;
+    }
+
+    const elm: HTMLElement = isDomElement(value)
+      ? value
+      : this.stringToDOM(value);
+
+    Object.keys(replace).forEach((tag: string) => {
+      Array.from(elm.getElementsByTagName(tag)).forEach(
+        (elToReplace: HTMLElement): void => {
+          if (
+            elToReplace === elm ||
+            (isFunction(replace[tag].if) && !replace[tag].if(elToReplace))
+          ) {
+            return;
+          }
+
+          const newTagName = isFunction(replace[tag].withFnc)
+            ? replace[tag].withFnc(elToReplace)
+            : replace[tag].with;
+
+          if (newTagName === null) {
+            return;
+          }
+
+          const newEl = document.createElement(newTagName);
+          newEl.innerHTML = elToReplace.innerHTML;
+          elToReplace.parentElement.replaceChild(newEl, elToReplace);
         }
       );
     });
@@ -445,7 +493,7 @@ export class HtmlParserHelpers {
       return String(html.textContent || html || '').replace(/\s+/gi, ' ');
     }
 
-    let elm: HTMLElement = isDomElement(html)
+    const elm: HTMLElement = isDomElement(html)
       ? (html.cloneNode() as HTMLElement)
       : this.stringToDOM(html);
 

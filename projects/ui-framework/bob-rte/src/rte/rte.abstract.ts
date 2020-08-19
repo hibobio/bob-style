@@ -52,6 +52,7 @@ import {
   RTE_TOOLBAR_HEIGHT,
   RTE_HTML_CLEANUP_REPLACERS_OUTPUT,
   RTE_HTML_CLEANUP_REPLACERS_INPUT,
+  RTE_HTML_CLEANUP_REPLACERS_PASTE,
 } from './rte.const';
 import { BlotType, RTEType, RTEMode } from './rte.enum';
 import { RteMentionsOption } from './rte.interface';
@@ -64,6 +65,8 @@ import { initMentionsControl } from './rte.mentions';
 import { FroalaEditorDirective } from './froala/editor.directive';
 import { TranslateService } from '@ngx-translate/core';
 import { RteUtilsService } from './rte-utils.service';
+
+// import { HtmlParserHelpers } from '../../../../ui-framework/src/lib/services/html/html-parser.service';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -393,15 +396,52 @@ export abstract class RTEbaseElement extends BaseFormElement
       this.mode === RTEMode.plainText
         ? [(value: string): string => this.parserService.getPlainText(value)]
         : [
-            (value: string): string =>
-              this.parserService.cleanupHtml(
+            (value: string) =>
+              this.sanitizer.filterXSS(value, {
+                css: true,
+              }),
+
+            (value: string): string | HTMLElement =>
+              this.parserService.replaceElements(
                 value,
-                RTE_HTML_CLEANUP_REPLACERS_INPUT
+                {
+                  i: {
+                    with: 'em',
+                  },
+
+                  b: {
+                    withFnc: (el: HTMLElement) =>
+                      el.style.fontWeight !== 'normal' &&
+                      el.style.fontWeight !== '400'
+                        ? 'strong'
+                        : 'span',
+                  },
+
+                  span: {
+                    withFnc: (el: HTMLElement) => {
+                      if (
+                        el.style.fontWeight === 'bold' ||
+                        parseInt(el.style.fontWeight, 10) > 500
+                      ) {
+                        return 'strong';
+                      }
+
+                      if (el.style.display === 'block') {
+                        if (this.DOM.isEmpty(el) && el.style.height) {
+                          el.innerHTML = '<br>';
+                        }
+
+                        return 'div';
+                      }
+
+                      return null;
+                    },
+                  },
+                },
+                true
               ),
 
-            (value: string) => this.sanitizer.filterXSS(value),
-
-            (value: string): string =>
+            (value: string | HTMLElement): string =>
               this.parserService.enforceAttributes(
                 value,
                 {
@@ -426,6 +466,12 @@ export abstract class RTEbaseElement extends BaseFormElement
                 },
                 false
               ) as string,
+
+            (value: string): string =>
+              this.parserService.cleanupHtml(
+                value,
+                RTE_HTML_CLEANUP_REPLACERS_PASTE
+              ),
 
             (value: string): string =>
               this.parserService.linkify(
