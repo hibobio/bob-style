@@ -245,42 +245,45 @@ export const onlyUpdatedProps = (
     }, {});
 };
 
-export const objectRemoveKey = (
-  object: GenericObject,
+export const objectRemoveKey = <T = GenericObject>(
+  object: T,
   key: string
-): GenericObject => {
-  const { [key]: deletedKey, ...otherKeys } = object;
-  return otherKeys;
+): T => {
+  if (!isObject(object)) {
+    return object;
+  }
+  const { [key]: deletedKey, ...otherKeys } = object as GenericObject;
+  return otherKeys as T;
 };
 
-export const objectRemoveKeys = (
-  object: GenericObject,
+export const objectRemoveKeys = <T = GenericObject>(
+  object: T,
   keys: string[]
-): GenericObject => {
+): T => {
   return Object.keys(object)
     .filter((key) => !asArray(keys).includes(key))
     .reduce((acc, key) => {
       acc[key] = object[key];
       return acc;
-    }, {});
+    }, {} as T);
 };
 
-export const objectRemoveEntriesByValue = (
-  object: GenericObject,
+export const objectRemoveEntriesByValue = <T = GenericObject>(
+  object: T,
   values: any[]
-): GenericObject => {
+): T => {
   return Object.keys(object)
     .filter((key) => !asArray(values).includes(object[key]))
     .reduce((acc, key) => {
       acc[key] = object[key];
       return acc;
-    }, {});
+    }, {} as T);
 };
 
-export const objectRemoveEntriesWithFalseyValue = (
-  object: GenericObject,
-  config: { remove?: any[]; allow?: any[] } = {}
-): GenericObject => {
+export const objectRemoveEntriesWithFalseyValue = <T = GenericObject>(
+  object: T,
+  config: { remove?: any | any[]; allow?: any | any[] } = {}
+): T => {
   const allow = asArray(config?.allow, false);
   const remove = asArray(config?.remove, false);
 
@@ -295,19 +298,26 @@ export const objectRemoveEntriesWithFalseyValue = (
     .reduce((acc, key) => {
       acc[key] = object[key];
       return acc;
-    }, {});
+    }, {} as T);
 };
 
-export const objectStringID = (
-  obj: any,
-  config: {
-    key?: string;
-    limit?: number;
-    addId?: boolean;
-    primitives?: boolean;
-  } = { limit: 400, primitives: true }
+export interface ObjectStringIDConfig {
+  key?: string;
+  limit?: number;
+  addId?: boolean;
+  primitives?: boolean;
+  ignoreProps?: string[];
+}
+
+export const objectStringID = <T = GenericObject>(
+  obj: T,
+  config: ObjectStringIDConfig = { limit: 400, primitives: true }
 ): string => {
-  const { key, limit, addId, primitives } = config;
+  const { key, limit, addId, primitives, ignoreProps } = config;
+
+  if (isArray(ignoreProps)) {
+    obj = objectRemoveKeys<T>(obj, ignoreProps);
+  }
 
   const str = String(
     primitives ? JSON.stringify(obj) : stringify(obj, null)
@@ -697,11 +707,11 @@ export const randomFromArray = (array: any[] = [], num: number = 1) => {
 // SORTERS
 // ----------------------
 
-export const arrOfObjSortByProp = (
-  arr: GenericObject[],
+export const arrOfObjSortByProp = <T = GenericObject>(
+  arr: T[],
   prop: string,
   asc = true
-): GenericObject[] => {
+): T[] => {
   arr.sort((a: GenericObject, b: GenericObject) => {
     const x = a[prop].toLowerCase();
     const y = b[prop].toLowerCase();
@@ -715,7 +725,7 @@ export const arrOfObjSortByProp = (
   return arr;
 };
 
-export const objectSortKeys = <T = any>(obj: T): T => {
+export const objectSortKeys = <T = GenericObject>(obj: T): T => {
   if (!isPlainObject(obj)) {
     return obj;
   }
@@ -735,13 +745,13 @@ export const dataDeepSort = <T = any>(data: T | T[]): T | T[] => {
   const sortedData: T[] = asArray(data, false)
     .map((di: T) => {
       if (isArray(di)) {
-        return dataDeepSort(di) as T;
+        return dataDeepSort<T>(di) as T;
       }
 
       if (isPlainObject(di)) {
-        const srtd: T = objectSortKeys(di);
+        const srtd: T = objectSortKeys<T>(di);
         Object.keys(srtd).forEach((key) => {
-          srtd[key] = dataDeepSort(srtd[key]);
+          srtd[key] = dataDeepSort<T>(srtd[key]);
         });
         return srtd;
       }
@@ -762,11 +772,11 @@ export const dataDeepSort = <T = any>(data: T | T[]): T | T[] => {
         return Boolean(a) ? 1 : -1;
       }
 
-      return objectStringID(a, {
+      return objectStringID<T>(a, {
         limit: 30,
         primitives: true,
       }).localeCompare(
-        objectStringID(b, {
+        objectStringID<T>(b, {
           limit: 30,
           primitives: true,
         })
@@ -799,15 +809,10 @@ export const compareAsStrings = (a: any, b: any, strict = true): boolean => {
 };
 
 // ignores order in arrays, only cares about values
-export const isEqualByValues = (
-  dataA: any,
-  dataB: any,
-  config: {
-    key?: string;
-    limit?: number;
-    addId?: boolean;
-    primitives?: boolean;
-  } = { limit: 5000, primitives: true }
+export const isEqualByValues = <T = any>(
+  dataA: T,
+  dataB: T,
+  config: ObjectStringIDConfig = { limit: 5000, primitives: true }
 ): boolean => {
   const truthyA = Boolean(dataA),
     truthyB = Boolean(dataB);
@@ -825,8 +830,8 @@ export const isEqualByValues = (
   }
 
   return (
-    objectStringID(dataDeepSort(dataA), config) ===
-    objectStringID(dataDeepSort(dataB), config)
+    objectStringID(dataDeepSort<T>(dataA), config) ===
+    objectStringID(dataDeepSort<T>(dataB), config)
   );
 };
 
@@ -887,7 +892,7 @@ export const cloneValue = (value: any) =>
     ? cloneArray(value)
     : value;
 
-export const cloneDeepSimpleObject = <T = any>(obj: T): T => {
+export const cloneDeepSimpleObject = <T = GenericObject>(obj: T): T => {
   if (!obj || obj !== obj || isPrimitive(obj)) {
     return obj;
   }
