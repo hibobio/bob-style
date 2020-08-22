@@ -5,7 +5,9 @@ import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { cloneDeep, bind } from 'lodash';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AlertService {
   private alertComponentRef: ComponentRef<AlertComponent>;
   private overlayConfig: OverlayConfig;
