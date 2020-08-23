@@ -26,7 +26,7 @@
          [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
          [value]="value"
          [autocomplete]="enableBrowserAutoComplete"
-         [disabled]="disabled || readonly"
+         [attr.disabled]="disabled || readonly || null"
          [required]="required"
          [readonly]="readonly"
          [attr.minlength]="minChars || null"

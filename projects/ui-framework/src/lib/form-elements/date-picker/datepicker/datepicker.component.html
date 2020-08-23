@@ -36,7 +36,7 @@
          [attr.name]="id"
          [type]="inputTypes.text"
          [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
-         [disabled]="disabled || readonly"
+         [attr.disabled]="disabled || readonly || null"
          [required]="required"
          (click)="$event.stopPropagation(); openPicker()"
          (focus)="onInputFocus()"
@@ -49,7 +49,7 @@
          readonly
          tabindex="-1"
          aria-hidden="true"
-         [disabled]="disabled || readonly"
+         [attr.disabled]="disabled || readonly || null"
          [matDatepicker]="picker"
          (dateChange)="transmit($event.value)"
          [min]="minDate || null"

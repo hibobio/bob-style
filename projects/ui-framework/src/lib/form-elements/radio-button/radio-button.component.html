@@ -17,7 +17,7 @@
            [checked]="(value && value[key] === radio[key]) || value == radio[key]"
            [required]="required"
            [readonly]="readonly"
-           [disabled]="disabled || readonly"
+           [attr.disabled]="disabled || readonly || null"
            (change)="onRadioChange(radio[key])" />
 
     <label class="brd-label"

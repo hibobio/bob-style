@@ -28,7 +28,7 @@
            [attr.maxlength]="maxChars || null"
            [type]="inputTypes.text"
            [attr.placeholder]="(!value || value.length === 0) && placeholder ? placeholder : null"
-           [disabled]="disabled"
+           [attr.disabled]="disabled || null"
            [required]="required"
            [matAutocomplete]="auto"
            [matAutocompleteConnectedTo]="wrapper"

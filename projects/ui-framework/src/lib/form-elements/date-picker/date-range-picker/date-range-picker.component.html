@@ -40,7 +40,7 @@
            [type]="inputTypes.text"
            [attr.placeholder]="hideLabelOnFocus && (startDateLabel || label) ? (!required ? (startDateLabel || label) :
            (startDateLabel || label) + '*') : !hideLabelOnFocus && label && startDateLabel ? startDateLabel : placeholder"
-           [disabled]="disabled || readonly"
+           [attr.disabled]="disabled || readonly || null"
            [required]="required"
            (click)="openPicker(0)"
            (focus)="onInputFocus(0)"
@@ -53,7 +53,7 @@
            readonly
            tabindex="-1"
            aria-hidden="true"
-           [disabled]="disabled || readonly"
+           [attr.disabled]="disabled || readonly || null"
            [matDatepicker]="startDatePicker"
            (dateChange)="transmit($event.value, 'value.startDate')"
            [min]="minDate || null"
@@ -97,7 +97,7 @@
            [attr.placeholder]="hideLabelOnFocus && (endDateLabel || label) ? (!required ? ((label && null) ||
            endDateLabel) : ((label && ' ') || endDateLabel + '*')) :
            !hideLabelOnFocus && label && endDateLabel ? endDateLabel : placeholder"
-           [disabled]="disabled || readonly"
+           [attr.disabled]="disabled || readonly || null"
            [required]="required"
            (click)="openPicker(1)"
            (focus)="onInputFocus(1)"
@@ -110,7 +110,7 @@
            readonly
            tabindex="-1"
            aria-hidden="true"
-           [disabled]="disabled || readonly"
+           [attr.disabled]="disabled || readonly || null"
            [matDatepicker]="endDatePicker"
            (dateChange)="transmit($event.value, 'value.endDate')"
            [min]="value?.startDate || minDate || null"

@@ -12,7 +12,7 @@
        [attr.name]="id"
        [checked]="value === true"
        [required]="required"
-       [disabled]="disabled || readonly"
+       [attr.disabled]="disabled || readonly || null"
        [readonly]="readonly"
        (change)="toggleCheckbox()" />
 
