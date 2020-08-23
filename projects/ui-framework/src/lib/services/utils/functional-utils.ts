@@ -4,6 +4,8 @@ import { GenericObject } from '../../types';
 import { isEqual, cloneDeep } from 'lodash';
 import { RenderedComponent } from '../component-renderer/component-renderer.interface';
 import { SelectGroupOption } from '../../lists/list.interface';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 // ----------------------
 // TYPES
@@ -1070,6 +1072,34 @@ export const applyChanges = (
   });
 
   return changes;
+};
+
+// ----------------------
+// OBSERVABLES
+// ----------------------
+
+export const prefetchSharedObservables = (
+  observables: Observable<any> | Observable<any>[]
+): Promise<void> => {
+  observables = asArray(observables);
+  const total = observables.length;
+  let counter = 0;
+
+  return new Promise((resolve, reject) => {
+    asArray(observables).forEach((o) => {
+      o.pipe(take(1)).subscribe(
+        () => {
+          if (++counter === total) {
+            resolve();
+          }
+        },
+        (err) => {
+          console.warn('[prefetchSharedObservables] failed:', err);
+          reject();
+        }
+      );
+    });
+  });
 };
 
 // ----------------------

@@ -23,7 +23,7 @@ import {
   AgGridEvent,
   RowEvent,
 } from 'ag-grid-community';
-import { cloneDeep, get, map } from 'lodash';
+import { get, map } from 'lodash';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { AgGridWrapper } from './ag-grid-wrapper';
 import {
@@ -42,7 +42,12 @@ import {
   TablePagerState,
   TableStyleConfig,
 } from './table.interface';
-import { hasChanges, PagerConfig, PAGER_CONFIG_DEF } from 'bob-style';
+import {
+  DOMhelpers,
+  hasChanges,
+  PagerConfig,
+  PAGER_CONFIG_DEF,
+} from 'bob-style';
 
 const CLOSE_BUTTON_DIAMETER = 20;
 const CLOSE_MARGIN_OFFSET = 6;
@@ -67,7 +72,8 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   constructor(
     private tableUtilsService: TableUtilsService,
     private elRef: ElementRef,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private DOM: DOMhelpers
   ) {
     super();
   }
@@ -237,7 +243,9 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   }
 
   private setGridHeight(height: number): void {
-    this.elRef.nativeElement.style.setProperty('--max-height', `${height}px`);
+    this.DOM.setCssProps(this.elRef.nativeElement, {
+      '--max-height': `${Math.max(height, this.rowHeight * 6)}px`,
+    });
   }
 
   public getOrderedColumnFields(): string[] {
