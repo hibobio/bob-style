@@ -48,6 +48,10 @@ export class SingleListComponent extends BaseListElement {
   }
 
   headerClick(header: ListHeader, index: number): void {
+    if (!header) {
+      return;
+    }
+
     if (header.groupIsOption) {
       super.headerClick(header, index);
       return;

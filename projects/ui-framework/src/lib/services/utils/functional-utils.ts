@@ -5,7 +5,7 @@ import { isEqual, cloneDeep } from 'lodash';
 import { RenderedComponent } from '../component-renderer/component-renderer.interface';
 import { SelectGroupOption } from '../../lists/list.interface';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { delay, take } from 'rxjs/operators';
 
 // ----------------------
 // TYPES
@@ -206,8 +206,8 @@ export const parseToNumber = asNumber;
 // OBJECTS
 // ----------------------
 
-export const hasProp = (
-  obj: GenericObject,
+export const hasProp = <T = GenericObject>(
+  obj: T,
   key: string,
   strict = true
 ): boolean =>
@@ -317,7 +317,7 @@ export const objectStringID = <T = GenericObject>(
 ): string => {
   const { key, limit, addId, primitives, ignoreProps } = config;
 
-  if (isArray(ignoreProps)) {
+  if (isArray(ignoreProps) && isObject(obj)) {
     obj = objectRemoveKeys<T>(obj, ignoreProps);
   }
 
@@ -727,19 +727,31 @@ export const arrOfObjSortByProp = <T = GenericObject>(
   return arr;
 };
 
-export const objectSortKeys = <T = GenericObject>(obj: T): T => {
+export const objectSortKeys = <T = GenericObject>(
+  obj: T,
+  removeKeys: string[] = null
+): T => {
   if (!isPlainObject(obj)) {
     return obj;
   }
   return Object.keys(obj)
     .sort()
     .reduce((newObj: T, key: string) => {
+      if (
+        (isArray(removeKeys) && removeKeys.includes(key)) ||
+        obj[key] === undefined
+      ) {
+        return newObj;
+      }
       newObj[key] = obj[key];
       return newObj;
     }, {} as T);
 };
 
-export const dataDeepSort = <T = any>(data: T | T[]): T | T[] => {
+export const dataDeepSort = <T = any>(
+  data: T | T[],
+  removeKeys = null
+): T | T[] => {
   if (isPrimitive(data) || isFalsyOrEmpty(data)) {
     return data;
   }
@@ -751,7 +763,7 @@ export const dataDeepSort = <T = any>(data: T | T[]): T | T[] => {
       }
 
       if (isPlainObject(di)) {
-        const srtd: T = objectSortKeys<T>(di);
+        const srtd: T = objectSortKeys<T>(di, removeKeys);
         Object.keys(srtd).forEach((key) => {
           srtd[key] = dataDeepSort<T>(srtd[key]);
         });
@@ -832,8 +844,11 @@ export const isEqualByValues = <T = any>(
   }
 
   return (
-    objectStringID(dataDeepSort<T>(dataA), config) ===
-    objectStringID(dataDeepSort<T>(dataB), config)
+    objectStringID(
+      dataDeepSort<T>(dataA, config?.ignoreProps || null),
+      config
+    ) ===
+    objectStringID(dataDeepSort<T>(dataB, config?.ignoreProps || null), config)
   );
 };
 
@@ -1087,7 +1102,7 @@ export const prefetchSharedObservables = (
 
   return new Promise((resolve, reject) => {
     asArray(observables).forEach((o) => {
-      o.pipe(take(1)).subscribe(
+      o.pipe(take(1), delay(0)).subscribe(
         () => {
           if (++counter === total) {
             resolve();

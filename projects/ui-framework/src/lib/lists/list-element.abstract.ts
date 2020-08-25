@@ -256,7 +256,9 @@ export abstract class BaseListElement
               const headerIndex = this.listHeaders.findIndex(
                 (header) => header.groupName === this.focusOption.groupName
               );
-              this.headerClick(this.listHeaders[headerIndex], headerIndex);
+              if (headerIndex > -1) {
+                this.headerClick(this.listHeaders[headerIndex], headerIndex);
+              }
             } else {
               this.optionClick(this.focusOption);
             }
