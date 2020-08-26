@@ -24,9 +24,9 @@ import {
   simpleUID,
   isKey,
   cloneValue,
-  isFalsyOrEmpty,
   hasProp,
   hasChanges,
+  isEmpty,
 } from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
 import { DateParseService } from './date-parse-service/date-parse.service';
@@ -172,7 +172,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       this.cd.detectChanges();
     }
 
-    if (isFalsyOrEmpty(this.value, true)) {
+    if (isEmpty(this.value)) {
       this.value = cloneValue(this.baseValue);
     }
   }

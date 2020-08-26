@@ -423,6 +423,8 @@ export abstract class BaseListElement
     );
 
     this.updateActionButtonsState(true);
+
+    this.cd.detectChanges();
   }
 
   resetList(): void {
@@ -434,6 +436,8 @@ export abstract class BaseListElement
 
     this.emitChange();
     this.listActionsState.apply.disabled = false;
+
+    this.cd.detectChanges();
   }
 
   onApply(): void {
