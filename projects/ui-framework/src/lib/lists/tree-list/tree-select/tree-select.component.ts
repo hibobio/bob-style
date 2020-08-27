@@ -170,7 +170,7 @@ export class TreeSelectComponent extends BaseFormElement
 
     if (
       hasChanges(changes, null, true, {
-        falseyCheck: isValuevy,
+        truthyCheck: isValuevy,
       }) &&
       !this.cd['destroyed']
     ) {

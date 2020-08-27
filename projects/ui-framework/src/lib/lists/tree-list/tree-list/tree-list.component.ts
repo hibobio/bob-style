@@ -92,7 +92,7 @@ export class TreeListComponent extends BaseTreeListElement {
 
     if (
       hasChanges(changes, ['list', 'itemsMap', 'value'], true, {
-        falseyCheck: isValuevy,
+        truthyCheck: isValuevy,
       })
     ) {
       viewModelWasUpdated =
@@ -103,7 +103,7 @@ export class TreeListComponent extends BaseTreeListElement {
 
     if (
       notFirstChanges(changes, ['startCollapsed'], true, {
-        falseyCheck: isBoolean,
+        truthyCheck: isBoolean,
       })
     ) {
       this.toggleCollapseAll(this.startCollapsed, false);
@@ -125,7 +125,7 @@ export class TreeListComponent extends BaseTreeListElement {
         ['list', 'itemsMap', 'viewFilter', 'value', 'startCollapsed'],
         true,
         {
-          falseyCheck: isValuevy,
+          truthyCheck: isValuevy,
         }
       )
     ) {

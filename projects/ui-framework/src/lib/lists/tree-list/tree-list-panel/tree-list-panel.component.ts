@@ -91,7 +91,7 @@ export class TreeListPanelComponent extends TreeListInputOutput
 
     if (
       notFirstChanges(changes, null, true, {
-        falseyCheck: isValuevy,
+        truthyCheck: isValuevy,
       }) &&
       !this.cd['destroyed']
     ) {

@@ -72,11 +72,16 @@ export const componentFromFixture = (
 
 export const simpleChange = (
   changes: GenericObject = {},
-  firstChange = false
+  firstChange = false,
+  previousValues: GenericObject = {}
 ): SimpleChanges => {
   const simpleChanges = {};
   Object.keys(changes).forEach((key) => {
-    simpleChanges[key] = new SimpleChange(undefined, changes[key], firstChange);
+    simpleChanges[key] = new SimpleChange(
+      previousValues && previousValues[key],
+      changes[key],
+      firstChange
+    );
   });
   return simpleChanges;
 };

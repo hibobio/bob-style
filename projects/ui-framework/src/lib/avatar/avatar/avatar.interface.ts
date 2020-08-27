@@ -27,4 +27,5 @@ export interface Avatar {
   tooltipType?: TruncateTooltipType;
   expectChanges?: boolean;
   supressWarnings?: boolean;
+  [key: string]: any;
 }

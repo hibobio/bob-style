@@ -196,7 +196,7 @@ export abstract class BaseEditableTreeListElement
 
     if (
       hasChanges(changes, ['list', 'startCollapsed'], true, {
-        falseyCheck: isValuevy,
+        truthyCheck: isValuevy,
       })
     ) {
       this.toggleCollapseAll(this.startCollapsed, false);
@@ -204,7 +204,7 @@ export abstract class BaseEditableTreeListElement
 
     if (
       notFirstChanges(changes, null, true, {
-        falseyCheck: isValuevy,
+        truthyCheck: isValuevy,
       }) &&
       !this.cd['destroyed']
     ) {

@@ -90,7 +90,7 @@ export class MenuComponent implements OnChanges, OnInit, OnDestroy {
 
     if (
       hasChanges(changes, ['menu', 'id', 'data', 'clickToOpenSub'], true, {
-        falseyCheck: isValuevy,
+        truthyCheck: isValuevy,
       })
     ) {
       this.setViewModel();

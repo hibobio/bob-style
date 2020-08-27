@@ -128,7 +128,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
 
     if (
       hasChanges(changes, ['value', 'valueDefault'], true, {
-        falseyCheck: isValuevy,
+        truthyCheck: isValuevy,
       })
     ) {
       this.updateActionButtonsState();
@@ -153,7 +153,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
 
     if (
       notFirstChanges(changes, null, true, {
-        falseyCheck: isValuevy,
+        truthyCheck: isValuevy,
       }) &&
       !this.cd['destroyed']
     ) {
