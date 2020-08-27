@@ -97,10 +97,12 @@ export const isDomElement = (val: any): val is HTMLElement =>
 export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
   (!Boolean(smth) && (fuzzy || (!isString(smth) && !isNumber(smth)))) ||
   (Array.isArray(smth) && smth.length === 0) ||
+  (smth instanceof Map && smth.size === 0) ||
+  (smth instanceof Set && smth.size === 0) ||
   (smth === Object(smth) &&
+    Object.keys(smth).length === 0 &&
     smth.constructor === Object &&
-    Object.getPrototypeOf(smth) === Object.prototype &&
-    Object.keys(smth).length === 0);
+    Object.getPrototypeOf(smth) === Object.prototype);
 
 export const isEmpty = (smth: any, fuzzy = false): boolean =>
   isFalsyOrEmpty(smth, true);
@@ -599,6 +601,23 @@ export const chainCall = <A = any>(
 ): A => {
   return funcs.reduce(
     (previousResult, fn) => fn(previousResult, ...args),
+    value
+  );
+};
+
+export const pipe = <T = any>(...functions: ((val: T) => T)[]) => (
+  value: T
+) => {
+  return functions.reduce((currentValue, currentFunction) => {
+    return currentFunction(currentValue);
+  }, value);
+};
+
+export const compose = <T = any>(...functions: ((val: T) => T)[]) => (
+  value: T
+) => {
+  return functions.reduceRight(
+    (currentValue, currentFunction) => currentFunction(currentValue),
     value
   );
 };
