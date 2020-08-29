@@ -1,5 +1,6 @@
-<b-single-select-panel #selectPanel [options]="employeeListOptions"
-                       [disabled]="!expandOnClick"
+<b-single-select-panel #selectPanel
+                       [options]="employeeListOptions"
+                       [disabled]="!expandOnClick && !expandOnHover"
                        [panelClass]="panelClass"
                        [readonly]="readonly || !selectChange.observers.length"
                        (opened)="selectPanelOpened.emit()"
@@ -10,11 +11,8 @@
 
     <b-avatar-image *ngFor="let avatar of avatarsToShow; trackBy: trackBy"
                     class="showcase-avatar"
-                    [imageSource]="avatar.imageSource"
-                    [size]="avatarSize || avatar.size"
-                    [backgroundColor]="avatar.backgroundColor"
-                    [badge]="avatar.badge"
-                    [icon]="avatar.icon">
+                    [avatar]="avatar"
+                    [size]="avatarSize || avatar.size">
     </b-avatar-image>
 
     <b-avatar-image class="show-more"

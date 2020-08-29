@@ -21,9 +21,11 @@ import {
   notFirstChanges,
   getKeyByValue,
   hasChanges,
+  isObject,
+  objectRemoveEntriesByValue,
 } from '../../../services/utils/functional-utils';
 import { AvatarIconSize, AvatarBadges, BadgeSize } from '../avatar.consts';
-import { BadgeConfig } from '../avatar.interface';
+import { Avatar, BadgeConfig } from '../avatar.interface';
 import { Icon } from '../../../icons/icon.interface';
 import { valueAsNumber } from '../../../services/utils/transformers';
 
@@ -48,6 +50,12 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   private host: HTMLElement;
+
+  @Input('avatar') set setProps(avatar: Avatar) {
+    if (isObject(avatar)) {
+      Object.assign(this, objectRemoveEntriesByValue(avatar, [undefined]));
+    }
+  }
 
   @Input() size: AvatarSize = AvatarSize.mini;
   @Input() imageSource: string;

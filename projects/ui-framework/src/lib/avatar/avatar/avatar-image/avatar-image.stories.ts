@@ -21,10 +21,10 @@ const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
 );
 
 const sizeOptionsKeys = Object.values(AvatarSize).filter(
-  key => typeof key === 'string'
+  (key) => typeof key === 'string'
 ) as string[];
 const sizeOptionsValues = Object.values(AvatarSize).filter(
-  key => typeof key === 'number'
+  (key) => typeof key === 'number'
 ) as number[];
 const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
 
@@ -62,10 +62,29 @@ const template = `
 </b-avatar-image>
 `;
 
+const template2 = `
+<b-avatar-image
+    [avatar]="{
+      size:size,
+      imageSource:imageSource,
+      backgroundColor:backgroundColor,
+      icon:icon,
+      badge:badge,
+      text:text,
+      disabled:disabled
+    }"
+    (clicked)="onClick($event)">
+</b-avatar-image>
+`;
+
 const note = `
   ## Avatar Image Element
   #### Module
   *AvatarModule*
+
+  ~~~
+  ${template}
+  ~~~
 
   #### Properties
   Name | Type | Description | Default value
@@ -89,13 +108,13 @@ const note = `
   ng-content | element | you can pass stuff to be placed inside Avatar as ng-content | &nbsp;
 
   ~~~
-  ${template}
+  ${template2}
   ~~~
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Avatar Image'">
-    ${template}
+    ${template2}
 </b-story-book-layout>
 `;
 

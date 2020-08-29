@@ -1003,6 +1003,7 @@ export interface ChangesHelperConfig {
   truthyCheck?: Function;
   equalCheck?: Function;
   firstChange?: boolean | null;
+  transform?: { [prop: string]: (val: any) => any };
 }
 
 export const CHANGES_HELPER_CONFIG_DEF: ChangesHelperConfig = {
@@ -1080,13 +1081,6 @@ export const notFirstChanges = (
     firstChange: false,
   });
 
-export interface ApplyChangesConfig {
-  defaults: GenericObject;
-  skip: string[];
-  discardAllFalsey: boolean;
-  config: ChangesHelperConfig;
-}
-
 export const applyChanges = (
   target: any,
   changes: SimpleChanges,
@@ -1100,8 +1094,11 @@ export const applyChanges = (
 
   if (keyMap) {
     Object.keys(keyMap).forEach((targetKey: string) => {
-      changes[targetKey] = changes[keyMap[targetKey]];
-      skip.push(keyMap[targetKey]);
+      if (changes[keyMap[targetKey]]) {
+        changes[targetKey] = changes[keyMap[targetKey]];
+        delete changes[keyMap[targetKey]];
+        skip.push(keyMap[targetKey]);
+      }
     });
   }
 
@@ -1121,6 +1118,8 @@ export const applyChanges = (
         isNullOrUndefined(changes[changeKey]?.currentValue)) ||
         (discardAllFalsey && !truthyCheck(changes[changeKey].currentValue)))
         ? defaults[changeKey]
+        : config?.transform && isFunction(config.transform[changeKey])
+        ? config.transform[changeKey](changes[changeKey]?.currentValue)
         : changes[changeKey]?.currentValue;
   });
 
