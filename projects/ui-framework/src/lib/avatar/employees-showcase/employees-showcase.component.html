@@ -1,6 +1,6 @@
 <b-single-select-panel #selectPanel
                        [options]="employeeListOptions"
-                       [disabled]="!expandOnClick && !expandOnHover"
+                       [disabled]="!expandOnClick"
                        [panelClass]="panelClass"
                        [readonly]="readonly || !selectChange.observers.length"
                        (opened)="selectPanelOpened.emit()"
