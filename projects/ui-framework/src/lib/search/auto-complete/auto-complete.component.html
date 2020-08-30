@@ -20,7 +20,6 @@
        [ngClass]="positionClassList">
 
     <b-auto-complete-panel (optionSelect)="onOptionSelect($event)"
-                           (escapeClick)="onEscape()"
                            [searchValue]="searchValue"
                            [options]="filteredOptions"
                            [searchInput]="searchInput">

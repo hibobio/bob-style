@@ -185,7 +185,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this.isQuickFilter) {
       this.panelClassList.push('b-quick-filter-panel');
     }

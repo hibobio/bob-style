@@ -15,7 +15,7 @@ import {
 import { escapeRegExp, has } from 'lodash';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Subscription, race } from 'rxjs';
+import { Subscription } from 'rxjs';
 import {
   CdkOverlayOrigin,
   Overlay,
@@ -110,10 +110,6 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     this.destroyPanel();
   }
 
-  onEscape(): void {
-    this.destroyPanel();
-  }
-
   ngOnDestroy(): void {
     this.destroyPanel(true);
   }
@@ -139,9 +135,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     const matcher = new RegExp(escapeRegExp(this.searchValue), 'i');
 
     return this.options.filter(
-      option =>
-        option.value.match(matcher) ||
-        (option.subText && option.subText.match(matcher))
+      (option) => option.value?.match(matcher) || option.subText?.match(matcher)
     );
   }
 }

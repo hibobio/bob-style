@@ -137,10 +137,6 @@ export class ListPanelService {
       (self as OEC).subscribtions.push(
         race(
           (self as OEC).overlayRef.backdropClick(),
-          (self as OEC).utilsService.getWindowKeydownEvent().pipe(
-            outsideZone((self as OEC).zone),
-            filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
-          ),
           (self as OEC).utilsService.getResizeEvent().pipe(
             outsideZone((self as OEC).zone),
             tap(() => {
@@ -164,9 +160,33 @@ export class ListPanelService {
           )
         ).subscribe(() => {
           (self as OEC).zone.run(() => {
-            self[(self as OEC).onApply ? 'onApply' : 'destroyPanel']();
+            self[
+              (self as OEC).onApply
+                ? 'onApply'
+                : (self as OEC).closePanel
+                ? 'closePanel'
+                : 'destroyPanel'
+            ]();
           });
         })
+      );
+
+      (self as OEC).subscribtions.push(
+        (self as OEC).utilsService
+          .getWindowKeydownEvent()
+          .pipe(
+            outsideZone((self as OEC).zone),
+            filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
+          )
+          .subscribe(() => {
+            (self as OEC)[
+              (self as OEC).onCancel
+                ? 'onCancel'
+                : (self as OEC).closePanel
+                ? 'closePanel'
+                : 'destroyPanel'
+            ]();
+          })
       );
     }
   }
