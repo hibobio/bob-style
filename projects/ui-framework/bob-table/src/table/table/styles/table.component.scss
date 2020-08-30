@@ -303,6 +303,6 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 
 [data-row-hover='true'] ::ng-deep {
   .ag-row.ag-row-hover {
-    background-color: $grey-100;
+    background-color: $color-option-hover-solid;
   }
 }

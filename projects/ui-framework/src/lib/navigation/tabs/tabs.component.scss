@@ -89,7 +89,7 @@
     }
 
     .mat-ink-bar {
-      background-color: var(--negative-500);
+      background-color: $color-select-red;
     }
   }
 
@@ -106,7 +106,7 @@
     }
 
     .mat-ink-bar {
-      background-color: var(--primary-500);
+      background-color: $color-select-red;
     }
   }
 }

@@ -39,7 +39,10 @@ $boxShadowColor: rgba($grey-700, 0.2);
 $color-error: $negative-600;
 $color-warn: $primary-500;
 
-$color-option-selected: $grey-300;
+$color-option-selected: rgba($grey-800, 0.08); //$grey-300;
+$color-option-selected-solid: rgb(238, 238, 238);
+$color-option-hover: rgba($grey-800, 0.04);
+$color-option-hover-solid: $grey-100;
 $color-select-yellow: #fdf4d2; // rgb(253, 244, 210)
 $color-select-red: var(--negative-600);
 

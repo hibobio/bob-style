@@ -99,7 +99,7 @@ $chipTypeMap: (
     '[data-selected="true"]:not([data-disabled="true"])': (
       color: $grey-800,
       background-color: $color-option-selected,
-      border-color: $color-option-selected,
+      border-color: $color-option-selected-solid,
     ),
   ),
   icon tab button:

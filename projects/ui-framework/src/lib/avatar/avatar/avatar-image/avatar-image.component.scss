@@ -1,4 +1,5 @@
 @import '../../../style/common-imports';
+@import '../../../style/icons.mixin';
 @import '../avatar.mixin';
 
 $avatarSizeMap: (
@@ -17,7 +18,7 @@ $avatarSizeMap: (
     ),
     '[data-badge-align="bottom-right"]:after': (
       top: auto,
-      bottom: 2px,
+      bottom: 0,
     ),
   ),
   small: (
@@ -31,7 +32,7 @@ $avatarSizeMap: (
     ),
     ':after': (
       top: 0,
-      right: -4px,
+      right: 0,
     ),
     '[data-badge-align="bottom-right"]:after': (
       top: auto,
@@ -53,7 +54,8 @@ $avatarSizeMap: (
     ),
     '[data-badge-align="bottom-right"]:after': (
       top: auto,
-      bottom: 3px,
+      bottom: 0,
+      right: 8px,
     ),
   ),
   large: (
@@ -72,6 +74,7 @@ $avatarSizeMap: (
     '[data-badge-align="bottom-right"]:after': (
       top: auto,
       bottom: 6px,
+      right: 12px,
     ),
   ),
   xlarge: (
@@ -89,7 +92,8 @@ $avatarSizeMap: (
     ),
     '[data-badge-align="bottom-right"]:after': (
       top: auto,
-      bottom: 0,
+      bottom: 6px,
+      right: 25px,
     ),
   ),
 );
@@ -179,6 +183,10 @@ $avatarSizeMap: (
     background-color: white;
     background-position: center;
     background-size: 100%;
+  }
+
+  &[data-badge-align='bottom-right'] {
+    @include icon-size(13px, '&:after');
   }
 
   @each $size, $sizeElems in $avatarSizeMap {

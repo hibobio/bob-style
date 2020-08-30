@@ -72,7 +72,7 @@
     height: $wrap-height;
 
     &:hover:not(.mat-option-disabled) {
-      background-color: $grey-100;
+      background-color: $color-option-hover-solid;
     }
   }
 

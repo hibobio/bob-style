@@ -227,10 +227,16 @@
       <td>$primary-500</td>
     </tr>
 
-    <tr>
-      <td>$color-option-selected</td>
+        <tr>
+      <td>$$color-option-hover, $color-option-hover-solid:</td>
       <td style="background-color: #e9e9e9;"></td>
-      <td>$grey-300</td>
+      <td>rgba(#303030, 0.04), $grey-100 </td>
+    </tr>
+
+    <tr>
+      <td>$color-option-selected, $color-option-selected-solid</td>
+      <td style="background-color: #e9e9e9;"></td>
+      <td>rgba(#303030, 0.08), rgb(238, 238, 238)</td>
     </tr>
 
     <tr>

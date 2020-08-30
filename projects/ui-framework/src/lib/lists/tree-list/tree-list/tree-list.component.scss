@@ -262,7 +262,7 @@ $btl-max-depth: 10;
 .btl-item {
   &:hover,
   &:focus {
-    background-color: $grey-100;
+    background-color: $color-option-hover-solid;
   }
 }
 
@@ -303,7 +303,7 @@ $btl-max-depth: 10;
 :host::ng-deep {
   [data-type='single'] {
     .btl-item.selected {
-      background-color: $color-option-selected;
+      background-color: $color-option-selected-solid;
       font-weight: $font-weight-bold-body;
     }
   }

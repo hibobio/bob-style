@@ -1,5 +1,5 @@
 @mixin single-list-option-selected {
-  background-color: $color-option-selected;
+  background-color: $color-option-selected-solid;
   font-weight: bold;
 }
 
@@ -16,7 +16,7 @@
   }
   &:hover,
   &.focus {
-    background-color: $grey-100;
+    background-color: $color-option-hover-solid;
   }
   &.selected {
     @include single-list-option-selected;
@@ -58,7 +58,7 @@
     &.clickable {
       &:hover,
       &.focus {
-        background-color: $grey-100;
+        background-color: $color-option-hover-solid;
       }
     }
 

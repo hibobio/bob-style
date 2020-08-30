@@ -57,12 +57,12 @@ $side-menu-selected-border: 4px;
   &:hover,
   &:focus,
   &.focused {
-    background-color: $grey-200;
+    background-color: $color-option-hover;
   }
 
   &.selected {
     border-left-color: $color-select-red;
-    background-color: $grey-300;
+    background-color: $color-option-selected;
 
     .option-display-name {
       font-weight: 700;

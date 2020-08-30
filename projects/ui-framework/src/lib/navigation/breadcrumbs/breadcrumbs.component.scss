@@ -1,7 +1,7 @@
 @import '../../style/common-imports';
 @import '../../style/icons.mixin';
 
-$brdcrb-active-color: var(--negative-500);
+$brdcrb-active-color: $color-select-red;
 $brdcrb-inactive-color: $grey-500;
 
 $brdcrb-height: base8(64);

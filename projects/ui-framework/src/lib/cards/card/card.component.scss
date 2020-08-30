@@ -61,8 +61,9 @@
   margin-top: times8(1);
 }
 
-[card-content] {
-  max-height: height-from-text(10, $useCssVars: true);
+:host::ng-deep [card-content] {
+  min-width: 0;
+  max-height: height-from-text(8, $useCssVars: true);
   overflow: hidden;
 }
 
