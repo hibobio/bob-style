@@ -102,7 +102,7 @@ export class RichTextEditorComponent extends RTEbaseElement
               const selection = this.getNativeRange();
               if (selection.startOffset === selection.endOffset) {
                 event.preventDefault();
-                console.log('Copy prevented, because selection is empty');
+                console.warn('Copy prevented, because selection is empty');
                 return false;
               }
             }
@@ -286,7 +286,7 @@ export class RichTextEditorComponent extends RTEbaseElement
         );
 
         try {
-          this.editor.html.insert(html, false);
+          this.editor.html.insert(html, true);
         } catch (error) {
           return;
         }

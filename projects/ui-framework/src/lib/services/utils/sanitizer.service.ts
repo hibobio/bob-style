@@ -34,6 +34,8 @@ export const SANITIZER_ALLOWED_TAGS = [
   'h4',
   'h5',
   'h6',
+
+  'pre',
 ];
 export const SANITIZER_ALLOWED_ATTRS = [
   'alt',

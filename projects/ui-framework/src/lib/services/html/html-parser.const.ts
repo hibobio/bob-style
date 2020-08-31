@@ -24,7 +24,7 @@ export const HTML_CLEANUP_REPLACERS: {
 } = {
   blockToDiv: {
     find: [
-      /(?:(<p)|(<main)|(<section)|(<header)|(<article)|(<footer))(?:>|(?: [^>]*>))/gi,
+      /(?:(<p)|(<main)|(<section)|(<header)|(<article)|(<footer))(?:>|(?:\s[^>]*>))/gi,
       /(<\/p>)|(\/main)|(\/section)|(\/header)|(\/article)|(\/footer)/gi,
     ],
     replaceWith: ['<div>', '</div>'],
@@ -32,8 +32,8 @@ export const HTML_CLEANUP_REPLACERS: {
 
   biToStrongEM: {
     find: [
-      /<b(?:>|(?: [^>]*>))/gi,
-      /<i(?:>|(?: [^>]*>))/gi,
+      /<b(?:>|(?:\s[^>]*>))/gi,
+      /<i(?:>|(?:\s[^>]*>))/gi,
       /<\/b>/gi,
       /<\/i>/gi,
     ],
@@ -92,6 +92,8 @@ export const HTML_CLEANUP_REPLACERS: {
       // replace <br><br> with <div><br></div>
       /(<br[^>]*>\s*){2,}/gi,
       /([^<>])(<br[^>]*>\s*){2,}(?=[^<>\s])/gi,
+      // <br> inside any tag => div
+      /(?:<([^d\s]+)[^>]*>\s*<br[^>]*>{1,}\s*<\/\1>)(?:(?:\s*<br[^>]*>\s*){1,})?/gi,
       // <br>'s at the start / end
       /(^(\s*<br[^>]*>\s*)+)|((\s*<br[^>]*>\s*)+$)/gi,
       // too many <div><br></div>
@@ -104,6 +106,7 @@ export const HTML_CLEANUP_REPLACERS: {
       '$1$2',
       '<div><br></div>',
       '$1<div><br></div>',
+      '<div><br></div>',
       '',
       // too many div-br-div
       '<div><br></div>',

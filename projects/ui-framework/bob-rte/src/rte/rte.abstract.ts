@@ -30,12 +30,10 @@ import {
   isNotEmptyArray,
   isNotEmptyObject,
   isNullOrUndefined,
-  joinArrays,
   notFirstChanges,
   PanelDefaultPosVer,
   SelectGroupOption,
   SingleSelectPanelComponent,
-  stringyOrFail,
   SanitizerService,
   firstChanges,
   Func,
@@ -50,9 +48,6 @@ import {
   RTE_MINHEIGHT_DEF,
   RTE_OPTIONS_DEF,
   RTE_TOOLBAR_HEIGHT,
-  RTE_HTML_CLEANUP_REPLACERS_OUTPUT,
-  RTE_HTML_CLEANUP_REPLACERS_INPUT,
-  RTE_HTML_CLEANUP_REPLACERS_PASTE,
 } from './rte.const';
 import { BlotType, RTEType, RTEMode } from './rte.enum';
 import { RteMentionsOption } from './rte.interface';
@@ -164,6 +159,7 @@ export abstract class RTEbaseElement extends BaseFormElement
         return;
       }
     }
+
     if (
       (value === undefined || isNullOrUndefined(this.editorValue)) &&
       this.baseValue !== undefined
@@ -352,240 +348,25 @@ export abstract class RTEbaseElement extends BaseFormElement
   }
 
   private initControls(): void {
-    if (this.mode === RTEMode.plainText) {
-      this.controls = [BlotType.placeholder];
-      return;
-    } else if (
-      this.controls.length === 1 &&
-      this.controls[0] === BlotType.placeholder
-    ) {
-      this.controls = Object.values(BlotType);
-    }
-
-    if (this.controls.includes(BlotType.list)) {
-      this.controls = joinArrays(this.controls, [BlotType.ul, BlotType.ol]);
-    }
-    if (this.controls.includes(BlotType.direction)) {
-      this.controls = joinArrays(this.controls, [
-        BlotType.rightToLeft,
-        BlotType.leftToRight,
-      ]);
-    }
-    if (this.disableControls.includes(BlotType.list)) {
-      this.disableControls = joinArrays(this.disableControls, [
-        BlotType.ul,
-        BlotType.ol,
-      ]);
-    }
-    if (this.disableControls.includes(BlotType.direction)) {
-      this.disableControls = joinArrays(this.disableControls, [
-        BlotType.rightToLeft,
-        BlotType.leftToRight,
-      ]);
-    }
-
-    this.controls = RTE_CONTROLS_DEF.filter(
-      (cntrl: BlotType) =>
-        (this.controls || RTE_CONTROLS_DEF).includes(cntrl) &&
-        !(this.disableControls || RTE_DISABLE_CONTROLS_DEF).includes(cntrl)
+    Object.assign(
+      this,
+      this.rteUtilsService.getControls(
+        this.mode,
+        this.controls,
+        this.disableControls
+      )
     );
   }
 
   private initTransformers(): void {
-    this.pasteTransformers =
-      this.mode === RTEMode.plainText
-        ? [(value: string): string => this.parserService.getPlainText(value)]
-        : [
-            (value: string) =>
-              this.sanitizer.filterXSS(value, {
-                css: true,
-              }),
-
-            (value: string): string | HTMLElement =>
-              this.parserService.replaceElements(
-                value,
-                {
-                  i: {
-                    with: 'em',
-                  },
-
-                  b: {
-                    withFnc: (el: HTMLElement) =>
-                      el.style.fontWeight !== 'normal' &&
-                      el.style.fontWeight !== '400'
-                        ? 'strong'
-                        : 'span',
-                  },
-
-                  span: {
-                    withFnc: (el: HTMLElement) => {
-                      if (
-                        el.style.fontWeight === 'bold' ||
-                        parseInt(el.style.fontWeight, 10) > 500
-                      ) {
-                        return 'strong';
-                      }
-
-                      if (el.style.display === 'block') {
-                        if (this.DOM.isEmpty(el) && el.style.height) {
-                          el.innerHTML = '<br>';
-                        }
-
-                        return 'div';
-                      }
-
-                      return null;
-                    },
-                  },
-                },
-                true
-              ),
-
-            (value: string | HTMLElement): string =>
-              this.parserService.enforceAttributes(
-                value,
-                {
-                  '*': {
-                    '.*': null,
-                  },
-                  a: {
-                    class: 'fr-deletable',
-                    target: '_blank',
-                    spellcheck: 'false',
-                    rel: 'noopener noreferrer',
-                    tabindex: '-1',
-                    style: null,
-                  },
-                  '[href*="/employee-profile/"]': {
-                    class: 'fr-deletable',
-                    target: null,
-                    spellcheck: 'false',
-                    rel: null,
-                    contenteditable: false,
-                  },
-                },
-                false
-              ) as string,
-
-            (value: string): string =>
-              this.parserService.cleanupHtml(
-                value,
-                RTE_HTML_CLEANUP_REPLACERS_PASTE
-              ),
-
-            (value: string): string =>
-              this.parserService.linkify(
-                value,
-                'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
-              ),
-          ];
-
-    this.inputTransformers = [
-      stringyOrFail,
-
-      ...(this.mode === RTEMode.plainText
-        ? [(value: string): string => this.parserService.getPlainText(value)]
-        : [
-            (value: string): string =>
-              this.parserService.enforceAttributes(
-                value,
-                {
-                  '*': {
-                    '^on.*': null,
-                    class: null,
-                  },
-                  br: {
-                    '.*': null,
-                  },
-                },
-                false
-              ) as string,
-
-            (value: string): string =>
-              this.parserService.cleanupHtml(
-                value,
-                RTE_HTML_CLEANUP_REPLACERS_INPUT
-              ),
-
-            (value: string): string =>
-              this.parserService.enforceAttributes(
-                value,
-                {
-                  a: {
-                    class: 'fr-deletable',
-                    target: '_blank',
-                    spellcheck: 'false',
-                    rel: 'noopener noreferrer',
-                    tabindex: '-1',
-                    style: null,
-                  },
-                  // '[mention-employee-id],[class*="mention"]'
-                  '[href*="/employee-profile/"]': {
-                    class: 'fr-deletable',
-                    target: null,
-                    spellcheck: 'false',
-                    rel: null,
-                    contenteditable: false,
-                  },
-                },
-                false
-              ) as string,
-
-            (value: string): string =>
-              this.parserService.linkify(
-                value,
-                'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
-              ),
-          ]),
-    ];
-
-    this.outputTransformers =
-      this.mode === RTEMode.plainText
-        ? [(value: string): string => this.parserService.getPlainText(value)]
-        : [
-            (value: string): string =>
-              this.parserService.enforceAttributes(
-                value,
-                {
-                  'span,p,div,a': {
-                    contenteditable: null,
-                    tabindex: null,
-                    spellcheck: null,
-                    class: {
-                      'fr-.*': false,
-                    },
-                  },
-
-                  ...(this.mode === RTEMode.htmlInlineCSS
-                    ? {
-                        a: {
-                          style:
-                            'color: #fea54a; font-weight: 600; text-decoration: none;',
-                        },
-                      }
-                    : {}),
-                },
-                false
-              ) as string,
-
-            (value: string): string =>
-              this.parserService.cleanupHtml(
-                value,
-                RTE_HTML_CLEANUP_REPLACERS_OUTPUT
-              ),
-          ];
-
-    if (this.placeholdersEnabled()) {
-      this.inputTransformers.push((value: string): string =>
-        this.placeholdersConverter.toRte(value, this.placeholderList)
-      );
-
-      this.pasteTransformers.push((value: string): string =>
-        this.placeholdersConverter.toRte(value, this.placeholderList)
-      );
-
-      this.outputTransformers.unshift(this.placeholdersConverter.fromRte);
-    }
+    Object.assign(
+      this,
+      this.rteUtilsService.getTransformers(
+        this.mode,
+        this.placeholdersEnabled(),
+        this.placeholderList
+      )
+    );
   }
 
   private initMentions(): void {

@@ -24,6 +24,9 @@ import {
   RenderedComponentContent,
   RenderedComponentHandlers,
 } from './component-renderer.interface';
+import { simpleChange } from '../utils/test-helpers';
+import { GenericObject } from '../../types';
+import { applyChanges } from '../utils/functional-utils';
 
 @Component({
   selector: 'b-component-renderer',
@@ -83,13 +86,10 @@ export class ComponentRendererComponent implements OnChanges, OnDestroy {
 
   private resolveComponentAttributes(
     component: ComponentRef<any>,
-    attributes: object
+    attributes: GenericObject
   ): SimpleChanges {
-    const changes = {};
-    for (const attr of Object.keys(attributes)) {
-      component.instance[attr] = attributes[attr];
-      changes[attr] = new SimpleChange(null, attributes[attr], true);
-    }
+    const changes = simpleChange(attributes, true);
+    applyChanges(component.instance, changes);
     return changes;
   }
 
@@ -145,7 +145,7 @@ export class ComponentRendererComponent implements OnChanges, OnDestroy {
       this.resolveComponentHandlers(component, comp.handlers);
     }
 
-    if (!attach) {
+    if (!attach && component.hostView && !component.hostView.destroyed) {
       component.hostView.detectChanges();
     }
 

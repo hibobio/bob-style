@@ -34,6 +34,9 @@ export class HtmlParserHelpers {
     value: string,
     replacers: HtmlCleanupReplacer[] = HTML_CLEANUP_REPLACERS_DEF
   ): string {
+    if (!value?.trim() || isEmptyArray(replacers)) {
+      return value;
+    }
     return asArray(replacers)
       .reduce((result: string, replacer: HtmlCleanupReplacer) => {
         replacer.find.forEach((find: RegExp, index) => {
@@ -62,6 +65,13 @@ export class HtmlParserHelpers {
     Object.keys(enforce).forEach((selector: string) => {
       const attributes = enforce[selector];
 
+      const allowedAttrs = Object.keys(attributes).reduce((aa, a) => {
+        if (attributes[a] === true) {
+          aa.push(a);
+        }
+        return aa;
+      }, []);
+
       Array.from(elm.querySelectorAll(selector)).forEach(
         (elem: HTMLElement): void => {
           Object.keys(attributes).forEach((attr) => {
@@ -73,7 +83,9 @@ export class HtmlParserHelpers {
                   .map((a) => a.name)
                   .filter((a) => new RegExp(attr, 'i').test(a))
                   .forEach((a) => {
-                    elem.removeAttribute(a);
+                    if (!allowedAttrs.includes(a)) {
+                      elem.removeAttribute(a);
+                    }
                   });
               }
             } else {
@@ -108,7 +120,7 @@ export class HtmlParserHelpers {
                   elem.removeAttribute(attr);
                 }
               } else {
-                if (attributes[attr] !== null) {
+                if (attributes[attr] !== null && attributes[attr] !== true) {
                   elem.setAttribute(attr, attributes[attr]);
                 }
               }
@@ -446,6 +458,53 @@ export class HtmlParserHelpers {
           parent = grandParent;
         }
       });
+
+    return returnDOM ? elm : this.DOMtoString(elm);
+  }
+
+  public unwrapInlineElements(
+    value: string | HTMLElement,
+    returnDOM = false
+  ): string | HTMLElement {
+    if (!value) {
+      return value;
+    }
+
+    const elm: HTMLElement = isDomElement(value)
+      ? value
+      : this.stringToDOM(value);
+
+    const tags = [['B', 'STRONG'], ['I', 'EM'], ['U'], ['DIV', 'P'], ['SPAN']];
+
+    elm.querySelectorAll('* > *:only-child').forEach((node) => {
+      //
+      let childTagType = tags.findIndex((tgs) => tgs.includes(node.tagName));
+      if (childTagType < 0) {
+        return;
+      }
+
+      if (node.children.length === 1 && node.children[0].tagName === 'BR') {
+        childTagType = 5;
+      }
+
+      let parent = node.parentElement;
+      let parentTagtype = tags.findIndex((tgs) => tgs.includes(parent.tagName));
+
+      while (
+        parent !== elm &&
+        (parentTagtype === childTagType ||
+          parentTagtype === 4 ||
+          childTagType === 5) &&
+        parent.children.length === 1
+      ) {
+        const child = parent.removeChild(parent.firstChild);
+        const grandParent = parent.parentElement;
+        grandParent.replaceChild(child, parent);
+
+        parent = grandParent;
+        parentTagtype = tags.findIndex((tgs) => tgs.includes(parent.tagName));
+      }
+    });
 
     return returnDOM ? elm : this.DOMtoString(elm);
   }

@@ -78,7 +78,7 @@ export const simpleChange = (
   const simpleChanges = {};
   Object.keys(changes).forEach((key) => {
     simpleChanges[key] = new SimpleChange(
-      previousValues && previousValues[key],
+      (previousValues && previousValues[key]) || undefined,
       changes[key],
       firstChange
     );
