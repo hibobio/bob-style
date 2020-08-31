@@ -152,7 +152,7 @@ export abstract class RTEbaseElement extends BaseFormElement
 
             ...this.inputTransformers,
           ],
-          value
+          value || ''
         );
       } catch (error) {
         console.error(`${this.getElementIDdata()} threw an error:\n`, error);
