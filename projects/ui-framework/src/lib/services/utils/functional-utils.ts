@@ -38,6 +38,9 @@ export const isEmptyString = (val: any): boolean => !isNotEmptyString(val);
 export const isArray = <T = any>(val: any): val is T[] =>
   !!val && Array.isArray(val);
 
+export const isArrayOrNull = (val: any) => isArray(val) || val === null;
+export const isObjectOrNull = (val: any) => isObject(val) || val === null;
+
 export const isDate = (value: any): boolean =>
   value instanceof Date &&
   typeof value.getMonth === 'function' &&
