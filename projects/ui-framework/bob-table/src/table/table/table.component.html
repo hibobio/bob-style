@@ -1,11 +1,9 @@
 <ag-grid-angular #agGrid
                  [ngClass]="{
                   'grid-ready': gridReady,
-                  'secondary': type === tableType.Secondary,
-                  'tertiary': type === tableType.Tertiary,
                   'remove-column-button': removeColumnButtonEnabled,
-                  'empty-table': !rowData || !rowData.length,
-                  'no-column-defs': !gridColumnDefs
+                  'empty-table': !rowData?.length,
+                  'no-column-defs': !columnDefs?.length
                   }"
                  [class]="_externalClasses"
                  [rowData]="rowData"
@@ -15,10 +13,11 @@
                  (selectionChanged)="onSelectionChanged($event)"
                  (sortChanged)="onSortChanged($event)"
                  [attr.data-row-hover]="styleConfig?.disableRowHoverBgColor ? false : true"
-                 [attr.data-column-borders]="styleConfig?.showColumnBorders ? true : null">
+                 [attr.data-column-borders]="styleConfig?.showColumnBorders ? true : null"
+                 [hidden]="emptyStateConfig && !rowData?.length">
 </ag-grid-angular>
 
-<b-pager *ngIf="enablePager && pagerState"
+<b-pager *ngIf="enablePager && pagerState && (rowData?.length || !emptyStateConfig)"
          [items]="pagerState.totalItems"
          [currentPage]="pagerState.currentPage"
          [config]="pagerConfig"
@@ -26,3 +25,10 @@
          (sliceSizeChange)="paginationPageSizeChange($event)"
          class="mrg-t-16">
 </b-pager>
+
+<b-empty-state *ngIf="emptyStateConfig && !rowData?.length"
+               [config]="emptyStateConfig"
+               class="grid-empty-state ag-root pad-32"
+               [ngClass]="{
+                 'no-column-defs': !columnDefs?.length
+               }"></b-empty-state>

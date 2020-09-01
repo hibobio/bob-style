@@ -12,6 +12,7 @@ import { storiesOf } from '@storybook/angular';
 import { AgGridModule } from 'ag-grid-angular';
 import { AvatarModule, ComponentGroupType, SearchModule } from 'bob-style';
 import { values } from 'lodash';
+import { Icons } from '../../../src/lib/icons/icons.enum';
 import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
 import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
@@ -60,6 +61,7 @@ const template = `
         showColumnBorders: showColumnBorders
     }"
     [enablePager]="enablePager"
+    [emptyStateConfig]="emptyStateConfig"
     (rowClicked)="rowClicked($event)"
     (cellClicked)="cellClicked($event)"
     (selectionChanged)="selectionChanged($event); onSelectionChanged($event)"
@@ -148,6 +150,7 @@ const note = `
   [styleConfig] | TableStyleConfig | style config (disableRowHoverBgColor, showColumnBorders) | {}
   [enablePager] | boolean | enable pagination
   [pagerConfig] | PagerConfig | config for pagination (sliceStep, sliceMax, sliceSize)
+  [emptyStateConfig] | EmptyStateConfig | config for the no-row-data state
   (pagerPageSizeChange) | EventEmitter<wbr>&lt;number&gt; | emits when page size changes | &nbsp;
   (rowClicked) | EventEmitter<wbr>&lt;RowClickedEvent&gt; | Row clicked event | &nbsp;
   (gridInit) | EventEmitter<wbr>&lt;void&gt;  | Grid init event | &nbsp;
@@ -229,6 +232,15 @@ function tableStoryFactory({
     disableRowHoverBgColor: boolean('disableRowHoverBgColor', false, 'Props'),
     showColumnBorders: boolean('showColumnBorders', false, 'Props'),
     enablePager: boolean('enablePager', true, 'Props'),
+    emptyStateConfig: object(
+      'emptyStateConfig',
+      {
+        text: 'Surprise party',
+        icon: Icons.cake,
+        buttonLabel: 'Eat cake',
+      },
+      'Data'
+    ),
     columnDefs: object(`${title} columnDefs`, tableCols, 'Data'),
     rowData: object(`${title} rowData`, tableData, 'Data'),
     rowClicked: action('Row clicked'),

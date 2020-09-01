@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostBinding,
   HostListener,
   Input,
   OnChanges,
@@ -44,7 +45,9 @@ import {
 } from './table.interface';
 import {
   DOMhelpers,
+  EmptyStateConfig,
   hasChanges,
+  notFirstChanges,
   PagerConfig,
   PAGER_CONFIG_DEF,
 } from 'bob-style';
@@ -86,7 +89,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   @ViewChild('agGrid', { static: true }) agGrid: AgGridAngular;
 
-  @Input() type: TableType = TableType.Primary;
+  @HostBinding('attr.data-type') @Input() type: TableType = TableType.Primary;
 
   @Input() rowData: any[] = [];
   @Input() columnDefs: ColumnDef[] = [];
@@ -103,6 +106,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Input() enablePager = false;
   @Input() pagerConfig: PagerConfig = { ...PAGER_CONFIG_DEF };
   @Input() styleConfig: TableStyleConfig = {};
+  @Input() emptyStateConfig: EmptyStateConfig;
 
   @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
     SortChangedEvent
@@ -211,6 +215,10 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     if (hasChanges(changes, ['maxHeight'])) {
       this.maxHeight = changes.maxHeight.currentValue;
       this.setGridHeight(this.maxHeight);
+    }
+
+    if (notFirstChanges(changes)) {
+      this.cdr.detectChanges();
     }
   }
 

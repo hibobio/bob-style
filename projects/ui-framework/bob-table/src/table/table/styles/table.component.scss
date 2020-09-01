@@ -47,32 +47,18 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     &.grid-ready {
       visibility: visible;
     }
+  }
 
-    &.secondary {
-      .ag-root {
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
-      }
-    }
-
-    &.tertiary {
-      .ag-root {
-        border-radius: 0;
-        border: none;
-      }
-    }
+  .ag-root,
+  .grid-empty-state {
+    background-color: white;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
   }
 
   .ag-root-wrapper-body.ag-layout-normal {
     height: auto;
     overflow: hidden;
-  }
-
-  .ag-root {
-    background-color: white;
-    border: 1px solid $border-color;
-    border-radius: 4px;
   }
 
   .ag-header {
@@ -262,7 +248,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
   .ag-overlay-wrapper > span,
   .ag-overlay-no-rows-center,
   .ag-overlay-loading-center {
-    @include b-display-3($color: $grey-500);
+    color: $grey-600;
   }
 
   .empty-table {
@@ -300,7 +286,47 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
   }
 }
 
+:host::ng-deep {
+  .grid-empty-state {
+    min-height: $min-table-height;
+
+    background-image: linear-gradient($border-color-light, $border-color-light);
+    background-size: 100% 1px;
+    background-position: left 0 top $table-header-height;
+
+    & > :first-child {
+      padding-top: $table-header-height;
+    }
+
+    &.no-column-defs {
+      min-height: $min-table-height - $table-header-height;
+      background-image: none;
+
+      & > :first-child {
+        padding-top: 0;
+      }
+    }
+  }
+}
+
 // style options
+
+:host[data-type='secondary']::ng-deep {
+  .ag-root,
+  .grid-empty-state {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+}
+
+:host[data-type='tertiary']::ng-deep {
+  .ag-root,
+  .grid-empty-state {
+    border-radius: 0;
+    border: 0;
+  }
+}
 
 [data-column-borders='true'] ::ng-deep {
   .ag-center-cols-viewport {
@@ -318,4 +344,9 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
   .ag-row.ag-row-hover {
     background-color: $color-option-hover-solid;
   }
+}
+
+[hidden] {
+  // opacity: 0.5;
+  display: none;
 }

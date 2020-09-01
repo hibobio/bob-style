@@ -6,6 +6,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import {
   AvatarModule,
   ButtonsModule,
+  EmptyStateModule,
   IconsModule,
   MenuModule,
   PagerModule,
@@ -48,6 +49,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ]),
     IconsModule,
     PagerModule,
+    EmptyStateModule,
   ],
   exports: [
     TableComponent,
