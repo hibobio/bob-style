@@ -1,4 +1,4 @@
-<img *ngIf="config.imgSrc"
+<img *ngIf="config?.imgSrc"
      class="empty-state-image"
      [src]="config.imgSrc"
      border="0"
@@ -6,18 +6,18 @@
 
 <ng-content selector="[top]"></ng-content>
 
-<b-icon *ngIf="!config.imgSrc && config.icon"
+<b-icon *ngIf="config?.icon && !config.imgSrc"
         class="empty-state-icon"
         [icon]="config.icon"
         [color]="iconColor"
         [size]="config.iconSize || iconSize.xxLarge"></b-icon>
 
-<p *ngIf="config.text"
+<p *ngIf="config?.text"
    class="empty-state-text">{{config.text}}</p>
 
-<b-button *ngIf="config.buttonLabel"
+<b-button *ngIf="config?.buttonLabel"
           class="empty-state-button"
-          (clicked)="buttonClick.emit()"
+          (clicked)="onButtonClick()"
           [type]="buttonType"
           [size]="buttonSize">{{config.buttonLabel}}</b-button>
 
