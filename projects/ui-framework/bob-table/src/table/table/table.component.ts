@@ -48,6 +48,12 @@ import {
   PagerConfig,
   PAGER_CONFIG_DEF,
 } from 'bob-style';
+import {
+  TABLE_AUTOSIZE_PADDING,
+  TABLE_MIN_HEIGHT,
+  TABLE_PAGER_HEIGHT,
+  TABLE_ROW_HEIGHT,
+} from './table.consts';
 
 const CLOSE_BUTTON_DIAMETER = 20;
 const CLOSE_MARGIN_OFFSET = 6;
@@ -86,7 +92,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Input() columnDefs: ColumnDef[] = [];
   @Input() columnDefConfig: ColumnDefConfig;
   @Input() rowSelection: RowSelection = null;
-  @Input() maxHeight = 450;
+  @Input() maxHeight = TABLE_MIN_HEIGHT;
   @Input() suppressColumnVirtualisation = true;
   @Input() suppressRowVirtualisation = false;
   @Input() tableGridOptions: Partial<GridOptions> = {};
@@ -120,8 +126,6 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     number
   >();
 
-  readonly rowHeight: number = 56;
-  readonly autoSizePadding: number = 30;
   readonly tableType = TableType;
 
   public gridReady = false;
@@ -244,7 +248,13 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   private setGridHeight(height: number): void {
     this.DOM.setCssProps(this.elRef.nativeElement, {
-      '--max-height': `${Math.max(height, this.rowHeight * 6)}px`,
+      '--max-height': `${Math.max(
+        height -
+          (this.enablePager || this.tableGridOptions?.pagination
+            ? TABLE_PAGER_HEIGHT
+            : 0),
+        TABLE_MIN_HEIGHT
+      )}px`,
     });
   }
 
@@ -262,10 +272,10 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       suppressAutoSize: true,
       suppressRowClickSelection: true,
       suppressDragLeaveHidesColumns: this.suppressDragLeaveHidesColumns,
-      autoSizePadding: this.autoSizePadding,
+      autoSizePadding: TABLE_AUTOSIZE_PADDING,
       suppressColumnVirtualisation: this.suppressColumnVirtualisation,
-      rowHeight: this.rowHeight,
-      headerHeight: this.rowHeight,
+      rowHeight: TABLE_ROW_HEIGHT,
+      headerHeight: TABLE_ROW_HEIGHT,
       rowSelection: this.rowSelection,
       suppressContextMenu: true,
       rowBuffer: this.suppressRowVirtualisation

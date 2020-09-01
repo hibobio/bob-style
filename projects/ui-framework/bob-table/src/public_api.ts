@@ -7,6 +7,7 @@
 export * from './table/table/table.interface';
 export * from './table/table/table.interface';
 export * from './table/table/table.enum';
+export * from './table/table/table.consts';
 export * from './table/table/extensions/tree.directive';
 export * from './table/table/extensions/tree.config';
 export { TableComponent } from './table/table/table.component';
