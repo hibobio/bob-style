@@ -11,7 +11,6 @@ import {
   Type,
   EventEmitter,
   OnDestroy,
-  SimpleChange,
   SimpleChanges,
   OnChanges,
 } from '@angular/core';
@@ -160,15 +159,17 @@ export class ComponentRendererComponent implements OnChanges, OnDestroy {
   }
 
   private reset(): void {
-    this.container.clear();
+    this.container?.clear();
   }
 
   private destroyComponent(): void {
+    console.log(this.destroy$, this.componentRef);
+
     if (this.destroy$ && !this.destroy$.isStopped) {
       this.destroy$.next(true);
       this.destroy$.complete();
     }
-    if (this.componentRef) {
+    if (this.componentRef && !this.componentRef.hostView.destroyed) {
       this.componentRef.destroy();
       this.componentRef = null;
     }
