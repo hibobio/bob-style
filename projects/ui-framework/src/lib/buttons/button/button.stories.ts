@@ -23,7 +23,8 @@ const template = `
           [type]="type"
           [size]="size"
           [text]="text"
-          [disabled]="disabled">
+          [disabled]="disabled"
+          [ngClass]="{preloading: loading}">
 </b-button>
 
 <b-button (clicked)="onClick($event)"
@@ -84,6 +85,7 @@ story.add(
       size: select('size', Object.values(ButtonSize), ButtonSize.medium),
       disabled: boolean('disabled', false),
       icon: select('icon', Object.values(Icons), Icons.timeline),
+      loading: boolean('preloader', false),
     },
     moduleMetadata: {
       imports: [ButtonsModule, StoryBookLayoutModule],

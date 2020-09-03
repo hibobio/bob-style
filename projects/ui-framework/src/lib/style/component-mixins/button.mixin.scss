@@ -77,7 +77,7 @@ $button-size-large: 44px;
   }
 }
 
-@mixin button-basic-types {
+@mixin button-basic-types($disabled: true) {
   @include Button($type: false, $basics: true);
 
   &.primary {
@@ -92,9 +92,11 @@ $button-size-large: 44px;
   &.negative {
     @include Button(negative, $basics: false);
   }
-  &.disabled,
-  &[disabled] {
-    @include Button(disabled, $basics: false);
+  @if ($disabled) {
+    &.disabled,
+    &[disabled] {
+      @include Button(disabled, $basics: false);
+    }
   }
 }
 

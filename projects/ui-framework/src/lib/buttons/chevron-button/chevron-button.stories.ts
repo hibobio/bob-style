@@ -23,7 +23,8 @@ const button = `<b-chevron-button [type]="type"
                     [size]="size"
                     [active]="active"
                     [disabled]="disabled"
-                    (clicked)="onClick($event)">
+                    (clicked)="onClick($event)"
+                    [ngClass]="{preloading: loading}">
 </b-chevron-button>`;
 
 const note = `
@@ -63,6 +64,7 @@ story.add(
       active: boolean('active', false),
       disabled: boolean('disabled', false),
       onClick: action('chevron button clicked'),
+      loading: boolean('preloader', false),
     },
     moduleMetadata: {
       imports: [ButtonsModule, IconsModule, StoryBookLayoutModule],

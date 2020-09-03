@@ -10,7 +10,12 @@ import {
   ElementRef,
   Directive,
 } from '@angular/core';
-import { ControlValueAccessor, FormControl } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormControl,
+  ValidatorFn,
+  ValidationErrors,
+} from '@angular/forms';
 import {
   simpleUID,
   asArray,
@@ -23,16 +28,22 @@ import {
   cloneArray,
   stringify,
   isFunction,
+  isObject,
+  objectRemoveEntriesByValue,
 } from '../services/utils/functional-utils';
 import { InputEventType, FormElementSize } from './form-elements.enum';
-import { TransmitOptions, ForceElementValue } from './form-elements.interface';
+import {
+  TransmitOptions,
+  ForceElementValue,
+  FormElementSpec,
+} from './form-elements.interface';
 import { IGNORE_EVENTS_DEF, TRANSMIT_OPTIONS_DEF } from './form-elements.const';
 import { InputTypes } from './input/input.enum';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseFormElement
-  implements ControlValueAccessor, OnChanges {
+  implements ControlValueAccessor, FormElementSpec, OnChanges {
   protected constructor(protected cd: ChangeDetectorRef) {}
 
   @ViewChild('input', { static: true, read: ElementRef })
@@ -51,6 +62,35 @@ export abstract class BaseFormElement
   @Input() ignoreEvents: InputEventType[] = cloneArray(IGNORE_EVENTS_DEF);
   @Input() formControlName: string;
   @Input() showCharCounter = true;
+
+  @Input() set isDisabled(disabled: boolean) {
+    this.disabled = disabled;
+  }
+
+  @Input('spec') set setProps(spec: FormElementSpec) {
+    if (isObject(spec)) {
+      let errorProps: string[] = [];
+      if (spec.value) {
+        errorProps.push('value');
+      }
+      if (spec.options) {
+        errorProps.push('options');
+      }
+      if (spec.optionsDefault) {
+        errorProps.push('optionsDefault');
+      }
+      if (errorProps.length) {
+        console.warn(
+          `[BaseFormElement.spec]: <${errorProps}> ${
+            errorProps.length > 1 ? 'are' : 'is'
+          } not allowed in [spec] input and should be ${
+            errorProps.length > 1 ? '' : 'a'
+          } separate binding${errorProps.length > 1 ? 's' : ''}`
+        );
+      }
+      Object.assign(this, objectRemoveEntriesByValue(spec, [undefined]));
+    }
+  }
 
   public inputFocused: boolean | boolean[] = false;
   public inputTransformers: Func[] = [];
@@ -85,9 +125,10 @@ export abstract class BaseFormElement
     );
   }
 
-  protected onNgChanges(changes: SimpleChanges): void {}
+  public onNgChanges(changes: SimpleChanges): void {}
 
-  @Input() validateFn: Function = (_: FormControl) => {};
+  @Input() validateFn: ValidatorFn = (_: FormControl) =>
+    ({} as ValidationErrors);
 
   onTouched: Function = (_: any) => {};
 
@@ -105,7 +146,7 @@ export abstract class BaseFormElement
     this.disabled = isDisabled;
   }
 
-  validate(c: FormControl) {
+  validate(c: FormControl): ValidationErrors {
     return this.validateFn(c);
   }
 
@@ -147,7 +188,7 @@ export abstract class BaseFormElement
     this.writingValue = false;
   }
 
-  protected transmitValue(
+  public transmitValue(
     value: any = this.value,
     options: Partial<TransmitOptions> = {}
   ): void {
@@ -222,11 +263,15 @@ export abstract class BaseFormElement
         showCharCounter: true,
         ignoreEvents: cloneArray(IGNORE_EVENTS_DEF),
       },
-      ['value', 'options']
+      ['value', 'options', 'setProps'],
+      false,
+      { keyMap: { disabled: 'isDisabled' } }
     );
 
-    if (changes.value) {
-      this.writeValue(changes.value.currentValue);
+    if (changes.value || changes.setProps?.currentValue?.value) {
+      this.writeValue(
+        changes.value.currentValue || changes.setProps?.currentValue?.value
+      );
       this.transmitValue(this.value, { eventType: [InputEventType.onWrite] });
     }
 
@@ -244,7 +289,7 @@ export abstract class BaseFormElement
     }
   }
 
-  protected getElementIDdata() {
+  public getElementIDdata(): string {
     return `[${
       this.formControlName ? 'formControl: ' + this.formControlName + ', ' : ''
     }element id: ${this.id}${

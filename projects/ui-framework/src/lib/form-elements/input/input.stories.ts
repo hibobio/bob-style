@@ -26,6 +26,36 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
 const inputTypes = values(InputTypes);
 const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
 
+const template2 = `
+<b-input  [value]="(inputType === inputTypes.number ? valueNum : value) || nullValue"
+          [spec]="{
+            inputType: inputType,
+            label: label,
+            description: description,
+            placeholder: placeholder,
+            hideLabelOnFocus: hideLabelOnFocus,
+            minChars: minChars,
+            maxChars: maxChars,
+            showCharCounter: showCharCounter,
+            step: step,
+            min: min,
+            max: max,
+            numberFormat: numberFormat,
+            onlyIntegers: onlyIntegers,
+            decimals: decimals,
+            readonly: readonly,
+            disabled: disabled,
+            required: required,
+            hintMessage: hintMessage,
+            warnMessage: warnMessage,
+            errorMessage: errorMessage,
+            enableBrowserAutoComplete: enableBrowserAutoComplete,
+            size: size,
+            allowedChars: allowedChars
+          }"
+            (inputEvents)="inputEvents($event)">
+</b-input>`;
+
 const template = `
 <b-input    [inputType]="inputType"
             [value]="(inputType === inputTypes.number ? valueNum : value) || nullValue"
@@ -84,7 +114,7 @@ const templateForNotes = `
 const storyTemplate = `
 <b-story-book-layout [title]="'Input'">
   <div style="max-width: 300px;">
-    ${template}
+    ${template2}
   </div>
 </b-story-book-layout>
 `;
