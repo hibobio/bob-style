@@ -26,8 +26,6 @@ export abstract class BaseButtonElement implements OnChanges, OnInit {
   @ViewChild('button', { static: true }) public button: ElementRef;
 
   @Input() text: string;
-  @Input() disabled = false;
-  @Input() size: ButtonSize;
   @Input() icon: Icons;
   @Input() active = false;
   @Input() color: any;
@@ -45,6 +43,9 @@ export abstract class BaseButtonElement implements OnChanges, OnInit {
   @HostBinding('attr.data-type') @Input() public type:
     | ButtonType
     | BackButtonType;
+
+  @HostBinding('attr.data-disabled') @Input() public disabled = false;
+  @HostBinding('attr.data-size') @Input() public size: ButtonSize = null;
 
   ngOnInit(): void {
     if (!this.buttonClass) {

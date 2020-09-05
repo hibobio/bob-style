@@ -1,6 +1,7 @@
 import { PinDirection } from './table.enum';
+import { ColumnDef } from './table.interface';
 
-export const SELECTION_COLUMN_DEF = {
+export const SELECTION_COLUMN_DEF: ColumnDef = {
   headerName: '',
   field: 'selection',
   checkboxSelection: true,
@@ -8,7 +9,7 @@ export const SELECTION_COLUMN_DEF = {
   lockPosition: true,
   width: 46,
   minWidth: 46,
-  cellClass: 'row-select',
+  cellClass: ['row-select'],
 };
 
 export const TABLE_PAGER_HEIGHT = 52;

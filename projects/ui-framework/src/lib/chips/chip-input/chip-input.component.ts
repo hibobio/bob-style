@@ -29,7 +29,6 @@ import { ChipListComponent } from '../chip-list/chip-list.component';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
 @Component({
   selector: 'b-chip-input',
@@ -57,8 +56,7 @@ export class ChipInputComponent extends BaseFormElement
   constructor(
     protected cd: ChangeDetectorRef,
     private utilsService: UtilsService,
-    private zone: NgZone,
-    private DOM: DOMhelpers
+    private zone: NgZone
   ) {
     super(cd);
     this.inputTransformers = [arrayOrFail];

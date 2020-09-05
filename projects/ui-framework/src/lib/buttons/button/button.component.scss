@@ -7,6 +7,7 @@ $minWidthLarge: 110px;
 
 :host {
   display: inline-flex;
+  border-radius: $border-radius;
 }
 
 button {
@@ -52,5 +53,35 @@ button {
     &.icon-after {
       @include button-icon-right($padding);
     }
+  }
+}
+
+:host.preloading {
+  @include preloader-mod-sm($base-selector: '&');
+
+  &[data-type] {
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+  }
+  &[data-type='tertiary'] {
+    border: 0;
+  }
+  &[data-type='primary'] {
+    border-color: var(--primary-600);
+  }
+  &[data-type='negative'] {
+    border-color: var(--negative-600);
+  }
+  &[data-type='secondary'],
+  &[data-type='disabled'],
+  &[data-disabled='true'] {
+    border-color: $border-color-light;
+  }
+  &[data-type='secondary'],
+  &[data-type='tertiary'],
+  &[data-type='disabled'],
+  &[data-disabled='true'] {
+    @include preloader-mod-grey($base-selector: '&');
   }
 }
