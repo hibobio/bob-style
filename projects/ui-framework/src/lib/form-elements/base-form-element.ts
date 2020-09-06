@@ -64,7 +64,7 @@ export abstract class BaseFormElement
   @Input() showCharCounter = true;
 
   @Input() set isDisabled(disabled: boolean) {
-    this.disabled = disabled;
+    this.disabled = Boolean(disabled);
   }
 
   @Input('spec') set setProps(spec: FormElementSpec) {

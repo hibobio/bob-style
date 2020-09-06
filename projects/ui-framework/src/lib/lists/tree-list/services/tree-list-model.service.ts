@@ -22,7 +22,10 @@ import {
   BTL_VALUE_SEPARATOR_DEF,
 } from '../tree-list.const';
 import { TreeListSearchUtils } from './tree-list-search.static';
-import { TreeListModelUtils } from './tree-list-model.static';
+import {
+  TreeListConverterConfig,
+  TreeListModelUtils,
+} from './tree-list-model.static';
 import { SelectType } from '../../list.enum';
 import { selectValueOrFail } from '../../../services/utils/transformers';
 import { TreeListValueUtils } from './tree-list-value.static';
@@ -31,14 +34,6 @@ interface TreeListGetListViewModelConfig {
   keyMap: TreeListKeyMap;
   viewFilter?: ViewFilter;
   expand?: boolean;
-}
-
-interface TreeListConverterConfig {
-  keyMap: TreeListKeyMap;
-  separator?: string;
-  collapsed?: boolean;
-  removeKeys?: string[];
-  onlyValue?: boolean;
 }
 
 interface TreeListValueToMapResult {
@@ -53,9 +48,6 @@ interface TreeListValueToMapResult {
 })
 export class TreeListModelService {
   constructor() {}
-
-  private counter = 0;
-  private maxItems = 5000;
 
   public getListViewModel(
     list: TreeListOption[],
@@ -142,136 +134,7 @@ export class TreeListModelService {
       onlyValue: false,
     }
   ): TreeListItemMap {
-    const { keyMap, separator, collapsed, onlyValue } = config;
-    this.counter = -1;
-
-    if (isNullOrUndefined(keyMap)) {
-      console.error(
-        `[TreeListModelService.getListItemsMap]:
-        keyMap is ${keyMap}`
-      );
-    }
-    const removeKeys = [...Object.values(keyMap || {}), 'selected', 'disabled'];
-
-    this.convertItem(
-      // item
-      {
-        [keyMap.children]: list || [],
-      },
-      // map
-      itemsMap,
-      // set
-      {
-        id: BTL_ROOT_ID,
-        name: BTL_ROOT_ID,
-        parentIDs: [],
-        parentCount: 0,
-        selectedCount: 0,
-        childrenCount: 0,
-        selectedIDs: new Set(),
-      },
-      // config
-      {
-        keyMap,
-        separator,
-        collapsed,
-        removeKeys,
-        onlyValue,
-      }
-    );
-
-    return itemsMap;
-  }
-
-  private convertItem(
-    item: TreeListOption,
-    itemsMap: TreeListItemMap,
-    set: Partial<TreeListItem> = {
-      parentIDs: [],
-    },
-    config: TreeListConverterConfig = {
-      keyMap: BTL_KEYMAP_DEF,
-      separator: BTL_VALUE_SEPARATOR_DEF,
-      collapsed: false,
-      removeKeys: [],
-      onlyValue: false,
-    }
-  ): TreeListItem {
-    if (this.counter > this.maxItems) {
-      console.error(
-        `[TreeListModelService.convertItem]:
-        List too complex! List with more than ${this.maxItems} items are not supported. Truncating to first ${this.maxItems} items.`
-      );
-      return;
-    }
-
-    const { keyMap, collapsed, removeKeys, onlyValue } = config;
-    let { separator } = config;
-    if (separator === undefined) {
-      separator = BTL_VALUE_SEPARATOR_DEF;
-    }
-
-    const converted: TreeListItem = {
-      ...objectRemoveKeys(item, removeKeys),
-      ...set,
-      id: set.id || TreeListModelUtils.getItemId(item, keyMap),
-      name: set.name || TreeListModelUtils.getItemName(item, keyMap),
-      childrenIDs: [],
-      groupsCount: 0,
-      originalIndex: this.counter,
-    };
-
-    if (isNotEmptyArray(item[keyMap.children])) {
-      converted.childrenIDs = [];
-      converted.selectedIDs = new Set();
-      converted.selectedCount = 0;
-
-      for (const itm of item[keyMap.children]) {
-        ++this.counter;
-
-        const cnvrtd = this.convertItem(
-          itm,
-          itemsMap,
-          // set
-          {
-            value: TreeListModelUtils.concatValue(
-              set.value || '',
-              TreeListModelUtils.getItemName(itm, keyMap),
-              separator
-            ),
-            parentIDs: [...(set.parentIDs || []), converted.id],
-          },
-          // config
-          {
-            keyMap,
-            separator,
-            collapsed,
-            removeKeys,
-            onlyValue,
-          }
-        );
-
-        if (!cnvrtd) {
-          break;
-        }
-
-        cnvrtd.parentCount = cnvrtd.parentIDs.length;
-        converted.childrenIDs.push(cnvrtd.id);
-
-        if (cnvrtd.childrenCount) {
-          ++converted.groupsCount;
-        }
-
-        TreeListModelUtils.updateMap(itemsMap, cnvrtd.id, cnvrtd, onlyValue);
-      }
-
-      converted.collapsed = collapsed && converted.id !== BTL_ROOT_ID;
-      converted.childrenCount = converted.childrenIDs.length;
-    }
-
-    TreeListModelUtils.updateMap(itemsMap, converted.id, converted, onlyValue);
-
-    return converted;
+    return TreeListModelUtils.getListItemsMap(list, itemsMap, config);
   }
 
   public getIDtoValueMap(
@@ -279,14 +142,7 @@ export class TreeListModelService {
     keyMap: TreeListKeyMap = BTL_KEYMAP_DEF,
     separator: string = BTL_VALUE_SEPARATOR_DEF
   ): Map<itemID, string> {
-    const map = (this.getListItemsMap(list, new Map(), {
-      keyMap,
-      separator,
-      collapsed: false,
-      onlyValue: true,
-    }) as any) as Map<itemID, string>;
-    map.delete(BTL_ROOT_ID);
-    return map;
+    return TreeListModelUtils.getIDtoValueMap(list, keyMap, separator);
   }
 
   public applyValueToMap(
