@@ -19,26 +19,35 @@ const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
   withKnobs
 );
 
-const template = `<b-square-button [type]="type"
+const template = `<b-round-button [type]="type"
                    [size]="size"
-                   [round]="round"
                    [icon]="icon"
-                   [color]="color"
-                   [toolTipSummary]="toolTipSummary"
                    [disabled]="disabled"
                    (clicked)="onClick($event)">
-</b-square-button>`;
+</b-round-button>
+&nbsp;&nbsp;
+<b-round-button [type]="'secondary'"
+                   [size]="size"
+                   [icon]="'b-icon-close'"
+                   [disabled]="disabled"
+                   (clicked)="onClick($event)">
+</b-round-button>`;
 
 const note = `
-  ## Square Button Element
+  ## Round Button Element
   #### Module
   *ButtonsModule*
 
   ~~~
-  ${template}
+<b-round-button [type]="type"
+                   [size]="size"
+                   [icon]="icon"
+                   [disabled]="disabled"
+                   (clicked)="onClick($event)">
+</b-round-button>
   ~~~
 
-  #### Properties
+  #### Properties (same as Square Button)
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
@@ -46,7 +55,6 @@ const note = `
   [size] | ButtonSize | button size | medium
   [icon] | Icons | button icon | &nbsp;
   [color] | IconColor | button icon color | dark
-  [round] | boolean | make it round! | &nbsp;
   [toolTipSummary] | string | Tooltip text | &nbsp;
   [text] | string | same as toolTipSummary - text will be displayed as tooltip | &nbsp;
 
@@ -55,22 +63,19 @@ const note = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Square button'">
+<b-story-book-layout [title]="'Round button'">
     ${template}
 </b-story-book-layout>
 `;
 
 story.add(
-  'Square Button',
+  'Round Button',
   () => ({
     template: storyTemplate,
     props: {
-      type: select('type', Object.values(ButtonType), ButtonType.secondary),
+      type: select('type', Object.values(ButtonType), ButtonType.primary),
       size: select('size', Object.values(ButtonSize), ButtonSize.medium),
-      icon: select('icon', Object.values(Icons), Icons.phone_link),
-      color: select('color', Object.values(IconColor), IconColor.dark),
-      round: boolean('round', false),
-      toolTipSummary: text('toolTipSummary', 'Call me'),
+      icon: select('icon', Object.values(Icons), Icons.tick),
       disabled: boolean('disabled', false),
       onClick: action('Square button'),
     },

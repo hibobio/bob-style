@@ -24,3 +24,9 @@ button {
     width: $button-size-large;
   }
 }
+
+:host[data-round='true']::ng-deep {
+  button {
+    border-radius: 50%;
+  }
+}

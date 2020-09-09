@@ -8,6 +8,7 @@ import { TextButtonComponent } from './text-button/text-button.component';
 import { ChevronButtonComponent } from './chevron-button/chevron-button.component';
 import { ActionMenuButtonComponent } from './action-menu-button/action-menu-button.component';
 import { MenuModule } from '../navigation/menu/menu.module';
+import { RoundButtonComponent } from './round/round.component';
 
 @NgModule({
   declarations: [
@@ -17,9 +18,10 @@ import { MenuModule } from '../navigation/menu/menu.module';
     BackButtonComponent,
     TextButtonComponent,
     ChevronButtonComponent,
-    ActionMenuButtonComponent
+    ActionMenuButtonComponent,
+    RoundButtonComponent,
   ],
-  imports: [CommonModule , MenuModule],
+  imports: [CommonModule, MenuModule],
   exports: [
     ButtonComponent,
     SquareButtonComponent,
@@ -27,7 +29,8 @@ import { MenuModule } from '../navigation/menu/menu.module';
     BackButtonComponent,
     TextButtonComponent,
     ChevronButtonComponent,
-    ActionMenuButtonComponent
-  ]
+    ActionMenuButtonComponent,
+    RoundButtonComponent,
+  ],
 })
 export class ButtonsModule {}

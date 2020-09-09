@@ -45,6 +45,9 @@ export {
   SquareButtonComponent
 } from './lib/buttons/square/square.component';
 export {
+  RoundButtonComponent
+} from './lib/buttons/round/round.component';
+export {
   GroupComponent
 } from './lib/buttons/group/group.component';
 export {
@@ -64,9 +67,7 @@ export {
 export {
   ActionMenuButtonComponent
 } from './lib/buttons/action-menu-button/action-menu-button.component';
-export {
-  ButtonConfig
-} from './lib/buttons/buttons.interface';
+export * from './lib/buttons/buttons.interface';
 /*
  * Avatar
  */

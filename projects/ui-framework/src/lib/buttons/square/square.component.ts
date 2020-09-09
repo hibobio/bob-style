@@ -39,6 +39,8 @@ export class SquareButtonComponent extends BaseButtonElement {
     return (!this.disabled && (this.toolTipSummary || this.text)) || null;
   }
 
+  @HostBinding('attr.data-round') @Input() round = false;
+
   getButtonClass(): string {
     return (
       (this.type || ButtonType.secondary) +
@@ -50,7 +52,11 @@ export class SquareButtonComponent extends BaseButtonElement {
           ' b-icon-' +
           (this.size === ButtonSize.small ? IconSize.medium : IconSize.large) +
           ' b-icon-' +
-          (this.color || IconColor.dark) +
+          (!this.type ||
+          this.type === ButtonType.primary ||
+          this.type === ButtonType.negative
+            ? IconColor.white
+            : IconColor.dark) +
           (this.type === ButtonType.tertiary ? ' has-hover' : '')
         : '')
     );
