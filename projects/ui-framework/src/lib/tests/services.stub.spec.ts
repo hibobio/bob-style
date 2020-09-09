@@ -1,7 +1,7 @@
 import createSpyObj = jasmine.createSpyObj;
 import spyObj = jasmine.SpyObj;
 import { of, Observable, EMPTY } from 'rxjs';
-import { UtilsService } from '../services/utils/utils.service';
+import { UtilsService, WinResizeEvent } from '../services/utils/utils.service';
 import { MobileService, MediaEvent } from '../services/utils/mobile.service';
 import { ScrollEvent } from '../services/utils/utils.interface';
 import { MockPipe } from 'ng-mocks';
@@ -23,7 +23,7 @@ export const utilsServiceStub: spyObj<UtilsService> = createSpyObj(
     'getElementInViewEvent',
   ]
 );
-utilsServiceStub.getResizeEvent.and.returnValue(of({}));
+utilsServiceStub.getResizeEvent.and.returnValue(of({} as WinResizeEvent));
 utilsServiceStub.getScrollEvent.and.returnValue(of({} as ScrollEvent));
 utilsServiceStub.getWindowKeydownEvent.and.returnValue(of({} as KeyboardEvent));
 utilsServiceStub.getWindowClickEvent.and.returnValue(of({} as MouseEvent));
