@@ -56,32 +56,66 @@ button {
   }
 }
 
-:host.preloading {
-  @include preloader-mod-sm($base-selector: '&');
+// Preloader
 
-  &[data-type] {
-    border-width: 1px;
-    border-style: solid;
-    border-color: transparent;
+:host.preloading ::ng-deep button,
+:host::ng-deep button.preloader {
+  opacity: 1;
+  visibility: visible !important;
+  pointer-events: none;
+
+  &,
+  &:before,
+  &:after {
+    color: transparent !important;
   }
-  &[data-type='tertiary'] {
-    border: 0;
+
+  @include mini-preloader(
+    $base-selector: '&',
+    $pseudo: null,
+    $full-size-selector: null,
+    $color: null
+  ) {
+    background-size: nth($preloader-size, 1) * 0.7 auto;
   }
-  &[data-type='primary'] {
-    border-color: var(--primary-600);
+
+  &.disabled,
+  &[disabled] {
+    opacity: 0.5;
   }
-  &[data-type='negative'] {
-    border-color: var(--negative-600);
-  }
-  &[data-type='secondary'],
-  &[data-type='disabled'],
-  &[data-disabled='true'] {
-    border-color: $border-color-light;
-  }
-  &[data-type='secondary'],
-  &[data-type='tertiary'],
-  &[data-type='disabled'],
-  &[data-disabled='true'] {
-    @include preloader-mod-grey($base-selector: '&');
+}
+
+:host.preloading[data-type='primary']::ng-deep button,
+:host.preloading[data-type='secondary']::ng-deep button,
+:host.preloading[data-type='negative']::ng-deep button,
+:host[data-type='primary']::ng-deep button.preloader,
+:host[data-type='secondary']::ng-deep button.preloader,
+:host[data-type='negative']::ng-deep button.preloader {
+  @include preloader-mod-white($base-selector: '&', $pseudo: null);
+}
+
+:host.preloading[data-type='primary']::ng-deep button,
+:host[data-type='primary']::ng-deep button.preloader {
+  background-color: var(--primary-700);
+}
+
+:host.preloading[data-type='secondary']::ng-deep button,
+:host[data-type='secondary']::ng-deep button.preloader {
+  background-color: $grey-500;
+}
+
+:host.preloading[data-type='negative']::ng-deep button,
+:host[data-type='negative']::ng-deep button.preloader {
+  background-color: var(--negative-700);
+}
+
+:host.preloading[data-type='tertiary']::ng-deep button,
+:host[data-type='tertiary']::ng-deep button.preloader {
+  @include preloader-mod-grey($base-selector: '&', $pseudo: null);
+}
+
+:host.preloading {
+  &:before {
+    display: none !important;
   }
 }

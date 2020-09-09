@@ -79,7 +79,7 @@ export class UtilsService {
     ).pipe(share()) as Observable<KeyboardEvent>;
   }
 
-  public getResizeEvent(): Observable<any> {
+  public getResizeEvent(): Observable<WinResizeEvent> {
     return this.winResize$;
   }
 

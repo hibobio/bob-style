@@ -163,8 +163,6 @@ export class ComponentRendererComponent implements OnChanges, OnDestroy {
   }
 
   private destroyComponent(): void {
-    console.log(this.destroy$, this.componentRef);
-
     if (this.destroy$ && !this.destroy$.isStopped) {
       this.destroy$.next(true);
       this.destroy$.complete();

@@ -46,7 +46,9 @@ export class ButtonComponent extends BaseButtonElement {
           this.type === ButtonType.negative
             ? IconColor.white
             : IconColor.dark)
-        : '')
+        : '') +
+      (this.active ? ' active' : '') +
+      (this.preloader ? ' preloader' : '')
     );
   }
 }

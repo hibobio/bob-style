@@ -34,8 +34,12 @@ $button-size-large: 44px;
       &:focus {
         background-color: var(--primary-500);
       }
-      &:active {
+      &:active,
+      &.active {
         background-color: var(--primary-700);
+      }
+      &.active {
+        pointer-events: none;
       }
     }
 
@@ -51,8 +55,12 @@ $button-size-large: 44px;
       &:focus {
         background-color: var(--negative-500);
       }
-      &:active {
+      &:active,
+      &.active {
         background-color: var(--negative-700);
+      }
+      &.active {
+        pointer-events: none;
       }
     }
 
@@ -62,8 +70,12 @@ $button-size-large: 44px;
       &:focus {
         background-color: $grey-300;
       }
-      &:active {
+      &:active,
+      &.active {
         background-color: $grey-500;
+      }
+      &.active {
+        pointer-events: none;
       }
     }
 

@@ -18,6 +18,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
   ag-grid-angular,
   .ag-root {
     max-height: var(--max-height);
+    will-change: max-height;
   }
 
   ag-grid-angular {

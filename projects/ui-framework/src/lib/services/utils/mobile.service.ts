@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { mobileBreakpoint } from '../../consts';
 import { Observable } from 'rxjs';
-import { UtilsService } from './utils.service';
+import { UtilsService, WinResizeEvent } from './utils.service';
 import {
   shareReplay,
   map,
@@ -52,7 +52,7 @@ export class MobileService {
     this.isTouchDevice = this.checkForTouchDevice();
     this.mediaEvent$ = this.utilsService.getResizeEvent().pipe(
       startWith(this.getMediaData()),
-      map((e: Event) => this.getMediaData()),
+      map((e: WinResizeEvent) => this.getMediaData()),
       distinctUntilChanged(isEqual),
       shareReplay(1)
     );

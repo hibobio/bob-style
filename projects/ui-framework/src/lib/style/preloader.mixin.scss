@@ -8,23 +8,39 @@ $preloader-size: 48px 12px;
 
 @mixin mini-preloader(
   $size: $preloader-size,
-  $base-selector: '&:empty',
   // use '&' to insert preloader on non-empty container element
-    $full-size-selector: '&',
+    $base-selector: '&:empty',
+  $full-size-selector: '&',
   $abs-pos-center: false,
-  $color: var(--primary-500),
+  $color: default,
   $pseudo: 'before'
 ) {
-  #{$base-selector} {
-    &:#{$pseudo} {
-      content: 'Loading...';
-      @include text-hide;
-      display: block;
-      overflow: hidden;
-      @include size($size);
-      margin: auto;
+  $pseudo-selector: '&:#{$pseudo}';
+  @if $pseudo == null {
+    $pseudo-selector: '&';
+  }
 
-      background-image: $preloader-svg;
+  #{$base-selector} {
+    #{$pseudo-selector} {
+      @if $pseudo != null {
+        content: 'Loading...';
+        @include text-hide;
+        display: block;
+        overflow: hidden;
+        @include size($size);
+        margin: auto;
+      }
+
+      @if $color != white and $color != grey and $color != null {
+        background-image: $preloader-svg;
+      }
+      @if $color == white {
+        background-image: $preloader-svg-wht;
+      }
+      @if $color == grey {
+        background-image: $preloader-svg;
+      }
+
       background-size: contain;
       background-position: center;
       background-repeat: no-repeat;
@@ -49,34 +65,41 @@ $preloader-size: 48px 12px;
     }
   }
 
-  @at-root .theme-bob #{$base-selector} {
-    &:#{$pseudo} {
-      background-image: $preloader-svg-bob;
+  @if $color != white and $color != grey and $color != null {
+    @at-root .theme-bob #{$base-selector} {
+      #{$pseudo-selector} {
+        background-image: $preloader-svg-bob;
+      }
     }
-  }
 
-  #{$base-selector}.preloader-grey {
-    &:#{$pseudo} {
-      background-image: $preloader-svg;
+    #{$base-selector}.preloader-grey {
+      #{$pseudo-selector} {
+        background-image: $preloader-svg;
+      }
     }
-  }
 
-  #{$base-selector}.preloader-white {
-    &:#{$pseudo} {
-      background-image: $preloader-svg-wht;
+    #{$base-selector}.preloader-white {
+      #{$pseudo-selector} {
+        background-image: $preloader-svg-wht;
+      }
     }
   }
 
   #{$base-selector}.preloader-sm {
-    &:#{$pseudo} {
+    #{$pseudo-selector} {
       transform: scale(0.7);
     }
   }
 }
 
 @mixin preloader-mod-grey($base-selector: '&:empty', $pseudo: 'before') {
+  $pseudo-selector: '&:#{$pseudo}';
+  @if $pseudo == null {
+    $pseudo-selector: '&';
+  }
+
   #{$base-selector} {
-    &:#{$pseudo} {
+    #{$pseudo-selector} {
       background-image: $preloader-svg;
     }
   }
@@ -87,16 +110,26 @@ $preloader-size: 48px 12px;
   $base-selector: '&:empty',
   $pseudo: 'before'
 ) {
+  $pseudo-selector: '&:#{$pseudo}';
+  @if $pseudo == null {
+    $pseudo-selector: '&';
+  }
+
   #{$base-selector} {
-    &:#{$pseudo} {
+    #{$pseudo-selector} {
       background-image: $preloader-svg-wht;
     }
   }
 }
 
 @mixin preloader-mod-sm($base-selector: '&:empty', $pseudo: 'before') {
+  $pseudo-selector: '&:#{$pseudo}';
+  @if $pseudo == null {
+    $pseudo-selector: '&';
+  }
+
   #{$base-selector} {
-    &:#{$pseudo} {
+    #{$pseudo-selector} {
       transform: scale(0.7);
     }
   }
