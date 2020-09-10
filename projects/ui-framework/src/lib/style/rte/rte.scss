@@ -6,11 +6,6 @@ $rte-icon-size: 17px;
 $rte-icon-color: darken($grey-600, 5%);
 $rte-icon-color-hover: darken($grey-700, 5%);
 
-$rte-placeholder-color: $rte-icon-color;
-
-$rte-label-to-placeholder: false;
-$rte-hide-label: true;
-
 // font-sizes
 
 .fr-element,
@@ -422,7 +417,8 @@ $rte-hide-label: true;
 .fr-popup {
   .fr-input-line {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: row-reverse;
+    align-items: center;
     padding: 0;
     margin-bottom: times8(2);
 
@@ -443,44 +439,23 @@ $rte-hide-label: true;
         box-shadow: none;
         padding: 0 $input-padding;
       }
+
+      &::placeholder {
+        display: none;
+        color: transparent;
+      }
     }
 
     // label
 
-    @if not $rte-label-to-placeholder {
-      input + label,
-      input.fr-not-empty + label {
-        position: static;
-        transition: none;
-        padding: 0;
-        @include bFormElement-label;
-      }
-    }
-
-    // label placeholder
-
-    @if $rte-label-to-placeholder {
-      input + label,
-      input.fr-not-empty + label {
-        @include b-body($lineHeight: $input-height, $color: $grey-600);
-        @include size;
-        @include position(0 0 0 0);
-        padding: 0 $input-padding;
-        background: none;
-        margin: 0;
-        transition: opacity 0.2s;
-        pointer-events: none;
-      }
-
-      input.fr-not-empty + label {
-        opacity: 0;
-      }
-    }
-
-    @if $rte-hide-label {
-      input + label {
-        display: none !important;
-      }
+    input + label,
+    input.fr-not-empty + label {
+      position: static;
+      transition: none;
+      @include b-body($color: $grey-600);
+      min-width: 50px;
+      margin-right: times8(1);
+      padding: 0;
     }
   }
 }
@@ -490,6 +465,49 @@ $rte-hide-label: true;
 .fr-popup .fr-link-insert-layer.fr-layer {
   @include desktop {
     width: 260px;
+  }
+
+  .fr-submit[data-cmd='linkInsert'] {
+    font-size: 0px;
+  }
+
+  .fr-link-attr + label {
+    overflow: hidden;
+    height: $font-size-body * $line-height-body;
+  }
+
+  .fr-submit[data-cmd='linkInsert'],
+  .fr-link-attr + label {
+    &:before {
+      display: block;
+      font-size: $font-size-body;
+      line-height: $line-height-body;
+      font-weight: normal;
+      font-family: inherit;
+      color: inherit;
+    }
+  }
+
+  .fr-submit[data-cmd='linkInsert'] {
+    &:before {
+      content: var(--translation-insert, 'Insert');
+    }
+  }
+
+  .fr-link-attr + label {
+    min-width: calc(var(--link-label-wch, 5) * 1ch);
+  }
+
+  input[placeholder='URL'] + label {
+    &:before {
+      content: var(--translation-url, 'URL');
+    }
+  }
+
+  input[placeholder='Text'] + label {
+    &:before {
+      content: var(--translation-text, 'Text');
+    }
   }
 }
 

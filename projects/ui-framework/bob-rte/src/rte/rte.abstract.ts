@@ -318,18 +318,29 @@ export abstract class RTEbaseElement extends BaseFormElement
     }
 
     this.DOM.setCssProps(this.host.nativeElement, {
-      '--translation-small': `'(${this.translate.instant(
+      '--translation-small': `'${this.translate.instant(
         'bob-style.rte.font-size.small'
-      )})'`,
-      '--translation-normal': `'(${this.translate.instant(
+      )}'`,
+      '--translation-normal': `'${this.translate.instant(
         'bob-style.rte.font-size.normal'
-      )})'`,
-      '--translation-large': `'(${this.translate.instant(
+      )}'`,
+      '--translation-large': `'${this.translate.instant(
         'bob-style.rte.font-size.large'
-      )})'`,
-      '--translation-huge': `'(${this.translate.instant(
+      )}'`,
+      '--translation-huge': `'${this.translate.instant(
         'bob-style.rte.font-size.huge'
-      )})'`,
+      )}'`,
+      '--translation-insert': `'${this.translate.instant(
+        'bob-style.rte.insert'
+      )}'`,
+      '--translation-url': `'${this.translate.instant('bob-style.rte.url')}'`,
+      '--translation-text': `'${this.translate.instant('bob-style.rte.text')}'`,
+
+      '--link-label-wch':
+        Math.max(
+          this.translate.instant('bob-style.rte.url').length,
+          this.translate.instant('bob-style.rte.text').length
+        ) + 1,
     });
   }
 

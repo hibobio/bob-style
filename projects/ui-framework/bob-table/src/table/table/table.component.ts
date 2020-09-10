@@ -47,6 +47,8 @@ import {
   DOMhelpers,
   EmptyStateConfig,
   hasChanges,
+  Icons,
+  IconSize,
   notFirstChanges,
   PagerConfig,
   PAGER_CONFIG_DEF,
@@ -57,6 +59,7 @@ import {
   TABLE_PAGER_HEIGHT,
   TABLE_ROW_HEIGHT,
 } from './table.consts';
+import { TranslateService } from '@ngx-translate/core';
 
 const CLOSE_BUTTON_DIAMETER = 20;
 const CLOSE_MARGIN_OFFSET = 6;
@@ -73,19 +76,25 @@ const DEFAULT_COL_ORDER_STRATEGY = ColumnOrderStrategy.AppendNew;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
-  /**
-   * @internal - use "addClass"
-   */
-  public _externalClasses = '';
-
   constructor(
     private tableUtilsService: TableUtilsService,
     private elRef: ElementRef,
     private cdr: ChangeDetectorRef,
-    private DOM: DOMhelpers
+    private DOM: DOMhelpers,
+    private translate: TranslateService
   ) {
     super();
+    this.emptyStateConfig = {
+      text: this.translate.instant('bob-style.table.empty-state-default'),
+      icon: Icons.table,
+      iconSize: IconSize.xLarge,
+    };
   }
+
+  /**
+   * @internal - use "addClass"
+   */
+  public _externalClasses = '';
 
   @ViewChild('agGrid', { static: true }) agGrid: AgGridAngular;
 
@@ -350,6 +359,14 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   addClass(className: string) {
     this._externalClasses += ` ${className}`;
     this.cdr.detectChanges();
+  }
+
+  isEmpty(): boolean {
+    return (
+      this.emptyStateConfig &&
+      (!this.rowData?.length ||
+        (this.pagerState && !this.pagerState.totalItems))
+    );
   }
 
   private getPagerState(): TablePagerState {

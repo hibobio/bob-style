@@ -2,7 +2,7 @@
                  [ngClass]="{
                   'grid-ready': gridReady,
                   'remove-column-button': removeColumnButtonEnabled,
-                  'empty-table': !rowData?.length,
+                  'empty-table': !rowData?.length && !emptyStateConfig,
                   'no-column-defs': !columnDefs?.length
                   }"
                  [class]="_externalClasses"
@@ -14,10 +14,10 @@
                  (sortChanged)="onSortChanged($event)"
                  [attr.data-row-hover]="styleConfig?.disableRowHoverBgColor ? false : true"
                  [attr.data-column-borders]="styleConfig?.showColumnBorders ? true : null"
-                 [hidden]="emptyStateConfig && !rowData?.length">
+                 [hidden]="isEmpty()">
 </ag-grid-angular>
 
-<b-pager *ngIf="enablePager && pagerState && (rowData?.length || !emptyStateConfig)"
+<b-pager *ngIf="enablePager && pagerState && !isEmpty()"
          [items]="pagerState.totalItems"
          [currentPage]="pagerState.currentPage"
          [config]="pagerConfig"
@@ -26,7 +26,7 @@
          class="mrg-t-16">
 </b-pager>
 
-<b-empty-state *ngIf="emptyStateConfig && !rowData?.length"
+<b-empty-state *ngIf="isEmpty()"
                [config]="emptyStateConfig"
                class="grid-empty-state ag-root pad-32"
                [ngClass]="{

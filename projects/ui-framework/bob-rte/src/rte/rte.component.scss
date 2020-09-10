@@ -8,11 +8,6 @@
   width: 100%;
 
   @include form-element-margins;
-
-  --translation-small: 'Small';
-  --translation-normal: 'Normal';
-  --translation-large: 'Large';
-  --translation-huge: 'Huge';
 }
 
 .bfe-label {

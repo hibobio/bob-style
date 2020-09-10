@@ -293,7 +293,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 
     background-image: linear-gradient($border-color-light, $border-color-light);
     background-size: 100% 1px;
-    background-position: left 0 top $table-header-height;
+    background-position: left 0 top ($table-header-height - 1px);
 
     & > :first-child {
       padding-top: $table-header-height;
