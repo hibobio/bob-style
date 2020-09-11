@@ -102,12 +102,6 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   @HostBinding('attr.data-type') @Input() type: TableType = TableType.Primary;
 
-  @HostBinding('class.preloading') get isPreloading() {
-    return (
-      isEmptyArray(this.columnDefs) || !this.rowData || !this.firstDataRendered
-    );
-  }
-
   @Input() rowData: any[];
   @Input() columnDefs: ColumnDef[];
 
@@ -200,11 +194,9 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    let updateColumns = false;
     let previousColumnDefValue: ColumnDef[];
 
-    if (hasChanges(changes, ['columnDefs'])) {
-      updateColumns = true;
+    if (hasChanges(changes, ['columnDefs'], true)) {
       this.columnDefConfig = {
         columnDef: changes.columnDefs.currentValue,
         orderStrategy: DEFAULT_COL_ORDER_STRATEGY,
@@ -212,13 +204,12 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       previousColumnDefValue = changes.columnDefs.previousValue;
     }
 
-    if (hasChanges(changes, ['columnDefConfig'])) {
-      updateColumns = true;
+    if (hasChanges(changes, ['columnDefConfig'], true)) {
       this.columnDefConfig = changes.columnDefConfig.currentValue;
       previousColumnDefValue = changes.columnDefConfig.previousValue?.columnDef;
     }
 
-    if (updateColumns) {
+    if (hasChanges(changes, ['columnDefs', 'columnDefConfig'], true)) {
       const existingColumns = previousColumnDefValue
         ? previousColumnDefValue
         : this.columnDefs;
@@ -236,7 +227,13 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       );
     }
 
-    if (hasChanges(changes, ['maxHeight'])) {
+    if (hasChanges(changes, ['columnDefs', 'rowData'], true)) {
+      this.DOM.bindClasses(this.elRef.nativeElement, {
+        preloading: this.isPreloading(),
+      });
+    }
+
+    if (notFirstChanges(changes, ['maxHeight'])) {
       this.maxHeight = changes.maxHeight.currentValue;
       this.setGridHeight(this.maxHeight);
     }
@@ -340,7 +337,9 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         if (this.shouldAutoSizeColumns !== false) {
           event.columnApi.autoSizeAllColumns();
         }
-
+        this.DOM.bindClasses(this.elRef.nativeElement, {
+          preloading: this.isPreloading(),
+        });
         this.cdr.detectChanges();
       },
       onGridColumnsChanged: (event: GridColumnsChangedEvent) => {
@@ -386,6 +385,12 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   isEmpty(): boolean {
     return (
       !this.rowData?.length || (this.pagerState && !this.pagerState.totalItems)
+    );
+  }
+
+  isPreloading(): boolean {
+    return (
+      isEmptyArray(this.columnDefs) || !this.rowData || !this.firstDataRendered
     );
   }
 
