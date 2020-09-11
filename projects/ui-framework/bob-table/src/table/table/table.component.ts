@@ -23,6 +23,7 @@ import {
   GridReadyEvent,
   AgGridEvent,
   RowEvent,
+  FirstDataRenderedEvent,
 } from 'ag-grid-community';
 import { get, map } from 'lodash';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
@@ -52,6 +53,7 @@ import {
   notFirstChanges,
   PagerConfig,
   PAGER_CONFIG_DEF,
+  isEmptyArray,
 } from 'bob-style';
 import {
   TABLE_AUTOSIZE_PADDING,
@@ -100,8 +102,15 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   @HostBinding('attr.data-type') @Input() type: TableType = TableType.Primary;
 
-  @Input() rowData: any[] = [];
-  @Input() columnDefs: ColumnDef[] = [];
+  @HostBinding('class.preloading') get isPreloading() {
+    return (
+      isEmptyArray(this.columnDefs) || !this.rowData || !this.firstDataRendered
+    );
+  }
+
+  @Input() rowData: any[];
+  @Input() columnDefs: ColumnDef[];
+
   @Input() columnDefConfig: ColumnDefConfig;
   @Input() rowSelection: RowSelection = null;
   @Input() maxHeight = TABLE_MIN_HEIGHT;
@@ -115,7 +124,11 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Input() enablePager = false;
   @Input() pagerConfig: PagerConfig = { ...PAGER_CONFIG_DEF };
   @Input() styleConfig: TableStyleConfig = {};
-  @Input() emptyStateConfig: EmptyStateConfig;
+
+  @Input('emptyStateConfig') set setEmptyStateConfig(config: EmptyStateConfig) {
+    this.emptyStateConfig = { ...this.emptyStateConfig, ...config };
+  }
+  public emptyStateConfig: EmptyStateConfig;
 
   @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
     SortChangedEvent
@@ -142,6 +155,8 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   readonly tableType = TableType;
 
   public gridReady = false;
+  public firstDataRendered = false;
+
   public gridOptions: GridOptions;
   public gridColumnDefs: ColumnDef[];
   public pagerState: TablePagerState;
@@ -311,25 +326,32 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       onGridReady: (event: GridReadyEvent) => {
         this.gridReady = true;
         this.gridApi = event.api || this.gridApi;
-        if (this.shouldAutoSizeColumns) {
-          event.columnApi.autoSizeAllColumns();
-        }
+        this.columnApi = event.columnApi || this.columnApi;
+
         this.setOrderedColumns(
           event.columnApi.getAllGridColumns(),
           TableEventName.onGridReady
         );
-        this.cdr.markForCheck();
+
         this.gridInit.emit();
       },
+      onFirstDataRendered: (event: FirstDataRenderedEvent) => {
+        this.firstDataRendered = true;
+        if (this.shouldAutoSizeColumns !== false) {
+          event.columnApi.autoSizeAllColumns();
+        }
+
+        this.cdr.detectChanges();
+      },
       onGridColumnsChanged: (event: GridColumnsChangedEvent) => {
-        if (this.shouldAutoSizeColumns) {
+        if (this.shouldAutoSizeColumns !== false) {
           event.columnApi.autoSizeAllColumns();
         }
         this.setOrderedColumns(
           event.columnApi.getAllGridColumns(),
           TableEventName.onGridColumnsChanged
         );
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
         this.emitColumnsChangedEvent(event.columnApi.getAllGridColumns());
       },
       onDragStopped: (event: DragStoppedEvent): void => {
@@ -363,15 +385,13 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   isEmpty(): boolean {
     return (
-      this.emptyStateConfig &&
-      (!this.rowData?.length ||
-        (this.pagerState && !this.pagerState.totalItems))
+      !this.rowData?.length || (this.pagerState && !this.pagerState.totalItems)
     );
   }
 
   private getPagerState(): TablePagerState {
     return (
-      (this.getApi() && {
+      (this.getGridApi() && {
         totalItems: this.getDisplayedRowCount(),
         currentPage: this.paginationGetCurrentPage(),
       }) || {

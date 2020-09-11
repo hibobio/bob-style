@@ -15,7 +15,7 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
       </b-avatar-image>
     </b-table-actions-wrapper>
   `,
-  styles: [':host {width: 100%; display: block}'],
+  styles: [':host {display: block}'],
 })
 export class AvatarCellComponent implements ICellRendererAngularComp {
   public params: any;

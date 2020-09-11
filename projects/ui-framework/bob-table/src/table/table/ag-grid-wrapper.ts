@@ -1,4 +1,4 @@
-import { RowNode, GridOptions, GridApi } from 'ag-grid-community';
+import { RowNode, GridOptions, GridApi, ColumnApi } from 'ag-grid-community';
 import { LicenseManager } from 'ag-grid-enterprise';
 import { AgGridAngular } from 'ag-grid-angular';
 
@@ -8,64 +8,73 @@ const LICENSE_KEY =
 export class AgGridWrapper {
   public gridOptions: GridOptions;
   public gridApi: GridApi;
+  public columnApi: ColumnApi;
   public agGrid: AgGridAngular;
 
   constructor() {
     LicenseManager.setLicenseKey(LICENSE_KEY);
   }
 
-  public getApi(): GridApi {
+  public getGridApi(): GridApi {
     return (
       this.gridApi || (this.gridApi = this.gridOptions?.api || this.agGrid?.api)
     );
   }
 
+  public getColumnApi(): ColumnApi {
+    return (
+      this.columnApi ||
+      (this.columnApi = this.gridOptions?.columnApi || this.agGrid?.columnApi)
+    );
+  }
+
   public setGridOptions(gridOptions: GridOptions) {
     this.gridOptions = gridOptions;
-    this.gridApi = this.getApi();
+    this.gridApi = this.getGridApi();
+    this.columnApi = this.getColumnApi();
   }
 
   public getDisplayedRowCount(): number {
-    return this.getApi()?.getDisplayedRowCount();
+    return this.getGridApi()?.getDisplayedRowCount();
   }
 
   public paginationGetCurrentPage(): number {
-    return this.getApi()?.paginationGetCurrentPage();
+    return this.getGridApi()?.paginationGetCurrentPage();
   }
 
   public paginationGoToPage(page: number): void {
-    this.getApi()?.paginationGoToPage(page);
+    this.getGridApi()?.paginationGoToPage(page);
   }
 
   public paginationSetPageSize(pageSize: number): void {
-    this.getApi()?.paginationSetPageSize(pageSize);
+    this.getGridApi()?.paginationSetPageSize(pageSize);
   }
 
   public addRows(rows: any[]): void {
-    this.getApi()?.updateRowData({ add: rows });
+    this.getGridApi()?.updateRowData({ add: rows });
   }
 
   public filterRows(filterQuery: string): void {
-    this.getApi()?.setQuickFilter(filterQuery);
+    this.getGridApi()?.setQuickFilter(filterQuery);
   }
 
   public resetFilter(): void {
-    this.getApi()?.resetQuickFilter();
+    this.getGridApi()?.resetQuickFilter();
   }
 
   public removeRows(rows: any[]): void {
-    this.getApi()?.updateRowData({ remove: rows });
+    this.getGridApi()?.updateRowData({ remove: rows });
   }
 
   public updateRows(rowsData: any[]): void {
-    this.getApi()?.updateRowData({ update: rowsData });
+    this.getGridApi()?.updateRowData({ update: rowsData });
   }
 
   public getRow(rowIndex: string): RowNode {
-    return this.getApi()?.getRowNode(rowIndex);
+    return this.getGridApi()?.getRowNode(rowIndex);
   }
 
   public deselectAll(): void {
-    this.getApi()?.deselectAll();
+    this.getGridApi()?.deselectAll();
   }
 }

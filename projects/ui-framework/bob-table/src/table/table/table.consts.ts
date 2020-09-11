@@ -7,8 +7,8 @@ export const SELECTION_COLUMN_DEF: ColumnDef = {
   checkboxSelection: true,
   pinned: PinDirection.Left,
   lockPosition: true,
-  width: 46,
   minWidth: 46,
+  maxWidth: 46,
   cellClass: ['row-select'],
 };
 

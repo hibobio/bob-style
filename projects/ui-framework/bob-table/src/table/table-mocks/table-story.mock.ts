@@ -13,13 +13,30 @@ import {
   randomFromArray,
   randomNumber,
   simpleUID,
+  mockThings,
+  mockAnimals,
 } from 'bob-style';
+
+const gridActions: GridActions = {
+  menuItems: [
+    {
+      label: 'menu item 1',
+      action: ($event) => console.log('menu item 1 clicked', $event),
+    },
+    {
+      label: 'menu item 2',
+      action: ($event) => console.log('menu item 2 clicked', $event),
+    },
+  ],
+};
 
 export const mockColumnsDefs: ColumnDef[] = [
   {
     headerName: '',
     field: 'about.avatar.imageSource',
     cellRendererFramework: AvatarCellComponent,
+    minWidth: 66,
+    maxWidth: 66,
     pinned: PinDirection.Left,
     lockPosition: true,
     resizable: false,
@@ -61,6 +78,46 @@ export const mockColumnsDefs: ColumnDef[] = [
     flex: 1,
   },
 ];
+
+const mockFields = mockThings(10);
+
+export const mockColumnsDefsExtended: ColumnDef[] = [
+  ...mockColumnsDefs,
+
+  ...mockFields.map((field) => ({
+    headerName: field,
+    field: field,
+  })),
+];
+
+export const mockRowData = makeArray(100).map((i, index) => ({
+  fullName: index === 0 ? 'Érica Ûulrich' : mockNames(1),
+  id: simpleUID(),
+  email: mockText(1).toLowerCase() + '@' + mockText(1).toLowerCase() + '.com',
+  internal: {
+    status: randomFromArray([
+      'Single',
+      'Married',
+      'Divorsed',
+      'Engaged',
+      'Separated',
+      'Diceased',
+    ]),
+  },
+  about: {
+    avatar: {
+      imageSource: mockAvatar(),
+    },
+  },
+  hiredDate: mockDate(),
+
+  ...mockFields.reduce((obj, field) => {
+    obj[field] = mockAnimals(1);
+    return obj;
+  }, {}),
+  actions: gridActions,
+  isClickable: true,
+}));
 
 export const treeColumnDefsMock: ColumnDef[] = [
   {
@@ -214,43 +271,6 @@ export const treeRowDataMock = [
     employmentType: 'Permanent',
   },
 ];
-
-const gridActions: GridActions = {
-  menuItems: [
-    {
-      label: 'menu item 1',
-      action: ($event) => console.log('menu item 1 clicked', $event),
-    },
-    {
-      label: 'menu item 2',
-      action: ($event) => console.log('menu item 2 clicked', $event),
-    },
-  ],
-};
-
-export const mockRowData = makeArray(100).map((i, index) => ({
-  fullName: index === 0 ? 'Érica Ûulrich' : mockNames(1),
-  id: simpleUID(),
-  email: mockText(1).toLowerCase() + '@' + mockText(1).toLowerCase() + '.com',
-  internal: {
-    status: randomFromArray([
-      'Single',
-      'Married',
-      'Divorsed',
-      'Engaged',
-      'Separated',
-      'Diceased',
-    ]),
-  },
-  about: {
-    avatar: {
-      imageSource: mockAvatar(),
-    },
-  },
-  hiredDate: mockDate(),
-  actions: gridActions,
-  isClickable: true,
-}));
 
 function makeBranch(names: string[]) {
   return makeArray(randomNumber(1, names.length)).map(

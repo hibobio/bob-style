@@ -21,6 +21,7 @@ import {
   mockRowData,
   treeColumnDefsMock,
   treeRowDataMock,
+  mockColumnsDefsExtended,
 } from './table-mocks/table-story.mock';
 import { TableModule } from './table.module';
 import {
@@ -30,6 +31,8 @@ import {
 import { TableComponent } from './table/table.component';
 import { RowSelection, TableType } from './table/table.enum';
 import { ColumnDef } from './table/table.interface';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'b-tree-cell-avatar',
@@ -47,11 +50,10 @@ const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(
   withKnobs
 );
 
-const template = `
-<b-table #table
+const template = `<b-table #table
     [type]="type"
-    [rowData]="rowData"
-    [columnDefs]="columnDefs"
+    [rowData]="rowData | async"
+    [columnDefs]="columnDefs | async"
     [maxHeight]="maxHeight"
     [rowSelection]="rowSelection"
     [removeColumnButtonEnabled]="removeColumnButtonEnabled"
@@ -69,8 +71,7 @@ const template = `
     (pagerPageSizeChange)="pagerPageSizeChange($event)"
     (columnsOrderChanged)="columnsOrderChanged($event)"
     (columnRemoved)="columnRemoved($event)">
-</b-table>
-`;
+</b-table>`;
 const treeTemplate = `<b-table
     [type]="type"
     [treeConfig]="treeConfig"
@@ -241,8 +242,10 @@ function tableStoryFactory({
       },
       'Data'
     ),
-    columnDefs: object(`${title} columnDefs`, tableCols, 'Data'),
-    rowData: object(`${title} rowData`, tableData, 'Data'),
+    // columnDefs: object(`${title} columnDefs`, tableCols, 'Data'),
+    // rowData: object(`${title} rowData`, tableData, 'Data'),
+    columnDefs: of(object(`${title} columnDefs`, tableCols, 'Data')),
+    rowData: of(object(`${title} rowData`, tableData, 'Data')),
     rowClicked: action('Row clicked'),
     cellClicked: action('Cell clicked'),
     selectionChanged: action('Selection changed'),
@@ -288,7 +291,7 @@ story.add(
     tableStoryFactory({
       title: 'Data Table',
       HTMLTemplate: storyTemplate,
-      tableCols: mockColumnsDefs,
+      tableCols: mockColumnsDefsExtended,
       tableData: mockRowData,
     }),
   { notes: { markdown: note } }

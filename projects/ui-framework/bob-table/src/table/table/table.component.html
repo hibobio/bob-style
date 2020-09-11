@@ -1,9 +1,7 @@
 <ag-grid-angular #agGrid
                  [ngClass]="{
-                  'grid-ready': gridReady,
                   'remove-column-button': removeColumnButtonEnabled,
-                  'empty-table': !rowData?.length && !emptyStateConfig,
-                  'no-column-defs': !columnDefs?.length
+                  'empty': !rowData?.length
                   }"
                  [class]="_externalClasses"
                  [rowData]="rowData"
@@ -28,7 +26,4 @@
 
 <b-empty-state *ngIf="isEmpty()"
                [config]="emptyStateConfig"
-               class="grid-empty-state ag-root pad-32"
-               [ngClass]="{
-                 'no-column-defs': !columnDefs?.length
-               }"></b-empty-state>
+               class="grid-empty-state ag-root pad-32"></b-empty-state>

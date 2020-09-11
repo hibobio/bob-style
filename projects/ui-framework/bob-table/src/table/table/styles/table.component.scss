@@ -9,9 +9,12 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 
 :host {
   --max-height: $table-row-height * 6;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   overflow: hidden;
+
+  &.preloading {
+    min-height: $min-table-height !important;
+  }
 }
 
 :host ::ng-deep {
@@ -33,7 +36,8 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
   ag-grid-angular {
     display: block;
     width: 100%;
-    visibility: hidden;
+    grid-row-start: 1;
+    grid-column-start: 1;
 
     &,
     .ag-root-wrapper,
@@ -43,10 +47,6 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 
     .ag-center-cols-viewport {
       @include hide-scrollbar;
-    }
-
-    &.grid-ready {
-      visibility: visible;
     }
   }
 
@@ -64,7 +64,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 
   .ag-header {
     background-color: white;
-    border-bottom: 1px solid $grey-300;
+    border-bottom: 1px solid $border-color-light;
     font-weight: $font-weight-bold-body;
 
     .ag-header-row {
@@ -137,7 +137,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 
   .ag-row {
     transition: none;
-    border-bottom: 1px solid $grey-300;
+    border-bottom: 1px solid $border-color-light;
     display: flex;
     align-items: center;
 
@@ -170,6 +170,8 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
         height: 100%;
         display: flex;
         align-content: center;
+        min-width: 46px;
+        max-width: 46px;
 
         .ag-cell-wrapper,
         .ag-selection-checkbox {
@@ -194,7 +196,8 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     }
 
     &.ag-row-last {
-      border-bottom: none;
+      border-bottom: 0;
+      // box-shadow: 0px 1px 0 0 $border-color-light;
     }
 
     &.row-clickable {
@@ -228,84 +231,30 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 
 // empty state
 
-:host ::ng-deep {
-  .ag-overlay {
-    @include position(0 0 0 0);
-  }
-
-  .ag-overlay-wrapper {
-    display: block;
-    padding: ($table-header-height + times8(3)) times8(2) times8(3) times8(2);
-    @include b-icon(
-      $icon: 'table',
-      $size: x-large,
-      $color: light,
-      $hover: false
-    ) {
-      margin: 0 auto 8px auto;
-    }
-  }
-
-  .ag-overlay-wrapper > span,
-  .ag-overlay-no-rows-center,
-  .ag-overlay-loading-center {
-    color: $grey-600;
-  }
-
-  .empty-table {
-    * {
-      overflow: hidden;
-    }
-    .ag-header-container,
-    .ag-header-cell {
-      width: auto !important;
-    }
-    .ag-header-row {
-      min-width: 100%;
-    }
-    .ag-root {
-      min-height: $min-table-height;
-    }
-    .ag-header {
-      @include disabled-state;
-    }
-    .ag-icon {
-      display: none !important;
-    }
-  }
-
-  .empty-table.no-column-defs {
-    .ag-header {
-      display: none;
-    }
-    .ag-root {
-      min-height: $min-table-height - $table-header-height;
-    }
-    .ag-overlay-wrapper {
-      padding: times8(3) times8(2);
-    }
-  }
-}
-
 :host::ng-deep {
+  ag-grid-angular.empty,
+  ag-grid-angular.empty .ag-root {
+    min-height: $min-table-height;
+  }
+
   .grid-empty-state {
     min-height: $min-table-height;
-
+    grid-row-start: 1;
+    grid-column-start: 1;
     background-image: linear-gradient($border-color-light, $border-color-light);
     background-size: 100% 1px;
     background-position: left 0 top ($table-header-height - 1px);
 
+    padding: times8(3);
+
     & > :first-child {
       padding-top: $table-header-height;
     }
+  }
 
-    &.no-column-defs {
-      min-height: $min-table-height - $table-header-height;
-      background-image: none;
-
-      & > :first-child {
-        padding-top: 0;
-      }
+  ag-grid-angular:not(.empty) ~ .grid-empty-state {
+    b-button {
+      display: none;
     }
   }
 }
@@ -348,6 +297,6 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 }
 
 [hidden] {
-  // opacity: 0.5;
-  display: none;
+  display: block;
+  visibility: hidden !important;
 }
