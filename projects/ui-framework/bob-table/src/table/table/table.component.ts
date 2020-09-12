@@ -226,9 +226,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       );
     }
 
-    if (
-      hasChanges(changes, ['columnDefs', 'columnDefConfig', 'rowData'], true)
-    ) {
+    if (hasChanges(changes, ['columnDefs', 'columnDefConfig', 'rowData'])) {
       this.setPreloadingClass();
     }
 
