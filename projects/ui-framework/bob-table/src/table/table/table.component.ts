@@ -376,10 +376,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   private setPreloadingClass(): void {
     this.DOM.bindClasses(this.elRef.nativeElement, {
-      preloading:
-        !this.gridReady ||
-        !this.gridColumnDefs?.length ||
-        this.rowData === undefined,
+      preloading: this.isPreloading(),
     });
   }
 
@@ -388,9 +385,18 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     this.cdr.detectChanges();
   }
 
+  isPreloading(): boolean {
+    return (
+      !this.gridReady ||
+      !this.gridColumnDefs?.length ||
+      this.rowData === undefined
+    );
+  }
+
   isEmpty(): boolean {
     return (
-      !this.rowData?.length || (this.pagerState && !this.pagerState.totalItems)
+      (this.rowData !== undefined && !this.rowData?.length) ||
+      (this.pagerState && !this.pagerState.totalItems)
     );
   }
 

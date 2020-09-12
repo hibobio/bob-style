@@ -457,8 +457,13 @@ export const arrayRemoveItemsMutate = <T = any>(arr: T[], items: T[]): T[] => {
 export const lastItem = <T = any>(arr: T[]): T =>
   !isIterable(arr) ? ((arr as any) as T) : arr[arr.length - 1];
 
-export const arrayFlatten = <T = any>(arr: any[]): T[] =>
-  asArray(arr).reduce((acc, val) => acc.concat(val), []);
+// export const arrayFlatten = <T = any>(arr: any[]): T[] =>
+//   asArray(arr).reduce((acc, val) => acc.concat(val), []);
+
+export const arrayFlatten = <T = any>(smth: any[]): T[] =>
+  Array.isArray(smth)
+    ? smth.reduce((result, val) => result.concat(arrayFlatten(val)), [])
+    : smth;
 
 export const arrayMode = <T = any>(arr: T[]): T =>
   isArray(arr) &&
