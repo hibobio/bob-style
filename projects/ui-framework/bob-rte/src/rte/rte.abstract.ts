@@ -331,15 +331,19 @@ export abstract class RTEbaseElement extends BaseFormElement
         'bob-style.rte.font-size.huge'
       )}'`,
       '--translation-insert': `'${this.translate.instant(
-        'bob-style.rte.insert'
+        'bob-style.rte.link.insert'
       )}'`,
-      '--translation-url': `'${this.translate.instant('bob-style.rte.url')}'`,
-      '--translation-text': `'${this.translate.instant('bob-style.rte.text')}'`,
+      '--translation-url': `'${this.translate.instant(
+        'bob-style.rte.link.url'
+      )}'`,
+      '--translation-text': `'${this.translate.instant(
+        'bob-style.rte.link.text'
+      )}'`,
 
       '--link-label-wch':
         Math.max(
-          this.translate.instant('bob-style.rte.url').length,
-          this.translate.instant('bob-style.rte.text').length
+          this.translate.instant('bob-style.rte.link.url').length,
+          this.translate.instant('bob-style.rte.link.text').length
         ) + 1,
     });
   }
