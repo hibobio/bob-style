@@ -390,8 +390,11 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   }
 
   isPreloading(): boolean {
+    console.log('isPreloading this.rowData', this.rowData);
     return (
-      !this.gridColumnDefs?.length || !this.rowData || !this.firstDataRendered
+      !this.firstDataRendered ||
+      !this.gridColumnDefs?.length ||
+      this.rowData === undefined
     );
   }
 

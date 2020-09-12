@@ -245,7 +245,9 @@ function tableStoryFactory({
     // columnDefs: object(`${title} columnDefs`, tableCols, 'Data'),
     // rowData: object(`${title} rowData`, tableData, 'Data'),
     columnDefs: of(object(`${title} columnDefs`, tableCols, 'Data')),
-    rowData: of(object(`${title} rowData`, tableData, 'Data')),
+    rowData: of(object(`${title} rowData`, tableData, 'Data')).pipe(
+      delay(3000)
+    ),
     rowClicked: action('Row clicked'),
     cellClicked: action('Cell clicked'),
     selectionChanged: action('Selection changed'),
