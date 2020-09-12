@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-function _document(): any {
+function _document(): Document {
   // return the global native browser document object
   return document;
 }
@@ -9,7 +9,7 @@ function _document(): any {
   providedIn: 'root',
 })
 export class DocumentRef {
-  get nativeDocument(): any {
+  get nativeDocument(): Document {
     return _document();
   }
 }

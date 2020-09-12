@@ -53,7 +53,6 @@ import {
   notFirstChanges,
   PagerConfig,
   PAGER_CONFIG_DEF,
-  isEmptyArray,
 } from 'bob-style';
 import {
   TABLE_AUTOSIZE_PADDING,
@@ -227,7 +226,9 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       );
     }
 
-    if (hasChanges(changes, ['columnDefs', 'rowData'], true)) {
+    if (
+      hasChanges(changes, ['columnDefs', 'columnDefConfig', 'rowData'], true)
+    ) {
       this.DOM.bindClasses(this.elRef.nativeElement, {
         preloading: this.isPreloading(),
       });
@@ -390,7 +391,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   isPreloading(): boolean {
     return (
-      isEmptyArray(this.columnDefs) || !this.rowData || !this.firstDataRendered
+      !this.gridColumnDefs?.length || !this.rowData || !this.firstDataRendered
     );
   }
 
