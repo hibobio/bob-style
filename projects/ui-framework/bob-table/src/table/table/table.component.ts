@@ -229,9 +229,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     if (
       hasChanges(changes, ['columnDefs', 'columnDefConfig', 'rowData'], true)
     ) {
-      this.DOM.bindClasses(this.elRef.nativeElement, {
-        preloading: this.isPreloading(),
-      });
+      this.setPreloadingClass();
     }
 
     if (notFirstChanges(changes, ['maxHeight'])) {
@@ -276,18 +274,6 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     this.columnsChanged.emit({ columns: this.columns.slice() });
   }
 
-  private setGridHeight(height: number): void {
-    this.DOM.setCssProps(this.elRef.nativeElement, {
-      '--max-height': `${Math.max(
-        height -
-          (this.enablePager || this.tableGridOptions?.pagination
-            ? TABLE_PAGER_HEIGHT
-            : 0),
-        TABLE_MIN_HEIGHT
-      )}px`,
-    });
-  }
-
   public getOrderedColumnFields(): string[] {
     return this.columns;
   }
@@ -326,11 +312,12 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         this.gridApi = event.api || this.gridApi;
         this.columnApi = event.columnApi || this.columnApi;
 
+        this.setPreloadingClass();
+
         this.setOrderedColumns(
           event.columnApi.getAllGridColumns(),
           TableEventName.onGridReady
         );
-
         this.gridInit.emit();
       },
       onFirstDataRendered: (event: FirstDataRenderedEvent) => {
@@ -338,9 +325,6 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         if (this.shouldAutoSizeColumns !== false) {
           event.columnApi.autoSizeAllColumns();
         }
-        this.DOM.bindClasses(this.elRef.nativeElement, {
-          preloading: this.isPreloading(),
-        });
         this.cdr.detectChanges();
       },
       onGridColumnsChanged: (event: GridColumnsChangedEvent) => {
@@ -378,6 +362,27 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     };
   }
 
+  private setGridHeight(height: number): void {
+    this.DOM.setCssProps(this.elRef.nativeElement, {
+      '--max-height': `${Math.max(
+        height -
+          (this.enablePager || this.tableGridOptions?.pagination
+            ? TABLE_PAGER_HEIGHT
+            : 0),
+        TABLE_MIN_HEIGHT
+      )}px`,
+    });
+  }
+
+  private setPreloadingClass(): void {
+    this.DOM.bindClasses(this.elRef.nativeElement, {
+      preloading:
+        !this.gridReady ||
+        !this.gridColumnDefs?.length ||
+        this.rowData === undefined,
+    });
+  }
+
   addClass(className: string) {
     this._externalClasses += ` ${className}`;
     this.cdr.detectChanges();
@@ -386,15 +391,6 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   isEmpty(): boolean {
     return (
       !this.rowData?.length || (this.pagerState && !this.pagerState.totalItems)
-    );
-  }
-
-  isPreloading(): boolean {
-    console.log('isPreloading this.rowData', this.rowData);
-    return (
-      !this.firstDataRendered ||
-      !this.gridColumnDefs?.length ||
-      this.rowData === undefined
     );
   }
 
