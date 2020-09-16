@@ -560,7 +560,7 @@ export * from './lib/services/utils/utils.service';
 export { ScrollEvent } from './lib/services/utils/utils.interface';
 export * from './lib/services/utils/window-ref.service';
 export { DocumentRef } from './lib/services/utils/document-ref.service';
-export { MobileService, WidthMode, MediaEvent, MobileOS } from './lib/services/utils/mobile.service';
+export * from './lib/services/utils/mobile.service';
 export * from './lib/services/utils/functional-utils';
 export * from './lib/services/utils/security-utils';
 // URL utils
@@ -591,6 +591,8 @@ export { ImageDimensionsService } from './lib/services/utils/image-dimensions.se
 export * from './lib/services/utils/nglet.directive';
 // NgSubscribe
 export * from './lib/services/utils/ngsubscribe.directive';
+// ColorService
+export * from './lib/services/color-service/color.service';
 
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
