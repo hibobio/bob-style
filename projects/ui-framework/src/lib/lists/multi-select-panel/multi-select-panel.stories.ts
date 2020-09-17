@@ -22,9 +22,13 @@ import { cloneDeep } from 'lodash';
 import { SelectGroupOption } from '../list.interface';
 import { SelectMode } from '../list.enum';
 
+// @ts-ignore: md file and not a module
 import listInterfaceDoc from '../list.interface.md';
+// @ts-ignore: md file and not a module
 import listSelectsPropsDoc from '../lists-selects.properties.md';
+// @ts-ignore: md file and not a module
 import selectPanelsPropsDoc from '../select-panels.properties.md';
+// @ts-ignore: md file and not a module
 import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(

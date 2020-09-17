@@ -16,10 +16,12 @@ import { MultiListAndChipsModule } from './multi-list-and-chips.module';
 import { action } from '@storybook/addon-actions';
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 import { Icons } from '../../icons/icons.enum';
-
-import listInterfaceDoc from '../../lists/list.interface.md';
-import listSelectsPropsDoc from '../../lists/lists-selects.properties.md';
 import { number } from '@storybook/addon-knobs';
+
+// @ts-ignore: md file and not a module
+import listInterfaceDoc from '../../lists/list.interface.md';
+// @ts-ignore: md file and not a module
+import listSelectsPropsDoc from '../../lists/lists-selects.properties.md';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs

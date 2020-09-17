@@ -20,6 +20,7 @@ import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-
 import { RichTextEditorModule } from './rte.module';
 import { mockText } from '../../../src/lib/mock.const';
 import { xssMock } from '../../../src/lib/services/utils/xss.mock';
+import { FormElementsCommonProps } from '../../../src/lib/form-elements/form-elements.stories.common';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -56,7 +57,8 @@ const template = `
       [errorMessage]="errorMessage"
       (changed)="change($event)"
       (focused)="focus($event)"
-      (blurred)="blur($event)">
+      (blurred)="blur($event)"
+      [focusOnInit]="focusOnInit">
   </b-rich-text-editor>
 `;
 
@@ -76,6 +78,7 @@ const notesTemplate = `<b-rich-text-editor
       [required]="required"
       [hintMessage]="hintMessage"
       [errorMessage]="errorMessage"
+      [focusOnInit]="focusOnInit"
       (changed)="change($event)"
       (blurred)="blur($event)">
 </b-rich-text-editor>`;
@@ -214,26 +217,17 @@ story.add(
         rteMockHtml: text('html', rteMockHtml, 'Data'),
         xssTest: xssMock,
 
-        placeholder: text('placeholder', 'Compose an epic...', 'Props'),
-        label: text('label', 'Edit rich textor', 'Props'),
-        hideLabelOnFocus: boolean('hideLabelOnFocus', false, 'Props'),
-        description: text('description', mockText(30), 'Props'),
+        ...FormElementsCommonProps(
+          'Edit rich textor',
+          'Compose an epic...',
+          mockText(30),
+          'Props'
+        ),
 
         minChars: number('minChars', 20, {}, 'Props'),
         maxChars: number('maxChars', undefined, {}, 'Props'),
         minHeight: number('minHeight', 185, {}, 'Props'),
         maxHeight: number('maxHeight', 350, {}, 'Props'),
-
-        disabled: boolean('disabled', false, 'Props'),
-        required: boolean('required', true, 'Props'),
-
-        hintMessage: text(
-          'hintMessage',
-          'This field should contain something',
-          'Props'
-        ),
-        warnMessage: text('warnMessage', '', 'Props'),
-        errorMessage: text('errorMessage', '', 'Props'),
 
         controls: array('controls', controlsDef, '\n', 'Props'),
         disableControls: array(

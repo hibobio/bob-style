@@ -13,7 +13,9 @@ import { SocialModule } from './social.module';
 import { SearchModule } from '../../search/search/search.module';
 import { Social } from './social.enum';
 
+// @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';
+import { FormElementsCommonProps } from '../form-elements.stories.common';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -30,6 +32,7 @@ const template = `
           [hintMessage]="hintMessage"
           [warnMessage]="warnMessage"
           [errorMessage]="errorMessage"
+          [focusOnInit]="focusOnInit"
           (socialInputChange)="socialInputChange($event)">
 </b-social>
 `;
@@ -75,14 +78,9 @@ story.add(
       props: {
         type: select('type', Social, Social.facebook),
         value: text('value', ''),
-        label: text('label', ''),
-        placeholder: text('placeholder', 'username'),
-        hintMessage: text('hintMessage', 'This field should contain something'),
-        warnMessage: text('warnMessage', ''),
-        errorMessage: text('errorMessage', ''),
-        disabled: boolean('disabled', false),
-        required: boolean('required', false),
-        readonly: boolean('readonly', false),
+
+        ...FormElementsCommonProps('Social label', 'username', ''),
+
         socialInputChange: action('social'),
       },
       moduleMetadata: {

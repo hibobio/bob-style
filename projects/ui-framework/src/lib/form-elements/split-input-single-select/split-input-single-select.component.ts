@@ -129,6 +129,7 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
 
   ngAfterViewInit(): void {
     this.input = this.bInput.input;
+    super.ngAfterViewInit();
   }
 
   onInputChange(event: InputEvent): void {

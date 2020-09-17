@@ -1,18 +1,16 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  boolean,
-  select,
-  text,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxModule } from './checkbox.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-
-import formElemsPropsDoc from '../form-elements.properties.md';
 import { mockText } from '../../mock.const';
+
+import { FormElementsCommonProps } from '../form-elements.stories.common';
+
+// @ts-ignore: md file and not a module
+import formElemsPropsDoc from '../form-elements.properties.md';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -30,7 +28,8 @@ const template = `
             [description]="description"
             [hintMessage]="hintMessage"
             [warnMessage]="warnMessage"
-            [errorMessage]="errorMessage">
+            [errorMessage]="errorMessage"
+            [focusOnInit]="focusOnInit">
 </b-checkbox>
 `;
 
@@ -67,16 +66,8 @@ story.add(
       props: {
         checkboxChange: action('checkboxChange'),
         value: boolean('value', true),
-        label: text('label', 'Form element label'),
-        placeholder: text('placeholder', 'Check this'),
         indeterminate: boolean('indeterminate', false),
-        disabled: boolean('disabled', false),
-        required: boolean('required', false),
-        readonly: boolean('readonly', false),
-        hintMessage: text('hintMessage', 'Usefull hint'),
-        warnMessage: text('warnMessage', ''),
-        errorMessage: text('errorMessage', ''),
-        description: text('description', mockText(15)),
+        ...FormElementsCommonProps('You have to', 'Check this'),
       },
       moduleMetadata: {
         imports: [

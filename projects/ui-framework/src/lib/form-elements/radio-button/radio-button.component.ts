@@ -124,6 +124,7 @@ export class RadioButtonComponent extends BaseFormElement
 
   ngAfterViewInit(): void {
     this.input = this.inputs.toArray()[0];
+    super.ngAfterViewInit();
   }
 
   public onRadioChange(key): void {

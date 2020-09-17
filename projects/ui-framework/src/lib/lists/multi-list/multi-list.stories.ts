@@ -12,12 +12,15 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { optionsMock, optionsMockDef } from './multi-list.mock';
 import { cloneDeep } from 'lodash';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
-
-import listInterfaceDoc from '../list.interface.md';
-import listSelectsPropsDoc from '../lists-selects.properties.md';
-import listsPropsDoc from '../lists.properties.md';
 import { select, number } from '@storybook/addon-knobs';
 import { SelectMode } from '../list.enum';
+
+// @ts-ignore: md file and not a module
+import listInterfaceDoc from '../list.interface.md';
+// @ts-ignore: md file and not a module
+import listSelectsPropsDoc from '../lists-selects.properties.md';
+// @ts-ignore: md file and not a module
+import listsPropsDoc from '../lists.properties.md';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs

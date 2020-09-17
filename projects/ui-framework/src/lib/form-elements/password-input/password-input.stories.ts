@@ -16,8 +16,11 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
 
+// @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';
+// @ts-ignore: md file and not a module
 import inputElemsPropsDoc from '../input.properties.md';
+import { FormElementsCommonProps } from '../form-elements.stories.common';
 
 const template = `
 <b-password-input
@@ -34,7 +37,7 @@ const template = `
               [disabled]="disabled"
               [required]="required"
               [hideLabelOnFocus]="hideLabelOnFocus"
-              [enableBrowserAutoComplete]="enableBrowserAutoComplete"
+              [focusOnInit]="focusOnInit"
               (inputEvents)="onChange($event)">
 </b-password-input>
 `;
@@ -72,22 +75,12 @@ story.add(
       template: storyTemplate,
       props: {
         value: text('value', ''),
-        label: text('label', 'Password input'),
-        placeholder: text('placeholder', 'Enter password'),
-        description: text('description', ''),
+
+        ...FormElementsCommonProps('Password input', 'Enter password', ''),
+
         minChars: number('minChars', 8),
         maxChars: number('maxChars', 30),
-        readonly: boolean('readonly', false),
-        disabled: boolean('disabled', false),
-        required: boolean('required', false),
-        hintMessage: text(
-          'hintMessage',
-          'Should be at least 8 characters long'
-        ),
-        warnMessage: text('warnMessage', ''),
-        errorMessage: text('errorMessage', ''),
-        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
-        enableBrowserAutoComplete: boolean('enableBrowserAutoComplete', false),
+
         onChange: action('Input changed'),
       },
       moduleMetadata: {

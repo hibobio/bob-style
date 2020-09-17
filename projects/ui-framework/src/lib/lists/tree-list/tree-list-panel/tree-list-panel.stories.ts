@@ -14,7 +14,9 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
+// @ts-ignore: md file and not a module
 import treeListPropsDoc from '../tree-list.properties.md';
+// @ts-ignore: md file and not a module
 import treeListPanelPropsDoc from '../tree-list-panel.properties.md';
 
 const componentTemplate = `<b-tree-list-panel

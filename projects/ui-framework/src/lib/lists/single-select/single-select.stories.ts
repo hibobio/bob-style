@@ -21,12 +21,18 @@ import { cloneDeep } from 'lodash';
 import { ListModelService } from '../list-service/list-model.service';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
+// @ts-ignore: md file and not a module
 import listInterfaceDoc from '../list.interface.md';
+// @ts-ignore: md file and not a module
 import selectsPropsDoc from '../selects.properties.md';
+// @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
+// @ts-ignore: md file and not a module
 import listSelectsPropsDoc from '../lists-selects.properties.md';
+// @ts-ignore: md file and not a module
 import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -51,6 +57,7 @@ const template = `
                  [hintMessage]="hintMessage"
                  [errorMessage]="errorMessage"
                  [size]="size"
+                 [focusOnInit]="focusOnInit"
                  (opened)="opened()"
                  (closed)="closed()"
                  (selectChange)="selectChange($event)"
@@ -148,18 +155,13 @@ const toAdd = () => ({
       'Props'
     ),
 
-    label: text('label', 'label text', 'Props'),
-    description: text('description', mockText(30), 'Props'),
-    placeholder: text('placeholder', 'placeholder text', 'Props'),
-    disabled: boolean('disabled', false, 'Props'),
-    required: boolean('required', false, 'Props'),
-    readonly: boolean('readonly', false, 'Props'),
-    hintMessage: text(
-      'hintMessage',
-      'This field should contain something',
+    ...FormElementsCommonProps(
+      'Single select',
+      'Pick one',
+      mockText(30),
       'Props'
     ),
-    errorMessage: text('errorMessage', '', 'Props'),
+
     size: select(
       'size',
       Object.values(FormElementSize),

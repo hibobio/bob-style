@@ -1,18 +1,14 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  select,
-  boolean,
-  withKnobs,
-  text,
-} from '@storybook/addon-knobs/angular';
+import { select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
 import { ButtonSize, ButtonType } from '../buttons.enum';
-import { Icons, IconColor } from '../../icons/icons.enum';
+import { Icons } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
+// @ts-ignore: md file and not a module
 import buttonsProps from '../button.properties.md';
 
 const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(

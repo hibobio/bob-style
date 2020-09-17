@@ -12,8 +12,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { mockText } from '../../mock.const';
 
+// @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';
+// @ts-ignore: md file and not a module
 import inputElemsPropsDoc from '../input.properties.md';
+import { FormElementsCommonProps } from '../form-elements.stories.common';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -33,6 +36,7 @@ const template = `
             [hintMessage]="hintMessage"
             [warnMessage]="warnMessage"
             [errorMessage]="errorMessage"
+            [focusOnInit]="focusOnInit"
             (inputEvents)="inputEvents($event)">
 </b-textarea>
 `;
@@ -66,18 +70,12 @@ story.add(
       props: {
         inputEvents: action('inputEvents'),
         value: text('value', ''),
-        label: text('label', 'Input label'),
-        description: text('description', mockText(30)),
-        placeholder: text('placeholder', 'Input placeholder'),
+
+        ...FormElementsCommonProps('Textarea label', 'Write something', ''),
+
         maxChars: number('maxChars', 100),
         minChars: number('minChars', 0),
         showCharCounter: boolean('showCharCounter', true),
-        disabled: boolean('disabled', false),
-        required: boolean('required', false),
-        readonly: boolean('readonly', false),
-        hintMessage: text('hintMessage', 'This field should contain something'),
-        warnMessage: text('warnMessage', ''),
-        errorMessage: text('errorMessage', ''),
       },
       moduleMetadata: {
         imports: [

@@ -56,6 +56,7 @@ export interface FormElementSpec {
   hideLabelOnFocus: boolean;
   enableBrowserAutoComplete?: InputAutoCompleteOptions;
   showCharCounter: boolean;
+  focusOnInit: boolean;
   inputTransformers: Func[];
   outputTransformers: Func[];
   inputType?: InputTypes;

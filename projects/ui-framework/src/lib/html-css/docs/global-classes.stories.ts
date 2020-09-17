@@ -5,6 +5,7 @@ import { TypographyModule } from '../../typography/typography.module';
 
 const story = storiesOf(ComponentGroupType.HtmlCss, module);
 
+// @ts-ignore: md file and not a module
 import classesTable from './global-classes.md';
 
 const storyTemplate = `

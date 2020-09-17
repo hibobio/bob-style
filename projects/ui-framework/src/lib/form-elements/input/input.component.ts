@@ -134,6 +134,8 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    super.ngAfterViewInit();
+
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
         this.showPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);

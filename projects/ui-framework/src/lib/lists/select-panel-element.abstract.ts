@@ -105,7 +105,6 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
   protected type: SelectType;
   public showPrefix = true;
-  public focusOnInit = true;
   public displayValue: string;
   public displayValueCount: number;
   protected listChange: ListChange;
@@ -173,6 +172,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   }
 
   ngAfterViewInit(): void {
+    super.ngAfterViewInit();
+
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
         this.showPrefix =
@@ -211,6 +212,10 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     }
 
     this.setDisplayValue();
+  }
+
+  focus(): void {
+    this.openPanel();
   }
 
   openPanel(): void {
