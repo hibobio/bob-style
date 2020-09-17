@@ -27,7 +27,7 @@ const inputTypes = values(InputTypes);
 const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
 
 const template2 = `
-<b-input  [value]="(inputType === inputTypes.number ? valueNum : value) || nullValue"
+<b-input  [value]="(inputType === inputTypes.number ? valueNum : value)"
           [spec]="{
             inputType: inputType,
             label: label,
@@ -58,7 +58,7 @@ const template2 = `
 
 const template = `
 <b-input    [inputType]="inputType"
-            [value]="(inputType === inputTypes.number ? valueNum : value) || nullValue"
+            [value]="(inputType === inputTypes.number ? valueNum : value)"
             [label]="label"
             [description]="description"
             [placeholder]="placeholder"

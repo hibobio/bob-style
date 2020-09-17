@@ -69,7 +69,7 @@ export abstract class BaseFormElement
 
   @Input('spec') set setProps(spec: FormElementSpec) {
     if (isObject(spec)) {
-      let errorProps: string[] = [];
+      const errorProps: string[] = [];
       if (spec.value) {
         errorProps.push('value');
       }
@@ -268,9 +268,11 @@ export abstract class BaseFormElement
       { keyMap: { disabled: 'isDisabled' } }
     );
 
-    if (changes.value || changes.setProps?.currentValue?.value) {
+    if (changes.value || changes.setProps?.currentValue?.value !== undefined) {
       this.writeValue(
-        changes.value.currentValue || changes.setProps?.currentValue?.value
+        changes.value
+          ? changes.value.currentValue
+          : changes.setProps.currentValue.value
       );
       this.transmitValue(this.value, { eventType: [InputEventType.onWrite] });
     }

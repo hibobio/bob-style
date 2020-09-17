@@ -47,7 +47,7 @@ export class ColorService {
   }
 
   public parseToRGB(color: string): number[] {
-    const colorArr = color.match(/\d+/g);
+    const colorArr = color.match(/\d+[,\)]/g);
 
     return colorArr && colorArr.length > 2
       ? [
