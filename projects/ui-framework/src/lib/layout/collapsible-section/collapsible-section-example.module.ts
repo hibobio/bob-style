@@ -289,7 +289,6 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   };
 
   public options: CollapsibleOptions = {
-    headerTranscludeStopPropagation: true,
     indicatorColor: ColorService.prototype.randomColor(),
   };
 
