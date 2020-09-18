@@ -19,6 +19,7 @@ const template = `
     [expanded]="expanded"
     [disabled]="disabled"
     [divided]="divided"
+    [showLeftSideBorder]="showLeftSideBorder"
     [title]="title"
     [description]="description"
     [options]="options"
@@ -54,6 +55,7 @@ const storyTemplate = `
       [expanded]="expanded"
       [disabled]="disabled"
       [divided]="divided"
+      [showLeftSideBorder]="showLeftSideBorder"
       [disableAnimation]="disableAnimation"
       (openedFirst)="loadData()"
       (closed)="onPanelClosed()"
@@ -67,6 +69,7 @@ const storyTemplate = `
       [expanded]="expanded"
       [disabled]="disabled"
       [divided]="divided"
+      [showLeftSideBorder]="showLeftSideBorder"
       [disableAnimation]="disableAnimation"
       (openedFirst)="loadData()"
       (closed)="onPanelClosed()"
@@ -127,6 +130,7 @@ story.add(
         expanded: boolean('expanded', false),
         disabled: boolean('disabled', false),
         divided: boolean('divided', true),
+        showLeftSideBorder: boolean('showLeftSideBorder', false),
         disableAnimation: boolean('disableAnimation', false),
         title: text('title', mockText(randomNumber(2, 5))),
         description: text('description', mockText(randomNumber(3, 6))),

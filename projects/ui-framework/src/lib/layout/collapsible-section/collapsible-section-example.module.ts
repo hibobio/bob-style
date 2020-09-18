@@ -43,6 +43,7 @@ import { CollapsibleOptions } from './collapsible-section.interface';
       [expanded]="expanded"
       [disabled]="disabled"
       [divided]="divided"
+      [showLeftSideBorder]="showLeftSideBorder"
       [options]="options"
       (openedFirst)="onOpenedFirst()"
       (opened)="onOpened()"
@@ -209,6 +210,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   @Input() disabled = false;
   @Input() divided = true;
   @Input() disableAnimation = false;
+  @Input() showLeftSideBorder = false;
 
   @Output() opened: EventEmitter<void> = new EventEmitter<void>();
   @Output() openedFirst: EventEmitter<void> = new EventEmitter<void>();
@@ -286,7 +288,10 @@ export class CollapsibleSectionExample1Component implements OnChanges {
     })),
   };
 
-  public options: CollapsibleOptions = {};
+  public options: CollapsibleOptions = {
+    headerTranscludeStopPropagation: true,
+    indicatorColor: ColorService.prototype.randomColor(),
+  };
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.collapsible && changes.collapsible.firstChange) {
@@ -319,6 +324,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
       [expanded]="expanded"
       [disabled]="disabled"
       [divided]="divided"
+      [showLeftSideBorder]="showLeftSideBorder"
       (openedFirst)="onOpenedFirst()"
       (opened)="onOpened()"
       (closed)="onClosed()"
@@ -352,8 +358,6 @@ export class CollapsibleSectionExample1Component implements OnChanges {
     '.cell:nth-last-child(1), .cell:nth-last-child(2) { margin-bottom: 0; }',
     'b-button {margin-right: 8px;}',
     'b-button:last-child {margin-right: 0;}',
-    ':host ::ng-deep .bcp-header { border-left: 16px solid var(--bcp-color); }',
-    ':host ::ng-deep .bcp-panel { border-left: 16px solid rgba(var(--bcp-color-rgb), 0.2); }',
   ],
 })
 export class CollapsibleSectionExample2Component implements OnChanges {
@@ -364,6 +368,7 @@ export class CollapsibleSectionExample2Component implements OnChanges {
   @Input() disabled = false;
   @Input() divided = true;
   @Input() disableAnimation = false;
+  @Input() showLeftSideBorder = false;
 
   @Input() title = mockText(randomNumber(2, 5));
   @Input() description = mockText(randomNumber(3, 6));

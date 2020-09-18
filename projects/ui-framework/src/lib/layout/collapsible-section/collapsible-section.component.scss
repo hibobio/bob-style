@@ -67,6 +67,10 @@ $bcp-border-color: $border-color-light;
   @include desktop {
     border-radius: $border-radius;
   }
+
+  &.show-border {
+    border-left: 16px solid var(--bcp-color);
+  }
 }
 
 .bcp-header,
@@ -190,6 +194,10 @@ $bcp-border-color: $border-color-light;
     p {
       @include normalize-par;
     }
+  }
+
+  &.show-border {
+    border-left: 16px solid rgba(var(--bcp-color-rgb), 0.3);
   }
 }
 
