@@ -94,6 +94,7 @@ const note = `
   [expanded] | boolean | if the panel is expanded (open) | false
   [disabled] | boolean | if the panel is disabled (can't be opened) | false
   [divided] | boolean | if the panel has a divider between the header and the content | true
+  [showLeftSideBorder] | boolean | if the panel has the colored border on the left | false
   [title] | string | section title | &nbsp;
   [description] | string | section description (subtitle) | &nbsp;
   [options] | CollapsibleOptions | additional options, among which: <br> **options.headerTranscludeStopPropagation** \
