@@ -286,9 +286,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
     })),
   };
 
-  public options: CollapsibleOptions = {
-    indicatorColor: ColorService.prototype.randomColor(),
-  };
+  public options: CollapsibleOptions = {};
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.collapsible && changes.collapsible.firstChange) {
