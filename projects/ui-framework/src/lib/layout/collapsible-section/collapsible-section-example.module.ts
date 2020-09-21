@@ -43,7 +43,6 @@ import { CollapsibleOptions } from './collapsible-section.interface';
       [expanded]="expanded"
       [disabled]="disabled"
       [divided]="divided"
-      [showLeftSideBorder]="showLeftSideBorder"
       [options]="options"
       (openedFirst)="onOpenedFirst()"
       (opened)="onOpened()"
@@ -210,7 +209,6 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   @Input() disabled = false;
   @Input() divided = true;
   @Input() disableAnimation = false;
-  @Input() showLeftSideBorder = false;
 
   @Output() opened: EventEmitter<void> = new EventEmitter<void>();
   @Output() openedFirst: EventEmitter<void> = new EventEmitter<void>();
@@ -323,7 +321,6 @@ export class CollapsibleSectionExample1Component implements OnChanges {
       [expanded]="expanded"
       [disabled]="disabled"
       [divided]="divided"
-      [showLeftSideBorder]="showLeftSideBorder"
       (openedFirst)="onOpenedFirst()"
       (opened)="onOpened()"
       (closed)="onClosed()"
@@ -367,7 +364,6 @@ export class CollapsibleSectionExample2Component implements OnChanges {
   @Input() disabled = false;
   @Input() divided = true;
   @Input() disableAnimation = false;
-  @Input() showLeftSideBorder = false;
 
   @Input() title = mockText(randomNumber(2, 5));
   @Input() description = mockText(randomNumber(3, 6));

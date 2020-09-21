@@ -68,7 +68,6 @@ export class CollapsibleSectionComponent
   @Input() expanded = false;
   @Input() disabled = false;
   @Input() divided = true;
-  @Input() showLeftSideBorder = false;
 
   @Input() title: string;
   @Input() description?: string;
