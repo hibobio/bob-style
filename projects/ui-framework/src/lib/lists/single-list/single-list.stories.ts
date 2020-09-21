@@ -13,8 +13,11 @@ import { optionsMock } from './single-list.mock';
 import { cloneDeep } from 'lodash';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
+// @ts-ignore: md file and not a module
 import listInterfaceDoc from '../list.interface.md';
+// @ts-ignore: md file and not a module
 import listSelectsPropsDoc from '../lists-selects.properties.md';
+// @ts-ignore: md file and not a module
 import listsPropsDoc from '../lists.properties.md';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(

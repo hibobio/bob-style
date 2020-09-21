@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipInputModule } from './chip-input.module';
 import { mockHobbies, mockText } from '../../mock.const';
 import { ButtonsModule } from '../../buttons/buttons.module';
+import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -37,6 +38,7 @@ const template = `
                 [warnMessage]="warnMessage"
                 [errorMessage]="errorMessage"
                 [hasFooterAction]="true"
+                [focusOnInit]="focusOnInit"
                 (changed)="chipInputChangeHandler($event)">
       <b-text-button footerAction
           [text]="'Edit List'">
@@ -86,14 +88,14 @@ const toAdd = () => ({
   props: {
     value: array('value', value, ','),
     acceptNew: boolean('acceptNew', true),
-    label: text('label', 'What are your hobbies?'),
-    placeholder: text('placehodler', 'Add tags and press ‘Enter’'),
-    description: text('description', mockText(30)),
-    disabled: boolean('disabled', false),
-    required: boolean('required', false),
-    hintMessage: text('hintMessage', 'Add something'),
-    warnMessage: text('warnMessage', ''),
-    errorMessage: text('errorMessage', ''),
+
+    ...FormElementsCommonProps(
+      'What are your hobbies?',
+      'Add tags and press ‘Enter’',
+      mockText(30),
+      'Props'
+    ),
+
     options: array('options', options, ','),
     chipInputChangeHandler: action('Chip input changed'),
   },

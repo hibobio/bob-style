@@ -15,9 +15,13 @@ import { thisMonth, thisYear } from '../../../services/utils/functional-utils';
 import { DatepickerType } from '../datepicker.enum';
 import { BDateAdapterMock, UserLocaleServiceMock } from '../dateadapter.mock';
 
+// @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../../form-elements.properties.md';
+// @ts-ignore: md file and not a module
 import datepickerPropsDoc from '../datepicker.properties.md';
+// @ts-ignore: md file and not a module
 import datepickerInterfaceDoc from '../datepicker.interface.md';
+import { FormElementsCommonProps } from '../../form-elements.stories.common';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -39,6 +43,7 @@ const template = `
               [disabled]="disabled"
               [required]="required"
               [readonly]="readonly"
+              [focusOnInit]="focusOnInit"
               (dateChange)="dateChange($event)">
               </b-date-range-picker>
 `;
@@ -128,17 +133,12 @@ story.add(
           ],
           ''
         ),
-        label: text('label', ''),
+
         startDateLabel: text('startDateLabel', 'Start date'),
         endDateLabel: text('endDateLabel', 'End date'),
-        placeholder: text('placeholder', ''),
-        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
-        disabled: boolean('disabled', false),
-        required: boolean('required', false),
-        readonly: boolean('readonly', false),
-        hintMessage: text('hintMessage', 'This field should contain something'),
-        warnMessage: text('warnMessage', ''),
-        errorMessage: text('errorMessage', ''),
+
+        ...FormElementsCommonProps('', ''),
+
         dateChange: action('Date Changed'),
       },
       moduleMetadata: {

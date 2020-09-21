@@ -38,6 +38,7 @@ export const TreeListStoriesCommonProps = (
   startCollapsed: boolean('startCollapsed', true, 'Props'),
   readonly: boolean('readonly', false, 'Props'),
   disabled: boolean('disabled', false, 'Props'),
+  focusOnInit: boolean('focusOnInit', true, 'Props'),
 
   // hideSelected: boolean('hideSelected', false, 'viewFilter'),
   // externalSearch: text('externalSearch', '', 'viewFilter'),

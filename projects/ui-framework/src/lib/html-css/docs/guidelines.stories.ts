@@ -4,7 +4,9 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { TypographyModule } from '../../typography/typography.module';
 
 const story = storiesOf(ComponentGroupType.HtmlCss, module);
+// @ts-ignore: md file and not a module
 import styleguideCssTable from './styleguide-scss.md';
+// @ts-ignore: md file and not a module
 import styleguideHtmlTable from './styleguide-html.md';
 
 const storyTemplate = `

@@ -17,7 +17,9 @@ import { map } from 'lodash';
 import { InputSingleSelectValue } from './split-input-single-select.interface';
 import { mockText } from '../../mock.const';
 
+// @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';
+import { FormElementsCommonProps } from '../form-elements.stories.common';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -35,6 +37,7 @@ const template = `
                              [selectDisabled]="selectDisabled"
                              [required]="required"
                              [readonly]="readonly"
+                             [focusOnInit]="focusOnInit"
                              (elementChange)="elementChange($event)">
 </b-split-input-single-select>
 `;
@@ -150,18 +153,11 @@ story.add(
       props: {
         value: object('value', value, 'Props'),
         inputType: select('type', InputTypes, InputTypes.number, 'Props'),
-        label: text('label', 'Base salary', 'Props'),
-        description: text('description', mockText(30), 'Props'),
-        disabled: boolean('disabled', false, 'Props'),
+
+        ...FormElementsCommonProps('Base salary', '', '', 'Props'),
+
         selectDisabled: boolean('selectDisabled', false, 'Props'),
-        required: boolean('required', false, 'Props'),
-        readonly: boolean('readonly', false, 'Props'),
-        hintMessage: text(
-          'hintMessage',
-          'This field should contain something',
-          'Props'
-        ),
-        errorMessage: text('errorMessage', '', 'Props'),
+
         elementChange: action('Split input single select change'),
         selectOptions: object('selectOptions', optionsMock, 'Options'),
       },

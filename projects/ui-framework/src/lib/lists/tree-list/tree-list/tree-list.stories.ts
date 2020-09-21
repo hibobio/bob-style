@@ -10,6 +10,7 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
+// @ts-ignore: md file and not a module
 import treeListPropsDoc from '../tree-list.properties.md';
 
 const template = `<b-tree-list

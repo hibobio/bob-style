@@ -14,6 +14,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { LinkColor } from '../../indicators/link/link.enum';
 import { ButtonType } from '../buttons.enum';
 
+// @ts-ignore: md file and not a module
 import buttonsProps from '../button.properties.md';
 
 const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(

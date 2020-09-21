@@ -103,6 +103,7 @@ export class SocialComponent extends BaseFormElement
 
   ngAfterViewInit(): void {
     this.input = this.bInput.input;
+    super.ngAfterViewInit();
   }
 
   onInputEvents(event: InputEvent): void {

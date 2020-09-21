@@ -23,14 +23,20 @@ import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-im
 import { SelectMode } from '../list.enum';
 import { SSPjobsOptionsMock } from '../single-select-panel/single-select-panel.stories';
 
+// @ts-ignore: md file and not a module
 import listInterfaceDoc from '../list.interface.md';
+// @ts-ignore: md file and not a module
 import listSelectsPropsDoc from '../lists-selects.properties.md';
+// @ts-ignore: md file and not a module
 import selectsPropsDoc from '../selects.properties.md';
+// @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
+// @ts-ignore: md file and not a module
 import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { number } from '@storybook/addon-knobs';
 import { MultiSelectComponent } from './multi-select.component';
+import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -58,6 +64,7 @@ const template = `
                 [hintMessage]="hintMessage"
                 [errorMessage]="errorMessage"
                 [size]="size"
+                [focusOnInit]="focusOnInit"
                 (opened)="opened()"
                 (closed)="closed()"
                 (selectChange)="selectChange($event)"
@@ -201,18 +208,14 @@ const toAdd = () => ({
     ),
     min: number('min', 0, {}, 'Props'),
     max: number('max', 0, {}, 'Props'),
-    label: text('label', 'label text', 'Props'),
-    description: text('description', mockText(30), 'Props'),
-    placeholder: text('placeholder', 'placeholder text', 'Props'),
-    disabled: boolean('disabled', false, 'Props'),
-    required: boolean('required', false, 'Props'),
-    readonly: boolean('readonly', false, 'Props'),
-    hintMessage: text(
-      'hintMessage',
-      'This field should contain something',
+
+    ...FormElementsCommonProps(
+      'Multi select',
+      'Pick any',
+      mockText(30),
       'Props'
     ),
-    errorMessage: text('errorMessage', '', 'Props'),
+
     size: select(
       'size',
       Object.values(FormElementSize),

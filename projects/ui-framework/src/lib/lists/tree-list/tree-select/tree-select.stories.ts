@@ -8,9 +8,13 @@ import { mockText } from '../../../mock.const';
 import { TreeListStoriesCommonProps } from '../tree-list.stories.common';
 import { action } from '@storybook/addon-actions';
 
+// @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../../../form-elements/form-elements.properties.md';
+// @ts-ignore: md file and not a module
 import treeListPropsDoc from '../tree-list.properties.md';
+// @ts-ignore: md file and not a module
 import treeListPanelPropsDoc from '../tree-list-panel.properties.md';
+import { FormElementsCommonProps } from '../../../form-elements/form-elements.stories.common';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -36,6 +40,7 @@ const componentTemplate = `<b-tree-select
       [readonly]="readonly"
       [hintMessage]="hintMessage"
       [errorMessage]="errorMessage"
+      [focusOnInit]="focusOnInit"
       (changed)="changed($event)"
       (opened)="opened()"
       (closed)="closed()"
@@ -103,16 +108,12 @@ const toAdd = () => ({
       null
     ),
 
-    label: text('label', 'label text', 'Props'),
-    description: text('description', mockText(30), 'Props'),
-    placeholder: text('placeholder', 'placeholder text', 'Props'),
-    required: boolean('required', false, 'Props'),
-    hintMessage: text(
-      'hintMessage',
-      'This field should contain something',
+    ...FormElementsCommonProps(
+      'Tree select',
+      'Pick something',
+      mockText(30),
       'Props'
     ),
-    errorMessage: text('errorMessage', '', 'Props'),
 
     opened: action('List opened'),
     closed: action('List closed'),

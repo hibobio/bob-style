@@ -5,9 +5,13 @@ import { TypographyModule } from '../../typography/typography.module';
 
 const story = storiesOf(ComponentGroupType.HtmlCss, module);
 
+// @ts-ignore: md file and not a module
 import varMiscTable from './variables-misc.md';
+// @ts-ignore: md file and not a module
 import varTypeTable from './variables-typography.md';
+// @ts-ignore: md file and not a module
 import varColorsTable from './variables-colors.md';
+// @ts-ignore: md file and not a module
 import varCSSTable from './variables-css.md';
 
 const storyTemplate = `

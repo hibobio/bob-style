@@ -11,6 +11,7 @@ import { ButtonsModule } from '../buttons.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
+// @ts-ignore: md file and not a module
 import buttonsProps from '../button.properties.md';
 
 const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(

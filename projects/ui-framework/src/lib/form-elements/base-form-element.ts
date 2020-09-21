@@ -9,6 +9,7 @@ import {
   ViewChild,
   ElementRef,
   Directive,
+  AfterViewInit,
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -43,7 +44,7 @@ import { InputTypes } from './input/input.enum';
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseFormElement
-  implements ControlValueAccessor, FormElementSpec, OnChanges {
+  implements ControlValueAccessor, FormElementSpec, OnChanges, AfterViewInit {
   protected constructor(protected cd: ChangeDetectorRef) {}
 
   @ViewChild('input', { static: true, read: ElementRef })
@@ -62,6 +63,7 @@ export abstract class BaseFormElement
   @Input() ignoreEvents: InputEventType[] = cloneArray(IGNORE_EVENTS_DEF);
   @Input() formControlName: string;
   @Input() showCharCounter = true;
+  @Input() focusOnInit = false;
 
   @Input() set isDisabled(disabled: boolean) {
     this.disabled = Boolean(disabled);
@@ -69,7 +71,7 @@ export abstract class BaseFormElement
 
   @Input('spec') set setProps(spec: FormElementSpec) {
     if (isObject(spec)) {
-      let errorProps: string[] = [];
+      const errorProps: string[] = [];
       if (spec.value) {
         errorProps.push('value');
       }
@@ -128,6 +130,7 @@ export abstract class BaseFormElement
   public onNgChanges(changes: SimpleChanges): void {}
 
   @Input() validateFn: ValidatorFn = (_: FormControl) =>
+    // tslint:disable-next-line: semicolon
     ({} as ValidationErrors);
 
   onTouched: Function = (_: any) => {};
@@ -268,9 +271,11 @@ export abstract class BaseFormElement
       { keyMap: { disabled: 'isDisabled' } }
     );
 
-    if (changes.value || changes.setProps?.currentValue?.value) {
+    if (changes.value || changes.setProps?.currentValue?.value !== undefined) {
       this.writeValue(
-        changes.value.currentValue || changes.setProps?.currentValue?.value
+        changes.value
+          ? changes.value.currentValue
+          : changes.setProps.currentValue.value
       );
       this.transmitValue(this.value, { eventType: [InputEventType.onWrite] });
     }
@@ -279,6 +284,12 @@ export abstract class BaseFormElement
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
+    }
+  }
+
+  ngAfterViewInit(): void {
+    if (this.focusOnInit) {
+      this.focus();
     }
   }
 

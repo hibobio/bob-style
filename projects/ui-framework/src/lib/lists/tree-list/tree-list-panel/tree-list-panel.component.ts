@@ -58,7 +58,7 @@ export class TreeListPanelComponent extends TreeListInputOutput
     private utilsService: UtilsService
   ) {
     super();
-    this.focusOnInit = true;
+
     this.listActions = { ...LIST_ACTIONS_DEF };
   }
 

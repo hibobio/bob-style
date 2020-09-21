@@ -7,7 +7,9 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
+// @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';
+import { FormElementsCommonProps } from '../form-elements.stories.common';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -24,6 +26,7 @@ const template = `
         [hintMessage]="hintMessage"
         [warnMessage]="warnMessage"
         [errorMessage]="errorMessage"
+        [focusOnInit]="focusOnInit"
         (changed)="onChange($event)">
 </b-timepicker>
 `;
@@ -62,16 +65,8 @@ story.add(
         onChange: action('Time changed'),
 
         value: text('value', '4:20'),
-        label: text('label', 'Input label'),
-        description: text('description', ''),
 
-        disabled: boolean('disabled', false),
-        required: boolean('required', false),
-        readonly: boolean('readonly', false),
-
-        hintMessage: text('hintMessage', 'This field should contain something'),
-        warnMessage: text('warnMessage', ''),
-        errorMessage: text('errorMessage', ''),
+        ...FormElementsCommonProps('Time is', '', ''),
       },
       moduleMetadata: {
         imports: [

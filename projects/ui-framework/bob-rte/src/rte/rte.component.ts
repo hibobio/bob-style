@@ -6,6 +6,7 @@ import {
   ChangeDetectorRef,
   ElementRef,
   OnDestroy,
+  AfterViewInit,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import {
@@ -50,7 +51,7 @@ import { RTEMode } from './rte.enum';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RichTextEditorComponent extends RTEbaseElement
-  implements OnInit, OnDestroy {
+  implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     protected cd: ChangeDetectorRef,
     protected placeholdersConverter: PlaceholdersConverterService,
@@ -164,6 +165,10 @@ export class RichTextEditorComponent extends RTEbaseElement
             focus: this.editor.events.focus,
           },
         } as ElementRef;
+
+        if (this.focusOnInit) {
+          this.focus();
+        }
       },
 
       contentChanged: () => {
@@ -382,6 +387,8 @@ export class RichTextEditorComponent extends RTEbaseElement
       },
     };
   }
+
+  ngAfterViewInit(): void {}
 
   ngOnDestroy(): void {
     if (this.tribute) {

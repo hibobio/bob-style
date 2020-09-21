@@ -14,8 +14,10 @@ import { values } from 'lodash';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { RadioDirection } from './radio-button.enum';
 
+// @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';
 import { mockAnimals, mockText } from '../../mock.const';
+import { FormElementsCommonProps } from '../form-elements.stories.common';
 
 const direction = values(RadioDirection);
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
@@ -33,6 +35,7 @@ const template = `
                 [hintMessage]="hintMessage"
                 [warnMessage]="warnMessage"
                 [errorMessage]="errorMessage"
+                [focusOnInit]="focusOnInit"
                 (radioChange)="radioChange($event)">
 </b-radio-button>
 `;
@@ -79,14 +82,7 @@ story.add(
         value: object('value', { id: 0 }),
         direction: select('direction', direction, direction.row),
 
-        label: text('label', 'Radio label'),
-        required: boolean('required', false),
-        disabled: boolean('disabled', false),
-        readonly: boolean('readonly', false),
-
-        hintMessage: text('hintMessage', 'Useful hint'),
-        warnMessage: text('warnMessage', ''),
-        errorMessage: text('errorMessage', ''),
+        ...FormElementsCommonProps('Radio label', '', ''),
 
         radioChange: action('radioChange'),
 

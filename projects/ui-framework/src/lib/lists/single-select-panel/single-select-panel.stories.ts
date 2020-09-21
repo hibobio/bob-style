@@ -21,9 +21,13 @@ import {
   makeArray,
 } from '../../services/utils/functional-utils';
 
+// @ts-ignore: md file and not a module
 import listInterfaceDoc from '../list.interface.md';
+// @ts-ignore: md file and not a module
 import listSelectsPropsDoc from '../lists-selects.properties.md';
+// @ts-ignore: md file and not a module
 import selectPanelsPropsDoc from '../select-panels.properties.md';
+// @ts-ignore: md file and not a module
 import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
@@ -105,7 +109,7 @@ export const SSPjobsOptionsMock: SelectGroupOption[] = makeArray(
   groupCount
 ).map((group, index) => ({
   groupName: jobTypes[index],
-  options: jobs.slice(index * 5, index * 5 + 5).map(option => ({
+  options: jobs.slice(index * 5, index * 5 + 5).map((option) => ({
     value: option,
     id: simpleUID(option + '-'),
     selected: false,

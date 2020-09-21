@@ -180,6 +180,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   ngAfterViewInit(): void {
     this.input = this.inputs.toArray()[0];
 
+    super.ngAfterViewInit();
+
     if (!this.doneFirstChange) {
       this.ngOnChanges({});
     }

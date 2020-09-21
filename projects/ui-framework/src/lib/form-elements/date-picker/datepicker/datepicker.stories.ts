@@ -16,8 +16,11 @@ import { DatepickerType } from '../datepicker.enum';
 import { mockText } from '../../../mock.const';
 import { BDateAdapterMock, UserLocaleServiceMock } from '../dateadapter.mock';
 
+// @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../../form-elements.properties.md';
+// @ts-ignore: md file and not a module
 import datepickerPropsDoc from '../datepicker.properties.md';
+import { FormElementsCommonProps } from '../../form-elements.stories.common';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -38,6 +41,7 @@ const template = `
               [disabled]="disabled"
               [required]="required"
               [readonly]="readonly"
+              [focusOnInit]="focusOnInit"
               (dateChange)="dateChange($event)">
 </b-datepicker>
 `;
@@ -123,16 +127,9 @@ story.add(
           ],
           ''
         ),
-        label: text('label', 'Date picker'),
-        placeholder: text('placeholder', ''),
-        description: text('description', mockText(30)),
-        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
-        disabled: boolean('disabled', false),
-        required: boolean('required', false),
-        readonly: boolean('readonly', false),
-        hintMessage: text('hintMessage', 'This field should contain something'),
-        warnMessage: text('warnMessage', ''),
-        errorMessage: text('errorMessage', ''),
+
+        ...FormElementsCommonProps('Date picker', ''),
+
         dateChange: action('Date Changed'),
       },
       moduleMetadata: {

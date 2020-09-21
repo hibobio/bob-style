@@ -15,9 +15,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { mockText } from '../../mock.const';
 
+// @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';
+// @ts-ignore: md file and not a module
 import inputElemsPropsDoc from '../input.properties.md';
 import { FormElementSize } from '../form-elements.enum';
+import { FormElementsCommonProps } from '../form-elements.stories.common';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -27,7 +30,7 @@ const inputTypes = values(InputTypes);
 const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
 
 const template2 = `
-<b-input  [value]="(inputType === inputTypes.number ? valueNum : value) || nullValue"
+<b-input  [value]="(inputType === inputTypes.number ? valueNum : value)"
           [spec]="{
             inputType: inputType,
             label: label,
@@ -49,16 +52,16 @@ const template2 = `
             hintMessage: hintMessage,
             warnMessage: warnMessage,
             errorMessage: errorMessage,
-            enableBrowserAutoComplete: enableBrowserAutoComplete,
             size: size,
-            allowedChars: allowedChars
+            allowedChars: allowedChars,
+            focusOnInit: focusOnInit
           }"
             (inputEvents)="inputEvents($event)">
 </b-input>`;
 
 const template = `
 <b-input    [inputType]="inputType"
-            [value]="(inputType === inputTypes.number ? valueNum : value) || nullValue"
+            [value]="(inputType === inputTypes.number ? valueNum : value)"
             [label]="label"
             [description]="description"
             [placeholder]="placeholder"
@@ -78,7 +81,6 @@ const template = `
             [hintMessage]="hintMessage"
             [warnMessage]="warnMessage"
             [errorMessage]="errorMessage"
-            [enableBrowserAutoComplete]="enableBrowserAutoComplete"
             [size]="size"
             [allowedChars]="allowedChars"
             (inputEvents)="inputEvents($event)">
@@ -106,7 +108,6 @@ const templateForNotes = `
             [hintMessage]="hintMessage"
             [warnMessage]="warnMessage"
             [errorMessage]="errorMessage"
-            [enableBrowserAutoComplete]="enableBrowserAutoComplete"
             (inputEvents)="inputEvents($event)">
 </b-input>
 `;
@@ -162,10 +163,9 @@ story.add(
         inputType: select('inputType', inputTypes, InputTypes.text),
         value: text('value (text input)', ''),
         valueNum: number('value (number input)', ''),
-        label: text('label', 'Input label'),
-        description: text('description', mockText(30)),
-        placeholder: text('placeholder', 'Input placeholder'),
-        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
+
+        ...FormElementsCommonProps('Input label', 'Input placeholder'),
+
         minChars: number('minChars', undefined),
         maxChars: number('maxChars', undefined),
         showCharCounter: boolean('showCharCounter', true),
@@ -175,17 +175,7 @@ story.add(
         numberFormat: boolean('numberFormat', false),
         onlyIntegers: boolean('onlyIntegers', false),
         decimals: number('decimals', 4),
-        disabled: boolean('disabled', false),
-        required: boolean('required', false),
-        readonly: boolean('readonly', false),
-        hintMessage: text('hintMessage', 'This field should contain something'),
-        warnMessage: text('warnMessage', ''),
-        errorMessage: text('errorMessage', ''),
-        enableBrowserAutoComplete: select(
-          'enableBrowserAutoComplete',
-          inputAutoCompleteOptions,
-          InputAutoCompleteOptions.off
-        ),
+
         size: select(
           'size',
           Object.values(FormElementSize),
