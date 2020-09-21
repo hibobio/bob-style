@@ -2,7 +2,8 @@
          [attr.aria-disabled]="disabled || null"
          [attr.data-collapsible]="!!collapsible"
          [attr.data-expanded]="!collapsible ? null : !!expanded"
-         [attr.data-divided]="!!divided">
+         [attr.data-divided]="!!divided"
+         [attr.show-border]="!!options.indicatorColor">
 
   <header *ngIf="title || hasHeaderContent"
           class="bcp-header {{panelID}}"
@@ -11,7 +12,6 @@
           [attr.aria-controls]="(collapsible && panelID) || null"
           [attr.aria-expanded]="!collapsible ? null : !!expanded"
           [attr.data-icon-before]="!collapsible ? null : expanded ? 'chevron-down' : 'chevron-right'"
-          [class.show-border]="showLeftSideBorder"
           (click)="togglePanel()">
 
     <div *ngIf="title"
@@ -40,8 +40,7 @@
        [attr.id]="panelID"
        [attr.aria-labelledby]="panelID+'-header'"
        [attr.data-collapsible]="!!collapsible"
-       [attr.data-expanded]="!collapsible || startsExpanded ? null : !!expanded"
-       [class.show-border]="showLeftSideBorder">
+       [attr.data-expanded]="!collapsible || startsExpanded ? null : !!expanded">
 
     <div class="bcp-panel-content-wrap {{panelID}}"
          [attr.data-collapsible]="!!collapsible"

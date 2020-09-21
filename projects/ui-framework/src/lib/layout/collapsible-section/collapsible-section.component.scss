@@ -50,6 +50,16 @@ $bcp-border-color: $border-color-light;
   &[aria-disabled='true'] {
     @include disabled-state;
   }
+
+  &[show-border='true'] {
+    .bcp-header {
+      border-left: 16px solid var(--bcp-color);
+    }
+
+    .bcp-panel {
+      border-left: 16px solid rgba(var(--bcp-color-rgb), 0.3);
+    }
+  }
 }
 
 .bcp-header-content,
@@ -66,10 +76,6 @@ $bcp-border-color: $border-color-light;
 
   @include desktop {
     border-radius: $border-radius;
-  }
-
-  &.show-border {
-    border-left: 16px solid var(--bcp-color);
   }
 }
 
@@ -194,10 +200,6 @@ $bcp-border-color: $border-color-light;
     p {
       @include normalize-par;
     }
-  }
-
-  &.show-border {
-    border-left: 16px solid rgba(var(--bcp-color-rgb), 0.3);
   }
 }
 
