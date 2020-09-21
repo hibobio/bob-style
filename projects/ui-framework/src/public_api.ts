@@ -10,6 +10,7 @@
 export * from './lib/enums';
 export * from './lib/types';
 export * from './lib/consts';
+export * from './lib/colorsPalette.enum';
 
 /*
  * Typography

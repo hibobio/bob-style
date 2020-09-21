@@ -2,7 +2,8 @@
          [attr.aria-disabled]="disabled || null"
          [attr.data-collapsible]="!!collapsible"
          [attr.data-expanded]="!collapsible ? null : !!expanded"
-         [attr.data-divided]="!!divided">
+         [attr.data-divided]="!!divided"
+         [attr.data-show-border]="!!options.indicatorColor">
 
   <header *ngIf="title || hasHeaderContent"
           class="bcp-header {{panelID}}"

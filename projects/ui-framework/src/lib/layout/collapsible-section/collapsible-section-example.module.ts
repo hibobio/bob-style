@@ -352,8 +352,6 @@ export class CollapsibleSectionExample1Component implements OnChanges {
     '.cell:nth-last-child(1), .cell:nth-last-child(2) { margin-bottom: 0; }',
     'b-button {margin-right: 8px;}',
     'b-button:last-child {margin-right: 0;}',
-    ':host ::ng-deep .bcp-header { border-left: 16px solid var(--bcp-color); }',
-    ':host ::ng-deep .bcp-panel { border-left: 16px solid rgba(var(--bcp-color-rgb), 0.2); }',
   ],
 })
 export class CollapsibleSectionExample2Component implements OnChanges {

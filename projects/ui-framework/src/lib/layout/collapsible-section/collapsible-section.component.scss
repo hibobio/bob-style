@@ -316,6 +316,16 @@ $bcp-border-color: $border-color-light;
   }
 }
 
+.bcp-section[data-show-border='true']::ng-deep {
+  & > .bcp-header {
+    border-left: 16px solid var(--bcp-color);
+  }
+
+  & > .bcp-panel {
+    border-left: 16px solid rgba(var(--bcp-color-rgb), 0.3);
+  }
+}
+
 :host[data-animation-disabled='true'] {
   [data-expanded] {
     transition-duration: 0s !important;
