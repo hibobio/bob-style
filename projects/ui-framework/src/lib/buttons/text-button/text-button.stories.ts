@@ -85,7 +85,7 @@ story.add(
     template: storyTemplate,
     props: {
       text: text('text', 'Click here!'),
-      icon: select('icon', Object.values(Icons), Icons.phone_link),
+      icon: select('icon', [0, ...Object.values(Icons)], Icons.phone_link),
       type: select('type', Object.values(ButtonType), ButtonType.secondary),
       color: select('color', Object.values(LinkColor), LinkColor.none),
       disabled: boolean('disabled', false),

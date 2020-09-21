@@ -46,7 +46,7 @@ const note = `
   [type] | ButtonType | button type | secondary
   [size] | ButtonSize | button size | medium
   [icon] | Icons | button icon | &nbsp;
-  [color] | IconColor | button icon color | dark
+  <s>[color]</s> | IconColor | button icon color (deprecated, use [type] instead) | dark
   [round] | boolean | make it round! | &nbsp;
   [toolTipSummary] | string | Tooltip text | &nbsp;
   [text] | string | same as toolTipSummary - text will be displayed as tooltip | &nbsp;
@@ -68,8 +68,8 @@ story.add(
     props: {
       type: select('type', Object.values(ButtonType), ButtonType.secondary),
       size: select('size', Object.values(ButtonSize), ButtonSize.medium),
-      icon: select('icon', Object.values(Icons), Icons.phone_link),
-      color: select('color', Object.values(IconColor), IconColor.dark),
+      icon: select('icon', [0, ...Object.values(Icons)], Icons.phone_link),
+      color: select('color', [0, ...Object.values(IconColor)], 0),
       round: boolean('round', false),
       toolTipSummary: text('toolTipSummary', 'Call me'),
       disabled: boolean('disabled', false),

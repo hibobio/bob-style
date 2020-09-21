@@ -3,8 +3,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { ButtonSize, ButtonType } from '../buttons.enum';
-import { IconColor, IconSize } from '../../icons/icons.enum';
 import { BaseButtonElement } from '../button.abstract';
 
 @Component({
@@ -15,6 +13,9 @@ import { BaseButtonElement } from '../button.abstract';
       type="button"
       [ngClass]="buttonClass"
       [attr.disabled]="disabled || null"
+      [attr.data-icon-before]="icn || null"
+      [attr.data-icon-before-size]="icn ? icnSize : null"
+      [attr.data-icon-before-color]="icn ? icnColor : null"
       (click)="onClick($event)"
     >
       {{ text }}
@@ -28,27 +29,5 @@ import { BaseButtonElement } from '../button.abstract';
 export class ButtonComponent extends BaseButtonElement {
   constructor(protected cd: ChangeDetectorRef) {
     super(cd);
-  }
-
-  getButtonClass(): string {
-    return (
-      (this.type || ButtonType.primary) +
-      ' ' +
-      (this.size || ButtonSize.medium) +
-      ' ' +
-      (this.icon
-        ? this.icon +
-          ' b-icon-' +
-          (this.size === ButtonSize.large ? IconSize.large : IconSize.medium) +
-          ' b-icon-' +
-          (!this.type ||
-          this.type === ButtonType.primary ||
-          this.type === ButtonType.negative
-            ? IconColor.white
-            : IconColor.dark)
-        : '') +
-      (this.active ? ' active' : '') +
-      (this.preloader ? ' preloader' : '')
-    );
   }
 }

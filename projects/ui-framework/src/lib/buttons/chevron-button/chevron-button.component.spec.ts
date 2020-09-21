@@ -27,28 +27,28 @@ describe('ChevronButtonComponent', () => {
   });
 
   describe('Inputs', () => {
-    it('should display text in the button', () => {
-      const button = fixture.debugElement.query(By.css('button'));
-      expect(button.nativeElement.innerText).toEqual('Click');
+    let buttonElement: HTMLElement;
+    beforeEach(() => {
+      buttonElement = fixture.debugElement.query(By.css('button'))
+        .nativeElement;
     });
-    it('should display chevron-down icon by default', () => {
-      const button = fixture.debugElement.query(By.css('button'));
 
-      expect(button.nativeElement.classList).not.toContain('b-icon-chevron-up');
-      expect(button.nativeElement.classList).toContain('b-icon-chevron-down');
+    it('should display text in the button', () => {
+      expect(buttonElement.innerText).toEqual('Click');
     });
+
+    it('should display chevron-down icon by default', () => {
+      expect(buttonElement.dataset.iconAfter).toEqual('chevron-down');
+    });
+
     it('should display chevron-up icon when active is true', () => {
       component.ngOnChanges(
         simpleChange({
           active: true,
         })
       );
-      const button = fixture.debugElement.query(By.css('button'));
 
-      expect(button.nativeElement.classList).not.toContain(
-        'b-icon-chevron-down'
-      );
-      expect(button.nativeElement.classList).toContain('b-icon-chevron-up');
+      expect(buttonElement.dataset.iconAfter).toEqual('chevron-up');
     });
   });
 

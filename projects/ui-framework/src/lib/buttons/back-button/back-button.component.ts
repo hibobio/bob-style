@@ -21,7 +21,10 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
       <ng-content></ng-content>
     </button>
   `,
-  styleUrls: ['../button/button.component.scss'],
+  styleUrls: [
+    '../button/button.component.scss',
+    './back-button.component.scss',
+  ],
   providers: [{ provide: BaseButtonElement, useExisting: BackButtonComponent }],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

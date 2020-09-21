@@ -13,6 +13,9 @@ import { SquareButtonComponent } from '../square/square.component';
       type="button"
       [ngClass]="buttonClass"
       [attr.disabled]="disabled || null"
+      [attr.data-icon-before]="icn || null"
+      [attr.data-icon-before-size]="icn ? icnSize : null"
+      [attr.data-icon-before-color]="icn ? icnColor : null"
       (click)="onClick($event)"
     >
       <ng-content></ng-content>

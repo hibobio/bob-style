@@ -18,6 +18,7 @@ import {
   applyChanges,
   isObject,
   objectRemoveEntriesByValue,
+  isString,
 } from '../services/utils/functional-utils';
 import { Button } from './buttons.interface';
 
@@ -49,6 +50,11 @@ export abstract class BaseButtonElement implements OnChanges, OnInit {
   readonly iconColor = IconColor;
 
   public buttonClass: string = null;
+  public icn: string;
+  public icnSize: IconSize;
+  public icnColor: IconColor;
+
+  protected typeDefault = ButtonType.primary;
 
   @HostBinding('attr.data-type') @Input() public type:
     | ButtonType
@@ -65,6 +71,18 @@ export abstract class BaseButtonElement implements OnChanges, OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
 
+    this.icn = isString(this.icon) && this.icon.replace('b-icon-', '');
+
+    this.icnSize =
+      this.size === ButtonSize.large ? IconSize.large : IconSize.medium;
+
+    this.icnColor =
+      !this.type ||
+      this.type === ButtonType.primary ||
+      this.type === ButtonType.negative
+        ? IconColor.white
+        : IconColor.dark;
+
     this.buttonClass = this.getButtonClass();
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
@@ -73,7 +91,14 @@ export abstract class BaseButtonElement implements OnChanges, OnInit {
   }
 
   getButtonClass(): string {
-    return null;
+    return (
+      (this.type || this.typeDefault) +
+      ' ' +
+      (this.size || ButtonSize.medium) +
+      ' ' +
+      (this.active ? ' active' : '') +
+      (this.preloader ? ' preloader' : '')
+    );
   }
 
   onClick($event: MouseEvent) {

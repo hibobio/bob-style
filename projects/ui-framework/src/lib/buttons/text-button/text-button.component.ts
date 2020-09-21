@@ -16,6 +16,8 @@ import { ButtonType } from '../buttons.enum';
       role="button"
       class="text-button"
       [ngClass]="buttonClass"
+      [attr.data-icon-before]="icn || null"
+      [attr.data-icon-before-size]="icn ? iconSize.medium : null"
       (click)="onClick($event)"
     >
       {{ text }}
@@ -46,10 +48,7 @@ export class TextButtonComponent extends BaseButtonElement {
       (this.color === LinkColor.primary ? 'color-primary ' : '') +
       (this.disabled ? 'disabled ' : '') +
       (this.icon
-        ? this.icon +
-          ' b-icon-' +
-          IconSize.medium +
-          ' ' +
+        ? ' ' +
           (this.color === LinkColor.primary
             ? 'b-icon-' + IconColor.primary
             : this.iconColorMap[this.type])

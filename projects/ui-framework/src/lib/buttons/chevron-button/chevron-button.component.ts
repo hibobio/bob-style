@@ -2,10 +2,11 @@ import {
   Component,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  OnInit,
 } from '@angular/core';
 import { BaseButtonElement } from '../button.abstract';
-import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
-import { ButtonSize, ButtonType } from '../buttons.enum';
+import { ButtonComponent } from '../button/button.component';
+import { ButtonType } from '../buttons.enum';
 
 @Component({
   selector: 'b-chevron-button',
@@ -14,8 +15,14 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
       #button
       type="button"
       [ngClass]="buttonClass"
-      (click)="onClick($event)"
       [attr.disabled]="disabled || null"
+      [attr.data-icon-before]="icn || null"
+      [attr.data-icon-before-size]="icn ? icnSize : null"
+      [attr.data-icon-before-color]="icn ? icnColor : null"
+      [attr.data-icon-after]="active ? 'chevron-up' : 'chevron-down'"
+      [attr.data-icon-after-size]="icnSize"
+      [attr.data-icon-after-color]="icnColor"
+      (click)="onClick($event)"
     >
       {{ text }}
       <ng-content></ng-content>
@@ -27,24 +34,10 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChevronButtonComponent extends BaseButtonElement {
+export class ChevronButtonComponent extends ButtonComponent implements OnInit {
   constructor(protected cd: ChangeDetectorRef) {
     super(cd);
-  }
 
-  getButtonClass(): string {
-    return (
-      (this.type || ButtonType.secondary) +
-      ' ' +
-      (this.size || ButtonSize.medium) +
-      ' ' +
-      ((this.active ? Icons.chevron_up : Icons.chevron_down) +
-        ' b-icon-' +
-        ' b-icon-' +
-        (this.size === ButtonSize.large ? IconSize.large : IconSize.medium) +
-        ' b-icon-' +
-        (this.type === ButtonType.primary ? IconColor.white : IconColor.dark)) +
-      ' icon-after'
-    );
+    this.typeDefault = ButtonType.secondary;
   }
 }

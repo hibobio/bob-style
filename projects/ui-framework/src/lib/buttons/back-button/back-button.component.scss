@@ -1,0 +1,10 @@
+button {
+  &,
+  &:before {
+    position: relative;
+  }
+
+  &:before {
+    top: -1px;
+  }
+}

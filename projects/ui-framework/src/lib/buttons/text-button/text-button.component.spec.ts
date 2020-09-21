@@ -3,7 +3,6 @@ import { TextButtonComponent } from './text-button.component';
 import { IconComponent } from '../../icons/icon.component';
 import { MockComponent } from 'ng-mocks';
 import { TypographyModule } from '../../typography/typography.module';
-import { By } from '@angular/platform-browser';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { LinkColor } from '../../indicators/link/link.enum';
 import { simpleChange } from '../../services/utils/test-helpers';
@@ -41,7 +40,7 @@ describe('TextButtonComponent', () => {
   it('should not display icon if no input is passed', () => {
     fixture.detectChanges();
     expect(component.buttonClass).not.toContain('b-icon');
-    expect(element.children[0].className).not.toContain('b-icon');
+    expect((element.children[0] as HTMLElement).dataset.iconBefore).toBeFalsy();
   });
 
   it('should display icon if is input', () => {
@@ -51,11 +50,13 @@ describe('TextButtonComponent', () => {
       })
     );
 
-    const expectedClass =
-      Icons.home + ' b-icon-' + IconSize.medium + ' b-icon-' + IconColor.dark;
-
-    expect(component.buttonClass).toContain(expectedClass);
-    expect(element.children[0].className).toContain(expectedClass);
+    expect(component.buttonClass).toContain(IconColor.dark);
+    expect(
+      (element.children[0] as HTMLElement).dataset.iconBefore
+    ).toBeTruthy();
+    expect((element.children[0] as HTMLElement).dataset.iconBeforeSize).toEqual(
+      IconSize.medium
+    );
   });
 
   it('should set color to orange for component and icon', () => {

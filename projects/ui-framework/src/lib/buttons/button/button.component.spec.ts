@@ -76,7 +76,7 @@ describe('ButtonComponent', () => {
 
   describe('icon', () => {
     it('should not add icon if no icon is passed', () => {
-      expect(buttonElement.className).not.toContain('b-icon');
+      expect(buttonElement.dataset.iconBefore).toBeFalsy();
     });
     it('should add icon if icon is passed', () => {
       component.ngOnChanges(
@@ -84,9 +84,7 @@ describe('ButtonComponent', () => {
           icon: Icons.timeline,
         })
       );
-
-      expect(component.buttonClass).toContain('b-icon');
-      expect(buttonElement.className).toContain('b-icon');
+      expect(buttonElement.dataset.iconBefore).toBeTruthy();
     });
   });
 
@@ -102,8 +100,7 @@ describe('ButtonComponent', () => {
         })
       );
 
-      expect(component.buttonClass).toContain('b-icon-' + expectedColor);
-      expect(buttonElement.className).toContain('b-icon-' + expectedColor);
+      expect(buttonElement.dataset.iconBeforeColor).toEqual(expectedColor);
     };
 
     const testSize = (buttonSize: ButtonSize, expectedSize: IconSize): void => {
@@ -114,12 +111,12 @@ describe('ButtonComponent', () => {
         })
       );
 
-      expect(component.buttonClass).toContain('b-icon-' + expectedSize);
-      expect(buttonElement.className).toContain('b-icon-' + expectedSize);
+      expect(buttonElement.dataset.iconBeforeSize).toEqual(expectedSize);
     };
 
     it('should not set iconColor or iconSize if there is no icon', () => {
-      expect(buttonElement.className).not.toContain('b-icon-');
+      expect(buttonElement.dataset.iconBeforeColor).toBeFalsy();
+      expect(buttonElement.dataset.iconBeforeSize).toBeFalsy();
     });
 
     it('should set iconColor based on button type', () => {

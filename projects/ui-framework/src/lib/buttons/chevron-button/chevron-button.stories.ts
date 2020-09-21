@@ -14,6 +14,7 @@ import { ButtonType, ButtonSize } from '../buttons.enum';
 
 // @ts-ignore: md file and not a module
 import buttonsProps from '../button.properties.md';
+import { Icons } from '../../icons/icons.enum';
 
 const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
   withKnobs
@@ -24,8 +25,7 @@ const button = `<b-chevron-button [type]="type"
                     [size]="size"
                     [active]="active"
                     [disabled]="disabled"
-                    (clicked)="onClick($event)"
-                    [ngClass]="{preloading: loading}">
+                    (clicked)="onClick($event)">
 </b-chevron-button>`;
 
 const note = `
@@ -50,7 +50,17 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Chevron button'">
-    ${button}
+    <b-chevron-button
+          [button]="{
+            type: type,
+            size: size,
+            text: text,
+            icon: icon,
+            disabled: disabled,
+            active: active,
+            preloader: preloader
+          }"
+        (clicked)="onClick($event)"></b-chevron-button>
 </b-story-book-layout>
 `;
 
@@ -65,7 +75,8 @@ story.add(
       active: boolean('active', false),
       disabled: boolean('disabled', false),
       onClick: action('chevron button clicked'),
-      loading: boolean('preloader', false),
+      icon: select('icon', [0, ...Object.values(Icons)], 0),
+      preloader: boolean('preloader', false),
     },
     moduleMetadata: {
       imports: [ButtonsModule, IconsModule, StoryBookLayoutModule],

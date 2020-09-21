@@ -6,7 +6,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { ButtonSize, ButtonType } from '../buttons.enum';
-import { IconSize, IconColor } from '../../icons/icons.enum';
+import { IconColor, IconSize } from '../../icons/icons.enum';
 import { BaseButtonElement } from '../button.abstract';
 
 @Component({
@@ -16,6 +16,8 @@ import { BaseButtonElement } from '../button.abstract';
       type="button"
       [ngClass]="buttonClass"
       [attr.disabled]="disabled || null"
+      [attr.data-icon-before]="icn || null"
+      [attr.data-icon-before-color]="icn ? color || icnColor : null"
       (click)="onClick($event)"
     >
       <ng-content></ng-content>
@@ -32,7 +34,7 @@ export class SquareButtonComponent extends BaseButtonElement {
     super(cd);
   }
 
-  @Input() color: IconColor = IconColor.dark;
+  @Input() color: IconColor;
   @Input() toolTipSummary: string = null;
 
   @HostBinding('attr.data-tooltip') get getTooltipText(): string {
@@ -48,15 +50,8 @@ export class SquareButtonComponent extends BaseButtonElement {
       (this.size || ButtonSize.medium) +
       ' ' +
       (this.icon
-        ? this.icon +
-          ' b-icon-' +
+        ? 'b-icon-' +
           (this.size === ButtonSize.small ? IconSize.medium : IconSize.large) +
-          ' b-icon-' +
-          (!this.type ||
-          this.type === ButtonType.primary ||
-          this.type === ButtonType.negative
-            ? IconColor.white
-            : IconColor.dark) +
           (this.type === ButtonType.tertiary ? ' has-hover' : '')
         : '')
     );

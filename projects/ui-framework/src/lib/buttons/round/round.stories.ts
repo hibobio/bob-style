@@ -71,7 +71,7 @@ story.add(
     props: {
       type: select('type', Object.values(ButtonType), ButtonType.primary),
       size: select('size', Object.values(ButtonSize), ButtonSize.medium),
-      icon: select('icon', Object.values(Icons), Icons.tick),
+      icon: select('icon', [0, ...Object.values(Icons)], Icons.tick),
       disabled: boolean('disabled', false),
       onClick: action('Square button'),
     },

@@ -100,7 +100,7 @@ story.add(
       size: select('size', Object.values(ButtonSize), ButtonSize.medium),
       disabled: boolean('disabled', false),
       active: boolean('active', false),
-      icon: select('icon', Object.values(Icons), Icons.timeline),
+      icon: select('icon', [0, ...Object.values(Icons)], Icons.timeline),
       preloader: boolean('preloader', false),
     },
     moduleMetadata: {
