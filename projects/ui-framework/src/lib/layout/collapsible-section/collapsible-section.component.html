@@ -3,7 +3,7 @@
          [attr.data-collapsible]="!!collapsible"
          [attr.data-expanded]="!collapsible ? null : !!expanded"
          [attr.data-divided]="!!divided"
-         [attr.show-border]="!!options.indicatorColor">
+         [attr.data-show-border]="!!options.indicatorColor">
 
   <header *ngIf="title || hasHeaderContent"
           class="bcp-header {{panelID}}"

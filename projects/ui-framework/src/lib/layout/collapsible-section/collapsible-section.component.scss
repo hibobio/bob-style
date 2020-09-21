@@ -50,16 +50,6 @@ $bcp-border-color: $border-color-light;
   &[aria-disabled='true'] {
     @include disabled-state;
   }
-
-  &[show-border='true'] {
-    .bcp-header {
-      border-left: 16px solid var(--bcp-color);
-    }
-
-    .bcp-panel {
-      border-left: 16px solid rgba(var(--bcp-color-rgb), 0.3);
-    }
-  }
 }
 
 .bcp-header-content,
@@ -323,6 +313,16 @@ $bcp-border-color: $border-color-light;
 
   & > .bcp-panel > .bcp-panel-footer {
     border: 0;
+  }
+}
+
+.bcp-section[data-show-border='true']::ng-deep {
+  & > .bcp-header {
+    border-left: 16px solid var(--bcp-color);
+  }
+
+  & > .bcp-panel {
+    border-left: 16px solid rgba(var(--bcp-color-rgb), 0.3);
   }
 }
 
