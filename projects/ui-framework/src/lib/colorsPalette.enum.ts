@@ -1,4 +1,4 @@
-export enum ColorPelette {
+export enum ColorPalette {
  color1_base = '#d36565',
  color1_dark = '#a54d4d',
  color1_darker = '#812525',
