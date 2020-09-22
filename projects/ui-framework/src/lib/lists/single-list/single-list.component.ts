@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
   NgZone,
   ElementRef,
+  OnInit,
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { ListHeader } from '../list.interface';
@@ -20,7 +21,7 @@ import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
   templateUrl: 'single-list.component.html',
   styleUrls: ['single-list.component.scss', 'single-list-extended.scss'],
 })
-export class SingleListComponent extends BaseListElement {
+export class SingleListComponent extends BaseListElement implements OnInit {
   constructor(
     renderer: Renderer2,
     keybrdSrvc: ListKeyboardService,
@@ -46,6 +47,13 @@ export class SingleListComponent extends BaseListElement {
     this.type = SelectType.single;
     this.listActions = { ...SINGLE_LIST_LIST_ACTIONS_DEF };
   }
+
+  ngOnInit(): void {
+    super.ngOnInit();
+    this.initialListHeight = (this.options.length + (!this.readonly && this.showNoneOption ? 1 : 0))
+      * this.listElHeight;
+  }
+
 
   headerClick(header: ListHeader, index: number): void {
     if (!header) {

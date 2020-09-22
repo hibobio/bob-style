@@ -210,8 +210,6 @@ export abstract class BaseListElement
 
   ngOnInit(): void {
     this.focusIndex = -1;
-    this.initialListHeight = (this.options.length + (!this.readonly && this.showNoneOption ? 1 : 0))
-      * this.listElHeight;
     this.keyDownSubscriber = this.keybrdSrvc
       .getKeyboardNavigationObservable()
       .subscribe((e: KeyboardEvent) => {
