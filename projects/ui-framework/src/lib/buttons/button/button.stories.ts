@@ -96,8 +96,8 @@ story.add(
     props: {
       onClick: action('onClick'),
       text: text('text', 'Click me'),
-      type: select('type', Object.values(ButtonType), ButtonType.primary),
-      size: select('size', Object.values(ButtonSize), ButtonSize.medium),
+      type: select('type', [0, ...Object.values(ButtonType)], 0),
+      size: select('size', [...Object.values(ButtonSize), 0], 0),
       disabled: boolean('disabled', false),
       active: boolean('active', false),
       icon: select('icon', [0, ...Object.values(Icons)], Icons.timeline),

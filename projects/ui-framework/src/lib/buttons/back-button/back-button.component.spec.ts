@@ -32,10 +32,14 @@ describe('BackButtonComponent', () => {
   });
 
   it('should show button component with back icon and button size small', () => {
-    expect(component.buttonClass).toContain(Icons.back_arrow_link);
     expect(component.buttonClass).toContain(ButtonSize.small);
-    expect(buttonElement.classList).toContain(Icons.back_arrow_link);
     expect(buttonElement.classList).toContain(ButtonSize.small);
+
+    expect(buttonElement.dataset.iconBefore).toContain(
+      Icons.back_arrow_link.replace('b-icon-', '')
+    );
+
+    expect(buttonElement.dataset.iconBeforeSize).toContain(ButtonSize.small);
   });
 
   it('should emit onclick', () => {

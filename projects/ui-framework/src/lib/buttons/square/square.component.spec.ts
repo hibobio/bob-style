@@ -54,7 +54,7 @@ describe('SquareButtonComponent', () => {
 
   describe('OnChanges', () => {
     it('should set icon size to large by default', () => {
-      expect(buttonElement.classList).toContain('b-icon-' + IconSize.large);
+      expect(buttonElement.dataset.iconBeforeSize).toEqual(IconSize.large);
     });
 
     it('should set icon size to medium if size is small', () => {
@@ -65,8 +65,7 @@ describe('SquareButtonComponent', () => {
         })
       );
 
-      expect(component.buttonClass).toContain('b-icon-' + IconSize.medium);
-      expect(buttonElement.classList).toContain('b-icon-' + IconSize.medium);
+      expect(buttonElement.dataset.iconBeforeSize).toEqual(IconSize.medium);
     });
   });
 

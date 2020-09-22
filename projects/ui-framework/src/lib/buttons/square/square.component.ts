@@ -4,10 +4,13 @@ import {
   HostBinding,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  SimpleChanges,
+  OnChanges,
 } from '@angular/core';
 import { ButtonSize, ButtonType } from '../buttons.enum';
 import { IconColor, IconSize } from '../../icons/icons.enum';
 import { BaseButtonElement } from '../button.abstract';
+import { notFirstChanges } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-square-button',
@@ -15,8 +18,10 @@ import { BaseButtonElement } from '../button.abstract';
     <button
       type="button"
       [ngClass]="buttonClass"
+      [class.has-hover]="type === buttonType.tertiary"
       [attr.disabled]="disabled || null"
       [attr.data-icon-before]="icn || null"
+      [attr.data-icon-before-size]="icn ? icnSize : null"
       [attr.data-icon-before-color]="icn ? color || icnColor : null"
       (click)="onClick($event)"
     >
@@ -29,9 +34,12 @@ import { BaseButtonElement } from '../button.abstract';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SquareButtonComponent extends BaseButtonElement {
+export class SquareButtonComponent extends BaseButtonElement
+  implements OnChanges {
   constructor(protected cd: ChangeDetectorRef) {
     super(cd);
+
+    this.typeDefault = ButtonType.secondary;
   }
 
   @Input() color: IconColor;
@@ -43,17 +51,14 @@ export class SquareButtonComponent extends BaseButtonElement {
 
   @HostBinding('attr.data-round') @Input() round = false;
 
-  getButtonClass(): string {
-    return (
-      (this.type || ButtonType.secondary) +
-      ' ' +
-      (this.size || ButtonSize.medium) +
-      ' ' +
-      (this.icon
-        ? 'b-icon-' +
-          (this.size === ButtonSize.small ? IconSize.medium : IconSize.large) +
-          (this.type === ButtonType.tertiary ? ' has-hover' : '')
-        : '')
-    );
+  ngOnChanges(changes: SimpleChanges) {
+    super.ngOnChanges(changes, false);
+
+    this.icnSize =
+      this.size === ButtonSize.small ? IconSize.medium : IconSize.large;
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 }

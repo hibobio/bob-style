@@ -66,8 +66,8 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
-      type: select('type', Object.values(ButtonType), ButtonType.secondary),
-      size: select('size', Object.values(ButtonSize), ButtonSize.medium),
+      type: select('type', [0, ...Object.values(ButtonType)], 0),
+      size: select('size', [...Object.values(ButtonSize), 0], 0),
       icon: select('icon', [0, ...Object.values(Icons)], Icons.phone_link),
       color: select('color', [0, ...Object.values(IconColor)], 0),
       round: boolean('round', false),

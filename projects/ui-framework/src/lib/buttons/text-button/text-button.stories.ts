@@ -86,7 +86,7 @@ story.add(
     props: {
       text: text('text', 'Click here!'),
       icon: select('icon', [0, ...Object.values(Icons)], Icons.phone_link),
-      type: select('type', Object.values(ButtonType), ButtonType.secondary),
+      type: select('type', [0, ...Object.values(ButtonType)], 0),
       color: select('color', Object.values(LinkColor), LinkColor.none),
       disabled: boolean('disabled', false),
       onClick: action('Text button'),

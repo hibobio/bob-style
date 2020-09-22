@@ -4,7 +4,7 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { BaseButtonElement } from '../button.abstract';
-import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
+import { Icons } from '../../icons/icons.enum';
 import { ButtonSize, ButtonType } from '../buttons.enum';
 
 @Component({
@@ -15,6 +15,9 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
       type="button"
       [ngClass]="buttonClass"
       [attr.disabled]="disabled || null"
+      [attr.data-icon-before]="icn || null"
+      [attr.data-icon-before-size]="icn ? icnSize : null"
+      [attr.data-icon-before-color]="icn ? icnColor : null"
       (click)="onClick($event)"
     >
       {{ text }}
@@ -31,19 +34,9 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
 export class BackButtonComponent extends BaseButtonElement {
   constructor(protected cd: ChangeDetectorRef) {
     super(cd);
-  }
 
-  getButtonClass(): string {
-    return (
-      (this.type || ButtonType.secondary) +
-      ' ' +
-      ButtonSize.small +
-      ' ' +
-      (Icons.back_arrow_link +
-        ' b-icon-' +
-        IconSize.medium +
-        ' b-icon-' +
-        IconColor.dark)
-    );
+    this.typeDefault = ButtonType.secondary;
+    this.icon = Icons.back_arrow_link;
+    this.size = ButtonSize.small;
   }
 }

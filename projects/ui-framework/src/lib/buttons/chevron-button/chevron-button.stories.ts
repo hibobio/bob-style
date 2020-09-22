@@ -70,8 +70,8 @@ story.add(
     template: storyTemplate,
     props: {
       text: text('text', 'Jump to section'),
-      type: select('type', Object.values(ButtonType), ButtonType.secondary),
-      size: select('size', Object.values(ButtonSize), ButtonSize.medium),
+      type: select('type', [0, ...Object.values(ButtonType)], 0),
+      size: select('size', [...Object.values(ButtonSize), 0], 0),
       active: boolean('active', false),
       disabled: boolean('disabled', false),
       onClick: action('chevron button clicked'),

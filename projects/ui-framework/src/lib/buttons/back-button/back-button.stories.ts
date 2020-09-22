@@ -5,7 +5,7 @@ import {
   boolean,
   withKnobs,
 } from '@storybook/addon-knobs/angular';
-import { BackButtonType } from '../buttons.enum';
+import { BackButtonType, ButtonType } from '../buttons.enum';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
 import { ComponentGroupType } from '../../consts';
@@ -64,11 +64,7 @@ story.add(
     props: {
       onClick: action('onClick'),
       text: text('text', 'Back'),
-      type: select(
-        'type',
-        Object.values(BackButtonType),
-        BackButtonType.secondary
-      ),
+      type: select('type', [0, ...Object.values(ButtonType)], 0),
       disabled: boolean('disabled', false),
     },
     moduleMetadata: {
