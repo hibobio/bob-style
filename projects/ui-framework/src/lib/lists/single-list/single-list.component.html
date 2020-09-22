@@ -5,7 +5,8 @@
 </b-search>
 
 <div [ngStyle]="{
-        height: listOptions && (getListHeight() + 'px')
+        height: listOptions && (getListHeight() + 'px'),
+        minHeight: initialListHeight + 'px'
       }"
      [attr.aria-readonly]="readonly || null"
      [ngClass]="{
@@ -13,6 +14,8 @@
        'show-none-option': !readonly && showNoneOption
       }"
      class="v-scroll-wrapper">
+
+  <div class="no-results-message" *ngIf="!listOptions?.length">No results were found.</div>
 
   <div #headers
        class="headers"

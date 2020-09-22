@@ -45,6 +45,14 @@ $list-item-height: $wrap-height;
   }
 }
 
+.v-scroll-wrapper .no-results-message {
+  height: $wrap-height;
+  display: flex;
+  align-items: center;
+  color: $grey-600;
+  padding: 0 $input-padding;
+}
+
 :host ::ng-deep {
   .v-scroll-wrapper {
     position: relative;
