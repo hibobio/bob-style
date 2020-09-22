@@ -50,6 +50,7 @@ import {
   hasChanges,
   Icons,
   IconSize,
+  isString,
   notFirstChanges,
   PagerConfig,
   PAGER_CONFIG_DEF,
@@ -106,7 +107,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   @Input() columnDefConfig: ColumnDefConfig;
   @Input() rowSelection: RowSelection = null;
-  @Input() maxHeight = TABLE_MIN_HEIGHT;
+  @Input() maxHeight: number | string = TABLE_MIN_HEIGHT;
   @Input() suppressColumnVirtualisation = true;
   @Input() suppressRowVirtualisation = false;
   @Input() tableGridOptions: Partial<GridOptions> = {};
@@ -360,15 +361,29 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     };
   }
 
-  private setGridHeight(height: number): void {
-    this.DOM.setCssProps(this.elRef.nativeElement, {
-      '--max-height': `${Math.max(
-        height -
-          (this.enablePager || this.tableGridOptions?.pagination
-            ? TABLE_PAGER_HEIGHT
-            : 0),
+  private setGridHeight(height: number | string): void {
+    let heightValue: string;
+
+    const heightMod =
+      this.enablePager || this.tableGridOptions?.pagination
+        ? TABLE_PAGER_HEIGHT
+        : 0;
+
+    if (isString(height) && height.startsWith('--')) {
+      heightValue = heightMod
+        ? `calc(var(${height}, ${
+            TABLE_MIN_HEIGHT + TABLE_PAGER_HEIGHT
+          }px) - ${heightMod}px)`
+        : `var(${height},${TABLE_MIN_HEIGHT}px)`;
+    } else {
+      heightValue = `${Math.max(
+        (parseInt(height as string, 10) || 0) - heightMod,
         TABLE_MIN_HEIGHT
-      )}px`,
+      )}px`;
+    }
+
+    this.DOM.setCssProps(this.elRef.nativeElement, {
+      '--max-height': heightValue,
     });
   }
 

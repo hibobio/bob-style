@@ -3,10 +3,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { action } from '@storybook/addon-actions';
 import {
   boolean,
-  number,
   object,
   select,
   withKnobs,
+  text,
 } from '@storybook/addon-knobs/angular';
 import { storiesOf } from '@storybook/angular';
 import { AgGridModule } from 'ag-grid-angular';
@@ -217,7 +217,7 @@ function tableStoryFactory({
 }: TableStory) {
   const defaultProps = {
     type: select('type', type, TableType.Primary, 'Props'),
-    maxHeight: number('maxHeight', 450, {}, 'Props'),
+    maxHeight: text('maxHeight', '450', 'Props'),
     rowSelection: select(
       'rowSelection',
       rowSelection,

@@ -8,7 +8,7 @@ $table-overlay-height: 86px;
 $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 
 :host {
-  --max-height: $table-row-height * 6;
+  --max-height: #{$table-row-height * 6};
   display: grid;
   overflow: hidden;
 
