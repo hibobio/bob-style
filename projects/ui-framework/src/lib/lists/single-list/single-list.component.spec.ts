@@ -533,4 +533,28 @@ describe('SingleListComponent', () => {
       expect(styles.height).toEqual('132px');
     });
   });
+
+  describe('No results were found.', () => {
+    it(`should not show 'no results were found.' message`, () => {
+      component['searchChange']('info 1');
+      fixture.detectChanges();
+      const noResultsMessageElements = fixture.debugElement.queryAll(By.css('.no-results-message'));
+      expect(noResultsMessageElements.length).toEqual(0);
+    });
+
+    it(`should show 'no results were found.' message`, () => {
+      component['searchChange']('˚ß∂∆ƒ˚ß∆ƒ');
+      fixture.detectChanges();
+      const noResultsMessageElements = fixture.debugElement.queryAll(By.css('.no-results-message'));
+      expect(noResultsMessageElements.length).toEqual(1);
+    });
+  });
+
+  describe('.v-scroll-wrapper min-height', () => {
+    it('should have min-height property set', () => {
+      const vScrollWrapperDiv = fixture.debugElement.queryAll(By.css('.v-scroll-wrapper'))[0];
+      expect(component['initialListHeight']).toBeGreaterThan(0);
+      expect(vScrollWrapperDiv.nativeElement.style.minHeight).toBeTruthy();
+    });
+  });
 });
