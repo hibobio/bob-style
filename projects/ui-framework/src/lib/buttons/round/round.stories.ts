@@ -69,7 +69,11 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
-      type: select('type', [0, ...Object.values(ButtonType)], 0),
+      type: select(
+        'type',
+        [0, ...Object.values(ButtonType)],
+        ButtonType.primary
+      ),
       size: select('size', [...Object.values(ButtonSize), 0], 0),
       icon: select('icon', [0, ...Object.values(Icons)], Icons.tick),
       disabled: boolean('disabled', false),
