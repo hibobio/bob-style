@@ -81,6 +81,9 @@ export const dateToString = (
 ): string => (isDate(date) ? format(date as Date, frmt) : date) as string;
 
 export const valueToObjectKey = (key: string) => (value: any) => {
+  if (isNullOrUndefined(value)) {
+    return value;
+  }
   return hasProp(value, key) ? value : { [key]: value };
 };
 

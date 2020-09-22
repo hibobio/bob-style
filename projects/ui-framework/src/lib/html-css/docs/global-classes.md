@@ -212,6 +212,18 @@
     </tr>
 
     <tr>
+      <td>bg-error, bg-warn
+      </td>
+      <td>Other common background colors
+      </td>
+      <td>
+        <pre><code>&lt;div class="bg-error clr-white"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
       <td>clr-white,
         clr-grey-100, clr-grey-300, clr-grey-500, clr-grey-600, clr-grey-700
       </td>
@@ -231,6 +243,18 @@
       </td>
       <td>
         <pre><code>&lt;div class="clr-primary-500"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
+      <td>clr-error, clr-warn
+      </td>
+      <td>Other common text colors
+      </td>
+      <td>
+        <pre><code>&lt;div class="clr-warn"&gt;
   Something
 &lt;/div&gt;</code></pre>
       </td>
@@ -279,11 +303,25 @@
       </td>
     </tr>
 
+    <tr>
+      <td style="white-space: nowrap;">b-collapse, b-expand</td>
+      <td>adds collapsing / expanding animation + expands / collapses element
+      </td>
+      <td>
+        <pre><code>&lt;div [ngClass]="{{ '{' }}
+        'b-collapse': isCollapsed,
+        'b-expand': !isCollapsed
+      {{ '}' }}"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
   </tbody>
 
 </table>
 
-<b-heading>Responsive</b-heading>
+<b-heading>Layout & Responsive</b-heading>
 
 <table class="doc-table">
   <thead>
@@ -295,6 +333,46 @@
   </thead>
 
   <tbody>
+
+        <tr>
+          <td style="white-space: nowrap;">blk, block</td>
+          <td>adds "display: block"</td>
+          <td>
+            <pre><code>&lt;span class="blk"&gt;
+  I'm a box
+&lt;/span&gt;</code></pre>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="white-space: nowrap;">flx, b-flex</td>
+          <td>adds "display: flex"</td>
+          <td>
+            <pre><code>&lt;span class="blk"&gt;
+  I'm flexible
+&lt;/span&gt;</code></pre>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="white-space: nowrap;">flx-row, flx-col</td>
+          <td>adds "display: flex" + "flex-direction" (column or row)</td>
+          <td>
+            <pre><code>&lt;span class="flx-col"&gt;
+  I'm vertical
+&lt;/span&gt;</code></pre>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="white-space: nowrap;">flx-center</td>
+          <td>adds "align-items" + "justify-content" to align content centrally. does not add "display: flex" (so can be used with grid's)</td>
+          <td>
+            <pre><code>&lt;span class="flx-col"&gt;
+  I'm vertical
+&lt;/span&gt;</code></pre>
+          </td>
+        </tr>
 
     <tr>
       <td style="white-space: nowrap;">b-mobile</td>
@@ -361,6 +439,16 @@
   </thead>
 
   <tbody>
+
+        <tr>
+          <td style="white-space: nowrap;">uppercase, capitalize</td>
+          <td>helper classes</td>
+          <td>
+            <pre><code>&lt;p class="uppercase"&gt;
+  Some text
+&lt;/p&gt;</code></pre>
+          </td>
+        </tr>
 
     <tr>
       <td style="white-space: nowrap;">b-body</td>

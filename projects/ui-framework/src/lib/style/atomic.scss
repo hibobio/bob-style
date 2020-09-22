@@ -141,6 +141,13 @@ $acss-dirs: top right bottom left;
   background-color: white;
 }
 
+.bg-error {
+  background-color: $color-error;
+}
+.bg-warn {
+  background-color: $color-warn;
+}
+
 .bg-grey-100 {
   background-color: $grey-100;
 }
@@ -175,6 +182,13 @@ $acss-dirs: top right bottom left;
 
 .clr-white {
   color: white;
+}
+
+.clr-error {
+  color: $color-error;
+}
+.clr-warn {
+  color: $color-warn;
 }
 
 .clr-grey-100 {
