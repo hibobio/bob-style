@@ -494,6 +494,12 @@ $rte-icon-color-hover: darken($grey-700, 5%);
     }
   }
 
+  .fr-submit[data-cmd-text='update'] {
+    &:before {
+      content: var(--translation-update, 'Update');
+    }
+  }
+
   .fr-link-attr + label {
     min-width: calc(var(--link-label-wch, 5) * 1ch);
   }

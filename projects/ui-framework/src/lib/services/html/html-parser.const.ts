@@ -25,7 +25,7 @@ export const HTML_CLEANUP_REPLACERS: {
   blockToDiv: {
     find: [
       /(?:(<p)|(<main)|(<section)|(<header)|(<article)|(<footer))(?:>|(?:\s[^>]*>))/gi,
-      /(<\/p>)|(\/main)|(\/section)|(\/header)|(\/article)|(\/footer)/gi,
+      /(<\/p>)|(<\/main>)|(<\/section>)|(<\/header>)|(<\/article>)|(<\/footer>)/gi,
     ],
     replaceWith: ['<div>', '</div>'],
   },

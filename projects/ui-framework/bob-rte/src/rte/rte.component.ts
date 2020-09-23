@@ -372,13 +372,24 @@ export class RichTextEditorComponent extends RTEbaseElement
 
       // link popup mods
       'popups.show.link.insert': () => {
+        const linkPopupSubmit = this.getEditorElement(
+          '.fr-layer[class*="fr-link-insert"] .fr-command.fr-submit'
+        ) as HTMLElement;
+
+        if (linkPopupSubmit) {
+          linkPopupSubmit.dataset.cmdText = linkPopupSubmit.innerHTML
+            .toLowerCase()
+            .trim();
+        }
+
         const inputs = asArray(
           this.getEditorElement(
             '.fr-layer[class*="fr-link-insert"] input[type="text"]'
           )
         );
+
         inputs.forEach((inputEl: HTMLInputElement) => {
-          inputEl.placeholder = inputEl.nextSibling.textContent;
+          // inputEl.placeholder = inputEl.nextSibling.textContent;
           inputEl.autocomplete = 'off';
           inputEl.removeAttribute('id');
           inputEl.blur();

@@ -57,7 +57,6 @@ export class CardsLayoutComponent
   @Input() alignCenter: boolean | 'auto' = false;
   @Input() mobileSwiper = false;
   @Input() type: CardType = CardType.regular;
-
   @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<
     number
   >();
@@ -126,6 +125,7 @@ export class CardsLayoutComponent
       sub.unsubscribe();
     });
     this.subs.length = 0;
+    this.cardsInRow$.complete();
   }
 
   getCardsInRow$(): Observable<number> {

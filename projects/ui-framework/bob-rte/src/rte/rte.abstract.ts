@@ -333,6 +333,9 @@ export abstract class RTEbaseElement extends BaseFormElement
       '--translation-insert': `'${this.translate.instant(
         'bob-style.rte.link.insert'
       )}'`,
+      '--translation-update': `'${this.translate.instant(
+        'bob-style.rte.link.update'
+      )}'`,
       '--translation-url': `'${this.translate.instant(
         'bob-style.rte.link.url'
       )}'`,
@@ -415,15 +418,19 @@ export abstract class RTEbaseElement extends BaseFormElement
   }
 
   public getEditorElement(selector = null): HTMLElement | HTMLElement[] {
-    const editorHostElem = this.editorDirective['_element'] as HTMLElement;
     if (!selector) {
-      return editorHostElem;
+      return this.editorDirective['_element'] as HTMLElement;
     }
 
-    const requestedElements = editorHostElem.querySelectorAll(selector);
+    const requestedElements = Array.from(
+      (this.host.nativeElement as HTMLElement).querySelectorAll(
+        selector
+      ) as NodeListOf<HTMLElement>
+    );
+
     return requestedElements.length < 2
       ? requestedElements[0]
-      : Array.from(requestedElements);
+      : requestedElements;
   }
 
   protected getEditorTextbox(): HTMLElement {
