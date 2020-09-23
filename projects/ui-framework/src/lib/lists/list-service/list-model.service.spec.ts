@@ -36,7 +36,6 @@ describe('ListModelService', () => {
       const headerModel = listModelService.getHeadersModel(optionsMock);
       expect(headerModel).toEqual([
         {
-          ...optionsMock[0],
           groupName: 'Basic Info',
           isCollapsed: false,
           placeHolderSize: 88,
@@ -47,7 +46,6 @@ describe('ListModelService', () => {
           groupIsOption: false,
         },
         {
-          ...optionsMock[1],
           groupName: 'Personal',
           isCollapsed: false,
           placeHolderSize: 88,
@@ -95,6 +93,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: true,
           groupIndex: 0,
+          key: undefined,
         },
         {
           value: 'Basic Info 2',
@@ -103,6 +102,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: false,
           groupIndex: 0,
+          key: undefined,
         },
         {
           isPlaceHolder: true,
@@ -115,6 +115,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: false,
           groupIndex: 1,
+          key: undefined,
         },
         {
           value: 'Personal 2',
@@ -123,6 +124,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: false,
           groupIndex: 1,
+          key: undefined,
         },
       ] as any);
     });
@@ -233,6 +235,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: true,
           groupIndex: 0,
+          key: undefined,
         },
         {
           value: 'Basic Info 2',
@@ -241,6 +244,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: false,
           groupIndex: 0,
+          key: undefined,
         },
         {
           isPlaceHolder: true,
@@ -253,6 +257,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: true,
           groupIndex: 1,
+          key: undefined,
         },
         {
           value: 'Personal 2',
@@ -261,6 +266,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: true,
           groupIndex: 1,
+          key: undefined,
         },
       ] as any);
     });

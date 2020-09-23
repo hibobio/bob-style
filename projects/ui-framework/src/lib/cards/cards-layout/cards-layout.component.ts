@@ -28,7 +28,10 @@ import {
 } from './cards-layout.const';
 import { BaseCardElement } from '../card/card.abstract';
 import { MediaEvent, MobileService } from '../../services/utils/mobile.service';
-import { notFirstChanges } from '../../services/utils/functional-utils';
+import {
+  applyChanges,
+  notFirstChanges,
+} from '../../services/utils/functional-utils';
 import { ItemsInRowService } from '../../avatar/avatar-layout/items-in-row.service';
 
 @Component({
@@ -46,31 +49,33 @@ export class CardsLayoutComponent
     private mobileService: MobileService,
     private zone: NgZone,
     private cd: ChangeDetectorRef,
-    private itemsInRow: ItemsInRowService
+    private itemsInRowService: ItemsInRowService
   ) {}
-
-  private resizeSubscription: Subscription;
-  private mediaEventSubscription: Subscription;
-  private cardsChangeSubscription: Subscription;
-  public cardsInRow = 1;
-  public cardsInRow$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-  public isMobile = false;
 
   @ContentChildren(BaseCardElement) public cards: QueryList<BaseCardElement>;
 
   @Input() alignCenter: boolean | 'auto' = false;
   @Input() mobileSwiper = false;
   @Input() type: CardType = CardType.regular;
+
   @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<
     number
   >();
 
+  public cardsInRow = 1;
+  public cardsInRow$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+  public isMobile = false;
+
+  private subs: Subscription[] = [];
+
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.type && !changes.type.firstChange) {
-      this.type = changes.type.currentValue;
+    applyChanges(this, changes);
+
+    if (notFirstChanges(changes, ['type'])) {
       this.setCssVars();
       this.updateCardsInRow(false);
     }
+
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
     }
@@ -80,48 +85,47 @@ export class CardsLayoutComponent
     this.setCssVars();
     this.updateCardsInRow();
 
-    this.resizeSubscription = this.utilsService
-      .getResizeEvent()
-      .pipe(
-        outsideZone(this.zone),
-        filter(() => {
-          return this.cardsInRow !== this.calcCardsInRow();
-        })
-      )
-      .subscribe(() => {
-        this.zone.run(() => {
-          this.updateCardsInRow();
-        });
-      });
+    this.subs.push(
+      this.utilsService
+        .getResizeEvent()
+        .pipe(
+          outsideZone(this.zone),
+          filter(() => {
+            return this.cardsInRow !== this.calcCardsInRow();
+          })
+        )
+        .subscribe(() => {
+          this.zone.run(() => {
+            this.updateCardsInRow();
+          });
+        }),
 
-    this.mediaEventSubscription = this.mobileService
-      .getMediaEvent()
-      .pipe(outsideZone(this.zone))
-      .subscribe((media: MediaEvent) => {
-        this.isMobile = media.matchMobile;
-        this.setCssVars();
-        this.updateCardsInRow();
-      });
+      this.mobileService
+        .getMediaEvent()
+        .pipe(outsideZone(this.zone))
+        .subscribe((media: MediaEvent) => {
+          this.isMobile = media.matchMobile;
+          this.setCssVars();
+          this.updateCardsInRow();
+        })
+    );
   }
 
   ngAfterContentInit(): void {
-    this.cardsChangeSubscription = this.cards.changes.subscribe(() => {
-      if (!this.cd['destroyed']) {
-        this.cd.detectChanges();
-      }
-    });
+    this.subs.push(
+      this.cards.changes.subscribe(() => {
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      })
+    );
   }
 
   ngOnDestroy(): void {
-    if (this.resizeSubscription) {
-      this.resizeSubscription.unsubscribe();
-    }
-    if (this.mediaEventSubscription) {
-      this.mediaEventSubscription.unsubscribe();
-    }
-    if (this.cardsChangeSubscription) {
-      this.cardsChangeSubscription.unsubscribe();
-    }
+    this.subs.forEach((sub) => {
+      sub.unsubscribe();
+    });
+    this.subs.length = 0;
   }
 
   getCardsInRow$(): Observable<number> {
@@ -154,7 +158,7 @@ export class CardsLayoutComponent
       ? CARD_TYPE_WIDTH[this.type]
       : CARD_TYPE_WIDTH_MOBILE[this.type];
 
-    return this.itemsInRow.itemsInRow(
+    return this.itemsInRowService.itemsInRow(
       this.hostRef.nativeElement,
       cardWidth,
       GAP_SIZE
