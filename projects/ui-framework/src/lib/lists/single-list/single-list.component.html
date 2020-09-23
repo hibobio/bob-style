@@ -15,7 +15,9 @@
       }"
      class="v-scroll-wrapper">
 
-  <div class="no-results-message option-select option" *ngIf="!listOptions?.length">No results were found.</div>
+  <div class="empty-state-message option-select option" *ngIf="!listOptions?.length">
+    {{'bob-style.lists.empty-state-default' | translate}}
+  </div>
 
   <div #headers
        class="headers"

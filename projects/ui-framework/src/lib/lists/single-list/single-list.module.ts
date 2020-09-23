@@ -10,6 +10,7 @@ import { SearchModule } from '../../search/search/search.module';
 import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
 import { ListFooterModule } from '../list-footer/list-footer.module';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [SingleListComponent],
@@ -20,6 +21,7 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
     FiltersModule,
     ComponentRendererModule,
     ListFooterModule,
+    TranslateModule,
   ],
   exports: [SingleListComponent],
   providers: [
