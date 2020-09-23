@@ -54,7 +54,7 @@
                                maxBufferPx="{{8*listElHeight}}"
                                minBufferPx="{{8*listElHeight}}">
 
-    <button *ngIf="showNoneOption && !readonly"
+    <button *ngIf="showNoneOption && !readonly && listOptions?.length"
             type="button"
             class="clear-selection"
             (click)="clearList()">
