@@ -102,7 +102,7 @@ export abstract class BaseListElement
   public listOptions: ListOption[];
   public listHeaders: ListHeader[];
   public focusIndex: number;
-  public staticListHeight: number;
+  public staticListHeight = 0;
   public searchValue: string;
   public shouldDisplaySearch = false;
   public filteredOptions: SelectGroupOption[];

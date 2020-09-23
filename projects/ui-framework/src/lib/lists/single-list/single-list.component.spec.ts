@@ -538,14 +538,14 @@ describe('SingleListComponent', () => {
     it(`should not show 'no results were found.' message`, () => {
       component['searchChange']('info 1');
       fixture.detectChanges();
-      const noResultsMessageElements = fixture.debugElement.queryAll(By.css('.no-results-message'));
+      const noResultsMessageElements = fixture.debugElement.queryAll(By.css('.empty-state-message'));
       expect(noResultsMessageElements.length).toEqual(0);
     });
 
     it(`should show 'no results were found.' message`, () => {
       component['searchChange']('˚ß∂∆ƒ˚ß∆ƒ');
       fixture.detectChanges();
-      const noResultsMessageElements = fixture.debugElement.queryAll(By.css('.no-results-message'));
+      const noResultsMessageElements = fixture.debugElement.queryAll(By.css('.empty-state-message'));
       expect(noResultsMessageElements.length).toEqual(1);
     });
   });
