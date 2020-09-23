@@ -6,7 +6,7 @@
 
 <div [ngStyle]="{
         height: listOptions && (getListHeight() + 'px'),
-        minHeight: initialListHeight + 'px'
+        minHeight: staticListHeight + 'px'
       }"
      [attr.aria-readonly]="readonly || null"
      [ngClass]="{

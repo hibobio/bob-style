@@ -553,7 +553,7 @@ describe('SingleListComponent', () => {
   describe('.v-scroll-wrapper min-height', () => {
     it('should have min-height property set', () => {
       const vScrollWrapperDiv = fixture.debugElement.queryAll(By.css('.v-scroll-wrapper'))[0];
-      expect(component['initialListHeight']).toBeGreaterThan(0);
+      expect(component['staticListHeight']).toBeGreaterThan(0);
       expect(vScrollWrapperDiv.nativeElement.style.minHeight).toBeTruthy();
     });
   });

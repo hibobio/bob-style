@@ -102,7 +102,7 @@ export abstract class BaseListElement
   public listOptions: ListOption[];
   public listHeaders: ListHeader[];
   public focusIndex: number;
-  public initialListHeight: number;
+  public staticListHeight: number;
   public searchValue: string;
   public shouldDisplaySearch = false;
   public filteredOptions: SelectGroupOption[];
@@ -313,6 +313,7 @@ export abstract class BaseListElement
 
     this.updateLists({
       collapseHeaders: this.startWithGroupsCollapsed && !this.searchValue,
+      updateListHeight: false
     });
   }
 
@@ -406,7 +407,10 @@ export abstract class BaseListElement
       this.allGroupsCollapsed =
         force !== null ? force : !this.allGroupsCollapsed;
 
-      this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
+      this.updateLists({
+        collapseHeaders: this.allGroupsCollapsed,
+        updateListHeight: this.listOptions?.length > 0
+      });
     }
   }
 
@@ -479,6 +483,10 @@ export abstract class BaseListElement
       );
     }
 
+    if (config.updateListHeight) {
+      this.staticListHeight = this.getCurrentListHeight();
+    }
+
     this.modelSrvc.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
@@ -532,4 +540,6 @@ export abstract class BaseListElement
   public headerTrackBy(index: number, listHeader: ListHeader): string {
     return index + listHeader.groupName;
   }
+
+  protected abstract getCurrentListHeight(): number;
 }

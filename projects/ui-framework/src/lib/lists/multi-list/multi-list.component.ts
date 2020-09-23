@@ -106,4 +106,10 @@ export class MultiListComponent extends BaseListElement {
       selectedIDs: this.selectedIDs,
     });
   }
+
+  protected getCurrentListHeight(): number {
+    const currentListHeight = this.listOptions.length * this.listElHeight;
+
+    return Math.min(currentListHeight, this.maxHeight);
+  }
 }

@@ -7,5 +7,6 @@ export const UPDATE_LISTS_CONFIG_DEF: UpdateListsConfig = {
   collapseHeaders: false,
   updateListHeaders: true,
   updateListOptions: true,
+  updateListHeight: true,
   selectedIDs: null,
 };
