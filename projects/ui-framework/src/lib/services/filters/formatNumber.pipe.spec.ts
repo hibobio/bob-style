@@ -3,8 +3,8 @@ import { FormatNumberPipe } from './formatNumber.pipe';
 describe('FormatNumberPipe', () => {
   const pipe = new FormatNumberPipe();
 
-  it('should format number and limit decimal points to 3', () => {
-    expect(pipe.transform(123456.7896)).toEqual('123,456.79');
+  it('should format number and limit decimal points to 4', () => {
+    expect(pipe.transform(123456.78966)).toEqual('123,456.7897');
   });
 
   it('should format string that looks like number', () => {

@@ -16,7 +16,7 @@ import { MockComponent } from 'ng-mocks';
 import { FormElementLabelComponent } from '../form-element-label/form-element-label.component';
 import { By } from '@angular/platform-browser';
 
-fdescribe('TimePickerComponent', () => {
+describe('TimePickerComponent', () => {
   let component: TimePickerComponent;
   let fixture: ComponentFixture<TimePickerComponent>;
   let componentElem: HTMLElement;

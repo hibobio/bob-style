@@ -5,40 +5,50 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  Output
+  OnDestroy,
+  Output,
 } from '@angular/core';
-import {DOMhelpers} from '../../services/html/dom-helpers.service';
-import {ItemsInRowService} from '../../services/items-in-row/items-in-row.service';
+import { Observable, Subscription } from 'rxjs';
+import { ItemsInRowService } from './items-in-row.service';
 
 @Component({
   selector: 'b-avatar-layout',
   templateUrl: './avatar-layout.component.html',
   styleUrls: ['./avatar-layout.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AvatarLayoutComponent implements AfterViewInit {
+export class AvatarLayoutComponent implements AfterViewInit, OnDestroy {
+  constructor(
+    private elementRef: ElementRef,
+    private itemsInRowService: ItemsInRowService
+  ) {}
+
   @Input() align: 'center' | 'left' = 'center';
   @Output() itemsInRowChange = new EventEmitter<number>();
+
   gapSize = 8;
   elemWidth = 90;
-  itemsInRow$;
-  constructor(
-    private DOM: DOMhelpers,
-    private elementRef: ElementRef,
-    private itemsInRow: ItemsInRowService,
-  ) { }
+  minItemsFallback = 3;
+  itemsInRow$: Observable<number>;
+
+  private sub: Subscription;
 
   ngAfterViewInit() {
-    this.itemsInRow$ = this.itemsInRow.itemsInRowObserver$(
+    this.itemsInRow$ = this.itemsInRowService.getItemsInRow$(
       this.elementRef.nativeElement,
       this.elemWidth,
-      this.gapSize
-    ).subscribe((count) => {
-      this.DOM.setCssProps(this.elementRef.nativeElement, {
-        '--item-count': count
+      this.gapSize,
+      this.minItemsFallback
+    );
+
+    if (this.itemsInRowChange.observers.length > 0) {
+      this.sub = this.itemsInRow$.subscribe((count) => {
+        this.itemsInRowChange.emit(count);
       });
-      this.itemsInRowChange.emit(count);
-    });
+    }
   }
 
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
 }

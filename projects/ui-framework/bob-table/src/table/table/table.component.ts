@@ -45,6 +45,7 @@ import {
   TableStyleConfig,
 } from './table.interface';
 import {
+  applyChanges,
   DOMhelpers,
   EmptyStateConfig,
   hasChanges,
@@ -66,6 +67,17 @@ import { TranslateService } from '@ngx-translate/core';
 const CLOSE_BUTTON_DIAMETER = 20;
 const CLOSE_MARGIN_OFFSET = 6;
 const DEFAULT_COL_ORDER_STRATEGY = ColumnOrderStrategy.AppendNew;
+
+const DEFAULT_PROP_VALUES = {
+  type: TableType.Primary,
+  maxHeight: TABLE_MIN_HEIGHT,
+  suppressColumnVirtualisation: true,
+  suppressDragLeaveHidesColumns: true,
+  shouldAutoSizeColumns: true,
+  tableGridOptions: {},
+  pagerConfig: { ...PAGER_CONFIG_DEF },
+  styleConfig: {},
+};
 
 @Component({
   selector: 'b-table',
@@ -100,24 +112,28 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   @ViewChild('agGrid', { static: true }) agGrid: AgGridAngular;
 
-  @HostBinding('attr.data-type') @Input() type: TableType = TableType.Primary;
+  @HostBinding('attr.data-type') @Input() type: TableType =
+    DEFAULT_PROP_VALUES.type;
 
   @Input() rowData: any[];
   @Input() columnDefs: ColumnDef[];
-
   @Input() columnDefConfig: ColumnDefConfig;
+
   @Input() rowSelection: RowSelection = null;
-  @Input() maxHeight: number | string = TABLE_MIN_HEIGHT;
-  @Input() suppressColumnVirtualisation = true;
+  @Input() maxHeight: number | string = DEFAULT_PROP_VALUES.maxHeight;
+  @Input() suppressColumnVirtualisation =
+    DEFAULT_PROP_VALUES.suppressColumnVirtualisation;
   @Input() suppressRowVirtualisation = false;
-  @Input() tableGridOptions: Partial<GridOptions> = {};
-  @Input() suppressDragLeaveHidesColumns = true;
+  @Input() tableGridOptions: Partial<GridOptions> =
+    DEFAULT_PROP_VALUES.tableGridOptions;
+  @Input() suppressDragLeaveHidesColumns =
+    DEFAULT_PROP_VALUES.suppressDragLeaveHidesColumns;
   @Input() removeColumnButtonEnabled = false;
-  @Input() shouldAutoSizeColumns = true;
+  @Input() shouldAutoSizeColumns = DEFAULT_PROP_VALUES.shouldAutoSizeColumns;
 
   @Input() enablePager = false;
-  @Input() pagerConfig: PagerConfig = { ...PAGER_CONFIG_DEF };
-  @Input() styleConfig: TableStyleConfig = {};
+  @Input() pagerConfig: PagerConfig = DEFAULT_PROP_VALUES.pagerConfig;
+  @Input() styleConfig: TableStyleConfig = DEFAULT_PROP_VALUES.styleConfig;
 
   @Input('emptyStateConfig') set setEmptyStateConfig(config: EmptyStateConfig) {
     this.emptyStateConfig = { ...this.emptyStateConfig, ...config };
@@ -194,18 +210,19 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes, DEFAULT_PROP_VALUES);
+
     let previousColumnDefValue: ColumnDef[];
 
     if (hasChanges(changes, ['columnDefs'], true)) {
       this.columnDefConfig = {
-        columnDef: changes.columnDefs.currentValue,
+        columnDef: this.columnDefs,
         orderStrategy: DEFAULT_COL_ORDER_STRATEGY,
       };
       previousColumnDefValue = changes.columnDefs.previousValue;
     }
 
     if (hasChanges(changes, ['columnDefConfig'], true)) {
-      this.columnDefConfig = changes.columnDefConfig.currentValue;
       previousColumnDefValue = changes.columnDefConfig.previousValue?.columnDef;
     }
 
@@ -232,11 +249,10 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     }
 
     if (notFirstChanges(changes, ['maxHeight'])) {
-      this.maxHeight = changes.maxHeight.currentValue;
       this.setGridHeight(this.maxHeight);
     }
 
-    if (notFirstChanges(changes)) {
+    if (notFirstChanges(changes) && !this.cdr['destroyed']) {
       this.cdr.detectChanges();
     }
   }

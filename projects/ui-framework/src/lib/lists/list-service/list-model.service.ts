@@ -15,6 +15,7 @@ import {
   hasProp,
   isEmptyArray,
   isBoolean,
+  objectRemoveKey,
 } from '../../services/utils/functional-utils';
 
 @Injectable()
@@ -36,7 +37,7 @@ export class ListModelService {
         group.options[0].value === group.groupName;
 
       return {
-        ...group,
+        ...objectRemoveKey(group, 'options'),
         isCollapsed: collapseHeaders || groupIsOption,
         placeHolderSize: group.options.length * LIST_EL_HEIGHT,
         selected: isBoolean(group.selected)

@@ -36,22 +36,26 @@ describe('ListModelService', () => {
       const headerModel = listModelService.getHeadersModel(optionsMock);
       expect(headerModel).toEqual([
         {
+          ...optionsMock[0],
           groupName: 'Basic Info',
           isCollapsed: false,
           placeHolderSize: 88,
           selected: false,
           indeterminate: true,
           selectedCount: 1,
-          hidden: false,
+          hasCheckbox: true,
+          groupIsOption: false,
         },
         {
+          ...optionsMock[1],
           groupName: 'Personal',
           isCollapsed: false,
           placeHolderSize: 88,
           selected: false,
           indeterminate: false,
           selectedCount: 0,
-          hidden: false,
+          hasCheckbox: true,
+          groupIsOption: false,
         },
       ]);
     });
@@ -90,7 +94,6 @@ describe('ListModelService', () => {
           groupName: 'Basic Info',
           isPlaceHolder: false,
           selected: true,
-          hidden: false,
           groupIndex: 0,
         },
         {
@@ -99,7 +102,6 @@ describe('ListModelService', () => {
           groupName: 'Basic Info',
           isPlaceHolder: false,
           selected: false,
-          hidden: false,
           groupIndex: 0,
         },
         {
@@ -112,7 +114,6 @@ describe('ListModelService', () => {
           groupName: 'Personal',
           isPlaceHolder: false,
           selected: false,
-          hidden: false,
           groupIndex: 1,
         },
         {
@@ -121,7 +122,6 @@ describe('ListModelService', () => {
           groupName: 'Personal',
           isPlaceHolder: false,
           selected: false,
-          hidden: false,
           groupIndex: 1,
         },
       ] as any);
@@ -210,7 +210,6 @@ describe('ListModelService', () => {
           selected: false,
           indeterminate: true,
           selectedCount: 1,
-          hidden: false,
         },
         {
           groupName: 'Personal',
@@ -219,7 +218,6 @@ describe('ListModelService', () => {
           selected: true,
           indeterminate: false,
           selectedCount: 2,
-          hidden: false,
         },
       ] as any);
 
@@ -234,7 +232,6 @@ describe('ListModelService', () => {
           groupName: 'Basic Info',
           isPlaceHolder: false,
           selected: true,
-          hidden: false,
           groupIndex: 0,
         },
         {
@@ -243,7 +240,6 @@ describe('ListModelService', () => {
           groupName: 'Basic Info',
           isPlaceHolder: false,
           selected: false,
-          hidden: false,
           groupIndex: 0,
         },
         {
@@ -256,7 +252,6 @@ describe('ListModelService', () => {
           groupName: 'Personal',
           isPlaceHolder: false,
           selected: true,
-          hidden: false,
           groupIndex: 1,
         },
         {
@@ -265,7 +260,6 @@ describe('ListModelService', () => {
           groupName: 'Personal',
           isPlaceHolder: false,
           selected: true,
-          hidden: false,
           groupIndex: 1,
         },
       ] as any);
@@ -318,7 +312,6 @@ describe('ListModelService', () => {
           selected: false,
           indeterminate: true,
           selectedCount: 1,
-          hidden: false,
         },
         {
           groupName: 'Personal',
@@ -327,7 +320,6 @@ describe('ListModelService', () => {
           selected: true,
           indeterminate: false,
           selectedCount: 2,
-          hidden: false,
         },
       ] as any);
 

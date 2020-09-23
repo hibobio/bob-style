@@ -92,7 +92,8 @@ describe('SingleListComponent', () => {
           selected: false,
           indeterminate: true,
           selectedCount: 1,
-          hidden: false,
+          hasCheckbox: false,
+          groupIsOption: false,
         },
         {
           groupName: 'Personal Header',
@@ -101,7 +102,8 @@ describe('SingleListComponent', () => {
           selected: false,
           indeterminate: false,
           selectedCount: 0,
-          hidden: false,
+          hasCheckbox: false,
+          groupIsOption: false,
         },
       ]);
     });
@@ -117,8 +119,8 @@ describe('SingleListComponent', () => {
           groupName: 'Basic Info Header',
           isPlaceHolder: false,
           selected: true,
-          hidden: false,
           groupIndex: 0,
+          key: undefined,
         },
         {
           value: 'Basic Info 2',
@@ -126,8 +128,8 @@ describe('SingleListComponent', () => {
           groupName: 'Basic Info Header',
           isPlaceHolder: false,
           selected: false,
-          hidden: false,
           groupIndex: 0,
+          key: undefined,
         },
         {
           isPlaceHolder: true,
@@ -140,8 +142,8 @@ describe('SingleListComponent', () => {
           isPlaceHolder: false,
           selected: false,
           disabled: true,
-          hidden: false,
           groupIndex: 1,
+          key: undefined,
         },
         {
           value: 'Personal 2',
@@ -149,8 +151,8 @@ describe('SingleListComponent', () => {
           groupName: 'Personal Header',
           isPlaceHolder: false,
           selected: false,
-          hidden: false,
           groupIndex: 1,
+          key: undefined,
         },
       ] as any);
     });

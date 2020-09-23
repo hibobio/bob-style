@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BackButtonComponent } from './back-button.component';
 import { By } from '@angular/platform-browser';
-import { Icons } from '../../icons/icons.enum';
+import { Icons, IconSize } from '../../icons/icons.enum';
 import { BackButtonType, ButtonSize } from '../buttons.enum';
 import { simpleChange } from '../../services/utils/test-helpers';
 
@@ -20,8 +20,7 @@ describe('BackButtonComponent', () => {
         component = fixture.componentInstance;
         fixture.detectChanges();
 
-        buttonElement = fixture.debugElement.query(By.css('button'))
-          .nativeElement;
+        buttonElement = component.button.nativeElement;
         component.clicked.subscribe(() => {});
         spyOn(component.clicked, 'emit');
       });
@@ -39,7 +38,7 @@ describe('BackButtonComponent', () => {
       Icons.back_arrow_link.replace('b-icon-', '')
     );
 
-    expect(buttonElement.dataset.iconBeforeSize).toContain(ButtonSize.small);
+    expect(buttonElement.dataset.iconBeforeSize).toContain(IconSize.medium);
   });
 
   it('should emit onclick', () => {

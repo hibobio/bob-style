@@ -13,7 +13,7 @@ import {
   ContentChildren,
   QueryList,
   OnInit,
-  AfterContentInit
+  AfterContentInit,
 } from '@angular/core';
 import { CardType } from '../cards.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -24,18 +24,18 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 import {
   CARD_TYPE_WIDTH,
   GAP_SIZE,
-  CARD_TYPE_WIDTH_MOBILE
+  CARD_TYPE_WIDTH_MOBILE,
 } from './cards-layout.const';
 import { BaseCardElement } from '../card/card.abstract';
 import { MediaEvent, MobileService } from '../../services/utils/mobile.service';
 import { notFirstChanges } from '../../services/utils/functional-utils';
-import {ItemsInRowService} from '../../services/items-in-row/items-in-row.service';
+import { ItemsInRowService } from '../../avatar/avatar-layout/items-in-row.service';
 
 @Component({
   selector: 'b-cards',
   templateUrl: './cards-layout.component.html',
   styleUrls: ['./cards-layout.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardsLayoutComponent
   implements OnDestroy, OnChanges, OnInit, AfterContentInit {
@@ -46,7 +46,7 @@ export class CardsLayoutComponent
     private mobileService: MobileService,
     private zone: NgZone,
     private cd: ChangeDetectorRef,
-    private itemsInRow: ItemsInRowService,
+    private itemsInRow: ItemsInRowService
   ) {}
 
   private resizeSubscription: Subscription;
@@ -145,7 +145,7 @@ export class CardsLayoutComponent
         (!this.isMobile
           ? CARD_TYPE_WIDTH[this.type]
           : CARD_TYPE_WIDTH_MOBILE[this.type]) + 'px',
-      '--card-grid-gap': GAP_SIZE + 'px'
+      '--card-grid-gap': GAP_SIZE + 'px',
     });
   }
 
@@ -154,13 +154,16 @@ export class CardsLayoutComponent
       ? CARD_TYPE_WIDTH[this.type]
       : CARD_TYPE_WIDTH_MOBILE[this.type];
 
-    return this.itemsInRow.itemsInRow(this.hostRef.nativeElement, cardWidth, GAP_SIZE);
+    return this.itemsInRow.itemsInRow(
+      this.hostRef.nativeElement,
+      cardWidth,
+      GAP_SIZE
+    );
   }
 
   public hasEnoughCards() {
     return (
-      this.cards &&
-      (this.cardsInRow < this.cards.length && this.cards.length > 1)
+      this.cards && this.cardsInRow < this.cards.length && this.cards.length > 1
     );
   }
 

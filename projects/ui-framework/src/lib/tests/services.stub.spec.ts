@@ -5,11 +5,13 @@ import { UtilsService, WinResizeEvent } from '../services/utils/utils.service';
 import { MobileService, MediaEvent } from '../services/utils/mobile.service';
 import { ScrollEvent } from '../services/utils/utils.interface';
 import { MockPipe } from 'ng-mocks';
+import { Mock } from 'ts-mocks';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { PipeTransform, Pipe } from '@angular/core';
 import { ListKeyboardService } from '../lists/list-service/list-keyboard.service';
 import { HighlightPipe } from '../services/filters/highlight.pipe';
 import { FormatNumberPipe } from '../services/filters/formatNumber.pipe';
+import { DOMhelpers } from '../services/html/dom-helpers.service';
 
 // This file is intentionally named .spec.ts - to fix build problems due to missing jasmine namespace
 
@@ -77,4 +79,16 @@ translateServiceStub.instant.and.callFake((val) => `translated ${val}`);
 export const TranslateServiceProvideMock = () => ({
   provide: TranslateService,
   useValue: translateServiceStub,
+});
+
+export const getDOMhelpersMock = () =>
+  new Mock<DOMhelpers>({
+    getElementCSSvar: () => 'xxx',
+    bindClasses: () => ({} as any),
+    setCssProps: () => {},
+  });
+
+export const DOMhelpersProvideMock = (mock: Mock<DOMhelpers> = null) => ({
+  provide: DOMhelpers,
+  useFactory: () => (mock || getDOMhelpersMock()).Object,
 });

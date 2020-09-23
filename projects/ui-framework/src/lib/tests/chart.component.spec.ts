@@ -15,7 +15,7 @@ export class MockNgZone extends NgZone {
   }
 }
 
-describe('ChartComponent', () => {
+describe('PieChartComponent', () => {
   let component: PieChartComponent;
   let fixture: ComponentFixture<PieChartComponent>;
   let updateChartOptionsSpy, applyOnChangeSpy, highchartRefSpy;
@@ -74,7 +74,7 @@ describe('ChartComponent', () => {
       component.ngOnChanges.call(component);
       component.preTooltipValue = 'ILS ';
       component.postTooltipValue = ' end';
-      component.tooltipValueFormatter = val => `formatted ${val / 1000}`;
+      component.tooltipValueFormatter = (val) => `formatted ${val / 1000}`;
       expect(
         component.tooltipFormatter(
           {
@@ -89,7 +89,7 @@ describe('ChartComponent', () => {
     describe('export chart', () => {
       it('should export chart call chart ref with type', () => {
         component.highChartRef = {
-          exportChart: exportObj => {},
+          exportChart: (exportObj) => {},
         } as any;
         const spyHighChartRefExport = spyOn(
           component.highChartRef as any,
@@ -97,9 +97,12 @@ describe('ChartComponent', () => {
         );
 
         component.exportChart('image/svg+xml');
-        expect(spyHighChartRefExport).toHaveBeenCalledWith({
-          type: 'image/svg+xml',
-        });
+        expect(spyHighChartRefExport).toHaveBeenCalledWith(
+          {
+            type: 'image/svg+xml',
+          },
+          undefined
+        );
       });
     });
     describe('ngOnChanges', () => {

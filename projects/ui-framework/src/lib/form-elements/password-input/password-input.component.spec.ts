@@ -12,7 +12,7 @@ import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { FormElementLabelComponent } from '../form-element-label/form-element-label.component';
 import { MockComponent } from 'ng-mocks';
 
-fdescribe('PasswordInputComponent', () => {
+describe('PasswordInputComponent', () => {
   let component: PasswordInputComponent;
   let fixture: ComponentFixture<PasswordInputComponent>;
   let inputElement: HTMLInputElement;

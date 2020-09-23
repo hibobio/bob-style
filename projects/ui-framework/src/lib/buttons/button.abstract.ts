@@ -64,13 +64,23 @@ export abstract class BaseButtonElement implements OnChanges, OnInit {
 
   ngOnInit(): void {
     if (!this.buttonClass) {
+      this.setIconVars();
       this.buttonClass = this.getButtonClass();
+      this.cd.detectChanges();
     }
   }
 
   ngOnChanges(changes: SimpleChanges, dc = true): void {
     applyChanges(this, changes);
+    this.setIconVars();
+    this.buttonClass = this.getButtonClass();
 
+    if (dc && notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
+  }
+
+  private setIconVars() {
     this.icn = isString(this.icon) && this.icon.replace('b-icon-', '');
 
     this.icnSize =
@@ -84,12 +94,6 @@ export abstract class BaseButtonElement implements OnChanges, OnInit {
           this.typeDefault === ButtonType.negative))
         ? IconColor.white
         : IconColor.dark;
-
-    this.buttonClass = this.getButtonClass();
-
-    if (dc && notFirstChanges(changes) && !this.cd['destroyed']) {
-      this.cd.detectChanges();
-    }
   }
 
   getButtonClass(): string {

@@ -1,3 +1,5 @@
+$b-select-panel-min-width: 280px;
+
 // general panels
 
 .cdk-overlay-container {
@@ -72,10 +74,16 @@
   }
 }
 
-html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
+html:not(.cdk-global-scrollblock) {
   @include desktop {
-    min-height: 365px;
-    min-width: 450px;
+    .cdk-overlay-connected-position-bounding-box {
+      min-height: 365px;
+      min-width: 450px;
+    }
+
+    .b-select-backdrop + .cdk-overlay-connected-position-bounding-box {
+      min-width: $b-select-panel-min-width;
+    }
   }
 }
 
@@ -83,12 +91,6 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
 
 .b-select-backdrop {
   opacity: 0;
-
-  & + .cdk-overlay-connected-position-bounding-box {
-    @include desktop {
-      min-height: 365px;
-    }
-  }
 }
 
 .b-select-panel {
@@ -176,7 +178,7 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
 // list panels
 
 .cdk-overlay-pane.b-select-panel {
-  min-width: 280px;
+  min-width: $b-select-panel-min-width;
   pointer-events: none !important;
 
   .b-select-panel,
@@ -236,7 +238,7 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
 .b-auto-complete-panel {
   flex-direction: column;
   justify-content: inherit;
-  min-width: 280px;
+  min-width: $b-select-panel-min-width;
 
   .panel-position {
     overflow: hidden;

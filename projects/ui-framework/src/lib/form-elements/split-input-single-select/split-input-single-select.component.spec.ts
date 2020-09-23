@@ -14,6 +14,7 @@ import { ListChange } from '../../lists/list-change/list-change';
 import { SimpleChange } from '@angular/core';
 import { InputMessageComponent } from '../input-message/input-message.component';
 import { FormElementLabelComponent } from '../form-element-label/form-element-label.component';
+import { simpleChange } from '../../services/utils/test-helpers';
 
 describe('SplitInputSingleSelectComponent', () => {
   let component: SplitInputSingleSelectComponent;
@@ -74,11 +75,7 @@ describe('SplitInputSingleSelectComponent', () => {
         selectValue: null,
       });
     });
-    it('should use the provided value and not overwrite with nulls', () => {
-      component.value = valueMock;
-      component.ngOnChanges({});
-      expect(component.value).toEqual(valueMock);
-    });
+
     it('should set inputValue as value on the inputEl', () => {
       component.value = valueMock;
       component.ngOnChanges({});
@@ -86,35 +83,18 @@ describe('SplitInputSingleSelectComponent', () => {
       const inputEl = fixture.debugElement.query(By.css('b-input'));
       expect(inputEl.context.value).toEqual(valueMock.inputValue);
     });
-    it('should enrich selectOptions with select=true from value', () => {
-      const expectedOptions = cloneDeep(optionsMock);
-      expectedOptions[0].options[0].selected = true;
-      component.value = valueMock;
-      component.ngOnChanges({
-        selectOptions: {
-          previousValue: undefined,
-          currentValue: optionsMock,
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
-      expect(component.options).toEqual(expectedOptions);
-    });
+
     it('should set selectedOptions as options on the selectEl', () => {
-      const expectedOptions = cloneDeep(optionsMock);
-      expectedOptions[0].options[0].selected = true;
-      component.value = valueMock;
-      component.ngOnChanges({
-        selectOptions: {
-          previousValue: undefined,
-          currentValue: optionsMock,
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
+      component.ngOnChanges(
+        simpleChange({ selectOptions: optionsMock, value: valueMock })
+      );
+
       fixture.detectChanges();
+
       const selectEl = fixture.debugElement.query(By.css('b-single-select'));
-      expect(selectEl.context.options).toEqual(expectedOptions);
+
+      expect(selectEl.context.options).toEqual(optionsMock);
+      expect(selectEl.context.value).toEqual(valueMock.selectValue);
     });
   });
 

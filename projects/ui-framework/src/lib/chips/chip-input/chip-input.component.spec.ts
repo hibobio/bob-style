@@ -23,7 +23,7 @@ import { InputEventType } from '../../form-elements/form-elements.enum';
 import { FormElementLabelComponent } from '../../form-elements/form-element-label/form-element-label.component';
 import { By } from '@angular/platform-browser';
 
-fdescribe('ChipInputComponent', () => {
+describe('ChipInputComponent', () => {
   let component: ChipInputComponent;
   let fixture: ComponentFixture<ChipInputComponent>;
   let chipInputElem: HTMLElement;

@@ -7,18 +7,20 @@ import { defaultTreeConfig, TreeConfig } from './tree.config';
 import { TreeDirective } from './tree.directive';
 
 import { Component, OnInit } from '@angular/core';
+import {
+  mockTranslatePipe,
+  TranslateServiceProvideMock,
+} from '../../../../../src/lib/tests/services.stub.spec';
 
 @Component({
-  selector   : 'b-table-tree-test',
-  template: `<b-table [treeConfig]="treeConfig"></b-table>`
+  selector: 'b-table-tree-test',
+  template: `<b-table [treeConfig]="treeConfig"></b-table>`,
 })
 export class TableTreeTestComponent implements OnInit {
   public treeConfig;
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }
 
 describe('TreeDirective', () => {
@@ -27,24 +29,27 @@ describe('TreeDirective', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        TableTreeTestComponent,
-      ],
-      imports: [TableModule]
-    })
-    .compileComponents();
+      declarations: [TableTreeTestComponent, mockTranslatePipe],
+      imports: [TableModule],
+      providers: [TranslateServiceProvideMock()],
+    }).compileComponents();
     fixture = TestBed.createComponent(TableTreeTestComponent);
     component = fixture.componentInstance;
   });
 
   describe('treeAble', () => {
     let grid: AgGridAngular;
-    const defaultConfigMock = {...defaultTreeConfig, hierarchyGetter: () => []};
+    const defaultConfigMock = {
+      ...defaultTreeConfig,
+      hierarchyGetter: () => [],
+    };
     function setup(treeConfig: TreeConfig = defaultConfigMock) {
       component.treeConfig = treeConfig;
       fixture.detectChanges();
       // tslint:disable-next-line:max-line-length
-      const gridElem: TableComponent = fixture.debugElement.query(By.css('b-table')).componentInstance;
+      const gridElem: TableComponent = fixture.debugElement.query(
+        By.css('b-table')
+      ).componentInstance;
       grid = gridElem.agGrid;
     }
     it('should pass the treeData', () => {
@@ -53,13 +58,14 @@ describe('TreeDirective', () => {
     });
     it('should pass getDataPath', () => {
       const getPathMock = (data) => [];
-      setup({...defaultConfigMock, hierarchyGetter: getPathMock});
+      setup({ ...defaultConfigMock, hierarchyGetter: getPathMock });
       expect(grid.getDataPath).toBe(getPathMock);
     });
     it('should pass groupDefaultExpanded', () => {
       setup();
-      expect(grid.groupDefaultExpanded).toBe(defaultConfigMock.groupDefaultExpanded);
+      expect(grid.groupDefaultExpanded).toBe(
+        defaultConfigMock.groupDefaultExpanded
+      );
     });
   });
-
 });

@@ -11,15 +11,15 @@ describe('ListChange', () => {
         groupName: 'Basic Info',
         key: 1,
         options: [
-          { value: 'Basic Info 1', id: 1, selected: false, },
-          { value: 'Basic Info 2', id: 2, selected: false, },
+          { value: 'Basic Info 1', id: 1, selected: false },
+          { value: 'Basic Info 2', id: 2, selected: false },
         ],
       },
       {
         groupName: 'Personal',
         options: [
-          { value: 'Personal 1', id: 11, selected: false, },
-          { value: 'Personal 2', id: 12, selected: false, },
+          { value: 'Personal 1', id: 11, selected: false },
+          { value: 'Personal 2', id: 12, selected: false },
         ],
       },
     ];
@@ -53,17 +53,17 @@ describe('ListChange', () => {
     it('should return selected option ids with group name', () => {
       optionsMock[0].options[0].selected = true;
       listChange = new ListChange(optionsMock);
-      expect(listChange.getSelectedGroupOptions()).toEqual(
-        [
-          {
-            groupName: 'Basic Info',
-            key: 1,
-            options: [
-              { value: 'Basic Info 1', id: 1, selected: true, },
-            ],
-          },
-        ]
-      );
+      expect(listChange.getSelectedGroupOptions()).toEqual([
+        {
+          groupName: 'Basic Info',
+          key: 1,
+          groupSelectedIDs: [1],
+          groupSelectedValues: ['Basic Info 1'],
+          selectedCount: 1,
+
+          options: [{ value: 'Basic Info 1', id: 1, selected: true }],
+        },
+      ]);
     });
   });
 });
