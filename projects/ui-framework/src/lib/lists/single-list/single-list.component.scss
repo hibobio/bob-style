@@ -46,7 +46,7 @@ $list-item-height: $wrap-height;
 }
 
 .v-scroll-wrapper .no-results-message {
-  @include noResultsMessage;
+  color: $grey-600;
 }
 
 :host ::ng-deep {
