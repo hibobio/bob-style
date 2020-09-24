@@ -50,18 +50,18 @@ html.cdk-global-scrollblock {
       padding: times8(5) times8(5) times8(2);
       user-select: none;
 
-      div[b-dialog-sub-title] {
-        margin-top: 5px;
-      }
-      b-display-2 {
-        overflow-wrap: break-word;
-      }
-
       &.show-confirmation:before {
         @include pseudo;
         @include position(0 0 0 0);
         background-color: black(0.3);
         z-index: 1;
+      }
+
+      div[b-dialog-sub-title] {
+        margin-top: 5px;
+      }
+      b-display-2 {
+        overflow-wrap: break-word;
       }
     }
 
