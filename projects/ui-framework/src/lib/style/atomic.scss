@@ -73,6 +73,10 @@ $acss-dirs: top right bottom left;
   }
 }
 
+.text-center {
+  text-align: center;
+}
+
 // Margin & Padding
 
 @each $size in $acss-sizes {

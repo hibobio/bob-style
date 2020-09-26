@@ -1,7 +1,7 @@
   <div class="cards-list"
        role="list"
        [attr.data-type]="type"
-       [attr.data-cards-in-row]="cardsInRow"
+       [attr.data-cards-in-row]="cardsInRow$ | async"
        [attr.data-few-cards]="!hasEnoughCards()"
        [attr.data-swiper-mode]="isSwiperEnabled()"
        [attr.data-align-center]="isAlignedCenter()">

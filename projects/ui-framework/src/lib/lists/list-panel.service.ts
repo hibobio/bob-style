@@ -214,7 +214,9 @@ export class ListPanelService {
   private getPanelClass(self: any): string[] {
     return [
       ...(self as OEC).panelClassList,
-      (self as OEC).hasArrow ? 'b-select-panel-with-arrow' : null,
+      (self as OEC).hasArrow
+        ? 'b-select-panel-with-arrow'
+        : 'b-select-panel-no-arrow',
       (self as OEC).panelClass,
     ].filter(Boolean);
   }

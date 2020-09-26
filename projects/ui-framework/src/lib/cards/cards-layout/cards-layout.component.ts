@@ -62,17 +62,25 @@ export class CardsLayoutComponent
   >();
 
   public cardsInRow = 1;
+
   public cardsInRow$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+
   public isMobile = false;
 
   private subs: Subscription[] = [];
+
+  private itemsInRow$: Observable<number>;
+
+  getCardsInRow$(): Observable<number> {
+    return this.cardsInRow$.asObservable();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
 
     if (notFirstChanges(changes, ['type'])) {
-      this.setCssVars();
-      this.updateCardsInRow(false);
+      // this.setCssVars();
+      // this.updateCardsInRow(false);
     }
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
@@ -81,6 +89,19 @@ export class CardsLayoutComponent
   }
 
   ngOnInit(): void {
+    this.isMobile = this.mobileService.isMobile();
+
+    this.itemsInRow$ = this.itemsInRowService.getItemsInRow$(
+      this.hostRef.nativeElement,
+      !this.isMobile
+        ? CARD_TYPE_WIDTH[this.type]
+        : CARD_TYPE_WIDTH_MOBILE[this.type],
+      GAP_SIZE,
+      1
+    );
+
+    this.itemsInRow$.subscribe(this.cardsInRow$);
+
     this.setCssVars();
     this.updateCardsInRow();
 
@@ -126,10 +147,6 @@ export class CardsLayoutComponent
     });
     this.subs.length = 0;
     this.cardsInRow$.complete();
-  }
-
-  getCardsInRow$(): Observable<number> {
-    return this.cardsInRow$ as Observable<number>;
   }
 
   private updateCardsInRow(doCheck = true): void {

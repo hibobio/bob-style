@@ -23,6 +23,7 @@ export interface MediaEvent {
   isMobileBrowser: boolean;
   mobileOS: MobileOS;
   isMobile: boolean;
+  isDesktop: boolean;
   width: number;
 }
 
@@ -71,6 +72,26 @@ export class MobileService {
 
   public getMediaEvent(): Observable<MediaEvent> {
     return this.mediaEvent$;
+  }
+
+  public isMobile(matchMobile = null): boolean {
+    return Boolean(
+      (matchMobile !== null
+        ? matchMobile
+        : this.matchBreakpoint(mobileBreakpoint, WidthMode.max)) ||
+        this.isMobBrowser ||
+        this.mobileOS
+    );
+  }
+
+  public isDesktop(matchDesktop = null): boolean {
+    return Boolean(
+      (matchDesktop !== null
+        ? matchDesktop
+        : this.matchBreakpoint(mobileBreakpoint + 1, WidthMode.min)) &&
+        !this.isMobBrowser &&
+        !this.mobileOS
+    );
   }
 
   public isMobileBrowser(): boolean {
@@ -135,14 +156,20 @@ export class MobileService {
 
   public getMediaData(): MediaEvent {
     const matchMobile = this.matchBreakpoint(mobileBreakpoint, WidthMode.max);
+    const matchDesktop = this.matchBreakpoint(
+      mobileBreakpoint + 1,
+      WidthMode.min
+    );
+
     return {
       width: this.windowRef.nativeWindow.innerWidth,
       matchMobile,
-      matchDesktop: this.matchBreakpoint(mobileBreakpoint + 1, WidthMode.min),
+      matchDesktop,
       isTouchDevice: this.isTouchDevice,
       isMobileBrowser: this.isMobBrowser,
       mobileOS: this.mobileOS,
-      isMobile: Boolean(matchMobile || this.isMobBrowser || this.mobileOS),
+      isMobile: this.isMobile(matchMobile),
+      isDesktop: this.isDesktop(matchDesktop),
     };
   }
 }

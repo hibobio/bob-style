@@ -110,6 +110,12 @@ html:not(.cdk-global-scrollblock) {
     box-shadow: 0 2px 5px $boxShadowColor;
   }
 
+  .panel-above {
+    box-shadow: 0 -2px 5px $boxShadowColor;
+  }
+}
+
+.b-select-panel-no-arrow {
   .panel-below {
     &,
     .b-select-list,
@@ -126,8 +132,6 @@ html:not(.cdk-global-scrollblock) {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     }
-
-    box-shadow: 0 -2px 5px $boxShadowColor;
   }
 }
 

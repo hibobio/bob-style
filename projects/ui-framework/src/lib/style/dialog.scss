@@ -64,7 +64,7 @@ html.cdk-global-scrollblock {
       overflow-x: hidden;
 
       &.show-scrolling-bottom {
-        border-bottom: 1px solid $grey-300;
+        border-bottom: 1px solid $border-color-light;
 
         & + .dialog-footer {
           margin-top: -1px;
@@ -137,7 +137,7 @@ html.cdk-global-scrollblock {
 
   .dialog-footer {
     position: relative;
-    border-top: 1px solid $grey-300;
+    border-top: 1px solid $border-color-light;
 
     .confirmation-message {
       position: absolute;
