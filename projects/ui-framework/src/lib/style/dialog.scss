@@ -50,13 +50,6 @@ html.cdk-global-scrollblock {
       padding: times8(5) times8(5) times8(2);
       user-select: none;
 
-      &.show-confirmation:before {
-        @include pseudo;
-        @include position(0 0 0 0);
-        background-color: black(0.3);
-        z-index: 1;
-      }
-
       div[b-dialog-sub-title] {
         margin-top: 5px;
       }
@@ -88,19 +81,6 @@ html.cdk-global-scrollblock {
 
         .dialog-content {
           visibility: hidden;
-        }
-      }
-
-      &.show-confirmation {
-        user-select: none;
-        pointer-events: none;
-
-        &:before {
-          @include pseudo;
-          @include position(0 0 0 0);
-          pointer-events: all;
-          background-color: black(0.3);
-          z-index: 1;
         }
       }
 
@@ -136,6 +116,20 @@ html.cdk-global-scrollblock {
       position: absolute;
       top: 5px;
       right: 5px;
+    }
+  }
+
+  .show-confirmation {
+    user-select: none;
+    pointer-events: none;
+    position: relative;
+
+    &:before {
+      @include pseudo;
+      @include position(0 0 0 0);
+      pointer-events: all;
+      background-color: black(0.3);
+      z-index: 1;
     }
   }
 
