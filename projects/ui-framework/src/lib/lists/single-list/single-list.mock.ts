@@ -1,6 +1,6 @@
 import { SelectGroupOption } from '../list.interface';
 import { makeArray, simpleUID } from '../../services/utils/functional-utils';
-import { mockAvatar, mockName, mockJobs } from '../../mock.const';
+import { mockAvatar, mockName, mockJobs, mockText } from '../../mock.const';
 import { randomNumber } from '../../services/utils/functional-utils';
 import { cloneDeep } from 'lodash';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
@@ -64,6 +64,7 @@ export const optionsMock: SelectGroupOption[] = [
             },
           },
           someOptionData: simpleUID(),
+          description: randomNumber() > 35 ? mockText(10) : null,
         };
       }),
 

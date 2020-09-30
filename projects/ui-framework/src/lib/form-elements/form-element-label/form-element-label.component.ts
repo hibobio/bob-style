@@ -26,11 +26,12 @@ export class FormElementLabelComponent {
   @HostBinding('class.bfe-label') classname = true;
 
   readonly truncateTooltipType = TruncateTooltipType;
-  readonly icons = Icons;
-  readonly iconColor = IconColor;
+
   readonly iconSize = IconSize;
-  readonly delay = 300;
-  readonly tooltipPosition = TooltipPosition;
+  readonly iconColor = IconColor;
+  readonly infoIcon = Icons.info_outline.replace('b-icon-', '');
+  readonly tooltipPosition = TooltipPosition.above;
+  readonly tooltipDelay = 300;
   readonly tooltipClass: TooltipClass[] = [
     TooltipClass.TextLeft,
     TooltipClass.PreWrap,

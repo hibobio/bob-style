@@ -82,6 +82,17 @@
               [innerHTML]="option.value | highlight: searchValue">
         </span>
 
+        <span *ngIf="!option.isPlaceHolder && option.description"
+              class="comp-suffix has-hover"
+              [attr.data-icon-before]="infoIcon"
+              [attr.data-icon-before-color]="iconColor.normal"
+              [attr.data-icon-before-size]="iconSize.small"
+              [matTooltip]="option.description"
+              [matTooltipClass]="tooltipClass"
+              [matTooltipShowDelay]="tooltipDelay"
+              [matTooltipPosition]="tooltipPosition">
+        </span>
+
       </div>
     </div>
   </cdk-virtual-scroll-viewport>

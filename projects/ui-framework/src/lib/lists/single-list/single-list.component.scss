@@ -141,6 +141,22 @@ $list-item-height: $wrap-height;
     }
   }
 
+  .comp-suffix {
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-right: -10px;
+    margin-left: auto;
+    visibility: hidden;
+  }
+
+  .option-select:hover,
+  .option-select:focus,
+  .option-select.focus {
+    .comp-suffix {
+      visibility: visible;
+    }
+  }
+
   .header-option-value,
   .option-value {
     min-width: 0;
@@ -169,4 +185,8 @@ $list-item-height: $wrap-height;
       @include single-list-option-selected;
     }
   }
+}
+
+::ng-deep .mat-tooltip.b-select-option-tooltip {
+  max-width: 280px;
 }

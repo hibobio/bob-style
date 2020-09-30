@@ -12,6 +12,7 @@ import { SearchModule } from '../../search/search/search.module';
 import { CheckboxModule } from '../../form-elements/checkbox/checkbox.module';
 import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [MultiListComponent],
@@ -24,6 +25,7 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
     ListFooterModule,
     CheckboxModule,
     ComponentRendererModule,
+    MatTooltipModule,
   ],
   exports: [MultiListComponent],
   providers: [

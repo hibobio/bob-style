@@ -51,6 +51,7 @@ import {
 } from '../form-elements/form-elements.enum';
 import { ListPanelService } from './list-panel.service';
 import { MobileService } from '../services/utils/mobile.service';
+import { TooltipClass } from '../popups/tooltip/tooltip.enum';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -124,6 +125,11 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   private panelConfig: OverlayConfig;
   private templatePortal: TemplatePortal;
   public panelOpen = false;
+
+  readonly tooltipClass: (TooltipClass | string)[] = [
+    TooltipClass.TextLeft,
+    TooltipClass.PreWrap,
+  ];
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(

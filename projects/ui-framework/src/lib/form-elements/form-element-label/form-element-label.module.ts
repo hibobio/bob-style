@@ -6,18 +6,8 @@ import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-to
 import { IconsModule } from '../../icons/icons.module';
 
 @NgModule({
-  declarations: [
-    FormElementLabelComponent,
-  ],
-  imports: [
-    CommonModule,
-    MatTooltipModule,
-    TruncateTooltipModule,
-    IconsModule,
-  ],
-  exports: [
-    FormElementLabelComponent,
-  ],
+  declarations: [FormElementLabelComponent],
+  imports: [CommonModule, MatTooltipModule, TruncateTooltipModule],
+  exports: [FormElementLabelComponent],
 })
-export class FormElementLabelModule {
-}
+export class FormElementLabelModule {}
