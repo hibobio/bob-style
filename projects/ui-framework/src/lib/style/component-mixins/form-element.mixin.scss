@@ -33,7 +33,7 @@ $input-focus-border-color: $grey-700;
     padding-top: ($label-height + $label-hint-margin);
   }
 
-  :host-context([data-size='smaller'].has-label) {
+  :host-context([data-size='smaller'].has-label) & {
     height: $wrap-height-smaller + $label-height + $label-hint-margin;
   }
 }
