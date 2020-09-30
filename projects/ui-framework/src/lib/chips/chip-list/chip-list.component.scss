@@ -42,7 +42,7 @@
 // Tabs view
 
 :host[data-type='tab'] {
-  border: 1px solid $grey-300;
+  border: 1px solid $border-color-light;
   border-radius: $wrap-height / 2;
   margin: 0 auto 0 0;
   flex-grow: 0;
@@ -52,7 +52,7 @@
 // Button Tabs view
 
 :host[data-type='button'] {
-  border: 1px solid $grey-500;
+  border: 1px solid $border-color;
   border-radius: $border-radius;
   margin: 0 auto 0 0;
   flex-grow: 0;
@@ -63,7 +63,7 @@
     border-radius: 0;
 
     & + b-chip {
-      border-left: 1px solid $grey-500;
+      border-left: 1px solid $border-color;
     }
   }
 }

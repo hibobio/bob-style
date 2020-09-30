@@ -62,7 +62,7 @@ $slider-thumb-size: 16px;
         .mat-slider-thumb {
           cursor: ew-resize;
           transform: scale(1) !important;
-          border: 1px solid $grey-500 !important;
+          border: 1px solid $border-color !important;
           background-color: $white !important;
           box-sizing: border-box;
           @include size($slider-thumb-size);

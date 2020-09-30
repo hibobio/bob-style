@@ -9,7 +9,7 @@ import {
   Output,
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { ItemsInRowService } from './items-in-row.service';
+import { ItemsInRowService } from '../../services/items-in-row/items-in-row.service';
 
 @Component({
   selector: 'b-avatar-layout',

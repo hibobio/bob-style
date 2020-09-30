@@ -29,7 +29,7 @@
     top: 14px;
   }
   &:before {
-    border-right-color: $grey-500;
+    border-right-color: $border-color;
     left: times8(-2);
     z-index: 1;
   }

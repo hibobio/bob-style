@@ -52,7 +52,7 @@ li {
 .emoji-header {
   font-weight: 600;
   height: 35px;
-  border-bottom: 1px solid $grey-500;
+  border-bottom: 1px solid $border-color;
 }
 
 .emojis {
@@ -70,7 +70,7 @@ li {
   position: sticky;
   top: 0;
   z-index: 4;
-  border-bottom: 1px solid $grey-500;
+  border-bottom: 1px solid $border-color;
   background-color: white;
 }
 
@@ -112,7 +112,7 @@ li {
   padding: 5px $emoji-padding;
   margin: 0;
   overflow: hidden;
-  border-top: 1px solid $grey-500;
+  border-top: 1px solid $border-color;
   background-color: white;
 }
 

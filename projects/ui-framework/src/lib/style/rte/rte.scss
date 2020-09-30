@@ -384,7 +384,7 @@ $rte-icon-color-hover: darken($grey-700, 5%);
 .fr-command.fr-btn.fr-active + .fr-dropdown-menu,
 .fr-popup,
 .fr-popup.fr-above {
-  border: 1px solid $grey-500;
+  border: 1px solid $border-color;
 }
 
 // popup buttons

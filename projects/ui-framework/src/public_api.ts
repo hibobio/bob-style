@@ -594,6 +594,8 @@ export * from './lib/services/utils/nglet.directive';
 export * from './lib/services/utils/ngsubscribe.directive';
 // ColorService
 export * from './lib/services/color-service/color.service';
+// ItemsInRowService
+export * from './lib/services/items-in-row/items-in-row.service';
 
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';

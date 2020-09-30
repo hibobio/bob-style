@@ -24,7 +24,7 @@ describe('CardsLayoutComponent', () => {
   let cardsHostElement: HTMLElement;
 
   const getCardMaxWidth = () =>
-    getComputedStyle(cardsHostElement).getPropertyValue('--card-width');
+    getComputedStyle(cardsHostElement).getPropertyValue('--item-width');
 
   const calcCards = (hostWidth, type) => {
     const gaps = (Math.floor(hostWidth / CARD_TYPE_WIDTH[type]) - 1) * GAP_SIZE;
@@ -85,7 +85,7 @@ describe('CardsLayoutComponent', () => {
     });
     it('should have gap-size variable set', () => {
       expect(
-        getComputedStyle(cardsHostElement).getPropertyValue('--card-grid-gap')
+        getComputedStyle(cardsHostElement).getPropertyValue('--item-grid-gap')
       ).toEqual(GAP_SIZE + 'px');
     });
   });

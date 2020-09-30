@@ -24,7 +24,7 @@ $table-padding-x: 15px;
 }
 
 @mixin cell-border($align: center) {
-  background-image: linear-gradient($grey-500, $grey-500);
+  background-image: linear-gradient($border-color, $border-color);
   background-size: 1px 30px;
   background-position: $align;
 }

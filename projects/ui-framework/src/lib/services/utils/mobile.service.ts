@@ -52,8 +52,8 @@ export class MobileService {
     this.mobileOS = this.getMobileOperatingSystem();
     this.isTouchDevice = this.checkForTouchDevice();
     this.mediaEvent$ = this.utilsService.getResizeEvent().pipe(
-      startWith(this.getMediaData()),
-      map((e: WinResizeEvent) => this.getMediaData()),
+      startWith({}),
+      map((resizeEvent: WinResizeEvent) => this.getMediaData(resizeEvent)),
       distinctUntilChanged(isEqual),
       shareReplay(1)
     );
@@ -66,7 +66,7 @@ export class MobileService {
   public matchBreakpoint(
     point: number = mobileBreakpoint,
     mode: WidthMode = WidthMode.max
-  ) {
+  ): boolean {
     return this.matchMedia(`(${mode}-width: ${point}px)`);
   }
 
@@ -133,7 +133,7 @@ export class MobileService {
     );
   }
 
-  private getUserAgent() {
+  private getUserAgent(): string {
     // @ts-ignore
     return navigator.userAgent || navigator.vendor || window.opera;
   }
@@ -154,15 +154,14 @@ export class MobileService {
     return this.matchMedia(query);
   }
 
-  public getMediaData(): MediaEvent {
-    const matchMobile = this.matchBreakpoint(mobileBreakpoint, WidthMode.max);
-    const matchDesktop = this.matchBreakpoint(
-      mobileBreakpoint + 1,
-      WidthMode.min
-    );
+  public getMediaData(resizeEvent: Partial<WinResizeEvent> = {}): MediaEvent {
+    const width =
+      resizeEvent.innerWidth || this.windowRef.nativeWindow.innerWidth;
+    const matchMobile = width <= mobileBreakpoint;
+    const matchDesktop = width > mobileBreakpoint;
 
     return {
-      width: this.windowRef.nativeWindow.innerWidth,
+      width,
       matchMobile,
       matchDesktop,
       isTouchDevice: this.isTouchDevice,
