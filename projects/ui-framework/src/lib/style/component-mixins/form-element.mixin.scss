@@ -32,6 +32,10 @@ $input-focus-border-color: $grey-700;
     height: $wrap-height + $label-height + $label-hint-margin;
     padding-top: ($label-height + $label-hint-margin);
   }
+
+  :host-context([data-size='smaller'].has-label) {
+    height: $wrap-height-smaller + $label-height + $label-hint-margin;
+  }
 }
 
 @mixin input-border-colors(
