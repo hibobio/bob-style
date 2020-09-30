@@ -11,11 +11,16 @@ import { CardsLayoutComponent } from './cards-layout.component';
 import { CardType } from '../cards.enum';
 import {
   simpleChange,
-  emitNativeEvent,
   fakeAsyncFlush,
 } from '../../services/utils/test-helpers';
 import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { ItemsInRowService } from '../../services/items-in-row/items-in-row.service';
+import {
+  DOMhelpersProvideMock,
+  MobileServiceProvideMock,
+  MutationObservableServiceProvideMock,
+} from '../../tests/services.stub.spec';
 
 describe('CardsLayoutComponent', () => {
   let fixture: ComponentFixture<CardsLayoutComponent>;
@@ -45,7 +50,13 @@ describe('CardsLayoutComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CardsLayoutComponent],
       imports: [],
-      providers: [EventManagerPlugins[0]],
+      providers: [
+        EventManagerPlugins[0],
+        ItemsInRowService,
+        MutationObservableServiceProvideMock(),
+        DOMhelpersProvideMock(),
+        MobileServiceProvideMock(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(CardsLayoutComponent, {
@@ -69,11 +80,6 @@ describe('CardsLayoutComponent', () => {
   }));
 
   describe('Oninit', () => {
-    describe('Start date', () => {
-      if (fixture) {
-        fixture.detectChanges();
-      }
-    });
     it('should be of type primary by default', () => {
       expect(getCardMaxWidth()).toEqual(
         CARD_TYPE_WIDTH[CardType.regular] + 'px'
@@ -83,6 +89,7 @@ describe('CardsLayoutComponent', () => {
       component.ngOnChanges(simpleChange({ type: CardType.large }));
       expect(getCardMaxWidth()).toEqual(CARD_TYPE_WIDTH[CardType.large] + 'px');
     });
+
     it('should have gap-size variable set', () => {
       expect(
         getComputedStyle(cardsHostElement).getPropertyValue('--item-grid-gap')
@@ -138,37 +145,6 @@ describe('CardsLayoutComponent', () => {
       component.getCardsInRow$().subscribe((numberOfCards) => {
         expect(numberOfCards).toEqual(4);
         done();
-      });
-    });
-
-    it('should call next on cardsInRow$ if type (width) of card changed, if cardsInRow changed', (done) => {
-      let cardsInRowSubscribeCalled = 0;
-      component.getCardsInRow$().subscribe((numberOfCards) => {
-        if (cardsInRowSubscribeCalled === 0) {
-          cardsInRowSubscribeCalled++;
-          component.ngOnChanges(
-            simpleChange({
-              type: CardType.small,
-            })
-          );
-        } else {
-          expect(numberOfCards).toEqual(calcCards(950, CardType.small));
-          done();
-        }
-      });
-    });
-
-    it('should call next on cardsInRow$ after window resize, if cardsInRow changed', (done) => {
-      let cardsInRowSubscribeCalled = 0;
-      component.getCardsInRow$().subscribe((numberOfCards) => {
-        if (cardsInRowSubscribeCalled === 0) {
-          cardsInRowSubscribeCalled++;
-          cardsHostElement.style.width = calcNeededWidth(3, CardType.regular);
-          emitNativeEvent(window, 'resize');
-        } else {
-          expect(numberOfCards).toEqual(3);
-          done();
-        }
       });
     });
   });

@@ -12,6 +12,7 @@ import { ListKeyboardService } from '../lists/list-service/list-keyboard.service
 import { HighlightPipe } from '../services/filters/highlight.pipe';
 import { FormatNumberPipe } from '../services/filters/formatNumber.pipe';
 import { DOMhelpers } from '../services/html/dom-helpers.service';
+import { MutationObservableService } from '../services/utils/mutation-observable';
 
 // This file is intentionally named .spec.ts - to fix build problems due to missing jasmine namespace
 
@@ -19,8 +20,8 @@ export const utilsServiceStub: spyObj<UtilsService> = createSpyObj(
   'UtilsService',
   [
     'getResizeEvent',
-    'getWindowKeydownEvent',
     'getScrollEvent',
+    'getWindowKeydownEvent',
     'getWindowClickEvent',
     'getElementInViewEvent',
   ]
@@ -33,14 +34,15 @@ utilsServiceStub.getElementInViewEvent.and.returnValue(of(true));
 
 export const mobileServiceStub: spyObj<MobileService> = createSpyObj(
   'MobileService',
-  ['getMediaEvent', 'getMediaData']
+  ['getMediaEvent', 'getMediaData', 'isMobile']
 );
 mobileServiceStub.getMediaEvent.and.returnValue(
-  of({ matchMobile: false } as MediaEvent)
+  of({ matchMobile: false, isMobile: false } as MediaEvent)
 );
 mobileServiceStub.getMediaData.and.returnValue({
   matchMobile: false,
 } as MediaEvent);
+mobileServiceStub.isMobile.and.returnValue(false);
 
 export const MobileServiceProvideMock = () => ({
   provide: MobileService,
@@ -85,10 +87,25 @@ export const getDOMhelpersMock = () =>
   new Mock<DOMhelpers>({
     getElementCSSvar: () => 'xxx',
     bindClasses: () => ({} as any),
-    setCssProps: () => {},
+    setCssProps: DOMhelpers.prototype.setCssProps,
+    getClosest: (elem) => elem,
   });
 
 export const DOMhelpersProvideMock = (mock: Mock<DOMhelpers> = null) => ({
   provide: DOMhelpers,
   useFactory: () => (mock || getDOMhelpersMock()).Object,
+});
+
+export const getMutationObservableServiceMock = () =>
+  new Mock<MutationObservableService>({
+    getMutationObservable: (element) => of(new Set([element])),
+    getResizeObservervable: (element) =>
+      of({ width: element.offsetWidth, height: element.offsetHeight }),
+  });
+
+export const MutationObservableServiceProvideMock = (
+  mock: Mock<MutationObservableService> = null
+) => ({
+  provide: MutationObservableService,
+  useFactory: () => (mock || getMutationObservableServiceMock()).Object,
 });

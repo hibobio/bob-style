@@ -34,7 +34,6 @@ import { TableModule } from '../table.module';
 import { TableComponent } from './table.component';
 import { ColumnOrderStrategy, RowSelection, TableType } from './table.enum';
 import { ColumnDef } from './table.interface';
-import { getTestScheduler } from 'jasmine-marbles';
 
 import createSpyObj = jasmine.createSpyObj;
 import SpyObj = jasmine.SpyObj;

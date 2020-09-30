@@ -60,10 +60,6 @@
         var(--item-count)
     );
   }
-
-  &[data-cards-in-row='1']::ng-deep .single-card {
-    width: 100%;
-  }
 }
 
 // Swiper
@@ -105,7 +101,6 @@ $hover-shadow-offset: 12px;
     padding-right: var(--padding-x-mob, #{$padding-x-mob});
 
     &::ng-deep .single-card {
-      width: 100%;
       scroll-snap-align: center;
     }
 

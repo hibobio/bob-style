@@ -50,7 +50,18 @@ const storyTemplate = `
     <h3>Text cards</h3>
     <p>(size/type 'regular')</p>
     ${template1}
-
+    <br><br>
+    <h3>Image cards</h3>
+    <p>(size/type 'large')</p>
+    ${template4}
+    <br><br>
+    <h3>Employee cards</h3>
+    <p>(size/type 'regular')</p>
+    ${template2}
+    <br><br>
+    <h3>Mini employee cards</h3>
+    <p>(size/type 'small')</p>
+    ${template3}
   </div>
 
 </b-story-book-layout>
