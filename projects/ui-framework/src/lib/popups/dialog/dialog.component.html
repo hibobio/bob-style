@@ -1,5 +1,6 @@
 <div #dialogHeader
-     mat-dialog-title>
+     mat-dialog-title
+     [class.show-confirmation]="showConfirmation">
   <ng-content select="[b-dialog-above-header]"></ng-content>
   <b-display-2 *ngIf="dialogTitle">{{dialogTitle}}</b-display-2>
   <ng-content select="[b-dialog-sub-title]"></ng-content>

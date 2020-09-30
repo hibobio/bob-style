@@ -46,6 +46,7 @@ html.cdk-global-scrollblock {
     }
 
     .mat-dialog-title {
+      position: relative;
       padding: times8(5) times8(5) times8(2);
       user-select: none;
 
@@ -80,23 +81,6 @@ html.cdk-global-scrollblock {
 
         .dialog-content {
           visibility: hidden;
-        }
-      }
-
-      &.show-confirmation {
-        user-select: none;
-        pointer-events: none;
-
-        &:before {
-          @include pseudo;
-          @include position(0 0 0 0);
-          pointer-events: all;
-          background-color: white(0.4);
-          z-index: 1;
-        }
-
-        & + .dialog-footer .mat-dialog-actions {
-          box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.1);
         }
       }
 
@@ -135,6 +119,20 @@ html.cdk-global-scrollblock {
     }
   }
 
+  .show-confirmation {
+    user-select: none;
+    pointer-events: none;
+    position: relative;
+
+    &:before {
+      @include pseudo;
+      @include position(0 0 0 0);
+      pointer-events: all;
+      background-color: black(0.3);
+      z-index: 1;
+    }
+  }
+
   .dialog-footer {
     position: relative;
     border-top: 1px solid $border-color-light;
@@ -149,6 +147,19 @@ html.cdk-global-scrollblock {
       background-color: $white;
       box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.2);
       transform: translateY(-100%);
+
+      & + .mat-dialog-actions {
+        box-shadow: 0 -1px 0 0 $border-color;
+
+        [mat-dialog-footer-left] {
+          @include disabled-state {
+            *,
+            :before {
+              pointer-events: none;
+            }
+          }
+        }
+      }
     }
 
     .mat-dialog-actions {
