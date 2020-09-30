@@ -12,14 +12,8 @@ describe('FormElementLabelComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        FormElementLabelComponent,
-      ],
-      imports: [
-        MatTooltipModule,
-        TruncateTooltipModule,
-        IconsModule,
-      ],
+      declarations: [FormElementLabelComponent],
+      imports: [MatTooltipModule, TruncateTooltipModule, IconsModule],
     })
       .compileComponents()
       .then(() => {
@@ -46,22 +40,26 @@ describe('FormElementLabelComponent', () => {
   describe('description', () => {
     it('should not show icon if none is provided', () => {
       fixture.detectChanges();
-      const icon = fixture.debugElement.query(By.css('b-icon'));
+      const icon = fixture.debugElement.query(By.css('.b-icon'));
       expect(icon).toBeFalsy();
     });
     it('should show icon if description is provided', () => {
       component.description = 'Hello';
       fixture.detectChanges();
-      const icon = fixture.debugElement.query(By.css('b-icon'));
+      const icon = fixture.debugElement.query(By.css('.b-icon'));
       expect(icon).toBeTruthy();
     });
     it('should pass params to icon', () => {
       component.description = 'Hello';
       fixture.detectChanges();
-      const icon = fixture.debugElement.query(By.css('b-icon'));
-      expect(icon.componentInstance.size).toEqual(IconSize.small);
-      expect(icon.componentInstance.color).toEqual(IconColor.normal);
-      expect(icon.componentInstance.icon).toEqual(Icons.info_outline);
+      const icon = fixture.debugElement.query(By.css('.b-icon'));
+      expect(icon.nativeElement.dataset.iconBeforeSize).toEqual(IconSize.small);
+      expect(icon.nativeElement.dataset.iconBeforeColor).toEqual(
+        IconColor.normal
+      );
+      expect(icon.nativeElement.dataset.iconBefore).toEqual(
+        Icons.info_outline.replace('b-icon-', '')
+      );
     });
   });
 });
