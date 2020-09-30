@@ -127,8 +127,8 @@ export class RadioButtonComponent extends BaseFormElement
     super.ngAfterViewInit();
   }
 
-  public onRadioChange(key): void {
-    this.writeValue(this.options.find((o) => o[this.key] === key));
+  public onRadioChange(id: RadioConfig['id']): void {
+    this.writeValue(this.options.find((o) => o[this.key] === id));
     this.transmit(InputEventType.onBlur);
   }
 
