@@ -1,17 +1,13 @@
 <div #dialogHeader
-     mat-dialog-title
-     [class.show-confirmation]="showConfirmation">
+     mat-dialog-title>
   <ng-content select="[b-dialog-above-header]"></ng-content>
   <b-display-2 *ngIf="dialogTitle">{{dialogTitle}}</b-display-2>
   <ng-content select="[b-dialog-sub-title]"></ng-content>
 </div>
 
 <div #dialogContent
-     (scroll)="onScroll($event)"
      class="dialog-content-wrapper"
      [ngClass]="{
-       'show-scrolling-top': showScrolling==dialogScrollDir.top,
-       'show-scrolling-bottom': showScrolling==dialogScrollDir.bottom,
        'no-footer': !dialogButtons,
        'show-progress': showProgress,
        'show-confirmation': showConfirmation

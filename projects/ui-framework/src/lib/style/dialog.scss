@@ -22,110 +22,96 @@ html.cdk-global-scrollblock {
 }
 
 .b-dialog-backdrop {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: black(0.3);
   transition: none;
 }
 
 .b-dialog-panel {
+  .mat-dialog-container,
+  [mat-dialog-title],
+  .dialog-content-wrapper,
+  [mat-dialog-actions] {
+    font: inherit;
+  }
+
   .mat-dialog-container {
     display: block;
     padding: 0;
     position: relative;
     overflow: hidden;
     color: inherit;
+  }
 
-    .mat-dialog-title,
-    .mat-dialog-content,
-    .mat-dialog-actions {
-      display: block;
-      margin: 0;
-      padding: 0;
-      max-height: none;
-      min-height: 0;
-      font: inherit;
+  [mat-dialog-title] {
+    padding: times8(5) times8(5) times8(2);
+    margin: 0;
+    user-select: none;
+
+    b-display-2 {
+      overflow-wrap: break-word;
+    }
+  }
+
+  [b-dialog-sub-title] {
+    margin-top: 5px;
+  }
+
+  .dialog-content-wrapper {
+    padding: 0 times8(5) times8(2);
+    margin: 0;
+    max-height: 60vh;
+    overflow-x: hidden;
+
+    &.no-footer {
+      padding-bottom: times8(5);
     }
 
-    .mat-dialog-title {
-      position: relative;
-      padding: times8(5) times8(5) times8(2);
-      user-select: none;
-
-      div[b-dialog-sub-title] {
-        margin-top: 5px;
-      }
-      b-display-2 {
-        overflow-wrap: break-word;
-      }
-    }
-
-    .dialog-content-wrapper {
-      padding: 0 times8(5) times8(2);
-      max-height: 60vh;
-      position: relative;
-      overflow-x: hidden;
-
-      &.show-scrolling-bottom {
-        border-bottom: 1px solid $border-color-light;
-
-        & + .dialog-footer {
-          margin-top: -1px;
-        }
-      }
-
-      &.no-footer {
-        padding-bottom: times8(5);
-      }
-
-      &.show-progress {
-        overflow: hidden;
-
-        .dialog-content {
-          visibility: hidden;
-        }
-      }
+    &.show-progress {
+      overflow: hidden;
 
       .dialog-content {
-        position: relative;
+        visibility: hidden;
       }
     }
+  }
 
-    .progress-indicator {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      z-index: 1;
-      align-items: center;
-      justify-content: center;
+  .dialog-content {
+    position: relative;
+  }
 
-      b-mini-preloader {
-        display: block;
-      }
+  .progress-indicator {
+    @include size(100%);
+    @include position(0 0 0 0);
+    z-index: 1;
+    @include flex-align;
+    flex-direction: column;
+  }
 
-      .preloader-message {
-        display: block;
-        color: $grey-600;
-        margin-top: times8(1.5);
-      }
-    }
+  .preloader-message {
+    display: block;
+    color: $grey-600;
+    margin-top: times8(1.5);
+  }
 
-    .close-button {
-      position: absolute;
-      top: 5px;
-      right: 5px;
+  .close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+
+  .dialog-content-wrapper {
+    &:before {
+      @include pseudo;
+      background-color: black(0);
+      transition: background-color 0.2s;
     }
   }
 
   .show-confirmation {
     user-select: none;
     pointer-events: none;
-    position: relative;
 
     &:before {
-      @include pseudo;
       @include position(0 0 0 0);
       pointer-events: all;
       background-color: black(0.3);
@@ -136,49 +122,54 @@ html.cdk-global-scrollblock {
   .dialog-footer {
     position: relative;
     border-top: 1px solid $border-color-light;
+  }
 
-    .confirmation-message {
-      position: absolute;
-      z-index: 1;
-      left: 0;
-      width: 100%;
-      box-sizing: border-box;
-      padding: times8(2) times8(3);
-      background-color: $white;
-      box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.2);
-      transform: translateY(-100%);
+  [mat-dialog-actions] {
+    padding: times8(3);
+    margin: 0;
+    background-color: $white;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    min-height: 0;
+    height: 100%;
+  }
 
-      & + .mat-dialog-actions {
-        box-shadow: 0 -1px 0 0 $border-color;
+  .action-buttons {
+    justify-self: flex-end;
+    margin-left: auto;
+  }
 
-        [mat-dialog-footer-left] {
-          @include disabled-state {
-            *,
-            :before {
-              pointer-events: none;
-            }
-          }
-        }
-      }
+  .dialog-button {
+    &:nth-child(2) {
+      margin-left: times8(2);
     }
+  }
 
-    .mat-dialog-actions {
-      padding: times8(3);
-      background-color: $white;
-      text-align: center;
-      position: relative;
-      z-index: 2;
-      display: flex;
-      height: 100%;
+  [mat-dialog-footer-left] {
+    transition: opacity 0.2s;
+  }
 
-      .action-buttons {
-        justify-self: flex-end;
-        margin-left: auto;
-      }
+  .confirmation-message {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: times8(2) times8(3);
+    background-color: $white;
+    transform: translateY(-100%);
 
-      .dialog-button {
-        &:nth-child(2) {
-          margin-left: times8(2);
+    & + [mat-dialog-actions] {
+      box-shadow: 0 -1px 0 0 $border-color;
+
+      [mat-dialog-footer-left] {
+        @include disabled-state {
+          *,
+          :before {
+            pointer-events: none;
+          }
         }
       }
     }
