@@ -21,6 +21,7 @@ import 'froala-editor/js/plugins/char_counter.min.js';
 import 'froala-editor/js/plugins/url.min.js';
 import 'froala-editor/js/plugins/emoticons.min.js';
 import { RteUtilsService } from './rte-utils.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { RteUtilsService } from './rte-utils.service';
     SingleSelectPanelModule,
     ButtonsModule,
     TranslateModule,
+    MatTooltipModule,
   ],
   exports: [
     FroalaEditorDirective,

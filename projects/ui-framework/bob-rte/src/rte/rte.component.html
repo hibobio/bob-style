@@ -26,10 +26,10 @@
     <b-square-button class="placeholder-panel-trigger"
                      [ngClass]="{ focused: plchldrPnlTrgrFocused }"
                      [type]="buttonType.tertiary"
-                     [size]="buttonSize.large"
+                     [size]="buttonSize.small"
                      [icon]="icons.placeholder_add"
                      [color]="iconColor.normal"
-                     [toolTipSummary]="('bob-style.rte.add-variable' | translate)"
+                     [matTooltip]="('bob-style.rte.add-variable' | translate)"
                      (clicked)="onPlaceholderPanelOpen()">
     </b-square-button>
   </b-single-select-panel>

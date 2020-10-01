@@ -1,4 +1,5 @@
 @import '../../../src/lib/style/common-imports';
+@import '../../../src/lib/style/icons.mixin';
 @import './rte.mixin';
 
 :host {
@@ -60,23 +61,15 @@
   background-color: $grey-200;
 
   &::ng-deep button {
-    transition: width 0.2s, height 0.2s, opacity 0.2s;
+    transition: background-color 0.2s;
 
     &:before {
-      transition: color 0.2s, font-size 0.2s;
+      transition: color 0.2s;
     }
   }
 
   &:not(:hover):not(.focused) {
     background-color: rgba($grey-200, 0.7);
-
-    &::ng-deep button {
-      @include size($button-size-small);
-
-      &:before {
-        font-size: 20px;
-      }
-    }
   }
 
   &.focused::ng-deep button:before {
@@ -195,10 +188,13 @@
 :host[data-type='singleLine'] ::ng-deep {
   .bfe-wrap,
   .fr-element.fr-view {
-    min-height: 0 !important;
     display: flex;
+    max-height: $input-height;
   }
 
+  .fr-element.fr-view {
+    min-height: $input-height;
+  }
   .bfe-wrap {
     align-items: center;
   }
@@ -210,7 +206,6 @@
 
   .fr-element.fr-view {
     padding: 0 $input-padding;
-    max-height: $input-height;
     align-items: center;
 
     border-top-left-radius: $border-radius;
@@ -225,10 +220,23 @@
     --rte-font-size-normal: #{$font-size-body};
     --rte-font-size-large: #{$font-size-body};
     --rte-font-size-xlarge: #{font-size-body};
+
+    &:focus + .fr-placeholder {
+      display: none;
+    }
+  }
+
+  .show-placeholder .fr-view {
+    br {
+      display: inline;
+    }
   }
 
   .fr-placeholder {
     bottom: 0;
+    min-height: $input-height;
+    line-height: $input-height !important;
+    font-size: $font-size-body !important;
   }
 
   .fr-toolbar {
@@ -245,13 +253,11 @@
     border-bottom-width: 0;
     border-bottom-right-radius: $border-radius;
 
-    .large.b-icon-large {
+    button.tertiary {
       width: $input-height;
       height: $input-height;
 
-      &:before {
-        font-size: 24px;
-      }
+      @include icon-size(24px);
     }
   }
 }
