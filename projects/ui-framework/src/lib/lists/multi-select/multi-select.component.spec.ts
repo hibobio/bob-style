@@ -19,7 +19,6 @@ import { SelectGroupOption } from '../list.interface';
 import { ListModelService } from '../list-service/list-model.service';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../list-change/list-change';
-import { simpleChange } from '../../services/utils/test-helpers';
 import {
   mockTranslatePipe,
   TranslateServiceProvideMock,
@@ -40,6 +39,7 @@ import { ListChangeService } from '../list-change/list-change.service';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 describe('MultiSelectComponent', () => {
   let component: MultiSelectComponent;

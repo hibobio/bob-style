@@ -1,14 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   elementFromFixture,
-  simpleChange,
   elementsFromFixture,
   emptyImgWithText,
 } from '../../services/utils/test-helpers';
 import { MultiListAndChipsComponent } from './multi-list-and-chips.component';
 import { Icons } from '../../icons/icons.enum';
 import { CommonModule } from '@angular/common';
-import { makeArray } from '../../services/utils/functional-utils';
+import { makeArray, simpleChange } from '../../services/utils/functional-utils';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../../lists/list-change/list-change';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';

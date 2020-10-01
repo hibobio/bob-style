@@ -10,14 +10,16 @@ import { AvatarImageComponent } from './avatar-image.component';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { isEqual } from 'lodash';
 import {
-  simpleChange,
   emitNativeEvent,
   emptyFilestackImg,
 } from '../../../services/utils/test-helpers';
 import { AvatarSize, AvatarBadge } from '../avatar.enum';
 import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
 import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
-import { stringify } from '../../../services/utils/functional-utils';
+import {
+  stringify,
+  simpleChange,
+} from '../../../services/utils/functional-utils';
 
 interface AttrCheck {
   role: string;

@@ -13,11 +13,7 @@ import { CommonModule } from '@angular/common';
 import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
 import { SelectOption } from '../list.interface';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
-import {
-  simpleChange,
-  inputValue,
-  fakeAsyncFlush,
-} from '../../services/utils/test-helpers';
+import { inputValue, fakeAsyncFlush } from '../../services/utils/test-helpers';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { ListSortType } from './editable-list.enum';
 import { cloneDeep } from 'lodash';
@@ -25,6 +21,7 @@ import { mockTranslatePipe } from '../../tests/services.stub.spec';
 import { ButtonComponent } from '../../buttons/button/button.component';
 import { InputMessageComponent } from '../../form-elements/input-message/input-message.component';
 import { SquareButtonComponent } from '../../buttons/square/square.component';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 describe('EditableListComponent', () => {
   let fixture: ComponentFixture<EditableListComponent>;

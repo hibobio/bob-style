@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { MatButtonModule } from '@angular/material/button';
 import { IconsModule } from '../../icons/icons.module';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { simpleChange } from '../../services/utils/test-helpers';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 describe('ButtonComponent', () => {
   let component: ButtonComponent;

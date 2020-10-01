@@ -3,12 +3,12 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LightboxModule } from '../lightbox.module';
 import { MediaEmbedComponent } from './media-embed.component';
 import {
-  simpleChange,
   emptyImg,
   emptyImgTestString,
 } from '../../../services/utils/test-helpers';
 import { MediaType } from './media-embed.enum';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { simpleChange } from '../../../services/utils/functional-utils';
 
 describe('MediaEmbedComponent', () => {
   let component: MediaEmbedComponent;

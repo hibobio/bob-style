@@ -41,10 +41,10 @@ import {
   getEventPath,
   hasChanges,
   cloneDeepSimpleObject,
+  simpleChange,
 } from '../services/utils/functional-utils';
 import { ListModelService } from './list-service/list-model.service';
 import { ListChangeService } from './list-change/list-change.service';
-import { simpleChange } from '../services/utils/test-helpers';
 import { LIST_ACTIONS_STATE_DEF } from './list-footer/list-footer.const';
 import { SelectType, SelectMode } from './list.enum';
 import { SearchComponent } from '../search/search/search.component';

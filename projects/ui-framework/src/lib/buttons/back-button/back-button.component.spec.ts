@@ -1,9 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BackButtonComponent } from './back-button.component';
-import { By } from '@angular/platform-browser';
 import { Icons, IconSize } from '../../icons/icons.enum';
 import { BackButtonType, ButtonSize } from '../buttons.enum';
-import { simpleChange } from '../../services/utils/test-helpers';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 describe('BackButtonComponent', () => {
   let component: BackButtonComponent;

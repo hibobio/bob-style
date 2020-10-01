@@ -350,3 +350,13 @@ $BLVTypeMap: (
     }
   }
 }
+
+:host {
+  &[data-initialized='true'] {
+    .blv-icon,
+    .blv-label,
+    .blv-value {
+      @include animate(fade-in, $time: 0.3s, $keyframes: true);
+    }
+  }
+}

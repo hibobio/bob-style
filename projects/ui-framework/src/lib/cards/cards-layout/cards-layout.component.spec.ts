@@ -9,10 +9,7 @@ import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CardsLayoutComponent } from './cards-layout.component';
 import { CardType } from '../cards.enum';
-import {
-  simpleChange,
-  fakeAsyncFlush,
-} from '../../services/utils/test-helpers';
+import { fakeAsyncFlush } from '../../services/utils/test-helpers';
 import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { ItemsInRowService } from '../../services/items-in-row/items-in-row.service';
@@ -21,6 +18,7 @@ import {
   MobileServiceProvideMock,
   MutationObservableServiceProvideMock,
 } from '../../tests/services.stub.spec';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 describe('CardsLayoutComponent', () => {
   let fixture: ComponentFixture<CardsLayoutComponent>;

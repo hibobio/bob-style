@@ -5,13 +5,12 @@ import {
   discardPeriodicTasks,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { SimpleChange, Type, SimpleChanges } from '@angular/core';
+import { Type } from '@angular/core';
 import {
   NativeMouseEvents,
   NativeKeyboardEvents,
   NativeEvents,
 } from '../../enums';
-import { GenericObject } from '../../types';
 
 export const emptyImg =
   // tslint:disable-next-line: max-line-length
@@ -68,22 +67,6 @@ export const componentFromFixture = (
 ): Type<any> => {
   const comp = fixtr.debugElement.query(By.css(selector));
   return comp && comp.componentInstance ? comp.componentInstance : null;
-};
-
-export const simpleChange = (
-  changes: GenericObject = {},
-  firstChange = false,
-  previousValues: GenericObject = {}
-): SimpleChanges => {
-  const simpleChanges = {};
-  Object.keys(changes).forEach((key) => {
-    simpleChanges[key] = new SimpleChange(
-      (previousValues && previousValues[key]) || undefined,
-      changes[key],
-      firstChange
-    );
-  });
-  return simpleChanges;
 };
 
 export const inputValue = (

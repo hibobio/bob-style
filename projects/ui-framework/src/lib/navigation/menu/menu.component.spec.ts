@@ -5,8 +5,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { By } from '@angular/platform-browser';
 import { MenuItem } from './menu.interface';
 import { CommonModule } from '@angular/common';
-import { simpleChange } from '../../services/utils/test-helpers';
-import { arrayInsertAt } from '../../services/utils/functional-utils';
+import {
+  arrayInsertAt,
+  simpleChange,
+} from '../../services/utils/functional-utils';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -16,22 +18,22 @@ describe('MenuComponent', () => {
     {
       label: 'button 0',
       key: 'button.zero',
-      action: $event => {},
+      action: ($event) => {},
     },
     {
       label: 'button 1',
-      action: $event => {},
+      action: ($event) => {},
     },
     {
       label: 'button 2',
       children: [
         {
           label: 'button 3',
-          action: $event => {},
+          action: ($event) => {},
         },
         {
           label: 'button 4',
-          action: $event => {},
+          action: ($event) => {},
         },
       ],
     },
@@ -191,7 +193,7 @@ describe('MenuComponent', () => {
             menuMock,
             {
               label: 'button 2',
-              action: $event => console.log('button 2', $event),
+              action: ($event) => console.log('button 2', $event),
               disabled: true,
             },
             1,

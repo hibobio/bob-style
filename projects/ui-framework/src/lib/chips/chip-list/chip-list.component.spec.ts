@@ -4,7 +4,6 @@ import { ChipType, ChipListAlign, ChipListSelectable } from '../chips.enum';
 import { ChipModule } from '../chip/chip.module';
 import {
   elementsFromFixture,
-  simpleChange,
   emitNativeEvent,
   emptyImg,
   emptyImgTestString,
@@ -12,6 +11,7 @@ import {
 import { ChipComponent } from '../chip/chip.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { cloneDeep } from 'lodash';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 describe('ChipListComponent', () => {
   let component: ChipListComponent;

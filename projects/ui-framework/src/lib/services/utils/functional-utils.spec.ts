@@ -1,5 +1,4 @@
-import { hasChanges, isNumber } from './functional-utils';
-import { simpleChange } from './test-helpers';
+import { hasChanges, isNumber, simpleChange } from './functional-utils';
 
 describe('Functional Utils', () => {
   //

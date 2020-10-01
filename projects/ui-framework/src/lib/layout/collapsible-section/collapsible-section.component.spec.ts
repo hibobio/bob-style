@@ -16,10 +16,10 @@ import { UtilsService } from '../../services/utils/utils.service';
 import {
   elementFromFixture,
   emitNativeEvent,
-  simpleChange,
 } from '../../services/utils/test-helpers';
 import { ColorService } from '../../services/color-service/color.service';
 import { utilsServiceStub } from '../../tests/services.stub.spec';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 @Component({
   template: `

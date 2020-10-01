@@ -24,6 +24,7 @@ import {
   eventHasCntrlKey,
   getEventPath,
   compareAsStrings,
+  simpleChange,
 } from '../../../services/utils/functional-utils';
 import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from '../tree-list.const';
 import {
@@ -62,7 +63,6 @@ import { DOMInputEvent } from '../../../types';
 import { TreeListModelUtils } from '../services/tree-list-model.static';
 import { SelectMode } from '../../list.enum';
 import { TranslateService } from '@ngx-translate/core';
-import { simpleChange } from '../../../services/utils/test-helpers';
 
 const LISTITEM_EL_HEIGHT = 32;
 

@@ -10,6 +10,8 @@ import {
   SimpleChanges,
   OnChanges,
   ChangeDetectorRef,
+  ElementRef,
+  AfterViewInit,
 } from '@angular/core';
 import { LabelValueType, TextAlign, IconPosition } from './label-value.enum';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
@@ -31,8 +33,12 @@ import { LabelValue } from './label-value.interface';
   styleUrls: ['./label-value.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LabelValueComponent implements OnChanges {
-  constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
+export class LabelValueComponent implements OnChanges, AfterViewInit {
+  constructor(
+    private hostRef: ElementRef,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
+  ) {}
 
   public iconAfter = false;
   public iconClass: string;
@@ -106,7 +112,7 @@ export class LabelValueComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
 
-    if (changes.iconPosition) {
+    if (hasChanges(changes, ['icon', 'iconSize', 'iconPosition'])) {
       this.iconAfter =
         this.iconPosition === this.iconPositions.label_after ||
         this.iconPosition === this.iconPositions.value_after;
@@ -117,9 +123,7 @@ export class LabelValueComponent implements OnChanges {
           : this.iconPosition === this.iconPositions.value_after
           ? this.iconPositions.value
           : this.iconPosition;
-    }
 
-    if (hasChanges(changes, ['icon', 'iconSize', 'iconPosition'])) {
       this.iconClass =
         this.icon +
         (this.iconSize ? ' b-icon-' + this.iconSize : ' b-icon-large');
@@ -144,6 +148,10 @@ export class LabelValueComponent implements OnChanges {
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.hostRef.nativeElement.dataset.initialized = 'true';
   }
 
   private emitEvents($event: MouseEvent | KeyboardEvent): void {

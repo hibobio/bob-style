@@ -10,8 +10,6 @@ import {
   elementFromFixture,
   elementsFromFixture,
   getPseudoContent,
-  inputValue,
-  simpleChange,
 } from '../../../services/utils/test-helpers';
 import {
   dateToString,
@@ -31,6 +29,7 @@ import {
   MatDatepickerModule,
 } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { simpleChange } from '../../../services/utils/functional-utils';
 
 describe('DateRangePickerComponent', () => {
   let fixture: ComponentFixture<DateRangePickerComponent>;
