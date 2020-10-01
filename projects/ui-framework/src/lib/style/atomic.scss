@@ -248,6 +248,11 @@ $acss-dirs: top right bottom left;
   display: block;
 }
 
+.grd,
+.b-grid {
+  display: grid;
+}
+
 .flx,
 .b-flex {
   display: flex;

@@ -2,7 +2,9 @@
 
 :host {
   position: relative;
-  height: $label-height;
+  min-height: $label-height;
+  margin-bottom: $label-hint-margin;
+  @include b-body($color: $label-color, $addCssVars: true);
 
   &.bfe-label[class] {
     display: flex;
