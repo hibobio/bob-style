@@ -24,7 +24,11 @@ export class EmployeesShowcaseService {
     employees: EmployeeShowcase[] | SelectGroupOption[],
     clone = false
   ): SelectGroupOption[] {
-    if (!employees || isEmptyArray(employees)) {
+    if (
+      isEmptyArray(employees) ||
+      (isArray((employees[0] as SelectGroupOption).options) &&
+        !(employees[0] as SelectGroupOption).options.length)
+    ) {
       return [{ groupName: 'empty', options: [] }];
     }
 
@@ -101,8 +105,8 @@ export class EmployeesShowcaseService {
   private optionHasAvatarComponent(option: any): boolean {
     return Boolean(
       option?.prefixComponent?.attributes &&
-      hasProp(option.prefixComponent.attributes, 'imageSource') ||
-      hasProp(option.prefixComponent.attributes, 'icon')
+        (hasProp(option.prefixComponent.attributes, 'imageSource') ||
+          hasProp(option.prefixComponent.attributes, 'icon'))
     );
   }
 
