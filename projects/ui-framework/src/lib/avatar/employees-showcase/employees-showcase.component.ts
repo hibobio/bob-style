@@ -195,6 +195,7 @@ export class EmployeesShowcaseComponent
       this.avatarsToFit < this.totalAvatars;
 
     this.DOM.setCssProps(this.host.nativeElement, {
+      '--avatar-size': this.avatarSize + 'px',
       '--avatar-count': this.avatarsToFit,
       '--avatar-gap': '-' + AvatarGap[this.avatarSize] + 'px',
     });

@@ -86,19 +86,19 @@ export class CardsLayoutComponent
 
   ngOnInit(): void {
     this.cardsInRow$ = this.itemsInRowService
-      .getItemsInRow$(
-        this.hostRef.nativeElement,
-        this.getCardWidth(),
-        GAP_SIZE,
-        1,
-        this.mobileService.getMediaEvent().pipe(
+      .getItemsInRow$({
+        hostElem: this.hostRef.nativeElement,
+        elemWidth: this.getCardWidth(),
+        gapSize: GAP_SIZE,
+        minItems: 1,
+        update$: this.mobileService.getMediaEvent().pipe(
           outsideZone(this.zone),
           tap((mediaEvent: MediaEvent) => {
             this.isMobile = mediaEvent.isMobile;
           }),
           map(() => [null, this.getCardWidth(), null])
-        )
-      )
+        ),
+      })
       .pipe(
         tap((cardsInRow) => {
           this.cardsInRow = cardsInRow;

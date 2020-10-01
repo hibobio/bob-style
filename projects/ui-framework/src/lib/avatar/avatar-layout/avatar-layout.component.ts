@@ -34,12 +34,12 @@ export class AvatarLayoutComponent implements AfterViewInit, OnDestroy {
   private sub: Subscription;
 
   ngAfterViewInit() {
-    this.itemsInRow$ = this.itemsInRowService.getItemsInRow$(
-      this.elementRef.nativeElement,
-      this.elemWidth,
-      this.gapSize,
-      this.minItemsFallback
-    );
+    this.itemsInRow$ = this.itemsInRowService.getItemsInRow$({
+      hostElem: this.elementRef.nativeElement,
+      elemWidth: this.elemWidth,
+      gapSize: this.gapSize,
+      minItems: this.minItemsFallback,
+    });
 
     if (this.itemsInRowChange.observers.length > 0) {
       this.sub = this.itemsInRow$.subscribe((count) => {

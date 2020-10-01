@@ -2,8 +2,24 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 import { DOMhelpers } from '../html/dom-helpers.service';
-import { isDomElement, isNumber } from '../utils/functional-utils';
+import { isDomElement, isFunction, isNumber } from '../utils/functional-utils';
 import { MutationObservableService } from '../utils/mutation-observable';
+
+export interface ItemsInRowConfig {
+  hostElem: HTMLElement;
+  elemWidth: number;
+  gapSize?: number;
+  minItems?: number;
+  update$?:
+    | BehaviorSubject<[HTMLElement, number, number]>
+    | Observable<[HTMLElement, number, number]>;
+  calcItemsFit?: (
+    availableWidth: number,
+    itemWidth: number,
+    itemsGap: number,
+    minItems: number
+  ) => number;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -25,17 +41,17 @@ export class ItemsInRowService {
     return Math.max(fullRow, minItems);
   }
 
-  getItemsInRow$(
-    hostElem: HTMLElement,
-    elemWidth: number,
-    gapSize: number = 0,
-    minItems: number = 1,
-    update$:
-      | BehaviorSubject<[HTMLElement, number, number]>
-      | Observable<[HTMLElement, number, number]> = new BehaviorSubject(
-      [] as any
-    )
-  ): Observable<number> {
+  getItemsInRow$({
+    hostElem,
+    elemWidth,
+    gapSize = 0,
+    minItems = 1,
+    update$ = new BehaviorSubject([] as any),
+    calcItemsFit = this.calcItemsFit,
+  }: ItemsInRowConfig): Observable<number> {
+    //
+    calcItemsFit = isFunction(calcItemsFit) ? calcItemsFit : this.calcItemsFit;
+
     if (!isDomElement(hostElem)) {
       console.error(
         `[ItemsInRowService.getItemsInRow$] host element was not provided`
@@ -68,7 +84,7 @@ export class ItemsInRowService {
           [HTMLElement, number, number],
           DOMRectReadOnly
         ]) => {
-          return this.calcItemsFit(
+          return calcItemsFit(
             elemRect.width ||
               this.DOM.getClosest(hostElem, this.DOM.getInnerWidth, 'result'),
             elemWidth,
