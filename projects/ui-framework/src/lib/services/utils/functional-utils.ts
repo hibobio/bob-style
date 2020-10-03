@@ -1,5 +1,5 @@
 import { SimpleChanges, SimpleChange, ElementRef } from '@angular/core';
-import { metaKeys } from '../../enums';
+import { controlKeys, KEYCODES, Keys, metaKeys } from '../../enums';
 import { GenericObject } from '../../types';
 import { isEqual, cloneDeep } from 'lodash';
 import { RenderedComponent } from '../component-renderer/component-renderer.interface';
@@ -982,6 +982,16 @@ export const getEventPath = (event: Event): HTMLElement[] =>
   ((event['path'] as any[]) ||
     (event.composedPath && (event.composedPath() as any[])) ||
     []) as HTMLElement[];
+
+export const keyEventIsCharacter = (event: KeyboardEvent): boolean => {
+  // tslint:disable-next-line: deprecation
+  const code = event.which || event.keyCode;
+
+  return (
+    (!controlKeys.includes(event.key as Keys) && !eventHasCntrlKey(event)) ||
+    code === KEYCODES.IME
+  );
+};
 
 // ----------------------
 // DOM

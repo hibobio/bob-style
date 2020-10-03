@@ -25,7 +25,7 @@ import {
   EMOJI_DATA,
   asArray,
   SanitizerService,
-  controlKeys,
+  keyEventIsCharacter,
 } from 'bob-style';
 
 import { RTEbaseElement } from './rte.abstract';
@@ -446,8 +446,7 @@ export class RichTextEditorComponent extends RTEbaseElement
     if (
       this.maxChars &&
       this.length >= this.maxChars &&
-      !controlKeys.includes(event.key as Keys) &&
-      !eventHasCntrlKey(event)
+      keyEventIsCharacter(event)
     ) {
       event.preventDefault();
       event.stopPropagation();
