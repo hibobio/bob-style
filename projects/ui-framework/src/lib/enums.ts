@@ -20,6 +20,7 @@ export enum Keys {
   comma = ',',
   dollar = '$',
   at = '@',
+  caps = 'CapsLock',
 }
 
 export const metaKeys = [Keys.meta, Keys.alt, Keys.control, Keys.shift];
@@ -42,6 +43,7 @@ export const controlKeys = [
   Keys.pageup,
   Keys.backspace,
   Keys.delete,
+  Keys.caps,
 ];
 
 export const arrowKeys = [

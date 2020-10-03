@@ -80,7 +80,7 @@ export abstract class RTEbaseElement extends BaseFormElement
     super(cd);
     this.baseValue = '';
     this.wrapEvent = false;
-    this.showCharCounter = false;
+    this.showCharCounter = true;
     this.options.scrollableContainer = '.bfe-wrap#' + this.id;
   }
 
@@ -167,13 +167,13 @@ export abstract class RTEbaseElement extends BaseFormElement
       this.editorValue = cloneValue(this.baseValue);
     }
 
-    if (!onChanges) {
-      setTimeout(() => {
-        if (!this.cd['destroyed']) {
-          this.cd.detectChanges();
-        }
-      }, 0);
-    }
+    setTimeout(() => {
+      this.updateLength();
+
+      if (!this.cd['destroyed']) {
+        this.cd.detectChanges();
+      }
+    }, 0);
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -227,12 +227,6 @@ export abstract class RTEbaseElement extends BaseFormElement
           this.editor.placeholder.refresh();
         }
       );
-    }
-
-    if (changes.maxChars) {
-      this.updateEditorOptions({ charCounterMax: this.maxChars || -1 }, () => {
-        this.editor.charCounter['_init']();
-      });
     }
 
     if (hasChanges(changes, ['minHeight', 'maxHeight', 'type'])) {
@@ -483,6 +477,7 @@ export abstract class RTEbaseElement extends BaseFormElement
         this.cd.detectChanges();
       }
     }
+
     return this.length;
   }
 

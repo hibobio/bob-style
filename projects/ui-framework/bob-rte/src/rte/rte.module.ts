@@ -6,6 +6,7 @@ import {
   HtmlParserHelpers,
   SingleSelectPanelModule,
   ButtonsModule,
+  EventManagerPlugins,
 } from 'bob-style';
 import { RichTextEditorComponent } from './rte.component';
 import { PlaceholdersConverterService } from './placeholders.service';
@@ -17,7 +18,7 @@ import 'froala-editor/js/plugins/font_size.min.js';
 import 'froala-editor/js/plugins/link.min.js';
 import 'froala-editor/js/plugins/align.min.js';
 import 'froala-editor/js/plugins/lists.min.js';
-import 'froala-editor/js/plugins/char_counter.min.js';
+// import 'froala-editor/js/plugins/char_counter.min.js';
 import 'froala-editor/js/plugins/url.min.js';
 import 'froala-editor/js/plugins/emoticons.min.js';
 import { RteUtilsService } from './rte-utils.service';
@@ -43,6 +44,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FroalaViewDirective,
     RichTextEditorComponent,
   ],
-  providers: [RteUtilsService, PlaceholdersConverterService, HtmlParserHelpers],
+  providers: [
+    RteUtilsService,
+    PlaceholdersConverterService,
+    HtmlParserHelpers,
+    EventManagerPlugins[0],
+  ],
 })
 export class RichTextEditorModule {}
