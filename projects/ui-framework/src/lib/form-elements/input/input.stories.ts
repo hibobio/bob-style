@@ -21,6 +21,7 @@ import formElemsPropsDoc from '../form-elements.properties.md';
 import inputElemsPropsDoc from '../input.properties.md';
 import { FormElementSize } from '../form-elements.enum';
 import { FormElementsCommonProps } from '../form-elements.stories.common';
+import { InViewModule } from '../../services/utils/inview.directive';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -116,6 +117,12 @@ const storyTemplate = `
 <b-story-book-layout [title]="'Input'">
   <div style="max-width: 300px;">
     ${template2}
+
+    <div
+     [inView]="onInView"
+     class=""
+     style="width: 20px; height: 20px; border: 1px solid red; margin: 100vh 0;"></div>
+
   </div>
 </b-story-book-layout>
 `;
@@ -157,6 +164,9 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        onInView: (elmnt, entry) => {
+          console.log('inview', elmnt, entry);
+        },
         inputTypes: InputTypes,
         nullValue: null,
         inputEvents: action('Input event'),
@@ -184,7 +194,12 @@ story.add(
         allowedChars: text('allowedChars', ''),
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, InputModule, StoryBookLayoutModule],
+        imports: [
+          BrowserAnimationsModule,
+          InputModule,
+          StoryBookLayoutModule,
+          InViewModule,
+        ],
       },
     };
   },
