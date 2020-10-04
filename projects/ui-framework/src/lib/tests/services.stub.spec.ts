@@ -30,7 +30,7 @@ utilsServiceStub.getResizeEvent.and.returnValue(of({} as WinResizeEvent));
 utilsServiceStub.getScrollEvent.and.returnValue(of({} as ScrollEvent));
 utilsServiceStub.getWindowKeydownEvent.and.returnValue(of({} as KeyboardEvent));
 utilsServiceStub.getWindowClickEvent.and.returnValue(of({} as MouseEvent));
-utilsServiceStub.getElementInViewEvent.and.returnValue(of(true));
+// utilsServiceStub.getElementInViewEvent.and.returnValue(of(true));
 
 export const mobileServiceStub: spyObj<MobileService> = createSpyObj(
   'MobileService',
