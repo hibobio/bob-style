@@ -8,7 +8,7 @@ import {
   MASONRY_CONFIG_DEF,
   MASONRY_GAP_DEF,
   MASONRY_COLS_DEF,
-  MASONRY_ROW_DIVISION,
+  MASONRY_ROW_DIVISION_DEF,
 } from './masonry.const';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
@@ -55,7 +55,8 @@ export class MasonryService {
     }
 
     this.DOM.setCssProps(host, {
-      '--masonry-row-div': MASONRY_ROW_DIVISION + 'px',
+      '--masonry-row-div':
+        (config.rowDivision || MASONRY_ROW_DIVISION_DEF) + 'px',
       '--masonry-gap': config.gap + 'px',
       '--masonry-col-width': config.columns
         ? `calc(100% / ${config.columns} - ${config.gap}px * ${
@@ -101,10 +102,10 @@ export class MasonryService {
           .forEach((elHeight, i) => {
             const el = elbatch[i];
 
-            let rowSpan = Math.ceil(
+            const rowSpan = Math.ceil(
               (Math.max(elHeight.scrollHeight, elHeight.offsetHeight) +
                 config.gap) /
-                (MASONRY_ROW_DIVISION + config.gap)
+                ((config.rowDivision || MASONRY_ROW_DIVISION_DEF) + config.gap)
             );
             el.classList.remove('recalc');
             el.style.gridRowEnd = 'span ' + rowSpan;
