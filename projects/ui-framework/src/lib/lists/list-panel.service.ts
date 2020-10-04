@@ -140,7 +140,7 @@ export class ListPanelService {
           (self as OEC).utilsService.getResizeEvent().pipe(
             outsideZone((self as OEC).zone),
             tap(() => {
-              (self as OEC).isMobile = this.mobileService.getMediaData().isMobile;
+              (self as OEC).isMobile = this.mobileService.isMobile();
             }),
             filter(() => !(self as OEC).isMobile)
           ),

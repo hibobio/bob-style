@@ -22,13 +22,13 @@ import {
   notFirstChanges,
   numberMinMax,
 } from '../../services/utils/functional-utils';
-import { UtilsService } from '../../services/utils/utils.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import { filter, take } from 'rxjs/operators';
 import { valueAsNumber } from '../../services/utils/transformers';
 import { ProgressConfig } from '../progress/progress.interface';
 import { ProgressSize } from '../progress/progress.enum';
+import { MutationObservableService } from '../../services/utils/mutation-observable';
 
 @Component({
   selector: 'b-simple-bar-chart',
@@ -39,8 +39,8 @@ import { ProgressSize } from '../progress/progress.enum';
 export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
   constructor(
     private host: ElementRef,
-    private utilsService: UtilsService,
     private DOM: DOMhelpers,
+    private mutationObservableService: MutationObservableService,
     private zone: NgZone,
     private cd: ChangeDetectorRef
   ) {}
@@ -91,13 +91,9 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     if (!this.config.disableAnimation) {
-      this.utilsService
+      this.mutationObservableService
         .getElementInViewEvent(this.host.nativeElement)
-        .pipe(
-          outsideZone(this.zone),
-          filter((i) => Boolean(i)),
-          take(1)
-        )
+        .pipe(outsideZone(this.zone), filter(Boolean), take(1))
         .subscribe(() => {
           this.wasInView = true;
           this.setCssProps();

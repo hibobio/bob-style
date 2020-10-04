@@ -10,7 +10,6 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import { AvatarLocation, CanvasDimension } from './floating-avatars.interface';
@@ -24,6 +23,7 @@ import {
   isNotEmptyArray,
 } from '../../services/utils/functional-utils';
 import { AvatarParticle } from './avatar.particle';
+import { MutationObservableService } from '../../services/utils/mutation-observable';
 
 @Component({
   selector: 'b-floating-avatars',
@@ -32,6 +32,15 @@ import { AvatarParticle } from './avatar.particle';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
+  constructor(
+    private hostRef: ElementRef,
+    private zone: NgZone,
+    private mutationObservableService: MutationObservableService,
+    private mobileService: MobileService
+  ) {
+    this.isMobile = this.mobileService.isMobile();
+  }
+
   @ViewChild('canvas', { static: true }) canvas: ElementRef;
 
   @Input() avatarImages: string[] = [];
@@ -55,40 +64,37 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
     height: 0,
   };
   private particles: AvatarParticle[] = [];
-  private resizeSubscriber: Subscription;
-  private inViewSubscriber: Subscription;
+  private subs: Subscription[] = [];
+
   private isMobile = false;
 
-  constructor(
-    private hostRef: ElementRef,
-    private zone: NgZone,
-    private utilsService: UtilsService,
-    private mobileService: MobileService
-  ) {}
-
   ngOnInit(): void {
-    this.isMobile = this.mobileService.getMediaData().matchMobile;
     this.build();
 
-    this.resizeSubscriber = this.utilsService
-      .getResizeEvent()
-      .pipe(outsideZone(this.zone))
-      .subscribe(() => {
-        this.stopLoop();
-        this.isMobile = this.mobileService.getMediaData().matchMobile;
-        this.build();
-      });
-
-    this.inViewSubscriber = this.utilsService
-      .getElementInViewEvent(this.hostRef.nativeElement)
-      .pipe(outsideZone(this.zone))
-      .subscribe(isInView => {
-        if (isInView) {
-          this.startLoop();
-        } else {
+    this.subs.push(
+      this.mutationObservableService
+        .getResizeObservervable(this.hostRef.nativeElement, {
+          watch: 'width',
+          threshold: 20,
+        })
+        .pipe(outsideZone(this.zone))
+        .subscribe(() => {
           this.stopLoop();
-        }
-      });
+          this.isMobile = this.mobileService.isMobile();
+          this.build();
+        }),
+
+      this.mutationObservableService
+        .getElementInViewEvent(this.hostRef.nativeElement)
+        .pipe(outsideZone(this.zone))
+        .subscribe((isInView) => {
+          if (isInView) {
+            this.startLoop();
+          } else {
+            this.stopLoop();
+          }
+        })
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -99,12 +105,10 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.resizeSubscriber) {
-      this.resizeSubscriber.unsubscribe();
-    }
-    if (this.inViewSubscriber) {
-      this.inViewSubscriber.unsubscribe();
-    }
+    this.subs.forEach((sub) => {
+      sub?.unsubscribe();
+    });
+    this.subs.length = 0;
     this.stopLoop();
   }
 

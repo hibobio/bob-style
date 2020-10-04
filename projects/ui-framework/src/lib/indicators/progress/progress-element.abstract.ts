@@ -17,22 +17,22 @@ import {
   notFirstChanges,
 } from '../../services/utils/functional-utils';
 import { valueAsNumber } from '../../services/utils/transformers';
-import { UtilsService } from '../../services/utils/utils.service';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { filter, take } from 'rxjs/operators';
 import { ProgressData, ProgressConfig } from './progress.interface';
 import { ProgressSize, ProgressType } from './progress.enum';
+import { MutationObservableService } from '../../services/utils/mutation-observable';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseProgressElement implements OnChanges, OnInit {
   constructor(
     protected host: ElementRef,
-    protected utilsService: UtilsService,
     protected DOM: DOMhelpers,
     protected zone: NgZone,
-    protected cd: ChangeDetectorRef
+    protected cd: ChangeDetectorRef,
+    protected mutationObservableService: MutationObservableService
   ) {}
 
   @Input() data: ProgressData = {} as ProgressData;
@@ -85,13 +85,9 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
 
   ngOnInit(): void {
     if (!this.config.disableAnimation) {
-      this.utilsService
+      this.mutationObservableService
         .getElementInViewEvent(this.host.nativeElement)
-        .pipe(
-          outsideZone(this.zone),
-          filter((i) => Boolean(i)),
-          take(1)
-        )
+        .pipe(outsideZone(this.zone), filter(Boolean), take(1))
         .subscribe(() => {
           this.wasInView = true;
           this.setCssProps();

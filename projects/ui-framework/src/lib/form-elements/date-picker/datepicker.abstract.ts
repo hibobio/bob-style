@@ -72,7 +72,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   ) {
     super(cd);
 
-    this.isMobile = this.mobileService.getMediaData().matchMobile;
+    this.isMobile = this.mobileService.isMobile();
 
     if (hasProp(this.dateAdapter, 'getFormat', false)) {
       this.dateFormats = {
@@ -156,10 +156,10 @@ export abstract class BaseDatepickerElement extends BaseFormElement
         throttle((val) => interval(1000))
       )
       .subscribe(() => {
-        const matchMobile = this.mobileService.getMediaData().matchMobile;
+        const isMobile = this.mobileService.isMobile();
 
-        if (matchMobile !== this.isMobile) {
-          this.isMobile = matchMobile;
+        if (isMobile !== this.isMobile) {
+          this.isMobile = isMobile;
           this.cd.detectChanges();
         }
 

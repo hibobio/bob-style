@@ -12,14 +12,13 @@ import {
   randomNumber,
   roundToDecimals,
 } from '../../../services/utils/functional-utils';
-import { UtilsService } from '../../../services/utils/utils.service';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
-
 import { BaseProgressElement } from '../progress-element.abstract';
 import {
   ProgressDonutDiameter,
   ProgressDonutStrokeWidth,
 } from '../progress.const';
+import { MutationObservableService } from '../../../services/utils/mutation-observable';
 
 @Component({
   selector: 'b-progress-donut',
@@ -31,12 +30,12 @@ export class ProgressDonutComponent extends BaseProgressElement
   implements OnInit {
   constructor(
     protected host: ElementRef,
-    protected utilsService: UtilsService,
     protected DOM: DOMhelpers,
     protected zone: NgZone,
-    protected cd: ChangeDetectorRef
+    protected cd: ChangeDetectorRef,
+    protected mutationObservableService: MutationObservableService
   ) {
-    super(host, utilsService, DOM, zone, cd);
+    super(host, DOM, zone, cd, mutationObservableService);
   }
 
   readonly id = simpleUID('bpd-');

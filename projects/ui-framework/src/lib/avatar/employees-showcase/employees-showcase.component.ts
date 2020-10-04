@@ -192,7 +192,8 @@ export class EmployeesShowcaseComponent
       this.showTotal !== false &&
       !this.fadeOut &&
       this.avatarSize < AvatarSize.medium &&
-      this.avatarsToFit < this.totalAvatars;
+      this.totalAvatars > 1;
+    // && this.avatarsToFit < this.totalAvatars;
 
     this.DOM.setCssProps(this.host.nativeElement, {
       '--avatar-size': this.avatarSize + 'px',
@@ -244,7 +245,8 @@ export class EmployeesShowcaseComponent
   private setAvatarsToShow(): void {
     this.avatarsToShow = this.showcaseViewModel.slice(
       0,
-      !this.showTotalButton ? this.avatarsToFit : this.avatarsToFit - 1
+      // !this.showTotalButton ? this.avatarsToFit : this.avatarsToFit - 1
+      this.avatarsToFit
     );
   }
 

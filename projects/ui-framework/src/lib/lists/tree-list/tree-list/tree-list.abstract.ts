@@ -56,7 +56,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
     protected host: ElementRef
   ) {
     super();
-    this.isMobile = this.mobileService.getMediaData().isMobile;
+    this.isMobile = this.mobileService.isMobile();
   }
 
   @ViewChild('search', { read: SearchComponent })

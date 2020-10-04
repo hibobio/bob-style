@@ -67,7 +67,7 @@ export abstract class BaseListElement
     protected DOM: DOMhelpers,
     protected host: ElementRef
   ) {
-    this.isMobile = this.mobileService.getMediaData().isMobile;
+    this.isMobile = this.mobileService.isMobile();
   }
 
   @ViewChild('vScroll', { static: true }) vScroll: CdkVirtualScrollViewport;
