@@ -1,0 +1,48 @@
+name: pull request workflow
+
+on:
+  pull_request:
+    branches:
+      - master
+env:
+  CI_COMMIT_ID: pr-${{github.event.pull_request.head.sha}}
+  CI_COMMITTER_NAME: ${{github.actor}}
+  CI_BRANCH: ${{github.ref}}
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.5.0
+        with:
+          access_token: ${{ github.token }}
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: jfrog
+        run: printf "registry=https://hibob.jfrog.io/hibob/api/npm/bob-js-virtual/\n_auth = ${{ secrets.JFROG_NPM_TOKEN }}\nalways-auth = true\nemail = deploy-js@hibob.io" > .npmrc
+        shell: bash
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: npm install
+        run: npm ci
+      - name: install bob-style
+        run: npm install bob-style --no-save
+      - name: test
+        run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadless
+      - name: build storybook
+        run: npm run build-storybook
