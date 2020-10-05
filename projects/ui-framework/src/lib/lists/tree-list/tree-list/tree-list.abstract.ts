@@ -41,6 +41,7 @@ import {
 import { TreeListSearchUtils } from '../services/tree-list-search.static';
 import { MobileService } from '../../../services/utils/mobile.service';
 import { TreeListViewUtils } from '../services/tree-list-view.static';
+import { LIST_MAX_ITEMS } from '../../list.consts';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -93,7 +94,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
         keyMap: BTL_KEYMAP_DEF,
         type: SelectType.multi,
         valueSeparatorChar: BTL_VALUE_SEPARATOR_DEF,
-        maxHeightItems: 8,
+        maxHeightItems: LIST_MAX_ITEMS,
         mode: SelectMode.tree,
       },
       ['list', 'value', 'itemsMap'],
@@ -143,7 +144,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
       );
 
       this.DOM.setCssProps(this.host.nativeElement, {
-        '--list-max-items': this.maxHeightItems,
+        '--list-max-items': this.maxHeightItems || null,
       });
     }
 

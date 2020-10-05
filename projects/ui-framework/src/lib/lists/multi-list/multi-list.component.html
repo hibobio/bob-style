@@ -5,13 +5,20 @@
 </b-search>
 
 <div [ngStyle]="{
-        height: listOptions && (listOptions.length * listElHeight + 'px')
+       height: listHeight ? listHeight + 'px' : null,
+       minHeight: listMinHeight ? listMinHeight + 'px' : null
       }"
      [attr.aria-readonly]="readonly || null"
      [ngClass]="{
        'no-group-header': noGroupHeaders
       }"
      class="v-scroll-wrapper">
+
+  <div class="empty-state-message option-select option"
+       *ngIf="!listOptions?.length">
+    {{'bob-style.lists.empty-state-default' | translate}}
+  </div>
+
   <div #headers
        class="headers"
        *ngIf="!noGroupHeaders">
@@ -57,8 +64,8 @@
   <cdk-virtual-scroll-viewport #vScroll
                                class="v-scroll"
                                [itemSize]="listElHeight"
-                               maxBufferPx="{{8*listElHeight}}"
-                               minBufferPx="{{8*listElHeight}}">
+                               [maxBufferPx]="maxHeight"
+                               [minBufferPx]="maxHeight">
     <div class="options">
       <div (click)="optionClick(option, true)"
            *cdkVirtualFor="let option of listOptions"

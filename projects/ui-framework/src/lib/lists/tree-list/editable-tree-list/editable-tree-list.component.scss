@@ -6,6 +6,7 @@ $betl-item-height: 32px;
 $betl-item-indent: 20px;
 $betl-bgcolor: white;
 $betl-bg-line-width: 1px;
+$betl-max-items: 15;
 
 //-------DEV---------
 .dev {
@@ -65,7 +66,9 @@ $betl-bg-line-width: 1px;
   flex-direction: column;
   min-height: 0;
   height: var(--list-min-height, auto);
-  max-height: calc(var(--list-max-items, 15) * #{$betl-item-height});
+  max-height: calc(
+    var(--list-max-items, #{$betl-max-items}) * #{$betl-item-height}
+  );
   overflow: auto;
 }
 

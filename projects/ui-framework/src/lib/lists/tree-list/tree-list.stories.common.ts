@@ -9,6 +9,7 @@ import {
   makeRandomList,
   HListMockValues,
 } from './tree-list.mock';
+import { LIST_MAX_ITEMS } from '../list.consts';
 
 export const TreeListStoriesCommonProps = (
   footerActions = {
@@ -17,7 +18,7 @@ export const TreeListStoriesCommonProps = (
     clear: false,
     reset: false,
   },
-  maxHeightItems = 8
+  maxHeightItems = LIST_MAX_ITEMS
 ) => ({
   serverKeyMap: BTL_KEYMAP_SERVER,
   type: select('type', Object.values(SelectType), SelectType.single, 'Props'),

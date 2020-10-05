@@ -24,11 +24,12 @@ import {
   ListFooterActionsState,
   UpdateListsConfig,
 } from './list.interface';
-import { find, cloneDeep, isEqual } from 'lodash';
+import { cloneDeep, isEqual } from 'lodash';
 import {
   LIST_EL_HEIGHT,
   DISPLAY_SEARCH_OPTION_NUM,
   UPDATE_LISTS_CONFIG_DEF,
+  LIST_MAX_ITEMS,
 } from './list.consts';
 import { ListKeyboardService } from './list-service/list-keyboard.service';
 import { Keys } from '../enums';
@@ -79,7 +80,7 @@ export abstract class BaseListElement
   @Input() optionsDefault: SelectGroupOption[];
   @Input() mode: SelectMode = SelectMode.classic;
   @Input() listActions: ListFooterActions;
-  @Input() maxHeight = LIST_EL_HEIGHT * 8;
+  @Input() maxHeight = LIST_EL_HEIGHT * LIST_MAX_ITEMS;
   @Input() showSingleGroupHeader = false;
   @Input() startWithGroupsCollapsed = true;
   @Input() showNoneOption = false;
@@ -102,7 +103,9 @@ export abstract class BaseListElement
   public listOptions: ListOption[];
   public listHeaders: ListHeader[];
   public focusIndex: number;
-  public staticListHeight = 0;
+  public maxHeightItems = LIST_MAX_ITEMS;
+  public listHeight = null;
+  public listMinHeight = 0;
   public searchValue: string;
   public shouldDisplaySearch = false;
   public filteredOptions: SelectGroupOption[];
@@ -126,7 +129,7 @@ export abstract class BaseListElement
       options: [],
       mode: SelectMode.classic,
       startWithGroupsCollapsed: true,
-      maxHeight: LIST_EL_HEIGHT * 8,
+      maxHeight: LIST_EL_HEIGHT * LIST_MAX_ITEMS,
     });
 
     if (this.mode === SelectMode.tree) {
@@ -198,8 +201,13 @@ export abstract class BaseListElement
     }
 
     if (hasChanges(changes, ['maxHeight', 'options'], true)) {
+      this.maxHeightItems =
+        Math.round((this.maxHeight || 0) / LIST_EL_HEIGHT) * LIST_EL_HEIGHT ||
+        LIST_MAX_ITEMS;
+      this.maxHeight = this.maxHeightItems * LIST_EL_HEIGHT;
+
       this.DOM.setCssProps(this.host.nativeElement, {
-        '--list-max-items': this.maxHeight / LIST_EL_HEIGHT,
+        '--list-max-items': this.maxHeight / LIST_EL_HEIGHT || null,
       });
     }
 
@@ -313,7 +321,7 @@ export abstract class BaseListElement
 
     this.updateLists({
       collapseHeaders: this.startWithGroupsCollapsed && !this.searchValue,
-      updateListHeight: false
+      updateListMinHeight: false,
     });
   }
 
@@ -409,7 +417,6 @@ export abstract class BaseListElement
 
       this.updateLists({
         collapseHeaders: this.allGroupsCollapsed,
-        updateListHeight: this.listOptions?.length > 0
       });
     }
   }
@@ -481,10 +488,11 @@ export abstract class BaseListElement
         this.listHeaders,
         this.noGroupHeaders
       );
+      this.listHeight = this.getListHeight();
     }
 
-    if (config.updateListHeight) {
-      this.staticListHeight = this.getCurrentListHeight();
+    if (config.updateListMinHeight) {
+      this.listMinHeight = this.getListMinHeight();
     }
 
     this.modelSrvc.setSelectedOptions(
@@ -541,5 +549,13 @@ export abstract class BaseListElement
     return index + listHeader.groupName;
   }
 
-  protected abstract getCurrentListHeight(): number;
+  protected getListMinHeight(): number {
+    return this.listOptions?.length
+      ? Math.min(this.getListHeight(), this.maxHeight)
+      : null;
+  }
+
+  protected getListHeight(): number {
+    return null;
+  }
 }

@@ -10,7 +10,7 @@ import {
   ViewChild,
   ChangeDetectorRef,
 } from '@angular/core';
-import { LIST_EL_HEIGHT } from '../../../lists/list.consts';
+import { LIST_EL_HEIGHT, LIST_MAX_ITEMS } from '../../../lists/list.consts';
 import { AutoCompleteOption } from '../auto-complete.interface';
 import { has } from 'lodash';
 import { Subscription } from 'rxjs';
@@ -40,7 +40,7 @@ export class AutoCompletePanelComponent
   @Output() escapeClick: EventEmitter<void> = new EventEmitter<void>();
 
   readonly listElHeight = LIST_EL_HEIGHT;
-  readonly maxHeight = this.listElHeight * 8;
+  readonly maxHeight = LIST_EL_HEIGHT * LIST_MAX_ITEMS;
   focusIndex: number;
   focusOption: AutoCompleteOption;
   private keyDownSubscriber: Subscription;

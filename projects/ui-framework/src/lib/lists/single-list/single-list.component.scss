@@ -2,6 +2,7 @@
 @import '../list';
 
 $list-item-height: $wrap-height;
+$list-max-items: 8;
 
 :host {
   display: flex;
@@ -12,7 +13,6 @@ $list-item-height: $wrap-height;
   border: 1px solid $border-color;
   box-shadow: 0 2px 3px 0 $boxShadowColor;
   overflow: hidden;
-  --list-max-items: 8;
 }
 
 :host b-search {
@@ -54,7 +54,9 @@ $list-item-height: $wrap-height;
     position: relative;
     background-color: $white;
     flex-grow: 5;
-    max-height: calc(var(--list-max-items) * #{$list-item-height} - 1px);
+    max-height: calc(
+      var(--list-max-items, #{$list-max-items}) * #{$list-item-height} - 1px
+    );
 
     @include b-body($addCssVars: false);
 

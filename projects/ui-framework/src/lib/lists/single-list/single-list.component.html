@@ -5,8 +5,8 @@
 </b-search>
 
 <div [ngStyle]="{
-        height: listOptions && (getListHeight() + 'px'),
-        minHeight: staticListHeight + 'px'
+        height: listHeight ? listHeight + 'px' : null,
+        minHeight: listMinHeight ? listMinHeight + 'px' : null
       }"
      [attr.aria-readonly]="readonly || null"
      [ngClass]="{
@@ -15,7 +15,8 @@
       }"
      class="v-scroll-wrapper">
 
-  <div class="empty-state-message option-select option" *ngIf="!listOptions?.length">
+  <div class="empty-state-message option-select option"
+       *ngIf="!listOptions?.length">
     {{'bob-style.lists.empty-state-default' | translate}}
   </div>
 
@@ -53,8 +54,8 @@
   <cdk-virtual-scroll-viewport #vScroll
                                class="v-scroll"
                                [itemSize]="listElHeight"
-                               maxBufferPx="{{8*listElHeight}}"
-                               minBufferPx="{{8*listElHeight}}">
+                               [maxBufferPx]="maxHeight"
+                               [minBufferPx]="maxHeight">
 
     <button *ngIf="showNoneOption && !readonly && listOptions?.length"
             type="button"

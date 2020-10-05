@@ -514,7 +514,7 @@ export abstract class BaseEditableTreeListElement
   ): void {
     if (styles === 'max-items') {
       this.DOM.setCssProps(this.hostElement, {
-        '--list-max-items': this.maxHeightItems,
+        '--list-max-items': this.maxHeightItems || null,
       });
       return;
     }

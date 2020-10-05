@@ -538,22 +538,28 @@ describe('SingleListComponent', () => {
     it(`should not show 'no results were found.' message`, () => {
       component['searchChange']('info 1');
       fixture.detectChanges();
-      const noResultsMessageElements = fixture.debugElement.queryAll(By.css('.empty-state-message'));
+      const noResultsMessageElements = fixture.debugElement.queryAll(
+        By.css('.empty-state-message')
+      );
       expect(noResultsMessageElements.length).toEqual(0);
     });
 
     it(`should show 'no results were found.' message`, () => {
       component['searchChange']('˚ß∂∆ƒ˚ß∆ƒ');
       fixture.detectChanges();
-      const noResultsMessageElements = fixture.debugElement.queryAll(By.css('.empty-state-message'));
+      const noResultsMessageElements = fixture.debugElement.queryAll(
+        By.css('.empty-state-message')
+      );
       expect(noResultsMessageElements.length).toEqual(1);
     });
   });
 
   describe('.v-scroll-wrapper min-height', () => {
     it('should have min-height property set', () => {
-      const vScrollWrapperDiv = fixture.debugElement.queryAll(By.css('.v-scroll-wrapper'))[0];
-      expect(component['staticListHeight']).toBeGreaterThan(0);
+      const vScrollWrapperDiv = fixture.debugElement.queryAll(
+        By.css('.v-scroll-wrapper')
+      )[0];
+      expect(component['listMinHeight']).toBeGreaterThan(0);
       expect(vScrollWrapperDiv.nativeElement.style.minHeight).toBeTruthy();
     });
   });

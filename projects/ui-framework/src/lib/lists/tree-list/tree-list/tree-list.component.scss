@@ -6,6 +6,7 @@ $btl-item-indent: base8(30);
 $btl-item-padding: $input-padding;
 $btl-icon-margin: 10px;
 $btl-max-depth: 10;
+$btl-max-items: 10;
 
 //-------DEV---------
 :host[data-debug='true'] {
@@ -35,7 +36,6 @@ $btl-max-depth: 10;
   overflow: hidden;
   @include b-body($color: $grey-700, $addCssVars: false, $lineHeight: 1.2);
   background-color: white;
-  --list-max-items: 8;
   border-radius: $border-radius;
 
   &[data-embedded='false'] {
@@ -62,7 +62,9 @@ $btl-max-depth: 10;
   padding: 0;
   margin: 0;
   position: relative;
-  max-height: calc(var(--list-max-items) * #{$btl-item-height} - 1px);
+  max-height: calc(
+    var(--list-max-items, #{$btl-max-items}) * #{$btl-item-height} - 1px
+  );
   overflow-y: auto;
   will-change: scroll-position, transform;
 }

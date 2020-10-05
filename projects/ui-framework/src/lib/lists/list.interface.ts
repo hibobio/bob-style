@@ -79,6 +79,6 @@ export interface UpdateListsConfig {
   collapseHeaders?: boolean;
   updateListHeaders?: boolean;
   updateListOptions?: boolean;
-  updateListHeight?: boolean;
+  updateListMinHeight?: boolean;
   selectedIDs?: (string | number)[];
 }

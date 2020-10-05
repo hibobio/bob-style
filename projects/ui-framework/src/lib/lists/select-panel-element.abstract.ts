@@ -40,7 +40,7 @@ import {
 import { SelectGroupOption, ListFooterActions } from './list.interface';
 import { ListChange } from './list-change/list-change';
 import { PanelDefaultPosVer } from '../popups/panel/panel.enum';
-import { LIST_EL_HEIGHT } from './list.consts';
+import { LIST_EL_HEIGHT, SELECT_MAX_ITEMS } from './list.consts';
 import { ListChangeService } from './list-change/list-change.service';
 import { selectValueOrFail } from '../services/utils/transformers';
 import { ListModelService } from './list-service/list-model.service';
@@ -111,6 +111,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
   private fitOptionsToValue = false;
   readonly listElHeight = LIST_EL_HEIGHT;
+  public maxHeightItems = SELECT_MAX_ITEMS;
 
   public touched = false;
   public dirty = false;

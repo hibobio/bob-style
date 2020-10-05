@@ -46,6 +46,7 @@ import {
 import { TreeListValueUtils } from '../services/tree-list-value.static';
 import { PanelDefaultPosVer } from '../../../popups/panel/panel.enum';
 import { LIST_ACTIONS_DEF } from '../../list-footer/list-footer.const';
+import { SELECT_MAX_ITEMS } from '../../list.consts';
 
 @Component({
   selector: 'b-tree-select',
@@ -116,7 +117,7 @@ export class TreeSelectComponent extends BaseFormElement
   readonly tooltipClass = [TooltipClass.PreWrap];
   public dirty = false;
   public touched = false;
-  public maxHeightItems = 6;
+  public maxHeightItems = SELECT_MAX_ITEMS;
 
   public ngOnChanges(changes: SimpleChanges): void {
     applyChanges(

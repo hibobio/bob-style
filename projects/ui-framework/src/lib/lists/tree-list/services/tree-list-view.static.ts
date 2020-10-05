@@ -7,7 +7,7 @@ import {
   isNumber,
   compareAsStrings,
 } from '../../../services/utils/functional-utils';
-import { LIST_EL_HEIGHT } from '../../list.consts';
+import { LIST_EL_HEIGHT, LIST_MAX_ITEMS } from '../../list.consts';
 import { TreeListModelUtils } from './tree-list-model.static';
 import { BTL_ROOT_ID } from '../tree-list.const';
 
@@ -77,7 +77,8 @@ export class TreeListViewUtils {
         itemElement.offsetTop - (item.parentCount - 1) * LIST_EL_HEIGHT;
       const listElScrollTopMin =
         listElScrollTopMax -
-        ((maxHeightItems || 8) - item.parentCount) * LIST_EL_HEIGHT;
+        ((maxHeightItems || LIST_MAX_ITEMS) - item.parentCount) *
+          LIST_EL_HEIGHT;
 
       if (
         listElement.scrollTop < listElScrollTopMin ||

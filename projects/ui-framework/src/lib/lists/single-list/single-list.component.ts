@@ -14,6 +14,7 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { SelectType } from '../list.enum';
 import { MobileService } from '../../services/utils/mobile.service';
 import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
+import { LIST_EL_HEIGHT } from '../list.consts';
 
 @Component({
   selector: 'b-single-list',
@@ -63,17 +64,10 @@ export class SingleListComponent extends BaseListElement {
   }
 
   getListHeight(): number {
-    return (
-      (this.listOptions.length +
-        (!this.readonly && this.showNoneOption ? 1 : 0)) *
-      this.listElHeight
-    );
-  }
-
-  protected getCurrentListHeight(): number {
-    const currentListHeight = (this.listOptions.length + (!this.readonly && this.showNoneOption ? 1 : 0))
-      * this.listElHeight;
-
-    return Math.min(currentListHeight, this.maxHeight);
+    return this.listOptions?.length
+      ? (this.listOptions.length +
+          (!this.readonly && this.showNoneOption ? 1 : 0)) *
+          LIST_EL_HEIGHT
+      : null;
   }
 }

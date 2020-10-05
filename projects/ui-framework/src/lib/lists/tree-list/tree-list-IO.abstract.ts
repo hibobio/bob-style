@@ -11,6 +11,7 @@ import {
 import { BTL_KEYMAP_DEF, BTL_VALUE_SEPARATOR_DEF } from './tree-list.const';
 import { SelectType, SelectMode } from '../list.enum';
 import { ListFooterActions } from '../list.interface';
+import { LIST_MAX_ITEMS } from '../list.consts';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -25,7 +26,7 @@ export abstract class TreeListInputOutput implements TreeListComponentIO {
   @Input() type: SelectType = SelectType.multi;
   @Input() mode: SelectMode = SelectMode.tree;
   @Input() valueSeparatorChar = BTL_VALUE_SEPARATOR_DEF;
-  @Input() maxHeightItems = 8;
+  @Input() maxHeightItems = LIST_MAX_ITEMS;
   @Input() startCollapsed = true;
   @Input() focusOnInit = false;
   @Input() readonly = false;
