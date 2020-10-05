@@ -9,6 +9,7 @@ $bms-max-items: 8;
 :host {
   display: block;
   text-align: left;
+  --list-max-items: #{$bms-max-items};
 }
 
 ul {

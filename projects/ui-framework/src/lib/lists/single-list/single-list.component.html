@@ -5,8 +5,8 @@
 </b-search>
 
 <div [ngStyle]="{
-        height: listHeight ? listHeight + 'px' : null,
-        minHeight: listMinHeight ? listMinHeight + 'px' : null
+        height: listHeight && listHeight + 'px',
+        minHeight: listMinHeight && listMinHeight + 'px'
       }"
      [attr.aria-readonly]="readonly || null"
      [ngClass]="{
