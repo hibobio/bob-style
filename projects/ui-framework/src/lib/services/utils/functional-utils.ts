@@ -1260,25 +1260,33 @@ export const isSelectGroupOptions = (
   );
 };
 
-export const batchProcessWithAnimationFrame = <T = any>(
-  items: T[],
-  config: {
-    batchSize?: number;
-    processItem?: (itm: T) => void;
-    processBatch?: (chnk: T[]) => void;
-    beforeAll?: (itms?: T[]) => void;
-    afterAll?: (itms?: T[]) => void;
-  }
-): void => {
-  const processItem = isFunction(config.processItem)
-      ? config.processItem
-      : null,
-    processBatch = isFunction(config.processBatch) ? config.processBatch : null,
-    beforeAll = isFunction(config.beforeAll) ? config.beforeAll : null,
-    afterAll = isFunction(config.afterAll) ? config.afterAll : null,
-    batchSize = isNumber(config.batchSize) ? config.batchSize : 15;
+interface BatchProcessConfig<T = any> {
+  batchSize?: number;
+  processItem?: (itm: T) => void;
+  processBatch?: (chnk: T[]) => void;
+  beforeAll?: (itms?: T[]) => void;
+  afterAll?: (itms?: T[]) => void;
+  processWith?: (callback: Function) => any;
+}
 
-  const chunks: T[][] = splitArrayToChunks(items, batchSize);
+export const batchProcess = <T = any>(
+  items: T[],
+  {
+    batchSize = 15,
+    processItem = null,
+    processBatch = null,
+    beforeAll = null,
+    afterAll = null,
+    processWith = null,
+  }: BatchProcessConfig
+): void => {
+  const processor = isFunction(processWith)
+    ? processWith
+    : window.requestAnimationFrame;
+
+  const chunks: T[][] = batchSize
+    ? splitArrayToChunks(items, batchSize)
+    : [items];
 
   let currentChunkIndex = 0;
 
@@ -1306,12 +1314,12 @@ export const batchProcessWithAnimationFrame = <T = any>(
 
     ++currentChunkIndex;
 
-    window.requestAnimationFrame(() => {
+    processor(() => {
       process();
     });
   };
 
-  window.requestAnimationFrame(() => {
+  processor(() => {
     process();
   });
 };

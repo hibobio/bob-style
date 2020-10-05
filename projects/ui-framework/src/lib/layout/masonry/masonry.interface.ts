@@ -11,3 +11,8 @@ export interface MasonryState {
   singleColumn?: boolean;
   config?: MasonryConfig;
 }
+
+export interface MasonryItemsChangedEvent {
+  totalItems: number;
+  updatedItems: HTMLElement[];
+}

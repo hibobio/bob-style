@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
-import { MasonryConfig, MasonryState } from './masonry.interface';
+import { EventEmitter, Injectable } from '@angular/core';
 import {
-  isNumber,
-  batchProcessWithAnimationFrame,
-} from '../../services/utils/functional-utils';
+  MasonryConfig,
+  MasonryItemsChangedEvent,
+  MasonryState,
+} from './masonry.interface';
+import { isNumber, batchProcess } from '../../services/utils/functional-utils';
 import {
   MASONRY_CONFIG_DEF,
   MASONRY_GAP_DEF,
@@ -11,6 +12,11 @@ import {
   MASONRY_ROW_DIVISION_DEF,
 } from './masonry.const';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+
+export interface MasonryUpdateConfig {
+  emitter?: EventEmitter<MasonryItemsChangedEvent>;
+  debug?: boolean;
+}
 
 @Injectable()
 export class MasonryService {
@@ -20,11 +26,15 @@ export class MasonryService {
     host: HTMLElement,
     config: MasonryConfig,
     state: MasonryState,
-    debug = false
+    { emitter = null, debug = false }: MasonryUpdateConfig
   ): void {
+    const elements: HTMLElement[] = Array.from(
+      host?.children || []
+    ) as HTMLElement[];
+
     if (state) {
       state.hostWidth = host.offsetWidth;
-      state.childrenCount = host.children.length;
+      state.childrenCount = elements.length;
       state.config = config;
       state.singleColumn = false;
     }
@@ -34,20 +44,20 @@ export class MasonryService {
     }
 
     if (
-      host.children[0]?.tagName !== 'B-MASONRY-ITEM' ||
-      host.children[0]?.children.length !== 1
+      elements[0]?.tagName !== 'B-MASONRY-ITEM' ||
+      elements[0]?.children.length !== 1
     ) {
       console.error(
         `[MasonryLayoutComponent]: ${
-          host.children[0]?.tagName !== 'B-MASONRY-ITEM'
+          elements[0]?.tagName !== 'B-MASONRY-ITEM'
             ? '<b-masonry-layout> should use <b-masonry-item> for children (you have ' +
-              host.children[0]?.tagName +
+              elements[0]?.tagName +
               ')'
             : ''
         } ${
-          host.children[0]?.children.length !== 1
+          elements[0]?.children.length !== 1
             ? ' and <b-masonry-item> should have a single child (you have ' +
-              host.children[0]?.children.length +
+              elements[0]?.children.length +
               ')'
             : ''
         }.`
@@ -65,11 +75,7 @@ export class MasonryService {
         : config.columnWidth && config.columnWidth + 'px',
     });
 
-    this.updateElementsRowSpan(
-      Array.from(host.children) as HTMLElement[],
-      config,
-      debug
-    );
+    this.updateElementsRowSpan(elements, config, { emitter, debug });
 
     host.classList.remove('single-column');
   }
@@ -77,17 +83,19 @@ export class MasonryService {
   public updateElementsRowSpan(
     elements: HTMLElement[],
     config: MasonryConfig,
-    debug = false
+    { emitter = null, debug = false }: MasonryUpdateConfig
   ): void {
     if (debug) {
       console.log(
-        `updateElementsRowSpan: will process in ${Math.ceil(
+        `updateElementsRowSpan: will process ${
+          elements.length
+        } elements - in ${Math.ceil(
           elements.length / Math.min(elements.length, 15)
         )} batches of ${Math.min(elements.length, 15)} items`
       );
     }
 
-    batchProcessWithAnimationFrame(elements, {
+    batchProcess(elements, {
       processBatch: (elbatch: HTMLElement[]) => {
         elbatch
           .map((el) => {
@@ -110,6 +118,13 @@ export class MasonryService {
             el.classList.remove('recalc');
             el.style.gridRowEnd = 'span ' + rowSpan;
           });
+      },
+
+      afterAll: () => {
+        emitter?.emit({
+          totalItems: elements[0]?.parentElement?.children.length,
+          updatedItems: elements,
+        });
       },
     });
   }

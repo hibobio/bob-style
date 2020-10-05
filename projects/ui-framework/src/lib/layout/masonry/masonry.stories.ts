@@ -12,10 +12,12 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
 );
 
 const template1 = `<b-masonry-layout #masonry [config]="{
-      columns: columns,
-      columnWidth: columnWidth,
-      gap: gap
-    }" [debug]="debug">
+          columns: columns,
+          columnWidth: columnWidth,
+          gap: gap
+        }"
+      (masonryItemsChanged)="onMasonryItemsChanged($event)"
+      [debug]="debug">
 
     <b-masonry-item *ngFor="let card of cards">
       <b-masonry-test-card  [card]="card">
@@ -141,6 +143,10 @@ story.add(
         columnWidth: number('columnWidth', 250),
         gap: number('gap', 16),
         debug: boolean('debug', true),
+
+        onMasonryItemsChanged: (event) => {
+          console.log('[masonryItemsChanged]', event);
+        },
       },
       moduleMetadata: {
         imports: [

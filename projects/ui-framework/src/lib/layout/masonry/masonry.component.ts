@@ -5,8 +5,14 @@ import {
   ElementRef,
   OnDestroy,
   NgZone,
+  EventEmitter,
+  Output,
 } from '@angular/core';
-import { MasonryConfig, MasonryState } from './masonry.interface';
+import {
+  MasonryConfig,
+  MasonryItemsChangedEvent,
+  MasonryState,
+} from './masonry.interface';
 import { throttleTime, filter, tap } from 'rxjs/operators';
 import { InputObservable } from '../../services/utils/decorators';
 import { merge, Subscription, Observable } from 'rxjs';
@@ -43,111 +49,124 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
   @Input('config')
   public config$: Observable<MasonryConfig>;
 
+  @Output() masonryItemsChanged: EventEmitter<
+    MasonryItemsChangedEvent
+  > = new EventEmitter<MasonryItemsChangedEvent>();
+
   public hostEl: HTMLElement;
   private config: MasonryConfig;
   private state: MasonryState = {};
   private updater: Subscription;
+  private subs: Subscription[] = [];
 
   private elementsToUpdate: Set<HTMLElement> = new Set();
 
   ngOnInit() {
     this.zone.runOutsideAngular(() => {
-      this.updater = merge(
-        this.config$.pipe(
-          tap((config: MasonryConfig) => {
-            this.config = this.service.processConfig(config);
-            this.state.config = undefined;
+      this.subs.push(
+        (this.updater = merge(
+          this.config$.pipe(
+            tap((config: MasonryConfig) => {
+              this.config = this.service.processConfig(config);
+              this.state.config = undefined;
 
-            if (this.debug) {
-              console.log('Masonry: new config:', this.config);
-            }
-          })
-        ),
-
-        this.mutationObservableService
-          .getMutationObservable(this.hostEl, {
-            characterData: true,
-            childList: true,
-            subtree: true,
-            attributeFilter: ['src', 'data-loaded', 'data-updated'],
-            mutations: 'processed',
-            filterSelector: 'b-masonry-item, b-masonry-layout > *',
-          })
-          .pipe(
-            tap((elementsToUpdate) => {
-              this.elementsToUpdate = new Set([
-                ...this.elementsToUpdate,
-                ...elementsToUpdate,
-              ]);
-
-              this.state.childrenCount = this.hostEl?.children.length;
+              if (this.debug) {
+                console.log('Masonry: new config:', this.config);
+              }
             })
           ),
 
-        this.mutationObservableService
-          .getResizeObservervable(this.hostEl, {
-            watch: 'width',
-            threshold: 20,
-          })
+          this.mutationObservableService
+            .getMutationObservable(this.hostEl, {
+              characterData: true,
+              childList: true,
+              subtree: true,
+              attributeFilter: ['src', 'data-loaded', 'data-updated'],
+              mutations: 'processed',
+              filterSelector: 'b-masonry-item, b-masonry-layout > *',
+            })
+            .pipe(
+              tap((elementsToUpdate) => {
+                this.elementsToUpdate = new Set([
+                  ...this.elementsToUpdate,
+                  ...elementsToUpdate,
+                ]);
+
+                this.state.childrenCount = this.hostEl?.children.length;
+              })
+            ),
+
+          this.mutationObservableService
+            .getResizeObservervable(this.hostEl, {
+              watch: 'width',
+              threshold: 20,
+            })
+            .pipe(
+              tap(() => {
+                if (this.debug) {
+                  console.log(
+                    `Masonry: host resized, prev hostWidth: ${this.state.hostWidth}, new hostWidth: ${this.hostEl.offsetWidth}`
+                  );
+                }
+
+                this.state.hostWidth = this.hostEl.offsetWidth;
+              })
+            )
+        )
           .pipe(
-            tap(() => {
+            throttleTime(100, undefined, {
+              leading: false,
+              trailing: true,
+            }),
+
+            filter(() => Boolean(this.state.childrenCount))
+          )
+          .subscribe(() => {
+            if (
+              this.config.columnWidth &&
+              this.state.hostWidth &&
+              this.config.columnWidth * 2 + this.config.gap >
+                this.state.hostWidth
+            ) {
+              if (this.state.singleColumn) {
+                return;
+              }
+
               if (this.debug) {
                 console.log(
-                  `Masonry: host resized, prev hostWidth: ${this.state.hostWidth}, new hostWidth: ${this.hostEl.offsetWidth}`
+                  `Masonry: hostWidth (${this.state.hostWidth}) too narrow for more than 1 column (of min-width ${this.config.columnWidth}), converting to single column`
                 );
               }
 
-              this.state.hostWidth = this.hostEl.offsetWidth;
-            })
-          )
-      )
-        .pipe(
-          throttleTime(100, undefined, {
-            leading: false,
-            trailing: true,
-          }),
+              this.service.cleanupMasonry(this.hostEl);
+              this.state.singleColumn = true;
 
-          filter(() => Boolean(this.state.childrenCount))
-        )
-        .subscribe(() => {
-          if (
-            this.config.columnWidth &&
-            this.state.hostWidth &&
-            this.config.columnWidth * 2 + this.config.gap > this.state.hostWidth
-          ) {
-            if (this.state.singleColumn) {
+              return;
+            }
+
+            if (!this.state.config || this.elementsToUpdate.size === 0) {
+              this.elementsToUpdate.clear();
+              this.init(this.config);
               return;
             }
 
             if (this.debug) {
               console.log(
-                `Masonry: hostWidth (${this.state.hostWidth}) too narrow for more than 1 column (of min-width ${this.config.columnWidth}), converting to single column`
+                'Masonry update: ' + this.elementsToUpdate.size + ' items.'
               );
             }
 
-            this.service.cleanupMasonry(this.hostEl);
-            this.state.singleColumn = true;
-
-            return;
-          }
-
-          if (!this.state.config || this.elementsToUpdate.size === 0) {
+            const elements = Array.from(this.elementsToUpdate);
             this.elementsToUpdate.clear();
-            this.init(this.config);
-            return;
-          }
 
-          if (this.debug) {
-            console.log(
-              'Masonry update: ' + this.elementsToUpdate.size + ' items.'
-            );
-          }
-
-          const elements = Array.from(this.elementsToUpdate);
-          this.elementsToUpdate.clear();
-
-          this.service.updateElementsRowSpan(elements, this.config);
-        });
+            this.service.updateElementsRowSpan(elements, this.config, {
+              emitter:
+                this.masonryItemsChanged.observers.length &&
+                this.masonryItemsChanged,
+              debug: this.debug,
+            });
+          }))
+      );
     });
   }
 
@@ -162,14 +181,21 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
     if (!this.updater) {
       this.ngOnInit();
     }
-    this.service.initMasonry(this.hostEl, config, this.state, this.debug);
+    this.service.initMasonry(this.hostEl, config, this.state, {
+      emitter:
+        this.masonryItemsChanged.observers.length && this.masonryItemsChanged,
+      debug: this.debug,
+    });
   }
 
   public destroy(fullCleanup = true): void {
     if (this.debug) {
       console.log('Masonry: destroy');
     }
-    this.updater?.unsubscribe();
+    this.subs.forEach((sub) => {
+      sub.unsubscribe();
+    });
+    this.subs.length = 0;
 
     if (fullCleanup) {
       this.state = {};
