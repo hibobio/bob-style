@@ -41,12 +41,13 @@ export interface SelectGroupOption {
 }
 
 export interface SelectOption {
-  value: string;
   id: number | string;
+  value: string;
   selected?: boolean;
   prefixComponent?: ListComponentPrefix | RenderedComponent;
   disabled?: boolean;
   hidden?: boolean;
+  description?: string;
   canBeDeleted?: boolean;
   [key: string]: any;
 }

@@ -109,7 +109,7 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   @Input() public value: string;
   @Input() public minChars = 0;
-  @Input() public maxChars = -1;
+  @Input() public maxChars = 0;
   @Input() public controls: BlotType[] = cloneArray(RTE_CONTROLS_DEF);
   @Input() public disableControls: BlotType[] = cloneArray(
     RTE_DISABLE_CONTROLS_DEF

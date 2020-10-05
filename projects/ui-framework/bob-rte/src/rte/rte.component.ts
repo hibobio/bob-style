@@ -159,7 +159,7 @@ export class RichTextEditorComponent extends RTEbaseElement
       },
 
       focus: (event: FocusEvent) => {
-        event.preventDefault();
+        event?.preventDefault();
 
         this.transmitValue(this.editor.html.get(), {
           eventType: [InputEventType.onFocus],
@@ -196,7 +196,7 @@ export class RichTextEditorComponent extends RTEbaseElement
       },
 
       click: (event: MouseEvent) => {
-        event.stopPropagation();
+        event?.stopPropagation();
         this.clicksHandler(event);
       },
 
@@ -376,8 +376,11 @@ export class RichTextEditorComponent extends RTEbaseElement
   }
 
   private focusHandler(event: FocusEvent): void {
-    const target = event.target as HTMLElement;
-    const relatedTarget = event.relatedTarget as HTMLElement;
+    const target = event?.target as HTMLElement;
+
+    if (!target) {
+      return;
+    }
 
     // select all text in link edit popup inputs
     if (
@@ -389,9 +392,13 @@ export class RichTextEditorComponent extends RTEbaseElement
   }
 
   private clicksHandler(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
+    const target = event?.target as HTMLElement;
 
     this.closeMentions();
+
+    if (!target) {
+      return;
+    }
 
     // placeholders related
     if (target.className.includes('placeholder-panel-trigger')) {
@@ -415,7 +422,10 @@ export class RichTextEditorComponent extends RTEbaseElement
   }
 
   private keydownHandler(event: KeyboardEvent): any {
-    //
+    if (!event) {
+      return;
+    }
+
     // cancel Ctrl+C events if selection is empty
     if (eventHasCntrlKey(event) && isKey(event.key, 'c')) {
       const selection = this.getNativeRange();
@@ -444,7 +454,7 @@ export class RichTextEditorComponent extends RTEbaseElement
 
     // max length
     if (
-      this.maxChars &&
+      this.maxChars > 0 &&
       this.length >= this.maxChars &&
       keyEventIsCharacter(event)
     ) {
