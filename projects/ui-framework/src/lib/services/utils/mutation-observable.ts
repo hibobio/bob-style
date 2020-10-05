@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { merge, Observable } from 'rxjs';
+import { merge, Observable, Subscriber } from 'rxjs';
 import {
   WindowRef,
   WindowLike,
   ResizeObserverInstance,
 } from './window-ref.service';
-import { isDomElement } from './functional-utils';
+import { isDomElement, pass } from './functional-utils';
 import { DOMhelpers } from '../html/dom-helpers.service';
 import { UtilsService } from './utils.service';
 import {
@@ -26,6 +26,16 @@ export interface ResizeObservableConfig {
   threshold?: number;
 }
 
+// tslint:disable-next-line: no-empty-interface
+export interface IntersectionObservableConfig extends IntersectionObserverInit {
+  delayEmit?: number;
+}
+
+export interface IntersectionObserverableEntry
+  extends IntersectionObserverEntry {
+  observer: IntersectionObserver;
+}
+
 export const MUTATION_OBSERVABLE_CONFIG_DEF: MutationObservableConfig = {
   characterData: true,
   childList: true,
@@ -37,6 +47,13 @@ export const MUTATION_OBSERVABLE_CONFIG_DEF: MutationObservableConfig = {
 export const RESIZE_OBSERVERVABLE_CONFIG_DEF: ResizeObservableConfig = {
   watch: 'both',
   threshold: 10,
+};
+
+export const INTERSECTION_OBSERVABLE_CONFIG_DEF: IntersectionObservableConfig = {};
+
+export const ELEMENT_IN_VIEW_CONFIG_DEF: IntersectionObservableConfig = {
+  ...INTERSECTION_OBSERVABLE_CONFIG_DEF,
+  delayEmit: 100,
 };
 
 @Injectable({
@@ -58,8 +75,8 @@ export class MutationObservableService {
     config: MutationObservableConfig = MUTATION_OBSERVABLE_CONFIG_DEF
   ): Observable<Set<HTMLElement>> {
     //
-    return new Observable((observer) => {
-      const mutationObserver = new this.nativeWindow.MutationObserver(
+    return new Observable((subscriber: Subscriber<Set<HTMLElement>>) => {
+      const mutationObserver: MutationObserver = new this.nativeWindow.MutationObserver(
         (mutations: MutationRecord[]) => {
           const affectedElementsSet = this.processMutations(
             mutations,
@@ -68,7 +85,7 @@ export class MutationObservableService {
           );
 
           if (affectedElementsSet.size) {
-            observer.next(affectedElementsSet);
+            subscriber.next(affectedElementsSet);
           }
         }
       );
@@ -93,59 +110,65 @@ export class MutationObservableService {
       console.warn(
         `[MutationObservableService.getResizeObservervable] This browser doesn't support ResizeObserver`
       );
-      return new Observable((observer) => {
-        let lastRect: Partial<DOMRectReadOnly> = {
-          width: 0,
-          height: 0,
-        };
-
-        const resizeSub = this.utilsService.getResizeEvent().subscribe(() => {
-          const newRect = {
-            width: element.offsetWidth,
-            height: element.offsetHeight,
+      return new Observable(
+        (subscriber: Subscriber<Partial<DOMRectReadOnly>>) => {
+          let lastRect: Partial<DOMRectReadOnly> = {
+            width: 0,
+            height: 0,
           };
 
-          if (this.compareDOMRects(lastRect, newRect, config)) {
-            observer.next({ ...newRect });
-            lastRect = newRect;
+          const resizeSub = this.utilsService.getResizeEvent().subscribe(() => {
+            const newRect = {
+              width: element.offsetWidth,
+              height: element.offsetHeight,
+            };
+
+            if (this.compareDOMRects(lastRect, newRect, config)) {
+              subscriber.next({ ...newRect });
+              lastRect = newRect;
+            }
+          });
+
+          const unsubscribe = () => {
+            resizeSub.unsubscribe();
+          };
+
+          return unsubscribe;
+        }
+      );
+    }
+
+    return new Observable(
+      (subscriber: Subscriber<Partial<DOMRectReadOnly>>) => {
+        let lastRect: Partial<DOMRectReadOnly> = { width: 0, height: 0 };
+
+        const resizeObserver: ResizeObserverInstance = new this.nativeWindow.ResizeObserver(
+          (entries) => {
+            const newRect = entries[entries.length - 1].contentRect;
+
+            if (this.compareDOMRects(lastRect, newRect, config)) {
+              subscriber.next({ ...newRect });
+              lastRect = newRect;
+            }
           }
-        });
+        );
+
+        resizeObserver.observe(element);
 
         const unsubscribe = () => {
-          resizeSub.unsubscribe();
+          resizeObserver.disconnect();
         };
 
         return unsubscribe;
-      });
-    }
-
-    return new Observable((observer) => {
-      let lastRect: Partial<DOMRectReadOnly> = { width: 0, height: 0 };
-
-      const resizeObserver: ResizeObserverInstance = new this.nativeWindow.ResizeObserver(
-        (entries) => {
-          const newRect = entries[entries.length - 1].contentRect;
-
-          if (this.compareDOMRects(lastRect, newRect, config)) {
-            observer.next({ ...newRect });
-            lastRect = newRect;
-          }
-        }
-      );
-
-      resizeObserver.observe(element);
-
-      const unsubscribe = () => {
-        resizeObserver.disconnect();
-      };
-
-      return unsubscribe;
-    });
+      }
+    );
   }
 
   public getIntersectionObservable(
-    element: HTMLElement
-  ): Observable<IntersectionObserverEntry> {
+    element: HTMLElement,
+    config: IntersectionObservableConfig = INTERSECTION_OBSERVABLE_CONFIG_DEF,
+    observer: IntersectionObserver = null
+  ): Observable<IntersectionObserverableEntry> {
     //
     if (
       !('IntersectionObserver' in this.nativeWindow) ||
@@ -175,28 +198,48 @@ export class MutationObservableService {
             (({
               isIntersecting: isInView,
               isVisible: isInView,
-            } as any) as IntersectionObserverEntry)
+            } as any) as IntersectionObserverableEntry)
         )
       );
     }
 
-    return new Observable((observer) => {
-      const intersectionObserver = new IntersectionObserver((entries) => {
-        observer.next(entries);
-      });
-      intersectionObserver.observe(element);
+    return new Observable(
+      (
+        subscriber: Subscriber<
+          IntersectionObserverableEntry | IntersectionObserverEntry[]
+        >
+      ) => {
+        const intersectionObserver =
+          observer ||
+          new this.nativeWindow.IntersectionObserver((entries) => {
+            subscriber.next(entries);
+          }, config);
 
-      return () => {
-        intersectionObserver.disconnect();
-      };
-    }).pipe(
-      map(
-        (entries: IntersectionObserverEntry[]) => entries[entries.length - 1]
-      ),
+        intersectionObserver.observe(element);
+
+        const unsubscribe = () => {
+          if (observer) {
+            observer.unobserve(element);
+          } else {
+            intersectionObserver?.disconnect();
+          }
+        };
+
+        return unsubscribe;
+      }
+    ).pipe(
+      map((entries: IntersectionObserverEntry[]) => {
+        return Object.assign(
+          entries.reverse().find((entry) => entry.target === element) || {},
+          {
+            observer,
+          }
+        );
+      }),
       distinctUntilChanged(
         (
-          prevEntry: IntersectionObserverEntry,
-          currEntry: IntersectionObserverEntry
+          prevEntry: IntersectionObserverableEntry,
+          currEntry: IntersectionObserverableEntry
         ) => prevEntry.isIntersecting === currEntry.isIntersecting
       )
     );
@@ -204,11 +247,11 @@ export class MutationObservableService {
 
   public getElementInViewEvent(
     element: HTMLElement,
-    delayEmit = 100
+    config: IntersectionObservableConfig = ELEMENT_IN_VIEW_CONFIG_DEF
   ): Observable<boolean> {
-    return this.getIntersectionObservable(element).pipe(
+    return this.getIntersectionObservable(element, config).pipe(
       map((entry: IntersectionObserverEntry) => entry.isIntersecting),
-      delay(delayEmit)
+      config.delayEmit ? delay(config.delayEmit) : pass
     );
   }
 

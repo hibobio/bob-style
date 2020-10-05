@@ -41,7 +41,9 @@ export interface ResizeObserverInstance {
 
 export interface WindowLike extends Partial<Window> {
   [key: string]: any;
+  MutationObserver?: typeof MutationObserver;
   ResizeObserver?: typeof ResizeObserver;
+  IntersectionObserver?: typeof IntersectionObserver;
 }
 
 function _window(): Window {

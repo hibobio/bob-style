@@ -500,9 +500,13 @@ export class DOMhelpers {
   }
 
   // TODO: Add Test
-  public getElementIndex(element: HTMLElement): number {
+  public getElementIndex(
+    element: HTMLElement,
+    parent: HTMLElement = null
+  ): number {
     return (
-      element && Array.from(element.parentElement.children).indexOf(element)
+      element &&
+      Array.from((parent || element.parentElement).children).indexOf(element)
     );
   }
 

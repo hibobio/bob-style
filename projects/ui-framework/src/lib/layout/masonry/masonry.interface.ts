@@ -7,6 +7,7 @@ export interface MasonryConfig {
 
 export interface MasonryState {
   hostWidth?: number;
+  columns?: number;
   childrenCount?: number;
   singleColumn?: boolean;
   config?: MasonryConfig;

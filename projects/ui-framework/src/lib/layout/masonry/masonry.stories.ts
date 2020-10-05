@@ -142,7 +142,7 @@ story.add(
         columns: number('columns', undefined),
         columnWidth: number('columnWidth', 250),
         gap: number('gap', 16),
-        debug: boolean('debug', true),
+        debug: boolean('debug', false),
 
         onMasonryItemsChanged: (event) => {
           console.log('[masonryItemsChanged]', event);

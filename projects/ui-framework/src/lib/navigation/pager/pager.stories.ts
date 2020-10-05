@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, object, withKnobs } from '@storybook/addon-knobs/angular';
+import { object, withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -87,7 +87,7 @@ const note = `
 
 `;
 
-const itemsNumber = 45;
+const itemsNumber = 145;
 const itemsMock: number[] = arrayOfNumbers(itemsNumber) as number[];
 
 story.add(
