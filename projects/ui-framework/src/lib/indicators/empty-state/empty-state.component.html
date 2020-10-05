@@ -15,9 +15,10 @@
 <p *ngIf="config?.text"
    class="empty-state-text">{{config.text}}</p>
 
-<b-button *ngIf="config?.buttonLabel"
+<b-button *ngIf="config?.buttonLabel || config?.button"
           class="empty-state-button"
           (clicked)="onButtonClick()"
+          [button]="config.button"
           [type]="buttonType"
           [size]="buttonSize">{{config.buttonLabel}}</b-button>
 

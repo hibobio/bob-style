@@ -1,11 +1,10 @@
 import { BaseFormElement } from './base-form-element';
 import {
-  simpleChange,
   eventEmitterMock,
   changeDetectorMock,
 } from '../services/utils/test-helpers';
 import { InputEventType, FormEvents } from './form-elements.enum';
-import { cloneObject } from '../services/utils/functional-utils';
+import { cloneObject, simpleChange } from '../services/utils/functional-utils';
 
 describe('BaseFormElement', () => {
   let baseFormElement: BaseFormElement;

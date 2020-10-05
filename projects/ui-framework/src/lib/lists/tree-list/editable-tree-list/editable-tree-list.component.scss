@@ -100,8 +100,8 @@ $betl-max-items: 15;
     to right,
     transparent 0,
     transparent #{$betl-item-indent/2 - $betl-bg-line-width/2},
-    $grey-500 #{$betl-item-indent/2 - $betl-bg-line-width/2},
-    $grey-500 #{$betl-item-indent/2 + $betl-bg-line-width/2},
+    $border-color #{$betl-item-indent/2 - $betl-bg-line-width/2},
+    $border-color #{$betl-item-indent/2 + $betl-bg-line-width/2},
     transparent #{$betl-item-indent/2 + $betl-bg-line-width/2},
     transparent #{$betl-item-indent * 2}
   );
@@ -336,11 +336,11 @@ $betl-max-items: 15;
     }
 
     &[data-drag-state='drag-hover-below'] > .betl-item-input-wrap {
-      box-shadow: inset 0 -2px 0 $grey-500;
+      box-shadow: inset 0 -2px 0 $border-color;
     }
 
     &[data-drag-state='drag-hover-above'] > .betl-item-input-wrap {
-      box-shadow: inset 0 2px 0 $grey-500;
+      box-shadow: inset 0 2px 0 $border-color;
     }
   }
 

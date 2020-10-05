@@ -23,6 +23,7 @@ export interface MediaEvent {
   isMobileBrowser: boolean;
   mobileOS: MobileOS;
   isMobile: boolean;
+  isDesktop: boolean;
   width: number;
 }
 
@@ -51,8 +52,8 @@ export class MobileService {
     this.mobileOS = this.getMobileOperatingSystem();
     this.isTouchDevice = this.checkForTouchDevice();
     this.mediaEvent$ = this.utilsService.getResizeEvent().pipe(
-      startWith(this.getMediaData()),
-      map((e: WinResizeEvent) => this.getMediaData()),
+      startWith({}),
+      map((resizeEvent: WinResizeEvent) => this.getMediaData(resizeEvent)),
       distinctUntilChanged(isEqual),
       shareReplay(1)
     );
@@ -65,12 +66,32 @@ export class MobileService {
   public matchBreakpoint(
     point: number = mobileBreakpoint,
     mode: WidthMode = WidthMode.max
-  ) {
+  ): boolean {
     return this.matchMedia(`(${mode}-width: ${point}px)`);
   }
 
   public getMediaEvent(): Observable<MediaEvent> {
     return this.mediaEvent$;
+  }
+
+  public isMobile(matchMobile = null): boolean {
+    return Boolean(
+      (matchMobile !== null
+        ? matchMobile
+        : this.matchBreakpoint(mobileBreakpoint, WidthMode.max)) ||
+        this.isMobBrowser ||
+        this.mobileOS
+    );
+  }
+
+  public isDesktop(matchDesktop = null): boolean {
+    return Boolean(
+      (matchDesktop !== null
+        ? matchDesktop
+        : this.matchBreakpoint(mobileBreakpoint + 1, WidthMode.min)) &&
+        !this.isMobBrowser &&
+        !this.mobileOS
+    );
   }
 
   public isMobileBrowser(): boolean {
@@ -112,7 +133,7 @@ export class MobileService {
     );
   }
 
-  private getUserAgent() {
+  private getUserAgent(): string {
     // @ts-ignore
     return navigator.userAgent || navigator.vendor || window.opera;
   }
@@ -133,16 +154,21 @@ export class MobileService {
     return this.matchMedia(query);
   }
 
-  public getMediaData(): MediaEvent {
-    const matchMobile = this.matchBreakpoint(mobileBreakpoint, WidthMode.max);
+  public getMediaData(resizeEvent: Partial<WinResizeEvent> = {}): MediaEvent {
+    const width =
+      resizeEvent.innerWidth || this.windowRef.nativeWindow.innerWidth;
+    const matchMobile = width <= mobileBreakpoint;
+    const matchDesktop = width > mobileBreakpoint;
+
     return {
-      width: this.windowRef.nativeWindow.innerWidth,
+      width,
       matchMobile,
-      matchDesktop: this.matchBreakpoint(mobileBreakpoint + 1, WidthMode.min),
+      matchDesktop,
       isTouchDevice: this.isTouchDevice,
       isMobileBrowser: this.isMobBrowser,
       mobileOS: this.mobileOS,
-      isMobile: Boolean(matchMobile || this.isMobBrowser || this.mobileOS),
+      isMobile: this.isMobile(matchMobile),
+      isDesktop: this.isDesktop(matchDesktop),
     };
   }
 }

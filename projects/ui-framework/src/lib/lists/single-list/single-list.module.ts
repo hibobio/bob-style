@@ -11,6 +11,7 @@ import { ComponentRendererModule } from '../../services/component-renderer/compo
 import { ListFooterModule } from '../list-footer/list-footer.module';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [SingleListComponent],
@@ -22,6 +23,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ComponentRendererModule,
     ListFooterModule,
     TranslateModule,
+    MatTooltipModule,
   ],
   exports: [SingleListComponent],
   providers: [

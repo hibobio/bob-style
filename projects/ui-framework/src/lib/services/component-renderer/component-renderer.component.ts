@@ -23,9 +23,8 @@ import {
   RenderedComponentContent,
   RenderedComponentHandlers,
 } from './component-renderer.interface';
-import { simpleChange } from '../utils/test-helpers';
 import { GenericObject } from '../../types';
-import { applyChanges } from '../utils/functional-utils';
+import { applyChanges, simpleChange } from '../utils/functional-utils';
 
 @Component({
   selector: 'b-component-renderer',

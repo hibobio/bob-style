@@ -6,11 +6,8 @@
 </div>
 
 <div #dialogContent
-     (scroll)="onScroll($event)"
      class="dialog-content-wrapper"
      [ngClass]="{
-       'show-scrolling-top': showScrolling==dialogScrollDir.top,
-       'show-scrolling-bottom': showScrolling==dialogScrollDir.bottom,
        'no-footer': !dialogButtons,
        'show-progress': showProgress,
        'show-confirmation': showConfirmation

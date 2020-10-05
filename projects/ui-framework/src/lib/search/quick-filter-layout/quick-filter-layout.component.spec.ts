@@ -16,7 +16,6 @@ import {
 import { CommonModule } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { GenericObject } from '../../types';
-
 import { QuickFilterLayoutModule } from './quick-filter-layout.module';
 import { QuickFilterLayoutComponent } from './quick-filter-layout.component';
 import { QuickFilterConfig } from '../quick-filter/quick-filter.interface';
@@ -33,10 +32,10 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
   elementFromFixture,
   elementsFromFixture,
-  simpleChange,
   inputValue,
 } from '../../services/utils/test-helpers';
 import { cloneDeep } from 'lodash';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 const QFconfig = [
   {

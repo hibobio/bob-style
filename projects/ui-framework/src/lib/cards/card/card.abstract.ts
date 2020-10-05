@@ -5,15 +5,20 @@ import {
   HostBinding,
   ElementRef,
   Directive,
+  SimpleChanges,
+  OnChanges,
 } from '@angular/core';
 import { Card } from './card.interface';
 import { CardType } from '../cards.enum';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
-import { isFunction } from '../../services/utils/functional-utils';
+import {
+  applyChanges,
+  isFunction,
+} from '../../services/utils/functional-utils';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class BaseCardElement {
+export abstract class BaseCardElement implements OnChanges {
   constructor(public cardElRef: ElementRef) {}
 
   @Input() card: Card;
@@ -39,5 +44,11 @@ export abstract class BaseCardElement {
       this.clicked.observers.length > 0 ||
       isFunction(this.card['action'])
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes, {
+      card: {},
+    });
   }
 }

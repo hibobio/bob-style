@@ -11,7 +11,6 @@ import { MockComponent } from 'ng-mocks';
 import { ListFooterComponent } from '../list-footer/list-footer.component';
 import { CheckboxComponent } from '../../form-elements/checkbox/checkbox.component';
 import {
-  simpleChange,
   elementsFromFixture,
   elementFromFixture,
 } from '../../services/utils/test-helpers';
@@ -29,6 +28,7 @@ import { SearchComponent } from '../../search/search/search.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 describe('MultiListComponent', () => {
   let component: MultiListComponent;

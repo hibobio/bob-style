@@ -1,5 +1,5 @@
 import { SimpleChanges, SimpleChange, ElementRef } from '@angular/core';
-import { metaKeys } from '../../enums';
+import { controlKeys, KEYCODES, Keys, metaKeys } from '../../enums';
 import { GenericObject } from '../../types';
 import { isEqual, cloneDeep } from 'lodash';
 import { RenderedComponent } from '../component-renderer/component-renderer.interface';
@@ -983,6 +983,16 @@ export const getEventPath = (event: Event): HTMLElement[] =>
     (event.composedPath && (event.composedPath() as any[])) ||
     []) as HTMLElement[];
 
+export const keyEventIsCharacter = (event: KeyboardEvent): boolean => {
+  // tslint:disable-next-line: deprecation
+  const code = event.which || event.keyCode;
+
+  return (
+    (!controlKeys.includes(event.key as Keys) && !eventHasCntrlKey(event)) ||
+    code === KEYCODES.IME
+  );
+};
+
 // ----------------------
 // DOM
 // ----------------------
@@ -1023,6 +1033,26 @@ export const CHANGES_HELPER_CONFIG_DEF: ChangesHelperConfig = {
   firstChange: null,
 };
 
+export const CHANGES_SET_PROPS = 'setProps';
+
+export const simpleChange = (
+  changes: GenericObject = {},
+  firstChange = false,
+  previousValues: GenericObject = {}
+): SimpleChanges => {
+  const simpleChanges = {};
+  Object.keys(changes).forEach((key) => {
+    simpleChanges[key] = new SimpleChange(
+      previousValues && previousValues[key] !== undefined
+        ? previousValues[key]
+        : undefined,
+      changes[key],
+      firstChange
+    );
+  });
+  return simpleChanges;
+};
+
 const simpleChangeFilter = (
   change: SimpleChange,
   discardAllFalsey = false,
@@ -1053,8 +1083,26 @@ export const hasChanges = (
     keys = Object.keys(changes);
   }
   return Boolean(
-    keys.find(
-      (i) =>
+    keys.find((i) => {
+      if (
+        !changes[i] &&
+        changes[CHANGES_SET_PROPS] &&
+        changes[CHANGES_SET_PROPS].currentValue.hasOwnProperty(i)
+      ) {
+        changes[i] = simpleChange(
+          {
+            [i]: changes[CHANGES_SET_PROPS].currentValue[i],
+          },
+          changes[CHANGES_SET_PROPS].firstChange,
+          {
+            [i]:
+              changes[CHANGES_SET_PROPS].previousValue &&
+              changes[CHANGES_SET_PROPS].previousValue[i],
+          }
+        )[i];
+      }
+
+      return (
         changes[i] &&
         (!isBoolean(config?.firstChange) ||
           (config?.firstChange === true && changes[i].firstChange) ||
@@ -1066,7 +1114,8 @@ export const hasChanges = (
           config?.checkEquality,
           equalCheck
         )
-    )
+      );
+    })
   );
 };
 
@@ -1096,7 +1145,7 @@ export const applyChanges = (
   target: any,
   changes: SimpleChanges,
   defaults: GenericObject = {},
-  skip: string[] = ['setProps'],
+  skip: string[] = [],
   discardAllFalsey = false,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): SimpleChanges => {
@@ -1116,6 +1165,7 @@ export const applyChanges = (
   Object.keys(changes).forEach((changeKey: string) => {
     if (
       skip?.includes(changeKey) ||
+      changeKey === CHANGES_SET_PROPS ||
       Object.getOwnPropertyDescriptor(target, changeKey)?.set ||
       Object.getOwnPropertyDescriptor(Object.getPrototypeOf(target), changeKey)
         ?.set

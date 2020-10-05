@@ -3,8 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   elementFromFixture,
   getPseudoContent,
-  inputValue,
-  simpleChange,
 } from '../../../services/utils/test-helpers';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { DateParseService } from '../date-parse-service/date-parse.service';
@@ -31,6 +29,7 @@ import {
 } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { simpleChange } from '../../../services/utils/functional-utils';
 
 describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;

@@ -63,7 +63,7 @@
 
 ::ng-deep .chip-input-autocomplete {
   &.mat-autocomplete-panel {
-    border: 1px solid $grey-500;
+    border: 1px solid $border-color;
     box-shadow: 0 2px 3px 0 $boxShadowColor;
     border-top-width: 0;
   }

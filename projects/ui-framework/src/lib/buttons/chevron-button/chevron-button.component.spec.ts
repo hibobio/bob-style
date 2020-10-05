@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChevronButtonComponent } from './chevron-button.component';
 import { By } from '@angular/platform-browser';
-import { simpleChange } from '../../services/utils/test-helpers';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 describe('ChevronButtonComponent', () => {
   let component: ChevronButtonComponent;

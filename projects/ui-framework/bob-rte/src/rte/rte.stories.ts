@@ -225,7 +225,7 @@ story.add(
         ),
 
         minChars: number('minChars', 20, {}, 'Props'),
-        maxChars: number('maxChars', undefined, {}, 'Props'),
+        maxChars: number('maxChars', 0, {}, 'Props'),
         minHeight: number('minHeight', 185, {}, 'Props'),
         maxHeight: number('maxHeight', 350, {}, 'Props'),
 

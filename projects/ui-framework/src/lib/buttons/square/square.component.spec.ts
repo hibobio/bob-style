@@ -7,7 +7,7 @@ import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { IconComponent } from '../../icons/icon.component';
 import { Icons, IconSize } from '../../icons/icons.enum';
-import { simpleChange } from '../../services/utils/test-helpers';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 describe('SquareButtonComponent', () => {
   let component: SquareButtonComponent;

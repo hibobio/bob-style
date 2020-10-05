@@ -13,6 +13,7 @@ import { CheckboxModule } from '../../form-elements/checkbox/checkbox.module';
 import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [MultiListComponent],
@@ -26,6 +27,7 @@ import { TranslateModule } from '@ngx-translate/core';
     CheckboxModule,
     ComponentRendererModule,
     TranslateModule,
+    MatTooltipModule,
   ],
   exports: [MultiListComponent],
   providers: [

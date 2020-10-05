@@ -13,7 +13,6 @@ import { InputAutoCompleteOptions, InputTypes } from './input.enum';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { mockText } from '../../mock.const';
 
 // @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';

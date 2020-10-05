@@ -12,7 +12,6 @@ import { DialogButton, DialogButtons } from './dialog.interface';
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { SLIDE_UP_DOWN } from '../../style/animations';
-import { DialogScrollDir } from './dialog.enum';
 import { isBoolean, isFunction } from '../../services/utils/functional-utils';
 
 @Component({
@@ -65,14 +64,11 @@ export class DialogComponent implements OnDestroy {
   @Output() clickedCancel: EventEmitter<void> = new EventEmitter<void>();
 
   public showConfirmation = false;
-  public showScrolling: DialogScrollDir = null;
 
   readonly icons = Icons;
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
 
-  readonly dialogScrollDir = DialogScrollDir;
-  private oldScrollPos = 0;
   private confirmationControlFromAbove = false;
 
   ngOnDestroy(): void {
@@ -116,15 +112,6 @@ export class DialogComponent implements OnDestroy {
 
   public closeDialog(): void {
     this.dialogRef.close();
-  }
-
-  public onScroll($event: Event): void {
-    const scrollTop = ($event.target as HTMLElement).scrollTop;
-    this.showScrolling =
-      scrollTop > this.oldScrollPos
-        ? DialogScrollDir.top
-        : DialogScrollDir.bottom;
-    this.oldScrollPos = scrollTop;
   }
 
   private invokeDialogActionAsPromise(dialogButton: DialogButton): void {

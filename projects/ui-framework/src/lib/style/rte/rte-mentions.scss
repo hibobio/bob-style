@@ -1,6 +1,6 @@
 .tribute-container {
   @include OverlayPanel();
-  border: 1px solid $grey-500;
+  border: 1px solid $border-color;
   display: block;
   position: absolute;
   z-index: 999999;

@@ -556,7 +556,8 @@ export * from './lib/services/filters/trackByProp.pipe';
 
 // Utils Module
 export { UtilsModule } from './lib/services/utils/utils.module';
-export { SpyDirective } from './lib/services/utils/spy.directive';
+export { SpyModule, SpyDirective } from './lib/services/utils/spy.directive';
+export { InViewModule, InViewDirective } from './lib/services/utils/inview.directive';
 export * from './lib/services/utils/utils.service';
 export { ScrollEvent } from './lib/services/utils/utils.interface';
 export * from './lib/services/utils/window-ref.service';
@@ -594,6 +595,8 @@ export * from './lib/services/utils/nglet.directive';
 export * from './lib/services/utils/ngsubscribe.directive';
 // ColorService
 export * from './lib/services/color-service/color.service';
+// ItemsInRowService
+export * from './lib/services/items-in-row/items-in-row.service';
 
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';

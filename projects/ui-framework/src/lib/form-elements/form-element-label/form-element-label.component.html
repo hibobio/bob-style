@@ -7,13 +7,13 @@
   {{label}}
 </label>
 
-<b-icon *ngIf="description"
-        [icon]="icons.info_outline"
-        [color]="iconColor.normal"
-        [size]="iconSize.small"
-        [hasHoverState]="true"
-        [matTooltip]="description"
-        [matTooltipClass]="tooltipClass"
-        [matTooltipShowDelay]="delay"
-        [matTooltipPosition]="tooltipPosition.above">
-</b-icon>
+<span *ngIf="description"
+      class="b-icon has-hover"
+      [attr.data-icon-before]="infoIcon"
+      [attr.data-icon-before-color]="iconColor.normal"
+      [attr.data-icon-before-size]="iconSize.small"
+      [matTooltip]="description"
+      [matTooltipClass]="tooltipClass"
+      [matTooltipShowDelay]="tooltipDelay"
+      [matTooltipPosition]="tooltipPosition">
+</span>

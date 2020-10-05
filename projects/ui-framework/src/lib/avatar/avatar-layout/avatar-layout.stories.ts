@@ -37,6 +37,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   (itemsInRowChange) | EventEmitter<wbr>&lt;number&gt; |  emits when item in row count changes | &nbsp;
+  itemsInRow$ | Observable<wbr>&lt;number&gt; | Observable with number of avatars that fit in 1 row | 1
 
   ~~~
   ${template}
@@ -64,7 +65,7 @@ story.add(
         align: select('align', alignOptions, alignOptions[0]),
         items: object(
           'items',
-          new Array(11).fill(0).map(x => ({
+          new Array(11).fill(0).map((x) => ({
             avatar: mockAvatar(),
             name: mockName(),
           }))

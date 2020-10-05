@@ -28,10 +28,10 @@ const note = `
   ##### getWindowKeydownEvent
   Returns observable of window keydown event with KeyboardEvent interface
 
-  ##### getElementInViewEvent(element: HTMLElement): Observable&lt;boolean&gt;
-  Returns observable of when element comes into / leaves viewport
-
 `;
+
+// ##### getElementInViewEvent(element: HTMLElement): Observable&lt;boolean&gt;
+// Returns observable of when element comes into / leaves viewport
 
 story.add(
   'UtilsService',
@@ -39,8 +39,8 @@ story.add(
     return {
       template: storyTemplate,
       moduleMetadata: {
-        imports: [StoryBookLayoutModule]
-      }
+        imports: [StoryBookLayoutModule],
+      },
     };
   },
   { notes: { markdown: note } }

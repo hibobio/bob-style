@@ -8,7 +8,7 @@ import { SelectGroupOption } from '../list.interface';
 import { By } from '@angular/platform-browser';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
-import { simpleChange } from '../../services/utils/test-helpers';
+import {} from '../../services/utils/test-helpers';
 import {
   mockTranslatePipe,
   TranslateServiceProvideMock,
@@ -22,6 +22,7 @@ import { IconComponent } from '../../icons/icon.component';
 import { MockComponent } from 'ng-mocks';
 import { ButtonComponent } from '../../buttons/button/button.component';
 import { SearchComponent } from '../../search/search/search.component';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 describe('SingleListComponent', () => {
   let component: SingleListComponent;

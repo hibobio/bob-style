@@ -3,7 +3,7 @@
     (cdkDropListDropped)="onDrop($event)"
     cdkDropList>
 
-  <li *ngFor="let section of UISections; trackBy: trackId; let index=index"
+  <li *ngFor="let section of UISections; trackBy: trackId; let index=index; let last = last;"
       class="draggable-section"
       cdkDrag
       cdkDragLockAxis="y"
@@ -14,6 +14,7 @@
 
     <b-collapsible-section id="{{section.id}}"
                            class="section"
+                           [class.mrg-b-16]="!last"
                            [panelID]="section.id"
                            [collapsible]="true"
                            [expanded]="this.expandedMap.get(section.id) || false"
@@ -52,7 +53,7 @@
 
       <ng-container header>
         <ng-container
-          *ngTemplateOutlet="collapsibleHeader?.tpl; context: { data: draggedSection.headerData, index: -1 }">
+                      *ngTemplateOutlet="collapsibleHeader?.tpl; context: { data: draggedSection.headerData, index: -1 }">
         </ng-container>
       </ng-container>
     </b-collapsible-section>

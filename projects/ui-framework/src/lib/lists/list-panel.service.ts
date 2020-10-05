@@ -140,7 +140,7 @@ export class ListPanelService {
           (self as OEC).utilsService.getResizeEvent().pipe(
             outsideZone((self as OEC).zone),
             tap(() => {
-              (self as OEC).isMobile = this.mobileService.getMediaData().isMobile;
+              (self as OEC).isMobile = this.mobileService.isMobile();
             }),
             filter(() => !(self as OEC).isMobile)
           ),
@@ -214,7 +214,9 @@ export class ListPanelService {
   private getPanelClass(self: any): string[] {
     return [
       ...(self as OEC).panelClassList,
-      (self as OEC).hasArrow ? 'b-select-panel-with-arrow' : null,
+      (self as OEC).hasArrow
+        ? 'b-select-panel-with-arrow'
+        : 'b-select-panel-no-arrow',
       (self as OEC).panelClass,
     ].filter(Boolean);
   }

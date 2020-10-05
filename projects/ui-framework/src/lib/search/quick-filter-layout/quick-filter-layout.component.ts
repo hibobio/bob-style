@@ -26,8 +26,8 @@ import {
   asArray,
   hasProp,
   cloneArray,
+  simpleChange,
 } from '../../services/utils/functional-utils';
-import { simpleChange } from '../../services/utils/test-helpers';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { keyBy, cloneDeep } from 'lodash';
@@ -99,19 +99,21 @@ export class QuickFilterLayoutComponent
         keyBy(changes.quickFilters.currentValue, 'key')
       );
 
-      this.assignFormCompAttrs(Object.values(
-        updatedCompProps
-      ) as QuickFilterConfig[]);
+      this.assignFormCompAttrs(
+        Object.values(updatedCompProps) as QuickFilterConfig[]
+      );
 
-      this.initValue(Object.keys(updatedCompProps).map(key =>
-        this.formComponents.toArray().find(comp => comp.id === key)
-      ) as BaseFormElement[]);
+      this.initValue(
+        Object.keys(updatedCompProps).map((key) =>
+          this.formComponents.toArray().find((comp) => comp.id === key)
+        ) as BaseFormElement[]
+      );
     }
   }
 
   ngOnInit() {
     this.subscribtions.push(
-      this.emitDebouncer.pipe(debounceTime(300)).subscribe(value => {
+      this.emitDebouncer.pipe(debounceTime(300)).subscribe((value) => {
         this.transmit(value);
       })
     );
@@ -122,15 +124,15 @@ export class QuickFilterLayoutComponent
 
     this.subscribtions.push(
       this.formComponents.changes.subscribe(() => {
-        const currentIDs = this.formComponents.toArray().map(cmp => cmp.id);
+        const currentIDs = this.formComponents.toArray().map((cmp) => cmp.id);
         const prevIDs = Object.keys(this.formCompEmittersMap);
         let newIDs: string[];
 
         if (prevIDs.length > 0) {
-          const deletedIDs = prevIDs.filter(id => !currentIDs.includes(id));
-          newIDs = currentIDs.filter(id => !prevIDs.includes(id));
+          const deletedIDs = prevIDs.filter((id) => !currentIDs.includes(id));
+          newIDs = currentIDs.filter((id) => !prevIDs.includes(id));
 
-          deletedIDs.forEach(id => {
+          deletedIDs.forEach((id) => {
             delete this.formCompEmittersMap[id];
             delete this.value[id];
           });
@@ -156,7 +158,7 @@ export class QuickFilterLayoutComponent
   private initFormElements(): void {
     this.formCompCount = this.formComponents.length;
 
-    this.formComponents.toArray().forEach(formComp => {
+    this.formComponents.toArray().forEach((formComp) => {
       if (!Object.keys(this.formCompEmittersMap).includes(formComp.id)) {
         Object.assign(formComp, {
           panelClass: 'b-quick-filter-panel',
@@ -190,9 +192,9 @@ export class QuickFilterLayoutComponent
     formComp: BaseFormElement | BaseFormElement[] = null
   ): void {
     (formComp ? asArray(formComp) : this.formComponents.toArray()).forEach(
-      cmp => {
+      (cmp) => {
         cmp.ngOnChanges(
-          simpleChange(quickFilters.find(fltr => fltr.key === cmp.id))
+          simpleChange(quickFilters.find((fltr) => fltr.key === cmp.id))
         );
       }
     );
@@ -222,12 +224,12 @@ export class QuickFilterLayoutComponent
       .map((butt: ElementRef): HTMLElement => butt.nativeElement);
 
     this.hasPrefix = Boolean(
-      buttons.find(butt =>
+      buttons.find((butt) =>
         Boolean(butt.getAttributeNames().includes('bar-prefix'))
       )
     );
     this.hasSuffix = Boolean(
-      buttons.find(butt =>
+      buttons.find((butt) =>
         Boolean(butt.getAttributeNames().includes('bar-suffix'))
       )
     );
@@ -246,7 +248,7 @@ export class QuickFilterLayoutComponent
       this.resetFilters.emit();
     } else if (this.quickFilters) {
       this.assignFormCompAttrs(
-        this.quickFilters.map(fltr => ({
+        this.quickFilters.map((fltr) => ({
           ...fltr,
           value: hasProp(fltr, 'value') ? fltr.value : null,
         }))
@@ -260,7 +262,7 @@ export class QuickFilterLayoutComponent
   ngOnDestroy(): void {
     this.emitDebouncer.complete();
 
-    this.subscribtions.forEach(sub => {
+    this.subscribtions.forEach((sub) => {
       sub.unsubscribe();
       sub = null;
     });

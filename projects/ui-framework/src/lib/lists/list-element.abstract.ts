@@ -42,14 +42,16 @@ import {
   getEventPath,
   hasChanges,
   cloneDeepSimpleObject,
+  simpleChange,
 } from '../services/utils/functional-utils';
 import { ListModelService } from './list-service/list-model.service';
 import { ListChangeService } from './list-change/list-change.service';
-import { simpleChange } from '../services/utils/test-helpers';
 import { LIST_ACTIONS_STATE_DEF } from './list-footer/list-footer.const';
 import { SelectType, SelectMode } from './list.enum';
 import { SearchComponent } from '../search/search/search.component';
 import { MobileService } from '../services/utils/mobile.service';
+import { IconColor, Icons, IconSize } from '../icons/icons.enum';
+import { TooltipClass, TooltipPosition } from '../popups/tooltip/tooltip.enum';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -66,7 +68,7 @@ export abstract class BaseListElement
     protected DOM: DOMhelpers,
     protected host: ElementRef
   ) {
-    this.isMobile = this.mobileService.getMediaData().isMobile;
+    this.isMobile = this.mobileService.isMobile();
   }
 
   @ViewChild('vScroll', { static: true }) vScroll: CdkVirtualScrollViewport;
@@ -123,6 +125,16 @@ export abstract class BaseListElement
   private keyDownSubscriber: Subscription;
   readonly listElHeight = LIST_EL_HEIGHT;
   readonly modes = SelectMode;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
+  readonly infoIcon = Icons.info_outline.replace('b-icon-', '');
+  readonly tooltipPosition = TooltipPosition.above;
+  readonly tooltipClass: (TooltipClass | string)[] = [
+    TooltipClass.TextLeft,
+    TooltipClass.PreWrap,
+    'b-select-option-tooltip',
+  ];
+  readonly tooltipDelay = 300;
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes, {

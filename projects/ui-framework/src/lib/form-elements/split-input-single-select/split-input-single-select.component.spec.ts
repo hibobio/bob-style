@@ -14,7 +14,7 @@ import { ListChange } from '../../lists/list-change/list-change';
 import { SimpleChange } from '@angular/core';
 import { InputMessageComponent } from '../input-message/input-message.component';
 import { FormElementLabelComponent } from '../form-element-label/form-element-label.component';
-import { simpleChange } from '../../services/utils/test-helpers';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 describe('SplitInputSingleSelectComponent', () => {
   let component: SplitInputSingleSelectComponent;

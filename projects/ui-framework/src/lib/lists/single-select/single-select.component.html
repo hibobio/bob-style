@@ -29,6 +29,7 @@
         [expectChanges]="true"
         [trustCssVars]="true"
         [type]="tooltipType"
+        [tooltipClass]="tooltipClass"
         [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ? label : placeholder) : null"
         (focus)="openPanel()">
     {{displayValue}}

@@ -46,9 +46,9 @@ const rteMockHtml =
             '!!!! And so, ',
           ])} `,
           `. <br><span style="font-size: 18px">AND THEN HE</span> `,
-          `. <br><span style="font-size: 18px">AND THEN HE</span> `,
+          `. <br><span style="font-size: 24px">AND THEN HE</span> `,
           `. <br><span style="font-size: 18px"> UNFORTUNATELY, </span> `,
-          `. <br><span style="font-size: 18px"> BUT!!! </span> `,
+          `. <br><span style="font-size: 24px"> BUT!!! </span> `,
           ` <strong>${mockBadJobs(1)}</strong> `,
           ` <strong>${mockBadJobs(1)}</strong> `,
           ` <strong>${mockBadJobs(1)}</strong> `,
@@ -61,9 +61,9 @@ const rteMockHtml =
   mockText(randomNumber(3, 5)).toLowerCase() +
   ' and that was the end.';
 
-const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
-  withKnobs
-);
+// const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
+//   withKnobs
+// );
 
 const template1 = `<b-read-more [config]="{
   maxLines: maxLines,
@@ -105,41 +105,41 @@ const note = `
 
 `;
 
-story.add(
-  'Read More',
-  () => {
-    return {
-      template: storyTemplate,
-      props: {
-        rteMockHtml: rteMockHtml,
-        expandable: boolean('expandable', false),
-        maxLines: number('maxLines', 5),
-        maxHeight: number('maxHeight', 300),
-        onClick: action('click'),
-      },
-      moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          StoryBookLayoutModule,
-          ReadMoreModule,
-          RteViewModule,
-          RouterModule.forRoot(
-            [
-              {
-                path: '',
-                component: RteViewComponent,
-              },
-              {
-                path: 'employee-profile/:id',
-                component: RteViewComponent,
-              },
-            ],
-            { useHash: true }
-          ),
-        ],
-        providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
-      },
-    };
-  },
-  { notes: { markdown: note } }
-);
+// story.add(
+//   'Read More',
+//   () => {
+//     return {
+//       template: storyTemplate,
+//       props: {
+//         rteMockHtml: rteMockHtml,
+//         expandable: boolean('expandable', false),
+//         maxLines: number('maxLines', 5),
+//         maxHeight: number('maxHeight', 300),
+//         onClick: action('click'),
+//       },
+//       moduleMetadata: {
+//         imports: [
+//           BrowserAnimationsModule,
+//           StoryBookLayoutModule,
+//           ReadMoreModule,
+//           RteViewModule,
+//           RouterModule.forRoot(
+//             [
+//               {
+//                 path: '',
+//                 component: RteViewComponent,
+//               },
+//               {
+//                 path: 'employee-profile/:id',
+//                 component: RteViewComponent,
+//               },
+//             ],
+//             { useHash: true }
+//           ),
+//         ],
+//         providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
+//       },
+//     };
+//   },
+//   { notes: { markdown: note } }
+// );

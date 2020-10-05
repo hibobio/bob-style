@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { merge, Observable } from 'rxjs';
 import {
   WindowRef,
   WindowLike,
@@ -8,6 +8,13 @@ import {
 import { isDomElement } from './functional-utils';
 import { DOMhelpers } from '../html/dom-helpers.service';
 import { UtilsService } from './utils.service';
+import {
+  delay,
+  distinctUntilChanged,
+  map,
+  startWith,
+  throttleTime,
+} from 'rxjs/operators';
 
 export interface MutationObservableConfig extends MutationObserverInit {
   mutations?: 'original' | 'processed';
@@ -41,7 +48,7 @@ export class MutationObservableService {
     private DOM: DOMhelpers,
     private utilsService: UtilsService
   ) {
-    this.nativeWindow = this.windowRef.nativeWindow;
+    this.nativeWindow = this.windowRef.nativeWindow || window;
   }
 
   private nativeWindow: WindowLike;
@@ -83,6 +90,9 @@ export class MutationObservableService {
     //
 
     if (!this.nativeWindow.ResizeObserver) {
+      console.warn(
+        `[MutationObservableService.getResizeObservervable] This browser doesn't support ResizeObserver`
+      );
       return new Observable((observer) => {
         let lastRect: Partial<DOMRectReadOnly> = {
           width: 0,
@@ -131,6 +141,75 @@ export class MutationObservableService {
 
       return unsubscribe;
     });
+  }
+
+  public getIntersectionObservable(
+    element: HTMLElement
+  ): Observable<IntersectionObserverEntry> {
+    //
+    if (
+      !('IntersectionObserver' in this.nativeWindow) ||
+      !('IntersectionObserverEntry' in this.nativeWindow) ||
+      !(
+        'intersectionRatio' in
+        this.nativeWindow.IntersectionObserverEntry.prototype
+      )
+    ) {
+      console.warn(
+        `[MutationObservableService.getIntersectionObservable] This browser doesn't support IntersectionObserver`
+      );
+
+      return merge(
+        this.utilsService.getScrollEvent(),
+        this.utilsService.getResizeEvent()
+      ).pipe(
+        startWith(1),
+        throttleTime(300, undefined, {
+          leading: true,
+          trailing: true,
+        }),
+        map(() => this.DOM.isInView(element)),
+        distinctUntilChanged(),
+        map(
+          (isInView) =>
+            (({
+              isIntersecting: isInView,
+              isVisible: isInView,
+            } as any) as IntersectionObserverEntry)
+        )
+      );
+    }
+
+    return new Observable((observer) => {
+      const intersectionObserver = new IntersectionObserver((entries) => {
+        observer.next(entries);
+      });
+      intersectionObserver.observe(element);
+
+      return () => {
+        intersectionObserver.disconnect();
+      };
+    }).pipe(
+      map(
+        (entries: IntersectionObserverEntry[]) => entries[entries.length - 1]
+      ),
+      distinctUntilChanged(
+        (
+          prevEntry: IntersectionObserverEntry,
+          currEntry: IntersectionObserverEntry
+        ) => prevEntry.isIntersecting === currEntry.isIntersecting
+      )
+    );
+  }
+
+  public getElementInViewEvent(
+    element: HTMLElement,
+    delayEmit = 100
+  ): Observable<boolean> {
+    return this.getIntersectionObservable(element).pipe(
+      map((entry: IntersectionObserverEntry) => entry.isIntersecting),
+      delay(delayEmit)
+    );
   }
 
   private compareDOMRects(

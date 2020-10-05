@@ -1,15 +1,17 @@
-@import "../../style/common-imports";
+@import '../../style/common-imports';
 :host {
   display: block;
   width: 100%;
-  --item-grid-gap: times8(2);
-  --item-width: auto;
+  flex-grow: 1;
 }
 
 .in-row-list {
   display: grid;
-  grid-gap: var(--item-grid-gap);
-  grid-template-columns: repeat(auto-fill, minmax(var(--item-width), 1fr));
+  grid-gap: var(--item-grid-gap, #{times8(2)});
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--item-width, auto), 1fr)
+  );
   &.center {
     grid-template-columns: none;
     grid-gap: 0;
@@ -21,11 +23,14 @@
   }
 }
 ::ng-deep .in-row-list.center {
-  margin: calc(var(--item-grid-gap) / -2);
-  width: calc(100% + var(--item-grid-gap));
+  margin: calc(var(--item-grid-gap, #{times8(2)}) / -2);
+  width: calc(100% + var(--item-grid-gap, #{times8(2)}));
   > * {
-    padding: 0 calc(var(--item-grid-gap) / 2);
-    margin: calc(var(--item-grid-gap) / 2);
-    width: calc((100% - var(--item-grid-gap) * var(--item-count)) / var(--item-count));
+    padding: 0 calc(var(--item-grid-gap, #{times8(2)}) / 2);
+    margin: calc(var(--item-grid-gap, #{times8(2)}) / 2);
+    width: calc(
+      (100% - var(--item-grid-gap, #{times8(2)}) * var(--item-count)) /
+        var(--item-count)
+    );
   }
 }

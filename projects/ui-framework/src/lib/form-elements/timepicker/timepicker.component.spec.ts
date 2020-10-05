@@ -8,13 +8,13 @@ import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import {
   elementFromFixture,
   getPseudoContent,
-  simpleChange,
   inputValue,
 } from '../../services/utils/test-helpers';
 import { IconsModule } from '../../icons/icons.module';
 import { MockComponent } from 'ng-mocks';
 import { FormElementLabelComponent } from '../form-element-label/form-element-label.component';
 import { By } from '@angular/platform-browser';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 describe('TimePickerComponent', () => {
   let component: TimePickerComponent;

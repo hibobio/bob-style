@@ -1,14 +1,16 @@
-@import "../../style/common-imports";
+@import '../../style/common-imports';
 
 :host {
   display: flex;
   width: 100%;
-  align-items:center;
+  align-items: center;
   margin: 32px 0;
-  &:before, &:after {
+
+  &:before,
+  &:after {
     flex: 1;
     content: '';
-    border-top: 1px solid $grey-300;
+    border-top: 1px solid $border-color-light;
   }
   &:before {
     margin-right: 16px;
@@ -17,7 +19,8 @@
     margin-left: 16px;
   }
   &:empty {
-    &:before, &:after {
+    &:before,
+    &:after {
       margin: 0;
     }
   }

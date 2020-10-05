@@ -1,3 +1,5 @@
-<div class="in-row-list" [ngClass]="[align]">
+<div class="in-row-list"
+     [ngClass]="[align]"
+     [attr.data-items-in-row]="itemsInRow$ | async">
   <ng-content></ng-content>
 </div>

@@ -5,7 +5,7 @@ import { MockComponent } from 'ng-mocks';
 import { TypographyModule } from '../../typography/typography.module';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { LinkColor } from '../../indicators/link/link.enum';
-import { simpleChange } from '../../services/utils/test-helpers';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 describe('TextButtonComponent', () => {
   let component: TextButtonComponent;

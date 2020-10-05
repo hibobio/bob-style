@@ -105,11 +105,17 @@ html:not(.cdk-global-scrollblock) {
   .b-select-panel {
     width: 100%;
     background-color: white;
-    border: 1px solid $grey-500;
+    border: 1px solid $border-color;
     border-radius: $border-radius;
     box-shadow: 0 2px 5px $boxShadowColor;
   }
 
+  .panel-above {
+    box-shadow: 0 -2px 5px $boxShadowColor;
+  }
+}
+
+.b-select-panel-no-arrow {
   .panel-below {
     &,
     .b-select-list,
@@ -126,8 +132,6 @@ html:not(.cdk-global-scrollblock) {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     }
-
-    box-shadow: 0 -2px 5px $boxShadowColor;
   }
 }
 
@@ -198,7 +202,7 @@ html:not(.cdk-global-scrollblock) {
     @include OverlayPositionBounding('center');
 
     &:before {
-      border-color: transparent transparent $grey-500 $grey-500 !important;
+      border-color: transparent transparent $border-color $border-color !important;
     }
 
     &:after {
@@ -242,7 +246,7 @@ html:not(.cdk-global-scrollblock) {
 
   .panel-position {
     overflow: hidden;
-    border: 1px solid $grey-500;
+    border: 1px solid $border-color;
     border-radius: $border-radius;
     box-shadow: 0 2px 5px $boxShadowColor;
 

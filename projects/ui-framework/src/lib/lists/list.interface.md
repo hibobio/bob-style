@@ -15,6 +15,7 @@ selected | boolean | if option is selected
 prefixComponent |  RenderedComponent | object, describing component to be rendered in the option (see [Component Renderer](https://hibobio.github.io/bob-style/?path=/story/services--component-renderer))
 disabled | boolean | if option is disabled
 exclusive | boolean | when selected, will unselect all other options in the list
+description | string | text to be added to (i) tooltip on the right of the option
  + | any | you can pass any additional properties in the SelectOption object
 
 #### interface: ListFooterActions

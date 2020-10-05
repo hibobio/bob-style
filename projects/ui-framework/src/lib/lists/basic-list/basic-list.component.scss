@@ -10,7 +10,7 @@
   width: 100%;
   background-color: white;
   border-collapse: separate;
-  border: 1px solid $grey-300;
+  border: 1px solid $border-color-light;
   border-radius: $border-radius;
 
   &:empty {
@@ -28,7 +28,7 @@
     height: $wrap-height;
 
     & + & {
-      box-shadow: 0 -1px 0 0 $grey-300;
+      box-shadow: 0 -1px 0 0 $border-color-light;
     }
 
     &.has-hover {

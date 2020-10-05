@@ -1,9 +1,9 @@
 $b-grid-gap: times8(3);
 
-@mixin gridLayout12Cols($column-gap: $b-grid-gap, $row-gap: null) {
+@mixin gridLayout12Cols($column-gap: $b-grid-gap, $row-gap: null, $cols: 12) {
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: repeat($cols, 1fr);
   @if $column-gap {
     grid-column-gap: $column-gap;
   }

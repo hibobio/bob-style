@@ -132,9 +132,9 @@
     </tr>
 
     <tr>
-      <td>brd-alt, brd-alt-l, brd-alt-r, brd-alt-t, brd-alt-b
+      <td><s>brd-alt, brd-alt-l, brd-alt-r, brd-alt-t, brd-alt-b</s>
       </td>
-      <td>Add lighter-color <u>border</u>: on all sides, left, right, top, bottom
+      <td><s>Add lighter-color <u>border</u>: on all sides, left, right, top, bottom</s> (deprecated)
       </td>
       <td>
         <pre><code>&lt;div class="brd-alt-r"&gt;
@@ -334,45 +334,46 @@
 
   <tbody>
 
-        <tr>
-          <td style="white-space: nowrap;">blk, block</td>
-          <td>adds "display: block"</td>
-          <td>
-            <pre><code>&lt;span class="blk"&gt;
+    <tr>
+      <td style="white-space: nowrap;">blk, block</td>
+      <td>adds "display: block"</td>
+      <td>
+        <pre><code>&lt;span class="blk"&gt;
   I'm a box
 &lt;/span&gt;</code></pre>
-          </td>
-        </tr>
+      </td>
+    </tr>
 
-        <tr>
-          <td style="white-space: nowrap;">flx, b-flex</td>
-          <td>adds "display: flex"</td>
-          <td>
-            <pre><code>&lt;span class="blk"&gt;
+    <tr>
+      <td style="white-space: nowrap;">flx, b-flex</td>
+      <td>adds "display: flex"</td>
+      <td>
+        <pre><code>&lt;span class="blk"&gt;
   I'm flexible
 &lt;/span&gt;</code></pre>
-          </td>
-        </tr>
+      </td>
+    </tr>
 
-        <tr>
-          <td style="white-space: nowrap;">flx-row, flx-col</td>
-          <td>adds "display: flex" + "flex-direction" (column or row)</td>
-          <td>
-            <pre><code>&lt;span class="flx-col"&gt;
+    <tr>
+      <td style="white-space: nowrap;">flx-row, flx-col</td>
+      <td>adds "display: flex" + "flex-direction" (column or row)</td>
+      <td>
+        <pre><code>&lt;span class="flx-col"&gt;
   I'm vertical
 &lt;/span&gt;</code></pre>
-          </td>
-        </tr>
+      </td>
+    </tr>
 
-        <tr>
-          <td style="white-space: nowrap;">flx-center</td>
-          <td>adds "align-items" + "justify-content" to align content centrally. does not add "display: flex" (so can be used with grid's)</td>
-          <td>
-            <pre><code>&lt;span class="flx-col"&gt;
+    <tr>
+      <td style="white-space: nowrap;">flx-center</td>
+      <td>adds "align-items" + "justify-content" to align content centrally. does not add "display: flex" (so can be
+        used with grid's)</td>
+      <td>
+        <pre><code>&lt;span class="flx-col"&gt;
   I'm vertical
 &lt;/span&gt;</code></pre>
-          </td>
-        </tr>
+      </td>
+    </tr>
 
     <tr>
       <td style="white-space: nowrap;">b-mobile</td>
@@ -440,15 +441,15 @@
 
   <tbody>
 
-        <tr>
-          <td style="white-space: nowrap;">uppercase, capitalize</td>
-          <td>helper classes</td>
-          <td>
-            <pre><code>&lt;p class="uppercase"&gt;
+    <tr>
+      <td style="white-space: nowrap;">uppercase, capitalize, text-center</td>
+      <td>helper classes</td>
+      <td>
+        <pre><code>&lt;p class="uppercase"&gt;
   Some text
 &lt;/p&gt;</code></pre>
-          </td>
-        </tr>
+      </td>
+    </tr>
 
     <tr>
       <td style="white-space: nowrap;">b-body</td>

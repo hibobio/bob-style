@@ -1,15 +1,14 @@
 @import '../../style/common-imports';
 @import '../../style/icons.mixin';
 
+:host {
+  display: block;
+}
+
 .sections {
   list-style: none;
   padding: 0;
   margin: 0;
-}
-
-.section {
-  display: block;
-  margin-bottom: times8(2);
 }
 
 .cdk-drag-placeholder {
@@ -38,6 +37,8 @@
 ::ng-deep .cdk-drag-preview.draggable-section b-collapsible-section {
   header.bcp-header {
     position: relative;
+    padding-top: times8(0.5);
+    padding-bottom: times8(0.5);
 
     @include b-icon(
       $elem: '&:after',
@@ -59,8 +60,10 @@
 ::ng-deep .cdk-drag-preview.draggable-section {
   list-style: none;
   box-shadow: 0 3px 7px 0 $boxShadowColor;
-  border-color: $grey-400;
   transform: translateY(-1px);
+  border-radius: $border-radius;
+  overflow: hidden;
+
   * {
     transition-duration: 0s !important;
     transition-delay: 0s !important;

@@ -71,16 +71,12 @@ export abstract class BaseFormElement
 
   @Input('spec') set setProps(spec: FormElementSpec) {
     if (isObject(spec)) {
-      const errorProps: string[] = [];
-      if (spec.value) {
-        errorProps.push('value');
-      }
-      if (spec.options) {
-        errorProps.push('options');
-      }
-      if (spec.optionsDefault) {
-        errorProps.push('optionsDefault');
-      }
+      const errorProps: string[] = [
+        'value',
+        'options',
+        'optionsDefault',
+      ].filter((p) => spec[p]);
+
       if (errorProps.length) {
         console.warn(
           `[BaseFormElement.spec]: <${errorProps}> ${
@@ -90,7 +86,10 @@ export abstract class BaseFormElement
           } separate binding${errorProps.length > 1 ? 's' : ''}`
         );
       }
-      Object.assign(this, objectRemoveEntriesByValue(spec, [undefined]));
+      Object.assign(
+        this,
+        objectRemoveEntriesByValue(spec, [undefined, ...errorProps])
+      );
     }
   }
 

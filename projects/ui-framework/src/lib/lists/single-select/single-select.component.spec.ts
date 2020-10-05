@@ -17,7 +17,6 @@ import { By } from '@angular/platform-browser';
 import { SelectGroupOption } from '../list.interface';
 import { cloneDeep } from 'lodash';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
-import { simpleChange } from '../../services/utils/test-helpers';
 import {
   mockTranslatePipe,
   TranslateServiceProvideMock,
@@ -33,6 +32,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { SingleListComponent } from '../single-list/single-list.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 describe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;

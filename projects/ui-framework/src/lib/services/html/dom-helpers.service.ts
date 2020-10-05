@@ -33,6 +33,49 @@ import {
 export class DOMhelpers {
   constructor() {}
 
+  // Simplified FastDom implementation
+  // https://github.com/wilsonpage/fastdom
+
+  private domReads = [];
+  private domWrites = [];
+  private hasScheduledTasks = false;
+
+  private scheduleDomTasks(): void {
+    if (!this.hasScheduledTasks) {
+      this.hasScheduledTasks = true;
+      window.requestAnimationFrame(() => {
+        this.runDomTasks();
+      });
+    }
+  }
+
+  public runDomTasks(): void {
+    try {
+      let task: () => void;
+      while ((task = this.domReads.shift())) {
+        task();
+      }
+      while ((task = this.domWrites.shift())) {
+        task();
+      }
+    } catch (e) {
+      console.error(`[DOMhelpers.runDomTasks]: ${e}`);
+    }
+    this.hasScheduledTasks = false;
+  }
+
+  public measure(task: () => void): void {
+    this.domReads.push(task);
+    this.scheduleDomTasks();
+  }
+
+  public mutate(task: () => void): void {
+    this.domWrites.push(task);
+    this.scheduleDomTasks();
+  }
+
+  // FastDom end
+
   public injectStyles(
     styles: string = '',
     elem: HTMLElement | Document = document
@@ -280,17 +323,13 @@ export class DOMhelpers {
 
   // returns line-height and font-size as unitless numbers
   public getElementTextProps(element: HTMLElement): TextProps {
-    const computedStyle = getComputedStyle(element),
-      fontSize = parseFloat(computedStyle.fontSize),
-      lineHeight =
-        computedStyle.lineHeight.indexOf('px') !== -1
-          ? parseFloat(computedStyle.lineHeight) / fontSize
-          : computedStyle.lineHeight.indexOf('%') !== -1
-          ? parseFloat(computedStyle.lineHeight) / 100
-          : undefined;
+    const computedStyle = getComputedStyle(element);
     return {
-      fontSize: fontSize,
-      lineHeight: lineHeight,
+      fontSize: parseFloat(computedStyle.fontSize),
+      lineHeightPx: parseFloat(computedStyle.lineHeight),
+      lineHeight:
+        parseFloat(computedStyle.lineHeight) /
+        parseFloat(computedStyle.fontSize),
     };
   }
 
@@ -535,9 +574,9 @@ export class DOMhelpers {
   public walkNodeTree(
     root: HTMLElement | Node,
     config: TreeWalkerConfig = {}
-  ): (HTMLElement | Node)[] | void {
+  ): (HTMLElement | Node)[] {
     if (!this.isNode(root)) {
-      return;
+      return null;
     }
 
     const walker = document.createTreeWalker(

@@ -48,7 +48,7 @@
   background-color: $grey-100;
   min-height: $wrap-height;
   min-width: 0;
-  border: 1px solid $grey-500;
+  border: 1px solid $border-color;
   border-radius: $border-radius;
 
   &:after {
@@ -56,6 +56,6 @@
   }
 
   &:before {
-    border-right-color: $grey-500;
+    border-right-color: $border-color;
   }
 }

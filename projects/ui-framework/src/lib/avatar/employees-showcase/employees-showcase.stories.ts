@@ -163,7 +163,8 @@ story.add(
 
         employees: object<EmployeeShowcase>(
           'employees',
-          EMPLOYEE_SHOWCASE_MOCK
+          EMPLOYEE_SHOWCASE_MOCK,
+          'Data'
         ),
         employeeOptions: object<SelectGroupOption>(
           'employeeOptions',

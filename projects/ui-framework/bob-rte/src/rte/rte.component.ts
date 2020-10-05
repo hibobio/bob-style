@@ -7,6 +7,7 @@ import {
   ElementRef,
   OnDestroy,
   AfterViewInit,
+  HostListener,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import {
@@ -24,6 +25,7 @@ import {
   EMOJI_DATA,
   asArray,
   SanitizerService,
+  keyEventIsCharacter,
 } from 'bob-style';
 
 import { RTEbaseElement } from './rte.abstract';
@@ -74,6 +76,16 @@ export class RichTextEditorComponent extends RTEbaseElement
     );
   }
 
+  @HostListener('click.outside-zone', ['$event'])
+  onHostClick(event: MouseEvent) {
+    this.clicksHandler(event);
+  }
+
+  @HostListener('focusin.outside-zone', ['$event'])
+  onHostFocus(event: FocusEvent) {
+    this.focusHandler(event);
+  }
+
   ngOnInit(): void {
     super.ngOnInit();
 
@@ -95,18 +107,10 @@ export class RichTextEditorComponent extends RTEbaseElement
 
         this.updateToolbar();
 
-        // cancel Ctrl+C events if selection is empty
         this.editor.events.on(
           'keydown',
           (event: KeyboardEvent) => {
-            if (eventHasCntrlKey(event) && isKey(event.key, 'c')) {
-              const selection = this.getNativeRange();
-              if (selection.startOffset === selection.endOffset) {
-                event.preventDefault();
-                console.warn('Copy prevented, because selection is empty');
-                return false;
-              }
-            }
+            return this.keydownHandler(event);
           },
           true
         );
@@ -126,38 +130,10 @@ export class RichTextEditorComponent extends RTEbaseElement
             this.tribute.attach(this.getEditorTextbox());
           }
 
-          this.editor.events.on(
-            'keydown',
-            (event: KeyboardEvent) => {
-              if (
-                isKey(event.key, Keys.enter) &&
-                this.tribute &&
-                this.tribute.isActive
-              ) {
-                return false;
-              }
-
-              if (isKey(event.key, Keys.escape)) {
-                this.closeMentions(true);
-              }
-            },
-            true
-          );
-
           this.getEditorTextbox().addEventListener('tribute-replaced', () => {
             this.editor.events.trigger('contentChanged', [], true);
           });
         }
-
-        // placeholders related
-        this.editor.events.bindClick(
-          this.editor.$(this.host.nativeElement),
-          '.placeholder-panel-trigger',
-          () => {
-            this.editor.undo.saveStep();
-            this.editor.events.disableBlur();
-          }
-        );
 
         // implementing baseFormElement input ref and focus method
         this.input = {
@@ -166,19 +142,25 @@ export class RichTextEditorComponent extends RTEbaseElement
           },
         } as ElementRef;
 
+        this.updateLength();
+
         if (this.focusOnInit) {
           this.focus();
         }
       },
 
       contentChanged: () => {
+        this.updateLength();
+
         this.transmitValue(this.editor.html.get(), {
           eventType: [InputEventType.onChange],
           updateValue: true,
         });
       },
 
-      focus: () => {
+      focus: (event: FocusEvent) => {
+        event.preventDefault();
+
         this.transmitValue(this.editor.html.get(), {
           eventType: [InputEventType.onFocus],
           emitterName: FormEvents.focused,
@@ -214,22 +196,8 @@ export class RichTextEditorComponent extends RTEbaseElement
       },
 
       click: (event: MouseEvent) => {
-        this.closeMentions();
-
-        const target = event.target as HTMLElement;
-
-        // prevent mentions link clicks
-        if (
-          target.className.includes('mention') ||
-          target.getAttributeNames().join(' ').includes('mention')
-        ) {
-          if (!eventHasMetaKey(event)) {
-            event.preventDefault();
-          }
-          this.editor.selection.save();
-          this.editor.toolbar.enable();
-          this.editor.selection.restore();
-        }
+        event.stopPropagation();
+        this.clicksHandler(event);
       },
 
       'window.copy': (event: ClipboardEvent) => {
@@ -314,10 +282,6 @@ export class RichTextEditorComponent extends RTEbaseElement
         );
       },
 
-      'charCounter.update': () => {
-        this.updateLength();
-      },
-
       'commands.after': (cmd: string) => {
         if (cmd === 'linkInsert') {
           const link = this.editor.link.get() as HTMLElement;
@@ -386,7 +350,7 @@ export class RichTextEditorComponent extends RTEbaseElement
           this.getEditorElement(
             '.fr-layer[class*="fr-link-insert"] input[type="text"]'
           )
-        );
+        ) as HTMLInputElement[];
 
         inputs.forEach((inputEl: HTMLInputElement) => {
           // inputEl.placeholder = inputEl.nextSibling.textContent;
@@ -394,7 +358,8 @@ export class RichTextEditorComponent extends RTEbaseElement
           inputEl.removeAttribute('id');
           inputEl.blur();
         });
-        inputs[0]?.focus();
+        // inputs[0]?.focus();
+        inputs[1]?.focus();
       },
     };
   }
@@ -408,6 +373,87 @@ export class RichTextEditorComponent extends RTEbaseElement
 
     // remove event listeners
     this.getEditorTextbox().outerHTML = this.getEditorTextbox().outerHTML;
+  }
+
+  private focusHandler(event: FocusEvent): void {
+    const target = event.target as HTMLElement;
+    const relatedTarget = event.relatedTarget as HTMLElement;
+
+    // select all text in link edit popup inputs
+    if (
+      target.matches('.fr-link-insert-layer input.fr-link-attr.fr-not-empty')
+    ) {
+      event.stopPropagation();
+      (target as HTMLInputElement).select();
+    }
+  }
+
+  private clicksHandler(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+
+    this.closeMentions();
+
+    // placeholders related
+    if (target.className.includes('placeholder-panel-trigger')) {
+      this.editor.undo.saveStep();
+      this.editor.events.disableBlur();
+    }
+
+    // prevent mentions link clicks
+    if (
+      target.className.includes('mention') ||
+      target.getAttributeNames().join(' ').includes('mention')
+    ) {
+      event.stopPropagation();
+      if (!eventHasMetaKey(event)) {
+        event.preventDefault();
+      }
+      this.editor.selection.save();
+      this.editor.toolbar.enable();
+      this.editor.selection.restore();
+    }
+  }
+
+  private keydownHandler(event: KeyboardEvent): any {
+    //
+    // cancel Ctrl+C events if selection is empty
+    if (eventHasCntrlKey(event) && isKey(event.key, 'c')) {
+      const selection = this.getNativeRange();
+      if (selection.startOffset === selection.endOffset) {
+        event.preventDefault();
+        console.warn('Copy prevented, because selection is empty');
+        return false;
+      }
+    }
+
+    // mentions related
+    if (this.mentionsEnabled()) {
+      if (
+        isKey(event.key, Keys.enter) &&
+        this.tribute &&
+        this.tribute.isActive
+      ) {
+        return false;
+      }
+
+      if (isKey(event.key, Keys.escape)) {
+        this.closeMentions(true);
+        return true;
+      }
+    }
+
+    // max length
+    if (
+      this.maxChars &&
+      this.length >= this.maxChars &&
+      keyEventIsCharacter(event)
+    ) {
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    }
+
+    return true;
   }
 
   // mentions methods

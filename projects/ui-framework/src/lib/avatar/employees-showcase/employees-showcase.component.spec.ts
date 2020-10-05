@@ -24,13 +24,13 @@ import { AvatarGap } from './employees-showcase.const';
 import { SingleSelectPanelComponent } from '../../lists/single-select-panel/single-select-panel.component';
 import { cloneDeep } from 'lodash';
 import {
-  simpleChange,
   elementsFromFixture,
   elementFromFixture,
   getCssVariable,
 } from '../../services/utils/test-helpers';
 import { AvatarImageComponent } from '../avatar/avatar-image/avatar-image.component';
 import { EmployeesShowcaseService } from './employees-showcase.service';
+import { simpleChange } from '../../services/utils/functional-utils';
 
 const showcaseMock = cloneDeep(EMPLOYEE_SHOWCASE_MOCK).slice(0, 25);
 

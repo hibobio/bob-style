@@ -3,14 +3,17 @@
 
 :host {
   display: block;
-  --card-grid-gap: times8(2);
-  --card-width: $card-width-regular;
+  width: 100%;
+  flex-grow: 1;
 }
 
 .cards-list {
   display: grid;
-  grid-gap: var(--card-grid-gap);
-  grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr));
+  grid-gap: var(--item-grid-gap, #{times8(2)});
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--item-width, #{$card-width-regular}), 1fr)
+  );
   position: relative;
 }
 
@@ -45,20 +48,19 @@
 
   &[data-swiper-mode='false'] {
     flex-wrap: wrap;
-    margin: calc(var(--card-grid-gap) / -2);
-    width: calc(100% + var(--card-grid-gap));
+    margin: calc(var(--item-grid-gap, #{times8(2)}) / -2);
+    width: calc(100% + var(--item-grid-gap, #{times8(2)}));
 
     &::ng-deep .single-card {
-      margin: calc(var(--card-grid-gap) / 2);
+      margin: calc(var(--item-grid-gap, #{times8(2)}) / 2);
     }
   }
 
-  @for $i from 2 through 10 {
-    &[data-cards-in-row='#{$i}']::ng-deep {
-      .single-card {
-        width: calc((100% - var(--card-grid-gap) * #{$i}) / #{$i});
-      }
-    }
+  &::ng-deep .single-card {
+    width: calc(
+      (100% - var(--item-grid-gap, #{times8(2)}) * var(--item-count)) /
+        var(--item-count)
+    );
   }
 }
 
@@ -79,8 +81,8 @@ $hover-shadow-offset: 12px;
   @include scroll-snap-x(
     $item: '&::ng-deep .single-card',
     $snap-align: start,
-    $breakout: var(--padding-x-mob),
-    $item-gap: var(--card-grid-gap),
+    $breakout: var(--padding-x-mob, #{$padding-x-mob}),
+    $item-gap: var(--item-grid-gap, #{times8(2)}),
     $ghosts: true
   ) {
     &:before {
@@ -88,26 +90,17 @@ $hover-shadow-offset: 12px;
     }
   }
 
-  @for $i from 2 through 5 {
-    &[data-cards-in-row='#{$i}']::ng-deep {
-      .single-card {
-        width: calc(
-          (
-              100vw -
-                var(--padding-x-mob) *
-                2 -
-                var(--card-grid-gap) *
-                #{$i -
-                1}
-            ) /
-            #{$i}
-        );
-      }
-    }
+  &::ng-deep .single-card {
+    width: calc(
+      (
+          100vw - var(--padding-x-mob, #{$padding-x-mob}) * 2 -
+            var(--item-grid-gap, #{times8(2)}) * #{var(--item-count) - 1}
+        ) / var(--item-count)
+    );
   }
 
   &[data-cards-in-row='1'] {
-    padding-right: var(--padding-x-mob);
+    padding-right: var(--padding-x-mob, #{$padding-x-mob});
 
     &::ng-deep .single-card {
       scroll-snap-align: center;
@@ -122,7 +115,8 @@ $hover-shadow-offset: 12px;
         &:before,
         &:after {
           width: calc(
-            (100vw - #{$card-max-width-large}) / 2 - var(--card-grid-gap)
+            (100vw - #{$card-max-width-large}) / 2 -
+              var(--item-grid-gap, #{times8(2)})
           );
         }
 
