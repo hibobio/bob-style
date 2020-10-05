@@ -26,7 +26,7 @@ const template = `
           [text]="text"
           [disabled]="disabled"
           [active]="active"
-          [ngClass]="{preloading: preloader}">
+          [preloader]="preloader">
 </b-button>
 
 <b-button (clicked)="onClick($event)"

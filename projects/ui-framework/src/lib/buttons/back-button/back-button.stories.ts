@@ -23,6 +23,7 @@ const template = `
                   [size]="size"
                   [text]="text"
                   [disabled]="disabled"
+                  [preloader]="preloader"
                   (clicked)="onClick($event)">
 </b-back-button>
 `;
@@ -66,6 +67,7 @@ story.add(
       text: text('text', 'Back'),
       type: select('type', [0, ...Object.values(ButtonType)], 0),
       disabled: boolean('disabled', false),
+      preloader: boolean('preloader', false),
     },
     moduleMetadata: {
       imports: [ButtonsModule, StoryBookLayoutModule],

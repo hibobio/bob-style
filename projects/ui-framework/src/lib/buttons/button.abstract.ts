@@ -56,9 +56,11 @@ export abstract class BaseButtonElement implements OnChanges, OnInit {
 
   protected typeDefault = ButtonType.primary;
 
-  @HostBinding('attr.data-type') @Input() public type:
-    | ButtonType
-    | BackButtonType;
+  @Input() public type: ButtonType | BackButtonType;
+
+  @HostBinding('attr.data-type') get getButtonType() {
+    return this.type || this.typeDefault;
+  }
   @HostBinding('attr.data-size') @Input() public size: ButtonSize = null;
   @HostBinding('attr.data-disabled') @Input() public disabled = false;
 
@@ -102,8 +104,8 @@ export abstract class BaseButtonElement implements OnChanges, OnInit {
       ' ' +
       (this.size || ButtonSize.medium) +
       ' ' +
-      (this.active ? ' active' : '') +
-      (this.preloader ? ' preloader' : '')
+      (this.active ? 'active ' : '') +
+      (this.preloader ? 'preloader' : '')
     );
   }
 

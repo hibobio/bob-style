@@ -31,6 +31,8 @@ import { ButtonType } from '../buttons.enum';
 export class TextButtonComponent extends BaseButtonElement {
   constructor(protected cd: ChangeDetectorRef) {
     super(cd);
+
+    this.typeDefault = ButtonType.secondary;
   }
 
   @Input() type: ButtonType = ButtonType.secondary;
