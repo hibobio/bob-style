@@ -8,7 +8,7 @@ import { Icons } from '../../icons/icons.enum';
 import { ButtonSize, ButtonType } from '../buttons.enum';
 
 @Component({
-  selector: 'b-back-button',
+  selector: 'b-back-button, [b-back-button]',
   template: `
     <button
       #button

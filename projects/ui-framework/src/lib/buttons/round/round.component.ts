@@ -7,7 +7,7 @@ import { BaseButtonElement } from '../button.abstract';
 import { SquareButtonComponent } from '../square/square.component';
 
 @Component({
-  selector: 'b-round-button',
+  selector: 'b-round-button, [b-round-button]',
   template: `
     <button
       type="button"

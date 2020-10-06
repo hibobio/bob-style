@@ -1,14 +1,10 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   MasonryConfig,
-  MasonryItemsChangedEvent,
   MasonryState,
+  MasonryUpdateConfig,
 } from './masonry.interface';
-import {
-  isNumber,
-  batchProcess,
-  makeArray,
-} from '../../services/utils/functional-utils';
+import { isNumber, batchProcess } from '../../services/utils/functional-utils';
 import {
   MASONRY_CONFIG_DEF,
   MASONRY_GAP_DEF,
@@ -17,21 +13,17 @@ import {
 } from './masonry.const';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
-export interface MasonryUpdateConfig {
-  emitter?: EventEmitter<MasonryItemsChangedEvent>;
-  debug?: boolean;
-}
-
 @Injectable()
 export class MasonryService {
   constructor(private DOM: DOMhelpers) {}
 
-  public initMasonry(
-    host: HTMLElement,
-    config: MasonryConfig,
-    state: MasonryState,
-    { emitter = null, debug = false }: MasonryUpdateConfig
-  ): void {
+  public initMasonry({
+    host,
+    config,
+    state,
+    emitter = null,
+    debug = false,
+  }: MasonryUpdateConfig): void {
     const elements: HTMLElement[] = Array.from(
       host?.children || []
     ) as HTMLElement[];
@@ -40,7 +32,7 @@ export class MasonryService {
       state.hostWidth = state.hostWidth || host.offsetWidth;
       state.config = config;
       state.singleColumn = false;
-      state.childrenCount = elements.length;
+      state.itemsCount = elements.length;
       state.columns = this.getColumsCount(config, state, host);
     }
 
@@ -80,16 +72,20 @@ export class MasonryService {
         : config.columnWidth && config.columnWidth + 'px',
     });
 
-    this.updateElementsRowSpan(elements, host, config, { emitter, debug });
+    this.updateElementsRowSpan(elements, {
+      host,
+      config,
+      state,
+      emitter,
+      debug,
+    });
 
     host.classList.remove('single-column');
   }
 
   public updateElementsRowSpan(
     elements: HTMLElement[],
-    host: HTMLElement,
-    config: MasonryConfig,
-    { emitter = null, debug = false }: MasonryUpdateConfig
+    { host, config, state, emitter = null, debug = false }: MasonryUpdateConfig
   ): void {
     if (debug) {
       console.log(
@@ -128,7 +124,8 @@ export class MasonryService {
 
       afterAll: () => {
         emitter?.emit({
-          totalItems: elements[0]?.parentElement?.children.length,
+          ...state,
+          host,
           updatedItems: elements,
         });
       },
@@ -159,7 +156,7 @@ export class MasonryService {
     }
     if (state) {
       delete state.hostWidth;
-      delete state.childrenCount;
+      delete state.itemsCount;
       delete state.config;
       delete state.singleColumn;
     }
@@ -199,27 +196,5 @@ export class MasonryService {
 
             return Math.floor(hostWidth / (colWidth + gap));
           })();
-  }
-
-  public getItemsInSameRow(
-    element: HTMLElement,
-    hostEl: HTMLElement,
-    config: MasonryConfig,
-    state: MasonryState
-  ): HTMLElement[] {
-    state.columns = this.getColumsCount(config, state, hostEl);
-
-    const index =
-      parseInt(element.getAttribute('data-index'), 10) ||
-      this.DOM.getElementIndex(element, hostEl);
-
-    const firstItemInSameRowIndex = Math.max(
-      0,
-      Math.floor((index + 1) / state.columns - 1)
-    );
-
-    return makeArray(state.columns).map(
-      (_, i) => hostEl.children[firstItemInSameRowIndex + i] as HTMLElement
-    );
   }
 }

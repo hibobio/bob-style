@@ -85,7 +85,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
         }),
 
       this.mutationObservableService
-        .getElementInViewEvent(this.hostRef.nativeElement)
+        .getElementInViewEvent(this.hostRef.nativeElement, {})
         .pipe(outsideZone(this.zone))
         .subscribe((isInView) => {
           if (isInView) {

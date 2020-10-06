@@ -5,12 +5,24 @@ import {
   NgModule,
   ElementRef,
   OnDestroy,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MutationObservableService } from './mutation-observable';
+import {
+  IntersectionObservableConfig,
+  IntersectionObserverableEntry,
+  INTERSECTION_OBSERVABLE_CONFIG_DEF,
+  MutationObservableService,
+} from './mutation-observable';
 import { Subscription } from 'rxjs';
 import { isFunction, pass } from './functional-utils';
 import { delay } from 'rxjs/operators';
+
+export const IN_VIEW_DIR_CONFIG_DEF: IntersectionObservableConfig = {
+  ...INTERSECTION_OBSERVABLE_CONFIG_DEF,
+  threshold: 0.25,
+};
 
 @Directive({
   // tslint:disable-next-line: directive-selector
@@ -24,23 +36,31 @@ export class InViewDirective implements OnInit, OnDestroy {
 
   @Input('inView') onInView: (
     elmnt?: HTMLElement,
-    entry?: IntersectionObserverEntry
+    entry?: IntersectionObserverableEntry
   ) => any;
+
   // tslint:disable-next-line: no-input-rename
   @Input('outOfView') onOutOfView: (
     elmnt?: HTMLElement,
-    entry?: IntersectionObserverEntry
+    entry?: IntersectionObserverableEntry
   ) => any;
+
   // tslint:disable-next-line: no-input-rename
-  @Input('delay') delayEmit: number;
+  @Input('inViewConfig') config: IntersectionObservableConfig;
+
+  @Output() isInView: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   private inViewSub: Subscription;
 
   ngOnInit(): void {
     this.inViewSub = this.mutationObservableService
-      .getIntersectionObservable(this.hostRef.nativeElement)
-      .pipe(this.delayEmit > 0 ? delay(this.delayEmit) : pass)
+      .getIntersectionObservable(
+        this.hostRef.nativeElement,
+        this.config || IN_VIEW_DIR_CONFIG_DEF
+      )
+      .pipe(this.config?.delayEmit > 0 ? delay(this.config.delayEmit) : pass)
       .subscribe((entry) => {
+        this.isInView.emit(entry.isIntersecting);
         if (entry.isIntersecting && isFunction(this.onInView)) {
           this.onInView(this.hostRef.nativeElement, entry);
         }

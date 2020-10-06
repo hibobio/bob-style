@@ -13,7 +13,7 @@ import { BaseButtonElement } from '../button.abstract';
 import { notFirstChanges } from '../../services/utils/functional-utils';
 
 @Component({
-  selector: 'b-square-button',
+  selector: 'b-square-button, [b-square-button]',
   template: `
     <button
       type="button"

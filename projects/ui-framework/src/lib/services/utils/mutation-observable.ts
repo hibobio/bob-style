@@ -34,6 +34,7 @@ export interface IntersectionObservableConfig extends IntersectionObserverInit {
 export interface IntersectionObserverableEntry
   extends IntersectionObserverEntry {
   observer: IntersectionObserver;
+  entries?: IntersectionObserverEntry[];
 }
 
 export const MUTATION_OBSERVABLE_CONFIG_DEF: MutationObservableConfig = {
@@ -53,7 +54,7 @@ export const INTERSECTION_OBSERVABLE_CONFIG_DEF: IntersectionObservableConfig = 
 
 export const ELEMENT_IN_VIEW_CONFIG_DEF: IntersectionObservableConfig = {
   ...INTERSECTION_OBSERVABLE_CONFIG_DEF,
-  delayEmit: 100,
+  threshold: 0.8,
 };
 
 @Injectable({
@@ -196,6 +197,7 @@ export class MutationObservableService {
         map(
           (isInView) =>
             (({
+              target: element,
               isIntersecting: isInView,
               isVisible: isInView,
             } as any) as IntersectionObserverableEntry)
@@ -230,9 +232,18 @@ export class MutationObservableService {
     ).pipe(
       map((entries: IntersectionObserverEntry[]) => {
         return Object.assign(
-          entries.reverse().find((entry) => entry.target === element) || {},
+          entries
+            .slice()
+            .reverse()
+            .find((entry) => entry.target === element) ||
+            (({
+              target: element,
+              isIntersecting: false,
+              isVisible: false,
+            } as any) as IntersectionObserverableEntry),
           {
             observer,
+            entries,
           }
         );
       }),

@@ -6,7 +6,7 @@ import {
 import { BaseButtonElement } from '../button.abstract';
 
 @Component({
-  selector: 'b-button',
+  selector: 'b-button, [b-button]',
   template: `
     <button
       #button

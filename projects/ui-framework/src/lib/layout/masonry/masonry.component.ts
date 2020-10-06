@@ -59,11 +59,6 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
   private updater: Subscription;
   private subs: Subscription[] = [];
   private elementsToUpdate: Set<HTMLElement> = new Set();
-  private intersectionObserver: IntersectionObserver;
-  private inViewUpdater: Subscription;
-  private intersectionObservedElements: Set<HTMLElement> = new Set();
-
-  public markInView = false;
 
   ngOnInit() {
     this.zone.runOutsideAngular(() => {
@@ -96,7 +91,7 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
                   ...elementsToUpdate,
                 ]);
 
-                this.state.childrenCount = this.hostEl?.children.length;
+                this.state.itemsCount = this.hostEl?.children.length;
               })
             ),
 
@@ -123,7 +118,7 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
               trailing: true,
             }),
 
-            filter(() => Boolean(this.state.childrenCount))
+            filter(() => Boolean(this.state.itemsCount))
           )
           .subscribe(() => {
             if (
@@ -163,72 +158,15 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
             const elements = Array.from(this.elementsToUpdate);
             this.elementsToUpdate.clear();
 
-            this.service.updateElementsRowSpan(
-              elements,
-              this.hostEl,
-              this.config,
-              {
-                emitter: this.masonryItemsChanged,
-                debug: this.debug,
-              }
-            );
+            this.service.updateElementsRowSpan(elements, {
+              host: this.hostEl,
+              config: this.config,
+              state: this.state,
+              emitter: this.masonryItemsChanged,
+              debug: this.debug,
+            });
           }))
       );
-
-      if (this.markInView) {
-        this.subs.push(
-          (this.inViewUpdater = this.mutationObservableService
-            .getMutationObservable(this.hostEl, {
-              childList: true,
-              characterData: false,
-              subtree: false,
-              mutations: 'processed',
-              filterSelector: 'b-masonry-item, b-masonry-layout > *',
-            })
-            .subscribe((addedElements) => {
-              if (this.debug) {
-                console.log('addedElements', addedElements);
-              }
-
-              if (this.state.singleColumn) {
-                return;
-              }
-
-              addedElements.forEach((element) => {
-                if (!this.intersectionObservedElements.has(element)) {
-                  this.intersectionObservedElements.add(element);
-
-                  this.subs.push(
-                    this.mutationObservableService
-                      .getIntersectionObservable(
-                        element,
-                        {},
-                        this.intersectionObserver
-                      )
-                      .pipe(
-                        tap((entry) => {
-                          if (!this.intersectionObserver) {
-                            this.intersectionObserver = entry.observer;
-                          }
-                        })
-                      )
-                      .subscribe((entry) => {
-                        if (this.state.singleColumn || !this.state) {
-                          return;
-                        }
-
-                        if (entry.isIntersecting) {
-                          element.setAttribute('data-in-view', 'true');
-                        } else {
-                          element.setAttribute('data-in-view', 'false');
-                        }
-                      })
-                  );
-                }
-              });
-            }))
-        );
-      }
     });
   }
 
@@ -243,7 +181,10 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
     if (!this.updater) {
       this.ngOnInit();
     }
-    this.service.initMasonry(this.hostEl, config, this.state, {
+    this.service.initMasonry({
+      host: this.hostEl,
+      config,
+      state: this.state,
       emitter: this.masonryItemsChanged,
       debug: this.debug,
     });
@@ -258,13 +199,9 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
     });
     this.subs.length = 0;
 
-    this.intersectionObserver?.disconnect();
-    this.intersectionObserver = undefined;
-
     if (fullCleanup) {
       this.state = {};
       this.updater = undefined;
-      this.inViewUpdater = undefined;
       this.service.cleanupMasonry(this.hostEl);
     }
   }

@@ -105,6 +105,9 @@ export const emitNativeEvent = (
   type: string | NativeEvents = NativeEvents.click,
   props = null
 ): void => {
+  if (!element) {
+    return;
+  }
   if (!props) {
     props = {};
   }

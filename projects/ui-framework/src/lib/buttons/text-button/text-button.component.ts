@@ -4,13 +4,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { IconColor, IconSize } from '../../icons/icons.enum';
+import { IconColor } from '../../icons/icons.enum';
 import { LinkColor } from '../../indicators/link/link.enum';
 import { BaseButtonElement } from '../button.abstract';
 import { ButtonType } from '../buttons.enum';
 
 @Component({
-  selector: 'b-text-button',
+  selector: 'b-text-button, [b-text-button]',
   template: `
     <span
       role="button"

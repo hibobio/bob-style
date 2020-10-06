@@ -21,32 +21,42 @@ const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
   withKnobs
 );
 
-const button1 = `
-<b-text-button [type]="type"
+const button1 = `<b-text-button [type]="type"
                [text]="text"
                [color]="color"
                [disabled]="disabled"
                (clicked)="onClick($event)">
-</b-text-button>
-`;
+</b-text-button>`;
 
-const button2 = `
-<b-text-button (clicked)="onClick($event)"
-               [text]="text"
-               [type]="type"
-               [icon]="icon"
-               [color]="color"
-               [disabled]="disabled">
-</b-text-button>
-`;
+const button2 = `<a b-text-button href="javascript:void()"
+              [button]="{
+                type: type,
+                 text: text,
+                 icon: icon,
+                 color: color,
+                 disabled: disabled
+              }"
+              (clicked)="onClick($event)">
+</a>`;
 
 const buttonNote = `<b-text-button [type]="type"
                [text]="text"
                [icon]="icon"
                [disabled]="disabled"
                (clicked)="onClick($event)">
-    Click
-</b-text-button>`;
+      Click
+</b-text-button>
+
+<a b-text-button
+              [routerLink]="someRoute"
+              [button]="{
+                type: type,
+                 text: text,
+                 icon: icon,
+                 disabled: disabled
+              }">
+      Go to profile
+</a>`;
 
 const note = `
   ## Text Button Element

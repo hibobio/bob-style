@@ -1,3 +1,5 @@
+import { EventEmitter } from '@angular/core';
+
 export interface MasonryConfig {
   columns?: number;
   columnWidth?: number;
@@ -8,12 +10,20 @@ export interface MasonryConfig {
 export interface MasonryState {
   hostWidth?: number;
   columns?: number;
-  childrenCount?: number;
+  itemsCount?: number;
   singleColumn?: boolean;
   config?: MasonryConfig;
 }
 
-export interface MasonryItemsChangedEvent {
-  totalItems: number;
+export interface MasonryItemsChangedEvent extends MasonryState {
   updatedItems: HTMLElement[];
+  host: HTMLElement;
+}
+
+export interface MasonryUpdateConfig {
+  host: HTMLElement;
+  config: MasonryConfig;
+  state: MasonryState;
+  emitter?: EventEmitter<MasonryItemsChangedEvent>;
+  debug?: boolean;
 }

@@ -19,17 +19,17 @@ const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
   withKnobs
 );
 
-const template = `
-<b-button (clicked)="onClick($event)"
+const template = `<b-button
           [type]="type"
           [size]="size"
           [text]="text"
           [disabled]="disabled"
           [active]="active"
-          [preloader]="preloader">
+          [preloader]="preloader"
+          (clicked)="onClick($event)">
 </b-button>
 
-<b-button (clicked)="onClick($event)"
+<a b-button href="javascript:void()"
           [button]="{
             type: type,
             size: size,
@@ -38,25 +38,28 @@ const template = `
             disabled: disabled,
             active: active,
             preloader: preloader
-          }">
-</b-button>
-`;
+          }"
+          (clicked)="onClick($event)">
+</a>`;
 
 const templForNotes = `<b-button [type]="type"
             [size]="size"
             [text]="text"
             [disabled]="disabled"
             (clicked)="onClick($event)">
-    Click me
+      Click me
 </b-button>
 
-<b-button [button]="{
+<a b-button
+            [routerLink]="someRoute"
+            [button]="{
+              type: type,
               text: text,
               icon: icon,
               preloader: preloader
-            }"
-            (clicked)="onClick($event)">
-</b-button>`;
+            }">
+      Go to profile
+</a>`;
 
 const note = `
   ## Button Element
@@ -73,7 +76,7 @@ const note = `
   [type] | ButtonType | button type | primary
   [size] | ButtonSize | button size | medium
   [icon] | Icons | button icon | &nbsp;
-  [preloader] | Boolean | if true, will hide text and show preloader animation
+  [preloader] | Boolean | if true, will hide text and show preloader animation | &nbsp;
 
   ${buttonsProps}
 `;
