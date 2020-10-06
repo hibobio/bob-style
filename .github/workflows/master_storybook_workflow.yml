@@ -1,24 +1,25 @@
-name: pull request workflow
+name: master storybook workflow
 
 on:
-  pull_request:
+  push:
     branches:
       - master
 env:
-  CI_COMMIT_ID: pr-${{github.event.pull_request.head.sha}}
   CI_COMMITTER_NAME: ${{github.actor}}
   CI_BRANCH: ${{github.ref}}
 jobs:
-  test:
+  deploy-storybook:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.5.0
         with:
-          access_token: ${{ github.token }}
+          access_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
@@ -42,44 +43,12 @@ jobs:
         run: npm ci
       - name: install bob-style
         run: npm install bob-style --no-save
-      - name: test
-        run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadless
       - name: build storybook
         run: npm run build-storybook
-  bump-version:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-    steps:
-      - uses: actions/checkout@v2
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@3.6.2
         with:
-          fetch-depth: 50
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.5.0
-        with:
-          access_token: ${{ github.token }}
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-      - uses: marceloprado/has-changed-path@v1
-        id: new-version
-        with:
-          paths: projects/ui-framework/package.json
-      - name: bump version
-        if: steps.new-version.outputs.changed != 'true'
-        run: |
-          cd ./projects/ui-framework
-          npm version patch --no-git-tag-version
-          cd ../..
-      - name: comit new version
-        if: steps.new-version.outputs.changed != 'true'
-        uses: EndBug/add-and-commit@v5
-        with:
-          author_name: Deployment Bot
-          author_email: bot@hibob.io
-          message: "bump version"
-          add: "*.json"
-        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: .out # The folder the action should deploy.
+          CLEAN: true # Automatically remove deleted files from the deploy branch
