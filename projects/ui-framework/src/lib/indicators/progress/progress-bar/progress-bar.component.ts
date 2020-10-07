@@ -42,6 +42,7 @@ export class ProgressBarComponent extends BaseProgressElement
           ? this.data?.value && this.data.value + '%'
           : null,
       '--bpb-color': this.data?.color || null,
+      '--bpd-track-color': this.data?.trackColor || null,
       '--bpb-trans': this.config?.disableAnimation
         ? '0s'
         : (this.data?.value > 50

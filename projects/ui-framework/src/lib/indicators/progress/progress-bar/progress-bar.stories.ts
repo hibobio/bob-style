@@ -29,6 +29,7 @@ const template = `
                   [size]="size"
                   [data]="{
                     color: color,
+                    trackColor: trackColor,
                     value: value,
                     headerTextPrimary: headerTextPrimary || false,
                     headerTextSecondary: headerTextSecondary,
@@ -288,6 +289,21 @@ hideValue = true`,
           0
         ),
         value: number('value', randomNumber(20, 80)),
+
+        trackColor: select(
+          'trackColor',
+          [
+            0,
+            'rgba(200, 200, 200, 0.15)',
+            'rgba(157,157,157, 0.15)',
+            'rgba(255,150,43, 0.15)',
+            'rgba(248,188,32, 0.15)',
+            'rgba(23,180,86, 0.15)',
+            'rgba(229,44,81, 0.15)',
+            'rgba(75,149,236, 0.15)',
+          ],
+          'rgba(200, 200, 200, 0.15)'
+        ),
 
         headerTextPrimary: text(
           'headerTextPrimary',

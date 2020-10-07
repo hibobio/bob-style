@@ -214,8 +214,8 @@ export abstract class BaseListElement
 
     if (hasChanges(changes, ['maxHeight', 'options'], true)) {
       this.maxHeightItems =
-        Math.round((this.maxHeight || 0) / LIST_EL_HEIGHT) * LIST_EL_HEIGHT ||
-        LIST_MAX_ITEMS;
+        Math.round((this.maxHeight || 0) / LIST_EL_HEIGHT) || LIST_MAX_ITEMS;
+
       this.maxHeight = this.maxHeightItems * LIST_EL_HEIGHT;
 
       this.DOM.setCssProps(this.host.nativeElement, {

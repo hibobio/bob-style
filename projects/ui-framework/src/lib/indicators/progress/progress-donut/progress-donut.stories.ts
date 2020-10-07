@@ -18,8 +18,10 @@ const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
 
 const template = `
   <b-progress-donut [size]="size"
+                  [customSize]="customSize"
                   [data]="{
                     color: color,
+                    trackColor: trackColor,
                     value: value,
                     headerTextPrimary: headerTextPrimary || false,
                     headerTextSecondary: headerTextSecondary
@@ -151,12 +153,28 @@ story.add(
         ProgressSize: ProgressSize,
 
         size: select('size', Object.values(ProgressSize), ProgressSize.medium),
+        customSize: number('customSize', 0),
         color: select(
           'color',
           ['#9d9d9d', '#ff962b', '#f8bc20', '#17b456', '#e52c51', '#4b95ec'],
           '#4b95ec'
         ),
         value: number('value', randomNumber(20, 80)),
+
+        trackColor: select(
+          'trackColor',
+          [
+            0,
+            'rgba(200, 200, 200, 0.15)',
+            'rgba(157,157,157, 0.15)',
+            'rgba(255,150,43, 0.15)',
+            'rgba(248,188,32, 0.15)',
+            'rgba(23,180,86, 0.15)',
+            'rgba(229,44,81, 0.15)',
+            'rgba(75,149,236, 0.15)',
+          ],
+          'rgba(200, 200, 200, 0.15)'
+        ),
 
         headerTextPrimary: text('headerTextPrimary', ''),
         headerTextSecondary: text('headerTextSecondary', 'Have voted'),

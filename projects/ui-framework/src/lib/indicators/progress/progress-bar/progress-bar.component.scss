@@ -82,7 +82,11 @@ p {
 }
 
 .bpb-bar {
-  @include progress-bar(horizontal, 'bpb');
+  @include progress-bar(
+    horizontal,
+    'bpb',
+    var(--bpd-track-color, #{$progress-bar-track-color-def})
+  );
 }
 
 .bpb-header,

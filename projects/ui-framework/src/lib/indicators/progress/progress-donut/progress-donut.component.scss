@@ -68,7 +68,10 @@ p {
 }
 
 .bpd-donut {
-  @include progress-donut($slctr-prfx: 'bpd', $trackColor: $grey-400);
+  @include progress-donut(
+    $slctr-prfx: 'bpd',
+    $trackColor: var(--bpd-track-color, #{$grey-400})
+  );
 }
 
 :host {

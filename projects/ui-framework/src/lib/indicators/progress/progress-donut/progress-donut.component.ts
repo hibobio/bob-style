@@ -6,11 +6,13 @@ import {
   ChangeDetectorRef,
   SimpleChanges,
   OnInit,
+  Input,
 } from '@angular/core';
 import {
   simpleUID,
   randomNumber,
   roundToDecimals,
+  hasChanges,
 } from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { BaseProgressElement } from '../progress-element.abstract';
@@ -19,6 +21,7 @@ import {
   ProgressDonutStrokeWidth,
 } from '../progress.const';
 import { MutationObservableService } from '../../../services/utils/mutation-observable';
+import { ProgressSize } from '../progress.enum';
 
 @Component({
   selector: 'b-progress-donut',
@@ -38,6 +41,8 @@ export class ProgressDonutComponent extends BaseProgressElement
     super(host, DOM, zone, cd, mutationObservableService);
   }
 
+  @Input() customSize: number;
+
   readonly id = simpleUID('bpd-');
 
   public diameter: number;
@@ -45,7 +50,7 @@ export class ProgressDonutComponent extends BaseProgressElement
   public circumference: number;
 
   onNgChanges(changes: SimpleChanges): void {
-    if (changes.size && this.host) {
+    if (hasChanges(changes, ['size', 'customSize']) && this.host) {
       this.setCircleLengths();
     }
   }
@@ -58,8 +63,17 @@ export class ProgressDonutComponent extends BaseProgressElement
   }
 
   private setCircleLengths(): void {
-    this.diameter = ProgressDonutDiameter[this.size];
-    this.strokeWidth = ProgressDonutStrokeWidth[this.size];
+    this.diameter =
+      this.customSize > 0
+        ? this.customSize
+        : ProgressDonutDiameter[this.size || ProgressSize.medium];
+    this.strokeWidth =
+      this.customSize > 0
+        ? this.customSize <= 50
+          ? this.customSize * 0.16
+          : this.customSize * 0.12
+        : ProgressDonutStrokeWidth[this.size || ProgressSize.medium];
+
     this.circumference = roundToDecimals(
       2 * 3.142 * (this.diameter / 2 - this.strokeWidth / 2),
       3
@@ -78,6 +92,7 @@ export class ProgressDonutComponent extends BaseProgressElement
           : 1,
 
       '--bpd-color': this.data.color || null,
+      '--bpd-track-color': this.data.trackColor || null,
       '--bpd-trans': this.config.disableAnimation
         ? '0s'
         : (this.data.value > 50
