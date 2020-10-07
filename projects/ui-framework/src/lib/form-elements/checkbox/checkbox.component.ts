@@ -51,8 +51,8 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
 
   // tslint:disable-next-line: no-output-rename
   @Output('checkboxChange') changed: EventEmitter<
-    InputEvent
-  > = new EventEmitter<InputEvent>();
+    InputEvent<boolean>
+  > = new EventEmitter<InputEvent<boolean>>();
 
   readonly icons = Icons;
   readonly iconColor = IconColor;

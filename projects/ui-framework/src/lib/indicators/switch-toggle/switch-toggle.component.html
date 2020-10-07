@@ -1,6 +1,20 @@
-<mat-slide-toggle [disableRipple]="true"
-                  (change)="onChange($event)"
-                  [checked]="isChecked"
-                  [disabled]="isDisabled">
-  <ng-content></ng-content>
-</mat-slide-toggle>
+<label *ngIf="label && placeholder"
+       class="bfe-label">{{label}}</label>
+
+<div class="bfe-wrap"
+     [attr.id]="id">
+  <mat-slide-toggle [disableRipple]="true"
+                    (change)="onChange($event)"
+                    [checked]="value"
+                    [disabled]="disabled">
+    <span>{{ placeholder || label }}</span>
+    <ng-content></ng-content>
+  </mat-slide-toggle>
+</div>
+
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled"></p>

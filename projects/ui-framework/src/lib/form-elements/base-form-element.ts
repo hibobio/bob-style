@@ -68,6 +68,9 @@ export abstract class BaseFormElement
   @Input() set isDisabled(disabled: boolean) {
     this.disabled = Boolean(disabled);
   }
+  get isDisabled() {
+    return this.disabled;
+  }
 
   @Input('spec') set setProps(spec: FormElementSpec) {
     if (isObject(spec)) {

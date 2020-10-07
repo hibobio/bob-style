@@ -1,7 +1,7 @@
 import { InputEventType } from '../form-elements.enum';
 
-export interface InputEvent {
+export interface InputEvent<T = any> {
   event: InputEventType;
-  value: any;
+  value: T;
   [key: string]: any;
 }

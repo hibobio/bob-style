@@ -9,7 +9,7 @@ Name | Type | Description | Default
 [warnMessage] | string | hint text | &nbsp;
 [errorMessage] | string | error text | &nbsp;
 &nbsp; | &nbsp; | &nbsp; | &nbsp;
-[disabled] | boolean | is field disabled | false
+[disabled] / [isDisabled] | boolean | is field disabled | false
 [required] | boolean | is field required | false
 [readonly] | boolean | if true, will not emit events and not allow any changes | false
 [size] | FormElementSize | regular height (44px), smaller height (36px) | regular

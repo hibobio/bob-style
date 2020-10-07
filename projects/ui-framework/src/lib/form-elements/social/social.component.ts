@@ -80,8 +80,8 @@ export class SocialComponent extends BaseFormElement
 
   // tslint:disable-next-line: no-output-rename
   @Output('socialInputChange') changed: EventEmitter<
-    InputEvent
-  > = new EventEmitter<InputEvent>();
+    InputEvent<string>
+  > = new EventEmitter<InputEvent<string>>();
 
   public inputId: string | number;
   public narrowInput = false;

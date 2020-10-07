@@ -63,7 +63,7 @@ export class RadioButtonComponent extends BaseFormElement
       (value) => valueInArrayOrFail(value, this.options, this.key),
     ];
     this.outputTransformers = [
-      (value) =>
+      (value: RadioConfig) =>
         !isNullOrUndefined(value) && hasProp(value, 'id')
           ? value.id
           : undefined,
@@ -85,9 +85,9 @@ export class RadioButtonComponent extends BaseFormElement
   readonly key = 'id';
 
   // tslint:disable-next-line: no-output-rename
-  @Output('radioChange') changed: EventEmitter<InputEvent> = new EventEmitter<
-    InputEvent
-  >();
+  @Output('radioChange') changed: EventEmitter<
+    InputEvent<number | string>
+  > = new EventEmitter<InputEvent<number | string>>();
 
   readonly icons = Icons;
   readonly iconColor = IconColor;

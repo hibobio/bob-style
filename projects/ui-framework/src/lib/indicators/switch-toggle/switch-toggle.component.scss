@@ -1,9 +1,22 @@
 @import '../../style/common-imports';
 
 :host {
-  display: block;
-  min-width: 0;
+  display: flex;
+  flex-direction: column;
   text-align: left;
+  min-width: 0;
+
+  @include form-element-margins;
+}
+
+.bfe-wrap {
+  display: flex;
+  align-items: center;
+  min-height: $wrap-height;
+}
+
+.bfe-label {
+  @include bFormElement-label;
 }
 
 :host ::ng-deep {
