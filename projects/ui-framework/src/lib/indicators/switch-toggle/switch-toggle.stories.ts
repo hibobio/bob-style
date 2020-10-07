@@ -20,15 +20,16 @@ const story2 = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
 
 const template = `<b-switch-toggle [label]="label"
                  [placeholder]="placeholder"
-                 [isChecked]="isChecked"
-                 [disabled]="isDisabled"
+                 [value]="isChecked"
+                 [disabled]="disabled"
+                 [required]="required"
                  [hintMessage]="hintMessage"
                  [warnMessage]="warnMessage"
                  [errorMessage]="errorMessage"
                  (changed)="onChange($event)">
 </b-switch-toggle>`;
 
-const template2 = `<b-switch-toggle [isDisabled]="isDisabled"
+const template2 = `<b-switch-toggle [isDisabled]="disabled"
                  [isChecked]="isChecked"
                  (switchChange)="onSwitchChange($event)">
   Toggle this!

@@ -38,7 +38,12 @@ export class SwitchToggleComponent extends BaseFormElement {
   }
 
   @HostBinding('attr.data-form-element') get isFormElement() {
-    return this.formControlName || this.label || this.placeholder;
+    return Boolean(
+      this.formControlName ||
+        this.label ||
+        this.placeholder ||
+        this.required !== undefined
+    );
   }
 
   @Input() set isChecked(checked: boolean) {

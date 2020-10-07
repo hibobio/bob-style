@@ -9,14 +9,25 @@
   @include form-element-margins;
 }
 
-.bfe-wrap {
-  display: flex;
-  align-items: center;
-  min-height: $wrap-height;
-}
-
 .bfe-label {
   @include bFormElement-label;
+}
+:host.required.has-label {
+  .bfe-label {
+    @include input-required;
+  }
+}
+
+:host[data-form-element='true'] {
+  .bfe-wrap {
+    display: flex;
+    align-items: center;
+    min-height: $wrap-height;
+  }
+
+  &[data-size='smaller'] {
+    min-height: $wrap-height-smaller;
+  }
 }
 
 :host ::ng-deep {
