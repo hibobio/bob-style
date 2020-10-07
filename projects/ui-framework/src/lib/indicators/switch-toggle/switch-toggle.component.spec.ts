@@ -1,5 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
+import {
+  MatSlideToggleChange,
+  MatSlideToggleModule,
+} from '@angular/material/slide-toggle';
 import { SwitchToggleComponent } from './switch-toggle.component';
 
 describe('SwitchToggleComponent', () => {
@@ -8,13 +11,14 @@ describe('SwitchToggleComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SwitchToggleComponent ],
+      declarations: [SwitchToggleComponent],
       imports: [MatSlideToggleModule],
     })
-    .compileComponents()
+      .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(SwitchToggleComponent);
         component = fixture.componentInstance;
+        component.switchChange.subscribe(() => {});
         spyOn(component.switchChange, 'emit');
         fixture.detectChanges();
       });
@@ -24,7 +28,9 @@ describe('SwitchToggleComponent', () => {
     expect(component).toBeTruthy();
   });
   it('Should call changed callback', () => {
+    component.switchChange.subscribe(() => {});
     component.onChange({ checked: true } as MatSlideToggleChange);
     expect(component.switchChange.emit).toHaveBeenCalled();
+    component.switchChange.unsubscribe();
   });
 });
