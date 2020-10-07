@@ -23,7 +23,7 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { PanelPositionService } from './panel-position-service/panel-position.service';
 import { Subscription } from 'rxjs';
 import { PanelDefaultPosVer, PanelSize } from './panel.enum';
-import { concat, compact, get, debounce, isEqual } from 'lodash';
+import { concat, compact, get, debounce, isEqual, invoke } from 'lodash';
 import { UtilsService } from '../../services/utils/utils.service';
 import { isKey, isDomElement } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
@@ -161,13 +161,13 @@ export class PanelComponent implements OnInit, OnDestroy {
     this.mouseEnterDebounce?.cancel();
     this.mouseLeaveDebounce?.cancel();
     if (this.overlayRef) {
-      this.overlayRef.dispose();
+      invoke(this.overlayRef, 'dispose');
       this.backdropClickSubscriber?.unsubscribe();
       this.positionChangeSubscriber?.unsubscribe();
       this.windowKeydownSubscriber?.unsubscribe();
       this.panelConfig = {};
-      this.templatePortal = null;
-      this.overlayRef = null;
+      this.templatePortal = undefined;
+      this.overlayRef = undefined;
       this.closed.emit();
     }
   }

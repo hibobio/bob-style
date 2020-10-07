@@ -15,7 +15,6 @@ import {
   stringify,
   isEmptyArray,
 } from './functional-utils';
-
 import { format, parseISO } from 'date-fns';
 import { InputTypes } from '../../form-elements/input/input.enum';
 import { SERVER_DATE_FORMAT } from '../../consts';

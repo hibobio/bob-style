@@ -1213,7 +1213,7 @@ export const prefetchSharedObservables = (
           }
         },
         (err) => {
-          console.warn(
+          console.error(
             '[prefetchSharedObservables] failed:',
             err?.error?.error || err?.error || err
           );

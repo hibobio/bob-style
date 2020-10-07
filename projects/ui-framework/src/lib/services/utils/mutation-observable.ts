@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { merge, Observable, Subscriber } from 'rxjs';
+import { merge, Observable, of, Subscriber } from 'rxjs';
 import {
   WindowRef,
   WindowLike,
   ResizeObserverInstance,
 } from './window-ref.service';
-import { isDomElement, pass } from './functional-utils';
+import { getType, isDomElement, pass } from './functional-utils';
 import { DOMhelpers } from '../html/dom-helpers.service';
 import { UtilsService } from './utils.service';
 import {
@@ -76,6 +76,15 @@ export class MutationObservableService {
     config: MutationObservableConfig = MUTATION_OBSERVABLE_CONFIG_DEF
   ): Observable<Set<HTMLElement>> {
     //
+    if (!isDomElement(element)) {
+      console.error(
+        `[MutationObservableService.getMutationObservable]: valid element to observe was not provided - got "${getType(
+          element
+        )}" instead`
+      );
+      return of(new Set());
+    }
+
     return new Observable((subscriber: Subscriber<Set<HTMLElement>>) => {
       const mutationObserver: MutationObserver = new this.nativeWindow.MutationObserver(
         (mutations: MutationRecord[]) => {
@@ -106,6 +115,14 @@ export class MutationObservableService {
     config: ResizeObservableConfig = RESIZE_OBSERVERVABLE_CONFIG_DEF
   ): Observable<Partial<DOMRectReadOnly>> {
     //
+    if (!isDomElement(element)) {
+      console.error(
+        `[MutationObservableService.getResizeObservervable]: valid element to observe was not provided - got "${getType(
+          element
+        )}" instead`
+      );
+      return of({ width: 0, height: 0 });
+    }
 
     if (!this.nativeWindow.ResizeObserver) {
       console.warn(
@@ -171,6 +188,19 @@ export class MutationObservableService {
     observer: IntersectionObserver = null
   ): Observable<IntersectionObserverableEntry> {
     //
+    if (!isDomElement(element)) {
+      console.error(
+        `[MutationObservableService.getIntersectionObservable]: valid element to observe was not provided - got "${getType(
+          element
+        )}" instead`
+      );
+      return of({
+        target: element,
+        isIntersecting: false,
+        isVisible: false,
+      } as any);
+    }
+
     if (
       !('IntersectionObserver' in this.nativeWindow) ||
       !('IntersectionObserverEntry' in this.nativeWindow) ||

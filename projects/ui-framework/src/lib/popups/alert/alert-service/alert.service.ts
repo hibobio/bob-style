@@ -61,9 +61,7 @@ export class AlertService {
 
   public closeAlertCallback(): void {
     this.isOpen = false;
-    if (this.overlayRef) {
-      this.overlayRef.dispose();
-    }
+    this.overlayRef?.dispose();
     clearTimeout(this.timeRef);
   }
 }

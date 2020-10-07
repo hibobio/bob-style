@@ -78,7 +78,7 @@ export abstract class BaseFormElement
       ].filter((p) => spec[p]);
 
       if (errorProps.length) {
-        console.warn(
+        console.error(
           `[BaseFormElement.spec]: <${errorProps}> ${
             errorProps.length > 1 ? 'are' : 'is'
           } not allowed in [spec] input and should be ${

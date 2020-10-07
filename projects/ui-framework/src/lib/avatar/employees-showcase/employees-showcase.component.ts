@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -17,7 +16,6 @@ import {
 } from '@angular/core';
 import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarSize } from '../avatar/avatar.enum';
-import { UtilsService } from '../../services/utils/utils.service';
 import {
   AvatarGap,
   SHUFFLE_EMPLOYEES_INTERVAL,
@@ -32,11 +30,11 @@ import {
   applyChanges,
   notFirstChanges,
   hasChanges,
-  isNumber,
 } from '../../services/utils/functional-utils';
 import { EmployeesShowcaseService } from './employees-showcase.service';
 import { Avatar } from '../avatar/avatar.interface';
 import { SingleSelectPanelComponent } from '../../lists/single-select-panel/single-select-panel.component';
+import { MutationObservableService } from '../../services/utils/mutation-observable';
 
 @Component({
   selector: 'b-employees-showcase',
@@ -45,15 +43,17 @@ import { SingleSelectPanelComponent } from '../../lists/single-select-panel/sing
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmployeesShowcaseComponent
-  implements OnInit, OnChanges, OnDestroy, AfterViewInit {
+  implements OnInit, OnChanges, OnDestroy {
   constructor(
     private showcaseSrvc: EmployeesShowcaseService,
-    private utilsService: UtilsService,
+    private mutationObservableService: MutationObservableService,
     private host: ElementRef,
     private DOM: DOMhelpers,
     private zone: NgZone,
     private cd: ChangeDetectorRef
-  ) {}
+  ) {
+    this.hostEl = this.host.nativeElement;
+  }
 
   @ViewChild(SingleSelectPanelComponent)
   selectPanel: SingleSelectPanelComponent;
@@ -61,7 +61,7 @@ export class EmployeesShowcaseComponent
   @Input() employees: EmployeeShowcase[] | SelectGroupOption[] = [];
   @Input() avatarSize: AvatarSize = AvatarSize.mini;
   @Input() min = 3;
-  @Input() max = 15;
+  @Input() max = 10;
 
   @Input() doShuffle = false;
   @Input() showTotal = true;
@@ -104,15 +104,16 @@ export class EmployeesShowcaseComponent
     color: IconColor.dark,
   };
 
+  private hostEl: HTMLElement;
   private avatarsToFit = 0;
   private clientWidth = 0;
-  private resizeEventSubscriber: Subscription;
   private intervalSubscriber: Subscription;
+  private subs: Subscription[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes, {
       min: 3,
-      max: 15,
+      max: 10,
       employees: [],
       avatarSize: AvatarSize.mini,
     });
@@ -129,35 +130,30 @@ export class EmployeesShowcaseComponent
   ngOnInit(): void {
     this.initShowcase();
 
-    this.resizeEventSubscriber = this.utilsService
-      .getResizeEvent()
-      .pipe(outsideZone(this.zone))
-      .subscribe(() => {
-        this.initShowcase();
-      });
+    if (this.max > 0 && this.min !== this.max) {
+      this.subs.push(
+        this.mutationObservableService
+          .getResizeObservervable(this.hostEl, {
+            watch: 'width',
+            threshold: 15,
+          })
+          .pipe(outsideZone(this.zone))
+          .subscribe(() => {
+            this.initShowcase();
+          })
+      );
+    }
 
     if (!this.employeeListOptions) {
       this.setViewModels();
     }
   }
 
-  ngAfterViewInit(): void {
-    this.zone.runOutsideAngular(() => {
-      setTimeout(() => {
-        this.initShowcase();
-      }, 1000);
-    });
-  }
-
   ngOnDestroy(): void {
-    if (this.resizeEventSubscriber) {
-      this.resizeEventSubscriber.unsubscribe();
-      this.resizeEventSubscriber = null;
-    }
-    if (this.intervalSubscriber) {
-      this.intervalSubscriber.unsubscribe();
-      this.intervalSubscriber = null;
-    }
+    this.subs.forEach((sub) => {
+      sub.unsubscribe();
+    });
+    this.subs.length = 0;
   }
 
   onSelectChange(listChange: ListChange): void {
@@ -165,11 +161,11 @@ export class EmployeesShowcaseComponent
   }
 
   public initShowcase(): void {
-    if (isNumber(this.min) && isNumber(this.max) && this.min === this.max) {
+    if (this.max > 0 && this.min === this.max) {
       this.avatarsToFit = Math.min(this.max, this.totalAvatars);
     } else {
       this.clientWidth = this.DOM.getClosest(
-        this.host.nativeElement,
+        this.hostEl,
         this.DOM.getInnerWidth,
         'result'
       );
@@ -195,7 +191,7 @@ export class EmployeesShowcaseComponent
       this.totalAvatars > 1;
     // && this.avatarsToFit < this.totalAvatars;
 
-    this.DOM.setCssProps(this.host.nativeElement, {
+    this.DOM.setCssProps(this.hostEl, {
       '--avatar-size': this.avatarSize + 'px',
       '--avatar-count': this.avatarsToFit,
       '--avatar-gap': '-' + AvatarGap[this.avatarSize] + 'px',
@@ -212,18 +208,17 @@ export class EmployeesShowcaseComponent
       this.avatarSize >= AvatarSize.medium &&
       this.avatarsToFit < this.totalAvatars
     ) {
-      if (!this.intervalSubscriber) {
+      if (!this.intervalSubscriber || this.intervalSubscriber.closed) {
         this.zone.runOutsideAngular(() => {
-          this.intervalSubscriber = interval(
-            SHUFFLE_EMPLOYEES_INTERVAL
-          ).subscribe(() => this.shuffleAvatars());
+          this.subs.push(
+            (this.intervalSubscriber = interval(
+              SHUFFLE_EMPLOYEES_INTERVAL
+            ).subscribe(() => this.shuffleAvatars()))
+          );
         });
       }
     } else {
-      if (this.intervalSubscriber) {
-        this.intervalSubscriber.unsubscribe();
-        this.intervalSubscriber = null;
-      }
+      this.intervalSubscriber?.unsubscribe();
     }
 
     if (!this.cd['destroyed']) {

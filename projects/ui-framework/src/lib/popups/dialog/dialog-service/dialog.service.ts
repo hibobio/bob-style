@@ -21,8 +21,9 @@ export class DialogService {
     config: DialogConfig
   ): MatDialogRef<any> {
     if (!config.panelClass) {
-      console.warn('DialogService: panelClass must be provided');
-      return;
+      console.warn(
+        'DialogService: panelClass should be provided and it was not'
+      );
     }
 
     const scrollBarGap =
@@ -41,7 +42,7 @@ export class DialogService {
           'b-dialog-panel',
           `size-${config.size}`,
           config.panelClass,
-        ],
+        ].filter(Boolean),
       }
     );
 

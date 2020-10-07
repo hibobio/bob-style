@@ -138,7 +138,7 @@ to get the right avatar image.`);
     }
 
     if (this.host.getAttribute('data-tooltip')) {
-      console.warn(`AvatarImageComponent: You can not use data-tooltip attribute
+      console.error(`AvatarImageComponent: You can not use data-tooltip attribute
 on b-avatar-image element.`);
       this.host.removeAttribute('data-tooltip');
     }
