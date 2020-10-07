@@ -21,7 +21,7 @@ import { MASONRY_CONFIG_DEF } from './masonry.const';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
 
 @Component({
-  selector: 'b-masonry-item',
+  selector: 'b-masonry-item, [b-masonry-item]',
   template: `<ng-content></ng-content>`,
   styles: [],
 })

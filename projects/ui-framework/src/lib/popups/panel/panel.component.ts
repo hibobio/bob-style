@@ -23,7 +23,7 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { PanelPositionService } from './panel-position-service/panel-position.service';
 import { Subscription } from 'rxjs';
 import { PanelDefaultPosVer, PanelSize } from './panel.enum';
-import { concat, compact, get, invoke, debounce, isEqual } from 'lodash';
+import { concat, compact, get, debounce, isEqual } from 'lodash';
 import { UtilsService } from '../../services/utils/utils.service';
 import { isKey, isDomElement } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
@@ -106,14 +106,14 @@ export class PanelComponent implements OnInit, OnDestroy {
   }
 
   onMouseEnter(): void {
-    this.mouseLeaveDebounce.cancel();
+    this.mouseLeaveDebounce?.cancel();
     if (!this.overlayRef) {
       this.mouseEnterDebounce();
     }
   }
 
   onMouseLeave(): void {
-    this.mouseEnterDebounce.cancel();
+    this.mouseEnterDebounce?.cancel();
     if (this.overlayRef) {
       this.mouseLeaveDebounce();
     }
@@ -158,13 +158,13 @@ export class PanelComponent implements OnInit, OnDestroy {
   }
 
   private destroyPanel(): void {
-    this.mouseEnterDebounce.cancel();
-    this.mouseLeaveDebounce.cancel();
+    this.mouseEnterDebounce?.cancel();
+    this.mouseLeaveDebounce?.cancel();
     if (this.overlayRef) {
-      invoke(this.overlayRef, 'dispose');
-      invoke(this.backdropClickSubscriber, 'unsubscribe');
-      invoke(this.positionChangeSubscriber, 'unsubscribe');
-      invoke(this.windowKeydownSubscriber, 'unsubscribe');
+      this.overlayRef.dispose();
+      this.backdropClickSubscriber?.unsubscribe();
+      this.positionChangeSubscriber?.unsubscribe();
+      this.windowKeydownSubscriber?.unsubscribe();
       this.panelConfig = {};
       this.templatePortal = null;
       this.overlayRef = null;

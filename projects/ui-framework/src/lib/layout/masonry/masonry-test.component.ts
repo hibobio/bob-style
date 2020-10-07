@@ -20,7 +20,7 @@ import { mockImage } from '../../mock.const';
     <div>
       <h3>{{ title$ | async }}</h3>
       <div *ngIf="dice">
-        <img #imgEl [src]="img$ | async" />
+        <img #imgEl [src]="img$ | async" loading="lazy" />
       </div>
       <p>{{ text$ | async }}</p>
     </div>

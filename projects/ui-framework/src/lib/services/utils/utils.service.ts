@@ -1,17 +1,8 @@
 import { Injectable } from '@angular/core';
-import { fromEvent, Observable, merge, Observer } from 'rxjs';
-import {
-  map,
-  share,
-  throttleTime,
-  startWith,
-  distinctUntilChanged,
-  flatMap,
-  delay,
-} from 'rxjs/operators';
+import { fromEvent, Observable } from 'rxjs';
+import { map, share, throttleTime } from 'rxjs/operators';
 import { WindowRef } from './window-ref.service';
 import { ScrollEvent } from './utils.interface';
-import { DOMhelpers } from '../html/dom-helpers.service';
 
 export interface WinResizeEvent {
   innerWidth: number;
@@ -112,8 +103,8 @@ export class UtilsService {
     smooth = false
   ): void {
     const scrollToTop =
-      element.getBoundingClientRect().top +
       this.windowRef.nativeWindow.scrollY +
+      element.getBoundingClientRect().top +
       offset;
     this.windowScrollTo(scrollToTop, smooth);
   }

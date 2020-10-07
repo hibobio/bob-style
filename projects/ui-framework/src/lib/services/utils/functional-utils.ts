@@ -179,10 +179,13 @@ export const closestNumber = (val: number, from: number[]): number => {
   ];
 };
 
-export const closestDivisable = (val: number, step: number): number => {
+export const closestDivisable = (val: number, step: number = 1): number => {
+  const polarity = val < 0 ? -1 : 1;
+  val = Math.abs(val || 0);
+  step = Math.abs(step || 1);
   const c1 = val - (val % step);
   const c2 = val + step - (val % step);
-  return val - c1 > c2 - val ? c2 : c1;
+  return (val - c1 > c2 - val ? c2 : c1) * polarity;
 };
 
 // ----------------------
