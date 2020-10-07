@@ -30,7 +30,7 @@ const template = `<b-switch-toggle [label]="label"
 </b-switch-toggle>`;
 
 const template2 = `<b-switch-toggle [isDisabled]="disabled"
-                 [isChecked]="isChecked"
+                 [isChecked]="!isChecked"
                  (switchChange)="onSwitchChange($event)">
   Toggle this!
 </b-switch-toggle>`;
@@ -82,7 +82,13 @@ const toAdd = () => ({
     }),
     onChange: action('changed'),
     isChecked: boolean('value (aka isChecked)', true),
-    ...FormElementsCommonProps('You have to', 'Switch this'),
+    ...FormElementsCommonProps(
+      'You have to',
+      'Switch this',
+      undefined,
+      undefined,
+      'Hint: use your mouse'
+    ),
   },
   moduleMetadata: {
     imports: [SwitchToggleModule, StoryBookLayoutModule],
