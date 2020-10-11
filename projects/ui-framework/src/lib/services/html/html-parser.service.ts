@@ -595,14 +595,13 @@ export class HtmlParserHelpers {
     returnDOM = true
   ): string | HTMLElement {
     const elm: HTMLElement = isDomElement(html) ? html : this.stringToDOM(html);
-
     const plainText = isString(html) ? html : elm.innerText;
 
     Object.keys(LANGUAGE_TESTS).forEach((key) => {
       if (!LANGUAGE_TESTS[key].test.test(plainText)) {
         return;
       }
-      const els = this.DOM.walkNodeTree(elm, {
+      this.DOM.walkNodeTree(elm, {
         take: TreeWalkerTake.textNodes,
         filter: (node: Node) =>
           node.nodeType !== 8 && LANGUAGE_TESTS[key].test.test(node.textContent)
