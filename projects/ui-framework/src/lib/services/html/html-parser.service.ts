@@ -612,7 +612,6 @@ export class HtmlParserHelpers {
             node.parentElement,
             LANGUAGE_TESTS[key].attributes
           );
-          return node.parentElement || node;
         },
       });
     });

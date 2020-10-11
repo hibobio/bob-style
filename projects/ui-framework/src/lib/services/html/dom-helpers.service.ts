@@ -598,10 +598,10 @@ export class DOMhelpers {
     );
 
     const nodes: Set<HTMLElement | Node> = new Set();
-    let n: HTMLElement | Node;
+    let node: HTMLElement | Node;
 
-    while ((n = walker.nextNode())) {
-      nodes.add((isFunction(config.forEach) && config.forEach(n)) || n);
+    while ((node = walker.nextNode())) {
+      nodes.add((isFunction(config.forEach) && config.forEach(node)) || node);
     }
 
     return Array.from(nodes);
