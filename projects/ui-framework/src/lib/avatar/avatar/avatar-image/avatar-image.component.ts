@@ -60,6 +60,7 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   @Input() size: AvatarSize = AvatarSize.mini;
   @Input() imageSource: string;
   @Input() backgroundColor: string;
+  @Input() border = false;
   @Input() icon: Icons | Icon;
   @Input() badge: AvatarBadge | Icon;
   @Input() text: string;
@@ -83,8 +84,14 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
       disabled: false,
     });
 
-    if (hasChanges(changes, ['size'], true)) {
-      this.size = valueAsNumber(true, this.size, AvatarSize.mini);
+    if (hasChanges(changes, ['size', 'setProps'], true)) {
+      this.size = valueAsNumber(
+        true,
+        this.size !== AvatarSize.mini
+          ? this.size || changes.setProps?.currentValue?.size
+          : changes.setProps?.currentValue?.size || this.size,
+        AvatarSize.mini
+      );
     }
 
     if (notFirstChanges(changes)) {
@@ -154,6 +161,7 @@ on b-avatar-image element.`);
 
     this.DOM.setAttributes(this.host, {
       role: 'img',
+      'data-border': this.border === true,
       'data-disabled': this.disabled || null,
       tabindex: isClickable && !this.disabled ? '0' : null,
       'data-badge-align':

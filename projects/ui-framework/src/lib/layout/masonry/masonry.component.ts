@@ -19,6 +19,7 @@ import { merge, Subscription, Observable } from 'rxjs';
 import { MasonryService } from './masonry.service';
 import { MASONRY_CONFIG_DEF } from './masonry.const';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
+import { cloneDeepSimpleObject } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-masonry-item, [b-masonry-item]',
@@ -45,7 +46,7 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
   @Input() debug = false;
 
   // tslint:disable-next-line: no-input-rename
-  @InputObservable({ ...MASONRY_CONFIG_DEF })
+  @InputObservable(cloneDeepSimpleObject(MASONRY_CONFIG_DEF))
   @Input('config')
   public config$: Observable<MasonryConfig>;
 

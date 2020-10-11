@@ -12,7 +12,8 @@
     <b-avatar-image *ngFor="let avatar of avatarsToShow; trackBy: trackBy"
                     class="showcase-avatar"
                     [avatar]="avatar"
-                    [size]="avatarSize || avatar.size">
+                    [size]="avatarSize"
+                    [border]="true">
     </b-avatar-image>
 
     <b-avatar-image class="show-more"
@@ -21,7 +22,8 @@
                     [icon]="dotsIcon"
                     [text]="totalAvatars < 10000
                       ?
-                      totalAvatars : null">
+                      totalAvatars : null"
+                    [border]="true">
     </b-avatar-image>
   </div>
 

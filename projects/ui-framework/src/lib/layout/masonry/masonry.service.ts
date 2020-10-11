@@ -4,7 +4,12 @@ import {
   MasonryState,
   MasonryUpdateConfig,
 } from './masonry.interface';
-import { isNumber, batchProcess } from '../../services/utils/functional-utils';
+import {
+  isNumber,
+  batchProcess,
+  joinArrays,
+  cloneDeepSimpleObject,
+} from '../../services/utils/functional-utils';
 import {
   MASONRY_CONFIG_DEF,
   MASONRY_GAP_DEF,
@@ -134,8 +139,17 @@ export class MasonryService {
 
   public processConfig(config: MasonryConfig): MasonryConfig {
     if (!config) {
-      return { ...MASONRY_CONFIG_DEF };
+      return cloneDeepSimpleObject(MASONRY_CONFIG_DEF);
     }
+
+    config.mutationObserverConfig = {
+      ...MASONRY_CONFIG_DEF.mutationObserverConfig,
+      ...config.mutationObserverConfig,
+    };
+    config.mutationObserverConfig.attributeFilter = joinArrays(
+      MASONRY_CONFIG_DEF.mutationObserverConfig.attributeFilter,
+      config.mutationObserverConfig?.attributeFilter
+    );
 
     config.gap = isNumber(config.gap) ? config.gap : MASONRY_GAP_DEF;
 

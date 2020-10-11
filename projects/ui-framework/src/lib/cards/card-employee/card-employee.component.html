@@ -3,6 +3,7 @@
   <b-avatar-image [size]="type === cardType.small ? avatarSize.small : avatarSize.medium"
                   [imageSource]="card.imageSource"
                   [isClickable]="isClickableCard()"
+                  [border]="true"
                   (clicked)="onClick($event)">
   </b-avatar-image>
 </div>

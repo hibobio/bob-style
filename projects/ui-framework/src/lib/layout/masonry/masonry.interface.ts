@@ -1,10 +1,13 @@
 import { EventEmitter } from '@angular/core';
+import { MutationObservableConfig } from '../../services/utils/mutation-observable';
 
 export interface MasonryConfig {
   columns?: number;
   columnWidth?: number;
   gap?: number;
   rowDivision?: number;
+  mutationObserverConfig?: MutationObservableConfig;
+  enableResizeObserverOnItems?: boolean;
 }
 
 export interface MasonryState {

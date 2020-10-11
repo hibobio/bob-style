@@ -4,6 +4,7 @@ import {
   WindowRef,
   WindowLike,
   ResizeObserverInstance,
+  ResizeObserverEntry,
 } from './window-ref.service';
 import { getType, isDomElement, pass } from './functional-utils';
 import { DOMhelpers } from '../html/dom-helpers.service';
@@ -161,7 +162,7 @@ export class MutationObservableService {
         let lastRect: Partial<DOMRectReadOnly> = { width: 0, height: 0 };
 
         const resizeObserver: ResizeObserverInstance = new this.nativeWindow.ResizeObserver(
-          (entries) => {
+          (entries: ResizeObserverEntry[]) => {
             const newRect = entries[entries.length - 1].contentRect;
 
             if (this.compareDOMRects(lastRect, newRect, config)) {

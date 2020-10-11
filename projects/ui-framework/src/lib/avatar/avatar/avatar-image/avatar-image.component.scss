@@ -5,13 +5,10 @@
 $avatarSizeMap: (
   mini: (
     '*': (
-      box-shadow: 0 1px 2px 0 $boxShadowColor,
       border-width: 2px,
       font-size: $font-size-caption,
     ),
-    '.has-hover:hover': (
-      box-shadow: 0 3px 6px 0 $boxShadowColor,
-    ),
+    '.has-hover:hover': (),
     ':after': (
       top: -2px,
       right: -5px,
@@ -23,13 +20,10 @@ $avatarSizeMap: (
   ),
   small: (
     '*': (
-      box-shadow: 0 1px 2px 0 $boxShadowColor,
       border-width: 2px,
       font-size: $font-size-big-body,
     ),
-    '.has-hover:hover': (
-      box-shadow: 0 3px 6px 0 $boxShadowColor,
-    ),
+    '.has-hover:hover': (),
     ':after': (
       top: 0,
       right: 0,
@@ -41,13 +35,10 @@ $avatarSizeMap: (
   ),
   medium: (
     '*': (
-      box-shadow: 0 2px 4px 0 $boxShadowColor,
       border-width: 3px,
       font-size: $font-size-display-4,
     ),
-    '.has-hover:hover': (
-      box-shadow: 0 6px 12px 0 $boxShadowColor,
-    ),
+    '.has-hover:hover': (),
     ':after': (
       top: 3px,
       right: -4px,
@@ -60,13 +51,10 @@ $avatarSizeMap: (
   ),
   large: (
     '*': (
-      box-shadow: 0 2px 4px 0 $boxShadowColor,
       border-width: 3px,
       font-size: $font-size-display-3,
     ),
-    '.has-hover:hover': (
-      box-shadow: 0 6px 12px 0 $boxShadowColor,
-    ),
+    '.has-hover:hover': (),
     ':after': (
       top: 6px,
       right: 2px,
@@ -79,13 +67,10 @@ $avatarSizeMap: (
   ),
   xlarge: (
     '*': (
-      box-shadow: 0 2px 4px 0 $boxShadowColor,
       border-width: 3px,
       font-size: $font-size-display-2,
     ),
-    '.has-hover:hover': (
-      box-shadow: 0 6px 12px 0 $boxShadowColor,
-    ),
+    '.has-hover:hover': (),
     ':after': (
       top: 0,
       right: -5px,
@@ -112,7 +97,7 @@ $avatarSizeMap: (
   text-align: center;
   position: relative;
   border-radius: 50%;
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition: transform 0.2s;
   border: 2px solid $white;
   background-size: cover;
   background-position: center;
@@ -207,5 +192,9 @@ $avatarSizeMap: (
         }
       }
     }
+  }
+
+  &[data-border='false'] {
+    border: 0;
   }
 }

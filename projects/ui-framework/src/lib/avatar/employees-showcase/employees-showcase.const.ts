@@ -3,8 +3,9 @@ import { AvatarSize } from '../avatar/avatar.enum';
 export const AvatarGap = {
   [AvatarSize.mini]: 22,
   [AvatarSize.small]: 35,
-  [AvatarSize.medium]: 26,
-  [AvatarSize.large]: 26,
+  [AvatarSize.medium]: 30,
+  [AvatarSize.large]: 35,
+  [AvatarSize.xlarge]: 40,
 };
 
 export const SHUFFLE_EMPLOYEES_INTERVAL = 3000;

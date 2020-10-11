@@ -404,7 +404,7 @@ export const simpleArraysEqual = <T>(arr1: T[], arr2: T[], strict = true) => {
 export const dedupeArray = <T = any>(arr: T[]): T[] => Array.from(new Set(arr));
 
 export const joinArrays = <T = any>(arr1: T[], ...rest: (T | T[])[]): T[] =>
-  dedupeArray(arr1.concat(...rest));
+  dedupeArray((arr1 || []).concat(...rest.filter((i) => i !== undefined)));
 
 export const simpleArrayAddItemUnique = <T = any>(arr: T[], item: T): T[] =>
   arr.filter((i) => i !== item).concat(item);

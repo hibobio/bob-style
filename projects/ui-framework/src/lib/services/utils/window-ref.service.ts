@@ -1,22 +1,21 @@
 import { Injectable } from '@angular/core';
 
+export interface ResizeObserverEntry {
+  readonly borderBoxSize: {
+    blockSize: number;
+    inlineSize: number;
+  };
+  readonly contentBoxSize: {
+    blockSize: number;
+    inlineSize: number;
+  };
+  readonly contentRect: DOMRectReadOnly;
+  readonly target: Element;
+}
+
 declare class ResizeObserver {
   constructor(
-    callback: (
-      entries: {
-        readonly borderBoxSize: {
-          blockSize: number;
-          inlineSize: number;
-        };
-        readonly contentBoxSize: {
-          blockSize: number;
-          inlineSize: number;
-        };
-        readonly contentRect: DOMRectReadOnly;
-        readonly target: Element;
-      }[],
-      observer: ResizeObserver
-    ) => void
+    callback: (entries: ResizeObserverEntry[], observer: ResizeObserver) => void
   );
   disconnect: () => void;
   observe: (
