@@ -18,6 +18,7 @@ import {
   HtmlCleanupReplacer,
   STYLES_KEEP_ON_DIV,
   FONTSIZE_KEY_TO_NUM_MAP,
+  LANGUAGE_TESTS,
 } from './html-parser.const';
 import { TreeWalkerTake, TreeWalkerFilter, DOMtags } from './dom-helpers.enum';
 import { GetElementStylesConfig } from './dom-helpers.interface';
@@ -587,5 +588,36 @@ export class HtmlParserHelpers {
       return elm as any;
     }
     return elm.innerHTML;
+  }
+
+  public addLangAttributes(
+    html: string | HTMLElement,
+    returnDOM = true
+  ): string | HTMLElement {
+    const elm: HTMLElement = isDomElement(html) ? html : this.stringToDOM(html);
+
+    const plainText = isString(html) ? html : elm.innerText;
+
+    Object.keys(LANGUAGE_TESTS).forEach((key) => {
+      if (!LANGUAGE_TESTS[key].test.test(plainText)) {
+        return;
+      }
+      const els = this.DOM.walkNodeTree(elm, {
+        take: TreeWalkerTake.textNodes,
+        filter: (node: Node) =>
+          node.nodeType !== 8 && LANGUAGE_TESTS[key].test.test(node.textContent)
+            ? TreeWalkerFilter.accept
+            : TreeWalkerFilter.reject,
+        forEach: (node) => {
+          this.DOM.setAttributes(
+            node.parentElement,
+            LANGUAGE_TESTS[key].attributes
+          );
+          return node.parentElement || node;
+        },
+      });
+    });
+
+    return returnDOM ? elm : this.DOMtoString(elm);
   }
 }

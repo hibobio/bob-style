@@ -14,6 +14,7 @@ import {
   isEmptyArray,
   asArray,
   hasProp,
+  isFunction,
 } from '../utils/functional-utils';
 import {
   Styles,
@@ -153,7 +154,7 @@ export class DOMhelpers {
   }
 
   public isRendered(element: HTMLElement | Node): boolean {
-    return this.isElement(element) && document.contains(element);
+    return isDomElement(element) && document.contains(element);
   }
 
   public hasChildren(element: HTMLElement): boolean {
@@ -201,7 +202,7 @@ export class DOMhelpers {
   // (provided as JSON with props in kebab-case),
   // including css variables ('--color-red')
   public setCssProps(element: HTMLElement, props: Styles): void {
-    if (!element) {
+    if (!isDomElement(element)) {
       return;
     }
     for (const prop of Object.keys(props)) {
@@ -226,6 +227,9 @@ export class DOMhelpers {
   }
 
   public setAttributes(element: HTMLElement, attrs: GenericObject): void {
+    if (!isDomElement(element)) {
+      return;
+    }
     for (const attr of Object.keys(attrs)) {
       if (!isNullOrUndefined(attrs[attr])) {
         element.setAttribute(attr, attrs[attr] as string);
@@ -239,7 +243,7 @@ export class DOMhelpers {
 
   // TODO: Add Test
   public appendCssText(element: HTMLElement, cssText: string): void {
-    if (!this.isElement(element)) {
+    if (!isDomElement(element)) {
       return;
     }
     element.style.cssText += ';' + cssText;
@@ -273,7 +277,7 @@ export class DOMhelpers {
     collection: GenericObject = {}
   ): GenericObject {
     const { rules, ignoreValues, removeStyleAttr } = config;
-    if (!this.isElement(element) || isEmptyArray(rules)) {
+    if (!isDomElement(element) || isEmptyArray(rules)) {
       return collection;
     }
     let { getStyles } = config;
@@ -454,7 +458,7 @@ export class DOMhelpers {
     selector: string = null,
     which: 'next' | 'prev' = 'next'
   ): HTMLElement {
-    if (!element) {
+    if (!isDomElement(element)) {
       return null;
     }
     let sibling: HTMLElement =
@@ -514,7 +518,7 @@ export class DOMhelpers {
 
   // TODO: Add Test
   public wrapChildren(element: HTMLElement, tag = 'span'): HTMLElement {
-    if (!this.isElement(element)) {
+    if (!isDomElement(element)) {
       return element;
     }
     const wrapper = element.appendChild(document.createElement(tag));
@@ -557,7 +561,7 @@ export class DOMhelpers {
   }
 
   public unwrap(element: HTMLElement): void {
-    if (!this.isElement(element)) {
+    if (!isDomElement(element)) {
       return;
     }
 
@@ -593,17 +597,14 @@ export class DOMhelpers {
         : undefined
     );
 
-    const nodes: (HTMLElement | Node)[] = [];
+    const nodes: Set<HTMLElement | Node> = new Set();
     let n: HTMLElement | Node;
 
     while ((n = walker.nextNode())) {
-      if (config.forEach) {
-        config.forEach(n);
-      }
-      nodes.push(n);
+      nodes.add((isFunction(config.forEach) && config.forEach(n)) || n);
     }
 
-    return nodes;
+    return Array.from(nodes);
   }
 
   // WIP----end------------------
@@ -617,7 +618,7 @@ export class DOMhelpers {
     element: HTMLElement,
     classes: string | string[] | NgClass
   ): NgClass {
-    if (!element || !this.isElement(element)) {
+    if (!element || !isDomElement(element)) {
       return {};
     }
 

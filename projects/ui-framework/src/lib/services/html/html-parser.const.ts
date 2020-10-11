@@ -1,3 +1,5 @@
+import { GenericObject } from '../../types';
+
 export const FONTSIZE_KEY_TO_NUM_MAP = {
   medium: 12, // 16, body
   'xx-small': 9,
@@ -13,6 +15,23 @@ export const FONTSIZE_KEY_TO_NUM_MAP = {
 };
 
 export const STYLES_KEEP_ON_DIV = ['text-align', 'direction'];
+
+export const LANGUAGE_TESTS: {
+  [lang: string]: { test: RegExp; attributes: GenericObject };
+} = {
+  hebrew: {
+    test: /[\u0590-\u05FF]/,
+    attributes: {
+      lang: 'he',
+    },
+  },
+  russian: {
+    test: /[а-яА-ЯЁё]/,
+    attributes: {
+      lang: 'ru',
+    },
+  },
+};
 
 export interface HtmlCleanupReplacer {
   find: RegExp[];

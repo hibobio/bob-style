@@ -23,25 +23,25 @@ $rte-icon-color-hover: darken($grey-700, 5%);
   [style*='11px'],
   [style*='10px'] {
     line-height: $font-size-body * $rte-lineheight;
-    font-size: var(--rte-font-size-small, $font-size-caption) !important;
+    font-size: var(--rte-font-size-small, #{$font-size-caption}) !important;
   }
 
   [style*='medium'],
   [style*='12px'] {
-    font-size: var(--rte-font-size-normal, $font-size-body) !important;
+    font-size: var(--rte-font-size-normal, #{$font-size-body}) !important;
   }
 
   [style*='large'],
   [style*='18px'] {
     line-height: 1;
-    font-size: var(--rte-font-size-large, $font-size-display-4) !important;
+    font-size: var(--rte-font-size-large, #{$font-size-display-4}) !important;
   }
 
   [style*='x-large'],
   [style*='28px'],
   [style*='30px'] {
     line-height: 0.8;
-    font-size: var(--rte-font-size-xlarge, $font-size-display-2) !important;
+    font-size: var(--rte-font-size-xlarge, #{$font-size-display-2}) !important;
   }
 }
 
@@ -606,23 +606,23 @@ $empticons-panel-max-width: 235px;
   &[title='small']:before,
   &[title='11']:before {
     content: var(--translation-small, 'Small');
-    font-size: var(--rte-font-size-small, $font-size-caption);
+    font-size: var(--rte-font-size-small, #{$font-size-caption});
   }
   &[title='medium']:before,
   &[title='12']:before {
     content: var(--translation-normal, 'Normal');
-    font-size: var(--rte-font-size-normal, $font-size-body);
+    font-size: var(--rte-font-size-normal, #{$font-size-body});
   }
   &[title='large']:before,
   &[title='18']:before {
     content: var(--translation-large, 'Large');
-    font-size: var(--rte-font-size-large, $font-size-display-4);
+    font-size: var(--rte-font-size-large, #{$font-size-display-4});
     line-height: 1;
   }
   &[title='x-large']:before,
   &[title='28']:before {
     content: var(--translation-huge, 'Huge');
-    font-size: var(--rte-font-size-xlarge, $font-size-display-2);
+    font-size: var(--rte-font-size-xlarge, #{$font-size-display-2});
     line-height: 1;
   }
 }

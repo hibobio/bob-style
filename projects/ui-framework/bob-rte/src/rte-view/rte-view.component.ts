@@ -17,6 +17,7 @@ import {
   SANITIZER_FILTER_XSS_OPTIONS,
   SANITIZER_ALLOWED_ATTRS,
   FilterXSSOptions,
+  HtmlParserHelpers,
 } from 'bob-style';
 import { PlaceholdersConverterService } from '../rte/placeholders.service';
 import { RteViewType } from './rte-view.enum';
@@ -39,6 +40,7 @@ export class RteViewComponent implements OnChanges {
     private host: ElementRef,
     private zone: NgZone,
     private sanitizer: SanitizerService,
+    private parser: HtmlParserHelpers,
     private router: Router,
     private placeholdersConverter: PlaceholdersConverterService
   ) {
@@ -83,6 +85,8 @@ export class RteViewComponent implements OnChanges {
             'viewer'
           )
         : sanitized;
+
+      this.parser.addLangAttributes(this.hostEl);
     }
   }
 }
