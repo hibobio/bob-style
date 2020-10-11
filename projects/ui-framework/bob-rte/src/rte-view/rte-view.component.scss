@@ -41,8 +41,7 @@
   --rte-font-size-small: 90%;
   --rte-font-size-xlarge: var(--rte-font-size-large);
 
-  [lang='he'],
-  [lang='ru'] {
+  [lang] {
     font-family: var(--display-font-family);
   }
 
