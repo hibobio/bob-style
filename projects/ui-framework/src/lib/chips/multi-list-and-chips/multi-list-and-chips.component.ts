@@ -112,10 +112,12 @@ export class MultiListAndChipsComponent implements OnChanges, OnInit {
   }
 
   public detectChipType(options: SelectGroupOption[] = this.options): ChipType {
-    return get(
-      options,
-      '[0].options[0].prefixComponent.attributes.imageSource',
-      false
+    return Boolean(
+      options.find((g) =>
+        Boolean(
+          get(g, 'options[0].prefixComponent.attributes.imageSource', false)
+        )
+      )
     )
       ? ChipType.avatar
       : ChipType.tag;
@@ -156,7 +158,12 @@ export class MultiListAndChipsComponent implements OnChanges, OnInit {
               id: option.id,
               imageSource:
                 this.chipListConfig.type === ChipType.avatar &&
-                option.prefixComponent.attributes.imageSource,
+                get(
+                  option,
+                  'prefixComponent.attributes.imageSource',
+                  undefined
+                ),
+
               type: this.chipListConfig.type,
               removable: !option.disabled,
             });

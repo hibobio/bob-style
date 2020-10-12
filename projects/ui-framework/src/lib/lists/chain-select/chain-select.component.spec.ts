@@ -5,6 +5,8 @@ import { IconsModule } from '../../icons/icons.module';
 import { By } from '@angular/platform-browser';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { ChainSelectDirective } from './chain-select.directive';
+import { simpleChange } from '../../services/utils/functional-utils';
+import { ChainSelectEvent } from './chain-select.interface';
 
 describe('EmployeeChainSelectComponent', () => {
   let component: ChainSelectComponent;
@@ -12,17 +14,9 @@ describe('EmployeeChainSelectComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ChainSelectComponent,
-        ChainSelectDirective,
-      ],
-      imports: [
-        CommonModule,
-        IconsModule,
-        ButtonsModule,
-      ],
-    })
-      .compileComponents();
+      declarations: [ChainSelectComponent, ChainSelectDirective],
+      imports: [CommonModule, IconsModule, ButtonsModule],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -33,16 +27,19 @@ describe('EmployeeChainSelectComponent', () => {
 
   describe('onInit', () => {
     it('Should replace null values in selectedItemList', () => {
-      component.selectedItemList = [1, null, 3];
-      component.ngOnInit();
-      expect(component.chainLinkList).toEqual([1, {}, 3]);
+      component.ngOnChanges(
+        simpleChange({
+          selectedItemList: [1, null, 3],
+        })
+      );
+      expect(component.chainLinkList).toEqual([1, undefined, 3]);
     });
   });
 
   describe('addChainLink', () => {
     it('Should add chain link to the list', () => {
       component.addChainLink();
-      expect(component.chainLinkList).toEqual([{}, {}]);
+      expect(component.chainLinkList).toEqual([undefined, undefined]);
       fixture.detectChanges();
       const rows = fixture.debugElement.queryAll(By.css('.chain-link-row'));
       expect(rows.length).toEqual(2);
@@ -63,15 +60,21 @@ describe('EmployeeChainSelectComponent', () => {
       spyOn(component.selectChange, 'emit');
       component.addChainLink();
       component.removeChainLink(1);
-      expect(component.selectChange.emit).toHaveBeenCalledWith({ event: 'delete', index: 1 });
+      expect(component.selectChange.emit).toHaveBeenCalledWith({
+        event: 'delete',
+        index: 1,
+      });
     });
   });
 
   describe('handleChange', () => {
     it('Should emit change', () => {
       spyOn(component.selectChange, 'emit');
-      component.handleChange({}, 0);
-      expect(component.selectChange.emit).toHaveBeenCalledWith({ event: {}, index: 0 });
+      component.handleChange({} as ChainSelectEvent, 0);
+      expect(component.selectChange.emit).toHaveBeenCalledWith({
+        event: {},
+        index: 0,
+      });
     });
   });
 
@@ -87,7 +90,9 @@ describe('EmployeeChainSelectComponent', () => {
       component.staticMode = true;
       component.addChainLink();
       fixture.detectChanges();
-      const deleteButton = fixture.debugElement.queryAll(By.css('.delete-button'));
+      const deleteButton = fixture.debugElement.queryAll(
+        By.css('.delete-button')
+      );
       expect(deleteButton.length).toEqual(0);
     });
 

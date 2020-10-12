@@ -58,8 +58,8 @@
 
   &::ng-deep .single-card {
     width: calc(
-      (100% - var(--item-grid-gap, #{times8(2)}) * var(--item-count)) /
-        var(--item-count)
+      (100% - var(--item-grid-gap, #{times8(2)}) * var(--item-count, 1)) /
+        var(--item-count, 1)
     );
   }
 }
@@ -94,8 +94,8 @@ $hover-shadow-offset: 12px;
     width: calc(
       (
           100vw - var(--padding-x-mob, #{$padding-x-mob}) * 2 -
-            var(--item-grid-gap, #{times8(2)}) * #{var(--item-count) - 1}
-        ) / var(--item-count)
+            var(--item-grid-gap, #{times8(2)}) * #{var(--item-count, 1) - 1}
+        ) / var(--item-count, 1)
     );
   }
 

@@ -156,7 +156,8 @@ export abstract class BaseListElement
 
     if (hasChanges(changes, ['startWithGroupsCollapsed', 'options'])) {
       this.startWithGroupsCollapsed =
-        this.startWithGroupsCollapsed && this.options.length > 1;
+        (this.startWithGroupsCollapsed || !changes.startWithGroupsCollapsed) &&
+        isNotEmptyArray(this.options, 1);
     }
 
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
@@ -183,8 +184,9 @@ export abstract class BaseListElement
       ])
     ) {
       this.allGroupsCollapsed =
-        this.allGroupsCollapsed ||
-        (this.startWithGroupsCollapsed && isNotEmptyArray(this.options, 1));
+        isNotEmptyArray(this.options, 1) &&
+        ((!changes.options && this.allGroupsCollapsed) ||
+          (changes.options && this.startWithGroupsCollapsed));
 
       this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
     } else if (hasChanges(changes, ['startWithGroupsCollapsed'])) {

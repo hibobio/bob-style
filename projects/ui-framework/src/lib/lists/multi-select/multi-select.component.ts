@@ -28,6 +28,7 @@ import { ListPanelService } from '../list-panel.service';
 import { MobileService } from '../../services/utils/mobile.service';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'b-multi-select',
@@ -53,23 +54,25 @@ import { LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 })
 export class MultiSelectComponent extends BaseSelectPanelElement {
   constructor(
-    listChangeSrvc: ListChangeService,
-    modelSrvc: ListModelService,
-    listPanelSrvc: ListPanelService,
-    mobileService: MobileService,
-    DOM: DOMhelpers,
-    zone: NgZone,
-    cd: ChangeDetectorRef,
-    overlay: Overlay,
-    viewContainerRef: ViewContainerRef,
-    panelPositionService: PanelPositionService,
-    utilsService: UtilsService
+    protected listChangeSrvc: ListChangeService,
+    protected modelSrvc: ListModelService,
+    protected listPanelSrvc: ListPanelService,
+    protected mobileService: MobileService,
+    protected translate: TranslateService,
+    protected DOM: DOMhelpers,
+    protected zone: NgZone,
+    protected cd: ChangeDetectorRef,
+    protected overlay: Overlay,
+    protected viewContainerRef: ViewContainerRef,
+    protected panelPositionService: PanelPositionService,
+    protected utilsService: UtilsService
   ) {
     super(
       listChangeSrvc,
       modelSrvc,
       listPanelSrvc,
       mobileService,
+      translate,
       DOM,
       zone,
       cd,

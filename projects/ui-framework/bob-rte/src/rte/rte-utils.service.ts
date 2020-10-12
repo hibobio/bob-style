@@ -11,7 +11,6 @@ import {
 import { RteMentionsOption } from './rte.interface';
 import { Injectable, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { RTEbaseElement } from './rte.abstract';
 import { BlotType, RTEMode } from './rte.enum';
 import {
   RTE_CONTROLS_DEF,

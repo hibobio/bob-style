@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  NgModule,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { ChainSelectModule } from './chain-select.module';
 import { SingleSelectModule } from '../single-select/single-select.module';
 import { CommonModule } from '@angular/common';
@@ -17,22 +24,29 @@ export class ChainSingleSelectExampleComponent implements OnInit {
   @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();
 
   ngOnInit(): void {
-    this.options = [{
-      groupName: 'test',
-      options: [{
-          value: 'option 1',
-          id: 1,
-          selected: 1 === this.selectedId,
-      }, {
-          value: 'option 2',
-          id: 2,
-          selected: 2 === this.selectedId,
-      }, {
-          value: 'option 3',
-          id: 3,
-          selected: 3 === this.selectedId,
-      }]
-    }];
+    console.log('ain-single-select-example init');
+    this.options = [
+      {
+        groupName: 'test',
+        options: [
+          {
+            value: 'option 1',
+            id: 1,
+            selected: 1 === this.selectedId,
+          },
+          {
+            value: 'option 2',
+            id: 2,
+            selected: 2 === this.selectedId,
+          },
+          {
+            value: 'option 3',
+            id: 3,
+            selected: 3 === this.selectedId,
+          },
+        ],
+      },
+    ];
   }
 
   change($event) {
@@ -70,19 +84,10 @@ export class ChainSelectExampleComponent {
 @NgModule({
   declarations: [
     ChainSelectExampleComponent,
-    ChainSingleSelectExampleComponent
+    ChainSingleSelectExampleComponent,
   ],
-  imports: [
-    CommonModule,
-    ChainSelectModule,
-    SingleSelectModule
-  ],
-  exports: [
-    ChainSelectExampleComponent
-  ],
-  entryComponents: [
-    ChainSingleSelectExampleComponent
-  ]
+  imports: [CommonModule, ChainSelectModule, SingleSelectModule],
+  exports: [ChainSelectExampleComponent],
+  entryComponents: [ChainSingleSelectExampleComponent],
 })
-export class ChainSelectExampleModule {
-}
+export class ChainSelectExampleModule {}

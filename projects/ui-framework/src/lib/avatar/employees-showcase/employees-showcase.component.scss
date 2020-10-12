@@ -99,20 +99,20 @@ $bes-avatar-count-default: 1;
             255,
             255,
             255,
-            calc(1 - #{$i} / var(--avatar-count, #{--avatar-count}))
+            calc(1 - #{$i} / var(--avatar-count, #{$bes-avatar-count-default}))
           ),
           rgba(
             255,
             255,
             255,
-            calc(1 - #{$i} / var(--avatar-count, #{--avatar-count}))
+            calc(1 - #{$i} / var(--avatar-count, #{$bes-avatar-count-default}))
           )
         );
         color: rgba(
           157,
           157,
           157,
-          calc(#{$i} / var(--avatar-count, #{--avatar-count}))
+          calc(#{$i} / var(--avatar-count, #{$bes-avatar-count-default}))
         );
       }
     }
@@ -127,20 +127,20 @@ $bes-avatar-count-default: 1;
             255,
             255,
             255,
-            calc(#{$i} / var(--avatar-count, #{--avatar-count}))
+            calc(#{$i} / var(--avatar-count, #{$bes-avatar-count-default}))
           ),
           rgba(
             255,
             255,
             255,
-            calc(#{$i} / var(--avatar-count, #{--avatar-count}))
+            calc(#{$i} / var(--avatar-count, #{$bes-avatar-count-default}))
           )
         );
         color: rgba(
           157,
           157,
           157,
-          calc(1 - #{$i} / var(--avatar-count, #{--avatar-count}))
+          calc(1 - #{$i} / var(--avatar-count, #{$bes-avatar-count-default}))
         );
       }
     }

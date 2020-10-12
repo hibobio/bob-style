@@ -1,3 +1,5 @@
+@import './fonts';
+
 @import './reset';
 @import './common-imports';
 @import './keyframes.global';
@@ -14,22 +16,6 @@
 @import './icons.mixin';
 @import './icon-classes';
 @import './rte/rte';
-
-@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700family=Open+Sans:wght@400;600;700&display=swap');
-
-$body-font-family: 'Gotham SSm A', 'Gotham SSm B';
-$display-font-family: 'Sentinel SSm A', 'Sentinel SSm B';
-$heading-font-family: $body-font-family;
-
-$sans-serif-font-family: 'Helvetica Neue', Helvetica, 'Open Sans', Arial;
-$serif-font-family: 'Georgia', 'Hoefler Text', 'Baskerville', 'Times',
-  'Times New Roman';
-
-$sans-serif-font-family-hebrew: 'Heebo', 'Arimo', 'Rubik', 'Assistant', 'Alef',
-  'Miriam Libre';
-
-$sans-serif-font-family-cyrillic: 'Open Sans', 'Roboto';
-$serif-font-family-cyrillic: 'Roboto Slab';
 
 :root {
   --primary-500: #{$primary-500};
@@ -53,41 +39,15 @@ $serif-font-family-cyrillic: 'Roboto Slab';
   --inform-700: #{$inform-700};
 
   --body-font-family: #{$body-font-family}, #{$sans-serif-font-family},
-    sans-serif;
-  --display-font-family: #{$display-font-family}, #{$serif-font-family}, serif;
+    #{$emoji-font-family}, sans-serif;
+  --display-font-family: #{$display-font-family}, #{$serif-font-family},
+    #{$emoji-font-family}, serif;
   --heading-font-family: #{$heading-font-family}, #{$sans-serif-font-family},
-    sans-serif;
+    #{$emoji-font-family}, sans-serif;
 
-  --emoji-font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Segoe UI', 'Twemoji Mozilla', 'Noto Color Emoji', NotoColorEmoji,
-    'EmojiOne Color', 'Android Emoji', EmojiSymbols;
+  --emoji-font-family: #{$emoji-font-family};
 
   --padding-x-mob: #{$padding-x-mob};
-}
-
-[direction='rtl'],
-[lang='he'],
-[style*='direction:rtl'],
-[style*='direction: rtl'] {
-  --body-font-family: #{$body-font-family}, #{$sans-serif-font-family-hebrew},
-    #{$sans-serif-font-family}, sans-serif;
-  --display-font-family: #{$display-font-family},
-    #{$sans-serif-font-family-hebrew}, #{$serif-font-family}, serif;
-  --heading-font-family: #{$heading-font-family},
-    #{$sans-serif-font-family-hebrew}, #{$sans-serif-font-family}, sans-serif;
-
-  font-family: var(--body-font-family);
-}
-
-[lang='ru'] {
-  --body-font-family: #{$body-font-family}, #{$sans-serif-font-family-cyrillic},
-    #{$sans-serif-font-family}, sans-serif;
-  --display-font-family: #{$display-font-family}, #{$serif-font-family-cyrillic},
-    #{$serif-font-family}, serif;
-  --heading-font-family: #{$heading-font-family},
-    #{$sans-serif-font-family-cyrillic}, #{$sans-serif-font-family}, sans-serif;
-
-  font-family: var(--body-font-family);
 }
 
 body {

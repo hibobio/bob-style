@@ -122,7 +122,22 @@ export const isValuevy = (smth: any): boolean =>
     isString(smth) ||
     isNumber(smth));
 
-export const getType = (smth: any): string =>
+export const getType = (
+  smth: any
+):
+  | 'null'
+  | 'undefined'
+  | 'string'
+  | 'number'
+  | 'boolean'
+  | 'array'
+  | 'map'
+  | 'set'
+  | 'date'
+  | 'regex'
+  | 'NaN'
+  | 'DOM node'
+  | string =>
   smth === null
     ? 'null'
     : isArray(smth)
@@ -140,6 +155,24 @@ export const getType = (smth: any): string =>
     : isNode(smth)
     ? 'DOM node'
     : String(typeof smth);
+
+export const getEmptyOfSameType = <T = unknown>(item: T): T => {
+  const type = getType(item);
+  switch (type) {
+    case 'null':
+      return null;
+    case 'object':
+      return {} as T;
+    case 'array':
+      return ([] as unknown) as T;
+    case 'map':
+      return (new Map() as unknown) as T;
+    case 'set':
+      return (new Set() as unknown) as T;
+    default:
+      return undefined;
+  }
+};
 
 // ----------------------
 // NUMBERS
@@ -1186,6 +1219,8 @@ export const applyChanges = (
         ? config.transform[changeKey](changes[changeKey]?.currentValue)
         : changes[changeKey]?.currentValue;
   });
+
+  console.log('applyChanges', cloneDeepSimpleObject(changes));
 
   return changes;
 };

@@ -11,6 +11,7 @@ import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-to
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { FormElementLabelModule } from '../../form-elements/form-element-label/form-element-label.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [MultiSelectComponent],
@@ -22,9 +23,10 @@ import { FormElementLabelModule } from '../../form-elements/form-element-label/f
     MultiListModule,
     TruncateTooltipModule,
     InputMessageModule,
-    FormElementLabelModule
+    FormElementLabelModule,
+    TranslateModule,
   ],
   exports: [MultiSelectComponent],
-  providers: [ListChangeService, ListModelService, DOMhelpers]
+  providers: [ListChangeService, ListModelService, DOMhelpers],
 })
 export class MultiSelectModule {}

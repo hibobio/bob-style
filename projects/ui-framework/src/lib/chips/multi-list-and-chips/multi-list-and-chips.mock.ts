@@ -45,7 +45,7 @@ export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
   },
   {
     groupName: 'For old people',
-    options: oldPeopleHobbies.map(hobby => ({
+    options: oldPeopleHobbies.map((hobby) => ({
       value: hobby,
       id: simpleUID(),
       selected: mayBeSelected(),
@@ -61,10 +61,10 @@ export const MultiListAndAvatarChipsOptionsMock: SelectGroupOption[] = [
   {
     groupName: 'People',
     options: mockNames(30).map(
-      (person: string): SelectOption => ({
+      (person: string, index: number): SelectOption => ({
         value: person,
         id: simpleUID(),
-        selected: false,
+        selected: index < 15 && mayBeSelected(85),
         disabled: false,
         prefixComponent: {
           component: AvatarImageComponent,

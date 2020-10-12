@@ -1,22 +1,43 @@
-import { Component, EventEmitter, Input, OnInit, Output, ContentChild } from '@angular/core';
-import { cloneDeep, isNull } from 'lodash';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ContentChild,
+  OnChanges,
+  SimpleChanges,
+  OnInit,
+} from '@angular/core';
+import { cloneDeep } from 'lodash';
 import { Icons, IconSize } from '../../icons/icons.enum';
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { ChainSelectDirective } from './chain-select.directive';
 import { ChainSelectEvent } from './chain-select.interface';
 import { ChainSelectEventEnum } from './chain-select.enum';
+import {
+  applyChanges,
+  asArray,
+  getEmptyOfSameType,
+  isNullOrUndefined,
+  objectStringID,
+} from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-chain-select',
   templateUrl: './chain-select.component.html',
-  styleUrls: ['./chain-select.component.scss']
+  styleUrls: ['./chain-select.component.scss'],
 })
-export class ChainSelectComponent implements OnInit {
+export class ChainSelectComponent implements OnChanges, OnInit {
+  @ContentChild(ChainSelectDirective, { static: true })
+  contentChild!: ChainSelectDirective;
+
   @Input() actionLabel: string;
   @Input() selectedItemList: any[];
   @Input() staticMode = false;
-  @Output() selectChange: EventEmitter<ChainSelectEvent> =
-    new EventEmitter<ChainSelectEvent>();
+
+  @Output() selectChange: EventEmitter<ChainSelectEvent> = new EventEmitter<
+    ChainSelectEvent
+  >();
 
   public chainLinkList: any[];
 
@@ -25,19 +46,36 @@ export class ChainSelectComponent implements OnInit {
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
 
-  @ContentChild(ChainSelectDirective, { static: true }) contentChild !: ChainSelectDirective;
+  private emptyItem: any;
 
-  ngOnInit() {
-    if (this.selectedItemList && this.selectedItemList.length) {
-      this.chainLinkList = cloneDeep(this.selectedItemList)
-        .map(item => isNull(item) ? {} : item);
-    } else {
-      this.chainLinkList = [{}];
+  ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes);
+
+    if (changes.selectedItemList) {
+      this.emptyItem = getEmptyOfSameType(
+        asArray(this.selectedItemList || this.chainLinkList).filter(Boolean)[0]
+      );
+
+      this.chainLinkList = cloneDeep(
+        this.selectedItemList || []
+      ).map((item: any) => (isNullOrUndefined(item) ? this.emptyItem : item));
+
+      if (!this.chainLinkList.length) {
+        this.addChainLink();
+      }
+    }
+  }
+
+  ngOnInit(): void {
+    if (!this.chainLinkList) {
+      this.emptyItem = undefined;
+      this.chainLinkList = [];
+      this.addChainLink();
     }
   }
 
   public addChainLink() {
-    this.chainLinkList.push({});
+    this.chainLinkList.push(getEmptyOfSameType(this.emptyItem));
   }
 
   public removeChainLink(index: number) {
@@ -48,7 +86,19 @@ export class ChainSelectComponent implements OnInit {
     });
   }
 
-  public handleChange($event, index) {
-    this.selectChange.emit({ index, event: $event });
+  public handleChange(event: ChainSelectEvent, index: number): void {
+    this.selectChange.emit({ index, event });
+  }
+
+  public trackBy(index: number, item: any): string {
+    return item
+      ? item.id ||
+          item.value ||
+          objectStringID(item, {
+            key: index + '',
+            limit: 1000,
+            primitives: true,
+          })
+      : index;
   }
 }

@@ -46,6 +46,18 @@ const template = `<b-multi-list-and-chips
         (selectChange)="onSelectChange($event)">
   </b-multi-list-and-chips>`;
 
+const templateForNotes = `<b-multi-list-and-chips
+      [options]="options"
+      [listLabel]="listLabel"
+      [chipsLabel]="chipsLabel"
+      [showSingleGroupHeader]="showSingleGroupHeader"
+      [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+      [min]="min"
+      [max]="max"
+      [emptyState]="emptyStateConfig"
+      (selectChange)="onSelectChange($event)">
+</b-multi-list-and-chips>`;
+
 const note = `
   ## Multi List And Chips
 
@@ -53,7 +65,7 @@ const note = `
   *MultiListAndChipsModule*
 
   ~~~
-  ${template}
+  ${templateForNotes}
   ~~~
 
   #### Properties

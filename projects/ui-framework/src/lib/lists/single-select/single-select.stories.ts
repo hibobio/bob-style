@@ -20,6 +20,8 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { cloneDeep } from 'lodash';
 import { ListModelService } from '../list-service/list-model.service';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
 
 // @ts-ignore: md file and not a module
 import listInterfaceDoc from '../list.interface.md';
@@ -31,8 +33,6 @@ import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 import listSelectsPropsDoc from '../lists-selects.properties.md';
 // @ts-ignore: md file and not a module
 import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
-import { FormElementSize } from '../../form-elements/form-elements.enum';
-import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -46,7 +46,7 @@ const template = `
 <b-single-select [value]="[value]"
                  [options]="options"
                  [label]="label"
-                 [placeholder]="placeholder"
+                 [placeholder]="placeholder || undefined"
                  [description]="description"
                  [showNoneOption]="showNoneOption"
                  [showSingleGroupHeader]="showSingleGroupHeader"
@@ -155,12 +155,7 @@ const toAdd = () => ({
       'Props'
     ),
 
-    ...FormElementsCommonProps(
-      'Single select',
-      'Pick one',
-      mockText(30),
-      'Props'
-    ),
+    ...FormElementsCommonProps('Single select', '', mockText(30), 'Props'),
 
     size: select(
       'size',

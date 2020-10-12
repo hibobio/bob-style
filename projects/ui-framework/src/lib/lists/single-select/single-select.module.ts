@@ -11,11 +11,10 @@ import { ListFooterModule } from '../list-footer/list-footer.module';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
 import { FormElementLabelModule } from '../../form-elements/form-element-label/form-element-label.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [
-    SingleSelectComponent,
-  ],
+  declarations: [SingleSelectComponent],
   imports: [
     CommonModule,
     PanelModule,
@@ -26,13 +25,9 @@ import { FormElementLabelModule } from '../../form-elements/form-element-label/f
     InputMessageModule,
     ListFooterModule,
     FormElementLabelModule,
+    TranslateModule,
   ],
-  exports: [
-    SingleSelectComponent,
-  ],
-  providers: [
-    ListChangeService,
-    ListModelService,
-  ],
+  exports: [SingleSelectComponent],
+  providers: [ListChangeService, ListModelService],
 })
 export class SingleSelectModule {}

@@ -2,7 +2,6 @@ import { storiesOf } from '@storybook/angular';
 import {
   withKnobs,
   object,
-  text,
   boolean,
   select,
 } from '@storybook/addon-knobs/angular';
@@ -22,6 +21,10 @@ import { ListModelService } from '../list-service/list-model.service';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { SelectMode } from '../list.enum';
 import { SSPjobsOptionsMock } from '../single-select-panel/single-select-panel.stories';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { number } from '@storybook/addon-knobs';
+import { MultiSelectComponent } from './multi-select.component';
+import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
 
 // @ts-ignore: md file and not a module
 import listInterfaceDoc from '../list.interface.md';
@@ -33,10 +36,6 @@ import selectsPropsDoc from '../selects.properties.md';
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 // @ts-ignore: md file and not a module
 import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
-import { FormElementSize } from '../../form-elements/form-elements.enum';
-import { number } from '@storybook/addon-knobs';
-import { MultiSelectComponent } from './multi-select.component';
-import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -52,7 +51,7 @@ const template = `
                 [optionsDefault]="optionsDefault"
                 [mode]="selectMode"
                 [label]="label"
-                [placeholder]="placeholder"
+                [placeholder]="placeholder || undefined"
                 [description]="description"
                 [showSingleGroupHeader]="showSingleGroupHeader"
                 [startWithGroupsCollapsed]="startWithGroupsCollapsed"
@@ -209,12 +208,7 @@ const toAdd = () => ({
     min: number('min', 0, {}, 'Props'),
     max: number('max', 0, {}, 'Props'),
 
-    ...FormElementsCommonProps(
-      'Multi select',
-      'Pick any',
-      mockText(30),
-      'Props'
-    ),
+    ...FormElementsCommonProps('Multi select', '', mockText(30), 'Props'),
 
     size: select(
       'size',

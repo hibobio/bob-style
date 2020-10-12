@@ -7,11 +7,10 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { PanelModule } from '../../popups/panel/panel.module';
 import { InputModule } from '../../form-elements/input/input.module';
 import { MultiListModule } from '../multi-list/multi-list.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [
-    MultiSelectPanelComponent,
-  ],
+  declarations: [MultiSelectPanelComponent],
   imports: [
     CommonModule,
     TypographyModule,
@@ -20,10 +19,8 @@ import { MultiListModule } from '../multi-list/multi-list.module';
     MultiListModule,
     PanelModule,
     InputModule,
+    TranslateModule,
   ],
-  exports: [
-    MultiSelectPanelComponent,
-  ],
+  exports: [MultiSelectPanelComponent],
 })
-export class MultiSelectPanelModule {
-}
+export class MultiSelectPanelModule {}

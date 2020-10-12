@@ -52,6 +52,7 @@ import {
 import { ListPanelService } from './list-panel.service';
 import { MobileService } from '../services/utils/mobile.service';
 import { TooltipClass } from '../popups/tooltip/tooltip.enum';
+import { TranslateService } from '@ngx-translate/core';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -62,6 +63,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     protected modelSrvc: ListModelService,
     protected listPanelSrvc: ListPanelService,
     protected mobileService: MobileService,
+    protected translate: TranslateService,
     protected DOM: DOMhelpers,
     protected zone: NgZone,
     protected cd: ChangeDetectorRef,
@@ -72,6 +74,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     protected utilsService: UtilsService
   ) {
     super(cd);
+    this.placeholder = this.translate.instant('common.select');
   }
 
   @ViewChild(CdkOverlayOrigin, { static: true })
@@ -139,6 +142,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       {
         options: [],
         mode: SelectMode.classic,
+        placeholder: this.translate.instant('common.select'),
       },
       ['value']
     );

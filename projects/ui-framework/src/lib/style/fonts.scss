@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap');
+
+/* hebrew */
+@font-face {
+  font-family: 'Miriam Libre Hebrew';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Miriam Libre Regular'), local('MiriamLibre-Regular'),
+    url(https://fonts.gstatic.com/s/miriamlibre/v7/DdTh798HsHwubBAqfkcBTL_fZZP-b-i3999i.woff2)
+      format('woff2');
+  unicode-range: U+0590-05FF, U+20AA, U+25CC, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: 'Miriam Libre Hebrew';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Miriam Libre Bold'), local('MiriamLibre-Bold'),
+    url(https://fonts.gstatic.com/s/miriamlibre/v7/DdT-798HsHwubBAqfkcBTL_X3LbrQMq63eVrHyO1.woff2)
+      format('woff2');
+  unicode-range: U+0590-05FF, U+20AA, U+25CC, U+FB1D-FB4F;
+}
+
+@media (min-width: 769px) {
+  @font-face {
+    font-family: 'Noto Emoji';
+    src: local('Noto Emoji'), local('NotoEmoji'),
+      url('http://images.hibob.com/fonts/NotoEmoji.woff2') format('woff2'),
+      url('http://images.hibob.com/fonts/NotoEmoji.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+
+$body-font-family: 'Gotham SSm A', 'Gotham SSm B';
+$display-font-family: 'Sentinel SSm A', 'Sentinel SSm B';
+$heading-font-family: $body-font-family;
+
+$sans-serif-font-family: 'Rubik', 'Open Sans', 'Helvetica Neue', Helvetica,
+  Arial;
+$serif-font-family: 'Miriam Libre Hebrew', 'Bitter', 'Roboto Slab',
+  'Rubik Hebrew', 'Georgia', 'Hoefler Text', 'Baskerville', 'Times',
+  'Times New Roman';
+
+$emoji-font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+  'Segoe UI', 'Twemoji Mozilla', 'Noto Color Emoji', 'NotoColorEmoji',
+  'EmojiOne Color', 'Android Emoji', 'Noto Emoji', 'EmojiSymbols', 'Symbola';
