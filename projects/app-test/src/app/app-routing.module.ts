@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FormElementsTestComponent } from './form-elements/form-elements.component';
 import { UtilsComponent } from './utils/utils.component';
-import { TreeListComponent } from './tree-list/tree-list.component';
+import { TreeListTestComponent } from './tree-list/tree-list.component';
 import { TestTableComponent } from './test-table/test-table.component';
 
 const routes: Routes = [
@@ -13,11 +13,11 @@ const routes: Routes = [
   },
   {
     path: 'table',
-    component: TestTableComponent
+    component: TestTableComponent,
   },
   {
     path: 'tree-list',
-    component: TreeListComponent
+    component: TreeListTestComponent,
   },
   {
     path: 'form',
@@ -26,15 +26,13 @@ const routes: Routes = [
   {
     path: 'utils',
     component: UtilsComponent,
-  }
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {
-  constructor() {
-  }
-
+  constructor() {}
 }
