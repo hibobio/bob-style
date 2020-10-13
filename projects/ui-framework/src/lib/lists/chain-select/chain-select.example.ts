@@ -24,7 +24,6 @@ export class ChainSingleSelectExampleComponent implements OnInit {
   @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();
 
   ngOnInit(): void {
-    console.log('ain-single-select-example init');
     this.options = [
       {
         groupName: 'test',

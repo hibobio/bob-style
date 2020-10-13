@@ -7,18 +7,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { MultiSelectModule } from 'bob-style';
 
 @NgModule({
-  declarations: [
-    TestTableComponent
-  ],
-  imports: [
-    CommonModule,
-    TableModule,
-    MultiSelectModule,
-  ],
-  providers: [
-    TestTableService,
-    TranslateService
-  ]
+  declarations: [TestTableComponent],
+  exports: [TestTableComponent],
+  imports: [CommonModule, TableModule, MultiSelectModule],
+  providers: [TestTableService, TranslateService],
 })
-export class TestTableModule {
-}
+export class TestTableModule {}

@@ -19,24 +19,27 @@ import { DateParseTesterModule } from './dateparser/dateparse-tester.module';
 import { CommonModule } from '@angular/common';
 import { TreeSelectModule } from '../../../ui-framework/src/lib/lists/tree-list/tree-select/tree-select.module';
 import { CardTableModule } from '../../../ui-framework/src/lib/table/card-table/card-table.module';
-import { TreeListComponent } from './tree-list/tree-list.component';
+import { TreeListTestModule } from './tree-list/tree-list.component';
 import { TestTableModule } from './test-table/test-table.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesDecoratorsModule } from './pipes-decorators/pipes-decorators.module';
+import { MutationObserversTestModule } from './mutation-observers/mutation-observers-test.module';
 
 @NgModule({
-  declarations: [AppComponent, TreeListComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     CommonModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
+    TranslateModule.forRoot(),
+    AppRoutingModule,
     EventManagerModule,
-    // RouterModule,
     UtilsModule,
     StatsModule,
-    AppRoutingModule,
+    // TreeListTestModule,
     // FormElementsTestModule,
     // UrlTesterModule,
     // TooltipTesterModule,
@@ -46,12 +49,11 @@ import { PipesDecoratorsModule } from './pipes-decorators/pipes-decorators.modul
     // FilterBarTestModule,
     // DatepickerModule,
     // DateParseTesterModule,
-    TreeSelectModule,
-    CardTableModule,
-    TestTableModule,
-    RouterModule,
-    TranslateModule.forRoot(),
-    PipesDecoratorsModule,
+    // TreeSelectModule,
+    // CardTableModule,
+    // TestTableModule,
+    // PipesDecoratorsModule,
+    MutationObserversTestModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

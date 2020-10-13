@@ -1,20 +1,30 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  ChangeDetectorRef, OnInit,
+  ChangeDetectorRef,
+  OnInit,
+  NgModule,
 } from '@angular/core';
 import { HListMockSimple } from '../../../../ui-framework/src/lib/lists/tree-list/tree-list.mock';
 import { BTL_KEYMAP_SERVER } from '../../../../ui-framework/src/lib/lists/tree-list/tree-list.const';
-import { FormGroup, FormControl } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { TreeListModule } from '../../../../ui-framework/src/lib/lists/tree-list/tree-list/tree-list.module';
+import { TreeSelectModule } from '../../../../ui-framework/src/lib/lists/tree-list/tree-select/tree-select.module';
+import { StatsModule } from '../../../../ui-framework/src/lib/services/util-components/stats.module';
 
 @Component({
   selector: 'app-tree-list',
   templateUrl: './tree-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TreeListComponent implements OnInit {
-  constructor(private cd: ChangeDetectorRef) {
-  }
+export class TreeListTestComponent implements OnInit {
+  constructor(private cd: ChangeDetectorRef) {}
 
   list = HListMockSimple;
   keymap = BTL_KEYMAP_SERVER;
@@ -36,17 +46,17 @@ export class TreeListComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.testForm.get('treeSelect').valueChanges.subscribe(value => {
+    this.testForm.get('treeSelect').valueChanges.subscribe((value) => {
       console.log('\n\nSingle List (valueChanges):', value, '\n\n');
     });
-    this.testForm2.get('treeSelect2').valueChanges.subscribe(value => {
+    this.testForm2.get('treeSelect2').valueChanges.subscribe((value) => {
       console.log('\n\nMulti List (valueChanges):', value, '\n\n');
     });
   }
 
   onListChanged(event, formName = 'testForm') {
     console.log(
-      `\n\n ${ formName === 'testForm2' ? 'Multi' : 'Single' } List (changed):`,
+      `\n\n ${formName === 'testForm2' ? 'Multi' : 'Single'} List (changed):`,
       event,
       '\n\n'
     );
@@ -80,3 +90,18 @@ export class TreeListComponent implements OnInit {
     console.log($event);
   }
 }
+
+@NgModule({
+  declarations: [TreeListTestComponent],
+  exports: [TreeListTestComponent],
+  imports: [
+    CommonModule,
+    StatsModule,
+    TreeListModule,
+    TreeSelectModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
+  providers: [],
+})
+export class TreeListTestModule {}

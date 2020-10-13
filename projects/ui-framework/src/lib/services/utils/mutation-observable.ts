@@ -6,7 +6,13 @@ import {
   ResizeObserverInstance,
   ResizeObserverEntry,
 } from './window-ref.service';
-import { getType, isDomElement, pass } from './functional-utils';
+import {
+  getType,
+  isDomElement,
+  isFunction,
+  isNotEmptyString,
+  pass,
+} from './functional-utils';
 import { DOMhelpers } from '../html/dom-helpers.service';
 import { UtilsService } from './utils.service';
 import {
@@ -20,6 +26,7 @@ import {
 export interface MutationObservableConfig extends MutationObserverInit {
   mutations?: 'original' | 'processed';
   filterSelector?: string;
+  filterBy?: (node: Node) => boolean;
 }
 
 export interface ResizeObservableConfig {
@@ -44,6 +51,7 @@ export const MUTATION_OBSERVABLE_CONFIG_DEF: MutationObservableConfig = {
   subtree: true,
   attributeFilter: ['src', 'data-loaded', 'data-updated'],
   mutations: 'processed',
+  filterBy: (node) => node?.nodeType === Node.ELEMENT_NODE,
 };
 
 export const RESIZE_OBSERVERVABLE_CONFIG_DEF: ResizeObservableConfig = {
@@ -89,6 +97,11 @@ export class MutationObservableService {
     return new Observable((subscriber: Subscriber<Set<HTMLElement>>) => {
       const mutationObserver: MutationObserver = new this.nativeWindow.MutationObserver(
         (mutations: MutationRecord[]) => {
+          if (config.mutations === 'original') {
+            subscriber.next(mutations as any);
+            return;
+          }
+
           const affectedElementsSet = this.processMutations(
             mutations,
             element,
@@ -166,7 +179,7 @@ export class MutationObservableService {
             const newRect = entries[entries.length - 1].contentRect;
 
             if (this.compareDOMRects(lastRect, newRect, config)) {
-              subscriber.next({ ...newRect });
+              subscriber.next(newRect);
               lastRect = newRect;
             }
           }
@@ -350,20 +363,24 @@ export class MutationObservableService {
 
     const filteredElements: Set<HTMLElement> = new Set();
 
-    if (config.filterSelector) {
+    if (config.filterSelector || config.filterBy) {
       affectedElements.forEach((el) => {
-        const target = this.DOM.getClosestUntil(
-          el,
-          config.filterSelector,
-          observedElement
-        );
+        let target = isNotEmptyString(config.filterSelector)
+          ? this.DOM.getClosestUntil(el, config.filterSelector, observedElement)
+          : el;
+
+        if (isFunction(config.filterBy) && !config.filterBy(el)) {
+          target = undefined;
+        }
 
         if (target && target !== observedElement && document.contains(target)) {
           filteredElements.add(target);
         }
       });
+
+      return filteredElements;
     }
 
-    return config.filterSelector ? filteredElements : affectedElements;
+    return affectedElements;
   }
 }

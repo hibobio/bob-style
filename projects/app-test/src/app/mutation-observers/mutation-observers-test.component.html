@@ -1,0 +1,38 @@
+<div class="rounded pad-32 mrg-32 mutation-observer">
+
+  <div #moBox>
+    <div class="flx">
+      <textarea #moTextArea
+                [(ngModel)]="textInputValue"></textarea>
+
+      <p id="input-value"
+         class="mrg-y-0 mrg-l-16">
+        {{ textInputValue }}
+      </p>
+    </div>
+
+    <div class="flx mrg-t-32">
+      <span *ngFor="let number of numbers; let index = index"
+            [id]="'number-'+index"
+            class="pad-8">{{number}}</span>
+
+      <button type="button"
+              class="mrg-l-16"
+              (click)="addNumber()">add a number</button>
+    </div>
+  </div>
+
+  <div class="flx mrg-t-32">
+    {{ moMessage$ | async }}
+  </div>
+
+</div>
+
+
+<div class="intersection-observer-message flx pad-16 mrg-t-32">
+  Green box is {{ (ioMessage$ | async) ? 'in view' : 'out of view' }}
+</div>
+
+<div class="resize-observer-message flx pad-16 rounded">
+  Textarea size is {{ roMessage$ | async }}
+</div>

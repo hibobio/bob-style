@@ -1,0 +1,26 @@
+:host {
+  min-height: 200vh;
+  width: 100vw;
+  padding: 400px 100px 100px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mutation-observer {
+  background-color: green;
+  color: white;
+}
+
+.intersection-observer-message {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+}
+
+.resize-observer-message {
+  position: fixed;
+  top: 70px;
+  right: 16px;
+}
