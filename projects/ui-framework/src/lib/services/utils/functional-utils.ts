@@ -1220,8 +1220,6 @@ export const applyChanges = (
         : changes[changeKey]?.currentValue;
   });
 
-  console.log('applyChanges', cloneDeepSimpleObject(changes));
-
   return changes;
 };
 

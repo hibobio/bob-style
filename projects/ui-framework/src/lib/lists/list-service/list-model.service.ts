@@ -18,7 +18,9 @@ import {
   objectRemoveKey,
 } from '../../services/utils/functional-utils';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ListModelService {
   constructor() {}
 
