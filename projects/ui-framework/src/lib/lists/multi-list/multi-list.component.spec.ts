@@ -85,11 +85,11 @@ describe('MultiListComponent', () => {
         fixture = TestBed.createComponent(MultiListComponent);
         component = fixture.componentInstance;
         component.ngOnInit = () => {};
-        component.startWithGroupsCollapsed = false;
 
         component.ngOnChanges(
           simpleChange({
             options: cloneDeep(optionsMock),
+            startWithGroupsCollapsed: false,
           })
         );
 
@@ -101,12 +101,10 @@ describe('MultiListComponent', () => {
 
   describe('OnChanges', () => {
     it('should create selectedIDs based on options', () => {
-      component.ngOnChanges({});
       fixture.detectChanges();
       expect(component.selectedIDs).toEqual([1]);
     });
     it('should create headerModel based on options', () => {
-      component.ngOnChanges({});
       expect(component.listHeaders).toEqual([
         {
           groupName: 'Basic Info Header',

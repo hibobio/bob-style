@@ -73,10 +73,11 @@ describe('SingleListComponent', () => {
         fixture = TestBed.createComponent(SingleListComponent);
         component = fixture.componentInstance;
         component.ngOnInit = () => {};
-        component.startWithGroupsCollapsed = false;
+
         component.ngOnChanges(
           simpleChange({
             options: optionsMock,
+            startWithGroupsCollapsed: false,
           })
         );
         fixture.detectChanges();
