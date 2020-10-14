@@ -32,14 +32,14 @@ describe('EmployeeChainSelectComponent', () => {
           selectedItemList: [1, null, 3],
         })
       );
-      expect(component.chainLinkList).toEqual([1, undefined, 3]);
+      expect(component.chainLinkList).toEqual([1, null, 3]);
     });
   });
 
   describe('addChainLink', () => {
     it('Should add chain link to the list', () => {
       component.addChainLink();
-      expect(component.chainLinkList).toEqual([undefined, undefined]);
+      expect(component.chainLinkList).toEqual([null, null]);
       fixture.detectChanges();
       const rows = fixture.debugElement.queryAll(By.css('.chain-link-row'));
       expect(rows.length).toEqual(2);
