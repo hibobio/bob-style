@@ -158,7 +158,7 @@ export enum Icons {
   slack_link = 'b-icon-slack',
   sort_asc = 'b-icon-sort-asc',
   sort_desc = 'b-icon-sort-desc',
-  sound = 'b-icon-',
+  sound = 'b-icon-sound',
   success = 'b-icon-success',
   success_alt = 'b-icon-success-alt',
   surveys = 'b-icon-surveys',
