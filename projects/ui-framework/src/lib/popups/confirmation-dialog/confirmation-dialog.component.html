@@ -2,7 +2,7 @@
           [dialogButtons]="config.buttonConfig">
   <div b-dialog-content
        class="message"
-       *ngIf="config.message">
-    {{config.message}}
+       *ngIf="config.message"
+       [innerHTML]="config.message">
   </div>
 </b-dialog>
