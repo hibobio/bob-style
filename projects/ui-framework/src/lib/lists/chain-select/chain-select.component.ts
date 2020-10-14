@@ -18,7 +18,6 @@ import {
   applyChanges,
   asArray,
   getEmptyOfSameType,
-  isNullOrUndefined,
   objectStringID,
 } from '../../services/utils/functional-utils';
 
@@ -46,19 +45,20 @@ export class ChainSelectComponent implements OnChanges, OnInit {
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
 
-  private emptyItem: any;
+  private emptyItem: any = undefined;
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
 
     if (changes.selectedItemList) {
-      this.emptyItem = getEmptyOfSameType(
-        asArray(this.selectedItemList || this.chainLinkList).filter(Boolean)[0]
-      );
+      this.emptyItem =
+        getEmptyOfSameType(
+          asArray(this.selectedItemList || this.chainLinkList).filter(
+            Boolean
+          )[0]
+        ) || null;
 
-      this.chainLinkList = cloneDeep(
-        this.selectedItemList || []
-      ).map((item: any) => (isNullOrUndefined(item) ? this.emptyItem : item));
+      this.chainLinkList = cloneDeep(this.selectedItemList || []);
 
       if (!this.chainLinkList.length) {
         this.addChainLink();
@@ -68,7 +68,7 @@ export class ChainSelectComponent implements OnChanges, OnInit {
 
   ngOnInit(): void {
     if (!this.chainLinkList) {
-      this.emptyItem = undefined;
+      this.emptyItem = null;
       this.chainLinkList = [];
       this.addChainLink();
     }
