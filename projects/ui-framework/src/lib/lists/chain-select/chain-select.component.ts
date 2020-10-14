@@ -45,7 +45,7 @@ export class ChainSelectComponent implements OnChanges, OnInit {
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
 
-  private emptyItem: any = undefined;
+  private emptyItem: any = null;
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
@@ -68,7 +68,6 @@ export class ChainSelectComponent implements OnChanges, OnInit {
 
   ngOnInit(): void {
     if (!this.chainLinkList) {
-      this.emptyItem = null;
       this.chainLinkList = [];
       this.addChainLink();
     }
