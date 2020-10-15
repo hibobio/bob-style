@@ -4,10 +4,10 @@ $b-grid-breakpoint-sm: var(--grid-breakpoint-sm, #{$breakpoint-device-sm});
 $b-grid-breakpoint-md: var(--grid-breakpoint-md, #{$breakpoint-device-md});
 $b-grid-breakpoint-lg: var(--grid-breakpoint-lg, #{$breakpoint-device-lg});
 
-@mixin gridLayout12Cols($column-gap: $b-grid-gap, $row-gap: null) {
+@mixin gridLayout12Cols($column-gap: $b-grid-gap, $row-gap: null, $cols: 12) {
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: repeat($cols, 1fr);
   @if $column-gap {
     grid-column-gap: $column-gap;
   }
