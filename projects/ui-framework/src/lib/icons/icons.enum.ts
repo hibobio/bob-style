@@ -19,8 +19,10 @@ export enum IconColor {
   light = 'light',
   white = 'white',
   primary = 'primary',
+  primary_alt = 'primary-alt',
   inform = 'inform',
   negative = 'negative',
+  negative_alt = 'negative-alt',
   positive = 'positive',
 }
 
