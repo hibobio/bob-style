@@ -46,7 +46,7 @@ export class AlertComponent {
   readonly iconSize: IconSize = IconSize.xLarge;
   readonly iconsDic: Dictionary<InfoStripIcon> = {
     warning: { color: IconColor.primary_alt, icon: Icons.error_alt },
-    error: { color: IconColor.negative_alt, icon: Icons.warning },
+    error: { color: IconColor.negative, icon: Icons.warning },
     success: { color: IconColor.positive, icon: Icons.success },
     information: { color: IconColor.inform, icon: Icons.baseline_info_icon }
   };
