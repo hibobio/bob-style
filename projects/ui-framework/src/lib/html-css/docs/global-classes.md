@@ -173,155 +173,7 @@
 
 </table>
 
-<b-heading>Colors</b-heading>
-
-<table class="doc-table">
-  <thead>
-    <tr>
-      <th>class</th>
-      <th>description</th>
-      <th>example</th>
-    </tr>
-  </thead>
-
-  <tbody>
-
-    <tr>
-      <td>bg-white,
-        bg-grey-100, bg-grey-300, bg-grey-500, bg-grey-600, bg-grey-700
-      </td>
-      <td>Common background grey colors
-      </td>
-      <td>
-        <pre><code>&lt;div class="bg-grey-100"&gt;
-  Something
-&lt;/div&gt;</code></pre>
-      </td>
-    </tr>
-
-    <tr>
-      <td>bg-primary-500, bg-secondary-500, bg-inform-500, bg-negative-500, bg-positive-500
-      </td>
-      <td>Common background brand colors
-      </td>
-      <td>
-        <pre><code>&lt;div class="bg-primary-500"&gt;
-  Something
-&lt;/div&gt;</code></pre>
-      </td>
-    </tr>
-
-    <tr>
-      <td>bg-error, bg-warn
-      </td>
-      <td>Other common background colors
-      </td>
-      <td>
-        <pre><code>&lt;div class="bg-error clr-white"&gt;
-  Something
-&lt;/div&gt;</code></pre>
-      </td>
-    </tr>
-
-    <tr>
-      <td>clr-white,
-        clr-grey-100, clr-grey-300, clr-grey-500, clr-grey-600, clr-grey-700
-      </td>
-      <td>Common grey text colors
-      </td>
-      <td>
-        <pre><code>&lt;div class="clr-grey-100"&gt;
-  Something
-&lt;/div&gt;</code></pre>
-      </td>
-    </tr>
-
-    <tr>
-      <td>clr-primary-500, clr-secondary-500, clr-inform-500, clr-negative-500, clr-positive-500
-      </td>
-      <td>Common brand text colors
-      </td>
-      <td>
-        <pre><code>&lt;div class="clr-primary-500"&gt;
-  Something
-&lt;/div&gt;</code></pre>
-      </td>
-    </tr>
-
-    <tr>
-      <td>clr-error, clr-warn
-      </td>
-      <td>Other common text colors
-      </td>
-      <td>
-        <pre><code>&lt;div class="clr-warn"&gt;
-  Something
-&lt;/div&gt;</code></pre>
-      </td>
-    </tr>
-
-  </tbody>
-
-</table>
-
-<b-heading>Misc</b-heading>
-
-<table class="doc-table">
-  <thead>
-    <tr>
-      <th>class</th>
-      <th>description</th>
-      <th>example</th>
-    </tr>
-  </thead>
-
-  <tbody>
-
-    <tr>
-      <td style="white-space: nowrap;">preloading</td>
-      <td>While element has this class, its children (if any) will be hidden (invisible, but dimentions are kept) and a
-        <u>mini-preloader</u> will be shown
-        instead
-      </td>
-      <td>
-        <pre><code>&lt;div [ngClass]="{{ '{' }} preloading: isLoading {{ '}' }}"&gt;
-  Something
-&lt;/div&gt;</code></pre>
-      </td>
-    </tr>
-
-    <tr>
-      <td style="white-space: nowrap;">preloading-collapsed</td>
-      <td>Same as .preloading, but will also collapse the contents (invisible and height 0).
-      </td>
-      <td>
-        <pre><code>&lt;div [ngClass]="{{ '{' }}
-        'preloading-collapsed': isLoading
-      {{ '}' }}"&gt;
-  Something
-&lt;/div&gt;</code></pre>
-      </td>
-    </tr>
-
-    <tr>
-      <td style="white-space: nowrap;">b-collapse, b-expand</td>
-      <td>adds collapsing / expanding animation + expands / collapses element
-      </td>
-      <td>
-        <pre><code>&lt;div [ngClass]="{{ '{' }}
-        'b-collapse': isCollapsed,
-        'b-expand': !isCollapsed
-      {{ '}' }}"&gt;
-  Something
-&lt;/div&gt;</code></pre>
-      </td>
-    </tr>
-
-  </tbody>
-
-</table>
-
-<b-heading>Layout & Responsive</b-heading>
+<b-heading>Layout</b-heading>
 
 <table class="doc-table">
   <thead>
@@ -365,6 +217,19 @@
     </tr>
 
     <tr>
+      <td style="white-space: nowrap;">flx-row-align-y, flx-row-align-x
+        <hr>
+        flx-col-align-y, flx-col-align-x</td>
+      <td>adds vertical or horizontal align styles (using "align-items" and "justify-content") for row or column
+        flex-layout</td>
+      <td>
+        <pre><code>&lt;span class="flx-col flx-col-align-x"&gt;
+  <span>I'm horizontally in the center of a column layout</span>
+&lt;/span&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
       <td style="white-space: nowrap;">flx-center</td>
       <td>adds "align-items" + "justify-content" to align content centrally. does not add "display: flex" (so can be
         used with grid's)</td>
@@ -374,6 +239,59 @@
 &lt;/span&gt;</code></pre>
       </td>
     </tr>
+
+    <tr>
+      <td style="white-space: nowrap;">grd, b-grid</td>
+      <td>adds "display: grid"</td>
+      <td>
+        <pre><code>&lt;span class="grd"&gt;
+  I'm a grid
+&lt;/span&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="white-space: nowrap;">no-gap, no-row-gap, no-col-gap</td>
+      <td>sets all gaps / row-gap / col-gap to zero</td>
+      <td>
+        <pre><code>&lt;span class="grd no-gap"&gt;
+  I'm a grid without gaps
+&lt;/span&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="white-space: nowrap; white-space: normal;">
+        gap-0, gap-8, gap-16, gap-24, gap-32, gap-40
+        <hr>
+        col-gap-0, col-gap-8, col-gap-16, col-gap-24, col-gap-32, col-gap-40
+        <hr>
+        row-gap-0, row-gap-8, row-gap-16, row-gap-24, row-gap-32, row-gap-40
+      </td>
+      <td>sets all gaps / row-gap / col-gap to 8-40px. Default grid gap is <strong>24px</strong>.</td>
+      <td>
+        <pre><code>&lt;span class="grd col-gap-24 row-gap-32"&gt;
+  I'm a grid with custom gaps
+&lt;/span&gt;</code></pre>
+      </td>
+    </tr>
+
+  </tbody>
+
+</table>
+
+<b-heading>Responsive</b-heading>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>class</th>
+      <th>description</th>
+      <th>example</th>
+    </tr>
+  </thead>
+
+  <tbody>
 
     <tr>
       <td style="white-space: nowrap;">b-mobile</td>
@@ -426,7 +344,6 @@
   </tbody>
 
 </table>
-
 
 <b-heading>Typography</b-heading>
 
@@ -538,6 +455,155 @@
         <pre><code>&lt;h5 class="b-heading"&gt;
   Subtitle
 &lt;/h5&gt;</code></pre>
+      </td>
+    </tr>
+
+  </tbody>
+
+</table>
+
+<b-heading>Colors</b-heading>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>class</th>
+      <th>description</th>
+      <th>example</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr>
+      <td>bg-white,
+        bg-grey-100, bg-grey-300, bg-grey-500, bg-grey-600, bg-grey-700
+      </td>
+      <td>Common background grey colors
+      </td>
+      <td>
+        <pre><code>&lt;div class="bg-grey-100"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
+      <td>bg-primary-500, bg-secondary-500, bg-inform-500, bg-negative-500, bg-positive-500
+      </td>
+      <td>Common background brand colors
+      </td>
+      <td>
+        <pre><code>&lt;div class="bg-primary-500"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
+      <td>bg-error, bg-warn
+      </td>
+      <td>Other common background colors
+      </td>
+      <td>
+        <pre><code>&lt;div class="bg-error clr-white"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
+      <td>clr-white,
+        clr-grey-100, clr-grey-300, clr-grey-500, clr-grey-600, clr-grey-700
+      </td>
+      <td>Common grey text colors
+      </td>
+      <td>
+        <pre><code>&lt;div class="clr-grey-100"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
+      <td>clr-primary-500, clr-secondary-500, clr-inform-500, clr-negative-500, clr-positive-500
+      </td>
+      <td>Common brand text colors
+      </td>
+      <td>
+        <pre><code>&lt;div class="clr-primary-500"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
+      <td>clr-error, clr-warn
+      </td>
+      <td>Other common text colors
+      </td>
+      <td>
+        <pre><code>&lt;div class="clr-warn"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
+  </tbody>
+
+</table>
+
+
+<b-heading>Misc</b-heading>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>class</th>
+      <th>description</th>
+      <th>example</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr>
+      <td style="white-space: nowrap;">preloading</td>
+      <td>While element has this class, its children (if any) will be hidden (invisible, but dimentions are kept) and a
+        <u>mini-preloader</u> will be shown
+        instead
+      </td>
+      <td>
+        <pre><code>&lt;div [ngClass]="{{ '{' }} preloading: isLoading {{ '}' }}"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="white-space: nowrap;">preloading-collapsed</td>
+      <td>Same as .preloading, but will also collapse the contents (invisible and height 0).
+      </td>
+      <td>
+        <pre><code>&lt;div [ngClass]="{{ '{' }}
+        'preloading-collapsed': isLoading
+      {{ '}' }}"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="white-space: nowrap;">b-collapse, b-expand</td>
+      <td>adds collapsing / expanding animation + expands / collapses element
+      </td>
+      <td>
+        <pre><code>&lt;div [ngClass]="{{ '{' }}
+        'b-collapse': isCollapsed,
+        'b-expand': !isCollapsed
+      {{ '}' }}"&gt;
+  Something
+&lt;/div&gt;</code></pre>
       </td>
     </tr>
 

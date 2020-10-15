@@ -1,9 +1,13 @@
 $b-grid-gap: times8(3);
 
-@mixin gridLayout12Cols($column-gap: $b-grid-gap, $row-gap: null, $cols: 12) {
+$b-grid-breakpoint-sm: var(--grid-breakpoint-sm, #{$breakpoint-device-sm});
+$b-grid-breakpoint-md: var(--grid-breakpoint-md, #{$breakpoint-device-md});
+$b-grid-breakpoint-lg: var(--grid-breakpoint-lg, #{$breakpoint-device-lg});
+
+@mixin gridLayout12Cols($column-gap: $b-grid-gap, $row-gap: null) {
   display: grid;
   width: 100%;
-  grid-template-columns: repeat($cols, 1fr);
+  grid-template-columns: repeat(12, 1fr);
   @if $column-gap {
     grid-column-gap: $column-gap;
   }
@@ -23,7 +27,7 @@ $b-grid-gap: times8(3);
     }
   }
   @if ($media == 'small' or $media == 'sm') {
-    @media screen and (min-width: $breakpoint-device-sm) {
+    @media screen and (min-width: $b-grid-breakpoint-sm) {
       grid-column: auto / span #{$span};
 
       @if $push {
@@ -34,7 +38,7 @@ $b-grid-gap: times8(3);
     }
   }
   @if ($media == 'medium' or $media == 'md') {
-    @media screen and (min-width: $breakpoint-device-md) {
+    @media screen and (min-width: $b-grid-breakpoint-md) {
       grid-column: auto / span #{$span};
 
       @if $push {
@@ -45,7 +49,7 @@ $b-grid-gap: times8(3);
     }
   }
   @if ($media == 'large' or $media == 'lg') {
-    @media screen and (min-width: $breakpoint-device-lg) {
+    @media screen and (min-width: $b-grid-breakpoint-lg) {
       grid-column: auto / span #{$span};
 
       @if $push {

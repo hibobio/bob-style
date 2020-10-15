@@ -253,6 +253,18 @@ $acss-dirs: top right bottom left;
   display: grid;
 }
 
+@each $size in $acss-sizes {
+  .gap-#{$size} {
+    gap: $size * 1px;
+  }
+  .col-gap-#{$size} {
+    column-gap: $size * 1px;
+  }
+  .row-gap-#{$size} {
+    row-gap: $size * 1px;
+  }
+}
+
 .flx,
 .b-flex {
   display: flex;
@@ -263,9 +275,25 @@ $acss-dirs: top right bottom left;
   flex-direction: row;
 }
 
+.flx-row-align-y {
+  align-items: center;
+}
+
+.flx-row-align-x {
+  justify-content: center;
+}
+
 .flx-col {
   display: flex;
   flex-direction: column;
+}
+
+.flx-col-align-y {
+  justify-content: center;
+}
+
+.flx-col-align-x {
+  align-items: center;
 }
 
 .flx-center {
