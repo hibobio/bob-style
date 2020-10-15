@@ -255,13 +255,13 @@ $acss-dirs: top right bottom left;
 
 @each $size in $acss-sizes {
   .gap-#{$size} {
-    gap: $size * 1px;
+    grid-gap: $size * 1px;
   }
   .col-gap-#{$size} {
-    column-gap: $size * 1px;
+    grid-column-gap: $size * 1px;
   }
   .row-gap-#{$size} {
-    row-gap: $size * 1px;
+    grid-row-gap: $size * 1px;
   }
 }
 
