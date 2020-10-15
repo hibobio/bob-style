@@ -1122,8 +1122,7 @@ export const hasChanges = (
     keys.find((i) => {
       if (
         !changes[i] &&
-        changes[CHANGES_SET_PROPS] &&
-        changes[CHANGES_SET_PROPS].currentValue.hasOwnProperty(i)
+        changes[CHANGES_SET_PROPS]?.currentValue?.hasOwnProperty(i)
       ) {
         changes[i] = simpleChange(
           {
