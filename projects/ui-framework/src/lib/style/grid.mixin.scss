@@ -1,9 +1,5 @@
 $b-grid-gap: times8(3);
 
-$b-grid-breakpoint-sm: var(--grid-breakpoint-sm, #{$breakpoint-device-sm});
-$b-grid-breakpoint-md: var(--grid-breakpoint-md, #{$breakpoint-device-md});
-$b-grid-breakpoint-lg: var(--grid-breakpoint-lg, #{$breakpoint-device-lg});
-
 @mixin gridLayout12Cols($column-gap: $b-grid-gap, $row-gap: null, $cols: 12) {
   display: grid;
   width: 100%;
@@ -27,7 +23,7 @@ $b-grid-breakpoint-lg: var(--grid-breakpoint-lg, #{$breakpoint-device-lg});
     }
   }
   @if ($media == 'small' or $media == 'sm') {
-    @media screen and (min-width: $b-grid-breakpoint-sm) {
+    @media screen and (min-width: $breakpoint-device-sm) {
       grid-column: auto / span #{$span};
 
       @if $push {
@@ -38,7 +34,7 @@ $b-grid-breakpoint-lg: var(--grid-breakpoint-lg, #{$breakpoint-device-lg});
     }
   }
   @if ($media == 'medium' or $media == 'md') {
-    @media screen and (min-width: $b-grid-breakpoint-md) {
+    @media screen and (min-width: $breakpoint-device-md) {
       grid-column: auto / span #{$span};
 
       @if $push {
@@ -49,7 +45,7 @@ $b-grid-breakpoint-lg: var(--grid-breakpoint-lg, #{$breakpoint-device-lg});
     }
   }
   @if ($media == 'large' or $media == 'lg') {
-    @media screen and (min-width: $b-grid-breakpoint-lg) {
+    @media screen and (min-width: $breakpoint-device-lg) {
       grid-column: auto / span #{$span};
 
       @if $push {

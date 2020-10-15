@@ -5,7 +5,8 @@
 </b-icon>
 
 <div class="content">
-  <p *ngIf="text">{{text}}</p>
+  <p *ngIf="text"
+     [innerHTML]="text"></p>
   <ng-content></ng-content>
   <b-link *ngIf="link"
           [config]="link"
