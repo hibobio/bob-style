@@ -10,6 +10,7 @@ import {
   randomNumber,
   hasProp,
   isSelectGroupOptions,
+  objectRemoveKeys,
 } from '../../services/utils/functional-utils';
 import { AvatarImageComponent } from '../avatar/avatar-image/avatar-image.component';
 import { AvatarSize } from '../avatar/avatar.enum';
@@ -75,8 +76,8 @@ export class EmployeesShowcaseService {
     if (!this.isCorrectGroupOptions(employeeListOptions)) {
       return [];
     }
-    return employeeListOptions[0].options.map(
-      (option) => option.prefixComponent.attributes
+    return employeeListOptions[0].options.map((option) =>
+      objectRemoveKeys(option.prefixComponent.attributes, ['disabled', 'size'])
     );
   }
 

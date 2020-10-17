@@ -23,6 +23,7 @@ import {
   hasChanges,
   isObject,
   objectRemoveEntriesByValue,
+  firstChanges,
 } from '../../../services/utils/functional-utils';
 import { AvatarIconSize, AvatarBadges, BadgeSize } from '../avatar.consts';
 import { Avatar, BadgeConfig } from '../avatar.interface';
@@ -50,6 +51,8 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   private host: HTMLElement;
+  private hasContent = false;
+  private initDone = false;
 
   @Input('avatar') set setProps(avatar: Avatar) {
     if (isObject(avatar)) {
@@ -84,7 +87,7 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
       disabled: false,
     });
 
-    if (hasChanges(changes, ['size', 'setProps'], true)) {
+    if (firstChanges(changes, ['size', 'setProps'], true)) {
       this.size = valueAsNumber(
         true,
         this.size !== AvatarSize.mini
@@ -94,123 +97,145 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
       );
     }
 
-    if (notFirstChanges(changes)) {
+    if (
+      this.initDone &&
+      (hasChanges(changes, ['text'], true, {
+        checkEquality: true,
+      }) ||
+        notFirstChanges(changes, null, false, {
+          checkEquality: true,
+        }))
+    ) {
       if (changes.text && !this.cd['destroyed']) {
         this.cd.detectChanges();
       }
 
-      this.zone.runOutsideAngular(() => {
-        setTimeout(() => {
-          this.setAttributes();
-        }, 0);
-      });
+      this.setAttributes();
     }
   }
 
   ngOnInit() {
     this.setAttributes();
+    this.initDone = true;
   }
 
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
-        if (!this.DOM.isEmpty(this.host)) {
-          this.setAttributes();
+        if (!this.hasContent && this.checkIfHasContent()) {
+          this.setAttributes(true);
         }
       }, 0);
     });
   }
 
-  private setAttributes(): void {
-    const isClickable =
-      this.isClickable !== false &&
-      (this.isClickable || this.clicked.observers.length > 0);
-    const hasContent = !this.DOM.isEmpty(this.host);
+  private setAttributes(hasContent = false): void {
+    this.DOM.mutate(() => {
+      const isClickable =
+        this.isClickable !== false &&
+        (this.isClickable || this.clicked.observers.length > 0);
+      this.hasContent = hasContent || this.checkIfHasContent();
 
-    if (
-      !this.supressWarnings &&
-      this.imageSource &&
-      this.imageSource.indexOf('filestack') > -1 &&
-      !/default-avatars/.test(this.imageSource) &&
-      !/align\W{1,2}faces/.test(this.imageSource)
-    ) {
-      const imgref = this.imageSource.split(
-        /(?:filestackcontent\W{1,2}com\W{1,2})|(?:\W{0,1}\?)/i
-      )[1];
-      console.warn(`AvatarImageComponent: Please check your imageSource ${
-        imgref ? '(' + imgref + ')' : ''
-      } -
+      if (
+        !this.supressWarnings &&
+        this.imageSource &&
+        this.imageSource.indexOf('filestack') > -1 &&
+        !/default-avatars/.test(this.imageSource) &&
+        !/align\W{1,2}faces/.test(this.imageSource)
+      ) {
+        const imgref = this.imageSource.split(
+          /(?:filestackcontent\W{1,2}com\W{1,2})|(?:\W{0,1}\?)/i
+        )[1];
+        console.warn(`AvatarImageComponent: Please check your imageSource ${
+          imgref ? '(' + imgref + ')' : ''
+        } -
 you should be using EmployeeAvatarService.getOptimizedAvatarImage
 to get the right avatar image.`);
-    }
+      }
 
-    if (this.host.getAttribute('data-tooltip')) {
-      console.error(`AvatarImageComponent: You can not use data-tooltip attribute
+      if (this.host.getAttribute('data-tooltip')) {
+        console.error(`AvatarImageComponent: You can not use data-tooltip attribute
 on b-avatar-image element.`);
-      this.host.removeAttribute('data-tooltip');
-    }
+        this.host.removeAttribute('data-tooltip');
+      }
 
-    this.DOM.setCssProps(this.host, {
-      '--avatar-size': this.size + 'px',
-      '--bg-color': this.backgroundColor || null,
-      '--avatar-image':
-        this.imageSource && !this.imageSource.includes('emptyAvatar')
-          ? `url(${this.imageSource})`
+      if (
+        decodeURIComponent(this.imageSource).includes(
+          'default-avatars/default.png'
+        )
+      ) {
+        this.imageSource = undefined;
+      }
+
+      this.DOM.setCssProps(this.host, {
+        '--avatar-size': this.size + 'px',
+        '--bg-color': this.backgroundColor || null,
+        '--avatar-image':
+          this.imageSource && !this.imageSource.includes('emptyAvatar')
+            ? `url(${this.imageSource})`
+            : null,
+      });
+
+      this.DOM.setAttributes(this.host, {
+        role: 'img',
+        'data-border': this.border === true,
+        'data-disabled': this.disabled || null,
+        tabindex: isClickable && !this.disabled ? '0' : null,
+        'data-badge-align':
+          this.badge === AvatarBadge.online ||
+          this.badge === AvatarBadge.offline
+            ? 'bottom-right'
+            : null,
+
+        'data-size': getKeyByValue(AvatarSize, this.size),
+        'data-icon-before-size':
+          (this.icon && (this.icon as Icon).size) || AvatarIconSize[this.size],
+        'data-icon-after-size': BadgeSize[this.size],
+
+        'data-icon-before':
+          !this.hasContent && this.icon
+            ? ((this.icon as Icon).icon || (this.icon as string)).replace(
+                'b-icon-',
+                ''
+              )
+            : !this.hasContent && !this.imageSource && !this.icon
+            ? Icons.person.replace('b-icon-', '')
+            : null,
+        'data-icon-before-color':
+          this.icon && (this.icon as Icon).color
+            ? (this.icon as Icon).color
+            : this.imageSource
+            ? IconColor.white
+            : IconColor.normal,
+
+        'data-icon-after': this.badge
+          ? (
+              (this.badge as BadgeConfig).icon ||
+              AvatarBadges[this.badge as AvatarBadge].icon
+            ).replace('b-icon-', '')
           : null,
-    });
-
-    this.DOM.setAttributes(this.host, {
-      role: 'img',
-      'data-border': this.border === true,
-      'data-disabled': this.disabled || null,
-      tabindex: isClickable && !this.disabled ? '0' : null,
-      'data-badge-align':
-        this.badge === AvatarBadge.online || this.badge === AvatarBadge.offline
-          ? 'bottom-right'
+        'data-icon-after-color': this.badge
+          ? (this.badge as BadgeConfig).color ||
+            AvatarBadges[this.badge as AvatarBadge].color
           : null,
+      });
 
-      'data-size': getKeyByValue(AvatarSize, this.size),
-      'data-icon-before-size':
-        (this.icon && (this.icon as Icon).size) || AvatarIconSize[this.size],
-      'data-icon-after-size': BadgeSize[this.size],
+      this.DOM.bindClasses(this.host, {
+        avatar: true,
+        'has-hover': isClickable && !this.disabled,
+        'icon-on-hover': Boolean(
+          this.imageSource && (this.icon || this.hasContent)
+        ),
+        'has-content': this.hasContent,
+      });
 
-      'data-icon-before':
-        !hasContent && this.icon
-          ? ((this.icon as Icon).icon || (this.icon as string)).replace(
-              'b-icon-',
-              ''
-            )
-          : !hasContent && !this.imageSource && !this.icon
-          ? Icons.person.replace('b-icon-', '')
-          : null,
-      'data-icon-before-color':
-        this.icon && (this.icon as Icon).color
-          ? (this.icon as Icon).color
-          : this.imageSource
-          ? IconColor.white
-          : IconColor.normal,
-
-      'data-icon-after': this.badge
-        ? (
-            (this.badge as BadgeConfig).icon ||
-            AvatarBadges[this.badge as AvatarBadge].icon
-          ).replace('b-icon-', '')
-        : null,
-      'data-icon-after-color': this.badge
-        ? (this.badge as BadgeConfig).color ||
-          AvatarBadges[this.badge as AvatarBadge].color
-        : null,
+      if (!this.host.className) {
+        this.host.removeAttribute('class');
+      }
     });
+  }
 
-    this.DOM.bindClasses(this.host, {
-      avatar: true,
-      'has-hover': isClickable && !this.disabled,
-      'icon-on-hover': Boolean(this.imageSource && (this.icon || hasContent)),
-      'has-content': hasContent,
-    });
-
-    if (!this.host.className) {
-      this.host.removeAttribute('class');
-    }
+  private checkIfHasContent(): boolean {
+    return Boolean(this.text?.trim() || !this.DOM.isEmpty(this.host));
   }
 }

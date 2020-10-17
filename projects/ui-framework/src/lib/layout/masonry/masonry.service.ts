@@ -92,7 +92,7 @@ export class MasonryService {
     elements: HTMLElement[],
     { host, config, state, emitter = null, debug = false }: MasonryUpdateConfig
   ): void {
-    if (debug) {
+    if (false && debug) {
       console.log(
         `updateElementsRowSpan: will process ${
           elements.length

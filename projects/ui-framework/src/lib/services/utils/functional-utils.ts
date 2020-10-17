@@ -370,7 +370,7 @@ export const objectStringID = <T = GenericObject>(
   }
 
   const str = String(
-    primitives ? JSON.stringify(obj) : stringify(obj, null, 1)
+    primitives !== false ? JSON.stringify(obj) : stringify(obj, null, 1)
   ).replace(/[\s\//'"\.,:\-_\+={}()\[\]]+/gi, '');
   const len = str.length;
   const slice =
@@ -896,11 +896,19 @@ export const compareAsStrings = (a: any, b: any, strict = true): boolean => {
           .replace(/[./\\()\"':,.;<>~!@#$%^&*|+=[\]{}`~\?-]/g, '');
 };
 
+export interface EqualByValuesConfig extends ObjectStringIDConfig {
+  sort?: boolean;
+}
+
 // ignores order in arrays, only cares about values
 export const isEqualByValues = <T = any>(
   dataA: T,
   dataB: T,
-  config: ObjectStringIDConfig = { limit: 5000, primitives: true }
+  config: EqualByValuesConfig = {
+    limit: 5000,
+    primitives: true,
+    sort: true,
+  }
 ): boolean => {
   const truthyA = Boolean(dataA),
     truthyB = Boolean(dataB);
@@ -919,11 +927,27 @@ export const isEqualByValues = <T = any>(
 
   return (
     objectStringID(
-      dataDeepSort<T>(dataA, config?.ignoreProps || null),
+      config.sort !== false
+        ? dataDeepSort<T>(dataA, config?.ignoreProps || null)
+        : dataA,
       config
     ) ===
-    objectStringID(dataDeepSort<T>(dataB, config?.ignoreProps || null), config)
+    objectStringID(
+      config.sort !== false
+        ? dataDeepSort<T>(dataB, config?.ignoreProps || null)
+        : dataB,
+      config
+    )
   );
+};
+
+export const isEqualByValuesConfigured = (config: EqualByValuesConfig) => <
+  T = any
+>(
+  dataA: T,
+  dataB: T
+): boolean => {
+  return isEqualByValues<T>(dataA, dataB, config);
 };
 
 // ----------------------
@@ -1065,7 +1089,11 @@ export interface ChangesHelperConfig {
 
 export const CHANGES_HELPER_CONFIG_DEF: ChangesHelperConfig = {
   truthyCheck: Boolean,
-  equalCheck: isEqualByValues,
+  equalCheck: isEqualByValuesConfigured({
+    limit: 5000,
+    primitives: true,
+    sort: false,
+  }),
   firstChange: null,
 };
 
@@ -1092,9 +1120,9 @@ export const simpleChange = (
 const simpleChangeFilter = (
   change: SimpleChange,
   discardAllFalsey = false,
-  truthyCheck: Function = Boolean,
+  truthyCheck: Function = CHANGES_HELPER_CONFIG_DEF.truthyCheck,
   checkEquality = false,
-  equalCheck: Function = isEqualByValues
+  equalCheck: Function = CHANGES_HELPER_CONFIG_DEF.equalCheck
 ): boolean => {
   return (
     change !== undefined &&
@@ -1113,8 +1141,9 @@ export const hasChanges = (
   discardAllFalsey = false,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): boolean => {
-  const truthyCheck = config?.truthyCheck || Boolean;
-  const equalCheck = config?.equalCheck || isEqualByValues;
+  const truthyCheck =
+    config?.truthyCheck || CHANGES_HELPER_CONFIG_DEF.truthyCheck;
+  const equalCheck = config?.equalCheck || CHANGES_HELPER_CONFIG_DEF.equalCheck;
   if (!keys) {
     keys = Object.keys(changes);
   }
@@ -1184,7 +1213,8 @@ export const applyChanges = (
   discardAllFalsey = false,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): SimpleChanges => {
-  const truthyCheck = config.truthyCheck || Boolean;
+  const truthyCheck =
+    config.truthyCheck || CHANGES_HELPER_CONFIG_DEF.truthyCheck;
   const keyMap = config.keyMap;
 
   if (keyMap) {
