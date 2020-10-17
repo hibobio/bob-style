@@ -86,9 +86,23 @@ export const TranslateServiceProvideMock = () => ({
 export const getDOMhelpersMock = () =>
   new Mock<DOMhelpers>({
     getElementCSSvar: () => 'xxx',
-    bindClasses: () => ({} as any),
+    bindClasses: DOMhelpers.prototype.bindClasses,
+    setAttributes: DOMhelpers.prototype.setAttributes,
     setCssProps: DOMhelpers.prototype.setCssProps,
+    mutate: (func) => {
+      setTimeout(() => {
+        func();
+      }, 0);
+    },
+    measure: (func) => {
+      setTimeout(() => {
+        func();
+      }, 0);
+    },
     getClosest: (elem) => elem,
+    isEmpty: DOMhelpers.prototype.isEmpty,
+    hasChildren: DOMhelpers.prototype.hasChildren,
+    hasInnerText: DOMhelpers.prototype.hasInnerText,
   });
 
 export const DOMhelpersProvideMock = (mock: Mock<DOMhelpers> = null) => ({

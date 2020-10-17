@@ -164,7 +164,6 @@ describe('MenuComponent', () => {
 
     // tslint:disable-next-line: max-line-length
     it('should invoke actionClick on deep menu action click, should output menu item, enriched with menu id', () => {
-      console.log(component);
       spyOn(component.submenus.first.menuViewModel[1], 'action');
       fixture.detectChanges();
 

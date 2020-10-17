@@ -9,7 +9,6 @@ import {
 import { AvatarComponent } from './avatar.component';
 import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
 import { By } from '@angular/platform-browser';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ChipType } from '../../chips/chips.enum';
 import { AvatarImageComponent } from './avatar-image/avatar-image.component';
@@ -20,6 +19,7 @@ import {
   emptyImg,
   emptyImgTestString,
 } from '../../services/utils/test-helpers';
+import { DOMhelpersProvideMock } from '../../tests/services.stub.spec';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;
@@ -41,7 +41,7 @@ describe('AvatarComponent', () => {
         MockComponent(TruncateTooltipComponent),
       ],
       imports: [],
-      providers: [DOMhelpers],
+      providers: [DOMhelpersProvideMock()],
     })
       .overrideComponent(AvatarComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -69,12 +69,11 @@ describe('AvatarComponent', () => {
     expect(component.size).toEqual(AvatarSize.mini);
   });
 
-  describe('Avatar image', () => {
+  describe('Basics', () => {
     it('Should put the image as background on .avatar element', () => {
       expect(avatarElement.getAttribute('style')).toContain(emptyImgTestString);
     });
-  });
-  describe('Avatar background color', () => {
+
     it('Should put the background color on .avatar element', () => {
       expect(avatarElement.getAttribute('style')).toContain('red');
     });
