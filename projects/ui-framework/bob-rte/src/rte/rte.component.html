@@ -36,7 +36,7 @@
 </div>
 
 <p b-input-message
-   *ngIf="hintMessage || warnMessage || errorMessage || (showCharCounter && (minChars || maxChars > 0))"
+   *ngIf="hintMessage || warnMessage || errorMessage || (showCharCounter && (minChars || maxChars))"
    [hintMessage]="hintMessage"
    [warnMessage]="warnMessage"
    [errorMessage]="errorMessage"
