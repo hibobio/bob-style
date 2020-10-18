@@ -109,14 +109,12 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
       if (changes.text && !this.cd['destroyed']) {
         this.cd.detectChanges();
       }
-      console.log('hasChanges');
 
       this.setAttributes();
     }
   }
 
   ngOnInit() {
-    console.log('ngOnInit');
     this.setAttributes();
     this.initDone = true;
   }
@@ -133,8 +131,6 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
 
   private setAttributes(hasContent = false): void {
     this.DOM.mutate(() => {
-      console.log('setAttributes');
-
       const isClickable =
         this.isClickable !== false &&
         (this.isClickable || this.clicked.observers.length > 0);
