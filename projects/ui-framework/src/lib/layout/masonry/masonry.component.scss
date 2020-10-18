@@ -31,6 +31,7 @@ $b-masonry-row-division: 1px;
   &.single-column {
     grid-template-columns: 100%;
     grid-auto-rows: auto;
+    grid-auto-rows: min-content;
 
     &::ng-deep b-masonry-item {
       display: block;

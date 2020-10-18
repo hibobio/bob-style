@@ -369,6 +369,13 @@
   }
 }
 
+@mixin firefox {
+  /* autoprefixer: off */
+  @-moz-document url-prefix() {
+    @content;
+  }
+}
+
 @mixin button-reset() {
   min-width: 0;
   flex-shrink: 0;
