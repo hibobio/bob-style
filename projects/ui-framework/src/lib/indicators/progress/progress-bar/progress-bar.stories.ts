@@ -24,6 +24,10 @@ const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
 );
 
+const story2 = storiesOf(ComponentGroupType.Charts, module).addDecorator(
+  withKnobs
+);
+
 const template = `
   <b-progress-bar [type]="type"
                   [size]="size"
@@ -268,61 +272,55 @@ const randomStuff = {
   icon3: randomFromArray(icons, 1),
 };
 
-story.add(
-  'Progress Bar',
-  () => {
-    return {
-      template: storyTemplate,
-      props: {
-        smallBarTooltip: `type = primary
+const toAdd = () => ({
+  template: storyTemplate,
+  props: {
+    smallBarTooltip: `type = primary
 size = small
 headerTextPrimary = false
 hideValue = true`,
 
-        ...randomStuff,
+    ...randomStuff,
 
-        type: select('type', Object.values(ProgressType), ProgressType.primary),
-        size: select('size', Object.values(ProgressSize), ProgressSize.medium),
-        color: select(
-          'color',
-          [0, '#9d9d9d', '#ff962b', '#f8bc20', '#17b456', '#e52c51', '#4b95ec'],
-          0
-        ),
-        value: number('value', randomNumber(20, 80)),
+    type: select('type', Object.values(ProgressType), ProgressType.primary),
+    size: select('size', Object.values(ProgressSize), ProgressSize.medium),
+    color: select(
+      'color',
+      [0, '#9d9d9d', '#ff962b', '#f8bc20', '#17b456', '#e52c51', '#4b95ec'],
+      0
+    ),
+    value: number('value', randomNumber(20, 80)),
 
-        trackColor: select(
-          'trackColor',
-          [
-            0,
-            'rgba(200, 200, 200, 0.15)',
-            'rgba(157,157,157, 0.15)',
-            'rgba(255,150,43, 0.15)',
-            'rgba(248,188,32, 0.15)',
-            'rgba(23,180,86, 0.15)',
-            'rgba(229,44,81, 0.15)',
-            'rgba(75,149,236, 0.15)',
-          ],
-          'rgba(200, 200, 200, 0.15)'
-        ),
+    trackColor: select(
+      'trackColor',
+      [
+        0,
+        'rgba(200, 200, 200, 0.15)',
+        'rgba(157,157,157, 0.15)',
+        'rgba(255,150,43, 0.15)',
+        'rgba(248,188,32, 0.15)',
+        'rgba(23,180,86, 0.15)',
+        'rgba(229,44,81, 0.15)',
+        'rgba(75,149,236, 0.15)',
+      ],
+      'rgba(200, 200, 200, 0.15)'
+    ),
 
-        headerTextPrimary: text(
-          'headerTextPrimary',
-          'Make America great again!'
-        ),
-        headerTextSecondary: text(
-          'headerTextSecondary',
-          randomNumber(1, 20) + '/' + randomNumber(20, 30)
-        ),
-        iconHeaderRight: select('iconHeaderRight', icons, Icons.doc_icon),
-        disableAnimation: boolean('disableAnimation', false),
-        hideValue: boolean('hideValue', false),
-        clickable: boolean('clickable', false),
-        onClick: action('bar clicked'),
-      },
-      moduleMetadata: {
-        imports: [StoryBookLayoutModule, ProgressBarModule, ButtonsModule],
-      },
-    };
+    headerTextPrimary: text('headerTextPrimary', 'Make America great again!'),
+    headerTextSecondary: text(
+      'headerTextSecondary',
+      randomNumber(1, 20) + '/' + randomNumber(20, 30)
+    ),
+    iconHeaderRight: select('iconHeaderRight', icons, Icons.doc_icon),
+    disableAnimation: boolean('disableAnimation', false),
+    hideValue: boolean('hideValue', false),
+    clickable: boolean('clickable', false),
+    onClick: action('bar clicked'),
   },
-  { notes: { markdown: note } }
-);
+  moduleMetadata: {
+    imports: [StoryBookLayoutModule, ProgressBarModule, ButtonsModule],
+  },
+});
+
+story.add('Progress Bar', toAdd, { notes: { markdown: note } });
+story2.add('Progress Bar', toAdd, { notes: { markdown: note } });
