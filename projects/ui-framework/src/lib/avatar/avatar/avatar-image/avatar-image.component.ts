@@ -24,6 +24,8 @@ import {
   isObject,
   objectRemoveEntriesByValue,
   firstChanges,
+  isString,
+  isNumber,
 } from '../../../services/utils/functional-utils';
 import { AvatarIconSize, AvatarBadges, BadgeSize } from '../avatar.consts';
 import { Avatar, BadgeConfig } from '../avatar.interface';
@@ -236,6 +238,10 @@ on b-avatar-image element.`);
   }
 
   private checkIfHasContent(): boolean {
-    return Boolean(this.text?.trim() || !this.DOM.isEmpty(this.host));
+    return Boolean(
+      isNumber(this.text) ||
+        (isString(this.text) && this.text.trim()) ||
+        !this.DOM.isEmpty(this.host)
+    );
   }
 }
