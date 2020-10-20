@@ -11,12 +11,15 @@ import { QuickFilterConfig } from './quick-filter.interface';
 import { mockCities, mockDepartments, mockJobs } from '../../mock.const';
 import { simpleUID } from '../../services/utils/functional-utils';
 import { LinkColor } from '../../indicators/link/link.enum';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { select } from '@storybook/addon-knobs';
 
 const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
   withKnobs
 );
 
 const template = `<b-quick-filter-bar [quickFilters]="quickFilters"
+                      [size]="size"
                       [showResetFilter]="showResetFilter"
                       (filtersChange)="filtersChange($event)"
                       (resetFilters)="resetFilters()">
@@ -42,6 +45,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default Value
   --- | --- | --- | ---
+  [size] | FormElementSize | \`regular\` or \`smaller\` | FormElementSize.regular
   [quickFilters] | QuickFilterConfig[] | array of quick filters | &nbsp;
   [showResetFilter] | boolean | displays reset button | false
   (filtersChange) | EventEmitter<wbr>&lt;QuickFilterChangeEvent&gt; | emits on quick filter bar change | &nbsp;
@@ -114,6 +118,7 @@ story.add(
       template: storyTemplate,
       props: {
         linkColor: LinkColor,
+        size: select('size', [FormElementSize.smaller, FormElementSize.regular], FormElementSize.regular),
         showResetFilter: boolean('showResetFilter', false),
         quickFilters: object('quickFilters', quickFilters),
         filtersChange: action('Quick filter bar change'),

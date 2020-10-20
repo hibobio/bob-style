@@ -52,7 +52,9 @@
   white-space: nowrap;
   border: 1px solid $input-border-color;
   background-color: white;
-
+  &.smaller {
+    height: $wrap-height-smaller;
+  }
   &:empty {
     display: none;
   }

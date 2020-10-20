@@ -23,6 +23,7 @@ import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
 
 @Component({
   selector: 'b-quick-filter-bar',
@@ -51,6 +52,7 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
   @ViewChild('prefix') prefix: ElementRef;
   @ViewChild('suffix') suffix: ElementRef;
 
+  @Input() size: FormElementSize = FormElementSize.regular;
   @Input() quickFilters: QuickFilterConfig[];
   @Input() showResetFilter = false;
   @Output() filtersChange: EventEmitter<
