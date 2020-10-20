@@ -50,6 +50,7 @@ import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tool
       useExisting: forwardRef(() => RadioButtonComponent),
       multi: true,
     },
+    { provide: BaseFormElement, useExisting: RadioButtonComponent },
   ],
 })
 export class RadioButtonComponent extends BaseFormElement

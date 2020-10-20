@@ -31,9 +31,8 @@
         [type]="tooltipType"
         [tooltipClass]="tooltipClass"
         [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ? label : placeholder) : null"
-        (focus)="openPanel()">
-    {{displayValue}}
-  </span>
+        [text]="displayValue"
+        (focus)="openPanel()"></span>
 
   <div class="bfe-suffix">
     <span class="select-chevron b-icon-medium"

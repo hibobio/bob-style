@@ -48,6 +48,7 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
       useExisting: forwardRef(() => ChipInputComponent),
       multi: true,
     },
+    { provide: BaseFormElement, useExisting: ChipInputComponent },
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

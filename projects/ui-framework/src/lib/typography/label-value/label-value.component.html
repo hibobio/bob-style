@@ -13,9 +13,8 @@
                       [maxLines]="labelMaxLines"
                       [type]="tooltipType"
                       [trustCssVars]="true"
-                      [expectChanges]="expectChanges">
-    {{label}}
-  </b-truncate-tooltip>
+                      [expectChanges]="expectChanges"
+                      [text]="label"></b-truncate-tooltip>
   <ng-container *ngIf="!labelMaxLines">{{label}}</ng-container>
 </h6>
 
@@ -28,9 +27,8 @@
                       [maxLines]="valueMaxLines"
                       [type]="tooltipType"
                       [trustCssVars]="true"
-                      [expectChanges]="expectChanges">
-    {{value}}
-  </b-truncate-tooltip>
+                      [expectChanges]="expectChanges"
+                      [text]="value"></b-truncate-tooltip>
   <ng-container *ngIf="!valueMaxLines">{{value}}</ng-container>
 </p>
 

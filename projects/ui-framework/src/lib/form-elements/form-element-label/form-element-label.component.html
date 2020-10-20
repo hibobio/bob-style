@@ -3,9 +3,8 @@
        [trustCssVars]="true"
        [type]="truncateTooltipType.material"
        [attr.for]="fieldId !== undefined ? fieldId : null"
-       [ngClass]="{'has-description': description}">
-  {{label}}
-</label>
+       [ngClass]="{'has-description': description}"
+       [text]="label"></label>
 
 <span *ngIf="description"
       class="b-icon has-hover"

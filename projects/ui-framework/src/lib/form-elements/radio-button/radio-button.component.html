@@ -25,7 +25,8 @@
 
       <span [b-truncate-tooltip]="1"
             [trustCssVars]="true"
-            [type]="truncateTooltipType.material">{{ radio.label || radio[key] || radio }}</span>
+            [type]="truncateTooltipType.material"
+            [text]="radio.label || radio[key] || radio"></span>
 
       <b-icon *ngIf="radio.description"
               [icon]="icons.info_outline"

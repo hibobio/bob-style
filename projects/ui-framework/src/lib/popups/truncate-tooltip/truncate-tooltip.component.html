@@ -1,13 +1,13 @@
-<i *ngIf="type !== types.none && type === types.material && tooltipAllowed && tooltipEnabled"
+<i *ngIf="type === types.material && tooltipAllowed && tooltipEnabled"
    class="tooltip-trigger"
-   [matTooltip]="tooltipText"
+   [matTooltip]="text || tooltipText"
    [matTooltipShowDelay]="delay"
    [matTooltipPosition]="position"
    [matTooltipClass]="tooltipClass"></i>
-<i *ngIf="type !== types.none && type === types.css && tooltipEnabled"
+<i *ngIf="type === types.css && tooltipEnabled"
    class="tooltip-trigger"
    [ngClass]="tooltipClass"
-   [attr.data-tooltip]="tooltipText"
+   [attr.data-tooltip]="text || tooltipText"
    [attr.data-tooltip-position]="position"></i>
 <div #textContainer
      class="btt"
@@ -16,6 +16,7 @@
         'tooltip-enabled': tooltipEnabled
       }"
      data-max-lines="1">
+  {{ text }}
   <ng-content></ng-content>
   <ng-template #directiveTemplate></ng-template>
 </div>

@@ -1,9 +1,8 @@
 <p class="card-title"
    [b-truncate-tooltip]="4"
    [type]="tooltipType.css"
-   [trustCssVars]="true">
-  {{ card.title }}
-</p>
+   [trustCssVars]="true"
+   [text]="card.title"></p>
 
 <p class="card-subtitle"
    *ngIf="card.subtitle">{{ card.subtitle }}

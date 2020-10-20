@@ -28,6 +28,7 @@ import { InputEvent } from '../../form-elements/input/input.interface';
       useExisting: forwardRef(() => SwitchToggleComponent),
       multi: true,
     },
+    { provide: BaseFormElement, useExisting: SwitchToggleComponent },
   ],
 })
 export class SwitchToggleComponent extends BaseFormElement {

@@ -315,6 +315,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         ? 10
         : 20,
       animateRows: false,
+      suppressPropertyNamesCheck: true,
 
       pagination: this.enablePager,
       paginationPageSize: this.pagerConfig.sliceSize,

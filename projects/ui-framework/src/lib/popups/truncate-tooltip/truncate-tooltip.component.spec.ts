@@ -14,10 +14,9 @@ import { TruncateTooltipComponent } from './truncate-tooltip.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TruncateTooltipModule } from './truncate-tooltip.module';
 import { TruncateTooltipType } from './truncate-tooltip.enum';
-import { UtilsModule } from '../../services/utils/utils.module';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { UtilsService } from '../../services/utils/utils.service';
 import { fakeAsyncFlush } from '../../services/utils/test-helpers';
+import { MutationObservableServiceProvideMock } from '../../tests/services.stub.spec';
 
 @Component({
   template: `
@@ -84,12 +83,11 @@ describe('TruncateTooltipComponent', () => {
       imports: [
         CommonModule,
         BrowserAnimationsModule,
-        UtilsModule,
         MatTooltipModule,
         TruncateTooltipModule,
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [DOMhelpers, UtilsService],
+      providers: [DOMhelpers, MutationObservableServiceProvideMock()],
     })
       .compileComponents()
       .then(() => {

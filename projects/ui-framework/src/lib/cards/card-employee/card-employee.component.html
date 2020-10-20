@@ -11,16 +11,14 @@
 <h4 class="card-title"
     [b-truncate-tooltip]="2"
     [type]="tooltipType.css"
-    [trustCssVars]="true">
-  {{card.title}}
-</h4>
+    [trustCssVars]="true"
+    [text]="card.title"></h4>
 
 <p class="card-subtitle"
    [b-truncate-tooltip]="2"
    [type]="tooltipType.css"
-   [trustCssVars]="true">
-  {{card.subtitle}}
-</p>
+   [trustCssVars]="true"
+   [text]="card.subtitle"></p>
 
 <div *ngIf="type !== cardType.small && card.social && (card.social.linkedin || card.social.facebook  || card.social.twitter)"
      class="social">
