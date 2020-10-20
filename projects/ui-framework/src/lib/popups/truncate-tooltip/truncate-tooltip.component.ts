@@ -11,15 +11,17 @@ import {
   OnInit,
   ChangeDetectorRef,
   HostListener,
+  SimpleChanges,
+  OnChanges,
 } from '@angular/core';
 import { TruncateTooltipType } from './truncate-tooltip.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { TextProps } from '../../services/html/html-helpers.interface';
-import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import { TooltipClass, TooltipPosition } from '../tooltip/tooltip.enum';
-import { asArray } from '../../services/utils/functional-utils';
+import { asArray, hasChanges } from '../../services/utils/functional-utils';
+import { MutationObservableService } from '../../services/utils/mutation-observable';
 
 @Component({
   selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
@@ -27,13 +29,15 @@ import { asArray } from '../../services/utils/functional-utils';
   styleUrls: ['./truncate-tooltip.component.scss'],
 })
 export class TruncateTooltipComponent
-  implements AfterViewInit, DoCheck, OnInit, OnDestroy {
+  implements OnChanges, AfterViewInit, DoCheck, OnInit, OnDestroy {
   constructor(
-    private utilsService: UtilsService,
     private DOM: DOMhelpers,
     private zone: NgZone,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private mutationObservableService: MutationObservableService
   ) {}
+
+  @Input() text: string;
 
   @Input('maxLines')
   set lines(value: number | string) {
@@ -70,9 +74,36 @@ export class TruncateTooltipComponent
 
   @HostListener('click.outside-zone')
   onClick() {
-    if (this.type === TruncateTooltipType.css && !this.tooltipEnabled) {
-      this.checkTooltipNecessity();
-      this.cd.detectChanges();
+    if (
+      !this.text &&
+      this.type === TruncateTooltipType.css &&
+      !this.tooltipEnabled
+    ) {
+      this.DOM.mutate(() => {
+        if (this.checkTooltipNecessity() && !this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      });
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      hasChanges(changes, ['text'], true, {
+        truthyCheck: (v: unknown) => v !== undefined,
+        checkEquality: true,
+      })
+    ) {
+      this.expectChanges = false;
+      this.tooltipText = this.text;
+
+      // this.zone.runOutsideAngular(() => {
+      this.DOM.mutate(() => {
+        if (this.checkTooltipNecessity() && !this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      });
+      // });
     }
   }
 
@@ -86,14 +117,18 @@ export class TruncateTooltipComponent
         this.addMouseListeners();
       }
 
-      this.resizeSubscription = this.utilsService
-        .getResizeEvent()
+      this.resizeSubscription = this.mutationObservableService
+        .getResizeObservervable(this.textContainer.nativeElement, {
+          watch: 'width',
+          threshold: 15,
+        })
         .pipe(outsideZone(this.zone))
         .subscribe(() => {
-          this.checkTooltipNecessity();
-          if (!this.cd['destroyed']) {
-            this.cd.detectChanges();
-          }
+          this.DOM.mutate(() => {
+            if (this.checkTooltipNecessity() && !this.cd['destroyed']) {
+              this.cd.detectChanges();
+            }
+          });
         });
     }
   }
@@ -101,45 +136,47 @@ export class TruncateTooltipComponent
   ngAfterViewInit(): void {
     this.maxLinesCache = this.maxLines;
 
-    this.zone.runOutsideAngular(() => {
-      setTimeout(() => {
-        this.tooltipText = this.textContainer.nativeElement.textContent.trim();
+    // this.zone.runOutsideAngular(() => {
+    this.DOM.mutate(() => {
+      this.tooltipText =
+        this.text || this.textContainer.nativeElement.textContent.trim();
 
-        this.setCssVars();
-        this.setMaxLinesAttr();
+      this.setCssVars();
+      this.setMaxLinesAttr();
 
-        if (this.type !== TruncateTooltipType.none) {
-          this.checkTooltipNecessity();
+      if (this.type !== TruncateTooltipType.none) {
+        this.checkTooltipNecessity();
+        this.initialized = true;
 
-          this.initialized = true;
-          if (this.type === TruncateTooltipType.css || this.lazyness === 0) {
-            this.tooltipAllowed = true;
-            this.stopHoverTimer();
-            this.removeMouseListeners();
-          }
-
-          if (!this.cd['destroyed']) {
-            this.cd.detectChanges();
-          }
+        if (this.type === TruncateTooltipType.css || this.lazyness === 0) {
+          this.tooltipAllowed = true;
+          this.stopHoverTimer();
+          this.removeMouseListeners();
         }
-      }, 0);
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }
     });
+    // });
   }
 
   ngDoCheck(): void {
-    if (this.expectChanges && this.type !== TruncateTooltipType.none) {
+    if (
+      !this.text &&
+      this.expectChanges &&
+      this.type !== TruncateTooltipType.none
+    ) {
       this.zone.runOutsideAngular(() => {
-        setTimeout(() => {
+        this.DOM.mutate(() => {
           if (
             this.initialized &&
             this.tooltipText !==
               this.textContainer.nativeElement.textContent.trim()
           ) {
             this.tooltipText = this.textContainer.nativeElement.textContent.trim();
-
-            this.zone.run(() => {
-              this.checkTooltipNecessity();
-            });
+            this.checkTooltipNecessity();
 
             if (!this.cd['destroyed']) {
               this.cd.detectChanges();
@@ -152,15 +189,13 @@ export class TruncateTooltipComponent
               this.cd.detectChanges();
             }
           }
-        }, 0);
+        });
       });
     }
   }
 
   ngOnDestroy(): void {
-    if (this.resizeSubscription) {
-      this.resizeSubscription.unsubscribe();
-    }
+    this.resizeSubscription?.unsubscribe();
     this.stopHoverTimer();
   }
 
@@ -199,7 +234,9 @@ export class TruncateTooltipComponent
     }
   }
 
-  private checkTooltipNecessity(): void {
+  private checkTooltipNecessity(): boolean {
+    const prevTooltipEnabled = this.tooltipEnabled;
+    const prevType = this.type;
     if (
       this.tooltipText &&
       (!this.type ||
@@ -227,6 +264,8 @@ export class TruncateTooltipComponent
               .scrollHeight > compareHeight)))
         ? true
         : false;
+
+    return prevTooltipEnabled !== this.tooltipEnabled || prevType !== this.type;
   }
 
   private parseMaxLines(value: string | number): number {
@@ -250,6 +289,7 @@ export class TruncateTooltipComponent
       this.hoverTimer = setTimeout(() => {
         this.removeMouseListeners();
         this.tooltipAllowed = true;
+
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
         }

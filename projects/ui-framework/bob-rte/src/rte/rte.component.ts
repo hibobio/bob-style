@@ -26,6 +26,7 @@ import {
   asArray,
   SanitizerService,
   keyEventIsCharacter,
+  BaseFormElement,
 } from 'bob-style';
 
 import { RTEbaseElement } from './rte.abstract';
@@ -49,6 +50,7 @@ import { RTEMode } from './rte.enum';
       useExisting: forwardRef(() => RichTextEditorComponent),
       multi: true,
     },
+    { provide: BaseFormElement, useExisting: RichTextEditorComponent },
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

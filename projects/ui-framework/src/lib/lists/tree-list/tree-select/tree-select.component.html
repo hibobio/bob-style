@@ -46,9 +46,8 @@
          [trustCssVars]="true"
          [type]="tooltipType"
          [tooltipClass]="tooltipClass"
-         [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ?label : placeholder) : null">
-      {{displayValue}}
-    </div>
+         [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ?label : placeholder) : null"
+         [text]="displayValue"></div>
 
     <div class="bfe-suffix">
       <span *ngIf="displayValueCount"

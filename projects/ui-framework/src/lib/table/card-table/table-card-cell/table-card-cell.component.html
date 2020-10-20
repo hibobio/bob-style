@@ -2,14 +2,16 @@
       [b-truncate-tooltip]="2"
       [type]="tooltipType.css"
       [trustCssVars]="true"
-      class="text">{{ cell.data || '—' }}</span>
+      [text]="cell.data || '—'"
+      class="text"></span>
 
 <ng-container *ngIf="ifArray(cell.data)">
   <span *ngFor="let line of cell.data; trackBy: trackByIndex"
         [b-truncate-tooltip]="1"
         [type]="tooltipType.css"
         [trustCssVars]="true"
-        class="text">{{ line }}</span>
+        [text]="line"
+        class="text"></span>
 </ng-container>
 
 <b-component-renderer *ngIf="ifComponent(cell.data)"

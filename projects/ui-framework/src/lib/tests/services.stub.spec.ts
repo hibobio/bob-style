@@ -7,12 +7,17 @@ import { ScrollEvent } from '../services/utils/utils.interface';
 import { MockPipe } from 'ng-mocks';
 import { Mock } from 'ts-mocks';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { PipeTransform, Pipe } from '@angular/core';
+import { PipeTransform, Pipe, NgModule, Component, Input } from '@angular/core';
 import { ListKeyboardService } from '../lists/list-service/list-keyboard.service';
 import { HighlightPipe } from '../services/filters/highlight.pipe';
 import { FormatNumberPipe } from '../services/filters/formatNumber.pipe';
 import { DOMhelpers } from '../services/html/dom-helpers.service';
 import { MutationObservableService } from '../services/utils/mutation-observable';
+import { CommonModule } from '@angular/common';
+import { TruncateTooltipType } from '../popups/truncate-tooltip/truncate-tooltip.enum';
+import { TooltipPosition } from '@angular/material/tooltip';
+import { TooltipClass } from '../popups/tooltip/tooltip.enum';
+import { TruncateTooltipComponent } from '../popups/truncate-tooltip/truncate-tooltip.component';
 
 // This file is intentionally named .spec.ts - to fix build problems due to missing jasmine namespace
 
@@ -86,9 +91,6 @@ export const TranslateServiceProvideMock = () => ({
 export const getDOMhelpersMock = () =>
   new Mock<DOMhelpers>({
     getElementCSSvar: () => 'xxx',
-    bindClasses: DOMhelpers.prototype.bindClasses,
-    setAttributes: DOMhelpers.prototype.setAttributes,
-    setCssProps: DOMhelpers.prototype.setCssProps,
     mutate: (func) => {
       setTimeout(() => {
         func();
@@ -100,9 +102,18 @@ export const getDOMhelpersMock = () =>
       }, 0);
     },
     getClosest: (elem) => elem,
+    bindClasses: DOMhelpers.prototype.bindClasses,
+    setAttributes: DOMhelpers.prototype.setAttributes,
+    setCssProps: DOMhelpers.prototype.setCssProps,
+    getElementTextProps: DOMhelpers.prototype.getElementTextProps,
+    getDeepTextElement: DOMhelpers.prototype.getDeepTextElement,
     isEmpty: DOMhelpers.prototype.isEmpty,
     hasChildren: DOMhelpers.prototype.hasChildren,
     hasInnerText: DOMhelpers.prototype.hasInnerText,
+    hasChildrenWithText: DOMhelpers.prototype.hasChildrenWithText,
+    hasTextNodes: DOMhelpers.prototype.hasTextNodes,
+    getTextNode: DOMhelpers.prototype.getTextNode,
+    isTextNode: DOMhelpers.prototype.isTextNode,
   });
 
 export const DOMhelpersProvideMock = (mock: Mock<DOMhelpers> = null) => ({
@@ -123,3 +134,58 @@ export const MutationObservableServiceProvideMock = (
   provide: MutationObservableService,
   useFactory: () => (mock || getMutationObservableServiceMock()).Object,
 });
+
+@Component({
+  selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
+  template: ` <div
+    #textContainer
+    class="btt initialized"
+    [class.tooltip-enabled]="tooltipText?.length > 10"
+    data-max-lines="1"
+  >
+    {{ tooltipText }}
+    <ng-content></ng-content>
+  </div>`,
+  styles: [
+    `
+      :host {
+        display: block;
+      }
+    `,
+  ],
+  providers: [
+    {
+      provide: TruncateTooltipComponent,
+      useExisting: TruncateTooltipMockComponent,
+    },
+  ],
+})
+export class TruncateTooltipMockComponent {
+  // tslint:disable-next-line: no-input-rename
+  @Input('text') tooltipText: string;
+
+  // tslint:disable-next-line: no-input-rename
+  @Input('maxLines')
+  @Input('b-truncate-tooltip')
+  maxLines: number;
+
+  @Input() delay: number;
+  @Input() lazyness: number;
+  @Input() expectChanges: boolean;
+  @Input() trustCssVars: boolean;
+  @Input() type: TruncateTooltipType;
+  @Input() position: TooltipPosition;
+  @Input() tooltipClass: TooltipClass | string | (TooltipClass | string)[];
+
+  public tooltipEnabled = true;
+  public tooltipAllowed = true;
+  public initialized = true;
+}
+
+@NgModule({
+  declarations: [TruncateTooltipMockComponent],
+  imports: [CommonModule],
+  exports: [TruncateTooltipMockComponent],
+  providers: [],
+})
+export class MockCompsModule {}

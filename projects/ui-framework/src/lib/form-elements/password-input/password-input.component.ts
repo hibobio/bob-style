@@ -9,6 +9,7 @@ import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { InputTypes } from '../input/input.enum';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseInputElement } from '../base-input-element';
+import { BaseFormElement } from '../base-form-element';
 
 @Component({
   selector: 'b-password-input',
@@ -28,6 +29,7 @@ import { BaseInputElement } from '../base-input-element';
       useExisting: forwardRef(() => PasswordInputComponent),
       multi: true,
     },
+    { provide: BaseFormElement, useExisting: PasswordInputComponent },
   ],
 })
 export class PasswordInputComponent extends BaseInputElement {

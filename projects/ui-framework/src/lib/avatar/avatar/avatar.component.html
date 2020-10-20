@@ -19,23 +19,20 @@
       [b-truncate-tooltip]="orientation === orient.horizontal ? 1 : 2"
       [type]="tooltipType"
       [trustCssVars]="true"
-      [expectChanges]="expectChanges">
-    {{title}}
-  </h4>
+      [expectChanges]="expectChanges"
+      [text]="title"></h4>
 
   <p *ngIf="subtitle && (orientation === orient.horizontal || size > avatarSize.small)"
      class="slot2-medium subtitle"
      [b-truncate-tooltip]="orientation === orient.horizontal ? 1 : 2"
      [type]="tooltipType"
      [trustCssVars]="true"
-     [expectChanges]="expectChanges">
-    {{subtitle}}
-  </p>
+     [expectChanges]="expectChanges"
+     [text]="subtitle"></p>
 
   <p *ngIf="caption && size > avatarSize.small"
      class="slot3-small caption"
-     [innerHTML]="caption">
-  </p>
+     [innerHTML]="caption"></p>
 
   <span *ngIf="(chip||afterChipText) && !disabled && size > avatarSize.small"
         class="avatar-chip">

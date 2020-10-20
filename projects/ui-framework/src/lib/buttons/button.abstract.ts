@@ -64,20 +64,20 @@ export abstract class BaseButtonElement implements OnChanges, OnInit {
   @HostBinding('attr.data-size') @Input() public size: ButtonSize = null;
   @HostBinding('attr.data-disabled') @Input() public disabled = false;
 
-  ngOnInit(): void {
-    if (!this.buttonClass) {
-      this.setIconVars();
-      this.buttonClass = this.getButtonClass();
-      this.cd.detectChanges();
-    }
-  }
-
   ngOnChanges(changes: SimpleChanges, dc = true): void {
     applyChanges(this, changes);
     this.setIconVars();
     this.buttonClass = this.getButtonClass();
 
     if (dc && notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
+  }
+
+  ngOnInit(): void {
+    if (!this.buttonClass) {
+      this.setIconVars();
+      this.buttonClass = this.getButtonClass();
       this.cd.detectChanges();
     }
   }

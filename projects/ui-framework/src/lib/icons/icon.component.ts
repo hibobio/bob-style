@@ -6,16 +6,18 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   SimpleChanges,
-  ElementRef
+  ElementRef,
 } from '@angular/core';
 import { IconColor, Icons, IconSize, IconType, IconRotate } from './icons.enum';
 import {
   notFirstChanges,
   applyChanges,
-  asArray
+  isObject,
+  objectRemoveEntriesByValue,
 } from '../services/utils/functional-utils';
 import { TooltipClass } from '../popups/tooltip/tooltip.enum';
 import { DOMhelpers } from '../services/html/dom-helpers.service';
+import { Icon } from './icon.interface';
 
 @Component({
   selector: 'b-icon, [b-icon]',
@@ -32,15 +34,21 @@ export class IconComponent implements OnChanges {
     private cd: ChangeDetectorRef
   ) {}
 
-  @Input() icon: Icons;
-  @Input() color: IconColor = IconColor.dark;
-  @Input() hasHoverState = false;
-  @Input() tooltipClass: TooltipClass | TooltipClass[];
-
   @HostBinding('attr.data-size') @Input() size: IconSize = IconSize.medium;
   @HostBinding('attr.data-type') @Input() type: IconType = IconType.regular;
   @HostBinding('attr.data-tooltip') @Input() toolTipSummary: string = null;
   @HostBinding('attr.data-rotate') @Input() rotate: IconRotate = null;
+
+  @Input('config') set setProps(config: Icon) {
+    if (isObject(config)) {
+      Object.assign(this, objectRemoveEntriesByValue(config, [undefined]));
+    }
+  }
+
+  @Input() icon: Icons;
+  @Input() color: IconColor = IconColor.dark;
+  @Input() hasHoverState = false;
+  @Input() tooltipClass: TooltipClass | TooltipClass[];
 
   public iconClass: string = null;
 

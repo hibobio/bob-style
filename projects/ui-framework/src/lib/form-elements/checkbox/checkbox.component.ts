@@ -36,6 +36,7 @@ import {
       useExisting: forwardRef(() => CheckboxComponent),
       multi: true,
     },
+    { provide: BaseFormElement, useExisting: CheckboxComponent },
   ],
 })
 export class CheckboxComponent extends BaseFormElement implements OnChanges {

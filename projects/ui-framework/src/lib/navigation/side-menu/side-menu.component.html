@@ -30,9 +30,8 @@
        *ngIf="option.displayName && !option.avatar"
        [b-truncate-tooltip]="1"
        [trustCssVars]="true"
-       [type]="tooltipType">
-      {{option.displayName}}
-    </p>
+       [type]="tooltipType"
+       [text]="option.displayName"></p>
 
     <div *ngIf="option.avatar"
          class="option-avatar">
@@ -48,12 +47,14 @@
         <h6 class="avatar-title"
             [b-truncate-tooltip]="1"
             [trustCssVars]="true"
-            [type]="tooltipType">{{option.avatar.title}}</h6>
+            [type]="tooltipType"
+            [text]="option.avatar.title"></h6>
         <p *ngIf="option.avatar.subtitle"
            class="avatar-subtitle"
            [b-truncate-tooltip]="1"
            [trustCssVars]="true"
-           [type]="tooltipType">{{option.avatar.subtitle}}</p>
+           [type]="tooltipType"
+           [text]="option.avatar.subtitle"></p>
 
         <b-icon *ngIf="option.avatar.textIcon"
                 class="avatar-text-icon"

@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { BaseInputElement } from '../base-input-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { BaseFormElement } from '../base-form-element';
 
 @Component({
   selector: 'b-textarea',
@@ -22,6 +23,7 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
       useExisting: forwardRef(() => TextareaComponent),
       multi: true,
     },
+    { provide: BaseFormElement, useExisting: TextareaComponent },
   ],
 })
 export class TextareaComponent extends BaseInputElement {

@@ -19,8 +19,8 @@ const story = storiesOf(ComponentGroupType.Icons, module).addDecorator(
 const iconClasses = Object.values(Icons).sort();
 
 let iconKeys = iconClasses.reduce((acc, ic) => {
-  const allKeys = Object.keys(Icons).filter(key => Icons[key] === ic);
-  allKeys.forEach(key => {
+  const allKeys = Object.keys(Icons).filter((key) => Icons[key] === ic);
+  allKeys.forEach((key) => {
     acc.push(key);
   });
 
@@ -31,22 +31,34 @@ iconKeys = Array.from(new Set(iconKeys));
 const size = values(IconSize);
 const color = values(IconColor);
 
-const template = `
+const template = `<b-icon [config]="{
+                      icon: icon,
+                      type: type,
+                      size: size,
+                      color: color,
+                      hasHoverState: hasHoverState,
+                      toolTipSummary: toolTipSummary,
+                      rotate: rotate
+                    }">
+</b-icon>`;
 
-<b-icon [toolTipSummary]="toolTipSummary"
-        [type]="type"
+const templForNotes = `<b-icon [type]="type"
         [icon]="icon"
         [size]="size"
         [color]="color"
         [hasHoverState]="hasHoverState"
-        [rotate]="rotate">
-</b-icon>
-`;
+        [rotate]="rotate"
+        [toolTipSummary]="toolTipSummary">
+</b-icon>`;
 
 const note = `
   ## Icon Element
   #### Module
   *IconsModule*
+
+  ~~~
+  ${templForNotes}
+  ~~~
 
   #### Properties
   Name | Type | Description | Default value
@@ -58,10 +70,7 @@ const note = `
   [toolTipSummary] | String | Tooltip text (uses simple CSS tooltip. if it looks bad, use matTooltip instead)  | &nbsp;
   [hasHoverState] | boolean | if icon has hover state | false
   [rotate] | '90', '-90', '180' | icon transform/rotate | &nbsp;
-
-  ~~~
-  ${template}
-  ~~~
+  [config] | Icon | all properties can be supplied as one config object | &nbsp;
 `;
 
 const storyTemplate = `
