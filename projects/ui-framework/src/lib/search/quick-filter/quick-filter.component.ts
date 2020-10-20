@@ -8,10 +8,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import {
-  QuickFilterChangeEvent,
-  QuickFilterConfig,
-} from './quick-filter.interface';
+import { QuickFilterChangeEvent, QuickFilterConfig } from './quick-filter.interface';
 import { QuickFilterSelectType } from './quick-filter.enum';
 import { has } from 'lodash';
 import { SingleSelectComponent } from '../../lists/single-select/single-select.component';
@@ -20,6 +17,7 @@ import { ListChange } from '../../lists/list-change/list-change';
 import { ListModelService } from '../../lists/list-service/list-model.service';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { SelectMode } from '../../lists/list.enum';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
 
 const QUICK_FILTER_CONFIG_DEF = {
   selectMode: SelectMode.classic,
@@ -41,6 +39,7 @@ export class QuickFilterComponent implements OnChanges {
     MultiSelectComponent
   >;
 
+  @Input() size: FormElementSize = FormElementSize.regular;
   @Input() quickFilterConfig: QuickFilterConfig;
   @Output() filterChange: EventEmitter<
     QuickFilterChangeEvent

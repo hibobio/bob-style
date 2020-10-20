@@ -84,7 +84,6 @@ $avatarSizeMap: (
 );
 
 :host {
-  --avatar-size: #{map-get($avatarSizes, mini)};
   --avatar-image: none;
   --bg-color: #{$grey-200};
 
@@ -105,7 +104,7 @@ $avatarSizeMap: (
   user-select: none;
   font-weight: 700;
 
-  @include size(var(--avatar-size));
+  @include size(var(--avatar-size, #{map-get($avatarSizes, mini)}));
   background-color: var(--bg-color);
   background-image: var(--avatar-image);
 

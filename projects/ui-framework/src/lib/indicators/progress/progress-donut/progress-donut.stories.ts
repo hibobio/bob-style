@@ -11,13 +11,18 @@ import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-lay
 import { ProgressDonutModule } from './progress-donut.module';
 import { randomNumber } from '../../../services/utils/functional-utils';
 import { ProgressSize } from '../progress.enum';
+import { Icons, IconSize } from '../../../icons/icons.enum';
+import { IconsModule } from '../../../icons/icons.module';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
 );
 
-const template = `
-  <b-progress-donut [size]="size"
+const story2 = storiesOf(ComponentGroupType.Charts, module).addDecorator(
+  withKnobs
+);
+
+const template = `<b-progress-donut [size]="size"
                   [customSize]="customSize"
                   [data]="{
                     color: color,
@@ -30,13 +35,17 @@ const template = `
                     disableAnimation: disableAnimation,
                     hideValue: hideValue
                   }">
-  </b-progress-donut>
-`;
+  </b-progress-donut>`;
 
 const examples = `
 
-<b-progress-donut style="margin: 0 30px 30px 0;"
-                [size]="'small'"
+<style>
+b-progress-donut {
+  margin: 0 30px 30px 0;
+}
+</style>
+
+<b-progress-donut [size]="progressSize.small"
                 [data]="{
                   color: 'orange',
                   value: 17,
@@ -49,8 +58,7 @@ const examples = `
                 }">
 </b-progress-donut>
 
-<b-progress-donut style="margin: 0 30px 30px 0;"
-                [size]="'medium'"
+<b-progress-donut [size]="progressSize.medium"
                 [data]="{
                   color: 'green',
                   value: 24,
@@ -63,8 +71,7 @@ const examples = `
                 }">
 </b-progress-donut>
 
-<b-progress-donut style="margin: 0 30px 30px 0;"
-                [size]="'large'"
+<b-progress-donut [size]="progressSize.large"
                 [data]="{
                   color: 'red',
                   value: 59,
@@ -75,8 +82,29 @@ const examples = `
                   disableAnimation: disableAnimation,
                   hideValue: false
                 }">
+</b-progress-donut>`;
+
+const contentExmpls = `<b-progress-donut [size]="progressSize.medium"
+                [data]="{
+                  color: 'pink',
+                  value: 62
+                }"
+                [config]="{
+                  hideValue: true
+                }">
+    <b-icon [icon]="icons.analytics_alt" [size]="iconSize.small"></b-icon>
 </b-progress-donut>
-`;
+
+<b-progress-donut [size]="progressSize.medium"
+                [data]="{
+                  color: 'purple',
+                  value: 37
+                }"
+                [config]="{
+                  hideValue: true
+                }">
+               <span class="b-display-4">37</span>
+</b-progress-donut>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Progress Donut'">
@@ -86,6 +114,7 @@ const storyTemplate = `
 
     <div style="display:flex; flex-wrap: wrap; align-items: center;">
       ${examples}
+      ${contentExmpls}
     </div>
 
     <div style="margin-top: 100vh; padding-bottom: 100px;">
@@ -102,6 +131,10 @@ const note = `
   ## Progress Donut
   #### Module
   *ProgressDonutModule*
+
+  ~~~
+  ${template}
+  ~~~
 
   *Note*: Progress donut animates when it appears in viewport. <br>
   To disable this behaviour (and all animation in general), \
@@ -122,8 +155,10 @@ const note = `
   [config] | ProgressConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation <br>\
   \`\`\`hideValue: boolean\`\`\` - hides value text |  &nbsp;
 
+  #### Passing content to be placed in the center:
+
   ~~~
-  ${template}
+  ${contentExmpls}
   ~~~
 
   #### Example \`data\`
@@ -144,48 +179,47 @@ data = {
   ~~~
 `;
 
-story.add(
-  'Progress Donut',
-  () => {
-    return {
-      template: storyTemplate,
-      props: {
-        ProgressSize: ProgressSize,
+const toAdd = () => ({
+  template: storyTemplate,
+  props: {
+    progressSize: ProgressSize,
+    icons: Icons,
+    iconSize: IconSize,
 
-        size: select('size', Object.values(ProgressSize), ProgressSize.medium),
-        customSize: number('customSize', 0),
-        color: select(
-          'color',
-          ['#9d9d9d', '#ff962b', '#f8bc20', '#17b456', '#e52c51', '#4b95ec'],
-          '#4b95ec'
-        ),
-        value: number('value', randomNumber(20, 80)),
+    size: select('size', Object.values(ProgressSize), ProgressSize.medium),
+    customSize: number('customSize', 0),
+    color: select(
+      'color',
+      ['#9d9d9d', '#ff962b', '#f8bc20', '#17b456', '#e52c51', '#4b95ec'],
+      '#4b95ec'
+    ),
+    value: number('value', randomNumber(20, 80)),
 
-        trackColor: select(
-          'trackColor',
-          [
-            0,
-            'rgba(200, 200, 200, 0.15)',
-            'rgba(157,157,157, 0.15)',
-            'rgba(255,150,43, 0.15)',
-            'rgba(248,188,32, 0.15)',
-            'rgba(23,180,86, 0.15)',
-            'rgba(229,44,81, 0.15)',
-            'rgba(75,149,236, 0.15)',
-          ],
-          'rgba(200, 200, 200, 0.15)'
-        ),
+    trackColor: select(
+      'trackColor',
+      [
+        0,
+        'rgba(200, 200, 200, 0.15)',
+        'rgba(157,157,157, 0.15)',
+        'rgba(255,150,43, 0.15)',
+        'rgba(248,188,32, 0.15)',
+        'rgba(23,180,86, 0.15)',
+        'rgba(229,44,81, 0.15)',
+        'rgba(75,149,236, 0.15)',
+      ],
+      'rgba(200, 200, 200, 0.15)'
+    ),
 
-        headerTextPrimary: text('headerTextPrimary', ''),
-        headerTextSecondary: text('headerTextSecondary', 'Have voted'),
+    headerTextPrimary: text('headerTextPrimary', ''),
+    headerTextSecondary: text('headerTextSecondary', 'Have voted'),
 
-        disableAnimation: boolean('disableAnimation', false),
-        hideValue: boolean('hideValue', false),
-      },
-      moduleMetadata: {
-        imports: [StoryBookLayoutModule, ProgressDonutModule],
-      },
-    };
+    disableAnimation: boolean('disableAnimation', false),
+    hideValue: boolean('hideValue', false),
   },
-  { notes: { markdown: note } }
-);
+  moduleMetadata: {
+    imports: [StoryBookLayoutModule, ProgressDonutModule, IconsModule],
+  },
+});
+
+story.add('Progress Donut', toAdd, { notes: { markdown: note } });
+story2.add('Progress Donut', toAdd, { notes: { markdown: note } });

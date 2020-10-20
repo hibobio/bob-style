@@ -143,6 +143,10 @@ export class RteUtilsService {
               this.parserService.replaceElements(
                 value,
                 {
+                  font: {
+                    with: 'span',
+                  },
+
                   i: {
                     with: 'em',
                   },
@@ -260,6 +264,10 @@ export class RteUtilsService {
               this.parserService.replaceElements(
                 value,
                 {
+                  font: {
+                    with: 'span',
+                  },
+
                   i: {
                     with: 'em',
                   },

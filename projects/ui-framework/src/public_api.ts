@@ -503,6 +503,7 @@ export { CollapsibleContentDirective } from './lib/layout/sortable-collapsible-s
 export { MasonryLayoutModule } from './lib/layout/masonry/masonry.module';
 export { MasonryLayoutComponent, MasonryItemComponent } from './lib/layout/masonry/masonry.component';
 export * from './lib/layout/masonry/masonry.interface';
+export * from './lib/layout/masonry/masonry.const';
 
 // Read More
 export { ReadMoreModule } from './lib/layout/read-more/read-more.module';

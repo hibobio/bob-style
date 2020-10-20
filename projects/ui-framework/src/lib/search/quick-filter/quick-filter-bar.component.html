@@ -17,7 +17,7 @@
 
   <div #prefix
        *ngIf="hasPrefix"
-       class="bar-prefix">
+       class="bar-prefix" [class.smaller]="size === 'smaller'">
     <ng-content select="[bar-prefix]"></ng-content>
   </div>
 
@@ -25,6 +25,7 @@
 
     <b-quick-filter *ngFor="let quickFilterConfig of quickFilters; trackBy: trackBy"
                     class="quick-filter-holder"
+                    [size]="size"
                     [ngStyle]="{width: 100/quickFilters.length + '%'}"
                     [quickFilterConfig]="quickFilterConfig"
                     (filterChange)="onFilterChange($event)">
@@ -34,7 +35,7 @@
 
   <div #suffix
        *ngIf="hasSuffix"
-       class="bar-suffix">
+       class="bar-suffix" [class.smaller]="size === 'smaller'">
     <ng-content select="[bar-suffix]"></ng-content>
   </div>
 

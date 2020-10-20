@@ -454,7 +454,7 @@ export class RichTextEditorComponent extends RTEbaseElement
 
     // max length
     if (
-      this.maxChars > 0 &&
+      this.maxChars &&
       this.length >= this.maxChars &&
       keyEventIsCharacter(event)
     ) {

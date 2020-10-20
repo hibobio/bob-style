@@ -1,4 +1,11 @@
-import { async, inject, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  fakeAsync,
+  flush,
+  inject,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { LightboxService } from './lightbox.service';
 import { LightboxData } from './lightbox.interface';
 import {
@@ -16,6 +23,11 @@ import {
   emptyImg,
   emptyImgTestString,
 } from '../../services/utils/test-helpers';
+import { DOMhelpersProvideMock } from '../../tests/services.stub.spec';
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { TruncateTooltipComponent } from '../truncate-tooltip/truncate-tooltip.component';
+import { MockComponent } from 'ng-mocks';
+import { IconComponent } from '../../icons/icon.component';
 
 describe('LightboxService', () => {
   let lightbox: LightboxData;
@@ -44,9 +56,14 @@ describe('LightboxService', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [LightboxModule, OverlayModule, ButtonsModule, AvatarModule],
-      declarations: [],
-      providers: [LightboxService],
+      imports: [LightboxModule, OverlayModule, ButtonsModule],
+      declarations: [
+        AvatarComponent,
+        AvatarImageComponent,
+        MockComponent(TruncateTooltipComponent),
+        MockComponent(IconComponent),
+      ],
+      providers: [LightboxService, DOMhelpersProvideMock()],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     });
 
@@ -97,9 +114,11 @@ describe('LightboxService', () => {
       lightboxService.closeLightbox();
     });
 
-    it('should open Lightbox with Avatar component', () => {
+    it('should open Lightbox with Avatar component', fakeAsync(() => {
       lightbox = lightboxService.showLightbox(testConfigComponent);
       lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+
+      flush();
 
       const lightContainerEl = overlayElement.querySelector(
         '.lightbox-container'
@@ -120,7 +139,7 @@ describe('LightboxService', () => {
       expect(avatarElImg.getAttribute('style')).toContain(emptyImgTestString);
       expect(avatarElTitle.textContent).toContain('John Malkovich');
       lightboxService.closeLightbox();
-    });
+    }));
 
     it('should add the right classnames and respect fillScreen property', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);

@@ -20,6 +20,7 @@ import {
   stringify,
   simpleChange,
 } from '../../../services/utils/functional-utils';
+import { DOMhelpersProvideMock } from '../../../tests/services.stub.spec';
 
 interface AttrCheck {
   role: string;
@@ -119,7 +120,7 @@ describe('AvatarImageComponent', () => {
     TestBed.configureTestingModule({
       declarations: [AvatarImageComponent],
       imports: [],
-      providers: [DOMhelpers, EventManagerPlugins[0]],
+      providers: [DOMhelpersProvideMock(), EventManagerPlugins[0]],
     })
       .compileComponents()
       .then(() => {
@@ -127,6 +128,7 @@ describe('AvatarImageComponent', () => {
         fixture.detectChanges();
         component = fixture.componentInstance;
         componentElem = fixture.nativeElement;
+        component['initDone'] = true;
       });
   }));
 
@@ -143,11 +145,15 @@ describe('AvatarImageComponent', () => {
 
   describe('Avatar imageSource & size', () => {
     it('Should display large Avatar with testImage', fakeAsync(() => {
+      console.log('describe');
       component.ngOnChanges(
-        simpleChange({
-          size: AvatarSize.large,
-          imageSource: emptyFilestackImg,
-        })
+        simpleChange(
+          {
+            size: AvatarSize.large,
+            imageSource: emptyFilestackImg,
+          },
+          false
+        )
       );
 
       flush();
@@ -170,13 +176,16 @@ describe('AvatarImageComponent', () => {
   describe('Avatar backgroundColor & disabled', () => {
     it('Should display medium Avatar with testImage and bgcolor red', fakeAsync(() => {
       component.ngOnChanges(
-        simpleChange({
-          size: AvatarSize.medium,
-          imageSource: emptyFilestackImg,
-          backgroundColor: 'red',
-          disabled: true,
-          iconAfterSize: 'large',
-        })
+        simpleChange(
+          {
+            size: AvatarSize.medium,
+            imageSource: emptyFilestackImg,
+            backgroundColor: 'red',
+            disabled: true,
+            iconAfterSize: 'large',
+          },
+          false
+        )
       );
 
       flush();
@@ -201,9 +210,12 @@ describe('AvatarImageComponent', () => {
   describe('Avatar icon', () => {
     it('Should display mini Avatar with no image and Save icon in normal color', fakeAsync(() => {
       component.ngOnChanges(
-        simpleChange({
-          icon: Icons.save,
-        })
+        simpleChange(
+          {
+            icon: Icons.save,
+          },
+          false
+        )
       );
 
       flush();
@@ -222,10 +234,13 @@ describe('AvatarImageComponent', () => {
     // tslint:disable-next-line: max-line-length
     it('Should display mini Avatar with test image, Settings icon in white color and icon-on-hover class', fakeAsync(() => {
       component.ngOnChanges(
-        simpleChange({
-          imageSource: emptyFilestackImg,
-          icon: Icons.settings,
-        })
+        simpleChange(
+          {
+            imageSource: emptyFilestackImg,
+            icon: Icons.settings,
+          },
+          false
+        )
       );
 
       flush();
@@ -245,13 +260,16 @@ describe('AvatarImageComponent', () => {
 
     it('Should display mini Avatar with no image and custom icon', fakeAsync(() => {
       component.ngOnChanges(
-        simpleChange({
-          icon: {
-            icon: Icons.search,
-            size: IconSize.large,
-            color: IconColor.negative,
+        simpleChange(
+          {
+            icon: {
+              icon: Icons.search,
+              size: IconSize.large,
+              color: IconColor.negative,
+            },
           },
-        })
+          false
+        )
       );
 
       flush();
@@ -271,14 +289,17 @@ describe('AvatarImageComponent', () => {
     // tslint:disable-next-line: max-line-length
     it('Should display mini Avatar with test image, custom icon NOT in white color and icon-on-hover class', fakeAsync(() => {
       component.ngOnChanges(
-        simpleChange({
-          imageSource: emptyFilestackImg,
-          icon: {
-            icon: Icons.success,
-            size: IconSize.large,
-            color: IconColor.negative,
+        simpleChange(
+          {
+            imageSource: emptyFilestackImg,
+            icon: {
+              icon: Icons.success,
+              size: IconSize.large,
+              color: IconColor.negative,
+            },
           },
-        })
+          false
+        )
       );
 
       flush();
@@ -301,10 +322,13 @@ describe('AvatarImageComponent', () => {
   describe('Avatar badge', () => {
     it('Should display mini Avatar with testImage and Pending badge', fakeAsync(() => {
       component.ngOnChanges(
-        simpleChange({
-          imageSource: emptyFilestackImg,
-          badge: AvatarBadge.pending,
-        })
+        simpleChange(
+          {
+            imageSource: emptyFilestackImg,
+            badge: AvatarBadge.pending,
+          },
+          false
+        )
       );
 
       flush();
@@ -323,13 +347,16 @@ describe('AvatarImageComponent', () => {
 
     it('Should display mini Avatar with testImage and custom badge icon', fakeAsync(() => {
       component.ngOnChanges(
-        simpleChange({
-          imageSource: emptyFilestackImg,
-          badge: {
-            icon: Icons.question_mark,
-            color: IconColor.positive,
+        simpleChange(
+          {
+            imageSource: emptyFilestackImg,
+            badge: {
+              icon: Icons.question_mark,
+              color: IconColor.positive,
+            },
           },
-        })
+          false
+        )
       );
 
       flush();
@@ -352,9 +379,12 @@ describe('AvatarImageComponent', () => {
       component.clicked.subscribe(() => {});
 
       component.ngOnChanges(
-        simpleChange({
-          imageSource: null,
-        })
+        simpleChange(
+          {
+            imageSource: null,
+          },
+          false
+        )
       );
       flush();
 
@@ -384,10 +414,13 @@ describe('AvatarImageComponent', () => {
       componentElem.innerHTML = '<span>hello world</span>';
 
       component.ngOnChanges(
-        simpleChange({
-          imageSource: emptyFilestackImg,
-          icon: Icons.settings,
-        })
+        simpleChange(
+          {
+            imageSource: emptyFilestackImg,
+            icon: Icons.settings,
+          },
+          false
+        )
       );
       component.ngAfterViewInit();
       flush();
@@ -408,11 +441,14 @@ describe('AvatarImageComponent', () => {
   describe('Text input', () => {
     it('Should add text and not show icon', fakeAsync(() => {
       component.ngOnChanges(
-        simpleChange({
-          text: 'Some text',
-          imageSource: emptyFilestackImg,
-          icon: Icons.settings,
-        })
+        simpleChange(
+          {
+            text: 'Some text',
+            imageSource: emptyFilestackImg,
+            icon: Icons.settings,
+          },
+          false
+        )
       );
 
       flush();

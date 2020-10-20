@@ -1,29 +1,36 @@
-<svg class="bpd-donut"
-     role="progressbar"
-     [id]="id"
-     [attr.aria-labelledby]="id+'-dsc1 '+id+'-dsc2'"
-     [attr.aria-valuenow]="data.value || null"
-     aria-valuemin="0"
-     aria-valuemax="100"
-     [attr.height]="diameter"
-     [attr.width]="diameter"
-     [attr.viewbox]="'0 0 ' + diameter + ' ' + diameter">
+<div class="bpd-donut-wrap">
+  <svg class="bpd-donut"
+       role="progressbar"
+       [id]="id"
+       [attr.aria-labelledby]="id+'-dsc1 '+id+'-dsc2'"
+       [attr.aria-valuenow]="data.value || null"
+       aria-valuemin="0"
+       aria-valuemax="100"
+       [attr.height]="diameter"
+       [attr.width]="diameter"
+       [attr.viewbox]="'0 0 ' + diameter + ' ' + diameter">
 
-  <circle class="bpd-track-circle"
-          [attr.cx]="diameter/2"
-          [attr.cy]="diameter/2"
-          [attr.r]="diameter/2 - strokeWidth/2"
-          [attr.stroke-width]="strokeWidth"></circle>
+    <circle class="bpd-track-circle"
+            [attr.cx]="diameter/2"
+            [attr.cy]="diameter/2"
+            [attr.r]="diameter/2 - strokeWidth/2"
+            [attr.stroke-width]="strokeWidth"></circle>
 
-  <circle class="bpd-progress-circle"
-          [attr.transform]="'rotate(-90 ' + (diameter/2) + ' ' + (diameter/2)+')'"
-          [attr.cx]="diameter/2"
-          [attr.cy]="diameter/2"
-          [attr.r]="diameter/2 - strokeWidth/2"
-          [attr.stroke-width]="strokeWidth"
-          [attr.stroke-dasharray]="circumference"
-          [attr.stroke-dashoffset]="circumference"></circle>
-</svg>
+    <circle class="bpd-progress-circle"
+            [attr.transform]="'rotate(-90 ' + (diameter/2) + ' ' + (diameter/2)+')'"
+            [attr.cx]="diameter/2"
+            [attr.cy]="diameter/2"
+            [attr.r]="diameter/2 - strokeWidth/2"
+            [attr.stroke-width]="strokeWidth"
+            [attr.stroke-dasharray]="circumference"
+            [attr.stroke-dashoffset]="circumference"></circle>
+  </svg>
+
+  <div class="bpd-donut-overlay">
+    <ng-content></ng-content>
+  </div>
+</div>
+
 
 <div *ngIf="!config.hideValue || data.headerTextPrimary || data.headerTextSecondary"
      class="bpd-header">

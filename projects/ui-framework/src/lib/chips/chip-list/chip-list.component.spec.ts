@@ -1,4 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  TestBed,
+} from '@angular/core/testing';
 import { ChipListComponent } from './chip-list.component';
 import { ChipType, ChipListAlign, ChipListSelectable } from '../chips.enum';
 import { ChipModule } from '../chip/chip.module';
@@ -12,6 +18,13 @@ import { ChipComponent } from '../chip/chip.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { cloneDeep } from 'lodash';
 import { simpleChange } from '../../services/utils/functional-utils';
+import { DOMhelpersProvideMock } from '../../tests/services.stub.spec';
+import { MockComponent } from 'ng-mocks';
+import { IconComponent } from '../../icons/icon.component';
+import { AvatarComponent } from '../../avatar/avatar/avatar.component';
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { TruncateTooltipComponent } from '../../popups/truncate-tooltip/truncate-tooltip.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('ChipListComponent', () => {
   let component: ChipListComponent;
@@ -57,10 +70,16 @@ describe('ChipListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ChipListComponent],
-      imports: [ChipModule, AvatarModule],
-      providers: [],
-      schemas: [],
+      declarations: [
+        ChipListComponent,
+        ChipComponent,
+        AvatarImageComponent,
+        MockComponent(IconComponent),
+        MockComponent(TruncateTooltipComponent),
+      ],
+      imports: [],
+      providers: [DOMhelpersProvideMock()],
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
@@ -313,7 +332,7 @@ describe('ChipListComponent', () => {
   });
 
   describe('Avatar chips', () => {
-    it('should display avatar Chips', () => {
+    it('should display avatar Chips', fakeAsync(() => {
       component.ngOnChanges(
         simpleChange({
           config: {
@@ -325,6 +344,8 @@ describe('ChipListComponent', () => {
 
       fixture.detectChanges();
       chipsElements = elementsFromFixture(fixture, 'b-chip');
+
+      flush();
 
       expect(
         chipsComponents.filter((comp) => comp.type === ChipType.avatar).length
@@ -339,7 +360,7 @@ describe('ChipListComponent', () => {
       expect(
         (chipsElements[0].children[0] as HTMLElement).getAttribute('style')
       ).toContain(emptyImgTestString);
-    });
+    }));
   });
 
   describe('Alternative interface', () => {

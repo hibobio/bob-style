@@ -49,6 +49,7 @@ $BPDtypeMap: (
   @include progress-host($slctr-prfx: 'bpd', $display: flex, $width: null);
   align-items: center;
   text-align: left;
+  user-select: none;
   --bpd-circumference: #{(2 * 3.142 * (46px / 2 - 4px))};
   --bpd-value-multiplier: 1;
 }
@@ -67,11 +68,26 @@ p {
   line-height: 1;
 }
 
+.bpd-donut-wrap {
+  display: grid;
+}
+
 .bpd-donut {
+  grid-column: 1;
+  grid-row: 1;
   @include progress-donut(
     $slctr-prfx: 'bpd',
     $trackColor: var(--bpd-track-color, #{$grey-400})
   );
+}
+
+.bpd-donut-overlay {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }
 
 :host {

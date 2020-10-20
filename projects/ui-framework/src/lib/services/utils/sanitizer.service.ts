@@ -36,6 +36,7 @@ export const SANITIZER_ALLOWED_TAGS = [
   'h6',
 
   'pre',
+  'font',
 ];
 export const SANITIZER_ALLOWED_ATTRS = [
   'alt',
