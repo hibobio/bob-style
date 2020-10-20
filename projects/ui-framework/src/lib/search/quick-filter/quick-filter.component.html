@@ -5,6 +5,7 @@
 <ng-template #multiSelect
              let-quickFilterConfig>
   <b-multi-select [ngClass]="{'has-value': hasValue}"
+                  [size]="size"
                   [label]="quickFilterConfig.label"
                   [placeholder]="quickFilterConfig.placeholder || null"
                   [options]="quickFilterConfig.options"
@@ -28,6 +29,7 @@
              let-quickFilterConfig>
   <b-single-select [ngClass]="{'has-value': hasValue}"
                    [label]="quickFilterConfig.label"
+                   [size]="size"
                    [placeholder]="quickFilterConfig.placeholder || null"
                    [options]="quickFilterConfig.options"
                    [optionsDefault]="quickFilterConfig.optionsDefault"
