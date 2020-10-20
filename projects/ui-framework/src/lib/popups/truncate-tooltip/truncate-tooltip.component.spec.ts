@@ -16,7 +16,12 @@ import { TruncateTooltipModule } from './truncate-tooltip.module';
 import { TruncateTooltipType } from './truncate-tooltip.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { fakeAsyncFlush } from '../../services/utils/test-helpers';
-import { MutationObservableServiceProvideMock } from '../../tests/services.stub.spec';
+import {
+  DOMhelpersProvideMock,
+  MutationObservableServiceProvideMock,
+} from '../../tests/services.stub.spec';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { TruncateTooltipDirective } from './truncate-tooltip.directive';
 
 @Component({
   template: `
@@ -79,15 +84,18 @@ describe('TruncateTooltipComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent],
-      imports: [
-        CommonModule,
-        BrowserAnimationsModule,
-        MatTooltipModule,
-        TruncateTooltipModule,
+      declarations: [
+        TestComponent,
+        TruncateTooltipComponent,
+        TruncateTooltipDirective,
       ],
+      imports: [CommonModule, BrowserAnimationsModule, MatTooltipModule],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [DOMhelpers, MutationObservableServiceProvideMock()],
+      providers: [
+        DOMhelpersProvideMock(),
+        MutationObservableServiceProvideMock(),
+        EventManagerPlugins[0],
+      ],
     })
       .compileComponents()
       .then(() => {

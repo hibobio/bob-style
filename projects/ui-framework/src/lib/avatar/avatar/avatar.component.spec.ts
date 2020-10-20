@@ -19,7 +19,10 @@ import {
   emptyImg,
   emptyImgTestString,
 } from '../../services/utils/test-helpers';
-import { DOMhelpersProvideMock } from '../../tests/services.stub.spec';
+import {
+  DOMhelpersProvideMock,
+  MockCompsModule,
+} from '../../tests/services.stub.spec';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;
@@ -38,9 +41,8 @@ describe('AvatarComponent', () => {
         AvatarComponent,
         AvatarImageComponent,
         MockComponent(ChipComponent),
-        MockComponent(TruncateTooltipComponent),
       ],
-      imports: [],
+      imports: [MockCompsModule],
       providers: [DOMhelpersProvideMock()],
     })
       .overrideComponent(AvatarComponent, {

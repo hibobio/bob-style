@@ -25,6 +25,8 @@ import {
   mockHighlightPipe,
   listKeyboardServiceStub,
   MobileServiceProvideMock,
+  DOMhelpersProvideMock,
+  MutationObservableServiceProvideMock,
 } from '../../tests/services.stub.spec';
 import { MockComponent } from 'ng-mocks';
 import { MultiListComponent } from '../multi-list/multi-list.component';
@@ -100,6 +102,8 @@ describe('MultiSelectComponent', () => {
         { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
         MobileServiceProvideMock(),
         TranslateServiceProvideMock(),
+        DOMhelpersProvideMock(),
+        MutationObservableServiceProvideMock(),
       ],
 
       schemas: [NO_ERRORS_SCHEMA],

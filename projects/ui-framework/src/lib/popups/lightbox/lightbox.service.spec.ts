@@ -18,12 +18,14 @@ import { ButtonsModule } from '../../buttons/buttons.module';
 import { LightboxModule } from './lightbox.module';
 import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
-import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import {
   emptyImg,
   emptyImgTestString,
 } from '../../services/utils/test-helpers';
-import { DOMhelpersProvideMock } from '../../tests/services.stub.spec';
+import {
+  DOMhelpersProvideMock,
+  MockCompsModule,
+} from '../../tests/services.stub.spec';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { TruncateTooltipComponent } from '../truncate-tooltip/truncate-tooltip.component';
 import { MockComponent } from 'ng-mocks';
@@ -56,11 +58,10 @@ describe('LightboxService', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [LightboxModule, OverlayModule, ButtonsModule],
+      imports: [LightboxModule, OverlayModule, ButtonsModule, MockCompsModule],
       declarations: [
         AvatarComponent,
         AvatarImageComponent,
-        MockComponent(TruncateTooltipComponent),
         MockComponent(IconComponent),
       ],
       providers: [LightboxService, DOMhelpersProvideMock()],
