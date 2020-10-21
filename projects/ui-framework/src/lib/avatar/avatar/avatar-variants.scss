@@ -16,7 +16,7 @@
   }
   &[data-orientation='horizontal'] {
     .avatar-text {
-      margin-left: 5px;
+      margin-left: 8px;
       max-width: calc(100% - (var(--avatar-size) + 5px));
     }
   }
@@ -80,7 +80,7 @@
   }
   &[data-orientation='horizontal'] {
     .avatar-text {
-      margin-left: 10px;
+      margin-left: 16px;
       max-width: calc(100% - (var(--avatar-size) + 10px));
     }
   }

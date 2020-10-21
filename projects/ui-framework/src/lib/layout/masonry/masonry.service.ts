@@ -46,8 +46,9 @@ export class MasonryService {
     }
 
     if (
-      elements[0]?.tagName !== 'B-MASONRY-ITEM' ||
-      elements[0]?.children.length !== 1
+      elements.length &&
+      (elements[0]?.tagName !== 'B-MASONRY-ITEM' ||
+        elements[0]?.children.length !== 1)
     ) {
       console.error(
         `[MasonryLayoutComponent]: ${
