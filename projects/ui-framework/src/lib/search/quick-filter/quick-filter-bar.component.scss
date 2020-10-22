@@ -56,12 +56,6 @@
     display: none;
   }
 }
-.smaller {
-  .bar-prefix,
-  .bar-suffix {
-    height: $wrap-height-smaller;
-  }
-}
 
 .bar-prefix {
   border-right: 0;
@@ -186,17 +180,18 @@
     }
   }
 }
-:host[data-size="smaller"] {
-  .bar-filters:empty {
-    &:before {
+:host {
+  &[data-size="smaller"] {
+    .bar-prefix,
+    .bar-suffix,
+    .bar-filters:empty:before {
       height: $wrap-height-smaller;
     }
-  }
-  .bfe-wrap {
-    &:before,
-    &:after {
-      @include quick-filter-separator-pseudo;
-      bottom: (($wrap-height-smaller - 20px) / 2 - 1px);
+    ::ng-deep .bfe-wrap {
+      &:before,
+      &:after {
+        bottom: (($wrap-height-smaller - 20px) / 2 - 1px) !important;
+      }
     }
   }
 }
