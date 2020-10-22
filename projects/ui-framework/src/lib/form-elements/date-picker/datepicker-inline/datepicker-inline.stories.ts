@@ -1,13 +1,13 @@
 import { storiesOf } from '@storybook/angular';
 import { select, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { DatepickerModule } from './datepicker.module';
 import { ComponentGroupType } from '../../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { thisMonth, thisYear } from '../../../services/utils/functional-utils';
 import { DatepickerType } from '../datepicker.enum';
 import { BDateAdapterMock, UserLocaleServiceMock } from '../dateadapter.mock';
+import { DatepickerInlineModule } from './datepicker-inline.module';
 
 // @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../../form-elements.properties.md';
@@ -18,7 +18,8 @@ import { FormElementsCommonProps } from '../../form-elements.stories.common';
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
-const template = `<b-datepicker [value]="value"
+const template = `
+<b-datepicker-inline [value]="value"
               [type]="pickerType"
               [dateFormat]="dateFormat"
               [minDate]="minDate"
@@ -35,10 +36,11 @@ const template = `<b-datepicker [value]="value"
               [readonly]="readonly"
               [focusOnInit]="focusOnInit"
               (dateChange)="dateChange($event)">
-</b-datepicker>`;
+</b-datepicker-inline>
+`;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Datepicker'">
+<b-story-book-layout [title]="'Datepicker Inline'">
   <div style="max-width: 300px;">
     ${template}
   </div>
@@ -70,11 +72,11 @@ const note = `
 
   ${datepickerPropsDoc}
 
-  ${formElemsPropsDoc}
-`;
+  `;
+// ${formElemsPropsDoc}
 
 story.add(
-  'Datepicker',
+  'Datepicker Inline',
   () => {
     return {
       template: storyTemplate,
@@ -119,14 +121,14 @@ story.add(
           ''
         ),
 
-        ...FormElementsCommonProps('Date picker', ''),
+        // ...FormElementsCommonProps('Date picker', ''),
 
         dateChange: action('Date Changed'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
-          DatepickerModule.init(BDateAdapterMock),
+          DatepickerInlineModule.init(BDateAdapterMock),
           StoryBookLayoutModule,
         ],
       },

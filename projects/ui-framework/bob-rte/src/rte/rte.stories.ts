@@ -33,8 +33,7 @@ const controlsDef = dedupeArray(Object.values(BlotType)).filter(
 
 const value = rteMockHtml;
 
-const template = `
-  <b-rich-text-editor
+const template = `<b-rich-text-editor
       [value]="html === 'rich text' ? rteMockHtml : xssTest"
       [type]="type"
       [mode]="mode"
@@ -59,8 +58,7 @@ const template = `
       (focused)="focus($event)"
       (blurred)="blur($event)"
       [focusOnInit]="focusOnInit">
-  </b-rich-text-editor>
-`;
+  </b-rich-text-editor>`;
 
 const notesTemplate = `<b-rich-text-editor
       [value]="value"

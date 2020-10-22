@@ -18,7 +18,106 @@
 
 $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23fff' d='M0 0l100 50L0 100h100V0z'/%3E%3C/svg%3E");
 
+.mat-datepicker-content {
+  user-select: none;
+  transform: none !important;
+  background-color: white;
+  border-radius: $border-radius;
+}
+
+.mat-datepicker-dialog .mat-datepicker-content-touch,
+.mat-datepicker-popup .mat-datepicker-content {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.b-datepicker-panel,
+.b-datepicker-panel .mat-button,
+.mat-datepicker-content {
+  font-family: var(--body-font-family);
+  color: $body-text-color;
+}
+
+.mat-datepicker-content .mat-calendar.b-datepicker-panel {
+  height: auto;
+  min-height: 0;
+}
+
 .b-datepicker-panel {
+  .mat-ripple {
+    display: none !important;
+  }
+
+  tr:first-child[aria-hidden='true'] .mat-calendar-body-label:only-child {
+    display: none;
+  }
+
+  .mat-calendar-body-label {
+    @include text-hide;
+
+    &[colspan] {
+      flex-grow: 1;
+    }
+  }
+
+  table,
+  thead,
+  tbody {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  tr {
+    display: flex;
+  }
+
+  td,
+  th {
+    display: block;
+  }
+
+  th {
+    width: (100% / 7);
+  }
+
+  .mat-calendar-controls {
+    justify-content: space-between;
+
+    .mat-calendar-spacer {
+      display: none;
+    }
+
+    .mat-calendar-previous-button {
+      order: 1;
+    }
+
+    .mat-calendar-period-button {
+      order: 2;
+    }
+
+    .mat-calendar-next-button {
+      order: 3;
+    }
+  }
+
+  .mat-calendar-table-header .mat-calendar-table-header-divider {
+    padding-bottom: times8(2);
+    width: 100%;
+  }
+
+  .mat-calendar-body-cell-content {
+    color: $body-text-color;
+
+    &.mat-calendar-body-selected {
+      background-color: var(--primary-500);
+      color: white;
+      font-weight: 500;
+    }
+  }
+
+  // ---------
+
   .mat-calendar-body-cell {
     padding-left: 0;
     padding-right: 0;
@@ -236,7 +335,23 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
 
 // Type Month
 
-.b-datepicker-panel.type-month {
+.b-datepicker-panel.type-month,
+.b-datepicker-panel[data-type='month'] {
+  //
+  .mat-calendar-period-button {
+    pointer-events: none;
+
+    .mat-calendar-arrow {
+      display: none;
+    }
+  }
+
+  mat-month-view {
+    display: none;
+  }
+
+  // ---------
+
   .first-in-range .mat-calendar-body-cell-content,
   .only-in-range:not(.first-in-range):not(.last-in-range)
     .mat-calendar-body-cell-content {
