@@ -9,11 +9,6 @@
   background-color: $input-border-color;
 }
 
-@mixin quick-filter-separator-pseudo-smaller {
-  @include quick-filter-separator-pseudo;
-  bottom: (($wrap-height-smaller - 20px) / 2 - 1px);
-}
-
 @mixin border-radius-left {
   border-top-left-radius: $border-radius;
   border-bottom-left-radius: $border-radius;
@@ -190,18 +185,18 @@
       }
     }
   }
-
-  .smaller {
-    .bar-filters:empty {
-      &:before {
-        height: $wrap-height-smaller;
-      }
+}
+:host[data-size="smaller"] {
+  .bar-filters:empty {
+    &:before {
+      height: $wrap-height-smaller;
     }
-    .bfe-wrap {
-      &:before,
-      &:after {
-        @include quick-filter-separator-pseudo-smaller;
-      }
+  }
+  .bfe-wrap {
+    &:before,
+    &:after {
+      @include quick-filter-separator-pseudo;
+      bottom: (($wrap-height-smaller - 20px) / 2 - 1px);
     }
   }
 }
