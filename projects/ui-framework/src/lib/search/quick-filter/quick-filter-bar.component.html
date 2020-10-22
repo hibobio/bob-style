@@ -11,13 +11,13 @@
 
 <div class="bar-content"
      [ngClass]="{
-        'has-prefix': hasPrefix,
-        'has-suffix': hasSuffix
-     }">
+      'has-prefix': hasPrefix,
+      'has-suffix': hasSuffix
+   }">
 
   <div #prefix
        *ngIf="hasPrefix"
-       class="bar-prefix" [class.smaller]="size === 'smaller'">
+       class="bar-prefix">
     <ng-content select="[bar-prefix]"></ng-content>
   </div>
 
@@ -35,7 +35,7 @@
 
   <div #suffix
        *ngIf="hasSuffix"
-       class="bar-suffix" [class.smaller]="size === 'smaller'">
+       class="bar-suffix">
     <ng-content select="[bar-suffix]"></ng-content>
   </div>
 

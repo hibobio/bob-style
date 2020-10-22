@@ -9,7 +9,7 @@ import {
   ElementRef,
   AfterViewInit,
   ChangeDetectorRef,
-  NgZone,
+  NgZone, HostBinding,
 } from '@angular/core';
 import {
   QuickFilterBarChangeEvent,
@@ -52,7 +52,7 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
   @ViewChild('prefix') prefix: ElementRef;
   @ViewChild('suffix') suffix: ElementRef;
 
-  @Input() size: FormElementSize = FormElementSize.regular;
+  @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
   @Input() quickFilters: QuickFilterConfig[];
   @Input() showResetFilter = false;
   @Output() filtersChange: EventEmitter<

@@ -52,9 +52,6 @@
   white-space: nowrap;
   border: 1px solid $input-border-color;
   background-color: white;
-  &.smaller {
-    height: $wrap-height-smaller;
-  }
   &:empty {
     display: none;
   }
@@ -179,6 +176,21 @@
 
       &:after {
         display: none;
+      }
+    }
+  }
+}
+:host {
+  &[data-size="smaller"] {
+    .bar-prefix,
+    .bar-suffix,
+    .bar-filters:empty:before {
+      height: $wrap-height-smaller;
+    }
+    ::ng-deep .bfe-wrap {
+      &:before,
+      &:after {
+        bottom: (($wrap-height-smaller - 20px) / 2 - 1px) !important;
       }
     }
   }
