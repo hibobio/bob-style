@@ -16,9 +16,8 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
-const template = `
-  <b-rich-text-view [type]="type" [value]="html === 'rich text' ? rteMockHtml : xssTest" [placeholderList]="placeholderList"></b-rich-text-view>
-`;
+const template = `<b-rich-text-view [type]="type" [value]="html === 'rich text' ? rteMockHtml : xssTest"
+      [placeholderList]="placeholderList"></b-rich-text-view>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'RTE View'" style="background-color: rgb(245,245,245); text-align: left;">

@@ -9,5 +9,5 @@ Name | Type | Description | Default
 
 #### Notes
 
-- In \`[type]="'month'"\` mode, the output date will be 1st of month, and the end date \`.to\` (in case of DateRangePicker) will be the last day of month (28-31).
-- the output event object also contains \`.date\` property that contains value as Date object (in case of DateRangePicker it contains  \`.startDate\` and \`.endDate\` as Date objects).
+- In `[type]="'month'"` mode, the output date will be 1st of month, and the end date `.to` (in case of DateRangePicker) will be the last day of month (28-31).
+- the output event object also contains `.date` property that contains value as Date object (in case of DateRangePicker it contains  `.startDate` and `.endDate` as Date objects).

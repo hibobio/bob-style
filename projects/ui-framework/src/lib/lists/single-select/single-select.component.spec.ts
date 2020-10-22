@@ -23,6 +23,7 @@ import {
   listKeyboardServiceStub,
   MobileServiceProvideMock,
   mockHighlightPipe,
+  MockCompsModule,
 } from '../../tests/services.stub.spec';
 import { ListFooterComponent } from '../list-footer/list-footer.component';
 import { ListModelService } from '../list-service/list-model.service';
@@ -31,8 +32,8 @@ import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { SingleListComponent } from '../single-list/single-list.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { simpleChange } from '../../services/utils/functional-utils';
+import { fakeAsyncFlush } from '../../services/utils/test-helpers';
 
 describe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;
@@ -77,7 +78,7 @@ describe('SingleSelectComponent', () => {
         NoopAnimationsModule,
         ScrollingModule,
         OverlayModule,
-        TruncateTooltipModule,
+        MockCompsModule,
       ],
       providers: [
         ListModelService,
@@ -170,6 +171,8 @@ describe('SingleSelectComponent', () => {
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
       expect(component.propagateChange).toHaveBeenCalledWith(12);
       flush();
+
+      fakeAsyncFlush();
     }));
   });
 
@@ -183,7 +186,10 @@ describe('SingleSelectComponent', () => {
         '.clear-selection'
       );
       expect(clearSelection).toBeTruthy();
+
+      fakeAsyncFlush();
     }));
+
     it('should do not show -None- option in single-list if required', fakeAsync(() => {
       component.required = true;
       fixture.autoDetectChanges();
@@ -194,7 +200,10 @@ describe('SingleSelectComponent', () => {
         '.clear-selection'
       );
       expect(clearSelection).toBeFalsy();
+
+      fakeAsyncFlush();
     }));
+
     it('should clear the selection', fakeAsync(() => {
       fixture.autoDetectChanges();
       component.openPanel();
@@ -207,7 +216,10 @@ describe('SingleSelectComponent', () => {
       fixture.autoDetectChanges();
       expect(component.displayValue).toBe(null);
       flush();
+
+      fakeAsyncFlush();
     }));
+
     it('should invoke selectChange.emit and propagateChange with null', fakeAsync(() => {
       fixture.autoDetectChanges();
       component.openPanel();
@@ -224,6 +236,8 @@ describe('SingleSelectComponent', () => {
       );
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
       flush();
+
+      fakeAsyncFlush();
     }));
   });
 
@@ -251,12 +265,14 @@ describe('SingleSelectComponent', () => {
       );
       fixture.autoDetectChanges();
     }));
+
     it('should not show tooltip', () => {
       const tooltipEl = fixture.debugElement.query(
         By.css('.btt.tooltip-enabled')
       );
       expect(tooltipEl).toBe(null);
     });
+
     it('should add tooltip', fakeAsync(() => {
       fixture.autoDetectChanges();
       component.openPanel();
@@ -271,10 +287,12 @@ describe('SingleSelectComponent', () => {
       const tooltipEl = fixture.debugElement.query(
         By.css('.btt.tooltip-enabled')
       );
-      expect(tooltipEl.nativeElement.innerText).toEqual(
+      expect(tooltipEl?.nativeElement.innerText).toContain(
         'a very very very long text that should have a tooltip'
       );
       flush();
+
+      fakeAsyncFlush();
     }));
   });
 });

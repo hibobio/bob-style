@@ -28,8 +28,7 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
 const inputTypes = values(InputTypes);
 const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
 
-const template2 = `
-<b-input  [value]="(inputType === inputTypes.number ? valueNum : value)"
+const template2 = `<b-input  [value]="(inputType === inputTypes.number ? valueNum : value)"
           [spec]="{
             inputType: inputType,
             label: label,
@@ -58,8 +57,7 @@ const template2 = `
             (inputEvents)="inputEvents($event)">
 </b-input>`;
 
-const template = `
-<b-input    [inputType]="inputType"
+const template = `<b-input    [inputType]="inputType"
             [value]="(inputType === inputTypes.number ? valueNum : value)"
             [label]="label"
             [description]="description"
@@ -83,11 +81,9 @@ const template = `
             [size]="size"
             [allowedChars]="allowedChars"
             (inputEvents)="inputEvents($event)">
-</b-input>
-`;
+</b-input>`;
 
-const templateForNotes = `
-<b-input    [inputType]="inputType"
+const templateForNotes = `<b-input    [inputType]="inputType"
             [value]="value"
             [label]="label"
             [description]="description"
@@ -108,8 +104,7 @@ const templateForNotes = `
             [warnMessage]="warnMessage"
             [errorMessage]="errorMessage"
             (inputEvents)="inputEvents($event)">
-</b-input>
-`;
+</b-input>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Input'">
