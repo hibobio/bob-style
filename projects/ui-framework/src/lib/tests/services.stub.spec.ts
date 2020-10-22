@@ -140,7 +140,7 @@ export const MutationObservableServiceProvideMock = (
   template: ` <div
     #textContainer
     class="btt initialized"
-    [class.tooltip-enabled]="tooltipText?.length > 10"
+    [class.tooltip-enabled]="tooltipText?.length > 20"
     data-max-lines="1"
   >
     {{ tooltipText }}
