@@ -1,42 +1,44 @@
-<b-icon [@reset]
-        *ngIf="showResetFilter"
-        class="reset-filters"
-        role="button"
-        [icon]="icons.refresh"
-        [color]="iconColor.normal"
-        [size]="iconSize.large"
-        [hasHoverState]="true"
-        (click)="onReset()">
-</b-icon>
+<div [class.smaller]="size === 'smaller'">
+  <b-icon [@reset]
+          *ngIf="showResetFilter"
+          class="reset-filters"
+          role="button"
+          [icon]="icons.refresh"
+          [color]="iconColor.normal"
+          [size]="iconSize.large"
+          [hasHoverState]="true"
+          (click)="onReset()">
+  </b-icon>
 
-<div class="bar-content"
-     [ngClass]="{
+  <div class="bar-content"
+       [ngClass]="{
         'has-prefix': hasPrefix,
         'has-suffix': hasSuffix
      }">
 
-  <div #prefix
-       *ngIf="hasPrefix"
-       class="bar-prefix" [class.smaller]="size === 'smaller'">
-    <ng-content select="[bar-prefix]"></ng-content>
+    <div #prefix
+         *ngIf="hasPrefix"
+         class="bar-prefix">
+      <ng-content select="[bar-prefix]"></ng-content>
+    </div>
+
+    <div class="bar-filters">
+
+      <b-quick-filter *ngFor="let quickFilterConfig of quickFilters; trackBy: trackBy"
+                      class="quick-filter-holder"
+                      [size]="size"
+                      [ngStyle]="{width: 100/quickFilters.length + '%'}"
+                      [quickFilterConfig]="quickFilterConfig"
+                      (filterChange)="onFilterChange($event)">
+      </b-quick-filter>
+
+    </div>
+
+    <div #suffix
+         *ngIf="hasSuffix"
+         class="bar-suffix">
+      <ng-content select="[bar-suffix]"></ng-content>
+    </div>
+
   </div>
-
-  <div class="bar-filters">
-
-    <b-quick-filter *ngFor="let quickFilterConfig of quickFilters; trackBy: trackBy"
-                    class="quick-filter-holder"
-                    [size]="size"
-                    [ngStyle]="{width: 100/quickFilters.length + '%'}"
-                    [quickFilterConfig]="quickFilterConfig"
-                    (filterChange)="onFilterChange($event)">
-    </b-quick-filter>
-
-  </div>
-
-  <div #suffix
-       *ngIf="hasSuffix"
-       class="bar-suffix" [class.smaller]="size === 'smaller'">
-    <ng-content select="[bar-suffix]"></ng-content>
-  </div>
-
 </div>

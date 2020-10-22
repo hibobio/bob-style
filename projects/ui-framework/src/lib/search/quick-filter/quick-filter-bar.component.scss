@@ -9,6 +9,11 @@
   background-color: $input-border-color;
 }
 
+@mixin quick-filter-separator-pseudo-smaller {
+  @include quick-filter-separator-pseudo;
+  bottom: (($wrap-height-smaller - 20px) / 2 - 1px);
+}
+
 @mixin border-radius-left {
   border-top-left-radius: $border-radius;
   border-bottom-left-radius: $border-radius;
@@ -52,11 +57,14 @@
   white-space: nowrap;
   border: 1px solid $input-border-color;
   background-color: white;
-  &.smaller {
-    height: $wrap-height-smaller;
-  }
   &:empty {
     display: none;
+  }
+}
+.smaller {
+  .bar-prefix,
+  .bar-suffix {
+    height: $wrap-height-smaller;
   }
 }
 
@@ -179,6 +187,20 @@
 
       &:after {
         display: none;
+      }
+    }
+  }
+
+  .smaller {
+    .bar-filters:empty {
+      &:before {
+        height: $wrap-height-smaller;
+      }
+    }
+    .bfe-wrap {
+      &:before,
+      &:after {
+        @include quick-filter-separator-pseudo-smaller;
       }
     }
   }
