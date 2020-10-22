@@ -10,7 +10,7 @@
      [disableRipple]="true"
      class="mat-tab-label {{tab?.key}}"
      [attr.data-index]="i"
-     [active]="i === selectedIndex">
+     [active]="i === selectedIndex || tabs.length === 1">
     {{tab.label}}
 
     <span *ngIf="tab.badge"
