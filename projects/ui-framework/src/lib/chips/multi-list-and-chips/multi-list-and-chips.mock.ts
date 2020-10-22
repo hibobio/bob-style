@@ -7,6 +7,7 @@ import {
 } from '../../services/utils/functional-utils';
 import { mockHobbies, mockNames, mockAvatar } from '../../mock.const';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { Icons } from '../../icons/icons.enum';
 
 const maxOpts = 10;
 
@@ -60,19 +61,45 @@ export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
 export const MultiListAndAvatarChipsOptionsMock: SelectGroupOption[] = [
   {
     groupName: 'People',
-    options: mockNames(30).map(
-      (person: string, index: number): SelectOption => ({
-        value: person,
+    options: [
+      {
+        value: 'Manager',
         id: simpleUID(),
-        selected: index < 15 && mayBeSelected(85),
+        selected: mayBeSelected(85),
         disabled: false,
         prefixComponent: {
           component: AvatarImageComponent,
           attributes: {
-            imageSource: mockAvatar(),
+            icon: Icons.person_manager,
           },
         },
-      })
-    ),
+      },
+      {
+        value: 'Reports To',
+        id: simpleUID(),
+        selected: mayBeSelected(85),
+        disabled: false,
+        prefixComponent: {
+          component: AvatarImageComponent,
+          attributes: {
+            icon: Icons.person_reports,
+          },
+        },
+      },
+      ...mockNames(30).map(
+        (person: string, index: number): SelectOption => ({
+          value: person,
+          id: simpleUID(),
+          selected: index < 15 && mayBeSelected(85),
+          disabled: false,
+          prefixComponent: {
+            component: AvatarImageComponent,
+            attributes: {
+              imageSource: mockAvatar(),
+            },
+          },
+        })
+      ),
+    ],
   },
 ];

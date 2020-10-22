@@ -111,18 +111,6 @@ export class MultiListAndChipsComponent implements OnChanges, OnInit {
     });
   }
 
-  public detectChipType(options: SelectGroupOption[] = this.options): ChipType {
-    return Boolean(
-      options.find((g) =>
-        Boolean(
-          get(g, 'options[0].prefixComponent.attributes.imageSource', false)
-        )
-      )
-    )
-      ? ChipType.avatar
-      : ChipType.tag;
-  }
-
   public onListChange(listChange: ListChange): void {
     this.options = listChange.getSelectGroupOptions();
     this.optionsToChips(this.options);
@@ -156,15 +144,13 @@ export class MultiListAndChipsComponent implements OnChanges, OnInit {
             chips.push({
               text: option.value,
               id: option.id,
-              imageSource:
-                this.chipListConfig.type === ChipType.avatar &&
-                get(
-                  option,
-                  'prefixComponent.attributes.imageSource',
-                  undefined
-                ),
-
-              type: this.chipListConfig.type,
+              imageSource: get(
+                option,
+                'prefixComponent.attributes.imageSource',
+                undefined
+              ),
+              icon: get(option, 'prefixComponent.attributes.icon', undefined),
+              type: this.getChipTypeFromOption(option),
               removable: !option.disabled,
             });
           }
@@ -211,5 +197,25 @@ export class MultiListAndChipsComponent implements OnChanges, OnInit {
 
   private emitChange(): void {
     this.selectChange.emit(new ListChange(this.options));
+  }
+
+  private detectChipType(
+    options: SelectGroupOption[] = this.options
+  ): ChipType {
+    return Boolean(
+      options.find(
+        (g) => this.getChipTypeFromOption(g.options[0]) !== ChipType.tag
+      )
+    )
+      ? ChipType.avatar
+      : ChipType.tag;
+  }
+
+  private getChipTypeFromOption(option: SelectOption): ChipType {
+    return get(option, 'prefixComponent.attributes.imageSource', false)
+      ? ChipType.avatar
+      : get(option, 'prefixComponent.attributes.icon', false)
+      ? ChipType.icon
+      : ChipType.tag;
   }
 }
