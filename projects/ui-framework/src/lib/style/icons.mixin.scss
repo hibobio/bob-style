@@ -193,12 +193,16 @@ $icon-colors: (
     color: var(--primary-500),
     hover: var(--primary-700),
   ),
+  'primary-alt': (
+    color: var(--primary-600),
+    hover: var(--primary-500),
+  ),
   'inform': (
     color: var(--inform-500),
     hover: var(--inform-700),
   ),
   'negative': (
-    color: var(--negative-500),
+    color: var(--negative-600),
     hover: var(--negative-700),
   ),
   'positive': (
