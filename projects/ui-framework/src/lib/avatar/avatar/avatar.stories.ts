@@ -54,30 +54,27 @@ const icons = [
   Icons.tag,
 ];
 
-const template = `
-<b-avatar
-  [imageSource]="imageSource"
-  [backgroundColor]="backgroundColor"
-  [size]="size"
-  [orientation]="orientation"
-  [title]="title"
-  [subtitle]="subtitle"
-  [caption]="caption"
-  [afterChipText]="afterChipText"
-  [icon]="icon"
-  [badge]="badge"
-  [chip]="chipType && chipText ? {type: chipType, text: chipText} : undefined"
-  [isClickable]="isClickable"
-  [disabled]="disabled"
-  [expectChanges]="true"
-  (clicked)="clickHandler($event)">
+const template = `<b-avatar
+    [imageSource]="imageSource"
+    [backgroundColor]="backgroundColor"
+    [size]="size"
+    [orientation]="orientation"
+    [title]="title"
+    [subtitle]="subtitle"
+    [caption]="caption"
+    [afterChipText]="afterChipText"
+    [icon]="icon"
+    [badge]="badge"
+    [chip]="chipType && chipText ? {type: chipType, text: chipText} : undefined"
+    [isClickable]="isClickable"
+    [disabled]="disabled"
+    [expectChanges]="true"
+    (clicked)="clickHandler($event)">
 
-  <b-text-button *ngIf="!(chipType && chipText)" avatar-text type="primary" text="View goals"></b-text-button>
-</b-avatar>
-`;
+    <b-text-button *ngIf="!(chipType && chipText)" avatar-text type="primary" text="View goals"></b-text-button>
+</b-avatar>`;
 
-const template2 = `
-  <b-avatar
+const template2 = `<b-avatar
     [avatar]="{
       imageSource:imageSource,
       backgroundColor:backgroundColor,
@@ -95,8 +92,7 @@ const template2 = `
       expectChanges: true
     }">
       <b-text-button *ngIf="!(chipType && chipText)" avatar-text type="primary" text="View goals"></b-text-button>
-  </b-avatar>
-`;
+  </b-avatar>`;
 
 const note = `
   ## Avatar Element

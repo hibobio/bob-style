@@ -1388,3 +1388,60 @@ export const batchProcess = <T = any>(
     process();
   });
 };
+
+export const isChrome = () => {
+  const isChromium = window['chrome'];
+  const winNav = window.navigator;
+  const vendorName = winNav.vendor;
+  const isOpera = typeof window['opr'] !== 'undefined';
+  const isIEedge = winNav.userAgent.indexOf('Edge') > -1;
+  const isIOSChrome = winNav.userAgent.match('CriOS');
+
+  return (
+    isChromium !== null &&
+    typeof isChromium !== 'undefined' &&
+    vendorName === 'Google Inc.' &&
+    isOpera === false &&
+    isIEedge === false
+  );
+};
+
+// let testArr = [
+//   '02-03',
+//   '1985-02-25',
+//   '09-24',
+//   '12-30',
+//   '12-15',
+//   '01-05',
+//   '01-15',
+// ].sort(sortBirthDateStrings);
+// => [ '01-05', '01-15', '02-03', '1985-02-25', '09-24', '12-15', '12-30' ]
+export const sortBirthDateStrings = (bd1: string, bd2: string): number => {
+  const [bd1num, bd2num] = [bd1, bd2].map(
+    (bdstr) =>
+      bdstr
+        .split(/\W/)
+        .slice(-2)
+        .reduce((res, num, indx) => {
+          return indx === 0
+            ? (res = Math.round((parseInt(num, 10) * 100) / 12))
+            : (res = res * 100 + Math.round((parseInt(num, 10) * 100) / 31));
+        }, 0) || 0 // 0 if NaN
+  );
+  return bd1num - bd2num;
+};
+
+export const getCopyName = (val: string, copyStr = 'copy'): string => {
+  if (!val) {
+    return val;
+  }
+  const match = val.match(new RegExp(`(.+)(${copyStr})\\s*(\\d*)\\s*$`));
+  return !match
+    ? val + ' ' + copyStr
+    : (
+        match[1] +
+        (match[2] || '') +
+        ' ' +
+        ((parseInt(match[3], 10) || 1) + 1)
+      ).trim();
+};
