@@ -1,5 +1,10 @@
 import { BasicListItem } from './basic-list.interface';
-import { mockHobbies, mockText, mockThings } from '../../mock.const';
+import {
+  mockCities,
+  mockCountries,
+  mockHobbies,
+  mockText,
+} from '../../mock.const';
 import { action } from '@storybook/addon-actions';
 import {
   randomNumber,
@@ -29,9 +34,13 @@ const icon1 = icons();
 const icon2 = icons();
 const numberOfItems = 5;
 
+const hobbies = mockHobbies();
+const cities = mockCities();
+const countries = mockCountries();
+
 export const basicListItems1: BasicListItem[] = makeArray(numberOfItems).map(
-  (i, index) => ({
-    label: mockHobbies(1),
+  (_, index) => ({
+    label: hobbies[index],
     icon: icon1,
     disabled: randomNumber() > 70,
     menu: [
@@ -48,8 +57,8 @@ export const basicListItems1: BasicListItem[] = makeArray(numberOfItems).map(
 );
 
 export const basicListItems2: BasicListItem[] = makeArray(numberOfItems).map(
-  (i, index) => ({
-    label: mockThings(2),
+  (_, index) => ({
+    label: [cities[index], countries[index]],
     icon: icon2,
     menu: [
       {

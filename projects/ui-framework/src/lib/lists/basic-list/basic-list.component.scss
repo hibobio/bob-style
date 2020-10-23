@@ -1,5 +1,8 @@
 @import '../../style/common-imports';
 
+$bbl-cell-padding: times8(1);
+$bbl-icon-cell-width: $button-size-medium;
+
 :host {
   display: block;
   text-align: left;
@@ -8,17 +11,21 @@
 
 .bbl-list {
   width: 100%;
-  background-color: white;
-  border-collapse: separate;
-  border: 1px solid $border-color-light;
-  border-radius: $border-radius;
+  border-collapse: collapse;
+
+  ::ng-deep tbody {
+    background-color: white;
+    box-shadow: inset 0 0 0 1px $border-color-light;
+    border-radius: $border-radius;
+  }
 
   &:empty {
     display: none;
   }
 
-  ::ng-deep td {
-    padding: 0 8px;
+  ::ng-deep td,
+  ::ng-deep th {
+    padding: 0 $bbl-cell-padding;
     vertical-align: middle;
     align-items: center;
     border-bottom: inherit;
@@ -36,9 +43,13 @@
     }
   }
 
+  &-header {
+    height: $wrap-height - 10px;
+  }
+
   &-icon {
     display: table-cell;
-    width: 36px;
+    width: $bbl-icon-cell-width;
   }
 
   &-action-container {
@@ -64,34 +75,49 @@
 
 // when a table is not a table
 
-.not-a-table {
-  display: block;
+.not-a-table ::ng-deep {
+  &,
+  thead,
+  tbody {
+    display: block;
+  }
 
-  ::ng-deep .bbl-list-item {
+  .bbl-list-item,
+  .bbl-list-header {
     display: flex;
   }
 
-  ::ng-deep td {
+  td,
+  th {
     display: flex;
   }
 
-  ::ng-deep .bbl-list-icon {
+  .bbl-list-icon {
     display: inline-flex;
   }
 
-  ::ng-deep .bbl-list-action-container {
+  .bbl-list-action-container {
     margin-left: auto;
   }
 }
 
-// secondary type
+// types
 
-:host[data-type='secondary'] ::ng-deep {
-  .bbl-list {
+:host[data-type='secondary'] ::ng-deep,
+:host[data-type='tertiary'] ::ng-deep {
+  .bbl-list tbody {
     background-color: $grey-100;
   }
+
   .bbl-list-label {
     color: $grey-700;
+  }
+}
+
+:host[data-type='tertiary'] ::ng-deep {
+  .bbl-list tbody {
+    box-shadow: none;
+    border-radius: 0;
   }
 }
 

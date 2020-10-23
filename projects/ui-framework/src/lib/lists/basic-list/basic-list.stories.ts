@@ -22,8 +22,8 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
-const withMenuTemplate = `
-  <b-basic-list [type]="type" [items]="items2"
+const withMenuTemplate = `<b-basic-list [type]="type" [items]="items2"
+                [titles]="['City', 'Country']"
                 [showActionOnHover]="showActionOnHover"
                 (clicked)="onItemClick($event)">
     <b-menu *bBasicListAction="let item=item" [menu]="item.menu">
@@ -33,11 +33,10 @@ const withMenuTemplate = `
                         [color]="iconColor.normal">
       </b-square-button>
     </b-menu>
-  </b-basic-list>
-`;
+  </b-basic-list>`;
 
-const withButtonTemplate = `
-  <b-basic-list [type]="type" [items]="items1"
+const withButtonTemplate = `<b-basic-list [type]="type" [items]="items1"
+                [titles]="['Hobbies']"
                 [showActionOnHover]="showActionOnHover"
                 (clicked)="onItemClick($event)">
     <b-button *bBasicListAction="let item=item"
@@ -47,20 +46,18 @@ const withButtonTemplate = `
               (clicked)="action('List item button clicked with item')(item)">
       Click me
     </b-button>
-  </b-basic-list>
-`;
+  </b-basic-list>`;
 
 const storyTemplate = `
   <b-story-book-layout [title]="'Basic List'">
     <div style="max-width: 650px;">
 
-      <b-subheading style="margin-bottom: 16px;text-align: left;">Multiple labels</b-subheading>
       ${withMenuTemplate}
 
       <br><br>
 
-      <b-subheading style="margin-bottom: 16px;text-align: left;">Single label</b-subheading>
       ${withButtonTemplate}
+
     </div>
   </b-story-book-layout>
 `;
@@ -75,6 +72,7 @@ const note = `
   Name | Type | Description | Default
   --- | --- | --- | ---
   [items] | BasicListItem[] | List of items to display | &nbsp;
+  [titles] | string[] | column titles (length should be equal to number of item labels) | &nbsp;
   [type] | BasicListType | primary (grey border), secondary (grey background) | primary
   [showActionOnHover] | boolean | if true, will hide item Action when not hovering over item | false
   (clicked) | EventEmitter<wbr>&lt;BasicListItem&gt; | Emitted on item (row) click | &nbsp;

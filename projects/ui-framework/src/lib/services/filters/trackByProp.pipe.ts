@@ -1,6 +1,6 @@
 import { NgModule, Pipe, TrackByFunction } from '@angular/core';
 import { PipeTransform } from '@angular/core';
-import { asArray } from '../utils/functional-utils';
+import { asArray, isObject, isPrimitive } from '../utils/functional-utils';
 
 /**
  * Pipe to generate NgFor TrackBy identity function
@@ -24,9 +24,13 @@ export class TrackByPropPipe implements PipeTransform {
     return function <T = any>(index: number, item: T): any {
       return propKeys === '$index'
         ? index
-        : asArray(propKeys)
+        : isPrimitive(item)
+        ? `${index}__${item}`
+        : isObject(item)
+        ? asArray(propKeys)
             .map((key) => item[key])
-            .join('|');
+            .join('__')
+        : `${index}__${JSON.stringify(item)}`;
     };
   }
 }

@@ -4,32 +4,47 @@
          'is-a-table': isTable,
          'not-a-table': !isTable,
          'single-label': singleLabel,
-         'show-action-on-hover': showActionOnHover
+         'show-action-on-hover': showActionOnHover,
+         'has-thead': titles?.length
         }">
-  <tr *ngFor="let item of items; index as i; trackBy: itemTrackBy"
-      class="bbl-list-item"
-      role="listitem"
-      [ngClass]="{
-        'has-hover': clicked.observers.length > 0
-      }"
-      (click.outside-zone)="onItemClick(item, $event)">
 
-    <td *ngIf="item.icon"
-        b-icon
-        class="bbl-list-icon"
-        [icon]="item.icon"
-        [color]="iconColor.normal"></td>
+  <thead *ngIf="titles?.length">
+    <tr class="bbl-list-header">
+      <th class="bbl-list-label b-bold-body"
+          *ngFor="let th of titles; index as i; trackBy: titleTrackBy"
+          [ngClass]="{
+            'bbl-list-icon': i===0 && items[0].icon,
+            'bbl-list-label': i>0 || !items[0].icon
+          }">
+        {{th}}
+      </th>
+    </tr>
+  </thead>
 
-    <td *ngFor="let label of item.label"
-        class="bbl-list-label">
-      <span data-max-lines="2">{{label}}</span>
-    </td>
+  <tbody *ngIf="items?.length">
+    <tr *ngFor="let item of items; index as i; trackBy: itemTrackBy"
+        class="bbl-list-item"
+        role="listitem"
+        [class.has-hover]="clicked.observers.length > 0"
+        (click.outside-zone)="onItemClick(item, $event)">
 
-    <td *ngIf="contentChild"
-        class="bbl-list-action-container">
-      <ng-container *ngTemplateOutlet="contentChild?.tpl; context: { item: item, index: i }">
-      </ng-container>
-    </td>
+      <td *ngIf="item.icon"
+          b-icon
+          class="bbl-list-icon"
+          [icon]="item.icon"
+          [color]="iconColor.normal"></td>
 
-  </tr>
+      <td *ngFor="let label of item.label"
+          class="bbl-list-label">
+        <span data-max-lines="2">{{label}}</span>
+      </td>
+
+      <td *ngIf="contentChild"
+          class="bbl-list-action-container">
+        <ng-container *ngTemplateOutlet="contentChild?.tpl; context: { item: item, index: i }">
+        </ng-container>
+      </td>
+
+    </tr>
+  </tbody>
 </table>
