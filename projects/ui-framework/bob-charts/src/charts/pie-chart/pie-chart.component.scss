@@ -1,0 +1,5 @@
+:host {
+  &[data-donut-size] > div {
+    margin-bottom: -5px;
+  }
+}

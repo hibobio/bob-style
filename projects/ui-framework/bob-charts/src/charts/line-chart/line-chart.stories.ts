@@ -18,31 +18,26 @@ import { ChartLegendPositionEnum } from '../chart/chart.interface';
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
 );
-const template = `
-<div>
-  <b-line-chart
-    [data]="data"
-    [type]="type"
-    [preTooltipValue]="preTooltipValue"
-    [postTooltipValue]="postTooltipValue"
-    [showDataLabels]="showDataLabels"
-    [legend]="legend"
-    [legendPosition]="legendPosition"
-    [colorPalette]="colorPalette"
-    [name]="name"
-    [height]="height"
-    [title]="title"
-    [pointFormat]="pointFormat"
-    #chart
-  >
-  </b-line-chart>
-  <button (click)="chart.exportChart(downloadChart)">download</button>
-</div>
-`;
+const template = `<b-line-chart
+        [data]="data"
+        [type]="type"
+        [preTooltipValue]="preTooltipValue"
+        [postTooltipValue]="postTooltipValue"
+        [showDataLabels]="showDataLabels"
+        [legend]="legend"
+        [legendPosition]="legendPosition"
+        [colorPalette]="colorPalette"
+        [name]="name"
+        [height]="height"
+        [title]="title"
+        [pointFormat]="pointFormat"
+        #chart>
+</b-line-chart>
+<button (click)="chart.exportChart(downloadChart)">download</button>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Line Chart'">
-    ${template}
+    <div>${template}</div>
 </b-story-book-layout>
 `;
 
@@ -82,13 +77,9 @@ story.add(
       props: {
         downloadChart: select(
           'downloadChart',
-          [
-            'application/pdf',
-            'image/jpeg',
-            'image/png',
-            'image/svg+xml'
-          ],
-          'image/jpeg'),
+          ['application/pdf', 'image/jpeg', 'image/png', 'image/svg+xml'],
+          'image/jpeg'
+        ),
         type: select(
           'type',
           [

@@ -17,37 +17,32 @@ import {
 } from '../../chart.mock';
 import { ChartLegendPositionEnum } from '../../chart/chart.interface';
 
-const story = storiesOf(
-  `${ComponentGroupType.Charts}`,
-  module
-).addDecorator(withKnobs);
-const template = `
-<div>
-  <b-bar-line-chart
-    [data]="data"
-    [legendPosition]="legendPosition"
-    [showDataLabels]="showDataLabels"
-    [preTooltipValue]="preTooltipValue"
-    [postTooltipValue]="postTooltipValue"
-    [categories]="categories"
-    [legend]="legend"
-    [stacked]="stacked"
-    [stackedPercent]="stackedPercent"
-    [colorPalette]="colorPalette"
-    [name]="name"
-    [height]="height"
-    [title]="title"
-    [pointFormat]="pointFormat"
-    #chart
-  >
+const story = storiesOf(`${ComponentGroupType.Charts}`, module).addDecorator(
+  withKnobs
+);
+const template = `<b-bar-line-chart
+          [data]="data"
+          [legendPosition]="legendPosition"
+          [showDataLabels]="showDataLabels"
+          [preTooltipValue]="preTooltipValue"
+          [postTooltipValue]="postTooltipValue"
+          [categories]="categories"
+          [legend]="legend"
+          [stacked]="stacked"
+          [stackedPercent]="stackedPercent"
+          [colorPalette]="colorPalette"
+          [name]="name"
+          [height]="height"
+          [title]="title"
+          [pointFormat]="pointFormat"
+          #chart>
   </b-bar-line-chart>
-  <button (click)="chart.exportChart(downloadChart)">download</button>
-</div>
-`;
+
+  <button (click)="chart.exportChart(downloadChart)">download</button>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Combination - stacked bar / line Chart'">
-    ${template}
+    <div>${template}</div>
 </b-story-book-layout>
 `;
 // tslint:disable:max-line-length
@@ -90,13 +85,9 @@ story.add(
       props: {
         downloadChart: select(
           'downloadChart',
-          [
-            'application/pdf',
-            'image/jpeg',
-            'image/png',
-            'image/svg+xml'
-          ],
-          'image/jpeg'),
+          ['application/pdf', 'image/jpeg', 'image/png', 'image/svg+xml'],
+          'image/jpeg'
+        ),
         showDataLabels: boolean('showDataLabels', false),
         legend: boolean('legend', true),
         legendPosition: select(

@@ -1,55 +1,63 @@
-@import "../../../../src/lib/style/common-imports.scss";
+@import '../../../../src/lib/style/common-imports.scss';
 
-.chart-tooltip {
-  background-color: #fff;
+:host {
+  display: block;
 }
 
-.highcharts-tooltip-container svg {
-  display: none;
-}
-.highcharts-tooltip>span {
-  transform: translateY(16px);
-  border: 1px solid $grey-400;
-  background-color: #fff;
-  border-radius: 5px;
-  opacity: 1;
-  z-index: 9999!important;
-  padding: .8em;
+::ng-deep {
   .chart-tooltip {
-    .value, .key {
-      font-size: 11px;
-      font-family: var(--heading-font-family);
-    }
-    .value {
-      font-weight: 600;
-    }
-    .key {
-      color: $grey-600;
-      font-weight: 400;
-    }
+    background-color: #fff;
   }
-  //left: 0!important;
-  //top: 0!important;
-  //position: relative;
-  &:before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    margin-left: -7px;
-    z-index: 3;
-    top: 100%;
-    border: 7px solid transparent;
-    border-top-color: $grey-400;
+
+  .highcharts-tooltip-container svg {
+    display: none;
   }
-  &:after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    margin-top: -2px;
-    margin-left: -7px;
-    z-index: 4;
-    top: 100%;
-    border: 7px solid transparent;
-    border-top-color: #fff;
+
+  .highcharts-tooltip > span {
+    transform: translateY(16px);
+    border: 1px solid $grey-400;
+    background-color: #fff;
+    border-radius: 5px;
+    opacity: 1;
+    z-index: 9999 !important;
+    padding: 0.8em;
+
+    .chart-tooltip {
+      .value,
+      .key {
+        font-size: 11px;
+        font-family: var(--heading-font-family);
+      }
+      .value {
+        font-weight: 600;
+      }
+      .key {
+        color: $grey-600;
+        font-weight: 400;
+      }
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      margin-left: -7px;
+      z-index: 3;
+      top: 100%;
+      border: 7px solid transparent;
+      border-top-color: $grey-400;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      margin-top: -2px;
+      margin-left: -7px;
+      z-index: 4;
+      top: 100%;
+      border: 7px solid transparent;
+      border-top-color: #fff;
+    }
   }
 }

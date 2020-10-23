@@ -1,21 +1,23 @@
-<b-pie-chart
-  #chart
-[height]="height"
-[data]="data"
-[name]="name"
-[legend]="legend"
-[colorPalette]="colorPalette"
-[donutInnerSize]="donutInnerSize"
-[donut]="true"
-[legendPosition]="legendPosition"
-[extraOptions]="extraOptions"
-[preTooltipValue]="preTooltipValue"
-[tooltipTemplate]="tooltipTemplate"
-[postTooltipValue]="postTooltipValue"
-[tooltipValueFormatter]="tooltipValueFormatter"
-(legendChanged)="updatePosition()"
->
+<b-pie-chart #chart
+             [height]="height"
+             [data]="data"
+             [name]="name"
+             [legend]="legend"
+             [colorPalette]="colorPalette"
+             [donutInnerSize]="donutInnerSize"
+             [donut]="true"
+             [legendPosition]="legendPosition"
+             [extraOptions]="extraOptions"
+             [preTooltipValue]="preTooltipValue"
+             [tooltipTemplate]="tooltipTemplate"
+             [postTooltipValue]="postTooltipValue"
+             [tooltipValueFormatter]="tooltipValueFormatter"
+             [donutSize]="donutSize"
+             (legendChanged)="updatePosition()">
 </b-pie-chart>
-<span class="text-container" [ngStyle]="textStyle" *ngIf="data?.length">
+
+<span class="text-container"
+      [ngStyle]="textStyle"
+      *ngIf="data?.length">
   <ng-content></ng-content>
 </span>

@@ -14,28 +14,28 @@ import { ChartsModule } from '../charts.module';
 import { TypographyModule } from 'bob-style';
 import { LINE_CHART_DATA_MOCK, NUMBER_OF_EMPLOYEES } from '../chart.mock';
 import { ChartLegendPositionEnum } from '../chart/chart.interface';
+import { DonutSize } from '../charts.enum';
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
 );
 
-const template = `
-  <b-donut-text-chart
-    [colorPalette]="colorPalette"
-    [legendPosition]="legendPosition"
-    [data]="data"
-    [legend]="legend"
-    [height]="height"
-    [preTooltipValue]="preTooltipValue"
-    [postTooltipValue]="postTooltipValue"
-    [name]="name"
-    [tooltipValueFormatter]="tooltipValueFormatter"
-    [donutInnerSize]="donutInnerSize"
-  >
-    <b-display-3 style="color: #9d9c9c;">
-      {{text}}
-    </b-display-3>
-  </b-donut-text-chart>
-`;
+const template = `<b-donut-text-chart
+        [donutSize]="donutSize"
+        [colorPalette]="colorPalette"
+        [legendPosition]="legendPosition"
+        [data]="data"
+        [legend]="legend"
+        [height]="height"
+        [preTooltipValue]="preTooltipValue"
+        [postTooltipValue]="postTooltipValue"
+        [name]="name"
+        [tooltipValueFormatter]="tooltipValueFormatter"
+        [donutInnerSize]="donutInnerSize"
+      >
+        <b-display-3 style="color: #9d9c9c;">
+          {{text}}
+        </b-display-3>
+  </b-donut-text-chart>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Donut Chart With Text (Pie chart)'">
@@ -70,7 +70,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        tooltipValueFormatter: tooltipValue => {
+        tooltipValueFormatter: (tooltipValue) => {
           // custom value formatter suffix number pipe example
           if (isNaN(tooltipValue)) {
             return null;
@@ -105,6 +105,7 @@ story.add(
           }
           return (isNegative ? '-' : '') + abs + key;
         },
+        donutSize: select('donutSize', [0, ...Object.values(DonutSize)], 0),
         text: text('text', NUMBER_OF_EMPLOYEES + ''),
         name: text('name', 'employees'),
         legend: boolean('legend', false),

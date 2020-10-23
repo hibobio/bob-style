@@ -13,48 +13,48 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../../src/lib/story-book-layout/story-book-layout.module';
 import { LINE_CHART_DATA_MOCK } from '../chart.mock';
 import { ChartLegendPositionEnum } from '../chart/chart.interface';
+import { DonutSize } from '../charts.enum';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
 );
 
-const tooltipTemplate = '<div class="chart-tooltip">\n' +
-    '\t<div class="value" style="color:${chartPoint.color};">\n' +
-        '\t\t${component.formatValue(chartPoint.y)}\n' +
-    '\t</div>\n' +
-    '\t<div class="key">${chartPoint.key}</div>\n' +
+const tooltipTemplate =
+  '<div class="chart-tooltip">\n' +
+  '\t<div class="value" style="color:${chartPoint.color};">\n' +
+  '\t\t${component.formatValue(chartPoint.y)}\n' +
+  '\t</div>\n' +
+  '\t<div class="key">${chartPoint.key}</div>\n' +
   '</div>';
 
-const template = `
-<div>
-  <small>Demo of all binding options</small>
-  <b-pie-chart
-    [data]="data"
-    [tooltipTemplate]="tooltipTemplate"
-    [preTooltipValue]="preTooltipValue"
-    [postTooltipValue]="postTooltipValue"
-    [donut]="donut"
-    [showDataLabels]="showDataLabels"
-    [extraOptions]="extraOptions"
-    [legend]="legend"
-    [legendPosition]="legendPosition"
-    [colorPalette]="colorPalette"
-    [name]="name"
-    [height]="height"
-    [donutWidth]="donutWidth"
-    [donutInnerSize]="donutInnerSize"
-    [title]="title"
-    [pointFormat]="pointFormat"
-    #chart
-  >
+const template = `<b-pie-chart
+        [donutSize]="donutSize"
+        [data]="data"
+        [tooltipTemplate]="tooltipTemplate"
+        [preTooltipValue]="preTooltipValue"
+        [postTooltipValue]="postTooltipValue"
+        [donut]="donut"
+        [showDataLabels]="showDataLabels"
+        [extraOptions]="extraOptions"
+        [legend]="legend"
+        [legendPosition]="legendPosition"
+        [colorPalette]="colorPalette"
+        [name]="name"
+        [height]="height"
+        [donutWidth]="donutWidth"
+        [donutInnerSize]="donutInnerSize"
+        [title]="title"
+        [pointFormat]="pointFormat"
+        #chart>
   </b-pie-chart>
-  <button (click)="chart.exportChart(downloadChart)">download</button>
-</div>
-`;
+  <br>
+  <button (click)="chart.exportChart(downloadChart)">download</button>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Pie Chart'">
+  <div>
     ${template}
+  </div>
 </b-story-book-layout>
 `;
 // tslint:disable:max-line-length
@@ -115,9 +115,10 @@ const note = `
   #### Pie Chart Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  donut (optional) | boolean | make pie chart donut chart | false
-  donutInnerSize (optional) | number | defining the inner white circle in a donut pie chart | 60
-  donutWidth (optional) | number | overrides donutInnerSize by applying width of donut instead inner circle width | null
+  [donut]  boolean | make pie chart donut chart | false
+  [donutInnerSize]  | number | defining the inner white circle in a donut pie chart | 60
+  [donutWidth] | number | overrides donutInnerSize by applying width of donut instead inner circle width | null
+  [donutSize] | DonutSize | donut size preset | &nbsp;
 `;
 // tslint:enable:max-line-length
 story.add(
@@ -130,15 +131,12 @@ story.add(
           console.log('point: ', point);
           return `<b>${point.key}</b> - ${component.formatValue(point.y)}`;
         },
+        donutSize: select('donutSize', [0, ...Object.values(DonutSize)], 0),
         downloadChart: select(
           'downloadChart',
-          [
-            'application/pdf',
-            'image/jpeg',
-            'image/png',
-            'image/svg+xml'
-          ],
-          'image/jpeg'),
+          ['application/pdf', 'image/jpeg', 'image/png', 'image/svg+xml'],
+          'image/jpeg'
+        ),
         showDataLabels: boolean('showDataLabels', false),
         donut: boolean('donut', false),
         legend: boolean('legend', true),

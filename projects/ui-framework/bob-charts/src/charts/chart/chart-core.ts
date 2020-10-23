@@ -69,7 +69,7 @@ export abstract class ChartCore implements AfterViewInit {
   @Input() showDataLabels = false;
   @Input() pointFormat = '{series.name}: <b>{point.percentage:.1f}%</b>';
   @Input() extraOptions: HighChartOptions = {};
-  @Output() legendChanged = new EventEmitter();
+
   @Input() tooltipTemplate = <ChartTooltipTemplateFormatter>(
     component: ChartCore,
     chartPoint: ChartFormatterThis
@@ -80,6 +80,9 @@ export abstract class ChartCore implements AfterViewInit {
       <div class="key">${chartPoint.key}</div>
     </div>`;
   @Input() tooltipValueFormatter = (val: number): number | string => val;
+
+  // tslint:disable-next-line: member-ordering
+  @Output() legendChanged = new EventEmitter();
 
   tooltipFormatter(chartThis: ChartFormatterThis, component: ChartCore) {
     return this.tooltipTemplate(component, chartThis);

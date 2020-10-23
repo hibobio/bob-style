@@ -20,32 +20,28 @@ import { ChartLegendPositionEnum } from '../../chart/chart.interface';
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
 );
-const template = `
-<div>
-  <b-stacked-bar-chart
-    [data]="data"
-    [showDataLabels]="showDataLabels"
-    [legendPosition]="legendPosition"
-    [stackedDataLabels]="stackedDataLabels"
-    [categories]="categories"
-    [preTooltipValue]="preTooltipValue"
-    [postTooltipValue]="postTooltipValue"
-    [legend]="legend"
-    [colorPalette]="colorPalette"
-    [name]="name"
-    [height]="height"
-    [title]="title"
-    [pointFormat]="pointFormat"
-    #chart
-  >
+const template = `<b-stacked-bar-chart
+        [data]="data"
+        [showDataLabels]="showDataLabels"
+        [legendPosition]="legendPosition"
+        [stackedDataLabels]="stackedDataLabels"
+        [categories]="categories"
+        [preTooltipValue]="preTooltipValue"
+        [postTooltipValue]="postTooltipValue"
+        [legend]="legend"
+        [colorPalette]="colorPalette"
+        [name]="name"
+        [height]="height"
+        [title]="title"
+        [pointFormat]="pointFormat"
+        #chart>
   </b-stacked-bar-chart>
-  <button (click)="chart.exportChart(downloadChart)">download</button>
-</div>
-`;
+
+  <button (click)="chart.exportChart(downloadChart)">download</button>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Pie Chart'">
-    ${template}
+    <div>${template}</div>
 </b-story-book-layout>
 `;
 
@@ -84,13 +80,9 @@ story.add(
       props: {
         downloadChart: select(
           'downloadChart',
-          [
-            'application/pdf',
-            'image/jpeg',
-            'image/png',
-            'image/svg+xml'
-          ],
-          'image/jpeg'),
+          ['application/pdf', 'image/jpeg', 'image/png', 'image/svg+xml'],
+          'image/jpeg'
+        ),
         showDataLabels: boolean('showDataLabels', false),
         stackedDataLabels: boolean('stackedDataLabels', false),
         legendPosition: select(
