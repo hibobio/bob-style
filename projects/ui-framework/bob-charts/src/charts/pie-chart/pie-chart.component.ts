@@ -45,15 +45,18 @@ export class PieChartComponent extends ChartCore implements OnChanges {
   @Input() donutSize: DonutSize = null;
 
   @HostBinding('attr.data-donut-size') get getDonutSize() {
-    return this.donutSize || this.donut
-      ? (getKeyByValue(
-          DONUT_DIAMETERS,
-          closestNumber(
-            this.donutWidth || this.donutInnerSize / (1 - 0.14),
-            Object.values(DONUT_DIAMETERS)
-          )
-        ) as DonutSize)
-      : null;
+    return (
+      this.donutSize ||
+      (this.donut
+        ? (getKeyByValue(
+            DONUT_DIAMETERS,
+            closestNumber(
+              this.donutWidth || this.donutInnerSize / (1 - 0.14),
+              Object.values(DONUT_DIAMETERS)
+            )
+          ) as DonutSize)
+        : null)
+    );
   }
 
   readonly type = ChartTypesEnum.Pie;

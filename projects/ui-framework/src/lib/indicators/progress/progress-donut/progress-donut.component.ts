@@ -50,7 +50,6 @@ export class ProgressDonutComponent extends BaseProgressElement
   }
 
   @Input() config: ProgressDonutConfig = {};
-
   @Input() customSize: number;
 
   @HostBinding('attr.data-donut-size') @Input() donutSize: DonutSize = null;
@@ -62,6 +61,16 @@ export class ProgressDonutComponent extends BaseProgressElement
   public circumference: number;
 
   onNgChanges(changes: SimpleChanges): void {
+    applyChanges(
+      this,
+      changes,
+      {
+        donutSize: null,
+      },
+      [],
+      true
+    );
+
     if (hasChanges(changes, ['size', 'customSize', 'donutSize'], true)) {
       this.size =
         this.donutSize || this.customSize
