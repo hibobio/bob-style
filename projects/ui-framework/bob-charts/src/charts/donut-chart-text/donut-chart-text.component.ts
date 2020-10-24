@@ -11,6 +11,7 @@ import { Options, SeriesPieDataOptions } from 'highcharts';
 import {
   ChartLegendPositionEnum,
   ChartTooltipTemplateFormatter,
+  ChartTooltipValueFormatter,
 } from '../charts.interface';
 import { DonutSize } from '../charts.enum';
 import { applyChanges, pass } from 'bob-style';
@@ -62,7 +63,7 @@ export class DonutChartTextComponent implements OnChanges {
   @Input() colorPalette: string[] = [...CHART_CORE_COLORPALETTE_DEF];
   @Input() donutSize: DonutSize;
 
-  @Input() tooltipValueFormatter: (v: string) => string = pass;
+  @Input() tooltipValueFormatter: ChartTooltipValueFormatter = pass;
   @Input()
   tooltipTemplate: ChartTooltipTemplateFormatter = CHART_CORE_TOOLTIP_TEMPLATE_DEF;
 

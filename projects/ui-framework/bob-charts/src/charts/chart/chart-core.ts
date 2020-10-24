@@ -21,6 +21,7 @@ import {
   ChartLegendPositionEnum,
   ChartLegendVerticalAlignEnum,
   ChartTooltipTemplateFormatter,
+  ChartTooltipValueFormatter,
   HighChartOptions,
 } from '../charts.interface';
 
@@ -71,7 +72,7 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
   @Input() pointFormat = CHART_CORE_POINTFORMAT_DEF;
   @Input() extraOptions: HighChartOptions = {};
 
-  @Input() tooltipValueFormatter: (v: string) => string = pass;
+  @Input() tooltipValueFormatter: ChartTooltipValueFormatter = pass;
   @Input()
   tooltipTemplate: ChartTooltipTemplateFormatter = CHART_CORE_TOOLTIP_TEMPLATE_DEF;
 

@@ -20,6 +20,10 @@ export interface ChartFormatterThis {
   total?: number;
 }
 
+export type ChartTooltipValueFormatter = (
+  value: number | string
+) => number | string;
+
 export type ChartTooltipTemplateFormatter = (
   component: ChartCore,
   chartThis: ChartFormatterThis
