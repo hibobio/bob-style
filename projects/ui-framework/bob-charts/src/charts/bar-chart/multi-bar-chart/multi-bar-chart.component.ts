@@ -6,7 +6,7 @@ import {
   SimpleChanges,
   NgZone,
 } from '@angular/core';
-import { ChartTypesEnum } from '../../chart/chart.enum';
+import { ChartTypesEnum } from '../../charts.enum';
 import { SeriesColumnOptions } from 'highcharts';
 import { ChartCore } from '../../chart/chart-core';
 

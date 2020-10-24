@@ -13,6 +13,7 @@ import { randomNumber } from '../../../services/utils/functional-utils';
 import { ProgressSize } from '../progress.enum';
 import { Icons, IconSize } from '../../../icons/icons.enum';
 import { IconsModule } from '../../../icons/icons.module';
+import { DonutSize } from '../../../../../bob-charts/src/charts/charts.enum';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
@@ -23,6 +24,7 @@ const story2 = storiesOf(ComponentGroupType.Charts, module).addDecorator(
 );
 
 const template = `<b-progress-donut [size]="size"
+                  [donutSize]="donutSize"
                   [customSize]="customSize"
                   [data]="{
                     color: color,
@@ -110,19 +112,7 @@ const storyTemplate = `
 <b-story-book-layout [title]="'Progress Donut'">
   <div>
     ${template}
-    <hr style="margin: 60px 0 50px 0; border: 0; height: 0; border-top: 2px dashed #d2d2d2;">
 
-    <div style="display:flex; flex-wrap: wrap; align-items: center;">
-      ${examples}
-      ${contentExmpls}
-    </div>
-
-    <div style="margin-top: 100vh; padding-bottom: 100px;">
-    <h3 style="text-align: left; margin-bottom: 50px;">Progress donuts animate as they come into view</h3>
-    <div style="display:flex; flex-wrap: wrap; align-items: center;">
-      ${examples}
-    </div>
-    </div>
   </div>
 </b-story-book-layout>
 `;
@@ -140,10 +130,14 @@ const note = `
   To disable this behaviour (and all animation in general), \
   pass \`\`\`{ disableAnimation: true }\`\`\` as [config].
 
+  *Note*: You should use only one of: \`\`\`[donutSize]\`\`\`, \`\`\`[customSize]\`\`\` or \`\`\`[size]\`\`\` inputs (they will be considered in this order). \`\`\`[donutSize]\`\`\` uses same sizes as Pie Chart. \`\`\`[size]\`\`\` is unique to Progress Donut, but by now is <u>deprecated</u>.
+
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [size] | ProgressSize | theme size | medium
+  [donutSize] | DonutSize | donut size preset | &nbsp;
+  [customSize] | number | custom donut diameter | &nbsp;
+  <s>[size]</s> | ProgressSize | theme size (deprecated) | medium
   [data] | ProgressData | \`\`\`color: string\`\`\` - bar color,<br>\
   \`\`\`value: number\`\`\` -  progress value (0-100) **&lt;= number indicating percentage**,<br>\
   \`\`\`headerTextPrimary: string / boolean\`\`\` - \
@@ -186,8 +180,10 @@ const toAdd = () => ({
     icons: Icons,
     iconSize: IconSize,
 
-    size: select('size', Object.values(ProgressSize), ProgressSize.medium),
+    size: select('size', [0, ...Object.values(ProgressSize)], 0),
+    donutSize: select('donutSize', [0, ...Object.values(DonutSize)], 0),
     customSize: number('customSize', 0),
+
     color: select(
       'color',
       ['#9d9d9d', '#ff962b', '#f8bc20', '#17b456', '#e52c51', '#4b95ec'],

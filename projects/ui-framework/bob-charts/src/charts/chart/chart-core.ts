@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { ExportingMimeTypeValue, Options, Chart } from 'highcharts';
-import { ChartTypesEnum } from './chart.enum';
+import { ChartTypesEnum } from '../charts.enum';
 import { merge } from 'lodash';
 import { simpleUID } from 'bob-style';
 import {
@@ -19,7 +19,7 @@ import {
   ChartLegendPositionEnum,
   ChartLegendVerticalAlignEnum,
   HighChartOptions,
-} from './chart.interface';
+} from '../charts.interface';
 
 import Boost from 'highcharts/modules/boost';
 import Exporting from 'highcharts/modules/exporting';

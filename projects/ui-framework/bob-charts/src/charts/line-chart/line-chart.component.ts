@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ChartCore } from '../chart/chart-core';
 import { SeriesLineOptions } from 'highcharts';
-import { LineChartTypes } from '../chart/chart.interface';
+import { LineChartTypes } from '../charts.interface';
 
 @Component({
   selector: 'b-line-chart',

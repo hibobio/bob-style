@@ -1,10 +1,9 @@
 import { storiesOf } from '@storybook/angular';
-import { number, object, withKnobs, } from '@storybook/addon-knobs/angular';
+import { number, object, withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EyeCandyModule } from '../eye-candy.module';
-import { makeArray } from 'bob-style';
 import { action } from '@storybook/addon-actions';
 
 const story = storiesOf(ComponentGroupType.EyeCandy, module).addDecorator(
@@ -34,14 +33,14 @@ const note = `
   (complete) | callback when the last snow flake is out of page & the requestAnimationFrame is canceled
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Snow'" style=" background: #000;">
-    ${ template }
+    ${template}
 </b-story-book-layout>
 `;
 
@@ -53,8 +52,8 @@ const toAdd = () => ({
     onComplete: action('snow complete'),
   },
   moduleMetadata: {
-    imports: [StoryBookLayoutModule, BrowserAnimationsModule, EyeCandyModule]
-  }
+    imports: [StoryBookLayoutModule, BrowserAnimationsModule, EyeCandyModule],
+  },
 });
 
 story.add('Snow', toAdd, { notes: { markdown: note } });

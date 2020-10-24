@@ -10,7 +10,7 @@ import {
   ChartFormatterThis,
   ChartLegendPositionEnum,
   ChartTooltipTemplateFormatter,
-} from '../chart/chart.interface';
+} from '../charts.interface';
 import { ChartCore } from '../chart/chart-core';
 import { DonutSize } from '../charts.enum';
 import { pass } from 'bob-style';

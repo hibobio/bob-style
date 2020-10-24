@@ -12,8 +12,8 @@ import { ComponentGroupType } from '../../../../src/lib/consts';
 import { StoryBookLayoutModule } from '../../../../src/lib/story-book-layout/story-book-layout.module';
 import { ChartsModule } from '../charts.module';
 import { LINE_CHART_DATA_MOCK } from '../chart.mock';
-import { ChartTypesEnum } from '../chart/chart.enum';
-import { ChartLegendPositionEnum } from '../chart/chart.interface';
+import { ChartTypesEnum } from '../charts.enum';
+import { ChartLegendPositionEnum } from '../charts.interface';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs

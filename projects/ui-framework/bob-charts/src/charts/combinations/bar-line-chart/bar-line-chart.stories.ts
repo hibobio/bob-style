@@ -15,7 +15,7 @@ import {
   COMBINED_BAR_CHART_DATA_MOCK,
   MULTI_BAR_CHART_CATEGORIES,
 } from '../../chart.mock';
-import { ChartLegendPositionEnum } from '../../chart/chart.interface';
+import { ChartLegendPositionEnum } from '../../charts.interface';
 
 const story = storiesOf(`${ComponentGroupType.Charts}`, module).addDecorator(
   withKnobs

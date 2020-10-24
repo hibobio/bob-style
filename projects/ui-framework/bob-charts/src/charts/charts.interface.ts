@@ -1,6 +1,6 @@
-import { Options, ExportingMimeTypeValue, Chart } from 'highcharts';
-import { ChartTypesEnum } from './chart.enum';
-import { ChartCore } from './chart-core';
+import { Options, ExportingMimeTypeValue } from 'highcharts';
+import { ChartTypesEnum } from './charts.enum';
+import { ChartCore } from './chart/chart-core';
 
 export class HighChartOptions implements Options {}
 

@@ -2,8 +2,10 @@
  * Charts
  */
 
+export * from './charts/charts.interface';
+export * from './charts/charts.enum';
+export * from './charts/charts.const';
 export { ChartsModule } from './charts/charts.module';
-export * from './charts/chart/chart.interface';
 export { PieChartComponent } from './charts/pie-chart/pie-chart.component';
 export { MultiBarChartComponent } from './charts/bar-chart/multi-bar-chart/multi-bar-chart.component';
 export { StackedBarChartComponent } from './charts/bar-chart/stacked-bar-chart/stacked-bar-chart.component';

@@ -13,7 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartsModule } from '../charts.module';
 import { TypographyModule } from 'bob-style';
 import { LINE_CHART_DATA_MOCK, NUMBER_OF_EMPLOYEES } from '../chart.mock';
-import { ChartLegendPositionEnum } from '../chart/chart.interface';
+import { ChartLegendPositionEnum } from '../charts.interface';
 import { DonutSize } from '../charts.enum';
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
@@ -21,17 +21,16 @@ const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
 
 const template = `<b-donut-text-chart
         [donutSize]="donutSize"
+        [donutInnerSize]="donutInnerSize"
+        [height]="height"
         [colorPalette]="colorPalette"
         [legendPosition]="legendPosition"
         [data]="data"
+        [name]="name"
         [legend]="legend"
-        [height]="height"
         [preTooltipValue]="preTooltipValue"
         [postTooltipValue]="postTooltipValue"
-        [name]="name"
-        [tooltipValueFormatter]="tooltipValueFormatter"
-        [donutInnerSize]="donutInnerSize"
-      >
+        [tooltipValueFormatter]="tooltipValueFormatter">
         <b-display-3 style="color: #9d9c9c;">
           {{text}}
         </b-display-3>
@@ -59,8 +58,8 @@ const note = `
   ~~~
 
   #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
+
+  See <a href="https://hibobio.github.io/bob-style/?path=/info/components-charts--pie-chart">Pie Chart notes</a>
 
 `;
 
@@ -105,46 +104,63 @@ story.add(
           }
           return (isNegative ? '-' : '') + abs + key;
         },
-        donutSize: select('donutSize', [0, ...Object.values(DonutSize)], 0),
-        text: text('text', NUMBER_OF_EMPLOYEES + ''),
-        name: text('name', 'employees'),
-        legend: boolean('legend', false),
-        height: number('height', 300),
+
+        donutSize: select(
+          'donutSize',
+          [0, ...Object.values(DonutSize)],
+          0,
+          'Props'
+        ),
+        donutInnerSize: number('donutInnerSize', 100, {}, 'Props'),
+        height: number('height', 300, [], 'Props'),
+
+        text: text('text', NUMBER_OF_EMPLOYEES + '', 'Props'),
+        name: text('name', 'employees', 'Props'),
+        legend: boolean('legend', false, 'Props'),
+
         legendPosition: select(
           'legendPosition',
           Object.values(ChartLegendPositionEnum),
-          ChartLegendPositionEnum.BOTTOM
+          ChartLegendPositionEnum.BOTTOM,
+          'Props'
         ),
-        preTooltipValue: text('preTooltipValue', ''),
-        postTooltipValue: text('postTooltipValue', ' PEOPLE'),
-        donutInnerSize: number('donutInnerSize', 100),
-        data: object('data', LINE_CHART_DATA_MOCK),
-        colorPalette: object('colorPalette', [
-          '#CC2E4E',
-          '#87233D',
-          '#DB8962',
-          '#FEA54A',
-          '#FECC4A',
-          '#8F4A67',
-          '#D2728A',
-          '#D295A4',
-          '#E0ACAC',
-          '#BF8A78',
-          '#C0755A',
-          '#866161',
-          '#663E4E',
-          '#574285',
-          '#6969C6',
-          '#556E8A',
-          '#789BC2',
-          '#9BC7FA',
-          '#6DC3BC',
-          '#82D9B1',
-          '#959595',
-          '#616161',
-          '#313131',
-        ]),
+
+        preTooltipValue: text('preTooltipValue', '', 'Props'),
+        postTooltipValue: text('postTooltipValue', ' PEOPLE', 'Props'),
+
+        data: object('data', LINE_CHART_DATA_MOCK, 'Data'),
+
+        colorPalette: object(
+          'colorPalette',
+          [
+            '#CC2E4E',
+            '#87233D',
+            '#DB8962',
+            '#FEA54A',
+            '#FECC4A',
+            '#8F4A67',
+            '#D2728A',
+            '#D295A4',
+            '#E0ACAC',
+            '#BF8A78',
+            '#C0755A',
+            '#866161',
+            '#663E4E',
+            '#574285',
+            '#6969C6',
+            '#556E8A',
+            '#789BC2',
+            '#9BC7FA',
+            '#6DC3BC',
+            '#82D9B1',
+            '#959595',
+            '#616161',
+            '#313131',
+          ],
+          'Data'
+        ),
       },
+
       moduleMetadata: {
         imports: [
           StoryBookLayoutModule,

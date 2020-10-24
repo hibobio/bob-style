@@ -8,7 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ChartCore } from '../chart/chart-core';
-import { ChartTypesEnum } from '../chart/chart.enum';
+import { ChartTypesEnum } from '../charts.enum';
 import { Options, SeriesPieDataOptions } from 'highcharts';
 import { DonutSize } from '../charts.enum';
 import { DONUT_SIZES } from '../charts.const';

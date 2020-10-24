@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ChartCore } from '../../chart/chart-core';
 import { SeriesOptionsType } from 'highcharts';
-import { ChartTypesEnum } from '../../chart/chart.enum';
+import { ChartTypesEnum } from '../../charts.enum';
 
 @Component({
   selector: 'b-bar-line-chart',

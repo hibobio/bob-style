@@ -62,7 +62,18 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
   protected setCssProps(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes);
+    applyChanges(
+      this,
+      changes,
+      {
+        data: {},
+        config: {},
+        size: ProgressSize.medium,
+        type: ProgressType.primary,
+      },
+      [],
+      true
+    );
 
     if (changes.data) {
       this.data.value = numberMinMax(
