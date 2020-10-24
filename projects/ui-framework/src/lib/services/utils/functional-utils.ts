@@ -1141,6 +1141,9 @@ export const hasChanges = (
   discardAllFalsey = false,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): boolean => {
+  if (!changes) {
+    return false;
+  }
   const truthyCheck =
     config?.truthyCheck || CHANGES_HELPER_CONFIG_DEF.truthyCheck;
   const equalCheck = config?.equalCheck || CHANGES_HELPER_CONFIG_DEF.equalCheck;
@@ -1213,6 +1216,9 @@ export const applyChanges = (
   discardAllFalsey = false,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): SimpleChanges => {
+  if (!changes) {
+    return changes;
+  }
   const truthyCheck =
     config.truthyCheck || CHANGES_HELPER_CONFIG_DEF.truthyCheck;
   const keyMap = config.keyMap;

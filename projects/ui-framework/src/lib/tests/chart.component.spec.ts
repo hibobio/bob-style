@@ -3,10 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectorRef, NgZone } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { PieChartComponent } from '../../../bob-charts/src/charts/pie-chart/pie-chart.component';
-import {
-  LINE_CHART_DATA_MOCK,
-  TOOLTIP_FORMATTER_MOCK_RESULT,
-} from '../../../bob-charts/src/charts/chart.mock';
+import { LINE_CHART_DATA_MOCK } from '../../../bob-charts/src/charts/chart.mock';
 import { ChartCore } from '../../../bob-charts/src/charts/chart/chart-core';
 
 export class MockNgZone extends NgZone {
@@ -76,16 +73,19 @@ describe('PieChartComponent', () => {
       component.postTooltipValue = ' end';
       component.tooltipValueFormatter = (val: number) =>
         `formatted ${val / 1000}`;
-      expect(
-        component.tooltipFormatter(
-          {
-            color: 'red',
-            y: 48000,
-            key: 'balloons',
-          },
-          component
-        )
-      ).toEqual(TOOLTIP_FORMATTER_MOCK_RESULT);
+
+      const formatted = component.tooltipFormatter(
+        {
+          color: 'red',
+          y: 48000,
+          key: 'balloons',
+        },
+        component
+      );
+
+      expect(formatted).toContain('ILS formatted 48 end');
+      expect(formatted).toContain('style="color:red;"');
+      expect(formatted).toContain('class="key">balloons');
     });
     describe('export chart', () => {
       it('should export chart call chart ref with type', () => {
