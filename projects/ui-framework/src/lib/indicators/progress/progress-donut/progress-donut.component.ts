@@ -16,6 +16,7 @@ import {
   hasChanges,
   closestNumber,
   getKeyByValue,
+  applyChanges,
 } from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { BaseProgressElement } from '../progress-element.abstract';
@@ -51,6 +52,7 @@ export class ProgressDonutComponent extends BaseProgressElement
   @Input() config: ProgressDonutConfig = {};
 
   @Input() customSize: number;
+
   @HostBinding('attr.data-donut-size') @Input() donutSize: DonutSize = null;
 
   readonly id = simpleUID('bpd-');
@@ -62,11 +64,11 @@ export class ProgressDonutComponent extends BaseProgressElement
   onNgChanges(changes: SimpleChanges): void {
     if (hasChanges(changes, ['size', 'customSize', 'donutSize'], true)) {
       this.size =
-        changes.donutSize || changes.customSize
+        this.donutSize || this.customSize
           ? getKeyByValue(
               PROGRESS_DONUT_DIAMETER,
               closestNumber(
-                changes.donutSize
+                this.donutSize
                   ? DONUT_SIZES[this.donutSize][0]
                   : this.customSize,
                 Object.values(PROGRESS_DONUT_DIAMETER)
