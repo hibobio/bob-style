@@ -74,7 +74,8 @@ describe('PieChartComponent', () => {
       component.ngOnChanges.call(component);
       component.preTooltipValue = 'ILS ';
       component.postTooltipValue = ' end';
-      component.tooltipValueFormatter = (val) => `formatted ${val / 1000}`;
+      component.tooltipValueFormatter = (val) =>
+        `formatted ${parseInt(val, 10) / 1000}`;
       expect(
         component.tooltipFormatter(
           {
