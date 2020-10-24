@@ -19,16 +19,20 @@ import { ChartCore } from '../../chart/chart-core';
   ],
 })
 export class MultiBarChartComponent extends ChartCore implements OnChanges {
-  type = ChartTypesEnum.Column;
+  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
+    super(cdr, zone);
+    this.sizeDefaults[0] = 450;
+  }
+
   @Input() categories: string[];
   @Input() data: SeriesColumnOptions[];
   @Input() name: string;
-  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
-    super(cdr, zone);
-    this.height = 450;
-  }
+
+  readonly type = ChartTypesEnum.Column;
 
   ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
+
     this.updateChartOptions();
     this.applyOnChange();
   }

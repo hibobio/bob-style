@@ -3,19 +3,24 @@ import {
   Component,
   ElementRef,
   Input,
+  OnChanges,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { Options, SeriesPieDataOptions } from 'highcharts';
 import {
-  ChartFormatterThis,
   ChartLegendPositionEnum,
   ChartTooltipTemplateFormatter,
 } from '../charts.interface';
-import { ChartCore } from '../chart/chart-core';
 import { DonutSize } from '../charts.enum';
-import { pass } from 'bob-style';
-
-export const ANIMATION_DURATION = 400;
+import { applyChanges, pass } from 'bob-style';
+import {
+  DONUT_CHART_WTEXT_ANIM_DURATION,
+  CHART_CORE_COLORPALETTE_DEF,
+  CHART_CORE_POINTFORMAT_DEF,
+  DONUT_CHART_WTEXT_SIZE_DEFS,
+  CHART_CORE_TOOLTIP_TEMPLATE_DEF,
+} from '../charts.const';
 
 export const debounce = <F extends (...args: any[]) => any>(
   func: F,
@@ -36,7 +41,7 @@ export const debounce = <F extends (...args: any[]) => any>(
   templateUrl: './donut-chart-text.component.html',
   styleUrls: ['./donut-chart-text.component.scss'],
 })
-export class DonutChartTextComponent {
+export class DonutChartTextComponent implements OnChanges {
   constructor(private cdr: ChangeDetectorRef) {}
 
   @ViewChild('chart', { read: ElementRef }) chartComponent: ElementRef;
@@ -44,41 +49,46 @@ export class DonutChartTextComponent {
 
   @Input() data: SeriesPieDataOptions[];
   @Input() name: string;
-  @Input() donutInnerSize = 80;
   @Input() height = 300;
+  @Input() donutInnerSize = 80;
   @Input() title: string = null;
   @Input() legend = false;
   @Input() legendPosition: ChartLegendPositionEnum =
     ChartLegendPositionEnum.RIGHT;
-  @Input() pointFormat = '{series.name}: <b>{point.percentage:.1f}%</b>';
+  @Input() pointFormat = CHART_CORE_POINTFORMAT_DEF;
   @Input() extraOptions: Options = {};
   @Input() preTooltipValue = '';
   @Input() postTooltipValue = '';
-  @Input() colorPalette: string[] = [
-    '#058DC7',
-    '#50B432',
-    '#ED561B',
-    '#DDDF00',
-    '#24CBE5',
-    '#64E572',
-    '#FF9655',
-    '#FFF263',
-    '#6AF9C4',
-  ];
+  @Input() colorPalette: string[] = [...CHART_CORE_COLORPALETTE_DEF];
   @Input() donutSize: DonutSize;
+
   @Input() tooltipValueFormatter: (v: string) => string = pass;
-  @Input() tooltipTemplate: ChartTooltipTemplateFormatter = (
-    component: ChartCore,
-    chartPoint: ChartFormatterThis
-  ) => `<div class="chart-tooltip">
-          <div class="value" style="color:${chartPoint.color};">
-            ${component.formatValue(chartPoint.y)}
-          </div>
-          <div class="key">${chartPoint.key}</div>
-        </div>`;
+  @Input()
+  tooltipTemplate: ChartTooltipTemplateFormatter = CHART_CORE_TOOLTIP_TEMPLATE_DEF;
 
   // tslint:disable-next-line: member-ordering
   public textStyle: any;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(
+      this,
+      changes,
+      {
+        height: DONUT_CHART_WTEXT_SIZE_DEFS[0],
+        donutInnerSize: DONUT_CHART_WTEXT_SIZE_DEFS[1],
+        legendPosition: ChartLegendPositionEnum.RIGHT,
+        pointFormat: CHART_CORE_POINTFORMAT_DEF,
+        extraOptions: {},
+        colorPalette: [...CHART_CORE_COLORPALETTE_DEF],
+        preTooltipValue: '',
+        postTooltipValue: '',
+        tooltipValueFormatter: pass,
+        tooltipTemplate: CHART_CORE_TOOLTIP_TEMPLATE_DEF,
+      },
+      [],
+      true
+    );
+  }
 
   private calculateTextPosition() {
     const chartWrapperRect = (this.chartComponent
@@ -114,6 +124,6 @@ export class DonutChartTextComponent {
     };
     debounce(() => {
       this.updateTextStyle();
-    }, ANIMATION_DURATION)();
+    }, DONUT_CHART_WTEXT_ANIM_DURATION)();
   }
 }

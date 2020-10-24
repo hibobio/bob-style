@@ -25,10 +25,18 @@ $BPDtypeMap: (
       '.bpd-text-scndr': (
         font-size: $font-size-big-body,
       ),
+      '.bpd-donut-overlay': (
+        font-size: $font-size-display-3,
+        letter-spacing: -2px,
+      ),
     ),
     'medium': (
       '.bpd-text-prmr': (
         font-size: $font-size-display-4,
+      ),
+      '.bpd-donut-overlay': (
+        font-size: 14px,
+        letter-spacing: -1px,
       ),
     ),
     'small': (
@@ -40,6 +48,10 @@ $BPDtypeMap: (
       ),
       '.bpd-text-scndr': (
         font-size: $font-size-caption,
+      ),
+      '.bpd-donut-overlay': (
+        font-size: 10px,
+        letter-spacing: -0.5px,
       ),
     ),
   ),
@@ -88,6 +100,10 @@ p {
   align-items: center;
   justify-content: center;
   pointer-events: none;
+
+  color: $grey-600;
+  font-family: var(--display-font-family);
+  font-weight: $font-weight-bold-body;
 }
 
 :host {
@@ -113,6 +129,18 @@ p {
           }
         }
       }
+    }
+  }
+
+  &[data-donut-size='large'] {
+    .bpd-donut-overlay {
+      font-size: $font-size-display-2;
+    }
+  }
+
+  &[data-donut-size='xlarge'] {
+    .bpd-donut-overlay {
+      font-size: $font-size-display-1;
     }
   }
 }

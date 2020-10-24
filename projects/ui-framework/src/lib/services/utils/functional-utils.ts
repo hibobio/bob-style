@@ -1238,7 +1238,7 @@ export const applyChanges = (
       return;
     }
 
-    target[changeKey] =
+    target[changeKey] = changes[changeKey].currentValue =
       defaults?.hasOwnProperty(changeKey) &&
       ((!discardAllFalsey &&
         isNullOrUndefined(changes[changeKey]?.currentValue)) ||

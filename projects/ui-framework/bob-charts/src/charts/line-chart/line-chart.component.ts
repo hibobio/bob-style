@@ -21,10 +21,12 @@ export class LineChartComponent extends ChartCore implements OnChanges {
   @Input() name: string;
   constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
     super(cdr, zone);
-    this.height = 450;
+    this.sizeDefaults[0] = 450;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
+
     this.updateOptions();
     this.applyOnChange();
   }

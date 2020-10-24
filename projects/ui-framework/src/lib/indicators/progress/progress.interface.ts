@@ -20,3 +20,7 @@ export interface ProgressBarData extends ProgressData {}
 
 // tslint:disable-next-line: no-empty-interface
 export interface ProgressBarConfig extends ProgressConfig {}
+
+export interface ProgressDonutConfig extends ProgressConfig {
+  showValueInCenter?: boolean;
+}

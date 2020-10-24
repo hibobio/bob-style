@@ -31,9 +31,9 @@ const template = `<b-donut-text-chart
         [preTooltipValue]="preTooltipValue"
         [postTooltipValue]="postTooltipValue"
         [tooltipValueFormatter]="tooltipValueFormatter">
-        <b-display-3 style="color: #9d9c9c;">
+        <span>
           {{text}}
-        </b-display-3>
+        </span>
   </b-donut-text-chart>`;
 
 const storyTemplate = `
@@ -111,8 +111,8 @@ story.add(
           0,
           'Props'
         ),
-        donutInnerSize: number('donutInnerSize', 100, {}, 'Props'),
-        height: number('height', 300, [], 'Props'),
+        donutInnerSize: number('donutInnerSize', 0, {}, 'Props'),
+        height: number('height', 0, [], 'Props'),
 
         text: text('text', NUMBER_OF_EMPLOYEES + '', 'Props'),
         name: text('name', 'employees', 'Props'),

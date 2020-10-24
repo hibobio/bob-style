@@ -1,3 +1,5 @@
+@import '../../../../src/lib/style/common-imports.scss';
+
 :host {
   position: relative;
   display: block;
@@ -20,6 +22,10 @@
   opacity: 0;
   will-change: top, left, width, height, transform, opacity;
   transition: all 0.2s cubic-bezier(0.17, 0.13, 0.53, 0.52);
+
+  color: $grey-600;
+  font-family: var(--display-font-family);
+  font-weight: $font-weight-bold-body;
 }
 
 :host ::ng-deep {
@@ -28,18 +34,27 @@
     & + .text-container {
       & > * {
         margin-top: -1px;
-        font-size: inherit;
       }
     }
   }
 
   b-pie-chart[data-donut-size='small'] + .text-container {
-    font-size: 10px !important;
+    font-size: 10px;
     letter-spacing: -0.5px;
   }
 
   b-pie-chart[data-donut-size='medium'] + .text-container {
-    font-size: 14px !important;
+    font-size: 14px;
     letter-spacing: -1px;
+  }
+
+  b-pie-chart[data-donut-size='large'] + .text-container {
+    font-size: $font-size-display-2;
+    letter-spacing: -2px;
+  }
+
+  b-pie-chart[data-donut-size='xlarge'] + .text-container {
+    font-size: $font-size-display-1;
+    letter-spacing: -2px;
   }
 }

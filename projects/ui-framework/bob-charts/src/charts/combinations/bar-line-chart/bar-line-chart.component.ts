@@ -16,18 +16,22 @@ import { ChartTypesEnum } from '../../charts.enum';
   styleUrls: ['../../chart/chart.component.scss'],
 })
 export class BarLineChartComponent extends ChartCore implements OnChanges {
-  type: ChartTypesEnum = ChartTypesEnum.Column;
+  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
+    super(cdr, zone);
+    this.sizeDefaults[0] = 450;
+  }
+
   @Input() categories: string[];
   @Input() stacked = false;
   @Input() stackedPercent = false;
   @Input() data: SeriesOptionsType[];
   @Input() name: string;
-  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
-    super(cdr, zone);
-    this.height = 450;
-  }
+
+  readonly type: ChartTypesEnum = ChartTypesEnum.Column;
 
   ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
+
     this.updateChartOptions();
     this.applyOnChange();
   }

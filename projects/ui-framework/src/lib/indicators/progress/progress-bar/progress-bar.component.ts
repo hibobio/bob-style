@@ -6,6 +6,7 @@ import {
   OnChanges,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  Input,
 } from '@angular/core';
 import {
   simpleUID,
@@ -14,6 +15,7 @@ import {
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { BaseProgressElement } from '../progress-element.abstract';
 import { MutationObservableService } from '../../../services/utils/mutation-observable';
+import { ProgressBarConfig } from '../progress.interface';
 
 @Component({
   selector: 'b-progress-bar',
@@ -32,6 +34,8 @@ export class ProgressBarComponent extends BaseProgressElement
   ) {
     super(host, DOM, zone, cd, mutationObservableService);
   }
+
+  @Input() config: ProgressBarConfig = {};
 
   readonly id = simpleUID('bpb-');
 

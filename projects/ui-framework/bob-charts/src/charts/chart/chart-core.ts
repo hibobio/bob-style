@@ -6,18 +6,21 @@ import {
   NgZone,
   Output,
   Directive,
+  SimpleChanges,
+  OnChanges,
 } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { ExportingMimeTypeValue, Options, Chart } from 'highcharts';
 import { ChartTypesEnum } from '../charts.enum';
 import { merge } from 'lodash';
-import { simpleUID } from 'bob-style';
+import { applyChanges, asString, pass, simpleUID } from 'bob-style';
 import {
   ChartFormatterThis,
   ChartLegendAlignEnum,
   ChartLegendLayoutEnum,
   ChartLegendPositionEnum,
   ChartLegendVerticalAlignEnum,
+  ChartTooltipTemplateFormatter,
   HighChartOptions,
 } from '../charts.interface';
 
@@ -25,10 +28,16 @@ import Boost from 'highcharts/modules/boost';
 import Exporting from 'highcharts/modules/exporting';
 import noData from 'highcharts/modules/no-data-to-display';
 import More from 'highcharts/highcharts-more';
+import {
+  CHART_CORE_COLORPALETTE_DEF,
+  CHART_CORE_POINTFORMAT_DEF,
+  CHART_CORE_SIZE_DEFS,
+  CHART_CORE_TOOLTIP_TEMPLATE_DEF,
+} from '../charts.const';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class ChartCore implements AfterViewInit {
+export abstract class ChartCore implements OnChanges, AfterViewInit {
   constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
     Exporting(Highcharts);
     Boost(Highcharts);
@@ -37,9 +46,11 @@ export abstract class ChartCore implements AfterViewInit {
   }
 
   highChartRef: Chart;
-  containerId: string = simpleUID('bhc-', 7);
+  readonly containerId: string = simpleUID('bhc-', 7);
   chartOptions: Options;
   options: Options;
+
+  protected sizeDefaults = CHART_CORE_SIZE_DEFS;
 
   private formatter = (function (component) {
     return function () {
@@ -52,46 +63,49 @@ export abstract class ChartCore implements AfterViewInit {
     ChartLegendPositionEnum.BOTTOM;
   @Input() preTooltipValue = '';
   @Input() postTooltipValue = '';
-  @Input() colorPalette: string[] = [
-    '#058DC7',
-    '#50B432',
-    '#ED561B',
-    '#DDDF00',
-    '#24CBE5',
-    '#64E572',
-    '#FF9655',
-    '#FFF263',
-    '#6AF9C4',
-  ];
-  @Input() height = 500;
+  @Input() colorPalette: string[] = [...CHART_CORE_COLORPALETTE_DEF];
+  @Input() height = this.sizeDefaults[0];
   @Input() title: string = null;
   @Input() legend = false;
   @Input() showDataLabels = false;
-  @Input() pointFormat = '{series.name}: <b>{point.percentage:.1f}%</b>';
+  @Input() pointFormat = CHART_CORE_POINTFORMAT_DEF;
   @Input() extraOptions: HighChartOptions = {};
 
-  @Input() tooltipTemplate = <ChartTooltipTemplateFormatter>(
-    component: ChartCore,
-    chartPoint: ChartFormatterThis
-  ) => `<div class="chart-tooltip">
-      <div class="value" style="color:${chartPoint.color};">
-          ${component.formatValue(chartPoint.y)}
-      </div>
-      <div class="key">${chartPoint.key}</div>
-    </div>`;
-  @Input() tooltipValueFormatter = (val: number): number | string => val;
+  @Input() tooltipValueFormatter: (v: string) => string = pass;
+  @Input()
+  tooltipTemplate: ChartTooltipTemplateFormatter = CHART_CORE_TOOLTIP_TEMPLATE_DEF;
 
   // tslint:disable-next-line: member-ordering
   @Output() legendChanged = new EventEmitter();
+
+  ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(
+      this,
+      changes,
+      {
+        height: this.sizeDefaults[0],
+        legendPosition: ChartLegendPositionEnum.BOTTOM,
+        colorPalette: [...CHART_CORE_COLORPALETTE_DEF],
+        pointFormat: CHART_CORE_POINTFORMAT_DEF,
+        extraOptions: {},
+        preTooltipValue: '',
+        postTooltipValue: '',
+        tooltipValueFormatter: pass,
+        tooltipTemplate: CHART_CORE_TOOLTIP_TEMPLATE_DEF,
+      },
+      [],
+      true
+    );
+  }
 
   tooltipFormatter(chartThis: ChartFormatterThis, component: ChartCore) {
     return this.tooltipTemplate(component, chartThis);
   }
 
   formatValue(value: number): string {
-    return `${this.preTooltipValue}${this.tooltipValueFormatter(value)}${
-      this.postTooltipValue
-    }`;
+    return `${this.preTooltipValue}${this.tooltipValueFormatter(
+      asString(value)
+    )}${this.postTooltipValue}`;
   }
 
   exportChart(type: ExportingMimeTypeValue) {

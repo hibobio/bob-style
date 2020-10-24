@@ -28,6 +28,7 @@ import { ProgressSize } from '../progress.enum';
 import { DonutSize } from '../../../../../bob-charts/src/charts/charts.enum';
 import { DONUT_SIZES } from '../../../../../bob-charts/src/charts/charts.const';
 import { isNumber } from 'highcharts';
+import { ProgressDonutConfig } from '../progress.interface';
 
 @Component({
   selector: 'b-progress-donut',
@@ -46,6 +47,8 @@ export class ProgressDonutComponent extends BaseProgressElement
   ) {
     super(host, DOM, zone, cd, mutationObservableService);
   }
+
+  @Input() config: ProgressDonutConfig = {};
 
   @Input() customSize: number;
   @HostBinding('attr.data-donut-size') @Input() donutSize: DonutSize = null;

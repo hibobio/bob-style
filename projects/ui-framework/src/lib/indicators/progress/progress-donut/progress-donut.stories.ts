@@ -35,7 +35,8 @@ const template = `<b-progress-donut [size]="size"
                   }"
                   [config]="{
                     disableAnimation: disableAnimation,
-                    hideValue: hideValue
+                    hideValue: hideValue,
+                    showValueInCenter: showValueInCenter
                   }">
   </b-progress-donut>`;
 
@@ -56,7 +57,7 @@ b-progress-donut {
                 }"
                 [config]="{
                   disableAnimation: disableAnimation,
-                  hideValue: false
+                  hideValue: false,
                 }">
 </b-progress-donut>
 
@@ -105,7 +106,7 @@ const contentExmpls = `<b-progress-donut [size]="progressSize.medium"
                 [config]="{
                   hideValue: true
                 }">
-               <span class="b-display-4">37</span>
+        <span>37</span>
 </b-progress-donut>`;
 
 const storyTemplate = `
@@ -146,8 +147,9 @@ const note = `
    text for the bottom line of the header (smaller font-size &amp; lighter grey color)<br><br>\
    **Note**: If \`headerTextPrimary\` is not provided (set to falsy value), value (in %) will be put in its place. \
    To hide primary text slot completely, also set \`hideValue\` to true in \`config\` |  &nbsp;
-  [config] | ProgressConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation <br>\
-  \`\`\`hideValue: boolean\`\`\` - hides value text |  &nbsp;
+  [config] | ProgressDonutConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation <br>\
+  \`\`\`hideValue: boolean\`\`\` - hides value text<br>\
+  \`\`\`showValueInCenter: boolean\`\`\` - puts value in the donut center |  &nbsp;
 
   #### Passing content to be placed in the center:
 
@@ -209,8 +211,9 @@ const toAdd = () => ({
     headerTextPrimary: text('headerTextPrimary', ''),
     headerTextSecondary: text('headerTextSecondary', 'Have voted'),
 
-    disableAnimation: boolean('disableAnimation', false),
     hideValue: boolean('hideValue', false),
+    showValueInCenter: boolean('showValueInCenter', false),
+    disableAnimation: boolean('disableAnimation', false),
   },
   moduleMetadata: {
     imports: [StoryBookLayoutModule, ProgressDonutModule, IconsModule],

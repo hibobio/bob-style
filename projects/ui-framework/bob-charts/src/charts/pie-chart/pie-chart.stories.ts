@@ -145,7 +145,7 @@ story.add(
           'Props'
         ),
         donutWidth: number('donutWidth', 0, {}, 'Props'),
-        donutInnerSize: number('donutInnerSize', 60, {}, 'Props'),
+        donutInnerSize: number('donutInnerSize', 0, {}, 'Props'),
 
         showDataLabels: boolean('showDataLabels', false, 'Props'),
 

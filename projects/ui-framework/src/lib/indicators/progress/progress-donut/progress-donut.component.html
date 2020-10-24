@@ -27,6 +27,7 @@
   </svg>
 
   <div class="bpd-donut-overlay">
+    <span *ngIf="config.showValueInCenter">{{(data.value + '%')}}</span>
     <ng-content></ng-content>
   </div>
 </div>
@@ -35,7 +36,7 @@
 <div *ngIf="!config.hideValue || data.headerTextPrimary || data.headerTextSecondary"
      class="bpd-header">
 
-  <h5 *ngIf="data.headerTextPrimary || !config.hideValue"
+  <h5 *ngIf="data.headerTextPrimary || (!config.hideValue && !config.showValueInCenter)"
       class="bpd-text bpd-value bpd-text-prmr"
       [id]="id+'-dsc1'"
       data-max-lines='1'>

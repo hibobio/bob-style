@@ -116,6 +116,14 @@ export const valueAsNumber = (
   return parsed === parsed ? parsed : def;
 };
 
+export const asString = (value: any): string => {
+  return isString(value)
+    ? value
+    : isNullOrUndefined(value)
+    ? ''
+    : JSON.stringify(value);
+};
+
 export const arrayToFirstItemOrNull = <T>(value: T[] | T): T => {
   return isEmptyArray(value) ? null : !Array.isArray(value) ? value : value[0];
 };
