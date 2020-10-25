@@ -96,11 +96,12 @@ export class PagerComponent<T = any> implements OnInit {
       return;
     }
 
-    const newPage = target.classList.contains('b-icon-chevron-left')
-      ? this.currentPage - 1
-      : target.classList.contains('b-icon-chevron-right')
-      ? this.currentPage + 1
-      : parseInt(target.innerText.trim(), 10) - 1;
+    const newPage =
+      target.getAttribute('data-icon-before') === 'chevron-left'
+        ? this.currentPage - 1
+        : target.getAttribute('data-icon-before') === 'chevron-right'
+        ? this.currentPage + 1
+        : parseInt(target.innerText.trim(), 10) - 1;
 
     if (newPage === newPage) {
       this.zone.run(() => {
