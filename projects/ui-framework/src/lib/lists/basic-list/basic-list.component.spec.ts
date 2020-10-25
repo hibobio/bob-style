@@ -6,6 +6,7 @@ import { BodyComponent } from '../../typography/body/body.component';
 import { SquareButtonComponent } from '../../buttons/square/square.component';
 import { IconComponent } from '../../icons/icon.component';
 import { TranslateServiceProvideMock } from '../../tests/services.stub.spec';
+import { EmptyStateComponent } from '../../indicators/empty-state/empty-state.component';
 
 describe('BasicListComponent', () => {
   let component: BasicListComponent;
@@ -19,8 +20,9 @@ describe('BasicListComponent', () => {
         MockComponent(BodyComponent),
         MockComponent(MenuComponent),
         MockComponent(SquareButtonComponent),
-        TranslateServiceProvideMock(),
+        MockComponent(EmptyStateComponent),
       ],
+      providers: [TranslateServiceProvideMock()],
     }).compileComponents();
   }));
 
