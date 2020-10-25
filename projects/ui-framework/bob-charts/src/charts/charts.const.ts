@@ -1,5 +1,4 @@
 import { ChartCore } from './chart/chart-core';
-import { DonutSize } from './charts.enum';
 import {
   ChartFormatterThis,
   ChartTooltipTemplateFormatter,
@@ -13,21 +12,6 @@ export const PIE_CHART_PIE_PADDING = 50;
 export const CHART_CORE_SIZE_DEFS = [500];
 // height, donutInnerSize
 export const PIE_CHART_SIZE_DEFS = [150, 60];
-
-// width, inner-width
-export const DONUT_SIZES = {
-  [DonutSize.small]: [24, 14],
-  [DonutSize.medium]: [40, 28],
-  [DonutSize.large]: [145, 105],
-  [DonutSize.xlarge]: [310, 188],
-};
-
-export const DONUT_DIAMETERS = {
-  [DonutSize.small]: 24,
-  [DonutSize.medium]: 40,
-  [DonutSize.large]: 145,
-  [DonutSize.xlarge]: 310,
-};
 
 export const DONUT_CHART_WTEXT_ANIM_DURATION = 400;
 

@@ -14,7 +14,8 @@ import { ChartsModule } from '../charts.module';
 import { TypographyModule } from 'bob-style';
 import { LINE_CHART_DATA_MOCK, NUMBER_OF_EMPLOYEES } from '../chart.mock';
 import { ChartLegendPositionEnum } from '../charts.interface';
-import { DonutSize } from '../charts.enum';
+import { DonutSize } from '../../../../src/lib/indicators/progress/progress.enum';
+
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
 );

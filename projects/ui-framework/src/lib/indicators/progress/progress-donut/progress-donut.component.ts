@@ -21,14 +21,12 @@ import {
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { BaseProgressElement } from '../progress-element.abstract';
 import {
+  DONUT_SIZES,
   PROGRESS_DONUT_DIAMETER,
   PROGRESS_DONUT_STROKE,
 } from '../progress.const';
 import { MutationObservableService } from '../../../services/utils/mutation-observable';
-import { ProgressSize } from '../progress.enum';
-import { DonutSize } from '../../../../../bob-charts/src/charts/charts.enum';
-import { DONUT_SIZES } from '../../../../../bob-charts/src/charts/charts.const';
-import { isNumber } from 'highcharts';
+import { DonutSize, ProgressSize } from '../progress.enum';
 import { ProgressDonutConfig } from '../progress.interface';
 
 @Component({

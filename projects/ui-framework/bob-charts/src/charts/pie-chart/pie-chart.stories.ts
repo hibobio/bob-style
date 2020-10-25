@@ -13,7 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../../src/lib/story-book-layout/story-book-layout.module';
 import { LINE_CHART_DATA_MOCK } from '../chart.mock';
 import { ChartLegendPositionEnum } from '../charts.interface';
-import { DonutSize } from '../charts.enum';
+import { DonutSize } from '../../../../src/lib/indicators/progress/progress.enum';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs

@@ -10,10 +10,9 @@ import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { ProgressDonutModule } from './progress-donut.module';
 import { randomNumber } from '../../../services/utils/functional-utils';
-import { ProgressSize } from '../progress.enum';
+import { DonutSize, ProgressSize } from '../progress.enum';
 import { Icons, IconSize } from '../../../icons/icons.enum';
 import { IconsModule } from '../../../icons/icons.module';
-import { DonutSize } from '../../../../../bob-charts/src/charts/charts.enum';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs

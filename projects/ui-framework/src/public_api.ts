@@ -133,6 +133,7 @@ export { EmptyStateConfig } from './lib/indicators/empty-state/empty-state.inter
 // Progress Bar
 export * from './lib/indicators/progress/progress.enum';
 export * from './lib/indicators/progress/progress.interface';
+export * from './lib/indicators/progress/progress.const';
 export { ProgressBarModule } from './lib/indicators/progress/progress-bar/progress-bar.module';
 export { ProgressBarComponent } from './lib/indicators/progress/progress-bar/progress-bar.component';
 // Progress Donut Bar

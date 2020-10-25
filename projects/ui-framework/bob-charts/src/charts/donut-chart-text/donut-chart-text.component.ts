@@ -13,8 +13,7 @@ import {
   ChartTooltipTemplateFormatter,
   ChartTooltipValueFormatter,
 } from '../charts.interface';
-import { DonutSize } from '../charts.enum';
-import { applyChanges, pass } from 'bob-style';
+import { applyChanges, pass, DonutSize } from 'bob-style';
 import {
   DONUT_CHART_WTEXT_ANIM_DURATION,
   CHART_CORE_COLORPALETTE_DEF,

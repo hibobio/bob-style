@@ -10,16 +10,20 @@ import {
 import { ChartCore } from '../chart/chart-core';
 import { ChartTypesEnum } from '../charts.enum';
 import { Options, SeriesPieDataOptions } from 'highcharts';
-import { DonutSize } from '../charts.enum';
 import {
-  DONUT_DIAMETERS,
-  DONUT_SIZES,
   PIE_CHART_LEGENT_HEIGHT,
   PIE_CHART_MIN_DONUT_WIDTH,
   PIE_CHART_PIE_PADDING,
   PIE_CHART_SIZE_DEFS,
 } from '../charts.const';
-import { applyChanges, closestNumber, getKeyByValue } from 'bob-style';
+import {
+  applyChanges,
+  closestNumber,
+  getKeyByValue,
+  DonutSize,
+  DONUT_DIAMETERS,
+  DONUT_SIZES,
+} from 'bob-style';
 
 @Component({
   selector: 'b-pie-chart',
