@@ -5,6 +5,7 @@ import { MenuComponent } from '../../navigation/menu/menu.component';
 import { BodyComponent } from '../../typography/body/body.component';
 import { SquareButtonComponent } from '../../buttons/square/square.component';
 import { IconComponent } from '../../icons/icon.component';
+import { TranslateServiceProvideMock } from '../../tests/services.stub.spec';
 
 describe('BasicListComponent', () => {
   let component: BasicListComponent;
@@ -18,6 +19,7 @@ describe('BasicListComponent', () => {
         MockComponent(BodyComponent),
         MockComponent(MenuComponent),
         MockComponent(SquareButtonComponent),
+        TranslateServiceProvideMock(),
       ],
     }).compileComponents();
   }));
