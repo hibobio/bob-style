@@ -1,7 +1,6 @@
 import {
   ChangeDetectorRef,
   Component,
-  ElementRef,
   HostBinding,
   Input,
   NgZone,
@@ -28,11 +27,7 @@ import { applyChanges, closestNumber, getKeyByValue } from 'bob-style';
   styleUrls: ['../chart/chart.component.scss', './pie-chart.component.scss'],
 })
 export class PieChartComponent extends ChartCore implements OnChanges {
-  constructor(
-    public cdr: ChangeDetectorRef,
-    public zone: NgZone,
-    private hostElRef: ElementRef
-  ) {
+  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
     super(cdr, zone);
     this.sizeDefaults = [...PIE_CHART_SIZE_DEFS];
   }
@@ -48,17 +43,27 @@ export class PieChartComponent extends ChartCore implements OnChanges {
     return (
       this.donutSize ||
       (this.donut
-        ? (getKeyByValue(
-            DONUT_DIAMETERS,
-            closestNumber(
-              this.donutWidth || this.donutInnerSize / (1 - 0.14),
-              Object.values(DONUT_DIAMETERS)
-            )
-          ) as DonutSize)
+        ? (() => {
+            const key = `${this.donutWidth}-${this.donutInnerSize}`;
+            if (!this.donutSizeCache.has(key)) {
+              this.donutSizeCache.set(
+                key,
+                getKeyByValue(
+                  DONUT_DIAMETERS,
+                  closestNumber(
+                    this.donutWidth || this.donutInnerSize / (1 - 0.14),
+                    Object.values(DONUT_DIAMETERS)
+                  )
+                ) as DonutSize
+              );
+            }
+            return this.donutSizeCache.get(key);
+          })()
         : null)
     );
   }
 
+  private donutSizeCache: Map<string, DonutSize> = new Map();
   readonly type = ChartTypesEnum.Pie;
 
   ngOnChanges(changes: SimpleChanges): void {

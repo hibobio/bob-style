@@ -13,7 +13,7 @@ import * as Highcharts from 'highcharts';
 import { ExportingMimeTypeValue, Options, Chart } from 'highcharts';
 import { ChartTypesEnum } from '../charts.enum';
 import { merge } from 'lodash';
-import { applyChanges, asString, pass, simpleUID } from 'bob-style';
+import { applyChanges, pass, simpleUID } from 'bob-style';
 import {
   ChartFormatterThis,
   ChartLegendAlignEnum,
@@ -104,9 +104,9 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
   }
 
   formatValue(value: number): string {
-    return `${this.preTooltipValue}${this.tooltipValueFormatter(
-      asString(value)
-    )}${this.postTooltipValue}`;
+    return `${this.preTooltipValue}${this.tooltipValueFormatter(value)}${
+      this.postTooltipValue
+    }`;
   }
 
   exportChart(type: ExportingMimeTypeValue) {
