@@ -17,7 +17,6 @@ import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
 import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
 import {
-  mockColumnsDefs,
   mockRowData,
   treeColumnDefsMock,
   treeRowDataMock,

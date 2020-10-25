@@ -12,14 +12,17 @@ import {
 } from '@angular/core';
 import { BasicListItem } from './basic-list.interface';
 import { BasicListActionDirective } from './basic-list-action.directive';
-import { IconColor } from '../../icons/icons.enum';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import {
   asArray,
   cloneDeepSimpleObject,
   isEmptyArray,
   isNotEmptyArray,
+  isObject,
 } from '../../services/utils/functional-utils';
 import { BasicListType } from './basic-list.enum';
+import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'b-basic-list',
@@ -28,7 +31,17 @@ import { BasicListType } from './basic-list.enum';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasicListComponent implements AfterContentInit {
-  constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
+  constructor(
+    private zone: NgZone,
+    private cd: ChangeDetectorRef,
+    private translate: TranslateService
+  ) {
+    this.emptyStateConfig = {
+      text: this.translate.instant('bob-style.table.empty-state-default'),
+      icon: Icons.table,
+      iconSize: IconSize.xLarge,
+    };
+  }
 
   @ContentChild(BasicListActionDirective, { static: true })
   contentChild!: BasicListActionDirective;
@@ -73,6 +86,15 @@ export class BasicListComponent implements AfterContentInit {
       }
     }
   }
+
+  @Input('emptyStateConfig') set setEmptyStateConfig(config: EmptyStateConfig) {
+    if (isObject(config)) {
+      this.enableEmptyState = true;
+      this.emptyStateConfig = { ...this.emptyStateConfig, ...config };
+    }
+  }
+  public emptyStateConfig: EmptyStateConfig;
+  public enableEmptyState = false;
 
   @Output() clicked: EventEmitter<BasicListItem> = new EventEmitter<
     BasicListItem

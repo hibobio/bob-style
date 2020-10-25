@@ -4,7 +4,8 @@ $bbl-cell-padding: times8(1);
 $bbl-icon-cell-width: $button-size-medium;
 
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   text-align: left;
   width: 100%;
 }
@@ -64,6 +65,13 @@ $bbl-icon-cell-width: $button-size-medium;
   }
 }
 
+.bbl-list-empty-state {
+  min-height: 200px;
+  padding: times8(4);
+  border: 1px solid $border-color-light;
+  border-radius: $border-radius;
+}
+
 .is-a-table ::ng-deep {
   @include desktop {
     .bbl-list-icon + .bbl-list-label,
@@ -105,7 +113,8 @@ $bbl-icon-cell-width: $button-size-medium;
 
 :host[data-type='secondary'] ::ng-deep,
 :host[data-type='tertiary'] ::ng-deep {
-  .bbl-list tbody {
+  .bbl-list tbody,
+  .bbl-list-empty-state {
     background-color: $grey-100;
   }
 
@@ -117,6 +126,10 @@ $bbl-icon-cell-width: $button-size-medium;
 :host[data-type='tertiary'] ::ng-deep {
   .bbl-list tbody {
     box-shadow: none;
+    border-radius: 0;
+  }
+  .bbl-list-empty-state {
+    border: 0;
     border-radius: 0;
   }
 }

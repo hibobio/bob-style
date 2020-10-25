@@ -22,7 +22,7 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
-const withMenuTemplate = `<b-basic-list [type]="type" [items]="items2"
+const withMenuTemplate = `<b-basic-list [type]="type" [items]="items1"
                 [titles]="['City', 'Country']"
                 [showActionOnHover]="showActionOnHover"
                 (clicked)="onItemClick($event)">
@@ -35,9 +35,10 @@ const withMenuTemplate = `<b-basic-list [type]="type" [items]="items2"
     </b-menu>
   </b-basic-list>`;
 
-const withButtonTemplate = `<b-basic-list [type]="type" [items]="items1"
+const withButtonTemplate = `<b-basic-list [type]="type" [items]="items2"
                 [titles]="['Hobbies']"
                 [showActionOnHover]="showActionOnHover"
+                [emptyStateConfig]="emptyStateConfig"
                 (clicked)="onItemClick($event)">
     <b-button *bBasicListAction="let item=item"
               [disabled]="item.disabled"
@@ -75,6 +76,7 @@ const note = `
   [titles] | string[] | column titles (length should be equal to number of item labels) | &nbsp;
   [type] | BasicListType | primary (grey border), secondary (grey background) | primary
   [showActionOnHover] | boolean | if true, will hide item Action when not hovering over item | false
+  [emptyStateConfig] | EmptyStateConfig | config for the no-data state
   (clicked) | EventEmitter<wbr>&lt;BasicListItem&gt; | Emitted on item (row) click | &nbsp;
   &lt;elem \\*bBasicListAction&gt; | ng-content | passing an element with \
   <u>*bBasicListAction</u> directive attached will put it in the item \
@@ -116,6 +118,15 @@ story.add(
       ),
 
       showActionOnHover: boolean('showActionOnHover', false, 'Props'),
+
+      emptyStateConfig: object(
+        'emptyStateConfig',
+        {
+          text: 'Surprise party',
+          icon: Icons.cake,
+        },
+        'Data'
+      ),
 
       items1: object('items 1', basicListItems1, 'Data'),
       items2: object('items 2', basicListItems2, 'Data'),
