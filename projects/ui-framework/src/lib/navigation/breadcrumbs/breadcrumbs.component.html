@@ -6,6 +6,7 @@
 
     <span class="step-wrap"
           [attr.data-tooltip]="type === breadcrumbsType.primary && !alwaysShowTitle ? step.title : null"
+          data-tooltip-align="center"
           [attr.role]="isClickable(step) ? 'button' : null"
           [attr.tabindex]="isClickable(step) ? 0 : null"
           (click)="isClickable(step) && onStepClick(i)">

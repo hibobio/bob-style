@@ -74,8 +74,8 @@ const note = `
 const breadcrumbsMock = [
   { title: 'Welcome', state: BreadcrumbsStepState.success },
   { title: 'Details', state: BreadcrumbsStepState.active },
-  { title: 'Avatar', state: BreadcrumbsStepState.closed },
-  { title: 'To dos', state: BreadcrumbsStepState.closed },
+  { title: 'Avatar', state: BreadcrumbsStepState.open },
+  { title: 'To dos', state: BreadcrumbsStepState.warning },
   { title: 'Summary', state: BreadcrumbsStepState.closed },
 ];
 
@@ -92,7 +92,7 @@ story.add(
         type: select(
           'type',
           Object.values(BreadcrumbsType),
-          BreadcrumbsType.primary
+          BreadcrumbsType.vertical
         ),
         alwaysShowTitle: boolean('alwaysShowTitle', false),
         clickable: boolean('clickable', true),

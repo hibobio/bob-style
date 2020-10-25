@@ -99,7 +99,8 @@ $brdcrb-show-step-numbers: false;
 
 [data-state='open'] ::ng-deep {
   .step-index {
-    border: 4px solid $brdcrb-active-color;
+    // border: 4px solid $brdcrb-active-color;
+    background-color: $brdcrb-active-color;
   }
 }
 
@@ -120,17 +121,13 @@ $brdcrb-show-step-numbers: false;
 [data-state='warning'] ::ng-deep {
   .step-index {
     @include b-icon(
-      $icon: error,
-      $size: null,
+      $icon: error-alt,
+      $size: 22px,
       $color: $color-warn,
       $hover: false
     ) {
-      font-size: 21px;
-      line-height: $brdcrb-circle-size;
-      height: $brdcrb-circle-size;
       overflow: visible;
     }
-    box-shadow: inset 0 0 0 2px $color-warn;
   }
 }
 
