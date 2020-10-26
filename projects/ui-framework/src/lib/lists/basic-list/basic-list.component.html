@@ -17,7 +17,8 @@
             'bbl-list-icon': i===0 && items[0].icon,
             'bbl-list-label': i>0 || !items[0].icon
           }">
-        {{th}}
+        <span data-max-lines="1"
+              [innerHTML]="th"></span>
       </th>
     </tr>
   </thead>
@@ -37,7 +38,8 @@
 
       <td *ngFor="let label of item.label"
           class="bbl-list-label">
-        <span data-max-lines="2">{{label}}</span>
+        <span [attr.data-max-lines]="maxLines"
+              [innerHTML]="label"></span>
       </td>
 
       <td *ngIf="contentChild"

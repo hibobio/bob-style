@@ -73,10 +73,15 @@ $bbl-icon-cell-width: $button-size-medium;
 }
 
 .is-a-table ::ng-deep {
-  @include desktop {
+  @include desktop($breakpoint-device-lg) {
     .bbl-list-icon + .bbl-list-label,
     .bbl-list-label:first-of-type {
       width: 25%;
+    }
+  }
+  @include mobile($breakpoint-device-lg) {
+    [data-max-lines='1'] {
+      max-width: 250px;
     }
   }
 }

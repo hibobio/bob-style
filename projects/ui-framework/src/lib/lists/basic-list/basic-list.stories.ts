@@ -4,6 +4,7 @@ import {
   object,
   select,
   boolean,
+  number,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -23,8 +24,11 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 );
 
 const withMenuTemplate = `<b-basic-list [type]="type" [items]="items1"
-                [titles]="['City', 'Country']"
-                [showActionOnHover]="showActionOnHover"
+                [titles]="['Hobbies']"
+                [config]="{
+                  showActionOnHover: showActionOnHover,
+                  maxLines: maxLines
+                }"
                 (clicked)="onItemClick($event)">
     <b-menu *bBasicListAction="let item=item" [menu]="item.menu">
       <b-square-button menu-trigger
@@ -36,8 +40,11 @@ const withMenuTemplate = `<b-basic-list [type]="type" [items]="items1"
   </b-basic-list>`;
 
 const withButtonTemplate = `<b-basic-list [type]="type" [items]="items2"
-                [titles]="['Hobbies']"
-                [showActionOnHover]="showActionOnHover"
+                [titles]="['City', 'Country']"
+                [config]="{
+                  showActionOnHover: showActionOnHover,
+                  maxLines: maxLines
+                }"
                 [emptyStateConfig]="emptyStateConfig"
                 (clicked)="onItemClick($event)">
     <b-button *bBasicListAction="let item=item"
@@ -54,9 +61,7 @@ const storyTemplate = `
     <div style="max-width: 650px;">
 
       ${withMenuTemplate}
-
       <br><br>
-
       ${withButtonTemplate}
 
     </div>
@@ -75,7 +80,11 @@ const note = `
   [items] | BasicListItem[] | List of items to display | &nbsp;
   [titles] | string[] | column titles (length should be equal to number of item labels) | &nbsp;
   [type] | BasicListType | primary (grey border), secondary (grey background) | primary
-  [showActionOnHover] | boolean | if true, will hide item Action when not hovering over item | false
+  [config] | BasicListConfig<br> \
+  {&nbsp;showActionOnHover: boolean; \
+    maxLines: number&nbsp;} | Configuration. \
+  <br>\`\`\`showActionOnHover\`\`\` - if true, will hide item Action when not hovering over item.<br>\
+  \`\`\`maxLines\`\`\` - max height of label cell, in lines of text. Defaults to 2. If set to 1, the text will not wrap. | &nbsp;
   [emptyStateConfig] | EmptyStateConfig | config for the no-data state
   (clicked) | EventEmitter<wbr>&lt;BasicListItem&gt; | Emitted on item (row) click | &nbsp;
   &lt;elem \\*bBasicListAction&gt; | ng-content | passing an element with \
@@ -97,6 +106,7 @@ const note = `
   --- | --- | ---
   label | string / string[] | item text
   icon? | Icons | item icon
+  [key:string] | any | accepts any extra properties
 `;
 
 story.add(
@@ -118,6 +128,7 @@ story.add(
       ),
 
       showActionOnHover: boolean('showActionOnHover', false, 'Props'),
+      maxLines: number('maxLines', 2, {}, 'Props'),
 
       emptyStateConfig: object(
         'emptyStateConfig',
