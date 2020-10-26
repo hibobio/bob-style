@@ -9,7 +9,6 @@ import {
   NgZone,
   ChangeDetectionStrategy,
   AfterContentInit,
-  SimpleChanges,
 } from '@angular/core';
 import { BasicListConfig, BasicListItem } from './basic-list.interface';
 import { BasicListActionDirective } from './basic-list-action.directive';
@@ -91,7 +90,6 @@ export class BasicListComponent implements AfterContentInit {
       this.showActionOnHover =
         config.showActionOnHover || this.showActionOnHover;
       this.maxLines = config.maxLines || this.maxLines;
-      // this.cd.detectChanges();
     }
   }
   public maxLines = 2;
@@ -132,10 +130,6 @@ export class BasicListComponent implements AfterContentInit {
         this.clicked.emit(item);
       });
     }
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
   }
 
   ngAfterContentInit(): void {
