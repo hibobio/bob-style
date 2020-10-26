@@ -56,7 +56,7 @@ b-progress-donut {
                 }"
                 [config]="{
                   disableAnimation: disableAnimation,
-                  hideValue: false,
+                  hideValue: false
                 }">
 </b-progress-donut>
 
@@ -112,7 +112,19 @@ const storyTemplate = `
 <b-story-book-layout [title]="'Progress Donut'">
   <div>
     ${template}
+    <hr style="margin: 60px 0 50px 0; border: 0; height: 0; border-top: 2px dashed #d2d2d2;">
 
+    <div style="display:flex; flex-wrap: wrap; align-items: center;">
+      ${examples}
+      ${contentExmpls}
+    </div>
+
+    <div style="margin-top: 100vh; padding-bottom: 100px;">
+    <h3 style="text-align: left; margin-bottom: 50px;">Progress donuts animate as they come into view</h3>
+    <div style="display:flex; flex-wrap: wrap; align-items: center;">
+      ${examples}
+    </div>
+    </div>
   </div>
 </b-story-book-layout>
 `;
