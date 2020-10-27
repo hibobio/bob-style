@@ -24,7 +24,11 @@ import {
   RenderedComponentHandlers,
 } from './component-renderer.interface';
 import { GenericObject } from '../../types';
-import { applyChanges, simpleChange } from '../utils/functional-utils';
+import {
+  applyChanges,
+  CHANGES_HELPER_CONFIG_DEF,
+  simpleChange,
+} from '../utils/functional-utils';
 
 @Component({
   selector: 'b-component-renderer',
@@ -87,7 +91,10 @@ export class ComponentRendererComponent implements OnChanges, OnDestroy {
     attributes: GenericObject
   ): SimpleChanges {
     const changes = simpleChange(attributes, true);
-    applyChanges(component.instance, changes);
+    applyChanges(component.instance, changes, {}, [], false, {
+      ...CHANGES_HELPER_CONFIG_DEF,
+      skipSetters: false,
+    });
     return changes;
   }
 

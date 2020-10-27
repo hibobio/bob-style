@@ -1085,6 +1085,7 @@ export interface ChangesHelperConfig {
   equalCheck?: Function;
   firstChange?: boolean | null;
   transform?: { [prop: string]: (val: any) => any };
+  skipSetters?: boolean;
 }
 
 export const CHANGES_HELPER_CONFIG_DEF: ChangesHelperConfig = {
@@ -1095,6 +1096,7 @@ export const CHANGES_HELPER_CONFIG_DEF: ChangesHelperConfig = {
     sort: false,
   }),
   firstChange: null,
+  skipSetters: true,
 };
 
 export const CHANGES_SET_PROPS = 'setProps';
@@ -1221,7 +1223,7 @@ export const applyChanges = (
   }
   const truthyCheck =
     config.truthyCheck || CHANGES_HELPER_CONFIG_DEF.truthyCheck;
-  const keyMap = config.keyMap;
+  const { keyMap, skipSetters } = config;
 
   if (keyMap) {
     Object.keys(keyMap).forEach((targetKey: string) => {
@@ -1237,9 +1239,12 @@ export const applyChanges = (
     if (
       skip?.includes(changeKey) ||
       changeKey === CHANGES_SET_PROPS ||
-      Object.getOwnPropertyDescriptor(target, changeKey)?.set ||
-      Object.getOwnPropertyDescriptor(Object.getPrototypeOf(target), changeKey)
-        ?.set
+      (skipSetters &&
+        (Object.getOwnPropertyDescriptor(target, changeKey)?.set ||
+          Object.getOwnPropertyDescriptor(
+            Object.getPrototypeOf(target),
+            changeKey
+          )?.set))
     ) {
       return;
     }
