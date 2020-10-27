@@ -1,8 +1,8 @@
 import { AvatarSize } from '../avatar/avatar.enum';
 
 export const AvatarGap = {
-  [AvatarSize.mini]: 22,
-  [AvatarSize.small]: 35,
+  [AvatarSize.mini]: 18,
+  [AvatarSize.small]: 30,
   [AvatarSize.medium]: 30,
   [AvatarSize.large]: 35,
   [AvatarSize.xlarge]: 40,

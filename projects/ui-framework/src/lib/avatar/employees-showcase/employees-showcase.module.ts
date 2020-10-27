@@ -6,10 +6,17 @@ import { IconsModule } from '../../icons/icons.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { SingleSelectPanelModule } from '../../lists/single-select-panel/single-select-panel.module';
 import { EmployeesShowcaseService } from './employees-showcase.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [EmployeesShowcaseComponent],
-  imports: [CommonModule, AvatarModule, IconsModule, SingleSelectPanelModule],
+  imports: [
+    CommonModule,
+    AvatarModule,
+    IconsModule,
+    SingleSelectPanelModule,
+    TranslateModule,
+  ],
   exports: [EmployeesShowcaseComponent],
   entryComponents: [],
   providers: [EmployeesShowcaseService, EventManagerPlugins[0]],

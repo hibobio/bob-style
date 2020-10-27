@@ -23,6 +23,11 @@ $bes-avatar-count-default: 1;
 
 .avatar-showcase {
   display: flex;
+  align-items: center;
+}
+
+.total-label {
+  margin-left: times8(1);
 }
 
 .avatar {

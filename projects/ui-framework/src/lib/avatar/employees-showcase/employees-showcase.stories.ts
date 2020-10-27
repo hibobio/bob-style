@@ -39,6 +39,7 @@ const template1 = `
             [min]="min"
             [max]="max"
             [showTotal]="showTotal"
+            [showTotalLabel]="showTotalLabel"
             [expandOnClick]="expandOnClick"
             [doShuffle]="doShuffle"
             [inverseStack]="inverseStack"
@@ -101,6 +102,7 @@ const note = `
   [expandOnClick] | boolean | expands panel on click | true
   [showTotal] | boolean | show the total counter circle \
    - only valid for avatar size < medium; will be disabled if [fadeOut] is true) | true
+  [showTotalLabel] | boolean | show total text ("Total: X") to the right of the showcase | false
   [doShuffle] | boolean | will shuffle and show random\
    avatars that dont fit - only if avatar size > medium.\
     this is resource intensive, so disabled by default  | <u>false</u>
@@ -151,10 +153,11 @@ story.add(
           AvatarSize.medium,
           'Props'
         ),
-        min: number('min', 3, {}, 'Props'),
-        max: number('max', 15, {}, 'Props'),
+        min: number('min', 1, {}, 'Props'),
+        max: number('max', 5, {}, 'Props'),
         expandOnClick: boolean('expandOnClick', true, 'Props'),
         showTotal: boolean('showTotal', true, 'Props'),
+        showTotalLabel: boolean('showTotalLabel', false, 'Props'),
         doShuffle: boolean('doShuffle', false, 'Props'),
         inverseStack: boolean('inverseStack', false, 'Props'),
         fadeOut: boolean('fadeOut', false, 'Props'),

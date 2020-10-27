@@ -65,6 +65,7 @@ export class EmployeesShowcaseComponent
 
   @Input() doShuffle = false;
   @Input() showTotal = true;
+  @Input() showTotalLabel = false;
   @Input() readonly = false;
 
   @HostBinding('attr.data-clickable')
@@ -96,7 +97,7 @@ export class EmployeesShowcaseComponent
   public showcaseViewModel: Avatar[] = [];
   public avatarsToShow: Avatar[] = [];
   public totalAvatars = 0;
-  public showTotalButton = false;
+  public showTotalButton = true;
 
   readonly panelClass = 'ee-showcase-panel';
   readonly dotsIcon = {
@@ -187,8 +188,8 @@ export class EmployeesShowcaseComponent
     this.showTotalButton =
       this.showTotal !== false &&
       !this.fadeOut &&
-      this.avatarSize < AvatarSize.medium &&
-      this.totalAvatars > 1;
+      this.avatarSize < AvatarSize.medium;
+    //  && this.totalAvatars > 1;
     // && this.avatarsToFit < this.totalAvatars;
 
     this.DOM.setCssProps(this.hostEl, {

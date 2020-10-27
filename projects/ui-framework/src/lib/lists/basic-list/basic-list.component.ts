@@ -133,11 +133,11 @@ export class BasicListComponent implements AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    this.initDone = true;
-
-    if (!this.items || !this.titles) {
+    if (isEmptyArray(this.items) || isEmptyArray(this.titles)) {
       return;
     }
+
+    this.initDone = true;
 
     this.tableCellCount =
       this.labelsCount +
