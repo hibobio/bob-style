@@ -51,10 +51,15 @@ export class EditCommentComponent implements AfterViewInit {
     if (isKey(event.key, Keys.enter)) {
       event.preventDefault();
 
+      const inputEl = this.commentInput.nativeElement;
+
       if (eventHasMetaKey(event)) {
-        this.kbrdCntrlSrvc.insertNewLineAtCursor(this.commentInput.nativeElement);
+        this.kbrdCntrlSrvc.insertNewLineAtCursor(inputEl);
       } else {
-        this.updateCommentAndResetValue();
+        inputEl.blur();
+        if (!this.updateOnBlur) {
+          this.updateCommentAndResetValue();
+        }
       }
     }
   }
@@ -74,7 +79,7 @@ export class EditCommentComponent implements AfterViewInit {
   private updateCommentAndResetValue(): void {
     const inputEl = this.commentInput.nativeElement;
     this.sendComment.emit({ content: inputEl.value });
-    inputEl.blur();
+
     inputEl.value = '';
   }
 }
