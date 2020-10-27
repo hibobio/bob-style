@@ -32,6 +32,7 @@ export class EditCommentComponent implements AfterViewInit {
   @Input() autoFocus = false;
   @Input() placeholder: string;
   @Input() comment: CommentItem;
+  @Input() updateOnBlur = false;
 
   @Output() sendComment: EventEmitter<CommentItemDto> = new EventEmitter<
     CommentItemDto
@@ -55,11 +56,22 @@ export class EditCommentComponent implements AfterViewInit {
       if (eventHasMetaKey(event)) {
         this.kbrdCntrlSrvc.insertNewLineAtCursor(inputEl);
       } else {
-        this.sendComment.emit({ content: inputEl.value });
-        inputEl.blur();
-        inputEl.value = '';
+        this.updateCommentAndResetValue();
       }
     }
+  }
+
+  onBlur(): void {
+    if (this.updateOnBlur) {
+      this.updateCommentAndResetValue();
+    }
+  }
+
+  private updateCommentAndResetValue(): void {
+    const inputEl = this.commentInput.nativeElement;
+    this.sendComment.emit({ content: inputEl.value });
+    inputEl.blur();
+    inputEl.value = '';
   }
 
   ngAfterViewInit(): void {
