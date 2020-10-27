@@ -19,6 +19,7 @@ const story = storiesOf(ComponentGroupType.Comments, module).addDecorator(
 const template = `
 <b-edit-comment
   [comment]="comment"
+  [updateOnBlur]="updateOnBlur"
   [placeholder]="placeholder"
   [autoFocus]="autoFocus"
   (sendComment)="sendComment($event)"></b-edit-comment>
@@ -51,6 +52,7 @@ story.add(
         sendComment: action('Send comment click'),
         placeholder: text('placeholder', 'Write your comment here.'),
         autoFocus: boolean('autoFocus', true),
+        updateOnBlur: boolean('updateOnBlur', false),
         comment: object('comment', {
           content: 'input value',
           avatar: mockAvatar(),

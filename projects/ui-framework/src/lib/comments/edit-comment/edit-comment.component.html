@@ -8,5 +8,6 @@
             class="bfe-input bfe-textarea"
             [attr.placeholder]="placeholder || null"
             [value]="comment?.content"
+            (blur)="onBlur()"
             (keydown)="enterPress($event)"></textarea>
 </div>
