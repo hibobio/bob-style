@@ -112,12 +112,18 @@ export class EmployeesShowcaseComponent
   private subs: Subscription[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes, {
-      min: 3,
-      max: 10,
-      employees: [],
-      avatarSize: AvatarSize.mini,
-    });
+    applyChanges(
+      this,
+      changes,
+      {
+        min: 3,
+        max: 10,
+        employees: [],
+        avatarSize: AvatarSize.mini,
+      },
+      [],
+      true
+    );
 
     if (hasChanges(changes, ['employees'], true)) {
       this.setViewModels();

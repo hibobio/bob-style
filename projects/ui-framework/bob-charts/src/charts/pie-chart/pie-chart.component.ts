@@ -23,6 +23,7 @@ import {
   DonutSize,
   DONUT_DIAMETERS,
   DONUT_SIZES,
+  GenericObject,
 } from 'bob-style';
 
 @Component({
@@ -68,6 +69,7 @@ export class PieChartComponent extends ChartCore implements OnChanges {
   }
 
   private donutSizeCache: Map<string, DonutSize> = new Map();
+  private propsCache: GenericObject;
   readonly type = ChartTypesEnum.Pie;
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -75,8 +77,8 @@ export class PieChartComponent extends ChartCore implements OnChanges {
       this,
       changes,
       {
-        height: PIE_CHART_SIZE_DEFS[0],
-        donutInnerSize: PIE_CHART_SIZE_DEFS[1],
+        height: this.sizeDefaults[0],
+        donutInnerSize: this.sizeDefaults[1],
         donutSize: null,
       },
       [],
@@ -85,15 +87,31 @@ export class PieChartComponent extends ChartCore implements OnChanges {
 
     super.ngOnChanges(changes);
 
+    let shouldDestroyOnUpdate = false;
+
     if (this.donutSize) {
+      this.propsCache = {
+        donut: this.donut,
+        legend: this.legend,
+        showDataLabels: this.showDataLabels,
+        title: this.title,
+        height: this.height,
+        donutInnerSize: this.donutInnerSize,
+      };
       this.donut = true;
       this.legend = this.showDataLabels = false;
       this.title = null;
       this.height = DONUT_SIZES[this.donutSize][0] + 5;
+      //
+    } else if (changes.donutSize?.previousValue && this.propsCache) {
+      //
+      Object.assign(this, this.propsCache);
+      this.propsCache = undefined;
+      shouldDestroyOnUpdate = true;
     }
 
     this.updateChartOptions();
-    this.applyOnChange();
+    this.applyOnChange(shouldDestroyOnUpdate);
   }
 
   updateChartOptions() {

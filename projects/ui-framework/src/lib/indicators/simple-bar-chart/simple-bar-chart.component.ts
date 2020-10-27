@@ -67,7 +67,17 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
   readonly id = simpleUID('bsbc-');
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes);
+    applyChanges(
+      this,
+      changes,
+      {
+        size: ProgressSize.medium,
+        data: [],
+        config: {},
+      },
+      [],
+      true
+    );
 
     if (changes.data) {
       this.data = this.data.map((item) => ({

@@ -165,7 +165,7 @@ export abstract class BaseEditableTreeListElement
         maxHeightItems: 15,
       },
       ['list'],
-      false,
+      true,
       {
         keyMap: { list: 'setList' },
       }

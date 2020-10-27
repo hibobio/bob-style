@@ -144,7 +144,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
         mode: SelectMode.classic,
         placeholder: this.translate.instant('common.select'),
       },
-      ['value']
+      ['value'],
+      true
     );
 
     if (

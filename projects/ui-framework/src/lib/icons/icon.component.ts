@@ -53,9 +53,17 @@ export class IconComponent implements OnChanges {
   public iconClass: string = null;
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes, {
-      color: IconColor.dark,
-    });
+    applyChanges(
+      this,
+      changes,
+      {
+        size: IconSize.medium,
+        type: IconType.regular,
+        color: IconColor.dark,
+      },
+      [],
+      true
+    );
 
     this.iconClass =
       this.icon +

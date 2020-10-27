@@ -88,9 +88,15 @@ export class CollapsibleSectionComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes, {
-      options: cloneObject(COLLAPSIBLE_OPTIONS_DEF),
-    });
+    applyChanges(
+      this,
+      changes,
+      {
+        options: cloneObject(COLLAPSIBLE_OPTIONS_DEF),
+      },
+      [],
+      true
+    );
 
     if (hasChanges(changes, ['options'])) {
       this.options = {

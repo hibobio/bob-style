@@ -57,7 +57,8 @@ export class ChipListComponent extends ChipListBaseElement
         config: {},
         chipListSelectable: ChipListSelectable.multi,
       },
-      ['chips']
+      ['chips'],
+      true
     );
 
     if (hasChanges(changes, ['chips'], true)) {

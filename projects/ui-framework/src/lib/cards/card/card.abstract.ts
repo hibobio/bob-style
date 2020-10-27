@@ -47,8 +47,15 @@ export abstract class BaseCardElement implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes, {
-      card: {},
-    });
+    applyChanges(
+      this,
+      changes,
+      {
+        type: CardType.regular,
+        card: {},
+      },
+      [],
+      true
+    );
   }
 }

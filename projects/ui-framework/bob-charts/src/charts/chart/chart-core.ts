@@ -13,7 +13,12 @@ import * as Highcharts from 'highcharts';
 import { ExportingMimeTypeValue, Options, Chart } from 'highcharts';
 import { ChartTypesEnum } from '../charts.enum';
 import { merge } from 'lodash';
-import { applyChanges, pass, simpleUID } from 'bob-style';
+import {
+  applyChanges,
+  cloneDeepSimpleObject,
+  pass,
+  simpleUID,
+} from 'bob-style';
 import {
   ChartFormatterThis,
   ChartLegendAlignEnum,
@@ -177,12 +182,17 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
     });
   }
 
-  applyOnChange() {
+  applyOnChange(destroy = false) {
     if (this.highChartRef) {
       this.cdr.markForCheck();
       this.initialOptions();
       this.zone.runOutsideAngular(() => {
-        this.highChartRef.update(this.options, true, true);
+        if (destroy) {
+          this.highChartRef.destroy();
+          this.highChartRef = Highcharts.chart(this.containerId, this.options);
+        } else {
+          this.highChartRef.update(this.options, true, true);
+        }
       });
     }
   }

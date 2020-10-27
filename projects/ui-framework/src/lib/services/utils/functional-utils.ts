@@ -1080,16 +1080,21 @@ export const countChildren = (parentSelector, parent) => {
 
 export interface ChangesHelperConfig {
   keyMap?: { [targetKey: string]: string };
-  checkEquality?: boolean;
-  truthyCheck?: Function;
-  equalCheck?: Function;
   firstChange?: boolean | null;
-  transform?: { [prop: string]: (val: any) => any };
   skipSetters?: boolean;
+
+  discardAllFalsey?: boolean;
+  checkEquality?: boolean;
+
+  truthyCheck?: (val: unknown) => boolean;
+  equalCheck?: <T = unknown>(valA: T, valB: T) => boolean;
+  transform?: { [prop: string]: (val: any) => any };
 }
 
 export const CHANGES_HELPER_CONFIG_DEF: ChangesHelperConfig = {
+  discardAllFalsey: false,
   truthyCheck: Boolean,
+  checkEquality: false,
   equalCheck: isEqualByValuesConfigured({
     limit: 5000,
     primitives: true,
@@ -1121,11 +1126,11 @@ export const simpleChange = (
 
 const simpleChangeFilter = (
   change: SimpleChange,
-  discardAllFalsey = false,
-  truthyCheck: Function = CHANGES_HELPER_CONFIG_DEF.truthyCheck,
-  checkEquality = false,
-  equalCheck: Function = CHANGES_HELPER_CONFIG_DEF.equalCheck
+  config?: ChangesHelperConfig
 ): boolean => {
+  config = { ...CHANGES_HELPER_CONFIG_DEF, ...config };
+  const { discardAllFalsey, truthyCheck, checkEquality, equalCheck } = config;
+
   return (
     change !== undefined &&
     // (change.currentValue !== undefined || change.previousValue !== undefined)
@@ -1140,18 +1145,23 @@ const simpleChangeFilter = (
 export const hasChanges = (
   changes: SimpleChanges,
   keys: string[] = null,
-  discardAllFalsey = false,
-  config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
+  discardAllFalsey = CHANGES_HELPER_CONFIG_DEF.discardAllFalsey,
+  config?: ChangesHelperConfig
 ): boolean => {
   if (!changes) {
     return false;
   }
-  const truthyCheck =
-    config?.truthyCheck || CHANGES_HELPER_CONFIG_DEF.truthyCheck;
-  const equalCheck = config?.equalCheck || CHANGES_HELPER_CONFIG_DEF.equalCheck;
+
   if (!keys) {
     keys = Object.keys(changes);
   }
+
+  config = {
+    ...config,
+    discardAllFalsey: config?.discardAllFalsey || discardAllFalsey,
+  };
+  const { firstChange } = config;
+
   return Boolean(
     keys.find((i) => {
       if (
@@ -1173,16 +1183,10 @@ export const hasChanges = (
 
       return (
         changes[i] &&
-        (!isBoolean(config?.firstChange) ||
-          (config?.firstChange === true && changes[i].firstChange) ||
-          (config?.firstChange === false && !changes[i].firstChange)) &&
-        simpleChangeFilter(
-          changes[i],
-          discardAllFalsey,
-          truthyCheck,
-          config?.checkEquality,
-          equalCheck
-        )
+        (!isBoolean(firstChange) ||
+          (firstChange === true && changes[i].firstChange) ||
+          (firstChange === false && !changes[i].firstChange)) &&
+        simpleChangeFilter(changes[i], config)
       );
     })
   );
@@ -1191,7 +1195,7 @@ export const hasChanges = (
 export const firstChanges = (
   changes: SimpleChanges,
   keys: string[] = null,
-  discardAllFalsey = false,
+  discardAllFalsey = CHANGES_HELPER_CONFIG_DEF.discardAllFalsey,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): boolean =>
   hasChanges(changes, keys, discardAllFalsey, {
@@ -1202,7 +1206,7 @@ export const firstChanges = (
 export const notFirstChanges = (
   changes: SimpleChanges,
   keys: string[] = null,
-  discardAllFalsey = false,
+  discardAllFalsey = CHANGES_HELPER_CONFIG_DEF.discardAllFalsey,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): boolean =>
   hasChanges(changes, keys, discardAllFalsey, {
@@ -1215,15 +1219,16 @@ export const applyChanges = (
   changes: SimpleChanges,
   defaults: GenericObject = {},
   skip: string[] = [],
-  discardAllFalsey = false,
+  discardAllFalsey = CHANGES_HELPER_CONFIG_DEF.discardAllFalsey,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): SimpleChanges => {
   if (!changes) {
     return changes;
   }
-  const truthyCheck =
-    config.truthyCheck || CHANGES_HELPER_CONFIG_DEF.truthyCheck;
-  const { keyMap, skipSetters } = config;
+
+  config = { ...CHANGES_HELPER_CONFIG_DEF, ...config };
+  const { keyMap, skipSetters, truthyCheck, transform } = config;
+  discardAllFalsey = config.discardAllFalsey || discardAllFalsey;
 
   if (keyMap) {
     Object.keys(keyMap).forEach((targetKey: string) => {
@@ -1238,9 +1243,9 @@ export const applyChanges = (
   Object.keys(changes).forEach((changeKey: string) => {
     if (
       skip?.includes(changeKey) ||
-      changeKey === CHANGES_SET_PROPS ||
-      (skipSetters &&
-        (Object.getOwnPropertyDescriptor(target, changeKey)?.set ||
+      (skipSetters !== false &&
+        (changeKey === CHANGES_SET_PROPS ||
+          Object.getOwnPropertyDescriptor(target, changeKey)?.set ||
           Object.getOwnPropertyDescriptor(
             Object.getPrototypeOf(target),
             changeKey
@@ -1255,8 +1260,8 @@ export const applyChanges = (
         isNullOrUndefined(changes[changeKey]?.currentValue)) ||
         (discardAllFalsey && !truthyCheck(changes[changeKey].currentValue)))
         ? defaults[changeKey]
-        : config?.transform && isFunction(config.transform[changeKey])
-        ? config.transform[changeKey](changes[changeKey]?.currentValue)
+        : transform && isFunction(transform[changeKey])
+        ? transform[changeKey](changes[changeKey]?.currentValue)
         : changes[changeKey]?.currentValue;
   });
 
