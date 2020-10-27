@@ -76,6 +76,7 @@ export const mockColumnsDefs: ColumnDef[] = [
     resizable: false,
     sortable: false,
     flex: 1,
+    minWidth: 56,
   },
 ];
 
