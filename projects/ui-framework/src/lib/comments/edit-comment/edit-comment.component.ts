@@ -2,16 +2,16 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   Output,
   ViewChild,
-  ElementRef,
 } from '@angular/core';
 import { CommentItem, CommentItemDto } from '../comments.interface';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { InputTypes } from '../../form-elements/input/input.enum';
-import { isKey, eventHasMetaKey } from '../../services/utils/functional-utils';
+import { eventHasMetaKey, isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 // tslint:disable-next-line: max-line-length
 import { FormElementKeyboardCntrlService } from '../../form-elements/services/keyboard-cntrl.service';
@@ -51,10 +51,8 @@ export class EditCommentComponent implements AfterViewInit {
     if (isKey(event.key, Keys.enter)) {
       event.preventDefault();
 
-      const inputEl = this.commentInput.nativeElement;
-
       if (eventHasMetaKey(event)) {
-        this.kbrdCntrlSrvc.insertNewLineAtCursor(inputEl);
+        this.kbrdCntrlSrvc.insertNewLineAtCursor(this.commentInput.nativeElement);
       } else {
         this.updateCommentAndResetValue();
       }
@@ -67,16 +65,16 @@ export class EditCommentComponent implements AfterViewInit {
     }
   }
 
+  ngAfterViewInit(): void {
+    if (this.autoFocus) {
+      this.focus();
+    }
+  }
+
   private updateCommentAndResetValue(): void {
     const inputEl = this.commentInput.nativeElement;
     this.sendComment.emit({ content: inputEl.value });
     inputEl.blur();
     inputEl.value = '';
-  }
-
-  ngAfterViewInit(): void {
-    if (this.autoFocus) {
-      this.focus();
-    }
   }
 }
