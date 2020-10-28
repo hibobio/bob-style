@@ -66,10 +66,6 @@ b-chip-list {
   }
 }
 
-:host ::ng-deep b-list-footer {
-  margin-top: auto;
-}
-
 b-empty-state {
   align-self: center;
   margin: auto;

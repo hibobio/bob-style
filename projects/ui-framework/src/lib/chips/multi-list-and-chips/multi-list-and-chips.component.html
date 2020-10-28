@@ -4,8 +4,7 @@
      [attr.aria-hidden]="!listLabel"
      *ngIf="listLabel || chipsLabel">{{listLabel}}</p>
 
-  <b-multi-list #list
-                [attr.aria-labelledby]="listLabel ? listID : null"
+  <b-multi-list [attr.aria-labelledby]="listLabel ? listID : null"
                 [mode]="mode"
                 [listActions]="listActions"
                 [options]="listOptions"
@@ -25,8 +24,7 @@
      [attr.aria-hidden]="!chipsLabel"
      *ngIf="listLabel || chipsLabel">{{chipsLabel}}</p>
 
-  <b-chip-list #chiplist
-               [attr.aria-labelledby]="chipsLabel ? chipListID : null"
+  <b-chip-list [attr.aria-labelledby]="chipsLabel ? chipListID : null"
                [chips]="chips"
                [config]="chipListConfig"
                (removed)="onChipRemoved($event)">

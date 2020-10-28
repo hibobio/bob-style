@@ -9,6 +9,7 @@ import {
   ChangeDetectorRef,
   OnInit,
   ElementRef,
+  ViewChild,
 } from '@angular/core';
 import { LIST_EL_HEIGHT } from '../../lists/list.consts';
 import {
@@ -32,6 +33,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { SelectMode } from '../../lists/list.enum';
 import { MULTI_LIST_LIST_ACTIONS_DEF } from '../../lists/list-footer/list-footer.const';
+import { ChipListComponent } from '../chip-list/chip-list.component';
+import { MultiListComponent } from '../../lists/multi-list/multi-list.component';
 
 @Component({
   selector: 'b-multi-list-and-chips',
@@ -48,6 +51,9 @@ export class MultiListAndChipsComponent implements OnChanges, OnInit {
   ) {
     this.listActions = { ...MULTI_LIST_LIST_ACTIONS_DEF };
   }
+
+  @ViewChild(MultiListComponent, { static: true }) list: MultiListComponent;
+  @ViewChild(ChipListComponent, { static: true }) chipList: ChipListComponent;
 
   @Input() mode: SelectMode = SelectMode.classic;
   @Input() options: SelectGroupOption[] = [];
