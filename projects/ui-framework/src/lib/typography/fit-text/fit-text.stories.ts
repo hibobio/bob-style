@@ -183,7 +183,7 @@ story.add(
         FitTextFontType.display
       ),
       disableAnimation: boolean('disableAnimation', false),
-      syncMin: boolean('enable syncMin', true),
+      syncMin: boolean('enable syncMin', false),
       onFontSizeChange: action('fontSizeChange'),
     },
     moduleMetadata: {
