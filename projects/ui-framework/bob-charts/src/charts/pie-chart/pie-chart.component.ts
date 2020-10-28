@@ -103,7 +103,7 @@ export class PieChartComponent extends ChartCore implements OnChanges {
       this.title = null;
       this.height = DONUT_SIZES[this.donutSize][0] + 5;
       //
-    } else if (changes.donutSize?.previousValue && this.propsCache) {
+    } else if (changes?.donutSize?.previousValue && this.propsCache) {
       //
       Object.assign(this, this.propsCache);
       this.propsCache = undefined;
