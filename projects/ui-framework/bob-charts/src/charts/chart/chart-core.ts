@@ -15,7 +15,8 @@ import { ChartTypesEnum } from '../charts.enum';
 import { merge } from 'lodash';
 import {
   applyChanges,
-  cloneDeepSimpleObject,
+  COLOR_GREY_700,
+  COLOR_GREY_500,
   pass,
   simpleUID,
 } from 'bob-style';
@@ -121,6 +122,34 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
   initialOptions(): void {
     this.options = merge(
       {
+        yAxis: {
+          labels: {
+            style: {
+              'font-family': 'var(--body-font-family)',
+              color: COLOR_GREY_700,
+            },
+          },
+          stackLabels: {
+            style: {
+              'font-family': 'var(--body-font-family)',
+              color: COLOR_GREY_700,
+            },
+          },
+        },
+        xAxis: {
+          labels: {
+            style: {
+              'font-family': 'var(--body-font-family)',
+              color: COLOR_GREY_700,
+            },
+          },
+          stackLabels: {
+            style: {
+              'font-family': 'var(--body-font-family)',
+              color: COLOR_GREY_700,
+            },
+          },
+        },
         colors: this.colorPalette,
         chart: {
           events: {
@@ -134,20 +163,68 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
           animation: {
             duration: 200,
           },
+          style: {
+            'font-family': 'var(--body-font-family)',
+            color: COLOR_GREY_700,
+          },
         },
         title: {
           text: this.title,
+          style: {
+            color: COLOR_GREY_700,
+          },
         },
-        legend: this.getLegendPositioning(this.legendPosition),
+        subtitle: {
+          style: {
+            color: COLOR_GREY_700,
+          },
+        },
+        caption: {
+          style: {
+            color: COLOR_GREY_700,
+          },
+        },
+        legend: {
+          ...this.getLegendPositioning(this.legendPosition),
+          itemStyle: {
+            'font-family': 'var(--body-font-family)',
+            color: COLOR_GREY_700,
+          },
+          navigation: {
+            style: {
+              'font-family': 'var(--body-font-family)',
+              color: COLOR_GREY_700,
+            },
+          },
+        },
         tooltip: {
+          borderColor: COLOR_GREY_500,
+          borderRadius: 4,
+          borderWidth: 1,
           outside: true,
           useHTML: true,
           style: {
+            'font-family': 'var(--body-font-family)',
+            color: COLOR_GREY_700,
             textAlign: 'center',
             shadow: false,
             opacity: 1,
           },
           formatter: this.formatter,
+        },
+        labels: {
+          style: {
+            'font-family': 'var(--body-font-family)',
+            color: COLOR_GREY_700,
+          },
+        },
+        annotations: {
+          labels: {
+            style: {
+              'font-family': 'var(--body-font-family)',
+              color: COLOR_GREY_700,
+            },
+          },
         },
         plotOptions: {
           [this.type]: {
@@ -158,6 +235,10 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
             showInLegend: this.legend,
             dataLabels: {
               enabled: this.showDataLabels,
+              style: {
+                'font-family': 'var(--body-font-family)',
+                color: COLOR_GREY_700,
+              },
             },
           },
         },
@@ -167,6 +248,11 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
         series: [],
         exporting: {
           enabled: false,
+          chartOptions: {
+            chart: {
+              backgroundColor: '#fff',
+            },
+          },
         },
       },
       this.chartOptions,

@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  withKnobs,
-  text,
-  boolean,
-  select,
-} from '@storybook/addon-knobs/angular';
+import { withKnobs, boolean, select } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { FitTextModule } from './fit-text.module';
@@ -43,6 +38,7 @@ const storyTemplate = `
     min-height: 50px;
     cursor: default;
     resize: both;
+    overflow: hidden;
   }
   .fit-text-wrapper {
     position: absolute;
@@ -57,7 +53,13 @@ const storyTemplate = `
   <div class="container">
 
     <div class="box">
-     <textarea class="resizer" [style.width]="width1+'px'" [style.height]="height1+'px'" [style.minHeight]="(fsBox1 ? fsBox1 + 16 : 50)+'px'" readonly title="Resize me!"></textarea>
+     <textarea #resizer1 class="resizer"
+      [style.width]="width1+'px'"
+      [style.maxHeight]="width1+'px'"
+      [style.minHeight]="(fsBox1 ? fsBox1 + 16 : 50)+'px'"
+      [style.minWidth]="(fsBox1 && rText1 ? max((fsBox1 * rText1.length / 1.6), 50) : 50) + 'px'"
+      rows="1"
+      readonly title="Resize me!"></textarea>
 
       <span class="fit-text-wrapper">
         <b-fit-text #box1 [text]="rText1 || text1"
@@ -73,7 +75,13 @@ const storyTemplate = `
     <br>
 
     <div class="box">
-     <textarea class="resizer" [style.width]="width2+'px'" [style.height]="height2+'px'" [style.minHeight]="(fsBox2 ? fsBox2 + 16 : 50)+'px'" readonly title="Resize me!"></textarea>
+     <textarea #resizer2 class="resizer"
+      [style.width]="width2+'px'"
+      [style.maxHeight]="width2+'px'"
+      [style.minHeight]="(fsBox2 ? fsBox2 + 16 : 50)+'px'"
+      [style.minWidth]="(fsBox2 && rText2 ? max((fsBox2 * rText2.length / 1.6), 50) : 50) + 'px'"
+      rows="1"
+      readonly title="Resize me!"></textarea>
 
       <span class="fit-text-wrapper">
         <b-fit-text #box2 [text]="rText2 || text2"
@@ -88,7 +96,13 @@ const storyTemplate = `
     <p>font-size: {{ (box2.fontSize$ | async) }}</p>
 
     <div class="box">
-     <textarea class="resizer" [style.width]="width3+'px'" [style.height]="height3+'px'" [style.minHeight]="(fsBox3 ? fsBox3 + 16 : 50)+'px'" readonly title="Resize me!"></textarea>
+     <textarea #resizer3 class="resizer"
+      [style.width]="width3+'px'"
+      [style.maxHeight]="width3+'px'"
+      [style.minHeight]="(fsBox3 ? fsBox3 + 16 : 50)+'px'"
+      [style.minWidth]="(fsBox3 && rText3 ? max((fsBox3 * rText3.length / 1.6), 50) : 50) + 'px'"
+      rows="1"
+      readonly title="Resize me!"></textarea>
 
       <span class="fit-text-wrapper">
         <b-fit-text #box3 [text]="rText3 || text3"
@@ -105,11 +119,11 @@ const storyTemplate = `
     <br>
     <div class="flx">
 
-      <button class="mrg-8" (click)="rText1 = mockCities(1); rText2 = mockAnimals(1); rText3 = mockThings(1); width1 = randomNumber(100,400); width2 = randomNumber(100,400); width3 = randomNumber(100,400); height1 = randomNumber(70,150); height2 = randomNumber(70,150); height3 = randomNumber(70,150);" type="button">
+      <button class="mrg-8" (click)="rText1 = mockCities(1); rText2 = mockAnimals(1); rText3 = mockThings(1); width1 = randomNumber(100,400); width2 = randomNumber(100,400); width3 = randomNumber(100,400); resizer1.style.removeProperty('height'); resizer2.style.removeProperty('height'); resizer3.style.removeProperty('height');" type="button">
       Gimme something
       </button>
 
-      <button class="mrg-8" (click)="rText1 = randomNumber(10,99)+'%'; rText2 = randomNumber(1,99)+'%'; rText3 = randomNumber(100,999); width1 = randomNumber(100,400); width2 = randomNumber(100,400); width3 = randomNumber(100,400); height1 = randomNumber(70,150); height2 = randomNumber(70,150); height3 = randomNumber(70,150);" type="button">
+      <button class="mrg-8" (click)="rText1 = randomNumber(10,99)+'%'; rText2 = randomNumber(1,99)+'%'; rText3 = randomNumber(100,999); width1 = randomNumber(100,400); width2 = randomNumber(100,400); width3 = randomNumber(100,400); resizer1.style.removeProperty('height'); resizer2.style.removeProperty('height'); resizer3.style.removeProperty('height');" type="button">
       ...but with numbers
       </button>
 
@@ -169,13 +183,12 @@ story.add(
       width1: 350,
       width2: 250,
       width3: 350,
-      height1: 150,
-      height2: 50,
-      height3: 150,
       mockThings: mockThings,
       mockAnimals: mockAnimals,
       mockCities: mockCities,
       randomNumber: randomNumber,
+      max: Math.max,
+      min: Math.min,
       stepped: boolean('stepped', false),
       fontType: select(
         'fontType',

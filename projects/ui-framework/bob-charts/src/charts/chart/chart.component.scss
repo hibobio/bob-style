@@ -5,6 +5,11 @@
 }
 
 ::ng-deep {
+  .highcharts-root,
+  .highcharts-tooltip > span {
+    font-family: var(--body-font-family) !important;
+  }
+
   .chart-tooltip {
     background-color: #fff;
   }
@@ -15,24 +20,23 @@
 
   .highcharts-tooltip > span {
     transform: translateY(16px);
-    border: 1px solid $grey-400;
+    border: 1px solid $border-color;
     background-color: #fff;
-    border-radius: 5px;
+    border-radius: $border-radius;
     opacity: 1;
     z-index: 9999 !important;
     padding: 0.8em;
+    color: $body-text-color;
 
     .chart-tooltip {
       .value,
       .key {
         font-size: 11px;
-        font-family: var(--heading-font-family);
       }
       .value {
         font-weight: 600;
       }
       .key {
-        color: $grey-600;
         font-weight: 400;
       }
     }

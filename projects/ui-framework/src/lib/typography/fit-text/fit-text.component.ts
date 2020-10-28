@@ -15,7 +15,7 @@ import { InputObservable } from '../../services/utils/decorators';
 import { asArray, closestNumber } from '../../services/utils/functional-utils';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
 
-const FIT_TEXT_FONT_SIZES = [11, 12, 14, 18, 22, 28, 42];
+const FIT_TEXT_FONT_SIZES = [11, 12, 14, 18, 22, 28, 36, 42];
 const FIT_TEXT_SAFETY_GAP = 8;
 
 export enum FitTextFontType {

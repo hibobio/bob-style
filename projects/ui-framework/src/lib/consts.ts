@@ -88,3 +88,13 @@ export const LOCALE_FORMATS: DateLocaleFormats = {
 export const DISPLAY_DATE_FORMAT_DEF = LOCALE_FORMATS['DD/MM/YYYY'].FullDate;
 
 export const DISPLAY_MONTH_FORMAT_DEF = LOCALE_FORMATS['DD/MM/YYYY'].MonthYear;
+
+export const COLOR_GREY_100 = '#f8f7f7';
+export const COLOR_GREY_200 = '#f3f2f2';
+export const COLOR_GREY_300 = '#e9e9e9';
+export const COLOR_GREY_400 = '#e2e2e2';
+export const COLOR_GREY_500 = '#d2d2d2';
+export const COLOR_GREY_600 = '#9d9d9d';
+export const COLOR_GREY_700 = '#535353';
+export const COLOR_GREY_800 = '#303030';
+export const COLOR_GREY_900 = '#050505';
