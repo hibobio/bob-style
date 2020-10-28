@@ -1,7 +1,9 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
+  HostBinding,
   Input,
   OnDestroy,
   OnInit,
@@ -10,7 +12,7 @@ import {
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 import { InputObservable } from '../../services/utils/decorators';
-import { closestNumber } from '../../services/utils/functional-utils';
+import { asArray, closestNumber } from '../../services/utils/functional-utils';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
 
 const FIT_TEXT_FONT_SIZES = [11, 12, 14, 18, 22, 28, 42];
@@ -75,8 +77,12 @@ const FIT_TEXT_STYLES_BY_TYPE = {
         transition: font-size 0.2s;
         line-height: 1;
       }
+      :host[data-disable-animation='true'] span {
+        transition: none;
+      }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FitTextComponent implements OnInit, OnDestroy {
   constructor(
@@ -87,13 +93,17 @@ export class FitTextComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line: no-input-rename
   @InputObservable('') @Input('text') text$: Observable<string>;
   // tslint:disable-next-line: no-input-rename
-  @InputObservable(null) @Input('syncMin') syncMin$: Observable<number>;
+  @InputObservable(null) @Input('syncMin') syncMin$: Observable<
+    number | number[]
+  >;
   // tslint:disable-next-line: no-input-rename
   @InputObservable(false) @Input('stepped') stepped$: Observable<boolean>;
   // tslint:disable-next-line: no-input-rename
   @InputObservable(FitTextFontType.display)
   @Input('type')
   fontType$: Observable<FitTextFontType>;
+
+  @HostBinding('attr.data-disable-animation') @Input() disableAnimation = false;
 
   @Output() changed: EventEmitter<number> = new EventEmitter<number>();
 
@@ -119,7 +129,7 @@ export class FitTextComponent implements OnInit, OnDestroy {
             Partial<DOMRectReadOnly>,
             string,
             FitTextFontType,
-            number,
+            number | number[],
             boolean
           ]) => {
             let fontSize = Math.floor(
@@ -132,7 +142,10 @@ export class FitTextComponent implements OnInit, OnDestroy {
               fontSize = closestNumber(fontSize, FIT_TEXT_FONT_SIZES);
             }
             if (syncMin) {
-              fontSize = Math.min(syncMin, fontSize);
+              fontSize = Math.min(
+                ...asArray(syncMin).filter(Boolean),
+                fontSize
+              );
             }
 
             return fontSize;
