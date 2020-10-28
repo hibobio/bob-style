@@ -1,6 +1,26 @@
 $acss-sizes: 0 8 16 24 32 40;
 $acss-dirs: top right bottom left;
 
+// misc
+
+.b-reset-link {
+  font: inherit;
+  color: inherit;
+
+  &,
+  &:hover {
+    text-decoration: inherit;
+  }
+}
+
+.b-reset-button {
+  @include button-reset;
+}
+
+.b-link {
+  @include b-link;
+}
+
 // Typography
 
 .b-body {
@@ -314,28 +334,10 @@ $acss-dirs: top right bottom left;
   box-shadow: 0 2px 5px $boxShadowColor;
 }
 
-.b-link {
-  @include b-link;
-}
-
 .b-collapse {
   @include animate-expand;
 }
 
 .b-expand {
   @include animate-expand;
-}
-
-.b-reset-link {
-  font: inherit;
-  color: inherit;
-
-  &,
-  &:hover {
-    text-decoration: inherit;
-  }
-}
-
-.b-reset-button {
-  @include button-reset;
 }

@@ -33,6 +33,8 @@ export { LabelValueModule } from './lib/typography/label-value/label-value.modul
 export { LabelValueComponent } from './lib/typography/label-value/label-value.component';
 export { LabelValueType, TextAlign, IconPosition } from './lib/typography/label-value/label-value.enum';
 export * from './lib/typography/label-value/label-value.interface';
+export { FitTextModule } from './lib/typography/fit-text/fit-text.module';
+export * from './lib/typography/fit-text/fit-text.component';
 
 /*
  * Buttons
