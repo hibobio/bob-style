@@ -29,7 +29,7 @@ const storyTemplate = `
 
     <div style="position: relative;">
 
-     <textarea style="width: 100%; min-width: 50px; min-height: 50px; cursor: default; resize: both; height: 150px; width: 350px;" readonly></textarea>
+     <textarea style="width: 100%; min-width: 50px; min-height: 50px; cursor: default; resize: both; height: 150px; width: 350px;" readonly title="Resize me!"></textarea>
 
       <span style="position: absolute; top:0; right:0; bottom:0; left:0; pointer-events: none; display: flex;">
           <b-fit-text #box1 [text]="text"
@@ -43,12 +43,17 @@ const storyTemplate = `
     <p>font-size: {{ (box1.fontSize$ | async) }}</p>
     <br>
 
-    <div style="border:1px solid black; width: 250px; height: 50px; display: flex;">
-      <b-fit-text #box2 [text]="'Renaissance'"
-      [type]="fontType"
-      [stepped]="stepped"
-      [syncMin]="syncMin ? (box1.fontSize$ | async) : null"
-      (changed)="fsBox2=$event"></b-fit-text>
+    <div style="position: relative;">
+
+     <textarea style="width: 100%; min-width: 50px; min-height: 50px; cursor: default; resize: both; height: 50px; width: 250px;" readonly title="Resize me!"></textarea>
+
+      <span style="position: absolute; top:0; right:0; bottom:0; left:0; pointer-events: none; display: flex;">
+          <b-fit-text #box2 [text]="'Renaissance'"
+          [type]="fontType"
+          [stepped]="stepped"
+          [syncMin]="syncMin ? (box1.fontSize$ | async) : null"
+          (changed)="fsBox1 = $event; onFontSizeChange($event)"></b-fit-text>
+      </span>
     </div>
 
     <p>font-size: {{ (box2.fontSize$ | async) }}</p>
