@@ -48,13 +48,13 @@ export class SingleListComponent extends BaseListElement {
     this.listActions = { ...SINGLE_LIST_LIST_ACTIONS_DEF };
   }
 
-  headerClick(header: ListHeader, index: number): void {
+  headerClick(header: ListHeader): void {
     if (!header) {
       return;
     }
 
     if (header.groupIsOption) {
-      super.headerClick(header, index);
+      super.headerClick(header);
       return;
     }
 

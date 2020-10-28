@@ -12,4 +12,5 @@ export const UPDATE_LISTS_CONFIG_DEF: UpdateListsConfig = {
   updateListOptions: true,
   updateListMinHeight: true,
   selectedIDs: null,
+  isSearching: false,
 };

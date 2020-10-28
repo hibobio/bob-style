@@ -48,7 +48,7 @@ export abstract class BaseFormElement
   protected constructor(protected cd: ChangeDetectorRef) {}
 
   @ViewChild('input', { static: true, read: ElementRef })
-  public input: ElementRef;
+  public input: ElementRef<HTMLInputElement>;
 
   @Input() id: string = simpleUID('bfe-');
   @Input() label: string;

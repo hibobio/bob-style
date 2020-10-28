@@ -152,6 +152,10 @@ export abstract class BaseListElement
       this.options = this.options.filter((group: SelectGroupOption) =>
         isNotEmptyArray(group.options)
       );
+      this.options.forEach((group, index) => {
+        group.groupIndex = index;
+        group.key = this.modelSrvc.getGroupKey(group);
+      });
     }
 
     if (hasChanges(changes, ['startWithGroupsCollapsed', 'options'])) {
@@ -280,7 +284,7 @@ export abstract class BaseListElement
                 (header) => header.groupName === this.focusOption.groupName
               );
               if (headerIndex > -1) {
-                this.headerClick(this.listHeaders[headerIndex], headerIndex);
+                this.headerClick(this.listHeaders[headerIndex]);
               }
             } else {
               this.optionClick(this.focusOption);
@@ -336,6 +340,7 @@ export abstract class BaseListElement
     this.updateLists({
       collapseHeaders: this.startWithGroupsCollapsed && !this.searchValue,
       updateListMinHeight: false,
+      isSearching: !!this.searchValue,
     });
   }
 
@@ -401,13 +406,12 @@ export abstract class BaseListElement
     }
   }
 
-  headerClick(header: ListHeader, index: number): void {
-    if (header.groupIsOption && !this.readonly) {
+  headerClick(header: ListHeader): void {
+    if (header?.groupIsOption && !this.readonly) {
       this.optionClick({
-        ...this.options[index].options[0],
+        ...this.options[header.groupIndex].options[0],
         isPlaceHolder: false,
         groupName: header.groupName,
-        groupIndex: index,
       } as ListOption);
     }
   }
@@ -486,21 +490,24 @@ export abstract class BaseListElement
         !this.max &&
         !this.min;
 
-      this.listHeaders = this.modelSrvc.getHeadersModel(
-        this.filteredOptions,
-        config.collapseHeaders,
-        this.type === SelectType.multi && isClassic,
-        isClassic &&
+      this.listHeaders = this.modelSrvc.getHeadersModel(this.filteredOptions, {
+        collapseHeaders: config.collapseHeaders,
+        hasCheckbox: this.type === SelectType.multi && isClassic,
+        allowGroupIsOption:
+          !config.isSearching &&
+          isClassic &&
           !this.noGroupHeaders &&
-          (this.options.length > 1 || this.showSingleGroupHeader)
-      );
+          (this.options.length > 1 || this.showSingleGroupHeader),
+      });
     }
 
     if (config.updateListOptions) {
       this.listOptions = this.modelSrvc.getOptionsModel(
         this.filteredOptions,
         this.listHeaders,
-        this.noGroupHeaders
+        {
+          noGroupHeaders: this.noGroupHeaders,
+        }
       );
       this.listHeight = this.getListHeight();
     }
@@ -560,7 +567,7 @@ export abstract class BaseListElement
   }
 
   public headerTrackBy(index: number, listHeader: ListHeader): string {
-    return index + listHeader.groupName;
+    return this.modelSrvc.getGroupKey(listHeader);
   }
 
   protected getListMinHeight(): number {

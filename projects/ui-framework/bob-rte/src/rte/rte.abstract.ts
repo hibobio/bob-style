@@ -105,7 +105,7 @@ export abstract class RTEbaseElement extends BaseFormElement
   protected editorDirective: FroalaEditorDirective;
   @ViewChild('placeholderPanel')
   protected placeholderPanel: SingleSelectPanelComponent;
-  public input: ElementRef<HTMLElement>;
+  public input: ElementRef<HTMLInputElement>;
 
   @Input() public value: string;
   @Input() public minChars = 0;

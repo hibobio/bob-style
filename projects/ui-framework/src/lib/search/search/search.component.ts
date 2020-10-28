@@ -8,6 +8,8 @@ import {
   ViewChild,
   ElementRef,
   HostBinding,
+  OnInit,
+  OnDestroy,
 } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import {
@@ -17,6 +19,8 @@ import {
 import { simpleUID } from '../../services/utils/functional-utils';
 import { DOMInputEvent } from '../../types';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { fromEvent, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'b-search',
@@ -26,10 +30,10 @@ import { FormElementSize } from '../../form-elements/form-elements.enum';
     './search.component.scss',
   ],
 })
-export class SearchComponent implements OnChanges {
+export class SearchComponent implements OnChanges, OnInit, OnDestroy {
   constructor() {}
 
-  @ViewChild('input', { static: true }) input: ElementRef;
+  @ViewChild('input', { static: true }) input: ElementRef<HTMLInputElement>;
 
   @Input() value = '';
   @Input() label: string;
@@ -49,6 +53,7 @@ export class SearchComponent implements OnChanges {
   readonly inputTypes = InputTypes;
 
   private skipFocusEvent = false;
+  private sub: Subscription;
 
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() searchFocus: EventEmitter<string> = new EventEmitter<string>();
@@ -60,6 +65,20 @@ export class SearchComponent implements OnChanges {
     if (changes.value) {
       this.value = changes.value.currentValue;
     }
+  }
+
+  ngOnInit() {
+    this.sub = fromEvent(this.input.nativeElement, 'input', {
+      passive: true,
+    })
+      .pipe(debounceTime(150))
+      .subscribe((inputEvent: DOMInputEvent) => {
+        this.onInput(inputEvent);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 
   onFocus(): void {

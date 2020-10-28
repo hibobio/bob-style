@@ -55,30 +55,32 @@ export class MultiListComponent extends BaseListElement {
     this.listActions = { ...MULTI_LIST_LIST_ACTIONS_DEF };
   }
 
-  headerClick(header: ListHeader, index: number): void {
+  headerClick(header: ListHeader): void {
     if (header.groupIsOption) {
-      super.headerClick(header, index);
+      super.headerClick(header);
       return;
     }
 
     if (this.options.length > 1 && !header.groupIsOption) {
       this.toggleGroupCollapse(header);
     } else if (!this.readonly) {
-      this.selectGroup(header, index);
+      this.selectGroup(header);
     }
   }
 
-  selectGroup(header: ListHeader, index: number): void {
+  selectGroup(header: ListHeader): void {
     if (header.groupIsOption) {
-      super.headerClick(header, index);
+      super.headerClick(header);
       return;
     }
 
-    header.selected = this.options[index].options
+    const groupOptions = this.options[header.groupIndex].options;
+
+    header.selected = groupOptions
       .filter((option) => !(option.disabled && !option.selected))
       .some((option) => !option.selected);
 
-    const groupOptionsNotDisabledIDs = this.options[index].options
+    const groupOptionsNotDisabledIDs = groupOptions
       .filter((option) => !option.disabled)
       .map((option) => option.id);
 

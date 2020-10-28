@@ -23,9 +23,9 @@
   <div #headers
        class="headers"
        *ngIf="!noGroupHeaders">
-    <div *ngFor="let header of listHeaders; let headerIndex =  index; trackBy: headerTrackBy"
+    <div *ngFor="let header of listHeaders; trackBy: headerTrackBy.bind(this)"
          class="headers-group">
-      <div (click)="headerClick(header, headerIndex)"
+      <div (click)="headerClick(header)"
            [ngClass]="{
              'groupIsOption': header.groupIsOption,
             'clickable': (!header.groupIsOption && options.length > 1) || (header.groupIsOption && !readonly),

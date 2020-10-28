@@ -2,6 +2,7 @@ import { RenderedComponent } from '../services/component-renderer/component-rend
 
 export interface ListHeader {
   groupName: string;
+  groupIndex?: number;
   key?: string | number;
   isCollapsed: boolean;
   placeHolderSize: number;
@@ -30,6 +31,7 @@ export interface ListOption {
 
 export interface SelectGroupOption {
   groupName: string;
+  groupIndex?: number;
   key?: string | number;
   options: SelectOption[];
   selected?: boolean;
@@ -82,4 +84,5 @@ export interface UpdateListsConfig {
   updateListOptions?: boolean;
   updateListMinHeight?: boolean;
   selectedIDs?: (string | number)[];
+  isSearching?: boolean;
 }

@@ -22,7 +22,7 @@
   <div #headers
        class="headers"
        *ngIf="!noGroupHeaders">
-    <div *ngFor="let header of listHeaders; let headerIndex =  index; trackBy: headerTrackBy"
+    <div *ngFor="let header of listHeaders; trackBy: headerTrackBy.bind(this)"
          class="headers-group">
       <div [ngClass]="{
             'clickable': (!header.groupIsOption && options.length > 1) || (header.groupIsOption && !readonly),
@@ -32,7 +32,7 @@
             'indeterminate': header.indeterminate
           }"
            class="option-select header has-hover">
-        <span (click)="headerClick(header, headerIndex)"
+        <span (click)="headerClick(header)"
               class="header-collapse-trigger">
         </span>
         <span *ngIf="options.length > 1 && !header.groupIsOption"
@@ -45,7 +45,7 @@
           <span *ngIf="header.hasCheckbox && !readonly"
                 [hidden]="searchValue"
                 class="checkbox bml-checkbox"
-                (click)="selectGroup(header, headerIndex)"></span>
+                (click)="selectGroup(header)"></span>
 
           <span class="header-option-value"
                 data-max-lines='3'

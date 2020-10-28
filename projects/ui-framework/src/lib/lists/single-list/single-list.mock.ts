@@ -15,6 +15,19 @@ export const selectSome = (options: SelectGroupOption[]): SelectGroupOption[] =>
     })),
   }));
 
+export const selectAll = (
+  options: SelectGroupOption[],
+  state = true
+): SelectGroupOption[] =>
+  cloneDeep(options).map((group: SelectGroupOption) => ({
+    ...group,
+    options: group.options.map((option, index) => ({
+      ...option,
+      selected: state,
+      disabled: false,
+    })),
+  }));
+
 const groupNum = 8;
 const optionsNum = 4;
 
@@ -42,7 +55,7 @@ export const optionsMock: SelectGroupOption[] = [
       groupName: groupNames[index],
       key: groupId,
 
-      options: makeArray(optionsNum).map((_, index) => {
+      options: makeArray(optionsNum).map((_, i) => {
         const optVal = mockName();
         const optId = simpleUID(
           groupId +
