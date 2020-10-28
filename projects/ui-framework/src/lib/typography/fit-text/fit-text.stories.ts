@@ -57,7 +57,7 @@ const storyTemplate = `
   <div class="container">
 
     <div class="box">
-     <textarea class="resizer" [style.width]="width1+'px'" [style.height]="height1+'px'" readonly title="Resize me!"></textarea>
+     <textarea class="resizer" [style.width]="width1+'px'" [style.height]="height1+'px'" [style.minHeight]="(fsBox1 ? fsBox1 + 16 : 50)+'px'" readonly title="Resize me!"></textarea>
 
       <span class="fit-text-wrapper">
         <b-fit-text #box1 [text]="rText1 || text1"
@@ -73,7 +73,7 @@ const storyTemplate = `
     <br>
 
     <div class="box">
-     <textarea class="resizer" [style.width]="width2+'px'" [style.height]="height2+'px'" readonly title="Resize me!"></textarea>
+     <textarea class="resizer" [style.width]="width2+'px'" [style.height]="height2+'px'" [style.minHeight]="(fsBox2 ? fsBox2 + 16 : 50)+'px'" readonly title="Resize me!"></textarea>
 
       <span class="fit-text-wrapper">
         <b-fit-text #box2 [text]="rText2 || text2"
@@ -88,7 +88,7 @@ const storyTemplate = `
     <p>font-size: {{ (box2.fontSize$ | async) }}</p>
 
     <div class="box">
-     <textarea class="resizer" [style.width]="width3+'px'" [style.height]="height3+'px'" readonly title="Resize me!"></textarea>
+     <textarea class="resizer" [style.width]="width3+'px'" [style.height]="height3+'px'" [style.minHeight]="(fsBox3 ? fsBox3 + 16 : 50)+'px'" readonly title="Resize me!"></textarea>
 
       <span class="fit-text-wrapper">
         <b-fit-text #box3 [text]="rText3 || text3"
@@ -109,7 +109,7 @@ const storyTemplate = `
       Gimme something
       </button>
 
-      <button class="mrg-8" (click)="rText1 = randomNumber(10,99)+'%'; rText2 = randomNumber(1,99)+'%'; rText3 = randomNumber(100,999)+'%'; width1 = randomNumber(100,400); width2 = randomNumber(100,400); width3 = randomNumber(100,400); height1 = randomNumber(70,150); height2 = randomNumber(70,150); height3 = randomNumber(70,150);" type="button">
+      <button class="mrg-8" (click)="rText1 = randomNumber(10,99)+'%'; rText2 = randomNumber(1,99)+'%'; rText3 = randomNumber(100,999); width1 = randomNumber(100,400); width2 = randomNumber(100,400); width3 = randomNumber(100,400); height1 = randomNumber(70,150); height2 = randomNumber(70,150); height3 = randomNumber(70,150);" type="button">
       ...but with numbers
       </button>
 
