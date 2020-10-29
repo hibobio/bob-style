@@ -18,7 +18,8 @@
 
   &:before {
     content: '●';
-    font-size: 18px;
     color: $grey-600;
+    font-size: 13px;
+    line-height: 10px;
   }
 }
