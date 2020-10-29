@@ -18,8 +18,7 @@
                  (clicked)="card.actionConfig.action($event)">
 </b-square-button>
 
-<div *ngIf="hasTop || card.imageUrl"
-     class="card-top"
+<div class="card-top"
      #cardTop
      [ngStyle]="{ 'background-image': card.imageUrl && 'url(' + card.imageUrl + ')' }"
      [ngClass]="{

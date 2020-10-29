@@ -36,7 +36,6 @@ export class CardComponent extends BaseCardElement implements AfterViewInit {
   readonly iconColor = IconColor;
   readonly linkColor = LinkColor;
   public hasContent = true;
-  public hasTop = true;
   public cardTopTextOnly = false;
 
   public titleMaxLines = 2;
@@ -49,7 +48,6 @@ export class CardComponent extends BaseCardElement implements AfterViewInit {
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
         this.hasContent = !this.DOM.isEmpty(this.cardContent.nativeElement);
-        this.hasTop = !this.DOM.isEmpty(this.cardTop.nativeElement);
 
         this.cardTopTextOnly =
           this.cardTop.nativeElement.children.length === 1 &&
@@ -65,6 +63,6 @@ export class CardComponent extends BaseCardElement implements AfterViewInit {
   }
 
   private getTitleMaxLines() {
-    return this.hasContent ? 2 : this.card.imageUrl ? 3 : this.hasTop ? 4 : 6;
+    return this.hasContent ? 2 : this.card.imageUrl ? 3 : 4;
   }
 }
