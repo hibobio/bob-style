@@ -40,8 +40,8 @@
                 'b-icon-chevron-down': !header.isCollapsed,
                 'b-icon-chevron-right': header.isCollapsed
               }"></span>
-        <span [innerHTML]="header.groupName | highlight: searchValue"></span>
-        <span *ngIf="header.selectedCount > 0"
+        <span [innerHTML]="header.groupName"></span>
+        <span *ngIf="header.selectedCount"
               class="header-selected-count">
           ({{header.selectedCount}})
         </span>

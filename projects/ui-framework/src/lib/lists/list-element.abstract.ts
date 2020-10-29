@@ -365,7 +365,9 @@ export abstract class BaseListElement
             ? newValue
               ? this.selectedIDs.concat(option.id)
               : this.selectedIDs.filter((id) => id !== option.id)
-            : [option.id];
+            : newValue
+            ? [option.id]
+            : [];
         }
       }
 

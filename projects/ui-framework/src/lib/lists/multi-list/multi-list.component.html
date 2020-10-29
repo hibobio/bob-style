@@ -43,14 +43,15 @@
               }"></span>
         <div class="header-option">
           <span *ngIf="header.hasCheckbox && !readonly"
-                [hidden]="searchValue"
+                [hidden]="searchValue && !header.groupIsOption"
                 class="checkbox bml-checkbox"
                 (click)="selectGroup(header)"></span>
 
           <span class="header-option-value"
                 data-max-lines='3'
-                [innerHTML]="header.groupName | highlight: searchValue"></span>
-          <span *ngIf="header.selectedCount > 0"
+                [innerHTML]="header.groupIsOption ? (header.groupName | highlight: searchValue) :
+                header.groupName"></span>
+          <span *ngIf="header.selectedCount"
                 class="header-selected-count">
             ({{header.selectedCount}})
           </span>

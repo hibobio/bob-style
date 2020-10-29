@@ -15,6 +15,12 @@
   }
 }
 
+.header-option-value ::ng-deep {
+  strong {
+    text-decoration: underline;
+  }
+}
+
 :host ::ng-deep {
   @include checkbox(
     $input-selector: null,
