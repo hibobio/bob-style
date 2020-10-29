@@ -27,6 +27,17 @@ const mayBeSelected = (perc = 80) => {
 
 export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
   {
+    groupName: 'All',
+    key: 'all',
+    options: [
+      {
+        id: 'all',
+        value: 'All',
+        exclusive: true,
+      },
+    ],
+  },
+  {
     groupName: 'For kids',
     options: kidsHobbies.map((hobby, index) => ({
       value: hobby,
@@ -59,6 +70,17 @@ export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
 ];
 
 export const MultiListAndAvatarChipsOptionsMock: SelectGroupOption[] = [
+  {
+    groupName: 'All',
+    key: 'all',
+    options: [
+      {
+        id: 'all',
+        value: 'All',
+        exclusive: true,
+      },
+    ],
+  },
   {
     groupName: 'People',
     options: [

@@ -35,11 +35,11 @@ const listOpts = MultiListAndChipsOptionsMock;
 const avatarListOpts = MultiListAndAvatarChipsOptionsMock;
 
 const template = `<b-multi-list-and-chips
-        [options]="options || listOpts"
+        [options]="options === 2 ? avatarListOpts : listOpts"
         [listLabel]="listLabel"
         [chipsLabel]="chipsLabel"
         [showSingleGroupHeader]="showSingleGroupHeader"
-        [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+        [startWithGroupsCollapsed]="options === 2 ? false : startWithGroupsCollapsed"
         [min]="min"
         [max]="max"
         [emptyState]="emptyStateConfig"
@@ -93,7 +93,7 @@ const storyTemplate = `
         {id: 2, label: 'People'}
       ]"
       [value]="{id: 1}"
-      (radioChange)="options = $event === 1 ? listOpts : avatarListOpts">
+      (radioChange)="options = $event">
     </b-radio-button>
   </div>
 </b-story-book-layout>
