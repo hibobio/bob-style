@@ -29,6 +29,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
 import { simpleChange } from '../../services/utils/functional-utils';
+import { getTestScheduler } from 'jasmine-marbles';
 
 describe('MultiListComponent', () => {
   let component: MultiListComponent;
@@ -99,6 +100,10 @@ describe('MultiListComponent', () => {
       });
   }));
 
+  afterEach(() => {
+    getTestScheduler().flush();
+  });
+
   describe('OnChanges', () => {
     it('should create selectedIDs based on options', () => {
       fixture.detectChanges();
@@ -108,6 +113,8 @@ describe('MultiListComponent', () => {
       expect(component.listHeaders).toEqual([
         {
           groupName: 'Basic Info Header',
+          key: '0__Basic Info Header',
+          groupIndex: 0,
           isCollapsed: false,
           placeHolderSize: 88,
           selected: false,
@@ -118,6 +125,8 @@ describe('MultiListComponent', () => {
         },
         {
           groupName: 'Personal Header',
+          key: '1__Personal Header',
+          groupIndex: 1,
           isCollapsed: false,
           placeHolderSize: 88,
           selected: false,
@@ -142,7 +151,7 @@ describe('MultiListComponent', () => {
           isPlaceHolder: false,
           selected: true,
           groupIndex: 0,
-          key: undefined,
+          key: '0__Basic Info Header',
         },
         {
           value: 'Basic Info 2',
@@ -151,7 +160,7 @@ describe('MultiListComponent', () => {
           isPlaceHolder: false,
           selected: false,
           groupIndex: 0,
-          key: undefined,
+          key: '0__Basic Info Header',
         },
         {
           isPlaceHolder: true,
@@ -165,7 +174,7 @@ describe('MultiListComponent', () => {
           selected: false,
           disabled: true,
           groupIndex: 1,
-          key: undefined,
+          key: '1__Personal Header',
         },
         {
           value: 'Personal 2',
@@ -174,7 +183,7 @@ describe('MultiListComponent', () => {
           isPlaceHolder: false,
           selected: false,
           groupIndex: 1,
-          key: undefined,
+          key: '1__Personal Header',
         },
       ] as any);
     });
@@ -487,6 +496,8 @@ describe('MultiListComponent', () => {
       const expectedHeaderModel = [
         {
           groupName: 'Basic Info Header',
+          key: '0__Basic Info Header',
+          groupIndex: 0,
           isCollapsed: true,
           placeHolderSize: 88,
           selected: true,
@@ -497,6 +508,8 @@ describe('MultiListComponent', () => {
         },
         {
           groupName: 'Personal Header',
+          key: '1__Personal Header',
+          groupIndex: 1,
           isCollapsed: false,
           placeHolderSize: 88,
           selected: false,
@@ -519,20 +532,20 @@ describe('MultiListComponent', () => {
           value: 'Personal 1',
           id: 11,
           groupName: 'Personal Header',
+          key: '1__Personal Header',
           isPlaceHolder: false,
           selected: false,
           disabled: true,
           groupIndex: 1,
-          key: undefined,
         },
         {
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal Header',
+          key: '1__Personal Header',
           isPlaceHolder: false,
           selected: false,
           groupIndex: 1,
-          key: undefined,
         },
       ];
 
@@ -577,6 +590,8 @@ describe('MultiListComponent', () => {
       expect(listChange.getSelectGroupOptions()).toEqual([
         {
           groupName: 'Basic Info Header',
+          key: '0__Basic Info Header',
+          groupIndex: 0,
           options: [
             { value: 'Basic Info 1', id: 1, selected: true },
             { value: 'Basic Info 2', id: 2, selected: false },
@@ -584,6 +599,8 @@ describe('MultiListComponent', () => {
         },
         {
           groupName: 'Personal Header',
+          key: '1__Personal Header',
+          groupIndex: 1,
           options: [
             { value: 'Personal 1', id: 11, selected: false, disabled: true },
             { value: 'Personal 2', id: 12, selected: true },

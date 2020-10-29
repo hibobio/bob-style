@@ -89,6 +89,8 @@ describe('SingleListComponent', () => {
       expect(component.listHeaders).toEqual([
         {
           groupName: 'Basic Info Header',
+          key: '0__Basic Info Header',
+          groupIndex: 0,
           isCollapsed: false,
           placeHolderSize: 88,
           selected: false,
@@ -99,6 +101,8 @@ describe('SingleListComponent', () => {
         },
         {
           groupName: 'Personal Header',
+          key: '1__Personal Header',
+          groupIndex: 1,
           isCollapsed: false,
           placeHolderSize: 88,
           selected: false,
@@ -122,7 +126,7 @@ describe('SingleListComponent', () => {
           isPlaceHolder: false,
           selected: true,
           groupIndex: 0,
-          key: undefined,
+          key: '0__Basic Info Header',
         },
         {
           value: 'Basic Info 2',
@@ -131,7 +135,7 @@ describe('SingleListComponent', () => {
           isPlaceHolder: false,
           selected: false,
           groupIndex: 0,
-          key: undefined,
+          key: '0__Basic Info Header',
         },
         {
           isPlaceHolder: true,
@@ -145,7 +149,7 @@ describe('SingleListComponent', () => {
           selected: false,
           disabled: true,
           groupIndex: 1,
-          key: undefined,
+          key: '1__Personal Header',
         },
         {
           value: 'Personal 2',
@@ -154,7 +158,7 @@ describe('SingleListComponent', () => {
           isPlaceHolder: false,
           selected: false,
           groupIndex: 1,
-          key: undefined,
+          key: '1__Personal Header',
         },
       ] as any);
     });
@@ -410,6 +414,8 @@ describe('SingleListComponent', () => {
       expect(listChange.getSelectGroupOptions()).toEqual([
         {
           groupName: 'Basic Info Header',
+          key: '0__Basic Info Header',
+          groupIndex: 0,
           options: [
             { value: 'Basic Info 1', id: 1, selected: false },
             { value: 'Basic Info 2', id: 2, selected: false },
@@ -417,6 +423,8 @@ describe('SingleListComponent', () => {
         },
         {
           groupName: 'Personal Header',
+          key: '1__Personal Header',
+          groupIndex: 1,
           options: [
             { value: 'Personal 1', id: 11, selected: false, disabled: true },
             { value: 'Personal 2', id: 12, selected: true },

@@ -42,6 +42,18 @@ import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { simpleChange } from '../../services/utils/functional-utils';
+import { getTestScheduler } from 'jasmine-marbles';
+
+const getOptionsModel = (options: SelectGroupOption[]): SelectGroupOption[] =>
+  options.map((g, i) => {
+    g = { ...g };
+    g.groupIndex = i;
+    g.key = ListModelService.prototype.getGroupKey(g);
+    return g;
+  });
+
+const getListChange = (options: SelectGroupOption[]): ListChange =>
+  new ListChange(getOptionsModel(options));
 
 describe('MultiSelectComponent', () => {
   let component: MultiSelectComponent;
@@ -148,6 +160,7 @@ describe('MultiSelectComponent', () => {
     component.selectModified.complete();
     component.selectCancelled.complete();
     component.changed.complete();
+    getTestScheduler().flush();
   });
 
   describe('OnInit', () => {
@@ -202,7 +215,9 @@ describe('MultiSelectComponent', () => {
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();
-      const expectedListChange = new ListChange(expectedOptionsMock);
+
+      const expectedListChange = getListChange(expectedOptionsMock);
+
       expect(component.selectModified.emit).toHaveBeenCalledWith(
         expectedListChange
       );
@@ -214,7 +229,7 @@ describe('MultiSelectComponent', () => {
     it('should emit onSelect with listChange and propagateChange with selected IDs array', fakeAsync(() => {
       const expectedMock = cloneDeep(optionsMock);
       expectedMock[1].options[1].selected = true;
-      const expectedListChange = new ListChange(expectedMock);
+      const expectedListChange = getListChange(expectedMock);
 
       component.openPanel();
       fixture.autoDetectChanges();
@@ -289,11 +304,11 @@ describe('MultiSelectComponent', () => {
 
       expect(component.value).toEqual([]);
       expect(component.displayValue).toBeFalsy();
-      expect(component.options).toEqual(expectedOptionsMock);
+      expect(component.options).toEqual(getOptionsModel(expectedOptionsMock));
       flush();
     }));
     it('should invoke selectChange.emit with listChange and propagateChange with []', fakeAsync(() => {
-      const expectedListChange = new ListChange(expectedOptionsMock);
+      const expectedListChange = getListChange(expectedOptionsMock);
 
       fixture.autoDetectChanges();
       component.openPanel();
@@ -436,7 +451,7 @@ describe('MultiSelectComponent', () => {
     }));
 
     it('should emit selectCancelled event and ignore option click in listChange', fakeAsync(() => {
-      const expectedListChange = new ListChange(optionsMock);
+      const expectedListChange = getListChange(optionsMock);
 
       fixture.autoDetectChanges();
       component.openPanel();
@@ -481,7 +496,7 @@ describe('MultiSelectComponent', () => {
     }));
 
     it('should invoke selectCancelled.emit with listChange and propagateChange with [3]', fakeAsync(() => {
-      const expectedListChange = new ListChange(optionsMock);
+      const expectedListChange = getListChange(optionsMock);
 
       fixture.autoDetectChanges();
       component.openPanel();

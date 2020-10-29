@@ -37,6 +37,8 @@ describe('ListModelService', () => {
       expect(headerModel).toEqual([
         {
           groupName: 'Basic Info',
+          key: 'Basic Info',
+          // groupIndex: 0,
           isCollapsed: false,
           placeHolderSize: 88,
           selected: false,
@@ -47,6 +49,8 @@ describe('ListModelService', () => {
         },
         {
           groupName: 'Personal',
+          key: 'Personal',
+          // groupIndex: 1,
           isCollapsed: false,
           placeHolderSize: 88,
           selected: false,
@@ -78,7 +82,7 @@ describe('ListModelService', () => {
       const optionsModel = listModelService.getOptionsModel(
         optionsMock,
         headerModel,
-        noGroupHeaders
+        { noGroupHeaders }
       );
 
       expect(optionsModel).toEqual([
@@ -90,19 +94,19 @@ describe('ListModelService', () => {
           value: 'Basic Info 1',
           id: 1,
           groupName: 'Basic Info',
+          key: 'Basic Info',
+          groupIndex: 0,
           isPlaceHolder: false,
           selected: true,
-          groupIndex: 0,
-          key: undefined,
         },
         {
           value: 'Basic Info 2',
           id: 2,
           groupName: 'Basic Info',
+          key: 'Basic Info',
           isPlaceHolder: false,
           selected: false,
           groupIndex: 0,
-          key: undefined,
         },
         {
           isPlaceHolder: true,
@@ -112,19 +116,19 @@ describe('ListModelService', () => {
           value: 'Personal 1',
           id: 11,
           groupName: 'Personal',
+          key: 'Personal',
           isPlaceHolder: false,
           selected: false,
           groupIndex: 1,
-          key: undefined,
         },
         {
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal',
+          key: 'Personal',
           isPlaceHolder: false,
           selected: false,
           groupIndex: 1,
-          key: undefined,
         },
       ] as any);
     });
@@ -147,7 +151,7 @@ describe('ListModelService', () => {
       const optionsModel = listModelService.getOptionsModel(
         optionsMock,
         headerModel,
-        noGroupHeaders
+        { noGroupHeaders }
       );
 
       expect(optionsModel).toEqual([
@@ -169,6 +173,8 @@ describe('ListModelService', () => {
       const headerModel = [
         {
           groupName: 'Basic Info',
+          key: 'Basic Info',
+          groupIndex: 0,
           isCollapsed: false,
           placeHolderSize: 88,
           selected: false,
@@ -176,6 +182,8 @@ describe('ListModelService', () => {
         },
         {
           groupName: 'Personal',
+          key: 'Personal',
+          groupIndex: 1,
           isCollapsed: false,
           placeHolderSize: 88,
           selected: false,
@@ -185,7 +193,7 @@ describe('ListModelService', () => {
       const optionsModel = listModelService.getOptionsModel(
         optionsMock,
         headerModel,
-        noGroupHeaders
+        { noGroupHeaders }
       );
       const options = [
         {
@@ -207,6 +215,8 @@ describe('ListModelService', () => {
       expect(headerModel).toEqual([
         {
           groupName: 'Basic Info',
+          key: 'Basic Info',
+          groupIndex: 0,
           isCollapsed: false,
           placeHolderSize: 88,
           selected: false,
@@ -215,6 +225,8 @@ describe('ListModelService', () => {
         },
         {
           groupName: 'Personal',
+          key: 'Personal',
+          groupIndex: 1,
           isCollapsed: false,
           placeHolderSize: 88,
           selected: true,
@@ -232,19 +244,19 @@ describe('ListModelService', () => {
           value: 'Basic Info 1',
           id: 1,
           groupName: 'Basic Info',
+          key: 'Basic Info',
           isPlaceHolder: false,
           selected: true,
           groupIndex: 0,
-          key: undefined,
         },
         {
           value: 'Basic Info 2',
           id: 2,
           groupName: 'Basic Info',
+          key: 'Basic Info',
           isPlaceHolder: false,
           selected: false,
           groupIndex: 0,
-          key: undefined,
         },
         {
           isPlaceHolder: true,
@@ -254,19 +266,19 @@ describe('ListModelService', () => {
           value: 'Personal 1',
           id: 11,
           groupName: 'Personal',
+          key: 'Personal',
           isPlaceHolder: false,
           selected: true,
           groupIndex: 1,
-          key: undefined,
         },
         {
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal',
+          key: 'Personal',
           isPlaceHolder: false,
           selected: true,
           groupIndex: 1,
-          key: undefined,
         },
       ] as any);
     });
@@ -275,6 +287,8 @@ describe('ListModelService', () => {
       const headerModel = [
         {
           groupName: 'Basic Info',
+          key: 'Basic Info',
+          groupIndex: 0,
           isCollapsed: true,
           placeHolderSize: 88,
           selected: true,
@@ -282,6 +296,8 @@ describe('ListModelService', () => {
         },
         {
           groupName: 'Personal',
+          key: 'Personal',
+          groupIndex: 1,
           isCollapsed: true,
           placeHolderSize: 88,
           selected: true,
@@ -291,7 +307,7 @@ describe('ListModelService', () => {
       const optionsModel = listModelService.getOptionsModel(
         optionsMock,
         headerModel,
-        noGroupHeaders
+        { noGroupHeaders }
       );
       const options = [
         {
@@ -313,6 +329,8 @@ describe('ListModelService', () => {
       expect(headerModel).toEqual([
         {
           groupName: 'Basic Info',
+          key: 'Basic Info',
+          groupIndex: 0,
           isCollapsed: true,
           placeHolderSize: 88,
           selected: false,
@@ -321,6 +339,8 @@ describe('ListModelService', () => {
         },
         {
           groupName: 'Personal',
+          key: 'Personal',
+          groupIndex: 1,
           isCollapsed: true,
           placeHolderSize: 88,
           selected: true,
