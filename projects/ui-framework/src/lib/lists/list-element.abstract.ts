@@ -411,7 +411,9 @@ export abstract class BaseListElement
       this.optionClick({
         ...this.options[header.groupIndex].options[0],
         isPlaceHolder: false,
+        key: this.modelSrvc.getGroupKey(header),
         groupName: header.groupName,
+        groupIndex: header.groupIndex,
       } as ListOption);
     }
   }
@@ -494,7 +496,7 @@ export abstract class BaseListElement
         collapseHeaders: config.collapseHeaders,
         hasCheckbox: this.type === SelectType.multi && isClassic,
         allowGroupIsOption:
-          !config.isSearching &&
+          // !config.isSearching &&
           isClassic &&
           !this.noGroupHeaders &&
           (this.options.length > 1 || this.showSingleGroupHeader),
