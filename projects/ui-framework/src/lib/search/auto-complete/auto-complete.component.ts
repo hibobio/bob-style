@@ -83,8 +83,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'options')) {
       this.options = changes.options.currentValue;
-      this.filteredOptions = this.getFilteredOptions();
-      this.ifSkipFiltering();
+      this.updateFilteredOptions();
     }
   }
 
@@ -116,10 +115,12 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     this.destroyPanel(true);
   }
 
-  private ifSkipFiltering() {
+  private updateFilteredOptions() {
     if (this.skipOptionsFiltering && this.options.length) {
       this.filteredOptions = this.options;
       this.openPanel();
+    } else {
+      this.filteredOptions = this.getFilteredOptions();
     }
   }
 
