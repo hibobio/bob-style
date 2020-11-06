@@ -60,6 +60,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     InputAutoCompleteOptions.off;
   @Input() options: AutoCompleteOption[];
   @Input() displayOptionsOnFocus = false;
+  @Input() skipOptionsFiltering = false;
 
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<
@@ -83,6 +84,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     if (has(changes, 'options')) {
       this.options = changes.options.currentValue;
       this.filteredOptions = this.getFilteredOptions();
+      this.ifSkipFiltering();
     }
   }
 
@@ -112,6 +114,13 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.destroyPanel(true);
+  }
+
+  private ifSkipFiltering() {
+    if (this.skipOptionsFiltering && this.options.length) {
+      this.filteredOptions = this.options;
+      this.openPanel();
+    }
   }
 
   private updateFilteredList(): void {
