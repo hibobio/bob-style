@@ -12,7 +12,7 @@ import {
   NgZone,
   ChangeDetectorRef,
 } from '@angular/core';
-import { escapeRegExp, has } from 'lodash';
+import { has } from 'lodash';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Subscription } from 'rxjs';
@@ -67,7 +67,6 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   >();
 
   searchValue = '';
-  filteredOptions: AutoCompleteOption[];
 
   // Used by ListPanelService:
   private subscribtions: Subscription[] = [];
@@ -82,7 +81,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'options')) {
       this.options = changes.options.currentValue;
-      this.filteredOptions = this.getFilteredOptions();
+      this.openPanel();
     }
   }
 
@@ -93,15 +92,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     } else {
       this.destroyPanel();
     }
-    this.updateFilteredList();
     this.searchChange.emit(this.searchValue);
-  }
-
-  onSearchFocus(): void {
-    if (this.displayOptionsOnFocus) {
-      this.openPanel();
-      this.updateFilteredList();
-    }
   }
 
   onOptionSelect(option: AutoCompleteOption): void {
@@ -114,13 +105,6 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     this.destroyPanel(true);
   }
 
-  private updateFilteredList(): void {
-    this.filteredOptions = this.getFilteredOptions();
-    if (this.filteredOptions.length === 0) {
-      this.destroyPanel();
-    }
-  }
-
   private openPanel(): void {
     if (this.options.length > 0) {
       this.listPanelSrvc.openPanel(this);
@@ -129,13 +113,5 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
 
   private destroyPanel(skipEmit = false): void {
     this.listPanelSrvc.destroyPanel(this, skipEmit);
-  }
-
-  private getFilteredOptions(): AutoCompleteOption[] {
-    const matcher = new RegExp(escapeRegExp(this.searchValue), 'i');
-
-    return this.options.filter(
-      (option) => option.value?.match(matcher) || option.subText?.match(matcher)
-    );
   }
 }
