@@ -11,7 +11,7 @@
           [placeholder]="placeholder"
           [hideLabelOnFocus]="hideLabelOnFocus"
           [enableBrowserAutoComplete]="enableBrowserAutoComplete"
-          (searchFocus)="openPanel()"
+          (searchFocus)="onSearchFocus()"
           (searchChange)="onSearchChange($event)">
 </b-search>
 
@@ -21,7 +21,7 @@
 
     <b-auto-complete-panel (optionSelect)="onOptionSelect($event)"
                            [searchValue]="searchValue"
-                           [options]="options"
+                           [options]="filteredOptions"
                            [searchInput]="searchInput">
     </b-auto-complete-panel>
 
