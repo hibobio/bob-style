@@ -30,6 +30,13 @@ import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-im
 import { MockComponent } from 'ng-mocks';
 import { IconComponent } from '../../icons/icon.component';
 
+const detectChanges = (lightbox: LightboxData, detectOnRef = true) => {
+  if (detectOnRef) {
+    lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+  }
+  lightbox.lightboxComponentRef.instance['cd'].detectChanges();
+};
+
 describe('LightboxService', () => {
   let lightbox: LightboxData;
   let lightboxService: LightboxService;
@@ -84,7 +91,7 @@ describe('LightboxService', () => {
   describe('Lightbox Service', () => {
     it('should open Lightbox with image', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);
-      lightbox.lightboxComponentRef.instance['cd'].detectChanges();
+      detectChanges(lightbox);
 
       const lightContainerEl = overlayElement.querySelector(
         '.lightbox-container'
@@ -101,7 +108,7 @@ describe('LightboxService', () => {
 
     it('should open Lightbox with video', () => {
       lightbox = lightboxService.showLightbox(testConfigVideo);
-      lightbox.lightboxComponentRef.instance['cd'].detectChanges();
+      detectChanges(lightbox);
 
       const lightContainerEl = overlayElement.querySelector(
         '.lightbox-container'
@@ -120,7 +127,7 @@ describe('LightboxService', () => {
 
     it('should open Lightbox with Avatar component', fakeAsync(() => {
       lightbox = lightboxService.showLightbox(testConfigComponent);
-      lightbox.lightboxComponentRef.instance['cd'].detectChanges();
+      detectChanges(lightbox, false);
 
       flush();
 
@@ -147,7 +154,7 @@ describe('LightboxService', () => {
 
     it('should add the right classnames and respect fillScreen property', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);
-      lightbox.lightboxComponentRef.instance['cd'].detectChanges();
+      detectChanges(lightbox);
       const lightContainerEl = overlayElement.querySelector(
         'b-lightbox'
       ) as HTMLElement;
@@ -157,7 +164,7 @@ describe('LightboxService', () => {
 
     it('should close Lightbox with Close button', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);
-      lightbox.lightboxComponentRef.instance['cd'].detectChanges();
+      detectChanges(lightbox);
 
       const closeButEl = overlayElement.querySelector(
         '.close-button'
