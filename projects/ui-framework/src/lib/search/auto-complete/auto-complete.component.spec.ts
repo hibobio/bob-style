@@ -38,7 +38,7 @@ describe('AutoCompleteComponent', () => {
       return {
         value: `Basic Info E${k} - option`,
         subText: `subtext e${k}`,
-        id: k,
+        id: k.toString(),
       };
     });
 
