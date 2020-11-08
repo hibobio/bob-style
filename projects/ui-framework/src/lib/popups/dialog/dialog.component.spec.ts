@@ -18,6 +18,7 @@ import { SquareButtonComponent } from '../../buttons/square/square.component';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 import { fakeAsyncFlush } from '../../services/utils/test-helpers';
+import { WindowRefProvideMock } from '../../tests/services.stub.spec';
 
 describe('DialogComponent', () => {
   let component: DialogComponent;
@@ -50,12 +51,16 @@ describe('DialogComponent', () => {
         MockComponent(SquareButtonComponent),
       ],
       imports: [NoopAnimationsModule, DialogModule, MatDialogModule],
-      providers: [{ provide: MatDialogRef, useValue: spyMatDialogRef }],
+      providers: [
+        { provide: MatDialogRef, useValue: spyMatDialogRef },
+        WindowRefProvideMock(),
+      ],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(DialogComponent);
         component = fixture.componentInstance;
+        component.closeModalOnHistoryBack = () => {};
         component.dialogTitle = dialogTitle;
         component.dialogButtons = dialogButtonsConfig;
       });

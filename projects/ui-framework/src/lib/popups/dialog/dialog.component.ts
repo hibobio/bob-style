@@ -15,6 +15,7 @@ import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { SLIDE_UP_DOWN } from '../../style/animations';
 import { isBoolean, isFunction } from '../../services/utils/functional-utils';
+import { WindowRef } from '../../services/utils/window-ref.service';
 
 @Component({
   selector: 'b-dialog',
@@ -40,7 +41,8 @@ import { isBoolean, isFunction } from '../../services/utils/functional-utils';
 export class DialogComponent implements OnInit, OnDestroy {
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private windowRef: WindowRef
   ) {}
 
   @Input() dialogTitle: string;
@@ -79,7 +81,7 @@ export class DialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    history.pushState(
+    this.windowRef.nativeWindow.history.pushState(
       {
         modal: true,
         desc: 'modal is open',
@@ -89,8 +91,8 @@ export class DialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (window.history.state.modal) {
-      history.back();
+    if (this.windowRef.nativeWindow.history.state.modal) {
+      this.windowRef.nativeWindow.history.back();
     }
     this.dialogRef.close();
   }

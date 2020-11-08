@@ -7,6 +7,7 @@ import {
   OnInit,
   OnDestroy,
   HostListener,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
@@ -16,6 +17,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Keys } from '../../enums';
 import { isKey } from '../../services/utils/functional-utils';
+import { WindowRef } from '../../services/utils/window-ref.service';
 
 @Component({
   selector: 'b-lightbox',
@@ -23,7 +25,11 @@ import { isKey } from '../../services/utils/functional-utils';
   styleUrls: ['./lightbox.component.scss'],
 })
 export class LightboxComponent implements OnInit, OnChanges, OnDestroy {
-  constructor(private utilsService: UtilsService) {}
+  constructor(
+    private utilsService: UtilsService,
+    private windowRef: WindowRef,
+    private cd: ChangeDetectorRef // needed for tests
+  ) {}
 
   @Input() config: LightboxConfig;
 
@@ -53,7 +59,7 @@ export class LightboxComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    history.pushState(
+    this.windowRef.nativeWindow.history.pushState(
       {
         lightbox: true,
         desc: 'lightbox is open',
@@ -70,12 +76,10 @@ export class LightboxComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (window.history.state.lightbox) {
-      history.back();
+    if (this.windowRef.nativeWindow.history.state.lightbox) {
+      this.windowRef.nativeWindow.history.back();
     }
-    if (this.windowKeydownSubscriber) {
-      this.windowKeydownSubscriber.unsubscribe();
-    }
+    this.windowKeydownSubscriber?.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

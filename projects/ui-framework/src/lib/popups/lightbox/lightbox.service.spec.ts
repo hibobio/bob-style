@@ -4,7 +4,6 @@ import {
   flush,
   inject,
   TestBed,
-  tick,
 } from '@angular/core/testing';
 import { LightboxService } from './lightbox.service';
 import { LightboxData } from './lightbox.interface';
@@ -25,9 +24,9 @@ import {
 import {
   DOMhelpersProvideMock,
   MockCompsModule,
+  WindowRefProvideMock,
 } from '../../tests/services.stub.spec';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
-import { TruncateTooltipComponent } from '../truncate-tooltip/truncate-tooltip.component';
 import { MockComponent } from 'ng-mocks';
 import { IconComponent } from '../../icons/icon.component';
 
@@ -64,7 +63,11 @@ describe('LightboxService', () => {
         AvatarImageComponent,
         MockComponent(IconComponent),
       ],
-      providers: [LightboxService, DOMhelpersProvideMock()],
+      providers: [
+        LightboxService,
+        DOMhelpersProvideMock(),
+        WindowRefProvideMock(),
+      ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     });
 
@@ -117,7 +120,7 @@ describe('LightboxService', () => {
 
     it('should open Lightbox with Avatar component', fakeAsync(() => {
       lightbox = lightboxService.showLightbox(testConfigComponent);
-      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+      lightbox.lightboxComponentRef.instance['cd'].detectChanges();
 
       flush();
 
@@ -194,21 +197,6 @@ describe('LightboxService', () => {
       } catch (e) {
         expect(e).toBeTruthy();
       }
-      lightboxService.closeLightbox();
-    });
-  });
-
-  describe('LightboxComponent windowKeydownSubscriber', () => {
-    it('should unsubscribe windowKeydownSubscriber', () => {
-      lightbox = lightboxService.showLightbox(testConfigImage);
-      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
-      expect(
-        lightbox.lightboxComponentRef.instance['windowKeydownSubscriber'].closed
-      ).toBe(false);
-      lightbox.lightboxComponentRef.instance.ngOnDestroy();
-      expect(
-        lightbox.lightboxComponentRef.instance['windowKeydownSubscriber'].closed
-      ).toBe(true);
       lightboxService.closeLightbox();
     });
   });

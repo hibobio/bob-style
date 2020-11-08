@@ -18,6 +18,7 @@ import { TruncateTooltipType } from '../popups/truncate-tooltip/truncate-tooltip
 import { TooltipPosition } from '@angular/material/tooltip';
 import { TooltipClass } from '../popups/tooltip/tooltip.enum';
 import { TruncateTooltipComponent } from '../popups/truncate-tooltip/truncate-tooltip.component';
+import { WindowLike, WindowRef } from '../services/utils/window-ref.service';
 
 // This file is intentionally named .spec.ts - to fix build problems due to missing jasmine namespace
 
@@ -189,3 +190,45 @@ export class TruncateTooltipMockComponent {
   providers: [],
 })
 export class MockCompsModule {}
+
+export const getWindowRefMock = () =>
+  new Mock<WindowRef>({
+    nativeWindow: ({
+      open: () => {},
+      location: {
+        hash: '',
+        href: '',
+        hostname: 'hostname',
+        search: 'search',
+        pathname: 'pathname',
+        reload: () => {},
+      },
+      dispatchEvent: () => true,
+      addEventListener: window.addEventListener,
+      removeEventListener: window.removeEventListener,
+      scrollTo: () => {},
+      sessionStorage: {
+        setItem: () => {},
+        removeItem: () => {},
+        clear: () => {},
+      },
+      analytics: {
+        identify: () => {},
+        alias: () => {},
+        group: () => {},
+        track: () => {},
+        reset: () => {},
+        page: () => {},
+      },
+      history: {
+        state: {},
+        pushState: () => {},
+        back: () => {},
+      },
+    } as any) as WindowLike,
+  });
+
+export const WindowRefProvideMock = (mock: Mock<WindowRef> = null) => ({
+  provide: WindowRef,
+  useFactory: () => (mock || getWindowRefMock()).Object,
+});
