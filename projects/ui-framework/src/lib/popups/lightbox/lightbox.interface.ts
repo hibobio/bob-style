@@ -10,6 +10,7 @@ export interface LightboxConfig {
   image?: string;
   video?: string | SafeResourceUrl;
   fillScreen?: boolean;
+  iframe?: string | SafeResourceUrl;
 }
 
 export interface LightboxData {

@@ -6,15 +6,14 @@ import {
   HostBinding,
   OnInit,
   OnDestroy,
-  HostListener,
   ChangeDetectorRef,
 } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
 import { LightboxConfig } from './lightbox.interface';
 import { UtilsService } from '../../services/utils/utils.service';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { fromEvent, merge, Subscription } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
 import { Keys } from '../../enums';
 import { isKey } from '../../services/utils/functional-utils';
 import { WindowRef } from '../../services/utils/window-ref.service';
@@ -38,12 +37,8 @@ export class LightboxComponent implements OnInit, OnChanges, OnDestroy {
   public readonly iconSize = IconSize;
   public readonly iconColor = IconColor;
   public readonly buttons = ButtonType;
-  public windowKeydownSubscriber: Subscription;
 
-  @HostListener('window:popstate', ['$event'])
-  closeLightboxOnHistoryBack() {
-    this.closeLightboxCallback();
-  }
+  private subs: Subscription[] = [];
 
   @HostBinding('class')
   get getClass(): string {
@@ -59,6 +54,19 @@ export class LightboxComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.subs.push(
+      merge(
+        fromEvent(this.windowRef.nativeWindow as Window, 'popstate'),
+        this.utilsService
+          .getWindowKeydownEvent()
+          .pipe(filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)))
+      )
+        .pipe(take(1))
+        .subscribe(() => {
+          this.closeLightboxCallback();
+        })
+    );
+
     this.windowRef.nativeWindow.history.pushState(
       {
         lightbox: true,
@@ -66,20 +74,17 @@ export class LightboxComponent implements OnInit, OnChanges, OnDestroy {
       },
       null
     );
-
-    this.windowKeydownSubscriber = this.utilsService
-      .getWindowKeydownEvent()
-      .pipe(filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)))
-      .subscribe(() => {
-        this.closeLightboxCallback();
-      });
   }
 
   ngOnDestroy(): void {
-    if (this.windowRef.nativeWindow.history.state.lightbox) {
+    if (this.windowRef.nativeWindow.history.state?.lightbox) {
       this.windowRef.nativeWindow.history.back();
     }
-    this.windowKeydownSubscriber?.unsubscribe();
+
+    this.subs.forEach((sub) => {
+      sub.unsubscribe();
+    });
+    this.subs.length = 0;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

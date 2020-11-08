@@ -13,14 +13,14 @@
        alt="">
 
   <iframe class="lightbox-video"
-          *ngIf="config.video && !config.image"
-          [src]="config.video"
+          *ngIf="(config.iframe || config.video) && !config.image"
+          [src]="config.iframe || config.video"
           frameborder="0"
           allowfullscreen>
   </iframe>
 
   <b-component-renderer class="lightbox-component"
-                        *ngIf="config.component && !config.image && !config.video"
+                        *ngIf="config.component && !config.image && !config.video && !config.iframe"
                         [render]="config.component"
                         (click.outside-zone)="$event.stopPropagation()">
   </b-component-renderer>

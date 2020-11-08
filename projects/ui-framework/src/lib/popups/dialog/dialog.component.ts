@@ -91,7 +91,7 @@ export class DialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.windowRef.nativeWindow.history.state.modal) {
+    if (this.windowRef.nativeWindow.history.state?.modal) {
       this.windowRef.nativeWindow.history.back();
     }
     this.dialogRef.close();
