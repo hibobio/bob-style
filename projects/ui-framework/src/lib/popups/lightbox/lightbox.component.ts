@@ -5,7 +5,8 @@ import {
   OnChanges,
   HostBinding,
   OnInit,
-  OnDestroy
+  OnDestroy,
+  HostListener,
 } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
@@ -19,7 +20,7 @@ import { isKey } from '../../services/utils/functional-utils';
 @Component({
   selector: 'b-lightbox',
   templateUrl: './lightbox.component.html',
-  styleUrls: ['./lightbox.component.scss']
+  styleUrls: ['./lightbox.component.scss'],
 })
 export class LightboxComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private utilsService: UtilsService) {}
@@ -32,6 +33,11 @@ export class LightboxComponent implements OnInit, OnChanges, OnDestroy {
   public readonly iconColor = IconColor;
   public readonly buttons = ButtonType;
   public windowKeydownSubscriber: Subscription;
+
+  @HostListener('window:popstate', ['$event'])
+  closeLightboxOnHistoryBack() {
+    this.closeLightboxCallback();
+  }
 
   @HostBinding('class')
   get getClass(): string {
@@ -47,6 +53,14 @@ export class LightboxComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
+    history.pushState(
+      {
+        lightbox: true,
+        desc: 'lightbox is open',
+      },
+      null
+    );
+
     this.windowKeydownSubscriber = this.utilsService
       .getWindowKeydownEvent()
       .pipe(filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)))
@@ -56,6 +70,9 @@ export class LightboxComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (window.history.state.lightbox) {
+      history.back();
+    }
     if (this.windowKeydownSubscriber) {
       this.windowKeydownSubscriber.unsubscribe();
     }

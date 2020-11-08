@@ -5,6 +5,8 @@ import {
   OnDestroy,
   Output,
   EventEmitter,
+  OnInit,
+  HostListener,
 } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Icons } from '../../icons/icons.enum';
@@ -35,7 +37,7 @@ import { isBoolean, isFunction } from '../../services/utils/functional-utils';
     ]),
   ],
 })
-export class DialogComponent implements OnDestroy {
+export class DialogComponent implements OnInit, OnDestroy {
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
     private cdr: ChangeDetectorRef
@@ -71,7 +73,25 @@ export class DialogComponent implements OnDestroy {
 
   private confirmationControlFromAbove = false;
 
+  @HostListener('window:popstate', ['$event'])
+  closeModalOnHistoryBack() {
+    this.closeDialog();
+  }
+
+  ngOnInit(): void {
+    history.pushState(
+      {
+        modal: true,
+        desc: 'modal is open',
+      },
+      null
+    );
+  }
+
   ngOnDestroy(): void {
+    if (window.history.state.modal) {
+      history.back();
+    }
     this.dialogRef.close();
   }
 
