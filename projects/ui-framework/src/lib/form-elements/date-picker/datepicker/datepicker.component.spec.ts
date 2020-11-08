@@ -152,11 +152,11 @@ describe('DatepickerComponent', () => {
     });
 
     it('should set min date for MatDatepicker', () => {
-      expect(dateToString(picker._minDate)).toEqual('2019-09-10');
+      expect(dateToString(picker._getMinDate())).toEqual('2019-09-10');
     });
 
     it('should set max date for MatDatepicker', () => {
-      expect(dateToString(picker._maxDate)).toEqual('2019-09-25');
+      expect(dateToString(picker._getMaxDate())).toEqual('2019-09-25');
     });
   });
 
