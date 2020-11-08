@@ -57,7 +57,7 @@ const optionsMock: AutoCompleteOption[] = Array.from(Array(20), (_, k) => {
   return {
     value: mockText(randomNumber(2, 5)),
     subText: mockText(randomNumber(2, 5)),
-    id: k
+    id: k.toString()
   };
 });
 
