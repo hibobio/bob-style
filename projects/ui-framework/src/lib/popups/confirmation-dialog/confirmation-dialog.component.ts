@@ -9,14 +9,14 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   templateUrl: './confirmation-dialog.component.html',
 })
 export class ConfirmationDialogComponent implements OnDestroy {
-  readonly buttonSize = ButtonSize;
-  readonly buttonType = ButtonType;
-  readonly icons = Icons;
-
   constructor(
     public dialogRef: MatDialogRef<ConfirmationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public config: ConfirmationDialogConfig
   ) {}
+
+  readonly buttonSize = ButtonSize;
+  readonly buttonType = ButtonType;
+  readonly icons = Icons;
 
   ngOnDestroy(): void {
     this.dialogRef.close();

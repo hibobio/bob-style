@@ -75,8 +75,7 @@ export class DialogComponent implements OnInit, OnDestroy {
 
   private confirmationControlFromAbove = false;
 
-  @HostListener('window:popstate', ['$event'])
-  closeModalOnHistoryBack() {
+  @HostListener('window:popstate') closeModalOnHistoryBack() {
     this.closeDialog();
   }
 
