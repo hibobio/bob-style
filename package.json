@@ -43,7 +43,7 @@
     "highcharts": "^7.1.2",
     "lodash": "^4.17.15",
     "ngx-smooth-dnd": "^0.4.1",
-    "rxjs": "^6.5.4",
+    "rxjs": "^6.6.3",
     "tributejs": "^4.1.1",
     "tslib": "^2.0.0",
     "xss": "^1.0.7",
