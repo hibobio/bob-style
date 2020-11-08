@@ -84,7 +84,7 @@ describe('LightboxService', () => {
   describe('Lightbox Service', () => {
     it('should open Lightbox with image', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);
-      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+      lightbox.lightboxComponentRef.instance['cd'].detectChanges();
 
       const lightContainerEl = overlayElement.querySelector(
         '.lightbox-container'
@@ -101,7 +101,7 @@ describe('LightboxService', () => {
 
     it('should open Lightbox with video', () => {
       lightbox = lightboxService.showLightbox(testConfigVideo);
-      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+      lightbox.lightboxComponentRef.instance['cd'].detectChanges();
 
       const lightContainerEl = overlayElement.querySelector(
         '.lightbox-container'
@@ -147,7 +147,7 @@ describe('LightboxService', () => {
 
     it('should add the right classnames and respect fillScreen property', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);
-      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+      lightbox.lightboxComponentRef.instance['cd'].detectChanges();
       const lightContainerEl = overlayElement.querySelector(
         'b-lightbox'
       ) as HTMLElement;
@@ -157,7 +157,7 @@ describe('LightboxService', () => {
 
     it('should close Lightbox with Close button', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);
-      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+      lightbox.lightboxComponentRef.instance['cd'].detectChanges();
 
       const closeButEl = overlayElement.querySelector(
         '.close-button'
