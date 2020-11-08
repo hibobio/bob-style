@@ -30,11 +30,8 @@ import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-im
 import { MockComponent } from 'ng-mocks';
 import { IconComponent } from '../../icons/icon.component';
 
-const detectChanges = (lightbox: LightboxData, detectOnRef = true) => {
-  if (detectOnRef) {
-    lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
-  }
-  lightbox.lightboxComponentRef.instance['cd'].detectChanges();
+const detectChanges = (lightbox: LightboxData) => {
+  lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
 };
 
 describe('LightboxService', () => {
@@ -127,7 +124,7 @@ describe('LightboxService', () => {
 
     it('should open Lightbox with Avatar component', fakeAsync(() => {
       lightbox = lightboxService.showLightbox(testConfigComponent);
-      detectChanges(lightbox, false);
+      detectChanges(lightbox);
 
       flush();
 

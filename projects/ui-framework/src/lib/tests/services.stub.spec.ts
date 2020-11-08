@@ -204,8 +204,8 @@ export const getWindowRefMock = () =>
         reload: () => {},
       },
       dispatchEvent: () => true,
-      addEventListener: window.addEventListener,
-      removeEventListener: window.removeEventListener,
+      addEventListener: () => {},
+      removeEventListener: () => {},
       scrollTo: () => {},
       sessionStorage: {
         setItem: () => {},

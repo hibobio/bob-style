@@ -4,7 +4,6 @@ import {
   fakeAsync,
   inject,
   TestBed,
-  tick,
   resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { MultiSelectPanelComponent } from './multi-select-panel.component';
@@ -37,6 +36,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CheckboxComponent } from '../../form-elements/checkbox/checkbox.component';
 import { ButtonComponent } from '../../buttons/button/button.component';
 import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
+import { fakeAsyncFlush } from '../../services/utils/test-helpers';
 
 describe('MultiSelectPanelComponent', () => {
   let component: MultiSelectPanelComponent;
@@ -124,7 +124,7 @@ describe('MultiSelectPanelComponent', () => {
     component.options = optionsMock;
     fixture.autoDetectChanges();
     component.openPanel();
-    tick(500);
+    fakeAsyncFlush();
   }));
 
   describe('panel', () => {

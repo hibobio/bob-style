@@ -5,6 +5,7 @@ import { DialogConfig } from '../dialog.interface';
 import { DocumentRef } from '../../../services/utils/document-ref.service';
 import { WindowRef } from '../../../services/utils/window-ref.service';
 import { DIALOG_CONFIG_DEF, DIALOG_SIZE_TO_WIDTH } from '../dialog.const';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +51,7 @@ export class DialogService {
 
     dialogRef
       .afterClosed()
+      .pipe(take(1))
       .subscribe(() =>
         this.documentRef.nativeDocument.body.style.removeProperty(
           'padding-right'

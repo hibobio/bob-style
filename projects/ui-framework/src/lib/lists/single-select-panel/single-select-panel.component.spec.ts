@@ -4,7 +4,6 @@ import {
   fakeAsync,
   inject,
   TestBed,
-  tick,
   resetFakeAsyncZone,
 } from '@angular/core/testing';
 import { SingleSelectPanelComponent } from './single-select-panel.component';
@@ -30,6 +29,7 @@ import { ListModelService } from '../list-service/list-model.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { SingleListComponent } from '../single-list/single-list.component';
+import { fakeAsyncFlush } from '../../services/utils/test-helpers';
 
 describe('SingleSelectPanelComponent', () => {
   let component: SingleSelectPanelComponent;
@@ -110,7 +110,7 @@ describe('SingleSelectPanelComponent', () => {
     component.options = optionsMock;
     fixture.autoDetectChanges();
     component.openPanel();
-    tick(500);
+    fakeAsyncFlush();
   }));
 
   describe('panel', () => {

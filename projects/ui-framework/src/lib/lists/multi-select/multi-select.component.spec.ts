@@ -2,7 +2,6 @@ import {
   async,
   ComponentFixture,
   fakeAsync,
-  flush,
   inject,
   TestBed,
   tick,
@@ -43,6 +42,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { simpleChange } from '../../services/utils/functional-utils';
 import { getTestScheduler } from 'jasmine-marbles';
+import { fakeAsyncFlush } from '../../services/utils/test-helpers';
 
 const getOptionsModel = (options: SelectGroupOption[]): SelectGroupOption[] =>
   options.map((g, i) => {
@@ -203,7 +203,7 @@ describe('MultiSelectComponent', () => {
       )[3] as HTMLElement).click();
       expect(component.value).toEqual([1, 11, 12]);
 
-      flush();
+      fakeAsyncFlush();
     }));
 
     it('should emit onSelectModified with listChange', fakeAsync(() => {
@@ -221,7 +221,8 @@ describe('MultiSelectComponent', () => {
       expect(component.selectModified.emit).toHaveBeenCalledWith(
         expectedListChange
       );
-      flush();
+
+      fakeAsyncFlush();
     }));
   });
 
@@ -250,7 +251,8 @@ describe('MultiSelectComponent', () => {
         expectedListChange
       );
       expect(component.propagateChange).toHaveBeenCalledWith([1, 11, 12]);
-      flush();
+
+      fakeAsyncFlush();
     }));
 
     it('should close the panel on apply', fakeAsync(() => {
@@ -269,7 +271,8 @@ describe('MultiSelectComponent', () => {
       applyButton.click();
 
       expect(component['destroyPanel']).toHaveBeenCalled();
-      flush();
+
+      fakeAsyncFlush();
     }));
   });
 
@@ -305,7 +308,8 @@ describe('MultiSelectComponent', () => {
       expect(component.value).toEqual([]);
       expect(component.displayValue).toBeFalsy();
       expect(component.options).toEqual(getOptionsModel(expectedOptionsMock));
-      flush();
+
+      fakeAsyncFlush();
     }));
     it('should invoke selectChange.emit with listChange and propagateChange with []', fakeAsync(() => {
       const expectedListChange = getListChange(expectedOptionsMock);
@@ -331,7 +335,8 @@ describe('MultiSelectComponent', () => {
         expectedListChange
       );
       expect(component.propagateChange).toHaveBeenCalledWith([]);
-      flush();
+
+      fakeAsyncFlush();
     }));
   });
 
@@ -394,7 +399,8 @@ describe('MultiSelectComponent', () => {
       expect(tooltipEl.nativeElement.innerText).toEqual(
         'Basic Info 1, Personal 1, Personal 2'
       );
-      flush();
+
+      fakeAsyncFlush();
     }));
   });
 
@@ -432,7 +438,8 @@ describe('MultiSelectComponent', () => {
 
       expect(tooltipEl).not.toBeFalsy();
       expect(totalValuesCounter.innerText).toEqual('(4)');
-      flush();
+
+      fakeAsyncFlush();
     }));
   });
 
@@ -447,7 +454,8 @@ describe('MultiSelectComponent', () => {
       component.onCancel();
 
       expect(component['destroyPanel']).toHaveBeenCalled();
-      flush();
+
+      fakeAsyncFlush();
     }));
 
     it('should emit selectCancelled event and ignore option click in listChange', fakeAsync(() => {
@@ -466,7 +474,8 @@ describe('MultiSelectComponent', () => {
       expect(component.selectCancelled.emit).toHaveBeenCalledWith(
         expectedListChange
       );
-      flush();
+
+      fakeAsyncFlush();
     }));
   });
 
@@ -492,7 +501,8 @@ describe('MultiSelectComponent', () => {
       expect(component.value).toEqual([1, 11]);
       expect(component.displayValue).toEqual('Basic Info 1, Personal 1');
       expect(component.options).toEqual(optionsMock);
-      flush();
+
+      fakeAsyncFlush();
     }));
 
     it('should invoke selectCancelled.emit with listChange and propagateChange with [3]', fakeAsync(() => {
@@ -518,7 +528,8 @@ describe('MultiSelectComponent', () => {
       expect(component.selectCancelled.emit).toHaveBeenCalledWith(
         expectedListChange
       );
-      flush();
+
+      fakeAsyncFlush();
     }));
   });
 });

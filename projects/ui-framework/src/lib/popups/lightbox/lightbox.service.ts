@@ -4,12 +4,24 @@ import { LightboxComponent } from './lightbox.component';
 import { Overlay, OverlayConfig } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { URLutils } from '../../services/url/url-utils.service';
-import { take } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
+import { fromEvent, merge, Subscription } from 'rxjs';
+import { WindowRef } from '../../services/utils/window-ref.service';
+import { UtilsService } from '../../services/utils/utils.service';
+import { isKey } from '../../services/utils/functional-utils';
+import { Keys } from '../../enums';
 
 @Injectable()
 export class LightboxService {
   lightbox: LightboxData;
-  constructor(private overlay: Overlay, private url: URLutils) {}
+  constructor(
+    private overlay: Overlay,
+    private url: URLutils,
+    private utilsService: UtilsService,
+    private windowRef: WindowRef
+  ) {}
+
+  private subs: Subscription[] = [];
 
   private overlayConfig: OverlayConfig = {
     disposeOnNavigation: true,
@@ -20,6 +32,10 @@ export class LightboxService {
   };
 
   public showLightbox(config: LightboxConfig): LightboxData {
+    if (this.lightbox) {
+      return;
+    }
+
     this.lightbox = {
       overlayRef: null,
       lightboxComponentRef: null,
@@ -46,17 +62,38 @@ export class LightboxService {
       this.lightbox.lightboxComponentRef.instance.closeLightboxCallback = () =>
         this.closeLightbox();
 
-      this.lightbox.overlayRef.overlayElement.addEventListener('click', () =>
-        this.closeLightbox()
-      );
-
       this.lightbox.close = () => this.closeLightbox();
 
       this.lightbox.closed$ = this.lightbox.overlayRef
         .detachments()
         .pipe(take(1));
 
+      this.windowRef.nativeWindow.history.pushState(
+        {
+          lightbox: true,
+          desc: 'lightbox is open',
+        },
+        null
+      );
+
+      this.subs.push(
+        merge(
+          fromEvent(this.lightbox.overlayRef.overlayElement, 'click'),
+          fromEvent(this.windowRef.nativeWindow as Window, 'popstate'),
+          this.utilsService
+            .getWindowKeydownEvent()
+            .pipe(
+              filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
+            )
+        )
+          .pipe(take(1))
+          .subscribe(() => {
+            this.closeLightbox();
+          })
+      );
+
       return this.lightbox as LightboxData;
+      //
     } catch (e) {
       this.closeLightbox();
       throw new Error(e.message);
@@ -64,14 +101,24 @@ export class LightboxService {
   }
 
   public closeLightbox(): void {
-    if (this.lightbox && this.lightbox.lightboxComponentRef) {
-      this.lightbox.lightboxComponentRef.destroy();
-      this.lightbox.lightboxComponentRef = null;
+    if (!this.lightbox) {
+      return;
     }
-    if (this.lightbox && this.lightbox.overlayRef) {
-      this.lightbox.overlayRef.dispose();
-      this.lightbox.overlayRef = null;
-    }
+
+    this.lightbox.lightboxComponentRef?.destroy();
+    this.lightbox.overlayRef?.dispose();
+
+    this.lightbox.lightboxComponentRef = null;
+    this.lightbox.overlayRef = null;
     this.lightbox = null;
+
+    if (this.windowRef.nativeWindow.history.state?.lightbox) {
+      this.windowRef.nativeWindow.history.back();
+    }
+
+    this.subs.forEach((sub) => {
+      sub.unsubscribe();
+    });
+    this.subs.length = 0;
   }
 }
