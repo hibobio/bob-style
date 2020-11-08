@@ -143,13 +143,13 @@ describe('DateRangePickerComponent', () => {
     });
 
     it('should set min date for MatDatepickers', () => {
-      expect(dateToString((pickers[0] as any)._minDate)).toEqual('2019-09-10');
-      expect(dateToString((pickers[1] as any)._minDate)).toEqual('2019-09-10');
+      expect(dateToString(pickers[0]._minDate)).toEqual('2019-09-10');
+      expect(dateToString(pickers[1]._minDate)).toEqual('2019-09-10');
     });
 
     it('should set max date for MatDatepickers', () => {
-      expect(dateToString((pickers[0] as any)._maxDate)).toEqual('2019-09-25');
-      expect(dateToString((pickers[1] as any)._maxDate)).toEqual('2019-09-25');
+      expect(dateToString(pickers[0]._maxDate)).toEqual('2019-09-25');
+      expect(dateToString(pickers[1]._maxDate)).toEqual('2019-09-25');
     });
   });
 
@@ -177,13 +177,13 @@ describe('DateRangePickerComponent', () => {
     });
 
     it('should set max date of Start date MatDatepicker to "to" date', () => {
-      expect(dateToString((pickers[0] as any)._maxDate)).toEqual('2019-09-27');
-      expect(dateToString((pickers[1] as any)._maxDate)).not.toEqual('2019-09-27');
+      expect(dateToString(pickers[0]._maxDate)).toEqual('2019-09-27');
+      expect(dateToString(pickers[1]._maxDate)).not.toEqual('2019-09-27');
     });
 
     it('should set min date of End date MatDatepicker to "from" date', () => {
-      expect(dateToString((pickers[0] as any)._minDate)).toEqual('2019-09-15');
-      expect(dateToString((pickers[1] as any)._minDate)).not.toEqual('2019-09-15');
+      expect(dateToString(pickers[0]._minDate)).toEqual('2019-09-15');
+      expect(dateToString(pickers[1]._minDate)).not.toEqual('2019-09-15');
     });
 
     it('should emit changed event', () => {
