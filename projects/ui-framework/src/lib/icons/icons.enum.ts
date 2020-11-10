@@ -103,6 +103,7 @@ export enum Icons {
   filter = 'b-icon-filter',
   filter_list = 'b-icon-filter-list',
   folder = 'b-icon-folder',
+  folder_lock = 'folder-lock',
   folder_shared = 'b-icon-folder-shared',
   graph_timeline = 'b-icon-graph-timeline',
   harmonise = 'b-icon-harmonise',
