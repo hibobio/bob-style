@@ -6,9 +6,9 @@ import { Injectable } from '@angular/core';
 export class ColorService {
   constructor() {}
 
-  public hexToRgb(hex: string): number[] {
+  public hexToRgb(hex: string): [number, number, number] {
     const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+    hex = hex.trim().replace(shorthandRegex, function (m, r, g, b) {
       return r + r + g + g + b + b;
     });
 
@@ -23,7 +23,7 @@ export class ColorService {
       : undefined;
   }
 
-  public rgbToHex(rgb: number[]): string {
+  public rgbToHex(rgb: [number, number, number]): string {
     return (
       '#' +
       this.componentToHex(rgb[0]) +
@@ -32,7 +32,7 @@ export class ColorService {
     );
   }
 
-  public isDark(color: number[] | string) {
+  public isDark(color: [number, number, number] | string) {
     if (typeof color === 'string') {
       color = this.parseToRGB(color);
     }
@@ -46,10 +46,10 @@ export class ColorService {
     );
   }
 
-  public parseToRGB(color: string): number[] {
-    const colorArr = color.match(/\d+[,\)]/g);
+  public parseToRGB(color: string): [number, number, number] {
+    const colorArr = color.trim().match(/\d+[,\)]/g);
 
-    return colorArr && colorArr.length > 2
+    return colorArr?.length > 2
       ? [
           parseInt(colorArr[0], 10),
           parseInt(colorArr[1], 10),
@@ -63,7 +63,7 @@ export class ColorService {
     return hex.length === 1 ? '0' + hex : hex;
   }
 
-  private getBrightness(color: number[]): number {
+  private getBrightness(color: [number, number, number]): number {
     return !color
       ? undefined
       : (color[0] * 299 + color[1] * 587 + color[2] * 114) / 1000;

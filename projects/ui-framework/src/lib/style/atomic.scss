@@ -17,6 +17,12 @@ $acss-dirs: top right bottom left;
   @include button-reset;
 }
 
+.reset-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 .b-link {
   @include b-link;
 }
@@ -322,6 +328,10 @@ $acss-dirs: top right bottom left;
 .flx-center {
   align-items: center;
   justify-content: center;
+}
+
+.flx-grow {
+  flex-grow: 1;
 }
 
 // Misc
