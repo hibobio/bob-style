@@ -80,7 +80,7 @@ export class AutoCompleteComponent implements OnInit, OnChanges, OnDestroy {
   private overlayRef: OverlayRef;
   private templatePortal: TemplatePortal;
   public panelOpen = false;
-  private getFilteredOptions: () => AutoCompleteOption[] = this.filterOptions;
+  private getFilteredOptions: () => AutoCompleteOption[] = this.skipFiltering;
 
   ngOnInit(): void {
     this.getFilteredOptions = (this.skipOptionsFiltering) ? this.skipFiltering : this.filterOptions;
