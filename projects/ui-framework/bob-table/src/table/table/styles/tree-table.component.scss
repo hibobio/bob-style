@@ -43,23 +43,18 @@ $toolpanel-indent-size: times8(4);
         display: none;
       }
     }
-    .ag-center-cols-clipper {
-      .ag-row[class*='ag-row-level-']:not(.ag-row-level-0) {
-        > :first-child {
-          pointer-events: none;
 
-          .ag-cell-wrapper {
-            @include ag-icon('arrow-dir-right');
-            overflow: visible;
-            position: relative;
-            &:before {
-              position: absolute;
-              color: $grey-600;
-              transform: translate(calc(-100% - 2px), -3px);
-              height: auto;
-            }
-          }
-        }
+    [class*='ag-row-group-indent-']:not(.ag-row-group-indent-0) {
+      pointer-events: none;
+
+      @include ag-icon('arrow-dir-right');
+      overflow: visible;
+      position: relative;
+      &:before {
+        position: absolute;
+        color: $grey-600;
+        transform: translate(calc(-100% - 2px), -3px);
+        height: auto;
       }
     }
   }
