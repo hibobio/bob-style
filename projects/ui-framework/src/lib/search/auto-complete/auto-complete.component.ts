@@ -11,6 +11,7 @@ import {
   ViewContainerRef,
   NgZone,
   ChangeDetectorRef,
+  OnInit,
 } from '@angular/core';
 import { escapeRegExp, has } from 'lodash';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
@@ -35,7 +36,7 @@ import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
   templateUrl: './auto-complete.component.html',
   styleUrls: ['./auto-complete.component.scss'],
 })
-export class AutoCompleteComponent implements OnChanges, OnDestroy {
+export class AutoCompleteComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private cd: ChangeDetectorRef,
     private listPanelSrvc: ListPanelService,
@@ -79,11 +80,17 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   private overlayRef: OverlayRef;
   private templatePortal: TemplatePortal;
   public panelOpen = false;
+  private getFilteredOptions: () => AutoCompleteOption[] = this.filterOptions;
+
+  ngOnInit(): void {
+    this.getFilteredOptions = (this.skipOptionsFiltering) ? this.skipFiltering : this.filterOptions;
+  }
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'options')) {
       this.options = changes.options.currentValue;
-      this.updateFilteredOptions();
+      this.filteredOptions = this.getFilteredOptions();
     }
   }
 
@@ -115,15 +122,6 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     this.destroyPanel(true);
   }
 
-  private updateFilteredOptions() {
-    if (this.skipOptionsFiltering && this.options.length) {
-      this.filteredOptions = this.options;
-      this.openPanel();
-    } else {
-      this.filteredOptions = this.getFilteredOptions();
-    }
-  }
-
   private updateFilteredList(): void {
     this.filteredOptions = this.getFilteredOptions();
     if (this.filteredOptions.length === 0) {
@@ -141,11 +139,15 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     this.listPanelSrvc.destroyPanel(this, skipEmit);
   }
 
-  private getFilteredOptions(): AutoCompleteOption[] {
+  private filterOptions(): AutoCompleteOption[] {
     const matcher = new RegExp(escapeRegExp(this.searchValue), 'i');
 
     return this.options.filter(
       (option) => option.value?.match(matcher) || option.subText?.match(matcher)
     );
+  }
+
+  private skipFiltering(): AutoCompleteOption[] {
+    return this.options;
   }
 }

@@ -19,7 +19,6 @@ import { By } from '@angular/platform-browser';
 import { AutoCompletePanelComponent } from './auto-complete-panel/auto-complete-panel.component';
 import { SearchComponent } from '../search/search.component';
 import { SearchModule } from '../search/search.module';
-import { simpleChange } from 'bob-style';
 
 describe('AutoCompleteComponent', () => {
   let component: AutoCompleteComponent;
@@ -195,34 +194,6 @@ describe('AutoCompleteComponent', () => {
       expect(component['panelOpen']).toBe(false);
       expect(component['panelConfig']).toEqual({});
       expect(component['templatePortal']).toBe(null);
-    });
-  });
-
-  describe('skipOptionsFiltering', () => {
-    it('should skip filtering and openPanel on ngOnChanges', () => {
-      spyOn<any>(component, 'openPanel');
-      optionsMock.pop();
-      component.skipOptionsFiltering = true;
-      component.ngOnChanges(simpleChange(
-        {
-          options: optionsMock,
-        },
-        false
-      ));
-      fixture.autoDetectChanges();
-      expect(component['openPanel']).toHaveBeenCalled();
-    });
-    it('should not skipFiltering and not call openPanel', () => {
-      spyOn<any>(component, 'openPanel');
-      optionsMock.pop();
-      component.ngOnChanges(simpleChange(
-        {
-          options: optionsMock,
-          skipOptionsFiltering: false
-        },
-        false
-      ));
-      expect(component['openPanel']).not.toHaveBeenCalled();
     });
   });
 });
