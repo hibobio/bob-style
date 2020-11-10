@@ -44,11 +44,10 @@ $toolpanel-indent-size: times8(4);
       }
     }
     .ag-center-cols-clipper {
-      .ag-row[role='row'] > :first-child {
-        pointer-events: none;
-      }
-      .ag-row:not(.ag-row-level-0) {
+      .ag-row[class*='ag-row-level-']:not(.ag-row-level-0) {
         > :first-child {
+          pointer-events: none;
+
           .ag-cell-wrapper {
             @include ag-icon('arrow-dir-right');
             overflow: visible;
