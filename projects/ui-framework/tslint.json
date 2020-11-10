@@ -12,6 +12,8 @@
       "element",
       "b",
       "kebab-case"
-    ]
+    ],
+    "no-unused-expression": false,
+    "no-input-rename": false
   }
 }

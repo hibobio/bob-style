@@ -4,8 +4,8 @@ import { mockText } from '../mock.const';
 export const FormElementsCommonProps = (
   label = 'Form element label',
   placeholder = '',
-  description = mockText(15),
-  tab = undefined,
+  description: string = mockText(15),
+  tab: string = undefined,
   hint = 'Usefull hint'
 ) => ({
   label: text('label', label, tab),

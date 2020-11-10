@@ -1,7 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import {
   array,
-  boolean,
   number,
   object,
   select,

@@ -112,6 +112,15 @@ export class RteUtilsService {
       mode === RTEMode.plainText
         ? [(value: string): string => this.parserService.getPlainText(value)]
         : [
+            (value: string): string => {
+              return value
+                .replace(
+                  /(<(\\?xml|meta|link|del|ins|st1:|[ovwxpm]:)((.|\s)*?)>[^<]*)|(<\/(\\?xml|meta|link|del|ins|st1:|[ovwxpm]:)((.|\s)*?)>)/gi,
+                  ''
+                )
+                .replace(/<!--([\S\s]*?)-->/g, '');
+            },
+
             (value: string) =>
               this.sanitizer.filterXSS(value, {
                 css: true,

@@ -244,7 +244,7 @@ export class RichTextEditorComponent extends RTEbaseElement
             (value: string) =>
               this.parserService.removeElements(
                 value,
-                '[data-bob-rte], head, meta, title, style'
+                '[data-bob-rte], head, meta, title, style, xml, link'
               ),
 
             ...(!isFromRte

@@ -519,6 +519,29 @@ export class HtmlParserHelpers {
     const elm: HTMLElement = this.stringToDOM(value);
 
     elm.querySelectorAll(selector).forEach((el) => el.remove());
+
+    return this.DOMtoString(elm);
+  }
+
+  public removeInvalid(value: string, selector: string): string {
+    if (!value || !selector) {
+      return value;
+    }
+    const elm: HTMLElement = this.stringToDOM(value);
+
+    this.DOM.walkNodeTree(elm, {
+      take: TreeWalkerTake.all,
+      filter: (node: Node) =>
+        [4, 7, 8, 10].includes(node.nodeType) ||
+        node instanceof HTMLUnknownElement ||
+        /^<[ovwxpm]:/.test(node['outerHtml'])
+          ? TreeWalkerFilter.accept
+          : TreeWalkerFilter.skip,
+      forEach: (node) => {
+        node['remove'] && node['remove']();
+      },
+    });
+
     return this.DOMtoString(elm);
   }
 
