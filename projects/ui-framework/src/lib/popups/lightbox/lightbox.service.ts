@@ -1,4 +1,4 @@
-import { Injectable, SimpleChange } from '@angular/core';
+import { Injectable, NgZone, SimpleChange } from '@angular/core';
 import { LightboxConfig, LightboxData } from './lightbox.interface';
 import { LightboxComponent } from './lightbox.component';
 import { Overlay, OverlayConfig } from '@angular/cdk/overlay';
@@ -10,6 +10,7 @@ import { WindowRef } from '../../services/utils/window-ref.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
+import { insideZone } from '../../services/utils/rxjs.operators';
 
 @Injectable()
 export class LightboxService {
@@ -18,7 +19,8 @@ export class LightboxService {
     private overlay: Overlay,
     private url: URLutils,
     private utilsService: UtilsService,
-    private windowRef: WindowRef
+    private windowRef: WindowRef,
+    private zone: NgZone
   ) {}
 
   private subs: Subscription[] = [];
@@ -80,11 +82,10 @@ export class LightboxService {
         merge(
           fromEvent(this.lightbox.overlayRef.overlayElement, 'click'),
           fromEvent(this.windowRef.nativeWindow as Window, 'popstate'),
-          this.utilsService
-            .getWindowKeydownEvent()
-            .pipe(
-              filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
-            )
+          this.utilsService.getWindowKeydownEvent(true).pipe(
+            filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)),
+            insideZone(this.zone)
+          )
         )
           .pipe(take(1))
           .subscribe(() => {

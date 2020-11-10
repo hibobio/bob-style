@@ -10,6 +10,7 @@ import {
   HostBinding,
   OnInit,
   OnDestroy,
+  NgZone,
 } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import {
@@ -21,6 +22,7 @@ import { DOMInputEvent } from '../../types';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { fromEvent, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { insideZone } from '../../services/utils/rxjs.operators';
 
 @Component({
   selector: 'b-search',
@@ -31,7 +33,7 @@ import { debounceTime } from 'rxjs/operators';
   ],
 })
 export class SearchComponent implements OnChanges, OnInit, OnDestroy {
-  constructor() {}
+  constructor(private zone: NgZone) {}
 
   @ViewChild('input', { static: true }) input: ElementRef<HTMLInputElement>;
 
@@ -68,13 +70,15 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.sub = fromEvent(this.input.nativeElement, 'input', {
-      passive: true,
-    })
-      .pipe(debounceTime(150))
-      .subscribe((inputEvent: DOMInputEvent) => {
-        this.onInput(inputEvent);
-      });
+    this.zone.runOutsideAngular(() => {
+      this.sub = fromEvent(this.input.nativeElement, 'input', {
+        passive: true,
+      })
+        .pipe(debounceTime(150), insideZone(this.zone))
+        .subscribe((inputEvent: DOMInputEvent) => {
+          this.onInput(inputEvent);
+        });
+    });
   }
 
   ngOnDestroy(): void {

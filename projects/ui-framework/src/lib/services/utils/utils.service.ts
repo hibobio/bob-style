@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { fromEvent, Observable } from 'rxjs';
 import { map, share, throttleTime } from 'rxjs/operators';
 import { WindowRef } from './window-ref.service';
 import { ScrollEvent } from './utils.interface';
+import { insideZone } from './rxjs.operators';
 
 export interface WinResizeEvent {
   innerWidth: number;
@@ -20,70 +21,82 @@ export class UtilsService {
   winClick$: Observable<MouseEvent>;
   winKey$: Observable<KeyboardEvent>;
 
-  constructor(private windowRef: WindowRef) {
-    this.winResize$ = fromEvent(
-      this.windowRef.nativeWindow as Window,
-      'resize',
-      {
-        passive: true,
-      }
-    ).pipe(
-      throttleTime(500, undefined, {
-        leading: true,
-        trailing: true,
-      }),
-      map((e: Event) => ({
-        innerWidth: e.target['innerWidth'],
-        innerHeight: e.target['innerHeight'],
-        outerHeight: e.target['outerHeight'],
-        outerWidth: e.target['outerWidth'],
-      })),
-      share()
-    );
+  constructor(private windowRef: WindowRef, private zone: NgZone) {
+    this.zone.runOutsideAngular(() => {
+      this.winResize$ = fromEvent(
+        this.windowRef.nativeWindow as Window,
+        'resize',
+        {
+          passive: true,
+        }
+      ).pipe(
+        throttleTime(500, undefined, {
+          leading: true,
+          trailing: true,
+        }),
+        map((e: Event) => ({
+          innerWidth: e.target['innerWidth'],
+          innerHeight: e.target['innerHeight'],
+          outerHeight: e.target['outerHeight'],
+          outerWidth: e.target['outerWidth'],
+        })),
+        share()
+      );
 
-    this.winScroll$ = fromEvent(
-      this.windowRef.nativeWindow as Window,
-      'scroll',
-      {
-        passive: true,
-      }
-    ).pipe(
-      map((e: Event) => ({
-        scrollY: (
-          (e.currentTarget as any) || (document.scrollingElement as any)
-        ).scrollY,
-        scrollX: (
-          (e.currentTarget as any) || (document.scrollingElement as any)
-        ).scrollX,
-      })),
-      share()
-    );
+      this.winScroll$ = fromEvent(
+        this.windowRef.nativeWindow as Window,
+        'scroll',
+        {
+          passive: true,
+        }
+      ).pipe(
+        map((e: Event) => ({
+          scrollY: (
+            (e.currentTarget as any) || (document.scrollingElement as any)
+          ).scrollY,
+          scrollX: (
+            (e.currentTarget as any) || (document.scrollingElement as any)
+          ).scrollX,
+        })),
+        share()
+      );
 
-    this.winClick$ = fromEvent(
-      this.windowRef.nativeWindow as Window,
-      'click'
-    ).pipe(share()) as Observable<MouseEvent>;
+      this.winClick$ = fromEvent(
+        this.windowRef.nativeWindow as Window,
+        'click'
+      ).pipe(share()) as Observable<MouseEvent>;
 
-    this.winKey$ = fromEvent(
-      this.windowRef.nativeWindow as Window,
-      'keydown'
-    ).pipe(share()) as Observable<KeyboardEvent>;
+      this.winKey$ = fromEvent(
+        this.windowRef.nativeWindow as Window,
+        'keydown'
+      ).pipe(share()) as Observable<KeyboardEvent>;
+    });
   }
 
-  public getResizeEvent(): Observable<WinResizeEvent> {
-    return this.winResize$;
+  public getResizeEvent(outsideNgZone = false): Observable<WinResizeEvent> {
+    return outsideNgZone
+      ? this.winResize$
+      : this.winResize$.pipe(insideZone(this.zone));
   }
 
-  public getScrollEvent(): Observable<ScrollEvent> {
-    return this.winScroll$;
+  public getScrollEvent(outsideNgZone = false): Observable<ScrollEvent> {
+    return outsideNgZone
+      ? this.winScroll$
+      : this.winScroll$.pipe(insideZone(this.zone));
   }
 
-  public getWindowClickEvent(): Observable<MouseEvent> {
-    return this.winClick$;
+  public getWindowClickEvent(outsideNgZone = false): Observable<MouseEvent> {
+    return outsideNgZone
+      ? this.winClick$
+      : this.winClick$.pipe(insideZone(this.zone));
   }
 
-  public getWindowKeydownEvent(): Observable<KeyboardEvent> {
-    return this.winKey$;
+  public getWindowKeydownEvent(
+    outsideNgZone = false
+  ): Observable<KeyboardEvent> {
+    return outsideNgZone
+      ? this.winKey$
+      : this.winKey$.pipe(insideZone(this.zone));
   }
 
   public scrollToTop(offset = 0, smooth = false): void {
