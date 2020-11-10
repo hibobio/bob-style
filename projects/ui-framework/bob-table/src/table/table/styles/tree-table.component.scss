@@ -44,9 +44,11 @@ $toolpanel-indent-size: times8(4);
       }
     }
 
-    [class*='ag-row-group-indent-']:not(.ag-row-group-indent-0) {
+    [class*='ag-row-group-indent-'] {
       pointer-events: none;
+    }
 
+    [class*='ag-row-group-indent-']:not(.ag-row-group-indent-0) {
       @include ag-icon('arrow-dir-right');
       overflow: visible;
       position: relative;
