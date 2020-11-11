@@ -633,6 +633,17 @@ export const padWith0 = (number: string | number, digits = 2): string => {
   return String(number).padStart(digits, '0');
 };
 
+export const sameStringsDifferentCase = (a: string, b: string): boolean => {
+  if (typeof a !== 'string' || typeof b !== 'string') {
+    return false;
+  }
+  a = a.trim();
+  b = b.trim();
+  return (
+    a !== b && a.localeCompare(b, undefined, { sensitivity: 'accent' }) === 0
+  );
+};
+
 // ----------------------
 // FUNCTIONS
 // ----------------------

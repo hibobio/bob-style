@@ -98,3 +98,5 @@ export const COLOR_GREY_600 = '#9d9d9d';
 export const COLOR_GREY_700 = '#535353';
 export const COLOR_GREY_800 = '#303030';
 export const COLOR_GREY_900 = '#050505';
+
+export const INVISIBLE_CHAR = '‌‌ ';
