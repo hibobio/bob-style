@@ -40,7 +40,8 @@
                 'b-icon-chevron-down': !header.isCollapsed,
                 'b-icon-chevron-right': header.isCollapsed
               }"></span>
-        <span [innerHTML]="header.groupName"></span>
+        <span class="header-option-value capitalize"
+              [innerHTML]="header.groupName"></span>
         <span *ngIf="header.selectedCount"
               class="header-selected-count">
           ({{header.selectedCount}})
