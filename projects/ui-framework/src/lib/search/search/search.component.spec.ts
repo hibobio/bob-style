@@ -108,6 +108,7 @@ describe('SearchComponent', () => {
       tick(300);
       fixture.detectChanges();
 
+      expect(component.value).toEqual(inputElement.nativeElement.value);
       expect(component.searchChange.emit).toHaveBeenCalledWith('some untrimmed string');
     }));
   });
