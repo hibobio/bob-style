@@ -102,10 +102,10 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   onInput(event: DOMInputEvent): void {
-    const newValue = event.target.value.trim();
+    const newValue = event.target.value;
     if (this.value !== newValue) {
       this.value = newValue;
-      this.searchChange.emit(this.value);
+      this.searchChange.emit(this.value.trim());
     }
   }
 
