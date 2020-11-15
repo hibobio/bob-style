@@ -84,9 +84,6 @@ $avatarSizeMap: (
 );
 
 :host {
-  --avatar-image: none;
-  --bg-color: #{$grey-200};
-
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -105,8 +102,8 @@ $avatarSizeMap: (
   font-weight: 700;
 
   @include size(var(--avatar-size, #{map-get($avatarSizes, mini)}));
-  background-color: var(--bg-color);
-  background-image: var(--avatar-image);
+  background-color: var(--bg-color, #{$grey-200});
+  background-image: var(--avatar-image, none);
 
   &:focus {
     outline: 0;

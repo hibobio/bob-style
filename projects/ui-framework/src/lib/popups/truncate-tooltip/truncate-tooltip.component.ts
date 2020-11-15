@@ -79,11 +79,13 @@ export class TruncateTooltipComponent
       this.type === TruncateTooltipType.css &&
       !this.tooltipEnabled
     ) {
+      // this.zone.runOutsideAngular(() => {
       this.DOM.mutate(() => {
         if (this.checkTooltipNecessity() && !this.cd['destroyed']) {
           this.cd.detectChanges();
         }
       });
+      // });
     }
   }
 
@@ -97,13 +99,13 @@ export class TruncateTooltipComponent
       this.expectChanges = false;
       this.tooltipText = this.text;
 
-      // this.zone.runOutsideAngular(() => {
-      this.DOM.mutate(() => {
-        if (this.checkTooltipNecessity() && !this.cd['destroyed']) {
-          this.cd.detectChanges();
-        }
+      this.zone.runOutsideAngular(() => {
+        this.DOM.mutate(() => {
+          if (this.checkTooltipNecessity() && !this.cd['destroyed']) {
+            this.cd.detectChanges();
+          }
+        });
       });
-      // });
     }
   }
 
@@ -136,30 +138,30 @@ export class TruncateTooltipComponent
   ngAfterViewInit(): void {
     this.maxLinesCache = this.maxLines;
 
-    // this.zone.runOutsideAngular(() => {
-    this.DOM.mutate(() => {
-      this.tooltipText =
-        this.text || this.textContainer.nativeElement.textContent.trim();
+    this.zone.runOutsideAngular(() => {
+      this.DOM.mutate(() => {
+        this.tooltipText =
+          this.text || this.textContainer.nativeElement.textContent.trim();
 
-      this.setCssVars();
-      this.setMaxLinesAttr();
+        this.setCssVars();
+        this.setMaxLinesAttr();
 
-      if (this.type !== TruncateTooltipType.none) {
-        this.checkTooltipNecessity();
-        this.initialized = true;
+        if (this.type !== TruncateTooltipType.none) {
+          this.checkTooltipNecessity();
+          this.initialized = true;
 
-        if (this.type === TruncateTooltipType.css || this.lazyness === 0) {
-          this.tooltipAllowed = true;
-          this.stopHoverTimer();
-          this.removeMouseListeners();
+          if (this.type === TruncateTooltipType.css || this.lazyness === 0) {
+            this.tooltipAllowed = true;
+            this.stopHoverTimer();
+            this.removeMouseListeners();
+          }
+
+          if (!this.cd['destroyed']) {
+            this.cd.detectChanges();
+          }
         }
-
-        if (!this.cd['destroyed']) {
-          this.cd.detectChanges();
-        }
-      }
+      });
     });
-    // });
   }
 
   ngDoCheck(): void {

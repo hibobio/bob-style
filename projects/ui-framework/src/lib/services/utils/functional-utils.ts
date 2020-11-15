@@ -4,7 +4,7 @@ import { GenericObject } from '../../types';
 import { isEqual, cloneDeep } from 'lodash';
 import { RenderedComponent } from '../component-renderer/component-renderer.interface';
 import { SelectGroupOption } from '../../lists/list.interface';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { delay, take } from 'rxjs/operators';
 
 // ----------------------
@@ -1311,6 +1311,13 @@ export const prefetchSharedObservables = (
       );
     });
   });
+};
+
+export const unsubscribeArray = (subs: Subscription[]): void => {
+  subs.forEach((sub) => {
+    sub?.unsubscribe();
+  });
+  subs.length = 0;
 };
 
 // ----------------------

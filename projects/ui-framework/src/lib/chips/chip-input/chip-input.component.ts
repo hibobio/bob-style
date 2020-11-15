@@ -109,8 +109,7 @@ export class ChipInputComponent extends BaseFormElement
     this.updatePossibleChips();
 
     this.windowClickSubscriber = this.utilsService
-      .getWindowClickEvent()
-      .pipe(outsideZone(this.zone))
+      .getWindowClickEvent(true)
       .subscribe(() => {
         this.unSelectLastChip();
       });
