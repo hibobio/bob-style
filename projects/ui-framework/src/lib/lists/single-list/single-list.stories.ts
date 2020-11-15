@@ -87,6 +87,8 @@ const options = cloneDeep(optionsMock);
 
 options[1].options[1].selected = true;
 options[1].options[3].disabled = true;
+options[1].description = 'How I wish, how I wish you were here...';
+options[3].description = 'We are just two lost souls swimming in a fishbowl year after year';
 
 story.add(
   'Single list',

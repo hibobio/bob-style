@@ -824,4 +824,21 @@ describe('MultiListComponent', () => {
       expect(resetButton.parentElement.getAttributeNames()).toContain('hidden');
     });
   });
+
+  describe('Headers tooltip with description', () => {
+    it('Should have description tooltip', () => {
+      optionsMock[1].description = 'Lorem ipsum';
+      console.log('optionsMock: ', optionsMock);
+      component.ngOnChanges(
+        simpleChange({
+          options: optionsMock,
+          startWithGroupsCollapsed: false,
+        })
+      );
+      fixture.detectChanges();
+      const headerGroups = fixture.debugElement.queryAll(By.css('.headers-group'));
+      const tooltipIcon = headerGroups[1].nativeElement.querySelector('.comp-suffix.has-hover');
+      expect(tooltipIcon).toBeTruthy();
+    });
+  });
 });

@@ -34,6 +34,7 @@ export interface SelectGroupOption {
   groupIndex?: number;
   key?: string | number;
   options: SelectOption[];
+  description?: string;
   selected?: boolean;
   hidden?: boolean;
   groupSelectedIDs?: (number | string)[];

@@ -31,7 +31,7 @@
             'selected': header.selected,
             'indeterminate': header.indeterminate
           }"
-           class="option-select header has-hover">
+           class="option-select header has-distinct-hover">
         <span (click)="headerClick(header)"
               class="header-collapse-trigger">
         </span>
@@ -56,6 +56,17 @@
             ({{header.selectedCount}})
           </span>
         </div>
+
+        <span *ngIf="header.description"
+              class="comp-suffix has-hover"
+              [attr.data-icon-before]="infoIcon"
+              [attr.data-icon-before-color]="iconColor.normal"
+              [attr.data-icon-before-size]="iconSize.small"
+              [matTooltip]="header.description"
+              [matTooltipClass]="tooltipClass"
+              [matTooltipShowDelay]="tooltipDelay"
+              [matTooltipPosition]="tooltipPosition">
+        </span>
       </div>
       <div [ngStyle]="{height: header.isCollapsed ? 0 : header.placeHolderSize + 'px'}"
            class="placeholder"></div>

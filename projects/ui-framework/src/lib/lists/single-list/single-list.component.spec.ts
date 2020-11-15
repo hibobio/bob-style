@@ -573,4 +573,21 @@ describe('SingleListComponent', () => {
       expect(vScrollWrapperDiv.nativeElement.style.minHeight).toBeTruthy();
     });
   });
+
+  describe('Headers tooltip with description', () => {
+    it('Should have description tooltip', () => {
+      optionsMock[0].description = 'Lorem ipsum';
+      console.log('optionsMock: ', optionsMock);
+      component.ngOnChanges(
+        simpleChange({
+          options: optionsMock,
+          startWithGroupsCollapsed: false,
+        })
+      );
+      fixture.detectChanges();
+      const headerGroups = fixture.debugElement.queryAll(By.css('.headers-group'));
+      const tooltipIcon = headerGroups[0].nativeElement.querySelector('.comp-suffix.has-hover');
+      expect(tooltipIcon).toBeTruthy();
+    });
+  });
 });

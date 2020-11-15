@@ -86,6 +86,10 @@ const note = `
 const options = cloneDeep(optionsMock);
 const optionsDef = cloneDeep(optionsMockDef);
 
+options[2].description = 'Lorem ipsum dolor';
+options[4].description = 'Sit amet en ipsum';
+options[6].description = 'Lorem Dolor sit amet en psium';
+
 story.add(
   'Multi list',
   () => ({
