@@ -98,4 +98,18 @@ describe('SearchComponent', () => {
       expect(component.value).toBe('');
     }));
   });
+
+  describe('onInput', () => {
+    it('should emmit only trimmed values', fakeAsync(() => {
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      inputElement.nativeElement.value = '         some untrimmed string   ';
+      inputElement.nativeElement.dispatchEvent(new Event('input'));
+
+      tick(300);
+      fixture.detectChanges();
+
+      expect(component.value).toEqual(inputElement.nativeElement.value);
+      expect(component.searchChange.emit).toHaveBeenCalledWith('some untrimmed string');
+    }));
+  });
 });
