@@ -86,10 +86,11 @@ const checkAttrubutes = (
       trim(DOMhelpers.prototype.getElementCSSvar(elem, '--avatar-size')) ||
       null,
     varBgColor:
-      trim(DOMhelpers.prototype.getElementCSSvar(elem, '--bg-color')) || null,
+      trim(DOMhelpers.prototype.getElementCSSvar(elem, '--bg-color')) ||
+      '#f3f2f2',
     varImg:
       trim(DOMhelpers.prototype.getElementCSSvar(elem, '--avatar-image')) ||
-      null,
+      'none',
   };
 
   return isEqual(expected, reality) || reality;

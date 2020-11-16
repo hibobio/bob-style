@@ -7,7 +7,14 @@ import { ScrollEvent } from '../services/utils/utils.interface';
 import { MockPipe } from 'ng-mocks';
 import { Mock } from 'ts-mocks';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { PipeTransform, Pipe, NgModule, Component, Input } from '@angular/core';
+import {
+  PipeTransform,
+  Pipe,
+  NgModule,
+  Component,
+  Input,
+  NgZone,
+} from '@angular/core';
 import { ListKeyboardService } from '../lists/list-service/list-keyboard.service';
 import { HighlightPipe } from '../services/filters/highlight.pipe';
 import { FormatNumberPipe } from '../services/filters/formatNumber.pipe';
@@ -120,6 +127,21 @@ export const getDOMhelpersMock = () =>
 export const DOMhelpersProvideMock = (mock: Mock<DOMhelpers> = null) => ({
   provide: DOMhelpers,
   useFactory: () => (mock || getDOMhelpersMock()).Object,
+});
+
+export const getNgZoneMock = () =>
+  new Mock<NgZone>({
+    ...new NgZone({
+      enableLongStackTrace: false,
+      shouldCoalesceEventChangeDetection: true,
+    }),
+    runOutsideAngular: (fnc) => fnc(),
+    run: (fnc) => fnc(),
+  });
+
+export const NgZoneProvideMock = (mock: Mock<NgZone> = null) => ({
+  provide: NgZone,
+  useFactory: () => (mock || getNgZoneMock()).Object,
 });
 
 export const getMutationObservableServiceMock = () =>
