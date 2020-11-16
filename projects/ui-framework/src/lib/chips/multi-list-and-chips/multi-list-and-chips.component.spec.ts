@@ -18,6 +18,7 @@ import {
   mockHighlightPipe,
   listKeyboardServiceStub,
   MobileServiceProvideMock,
+  TrackByPropPipeStub,
 } from '../../tests/services.stub.spec';
 import { ChipListComponent } from '../chip-list/chip-list.component';
 import { ChipComponent } from '../chip/chip.component';
@@ -41,6 +42,7 @@ describe('MultiListAndChipsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        TrackByPropPipeStub,
         MultiListAndChipsComponent,
         ChipComponent,
         ChipListComponent,
