@@ -54,6 +54,7 @@ const template2 = `<b-input  [value]="(inputType === inputTypes.number ? valueNu
             allowedChars: allowedChars,
             focusOnInit: focusOnInit
           }"
+           [allowedChars]="allowedChars"
             (inputEvents)="inputEvents($event)">
 </b-input>`;
 

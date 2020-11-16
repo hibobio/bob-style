@@ -24,6 +24,7 @@ import {
   MobileServiceProvideMock,
   mockHighlightPipe,
   MockCompsModule,
+  TrackByPropPipeStub,
 } from '../../tests/services.stub.spec';
 import { ListFooterComponent } from '../list-footer/list-footer.component';
 import { ListModelService } from '../list-service/list-model.service';
@@ -67,6 +68,7 @@ describe('SingleSelectComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [
+        TrackByPropPipeStub,
         SingleSelectComponent,
         SingleListComponent,
         ListFooterComponent,

@@ -3,6 +3,21 @@
 @import '../avatar.mixin';
 
 $avatarSizeMap: (
+  micro: (
+    '*': (
+      border-width: 1px,
+      font-size: $font-size-caption,
+    ),
+    '.has-hover:hover': (),
+    ':after': (
+      top: -2px,
+      right: -6px,
+    ),
+    '[data-badge-align="bottom-right"]:after': (
+      top: auto,
+      bottom: 0,
+    ),
+  ),
   mini: (
     '*': (
       border-width: 2px,

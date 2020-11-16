@@ -12,6 +12,8 @@ import { ListFooterModule } from '../list-footer/list-footer.module';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
+import { TrackByPropModule } from '../../services/filters/trackByProp.pipe';
 
 @NgModule({
   declarations: [SingleListComponent],
@@ -24,6 +26,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ListFooterModule,
     TranslateModule,
     MatTooltipModule,
+    AvatarModule,
+    TrackByPropModule,
   ],
   exports: [SingleListComponent],
   providers: [

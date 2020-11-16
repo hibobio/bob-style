@@ -15,6 +15,7 @@ import {
   listKeyboardServiceStub,
   mockHighlightPipe,
   MobileServiceProvideMock,
+  TrackByPropPipeStub,
 } from '../../tests/services.stub.spec';
 import { ListFooterComponent } from '../list-footer/list-footer.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -50,6 +51,7 @@ describe('SingleListComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [
+        TrackByPropPipeStub,
         SingleListComponent,
         ListFooterComponent,
         mockTranslatePipe,
@@ -585,8 +587,12 @@ describe('SingleListComponent', () => {
         })
       );
       fixture.detectChanges();
-      const headerGroups = fixture.debugElement.queryAll(By.css('.headers-group'));
-      const tooltipIcon = headerGroups[0].nativeElement.querySelector('.comp-suffix.has-hover');
+      const headerGroups = fixture.debugElement.queryAll(
+        By.css('.headers-group')
+      );
+      const tooltipIcon = headerGroups[0].nativeElement.querySelector(
+        '.comp-suffix.has-hover'
+      );
       expect(tooltipIcon).toBeTruthy();
     });
   });

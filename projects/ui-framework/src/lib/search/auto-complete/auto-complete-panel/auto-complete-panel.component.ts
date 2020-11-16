@@ -20,6 +20,7 @@ import { Keys } from '../../../enums';
 
 import { SearchComponent } from '../../search/search.component';
 import { getEventPath } from '../../../services/utils/functional-utils';
+import { FormElementSize } from '../../../form-elements/form-elements.enum';
 
 @Component({
   selector: 'b-auto-complete-panel',
@@ -78,10 +79,11 @@ export class AutoCompletePanelComponent
             );
             this.focusOption = this.options[this.focusIndex];
             this.vScroll.scrollToIndex(
-              this.listKeyboardService.getScrollToIndex(
-                this.focusIndex,
-                this.maxHeight
-              )
+              this.listKeyboardService.getScrollToIndex({
+                focusIndex: this.focusIndex,
+                listHeight: this.maxHeight,
+                size: FormElementSize.regular,
+              })
             );
             if (!this.cd['destroyed']) {
               this.cd.detectChanges();
@@ -96,10 +98,11 @@ export class AutoCompletePanelComponent
             );
             this.focusOption = this.options[this.focusIndex];
             this.vScroll.scrollToIndex(
-              this.listKeyboardService.getScrollToIndex(
-                this.focusIndex,
-                this.maxHeight
-              )
+              this.listKeyboardService.getScrollToIndex({
+                focusIndex: this.focusIndex,
+                listHeight: this.maxHeight,
+                size: FormElementSize.regular,
+              })
             );
             if (!this.cd['destroyed']) {
               this.cd.detectChanges();

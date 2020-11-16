@@ -22,7 +22,7 @@
       [expectChanges]="expectChanges"
       [text]="title"></h4>
 
-  <p *ngIf="subtitle && (orientation === orient.horizontal || size > avatarSize.small)"
+  <p *ngIf="subtitle && size > avatarSize.micro && (orientation === orient.horizontal || size > avatarSize.small)"
      class="slot2-medium subtitle"
      [b-truncate-tooltip]="orientation === orient.horizontal ? 1 : 2"
      [type]="tooltipType"

@@ -18,11 +18,14 @@ import {
   objectRemoveKey,
   isNumber,
 } from '../../services/utils/functional-utils';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { FORM_ELEMENT_HEIGHT } from '../../form-elements/form-elements.const';
 
 interface GetHeadersModelConfig {
   collapseHeaders?: boolean;
   hasCheckbox?: boolean;
   allowGroupIsOption?: boolean;
+  size?: FormElementSize;
 }
 
 interface GetOptionsModelConfig {
@@ -41,30 +44,35 @@ export class ListModelService {
       collapseHeaders = false,
       hasCheckbox = true,
       allowGroupIsOption = false,
+      size = FormElementSize.regular,
     }: GetHeadersModelConfig = {}
   ): ListHeader[] {
-    return options.map((group) => {
-      const selectedCount = this.countOptions(group.options, 'selected');
+    return options.map(
+      (group): ListHeader => {
+        const selectedCount = this.countOptions(group.options, 'selected');
 
-      const groupIsOption =
-        allowGroupIsOption &&
-        group.options.length === 1 &&
-        group.options[0].value === group.groupName;
+        const groupIsOption =
+          allowGroupIsOption &&
+          group.options.length === 1 &&
+          group.options[0].value === group.groupName;
 
-      return {
-        ...objectRemoveKey(group, 'options'),
-        key: this.getGroupKey(group),
-        isCollapsed: collapseHeaders || groupIsOption,
-        placeHolderSize: group.options.length * LIST_EL_HEIGHT,
-        selected: isBoolean(group.selected)
-          ? group.selected
-          : selectedCount === group.options.length,
-        indeterminate: this.isIndeterminate(group.options, selectedCount),
-        selectedCount,
-        hasCheckbox,
-        groupIsOption,
-      };
-    });
+        return {
+          ...objectRemoveKey(group, 'options'),
+          key: this.getGroupKey(group),
+          isCollapsed: collapseHeaders || groupIsOption,
+          placeHolderSize:
+            group.options.length *
+            (FORM_ELEMENT_HEIGHT[size] || LIST_EL_HEIGHT),
+          selected: isBoolean(group.selected)
+            ? group.selected
+            : selectedCount === group.options.length,
+          indeterminate: this.isIndeterminate(group.options, selectedCount),
+          selectedCount,
+          hasCheckbox,
+          groupIsOption,
+        };
+      }
+    );
   }
 
   getOptionsModel(

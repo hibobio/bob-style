@@ -59,7 +59,7 @@
                   [mode]="mode"
                   [options]="options"
                   [optionsDefault]="optionsDefault"
-                  [maxHeight]="listElHeight*maxHeightItems"
+                  [maxHeight]="(listElHeight[size]||listElHeightDef)*maxHeightItems"
                   [showSingleGroupHeader]="showSingleGroupHeader"
                   [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                   [readonly]="readonly"
@@ -67,6 +67,7 @@
                   [listActions]="listActions"
                   [min]="min"
                   [max]="max"
+                  [size]="size"
                   (selectChange)="onSelect($event)"
                   (apply)="onApply()"
                   (cancel)="onCancel()">

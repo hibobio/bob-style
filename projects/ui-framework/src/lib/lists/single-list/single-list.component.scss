@@ -1,7 +1,6 @@
 @import '../../style/common-imports';
 @import '../list';
 
-$list-item-height: $wrap-height;
 $list-max-items: 8;
 
 :host {
@@ -55,7 +54,7 @@ $list-max-items: 8;
     background-color: $white;
     flex-grow: 5;
     max-height: calc(
-      var(--list-max-items, #{$list-max-items}) * #{$list-item-height} - 1px
+      var(--list-max-items, #{$list-max-items}) * #{$wrap-height} - 1px
     );
 
     @include b-body($addCssVars: false);
@@ -197,4 +196,23 @@ $list-max-items: 8;
 
 ::ng-deep .mat-tooltip.b-select-option-tooltip {
   max-width: 280px;
+}
+
+:host[data-size='smaller'] ::ng-deep {
+  .option-select,
+  .show-none-option .clear-selection {
+    height: $wrap-height-smaller;
+  }
+
+  .v-scroll-wrapper {
+    max-height: calc(
+      var(--list-max-items, #{$list-max-items}) * #{$wrap-height-smaller} - 1px
+    );
+  }
+
+  .show-none-option {
+    .headers {
+      top: $wrap-height-smaller;
+    }
+  }
 }

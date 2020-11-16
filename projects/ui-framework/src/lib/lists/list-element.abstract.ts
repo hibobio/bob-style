@@ -13,6 +13,7 @@ import {
   SimpleChanges,
   OnChanges,
   Directive,
+  HostBinding,
 } from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Subscription } from 'rxjs';
@@ -52,6 +53,9 @@ import { SearchComponent } from '../search/search/search.component';
 import { MobileService } from '../services/utils/mobile.service';
 import { IconColor, Icons, IconSize } from '../icons/icons.enum';
 import { TooltipClass, TooltipPosition } from '../popups/tooltip/tooltip.enum';
+import { FormElementSize } from '../form-elements/form-elements.enum';
+import { AvatarSize } from '../avatar/avatar/avatar.enum';
+import { FORM_ELEMENT_HEIGHT } from '../form-elements/form-elements.const';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -72,7 +76,7 @@ export abstract class BaseListElement
   }
 
   @ViewChild('vScroll', { static: true }) vScroll: CdkVirtualScrollViewport;
-  @ViewChild('headers') headers;
+  @ViewChild('headers') headers: ElementRef;
   @ViewChild('footer', { read: ElementRef })
   private footer: ElementRef;
   @ViewChild('search', { read: SearchComponent })
@@ -91,6 +95,8 @@ export abstract class BaseListElement
 
   @Input() min: number;
   @Input() max: number;
+
+  @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
@@ -123,11 +129,14 @@ export abstract class BaseListElement
   protected listChange: ListChange;
 
   private keyDownSubscriber: Subscription;
-  readonly listElHeight = LIST_EL_HEIGHT;
+  readonly listElHeight = FORM_ELEMENT_HEIGHT;
+  readonly listElHeightDef = LIST_EL_HEIGHT;
   readonly modes = SelectMode;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
   readonly infoIcon = Icons.info_outline.replace('b-icon-', '');
+  readonly avatarSize = AvatarSize;
+  readonly formElementSize = FormElementSize;
   readonly tooltipPosition = TooltipPosition.above;
   readonly tooltipClass: (TooltipClass | string)[] = [
     TooltipClass.TextLeft,
@@ -218,14 +227,21 @@ export abstract class BaseListElement
       this.updateActionButtonsState();
     }
 
-    if (hasChanges(changes, ['maxHeight', 'options'], true)) {
+    if (hasChanges(changes, ['maxHeight', 'options', 'size'], true)) {
       this.maxHeightItems =
-        Math.round((this.maxHeight || 0) / LIST_EL_HEIGHT) || LIST_MAX_ITEMS;
+        Math.round(
+          (this.maxHeight || 0) /
+            (FORM_ELEMENT_HEIGHT[this.size] || LIST_EL_HEIGHT)
+        ) || LIST_MAX_ITEMS;
 
-      this.maxHeight = this.maxHeightItems * LIST_EL_HEIGHT;
+      this.maxHeight =
+        this.maxHeightItems *
+        (FORM_ELEMENT_HEIGHT[this.size] || LIST_EL_HEIGHT);
 
       this.DOM.setCssProps(this.host.nativeElement, {
-        '--list-max-items': this.maxHeight / LIST_EL_HEIGHT || null,
+        '--list-max-items':
+          this.maxHeight / (FORM_ELEMENT_HEIGHT[this.size] || LIST_EL_HEIGHT) ||
+          null,
       });
     }
 
@@ -253,7 +269,11 @@ export abstract class BaseListElement
             );
             this.focusOption = this.listOptions[this.focusIndex];
             this.vScroll.scrollToIndex(
-              this.keybrdSrvc.getScrollToIndex(this.focusIndex, this.maxHeight)
+              this.keybrdSrvc.getScrollToIndex({
+                focusIndex: this.focusIndex,
+                listHeight: this.maxHeight,
+                size: this.size,
+              })
             );
             if (!this.cd['destroyed']) {
               this.cd.detectChanges();
@@ -268,7 +288,11 @@ export abstract class BaseListElement
             );
             this.focusOption = this.listOptions[this.focusIndex];
             this.vScroll.scrollToIndex(
-              this.keybrdSrvc.getScrollToIndex(this.focusIndex, this.maxHeight)
+              this.keybrdSrvc.getScrollToIndex({
+                focusIndex: this.focusIndex,
+                listHeight: this.maxHeight,
+                size: this.size,
+              })
             );
             if (!this.cd['destroyed']) {
               this.cd.detectChanges();
@@ -365,7 +389,7 @@ export abstract class BaseListElement
             ? newValue
               ? this.selectedIDs.concat(option.id)
               : this.selectedIDs.filter((id) => id !== option.id)
-            : newValue
+            : newValue || this.min >= 1
             ? [option.id]
             : [];
         }
@@ -492,7 +516,7 @@ export abstract class BaseListElement
       const isClassic =
         (!this.mode || this.mode === SelectMode.classic) &&
         !this.max &&
-        !this.min;
+        (!this.min || this.min === 1);
 
       this.listHeaders = this.modelSrvc.getHeadersModel(this.filteredOptions, {
         collapseHeaders: config.collapseHeaders,
@@ -502,6 +526,7 @@ export abstract class BaseListElement
           isClassic &&
           !this.noGroupHeaders &&
           (this.options.length > 1 || this.showSingleGroupHeader),
+        size: this.size || FormElementSize.regular,
       });
     }
 

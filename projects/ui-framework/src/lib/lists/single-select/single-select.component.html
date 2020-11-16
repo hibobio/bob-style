@@ -7,7 +7,7 @@
 
 <div class="bfe-wrap has-suffix"
      [ngClass]="{
-        'has-prefix': hasPrefix || showPrefix,
+        'has-prefix': hasPrefix || showPrefix || valueAvatar,
         focused: panelOpen,
         'panel-open': panelOpen,
         'panel-above': positionClassList['panel-above'],
@@ -16,10 +16,20 @@
      (click)="openPanel()"
      cdkOverlayOrigin>
 
-  <div *ngIf="hasPrefix || showPrefix"
+  <div *ngIf="(hasPrefix || showPrefix) && !valueAvatar"
        class="bfe-prefix"
        #prefix>
     <ng-content select="[input-prefix]"></ng-content>
+  </div>
+
+  <div *ngIf="valueAvatar"
+       class="bfe-prefix">
+    <b-avatar-image [avatar]="valueAvatar"
+                    [border]="size !== formElementSize.smaller"
+                    [backgroundColor]="'transparent'"
+                    [icon]="valueAvatar.icon"
+                    [imageSource]="valueAvatar.imageSource"
+                    [size]="size === formElementSize.smaller ? avatarSize.micro : avatarSize.mini"></b-avatar-image>
   </div>
 
   <span #input
@@ -53,13 +63,15 @@
     <b-single-list class="b-select-list"
                    [options]="options"
                    [optionsDefault]="optionsDefault"
-                   [maxHeight]="listElHeight*maxHeightItems"
+                   [maxHeight]="(listElHeight[size]||listElHeightDef)*maxHeightItems"
                    [showSingleGroupHeader]="showSingleGroupHeader"
                    [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                    [showNoneOption]="!required && showNoneOption"
                    [readonly]="readonly"
                    [focusOnInit]="true"
                    [listActions]="listActions"
+                   [min]="min || (required && 1)"
+                   [size]="size"
                    (selectChange)="onSelect($event)"
                    (apply)="onApply()"
                    (cancel)="onCancel()">

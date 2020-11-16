@@ -14,6 +14,8 @@ import { ComponentRendererModule } from '../../services/component-renderer/compo
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
+import { TrackByPropModule } from '../../services/filters/trackByProp.pipe';
 
 @NgModule({
   declarations: [MultiListComponent],
@@ -28,6 +30,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ComponentRendererModule,
     TranslateModule,
     MatTooltipModule,
+    AvatarModule,
+    TrackByPropModule,
   ],
   exports: [MultiListComponent],
   providers: [

@@ -1,33 +1,6 @@
+import { AvatarImageComponent } from '../avatar/avatar/avatar-image/avatar-image.component';
+import { IconComponent } from '../icons/icon.component';
 import { RenderedComponent } from '../services/component-renderer/component-renderer.interface';
-
-export interface ListHeader {
-  groupName: string;
-  groupIndex?: number;
-  key?: string | number;
-  isCollapsed: boolean;
-  placeHolderSize: number;
-  selected?: boolean;
-  indeterminate?: boolean;
-  selectedCount?: number;
-  hidden?: boolean;
-  groupIsOption?: boolean;
-  hasCheckbox?: boolean;
-}
-
-export interface ListOption {
-  isPlaceHolder: boolean;
-  groupName: string;
-  groupIndex: number;
-  key?: string | number;
-  value: string;
-  id: number | string;
-  selected: boolean;
-  prefixComponent?: ListComponentPrefix | RenderedComponent;
-  disabled?: boolean;
-  hidden?: boolean;
-  exclusive?: boolean;
-  [key: string]: any;
-}
 
 export interface SelectGroupOption {
   groupName: string;
@@ -37,6 +10,7 @@ export interface SelectGroupOption {
   description?: string;
   selected?: boolean;
   hidden?: boolean;
+
   groupSelectedIDs?: (number | string)[];
   groupSelectedValues?: string[];
   selectedCount?: number;
@@ -47,7 +21,7 @@ export interface SelectOption {
   id: number | string;
   value: string;
   selected?: boolean;
-  prefixComponent?: ListComponentPrefix | RenderedComponent;
+  prefixComponent?: RenderedComponent<AvatarImageComponent | IconComponent>;
   disabled?: boolean;
   hidden?: boolean;
   description?: string;
@@ -55,9 +29,26 @@ export interface SelectOption {
   [key: string]: any;
 }
 
-export interface ListComponentPrefix {
-  component: any;
-  attributes: any;
+export interface ListHeader
+  extends Omit<
+    SelectGroupOption,
+    'options' | 'groupSelectedIDs' | 'groupSelectedValues'
+  > {
+  isCollapsed: boolean;
+  placeHolderSize: number;
+  indeterminate?: boolean;
+  groupIsOption?: boolean;
+  hasCheckbox?: boolean;
+}
+
+export interface ListOption
+  extends SelectOption,
+    Omit<
+      SelectGroupOption,
+      'options' | 'groupSelectedIDs' | 'groupSelectedValues' | 'selectedCount'
+    > {
+  isPlaceHolder?: boolean;
+  exclusive?: boolean;
 }
 
 export interface ListFooterActions {

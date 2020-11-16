@@ -1,9 +1,19 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostBinding,
+  Input,
+  Output,
+} from '@angular/core';
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { Icons } from '../../icons/icons.enum';
 import { ListFooterActions, ListFooterActionsState } from '../list.interface';
 import { LIST_ACTIONS_DEF, LIST_ACTIONS_STATE_DEF } from './list-footer.const';
-import { cloneObject, cloneDeepSimpleObject } from '../../services/utils/functional-utils';
+import {
+  cloneObject,
+  cloneDeepSimpleObject,
+} from '../../services/utils/functional-utils';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
 
 @Component({
   selector: 'b-list-footer',
@@ -15,6 +25,8 @@ export class ListFooterComponent {
   @Input() listActionsState: ListFooterActionsState = cloneDeepSimpleObject(
     LIST_ACTIONS_STATE_DEF
   );
+
+  @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
 
   @Output() apply: EventEmitter<void> = new EventEmitter<void>();
   @Output() cancel: EventEmitter<void> = new EventEmitter<void>();

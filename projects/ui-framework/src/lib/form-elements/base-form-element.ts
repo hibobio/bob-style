@@ -31,6 +31,7 @@ import {
   isFunction,
   isObject,
   objectRemoveEntriesByValue,
+  objectRemoveKeys,
 } from '../services/utils/functional-utils';
 import { InputEventType, FormElementSize } from './form-elements.enum';
 import {
@@ -91,7 +92,10 @@ export abstract class BaseFormElement
       }
       Object.assign(
         this,
-        objectRemoveEntriesByValue(spec, [undefined, ...errorProps])
+        objectRemoveKeys(
+          objectRemoveEntriesByValue(spec, [undefined]),
+          errorProps
+        )
       );
     }
   }

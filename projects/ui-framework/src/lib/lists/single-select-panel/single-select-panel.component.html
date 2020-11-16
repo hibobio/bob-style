@@ -20,13 +20,15 @@
     <b-single-list class="b-select-list"
                    [options]="options"
                    [optionsDefault]="optionsDefault"
-                   [maxHeight]="listElHeight*maxHeightItems"
+                   [maxHeight]="(listElHeight[size]||listElHeightDef)*maxHeightItems"
                    [showSingleGroupHeader]="false"
                    [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                    [showNoneOption]="false"
                    [listActions]="listActions"
                    [readonly]="readonly"
                    [focusOnInit]="true"
+                   [min]="min || (required && 1)"
+                   [size]="size"
                    (selectChange)="onSelect($event)">
       <ng-content footerAction
                   select="[footerAction],[footerActionRight]"></ng-content>

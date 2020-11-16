@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { ListKeyboardService } from './list-keyboard.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { Keys } from '../../enums';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
 
 describe('ListModelService', () => {
   let listKeyboardService: ListKeyboardService;
@@ -72,19 +73,21 @@ describe('ListModelService', () => {
     it('should return -6 when listHeight=LIST_EL_HEIGHT*8 and focusIndex=0', () => {
       const listHeight = LIST_EL_HEIGHT * 8;
       const focusIndex = 0;
-      const scrollToIndex = listKeyboardService.getScrollToIndex(
+      const scrollToIndex = listKeyboardService.getScrollToIndex({
         focusIndex,
-        listHeight
-      );
+        listHeight,
+        size: FormElementSize.regular,
+      });
       expect(scrollToIndex).toEqual(-6);
     });
     it('should return 1 when listHeight=LIST_EL_HEIGHT*8 and focusIndex=7', () => {
       const listHeight = LIST_EL_HEIGHT * 8;
       const focusIndex = 7;
-      const scrollToIndex = listKeyboardService.getScrollToIndex(
+      const scrollToIndex = listKeyboardService.getScrollToIndex({
         focusIndex,
-        listHeight
-      );
+        listHeight,
+        size: FormElementSize.regular,
+      });
       expect(scrollToIndex).toEqual(1);
     });
   });

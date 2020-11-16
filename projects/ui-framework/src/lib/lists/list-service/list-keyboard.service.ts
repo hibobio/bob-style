@@ -5,6 +5,8 @@ import { LIST_EL_HEIGHT } from '../list.consts';
 import { Keys } from '../../enums';
 import { isKey } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { FORM_ELEMENT_HEIGHT } from '../../form-elements/form-elements.const';
 
 @Injectable()
 export class ListKeyboardService {
@@ -29,7 +31,7 @@ export class ListKeyboardService {
     focusIndex: number,
     listLength: number
   ): number {
-    let nextFocusIndex;
+    let nextFocusIndex: number;
     switch (navKey) {
       case Keys.arrowdown:
         nextFocusIndex = (focusIndex + 1) % listLength;
@@ -43,7 +45,19 @@ export class ListKeyboardService {
     return nextFocusIndex;
   }
 
-  getScrollToIndex(focusIndex: number, listHeight: number): number {
-    return focusIndex - listHeight / LIST_EL_HEIGHT + 2;
+  getScrollToIndex({
+    focusIndex,
+    listHeight,
+    size,
+  }: {
+    focusIndex: number;
+    listHeight: number;
+    size: FormElementSize;
+  }): number {
+    return (
+      focusIndex -
+      listHeight / (FORM_ELEMENT_HEIGHT[size] || LIST_EL_HEIGHT) +
+      2
+    );
   }
 }

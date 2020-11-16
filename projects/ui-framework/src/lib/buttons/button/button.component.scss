@@ -8,6 +8,11 @@ $minWidthLarge: 110px;
 :host {
   display: inline-flex;
   border-radius: $border-radius;
+
+  &,
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 button {

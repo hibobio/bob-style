@@ -14,6 +14,7 @@ import {
   Component,
   Input,
   NgZone,
+  TrackByFunction,
 } from '@angular/core';
 import { ListKeyboardService } from '../lists/list-service/list-keyboard.service';
 import { HighlightPipe } from '../services/filters/highlight.pipe';
@@ -26,8 +27,16 @@ import { TooltipPosition } from '@angular/material/tooltip';
 import { TooltipClass } from '../popups/tooltip/tooltip.enum';
 import { TruncateTooltipComponent } from '../popups/truncate-tooltip/truncate-tooltip.component';
 import { WindowLike, WindowRef } from '../services/utils/window-ref.service';
+import { simpleUID } from '../services/utils/functional-utils';
 
 // This file is intentionally named .spec.ts - to fix build problems due to missing jasmine namespace
+
+@Pipe({ name: 'trackByProp' })
+export class TrackByPropPipeStub implements PipeTransform {
+  transform(value: string | string[], params?: any): TrackByFunction<any> {
+    return (index, item) => simpleUID();
+  }
+}
 
 export const utilsServiceStub: spyObj<UtilsService> = createSpyObj(
   'UtilsService',

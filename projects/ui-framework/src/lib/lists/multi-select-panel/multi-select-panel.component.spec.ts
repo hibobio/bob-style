@@ -24,6 +24,7 @@ import {
   mockHighlightPipe,
   listKeyboardServiceStub,
   MobileServiceProvideMock,
+  TrackByPropPipeStub,
 } from '../../tests/services.stub.spec';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MultiSelectComponent } from '../multi-select/multi-select.component';
@@ -71,6 +72,7 @@ describe('MultiSelectPanelComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [
+        TrackByPropPipeStub,
         MultiSelectPanelComponent,
         MockComponent(ChevronButtonComponent),
         MultiSelectComponent,

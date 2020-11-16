@@ -167,28 +167,28 @@ const toAdd = () => ({
       [
         [
           options[2].options[0].id,
-          options[1].options[2].id,
-          options[3].options[3].id,
           options[2].options[2].id,
+          options[3].options[3].id,
+          options[4].options[2].id,
         ],
         [
           options[3].options[1].id,
-          options[1].options[3].id,
+          options[2].options[3].id,
           options[2].options[2].id,
           options[4].options[0].id,
         ],
         [
           options[3].options[3].id,
-          options[1].options[2].id,
+          options[2].options[2].id,
           options[4].options[0].id,
           options[2].options[1].id,
         ],
       ],
       [
         options[2].options[0].id,
-        options[1].options[2].id,
-        options[3].options[3].id,
         options[2].options[2].id,
+        options[3].options[3].id,
+        options[4].options[2].id,
       ],
       'Props'
     ),

@@ -1,3 +1,4 @@
+:host[data-size='micro'],
 :host[data-size='mini'] {
   ::ng-deep [avatar-text] {
     margin-top: 0px;
@@ -25,6 +26,15 @@
       margin-top: 3px;
       max-width: 80px;
     }
+  }
+}
+
+:host[data-size='micro'] {
+  .slot1-big {
+    font-weight: 400;
+  }
+  .slot2-medium {
+    display: none;
   }
 }
 

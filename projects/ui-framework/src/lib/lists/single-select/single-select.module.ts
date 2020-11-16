@@ -12,6 +12,7 @@ import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-to
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
 import { FormElementLabelModule } from '../../form-elements/form-element-label/form-element-label.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
 
 @NgModule({
   declarations: [SingleSelectComponent],
@@ -26,6 +27,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ListFooterModule,
     FormElementLabelModule,
     TranslateModule,
+    AvatarModule,
   ],
   exports: [SingleSelectComponent],
   providers: [ListChangeService, ListModelService],

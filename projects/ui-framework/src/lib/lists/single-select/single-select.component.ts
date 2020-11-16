@@ -19,12 +19,17 @@ import { isArray, arrayFlatten } from '../../services/utils/functional-utils';
 import { ListModelService } from '../list-service/list-model.service';
 import { SelectOption } from '../list.interface';
 import { SelectType } from '../list.enum';
-import { FormEvents } from '../../form-elements/form-elements.enum';
+import {
+  FormElementSize,
+  FormEvents,
+} from '../../form-elements/form-elements.enum';
 import { ListPanelService } from '../list-panel.service';
 import { MobileService } from '../../services/utils/mobile.service';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 import { TranslateService } from '@ngx-translate/core';
+import { Avatar } from '../../avatar/avatar/avatar.interface';
+import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 
 @Component({
   selector: 'b-single-select',
@@ -85,13 +90,25 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
 
   @Input() showNoneOption = true;
 
+  public valueAvatar: Avatar;
+
+  readonly avatarSize = AvatarSize;
+  readonly formElementSize = FormElementSize;
+
   protected getDisplayValue(): string {
-    const option =
+    const option: SelectOption =
       this.value &&
       this.options &&
       arrayFlatten(
         this.options.map((group) => group.options)
       ).find((opt: SelectOption) => this.value.includes(opt.id));
+
+    this.valueAvatar =
+      option?.prefixComponent?.attributes.imageSource ||
+      option?.prefixComponent?.attributes.icon
+        ? option.prefixComponent.attributes
+        : null;
+
     return option && option.value;
   }
 

@@ -1,5 +1,6 @@
 <b-search *ngIf="shouldDisplaySearch"
           #search
+          [size]="size"
           (searchChange)="searchChange($event)"
           [ngClass]="{ 'no-result': !listOptions?.length }">
 </b-search>
@@ -75,12 +76,12 @@
 
   <cdk-virtual-scroll-viewport #vScroll
                                class="v-scroll"
-                               [itemSize]="listElHeight"
+                               [itemSize]="listElHeight[size]||listElHeightDef"
                                [maxBufferPx]="maxHeight"
                                [minBufferPx]="maxHeight">
     <div class="options">
       <div (click)="optionClick(option, true)"
-           *cdkVirtualFor="let option of listOptions"
+           *cdkVirtualFor="let option of listOptions; trackBy: 'id' | trackByProp"
            [ngClass]="{
             'header-placeholder': option.isPlaceHolder,
             'option': !option.isPlaceHolder,
@@ -100,10 +101,23 @@
                 'selected': option.selected
               }"></span>
 
-        <b-component-renderer *ngIf="option.prefixComponent
-                        && option.prefixComponent.component"
-                              class="comp-prefix"
-                              [render]="option.prefixComponent"></b-component-renderer>
+        <ng-container *ngIf="option.prefixComponent?.component">
+          <b-avatar-image *ngIf="option.prefixComponent.attributes.imageSource ||
+                             option.prefixComponent.attributes.icon; else renderComp"
+                          class="comp-prefix"
+                          [avatar]="option.prefixComponent.attributes"
+                          [border]="size !== formElementSize.smaller"
+                          [backgroundColor]="'transparent'"
+                          [icon]="option.prefixComponent.attributes.icon"
+                          [imageSource]="option.prefixComponent.attributes.imageSource"
+                          [size]="size === formElementSize.smaller ? avatarSize.micro : avatarSize.mini">
+          </b-avatar-image>
+
+          <ng-template #renderComp>
+            <b-component-renderer class="comp-prefix"
+                                  [render]="option.prefixComponent"></b-component-renderer>
+          </ng-template>
+        </ng-container>
 
         <span *ngIf="!option.isPlaceHolder && option.value"
               class="option-value capitalize"
@@ -132,6 +146,7 @@
                *ngIf="hasFooter"
                [listActions]="!readonly ? listActions : {}"
                [listActionsState]="!readonly ? listActionsState : {}"
+               [size]="size"
                (apply)="onApply()"
                (cancel)="onCancel()"
                (clear)="clearList()"

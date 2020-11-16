@@ -4,14 +4,19 @@ import { mockAvatar, mockName, mockJobs, mockText } from '../../mock.const';
 import { randomNumber } from '../../services/utils/functional-utils';
 import { cloneDeep } from 'lodash';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { IconColor, Icons } from '../../icons/icons.enum';
+
+const mayBeSelected = (perc = 80) => {
+  return randomNumber() > perc;
+};
 
 export const selectSome = (options: SelectGroupOption[]): SelectGroupOption[] =>
   cloneDeep(options).map((group: SelectGroupOption) => ({
     ...group,
     options: group.options.map((option, index) => ({
       ...option,
-      selected: randomNumber() > 80,
-      disabled: index !== 0 && randomNumber() > 90,
+      selected: mayBeSelected(80),
+      disabled: index !== 0 && mayBeSelected(90),
     })),
   }));
 
@@ -45,6 +50,44 @@ export const optionsMock: SelectGroupOption[] = [
       },
     ],
   },
+
+  {
+    groupName: 'Roles',
+    key: 'roles',
+    options: [
+      {
+        value: 'Manager',
+        id: simpleUID(),
+        selected: mayBeSelected(85),
+        disabled: false,
+        prefixComponent: {
+          component: AvatarImageComponent,
+          attributes: {
+            icon: {
+              icon: Icons.person_manager,
+              color: IconColor.dark,
+            },
+          },
+        },
+      },
+      {
+        value: 'Reports To',
+        id: simpleUID(),
+        selected: mayBeSelected(85),
+        disabled: false,
+        prefixComponent: {
+          component: AvatarImageComponent,
+          attributes: {
+            icon: {
+              icon: Icons.person_reports,
+              color: IconColor.dark,
+            },
+          },
+        },
+      },
+    ],
+  },
+
   ...makeArray(groupNum).map((group, index) => {
     const groupId = simpleUID(
       groupNames[index].replace(/\s+/g, '').slice(0, 8).toUpperCase() + '-',
@@ -77,7 +120,7 @@ export const optionsMock: SelectGroupOption[] = [
             },
           },
           someOptionData: simpleUID(),
-          description: randomNumber() > 35 ? mockText(10) : null,
+          description: mayBeSelected(35) ? mockText(10) : null,
         };
       }),
 

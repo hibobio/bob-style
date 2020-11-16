@@ -1,6 +1,10 @@
 @mixin single-list-option-selected {
   background-color: $color-option-selected-solid;
   font-weight: bold;
+
+  ::ng-deep b-avatar-image {
+    border-color: $color-option-selected-solid;
+  }
 }
 
 @mixin listOption {
@@ -17,6 +21,10 @@
   &:hover,
   &.focus {
     background-color: $color-option-hover-solid;
+
+    ::ng-deep b-avatar-image {
+      border-color: $color-option-hover-solid;
+    }
   }
   &.selected {
     @include single-list-option-selected;

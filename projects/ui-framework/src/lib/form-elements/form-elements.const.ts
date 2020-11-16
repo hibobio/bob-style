@@ -1,4 +1,4 @@
-import { FormEvents } from './form-elements.enum';
+import { FormElementSize, FormEvents } from './form-elements.enum';
 import { InputEventType } from './form-elements.enum';
 import { TransmitOptions } from './form-elements.interface';
 
@@ -16,3 +16,8 @@ export const IGNORE_EVENTS_DEF: InputEventType[] = [
   InputEventType.onFocus,
   InputEventType.onKey,
 ];
+
+export const FORM_ELEMENT_HEIGHT: { [key in FormElementSize]: number } = {
+  [FormElementSize.regular]: 44,
+  [FormElementSize.smaller]: 36,
+};

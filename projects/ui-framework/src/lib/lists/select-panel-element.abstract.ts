@@ -53,6 +53,7 @@ import { ListPanelService } from './list-panel.service';
 import { MobileService } from '../services/utils/mobile.service';
 import { TooltipClass } from '../popups/tooltip/tooltip.enum';
 import { TranslateService } from '@ngx-translate/core';
+import { FORM_ELEMENT_HEIGHT } from '../form-elements/form-elements.const';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -101,6 +102,9 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @Input() tooltipType: TruncateTooltipType = TruncateTooltipType.auto;
   @Input() listActions: ListFooterActions;
 
+  @Input() min: number;
+  @Input() max: number;
+
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
@@ -114,7 +118,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   protected listChange: ListChange;
 
   private fitOptionsToValue = false;
-  readonly listElHeight = LIST_EL_HEIGHT;
+  readonly listElHeight = FORM_ELEMENT_HEIGHT;
+  readonly listElHeightDef = LIST_EL_HEIGHT;
   public maxHeightItems = SELECT_MAX_ITEMS;
 
   public touched = false;

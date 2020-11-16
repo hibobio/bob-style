@@ -35,3 +35,13 @@
     margin-left: -2px;
   }
 }
+
+:host[data-size='smaller'] ::ng-deep {
+  .bfe-prefix {
+    padding-right: 8px;
+
+    b-avatar-image {
+      margin-left: -8px;
+    }
+  }
+}

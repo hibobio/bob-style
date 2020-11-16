@@ -21,6 +21,7 @@ import {
   mockHighlightPipe,
   listKeyboardServiceStub,
   MobileServiceProvideMock,
+  TrackByPropPipeStub,
 } from '../../tests/services.stub.spec';
 import { ButtonComponent } from '../../buttons/button/button.component';
 import { IconComponent } from '../../icons/icon.component';
@@ -61,6 +62,7 @@ describe('MultiListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        TrackByPropPipeStub,
         MultiListComponent,
         ListFooterComponent,
         mockTranslatePipe,
@@ -836,8 +838,12 @@ describe('MultiListComponent', () => {
         })
       );
       fixture.detectChanges();
-      const headerGroups = fixture.debugElement.queryAll(By.css('.headers-group'));
-      const tooltipIcon = headerGroups[1].nativeElement.querySelector('.comp-suffix.has-hover');
+      const headerGroups = fixture.debugElement.queryAll(
+        By.css('.headers-group')
+      );
+      const tooltipIcon = headerGroups[1].nativeElement.querySelector(
+        '.comp-suffix.has-hover'
+      );
       expect(tooltipIcon).toBeTruthy();
     });
   });

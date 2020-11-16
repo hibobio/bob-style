@@ -26,6 +26,7 @@ import {
   MobileServiceProvideMock,
   DOMhelpersProvideMock,
   MutationObservableServiceProvideMock,
+  TrackByPropPipeStub,
 } from '../../tests/services.stub.spec';
 import { MockComponent } from 'ng-mocks';
 import { MultiListComponent } from '../multi-list/multi-list.component';
@@ -87,6 +88,7 @@ describe('MultiSelectComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [
+        TrackByPropPipeStub,
         MultiSelectComponent,
         MultiListComponent,
         ListFooterComponent,

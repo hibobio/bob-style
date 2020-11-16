@@ -7,7 +7,7 @@ import {
 } from '../../services/utils/functional-utils';
 import { mockHobbies, mockNames, mockAvatar } from '../../mock.const';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
-import { Icons } from '../../icons/icons.enum';
+import { IconColor, Icons } from '../../icons/icons.enum';
 
 const maxOpts = 10;
 
@@ -92,7 +92,10 @@ export const MultiListAndAvatarChipsOptionsMock: SelectGroupOption[] = [
         prefixComponent: {
           component: AvatarImageComponent,
           attributes: {
-            icon: Icons.person_manager,
+            icon: {
+              icon: Icons.person_manager,
+              color: IconColor.dark,
+            },
           },
         },
       },
@@ -104,7 +107,10 @@ export const MultiListAndAvatarChipsOptionsMock: SelectGroupOption[] = [
         prefixComponent: {
           component: AvatarImageComponent,
           attributes: {
-            icon: Icons.person_reports,
+            icon: {
+              icon: Icons.person_reports,
+              color: IconColor.dark,
+            },
           },
         },
       },

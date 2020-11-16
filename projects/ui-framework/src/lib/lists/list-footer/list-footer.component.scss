@@ -18,6 +18,10 @@ $blf-apply-cancel-button-width: 80px;
   &:empty {
     display: none;
   }
+
+  &[data-size='smaller'] {
+    height: $wrap-height;
+  }
 }
 
 [hidden] {
