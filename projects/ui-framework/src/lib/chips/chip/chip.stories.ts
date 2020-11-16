@@ -159,19 +159,28 @@ const icons = [
   Icons.tag,
 ];
 
+const avatar1 = mockAvatar(),
+  name1 = mockName(),
+  text1 = mockThings().find((i) => i.split(' ').length > 1),
+  icon1 = randomFromArray(icons, 1),
+  text2 = mockThings().find((i) => i.split(' ').length > 1),
+  text3 = mockHobbies().find((i) => i.split(' ').length > 1),
+  text4 = mockAnimals().find((i) => i.split(' ').length > 1),
+  imgSrc = mockAvatar();
+
 story.add(
   'Chip',
   () => ({
     template: storyTemplate,
     props: {
-      avatar1: mockAvatar(),
-      name1: mockName(),
-      text1: mockThings().find(i => i.split(' ').length > 1),
-      icon1: randomFromArray(icons, 1),
+      avatar1,
+      name1,
+      text1,
+      icon1,
 
-      text2: mockThings().find(i => i.split(' ').length > 1),
-      text3: mockHobbies().find(i => i.split(' ').length > 1),
-      text4: mockAnimals().find(i => i.split(' ').length > 1),
+      text2,
+      text3,
+      text4,
 
       chipType: ChipType,
       avatarSize: AvatarSize,
@@ -182,7 +191,7 @@ story.add(
       removable: boolean('removable', false),
       disabled: boolean('disabled', false),
       selected: boolean('selected', false),
-      imageSource: text('imageSource', mockAvatar()),
+      imageSource: text('imageSource', imgSrc),
       icon: select('icon', icons, Icons.person),
       onRemove: action('Chip removed'),
     },

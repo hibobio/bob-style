@@ -24,14 +24,16 @@
 }
 
 .bpgr-page-buttons ::ng-deep {
-  button.negative {
+  .current-page button {
     font-weight: 700;
     cursor: pointer;
     pointer-events: none;
 
+    &,
     &:focus,
     &:active {
-      background-color: var(--negative-600);
+      background-color: $grey-700;
+      color: white;
     }
   }
 }

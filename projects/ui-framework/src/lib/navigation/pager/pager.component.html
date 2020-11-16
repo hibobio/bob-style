@@ -21,9 +21,10 @@
   <b-square-button *ngFor="let page of pagesViewModel; trackBy: pageButtonsTrackBy;"
                    [type]="totalPages > 1 && currentPage===page
                      ?
-                     buttonType.negative
+                     buttonType.secondary
                      :
                      buttonType.tertiary"
+                   [class.current-page]="totalPages > 1 && currentPage===page"
                    [disabled]="page !== page || totalPages < 2">
     {{page === page ? page + 1 : '...'}}
   </b-square-button>

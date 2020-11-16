@@ -1,6 +1,9 @@
 @import '../../style/common-imports';
 @import '../../avatar/avatar/avatar.mixin';
 
+$chip-selected-color: $grey-700;
+$chip-tab-selected-color: $color-select-red;
+
 @keyframes bchp-blink {
   0%,
   100% {
@@ -76,6 +79,9 @@ $chipTypeMap: (
       ),
       '[data-selected="true"]:not([data-disabled="true"])': (
         font-weight: 500,
+        color: $grey-800,
+        background-color: $color-option-selected,
+        border-color: $color-option-selected-solid,
       ),
     ),
   avatar: (
@@ -95,11 +101,6 @@ $chipTypeMap: (
   icon: (
     '*': (
       padding: 0 16px,
-    ),
-    '[data-selected="true"]:not([data-disabled="true"])': (
-      color: $grey-800,
-      background-color: $color-option-selected,
-      border-color: $color-option-selected-solid,
     ),
   ),
   icon tab button:
@@ -122,7 +123,7 @@ $chipTypeMap: (
       ),
       '[data-selected="true"]:not([data-disabled="true"])': (
         color: white,
-        background-color: $color-select-red,
+        background-color: $chip-tab-selected-color,
         font-weight: 700,
       ),
       '[data-selected="true"]:not([data-disabled="true"]):before': (
@@ -152,9 +153,9 @@ $chipTypeMap: (
 
 $chipStateMap: (
   selected: (
-    background-color: $color-select-red,
+    background-color: $chip-selected-color,
     color: white,
-    border-color: $color-select-red,
+    border-color: $chip-selected-color,
   ),
   disabled: (
     background-color: $grey-200,
