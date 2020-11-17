@@ -622,8 +622,30 @@ export const stringify = (smth: any, limit = 300, limitKeys = null): string => {
     : stringified;
 };
 
-export const capitalize = (smth: string): string =>
-  smth.charAt(0).toUpperCase() + smth.slice(1);
+export const capitalize = (smth: string): string => {
+  if (!isString(smth)) {
+    return smth;
+  }
+  smth = smth.trim();
+  return smth.charAt(0).toUpperCase() + smth.slice(1);
+};
+
+export const capitalizeAll = (smth: string): string => {
+  if (!isString(smth)) {
+    return smth;
+  }
+  return smth
+    .trim()
+    .toLowerCase()
+    .split(/\s+/)
+    .map((ss) => capitalize(ss))
+    .join(' ');
+};
+// smth
+//   .trim()
+//   .toLowerCase()
+//   .replace(/\w\S*/g, (w) => w.replace(/^\w/, (c) => c.toUpperCase()));
+
 
 export const padWith0 = (number: string | number, digits = 2): string => {
   if (isNullOrUndefined(number) || isNaN(parseInt(number as string, 10))) {

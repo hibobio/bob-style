@@ -41,8 +41,12 @@
                 'b-icon-chevron-down': !header.isCollapsed,
                 'b-icon-chevron-right': header.isCollapsed
               }"></span>
-        <span class="header-option-value capitalize"
-              [innerHTML]="header.groupName"></span>
+
+        <div class="capitalize">
+          <span class="header-option-value"
+                [innerHTML]="header.groupName"></span>
+        </div>
+
         <span *ngIf="header.selectedCount"
               class="header-selected-count">
           ({{header.selectedCount}})
@@ -108,11 +112,12 @@
           </ng-template>
         </ng-container>
 
-        <span *ngIf="!option.isPlaceHolder && option.value"
-              class="option-value capitalize"
-              data-max-lines='3'
-              [innerHTML]="option.value | highlight: searchValue">
-        </span>
+        <div class="capitalize">
+          <span *ngIf="!option.isPlaceHolder && option.value"
+                class="option-value"
+                data-max-lines='3'
+                [innerHTML]="option.value | highlight: searchValue"></span>
+        </div>
 
         <span *ngIf="!option.isPlaceHolder && option.description"
               class="comp-suffix has-hover"

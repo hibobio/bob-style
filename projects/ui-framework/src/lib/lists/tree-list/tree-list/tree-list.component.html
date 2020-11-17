@@ -52,11 +52,11 @@
             role="checkbox"
             [attr.aria-checked]="item.selected"></span>
 
-      <span class="btl-item-name capitalize"
-            data-max-lines='3'
-            [innerHTML]="item.name | highlight: searchValue">
-        {{item.name}}
-      </span>
+      <div class="capitalize">
+        <span class="btl-item-name"
+              data-max-lines='3'
+              [innerHTML]="item.name | highlight: searchValue"></span>
+      </div>
 
       <span *ngIf="item.selectedCount"
             class="btl-selected-count">

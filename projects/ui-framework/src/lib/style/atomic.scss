@@ -93,10 +93,16 @@ $acss-dirs: top right bottom left;
   text-transform: uppercase;
 }
 
+// only works on display-block elements
 .capitalize {
-  :first-letter {
+  // display: inline-block;
+  &::first-letter {
     text-transform: capitalize;
   }
+}
+
+.capitalize-all {
+  text-transform: capitalize;
 }
 
 .text-center {
@@ -288,6 +294,10 @@ $acss-dirs: top right bottom left;
 .blk,
 .block {
   display: block;
+}
+
+.inl-blk {
+  display: inline-block;
 }
 
 .grd,
