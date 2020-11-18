@@ -43,7 +43,8 @@ const template = `<b-multi-list-and-chips
         [min]="min"
         [max]="max"
         [emptyState]="emptyStateConfig"
-        (selectChange)="onSelectChange($event)">
+        (selectChange)="onSelectChange($event)"
+        (changed)="onChange($event)">
   </b-multi-list-and-chips>`;
 
 const templateForNotes = `<b-multi-list-and-chips
@@ -55,7 +56,8 @@ const templateForNotes = `<b-multi-list-and-chips
       [min]="min"
       [max]="max"
       [emptyState]="emptyStateConfig"
-      (selectChange)="onSelectChange($event)">
+      (selectChange)="onSelectChange($event)"
+      (changed)="onChange($event)">
 </b-multi-list-and-chips>`;
 
 const note = `
@@ -125,6 +127,7 @@ const toAdd = () => ({
     ),
 
     onSelectChange: action('ListChange'),
+    onChange: action('Selected IDs changed'),
   },
   moduleMetadata: {
     imports: [

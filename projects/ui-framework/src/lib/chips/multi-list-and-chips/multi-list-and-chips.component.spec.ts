@@ -7,7 +7,7 @@ import {
 import { MultiListAndChipsComponent } from './multi-list-and-chips.component';
 import { Icons } from '../../icons/icons.enum';
 import { CommonModule } from '@angular/common';
-import { makeArray, simpleChange } from '../../services/utils/functional-utils';
+import { makeArray } from '../../services/utils/functional-utils';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../../lists/list-change/list-change';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
@@ -31,13 +31,12 @@ import { ListChangeService } from '../../lists/list-change/list-change.service';
 import { ListKeyboardService } from '../../lists/list-service/list-keyboard.service';
 import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
 import { ListFooterComponent } from '../../lists/list-footer/list-footer.component';
+import { NgLetModule } from '../../services/utils/nglet.directive';
+import { BehaviorSubject, of } from 'rxjs';
 
 describe('MultiListAndChipsComponent', () => {
   let component: MultiListAndChipsComponent;
   let fixture: ComponentFixture<MultiListAndChipsComponent>;
-
-  let multiListEl: HTMLElement;
-  let chipsListEl: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -53,7 +52,12 @@ describe('MultiListAndChipsComponent', () => {
         mockHighlightPipe,
         TextButtonComponent,
       ],
-      imports: [CommonModule, NoopAnimationsModule, ScrollingModule],
+      imports: [
+        CommonModule,
+        NoopAnimationsModule,
+        ScrollingModule,
+        NgLetModule,
+      ],
       providers: [
         ListModelService,
         ListChangeService,
@@ -63,35 +67,47 @@ describe('MultiListAndChipsComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })
-      .overrideModule(BrowserDynamicTestingModule, {
-        set: {
-          entryComponents: [AvatarImageComponent],
-        },
-      })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(MultiListAndChipsComponent);
         component = fixture.componentInstance;
 
-        spyOn(component.selectChange, 'emit');
-        fixture.detectChanges();
+        component.selectChange.subscribe(() => {});
+        component.changed.subscribe(() => {});
+        component.listOptions$.subscribe(() => {});
+        component.otherList$.subscribe(() => {});
 
-        multiListEl = elementFromFixture(fixture, '.mlac-list');
-        chipsListEl = elementFromFixture(fixture, '.mlac-chips');
+        spyOn(component.selectChange, 'next');
+        fixture.detectChanges();
       });
   }));
+
+  afterAll(() => {
+    [
+      component.selectChange,
+      component.changed,
+      component.listOptions$,
+      component.otherList$,
+    ].forEach((s) => {
+      s.complete();
+      s?.unsubscribe();
+    });
+  });
 
   describe('Labels', () => {
     it('Should display Multi-list label', () => {
       component.listLabel = 'listLabel';
       fixture.detectChanges();
-      const listLabel = elementFromFixture(fixture, '.mlac-list-label');
+      const listLabel = elementFromFixture(fixture, '.mlas-list-label');
       expect(listLabel.innerHTML).toContain('listLabel');
     });
     it('Should display Chips-list label', () => {
-      component.chipsLabel = 'chipsLabel';
+      component.otherLabel = 'chipsLabel';
       fixture.detectChanges();
-      const chipsLabel = elementFromFixture(fixture, '.mlac-chips-label');
+      const chipsLabel = elementFromFixture(
+        fixture,
+        '.chips-list .mlas-list-label'
+      );
       expect(chipsLabel.innerHTML).toContain('chipsLabel');
     });
   });
@@ -114,23 +130,22 @@ describe('MultiListAndChipsComponent', () => {
     });
 
     it('Should not display Empty State component, if some options are selected', () => {
-      component.ngOnChanges(
-        simpleChange({
+      component.inputOptions$ = [
+        {
+          groupName: 'Grosssup',
           options: [
             {
-              groupName: 'Group',
-              options: [
-                {
-                  id: 1,
-                  value: 'Option',
-                  selected: true,
-                },
-              ],
+              id: 134,
+              value: 'Option',
+              selected: true,
             },
           ],
-        })
-      );
+        },
+      ] as any;
+
+      component.ngOnInit();
       fixture.detectChanges();
+
       emptyStateEl = elementFromFixture(fixture, 'b-chip-list b-empty-state');
       expect(emptyStateEl).toBeFalsy();
     });
@@ -141,25 +156,22 @@ describe('MultiListAndChipsComponent', () => {
     let chipEls: HTMLElement[];
 
     beforeEach(() => {
-      component.ngOnChanges(
-        simpleChange({
-          options: [
-            {
-              groupName: 'Group',
-              options: makeArray(5).map((itm, ind) => ({
-                id: ind,
-                value: 'Option' + ind,
-              })),
-            },
-          ],
-        })
-      );
+      component.inputOptions$ = [
+        {
+          groupName: 'Group',
+          options: makeArray(5).map((itm, ind) => ({
+            id: ind,
+            value: 'Option' + ind,
+          })),
+        },
+      ] as any;
 
+      component.ngOnInit();
       fixture.detectChanges();
 
       listOptions = elementsFromFixture(
         fixture,
-        '.mlac-list .option-select.option'
+        '.mlas-list .option-select.option'
       );
     });
 
@@ -222,21 +234,20 @@ describe('MultiListAndChipsComponent', () => {
     let chipEls: HTMLElement[];
 
     it('Should display single All chip, if all options of group are selected', () => {
-      component.ngOnChanges(
-        simpleChange({
-          options: [
-            {
-              groupName: 'Group1',
-              options: makeArray(3).map((itm, ind) => ({
-                id: ind,
-                value: 'Option' + ind,
-                selected: true,
-              })),
-            },
-          ],
-        })
-      );
+      component.inputOptions$ = [
+        {
+          groupName: 'Group1',
+          options: makeArray(3).map((itm, ind) => ({
+            id: ind,
+            value: 'Option' + ind,
+            selected: true,
+          })),
+        },
+      ] as any;
+
+      component.ngOnInit();
       fixture.detectChanges();
+
       chipEls = elementsFromFixture(fixture, 'b-chip-list b-chip');
 
       expect(chipEls.length).toEqual(1);
@@ -244,24 +255,23 @@ describe('MultiListAndChipsComponent', () => {
     });
 
     it('Should display single All chip, if all options of group were selected by user', () => {
-      component.ngOnChanges(
-        simpleChange({
-          options: [
-            {
-              groupName: 'Group1',
-              options: makeArray(3).map((itm, ind) => ({
-                id: ind,
-                value: 'Option' + ind,
-                selected: false,
-              })),
-            },
-          ],
-        })
-      );
+      component.inputOptions$ = [
+        {
+          groupName: 'Group1',
+          options: makeArray(3).map((itm, ind) => ({
+            id: ind,
+            value: 'Option' + ind,
+            selected: false,
+          })),
+        },
+      ] as any;
+
+      component.ngOnInit();
       fixture.detectChanges();
+
       listOptions = elementsFromFixture(
         fixture,
-        '.mlac-list .option-select.option'
+        '.mlas-list .option-select.option'
       );
       chipEls = elementsFromFixture(fixture, 'b-chip-list b-chip');
       expect(listOptions.length).toEqual(3);
@@ -280,32 +290,29 @@ describe('MultiListAndChipsComponent', () => {
     let chipEls: HTMLElement[];
 
     beforeEach(() => {
-      component.ngOnChanges(
-        simpleChange({
-          options: [
-            {
-              groupName: 'Group',
-              options: makeArray(5).map((itm, ind) => ({
-                id: ind,
-                value: 'Option' + ind,
-                selected: ind !== 4,
-                prefixComponent: {
-                  component: AvatarImageComponent,
-                  attributes: {
-                    imageSource: emptyImgWithText('avatarImg' + ind),
-                  },
-                },
-              })),
+      component.inputOptions$ = [
+        {
+          groupName: 'Group',
+          options: makeArray(5).map((itm, ind) => ({
+            id: ind,
+            value: 'Option' + ind,
+            selected: ind !== 4,
+            prefixComponent: {
+              component: AvatarImageComponent,
+              attributes: {
+                imageSource: emptyImgWithText('avatarImg' + ind),
+              },
             },
-          ],
-        })
-      );
+          })),
+        },
+      ] as any;
 
+      component.ngOnInit();
       fixture.detectChanges();
 
       listOptions = elementsFromFixture(
         fixture,
-        '.mlac-list .option-select.option'
+        '.mlas-list .option-select.option'
       );
     });
 
@@ -334,17 +341,14 @@ describe('MultiListAndChipsComponent', () => {
     ];
 
     beforeEach(() => {
-      component.ngOnChanges(
-        simpleChange({
-          options: options,
-        })
-      );
+      component.inputOptions$ = options as any;
 
+      component.ngOnInit();
       fixture.detectChanges();
 
       listOptions = elementsFromFixture(
         fixture,
-        '.mlac-list .option-select.option'
+        '.mlas-list .option-select.option'
       );
     });
 
@@ -355,7 +359,7 @@ describe('MultiListAndChipsComponent', () => {
 
       listOptions[4].click();
 
-      expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
+      expect(component.selectChange.next).toHaveBeenCalledWith(listChange);
     });
 
     it('Should emit event when chip is removed', () => {
@@ -371,8 +375,8 @@ describe('MultiListAndChipsComponent', () => {
       const removeButts = elementsFromFixture(fixture, 'b-chip .remove-button');
       removeButts[0].click();
 
-      expect(component.selectChange.emit).toHaveBeenCalledTimes(3);
-      expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
+      expect(component.selectChange.next).toHaveBeenCalledTimes(3);
+      expect(component.selectChange.next).toHaveBeenCalledWith(listChange);
     });
   });
 });

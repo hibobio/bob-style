@@ -38,7 +38,9 @@ export const isEmptyString = (val: any): boolean => !isNotEmptyString(val);
 export const isArray = <T = any>(val: any): val is T[] =>
   !!val && Array.isArray(val);
 
-export const isArrayOrNull = (val: any) => isArray(val) || val === null;
+export const isArrayOrNull = <T = any>(val: T) =>
+  isArray<T>(val) || val === null;
+
 export const isObjectOrNull = (val: any) => isObject(val) || val === null;
 
 export const isDate = (value: any): boolean =>
@@ -46,7 +48,7 @@ export const isDate = (value: any): boolean =>
   typeof value.getMonth === 'function' &&
   String(value) !== 'Invalid Date';
 
-export const isNotEmptyArray = (val: any, min = 0): boolean =>
+export const isNotEmptyArray = <T = any>(val: T, min = 0): boolean =>
   isArray(val) && val.length > min;
 
 export const isEmptyArray = (val: any): boolean =>
@@ -389,6 +391,23 @@ export const objectStringID = <T = GenericObject>(
   ).toLowerCase();
 };
 
+export const objectGetPropertyDescriptor = (
+  obj: any,
+  key: string
+): PropertyDescriptor => {
+  let descriptor: PropertyDescriptor = Object.getOwnPropertyDescriptor(
+    obj,
+    key
+  );
+
+  while (descriptor === undefined && Object.getPrototypeOf(obj) !== undefined) {
+    obj = Object.getPrototypeOf(obj);
+    descriptor = Object.getOwnPropertyDescriptor(obj, key);
+  }
+
+  return descriptor;
+};
+
 // ----------------------
 // ARRAYS
 // ----------------------
@@ -645,7 +664,6 @@ export const capitalizeAll = (smth: string): string => {
 //   .trim()
 //   .toLowerCase()
 //   .replace(/\w\S*/g, (w) => w.replace(/^\w/, (c) => c.toUpperCase()));
-
 
 export const padWith0 = (number: string | number, digits = 2): string => {
   if (isNullOrUndefined(number) || isNaN(parseInt(number as string, 10))) {
@@ -1278,11 +1296,7 @@ export const applyChanges = (
       skip?.includes(changeKey) ||
       (skipSetters !== false &&
         (changeKey === CHANGES_SET_PROPS ||
-          Object.getOwnPropertyDescriptor(target, changeKey)?.set ||
-          Object.getOwnPropertyDescriptor(
-            Object.getPrototypeOf(target),
-            changeKey
-          )?.set))
+          objectGetPropertyDescriptor(target, changeKey)?.set))
     ) {
       return;
     }

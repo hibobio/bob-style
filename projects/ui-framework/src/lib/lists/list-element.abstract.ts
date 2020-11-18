@@ -44,6 +44,7 @@ import {
   hasChanges,
   cloneDeepSimpleObject,
   simpleChange,
+  isArray,
 } from '../services/utils/functional-utils';
 import { ListModelService } from './list-service/list-model.service';
 import { ListChangeService } from './list-change/list-change.service';
@@ -96,6 +97,29 @@ export abstract class BaseListElement
   @Input() min: number;
   @Input() max: number;
 
+  @Input('value') set setValue(value: (string | number)[]) {
+    if (
+      isArray(value) &&
+      isNotEmptyArray(this.options) &&
+      isNotEmptyArray(this.listHeaders) &&
+      isNotEmptyArray(this.listOptions)
+    ) {
+      this.selectedIDs = value;
+
+      this.options = this.listChangeSrvc.getCurrentSelectGroupOptions(
+        this.options,
+        this.selectedIDs
+      );
+
+      this.modelSrvc.setSelectedOptions(
+        this.listHeaders,
+        this.listOptions,
+        this.options,
+        this.selectedIDs
+      );
+    }
+  }
+
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
@@ -146,12 +170,17 @@ export abstract class BaseListElement
   readonly tooltipDelay = 300;
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes, {
-      options: [],
-      mode: SelectMode.classic,
-      startWithGroupsCollapsed: true,
-      maxHeight: LIST_EL_HEIGHT * LIST_MAX_ITEMS,
-    });
+    applyChanges(
+      this,
+      changes,
+      {
+        options: [],
+        mode: SelectMode.classic,
+        startWithGroupsCollapsed: true,
+        maxHeight: LIST_EL_HEIGHT * LIST_MAX_ITEMS,
+      },
+      ['setValue']
+    );
 
     if (this.mode === SelectMode.tree) {
       this.mode = SelectMode.classic;

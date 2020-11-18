@@ -1,50 +1,6 @@
 @import '../../style/common-imports';
 
-$gap: 20px;
-
-:host {
-  display: flex;
-  justify-content: space-between;
-  text-align: left;
-  --translation-all: '(all)';
-}
-
-.mlac-list,
-.mlac-chips {
-  display: flex;
-  flex-direction: column;
-}
-
-.mlac-list {
-  width: calc(50% - #{$gap / 2});
-}
-
-.mlac-chips {
-  width: calc(50% - #{$gap / 2});
-}
-
-.mlac-list-label,
-.mlac-chips-label {
-  @include bFormElement-label(false);
-}
-
-b-multi-list,
 b-chip-list {
-  flex-grow: 5;
-  min-height: 300px;
-  max-height: 360px;
-}
-
-b-multi-list {
-  box-shadow: none;
-  background-color: white;
-}
-
-b-chip-list {
-  background-color: white;
-  border: 1px solid $border-color;
-  border-radius: $border-radius;
-  margin: 0;
   padding: 10px 12px;
   position: relative;
 }
@@ -58,18 +14,10 @@ b-chip-list {
     .chip-text {
       font-weight: 700;
       &:after {
-        content: var(--translation-all);
+        content: var(--translation-all, '(all)');
         font-weight: 400;
         text-transform: lowercase;
       }
     }
   }
-}
-
-b-empty-state {
-  align-self: center;
-  margin: auto;
-  justify-content: center;
-  text-align: center;
-  padding: inherit;
 }

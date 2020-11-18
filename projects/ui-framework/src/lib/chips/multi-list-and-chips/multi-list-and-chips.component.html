@@ -1,35 +1,38 @@
-<div class="mlac-list">
-  <p class="mlac-list-label"
-     [attr.id]="listID"
+<div class="mlas-list">
+  <p class="mlas-list-label"
+     [attr.id]="listID+'-label'"
      [attr.aria-hidden]="!listLabel"
-     *ngIf="listLabel || chipsLabel">{{listLabel}}</p>
+     *ngIf="listLabel || otherLabel">{{listLabel}}</p>
 
-  <b-multi-list [attr.aria-labelledby]="listLabel ? listID : null"
+  <b-multi-list [attr.aria-labelledby]="listLabel ? listID+'-label' : null"
+                [attr.id]="listID"
+                [options]="listOptions$ | async"
+                [value]="listValue$ | async"
+                [optionsDefault]="optionsDefault"
                 [mode]="mode"
                 [listActions]="listActions"
-                [options]="listOptions"
-                [optionsDefault]="optionsDefault"
                 [maxHeight]="listElHeight*6"
                 [showSingleGroupHeader]="showSingleGroupHeader"
                 [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                 [min]="min"
-                [max]="max"
-                (selectChange)="onListChange($event)">
+                [max]="max">
   </b-multi-list>
 </div>
 
-<div class="mlac-chips">
-  <p class="mlac-chips-label"
-     [attr.id]="chipListID"
-     [attr.aria-hidden]="!chipsLabel"
-     *ngIf="listLabel || chipsLabel">{{chipsLabel}}</p>
+<div class="mlas-list chips-list">
+  <p class="mlas-list-label"
+     [attr.id]="otherID+'-label'"
+     [attr.aria-hidden]="!otherLabel"
+     *ngIf="listLabel || otherLabel">{{otherLabel}}</p>
 
-  <b-chip-list [attr.aria-labelledby]="chipsLabel ? chipListID : null"
+  <b-chip-list *ngLet="otherList$ | async as chips"
+               [attr.id]="otherID"
+               [attr.aria-labelledby]="otherLabel ? otherID+'-label' : null"
                [chips]="chips"
                [config]="chipListConfig"
-               (removed)="onChipRemoved($event)">
+               (removed)="unselectOptions($event)">
 
-    <b-empty-state *ngIf="emptyState && chips.length === 0"
+    <b-empty-state *ngIf="emptyState && !chips?.length"
                    [config]="emptyState"></b-empty-state>
   </b-chip-list>
 </div>
