@@ -10,4 +10,6 @@ export interface BasicListItem {
 export interface BasicListConfig {
   showActionOnHover?: boolean;
   maxLines?: number;
+
+  [key: string]: any;
 }

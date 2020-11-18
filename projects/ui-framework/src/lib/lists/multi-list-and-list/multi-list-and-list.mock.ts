@@ -9,18 +9,18 @@ import { mockHobbies, mockNames, mockAvatar } from '../../mock.const';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { Icons } from '../../icons/icons.enum';
 import { BasicListItem } from '../../lists/basic-list/basic-list.interface';
-import { ListViewConfig } from './multi-list-and-list.component';
+import { ListViewConfig } from './multi-list-and-list.interface';
 
 const maxOpts = 10;
 
 const oldPeopleHobbies = randomFromArray(mockHobbies(), maxOpts);
 const couplesHobbies = randomFromArray(
   arrayDifference(mockHobbies(), oldPeopleHobbies),
-  maxOpts,
+  maxOpts
 );
 const kidsHobbies = randomFromArray(
   arrayDifference(mockHobbies(), oldPeopleHobbies.concat(couplesHobbies)),
-  maxOpts,
+  maxOpts
 );
 
 const mayBeSelected = (perc = 80) => {
@@ -177,15 +177,16 @@ export const MultiListAndListPepopleOptionsMock: SelectGroupOption[] = [
               imageSource: mockAvatar(),
             },
           },
-        }),
+        })
       ),
     ],
   },
 ];
 
-export const listData: BasicListItem[] = [{
-  label: 'label only',
-},
+export const listData: BasicListItem[] = [
+  {
+    label: 'label only',
+  },
   {
     label: 'label icon and menu',
     icon: Icons.doc,
@@ -194,18 +195,12 @@ export const listData: BasicListItem[] = [{
     menu: [{ label: 'Delete' }, { label: 'Edit' }],
   },
   {
-    label: [
-      '<strong> strong label</strong> - child ',
-      'action icon',
-    ],
+    label: ['<strong> strong label</strong> - child ', 'action icon'],
     icon: Icons.doc,
     menuIcon: Icons.delete,
   },
   {
-    label: [
-      '<strong> strong label 2</strong> - child2 ',
-      'text',
-    ],
+    label: ['<strong> strong label 2</strong> - child2 ', 'text'],
     menuIcon: Icons.delete,
     icon: null,
   },

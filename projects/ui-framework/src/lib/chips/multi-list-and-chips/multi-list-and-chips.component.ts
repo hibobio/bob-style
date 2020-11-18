@@ -91,7 +91,7 @@ export class MultiListAndChipsComponent
     options: SelectGroupOption[],
     value: (string | number)[]
   ): MlacChip[] {
-    const chips = [];
+    const chips: MlacChip[] = [];
 
     const isSelected = (option: SelectOption) =>
       isArray(value) ? value.includes(option.id) : option.selected;

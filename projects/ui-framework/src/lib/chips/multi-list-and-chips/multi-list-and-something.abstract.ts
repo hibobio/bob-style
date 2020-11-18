@@ -16,14 +16,8 @@ import {
   of,
   Subscription,
 } from 'rxjs';
-import {
-  distinctUntilChanged,
-  filter,
-  map,
-  skip,
-  switchMap,
-  take,
-} from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, skip } from 'rxjs/operators';
+import { Icons } from '../../icons/icons.enum';
 import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
 import { ListChange } from '../../lists/list-change/list-change';
 import { ListChangeService } from '../../lists/list-change/list-change.service';
@@ -59,7 +53,7 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
     this.listActions = { ...MULTI_LIST_LIST_ACTIONS_DEF };
     this.emptyState = {
       text: this.translate.instant('bob-style.table.empty-state-default'),
-      icon: null,
+      icon: Icons.three_dots,
     };
   }
 

@@ -230,6 +230,7 @@ export { BasicListActionDirective } from './lib/lists/basic-list/basic-list-acti
 export * from './lib/lists/basic-list/basic-list.interface';
 export * from './lib/lists/basic-list/basic-list.enum';
 // Multi List And List
+export * from './lib/lists/multi-list-and-list/multi-list-and-list.interface';
 export { MultiListAndListModule } from './lib/lists/multi-list-and-list/multi-list-and-list.module';
 export { MultiListAndListComponent } from './lib/lists/multi-list-and-list/multi-list-and-list.component';
 // Single select panel
