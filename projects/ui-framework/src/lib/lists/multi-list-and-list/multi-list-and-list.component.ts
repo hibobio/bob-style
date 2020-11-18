@@ -50,7 +50,10 @@ export class MultiListAndListComponent
   @Output() menuAction: EventEmitter<{
     action: string;
     item: string;
-  }> = new EventEmitter<any>();
+  }> = new EventEmitter<{
+    action: string;
+    item: string;
+  }>();
 
   readonly buttonType: ButtonType = ButtonType.tertiary;
   readonly type: BasicListType = BasicListType.primary;

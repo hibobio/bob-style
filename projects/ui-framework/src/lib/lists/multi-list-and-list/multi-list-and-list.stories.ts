@@ -84,7 +84,7 @@ const note = `
    be displayed when no options are selected | &nbsp;
   (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits on list change | &nbsp;
   (changed) | EventEmitter<wbr>&lt;(string|number)[]&gt; | emits selected IDs (value)
-  (EmitMenuAction) | EventEmitter<wbr>&lt;any&gt; | emits list option id + menu item id - on menu click | &nbsp;
+  (EmitMenuAction) | EventEmitter<wbr>&lt;{ action: string;<wbr> item: string; }&gt; | emits list option id + menu item id - on menu click | &nbsp;
 
   ${listSelectsPropsDoc}
 
