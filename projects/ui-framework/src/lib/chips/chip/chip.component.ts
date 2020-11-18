@@ -15,6 +15,7 @@ import {
   hasChanges,
 } from '../../services/utils/functional-utils';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { Icon } from '../../icons/icon.interface';
 
 @Component({
   selector: 'b-chip, [b-chip]',
@@ -30,7 +31,7 @@ export class ChipComponent implements OnChanges {
 
   @Input() text: string;
   @Input() textStrong: string;
-  @Input() icon: Icons;
+  @Input() icon: Icons | Icon;
   @Input() class: string;
 
   @HostBinding('attr.data-type') @Input() type: ChipType = ChipType.tag;
@@ -60,7 +61,10 @@ export class ChipComponent implements OnChanges {
     if (changes.type || changes.icon) {
       this.DOM.setAttributes(this.chip, {
         'data-icon-before': this.iconAllowed()
-          ? this.icon.replace('b-icon-', '')
+          ? ((this.icon as Icon).icon || (this.icon as Icons)).replace(
+              'b-icon-',
+              ''
+            )
           : null,
         'data-icon-before-size': this.iconAllowed() ? IconSize.large : null,
       });
