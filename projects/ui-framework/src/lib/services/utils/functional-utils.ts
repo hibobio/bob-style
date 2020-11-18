@@ -395,6 +395,9 @@ export const objectGetPropertyDescriptor = (
   obj: any,
   key: string
 ): PropertyDescriptor => {
+  if (!obj || isPrimitive(obj)) {
+    return undefined;
+  }
   let descriptor: PropertyDescriptor = Object.getOwnPropertyDescriptor(
     obj,
     key
