@@ -4,6 +4,7 @@ import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.inter
 import { ListChange } from '../../lists/list-change/list-change';
 import { SelectMode } from '../../lists/list.enum';
 import {
+  itemID,
   ListFooterActions,
   SelectGroupOption,
 } from '../../lists/list.interface';
@@ -13,10 +14,10 @@ export interface MultiListAndSomething<T = any> {
   list: MultiListComponent;
 
   inputOptions$: Observable<SelectGroupOption[]>;
-  inputValue$: Observable<(string | number)[]>;
+  inputValue$: Observable<itemID[]>;
 
   listOptions$: BehaviorSubject<SelectGroupOption[]>;
-  listValue$: BehaviorSubject<(string | number)[]>;
+  listValue$: BehaviorSubject<itemID[]>;
 
   otherList$: BehaviorSubject<T[]>;
 
@@ -32,7 +33,7 @@ export interface MultiListAndSomething<T = any> {
   max: number;
 
   selectChange: EventEmitter<ListChange>;
-  changed: EventEmitter<(string | number)[]>;
+  changed: EventEmitter<itemID[]>;
 
   readonly listElHeight: number;
   readonly listID: string;
@@ -42,8 +43,5 @@ export interface MultiListAndSomething<T = any> {
   unselectOptions(unselectedID: any | any[]): void;
 
   // components that extend base need to implement this mapper method
-  optionsToOtherList(
-    options: SelectGroupOption[],
-    value: (string | number)[]
-  ): T[];
+  optionsToOtherList(options: SelectGroupOption[], value: itemID[]): T[];
 }

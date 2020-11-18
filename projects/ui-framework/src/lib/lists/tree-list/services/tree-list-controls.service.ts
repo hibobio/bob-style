@@ -6,7 +6,7 @@ import {
   eventHasShiftlKey,
   eventHasMetaKey,
 } from '../../../services/utils/functional-utils';
-import { TreeListItem, TreeListItemMap, itemID } from '../tree-list.interface';
+import { TreeListItem, TreeListItemMap } from '../tree-list.interface';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { TreeListViewUtils } from './tree-list-view.static';
 import {
@@ -14,6 +14,7 @@ import {
   InsertItemLocation,
 } from '../editable-tree-list/editable-tree-list.interface';
 import { SelectMode } from '../../list.enum';
+import { itemID } from '../../list.interface';
 
 interface TreeListClickConfig {
   itemsMap: TreeListItemMap;

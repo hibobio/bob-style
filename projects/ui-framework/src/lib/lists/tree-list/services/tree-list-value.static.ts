@@ -5,11 +5,11 @@ import {
 } from '../../../services/utils/functional-utils';
 import {
   TreeListValue,
-  itemID,
   TreeListItemMap,
   TreeListOption,
 } from '../tree-list.interface';
 import { BTL_VALUE_SEPARATOR_DEF } from '../tree-list.const';
+import { itemID } from '../../list.interface';
 
 export class TreeListValueUtils {
   //

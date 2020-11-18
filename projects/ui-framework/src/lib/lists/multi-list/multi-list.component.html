@@ -104,7 +104,7 @@
                 'selected': option.selected
               }"></span>
 
-        <ng-container *ngIf="option.prefixComponent?.component">
+        <ng-container *ngIf="option.prefixComponent">
           <b-avatar-image *ngIf="option.prefixComponent.attributes.imageSource ||
                              option.prefixComponent.attributes.icon; else renderComp"
                           class="comp-prefix"

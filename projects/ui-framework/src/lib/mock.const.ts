@@ -1280,24 +1280,29 @@ export const mockNames = (num: number = null) => {
   return (num ? ns.slice(0, num) : ns) as string[];
 };
 
-export const mockJobs = (num = null) => randomFromArray(mockJobsList, num);
+export const mockJobs = (num: number = null) =>
+  randomFromArray(mockJobsList, num);
 
-export const mockBadJobs = (num = null) => randomFromArray(badJobsList, num);
+export const mockBadJobs = (num: number = null) =>
+  randomFromArray(badJobsList, num);
 
-export const mockHobbies = (num = null) =>
+export const mockHobbies = (num: number = null) =>
   randomFromArray(mockHobbiesList, num);
 
-export const mockCities = (num = null) => randomFromArray(mockCitiesList, num);
+export const mockCities = (num: number = null) =>
+  randomFromArray(mockCitiesList, num);
 
-export const mockCountries = (num = null) =>
+export const mockCountries = (num: number = null) =>
   randomFromArray(mockCountriesList, num);
 
-export const mockDepartments = (num = null) =>
+export const mockDepartments = (num: number = null) =>
   randomFromArray(mockDepartmentsList, num);
 
-export const mockThings = (num = null) => randomFromArray(randomItems, num);
+export const mockThings = (num: number = null) =>
+  randomFromArray(randomItems, num);
 
-export const mockAnimals = (num = null) => randomFromArray(randomAnimals, num);
+export const mockAnimals = (num: number = null) =>
+  randomFromArray(randomAnimals, num);
 
 export const mockDate = () =>
   `${padWith0(randomNumber(1, 31))}/${padWith0(
@@ -1327,7 +1332,7 @@ export const mockDateRange = (length = 0) => {
   )}/${padWith0(month)}/${year}`;
 };
 
-export const loremText = (words = null) => {
+export const loremText = (words: number = null) => {
   if (typeof words === 'number') {
     return lorem.split(' ').slice(0, words).join(' ');
   }

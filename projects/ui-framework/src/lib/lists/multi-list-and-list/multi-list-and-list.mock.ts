@@ -32,7 +32,6 @@ export const MultiListAndListTimeOffOptionsMock: SelectGroupOption[] = [
     groupName: 'Holiday',
     options: [
       {
-        strongParent: true,
         id: 6936222,
         value: 'Holiday policy',
         selected: false,
@@ -44,7 +43,6 @@ export const MultiListAndListTimeOffOptionsMock: SelectGroupOption[] = [
     groupName: 'Sick',
     options: [
       {
-        strongParent: true,
         id: 6923623,
         value: 'Sick policy',
         selected: false,
@@ -55,7 +53,6 @@ export const MultiListAndListTimeOffOptionsMock: SelectGroupOption[] = [
     groupName: 'Time off in lieu',
     options: [
       {
-        strongParent: true,
         value: 'Time Off in Lieu policy',
         id: 6932624,
         selected: true,
@@ -66,14 +63,12 @@ export const MultiListAndListTimeOffOptionsMock: SelectGroupOption[] = [
     groupName: 'test1',
     options: [
       {
-        strongParent: true,
         value: 'test1.sub',
         subValue: '16 days',
         id: 7423814,
         selected: true,
       },
       {
-        strongParent: true,
         value: 'sub2',
         subValue: '10 days',
         id: 7432822,

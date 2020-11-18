@@ -1,13 +1,13 @@
-import { SelectGroupOption, SelectOption } from '../list.interface';
+import { itemID, SelectGroupOption, SelectOption } from '../list.interface';
 import { arrayFlatten } from '../../services/utils/functional-utils';
 
 export class ListChange {
   public readonly selectGroupOptions: SelectGroupOption[];
-  public readonly selectedIDs: (string | number)[];
+  public readonly selectedIDs: itemID[];
 
   constructor(
     selectedGroupOptionsSrc: SelectGroupOption[],
-    selectedIDsSrc: (string | number)[] = null
+    selectedIDsSrc: itemID[] = null
   ) {
     this.selectGroupOptions = selectedGroupOptionsSrc;
     this.selectedIDs = selectedIDsSrc || this.getSelIds();
@@ -17,7 +17,7 @@ export class ListChange {
     return this.selectGroupOptions;
   }
 
-  getSelectedIds(): (number | string)[] {
+  getSelectedIds(): itemID[] {
     return this.selectedIDs;
   }
 
@@ -25,7 +25,7 @@ export class ListChange {
     return this.selectGroupOptions.reduce(
       (sgo: SelectGroupOption[], group: SelectGroupOption) => {
         const groupSelectedOptions: SelectOption[] = [],
-          groupSelectedIDs: (number | string)[] = [],
+          groupSelectedIDs: itemID[] = [],
           groupSelectedValues: string[] = [];
 
         group.options.forEach((option) => {
@@ -59,7 +59,7 @@ export class ListChange {
       .join(', ');
   }
 
-  private getSelIds(): (number | string)[] {
+  private getSelIds(): itemID[] {
     return arrayFlatten(this.selectGroupOptions.map((group) => group.options))
       .filter((option) => option.selected)
       .map((option) => option.id);

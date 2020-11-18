@@ -20,7 +20,7 @@ import { InputTypes } from '../../form-elements/input/input.enum';
 import { SERVER_DATE_FORMAT } from '../../consts';
 import { GenericObject } from '../../types';
 import { SelectType } from '../../lists/list.enum';
-import { itemID } from '../../lists/tree-list/tree-list.interface';
+import { itemID } from '../../lists/list.interface';
 
 // -------------------------------
 // Transformers

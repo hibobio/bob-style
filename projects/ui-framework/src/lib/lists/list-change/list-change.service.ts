@@ -1,25 +1,28 @@
 import { Injectable } from '@angular/core';
 import { ListChange } from './list-change';
-import { SelectGroupOption, SelectOption } from '../list.interface';
+import { itemID, SelectGroupOption, SelectOption } from '../list.interface';
 import { asArray } from '../../services/utils/functional-utils';
 
 @Injectable()
 export class ListChangeService {
   getListChange(
     options: SelectGroupOption[],
-    selectedIDs: (string | number)[]
+    selectedIDs: itemID[]
   ): ListChange {
-    const currentOptions = this.getCurrentSelectGroupOptions(
+    const currentOptions = this.getCurrentSelectGroupOptions({
       options,
-      selectedIDs
-    );
+      selectedIDs,
+    });
     return new ListChange(currentOptions, null);
   }
 
-  getCurrentSelectGroupOptions(
-    options: SelectGroupOption[],
-    selectedIDs: (string | number)[]
-  ): SelectGroupOption[] {
+  getCurrentSelectGroupOptions({
+    options,
+    selectedIDs,
+  }: {
+    options: SelectGroupOption[];
+    selectedIDs: itemID[];
+  }): SelectGroupOption[] {
     return options.map((group: SelectGroupOption) => ({
       ...group,
       options: group.options.map((option: SelectOption) => ({

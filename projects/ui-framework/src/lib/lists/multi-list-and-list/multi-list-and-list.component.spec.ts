@@ -40,6 +40,7 @@ import { ListRow } from './multi-list-and-list.interface';
 import { MockComponent } from 'ng-mocks';
 import { MenuComponent } from '../../navigation/menu/menu.component';
 import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
+import { itemID } from '../list.interface';
 
 describe('MultiListAndListComponent', () => {
   let component: MultiListAndListComponent;
@@ -316,7 +317,7 @@ describe('MultiListAndListComponent', () => {
       listOptions[0].click();
       listOptions[3].click();
 
-      component.unselectOptions({ id: 3 as string | number } as ListRow);
+      component.unselectOptions({ id: 3 as itemID } as ListRow);
 
       expect(component.selectChange.next).toHaveBeenCalledTimes(3);
       expect(component.selectChange.next).toHaveBeenCalledWith(listChange);

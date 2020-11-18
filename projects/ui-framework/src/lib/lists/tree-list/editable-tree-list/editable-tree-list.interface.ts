@@ -1,8 +1,8 @@
+import { itemID } from '../../list.interface';
 import {
   TreeListItem,
   TreeListItemMap,
   TreeListOption,
-  itemID,
 } from '../tree-list.interface';
 
 export interface TreeListItemEditContext {

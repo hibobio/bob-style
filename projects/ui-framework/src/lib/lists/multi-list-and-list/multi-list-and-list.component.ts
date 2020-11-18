@@ -8,7 +8,11 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { SelectGroupOption, SelectOption } from '../../lists/list.interface';
+import {
+  itemID,
+  SelectGroupOption,
+  SelectOption,
+} from '../../lists/list.interface';
 import { isArray } from '../../services/utils/functional-utils';
 import { TranslateService } from '@ngx-translate/core';
 import { BasicListType } from '../../lists/basic-list/basic-list.enum';
@@ -52,10 +56,10 @@ export class MultiListAndListComponent
 
   @Output() menuAction: EventEmitter<{
     action: string;
-    item: string | number;
+    item: itemID;
   }> = new EventEmitter<{
     action: string;
-    item: string | number;
+    item: itemID;
   }>();
 
   readonly buttonType: ButtonType = ButtonType.tertiary;
@@ -63,7 +67,7 @@ export class MultiListAndListComponent
 
   public optionsToOtherList(
     options: SelectGroupOption[],
-    value: (string | number)[]
+    value: itemID[]
   ): ListRow[] {
     const listItems: ListRow[] = [];
 

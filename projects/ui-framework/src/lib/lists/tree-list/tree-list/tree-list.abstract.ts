@@ -27,8 +27,8 @@ import {
 } from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { SelectType, SelectMode } from '../../list.enum';
-import { ListFooterActionsState } from '../../list.interface';
-import { itemID, TreeListItemMap, TreeListItem } from '../tree-list.interface';
+import { itemID, ListFooterActionsState } from '../../list.interface';
+import { TreeListItemMap, TreeListItem } from '../tree-list.interface';
 import { TreeListInputOutput } from '../tree-list-IO.abstract';
 import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListControlsService } from '../services/tree-list-controls.service';

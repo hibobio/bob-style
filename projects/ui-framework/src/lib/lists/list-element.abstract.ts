@@ -24,6 +24,7 @@ import {
   SelectGroupOption,
   ListFooterActionsState,
   UpdateListsConfig,
+  itemID,
 } from './list.interface';
 import { cloneDeep, isEqual } from 'lodash';
 import {
@@ -97,7 +98,7 @@ export abstract class BaseListElement
   @Input() min: number;
   @Input() max: number;
 
-  @Input('value') set setValue(value: (string | number)[]) {
+  @Input('value') set setValue(value: itemID[]) {
     if (
       isArray(value) &&
       isNotEmptyArray(this.options) &&
@@ -106,10 +107,10 @@ export abstract class BaseListElement
     ) {
       this.selectedIDs = value;
 
-      this.options = this.listChangeSrvc.getCurrentSelectGroupOptions(
-        this.options,
-        this.selectedIDs
-      );
+      this.options = this.listChangeSrvc.getCurrentSelectGroupOptions({
+        options: this.options,
+        selectedIDs: this.selectedIDs,
+      });
 
       this.modelSrvc.setSelectedOptions(
         this.listHeaders,
@@ -148,8 +149,8 @@ export abstract class BaseListElement
   public allGroupsCollapsed: boolean;
   public isMobile = false;
 
-  public selectedIDs: (string | number)[];
-  protected optionsDefaultIDs: (string | number)[];
+  public selectedIDs: itemID[];
+  protected optionsDefaultIDs: itemID[];
   protected listChange: ListChange;
 
   private keyDownSubscriber: Subscription;
@@ -496,7 +497,7 @@ export abstract class BaseListElement
     }
   }
 
-  clearList(setSelectedIDs: (string | number)[] = null): void {
+  clearList(setSelectedIDs: itemID[] = null): void {
     this.selectedIDs = this.getSelectedIDs(this.options, 'disabled').concat(
       setSelectedIDs || []
     );
@@ -585,7 +586,7 @@ export abstract class BaseListElement
   protected getSelectedIDs(
     options: SelectGroupOption[] = this.options,
     mustBe = 'selected'
-  ): (string | number)[] {
+  ): itemID[] {
     return this.modelSrvc.getSelectedIDs(options, mustBe);
   }
 

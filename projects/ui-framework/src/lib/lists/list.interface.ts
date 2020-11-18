@@ -2,23 +2,24 @@ import { AvatarImageComponent } from '../avatar/avatar/avatar-image/avatar-image
 import { IconComponent } from '../icons/icon.component';
 import { RenderedComponent } from '../services/component-renderer/component-renderer.interface';
 
+export type itemID = string | number;
 export interface SelectGroupOption {
   groupName: string;
   groupIndex?: number;
-  key?: string | number;
+  key?: itemID;
   options: SelectOption[];
   description?: string;
   selected?: boolean;
   hidden?: boolean;
 
-  groupSelectedIDs?: (number | string)[];
+  groupSelectedIDs?: itemID[];
   groupSelectedValues?: string[];
   selectedCount?: number;
   [key: string]: any;
 }
 
 export interface SelectOption {
-  id: number | string;
+  id: itemID;
   value: string;
   selected?: boolean;
   prefixComponent?: RenderedComponent<AvatarImageComponent | IconComponent>;
@@ -75,6 +76,6 @@ export interface UpdateListsConfig {
   updateListHeaders?: boolean;
   updateListOptions?: boolean;
   updateListMinHeight?: boolean;
-  selectedIDs?: (string | number)[];
+  selectedIDs?: itemID[];
   isSearching?: boolean;
 }

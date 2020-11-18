@@ -17,6 +17,7 @@ import { action } from '@storybook/addon-actions';
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 import { Icons } from '../../icons/icons.enum';
 import { number } from '@storybook/addon-knobs';
+import { cloneDeep } from 'lodash';
 
 // @ts-ignore: md file and not a module
 import listInterfaceDoc from '../../lists/list.interface.md';
@@ -31,8 +32,8 @@ const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
-const listOpts = MultiListAndChipsOptionsMock;
-const avatarListOpts = MultiListAndAvatarChipsOptionsMock;
+const listOpts = cloneDeep(MultiListAndChipsOptionsMock);
+const avatarListOpts = cloneDeep(MultiListAndAvatarChipsOptionsMock);
 
 const template = `<b-multi-list-and-chips
         [options]="options === 2 ? avatarListOpts : listOpts"

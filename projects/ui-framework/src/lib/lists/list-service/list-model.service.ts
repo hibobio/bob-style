@@ -6,6 +6,7 @@ import {
   ListHeader,
   SelectGroupOption,
   SelectOption,
+  itemID,
 } from '../list.interface';
 import {
   arrayFlatten,
@@ -129,7 +130,7 @@ export class ListModelService {
     listHeaders: ListHeader[],
     listOptions: ListOption[],
     options: SelectGroupOption[],
-    selectedIDs: (number | string)[] = null
+    selectedIDs: itemID[] = null
   ): void {
     selectedIDs = selectedIDs || this.getSelectedIDs(options);
 
@@ -177,14 +178,11 @@ export class ListModelService {
       : cloneDeep(options);
   }
 
-  getSelectedIDs(
-    options: SelectGroupOption[],
-    mustBe = 'selected'
-  ): (number | string)[] {
+  getSelectedIDs(options: SelectGroupOption[], mustBe = 'selected'): itemID[] {
     if (isEmptyArray(options)) {
       return [];
     }
-    return arrayFlatten<string | number>(
+    return arrayFlatten<itemID>(
       options.map((group) =>
         group.options
           .filter((option: SelectOption) => option.selected && option[mustBe])

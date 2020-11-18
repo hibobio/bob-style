@@ -15,7 +15,13 @@ import {
   Observable,
   Subscription,
 } from 'rxjs';
-import { distinctUntilChanged, filter, map, skip } from 'rxjs/operators';
+import {
+  distinctUntilChanged,
+  filter,
+  map,
+  shareReplay,
+  skip,
+} from 'rxjs/operators';
 import { Icons } from '../../icons/icons.enum';
 import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
 import { ListChange } from '../../lists/list-change/list-change';
@@ -25,6 +31,7 @@ import { ListModelService } from '../../lists/list-service/list-model.service';
 import { LIST_EL_HEIGHT } from '../../lists/list.consts';
 import { SelectMode } from '../../lists/list.enum';
 import {
+  itemID,
   ListFooterActions,
   SelectGroupOption,
 } from '../../lists/list.interface';
@@ -32,6 +39,7 @@ import { MultiListComponent } from '../../lists/multi-list/multi-list.component'
 import { InputObservable } from '../../services/utils/decorators';
 import {
   asArray,
+  cloneDeepSimpleObject,
   isArray,
   isArrayOrNull,
   isNotEmptyArray,
@@ -74,9 +82,7 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
     ListChange
   >();
 
-  @Output() changed: EventEmitter<(string | number)[]> = new EventEmitter<
-    (string | number)[]
-  >();
+  @Output() changed: EventEmitter<itemID[]> = new EventEmitter<itemID[]>();
 
   readonly listElHeight: number = LIST_EL_HEIGHT;
   readonly listID: string = simpleUID('mlas-');
@@ -88,15 +94,13 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
 
   @InputObservable(null)
   @Input('value')
-  public inputValue$: Observable<(string | number)[]>;
+  public inputValue$: Observable<itemID[]>;
 
   public listOptions$: BehaviorSubject<
     SelectGroupOption[]
   > = new BehaviorSubject(undefined);
 
-  public listValue$: BehaviorSubject<(string | number)[]> = new BehaviorSubject(
-    null
-  );
+  public listValue$: BehaviorSubject<itemID[]> = new BehaviorSubject(null);
 
   public otherList$: BehaviorSubject<T[]> = new BehaviorSubject(undefined);
 
@@ -104,26 +108,24 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
 
   ngOnInit(): void {
     //
-    const validInputOptions$: Observable<
-      SelectGroupOption[]
-    > = this.inputOptions$.pipe(
-      filter(isNotEmptyArray),
+    const validInputOptions$ = this.inputOptions$.pipe(
+      filter((ops) => isNotEmptyArray(ops)),
       map((options: SelectGroupOption[]) =>
-        options.filter((group) => group.options?.length)
-      )
+        cloneDeepSimpleObject(options).filter((group) => group.options?.length)
+      ),
+      shareReplay(1)
     );
 
-    const distinctValue$: Observable<
-      (string | number)[]
-    > = this.listValue$.pipe(
-      filter(isArrayOrNull),
-      distinctUntilChanged(simpleArraysEqual)
+    const distinctValue$ = this.listValue$.pipe(
+      filter((value) => isArrayOrNull(value)),
+      distinctUntilChanged(simpleArraysEqual),
+      shareReplay(1)
     );
 
     const latestOptionsAndValue$ = combineLatest([
       validInputOptions$,
       distinctValue$,
-    ]);
+    ]).pipe(shareReplay(1));
 
     // update ListValue from inputs and Multi-List's List Changes
     this.subs.push(
@@ -160,10 +162,10 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
           map((options) => {
             const value = this.listValue$.getValue();
             return isArray(value)
-              ? this.listChangeService.getCurrentSelectGroupOptions(
+              ? this.listChangeService.getCurrentSelectGroupOptions({
                   options,
-                  value
-                )
+                  selectedIDs: value,
+                })
               : options;
           })
         )
@@ -198,19 +200,24 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
 
     // emit changed
     this.subs.push(
-      distinctValue$.pipe(filter(isArray), skip(1)).subscribe(this.changed)
+      distinctValue$
+        .pipe(
+          filter((value) => isArray(value)),
+          skip(1)
+        )
+        .subscribe(this.changed)
     );
   }
 
   public optionsToOtherList(
     options: SelectGroupOption[],
-    value: (string | number)[]
+    value: itemID[]
   ): T[] {
     return [];
   }
 
   public unselectOptions(unselectedID: any | any[]): void {
-    const IDs: (string | number)[] = asArray(unselectedID);
+    const IDs: itemID[] = asArray(unselectedID);
     const newValue = this.listValue$
       .getValue()
       ?.filter((id) => !IDs.includes(id));

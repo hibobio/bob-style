@@ -7,7 +7,11 @@ import {
   ElementRef,
   ViewChild,
 } from '@angular/core';
-import { SelectGroupOption, SelectOption } from '../../lists/list.interface';
+import {
+  itemID,
+  SelectGroupOption,
+  SelectOption,
+} from '../../lists/list.interface';
 import { ChipListConfig } from '../chips.interface';
 import { ChipType } from '../chips.enum';
 import {
@@ -89,7 +93,7 @@ export class MultiListAndChipsComponent
   // method used by base class to map list options to other list
   public optionsToOtherList(
     options: SelectGroupOption[],
-    value: (string | number)[]
+    value: itemID[]
   ): MlacChip[] {
     const chips: MlacChip[] = [];
 
