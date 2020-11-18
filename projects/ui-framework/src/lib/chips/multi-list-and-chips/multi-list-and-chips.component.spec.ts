@@ -1,4 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  resetFakeAsyncZone,
+  TestBed,
+} from '@angular/core/testing';
 import {
   elementFromFixture,
   elementsFromFixture,
@@ -11,7 +16,6 @@ import { makeArray } from '../../services/utils/functional-utils';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../../lists/list-change/list-change';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import {
   TranslateServiceProvideMock,
   mockTranslatePipe,
@@ -19,6 +23,10 @@ import {
   listKeyboardServiceStub,
   MobileServiceProvideMock,
   TrackByPropPipeStub,
+  DOMhelpersProvideMock,
+  MutationObservableServiceProvideMock,
+  WindowRefProvideMock,
+  NgZoneProvideMock,
 } from '../../tests/services.stub.spec';
 import { ChipListComponent } from '../chip-list/chip-list.component';
 import { ChipComponent } from '../chip/chip.component';
@@ -29,28 +37,34 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ListModelService } from '../../lists/list-service/list-model.service';
 import { ListChangeService } from '../../lists/list-change/list-change.service';
 import { ListKeyboardService } from '../../lists/list-service/list-keyboard.service';
-import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
 import { ListFooterComponent } from '../../lists/list-footer/list-footer.component';
 import { NgLetModule } from '../../services/utils/nglet.directive';
-import { BehaviorSubject, of } from 'rxjs';
+import { MockComponent } from 'ng-mocks';
+import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
 
 describe('MultiListAndChipsComponent', () => {
   let component: MultiListAndChipsComponent;
   let fixture: ComponentFixture<MultiListAndChipsComponent>;
 
+  beforeEach(() => {
+    resetFakeAsyncZone();
+  });
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        TrackByPropPipeStub,
         MultiListAndChipsComponent,
-        ChipComponent,
-        ChipListComponent,
-        AvatarImageComponent,
+
         MultiListComponent,
+        ChipListComponent,
+        ChipComponent,
+        MockComponent(AvatarImageComponent),
         ListFooterComponent,
+        TextButtonComponent,
+
+        TrackByPropPipeStub,
         mockTranslatePipe,
         mockHighlightPipe,
-        TextButtonComponent,
       ],
       imports: [
         CommonModule,
@@ -64,6 +78,10 @@ describe('MultiListAndChipsComponent', () => {
         { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
         MobileServiceProvideMock(),
         TranslateServiceProvideMock(),
+        DOMhelpersProvideMock(),
+        MutationObservableServiceProvideMock(),
+        WindowRefProvideMock(),
+        NgZoneProvideMock(),
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })
@@ -72,13 +90,16 @@ describe('MultiListAndChipsComponent', () => {
         fixture = TestBed.createComponent(MultiListAndChipsComponent);
         component = fixture.componentInstance;
 
+        component.inputOptions$ = [] as any;
+
         component.selectChange.subscribe(() => {});
         component.changed.subscribe(() => {});
         component.listOptions$.subscribe(() => {});
         component.otherList$.subscribe(() => {});
 
         spyOn(component.selectChange, 'next');
-        fixture.detectChanges();
+
+        fixture.autoDetectChanges();
       });
   }));
 
@@ -90,20 +111,21 @@ describe('MultiListAndChipsComponent', () => {
       component.otherList$,
     ].forEach((s) => {
       s.complete();
-      s?.unsubscribe();
     });
   });
 
   describe('Labels', () => {
-    it('Should display Multi-list label', () => {
+    beforeEach(() => {
       component.listLabel = 'listLabel';
+      component.otherLabel = 'chipsLabel';
       fixture.detectChanges();
+    });
+
+    it('Should display Multi-list label', () => {
       const listLabel = elementFromFixture(fixture, '.mlas-list-label');
       expect(listLabel.innerHTML).toContain('listLabel');
     });
     it('Should display Chips-list label', () => {
-      component.otherLabel = 'chipsLabel';
-      fixture.detectChanges();
       const chipsLabel = elementFromFixture(
         fixture,
         '.chips-list .mlas-list-label'

@@ -13,7 +13,6 @@ import {
   combineLatest,
   merge,
   Observable,
-  of,
   Subscription,
 } from 'rxjs';
 import { distinctUntilChanged, filter, map, skip } from 'rxjs/operators';

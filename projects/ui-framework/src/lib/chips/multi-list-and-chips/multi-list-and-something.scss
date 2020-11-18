@@ -14,7 +14,7 @@ $gap: 20px;
   width: calc(50% - #{$gap / 2});
 }
 
-.mlas-list-label + [id] {
+:host::ng-deep .mlas-list > [id]:last-child {
   margin: 0;
   flex-grow: 5;
   min-height: 300px;

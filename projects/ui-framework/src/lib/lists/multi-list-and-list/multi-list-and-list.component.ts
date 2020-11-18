@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -18,6 +19,7 @@ import { ListModelService } from '../list-service/list-model.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { MultiListAndSomething } from '../../chips/multi-list-and-chips/multi-list-and-something.interface';
 import { ListRow, ListViewConfig } from './multi-list-and-list.interface';
+import { MenuItem } from '../../navigation/menu/menu.interface';
 
 @Component({
   selector: 'b-multi-list-and-list',
@@ -35,7 +37,8 @@ export class MultiListAndListComponent
     public host: ElementRef,
     protected translate: TranslateService,
     protected listModelService: ListModelService,
-    protected listChangeService: ListChangeService
+    protected listChangeService: ListChangeService,
+    private cd: ChangeDetectorRef
   ) {
     super(translate, listModelService, listChangeService);
   }
@@ -49,10 +52,10 @@ export class MultiListAndListComponent
 
   @Output() menuAction: EventEmitter<{
     action: string;
-    item: string;
+    item: string | number;
   }> = new EventEmitter<{
     action: string;
-    item: string;
+    item: string | number;
   }>();
 
   readonly buttonType: ButtonType = ButtonType.tertiary;
@@ -88,7 +91,14 @@ export class MultiListAndListComponent
     return listItems;
   }
 
-  private emitMenuAction(action: string, item: string) {
-    this.menuAction.emit({ action, item });
+  public unselectOptions(listRow: ListRow) {
+    super.unselectOptions(listRow.id);
+  }
+
+  public emitMenuAction(menuItem: MenuItem, listRow: ListRow) {
+    this.menuAction.emit({
+      action: menuItem.label,
+      item: listRow.id,
+    });
   }
 }

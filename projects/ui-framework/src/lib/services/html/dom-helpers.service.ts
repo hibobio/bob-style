@@ -29,10 +29,11 @@ import {
   GetElementStylesConfig,
   TreeWalkerConfig,
 } from './dom-helpers.interface';
+import { WindowRef } from '../utils/window-ref.service';
 
 @Injectable({ providedIn: 'root' })
 export class DOMhelpers {
-  constructor() {}
+  constructor(private windowRef: WindowRef) {}
 
   // Simplified FastDom implementation
   // https://github.com/wilsonpage/fastdom
@@ -44,7 +45,7 @@ export class DOMhelpers {
   private scheduleDomTasks(): void {
     if (!this.hasScheduledTasks) {
       this.hasScheduledTasks = true;
-      window.requestAnimationFrame(() => {
+      this.windowRef.nativeWindow.requestAnimationFrame(() => {
         this.runDomTasks();
       });
     }

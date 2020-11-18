@@ -256,6 +256,11 @@ export const getWindowRefMock = () =>
         pushState: () => {},
         back: () => {},
       },
+      requestAnimationFrame: (fn) => {
+        setTimeout(() => {
+          fn();
+        }, 0);
+      },
     } as any) as WindowLike,
   });
 

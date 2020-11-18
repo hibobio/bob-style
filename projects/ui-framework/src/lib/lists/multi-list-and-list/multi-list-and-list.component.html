@@ -33,7 +33,7 @@
       <b-menu *ngIf="listViewConfig?.rowAction?.menu"
               [menu]="item.menu"
               [disabled]="item.disabled"
-              (actionClick)="emitMenuAction($event.label, item.id)">
+              (actionClick)="emitMenuAction($event, item)">
         <b-square-button menu-trigger
                          [type]="buttonType"
                          [icon]="item.actionIcon">
@@ -44,7 +44,7 @@
                        [disabled]="item.disabled"
                        [type]="buttonType"
                        [icon]="item.actionIcon"
-                       (clicked)="unselectOptions(item.id)">
+                       (clicked)="unselectOptions(item)">
       </b-square-button>
 
     </ng-container>

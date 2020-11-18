@@ -12,8 +12,8 @@ import {
   NgZone,
   SimpleChanges,
   OnChanges,
-  Directive,
   HostBinding,
+  Injectable,
 } from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Subscription } from 'rxjs';
@@ -58,7 +58,7 @@ import { FormElementSize } from '../form-elements/form-elements.enum';
 import { AvatarSize } from '../avatar/avatar/avatar.enum';
 import { FORM_ELEMENT_HEIGHT } from '../form-elements/form-elements.const';
 
-@Directive()
+@Injectable()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseListElement
   implements OnChanges, OnInit, OnDestroy, AfterViewInit {

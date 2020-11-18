@@ -5,7 +5,7 @@ import {
   discardPeriodicTasks,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Type } from '@angular/core';
+import { DebugElement, Type } from '@angular/core';
 import {
   NativeMouseEvents,
   NativeKeyboardEvents,
@@ -61,12 +61,12 @@ export const elementFromFixture = <T = HTMLElement>(
   selector: string
 ): T => elementsFromFixture<T>(fixtr, selector)[0];
 
-export const componentFromFixture = (
+export const componentFromFixture = <T = any>(
   fixtr: ComponentFixture<any>,
   selector: string
-): Type<any> => {
-  const comp = fixtr.debugElement.query(By.css(selector));
-  return comp && comp.componentInstance ? comp.componentInstance : null;
+): T => {
+  const comp: DebugElement = fixtr.debugElement.query(By.css(selector));
+  return comp && comp.componentInstance ? (comp.componentInstance as T) : null;
 };
 
 export const inputValue = (
