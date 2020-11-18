@@ -1,0 +1,23 @@
+@import '../../style/common-imports';
+
+b-basic-list {
+  flex-grow: 5;
+  min-height: 300px;
+  max-height: 360px;
+  background-color: white;
+  overflow-y: auto;
+  border: solid 1px $border-color;
+  border-radius: $border-radius;
+}
+
+:host ::ng-deep b-basic-list > table {
+
+  tbody {
+    box-shadow: none !important;
+
+    .bbl-list-label + .bbl-list-label {
+      text-align: right;
+    }
+  }
+
+}

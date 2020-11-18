@@ -1,0 +1,54 @@
+<div class="mlac-list">
+  <p class="mlac-list-label"
+     [attr.id]="listID"
+     [attr.aria-hidden]="!listLabel"
+     *ngIf="listLabel">{{listLabel}}</p>
+
+  <b-multi-list [attr.aria-labelledby]="listLabel ? listID : null"
+                [mode]="mode"
+                [listActions]="listActions"
+                [options]="listOptions"
+                [maxHeight]="listElHeight*6"
+                [showSingleGroupHeader]="showSingleGroupHeader"
+                [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+                [min]="min"
+                [max]="max"
+                (selectChange)="onListChange($event)">
+  </b-multi-list>
+</div>
+
+<div class="mlac-list">
+  <p class="mlac-list-label"
+     [attr.id]="listID"
+     [attr.aria-hidden]="!listLabel"
+     *ngIf="selectedLabel">{{selectedLabel}}</p>
+
+  <b-basic-list [type]="type"
+                [items]="selectedListOptions"
+                [config]="{
+                  showActionOnHover: showActionOnHover,
+                  maxLines: maxLines
+                }"
+                [emptyStateConfig]="emptyStateConfig">
+
+    <ng-container *bBasicListAction="let item=item">
+
+      <b-menu *ngIf="listViewConfig.rowAction.menu" [menu]="item.menu">
+        <b-square-button menu-trigger
+                         [type]="buttonType"
+                         [icon]="item.actionIcon">
+        </b-square-button>
+      </b-menu>
+
+      <b-square-button *ngIf="listViewConfig.rowAction.icon && !listViewConfig.rowAction.menu"
+                       [disabled]="item.disabled"
+                       [type]="buttonType"
+                       [icon]="item.actionIcon"
+                       (clicked)="onListRowRemove(item)"
+      >
+      </b-square-button>
+
+    </ng-container>
+  </b-basic-list>
+
+</div>
