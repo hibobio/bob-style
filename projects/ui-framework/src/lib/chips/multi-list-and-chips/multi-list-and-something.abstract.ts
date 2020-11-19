@@ -39,7 +39,6 @@ import { MultiListComponent } from '../../lists/multi-list/multi-list.component'
 import { InputObservable } from '../../services/utils/decorators';
 import {
   asArray,
-  cloneDeepSimpleObject,
   isArray,
   isArrayOrNull,
   isNotEmptyArray,
@@ -104,6 +103,20 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
 
   public otherList$: BehaviorSubject<T[]> = new BehaviorSubject(undefined);
 
+  // for compatibility
+  public get options(): SelectGroupOption[] {
+    return this.listOptions$.getValue();
+  }
+  public set options(options: SelectGroupOption[]) {
+    this.listOptions$.next(options);
+  }
+  public get value(): itemID[] {
+    return this.listValue$.getValue();
+  }
+  public set value(value: itemID[]) {
+    this.listValue$.next(value);
+  }
+
   protected subs: Subscription[] = [];
 
   ngOnInit(): void {
@@ -111,7 +124,7 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
     const validInputOptions$ = this.inputOptions$.pipe(
       filter((ops) => isNotEmptyArray(ops)),
       map((options: SelectGroupOption[]) =>
-        cloneDeepSimpleObject(options).filter((group) => group.options?.length)
+        options.filter((group) => group.options?.length)
       ),
       shareReplay(1)
     );

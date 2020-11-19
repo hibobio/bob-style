@@ -56,6 +56,14 @@ export class MultiListAndChipsComponent
 
   @Input('chipsLabel') otherLabel: string;
 
+  // for compatibility
+  public get chipsLabel(): string {
+    return this.otherLabel;
+  }
+  public set chipsLabel(label: string) {
+    this.otherLabel = label;
+  }
+
   public chipListConfig: ChipListConfig = {
     type: ChipType.tag,
     selectable: false,
