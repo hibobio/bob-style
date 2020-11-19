@@ -145,7 +145,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   private doneFirstChange = false;
   private useFormatForPlaceholder = false;
 
-  protected subs: Subscription[];
+  protected subs: Subscription[] = [];
 
   protected doOnPickerOpen(picker: MatDatepicker<any>): void {}
 

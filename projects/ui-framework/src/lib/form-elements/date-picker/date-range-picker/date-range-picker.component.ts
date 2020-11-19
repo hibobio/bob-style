@@ -142,6 +142,10 @@ export class DateRangePickerComponent extends BaseDatepickerElement
         .subscribe((event: MouseEvent) => {
           const target = event.target as HTMLElement;
 
+          if (!target) {
+            return;
+          }
+
           if (
             this.type === DatepickerType.month &&
             target.matches(
