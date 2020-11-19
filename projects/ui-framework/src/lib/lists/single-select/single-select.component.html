@@ -24,12 +24,7 @@
 
   <div *ngIf="valueAvatar"
        class="bfe-prefix">
-    <b-avatar-image [avatar]="valueAvatar"
-                    [border]="size !== formElementSize.smaller"
-                    [backgroundColor]="'transparent'"
-                    [icon]="valueAvatar.icon"
-                    [imageSource]="valueAvatar.imageSource"
-                    [size]="size === formElementSize.smaller ? avatarSize.micro : avatarSize.mini"></b-avatar-image>
+    <b-avatar-image [avatar]="valueAvatar"></b-avatar-image>
   </div>
 
   <div #input

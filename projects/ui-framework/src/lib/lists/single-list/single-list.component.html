@@ -94,23 +94,14 @@
            }"
            class="option-select">
 
-        <ng-container *ngIf="option.prefixComponent">
-          <b-avatar-image *ngIf="option.prefixComponent.attributes.imageSource ||
-                             option.prefixComponent.attributes.icon; else renderComp"
-                          class="comp-prefix"
-                          [avatar]="option.prefixComponent.attributes"
-                          [border]="size !== formElementSize.smaller"
-                          [backgroundColor]="'transparent'"
-                          [icon]="option.prefixComponent.attributes.icon"
-                          [imageSource]="option.prefixComponent.attributes.imageSource"
-                          [size]="size === formElementSize.smaller ? avatarSize.micro : avatarSize.mini">
-          </b-avatar-image>
+        <b-avatar-image *ngIf="option.avatar"
+                        class="comp-prefix"
+                        [avatar]="option.avatar">
+        </b-avatar-image>
 
-          <ng-template #renderComp>
-            <b-component-renderer class="comp-prefix"
-                                  [render]="option.prefixComponent"></b-component-renderer>
-          </ng-template>
-        </ng-container>
+        <b-component-renderer *ngIf="!option.avatar && option.prefixComponent"
+                              class="comp-prefix"
+                              [render]="option.prefixComponent"></b-component-renderer>
 
         <div class="capitalize">
           <span *ngIf="!option.isPlaceHolder && option.value"

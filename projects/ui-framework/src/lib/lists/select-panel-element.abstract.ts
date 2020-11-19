@@ -179,7 +179,13 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
     this.onNgChanges(changes);
 
-    if (hasChanges(changes, ['options']) && !this.fitOptionsToValue) {
+    if (
+      (hasChanges(changes, ['options']) && !this.fitOptionsToValue) ||
+      (changes.size &&
+        this.type === SelectType.single &&
+        !changes.value &&
+        !changes.options)
+    ) {
       this.setDisplayValue();
     }
 

@@ -320,22 +320,27 @@ export class ListModelService {
 
   getOptionAvatar(option: SelectOption, size: FormElementSize): Avatar {
     const prefixComponent = option?.prefixComponent?.attributes;
-    const optionAvatar: Avatar =
+    let optionAvatar: Avatar =
       option?.avatar ||
       ((prefixComponent?.imageSource || prefixComponent?.icon) &&
         prefixComponent);
 
-    return optionAvatar
-      ? {
-          ...optionAvatar,
-          size:
-            size === FormElementSize.smaller
-              ? AvatarSize.micro
-              : AvatarSize.mini,
-          icon: this.getOptionIcon(option, size),
-          border: size !== FormElementSize.smaller,
-          backgroundColor: 'transparent',
-        }
-      : undefined;
+    optionAvatar = optionAvatar && {
+      ...optionAvatar,
+      size:
+        size === FormElementSize.smaller ? AvatarSize.micro : AvatarSize.mini,
+      icon: this.getOptionIcon(option, size),
+      border: size !== FormElementSize.smaller,
+      backgroundColor: 'transparent',
+    };
+
+    if (optionAvatar?.icon) {
+      optionAvatar.imageSource = null;
+    }
+    if (optionAvatar?.imageSource && !optionAvatar.icon) {
+      optionAvatar.icon = null;
+    }
+
+    return optionAvatar;
   }
 }

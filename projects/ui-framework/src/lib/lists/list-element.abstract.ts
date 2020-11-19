@@ -46,8 +46,6 @@ import {
   hasChanges,
   cloneDeepSimpleObject,
   simpleChange,
-  isObject,
-  isString,
   isArray,
 } from '../services/utils/functional-utils';
 import { ListModelService } from './list-service/list-model.service';

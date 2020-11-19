@@ -103,12 +103,9 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
         this.options.map((group) => group.options)
       ).find((opt: SelectOption) => this.value.includes(opt.id));
 
-    this.valueAvatar =
-      option?.avatar ||
-      ((option?.prefixComponent?.attributes.imageSource ||
-        option?.prefixComponent?.attributes.icon) &&
-        option.prefixComponent.attributes) ||
-      null;
+    this.valueAvatar = this.modelSrvc.getOptionAvatar(option, this.size);
+
+    console.log('valueAvatar', this.valueAvatar);
 
     return option?.value;
   }
