@@ -646,7 +646,6 @@ export const capitalizeAll = (smth: string): string => {
 //   .toLowerCase()
 //   .replace(/\w\S*/g, (w) => w.replace(/^\w/, (c) => c.toUpperCase()));
 
-
 export const padWith0 = (number: string | number, digits = 2): string => {
   if (isNullOrUndefined(number) || isNaN(parseInt(number as string, 10))) {
     return number as any;

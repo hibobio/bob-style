@@ -1,4 +1,5 @@
 import { AvatarImageComponent } from '../avatar/avatar/avatar-image/avatar-image.component';
+import { Avatar } from '../avatar/avatar/avatar.interface';
 import { IconComponent } from '../icons/icon.component';
 import { RenderedComponent } from '../services/component-renderer/component-renderer.interface';
 
@@ -10,10 +11,11 @@ export interface SelectGroupOption {
   description?: string;
   selected?: boolean;
   hidden?: boolean;
+  selectedCount?: number;
 
   groupSelectedIDs?: (number | string)[];
   groupSelectedValues?: string[];
-  selectedCount?: number;
+
   [key: string]: any;
 }
 
@@ -22,6 +24,7 @@ export interface SelectOption {
   value: string;
   selected?: boolean;
   prefixComponent?: RenderedComponent<AvatarImageComponent | IconComponent>;
+  avatar?: Avatar;
   disabled?: boolean;
   hidden?: boolean;
   description?: string;

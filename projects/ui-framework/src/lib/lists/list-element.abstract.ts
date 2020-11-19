@@ -24,6 +24,7 @@ import {
   SelectGroupOption,
   ListFooterActionsState,
   UpdateListsConfig,
+  SelectOption,
 } from './list.interface';
 import { cloneDeep, isEqual } from 'lodash';
 import {
@@ -44,6 +45,8 @@ import {
   hasChanges,
   cloneDeepSimpleObject,
   simpleChange,
+  isObject,
+  isString,
 } from '../services/utils/functional-utils';
 import { ListModelService } from './list-service/list-model.service';
 import { ListChangeService } from './list-change/list-change.service';
@@ -161,10 +164,6 @@ export abstract class BaseListElement
       this.options = this.options.filter((group: SelectGroupOption) =>
         isNotEmptyArray(group.options)
       );
-      this.options.forEach((group, index) => {
-        group.groupIndex = index;
-        group.key = this.modelSrvc.getGroupKey(group);
-      });
     }
 
     if (hasChanges(changes, ['startWithGroupsCollapsed', 'options'])) {
@@ -175,7 +174,7 @@ export abstract class BaseListElement
 
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
       this.selectedIDs = this.getSelectedIDs(this.options);
-      this.filteredOptions = cloneDeep(this.options) || [];
+      this.filteredOptions = this.options || [];
 
       this.shouldDisplaySearch =
         this.options &&
@@ -536,6 +535,7 @@ export abstract class BaseListElement
         this.listHeaders,
         {
           noGroupHeaders: this.noGroupHeaders,
+          size: this.size,
         }
       );
       this.listHeight = this.getListHeight();

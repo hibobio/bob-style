@@ -104,12 +104,13 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
       ).find((opt: SelectOption) => this.value.includes(opt.id));
 
     this.valueAvatar =
-      option?.prefixComponent?.attributes.imageSource ||
-      option?.prefixComponent?.attributes.icon
-        ? option.prefixComponent.attributes
-        : null;
+      option?.avatar ||
+      ((option?.prefixComponent?.attributes.imageSource ||
+        option?.prefixComponent?.attributes.icon) &&
+        option.prefixComponent.attributes) ||
+      null;
 
-    return option && option.value;
+    return option?.value;
   }
 
   protected emitChange(
