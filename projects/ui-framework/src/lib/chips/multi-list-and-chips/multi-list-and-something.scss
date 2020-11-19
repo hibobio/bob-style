@@ -1,0 +1,38 @@
+@import '../../style/common-imports';
+
+$gap: 20px;
+
+:host {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.mlas-list {
+  display: flex;
+  flex-direction: column;
+  width: calc(50% - #{$gap / 2});
+}
+
+:host::ng-deep .mlas-list > [id]:last-child {
+  margin: 0;
+  flex-grow: 5;
+  min-height: 300px;
+  max-height: 360px;
+  box-shadow: none;
+  background-color: white;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+}
+
+.mlas-list-label {
+  @include bFormElement-label(false);
+}
+
+b-empty-state {
+  align-self: center;
+  margin: auto;
+  justify-content: center;
+  text-align: center;
+  padding: inherit;
+}

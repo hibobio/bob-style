@@ -37,7 +37,7 @@ import {
   notFirstChanges,
   isNotEmptyArray,
 } from '../services/utils/functional-utils';
-import { SelectGroupOption, ListFooterActions } from './list.interface';
+import { SelectGroupOption, ListFooterActions, itemID } from './list.interface';
 import { ListChange } from './list-change/list-change';
 import { PanelDefaultPosVer } from '../popups/panel/panel.enum';
 import { LIST_EL_HEIGHT, SELECT_MAX_ITEMS } from './list.consts';
@@ -85,7 +85,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
 
-  @Input() value: (number | string)[];
+  @Input() value: itemID[];
   @Input() options: SelectGroupOption[] = [];
   @Input() optionsDefault: SelectGroupOption[];
   @Input() mode: SelectMode = SelectMode.classic;
@@ -222,10 +222,10 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     this.fitOptionsToValue = true;
 
     if (isNotEmptyArray(options)) {
-      this.options = this.listChangeSrvc.getCurrentSelectGroupOptions(
+      this.options = this.listChangeSrvc.getCurrentSelectGroupOptions({
         options,
-        this.value
-      );
+        selectedIDs: this.value,
+      });
     }
 
     this.setDisplayValue();

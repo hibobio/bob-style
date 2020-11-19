@@ -2,7 +2,6 @@ import { Input, Output, EventEmitter, Directive } from '@angular/core';
 import {
   TreeListComponentIO,
   TreeListOption,
-  itemID,
   ViewFilter,
   TreeListKeyMap,
   TreeListValue,
@@ -10,7 +9,7 @@ import {
 } from './tree-list.interface';
 import { BTL_KEYMAP_DEF, BTL_VALUE_SEPARATOR_DEF } from './tree-list.const';
 import { SelectType, SelectMode } from '../list.enum';
-import { ListFooterActions } from '../list.interface';
+import { itemID, ListFooterActions } from '../list.interface';
 import { LIST_MAX_ITEMS } from '../list.consts';
 
 @Directive()

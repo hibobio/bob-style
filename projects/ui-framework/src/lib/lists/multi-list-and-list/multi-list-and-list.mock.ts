@@ -9,18 +9,18 @@ import { mockHobbies, mockNames, mockAvatar } from '../../mock.const';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { Icons } from '../../icons/icons.enum';
 import { BasicListItem } from '../../lists/basic-list/basic-list.interface';
-import { ListViewConfig } from './multi-list-and-list.component';
+import { ListViewConfig } from './multi-list-and-list.interface';
 
 const maxOpts = 10;
 
 const oldPeopleHobbies = randomFromArray(mockHobbies(), maxOpts);
 const couplesHobbies = randomFromArray(
   arrayDifference(mockHobbies(), oldPeopleHobbies),
-  maxOpts,
+  maxOpts
 );
 const kidsHobbies = randomFromArray(
   arrayDifference(mockHobbies(), oldPeopleHobbies.concat(couplesHobbies)),
-  maxOpts,
+  maxOpts
 );
 
 const mayBeSelected = (perc = 80) => {
@@ -32,7 +32,6 @@ export const MultiListAndListTimeOffOptionsMock: SelectGroupOption[] = [
     groupName: 'Holiday',
     options: [
       {
-        strongParent: true,
         id: 6936222,
         value: 'Holiday policy',
         selected: false,
@@ -44,7 +43,6 @@ export const MultiListAndListTimeOffOptionsMock: SelectGroupOption[] = [
     groupName: 'Sick',
     options: [
       {
-        strongParent: true,
         id: 6923623,
         value: 'Sick policy',
         selected: false,
@@ -55,7 +53,6 @@ export const MultiListAndListTimeOffOptionsMock: SelectGroupOption[] = [
     groupName: 'Time off in lieu',
     options: [
       {
-        strongParent: true,
         value: 'Time Off in Lieu policy',
         id: 6932624,
         selected: true,
@@ -66,14 +63,12 @@ export const MultiListAndListTimeOffOptionsMock: SelectGroupOption[] = [
     groupName: 'test1',
     options: [
       {
-        strongParent: true,
         value: 'test1.sub',
         subValue: '16 days',
         id: 7423814,
         selected: true,
       },
       {
-        strongParent: true,
         value: 'sub2',
         subValue: '10 days',
         id: 7432822,
@@ -177,15 +172,16 @@ export const MultiListAndListPepopleOptionsMock: SelectGroupOption[] = [
               imageSource: mockAvatar(),
             },
           },
-        }),
+        })
       ),
     ],
   },
 ];
 
-export const listData: BasicListItem[] = [{
-  label: 'label only',
-},
+export const listData: BasicListItem[] = [
+  {
+    label: 'label only',
+  },
   {
     label: 'label icon and menu',
     icon: Icons.doc,
@@ -194,18 +190,12 @@ export const listData: BasicListItem[] = [{
     menu: [{ label: 'Delete' }, { label: 'Edit' }],
   },
   {
-    label: [
-      '<strong> strong label</strong> - child ',
-      'action icon',
-    ],
+    label: ['<strong> strong label</strong> - child ', 'action icon'],
     icon: Icons.doc,
     menuIcon: Icons.delete,
   },
   {
-    label: [
-      '<strong> strong label 2</strong> - child2 ',
-      'text',
-    ],
+    label: ['<strong> strong label 2</strong> - child2 ', 'text'],
     menuIcon: Icons.delete,
     icon: null,
   },

@@ -20,7 +20,6 @@ import {
 } from '../../../services/utils/functional-utils';
 import { SelectType } from '../../list.enum';
 import {
-  itemID,
   TreeListItem,
   TreeListOption,
   TreeListItemMap,
@@ -33,6 +32,7 @@ import { BehaviorSubject } from 'rxjs';
 import { TreeListValueUtils } from '../services/tree-list-value.static';
 import { MobileService } from '../../../services/utils/mobile.service';
 import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../../list-footer/list-footer.const';
+import { itemID } from '../../list.interface';
 
 @Component({
   selector: 'b-tree-list',

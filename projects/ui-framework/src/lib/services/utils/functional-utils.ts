@@ -38,7 +38,9 @@ export const isEmptyString = (val: any): boolean => !isNotEmptyString(val);
 export const isArray = <T = any>(val: any): val is T[] =>
   !!val && Array.isArray(val);
 
-export const isArrayOrNull = (val: any) => isArray(val) || val === null;
+export const isArrayOrNull = <T = any>(val: T) =>
+  isArray<T>(val) || val === null;
+
 export const isObjectOrNull = (val: any) => isObject(val) || val === null;
 
 export const isDate = (value: any): boolean =>
@@ -46,7 +48,7 @@ export const isDate = (value: any): boolean =>
   typeof value.getMonth === 'function' &&
   String(value) !== 'Invalid Date';
 
-export const isNotEmptyArray = (val: any, min = 0): boolean =>
+export const isNotEmptyArray = <T = any>(val: T, min = 0): boolean =>
   isArray(val) && val.length > min;
 
 export const isEmptyArray = (val: any): boolean =>
@@ -387,6 +389,26 @@ export const objectStringID = <T = GenericObject>(
     (sliced || typeof obj + (addId ? '__' + simpleUID() : '[empty]')) +
     ('__' + len)
   ).toLowerCase();
+};
+
+export const objectGetPropertyDescriptor = (
+  obj: any,
+  key: string
+): PropertyDescriptor => {
+  if (!obj || isPrimitive(obj)) {
+    return undefined;
+  }
+  let descriptor: PropertyDescriptor = Object.getOwnPropertyDescriptor(
+    obj,
+    key
+  );
+
+  while (!descriptor && Object.getPrototypeOf(obj)) {
+    obj = Object.getPrototypeOf(obj);
+    descriptor = Object.getOwnPropertyDescriptor(obj, key);
+  }
+
+  return descriptor;
 };
 
 // ----------------------
@@ -1277,11 +1299,7 @@ export const applyChanges = (
       skip?.includes(changeKey) ||
       (skipSetters !== false &&
         (changeKey === CHANGES_SET_PROPS ||
-          Object.getOwnPropertyDescriptor(target, changeKey)?.set ||
-          Object.getOwnPropertyDescriptor(
-            Object.getPrototypeOf(target),
-            changeKey
-          )?.set))
+          objectGetPropertyDescriptor(target, changeKey)?.set))
     ) {
       return;
     }

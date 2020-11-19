@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, object, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  object,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,17 +28,16 @@ import { EmptyStateModule } from '../../indicators/empty-state/empty-state.modul
 import { TranslateModule } from '@ngx-translate/core';
 import { MultiListAndListModule } from './multi-list-and-list.module';
 
-
 const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
-  withKnobs,
+  withKnobs
 );
 const listViewConfig = listViewConfigMock;
 const listOpts = MultiListAndListOptionsMock;
-const policeies = MultiListAndListTimeOffOptionsMock;
+const policies = MultiListAndListTimeOffOptionsMock;
 const avatarListOpts = MultiListAndListPepopleOptionsMock;
 
 const template = `<b-multi-list-and-list
-        [options]="options === 2 ? listOpts : policeies"
+        [options]="options === 2 ? policies : listOpts"
         [listLabel]="listLabel"
         [selectedLabel]="selectedLabel"
         [listViewConfig]="listViewConfig"
@@ -42,6 +46,7 @@ const template = `<b-multi-list-and-list
         [min]="min"
         [max]="max"
         (selectChange)="onSelectChange($event)"
+        (changed)="onChange($event)"
         (menuAction)="onEmitMenuAction($event)">
   </b-multi-list-and-list>`;
 
@@ -55,6 +60,7 @@ const templateForNotes = `<b-multi-list-and-list
       [min]="min"
       [max]="max"
       (menuAction)="onEmitMenuAction($event)"
+      (changed)="onChange($event)"
       (selectChange)="onSelectChange($event)">
 </b-multi-list-and-list>`;
 
@@ -73,11 +79,12 @@ const note = `
   --- | --- | --- | ---
   [listLabel] | string | label text for the Multi List component | &nbsp;
   [listViewConfig] | ListViewConfig | init state config | { rowStartIcon: Icons.doc, rowAction: { icon: Icons.delete,} |
-  [chipsLabel] | string | label text for the Chips List component | &nbsp;
+  [selectedLabel] | string | label text for the right List | &nbsp;
   [emptyState] | EmptyStateConfig | config for the EmptyStateComponent to\
    be displayed when no options are selected | &nbsp;
   (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits on list change | &nbsp;
-  (EmitMenuAction) | EventEmitter<wbr>&lt;any&gt; | emits on menu click | &nbsp;
+  (changed) | EventEmitter<wbr>&lt;(string|number)[]&gt; | emits selected IDs (value)
+  (EmitMenuAction) | EventEmitter<wbr>&lt;{ action: string;<wbr> item: string; }&gt; | emits list option id + menu item id - on menu click | &nbsp;
 
   ${listSelectsPropsDoc}
 
@@ -91,8 +98,8 @@ const storyTemplate = `
 
     <br><br>
     <b-radio-button [radioConfig]="[
-        {id: 1, label: 'Policies'},
-        {id: 2, label: 'Hobbies'}
+        {id: 1, label: 'Hobbies'},
+        {id: 2, label: 'Policies'}
       ]"
       [value]="{id: 1}"
       (radioChange)="options = $event">
@@ -111,12 +118,12 @@ const toAdd = () => ({
     startWithGroupsCollapsed: boolean(
       'startWithGroupsCollapsed',
       true,
-      'Props',
+      'Props'
     ),
     min: number('min', 0, {}, 'Props'),
     listOpts: object('listOpts', listOpts, 'Data'),
     avatarListOpts: object('avatarListOpts', avatarListOpts, 'Data'),
-    policeies: object('policeies', policeies, 'Data'),
+    policies: object('policies', policies, 'Data'),
     emptyStateConfig: object(
       'emptyStateConfig',
       {
@@ -124,10 +131,11 @@ const toAdd = () => ({
           'Choose a life. Choose a job. Choose a career. Choose a family. Choose a fucking big television.',
         icon: Icons.toDos_link,
       },
-      'Props',
+      'Props'
     ),
 
     onSelectChange: action('ListChange'),
+    onChange: action('Selected IDs changed'),
     onEmitMenuAction: action('EmitMenuAction'),
   },
   moduleMetadata: {

@@ -1,4 +1,4 @@
-import { TreeListItem, TreeListItemMap, itemID } from '../tree-list.interface';
+import { TreeListItem, TreeListItemMap } from '../tree-list.interface';
 import {
   TreeListItemEditContext,
   InsertItemLocation,
@@ -11,6 +11,7 @@ import {
   arrayInsertAt,
 } from '../../../services/utils/functional-utils';
 import { TreeListModelUtils } from './tree-list-model.static';
+import { itemID } from '../../list.interface';
 
 export class TreeListEditUtils {
   //

@@ -3,7 +3,6 @@ import {
   TreeListItemMap,
   TreeListOption,
   TreeListItem,
-  itemID,
   ViewFilter,
   TreeListKeyMap,
 } from '../tree-list.interface';
@@ -29,6 +28,7 @@ import {
 import { SelectType } from '../../list.enum';
 import { selectValueOrFail } from '../../../services/utils/transformers';
 import { TreeListValueUtils } from './tree-list-value.static';
+import { itemID } from '../../list.interface';
 
 interface TreeListGetListViewModelConfig {
   keyMap: TreeListKeyMap;

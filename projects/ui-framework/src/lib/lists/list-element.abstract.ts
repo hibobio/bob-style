@@ -12,8 +12,8 @@ import {
   NgZone,
   SimpleChanges,
   OnChanges,
-  Directive,
   HostBinding,
+  Injectable,
 } from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Subscription } from 'rxjs';
@@ -25,6 +25,7 @@ import {
   ListFooterActionsState,
   UpdateListsConfig,
   SelectOption,
+  itemID,
 } from './list.interface';
 import { cloneDeep, isEqual } from 'lodash';
 import {
@@ -47,6 +48,7 @@ import {
   simpleChange,
   isObject,
   isString,
+  isArray,
 } from '../services/utils/functional-utils';
 import { ListModelService } from './list-service/list-model.service';
 import { ListChangeService } from './list-change/list-change.service';
@@ -60,7 +62,7 @@ import { FormElementSize } from '../form-elements/form-elements.enum';
 import { AvatarSize } from '../avatar/avatar/avatar.enum';
 import { FORM_ELEMENT_HEIGHT } from '../form-elements/form-elements.const';
 
-@Directive()
+@Injectable()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseListElement
   implements OnChanges, OnInit, OnDestroy, AfterViewInit {
@@ -99,6 +101,29 @@ export abstract class BaseListElement
   @Input() min: number;
   @Input() max: number;
 
+  @Input('value') set setValue(value: itemID[]) {
+    if (
+      isArray(value) &&
+      isNotEmptyArray(this.options) &&
+      isNotEmptyArray(this.listHeaders) &&
+      isNotEmptyArray(this.listOptions)
+    ) {
+      this.selectedIDs = value;
+
+      this.options = this.listChangeSrvc.getCurrentSelectGroupOptions({
+        options: this.options,
+        selectedIDs: this.selectedIDs,
+      });
+
+      this.modelSrvc.setSelectedOptions(
+        this.listHeaders,
+        this.listOptions,
+        this.options,
+        this.selectedIDs
+      );
+    }
+  }
+
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
@@ -127,8 +152,8 @@ export abstract class BaseListElement
   public allGroupsCollapsed: boolean;
   public isMobile = false;
 
-  public selectedIDs: (string | number)[];
-  protected optionsDefaultIDs: (string | number)[];
+  public selectedIDs: itemID[];
+  protected optionsDefaultIDs: itemID[];
   protected listChange: ListChange;
 
   private keyDownSubscriber: Subscription;
@@ -149,12 +174,17 @@ export abstract class BaseListElement
   readonly tooltipDelay = 300;
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes, {
-      options: [],
-      mode: SelectMode.classic,
-      startWithGroupsCollapsed: true,
-      maxHeight: LIST_EL_HEIGHT * LIST_MAX_ITEMS,
-    });
+    applyChanges(
+      this,
+      changes,
+      {
+        options: [],
+        mode: SelectMode.classic,
+        startWithGroupsCollapsed: true,
+        maxHeight: LIST_EL_HEIGHT * LIST_MAX_ITEMS,
+      },
+      ['setValue']
+    );
 
     if (this.mode === SelectMode.tree) {
       this.mode = SelectMode.classic;
@@ -466,7 +496,7 @@ export abstract class BaseListElement
     }
   }
 
-  clearList(setSelectedIDs: (string | number)[] = null): void {
+  clearList(setSelectedIDs: itemID[] = null): void {
     this.selectedIDs = this.getSelectedIDs(this.options, 'disabled').concat(
       setSelectedIDs || []
     );
@@ -556,7 +586,7 @@ export abstract class BaseListElement
   protected getSelectedIDs(
     options: SelectGroupOption[] = this.options,
     mustBe = 'selected'
-  ): (string | number)[] {
+  ): itemID[] {
     return this.modelSrvc.getSelectedIDs(options, mustBe);
   }
 

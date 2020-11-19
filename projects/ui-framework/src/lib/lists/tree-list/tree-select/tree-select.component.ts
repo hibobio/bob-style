@@ -14,7 +14,6 @@ import {
 import { BaseFormElement } from '../../../form-elements/base-form-element';
 import {
   TreeListOption,
-  itemID,
   ViewFilter,
   TreeListComponentIO,
   TreeListKeyMap,
@@ -22,7 +21,7 @@ import {
   TreeListItemMap,
 } from '../tree-list.interface';
 import { SelectType, SelectMode } from '../../list.enum';
-import { ListFooterActions } from '../../list.interface';
+import { itemID, ListFooterActions } from '../../list.interface';
 import { TruncateTooltipType } from '../../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { TreeListPanelComponent } from '../tree-list-panel/tree-list-panel.component';

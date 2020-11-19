@@ -31,7 +31,6 @@ import {
   TreeListOption,
   TreeListKeyMap,
   TreeListItemMap,
-  itemID,
   TreeListItem,
 } from '../tree-list.interface';
 import { MenuItem } from '../../../navigation/menu/menu.interface';
@@ -63,6 +62,7 @@ import { DOMInputEvent } from '../../../types';
 import { TreeListModelUtils } from '../services/tree-list-model.static';
 import { SelectMode } from '../../list.enum';
 import { TranslateService } from '@ngx-translate/core';
+import { itemID } from '../../list.interface';
 
 const LISTITEM_EL_HEIGHT = 32;
 

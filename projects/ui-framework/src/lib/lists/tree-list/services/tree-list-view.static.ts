@@ -1,4 +1,4 @@
-import { TreeListItem, itemID, TreeListItemMap } from '../tree-list.interface';
+import { TreeListItem, TreeListItemMap } from '../tree-list.interface';
 import {
   isEmptyArray,
   isEmptyMap,
@@ -10,6 +10,7 @@ import {
 import { LIST_EL_HEIGHT, LIST_MAX_ITEMS } from '../../list.consts';
 import { TreeListModelUtils } from './tree-list-model.static';
 import { BTL_ROOT_ID } from '../tree-list.const';
+import { itemID } from '../../list.interface';
 
 interface TreeListItemElementContext {
   item: TreeListItem;

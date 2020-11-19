@@ -1,51 +1,50 @@
-<div class="mlac-list">
-  <p class="mlac-list-label"
-     [attr.id]="listID"
+<div class="mlas-list">
+  <p class="mlas-list-label"
+     [attr.id]="listID+'-label'"
      [attr.aria-hidden]="!listLabel"
-     *ngIf="listLabel">{{listLabel}}</p>
+     *ngIf="listLabel || otherLabel">{{listLabel}}</p>
 
-  <b-multi-list [attr.aria-labelledby]="listLabel ? listID : null"
-                [mode]="mode"
-                [listActions]="listActions"
-                [options]="listOptions"
+  <b-multi-list [attr.id]="listID"
+                [attr.aria-labelledby]="listLabel ? listID+'-label' : null"
+                [options]="listOptions$ | async"
+                [value]="listValue$ | async"
                 [maxHeight]="listElHeight*6"
                 [showSingleGroupHeader]="showSingleGroupHeader"
                 [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                 [min]="min"
-                [max]="max"
-                (selectChange)="onListChange($event)">
+                [max]="max">
   </b-multi-list>
 </div>
 
-<div class="mlac-list">
-  <p class="mlac-list-label"
-     [attr.id]="listID"
-     [attr.aria-hidden]="!listLabel"
-     *ngIf="selectedLabel">{{selectedLabel}}</p>
+<div class="mlas-list basic-list">
+  <p class="mlas-list-label"
+     [attr.id]="otherID+'-label'"
+     [attr.aria-hidden]="!otherLabel"
+     *ngIf="listLabel || otherLabel">{{otherLabel}}</p>
 
-  <b-basic-list [type]="type"
-                [items]="selectedListOptions"
-                [config]="{
-                  showActionOnHover: showActionOnHover,
-                  maxLines: maxLines
-                }"
-                [emptyStateConfig]="emptyStateConfig">
+  <b-basic-list [attr.id]="otherID"
+                [type]="type"
+                [items]="otherList$ | async"
+                [config]="listViewConfig"
+                [emptyStateConfig]="emptyState">
 
     <ng-container *bBasicListAction="let item=item">
 
-      <b-menu *ngIf="listViewConfig.rowAction.menu" [menu]="item.menu">
+      <b-menu *ngIf="listViewConfig?.rowAction?.menu"
+              [menu]="item.menu"
+              [disabled]="item.disabled"
+              (actionClick)="emitMenuAction($event, item)">
         <b-square-button menu-trigger
                          [type]="buttonType"
                          [icon]="item.actionIcon">
         </b-square-button>
       </b-menu>
 
-      <b-square-button *ngIf="listViewConfig.rowAction.icon && !listViewConfig.rowAction.menu"
+      <b-square-button *ngIf="listViewConfig?.rowAction?.icon && !listViewConfig?.rowAction?.menu"
                        [disabled]="item.disabled"
                        [type]="buttonType"
                        [icon]="item.actionIcon"
-                       (clicked)="onListRowRemove(item)"
-      >
+                       (clicked)="unselectOptions(item)">
       </b-square-button>
 
     </ng-container>

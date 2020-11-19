@@ -14,7 +14,7 @@ import {
   OnInit,
   OnDestroy,
 } from '@angular/core';
-import { SelectOption } from '../list.interface';
+import { itemID, SelectOption } from '../list.interface';
 import { DropResult } from 'ngx-smooth-dnd';
 import { Icons } from '../../icons/icons.enum';
 import { ButtonType, ButtonSize } from '../../buttons/buttons.enum';
@@ -351,7 +351,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     );
   }
 
-  public listTrackBy(index: number, item: SelectOption): string | number {
+  public listTrackBy(index: number, item: SelectOption): itemID {
     return (
       (item.id !== undefined && item.id) || item.value || JSON.stringify(item)
     );

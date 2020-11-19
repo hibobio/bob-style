@@ -1,6 +1,5 @@
 import {
   TreeListItem,
-  itemID,
   TreeListItemMap,
   TreeListOption,
   TreeListKeyMap,
@@ -17,6 +16,7 @@ import {
   BTL_ROOT_ID,
   BTL_VALUE_SEPARATOR_DEF,
 } from '../tree-list.const';
+import { itemID } from '../../list.interface';
 
 export interface IDsAndItemsSets {
   IDs: Set<itemID>;

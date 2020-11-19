@@ -1,8 +1,9 @@
 import { HtmlParserHelpers } from './html-parser.service';
 import { DOMhelpers } from './dom-helpers.service';
+import { WindowRef } from '../utils/window-ref.service';
 
 describe('HtmlParserHelpers', () => {
-  const parser = new HtmlParserHelpers(new DOMhelpers());
+  const parser = new HtmlParserHelpers(new DOMhelpers(new WindowRef()));
 
   const testEnforce = {
     'span,p,div,a': {
