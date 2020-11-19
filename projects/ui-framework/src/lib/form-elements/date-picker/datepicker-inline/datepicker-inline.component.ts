@@ -23,6 +23,7 @@ import { BaseFormElement } from '../../base-form-element';
 import { Overlay } from '@angular/cdk/overlay';
 import { MAT_DATEPICKER_SCROLL_STRATEGY } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material/core';
+import { UtilsService } from '../../../services/utils/utils.service';
 
 @Component({
   selector: 'b-datepicker-inline',
@@ -50,17 +51,19 @@ import { DateAdapter } from '@angular/material/core';
 })
 export class DatepickerInlineComponent extends BaseDatepickerElement {
   constructor(
-    windowRef: WindowRef,
-    mobileService: MobileService,
-    DOM: DOMhelpers,
-    cd: ChangeDetectorRef,
-    zone: NgZone,
-    kbrdCntrlSrvc: FormElementKeyboardCntrlService,
-    dateParseSrvc: DateParseService,
-    dateAdapter: DateAdapter<any>
+    protected windowRef: WindowRef,
+    protected utilsService: UtilsService,
+    protected mobileService: MobileService,
+    protected DOM: DOMhelpers,
+    protected cd: ChangeDetectorRef,
+    protected zone: NgZone,
+    protected kbrdCntrlSrvc: FormElementKeyboardCntrlService,
+    protected dateParseSrvc: DateParseService,
+    protected dateAdapter: DateAdapter<any>
   ) {
     super(
       windowRef,
+      utilsService,
       mobileService,
       DOM,
       cd,

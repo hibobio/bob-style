@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { mobileBreakpoint } from '../../consts';
 import { Observable } from 'rxjs';
-import { UtilsService, WinResizeEvent } from './utils.service';
+import { UtilsService } from './utils.service';
 import {
   shareReplay,
   map,
@@ -10,6 +10,7 @@ import {
 } from 'rxjs/operators';
 import { WindowRef } from './window-ref.service';
 import { isEqual } from 'lodash';
+import { WinResizeEvent } from './utils.interface';
 
 export enum WidthMode {
   min = 'min',
