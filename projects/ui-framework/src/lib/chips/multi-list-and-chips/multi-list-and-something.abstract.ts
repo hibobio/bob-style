@@ -154,7 +154,6 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
     );
 
     // combine Options+Value inputs to Multi-lists's options
-    // (it does not have separate value input);
     // this is supposed to happen once
     this.subs.push(
       validInputOptions$
