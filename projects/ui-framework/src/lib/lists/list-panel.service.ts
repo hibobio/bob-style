@@ -137,15 +137,13 @@ export class ListPanelService {
       (self as OEC).subscribtions.push(
         race(
           (self as OEC).overlayRef.backdropClick(),
-          (self as OEC).utilsService.getResizeEvent().pipe(
-            outsideZone((self as OEC).zone),
+          (self as OEC).utilsService.getResizeEvent(true).pipe(
             tap(() => {
               (self as OEC).isMobile = this.mobileService.isMobile();
             }),
             filter(() => !(self as OEC).isMobile)
           ),
-          (self as OEC).utilsService.getScrollEvent().pipe(
-            outsideZone((self as OEC).zone),
+          (self as OEC).utilsService.getScrollEvent(true).pipe(
             filter(() => !(self as OEC).isMobile),
             throttleTime(50, undefined, {
               leading: true,
@@ -173,11 +171,8 @@ export class ListPanelService {
 
       (self as OEC).subscribtions.push(
         (self as OEC).utilsService
-          .getWindowKeydownEvent()
-          .pipe(
-            outsideZone((self as OEC).zone),
-            filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
-          )
+          .getWindowKeydownEvent(true)
+          .pipe(filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)))
           .subscribe(() => {
             (self as OEC)[
               (self as OEC).onCancel

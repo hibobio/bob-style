@@ -149,8 +149,7 @@ export class CollapsibleSectionComponent
 
   ngOnInit(): void {
     this.resizeSubscription = this.utilsService
-      .getResizeEvent()
-      .pipe(outsideZone(this.zone))
+      .getResizeEvent(true)
       .subscribe(() => {
         if (this.collapsible) {
           this.setCssVars();

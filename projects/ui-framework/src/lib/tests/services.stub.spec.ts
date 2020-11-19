@@ -1,9 +1,9 @@
 import createSpyObj = jasmine.createSpyObj;
 import spyObj = jasmine.SpyObj;
 import { of, Observable, EMPTY } from 'rxjs';
-import { UtilsService, WinResizeEvent } from '../services/utils/utils.service';
+import { UtilsService } from '../services/utils/utils.service';
 import { MobileService, MediaEvent } from '../services/utils/mobile.service';
-import { ScrollEvent } from '../services/utils/utils.interface';
+import { ScrollEvent, WinResizeEvent } from '../services/utils/utils.interface';
 import { MockPipe } from 'ng-mocks';
 import { Mock } from 'ts-mocks';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';

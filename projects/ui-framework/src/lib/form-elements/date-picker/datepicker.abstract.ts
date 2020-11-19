@@ -17,9 +17,8 @@ import {
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { MobileService } from '../../services/utils/mobile.service';
-import { Subscription, fromEvent, interval } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
-import { outsideZone } from '../../services/utils/rxjs.operators';
 import {
   simpleUID,
   isKey,
@@ -27,12 +26,13 @@ import {
   hasProp,
   hasChanges,
   isEmpty,
+  unsubscribeArray,
 } from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
 import { DateParseService } from './date-parse-service/date-parse.service';
 import { Keys } from '../../enums';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { throttle } from 'rxjs/operators';
+import { throttleTime } from 'rxjs/operators';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { InputEventType } from '../form-elements.enum';
 import { InputEvent } from '../input/input.interface';
@@ -50,6 +50,7 @@ import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { LocaleFormat, DateFormatFullDate, DateFormat } from '../../types';
 import { Overlay } from '@angular/cdk/overlay';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { UtilsService } from '../../services/utils/utils.service';
 
 export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
   const strategy = () => overlay.scrollStrategies.close();
@@ -62,13 +63,14 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     protected windowRef: WindowRef,
+    protected utilsService: UtilsService,
     protected mobileService: MobileService,
     protected DOM: DOMhelpers,
     protected cd: ChangeDetectorRef,
     protected zone: NgZone,
     protected kbrdCntrlSrvc: FormElementKeyboardCntrlService,
     protected dateParseSrvc: DateParseService,
-    private dateAdapter: any
+    protected dateAdapter: any
   ) {
     super(cd);
 
@@ -132,7 +134,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   protected overlayStylesDef: Styles = {};
 
   private allowInputBlur = !this.allowKeyInput;
-  private resizeSubscription: Subscription;
 
   readonly types = DatepickerType;
   readonly icons = Icons;
@@ -144,29 +145,33 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   private doneFirstChange = false;
   private useFormatForPlaceholder = false;
 
+  protected subs: Subscription[] = [];
+
   protected doOnPickerOpen(picker: MatDatepicker<any>): void {}
 
   ngOnInit(): void {
-    this.resizeSubscription = fromEvent(
-      this.windowRef.nativeWindow as Window,
-      'resize'
-    )
-      .pipe(
-        outsideZone(this.zone),
-        throttle((val) => interval(1000))
-      )
-      .subscribe(() => {
-        const isMobile = this.mobileService.isMobile();
+    this.subs.push(
+      this.utilsService
+        .getResizeEvent(true)
+        .pipe(
+          throttleTime(100, undefined, {
+            leading: false,
+            trailing: true,
+          })
+        )
+        .subscribe(() => {
+          const isMobile = this.mobileService.isMobile();
 
-        if (isMobile !== this.isMobile) {
-          this.isMobile = isMobile;
-          this.cd.detectChanges();
-        }
+          if (isMobile !== this.isMobile) {
+            this.isMobile = isMobile;
+            this.cd.detectChanges();
+          }
 
-        if (!this.isMobile) {
-          this.allPickers((picker) => this.closePicker(picker));
-        }
-      });
+          if (!this.isMobile) {
+            this.allPickers((picker) => this.closePicker(picker));
+          }
+        })
+    );
 
     if (this.value) {
       this.cd.detectChanges();
@@ -188,9 +193,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   ngOnDestroy(): void {
-    if (this.resizeSubscription) {
-      this.resizeSubscription.unsubscribe();
-    }
+    unsubscribeArray(this.subs);
   }
 
   // extends BaseFormElement's ngOnChanges

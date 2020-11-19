@@ -121,8 +121,7 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
         threshold: 5,
       }),
 
-      this.utilsService.getResizeEvent().pipe(
-        outsideZone(this.zone),
+      this.utilsService.getResizeEvent(true).pipe(
         skip(1),
         filter(() => Boolean(this.config?.dynamicFontSize))
       )

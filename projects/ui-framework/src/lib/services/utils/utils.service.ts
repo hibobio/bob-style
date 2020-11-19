@@ -1,16 +1,9 @@
 import { Injectable, NgZone } from '@angular/core';
 import { fromEvent, Observable } from 'rxjs';
-import { map, share, throttleTime } from 'rxjs/operators';
+import { map, share, tap, throttleTime } from 'rxjs/operators';
 import { WindowRef } from './window-ref.service';
-import { ScrollEvent } from './utils.interface';
+import { ScrollEvent, WinResizeEvent } from './utils.interface';
 import { insideZone } from './rxjs.operators';
-
-export interface WinResizeEvent {
-  innerWidth: number;
-  innerHeight: number;
-  outerHeight: number;
-  outerWidth: number;
-}
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +16,7 @@ export class UtilsService {
 
   constructor(private windowRef: WindowRef, private zone: NgZone) {
     this.zone.runOutsideAngular(() => {
-      this.winResize$ = fromEvent(
+      this.winResize$ = fromEvent<UIEvent>(
         this.windowRef.nativeWindow as Window,
         'resize',
         {
@@ -34,12 +27,7 @@ export class UtilsService {
           leading: true,
           trailing: true,
         }),
-        map((e: Event) => ({
-          innerWidth: e.target['innerWidth'],
-          innerHeight: e.target['innerHeight'],
-          outerHeight: e.target['outerHeight'],
-          outerWidth: e.target['outerWidth'],
-        })),
+        map((e: UIEvent) => e.target as Window),
         share()
       );
 
@@ -50,14 +38,16 @@ export class UtilsService {
           passive: true,
         }
       ).pipe(
-        map((e: Event) => ({
-          scrollY: (
-            (e.currentTarget as any) || (document.scrollingElement as any)
-          ).scrollY,
-          scrollX: (
-            (e.currentTarget as any) || (document.scrollingElement as any)
-          ).scrollX,
-        })),
+        tap((e) =>
+          console.log(
+            e.currentTarget,
+            (e.currentTarget as any).scrollY,
+            (document.scrollingElement as any).scrollY
+          )
+        ),
+        map(
+          (e: Event) => (e.currentTarget || document.scrollingElement) as Window
+        ),
         share()
       );
 

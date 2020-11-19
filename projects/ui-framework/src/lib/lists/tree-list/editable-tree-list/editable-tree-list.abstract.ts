@@ -225,9 +225,8 @@ export abstract class BaseEditableTreeListElement
     }
 
     this.windowKeydownSubscriber = this.utilsService
-      .getWindowKeydownEvent()
+      .getWindowKeydownEvent(true)
       .pipe(
-        outsideZone(this.zone),
         filter(
           (event: KeyboardEvent) =>
             event.key === 'z' &&

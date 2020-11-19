@@ -6,7 +6,7 @@ import {
   forwardRef,
   Input,
   NgZone,
-  HostListener,
+  OnInit,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SERVER_DATE_FORMAT } from '../../../consts';
@@ -38,6 +38,7 @@ import {
   MatDatepicker,
 } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material/core';
+import { UtilsService } from '../../../services/utils/utils.service';
 
 interface DateRangePickerValueLocal {
   startDate: Date | string;
@@ -78,19 +79,21 @@ const DATERANGE_VALUE_DEF: DateRangePickerValueLocal = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DateRangePickerComponent extends BaseDatepickerElement
-  implements AfterViewInit {
+  implements OnInit, AfterViewInit {
   constructor(
-    windowRef: WindowRef,
-    mobileService: MobileService,
-    DOM: DOMhelpers,
-    cd: ChangeDetectorRef,
-    zone: NgZone,
-    kbrdCntrlSrvc: FormElementKeyboardCntrlService,
-    dateParseSrvc: DateParseService,
-    dateAdapter: DateAdapter<any>
+    protected windowRef: WindowRef,
+    protected utilsService: UtilsService,
+    protected mobileService: MobileService,
+    protected DOM: DOMhelpers,
+    protected cd: ChangeDetectorRef,
+    protected zone: NgZone,
+    protected kbrdCntrlSrvc: FormElementKeyboardCntrlService,
+    protected dateParseSrvc: DateParseService,
+    protected dateAdapter: DateAdapter<any>
   ) {
     super(
       windowRef,
+      utilsService,
       mobileService,
       DOM,
       cd,
@@ -130,25 +133,52 @@ export class DateRangePickerComponent extends BaseDatepickerElement
   public idSD = simpleUID('bdp-sd-');
   public idED = simpleUID('bdp-ed-');
 
-  @HostListener('window:click', ['$event'])
-  onWindowEvent(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    if (
-      this.type === DatepickerType.month &&
-      target.matches('.mat-calendar-next-button,.mat-calendar-previous-button')
-    ) {
-      const isStartDate = target
-        .closest('.b-datepicker-panel')
-        .classList.contains('start-date-picker');
+  ngOnInit(): void {
+    super.ngOnInit();
 
-      this.doOnPickerOpen(this.getPicker(isStartDate ? 0 : 1));
-    }
+    this.subs.push(
+      this.utilsService
+        .getWindowClickEvent(true)
+        .subscribe((event: MouseEvent) => {
+          const target = event.target as HTMLElement;
 
-    if (target.matches('.start-date-picker .mat-calendar-body-cell-content')) {
-      setTimeout(() => {
-        this.openPicker(1);
-      }, 0);
-    }
+          if (!target) {
+            return;
+          }
+
+          if (
+            this.type === DatepickerType.month &&
+            target.matches(
+              '.mat-calendar-next-button, .mat-calendar-previous-button'
+            )
+          ) {
+            const panel = target.closest('.b-datepicker-panel');
+
+            if (
+              !panel.classList.contains(this.idSD) &&
+              !panel.classList.contains(this.idED)
+            ) {
+              return;
+            }
+
+            const isStartDate = panel.classList.contains('start-date-picker');
+
+            this.doOnPickerOpen(this.getPicker(isStartDate ? 0 : 1));
+          }
+
+          if (
+            target.matches(
+              `.${this.idSD}.start-date-picker .mat-calendar-body-cell-content`
+            )
+          ) {
+            setTimeout(() => {
+              this.zone.run(() => {
+                this.openPicker(1);
+              });
+            }, 0);
+          }
+        })
+    );
   }
 
   ngAfterViewInit(): void {
