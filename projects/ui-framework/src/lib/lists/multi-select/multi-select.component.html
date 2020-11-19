@@ -22,17 +22,17 @@
     <ng-content select="[input-prefix]"></ng-content>
   </div>
 
-  <span #input
-        class="bfe-input trigger-input"
-        tabindex="0"
-        [b-truncate-tooltip]="1"
-        [expectChanges]="true"
-        [trustCssVars]="true"
-        [type]="tooltipType"
-        [tooltipClass]="tooltipClass"
-        [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ?label : placeholder) : null"
-        [text]="displayValue"
-        (focus)="openPanel()"></span>
+  <div #input
+       class="bfe-input trigger-input capitalize"
+       tabindex="0"
+       [b-truncate-tooltip]="1"
+       [expectChanges]="true"
+       [trustCssVars]="true"
+       [type]="tooltipType"
+       [tooltipClass]="tooltipClass"
+       [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ?label : placeholder) : null"
+       [text]="displayValue"
+       (focus)="openPanel()"></div>
 
   <div class="bfe-suffix">
     <span *ngIf="truncate.tooltipEnabled && displayValueCount"
