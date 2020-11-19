@@ -108,11 +108,8 @@ export class MenuComponent implements OnChanges, OnInit, OnDestroy {
     }
 
     this.windowKeydownSubscriber = this.utilsService
-      .getWindowKeydownEvent()
-      .pipe(
-        outsideZone(this.zone),
-        filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
-      )
+      .getWindowKeydownEvent(true)
+      .pipe(filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)))
       .subscribe(() => {
         this.zone.run(() => {
           this.close();
