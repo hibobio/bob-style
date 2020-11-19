@@ -57,14 +57,16 @@ export class ListChange {
   getDisplayValue(
     options: SelectGroupOption[] = this.selectGroupOptions
   ): string {
-    return arrayFlatten(options.map((group) => group.options))
+    return arrayFlatten<SelectOption>(options.map((group) => group.options))
       .filter((option) => option.selected)
       .map((option) => option.value)
       .join(', ');
   }
 
   private getSelIds(): itemID[] {
-    return arrayFlatten(this.selectGroupOptions.map((group) => group.options))
+    return arrayFlatten<SelectOption>(
+      this.selectGroupOptions.map((group) => group.options)
+    )
       .filter((option) => option.selected)
       .map((option) => option.id);
   }

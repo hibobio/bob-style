@@ -285,7 +285,8 @@ export class ListModelService {
   }
 
   totalOptionsCount(options: SelectGroupOption[]): number {
-    return arrayFlatten(options.map((group) => group.options)).length;
+    return arrayFlatten<SelectOption>(options.map((group) => group.options))
+      .length;
   }
 
   getGroupKey(group: SelectGroupOption | ListHeader): string {

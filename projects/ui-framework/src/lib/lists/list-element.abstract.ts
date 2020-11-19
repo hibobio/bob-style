@@ -99,7 +99,7 @@ export abstract class BaseListElement
   @Input() min: number;
   @Input() max: number;
 
-  @Input('value') set setValue(value: itemID[]) {
+  @Input() set value(value: itemID[]) {
     if (
       isArray(value) &&
       isNotEmptyArray(this.options) &&
@@ -120,6 +120,9 @@ export abstract class BaseListElement
         this.selectedIDs
       );
     }
+  }
+  get value() {
+    return this.selectedIDs;
   }
 
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;

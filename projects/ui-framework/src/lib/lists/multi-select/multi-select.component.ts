@@ -123,8 +123,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     return (
       this.value &&
       this.options &&
-      arrayFlatten(this.options.map((group) => group.options))
-        .filter((option: SelectOption) => this.value.includes(option.id))
+      arrayFlatten<SelectOption>(this.options.map((group) => group.options))
+        .filter((option) => this.value.includes(option.id))
         .map((option: SelectOption) => option.value)
         .join(', ')
     );
