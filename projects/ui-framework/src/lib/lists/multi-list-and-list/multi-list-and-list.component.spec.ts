@@ -319,7 +319,6 @@ describe('MultiListAndListComponent', () => {
 
       component.unselectOptions({ id: 3 as itemID } as ListRow);
 
-      expect(component.selectChange.next).toHaveBeenCalledTimes(3);
       expect(component.selectChange.next).toHaveBeenCalledWith(listChange);
     });
   });

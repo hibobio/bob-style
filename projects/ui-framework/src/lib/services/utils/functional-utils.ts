@@ -403,7 +403,7 @@ export const objectGetPropertyDescriptor = (
     key
   );
 
-  while (descriptor === undefined && Object.getPrototypeOf(obj) !== undefined) {
+  while (!descriptor && Object.getPrototypeOf(obj)) {
     obj = Object.getPrototypeOf(obj);
     descriptor = Object.getOwnPropertyDescriptor(obj, key);
   }

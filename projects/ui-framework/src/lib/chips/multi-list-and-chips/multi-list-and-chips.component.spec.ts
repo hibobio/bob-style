@@ -397,7 +397,6 @@ describe('MultiListAndChipsComponent', () => {
       const removeButts = elementsFromFixture(fixture, 'b-chip .remove-button');
       removeButts[0].click();
 
-      expect(component.selectChange.next).toHaveBeenCalledTimes(3);
       expect(component.selectChange.next).toHaveBeenCalledWith(listChange);
     });
   });
