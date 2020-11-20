@@ -1,4 +1,5 @@
 import { AvatarImageComponent } from '../avatar/avatar/avatar-image/avatar-image.component';
+import { AvatarComponent } from '../avatar/avatar/avatar.component';
 import { Avatar } from '../avatar/avatar/avatar.interface';
 import { IconComponent } from '../icons/icon.component';
 import { RenderedComponent } from '../services/component-renderer/component-renderer.interface';
@@ -24,7 +25,9 @@ export interface SelectOption {
   id: itemID;
   value: string;
   selected?: boolean;
-  prefixComponent?: RenderedComponent<AvatarImageComponent | IconComponent>;
+  prefixComponent?: RenderedComponent<
+    AvatarImageComponent | AvatarComponent | IconComponent
+  >;
   avatar?: Avatar;
   disabled?: boolean;
   hidden?: boolean;
