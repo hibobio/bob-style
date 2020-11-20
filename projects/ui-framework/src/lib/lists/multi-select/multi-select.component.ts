@@ -16,7 +16,7 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListModelService } from '../list-service/list-model.service';
-import { SelectOption } from '../list.interface';
+import { SelectGroupOption, SelectOption } from '../list.interface';
 import { TruncateTooltipComponent } from '../../popups/truncate-tooltip/truncate-tooltip.component';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { UtilsService } from '../../services/utils/utils.service';
@@ -97,6 +97,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     ListChange
   >();
 
+  public valueShowcase: SelectGroupOption[];
+
   onApply(): void {
     if (this.listChange) {
       this.dirty = true;
@@ -120,14 +122,13 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
   }
 
   protected getDisplayValue(): string {
-    return (
+    const options =
       this.value &&
       this.options &&
-      arrayFlatten<SelectOption>(this.options.map((group) => group.options))
-        .filter((option) => this.value.includes(option.id))
-        .map((option: SelectOption) => option.value)
-        .join(', ')
-    );
+      arrayFlatten<SelectOption>(
+        this.options.map((group) => group.options)
+      ).filter((option) => this.value.includes(option.id));
+    return options.map((option: SelectOption) => option.value).join(', ');
   }
 
   protected emitChange(

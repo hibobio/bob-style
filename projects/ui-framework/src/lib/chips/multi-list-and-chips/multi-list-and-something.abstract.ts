@@ -1,4 +1,5 @@
 import {
+  Directive,
   EventEmitter,
   Injectable,
   Input,
@@ -48,7 +49,8 @@ import {
 } from '../../services/utils/functional-utils';
 import { MultiListAndSomething } from './multi-list-and-something.interface';
 
-@Injectable()
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class BaseMultiListAndSomethingElement<T = any>
   implements MultiListAndSomething<T>, OnInit, OnDestroy {
   constructor(
@@ -221,12 +223,10 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
     );
   }
 
-  public optionsToOtherList(
+  public abstract optionsToOtherList(
     options: SelectGroupOption[],
     value: itemID[]
-  ): T[] {
-    return [];
-  }
+  ): T[];
 
   public unselectOptions(unselectedID: any | any[]): void {
     const IDs: itemID[] = asArray(unselectedID);

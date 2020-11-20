@@ -16,10 +16,22 @@
      (click)="openPanel()"
      cdkOverlayOrigin>
 
-  <div *ngIf="hasPrefix || showPrefix"
+  <div *ngIf="(hasPrefix || showPrefix) && !valueShowcase"
        class="bfe-prefix"
        #prefix>
     <ng-content select="[input-prefix]"></ng-content>
+  </div>
+
+  <div *ngIf="valueShowcase"
+       class="bfe-prefix">
+    <b-employees-showcase [employees]="valueShowcase"
+                          [min]="3"
+                          [max]="3"
+                          [avatarSize]=""
+                          [showTotal]="false"
+                          [expandOnClick]="false"
+                          [readonly]="true">
+    </b-employees-showcase>
   </div>
 
   <div #input

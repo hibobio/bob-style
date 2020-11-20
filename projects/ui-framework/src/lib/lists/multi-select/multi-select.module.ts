@@ -12,6 +12,7 @@ import { InputMessageModule } from '../../form-elements/input-message/input-mess
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { FormElementLabelModule } from '../../form-elements/form-element-label/form-element-label.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { EmployeesShowcaseModule } from '../../avatar/employees-showcase/employees-showcase.module';
 
 @NgModule({
   declarations: [MultiSelectComponent],
@@ -25,6 +26,7 @@ import { TranslateModule } from '@ngx-translate/core';
     InputMessageModule,
     FormElementLabelModule,
     TranslateModule,
+    EmployeesShowcaseModule,
   ],
   exports: [MultiSelectComponent],
   providers: [ListChangeService, ListModelService, DOMhelpers],
