@@ -24,11 +24,7 @@ import listInterfaceDoc from '../../lists/list.interface.md';
 // @ts-ignore: md file and not a module
 import listSelectsPropsDoc from '../../lists/lists-selects.properties.md';
 
-const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
-  withKnobs
-);
-
-const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
@@ -141,5 +137,3 @@ const toAdd = () => ({
 });
 
 story.add('Multi List And Chips', toAdd, { notes: { markdown: note } });
-
-story2.add('Multi List And Chips', toAdd, { notes: { markdown: note } });

@@ -1,13 +1,29 @@
-import {Directive, Input, OnInit, Host, ComponentFactoryResolver, Injector, ViewContainerRef} from '@angular/core';
-import {merge, cloneDeep} from 'lodash';
-import {TableComponent} from '../table.component';
-import {TreeConfig, defaultTreeConfig, TreeCellRendererComponent} from './tree.config';
+import {
+  Directive,
+  Input,
+  OnInit,
+  Host,
+  ComponentFactoryResolver,
+  Injector,
+  ViewContainerRef,
+} from '@angular/core';
+import { merge, cloneDeep } from 'lodash';
+import { TableComponent } from '../table.component';
+import {
+  TreeConfig,
+  defaultTreeConfig,
+  TreeCellRendererComponent,
+} from './tree.config';
 
-function getTreeCellRenderer(treeConfig: TreeConfig, cfr: ComponentFactoryResolver, vcr: ViewContainerRef) {
+function getTreeCellRenderer(
+  treeConfig: TreeConfig,
+  cfr: ComponentFactoryResolver,
+  vcr: ViewContainerRef
+) {
   return class TreeCellRenderer {
     private value: any;
 
-    init({value}) {
+    init({ value }) {
       this.value = value;
     }
 
@@ -21,7 +37,9 @@ function getTreeCellRenderer(treeConfig: TreeConfig, cfr: ComponentFactoryResolv
     }
 
     private renderComponent() {
-      const cmpFactory = cfr.resolveComponentFactory<TreeCellRendererComponent>(treeConfig.cellComponent);
+      const cmpFactory = cfr.resolveComponentFactory<TreeCellRendererComponent>(
+        treeConfig.cellComponent
+      );
       const cmpRef = vcr.createComponent(cmpFactory);
       if (typeof cmpRef.instance.init === 'function') {
         cmpRef.instance.init(this.value);
@@ -34,16 +52,13 @@ function getTreeCellRenderer(treeConfig: TreeConfig, cfr: ComponentFactoryResolv
       return treeConfig.cellTemplate(this.value);
     }
   };
-
 }
-
 
 @Directive({
   // tslint:disable-next-line:directive-selector
-  selector: '[treeConfig]'
+  selector: '[treeConfig]',
 })
 export class TreeDirective implements OnInit {
-
   public treeConfig: TreeConfig;
   get table() {
     return this.tableComponent.agGrid;
@@ -55,7 +70,11 @@ export class TreeDirective implements OnInit {
   }
   @Input() isCollapsable = true;
 
-  constructor(@Host() private tableComponent: TableComponent, private cfr: ComponentFactoryResolver, public vcr: ViewContainerRef) { }
+  constructor(
+    @Host() private tableComponent: TableComponent,
+    private cfr: ComponentFactoryResolver,
+    public vcr: ViewContainerRef
+  ) {}
 
   public ngOnInit(): void {
     this.tableComponent.addClass('tree-table');
@@ -67,17 +86,17 @@ export class TreeDirective implements OnInit {
   private applyTreeConfig(treeConfig: TreeConfig) {
     this.tableComponent.agGrid.treeData = true;
     this.tableComponent.agGrid.getDataPath = treeConfig.hierarchyGetter;
-    this.tableComponent.agGrid.groupDefaultExpanded = treeConfig.groupDefaultExpanded;
+    this.tableComponent.agGrid.groupDefaultExpanded =
+      treeConfig.groupDefaultExpanded;
     this.tableComponent.agGrid.autoGroupColumnDef = {
       ...treeConfig.colDef,
       cellRendererParams: {
         suppressCount: treeConfig.suppressCount,
         suppressDoubleClickExpand: true,
         suppressEnterExpand: true,
-        innerRenderer: getTreeCellRenderer(treeConfig, this.cfr, this.vcr)
+        innerRenderer: getTreeCellRenderer(treeConfig, this.cfr, this.vcr),
       },
-      valueGetter: treeConfig.dataGetter
+      valueGetter: treeConfig.dataGetter,
     };
   }
-
 }

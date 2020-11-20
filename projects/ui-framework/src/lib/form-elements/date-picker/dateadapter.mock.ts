@@ -25,7 +25,7 @@ export const UserLocaleServiceMock = {
   },
 
   getDisplayDate(date, localeFormat) {
-    let dateToFormat = date;
+    const dateToFormat = date;
 
     const dateFormat = get(
       get(LOCALE_FORMATS, UserLocaleServiceMock.dateFormat),

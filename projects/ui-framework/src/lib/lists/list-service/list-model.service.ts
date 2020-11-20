@@ -94,14 +94,19 @@ export class ListModelService {
     groupIndex: number;
     size: FormElementSize;
   }): ListOption {
+    const avatar = this.getOptionAvatar(option, size);
     const opt: ListOption = {
       ...option,
       groupName: group.groupName,
       key: this.getGroupKey(group),
       groupIndex: isNumber(group.groupIndex) ? group.groupIndex : groupIndex,
       isPlaceHolder: false,
-      avatar: option.avatar = this.getOptionAvatar(option, size),
+      ...(avatar && { avatar }),
     };
+
+    if (avatar) {
+      option.avatar = avatar;
+    }
 
     return opt;
   }

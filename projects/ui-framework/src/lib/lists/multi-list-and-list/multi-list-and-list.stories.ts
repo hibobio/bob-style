@@ -28,7 +28,7 @@ import { EmptyStateModule } from '../../indicators/empty-state/empty-state.modul
 import { TranslateModule } from '@ngx-translate/core';
 import { MultiListAndListModule } from './multi-list-and-list.module';
 
-const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 const listViewConfig = listViewConfigMock;
@@ -151,4 +151,4 @@ const toAdd = () => ({
   },
 });
 
-story2.add('Multi List And List', toAdd, { notes: { markdown: note } });
+story.add('Multi List And List', toAdd, { notes: { markdown: note } });

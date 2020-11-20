@@ -1,4 +1,4 @@
-import { Chip } from '../chips.interface';
+import { Chip } from '../../chips/chips.interface';
 
 export interface MlacChip extends Chip {
   group?: {

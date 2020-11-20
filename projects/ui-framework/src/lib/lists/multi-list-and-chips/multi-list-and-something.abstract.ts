@@ -1,7 +1,6 @@
 import {
   Directive,
   EventEmitter,
-  Injectable,
   Input,
   OnDestroy,
   OnInit,

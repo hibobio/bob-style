@@ -12,8 +12,8 @@ import {
   SelectGroupOption,
   SelectOption,
 } from '../../lists/list.interface';
-import { ChipListConfig } from '../chips.interface';
-import { ChipType } from '../chips.enum';
+import { ChipListConfig } from '../../chips/chips.interface';
+import { ChipType } from '../../chips/chips.enum';
 import {
   isArray,
   isNotEmptyArray,
@@ -21,7 +21,7 @@ import {
 import { get } from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { ChipListComponent } from '../chip-list/chip-list.component';
+import { ChipListComponent } from '../../chips/chip-list/chip-list.component';
 import { ListChangeService } from '../../lists/list-change/list-change.service';
 import { BaseMultiListAndSomethingElement } from './multi-list-and-something.abstract';
 import { MultiListAndSomething } from './multi-list-and-something.interface';

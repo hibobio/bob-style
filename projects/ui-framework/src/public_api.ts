@@ -175,11 +175,11 @@ export { ChipListComponent } from './lib/chips/chip-list/chip-list.component';
 export { ChipInputModule } from './lib/chips/chip-input/chip-input.module';
 export { ChipInputComponent } from './lib/chips/chip-input/chip-input.component';
 // Multi List and Chips
-export * from './lib/chips/multi-list-and-chips/multi-list-and-chips.interface';
-export * from './lib/chips/multi-list-and-chips/multi-list-and-something.interface';
-export { BaseMultiListAndSomethingElement } from './lib/chips/multi-list-and-chips/multi-list-and-something.abstract';
-export { MultiListAndChipsModule } from './lib/chips/multi-list-and-chips/multi-list-and-chips.module';
-export { MultiListAndChipsComponent } from './lib/chips/multi-list-and-chips/multi-list-and-chips.component';
+export * from './lib/lists/multi-list-and-chips/multi-list-and-chips.interface';
+export * from './lib/lists/multi-list-and-chips/multi-list-and-something.interface';
+export { BaseMultiListAndSomethingElement } from './lib/lists/multi-list-and-chips/multi-list-and-something.abstract';
+export { MultiListAndChipsModule } from './lib/lists/multi-list-and-chips/multi-list-and-chips.module';
+export { MultiListAndChipsComponent } from './lib/lists/multi-list-and-chips/multi-list-and-chips.component';
 // Emoji chips
 export { EmojiChipListModule } from './lib/chips/emoji-chip-list/emoji-chip-list.module';
 export { EmojiChipListComponent } from './lib/chips/emoji-chip-list/emoji-chip-list.component';

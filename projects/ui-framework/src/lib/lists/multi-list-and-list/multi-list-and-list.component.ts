@@ -18,10 +18,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { BasicListType } from '../../lists/basic-list/basic-list.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
 import { BasicListComponent } from '../../lists/basic-list/basic-list.component';
-import { BaseMultiListAndSomethingElement } from '../../chips/multi-list-and-chips/multi-list-and-something.abstract';
+import { BaseMultiListAndSomethingElement } from '../multi-list-and-chips/multi-list-and-something.abstract';
 import { ListModelService } from '../list-service/list-model.service';
 import { ListChangeService } from '../list-change/list-change.service';
-import { MultiListAndSomething } from '../../chips/multi-list-and-chips/multi-list-and-something.interface';
+import { MultiListAndSomething } from '../multi-list-and-chips/multi-list-and-something.interface';
 import { ListRow, ListViewConfig } from './multi-list-and-list.interface';
 import { MenuItem } from '../../navigation/menu/menu.interface';
 
@@ -29,7 +29,7 @@ import { MenuItem } from '../../navigation/menu/menu.interface';
   selector: 'b-multi-list-and-list',
   templateUrl: './multi-list-and-list.component.html',
   styleUrls: [
-    '../../chips/multi-list-and-chips/multi-list-and-something.scss',
+    '../multi-list-and-chips/multi-list-and-something.scss',
     './multi-list-and-list.component.scss',
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -51,6 +51,14 @@ export class MultiListAndListComponent
   basicList: BasicListComponent;
 
   @Input('selectedLabel') otherLabel: string;
+
+  // for compatibility
+  public get selectedLabel(): string {
+    return this.otherLabel;
+  }
+  public set selectedLabel(label: string) {
+    this.otherLabel = label;
+  }
 
   @Input() public listViewConfig: ListViewConfig;
 

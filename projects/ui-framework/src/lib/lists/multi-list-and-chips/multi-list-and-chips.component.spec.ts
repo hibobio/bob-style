@@ -28,8 +28,8 @@ import {
   WindowRefProvideMock,
   NgZoneProvideMock,
 } from '../../tests/services.stub.spec';
-import { ChipListComponent } from '../chip-list/chip-list.component';
-import { ChipComponent } from '../chip/chip.component';
+import { ChipListComponent } from '../../chips/chip-list/chip-list.component';
+import { ChipComponent } from '../../chips/chip/chip.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MultiListComponent } from '../../lists/multi-list/multi-list.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
