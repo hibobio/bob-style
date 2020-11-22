@@ -56,7 +56,7 @@ $bes-avatar-count-default: 1;
 .show-more {
   letter-spacing: -0.5px;
 
-  line-height: calc(var(--avatar-size) + 1px);
+  line-height: calc(var(--avatar-size, #{$bes-avatar-size-default}) + 1px);
 
   &[data-size='micro'] {
     font-size: 9px;

@@ -158,7 +158,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     }
   }
 
-  private getValueShowcase(options: SelectOption[]): ShowcaseInputItem[] {
+  private getValueShowcase(options: SelectOption[]): Avatar[] {
     return options?.filter((o) => o.prefixComponent).length
       ? options.map((option) =>
           this.modelSrvc.getOptionAvatar(

@@ -341,19 +341,13 @@ export class ListModelService {
 
     optionAvatar = optionAvatar && {
       ...optionAvatar,
+      imageSource: optionAvatar.imageSource || null,
+      icon: this.getOptionIcon(option, size) || null,
       size:
         size === FormElementSize.smaller ? AvatarSize.micro : AvatarSize.mini,
-      icon: this.getOptionIcon(option, size),
       border: size !== FormElementSize.smaller,
       backgroundColor,
     };
-
-    if (optionAvatar?.icon) {
-      optionAvatar.imageSource = null;
-    }
-    if (optionAvatar?.imageSource && !optionAvatar.icon) {
-      optionAvatar.icon = null;
-    }
 
     return optionAvatar;
   }
