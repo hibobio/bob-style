@@ -44,7 +44,9 @@ export enum ColorPalette {
   color9_darker = '#2e4d6e',
   color9_light = '#bed8f5',
   color9_lighter = '#deedfd',
+}
 
+export enum ColorsGrey {
   color_grey_100 = '#f8f7f7',
   color_grey_200 = '#f3f2f2',
   color_grey_300 = '#e9e9e9',

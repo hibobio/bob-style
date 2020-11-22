@@ -1,4 +1,4 @@
-import { ColorPalette } from './colorsPalette.enum';
+import { ColorsGrey } from './colorsPalette.enum';
 import { DateLocaleFormats } from './types';
 
 export enum ComponentGroupType {
@@ -90,12 +90,12 @@ export const DISPLAY_DATE_FORMAT_DEF = LOCALE_FORMATS['DD/MM/YYYY'].FullDate;
 
 export const DISPLAY_MONTH_FORMAT_DEF = LOCALE_FORMATS['DD/MM/YYYY'].MonthYear;
 
-export const COLOR_GREY_100 = ColorPalette.color_grey_100;
-export const COLOR_GREY_200 = ColorPalette.color_grey_200;
-export const COLOR_GREY_300 = ColorPalette.color_grey_300;
-export const COLOR_GREY_400 = ColorPalette.color_grey_400;
-export const COLOR_GREY_500 = ColorPalette.color_grey_500;
-export const COLOR_GREY_600 = ColorPalette.color_grey_600;
-export const COLOR_GREY_700 = ColorPalette.color_grey_700;
-export const COLOR_GREY_800 = ColorPalette.color_grey_800;
-export const COLOR_GREY_900 = ColorPalette.color_grey_900;
+export const COLOR_GREY_100 = ColorsGrey.color_grey_100;
+export const COLOR_GREY_200 = ColorsGrey.color_grey_200;
+export const COLOR_GREY_300 = ColorsGrey.color_grey_300;
+export const COLOR_GREY_400 = ColorsGrey.color_grey_400;
+export const COLOR_GREY_500 = ColorsGrey.color_grey_500;
+export const COLOR_GREY_600 = ColorsGrey.color_grey_600;
+export const COLOR_GREY_700 = ColorsGrey.color_grey_700;
+export const COLOR_GREY_800 = ColorsGrey.color_grey_800;
+export const COLOR_GREY_900 = ColorsGrey.color_grey_900;

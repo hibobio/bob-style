@@ -55,8 +55,6 @@ export class EmployeesShowcaseComponent
   @ViewChild(SingleSelectPanelComponent)
   selectPanel: SingleSelectPanelComponent;
 
-  @Input() employees: ShowcaseInputItem[] = [];
-
   @Input() avatarSize: AvatarSize = AvatarSize.mini;
   @Input() min = 3;
   @Input() max = 10;
