@@ -41,7 +41,7 @@ $avatarSizeMap: (
     '.has-hover:hover': (),
     ':after': (
       top: 0,
-      right: 0,
+      right: -3px,
     ),
     '[data-badge-align="bottom-right"]:after': (
       top: auto,

@@ -36,6 +36,7 @@ import selectsPropsDoc from '../selects.properties.md';
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 // @ts-ignore: md file and not a module
 import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
+import { Icons } from '../../icons/icons.enum';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -57,6 +58,7 @@ const template = `
                 [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                 [min]="min"
                 [max]="max"
+                [defaultIcon]="defaultIcon"
                 [disabled]="disabled"
                 [required]="required"
                 [readonly]="readonly"
@@ -207,6 +209,13 @@ const toAdd = () => ({
     ),
     min: number('min', 0, {}, 'Props'),
     max: number('max', 0, {}, 'Props'),
+
+    defaultIcon: select(
+      'defaultIcon',
+      [null, Icons.people_alt2],
+      null,
+      'Props'
+    ),
 
     ...FormElementsCommonProps('Multi select', '', mockText(30), 'Props'),
 

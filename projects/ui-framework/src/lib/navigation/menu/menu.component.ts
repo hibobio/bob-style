@@ -27,7 +27,6 @@ import {
 } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
-import { outsideZone } from '../../services/utils/rxjs.operators';
 import { filter } from 'rxjs/operators';
 import { Keys } from '../../enums';
 

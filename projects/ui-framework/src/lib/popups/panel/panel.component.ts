@@ -23,13 +23,13 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { PanelPositionService } from './panel-position-service/panel-position.service';
 import { Subscription } from 'rxjs';
 import { PanelDefaultPosVer, PanelSize } from './panel.enum';
-import { concat, compact, get, debounce, isEqual, invoke } from 'lodash';
+import { concat, compact, get, debounce, invoke } from 'lodash';
 import { UtilsService } from '../../services/utils/utils.service';
 import { isKey, isDomElement } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
-import { filter, distinctUntilChanged } from 'rxjs/operators';
+import { filter, throttleTime } from 'rxjs/operators';
 import { OverlayPositionClasses } from '../../types';
-import { outsideZone } from '../../services/utils/rxjs.operators';
+import { onlyDistinct } from '../../services/utils/rxjs.operators';
 
 const HOVER_DELAY_DURATION = 300;
 
@@ -202,7 +202,13 @@ export class PanelComponent implements OnInit, OnDestroy {
     positionStrategy: FlexibleConnectedPositionStrategy
   ): void {
     this.positionChangeSubscriber = positionStrategy.positionChanges
-      .pipe(distinctUntilChanged(isEqual))
+      .pipe(
+        throttleTime(200, undefined, {
+          leading: true,
+          trailing: true,
+        }),
+        onlyDistinct()
+      )
       .subscribe((change) => {
         this.positionClassList = this.panelPositionService.getPositionClassList(
           change

@@ -312,24 +312,30 @@ export const objectRemoveKeys = <T = GenericObject>(
   object: T,
   keys: string[]
 ): T => {
-  return Object.keys(object)
-    .filter((key) => !asArray(keys).includes(key))
-    .reduce((acc, key) => {
-      acc[key] = object[key];
-      return acc;
-    }, {} as T);
+  return (
+    object &&
+    Object.keys(object)
+      .filter((key) => !asArray(keys).includes(key))
+      .reduce((acc, key) => {
+        acc[key] = object[key];
+        return acc;
+      }, {} as T)
+  );
 };
 
 export const objectRemoveEntriesByValue = <T = GenericObject>(
   object: T,
   values: any[]
 ): T => {
-  return Object.keys(object)
-    .filter((key) => !asArray(values).includes(object[key]))
-    .reduce((acc, key) => {
-      acc[key] = object[key];
-      return acc;
-    }, {} as T);
+  return (
+    object &&
+    Object.keys(object)
+      .filter((key) => !asArray(values).includes(object[key]))
+      .reduce((acc, key) => {
+        acc[key] = object[key];
+        return acc;
+      }, {} as T)
+  );
 };
 
 export const objectRemoveEntriesWithFalseyValue = <T = GenericObject>(
@@ -339,18 +345,21 @@ export const objectRemoveEntriesWithFalseyValue = <T = GenericObject>(
   const allow = asArray(config?.allow, false);
   const remove = asArray(config?.remove, false);
 
-  return Object.keys(object)
-    .filter((key) => {
-      return remove
-        ? !remove.includes(object[key])
-        : allow
-        ? Boolean(object[key]) || allow.includes(object[key])
-        : Boolean(object[key]);
-    })
-    .reduce((acc, key) => {
-      acc[key] = object[key];
-      return acc;
-    }, {} as T);
+  return (
+    object &&
+    Object.keys(object)
+      .filter((key) => {
+        return remove
+          ? !remove.includes(object[key])
+          : allow
+          ? Boolean(object[key]) || allow.includes(object[key])
+          : Boolean(object[key]);
+      })
+      .reduce((acc, key) => {
+        acc[key] = object[key];
+        return acc;
+      }, {} as T)
+  );
 };
 
 export interface ObjectStringIDConfig {
@@ -954,15 +963,17 @@ export interface EqualByValuesConfig extends ObjectStringIDConfig {
   sort?: boolean;
 }
 
+export const EQUAL_BY_VALUES_CONFIG_DEF: EqualByValuesConfig = {
+  limit: 5000,
+  primitives: true,
+  sort: true,
+};
+
 // ignores order in arrays, only cares about values
 export const isEqualByValues = <T = any>(
   dataA: T,
   dataB: T,
-  config: EqualByValuesConfig = {
-    limit: 5000,
-    primitives: true,
-    sort: true,
-  }
+  config: EqualByValuesConfig = EQUAL_BY_VALUES_CONFIG_DEF
 ): boolean => {
   const truthyA = Boolean(dataA),
     truthyB = Boolean(dataB);

@@ -7,7 +7,6 @@ import {
   ViewChild,
   NgZone,
   ChangeDetectorRef,
-  Input,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
@@ -16,7 +15,7 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListModelService } from '../list-service/list-model.service';
-import { SelectGroupOption, SelectOption } from '../list.interface';
+import { SelectOption } from '../list.interface';
 import { TruncateTooltipComponent } from '../../popups/truncate-tooltip/truncate-tooltip.component';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { UtilsService } from '../../services/utils/utils.service';
@@ -29,6 +28,9 @@ import { MobileService } from '../../services/utils/mobile.service';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 import { TranslateService } from '@ngx-translate/core';
+import { IconColor, Icons } from '../../icons/icons.enum';
+import { ShowcaseInputItem } from '../../avatar/employees-showcase/employees-showcase.interface';
+import { Avatar } from '../../avatar/avatar/avatar.interface';
 
 @Component({
   selector: 'b-multi-select',
@@ -97,7 +99,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     ListChange
   >();
 
-  public valueShowcase: SelectGroupOption[];
+  public valueShowcase: ShowcaseInputItem[];
 
   onApply(): void {
     if (this.listChange) {
@@ -128,7 +130,10 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
       arrayFlatten<SelectOption>(
         this.options.map((group) => group.options)
       ).filter((option) => this.value.includes(option.id));
-    return options.map((option: SelectOption) => option.value).join(', ');
+
+    this.valueShowcase = this.getValueShowcase(options);
+
+    return options?.map((option: SelectOption) => option.value).join(', ');
   }
 
   protected emitChange(
@@ -151,5 +156,30 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
         this.onTouched();
       }
     }
+  }
+
+  private getValueShowcase(options: SelectOption[]): ShowcaseInputItem[] {
+    return options?.filter((o) => o.prefixComponent).length
+      ? options.map((option) =>
+          this.modelSrvc.getOptionAvatar(
+            option,
+            this.size,
+            options.length > 1 ? null : 'transparent'
+          )
+        )
+      : this.defaultIcon
+      ? [
+          {
+            id: 'no-value',
+            imageSource: null,
+            icon: this.modelSrvc.getOptionIcon(
+              { icon: this.defaultIcon },
+              this.size,
+              IconColor.normal
+            ),
+            backgroundColor: 'transparent',
+          } as Avatar,
+        ]
+      : undefined;
   }
 }

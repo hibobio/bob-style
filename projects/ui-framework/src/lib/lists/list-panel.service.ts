@@ -15,18 +15,9 @@ import {
   CdkOverlayOrigin,
   OverlayRef,
 } from '@angular/cdk/overlay';
-import {
-  throttleTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  pairwise,
-  tap,
-} from 'rxjs/operators';
+import { throttleTime, filter, map, pairwise, tap } from 'rxjs/operators';
 import { race, Subscription } from 'rxjs';
-import { outsideZone } from '../services/utils/rxjs.operators';
-import { isEqual } from 'lodash';
-import { isKey, hasProp } from '../services/utils/functional-utils';
+import { hasProp } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
 import { ScrollEvent } from '../services/utils/utils.interface';
 import { MobileService } from '../services/utils/mobile.service';
@@ -35,6 +26,7 @@ import { UtilsService } from '../services/utils/utils.service';
 import { PanelPositionService } from '../popups/panel/panel-position-service/panel-position.service';
 import { PanelDefaultPosVer } from '../popups/panel/panel.enum';
 import { OverlayPositionClasses } from '../types';
+import { filterKey, onlyDistinct } from '../services/utils/rxjs.operators';
 
 export interface OverlayEnabledComponent {
   zone: NgZone;
@@ -122,7 +114,7 @@ export class ListPanelService {
               leading: true,
               trailing: true,
             }),
-            distinctUntilChanged(isEqual)
+            onlyDistinct()
           )
           .subscribe((change: ConnectedOverlayPositionChange) => {
             (self as OEC).positionClassList = (self as OEC).panelPositionService.getPositionClassList(
@@ -136,13 +128,19 @@ export class ListPanelService {
 
       (self as OEC).subscribtions.push(
         race(
-          (self as OEC).overlayRef.backdropClick(),
+          (self as OEC).overlayRef
+            .backdropClick()
+            .pipe(
+              filter(() => (self as OEC)['backdropClickMode'] !== 'cancel')
+            ),
+
           (self as OEC).utilsService.getResizeEvent(true).pipe(
             tap(() => {
               (self as OEC).isMobile = this.mobileService.isMobile();
             }),
             filter(() => !(self as OEC).isMobile)
           ),
+
           (self as OEC).utilsService.getScrollEvent(true).pipe(
             filter(() => !(self as OEC).isMobile),
             throttleTime(50, undefined, {
@@ -170,18 +168,25 @@ export class ListPanelService {
       );
 
       (self as OEC).subscribtions.push(
-        (self as OEC).utilsService
-          .getWindowKeydownEvent(true)
-          .pipe(filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)))
-          .subscribe(() => {
-            (self as OEC)[
-              (self as OEC).onCancel
-                ? 'onCancel'
-                : (self as OEC).closePanel
-                ? 'closePanel'
-                : 'destroyPanel'
-            ]();
-          })
+        race(
+          (self as OEC).overlayRef
+            .backdropClick()
+            .pipe(
+              filter(() => (self as OEC)['backdropClickMode'] === 'cancel')
+            ),
+
+          (self as OEC).utilsService
+            .getWindowKeydownEvent(true)
+            .pipe(filterKey(Keys.escape))
+        ).subscribe(() => {
+          (self as OEC)[
+            (self as OEC).onCancel
+              ? 'onCancel'
+              : (self as OEC).closePanel
+              ? 'closePanel'
+              : 'destroyPanel'
+          ]();
+        })
       );
     }
   }

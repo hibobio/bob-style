@@ -77,7 +77,7 @@ export class MultiListAndChipsComponent
     this.subs.push(
       this.inputOptions$
         .pipe(
-          filter(isNotEmptyArray),
+          filter((options) => isNotEmptyArray(options)),
           map((options) => this.detectChipType(options)),
           filter((type) => type !== this.chipListConfig.type)
         )

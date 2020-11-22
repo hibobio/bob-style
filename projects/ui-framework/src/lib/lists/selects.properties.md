@@ -1,6 +1,7 @@
 #### Single/Multi Select common properties
 Name | Type | Description | Default
 --- | --- | --- | ---
+[defaultIcon] | Icons | icon to show, when there is no value (useful when creating Employee-selects with avatars/icons)
 [tooltipType] | TruncateTooltipType | you can use CSS or Material tooltip for truncated value text | CSS
 [hasPrefix] | boolean | if you are providing `input-prefix` ng-content, set this to true | false
 &nbsp; | &nbsp; | &nbsp; | &nbsp;

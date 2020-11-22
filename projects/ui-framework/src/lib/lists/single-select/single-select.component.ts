@@ -30,6 +30,7 @@ import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 import { TranslateService } from '@ngx-translate/core';
 import { Avatar } from '../../avatar/avatar/avatar.interface';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
+import { IconColor } from '../../icons/icons.enum';
 
 @Component({
   selector: 'b-single-select',
@@ -103,7 +104,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
         this.options.map((group) => group.options)
       ).find((opt) => this.value.includes(opt.id));
 
-    this.valueAvatar = this.modelSrvc.getOptionAvatar(option, this.size);
+    this.valueAvatar = this.getValueAvatar(option);
 
     return option?.value;
   }
@@ -133,5 +134,22 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
     }
 
     this.destroyPanel();
+  }
+
+  private getValueAvatar(option: SelectOption): Avatar {
+    return option
+      ? this.modelSrvc.getOptionAvatar(option, this.size, 'transparent')
+      : this.defaultIcon
+      ? ({
+          id: 'no-value',
+          imageSource: null,
+          icon: this.modelSrvc.getOptionIcon(
+            { icon: this.defaultIcon },
+            this.size,
+            IconColor.normal
+          ),
+          backgroundColor: 'transparent',
+        } as Avatar)
+      : undefined;
   }
 }

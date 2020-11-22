@@ -303,7 +303,11 @@ export class ListModelService {
     );
   }
 
-  getOptionIcon(option: SelectOption, size: FormElementSize): Icon {
+  getOptionIcon(
+    option: Partial<SelectOption>,
+    size: FormElementSize,
+    color: IconColor = IconColor.dark
+  ): Icon {
     const optionIcon: Icon | Icons =
       option?.icon || option?.prefixComponent?.attributes?.icon;
     const iconSize =
@@ -315,16 +319,20 @@ export class ListModelService {
       ? {
           ...(optionIcon as Icon),
           size: iconSize,
-          color: IconColor.dark,
+          color,
         }
       : {
-          size: iconSize,
-          color: IconColor.dark,
           icon: optionIcon as Icons,
+          size: iconSize,
+          color,
         };
   }
 
-  getOptionAvatar(option: SelectOption, size: FormElementSize): Avatar {
+  getOptionAvatar(
+    option: SelectOption,
+    size: FormElementSize,
+    backgroundColor = 'transparent'
+  ): Avatar {
     const prefixComponent = option?.prefixComponent?.attributes;
     let optionAvatar: Avatar =
       option?.avatar ||
@@ -337,7 +345,7 @@ export class ListModelService {
         size === FormElementSize.smaller ? AvatarSize.micro : AvatarSize.mini,
       icon: this.getOptionIcon(option, size),
       border: size !== FormElementSize.smaller,
-      backgroundColor: 'transparent',
+      backgroundColor,
     };
 
     if (optionAvatar?.icon) {

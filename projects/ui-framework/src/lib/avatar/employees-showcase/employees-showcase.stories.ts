@@ -19,6 +19,8 @@ import {
 } from './employees-showcase.mock';
 import { SelectGroupOption } from '../../lists/list.interface';
 import { EmployeeShowcase } from './employees-showcase.interface';
+import { cloneDeepSimpleObject } from '../../services/utils/functional-utils';
+import { cloneDeep } from 'lodash';
 
 const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
   withKnobs
@@ -41,7 +43,6 @@ const template1 = `
             [showTotal]="showTotal"
             [showTotalLabel]="showTotalLabel"
             [expandOnClick]="expandOnClick"
-            [doShuffle]="doShuffle"
             [inverseStack]="inverseStack"
             [fadeOut]="fadeOut"
             [zoomOnHover]="zoomOnHover"
@@ -58,7 +59,6 @@ const template2 = `
             [max]="8"
             [showTotal]="true"
             [expandOnClick]="true"
-            [doShuffle]="false"
             [inverseStack]="true"
             [fadeOut]="true"
             [zoomOnHover]="false"
@@ -68,13 +68,12 @@ const template2 = `
 
 const template3 = `
   <b-employees-showcase
-            [employees]="employees.reverse()"
+            [employees]="employees.slice().reverse()"
             [avatarSize]="avatarSizes.mini"
             [min]="3"
             [max]="6"
             [showTotal]="true"
             [expandOnClick]="true"
-            [doShuffle]="false"
             [inverseStack]="false"
             [fadeOut]="false"
             [zoomOnHover]="false"
@@ -103,9 +102,6 @@ const note = `
   [showTotal] | boolean | show the total counter circle \
    - only valid for avatar size < medium; will be disabled if [fadeOut] is true) | true
   [showTotalLabel] | boolean | show total text ("Total: X") to the right of the showcase | false
-  [doShuffle] | boolean | will shuffle and show random\
-   avatars that dont fit - only if avatar size > medium.\
-    this is resource intensive, so disabled by default  | <u>false</u>
   [inverseStack] | boolean | the 'front', uppermost avatar \
   will be on the left, and not on the right, as in defauult mode | false
   [fadeOut] | boolean | make avatars fade out, from front to back | false
@@ -136,6 +132,7 @@ const storyTemplate = `
     <h4>avatarSize mini, readonly</h4>
     ${template3}
 
+
 </div>
 </b-story-book-layout>
 `;
@@ -158,7 +155,6 @@ story.add(
         expandOnClick: boolean('expandOnClick', true, 'Props'),
         showTotal: boolean('showTotal', true, 'Props'),
         showTotalLabel: boolean('showTotalLabel', false, 'Props'),
-        doShuffle: boolean('doShuffle', false, 'Props'),
         inverseStack: boolean('inverseStack', false, 'Props'),
         fadeOut: boolean('fadeOut', false, 'Props'),
         zoomOnHover: boolean('zoomOnHover', false, 'Props'),
@@ -166,14 +162,15 @@ story.add(
 
         employees: object<EmployeeShowcase>(
           'employees',
-          EMPLOYEE_SHOWCASE_MOCK,
+          cloneDeepSimpleObject(EMPLOYEE_SHOWCASE_MOCK),
           'Data'
         ),
         employeeOptions: object<SelectGroupOption>(
           'employeeOptions',
-          EMPLOYEE_SHOWCASE_OPTIONS_MOCK,
+          cloneDeep(EMPLOYEE_SHOWCASE_OPTIONS_MOCK),
           'Data'
         ),
+        clone: cloneDeepSimpleObject,
 
         selectChange: action('Showcase list change'),
         onAvatarClick: action('Avatar clicked'),

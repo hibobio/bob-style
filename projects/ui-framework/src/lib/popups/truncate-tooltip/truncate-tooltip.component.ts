@@ -119,19 +119,20 @@ export class TruncateTooltipComponent
         this.addMouseListeners();
       }
 
-      this.resizeSubscription = this.mutationObservableService
-        .getResizeObservervable(this.textContainer.nativeElement, {
-          watch: 'width',
-          threshold: 15,
-        })
-        .pipe(outsideZone(this.zone))
-        .subscribe(() => {
-          this.DOM.mutate(() => {
-            if (this.checkTooltipNecessity() && !this.cd['destroyed']) {
-              this.cd.detectChanges();
-            }
+      this.zone.runOutsideAngular(() => {
+        this.resizeSubscription = this.mutationObservableService
+          .getResizeObservervable(this.textContainer.nativeElement, {
+            watch: 'width',
+            threshold: 15,
+          })
+          .subscribe(() => {
+            this.DOM.mutate(() => {
+              if (this.checkTooltipNecessity() && !this.cd['destroyed']) {
+                this.cd.detectChanges();
+              }
+            });
           });
-        });
+      });
     }
   }
 

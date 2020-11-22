@@ -88,7 +88,7 @@ export * from './lib/avatar/avatar/avatar.interface';
 // Employees Showcase Module
 export { EmployeesShowcaseModule } from './lib/avatar/employees-showcase/employees-showcase.module';
 export { EmployeesShowcaseComponent } from './lib/avatar/employees-showcase/employees-showcase.component';
-export { EmployeeShowcase } from './lib/avatar/employees-showcase/employees-showcase.interface';
+export * from './lib/avatar/employees-showcase/employees-showcase.interface';
 // Layout
 export { AvatarLayoutModule } from './lib/avatar/avatar-layout/avatar-layout.module';
 export { AvatarLayoutComponent } from './lib/avatar/avatar-layout/avatar-layout.component';

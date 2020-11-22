@@ -9,3 +9,8 @@ export enum SelectMode {
   checkGroups = 'checkGroups',
   tree = 'tree',
 }
+
+export enum BackdropClickMode {
+  apply = 'apply',
+  cancel = 'cancel',
+}

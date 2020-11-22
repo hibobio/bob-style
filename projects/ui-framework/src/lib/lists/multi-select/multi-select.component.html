@@ -7,7 +7,7 @@
 
 <div class="bfe-wrap has-suffix"
      [ngClass]="{
-        'has-prefix': hasPrefix || showPrefix,
+        'has-prefix': hasPrefix || showPrefix || valueShowcase,
         focused: panelOpen,
         'panel-open': panelOpen,
         'panel-above': positionClassList['panel-above'],
@@ -27,8 +27,8 @@
     <b-employees-showcase [employees]="valueShowcase"
                           [min]="3"
                           [max]="3"
-                          [avatarSize]=""
-                          [showTotal]="false"
+                          [avatarSize]="size === formElementSize.smaller ? avatarSize.micro : avatarSize.mini"
+                          [showTotal]="valueShowcase.length > 3"
                           [expandOnClick]="false"
                           [readonly]="true">
     </b-employees-showcase>
@@ -47,7 +47,7 @@
        (focus)="openPanel()"></div>
 
   <div class="bfe-suffix">
-    <span *ngIf="truncate.tooltipEnabled && displayValueCount"
+    <span *ngIf="truncate.tooltipEnabled && displayValueCount && !valueShowcase"
           class="total-values">
       ({{displayValueCount}})
     </span>

@@ -46,6 +46,7 @@ export class NgSubscribeContext {
 }
 
 @Directive({
+  // tslint:disable-next-line: directive-selector
   selector: '[ngSubscribe]',
 })
 export class NgSubscribeDirective implements OnInit, OnDestroy {

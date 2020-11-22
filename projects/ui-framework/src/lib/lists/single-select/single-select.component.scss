@@ -27,12 +27,25 @@
 }
 
 :host ::ng-deep {
-  .bfe-prefix b-avatar-image {
+  .bfe-prefix {
+    cursor: pointer;
+  }
+
+  .bfe-prefix > b-avatar-image,
+  .bfe-prefix > b-employees-showcase {
     margin-left: -12px;
+    pointer-events: none;
   }
 
   .option-select b-avatar-image {
     margin-left: -2px;
+  }
+
+  b-avatar-image[data-size='mini'] {
+    --avatar-gap: -22px;
+  }
+  b-avatar-image[data-size='micro'] {
+    --avatar-gap: -15px;
   }
 }
 
@@ -40,7 +53,8 @@
   .bfe-prefix {
     padding-right: 8px;
 
-    b-avatar-image {
+    & > b-avatar-image,
+    & > b-employees-showcase {
       margin-left: -8px;
     }
   }

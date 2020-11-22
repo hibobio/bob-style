@@ -4,8 +4,8 @@
      [attr.aria-hidden]="!listLabel"
      *ngIf="listLabel || otherLabel">{{listLabel}}</p>
 
-  <b-multi-list [attr.aria-labelledby]="listLabel ? listID+'-label' : null"
-                [attr.id]="listID"
+  <b-multi-list [attr.id]="listID"
+                [attr.aria-labelledby]="listLabel ? listID+'-label' : null"
                 [options]="listOptions$ | async"
                 [value]="listValue$ | async"
                 [optionsDefault]="optionsDefault"

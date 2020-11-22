@@ -8,6 +8,9 @@
                 [attr.aria-labelledby]="listLabel ? listID+'-label' : null"
                 [options]="listOptions$ | async"
                 [value]="listValue$ | async"
+                [optionsDefault]="optionsDefault"
+                [mode]="mode"
+                [listActions]="listActions"
                 [maxHeight]="listElHeight*6"
                 [showSingleGroupHeader]="showSingleGroupHeader"
                 [startWithGroupsCollapsed]="startWithGroupsCollapsed"
@@ -23,6 +26,7 @@
      *ngIf="listLabel || otherLabel">{{otherLabel}}</p>
 
   <b-basic-list [attr.id]="otherID"
+                [attr.aria-labelledby]="otherLabel ? otherID+'-label' : null"
                 [type]="type"
                 [items]="otherList$ | async"
                 [config]="listViewConfig"

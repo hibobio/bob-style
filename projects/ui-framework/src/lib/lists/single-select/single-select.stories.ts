@@ -33,6 +33,7 @@ import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 import listSelectsPropsDoc from '../lists-selects.properties.md';
 // @ts-ignore: md file and not a module
 import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
+import { Icons } from '../../icons/icons.enum';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -51,6 +52,7 @@ const template = `
                  [showNoneOption]="showNoneOption"
                  [showSingleGroupHeader]="showSingleGroupHeader"
                  [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+                 [defaultIcon]="defaultIcon"
                  [disabled]="disabled"
                  [required]="required"
                  [readonly]="readonly"
@@ -154,6 +156,8 @@ const toAdd = () => ({
       true,
       'Props'
     ),
+
+    defaultIcon: select('defaultIcon', [null, Icons.person], null, 'Props'),
 
     ...FormElementsCommonProps('Single select', '', mockText(30), 'Props'),
 

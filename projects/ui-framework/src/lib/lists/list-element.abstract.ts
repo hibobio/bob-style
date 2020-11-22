@@ -24,7 +24,6 @@ import {
   SelectGroupOption,
   ListFooterActionsState,
   UpdateListsConfig,
-  SelectOption,
   itemID,
 } from './list.interface';
 import { cloneDeep, isEqual } from 'lodash';

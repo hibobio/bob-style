@@ -44,7 +44,7 @@ import { LIST_EL_HEIGHT, SELECT_MAX_ITEMS } from './list.consts';
 import { ListChangeService } from './list-change/list-change.service';
 import { selectValueOrFail } from '../services/utils/transformers';
 import { ListModelService } from './list-service/list-model.service';
-import { SelectType, SelectMode } from './list.enum';
+import { SelectType, SelectMode, BackdropClickMode } from './list.enum';
 import {
   FormEvents,
   FormElementSize,
@@ -54,6 +54,8 @@ import { MobileService } from '../services/utils/mobile.service';
 import { TooltipClass } from '../popups/tooltip/tooltip.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { FORM_ELEMENT_HEIGHT } from '../form-elements/form-elements.const';
+import { AvatarSize } from '../avatar/avatar/avatar.enum';
+import { Icons } from '../icons/icons.enum';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -105,6 +107,9 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @Input() min: number;
   @Input() max: number;
 
+  @Input() defaultIcon: Icons;
+  @Input() backdropClickMode: BackdropClickMode = BackdropClickMode.apply;
+
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
@@ -118,6 +123,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   protected listChange: ListChange;
 
   private fitOptionsToValue = false;
+  readonly formElementSize = FormElementSize;
+  readonly avatarSize = AvatarSize;
   readonly listElHeight = FORM_ELEMENT_HEIGHT;
   readonly listElHeightDef = LIST_EL_HEIGHT;
   public maxHeightItems = SELECT_MAX_ITEMS;
@@ -181,8 +188,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
     if (
       (hasChanges(changes, ['options']) && !this.fitOptionsToValue) ||
-      (changes.size &&
-        this.type === SelectType.single &&
+      ((changes.size || changes.defaultIcon) &&
         !changes.value &&
         !changes.options)
     ) {

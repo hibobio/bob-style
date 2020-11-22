@@ -41,6 +41,16 @@ const componentTemplate1 = `<b-multi-select-panel [chevronButtonText]="chevronBu
                         [mode]="selectMode"
                         [disabled]="disabled"
                         [readonly]="readonly"
+                        [backdropClickMode]="backdropClickMode"
+                        (selectChange)="selectChange($event)">
+</b-multi-select-panel>`;
+
+const componentTemplate1_notes = `<b-multi-select-panel [chevronButtonText]="chevronButtonText"
+                        [options]="options"
+                        [optionsDefault]="optionsDefault"
+                        [mode]="selectMode"
+                        [disabled]="disabled"
+                        [readonly]="readonly"
                         (selectChange)="selectChange($event)">
 </b-multi-select-panel>`;
 
@@ -77,7 +87,7 @@ const note = `
   *MultiSelectPanelModule*
 
   ~~~
-  ${componentTemplate1}
+  ${componentTemplate1_notes}
   ~~~
 
   ~~~
@@ -121,6 +131,12 @@ story.add(
           'optionsDefault',
           optionsDef,
           'Options'
+        ),
+        backdropClickMode: select(
+          'backdropClickMode',
+          ['apply', 'cancel'],
+          'apply',
+          'Props'
         ),
         selectChange: action('Multi select panel change'),
       },

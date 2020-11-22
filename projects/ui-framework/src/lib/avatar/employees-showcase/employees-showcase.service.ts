@@ -1,133 +1,120 @@
 import { Injectable } from '@angular/core';
-import { EmployeeShowcase } from './employees-showcase.interface';
+import {
+  EmployeeShowcase,
+  ShowcaseInputItem,
+} from './employees-showcase.interface';
 import { SelectGroupOption } from '../../lists/list.interface';
 import {
-  isEmptyArray,
   simpleUID,
-  stringify,
-  asArray,
-  isArray,
-  randomNumber,
-  hasProp,
   isSelectGroupOptions,
   objectRemoveKeys,
+  isNotEmptyArray,
 } from '../../services/utils/functional-utils';
-import { AvatarImageComponent } from '../avatar/avatar-image/avatar-image.component';
-import { AvatarSize } from '../avatar/avatar.enum';
-import { cloneDeep } from 'lodash';
 import { Avatar } from '../avatar/avatar.interface';
+import { map } from 'rxjs/operators';
+import { OperatorFunction } from 'rxjs';
 
 @Injectable()
 export class EmployeesShowcaseService {
   constructor() {}
 
-  public getEmployeeListOptions(
-    employees: EmployeeShowcase[] | SelectGroupOption[],
-    clone = false
+  public employeeListMapper: OperatorFunction<
+    ShowcaseInputItem[],
+    SelectGroupOption[]
+  > = map((employees: ShowcaseInputItem[]) => {
+    return this.isSelectGroupOptions(employees)
+      ? employees
+      : this.isEmployeeShowcase(employees)
+      ? this.mapEmployeeShowcaseToSelectGroupOptions(employees)
+      : [];
+  });
+
+  public avatarsMapper: OperatorFunction<ShowcaseInputItem[], Avatar[]> = map(
+    (employees: ShowcaseInputItem[]) => {
+      return this.isAvatars(employees)
+        ? employees
+        : this.isSelectGroupOptions(employees)
+        ? this.mapSelectGroupOptionsToAvatars(employees)
+        : this.isEmployeeShowcase(employees)
+        ? this.mapEmployeeShowcaseToAvatars(employees)
+        : [];
+    }
+  );
+
+  private isSelectGroupOptions(
+    options: ShowcaseInputItem[]
+  ): options is SelectGroupOption[] {
+    return isSelectGroupOptions(options);
+  }
+
+  private isEmployeeShowcase(
+    employees: ShowcaseInputItem[]
+  ): employees is EmployeeShowcase[] {
+    return (
+      isNotEmptyArray(employees) && employees[0].id && employees[0].displayName
+    );
+  }
+
+  private isAvatars(avatars: ShowcaseInputItem[]): avatars is Avatar[] {
+    return (
+      isNotEmptyArray(avatars) && (avatars[0].imageSource || avatars[0].icon)
+    );
+  }
+
+  private mapSelectGroupOptionsToAvatars(
+    options: SelectGroupOption[]
+  ): Avatar[] {
+    return (
+      options &&
+      options[0]?.options?.map((option) => {
+        const attributes = objectRemoveKeys(option.prefixComponent.attributes, [
+          'disabled',
+          'size',
+        ]);
+
+        return {
+          ...attributes,
+          imageSource: attributes.imageSource || null,
+          icon: attributes.icon || null,
+        };
+      })
+    );
+  }
+
+  private mapEmployeeShowcaseToAvatars(
+    employees: EmployeeShowcase[]
+  ): Avatar[] {
+    return employees?.map((employee) => ({
+      imageSource: employee.imageSource || null,
+      icon: employee.icon || null,
+    }));
+  }
+
+  private mapEmployeeShowcaseToSelectGroupOptions(
+    employees: EmployeeShowcase[]
   ): SelectGroupOption[] {
-    if (
-      isEmptyArray(employees) ||
-      (isArray((employees[0] as SelectGroupOption).options) &&
-        !(employees[0] as SelectGroupOption).options.length)
-    ) {
-      return [{ groupName: 'empty', options: [] }];
-    }
-
-    if (this.isCorrectGroupOptions(employees)) {
-      return (clone ? cloneDeep(employees) : employees) as SelectGroupOption[];
-    }
-
-    if (this.isCorrectViewModel(employees)) {
-      const groupID = simpleUID();
-      return [
+    const groupID = simpleUID();
+    return (
+      employees && [
         {
           groupName: groupID,
           key: groupID,
-          options: (employees as EmployeeShowcase[]).map(
+          options: employees.map(
             (employee: EmployeeShowcase, indx: number) => ({
               value: employee.displayName,
               id: employee.id || groupID + '_' + indx,
               selected: false,
               prefixComponent: {
-                component: AvatarImageComponent,
+                component: null,
                 attributes: {
-                  imageSource: employee.imageSource,
-                  size: AvatarSize.mini,
+                  imageSource: employee.imageSource || null,
+                  icon: employee.icon || null,
                 },
               },
             })
           ),
         },
-      ];
-    }
-
-    throw new Error(
-      `Provided [employees] (${stringify(
-        isSelectGroupOptions(employees)
-          ? (employees as SelectGroupOption[])[0].options.slice(0, 3)
-          : asArray(employees as EmployeeShowcase[]).slice(0, 3)
-      )}...) is missing required data.`
-    );
-  }
-
-  public getShowcaseViewModel(
-    employeeListOptions: SelectGroupOption[]
-  ): Avatar[] {
-    if (!this.isCorrectGroupOptions(employeeListOptions)) {
-      return [];
-    }
-    return employeeListOptions[0].options.map((option) =>
-      objectRemoveKeys(option.prefixComponent.attributes, ['disabled', 'size'])
-    );
-  }
-
-  public shuffleShowcaseViewModel(
-    showcaseViewModel: Avatar[],
-    avatarsToFit: number,
-    doOnSuccess = () => {}
-  ): Avatar[] {
-    const firstIndex = randomNumber(0, avatarsToFit > 1 ? avatarsToFit - 1 : 0);
-    const secondIndex = randomNumber(
-      avatarsToFit,
-      showcaseViewModel.length > 1 ? showcaseViewModel.length - 1 : 0
-    );
-
-    if (firstIndex !== secondIndex) {
-      const firstEmployee = cloneDeep(showcaseViewModel[firstIndex]);
-      showcaseViewModel[firstIndex] = showcaseViewModel[secondIndex];
-      showcaseViewModel[secondIndex] = firstEmployee;
-
-      doOnSuccess();
-    }
-
-    return showcaseViewModel;
-  }
-
-  private optionHasAvatarComponent(option: any): boolean {
-    return Boolean(
-      option?.prefixComponent?.attributes &&
-        (hasProp(option.prefixComponent.attributes, 'imageSource') ||
-          hasProp(option.prefixComponent.attributes, 'icon'))
-    );
-  }
-
-  private isCorrectGroupOptions(
-    employees: EmployeeShowcase[] | SelectGroupOption[]
-  ): boolean {
-    return (
-      isSelectGroupOptions(employees) &&
-      this.optionHasAvatarComponent(
-        (employees as SelectGroupOption[])[0].options[0]
-      )
-    );
-  }
-
-  private isCorrectViewModel(
-    employees: EmployeeShowcase[] | SelectGroupOption[]
-  ): boolean {
-    return Boolean(
-      isArray(employees) &&
-        hasProp((employees as EmployeeShowcase[])[0], 'imageSource')
+      ]
     );
   }
 }
