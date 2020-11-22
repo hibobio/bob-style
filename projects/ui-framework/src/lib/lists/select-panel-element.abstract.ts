@@ -109,6 +109,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
   @Input() defaultIcon: Icons;
   @Input() backdropClickMode: BackdropClickMode = BackdropClickMode.apply;
+  @Input() showValueShowcase = true;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange

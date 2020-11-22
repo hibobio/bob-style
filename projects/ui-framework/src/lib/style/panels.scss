@@ -278,3 +278,15 @@ html:not(.cdk-global-scrollblock) {
     background-color: $input-border-color;
   }
 }
+
+// hiding intercom
+
+#intercom-container {
+  transition: opacity 0.5s;
+}
+
+.cdk-global-scrollblock
+  .cdk-overlay-container:not(:empty)
+  ~ #intercom-container {
+  opacity: 0;
+}

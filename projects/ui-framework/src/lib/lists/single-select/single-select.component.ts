@@ -104,7 +104,8 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
         this.options.map((group) => group.options)
       ).find((opt) => this.value.includes(opt.id));
 
-    this.valueAvatar = this.getValueAvatar(option);
+    this.valueAvatar =
+      this.showValueShowcase !== false && this.getValueAvatar(option);
 
     return option?.value;
   }

@@ -131,7 +131,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
         this.options.map((group) => group.options)
       ).filter((option) => this.value.includes(option.id));
 
-    this.valueShowcase = this.getValueShowcase(options);
+    this.valueShowcase =
+      this.showValueShowcase !== false && this.getValueShowcase(options);
 
     return options?.map((option: SelectOption) => option.value).join(', ');
   }

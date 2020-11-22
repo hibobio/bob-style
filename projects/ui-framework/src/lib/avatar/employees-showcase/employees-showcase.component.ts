@@ -216,13 +216,7 @@ export class EmployeesShowcaseComponent
         this.totalAvatars = avatars.length;
 
         if (this.totalAvatars < this.avatarsToFit) {
-          this.zone.runOutsideAngular(() => {
-            this.DOM.mutate(() => {
-              this.DOM.setCssProps(this.hostEl, {
-                '--avatar-count': this.totalAvatars,
-              });
-            });
-          });
+          this.avatarsSliceUpdate$.next(this.totalAvatars);
         }
       })
     );
