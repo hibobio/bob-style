@@ -80,11 +80,9 @@ export class ChipComponent implements OnChanges {
 
     if (changes.type || changes.selected) {
       this.removeIconColor =
-        ((this.type === ChipType.tag ||
-          this.type === ChipType.avatar ||
-          this.type === ChipType.icon) &&
-          !this.selected) ||
-        (this.type === ChipType.icon && this.selected)
+        this.type === ChipType.avatar ||
+        this.type === ChipType.icon ||
+        (this.type === ChipType.tag && !this.selected)
           ? IconColor.normal
           : IconColor.white;
     }

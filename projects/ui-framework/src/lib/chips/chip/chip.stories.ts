@@ -40,7 +40,8 @@ const template = `
 
     <b-avatar-image *ngIf="type === chipType.avatar"
                 [imageSource]="imageSource"
-                [size]="avatarSize.mini"></b-avatar-image>
+                [size]="avatarSize.mini"
+                [border]="true"></b-avatar-image>
   </b-chip>
 `;
 

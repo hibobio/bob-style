@@ -15,7 +15,8 @@
 
   <b-avatar-image *ngIf="(chip.type === chipType.avatar || config.type === chipType.avatar) && chip.imageSource"
                   [imageSource]="chip.imageSource"
-                  [size]="avatarSize.mini"></b-avatar-image>
+                  [size]="avatarSize.mini"
+                  [border]="true"></b-avatar-image>
 </b-chip>
 
 <ng-content></ng-content>

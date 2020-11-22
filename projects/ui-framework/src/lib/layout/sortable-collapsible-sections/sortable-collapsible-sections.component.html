@@ -5,6 +5,7 @@
 
   <li *ngFor="let section of UISections; trackBy: trackId; let index=index; let last = last;"
       class="draggable-section"
+      [class.mrg-b-16]="!last"
       cdkDrag
       cdkDragLockAxis="y"
       cdkDragStartDelay="5"
@@ -14,7 +15,6 @@
 
     <b-collapsible-section id="{{section.id}}"
                            class="section"
-                           [class.mrg-b-16]="!last"
                            [panelID]="section.id"
                            [collapsible]="true"
                            [expanded]="this.expandedMap.get(section.id) || false"

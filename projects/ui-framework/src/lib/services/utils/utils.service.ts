@@ -38,13 +38,6 @@ export class UtilsService {
           passive: true,
         }
       ).pipe(
-        tap((e) =>
-          console.log(
-            e.currentTarget,
-            (e.currentTarget as any).scrollY,
-            (document.scrollingElement as any).scrollY
-          )
-        ),
         map(
           (e: Event) => (e.currentTarget || document.scrollingElement) as Window
         ),
