@@ -1,0 +1,12 @@
+<b-dialog [dialogTitle]="config?.title || ('bob-style.delete-confirmation.default.title' | translate)"
+          [dialogButtons]="buttonConfig$ | async">
+  <div b-dialog-content>
+    <p class="message" [innerHTML]="config?.message || ('bob-style.delete-confirmation.default.message' | translate)"></p>
+    <b-input
+      [label]="config?.confirmationData?.label || defaultLabel"
+      [placeholder]="config?.confirmationData?.placeholder"
+      [hintMessage]="config?.confirmationData?.hintMessage"
+      [errorMessage]="(valid$ | async) === false && (config?.confirmationData?.errorMessage || ('bob-style.delete-confirmation.default.error' | translate))">
+    </b-input>
+  </div>
+</b-dialog>

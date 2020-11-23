@@ -1,7 +1,6 @@
 import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
-import { DialogSize } from '../dialog/dialog.enum';
 import { ConfirmationDialogComponent } from './confirmation-dialog.component';
 import { ConfirmationDialogService } from './confirmation-dialog.service';
 import { ConfirmationDialogModule } from './confirmation-dialog.module';
@@ -13,6 +12,9 @@ import { ConfirmationDialogConfig } from './confirmation-dialog.interface';
   template: `
     <b-button (clicked)="openDialog()" style="margin-right: 10px;"
       >Delete</b-button
+    >
+    <b-button (clicked)="openDeleteConfirmationDialog()" style="margin-right: 10px;"
+    >Confirm And Delete</b-button
     >
   `
 })
@@ -39,6 +41,12 @@ export class ConfirmationDialogExampleComponent {
     const dialogRef: MatDialogRef<
       ConfirmationDialogComponent
     > = this.confirmationDialogService.openDialog(dialogConfig);
+  }
+
+  openDeleteConfirmationDialog(): void {
+    const dialogRef: MatDialogRef<
+      ConfirmationDialogComponent
+      > = this.confirmationDialogService.openDeleteConfirmationDialog();
   }
 }
 

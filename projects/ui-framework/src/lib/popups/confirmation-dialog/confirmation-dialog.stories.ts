@@ -65,6 +65,12 @@ const note = `
   }
   ~~~
 
+  #### Methods & properties
+
+  Name | Returns | description
+  --- | ---
+  openDialog | MatDialogRef&lt;ConfirmationDialogComponent&gt; |
+  openDeleteConfirmationDialog | MatDialogRef&lt;DeleteConfirmationDialogComponent&gt; | will open with default ok/cancel buttons, title and message - if not provided. config object is <strong>optional.</strong>
 
   #### interface ConfirmationDialogConfig
   Name | Type | Description
@@ -73,6 +79,7 @@ const note = `
   title | string | Dialog title
   message | string | Dialog message
   class | string | Class to be added to the dialog panel
+  confirmationData | ConfirmationData | confirmation data config - <strong>Optional</strong>
 
   #### interface ConfirmationDialogButtons
   Name | Type | Description
@@ -88,6 +95,15 @@ const note = `
   type | ButtonType | button type (primary, negative...)
   disabled | boolean | if is disabled
   action | Function | will be invoked on button click
+
+  #### interface ConfirmationData
+  Name | Type | Description | Default Value
+  --- | --- | ---
+  confirmationText | string | text to type in input | Delete
+  label | string | input label | type 'Delete' to confirm
+  placeholder | string | input placeholder | &nbsp;
+  hintMessage | string | input hint message | &nbsp;
+  errorMessage | string | input error message | Please enter the confirmation text
 
 `;
 story.add(
