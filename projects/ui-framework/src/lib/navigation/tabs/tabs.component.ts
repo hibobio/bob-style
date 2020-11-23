@@ -27,6 +27,8 @@ import { IconSize, IconColor } from '../../icons/icons.enum';
 import { BadgeConfig } from '../../avatar/avatar/avatar.interface';
 import { AvatarBadges } from '../../avatar/avatar/avatar.consts';
 import { AvatarBadge } from '../../avatar/avatar/avatar.enum';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { WindowRef } from '../../services/utils/window-ref.service';
 
 @Component({
   selector: 'b-tabs',
@@ -35,7 +37,12 @@ import { AvatarBadge } from '../../avatar/avatar/avatar.enum';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TabsComponent implements OnChanges, AfterViewInit {
-  constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
+  constructor(
+    private DOM: DOMhelpers,
+    private windowRef: WindowRef,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
+  ) {}
 
   @ViewChild(MatTabNav) matTabNav: MatTabNav;
   @ViewChildren(MatTabLink, { read: ElementRef })
@@ -74,12 +81,8 @@ export class TabsComponent implements OnChanges, AfterViewInit {
       this.cd.detectChanges();
     }
 
-    if (notFirstChanges(changes, ['tabs', 'type'], true)) {
-      this.zone.runOutsideAngular(() => {
-        setTimeout(() => {
-          this.updateTabWidths();
-        }, 0);
-      });
+    if (notFirstChanges(changes, ['tabs', 'setTabs', 'type'], true)) {
+      this.updateTabWidths();
     }
   }
 
@@ -138,9 +141,18 @@ export class TabsComponent implements OnChanges, AfterViewInit {
   }
 
   private updateTabWidths(): void {
-    this.tabLabels.toArray().forEach((label) => {
-      const element = label.nativeElement;
-      element.style.minWidth = element.scrollWidth + 'px';
+    this.zone.runOutsideAngular(() => {
+      this.DOM.mutate(() => {
+        this.tabLabels.toArray().forEach((label) => {
+          const element = label.nativeElement;
+          if (element.style.minWidth) {
+            element.style.removeProperty('min-width');
+          }
+          element.style.minWidth = element.scrollWidth + 4 + 'px';
+        });
+
+        this.windowRef.nativeWindow.dispatchEvent(new Event('resize'));
+      });
     });
   }
 
