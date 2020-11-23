@@ -1,10 +1,12 @@
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ButtonType, ConfirmationDialogConfig, InputComponent, InputEventType } from 'bob-style';
 import { merge, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, startWith } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { ConfirmationDialogButtons } from '../confirmation-dialog.interface';
+import { ConfirmationDialogButtons, ConfirmationDialogConfig } from '../confirmation-dialog.interface';
+import { InputComponent } from '../../../form-elements/input/input.component';
+import { InputEventType } from '../../../form-elements/form-elements.enum';
+import { ButtonType } from '../../.././buttons/buttons.enum';
 
 @Component({
   selector: 'b-delete-confirmation-dialog',
