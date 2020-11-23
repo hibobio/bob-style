@@ -19,13 +19,15 @@ import listInterfaceDoc from '../list.interface.md';
 import listSelectsPropsDoc from '../lists-selects.properties.md';
 // @ts-ignore: md file and not a module
 import listsPropsDoc from '../lists.properties.md';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-single-list #list [options]="options"
+<b-single-list #list [options]="options$ | async"
                [showSingleGroupHeader]="showSingleGroupHeader"
                [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                [showNoneOption]="showNoneOption"
@@ -83,7 +85,7 @@ const note = `
   ${listInterfaceDoc}
 `;
 
-const options = cloneDeep(optionsMock);
+const options: SelectGroupOption[] = cloneDeep(optionsMock);
 
 options[2].options[1].selected = true;
 options[2].options[3].disabled = true;
@@ -91,12 +93,14 @@ options[2].description = 'How I wish, how I wish you were here...';
 options[3].description =
   'We are just two lost souls swimming in a fishbowl year after year';
 
+const options$ = of(options).pipe(delay(1000));
+
 story.add(
   'Single list',
   () => ({
     template: storyTemplate,
     props: {
-      showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
+      showSingleGroupHeader: boolean('showSingleGroupHeader', false, 'Props'),
       startWithGroupsCollapsed: boolean(
         'startWithGroupsCollapsed',
         true,
@@ -107,6 +111,8 @@ story.add(
       options: object<SelectGroupOption>('options', options, 'Options'),
 
       selectChange: action('Single list change'),
+
+      options$: options$,
     },
     moduleMetadata: {
       imports: [

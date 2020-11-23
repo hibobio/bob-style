@@ -11,18 +11,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MultiListAndChipsOptionsMock,
   MultiListAndAvatarChipsOptionsMock,
+  someValues1,
+  someValues2,
 } from './multi-list-and-chips.mock';
 import { MultiListAndChipsModule } from './multi-list-and-chips.module';
 import { action } from '@storybook/addon-actions';
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 import { Icons } from '../../icons/icons.enum';
-import { number } from '@storybook/addon-knobs';
+import { number, select } from '@storybook/addon-knobs';
 import { cloneDeep } from 'lodash';
 
 // @ts-ignore: md file and not a module
 import listInterfaceDoc from '../../lists/list.interface.md';
 // @ts-ignore: md file and not a module
 import listSelectsPropsDoc from '../../lists/lists-selects.properties.md';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -31,8 +35,12 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 const listOpts = cloneDeep(MultiListAndChipsOptionsMock);
 const avatarListOpts = cloneDeep(MultiListAndAvatarChipsOptionsMock);
 
+const listOpts$ = of(listOpts).pipe(delay(1000));
+const avatarListOpts$ = of(avatarListOpts).pipe(delay(1000));
+
 const template = `<b-multi-list-and-chips
-        [options]="options === 2 ? avatarListOpts : listOpts"
+        [options]="listOpts$ | async"
+        [value]="value === 1 ? someValues1 : value === 2 ? someValues2 : value === 3 ? [] : undefined"
         [listLabel]="listLabel"
         [chipsLabel]="chipsLabel"
         [showSingleGroupHeader]="showSingleGroupHeader"
@@ -46,6 +54,7 @@ const template = `<b-multi-list-and-chips
 
 const templateForNotes = `<b-multi-list-and-chips
       [options]="options"
+      [value]="selectedIDs"
       [listLabel]="listLabel"
       [chipsLabel]="chipsLabel"
       [showSingleGroupHeader]="showSingleGroupHeader"
@@ -111,6 +120,11 @@ const toAdd = () => ({
     ),
     min: number('min', 0, {}, 'Props'),
     max: number('max', 0, {}, 'Props'),
+
+    value: select('value', [0, 1, 2, 3], 0, 'Data'),
+    someValues1: someValues1,
+    someValues2: someValues2,
+
     listOpts: object('listOpts', listOpts, 'Data'),
     avatarListOpts: object('avatarListOpts', avatarListOpts, 'Data'),
     emptyStateConfig: object(
@@ -125,6 +139,9 @@ const toAdd = () => ({
 
     onSelectChange: action('ListChange'),
     onChange: action('Selected IDs changed'),
+
+    listOpts$: listOpts$,
+    avatarListOpts$: avatarListOpts$,
   },
   moduleMetadata: {
     imports: [

@@ -78,9 +78,9 @@ export abstract class BaseListElement
   }
 
   @ViewChild('vScroll', { static: true }) vScroll: CdkVirtualScrollViewport;
-  @ViewChild('headers') headers: ElementRef;
+  @ViewChild('headers') headers: ElementRef<HTMLElement>;
   @ViewChild('footer', { read: ElementRef })
-  private footer: ElementRef;
+  private footer: ElementRef<HTMLElement>;
   @ViewChild('search', { read: SearchComponent })
   protected search: SearchComponent;
 
@@ -183,7 +183,7 @@ export abstract class BaseListElement
         startWithGroupsCollapsed: true,
         maxHeight: LIST_EL_HEIGHT * LIST_MAX_ITEMS,
       },
-      ['setValue']
+      ['value']
     );
 
     if (this.mode === SelectMode.tree) {
@@ -251,6 +251,7 @@ export abstract class BaseListElement
         'options',
         'showSingleGroupHeader',
         'optionsDefault',
+        'value',
       ])
     ) {
       this.updateActionButtonsState();
@@ -276,6 +277,10 @@ export abstract class BaseListElement
 
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
+    }
+
+    if (hasChanges(changes, ['options'])) {
+      this.moveHeaders();
     }
   }
 
@@ -357,13 +362,7 @@ export abstract class BaseListElement
   }
 
   ngAfterViewInit(): void {
-    if (!this.noGroupHeaders) {
-      this.renderer.insertBefore(
-        this.vScroll.elementRef.nativeElement,
-        this.headers.nativeElement,
-        this.vScroll.elementRef.nativeElement.firstChild
-      );
-    }
+    this.moveHeaders();
 
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
@@ -637,5 +636,23 @@ export abstract class BaseListElement
 
   protected getListHeight(): number {
     return null;
+  }
+
+  protected moveHeaders() {
+    if (!this.vScroll?.elementRef || !this.headers) {
+      return;
+    }
+
+    if (
+      !this.noGroupHeaders &&
+      this.headers.nativeElement.nextElementSibling.tagName ===
+        'CDK-VIRTUAL-SCROLL-VIEWPORT'
+    ) {
+      this.renderer.insertBefore(
+        this.vScroll.elementRef.nativeElement,
+        this.headers.nativeElement,
+        this.vScroll.elementRef.nativeElement.firstChild
+      );
+    }
   }
 }

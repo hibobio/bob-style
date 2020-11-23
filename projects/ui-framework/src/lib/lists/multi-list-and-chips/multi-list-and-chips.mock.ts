@@ -4,6 +4,7 @@ import {
   randomNumber,
   randomFromArray,
   arrayDifference,
+  arrayFlatten,
 } from '../../services/utils/functional-utils';
 import { mockHobbies, mockNames, mockAvatar } from '../../mock.const';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
@@ -131,3 +132,22 @@ export const MultiListAndAvatarChipsOptionsMock: SelectGroupOption[] = [
     ],
   },
 ];
+
+const getSomeValues = () =>
+  arrayFlatten(
+    MultiListAndChipsOptionsMock.slice(
+      randomNumber(1, MultiListAndChipsOptionsMock.length)
+    ).map((group) =>
+      randomFromArray(group.options, randomNumber(2, maxOpts)).map(
+        (o: SelectOption) => o.id
+      )
+    )
+  ).concat(
+    randomFromArray(
+      MultiListAndAvatarChipsOptionsMock[1].options,
+      randomNumber(2, MultiListAndAvatarChipsOptionsMock[1].options.length)
+    ).map((o: SelectOption) => o.id)
+  );
+
+export const someValues1 = getSomeValues();
+export const someValues2 = getSomeValues();

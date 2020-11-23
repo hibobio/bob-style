@@ -21,13 +21,15 @@ import listInterfaceDoc from '../list.interface.md';
 import listSelectsPropsDoc from '../lists-selects.properties.md';
 // @ts-ignore: md file and not a module
 import listsPropsDoc from '../lists.properties.md';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-multi-list #list [options]="options"
+<b-multi-list #list [options]="options$ | async"
               [optionsDefault]="optionsDefault"
               [showSingleGroupHeader]="showSingleGroupHeader"
               [startWithGroupsCollapsed]="startWithGroupsCollapsed"
@@ -83,12 +85,14 @@ const note = `
   ${listInterfaceDoc}
 `;
 
-const options = cloneDeep(optionsMock);
+const options: SelectGroupOption[] = cloneDeep(optionsMock);
 const optionsDef = cloneDeep(optionsMockDef);
 
 options[2].description = 'Lorem ipsum dolor';
 options[4].description = 'Sit amet en ipsum';
 options[6].description = 'Lorem Dolor sit amet en psium';
+
+const options$ = of(options).pipe(delay(1000));
 
 story.add(
   'Multi list',
@@ -117,6 +121,8 @@ story.add(
         optionsDef,
         'Options'
       ),
+
+      options$: options$,
     },
     moduleMetadata: {
       imports: [
