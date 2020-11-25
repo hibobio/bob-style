@@ -73,10 +73,23 @@ $rte-icon-color-hover: darken($grey-700, 5%);
   }
 }
 
+// other text-styles related
+
 .fr-element,
 .fr-view {
   a {
     @include b-link($color-link-primary);
+  }
+}
+
+.fr-element,
+.fr-view {
+  [lang='he'],
+  [lang='HE'],
+  [dir='rtl'],
+  [dir='RTL'] {
+    direction: rtl;
+    text-align: right;
   }
 }
 

@@ -162,7 +162,7 @@ export class DOMhelpers {
     return element.children.length !== 0;
   }
 
-  public hasInnerText(element: HTMLElement): boolean {
+  public hasInnerText(element: HTMLElement | Node): boolean {
     return Boolean(
       element && element.textContent && element.textContent.trim()
     );
@@ -577,6 +577,12 @@ export class DOMhelpers {
     }
 
     parent.removeChild(element);
+
+    // const docFrag = document.createDocumentFragment();
+    //  Array.from(parent.childNodes).forEach((nd) => {
+    //    docFrag.appendChild(parent.removeChild(nd));
+    //  });
+    //   parent.replaceChild(docFrag, element);
   }
 
   // TODO: Add Test

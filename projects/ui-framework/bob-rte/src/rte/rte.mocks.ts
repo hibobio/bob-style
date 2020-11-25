@@ -95,3 +95,45 @@ export const rteMockHtml = `<br><br> <br><br> <span> <br> </span> <div><br></div
 
 <div><br></div> <span><br></span>
 `;
+
+export const wordMock4 = `
+
+<div>
+<p class=MsoNormal dir=RTL>
+mmmm
+ </p>
+
+    <p class=MsoNormal dir=RTL>
+      <span lang=HE>
+        aaa aaaa
+        <strong style='color:black'>
+         <span>bbb bbb</span>
+        </strong>
+      </span>
+   </p>
+
+   <p>
+
+   <span><span>
+   hello
+   <br>
+   </span></span>
+   </p>
+
+   <p class=MsoNormal dir=RTL>
+    <span>
+      <span lang=HE>
+        ccc ccc
+
+        <span style='font-weight: bold; color:black'>
+         ddd ddd
+        </span>
+      </span>
+    </span>
+
+    </p>
+  ooo
+
+
+  </div>
+`;

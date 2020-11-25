@@ -10,9 +10,20 @@ export interface FilterXSSOptions extends IFilterXSSOptions {
 }
 
 export const SANITIZER_ALLOWED_TAGS = [
+  'div',
+  'article',
+  'p',
+  'section',
+
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+
   'a',
   'br',
-  'div',
   'b',
   'strong',
   'em',
@@ -21,19 +32,11 @@ export const SANITIZER_ALLOWED_TAGS = [
   'li',
   'ol',
   'ul',
-  'p',
   'span',
   'u',
   'strike',
   'sub',
   'sup',
-
-  'h1',
-  'h2',
-  'h3',
-  'h4',
-  'h5',
-  'h6',
 
   'pre',
   'font',
@@ -148,11 +151,15 @@ export class SanitizerService {
     return !html || !isString(html)
       ? html
       : options
-      ? xss.filterXSS(html, { ...SANITIZER_FILTER_XSS_OPTIONS, ...options })
+      ? xss
+          .filterXSS(html, { ...SANITIZER_FILTER_XSS_OPTIONS, ...options })
+          .replace(/\[removed\]/g, '')
       : (
           this.htmlSanitizer ||
           (this.htmlSanitizer = new xss.FilterXSS(SANITIZER_FILTER_XSS_OPTIONS))
-        ).process(html);
+        )
+          .process(html)
+          .replace(/\[removed\]/g, '');
   }
 
   public sanitizeHtml(

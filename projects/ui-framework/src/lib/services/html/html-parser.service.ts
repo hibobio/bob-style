@@ -475,37 +475,69 @@ export class HtmlParserHelpers {
       ? value
       : this.stringToDOM(value);
 
-    const tags = [['B', 'STRONG'], ['I', 'EM'], ['U'], ['DIV', 'P'], ['SPAN']];
+    const tags: string[][] = [
+      [DOMtags.b, DOMtags.strong],
+      [DOMtags.i, DOMtags.em],
+      [DOMtags.u],
+      [
+        DOMtags.div,
+        DOMtags.p,
+        DOMtags.section,
+        DOMtags.article,
+        DOMtags.main,
+        DOMtags.footer,
+        DOMtags.header,
+      ],
+      [DOMtags.span, 'FONT', 'PRE'],
+    ];
 
-    elm.querySelectorAll('* > *:only-child').forEach((node) => {
-      //
-      let childTagType = tags.findIndex((tgs) => tgs.includes(node.tagName));
-      if (childTagType < 0) {
-        return;
-      }
-
-      if (node.children.length === 1 && node.children[0].tagName === 'BR') {
-        childTagType = 5;
-      }
-
-      let parent = node.parentElement;
-      let parentTagtype = tags.findIndex((tgs) => tgs.includes(parent.tagName));
-
-      while (
-        parent !== elm &&
-        (parentTagtype === childTagType ||
-          parentTagtype === 4 ||
-          childTagType === 5) &&
-        parent.children.length === 1
-      ) {
-        const child = parent.removeChild(parent.firstChild);
-        const grandParent = parent.parentElement;
-        grandParent.replaceChild(child, parent);
-
-        parent = grandParent;
-        parentTagtype = tags.findIndex((tgs) => tgs.includes(parent.tagName));
-      }
+    elm.querySelectorAll('*:empty').forEach((element: HTMLElement) => {
+      element.remove();
     });
+
+    Array.from(elm.querySelectorAll(':only-child')).forEach(
+      (node: HTMLElement) => {
+        //
+        let childTagType = tags.findIndex((tgs) => tgs.includes(node.tagName));
+        if (childTagType < 0) {
+          return;
+        }
+
+        if (
+          node.children.length === 1 &&
+          node.children[0].tagName === DOMtags.br
+        ) {
+          childTagType = 5;
+        }
+
+        let parent = node.parentElement;
+        let parentTagtype = tags.findIndex((tgs) =>
+          tgs.includes(parent.tagName)
+        );
+
+        while (
+          parent !== elm &&
+          (parentTagtype === childTagType ||
+            (parentTagtype === 4 && !parent.getAttribute('style')) ||
+            childTagType === 5) &&
+          parent.children.length === 1
+        ) {
+          const grandParent = parent.parentElement;
+          this.DOM.unwrap(parent);
+          parent = grandParent;
+          parentTagtype = tags.findIndex((tgs) => tgs.includes(parent.tagName));
+        }
+
+        if (
+          childTagType === 4 &&
+          node.children.length < 2 &&
+          node.parentElement &&
+          !node.getAttribute('style')
+        ) {
+          this.DOM.unwrap(node);
+        }
+      }
+    );
 
     return returnDOM ? elm : this.DOMtoString(elm);
   }

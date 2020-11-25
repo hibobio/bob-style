@@ -43,10 +43,10 @@ export const HTML_CLEANUP_REPLACERS: {
 } = {
   blockToDiv: {
     find: [
-      /(?:(<p)|(<main)|(<section)|(<header)|(<article)|(<footer))(?:>|(?:\s[^>]*>))/gi,
+      /(?:(?:<p)|(?:<main)|(?:<section)|(?:<header)|(?:<article)|(?:<footer))(>|(?:\s[^>]*>))/gi,
       /(<\/p>)|(<\/main>)|(<\/section>)|(<\/header>)|(<\/article>)|(<\/footer>)/gi,
     ],
-    replaceWith: ['<div>', '</div>'],
+    replaceWith: ['<div$1', '</div>'],
   },
 
   biToStrongEM: {
@@ -106,6 +106,8 @@ export const HTML_CLEANUP_REPLACERS: {
 
   BRs: {
     find: [
+      // div's with &nbsp;
+      /(?:<(div|p)[^>]*>(?:\s*<span[^>]*>\s*)*(?:\s*&nbsp;\s*)+(?:\s*<\/span>\s*)*(?:<\/\1>))+/gi,
       // <br>'s inside tags with text (<div><br> text</div>)
       /(<(?:div|p|span|ul|ol|li|a|strong|em|i)[^>]*>)(?:\s*<br[^>]*>\s*)+([^<\s]+)/gi,
       // replace <br><br> with <div><br></div>
@@ -122,6 +124,7 @@ export const HTML_CLEANUP_REPLACERS: {
       /(?:(?:<([^\/>\s]+)[^>]*>(?:\s*<br[^>]*>\s*)+<\/\1>\s*)+((?:<\/[^\/>]+>\s*)*)$)/i,
     ],
     replaceWith: [
+      '<div><br></div>',
       '$1$2',
       '<div><br></div>',
       '$1<div><br></div>',

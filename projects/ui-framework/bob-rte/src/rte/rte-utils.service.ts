@@ -20,6 +20,8 @@ import {
 } from './rte.const';
 import { PlaceholdersConverterService } from './placeholders.service';
 
+// import { HtmlParserHelpers } from '../../../../ui-framework/src/lib/services/html/html-parser.service';
+
 @Injectable()
 export class RteUtilsService {
   constructor(
@@ -121,26 +123,10 @@ export class RteUtilsService {
                 .replace(/<!--([\S\s]*?)-->/g, '');
             },
 
-            (value: string) =>
+            (value: string): string =>
               this.sanitizer.filterXSS(value, {
                 css: true,
               }),
-
-            (value: string | HTMLElement): string | HTMLElement =>
-              this.parserService.unwrapInlineElements(value, true),
-
-            (value: string): string | HTMLElement =>
-              this.parserService.enforceAttributes(
-                value,
-                {
-                  '*': {
-                    '.*': null,
-                    href: true,
-                    style: true,
-                  },
-                },
-                false
-              ),
 
             (value: string): string =>
               this.parserService.cleanupHtml(
@@ -204,6 +190,9 @@ export class RteUtilsService {
                 true
               ),
 
+            (value: string | HTMLElement): string | HTMLElement =>
+              this.parserService.unwrapInlineElements(value, true),
+
             (value: string | HTMLElement): string =>
               this.parserService.enforceAttributes(
                 value,
@@ -211,6 +200,8 @@ export class RteUtilsService {
                   '*': {
                     '.*': null,
                     href: true,
+                    lang: true,
+                    dir: true,
                   },
                   a: {
                     class: 'fr-deletable',
