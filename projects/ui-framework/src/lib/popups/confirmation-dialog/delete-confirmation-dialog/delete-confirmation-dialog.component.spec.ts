@@ -82,7 +82,8 @@ describe('DeleteConfirmationDialogComponent', () => {
         },
         ok: Object.assign({}, config.buttonConfig.ok, {
           disabled: true,
-          type: ButtonType.negative
+          type: ButtonType.negative,
+          action: jasmine.any(Function)
         })
       };
       expect(dialog.componentInstance.dialogButtons).toEqual(bConfig);

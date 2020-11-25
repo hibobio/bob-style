@@ -60,6 +60,7 @@ export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy {
             type: ButtonType.negative,
             ...this.config?.buttonConfig?.ok,
             disabled: !valid,
+            action: () => Promise.resolve(true)
           },
         };
       })
