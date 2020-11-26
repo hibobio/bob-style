@@ -144,15 +144,17 @@ export const cacheMap = <T = any>({
     sort: false,
   }),
   mapper = pass,
-  distinctOnly = false,
   dataCache = new Map(),
+  ignoreEmpty = false,
+  distinctOnly = false,
   cacheMaxSize = null,
   clearCacheOnComplete = true,
 }: {
   idGetter: (value: T) => string;
   mapper: (value: T) => T;
-  distinctOnly: boolean;
   dataCache: Map<string, T>;
+  ignoreEmpty: boolean;
+  distinctOnly: boolean;
   cacheMaxSize: number;
   clearCacheOnComplete: boolean;
 }): MonoTypeOperatorFunction<T> => {
@@ -168,6 +170,10 @@ export const cacheMap = <T = any>({
           const cacheSize = dataCache.size;
           if (cacheMaxSize && cacheSize > cacheMaxSize) {
             mapSplice(dataCache, 0, cacheSize - 10);
+          }
+
+          if (ignoreEmpty && isFalsyOrEmpty(value)) {
+            return;
           }
 
           const valueID = isFunction(idGetter)
