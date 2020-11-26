@@ -152,6 +152,25 @@ $acss-dirs: top right bottom left;
   }
 }
 
+@each $dir in $acss-dirs {
+  $dir-short: str-slice($dir, 0, 1);
+
+  .mrg-#{$dir-short}-auto {
+    margin-#{$dir}: auto;
+  }
+}
+.mrg-x-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.mrg-y-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.mrg-auto {
+  margin: auto;
+}
+
 [class*='mrg-t'],
 [class*='mrg-y'] {
   &:first-child {

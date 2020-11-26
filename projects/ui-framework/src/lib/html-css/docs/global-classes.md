@@ -67,6 +67,20 @@
     </tr>
 
     <tr>
+      <td>mrg-auto, mrg-x-auto, mrg-y-auto
+        <hr>
+        mrg-t-auto, mrg-r-auto, mrg-b-auto, mrg-l-auto
+      </td>
+      <td>Add <u>margin auto</u> on respective side
+      </td>
+      <td>
+        <pre><code>&lt;div class="mrg-l-auto"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
+    <tr>
       <td>pad-0, pad-8, pad-16, pad-24, pad-32, pad-40</td>
       <td>Add <u>padding</u> on all sides:<br> 8px, 16px, 24px, 32px, 40px
       </td>
