@@ -150,7 +150,8 @@ export class MultiListAndChipsComponent
       chip.group
         ? this.listOptions$
             .getValue()
-            [chip.group.index].options.map((o) => o.id)
+            [chip.group.index].options.filter((o) => !o.disabled)
+            .map((o) => o.id)
         : chip.id
     );
   }
