@@ -171,18 +171,18 @@ $acss-dirs: top right bottom left;
   margin: auto;
 }
 
-[class*='mrg-t'],
-[class*='mrg-y'] {
-  &:first-child {
-    margin-top: 0;
-  }
-}
-[class*='mrg-b'],
-[class*='mrg-y'] {
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
+// [class*='mrg-t'],
+// [class*='mrg-y'] {
+//   &:first-child {
+//     margin-top: 0;
+//   }
+// }
+// [class*='mrg-b'],
+// [class*='mrg-y'] {
+//   &:last-child {
+//     margin-bottom: 0;
+//   }
+// }
 
 // Border
 
