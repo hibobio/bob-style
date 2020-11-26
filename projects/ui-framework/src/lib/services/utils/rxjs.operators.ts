@@ -144,7 +144,7 @@ export const cacheMap = <T = any>({
     sort: false,
   }),
   mapper = pass,
-  dataCache = new Map(),
+  dataCache = null,
   ignoreEmpty = false,
   distinctOnly = false,
   cacheMaxSize = null,
@@ -166,6 +166,7 @@ export const cacheMap = <T = any>({
         next: (value) => {
           if (!dataCache) {
             dataCache = new Map();
+            clearCacheOnComplete = true;
           }
           const cacheSize = dataCache.size;
           if (cacheMaxSize && cacheSize > cacheMaxSize) {
