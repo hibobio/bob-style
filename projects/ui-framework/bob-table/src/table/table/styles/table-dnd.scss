@@ -1,0 +1,23 @@
+@import '../../../../../src/lib/style/common-imports';
+@import '../../../../../src/lib/style/icons.mixin';
+@import './table.mixin';
+
+:host ::ng-deep .ag-icon-grip {
+  display: block;
+  @include ag-icon('drag');
+}
+
+::ng-deep .ag-dnd-ghost {
+  background: $white;
+  border-radius: 2px;
+  box-shadow: none;
+  padding: 4px;
+  border: 1px solid $border-color;
+  font-weight: 600;
+  font-size: 12px;
+  height: 32px !important;
+  line-height: 32px;
+  margin: 0;
+  padding: 0 8px;
+  transform: translateY(8px);
+}

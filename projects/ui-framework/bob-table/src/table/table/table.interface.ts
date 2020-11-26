@@ -38,6 +38,11 @@ export interface RowClickedEvent {
   agGridId: string;
 }
 
+export interface BRowDragEvent {
+  nodeData: any;
+  overNodeData: any;
+}
+
 export interface SortChangedEvent {
   colId: string;
   sort: string;

@@ -7,9 +7,12 @@
                  [rowData]="rowData"
                  [columnDefs]="gridColumnDefs"
                  [gridOptions]="gridOptions"
+                 [getRowNodeId]="getRowNodeId"
                  (rowClicked)="onRowClicked($event)"
                  (selectionChanged)="onSelectionChanged($event)"
                  (sortChanged)="onSortChanged($event)"
+                 (rowDragMove)="onRowDragMove($event)"
+                 (rowDragEnd)="onRowDragEnd($event)"
                  [attr.data-row-hover]="styleConfig?.disableRowHoverBgColor ? false : true"
                  [attr.data-column-borders]="styleConfig?.showColumnBorders ? true : null"
                  [hidden]="isEmpty()">

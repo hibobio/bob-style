@@ -162,6 +162,7 @@ const note = `
   (columnRemoved) | EventEmitter<wbr>&lt;string&gt; | Emits Cell ID,\
    when remove coulumn button is clicked in column header. \
    <br>**Note** the column is not removed - consumer has to provide this functionality. | &nbsp;
+  (rowDragEnd) | EventEmitter<wbr>&lt;BRowDragEvent&gt; | emits on row drag end | &nbsp;
 
   #### Methods
   Name | Type | Description
