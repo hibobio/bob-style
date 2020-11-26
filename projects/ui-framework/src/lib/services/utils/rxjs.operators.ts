@@ -152,7 +152,7 @@ export const cacheMap = <T = any>({
 }: {
   trackBy: (value: T) => any;
   mapper: (value: T) => T;
-  dataCache: Map<string, T>;
+  dataCache: Map<any, T>;
   ignoreEmpty: boolean;
   distinctOnly: boolean;
   cacheMaxSize: number;
