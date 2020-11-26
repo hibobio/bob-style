@@ -51,8 +51,9 @@ export const isDate = (value: any): boolean =>
 export const isNotEmptyArray = <T = any>(val: T, min = 0): boolean =>
   isArray(val) && val.length > min;
 
-export const isEmptyArray = (val: any): boolean =>
-  isNullOrUndefined(val) || (Array.isArray(val) && val.length === 0);
+export const isEmptyArray = (val: any, falsyIsEmpty = true): boolean =>
+  (falsyIsEmpty && isNullOrUndefined(val)) ||
+  (Array.isArray(val) && val.length === 0);
 
 export const isObject = (val: any): val is object =>
   !!val && val === Object(val) && typeof val !== 'function' && !isArray(val);
