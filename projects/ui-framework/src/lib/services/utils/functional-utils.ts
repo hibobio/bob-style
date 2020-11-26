@@ -401,6 +401,20 @@ export const objectStringID = <T = GenericObject>(
   ).toLowerCase();
 };
 
+export const objectStringIDconfigured = <T = GenericObject>(
+  config: ObjectStringIDConfig | EqualByValuesConfig = {
+    limit: 400,
+    primitives: true,
+  }
+) => (obj: T): string => {
+  return objectStringID<T>(
+    config['sort'] !== false
+      ? (dataDeepSort<T>(obj, config?.ignoreProps || null) as T)
+      : obj,
+    config
+  );
+};
+
 export const objectGetPropertyDescriptor = (
   obj: any,
   key: string
@@ -1007,12 +1021,9 @@ export const isEqualByValues = <T = any>(
   );
 };
 
-export const isEqualByValuesConfigured = (config: EqualByValuesConfig) => <
-  T = any
->(
-  dataA: T,
-  dataB: T
-): boolean => {
+export const isEqualByValuesConfigured = <T = any>(
+  config: EqualByValuesConfig
+) => (dataA: T, dataB: T): boolean => {
   return isEqualByValues<T>(dataA, dataB, config);
 };
 

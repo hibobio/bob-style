@@ -1,14 +1,22 @@
 import { NgZone } from '@angular/core';
-import { Subscription, Observable, defer } from 'rxjs';
+import {
+  Subscription,
+  Observable,
+  defer,
+  MonoTypeOperatorFunction,
+} from 'rxjs';
 import { distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
 import { ɵɵdirectiveInject as directiveInject } from '@angular/core';
 import {
   cloneDeepSimpleObject,
   EqualByValuesConfig,
-  EQUAL_BY_VALUES_CONFIG_DEF,
   isEqualByValues,
   isFalsyOrEmpty,
+  isFunction,
   isKey,
+  mapSplice,
+  objectStringIDconfigured,
+  pass,
 } from './functional-utils';
 import { Keys } from '../../enums';
 
@@ -128,3 +136,57 @@ export function distinctFrom<T = any>(prev: T, config?: EqualByValuesConfig) {
       })
   );
 }
+
+export const cacheMap = <T = any>({
+  idGetter = objectStringIDconfigured<T>({
+    limit: 5000,
+    primitives: true,
+    sort: false,
+  }),
+  mapper = pass,
+  distinctOnly = false,
+  dataCache = new Map(),
+  cacheMaxSize = null,
+}: {
+  idGetter: (value: T) => string;
+  mapper: (value: T) => T;
+  distinctOnly: boolean;
+  dataCache: Map<string, T>;
+  cacheMaxSize: number;
+}): MonoTypeOperatorFunction<T> => {
+  //
+  return (source: Observable<T>): Observable<T> => {
+    return new Observable((subscriber) => {
+      return source.subscribe({
+        //
+        next: (value) => {
+          const cacheSize = dataCache.size;
+          if (cacheMaxSize && cacheSize > cacheMaxSize) {
+            mapSplice(dataCache, 0, cacheSize - 10);
+          }
+
+          const valueID = isFunction(idGetter)
+            ? idGetter(value)
+            : JSON.stringify(value);
+
+          if (dataCache.has(valueID) && distinctOnly) {
+            return;
+          }
+
+          if (!dataCache.has(valueID)) {
+            dataCache.set(valueID, mapper(value));
+          }
+
+          subscriber.next(dataCache.get(valueID));
+        },
+
+        error(error) {
+          subscriber.error(error);
+        },
+        complete() {
+          subscriber.complete();
+        },
+      });
+    });
+  };
+};

@@ -218,7 +218,7 @@ export class YourDialogComponent implements OnInit {
   b-dialog-content | the dialog content
   b-dialog-confirmation | template for the confirmatiom window
   b-dialog-preloader-message | template for the progress message (shown beneath preloader anmation)
-  mat-dialog-footer-left | content to be placed on the left of the footer (opposite from the ok/cancel buttons)
+  b-dialog-footer, <s>mat-dialog-footer-left</s> | content to be placed on the left of the footer (opposite from the ok/cancel buttons). if ok/cancel buttons are not defined, content is placed in the center
 
 `;
 story.add(

@@ -43,12 +43,12 @@
   </div>
 
   <div mat-dialog-actions
-       *ngIf="dialogButtons"
-       [ngClass]="{'single-button': !dialogButtons.cancel}">
+       *ngIf="dialogButtons">
 
-    <ng-content select="[mat-dialog-footer-left]"></ng-content>
+    <ng-content select="[mat-dialog-footer-left], [b-dialog-footer]"></ng-content>
 
-    <div class="action-buttons">
+    <div class="action-buttons"
+         *ngIf="dialogButtons.ok || dialogButtons.cancel">
       <b-button *ngIf="dialogButtons.cancel"
                 (clicked)="onCancel()"
                 [disabled]="showProgress"
@@ -57,7 +57,8 @@
                 class="dialog-button cancel-button{{dialogButtons.cancel?.class ? ' ' + dialogButtons.cancel.class : ''}}">
         {{dialogButtons.cancel?.label || 'Cancel'}}
       </b-button>
-      <b-button (clicked)="onOk()"
+      <b-button *ngIf="dialogButtons.ok"
+                (clicked)="onOk()"
                 [disabled]="showProgress || dialogButtons.ok.disabled"
                 [size]="buttonSize.medium"
                 [type]="(showConfirmation && dialogButtons.confirmation?.buttonType ?

@@ -9,7 +9,7 @@ export interface DialogConfig extends MatDialogConfig {
 }
 
 export interface DialogButtons {
-  ok: DialogButton;
+  ok?: DialogButton;
   cancel?: DialogButton;
   preloaderMessage?: string;
   confirmation?: DialogConfirmation;
