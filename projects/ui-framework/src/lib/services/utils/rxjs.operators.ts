@@ -147,12 +147,14 @@ export const cacheMap = <T = any>({
   distinctOnly = false,
   dataCache = new Map(),
   cacheMaxSize = null,
+  clearCacheOnComplete = true,
 }: {
   idGetter: (value: T) => string;
   mapper: (value: T) => T;
   distinctOnly: boolean;
   dataCache: Map<string, T>;
   cacheMaxSize: number;
+  clearCacheOnComplete: boolean;
 }): MonoTypeOperatorFunction<T> => {
   //
   return (source: Observable<T>): Observable<T> => {
@@ -160,6 +162,9 @@ export const cacheMap = <T = any>({
       return source.subscribe({
         //
         next: (value) => {
+          if (!dataCache) {
+            dataCache = new Map();
+          }
           const cacheSize = dataCache.size;
           if (cacheMaxSize && cacheSize > cacheMaxSize) {
             mapSplice(dataCache, 0, cacheSize - 10);
@@ -174,7 +179,7 @@ export const cacheMap = <T = any>({
           }
 
           if (!dataCache.has(valueID)) {
-            dataCache.set(valueID, mapper(value));
+            dataCache.set(valueID, isFunction(mapper) ? mapper(value) : value);
           }
 
           subscriber.next(dataCache.get(valueID));
@@ -184,6 +189,10 @@ export const cacheMap = <T = any>({
           subscriber.error(error);
         },
         complete() {
+          if (clearCacheOnComplete !== false) {
+            dataCache.clear();
+            dataCache = undefined;
+          }
           subscriber.complete();
         },
       });
