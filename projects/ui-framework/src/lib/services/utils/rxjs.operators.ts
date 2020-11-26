@@ -138,7 +138,7 @@ export function distinctFrom<T = any>(prev: T, config?: EqualByValuesConfig) {
 }
 
 export const cacheMap = <T = any>({
-  idGetter = objectStringIDconfigured<T>({
+  trackBy = objectStringIDconfigured<T>({
     limit: 5000,
     primitives: true,
     sort: false,
@@ -150,7 +150,7 @@ export const cacheMap = <T = any>({
   cacheMaxSize = null,
   clearCacheOnComplete = true,
 }: {
-  idGetter: (value: T) => string;
+  trackBy: (value: T) => any;
   mapper: (value: T) => T;
   dataCache: Map<string, T>;
   ignoreEmpty: boolean;
@@ -176,8 +176,8 @@ export const cacheMap = <T = any>({
             return;
           }
 
-          const valueID = isFunction(idGetter)
-            ? idGetter(value)
+          const valueID = isFunction(trackBy)
+            ? trackBy(value)
             : JSON.stringify(value);
 
           if (dataCache.has(valueID) && distinctOnly) {
