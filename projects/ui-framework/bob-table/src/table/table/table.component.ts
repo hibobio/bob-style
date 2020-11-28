@@ -142,8 +142,6 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     this.emptyStateConfig = { ...this.emptyStateConfig, ...config };
   }
 
-  @Input() getRowNodeId?: Function;
-
   public emptyStateConfig: EmptyStateConfig;
 
   @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
