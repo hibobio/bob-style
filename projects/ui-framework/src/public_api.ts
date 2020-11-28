@@ -576,6 +576,7 @@ export * from './lib/services/utils/document-ref.service';
 export * from './lib/services/utils/mobile.service';
 export * from './lib/services/utils/functional-utils';
 export * from './lib/services/utils/security-utils';
+export * from './lib/services/utils/simple-cache';
 // URL utils
 export { UrlUtilsModule } from './lib/services/url/url-utils.module';
 export { URLutils } from './lib/services/url/url-utils.service';
@@ -588,6 +589,7 @@ export { ComponentRendererComponent } from './lib/services/component-renderer/co
 export { RenderedComponent } from './lib/services/component-renderer/component-renderer.interface';
 // RxJs operators
 export * from './lib/services/utils/rxjs.operators';
+export * from './lib/services/utils/rxjs.oprtrs.cachemap';
 // Event Manager Plugins
 export {
   EventManagerPlugins,

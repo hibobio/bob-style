@@ -167,17 +167,17 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       this.destroyPanel();
     }
 
-    if (hasChanges(changes, ['options'])) {
+    if (hasChanges(changes, ['options'], true)) {
       this.options = this.options.filter((group: SelectGroupOption) =>
         isNotEmptyArray(group.options)
       );
     }
 
-    if (hasChanges(changes, ['options']) && !this.fitOptionsToValue) {
+    if (hasChanges(changes, ['options'], true) && !this.fitOptionsToValue) {
       this.value = this.modelSrvc.getSelectedIDs(this.options);
     }
 
-    if (hasChanges(changes, ['options']) && this.fitOptionsToValue) {
+    if (hasChanges(changes, ['options'], true) && this.fitOptionsToValue) {
       this.writeValue(this.value, this.options);
     }
 
@@ -188,7 +188,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     this.onNgChanges(changes);
 
     if (
-      (hasChanges(changes, ['options']) && !this.fitOptionsToValue) ||
+      (hasChanges(changes, ['options'], true) && !this.fitOptionsToValue) ||
       ((changes.size || changes.defaultIcon) &&
         !changes.value &&
         !changes.options)

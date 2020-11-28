@@ -190,7 +190,7 @@ export abstract class BaseListElement
       this.mode = SelectMode.classic;
     }
 
-    if (hasChanges(changes, ['options'])) {
+    if (hasChanges(changes, ['options'], true)) {
       this.options = this.options.filter((group: SelectGroupOption) =>
         isNotEmptyArray(group.options)
       );

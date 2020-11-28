@@ -581,7 +581,7 @@ export const splitArrayToChunks = <T = any>(
 // MAPS
 // ----------------------
 
-export const withMapItemsInIndexRange = <K = any, V = any>(
+export const withMapItemsInIndexRange = <K = unknown, V = unknown>(
   map: Map<K, V>,
   callback: (key: K, value: V) => void,
   startindex?: number,
@@ -601,7 +601,7 @@ export const withMapItemsInIndexRange = <K = any, V = any>(
   }
 };
 
-export const mapSplice = <K = any, V = any>(
+export const mapSplice = <K = unknown, V = unknown>(
   map: Map<K, V>,
   startindex: number,
   deleteCount?: number,
