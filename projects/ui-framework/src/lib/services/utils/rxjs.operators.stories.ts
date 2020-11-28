@@ -217,6 +217,16 @@ const note = `
   takes mapper function: \`(val: T) => Observable<R>\`
 
   Internal cache (instance of \`SimpleCache\`) stores max 20 items for max 15 min, configurable.
+  After the stream has no more subscriptions, cache is cleared.
+
+  **Additional (optional) arguments:**
+  trackBy: \`(val: T) => K\` - function to get unique id from value
+  ignoreEmpty: \`boolean\` - if true, will ignore empty & falsy values (except 0 and '')
+  capacity: \`number\` - max size of cache (defaults to 20)
+  TTL: \`number\` - time to live, in ms. items in cache expire after this time. if item is requested, expiration timer resets.
+  clearCacheOnComplete: \`boolean\` - if cache should be cleared when there are no more subsciptions to the stream (useful when you pass your own dataCache).
+  dataCache: \`Map<K, R | Observable<R>>\` - you can pass your own Map that will be used for cache store - for example to share cache between streams, or to store it on the component - in this case you can set \`TTL\` to null and \`clearCacheOnComplete\` to false
+
 
   ~~~
   this.cached$ = this.source$.pipe(
