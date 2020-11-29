@@ -42,10 +42,8 @@
                 'b-icon-chevron-right': header.isCollapsed
               }"></span>
 
-        <div class="capitalize">
-          <span class="header-option-value"
-                [innerHTML]="header.groupName"></span>
-        </div>
+        <span class="header-option-value"
+              [innerHTML]="header.groupName"></span>
 
         <span *ngIf="header.selectedCount"
               class="header-selected-count">
@@ -103,12 +101,10 @@
                               class="comp-prefix"
                               [render]="option.prefixComponent"></b-component-renderer>
 
-        <div class="capitalize">
-          <span *ngIf="!option.isPlaceHolder && option.value"
-                class="option-value"
-                data-max-lines='3'
-                [innerHTML]="option.value | highlight: searchValue"></span>
-        </div>
+        <span *ngIf="!option.isPlaceHolder && option.value"
+              class="option-value"
+              data-max-lines='3'
+              [innerHTML]="option.value | highlight: searchValue"></span>
 
         <span *ngIf="!option.isPlaceHolder && option.description"
               class="comp-suffix has-hover"

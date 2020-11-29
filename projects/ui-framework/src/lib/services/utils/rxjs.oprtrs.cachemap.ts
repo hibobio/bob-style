@@ -1,12 +1,12 @@
-import { Observable, ObservableInput, OperatorFunction } from 'rxjs';
-import { share, switchMap } from 'rxjs/operators';
+import { Observable, ObservableInput, of, OperatorFunction } from 'rxjs';
+import { shareReplay, switchMap } from 'rxjs/operators';
 import {
   isFalsyOrEmpty,
   isFunction,
   isMap,
+  isNumber,
   isPlainObject,
   objectStringIDconfigured,
-  pass,
   stringify,
 } from './functional-utils';
 import { SimpleCache } from './simple-cache';
@@ -28,7 +28,9 @@ export interface CacheMapConfig<T = unknown, R = T, K = unknown>
 }
 
 const processCacheMapConfig = <T = unknown, R = T, K = unknown>(
-  config: CacheMapConfig<T, R, K> | CacheMapConfig<T, R, K>['mapper']
+  config: CacheMapConfig<T, R, K> | CacheMapConfig<T, R, K>['mapper'],
+  defaultMapper: CacheMapConfig<T, R, K>['mapper'] = (v: T) =>
+    (v as unknown) as R
 ): CacheMapConfig<T, R, K> => {
   const trackByFnc: CacheMapConfig<T, R, K>['trackBy'] = (isFunction(config) ||
   config?.trackBy === undefined
@@ -45,7 +47,7 @@ const processCacheMapConfig = <T = unknown, R = T, K = unknown>(
     ? config
     : isFunction(config.mapper)
     ? config.mapper
-    : (pass as CacheMapConfig<T, R, K>['mapper']);
+    : defaultMapper;
 
   return {
     ...(isPlainObject(config) ? config : {}),
@@ -53,7 +55,7 @@ const processCacheMapConfig = <T = unknown, R = T, K = unknown>(
     trackBy: (value: T): K => {
       let valueID: K;
       try {
-        valueID = trackByFnc(value) as K;
+        valueID = trackByFnc(value);
       } catch (e) {
         console.error(
           `[cacheMap]: calling trackBy on "${stringify(
@@ -78,9 +80,17 @@ const processCacheMapConfig = <T = unknown, R = T, K = unknown>(
       return result;
     },
 
-    clearCacheOnComplete: !isMap((config as CacheMapConfig<T, R, K>)?.dataCache)
-      ? true
-      : (config as CacheMapConfig<T, R, K>).clearCacheOnComplete || false,
+    TTL:
+      !isFunction(config) && isMap(config?.dataCache) && !isNumber(config?.TTL)
+        ? null
+        : (config as CacheMapConfig<T, R, K>)?.TTL,
+
+    clearCacheOnComplete:
+      !isFunction(config) &&
+      !isMap(config?.dataCache) &&
+      config.clearCacheOnComplete !== false
+        ? true
+        : (config as CacheMapConfig<T, R, K>).clearCacheOnComplete || false,
   };
 };
 
@@ -99,7 +109,7 @@ export const cacheMap = <T = unknown, R = T, K = string>(
   } = processCacheMapConfig(config);
 
   const cache = new SimpleCache<R, K>({
-    map: dataCache as Map<K, R>,
+    map: dataCache,
     capacity,
     TTL,
   });
@@ -120,7 +130,7 @@ export const cacheMap = <T = unknown, R = T, K = string>(
           const valueID = trackBy(value);
 
           if (!cache.has(valueID)) {
-            cache.put(valueID, mapper(value) as R);
+            cache.put(valueID, mapper(value));
           }
           subscriber.next(cache.get(valueID));
         },
@@ -165,10 +175,10 @@ export const cacheSwitchMap = <T = unknown, R = T, K = string>(
     capacity,
     TTL,
     clearCacheOnComplete,
-  } = processCacheMapConfig(config);
+  } = processCacheMapConfig(config, (v: T) => of((v as unknown) as R));
 
   const cache = new SimpleCache<Observable<R>, K>({
-    map: dataCache as Map<K, Observable<R>>,
+    map: dataCache,
     capacity,
     TTL,
   });
@@ -208,7 +218,7 @@ export const cacheSwitchMap = <T = unknown, R = T, K = string>(
       switchMap<T, ObservableInput<R>>((value: T) => {
         const valueID = trackBy(value);
         if (!cache.has(valueID)) {
-          cache.put(valueID, (mapper(value) as Observable<R>).pipe(share()));
+          cache.put(valueID, mapper(value).pipe(shareReplay(1)));
         }
         return cache.get(valueID);
       })

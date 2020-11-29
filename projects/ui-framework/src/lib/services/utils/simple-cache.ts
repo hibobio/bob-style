@@ -2,6 +2,9 @@ import { ɵɵdirectiveInject as directiveInject } from '@angular/core';
 import { NgZone } from '@angular/core';
 import { isMap, mapSplice } from './functional-utils';
 
+export const SIMPLE_CACHE_TTL_DEF = 15 * 60000;
+export const SIMPLE_CACHE_CAPACITY_DEF = 30;
+
 export interface SimpleCacheConfig<V = unknown, K = unknown> {
   map?: Map<K, V>;
   capacity?: number;
@@ -11,8 +14,8 @@ export interface SimpleCacheConfig<V = unknown, K = unknown> {
 export class SimpleCache<V = unknown, K = string> {
   constructor({ map, capacity, TTL }: SimpleCacheConfig<V, K> = {}) {
     this._store = isMap(map) ? map : new Map();
-    this._ttl = TTL === undefined ? 15 * 60000 : TTL;
-    this._cap = capacity === undefined ? 30 : capacity;
+    this._ttl = TTL === undefined ? SIMPLE_CACHE_TTL_DEF : TTL;
+    this._cap = capacity === undefined ? SIMPLE_CACHE_CAPACITY_DEF : capacity;
     this._zone = directiveInject(NgZone);
   }
   private readonly _store: SimpleCacheConfig<V, K>['map'];
