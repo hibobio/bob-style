@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -42,7 +43,8 @@ export class MultiListAndListComponent
     protected DOM: DOMhelpers,
     protected translate: TranslateService,
     protected listModelService: ListModelService,
-    protected listChangeService: ListChangeService
+    protected listChangeService: ListChangeService,
+    private cd: ChangeDetectorRef
   ) {
     super(host, DOM, translate, listModelService, listChangeService);
   }
