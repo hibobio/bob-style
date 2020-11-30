@@ -43,13 +43,13 @@ export class MultiListAndChipsComponent
   implements MultiListAndSomething<MlacChip>, OnInit {
   constructor(
     public host: ElementRef,
+    protected DOM: DOMhelpers,
     protected translate: TranslateService,
     protected listModelService: ListModelService,
     protected listChangeService: ListChangeService,
-    private DOM: DOMhelpers,
     private cd: ChangeDetectorRef
   ) {
-    super(translate, listModelService, listChangeService);
+    super(host, DOM, translate, listModelService, listChangeService);
   }
 
   @ViewChild(ChipListComponent, { static: true }) chipList: ChipListComponent;

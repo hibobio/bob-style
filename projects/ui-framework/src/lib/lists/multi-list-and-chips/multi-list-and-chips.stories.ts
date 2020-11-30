@@ -39,7 +39,7 @@ const listOpts$ = of(listOpts).pipe(delay(1000));
 const avatarListOpts$ = of(avatarListOpts).pipe(delay(1000));
 
 const template = `<b-multi-list-and-chips
-        [options]="listOpts$ | async"
+        [options]="(options === 2 ? avatarListOpts$ : listOpts$) | async"
         [value]="value === 1 ? someValues1 : value === 2 ? someValues2 : value === 3 ? [] : undefined"
         [listLabel]="listLabel"
         [chipsLabel]="chipsLabel"

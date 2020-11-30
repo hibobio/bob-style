@@ -1,6 +1,8 @@
 import {
   Directive,
+  ElementRef,
   EventEmitter,
+  HostBinding,
   Input,
   OnDestroy,
   OnInit,
@@ -22,13 +24,15 @@ import {
   shareReplay,
   skip,
 } from 'rxjs/operators';
+import { FORM_ELEMENT_HEIGHT } from '../../form-elements/form-elements.const';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { Icons } from '../../icons/icons.enum';
 import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
 import { ListChange } from '../../lists/list-change/list-change';
 import { ListChangeService } from '../../lists/list-change/list-change.service';
 import { MULTI_LIST_LIST_ACTIONS_DEF } from '../../lists/list-footer/list-footer.const';
 import { ListModelService } from '../../lists/list-service/list-model.service';
-import { LIST_EL_HEIGHT } from '../../lists/list.consts';
+import { LIST_EL_HEIGHT, LIST_MAX_ITEMS } from '../../lists/list.consts';
 import { SelectMode } from '../../lists/list.enum';
 import {
   itemID,
@@ -36,6 +40,7 @@ import {
   SelectGroupOption,
 } from '../../lists/list.interface';
 import { MultiListComponent } from '../../lists/multi-list/multi-list.component';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { InputObservable } from '../../services/utils/decorators';
 import {
   asArray,
@@ -53,6 +58,8 @@ import { MultiListAndSomething } from './multi-list-and-something.interface';
 export abstract class BaseMultiListAndSomethingElement<T = any>
   implements MultiListAndSomething<T>, OnInit, OnDestroy {
   constructor(
+    public host: ElementRef,
+    protected DOM: DOMhelpers,
     protected translate: TranslateService,
     protected listModelService: ListModelService,
     protected listChangeService: ListChangeService
@@ -66,6 +73,8 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
 
   @ViewChild(MultiListComponent, { static: true }) list: MultiListComponent;
 
+  @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
+
   @Input() optionsDefault: SelectGroupOption[];
   @Input() mode: SelectMode = SelectMode.classic;
   @Input() listLabel: string;
@@ -77,6 +86,17 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
 
   @Input() min: number;
   @Input() max: number;
+
+  @Input('maxHeight') set setMaxHeight(maxHeight: number) {
+    const formElementHeight = FORM_ELEMENT_HEIGHT[this.size] || LIST_EL_HEIGHT;
+    this.maxHeight =
+      (Math.round((maxHeight || 0) / formElementHeight) || LIST_MAX_ITEMS) *
+      formElementHeight;
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--mlas-max-height': this.maxHeight + 'px',
+    });
+  }
+  public maxHeight: number;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange

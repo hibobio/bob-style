@@ -18,7 +18,7 @@ $gap: 20px;
   margin: 0;
   flex-grow: 5;
   min-height: 300px;
-  max-height: 360px;
+  max-height: var(--mlas-max-height, 352px);
   box-shadow: none;
   background-color: white;
   border: 1px solid $border-color;

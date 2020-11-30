@@ -9,7 +9,7 @@ import {
   objectStringIDconfigured,
   stringify,
 } from './functional-utils';
-import { SimpleCache } from './simple-cache';
+import { SimpleCache, SIMPLE_CACHE_TTL_DEF } from './simple-cache';
 
 export interface CacheMapBaseConfig<T = unknown, R = T, K = unknown> {
   trackBy?: (value: T) => K;
@@ -18,7 +18,7 @@ export interface CacheMapBaseConfig<T = unknown, R = T, K = unknown> {
   ignoreEmpty?: boolean;
   capacity?: number;
   TTL?: number;
-  clearCacheOnComplete?: boolean;
+  clearCacheOnUnsubscribe?: boolean;
 }
 
 export interface CacheMapConfig<T = unknown, R = T, K = unknown>
@@ -85,12 +85,12 @@ const processCacheMapConfig = <T = unknown, R = T, K = unknown>(
         ? null
         : (config as CacheMapConfig<T, R, K>)?.TTL,
 
-    clearCacheOnComplete:
+    clearCacheOnUnsubscribe:
       !isFunction(config) &&
       !isMap(config?.dataCache) &&
-      config.clearCacheOnComplete !== false
+      config.clearCacheOnUnsubscribe !== false
         ? true
-        : (config as CacheMapConfig<T, R, K>).clearCacheOnComplete || false,
+        : (config as CacheMapConfig<T, R, K>).clearCacheOnUnsubscribe || false,
   };
 };
 
@@ -105,7 +105,7 @@ export const cacheMap = <T = unknown, R = T, K = string>(
     ignoreEmpty,
     capacity,
     TTL,
-    clearCacheOnComplete,
+    clearCacheOnUnsubscribe,
   } = processCacheMapConfig(config);
 
   const cache = new SimpleCache<R, K>({
@@ -135,20 +135,32 @@ export const cacheMap = <T = unknown, R = T, K = string>(
           subscriber.next(cache.get(valueID));
         },
 
+        complete() {
+          cache.clearAllTimers();
+          subscriber.complete();
+        },
+
         error(error) {
           subscriber.error(error);
-        },
-        complete() {
-          subscriber.complete();
         },
       });
 
       return () => {
         --subsCount;
 
-        if (subsCount < 1 && clearCacheOnComplete !== false) {
-          cache.clear();
+        if (subsCount < 1 && clearCacheOnUnsubscribe !== false) {
+          if (TTL || TTL === undefined) {
+            cache.clearAllTimers();
+            cache.setTimer(
+              'clear',
+              () => cache.clear(),
+              (TTL || SIMPLE_CACHE_TTL_DEF) / 3
+            );
+          } else {
+            cache.clear();
+          }
         }
+
         subscription.unsubscribe();
       };
     });
@@ -174,7 +186,7 @@ export const cacheSwitchMap = <T = unknown, R = T, K = string>(
     ignoreEmpty,
     capacity,
     TTL,
-    clearCacheOnComplete,
+    clearCacheOnUnsubscribe,
   } = processCacheMapConfig(config, (v: T) => of((v as unknown) as R));
 
   const cache = new SimpleCache<Observable<R>, K>({
@@ -198,25 +210,38 @@ export const cacheSwitchMap = <T = unknown, R = T, K = string>(
 
           subscriber.next(value);
         },
+
+        complete() {
+          cache.clearAllTimers();
+          subscriber.complete();
+        },
+
         error(error) {
           subscriber.error(error);
-        },
-        complete() {
-          subscriber.complete();
         },
       });
 
       return () => {
         --subsCount;
 
-        if (subsCount < 1 && clearCacheOnComplete !== false) {
-          cache.clear();
+        if (subsCount < 1 && clearCacheOnUnsubscribe !== false) {
+          if (TTL || TTL === undefined) {
+            cache.clearAllTimers();
+            cache.setTimer(
+              'clear',
+              () => cache.clear(),
+              (TTL || SIMPLE_CACHE_TTL_DEF) / 3
+            );
+          } else {
+            cache.clear();
+          }
         }
         subscription.unsubscribe();
       };
     }).pipe(
       switchMap<T, ObservableInput<R>>((value: T) => {
         const valueID = trackBy(value);
+
         if (!cache.has(valueID)) {
           cache.put(valueID, mapper(value).pipe(shareReplay(1)));
         }

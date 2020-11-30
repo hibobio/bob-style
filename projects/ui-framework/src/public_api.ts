@@ -577,6 +577,7 @@ export * from './lib/services/utils/mobile.service';
 export * from './lib/services/utils/functional-utils';
 export * from './lib/services/utils/security-utils';
 export * from './lib/services/utils/simple-cache';
+export * from './lib/services/utils/logger';
 // URL utils
 export { UrlUtilsModule } from './lib/services/url/url-utils.module';
 export { URLutils } from './lib/services/url/url-utils.service';

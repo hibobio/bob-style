@@ -1,6 +1,12 @@
 import { NgZone } from '@angular/core';
-import { Subscription, Observable, defer } from 'rxjs';
-import { distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
+import { Subscription, Observable, defer, OperatorFunction } from 'rxjs';
+import {
+  distinctUntilChanged,
+  filter,
+  map,
+  tap,
+  finalize,
+} from 'rxjs/operators';
 import { ɵɵdirectiveInject as directiveInject } from '@angular/core';
 import {
   cloneDeepSimpleObject,
@@ -10,6 +16,7 @@ import {
   isKey,
 } from './functional-utils';
 import { Keys } from '../../enums';
+import { log } from './logger';
 
 // Source: https://netbasal.com/optimizing-angular-change-detection-triggered-by-dom-events-d2a3b2e11d87
 
@@ -69,29 +76,30 @@ export function tapOnce<T = any>(fn: (value: T) => void) {
 }
 
 // https://netbasal.com/creating-custom-operators-in-rxjs-32f052d69457
-export function debug<T = any>(tag: string) {
-  return tap<T>({
-    next(value) {
-      console.log(
-        `%c[${tag}: Next]`,
-        'background: #009688; color: #fff; padding: 3px; font-size: 9px;',
-        value
+export function debug<T = any>(tag: string): OperatorFunction<T, T> {
+  const logger = log.logger(tag);
+
+  return (source: Observable<T>): Observable<T> =>
+    defer(() => {
+      logger.success('Subscribed');
+
+      return source.pipe(
+        tap({
+          next(value) {
+            logger.info('Next', value);
+          },
+          error(error) {
+            logger.error('Error', error);
+          },
+          complete() {
+            logger.attention('Complete');
+          },
+        }),
+        finalize(() => {
+          logger.attention('Unsubscribed');
+        })
       );
-    },
-    error(error) {
-      console.log(
-        `%[${tag}: Error]`,
-        'background: #E91E63; color: #fff; padding: 3px; font-size: 9px;',
-        error
-      );
-    },
-    complete() {
-      console.log(
-        `%c[${tag}]: Complete`,
-        'background: #00BCD4; color: #fff; padding: 3px; font-size: 9px;'
-      );
-    },
-  });
+    });
 }
 
 export function counter<T = any>() {

@@ -11,6 +11,8 @@ export interface SimpleCacheConfig<V = unknown, K = unknown> {
   TTL?: number;
 }
 
+export type Timer = NodeJS.Timer | number;
+
 export class SimpleCache<V = unknown, K = string> {
   constructor({ map, capacity, TTL }: SimpleCacheConfig<V, K> = {}) {
     this._store = isMap(map) ? map : new Map();
@@ -22,7 +24,27 @@ export class SimpleCache<V = unknown, K = string> {
   private readonly _ttl: SimpleCacheConfig<V, K>['TTL'];
   private readonly _cap: SimpleCacheConfig<V, K>['capacity'];
   private readonly _zone: NgZone;
-  private readonly _timers: Map<K, NodeJS.Timer | number> = new Map();
+  private readonly _timers: Map<K | string, Timer> = new Map();
+
+  public get map(): SimpleCacheConfig<V, K>['map'] {
+    return this._store;
+  }
+
+  public get entries(): [K, V][] {
+    return Array.from(this._store.entries());
+  }
+
+  public get values(): V[] {
+    return Array.from(this._store.values());
+  }
+
+  public get keys(): K[] {
+    return Array.from(this._store.keys());
+  }
+
+  public get size(): number {
+    return this._store.size;
+  }
 
   public put(key: K, value: V): number {
     this._store.set(key, value);
@@ -45,8 +67,7 @@ export class SimpleCache<V = unknown, K = string> {
   }
 
   public clear(): void {
-    this._timers.forEach((timer, key: K) => this.clearTimer(key));
-    this._timers.clear();
+    this.clearAllTimers();
     this._store.clear();
   }
 
@@ -54,50 +75,42 @@ export class SimpleCache<V = unknown, K = string> {
     this._store.forEach(fn);
   }
 
-  public get map(): SimpleCacheConfig<V, K>['map'] {
-    return this._store;
-  }
-
-  public get entries(): [K, V][] {
-    return Array.from(this._store.entries());
-  }
-
-  public get values(): V[] {
-    return Array.from(this._store.values());
-  }
-
-  public get keys(): K[] {
-    return Array.from(this._store.keys());
-  }
-
-  public get size(): number {
-    return this._store.size;
-  }
-
-  private setTTLtimer(key: K, time: number = this._ttl) {
-    if (!this._ttl) {
-      return;
-    }
+  public setTimer(
+    key: K | string,
+    action: (k: K | string) => void,
+    time: number
+  ): Timer {
     this.clearTimer(key);
 
     this._zone.runOutsideAngular(() => {
       this._timers.set(
         key,
         setTimeout(() => {
-          this.del(key);
+          action(key);
         }, time)
       );
     });
+
+    return this._timers.get(key);
   }
 
-  private clearTimer(key: K) {
-    if (!this._ttl) {
-      return;
-    }
+  public clearTimer(key: K | string): void {
     if (this._timers.get(key)) {
       clearTimeout(this._timers.get(key) as any);
       this._timers.delete(key);
     }
+  }
+
+  public clearAllTimers(): void {
+    this._timers.forEach((timer, key) => this.clearTimer(key));
+    this._timers.clear();
+  }
+
+  private setTTLtimer(key: K, time: number = this._ttl): Timer {
+    if (!this._ttl) {
+      return;
+    }
+    return this.setTimer(key, () => this.del(key), time);
   }
 
   private checkCacheSize(): number {
