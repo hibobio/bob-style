@@ -4,6 +4,16 @@ import {
   ChartTooltipTemplateFormatter,
 } from './charts.interface';
 
+
+export const COLUMN_BAR_WIDTH = {
+  pointPadding: 0.1,
+  groupPadding: 0.08,
+};
+export const MULTI_COLUMN_WIDTH = {
+  pointPadding: 0.1,
+  groupPadding: 0.2,
+};
+
 export const PIE_CHART_MIN_DONUT_WIDTH = 3;
 export const PIE_CHART_LEGENT_HEIGHT = 37;
 export const PIE_CHART_PIE_PADDING = 50;

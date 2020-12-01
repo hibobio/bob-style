@@ -37,6 +37,8 @@ import { ColumnDef } from './table.interface';
 
 import createSpyObj = jasmine.createSpyObj;
 import SpyObj = jasmine.SpyObj;
+import { RowNode } from 'ag-grid-community/dist/lib/entities/rowNode';
+import { RowDragEvent } from 'ag-grid-community';
 
 describe('TableComponent', () => {
   let component: TableComponent;
@@ -461,6 +463,75 @@ describe('TableComponent', () => {
         'fullName',
         'email',
       ]);
+    });
+  });
+
+  describe('onRowDragMove', () => {
+    it('Should update rowData', () => {
+      spyOn(component.getGridApi(), 'updateRowData').and.callFake(() => null);
+      component.onRowDragMove({
+        node: { id: rowDataMock[0].id, data: rowDataMock[0] } as RowNode,
+        overNode: { id: rowDataMock[1].id, data: rowDataMock[1] } as RowNode,
+      } as RowDragEvent);
+      expect(component.rowData).toEqual([
+        {
+          fullName: 'Doron Cynsiger',
+          id: '2',
+          email: 'doron.cynsiger@hibob.io',
+          internal: {
+            status: 'Active'
+          },
+          about: {
+            avatar:
+              {
+                imageSource: 'img_url2.jpg',
+              },
+          },
+        },
+        {
+          fullName: 'Omri Hecht',
+          id: '1',
+          email: 'omri.hecht@hibob.io',
+          internal: {
+            status: 'Active'
+          },
+          about: {
+            avatar: {
+              imageSource: 'img_url1.jpg',
+            },
+          },
+          isClickable: true,
+        },
+        {
+          fullName: 'Ishai Borovoy',
+          id: '3',
+          email: 'ishai.borovoy@hibob.io',
+          internal: {
+            status: 'InActive'
+          },
+          about: {
+            avatar: {
+              imageSource: 'img_url3.jpg',
+            }
+          },
+        },
+      ]);
+      expect(rowDataMock).toEqual(ROW_DATA_MOCK);
+    });
+
+    it('Should call gridApi', () => {
+      spyOn(component.getGridApi(), 'updateRowData').and.callFake(() => null);
+      component.onRowDragMove({
+        node: { id: rowDataMock[0].id, data: rowDataMock[0] } as RowNode,
+        overNode: { id: rowDataMock[1].id, data: rowDataMock[1] } as RowNode,
+      } as RowDragEvent);
+      expect(component.getGridApi().updateRowData).toHaveBeenCalledWith({
+        remove: [rowDataMock[0]]
+      });
+      expect(component.getGridApi().updateRowData).toHaveBeenCalledWith({
+        add: [rowDataMock[0]],
+        addIndex: 1
+      });
     });
   });
 });

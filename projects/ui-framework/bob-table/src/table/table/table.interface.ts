@@ -41,6 +41,7 @@ export interface RowClickedEvent {
 export interface BRowDragEvent {
   nodeData: any;
   overNodeData: any;
+  newRowData: any[];
 }
 
 export interface SortChangedEvent {

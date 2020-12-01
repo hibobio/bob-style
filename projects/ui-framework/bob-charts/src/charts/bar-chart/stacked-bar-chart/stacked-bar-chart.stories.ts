@@ -41,11 +41,15 @@ const template = `<b-stacked-bar-chart
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Pie Chart'">
+    <div><h1 style="text-align:left; color: red">Deprecated, use multi-bar-chart with [stackType] input 'stack' or 'stack-percent'</h1></div>
     <div>${template}</div>
 </b-story-book-layout>
 `;
 
 const note = `
+  # Deprecated, use multi-bar-chart with [stackType] input \'stack\' or \'stack-percent\'
+  \n\n
+
   ## Single Chart
 
   #### Module
