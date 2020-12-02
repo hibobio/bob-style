@@ -67,10 +67,10 @@
   </div>
 
   <cdk-virtual-scroll-viewport #vScroll
-                               class="v-scroll"
+                               class="v-scroll scroll-visible-alt"
                                [itemSize]="listElHeight[size]||listElHeightDef"
-                               [maxBufferPx]="maxHeight"
-                               [minBufferPx]="maxHeight">
+                               [maxBufferPx]="listMaxHeight"
+                               [minBufferPx]="listMaxHeight">
 
     <button *ngIf="showNoneOption && !readonly && listOptions?.length"
             type="button"

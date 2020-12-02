@@ -5,6 +5,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -44,9 +45,10 @@ export class MultiListAndListComponent
     protected translate: TranslateService,
     protected listModelService: ListModelService,
     protected listChangeService: ListChangeService,
-    private cd: ChangeDetectorRef
+    protected zone: NgZone,
+    protected cd: ChangeDetectorRef
   ) {
-    super(host, DOM, translate, listModelService, listChangeService);
+    super(host, DOM, translate, listModelService, listChangeService, zone, cd);
   }
 
   @ViewChild(BasicListComponent, { static: true })

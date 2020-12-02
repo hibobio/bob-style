@@ -6,6 +6,7 @@ import {
   OnInit,
   ElementRef,
   ViewChild,
+  NgZone,
 } from '@angular/core';
 import {
   itemID,
@@ -47,9 +48,10 @@ export class MultiListAndChipsComponent
     protected translate: TranslateService,
     protected listModelService: ListModelService,
     protected listChangeService: ListChangeService,
-    private cd: ChangeDetectorRef
+    protected zone: NgZone,
+    protected cd: ChangeDetectorRef
   ) {
-    super(host, DOM, translate, listModelService, listChangeService);
+    super(host, DOM, translate, listModelService, listChangeService, zone, cd);
   }
 
   @ViewChild(ChipListComponent, { static: true }) chipList: ChipListComponent;

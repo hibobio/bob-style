@@ -76,10 +76,10 @@
   </div>
 
   <cdk-virtual-scroll-viewport #vScroll
-                               class="v-scroll"
+                               class="v-scroll scroll-visible-alt"
                                [itemSize]="listElHeight[size]||listElHeightDef"
-                               [maxBufferPx]="maxHeight"
-                               [minBufferPx]="maxHeight">
+                               [maxBufferPx]="listMaxHeight"
+                               [minBufferPx]="listMaxHeight">
     <div class="options">
       <div (click)="optionClick(option, true)"
            *cdkVirtualFor="let option of listOptions; trackBy: 'id' | trackByProp"

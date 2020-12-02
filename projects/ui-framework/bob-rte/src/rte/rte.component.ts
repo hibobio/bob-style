@@ -35,6 +35,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { RteUtilsService } from './rte-utils.service';
 import { RTEMode } from './rte.enum';
 
+// import { HtmlParserHelpers } from '../../../../ui-framework/src/lib/services/html/html-parser.service';
+
 @Component({
   selector: 'b-rich-text-editor',
   templateUrl: './rte.component.html',

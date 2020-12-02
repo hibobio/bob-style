@@ -45,6 +45,7 @@ const template = `<b-multi-list-and-list
         [startWithGroupsCollapsed]="options === 2 ? false : startWithGroupsCollapsed"
         [min]="min"
         [max]="max"
+        [maxHeight]="maxHeight"
         (selectChange)="onSelectChange($event)"
         (changed)="onChange($event)"
         (menuAction)="onEmitMenuAction($event)">
@@ -121,6 +122,9 @@ const toAdd = () => ({
       'Props'
     ),
     min: number('min', 0, {}, 'Props'),
+
+    maxHeight: number('maxHeight', 0, {}, 'Props'),
+
     listOpts: object('listOpts', listOpts, 'Data'),
     avatarListOpts: object('avatarListOpts', avatarListOpts, 'Data'),
     policies: object('policies', policies, 'Data'),

@@ -10,6 +10,8 @@
   overflow-y: auto;
   flex-grow: 1;
 
+  @include always-visible-scrollbar($margin: 0, $track-color: black(0.1));
+
   &.empty {
     align-content: unset;
   }

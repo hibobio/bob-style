@@ -27,6 +27,20 @@ $acss-dirs: top right bottom left;
   @include b-link;
 }
 
+.scroll-hide {
+  @include hide-scrollbar;
+}
+
+.scroll-visible {
+  @include always-visible-scrollbar;
+  overflow: auto;
+}
+
+.scroll-visible-alt {
+  @include always-visible-scrollbar($margin: 0, $track-color: black(0.1));
+  overflow: auto;
+}
+
 // Typography
 
 .b-body {

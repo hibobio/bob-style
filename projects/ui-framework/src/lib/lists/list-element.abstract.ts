@@ -31,7 +31,7 @@ import {
   LIST_EL_HEIGHT,
   DISPLAY_SEARCH_OPTION_NUM,
   UPDATE_LISTS_CONFIG_DEF,
-  LIST_MAX_ITEMS,
+  SELECT_MAX_ITEMS,
 } from './list.consts';
 import { ListKeyboardService } from './list-service/list-keyboard.service';
 import { Keys } from '../enums';
@@ -46,6 +46,8 @@ import {
   cloneDeepSimpleObject,
   simpleChange,
   isArray,
+  objectRemoveKey,
+  notFirstChanges,
 } from '../services/utils/functional-utils';
 import { ListModelService } from './list-service/list-model.service';
 import { ListChangeService } from './list-change/list-change.service';
@@ -88,7 +90,7 @@ export abstract class BaseListElement
   @Input() optionsDefault: SelectGroupOption[];
   @Input() mode: SelectMode = SelectMode.classic;
   @Input() listActions: ListFooterActions;
-  @Input() maxHeight = LIST_EL_HEIGHT * LIST_MAX_ITEMS;
+  @Input() maxHeight: number;
   @Input() showSingleGroupHeader = false;
   @Input() startWithGroupsCollapsed = true;
   @Input() showNoneOption = false;
@@ -139,9 +141,14 @@ export abstract class BaseListElement
   public listOptions: ListOption[];
   public listHeaders: ListHeader[];
   public focusIndex: number;
-  public maxHeightItems = LIST_MAX_ITEMS;
+
+  readonly listElHeight = FORM_ELEMENT_HEIGHT;
+  readonly listElHeightDef = LIST_EL_HEIGHT;
+  public maxHeightItems = SELECT_MAX_ITEMS;
   public listHeight = null;
   public listMinHeight = 0;
+  public listMaxHeight = LIST_EL_HEIGHT * SELECT_MAX_ITEMS;
+
   public searchValue: string;
   public shouldDisplaySearch = false;
   public filteredOptions: SelectGroupOption[];
@@ -157,8 +164,7 @@ export abstract class BaseListElement
   protected listChange: ListChange;
 
   private keyDownSubscriber: Subscription;
-  readonly listElHeight = FORM_ELEMENT_HEIGHT;
-  readonly listElHeightDef = LIST_EL_HEIGHT;
+
   readonly modes = SelectMode;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
@@ -181,7 +187,6 @@ export abstract class BaseListElement
         options: [],
         mode: SelectMode.classic,
         startWithGroupsCollapsed: true,
-        maxHeight: LIST_EL_HEIGHT * LIST_MAX_ITEMS,
       },
       ['value']
     );
@@ -257,22 +262,8 @@ export abstract class BaseListElement
       this.updateActionButtonsState();
     }
 
-    if (hasChanges(changes, ['maxHeight', 'options', 'size'], true)) {
-      this.maxHeightItems =
-        Math.round(
-          (this.maxHeight || 0) /
-            (FORM_ELEMENT_HEIGHT[this.size] || LIST_EL_HEIGHT)
-        ) || LIST_MAX_ITEMS;
-
-      this.maxHeight =
-        this.maxHeightItems *
-        (FORM_ELEMENT_HEIGHT[this.size] || LIST_EL_HEIGHT);
-
-      this.DOM.setCssProps(this.host.nativeElement, {
-        '--list-max-items':
-          this.maxHeight / (FORM_ELEMENT_HEIGHT[this.size] || LIST_EL_HEIGHT) ||
-          null,
-      });
+    if (notFirstChanges(changes, ['maxHeight', 'options', 'size'], true)) {
+      this.processMaxHeight();
     }
 
     if (!this.cd['destroyed']) {
@@ -305,7 +296,7 @@ export abstract class BaseListElement
             this.vScroll.scrollToIndex(
               this.keybrdSrvc.getScrollToIndex({
                 focusIndex: this.focusIndex,
-                listHeight: this.maxHeight,
+                listHeight: this.listMaxHeight,
                 size: this.size,
               })
             );
@@ -324,7 +315,7 @@ export abstract class BaseListElement
             this.vScroll.scrollToIndex(
               this.keybrdSrvc.getScrollToIndex({
                 focusIndex: this.focusIndex,
-                listHeight: this.maxHeight,
+                listHeight: this.listMaxHeight,
                 size: this.size,
               })
             );
@@ -365,10 +356,12 @@ export abstract class BaseListElement
     this.moveHeaders();
 
     this.zone.runOutsideAngular(() => {
-      setTimeout(() => {
+      this.DOM.mutate(() => {
         this.hasFooter =
           (!this.readonly && objectHasTruthyValue(this.listActions)) ||
           !this.DOM.isEmpty(this.footer.nativeElement);
+
+        this.processMaxHeight();
 
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
@@ -377,7 +370,7 @@ export abstract class BaseListElement
         if (this.focusOnInit && this.search && !this.isMobile) {
           this.search.input.nativeElement.focus();
         }
-      }, 0);
+      });
     });
   }
 
@@ -630,12 +623,35 @@ export abstract class BaseListElement
 
   protected getListMinHeight(): number {
     return this.listOptions?.length
-      ? Math.min(this.getListHeight(), this.maxHeight)
+      ? Math.min(this.getListHeight(), this.listMaxHeight)
       : null;
   }
 
   protected getListHeight(): number {
     return null;
+  }
+
+  public processMaxHeight(
+    maxHeight = this.maxHeight
+  ): {
+    listMaxHeight: number;
+    maxHeightItems: number;
+    maxHeight: number;
+  } {
+    const processed = this.modelSrvc.processMaxHeight({
+      maxHeight,
+      size: this.size,
+      hasFooter: this.hasFooter,
+      shouldDisplaySearch: this.shouldDisplaySearch,
+    });
+
+    Object.assign(this, objectRemoveKey(processed, 'maxHeight'));
+
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--list-max-items': this.maxHeightItems,
+    });
+
+    return processed;
   }
 
   protected moveHeaders() {

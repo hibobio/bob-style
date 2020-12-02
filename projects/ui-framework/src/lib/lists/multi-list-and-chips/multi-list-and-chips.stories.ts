@@ -27,6 +27,7 @@ import listInterfaceDoc from '../../lists/list.interface.md';
 import listSelectsPropsDoc from '../../lists/lists-selects.properties.md';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { selectSome } from '../single-list/single-list.mock';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -35,11 +36,15 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 const listOpts = cloneDeep(MultiListAndChipsOptionsMock);
 const avatarListOpts = cloneDeep(MultiListAndAvatarChipsOptionsMock);
 
+const listOptsDef = selectSome(MultiListAndChipsOptionsMock);
+const avatarListOptsDef = selectSome(MultiListAndChipsOptionsMock);
+
 const listOpts$ = of(listOpts).pipe(delay(1000));
 const avatarListOpts$ = of(avatarListOpts).pipe(delay(1000));
 
 const template = `<b-multi-list-and-chips
         [options]="(options === 2 ? avatarListOpts$ : listOpts$) | async"
+        [optionsDefault]="options === 2 ? avatarListOptsDef : listOptsDef"
         [value]="value === 1 ? someValues1 : value === 2 ? someValues2 : value === 3 ? [] : undefined"
         [listLabel]="listLabel"
         [chipsLabel]="chipsLabel"
@@ -47,6 +52,7 @@ const template = `<b-multi-list-and-chips
         [startWithGroupsCollapsed]="options === 2 ? false : startWithGroupsCollapsed"
         [min]="min"
         [max]="max"
+        [maxHeight]="maxHeight"
         [emptyState]="emptyStateConfig"
         (selectChange)="onSelectChange($event)"
         (changed)="onChange($event)">
@@ -121,12 +127,21 @@ const toAdd = () => ({
     min: number('min', 0, {}, 'Props'),
     max: number('max', 0, {}, 'Props'),
 
+    maxHeight: number('maxHeight', 0, {}, 'Props'),
+
     value: select('value', [0, 1, 2, 3], 0, 'Data'),
     someValues1: someValues1,
     someValues2: someValues2,
 
     listOpts: object('listOpts', listOpts, 'Data'),
     avatarListOpts: object('avatarListOpts', avatarListOpts, 'Data'),
+
+    listOptsDef: listOptsDef,
+    avatarListOptsDef: avatarListOptsDef,
+
+    listOpts$: listOpts$,
+    avatarListOpts$: avatarListOpts$,
+
     emptyStateConfig: object(
       'emptyStateConfig',
       {
@@ -139,9 +154,6 @@ const toAdd = () => ({
 
     onSelectChange: action('ListChange'),
     onChange: action('Selected IDs changed'),
-
-    listOpts$: listOpts$,
-    avatarListOpts$: avatarListOpts$,
   },
   moduleMetadata: {
     imports: [

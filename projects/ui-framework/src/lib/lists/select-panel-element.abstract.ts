@@ -40,7 +40,6 @@ import {
 import { SelectGroupOption, ListFooterActions, itemID } from './list.interface';
 import { ListChange } from './list-change/list-change';
 import { PanelDefaultPosVer } from '../popups/panel/panel.enum';
-import { LIST_EL_HEIGHT, SELECT_MAX_ITEMS } from './list.consts';
 import { ListChangeService } from './list-change/list-change.service';
 import { selectValueOrFail } from '../services/utils/transformers';
 import { ListModelService } from './list-service/list-model.service';
@@ -53,7 +52,6 @@ import { ListPanelService } from './list-panel.service';
 import { MobileService } from '../services/utils/mobile.service';
 import { TooltipClass } from '../popups/tooltip/tooltip.enum';
 import { TranslateService } from '@ngx-translate/core';
-import { FORM_ELEMENT_HEIGHT } from '../form-elements/form-elements.const';
 import { AvatarSize } from '../avatar/avatar/avatar.enum';
 import { Icons } from '../icons/icons.enum';
 
@@ -126,9 +124,6 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   private fitOptionsToValue = false;
   readonly formElementSize = FormElementSize;
   readonly avatarSize = AvatarSize;
-  readonly listElHeight = FORM_ELEMENT_HEIGHT;
-  readonly listElHeightDef = LIST_EL_HEIGHT;
-  public maxHeightItems = SELECT_MAX_ITEMS;
 
   public touched = false;
   public dirty = false;

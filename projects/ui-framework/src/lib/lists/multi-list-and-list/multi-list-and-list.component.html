@@ -26,7 +26,8 @@
      [attr.aria-hidden]="!otherLabel"
      *ngIf="listLabel || otherLabel">{{otherLabel}}</p>
 
-  <b-basic-list [attr.id]="otherID"
+  <b-basic-list class="scroll-visible-alt"
+                [attr.id]="otherID"
                 [attr.aria-labelledby]="otherLabel ? otherID+'-label' : null"
                 [type]="type"
                 [items]="otherList$ | async"
