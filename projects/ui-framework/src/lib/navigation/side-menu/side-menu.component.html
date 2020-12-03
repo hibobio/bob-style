@@ -21,10 +21,18 @@
         'selected': option.id === selectedId && !option.disabled,
         'has-menu': option.actions?.length
       }"
-      class="{{option.icon && !option.avatar ? option.icon : null}}"
       [attr.tabindex]="!option.disabled ? 0 : null"
-      [attr.role]="!option.disabled ? 'button' : null"
-      [attr.data-icon-before-color]="option.id === selectedId && !option.disabled ? iconColor.dark : iconColor.normal">
+      [attr.role]="!option.disabled ? 'button' : null">
+
+    <b-icon *ngIf="option.icon && !option.avatar"
+            class="mrg-r-8"
+            [icon]="option.icon"
+            [color]="option.id === selectedId && !option.disabled ? iconColor.dark : iconColor.normal"
+            [matTooltip]="option.iconTooltip"
+            [matTooltipClass]="tooltipClass.PreWrap"
+            [matTooltipShowDelay]="tooltipDelay"
+            [matTooltipPosition]="tooltipPosition">
+    </b-icon>
 
     <p class="option-display-name"
        *ngIf="option.displayName && !option.avatar"
@@ -62,8 +70,10 @@
                 [size]="iconSize.small"
                 [color]="option.avatar.textIconPosition.includes('label') ? iconColor.dark :
                 iconColor.normal"
-                [toolTipSummary]="option.avatar.textIconTooltip"
-                [tooltipClass]="option.avatar.tooltipClass">
+                [matTooltip]="option.avatar.textIconTooltip"
+                [matTooltipClass]="option.avatar.tooltipClass || tooltipClass.PreWrap"
+                [matTooltipShowDelay]="tooltipDelay"
+                [matTooltipPosition]="tooltipPosition">
         </b-icon>
       </div>
     </div>
