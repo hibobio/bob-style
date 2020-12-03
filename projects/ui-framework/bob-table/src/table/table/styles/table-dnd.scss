@@ -2,9 +2,43 @@
 @import '../../../../../src/lib/style/icons.mixin';
 @import './table.mixin';
 
-:host ::ng-deep .ag-icon-grip {
-  display: block;
-  @include ag-icon('drag');
+:host::ng-deep [data-row-drag-enabled='true'] {
+  .ag-icon-grip {
+    display: block;
+    @include ag-icon('drag-alt', $color: normal, $margin: null);
+    margin-left: -1px;
+    margin-right: 10px;
+    cursor: grab;
+  }
+
+  .ag-row-hover .ag-icon-grip {
+    @include icon-color(dark, $hover: false);
+  }
+
+  .ag-row-dragging.ag-row-focus {
+    pointer-events: none;
+
+    & > * {
+      @include disabled-state;
+    }
+  }
+
+  &[data-row-is-dragged='true'] {
+    .ag-row-no-focus {
+      &:hover,
+      &.ag-row-hover {
+        box-shadow: 0 -1px 0 0 $grey-700;
+      }
+    }
+
+    .ag-row-dragging ~ .ag-row-no-focus {
+      &:hover,
+      &.ag-row-hover {
+        box-shadow: 0 1px 0 0 $grey-700;
+        border-bottom-color: transparent;
+      }
+    }
+  }
 }
 
 ::ng-deep .ag-dnd-ghost {
@@ -20,4 +54,5 @@
   margin: 0;
   padding: 0 8px;
   transform: translateY(8px);
+  pointer-events: none;
 }

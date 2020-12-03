@@ -53,6 +53,7 @@ const template = `<b-table #table
     [type]="type"
     [rowData]="rowData | async"
     [columnDefs]="columnDefs | async"
+    [tableGridOptions]="tableGridOptions"
     [maxHeight]="maxHeight"
     [rowSelection]="rowSelection"
     [removeColumnButtonEnabled]="removeColumnButtonEnabled"
@@ -293,6 +294,7 @@ story.add(
       HTMLTemplate: storyTemplate,
       tableCols: mockColumnsDefsExtended,
       tableData: mockRowData,
+      props: { tableGridOptions: { getRowNodeId: (data) => data.id } },
     }),
   { notes: { markdown: note } }
 );

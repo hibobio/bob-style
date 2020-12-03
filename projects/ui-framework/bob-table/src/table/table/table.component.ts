@@ -150,7 +150,9 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<
     RowClickedEvent
   >();
-  @Output() rowDragEnd: EventEmitter<BRowDragEvent> = new EventEmitter<BRowDragEvent>();
+  @Output() rowDragEnd: EventEmitter<BRowDragEvent> = new EventEmitter<
+    BRowDragEvent
+  >();
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() gridInit: EventEmitter<void> = new EventEmitter<void>();
   @Output() columnsChanged: EventEmitter<
@@ -175,6 +177,9 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   public gridOptions: GridOptions;
   public gridColumnDefs: ColumnDef[];
   public pagerState: TablePagerState;
+
+  public rowDragEnabled = false;
+  public rowIsDragged = false;
 
   private columns: string[];
 
@@ -225,6 +230,8 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         orderStrategy: DEFAULT_COL_ORDER_STRATEGY,
       };
       previousColumnDefValue = changes.columnDefs.previousValue;
+
+      this.rowDragEnabled = Boolean(this.columnDefs.find((def) => def.rowDrag));
     }
 
     if (hasChanges(changes, ['columnDefConfig'], true)) {
@@ -281,37 +288,35 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     });
   }
 
-  onRowDragMove(event: RowDragEvent) {
+  onRowDragEnd(event: RowDragEvent) {
     const movingNode = event.node;
     const overNode = event.overNode;
     const rowNeedsToMove = movingNode.id !== overNode.id;
 
     if (rowNeedsToMove) {
       const gridApi = this.getGridApi();
-      const movingData = movingNode.data ;
+      const movingData = movingNode.data;
       const overData = overNode.data;
       const fromIndex = this.rowData.indexOf(movingData);
       const toIndex = this.rowData.indexOf(overData);
-      const newRowData = [ ...this.rowData ];
+      const newRowData = [...this.rowData];
       newRowData.splice(fromIndex, 1);
       newRowData.splice(toIndex, 0, movingData);
       this.rowData = newRowData;
       gridApi.updateRowData({
-        remove: [movingData]
+        remove: [movingData],
       });
       gridApi.updateRowData({
         add: [movingData],
-        addIndex: toIndex
+        addIndex: toIndex,
       });
       gridApi.clearFocusedCell();
     }
-  }
 
-  onRowDragEnd(event: RowDragEvent) {
     this.rowDragEnd.emit({
       nodeData: event.node.data,
       overNodeData: event.overNode.data,
-      newRowData: [ ...this.rowData ]
+      newRowData: [...this.rowData],
     });
   }
 
@@ -355,6 +360,8 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         : 20,
       animateRows: false,
       suppressPropertyNamesCheck: true,
+
+      scrollbarWidth: 7,
 
       pagination: this.enablePager,
       paginationPageSize: this.pagerConfig.sliceSize,

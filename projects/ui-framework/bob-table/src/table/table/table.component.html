@@ -10,10 +10,12 @@
                  (rowClicked)="onRowClicked($event)"
                  (selectionChanged)="onSelectionChanged($event)"
                  (sortChanged)="onSortChanged($event)"
-                 (rowDragMove)="onRowDragMove($event)"
-                 (rowDragEnd)="onRowDragEnd($event)"
+                 (rowDragEnter)="rowIsDragged=true"
+                 (rowDragEnd)="rowIsDragged=false; onRowDragEnd($event)"
                  [attr.data-row-hover]="styleConfig?.disableRowHoverBgColor ? false : true"
                  [attr.data-column-borders]="styleConfig?.showColumnBorders ? true : null"
+                 [attr.data-row-drag-enabled]="rowDragEnabled || null"
+                 [attr.data-row-is-dragged]="rowIsDragged || null"
                  [hidden]="isEmpty()">
 </ag-grid-angular>
 
