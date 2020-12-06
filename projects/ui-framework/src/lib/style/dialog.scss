@@ -57,13 +57,13 @@ html.cdk-global-scrollblock {
   }
 
   .dialog-content-wrapper {
-    padding: 0 times8(5) times8(2);
+    padding: 0 times8(5) times8(6);
     margin: 0;
     max-height: 60vh;
     overflow-x: hidden;
 
     &.no-footer {
-      padding-bottom: times8(5);
+      padding-bottom: times8(6);
     }
 
     &.show-progress {
