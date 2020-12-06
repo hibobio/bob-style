@@ -53,6 +53,7 @@ const template = `<b-table #table
     [type]="type"
     [rowData]="rowData | async"
     [columnDefs]="columnDefs | async"
+    [tableGridOptions]="tableGridOptions"
     [maxHeight]="maxHeight"
     [rowSelection]="rowSelection"
     [removeColumnButtonEnabled]="removeColumnButtonEnabled"
@@ -162,6 +163,7 @@ const note = `
   (columnRemoved) | EventEmitter<wbr>&lt;string&gt; | Emits Cell ID,\
    when remove coulumn button is clicked in column header. \
    <br>**Note** the column is not removed - consumer has to provide this functionality. | &nbsp;
+  (rowDragEnd) | EventEmitter<wbr>&lt;BRowDragEvent&gt; | emits on row drag end | &nbsp;
 
   #### Methods
   Name | Type | Description
@@ -292,6 +294,7 @@ story.add(
       HTMLTemplate: storyTemplate,
       tableCols: mockColumnsDefsExtended,
       tableData: mockRowData,
+      props: { tableGridOptions: { getRowNodeId: (data) => data.id } },
     }),
   { notes: { markdown: note } }
 );

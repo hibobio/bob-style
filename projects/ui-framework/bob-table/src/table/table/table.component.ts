@@ -23,6 +23,7 @@ import {
   GridReadyEvent,
   AgGridEvent,
   RowEvent,
+  RowDragEvent,
   FirstDataRenderedEvent,
 } from 'ag-grid-community';
 import { get, map } from 'lodash';
@@ -35,6 +36,7 @@ import {
   TableType,
 } from './table.enum';
 import {
+  BRowDragEvent,
   ColumnDef,
   ColumnDefConfig,
   ColumnsChangedEvent,
@@ -85,6 +87,7 @@ const DEFAULT_PROP_VALUES = {
   styleUrls: [
     './styles/table.component.scss',
     './styles/table-checkbox.scss',
+    './styles/table-dnd.scss',
     './styles/tree-table.component.scss',
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -138,6 +141,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Input('emptyStateConfig') set setEmptyStateConfig(config: EmptyStateConfig) {
     this.emptyStateConfig = { ...this.emptyStateConfig, ...config };
   }
+
   public emptyStateConfig: EmptyStateConfig;
 
   @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
@@ -145,6 +149,9 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   >();
   @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<
     RowClickedEvent
+  >();
+  @Output() rowDragEnd: EventEmitter<BRowDragEvent> = new EventEmitter<
+    BRowDragEvent
   >();
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() gridInit: EventEmitter<void> = new EventEmitter<void>();
@@ -170,6 +177,9 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   public gridOptions: GridOptions;
   public gridColumnDefs: ColumnDef[];
   public pagerState: TablePagerState;
+
+  public rowDragEnabled = false;
+  public rowIsDragged = false;
 
   private columns: string[];
 
@@ -220,6 +230,8 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         orderStrategy: DEFAULT_COL_ORDER_STRATEGY,
       };
       previousColumnDefValue = changes.columnDefs.previousValue;
+
+      this.rowDragEnabled = Boolean(this.columnDefs.find((def) => def.rowDrag));
     }
 
     if (hasChanges(changes, ['columnDefConfig'], true)) {
@@ -268,11 +280,43 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     this.selectionChanged.emit($event.api.getSelectedRows());
   }
 
-  onRowClicked($event: RowEvent): void {
+  onRowClicked($event: RowEvent) {
     this.rowClicked.emit({
       rowIndex: $event.rowIndex,
       data: $event.data,
       agGridId: get($event, 'node.id', null),
+    });
+  }
+
+  onRowDragEnd(event: RowDragEvent) {
+    const movingNode = event.node;
+    const overNode = event.overNode;
+    const rowNeedsToMove = movingNode.id !== overNode.id;
+
+    if (rowNeedsToMove) {
+      const gridApi = this.getGridApi();
+      const movingData = movingNode.data;
+      const overData = overNode.data;
+      const fromIndex = this.rowData.indexOf(movingData);
+      const toIndex = this.rowData.indexOf(overData);
+      const newRowData = [...this.rowData];
+      newRowData.splice(fromIndex, 1);
+      newRowData.splice(toIndex, 0, movingData);
+      this.rowData = newRowData;
+      gridApi.updateRowData({
+        remove: [movingData],
+      });
+      gridApi.updateRowData({
+        add: [movingData],
+        addIndex: toIndex,
+      });
+      gridApi.clearFocusedCell();
+    }
+
+    this.rowDragEnd.emit({
+      nodeData: event.node.data,
+      overNodeData: event.overNode.data,
+      newRowData: [...this.rowData],
     });
   }
 
@@ -316,6 +360,8 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         : 20,
       animateRows: false,
       suppressPropertyNamesCheck: true,
+
+      scrollbarWidth: 7,
 
       pagination: this.enablePager,
       paginationPageSize: this.pagerConfig.sliceSize,

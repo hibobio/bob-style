@@ -3,7 +3,7 @@ import { SideMenuComponent } from './side-menu.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { sideMenuMock2 } from './side-menu.mock';
 import { elementsFromFixture } from '../../services/utils/test-helpers';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { SquareButtonComponent } from '../../buttons/square/square.component';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
@@ -12,6 +12,7 @@ import { TruncateTooltipComponent } from '../../popups/truncate-tooltip/truncate
 import { IconComponent } from '../../icons/icon.component';
 import { TooltipClass } from '../../popups/tooltip/tooltip.enum';
 import { By } from '@angular/platform-browser';
+import { MatTooltip } from '@angular/material/tooltip';
 
 describe('SideMenuComponent', () => {
   let component: SideMenuComponent;
@@ -27,6 +28,7 @@ describe('SideMenuComponent', () => {
         MockComponent(MenuComponent),
         MockComponent(TruncateTooltipComponent),
         IconComponent,
+        MockDirective(MatTooltip),
       ],
       providers: [EventManagerPlugins[0]],
       schemas: [NO_ERRORS_SCHEMA],
@@ -57,12 +59,16 @@ describe('SideMenuComponent', () => {
     let iconEls: HTMLElement[];
     let avatarTextEls: HTMLElement[];
     let menuEls: HTMLElement[];
+    let matTooltip: MatTooltip;
 
     beforeEach(() => {
       options = elementsFromFixture(fixture, '.menu-option');
       iconEls = elementsFromFixture(fixture, '.avatar-text-icon');
       avatarTextEls = elementsFromFixture(fixture, '.avatar-text');
       menuEls = elementsFromFixture(fixture, '.option-actions');
+      matTooltip = fixture.debugElement
+        .queryAll(By.directive(MatTooltip))[0]
+        .injector.get(MatTooltip);
     });
 
     it('should display correct amount of options', () => {
@@ -94,13 +100,10 @@ describe('SideMenuComponent', () => {
     });
 
     it('should display text icon tooltip', () => {
-      expect(iconEls[0].getAttribute('data-tooltip')).toBeTruthy();
+      expect(matTooltip.message).toContain('Raising to the top');
     });
     it('should display icon tooltip wrap', () => {
-      expect(
-        fixture.debugElement.query(By.css('.avatar-text-icon'))
-          .nativeElement.className
-      ).toContain(TooltipClass.NoWrap);
+      expect(matTooltip.tooltipClass).toContain(TooltipClass.NoWrap);
     });
   });
 });

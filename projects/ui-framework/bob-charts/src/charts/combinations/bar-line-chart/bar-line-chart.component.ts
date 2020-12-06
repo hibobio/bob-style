@@ -9,6 +9,7 @@ import {
 import { ChartCore } from '../../chart/chart-core';
 import { SeriesOptionsType } from 'highcharts';
 import { ChartTypesEnum } from '../../charts.enum';
+import { COLUMN_BAR_WIDTH, MULTI_COLUMN_WIDTH } from '../../charts.const';
 
 @Component({
   selector: 'b-bar-line-chart',
@@ -37,14 +38,6 @@ export class BarLineChartComponent extends ChartCore implements OnChanges {
   }
 
   private updateChartOptions() {
-    const COLUMN_BAR_WIDTH = {
-      pointPadding: 0.1,
-      groupPadding: 0.08,
-    };
-    const MULTI_COLUMN_WIDTH = {
-      pointPadding: 0.1,
-      groupPadding: 0.2,
-    };
 
     this.chartOptions = {
       chart: {

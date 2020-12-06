@@ -10,6 +10,7 @@ import {
   asArray,
   isDomElement,
   isFunction,
+  arrayFlatten,
 } from '../utils/functional-utils';
 import { DOMhelpers } from './dom-helpers.service';
 import { EnforceFontSizeConfig, ProcessCSS } from './html-parser.interface';
@@ -491,7 +492,12 @@ export class HtmlParserHelpers {
       [DOMtags.span, 'FONT', 'PRE'],
     ];
 
-    elm.querySelectorAll('*:empty').forEach((element: HTMLElement) => {
+    const emptyTags = arrayFlatten(tags)
+      .map((t) => t + ':empty')
+      .join()
+      .toLowerCase();
+
+    elm.querySelectorAll(emptyTags).forEach((element: HTMLElement) => {
       element.remove();
     });
 

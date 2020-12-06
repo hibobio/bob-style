@@ -11,9 +11,10 @@
                 [optionsDefault]="optionsDefault"
                 [mode]="mode"
                 [listActions]="listActions"
-                [maxHeight]="listElHeight*6"
+                [maxHeight]="maxHeight"
                 [showSingleGroupHeader]="showSingleGroupHeader"
                 [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+                [size]="size"
                 [min]="min"
                 [max]="max">
   </b-multi-list>
@@ -25,7 +26,8 @@
      [attr.aria-hidden]="!otherLabel"
      *ngIf="listLabel || otherLabel">{{otherLabel}}</p>
 
-  <b-basic-list [attr.id]="otherID"
+  <b-basic-list class="scroll-visible-alt"
+                [attr.id]="otherID"
                 [attr.aria-labelledby]="otherLabel ? otherID+'-label' : null"
                 [type]="type"
                 [items]="otherList$ | async"

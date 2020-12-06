@@ -17,4 +17,5 @@ export interface SideMenuOption {
   avatar?: SideMenuOptionAvatar;
   actions?: MenuItem[];
   disabled?: boolean;
+  iconTooltip?: string;
 }

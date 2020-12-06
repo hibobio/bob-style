@@ -24,6 +24,7 @@ export const sideMenuMock1: SideMenuOption[] = makeArray(4).map((i, index) => ({
   displayName: mockText(1),
   icon: Icons.folder,
   actions: menuMock,
+  iconTooltip: mockText(5),
 }));
 
 sideMenuMock1[3].disabled = true;

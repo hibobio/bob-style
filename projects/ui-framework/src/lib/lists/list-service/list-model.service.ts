@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { escapeRegExp, cloneDeep } from 'lodash';
-import { LIST_EL_HEIGHT } from '../list.consts';
+import {
+  LIST_EL_HEIGHT,
+  LIST_FOOTER_HEIGHT,
+  SELECT_MAX_ITEMS,
+} from '../list.consts';
 import {
   ListOption,
   ListHeader,
@@ -350,5 +354,43 @@ export class ListModelService {
     };
 
     return optionAvatar;
+  }
+
+  processMaxHeight({
+    maxHeight,
+    size = FormElementSize.regular,
+    hasFooter = true,
+    shouldDisplaySearch = true,
+  }: {
+    maxHeight: number;
+    size?: FormElementSize;
+    hasFooter?: boolean;
+    shouldDisplaySearch?: boolean;
+  }): {
+    listMaxHeight: number;
+    maxHeightItems: number;
+    maxHeight: number;
+  } {
+    const maxHeightDef =
+      FORM_ELEMENT_HEIGHT[size] * SELECT_MAX_ITEMS +
+      LIST_FOOTER_HEIGHT[size] +
+      FORM_ELEMENT_HEIGHT[size];
+
+    const formElSize = FORM_ELEMENT_HEIGHT[size];
+    const extrasSize =
+      (hasFooter ? LIST_FOOTER_HEIGHT[size] : 0) +
+      (shouldDisplaySearch ? formElSize : 0);
+
+    let listMaxHeight = (maxHeight || maxHeightDef) - extrasSize;
+
+    const maxHeightItems = Math.max(
+      Math.floor(listMaxHeight / formElSize),
+      SELECT_MAX_ITEMS
+    );
+
+    listMaxHeight = maxHeightItems * formElSize;
+    maxHeight = listMaxHeight + extrasSize;
+
+    return { maxHeightItems, listMaxHeight, maxHeight };
   }
 }

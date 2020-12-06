@@ -5,6 +5,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -24,6 +25,7 @@ import { ListChangeService } from '../list-change/list-change.service';
 import { MultiListAndSomething } from '../multi-list-and-chips/multi-list-and-something.interface';
 import { ListRow, ListViewConfig } from './multi-list-and-list.interface';
 import { MenuItem } from '../../navigation/menu/menu.interface';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
 @Component({
   selector: 'b-multi-list-and-list',
@@ -39,12 +41,14 @@ export class MultiListAndListComponent
   implements MultiListAndSomething<ListRow> {
   constructor(
     public host: ElementRef,
+    protected DOM: DOMhelpers,
     protected translate: TranslateService,
     protected listModelService: ListModelService,
     protected listChangeService: ListChangeService,
-    private cd: ChangeDetectorRef
+    protected zone: NgZone,
+    protected cd: ChangeDetectorRef
   ) {
-    super(translate, listModelService, listChangeService);
+    super(host, DOM, translate, listModelService, listChangeService, zone, cd);
   }
 
   @ViewChild(BasicListComponent, { static: true })

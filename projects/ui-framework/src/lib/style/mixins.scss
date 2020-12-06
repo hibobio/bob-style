@@ -340,6 +340,40 @@
   }
 }
 
+@mixin always-visible-scrollbar(
+  $width: 7px,
+  $margin: 2px,
+  $track-color: white
+) {
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+  }
+
+  &::-webkit-scrollbar:vertical {
+    width: $width + $margin * 2;
+  }
+
+  &::-webkit-scrollbar:horizontal {
+    height: $width + $margin * 2;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $track-color;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: $margin solid $track-color;
+    background-color: black(0.3);
+  }
+
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      background-color: black(0.35);
+    }
+  }
+}
+
 @mixin normalize-par {
   &:only-child {
     margin: 0;

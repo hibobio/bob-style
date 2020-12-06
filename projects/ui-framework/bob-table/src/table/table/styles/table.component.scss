@@ -209,6 +209,16 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
       background-color: $color-select-yellow;
     }
   }
+
+  .ag-body-viewport,
+  .ag-body-horizontal-scroll-viewport,
+  .ag-body-horizontal-scroll-container {
+    @include always-visible-scrollbar($margin: 0, $track-color: black(0.05));
+  }
+
+  .ag-body-horizontal-scroll-viewport + .ag-horizontal-right-spacer {
+    background-color: black(0.05);
+  }
 }
 
 // column remove (x) button

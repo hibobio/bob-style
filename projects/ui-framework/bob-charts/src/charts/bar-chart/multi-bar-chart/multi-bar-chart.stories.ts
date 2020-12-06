@@ -1,20 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  select,
-  boolean,
-  number,
-  object,
-  text,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentGroupType } from '../../../../../src/lib/consts';
 import { StoryBookLayoutModule } from '../../../../../src/lib/story-book-layout/story-book-layout.module';
 import { ChartsModule } from '../../charts.module';
-import {
-  MULTI_BAR_CHART_CATEGORIES,
-  MULTI_BAR_CHART_DATA_MOCK,
-} from '../../chart.mock';
+import { MULTI_BAR_CHART_CATEGORIES, MULTI_BAR_CHART_DATA_MOCK } from '../../chart.mock';
 import { ChartLegendPositionEnum } from '../../charts.interface';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
@@ -33,6 +23,8 @@ const template = `<b-multi-bar-chart
       [height]="height"
       [title]="title"
       [pointFormat]="pointFormat"
+      [stackType]="stackType"
+      [direction]="direction"
       #chart>
 </b-multi-bar-chart>
 
@@ -69,6 +61,8 @@ const note = `
   height (optional) | number | height of chart | 500
   title (optional) | string | title of chart | &nbsp;
   pointFormat (optional) | string | tooltip formatter | {series.name}: <b>{point.percentage:.1f}%</b>
+  stackType (optional) | 'normal' \/ 'stack' \/ 'stack-percent' | Multi bar chart stack options | 'normal'
+  direction (optional) | 'vertical' \/ 'horizontal' | sets the direction of the chart (bar \/ column) | 'vertical'
 
   #### Hiding left/bottom labels
   To disable "Values" word on the left, you can use:
@@ -94,6 +88,16 @@ story.add(
           'downloadChart',
           ['application/pdf', 'image/jpeg', 'image/png', 'image/svg+xml'],
           'image/jpeg'
+        ),
+        direction: select(
+          'direction',
+          ['vertical', 'horizontal'],
+          'vertical'
+        ),
+        stackType: select(
+          'stackType',
+          ['normal', 'stack', 'stack-percent'],
+          'normal'
         ),
         legendPosition: select(
           'legendPosition',

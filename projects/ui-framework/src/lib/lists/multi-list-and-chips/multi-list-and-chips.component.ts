@@ -6,6 +6,7 @@ import {
   OnInit,
   ElementRef,
   ViewChild,
+  NgZone,
 } from '@angular/core';
 import {
   itemID,
@@ -43,13 +44,14 @@ export class MultiListAndChipsComponent
   implements MultiListAndSomething<MlacChip>, OnInit {
   constructor(
     public host: ElementRef,
+    protected DOM: DOMhelpers,
     protected translate: TranslateService,
     protected listModelService: ListModelService,
     protected listChangeService: ListChangeService,
-    private DOM: DOMhelpers,
-    private cd: ChangeDetectorRef
+    protected zone: NgZone,
+    protected cd: ChangeDetectorRef
   ) {
-    super(translate, listModelService, listChangeService);
+    super(host, DOM, translate, listModelService, listChangeService, zone, cd);
   }
 
   @ViewChild(ChipListComponent, { static: true }) chipList: ChipListComponent;
@@ -150,7 +152,8 @@ export class MultiListAndChipsComponent
       chip.group
         ? this.listOptions$
             .getValue()
-            [chip.group.index].options.map((o) => o.id)
+            [chip.group.index].options.filter((o) => !o.disabled)
+            .map((o) => o.id)
         : chip.id
     );
   }

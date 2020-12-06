@@ -51,8 +51,9 @@ export const isDate = (value: any): boolean =>
 export const isNotEmptyArray = <T = any>(val: T, min = 0): boolean =>
   isArray(val) && val.length > min;
 
-export const isEmptyArray = (val: any): boolean =>
-  isNullOrUndefined(val) || (Array.isArray(val) && val.length === 0);
+export const isEmptyArray = (val: any, falsyIsEmpty = true): boolean =>
+  (falsyIsEmpty && isNullOrUndefined(val)) ||
+  (Array.isArray(val) && val.length === 0);
 
 export const isObject = (val: any): val is object =>
   !!val && val === Object(val) && typeof val !== 'function' && !isArray(val);
@@ -400,6 +401,20 @@ export const objectStringID = <T = GenericObject>(
   ).toLowerCase();
 };
 
+export const objectStringIDconfigured = <T = GenericObject>(
+  config: ObjectStringIDConfig | EqualByValuesConfig = {
+    limit: 400,
+    primitives: true,
+  }
+) => (obj: T): string => {
+  return objectStringID<T>(
+    config['sort'] !== false
+      ? (dataDeepSort<T>(obj, config?.ignoreProps || null) as T)
+      : obj,
+    config
+  );
+};
+
 export const objectGetPropertyDescriptor = (
   obj: any,
   key: string
@@ -566,7 +581,7 @@ export const splitArrayToChunks = <T = any>(
 // MAPS
 // ----------------------
 
-export const withMapItemsInIndexRange = <K = any, V = any>(
+export const withMapItemsInIndexRange = <K = unknown, V = unknown>(
   map: Map<K, V>,
   callback: (key: K, value: V) => void,
   startindex?: number,
@@ -586,7 +601,7 @@ export const withMapItemsInIndexRange = <K = any, V = any>(
   }
 };
 
-export const mapSplice = <K = any, V = any>(
+export const mapSplice = <K = unknown, V = unknown>(
   map: Map<K, V>,
   startindex: number,
   deleteCount?: number,
@@ -1006,12 +1021,9 @@ export const isEqualByValues = <T = any>(
   );
 };
 
-export const isEqualByValuesConfigured = (config: EqualByValuesConfig) => <
-  T = any
->(
-  dataA: T,
-  dataB: T
-): boolean => {
+export const isEqualByValuesConfigured = <T = any>(
+  config: EqualByValuesConfig
+) => (dataA: T, dataB: T): boolean => {
   return isEqualByValues<T>(dataA, dataB, config);
 };
 

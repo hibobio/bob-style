@@ -7,6 +7,7 @@ import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-to
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { IconsModule } from '../../icons/icons.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [SideMenuComponent],
@@ -17,6 +18,7 @@ import { IconsModule } from '../../icons/icons.module';
     ButtonsModule,
     AvatarModule,
     IconsModule,
+    MatTooltipModule,
   ],
   exports: [SideMenuComponent],
   providers: [EventManagerPlugins[0]],

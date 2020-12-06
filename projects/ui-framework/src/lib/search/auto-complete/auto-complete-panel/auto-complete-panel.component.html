@@ -3,9 +3,10 @@
      [ngStyle]="{height: options.length * listElHeight + 'px', maxHeight: maxHeight + 'px'}">
 
   <cdk-virtual-scroll-viewport #vScroll
-                               class="v-scroll"
+                               class="v-scroll scroll-visible-alt"
                                [itemSize]="listElHeight"
-                               maxBufferPx="{{8*listElHeight}}" minBufferPx="{{8*listElHeight}}">
+                               maxBufferPx="{{8*listElHeight}}"
+                               minBufferPx="{{8*listElHeight}}">
 
     <div class="options">
       <div (click)="optionClick(option)"
@@ -13,7 +14,8 @@
            *cdkVirtualFor="let option of options"
            class="option-select">
         <span [innerHTML]="option.value | highlight: searchValue"></span>
-        <b-caption *ngIf="option.subText" [innerHTML]="option.subText | highlight: searchValue"></b-caption>
+        <b-caption *ngIf="option.subText"
+                   [innerHTML]="option.subText | highlight: searchValue"></b-caption>
       </div>
     </div>
 

@@ -191,4 +191,6 @@ export enum Icons {
   zoom_in = 'b-icon-zoom-in',
   zoom_out = 'b-icon-zoom-out',
   zoom_out_alt = 'b-icon-zoom-out-alt',
+  arrow_drop_down = 'b-icon-arrow-drop-down',
+  arrow_drop_right = 'b-icon-arrow-drop-right',
 }
