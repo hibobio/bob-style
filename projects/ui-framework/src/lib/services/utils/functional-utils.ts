@@ -43,7 +43,7 @@ export const isArrayOrNull = <T = any>(val: T) =>
 
 export const isObjectOrNull = (val: any) => isObject(val) || val === null;
 
-export const isDate = (value: any): boolean =>
+export const isDate = (value: any): value is Date =>
   value instanceof Date &&
   typeof value.getMonth === 'function' &&
   String(value) !== 'Invalid Date';
@@ -825,6 +825,28 @@ export const monthIndex = (month: number | string, minusOne = true): number => {
     num = num - 1;
   }
   return Math.max(0, Math.min(11, num));
+};
+
+export const isSameDay = (
+  dateA: Date | string,
+  dateB: Date | string
+): boolean => {
+  const isTruthyStringOrDate = (smth: any) =>
+    Boolean(smth) && (isString(smth) || isDate(smth));
+
+  if (
+    [isTruthyStringOrDate(dateA), isTruthyStringOrDate(dateB)].join() !==
+      [isTruthyStringOrDate(dateB), isTruthyStringOrDate(dateA)].join() ||
+    (isString(dateA) && isString(dateB) && dateA !== dateB) ||
+    (isDate(dateA) &&
+      isDate(dateB) &&
+      [dateA.getFullYear(), dateA.getMonth(), dateA.getDay()].join() !==
+        [dateB.getFullYear(), dateB.getMonth(), dateB.getDay()].join())
+  ) {
+    return false;
+  }
+
+  return true;
 };
 
 // ----------------------

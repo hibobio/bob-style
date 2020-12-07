@@ -57,4 +57,7 @@ export class WindowRef {
   get nativeWindow(): WindowLike {
     return _window();
   }
+  isEmbedMode() {
+    return this.nativeWindow.parent !== _window();
+  }
 }
