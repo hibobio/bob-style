@@ -262,6 +262,7 @@ export const getWindowRefMock = () =>
         }, 0);
       },
     } as any) as WindowLike,
+    isEmbedMode: () => false,
   });
 
 export const WindowRefProvideMock = (mock: Mock<WindowRef> = null) => ({

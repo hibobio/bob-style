@@ -273,7 +273,7 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
 
   .first-in-range {
     .mat-calendar-body-cell-content,
-    &:after {
+    &:not(:last-child):after {
       border-top-left-radius: 100%;
       border-bottom-left-radius: 100%;
       border-top-right-radius: 0;

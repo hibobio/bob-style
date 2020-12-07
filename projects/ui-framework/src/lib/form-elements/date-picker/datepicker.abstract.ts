@@ -199,7 +199,9 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   // extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
-    this.allPickers((picker) => this.closePicker(picker));
+    if (!changes.value || Object.keys(changes).length !== 1) {
+      this.allPickers((picker) => this.closePicker(picker));
+    }
 
     if (hasChanges(changes, ['minDate'])) {
       this.minDate = dateOrFail(changes.minDate.currentValue);
