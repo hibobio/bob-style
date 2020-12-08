@@ -71,6 +71,7 @@ const FIT_TEXT_STYLES_BY_TYPE = {
         white-space: nowrap;
         min-width: 0;
         max-width: 100%;
+        width: 100%;
       }
       span {
         will-change: font-size;

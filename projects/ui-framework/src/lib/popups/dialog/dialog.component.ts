@@ -43,7 +43,9 @@ export class DialogComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<DialogComponent>,
     private cdr: ChangeDetectorRef,
     private windowRef: WindowRef
-  ) {}
+  ) {
+    this.isEmbedMode = this.windowRef.isEmbedMode();
+  }
 
   @Input() dialogTitle: string;
   @Input() dialogButtons: DialogButtons;
@@ -73,24 +75,30 @@ export class DialogComponent implements OnInit, OnDestroy {
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
 
+  private readonly isEmbedMode: boolean;
+
   private confirmationControlFromAbove = false;
 
   @HostListener('window:popstate') closeModalOnHistoryBack() {
-    this.closeDialog();
+    if (!this.isEmbedMode) {
+      this.closeDialog();
+    }
   }
 
   ngOnInit(): void {
-    this.windowRef.nativeWindow.history.pushState(
-      {
-        modal: true,
-        desc: 'modal is open',
-      },
-      null
-    );
+    if (!this.isEmbedMode) {
+      this.windowRef.nativeWindow.history.pushState(
+        {
+          modal: true,
+          desc: 'modal is open',
+        },
+        null
+      );
+    }
   }
 
   ngOnDestroy(): void {
-    if (this.windowRef.nativeWindow.history.state?.modal) {
+    if (!this.isEmbedMode && this.windowRef.nativeWindow.history.state?.modal) {
       this.windowRef.nativeWindow.history.back();
     }
     this.dialogRef.close();

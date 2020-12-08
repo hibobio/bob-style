@@ -11,7 +11,7 @@
           [attr.data-collapsible]="!!collapsible"
           [attr.aria-controls]="(collapsible && panelID) || null"
           [attr.aria-expanded]="!collapsible ? null : !!expanded"
-          [attr.data-icon-before]="!collapsible ? null : expanded ? 'chevron-down' : 'chevron-right'"
+          [attr.data-icon-before]="!collapsible ? null : expanded ? 'arrow-drop-down' : 'arrow-drop-right'"
           (click)="togglePanel()">
 
     <div *ngIf="title"

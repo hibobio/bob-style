@@ -51,6 +51,7 @@ import { LocaleFormat, DateFormatFullDate, DateFormat } from '../../types';
 import { Overlay } from '@angular/cdk/overlay';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { UtilsService } from '../../services/utils/utils.service';
+import { isSameDay } from 'date-fns';
 
 export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
   const strategy = () => overlay.scrollStrategies.close();
@@ -198,7 +199,9 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   // extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
-    this.allPickers((picker) => this.closePicker(picker));
+    if (!changes.value || Object.keys(changes).length !== 1) {
+      this.allPickers((picker) => this.closePicker(picker));
+    }
 
     if (hasChanges(changes, ['minDate'])) {
       this.minDate = dateOrFail(changes.minDate.currentValue);
@@ -266,7 +269,9 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     path = 'value',
     event = [InputEventType.onBlur]
   ) {
-    if (this.writingValue) {
+    const currentValue = get(this, path);
+
+    if (currentValue && value && isSameDay(currentValue, value)) {
       this.writingValue = false;
       return;
     }

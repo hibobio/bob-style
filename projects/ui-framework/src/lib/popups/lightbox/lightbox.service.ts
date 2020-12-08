@@ -21,9 +21,13 @@ export class LightboxService {
     private utilsService: UtilsService,
     private windowRef: WindowRef,
     private zone: NgZone
-  ) {}
+  ) {
+    this.isEmbedMode = this.windowRef.isEmbedMode();
+  }
 
   private subs: Subscription[] = [];
+
+  private readonly isEmbedMode: boolean;
 
   private overlayConfig: OverlayConfig = {
     disposeOnNavigation: true,
@@ -70,18 +74,22 @@ export class LightboxService {
         .detachments()
         .pipe(take(1));
 
-      this.windowRef.nativeWindow.history.pushState(
-        {
-          lightbox: true,
-          desc: 'lightbox is open',
-        },
-        null
-      );
+      if (!this.isEmbedMode) {
+        this.windowRef.nativeWindow.history.pushState(
+          {
+            lightbox: true,
+            desc: 'lightbox is open',
+          },
+          null
+        );
+      }
 
       this.subs.push(
         merge(
           fromEvent(this.lightbox.overlayRef.overlayElement, 'click'),
-          fromEvent(this.windowRef.nativeWindow as Window, 'popstate'),
+          fromEvent(this.windowRef.nativeWindow as Window, 'popstate').pipe(
+            filter(() => !this.isEmbedMode)
+          ),
           this.utilsService.getWindowKeydownEvent(true).pipe(
             filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)),
             insideZone(this.zone)
@@ -113,7 +121,10 @@ export class LightboxService {
     this.lightbox.overlayRef = null;
     this.lightbox = null;
 
-    if (this.windowRef.nativeWindow.history.state?.lightbox) {
+    if (
+      !this.isEmbedMode &&
+      this.windowRef.nativeWindow.history.state?.lightbox
+    ) {
       this.windowRef.nativeWindow.history.back();
     }
 

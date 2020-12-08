@@ -39,8 +39,8 @@
         <span *ngIf="options.length > 1 && !header.groupIsOption"
               class="chevron b-icon-medium"
               [ngClass]="{
-                'b-icon-chevron-down': !header.isCollapsed,
-                'b-icon-chevron-right': header.isCollapsed
+                'b-icon-arrow-drop-down': !header.isCollapsed,
+                'b-icon-arrow-drop-right': header.isCollapsed
               }"></span>
         <div class="header-option">
           <span *ngIf="header.hasCheckbox && !readonly"
