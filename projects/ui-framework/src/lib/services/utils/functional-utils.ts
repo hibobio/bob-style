@@ -116,7 +116,7 @@ export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
 export const isEmpty = (smth: any, fuzzy = false): boolean =>
   isFalsyOrEmpty(smth, true);
 
-// truthy, string, number or null
+// truthy, string, number, boolean or null
 export const isValuevy = (smth: any): boolean =>
   smth !== undefined &&
   (Boolean(smth) ||
@@ -433,6 +433,26 @@ export const objectGetPropertyDescriptor = (
   }
 
   return descriptor;
+};
+
+// objectGetDeepestValid(error, 'error.error')
+export const objectGetDeepestValid = <T = any, V = any>(
+  obj: T,
+  path: string
+): V => {
+  if (!isObject(obj) || !isString(path)) {
+    return undefined;
+  }
+  const pathParts = path.split('.');
+  let index = 0;
+  let value: T | V = obj;
+
+  while (!isNullOrUndefined(value[pathParts[index]])) {
+    value = value[pathParts[index]];
+    ++index;
+  }
+
+  return value as V;
 };
 
 // ----------------------

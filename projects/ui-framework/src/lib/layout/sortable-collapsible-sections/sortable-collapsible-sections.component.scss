@@ -33,27 +33,33 @@
   transform: translateY(-50%);
 }
 
-:host ::ng-deep b-collapsible-section,
-::ng-deep .cdk-drag-preview.draggable-section b-collapsible-section {
+:host
+  ::ng-deep
+  .draggable-section
+  > b-collapsible-section
+  > .bcp-section
+  > .bcp-header,
+::ng-deep
+  .cdk-drag-preview.draggable-section
+  b-collapsible-section
   header.bcp-header {
-    position: relative;
-    padding-top: times8(0.5);
-    padding-bottom: times8(0.5);
+  position: relative;
+  padding-top: times8(0.5);
+  padding-bottom: times8(0.5);
 
-    @include b-icon(
-      $elem: '&:after',
-      $icon: 'drag-alt',
-      $size: 'medium',
-      $color: 'light',
-      $hover: true
-    ) {
-      order: -1;
-      margin-right: times8(1);
-      margin-left: times8(-2);
-      width: times8(4);
-      height: times8(4);
-      line-height: times8(4);
-    }
+  @include b-icon(
+    $elem: '&:after',
+    $icon: 'drag-alt',
+    $size: 'medium',
+    $color: 'light',
+    $hover: true
+  ) {
+    order: -1;
+    margin-right: times8(1);
+    margin-left: times8(-2);
+    width: times8(4);
+    height: times8(4);
+    line-height: times8(4);
   }
 }
 

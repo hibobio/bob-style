@@ -8,7 +8,10 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { QuickFilterChangeEvent, QuickFilterConfig } from './quick-filter.interface';
+import {
+  QuickFilterChangeEvent,
+  QuickFilterConfig,
+} from './quick-filter.interface';
 import { QuickFilterSelectType } from './quick-filter.enum';
 import { has } from 'lodash';
 import { SingleSelectComponent } from '../../lists/single-select/single-select.component';
@@ -24,7 +27,7 @@ const QUICK_FILTER_CONFIG_DEF = {
   showSingleGroupHeader: false,
   showNoneOption: true,
   startWithGroupsCollapsed: true,
-  disabled: false
+  disabled: false,
 };
 
 @Component({
@@ -57,6 +60,7 @@ export class QuickFilterComponent implements OnChanges {
         ...changes.quickFilterConfig.currentValue,
       };
       this.hasValue =
+        this.quickFilterConfig.value ||
         this.listModelService.getSelectedIDs(this.quickFilterConfig.options)
           .length > 0;
     }

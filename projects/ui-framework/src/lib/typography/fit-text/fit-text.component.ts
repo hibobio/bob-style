@@ -136,7 +136,7 @@ export class FitTextComponent implements OnInit, OnDestroy {
             let fontSize = Math.floor(
               (Math.max(0, hostRect.width - FIT_TEXT_SAFETY_GAP) *
                 (FIT_TEXT_CHAR_RATIO_BY_TYPE[fontType] || 1.4)) /
-                (text?.length || 0)
+                String(text ?? '').length
             );
 
             if (stepped) {
