@@ -194,7 +194,8 @@ describe('TableComponent', () => {
 
       expect(spyTableUtilsService.getGridColumnDef).toHaveBeenCalledWith(
         columnDefsMock,
-        null
+        null,
+        false
       );
 
       expect(component.gridColumnDefs).toEqual(columnDefsMock);

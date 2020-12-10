@@ -64,6 +64,7 @@ const template = `<b-table #table
     }"
     [enablePager]="enablePager"
     [emptyStateConfig]="emptyStateConfig"
+    [enableRowDrag]="enableRowDrag"
     (rowClicked)="rowClicked($event)"
     (cellClicked)="cellClicked($event)"
     (selectionChanged)="selectionChanged($event); onSelectionChanged($event)"
@@ -149,7 +150,8 @@ const note = `
   [removeColumnButtonEnabled] | boolean | adds (x) button to column header | false
   [shouldAutoSizeColumns] | boolean | enable auto size | true
   [styleConfig] | TableStyleConfig | style config (disableRowHoverBgColor, showColumnBorders) | {}
-  [enablePager] | boolean | enable pagination
+  [enablePager] | boolean | enable pagination | false
+  [enableRowDrag] | boolean | enable row dragging | false
   [pagerConfig] | PagerConfig | config for pagination (sliceStep, sliceMax, sliceSize)
   [emptyStateConfig] | EmptyStateConfig | config for the no-row-data state
   (pagerPageSizeChange) | EventEmitter<wbr>&lt;number&gt; | emits when page size changes | &nbsp;
@@ -234,6 +236,7 @@ function tableStoryFactory({
     disableRowHoverBgColor: boolean('disableRowHoverBgColor', false, 'Props'),
     showColumnBorders: boolean('showColumnBorders', false, 'Props'),
     enablePager: boolean('enablePager', true, 'Props'),
+    enableRowDrag: boolean('enableRowDrag', false, 'Props'),
     emptyStateConfig: object(
       'emptyStateConfig',
       {
