@@ -15,37 +15,39 @@ export class log {
     color = null
   ) {
     things = asArray(things);
+    const addToTag =
+      things.length > 1 && isString(things[0]) && things[0].length < 20;
     return tag
       ? console[what](
-          `%c[${tag}]:${isString(things[0]) ? ` ${things[0]}` : ''}`,
+          `%c[${tag}]:${addToTag ? ` ${things[0]}` : ''}`,
           `background: ${
             color || '#535353'
           }; color: white; padding: 3px; font-size: 9px;`,
-          ...things.slice(1)
+          ...(addToTag ? things.slice(1) : things)
         )
-      : console.log(...things);
+      : console[what](...things);
   }
 
   static clr() {
     console.clear();
   }
 
-  static me(things: any[], tag?: string) {
+  static me(things: any | any[], tag?: string) {
     this.do('log', things, tag, '#535353');
   }
-  static inf(things: any[], tag?: string) {
+  static inf(things: any | any[], tag?: string) {
     this.do('info', things, tag, '#4b95ec');
   }
-  static scs(things: any[], tag?: string) {
+  static scs(things: any | any[], tag?: string) {
     this.do('log', things, tag, '#0d853d');
   }
-  static wrn(things: any[], tag?: string) {
+  static wrn(things: any | any[], tag?: string) {
     this.do('warn', things, tag, '#ff8100');
   }
-  static atn(things: any[], tag?: string) {
+  static atn(things: any | any[], tag?: string) {
     this.do('log', things, tag, '#ff8100');
   }
-  static err(things: any[], tag?: string) {
+  static err(things: any | any[], tag?: string) {
     this.do('error', things, tag, '#cc2748');
   }
 
