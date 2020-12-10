@@ -26,6 +26,7 @@ import {
 import { Keys } from '../../enums';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { LabelValue } from './label-value.interface';
+import { InfoTooltip } from '../../popups/info-tooltip/info-tooltip.interface';
 
 @Component({
   selector: 'b-label-value',
@@ -60,6 +61,7 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
   @Input() valueMaxLines: number;
   @Input() expectChanges = false;
   @Input() tooltipType = TruncateTooltipType.css;
+  @Input() labelDescription: InfoTooltip;
 
   @Input() icon: Icons;
   @Input() iconPosition: IconPosition = IconPosition.left;

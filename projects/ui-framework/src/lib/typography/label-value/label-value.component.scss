@@ -135,6 +135,11 @@ $BLVTypeMap: (
   min-width: 0;
 }
 
+b-info-tooltip {
+  margin-left: times8(1);
+  line-height: 0;
+}
+
 :host::ng-deep > :not(.blv-icon):not(.blv-label):not(.blv-value) {
   order: 4;
 }

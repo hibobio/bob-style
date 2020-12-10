@@ -16,6 +16,14 @@
                       [expectChanges]="expectChanges"
                       [text]="label"></b-truncate-tooltip>
   <ng-container *ngIf="!labelMaxLines">{{label}}</ng-container>
+  <b-info-tooltip *ngIf="labelDescription"
+                  [title]="labelDescription.title"
+                  [iconSize]="labelDescription.iconSize"
+                  [icon]="labelDescription.icon"
+                  [text]="labelDescription.text"
+                  [link]="labelDescription.link"
+                  (linkClicked)="labelDescription.linkClicked()">
+  </b-info-tooltip>
 </h6>
 
 <p *ngIf="value"

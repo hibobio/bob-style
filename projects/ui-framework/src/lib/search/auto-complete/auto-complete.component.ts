@@ -81,20 +81,28 @@ export class AutoCompleteComponent implements OnInit, OnChanges, OnDestroy {
   private templatePortal: TemplatePortal;
   public panelOpen = false;
   private getFilteredOptions: () => AutoCompleteOption[] = this.skipFiltering;
+  private changeOptionsFlow: (changes: SimpleChanges) => void = this.changeOptions;
 
   ngOnInit(): void {
     this.getFilteredOptions = (this.skipOptionsFiltering) ? this.skipFiltering : this.filterOptions;
+    this.changeOptionsFlow = (this.skipOptionsFiltering) ? this.changeOptionsAndOpenPanel : this.changeOptions;
   }
 
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'options')) {
-      this.options = changes.options.currentValue;
-      this.filteredOptions = this.getFilteredOptions();
-      if (this.skipOptionsFiltering) {
-        this.openPanel();
-      }
+      this.changeOptionsFlow(changes);
     }
+  }
+
+  private changeOptions(changes: SimpleChanges) {
+    this.options = changes.options.currentValue;
+    this.filteredOptions = this.getFilteredOptions();
+  }
+
+  private changeOptionsAndOpenPanel(changes: SimpleChanges) {
+    this.changeOptions(changes);
+    this.openPanel();
   }
 
   onSearchChange(searchVal: string): void {

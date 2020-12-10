@@ -3,7 +3,6 @@ import {
   text,
   withKnobs,
   select,
-  boolean,
   number,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
@@ -15,6 +14,8 @@ import { randomNumber } from '../../services/utils/functional-utils';
 import { mockText } from '../../mock.const';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { LabelValueModule } from './label-value.module';
+import { object } from '@storybook/addon-knobs';
+import { LinkColor, LinkTarget } from '../../indicators/link/link.enum';
 
 const story = storiesOf(ComponentGroupType.Typography, module).addDecorator(
   withKnobs
@@ -26,6 +27,7 @@ const templateAlt = `
       type:type,
       textAlign:textAlign,
       label:label,
+      labelDescription:labelDescription,
       value:value,
       labelMaxLines:labelMaxLines,
       valueMaxLines:valueMaxLines,
@@ -282,6 +284,7 @@ const note = `
   which allow to put the icon inside label or value | left
   [iconSize] | IconSize | icon size | large (small if positioned inside label or value)
   [iconColor] | IconColor | icon color | null
+  [labelDescription] | InfoTooltip | All properties needed for the <b-info-tooltip> component | undefined
   (clicked) | EventEmitter | emits when component is clicked
   (labelClicked) | EventEmitter | emits when label is clicked
   (valueClicked) | EventEmitter | emits when value is clicked
@@ -307,6 +310,21 @@ story.add(
         type: select('type', Object.values(LabelValueType), LabelValueType.one),
         label: text('label', mockText(randomNumber(1, 3))),
         value: text('value', mockText(randomNumber(4, 6))),
+        labelDescription: object('labelDescription', {
+          title: mockText(3),
+          text: mockText(7),
+          iconSize: IconSize.small,
+          icon: Icons.info_outline,
+          linkClicked: () => {
+            console.log('LINK WAS CLICKED');
+          },
+          link: {
+            text: mockText(2),
+            url: 'https://app.hibob.com',
+            color: LinkColor.primary,
+            target: LinkTarget.blank,
+          }
+        }),
 
         textAlign: select(
           'textAlign',
