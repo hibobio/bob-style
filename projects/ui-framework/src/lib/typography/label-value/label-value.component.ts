@@ -22,6 +22,7 @@ import {
   hasChanges,
   isObject,
   objectRemoveEntriesByValue,
+  isFunction,
 } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
@@ -80,6 +81,7 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
   @Output() iconClicked: EventEmitter<
     MouseEvent | KeyboardEvent
   > = new EventEmitter<MouseEvent | KeyboardEvent>();
+  @Output() linkClicked: EventEmitter<void> = new EventEmitter<void>();
 
   @HostBinding('attr.data-type') @Input() type: LabelValueType =
     LabelValueType.one;
@@ -154,6 +156,15 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.hostRef.nativeElement.dataset.initialized = 'true';
+  }
+
+  onTooltipLinkClick(): void {
+    if (isFunction(this.labelDescription.linkClicked)) {
+      this.labelDescription.linkClicked();
+    }
+    if (this.linkClicked.observers.length > 0) {
+      this.linkClicked.emit();
+    }
   }
 
   private emitEvents($event: MouseEvent | KeyboardEvent): void {

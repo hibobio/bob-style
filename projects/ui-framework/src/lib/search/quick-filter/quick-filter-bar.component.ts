@@ -9,14 +9,14 @@ import {
   ElementRef,
   AfterViewInit,
   ChangeDetectorRef,
-  NgZone, HostBinding,
+  NgZone,
+  HostBinding,
 } from '@angular/core';
 import {
   QuickFilterBarChangeEvent,
   QuickFilterChangeEvent,
   QuickFilterConfig,
 } from './quick-filter.interface';
-import { chain, has } from 'lodash';
 import { ListChangeService } from '../../lists/list-change/list-change.service';
 import { ListModelService } from '../../lists/list-service/list-model.service';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
@@ -24,6 +24,7 @@ import { ButtonType } from '../../buttons/buttons.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { hasChanges } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-quick-filter-bar',
@@ -78,18 +79,23 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (has(changes, 'quickFilters')) {
+    if (hasChanges(changes, ['quickFilters'], true)) {
       this.quickFilters = changes.quickFilters.currentValue;
-      this.quickFiltersChanges = chain(this.quickFilters)
-        .map((qf) => ({
-          key: qf.key,
-          listChange: this.listChangeService.getListChange(
-            qf.options,
-            this.listModelService.getSelectedIDs(qf.options)
-          ),
-        }))
-        .keyBy('key')
-        .value();
+      this.quickFiltersChanges =
+        this.quickFilters?.reduce(
+          (changes: QuickFilterBarChangeEvent, qf: QuickFilterConfig) => {
+            changes[qf.key] = {
+              key: qf.key,
+              listChange: this.listChangeService.getListChange(
+                qf.options,
+                qf.value || this.listModelService.getSelectedIDs(qf.options)
+              ),
+            };
+
+            return changes;
+          },
+          {}
+        ) || {};
     }
   }
 
