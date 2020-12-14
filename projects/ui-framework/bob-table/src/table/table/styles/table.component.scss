@@ -307,6 +307,16 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
   }
 }
 
+[data-show-actions-on-hover='true'] ::ng-deep {
+
+  .ag-row:not(.ag-row-hover) {
+
+    .b-actions-cell {
+      visibility: hidden;
+    }
+  }
+}
+
 [hidden] {
   display: block;
   visibility: hidden !important;

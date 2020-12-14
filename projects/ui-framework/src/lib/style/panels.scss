@@ -239,6 +239,14 @@ html:not(.cdk-global-scrollblock) {
   opacity: 0;
 }
 
+.panel-ghost {
+  margin-top: 4px;
+  .b-select-panel:after,
+  .panel-position:after {
+    display: none;
+  }
+}
+
 .b-auto-complete-panel {
   flex-direction: column;
   justify-content: inherit;

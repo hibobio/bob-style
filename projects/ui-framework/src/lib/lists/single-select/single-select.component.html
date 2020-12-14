@@ -1,49 +1,64 @@
-<b-form-element-label *ngIf="label && !hideLabelOnFocus"
+<b-form-element-label *ngIf="!ghost && label && !hideLabelOnFocus"
                       class="bfe-label"
                       [label]="label"
                       [description]="description"
                       [fieldId]="id">
 </b-form-element-label>
-
-<div class="bfe-wrap has-suffix"
-     [ngClass]="{
+<div cdkOverlayOrigin (click)="openPanel()"
+      [ngClass]="{
+        'bfe-wrap': !ghost,
+        'has-suffix': !ghost,
         'has-prefix': hasPrefix || showPrefix || valueAvatar,
         focused: panelOpen,
         'panel-open': panelOpen,
         'panel-above': positionClassList['panel-above'],
         'panel-below': positionClassList['panel-below']
       }"
-     (click)="openPanel()"
-     cdkOverlayOrigin>
+>
+  <ng-container *ngIf="!ghost; else ghostTmp">
+    <div *ngIf="(hasPrefix || showPrefix) && !valueAvatar"
+         class="bfe-prefix"
+         #prefix>
+      <ng-content select="[input-prefix]"></ng-content>
+    </div>
 
-  <div *ngIf="(hasPrefix || showPrefix) && !valueAvatar"
-       class="bfe-prefix"
-       #prefix>
-    <ng-content select="[input-prefix]"></ng-content>
-  </div>
+    <div *ngIf="valueAvatar"
+         class="bfe-prefix">
+      <b-avatar-image [avatar]="valueAvatar"></b-avatar-image>
+    </div>
 
-  <div *ngIf="valueAvatar"
-       class="bfe-prefix">
-    <b-avatar-image [avatar]="valueAvatar"></b-avatar-image>
-  </div>
+    <div #input
+         class="bfe-input trigger-input"
+         tabindex="0"
+         [b-truncate-tooltip]="1"
+         [expectChanges]="true"
+         [trustCssVars]="true"
+         [type]="tooltipType"
+         [tooltipClass]="tooltipClass"
+         [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ? label : placeholder) : null"
+         [text]="displayValue"
+         (focus)="openPanel()"></div>
 
-  <div #input
-       class="bfe-input trigger-input"
-       tabindex="0"
-       [b-truncate-tooltip]="1"
-       [expectChanges]="true"
-       [trustCssVars]="true"
-       [type]="tooltipType"
-       [tooltipClass]="tooltipClass"
-       [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ? label : placeholder) : null"
-       [text]="displayValue"
-       (focus)="openPanel()"></div>
-
-  <div class="bfe-suffix">
+    <div class="bfe-suffix">
     <span class="select-chevron b-icon-medium"
           [ngClass]="{'b-icon-chevron-down': !panelOpen, 'b-icon-chevron-up': panelOpen}"></span>
-  </div>
+    </div>
+  </ng-container>
 </div>
+
+<ng-template #ghostTmp>
+  <div class="flx flx-row-align-y">
+    <strong *ngIf="label" class="mrg-r-4">{{label}}</strong>
+    <span *ngIf="displayValue" class="mrg-r-4">{{displayValue}}</span>
+    <b-icon
+      class="select-chevron"
+      [icon]="icons.arrow_drop_down"
+      [size]="iconSize.medium"
+      [color]="iconColor.dark"
+      [rotate]="panelOpen ? '180' : null"
+    ></b-icon>
+  </div>
+</ng-template>
 
 <p b-input-message
    *ngIf="hintMessage || warnMessage || errorMessage"
@@ -54,7 +69,7 @@
 
 <ng-template #templateRef>
   <div class="b-select-panel"
-       [ngClass]="positionClassList">
+       [ngClass]="!ghost && positionClassList">
     <b-single-list class="b-select-list"
                    [options]="options"
                    [optionsDefault]="optionsDefault"

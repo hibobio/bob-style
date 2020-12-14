@@ -29,10 +29,10 @@ $table-padding-x: 15px;
   background-position: $align;
 }
 
-@mixin ag-icon($b-icon, $color: dark, $margin: 5px) {
+@mixin ag-icon($icon, $color: dark, $margin: 5px, $size: small) {
   margin-right: $margin;
   background: none;
-  @include b-icon($icon: $b-icon, $size: small, $color: $color, $hover: false);
+  @include b-icon($icon: $icon, $size: $size, $color: $color, $hover: false);
   cursor: pointer;
 
   &:before {

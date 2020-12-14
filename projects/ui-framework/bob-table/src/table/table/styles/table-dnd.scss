@@ -5,14 +5,14 @@
 :host::ng-deep [data-row-drag-enabled='true'] {
   .ag-icon-grip {
     display: block;
-    @include ag-icon('drag-alt', $color: normal, $margin: null);
+    @include ag-icon('drag-alt', $color: light, $margin: null, $size: medium);
     margin-left: -1px;
     margin-right: 10px;
     cursor: grab;
   }
 
   .ag-row-hover .ag-icon-grip {
-    @include icon-color(dark, $hover: false);
+    @include icon-color(normal, $hover: false);
   }
 
   .ag-row-dragging.ag-row-focus {

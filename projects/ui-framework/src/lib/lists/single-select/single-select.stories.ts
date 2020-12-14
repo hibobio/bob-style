@@ -50,6 +50,7 @@ const template = `
                  [placeholder]="placeholder || undefined"
                  [description]="description"
                  [showNoneOption]="showNoneOption"
+                 [ghost]="ghost"
                  [showSingleGroupHeader]="showSingleGroupHeader"
                  [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                  [defaultIcon]="defaultIcon"
@@ -74,6 +75,7 @@ const template = `
 const templateForNotes = `<b-single-select [value]="[value]"
                  [options]="options"
                  [label]="label"
+                 [ghost]="ghost"
                  [placeholder]="placeholder"
                  [description]="description"
                  [showNoneOption]="showNoneOption"
@@ -118,6 +120,7 @@ const note = `
    If present, the \`.selected\` props of \`[options]\` will be ignored, \
    and instead \`[value]\` will be used to select option | &nbsp;
   [showNoneOption] | boolean | displays the no-selection option.<br>\
+  [ghost] | boolean | displays single select without input frame around (minimal footprint)<br>\
   **Note:** If \`[required]\` is true, \`[showNoneOption]\` will automatically set to false | true
 
   ${listSelectsPropsDoc}
@@ -150,6 +153,7 @@ const toAdd = () => ({
     ),
 
     showNoneOption: boolean('showNoneOption', true, 'Props'),
+    ghost: boolean('ghost', false, 'Props'),
     showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
     startWithGroupsCollapsed: boolean(
       'startWithGroupsCollapsed',

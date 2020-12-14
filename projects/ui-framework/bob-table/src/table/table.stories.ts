@@ -60,7 +60,8 @@ const template = `<b-table #table
     [shouldAutoSizeColumns]="shouldAutoSizeColumns"
     [styleConfig]="{
         disableRowHoverBgColor: disableRowHoverBgColor,
-        showColumnBorders: showColumnBorders
+        showColumnBorders: showColumnBorders,
+        showActionsOnHover: showActionsOnHover
     }"
     [enablePager]="enablePager"
     [emptyStateConfig]="emptyStateConfig"
@@ -235,6 +236,7 @@ function tableStoryFactory({
     shouldAutoSizeColumns: boolean('shouldAutoSizeColumns', true, 'Props'),
     disableRowHoverBgColor: boolean('disableRowHoverBgColor', false, 'Props'),
     showColumnBorders: boolean('showColumnBorders', false, 'Props'),
+    showActionsOnHover: boolean('showActionsOnHover', false, 'Props'),
     enablePager: boolean('enablePager', true, 'Props'),
     enableRowDrag: boolean('enableRowDrag', false, 'Props'),
     emptyStateConfig: object(

@@ -224,7 +224,7 @@ describe('TableUtilsService', () => {
           cellStyle: {},
           resizable: true,
           sortable: false,
-          sort: SortDirections.Asc,
+          sort: null,
           rowDrag: true
         },
         {

@@ -65,6 +65,7 @@ export interface ColumnsOrderChangedEvent extends ColumnsChangedEvent {
 export interface TableStyleConfig {
   disableRowHoverBgColor?: boolean;
   showColumnBorders?: boolean;
+  showActionsOnHover?: boolean;
 }
 
 export interface ColumnDefConfig {

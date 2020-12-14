@@ -1,3 +1,5 @@
+@import '../../style/common-imports';
+
 .trigger-input {
   cursor: pointer;
   position: static;
@@ -47,6 +49,8 @@
   b-avatar-image[data-size='micro'] {
     --avatar-gap: -15px;
   }
+
+
 }
 
 :host[data-size='smaller'] ::ng-deep {

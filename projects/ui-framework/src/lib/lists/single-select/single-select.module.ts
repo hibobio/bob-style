@@ -13,6 +13,7 @@ import { InputMessageModule } from '../../form-elements/input-message/input-mess
 import { FormElementLabelModule } from '../../form-elements/form-element-label/form-element-label.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
+import { IconsModule } from '../../icons/icons.module';
 
 @NgModule({
   declarations: [SingleSelectComponent],
@@ -28,6 +29,7 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
     FormElementLabelModule,
     TranslateModule,
     AvatarModule,
+    IconsModule,
   ],
   exports: [SingleSelectComponent],
   providers: [ListChangeService, ListModelService],

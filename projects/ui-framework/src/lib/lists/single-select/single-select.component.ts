@@ -4,7 +4,7 @@ import {
   ViewContainerRef,
   NgZone,
   ChangeDetectorRef,
-  Input,
+  Input, OnInit, OnChanges,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
@@ -30,7 +30,7 @@ import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 import { TranslateService } from '@ngx-translate/core';
 import { Avatar } from '../../avatar/avatar/avatar.interface';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
-import { IconColor } from '../../icons/icons.enum';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 
 @Component({
   selector: 'b-single-select',
@@ -53,7 +53,10 @@ import { IconColor } from '../../icons/icons.enum';
     { provide: BaseFormElement, useExisting: SingleSelectComponent },
   ],
 })
-export class SingleSelectComponent extends BaseSelectPanelElement {
+export class SingleSelectComponent extends BaseSelectPanelElement implements OnChanges {
+  readonly icons = Icons;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
   constructor(
     protected listChangeSrvc: ListChangeService,
     protected modelSrvc: ListModelService,
@@ -90,6 +93,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
   }
 
   @Input() showNoneOption = true;
+  @Input() ghost = false;
 
   public valueAvatar: Avatar;
 
@@ -108,6 +112,14 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
       this.showValueShowcase !== false && this.getValueAvatar(option);
 
     return option?.value;
+  }
+
+  ngOnChanges(changes) {
+    if (changes.ghost) {
+      this.panelClassList = this.panelClassList.filter(className => className !== 'panel-ghost');
+      this.ghost && this.panelClassList.push('panel-ghost');
+    }
+    super.ngOnChanges(changes);
   }
 
   protected emitChange(

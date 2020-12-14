@@ -48,6 +48,7 @@ export class TableUtilsService {
       ...colDef,
       resizable: get(colDef, 'resizable', true),
       sortable: !enableRowDrag && get(colDef, 'sortable', true),
+      ...(colDef.sort && { sort: enableRowDrag ? null : colDef.sort }),
       menuTabs: [],
       cellClass: this.getCellClass(colDef),
       cellStyle: this.getCellStyle(colDef),
