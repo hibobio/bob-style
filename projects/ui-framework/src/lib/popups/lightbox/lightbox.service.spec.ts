@@ -29,6 +29,8 @@ import {
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { MockComponent } from 'ng-mocks';
 import { IconComponent } from '../../icons/icon.component';
+import { ComponentRendererService } from '../../services/component-renderer/component-renderer.service';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 const detectChanges = (lightbox: LightboxData) => {
   lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
@@ -69,10 +71,15 @@ describe('LightboxService', () => {
       ],
       providers: [
         LightboxService,
+        ComponentRendererService,
         DOMhelpersProvideMock(),
         WindowRefProvideMock(),
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+    }).overrideModule(BrowserDynamicTestingModule, {
+      set: {
+        entryComponents: [AvatarComponent, AvatarImageComponent],
+      },
     });
 
     inject(
@@ -155,7 +162,8 @@ describe('LightboxService', () => {
       const lightContainerEl = overlayElement.querySelector(
         'b-lightbox'
       ) as HTMLElement;
-      expect(lightContainerEl.className).toEqual('fill-cover type-image');
+      expect(lightContainerEl.className).toContain('fill-cover');
+      expect(lightContainerEl.className).toContain('type-image');
       lightboxService.closeLightbox();
     });
 

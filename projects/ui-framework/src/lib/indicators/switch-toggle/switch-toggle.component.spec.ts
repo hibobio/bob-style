@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   MatSlideToggleChange,
@@ -13,6 +14,7 @@ describe('SwitchToggleComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SwitchToggleComponent],
       imports: [MatSlideToggleModule],
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {

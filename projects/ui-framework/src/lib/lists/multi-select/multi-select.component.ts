@@ -8,8 +8,6 @@ import {
   NgZone,
   ChangeDetectorRef,
 } from '@angular/core';
-import { Overlay } from '@angular/cdk/overlay';
-import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListChange } from '../list-change/list-change';
@@ -18,7 +16,6 @@ import { ListModelService } from '../list-service/list-model.service';
 import { SelectOption } from '../list.interface';
 import { TruncateTooltipComponent } from '../../popups/truncate-tooltip/truncate-tooltip.component';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { UtilsService } from '../../services/utils/utils.service';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import { FormEvents } from '../../form-elements/form-elements.enum';
 import { arrayFlatten } from '../../services/utils/functional-utils';
@@ -28,7 +25,7 @@ import { MobileService } from '../../services/utils/mobile.service';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 import { TranslateService } from '@ngx-translate/core';
-import { IconColor, Icons } from '../../icons/icons.enum';
+import { IconColor } from '../../icons/icons.enum';
 import { ShowcaseInputItem } from '../../avatar/employees-showcase/employees-showcase.interface';
 import { Avatar } from '../../avatar/avatar/avatar.interface';
 
@@ -63,11 +60,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     protected translate: TranslateService,
     protected DOM: DOMhelpers,
     protected zone: NgZone,
-    protected cd: ChangeDetectorRef,
-    protected overlay: Overlay,
-    protected viewContainerRef: ViewContainerRef,
-    protected panelPositionService: PanelPositionService,
-    protected utilsService: UtilsService
+    public cd: ChangeDetectorRef,
+    public viewContainerRef: ViewContainerRef
   ) {
     super(
       listChangeSrvc,
@@ -78,10 +72,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
       DOM,
       zone,
       cd,
-      overlay,
-      viewContainerRef,
-      panelPositionService,
-      utilsService
+      viewContainerRef
     );
     this.type = SelectType.multi;
     this.hasArrow = false;

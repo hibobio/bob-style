@@ -1583,3 +1583,7 @@ export const getCopyName = (val: string, copyStr = 'copy'): string => {
         ((parseInt(match[3], 10) || 1) + 1)
       ).trim();
 };
+
+export const invoke = <T = unknown, R = any>(smth: T, method: string): R => {
+  return smth && isFunction(smth[method]) && smth[method]();
+};

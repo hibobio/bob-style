@@ -443,8 +443,10 @@ export { PagerComponent } from './lib/navigation/pager/pager.component';
 // Panel Module
 export { PanelModule } from './lib/popups/panel/panel.module';
 export { PanelComponent } from './lib/popups/panel/panel.component';
-export { PanelSize, PanelDefaultPosVer } from './lib/popups/panel/panel.enum';
-export { PanelPositionService } from './lib/popups/panel/panel-position-service/panel-position.service';
+export * from './lib/popups/panel/panel.service';
+export * from './lib/popups/panel/panel.interface';
+export * from './lib/popups/panel/panel.enum';
+export * from './lib/popups/panel/panel-position-service/panel-position.service';
 export * from './lib/popups/panel/panel-position-service/panel-position.const';
 // Dialog Module
 export { DialogModule } from './lib/popups/dialog/dialog.module';
@@ -588,6 +590,7 @@ export { allowedDomainsTest, naiveLinkTest, imageLinkTest } from './lib/services
 export { ComponentRendererModule } from './lib/services/component-renderer/component-renderer.module';
 export { ComponentRendererComponent } from './lib/services/component-renderer/component-renderer.component';
 export { RenderedComponent } from './lib/services/component-renderer/component-renderer.interface';
+export * from './lib/services/component-renderer/component-renderer.service';
 // RxJs operators
 export * from './lib/services/utils/rxjs.operators';
 export * from './lib/services/utils/rxjs.oprtrs.cachemap';

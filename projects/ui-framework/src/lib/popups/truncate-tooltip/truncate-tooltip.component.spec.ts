@@ -22,6 +22,7 @@ import {
 } from '../../tests/services.stub.spec';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { TruncateTooltipDirective } from './truncate-tooltip.directive';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 @Component({
   template: `
@@ -97,6 +98,11 @@ describe('TruncateTooltipComponent', () => {
         EventManagerPlugins[0],
       ],
     })
+      .overrideModule(BrowserDynamicTestingModule, {
+        set: {
+          entryComponents: [TruncateTooltipComponent],
+        },
+      })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(TestComponent);

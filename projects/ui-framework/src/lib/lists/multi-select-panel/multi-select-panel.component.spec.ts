@@ -38,6 +38,8 @@ import { CheckboxComponent } from '../../form-elements/checkbox/checkbox.compone
 import { ButtonComponent } from '../../buttons/button/button.component';
 import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
 import { fakeAsyncFlush } from '../../services/utils/test-helpers';
+import { ListPanelService } from '../list-panel.service';
+import { PanelService } from '../../popups/panel/panel.service';
 
 describe('MultiSelectPanelComponent', () => {
   let component: MultiSelectPanelComponent;
@@ -91,6 +93,8 @@ describe('MultiSelectPanelComponent', () => {
         OverlayModule,
       ],
       providers: [
+        ListPanelService,
+        PanelService,
         PanelPositionService,
         ListModelService,
         ListChangeService,

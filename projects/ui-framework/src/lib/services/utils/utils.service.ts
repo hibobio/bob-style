@@ -1,9 +1,17 @@
-import { Injectable, NgZone } from '@angular/core';
-import { fromEvent, Observable } from 'rxjs';
-import { map, share, tap, throttleTime } from 'rxjs/operators';
+import { Inject, Injectable, InjectionToken, NgZone } from '@angular/core';
+import { defer, EMPTY, fromEvent, merge, Observable } from 'rxjs';
+import { map, share, throttleTime } from 'rxjs/operators';
 import { WindowRef } from './window-ref.service';
 import { ScrollEvent, WinResizeEvent } from './utils.interface';
 import { insideZone } from './rxjs.operators';
+import { DocumentRef } from './document-ref.service';
+
+export const APP_SCROLL_CONTAINER = new InjectionToken<string>(
+  'App scrollable container selector',
+  {
+    factory: () => '.content-wrapper[cdkscrollable]',
+  }
+);
 
 @Injectable({
   providedIn: 'root',
@@ -13,9 +21,17 @@ export class UtilsService {
   winScroll$: Observable<ScrollEvent>;
   winClick$: Observable<MouseEvent>;
   winKey$: Observable<KeyboardEvent>;
+  appScrollableContainerElement: HTMLElement;
 
-  constructor(private windowRef: WindowRef, private zone: NgZone) {
+  constructor(
+    @Inject(APP_SCROLL_CONTAINER) private appScrollContainerSelector: string,
+    private windowRef: WindowRef,
+    private documentRef: DocumentRef,
+    private zone: NgZone
+  ) {
+    //
     this.zone.runOutsideAngular(() => {
+      //
       this.winResize$ = fromEvent<UIEvent>(
         this.windowRef.nativeWindow as Window,
         'resize',
@@ -31,16 +47,32 @@ export class UtilsService {
         share()
       );
 
-      this.winScroll$ = fromEvent(
-        this.windowRef.nativeWindow as Window,
-        'scroll',
-        {
+      this.winScroll$ = merge(
+        defer(() => {
+          return this.appScrollableContainerElement ||
+            (this.appScrollableContainerElement = this.documentRef.nativeDocument.querySelector(
+              this.appScrollContainerSelector
+            ))
+            ? fromEvent(this.appScrollableContainerElement, 'scroll', {
+                passive: true,
+              })
+            : EMPTY;
+        }),
+
+        fromEvent(this.windowRef.nativeWindow as Window, 'scroll', {
           passive: true,
-        }
+        })
       ).pipe(
-        map(
-          (e: Event) => (e.currentTarget || document.scrollingElement) as Window
-        ),
+        map((e: Event) => {
+          const target =
+            (e.currentTarget as any) || (document.scrollingElement as any);
+
+          return {
+            scrollY: target.scrollY || target.scrollTop,
+            scrollX: target.scrollX || target.scrollLeft,
+          };
+        }),
+
         share()
       );
 

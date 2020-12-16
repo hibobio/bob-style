@@ -6,11 +6,8 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
-import { Overlay } from '@angular/cdk/overlay';
-import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { ListChange } from '../list-change/list-change';
-import { UtilsService } from '../../services/utils/utils.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListModelService } from '../list-service/list-model.service';
 import { SelectType } from '../list.enum';
@@ -36,11 +33,8 @@ export class SingleSelectPanelComponent extends BaseSelectPanelElement {
     protected translate: TranslateService,
     protected DOM: DOMhelpers,
     protected zone: NgZone,
-    protected cd: ChangeDetectorRef,
-    protected overlay: Overlay,
-    protected viewContainerRef: ViewContainerRef,
-    protected panelPositionService: PanelPositionService,
-    protected utilsService: UtilsService
+    public cd: ChangeDetectorRef,
+    public viewContainerRef: ViewContainerRef
   ) {
     super(
       listChangeSrvc,
@@ -51,10 +45,7 @@ export class SingleSelectPanelComponent extends BaseSelectPanelElement {
       DOM,
       zone,
       cd,
-      overlay,
-      viewContainerRef,
-      panelPositionService,
-      utilsService
+      viewContainerRef
     );
     this.type = SelectType.single;
     this.wrapEvent = false;

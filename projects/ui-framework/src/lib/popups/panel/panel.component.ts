@@ -12,24 +12,19 @@ import {
   OnInit,
   ElementRef,
 } from '@angular/core';
-import {
-  CdkOverlayOrigin,
-  FlexibleConnectedPositionStrategy,
-  Overlay,
-  OverlayConfig,
-  OverlayRef,
-} from '@angular/cdk/overlay';
+import { CdkOverlayOrigin, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { PanelPositionService } from './panel-position-service/panel-position.service';
 import { Subscription } from 'rxjs';
 import { PanelDefaultPosVer, PanelSize } from './panel.enum';
-import { concat, compact, get, debounce, invoke } from 'lodash';
+import { debounce } from 'lodash';
 import { UtilsService } from '../../services/utils/utils.service';
-import { isKey, isDomElement } from '../../services/utils/functional-utils';
+import { isKey, unsubscribeArray } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
-import { filter, throttleTime } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { OverlayPositionClasses } from '../../types';
-import { onlyDistinct } from '../../services/utils/rxjs.operators';
+import { PanelService } from './panel.service';
+import { Panel } from './panel.interface';
 
 const HOVER_DELAY_DURATION = 300;
 
@@ -40,12 +35,11 @@ const HOVER_DELAY_DURATION = 300;
 })
 export class PanelComponent implements OnInit, OnDestroy {
   constructor(
-    private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
-    private panelPositionService: PanelPositionService,
     private utilsService: UtilsService,
     private zone: NgZone,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private service: PanelService
   ) {}
 
   @ViewChild(CdkOverlayOrigin, { static: true })
@@ -69,24 +63,21 @@ export class PanelComponent implements OnInit, OnDestroy {
     OverlayPositionClasses
   > = new EventEmitter<OverlayPositionClasses>();
 
-  private panelConfig: OverlayConfig;
-  public overlayRef: OverlayRef;
-  private templatePortal: TemplatePortal;
-  private backdropClickSubscriber: Subscription;
-  private positionChangeSubscriber: Subscription;
-  private windowKeydownSubscriber: Subscription;
+  public panel: Panel;
   public positionClassList: OverlayPositionClasses = {};
   public mouseEnterDebounce: any;
   public mouseLeaveDebounce: any;
+  private subs: Subscription[] = [];
+
+  public get overlayRef() {
+    return this.panel?.overlayRef;
+  }
 
   @Input('overlayOrigin') set setOverlayOrigin(
-    overlayOrigin: HTMLElement | ElementRef
+    origin: HTMLElement | ElementRef<HTMLElement>
   ) {
-    this.overlayOrigin = {
-      elementRef: isDomElement(overlayOrigin)
-        ? new ElementRef(overlayOrigin)
-        : overlayOrigin,
-    };
+    this.overlayOrigin =
+      this.service.getOverlayOrigin(origin) || this.overlayOrigin;
   }
 
   ngOnInit() {
@@ -107,46 +98,59 @@ export class PanelComponent implements OnInit, OnDestroy {
 
   onMouseEnter(): void {
     this.mouseLeaveDebounce?.cancel();
-    if (!this.overlayRef) {
+    if (!this.panel) {
       this.mouseEnterDebounce();
     }
   }
 
   onMouseLeave(): void {
     this.mouseEnterDebounce?.cancel();
-    if (this.overlayRef) {
+    if (this.panel) {
       this.mouseLeaveDebounce();
     }
   }
 
   openPanel(): void {
-    if (!this.disabled && !this.overlayRef) {
-      this.panelConfig = this.getConfig();
-      this.overlayRef = this.overlay.create(this.panelConfig);
-      this.templatePortal = new TemplatePortal(
-        this.templateRef,
-        this.viewContainerRef
+    if (!this.disabled && !this.panel) {
+      //
+      this.panel = this.service.createPanel({
+        origin: this.overlayOrigin,
+        viewContainerRef: this.viewContainerRef,
+        templateRef: this.templateRef,
+        position: this.defaultPosVer,
+        openOnHover: this.openOnHover,
+        hasBackdrop: true,
+        showBackdrop: this.showBackdrop,
+        panelClass: this.panelClass,
+        backdropClass: this.backdropClass,
+      });
+
+      this.subs.push(
+        this.panel?.backdropClick$.subscribe(() => {
+          this.destroyPanel();
+        }),
+
+        this.utilsService
+          .getWindowKeydownEvent(true)
+          .pipe(filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)))
+          .subscribe(() => {
+            this.zone.run(() => {
+              this.destroyPanel();
+            });
+          }),
+
+        this.panel?.positionClasses$.subscribe((positionClassList) => {
+          this.positionClassList = positionClassList;
+
+          if (!this.cd['destroyed'] && this.panel) {
+            this.cd.detectChanges();
+          }
+
+          this.positionChanged.emit(this.positionClassList);
+        })
       );
 
-      this.overlayRef.attach(this.templatePortal);
-      this.overlayRef.updatePosition();
-
-      this.opened.emit(this.overlayRef);
-
-      this.backdropClickSubscriber = this.overlayRef
-        .backdropClick()
-        .subscribe(() => {
-          this.destroyPanel();
-        });
-
-      this.windowKeydownSubscriber = this.utilsService
-        .getWindowKeydownEvent(true)
-        .pipe(filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)))
-        .subscribe(() => {
-          this.zone.run(() => {
-            this.destroyPanel();
-          });
-        });
+      this.opened.emit(this.panel?.overlayRef);
     }
   }
 
@@ -157,76 +161,12 @@ export class PanelComponent implements OnInit, OnDestroy {
   private destroyPanel(): void {
     this.mouseEnterDebounce?.cancel();
     this.mouseLeaveDebounce?.cancel();
-    if (this.overlayRef) {
-      invoke(this.overlayRef, 'dispose');
-      this.backdropClickSubscriber?.unsubscribe();
-      this.positionChangeSubscriber?.unsubscribe();
-      this.windowKeydownSubscriber?.unsubscribe();
-      this.panelConfig = {};
-      this.templatePortal = undefined;
-      this.overlayRef = undefined;
+
+    if (this.panel) {
+      this.service.destroyPanel(this.panel);
+      unsubscribeArray(this.subs);
+      this.panel = undefined;
       this.closed.emit();
     }
-  }
-
-  private getConfig(): OverlayConfig {
-    const positionStrategy = this.panelPositionService.getPanelPositionStrategy(
-      this.overlayOrigin,
-      this.defaultPosVer
-    );
-
-    this.subscribeToPositions(positionStrategy);
-
-    const panelClass = compact(
-      concat(['b-panel'], [get(this, 'panelClass', null)])
-    );
-    const backdropClass =
-      this.backdropClass ||
-      (this.openOnHover
-        ? 'b-panel-backdrop-disabled'
-        : this.showBackdrop
-        ? 'b-panel-backdrop'
-        : 'b-panel-backdrop-invisible');
-
-    return {
-      disposeOnNavigation: true,
-      hasBackdrop: true,
-      backdropClass,
-      panelClass,
-      positionStrategy,
-      scrollStrategy: this.panelPositionService.getScrollStrategy(),
-    };
-  }
-
-  private subscribeToPositions(
-    positionStrategy: FlexibleConnectedPositionStrategy
-  ): void {
-    this.positionChangeSubscriber = positionStrategy.positionChanges
-      .pipe(
-        throttleTime(200, undefined, {
-          leading: true,
-          trailing: true,
-        }),
-        onlyDistinct()
-      )
-      .subscribe((change) => {
-        this.positionClassList = this.panelPositionService.getPositionClassList(
-          change
-        );
-
-        if (!this.cd['destroyed'] && this.overlayRef) {
-          this.cd.detectChanges();
-          const elem = this.overlayRef.overlayElement.children[0];
-          elem.classList.remove('panel-above', 'panel-below');
-
-          if (this.positionClassList['panel-above']) {
-            elem.classList.add('panel-above');
-          } else {
-            elem.classList.add('panel-below');
-          }
-        }
-
-        this.positionChanged.emit(this.positionClassList);
-      });
   }
 }

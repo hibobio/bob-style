@@ -198,6 +198,8 @@
   overflow: hidden;
   position: absolute;
   appearance: none;
+  min-height: 0;
+  min-width: 0;
 }
 
 @mixin mask-image(

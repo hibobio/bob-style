@@ -6,46 +6,40 @@ import {
   ChangeDetectorRef,
   EventEmitter,
 } from '@angular/core';
-import { TemplatePortal } from '@angular/cdk/portal';
 import {
-  FlexibleConnectedPositionStrategy,
-  ConnectedOverlayPositionChange,
-  OverlayConfig,
-  Overlay,
   CdkOverlayOrigin,
   OverlayRef,
+  ConnectedPosition,
 } from '@angular/cdk/overlay';
 import { throttleTime, filter, map, pairwise, tap } from 'rxjs/operators';
 import { race, Subscription } from 'rxjs';
-import { hasProp } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
 import { ScrollEvent } from '../services/utils/utils.interface';
 import { MobileService } from '../services/utils/mobile.service';
 import { DOMhelpers } from '../services/html/dom-helpers.service';
 import { UtilsService } from '../services/utils/utils.service';
-import { PanelPositionService } from '../popups/panel/panel-position-service/panel-position.service';
 import { PanelDefaultPosVer } from '../popups/panel/panel.enum';
 import { OverlayPositionClasses } from '../types';
-import { filterKey, onlyDistinct } from '../services/utils/rxjs.operators';
+import { filterKey } from '../services/utils/rxjs.operators';
+import { PanelService } from '../popups/panel/panel.service';
+import { CreatePanelConfig, Panel } from '../popups/panel/panel.interface';
+import { BackdropClickMode } from './list.enum';
+import { unsubscribeArray } from '../services/utils/functional-utils';
 
 export interface OverlayEnabledComponent {
-  zone: NgZone;
-  DOM: DOMhelpers;
-  utilsService: UtilsService;
-  overlay: Overlay;
   viewContainerRef: ViewContainerRef;
-  panelPositionService: PanelPositionService;
   overlayOrigin: CdkOverlayOrigin;
-  templateRef: TemplateRef<any>;
-  panelPosition: PanelDefaultPosVer;
+  templateRef: TemplateRef<unknown>;
+  panelPosition: PanelDefaultPosVer | ConnectedPosition[];
+  cd: ChangeDetectorRef;
   subscribtions: Subscription[];
   panelClassList: string[];
   positionClassList: OverlayPositionClasses;
-  overlayRef: OverlayRef;
-  panelConfig: OverlayConfig;
-  templatePortal: TemplatePortal;
+
+  backdropClickMode?: BackdropClickMode;
+
+  panel: Panel;
   panelOpen: boolean;
-  cd: ChangeDetectorRef;
 
   disabled?: boolean;
   hasArrow?: boolean;
@@ -53,185 +47,175 @@ export interface OverlayEnabledComponent {
   panelClass?: string;
   opened?: EventEmitter<OverlayRef>;
   closed?: EventEmitter<void>;
-  onApply?: () => void;
 
-  [key: string]: any;
+  onApply?: () => void;
+  onCancel?: () => void;
+  closePanel?: () => void;
 }
 
-type OEC = OverlayEnabledComponent;
-
-export interface PanelOptions {
-  hasBackdrop: boolean;
+export interface ListOpenPanelConfig extends Partial<CreatePanelConfig> {
+  self: OverlayEnabledComponent;
+  subs?: Subscription[];
+  backdropClickMode?: BackdropClickMode;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class ListPanelService {
-  constructor(private mobileService: MobileService) {}
+  constructor(
+    private mobileService: MobileService,
+    private panelService: PanelService,
+    private DOM: DOMhelpers,
+    private utilsService: UtilsService,
+    private zone: NgZone
+  ) {}
 
-  public openPanel(self: any, options: PanelOptions = null): void {
-    if (
-      !(self as OEC).overlayRef &&
-      !(self as OEC).disabled &&
-      !(self as OEC).panelOpen
-    ) {
-      (self as OEC).panelOpen = true;
-      (self as OEC).panelConfig = this.getConfig(self, options);
-      (self as OEC).overlayRef = (self as OEC).overlay.create(
-        (self as OEC).panelConfig
-      );
-      (self as OEC).templatePortal = new TemplatePortal(
-        (self as OEC).templateRef,
-        (self as OEC).viewContainerRef
-      );
+  public openPanel(config: ListOpenPanelConfig): Panel {
+    const { self } = config;
 
-      (self as OEC).overlayRef.attach((self as OEC).templatePortal);
-      (self as OEC).overlayRef.updatePosition();
+    if (self.panel || self.disabled || self.panelOpen) {
+      return self.panel;
+    }
 
-      const inputWidth = (self as OEC).overlayOrigin.elementRef.nativeElement
-        .offsetWidth;
-      (self as OEC).overlayRef.updateSize({
-        width: inputWidth,
-        height: 360,
-      });
+    const {
+      subs = self.subscribtions,
+      hasBackdrop,
+      backdropClickMode = self.backdropClickMode || BackdropClickMode.apply,
+    } = config;
 
-      const panelElem = (self as OEC).overlayRef.overlayElement
-        .children[0] as HTMLElement;
-      (self as OEC).DOM.setCssProps(panelElem, {
-        '--input-width': inputWidth + 'px',
-      });
+    const panel = this.panelService.createPanel({
+      ...config,
 
-      if ((self as OEC).opened?.observers.length) {
-        (self as OEC).opened.emit((self as OEC).overlayRef);
-      }
+      origin: self.overlayOrigin,
+      viewContainerRef: self.viewContainerRef,
+      templateRef: self.templateRef,
+      position: self.panelPosition,
 
-      (self as OEC).subscribtions.push(
-        ((self as OEC).panelConfig
-          .positionStrategy as FlexibleConnectedPositionStrategy).positionChanges
-          .pipe(
-            throttleTime(200, undefined, {
-              leading: true,
-              trailing: true,
-            }),
-            onlyDistinct()
+      panelClass: [
+        ...self.panelClassList,
+        self.hasArrow ? 'b-select-panel-with-arrow' : 'b-select-panel-no-arrow',
+        self.panelClass,
+      ].filter(Boolean),
+      backdropClass: 'b-select-backdrop',
+
+      openOnHover: false,
+      hasBackdrop: hasBackdrop !== false,
+      showBackdrop: true,
+    });
+
+    const inputWidth = panel.overlayOrigin.elementRef.nativeElement.offsetWidth;
+    panel.overlayRef.updateSize({
+      width: inputWidth,
+      height: 360,
+    });
+
+    const panelElem = panel.overlayRef.overlayElement
+      .children[0] as HTMLElement;
+    this.DOM.setCssProps(panelElem, {
+      '--input-width': inputWidth + 'px',
+    });
+
+    subs.push(
+      //
+      panel.positionClasses$.subscribe((positionClassList) => {
+        self.positionClassList = positionClassList;
+        if (!self.cd['destroyed']) {
+          self.cd.detectChanges();
+        }
+      }),
+
+      race(
+        panel.backdropClick$.pipe(
+          filter(() => backdropClickMode !== BackdropClickMode.cancel)
+        ),
+
+        this.utilsService.getResizeEvent(true).pipe(
+          tap(() => {
+            self.isMobile = this.mobileService.isMobile();
+          }),
+          filter(() => !self.isMobile)
+        ),
+
+        this.utilsService.getScrollEvent(true).pipe(
+          filter(() => !self.isMobile),
+          throttleTime(50, undefined, {
+            leading: true,
+            trailing: true,
+          }),
+          map((e: ScrollEvent) => e.scrollY),
+          pairwise(),
+          filter(
+            (scrollArr: number[]) => Math.abs(scrollArr[0] - scrollArr[1]) > 20
           )
-          .subscribe((change: ConnectedOverlayPositionChange) => {
-            (self as OEC).positionClassList = (self as OEC).panelPositionService.getPositionClassList(
-              change
-            );
-            if (!(self as OEC).cd['destroyed']) {
-              (self as OEC).cd.detectChanges();
-            }
-          })
-      );
-
-      (self as OEC).subscribtions.push(
-        race(
-          (self as OEC).overlayRef
-            .backdropClick()
-            .pipe(
-              filter(() => (self as OEC)['backdropClickMode'] !== 'cancel')
-            ),
-
-          (self as OEC).utilsService.getResizeEvent(true).pipe(
-            tap(() => {
-              (self as OEC).isMobile = this.mobileService.isMobile();
-            }),
-            filter(() => !(self as OEC).isMobile)
-          ),
-
-          (self as OEC).utilsService.getScrollEvent(true).pipe(
-            filter(() => !(self as OEC).isMobile),
-            throttleTime(50, undefined, {
-              leading: true,
-              trailing: true,
-            }),
-            map((e: ScrollEvent) => e.scrollY),
-            pairwise(),
-            filter(
-              (scrollArr: number[]) =>
-                Math.abs(scrollArr[0] - scrollArr[1]) > 20
-            )
-          )
-        ).subscribe(() => {
-          (self as OEC).zone.run(() => {
-            self[
-              (self as OEC).onApply
-                ? 'onApply'
-                : (self as OEC).closePanel
-                ? 'closePanel'
-                : 'destroyPanel'
-            ]();
-          });
-        })
-      );
-
-      (self as OEC).subscribtions.push(
-        race(
-          (self as OEC).overlayRef
-            .backdropClick()
-            .pipe(
-              filter(() => (self as OEC)['backdropClickMode'] === 'cancel')
-            ),
-
-          (self as OEC).utilsService
-            .getWindowKeydownEvent(true)
-            .pipe(filterKey(Keys.escape))
-        ).subscribe(() => {
-          (self as OEC)[
-            (self as OEC).onCancel
-              ? 'onCancel'
-              : (self as OEC).closePanel
+        )
+        //
+      ).subscribe(() => {
+        this.zone.run(() => {
+          self[
+            self.onApply
+              ? 'onApply'
+              : self.closePanel
               ? 'closePanel'
               : 'destroyPanel'
           ]();
-        })
-      );
+        });
+      })
+    );
+
+    subs.push(
+      //
+      race(
+        panel.backdropClick$.pipe(
+          filter(() => backdropClickMode === BackdropClickMode.cancel)
+        ),
+
+        this.utilsService
+          .getWindowKeydownEvent(true)
+          .pipe(filterKey(Keys.escape))
+        //
+      ).subscribe(() => {
+        self[
+          self.onCancel
+            ? 'onCancel'
+            : self.closePanel
+            ? 'closePanel'
+            : 'destroyPanel'
+        ]();
+      })
+    );
+
+    self.panelOpen = true;
+    self.opened?.emit(panel.overlayRef);
+
+    return panel;
+  }
+
+  public destroyPanel({
+    self,
+    skipEmit = false,
+  }: {
+    self: OverlayEnabledComponent;
+    skipEmit?: boolean;
+  }): null {
+    self.panelOpen = false;
+
+    if (!self.panel) {
+      return null;
     }
-  }
 
-  public destroyPanel(self: any, skipEmit = false): void {
-    (self as OEC).panelOpen = false;
-    if ((self as OEC).overlayRef) {
-      (self as OEC).overlayRef.dispose();
-      (self as OEC).panelConfig = {};
-      (self as OEC).templatePortal = null;
-      (self as OEC).overlayRef = null;
+    this.panelService.destroyPanel(self.panel);
 
-      (self as OEC).subscribtions.forEach((sub) => {
-        sub.unsubscribe();
-        sub = null;
-      });
-      (self as OEC).subscribtions = [];
+    unsubscribeArray(self.subscribtions);
 
-      if ((self as OEC).closed?.observers.length && !skipEmit) {
-        (self as OEC).closed.emit();
-      }
+    if (!self.cd['destroyed']) {
+      self.cd.detectChanges();
     }
-  }
 
-  private getPanelClass(self: any): string[] {
-    return [
-      ...(self as OEC).panelClassList,
-      (self as OEC).hasArrow
-        ? 'b-select-panel-with-arrow'
-        : 'b-select-panel-no-arrow',
-      (self as OEC).panelClass,
-    ].filter(Boolean);
-  }
+    if (!skipEmit) {
+      self.closed?.emit();
+    }
 
-  private getConfig(self: any, options: PanelOptions = null): OverlayConfig {
-    return {
-      disposeOnNavigation: true,
-      hasBackdrop: hasProp(options, 'hasBackdrop') ? options.hasBackdrop : true,
-      backdropClass: 'b-select-backdrop',
-      panelClass: this.getPanelClass(self),
-      positionStrategy: (self as OEC).panelPositionService.getPanelPositionStrategy(
-        (self as OEC).overlayOrigin,
-        (self as OEC).panelPosition
-      ),
-      scrollStrategy: (self as OEC).panelPositionService.getScrollStrategy(),
-    };
+    return null;
   }
 }

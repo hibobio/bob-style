@@ -22,15 +22,13 @@ $b-select-panel-min-width: 280px;
 .b-panel-backdrop {
   background-color: rgba(0, 0, 0, 0.3);
   transition: none;
+  pointer-events: none !important;
 }
 
+.b-select-backdrop,
 .b-panel-backdrop-invisible {
   background-color: rgba(0, 0, 0, 0);
   transition: none;
-}
-
-.b-panel-backdrop-disabled {
-  display: none;
 }
 
 .b-panel {
@@ -88,10 +86,6 @@ html:not(.cdk-global-scrollblock) {
 }
 
 // select panels
-
-.b-select-backdrop {
-  opacity: 0;
-}
 
 .b-select-panel {
   flex-direction: column;

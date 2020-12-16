@@ -37,6 +37,7 @@ import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 // @ts-ignore: md file and not a module
 import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
 import { Icons } from '../../icons/icons.enum';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -105,12 +106,18 @@ const templateForNotes = `<b-multi-select [value]="value"
 </b-multi-select>`;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Multi select'">
-  <div style="max-width: 350px;">
-    ${template}
-  </div>
+<style>
+  body,html { overflow: hidden;}
+</style>
+<div class="app-content">
+  <b-story-book-layout [title]="'Multi select'" cdkScrollable class="content-wrapper" style="overflow: auto; max-height: 100vh; min-height: 0;">
 
-</b-story-book-layout>
+    <div style="max-width: 350px; min-height: 130vh;">
+      ${template}
+    </div>
+
+  </b-story-book-layout>
+</div>
 `;
 
 const note = `
@@ -254,6 +261,7 @@ const toAdd = () => ({
       BrowserAnimationsModule,
       StoryBookLayoutModule,
       AvatarModule,
+      ScrollingModule,
     ],
     entryComponents: [AvatarImageComponent],
   },

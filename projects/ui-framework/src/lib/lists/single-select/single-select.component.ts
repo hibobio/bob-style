@@ -4,16 +4,14 @@ import {
   ViewContainerRef,
   NgZone,
   ChangeDetectorRef,
-  Input, OnInit, OnChanges,
+  Input,
+  OnChanges,
 } from '@angular/core';
-import { Overlay } from '@angular/cdk/overlay';
-import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { UtilsService } from '../../services/utils/utils.service';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import { isArray, arrayFlatten } from '../../services/utils/functional-utils';
 import { ListModelService } from '../list-service/list-model.service';
@@ -53,10 +51,8 @@ import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
     { provide: BaseFormElement, useExisting: SingleSelectComponent },
   ],
 })
-export class SingleSelectComponent extends BaseSelectPanelElement implements OnChanges {
-  readonly icons = Icons;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
+export class SingleSelectComponent extends BaseSelectPanelElement
+  implements OnChanges {
   constructor(
     protected listChangeSrvc: ListChangeService,
     protected modelSrvc: ListModelService,
@@ -65,11 +61,8 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
     protected translate: TranslateService,
     protected DOM: DOMhelpers,
     protected zone: NgZone,
-    protected cd: ChangeDetectorRef,
-    protected overlay: Overlay,
-    protected viewContainerRef: ViewContainerRef,
-    protected panelPositionService: PanelPositionService,
-    protected utilsService: UtilsService
+    public cd: ChangeDetectorRef,
+    public viewContainerRef: ViewContainerRef
   ) {
     super(
       listChangeSrvc,
@@ -80,10 +73,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
       DOM,
       zone,
       cd,
-      overlay,
-      viewContainerRef,
-      panelPositionService,
-      utilsService
+      viewContainerRef
     );
     this.type = SelectType.single;
     this.value = null;
@@ -99,6 +89,9 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
 
   readonly avatarSize = AvatarSize;
   readonly formElementSize = FormElementSize;
+  readonly icons = Icons;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
 
   protected getDisplayValue(): string {
     const option: SelectOption =
@@ -116,7 +109,9 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
 
   ngOnChanges(changes) {
     if (changes.ghost) {
-      this.panelClassList = this.panelClassList.filter(className => className !== 'panel-ghost');
+      this.panelClassList = this.panelClassList.filter(
+        (className) => className !== 'panel-ghost'
+      );
       this.ghost && this.panelClassList.push('panel-ghost');
     }
     super.ngOnChanges(changes);

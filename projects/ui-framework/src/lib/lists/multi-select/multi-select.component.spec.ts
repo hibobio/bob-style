@@ -200,6 +200,7 @@ describe('MultiSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(500);
+
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();
@@ -214,6 +215,7 @@ describe('MultiSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(500);
+
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();

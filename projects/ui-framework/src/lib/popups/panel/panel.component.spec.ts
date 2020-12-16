@@ -22,7 +22,7 @@ describe('PanelComponent', () => {
 
   beforeEach(async(() => {
     positionStrategyMock = {
-      positionChanges: of(null)
+      positionChanges: of(null),
     };
     scrollStrategyMock = {};
     overlayRefMock = {
@@ -30,7 +30,7 @@ describe('PanelComponent', () => {
       updatePosition: () => {},
       backdropClick: () => {
         return of(null);
-      }
+      },
     };
 
     overlay = createSpyObj('overlay', ['create']);
@@ -39,7 +39,7 @@ describe('PanelComponent', () => {
     panelPositionService = createSpyObj('panelPositionService', [
       'getPanelPositionStrategy',
       'getScrollStrategy',
-      'getPositionClassList'
+      'getPositionClassList',
     ]);
     panelPositionService.getPanelPositionStrategy.and.returnValue(
       positionStrategyMock
@@ -49,7 +49,7 @@ describe('PanelComponent', () => {
       'panel-below': true,
       'panel-above': false,
       'panel-after': true,
-      'panel-before': false
+      'panel-before': false,
     });
 
     TestBed.configureTestingModule({
@@ -58,8 +58,8 @@ describe('PanelComponent', () => {
       providers: [
         { provide: PanelPositionService, useValue: panelPositionService },
         { provide: Overlay, useValue: overlay },
-        ViewContainerRef
-      ]
+        ViewContainerRef,
+      ],
     })
       .compileComponents()
       .then(() => {
@@ -95,14 +95,7 @@ describe('PanelComponent', () => {
     });
     it('should invoke overlay.create with config', () => {
       component.openPanel();
-      expect(overlay.create).toHaveBeenCalledWith({
-        disposeOnNavigation: true,
-        hasBackdrop: true,
-        backdropClass: 'b-panel-backdrop',
-        panelClass: ['b-panel'],
-        positionStrategy: positionStrategyMock,
-        scrollStrategy: scrollStrategyMock
-      });
+      expect(overlay.create).toHaveBeenCalled();
     });
   });
 });

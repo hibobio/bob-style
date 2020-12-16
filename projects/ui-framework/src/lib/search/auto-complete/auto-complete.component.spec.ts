@@ -96,6 +96,7 @@ describe('AutoCompleteComponent', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       searchEl.componentInstance.searchChange.emit('e1');
       fixture.autoDetectChanges();
+
       panel = overlayContainerElement.querySelector('b-auto-complete-panel');
       expect(panel).toBeTruthy();
     });
@@ -103,6 +104,7 @@ describe('AutoCompleteComponent', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       searchEl.componentInstance.searchChange.emit('e1');
       fixture.autoDetectChanges();
+
       let panel = overlayContainerElement.querySelector(
         'b-auto-complete-panel'
       );
@@ -125,6 +127,7 @@ describe('AutoCompleteComponent', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       searchEl.componentInstance.searchChange.emit('e1');
       fixture.autoDetectChanges();
+
       const panel = overlayContainerElement.querySelector(
         'b-auto-complete-panel'
       );
@@ -134,6 +137,7 @@ describe('AutoCompleteComponent', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       searchEl.componentInstance.searchChange.emit('abcdef');
       fixture.autoDetectChanges();
+
       const panel = overlayContainerElement.querySelector(
         'b-auto-complete-panel'
       );
@@ -152,6 +156,7 @@ describe('AutoCompleteComponent', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       searchEl.componentInstance.searchFocus.emit();
       fixture.autoDetectChanges();
+
       const panel = overlayContainerElement.querySelector(
         'b-auto-complete-panel'
       );
@@ -162,6 +167,7 @@ describe('AutoCompleteComponent', () => {
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       searchEl.componentInstance.searchFocus.emit();
       fixture.autoDetectChanges();
+
       const panel = overlayContainerElement.querySelector(
         'b-auto-complete-panel'
       );
@@ -175,6 +181,7 @@ describe('AutoCompleteComponent', () => {
       searchEl.componentInstance.searchChange.emit('e1');
       fixture.autoDetectChanges();
       tick(0);
+
       (overlayContainerElement.querySelectorAll(
         '.option-select'
       )[0] as HTMLElement).click();
@@ -192,8 +199,6 @@ describe('AutoCompleteComponent', () => {
       component.ngOnDestroy();
       expect(component['subscribtions']).toEqual([]);
       expect(component['panelOpen']).toBe(false);
-      expect(component['panelConfig']).toEqual({});
-      expect(component['templatePortal']).toBe(null);
     });
   });
 });

@@ -18,19 +18,14 @@ import {
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
-  Overlay,
-  OverlayConfig,
   OverlayRef,
   ConnectedPosition,
 } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
 import { Subscription } from 'rxjs';
-import { PanelPositionService } from '../popups/panel/panel-position-service/panel-position.service';
 import { BaseFormElement } from '../form-elements/base-form-element';
 import { DOMhelpers } from '../services/html/dom-helpers.service';
 import { TruncateTooltipType } from '../popups/truncate-tooltip/truncate-tooltip.enum';
 import { OverlayPositionClasses } from '../types';
-import { UtilsService } from '../services/utils/utils.service';
 import {
   hasChanges,
   applyChanges,
@@ -48,17 +43,26 @@ import {
   FormEvents,
   FormElementSize,
 } from '../form-elements/form-elements.enum';
-import { ListPanelService } from './list-panel.service';
+import {
+  ListPanelService,
+  OverlayEnabledComponent,
+} from './list-panel.service';
 import { MobileService } from '../services/utils/mobile.service';
 import { TooltipClass } from '../popups/tooltip/tooltip.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { AvatarSize } from '../avatar/avatar/avatar.enum';
 import { Icons } from '../icons/icons.enum';
+import { Panel } from '../popups/panel/panel.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseSelectPanelElement extends BaseFormElement
-  implements OnChanges, OnInit, AfterViewInit, OnDestroy {
+  implements
+    OverlayEnabledComponent,
+    OnChanges,
+    OnInit,
+    AfterViewInit,
+    OnDestroy {
   protected constructor(
     protected listChangeSrvc: ListChangeService,
     protected modelSrvc: ListModelService,
@@ -67,12 +71,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     protected translate: TranslateService,
     protected DOM: DOMhelpers,
     protected zone: NgZone,
-    protected cd: ChangeDetectorRef,
-    // Used by ListPanelService:
-    protected overlay: Overlay,
-    protected viewContainerRef: ViewContainerRef,
-    protected panelPositionService: PanelPositionService,
-    protected utilsService: UtilsService
+    public cd: ChangeDetectorRef,
+    public viewContainerRef: ViewContainerRef
   ) {
     super(cd);
     this.placeholder = this.translate.instant('common.select');
@@ -129,14 +129,15 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   public dirty = false;
   public isMobile = false;
 
-  // Used by ListPanelService:
-  private subscribtions: Subscription[] = [];
+  public panel: Panel;
+  public panelOpen = false;
   public panelClassList: string[] = ['b-select-panel'];
   public positionClassList: OverlayPositionClasses = {};
-  public overlayRef: OverlayRef;
-  private panelConfig: OverlayConfig;
-  private templatePortal: TemplatePortal;
-  public panelOpen = false;
+  public subscribtions: Subscription[] = [];
+
+  public get overlayRef(): OverlayRef {
+    return this.panel?.overlayRef;
+  }
 
   readonly tooltipClass: (TooltipClass | string)[] = [
     TooltipClass.TextLeft,
@@ -244,7 +245,9 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   }
 
   openPanel(): void {
-    this.listPanelSrvc.openPanel(this);
+    this.panel = this.listPanelSrvc.openPanel({
+      self: this,
+    });
   }
 
   closePanel(): void {
@@ -272,15 +275,10 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   }
 
   protected destroyPanel(skipEmit = false): void {
-    if (this.overlayRef) {
+    if (this.panel) {
       this.touched = true;
     }
-
-    this.listPanelSrvc.destroyPanel(this, skipEmit);
-
-    if (!this.cd['destroyed']) {
-      this.cd.detectChanges();
-    }
+    this.panel = this.listPanelSrvc.destroyPanel({ self: this, skipEmit });
   }
 
   protected setDisplayValue(): void {

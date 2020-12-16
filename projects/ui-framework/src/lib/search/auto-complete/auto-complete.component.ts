@@ -9,45 +9,33 @@ import {
   TemplateRef,
   ViewChild,
   ViewContainerRef,
-  NgZone,
   ChangeDetectorRef,
   OnInit,
 } from '@angular/core';
 import { escapeRegExp, has } from 'lodash';
-import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
-import { TemplatePortal } from '@angular/cdk/portal';
 import { Subscription } from 'rxjs';
-import {
-  CdkOverlayOrigin,
-  Overlay,
-  OverlayConfig,
-  OverlayRef,
-} from '@angular/cdk/overlay';
+import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
 import { AutoCompleteOption } from './auto-complete.interface';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
 import { OverlayPositionClasses } from '../../types';
-import { UtilsService } from '../../services/utils/utils.service';
-import { ListPanelService } from '../../lists/list-panel.service';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import {
+  ListPanelService,
+  OverlayEnabledComponent,
+} from '../../lists/list-panel.service';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
+import { Panel } from '../../popups/panel/panel.interface';
 
 @Component({
   selector: 'b-auto-complete',
   templateUrl: './auto-complete.component.html',
   styleUrls: ['./auto-complete.component.scss'],
 })
-export class AutoCompleteComponent implements OnInit, OnChanges, OnDestroy {
+export class AutoCompleteComponent
+  implements OverlayEnabledComponent, OnInit, OnChanges, OnDestroy {
   constructor(
-    private cd: ChangeDetectorRef,
-    private listPanelSrvc: ListPanelService,
-
-    // Used by ListPanelService:
-    private zone: NgZone,
-    private DOM: DOMhelpers,
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
-    private panelPositionService: PanelPositionService,
-    private utilsService: UtilsService
+    public viewContainerRef: ViewContainerRef,
+    public cd: ChangeDetectorRef,
+    private listPanelSrvc: ListPanelService
   ) {}
 
   @ViewChild(CdkOverlayOrigin, { static: true })
@@ -71,23 +59,29 @@ export class AutoCompleteComponent implements OnInit, OnChanges, OnDestroy {
   searchValue = '';
   filteredOptions: AutoCompleteOption[];
 
-  // Used by ListPanelService:
-  private subscribtions: Subscription[] = [];
-  public panelPosition = PanelDefaultPosVer.belowLeftRight;
-  private panelClassList: string[] = ['b-auto-complete-panel'];
-  public positionClassList: OverlayPositionClasses = {};
-  private panelConfig: OverlayConfig;
-  private overlayRef: OverlayRef;
-  private templatePortal: TemplatePortal;
+  public panel: Panel;
   public panelOpen = false;
-  private getFilteredOptions: () => AutoCompleteOption[] = this.skipFiltering;
-  private changeOptionsFlow: (changes: SimpleChanges) => void = this.changeOptions;
+  public panelPosition = PanelDefaultPosVer.belowLeftRight;
+  public panelClassList: string[] = ['b-auto-complete-panel'];
+  public positionClassList: OverlayPositionClasses = {};
+  public subscribtions: Subscription[] = [];
 
-  ngOnInit(): void {
-    this.getFilteredOptions = (this.skipOptionsFiltering) ? this.skipFiltering : this.filterOptions;
-    this.changeOptionsFlow = (this.skipOptionsFiltering) ? this.changeOptionsAndOpenPanel : this.changeOptions;
+  public get overlayRef(): OverlayRef {
+    return this.panel?.overlayRef;
   }
 
+  private getFilteredOptions: () => AutoCompleteOption[] = this.skipFiltering;
+  private changeOptionsFlow: (changes: SimpleChanges) => void = this
+    .changeOptions;
+
+  ngOnInit(): void {
+    this.getFilteredOptions = this.skipOptionsFiltering
+      ? this.skipFiltering
+      : this.filterOptions;
+    this.changeOptionsFlow = this.skipOptionsFiltering
+      ? this.changeOptionsAndOpenPanel
+      : this.changeOptions;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'options')) {
@@ -142,12 +136,12 @@ export class AutoCompleteComponent implements OnInit, OnChanges, OnDestroy {
 
   private openPanel(): void {
     if (this.options.length > 0) {
-      this.listPanelSrvc.openPanel(this);
+      this.panel = this.listPanelSrvc.openPanel({ self: this });
     }
   }
 
   private destroyPanel(skipEmit = false): void {
-    this.listPanelSrvc.destroyPanel(this, skipEmit);
+    this.panel = this.listPanelSrvc.destroyPanel({ self: this, skipEmit });
   }
 
   private filterOptions(): AutoCompleteOption[] {

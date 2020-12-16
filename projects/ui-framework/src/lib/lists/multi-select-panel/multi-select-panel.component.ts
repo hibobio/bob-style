@@ -7,10 +7,7 @@ import {
 } from '@angular/core';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { ListChange } from '../list-change/list-change';
-import { Overlay } from '@angular/cdk/overlay';
-import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { UtilsService } from '../../services/utils/utils.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListModelService } from '../list-service/list-model.service';
 import { SelectType } from '../list.enum';
@@ -36,11 +33,8 @@ export class MultiSelectPanelComponent extends BaseSelectPanelElement {
     protected translate: TranslateService,
     protected DOM: DOMhelpers,
     protected zone: NgZone,
-    protected cd: ChangeDetectorRef,
-    protected overlay: Overlay,
-    protected viewContainerRef: ViewContainerRef,
-    protected panelPositionService: PanelPositionService,
-    protected utilsService: UtilsService
+    public cd: ChangeDetectorRef,
+    public viewContainerRef: ViewContainerRef
   ) {
     super(
       listChangeSrvc,
@@ -51,10 +45,7 @@ export class MultiSelectPanelComponent extends BaseSelectPanelElement {
       DOM,
       zone,
       cd,
-      overlay,
-      viewContainerRef,
-      panelPositionService,
-      utilsService
+      viewContainerRef
     );
     this.type = SelectType.multi;
     this.wrapEvent = false;

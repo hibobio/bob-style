@@ -20,10 +20,7 @@ import {
   asArray,
 } from '../../services/utils/functional-utils';
 import { ListPanelService } from '../../lists/list-panel.service';
-import { Overlay } from '@angular/cdk/overlay';
-import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { UtilsService } from '../../services/utils/utils.service';
 import { MultiSearchBaseElement } from './multi-search.abstract';
 import { Keys, clickKeys, controlKeys, arrowKeys } from '../../enums';
 
@@ -35,26 +32,13 @@ import { Keys, clickKeys, controlKeys, arrowKeys } from '../../enums';
 })
 export class MultiSearchComponent extends MultiSearchBaseElement {
   constructor(
-    protected cd: ChangeDetectorRef,
-    protected listPanelSrvc: ListPanelService,
-    // Used by ListPanelService:
-    protected zone: NgZone,
+    public viewContainerRef: ViewContainerRef,
+    public cd: ChangeDetectorRef,
     protected DOM: DOMhelpers,
-    protected utilsService: UtilsService,
-    protected overlay: Overlay,
-    protected viewContainerRef: ViewContainerRef,
-    protected panelPositionService: PanelPositionService
+    protected listPanelSrvc: ListPanelService,
+    private zone: NgZone
   ) {
-    super(
-      cd,
-      listPanelSrvc,
-      zone,
-      DOM,
-      utilsService,
-      overlay,
-      viewContainerRef,
-      panelPositionService
-    );
+    super(viewContainerRef, cd, DOM, listPanelSrvc);
   }
 
   @Input('showAll')

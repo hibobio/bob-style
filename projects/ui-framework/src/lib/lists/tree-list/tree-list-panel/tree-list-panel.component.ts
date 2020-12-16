@@ -14,19 +14,14 @@ import {
   OnDestroy,
 } from '@angular/core';
 import {
-  Overlay,
   CdkOverlayOrigin,
   ConnectedPosition,
   OverlayRef,
-  OverlayConfig,
 } from '@angular/cdk/overlay';
-import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { PanelDefaultPosVer } from '../../../popups/panel/panel.enum';
 import { Subscription } from 'rxjs';
 import { OverlayPositionClasses } from '../../../types';
-import { TemplatePortal } from '@angular/cdk/portal';
-import { UtilsService } from '../../../services/utils/utils.service';
 import {
   hasChanges,
   notFirstChanges,
@@ -34,9 +29,13 @@ import {
 } from '../../../services/utils/functional-utils';
 import { TreeListValue } from '../tree-list.interface';
 import { TreeListInputOutput } from '../tree-list-IO.abstract';
-import { ListPanelService } from '../../list-panel.service';
+import {
+  ListPanelService,
+  OverlayEnabledComponent,
+} from '../../list-panel.service';
 import { TreeListPanelIO } from './tree-list-panel.interface';
 import { LIST_ACTIONS_DEF } from '../../list-footer/list-footer.const';
+import { Panel } from '../../../popups/panel/panel.interface';
 
 @Component({
   selector: 'b-tree-list-panel',
@@ -45,17 +44,13 @@ import { LIST_ACTIONS_DEF } from '../../list-footer/list-footer.const';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TreeListPanelComponent extends TreeListInputOutput
-  implements TreeListPanelIO, OnChanges, OnDestroy {
+  implements TreeListPanelIO, OverlayEnabledComponent, OnChanges, OnDestroy {
   constructor(
+    public viewContainerRef: ViewContainerRef,
     public DOM: DOMhelpers,
     protected zone: NgZone,
-    protected cd: ChangeDetectorRef,
-    private listPanelSrvc: ListPanelService,
-    // Used by ListPanelService:
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
-    private panelPositionService: PanelPositionService,
-    private utilsService: UtilsService
+    public cd: ChangeDetectorRef,
+    private listPanelSrvc: ListPanelService
   ) {
     super();
 
@@ -75,14 +70,15 @@ export class TreeListPanelComponent extends TreeListInputOutput
 
   public treeListValue: TreeListValue;
 
-  // Used by ListPanelService:
-  private subscribtions: Subscription[] = [];
-  private panelClassList: string[] = ['b-select-panel'];
-  public positionClassList: OverlayPositionClasses = {};
-  public overlayRef: OverlayRef;
-  private panelConfig: OverlayConfig;
-  private templatePortal: TemplatePortal;
+  public panel: Panel;
   public panelOpen = false;
+  public panelClassList: string[] = ['b-select-panel'];
+  public positionClassList: OverlayPositionClasses = {};
+  public subscribtions: Subscription[] = [];
+
+  public get overlayRef(): OverlayRef {
+    return this.panel?.overlayRef;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (hasChanges(changes, ['disabled'])) {
@@ -132,7 +128,9 @@ export class TreeListPanelComponent extends TreeListInputOutput
   }
 
   public openPanel(): void {
-    this.listPanelSrvc.openPanel(this);
+    this.panel = this.listPanelSrvc.openPanel({
+      self: this,
+    });
   }
 
   public closePanel(): void {
@@ -140,10 +138,6 @@ export class TreeListPanelComponent extends TreeListInputOutput
   }
 
   protected destroyPanel(skipEmit = false): void {
-    this.listPanelSrvc.destroyPanel(this, skipEmit);
-
-    if (!this.cd['destroyed']) {
-      this.cd.detectChanges();
-    }
+    this.panel = this.listPanelSrvc.destroyPanel({ self: this, skipEmit });
   }
 }

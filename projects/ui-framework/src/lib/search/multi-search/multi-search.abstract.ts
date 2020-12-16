@@ -1,7 +1,6 @@
 import {
   Directive,
   ChangeDetectorRef,
-  NgZone,
   ViewContainerRef,
   ViewChild,
   TemplateRef,
@@ -10,16 +9,12 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { ListPanelService } from '../../lists/list-panel.service';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { UtilsService } from '../../services/utils/utils.service';
 import {
-  Overlay,
-  OverlayConfig,
-  OverlayRef,
-  CdkOverlayOrigin,
-} from '@angular/cdk/overlay';
-import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
+  ListPanelService,
+  OverlayEnabledComponent,
+} from '../../lists/list-panel.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { OverlayRef, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import {
   MULTI_SEARCH_KEYMAP_DEF,
   MULTI_SEARCH_SHOW_ITEMS_DEF,
@@ -34,24 +29,20 @@ import {
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { Subscription } from 'rxjs';
 import { OverlayPositionClasses } from '../../types';
-import { TemplatePortal } from '@angular/cdk/portal';
 import { simpleUID } from '../../services/utils/functional-utils';
 import { SearchComponent } from '../search/search.component';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { Panel } from '../../popups/panel/panel.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class MultiSearchBaseElement {
+export abstract class MultiSearchBaseElement
+  implements OverlayEnabledComponent {
   constructor(
-    protected cd: ChangeDetectorRef,
-    protected listPanelSrvc: ListPanelService,
-    // Used by ListPanelService:
-    protected zone: NgZone,
+    public viewContainerRef: ViewContainerRef,
+    public cd: ChangeDetectorRef,
     protected DOM: DOMhelpers,
-    protected utilsService: UtilsService,
-    protected overlay: Overlay,
-    protected viewContainerRef: ViewContainerRef,
-    protected panelPositionService: PanelPositionService
+    protected listPanelSrvc: ListPanelService
   ) {}
 
   @Input() label: string;
@@ -86,18 +77,16 @@ export abstract class MultiSearchBaseElement {
 
   @ViewChild(SearchComponent, { static: true }) search: SearchComponent;
 
-  // Used by ListPanelService:
   @ViewChild(CdkOverlayOrigin, { static: true })
   overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
-  public panelPosition = PanelDefaultPosVer.belowLeftRight;
-  protected subscribtions: Subscription[] = [];
-  protected panelClassList: string[] = ['b-select-panel', 'bms-select-panel'];
-  public positionClassList: OverlayPositionClasses = {};
-  public overlayRef: OverlayRef;
-  protected panelConfig: OverlayConfig;
-  protected templatePortal: TemplatePortal;
+
+  public panel: Panel;
   public panelOpen = false;
+  public panelPosition = PanelDefaultPosVer.belowLeftRight;
+  public subscribtions: Subscription[] = [];
+  public panelClassList: string[] = ['b-select-panel', 'bms-select-panel'];
+  public positionClassList: OverlayPositionClasses = {};
 
   public onFocusOut(event: FocusEvent): void {
     if (this.ignoreFocusOut) {
@@ -110,7 +99,7 @@ export abstract class MultiSearchBaseElement {
 
     if (
       !relatedTarget ||
-      (!this.overlayRef?.overlayElement.contains(relatedTarget) &&
+      (!this.panel?.overlayRef?.overlayElement.contains(relatedTarget) &&
         !relatedTarget.matches('.clear-input'))
     ) {
       this.closePanel();
@@ -138,10 +127,10 @@ export abstract class MultiSearchBaseElement {
   protected focusFirstOption(focusList = false): HTMLElement {
     const elToFocus = (this.lastFocusedOption ||
       (!focusList &&
-        this.overlayRef?.overlayElement?.querySelector(
+        this.panel?.overlayRef?.overlayElement?.querySelector(
           '.bms-option:not(.bms-show-more)'
         )) ||
-      this.overlayRef?.overlayElement?.children[0]) as HTMLElement;
+      this.panel?.overlayRef?.overlayElement?.children[0]) as HTMLElement;
 
     elToFocus?.focus();
 
@@ -149,14 +138,17 @@ export abstract class MultiSearchBaseElement {
   }
 
   public openPanel(): void {
-    if (!this.overlayRef) {
-      this.listPanelSrvc.openPanel(this, { hasBackdrop: false });
+    if (!this.panel) {
+      this.panel = this.listPanelSrvc.openPanel({
+        self: this,
+        hasBackdrop: false,
+      });
       this.focusSearchInput();
     }
   }
 
   public closePanel(): void {
-    if (this.overlayRef) {
+    if (this.panel) {
       this.search.inputFocused = false;
       this.search['skipFocusEvent'] = false;
       this.lastFocusedOption = undefined;
@@ -167,7 +159,7 @@ export abstract class MultiSearchBaseElement {
   }
 
   protected destroyPanel(skipEmit = false): void {
-    this.listPanelSrvc.destroyPanel(this, skipEmit);
+    this.panel = this.listPanelSrvc.destroyPanel({ self: this, skipEmit });
 
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
