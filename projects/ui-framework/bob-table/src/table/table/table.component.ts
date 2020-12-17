@@ -225,11 +225,18 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
     let previousColumnDefValue: ColumnDef[];
 
-    if (hasChanges(changes, ['columnDefs'], true)) {
+    if (
+      (!this.columnDefConfig &&
+        !hasChanges(changes, ['columnDefs', 'columnDefConfig'], true)) ||
+      hasChanges(changes, ['columnDefs'], true)
+    ) {
       this.columnDefConfig = {
         columnDef: this.columnDefs,
         orderStrategy: DEFAULT_COL_ORDER_STRATEGY,
       };
+    }
+
+    if (hasChanges(changes, ['columnDefs'], true)) {
       previousColumnDefValue = changes.columnDefs.previousValue;
     }
 
@@ -249,7 +256,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         ? previousColumnDefValue
         : this.columnDefs;
       const columnDefs =
-        this.columnDefConfig.orderStrategy === ColumnOrderStrategy.AppendNew
+        this.columnDefConfig.orderStrategy === DEFAULT_COL_ORDER_STRATEGY
           ? this.tableUtilsService.getOrderedFields(
               existingColumns,
               this.columnDefConfig.columnDef,
@@ -257,8 +264,14 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
             )
           : this.columnDefConfig.columnDef;
 
-      if (this.enableRowDrag && columnDefs.find(colDef => colDef.sortable || colDef.sort)) {
-        log.wrn(['Sorting disabled, because row drag is enabled'], 'TableComponent');
+      if (
+        this.enableRowDrag &&
+        columnDefs.find((colDef) => colDef.sortable || colDef.sort)
+      ) {
+        log.wrn(
+          ['Sorting disabled, because row drag is enabled'],
+          'TableComponent'
+        );
       }
 
       this.gridColumnDefs = this.tableUtilsService.getGridColumnDef(
