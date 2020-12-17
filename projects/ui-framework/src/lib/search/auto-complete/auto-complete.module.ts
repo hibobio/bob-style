@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AutoCompleteComponent } from './auto-complete.component';
 import { AutoCompletePanelComponent } from './auto-complete-panel/auto-complete-panel.component';
-import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { TypographyModule } from '../../typography/typography.module';
@@ -12,8 +11,15 @@ import { SearchModule } from '../search/search.module';
 
 @NgModule({
   declarations: [AutoCompleteComponent, AutoCompletePanelComponent],
-  imports: [CommonModule, SearchModule, OverlayModule, ScrollingModule, TypographyModule, FiltersModule],
-  providers: [PanelPositionService, ListKeyboardService],
-  exports: [AutoCompleteComponent]
+  imports: [
+    CommonModule,
+    SearchModule,
+    OverlayModule,
+    ScrollingModule,
+    TypographyModule,
+    FiltersModule,
+  ],
+  providers: [ListKeyboardService],
+  exports: [AutoCompleteComponent],
 })
 export class AutoCompleteModule {}

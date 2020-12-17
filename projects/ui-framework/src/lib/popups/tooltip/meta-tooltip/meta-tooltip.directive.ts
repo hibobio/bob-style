@@ -22,8 +22,8 @@ import {
   MAT_TOOLTIP_DEFAULT_OPTIONS,
   MAT_TOOLTIP_SCROLL_STRATEGY,
 } from '@angular/material/tooltip';
-import { isObject, isString } from '../../services/utils/functional-utils';
-import { InfoTooltip } from '../info-tooltip/info-tooltip.interface';
+import { isObject, isString } from '../../../services/utils/functional-utils';
+import { InfoTooltip } from '../../info-tooltip/info-tooltip.interface';
 
 @Directive({
   selector: '[bTooltip]',

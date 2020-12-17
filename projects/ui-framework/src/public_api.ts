@@ -492,6 +492,9 @@ export { TruncateTooltipDirective } from './lib/popups/truncate-tooltip/truncate
 export { TruncateTooltipType, TruncateTooltipPosition } from './lib/popups/truncate-tooltip/truncate-tooltip.enum';
 // CSS Tooltip
 export *  from './lib/popups/tooltip/tooltip.enum';
+// Meta Tooltip
+export { MetaTooltipModule } from './lib/popups/tooltip/meta-tooltip/meta-tooltip.module';
+export { MetaTooltipDirective } from './lib/popups/tooltip/meta-tooltip/meta-tooltip.directive';
 
 /*
  * Layout

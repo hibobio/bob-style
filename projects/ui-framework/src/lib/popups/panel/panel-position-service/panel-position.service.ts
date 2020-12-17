@@ -19,7 +19,9 @@ import { PanelDefaultPosVer } from '../panel.enum';
 import { OverlayPositionClasses } from '../../../types';
 import { isArray } from '../../../services/utils/functional-utils';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PanelPositionService {
   constructor(
     private overlay: Overlay,

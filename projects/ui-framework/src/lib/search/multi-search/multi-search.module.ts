@@ -4,7 +4,6 @@ import { MultiSearchComponent } from './multi-search.component';
 import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { SearchModule } from '../search/search.module';
-import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { ListPanelService } from '../../lists/list-panel.service';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
@@ -23,6 +22,6 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
   ],
   exports: [MultiSearchComponent],
-  providers: [PanelPositionService, ListPanelService, EventManagerPlugins[0]],
+  providers: [ListPanelService, EventManagerPlugins[0]],
 })
 export class MultiSearchModule {}

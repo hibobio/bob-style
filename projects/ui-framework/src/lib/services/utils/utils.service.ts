@@ -9,7 +9,7 @@ import { DocumentRef } from './document-ref.service';
 export const APP_SCROLL_CONTAINER = new InjectionToken<string>(
   'App scrollable container selector',
   {
-    factory: () => '.content-wrapper[cdkscrollable]',
+    factory: () => '.app-content > .content-wrapper',
   }
 );
 

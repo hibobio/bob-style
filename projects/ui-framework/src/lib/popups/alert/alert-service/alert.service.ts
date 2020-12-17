@@ -4,64 +4,78 @@ import { AlertComponent } from '../alert/alert.component';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { cloneDeep, bind } from 'lodash';
+import { PanelService } from '../../panel/panel.service';
+import { Panel } from '../../panel/panel.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AlertService {
-  private alertComponentRef: ComponentRef<AlertComponent>;
-  private overlayConfig: OverlayConfig;
-  public overlayRef: OverlayRef;
+  constructor(private overlay: Overlay, private panelService: PanelService) {}
+
   public isOpen: boolean;
   private timeRef: NodeJS.Timer;
   private alertDuration = 7000;
 
-  constructor(private overlay: Overlay) {}
+  public panel: Panel<AlertComponent>;
+
+  public get overlayRef(): OverlayRef {
+    return this.panel?.overlayRef;
+  }
+  public get alertComponentRef(): ComponentRef<AlertComponent> {
+    return this.panel?.componentRef;
+  }
 
   public showAlert(config: AlertConfig): ComponentRef<AlertComponent> {
     this.closeAlertCallback();
     if (!this.isOpen) {
-      this.overlayConfig = this.getConfig();
-      this.overlayRef = this.overlay.create(this.overlayConfig);
-      const alertPortal = new ComponentPortal(AlertComponent, null);
-      this.alertComponentRef = this.overlayRef.attach(alertPortal);
-      this.alertComponentRef.instance.alertConfig = cloneDeep(config);
-      this.alertComponentRef.instance.closeAlertCallback = bind(
+      //
+      this.panel = this.panelService.createPanel({
+        origin: null,
+        ...this.getConfig(),
+      });
+
+      this.panel.portal = new ComponentPortal(AlertComponent, null);
+      this.panel.componentRef = this.overlayRef.attach(this.panel.portal);
+
+      this.panel.componentRef.instance.alertConfig = cloneDeep(config);
+      this.panel.componentRef.instance.closeAlertCallback = bind(
         this.closeAlertCallback,
         this
       );
-      this.isOpen = true;
-      this.alertComponentRef.instance.animationState = 'enter';
+
+      this.panel.componentRef.instance.animationState = 'enter';
       this.timeRef = setTimeout(
-        () => this.alertComponentRef.instance.closeAlert(),
+        () => this.panel.componentRef.instance.closeAlert(),
         this.alertDuration
       );
-      return this.alertComponentRef;
+
+      this.isOpen = true;
+
+      return this.panel.componentRef;
     }
   }
 
   private getConfig(): OverlayConfig {
-    const positionStrategy = this.overlay
-      .position()
-      .global()
-      .centerHorizontally()
-      .top('10px');
-    const panelClass = '';
     return {
       disposeOnNavigation: true,
       hasBackdrop: false,
-      panelClass,
-      positionStrategy,
+      panelClass: '',
+      positionStrategy: this.overlay
+        .position()
+        .global()
+        .centerHorizontally()
+        .top('10px'),
     };
   }
 
   public closeAlert(): void {
-    this.alertComponentRef.instance.closeAlert();
+    this.panel.componentRef.instance.closeAlert();
   }
 
   public closeAlertCallback(): void {
     this.isOpen = false;
-    this.overlayRef?.dispose();
+    this.panelService.destroyPanel(this.panel);
     clearTimeout(this.timeRef);
   }
 }

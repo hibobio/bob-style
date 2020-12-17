@@ -12,9 +12,7 @@ import {
   OnInit,
   ElementRef,
 } from '@angular/core';
-import { CdkOverlayOrigin, Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
-import { PanelPositionService } from './panel-position-service/panel-position.service';
+import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
 import { Subscription } from 'rxjs';
 import { PanelDefaultPosVer, PanelSize } from './panel.enum';
 import { debounce } from 'lodash';
@@ -69,7 +67,7 @@ export class PanelComponent implements OnInit, OnDestroy {
   public mouseLeaveDebounce: any;
   private subs: Subscription[] = [];
 
-  public get overlayRef() {
+  public get overlayRef(): OverlayRef {
     return this.panel?.overlayRef;
   }
 
@@ -121,7 +119,7 @@ export class PanelComponent implements OnInit, OnDestroy {
         openOnHover: this.openOnHover,
         hasBackdrop: true,
         showBackdrop: this.showBackdrop,
-        panelClass: this.panelClass,
+        panelClass: ['b-panel', this.panelClass],
         backdropClass: this.backdropClass,
       });
 
