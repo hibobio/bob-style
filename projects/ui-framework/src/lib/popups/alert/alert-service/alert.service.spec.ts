@@ -22,6 +22,7 @@ import { AlertComponent } from '../alert/alert.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { fakeAsyncFlush } from '../../../services/utils/test-helpers';
+import { PanelService } from '../../panel/panel.service';
 
 const ALERT_DURATION_TICK = 11;
 const ALERT_CONFIG: AlertConfig = {
@@ -43,7 +44,7 @@ describe('AlertService', () => {
       imports: [OverlayModule, ButtonsModule, BrowserAnimationsModule],
       declarations: [AlertComponent, MockComponent(IconComponent)],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-      providers: [AlertService],
+      providers: [AlertService, PanelService],
     }).overrideModule(BrowserDynamicTestingModule, {
       set: {
         entryComponents: [AlertComponent],
@@ -97,8 +98,8 @@ describe('AlertService', () => {
       closeButton.click();
       expect(alertComponentRef.instance.animationState).toEqual('leave');
       alertComponentRef.instance.onAnimationDone({ toState: 'leave' });
-      expect(alertService.overlayRef.hostElement).toBeNull();
-      expect(alertService.overlayRef.hasAttached()).toBeFalsy();
+      expect(alertService.overlayRef?.hostElement).toBeFalsy();
+      expect(alertService.overlayRef?.hasAttached()).toBeFalsy();
       expect(alertService.isOpen).toBeFalsy();
       tick(ALERT_DURATION_TICK);
 
@@ -112,8 +113,8 @@ describe('AlertService', () => {
       tick(ALERT_DURATION_TICK);
       expect(alertComponentRef.instance.animationState).toEqual('leave');
       alertComponentRef.instance.onAnimationDone({ toState: 'leave' });
-      expect(alertService.overlayRef.hostElement).toBeNull();
-      expect(alertService.overlayRef.hasAttached()).toBeFalsy();
+      expect(alertService.overlayRef?.hostElement).toBeFalsy();
+      expect(alertService.overlayRef?.hasAttached()).toBeFalsy();
       expect(alertService.isOpen).toBeFalsy();
 
       fakeAsyncFlush();
