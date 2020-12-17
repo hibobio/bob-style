@@ -9,8 +9,21 @@ import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [ConfirmationDialogComponent, DeleteConfirmationDialogComponent],
-  imports: [CommonModule, DialogModule, ButtonsModule, TypographyModule, InputModule, TranslateModule],
-  entryComponents: [ConfirmationDialogComponent],
+  declarations: [
+    ConfirmationDialogComponent,
+    DeleteConfirmationDialogComponent,
+  ],
+  imports: [
+    CommonModule,
+    DialogModule,
+    ButtonsModule,
+    TypographyModule,
+    InputModule,
+    TranslateModule,
+  ],
+  entryComponents: [
+    ConfirmationDialogComponent,
+    DeleteConfirmationDialogComponent,
+  ],
 })
 export class ConfirmationDialogModule {}

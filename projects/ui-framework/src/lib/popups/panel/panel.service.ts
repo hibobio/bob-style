@@ -128,6 +128,9 @@ export class PanelService {
   }
 
   destroyPanel(panel: Panel): void {
+    if (!panel) {
+      return;
+    }
     panel.componentRef?.destroy();
     panel.portal?.isAttached && panel.portal.detach();
     invoke(panel.overlayRef, 'dispose');

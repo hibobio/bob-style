@@ -76,6 +76,7 @@ export class AlertService {
   public closeAlertCallback(): void {
     this.isOpen = false;
     this.panelService.destroyPanel(this.panel);
+    this.panel = undefined;
     clearTimeout(this.timeRef);
   }
 }
