@@ -141,6 +141,9 @@ export { ProgressBarComponent } from './lib/indicators/progress/progress-bar/pro
 // Progress Donut Bar
 export { ProgressDonutComponent } from './lib/indicators/progress/progress-donut/progress-donut.component';
 export { ProgressDonutModule } from './lib/indicators/progress/progress-donut/progress-donut.module';
+// Multi Progress Bar
+export { MultiProgressBarModule } from './lib/indicators/progress/multi-progress-bar/multi-progress-bar.module';
+export { MultiProgressBarComponent } from './lib/indicators/progress/multi-progress-bar/multi-progress-bar.component';
 // Simple Bar Chart
 export * from './lib/indicators/simple-bar-chart/simple-bar-chart.interface';
 export { SimpleBarChartModule } from './lib/indicators/simple-bar-chart/simple-bar-chart.module';
