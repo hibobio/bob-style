@@ -37,6 +37,10 @@ const storyTemplate = `
 <b-story-book-layout [title]="'Multi Progress Bar'">
   <div style="max-width: 300px">
     ${template}
+    <br><br>
+    <b-button type="secondary" size="small">
+      <b-multi-progress-bar [data]="data2" class="mrg-r-8"></b-multi-progress-bar> <span class="b-caption">(420)</span>
+    </b-button>
   </div>
 </b-story-book-layout>
 `;
@@ -65,6 +69,12 @@ const toAdd = () => ({
 
     type: select('type', Object.values(ProgressType), ProgressType.primary),
     size: select('size', Object.values(ProgressSize), ProgressSize.medium),
+
+    data2: [
+      { value: 76, color: 'green' },
+      { value: 43, color: 'yellow' },
+      { value: 21, color: 'red' },
+    ],
 
     data: object('data', [
       { value: 13 },

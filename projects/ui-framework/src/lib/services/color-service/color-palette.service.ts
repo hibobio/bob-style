@@ -17,17 +17,6 @@ export class ColorPaletteService {
       )
       .map((key) => ColorPalette[key]);
     this.paletteSize = this.colorPalette.length;
-
-    console.log(
-      [].concat(
-        Object.keys(ColorPalette).filter((key) => key.endsWith('base')),
-        Object.keys(ColorPalette).filter((key) => key.endsWith('dark')),
-        Object.keys(ColorPalette).filter((key) => key.endsWith('darker')),
-        Object.keys(ColorPalette).filter((key) => key.endsWith('light')),
-        Object.keys(ColorPalette).filter((key) => key.endsWith('lighter'))
-      ),
-      this.colorPalette
-    );
   }
 
   public colorPalette: ColorPalette[];
@@ -37,10 +26,6 @@ export class ColorPaletteService {
     if (!isNumber(index)) {
       index = randomNumber(0, this.colorPalette.length);
     }
-    console.log(
-      index % this.paletteSize,
-      this.colorPalette[index % this.paletteSize]
-    );
     return this.colorPalette[index % this.paletteSize];
   }
 
