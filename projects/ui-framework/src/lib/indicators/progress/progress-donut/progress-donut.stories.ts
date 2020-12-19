@@ -150,7 +150,7 @@ const note = `
   [donutSize] | DonutSize | donut size preset | &nbsp;
   [customSize] | number | custom donut diameter | &nbsp;
   <s>[size]</s> | ProgressSize | theme size (deprecated) | medium
-  [data] | ProgressData | \`\`\`color: string\`\`\` - bar color,<br>\
+  [data] | ProgressDonutData | \`\`\`color: string\`\`\` - bar color,<br>\
   \`\`\`value: number\`\`\` -  progress value (0-100) **&lt;= number indicating percentage**,<br>\
   \`\`\`headerTextPrimary: string / boolean\`\`\` - \
    text for the top line of the header (headings font-family),<br>\

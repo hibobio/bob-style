@@ -27,7 +27,7 @@ import {
 } from '../progress.const';
 import { MutationObservableService } from '../../../services/utils/mutation-observable';
 import { DonutSize, ProgressSize } from '../progress.enum';
-import { ProgressDonutConfig } from '../progress.interface';
+import { ProgressDonutConfig, ProgressDonutData } from '../progress.interface';
 
 @Component({
   selector: 'b-progress-donut',
@@ -47,6 +47,7 @@ export class ProgressDonutComponent extends BaseProgressElement
     super(host, DOM, zone, cd, mutationObservableService);
   }
 
+  @Input() data: ProgressDonutData;
   @Input() config: ProgressDonutConfig = {};
   @Input() customSize: number;
 

@@ -15,7 +15,7 @@ import {
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { BaseProgressElement } from '../progress-element.abstract';
 import { MutationObservableService } from '../../../services/utils/mutation-observable';
-import { ProgressBarConfig } from '../progress.interface';
+import { ProgressBarConfig, ProgressBarData } from '../progress.interface';
 
 @Component({
   selector: 'b-progress-bar',
@@ -35,6 +35,7 @@ export class ProgressBarComponent extends BaseProgressElement
     super(host, DOM, zone, cd, mutationObservableService);
   }
 
+  @Input() data: ProgressBarData;
   @Input() config: ProgressBarConfig = {};
 
   readonly id = simpleUID('bpb-');

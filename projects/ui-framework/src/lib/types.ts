@@ -1,6 +1,10 @@
+import { ColorPalette, ColorsGrey } from './colorsPalette.enum';
+
 export interface GenericObject<T = any> {
   [key: string]: T;
 }
+
+export type Color = ColorPalette | ColorsGrey | string;
 
 export interface ArrayES<T> extends Array<T> {
   flat(): Array<T>;

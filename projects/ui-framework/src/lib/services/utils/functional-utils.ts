@@ -1,7 +1,7 @@
 import { SimpleChanges, SimpleChange, ElementRef } from '@angular/core';
 import { controlKeys, KEYCODES, Keys, metaKeys } from '../../enums';
 import { GenericObject } from '../../types';
-import { isEqual, cloneDeep } from 'lodash';
+import { isEqual, cloneDeep, set, get, merge } from 'lodash';
 import { RenderedComponent } from '../component-renderer/component-renderer.interface';
 import { SelectGroupOption } from '../../lists/list.interface';
 import { Observable, Subscription } from 'rxjs';
@@ -55,10 +55,10 @@ export const isEmptyArray = (val: any, falsyIsEmpty = true): boolean =>
   (falsyIsEmpty && isNullOrUndefined(val)) ||
   (Array.isArray(val) && val.length === 0);
 
-export const isObject = (val: any): val is object =>
+export const isObject = <T = object>(val: any): val is T =>
   !!val && val === Object(val) && typeof val !== 'function' && !isArray(val);
 
-export const isPlainObject = <T = any>(val: any): val is { [key: string]: T } =>
+export const isPlainObject = <T = GenericObject>(val: any): val is T =>
   isObject(val) &&
   val.constructor === Object &&
   Object.getPrototypeOf(val) === Object.prototype;
@@ -1586,4 +1586,35 @@ export const getCopyName = (val: string, copyStr = 'copy'): string => {
 
 export const invoke = <T = unknown, R = any>(smth: T, method: string): R => {
   return smth && isFunction(smth[method]) && smth[method]();
+};
+
+// ----------------------
+// LODASH WRAPS
+// ----------------------
+
+export const _cloneDeep = <T = unknown>(smth: T): T => {
+  return cloneDeep(smth) as T;
+};
+
+export const _set = <T = unknown, V = unknown>(
+  target: T,
+  path: string,
+  value: V
+): T => {
+  return set(target, path, value);
+};
+
+export const _get = <V = unknown, T = unknown>(
+  smth: T,
+  path: string,
+  defVal?: V
+): V => {
+  return get(smth, path, defVal);
+};
+
+export const _merge = <T = unknown>(
+  target: Partial<T>,
+  ...sources: Partial<T>[]
+): T => {
+  return merge(target, ...sources) as T;
 };

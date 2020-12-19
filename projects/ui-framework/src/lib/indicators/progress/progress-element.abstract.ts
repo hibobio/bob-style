@@ -15,6 +15,7 @@ import {
   applyChanges,
   numberMinMax,
   notFirstChanges,
+  isObject,
 } from '../../services/utils/functional-utils';
 import { valueAsNumber } from '../../services/utils/transformers';
 import { outsideZone } from '../../services/utils/rxjs.operators';
@@ -33,17 +34,20 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
     protected zone: NgZone,
     protected cd: ChangeDetectorRef,
     protected mutationObservableService: MutationObservableService
-  ) {}
+  ) {
+    this.data = this.dataDef;
+  }
 
-  @Input() data: ProgressData = {} as ProgressData;
+  @Input() data: ProgressData | ProgressData[];
   @Input() config: ProgressConfig = {};
-  @Output() clicked: EventEmitter<ProgressData> = new EventEmitter<
-    ProgressData
-  >();
+  @Output() clicked: EventEmitter<
+    ProgressData | ProgressData[]
+  > = new EventEmitter<ProgressData | ProgressData[]>();
 
   readonly id: string;
   readonly progressType = ProgressType;
   protected wasInView = false;
+  protected dataDef: ProgressData | ProgressData[] = {} as ProgressData;
 
   @HostBinding('attr.data-size') @Input() size: ProgressSize =
     ProgressSize.medium;
@@ -59,14 +63,14 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
   }
 
   protected onNgChanges(changes: SimpleChanges): void {}
-  protected setCssProps(): void {}
+  protected abstract setCssProps(): void;
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(
       this,
       changes,
       {
-        data: {},
+        data: this.dataDef,
         config: {},
         size: ProgressSize.medium,
         type: ProgressType.primary,
@@ -75,7 +79,7 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
       true
     );
 
-    if (changes.data) {
+    if (changes.data && isObject<ProgressData>(this.data)) {
       this.data.value = numberMinMax(
         valueAsNumber(true, this.data.value, 0),
         0,

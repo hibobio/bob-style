@@ -1,0 +1,101 @@
+import { storiesOf } from '@storybook/angular';
+import {
+  select,
+  withKnobs,
+  boolean,
+  object,
+} from '@storybook/addon-knobs/angular';
+import { ComponentGroupType } from '../../../consts';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
+import { ProgressType, ProgressSize } from '../progress.enum';
+import { MultiProgressBarModule } from './multi-progress-bar.module';
+import { ButtonsModule } from '../../../buttons/buttons.module';
+import { action } from '@storybook/addon-actions';
+
+const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
+  withKnobs
+);
+
+const story2 = storiesOf(ComponentGroupType.Charts, module).addDecorator(
+  withKnobs
+);
+
+const template = `
+<b-multi-progress-bar [data]="data"
+     [type]="type" [size]="size"
+      [config]="{
+        trackColor: trackColor,
+        direction: direction,
+        clickable: clickable,
+        disableAnimation: disableAnimation
+      }"
+      (clicked)="onClick($event)">
+</b-multi-progress-bar>
+`;
+
+const storyTemplate = `
+<b-story-book-layout [title]="'Multi Progress Bar'">
+  <div style="max-width: 300px">
+    ${template}
+  </div>
+</b-story-book-layout>
+`;
+
+const note = `
+  ## Multi Progress Bar
+  #### Module
+  *MultiProgressBarModule*
+
+
+  #### Properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+
+
+  ~~~
+  ${template}
+  ~~~
+`;
+
+const toAdd = () => ({
+  template: storyTemplate,
+  props: {
+    progressType: ProgressType,
+    progressSize: ProgressSize,
+
+    type: select('type', Object.values(ProgressType), ProgressType.primary),
+    size: select('size', Object.values(ProgressSize), ProgressSize.medium),
+
+    data: object('data', [
+      { value: 13 },
+      { value: 27 },
+      { value: 5 },
+      { value: 67 },
+    ]),
+
+    trackColor: select(
+      'trackColor',
+      [
+        0,
+        'rgba(200, 200, 200, 0.15)',
+        'rgba(157,157,157, 0.15)',
+        'rgba(255,150,43, 0.15)',
+        'rgba(248,188,32, 0.15)',
+        'rgba(23,180,86, 0.15)',
+        'rgba(229,44,81, 0.15)',
+        'rgba(75,149,236, 0.15)',
+      ],
+      'rgba(200, 200, 200, 0.15)'
+    ),
+    direction: select('direction', ['min-to-max', 'max-to-min'], 'max-to-min'),
+    disableAnimation: boolean('disableAnimation', false),
+    clickable: boolean('clickable', false),
+    onClick: action('bar clicked'),
+  },
+  moduleMetadata: {
+    imports: [StoryBookLayoutModule, MultiProgressBarModule, ButtonsModule],
+  },
+});
+
+story.add('Multi Progress Bar', toAdd, { notes: { markdown: note } });
+story2.add('Multi Progress Bar', toAdd, { notes: { markdown: note } });

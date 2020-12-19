@@ -1,0 +1,29 @@
+@import '../../../style/common-imports';
+@import '../progress.mixin';
+
+:host {
+  display: block;
+  background-position: left center;
+  background-repeat: no-repeat;
+
+  background-color: var(--bmpb-track-color, #{$progress-bar-track-color-def});
+
+  background-image: var(--bmpb-img, none);
+  background-size: var(--bmpb-img-size, 0% 100%);
+
+  transition: background-size var(--bmpb-trans, 1s);
+  transition-delay: var(--bmpb-trans-delay, 0.2s);
+  transition-timing-function: ease-in-out;
+
+  &[data-clickable='true'] {
+    cursor: pointer;
+  }
+
+  height: times8(1);
+  border-radius: times8(1) / 2;
+
+  &[data-size='large'] {
+    height: times8(2);
+    border-radius: times8(1) / 2;
+  }
+}
