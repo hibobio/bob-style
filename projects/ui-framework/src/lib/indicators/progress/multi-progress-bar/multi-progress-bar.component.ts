@@ -107,13 +107,16 @@ export class MultiProgressBarComponent extends BaseProgressElement
   }
 
   protected setCssProps(): void {
+    const totalValues = this.data.length;
     const bgImg =
       'linear-gradient(to right, ' +
       this.data
         .reduce(
-          (acc, d) => {
+          (acc, d, i) => {
             acc.val.push(
-              `${d.color} ${acc.pos}%, ${d.color} ${(acc.pos += d.value)}%`
+              `${d.color} ${acc.pos}%, ${d.color} ${
+                i < totalValues - 1 ? (acc.pos += d.value) : 100
+              }%`
             );
 
             return acc;
