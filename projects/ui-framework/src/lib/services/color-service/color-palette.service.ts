@@ -47,11 +47,9 @@ export class ColorPaletteService {
       next: () => {
         generator.currentIndex = ++generator.currentIndex % this.paletteSize;
         generator.currentColorName = this.colorPaletteKeys[
-          generator.currentIndex % this.paletteSize
+          generator.currentIndex
         ];
-        generator.currentColor = this.colorPalette[
-          generator.currentIndex % this.paletteSize
-        ];
+        generator.currentColor = this.colorPalette[generator.currentIndex];
         return generator.currentColor;
       },
 
