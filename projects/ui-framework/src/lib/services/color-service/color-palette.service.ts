@@ -38,7 +38,11 @@ export class ColorPaletteService {
     return this.colorPalette[index % this.paletteSize];
   }
 
-  paletteColorGenerator(startIndex?: number): PaletteColorGenerator {
+  public gerRandomPaletteColor() {
+    return this.getPaletteColorByIndex();
+  }
+
+  public paletteColorGenerator(startIndex?: number): PaletteColorGenerator {
     const generator: PaletteColorGenerator = {
       currentIndex: (startIndex || 0) - 1,
       currentColorName: null,

@@ -237,6 +237,7 @@ const note = `
   signature | returns | description
   --- | ---
   getPaletteColorByIndex<wbr>(index?: number) | ColorPalette | returns color from the ColorPalette by index, if index is not provided - returns random color
+  gerRandomPaletteColor() | ColorPalette | same as calling getPaletteColorByIndex without providing index - returns random palette color
   paletteColorGenerator<wbr>(startIndex?: number) | PaletteColorGenerator | returns an object with:<br>\
    \`\`\`next()\`\`\` method - will return next color in ColorPalette on each call, <br>\
    \`\`\`nextMultiple(count)\`\`\` method - will return next Count number of colors (ColorPalette[]),<br>\
