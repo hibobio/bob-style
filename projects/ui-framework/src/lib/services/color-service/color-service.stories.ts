@@ -1,232 +1,229 @@
 import { storiesOf } from '@storybook/angular';
-import { object, withKnobs } from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
+import { withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import {
+  COLOR_PALETTE_MAIN_COLOR_ORDER,
+  COLOR_PALETTE_SET1_COLOR_ORDER,
+  COLOR_PALETTE_SET2_COLOR_ORDER,
+  COLOR_PALETTE_SET3_COLOR_ORDER,
+  COLOR_PALETTE_SET4_COLOR_ORDER,
+  COLOR_PALETTE_SET5_COLOR_ORDER,
+  COLOR_PALETTE_SET6_COLOR_ORDER,
+} from './color-palette.const';
+import { ColorService } from './color.service';
+import { ColorPalette } from './color-palette.enum';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs
 );
 
+const getTextColor = (color: string): string => {
+  return ColorService.prototype.isDark(color) ? 'white' : 'black';
+};
+
+const orderedPalette = Object.keys(ColorPalette)
+  .slice()
+  .sort((k1, k2) => {
+    const k1Split = k1.split('_');
+    const k2Split = k2.split('_');
+
+    const colorInd1 = parseInt(k1Split[0].replace('color', ''), 10);
+    const colorInd2 = parseInt(k2Split[0].replace('color', ''), 10);
+
+    const shadeInd1 =
+      k1Split[1] === 'darker'
+        ? 1
+        : k1Split[1] === 'dark'
+        ? 2
+        : k1Split[1] === 'base'
+        ? 3
+        : k1Split[1] === 'light'
+        ? 4
+        : 5;
+
+    const shadeInd2 =
+      k2Split[2] === 'darker'
+        ? 0
+        : k2Split[2] === 'dark'
+        ? 1
+        : k2Split[2] === 'base'
+        ? 2
+        : k2Split[2] === 'light'
+        ? 3
+        : 4;
+
+    return (
+      parseFloat(`${colorInd1}.${shadeInd1}`) -
+      parseFloat(`${colorInd2}.${shadeInd2}`)
+    );
+  });
+
 const storyTemplate = `
-<b-story-book-layout [title]="'ColorService, ColorPaletteService'">
+<b-story-book-layout [title]="'ColorPalette'">
 
-<div>
-  <h3>enum: ColorPalette</h3>
+<div style="margin-top: -20px;">
+  <h3 class="mrg-t-0">enum: ColorPalette</h3>
 
-  <table>
+  <div class="flx" style="display: grid; grid-template-columns: repeat(5, 1fr);">
+  ${orderedPalette
+    .map((key, i) => {
+      return (
+        '<div class="mrg-4 pad-4" style="background-color:' +
+        ColorPalette[key] +
+        '; color: ' +
+        getTextColor(ColorPalette[key]) +
+        ';">' +
+        key +
+        '<br>' +
+        ColorPalette[key] +
+        '</div>'
+      );
+    })
+    .join('')}
+  </div>
 
-    <tr>
-      <td style="background-color: #f6bbbb; color: black;">
-        color1_lighter
-        #f6bbbb
-      </td>
-      <td style="background-color: #f09292; color: black;">
-        color1_light
-        #f09292
-      </td>
+  <h3 class="mrg-t-40">PalletteColorSet.main</h3>
 
-      <td style="background-color: #d36565; color: white;">
-        color1_base
-        #d36565
-      </td>
-      <td style="background-color: #a54d4d; color: white;">
-        color1_dark
-        #a54d4d
-      </td>
-      <td style="background-color: #812525; color: white;">
-        color1_darker
-        #812525
-      </td>
-    </tr>
+  <div class="flx" style="display: grid; grid-template-columns: repeat(5, 1fr);">
+  ${COLOR_PALETTE_MAIN_COLOR_ORDER.map((key, i) => {
+    return (
+      '<div class="mrg-4 pad-4" style="background-color:' +
+      ColorPalette[key] +
+      '; color: ' +
+      getTextColor(ColorPalette[key]) +
+      ';">' +
+      i +
+      '<br>' +
+      key +
+      '<br>' +
+      ColorPalette[key] +
+      '</div>'
+    );
+  }).join('')}
+  </div>
 
-    <tr>
-      <td style="background-color: #fbf5d7; color: black;">
-        color2_lighter
-        #fbf5d7
-      </td>
-      <td style="background-color: #f8eaa3; color: black;">
-        color2_light
-        #f8eaa3
-      </td>
-      <td style="background-color: #e8d883; color: white;">
-        color2_base
-        #e8d883
-      </td>
-      <td style="background-color: #c1b051; color: white;">
-        color2_dark
-        #c1b051
-      </td>
-      <td style="background-color: #776926; color: white;">
-        color2_darker
-        #776926
-      </td>
-    </tr>
+  <h3 class="mrg-t-40">PalletteColorSet.set1</h3>
 
-    <tr>
-      <td style="background-color: #ffdbc1; color: black;">
-        color3_lighter
-        #ffdbc1
-      </td>
-      <td style="background-color: #f4b486; color: black;">
-        color3_light
-        #f4b486
-      </td>
-      <td style="background-color: #f1a168; color: white;">
-        color3_base
-        #f1a168
-      </td>
-      <td style="background-color: #eb7a29; color: white;">
-        color3_dark
-        #eb7a29
-      </td>
-      <td style="background-color: #a84f10; color: white;">
-        color3_darker
-        #a84f10
-      </td>
-    </tr>
+  <div class="flx" style="display: grid; grid-template-columns: repeat(5, 1fr);">
+  ${COLOR_PALETTE_SET1_COLOR_ORDER.map((key, i) => {
+    return (
+      '<div class="mrg-4 pad-4" style="background-color:' +
+      ColorPalette[key] +
+      '; color: ' +
+      getTextColor(ColorPalette[key]) +
+      ';">' +
+      i +
+      '<br>' +
+      key +
+      '<br>' +
+      ColorPalette[key] +
+      '</div>'
+    );
+  }).join('')}
+  </div>
 
-    <tr>
-      <td style="background-color: #ffcce2; color: black;">
-        color4_lighter
-        #ffcce2
-      </td>
-      <td style="background-color: #feabcf; color: black;">
-        color4_light
-        #feabcf
-      </td>
-      <td style="background-color: #c85c8a; color: white;">
-        color4_base
-        #c85c8a
-      </td>
-      <td style="background-color: #9b446a; color: white;">
-        color4_dark
-        #9b446a
-      </td>
-      <td style="background-color: #642b44; color: white;">
-        color4_darker
-        #642b44
-      </td>
-    </tr>
+  <h3 class="mrg-t-40">PalletteColorSet.set2</h3>
 
-    <tr>
-      <td style="background-color: #ceefe9; color: black;">
-        color5_lighter
-        #ceefe9
-      </td>
-      <td style="background-color: #a8ded7; color: black;">
-        color5_light
-        #a8ded7
-      </td>
-      <td style="background-color: #6cc1c1; color: white;">
-        color5_base
-        #6cc1c1
-      </td>
-      <td style="background-color: #46919e; color: white;">
-        color5_dark
-        #46919e
-      </td>
-      <td style="background-color: #154156; color: white;">
-        color5_darker
-        #154156
-      </td>
-    </tr>
+  <div class="flx" style="display: grid; grid-template-columns: repeat(5, 1fr);">
+  ${COLOR_PALETTE_SET2_COLOR_ORDER.map((key, i) => {
+    return (
+      '<div class="mrg-4 pad-4" style="background-color:' +
+      ColorPalette[key] +
+      '; color: ' +
+      getTextColor(ColorPalette[key]) +
+      ';">' +
+      i +
+      '<br>' +
+      key +
+      '<br>' +
+      ColorPalette[key] +
+      '</div>'
+    );
+  }).join('')}
+  </div>
 
-    <tr>
-      <td style="background-color: #e6d3f9; color: black;">
-        color6_lighter
-        #e6d3f9
-      </td>
-      <td style="background-color: #c9aae8; color: black;">
-        color6_light
-        #c9aae8
-      </td>
+  <h3 class="mrg-t-40">PalletteColorSet.set3</h3>
 
-      <td style="background-color: #9368bf; color: white;">
-        color6_base
-        #9368bf
-      </td>
-      <td style="background-color: #6b4493; color: white;">
-        color6_dark
-        #6b4493
-      </td>
-      <td style="background-color: #4b2f67; color: white;">
-        color6_darker
-        #4b2f67
-      </td>
-    </tr>
+  <div class="flx" style="display: grid; grid-template-columns: repeat(5, 1fr);">
+  ${COLOR_PALETTE_SET3_COLOR_ORDER.map((key, i) => {
+    return (
+      '<div class="mrg-4 pad-4" style="background-color:' +
+      ColorPalette[key] +
+      '; color: ' +
+      getTextColor(ColorPalette[key]) +
+      ';">' +
+      i +
+      '<br>' +
+      key +
+      '<br>' +
+      ColorPalette[key] +
+      '</div>'
+    );
+  }).join('')}
+  </div>
 
-    <tr>
-      <td style="background-color: #d3f8d6; color: black;">
-        color7_lighter
-        #d3f8d6
-      </td>
-      <td style="background-color: #a9e8ad; color: black;">
-        color7_light
-        #a9e8ad
-      </td>
-      <td style="background-color: #85c88a; color: white;">
-        color7_base
-        #85c88a
-      </td>
-      <td style="background-color: #589c5c; color: white;">
-        color7_dark
-        #589c5c
-      </td>
-      <td style="background-color: #38613a; color: white;">
-        color7_darker
-        #38613a
-      </td>
-    </tr>
+  <h3 class="mrg-t-40">PalletteColorSet.set4</h3>
 
-    <tr>
-      <td style="background-color: #f8d5c0; color: black;">
-        color8_lighter
-        #f8d5c0
-      </td>
-      <td style="background-color: #e0b69c; color: black;">
-        color8_light
-        #e0b69c
-      </td>
-      <td style="background-color: #b48e78; color: white;">
-        color8_base
-        #b48e78
-      </td>
-      <td style="background-color: #8b6c59; color: white;">
-        color8_dark
-        #8b6c59
-      </td>
-      <td style="background-color: #593e2d; color: white;">
-        color8_darker
-        #593e2d
-      </td>
-    </tr>
+  <div class="flx" style="display: grid; grid-template-columns: repeat(5, 1fr);">
+  ${COLOR_PALETTE_SET4_COLOR_ORDER.map((key, i) => {
+    return (
+      '<div class="mrg-4 pad-4" style="background-color:' +
+      ColorPalette[key] +
+      '; color: ' +
+      getTextColor(ColorPalette[key]) +
+      ';">' +
+      i +
+      '<br>' +
+      key +
+      '<br>' +
+      ColorPalette[key] +
+      '</div>'
+    );
+  }).join('')}
+  </div>
 
-    <tr>
-      <td style="background-color: #deedfd; color: black;">
-        color9_lighter
-        #deedfd
-      </td>
-      <td style="background-color: #bed8f5; color: black;">
-        color9_light
-        #bed8f5
-      </td>
-      <td style="background-color: #a4c9ef; color: white;">
-        color9_base
-        #a4c9ef
-      </td>
-      <td style="background-color: #618cbb; color: white;">
-        color9_dark
-        #618cbb
-      </td>
-      <td style="background-color: #2e4d6e; color: white;">
-        color9_darker
-        #2e4d6e
-      </td>
-    </tr>
+  <h3 class="mrg-t-40">PalletteColorSet.set5</h3>
 
-  </table>
+  <div class="flx" style="display: grid; grid-template-columns: repeat(5, 1fr);">
+  ${COLOR_PALETTE_SET5_COLOR_ORDER.map((key, i) => {
+    return (
+      '<div class="mrg-4 pad-4" style="background-color:' +
+      ColorPalette[key] +
+      '; color: ' +
+      getTextColor(ColorPalette[key]) +
+      ';">' +
+      i +
+      '<br>' +
+      key +
+      '<br>' +
+      ColorPalette[key] +
+      '</div>'
+    );
+  }).join('')}
+  </div>
+
+  <h3 class="mrg-t-40">PalletteColorSet.set6</h3>
+
+  <div class="flx" style="display: grid; grid-template-columns: repeat(5, 1fr);">
+  ${COLOR_PALETTE_SET6_COLOR_ORDER.map((key, i) => {
+    return (
+      '<div class="mrg-4 pad-4" style="background-color:' +
+      ColorPalette[key] +
+      '; color: ' +
+      getTextColor(ColorPalette[key]) +
+      ';">' +
+      i +
+      '<br>' +
+      key +
+      '<br>' +
+      ColorPalette[key] +
+      '</div>'
+    );
+  }).join('')}
+  </div>
+
 </div>
 
 
@@ -240,13 +237,21 @@ const note = `
   #### ColorPaletteService methods
   signature | returns | description
   --- | ---
-  getPaletteColorByIndex<wbr>(index?: number) | ColorPalette | returns color from the ColorPalette by index, <br>if index is not provided - returns random color
-  gerRandomPaletteColor() | ColorPalette | returns random palette color
-  gerRandomPaletteColors<wbr>(count = 1) | ColorPalette[] | returns Count number of colors
-  paletteColorGenerator<wbr>(startIndex?: number) | PaletteColorGenerator | returns an object with:<br>\
-   \`\`\`next()\`\`\` method - will return next color in ColorPalette on each call, <br>\
-   \`\`\`nextMultiple(count = 1)\`\`\` method - will return next Count number of colors (ColorPalette[]),<br>\
-    also has properties: \`\`\`currentIndex\`\`\`, \`\`\`currentColorName\`\`\`, \`\`\`currentColor\`\`\`.
+  getPaletteColorByIndex<wbr>(index?: number, set?: PalletteColorSet) | ColorPalette | returns color from the ColorPalette by index, <br>\
+  by default, returns colors from 'main' set, unless a differen set requested, <br>\
+  if index is not provided - returns random color
+  gerRandomPaletteColor(set?: PalletteColorSet) | ColorPalette | returns random palette color (by default from 'main' set)
+  gerRandomPaletteColors<wbr>(count = 1, set?: PalletteColorSet) | ColorPalette[] | returns Count number of colors (by default from 'main' set)
+  <u>paletteColorGenerator</u><wbr>(startIndex?: number, set?: PalletteColorSet) | PaletteColorGenerator | returns an object with:<br><br>\
+  **methods:**<br>\
+   \`\`\`next()\`\`\` - will return next color in ColorPalette on each call, <br>\
+   \`\`\`nextMultiple(count = 1)\`\`\` - will return next Count number of colors (ColorPalette[]),<br><br>\
+   **properties:** <br>\
+   \`\`\`currentSet\`\`\` (set in use, dafaults to 'main', if colors from requested set are exhausted, will switch to 'main' set),<br>\
+    \`\`\`currentIndex\`\`\` - increases with every next() call, <br>\
+    \`\`\`currentIndexInSet\`\`\` - index of current color in current set (may be different from currentIndex due to looping of colors), <br>\
+    \`\`\`currentColorName\`\`\` - current ColorPalette key,<br>\
+     \`\`\`currentColor\`\`\` - current ColorPalette value
 
   ~~~
   colorPalette = this.colorPaletteService.paletteColorGenerator();
@@ -261,7 +266,7 @@ const note = `
 `;
 
 story.add(
-  'Color services',
+  'ColorPalette',
   () => {
     return {
       template: storyTemplate,

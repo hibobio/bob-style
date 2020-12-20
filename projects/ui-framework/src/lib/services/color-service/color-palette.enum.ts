@@ -1,3 +1,13 @@
+export enum PalletteColorSet {
+  main = 'main',
+  set1 = 'set1',
+  set2 = 'set2',
+  set3 = 'set3',
+  set4 = 'set4',
+  set5 = 'set5',
+  set6 = 'set6',
+}
+
 export enum ColorPalette {
   color1_base = '#d36565',
   color1_dark = '#a54d4d',

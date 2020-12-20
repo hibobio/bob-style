@@ -1,6 +1,6 @@
-import { ColorPalette, ColorsGrey } from '../../colorsPalette.enum';
 import { Icons } from '../../icons/icons.enum';
 import { Color } from '../../types';
+import { ProgressDirection } from './progress.enum';
 
 export interface ProgressData {
   value: number;
@@ -41,5 +41,5 @@ export interface MultiProgressBarConfig
   extends Omit<ProgressConfig, 'hideValue'> {
   trackColor?: Color;
   total?: number;
-  direction?: 'min-to-max' | 'max-to-min';
+  direction?: ProgressDirection;
 }

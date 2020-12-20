@@ -6,12 +6,14 @@ import { ScrollEvent, WinResizeEvent } from './utils.interface';
 import { insideZone } from './rxjs.operators';
 import { DocumentRef } from './document-ref.service';
 
+const appScrollContainerTokenFactory = function () {
+  return '.app-content > .content-wrapper';
+};
+
 export const APP_SCROLL_CONTAINER = new InjectionToken<string>(
   'App scrollable container selector',
   {
-    factory: function () {
-      return '.app-content > .content-wrapper';
-    },
+    factory: appScrollContainerTokenFactory,
   }
 );
 

@@ -1,4 +1,4 @@
-import { ColorsGrey } from './colorsPalette.enum';
+import { ColorsGrey } from './services/color-service/color-palette.enum';
 import { DateLocaleFormats } from './types';
 
 export enum ComponentGroupType {

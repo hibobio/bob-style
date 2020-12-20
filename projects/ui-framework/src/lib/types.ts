@@ -1,4 +1,7 @@
-import { ColorPalette, ColorsGrey } from './colorsPalette.enum';
+import {
+  ColorPalette,
+  ColorsGrey,
+} from './services/color-service/color-palette.enum';
 
 export interface GenericObject<T = any> {
   [key: string]: T;

@@ -10,7 +10,6 @@
 export * from './lib/enums';
 export * from './lib/types';
 export * from './lib/consts';
-export * from './lib/colorsPalette.enum';
 
 /*
  * Typography
@@ -617,6 +616,8 @@ export * from './lib/services/utils/nglet.directive';
 // NgSubscribe
 export * from './lib/services/utils/ngsubscribe.directive';
 // ColorService
+export * from './lib/services/color-service/color-palette.enum';
+export * from './lib/services/color-service/color-palette.const';
 export * from './lib/services/color-service/color.service';
 export * from './lib/services/color-service/color-palette.service';
 // ItemsInRowService
