@@ -1,9 +1,7 @@
-import { DOCUMENT } from '@angular/common';
 import {
   ComponentFactory,
   ComponentFactoryResolver,
   ComponentRef,
-  Inject,
   Injectable,
   Injector,
   SimpleChanges,
@@ -13,6 +11,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GenericObject } from '../../types';
+import { DocumentRef } from '../utils/document-ref.service';
 import { applyChanges, asArray, simpleChange } from '../utils/functional-utils';
 import {
   RenderedComponent,
@@ -25,7 +24,7 @@ import {
 })
 export class ComponentRendererService {
   constructor(
-    @Inject(DOCUMENT) private document: Document,
+    private documentRef: DocumentRef,
     private factoryResolver: ComponentFactoryResolver,
     private injector: Injector
   ) {}
@@ -42,7 +41,7 @@ export class ComponentRendererService {
 
     const elements = content.map((cntnt) => {
       if (typeof cntnt === 'string') {
-        return [this.document.createTextNode(cntnt)];
+        return [this.documentRef.nativeDocument.createTextNode(cntnt)];
       }
       if (!!cntnt.component) {
         const transcomponent = this.createComponent({

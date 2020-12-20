@@ -6,7 +6,7 @@ import { ScrollEvent, WinResizeEvent } from './utils.interface';
 import { insideZone } from './rxjs.operators';
 import { DocumentRef } from './document-ref.service';
 
-function appScrollContainerTokenFactory() {
+export function appScrollContainerTokenFactory() {
   return '.app-content > .content-wrapper';
 }
 
