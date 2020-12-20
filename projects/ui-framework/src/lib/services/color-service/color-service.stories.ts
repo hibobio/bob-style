@@ -66,6 +66,8 @@ const storyTemplate = `
 <div style="margin-top: -20px;">
   <h3 class="mrg-t-0">enum: ColorPalette</h3>
 
+  <p>more details: <a href="https://www.figma.com/file/5XEoqCtcQtS6gf97J517fp/Design-System-(Web)?node-id=14%3A123" target="_blank"><strong>Figma</strong></a></p>
+
   <div class="flx" style="display: grid; grid-template-columns: repeat(5, 1fr);">
   ${orderedPalette
     .map((key, i) => {
@@ -237,19 +239,19 @@ const note = `
   #### ColorPaletteService methods
   signature | returns | description
   --- | ---
-  getPaletteColorByIndex<wbr>(index?: number, set?: PalletteColorSet) | ColorPalette | returns color from the ColorPalette by index, <br>\
+  getPaletteColorByIndex<wbr>(index?: number, colorSet?: PalletteColorSet) | ColorPalette | returns color from the ColorPalette by index, <br>\
   by default, returns colors from 'main' set, unless a differen set requested, <br>\
   if index is not provided - returns random color
-  gerRandomPaletteColor(set?: PalletteColorSet) | ColorPalette | returns random palette color (by default from 'main' set)
-  gerRandomPaletteColors<wbr>(count = 1, set?: PalletteColorSet) | ColorPalette[] | returns Count number of colors (by default from 'main' set)
-  <u>paletteColorGenerator</u><wbr>(set?: PalletteColorSet, startIndex?: number) | PaletteColorGenerator | returns PaletteColorGenerator object with:<br><br>\
+  gerRandomPaletteColor(colorSet?: PalletteColorSet) | ColorPalette | returns random palette color (by default from 'main' set)
+  gerRandomPaletteColors<wbr>(count = 1, colorSet?: PalletteColorSet) | ColorPalette[] | returns Count number of colors (by default from 'main' set)
+  <u>paletteColorGenerator</u><wbr>(colorSet?: PalletteColorSet, startIndex?: number) | PaletteColorGenerator | returns PaletteColorGenerator object with:<br><br>\
   **methods:**<br>\
    \`\`\`next()\`\`\` - will return next color in ColorPalette on each call, <br>\
-   \`\`\`nextMultiple(count = 1)\`\`\` - will return next Count number of colors (ColorPalette[]),<br><br>\
+   \`\`\`nextMultiple(count = 1)\`\`\` - will return next Count number of colors (ColorPalette[]),<br>\
+   \`\`\`reset()\`\`\` - will reset generator, so on next <u>next()</u> call will return first color in set, <br><br>\
    **properties:** <br>\
-   \`\`\`currentSet\`\`\` (set in use, dafaults to 'main', if colors from requested set are exhausted, will switch to 'main' set),<br>\
-    \`\`\`currentIndex\`\`\` - increases with every next() call, <br>\
-    \`\`\`currentIndexInSet\`\`\` - index of current color in current set (may be different from currentIndex due to looping of colors), <br>\
+   \`\`\`colorSet\`\`\` (set in use, dafaults to 'main'),<br>\
+    \`\`\`currentIndex\`\`\` - increases with every <u>next()</u> call, <br>\
     \`\`\`currentColorName\`\`\` - current ColorPalette key,<br>\
      \`\`\`currentColor\`\`\` - current ColorPalette value
 

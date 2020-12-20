@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ColorPalette, PalletteColorSet } from './color-palette.enum';
 import {
+  arrayDifference,
   isNumber,
+  joinArrays,
   makeArray,
   randomFromArray,
   randomNumber,
@@ -11,21 +13,59 @@ import { COLOR_PALETTE_SETS_COLOR_ORDER } from './color-palette.const';
 export interface PaletteColorGenerator {
   next(): ColorPalette;
   nextMultiple(count: number): ColorPalette[];
-  currentSet: PalletteColorSet;
+  reset(): void;
+
+  colorSet: PalletteColorSet;
+  currentIndex: number;
   currentColorName: string;
   currentColor: ColorPalette;
-  currentIndex: number;
-  currentIndexInSet: number;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class ColorPaletteService {
+  public readonly colorPaletteSetColorNames: {
+    [key in PalletteColorSet]: string[];
+  };
+
+  public readonly colorPaletteSetColorValues: {
+    [key in PalletteColorSet]: ColorPalette[];
+  };
+
+  private readonly colorPaletteSetSize: {
+    [key in PalletteColorSet]: number;
+  };
+
+  private readonly mainPaletteSize: number;
+
   constructor() {
-    this.colorPaletteSet = Object.keys(PalletteColorSet).reduce(
+    this.colorPaletteSetColorNames = Object.keys(PalletteColorSet).reduce(
       (acc, setKey) => {
-        acc[setKey] = COLOR_PALETTE_SETS_COLOR_ORDER[setKey].map(
+        acc[setKey] =
+          setKey === PalletteColorSet.main
+            ? COLOR_PALETTE_SETS_COLOR_ORDER[PalletteColorSet.main].slice()
+            : joinArrays(
+                COLOR_PALETTE_SETS_COLOR_ORDER[setKey],
+                randomFromArray(
+                  arrayDifference(
+                    COLOR_PALETTE_SETS_COLOR_ORDER[PalletteColorSet.main],
+                    COLOR_PALETTE_SETS_COLOR_ORDER[setKey]
+                  ),
+                  null
+                )
+              );
+
+        return acc;
+      },
+      {} as {
+        [key in PalletteColorSet]: string[];
+      }
+    );
+
+    this.colorPaletteSetColorValues = Object.keys(PalletteColorSet).reduce(
+      (acc, setKey) => {
+        acc[setKey] = this.colorPaletteSetColorNames[setKey].map(
           (colorKey: string) => ColorPalette[colorKey]
         );
         return acc;
@@ -44,77 +84,62 @@ export class ColorPaletteService {
         [key in PalletteColorSet]: number;
       }
     );
+
+    this.mainPaletteSize = this.colorPaletteSetSize[PalletteColorSet.main];
   }
 
-  public readonly colorPaletteSet: {
-    [key in PalletteColorSet]: ColorPalette[];
-  };
-
-  private readonly colorPaletteSetSize: {
-    [key in PalletteColorSet]: number;
-  };
-
-  public gerRandomPaletteColors(
+  public getRandomPaletteColors(
     count = 1,
-    set = PalletteColorSet.main
+    colorSet = PalletteColorSet.main
   ): ColorPalette[] {
-    return randomFromArray(this.colorPaletteSet[set], count);
+    return randomFromArray(
+      count <= this.colorPaletteSetSize[colorSet]
+        ? this.colorPaletteSetColorValues[colorSet].slice(
+            0,
+            this.colorPaletteSetSize[colorSet]
+          )
+        : this.colorPaletteSetColorValues[colorSet],
+      count
+    );
   }
 
-  public gerRandomPaletteColor(set = PalletteColorSet.main): ColorPalette {
-    return this.colorPaletteSet[set][
-      randomNumber(0, this.colorPaletteSetSize[set] - 1)
+  public getRandomPaletteColor(colorSet = PalletteColorSet.main): ColorPalette {
+    return this.colorPaletteSetColorValues[colorSet][
+      randomNumber(0, this.colorPaletteSetSize[colorSet] - 1)
     ];
   }
 
   public getPaletteColorByIndex(
     index?: number,
-    set = PalletteColorSet.main
+    colorSet = PalletteColorSet.main
   ): ColorPalette {
     return isNumber(index)
-      ? this.colorPaletteSet[set][index % this.colorPaletteSetSize[set]]
-      : this.gerRandomPaletteColor(set);
+      ? this.colorPaletteSetColorValues[colorSet][index % this.mainPaletteSize]
+      : this.getRandomPaletteColor(colorSet);
   }
 
   public paletteColorGenerator(
-    set = PalletteColorSet.main,
+    colorSet = PalletteColorSet.main,
     startIndex = 0
   ): PaletteColorGenerator {
     const generator: PaletteColorGenerator = {
-      currentSet: set || PalletteColorSet.main,
-      currentIndex: startIndex - 1,
-      currentIndexInSet: startIndex - 1,
-      currentColorName: null,
-      currentColor: null,
+      ...this.getGeneratorInitState(colorSet, startIndex),
+
+      reset: () => {
+        Object.assign(generator, this.getGeneratorInitState(colorSet));
+      },
 
       next: () => {
-        ++generator.currentIndex;
-        ++generator.currentIndexInSet;
+        const currentIndexInSet =
+          ++generator.currentIndex % this.mainPaletteSize;
 
-        const shouldSwitchToMainSet =
-          generator.currentSet !== PalletteColorSet.main &&
-          generator.currentIndex >=
-            this.colorPaletteSetSize[generator.currentSet];
+        generator.currentColorName = this.colorPaletteSetColorNames[
+          generator.colorSet
+        ][currentIndexInSet];
 
-        shouldSwitchToMainSet &&
-          (generator.currentIndexInSet =
-            generator.currentIndex -
-            this.colorPaletteSetSize[generator.currentSet]);
-
-        shouldSwitchToMainSet && (generator.currentSet = PalletteColorSet.main);
-
-        generator.currentIndexInSet =
-          generator.currentIndexInSet %
-          this.colorPaletteSetSize[generator.currentSet];
-
-        generator.currentColorName =
-          COLOR_PALETTE_SETS_COLOR_ORDER[generator.currentSet][
-            generator.currentIndexInSet
-          ];
-
-        generator.currentColor = this.colorPaletteSet[generator.currentSet][
-          generator.currentIndexInSet
-        ];
+        generator.currentColor = this.colorPaletteSetColorValues[
+          generator.colorSet
+        ][currentIndexInSet];
 
         return generator.currentColor;
       },
@@ -125,5 +150,17 @@ export class ColorPaletteService {
     };
 
     return generator;
+  }
+
+  private getGeneratorInitState(
+    colorSet = PalletteColorSet.main,
+    startIndex = 0
+  ) {
+    return {
+      colorSet: colorSet || PalletteColorSet.main,
+      currentIndex: startIndex - 1,
+      currentColorName: null,
+      currentColor: null,
+    };
   }
 }
