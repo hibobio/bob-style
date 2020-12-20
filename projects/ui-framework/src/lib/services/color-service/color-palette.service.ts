@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ColorPalette } from '../../colorsPalette.enum';
-import { isNumber, makeArray, randomNumber } from '../utils/functional-utils';
+import {
+  isNumber,
+  makeArray,
+  randomFromArray,
+  randomNumber,
+} from '../utils/functional-utils';
 
 export interface PaletteColorGenerator {
   next(): ColorPalette;
@@ -38,7 +43,11 @@ export class ColorPaletteService {
     return this.colorPalette[index % this.paletteSize];
   }
 
-  public gerRandomPaletteColor() {
+  public gerRandomPaletteColors(count = 1): ColorPalette[] {
+    return randomFromArray(this.colorPalette, count);
+  }
+
+  public gerRandomPaletteColor(): ColorPalette {
     return this.getPaletteColorByIndex();
   }
 

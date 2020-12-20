@@ -236,11 +236,12 @@ const note = `
   #### ColorPaletteService methods
   signature | returns | description
   --- | ---
-  getPaletteColorByIndex<wbr>(index?: number) | ColorPalette | returns color from the ColorPalette by index, if index is not provided - returns random color
-  gerRandomPaletteColor() | ColorPalette | same as calling getPaletteColorByIndex without providing index - returns random palette color
+  getPaletteColorByIndex<wbr>(index?: number) | ColorPalette | returns color from the ColorPalette by index, <br>if index is not provided - returns random color
+  gerRandomPaletteColor() | ColorPalette | returns random palette color
+  gerRandomPaletteColors<wbr>(count = 1) | ColorPalette[] | returns Count number of colors
   paletteColorGenerator<wbr>(startIndex?: number) | PaletteColorGenerator | returns an object with:<br>\
    \`\`\`next()\`\`\` method - will return next color in ColorPalette on each call, <br>\
-   \`\`\`nextMultiple(count)\`\`\` method - will return next Count number of colors (ColorPalette[]),<br>\
+   \`\`\`nextMultiple(count = 1)\`\`\` method - will return next Count number of colors (ColorPalette[]),<br>\
     also has properties: \`\`\`currentIndex\`\`\`, \`\`\`currentColorName\`\`\`, \`\`\`currentColor\`\`\`.
 
   ~~~
