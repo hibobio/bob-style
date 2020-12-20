@@ -50,11 +50,24 @@ const note = `
   #### Module
   *MultiProgressBarModule*
 
+  *Note*: Progress bar animates when it appears in viewport. <br>
+  To disable this behaviour (and all animation in general), \
+  pass \`\`\`{ disableAnimation: true }\`\`\` as [config].
 
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-
+  [type] | ProgressType | theme | primary
+  [size] | ProgressSize | theme size | medium
+  [data] | MultiProgressBarData[] | \`\`\`color: ColorPalette/string\`\`\` - bar color (if color is not passed, color for the Palette will be used),<br>\
+  \`\`\`value: number\`\`\` -  progress value;<br>\
+  **Note:** If the sum of all values does not add up to 100, then the sum of all values will be taken for 100%, and all the progress bars will display relative to that. |  &nbsp;
+  [config] | MultiProgressBarConfig |  \`\`\`total: boolean\`\`\` - number to be considered as 100% instead of the sum of values <br>\
+  \`\`\`disableAnimation: boolean\`\`\` - disables animation <br>\
+  \`\`\`clickable: boolean\`\`\` - will add hover style to the bars\
+   (sets to true automatically if \`(clicked)\` listener exists)<br>\
+   \`\`\`trackColor:  ColorPalette/string\`\`\` - bg color of the bar track (by default its light grey) <br>\
+   \`\`\`direction: ProgressDirection\`\`\` - how the values are sorted left-to-right: maxToMin (default) or minToMax  |  &nbsp;
 
   ~~~
   ${template}

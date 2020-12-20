@@ -1,24 +1,33 @@
 import { Injectable } from '@angular/core';
 import { ColorPalette } from '../../colorsPalette.enum';
-import { isNumber, joinArrays, randomNumber } from '../utils/functional-utils';
+import { isNumber, makeArray, randomNumber } from '../utils/functional-utils';
+
+export interface PaletteColorGenerator {
+  next(): ColorPalette;
+  nextMultiple(count: number): ColorPalette[];
+  currentColorName: string;
+  currentColor: ColorPalette;
+  currentIndex: number;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class ColorPaletteService {
   constructor() {
-    this.colorPalette = []
-      .concat(
-        Object.keys(ColorPalette).filter((key) => key.endsWith('base')),
-        Object.keys(ColorPalette).filter((key) => key.endsWith('dark')),
-        Object.keys(ColorPalette).filter((key) => key.endsWith('darker')),
-        Object.keys(ColorPalette).filter((key) => key.endsWith('light')),
-        Object.keys(ColorPalette).filter((key) => key.endsWith('lighter'))
-      )
-      .map((key) => ColorPalette[key]);
+    this.colorPaletteKeys = [].concat(
+      Object.keys(ColorPalette).filter((key) => key.endsWith('base')),
+      Object.keys(ColorPalette).filter((key) => key.endsWith('dark')),
+      Object.keys(ColorPalette).filter((key) => key.endsWith('darker')),
+      Object.keys(ColorPalette).filter((key) => key.endsWith('light')),
+      Object.keys(ColorPalette).filter((key) => key.endsWith('lighter'))
+    );
+
+    this.colorPalette = this.colorPaletteKeys.map((key) => ColorPalette[key]);
     this.paletteSize = this.colorPalette.length;
   }
 
+  public colorPaletteKeys: string[];
   public colorPalette: ColorPalette[];
   public paletteSize: number;
 
@@ -29,11 +38,28 @@ export class ColorPaletteService {
     return this.colorPalette[index % this.paletteSize];
   }
 
-  paletteColorGenerator: () => Generator<ColorPalette> = function* () {
-    let currIndex = -1;
+  paletteColorGenerator(startIndex?: number): PaletteColorGenerator {
+    const generator: PaletteColorGenerator = {
+      currentIndex: (startIndex || 0) - 1,
+      currentColorName: null,
+      currentColor: null,
 
-    while (true) {
-      yield this.getPaletteColorByIndex(++currIndex);
-    }
-  };
+      next: () => {
+        generator.currentIndex = ++generator.currentIndex % this.paletteSize;
+        generator.currentColorName = this.colorPaletteKeys[
+          generator.currentIndex % this.paletteSize
+        ];
+        generator.currentColor = this.colorPalette[
+          generator.currentIndex % this.paletteSize
+        ];
+        return generator.currentColor;
+      },
+
+      nextMultiple: (count = 1) => {
+        return makeArray(count).map((_) => generator.next());
+      },
+    };
+
+    return generator;
+  }
 }

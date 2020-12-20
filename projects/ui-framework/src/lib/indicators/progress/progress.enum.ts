@@ -15,3 +15,8 @@ export enum DonutSize {
   large = 'large',
   xlarge = 'xlarge',
 }
+
+export enum ProgressDirection {
+  minToMax = 'min-to-max',
+  maxToMin = 'max-to-min',
+}
