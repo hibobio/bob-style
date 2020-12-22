@@ -23,16 +23,16 @@ $b-select-panel-min-width: 280px;
   background-color: rgba(0, 0, 0, 0.3);
   transition: none;
   pointer-events: none !important;
+
+  &.clickable {
+    pointer-events: auto !important;
+  }
 }
 
 .b-select-backdrop,
 .b-panel-backdrop-invisible {
   background-color: rgba(0, 0, 0, 0);
   transition: none;
-}
-
-.b-select-backdrop.clickable {
-  pointer-events: auto !important;
 }
 
 .b-panel {
