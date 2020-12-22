@@ -5,7 +5,7 @@ import {
   boolean,
   withKnobs,
   number,
-} from '@storybook/addon-knobs/angular';
+} from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -160,7 +160,7 @@ story.add(
         zoomOnHover: boolean('zoomOnHover', false, 'Props'),
         readonly: boolean('readonly', false, 'Props'),
 
-        employees: object<EmployeeShowcase>(
+        employees: object<EmployeeShowcase[]>(
           'employees',
           cloneDeepSimpleObject(EMPLOYEE_SHOWCASE_MOCK),
           'Data'

@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  boolean,
-  select,
-  text,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
 import { IconsModule } from './icons.module';
 import { IconColor, Icons, IconSize, IconType } from './icons.enum';
 import { reduce, values } from 'lodash';

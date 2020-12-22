@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { withKnobs, select, boolean } from '@storybook/addon-knobs/angular';
+import { withKnobs, select, boolean } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -123,7 +123,7 @@ const colClasses = [
   'col-11',
   'col-12',
   ...Object.values(GridItemClass).filter(
-    i => i !== GridItemClass.rowStart && i !== GridItemClass.pushRight
+    (i) => i !== GridItemClass.rowStart && i !== GridItemClass.pushRight
   ),
 ];
 
@@ -132,7 +132,7 @@ const colClassDef = GridItemClass.third;
 const containerGapClasses = [
   '',
   ...Object.values(GridContainerClass).filter(
-    i => i !== GridContainerClass.container
+    (i) => i !== GridContainerClass.container
   ),
 ];
 

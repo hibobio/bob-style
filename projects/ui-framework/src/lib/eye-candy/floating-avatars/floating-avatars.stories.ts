@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  object,
-  text,
-  number,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { object, text, number, withKnobs } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

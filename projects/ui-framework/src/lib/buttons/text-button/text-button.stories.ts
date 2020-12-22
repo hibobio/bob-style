@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  boolean,
-  select,
-  text,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
 import { Icons } from '../../icons/icons.enum';

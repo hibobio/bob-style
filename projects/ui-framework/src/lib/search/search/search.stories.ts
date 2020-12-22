@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { text, withKnobs } from '@storybook/addon-knobs/angular';
+import { text, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { SearchModule } from './search.module';
 import { ComponentGroupType } from '../../consts';

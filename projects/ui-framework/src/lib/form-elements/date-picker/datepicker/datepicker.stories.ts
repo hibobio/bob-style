@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { select, withKnobs } from '@storybook/addon-knobs/angular';
+import { select, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { DatepickerModule } from './datepicker.module';
 import { ComponentGroupType } from '../../../consts';

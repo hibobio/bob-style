@@ -5,7 +5,7 @@ import {
   text,
   withKnobs,
   select,
-} from '@storybook/addon-knobs/angular';
+} from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { ButtonsModule } from '../../buttons/buttons.module';
@@ -172,7 +172,7 @@ const toAdd = () => ({
       'Props'
     ),
 
-    options: object<SelectGroupOption>('options', options, 'Options'),
+    options: object<SelectGroupOption[]>('options', options, 'Options'),
 
     opened: action('Panel opened'),
     closed: action('Panel closed'),

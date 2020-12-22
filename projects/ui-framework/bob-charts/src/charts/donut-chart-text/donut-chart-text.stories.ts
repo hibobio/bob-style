@@ -6,7 +6,7 @@ import {
   object,
   text,
   withKnobs,
-} from '@storybook/addon-knobs/angular';
+} from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../../../src/lib/consts';
 import { StoryBookLayoutModule } from '../../../../src/lib/story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -113,7 +113,7 @@ story.add(
           'Props'
         ),
         donutInnerSize: number('donutInnerSize', 0, {}, 'Props'),
-        height: number('height', 0, [], 'Props'),
+        height: number('height', 0, undefined, 'Props'),
 
         text: text('text', NUMBER_OF_EMPLOYEES + '', 'Props'),
         name: text('name', 'employees', 'Props'),

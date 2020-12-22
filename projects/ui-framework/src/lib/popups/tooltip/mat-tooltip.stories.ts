@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { withKnobs, text } from '@storybook/addon-knobs/angular';
+import { withKnobs, text } from '@storybook/addon-knobs';
 import { radios } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';

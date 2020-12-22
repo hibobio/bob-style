@@ -1,15 +1,14 @@
 import { storiesOf } from '@storybook/angular';
-import { text, withKnobs, boolean } from '@storybook/addon-knobs/angular';
+import { text, withKnobs, boolean } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { ActionBarModule } from './action-bar.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 
-const story = storiesOf(
-  ComponentGroupType.Navigation,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(
+  withKnobs
+);
 
 const componentTemplate = `
 <b-action-bar [label]="label"
@@ -59,9 +58,9 @@ story.add(
           BrowserAnimationsModule,
           ActionBarModule,
           StoryBookLayoutModule,
-          ButtonsModule
-        ]
-      }
+          ButtonsModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

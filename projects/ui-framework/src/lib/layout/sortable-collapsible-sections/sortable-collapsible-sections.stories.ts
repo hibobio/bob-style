@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { object, withKnobs } from '@storybook/addon-knobs/angular';
+import { object, withKnobs } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -51,7 +51,7 @@ const templateExample = `
 const storyTemplate = `
 <b-story-book-layout [title]="'Sortable Collapsible Sections'" style="background-color: rgb(245,245,245); text-align: left;">
 <div style="width: 100%; max-width: none;">
-    ${ template }
+    ${template}
 </div>
 </b-story-book-layout>
 `;
@@ -74,7 +74,7 @@ const note = `
 
   #### Template
   ~~~
-  ${ template }
+  ${template}
   ~~~
 
   #### Interface
@@ -100,31 +100,30 @@ const note = `
 
   #### Example
   ~~~
-  ${ templateExample }
+  ${templateExample}
   ~~~
 `;
 
-const sectionsMock = makeArray(10)
-  .map((_, index) => {
-    return {
-      id: simpleUID('trackId_', 8),
-      title: `Section ${ index }`,
-      description: `Section ${ index } description`,
-      expanded: index === 1,
-      contentData: { a: `foo ${ index }`, b: `bar ${ index }` },
-      headerData: {
-        buttonConfig: {
-          type: ButtonType.tertiary,
-          icon: Icons.three_dots_vert,
-          color: IconColor.normal
-        },
-        menuItems: [
-          { label: 'add', action: () => console.log('add ' + index) },
-          { label: 'remove', action: () => console.log('remove ' + index) },
-        ]
+const sectionsMock = makeArray(10).map((_, index) => {
+  return {
+    id: simpleUID('trackId_', 8),
+    title: `Section ${index}`,
+    description: `Section ${index} description`,
+    expanded: index === 1,
+    contentData: { a: `foo ${index}`, b: `bar ${index}` },
+    headerData: {
+      buttonConfig: {
+        type: ButtonType.tertiary,
+        icon: Icons.three_dots_vert,
+        color: IconColor.normal,
       },
-    };
-  });
+      menuItems: [
+        { label: 'add', action: () => console.log('add ' + index) },
+        { label: 'remove', action: () => console.log('remove ' + index) },
+      ],
+    },
+  };
+});
 
 story.add(
   'Sortable Collapsible Sections',
@@ -138,7 +137,7 @@ story.add(
         onDragEnd: action('dragEnd'),
         onDropped: action('orderChanged'),
         onOpened: action('opened'),
-        onClosed: action('closed')
+        onClosed: action('closed'),
       },
       moduleMetadata: {
         declarations: [],

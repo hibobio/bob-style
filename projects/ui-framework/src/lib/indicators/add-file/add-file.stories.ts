@@ -1,11 +1,6 @@
 import { ComponentGroupType } from '../../consts';
 import { storiesOf } from '@storybook/angular';
-import {
-  text,
-  select,
-  boolean,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { text, select, boolean, withKnobs } from '@storybook/addon-knobs';
 import { AddFileModule } from './add-file.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { Icons } from '../../icons/icons.enum';
@@ -47,15 +42,19 @@ story.add(
       template: storyTemplate,
       props: {
         icon: select('icon', icons, Icons.add_photo),
-        imageUrl: select('imageUrl', [
-          'https://i.imgur.com/LMg0fWt.png',
-          'https://www.freeiconspng.com/uploads/skype-icon-5.png'
-        ]),
-        onClick: action('Add file click')
+        imageUrl: select(
+          'imageUrl',
+          [
+            'https://i.imgur.com/LMg0fWt.png',
+            'https://www.freeiconspng.com/uploads/skype-icon-5.png',
+          ],
+          'https://i.imgur.com/LMg0fWt.png'
+        ),
+        onClick: action('Add file click'),
       },
       moduleMetadata: {
-        imports: [AddFileModule, StoryBookLayoutModule]
-      }
+        imports: [AddFileModule, StoryBookLayoutModule],
+      },
     };
   },
   { notes: { markdown: note } }

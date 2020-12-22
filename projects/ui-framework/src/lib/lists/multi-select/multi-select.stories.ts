@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  withKnobs,
-  object,
-  boolean,
-  select,
-} from '@storybook/addon-knobs/angular';
+import { withKnobs, object, boolean, select } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { ButtonsModule } from '../../buttons/buttons.module';
@@ -240,7 +235,7 @@ const toAdd = () => ({
       'Options'
     ),
     options_plain: SSPjobsOptionsMock,
-    options_avatars: object<SelectGroupOption>(
+    options_avatars: object<SelectGroupOption[]>(
       'options data',
       options,
       'Options'

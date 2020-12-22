@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { withKnobs } from '@storybook/addon-knobs/angular';
+import { withKnobs } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

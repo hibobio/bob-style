@@ -1,13 +1,12 @@
 import { storiesOf } from '@storybook/angular';
-import { withKnobs } from '@storybook/addon-knobs/angular';
+import { withKnobs } from '@storybook/addon-knobs';
 import { TypographyModule } from './typography.module';
 import { ComponentGroupType } from '../consts';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 
-const story = storiesOf(
-  ComponentGroupType.Typography,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Typography, module).addDecorator(
+  withKnobs
+);
 
 const displayTemplate = `
 <style>
@@ -170,8 +169,8 @@ story.add(
     template: storyTemplate,
     props: {},
     moduleMetadata: {
-      imports: [TypographyModule, StoryBookLayoutModule]
-    }
+      imports: [TypographyModule, StoryBookLayoutModule],
+    },
   }),
   { notes: { markdown: note } }
 );

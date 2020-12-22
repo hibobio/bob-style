@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  boolean,
-  select,
-  withKnobs,
-  number,
-} from '@storybook/addon-knobs/angular';
+import { boolean, select, withKnobs, number } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { CardType } from '../cards.enum';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

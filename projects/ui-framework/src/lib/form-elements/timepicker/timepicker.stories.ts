@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { text, boolean, withKnobs } from '@storybook/addon-knobs/angular';
+import { text, boolean, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { TimePickerModule } from './timepicker.module';
 

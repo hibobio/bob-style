@@ -12,7 +12,15 @@ addParameters({
     }),
     isFullscreen: false,
     panelPosition: 'right'
-  }
+  },
+  docs: {
+    extractComponentDescription: (component, { notes }) => {
+      if (notes) {
+        return typeof notes === 'string' ? notes : notes.markdown || notes.text;
+      }
+      return null;
+    },
+  },
 });
 
 // automatically import all files ending in *.stories.ts

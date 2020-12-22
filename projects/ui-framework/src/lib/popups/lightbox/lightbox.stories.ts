@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  select,
-  text,
-  withKnobs,
-  boolean,
-} from '@storybook/addon-knobs/angular';
+import { select, text, withKnobs, boolean } from '@storybook/addon-knobs';
 import { LightboxModule } from './lightbox.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';

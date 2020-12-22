@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { text, withKnobs } from '@storybook/addon-knobs/angular';
+import { text, withKnobs } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DividerModule } from './divider.module';
@@ -53,16 +53,16 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        text: text('text', 'Some text')
+        text: text('text', 'Some text'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           DividerModule,
           TypographyModule,
-          StoryBookLayoutModule
-        ]
-      }
+          StoryBookLayoutModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

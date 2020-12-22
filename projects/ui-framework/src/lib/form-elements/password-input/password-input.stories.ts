@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  boolean,
-  number,
-  text,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { PasswordInputModule } from './password-input.module';
 import { ComponentGroupType } from '../../consts';

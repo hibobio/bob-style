@@ -7,7 +7,7 @@ import {
   select,
   withKnobs,
   text,
-} from '@storybook/addon-knobs/angular';
+} from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 import { AgGridModule } from 'ag-grid-angular';
 import { AvatarModule, ComponentGroupType, SearchModule } from 'bob-style';

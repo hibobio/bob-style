@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  number,
-  object,
-  select,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { number, object, select, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { TabsModule } from './tabs.module';
 import { ComponentGroupType } from '../../consts';
@@ -78,7 +73,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        tabs: object<Tab>('tabs', tabs),
+        tabs: object<Tab[]>('tabs', tabs),
         type: select('type', Object.values(TabsType), TabsType.primary),
         selectClick: function (e) {
           this.selectedIndex = e.index;

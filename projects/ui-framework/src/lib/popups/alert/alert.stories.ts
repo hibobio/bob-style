@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import { select, text, withKnobs } from '@storybook/addon-knobs';
 import { AlertModule } from './alert.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -60,11 +60,11 @@ story.add(
       props: {
         alertType: select('alertType', alertTypes, AlertType.success),
         title: text('title', 'Alert title'),
-        text: text('text', 'The alert text appear here')
+        text: text('text', 'The alert text appear here'),
       },
       moduleMetadata: {
-        imports: [AlertModule, AlertExampleModule, StoryBookLayoutModule]
-      }
+        imports: [AlertModule, AlertExampleModule, StoryBookLayoutModule],
+      },
     };
   },
   { notes: { markdown: note } }

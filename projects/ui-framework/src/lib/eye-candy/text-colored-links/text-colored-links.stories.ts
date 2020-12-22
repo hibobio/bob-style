@@ -1,15 +1,14 @@
 import { storiesOf } from '@storybook/angular';
-import { withKnobs, boolean, object } from '@storybook/addon-knobs/angular';
+import { withKnobs, boolean, object } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
-import {TextColoredLinksModule} from './text-colored-links.module';
-import {COLOR_TEXT_ITEMS} from './text-colored-links/text-colored-links.mocks';
+import { TextColoredLinksModule } from './text-colored-links.module';
+import { COLOR_TEXT_ITEMS } from './text-colored-links/text-colored-links.mocks';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import {DEFAULT_COLORS} from './text-colored-links.interface';
+import { DEFAULT_COLORS } from './text-colored-links.interface';
 
-const story = storiesOf(
-  ComponentGroupType.EyeCandy,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.EyeCandy, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <div>
@@ -58,11 +57,8 @@ story.add(
       colorTextItems: object('texts', COLOR_TEXT_ITEMS),
     },
     moduleMetadata: {
-      imports: [
-        TextColoredLinksModule,
-        StoryBookLayoutModule,
-      ],
-    }
+      imports: [TextColoredLinksModule, StoryBookLayoutModule],
+    },
   }),
   { notes: { markdown: note } }
 );

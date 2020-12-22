@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  text,
-  withKnobs,
-  select,
-  number,
-} from '@storybook/addon-knobs/angular';
+import { text, withKnobs, select, number } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -323,7 +318,7 @@ story.add(
             url: 'https://app.hibob.com',
             color: LinkColor.primary,
             target: LinkTarget.blank,
-          }
+          },
         }),
 
         textAlign: select(

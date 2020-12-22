@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, object, withKnobs } from '@storybook/addon-knobs/angular';
+import { boolean, object, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { ButtonType } from '../../buttons/buttons.enum';

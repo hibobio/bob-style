@@ -6,7 +6,7 @@ import {
   object,
   text,
   withKnobs,
-} from '@storybook/addon-knobs/angular';
+} from '@storybook/addon-knobs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartsModule } from '../../charts.module';
 import { ComponentGroupType } from '../../../../../src/lib/consts';

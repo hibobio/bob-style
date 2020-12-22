@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { object, withKnobs } from '@storybook/addon-knobs/angular';
+import { object, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CardTableModule } from './card-table.module';

@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { withKnobs, object, boolean } from '@storybook/addon-knobs/angular';
+import { withKnobs, object, boolean } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { ButtonsModule } from '../../buttons/buttons.module';
@@ -108,7 +108,7 @@ story.add(
       ),
       showNoneOption: boolean('showNoneOption', false, 'Props'),
       readonly: boolean('readonly', false, 'Props'),
-      options: object<SelectGroupOption>('options', options, 'Options'),
+      options: object<SelectGroupOption[]>('options', options, 'Options'),
 
       selectChange: action('Single list change'),
 

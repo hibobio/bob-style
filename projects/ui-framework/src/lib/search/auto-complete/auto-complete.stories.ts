@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { object, text, withKnobs, boolean } from '@storybook/addon-knobs/angular';
+import { object, text, withKnobs, boolean } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -57,7 +57,7 @@ const optionsMock: AutoCompleteOption[] = Array.from(Array(20), (_, k) => {
   return {
     value: mockText(randomNumber(2, 5)),
     subText: mockText(randomNumber(2, 5)),
-    id: k.toString()
+    id: k.toString(),
   };
 });
 
@@ -72,16 +72,16 @@ story.add(
         displayOptionsOnFocus: boolean('displayOptionsOnFocus', false),
         options: object('options', optionsMock),
         searchChange: action('searchChange'),
-        optionSelect: action('optionSelect')
+        optionSelect: action('optionSelect'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           TypographyModule,
           StoryBookLayoutModule,
-          AutoCompleteModule
-        ]
-      }
+          AutoCompleteModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

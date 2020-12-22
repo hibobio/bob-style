@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, object, withKnobs } from '@storybook/addon-knobs/angular';
+import { boolean, object, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -196,14 +196,14 @@ onChange(event){
 const optionsFromList = (list, key = 'Stuff') => [
   {
     groupName: key,
-    options: list.map(c => ({ value: c, id: simpleUID() })),
+    options: list.map((c) => ({ value: c, id: simpleUID() })),
   },
 ];
 
-const deselectOptions = options =>
-  options.map(g => ({
+const deselectOptions = (options) =>
+  options.map((g) => ({
     ...g,
-    options: g.options.map(o => ({ ...o, selected: false })),
+    options: g.options.map((o) => ({ ...o, selected: false })),
   }));
 
 const items = optionsFromList(mockThings(), 'Things');

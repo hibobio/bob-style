@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { withKnobs, select, text } from '@storybook/addon-knobs/angular';
+import { withKnobs, select, text } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -59,7 +59,7 @@ story.add(
             0,
             'https://raw.githubusercontent.com/hibobio/hibob-files/master/img/emptyState_ee_profile_summary.png?token=AAP3IOWBZDZ6CYVRQ2QNWXK7FJW5A',
           ],
-          ''
+          0
         ),
       },
       moduleMetadata: {

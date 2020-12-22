@@ -4,13 +4,8 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { buttonConfigMock, menuItemsMock } from './action-menu-button.mock';
-import {
-  object,
-  boolean,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { object, boolean, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
-
 
 const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
   withKnobs
@@ -74,4 +69,3 @@ story.add(
   },
   { notes: { markdown: note } }
 );
-

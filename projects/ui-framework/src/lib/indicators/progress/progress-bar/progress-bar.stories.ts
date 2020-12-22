@@ -5,7 +5,7 @@ import {
   boolean,
   withKnobs,
   number,
-} from '@storybook/addon-knobs/angular';
+} from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { ProgressBarModule } from './progress-bar.module';

@@ -6,7 +6,7 @@ import {
   select,
   text,
   withKnobs,
-} from '@storybook/addon-knobs/angular';
+} from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { values } from 'lodash';
@@ -234,7 +234,7 @@ story.add(
           'Props'
         ),
 
-        placeholderList: object<SelectGroupOption>(
+        placeholderList: object<SelectGroupOption[]>(
           'options',
           placeholderMock,
           'Data'

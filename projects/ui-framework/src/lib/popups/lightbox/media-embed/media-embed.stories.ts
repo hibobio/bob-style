@@ -1,19 +1,14 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  select,
-  text,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { select, text, withKnobs } from '@storybook/addon-knobs';
 import { LightboxModule } from '../lightbox.module';
 import { ComponentGroupType } from '../../../consts';
 import { LightboxExampleModule } from '../lightbox-example.module';
 import { ButtonsModule } from '../../../buttons/buttons.module';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
-const story = storiesOf(
-  ComponentGroupType.Popups,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
+  withKnobs
+);
 
 const template = `<b-media-embed [url]="videoLink">
 </b-media-embed>`;
@@ -55,16 +50,16 @@ story.add(
         videoLink: text(
           'videoLink',
           'https://www.youtube.com/embed/p3j2NYZ8FKs'
-        )
+        ),
       },
       moduleMetadata: {
         imports: [
           LightboxModule,
           LightboxExampleModule,
           StoryBookLayoutModule,
-          ButtonsModule
-        ]
-      }
+          ButtonsModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

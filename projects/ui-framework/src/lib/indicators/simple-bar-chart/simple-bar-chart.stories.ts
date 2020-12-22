@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, withKnobs, object } from '@storybook/addon-knobs/angular';
+import { boolean, withKnobs, object } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { SimpleBarChartModule } from './simple-bar-chart.module';

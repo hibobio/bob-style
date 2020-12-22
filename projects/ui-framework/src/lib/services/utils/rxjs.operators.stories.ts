@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { withKnobs } from '@storybook/addon-knobs/angular';
+import { withKnobs } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { interval, Observable, of, Subject, Subscription } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';

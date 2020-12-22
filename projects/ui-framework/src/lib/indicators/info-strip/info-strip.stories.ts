@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  text,
-  withKnobs,
-  select,
-  object,
-} from '@storybook/addon-knobs/angular';
+import { text, withKnobs, select, object } from '@storybook/addon-knobs';
 import { InfoStripModule } from './info-strip.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';

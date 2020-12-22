@@ -1,11 +1,6 @@
 import { ComponentGroupType } from '../../consts';
 import { storiesOf } from '@storybook/angular';
-import {
-  withKnobs,
-  object,
-  text,
-  boolean,
-} from '@storybook/addon-knobs/angular';
+import { withKnobs, object, text, boolean } from '@storybook/addon-knobs';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { action } from '@storybook/addon-actions';
 import { CommentsModule } from '../comments.module';

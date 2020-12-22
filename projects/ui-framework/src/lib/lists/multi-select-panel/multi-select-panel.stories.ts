@@ -5,7 +5,7 @@ import {
   withKnobs,
   boolean,
   select,
-} from '@storybook/addon-knobs/angular';
+} from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';

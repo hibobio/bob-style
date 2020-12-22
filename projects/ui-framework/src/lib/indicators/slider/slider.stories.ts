@@ -5,7 +5,7 @@ import {
   withKnobs,
   number,
   boolean,
-} from '@storybook/addon-knobs/angular';
+} from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { SliderModule } from './slider.module';
 import { ComponentGroupType } from '../../consts';

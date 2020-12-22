@@ -5,7 +5,7 @@ import {
   boolean,
   withKnobs,
   number,
-} from '@storybook/addon-knobs/angular';
+} from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { InputModule } from './input.module';
@@ -157,7 +157,7 @@ story.add(
         inputEvents: action('Input event'),
         inputType: select('inputType', inputTypes, InputTypes.text),
         value: text('value (text input)', ''),
-        valueNum: number('value (number input)', ''),
+        valueNum: number('value (number input)', 0),
 
         ...FormElementsCommonProps('Input label', 'Input placeholder'),
 

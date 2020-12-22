@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  boolean,
-  select,
-  text,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { zipObject } from 'lodash';
 import { AvatarSize, AvatarBadge } from '../avatar.enum';
@@ -126,19 +121,18 @@ story.add(
       props: {
         imageSource: text('imageSource', mockAvatar()),
         size: select('size', sizeOptions, AvatarSize.large),
-        backgroundColor: select('background color', [
-          0,
-          '#fff',
-          'red',
-          'black',
-        ]),
-        icon: select('icon', [0, ...icons]),
+        backgroundColor: select(
+          'background color',
+          [0, '#fff', 'red', 'black'],
+          null
+        ),
+        icon: select('icon', [0, ...icons], null),
         badge: select(
           'badge',
           [0, ...Object.keys(AvatarBadge)],
           AvatarBadge.approved
         ),
-        text: text('text'),
+        text: text('text', null),
         disabled: boolean('disabled', false),
         onClick: action('Avatar Clicked'),
       },

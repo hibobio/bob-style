@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, withKnobs } from '@storybook/addon-knobs/angular';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { SwitchToggleModule } from './switch-toggle.module';
 import { ComponentGroupType } from '../../consts';

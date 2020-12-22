@@ -1,10 +1,20 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  number,
+  object,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentGroupType } from '../../../../../src/lib/consts';
 import { StoryBookLayoutModule } from '../../../../../src/lib/story-book-layout/story-book-layout.module';
 import { ChartsModule } from '../../charts.module';
-import { MULTI_BAR_CHART_CATEGORIES, MULTI_BAR_CHART_DATA_MOCK } from '../../chart.mock';
+import {
+  MULTI_BAR_CHART_CATEGORIES,
+  MULTI_BAR_CHART_DATA_MOCK,
+} from '../../chart.mock';
 import { ChartLegendPositionEnum } from '../../charts.interface';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
@@ -89,11 +99,7 @@ story.add(
           ['application/pdf', 'image/jpeg', 'image/png', 'image/svg+xml'],
           'image/jpeg'
         ),
-        direction: select(
-          'direction',
-          ['vertical', 'horizontal'],
-          'vertical'
-        ),
+        direction: select('direction', ['vertical', 'horizontal'], 'vertical'),
         stackType: select(
           'stackType',
           ['normal', 'stack', 'stack-percent'],

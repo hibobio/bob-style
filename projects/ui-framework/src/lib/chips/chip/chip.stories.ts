@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  text,
-  select,
-  boolean,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { text, select, boolean, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { ChipModule } from './chip.module';
 import { ChipType } from '../chips.enum';

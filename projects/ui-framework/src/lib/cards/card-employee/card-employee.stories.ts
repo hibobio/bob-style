@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { object, select, withKnobs } from '@storybook/addon-knobs/angular';
+import { object, select, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';

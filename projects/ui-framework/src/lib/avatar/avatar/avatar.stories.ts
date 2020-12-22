@@ -1,10 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  boolean,
-  select,
-  text,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { zipObject } from 'lodash';
 import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
@@ -190,9 +185,13 @@ story.add(
         caption: text('caption', 'Product, Israel'),
         afterChipText: text('afterChipText', '(Active)'),
         disabled: boolean('disabled', false),
-        icon: select('icon', [0, ...icons]),
+        icon: select('icon', [0, ...icons], null),
         badge: select('badge', badges, AvatarBadge.approved),
-        backgroundColor: select('background color', ['#fff', 'red', 'black']),
+        backgroundColor: select(
+          'background color',
+          ['#fff', 'red', 'black'],
+          null
+        ),
         chipType: select('chip type', [0, ...chips], ChipType.success),
         chipText: text('chip text', 'Employed'),
       },
