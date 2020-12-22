@@ -30,7 +30,7 @@ describe('DeleteConfirmationDialogComponent', () => {
       class: 'confirm-test',
       buttonConfig: {
         ok: {
-          label: 'Ok',
+          label: 'translated common.delete',
           action: () => true,
         },
         cancel: {

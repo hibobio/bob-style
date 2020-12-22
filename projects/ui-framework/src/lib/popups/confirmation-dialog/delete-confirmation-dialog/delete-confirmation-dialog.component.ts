@@ -19,8 +19,11 @@ export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public config: ConfirmationDialogConfig,
     private translateService: TranslateService
   ) {
-    this.confirmationText = config?.confirmationData?.confirmationText ??
-      this.translateService.instant('common.delete');
+    this.confirmationText =
+      config?.confirmationData?.confirmationText ??
+      this.translateService.instant(
+        'bob-style.delete-confirmation.default.confirmationText'
+      );
     this.defaultLabel = this.translateService.instant('bob-style.delete-confirmation.default.label', {
       confirmationText: config?.confirmationData?.label ??
         this.confirmationText
@@ -56,7 +59,7 @@ export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy {
             ...this.config?.buttonConfig?.cancel,
           },
           ok: {
-            label: this.translateService.instant('common.ok'),
+            label: this.translateService.instant('common.delete'),
             type: ButtonType.negative,
             ...this.config?.buttonConfig?.ok,
             disabled: !valid,

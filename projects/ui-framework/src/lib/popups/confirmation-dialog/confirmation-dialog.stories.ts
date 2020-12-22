@@ -99,8 +99,8 @@ const note = `
   #### interface ConfirmationData
   Name | Type | Description | Default Value
   --- | --- | ---
-  confirmationText | string | text to type in input | Delete
-  label | string | input label | type 'Delete' to confirm
+  confirmationText | string | text to type in input | DELETE
+  label | string | input label | Type 'DELETE' to confirm
   placeholder | string | input placeholder | &nbsp;
   hintMessage | string | input hint message | &nbsp;
   errorMessage | string | input error message | Please enter the confirmation text
