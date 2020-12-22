@@ -1,11 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  resetFakeAsyncZone,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
 
 import { TabsComponent } from './tabs.component';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -21,7 +14,7 @@ describe('TabsComponent', () => {
   let component: TabsComponent;
   let fixture: ComponentFixture<TabsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [MatTabsModule, BrowserAnimationsModule],
       declarations: [TabsComponent],

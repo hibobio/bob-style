@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CardTableSortableComponent } from './card-table-sortable.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TruncateTooltipModule } from '../../../popups/truncate-tooltip/truncate-tooltip.module';
@@ -11,7 +11,7 @@ describe('CardTableSortableComponent', () => {
   let component: CardTableSortableComponent;
   let fixture: ComponentFixture<CardTableSortableComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [CardTableSortableComponent],
       imports: [TruncateTooltipModule, DragDropModule, IconsModule],

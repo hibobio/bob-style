@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RadioButtonComponent } from './radio-button.component';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,7 +13,7 @@ describe('RadioButtonComponent', () => {
   let fixture: ComponentFixture<RadioButtonComponent>;
   let radioConfigMock: RadioConfig[];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     radioConfigMock = [
       { id: 11, label: 'option one' },
       { id: 12, label: 'option two' },

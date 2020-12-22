@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {TableActionsWrapperComponent} from './table-actions-wrapper.component';
 import {By} from '@angular/platform-browser';
 import {MockComponent, MockDirective} from 'ng-mocks';
@@ -9,7 +9,7 @@ describe('TableActionsWrapperComponent', () => {
   let component: TableActionsWrapperComponent;
   let fixture: ComponentFixture<TableActionsWrapperComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         TableActionsWrapperComponent,

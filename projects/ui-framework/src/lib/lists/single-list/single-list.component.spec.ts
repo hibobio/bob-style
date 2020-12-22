@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -30,7 +30,7 @@ describe('SingleListComponent', () => {
   let optionsMock: SelectGroupOption[];
   let fixture: ComponentFixture<SingleListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     optionsMock = [
       {
         groupName: 'Basic Info Header',

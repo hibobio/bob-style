@@ -1,9 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  resetFakeAsyncZone,
-  TestBed,
-} from '@angular/core/testing';
+import { ComponentFixture, resetFakeAsyncZone, TestBed, waitForAsync } from '@angular/core/testing';
 import {
   elementFromFixture,
   elementsFromFixture,
@@ -50,7 +45,7 @@ describe('MultiListAndChipsComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         MultiListAndChipsComponent,

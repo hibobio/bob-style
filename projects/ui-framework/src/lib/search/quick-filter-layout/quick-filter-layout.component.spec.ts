@@ -1,12 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-  flush,
-  resetFakeAsyncZone,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, flush, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
 import {
   Component,
   ChangeDetectionStrategy,
@@ -193,7 +185,7 @@ describe('QuickFilterLayoutComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent],
       imports: [

@@ -1,11 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  resetFakeAsyncZone,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogComponent } from './dialog.component';
 import { DialogModule } from './dialog.module';
@@ -31,7 +24,7 @@ describe('DialogComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const dialogButtonsConfig: DialogButtons = {
       ok: {
         label: 'ok',

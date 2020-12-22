@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { BasicListComponent } from './basic-list.component';
 import { MenuComponent } from '../../navigation/menu/menu.component';
@@ -12,7 +12,7 @@ describe('BasicListComponent', () => {
   let component: BasicListComponent;
   let fixture: ComponentFixture<BasicListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         BasicListComponent,

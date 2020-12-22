@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { PanelComponent } from './panel.component';
 import { CdkOverlayOrigin, Overlay, OverlayModule } from '@angular/cdk/overlay';
@@ -20,7 +20,7 @@ describe('PanelComponent', () => {
   let scrollStrategyMock;
   let overlayRefMock;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     positionStrategyMock = {
       positionChanges: of(null),
     };

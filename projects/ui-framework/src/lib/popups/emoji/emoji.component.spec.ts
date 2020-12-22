@@ -1,11 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  resetFakeAsyncZone,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
 
 import { EmojiComponent } from './emoji.component';
 import { By } from '@angular/platform-browser';
@@ -24,7 +17,7 @@ describe('EmojiComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [TypographyModule, TruncateTooltipModule, PanelModule],
       declarations: [EmojiComponent],

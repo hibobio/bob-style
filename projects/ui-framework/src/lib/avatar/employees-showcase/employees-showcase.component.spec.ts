@@ -1,12 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  flush,
-  resetFakeAsyncZone,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, flush, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
 import { EmployeesShowcaseComponent } from './employees-showcase.component';
 import { UtilsService } from '../../services/utils/utils.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -136,7 +128,7 @@ xdescribe('EmployeesShowcaseComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         EmployeesShowcaseComponent,

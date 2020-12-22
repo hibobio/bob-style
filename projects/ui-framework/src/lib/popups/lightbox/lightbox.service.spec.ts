@@ -1,10 +1,4 @@
-import {
-  async,
-  fakeAsync,
-  flush,
-  inject,
-  TestBed,
-} from '@angular/core/testing';
+import { fakeAsync, flush, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { LightboxService } from './lightbox.service';
 import { LightboxData } from './lightbox.interface';
 import {
@@ -61,7 +55,7 @@ describe('LightboxService', () => {
     },
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [LightboxModule, OverlayModule, ButtonsModule, MockCompsModule],
       declarations: [

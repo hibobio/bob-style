@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SplitInputSingleSelectComponent } from './split-input-single-select.component';
@@ -22,7 +22,7 @@ describe('SplitInputSingleSelectComponent', () => {
   let optionsMock: SelectGroupOption[];
   let valueMock: InputSingleSelectValue;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     valueMock = {
       inputValue: 200,
       selectValue: 'USD',

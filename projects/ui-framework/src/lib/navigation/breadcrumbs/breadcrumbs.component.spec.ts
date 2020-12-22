@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BreadcrumbsComponent } from './breadcrumbs.component';
 import { Breadcrumb } from './breadcrumbs.interface';
 import { BreadcrumbsType, BreadcrumbsStepState } from './breadcrumbs.enum';
@@ -15,7 +15,7 @@ describe('BreadcrumbsComponent', () => {
   let titleElements: HTMLElement[];
   let stepWrapElements: HTMLElement[];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     breadCrumbsMock = [
       { title: 'details', state: BreadcrumbsStepState.success },
       { title: 'avatar', state: BreadcrumbsStepState.active },

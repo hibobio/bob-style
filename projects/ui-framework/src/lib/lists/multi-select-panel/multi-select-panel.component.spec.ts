@@ -1,11 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  inject,
-  TestBed,
-  resetFakeAsyncZone,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
 import { MultiSelectPanelComponent } from './multi-select-panel.component';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
@@ -53,7 +46,7 @@ describe('MultiSelectPanelComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     optionsMock = [
       {
         groupName: '',

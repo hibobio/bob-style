@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { LinkComponent } from './link.component';
 import { By } from '@angular/platform-browser';
 import { LinkColor, LinkTarget } from './link.enum';
@@ -7,7 +7,7 @@ describe('LinkComponent', () => {
   let component: LinkComponent;
   let fixture: ComponentFixture<LinkComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [LinkComponent],
     })

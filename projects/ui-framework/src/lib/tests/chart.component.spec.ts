@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ChangeDetectorRef, NgZone } from '@angular/core';
 import * as Highcharts from 'highcharts';
@@ -17,7 +17,7 @@ describe('PieChartComponent', () => {
   let fixture: ComponentFixture<PieChartComponent>;
   let updateChartOptionsSpy, applyOnChangeSpy, highchartRefSpy;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [PieChartComponent],
       providers: [ChangeDetectorRef],

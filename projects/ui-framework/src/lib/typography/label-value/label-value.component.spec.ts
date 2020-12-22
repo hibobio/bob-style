@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 
@@ -13,7 +13,7 @@ describe('LabelValueComponent', () => {
   let valueElement: HTMLElement;
   let iconElement: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [LabelValueComponent],
       providers: [EventManagerPlugins[0]],

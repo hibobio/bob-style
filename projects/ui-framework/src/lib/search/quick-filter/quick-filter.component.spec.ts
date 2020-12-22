@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SelectGroupOption } from '../../lists/list.interface';
 import { QuickFilterSelectType } from './quick-filter.enum';
@@ -16,7 +16,7 @@ describe('QuickFilterComponent', () => {
   let fixture: ComponentFixture<QuickFilterComponent>;
   let optionsMock: SelectGroupOption[];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     optionsMock = Array.from(Array(3), (g, i) => {
       return {
         groupName: `Basic Info G${i} - header`,

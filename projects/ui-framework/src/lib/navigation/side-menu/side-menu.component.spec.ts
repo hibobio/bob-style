@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SideMenuComponent } from './side-menu.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { sideMenuMock2 } from './side-menu.mock';
@@ -19,7 +19,7 @@ describe('SideMenuComponent', () => {
   let fixture: ComponentFixture<SideMenuComponent>;
   let options: HTMLElement[];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         SideMenuComponent,

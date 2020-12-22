@@ -1,10 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  flush,
-  TestBed,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { ChipListComponent } from './chip-list.component';
 import { ChipType, ChipListAlign, ChipListSelectable } from '../chips.enum';
 import { ChipModule } from '../chip/chip.module';
@@ -68,7 +62,7 @@ describe('ChipListComponent', () => {
     },
   ];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         ChipListComponent,

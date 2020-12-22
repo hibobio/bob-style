@@ -1,13 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  flush,
-  inject,
-  TestBed,
-  tick,
-  resetFakeAsyncZone,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SingleSelectComponent } from './single-select.component';
@@ -48,7 +39,7 @@ describe('SingleSelectComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     optionsMock = [
       {
         groupName: 'Basic Info',
@@ -252,7 +243,7 @@ describe('SingleSelectComponent', () => {
   });
 
   describe('tooltip', () => {
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
       const testOptionsMock = cloneDeep(optionsMock);
       testOptionsMock[1].options[1].value =
         'a very very very long text that should have a tooltip';

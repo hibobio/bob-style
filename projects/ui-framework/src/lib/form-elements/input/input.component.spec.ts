@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { InputComponent } from './input.component';
 import { InputEventType } from '../form-elements.enum';
@@ -23,7 +23,7 @@ describe('InputComponent', () => {
   let buttonUpElement: any;
   let buttonDownElement: any;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [InputComponent],
       imports: [

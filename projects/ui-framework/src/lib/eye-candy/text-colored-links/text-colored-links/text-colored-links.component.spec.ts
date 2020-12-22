@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {TextColoredLinksComponent} from './text-colored-links.component';
 import {actionMock, COLOR_TEXT_ITEMS} from './text-colored-links.mocks';
@@ -94,7 +94,7 @@ describe('TextColoredLinksComponent', () => {
     return item;
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TextColoredLinksComponent]
     })

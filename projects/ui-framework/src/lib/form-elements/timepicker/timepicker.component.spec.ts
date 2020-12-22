@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TimePickerComponent } from './timepicker.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMessageModule } from '../input-message/input-message.module';
@@ -27,7 +27,7 @@ describe('TimePickerComponent', () => {
   let iconElem: HTMLElement;
   let messageElem: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         TimePickerComponent,

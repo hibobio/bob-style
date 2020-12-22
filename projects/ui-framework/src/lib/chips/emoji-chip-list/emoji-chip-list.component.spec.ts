@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { EmojiChipListComponent } from './emoji-chip-list.component';
 import { MockPipe } from 'ng-mocks';
@@ -10,7 +10,7 @@ describe('EmojiChipListComponent', () => {
   let component: EmojiChipListComponent;
   let fixture: ComponentFixture<EmojiChipListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [MatTooltipModule],
       declarations: [

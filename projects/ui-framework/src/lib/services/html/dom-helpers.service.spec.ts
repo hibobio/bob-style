@@ -1,4 +1,4 @@
-import { TestBed, ComponentFixture, async } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { DOMhelpers } from './dom-helpers.service';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -55,7 +55,7 @@ describe('DOMhelpers', () => {
   let testDiv3: HTMLElement;
   let testDiv4: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent],
       imports: [CommonModule, UtilsModule],

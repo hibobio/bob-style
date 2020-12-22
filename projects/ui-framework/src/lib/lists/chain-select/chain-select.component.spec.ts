@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ChainSelectComponent } from './chain-select.component';
 import { IconsModule } from '../../icons/icons.module';
 import { By } from '@angular/platform-browser';
@@ -12,7 +12,7 @@ describe('EmployeeChainSelectComponent', () => {
   let component: ChainSelectComponent;
   let fixture: ComponentFixture<ChainSelectComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ChainSelectComponent, ChainSelectDirective],
       imports: [CommonModule, IconsModule, ButtonsModule],

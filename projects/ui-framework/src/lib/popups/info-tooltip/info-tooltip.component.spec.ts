@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { InfoTooltipComponent } from './info-tooltip.component';
 import { By } from '@angular/platform-browser';
@@ -14,7 +14,7 @@ describe('InfoTooltipComponent', () => {
   let component: InfoTooltipComponent;
   let fixture: ComponentFixture<InfoTooltipComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [InfoTooltipComponent, MockComponent(IconComponent)],
       imports: [PanelModule, TypographyModule, LinkModule],

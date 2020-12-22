@@ -1,13 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  flush,
-  inject,
-  TestBed,
-  tick,
-  resetFakeAsyncZone,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AutoCompleteComponent } from './auto-complete.component';
 import { AutoCompleteModule } from './auto-complete.module';
@@ -32,7 +23,7 @@ describe('AutoCompleteComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     optionsMock = Array.from(Array(12), (_, k) => {
       return {
         value: `Basic Info E${k} - option`,

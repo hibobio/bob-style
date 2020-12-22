@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BackButtonComponent } from './back-button.component';
 import { Icons, IconSize } from '../../icons/icons.enum';
 import { BackButtonType, ButtonSize } from '../buttons.enum';
@@ -9,7 +9,7 @@ describe('BackButtonComponent', () => {
   let fixture: ComponentFixture<BackButtonComponent>;
   let buttonElement: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [BackButtonComponent],
     })

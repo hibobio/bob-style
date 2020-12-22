@@ -1,4 +1,4 @@
-import { ComponentFixture, async, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,7 +28,7 @@ describe('MockComponent', () => {
   let mockSlot2: HTMLElement;
   let mockSlot3: any;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, MockComponent],
       imports: [BrowserAnimationsModule],

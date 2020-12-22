@@ -1,12 +1,5 @@
 import { CardComponent } from './card.component';
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  resetFakeAsyncZone,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { MenuComponent } from '../../navigation/menu/menu.component';
@@ -29,7 +22,7 @@ describe('CardComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         CardComponent,

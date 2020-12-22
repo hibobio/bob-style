@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActionsCellComponent } from './actions-cell.component';
 import { By } from '@angular/platform-browser';
 import { IconColor, Icons } from 'bob-style';
@@ -20,7 +20,7 @@ describe('ActionsCellComponent', () => {
     openLeft: true,
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         ActionsCellComponent,

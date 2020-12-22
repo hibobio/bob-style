@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ChipComponent } from './chip.component';
 import { ChipType } from '../chips.enum';
@@ -11,7 +11,7 @@ describe('ChipComponent', () => {
   let fixture: ComponentFixture<ChipComponent>;
   let chipElement: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ChipComponent],
       imports: [],

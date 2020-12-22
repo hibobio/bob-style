@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { QuickFilterBarComponent } from './quick-filter-bar.component';
 import { SelectGroupOption } from '../../lists/list.interface';
@@ -23,7 +23,7 @@ describe('QuickFilterBarComponent', () => {
   let optionsMock: SelectGroupOption[];
   let quickFiltersMock: QuickFilterConfig[];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     optionsMock = Array.from(Array(3), (g, i) => {
       return {
         groupName: `Basic Info G${i} - header`,

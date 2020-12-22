@@ -1,12 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  inject,
-  TestBed,
-  tick,
-  resetFakeAsyncZone,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
@@ -68,7 +60,7 @@ describe('MultiSelectComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     optionsMock = [
       {
         groupName: 'Basic Info',

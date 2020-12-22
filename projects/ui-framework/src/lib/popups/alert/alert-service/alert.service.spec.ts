@@ -1,11 +1,4 @@
-import {
-  fakeAsync,
-  inject,
-  TestBed,
-  tick,
-  resetFakeAsyncZone,
-  async,
-} from '@angular/core/testing';
+import { fakeAsync, inject, TestBed, tick, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
 import { AlertService } from './alert.service';
 import { AlertConfig } from '../alert.interface';
 import { AlertType } from '../alert.enum';
@@ -39,7 +32,7 @@ describe('AlertService', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [OverlayModule, ButtonsModule, BrowserAnimationsModule],
       declarations: [AlertComponent, MockComponent(IconComponent)],

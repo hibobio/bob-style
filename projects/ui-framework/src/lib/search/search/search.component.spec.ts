@@ -1,10 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { SearchComponent } from './search.component';
 import { InputModule } from '../../form-elements/input/input.module';
@@ -16,7 +10,7 @@ describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [SearchComponent],
       imports: [NoopAnimationsModule, FormsModule, InputModule, IconsModule],

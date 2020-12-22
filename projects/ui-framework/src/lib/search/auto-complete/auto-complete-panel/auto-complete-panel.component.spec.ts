@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AutoCompletePanelComponent } from './auto-complete-panel.component';
 import { ListKeyboardService } from '../../../lists/list-service/list-keyboard.service';
@@ -16,7 +16,7 @@ describe('AutoCompletePanelComponent', () => {
   let fixture: ComponentFixture<AutoCompletePanelComponent>;
   let optionsMock: AutoCompleteOption[];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     optionsMock = Array.from(Array(12), (_, k) => {
       return {
         value: `Basic Info E${k} - option`,

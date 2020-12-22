@@ -1,10 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  resetFakeAsyncZone,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CardsLayoutComponent } from './cards-layout.component';
@@ -44,7 +38,7 @@ describe('CardsLayoutComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [CardsLayoutComponent],
       imports: [],

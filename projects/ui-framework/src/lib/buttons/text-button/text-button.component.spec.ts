@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TextButtonComponent } from './text-button.component';
 import { IconComponent } from '../../icons/icon.component';
 import { MockComponent } from 'ng-mocks';
@@ -12,7 +12,7 @@ describe('TextButtonComponent', () => {
   let fixture: ComponentFixture<TextButtonComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent(IconComponent), TextButtonComponent],
       imports: [TypographyModule],

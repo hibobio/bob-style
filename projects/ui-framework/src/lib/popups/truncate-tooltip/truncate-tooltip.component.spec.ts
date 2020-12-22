@@ -1,11 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-  resetFakeAsyncZone,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA, Component, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -83,7 +76,7 @@ describe('TruncateTooltipComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         TestComponent,

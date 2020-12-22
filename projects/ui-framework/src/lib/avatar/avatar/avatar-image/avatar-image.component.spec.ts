@@ -1,11 +1,4 @@
-import {
-  ComponentFixture,
-  async,
-  TestBed,
-  fakeAsync,
-  flush,
-  resetFakeAsyncZone,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
 import { AvatarImageComponent } from './avatar-image.component';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { isEqual } from 'lodash';
@@ -117,7 +110,7 @@ describe('AvatarImageComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AvatarImageComponent],
       imports: [],

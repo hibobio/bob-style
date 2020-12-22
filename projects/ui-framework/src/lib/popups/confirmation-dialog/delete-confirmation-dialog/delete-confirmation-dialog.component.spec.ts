@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogComponent } from '../../dialog/dialog.component';
@@ -22,7 +22,7 @@ describe('DeleteConfirmationDialogComponent', () => {
   let spyMatDialogRef: SpyObj<MatDialogRef<any>>;
   let config: ConfirmationDialogConfig;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     spyMatDialogRef = createSpyObj('spyMatDialogRef', ['close']);
 
     config = {

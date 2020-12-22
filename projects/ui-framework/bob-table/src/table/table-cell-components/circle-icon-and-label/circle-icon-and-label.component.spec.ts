@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {CircleIconAndLabelComponent} from './circle-icon-and-label.component';
 import {By} from '@angular/platform-browser';
 import {CircleIconAndLabelParams} from './circle-icon-and-label.interface';
@@ -10,7 +10,7 @@ describe('CircleIconAndLabelComponent', () => {
   let component: CircleIconAndLabelComponent;
   let fixture: ComponentFixture<CircleIconAndLabelComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         CircleIconAndLabelComponent,

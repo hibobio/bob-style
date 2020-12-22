@@ -1,5 +1,5 @@
 import { SliderComponent } from './slider.component';
-import { ComponentFixture, async, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
 import { By } from '@angular/platform-browser';
@@ -8,7 +8,7 @@ describe('SliderModule', () => {
   let fixture: ComponentFixture<SliderComponent>;
   let component: SliderComponent;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [SliderComponent],
       providers: [],

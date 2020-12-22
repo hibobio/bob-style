@@ -1,11 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  flush,
-  resetFakeAsyncZone,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
 import { AvatarComponent } from './avatar.component';
 import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
 import { By } from '@angular/platform-browser';
@@ -35,7 +28,7 @@ describe('AvatarComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         AvatarComponent,

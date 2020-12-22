@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { CardEmployeeComponent } from './card-employee.component';
 import { TypographyModule } from '../../typography/typography.module';
@@ -16,7 +16,7 @@ describe('CardEmployeeComponent', () => {
   let fixture: ComponentFixture<CardEmployeeComponent>;
   let component: CardEmployeeComponent;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         CardEmployeeComponent,

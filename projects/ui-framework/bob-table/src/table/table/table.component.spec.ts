@@ -1,14 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  flush,
-  TestBed,
-  tick,
-  resetFakeAsyncZone,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -55,7 +47,7 @@ describe('TableComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     columnDefsMock = cloneDeep(COLUMN_DEFS_MOCK);
     rowDataMock = cloneDeep(ROW_DATA_MOCK);
     previousColumnDefsMock = [

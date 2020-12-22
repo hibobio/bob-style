@@ -1,4 +1,4 @@
-import { async, TestBed, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LightboxModule } from '../lightbox.module';
 import { MediaEmbedComponent } from './media-embed.component';
@@ -15,7 +15,7 @@ describe('MediaEmbedComponent', () => {
   let fixture: ComponentFixture<MediaEmbedComponent>;
   let compElement: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [LightboxModule, OverlayModule],
       declarations: [],

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ChipInputComponent } from './chip-input.component';
 
 import {
@@ -34,7 +34,7 @@ describe('ChipInputComponent', () => {
 
   const chipOptions = ['ABC', 'ACB', 'BAC', 'BCA', 'CAB', 'CBA'];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         ChipInputComponent,

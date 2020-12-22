@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {InfoStripComponent} from './info-strip.component';
 import {By} from '@angular/platform-browser';
 import {MockComponent} from 'ng-mocks';
@@ -12,7 +12,7 @@ describe('InfoStripComponent', () => {
   let component: InfoStripComponent;
   let fixture: ComponentFixture<InfoStripComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent(IconComponent),

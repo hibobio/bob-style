@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { EditCommentComponent } from './edit-comment.component';
 import { COMMENT_ITEM, eventEnterShiftKey } from '../comments.mocks';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
@@ -9,7 +9,7 @@ describe('EditCommentComponent', () => {
   let component: EditCommentComponent;
   let fixture: ComponentFixture<EditCommentComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [AvatarModule, MatTooltipModule],
       declarations: [EditCommentComponent],

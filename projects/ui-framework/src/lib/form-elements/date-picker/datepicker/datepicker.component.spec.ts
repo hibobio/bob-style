@@ -1,5 +1,5 @@
 import { DatepickerComponent } from './datepicker.component';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {
   elementFromFixture,
   getPseudoContent,
@@ -43,7 +43,7 @@ describe('DatepickerComponent', () => {
   let picker: MatDatepicker<any>;
   let pickerDateCellElem: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         MatDatepickerModule,

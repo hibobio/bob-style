@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormElementLabelComponent } from './form-element-label.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
@@ -10,7 +10,7 @@ describe('FormElementLabelComponent', () => {
   let component: FormElementLabelComponent;
   let fixture: ComponentFixture<FormElementLabelComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [FormElementLabelComponent],
       imports: [MatTooltipModule, TruncateTooltipModule, IconsModule],

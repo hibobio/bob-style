@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DateRangePickerComponent } from './date-range-picker.component';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { MobileService } from '../../../services/utils/mobile.service';
@@ -43,7 +43,7 @@ describe('DateRangePickerComponent', () => {
   let messageElem: HTMLElement;
   let pickerDateCellElems: HTMLElement[];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         MatDatepickerModule,

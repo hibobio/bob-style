@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SocialComponent } from './social.component';
 import { InputModule } from '../../form-elements/input/input.module';
 import { IconsModule } from '../../icons/icons.module';
@@ -23,7 +23,7 @@ describe('SocialComponent', () => {
     expect(`${socialTypesRes[type].prefix}AlanTulin`).toEqual(res[type]);
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [SocialComponent],
       imports: [NoopAnimationsModule, InputModule, IconsModule],

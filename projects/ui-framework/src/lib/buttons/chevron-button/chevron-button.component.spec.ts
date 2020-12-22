@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ChevronButtonComponent } from './chevron-button.component';
 import { By } from '@angular/platform-browser';
 import { simpleChange } from '../../services/utils/functional-utils';
@@ -7,7 +7,7 @@ describe('ChevronButtonComponent', () => {
   let component: ChevronButtonComponent;
   let fixture: ComponentFixture<ChevronButtonComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ChevronButtonComponent],
     })

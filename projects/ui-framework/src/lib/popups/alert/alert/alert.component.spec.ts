@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AlertComponent } from './alert.component';
 import { AlertType } from '../alert.enum';
 import { MockComponent } from 'ng-mocks';
@@ -11,7 +11,7 @@ describe('AlertComponent', () => {
   let component: AlertComponent;
   let fixture: ComponentFixture<AlertComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [ButtonsModule, TypographyModule, BrowserAnimationsModule],
       declarations: [AlertComponent, MockComponent(IconComponent)]
