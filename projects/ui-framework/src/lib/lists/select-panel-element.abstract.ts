@@ -96,6 +96,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @Input() panelPosition: PanelDefaultPosVer | ConnectedPosition[];
   @Input() panelClass: string;
   @Input() hasArrow = true;
+  @Input() hasBackdrop: boolean;
 
   @Input() showSingleGroupHeader = false;
   @Input() startWithGroupsCollapsed = true;
@@ -247,6 +248,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   openPanel(): void {
     this.panel = this.listPanelSrvc.openPanel({
       self: this,
+      hasBackdrop: this.hasBackdrop,
     });
   }
 

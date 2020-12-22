@@ -97,7 +97,10 @@ export class ListPanelService {
         self.hasArrow ? 'b-select-panel-with-arrow' : 'b-select-panel-no-arrow',
         self.panelClass,
       ].filter(Boolean),
-      backdropClass: 'b-select-backdrop',
+      backdropClass: [
+        'b-select-backdrop',
+        hasBackdrop === true && 'clickable',
+      ].filter(Boolean),
 
       openOnHover: false,
       hasBackdrop: hasBackdrop !== false,
