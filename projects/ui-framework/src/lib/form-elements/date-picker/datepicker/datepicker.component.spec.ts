@@ -43,60 +43,62 @@ describe('DatepickerComponent', () => {
   let picker: MatDatepicker<any>;
   let pickerDateCellElem: HTMLElement;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        MatDatepickerModule,
-        MatNativeDateModule,
-        IconsModule,
-        InputMessageModule,
-        NoopAnimationsModule,
-        OverlayModule,
-        FormElementLabelModule,
-        DateInputDirectiveModule,
-      ],
-      declarations: [DatepickerComponent],
-      providers: [
-        { provide: UtilsService, useValue: utilsServiceStub },
-        { provide: MobileService, useValue: mobileServiceStub },
-        FormElementKeyboardCntrlService,
-        DateParseService,
-        EventManagerPlugins[0],
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          MatDatepickerModule,
+          MatNativeDateModule,
+          IconsModule,
+          InputMessageModule,
+          NoopAnimationsModule,
+          OverlayModule,
+          FormElementLabelModule,
+          DateInputDirectiveModule,
+        ],
+        declarations: [DatepickerComponent],
+        providers: [
+          { provide: UtilsService, useValue: utilsServiceStub },
+          { provide: MobileService, useValue: mobileServiceStub },
+          FormElementKeyboardCntrlService,
+          DateParseService,
+          EventManagerPlugins[0],
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(DatepickerComponent);
+          component = fixture.componentInstance;
+          componentElem = fixture.nativeElement;
+
+          component.ngOnInit = () => {};
+
+          component.ignoreEvents = [];
+          component.label = 'Label';
+          component.hintMessage = 'Hint';
+          component.required = true;
+
+          fixture.detectChanges();
+
+          labelElem = elementFromFixture(fixture, '.bfe-label .btt');
+          labelWrapElem = elementFromFixture(fixture, '.bfe-label label');
+          inputElem = elementFromFixture(
+            fixture,
+            '.bfe-input'
+          ) as HTMLInputElement;
+
+          messageElem = elementFromFixture(fixture, '[b-input-message]');
+
+          spyOn(component.changed, 'emit');
+          component.changed.subscribe(() => {});
+          spyOn(component, 'propagateChange');
+
+          picker = component.pickers.toArray()[0];
+          picker.startAt = parseISO('2019-09-01');
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(DatepickerComponent);
-        component = fixture.componentInstance;
-        componentElem = fixture.nativeElement;
-
-        component.ngOnInit = () => {};
-
-        component.ignoreEvents = [];
-        component.label = 'Label';
-        component.hintMessage = 'Hint';
-        component.required = true;
-
-        fixture.detectChanges();
-
-        labelElem = elementFromFixture(fixture, '.bfe-label .btt');
-        labelWrapElem = elementFromFixture(fixture, '.bfe-label label');
-        inputElem = elementFromFixture(
-          fixture,
-          '.bfe-input'
-        ) as HTMLInputElement;
-
-        messageElem = elementFromFixture(fixture, '[b-input-message]');
-
-        spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => {});
-        spyOn(component, 'propagateChange');
-
-        picker = component.pickers.toArray()[0];
-        picker.startAt = parseISO('2019-09-01');
-      });
-  }));
+  );
 
   afterEach(() => {
     component.changed.complete();
@@ -152,11 +154,11 @@ describe('DatepickerComponent', () => {
     });
 
     it('should set min date for MatDatepicker', () => {
-      expect(dateToString(picker._minDate)).toEqual('2019-09-10');
+      expect(dateToString(picker._getMinDate())).toEqual('2019-09-10');
     });
 
     it('should set max date for MatDatepicker', () => {
-      expect(dateToString(picker._maxDate)).toEqual('2019-09-25');
+      expect(dateToString(picker._getMaxDate())).toEqual('2019-09-25');
     });
   });
 

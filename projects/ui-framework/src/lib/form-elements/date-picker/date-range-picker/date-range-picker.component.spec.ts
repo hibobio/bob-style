@@ -43,52 +43,54 @@ describe('DateRangePickerComponent', () => {
   let messageElem: HTMLElement;
   let pickerDateCellElems: HTMLElement[];
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        MatDatepickerModule,
-        MatNativeDateModule,
-        IconsModule,
-        InputMessageModule,
-        NoopAnimationsModule,
-        DateInputDirectiveModule,
-      ],
-      declarations: [DateRangePickerComponent],
-      providers: [
-        { provide: UtilsService, useValue: utilsServiceStub },
-        { provide: MobileService, useValue: mobileServiceStub },
-        DateParseService,
-        EventManagerPlugins[0],
-      ],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          MatDatepickerModule,
+          MatNativeDateModule,
+          IconsModule,
+          InputMessageModule,
+          NoopAnimationsModule,
+          DateInputDirectiveModule,
+        ],
+        declarations: [DateRangePickerComponent],
+        providers: [
+          { provide: UtilsService, useValue: utilsServiceStub },
+          { provide: MobileService, useValue: mobileServiceStub },
+          DateParseService,
+          EventManagerPlugins[0],
+        ],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(DateRangePickerComponent);
+          component = fixture.componentInstance;
+          componentElem = fixture.nativeElement;
+
+          component.ignoreEvents = [];
+          component.startDateLabel = 'Start date';
+          component.endDateLabel = 'End date';
+          component.hintMessage = 'Hint';
+          component.required = true;
+
+          fixture.detectChanges();
+
+          pickers = component.pickers.toArray();
+          inputElems = component.inputs.toArray().map((i) => i.nativeElement);
+          iconElems = elementsFromFixture(fixture, '.bfe-suffix .b-icon');
+          labelElems = elementsFromFixture(fixture, '.bfe-label');
+          messageElem = elementFromFixture(fixture, '[b-input-message]');
+
+          pickers[0].startAt = parseISO('2019-09-01');
+          pickers[1].startAt = parseISO('2019-09-01');
+
+          spyOn(component.changed, 'emit');
+          component.changed.subscribe(() => {});
+          spyOn(component, 'propagateChange');
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(DateRangePickerComponent);
-        component = fixture.componentInstance;
-        componentElem = fixture.nativeElement;
-
-        component.ignoreEvents = [];
-        component.startDateLabel = 'Start date';
-        component.endDateLabel = 'End date';
-        component.hintMessage = 'Hint';
-        component.required = true;
-
-        fixture.detectChanges();
-
-        pickers = component.pickers.toArray();
-        inputElems = component.inputs.toArray().map((i) => i.nativeElement);
-        iconElems = elementsFromFixture(fixture, '.bfe-suffix .b-icon');
-        labelElems = elementsFromFixture(fixture, '.bfe-label');
-        messageElem = elementFromFixture(fixture, '[b-input-message]');
-
-        pickers[0].startAt = parseISO('2019-09-01');
-        pickers[1].startAt = parseISO('2019-09-01');
-
-        spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => {});
-        spyOn(component, 'propagateChange');
-      });
-  }));
+  );
 
   afterEach(() => {
     component.changed.complete();
@@ -143,13 +145,14 @@ describe('DateRangePickerComponent', () => {
     });
 
     it('should set min date for MatDatepickers', () => {
-      expect(dateToString(pickers[0]._minDate)).toEqual('2019-09-10');
-      expect(dateToString(pickers[1]._minDate)).toEqual('2019-09-10');
+      console.log('pickers[0]', pickers[0]);
+      expect(dateToString(pickers[0]._getMinDate())).toEqual('2019-09-10');
+      expect(dateToString(pickers[1]._getMinDate())).toEqual('2019-09-10');
     });
 
     it('should set max date for MatDatepickers', () => {
-      expect(dateToString(pickers[1]._maxDate)).toEqual('2019-09-25');
-      expect(dateToString(pickers[0]._maxDate)).toEqual('2019-09-25');
+      expect(dateToString(pickers[1]._getMaxDate())).toEqual('2019-09-25');
+      expect(dateToString(pickers[0]._getMaxDate())).toEqual('2019-09-25');
     });
   });
 
@@ -177,13 +180,13 @@ describe('DateRangePickerComponent', () => {
     });
 
     it('should set max date of Start date MatDatepicker to "to" date', () => {
-      expect(dateToString(pickers[0]._maxDate)).toEqual('2019-09-27');
-      expect(dateToString(pickers[1]._maxDate)).not.toEqual('2019-09-27');
+      expect(dateToString(pickers[0]._getMaxDate())).toEqual('2019-09-27');
+      expect(dateToString(pickers[1]._getMaxDate())).not.toEqual('2019-09-27');
     });
 
     it('should set min date of End date MatDatepicker to "from" date', () => {
-      expect(dateToString(pickers[1]._minDate)).toEqual('2019-09-15');
-      expect(dateToString(pickers[0]._minDate)).not.toEqual('2019-09-15');
+      expect(dateToString(pickers[1]._getMinDate())).toEqual('2019-09-15');
+      expect(dateToString(pickers[0]._getMinDate())).not.toEqual('2019-09-15');
     });
 
     it('should emit changed event', () => {
