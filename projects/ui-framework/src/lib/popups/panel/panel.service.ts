@@ -64,6 +64,8 @@ export class PanelService {
       ),
     } as Panel<T>;
 
+    panel.created = new Date().getTime();
+
     panel.overlayRef = this.overlay.create(panel);
 
     if (panel.viewContainerRef && panel.templateRef) {
@@ -103,6 +105,7 @@ export class PanelService {
       this.utilsService.getWindowClickEvent(true).pipe(
         filter((event: MouseEvent) => {
           return (
+            new Date().getTime() - panel.created > 200 &&
             document.contains(panel.overlayRef.overlayElement) &&
             !getEventPath(event).includes(panel.overlayRef.overlayElement) &&
             !getEventPath(event).includes(

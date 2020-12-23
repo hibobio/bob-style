@@ -23,10 +23,10 @@ $b-select-panel-min-width: 280px;
   background-color: rgba(0, 0, 0, 0.3);
   transition: none;
   pointer-events: none !important;
+}
 
-  &.clickable {
-    pointer-events: auto !important;
-  }
+.cdk-overlay-backdrop-showing.clickable {
+  pointer-events: auto !important;
 }
 
 .b-select-backdrop,
