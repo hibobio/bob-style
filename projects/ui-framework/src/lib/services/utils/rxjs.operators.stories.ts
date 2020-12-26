@@ -3,7 +3,7 @@ import { withKnobs } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { interval, Observable, of, Subject, Subscription } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
-import { Component, NgModule } from '@angular/core';
+import { Component, NgModule, OnInit } from '@angular/core';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import {
   randomFromArray,
@@ -13,6 +13,8 @@ import {
 import { cacheMap, cacheSwitchMap } from './rxjs.oprtrs.cachemap';
 import { CommonModule } from '@angular/common';
 import { debug } from './rxjs.operators';
+import { ColorPaletteService } from '../color-service/color-palette.service';
+import { PalletteColorSet } from '../color-service/color-palette.enum';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs
@@ -61,16 +63,16 @@ const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   ],
   providers: [],
 })
-export class RxjsOperatorsComponent {
-  constructor() {}
+export class RxjsOperatorsComponent implements OnInit {
+  constructor(private cps: ColorPaletteService) {}
 
   interval$: Observable<number> = interval(1000);
   cacheMapped$: Observable<string>;
   cacheSwitchMapped$: Observable<string>;
-  cacheMapLog: string = '';
-  cacheMapLog2: string = '';
-  cacheSwitchMapLog: string = '';
-  cacheSwitchMapLog2: string = '';
+  cacheMapLog = '';
+  cacheMapLog2 = '';
+  cacheSwitchMapLog = '';
+  cacheSwitchMapLog2 = '';
   subs1: Subscription[] = [];
   subs2: Subscription[] = [];
   cache = new Map();
@@ -81,6 +83,8 @@ export class RxjsOperatorsComponent {
   done$ = new Subject();
 
   counters = {};
+
+  colorPaletteGenerator = this.cps.paletteColorGenerator(PalletteColorSet.set1);
 
   ngOnInit() {
     const falsyValues = [null, undefined, {}, [], 0, ''];
@@ -141,7 +145,12 @@ export class RxjsOperatorsComponent {
 
     this.subs1.push(
       this.cacheMapped$
-        .pipe(debug('cacheMapped sub 1'), takeUntil(this.done$))
+        .pipe(
+          debug('cacheMapped sub 1', {
+            color: this.colorPaletteGenerator.next(),
+          }),
+          takeUntil(this.done$)
+        )
         .subscribe((v) => {
           this.cacheMapLog += v;
         })
@@ -150,7 +159,12 @@ export class RxjsOperatorsComponent {
     setTimeout(() => {
       this.subs1.push(
         this.cacheMapped$
-          .pipe(debug('cacheMapped sub 2'), takeUntil(this.done$))
+          .pipe(
+            debug('cacheMapped sub 2', {
+              color: this.colorPaletteGenerator.next(),
+            }),
+            takeUntil(this.done$)
+          )
           .subscribe((v) => {
             this.cacheMapLog2 += v;
           })
@@ -166,7 +180,12 @@ export class RxjsOperatorsComponent {
 
     this.subs2.push(
       this.cacheSwitchMapped$
-        .pipe(debug('cacheSwitchMapped sub 1'), takeUntil(this.done$))
+        .pipe(
+          debug('cacheSwitchMapped sub 1', {
+            color: this.colorPaletteGenerator.next(),
+          }),
+          takeUntil(this.done$)
+        )
         .subscribe((v) => {
           this.cacheSwitchMapLog += v;
         })
@@ -175,7 +194,12 @@ export class RxjsOperatorsComponent {
     setTimeout(() => {
       this.subs2.push(
         this.cacheSwitchMapped$
-          .pipe(debug('cacheSwitchMapped sub 2'), takeUntil(this.done$))
+          .pipe(
+            debug('cacheSwitchMapped sub 2', {
+              color: this.colorPaletteGenerator.next(),
+            }),
+            takeUntil(this.done$)
+          )
           .subscribe((v) => {
             this.cacheSwitchMapLog2 += v;
           })

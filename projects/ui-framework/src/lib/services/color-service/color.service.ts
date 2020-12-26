@@ -33,6 +33,9 @@ export class ColorService {
   }
 
   public isDark(color: [number, number, number] | string) {
+    if (!color) {
+      return color;
+    }
     if (typeof color === 'string') {
       color = this.parseToRGB(color);
     }

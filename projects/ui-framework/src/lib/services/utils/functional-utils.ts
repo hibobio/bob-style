@@ -646,6 +646,10 @@ export const mapSplice = <K = unknown, V = unknown>(
   return deletedElementsMap;
 };
 
+export const getMapValues = <K = string, V = unknown>(map: Map<K, V>): V[] => {
+  return Array.from(map.values());
+};
+
 // ----------------------
 // STRINGS
 // ----------------------

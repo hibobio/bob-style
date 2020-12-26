@@ -76,12 +76,19 @@ export function tapOnce<T = any>(fn: (value: T) => void) {
 }
 
 // https://netbasal.com/creating-custom-operators-in-rxjs-32f052d69457
-export function debug<T = any>(tag: string): OperatorFunction<T, T> {
-  const logger = log.logger(tag);
+export function debug<T = any>(
+  tag: string,
+  config: {
+    onlyValues?: boolean;
+    color?: string;
+  } = {}
+): OperatorFunction<T, T> {
+  const { onlyValues, color } = config;
+  const logger = log.logger(tag, color);
 
   return (source: Observable<T>): Observable<T> =>
     defer(() => {
-      logger.success('Subscribed');
+      !onlyValues && logger.success('Subscribed');
 
       return source.pipe(
         tap({
@@ -92,11 +99,11 @@ export function debug<T = any>(tag: string): OperatorFunction<T, T> {
             logger.error('Error', error);
           },
           complete() {
-            logger.attention('Complete');
+            !onlyValues && logger.attention('Complete');
           },
         }),
         finalize(() => {
-          logger.attention('Unsubscribed');
+          !onlyValues && logger.attention('Unsubscribed');
         })
       );
     });
