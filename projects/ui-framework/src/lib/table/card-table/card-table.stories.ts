@@ -144,6 +144,7 @@ const note = `
    - | RenderedComponent | object describing a Component to be displayed in the cell
     - | empty or absent | if the cell object doesnt have a data property\
      or its value is an empty string, then a '-' will be displayed
+  maxLines | number / null | truncate to max lines, disable truncate on null
   class | string / string[] | class name(s) to be added to the cell
 
   *Note:* If using RenderedComponent as cell data, consumer must

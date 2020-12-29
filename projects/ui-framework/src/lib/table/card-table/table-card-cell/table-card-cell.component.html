@@ -1,5 +1,5 @@
 <span *ngIf="ifString(cell.data) || !cell.data"
-      [b-truncate-tooltip]="2"
+      [b-truncate-tooltip]="cell.maxLines !== undefined ? cell.maxLines : 2"
       [type]="tooltipType.css"
       [trustCssVars]="true"
       [text]="cell.data || '—'"

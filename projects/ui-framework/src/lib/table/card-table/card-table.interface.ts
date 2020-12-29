@@ -32,6 +32,7 @@ export interface CardTableCellData {
   id?: string | number;
   data?: CardTableCellDataType;
   class?: string | string[];
+  maxLines?: number | null;
 }
 
 export interface CardTableCellClickEvent {
