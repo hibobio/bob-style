@@ -1,4 +1,4 @@
-import { SimpleChanges, SimpleChange, ElementRef } from '@angular/core';
+import { SimpleChanges, SimpleChange, ElementRef, Type } from '@angular/core';
 import { controlKeys, KEYCODES, Keys, metaKeys } from '../../enums';
 import { GenericObject } from '../../types';
 import { isEqual, cloneDeep, set, get, merge } from 'lodash';
@@ -1431,6 +1431,9 @@ export const unsubscribeArray = (subs: Subscription[]): void => {
 // ----------------------
 // MISC HELPERS
 // ----------------------
+
+export const thisClassName = <T = unknown>(that: T | Type<T>): string =>
+  that?.constructor?.name;
 
 export function MixIn(baseCtors: Function[]) {
   return function (derivedCtor: Function) {
