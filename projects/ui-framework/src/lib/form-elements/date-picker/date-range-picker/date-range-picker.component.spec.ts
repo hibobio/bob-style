@@ -145,7 +145,6 @@ describe('DateRangePickerComponent', () => {
     });
 
     it('should set min date for MatDatepickers', () => {
-      console.log('pickers[0]', pickers[0]);
       expect(dateToString(pickers[0]._getMinDate())).toEqual('2019-09-10');
       expect(dateToString(pickers[1]._getMinDate())).toEqual('2019-09-10');
     });

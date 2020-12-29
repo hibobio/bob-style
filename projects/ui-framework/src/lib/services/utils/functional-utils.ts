@@ -373,7 +373,7 @@ export interface ObjectStringIDConfig {
 
 export const objectStringID = <T = GenericObject>(
   obj: T,
-  config: ObjectStringIDConfig = { limit: 400, primitives: true }
+  config: ObjectStringIDConfig = { limit: 1500, primitives: true }
 ): string => {
   const { key, limit, addId, primitives, ignoreProps } = config;
 

@@ -14,6 +14,7 @@
       "kebab-case"
     ],
     "no-unused-expression": false,
-    "no-input-rename": false
+    "no-input-rename": false,
+    "no-unnecessary-initializer": false
   }
 }
