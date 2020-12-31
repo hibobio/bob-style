@@ -1,7 +1,15 @@
 import { SimpleChanges, SimpleChange, ElementRef, Type } from '@angular/core';
 import { controlKeys, KEYCODES, Keys, metaKeys } from '../../enums';
 import { GenericObject } from '../../types';
-import { isEqual, cloneDeep, set, get, merge } from 'lodash';
+import {
+  isEqual as _isEqual,
+  cloneDeep as _cloneDeep,
+  set as _set,
+  get as _get,
+  merge as _merge,
+  pick as _pick,
+  omit as _omit,
+} from 'lodash';
 import { RenderedComponent } from '../component-renderer/component-renderer.interface';
 import { SelectGroupOption } from '../../lists/list.interface';
 import { Observable, Subscription } from 'rxjs';
@@ -290,7 +298,7 @@ export const onlyUpdatedProps = (
   return Object.keys(newObj)
     .filter(
       (key: string) =>
-        !hasProp(oldObj, key) || !isEqual(oldObj[key], newObj[key])
+        !hasProp(oldObj, key) || !_isEqual(oldObj[key], newObj[key])
     )
     .reduce((updObj, key) => {
       updObj[key] = newObj[key];
@@ -1446,14 +1454,20 @@ export function MixIn(baseCtors: Function[]) {
 }
 
 export const simpleUID = (
-  prefix: string = '',
+  prefix: string = null,
   length: number = 5,
-  suffix: string = ''
+  suffix: string | boolean = true
 ): string => {
   return (
-    prefix.replace(/\s+/g, '_') +
+    (isString(prefix) && prefix
+      ? prefix.replace(/(^[\W_]|[\W_]$)/g, '').replace(/\s+/g, '_') + '-'
+      : '') +
     Math.random().toString(16).substr(2, length) +
-    suffix.replace(/\s+/g, '_')
+    (isString(suffix)
+      ? (length ? '-' : '') + suffix.replace(/\s+/g, '_')
+      : suffix !== false
+      ? (length ? '-' : '') + String(new Date().getTime()).slice(-4)
+      : '')
   );
 };
 
@@ -1599,29 +1613,43 @@ export const invoke = <T = unknown, R = any>(smth: T, method: string): R => {
 // LODASH WRAPS
 // ----------------------
 
-export const _cloneDeep = <T = unknown>(smth: T): T => {
-  return cloneDeep(smth) as T;
+export const cloneDeep = <T = unknown>(smth: T): T => {
+  return _cloneDeep(smth) as T;
 };
 
-export const _set = <T = unknown, V = unknown>(
+export const set = <T = unknown, V = unknown>(
   target: T,
   path: string,
   value: V
 ): T => {
-  return set(target, path, value);
+  return _set(target, path, value);
 };
 
-export const _get = <V = unknown, T = unknown>(
-  smth: T,
+export const get = <T = unknown, V = unknown>(
+  source: T,
   path: string,
-  defVal?: V
+  defVal?: V | undefined | null
 ): V => {
-  return get(smth, path, defVal);
+  return _get(source, path, defVal);
 };
 
-export const _merge = <T = unknown>(
+export const merge = <T = unknown>(
   target: Partial<T>,
   ...sources: Partial<T>[]
 ): T => {
-  return merge(target, ...sources) as T;
+  return _merge(target, ...sources) as T;
+};
+
+export const pick = <T extends GenericObject, K extends keyof T>(
+  object: T,
+  props: K | K[]
+): Pick<T, K> => {
+  return _pick(object, props);
+};
+
+export const omit = <T extends GenericObject, K extends keyof T>(
+  object: T,
+  props: K | K[]
+): Omit<T, K> => {
+  return _omit(object, props);
 };

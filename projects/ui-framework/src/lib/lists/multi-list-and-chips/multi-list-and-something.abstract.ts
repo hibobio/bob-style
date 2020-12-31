@@ -110,8 +110,8 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
   @Output() changed: EventEmitter<itemID[]> = new EventEmitter<itemID[]>();
 
   readonly listElHeight: number = LIST_EL_HEIGHT;
-  readonly listID: string = simpleUID('mlas-');
-  readonly otherID: string = simpleUID('mlas-');
+  readonly listID: string = simpleUID('mlas');
+  readonly otherID: string = simpleUID('mlas');
 
   @InputObservable([])
   @Input('options')

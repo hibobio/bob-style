@@ -53,7 +53,7 @@ export class ProgressDonutComponent extends BaseProgressElement
 
   @HostBinding('attr.data-donut-size') @Input() donutSize: DonutSize = null;
 
-  readonly id = simpleUID('bpd-');
+  readonly id = simpleUID('bpd');
 
   public diameter: number;
   public strokeWidth: number;

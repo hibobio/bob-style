@@ -38,7 +38,7 @@ export class ProgressBarComponent extends BaseProgressElement
   @Input() data: ProgressBarData;
   @Input() config: ProgressBarConfig = {};
 
-  readonly id = simpleUID('bpb-');
+  readonly id = simpleUID('bpb');
 
   protected setCssProps(): void {
     this.DOM.setCssProps(this.host.nativeElement, {

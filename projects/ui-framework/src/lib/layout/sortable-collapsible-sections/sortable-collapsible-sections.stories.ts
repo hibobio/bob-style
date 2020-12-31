@@ -106,7 +106,7 @@ const note = `
 
 const sectionsMock = makeArray(10).map((_, index) => {
   return {
-    id: simpleUID('trackId_', 8),
+    id: simpleUID('trackId', 8),
     title: `Section ${index}`,
     description: `Section ${index} description`,
     expanded: index === 1,

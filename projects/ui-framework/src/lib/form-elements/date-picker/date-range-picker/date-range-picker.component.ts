@@ -130,8 +130,8 @@ export class DateRangePickerComponent extends BaseDatepickerElement
   @Input() startDateLabel: string;
   @Input() endDateLabel: string;
 
-  public idSD = simpleUID('bdp-sd-');
-  public idED = simpleUID('bdp-ed-');
+  public idSD = simpleUID('bdp-sd');
+  public idED = simpleUID('bdp-ed');
 
   ngOnInit(): void {
     super.ngOnInit();

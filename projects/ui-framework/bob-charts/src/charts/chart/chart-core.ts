@@ -53,7 +53,7 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
   }
 
   highChartRef: Chart;
-  readonly containerId: string = simpleUID('bhc-', 7);
+  readonly containerId: string = simpleUID('bhc', 7);
   chartOptions: Options;
   options: Options;
 

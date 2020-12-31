@@ -52,7 +52,7 @@ export class MultiProgressBarComponent extends BaseProgressElement
   @Input() data: MultiProgressBarData[] = [];
   @Input() config: MultiProgressBarConfig = {};
 
-  readonly id = simpleUID('bmpb-');
+  readonly id = simpleUID('bmpb');
 
   @HostBinding('attr.id') get idAttr() {
     return this.id;

@@ -62,7 +62,7 @@ export abstract class MultiSearchBaseElement
   public searchOptions: MultiSearchGroupOption[];
   public searchOptionsEmpty: MultiSearchGroupOption[];
 
-  public id = simpleUID('bms-');
+  public id = simpleUID('bms');
   public searchValue: string;
 
   readonly keyMapDef = { ...MULTI_SEARCH_KEYMAP_DEF };

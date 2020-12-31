@@ -76,7 +76,7 @@ export class TreeListEditUtils {
 
   public static newItem(set: Partial<TreeListItem> = {}): TreeListItem {
     return {
-      id: simpleUID('etlni-'),
+      id: simpleUID('etlni'),
       name: '',
       value: '',
       parentIDs: [BTL_ROOT_ID],

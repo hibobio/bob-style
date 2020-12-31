@@ -82,118 +82,118 @@ const note = `
 
 const mock3 = [
   {
-    id: simpleUID('000-', 3),
+    id: simpleUID('000', 3),
     name: '000',
   },
   {
-    id: simpleUID('AAA-', 3),
+    id: simpleUID('AAA', 3),
     name: 'AAA',
     children: [
       {
-        id: simpleUID('DDD-', 3),
+        id: simpleUID('DDD', 3),
         name: 'DDD',
       },
       {
-        id: simpleUID('EEE-', 3),
+        id: simpleUID('EEE', 3),
         name: 'EEE',
       },
       {
-        id: simpleUID('FFF-', 3),
+        id: simpleUID('FFF', 3),
         name: 'FFF',
       },
     ],
   },
   {
-    id: simpleUID('BBB-', 3),
+    id: simpleUID('BBB', 3),
     name: 'BBB',
     children: [
       {
-        id: simpleUID('HHH-', 3),
+        id: simpleUID('HHH', 3),
         name: 'HHH',
       },
       {
-        id: simpleUID('III-', 3),
+        id: simpleUID('III', 3),
         name: 'III',
       },
       {
-        id: simpleUID('JJJ-', 3),
+        id: simpleUID('JJJ', 3),
         name: 'JJJ',
       },
     ],
   },
   {
-    id: simpleUID('CCC-', 3),
+    id: simpleUID('CCC', 3),
     name: 'CCC',
     children: [
       {
-        id: simpleUID('KKK-', 3),
+        id: simpleUID('KKK', 3),
         name: 'KKK',
       },
       {
-        id: simpleUID('LLL-', 3),
+        id: simpleUID('LLL', 3),
         name: 'LLL',
       },
       {
-        id: simpleUID('MMM-', 3),
+        id: simpleUID('MMM', 3),
         name: 'MMM',
       },
     ],
   },
   {
-    id: simpleUID('111-', 3),
+    id: simpleUID('111', 3),
     name: '111',
   },
 ];
 
 const mock2 = [
   {
-    id: simpleUID('AAA-', 3),
+    id: simpleUID('AAA', 3),
     name: 'AAA',
   },
   {
-    id: simpleUID('BBB-', 3),
+    id: simpleUID('BBB', 3),
     name: 'BBB',
   },
   {
-    id: simpleUID('CCC-', 3),
+    id: simpleUID('CCC', 3),
     name: 'CCC',
   },
   {
-    id: simpleUID('DDD-', 3),
+    id: simpleUID('DDD', 3),
     name: 'DDD',
   },
   {
-    id: simpleUID('EEE-', 3),
+    id: simpleUID('EEE', 3),
     name: 'EEE',
   },
 ];
 
 const mock = [
   {
-    id: simpleUID('TLV-', 3),
+    id: simpleUID('TLV', 3),
     name: 'TLV',
   },
   {
-    id: simpleUID('London-', 3),
+    id: simpleUID('London', 3),
     name: 'London',
   },
   {
-    id: simpleUID('NewYork-', 3),
+    id: simpleUID('NewYork', 3),
     name: 'New York',
 
     children: [
       {
-        id: simpleUID('R&D-', 3),
+        id: simpleUID('R&D', 3),
         name: 'R&D',
 
         children: [
           {
-            id: simpleUID('Product-', 3),
+            id: simpleUID('Product', 3),
             name: 'Product',
 
             children: [
               {
-                id: simpleUID('Design-', 3),
+                id: simpleUID('Design', 3),
                 name: 'Design',
               },
             ],
@@ -203,7 +203,7 @@ const mock = [
     ],
   },
   {
-    id: simpleUID('UK-', 3),
+    id: simpleUID('UK', 3),
     name: 'UK',
   },
 ];

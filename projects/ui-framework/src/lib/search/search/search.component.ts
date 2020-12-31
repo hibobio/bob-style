@@ -43,7 +43,7 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy {
   @Input() hideLabelOnFocus = true;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
-  @Input() id = simpleUID('bsrch-');
+  @Input() id = simpleUID('bsrch');
 
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
 

@@ -64,7 +64,7 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
   >();
 
   private wasInView = false;
-  readonly id = simpleUID('bsbc-');
+  readonly id = simpleUID('bsbc');
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(

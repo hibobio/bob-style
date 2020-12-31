@@ -15,13 +15,13 @@ export const makeRandomList = (
 ): TreeListOption[] => {
   const genOption = () =>
     ({
-      id: simpleUID('opt-', 7),
+      id: simpleUID('opt', 7),
       name: mockText(randomNumber(1, 3)),
     } as TreeListOption);
 
   const genGroup = (depthCounter = 0) =>
     ({
-      id: simpleUID('grp-', 7),
+      id: simpleUID('grp', 7),
       name: mockText(randomNumber(1, 3)),
       children: makeArray(randomNumber(...groupItemsMinMax)).map(() =>
         // tslint:disable-next-line: no-use-before-declare

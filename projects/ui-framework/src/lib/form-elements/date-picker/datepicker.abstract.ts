@@ -111,7 +111,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   public inputs: QueryList<ElementRef>;
   public input: ElementRef<HTMLInputElement>;
 
-  @Input() id: string = simpleUID('bdp-');
+  @Input() id: string = simpleUID('bdp');
 
   @Input() minDate: Date | string;
   @Input() maxDate: Date | string;

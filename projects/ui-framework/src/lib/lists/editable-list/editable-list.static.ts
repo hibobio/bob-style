@@ -25,7 +25,7 @@ export class EditableListUtils {
   public static addItem(list: SelectOption[], value: string): SelectOption[] {
     if (value) {
       list.unshift({
-        id: simpleUID('new-'),
+        id: simpleUID('new'),
         value: value,
       });
     }

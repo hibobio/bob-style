@@ -51,7 +51,7 @@ export abstract class BaseFormElement
   @ViewChild('input', { static: true, read: ElementRef })
   public input: ElementRef<HTMLInputElement>;
 
-  @Input() id: string = simpleUID('bfe-');
+  @Input() id: string = simpleUID('bfe');
   @Input() label: string;
   @Input() description: string;
   @Input() placeholder: string;
