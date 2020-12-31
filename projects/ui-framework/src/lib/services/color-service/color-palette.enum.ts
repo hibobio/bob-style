@@ -69,19 +69,19 @@ export enum ColorsGrey {
 }
 
 export enum ColorsMain {
-  color_main_primary_500 = '#fea54a',
-  color_main_primary_600 = '#ff962b',
-  color_main_primary_700 = '#ff8100',
-  color_main_secondary_500 = '#fecc4a',
-  color_main_secondary_600 = '#f8bc20',
-  color_main_secondary_700 = '#f0ad00',
-  color_main_positive_500 = '#1bd164',
-  color_main_positive_600 = '#17b456',
-  color_main_positive_700 = '#0d853d',
-  color_main_negative_500 = '#ff476d',
-  color_main_negative_600 = '#e52c51',
-  color_main_negative_700 = '#cc2748',
-  color_main_inform_500 = '#9bc3f2',
-  color_main_inform_600 = '#70abf0',
-  color_main_inform_700 = '#4b95ec'
+  primary_500 = '#fea54a',
+  primary_600 = '#ff962b',
+  primary_700 = '#ff8100',
+  secondary_500 = '#fecc4a',
+  secondary_600 = '#f8bc20',
+  secondary_700 = '#f0ad00',
+  positive_500 = '#1bd164',
+  positive_600 = '#17b456',
+  positive_700 = '#0d853d',
+  negative_500 = '#ff476d',
+  negative_600 = '#e52c51',
+  negative_700 = '#cc2748',
+  inform_500 = '#9bc3f2',
+  inform_600 = '#70abf0',
+  inform_700 = '#4b95ec'
 }
