@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ColorPalette, PalletteColorSet } from './color-palette.enum';
 import {
   arrayDifference,
+  asArray,
   isNumber,
   joinArrays,
   makeArray,
@@ -11,14 +12,15 @@ import {
 import { COLOR_PALETTE_SETS_COLOR_ORDER } from './color-palette.const';
 
 export interface PaletteColorGenerator {
-  next(): ColorPalette;
-  nextMultiple(count: number): ColorPalette[];
-  reset(): void;
-
   colorSet: PalletteColorSet;
   currentIndex: number;
   currentColorName: string;
   currentColor: ColorPalette;
+  skipColors?: (ColorPalette | string)[];
+
+  next(): ColorPalette;
+  nextMultiple(count: number): ColorPalette[];
+  reset(): void;
 }
 
 @Injectable({
@@ -120,18 +122,43 @@ export class ColorPaletteService {
 
   public paletteColorGenerator(
     colorSet = PalletteColorSet.main,
-    startIndex = 0
+    config?: {
+      startIndex?: number;
+      skipColors?: (ColorPalette | string)[];
+    }
   ): PaletteColorGenerator {
+    const { startIndex = 0 } = config || {};
+    const skipColors = asArray(config?.skipColors);
+    const skipIndexes: number[] =
+      skipColors.length && skipColors.length < this.mainPaletteSize
+        ? skipColors.reduce((indexes: number[], sc) => {
+            const skpIndx = sc.startsWith('#')
+              ? this.colorPaletteSetColorValues[colorSet].indexOf(
+                  sc as ColorPalette
+                )
+              : this.colorPaletteSetColorNames[colorSet].indexOf(sc as string);
+            if (skpIndx !== -1) {
+              indexes.push(skpIndx);
+            }
+            return indexes;
+          }, [])
+        : [];
+
     const generator: PaletteColorGenerator = {
       ...this.getGeneratorInitState(colorSet, startIndex),
+
+      skipColors,
 
       reset: () => {
         Object.assign(generator, this.getGeneratorInitState(colorSet));
       },
 
       next: () => {
-        const currentIndexInSet =
-          ++generator.currentIndex % this.mainPaletteSize;
+        let currentIndexInSet = ++generator.currentIndex % this.mainPaletteSize;
+
+        while (skipIndexes.includes(currentIndexInSet)) {
+          currentIndexInSet = ++generator.currentIndex % this.mainPaletteSize;
+        }
 
         generator.currentColorName = this.colorPaletteSetColorNames[
           generator.colorSet

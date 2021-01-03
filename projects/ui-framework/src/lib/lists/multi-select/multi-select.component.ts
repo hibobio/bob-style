@@ -78,6 +78,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     this.hasArrow = false;
     this.panelPosition = PanelDefaultPosVer.belowLeftRight;
     this.listActions = { ...LIST_ACTIONS_DEF };
+
+    this.showValueShowcase = false;
   }
 
   @ViewChild('input', { static: true, read: TruncateTooltipComponent })
