@@ -236,17 +236,17 @@ export const closestDivisable = (val: number, step: number = 1): number => {
 // CONVERTERS
 // ----------------------
 
-export const asArray = <T = any>(
+export const asArray = <T = unknown>(
   smth: T | T[] | Iterable<T>,
   castFalsey = true
 ): T[] =>
   isNullOrUndefined(smth) && castFalsey
     ? []
     : isArray(smth)
-    ? (smth as T[])
+    ? smth
     : isIterable(smth)
     ? Array.from(smth)
-    : ([smth] as T[]);
+    : [smth];
 
 export const asNumber = (smth: any, roundToDcmls = null): number => {
   if (!smth) {
@@ -614,23 +614,23 @@ export const splitArrayToChunks = <T = any>(
 
 export const addToSet = <T = unknown>(
   targetSet: Set<T>,
-  values: T | T[] | Set<T>
+  values: T | T[] | Set<T> | Iterable<T>
 ): Set<T> => {
   if (!targetSet) {
-    return new Set(asArray(values));
+    return new Set(asArray<T>(values));
   }
-  asArray(values).forEach((v) => targetSet.add(v));
+  asArray<T>(values).forEach((v) => targetSet.add(v));
   return targetSet;
 };
 
 export const removeFromSet = <T = unknown>(
   targetSet: Set<T>,
-  values: T | T[] | Set<T>
+  values: T | T[] | Set<T> | Iterable<T>
 ): Set<T> => {
   if (!targetSet) {
     return new Set();
   }
-  asArray(values).forEach((v) => targetSet.delete(v));
+  asArray<T>(values).forEach((v) => targetSet.delete(v));
   return targetSet;
 };
 
