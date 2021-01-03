@@ -1,0 +1,14 @@
+<button class="search-button"
+        type="button"
+        *ngIf="!open"
+        (click)="onSearchOpen()">
+</button>
+
+<b-search #search
+          class="search"
+          [size]="formElementSize.smaller"
+          [placeholder]="placeholder"
+          (searchBlur)="onSearchClose($event)"
+          (searchChange)="onSearchChange($event)"
+          [ngClass]="{'open': open, 'as-icon': !open}">
+</b-search>
