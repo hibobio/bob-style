@@ -1,6 +1,6 @@
 {
   "name": "bob-style",
-  "version": "4.3.13",
+  "version": "4.3.16",
   "peerDependencies": {
     "@angular/animations": "^11.0.5",
     "@angular/cdk": "^11.0.3",
@@ -9,7 +9,7 @@
     "@angular/core": "^11.0.5",
     "@angular/forms": "^11.0.5",
     "@angular/material": "^11.0.3",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.20",
     "rxjs": "^6.5.4",
     "@types/node": "^12.12.39",
     "@types/highcharts": "^5.0.44",
@@ -21,7 +21,7 @@
     "date-fns": "^2.9.0",
     "tributejs": "^4.1.1",
     "ngx-smooth-dnd": "^0.4.1",
-    "froala-editor": "^3.1.1",
+    "froala-editor": "^3.2.2",
     "xss": "^1.0.7"
   },
   "browserslist": [

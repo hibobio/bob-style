@@ -23,6 +23,7 @@ import { PagerService } from './pager.service';
   selector: 'b-pager',
   templateUrl: './pager.component.html',
   styleUrls: ['./pager.component.scss'],
+  providers: [PagerService]
 })
 export class PagerComponent<T = any> implements OnInit {
   constructor(private zone: NgZone, private pagerService: PagerService) {}
