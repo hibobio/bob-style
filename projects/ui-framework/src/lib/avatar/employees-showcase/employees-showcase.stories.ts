@@ -21,6 +21,7 @@ import { SelectGroupOption } from '../../lists/list.interface';
 import { EmployeeShowcase } from './employees-showcase.interface';
 import { cloneDeepSimpleObject } from '../../services/utils/functional-utils';
 import { cloneDeep } from 'lodash';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
   withKnobs
@@ -35,6 +36,24 @@ const sizeOptionsValues = Object.values(AvatarSize).filter(
 const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
 
 const template1 = `
+  <b-employees-showcase
+            [employees]="employees"
+            [avatarSize]="avatarSize"
+            [min]="min"
+            [max]="max"
+            [showTotal]="showTotal"
+            [showTotalLabel]="showTotalLabel"
+            [expandOnClick]="expandOnClick"
+            [inverseStack]="inverseStack"
+            [fadeOut]="fadeOut"
+            [zoomOnHover]="zoomOnHover"
+            [readonly]="readonly"
+            [hasBackdrop]="hasBackdrop || undefined"
+            (selectChange)="selectChange($event)">
+  </b-employees-showcase>
+`;
+
+const template1ForNotes = `
   <b-employees-showcase
             [employees]="employees"
             [avatarSize]="avatarSize"
@@ -62,7 +81,8 @@ const template2 = `
             [inverseStack]="true"
             [fadeOut]="true"
             [zoomOnHover]="false"
-            [readonly]="true">
+            [readonly]="true"
+            [hasBackdrop]="hasBackdrop || undefined">
   </b-employees-showcase>
 `;
 
@@ -77,7 +97,8 @@ const template3 = `
             [inverseStack]="false"
             [fadeOut]="false"
             [zoomOnHover]="false"
-            [readonly]="true">
+            [readonly]="true"
+            [hasBackdrop]="hasBackdrop || undefined">
   </b-employees-showcase>
 `;
 
@@ -114,13 +135,14 @@ const note = `
   (selectPanelClosed) | EventEmitter<wbr>&lt;void&gt; | emits when select panel closes | &nbsp;
 
   ~~~
-  ${template1}
+  ${template1ForNotes}
   ~~~
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Employees Showcase'" style=" background: rgb(247,247,247);">
-<div style="max-width: 500px; text-align: left;">
+<b-story-book-layout [title]="'Employees Showcase'" cdkScrollable class="content-wrapper" style="background: rgb(247,247,247); overflow: auto; max-height: 100vh; min-height: 0;">
+
+<div style="max-width: 500px; text-align: left; min-height: 130vh;">
     ${template1}
 
     <hr style="margin: 60px 0 50px 0; border: 0; height: 0; border-top: 2px dashed #d2d2d2;">
@@ -159,6 +181,7 @@ story.add(
         fadeOut: boolean('fadeOut', false, 'Props'),
         zoomOnHover: boolean('zoomOnHover', false, 'Props'),
         readonly: boolean('readonly', false, 'Props'),
+        hasBackdrop: boolean('hasBackdrop', false, 'Props'),
 
         employees: object<EmployeeShowcase[]>(
           'employees',
@@ -180,6 +203,7 @@ story.add(
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           EmployeesShowcaseModule,
+          ScrollingModule,
         ],
       },
     };

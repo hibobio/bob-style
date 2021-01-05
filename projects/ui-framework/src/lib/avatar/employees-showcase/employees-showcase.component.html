@@ -4,6 +4,7 @@
                        [panelClass]="panelClass"
                        [readonly]="readonly || !selectChange.observers.length"
                        [size]="formElementSize"
+                       [hasBackdrop]="hasBackdrop"
                        (opened)="selectPanelOpened.emit()"
                        (closed)="selectPanelClosed.emit()"
                        (selectChange)="selectChange.emit($event)">

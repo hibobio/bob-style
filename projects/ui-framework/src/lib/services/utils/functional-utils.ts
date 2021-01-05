@@ -449,11 +449,17 @@ export const objectGetPropertyDescriptor = (
 // objectGetDeepestValid(error, 'error.error')
 export const objectGetDeepestValid = <T = any, V = any>(
   obj: T,
-  path: string
+  path: string,
+  fallback?: V
 ): V => {
   if (!isObject(obj) || !isString(path)) {
-    return undefined;
+    return fallback;
   }
+
+  if (!isNullOrUndefined(obj[path])) {
+    return obj[path] as V;
+  }
+
   const pathParts = path.split('.');
   let index = 0;
   let value: T | V = obj;
@@ -463,7 +469,9 @@ export const objectGetDeepestValid = <T = any, V = any>(
     ++index;
   }
 
-  return value as V;
+  return (fallback !== undefined && (value === undefined || value === obj)
+    ? fallback
+    : value) as V;
 };
 
 // ----------------------
@@ -541,6 +549,16 @@ export const arrayInsertAt = <T = any>(
   return (arr || [])
     .slice(0, index)
     .concat(val, (arr || []).slice(!overwrite ? index : index + 1));
+};
+
+export const arrayRemoveAtIndex = <T = any>(
+  arr: T[],
+  index: number,
+  itemsCount = 1
+): T[] => {
+  arr = arr.slice();
+  arr.splice(index, itemsCount);
+  return arr;
 };
 
 export const arrayRemoveAtIndexMutate = <T = any>(

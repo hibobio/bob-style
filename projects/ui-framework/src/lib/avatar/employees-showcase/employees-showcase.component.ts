@@ -62,6 +62,7 @@ export class EmployeesShowcaseComponent
   @Input() showTotal = true;
   @Input() showTotalLabel = false;
   @Input() readonly = false;
+  @Input() hasBackdrop: boolean;
 
   @Input() inverseStack = false;
   @Input() formElementSize: FormElementSize = FormElementSize.regular;

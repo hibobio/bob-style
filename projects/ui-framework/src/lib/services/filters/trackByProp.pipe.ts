@@ -4,15 +4,19 @@ import {
   asArray,
   isObject,
   isPrimitive,
+  objectGetDeepestValid,
   objectStringID,
 } from '../utils/functional-utils';
 
 /**
  * Pipe to generate NgFor TrackBy identity function
  *
- * <ng-container *ngFor="let item of items; trackBy: ('id' | trackByProp)"
- * <ng-container *ngFor="let item of items; trackBy: (['type', 'id'] | trackByProp)"
+ * <ng-container *ngFor="let item of items; trackBy: ('id' | trackByProp)">
+ * <ng-container *ngFor="let item of items; trackBy: (['type', 'id'] | trackByProp)">
  *
+ * Can be used with a 'path':
+ * <ng-container *ngFor="let ee of ees; trackBy: ('work.title' | trackByProp)">
+ * ( will return ee.work.title )
  */
 
 @Pipe({
@@ -33,9 +37,10 @@ export class TrackByPropPipe implements PipeTransform {
         ? `${index}__${item}`
         : isObject(item)
         ? asArray(propKeys)
-            .map((key) =>
-              isPrimitive(item[key]) ? item[key] : objectStringID(item[key])
-            )
+            .map((key) => {
+              const val = objectGetDeepestValid(item, key, index);
+              return isPrimitive(val) ? val : objectStringID(val);
+            })
             .join('__')
         : `${index}__${objectStringID(item)}`;
     };
