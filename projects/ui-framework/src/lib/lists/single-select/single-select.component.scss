@@ -5,9 +5,12 @@
   position: static;
 }
 
+.ghost {
+  white-space: nowrap;
+}
+
 .bfe-wrap {
   position: relative;
-
   &.panel-open {
     &.panel-below {
       border-bottom-right-radius: 0;
