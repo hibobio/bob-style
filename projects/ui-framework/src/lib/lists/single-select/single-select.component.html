@@ -49,7 +49,9 @@
 <ng-template #ghostTmp>
   <div class="ghost flx flx-row-align-y">
     <strong *ngIf="label" class="mrg-r-4">{{label}}</strong>
-    <span *ngIf="displayValue" class="mrg-r-4">{{displayValue}}</span>
+    <ng-container *ngIf="displayValue">
+      <span class="mrg-r-4" *bTruncateTooltip="1">{{displayValue}}</span>
+    </ng-container>
     <b-icon
       class="select-chevron"
       [icon]="icons.arrow_drop_down"
