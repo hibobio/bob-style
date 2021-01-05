@@ -103,6 +103,10 @@ $acss-dirs: top right bottom left;
   }
 }
 
+.no-wrap {
+  white-space: nowrap;
+}
+
 .uppercase {
   text-transform: uppercase;
 }
