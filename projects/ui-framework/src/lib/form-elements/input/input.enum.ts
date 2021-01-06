@@ -7,10 +7,10 @@ export enum InputTypes {
   tel = 'tel',
   url = 'url',
   date = 'date',
-  hidden = 'hidden'
+  hidden = 'hidden',
 }
 
 export enum InputAutoCompleteOptions {
   on = 'on',
-  off = 'off'
+  off = 'chrome-off',
 }

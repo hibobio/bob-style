@@ -82,7 +82,8 @@
         <input [(ngModel)]="item.name"
                [placeholder]="('tree-list-editor.shortcuts.untitled' | translate)"
                class="betl-item-input"
-               type="text">
+               type="text"
+               autocomplete="chrome-off">
         <span *ngIf="debug"
               style="font-size:80%;">{{getDragState(index)}} {{item.id}}</span>
       </span>
