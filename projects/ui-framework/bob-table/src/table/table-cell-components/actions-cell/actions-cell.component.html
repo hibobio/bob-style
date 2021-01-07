@@ -1,6 +1,6 @@
-<div class="b-actions-cell"
-     *ngIf="menuItems && menuItems.length">
-  <b-menu [menu]="menuItems"
+  <b-menu class="b-actions-cell"
+          *ngIf="menuItems && menuItems.length"
+          [menu]="menuItems"
           [openLeft]="openLeft"
           (click)="$event.stopPropagation()">
     <b-square-button menu-trigger
@@ -9,4 +9,3 @@
                      [color]="buttonColor">
     </b-square-button>
   </b-menu>
-</div>
