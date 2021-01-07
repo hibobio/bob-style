@@ -1,6 +1,6 @@
 {
   "name": "bob-style",
-  "version": "4.3.18",
+  "version": "4.3.20",
   "peerDependencies": {
     "@angular/animations": "^11.0.5",
     "@angular/cdk": "^11.0.3",
@@ -17,7 +17,7 @@
     "ag-grid-angular": "^22.1.1",
     "ag-grid-community": "^22.1.1",
     "ag-grid-enterprise": "^22.1.1",
-    "highcharts": "^7.1.2",
+    "highcharts": "^8.1.1",
     "date-fns": "^2.9.0",
     "tributejs": "^4.1.1",
     "ngx-smooth-dnd": "^0.4.1",
