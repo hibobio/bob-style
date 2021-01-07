@@ -7,12 +7,21 @@ import { TypographyModule } from '../../typography/typography.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { IconsModule } from '../../icons/icons.module';
 import { MiniPreloaderModule } from '../../indicators/mini-preloader/mini-preloader.module';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [DialogComponent],
-  imports: [CommonModule, MatDialogModule, TypographyModule, ButtonsModule, IconsModule, MiniPreloaderModule],
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    TypographyModule,
+    ButtonsModule,
+    IconsModule,
+    MiniPreloaderModule,
+    ScrollingModule,
+  ],
   exports: [DialogComponent],
   providers: [DialogService],
-  entryComponents: [DialogComponent]
+  entryComponents: [DialogComponent],
 })
 export class DialogModule {}

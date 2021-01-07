@@ -1,5 +1,6 @@
 <div #dialogHeader
-     mat-dialog-title>
+     mat-dialog-title
+     [ngClass]="{'brd-b': scrolled$ | async}">
   <ng-content select="[b-dialog-above-header]"></ng-content>
   <b-display-2 *ngIf="dialogTitle">{{dialogTitle}}</b-display-2>
   <ng-content select="[b-dialog-sub-title]"></ng-content>
@@ -12,7 +13,8 @@
        'show-progress': showProgress,
        'show-confirmation': showConfirmation
      }"
-     mat-dialog-content>
+     mat-dialog-content
+     cdkScrollable>
 
   <div class="dialog-content">
     <ng-content select="[b-dialog-content]"></ng-content>

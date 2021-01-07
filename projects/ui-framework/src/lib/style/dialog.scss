@@ -47,6 +47,11 @@ html.cdk-global-scrollblock {
     margin: 0;
     user-select: none;
 
+    &.brd-b {
+      border-bottom: 0;
+      box-shadow: inset 0 -1px $border-color;
+    }
+
     b-display-2 {
       overflow-wrap: break-word;
     }
