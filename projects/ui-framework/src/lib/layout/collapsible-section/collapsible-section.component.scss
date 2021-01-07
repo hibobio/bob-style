@@ -68,6 +68,11 @@ $bcp-header-min-height: 70px;
   padding: times8(2) times8(4);
 
   @include icon-size(32px);
+  &:before {
+    width: map-get($icon-sizes, large);
+    display: flex;
+    justify-content: center;
+  }
   @include desktop {
     border-radius: $border-radius;
   }
