@@ -11,7 +11,7 @@
 
   <div class="avatar-showcase">
 
-    <b-avatar-image *ngFor="let avatar of (avatars$ | async) | slice:0:(avatarsSlice$ | async); trackBy: avatarsTrackBy"
+    <b-avatar-image *ngFor="let avatar of (avatars$ | async); trackBy: avatarsTrackBy"
                     class="showcase-avatar"
                     [avatar]="avatar"
                     [size]="avatarSize"

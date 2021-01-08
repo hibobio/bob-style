@@ -5,7 +5,6 @@ import { AvatarModule } from '../avatar/avatar.module';
 import { IconsModule } from '../../icons/icons.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { SingleSelectPanelModule } from '../../lists/single-select-panel/single-select-panel.module';
-import { EmployeesShowcaseService } from './employees-showcase.service';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
@@ -19,6 +18,6 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   exports: [EmployeesShowcaseComponent],
   entryComponents: [],
-  providers: [EmployeesShowcaseService, EventManagerPlugins[0]],
+  providers: [EventManagerPlugins[0]],
 })
 export class EmployeesShowcaseModule {}

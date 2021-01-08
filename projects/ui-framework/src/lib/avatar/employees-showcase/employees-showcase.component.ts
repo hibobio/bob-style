@@ -15,13 +15,22 @@ import {
 } from '@angular/core';
 import { ShowcaseInputItem } from './employees-showcase.interface';
 import { AvatarSize } from '../avatar/avatar.enum';
-import { AvatarGap } from './employees-showcase.const';
+import {
+  AvatarGap,
+  SHUFFLE_EMPLOYEES_INTERVAL,
+} from './employees-showcase.const';
 import { Icons, IconColor } from '../../icons/icons.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  Observable,
+  of,
+  Subscription,
+} from 'rxjs';
 import { SelectGroupOption } from '../../lists/list.interface';
 import { ListChange } from '../../lists/list-change/list-change';
-import { insideZone } from '../../services/utils/rxjs.operators';
+import { insideZone, shuffle } from '../../services/utils/rxjs.operators';
 import {
   applyChanges,
   hasChanges,
@@ -31,7 +40,13 @@ import { Avatar } from '../avatar/avatar.interface';
 import { SingleSelectPanelComponent } from '../../lists/single-select-panel/single-select-panel.component';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
 import { InputObservable } from '../../services/utils/decorators';
-import { debounceTime, distinctUntilChanged, map, tap } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
 
 @Component({
@@ -39,6 +54,7 @@ import { FormElementSize } from '../../form-elements/form-elements.enum';
   templateUrl: './employees-showcase.component.html',
   styleUrls: ['./employees-showcase.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [EmployeesShowcaseService],
 })
 export class EmployeesShowcaseComponent
   implements OnInit, OnChanges, OnDestroy {
@@ -63,6 +79,7 @@ export class EmployeesShowcaseComponent
   @Input() showTotalLabel = false;
   @Input() readonly = false;
   @Input() hasBackdrop: boolean;
+  @Input() doShuffle = false;
 
   @Input() inverseStack = false;
   @Input() formElementSize: FormElementSize = FormElementSize.regular;
@@ -96,20 +113,22 @@ export class EmployeesShowcaseComponent
   public totalAvatars = 0;
   public showTotalButton = true;
 
+  public get avatarsToFit(): number {
+    return this.avatarsSlice$?.getValue() || 1;
+  }
+
   readonly panelClass = 'ee-showcase-panel';
   readonly dotsIcon = {
     icon: Icons.three_dots,
     color: IconColor.dark,
   };
 
-  private avatarsToFit = 1;
   private hostEl: HTMLElement;
   private resizeObserverSub$: Subscription;
 
   public employeeList$: Observable<SelectGroupOption[]>;
   public avatars$: Observable<Avatar[]>;
-  public avatarsSlice$: Observable<number>;
-  private avatarsSliceUpdate$: BehaviorSubject<number> = new BehaviorSubject(1);
+  private avatarsSlice$: BehaviorSubject<number> = new BehaviorSubject(1);
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(
@@ -159,7 +178,7 @@ export class EmployeesShowcaseComponent
         this.resizeObserverSub$?.unsubscribe();
         this.resizeObserverSub$ = undefined;
 
-        this.avatarsSliceUpdate$.next(
+        this.avatarsSlice$.next(
           Math.min(this.min, this.totalAvatars || this.max)
         );
       }
@@ -178,52 +197,68 @@ export class EmployeesShowcaseComponent
                 distinctUntilChanged(),
                 insideZone()
               )
-              .subscribe(this.avatarsSliceUpdate$);
+              .subscribe(this.avatarsSlice$);
           });
         } else {
-          this.avatarsSliceUpdate$.next(this.calcAvatarsToFit());
+          this.avatarsSlice$.next(this.calcAvatarsToFit());
         }
       }
+    }
+
+    if (
+      hasChanges(changes, ['doShuffle'], true, {
+        truthyCheck: (v) => v !== undefined,
+        checkEquality: true,
+      })
+    ) {
+      const currentSlice = this.avatarsSlice$.getValue();
+      this.avatarsSlice$.next(1);
+      this.avatarsSlice$.next(currentSlice);
     }
   }
 
   ngOnInit(): void {
     //
-    this.avatarsSlice$ = this.avatarsSliceUpdate$.pipe(
-      distinctUntilChanged(),
-      tap((avatarsToFit) => {
-        this.avatarsToFit = avatarsToFit;
+    this.employeeList$ = this.employees$.pipe(
+      this.showcaseSrvc.employeeListMapper
+    );
 
+    const avatarsSlice$ = this.avatarsSlice$.pipe(
+      distinctUntilChanged(),
+      debounceTime(10),
+      tap((avatarsToFit) => {
         this.zone.runOutsideAngular(() => {
           this.DOM.mutate(() => {
             this.DOM.setCssProps(this.hostEl, {
-              '--avatar-count': this.avatarsToFit,
+              '--avatar-count': avatarsToFit || 1,
             });
           });
         });
       })
     );
 
-    this.employeeList$ = this.employees$.pipe(
-      this.showcaseSrvc.employeeListMapper
-    );
-
-    this.avatars$ = this.employees$.pipe(
+    const avatars$ = this.employees$.pipe(
       this.showcaseSrvc.avatarsMapper,
-
       tap((avatars) => {
         this.totalAvatars = avatars.length;
-
         if (this.totalAvatars < this.avatarsToFit) {
-          this.avatarsSliceUpdate$.next(this.totalAvatars);
+          this.avatarsSlice$.next(this.totalAvatars);
         }
+      })
+    );
+
+    this.avatars$ = combineLatest([avatars$, avatarsSlice$]).pipe(
+      switchMap(([avatars, avatarsSlice]) => {
+        return avatars.length > avatarsSlice && this.doShuffle
+          ? of(avatars).pipe(shuffle(avatarsSlice, SHUFFLE_EMPLOYEES_INTERVAL))
+          : of(avatars.slice(0, avatarsSlice));
       })
     );
   }
 
   ngOnDestroy(): void {
     this.resizeObserverSub$?.unsubscribe();
-    this.avatarsSliceUpdate$.complete();
+    this.avatarsSlice$.complete();
   }
 
   public avatarsTrackBy(index: number, item: Avatar): string {
