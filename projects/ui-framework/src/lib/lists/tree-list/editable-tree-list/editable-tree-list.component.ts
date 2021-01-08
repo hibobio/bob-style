@@ -26,6 +26,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './editable-tree-list.component.html',
   styleUrls: ['./editable-tree-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [TreeListControlsService],
 })
 export class EditableTreeListComponent extends BaseEditableTreeListElement {
   constructor(

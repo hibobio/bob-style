@@ -44,11 +44,6 @@ import 'froala-editor/js/plugins/emoticons.min.js';
     FroalaViewDirective,
     RichTextEditorComponent,
   ],
-  providers: [
-    RteUtilsService,
-    PlaceholdersConverterService,
-    HtmlParserHelpers,
-    EventManagerPlugins[0],
-  ],
+  providers: [EventManagerPlugins[0]],
 })
 export class RichTextEditorModule {}

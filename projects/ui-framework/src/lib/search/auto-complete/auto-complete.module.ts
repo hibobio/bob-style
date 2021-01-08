@@ -6,7 +6,6 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { TypographyModule } from '../../typography/typography.module';
 import { FiltersModule } from '../../services/filters/filters.module';
-import { ListKeyboardService } from '../../lists/list-service/list-keyboard.service';
 import { SearchModule } from '../search/search.module';
 
 @NgModule({
@@ -19,7 +18,7 @@ import { SearchModule } from '../search/search.module';
     TypographyModule,
     FiltersModule,
   ],
-  providers: [ListKeyboardService],
+  providers: [],
   exports: [AutoCompleteComponent],
 })
 export class AutoCompleteModule {}

@@ -32,6 +32,7 @@ export class MasonryItemComponent {}
   selector: 'b-masonry-layout',
   template: `<ng-content></ng-content>`,
   styleUrls: ['./masonry.component.scss'],
+  providers: [MasonryService],
 })
 export class MasonryLayoutComponent implements OnInit, OnDestroy {
   constructor(

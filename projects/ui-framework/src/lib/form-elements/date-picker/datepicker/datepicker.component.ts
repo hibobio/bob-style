@@ -48,6 +48,7 @@ import { UtilsService } from '../../../services/utils/utils.service';
       useFactory: CLOSE_SCROLL_STRATEGY_FACTORY,
     },
     { provide: BaseFormElement, useExisting: DatepickerComponent },
+    DateParseService,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

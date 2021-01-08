@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { SortableCollapsibleSectionsComponent } from './sortable-collapsible-sections.component';
 import { CollapsibleHeaderDirective } from './collapsible-header.directive';
 import { CollapsibleContentDirective } from './collapsible-content.directive';
@@ -13,19 +12,12 @@ import { CollapsibleSectionModule } from '../collapsible-section/collapsible-sec
     CollapsibleContentDirective,
     CollapsibleHeaderDirective,
   ],
-  imports: [
-    CommonModule,
-    CollapsibleSectionModule,
-    DragDropModule
-  ],
+  imports: [CommonModule, CollapsibleSectionModule, DragDropModule],
   exports: [
     SortableCollapsibleSectionsComponent,
     CollapsibleContentDirective,
     CollapsibleHeaderDirective,
   ],
-  providers: [
-    DOMhelpers
-  ],
+  providers: [],
 })
-export class SortableCollapsibleSectionsModule {
-}
+export class SortableCollapsibleSectionsModule {}

@@ -39,6 +39,7 @@ import { itemID } from '../../list.interface';
   templateUrl: './tree-list.component.html',
   styleUrls: ['./tree-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [TreeListControlsService],
 })
 export class TreeListComponent extends BaseTreeListElement {
   constructor(

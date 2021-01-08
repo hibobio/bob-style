@@ -1,5 +1,13 @@
 import { NgZone } from '@angular/core';
-import { Subscription, Observable, defer, OperatorFunction } from 'rxjs';
+import {
+  Subscription,
+  Observable,
+  defer,
+  OperatorFunction,
+  interval,
+  merge,
+  EMPTY,
+} from 'rxjs';
 import {
   distinctUntilChanged,
   filter,
@@ -14,6 +22,9 @@ import {
   isEqualByValues,
   isFalsyOrEmpty,
   isKey,
+  randomFromArray,
+  isArray,
+  asArray,
 } from './functional-utils';
 import { Keys } from '../../enums';
 import { log } from './logger';
@@ -143,4 +154,36 @@ export function distinctFrom<T = any>(prev: T, config?: EqualByValuesConfig) {
         ...config,
       })
   );
+}
+
+export function shuffle<T = unknown>(
+  slice: number = null,
+  time: number = null
+): OperatorFunction<T[], T[]> {
+  return function (source: Observable<T[]>): Observable<T[]> {
+    //
+    return defer(() => {
+      return new Observable<T[]>((subscriber) => {
+        const intrvl = time ? interval(time) : EMPTY;
+        let original: T[];
+        let shuffled: T[];
+
+        return merge(source, intrvl).subscribe({
+          next: (arrOrNum: T[] | number) => {
+            if (isArray(arrOrNum)) {
+              original = arrOrNum.slice();
+            }
+            shuffled = asArray(randomFromArray(original, slice));
+            subscriber.next(shuffled);
+          },
+          error: (error) => {
+            subscriber.error(error);
+          },
+          complete: () => {
+            subscriber.complete();
+          },
+        });
+      });
+    });
+  };
 }

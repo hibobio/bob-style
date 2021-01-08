@@ -1,9 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   CardTableCellData,
   CardTableRowOrderChangeEvent,
@@ -20,6 +15,7 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
     './card-table-sortable.component.scss',
     './../card-table/card-table.component.scss',
   ],
+  providers: [CellWidthsService],
 })
 export class CardTableSortableComponent extends CardTableComponent {
   @Input() useDragHandle = false;

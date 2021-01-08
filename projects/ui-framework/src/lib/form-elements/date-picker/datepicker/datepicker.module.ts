@@ -10,8 +10,6 @@ import { IconsModule } from '../../../icons/icons.module';
 import { CommonModule } from '@angular/common';
 import { InputMessageModule } from '../../input-message/input-message.module';
 import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
-import { DateParseService } from '../date-parse-service/date-parse.service';
-import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.service';
 import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
 import { B_DATE_FORMATS } from '../dateadapter.mock';
 import { DateInputDirectiveModule } from '../date-input-directive/dateinput.directive.module';
@@ -30,8 +28,6 @@ import { DateInputDirectiveModule } from '../date-input-directive/dateinput.dire
   exports: [DatepickerComponent],
   entryComponents: [],
   providers: [
-    FormElementKeyboardCntrlService,
-    DateParseService,
     EventManagerPlugins[0],
     {
       provide: MAT_DATE_FORMATS,

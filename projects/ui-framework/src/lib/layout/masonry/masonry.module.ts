@@ -4,12 +4,11 @@ import {
   MasonryItemComponent,
   MasonryLayoutComponent,
 } from './masonry.component';
-import { MasonryService } from './masonry.service';
 
 @NgModule({
   imports: [CommonModule],
   declarations: [MasonryLayoutComponent, MasonryItemComponent],
   exports: [MasonryLayoutComponent, MasonryItemComponent],
-  providers: [MasonryService],
+  providers: [],
 })
 export class MasonryLayoutModule {}

@@ -8,7 +8,9 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { FORM_ELEMENT_HEIGHT } from '../../form-elements/form-elements.const';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ListKeyboardService {
   constructor(private utilSrvc: UtilsService) {}
 

@@ -8,6 +8,6 @@ import { EventManagerPlugins } from 'bob-style';
   declarations: [RteViewComponent],
   imports: [CommonModule],
   exports: [RteViewComponent],
-  providers: [PlaceholdersConverterService, EventManagerPlugins[0]],
+  providers: [EventManagerPlugins[0]],
 })
 export class RteViewModule {}

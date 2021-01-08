@@ -3,7 +3,9 @@ import { ListChange } from './list-change';
 import { itemID, SelectGroupOption, SelectOption } from '../list.interface';
 import { asArray } from '../../services/utils/functional-utils';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ListChangeService {
   getListChange(
     options: SelectGroupOption[],

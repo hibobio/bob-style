@@ -75,6 +75,7 @@ const DATERANGE_VALUE_DEF: DateRangePickerValueLocal = {
       useFactory: CLOSE_SCROLL_STRATEGY_FACTORY,
     },
     { provide: BaseFormElement, useExisting: DateRangePickerComponent },
+    DateParseService,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

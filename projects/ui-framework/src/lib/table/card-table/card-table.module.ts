@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { TableCardCellComponent } from './table-card-cell/table-card-cell.component';
 import { TableCardComponent } from './table-card/table-card.component';
 import { CardTableComponent } from './card-table/card-table.component';
-import { CellWidthsService } from './cell-widths-service/cell-widths.service';
 import { TypographyModule } from '../../typography/typography.module';
 import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
@@ -17,7 +16,7 @@ import { IconsModule } from '../../icons/icons.module';
     TableCardCellComponent,
     TableCardComponent,
     CardTableComponent,
-    CardTableSortableComponent
+    CardTableSortableComponent,
   ],
   imports: [
     CommonModule,
@@ -28,6 +27,6 @@ import { IconsModule } from '../../icons/icons.module';
     IconsModule,
   ],
   exports: [CardTableComponent, CardTableSortableComponent],
-  providers: [CellWidthsService]
+  providers: [],
 })
 export class CardTableModule {}

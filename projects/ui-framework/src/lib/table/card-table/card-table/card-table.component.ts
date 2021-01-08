@@ -27,6 +27,7 @@ import { isRenderedComponent } from '../../../services/utils/functional-utils';
   templateUrl: './card-table.component.html',
   styleUrls: ['./card-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [CellWidthsService],
 })
 export class CardTableComponent implements OnInit {
   constructor(protected widthsService: CellWidthsService) {}

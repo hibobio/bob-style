@@ -12,7 +12,9 @@ import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { insideZone } from '../../services/utils/rxjs.operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class LightboxService {
   lightbox: LightboxData;
   constructor(

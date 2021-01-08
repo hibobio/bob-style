@@ -19,7 +19,9 @@ import {
 } from '../datepicker.interface';
 import { DateFormat } from '../../../types';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DateParseService {
   parseFormat(
     frmt: string | DateFormat,
@@ -56,9 +58,9 @@ export class DateParseService {
 
     result.items = split.length;
 
-    result.index.day = split.findIndex(i => i === 'dd' || i === 'd');
-    result.index.month = split.findIndex(i => i.includes('mm'));
-    result.index.year = split.findIndex(i => i.includes('yy'));
+    result.index.day = split.findIndex((i) => i === 'dd' || i === 'd');
+    result.index.month = split.findIndex((i) => i.includes('mm'));
+    result.index.year = split.findIndex((i) => i.includes('yy'));
 
     result.length.day =
       result.index.day > -1 ? split[result.index.day].length : 0;
@@ -86,7 +88,7 @@ export class DateParseService {
     result.valid =
       result.items &&
       [result.index.day, result.index.month, result.index.year].filter(
-        i => i > -1
+        (i) => i > -1
       ).length === result.items;
 
     if (!result.valid) {
@@ -94,7 +96,7 @@ export class DateParseService {
     }
 
     let cntr = 0;
-    ['day', 'month', 'year'].forEach(i => {
+    ['day', 'month', 'year'].forEach((i) => {
       if (result.index[i] > -1) {
         return;
       }
@@ -167,11 +169,11 @@ export class DateParseService {
     }
 
     index.day = split.findIndex(
-      i => parseInt(i, 10) > 12 && parseInt(i, 10) < 32
+      (i) => parseInt(i, 10) > 12 && parseInt(i, 10) < 32
     );
-    index.month = split.findIndex(i => isNaN(parseInt(i, 10)));
+    index.month = split.findIndex((i) => isNaN(parseInt(i, 10)));
     index.year = split.findIndex(
-      i => parseInt(i, 10) > 31 && ((strict && i.length > 2) || !strict)
+      (i) => parseInt(i, 10) > 31 && ((strict && i.length > 2) || !strict)
     );
 
     onlyYear =
@@ -195,17 +197,17 @@ export class DateParseService {
         frmt.index.month < frmt.index.day) ||
       (resultItems === 2 && index.year > -1 && index.day < 0);
 
-    let needIndex = frmt.order.filter(k => index[k] < 0);
+    let needIndex = frmt.order.filter((k) => index[k] < 0);
     const indexes = Object.values(index),
-      extraIndexes = [0, 1, 2].filter(i => !indexes.includes(i)),
-      needOrderDay = needIndex.findIndex(i => i === 'day'),
-      needOrderMonth = needIndex.findIndex(i => i === 'month');
+      extraIndexes = [0, 1, 2].filter((i) => !indexes.includes(i)),
+      needOrderDay = needIndex.findIndex((i) => i === 'day'),
+      needOrderMonth = needIndex.findIndex((i) => i === 'month');
 
     if (
       needIndex.includes('year') &&
       needIndex[needIndex.length - 1] !== 'year'
     ) {
-      needIndex = needIndex.filter(i => i !== 'year');
+      needIndex = needIndex.filter((i) => i !== 'year');
       needIndex.push('year');
     }
 

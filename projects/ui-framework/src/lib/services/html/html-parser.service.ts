@@ -670,7 +670,7 @@ export class HtmlParserHelpers {
             : TreeWalkerFilter.reject,
         forEach: (node) => {
           this.DOM.setAttributes(
-            node.parentElement,
+            node.parentElement as HTMLElement,
             LANGUAGE_TESTS[key].attributes
           );
         },

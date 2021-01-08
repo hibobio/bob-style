@@ -5,11 +5,8 @@ import { PanelModule } from '../../popups/panel/panel.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MultiListModule } from '../multi-list/multi-list.module';
-import { ListChangeService } from '../list-change/list-change.service';
-import { ListModelService } from '../list-service/list-model.service';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { FormElementLabelModule } from '../../form-elements/form-element-label/form-element-label.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { EmployeesShowcaseModule } from '../../avatar/employees-showcase/employees-showcase.module';
@@ -29,6 +26,6 @@ import { EmployeesShowcaseModule } from '../../avatar/employees-showcase/employe
     EmployeesShowcaseModule,
   ],
   exports: [MultiSelectComponent],
-  providers: [ListChangeService, ListModelService, DOMhelpers],
+  providers: [],
 })
 export class MultiSelectModule {}
