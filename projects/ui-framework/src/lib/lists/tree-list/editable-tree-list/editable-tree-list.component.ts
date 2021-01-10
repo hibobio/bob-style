@@ -253,25 +253,6 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
 
     const droppedOnItem = this.itemsMap.get(this.listViewModel[newIndex]);
 
-    if (this.debug) {
-      console.log(
-        `dropped "${item.name || 'untitled'}" on "${droppedOnItem.name}";
-        prevIndex: ${prevIndex}, newIndex: ${newIndex}`
-      );
-    }
-
-    // if (
-    //   !TreeListModelUtils.getParent(
-    //     droppedOnItem,
-    //     this.itemsMap
-    //   ).childrenIDs.includes(item.id) &&
-    //   this.countItemDuplicatesInGroup(item)
-    // ) {
-    //   console.log('Duplicate item', item.name);
-    //   this.finishDrag();
-    //   return;
-    // }
-
     this.finishDrag();
 
     if (prevIndex === newIndex || droppedOnItem.parentIDs.includes(item.id)) {

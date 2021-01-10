@@ -14,7 +14,6 @@ export const UPDATE_LISTS_CONFIG_DEF: UpdateListsConfig = {
   updateListOptions: true,
   updateListMinHeight: true,
   selectedIDs: null,
-  isSearching: false,
 };
 
 export const LIST_FOOTER_HEIGHT: { [key in FormElementSize]: number } = {

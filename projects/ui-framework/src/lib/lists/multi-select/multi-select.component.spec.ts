@@ -1,4 +1,12 @@
-import { ComponentFixture, fakeAsync, inject, TestBed, tick, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  inject,
+  TestBed,
+  tick,
+  resetFakeAsyncZone,
+  waitForAsync,
+} from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
@@ -9,7 +17,6 @@ import { By } from '@angular/platform-browser';
 import { SelectGroupOption } from '../list.interface';
 import { ListModelService } from '../list-service/list-model.service';
 import { cloneDeep } from 'lodash';
-import { ListChange } from '../list-change/list-change';
 import {
   mockTranslatePipe,
   TranslateServiceProvideMock,
@@ -36,17 +43,11 @@ import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-to
 import { simpleChange } from '../../services/utils/functional-utils';
 import { getTestScheduler } from 'jasmine-marbles';
 import { fakeAsyncFlush } from '../../services/utils/test-helpers';
-
-const getOptionsModel = (options: SelectGroupOption[]): SelectGroupOption[] =>
-  options.map((g, i) => {
-    g = { ...g };
-    g.groupIndex = i;
-    g.key = ListModelService.prototype.getGroupKey(g);
-    return g;
-  });
-
-const getListChange = (options: SelectGroupOption[]): ListChange =>
-  new ListChange(getOptionsModel(options));
+import {
+  compareListChange,
+  getOptionsModel,
+  mockListChange,
+} from '../lists-test-helpers.spec';
 
 describe('MultiSelectComponent', () => {
   let component: MultiSelectComponent;
@@ -60,94 +61,96 @@ describe('MultiSelectComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(waitForAsync(() => {
-    optionsMock = [
-      {
-        groupName: 'Basic Info',
-        options: [
-          { value: 'Basic Info 1', id: 1, selected: true },
-          { value: 'Basic Info 2', id: 2, selected: false },
+  beforeEach(
+    waitForAsync(() => {
+      optionsMock = [
+        {
+          groupName: 'Basic Info',
+          options: [
+            { value: 'Basic Info 1', id: 1, selected: true },
+            { value: 'Basic Info 2', id: 2, selected: false },
+          ],
+        },
+        {
+          groupName: 'Personal',
+          options: [
+            { value: 'Personal 1', id: 11, selected: true },
+            { value: 'Personal 2', id: 12, selected: false },
+          ],
+        },
+      ];
+
+      TestBed.configureTestingModule({
+        declarations: [
+          TrackByPropPipeStub,
+          MultiSelectComponent,
+          MultiListComponent,
+          ListFooterComponent,
+          mockTranslatePipe,
+          mockHighlightPipe,
+          MockComponent(CheckboxComponent),
+          ButtonComponent,
+          TextButtonComponent,
+          MockComponent(IconComponent),
+          MockComponent(SearchComponent),
         ],
-      },
-      {
-        groupName: 'Personal',
-        options: [
-          { value: 'Personal 1', id: 11, selected: true },
-          { value: 'Personal 2', id: 12, selected: false },
+
+        imports: [
+          CommonModule,
+          NoopAnimationsModule,
+          ScrollingModule,
+          OverlayModule,
+          TruncateTooltipModule,
         ],
-      },
-    ];
 
-    TestBed.configureTestingModule({
-      declarations: [
-        TrackByPropPipeStub,
-        MultiSelectComponent,
-        MultiListComponent,
-        ListFooterComponent,
-        mockTranslatePipe,
-        mockHighlightPipe,
-        MockComponent(CheckboxComponent),
-        ButtonComponent,
-        TextButtonComponent,
-        MockComponent(IconComponent),
-        MockComponent(SearchComponent),
-      ],
+        providers: [
+          PanelPositionService,
+          ListModelService,
+          ListChangeService,
+          { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
+          MobileServiceProvideMock(),
+          TranslateServiceProvideMock(),
+          DOMhelpersProvideMock(),
+          MutationObservableServiceProvideMock(),
+        ],
 
-      imports: [
-        CommonModule,
-        NoopAnimationsModule,
-        ScrollingModule,
-        OverlayModule,
-        TruncateTooltipModule,
-      ],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(MultiSelectComponent);
+          component = fixture.componentInstance;
+          component.startWithGroupsCollapsed = false;
+          component.ngAfterViewInit = () => {};
 
-      providers: [
-        PanelPositionService,
-        ListModelService,
-        ListChangeService,
-        { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
-        MobileServiceProvideMock(),
-        TranslateServiceProvideMock(),
-        DOMhelpersProvideMock(),
-        MutationObservableServiceProvideMock(),
-      ],
+          component.ngOnChanges(
+            simpleChange({
+              options: optionsMock,
+            })
+          );
 
-      schemas: [NO_ERRORS_SCHEMA],
+          component.selectChange.subscribe(() => {});
+          component.selectModified.subscribe(() => {});
+          component.selectCancelled.subscribe(() => {});
+          component.changed.subscribe(() => {});
+
+          spyOn(component.selectChange, 'emit');
+          spyOn(component.selectModified, 'emit');
+          spyOn(component.selectCancelled, 'emit');
+          spyOn(component, 'propagateChange');
+          fixture.autoDetectChanges();
+        });
+
+      inject(
+        [OverlayContainer, Platform],
+        (oc: OverlayContainer, p: Platform) => {
+          overlayContainer = oc;
+          overlayContainerElement = oc.getContainerElement();
+          platform = p;
+        }
+      )();
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(MultiSelectComponent);
-        component = fixture.componentInstance;
-        component.startWithGroupsCollapsed = false;
-        component.ngAfterViewInit = () => {};
-
-        component.ngOnChanges(
-          simpleChange({
-            options: optionsMock,
-          })
-        );
-
-        component.selectChange.subscribe(() => {});
-        component.selectModified.subscribe(() => {});
-        component.selectCancelled.subscribe(() => {});
-        component.changed.subscribe(() => {});
-
-        spyOn(component.selectChange, 'emit');
-        spyOn(component.selectModified, 'emit');
-        spyOn(component.selectCancelled, 'emit');
-        spyOn(component, 'propagateChange');
-        fixture.autoDetectChanges();
-      });
-
-    inject(
-      [OverlayContainer, Platform],
-      (oc: OverlayContainer, p: Platform) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-        platform = p;
-      }
-    )();
-  }));
+  );
 
   afterEach(() => {
     component.selectChange.complete();
@@ -202,8 +205,6 @@ describe('MultiSelectComponent', () => {
     }));
 
     it('should emit onSelectModified with listChange', fakeAsync(() => {
-      const expectedOptionsMock: SelectGroupOption[] = cloneDeep(optionsMock);
-      expectedOptionsMock[1].options[1].selected = true;
       component.openPanel();
       fixture.autoDetectChanges();
       tick(500);
@@ -212,10 +213,15 @@ describe('MultiSelectComponent', () => {
         'b-multi-list .option'
       )[3] as HTMLElement).click();
 
-      const expectedListChange = getListChange(expectedOptionsMock);
+      tick();
 
-      expect(component.selectModified.emit).toHaveBeenCalledWith(
-        expectedListChange
+      compareListChange(
+        component['listChange'],
+        mockListChange(optionsMock, [
+          optionsMock[0].options[0].id,
+          optionsMock[1].options[0].id,
+          optionsMock[1].options[1].id,
+        ])
       );
 
       fakeAsyncFlush();
@@ -224,10 +230,6 @@ describe('MultiSelectComponent', () => {
 
   describe('selectChange', () => {
     it('should emit onSelect with listChange and propagateChange with selected IDs array', fakeAsync(() => {
-      const expectedMock = cloneDeep(optionsMock);
-      expectedMock[1].options[1].selected = true;
-      const expectedListChange = getListChange(expectedMock);
-
       component.openPanel();
       fixture.autoDetectChanges();
 
@@ -237,15 +239,24 @@ describe('MultiSelectComponent', () => {
         'b-multi-list .option'
       )[3] as HTMLElement).click();
 
+      tick();
+
+      compareListChange(
+        component['listChange'],
+        mockListChange(optionsMock, [
+          optionsMock[0].options[0].id,
+          optionsMock[1].options[0].id,
+          optionsMock[1].options[1].id,
+        ])
+      );
+
       const applyButton = overlayContainerElement.querySelector(
         'b-list-footer .apply-button button'
       ) as HTMLButtonElement;
-
       applyButton.click();
 
-      expect(component.selectChange.emit).toHaveBeenCalledWith(
-        expectedListChange
-      );
+      tick();
+
       expect(component.propagateChange).toHaveBeenCalledWith([1, 11, 12]);
 
       fakeAsyncFlush();
@@ -273,12 +284,6 @@ describe('MultiSelectComponent', () => {
   });
 
   describe('clear -> apply', () => {
-    let expectedOptionsMock: SelectGroupOption[];
-    beforeEach(() => {
-      expectedOptionsMock = cloneDeep(optionsMock);
-      expectedOptionsMock[0].options[0].selected = false;
-      expectedOptionsMock[1].options[0].selected = false;
-    });
     it('should clear the selection from options, selectedIDs and empty displayValue', fakeAsync(() => {
       fixture.autoDetectChanges();
       component.openPanel();
@@ -287,29 +292,32 @@ describe('MultiSelectComponent', () => {
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();
+      tick();
+
       fixture.autoDetectChanges();
 
       const clearButton = overlayContainerElement.querySelector(
         'b-list-footer .clear-button [role="button"]'
       ) as HTMLElement;
       clearButton.click();
+      tick();
 
       const applyButton = overlayContainerElement.querySelector(
         'b-list-footer .apply-button button'
       ) as HTMLElement;
       applyButton.click();
+      tick();
 
       fixture.autoDetectChanges();
 
       expect(component.value).toEqual([]);
       expect(component.displayValue).toBeFalsy();
-      expect(component.options).toEqual(getOptionsModel(expectedOptionsMock));
+      expect(component.options).toEqual(getOptionsModel(optionsMock, false));
 
       fakeAsyncFlush();
     }));
-    it('should invoke selectChange.emit with listChange and propagateChange with []', fakeAsync(() => {
-      const expectedListChange = getListChange(expectedOptionsMock);
 
+    it('should invoke selectChange.emit with listChange and propagateChange with []', fakeAsync(() => {
       fixture.autoDetectChanges();
       component.openPanel();
       tick(500);
@@ -327,8 +335,10 @@ describe('MultiSelectComponent', () => {
       ) as HTMLElement;
       applyButton.click();
       fixture.autoDetectChanges();
+      tick();
+
       expect(component.selectChange.emit).toHaveBeenCalledWith(
-        expectedListChange
+        mockListChange(optionsMock, false)
       );
       expect(component.propagateChange).toHaveBeenCalledWith([]);
 
@@ -455,8 +465,6 @@ describe('MultiSelectComponent', () => {
     }));
 
     it('should emit selectCancelled event and ignore option click in listChange', fakeAsync(() => {
-      const expectedListChange = getListChange(optionsMock);
-
       fixture.autoDetectChanges();
       component.openPanel();
       tick(500);
@@ -464,12 +472,12 @@ describe('MultiSelectComponent', () => {
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();
+      tick();
 
       component.onCancel();
+      tick();
 
-      expect(component.selectCancelled.emit).toHaveBeenCalledWith(
-        expectedListChange
-      );
+      expect(component['listChange']).toBeFalsy();
 
       fakeAsyncFlush();
     }));
@@ -502,8 +510,6 @@ describe('MultiSelectComponent', () => {
     }));
 
     it('should invoke selectCancelled.emit with listChange and propagateChange with [3]', fakeAsync(() => {
-      const expectedListChange = getListChange(optionsMock);
-
       fixture.autoDetectChanges();
       component.openPanel();
       tick(500);
@@ -511,19 +517,16 @@ describe('MultiSelectComponent', () => {
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();
-      fixture.autoDetectChanges();
+      tick();
 
       const clearButton = overlayContainerElement.querySelector(
         'b-list-footer .clear-button [role="button"]'
       ) as HTMLElement;
       clearButton.click();
-
       component.onCancel();
+      tick();
 
-      fixture.autoDetectChanges();
-      expect(component.selectCancelled.emit).toHaveBeenCalledWith(
-        expectedListChange
-      );
+      expect(component['listChange']).toBeFalsy();
 
       fakeAsyncFlush();
     }));

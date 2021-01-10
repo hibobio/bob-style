@@ -1,4 +1,12 @@
-import { ComponentFixture, fakeAsync, inject, TestBed, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  inject,
+  TestBed,
+  resetFakeAsyncZone,
+  waitForAsync,
+  tick,
+} from '@angular/core/testing';
 import { MultiSelectPanelComponent } from './multi-select-panel.component';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
@@ -8,7 +16,6 @@ import { ChevronButtonComponent } from '../../buttons/chevron-button/chevron-but
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
-import { ListChange } from '../list-change/list-change';
 import { UtilsService } from '../../services/utils/utils.service';
 import {
   utilsServiceStub,
@@ -33,6 +40,7 @@ import { TextButtonComponent } from '../../buttons/text-button/text-button.compo
 import { fakeAsyncFlush } from '../../services/utils/test-helpers';
 import { ListPanelService } from '../list-panel.service';
 import { PanelService } from '../../popups/panel/panel.service';
+import { compareListChange, mockListChange } from '../lists-test-helpers.spec';
 
 describe('MultiSelectPanelComponent', () => {
   let component: MultiSelectPanelComponent;
@@ -46,78 +54,80 @@ describe('MultiSelectPanelComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(waitForAsync(() => {
-    optionsMock = [
-      {
-        groupName: '',
-        options: [
-          {
-            value: 'Basic info',
-            id: '1',
-            selected: false,
-          },
-          {
-            value: 'Personal',
-            id: '2',
-            selected: false,
-          },
+  beforeEach(
+    waitForAsync(() => {
+      optionsMock = [
+        {
+          groupName: '',
+          options: [
+            {
+              value: 'Basic info',
+              id: '1',
+              selected: false,
+            },
+            {
+              value: 'Personal',
+              id: '2',
+              selected: false,
+            },
+          ],
+        },
+      ];
+
+      TestBed.configureTestingModule({
+        declarations: [
+          TrackByPropPipeStub,
+          MultiSelectPanelComponent,
+          MockComponent(ChevronButtonComponent),
+          MultiSelectComponent,
+          MultiListComponent,
+          ListFooterComponent,
+          mockTranslatePipe,
+          mockHighlightPipe,
+          MockComponent(CheckboxComponent),
+          ButtonComponent,
+          TextButtonComponent,
         ],
-      },
-    ];
+        imports: [
+          CommonModule,
+          NoopAnimationsModule,
+          ScrollingModule,
+          OverlayModule,
+        ],
+        providers: [
+          ListPanelService,
+          PanelService,
+          PanelPositionService,
+          ListModelService,
+          ListChangeService,
+          { provide: UtilsService, useValue: utilsServiceStub },
+          { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
+          MobileServiceProvideMock(),
+          TranslateServiceProvideMock(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(MultiSelectPanelComponent);
+          component = fixture.componentInstance;
+          component.ngAfterViewInit = () => {};
 
-    TestBed.configureTestingModule({
-      declarations: [
-        TrackByPropPipeStub,
-        MultiSelectPanelComponent,
-        MockComponent(ChevronButtonComponent),
-        MultiSelectComponent,
-        MultiListComponent,
-        ListFooterComponent,
-        mockTranslatePipe,
-        mockHighlightPipe,
-        MockComponent(CheckboxComponent),
-        ButtonComponent,
-        TextButtonComponent,
-      ],
-      imports: [
-        CommonModule,
-        NoopAnimationsModule,
-        ScrollingModule,
-        OverlayModule,
-      ],
-      providers: [
-        ListPanelService,
-        PanelService,
-        PanelPositionService,
-        ListModelService,
-        ListChangeService,
-        { provide: UtilsService, useValue: utilsServiceStub },
-        { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
-        MobileServiceProvideMock(),
-        TranslateServiceProvideMock(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
+          spyOn(component as any, 'destroyPanel');
+          spyOn(component.selectChange, 'emit');
+          component.chevronButtonText = 'Click';
+        });
+
+      inject(
+        [OverlayContainer, Platform],
+        (oc: OverlayContainer, p: Platform) => {
+          overlayContainer = oc;
+          overlayContainerElement = oc.getContainerElement();
+          platform = p;
+        }
+      )();
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(MultiSelectPanelComponent);
-        component = fixture.componentInstance;
-        component.ngAfterViewInit = () => {};
-
-        spyOn(component as any, 'destroyPanel');
-        spyOn(component.selectChange, 'emit');
-        component.chevronButtonText = 'Click';
-      });
-
-    inject(
-      [OverlayContainer, Platform],
-      (oc: OverlayContainer, p: Platform) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-        platform = p;
-      }
-    )();
-  }));
+  );
 
   beforeEach(fakeAsync(() => {
     component.options = optionsMock;
@@ -138,17 +148,35 @@ describe('MultiSelectPanelComponent', () => {
   });
 
   describe('onSelect', () => {
-    it('should save listChange on component state', () => {
+    it('should save listChange on component state', fakeAsync(() => {
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[1] as HTMLElement).click();
-      optionsMock[0].options[1].selected = true;
-      const listChange = new ListChange(optionsMock);
-      expect(component['listChange']).toEqual(listChange);
-    });
+
+      tick();
+
+      compareListChange(
+        component['listChange'],
+        mockListChange(optionsMock, [optionsMock[0].options[1].id])
+      );
+    }));
   });
 
-  describe('onApply', () => {
+  describe('onApply 1', () => {
+    it('should emit listChange on selection', fakeAsync(() => {
+      (overlayContainerElement.querySelectorAll(
+        'b-multi-list .option'
+      )[1] as HTMLElement).click();
+      tick();
+
+      compareListChange(
+        component['listChange'],
+        mockListChange(optionsMock, [optionsMock[0].options[1].id])
+      );
+    }));
+  });
+
+  describe('onApply 2', () => {
     beforeEach(() => {
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
@@ -157,6 +185,7 @@ describe('MultiSelectPanelComponent', () => {
         '.apply-button button'
       ) as HTMLElement).click();
     });
+
     it('should indicate selected option', () => {
       const listOptionsCb = overlayContainerElement.querySelectorAll(
         'b-multi-list .option .checkbox'
@@ -164,11 +193,7 @@ describe('MultiSelectPanelComponent', () => {
       expect(listOptionsCb[0].classList).not.toContain('selected');
       expect(listOptionsCb[1].classList).toContain('selected');
     });
-    it('should emit listChange on selection', () => {
-      optionsMock[0].options[1].selected = true;
-      const listChange = new ListChange(optionsMock);
-      expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
-    });
+
     it('should invoke panel close', () => {
       expect(component['destroyPanel']).toHaveBeenCalled();
     });

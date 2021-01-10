@@ -1,4 +1,12 @@
-import { ComponentFixture, fakeAsync, inject, TestBed, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  inject,
+  TestBed,
+  resetFakeAsyncZone,
+  waitForAsync,
+  tick,
+} from '@angular/core/testing';
 import { SingleSelectPanelComponent } from './single-select-panel.component';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
@@ -6,7 +14,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { SelectGroupOption } from '../list.interface';
-import { ListChange } from '../list-change/list-change';
 import { UtilsService } from '../../services/utils/utils.service';
 import {
   utilsServiceStub,
@@ -24,6 +31,7 @@ import { ListChangeService } from '../list-change/list-change.service';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { SingleListComponent } from '../single-list/single-list.component';
 import { fakeAsyncFlush } from '../../services/utils/test-helpers';
+import { compareGOptions, getOptionsModel } from '../lists-test-helpers.spec';
 
 describe('SingleSelectPanelComponent', () => {
   let component: SingleSelectPanelComponent;
@@ -37,69 +45,71 @@ describe('SingleSelectPanelComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(waitForAsync(() => {
-    optionsMock = [
-      {
-        groupName: '',
-        options: [
-          {
-            value: 'Basic info',
-            id: '1',
-            selected: false,
-          },
-          {
-            value: 'Personal',
-            id: '2',
-            selected: false,
-          },
+  beforeEach(
+    waitForAsync(() => {
+      optionsMock = [
+        {
+          groupName: '',
+          options: [
+            {
+              value: 'Basic info',
+              id: '1',
+              selected: false,
+            },
+            {
+              value: 'Personal',
+              id: '2',
+              selected: false,
+            },
+          ],
+        },
+      ];
+
+      TestBed.configureTestingModule({
+        declarations: [
+          TrackByPropPipeStub,
+          SingleSelectPanelComponent,
+          SingleListComponent,
+          mockTranslatePipe,
+          mockHighlightPipe,
         ],
-      },
-    ];
+        imports: [
+          CommonModule,
+          NoopAnimationsModule,
+          ScrollingModule,
+          OverlayModule,
+        ],
+        providers: [
+          ListModelService,
+          ListChangeService,
+          { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
+          MobileServiceProvideMock(),
+          TranslateServiceProvideMock(),
+          PanelPositionService,
+          { provide: UtilsService, useValue: utilsServiceStub },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(SingleSelectPanelComponent);
+          component = fixture.componentInstance;
+          component.ngAfterViewInit = () => {};
+          spyOn(component as any, 'destroyPanel');
+          spyOn(component.selectChange, 'emit');
+          component.chevronButtonText = 'Click';
+        });
 
-    TestBed.configureTestingModule({
-      declarations: [
-        TrackByPropPipeStub,
-        SingleSelectPanelComponent,
-        SingleListComponent,
-        mockTranslatePipe,
-        mockHighlightPipe,
-      ],
-      imports: [
-        CommonModule,
-        NoopAnimationsModule,
-        ScrollingModule,
-        OverlayModule,
-      ],
-      providers: [
-        ListModelService,
-        ListChangeService,
-        { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
-        MobileServiceProvideMock(),
-        TranslateServiceProvideMock(),
-        PanelPositionService,
-        { provide: UtilsService, useValue: utilsServiceStub },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
+      inject(
+        [OverlayContainer, Platform],
+        (oc: OverlayContainer, p: Platform) => {
+          overlayContainer = oc;
+          overlayContainerElement = oc.getContainerElement();
+          platform = p;
+        }
+      )();
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(SingleSelectPanelComponent);
-        component = fixture.componentInstance;
-        component.ngAfterViewInit = () => {};
-        spyOn(component as any, 'destroyPanel');
-        spyOn(component.selectChange, 'emit');
-        component.chevronButtonText = 'Click';
-      });
-
-    inject(
-      [OverlayContainer, Platform],
-      (oc: OverlayContainer, p: Platform) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-        platform = p;
-      }
-    )();
-  }));
+  );
 
   beforeEach(fakeAsync(() => {
     component.options = optionsMock;
@@ -132,14 +142,19 @@ describe('SingleSelectPanelComponent', () => {
       );
       expect((listOptions[1] as HTMLElement).classList).toContain('selected');
     });
-    it('should emit listChange on selection', () => {
+
+    it('should emit listChange on selection', fakeAsync(() => {
       (overlayContainerElement.querySelectorAll(
         'b-single-list .option'
       )[1] as HTMLElement).click();
-      optionsMock[0].options[1].selected = true;
-      const listChange = new ListChange(optionsMock);
-      expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
-    });
+      tick();
+
+      compareGOptions(
+        component.options,
+        getOptionsModel(optionsMock, [optionsMock[0].options[1].id])
+      );
+    }));
+
     it('should destroy panel on select', () => {
       (overlayContainerElement.querySelectorAll(
         'b-single-list .option'

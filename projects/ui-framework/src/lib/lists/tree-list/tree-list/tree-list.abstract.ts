@@ -69,7 +69,6 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
 
   @HostBinding('attr.data-embedded') @Input() embedded = false;
   @HostBinding('attr.data-empty') empty = true;
-  @HostBinding('attr.data-debug') @Input() debug = false;
 
   public itemsMap: TreeListItemMap = new Map();
   protected itemsMapFromAbove = false;
@@ -339,65 +338,4 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   ): void {}
 
   protected toggleItemSelect(item: TreeListItem, force: boolean = null): void {}
-
-  // Dev / Debug
-
-  private sortMapByOriginalIndex(itemsMap: TreeListItemMap): TreeListItemMap {
-    return new Map(
-      Array.from(itemsMap.entries()).sort((entryA, entryB) => {
-        const itemA = entryA[1],
-          itemB = entryB[1];
-        if (!itemA || !itemB) {
-          return 0;
-        }
-        return itemA.originalIndex > itemB.originalIndex ? 1 : -1;
-      })
-    );
-  }
-
-  log(what = 'Data') {
-    switch (what) {
-      case 'Data':
-        console.log('---------CMPNT---------\n', this);
-        console.log('---------LIST---------\n', this.list);
-        console.log(
-          '---------MAP---------\n',
-          this.sortMapByOriginalIndex(this.itemsMap)
-        );
-        console.log('---------VIEWMODEL---------\n', this.listViewModel);
-        break;
-
-      case 'ValuesMap':
-        console.log(
-          '------------------\n',
-          'IDs to Values map:\n',
-          this.modelSrvc.getIDtoValueMap(this.list, this.keyMap)
-        );
-        break;
-
-      case 'ViewContext':
-        console.log(
-          '------------------\n',
-          'Items view context:\n',
-          this.listViewModel.map((id) => {
-            const item = this.itemsMap.get(id);
-            return {
-              id: item.id,
-              collapsed: item.collapsed,
-              parentCount: item.parentCount,
-              childrenCount: item.childrenCount,
-              groupsCount: item.groupsCount,
-              selectedCount: item.selectedCount,
-              allOptionsHidden: item.allOptionsHidden,
-              nextInViewIsGroup: item.nextInViewIsGroup,
-            };
-          })
-        );
-        break;
-
-      case 'Value':
-        console.log('---------VALUE---------\n', this.value);
-        break;
-    }
-  }
 }

@@ -10,15 +10,15 @@ import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EmployeesShowcaseModule } from './employees-showcase.module';
+import { EmployeesShowcaseModule } from './avatar-showcase.module';
 import { AvatarSize } from '../avatar/avatar.enum';
 import { zipObject } from 'lodash';
 import {
   EMPLOYEE_SHOWCASE_MOCK,
   EMPLOYEE_SHOWCASE_OPTIONS_MOCK,
-} from './employees-showcase.mock';
+} from './avatar-showcase.mock';
 import { SelectGroupOption } from '../../lists/list.interface';
-import { EmployeeShowcase } from './employees-showcase.interface';
+import { AvatarShowcase } from './avatar-showcase.interface';
 import { cloneDeepSimpleObject } from '../../services/utils/functional-utils';
 import { cloneDeep } from 'lodash';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -36,7 +36,7 @@ const sizeOptionsValues = Object.values(AvatarSize).filter(
 const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
 
 const template1 = `
-  <b-employees-showcase
+  <b-avatar-showcase
             [employees]="employees"
             [avatarSize]="avatarSize"
             [min]="min"
@@ -51,11 +51,11 @@ const template1 = `
             [hasBackdrop]="hasBackdrop || undefined"
             [doShuffle]="doShuffle"
             (selectChange)="selectChange($event)">
-  </b-employees-showcase>
+  </b-avatar-showcase>
 `;
 
 const template1ForNotes = `
-  <b-employees-showcase
+  <b-avatar-showcase
             [employees]="employees"
             [avatarSize]="avatarSize"
             [min]="min"
@@ -69,11 +69,11 @@ const template1ForNotes = `
             [readonly]="readonly"
             [doShuffle]="doShuffle"
             (selectChange)="selectChange($event)">
-  </b-employees-showcase>
+  </b-avatar-showcase>
 `;
 
 const template2 = `
-  <b-employees-showcase
+  <b-avatar-showcase
             [employees]="employeeOptions"
             [avatarSize]="avatarSizes.small"
             [min]="3"
@@ -86,11 +86,11 @@ const template2 = `
             [readonly]="true"
             [doShuffle]="doShuffle"
             [hasBackdrop]="hasBackdrop || undefined">
-  </b-employees-showcase>
+  </b-avatar-showcase>
 `;
 
 const template3 = `
-  <b-employees-showcase
+  <b-avatar-showcase
             [employees]="employees.slice().reverse()"
             [avatarSize]="avatarSizes.mini"
             [min]="3"
@@ -103,19 +103,19 @@ const template3 = `
             [readonly]="true"
             [doShuffle]="doShuffle"
             [hasBackdrop]="hasBackdrop || undefined">
-  </b-employees-showcase>
+  </b-avatar-showcase>
 `;
 
 const note = `
-  ## Employees Showcase
+  ## Avatar Showcase (aka Employees Showcase)
   #### Module
   *EmployeesShowcaseModule*
 
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [employees] | <s>EmployeeShowcase[]</s> / SelectGroupOption[] | Employees list. \
-  EmployeeShowcase[] interface is deprecated\
+  [employees] | <s>AvatarShowcase[]</s> / SelectGroupOption[] | Employees list. \
+  AvatarShowcase[] interface is deprecated\
    in favor of Select/list compatible SelectGroupOption[] (that can have badges &\
      icons in AvatarImage prefixcomponent object) | []
   [avatarSize] | AvatarSize | avatar size | 'mini'
@@ -150,15 +150,20 @@ const storyTemplate = `
 <div style="max-width: 500px; text-align: left; min-height: 130vh;">
     ${template1}
 
+    <hr style="margin: 60px 0 50px 0; border: 0; height: 0; border-top: 2px dashed #d2d2d2;">
 
+    <h4>SelectGroupOption[] - AvtarImage component with badges; <br>
+    avatarSize small, inverseStack, fadeOut, readonly</h4>
+    ${template2}
 
-
+    <h4>avatarSize mini, readonly</h4>
+    ${template3}
 </div>
 </b-story-book-layout>
 `;
 
 story.add(
-  'Employees Showcase',
+  'Avatar Showcase',
   () => {
     return {
       template: storyTemplate,
@@ -182,7 +187,7 @@ story.add(
         hasBackdrop: boolean('hasBackdrop', false, 'Props'),
         doShuffle: boolean('doShuffle', false, 'Props'),
 
-        employees: object<EmployeeShowcase[]>(
+        employees: object<AvatarShowcase[]>(
           'employees',
           cloneDeepSimpleObject(EMPLOYEE_SHOWCASE_MOCK),
           'Data'

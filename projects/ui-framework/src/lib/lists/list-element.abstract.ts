@@ -196,6 +196,20 @@ export abstract class BaseListElement
     }
 
     if (hasChanges(changes, ['options'], true)) {
+      this.options = this.options.reduce(
+        (grOpts: SelectGroupOption[], group: SelectGroupOption) => {
+          if (isNotEmptyArray(group?.options)) {
+            grOpts.push({
+              ...group,
+              optionsCount: group.options.length,
+            });
+          }
+
+          return grOpts;
+        },
+        []
+      );
+
       this.options = this.options.filter((group: SelectGroupOption) =>
         isNotEmptyArray(group.options)
       );
@@ -385,7 +399,6 @@ export abstract class BaseListElement
     this.updateLists({
       collapseHeaders: this.startWithGroupsCollapsed && !this.searchValue,
       updateListMinHeight: false,
-      isSearching: !!this.searchValue,
     });
   }
 
@@ -543,7 +556,6 @@ export abstract class BaseListElement
         collapseHeaders: config.collapseHeaders,
         hasCheckbox: this.type === SelectType.multi && isClassic,
         allowGroupIsOption:
-          // !config.isSearching &&
           isClassic &&
           !this.noGroupHeaders &&
           (this.options.length > 1 || this.showSingleGroupHeader),

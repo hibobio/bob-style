@@ -35,8 +35,7 @@ const componentTemplate = `<b-tree-list-panel
       (apply)="apply()"
       (cancel)="cancel()"
       (opened)="opened()"
-      (closed)="closed()"
-      [debug]="debug">
+      (closed)="closed()">
 
     <b-square-button  [disabled]="disabled"
                       [type]="buttonType.secondary"

@@ -24,7 +24,7 @@ import {
   isKey,
   randomFromArray,
   isArray,
-  asArray,
+  isNumber,
 } from './functional-utils';
 import { Keys } from '../../enums';
 import { log } from './logger';
@@ -156,26 +156,85 @@ export function distinctFrom<T = any>(prev: T, config?: EqualByValuesConfig) {
   );
 }
 
-export function shuffle<T = unknown>(
-  slice: number = null,
-  time: number = null
+export interface TimedSliceConfig {
+  slice?: number;
+  time?: number | boolean;
+  loop?: boolean;
+  shuffle?: boolean | 'auto';
+}
+
+export function timedSlice<T = unknown>(
+  config: TimedSliceConfig = {}
 ): OperatorFunction<T[], T[]> {
+  const { slice, time = null, loop = false, shuffle = false } = config;
+
   return function (source: Observable<T[]>): Observable<T[]> {
     //
     return defer(() => {
       return new Observable<T[]>((subscriber) => {
-        const intrvl = time ? interval(time) : EMPTY;
-        let original: T[];
-        let shuffled: T[];
+        //
+        const intrvl = isNumber(time) ? interval(time) : EMPTY;
+        let data: T[],
+          dataSize: number,
+          sliceSize: number,
+          currentSlice: [number, number?],
+          sliceIndex: number,
+          doShuffle: boolean | 'auto';
+
+        const reset = () => {
+          data = dataSize = sliceSize = doShuffle = undefined;
+          sliceIndex = -1;
+          currentSlice = [0];
+        };
 
         return merge(source, intrvl).subscribe({
+          //
           next: (arrOrNum: T[] | number) => {
-            if (isArray(arrOrNum)) {
-              original = arrOrNum.slice();
+            //
+            if (!isArray(arrOrNum) && !data) {
+              return;
             }
-            shuffled = asArray(randomFromArray(original, slice));
-            subscriber.next(shuffled);
+
+            if (isArray(arrOrNum)) {
+              reset();
+              dataSize = arrOrNum.length;
+              sliceSize = slice > 0 ? slice : dataSize;
+              doShuffle =
+                shuffle === 'auto' && loop && dataSize >= sliceSize * 2
+                  ? true
+                  : shuffle;
+
+              data =
+                doShuffle === true
+                  ? randomFromArray(arrOrNum, null)
+                  : arrOrNum.slice();
+            }
+
+            ++sliceIndex;
+            if (!loop && currentSlice[1] >= dataSize) {
+              reset();
+              subscriber.complete();
+              return;
+            }
+
+            (currentSlice || (currentSlice = [] as any))[0] =
+              (sliceSize * sliceIndex) %
+              (loop ? Math.max(dataSize, sliceSize) : dataSize);
+
+            currentSlice[1] = currentSlice[0] + sliceSize;
+
+            if (loop && currentSlice[1] > dataSize) {
+              while (data.length < currentSlice[1]) {
+                data.push(
+                  ...(doShuffle === true ? randomFromArray(data, null) : data)
+                );
+              }
+              dataSize = data.length;
+            }
+
+            subscriber.next(data.slice(...currentSlice));
           },
+
           error: (error) => {
             subscriber.error(error);
           },

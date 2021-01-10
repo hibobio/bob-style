@@ -21,21 +21,11 @@ export class TreeListEditUtils {
     target: TreeListItem,
     context: TreeListItemEditContext = null,
     itemsMap: TreeListItemMap,
-    listViewModel: itemID[],
-    debug = false
+    listViewModel: itemID[]
   ): TreeListItem {
     const { parent, insertionIndexInParent } =
       context ||
       this.getItemEditContext(where, target, itemsMap, listViewModel);
-
-    if (debug) {
-      console.log(`insertItem ${
-        item.name || item.id
-      }, where: ${where}, target: ${target?.id || null},
-      parent: ${
-        parent.name
-      }, insertionIndexInParent: ${insertionIndexInParent}`);
-    }
 
     parent.childrenIDs = arrayInsertAt(
       parent.childrenIDs,
@@ -54,7 +44,6 @@ export class TreeListEditUtils {
     itemsMap: TreeListItemMap,
     listViewModel: itemID[]
   ): TreeListItem {
-    console.log('deleteItem', item.name, item);
     //
     const parent =
       context?.parent || TreeListModelUtils.getParent(item, itemsMap);

@@ -27,8 +27,7 @@ const template = `<b-editable-tree-list
      [maxHeightItems]="maxHeightItems"
      [startCollapsed]="startCollapsed"
      [focusOnInit]="focusOnInit"
-     (changed)="listOut = $event; changed($event);"
-     [debug]="debug">
+     (changed)="listOut = $event; changed($event);">
 </b-editable-tree-list>`;
 
 const templateForNotes = `<b-editable-tree-list
@@ -52,7 +51,7 @@ const storyTemplate = `
       [type]="'single'"
       [readonly]="true"
       [list]="listOut || optionsMap[options]"
-      [keyMap]="options === 'simple' ? serverKeyMap : null" [startCollapsed]="startCollapsed" [debug]="debug"></b-tree-list>
+      [keyMap]="options === 'simple' ? serverKeyMap : null" [startCollapsed]="startCollapsed"></b-tree-list>
     </ng-container>
   </div>
 </b-story-book-layout>
@@ -220,8 +219,6 @@ story.add(
       startCollapsed: boolean('startCollapsed', true, 'Props'),
       maxHeightItems: number('maxHeightItems', 15, {}, 'Props'),
       focusOnInit: boolean('focusOnInit', true, 'Props'),
-
-      debug: boolean('debug', false, 'Props'),
 
       optionsMap: {
         'primitive 1': mock,

@@ -59,48 +59,50 @@ describe('MultiListComponent', () => {
     },
   ];
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        TrackByPropPipeStub,
-        MultiListComponent,
-        ListFooterComponent,
-        mockTranslatePipe,
-        mockHighlightPipe,
-        MockComponent(CheckboxComponent),
-        ButtonComponent,
-        TextButtonComponent,
-        MockComponent(IconComponent),
-        MockComponent(SearchComponent),
-      ],
-      imports: [CommonModule, NoopAnimationsModule, ScrollingModule],
-      providers: [
-        ListModelService,
-        ListChangeService,
-        { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
-        MobileServiceProvideMock(),
-        TranslateServiceProvideMock(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          TrackByPropPipeStub,
+          MultiListComponent,
+          ListFooterComponent,
+          mockTranslatePipe,
+          mockHighlightPipe,
+          MockComponent(CheckboxComponent),
+          ButtonComponent,
+          TextButtonComponent,
+          MockComponent(IconComponent),
+          MockComponent(SearchComponent),
+        ],
+        imports: [CommonModule, NoopAnimationsModule, ScrollingModule],
+        providers: [
+          ListModelService,
+          ListChangeService,
+          { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
+          MobileServiceProvideMock(),
+          TranslateServiceProvideMock(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(MultiListComponent);
+          component = fixture.componentInstance;
+          component.ngOnInit = () => {};
+
+          component.ngOnChanges(
+            simpleChange({
+              options: cloneDeep(optionsMock),
+              startWithGroupsCollapsed: false,
+            })
+          );
+
+          spyOn(component.selectChange, 'emit');
+          spyOn(component.apply, 'emit');
+          fixture.detectChanges();
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(MultiListComponent);
-        component = fixture.componentInstance;
-        component.ngOnInit = () => {};
-
-        component.ngOnChanges(
-          simpleChange({
-            options: cloneDeep(optionsMock),
-            startWithGroupsCollapsed: false,
-          })
-        );
-
-        spyOn(component.selectChange, 'emit');
-        spyOn(component.apply, 'emit');
-        fixture.detectChanges();
-      });
-  }));
+  );
 
   afterEach(() => {
     getTestScheduler().flush();
@@ -113,7 +115,7 @@ describe('MultiListComponent', () => {
     });
     it('should create headerModel based on options', () => {
       expect(component.listHeaders).toEqual([
-        {
+        jasmine.objectContaining({
           groupName: 'Basic Info Header',
           key: '0__Basic Info Header',
           groupIndex: 0,
@@ -124,8 +126,8 @@ describe('MultiListComponent', () => {
           selectedCount: 1,
           hasCheckbox: true,
           groupIsOption: false,
-        },
-        {
+        }),
+        jasmine.objectContaining({
           groupName: 'Personal Header',
           key: '1__Personal Header',
           groupIndex: 1,
@@ -136,7 +138,7 @@ describe('MultiListComponent', () => {
           selectedCount: 0,
           hasCheckbox: true,
           groupIsOption: false,
-        },
+        }),
       ]);
     });
 
@@ -146,7 +148,7 @@ describe('MultiListComponent', () => {
           isPlaceHolder: true,
           selected: false,
         },
-        {
+        jasmine.objectContaining({
           value: 'Basic Info 1',
           id: 1,
           groupName: 'Basic Info Header',
@@ -154,8 +156,8 @@ describe('MultiListComponent', () => {
           selected: true,
           groupIndex: 0,
           key: '0__Basic Info Header',
-        },
-        {
+        }),
+        jasmine.objectContaining({
           value: 'Basic Info 2',
           id: 2,
           groupName: 'Basic Info Header',
@@ -163,12 +165,12 @@ describe('MultiListComponent', () => {
           selected: false,
           groupIndex: 0,
           key: '0__Basic Info Header',
-        },
+        }),
         {
           isPlaceHolder: true,
           selected: false,
         },
-        {
+        jasmine.objectContaining({
           value: 'Personal 1',
           id: 11,
           groupName: 'Personal Header',
@@ -177,8 +179,8 @@ describe('MultiListComponent', () => {
           disabled: true,
           groupIndex: 1,
           key: '1__Personal Header',
-        },
-        {
+        }),
+        jasmine.objectContaining({
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal Header',
@@ -186,7 +188,7 @@ describe('MultiListComponent', () => {
           selected: false,
           groupIndex: 1,
           key: '1__Personal Header',
-        },
+        }),
       ] as any);
     });
 
@@ -496,7 +498,7 @@ describe('MultiListComponent', () => {
 
     it('should not update options model when header is collapsed', () => {
       const expectedHeaderModel = [
-        {
+        jasmine.objectContaining({
           groupName: 'Basic Info Header',
           key: '0__Basic Info Header',
           groupIndex: 0,
@@ -507,8 +509,8 @@ describe('MultiListComponent', () => {
           selectedCount: 2,
           hasCheckbox: true,
           groupIsOption: false,
-        },
-        {
+        }),
+        jasmine.objectContaining({
           groupName: 'Personal Header',
           key: '1__Personal Header',
           groupIndex: 1,
@@ -519,7 +521,7 @@ describe('MultiListComponent', () => {
           selectedCount: 0,
           hasCheckbox: true,
           groupIsOption: false,
-        },
+        }),
       ];
       const expectedOptionsModel = [
         {
@@ -530,7 +532,7 @@ describe('MultiListComponent', () => {
           isPlaceHolder: true,
           selected: false,
         },
-        {
+        jasmine.objectContaining({
           value: 'Personal 1',
           id: 11,
           groupName: 'Personal Header',
@@ -539,8 +541,8 @@ describe('MultiListComponent', () => {
           selected: false,
           disabled: true,
           groupIndex: 1,
-        },
-        {
+        }),
+        jasmine.objectContaining({
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal Header',
@@ -548,7 +550,7 @@ describe('MultiListComponent', () => {
           isPlaceHolder: false,
           selected: false,
           groupIndex: 1,
-        },
+        }),
       ];
 
       const headerCollapseTrigger = fixture.debugElement.query(
@@ -594,6 +596,7 @@ describe('MultiListComponent', () => {
           groupName: 'Basic Info Header',
           key: '0__Basic Info Header',
           groupIndex: 0,
+          optionsCount: 2,
           options: [
             { value: 'Basic Info 1', id: 1, selected: true },
             { value: 'Basic Info 2', id: 2, selected: false },
@@ -602,6 +605,7 @@ describe('MultiListComponent', () => {
         {
           groupName: 'Personal Header',
           key: '1__Personal Header',
+          optionsCount: 2,
           groupIndex: 1,
           options: [
             { value: 'Personal 1', id: 11, selected: false, disabled: true },
@@ -830,7 +834,7 @@ describe('MultiListComponent', () => {
   describe('Headers tooltip with description', () => {
     it('Should have description tooltip', () => {
       optionsMock[1].description = 'Lorem ipsum';
-      console.log('optionsMock: ', optionsMock);
+
       component.ngOnChanges(
         simpleChange({
           options: optionsMock,

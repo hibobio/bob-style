@@ -28,8 +28,7 @@
                  [listActions]="listActions"
                  (changed)="onSelectChange($event)"
                  (apply)="onApply()"
-                 (cancel)="onCancel()"
-                 [debug]="debug">
+                 (cancel)="onCancel()">
       <ng-content footerAction
                   select="[footerAction],[footerActionRight]"></ng-content>
     </b-tree-list>

@@ -24,14 +24,14 @@
 
   <div *ngIf="valueShowcase"
        class="bfe-prefix">
-    <b-employees-showcase [employees]="valueShowcase"
-                          [min]="3"
-                          [max]="3"
-                          [avatarSize]="size === formElementSize.smaller ? avatarSize.micro : avatarSize.mini"
-                          [showTotal]="valueShowcase.length > 3"
-                          [expandOnClick]="false"
-                          [readonly]="true">
-    </b-employees-showcase>
+    <b-avatar-showcase [employees]="valueShowcase"
+                       [min]="3"
+                       [max]="3"
+                       [avatarSize]="size === formElementSize.smaller ? avatarSize.micro : avatarSize.mini"
+                       [showTotal]="valueShowcase.length > 3"
+                       [expandOnClick]="false"
+                       [readonly]="true">
+    </b-avatar-showcase>
   </div>
 
   <div #input

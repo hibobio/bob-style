@@ -36,7 +36,6 @@ export abstract class TreeListInputOutput implements TreeListComponentIO {
     clear: false,
     reset: false,
   };
-  @Input() debug = false;
 
   @Output() changed: EventEmitter<TreeListValue> = new EventEmitter<
     TreeListValue

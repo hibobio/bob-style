@@ -1,4 +1,4 @@
-import { EmployeeShowcase } from './employees-showcase.interface';
+import { AvatarShowcase } from './avatar-showcase.interface';
 import {
   simpleUID,
   makeArray,
@@ -10,7 +10,7 @@ import { SelectGroupOption } from '../../lists/list.interface';
 import { AvatarImageComponent } from '../avatar/avatar-image/avatar-image.component';
 import { AvatarSize } from '../avatar/avatar.enum';
 
-const maxEEs = 50;
+const maxEEs = 30;
 const groupID = simpleUID();
 const badges = ['approved', 'pending', 'rejected'];
 
@@ -25,11 +25,12 @@ const avatars = randomFromArray(
   null
 );
 
-export const EMPLOYEE_SHOWCASE_MOCK: EmployeeShowcase[] = makeArray(maxEEs).map(
+export const EMPLOYEE_SHOWCASE_MOCK: AvatarShowcase[] = makeArray(maxEEs).map(
   (_, i) => ({
     id: simpleUID(),
     displayName: mockName(),
     imageSource: avatars[i],
+    // text: i + '',
   })
 );
 
@@ -48,6 +49,7 @@ export const EMPLOYEE_SHOWCASE_OPTIONS_MOCK: SelectGroupOption[] = [
           imageSource: avatars[i],
           size: AvatarSize.mini,
           badge: randomFromArray(badges),
+          // text: i + '',
           // icon: randomIcon(),
         },
       },

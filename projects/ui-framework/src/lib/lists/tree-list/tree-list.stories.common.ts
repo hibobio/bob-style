@@ -82,6 +82,4 @@ export const TreeListStoriesCommonProps = (
   changed: action('List change'),
   apply: action('List apply'),
   cancel: action('List cancel'),
-
-  debug: boolean('debug', false, 'Props'),
 });

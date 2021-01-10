@@ -9,7 +9,7 @@ import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-to
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
 import { FormElementLabelModule } from '../../form-elements/form-element-label/form-element-label.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { EmployeesShowcaseModule } from '../../avatar/employees-showcase/employees-showcase.module';
+import { EmployeesShowcaseModule } from '../../avatar/avatar-showcase/avatar-showcase.module';
 
 @NgModule({
   declarations: [MultiSelectComponent],

@@ -33,7 +33,8 @@
   }
 
   .bfe-prefix > b-avatar-image,
-  .bfe-prefix > b-employees-showcase {
+  .bfe-prefix > b-employees-showcase,
+  .bfe-prefix > b-avatar-showcase {
     margin-left: -12px;
     pointer-events: none;
   }
@@ -48,8 +49,6 @@
   b-avatar-image[data-size='micro'] {
     --avatar-gap: -15px;
   }
-
-
 }
 
 :host[data-size='smaller'] ::ng-deep {
@@ -57,7 +56,8 @@
     padding-right: 8px;
 
     & > b-avatar-image,
-    & > b-employees-showcase {
+    & > b-employees-showcase,
+    & > b-avatar-showcase {
       margin-left: -8px;
     }
   }

@@ -36,8 +36,7 @@ const template = `<b-tree-list
       [disabled]="disabled"
       (changed)="changed($event)"
       (apply)="apply()"
-      (cancel)="cancel()"
-      [debug]="debug">
+      (cancel)="cancel()">
 
 </b-tree-list>`;
 

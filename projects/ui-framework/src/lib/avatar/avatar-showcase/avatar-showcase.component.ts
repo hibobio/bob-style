@@ -13,12 +13,12 @@ import {
   HostBinding,
   ViewChild,
 } from '@angular/core';
-import { ShowcaseInputItem } from './employees-showcase.interface';
+import { ShowcaseInputItem } from './avatar-showcase.interface';
 import { AvatarSize } from '../avatar/avatar.enum';
 import {
   AvatarGap,
-  SHUFFLE_EMPLOYEES_INTERVAL,
-} from './employees-showcase.const';
+  AVATAR_SHOWCASE_SHUFFLE_INTERVAL,
+} from './avatar-showcase.const';
 import { Icons, IconColor } from '../../icons/icons.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import {
@@ -30,12 +30,12 @@ import {
 } from 'rxjs';
 import { SelectGroupOption } from '../../lists/list.interface';
 import { ListChange } from '../../lists/list-change/list-change';
-import { insideZone, shuffle } from '../../services/utils/rxjs.operators';
+import { insideZone, timedSlice } from '../../services/utils/rxjs.operators';
 import {
   applyChanges,
   hasChanges,
 } from '../../services/utils/functional-utils';
-import { EmployeesShowcaseService } from './employees-showcase.service';
+import { AvatarShowcaseService } from './avatar-showcase.service';
 import { Avatar } from '../avatar/avatar.interface';
 import { SingleSelectPanelComponent } from '../../lists/single-select-panel/single-select-panel.component';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
@@ -50,16 +50,16 @@ import {
 import { FormElementSize } from '../../form-elements/form-elements.enum';
 
 @Component({
-  selector: 'b-employees-showcase',
-  templateUrl: './employees-showcase.component.html',
-  styleUrls: ['./employees-showcase.component.scss'],
+  selector: 'b-employees-showcase, b-avatar-showcase',
+  templateUrl: './avatar-showcase.component.html',
+  styleUrls: ['./avatar-showcase.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [EmployeesShowcaseService],
+  providers: [AvatarShowcaseService],
 })
 export class EmployeesShowcaseComponent
   implements OnInit, OnChanges, OnDestroy {
   constructor(
-    private showcaseSrvc: EmployeesShowcaseService,
+    private showcaseSrvc: AvatarShowcaseService,
     private mutationObservableService: MutationObservableService,
     private host: ElementRef,
     private DOM: DOMhelpers,
@@ -249,9 +249,17 @@ export class EmployeesShowcaseComponent
 
     this.avatars$ = combineLatest([avatars$, avatarsSlice$]).pipe(
       switchMap(([avatars, avatarsSlice]) => {
-        return avatars.length > avatarsSlice && this.doShuffle
-          ? of(avatars).pipe(shuffle(avatarsSlice, SHUFFLE_EMPLOYEES_INTERVAL))
-          : of(avatars.slice(0, avatarsSlice));
+        return of(avatars).pipe(
+          timedSlice({
+            slice: avatarsSlice,
+            shuffle: 'auto',
+            ...(avatars.length > avatarsSlice &&
+              this.doShuffle && {
+                time: AVATAR_SHOWCASE_SHUFFLE_INTERVAL,
+                loop: true,
+              }),
+          })
+        );
       })
     );
   }

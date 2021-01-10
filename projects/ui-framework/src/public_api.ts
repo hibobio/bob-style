@@ -84,10 +84,10 @@ export {
 } from './lib/avatar/avatar/avatar-image/avatar-image.component';
 export * from './lib/avatar/avatar/avatar.enum';
 export * from './lib/avatar/avatar/avatar.interface';
-// Employees Showcase Module
-export { EmployeesShowcaseModule } from './lib/avatar/employees-showcase/employees-showcase.module';
-export { EmployeesShowcaseComponent } from './lib/avatar/employees-showcase/employees-showcase.component';
-export * from './lib/avatar/employees-showcase/employees-showcase.interface';
+// Avatar Showcase Module
+export { EmployeesShowcaseModule } from './lib/avatar/avatar-showcase/avatar-showcase.module';
+export { EmployeesShowcaseComponent } from './lib/avatar/avatar-showcase/avatar-showcase.component';
+export * from './lib/avatar/avatar-showcase/avatar-showcase.interface';
 // Layout
 export { AvatarLayoutModule } from './lib/avatar/avatar-layout/avatar-layout.module';
 export { AvatarLayoutComponent } from './lib/avatar/avatar-layout/avatar-layout.component';

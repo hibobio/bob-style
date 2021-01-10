@@ -26,7 +26,7 @@ import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 import { TranslateService } from '@ngx-translate/core';
 import { IconColor } from '../../icons/icons.enum';
-import { ShowcaseInputItem } from '../../avatar/employees-showcase/employees-showcase.interface';
+import { ShowcaseInputItem } from '../../avatar/avatar-showcase/avatar-showcase.interface';
 import { Avatar } from '../../avatar/avatar/avatar.interface';
 
 @Component({

@@ -1,4 +1,5 @@
 import { SelectGroupOption } from '../list.interface';
+import { compareGOptions } from '../lists-test-helpers.spec';
 import { ListChange } from './list-change';
 
 describe('ListChange', () => {
@@ -10,6 +11,7 @@ describe('ListChange', () => {
       {
         groupName: 'Basic Info',
         key: 1,
+        optionsCount: 2,
         options: [
           { value: 'Basic Info 1', id: 1, selected: false },
           { value: 'Basic Info 2', id: 2, selected: false },
@@ -17,6 +19,7 @@ describe('ListChange', () => {
       },
       {
         groupName: 'Personal',
+        optionsCount: 2,
         options: [
           { value: 'Personal 1', id: 11, selected: false },
           { value: 'Personal 2', id: 12, selected: false },
@@ -28,7 +31,7 @@ describe('ListChange', () => {
   describe('getSelectGroupOptions', () => {
     it('should return getSelectGroupOptions model', () => {
       listChange = new ListChange(optionsMock);
-      expect(listChange.getSelectGroupOptions()).toEqual(optionsMock);
+      compareGOptions(listChange.getSelectGroupOptions(), optionsMock);
     });
   });
 
@@ -50,17 +53,18 @@ describe('ListChange', () => {
       listChange = new ListChange(optionsMock);
       expect(listChange.getSelectedGroupOptions()).toEqual([]);
     });
+
     it('should return selected option ids with group name', () => {
       optionsMock[0].options[0].selected = true;
       listChange = new ListChange(optionsMock);
-      expect(listChange.getSelectedGroupOptions()).toEqual([
+
+      compareGOptions(listChange.getSelectedGroupOptions(), [
         {
           groupName: 'Basic Info',
           key: 1,
           groupSelectedIDs: [1],
           groupSelectedValues: ['Basic Info 1'],
           selectedCount: 1,
-
           options: [{ value: 'Basic Info 1', id: 1, selected: true }],
         },
       ]);

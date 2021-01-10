@@ -43,8 +43,7 @@ const componentTemplate = `<b-tree-select
       [focusOnInit]="focusOnInit"
       (changed)="changed($event)"
       (opened)="opened()"
-      (closed)="closed()"
-      [debug]="debug">
+      (closed)="closed()">
 </b-tree-select>`;
 
 const templateForNotes = `<b-tree-select

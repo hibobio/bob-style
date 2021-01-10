@@ -3,11 +3,13 @@ import { Icons } from '../../icons/icons.enum';
 import { SelectOption } from '../../lists/list.interface';
 import { Avatar } from '../avatar/avatar.interface';
 
-export interface EmployeeShowcase {
+export interface AvatarShowcase {
   id: string;
   displayName: string;
   imageSource?: string;
   icon?: Icons | Icon;
 }
 
-export type ShowcaseInputItem = EmployeeShowcase | SelectOption | Avatar;
+export interface EmployeeShowcase extends AvatarShowcase {}
+
+export type ShowcaseInputItem = AvatarShowcase | SelectOption | Avatar;

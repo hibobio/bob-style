@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EmployeesShowcaseComponent } from './employees-showcase.component';
+import { EmployeesShowcaseComponent } from './avatar-showcase.component';
 import { AvatarModule } from '../avatar/avatar.module';
 import { IconsModule } from '../../icons/icons.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';

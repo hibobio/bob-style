@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  EmployeeShowcase,
-  ShowcaseInputItem,
-} from './employees-showcase.interface';
+import { AvatarShowcase, ShowcaseInputItem } from './avatar-showcase.interface';
 import { SelectGroupOption } from '../../lists/list.interface';
 import {
   simpleUID,
@@ -15,7 +12,7 @@ import { map } from 'rxjs/operators';
 import { OperatorFunction } from 'rxjs';
 
 @Injectable()
-export class EmployeesShowcaseService {
+export class AvatarShowcaseService {
   constructor() {}
 
   public employeeListMapper: OperatorFunction<
@@ -24,8 +21,8 @@ export class EmployeesShowcaseService {
   > = map((employees: ShowcaseInputItem[]) => {
     return this.isSelectGroupOptions(employees)
       ? employees
-      : this.isEmployeeShowcase(employees)
-      ? this.mapEmployeeShowcaseToSelectGroupOptions(employees)
+      : this.isAvatarShowcase(employees)
+      ? this.mapAvatarShowcaseToSelectGroupOptions(employees)
       : [];
   });
 
@@ -35,8 +32,8 @@ export class EmployeesShowcaseService {
         ? employees
         : this.isSelectGroupOptions(employees)
         ? this.mapSelectGroupOptionsToAvatars(employees)
-        : this.isEmployeeShowcase(employees)
-        ? this.mapEmployeeShowcaseToAvatars(employees)
+        : this.isAvatarShowcase(employees)
+        ? this.mapAvatarShowcaseToAvatars(employees)
         : [];
     }
   );
@@ -47,9 +44,9 @@ export class EmployeesShowcaseService {
     return isSelectGroupOptions(options);
   }
 
-  private isEmployeeShowcase(
+  private isAvatarShowcase(
     employees: ShowcaseInputItem[]
-  ): employees is EmployeeShowcase[] {
+  ): employees is AvatarShowcase[] {
     return (
       isNotEmptyArray(employees) && employees[0].id && employees[0].displayName
     );
@@ -81,17 +78,15 @@ export class EmployeesShowcaseService {
     );
   }
 
-  private mapEmployeeShowcaseToAvatars(
-    employees: EmployeeShowcase[]
-  ): Avatar[] {
+  private mapAvatarShowcaseToAvatars(employees: AvatarShowcase[]): Avatar[] {
     return employees?.map((employee) => ({
       imageSource: employee.imageSource || null,
       icon: employee.icon || null,
     }));
   }
 
-  private mapEmployeeShowcaseToSelectGroupOptions(
-    employees: EmployeeShowcase[]
+  private mapAvatarShowcaseToSelectGroupOptions(
+    employees: AvatarShowcase[]
   ): SelectGroupOption[] {
     const groupID = simpleUID();
     return (
@@ -99,20 +94,18 @@ export class EmployeesShowcaseService {
         {
           groupName: groupID,
           key: groupID,
-          options: employees.map(
-            (employee: EmployeeShowcase, indx: number) => ({
-              value: employee.displayName,
-              id: employee.id || groupID + '_' + indx,
-              selected: false,
-              prefixComponent: {
-                component: null,
-                attributes: {
-                  imageSource: employee.imageSource || null,
-                  icon: employee.icon || null,
-                },
+          options: employees.map((employee: AvatarShowcase, indx: number) => ({
+            value: employee.displayName,
+            id: employee.id || groupID + '_' + indx,
+            selected: false,
+            prefixComponent: {
+              component: null,
+              attributes: {
+                imageSource: employee.imageSource || null,
+                icon: employee.icon || null,
               },
-            })
-          ),
+            },
+          })),
         },
       ]
     );

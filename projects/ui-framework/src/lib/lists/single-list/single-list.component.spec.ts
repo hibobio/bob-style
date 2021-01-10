@@ -30,66 +30,68 @@ describe('SingleListComponent', () => {
   let optionsMock: SelectGroupOption[];
   let fixture: ComponentFixture<SingleListComponent>;
 
-  beforeEach(waitForAsync(() => {
-    optionsMock = [
-      {
-        groupName: 'Basic Info Header',
+  beforeEach(
+    waitForAsync(() => {
+      optionsMock = [
+        {
+          groupName: 'Basic Info Header',
 
-        options: [
-          { value: 'Basic Info 1', id: 1, selected: true },
-          { value: 'Basic Info 2', id: 2, selected: false },
-        ],
-      },
-      {
-        groupName: 'Personal Header',
-        options: [
-          { value: 'Personal 1', id: 11, selected: false, disabled: true },
-          { value: 'Personal 2', id: 12, selected: false },
-        ],
-      },
-    ];
+          options: [
+            { value: 'Basic Info 1', id: 1, selected: true },
+            { value: 'Basic Info 2', id: 2, selected: false },
+          ],
+        },
+        {
+          groupName: 'Personal Header',
+          options: [
+            { value: 'Personal 1', id: 11, selected: false, disabled: true },
+            { value: 'Personal 2', id: 12, selected: false },
+          ],
+        },
+      ];
 
-    TestBed.configureTestingModule({
-      declarations: [
-        TrackByPropPipeStub,
-        SingleListComponent,
-        ListFooterComponent,
-        mockTranslatePipe,
-        mockHighlightPipe,
-        MockComponent(ButtonComponent),
-        MockComponent(IconComponent),
-        MockComponent(SearchComponent),
-      ],
-      imports: [CommonModule, NoopAnimationsModule, ScrollingModule],
-      providers: [
-        ListModelService,
-        ListChangeService,
-        { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
-        MobileServiceProvideMock(),
-        TranslateServiceProvideMock(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
+      TestBed.configureTestingModule({
+        declarations: [
+          TrackByPropPipeStub,
+          SingleListComponent,
+          ListFooterComponent,
+          mockTranslatePipe,
+          mockHighlightPipe,
+          MockComponent(ButtonComponent),
+          MockComponent(IconComponent),
+          MockComponent(SearchComponent),
+        ],
+        imports: [CommonModule, NoopAnimationsModule, ScrollingModule],
+        providers: [
+          ListModelService,
+          ListChangeService,
+          { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
+          MobileServiceProvideMock(),
+          TranslateServiceProvideMock(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(SingleListComponent);
+          component = fixture.componentInstance;
+          component.ngOnInit = () => {};
+
+          component.ngOnChanges(
+            simpleChange({
+              options: optionsMock,
+              startWithGroupsCollapsed: false,
+            })
+          );
+          fixture.detectChanges();
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(SingleListComponent);
-        component = fixture.componentInstance;
-        component.ngOnInit = () => {};
-
-        component.ngOnChanges(
-          simpleChange({
-            options: optionsMock,
-            startWithGroupsCollapsed: false,
-          })
-        );
-        fixture.detectChanges();
-      });
-  }));
+  );
 
   describe('ngOnChanges', () => {
     it('should create headerModel based on options', () => {
       expect(component.listHeaders).toEqual([
-        {
+        jasmine.objectContaining({
           groupName: 'Basic Info Header',
           key: '0__Basic Info Header',
           groupIndex: 0,
@@ -100,8 +102,8 @@ describe('SingleListComponent', () => {
           selectedCount: 1,
           hasCheckbox: false,
           groupIsOption: false,
-        },
-        {
+        }),
+        jasmine.objectContaining({
           groupName: 'Personal Header',
           key: '1__Personal Header',
           groupIndex: 1,
@@ -112,7 +114,7 @@ describe('SingleListComponent', () => {
           selectedCount: 0,
           hasCheckbox: false,
           groupIsOption: false,
-        },
+        }),
       ]);
     });
     it('should create optionsModel based on options', () => {
@@ -121,7 +123,7 @@ describe('SingleListComponent', () => {
           isPlaceHolder: true,
           selected: false,
         },
-        {
+        jasmine.objectContaining({
           value: 'Basic Info 1',
           id: 1,
           groupName: 'Basic Info Header',
@@ -129,8 +131,8 @@ describe('SingleListComponent', () => {
           selected: true,
           groupIndex: 0,
           key: '0__Basic Info Header',
-        },
-        {
+        }),
+        jasmine.objectContaining({
           value: 'Basic Info 2',
           id: 2,
           groupName: 'Basic Info Header',
@@ -138,12 +140,12 @@ describe('SingleListComponent', () => {
           selected: false,
           groupIndex: 0,
           key: '0__Basic Info Header',
-        },
+        }),
         {
           isPlaceHolder: true,
           selected: false,
         },
-        {
+        jasmine.objectContaining({
           value: 'Personal 1',
           id: 11,
           groupName: 'Personal Header',
@@ -152,8 +154,8 @@ describe('SingleListComponent', () => {
           disabled: true,
           groupIndex: 1,
           key: '1__Personal Header',
-        },
-        {
+        }),
+        jasmine.objectContaining({
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal Header',
@@ -161,7 +163,7 @@ describe('SingleListComponent', () => {
           selected: false,
           groupIndex: 1,
           key: '1__Personal Header',
-        },
+        }),
       ] as any);
     });
     it('should render 2 headers', () => {
@@ -414,7 +416,7 @@ describe('SingleListComponent', () => {
 
     it('should return updated options model', () => {
       expect(listChange.getSelectGroupOptions()).toEqual([
-        {
+        jasmine.objectContaining({
           groupName: 'Basic Info Header',
           key: '0__Basic Info Header',
           groupIndex: 0,
@@ -422,8 +424,8 @@ describe('SingleListComponent', () => {
             { value: 'Basic Info 1', id: 1, selected: false },
             { value: 'Basic Info 2', id: 2, selected: false },
           ],
-        },
-        {
+        }),
+        jasmine.objectContaining({
           groupName: 'Personal Header',
           key: '1__Personal Header',
           groupIndex: 1,
@@ -431,7 +433,7 @@ describe('SingleListComponent', () => {
             { value: 'Personal 1', id: 11, selected: false, disabled: true },
             { value: 'Personal 2', id: 12, selected: true },
           ],
-        },
+        }),
       ]);
     });
     it('should return selectedId', () => {
@@ -578,11 +580,12 @@ describe('SingleListComponent', () => {
 
   describe('Headers tooltip with description', () => {
     it('Should have description tooltip', () => {
-      optionsMock[0].description = 'Lorem ipsum';
-      console.log('optionsMock: ', optionsMock);
       component.ngOnChanges(
         simpleChange({
-          options: optionsMock,
+          options: [
+            { ...optionsMock[0], description: 'Hello world' },
+            optionsMock[1],
+          ],
           startWithGroupsCollapsed: false,
         })
       );

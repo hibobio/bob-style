@@ -97,7 +97,6 @@ export class TreeSelectComponent extends BaseFormElement
   @Input() disabled = false;
   @Input() listActions: ListFooterActions;
   @Input() tooltipType: TruncateTooltipType = TruncateTooltipType.auto;
-  @Input() debug = false;
 
   @Output() changed: EventEmitter<TreeListValue> = new EventEmitter<
     TreeListValue

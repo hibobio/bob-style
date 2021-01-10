@@ -13,6 +13,7 @@ export interface SelectGroupOption {
   description?: string;
   selected?: boolean;
   hidden?: boolean;
+  optionsCount?: number;
   selectedCount?: number;
 
   groupSelectedIDs?: itemID[];
@@ -83,5 +84,4 @@ export interface UpdateListsConfig {
   updateListOptions?: boolean;
   updateListMinHeight?: boolean;
   selectedIDs?: itemID[];
-  isSearching?: boolean;
 }

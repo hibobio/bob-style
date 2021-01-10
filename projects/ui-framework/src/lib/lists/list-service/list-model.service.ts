@@ -63,7 +63,7 @@ export class ListModelService {
 
         const groupIsOption =
           allowGroupIsOption &&
-          group.options.length === 1 &&
+          group.optionsCount === 1 &&
           group.options[0].value === group.groupName;
 
         group.groupIndex = index;

@@ -78,19 +78,3 @@
   <ng-content footerAction
               select="[footerAction],[footerActionRight]"></ng-content>
 </b-list-footer>
-
-
-<div class="dev"
-     *ngIf="debug">
-  <p>Total items: {{ itemsMap.size - 1 }}</p>
-  <p>Total items in view: {{ listViewModel.length }}</p>
-  <p>Total selected: {{ itemsMap.get('#root') && itemsMap.get('#root').selectedCount }}</p>
-  <button type="button"
-          (click)="log('Data')">Log data</button>
-  <button type="button"
-          (click)="log('ValuesMap')">Log ID to Values map</button>
-  <button type="button"
-          (click)="log('ViewContext')">Log items View Context</button>
-  <button type="button"
-          (click)="log('Value')">Log Value</button>
-</div>

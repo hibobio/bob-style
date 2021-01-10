@@ -77,15 +77,11 @@
             aria-hidden="true"></span>
 
       <span class="betl-item-elmnt betl-item-input-wrap">
-        <span *ngIf="debug"
-              style="font-size:80%;white-space:nowrap;">L{{item.parentCount || 1}} i{{index}}</span>
         <input [(ngModel)]="item.name"
                [placeholder]="('tree-list-editor.shortcuts.untitled' | translate)"
                class="betl-item-input"
                type="text"
                autocomplete="chrome-off">
-        <span *ngIf="debug"
-              style="font-size:80%;">{{getDragState(index)}} {{item.id}}</span>
       </span>
 
     </li>
@@ -106,32 +102,4 @@
           [icon]="icons.add"
           (click)="$event.stopPropagation(); insertNewItem('lastChildOf', rootItem, false)">
   </b-icon>
-</div>
-
-
-<div *ngIf="debug"
-     class="dev"
-     (click)="$event.stopPropagation();">
-  <div class="2cols">
-    <div>
-      <p>Total items: {{ itemsMap.size - 1 }}</p>
-      <p>Total items in view: {{ listViewModel.length }}</p>
-    </div>
-    <div [hidden]="!draggingIndex && !dragHoverIndex">
-      <p>draggingIndex: {{ draggingIndex >= 0 ? draggingIndex : '-' }}</p>
-      <p>dragHoverIndex: {{ dragHoverIndex >= 0 ? dragHoverIndex : '-' }}</p>
-    </div>
-  </div>
-  <button type="button"
-          (click)="clear()">Clear</button>
-  <button type="button"
-          (click)="reset()">Reset</button>
-  <button type="button"
-          (click)="log('Data')">Log data</button>
-  <button type="button"
-          (click)="log('New')">Log new</button>
-  <button type="button"
-          (click)="log('Deleted')">Log deleted</button>
-  <button type="button"
-          (click)="emitChange()">Emit</button>
 </div>

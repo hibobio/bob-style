@@ -91,7 +91,6 @@ export abstract class BaseEditableTreeListElement
   @Input() focusOnInit = false;
 
   @HostBinding('attr.data-embedded') @Input() embedded = false;
-  @HostBinding('attr.data-debug') @Input() debug = false;
   @HostBinding('attr.data-dnd-disabled') @Input() disableDragAndDrop = false;
 
   @Output() changed: EventEmitter<TreeListOption[]> = new EventEmitter<
@@ -187,10 +186,6 @@ export abstract class BaseEditableTreeListElement
 
       this.list = changes.list.currentValue || [];
 
-      if (this.debug && !changes.skipBackup?.currentValue) {
-        this.listBackup = cloneDeep(this.list);
-      }
-
       this.initItemsMap();
     }
 
@@ -209,11 +204,6 @@ export abstract class BaseEditableTreeListElement
       !this.cd['destroyed']
     ) {
       this.cd.detectChanges();
-
-      if (this.debug) {
-        this.hasChanges = true;
-        this.emitChange();
-      }
     }
   }
 
@@ -634,71 +624,5 @@ export abstract class BaseEditableTreeListElement
         ],
       },
     ];
-  }
-
-  // Dev / Debug
-
-  clear() {
-    this.ngOnChanges(
-      simpleChange({
-        setList: [],
-        skipBackup: true,
-      })
-    );
-  }
-
-  reset() {
-    this.ngOnChanges(
-      simpleChange({
-        setList: this.listBackup,
-      })
-    );
-  }
-
-  log(what = 'Data') {
-    switch (what) {
-      case 'Data':
-        console.log('---------CMPNT---------\n', this);
-        console.log('---------LIST---------\n', this.list);
-        console.log('---------MAP---------\n', this.itemsMap);
-        console.log('---------VIEWMODEL---------\n', this.listViewModel);
-        break;
-
-      case 'New':
-        console.log(
-          '------------------\n',
-          'New items:\n',
-          Array.from(this.itemsMap.values()).filter((item) => item.newitem)
-        );
-        break;
-
-      case 'Deleted':
-        console.log(
-          '------------------\n',
-          'Deleted items:\n',
-          Array.from(this.itemsMap.values()).filter((item) => item.deleted)
-        );
-        break;
-
-      case 'ViewContext':
-        console.log(
-          '------------------\n',
-          'Items view context:\n',
-          this.listViewModel.map((id) => {
-            const item = this.itemsMap.get(id);
-            return {
-              id: item.id,
-              collapsed: item.collapsed,
-              parentCount: item.parentCount,
-              childrenCount: item.childrenCount,
-              groupsCount: item.groupsCount,
-              selectedCount: item.selectedCount,
-              allOptionsHidden: item.allOptionsHidden,
-              nextInViewIsGroup: item.nextInViewIsGroup,
-            };
-          })
-        );
-        break;
-    }
   }
 }

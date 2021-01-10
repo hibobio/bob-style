@@ -8,24 +8,6 @@ $btl-icon-margin: 10px;
 $btl-max-depth: 10;
 $btl-max-items: 8;
 
-//-------DEV---------
-:host[data-debug='true'] {
-  overflow: visible !important;
-
-  .dev {
-    display: block;
-    position: absolute;
-    top: calc(100% + 20px);
-    left: 0;
-    right: 0;
-
-    p {
-      margin: 0 0 5px 0;
-    }
-  }
-}
-//----------------
-
 :host {
   display: block;
   max-width: 100%;

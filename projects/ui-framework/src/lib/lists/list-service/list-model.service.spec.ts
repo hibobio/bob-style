@@ -35,7 +35,7 @@ describe('ListModelService', () => {
     it('should return header model for virtual scroll', () => {
       const headerModel = listModelService.getHeadersModel(optionsMock);
       expect(headerModel).toEqual([
-        {
+        jasmine.objectContaining({
           groupName: 'Basic Info',
           key: '0__Basic Info',
           groupIndex: 0,
@@ -46,8 +46,8 @@ describe('ListModelService', () => {
           selectedCount: 1,
           hasCheckbox: true,
           groupIsOption: false,
-        },
-        {
+        }),
+        jasmine.objectContaining({
           groupName: 'Personal',
           key: '1__Personal',
           groupIndex: 1,
@@ -58,7 +58,7 @@ describe('ListModelService', () => {
           selectedCount: 0,
           hasCheckbox: true,
           groupIsOption: false,
-        },
+        }),
       ]);
     });
     it('should set header indeterminate to true if some of the options are disabled and selected', () => {
@@ -90,7 +90,7 @@ describe('ListModelService', () => {
           isPlaceHolder: true,
           selected: false,
         },
-        {
+        jasmine.objectContaining({
           value: 'Basic Info 1',
           id: 1,
           groupName: 'Basic Info',
@@ -98,8 +98,8 @@ describe('ListModelService', () => {
           groupIndex: 0,
           isPlaceHolder: false,
           selected: true,
-        },
-        {
+        }),
+        jasmine.objectContaining({
           value: 'Basic Info 2',
           id: 2,
           groupName: 'Basic Info',
@@ -107,12 +107,12 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: false,
           groupIndex: 0,
-        },
+        }),
         {
           isPlaceHolder: true,
           selected: false,
         },
-        {
+        jasmine.objectContaining({
           value: 'Personal 1',
           id: 11,
           groupName: 'Personal',
@@ -120,8 +120,8 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: false,
           groupIndex: 1,
-        },
-        {
+        }),
+        jasmine.objectContaining({
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal',
@@ -129,7 +129,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: false,
           groupIndex: 1,
-        },
+        }),
       ] as any);
     });
     it('should return options model for virtual scroll filtered by collapsed headers', () => {
@@ -213,7 +213,7 @@ describe('ListModelService', () => {
       ];
       listModelService.setSelectedOptions(headerModel, optionsModel, options);
       expect(headerModel).toEqual([
-        {
+        jasmine.objectContaining({
           groupName: 'Basic Info',
           key: 'Basic Info',
           groupIndex: 0,
@@ -222,8 +222,8 @@ describe('ListModelService', () => {
           selected: false,
           indeterminate: true,
           selectedCount: 1,
-        },
-        {
+        }),
+        jasmine.objectContaining({
           groupName: 'Personal',
           key: 'Personal',
           groupIndex: 1,
@@ -232,7 +232,7 @@ describe('ListModelService', () => {
           selected: true,
           indeterminate: false,
           selectedCount: 2,
-        },
+        }),
       ] as any);
 
       expect(optionsModel).toEqual([
@@ -240,7 +240,7 @@ describe('ListModelService', () => {
           isPlaceHolder: true,
           selected: false,
         },
-        {
+        jasmine.objectContaining({
           value: 'Basic Info 1',
           id: 1,
           groupName: 'Basic Info',
@@ -248,8 +248,8 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: true,
           groupIndex: 0,
-        },
-        {
+        }),
+        jasmine.objectContaining({
           value: 'Basic Info 2',
           id: 2,
           groupName: 'Basic Info',
@@ -257,12 +257,12 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: false,
           groupIndex: 0,
-        },
+        }),
         {
           isPlaceHolder: true,
           selected: false,
         },
-        {
+        jasmine.objectContaining({
           value: 'Personal 1',
           id: 11,
           groupName: 'Personal',
@@ -270,8 +270,8 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: true,
           groupIndex: 1,
-        },
-        {
+        }),
+        jasmine.objectContaining({
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal',
@@ -279,7 +279,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: true,
           groupIndex: 1,
-        },
+        }),
       ] as any);
     });
     it('should enrich header selected values also when header is collapsed', () => {
@@ -327,7 +327,7 @@ describe('ListModelService', () => {
       ];
       listModelService.setSelectedOptions(headerModel, optionsModel, options);
       expect(headerModel).toEqual([
-        {
+        jasmine.objectContaining({
           groupName: 'Basic Info',
           key: 'Basic Info',
           groupIndex: 0,
@@ -336,8 +336,8 @@ describe('ListModelService', () => {
           selected: false,
           indeterminate: true,
           selectedCount: 1,
-        },
-        {
+        }),
+        jasmine.objectContaining({
           groupName: 'Personal',
           key: 'Personal',
           groupIndex: 1,
@@ -346,7 +346,7 @@ describe('ListModelService', () => {
           selected: true,
           indeterminate: false,
           selectedCount: 2,
-        },
+        }),
       ] as any);
 
       expect(optionsModel).toEqual([
