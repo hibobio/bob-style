@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { SelectGroupOption, isNotEmptyArray, SelectOption } from 'bob-style';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PlaceholdersConverterService {
   constructor() {}
 
@@ -59,7 +61,12 @@ export class PlaceholdersConverterService {
     return name ? this.getDisplayByMode(id, group, name, mode) : id;
   }
 
-  private getDisplayByMode(id: string, group: string, name: string, mode: 'editor' | 'viewer' | 'textual') {
+  private getDisplayByMode(
+    id: string,
+    group: string,
+    name: string,
+    mode: 'editor' | 'viewer' | 'textual'
+  ) {
     switch (mode) {
       case 'editor':
         // prettier-ignore
@@ -70,7 +77,7 @@ export class PlaceholdersConverterService {
         // tslint:disable-next-line: max-line-length
         return ` <span data-placeholder-id="${ id }">${ this.padChar.repeat(3) }${ (group ? '<strong>' + group + '</strong> - ' : '') + name }${ this.padChar.repeat(3) }</span> `;
       case 'textual':
-        return `{${ group } - ${ name }}`;
+        return `{${group} - ${name}}`;
     }
   }
 

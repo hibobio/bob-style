@@ -3,17 +3,14 @@ import { CommonModule } from '@angular/common';
 import {
   InputMessageModule,
   FormElementLabelModule,
-  HtmlParserHelpers,
   SingleSelectPanelModule,
   ButtonsModule,
   EventManagerPlugins,
 } from 'bob-style';
 import { RichTextEditorComponent } from './rte.component';
-import { PlaceholdersConverterService } from './placeholders.service';
 import { FroalaEditorDirective } from './froala/editor.directive';
 import { FroalaViewDirective } from './froala/view.directive';
 import { TranslateModule } from '@ngx-translate/core';
-import { RteUtilsService } from './rte-utils.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import 'froala-editor/js/plugins/font_size.min.js';

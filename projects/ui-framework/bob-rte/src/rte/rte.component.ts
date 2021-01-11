@@ -53,7 +53,6 @@ import { RTEMode } from './rte.enum';
       multi: true,
     },
     { provide: BaseFormElement, useExisting: RichTextEditorComponent },
-    PlaceholdersConverterService,
     RteUtilsService,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

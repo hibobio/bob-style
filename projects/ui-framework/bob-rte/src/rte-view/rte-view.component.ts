@@ -33,7 +33,6 @@ export const RTE_VIEW_SANITIZER_OPTIONS: Partial<FilterXSSOptions> = {
   template: ``,
   styleUrls: ['./rte-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [PlaceholdersConverterService],
 })
 export class RteViewComponent implements OnChanges {
   constructor(
