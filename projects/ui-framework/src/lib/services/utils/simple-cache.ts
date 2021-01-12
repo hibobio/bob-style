@@ -9,22 +9,27 @@ export interface SimpleCacheConfig<V = unknown, K = unknown> {
   map?: Map<K, V>;
   capacity?: number;
   TTL?: number;
+  zone?: NgZone;
 }
 
 export type Timer = NodeJS.Timer | number;
 
 export class SimpleCache<V = unknown, K = string> {
-  constructor({ map, capacity, TTL }: SimpleCacheConfig<V, K> = {}) {
+  constructor({ map, capacity, TTL, zone }: SimpleCacheConfig<V, K> = {}) {
     this._store = isMap(map) ? map : new Map();
     this._ttl = TTL === undefined ? SIMPLE_CACHE_TTL_DEF : TTL;
     this._cap = capacity === undefined ? SIMPLE_CACHE_CAPACITY_DEF : capacity;
-    // this._zone = directiveInject(NgZone);
+    this._zone = zone;
   }
   private readonly _store: SimpleCacheConfig<V, K>['map'];
   private readonly _ttl: SimpleCacheConfig<V, K>['TTL'];
   private readonly _cap: SimpleCacheConfig<V, K>['capacity'];
-  // private readonly _zone: NgZone;
   private readonly _timers: Map<K | string, Timer> = new Map();
+
+  private _zone: NgZone;
+  private get zone(): NgZone {
+    return this._zone || (this._zone = directiveInject(NgZone));
+  }
 
   public get map(): SimpleCacheConfig<V, K>['map'] {
     return this._store;
@@ -82,14 +87,14 @@ export class SimpleCache<V = unknown, K = string> {
   ): Timer {
     this.clearTimer(key);
 
-    // this._zone.runOutsideAngular(() => {
-    this._timers.set(
-      key,
-      setTimeout(() => {
-        action(key);
-      }, time)
-    );
-    // });
+    this.zone.runOutsideAngular(() => {
+      this._timers.set(
+        key,
+        setTimeout(() => {
+          action(key);
+        }, time)
+      );
+    });
 
     return this._timers.get(key);
   }

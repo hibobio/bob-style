@@ -1,3 +1,4 @@
+import { NgZone } from '@angular/core';
 import { Observable, ObservableInput, of, OperatorFunction } from 'rxjs';
 import { shareReplay, switchMap } from 'rxjs/operators';
 import {
@@ -19,6 +20,7 @@ export interface CacheMapBaseConfig<T = unknown, R = T, K = unknown> {
   capacity?: number;
   TTL?: number;
   clearCacheOnUnsubscribe?: boolean;
+  zone?: NgZone;
 }
 
 export interface CacheMapConfig<T = unknown, R = T, K = unknown>
@@ -106,12 +108,14 @@ export const cacheMap = <T = unknown, R = T, K = string>(
     capacity,
     TTL,
     clearCacheOnUnsubscribe,
+    zone,
   } = processCacheMapConfig(config);
 
   const cache = new SimpleCache<R, K>({
     map: dataCache,
     capacity,
     TTL,
+    zone,
   });
 
   let subsCount = 0;
@@ -187,12 +191,14 @@ export const cacheSwitchMap = <T = unknown, R = T, K = string>(
     capacity,
     TTL,
     clearCacheOnUnsubscribe,
+    zone,
   } = processCacheMapConfig(config, (v: T) => of((v as unknown) as R));
 
   const cache = new SimpleCache<Observable<R>, K>({
     map: dataCache,
     capacity,
     TTL,
+    zone,
   });
 
   let subsCount = 0;
