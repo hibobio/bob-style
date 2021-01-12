@@ -9,4 +9,4 @@ export const AvatarGap = {
   [AvatarSize.xlarge]: 40,
 };
 
-export const AVATAR_SHOWCASE_SHUFFLE_INTERVAL = 3000;
+export const AVATAR_SHOWCASE_SHUFFLE_INTERVAL = 4000;

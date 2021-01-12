@@ -232,7 +232,13 @@ export function timedSlice<T = unknown>(
               dataSize = data.length;
             }
 
-            subscriber.next(data.slice(...currentSlice));
+            if (currentSlice[0] > 0) {
+              window.requestAnimationFrame(() => {
+                subscriber.next(data.slice(...currentSlice));
+              });
+            } else {
+              subscriber.next(data.slice(...currentSlice));
+            }
           },
 
           error: (error) => {

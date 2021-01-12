@@ -75,7 +75,7 @@ export class MutationObservableService {
     private DOM: DOMhelpers,
     private utilsService: UtilsService
   ) {
-    this.nativeWindow = this.windowRef.nativeWindow || window;
+    this.nativeWindow = (this.windowRef.nativeWindow || window) as WindowLike;
   }
 
   private nativeWindow: WindowLike;

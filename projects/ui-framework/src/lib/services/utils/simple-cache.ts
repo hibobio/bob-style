@@ -18,12 +18,12 @@ export class SimpleCache<V = unknown, K = string> {
     this._store = isMap(map) ? map : new Map();
     this._ttl = TTL === undefined ? SIMPLE_CACHE_TTL_DEF : TTL;
     this._cap = capacity === undefined ? SIMPLE_CACHE_CAPACITY_DEF : capacity;
-    this._zone = directiveInject(NgZone);
+    // this._zone = directiveInject(NgZone);
   }
   private readonly _store: SimpleCacheConfig<V, K>['map'];
   private readonly _ttl: SimpleCacheConfig<V, K>['TTL'];
   private readonly _cap: SimpleCacheConfig<V, K>['capacity'];
-  private readonly _zone: NgZone;
+  // private readonly _zone: NgZone;
   private readonly _timers: Map<K | string, Timer> = new Map();
 
   public get map(): SimpleCacheConfig<V, K>['map'] {
@@ -82,14 +82,14 @@ export class SimpleCache<V = unknown, K = string> {
   ): Timer {
     this.clearTimer(key);
 
-    this._zone.runOutsideAngular(() => {
-      this._timers.set(
-        key,
-        setTimeout(() => {
-          action(key);
-        }, time)
-      );
-    });
+    // this._zone.runOutsideAngular(() => {
+    this._timers.set(
+      key,
+      setTimeout(() => {
+        action(key);
+      }, time)
+    );
+    // });
 
     return this._timers.get(key);
   }
