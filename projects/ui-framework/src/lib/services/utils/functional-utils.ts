@@ -12,8 +12,15 @@ import {
 } from 'lodash';
 import { RenderedComponent } from '../component-renderer/component-renderer.interface';
 import { SelectGroupOption } from '../../lists/list.interface';
-import { Observable, Subscription } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  ReplaySubject,
+  Subject,
+  Subscription,
+} from 'rxjs';
 import { delay, take } from 'rxjs/operators';
+import { AnonymousSubject } from 'rxjs/internal/Subject';
 
 // ----------------------
 // TYPES
@@ -1447,8 +1454,34 @@ export const applyChanges = (
 };
 
 // ----------------------
-// OBSERVABLES
+// RXJS / OBSERVABLES
 // ----------------------
+
+export const isSubject = <T extends Subject<unknown>>(smth: any): smth is T => {
+  return (
+    smth &&
+    (smth instanceof BehaviorSubject ||
+      smth instanceof AnonymousSubject ||
+      smth instanceof ReplaySubject ||
+      smth instanceof Subject ||
+      (isFunction(smth.subscribe) &&
+        isFunction(smth.next) &&
+        isFunction(smth.asObservable)))
+  );
+};
+
+export const getSubjectValue = <V, T extends BehaviorSubject<V>>(
+  subj: T
+): V => {
+  if (!subj || !isSubject(subj)) {
+    return undefined;
+  }
+  return isFunction(subj.getValue)
+    ? subj.getValue()
+    : isFunction(subj['destination']?.getValue)
+    ? subj['destination'].getValue()
+    : undefined;
+};
 
 export const prefetchSharedObservables = (
   observables: Observable<any> | Observable<any>[]

@@ -21,14 +21,14 @@ import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import { ChipType } from '../chips.enum';
 import { ChipInputChange, ChipListConfig, Chip } from '../chips.interface';
-import { isKey } from '../../services/utils/functional-utils';
+import { isKey, isRegExp } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { InputEventType } from '../../form-elements/form-elements.enum';
 import { arrayOrFail } from '../../services/utils/transformers';
 import { ChipListComponent } from '../chip-list/chip-list.component';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
-import { outsideZone } from '../../services/utils/rxjs.operators';
+import { ChipInputValidation, CHIP_INPUT_VALIDATION } from './chip-input.const';
 
 @Component({
   selector: 'b-chip-input',
@@ -69,6 +69,8 @@ export class ChipInputComponent extends BaseFormElement
   @Input() acceptNew = true;
   @Input() maxChars = 50;
 
+  @Input() validation: ChipInputValidation | RegExp;
+
   @Input() hasFooterAction = false;
   public showSuffix = true;
 
@@ -82,6 +84,7 @@ export class ChipInputComponent extends BaseFormElement
   };
 
   private ignoreAutoClosedEvent = false;
+  private validator: RegExp;
 
   @ViewChild('chips', { static: true }) public chips: ChipListComponent;
   @ViewChild('input', { read: MatAutocompleteTrigger, static: true })
@@ -102,6 +105,14 @@ export class ChipInputComponent extends BaseFormElement
     if (changes.options && !changes.options.firstChange) {
       this.options = changes.options.currentValue || [];
       this.updatePossibleChips();
+    }
+
+    if (changes.validation && this.validation) {
+      this.validator = isRegExp(this.validation)
+        ? this.validation
+        : isRegExp(CHIP_INPUT_VALIDATION[this.validation])
+        ? CHIP_INPUT_VALIDATION[this.validation]
+        : null;
     }
   }
 
@@ -183,7 +194,7 @@ export class ChipInputComponent extends BaseFormElement
           }, 200);
         });
         this.input.nativeElement.value = this.input.nativeElement.value.replace(
-          /,/g,
+          /[,;]/g,
           ''
         );
       }
@@ -220,10 +231,14 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   private addChipFromInput(): void {
-    const name = this.input.nativeElement.value.replace(/,/g, '').trim();
+    const name = this.input.nativeElement.value.replace(/[,;]/g, '').trim();
     if (name) {
       let chipToAdd = this.findChip(name);
-      if (!chipToAdd && this.acceptNew) {
+      if (
+        !chipToAdd &&
+        this.acceptNew &&
+        (!this.validator || this.validator.test(name))
+      ) {
         chipToAdd = name;
       }
       this.commitChip(chipToAdd);
@@ -271,7 +286,7 @@ export class ChipInputComponent extends BaseFormElement
           }, 0);
         });
       }
-    } else if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.comma)) {
+    } else if (this.isAddChipKeyEvent(event)) {
       this.zone.run(() => {
         this.addChipFromInput();
         this.autocompleteTrigger.closePanel();
@@ -282,9 +297,22 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   public onInputKeydown(event: KeyboardEvent): void {
-    if (isKey(event.key, Keys.enter)) {
+    if (this.isAddChipKeyEvent(event)) {
       event.preventDefault();
     }
+  }
+
+  private isAddChipKeyEvent(event: KeyboardEvent): boolean {
+    return (
+      isKey(event.key, Keys.enter) ||
+      isKey(event.key, Keys.comma) ||
+      isKey(event.key, Keys.semicolon) ||
+      Boolean(
+        isKey(event.key, Keys.tab) &&
+          this.inputFocused &&
+          this.input.nativeElement.value.trim()
+      )
+    );
   }
 
   public chipsTrackBy(index: number, chip: string): string {

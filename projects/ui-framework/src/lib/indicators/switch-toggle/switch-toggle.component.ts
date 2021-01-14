@@ -40,10 +40,7 @@ export class SwitchToggleComponent extends BaseFormElement {
 
   @HostBinding('attr.data-form-element') get isFormElement() {
     return Boolean(
-      this.formControlName ||
-        this.label ||
-        this.placeholder ||
-        this.required !== undefined
+      this.formControlName || this.label || this.placeholder || this.required
     );
   }
 

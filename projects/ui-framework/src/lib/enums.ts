@@ -18,6 +18,7 @@ export enum Keys {
   delete = 'Delete',
   space = ' ',
   comma = ',',
+  semicolon = ';',
   dollar = '$',
   at = '@',
   caps = 'CapsLock',

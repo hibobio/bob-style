@@ -71,3 +71,44 @@ export function InputObservable<T = any>(
     });
   };
 }
+
+// export function InputObservable<T = any>(
+//   defaultValue: T = undefined,
+//   operators: Operator<any, T>[] = [pass]
+// ) {
+//   const subjectSymbol: any = Symbol();
+//   const subjectSymbolObservable = Symbol();
+
+//   return function (target: any, key: string) {
+//     //
+//     const setSubject = (trgt: any, subject: BehaviorSubject<T> = null) => {
+//       trgt[subjectSymbol] = subject || new BehaviorSubject<T>(defaultValue);
+//       trgt[subjectSymbolObservable] = trgt[subjectSymbol]
+//         .asObservable()
+//         .pipe(...operators);
+//     };
+
+//     Object.defineProperty(target, key, {
+//       set: function (value: T) {
+//         if (!this[subjectSymbol]) {
+//           setSubject(this, isSubject<BehaviorSubject<T>>(value) && value);
+//         }
+
+//         if (
+//           !isSubject<BehaviorSubject<T>>(value) &&
+//           value !== undefined &&
+//           value !== getSubjectValue(this[subjectSymbol])
+//         ) {
+//           this[subjectSymbol].next(value);
+//         }
+//       },
+
+//       get: function (): Observable<T> {
+//         if (!this[subjectSymbol]) {
+//           setSubject(this);
+//         }
+//         return this[subjectSymbolObservable];
+//       },
+//     });
+//   };
+// }

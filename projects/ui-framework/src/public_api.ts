@@ -176,6 +176,7 @@ export { ChipListComponent } from './lib/chips/chip-list/chip-list.component';
 // Chip Input
 export { ChipInputModule } from './lib/chips/chip-input/chip-input.module';
 export { ChipInputComponent } from './lib/chips/chip-input/chip-input.component';
+export * from './lib/chips/chip-input/chip-input.const';
 // Multi List and Chips
 export * from './lib/lists/multi-list-and-chips/multi-list-and-chips.interface';
 export * from './lib/lists/multi-list-and-chips/multi-list-and-something.interface';

@@ -60,6 +60,7 @@ const note = `
   [errorMessage] | string | error text | &nbsp;
   [required] | boolean | if input is required | false
   [disabled] | boolean | if input is disabled | false
+  [validation] | ChipInputValidation / RegExp | you can pass RegExp to validate input or use preset for **<u>email</u>** input validation | &nbsp;
   &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
   (changed) | EventEmitter<wbr>&lt;ChipInputChange&gt; | emits on change: {value, added, removed} | &nbsp;
 
@@ -89,6 +90,11 @@ const toAdd = () => ({
       'Add tags and press ‘Enter’',
       mockText(30),
       'Props'
+    ),
+
+    hintMessage: text(
+      'hintMessage',
+      'Use comma, semicolon, enter or tab keys to separate items'
     ),
 
     options: array('options', options, ','),
