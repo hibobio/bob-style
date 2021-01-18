@@ -801,6 +801,21 @@ export const sameStringsDifferentCase = (a: string, b: string): boolean => {
   );
 };
 
+export const normalizeString = (value: string): string => {
+  return (
+    value &&
+    String(value)
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+  );
+};
+
+export const testNormalized = (partial: string, full: string): boolean => {
+  const matcher = getMatcher(partial);
+  return matcher.test(normalizeString(full));
+};
+
 // ----------------------
 // FUNCTIONS
 // ----------------------
@@ -950,6 +965,18 @@ export const escapeRegExp = (value: string): string => {
 export const stringToRegex = (value: string, options = 'i'): RegExp => {
   return new RegExp(escapeRegExp(value), options);
 };
+
+export const getMatcher = (searchStr: string): RegExp =>
+  stringToRegex(normalizeString(searchStr), 'i');
+
+export const getFuzzyMatcher = (searchStr: string): RegExp =>
+  new RegExp(
+    normalizeString(searchStr)
+      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\*\[\]\+><@\s]+/g, '')
+      .split('')
+      .join('[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\*\\[\\]\\+><@\\s]*'),
+    'i'
+  );
 
 // ----------------------
 // RANDOMIZERS

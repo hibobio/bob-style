@@ -18,6 +18,8 @@ import {
   isFunction,
   isKey,
   asArray,
+  getFuzzyMatcher,
+  normalizeString,
 } from '../../services/utils/functional-utils';
 import { ListPanelService } from '../../lists/list-panel.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -236,13 +238,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
       );
     }
 
-    const matcher = new RegExp(
-      searchValue
-        .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\*\[\]\+><@\s]+/g, '')
-        .split('')
-        .join('[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\*\\[\\]\\+><@\\s]*'),
-      'i'
-    );
+    const matcher = getFuzzyMatcher(searchValue);
 
     const filtered = groupOptions.reduce(
       (msgo: MultiSearchGroupOption[], group) => {
@@ -259,7 +255,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
             option.searchValue = asArray(option.searchValue);
 
             searchValueIndex = option.searchValue.findIndex((sv) =>
-              matcher.test(String(sv))
+              matcher.test(normalizeString(sv))
             );
 
             if (searchValueIndex === -1) {
@@ -270,7 +266,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
             valueToMatch = String(option.searchValue[searchValueIndex]);
           }
 
-          match = matcher.exec(valueToMatch);
+          match = matcher.exec(normalizeString(valueToMatch));
 
           if (!match) {
             delete option.searchMatch;

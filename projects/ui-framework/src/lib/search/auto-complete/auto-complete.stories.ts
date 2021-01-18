@@ -9,7 +9,7 @@ import { TypographyModule } from '../../typography/typography.module';
 import { AutoCompleteModule } from './auto-complete.module';
 import { AutoCompleteOption } from './auto-complete.interface';
 import { mockText } from '../../mock.const';
-import { randomNumber } from '../../services/utils/functional-utils';
+import { randomNumber, simpleUID } from '../../services/utils/functional-utils';
 
 const story = storiesOf(ComponentGroupType.Search, module)
   .addDecorator(withNotes)
@@ -53,13 +53,20 @@ const note = `
   ~~~
 `;
 
-const optionsMock: AutoCompleteOption[] = Array.from(Array(20), (_, k) => {
-  return {
-    value: mockText(randomNumber(2, 5)),
-    subText: mockText(randomNumber(2, 5)),
-    id: k.toString(),
-  };
-});
+const optionsMock: AutoCompleteOption[] = [
+  {
+    value: 'Crème Brulée',
+    subText: `it's very nice`,
+    id: simpleUID(),
+  },
+  ...Array.from(Array(20), (_, k) => {
+    return {
+      value: mockText(randomNumber(2, 5)),
+      subText: mockText(randomNumber(2, 5)),
+      id: k.toString(),
+    };
+  }),
+];
 
 story.add(
   'Auto complete',

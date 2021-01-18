@@ -15,6 +15,7 @@ import { NgLetModule } from '../../../../ui-framework/src/lib/services/utils/ngl
 import { CommonModule } from '@angular/common';
 
 @Component({
+  // tslint:disable-next-line: component-selector
   selector: 'pipes-decorators',
   template: `
     <ng-container
@@ -53,20 +54,13 @@ export class PipesDecoratorsComponent {
     [
       'My friend',
       'My neighbour',
-      "My wife's brother",
+      `My wife's brother`,
       'My ex-husband',
       'One guy I know',
     ],
     null
   );
   enabled = true;
-
-  stopIt() {
-    this.enabled = false;
-  }
-  startIt() {
-    this.enabled = true;
-  }
 
   items$ = interval(1000).pipe(
     filter(() => this.enabled),
@@ -86,6 +80,13 @@ export class PipesDecoratorsComponent {
       return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     })
   );
+
+  stopIt() {
+    this.enabled = false;
+  }
+  startIt() {
+    this.enabled = true;
+  }
 }
 
 @NgModule({

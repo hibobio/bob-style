@@ -5,7 +5,7 @@ import { SELECTION_COLUMN_DEF } from '../table/table.consts';
 import { GridOptions } from 'ag-grid-community';
 import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
 import { PinDirection, RowSelection } from '../table/table.enum';
-import { IconSize, joinArrays } from 'bob-style';
+import { IconSize, joinArrays, normalizeString } from 'bob-style';
 
 const ICON_CELL_STYLE = { padding: '0 15px 0 43px' };
 
@@ -43,7 +43,10 @@ export class TableUtilsService {
     };
   }
 
-  private getEnrichColumnDef(columnDefs: ColumnDef[], enableRowDrag: boolean): ColumnDef[] {
+  private getEnrichColumnDef(
+    columnDefs: ColumnDef[],
+    enableRowDrag: boolean
+  ): ColumnDef[] {
     return columnDefs.map((colDef, i) => ({
       ...colDef,
       resizable: get(colDef, 'resizable', true),
@@ -52,7 +55,14 @@ export class TableUtilsService {
       menuTabs: [],
       cellClass: this.getCellClass(colDef),
       cellStyle: this.getCellStyle(colDef),
-      rowDrag: enableRowDrag && i === 0
+      rowDrag: enableRowDrag && i === 0,
+
+      filterParams: {
+        textFormatter: normalizeString,
+      },
+      getQuickFilterText: function (params) {
+        return normalizeString(params.value);
+      },
     }));
   }
 

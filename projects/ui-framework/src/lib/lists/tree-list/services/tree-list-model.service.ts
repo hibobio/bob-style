@@ -8,8 +8,6 @@ import {
 } from '../tree-list.interface';
 import {
   isNotEmptyArray,
-  isNullOrUndefined,
-  objectRemoveKeys,
   stringify,
   simpleArraysEqual,
   joinArrays,

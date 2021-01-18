@@ -1,8 +1,8 @@
 @import '../../style/common-imports';
 
 $bes-avatar-size-default: 36px;
-$bes-avatar-gap-default: -22px;
-$bes-avatar-count-default: 1;
+$bes-avatar-gap-default: -18px;
+$bes-avatar-count-default: 3;
 
 :host {
   width: 100%;
@@ -10,6 +10,12 @@ $bes-avatar-count-default: 1;
   text-align: left;
   backface-visibility: hidden;
   min-height: var(--avatar-size, #{$bes-avatar-size-default});
+  min-width: calc(
+    var(--avatar-size, #{$bes-avatar-size-default}) *
+      var(--avatar-count, #{$bes-avatar-count-default}) +
+      var(--avatar-gap, #{$bes-avatar-gap-default}) *
+      (var(--avatar-count, #{$bes-avatar-count-default}) - 1)
+  );
 }
 
 @keyframes fade-white-out {

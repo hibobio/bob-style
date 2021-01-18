@@ -56,6 +56,21 @@ export const optionsMock: SelectGroupOption[] = [
     key: 'roles',
     options: [
       {
+        value: 'Crème Brulée',
+        id: simpleUID(),
+        selected: mayBeSelected(85),
+        disabled: false,
+        prefixComponent: {
+          component: AvatarImageComponent,
+          attributes: {
+            icon: {
+              icon: Icons.cake,
+              color: IconColor.dark,
+            },
+          },
+        },
+      },
+      {
         value: 'Manager',
         id: simpleUID(),
         selected: mayBeSelected(85),
@@ -130,5 +145,14 @@ export const optionsMock: SelectGroupOption[] = [
   {
     groupName: 'Group with empty options',
     options: [],
+  },
+  {
+    groupName: 'Level',
+    options: [
+      {
+        id: 'Level',
+        value: 'Level',
+      },
+    ],
   },
 ];

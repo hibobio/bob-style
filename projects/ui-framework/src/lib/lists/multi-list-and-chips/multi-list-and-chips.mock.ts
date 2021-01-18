@@ -40,12 +40,29 @@ export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
   },
   {
     groupName: 'For kids',
-    options: kidsHobbies.map((hobby, index) => ({
-      value: hobby,
-      id: simpleUID(),
-      selected: index === 1 || mayBeSelected(),
-      disabled: index === 1,
-    })),
+    options: [
+      {
+        value: 'Crème Brulée',
+        id: simpleUID(),
+        selected: mayBeSelected(85),
+        disabled: false,
+        prefixComponent: {
+          component: AvatarImageComponent,
+          attributes: {
+            icon: {
+              icon: Icons.cake,
+              color: IconColor.dark,
+            },
+          },
+        },
+      },
+      ...kidsHobbies.map((hobby, index) => ({
+        value: hobby,
+        id: simpleUID(),
+        selected: index === 1 || mayBeSelected(),
+        disabled: index === 1,
+      })),
+    ],
   },
   {
     groupName: 'For couples',
@@ -67,6 +84,15 @@ export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
   {
     groupName: 'Group with empty options',
     options: [],
+  },
+  {
+    groupName: 'Level',
+    options: [
+      {
+        id: 'Level',
+        value: 'Level',
+      },
+    ],
   },
 ];
 

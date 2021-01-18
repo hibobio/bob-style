@@ -1,5 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { escapeRegExp } from '../utils/functional-utils';
+import {
+  getFuzzyMatcher,
+  getMatcher,
+  normalizeString,
+} from '../utils/functional-utils';
 
 @Pipe({
   name: 'highlight',
@@ -12,24 +16,12 @@ export class HighlightPipe implements PipeTransform {
       return value || '';
     }
 
-    const matcher = !fuzzy
-      ? new RegExp(escapeRegExp(searchStr), 'i')
-      : new RegExp(
-          searchStr
-            .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\*\[\]\+><@\s]+/g, '')
-            .split('')
-            .join('[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\*\\[\\]\\+><@\\s]*'),
-          'i'
-        );
+    const matcher = !fuzzy ? getMatcher(searchStr) : getFuzzyMatcher(searchStr);
 
-    const match = matcher.exec(value);
+    const match = matcher.exec(normalizeString(value));
 
     if (!match) {
       return value;
-    }
-
-    if (!fuzzy) {
-      return value.replace(match['0'], (str) => `<strong>${str}</strong>`);
     }
 
     return (

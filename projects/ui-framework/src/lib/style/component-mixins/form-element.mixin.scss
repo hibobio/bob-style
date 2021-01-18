@@ -248,10 +248,23 @@ $input-focus-border-color: $grey-700;
     .bfe-label {
       @include input-required;
     }
+    .bfe-wrap {
+      background-color: $grey-100;
+    }
   }
 
   #{$sel}.readonly {
     cursor: default;
+  }
+
+  #{$sel}.readonly ::ng-deep {
+    .bfe-wrap {
+      background-color: $grey-100;
+    }
+    .bfe-wrap,
+    .bfe-input {
+      cursor: default;
+    }
   }
 
   #{$sel} {

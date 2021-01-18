@@ -85,33 +85,37 @@ export const mockSearchData: MultiSearchGroupOption[] = [
     groupName: 'People',
     key: 'people',
     icon: Icons.department_icon,
-    options: mockNames(items).map((name: string, index) => ({
-      value: name,
-      id: name,
+    options: ['Crème Brulée', ...mockNames(items)].map(
+      (name: string, index) => ({
+        value: name,
+        id: name,
 
-      searchValue: [
-        name,
-        `${name.split(' ')[1]}, ${name.split(' ')[0]}`,
-        `${mockNames(1).toLowerCase().replace(/\s/g, '.')}@${uselessDomain()}`,
-        randomNumber(100000000, 999999999),
-      ],
+        searchValue: [
+          name,
+          `${name.split(' ')[1]}, ${name.split(' ')[0]}`,
+          `${mockNames(1)
+            .toLowerCase()
+            .replace(/\s/g, '.')}@${uselessDomain()}`,
+          randomNumber(100000000, 999999999),
+        ] as string[],
 
-      prefixComponent: {
-        component: AvatarImageComponent,
-        attributes: {
-          imageSource: mockAvatar(),
-          badge: randomFromArray([
-            null,
-            null,
-            null,
-            AvatarBadge.approved,
-            AvatarBadge.pending,
-            AvatarBadge.rejected,
-            AvatarBadge.error,
-          ]),
+        prefixComponent: {
+          component: AvatarImageComponent,
+          attributes: {
+            imageSource: mockAvatar(),
+            badge: randomFromArray([
+              null,
+              null,
+              null,
+              AvatarBadge.approved,
+              AvatarBadge.pending,
+              AvatarBadge.rejected,
+              AvatarBadge.error,
+            ]),
+          },
         },
-      },
-    })),
+      })
+    ),
     optionClickHandler: (option: MultiSearchOption) => {
       console.log(`Handler for: ${option.value}`);
     },

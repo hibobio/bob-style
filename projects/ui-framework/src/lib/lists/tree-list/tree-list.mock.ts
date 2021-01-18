@@ -69,7 +69,7 @@ export const HListMockSimple: TreeListOption[] = makeArray(mxRootOptns).map(
     if (indx === 1 || indx === Math.max(2, mxRootOptns - 2)) {
       return ({
         serverId: `option-${indx + 1}-group-${indx}`,
-        value: `0${indx + 1} Group ${indx}`,
+        value: indx === 1 ? 'Crème Brulée' : `0${indx + 1} Group ${indx}`,
         canBeDeleted: false,
         children: [
           {

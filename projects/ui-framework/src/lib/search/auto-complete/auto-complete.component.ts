@@ -12,7 +12,7 @@ import {
   ChangeDetectorRef,
   OnInit,
 } from '@angular/core';
-import { escapeRegExp, has } from 'lodash';
+import { has } from 'lodash';
 import { Subscription } from 'rxjs';
 import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
 import { AutoCompleteOption } from './auto-complete.interface';
@@ -24,6 +24,10 @@ import {
 } from '../../lists/list-panel.service';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { Panel } from '../../popups/panel/panel.interface';
+import {
+  getMatcher,
+  normalizeString,
+} from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-auto-complete',
@@ -145,10 +149,12 @@ export class AutoCompleteComponent
   }
 
   private filterOptions(): AutoCompleteOption[] {
-    const matcher = new RegExp(escapeRegExp(this.searchValue), 'i');
+    const matcher = getMatcher(this.searchValue);
 
     return this.options.filter(
-      (option) => option.value?.match(matcher) || option.subText?.match(matcher)
+      (option) =>
+        matcher.test(normalizeString(option.value)) ||
+        matcher.test(normalizeString(option.subText))
     );
   }
 
