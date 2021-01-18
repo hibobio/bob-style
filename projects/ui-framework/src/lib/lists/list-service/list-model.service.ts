@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { escapeRegExp, cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash';
 import {
   LIST_EL_HEIGHT,
   LIST_FOOTER_HEIGHT,
@@ -22,6 +22,8 @@ import {
   isBoolean,
   objectRemoveKey,
   isNumber,
+  normalizeString,
+  getMatcher,
 } from '../../services/utils/functional-utils';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { FORM_ELEMENT_HEIGHT } from '../../form-elements/form-elements.const';
@@ -65,9 +67,6 @@ export class ListModelService {
           allowGroupIsOption &&
           group.optionsCount === 1 &&
           group.options[0].value === group.groupName;
-
-        group.groupIndex = index;
-        group.key = this.getGroupKey(group);
 
         return {
           ...objectRemoveKey(group, 'options'),
@@ -200,14 +199,14 @@ export class ListModelService {
     searchValue: string
   ): SelectGroupOption[] {
     searchValue = searchValue.trim();
-    const matcher = new RegExp(escapeRegExp(searchValue), 'i');
+    const matcher = getMatcher(searchValue);
 
     return searchValue
       ? options
           .map((group: SelectGroupOption) =>
             Object.assign({}, group, {
               options: group.options.filter((option: SelectOption) =>
-                matcher.test(option.value)
+                matcher.test(normalizeString(option.value))
               ),
             })
           )
@@ -392,5 +391,25 @@ export class ListModelService {
     maxHeight = listMaxHeight + extrasSize;
 
     return { maxHeightItems, listMaxHeight, maxHeight };
+  }
+
+  enrichIncomingOptions(options: SelectGroupOption[]): SelectGroupOption[] {
+    let index = -1;
+    return options.reduce(
+      (grOpts: SelectGroupOption[], group: SelectGroupOption) => {
+        if (isNotEmptyArray(group?.options)) {
+          const gr = {
+            ...group,
+            groupIndex: ++index,
+            optionsCount: group.options.length,
+          };
+          gr.key = this.getGroupKey(gr);
+
+          grOpts.push(gr);
+        }
+        return grOpts;
+      },
+      []
+    );
   }
 }

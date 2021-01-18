@@ -165,9 +165,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     }
 
     if (hasChanges(changes, ['options'], true)) {
-      this.options = this.options.filter((group: SelectGroupOption) =>
-        isNotEmptyArray(group.options)
-      );
+      this.options = this.modelSrvc.enrichIncomingOptions(this.options);
     }
 
     if (hasChanges(changes, ['options'], true) && !this.fitOptionsToValue) {

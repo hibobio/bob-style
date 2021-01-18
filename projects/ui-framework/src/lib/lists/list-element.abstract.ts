@@ -196,23 +196,7 @@ export abstract class BaseListElement
     }
 
     if (hasChanges(changes, ['options'], true)) {
-      this.options = this.options.reduce(
-        (grOpts: SelectGroupOption[], group: SelectGroupOption) => {
-          if (isNotEmptyArray(group?.options)) {
-            grOpts.push({
-              ...group,
-              optionsCount: group.options.length,
-            });
-          }
-
-          return grOpts;
-        },
-        []
-      );
-
-      this.options = this.options.filter((group: SelectGroupOption) =>
-        isNotEmptyArray(group.options)
-      );
+      this.options = this.modelSrvc.enrichIncomingOptions(this.options);
     }
 
     if (hasChanges(changes, ['startWithGroupsCollapsed', 'options'])) {
