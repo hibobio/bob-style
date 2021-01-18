@@ -5,7 +5,14 @@ import { SELECTION_COLUMN_DEF } from '../table/table.consts';
 import { GridOptions } from 'ag-grid-community';
 import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
 import { PinDirection, RowSelection } from '../table/table.enum';
-import { IconSize, joinArrays, normalizeString } from 'bob-style';
+import {
+  GenericObject,
+  IconSize,
+  isFunction,
+  joinArrays,
+  normalizeString,
+  pass,
+} from 'bob-style';
 
 const ICON_CELL_STYLE = { padding: '0 15px 0 43px' };
 
@@ -61,7 +68,11 @@ export class TableUtilsService {
         textFormatter: normalizeString,
       },
       getQuickFilterText: function (params) {
-        return normalizeString(params.value);
+        return normalizeString(
+          isFunction(colDef.getQuickFilterText)
+            ? colDef.getQuickFilterText(params)
+            : params.value
+        );
       },
     }));
   }
