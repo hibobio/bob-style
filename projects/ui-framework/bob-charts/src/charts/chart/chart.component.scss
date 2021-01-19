@@ -11,21 +11,11 @@
   }
 
   .chart-tooltip {
-    background-color: #fff;
-  }
-
-  .highcharts-tooltip-container svg {
-    display: none;
+    text-align: center;
+    font-family: var(--body-font-family);
   }
 
   .highcharts-tooltip > span {
-    transform: translateY(16px);
-    border: 1px solid $border-color;
-    background-color: #fff;
-    border-radius: $border-radius;
-    opacity: 1;
-    z-index: 9999 !important;
-    padding: 0.8em;
     color: $body-text-color;
 
     .chart-tooltip {
@@ -39,29 +29,6 @@
       .key {
         font-weight: 400;
       }
-    }
-
-    &:before {
-      content: '';
-      position: absolute;
-      left: 50%;
-      margin-left: -7px;
-      z-index: 3;
-      top: 100%;
-      border: 7px solid transparent;
-      border-top-color: $grey-400;
-    }
-
-    &:after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      margin-top: -2px;
-      margin-left: -7px;
-      z-index: 4;
-      top: 100%;
-      border: 7px solid transparent;
-      border-top-color: #fff;
     }
   }
 }
