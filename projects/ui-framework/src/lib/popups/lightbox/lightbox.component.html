@@ -22,7 +22,7 @@
   <b-component-renderer class="lightbox-component"
                         *ngIf="config.component && !config.image && !config.video && !config.iframe"
                         [render]="config.component"
-                        (click.outside-zone)="$event.stopPropagation()">
+                        (click.outside-zone)="$event.stopPropagation(); clickBody()">
   </b-component-renderer>
 
 </div>

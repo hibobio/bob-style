@@ -248,9 +248,6 @@ $input-focus-border-color: $grey-700;
     .bfe-label {
       @include input-required;
     }
-    .bfe-wrap {
-      background-color: $grey-100;
-    }
   }
 
   #{$sel}.readonly {

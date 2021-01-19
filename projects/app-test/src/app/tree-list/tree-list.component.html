@@ -12,8 +12,7 @@
                  [label]="'Select stuff'"
                  [placeholder]="'Placeholder'"
                  [hintMessage]="'Please make it work'"
-                 (changed)="onListChanged($event)"
-                 [debug]="true">
+                 (changed)="onListChanged($event)">
   </b-tree-select>
   <button type="button"
           (click)="setListValTo(null)">value = null</button>
@@ -41,8 +40,7 @@
                  [label]="'Select stuff'"
                  [placeholder]="'Placeholder'"
                  [hintMessage]="'Please make it work'"
-                 (changed)="onListChanged($event,'testForm2')"
-                 [debug]="true">
+                 (changed)="onListChanged($event,'testForm2')">
   </b-tree-select>
   <button type="button"
           (click)="setListValTo(null,'testForm2')">value = null</button>

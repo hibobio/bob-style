@@ -8,6 +8,7 @@ import {
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
 import { LightboxConfig } from './lightbox.interface';
+import { DocumentRef } from '../../services/utils/document-ref.service';
 
 @Component({
   selector: 'b-lightbox',
@@ -15,7 +16,7 @@ import { LightboxConfig } from './lightbox.interface';
   styleUrls: ['./lightbox.component.scss'],
 })
 export class LightboxComponent implements OnChanges {
-  constructor() {}
+  constructor(private documentRef: DocumentRef) {}
 
   @Input() config: LightboxConfig;
 
@@ -46,5 +47,9 @@ export class LightboxComponent implements OnChanges {
 
   public closeLightbox(): void {
     this.closeLightboxCallback();
+  }
+
+  public clickBody(): void {
+    this.documentRef.nativeDocument.body.click();
   }
 }
