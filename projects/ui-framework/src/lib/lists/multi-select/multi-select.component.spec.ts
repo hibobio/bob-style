@@ -504,7 +504,10 @@ describe('MultiSelectComponent', () => {
       fixture.autoDetectChanges();
       expect(component.value).toEqual([1, 11]);
       expect(component.displayValue).toEqual('Basic Info 1, Personal 1');
-      expect(component.options).toEqual(optionsMock);
+
+      console.log(optionsMock, getOptionsModel(optionsMock));
+
+      expect(component.options).toEqual(getOptionsModel(optionsMock, null));
 
       fakeAsyncFlush();
     }));

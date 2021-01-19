@@ -60,13 +60,18 @@ export class ListModelService {
     }: GetHeadersModelConfig = {}
   ): ListHeader[] {
     return options.map(
-      (group, index): ListHeader => {
+      (group, groupIndex: number): ListHeader => {
         const selectedCount = this.countOptions(group.options, 'selected');
 
         const groupIsOption =
           allowGroupIsOption &&
           group.optionsCount === 1 &&
           group.options[0].value === group.groupName;
+
+        group.groupIndex = isNumber(group.groupIndex)
+          ? group.groupIndex
+          : groupIndex;
+        group.key = this.getGroupKey(group);
 
         return {
           ...objectRemoveKey(group, 'options'),

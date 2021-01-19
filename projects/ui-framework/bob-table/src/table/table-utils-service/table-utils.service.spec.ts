@@ -2,8 +2,12 @@ import { TestBed } from '@angular/core/testing';
 import { TableUtilsService } from './table-utils.service';
 import { ColumnDef } from '../table/table.interface';
 import { concat } from 'lodash';
-import { PinDirection, RowSelection, SortDirections } from '../table/table.enum';
-import { IconColor, Icons } from 'bob-style';
+import {
+  PinDirection,
+  RowSelection,
+  SortDirections,
+} from '../table/table.enum';
+import { IconColor, Icons, objectRemoveKeys } from 'bob-style';
 
 describe('TableUtilsService', () => {
   let tableUtilsService: TableUtilsService;
@@ -16,7 +20,9 @@ describe('TableUtilsService', () => {
 
   beforeEach(() => {
     existingColsMock = [
-      { field: 'about.avatar', }, { field: 'fullName', }, { field: 'email', },
+      { field: 'about.avatar' },
+      { field: 'fullName' },
+      { field: 'email' },
     ];
 
     columnDefsMock = [
@@ -30,7 +36,7 @@ describe('TableUtilsService', () => {
         menuTabs: [],
         cellClass: [],
         cellStyle: {},
-        rowDrag: false
+        rowDrag: false,
       },
       {
         headerName: 'Display Name',
@@ -41,7 +47,7 @@ describe('TableUtilsService', () => {
         menuTabs: [],
         cellClass: [],
         cellStyle: {},
-        rowDrag: false
+        rowDrag: false,
       },
       {
         headerName: 'Email',
@@ -51,10 +57,15 @@ describe('TableUtilsService', () => {
         menuTabs: [],
         cellClass: [],
         cellStyle: {},
-        rowDrag: false
+        rowDrag: false,
       },
     ];
-    newColumnDefsMock = [{ field: 'fullName' }, { field: 'email' }, { field: 'site' }, { field: 'department' }];
+    newColumnDefsMock = [
+      { field: 'fullName' },
+      { field: 'email' },
+      { field: 'site' },
+      { field: 'department' },
+    ];
     tableColumnsMock = [
       {
         colId: 'about.avatar',
@@ -92,11 +103,11 @@ describe('TableUtilsService', () => {
   describe('getGridColumnDef', () => {
     it('should not enrich data with select column', () => {
       rowSelectionMock = null;
-      const columnDefs = tableUtilsService.getGridColumnDef(
-        columnDefsMock,
-        rowSelectionMock,
-        false
-      );
+      const columnDefs = tableUtilsService
+        .getGridColumnDef(columnDefsMock, rowSelectionMock, false)
+        .map((cd) =>
+          objectRemoveKeys(cd, ['filterParams', 'getQuickFilterText'])
+        );
       expect(columnDefs).toEqual(columnDefsMock);
     });
     xit('should enrich data with multi select column', () => {
@@ -158,14 +169,14 @@ describe('TableUtilsService', () => {
           menuTabs: [],
           cellClass: ['b-icon-email', 'b-icon-normal', 'b-icon-medium'],
           cellStyle: { padding: '0 15px 0 43px' },
-          rowDrag: false
+          rowDrag: false,
         },
       ];
-      const columnDefs = tableUtilsService.getGridColumnDef(
-        colDefIconMock,
-        rowSelectionMock,
-        false
-      );
+      const columnDefs = tableUtilsService
+        .getGridColumnDef(colDefIconMock, rowSelectionMock, false)
+        .map((cd) =>
+          objectRemoveKeys(cd, ['filterParams', 'getQuickFilterText'])
+        );
       expect(columnDefs).toEqual(expectedColDefs);
     });
     it('should add icon cellClass and cellStyle and color from spec', () => {
@@ -191,14 +202,14 @@ describe('TableUtilsService', () => {
           menuTabs: [],
           cellClass: ['b-icon-email', 'b-icon-inform', 'b-icon-medium'],
           cellStyle: { padding: '0 15px 0 43px' },
-          rowDrag: false
+          rowDrag: false,
         },
       ];
-      const columnDefs = tableUtilsService.getGridColumnDef(
-        colDefIconMock,
-        rowSelectionMock,
-        false
-      );
+      const columnDefs = tableUtilsService
+        .getGridColumnDef(colDefIconMock, rowSelectionMock, false)
+        .map((cd) =>
+          objectRemoveKeys(cd, ['filterParams', 'getQuickFilterText'])
+        );
       expect(columnDefs).toEqual(expectedColDefs);
     });
     it('Should disable sorting when enableRowDrag is true', () => {
@@ -207,12 +218,12 @@ describe('TableUtilsService', () => {
           headerName: 'Name',
           field: 'name',
           sortable: true,
-          sort: SortDirections.Asc
+          sort: SortDirections.Asc,
         },
         {
           headerName: 'Email',
           field: 'email',
-          sortable: true
+          sortable: true,
         },
       ];
       const expectedColDefs: ColumnDef[] = [
@@ -225,7 +236,7 @@ describe('TableUtilsService', () => {
           resizable: true,
           sortable: false,
           sort: null,
-          rowDrag: true
+          rowDrag: true,
         },
         {
           headerName: 'Email',
@@ -235,14 +246,14 @@ describe('TableUtilsService', () => {
           cellStyle: {},
           resizable: true,
           sortable: false,
-          rowDrag: false
+          rowDrag: false,
         },
       ];
-      const columnDefs = tableUtilsService.getGridColumnDef(
-        colDefMock,
-        null,
-        true
-      );
+      const columnDefs = tableUtilsService
+        .getGridColumnDef(colDefMock, null, true)
+        .map((cd) =>
+          objectRemoveKeys(cd, ['filterParams', 'getQuickFilterText'])
+        );
       expect(columnDefs).toEqual(expectedColDefs);
     });
   });
@@ -250,15 +261,29 @@ describe('TableUtilsService', () => {
   describe('getOrderedFields', () => {
     it('Should sort existing columns according to order', () => {
       const columnOrder = ['about.avatar', 'email', 'fullName'];
-      const orderedColumns = tableUtilsService.getOrderedFields(existingColsMock, newColumnDefsMock, columnOrder);
+      const orderedColumns = tableUtilsService.getOrderedFields(
+        existingColsMock,
+        newColumnDefsMock,
+        columnOrder
+      );
       expect(orderedColumns).toEqual([
-        { field: 'email' }, { field: 'fullName' }, { field: 'site' }, { field: 'department', }
+        { field: 'email' },
+        { field: 'fullName' },
+        { field: 'site' },
+        { field: 'department' },
       ] as any);
     });
     it('Should kepp existing columns order is no order is passed', () => {
-      const orderedColumns = tableUtilsService.getOrderedFields(existingColsMock, newColumnDefsMock, null);
+      const orderedColumns = tableUtilsService.getOrderedFields(
+        existingColsMock,
+        newColumnDefsMock,
+        null
+      );
       expect(orderedColumns).toEqual([
-        { field: 'fullName' }, { field: 'email' }, { field: 'site' }, { field: 'department' },
+        { field: 'fullName' },
+        { field: 'email' },
+        { field: 'site' },
+        { field: 'department' },
       ] as any);
     });
   });
