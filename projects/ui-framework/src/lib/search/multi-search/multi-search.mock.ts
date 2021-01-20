@@ -85,7 +85,7 @@ export const mockSearchData: MultiSearchGroupOption[] = [
     groupName: 'People',
     key: 'people',
     icon: Icons.department_icon,
-    options: ['Crème Brulée', ...mockNames(items)].map(
+    options: ['Crème Brûlée', ...mockNames(items)].map(
       (name: string, index) => ({
         value: name,
         id: name,

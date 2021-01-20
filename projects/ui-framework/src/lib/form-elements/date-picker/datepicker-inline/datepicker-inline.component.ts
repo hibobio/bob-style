@@ -84,7 +84,4 @@ export class DatepickerInlineComponent extends BaseDatepickerElement {
   }
 
   @HostBinding('class.b-datepicker-panel') hostClass = true;
-
-  @Input()
-  value: Date | string = '';
 }

@@ -84,6 +84,4 @@ export class DatepickerComponent extends BaseDatepickerElement {
 
     this.baseValue = '';
   }
-
-  @Input() value: Date | string = '';
 }

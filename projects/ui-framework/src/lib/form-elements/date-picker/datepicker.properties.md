@@ -5,7 +5,7 @@ Name | Type | Description | Default
 [dateFormat] | string | string, representing date format (will also be used as default placeholder) | &nbsp;
 [minDate] | Date / string (YYYY-MM-DD) | minimum date | &nbsp;
 [maxDate] | Date / string (YYYY-MM-DD) | maximum date | &nbsp;
-(dateChange) | EventEmitter<wbr>&lt;InputEvent&gt; |  Emited on date change | &nbsp;
+(dateChange) | EventEmitter<wbr>&lt;DatePickerChangeEvent / DateRangePickerChangeEvent&gt; |  Emited on date change | &nbsp;
 
 #### Notes
 

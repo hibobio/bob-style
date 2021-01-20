@@ -56,7 +56,7 @@ export const optionsMock: SelectGroupOption[] = [
     key: 'roles',
     options: [
       {
-        value: 'Crème Brulée',
+        value: 'Crème Brûlée',
         id: simpleUID(),
         selected: mayBeSelected(85),
         disabled: false,

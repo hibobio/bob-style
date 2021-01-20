@@ -17,6 +17,8 @@
     "no-input-rename": false,
     "no-unnecessary-initializer": false,
     "no-empty-interface": false,
-    "deprecation": false
+    "deprecation": false,
+    "semicolon": false,
+    "md file": false
   }
 }

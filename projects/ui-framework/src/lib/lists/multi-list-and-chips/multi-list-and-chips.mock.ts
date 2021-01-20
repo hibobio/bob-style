@@ -42,7 +42,7 @@ export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
     groupName: 'For kids',
     options: [
       {
-        value: 'Crème Brulée',
+        value: 'Crème Brûlée',
         id: simpleUID(),
         selected: mayBeSelected(85),
         disabled: false,

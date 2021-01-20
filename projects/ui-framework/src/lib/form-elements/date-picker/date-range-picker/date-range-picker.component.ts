@@ -27,7 +27,11 @@ import { MobileService } from '../../../services/utils/mobile.service';
 import { DateParseService } from '../date-parse-service/date-parse.service';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { WindowRef } from '../../../services/utils/window-ref.service';
-import { DateRangePickerValue } from '../datepicker.interface';
+import {
+  DateRangePickerChangeEvent,
+  DateRangePickerValue,
+  DateRangePickerValueLocal,
+} from '../datepicker.interface';
 import { Overlay } from '@angular/cdk/overlay';
 import { DatepickerType } from '../datepicker.enum';
 import { startOfMonth } from 'date-fns';
@@ -39,11 +43,6 @@ import {
 } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material/core';
 import { UtilsService } from '../../../services/utils/utils.service';
-
-interface DateRangePickerValueLocal {
-  startDate: Date | string;
-  endDate: Date | string;
-}
 
 const DATERANGE_VALUE_DEF: DateRangePickerValueLocal = {
   startDate: undefined,
@@ -79,7 +78,11 @@ const DATERANGE_VALUE_DEF: DateRangePickerValueLocal = {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DateRangePickerComponent extends BaseDatepickerElement
+export class DateRangePickerComponent
+  extends BaseDatepickerElement<
+    DateRangePickerValueLocal,
+    DateRangePickerChangeEvent
+  >
   implements OnInit, AfterViewInit {
   constructor(
     protected windowRef: WindowRef,
@@ -125,8 +128,6 @@ export class DateRangePickerComponent extends BaseDatepickerElement
 
     this.baseValue = cloneObject(DATERANGE_VALUE_DEF);
   }
-
-  @Input() value: DateRangePickerValueLocal;
 
   @Input() startDateLabel: string;
   @Input() endDateLabel: string;

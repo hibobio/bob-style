@@ -35,12 +35,15 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { throttleTime } from 'rxjs/operators';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { InputEventType } from '../form-elements.enum';
-import { InputEvent } from '../input/input.interface';
 import { set, get } from 'lodash';
 import { DatepickerType, DateAdjust } from './datepicker.enum';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { Styles } from '../../services/html/html-helpers.interface';
-import { DateParseResult, FormatParserResult } from './datepicker.interface';
+import {
+  DateParseResult,
+  DatePickerChangeEvent,
+  FormatParserResult,
+} from './datepicker.interface';
 import {
   DISPLAY_DATE_FORMAT_DEF,
   DISPLAY_MONTH_FORMAT_DEF,
@@ -60,8 +63,10 @@ export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class BaseDatepickerElement extends BaseFormElement
-  implements OnInit, AfterViewInit, OnDestroy {
+export abstract class BaseDatepickerElement<
+  I = Date | string,
+  O = DatePickerChangeEvent
+> extends BaseFormElement implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     protected windowRef: WindowRef,
     protected utilsService: UtilsService,
@@ -111,6 +116,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   public inputs: QueryList<ElementRef>;
   public input: ElementRef<HTMLInputElement>;
 
+  @Input() value: I;
+
   @Input() id: string = simpleUID('bdp');
 
   @Input() minDate: Date | string;
@@ -123,9 +130,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   @Input() panelClass: string;
 
   // tslint:disable-next-line: no-output-rename
-  @Output('dateChange') changed: EventEmitter<InputEvent> = new EventEmitter<
-    InputEvent
-  >();
+  @Output('dateChange') changed: EventEmitter<O> = new EventEmitter<O>();
 
   public isMobile = false;
   public inputFocused: boolean[] = [];

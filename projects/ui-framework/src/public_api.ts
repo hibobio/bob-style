@@ -316,6 +316,7 @@ export { DateRangePickerModule } from './lib/form-elements/date-picker/date-rang
 export { DateRangePickerComponent } from './lib/form-elements/date-picker/date-range-picker/date-range-picker.component';
 // DatePickerInlineModule
 export { DatepickerInlineModule } from './lib/form-elements/date-picker/datepicker-inline/datepicker-inline.module';
+export { DatepickerInlineComponent } from './lib/form-elements/date-picker/datepicker-inline/datepicker-inline.component';
 // Input Module
 export { InputModule } from './lib/form-elements/input/input.module';
 export { InputComponent } from './lib/form-elements/input/input.component';

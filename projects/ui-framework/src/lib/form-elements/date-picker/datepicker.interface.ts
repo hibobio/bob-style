@@ -1,8 +1,22 @@
 import { DateFormat, LocaleFormat, DateLocaleFormatKeys } from '../../types';
+import { InputEvent } from '../input/input.interface';
 
 export interface DateRangePickerValue {
   from: string;
   to: string;
+}
+export interface DateRangePickerValueLocal<D = Date | string>
+  extends Partial<DateRangePickerValue> {
+  startDate: D;
+  endDate: D;
+}
+
+export interface DatePickerChangeEvent extends InputEvent<string> {
+  date: Date;
+}
+export interface DateRangePickerChangeEvent
+  extends InputEvent<DateRangePickerValue> {
+  date: DateRangePickerValueLocal<string>;
 }
 
 export type DateFormatKeys = 'day' | 'month' | 'year';
