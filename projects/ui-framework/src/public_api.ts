@@ -314,6 +314,8 @@ export {
 export { DateRangePickerModule } from './lib/form-elements/date-picker/date-range-picker/date-range-picker.module';
 // tslint:disable-next-line: max-line-length
 export { DateRangePickerComponent } from './lib/form-elements/date-picker/date-range-picker/date-range-picker.component';
+// DatePickerInlineModule
+export { DatepickerInlineModule } from './lib/form-elements/date-picker/datepicker-inline/datepicker-inline.module';
 // Input Module
 export { InputModule } from './lib/form-elements/input/input.module';
 export { InputComponent } from './lib/form-elements/input/input.component';
