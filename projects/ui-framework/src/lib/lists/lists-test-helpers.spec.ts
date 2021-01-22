@@ -8,6 +8,7 @@ import {
 import { ListChange } from './list-change/list-change';
 import { ListModelService } from './list-service/list-model.service';
 import { itemID, SelectGroupOption } from './list.interface';
+import 'jasmine';
 
 export const getOptionsModel = (
   options: SelectGroupOption[],
