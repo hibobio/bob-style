@@ -676,9 +676,3 @@ export { SLIDE_UP_DOWN } from './lib/style/animations';
  */
 export * from './lib/html-css/grid-layout/grid-layout.enum';
 
-
-/*
- * MISC
- */
-
-export * from './lib/lists/lists-test-helpers.spec';
