@@ -1751,16 +1751,24 @@ export const merge = <T = unknown>(
   return _merge(target, ...sources) as T;
 };
 
-export const pick = <T extends GenericObject, K extends keyof T>(
+export const pick = <
+  T extends GenericObject,
+  K extends Extract<keyof T, string>,
+  O extends Omit<T, K> & GenericObject
+>(
   object: T,
   props: K | K[]
-): Pick<T, K> => {
+): O => {
   return _pick(object, props);
 };
 
-export const omit = <T extends GenericObject, K extends keyof T>(
+export const omit = <
+  T extends GenericObject,
+  K extends Extract<keyof T, string>,
+  O extends Omit<T, K> & GenericObject
+>(
   object: T,
   props: K | K[]
-): Omit<T, K> => {
+): O => {
   return _omit(object, props);
 };

@@ -6,6 +6,7 @@ export enum PalletteColorSet {
   set4 = 'set4',
   set5 = 'set5',
   set6 = 'set6',
+  set7 = 'set7', // Document app
 }
 
 export enum ColorPalette {
@@ -83,5 +84,5 @@ export enum ColorsMain {
   negative_700 = '#cc2748',
   inform_500 = '#9bc3f2',
   inform_600 = '#70abf0',
-  inform_700 = '#4b95ec'
+  inform_700 = '#4b95ec',
 }

@@ -250,6 +250,38 @@ export const COLOR_PALETTE_SET6_COLOR_ORDER: string[] = [
   'color8_lighter',
 ];
 
+export const COLOR_PALETTE_SET7_COLOR_ORDER: string[] = [
+  'color1_base',
+  'color2_base',
+  'color3_base',
+  'color4_base',
+  'color5_base',
+  'color6_base',
+  'color7_base',
+  'color8_base',
+  'color9_base',
+
+  'color1_dark',
+  'color2_dark',
+  'color3_dark',
+  'color4_dark',
+  'color5_dark',
+  'color6_dark',
+  'color7_dark',
+  'color8_dark',
+  'color9_dark',
+
+  'color1_darker',
+  'color2_darker',
+  'color3_darker',
+  'color4_darker',
+  'color5_darker',
+  'color6_darker',
+  'color7_darker',
+  'color8_darker',
+  'color9_darker',
+];
+
 export const COLOR_PALETTE_SETS_COLOR_ORDER: {
   [key in PalletteColorSet]: string[];
 } = {
@@ -260,4 +292,5 @@ export const COLOR_PALETTE_SETS_COLOR_ORDER: {
   [PalletteColorSet.set4]: COLOR_PALETTE_SET4_COLOR_ORDER,
   [PalletteColorSet.set5]: COLOR_PALETTE_SET5_COLOR_ORDER,
   [PalletteColorSet.set6]: COLOR_PALETTE_SET6_COLOR_ORDER,
+  [PalletteColorSet.set7]: COLOR_PALETTE_SET7_COLOR_ORDER,
 };
