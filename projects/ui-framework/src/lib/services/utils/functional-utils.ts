@@ -882,6 +882,9 @@ export const isDateISO8601 = (date: string): boolean => {
   );
 };
 
+export const isDateOrDateString = (value: Date | string) =>
+  value && isDate(new Date(value));
+
 export const isDateFormat = (frmt: string): boolean => {
   if (!isString(frmt)) {
     return false;
