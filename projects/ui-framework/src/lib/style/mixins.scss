@@ -363,10 +363,20 @@
     background-color: $track-color;
   }
 
+  &::-webkit-scrollbar-track:vertical {
+    border-top-right-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+  }
+
+  &::-webkit-scrollbar-track:horizontal {
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+  }
+
   &::-webkit-scrollbar-thumb {
-    border-radius: 8px;
     border: $margin solid $track-color;
     background-color: black(0.3);
+    border-radius: 8px;
   }
 
   &:hover {

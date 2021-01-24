@@ -130,8 +130,12 @@ $acss-dirs: top right bottom left;
 // Margin & Padding
 
 @each $size in $acss-sizes {
+  $imp: '';
+  @if $size == 0 {
+    $imp: ' !important';
+  }
   .mrg-#{$size} {
-    margin: $size * 1px;
+    margin: #{$size * 1px}#{$imp};
   }
   .pad-#{$size} {
     padding: $size * 1px;
@@ -142,8 +146,13 @@ $acss-dirs: top right bottom left;
   $dir-short: str-slice($dir, 0, 1);
 
   @each $size in $acss-sizes {
+    $imp: '';
+    @if $size == 0 {
+      $imp: ' !important';
+    }
+
     .mrg-#{$dir-short}-#{$size} {
-      margin-#{$dir}: $size * 1px;
+      margin-#{$dir}: #{$size * 1px}#{$imp};
     }
     .pad-#{$dir-short}-#{$size} {
       padding-#{$dir}: $size * 1px;
@@ -152,13 +161,17 @@ $acss-dirs: top right bottom left;
 }
 
 @each $size in $acss-sizes {
+  $imp: '';
+  @if $size == 0 {
+    $imp: ' !important';
+  }
   .mrg-x-#{$size} {
-    margin-left: $size * 1px;
-    margin-right: $size * 1px;
+    margin-left: #{$size * 1px}#{$imp};
+    margin-right: #{$size * 1px}#{$imp};
   }
   .mrg-y-#{$size} {
-    margin-top: $size * 1px;
-    margin-bottom: $size * 1px;
+    margin-top: #{$size * 1px}#{$imp};
+    margin-bottom: #{$size * 1px}#{$imp};
   }
   .pad-x-#{$size} {
     padding-left: $size * 1px;

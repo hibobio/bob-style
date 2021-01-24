@@ -10,7 +10,7 @@
 <ng-template #templateRef>
   <div class="panel-position"
        [ngClass]="positionClassList">
-    <div class="panel-wrapper {{size}}"
+    <div class="panel-wrapper {{size}} scroll-visible"
          (mouseenter)="openOnHover && !disabled && onMouseEnter()"
          (mouseleave)="openOnHover && !disabled && onMouseLeave()">
       <ng-content select="[panel-content]"></ng-content>

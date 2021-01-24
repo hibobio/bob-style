@@ -50,6 +50,13 @@ $b-select-panel-min-width: 280px;
     &.large {
       max-width: 700px;
     }
+
+    &.small,
+    &.medium,
+    &.large {
+      max-height: #{'min(450px, 60vh)'};
+      overflow: auto;
+    }
   }
 
   .panel-position {
