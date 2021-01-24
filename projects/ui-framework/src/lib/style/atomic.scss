@@ -342,6 +342,17 @@ $acss-dirs: top right bottom left;
   display: grid;
 }
 
+@each $col in (2, 3, 4, 5, 6, 7, 8) {
+  .grd-auto-#{$col} {
+    display: grid !important;
+    grid-template-columns: repeat(#{$col}, auto);
+  }
+  .grd-eq-#{$col} {
+    display: grid !important;
+    grid-template-columns: repeat(#{$col}, 1fr);
+  }
+}
+
 @each $size in $acss-sizes {
   .gap-#{$size} {
     grid-gap: $size * 1px;
