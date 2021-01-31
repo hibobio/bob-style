@@ -321,13 +321,13 @@ export class ListModelService {
     const iconSize =
       size === FormElementSize.smaller ? IconSize.medium : IconSize.large;
 
-    return !optionIcon
-      ? undefined
+    return isNullOrUndefined(optionIcon)
+      ? (optionIcon as any)
       : (optionIcon as Icon).icon
       ? {
           ...(optionIcon as Icon),
           size: iconSize,
-          color,
+          color: (optionIcon as Icon).color || color,
         }
       : {
           icon: optionIcon as Icons,
@@ -354,7 +354,7 @@ export class ListModelService {
       size:
         size === FormElementSize.smaller ? AvatarSize.micro : AvatarSize.mini,
       border: size !== FormElementSize.smaller,
-      backgroundColor,
+      backgroundColor: prefixComponent?.backgroundColor || backgroundColor,
     };
 
     return optionAvatar;

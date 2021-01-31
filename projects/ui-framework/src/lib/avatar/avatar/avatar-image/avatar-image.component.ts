@@ -192,25 +192,26 @@ on b-avatar-image element.`);
 
           'data-size': getKeyByValue(AvatarSize, this.size),
           'data-icon-before-size':
-            (this.icon && (this.icon as Icon).size) ||
-            AvatarIconSize[this.size],
+            (this.icon as Icon)?.size || AvatarIconSize[this.size],
           'data-icon-after-size': BadgeSize[this.size],
 
           'data-icon-before':
             !this.hasContent && this.icon
-              ? ((this.icon as Icon).icon || (this.icon as string)).replace(
+              ? ((this.icon as Icon).icon || (this.icon as string))?.replace(
                   'b-icon-',
                   ''
-                )
-              : !this.hasContent && !this.imageSource && !this.icon
+                ) || null
+              : !this.hasContent &&
+                !this.imageSource &&
+                !this.icon &&
+                this.icon !== null
               ? Icons.person.replace('b-icon-', '')
               : null,
-          'data-icon-before-color':
-            this.icon && (this.icon as Icon).color
-              ? (this.icon as Icon).color
-              : this.imageSource
-              ? IconColor.white
-              : IconColor.normal,
+          'data-icon-before-color': (this.icon as Icon)?.color
+            ? (this.icon as Icon).color
+            : this.imageSource
+            ? IconColor.white
+            : IconColor.normal,
 
           'data-icon-after': this.badge
             ? (

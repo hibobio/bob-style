@@ -58,14 +58,16 @@ export const optionsMock: SelectGroupOption[] = [
       {
         value: 'Crème Brûlée',
         id: simpleUID(),
-        selected: mayBeSelected(85),
+        //  selected: mayBeSelected(85),
         disabled: false,
         prefixComponent: {
           component: AvatarImageComponent,
           attributes: {
+            backgroundColor: '#eb9534',
+            imageSource: null,
             icon: {
               icon: Icons.cake,
-              color: IconColor.dark,
+              color: IconColor.white,
             },
           },
         },
@@ -73,7 +75,6 @@ export const optionsMock: SelectGroupOption[] = [
       {
         value: 'Manager',
         id: simpleUID(),
-        selected: mayBeSelected(85),
         disabled: false,
         prefixComponent: {
           component: AvatarImageComponent,
@@ -88,7 +89,6 @@ export const optionsMock: SelectGroupOption[] = [
       {
         value: 'Reports To',
         id: simpleUID(),
-        selected: mayBeSelected(85),
         disabled: false,
         prefixComponent: {
           component: AvatarImageComponent,

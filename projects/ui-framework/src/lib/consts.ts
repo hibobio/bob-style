@@ -99,3 +99,6 @@ export const COLOR_GREY_600 = ColorsGrey.color_grey_600;
 export const COLOR_GREY_700 = ColorsGrey.color_grey_700;
 export const COLOR_GREY_800 = ColorsGrey.color_grey_800;
 export const COLOR_GREY_900 = ColorsGrey.color_grey_900;
+
+export const emptyPixel =
+  'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
