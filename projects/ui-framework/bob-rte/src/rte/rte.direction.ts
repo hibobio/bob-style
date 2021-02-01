@@ -1,6 +1,6 @@
 import FroalaEditor from 'froala-editor';
 
-const changeDirection = function(dir: string) {
+const changeDirection = function (dir: string) {
   this.selection.save();
   this.html.wrap(true, true, true, true);
   this.selection.restore();
@@ -35,16 +35,18 @@ export const initDirectionControl = () => {
     undo: true,
     refreshAfterCallback: true,
 
-    callback: function() {
+    callback: function () {
       changeDirection.apply(this, ['rtl']);
     },
 
-    refresh: function(btns: HTMLElement[]) {
+    refresh: function (btns: HTMLElement[]) {
       const elem = this.selection.blocks()[0] as HTMLElement;
       if (elem && elem.style.cssText.includes('rtl')) {
         btns[0].classList.add('fr-active');
+        btns[0].setAttribute('data-active', 'true');
       } else {
         btns[0].classList.remove('fr-active');
+        btns[0].setAttribute('data-active', 'false');
       }
     },
   });
@@ -57,16 +59,18 @@ export const initDirectionControl = () => {
     undo: true,
     refreshAfterCallback: true,
 
-    callback: function() {
+    callback: function () {
       changeDirection.apply(this, ['ltr']);
     },
 
-    refresh: function(btns: HTMLElement[]) {
+    refresh: function (btns: HTMLElement[]) {
       const elem = this.selection.blocks()[0] as HTMLElement;
       if (elem && elem.style.cssText.includes('ltr')) {
         btns[0].classList.add('fr-active');
+        btns[0].setAttribute('data-active', 'true');
       } else {
         btns[0].classList.remove('fr-active');
+        btns[0].setAttribute('data-active', 'false');
       }
     },
   });

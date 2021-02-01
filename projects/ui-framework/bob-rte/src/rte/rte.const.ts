@@ -25,11 +25,17 @@ export const RTE_CONTROLS_DEF = joinArrays(
     BlotType.emoticons,
     BlotType.mentions,
     BlotType.placeholder,
+    BlotType.removeFormat,
+    BlotType.pasteAsText,
   ],
   Object.values(BlotType)
 );
 
-export const RTE_DISABLE_CONTROLS_DEF: BlotType[] = [BlotType.placeholder];
+export const RTE_DISABLE_CONTROLS_DEF: BlotType[] = [
+  BlotType.placeholder,
+  BlotType.removeFormat,
+  BlotType.pasteAsText,
+];
 
 export const RTE_MINHEIGHT_DEF = 185;
 export const RTE_MAXHEIGHT_DEF = 350;

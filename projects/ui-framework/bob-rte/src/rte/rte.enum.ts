@@ -31,4 +31,6 @@ export enum BlotType {
   placeholder = 'placeholder',
   mentions = 'mentions',
   emoticons = 'emoticons',
+  pasteAsText = 'pasteAsText',
+  removeFormat = 'removeFormat',
 }

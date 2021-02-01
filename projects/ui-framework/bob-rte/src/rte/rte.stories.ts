@@ -234,11 +234,7 @@ story.add(
           'Props'
         ),
 
-        placeholderList: object<SelectGroupOption[]>(
-          'options',
-          placeholderMock,
-          'Data'
-        ),
+        placeholderList: object('options', placeholderMock, 'Data'),
         mentionsList: object('mentionsList', mentionsOptions, 'Data'),
 
         change: action('Value changed'),

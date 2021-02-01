@@ -266,8 +266,9 @@ $rte-icon-color-hover: darken($grey-700, 5%);
   }
 
   &:hover,
-  &:focus,
-  &.fr-active {
+  // &:focus,
+  &.fr-active,
+  &[data-active='true'] {
     &:not([data-cmd='setEmoticonCategory']) {
       background-color: transparent !important;
     }
@@ -671,6 +672,8 @@ $empticons-panel-max-width: 235px;
 
 .fr-toolbar {
   [data-cmd='mentions'],
+  [data-cmd='pasteAsText'],
+  [data-cmd='removeFormat'],
   [data-cmd='rightToLeft'],
   [data-cmd='leftToRight'] {
     font-size: 0px;
@@ -718,6 +721,56 @@ $empticons-panel-max-width: 235px;
   [data-cmd='mentions'] {
     @include b-icon($icon: 'at', $size: small, $color: null) {
       font-size: 17px;
+    }
+  }
+}
+
+// controls tooltips
+.fr-toolbar {
+  .fr-command[data-cmd='pasteAsText'],
+  .fr-command[data-cmd='removeFormat'] {
+    span.fr-sr-only[data-tooltip] {
+      @include size(100%);
+      @include position(0 0 0 0);
+      overflow: visible;
+      clip: initial;
+      padding: 0;
+      margin: 0;
+      font: inherit;
+      line-height: normal;
+      min-width: 0;
+
+      &:after {
+        min-width: 120px;
+      }
+    }
+
+    margin-left: auto;
+  }
+}
+
+// pasteAsText
+.fr-toolbar {
+  .fr-command[data-cmd='pasteAsText'] {
+    @include b-icon($icon: 'paste-text', $size: small, $color: null) {
+      font-size: 17px;
+    }
+
+    & + .fr-command[data-cmd='removeFormat'] {
+      margin-left: 0;
+    }
+  }
+}
+
+// removeFormat
+.fr-toolbar {
+  .fr-command[data-cmd='removeFormat'] {
+    @include b-icon($icon: 'remove-format', $size: small, $color: null) {
+      font-size: 17px;
+    }
+
+    & + .fr-command[data-cmd='pasteAsText'] {
+      margin-left: 0;
     }
   }
 }

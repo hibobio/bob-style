@@ -140,6 +140,31 @@ export class RichTextEditorComponent extends RTEbaseElement
           });
         }
 
+        // init pasteAsText && removeFormat
+        if (this.toolbarButtons) {
+          const buttons = this.toolbarButtons.filter((b) => {
+            const title = b.getAttribute('aria-label').toLowerCase();
+            return title.startsWith('paste') || title.startsWith('remove');
+          });
+
+          buttons.forEach((b) => {
+            const title = b.getAttribute('aria-label');
+            const span = b.children[0];
+            if (!title || !span) {
+              return;
+            }
+
+            span.setAttribute(
+              'data-tooltip',
+              title.toLowerCase().startsWith('paste')
+                ? title + '\n(disabled)'
+                : title
+            );
+            span.setAttribute('data-tooltip-wrap', 'pre');
+            span.setAttribute('data-tooltip-align', 'center');
+          });
+        }
+
         // implementing baseFormElement input ref and focus method
         this.input = {
           nativeElement: {
@@ -250,7 +275,14 @@ export class RichTextEditorComponent extends RTEbaseElement
                 '[data-bob-rte], head, meta, title, style, xml, link'
               ),
 
-            ...(!isFromRte
+            (value: string) =>
+              this.miscControlsState.pasteAsText
+                ? this.parserService
+                    .getPlainText(value)
+                    .replace(/(?:\r\n|\r|\n)/g, '<br>')
+                : value,
+
+            ...(!isFromRte && !this.miscControlsState.pasteAsText
               ? this.pasteTransformers
               : [
                   (value: string): string =>

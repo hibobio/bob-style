@@ -60,6 +60,10 @@ import { initMentionsControl } from './rte.mentions';
 import { FroalaEditorDirective } from './froala/editor.directive';
 import { TranslateService } from '@ngx-translate/core';
 import { RteUtilsService } from './rte-utils.service';
+import {
+  initPasteAsTextControl,
+  initRemoveFormatControl,
+} from './rte.misc-controls';
 
 // import { HtmlParserHelpers } from '../../../../ui-framework/src/lib/services/html/html-parser.service';
 
@@ -100,6 +104,9 @@ export abstract class RTEbaseElement extends BaseFormElement
   readonly plchldrPanelPosition = PanelDefaultPosVer.belowRight;
 
   private cntrlsInited = false;
+  protected miscControlsState: { pasteAsText: boolean } = {
+    pasteAsText: false,
+  };
 
   @ViewChild('editor', { read: FroalaEditorDirective, static: true })
   protected editorDirective: FroalaEditorDirective;
@@ -301,6 +308,13 @@ export abstract class RTEbaseElement extends BaseFormElement
   public ngOnInit(): void {
     initDirectionControl();
     initMentionsControl();
+    initPasteAsTextControl(this.miscControlsState);
+    initRemoveFormatControl({
+      parserService: this.parserService,
+      placeholdersConverter: this.placeholdersConverter,
+      placeholderList: this.placeholderList,
+      placeholdersEnabled: this.placeholdersEnabled(),
+    });
 
     if (!this.cntrlsInited) {
       this.initControls();
