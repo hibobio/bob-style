@@ -95,13 +95,17 @@ export const HTML_CLEANUP_REPLACERS: {
   },
 
   unnecessaryWrappers: {
-    find: [/<(span)>([^<]+)<\/\1>/gi],
-    replaceWith: ['$2'],
+    find: [
+      /<(span)>([^<]+)<\/\1>/gi,
+      /<\/(strong|em)>([\s.,;-]*)<\1([^>\/]*)>/gi,
+      /(<span\s*([^>\/]*)>)([^<]+)<\/span>(\s*)<span\s*\2>/gi,
+    ],
+    replaceWith: ['$2', '$2', '$1$3$4'],
   },
 
   whiteSpace: {
-    find: [/\s+/gi],
-    replaceWith: [' '],
+    find: [/([^\s.,;\-:])\s+([.,;])/gi, /([.,;])([^\s.,;<])/gi, /\s+/gi],
+    replaceWith: ['$1$2', '$1 $2', ' '],
   },
 
   BRs: {

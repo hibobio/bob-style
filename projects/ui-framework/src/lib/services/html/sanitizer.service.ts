@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { isString, chainCall } from './functional-utils';
-import { HtmlParserHelpers } from '../html/html-parser.service';
+import { isString, chainCall } from '../utils/functional-utils';
+import { HtmlParserHelpers } from './html-parser.service';
 
 import * as xss from 'xss';
 import { IFilterXSSOptions, ICSSFilter } from 'xss';
@@ -47,7 +47,7 @@ export const SANITIZER_ALLOWED_ATTRS = [
   'dir',
   'href',
   'id',
-  'lang',
+  // 'lang',
   'rel',
   'src',
   'target',
