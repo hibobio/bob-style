@@ -91,7 +91,10 @@ export class RteUtilsService {
       ]);
     }
 
-    controls = RTE_CONTROLS_DEF.filter(
+    controls = joinArrays(RTE_CONTROLS_DEF, [
+      BlotType.removeFormat,
+      BlotType.pasteAsText,
+    ]).filter(
       (cntrl: BlotType) =>
         (controls || RTE_CONTROLS_DEF).includes(cntrl) &&
         !(disableControls || RTE_DISABLE_CONTROLS_DEF).includes(cntrl)

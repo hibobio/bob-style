@@ -25,10 +25,10 @@ export const RTE_CONTROLS_DEF = joinArrays(
     BlotType.emoticons,
     BlotType.mentions,
     BlotType.placeholder,
-    BlotType.removeFormat,
-    BlotType.pasteAsText,
   ],
-  Object.values(BlotType)
+  Object.values(BlotType).filter((v) =>
+    [BlotType.removeFormat, BlotType.pasteAsText].includes(v)
+  )
 );
 
 export const RTE_DISABLE_CONTROLS_DEF: BlotType[] = [
