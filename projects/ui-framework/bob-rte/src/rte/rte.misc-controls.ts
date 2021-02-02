@@ -1,6 +1,6 @@
 import FroalaEditor from 'froala-editor';
-import { SelectGroupOption } from '../../../src/lib/lists/list.interface';
-import { HtmlParserHelpers } from '../../../src/lib/services/html/html-parser.service';
+import { SelectGroupOption } from 'bob-style';
+import { HtmlParserHelpers } from 'bob-style';
 import { PlaceholdersConverterService } from './placeholders.service';
 
 export const initPasteAsTextControl = (controlsState: {

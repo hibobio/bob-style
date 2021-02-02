@@ -12,12 +12,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { values } from 'lodash';
 import { BlotType, RTEType, RTEMode } from './rte.enum';
 import { mentionsOptions, placeholderMock, rteMockHtml } from './rte.mocks';
-import { ComponentGroupType } from '../../../src/lib/consts';
-import { dedupeArray } from '../../../src/lib/services/utils/functional-utils';
-import { SelectGroupOption } from '../../../src/lib/lists/list.interface';
+import { ComponentGroupType } from 'bob-style';
+import { dedupeArray } from 'bob-style';
 import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
 import { RichTextEditorModule } from './rte.module';
-import { mockText } from '../../../src/lib/mock.const';
+import { mockText } from 'bob-style';
 import { xssMock } from '../../../src/lib/services/utils/xss.mock';
 import { FormElementsCommonProps } from '../../../src/lib/form-elements/form-elements.stories.common';
 
