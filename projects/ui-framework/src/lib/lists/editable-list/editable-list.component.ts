@@ -40,6 +40,7 @@ import { Keys } from '../../enums';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { EditableListUtils } from './editable-list.static';
+import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
 
 @Component({
   selector: 'b-editable-list',
@@ -67,6 +68,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
   readonly order = ListSortType;
+  readonly autoComplete = InputAutoCompleteOptions;
 
   public listState: EditableListState = {
     delete: [],

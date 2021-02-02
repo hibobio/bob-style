@@ -63,6 +63,7 @@ import { TreeListModelUtils } from '../services/tree-list-model.static';
 import { SelectMode } from '../../list.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { itemID } from '../../list.interface';
+import { InputAutoCompleteOptions } from '../../../form-elements/input/input.enum';
 
 const LISTITEM_EL_HEIGHT = 32;
 
@@ -126,6 +127,7 @@ export abstract class BaseEditableTreeListElement
   readonly iconType = IconType;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
+  readonly autoComplete = InputAutoCompleteOptions;
 
   protected savestate: UndoState;
   protected listBackup: TreeListOption[];

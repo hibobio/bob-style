@@ -31,7 +31,7 @@
          [setTo]="type === types.month ? dateAdjust.startOfMonth : null"
          (parsed)="onInputChange($event)"
          [readonly]="!allowKeyInput || readonly"
-         autocomplete="chrome-off"
+         [attr.autocomplete]="autoComplete.off"
          [attr.id]="id"
          [attr.name]="id"
          [type]="inputTypes.text"

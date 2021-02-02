@@ -55,6 +55,7 @@ import { Overlay } from '@angular/cdk/overlay';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { UtilsService } from '../../services/utils/utils.service';
 import { isSameDay } from 'date-fns';
+import { InputAutoCompleteOptions } from '../input/input.enum';
 
 export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
   const strategy = () => overlay.scrollStrategies.close();
@@ -147,6 +148,7 @@ export abstract class BaseDatepickerElement<
   readonly iconColor = IconColor;
   readonly panelPos = PanelDefaultPosVer;
   readonly dateAdjust = DateAdjust;
+  readonly autoComplete = InputAutoCompleteOptions;
 
   private doneFirstChange = false;
   private useFormatForPlaceholder = false;

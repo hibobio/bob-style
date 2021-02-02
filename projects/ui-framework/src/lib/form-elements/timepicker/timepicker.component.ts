@@ -20,6 +20,7 @@ import { InputEventType } from '../form-elements.enum';
 import { Keys } from '../../enums';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
+import { InputAutoCompleteOptions } from '../input/input.enum';
 
 interface ParseConfig {
   minValue?: number;
@@ -88,6 +89,7 @@ export class TimePickerComponent extends BaseFormElement {
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
+  readonly autoComplete = InputAutoCompleteOptions;
 
   onInputKeydown(event: KeyboardEvent) {
     if (!this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9]/)) {

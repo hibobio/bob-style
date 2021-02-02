@@ -29,6 +29,7 @@ import { ChipListComponent } from '../chip-list/chip-list.component';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
 import { ChipInputValidation, CHIP_INPUT_VALIDATION } from './chip-input.const';
+import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
 
 @Component({
   selector: 'b-chip-input',
@@ -82,6 +83,7 @@ export class ChipInputComponent extends BaseFormElement
     removable: true,
     focusable: true,
   };
+  readonly autoComplete = InputAutoCompleteOptions;
 
   private ignoreAutoClosedEvent = false;
   private validator: RegExp;

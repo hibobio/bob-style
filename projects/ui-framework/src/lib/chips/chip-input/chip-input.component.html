@@ -22,7 +22,7 @@
 
     <input #input
            class="bfe-input"
-           autocomplete="chrome-off"
+           [attr.autocomplete]="autoComplete.off"
            [ngClass]="{empty: input.value === ''}"
            [attr.id]="id"
            [attr.name]="id"

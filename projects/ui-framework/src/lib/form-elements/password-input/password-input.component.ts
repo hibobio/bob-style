@@ -4,12 +4,15 @@ import {
   NgZone,
   ChangeDetectorRef,
   Input,
+  SimpleChanges,
+  OnChanges,
 } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { InputTypes } from '../input/input.enum';
+import { InputAutoCompleteOptions, InputTypes } from '../input/input.enum';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseInputElement } from '../base-input-element';
 import { BaseFormElement } from '../base-form-element';
+import { applyChanges } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-password-input',
@@ -32,7 +35,8 @@ import { BaseFormElement } from '../base-form-element';
     { provide: BaseFormElement, useExisting: PasswordInputComponent },
   ],
 })
-export class PasswordInputComponent extends BaseInputElement {
+export class PasswordInputComponent extends BaseInputElement
+  implements OnChanges {
   constructor(cd: ChangeDetectorRef, zone: NgZone) {
     super(cd, zone);
     this.outputTransformers = [];
@@ -41,11 +45,21 @@ export class PasswordInputComponent extends BaseInputElement {
   @Input() minChars = 4;
   @Input() maxChars = 30;
 
+  @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
+    InputAutoCompleteOptions.newPassword;
+
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
 
   public inputType = InputTypes.password;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes, {
+      enableBrowserAutoComplete: InputAutoCompleteOptions.newPassword,
+    });
+    super.ngOnChanges(changes);
+  }
 
   public isInputEmpty(): boolean {
     return !this.value || this.value.trim() === '';

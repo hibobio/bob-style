@@ -12,5 +12,7 @@ export enum InputTypes {
 
 export enum InputAutoCompleteOptions {
   on = 'on',
-  off = 'chrome-off',
+  off = 'off',
+  chromeOff = 'chrome-off',
+  newPassword = 'new-password',
 }

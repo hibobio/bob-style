@@ -19,7 +19,7 @@
          [attr.id]="id"
          [value]="value"
          [attr.placeholder]="hideLabelOnFocus && label ? label : placeholder"
-         [autocomplete]="enableBrowserAutoComplete"
+         [attr.autocomplete]="enableBrowserAutoComplete"
          (focus)="onFocus()"
          (blur)="onBlur($event)">
 

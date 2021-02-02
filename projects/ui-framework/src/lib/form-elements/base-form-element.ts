@@ -40,7 +40,7 @@ import {
   FormElementSpec,
 } from './form-elements.interface';
 import { IGNORE_EVENTS_DEF, TRANSMIT_OPTIONS_DEF } from './form-elements.const';
-import { InputTypes } from './input/input.enum';
+import { InputAutoCompleteOptions, InputTypes } from './input/input.enum';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -65,6 +65,8 @@ export abstract class BaseFormElement
   @Input() formControlName: string;
   @Input() showCharCounter = true;
   @Input() focusOnInit = false;
+  @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
+    InputAutoCompleteOptions.off;
 
   @Input() set isDisabled(disabled: boolean) {
     this.disabled = Boolean(disabled);
@@ -271,6 +273,7 @@ export abstract class BaseFormElement
       {
         showCharCounter: true,
         ignoreEvents: cloneArray(IGNORE_EVENTS_DEF),
+        enableBrowserAutoComplete: InputAutoCompleteOptions.off,
       },
       ['value', 'options', 'setProps'],
       false,

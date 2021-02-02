@@ -25,7 +25,7 @@
          [type]="inputType === inputTypes.number ? inputTypes.tel : inputType"
          [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
          [value]="value"
-         [autocomplete]="enableBrowserAutoComplete"
+         [attr.autocomplete]="enableBrowserAutoComplete"
          [attr.disabled]="disabled || readonly || null"
          [required]="required"
          [readonly]="readonly"

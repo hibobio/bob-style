@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { InputEvent } from './input/input.interface';
 import { BaseFormElement } from './base-form-element';
-import { InputAutoCompleteOptions, InputTypes } from './input/input.enum';
+import { InputTypes } from './input/input.enum';
 import { InputEventType } from './form-elements.enum';
 import { isKey, notFirstChanges } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
@@ -35,8 +35,6 @@ export abstract class BaseInputElement extends BaseFormElement {
   @Input() step: number;
   @Input() value: any = '';
   @Input() inputType: InputTypes = InputTypes.text;
-  @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
-    InputAutoCompleteOptions.off;
 
   @Input() minChars: number;
   @Input() maxChars: number;

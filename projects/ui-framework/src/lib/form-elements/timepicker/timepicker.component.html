@@ -25,7 +25,7 @@
            #input
            class="bfe-input-hours"
            type="tel"
-           autocomplete="chrome-off"
+           [attr.autocomplete]="autoComplete.off"
            maxlength="2"
            placeholder="00"
            [value]="valueHours || null"
@@ -43,7 +43,7 @@
     <input #inputMinutes
            class="bfe-input-minutes"
            type="tel"
-           autocomplete="chrome-off"
+           [attr.autocomplete]="autoComplete.off"
            maxlength="2"
            placeholder="00"
            [value]="valueMinutes || null"
