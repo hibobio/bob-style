@@ -103,7 +103,7 @@
 
         <span *ngIf="!option.isPlaceHolder && option.value"
               class="option-value"
-              data-max-lines='3'
+              [attr.data-max-lines]="size === formElementSize.smaller ? 2 : 3"
               [innerHTML]="option.value | highlight: searchValue"></span>
 
         <span *ngIf="!option.isPlaceHolder && option.description"

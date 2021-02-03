@@ -522,6 +522,8 @@ export { SortableCollapsibleSectionsComponent } from './lib/layout/sortable-coll
 export { SortableCollapsibleSection, SortableCollapsibleDropped } from './lib/layout/sortable-collapsible-sections/sortable-collapsible-sections.interface';
 export { CollapsibleHeaderDirective } from './lib/layout/sortable-collapsible-sections/collapsible-header.directive';
 export { CollapsibleContentDirective } from './lib/layout/sortable-collapsible-sections/collapsible-content.directive';
+export { CollapsibleModule } from './lib/layout/collapsible/collapsible.module';
+export { CollapsibleComponent } from './lib/layout/collapsible/collapsible.component';
 
 // Masonry
 export { MasonryLayoutModule } from './lib/layout/masonry/masonry.module';

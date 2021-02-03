@@ -49,7 +49,7 @@
                 (click)="selectGroup(header)"></span>
 
           <span class="header-option-value"
-                data-max-lines='3'
+                [attr.data-max-lines]="size === formElementSize.smaller ? 2 : 3"
                 [innerHTML]="header.groupIsOption ? (header.groupName | highlight: searchValue) :
                   header.groupName"></span>
 
