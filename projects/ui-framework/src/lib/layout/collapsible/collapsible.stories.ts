@@ -64,7 +64,8 @@ const note = `
   [title] | string | header text | &nbsp;
   [config] | CollapsibleStyle | object containing: <br>\
   **sectionClass, headerClass, panelClass** (supports what ngClass binding supports - string, string[], object);<br>\
-  **sectionStyle, headerStyle, panelStyle** (supports what ngStyle supports) | COLLAPSIBLE<sub>-</sub>STYLE<sub>-</sub>DEF
+  **sectionStyle, headerStyle, panelStyle** (supports what ngStyle supports)<br>\
+  chevronIcon (icon config, Icon interface) | COLLAPSIBLE<sub>-</sub>STYLE<sub>-</sub>DEF
   &lt;ng-content&gt; | template | pass anything to be put inside panel
   &lt;ng-content header&gt; | template | pass div with attribute 'header' to be put in the header
 

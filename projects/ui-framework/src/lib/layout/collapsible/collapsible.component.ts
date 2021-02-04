@@ -53,13 +53,13 @@ export class CollapsibleComponent implements OnChanges {
       this,
       changes,
       {
-        style: COLLAPSIBLE_STYLE_DEF,
+        config: COLLAPSIBLE_STYLE_DEF,
       },
       [],
       true
     );
 
-    if (hasChanges(changes, ['style'], true)) {
+    if (hasChanges(changes, ['config'], true)) {
       this.config = { ...COLLAPSIBLE_STYLE_DEF, ...this.config };
     }
 
