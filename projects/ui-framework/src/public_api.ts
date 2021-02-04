@@ -524,6 +524,8 @@ export { CollapsibleHeaderDirective } from './lib/layout/sortable-collapsible-se
 export { CollapsibleContentDirective } from './lib/layout/sortable-collapsible-sections/collapsible-content.directive';
 export { CollapsibleModule } from './lib/layout/collapsible/collapsible.module';
 export { CollapsibleComponent } from './lib/layout/collapsible/collapsible.component';
+export * from './lib/layout/collapsible/collapsible.const';
+export * from './lib/layout/collapsible/collapsible.interface';
 
 // Masonry
 export { MasonryLayoutModule } from './lib/layout/masonry/masonry.module';

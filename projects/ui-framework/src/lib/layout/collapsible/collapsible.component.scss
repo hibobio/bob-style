@@ -8,6 +8,10 @@
   cursor: pointer;
   list-style: none;
 
+  &.animate:before {
+    transition: transform 0.1s;
+  }
+
   &::marker,
   &::-webkit-details-marker {
     display: none;

@@ -38,3 +38,18 @@
     content: $char;
   }
 }
+
+[data-icon-before-rotate='90']:before,
+[data-icon-after-rotate='90']:after {
+  transform: rotate(90deg);
+}
+
+[data-icon-before-rotate='180']:before,
+[data-icon-after-rotate='180']:after {
+  transform: rotate(180deg);
+}
+
+[data-icon-before-rotate='-90']:before,
+[data-icon-after-rotate='-90']:after {
+  transform: rotate(-90deg);
+}

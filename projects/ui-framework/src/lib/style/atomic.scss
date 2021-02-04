@@ -127,6 +127,10 @@ $acss-dirs: top right bottom left;
   text-align: center;
 }
 
+.text-bold {
+  font-weight: 700;
+}
+
 // Margin & Padding
 
 @each $size in $acss-sizes {

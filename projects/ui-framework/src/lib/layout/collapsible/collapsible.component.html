@@ -1,22 +1,24 @@
 <details #section
          [attr.id]="id"
          class="bcl-collapsible"
-         [ngClass]="style.sectionClass"
-         [ngStyle]="style.sectionStyle"
+         [ngClass]="config.sectionClass"
+         [ngStyle]="config.sectionStyle"
          (toggle)="onExpand($event)">
 
   <summary class="bcl-header"
-           [ngClass]="style.headerClass"
-           [ngStyle]="style.headerStyle"
-           [attr.data-icon-before]="expanded ? chevronIcon.down : chevronIcon.right">
+           [ngClass]="config.headerClass"
+           [class.animate]="animate"
+           [ngStyle]="config.headerStyle"
+           [attr.data-icon-before]="chevronIcon"
+           [attr.data-icon-before-rotate]="expanded ? '90' : expanded">
     {{ title }}
     <ng-content select="[header]"></ng-content>
   </summary>
 
   <div class="bcl-panel"
-       [ngClass]="style.panelClass"
+       [ngClass]="config.panelClass"
        [class.b-expand]="expanded && shouldAnimate"
-       [ngStyle]="style.panelStyle">
+       [ngStyle]="config.panelStyle">
     <ng-content></ng-content>
   </div>
 

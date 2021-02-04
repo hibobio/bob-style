@@ -46,6 +46,10 @@ const note = `
   #### Module
   *MenuModule*
 
+  ~~~
+  ${template}
+  ~~~
+
   #### Properties
   Name | Type | Description | Default
   --- | --- | --- | ---
@@ -61,9 +65,8 @@ const note = `
   (openMenu) | &lt;string / void&gt; | notifies on menu open, outputs menu's id, if present | &nbsp;
   (closeMenu) | &lt;string / void&gt; | notifies on menu close, outputs menu's id, if present | &nbsp;
 
-  ~~~
-  ${template}
-  ~~~
+  **Note:**
+  The element (for example, button) that is passed as <u>ng-content</u> and should open the menu must have <u>menu-trigger</u> attribute, otherwise it will not be displayed.
 
   #### Example \`MenuItem[]\` config:
 
