@@ -45,7 +45,7 @@ export class CollapsibleComponent implements OnChanges {
 
   public expanded = false;
   public shouldAnimate = false;
-  public chevronIcon: string;
+  public chevronIcon: string = Icons.chevron_right.replace('b-icon-', '');
   private timeout: any;
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -61,13 +61,11 @@ export class CollapsibleComponent implements OnChanges {
 
     if (hasChanges(changes, ['config'], true)) {
       this.config = { ...COLLAPSIBLE_STYLE_DEF, ...this.config };
+
+      this.chevronIcon = (
+        this.config?.chevronIcon?.icon || Icons.chevron_right
+      ).replace('b-icon-', '');
     }
-
-    this.chevronIcon = (
-      this.config?.chevronIcon?.icon || Icons.chevron_right
-    ).replace('b-icon-', '');
-
-    console.log(changes, this.chevronIcon);
   }
 
   public onExpand(event: Event) {
