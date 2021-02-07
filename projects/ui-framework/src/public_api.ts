@@ -147,6 +147,10 @@ export { MultiProgressBarComponent } from './lib/indicators/progress/multi-progr
 export * from './lib/indicators/simple-bar-chart/simple-bar-chart.interface';
 export { SimpleBarChartModule } from './lib/indicators/simple-bar-chart/simple-bar-chart.module';
 export { SimpleBarChartComponent } from './lib/indicators/simple-bar-chart/simple-bar-chart.component';
+// Legend
+export * from './lib/indicators/legend/legend.interface';
+export { LegendModule } from './lib/indicators/legend/legend.module';
+export { LegendComponent } from './lib/indicators/legend/legend.component';
 
 /*
 * Comments

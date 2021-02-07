@@ -54,7 +54,7 @@ const note = `
   --- | --- | --- | ---
   [type] | ProgressType | theme | primary
   [size] | ProgressSize | theme size | medium
-  [data] | MultiProgressBarData[] | \`\`\`color: ColorPalette/string\`\`\` - bar color (if color is not passed, color for the Palette will be used),<br>\
+  [data] | MultiProgressBarData[] | \`\`\`color: ColorPalette/string\`\`\` - bar section color (if color is not passed, color from the Palette will be used),<br>\
   \`\`\`value: number\`\`\` -  progress value;<br>\
   **Note:** If the sum of all values does not add up to 100, then the sum of all values will be taken for 100%, and all the progress bars will display relative to that. |  &nbsp;
   [config] | MultiProgressBarConfig |  \`\`\`total: boolean\`\`\` - number to be considered as 100% instead of the sum of values <br>\

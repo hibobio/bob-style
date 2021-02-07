@@ -1,3 +1,9 @@
+export enum Types {
+  primary = 'primary',
+  secondary = 'secondary',
+  tertiary = 'tertiary',
+}
+
 export enum Keys {
   meta = 'Meta',
   alt = 'Alt',

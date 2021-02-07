@@ -28,4 +28,9 @@
     height: times8(2);
     border-radius: times8(2) / 2;
   }
+
+  &[data-type='secondary'] {
+    height: times8(3);
+    border-radius: $border-radius;
+  }
 }

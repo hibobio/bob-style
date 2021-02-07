@@ -1,0 +1,59 @@
+@import '../../style/common-imports';
+
+$blc-size-def: 20px;
+
+:host {
+  display: block;
+  text-align: left;
+}
+
+.bl-list {
+  gap: 8px;
+}
+
+[data-type='primary'] ::ng-deep {
+  .bl-cell {
+    font-size: $font-size-body;
+    color: $grey-800;
+
+    &:before {
+      font-size: inherit;
+      margin-right: 8px;
+    }
+  }
+}
+
+[data-type='secondary'] ::ng-deep {
+  .bl-cell {
+    font-size: $font-size-caption;
+    color: $grey-600;
+
+    &:before {
+      font-size: 9px;
+      margin-right: 4px;
+    }
+  }
+}
+
+.bl-cell {
+  &[data-has-value='true'] {
+    display: flex;
+    align-items: center;
+
+    &:before {
+      @include flex-align;
+      height: var(--blc-circle-size, #{$blc-size-def});
+      line-height: var(--blc-circle-size, #{$blc-size-def});
+      min-width: var(--blc-circle-size, #{$blc-size-def});
+      border-radius: calc(var(--blc-circle-size, #{$blc-size-def}) / 2);
+      background-color: var(--blc-color, #{$grey-700});
+      letter-spacing: -0.6px;
+      padding: 0 4px;
+      font-weight: 700;
+      color: white;
+
+      counter-reset: variable var(--blc-value);
+      content: counter(variable);
+    }
+  }
+}
