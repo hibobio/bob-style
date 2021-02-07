@@ -22,7 +22,16 @@ const template = `<b-legend [config]="{type:type, columns:columns}"
       [data]="data"></b-legend>`;
 
 const storyTemplate = `<b-story-book-layout [title]="'Legend'">
-    ${template}
+<div>
+
+  ${template}
+
+    <br><br>
+    <h4>Secondary without values:</h4>
+    <b-legend [config]="{type:'secondary', columns:columns}"
+      [data]="data2"></b-legend>
+
+</div>
 </b-story-book-layout>`;
 
 const note = `
@@ -72,6 +81,14 @@ const toAdd = () => ({
         };
       })
     ),
+    data2: makeArray(9).map((_) => {
+      const dice = randomNumber();
+
+      return {
+        text: mockText(2),
+        color: colorGenerator.next(),
+      };
+    }),
   },
   moduleMetadata: {
     imports: [StoryBookLayoutModule, LegendModule],
