@@ -3,7 +3,8 @@
     [style.--blc-circle-size]="(config?.type === 'secondary' ? 12 : 20)+'px'">
   <li *ngFor="let cell of data; trackBy: ['color','value'] | trackByProp"
       class="bl-cell"
-      [attr.data-has-value]="!!(cell.color || cell.value)"
+      [attr.data-has-color]="!!(cell.color)"
+      [attr.data-has-value]="!!(cell.value)"
       [style.--blc-color]="cell.color||null"
       [style.--blc-value]="cell.value||null">
     {{cell.text}}

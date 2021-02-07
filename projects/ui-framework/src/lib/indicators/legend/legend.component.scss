@@ -36,17 +36,24 @@ $blc-size-def: 20px;
 }
 
 .bl-cell {
-  &[data-has-value='true'] {
+  &[data-has-value='true'],
+  &[data-has-color='true'] {
     display: flex;
     align-items: center;
 
     &:before {
-      @include flex-align;
+      @include pseudo;
       height: var(--blc-circle-size, #{$blc-size-def});
       line-height: var(--blc-circle-size, #{$blc-size-def});
       min-width: var(--blc-circle-size, #{$blc-size-def});
       border-radius: calc(var(--blc-circle-size, #{$blc-size-def}) / 2);
       background-color: var(--blc-color, #{$grey-700});
+    }
+  }
+
+  &[data-has-value='true'] {
+    &:before {
+      @include flex-align;
       letter-spacing: -0.6px;
       padding: 0 4px;
       font-weight: 700;
