@@ -6,6 +6,7 @@ import { ProgressType, ProgressSize } from '../progress.enum';
 import { MultiProgressBarModule } from './multi-progress-bar.module';
 import { ButtonsModule } from '../../../buttons/buttons.module';
 import { action } from '@storybook/addon-actions';
+import { ColorPaletteService } from '../../../services/color-service/color-palette.service';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
@@ -69,6 +70,8 @@ const note = `
   ~~~
 `;
 
+const colorGenerator = new ColorPaletteService().paletteColorGenerator();
+
 const toAdd = () => ({
   template: storyTemplate,
   props: {
@@ -85,10 +88,10 @@ const toAdd = () => ({
     ],
 
     data: object('data', [
-      { value: 13 },
-      { value: 27 },
-      { value: 5 },
-      { value: 67 },
+      { value: 13, color: colorGenerator.next() },
+      { value: 27, color: colorGenerator.next() },
+      { value: 5, color: colorGenerator.next() },
+      { value: 67, color: colorGenerator.next() },
     ]),
 
     trackColor: select(
