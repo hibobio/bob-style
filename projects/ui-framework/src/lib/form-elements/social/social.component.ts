@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { IconColor, IconSize } from '../../icons/icons.enum';
-import { InputEvent } from '../input/input.interface';
+import { BInputEvent } from '../input/input.interface';
 import { SocialTypes } from './social.const';
 import { Social } from './social.enum';
 import { BaseFormElement } from '../base-form-element';
@@ -80,8 +80,8 @@ export class SocialComponent extends BaseFormElement
 
   // tslint:disable-next-line: no-output-rename
   @Output('socialInputChange') changed: EventEmitter<
-    InputEvent<string>
-  > = new EventEmitter<InputEvent<string>>();
+    BInputEvent<string>
+  > = new EventEmitter<BInputEvent<string>>();
 
   public inputId: string | number;
   public narrowInput = false;
@@ -106,7 +106,7 @@ export class SocialComponent extends BaseFormElement
     super.ngAfterViewInit();
   }
 
-  onInputEvents(event: InputEvent): void {
+  onInputEvents(event: BInputEvent<string>): void {
     if (event.event === InputEventType.onChange) {
       this.writeValue(event.value);
     }

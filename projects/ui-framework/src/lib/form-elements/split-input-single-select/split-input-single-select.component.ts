@@ -14,8 +14,7 @@ import { SelectGroupOption, SelectOption } from '../../lists/list.interface';
 import { InputTypes } from '../input/input.enum';
 import { InputEventType } from '../form-elements.enum';
 import { InputSingleSelectValue } from './split-input-single-select.interface';
-import { assign, map } from 'lodash';
-import { InputEvent } from '../input/input.interface';
+import { BInputEvent } from '../input/input.interface';
 import { ListChange } from '../../lists/list-change/list-change';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
@@ -132,7 +131,7 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
     super.ngAfterViewInit();
   }
 
-  onInputChange(event: InputEvent): void {
+  onInputChange(event: BInputEvent<string>): void {
     if (
       event.event === InputEventType.onChange ||
       event.event === InputEventType.onBlur

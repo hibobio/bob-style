@@ -3,11 +3,12 @@
  *ngFor="let c of arrayOfObjects | sortBy:'asc':'propertyName'"
  */
 import { NgModule, Pipe, PipeTransform } from '@angular/core';
+import { SortType } from '../../types';
 import { arrOfObjSortByProp, isEmptyArray } from '../utils/functional-utils';
 
 @Pipe({ name: 'sortBy' })
 export class SortByPipe implements PipeTransform {
-  transform(value: any[], dir: 'asc' | 'desc' = 'asc', key?: string): any[] {
+  transform(value: any[], dir: SortType = 'asc', key?: string): any[] {
     if (isEmptyArray(value) || !dir) {
       return value;
     }

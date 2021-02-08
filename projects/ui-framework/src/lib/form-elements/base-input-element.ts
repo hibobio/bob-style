@@ -9,7 +9,7 @@ import {
   Directive,
   ElementRef,
 } from '@angular/core';
-import { InputEvent } from './input/input.interface';
+import { BInputEvent } from './input/input.interface';
 import { BaseFormElement } from './base-form-element';
 import { InputTypes } from './input/input.enum';
 import { InputEventType } from './form-elements.enum';
@@ -42,9 +42,9 @@ export abstract class BaseInputElement extends BaseFormElement {
   @Input() max: number;
 
   // tslint:disable-next-line: no-output-rename
-  @Output('inputEvents') changed: EventEmitter<InputEvent> = new EventEmitter<
-    InputEvent
-  >();
+  @Output('inputEvents') changed: EventEmitter<
+    BInputEvent<string>
+  > = new EventEmitter<BInputEvent<string>>();
 
   @HostBinding('attr.hidden') get isHidden() {
     return this.inputType === InputTypes.hidden ? 'hidden' : null;

@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { InputEvent } from '../input/input.interface';
+import { BInputEvent } from '../input/input.interface';
 import { InputEventType } from '../form-elements.enum';
 import { booleanOrFail } from '../../services/utils/transformers';
 import { notFirstChanges } from '../../services/utils/functional-utils';
@@ -52,8 +52,8 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
 
   // tslint:disable-next-line: no-output-rename
   @Output('checkboxChange') changed: EventEmitter<
-    InputEvent<boolean>
-  > = new EventEmitter<InputEvent<boolean>>();
+    BInputEvent<boolean>
+  > = new EventEmitter<BInputEvent<boolean>>();
 
   readonly icons = Icons;
   readonly iconColor = IconColor;

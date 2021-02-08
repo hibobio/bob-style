@@ -13,7 +13,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { FormElementsModule } from '../../form-elements/form-elements.module';
 import { InputEventType } from '../../form-elements/form-elements.enum';
-import { InputEvent } from '../../form-elements/input/input.interface';
+import { BInputEvent } from '../../form-elements/input/input.interface';
 import { SelectGroupOption } from '../../lists/list.interface';
 import { DialogSize } from './dialog.enum';
 import { DialogButtons } from './dialog.interface';
@@ -169,7 +169,7 @@ export class ExampleDialog1Component implements OnInit {
     ];
   }
 
-  onTextEdit(event: InputEvent): void {
+  onTextEdit(event: BInputEvent<string>): void {
     if (event.event === InputEventType.onChange) {
       this.editedText = event.value as string;
     }

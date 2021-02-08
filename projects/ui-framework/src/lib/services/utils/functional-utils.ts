@@ -1,6 +1,6 @@
 import { SimpleChanges, SimpleChange, ElementRef, Type } from '@angular/core';
 import { controlKeys, KEYCODES, Keys, metaKeys } from '../../enums';
-import { Color, GenericObject } from '../../types';
+import { Color, GenericObject, SortType } from '../../types';
 import {
   isEqual as _isEqual,
   cloneDeep as _cloneDeep,
@@ -1013,17 +1013,25 @@ export const randomFromArray = (array: any[] = [], num: number = 1) => {
 export const sortByLength = (
   strA: string | any[],
   strB: string | any[],
-  dir: 'asc' | 'desc' = 'asc'
-) =>
-  dir === 'desc'
+  dir: SortType = 'asc'
+) => {
+  if (!dir) {
+    return 0;
+  }
+  return dir === 'desc'
     ? (strB?.length || 0) - (strA?.length || 0)
     : (strA?.length || 0) - (strB?.length || 0);
+};
 
 export const arrOfObjSortByProp = <T = GenericObject<string | number>>(
   arr: T[],
   prop: string,
-  dir: 'asc' | 'desc' = 'asc'
+  dir: SortType = 'asc'
 ): T[] => {
+  if (isEmptyArray(arr) || !dir) {
+    return arr;
+  }
+
   arr.sort((a: GenericObject, b: GenericObject) => {
     const x: string | number = isString(a[prop])
       ? a[prop].toLowerCase()

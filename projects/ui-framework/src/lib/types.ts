@@ -1,3 +1,4 @@
+import { Sort } from './enums';
 import {
   ColorPalette,
   ColorsGrey,
@@ -8,6 +9,8 @@ export interface GenericObject<T = any> {
 }
 
 export type Color = ColorPalette | ColorsGrey | string;
+
+export type SortType = Sort | 'asc' | 'desc' | boolean;
 
 export interface ArrayES<T> extends Array<T> {
   flat(): Array<T>;

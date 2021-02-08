@@ -324,7 +324,7 @@ export { DatepickerInlineComponent } from './lib/form-elements/date-picker/datep
 // Input Module
 export { InputModule } from './lib/form-elements/input/input.module';
 export { InputComponent } from './lib/form-elements/input/input.component';
-export { InputEvent } from './lib/form-elements/input/input.interface';
+export * from './lib/form-elements/input/input.interface';
 export {
   InputTypes, InputAutoCompleteOptions
 } from './lib/form-elements/input/input.enum';

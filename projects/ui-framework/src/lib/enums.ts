@@ -34,6 +34,11 @@ export enum NumTypes {
   twenty = '20',
 }
 
+export enum Sort {
+  asc = 'asc',
+  desc = 'desc',
+}
+
 export enum Keys {
   meta = 'Meta',
   alt = 'Alt',

@@ -11,7 +11,7 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import { InputEventType } from '../../form-elements/form-elements.enum';
-import { InputEvent } from '../../form-elements/input/input.interface';
+import { BInputEvent } from '../../form-elements/input/input.interface';
 
 @Component({
   selector: 'b-switch-toggle',
@@ -56,8 +56,8 @@ export class SwitchToggleComponent extends BaseFormElement {
   >();
 
   // tslint:disable-next-line: no-output-rename
-  @Output() changed: EventEmitter<InputEvent<boolean>> = new EventEmitter<
-    InputEvent<boolean>
+  @Output() changed: EventEmitter<BInputEvent<boolean>> = new EventEmitter<
+    BInputEvent<boolean>
   >();
 
   onChange($event: MatSlideToggleChange): void {

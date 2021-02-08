@@ -52,7 +52,7 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   [value] | string | value of input field ('HH:MM')
-  (changed) | InputEvent | change emitter
+  (changed) | BInputEvent | change emitter
 
   ${formElemsPropsDoc}
 `;
