@@ -32,7 +32,8 @@ export class ColorService {
     );
   }
 
-  public isDark(color: [number, number, number] | string) {
+  // with bigger sensitivity values, lighter colors will be considered dark
+  public isDark(color: [number, number, number] | string, sensitivity = 160) {
     if (!color) {
       return color;
     }
@@ -40,7 +41,7 @@ export class ColorService {
       color = this.parseToRGB(color);
     }
     const brightness = this.getBrightness(color);
-    return brightness && brightness < 160; // 128
+    return brightness && brightness < sensitivity; // 128
   }
 
   public randomColor(): string {

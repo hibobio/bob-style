@@ -1,14 +1,82 @@
 @import '../../style/common-imports';
 
 $blc-size-def: 20px;
+$blc-margin: times8(1);
 
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   text-align: left;
 }
 
-.bl-list {
-  gap: 8px;
+[data-layout='grid'] {
+  display: grid;
+  grid-template-columns: repeat(var(--blc-cols, 3), 1fr);
+  column-gap: $blc-margin;
+  row-gap: var(--blc-row-gap, #{$blc-margin});
+
+  &[data-flow='column'] {
+    grid-auto-flow: column;
+    grid-template-rows: repeat(var(--blc-rows, 10), 1fr);
+  }
+}
+
+[data-layout='flex'] {
+  display: flex;
+  flex-wrap: wrap;
+
+  ::ng-deep {
+    .bl-cell {
+      margin-right: $blc-margin;
+      margin-bottom: var(--blc-row-gap, #{$blc-margin});
+    }
+  }
+
+  &[data-flow='column'] {
+    flex-direction: column;
+    max-height: calc(
+      (
+          var(--blc-circle-size, #{$blc-size-def}) +
+            var(--blc-row-gap, #{$blc-margin})
+        ) * var(--blc-rows, 10)
+    );
+  }
+}
+
+[data-has-value='true'] ::ng-deep,
+[data-has-color='true'] ::ng-deep {
+  .bl-cell {
+    display: flex;
+    align-items: center;
+
+    &:before {
+      @include pseudo;
+      height: var(--blc-circle-size, #{$blc-size-def});
+      line-height: var(--blc-circle-size, #{$blc-size-def});
+      min-width: var(--blc-circle-size, #{$blc-size-def});
+      border-radius: calc(var(--blc-circle-size, #{$blc-size-def}) / 2);
+      background-color: var(--blc-color, #{$grey-700});
+    }
+  }
+}
+
+[data-has-value='true'] ::ng-deep {
+  .bl-cell {
+    &:before {
+      @include flex-align;
+      letter-spacing: -0.6px;
+      padding: 0 4px;
+      font-weight: 700;
+      color: var(--blc-text-color, white);
+
+      counter-reset: variable var(--blc-value);
+      content: counter(variable);
+    }
+  }
 }
 
 [data-type='primary'] ::ng-deep {
@@ -31,36 +99,6 @@ $blc-size-def: 20px;
     &:before {
       font-size: 9px;
       margin-right: 4px;
-    }
-  }
-}
-
-.bl-cell {
-  &[data-has-value='true'],
-  &[data-has-color='true'] {
-    display: flex;
-    align-items: center;
-
-    &:before {
-      @include pseudo;
-      height: var(--blc-circle-size, #{$blc-size-def});
-      line-height: var(--blc-circle-size, #{$blc-size-def});
-      min-width: var(--blc-circle-size, #{$blc-size-def});
-      border-radius: calc(var(--blc-circle-size, #{$blc-size-def}) / 2);
-      background-color: var(--blc-color, #{$grey-700});
-    }
-  }
-
-  &[data-has-value='true'] {
-    &:before {
-      @include flex-align;
-      letter-spacing: -0.6px;
-      padding: 0 4px;
-      font-weight: 700;
-      color: white;
-
-      counter-reset: variable var(--blc-value);
-      content: counter(variable);
     }
   }
 }

@@ -1,6 +1,6 @@
 import { SimpleChanges, SimpleChange, ElementRef, Type } from '@angular/core';
 import { controlKeys, KEYCODES, Keys, metaKeys } from '../../enums';
-import { GenericObject } from '../../types';
+import { Color, GenericObject } from '../../types';
 import {
   isEqual as _isEqual,
   cloneDeep as _cloneDeep,
@@ -22,6 +22,12 @@ import {
 } from 'rxjs';
 import { delay, take } from 'rxjs/operators';
 import { AnonymousSubject } from 'rxjs/internal/Subject';
+import { PalletteColorSet } from '../color-service/color-palette.enum';
+import {
+  ColorPaletteService,
+  PaletteColorGenerator,
+} from '../color-service/color-palette.service';
+import { ColorService } from '../color-service/color.service';
 
 // ----------------------
 // TYPES
@@ -1004,20 +1010,39 @@ export const randomFromArray = (array: any[] = [], num: number = 1) => {
 // SORTERS
 // ----------------------
 
-export const arrOfObjSortByProp = <T = GenericObject>(
+export const sortByLength = (
+  strA: string | any[],
+  strB: string | any[],
+  dir: 'asc' | 'desc' = 'asc'
+) =>
+  dir === 'desc'
+    ? (strB?.length || 0) - (strA?.length || 0)
+    : (strA?.length || 0) - (strB?.length || 0);
+
+export const arrOfObjSortByProp = <T = GenericObject<string | number>>(
   arr: T[],
   prop: string,
-  asc = true
+  dir: 'asc' | 'desc' = 'asc'
 ): T[] => {
   arr.sort((a: GenericObject, b: GenericObject) => {
-    const x = a[prop].toLowerCase();
-    const y = b[prop].toLowerCase();
-    return x < y ? -1 : x > y ? 1 : 0;
+    const x: string | number = isString(a[prop])
+      ? a[prop].toLowerCase()
+      : a[prop];
+    const y: string | number = isString(b[prop])
+      ? b[prop].toLowerCase()
+      : b[prop];
+    return dir === 'desc'
+      ? x < y
+        ? 1
+        : x > y
+        ? -1
+        : 0
+      : x < y
+      ? -1
+      : x > y
+      ? 1
+      : 0;
   });
-
-  if (!asc) {
-    arr.reverse();
-  }
 
   return arr;
 };
@@ -1093,6 +1118,31 @@ export const dataDeepSort = <T = any>(
     });
 
   return isArray(data) ? (sortedData as T[]) : (sortedData[0] as T);
+};
+
+// let testArr = [
+//   '02-03',
+//   '1985-02-25',
+//   '09-24',
+//   '12-30',
+//   '12-15',
+//   '01-05',
+//   '01-15',
+// ].sort(sortBirthDateStrings);
+// => [ '01-05', '01-15', '02-03', '1985-02-25', '09-24', '12-15', '12-30' ]
+export const sortBirthDateStrings = (bd1: string, bd2: string): number => {
+  const [bd1num, bd2num] = [bd1, bd2].map(
+    (bdstr) =>
+      bdstr
+        .split(/\W/)
+        .slice(-2)
+        .reduce((res, num, indx) => {
+          return indx === 0
+            ? (res = Math.round((parseInt(num, 10) * 100) / 12))
+            : (res = res * 100 + Math.round((parseInt(num, 10) * 100) / 31));
+        }, 0) || 0 // 0 if NaN
+  );
+  return bd1num - bd2num;
 };
 
 // ----------------------
@@ -1680,31 +1730,6 @@ export const isChrome = () => {
   );
 };
 
-// let testArr = [
-//   '02-03',
-//   '1985-02-25',
-//   '09-24',
-//   '12-30',
-//   '12-15',
-//   '01-05',
-//   '01-15',
-// ].sort(sortBirthDateStrings);
-// => [ '01-05', '01-15', '02-03', '1985-02-25', '09-24', '12-15', '12-30' ]
-export const sortBirthDateStrings = (bd1: string, bd2: string): number => {
-  const [bd1num, bd2num] = [bd1, bd2].map(
-    (bdstr) =>
-      bdstr
-        .split(/\W/)
-        .slice(-2)
-        .reduce((res, num, indx) => {
-          return indx === 0
-            ? (res = Math.round((parseInt(num, 10) * 100) / 12))
-            : (res = res * 100 + Math.round((parseInt(num, 10) * 100) / 31));
-        }, 0) || 0 // 0 if NaN
-  );
-  return bd1num - bd2num;
-};
-
 export const getCopyName = (val: string, copyStr = 'copy'): string => {
   if (!val) {
     return val;
@@ -1719,6 +1744,14 @@ export const getCopyName = (val: string, copyStr = 'copy'): string => {
         ((parseInt(match[3], 10) || 1) + 1)
       ).trim();
 };
+
+export const getColorGenerator = (
+  colorSet = PalletteColorSet.main
+): PaletteColorGenerator =>
+  new ColorPaletteService().paletteColorGenerator(colorSet);
+
+export const isDark = (color: Color, sensitivity?: number) =>
+  ColorService.prototype.isDark(color, sensitivity);
 
 export const invoke = <T = unknown, R = any>(smth: T, method: string): R => {
   return smth && isFunction(smth[method]) && smth[method]();

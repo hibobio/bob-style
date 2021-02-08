@@ -46,7 +46,7 @@ export class EditableListUtils {
       (!order && currentOrder && currentOrder !== ListSortType.Asc) ||
       (!order && !currentOrder && !this.isListAscending(list));
 
-    arrOfObjSortByProp(list, 'value', shouldBeAscending);
+    arrOfObjSortByProp(list, 'value', shouldBeAscending ? 'asc' : 'desc');
 
     return shouldBeAscending ? ListSortType.Asc : ListSortType.Desc;
   }

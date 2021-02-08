@@ -1,5 +1,4 @@
-import { ColorService } from '../color-service/color.service';
-import { asArray, isString } from './functional-utils';
+import { asArray, isDark, isString } from './functional-utils';
 
 const LOGGER_DATA = {
   message: ['log', '#535353', '•', '13px'],
@@ -20,8 +19,7 @@ export class log {
   constructor(tag: string, bgColor?: string) {
     this._tag = tag;
     this._bgColor = bgColor;
-    this._textColor =
-      bgColor && ColorService.prototype.isDark(bgColor) ? 'white' : 'black';
+    this._textColor = bgColor && isDark(bgColor) ? 'white' : 'black';
   }
 
   private readonly _tag: string;
@@ -43,11 +41,7 @@ export class log {
     bgColor = bgColor || LOGGER_DATA[what][1];
     textColor =
       textColor ||
-      (bgColor
-        ? ColorService.prototype.isDark(bgColor)
-          ? 'white'
-          : 'black'
-        : LOGGER_TXTCOL_DEF);
+      (bgColor ? (isDark(bgColor) ? 'white' : 'black') : LOGGER_TXTCOL_DEF);
 
     return tag
       ? console[LOGGER_DATA[what][0]](

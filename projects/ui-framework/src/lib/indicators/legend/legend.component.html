@@ -1,12 +1,21 @@
-<ul class="bl-list reset-list grd-eq-{{config?.columns||3}}"
-    [attr.data-type]="config?.type || 'primary'"
-    [style.--blc-circle-size]="(config?.type === 'secondary' ? 12 : 20)+'px'">
-  <li *ngFor="let cell of data; trackBy: ['color','value'] | trackByProp"
+<ul class="bl-list reset-list"
+    [attr.data-type]="config.type"
+    [attr.data-layout]="config.layout"
+    [attr.data-flow]="config.flow"
+    [attr.data-has-color]="config.hasColor"
+    [attr.data-has-value]="config.hasValue"
+    [ngClass]="config.listClass"
+    [ngStyle]="config.listStyle">
+
+  <li *ngFor="let cell of (config.sortByValue ?
+        (data | sortBy:config.sortByValue:'value') : data); trackBy: ['color','value'] | trackByProp"
       class="bl-cell"
-      [attr.data-has-color]="!!(cell.color)"
-      [attr.data-has-value]="!!(cell.value)"
-      [style.--blc-color]="cell.color||null"
-      [style.--blc-value]="cell.value||null">
+      [style.--blc-color]="cell.color"
+      [style.--blc-text-color]="config.valueTextColor || cell.valueTextColor"
+      [style.--blc-value]="cell.value"
+      [style.color]="cell.value"
+      [ngClass]="config.cellClass"
+      [ngStyle]="config.cellStyle">
     {{cell.text}}
   </li>
 </ul>
