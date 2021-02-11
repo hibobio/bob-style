@@ -1,6 +1,7 @@
 <b-single-select-panel #selectPanel
+                       *ngLet="avatars$ | async as avatars"
                        [options]="employeeList$ | async"
-                       [disabled]="!expandOnClick"
+                       [disabled]="!expandOnClick || !avatars?.length"
                        [panelClass]="panelClass"
                        [readonly]="readonly || !selectChange.observers.length"
                        [size]="formElementSize"
@@ -11,7 +12,7 @@
 
   <div class="avatar-showcase">
 
-    <b-avatar-image *ngFor="let avatar of (avatars$ | async); trackBy: avatarsTrackBy"
+    <b-avatar-image *ngFor="let avatar of avatars; trackBy: avatarsTrackBy"
                     class="showcase-avatar"
                     [avatar]="avatar"
                     [size]="avatarSize"

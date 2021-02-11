@@ -16,6 +16,14 @@ import {
 } from '../../services/utils/functional-utils';
 import { LegendConfig, LegendData } from './legend.interface';
 
+export const LEGEND_CONFIG_DEF: LegendConfig = {
+  type: Types.secondary,
+  layout: 'grid',
+  flow: 'row',
+  columns: 3,
+  rowGap: 8,
+};
+
 @Component({
   selector: 'b-legend',
   templateUrl: './legend.component.html',
@@ -34,15 +42,15 @@ export class LegendComponent implements OnChanges {
     this.config = {
       ...this.config,
       ...config,
-      columns: config.columns || this.config.columns || 3,
-      rowGap: config.rowGap || this.config.rowGap || 8,
-      type: config.type || this.config.type || Types.primary,
-      layout: config.layout || this.config.layout || 'grid',
-      flow: config.flow || this.config.flow || 'row',
+      columns: config?.columns || this.config.columns || 3,
+      rowGap: config?.rowGap || this.config.rowGap || 8,
+      type: config?.type || this.config.type || Types.primary,
+      layout: config?.layout || this.config.layout || 'grid',
+      flow: config?.flow || this.config.flow || 'row',
       sortByValue,
     };
   }
-  public config: LegendConfig;
+  public config: LegendConfig = LEGEND_CONFIG_DEF;
 
   @Input('data') set setData(data: LegendData[]) {
     this.data = (data || []).map((item) => ({
@@ -56,7 +64,7 @@ export class LegendComponent implements OnChanges {
         : ColorsGrey.color_grey_800,
     }));
   }
-  public data: LegendData[];
+  public data: LegendData[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (

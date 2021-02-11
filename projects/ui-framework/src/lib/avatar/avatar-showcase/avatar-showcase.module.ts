@@ -6,6 +6,7 @@ import { IconsModule } from '../../icons/icons.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { SingleSelectPanelModule } from '../../lists/single-select-panel/single-select-panel.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { NgLetModule } from '../../services/utils/nglet.directive';
 
 @NgModule({
   declarations: [EmployeesShowcaseComponent],
@@ -15,6 +16,7 @@ import { TranslateModule } from '@ngx-translate/core';
     IconsModule,
     SingleSelectPanelModule,
     TranslateModule,
+    NgLetModule,
   ],
   exports: [EmployeesShowcaseComponent],
   entryComponents: [],
