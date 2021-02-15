@@ -154,6 +154,7 @@ $list-max-items: 8;
     visibility: hidden;
     z-index: 2;
     cursor: default;
+    text-transform: none;
   }
 
   .option-select:hover,
@@ -162,6 +163,10 @@ $list-max-items: 8;
     .comp-suffix {
       visibility: visible;
     }
+  }
+
+  b-component-renderer.comp-suffix {
+    visibility: visible;
   }
 
   .header-option-value,

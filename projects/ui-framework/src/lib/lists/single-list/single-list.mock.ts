@@ -5,6 +5,7 @@ import { randomNumber } from '../../services/utils/functional-utils';
 import { cloneDeep } from 'lodash';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { IconColor, Icons } from '../../icons/icons.enum';
+import { SwitchToggleComponent } from '../../indicators/switch-toggle/switch-toggle.component';
 
 const mayBeSelected = (perc = 80) => {
   return randomNumber() > perc;
@@ -54,6 +55,17 @@ export const optionsMock: SelectGroupOption[] = [
   {
     groupName: 'Roles',
     key: 'roles',
+    suffixComponent: {
+      component: SwitchToggleComponent,
+      attributes: {
+        placeholder: 'Some toggle',
+        labelInFront: true,
+        value: true,
+      },
+      handlers: {
+        changed: console.log,
+      },
+    },
     options: [
       {
         value: 'Crème Brûlée',

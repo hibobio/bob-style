@@ -11,8 +11,12 @@ export interface SelectGroupOption {
   key?: itemID;
   options: SelectOption[];
   description?: string;
+
+  suffixComponent?: RenderedComponent;
+
   selected?: boolean;
   hidden?: boolean;
+
   optionsCount?: number;
   selectedCount?: number;
 

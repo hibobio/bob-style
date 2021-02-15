@@ -13,9 +13,13 @@ import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import {
   applyChanges,
   hasChanges,
+  isDark,
 } from '../../services/utils/functional-utils';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { Icon } from '../../icons/icon.interface';
+import { NgClass } from '../../services/html/html-helpers.interface';
+import { Color } from '../../types';
+import { ColorsGrey } from '../../services/color-service/color-palette.enum';
 
 @Component({
   selector: 'b-chip, [b-chip]',
@@ -32,7 +36,8 @@ export class ChipComponent implements OnChanges {
   @Input() text: string;
   @Input() textStrong: string;
   @Input() icon: Icons | Icon;
-  @Input() class: string;
+  @Input() class: string | string[] | NgClass;
+  @Input() color: Color;
 
   @HostBinding('attr.data-type') @Input() type: ChipType = ChipType.tag;
   @HostBinding('attr.data-removable') @Input() removable = false;
@@ -72,6 +77,15 @@ export class ChipComponent implements OnChanges {
 
     if (hasChanges(changes, ['class'], true)) {
       this.DOM.bindClasses(this.chip, this.class);
+    }
+
+    if (hasChanges(changes, ['color'], true)) {
+      console.log(this.color);
+      this.DOM.setCssProps(this.chip, {
+        'background-color': this.color,
+        'border-color': this.color,
+        color: isDark(this.color, 200) ? 'white' : ColorsGrey.color_grey_800,
+      });
     }
 
     if (changes.type || changes.removable) {

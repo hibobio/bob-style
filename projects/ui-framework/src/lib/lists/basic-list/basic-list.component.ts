@@ -23,6 +23,7 @@ import {
 import { BasicListType } from './basic-list.enum';
 import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
 import { TranslateService } from '@ngx-translate/core';
+import { Types } from '../../enums';
 
 @Component({
   selector: 'b-basic-list',
@@ -46,8 +47,8 @@ export class BasicListComponent implements AfterContentInit {
   @ContentChild(BasicListActionDirective, { static: true })
   contentChild!: BasicListActionDirective;
 
-  @HostBinding('attr.data-type') @Input() public type: BasicListType =
-    BasicListType.primary;
+  @HostBinding('attr.data-type') @Input() public type: BasicListType | Types =
+    Types.primary;
 
   @Input('items') set setItems(items: BasicListItem[]) {
     this.items = (items || []).map((item) => ({

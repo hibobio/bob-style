@@ -4,6 +4,8 @@ Name | Type | Description
 groupName | string | group display name
 key | string / number | grpup ID
 options | SelectOption[] | array of options
+description | string | text to be added to (i) tooltip on the right of the group
+suffixComponent |  RenderedComponent | object, describing component to be rendered on the right of the group (see [Component Renderer](https://hibobio.github.io/bob-style/?path=/story/services--component-renderer))
  + | any | you can pass any additional properties in the SelectGroupOption object
 
 #### interface: SelectOption

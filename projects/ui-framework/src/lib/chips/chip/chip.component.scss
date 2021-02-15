@@ -15,14 +15,15 @@ $chip-tab-selected-color: $color-select-red;
 }
 
 $chipTypeMap: (
-  tag: (
-    '*': (
-      background-color: $grey-300,
-      color: $grey-700,
-      border-color: $grey-300,
-      font-weight: $font-weight-body,
+  tag label:
+    (
+      '*': (
+        background-color: $grey-300,
+        color: $grey-700,
+        border-color: $grey-300,
+        font-weight: $font-weight-body,
+      ),
     ),
-  ),
   normal info warning error success:
     (
       font-weight: 500,
@@ -149,6 +150,13 @@ $chipTypeMap: (
       border-radius: $border-radius,
     ),
   ),
+  label: (
+    '*': (
+      border-radius: $border-radius/2,
+      height: times8(2),
+      padding: 0 8px,
+    ),
+  )
 );
 
 $chipStateMap: (
@@ -203,6 +211,10 @@ $chipStateMap: (
       z-index: 0;
     }
   }
+
+  &.rounded {
+    border-radius: $border-radius/2;
+  }
 }
 
 .chip-text {
@@ -222,6 +234,10 @@ $chipStateMap: (
 
 :host[data-icon-before]:before {
   transition: none;
+}
+
+:host[data-type='avatar'] ::ng-deep b-avatar-image {
+  border: 2px solid white;
 }
 
 :host {

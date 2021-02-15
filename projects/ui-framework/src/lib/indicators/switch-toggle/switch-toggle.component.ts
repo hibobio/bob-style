@@ -44,6 +44,8 @@ export class SwitchToggleComponent extends BaseFormElement {
     );
   }
 
+  @HostBinding('attr.data-label-in-front') @Input() labelInFront = false;
+
   @Input() set isChecked(checked: boolean) {
     this.writeValue(Boolean(checked));
   }

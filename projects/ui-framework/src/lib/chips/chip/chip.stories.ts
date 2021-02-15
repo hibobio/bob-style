@@ -17,6 +17,8 @@ import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { IconsModule } from '../../icons/icons.module';
 import { IconSize, Icons } from '../../icons/icons.enum';
 import { randomFromArray } from '../../services/utils/functional-utils';
+import { COLOR_PALETTE_SET1_COLOR_ORDER } from '../../services/color-service/color-palette.const';
+import { ColorPalette } from '../../services/color-service/color-palette.enum';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
@@ -28,6 +30,7 @@ const template = `
     [textStrong]="textStrong"
     [text]="text"
     [icon]="icon"
+    [color]="colorPalette[color]"
     [removable]="removable"
     [disabled]="disabled"
     [selected]="selected"
@@ -48,11 +51,13 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [text] | string | chip text | &nbsp;
-  [textStrong] | string | bold text (displayed before [text]) | &nbsp;
   [type] | ChipType | enum for setting the chip type \
   (tag, info, warning, error, success, avatar) | tag
+  [text] | string | chip text | &nbsp;
+  [textStrong] | string | bold text (displayed before [text]) | &nbsp;
   [icon] | Icons | icon (for Icon type chip) | &nbsp;
+  [color] | ColorPalette/string | (custom) chip bg color | &nbsp;
+  [class] | string/<wbr>string[]/<wbr>object | ngClass-compatible class(es) to be added to chip | &nbsp;
   [removable] | boolean | if chip has a 'x' button | false
   [disabled] | boolean | disables chip | false
   [selected] | boolean | selects chip | false
@@ -116,7 +121,8 @@ const storyTemplate = `
         (removed)="onRemove($event)">
 
         <b-avatar-image [imageSource]="avatar1"
-                    [size]="avatarSize.mini"></b-avatar-image>
+                    [size]="avatarSize.mini"
+                    [border]="true"></b-avatar-image>
       </b-chip>
 
       <b-chip style="margin: 10px;"
@@ -181,9 +187,11 @@ story.add(
       chipType: ChipType,
       avatarSize: AvatarSize,
       iconSize: IconSize,
+      colorPalette: ColorPalette,
       type: select('type', Object.values(ChipType), ChipType.tag),
       text: text('text', mockName()),
       textStrong: text('textStrong', undefined),
+      color: select('color', [0, ...COLOR_PALETTE_SET1_COLOR_ORDER], 0),
       removable: boolean('removable', false),
       disabled: boolean('disabled', false),
       selected: boolean('selected', false),

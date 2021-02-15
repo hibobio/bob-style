@@ -18,6 +18,7 @@ import { ButtonType, ButtonSize } from '../../buttons/buttons.enum';
 import { basicListItems1, basicListItems2 } from './basic-list.mock';
 import { BasicListType } from './basic-list.enum';
 import { TypographyModule } from '../../typography/typography.module';
+import { Types } from '../../enums';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -39,7 +40,7 @@ const withMenuTemplate = `<b-basic-list [type]="type" [items]="items1"
     </b-menu>
   </b-basic-list>`;
 
-const withButtonTemplate = `<b-basic-list [type]="type" [items]="items2"
+const withButtonTemplate = `<b-basic-list [type]="type !== types.quaternary ? type : types.primary" [items]="items2"
                 [titles]="['City', 'Country']"
                 [config]="{
                   showActionOnHover: showActionOnHover,
@@ -126,6 +127,8 @@ story.add(
         BasicListType.primary,
         'Props'
       ),
+
+      types: Types,
 
       showActionOnHover: boolean('showActionOnHover', false, 'Props'),
       maxLines: number('maxLines', 2, {}, 'Props'),

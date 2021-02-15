@@ -12,6 +12,7 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { optionsMock } from './single-list.mock';
 import { cloneDeep } from 'lodash';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { SwitchToggleModule } from '../../indicators/switch-toggle/switch-toggle.module';
 
 // @ts-ignore: md file and not a module
 import listInterfaceDoc from '../list.interface.md';
@@ -122,8 +123,9 @@ story.add(
         BrowserAnimationsModule,
         StoryBookLayoutModule,
         AvatarModule,
+        SwitchToggleModule,
       ],
-      entryComponents: [AvatarImageComponent],
+      entryComponents: [],
     },
   }),
   { notes: { markdown: note } }

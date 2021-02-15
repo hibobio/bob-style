@@ -20,6 +20,7 @@ const story2 = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
 
 const template = `<b-switch-toggle [label]="label"
                  [placeholder]="placeholder"
+                 [labelInFront]="labelInFront"
                  [value]="isChecked"
                  [disabled]="disabled"
                  [required]="required"
@@ -31,6 +32,7 @@ const template = `<b-switch-toggle [label]="label"
 
 const template2 = `<b-switch-toggle [isDisabled]="disabled"
                  [isChecked]="!isChecked"
+                 [labelInFront]="labelInFront"
                  (switchChange)="onSwitchChange($event)">
   Toggle this!
 </b-switch-toggle>`;
@@ -56,8 +58,9 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   [value] aka <s>[isChecked]</s> | boolean | is switch toggle on | false
-  <s>(switchChange)</s> | EventEmitter<wbr>&lt;MatSlideToggleChange&ght; | (deprecated) toggle change event | &nbsp;
-  (changed) | EventEmitter<wbr>&lt;boolean&ght; | toggle change event | &nbsp;
+  [labelInFront] | boolean | if true, label/placeholder will be put in front of the toggle (vs default after) | false
+  <s>(switchChange)</s> | EventEmitter<wbr>&lt;MatSlideToggleChange&gt; | (deprecated) toggle change event | &nbsp;
+  (changed) | EventEmitter<wbr>&lt;boolean&gt; | toggle change event | &nbsp;
 
   ${formElemsPropsDoc}
 `;
@@ -82,6 +85,7 @@ const toAdd = () => ({
     }),
     onChange: action('changed'),
     isChecked: boolean('value (aka isChecked)', true),
+    labelInFront: boolean('labelInFront', false),
     ...FormElementsCommonProps(
       'You have to',
       'Switch this',

@@ -59,7 +59,13 @@
           </span>
         </div>
 
-        <span *ngIf="header.description"
+        <b-component-renderer *ngIf="header.suffixComponent"
+                              class="comp-suffix"
+                              [render]="header.suffixComponent"
+                              (click.outside-zone)="$event.stopPropagation()"></b-component-renderer>
+
+
+        <span *ngIf="header.description && !header.suffixComponent"
               class="comp-suffix has-hover"
               [attr.data-icon-before]="infoIcon"
               [attr.data-icon-before-color]="iconColor.normal"
@@ -67,7 +73,8 @@
               [matTooltip]="header.description"
               [matTooltipClass]="tooltipClass"
               [matTooltipShowDelay]="tooltipDelay"
-              [matTooltipPosition]="tooltipPosition">
+              [matTooltipPosition]="tooltipPosition"
+              (click.outside-zone)="$event.stopPropagation()">
         </span>
       </div>
       <div [ngStyle]="{height: header.isCollapsed ? 0 : header.placeHolderSize + 'px'}"
@@ -124,7 +131,8 @@
               [matTooltip]="option.description"
               [matTooltipClass]="tooltipClass"
               [matTooltipShowDelay]="tooltipDelay"
-              [matTooltipPosition]="tooltipPosition">
+              [matTooltipPosition]="tooltipPosition"
+              (click.outside-zone)="$event.stopPropagation()">
         </span>
 
       </div>
