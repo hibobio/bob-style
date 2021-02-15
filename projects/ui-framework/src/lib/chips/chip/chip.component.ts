@@ -80,7 +80,6 @@ export class ChipComponent implements OnChanges {
     }
 
     if (hasChanges(changes, ['color'], true)) {
-      console.log(this.color);
       this.DOM.setCssProps(this.chip, {
         'background-color': this.color,
         'border-color': this.color,
