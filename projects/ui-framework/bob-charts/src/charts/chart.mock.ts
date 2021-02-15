@@ -9,6 +9,22 @@ export const LINE_CHART_DATA_MOCK = [
   ['Sales', 6],
 ];
 
+export const BUBBLE_CHART_DATA_MOCK = [
+  { x: 0, y: 0, z: 10, name: 'BE', country: 'Belgium' },
+  { x: 0, y: 1, z: 20, name: 'DE', country: 'Germany' },
+  { x: 0, y: 2, z: 10, name: 'FI', country: 'Finland' },
+  { x: 1, y: 0, z: 30, name: 'NL', country: 'Netherlands' },
+  { x: 1, y: 1, z: 10, name: 'SE', country: 'Sweden' },
+  { x: 1, y: 2, z: 30, name: 'ES', country: 'Spain' },
+  { x: 2, y: 0, z: 30, name: 'FR', country: 'France' },
+  { x: 2, y: 1, z: 10, name: 'NO', country: 'Norway' },
+  { x: 2, y: 2, z: 20, name: 'UK', country: 'United Kingdom' },
+];
+
+export const BUBBLE_CHART_CATEGORIES_MOCK = [
+  'Low', 'Medium', 'High'
+];
+
 export const MULTI_BAR_CHART_DATA_MOCK = [
   {
     name: 'John',

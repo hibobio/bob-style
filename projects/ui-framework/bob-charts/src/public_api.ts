@@ -12,3 +12,4 @@ export { StackedBarChartComponent } from './charts/bar-chart/stacked-bar-chart/s
 export { LineChartComponent } from './charts/line-chart/line-chart.component';
 export { BarLineChartComponent } from './charts/combinations/bar-line-chart/bar-line-chart.component';
 export { DonutChartTextComponent } from './charts/donut-chart-text/donut-chart-text.component';
+export { BubbleChartComponent } from './charts/bubble-chart/bubble.chart.component';
