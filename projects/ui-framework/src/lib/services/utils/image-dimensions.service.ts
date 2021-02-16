@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 
+export interface ImageDims {
+  url: string;
+  width: number;
+  height: number;
+  error?: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class ImageDimensionsService {
   //
-  private createImageDimensions$(
-    imgUrl: string
-  ): Observable<{
-    url: string;
-    width: number;
-    height: number;
-    error?: boolean;
-  }> {
+  private createImageDimensions$(imgUrl: string): Observable<ImageDims> {
     return new Observable((observer) => {
       let img = new Image();
 
@@ -59,14 +59,7 @@ export class ImageDimensionsService {
     });
   }
 
-  getImageDimensions$(
-    imgUrl: string
-  ): Observable<{
-    url: string;
-    width: number;
-    height: number;
-    error?: boolean;
-  }> {
+  getImageDimensions$(imgUrl: string): Observable<ImageDims> {
     return this.createImageDimensions$(imgUrl).pipe(take(1));
   }
 

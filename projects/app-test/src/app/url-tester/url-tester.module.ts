@@ -20,7 +20,7 @@ export class UrlTesterComponent {
 
   testUrl(url: string) {
     console.log(url, this.url.getData(url));
-    console.log(this.url.domainAllowed(url));
+    console.log(this.url.validateVideoUrl(url));
   }
 }
 

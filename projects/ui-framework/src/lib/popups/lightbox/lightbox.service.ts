@@ -52,8 +52,9 @@ export class LightboxService {
     try {
       this.lightbox.config = {
         ...config,
-        image: config.image && this.url.validateImg(config.image),
-        video: config.video && this.url.domainAllowed(config.video as string),
+        image: config.image && this.url.validateImgUrl(config.image as string),
+        video:
+          config.video && this.url.validateVideoUrl(config.video as string),
       };
 
       this.lightbox.overlayRef = this.overlay.create(this.overlayConfig);

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 
 export interface LightboxConfig {
   component?: RenderedComponent;
-  image?: string;
+  image?: string | SafeResourceUrl;
   video?: string | SafeResourceUrl;
   iframe?: string | SafeResourceUrl;
   fillScreen?: boolean;

@@ -626,7 +626,7 @@ export * from './lib/services/utils/decorators';
 // Mutation Observable
 export * from './lib/services/utils/mutation-observable';
 // Image Dimensions
-export { ImageDimensionsService } from './lib/services/utils/image-dimensions.service';
+export * from './lib/services/utils/image-dimensions.service';
 // NgLet
 export * from './lib/services/utils/nglet.directive';
 // NgSubscribe
