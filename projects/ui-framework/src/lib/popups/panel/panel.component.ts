@@ -17,12 +17,12 @@ import { Subscription } from 'rxjs';
 import { PanelDefaultPosVer, PanelSize } from './panel.enum';
 import { debounce } from 'lodash';
 import { UtilsService } from '../../services/utils/utils.service';
-import { isKey, unsubscribeArray } from '../../services/utils/functional-utils';
+import { unsubscribeArray } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
-import { filter } from 'rxjs/operators';
 import { OverlayPositionClasses } from '../../types';
 import { PanelService } from './panel.service';
 import { Panel } from './panel.interface';
+import { filterKey } from '../../services/utils/rxjs.operators';
 
 const HOVER_DELAY_DURATION = 300;
 
@@ -130,7 +130,7 @@ export class PanelComponent implements OnInit, OnDestroy {
 
         this.utilsService
           .getWindowKeydownEvent(true)
-          .pipe(filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)))
+          .pipe(filterKey(Keys.escape))
           .subscribe(() => {
             this.zone.run(() => {
               this.destroyPanel();
