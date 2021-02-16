@@ -9,6 +9,7 @@ import createSpyObj = jasmine.createSpyObj;
 import { of } from 'rxjs';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { DIALOG_CONFIG_DEF } from '../dialog.const';
+import { omit } from '../../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-comp-mock',
@@ -73,7 +74,7 @@ describe('DialogService', () => {
       };
 
       const expectedConfig = {
-        ...DIALOG_CONFIG_DEF,
+        ...omit(DIALOG_CONFIG_DEF, 'disableClose'),
         size: DialogSize.small,
         data: {},
         width: '480px',
@@ -81,7 +82,10 @@ describe('DialogService', () => {
       };
 
       dialogService.openDialog(comp, config);
-      expect(spyMatDialog.open).toHaveBeenCalledWith(comp, expectedConfig);
+      expect(spyMatDialog.open).toHaveBeenCalledWith(
+        comp,
+        jasmine.objectContaining(expectedConfig)
+      );
     });
     it('should call matDialog.open with config medium', () => {
       config = {
@@ -91,7 +95,7 @@ describe('DialogService', () => {
       };
 
       const expectedConfig = {
-        ...DIALOG_CONFIG_DEF,
+        ...omit(DIALOG_CONFIG_DEF, 'disableClose'),
         size: DialogSize.medium,
         data: {},
         width: '720px',
@@ -99,7 +103,10 @@ describe('DialogService', () => {
       };
 
       dialogService.openDialog(comp, config);
-      expect(spyMatDialog.open).toHaveBeenCalledWith(comp, expectedConfig);
+      expect(spyMatDialog.open).toHaveBeenCalledWith(
+        comp,
+        jasmine.objectContaining(expectedConfig)
+      );
     });
     it('should call matDialog.open with config large', () => {
       config = {
@@ -109,7 +116,7 @@ describe('DialogService', () => {
       };
 
       const expectedConfig = {
-        ...DIALOG_CONFIG_DEF,
+        ...omit(DIALOG_CONFIG_DEF, 'disableClose'),
         size: DialogSize.large,
         data: {},
         width: '960px',
@@ -117,7 +124,10 @@ describe('DialogService', () => {
       };
 
       dialogService.openDialog(comp, config);
-      expect(spyMatDialog.open).toHaveBeenCalledWith(comp, expectedConfig);
+      expect(spyMatDialog.open).toHaveBeenCalledWith(
+        comp,
+        jasmine.objectContaining(expectedConfig)
+      );
     });
     it('should return the dialogRef object', () => {
       const dialogRef = dialogService.openDialog(comp, config);

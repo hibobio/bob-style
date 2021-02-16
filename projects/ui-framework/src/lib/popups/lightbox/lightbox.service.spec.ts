@@ -1,4 +1,10 @@
-import { fakeAsync, flush, inject, TestBed, waitForAsync } from '@angular/core/testing';
+import {
+  fakeAsync,
+  flush,
+  inject,
+  TestBed,
+  waitForAsync,
+} from '@angular/core/testing';
 import { LightboxService } from './lightbox.service';
 import { LightboxData } from './lightbox.interface';
 import {
@@ -55,36 +61,43 @@ describe('LightboxService', () => {
     },
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [LightboxModule, OverlayModule, ButtonsModule, MockCompsModule],
-      declarations: [
-        AvatarComponent,
-        AvatarImageComponent,
-        MockComponent(IconComponent),
-      ],
-      providers: [
-        LightboxService,
-        ComponentRendererService,
-        DOMhelpersProvideMock(),
-        WindowRefProvideMock(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-    }).overrideModule(BrowserDynamicTestingModule, {
-      set: {
-        entryComponents: [AvatarComponent, AvatarImageComponent],
-      },
-    });
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          LightboxModule,
+          OverlayModule,
+          ButtonsModule,
+          MockCompsModule,
+        ],
+        declarations: [
+          AvatarComponent,
+          AvatarImageComponent,
+          MockComponent(IconComponent),
+        ],
+        providers: [
+          LightboxService,
+          ComponentRendererService,
+          DOMhelpersProvideMock(),
+          WindowRefProvideMock(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+      }).overrideModule(BrowserDynamicTestingModule, {
+        set: {
+          entryComponents: [AvatarComponent, AvatarImageComponent],
+        },
+      });
 
-    inject(
-      [OverlayContainer, ComponentFactoryResolver, Overlay],
-      (oc: OverlayContainer) => {
-        overlayElement = oc.getContainerElement();
-      }
-    )();
+      inject(
+        [OverlayContainer, ComponentFactoryResolver, Overlay],
+        (oc: OverlayContainer) => {
+          overlayElement = oc.getContainerElement();
+        }
+      )();
 
-    lightboxService = TestBed.inject(LightboxService);
-  }));
+      lightboxService = TestBed.inject(LightboxService);
+    })
+  );
 
   describe('Lightbox Service', () => {
     it('should open Lightbox with image', () => {
@@ -161,24 +174,30 @@ describe('LightboxService', () => {
       lightboxService.closeLightbox();
     });
 
-    it('should close Lightbox with Close button', () => {
+    it('should close Lightbox with Close button', fakeAsync(() => {
       lightbox = lightboxService.showLightbox(testConfigImage);
       detectChanges(lightbox);
 
       const closeButEl = overlayElement.querySelector(
-        '.close-button'
+        '.close-button button'
+      ) as HTMLElement;
+      let lightContainerEl = overlayElement.querySelector(
+        '.lightbox-container'
       ) as HTMLElement;
 
-      closeButEl.click();
+      expect(lightContainerEl).toBeTruthy();
 
-      const lightContainerEl = overlayElement.querySelector(
+      closeButEl.click();
+      flush();
+
+      lightContainerEl = overlayElement.querySelector(
         '.lightbox-container'
       ) as HTMLElement;
 
       expect(lightContainerEl).toBeFalsy();
-      expect(lightbox.lightboxComponentRef).toBeNull();
-      expect(lightbox.overlayRef).toBeNull();
-    });
+      expect(lightbox.lightboxComponentRef).toBeFalsy();
+      expect(lightbox.overlayRef).toBeFalsy();
+    }));
 
     it('should not accept random links for video link', () => {
       const bad = 'good';
