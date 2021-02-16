@@ -131,7 +131,10 @@ export class URLutils {
   validateImgUrl(url: string): SafeResourceUrl {
     const urlData = this.getData(url);
 
-    if (urlData && (filestackTest.test(url) || imageLinkTest.test(url))) {
+    if (
+      (urlData || base64imageTest.test(url)) &&
+      (filestackTest.test(url) || imageLinkTest.test(url))
+    ) {
       return this.sanitizer.bypassSecurityTrustResourceUrl(
         !base64imageTest.test(url) ? this.reconstruct(url) : url
       );
