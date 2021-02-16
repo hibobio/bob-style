@@ -1,18 +1,23 @@
 import { storiesOf } from '@storybook/angular';
-import { withKnobs } from '@storybook/addon-knobs';
+import { boolean, select, withKnobs } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogModule } from './dialog.module';
 import { DialogExampleModule } from './dialog-example.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { DialogSize } from './dialog.enum';
 
 const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-dialog-example></b-dialog-example>
+<b-dialog-example
+[size]="size"
+[disableClose]="disableClose"
+[closeOnBackdropClick]="closeOnBackdropClick"
+></b-dialog-example>
 `;
 
 const storyTemplate = `
@@ -178,11 +183,14 @@ export class YourDialogComponent implements OnInit {
   ----------------
 
   #### interface DialogConfig
-  Name | Type | Description
-  --- | --- | ---
-  size | DialogSize | small (480px), medium (720px), large (960px), xLarge (90vw)
-  panelClass | string | css class to be added to the dialog popup
-  data | any | any data, to be injected into your dialog component via \`@Inject(MAT_DIALOG_DATA) public data: any\`
+  Name | Type | Description | Default
+  --- | --- | --- | ---
+  size | DialogSize | small (480px), medium (720px), large (960px), xLarge (90vw) | medium
+  panelClass | string | css class to be added to the dialog popup | &nbsp;
+  data | any | any data, to be injected into your dialog component via \`@Inject(MAT_DIALOG_DATA) public data: any\` | &nbsp;
+  disableClose | boolean | if true, closing via Escape key and backdrop click will be disabled (only closing via X button is enabled) | false
+  closeOnBackdropClick | boolean | if backdrop click should close dialog | false
+
 
   #### interface DialogButton
   Name | Type | Description
@@ -225,7 +233,11 @@ story.add(
   'Dialog',
   () => ({
     template: storyTemplate,
-    props: {},
+    props: {
+      size: select('size', [0, ...Object.values(DialogSize)], 0),
+      disableClose: boolean('disableClose', false),
+      closeOnBackdropClick: boolean('closeOnBackdropClick', false),
+    },
     moduleMetadata: {
       imports: [
         DialogModule,

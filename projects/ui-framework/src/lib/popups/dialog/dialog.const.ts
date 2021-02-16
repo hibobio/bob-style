@@ -9,10 +9,12 @@ export const DIALOG_SIZE_TO_WIDTH = {
 };
 
 export const DIALOG_CONFIG_DEF: Partial<DialogConfig> = {
-  closeOnNavigation: true,
+  size: DialogSize.medium,
   backdropClass: 'b-dialog-backdrop',
   hasBackdrop: true,
-  disableClose: false,
   maxWidth: '90vw',
   autoFocus: false,
+  closeOnNavigation: true,
+  disableClose: false,
+  closeOnBackdropClick: false,
 };

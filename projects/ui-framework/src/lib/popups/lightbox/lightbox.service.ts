@@ -28,7 +28,6 @@ export class LightboxService {
   }
 
   private subs: Subscription[] = [];
-
   private readonly isEmbedMode: boolean;
 
   private overlayConfig: OverlayConfig = {

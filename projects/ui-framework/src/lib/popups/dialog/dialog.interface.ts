@@ -3,9 +3,11 @@ import { ButtonType } from '../../buttons/buttons.enum';
 import { MatDialogConfig } from '@angular/material/dialog';
 
 export interface DialogConfig extends MatDialogConfig {
-  size: DialogSize;
-  panelClass: string;
+  size?: DialogSize;
+  panelClass?: string;
   data: any;
+  disableClose?: boolean;
+  closeOnBackdropClick?: boolean;
 }
 
 export interface DialogButtons {

@@ -4,6 +4,7 @@ import {
   NgModule,
   OnInit,
   ChangeDetectorRef,
+  Input,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TypographyModule } from '../../typography/typography.module';
@@ -39,6 +40,10 @@ can add as many holiday policies as you need for your organisation. Before we cr
 a note on what types are.`,
   };
 
+  @Input() size: DialogSize;
+  @Input() disableClose = false;
+  @Input() closeOnBackdropClick = false;
+
   constructor(private dialogService: DialogService) {}
 
   openDialog1(): void {
@@ -46,9 +51,11 @@ a note on what types are.`,
       // tslint:disable-next-line: no-use-before-declare
       ExampleDialog1Component,
       {
-        size: DialogSize.medium,
+        size: this.size || DialogSize.medium,
         panelClass: 'dialog-example-1',
         data: this.dataMock,
+        disableClose: this.disableClose,
+        closeOnBackdropClick: this.closeOnBackdropClick,
       }
     );
 
@@ -62,9 +69,11 @@ a note on what types are.`,
       // tslint:disable-next-line: no-use-before-declare
       ExampleDialog2Component,
       {
-        size: DialogSize.small,
+        size: this.size || DialogSize.small,
         panelClass: 'dialog-example-2',
         data: {},
+        disableClose: this.disableClose,
+        closeOnBackdropClick: this.closeOnBackdropClick,
       }
     );
   }
@@ -74,11 +83,13 @@ a note on what types are.`,
       // tslint:disable-next-line: no-use-before-declare
       ExampleDialog3Component,
       {
-        size: DialogSize.medium,
+        size: this.size || DialogSize.medium,
         panelClass: 'dialog-example-3',
         data: {
           title: 'New world order',
         },
+        disableClose: this.disableClose,
+        closeOnBackdropClick: this.closeOnBackdropClick,
       }
     );
   }
