@@ -604,8 +604,8 @@ export * from './lib/services/utils/logger';
 // URL utils
 export { UrlUtilsModule } from './lib/services/url/url-utils.module';
 export { URLutils } from './lib/services/url/url-utils.service';
-export { URLtype } from './lib/services/url/url.enum';
-export { VideoData } from './lib/services/url/url.interface';
+export * from './lib/services/url/url.enum';
+export * from './lib/services/url/url.interface';
 export { allowedDomainsTest, naiveLinkTest, imageLinkTest } from './lib/services/url/url.const';
 // Component Renderer
 export { ComponentRendererModule } from './lib/services/component-renderer/component-renderer.module';

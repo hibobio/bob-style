@@ -23,6 +23,9 @@ import { Types } from '../../enums';
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
+const story2 = storiesOf(ComponentGroupType.Layout, module).addDecorator(
+  withKnobs
+);
 
 const withMenuTemplate = `<b-basic-list [type]="type" [items]="items1"
                 [titles]="['Hobbies']"
@@ -110,53 +113,53 @@ const note = `
   [key:string] | any | accepts any extra properties
 `;
 
-story.add(
-  'Basic list',
-  () => ({
-    template: storyTemplate,
-    props: {
-      buttonType: ButtonType,
-      buttonSize: ButtonSize,
-      icons: Icons,
-      iconColor: IconColor,
-      action,
+const toAdd = () => ({
+  template: storyTemplate,
+  props: {
+    buttonType: ButtonType,
+    buttonSize: ButtonSize,
+    icons: Icons,
+    iconColor: IconColor,
+    action,
 
-      type: select(
-        'type',
-        Object.values(BasicListType),
-        BasicListType.primary,
-        'Props'
-      ),
+    type: select(
+      'type',
+      Object.values(BasicListType),
+      BasicListType.primary,
+      'Props'
+    ),
 
-      types: Types,
+    types: Types,
 
-      showActionOnHover: boolean('showActionOnHover', false, 'Props'),
-      maxLines: number('maxLines', 2, {}, 'Props'),
+    showActionOnHover: boolean('showActionOnHover', false, 'Props'),
+    maxLines: number('maxLines', 2, {}, 'Props'),
 
-      emptyStateConfig: object(
-        'emptyStateConfig',
-        {
-          text: 'Surprise party',
-          icon: Icons.cake,
-        },
-        'Data'
-      ),
+    emptyStateConfig: object(
+      'emptyStateConfig',
+      {
+        text: 'Surprise party',
+        icon: Icons.cake,
+      },
+      'Data'
+    ),
 
-      items1: object('items 1', basicListItems1, 'Data'),
-      items2: object('items 2', basicListItems2, 'Data'),
+    items1: object('items 1', basicListItems1, 'Data'),
+    items2: object('items 2', basicListItems2, 'Data'),
 
-      onItemClick: action('Item clicked'),
-    },
-    moduleMetadata: {
-      imports: [
-        BasicListModule,
-        MenuModule,
-        StoryBookLayoutModule,
-        ButtonsModule,
-        BrowserAnimationsModule,
-        TypographyModule,
-      ],
-    },
-  }),
-  { notes: { markdown: note } }
-);
+    onItemClick: action('Item clicked'),
+  },
+  moduleMetadata: {
+    imports: [
+      BasicListModule,
+      MenuModule,
+      StoryBookLayoutModule,
+      ButtonsModule,
+      BrowserAnimationsModule,
+      TypographyModule,
+    ],
+  },
+});
+
+story.add('Basic list', toAdd, { notes: { markdown: note } });
+
+story2.add('Basic list', toAdd, { notes: { markdown: note } });

@@ -21,6 +21,7 @@ import { MobileService } from '../../services/utils/mobile.service';
 import {
   notFirstChanges,
   isNotEmptyArray,
+  unsubscribeArray,
 } from '../../services/utils/functional-utils';
 import { AvatarParticle } from './avatar.particle';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
@@ -105,10 +106,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subs.forEach((sub) => {
-      sub?.unsubscribe();
-    });
-    this.subs.length = 0;
+    unsubscribeArray(this.subs);
     this.stopLoop();
   }
 

@@ -89,7 +89,9 @@ export class BasicListComponent implements AfterContentInit {
   @Input('config') set setConfig(config: BasicListConfig) {
     if (isObject(config)) {
       this.showActionOnHover =
-        config.showActionOnHover || this.showActionOnHover;
+        config.showActionOnHover !== undefined
+          ? config.showActionOnHover
+          : this.showActionOnHover !== false;
       this.maxLines = config.maxLines || this.maxLines;
     }
   }

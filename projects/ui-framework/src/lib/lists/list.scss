@@ -1,3 +1,5 @@
+$chevron-element-width: 18px;
+
 @mixin single-list-option-selected {
   background-color: $color-option-selected-solid;
   font-weight: bold;
@@ -80,6 +82,8 @@
     }
 
     .chevron {
+      width: $chevron-element-width;
+
       &:before {
         display: flex;
         justify-content: center;

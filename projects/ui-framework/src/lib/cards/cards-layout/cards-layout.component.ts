@@ -28,6 +28,7 @@ import { MediaEvent, MobileService } from '../../services/utils/mobile.service';
 import {
   applyChanges,
   notFirstChanges,
+  unsubscribeArray,
 } from '../../services/utils/functional-utils';
 import { ItemsInRowService } from '../../services/items-in-row/items-in-row.service';
 import { outsideZone } from '../../services/utils/rxjs.operators';
@@ -117,10 +118,7 @@ export class CardsLayoutComponent
   }
 
   ngOnDestroy(): void {
-    this.subs.forEach((sub) => {
-      sub.unsubscribe();
-    });
-    this.subs.length = 0;
+    unsubscribeArray(this.subs);
   }
 
   private getCardWidth(type = this.type, isMobile = this.isMobile): number {

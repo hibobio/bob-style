@@ -44,6 +44,7 @@
 
   .mat-slide-toggle-label {
     align-items: flex-start;
+    cursor: default;
   }
 
   .mat-slide-toggle-content {
@@ -52,8 +53,12 @@
     overflow: visible;
   }
 
+  .mat-slide-toggle-bar,
   .mat-slide-toggle-thumb-container {
     cursor: pointer;
+  }
+
+  .mat-slide-toggle-thumb-container {
     width: 14px;
     height: 14px;
     top: 2px;

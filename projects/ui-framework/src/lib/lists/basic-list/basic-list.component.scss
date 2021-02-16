@@ -88,8 +88,12 @@ $bbl-icon-cell-width: $button-size-medium;
 
 // when a table is not a table
 
-.not-a-table ::ng-deep {
-  &,
+.not-a-table {
+  display: block;
+}
+
+.not-a-table ::ng-deep,
+:host[data-type='quaternary'] ::ng-deep {
   thead,
   tbody {
     display: block;
@@ -140,11 +144,9 @@ $bbl-icon-cell-width: $button-size-medium;
 }
 
 :host[data-type='quaternary'] {
-  display: flex;
-  flex-direction: column;
-
   ::ng-deep {
-    thead {
+    thead,
+    th {
       display: none;
     }
 
@@ -152,26 +154,14 @@ $bbl-icon-cell-width: $button-size-medium;
       box-shadow: none;
     }
 
-    .bbl-list,
-    .bbl-list tbody {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .bbl-list-item,
-    .bbl-list-item td {
-      display: flex;
-      align-items: center;
-    }
-
     .bbl-list-item {
       height: auto;
+      min-height: 70px;
       margin-bottom: times8(2);
-      border-radius: $border-radius;
+      padding: times8(0.5) times8(3);
       border: 1px solid $border-color;
-      padding: times8(2) times8(3);
+      border-radius: $border-radius;
       background-color: $grey-100;
-      margin-bottom: times8(2);
 
       & + .bbl-list-item {
         box-shadow: none;
@@ -192,13 +182,11 @@ $bbl-icon-cell-width: $button-size-medium;
     }
 
     .bbl-list-label {
-      @include b-display-4;
-      font-weight: 700;
+      @include b-display-3;
     }
 
     .bbl-list-action-container {
       margin-right: times8(-2);
-      margin-left: auto;
     }
   }
 }

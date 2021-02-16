@@ -166,6 +166,7 @@ $list-max-items: 8;
   }
 
   b-component-renderer.comp-suffix {
+    cursor: default;
     visibility: visible;
   }
 
@@ -219,5 +220,9 @@ $list-max-items: 8;
     .headers {
       top: $wrap-height-smaller;
     }
+  }
+
+  .options .option-select.option {
+    padding-left: $input-padding + $chevron-element-width;
   }
 }

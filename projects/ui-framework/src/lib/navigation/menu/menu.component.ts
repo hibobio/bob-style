@@ -23,12 +23,11 @@ import {
   applyChanges,
   notFirstChanges,
   isValuevy,
-  isKey,
 } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
 import { Keys } from '../../enums';
+import { filterKey } from '../../services/utils/rxjs.operators';
 
 @Component({
   selector: 'b-menu',
@@ -108,7 +107,7 @@ export class MenuComponent implements OnChanges, OnInit, OnDestroy {
 
     this.windowKeydownSubscriber = this.utilsService
       .getWindowKeydownEvent(true)
-      .pipe(filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)))
+      .pipe(filterKey(Keys.escape))
       .subscribe(() => {
         this.zone.run(() => {
           this.close();

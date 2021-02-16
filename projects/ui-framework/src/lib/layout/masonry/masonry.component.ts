@@ -19,7 +19,10 @@ import { merge, Subscription, Observable } from 'rxjs';
 import { MasonryService } from './masonry.service';
 import { MASONRY_CONFIG_DEF } from './masonry.const';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
-import { cloneDeepSimpleObject } from '../../services/utils/functional-utils';
+import {
+  cloneDeepSimpleObject,
+  unsubscribeArray,
+} from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-masonry-item, [b-masonry-item]',
@@ -196,10 +199,7 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
     if (this.debug) {
       console.log('Masonry: destroy');
     }
-    this.subs.forEach((sub) => {
-      sub.unsubscribe();
-    });
-    this.subs.length = 0;
+    unsubscribeArray(this.subs);
 
     if (fullCleanup) {
       this.state = {};
