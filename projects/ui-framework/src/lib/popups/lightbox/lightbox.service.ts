@@ -10,7 +10,10 @@ import { WindowRef } from '../../services/utils/window-ref.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Keys } from '../../enums';
 import { filterKey, insideZone } from '../../services/utils/rxjs.operators';
-import { unsubscribeArray } from '../../services/utils/functional-utils';
+import {
+  isObject,
+  unsubscribeArray,
+} from '../../services/utils/functional-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -52,9 +55,16 @@ export class LightboxService {
     try {
       this.lightbox.config = {
         ...config,
-        image: config.image && this.url.validateImgUrl(config.image as string),
+        image:
+          config.image &&
+          (isObject(config.image)
+            ? config.image
+            : this.url.validateImgUrl(config.image as string)),
         video:
-          config.video && this.url.validateVideoUrl(config.video as string),
+          config.video &&
+          (isObject(config.video)
+            ? config.video
+            : this.url.validateVideoUrl(config.video as string)),
       };
 
       this.lightbox.overlayRef = this.overlay.create(this.overlayConfig);

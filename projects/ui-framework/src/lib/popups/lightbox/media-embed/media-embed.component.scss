@@ -3,13 +3,12 @@
 $triangle-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 255.3 404.3' width='255.3' height='404.3'%3E%3Cpath d='M0 404.3V0l255.2 202.2L.1 404.3H0z'/%3E%3C/svg%3E");
 
 :host {
-  display: block;
+  @include flex-align;
   background-color: black(0.5);
   width: 100%;
   @include ratioPad(16/9);
   background-position: center;
   background-size: cover;
-  cursor: pointer;
   position: relative;
   overflow: hidden;
 
@@ -23,9 +22,18 @@ $triangle-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
     @include position;
   }
 
+  &[data-inline-embed='false'] {
+    cursor: pointer;
+  }
+
   &[data-type='image'] {
     &:before {
       background: inherit;
+    }
+  }
+
+  &[data-type='image'][data-inline-embed='false'] {
+    &:before {
       transition: transform 0.5s;
     }
     &:hover {
@@ -38,6 +46,11 @@ $triangle-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
   &[data-type='video'] {
     &:before {
       background-color: black(0.1);
+    }
+  }
+
+  &[data-type='video'][data-inline-embed='false'] {
+    &:before {
       transition: background-color 0.3s;
     }
     &:after {
@@ -61,4 +74,10 @@ $triangle-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
       }
     }
   }
+}
+
+.embed-video {
+  @include size(100%);
+  @include position(0 0 0 0);
+  z-index: 1;
 }

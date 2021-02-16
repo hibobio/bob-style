@@ -8,14 +8,27 @@ import {
   base64imageTest,
   filestackTest,
 } from './url.const';
-import { VideoData } from './url.interface';
+import { MediaData, VideoData } from './url.interface';
 import { URLtype } from './url.enum';
+import { Observable, of } from 'rxjs';
+import { fromFetch } from 'rxjs/fetch';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { log } from '../utils/logger';
+import { MediaType } from '../../popups/lightbox/media-embed/media-embed.enum';
+import { GenericObject } from '../../types';
+import {
+  ImageDimensionsService,
+  ImageDims,
+} from '../utils/image-dimensions.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class URLutils {
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(
+    private sanitizer: DomSanitizer,
+    private imageDimensionsService: ImageDimensionsService
+  ) {}
 
   reconstruct(url: string): string {
     if (!naiveLinkTest.test(url)) {
@@ -52,34 +65,6 @@ export class URLutils {
       : data.pathname.substr(1) + data.search + data.hash;
   }
 
-  validateImg(url: string): string {
-    if (filestackTest.test(url)) {
-      return this.reconstruct(url);
-    }
-    if (imageLinkTest.test(url)) {
-      return !base64imageTest.test(url) ? this.reconstruct(url) : url;
-    }
-    throw new Error(`URL (${url}) is not a valid image URL.`);
-  }
-
-  domainAllowed(url: string): SafeResourceUrl {
-    const urlData = this.getData(url);
-
-    if (urlData) {
-      for (const key of Object.keys(allowedDomainsTest)) {
-        if (allowedDomainsTest[key].test(urlData.hostname)) {
-          return this.sanitizer.bypassSecurityTrustResourceUrl(urlData.href);
-        }
-      }
-    }
-
-    throw new Error(
-      `[URLutils Service]: URL (${url}) is not allowed. Allowed URLs are [${stringify(
-        Object.keys(allowedDomainsTest)
-      )}]`
-    );
-  }
-
   getYoutubeVideoID(url: string): string {
     const u = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/);
     return undefined !== u[2] ? u[2].split(/[^0-9a-z_\-]/i)[0] : u[0];
@@ -90,7 +75,7 @@ export class URLutils {
     return url.match(regExp)[5];
   }
 
-  parseVideoURL(url: string): VideoData {
+  parseVideoURL(url: string, autoplay = true): VideoData {
     const urlData = this.getData(url);
 
     if (!urlData) {
@@ -102,10 +87,9 @@ export class URLutils {
       return {
         type: URLtype.youtube,
         id,
-        url:
-          'https://www.youtube.com/embed/' +
-          id +
-          '?autoplay=1&rel=0&color=white&iv_load_policy=3&modestbranding=1',
+        url: `https://www.youtube.com/embed/${id}?autoplay=${
+          autoplay ? 1 : 0
+        }&rel=0&color=white&iv_load_policy=3&modestbranding=1`,
         thumb: 'https://img.youtube.com/vi/' + id + '/maxresdefault.jpg',
         thumbAlt: 'https://img.youtube.com/vi/' + id + '/hqdefault.jpg',
         thumbMinWidth: 120,
@@ -129,32 +113,140 @@ export class URLutils {
   }
 
   isValidImageURL(url: string): boolean {
-    if (base64imageTest.test(url)) {
-      return true;
-    }
-
-    const urlData = this.getData(url);
-    if (!urlData) {
-      return false;
-    }
-
-    return (
-      filestackTest.test(urlData.href) || imageLinkTest.test(urlData.pathname)
-    );
+    let result = false;
+    try {
+      result = Boolean(this.validateImgUrl(url));
+    } catch (e) {}
+    return result;
   }
 
   isValidVideoURL(url: string): boolean {
+    let result = false;
+    try {
+      result = Boolean(this.validateVideoUrl(url));
+    } catch (e) {}
+    return result;
+  }
+
+  validateImgUrl(url: string): SafeResourceUrl {
     const urlData = this.getData(url);
-    if (!urlData) {
-      return false;
+
+    if (urlData && (filestackTest.test(url) || imageLinkTest.test(url))) {
+      return this.sanitizer.bypassSecurityTrustResourceUrl(
+        !base64imageTest.test(url) ? this.reconstruct(url) : url
+      );
     }
 
-    for (const key of Object.keys(allowedDomainsTest)) {
-      if (allowedDomainsTest[key].test(urlData.hostname)) {
-        return true;
+    throw new Error(
+      `[URLutils.validateImgUrl]: URL (${url}) is not a valid image URL.`
+    );
+  }
+
+  validateVideoUrl(url: string): SafeResourceUrl {
+    const urlData = this.getData(url);
+
+    if (urlData) {
+      for (const key of Object.keys(allowedDomainsTest)) {
+        if (allowedDomainsTest[key].test(urlData.hostname)) {
+          return this.sanitizer.bypassSecurityTrustResourceUrl(urlData.href);
+        }
       }
     }
 
-    return false;
+    throw new Error(
+      `[URLutils.validateVideoUrl]: URL (${url}) is not allowed. Allowed URLs are [${stringify(
+        Object.keys(allowedDomainsTest)
+      )}]`
+    );
+  }
+
+  getMediaData$(url: string, autoplay = true): Observable<MediaData> {
+    //
+    const mediaType =
+      imageLinkTest.test(url) || filestackTest.test(url)
+        ? MediaType.image
+        : MediaType.video;
+
+    const mediaData: MediaData = {
+      mediaType,
+      url,
+    };
+
+    return of(mediaData).pipe(
+      //
+      map(() => {
+        if (mediaData.mediaType === MediaType.image) {
+          mediaData.safeUrl = this.validateImgUrl(mediaData.url);
+        }
+
+        if (mediaData.mediaType === MediaType.video) {
+          const videoData = this.parseVideoURL(mediaData.url, autoplay);
+          const safeUrl = this.validateVideoUrl(
+            videoData?.url || mediaData.url
+          );
+
+          Object.assign(mediaData, videoData, {
+            url: mediaData.url,
+            safeUrl,
+          });
+        }
+
+        return mediaData;
+      }),
+
+      switchMap(() => {
+        //
+        return mediaData.type === URLtype.vimeo
+          ? //
+            fromFetch(
+              `https://vimeo.com/api/v2/video/${mediaData.id}.json`
+            ).pipe(
+              switchMap((response: Response) => {
+                if (response.ok) {
+                  return response.json();
+                } else {
+                  throw new Error(
+                    `Vimeo API Error ${response.status}: ${response.statusText}`
+                  );
+                }
+              }),
+              map((videoMeta: GenericObject) => {
+                const thumb =
+                  videoMeta && videoMeta[0]?.thumbnail_large?.split('_640')[0];
+                mediaData.thumb =
+                  (thumb && thumb + '_1280x720.jpg') || mediaData.thumb;
+                return mediaData;
+              })
+            )
+          : //
+          mediaData.type === URLtype.youtube &&
+            mediaData['thumbAlt'] &&
+            mediaData['thumbMinWidth']
+          ? //
+            this.imageDimensionsService
+              .getImageDimensions$(mediaData.thumb)
+              .pipe(
+                map((imgDims: ImageDims) => {
+                  if (imgDims.width <= mediaData['thumbMinWidth']) {
+                    mediaData.thumb = mediaData['thumbAlt'];
+                  }
+                  return mediaData;
+                })
+              )
+          : //
+            of(mediaData);
+      }),
+
+      map(() => {
+        delete mediaData.thumbAlt;
+        delete mediaData.thumbMinWidth;
+        return mediaData;
+      }),
+
+      catchError((error) => {
+        log.err(error, 'URLutils.getMediaData$');
+        return of(mediaData);
+      })
+    );
   }
 }

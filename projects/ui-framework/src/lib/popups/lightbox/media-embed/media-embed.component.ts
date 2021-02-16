@@ -2,144 +2,100 @@ import {
   Component,
   Input,
   HostListener,
-  OnChanges,
-  SimpleChanges,
   OnDestroy,
   ElementRef,
   HostBinding,
+  Output,
+  EventEmitter,
+  OnInit,
 } from '@angular/core';
 import { URLutils } from '../../../services/url/url-utils.service';
-import { VideoData } from '../../../services/url/url.interface';
+import { MediaData, VideoData } from '../../../services/url/url.interface';
 import { LightboxData } from '../lightbox.interface';
 import { LightboxService } from '../lightbox.service';
 import { MediaType } from './media-embed.enum';
+
+import { Observable } from 'rxjs';
+import { InputObservable } from '../../../services/utils/decorators';
 import {
-  imageLinkTest,
-  base64imageTest,
-  filestackTest,
-  allowedDomainsTest,
-} from '../../../services/url/url.const';
-import {
-  stringify,
-  hasChanges,
-} from '../../../services/utils/functional-utils';
-import { URLtype } from '../../../services/url/url.enum';
+  distinctUntilChanged,
+  filter,
+  shareReplay,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs/operators';
 
 @Component({
   selector: 'b-media-embed',
-  template: '',
+  template: `<ng-container *ngLet="(mediaData$ | async) || {} as md">
+    <iframe
+      *ngIf="inline === true && md.mediaType === mt.video && md.safeUrl"
+      class="embed-video"
+      [src]="md.safeUrl"
+      frameborder="0"
+      allowfullscreen
+    >
+    </iframe>
+  </ng-container>`,
   styleUrls: ['./media-embed.component.scss'],
 })
-export class MediaEmbedComponent implements OnChanges, OnDestroy {
+export class MediaEmbedComponent implements OnInit, OnDestroy {
   constructor(
     private URL: URLutils,
     private lightboxService: LightboxService,
     private host: ElementRef
   ) {}
 
-  public videoData: VideoData;
-  public lightbox: LightboxData;
+  @InputObservable(null, [filter(Boolean)])
+  @Input('url')
+  url$: Observable<string>;
 
-  @Input() url: string;
+  @Output() clicked: EventEmitter<VideoData> = new EventEmitter<VideoData>();
 
   @HostBinding('attr.data-type') public mediaType: MediaType;
+  @HostBinding('attr.data-inline-embed') @Input() inline = false;
+
+  public videoData: VideoData;
+  public lightbox: LightboxData;
+  readonly mt = MediaType;
+  public mediaData$: Observable<MediaData>;
 
   @HostListener('click')
   onClick() {
-    this.ngOnDestroy();
-    this.lightbox = this.lightboxService.showLightbox({
-      video:
-        this.mediaType === MediaType.video &&
-        this.videoData &&
-        this.videoData.url,
-      image: this.mediaType === MediaType.image && this.url,
+    this.clicked.observers.length && this.clicked.emit(this.videoData);
+    if (this.clicked.observers.length || this.inline) {
+      return;
+    }
+
+    this.lightbox?.close();
+
+    this.mediaData$.pipe(take(1)).subscribe((md) => {
+      md.safeUrl &&
+        (this.lightbox = this.lightboxService.showLightbox({
+          [md.mediaType]: md.safeUrl,
+        }));
     });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (hasChanges(changes, ['url'], true)) {
-      this.url = changes.url.currentValue;
-
-      this.mediaType =
-        imageLinkTest.test(this.url) || filestackTest.test(this.url)
-          ? MediaType.image
-          : MediaType.video;
-
-      if (this.mediaType === MediaType.image) {
-        this.setThumbImg(
-          !base64imageTest.test(this.url)
-            ? this.URL.reconstruct(this.url)
-            : this.url
-        );
-      }
-
-      if (this.mediaType === MediaType.video) {
-        this.videoData = this.URL.parseVideoURL(this.url);
-
-        if (!this.videoData) {
-          console.error(
-            `[MediaEmbedComponent]: URL (${
-              this.url
-            }) is not allowed. Allowed URLs are [${stringify(
-              Object.keys(allowedDomainsTest)
-            )}]`
-          );
-          return;
-        }
-
-        if (this.videoData.type === URLtype.vimeo) {
-          (async () => {
-            const response = await fetch(
-              `https://vimeo.com/api/v2/video/${this.videoData.id}.json`
-            );
-            const videMeta = await response.json();
-
-            const thumb =
-              videMeta && videMeta[0]?.thumbnail_large?.split('_640')[0];
-            this.videoData.thumb =
-              (thumb && thumb + '_1280x720.jpg') || this.videoData.thumb;
-
-            this.setThumbImg(this.videoData.thumb);
-          })();
-
-          return;
-        }
-
-        this.setThumbImg(this.videoData.thumb);
-
-        if (
-          this.videoData.type === URLtype.youtube &&
-          this.videoData.thumbAlt &&
-          this.videoData.thumbMinWidth
-        ) {
-          let testImg = new Image();
-
-          testImg.onerror = () => {
-            this.setThumbImg(this.videoData.thumbAlt);
-            testImg = testImg.onload = testImg.onerror = null;
-          };
-          testImg.onload = () => {
-            if (testImg.naturalWidth <= this.videoData.thumbMinWidth) {
-              this.setThumbImg(this.videoData.thumbAlt);
-            }
-            testImg = testImg.onload = testImg.onerror = null;
-          };
-
-          testImg.src = this.videoData.thumb;
-        }
-      }
-    }
+  ngOnInit() {
+    this.mediaData$ = this.url$.pipe(
+      distinctUntilChanged(),
+      switchMap((url) => this.URL.getMediaData$(url, this.inline !== true)),
+      tap((md) => {
+        this.mediaType = md.mediaType;
+        md.safeUrl && this.setThumbImg(md.thumb || md.url);
+      }),
+      shareReplay(1)
+    );
   }
 
   ngOnDestroy(): void {
-    if (this.lightbox) {
-      this.lightbox.close();
-    }
+    this.lightbox?.close();
   }
 
   private setThumbImg(imgUrl: string) {
-    if (imgUrl) {
-      this.host.nativeElement.style.backgroundImage = `url(${imgUrl})`;
-    }
+    imgUrl &&
+      (this.host.nativeElement.style.backgroundImage = `url(${imgUrl})`);
   }
 }

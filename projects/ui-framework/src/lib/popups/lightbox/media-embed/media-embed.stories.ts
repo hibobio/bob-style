@@ -1,10 +1,11 @@
 import { storiesOf } from '@storybook/angular';
-import { select, text, withKnobs } from '@storybook/addon-knobs';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
 import { LightboxModule } from '../lightbox.module';
 import { ComponentGroupType } from '../../../consts';
 import { LightboxExampleModule } from '../lightbox-example.module';
 import { ButtonsModule } from '../../../buttons/buttons.module';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
+import { action } from '@storybook/addon-actions';
 
 const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
@@ -15,7 +16,7 @@ const template = `<b-media-embed [url]="videoLink">
 
 const storyTemplate = `<b-story-book-layout [title]="'Media Embed'">
    <div>
-  <b-media-embed [url]="embed === 'video' ? videoLink : imageLink">
+  <b-media-embed [url]="embed === 'video' ? videoLink : imageLink" [inline]="inline">
   </b-media-embed>
   </div>
 </b-story-book-layout>`;
@@ -27,13 +28,15 @@ const note = `
   *LightboxModule*
 
   ~~~
-  ${template}
+  <b-media-embed [url]="videoUrl"></b-media-embed>
   ~~~
 
   #### Properties
   Name | Type | Description
   --- | --- | --- | ---
   [url] | string |  image, youtube or vimeo link to show in lightbox (other URLs types not supported)
+  [inline] | boolean | if true, the component will embed the img/video in itself (instead of using lightbox) | false
+  (clicked) | EventEmitter<wbr>&lt;VideoData&gt; | if someone is listening to this output, the event will emit an object with video data (including thumbnail image) and the lightbox with the video will <u>not</u> be opened (it becomes the responsibilty of consumer) | &nbsp;
 `;
 
 story.add(
@@ -51,6 +54,8 @@ story.add(
           'videoLink',
           'https://www.youtube.com/embed/p3j2NYZ8FKs'
         ),
+        inline: boolean('inline', false),
+        clicked: action('clicked'),
       },
       moduleMetadata: {
         imports: [
