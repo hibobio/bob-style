@@ -4,13 +4,13 @@ import { LightboxComponent } from './lightbox.component';
 import { Overlay, OverlayConfig } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { URLutils } from '../../services/url/url-utils.service';
-import { filter, take } from 'rxjs/operators';
-import { fromEvent, merge, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { EMPTY, fromEvent, merge, Subscription } from 'rxjs';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { UtilsService } from '../../services/utils/utils.service';
-import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
-import { insideZone } from '../../services/utils/rxjs.operators';
+import { filterKey, insideZone } from '../../services/utils/rxjs.operators';
+import { unsubscribeArray } from '../../services/utils/functional-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -76,7 +76,7 @@ export class LightboxService {
         .detachments()
         .pipe(take(1));
 
-      if (!this.isEmbedMode) {
+      !this.isEmbedMode &&
         this.windowRef.nativeWindow.history.pushState(
           {
             lightbox: true,
@@ -84,18 +84,22 @@ export class LightboxService {
           },
           null
         );
-      }
 
       this.subs.push(
         merge(
-          fromEvent(this.lightbox.overlayRef.overlayElement, 'click'),
-          fromEvent(this.windowRef.nativeWindow as Window, 'popstate').pipe(
-            filter(() => !this.isEmbedMode)
-          ),
-          this.utilsService.getWindowKeydownEvent(true).pipe(
-            filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)),
-            insideZone(this.zone)
-          )
+          config.closeOnBackdropClick === true && config.disableClose !== true
+            ? fromEvent(this.lightbox.overlayRef.overlayElement, 'click')
+            : EMPTY,
+
+          config.disableClose !== true
+            ? this.utilsService
+                .getWindowKeydownEvent(true)
+                .pipe(filterKey(Keys.escape), insideZone(this.zone))
+            : EMPTY,
+
+          !this.isEmbedMode
+            ? fromEvent(this.windowRef.nativeWindow as Window, 'popstate')
+            : EMPTY
         )
           .pipe(take(1))
           .subscribe(() => {
@@ -130,9 +134,6 @@ export class LightboxService {
       this.windowRef.nativeWindow.history.back();
     }
 
-    this.subs.forEach((sub) => {
-      sub.unsubscribe();
-    });
-    this.subs.length = 0;
+    unsubscribeArray(this.subs);
   }
 }

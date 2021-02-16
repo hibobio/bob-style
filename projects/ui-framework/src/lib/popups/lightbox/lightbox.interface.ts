@@ -9,8 +9,10 @@ export interface LightboxConfig {
   component?: RenderedComponent;
   image?: string;
   video?: string | SafeResourceUrl;
-  fillScreen?: boolean;
   iframe?: string | SafeResourceUrl;
+  fillScreen?: boolean;
+  disableClose?: boolean;
+  closeOnBackdropClick?: boolean;
 }
 
 export interface LightboxData {

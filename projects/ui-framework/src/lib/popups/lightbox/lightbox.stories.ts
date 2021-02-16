@@ -10,16 +10,15 @@ const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
 );
 
-const template = `<b-lightbox-example
+const storyTemplate = `<b-story-book-layout [title]="'Lightbox'">
+<b-lightbox-example
                   [imageLink]="imageLink"
                   [videoLink]="videoLink"
                   [showInLightbox]="showInLightbox"
-                  [fillScreen]="fillScreen">
-                </b-lightbox-example>`;
-
-const storyTemplate = `<b-story-book-layout [title]="'Lightbox'">
-    ${template}
-
+                  [fillScreen]="fillScreen"
+                  [disableClose]="disableClose"
+                  [closeOnBackdropClick]="closeOnBackdropClick">
+                </b-lightbox-example>
 </b-story-book-layout>`;
 
 const note = `
@@ -36,6 +35,8 @@ const note = `
   image | string | valid image URL to show in lightbox
   video | string | embedable youtube or vimeo link to show in lightbox (other URLs will throw error)
   fillScreen | boolean | if content should fill most of the screen (may be important for components)
+  disableClose | boolean | if true, closing via Escape key and backdrop click will be disabled (only closing via X button is enabled) | false
+  closeOnBackdropClick | boolean | if backdrop click should close lightbox | false
 
   #### Returned object properties
 
@@ -96,6 +97,8 @@ story.add(
           'https://www.youtube.com/embed/p3j2NYZ8FKs'
         ),
         fillScreen: boolean('fillScreen', false),
+        disableClose: boolean('disableClose', false),
+        closeOnBackdropClick: boolean('closeOnBackdropClick', false),
       },
       moduleMetadata: {
         imports: [
