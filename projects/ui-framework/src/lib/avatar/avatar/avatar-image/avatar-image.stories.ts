@@ -66,7 +66,8 @@ const template2 = `
       icon:icon,
       badge:badge,
       text:text,
-      disabled:disabled
+      disabled:disabled,
+      border: border
     }"
     (clicked)="onClick($event)">
 </b-avatar-image>
@@ -108,7 +109,7 @@ const note = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Avatar Image'">
+<b-story-book-layout [title]="'Avatar Image'" style="background: rgb(245,245,245);">
     ${template2}
 </b-story-book-layout>
 `;
@@ -135,6 +136,7 @@ story.add(
         text: text('text', null),
         disabled: boolean('disabled', false),
         onClick: action('Avatar Clicked'),
+        border: boolean('border', false),
       },
       moduleMetadata: {
         imports: [

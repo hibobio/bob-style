@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { URLutils } from '../../../../ui-framework/src/lib/services/url/url-utils.service';
 import { FormsModule } from '@angular/forms';
 import { mockText } from '../../../../ui-framework/src/lib/mock.const';
+// tslint:disable-next-line: max-line-length
 import { TruncateTooltipModule } from '../../../../ui-framework/src/lib/popups/truncate-tooltip/truncate-tooltip.module';
 import { TypographyModule } from '../../../../ui-framework/src/lib/typography/typography.module';
 
 @Component({
+  // tslint:disable-next-line: component-selector
   selector: 'tooltip-tester',
   template: `
     <style>
@@ -87,7 +89,7 @@ import { TypographyModule } from '../../../../ui-framework/src/lib/typography/ty
       </p>
     </div>
   `,
-  providers: [URLutils]
+  providers: [URLutils],
 })
 export class TooltipTesterComponent {
   constructor() {}
@@ -102,6 +104,6 @@ export class TooltipTesterComponent {
   imports: [CommonModule, TruncateTooltipModule, FormsModule, TypographyModule],
   exports: [TooltipTesterComponent],
   providers: [],
-  entryComponents: []
+  entryComponents: [],
 })
 export class TooltipTesterModule {}
