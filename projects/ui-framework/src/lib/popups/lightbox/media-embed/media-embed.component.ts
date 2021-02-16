@@ -25,6 +25,7 @@ import {
   take,
   tap,
 } from 'rxjs/operators';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 
 @Component({
   selector: 'b-media-embed',
@@ -43,6 +44,7 @@ import {
 export class MediaEmbedComponent implements OnInit, OnDestroy {
   constructor(
     private URL: URLutils,
+    private DOM: DOMhelpers,
     private lightboxService: LightboxService,
     private host: ElementRef
   ) {}
@@ -53,7 +55,6 @@ export class MediaEmbedComponent implements OnInit, OnDestroy {
 
   @Output() clicked: EventEmitter<VideoData> = new EventEmitter<VideoData>();
 
-  @HostBinding('attr.data-type') public mediaType: MediaType;
   @HostBinding('attr.data-inline-embed') @Input() inline = false;
 
   public videoData: VideoData;
@@ -83,8 +84,7 @@ export class MediaEmbedComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       switchMap((url) => this.URL.getMediaData$(url, this.inline !== true)),
       tap((md) => {
-        this.mediaType = md.mediaType;
-        md.safeUrl && this.setThumbImg(md.thumb || md.url);
+        md.safeUrl && this.setAttrs(md.thumb || md.url, md.mediaType);
       }),
       shareReplay(1)
     );
@@ -94,8 +94,15 @@ export class MediaEmbedComponent implements OnInit, OnDestroy {
     this.lightbox?.close();
   }
 
-  private setThumbImg(imgUrl: string) {
+  private setAttrs(imgUrl: string, mediaType: MediaType) {
     imgUrl &&
-      (this.host.nativeElement.style.backgroundImage = `url(${imgUrl})`);
+      this.DOM.setCssProps(this.host.nativeElement, {
+        'background-image': `url(${imgUrl})`,
+      });
+
+    mediaType &&
+      this.DOM.setAttributes(this.host.nativeElement, {
+        'data-type': mediaType,
+      });
   }
 }

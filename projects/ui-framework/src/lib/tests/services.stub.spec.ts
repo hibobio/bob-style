@@ -28,6 +28,10 @@ import { TooltipClass } from '../popups/tooltip/tooltip.enum';
 import { TruncateTooltipComponent } from '../popups/truncate-tooltip/truncate-tooltip.component';
 import { WindowLike, WindowRef } from '../services/utils/window-ref.service';
 import { simpleUID } from '../services/utils/functional-utils';
+import { URLutils } from '../services/url/url-utils.service';
+import { filestackTest, imageLinkTest } from '../services/url/url.const';
+import { MediaType } from '../popups/lightbox/media-embed/media-embed.enum';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 // This file is intentionally named .spec.ts - to fix build problems due to missing jasmine namespace
 
@@ -268,4 +272,33 @@ export const getWindowRefMock = () =>
 export const WindowRefProvideMock = (mock: Mock<WindowRef> = null) => ({
   provide: WindowRef,
   useFactory: () => (mock || getWindowRefMock()).Object,
+});
+
+export const getURLutilsMock = () =>
+  new Mock<URLutils>({
+    validateImgUrl: (url) =>
+      ({
+        changingThisBreaksApplicationSecurity: url,
+      } as SafeResourceUrl),
+    validateVideoUrl: (url) =>
+      ({
+        changingThisBreaksApplicationSecurity: url,
+      } as SafeResourceUrl),
+    getMediaData$: (url) =>
+      of({
+        url,
+        mediaType:
+          imageLinkTest.test(url) || filestackTest.test(url)
+            ? MediaType.image
+            : MediaType.video,
+        safeUrl: {
+          changingThisBreaksApplicationSecurity: url,
+        } as SafeResourceUrl,
+        thumb: url.slice(-20) + '/maxresdefault.jpg',
+      }),
+  });
+
+export const URLutilsProvideMock = (mock: Mock<URLutils> = null) => ({
+  provide: URLutils,
+  useFactory: () => (mock || getURLutilsMock()).Object,
 });

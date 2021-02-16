@@ -2,61 +2,64 @@ import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LightboxModule } from '../lightbox.module';
 import { MediaEmbedComponent } from './media-embed.component';
-import {
-  emptyImg,
-  emptyImgTestString,
-} from '../../../services/utils/test-helpers';
+import { emptyImg } from '../../../services/utils/test-helpers';
 import { MediaType } from './media-embed.enum';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { simpleChange } from '../../../services/utils/functional-utils';
+import { URLutilsProvideMock } from '../../../tests/services.stub.spec';
+import { take } from 'rxjs/operators';
 
 describe('MediaEmbedComponent', () => {
   let component: MediaEmbedComponent;
   let fixture: ComponentFixture<MediaEmbedComponent>;
   let compElement: HTMLElement;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [LightboxModule, OverlayModule],
-      declarations: [],
-      providers: [],
-      schemas: [NO_ERRORS_SCHEMA],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [LightboxModule, OverlayModule],
+        declarations: [],
+        providers: [URLutilsProvideMock()],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(MediaEmbedComponent);
+          component = fixture.componentInstance;
+          compElement = fixture.debugElement.nativeElement;
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(MediaEmbedComponent);
-        component = fixture.componentInstance;
-        compElement = fixture.debugElement.nativeElement;
-      });
-  }));
+  );
 
   describe('MediaEmbedComponent - Video', () => {
     beforeEach(() => {
-      component.ngOnChanges(
-        simpleChange({
-          url: 'https://www.youtube.com/watch?v=BvQ571eAOZE',
-        })
-      );
+      component.url$ = 'https://www.youtube.com/watch?v=BvQ571eAOZE' as any;
       fixture.detectChanges();
     });
 
-    it('should set mediaType prop to "video"', () => {
-      expect(component.mediaType).toEqual(MediaType.video);
+    it('should set mediaType prop to "video"', (done) => {
+      component.mediaData$.pipe(take(1)).subscribe((md) => {
+        expect(md.mediaType).toEqual(MediaType.video);
+        done();
+      });
     });
 
-    it('should parse url and get correct embed url', () => {
-      expect(component.videoData.url).toContain(
-        'www.youtube.com/embed/BvQ571eAOZE'
-      );
+    it('should parse url and get correct embed url', (done) => {
+      component.mediaData$.pipe(take(1)).subscribe((md) => {
+        expect(md.safeUrl['changingThisBreaksApplicationSecurity']).toContain(
+          'BvQ571eAOZE'
+        );
+        done();
+      });
     });
 
-    it('should parse url and get thumbnail image', () => {
-      expect(component.videoData.thumb).toContain(
-        'img.youtube.com/vi/BvQ571eAOZE/maxresdefault.jpg'
-      );
-      expect(compElement.style.backgroundImage).toContain(
-        'img.youtube.com/vi/BvQ571eAOZE/maxresdefault.jpg'
-      );
+    it('should parse url and get thumbnail image', (done) => {
+      component.mediaData$.pipe(take(1)).subscribe((md) => {
+        expect(md.thumb).toContain('maxresdefault.jpg');
+        expect(compElement.style.backgroundImage).toContain(
+          'maxresdefault.jpg'
+        );
+        done();
+      });
     });
 
     it('should open lightbox on click', () => {
@@ -66,28 +69,26 @@ describe('MediaEmbedComponent', () => {
       expect(component.lightbox.overlayRef).toBeTruthy();
       expect(component.lightbox.lightboxComponentRef).toBeTruthy();
       expect(
-        (component.lightbox.config.video as any)
-          .changingThisBreaksApplicationSecurity
-      ).toContain('www.youtube.com/embed/BvQ571eAOZE');
+        component.lightbox.config.video['changingThisBreaksApplicationSecurity']
+      ).toContain('BvQ571eAOZE');
     });
   });
 
   describe('MediaEmbedComponent - Image', () => {
     beforeEach(() => {
-      component.ngOnChanges(
-        simpleChange({
-          url: emptyImg,
-        })
-      );
+      component.url$ = emptyImg as any;
       fixture.detectChanges();
     });
 
-    it('should set mediaType prop to "image"', () => {
-      expect(component.mediaType).toEqual(MediaType.image);
+    it('should set mediaType prop to "image"', (done) => {
+      component.mediaData$.pipe(take(1)).subscribe((md) => {
+        expect(md.mediaType).toEqual(MediaType.image);
+        done();
+      });
     });
 
     it('should set thumbnail image', () => {
-      expect(compElement.style.backgroundImage).toContain(emptyImgTestString);
+      expect(compElement.style.backgroundImage).toContain(emptyImg.slice(-20));
     });
 
     it('should open lightbox on click', () => {
@@ -96,7 +97,9 @@ describe('MediaEmbedComponent', () => {
       fixture.detectChanges();
       expect(component.lightbox.overlayRef).toBeTruthy();
       expect(component.lightbox.lightboxComponentRef).toBeTruthy();
-      expect(component.lightbox.config.image).toContain(emptyImgTestString);
+      expect(
+        component.lightbox.config.image['changingThisBreaksApplicationSecurity']
+      ).toContain(emptyImg.slice(-20));
     });
   });
 });
