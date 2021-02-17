@@ -68,6 +68,14 @@ export class CollapsibleComponent implements OnChanges {
     }
   }
 
+  public expand(expand = true) {
+    this.section.nativeElement.open = this.expanded = expand;
+  }
+
+  public collapse(collapse = true) {
+    this.section.nativeElement.open = this.expanded = !collapse;
+  }
+
   public onExpand(event: Event) {
     this.addAnimation();
     this.expanded = event.target['open'];

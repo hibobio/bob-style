@@ -10,16 +10,19 @@ import { CollapsibleModule } from './collapsible.module';
 import { COLLAPSIBLE_STYLE_DEF } from './collapsible.const';
 import { CollapsibleComponent } from './collapsible.component';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { ClickOutsideModule } from '../../services/utils/clickOutside.directive';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
 const template = `
-  <b-collapsible [title]="title"
+  <b-collapsible #collapsible
+         [title]="title"
          [config]="style"
          [animate]="animate"
-         [startExpaned]="startExpaned">
+         [startExpaned]="startExpaned"
+         (click.outside)="collapsible.collapse()">
     {{ content }}
   </b-collapsible>
 `;
@@ -102,6 +105,7 @@ story.add(
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           CollapsibleModule,
+          ClickOutsideModule,
         ],
         entryComponents: [],
       },
