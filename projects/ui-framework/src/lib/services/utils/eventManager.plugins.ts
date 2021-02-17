@@ -3,12 +3,12 @@ import { EventManager, EVENT_MANAGER_PLUGINS } from '@angular/platform-browser';
 import { NativeEvents } from '../../enums';
 
 export enum EventModifiers {
-  outsideZone = 'outside-zone'
+  outsideZone = 'outside-zone',
 }
 export enum GlobalEventModifiers {
   window = 'window',
   document = 'document',
-  body = 'body'
+  body = 'body',
 }
 
 const allowedNativeEvents = Object.values(NativeEvents);
@@ -20,11 +20,11 @@ const splitToArray = (name: string, test = /[^\w-]+/): string[] => {
 
 const getEventsArray = (eventName: string): string[] =>
   splitToArray(eventName, /[^\w-.]+/).filter(
-    name => !globalElems.includes(name as GlobalEventModifiers)
+    (name) => !globalElems.includes(name as GlobalEventModifiers)
   );
 
 const getNativeEventsArray = (eventName: string): string[] =>
-  splitToArray(eventName).filter(name =>
+  splitToArray(eventName).filter((name) =>
     allowedNativeEvents.includes(name as NativeEvents)
   );
 
@@ -46,7 +46,7 @@ const getDocElement = (selector: string): EventTarget => {
 };
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OutsideZonePlugin {
   manager: EventManager;
@@ -57,9 +57,9 @@ export class OutsideZonePlugin {
     return (
       splitName.length === 2 &&
       splitName[1] === EventModifiers.outsideZone &&
-      allowedNativeEvents.includes(getNativeEventName(
-        splitName[0]
-      ) as NativeEvents)
+      allowedNativeEvents.includes(
+        getNativeEventName(splitName[0]) as NativeEvents
+      )
     );
   }
 
@@ -92,7 +92,7 @@ export class OutsideZonePlugin {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MultiEventPlugin {
   manager: EventManager;
@@ -137,15 +137,45 @@ export class MultiEventPlugin {
   }
 }
 
+@Injectable({
+  providedIn: 'root',
+})
+export class StopPropEventPlugin {
+  supports(eventName: string): boolean {
+    return eventName.endsWith('stop');
+  }
+
+  addEventListener(
+    element: HTMLElement,
+    eventName: string,
+    originalHandler: Function
+  ): Function {
+    const [nativeEventName] = eventName.split('.');
+    const enhancedHandler = (event: Event) => {
+      event.stopPropagation();
+      originalHandler(event);
+    };
+
+    element.addEventListener(nativeEventName, enhancedHandler);
+
+    return () => element.removeEventListener(nativeEventName, enhancedHandler);
+  }
+}
+
 export const EventManagerPlugins = [
   {
     multi: true,
     provide: EVENT_MANAGER_PLUGINS,
-    useClass: OutsideZonePlugin
+    useClass: OutsideZonePlugin,
   },
   {
     multi: true,
     provide: EVENT_MANAGER_PLUGINS,
-    useClass: MultiEventPlugin
-  }
+    useClass: MultiEventPlugin,
+  },
+  {
+    multi: true,
+    provide: EVENT_MANAGER_PLUGINS,
+    useClass: StopPropEventPlugin,
+  },
 ];

@@ -638,6 +638,8 @@ export * from './lib/services/color-service/color.service';
 export * from './lib/services/color-service/color-palette.service';
 // ItemsInRowService
 export * from './lib/services/items-in-row/items-in-row.service';
+// Click Outside
+export * from './lib/services/utils/clickOutside.directive';
 
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
