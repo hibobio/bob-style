@@ -25,7 +25,7 @@ const storyTemplate = `
     </div>
 
     <div class="flx flx-row-align-y flx-grow">
-      <textarea class="flx-grow" style="resize:none;border:0;min-height: 6em;">${'<my-component \
+      <textarea class="flx-grow" style="resize:none;border:0;min-height: 7em;">${'<my-component \
          \n(click)="clickedInside()">\
          \n(click.outside)="clickedOutside()">\
          \n</my-component>'}</textarea>
@@ -46,7 +46,7 @@ const storyTemplate = `
     </div>
 
     <div class="flx flx-row-align-y flx-grow">
-      <textarea class="flx-grow" style="resize:none;border:0;min-height: 6em;">${'<my-component \
+      <textarea class="flx-grow" style="resize:none;border:0;min-height: 7em;">${'<my-component \
       \n(win.keydown.enter)="onEnter()" \
       \n(win.keydown.escape)="onEscape()">\
       \n</my-component>'}</textarea>
@@ -71,7 +71,7 @@ const storyTemplate = `
     </div>
 
     <div class="flx flx-row-align-y flx-grow">
-      <textarea class="flx-grow" style="resize:none;border:0;min-height: 6em;">${'<my-component \
+      <textarea class="flx-grow" style="resize:none;border:0;min-height: 7em;">${'<my-component \
       \n(inView)="onInView($event)">\
       \n</my-component>'}</textarea>
     </div>
