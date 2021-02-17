@@ -10,6 +10,7 @@ import {
   pick as _pick,
   omit as _omit,
   assign as _assign,
+  sortBy as _sortBy,
 } from 'lodash';
 import { RenderedComponent } from '../component-renderer/component-renderer.interface';
 import { SelectGroupOption } from '../../lists/list.interface';
@@ -28,6 +29,7 @@ import {
   PaletteColorGenerator,
 } from '../color-service/color-palette.service';
 import { ColorService } from '../color-service/color.service';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 // ----------------------
 // TYPES
@@ -124,6 +126,9 @@ export const isDomElement = (val: any): val is HTMLElement =>
 
 export const isElementRef = (val: any): val is ElementRef =>
   isDomElement(val?.nativeElement);
+
+export const isSafeUrl = (val: any): val is SafeResourceUrl =>
+  hasProp(val, 'changingThisBreaksApplicationSecurity');
 
 export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
   (!Boolean(smth) && (fuzzy || (!isString(smth) && !isNumber(smth)))) ||
@@ -1831,4 +1836,8 @@ export const omit = <
   props: K | K[]
 ): O => {
   return _omit(object, props);
+};
+
+export const sortBy = <T>(list: T[], idBy: (item: T) => string): T[] => {
+  return _sortBy(list, idBy);
 };

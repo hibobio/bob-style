@@ -117,6 +117,7 @@ const toAdd = () => ({
       'Props'
     ),
     min: number('min', 0, {}, 'Props'),
+    max: number('max', 0, {}, 'Props'),
 
     maxHeight: number('maxHeight', 0, {}, 'Props'),
 

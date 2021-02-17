@@ -12,6 +12,7 @@ import { Keys } from '../../enums';
 import { filterKey, insideZone } from '../../services/utils/rxjs.operators';
 import {
   isObject,
+  isSafeUrl,
   unsubscribeArray,
 } from '../../services/utils/functional-utils';
 
@@ -57,12 +58,12 @@ export class LightboxService {
         ...config,
         image:
           config.image &&
-          (isObject(config.image)
+          (isSafeUrl(config.image)
             ? config.image
             : this.url.validateImgUrl(config.image as string)),
         video:
           config.video &&
-          (isObject(config.video)
+          (isSafeUrl(config.video)
             ? config.video
             : this.url.validateVideoUrl(config.video as string)),
       };
