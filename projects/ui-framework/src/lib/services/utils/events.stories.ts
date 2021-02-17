@@ -5,11 +5,12 @@ import { ClickOutsideModule } from './clickOutside.directive';
 import { action } from '@storybook/addon-actions';
 import { log } from './logger';
 import { WindowKeydownModule } from './windowKeydown.directive';
+import { InViewModule } from './inview.directive';
 
 const story = storiesOf(ComponentGroupType.Services, module);
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Events'"><div style="max-width:700px;text-align:left;">
+<b-story-book-layout [title]="'Events'"><div style="max-width:700px;text-align:left;min-height:250vh;">
 
   <h4>ClickOutsideDirective</h4>
 
@@ -32,7 +33,7 @@ const storyTemplate = `
 
   </div>
 
-  <h4>WindowKeydownDirective</h4>
+  <h4 class="mrg-t-40">WindowKeydownDirective</h4>
 
   <div class="flx flx-row-align-y">
 
@@ -48,6 +49,30 @@ const storyTemplate = `
       <textarea class="flx-grow" style="resize:none;border:0;min-height: 6em;">${'<my-component \
       \n(win.keydown.enter)="onEnter()" \
       \n(win.keydown.escape)="onEscape()">\
+      \n</my-component>'}</textarea>
+    </div>
+
+  </div>
+
+
+  <div class="mrg-t-40" style="text-align:center;font-size:30px">↓↓↓</div>
+
+  <h4 style="margin-top: 50vh">InViewDirective</h4>
+
+  <div class="flx flx-row-align-y">
+
+    <div
+     class="flx flx-center brd pad-16 b-caption mrg-r-24"
+     style="user-select: none; width:150px; height:150px; border-color: black;"
+     [style.backgroundColor]="isInView ? '#4682B4' : null"
+     [style.color]="isInView ? 'white' : null"
+    (inView)="onInView(isInView = $event); log('In View?',$event)">
+      <span>scroll and see log</span>
+    </div>
+
+    <div class="flx flx-row-align-y flx-grow">
+      <textarea class="flx-grow" style="resize:none;border:0;min-height: 6em;">${'<my-component \
+      \n(inView)="onInView($event)">\
       \n</my-component>'}</textarea>
     </div>
 
@@ -87,13 +112,16 @@ story.add(
         clickedOutside: action('clickedOutside'),
         onEnter: action('onEnter'),
         onEscape: action('onEscape'),
+        onInView: action('onInView'),
         log: logger.info,
+        isInView: false,
       },
       moduleMetadata: {
         imports: [
           StoryBookLayoutModule,
           ClickOutsideModule,
           WindowKeydownModule,
+          InViewModule,
         ],
         declarations: [],
       },

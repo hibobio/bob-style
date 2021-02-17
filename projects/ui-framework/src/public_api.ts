@@ -591,7 +591,6 @@ export * from './lib/services/filters/sortByProp.pipe';
 // Utils Module
 export { UtilsModule } from './lib/services/utils/utils.module';
 export { SpyModule, SpyDirective } from './lib/services/utils/spy.directive';
-export { InViewModule, InViewDirective } from './lib/services/utils/inview.directive';
 export * from './lib/services/utils/utils.service';
 export * from './lib/services/utils/utils.interface';
 export * from './lib/services/utils/window-ref.service';
@@ -639,8 +638,9 @@ export * from './lib/services/color-service/color-palette.service';
 // ItemsInRowService
 export * from './lib/services/items-in-row/items-in-row.service';
 // Event directives
-export * from './lib/services/utils/clickOutside.directive';
-export * from './lib/services/utils/windowKeydown.directive';
+export { InViewModule, InViewDirective } from './lib/services/utils/inview.directive';
+export { ClickOutsideModule, ClickOutsideDirective } from './lib/services/utils/clickOutside.directive';
+export { WindowKeydownModule, WindowKeydownDirective } from './lib/services/utils/windowKeydown.directive';
 
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
