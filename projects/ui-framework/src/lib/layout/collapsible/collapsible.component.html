@@ -11,6 +11,7 @@
            [ngStyle]="config.headerStyle"
            [attr.data-icon-before]="chevronIcon"
            [attr.data-icon-before-size]="config.chevronIcon?.size || null"
+           [attr.data-icon-before-color]="config.chevronIcon?.color || null"
            [attr.data-icon-before-rotate]="expanded ? '90' : config.chevronIcon?.rotate || null">
     {{ title }}
     <ng-content select="[header]"></ng-content>
