@@ -23,6 +23,7 @@ import listSelectsPropsDoc from '../lists-selects.properties.md';
 import listsPropsDoc from '../lists.properties.md';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -37,6 +38,7 @@ const template = `
               [max]="max"
               [mode]="selectMode"
               [readonly]="readonly"
+              [size]="size"
               (selectChange)="selectChange($event)">
 
       <b-text-button footerAction *ngIf="options.length>1"
@@ -120,6 +122,13 @@ story.add(
         'optionsDefault',
         optionsDef,
         'Options'
+      ),
+
+      size: select(
+        'size',
+        Object.values(FormElementSize),
+        FormElementSize.regular,
+        'Props'
       ),
 
       options$: options$,

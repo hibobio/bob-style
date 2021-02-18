@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { withKnobs, object, boolean } from '@storybook/addon-knobs';
+import { withKnobs, object, boolean, select } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { ButtonsModule } from '../../buttons/buttons.module';
@@ -22,6 +22,7 @@ import listSelectsPropsDoc from '../lists-selects.properties.md';
 import listsPropsDoc from '../lists.properties.md';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -33,6 +34,7 @@ const template = `
                [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                [showNoneOption]="showNoneOption"
                [readonly]="readonly"
+               [size]="size"
                (selectChange)="selectChange($event)">
 
       <b-text-button footerAction *ngIf="options.length>1"
@@ -110,6 +112,13 @@ story.add(
       showNoneOption: boolean('showNoneOption', false, 'Props'),
       readonly: boolean('readonly', false, 'Props'),
       options: object<SelectGroupOption[]>('options', options, 'Options'),
+
+      size: select(
+        'size',
+        Object.values(FormElementSize),
+        FormElementSize.regular,
+        'Props'
+      ),
 
       selectChange: action('Single list change'),
 

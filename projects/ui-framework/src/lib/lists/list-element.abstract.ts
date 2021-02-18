@@ -226,6 +226,7 @@ export abstract class BaseListElement
         'mode',
         'min',
         'max',
+        'size',
       ])
     ) {
       this.allGroupsCollapsed =

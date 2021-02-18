@@ -222,7 +222,9 @@ $list-max-items: 8;
     }
   }
 
-  .options .option-select.option {
-    padding-left: $input-padding + $chevron-element-width;
+  .v-scroll-wrapper:not(.no-group-header) {
+    .option-select.option {
+      padding-left: $input-padding + $chevron-element-width;
+    }
   }
 }
