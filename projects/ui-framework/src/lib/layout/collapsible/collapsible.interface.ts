@@ -13,4 +13,6 @@ export interface CollapsibleStyle {
   panelStyle?: GenericObject<string>;
 
   chevronIcon?: Icon;
+
+  animate?: boolean;
 }

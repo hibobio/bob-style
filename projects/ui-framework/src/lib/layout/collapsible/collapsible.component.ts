@@ -35,7 +35,7 @@ export class CollapsibleComponent implements OnChanges {
   @Input() id: string = simpleUID('bcl');
   @Input() title: string;
   @Input() config: CollapsibleStyle = COLLAPSIBLE_STYLE_DEF;
-  @Input() animate = false;
+  @Input() animate: boolean;
 
   @Input('startExpaned') set setStartExpaned(startExpaned: boolean) {
     if (isBoolean(startExpaned) && this.section) {
@@ -66,6 +66,8 @@ export class CollapsibleComponent implements OnChanges {
         this.config?.chevronIcon?.icon || Icons.chevron_right
       ).replace('b-icon-', '');
     }
+
+    this.animate = Boolean(this.animate || this.config?.animate);
   }
 
   public expand(expand = true) {
