@@ -4,8 +4,9 @@
                       [description]="description"
                       [fieldId]="id">
 </b-form-element-label>
-<div cdkOverlayOrigin (click)="openPanel()"
-      [ngClass]="{
+<div cdkOverlayOrigin
+     (click)="openPanel()"
+     [ngClass]="{
         'bfe-wrap': !ghost,
         'has-suffix': !ghost,
         'has-prefix': hasPrefix || showPrefix || valueAvatar,
@@ -13,8 +14,7 @@
         'panel-open': panelOpen,
         'panel-above': positionClassList['panel-above'],
         'panel-below': positionClassList['panel-below']
-      }"
->
+      }">
   <ng-container *ngIf="!ghost; else ghostTmp">
     <div *ngIf="(hasPrefix || showPrefix) && !valueAvatar"
          class="bfe-prefix"
@@ -40,23 +40,29 @@
          (focus)="openPanel()"></div>
 
     <div class="bfe-suffix">
-    <span class="select-chevron b-icon-medium"
-          [ngClass]="{'b-icon-chevron-down': !panelOpen, 'b-icon-chevron-up': panelOpen}"></span>
+      <span class="select-chevron b-icon-medium"
+            [ngClass]="{'b-icon-chevron-down': !panelOpen, 'b-icon-chevron-up': panelOpen}"></span>
     </div>
   </ng-container>
 </div>
 
 <ng-template #ghostTmp>
-  <div class="no-wrap flx flx-row-align-y">
-    <strong *ngIf="label" class="mrg-r-4">{{label}}</strong>
-    <b-truncate-tooltip *ngIf="displayValue" class="mrg-r-4" [maxLines]="1" [text]="displayValue"></b-truncate-tooltip>
-    <b-icon
-      class="select-chevron"
-      [icon]="icons.arrow_drop_down"
-      [size]="iconSize.medium"
-      [color]="iconColor.dark"
-      [rotate]="panelOpen ? '180' : null"
-    ></b-icon>
+  <div class="ghost-wrap flx flx-row-align-y cursor-pointer no-wrap">
+    <strong *ngIf="label"
+            class="mrg-r-4">{{label}}</strong>
+    <b-avatar-image *ngIf="valueAvatar"
+                    class="mrg-r-4"
+                    [avatar]="valueAvatar">
+    </b-avatar-image>
+    <b-truncate-tooltip *ngIf="displayValue"
+                        class="mrg-r-4"
+                        [maxLines]="1"
+                        [text]="displayValue"></b-truncate-tooltip>
+    <b-icon class="select-chevron"
+            [icon]="icons.arrow_drop_down"
+            [size]="iconSize.medium"
+            [color]="iconColor.dark"
+            [rotate]="panelOpen ? '180' : null"></b-icon>
   </div>
 </ng-template>
 

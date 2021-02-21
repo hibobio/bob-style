@@ -62,3 +62,11 @@
     }
   }
 }
+
+.ghost-wrap {
+  min-height: 20px;
+  b-avatar-image {
+    margin-top: -2px;
+    margin-bottom: -2px;
+  }
+}

@@ -103,4 +103,4 @@ export const COLOR_GREY_900 = ColorsGrey.color_grey_900;
 export const emptyPixel =
   'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
-export const INVISIBLE_CHARACTER = '‎';
+export const INVISIBLE_CHARACTER = '\u200E';

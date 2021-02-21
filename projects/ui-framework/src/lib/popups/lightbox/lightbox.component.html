@@ -19,7 +19,7 @@
           allowfullscreen>
   </iframe>
 
-  <b-component-renderer class="lightbox-component"
+  <b-component-renderer class="lightbox-component scroll-visible"
                         *ngIf="config.component && !config.image && !config.video && !config.iframe"
                         [render]="config.component"
                         (click.outside-zone)="$event.stopPropagation(); clickBody()">

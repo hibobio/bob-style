@@ -1,4 +1,4 @@
-$acss-sizes: 0 4 8 16 24 32 40;
+$acss-sizes: 0 4 8 16 24 32 40 48;
 $acss-dirs: top right bottom left;
 
 // misc
@@ -39,6 +39,10 @@ $acss-dirs: top right bottom left;
 .scroll-visible-alt {
   @include always-visible-scrollbar($margin: 0, $track-color: black(0.05));
   overflow: auto;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 // Typography

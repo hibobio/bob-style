@@ -145,15 +145,17 @@ export class SingleSelectComponent extends BaseSelectPanelElement
   }
 
   private getValueAvatar(option: SelectOption): Avatar {
+    const size = this.ghost ? FormElementSize.smaller : this.size;
+
     return option
-      ? this.modelSrvc.getOptionAvatar(option, this.size, 'transparent')
+      ? this.modelSrvc.getOptionAvatar(option, size, 'transparent')
       : this.defaultIcon
       ? ({
           id: 'no-value',
           imageSource: null,
           icon: this.modelSrvc.getOptionIcon(
             { icon: this.defaultIcon },
-            this.size,
+            size,
             IconColor.normal
           ),
           backgroundColor: 'transparent',
