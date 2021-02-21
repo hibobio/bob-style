@@ -95,6 +95,8 @@ export abstract class BaseButtonElement implements OnChanges, OnInit {
         (this.typeDefault === ButtonType.primary ||
           this.typeDefault === ButtonType.negative))
         ? IconColor.white
+        : this.disabled
+        ? IconColor.normal
         : IconColor.dark;
   }
 
