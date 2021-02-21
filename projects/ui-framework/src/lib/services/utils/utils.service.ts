@@ -1,10 +1,15 @@
 import { Inject, Injectable, InjectionToken, NgZone } from '@angular/core';
 import { defer, EMPTY, fromEvent, merge, Observable } from 'rxjs';
-import { map, share, throttleTime } from 'rxjs/operators';
+import { map, share, throttleTime, filter } from 'rxjs/operators';
 import { WindowRef } from './window-ref.service';
-import { ScrollEvent, WinResizeEvent } from './utils.interface';
+import {
+  ScrollEvent,
+  WindowMessageData,
+  WinResizeEvent,
+} from './utils.interface';
 import { insideZone } from './rxjs.operators';
 import { DocumentRef } from './document-ref.service';
+import { asArray } from './functional-utils';
 
 export function appScrollContainerTokenFactory() {
   return '.app-content > .content-wrapper';
@@ -26,6 +31,7 @@ export class UtilsService {
   winClick$: Observable<MouseEvent>;
   winKey$: Observable<KeyboardEvent>;
   appScrollableContainerElement: HTMLElement;
+  winMessages$: Observable<MessageEvent<WindowMessageData>['data']>;
 
   constructor(
     @Inject(APP_SCROLL_CONTAINER) private appScrollContainerSelector: string,
@@ -80,16 +86,24 @@ export class UtilsService {
         share()
       );
 
-      this.winClick$ = fromEvent(
+      this.winClick$ = fromEvent<MouseEvent>(
         this.windowRef.nativeWindow as Window,
         'click'
-      ).pipe(share()) as Observable<MouseEvent>;
+      ).pipe(share());
 
-      this.winKey$ = fromEvent(
+      this.winKey$ = fromEvent<KeyboardEvent>(
         this.windowRef.nativeWindow as Window,
         'keydown'
-      ).pipe(share()) as Observable<KeyboardEvent>;
+      ).pipe(share());
     });
+
+    this.winMessages$ = fromEvent<MessageEvent>(
+      this.windowRef.nativeWindow as Window,
+      'message'
+    ).pipe(
+      map((event) => event.data),
+      share()
+    );
   }
 
   public getResizeEvent(outsideNgZone = false): Observable<WinResizeEvent> {
@@ -116,6 +130,21 @@ export class UtilsService {
     return outsideNgZone
       ? this.winKey$
       : this.winKey$.pipe(insideZone(this.zone));
+  }
+
+  public getWindowMessageEvents(
+    filterBy: { id?: string | string[]; type?: string | string[] } = {}
+  ): Observable<WindowMessageData> {
+    return this.winMessages$.pipe(
+      filter((eventData) => {
+        return (
+          (filterBy.id ? asArray(filterBy.id).includes(eventData.id) : true) &&
+          (filterBy.type
+            ? asArray(filterBy.type).includes(eventData.type)
+            : true)
+        );
+      })
+    );
   }
 
   public scrollToTop(offset = 0, smooth = false): void {

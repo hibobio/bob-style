@@ -11,10 +11,10 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { Keys } from '../../enums';
 import { filterKey, insideZone } from '../../services/utils/rxjs.operators';
 import {
-  isObject,
   isSafeUrl,
   unsubscribeArray,
 } from '../../services/utils/functional-utils';
+import { AlertService } from '../alert/alert-service/alert.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +25,7 @@ export class LightboxService {
     private overlay: Overlay,
     private url: URLutils,
     private utilsService: UtilsService,
+    private alertService: AlertService,
     private windowRef: WindowRef,
     private zone: NgZone
   ) {
@@ -110,6 +111,12 @@ export class LightboxService {
 
           !this.isEmbedMode
             ? fromEvent(this.windowRef.nativeWindow as Window, 'popstate')
+            : EMPTY,
+
+          !this.isEmbedMode
+            ? this.utilsService.getWindowMessageEvents({
+                type: ['LIGHTBOX_CLOSE'],
+              })
             : EMPTY
         )
           .pipe(take(1))
@@ -117,6 +124,17 @@ export class LightboxService {
             this.closeLightbox();
           })
       );
+
+      !this.isEmbedMode &&
+        this.subs.push(
+          this.utilsService
+            .getWindowMessageEvents({
+              type: ['LIGHTBOX_SHOW_ALERT'],
+            })
+            .subscribe(({ payload }) => {
+              this.alertService.showAlert(payload);
+            })
+        );
 
       return this.lightbox as LightboxData;
       //

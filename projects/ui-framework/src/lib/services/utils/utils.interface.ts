@@ -9,3 +9,9 @@ export interface WinResizeEvent extends Partial<Window> {
   outerHeight: number;
   outerWidth: number;
 }
+
+export interface WindowMessageData<T = any> {
+  id?: string;
+  type?: string;
+  payload?: T;
+}
