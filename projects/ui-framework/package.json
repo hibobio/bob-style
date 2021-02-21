@@ -10,10 +10,10 @@
     "@angular/forms": "^11.0.5",
     "@angular/material": "^11.0.3",
     "lodash": "^4.17.20",
-    "rxjs": "^6.5.4",
+    "rxjs": "^6.6.3",
     "@types/node": "^12.12.39",
     "@types/highcharts": "^5.0.44",
-    "@ngx-translate/core": "^12.1.2",
+    "@ngx-translate/core": "^13.0.0",
     "ag-grid-angular": "^22.1.1",
     "ag-grid-community": "^22.1.1",
     "ag-grid-enterprise": "^22.1.1",
@@ -21,7 +21,7 @@
     "date-fns": "^2.9.0",
     "tributejs": "^4.1.1",
     "ngx-smooth-dnd": "^0.4.1",
-    "froala-editor": "^3.2.2",
+    "froala-editor": "^3.2.6",
     "xss": "^1.0.7"
   },
   "browserslist": [
