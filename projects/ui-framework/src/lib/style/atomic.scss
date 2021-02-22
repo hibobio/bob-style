@@ -426,6 +426,10 @@ $acss-dirs: top right bottom left;
   flex-grow: 1;
 }
 
+.flx-wrap {
+  flex-wrap: wrap;
+}
+
 // Misc
 
 .rounded {
