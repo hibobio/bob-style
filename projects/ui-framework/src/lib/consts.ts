@@ -84,6 +84,30 @@ export const LOCALE_FORMATS: DateLocaleFormats = {
     FullDate: 'MMM-dd-yyyy',
     ShortDate: 'MMM-d-yy',
   },
+  'YYYY-MM-DD': {
+    DayMonth: 'MM-dd',
+    MonthYear: 'yy-MM',
+    FullDate: 'yyyy-MM-dd',
+    ShortDate: 'yy-MM-d',
+  },
+  'DD.MM.YYYY': {
+    DayMonth: 'dd.MM',
+    MonthYear: 'MM.yy',
+    FullDate: 'dd.MM.yyyy',
+    ShortDate: 'dd.M.yy',
+  },
+  'MM.DD.YYYY': {
+    DayMonth: 'MM.dd',
+    MonthYear: 'MM.yy',
+    FullDate: 'MM.dd.yyyy',
+    ShortDate: 'M.dd.yy',
+  },
+  'YYYY.MM.DD': {
+    DayMonth: 'MM.dd',
+    MonthYear: 'yy.MM',
+    FullDate: 'yyyy.MM.dd',
+    ShortDate: 'yy.MM.d',
+  },
 };
 
 export const DISPLAY_DATE_FORMAT_DEF = LOCALE_FORMATS['DD/MM/YYYY'].FullDate;

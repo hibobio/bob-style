@@ -12,14 +12,14 @@
            [attr.data-icon-before]="chevronIcon"
            [attr.data-icon-before-size]="config.chevronIcon?.size || null"
            [attr.data-icon-before-color]="config.chevronIcon?.color || null"
-           [attr.data-icon-before-rotate]="expanded ? '90' : config.chevronIcon?.rotate || null">
+           [attr.data-icon-before-rotate]="isExpanded ? '90' : config.chevronIcon?.rotate || null">
     {{ title }}
     <ng-content select="[header]"></ng-content>
   </summary>
 
   <div class="bcl-panel"
        [ngClass]="config.panelClass"
-       [class.b-expand]="expanded && shouldAnimate"
+       [class.b-expand]="isExpanded && shouldAnimate"
        [ngStyle]="config.panelStyle">
     <ng-content></ng-content>
   </div>
