@@ -16,10 +16,10 @@
 
   </div>
 
-  <div class="then"
-       *ngIf="!(staticMode && last)">
-    <b-icon [icon]="icons.arrow_right"></b-icon>
-  </div>
+  <b-icon class="then mrg-y-8 mrg-l-16"
+          *ngIf="!(staticMode && last)"
+          [icon]="icons.arrow_right"
+          rotate="90"></b-icon>
 
 </ng-container>
 

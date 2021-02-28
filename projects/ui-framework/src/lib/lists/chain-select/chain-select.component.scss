@@ -2,30 +2,24 @@
 
 :host {
   text-align: left;
+  display: block;
 }
 
 .chain-link-row {
   position: relative;
 
-  &:hover {
-    .delete-button {
-      display: block;
-    }
-  }
-
   .delete-button {
-    display: none;
+    width: $button-size-large;
     position: absolute;
-    right: -44px;
-    bottom: 0;
+    right: $button-size-large * -1;
+    top: 50%;
+    margin-top: $button-size-large * -0.5;
   }
-}
 
-.then {
-  margin: times8(1) 0 times8(1) times8(2);
-
-  b-icon {
-    transform: rotate(90deg);
+  &:not(:hover) {
+    .delete-button {
+      display: none;
+    }
   }
 }
 

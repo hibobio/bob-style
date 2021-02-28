@@ -10,6 +10,10 @@ const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
 );
 
+const story2 = storiesOf(ComponentGroupType.Layout, module).addDecorator(
+  withKnobs
+);
+
 const template = `<b-empty-state [config]="{
               text: text,
               icon: icon,
@@ -38,34 +42,30 @@ const note = `
   ~~~
 `;
 
-story.add(
-  'Empty State',
-  () => {
-    return {
-      template: storyTemplate,
-      props: {
-        buttonClicked: action('button clicked'),
+const toAdd = () => {
+  return {
+    template: storyTemplate,
+    props: {
+      buttonClicked: action('button clicked'),
 
-        text: text('text', 'Something empty here'),
-        icon: select(
-          'icon',
-          [0, ...Object.values(Icons).sort(), 0],
-          Icons.cake
-        ),
-        buttonLabel: text('buttonLabel', 'CLICK HERE'),
-        imgSrc: select(
-          'imgSrc',
-          [
-            0,
-            'https://raw.githubusercontent.com/hibobio/hibob-files/master/img/emptyState_ee_profile_summary.png?token=AAP3IOWBZDZ6CYVRQ2QNWXK7FJW5A',
-          ],
-          0
-        ),
-      },
-      moduleMetadata: {
-        imports: [EmptyStateModule, StoryBookLayoutModule],
-      },
-    };
-  },
-  { notes: { markdown: note } }
-);
+      text: text('text', 'Something empty here'),
+      icon: select('icon', [0, ...Object.values(Icons).sort(), 0], Icons.cake),
+      buttonLabel: text('buttonLabel', 'CLICK HERE'),
+      imgSrc: select(
+        'imgSrc',
+        [
+          0,
+          'https://raw.githubusercontent.com/hibobio/hibob-files/master/img/emptyState_ee_profile_summary.png?token=AAP3IOWBZDZ6CYVRQ2QNWXK7FJW5A',
+        ],
+        0
+      ),
+    },
+    moduleMetadata: {
+      imports: [EmptyStateModule, StoryBookLayoutModule],
+    },
+  };
+};
+
+story.add('Empty State', toAdd, { notes: { markdown: note } });
+
+story2.add('Empty State', toAdd, { notes: { markdown: note } });
