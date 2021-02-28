@@ -27,6 +27,7 @@ import { PalletteColorSet } from '../color-service/color-palette.enum';
 import {
   ColorPaletteService,
   PaletteColorGenerator,
+  PaletteColorGeneratorConfig,
 } from '../color-service/color-palette.service';
 import { ColorService } from '../color-service/color.service';
 import { SafeResourceUrl } from '@angular/platform-browser';
@@ -1759,9 +1760,10 @@ export const getCopyName = (val: string, copyStr = 'copy'): string => {
 };
 
 export const getColorGenerator = (
-  colorSet = PalletteColorSet.main
+  colorSet = PalletteColorSet.main,
+  config?: PaletteColorGeneratorConfig
 ): PaletteColorGenerator =>
-  new ColorPaletteService().paletteColorGenerator(colorSet);
+  new ColorPaletteService().paletteColorGenerator(colorSet, config);
 
 export const isDark = (color: Color, sensitivity?: number) =>
   ColorService.prototype.isDark(color, sensitivity);

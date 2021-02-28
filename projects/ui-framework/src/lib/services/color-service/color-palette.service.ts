@@ -16,11 +16,15 @@ export interface PaletteColorGenerator {
   currentIndex: number;
   currentColorName: string;
   currentColor: ColorPalette;
-  skipColors?: (ColorPalette | string)[];
 
   next(): ColorPalette;
   nextMultiple(count: number): ColorPalette[];
   reset(): void;
+}
+
+export interface PaletteColorGeneratorConfig {
+  startIndex?: number;
+  skipColors?: (ColorPalette | string)[];
 }
 
 @Injectable({
@@ -49,13 +53,13 @@ export class ColorPaletteService {
             ? COLOR_PALETTE_SETS_COLOR_ORDER[PalletteColorSet.main].slice()
             : joinArrays(
                 COLOR_PALETTE_SETS_COLOR_ORDER[setKey],
-                randomFromArray(
-                  arrayDifference(
-                    COLOR_PALETTE_SETS_COLOR_ORDER[PalletteColorSet.main],
-                    COLOR_PALETTE_SETS_COLOR_ORDER[setKey]
-                  ),
-                  null
+                // randomFromArray(
+                arrayDifference(
+                  COLOR_PALETTE_SETS_COLOR_ORDER[PalletteColorSet.main],
+                  COLOR_PALETTE_SETS_COLOR_ORDER[setKey]
                 )
+                //   null
+                // )
               );
 
         return acc;
@@ -90,16 +94,20 @@ export class ColorPaletteService {
     this.mainPaletteSize = this.colorPaletteSetSize[PalletteColorSet.main];
   }
 
+  public getPaletteColors(colorSet = PalletteColorSet.main): ColorPalette[] {
+    return this.colorPaletteSetColorValues[colorSet].slice(
+      0,
+      this.colorPaletteSetSize[colorSet]
+    );
+  }
+
   public getRandomPaletteColors(
     count = 1,
     colorSet = PalletteColorSet.main
   ): ColorPalette[] {
     return randomFromArray(
-      count <= this.colorPaletteSetSize[colorSet]
-        ? this.colorPaletteSetColorValues[colorSet].slice(
-            0,
-            this.colorPaletteSetSize[colorSet]
-          )
+      count && count <= this.colorPaletteSetSize[colorSet]
+        ? this.getPaletteColors(colorSet)
         : this.colorPaletteSetColorValues[colorSet],
       count
     );
@@ -122,14 +130,13 @@ export class ColorPaletteService {
 
   public paletteColorGenerator(
     colorSet = PalletteColorSet.main,
-    config?: {
-      startIndex?: number;
-      skipColors?: (ColorPalette | string)[];
-    }
+    config?: PaletteColorGeneratorConfig
   ): PaletteColorGenerator {
     const { startIndex = 0 } = config || {};
+    let callIndex = -1;
     const skipColors = asArray(config?.skipColors);
-    const skipIndexes: number[] =
+
+    let skipIndexes: number[] =
       skipColors.length && skipColors.length < this.mainPaletteSize
         ? skipColors.reduce((indexes: number[], sc) => {
             const skpIndx = sc.startsWith('#')
@@ -147,16 +154,22 @@ export class ColorPaletteService {
     const generator: PaletteColorGenerator = {
       ...this.getGeneratorInitState(colorSet, startIndex),
 
-      skipColors,
-
       reset: () => {
+        callIndex = -1;
+        skipIndexes = [];
         Object.assign(generator, this.getGeneratorInitState(colorSet));
       },
 
       next: () => {
+        ++callIndex;
+
         let currentIndexInSet = ++generator.currentIndex % this.mainPaletteSize;
 
-        while (skipIndexes.includes(currentIndexInSet)) {
+        while (
+          skipIndexes.length &&
+          callIndex < this.mainPaletteSize - skipIndexes.length &&
+          skipIndexes.includes(currentIndexInSet)
+        ) {
           currentIndexInSet = ++generator.currentIndex % this.mainPaletteSize;
         }
 
