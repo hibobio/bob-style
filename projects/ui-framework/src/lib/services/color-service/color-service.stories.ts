@@ -242,8 +242,8 @@ const note = `
   getPaletteColorByIndex<wbr>(index?: number, colorSet?: PalletteColorSet) | ColorPalette | returns color from the ColorPalette by index, <br>\
   by default, returns colors from 'main' set, unless a differen set requested, <br>\
   if index is not provided - returns random color
-  gerRandomPaletteColor(colorSet?: PalletteColorSet) | ColorPalette | returns random palette color (by default from 'main' set)
-  gerRandomPaletteColors<wbr>(count = 1, colorSet?: PalletteColorSet) | ColorPalette[] | returns Count number of colors (by default from 'main' set)
+  getRandomPaletteColor(colorSet?: PalletteColorSet) | ColorPalette | returns random palette color (by default from 'main' set)
+  getRandomPaletteColors<wbr>(count = 1, colorSet?: PalletteColorSet) | ColorPalette[] | returns Count number of colors (by default from 'main' set)
   <u>paletteColorGenerator</u><wbr>(colorSet?: PalletteColorSet, startIndex?: number) | PaletteColorGenerator | returns PaletteColorGenerator object with:<br><br>\
   **methods:**<br>\
    \`\`\`next()\`\`\` - will return next color in ColorPalette on each call, <br>\
