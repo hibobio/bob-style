@@ -12,8 +12,9 @@
         [color]="iconColor"
         [size]="config.iconSize || iconSize.xxLarge"></b-icon>
 
-<p *ngIf="config?.text"
-   class="empty-state-text">{{config.text}}</p>
+<div *ngIf="config?.text"
+     class="empty-state-text"
+     [innerHTML]="config.text"></div>
 
 <b-button *ngIf="config?.buttonLabel || config?.button"
           class="empty-state-button"

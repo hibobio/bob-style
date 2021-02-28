@@ -23,6 +23,7 @@ export const LANGUAGE_TESTS: {
     test: /[\u0590-\u05FF]/,
     attributes: {
       lang: 'he',
+      dir: 'rtl',
     },
   },
   russian: {

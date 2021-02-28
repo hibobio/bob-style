@@ -47,7 +47,7 @@ export const SANITIZER_ALLOWED_ATTRS = [
   'dir',
   'href',
   'id',
-  // 'lang',
+  'lang',
   'rel',
   'src',
   'target',

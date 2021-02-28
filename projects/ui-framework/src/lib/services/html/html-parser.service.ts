@@ -653,7 +653,7 @@ export class HtmlParserHelpers {
 
   public addLangAttributes(
     html: string | HTMLElement,
-    returnDOM = true
+    returnDOM = false
   ): string | HTMLElement {
     const elm: HTMLElement = isDomElement(html) ? html : this.stringToDOM(html);
     const plainText = isString(html) ? html : elm.innerText;
