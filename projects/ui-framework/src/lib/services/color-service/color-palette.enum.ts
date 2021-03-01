@@ -1,12 +1,12 @@
 export enum PalletteColorSet {
-  main = 'main',
-  all = 'all',
   set1 = 'set1',
   set2 = 'set2',
   set3 = 'set3',
   set4 = 'set4',
   set5 = 'set5',
   set6 = 'set6',
+  main = 'main',
+  all = 'all',
   set7 = 'set7', // Document app
 }
 

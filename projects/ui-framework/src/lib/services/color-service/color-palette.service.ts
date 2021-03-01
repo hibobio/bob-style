@@ -50,7 +50,9 @@ export class ColorPaletteService {
     this.colorPaletteSetColorNames = Object.keys(PalletteColorSet).reduce(
       (acc, setKey) => {
         acc[setKey] =
-          setKey === PalletteColorSet.main || setKey === PalletteColorSet.all
+          setKey === PalletteColorSet.all
+            ? joinArrays([], ...Object.values(COLOR_PALETTE_SETS_COLOR_ORDER))
+            : setKey === PalletteColorSet.main
             ? COLOR_PALETTE_SETS_COLOR_ORDER[setKey].slice()
             : joinArrays(
                 COLOR_PALETTE_SETS_COLOR_ORDER[setKey],
@@ -99,12 +101,7 @@ export class ColorPaletteService {
     count: number | null = null,
     colorSet: PalletteColorSet | number = PalletteColorSet.main
   ): ColorPalette[] {
-    if (isNumber(colorSet)) {
-      colorSet =
-        colorSet < 1 || colorSet > 6
-          ? PalletteColorSet.all
-          : (`set${colorSet}` as PalletteColorSet);
-    }
+    colorSet = this.getColorSetName(colorSet);
     return !count || count <= this.colorPaletteSetSize[colorSet]
       ? this.colorPaletteSetColorValues[colorSet].slice(
           0,
@@ -120,12 +117,7 @@ export class ColorPaletteService {
     count: number | null = null,
     colorSet: PalletteColorSet | number = PalletteColorSet.main
   ): ColorPalette[] {
-    if (isNumber(colorSet)) {
-      colorSet =
-        colorSet < 1 || colorSet > 6
-          ? PalletteColorSet.all
-          : (`set${colorSet}` as PalletteColorSet);
-    }
+    colorSet = this.getColorSetName(colorSet);
     return randomFromArray(
       !count || count <= this.colorPaletteSetSize[colorSet]
         ? this.getPaletteColors(count, colorSet)
@@ -134,7 +126,10 @@ export class ColorPaletteService {
     );
   }
 
-  public getRandomPaletteColor(colorSet = PalletteColorSet.main): ColorPalette {
+  public getRandomPaletteColor(
+    colorSet: PalletteColorSet | number = PalletteColorSet.main
+  ): ColorPalette {
+    colorSet = this.getColorSetName(colorSet);
     return this.colorPaletteSetColorValues[colorSet][
       randomNumber(0, this.colorPaletteSetSize[colorSet] - 1)
     ];
@@ -142,17 +137,19 @@ export class ColorPaletteService {
 
   public getPaletteColorByIndex(
     index?: number,
-    colorSet = PalletteColorSet.main
+    colorSet: PalletteColorSet | number = PalletteColorSet.main
   ): ColorPalette {
+    colorSet = this.getColorSetName(colorSet);
     return isNumber(index)
       ? this.colorPaletteSetColorValues[colorSet][index % this.mainPaletteSize]
       : this.getRandomPaletteColor(colorSet);
   }
 
   public paletteColorGenerator(
-    colorSet = PalletteColorSet.main,
+    colorSet: PalletteColorSet | number = PalletteColorSet.main,
     config?: PaletteColorGeneratorConfig
   ): PaletteColorGenerator {
+    colorSet = this.getColorSetName(colorSet);
     const { startIndex = 0 } = config || {};
     let callIndex = -1;
     const skipColors = asArray(config?.skipColors);
@@ -178,7 +175,10 @@ export class ColorPaletteService {
       reset: () => {
         callIndex = -1;
         skipIndexes = [];
-        Object.assign(generator, this.getGeneratorInitState(colorSet));
+        Object.assign(
+          generator,
+          this.getGeneratorInitState(colorSet as PalletteColorSet)
+        );
       },
 
       next: () => {
@@ -213,8 +213,18 @@ export class ColorPaletteService {
     return generator;
   }
 
+  private getColorSetName(
+    colorSet: PalletteColorSet | number = PalletteColorSet.main
+  ): PalletteColorSet {
+    return isNumber(colorSet)
+      ? colorSet < 1 || colorSet > 6
+        ? PalletteColorSet.all
+        : (`set${colorSet}` as PalletteColorSet)
+      : colorSet;
+  }
+
   private getGeneratorInitState(
-    colorSet = PalletteColorSet.main,
+    colorSet: PalletteColorSet = PalletteColorSet.main,
     startIndex = 0
   ) {
     return {

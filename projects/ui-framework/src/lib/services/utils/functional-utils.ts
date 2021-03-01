@@ -23,7 +23,10 @@ import {
 } from 'rxjs';
 import { delay, take } from 'rxjs/operators';
 import { AnonymousSubject } from 'rxjs/internal/Subject';
-import { PalletteColorSet } from '../color-service/color-palette.enum';
+import {
+  ColorPalette,
+  PalletteColorSet,
+} from '../color-service/color-palette.enum';
 import {
   ColorPaletteService,
   PaletteColorGenerator,
@@ -1764,6 +1767,28 @@ export const getColorGenerator = (
   config?: PaletteColorGeneratorConfig
 ): PaletteColorGenerator =>
   new ColorPaletteService().paletteColorGenerator(colorSet, config);
+
+export const getPaletteColors = (
+  count: number | null = null,
+  colorSet: PalletteColorSet | number = PalletteColorSet.main
+): ColorPalette[] =>
+  new ColorPaletteService().getPaletteColors(count, colorSet);
+
+export const getRandomPaletteColors = (
+  count: number | null = null,
+  colorSet: PalletteColorSet | number = PalletteColorSet.main
+): ColorPalette[] =>
+  new ColorPaletteService().getRandomPaletteColors(count, colorSet);
+
+export const getRandomPaletteColor = (
+  colorSet: PalletteColorSet | number = PalletteColorSet.main
+): ColorPalette => new ColorPaletteService().getRandomPaletteColor(colorSet);
+
+export const getPaletteColorByIndex = (
+  index?: number,
+  colorSet: PalletteColorSet | number = PalletteColorSet.main
+): ColorPalette =>
+  new ColorPaletteService().getPaletteColorByIndex(index, colorSet);
 
 export const isDark = (color: Color, sensitivity?: number) =>
   ColorService.prototype.isDark(color, sensitivity);
