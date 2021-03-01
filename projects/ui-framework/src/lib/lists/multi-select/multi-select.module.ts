@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MultiSelectComponent } from './multi-select.component';
-import { PanelModule } from '../../popups/panel/panel.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MultiListModule } from '../multi-list/multi-list.module';
@@ -15,7 +14,6 @@ import { EmployeesShowcaseModule } from '../../avatar/avatar-showcase/avatar-sho
   declarations: [MultiSelectComponent],
   imports: [
     CommonModule,
-    PanelModule,
     ButtonsModule,
     OverlayModule,
     MultiListModule,

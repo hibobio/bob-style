@@ -1,5 +1,6 @@
 export enum PalletteColorSet {
   main = 'main',
+  all = 'all',
   set1 = 'set1',
   set2 = 'set2',
   set3 = 'set3',

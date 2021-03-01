@@ -12,7 +12,7 @@ export type Color = ColorPalette | ColorsGrey | string;
 
 export type SortType = Sort | 'asc' | 'desc' | boolean;
 
-export interface ArrayES<T> extends Array<T> {
+export interface ArrayES<T = any> extends Array<T> {
   flat(): Array<T>;
   flatMap(func: (x: T) => T): Array<T>;
 }

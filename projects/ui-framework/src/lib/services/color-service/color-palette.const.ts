@@ -1,3 +1,4 @@
+import { ArrayES } from '../../types';
 import { PalletteColorSet } from './color-palette.enum';
 
 export const COLOR_PALETTE_MAIN_COLOR_ORDER: string[] = [
@@ -286,6 +287,7 @@ export const COLOR_PALETTE_SETS_COLOR_ORDER: {
   [key in PalletteColorSet]: string[];
 } = {
   [PalletteColorSet.main]: COLOR_PALETTE_MAIN_COLOR_ORDER,
+
   [PalletteColorSet.set1]: COLOR_PALETTE_SET1_COLOR_ORDER,
   [PalletteColorSet.set2]: COLOR_PALETTE_SET2_COLOR_ORDER,
   [PalletteColorSet.set3]: COLOR_PALETTE_SET3_COLOR_ORDER,
@@ -293,4 +295,18 @@ export const COLOR_PALETTE_SETS_COLOR_ORDER: {
   [PalletteColorSet.set5]: COLOR_PALETTE_SET5_COLOR_ORDER,
   [PalletteColorSet.set6]: COLOR_PALETTE_SET6_COLOR_ORDER,
   [PalletteColorSet.set7]: COLOR_PALETTE_SET7_COLOR_ORDER,
+
+  [PalletteColorSet.all]: Array.from(
+    new Set(
+      ([
+        COLOR_PALETTE_SET1_COLOR_ORDER,
+        COLOR_PALETTE_SET2_COLOR_ORDER,
+        COLOR_PALETTE_SET3_COLOR_ORDER,
+        COLOR_PALETTE_SET4_COLOR_ORDER,
+        COLOR_PALETTE_SET5_COLOR_ORDER,
+        COLOR_PALETTE_SET6_COLOR_ORDER,
+        COLOR_PALETTE_MAIN_COLOR_ORDER,
+      ] as ArrayES).flat()
+    )
+  ),
 };

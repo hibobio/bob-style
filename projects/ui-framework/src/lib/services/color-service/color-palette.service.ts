@@ -10,6 +10,7 @@ import {
   randomNumber,
 } from '../utils/functional-utils';
 import { COLOR_PALETTE_SETS_COLOR_ORDER } from './color-palette.const';
+import { ArrayES } from '../../types';
 
 export interface PaletteColorGenerator {
   colorSet: PalletteColorSet;
@@ -49,17 +50,17 @@ export class ColorPaletteService {
     this.colorPaletteSetColorNames = Object.keys(PalletteColorSet).reduce(
       (acc, setKey) => {
         acc[setKey] =
-          setKey === PalletteColorSet.main
-            ? COLOR_PALETTE_SETS_COLOR_ORDER[PalletteColorSet.main].slice()
+          setKey === PalletteColorSet.main || setKey === PalletteColorSet.all
+            ? COLOR_PALETTE_SETS_COLOR_ORDER[setKey].slice()
             : joinArrays(
                 COLOR_PALETTE_SETS_COLOR_ORDER[setKey],
-                // randomFromArray(
-                arrayDifference(
-                  COLOR_PALETTE_SETS_COLOR_ORDER[PalletteColorSet.main],
-                  COLOR_PALETTE_SETS_COLOR_ORDER[setKey]
+                randomFromArray(
+                  arrayDifference(
+                    COLOR_PALETTE_SETS_COLOR_ORDER[setKey],
+                    COLOR_PALETTE_SETS_COLOR_ORDER[PalletteColorSet.main]
+                  ),
+                  null
                 )
-                //   null
-                // )
               );
 
         return acc;
@@ -94,20 +95,40 @@ export class ColorPaletteService {
     this.mainPaletteSize = this.colorPaletteSetSize[PalletteColorSet.main];
   }
 
-  public getPaletteColors(colorSet = PalletteColorSet.main): ColorPalette[] {
-    return this.colorPaletteSetColorValues[colorSet].slice(
-      0,
-      this.colorPaletteSetSize[colorSet]
-    );
+  public getPaletteColors(
+    count: number | null = null,
+    colorSet: PalletteColorSet | number = PalletteColorSet.main
+  ): ColorPalette[] {
+    if (isNumber(colorSet)) {
+      colorSet =
+        colorSet < 1 || colorSet > 6
+          ? PalletteColorSet.all
+          : (`set${colorSet}` as PalletteColorSet);
+    }
+    return !count || count <= this.colorPaletteSetSize[colorSet]
+      ? this.colorPaletteSetColorValues[colorSet].slice(
+          0,
+          count || this.colorPaletteSetSize[colorSet]
+        )
+      : (Array(Math.ceil(count / this.mainPaletteSize)) as ArrayES)
+          .fill(this.colorPaletteSetColorValues[colorSet])
+          .flat()
+          .slice(0, count);
   }
 
   public getRandomPaletteColors(
-    count = 1,
-    colorSet = PalletteColorSet.main
+    count: number | null = null,
+    colorSet: PalletteColorSet | number = PalletteColorSet.main
   ): ColorPalette[] {
+    if (isNumber(colorSet)) {
+      colorSet =
+        colorSet < 1 || colorSet > 6
+          ? PalletteColorSet.all
+          : (`set${colorSet}` as PalletteColorSet);
+    }
     return randomFromArray(
-      count && count <= this.colorPaletteSetSize[colorSet]
-        ? this.getPaletteColors(colorSet)
+      !count || count <= this.colorPaletteSetSize[colorSet]
+        ? this.getPaletteColors(count, colorSet)
         : this.colorPaletteSetColorValues[colorSet],
       count
     );
