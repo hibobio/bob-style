@@ -50,9 +50,7 @@ export class ColorPaletteService {
     this.colorPaletteSetColorNames = Object.keys(PalletteColorSet).reduce(
       (acc, setKey) => {
         acc[setKey] =
-          setKey === PalletteColorSet.all
-            ? joinArrays([], ...Object.values(COLOR_PALETTE_SETS_COLOR_ORDER))
-            : setKey === PalletteColorSet.main
+          setKey === PalletteColorSet.main
             ? COLOR_PALETTE_SETS_COLOR_ORDER[setKey].slice()
             : joinArrays(
                 COLOR_PALETTE_SETS_COLOR_ORDER[setKey],
@@ -86,7 +84,8 @@ export class ColorPaletteService {
 
     this.colorPaletteSetSize = Object.keys(PalletteColorSet).reduce(
       (acc, key) => {
-        acc[key] = COLOR_PALETTE_SETS_COLOR_ORDER[key].length;
+        COLOR_PALETTE_SETS_COLOR_ORDER[key] &&
+          (acc[key] = COLOR_PALETTE_SETS_COLOR_ORDER[key].length);
         return acc;
       },
       {} as {
@@ -218,9 +217,9 @@ export class ColorPaletteService {
   ): PalletteColorSet {
     return isNumber(colorSet)
       ? colorSet < 1 || colorSet > 6
-        ? PalletteColorSet.all
+        ? PalletteColorSet.main
         : (`set${colorSet}` as PalletteColorSet)
-      : colorSet;
+      : colorSet || PalletteColorSet.main;
   }
 
   private getGeneratorInitState(
