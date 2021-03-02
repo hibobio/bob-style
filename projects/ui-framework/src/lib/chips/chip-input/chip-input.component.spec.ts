@@ -34,51 +34,53 @@ describe('ChipInputComponent', () => {
 
   const chipOptions = ['ABC', 'ACB', 'BAC', 'BCA', 'CAB', 'CBA'];
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ChipInputComponent,
-        ChipListComponent,
-        ChipComponent,
-        MockComponent(TextButtonComponent),
-        MockComponent(IconComponent),
-        MockComponent(AvatarImageComponent),
-        MockComponent(FormElementLabelComponent),
-      ],
-      imports: [MatAutocompleteModule, InputMessageModule],
-      providers: [EventManagerPlugins[0]],
-    })
-      .overrideComponent(ChipInputComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          ChipInputComponent,
+          ChipListComponent,
+          ChipComponent,
+          MockComponent(TextButtonComponent),
+          MockComponent(IconComponent),
+          MockComponent(AvatarImageComponent),
+          MockComponent(FormElementLabelComponent),
+        ],
+        imports: [MatAutocompleteModule, InputMessageModule],
+        providers: [EventManagerPlugins[0]],
       })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(ChipInputComponent);
-        component = fixture.componentInstance;
-        chipInputElem = fixture.debugElement.nativeElement;
-        component.options = chipOptions;
-        component.label = 'label';
-        component.placeholder = 'placeholder';
-        component.hintMessage = 'hintMessage';
-        component.required = true;
+        .overrideComponent(ChipInputComponent, {
+          set: { changeDetection: ChangeDetectionStrategy.Default },
+        })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(ChipInputComponent);
+          component = fixture.componentInstance;
+          chipInputElem = fixture.debugElement.nativeElement;
+          component.options = chipOptions;
+          component.label = 'label';
+          component.placeholder = 'placeholder';
+          component.hintMessage = 'hintMessage';
+          component.required = true;
 
-        fixture.detectChanges();
+          fixture.detectChanges();
 
-        spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => {});
+          spyOn(component.changed, 'emit');
+          component.changed.subscribe(() => {});
 
-        chipsComponents = () => component.chips.list.toArray();
-        inputElement = elementFromFixture(
-          fixture,
-          '.bfe-input'
-        ) as HTMLInputElement;
+          chipsComponents = () => component.chips.list.toArray();
+          inputElement = elementFromFixture(
+            fixture,
+            '.bfe-input'
+          ) as HTMLInputElement;
 
-        chipsElements = () =>
-          elementsFromFixture(fixture, 'b-chip-list b-chip');
+          chipsElements = () =>
+            elementsFromFixture(fixture, 'b-chip-list b-chip');
 
-        messageElement = elementFromFixture(fixture, '[b-input-message]');
-      });
-  }));
+          messageElement = elementFromFixture(fixture, '[b-input-message]');
+        });
+    })
+  );
 
   afterEach(() => {
     component.changed.complete();
@@ -151,6 +153,17 @@ describe('ChipInputComponent', () => {
       expect(chipsComponents().length).toEqual(1);
       expect(chipsElements()[0].className).toContain('blink');
       expect(component.changed.emit).not.toHaveBeenCalled();
+    });
+    it('[case sensitive] should add chip from options from user input', () => {
+      component.caseSensitive = true;
+      component.value = ['ABC'];
+      fixture.detectChanges();
+
+      inputValue(inputElement, 'AbC');
+      fixture.detectChanges();
+
+      expect(component.value).toEqual(['ABC', 'AbC']);
+      expect(chipsComponents().length).toEqual(2);
     });
   });
 
@@ -231,7 +244,7 @@ describe('ChipInputComponent', () => {
 
       component.optionSelected({
         option: {
-          viewValue: 'ABC',
+          viewValue: 'AbC',
         },
       } as MatAutocompleteSelectedEvent);
       fixture.detectChanges();
@@ -240,6 +253,22 @@ describe('ChipInputComponent', () => {
       expect(chipsComponents().length).toEqual(1);
       expect(chipsElements()[0].className).toContain('blink');
       expect(component.changed.emit).not.toHaveBeenCalled();
+    });
+    it('[case sensitive] should add chip from options to value', () => {
+      component.caseSensitive = true;
+      component.value = ['AbC'];
+      fixture.detectChanges();
+
+      component.optionSelected({
+        option: {
+          viewValue: 'ABC',
+        },
+      } as MatAutocompleteSelectedEvent);
+      fixture.detectChanges();
+
+      expect(component.value).toEqual(['AbC', 'ABC']);
+      expect(chipsComponents().length).toEqual(2);
+      expect(component.changed.emit).toHaveBeenCalled();
     });
   });
 });

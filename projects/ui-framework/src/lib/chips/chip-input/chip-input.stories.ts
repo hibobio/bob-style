@@ -29,6 +29,7 @@ const template = `
                 [description]="description"
                 [required]="required"
                 [disabled]="disabled"
+                [caseSensitive]="caseSensitive"
                 [hintMessage]="hintMessage"
                 [warnMessage]="warnMessage"
                 [errorMessage]="errorMessage"
@@ -60,6 +61,7 @@ const note = `
   [errorMessage] | string | error text | &nbsp;
   [required] | boolean | if input is required | false
   [disabled] | boolean | if input is disabled | false
+  [caseSensitive] | boolean | case sensitive | false
   [validation] | ChipInputValidation / RegExp | you can pass RegExp to validate input or use preset for **<u>email</u>** input validation | &nbsp;
   &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
   (changed) | EventEmitter<wbr>&lt;ChipInputChange&gt; | emits on change: {value, added, removed} | &nbsp;
@@ -84,6 +86,7 @@ const toAdd = () => ({
   props: {
     value: array('value', value, ','),
     acceptNew: boolean('acceptNew', true),
+    caseSensitive: boolean('caseSensitive', false),
 
     ...FormElementsCommonProps(
       'What are your hobbies?',
@@ -96,7 +99,6 @@ const toAdd = () => ({
       'hintMessage',
       'Use comma, semicolon, enter or tab keys to separate items'
     ),
-
     options: array('options', options, ','),
     chipInputChangeHandler: action('Chip input changed'),
   },
