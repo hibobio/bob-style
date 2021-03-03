@@ -53,7 +53,8 @@ import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChipInputComponent extends BaseFormElement
+export class ChipInputComponent
+  extends BaseFormElement
   implements OnInit, OnDestroy {
   constructor(
     protected cd: ChangeDetectorRef,
@@ -73,6 +74,7 @@ export class ChipInputComponent extends BaseFormElement
   @Input() validation: ChipInputValidation | RegExp;
 
   @Input() hasFooterAction = false;
+  @Input() caseSensitive = false;
   public showSuffix = true;
 
   private possibleChips: string[] = [];
@@ -95,9 +97,8 @@ export class ChipInputComponent extends BaseFormElement
   private autocompletePanel: MatAutocomplete;
   private windowClickSubscriber: Subscription;
 
-  @Output() changed: EventEmitter<ChipInputChange> = new EventEmitter<
-    ChipInputChange
-  >();
+  @Output()
+  changed: EventEmitter<ChipInputChange> = new EventEmitter<ChipInputChange>();
 
   // extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
@@ -144,24 +145,21 @@ export class ChipInputComponent extends BaseFormElement
   private updatePossibleChips(): void {
     this.possibleChips = this.options
       ? this.options.filter((ch) =>
-          this.value
-            ? !this.value.find((c) => c.toLowerCase() === ch.toLowerCase())
-            : true
+          this.value ? !this.value.find((c) => this.chipsAreEqual(c, ch)) : true
         )
       : [];
   }
 
   private findChip(name: string, chipsSource = this.possibleChips): string {
     return (
-      chipsSource &&
-      chipsSource.find((chip) => chip.toLowerCase() === name.toLowerCase())
+      chipsSource && chipsSource.find((chip) => this.chipsAreEqual(chip, name))
     );
   }
 
   private removeChip(name: string, chipsSource = this.possibleChips): string[] {
     return (
       chipsSource &&
-      chipsSource.filter((chip) => chip.toLowerCase() !== name.toLowerCase())
+      chipsSource.filter((chip) => !this.chipsAreEqual(chip, name))
     );
   }
 
@@ -170,9 +168,18 @@ export class ChipInputComponent extends BaseFormElement
     chipsSource = this.possibleChips
   ): string[] {
     const filtered = chipsSource.filter(
-      (chip) => chip.toLowerCase().indexOf(name.toLowerCase()) > -1
+      (chip) =>
+        (this.caseSensitive
+          ? chip.indexOf(name)
+          : chip.toLowerCase().indexOf(name.toLowerCase())) > -1
     );
     return filtered.length > 0 && filtered;
+  }
+
+  private chipsAreEqual(chip1: string, chip2: string): boolean {
+    return this.caseSensitive
+      ? chip1 === chip2
+      : chip1.toLowerCase() === chip2.toLowerCase();
   }
 
   private commitChip(chipToAdd: string): void {
@@ -184,10 +191,8 @@ export class ChipInputComponent extends BaseFormElement
     } else if (chipToAdd) {
       const existingChipElemnent = this.chips.list
         .toArray()
-        .find(
-          (ch) =>
-            ch.chip.textContent.trim().toLowerCase() === chipToAdd.toLowerCase()
-        ).chip;
+        .find((ch) => this.chipsAreEqual(ch.chip.textContent.trim(), chipToAdd))
+        .chip;
       if (existingChipElemnent) {
         existingChipElemnent.classList.add('blink');
         this.zone.runOutsideAngular(() => {
