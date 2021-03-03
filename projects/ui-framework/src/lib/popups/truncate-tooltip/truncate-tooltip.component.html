@@ -15,8 +15,8 @@
         initialized: initialized,
         'tooltip-enabled': tooltipEnabled
       }"
-     data-max-lines="1">
-  {{ text }}
+     data-max-lines="1"
+     [innerHTML]="text">
   <ng-content></ng-content>
   <ng-template #directiveTemplate></ng-template>
 </div>

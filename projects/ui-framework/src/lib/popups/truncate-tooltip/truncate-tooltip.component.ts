@@ -18,7 +18,6 @@ import { TruncateTooltipType } from './truncate-tooltip.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { TextProps } from '../../services/html/html-helpers.interface';
 import { Subscription } from 'rxjs';
-import { outsideZone } from '../../services/utils/rxjs.operators';
 import { TooltipClass, TooltipPosition } from '../tooltip/tooltip.enum';
 import { asArray, hasChanges } from '../../services/utils/functional-utils';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
