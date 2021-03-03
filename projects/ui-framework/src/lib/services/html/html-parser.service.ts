@@ -627,6 +627,7 @@ export class HtmlParserHelpers {
     });
 
     return elm.innerText
+      .replace(/\&nbsp;/g, ' ')
       .replace(/_§±§_/g, '\n')
       .replace(/_±§±_/g, '\n- ')
       .replace(/^[ \t]+/gim, '')
