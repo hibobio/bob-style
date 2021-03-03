@@ -1,0 +1,56 @@
+<b-form-element-label *ngIf="label && !hideLabelOnFocus"
+                      class="bfe-label"
+                      [label]="label"
+                      [description]="description"
+                      [fieldId]="id">
+</b-form-element-label>
+
+<div cdkOverlayOrigin
+     class="bfe-wrap"
+     [ngClass]="{
+       focused: panelOpen,
+       'panel-open': panelOpen,
+       'panel-above': positionClassList['panel-above'],
+       'panel-below': positionClassList['panel-below']
+      }"
+     (click)="openPanel()">
+
+  <input #input
+         class="bfe-input"
+         [attr.id]="id"
+         [attr.name]="id"
+         [type]="'text'"
+         [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
+         [value]="value"
+         [attr.disabled]="disabled || readonly || null"
+         [required]="required"
+         [readonly]="readonly"
+         [attr.maxlength]="7">
+
+  <div class="bfe-suffix">
+    <span class="select-chevron b-icon-medium"
+          [ngClass]="{'b-icon-chevron-down': !panelOpen, 'b-icon-chevron-up': panelOpen}">
+    </span>
+  </div>
+
+</div>
+
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled">
+</p>
+
+<ng-template #templateRef>
+  <div class="b-select-panel color-picker-dropdown">
+    <span
+      [cpToggle]="true"
+      [cpOutputFormat]="'hex'"
+      [cpDialogDisplay]="'inline'"
+      [colorPicker]="value"
+      (colorPickerChange)="onColorPickerChange($event)">
+    </span>
+  </div>
+</ng-template>

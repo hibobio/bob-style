@@ -1,1 +1,10 @@
-<mutation-observers-test></mutation-observers-test>
+<div style="width: 170px; margin-left: 50px" [formGroup]="formGroup">
+  <b-colorpicker
+    [label]="'Some label'"
+    [description]="'The description'"
+    [placeholder]="'The placeholder'"
+    [warnMessage]="''"
+    formControlName="tester"
+    [errorMessage]="''">
+  </b-colorpicker>
+</div>

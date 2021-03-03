@@ -9,6 +9,7 @@ import {
   makeArray,
   simpleUID,
 } from '../../../ui-framework/src/lib/services/utils/functional-utils';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -17,12 +18,27 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  constructor() {}
+
+  formGroup: FormGroup;
+
+  constructor(formBuilder: FormBuilder) {
+    this.formGroup = formBuilder.group({
+      tester: ['', Validators.required]
+    });
+
+    setTimeout(() => {
+      console.log('formGroup: ', this.formGroup.value);
+    }, 7000);
+  }
 
   num = 3;
   ids = makeArray(this.num).map(() => simpleUID());
   names = makeArray(this.num).map(() => mockNames(1));
   enabled = true;
+
+  inputEventHandler(val) {
+    console.log('val: ', val);
+  }
 
   stopIt() {
     this.enabled = false;

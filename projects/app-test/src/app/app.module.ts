@@ -24,6 +24,7 @@ import { TestTableModule } from './test-table/test-table.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesDecoratorsModule } from './pipes-decorators/pipes-decorators.module';
 import { MutationObserversTestModule } from './mutation-observers/mutation-observers-test.module';
+import { ColorPickerModule } from '../../../ui-framework/src/lib/form-elements/color-picker/color-picker.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -54,6 +55,7 @@ import { MutationObserversTestModule } from './mutation-observers/mutation-obser
     // TestTableModule,
     // PipesDecoratorsModule,
     MutationObserversTestModule,
+    ColorPickerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

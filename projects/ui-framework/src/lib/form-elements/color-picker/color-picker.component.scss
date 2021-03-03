@@ -1,0 +1,33 @@
+@import '../../style/common-imports';
+
+@include bFormElement();
+
+
+.bfe-wrap {
+  position: relative;
+  &.panel-open {
+    &.panel-below {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    &.panel-above {
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+    }
+  }
+}
+
+.select-chevron {
+  &:before {
+    width: 12px;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+::ng-deep {
+  .cdk-overlay-container .color-picker-dropdown .color-picker {
+    width: 100% !important;
+    border: none;
+  }
+}
