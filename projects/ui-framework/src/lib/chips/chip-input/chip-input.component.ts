@@ -173,10 +173,11 @@ export class ChipInputComponent
           ? chip.indexOf(name)
           : chip.toLowerCase().indexOf(name.toLowerCase())) > -1
     );
+    console.log('filtered', filtered);
     return filtered.length > 0 && filtered;
   }
 
-  private chipsAreEqual(chip1: string, chip2: string) {
+  private chipsAreEqual(chip1: string, chip2: string): boolean {
     return this.caseSensitive
       ? chip1 === chip2
       : chip1.toLowerCase() === chip2.toLowerCase();
