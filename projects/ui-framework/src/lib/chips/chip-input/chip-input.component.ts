@@ -173,7 +173,6 @@ export class ChipInputComponent
           ? chip.indexOf(name)
           : chip.toLowerCase().indexOf(name.toLowerCase())) > -1
     );
-    console.log('filtered', filtered);
     return filtered.length > 0 && filtered;
   }
 
