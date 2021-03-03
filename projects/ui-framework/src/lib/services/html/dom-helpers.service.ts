@@ -15,6 +15,7 @@ import {
   asArray,
   hasProp,
   isFunction,
+  injectStyles,
 } from '../utils/functional-utils';
 import {
   Styles,
@@ -82,31 +83,7 @@ export class DOMhelpers {
     styles: string = '',
     elem: HTMLElement | Document = document
   ): void {
-    let styleEl: HTMLStyleElement, existingStyles: string;
-    if (elem === document) {
-      elem = document.head;
-    }
-    styleEl = elem.querySelector(`style[data-injected="true"]`);
-    if (styleEl) {
-      existingStyles = styleEl.innerHTML.replace(/\s*/gim, '');
-    }
-    if (!styleEl && styles) {
-      styleEl = document.createElement('style');
-      styleEl.setAttribute('data-injected', 'true');
-      elem.appendChild(styleEl);
-    }
-    if (
-      styles &&
-      (!existingStyles ||
-        (existingStyles &&
-          styleEl.innerHTML.replace(/\s*/gim, '') !== existingStyles))
-    ) {
-      styleEl.innerHTML = styles;
-      return;
-    }
-    if (styleEl && !styles) {
-      styleEl.remove();
-    }
+    return injectStyles(styles, elem);
   }
 
   public isTextNode(element: any): element is Node {

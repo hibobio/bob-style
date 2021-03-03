@@ -1361,6 +1361,38 @@ export const countChildren = (parentSelector, parent) => {
   return relevantChildren;
 };
 
+export const injectStyles = (
+  styles: string = '',
+  elem: HTMLElement | Document = document
+): void => {
+  let styleEl: HTMLStyleElement, existingStyles: string;
+  if (elem === document) {
+    elem = document.head;
+  }
+  styleEl = elem.querySelector(`style[data-injected="true"]`);
+  if (styleEl) {
+    existingStyles = styleEl.innerHTML.replace(/\s*/gim, '');
+  }
+  if (!styleEl && styles) {
+    styleEl = document.createElement('style');
+    styleEl.setAttribute('data-injected', 'true');
+    elem.appendChild(styleEl);
+  }
+  if (
+    styles &&
+    (!existingStyles ||
+      (existingStyles && styles.replace(/\s*/gim, '') !== existingStyles))
+  ) {
+    styleEl.innerHTML = `${
+      existingStyles ? existingStyles + '\n' : ''
+    }${styles}`;
+    return;
+  }
+  if (styleEl && !styles) {
+    styleEl.remove();
+  }
+};
+
 // ----------------------
 // NGONCHANGES HELPERS
 // ----------------------
