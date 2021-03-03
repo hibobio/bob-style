@@ -7,6 +7,7 @@ import {
   ResizeObserverEntry,
 } from './window-ref.service';
 import {
+  getElementWindow,
   getType,
   isDomElement,
   isFunction,
@@ -82,10 +83,13 @@ export class MutationObservableService {
 
   public getMutationObservable(
     element: HTMLElement,
-    config: MutationObservableConfig = MUTATION_OBSERVABLE_CONFIG_DEF
+    config: MutationObservableConfig = MUTATION_OBSERVABLE_CONFIG_DEF,
+    win: WindowLike = this.nativeWindow
   ): Observable<Set<HTMLElement>> {
     //
-    if (!isDomElement(element)) {
+    win = win || (getElementWindow(element) as any);
+
+    if (!isDomElement(element, win)) {
       console.error(
         `[MutationObservableService.getMutationObservable]: valid element to observe was not provided - got "${getType(
           element
@@ -95,7 +99,7 @@ export class MutationObservableService {
     }
 
     return new Observable((subscriber: Subscriber<Set<HTMLElement>>) => {
-      const mutationObserver: MutationObserver = new this.nativeWindow.MutationObserver(
+      const mutationObserver: MutationObserver = new win.MutationObserver(
         (mutations: MutationRecord[]) => {
           if (config.mutations === 'original') {
             subscriber.next(mutations as any);
@@ -105,7 +109,8 @@ export class MutationObservableService {
           const affectedElementsSet = this.processMutations(
             mutations,
             element,
-            config
+            config,
+            win
           );
 
           if (affectedElementsSet.size) {
@@ -126,10 +131,13 @@ export class MutationObservableService {
 
   public getResizeObservervable(
     element: HTMLElement,
-    config: ResizeObservableConfig = RESIZE_OBSERVERVABLE_CONFIG_DEF
+    config: ResizeObservableConfig = RESIZE_OBSERVERVABLE_CONFIG_DEF,
+    win: WindowLike = this.nativeWindow
   ): Observable<Partial<DOMRectReadOnly>> {
     //
-    if (!isDomElement(element)) {
+    win = win || (getElementWindow(element) as any);
+
+    if (!isDomElement(element, win)) {
       console.error(
         `[MutationObservableService.getResizeObservervable]: valid element to observe was not provided - got "${getType(
           element
@@ -138,7 +146,7 @@ export class MutationObservableService {
       return of({ width: 0, height: 0 });
     }
 
-    if (!this.nativeWindow.ResizeObserver) {
+    if (!win.ResizeObserver) {
       console.warn(
         `[MutationObservableService.getResizeObservervable] This browser doesn't support ResizeObserver`
       );
@@ -174,7 +182,7 @@ export class MutationObservableService {
       (subscriber: Subscriber<Partial<DOMRectReadOnly>>) => {
         let lastRect: Partial<DOMRectReadOnly> = { width: 0, height: 0 };
 
-        const resizeObserver: ResizeObserverInstance = new this.nativeWindow.ResizeObserver(
+        const resizeObserver: ResizeObserverInstance = new win.ResizeObserver(
           (entries: ResizeObserverEntry[]) => {
             const newRect = entries[entries.length - 1].contentRect;
 
@@ -199,10 +207,13 @@ export class MutationObservableService {
   public getIntersectionObservable(
     element: HTMLElement,
     config: IntersectionObservableConfig = INTERSECTION_OBSERVABLE_CONFIG_DEF,
-    observer: IntersectionObserver = null
+    observer: IntersectionObserver = null,
+    win: WindowLike = this.nativeWindow
   ): Observable<IntersectionObserverableEntry> {
     //
-    if (!isDomElement(element)) {
+    win = win || (getElementWindow(element) as any);
+
+    if (!isDomElement(element, win)) {
       console.error(
         `[MutationObservableService.getIntersectionObservable]: valid element to observe was not provided - got "${getType(
           element
@@ -216,12 +227,9 @@ export class MutationObservableService {
     }
 
     if (
-      !('IntersectionObserver' in this.nativeWindow) ||
-      !('IntersectionObserverEntry' in this.nativeWindow) ||
-      !(
-        'intersectionRatio' in
-        this.nativeWindow.IntersectionObserverEntry.prototype
-      )
+      !('IntersectionObserver' in win) ||
+      !('IntersectionObserverEntry' in win) ||
+      !('intersectionRatio' in win.IntersectionObserverEntry?.prototype)
     ) {
       console.warn(
         `[MutationObservableService.getIntersectionObservable] This browser doesn't support IntersectionObserver`
@@ -257,7 +265,7 @@ export class MutationObservableService {
       ) => {
         const intersectionObserver =
           observer ||
-          new this.nativeWindow.IntersectionObserver((entries) => {
+          new win.IntersectionObserver((entries) => {
             subscriber.next(entries);
           }, config);
 
@@ -326,7 +334,8 @@ export class MutationObservableService {
   private processMutations(
     mutations: MutationRecord[],
     observedElement: HTMLElement,
-    config: MutationObservableConfig
+    config: MutationObservableConfig,
+    win: WindowLike = this.nativeWindow
   ): Set<HTMLElement> {
     let affectedElements: Set<HTMLElement> = new Set();
 
@@ -347,7 +356,7 @@ export class MutationObservableService {
         mutation.target.nodeType !== 8
       ) {
         affectedElements.add(
-          isDomElement(mutation.target)
+          isDomElement(mutation.target, win)
             ? mutation.target
             : mutation.target.parentElement
         );

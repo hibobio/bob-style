@@ -34,6 +34,7 @@ import {
 } from '../color-service/color-palette.service';
 import { ColorService } from '../color-service/color.service';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { WindowLike } from './window-ref.service';
 
 // ----------------------
 // TYPES
@@ -114,19 +115,35 @@ export const isSet = (val: any): boolean => {
 export const isRegExp = (val: any): val is RegExp =>
   !!val && typeof val === 'object' && val instanceof RegExp;
 
-export const isNode = (val: any, nodeType: number = null): val is Node =>
-  !!val &&
-  // typeof val === 'object' &&
-  val instanceof Node &&
-  typeof val.nodeName === 'string' &&
-  ((nodeType !== null && val.nodeType === nodeType) ||
-    (nodeType === null && typeof val.nodeType === 'number'));
+export const isNode = (
+  val: any,
+  nodeType: number = null,
+  win: (Window & typeof globalThis) | WindowLike = window
+): val is Node => {
+  if (!val) {
+    return;
+  }
 
-export const isTextNode = (val: any): val is Node =>
-  isNode(val, Node.TEXT_NODE);
+  win = win || getElementWindow(val);
 
-export const isDomElement = (val: any): val is HTMLElement =>
-  isNode(val, Node.ELEMENT_NODE);
+  return (
+    win &&
+    val instanceof win['Node'] &&
+    typeof val.nodeName === 'string' &&
+    ((nodeType !== null && val.nodeType === nodeType) ||
+      (nodeType === null && typeof val.nodeType === 'number'))
+  );
+};
+
+export const isTextNode = (
+  val: any,
+  win: (Window & typeof globalThis) | WindowLike = window
+): val is Node => isNode(val, Node.TEXT_NODE, win);
+
+export const isDomElement = (
+  val: any,
+  win: (Window & typeof globalThis) | WindowLike = window
+): val is HTMLElement => isNode(val, Node.ELEMENT_NODE, win);
 
 export const isElementRef = (val: any): val is ElementRef =>
   isDomElement(val?.nativeElement);
@@ -1344,15 +1361,64 @@ export const keyEventIsCharacter = (event: KeyboardEvent): boolean => {
 // DOM
 // ----------------------
 
-export const countChildren = (parentSelector, parent) => {
+export const isWindow = (val: any): val is Window & typeof globalThis => {
+  return thisClassName(val) === 'Window' && val.document;
+};
+
+export const isDocument = (val: any): val is Document => {
+  return (
+    thisClassName(val) === 'HTMLDocument' &&
+    (val.defaultView || val['parentWindow'])
+  );
+};
+
+export const getElementDocument = (
+  element: HTMLElement | Node | Document | Window
+): Document => {
+  return (
+    element &&
+    (isDocument(element)
+      ? element
+      : element['ownerDocument'] || element['document'])
+  );
+};
+
+export const getElementWindow = (
+  element: HTMLElement | Node | Document | Window
+): Window & typeof globalThis => {
+  if (!element || isWindow(element)) {
+    return element as Window & typeof globalThis;
+  }
+  const doc = getElementDocument(element);
+  return doc && (doc.defaultView || doc['parentWindow']);
+};
+
+export const insertAfter = (
+  newNode: HTMLElement | Node,
+  referenceNode: HTMLElement | Node,
+  clone = false
+): HTMLElement => {
+  if (!isNode(newNode, null) || !isNode(referenceNode, null)) {
+    return;
+  }
+  return referenceNode.parentNode.insertBefore(
+    clone ? newNode.cloneNode(true) : newNode,
+    referenceNode.nextSibling
+  ) as HTMLElement;
+};
+
+export const countChildren = (
+  parentSelector?: string,
+  parent?: HTMLElement | Node
+) => {
   parent = parentSelector ? document.querySelector(parentSelector) : parent;
   if (!parent) {
     return 0;
   }
   let relevantChildren = 0;
-  for (const child of parent.childNodes) {
+  for (const child of Array.from(parent.childNodes)) {
     if (child.nodeType !== 3 && child.nodeType !== 8) {
-      if (child.tagName && child.tagName.toLowerCase() !== 'svg') {
+      if (child['tagName']?.toLowerCase() !== 'svg') {
         relevantChildren += countChildren(null, child);
       }
       relevantChildren++;
@@ -1366,7 +1432,7 @@ export const injectStyles = (
   elem: HTMLElement | Document = document
 ): void => {
   let styleEl: HTMLStyleElement, existingStyles: string;
-  if (elem === document) {
+  if (elem === getElementDocument(elem)) {
     elem = document.head;
   }
   styleEl = elem.querySelector(`style[data-injected="true"]`);
