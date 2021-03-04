@@ -55,6 +55,7 @@ export class CardsLayoutComponent
 
   @Input() alignCenter: boolean | 'auto' = false;
   @Input() mobileSwiper = false;
+  @Input() swiper: 'desktop' | 'mobile' | 'both' | boolean = false;
   @Input() type: CardType = CardType.regular;
 
   @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<
@@ -75,6 +76,10 @@ export class CardsLayoutComponent
       type: CardType.regular,
       alignCenter: false,
     });
+
+    if (this.mobileSwiper && this.swiper !== 'both' && this.swiper !== true) {
+      this.swiper === 'mobile';
+    }
 
     if (notFirstChanges(changes, ['type'])) {
       this.ngOnInit();
@@ -132,7 +137,12 @@ export class CardsLayoutComponent
   }
 
   public isSwiperEnabled() {
-    return this.mobileSwiper && this.isMobile && this.hasEnoughCards();
+    return (
+      (this.swiper === true ||
+        (this.isMobile && this.swiper && this.swiper !== 'desktop') ||
+        (!this.isMobile && this.swiper && this.swiper !== 'mobile')) &&
+      this.hasEnoughCards()
+    );
   }
 
   public isAlignedCenter() {

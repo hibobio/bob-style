@@ -13,28 +13,28 @@ const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
 const template1 = `
   <b-card-layout-example-1 [type]="type || 'regular'"
                            [alignCenter]="alignCenter"
-                           [mobileSwiper]="mobileSwiper"
+                           [swiper]="swiper"
                            [maxCards]="maxCards">
   </b-card-layout-example-1>
 `;
 const template2 = `
   <b-card-layout-example-2 [type]="type || 'regular'"
                            [alignCenter]="alignCenter"
-                           [mobileSwiper]="mobileSwiper"
+                           [swiper]="swiper"
                            [maxCards]="maxCards">
   </b-card-layout-example-2>
 `;
 const template3 = `
   <b-card-layout-example-3 [type]="type || 'small'"
                            [alignCenter]="alignCenter"
-                           [mobileSwiper]="mobileSwiper"
+                           [swiper]="swiper"
                            [maxCards]="maxCards">
   </b-card-layout-example-3>
 `;
 const template4 = `
   <b-card-layout-example-4 [type]="type || 'large'"
                            [alignCenter]="alignCenter"
-                           [mobileSwiper]="mobileSwiper"
+                           [swiper]="swiper"
                            [maxCards]="maxCards">
   </b-card-layout-example-4>
 `;
@@ -75,7 +75,8 @@ const note = `
   [alignCenter] | boolean | put cards in the center. by default, if there \
   is not enough cards to fill 1 row, the cards will be centered. \
   To disable this behaviour, set [alignCenter] to **null**. set to **true** to force centering. | false
-  [mobileSwiper] | boolean | enable mobile swiper (1 row of scrollable cards) | false
+  <s>[mobileSwiper]</s> | boolean | (deprecated) enable mobile swiper (1 row of scrollable cards) | false
+  [swiper] | 'desktop' / 'mobile' / 'both' / boolean | enable/disable swiper (1 row of scrollable cards) on mobile, desktop or both
   cardsInRow$ / getCardsInRow$() | Observable&lt;number&gt; | observable \
   that returns cards in row | initial cards in row
   (cardsAmountChanged) | EventEmitter<wbr>&lt;number&gt; | emits when cardsInRow changes | &nbsp;
@@ -84,7 +85,7 @@ const note = `
 \`\`\`
 <b-cards [type]="type"
          [alignCenter]="false"
-         [mobileSwiper]="true">
+         [swiper]="'mobile'">
 
     <b-card-add [type]="type"
                 (clicked)="onAddCardClick()"
@@ -118,7 +119,11 @@ story.add(
       props: {
         type: select('type', Object.values(CardType), CardType.regular),
         alignCenter: boolean('alignCenter', false),
-        mobileSwiper: boolean('mobileSwiper', true),
+        swiper: select(
+          'swiper',
+          ['mobile', 'desktop', 'both', true, false],
+          'mobile'
+        ),
         maxCards: number('maxCards', 6),
       },
       moduleMetadata: {

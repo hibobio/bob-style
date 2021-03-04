@@ -38,11 +38,7 @@ import { randomNumber } from '../../services/utils/functional-utils';
 @Component({
   selector: 'b-card-layout-example-1',
   template: `
-    <b-cards
-      [type]="type"
-      [alignCenter]="alignCenter"
-      [mobileSwiper]="mobileSwiper"
-    >
+    <b-cards [type]="type" [alignCenter]="alignCenter" [swiper]="swiper">
       <b-card-add
         *ngIf="addCard"
         [type]="type"
@@ -74,7 +70,7 @@ export class CardLayoutExample1Component implements OnChanges {
   constructor() {}
   @Input() type: CardType = CardType.regular;
   @Input() alignCenter = false;
-  @Input() mobileSwiper = true;
+  @Input() swiper = true;
   @Input() maxCards = 6;
 
   addCard: AddCard;
@@ -86,7 +82,7 @@ export class CardLayoutExample1Component implements OnChanges {
       this.addCard = this.maxCards > 1 ? AddCardMockData : null;
       this.cards = getCardsMockData(
         this.maxCards === 1 ? 1 : this.maxCards - 1
-      ).map(card => ({
+      ).map((card) => ({
         ...card,
         text: mockText(randomNumber(10, 25)) + '.',
         avatarImgUrl: mockAvatar(),
@@ -108,11 +104,7 @@ export class CardLayoutExample1Component implements OnChanges {
 @Component({
   selector: 'b-card-layout-example-2',
   template: `
-    <b-cards
-      [type]="type"
-      [alignCenter]="alignCenter"
-      [mobileSwiper]="mobileSwiper"
-    >
+    <b-cards [type]="type" [alignCenter]="alignCenter" [swiper]="swiper">
       <b-card-employee
         *ngFor="let card of cards; let i = index"
         [type]="type"
@@ -130,7 +122,7 @@ export class CardLayoutExample1Component implements OnChanges {
 export class CardLayoutExample2Component implements OnChanges {
   constructor() {}
   @Input() alignCenter = false;
-  @Input() mobileSwiper = true;
+  @Input() swiper = true;
   @Input() type: CardType = CardType.large;
   @Input() maxCards = 6;
 
@@ -140,7 +132,7 @@ export class CardLayoutExample2Component implements OnChanges {
     if (changes.maxCards) {
       this.maxCards = changes.maxCards.currentValue;
 
-      this.cards = getEmployeeCardsMockData(this.maxCards).map(card => ({
+      this.cards = getEmployeeCardsMockData(this.maxCards).map((card) => ({
         ...card,
         hobbies: mockHobbies(4).join(', '),
       }));
@@ -155,11 +147,7 @@ export class CardLayoutExample2Component implements OnChanges {
 @Component({
   selector: 'b-card-layout-example-3',
   template: `
-    <b-cards
-      [type]="type"
-      [alignCenter]="alignCenter"
-      [mobileSwiper]="mobileSwiper"
-    >
+    <b-cards [type]="type" [alignCenter]="alignCenter" [swiper]="swiper">
       <b-card-employee
         *ngFor="let card of cards; let i = index"
         [type]="type"
@@ -177,7 +165,7 @@ export class CardLayoutExample3Component implements OnChanges, OnDestroy {
   set amountOfCardsFn(bCardsComponent: CardsLayoutComponent) {
     this.numberOfCardsSubscription = bCardsComponent
       .getCardsInRow$()
-      .subscribe(numberOfCards => {
+      .subscribe((numberOfCards) => {
         console.log('number of cards in a row (example 3)', numberOfCards);
       });
   }
@@ -186,7 +174,7 @@ export class CardLayoutExample3Component implements OnChanges, OnDestroy {
   @Input() alignCenter = false;
   @Input() type: CardType = CardType.small;
   @Input() maxCards = 6;
-  @Input() mobileSwiper = true;
+  @Input() swiper = true;
 
   dates: string[] = [];
 
@@ -198,7 +186,7 @@ export class CardLayoutExample3Component implements OnChanges, OnDestroy {
     if (changes.maxCards) {
       this.maxCards = changes.maxCards.currentValue;
 
-      this.cards = getEmployeeCardsMockData(this.maxCards).map(card => ({
+      this.cards = getEmployeeCardsMockData(this.maxCards).map((card) => ({
         ...card,
         date: mockDate(),
       }));
@@ -219,11 +207,7 @@ export class CardLayoutExample3Component implements OnChanges, OnDestroy {
 @Component({
   selector: 'b-card-layout-example-4',
   template: `
-    <b-cards
-      [type]="type"
-      [alignCenter]="alignCenter"
-      [mobileSwiper]="mobileSwiper"
-    >
+    <b-cards [type]="type" [alignCenter]="alignCenter" [swiper]="swiper">
       <b-card-add
         *ngIf="addCard"
         [type]="type"
@@ -291,7 +275,7 @@ export class CardLayoutExample4Component implements OnChanges {
   @Input() type: CardType = CardType.regular;
   @Input() alignCenter = false;
   @Input() maxCards = 6;
-  @Input() mobileSwiper = true;
+  @Input() swiper = true;
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
@@ -306,7 +290,7 @@ export class CardLayoutExample4Component implements OnChanges {
       this.addCard = this.maxCards > 1 ? AddCardMockData : null;
       this.cards = getCardsMockData(
         this.maxCards === 1 ? 1 : this.maxCards - 1
-      ).map(card => ({
+      ).map((card) => ({
         ...card,
         imageUrl: mockImage(400, 300),
         provider: mockText(1),
