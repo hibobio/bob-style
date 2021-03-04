@@ -547,10 +547,11 @@ export { ReadMoreComponent } from './lib/layout/read-more/read-more.component';
 
 // Cards
 export { CardsModule } from './lib/cards/cards.module';
-export { CardType } from './lib/cards/cards.enum';
+export * from './lib/cards/cards.enum';
+export * from './lib/cards/card/card.interface';
+export { BaseCardElement } from './lib/cards/card/card.abstract';
 // Single card
 export { CardComponent } from './lib/cards/card/card.component';
-export { Card, CardActionButton } from './lib/cards/card/card.interface';
 // Add new Card
 export { CardAddComponent } from './lib/cards/card-add/card-add.component';
 export { AddCard } from './lib/cards/card-add/card-add.interface';
@@ -561,6 +562,8 @@ export {
 } from './lib/cards/card-employee/card-employee.interface';
 // Cards Layout
 export { CardsLayoutComponent } from './lib/cards/cards-layout/cards-layout.component';
+export * from './lib/cards/cards-layout/cards-layout.const';
+
 
 // Card Table
 export { CardTableModule } from './lib/table/card-table/card-table.module';
