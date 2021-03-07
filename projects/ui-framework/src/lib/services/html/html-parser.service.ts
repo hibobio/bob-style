@@ -20,13 +20,17 @@ import {
   STYLES_KEEP_ON_DIV,
   FONTSIZE_KEY_TO_NUM_MAP,
   LANGUAGE_TESTS,
+  HTML_CLEANUP_REPLACERS,
 } from './html-parser.const';
 import { TreeWalkerTake, TreeWalkerFilter, DOMtags } from './dom-helpers.enum';
 import { GetElementStylesConfig } from './dom-helpers.interface';
+import { DocumentRef } from '../utils/document-ref.service';
 
 @Injectable({ providedIn: 'root' })
 export class HtmlParserHelpers {
-  constructor(private DOM: DOMhelpers) {}
+  constructor(private documentRef: DocumentRef, private DOM: DOMhelpers) {}
+
+  private _txtAreaEl: HTMLTextAreaElement;
 
   public linkify(value: string, add = ''): string {
     return LinkifyPipe.prototype.transform(value, add);
@@ -172,7 +176,9 @@ export class HtmlParserHelpers {
             return;
           }
 
-          const newEl = document.createElement(newTagName);
+          const newEl = this.documentRef.nativeDocument.createElement(
+            newTagName
+          );
           newEl.innerHTML = elToReplace.innerHTML;
           elToReplace.parentElement.replaceChild(newEl, elToReplace);
         }
@@ -238,12 +244,14 @@ export class HtmlParserHelpers {
       ? value
       : this.stringToDOM(value);
 
-    const hiddenRenderedElem = document.createElement('div');
+    const hiddenRenderedElem = this.documentRef.nativeDocument.createElement(
+      'div'
+    );
     this.DOM.appendCssText(
       hiddenRenderedElem,
       'position: absolute; overflow: hidden; width: 0px; height: 0px;'
     );
-    document.body.appendChild(hiddenRenderedElem);
+    this.documentRef.nativeDocument.body.appendChild(hiddenRenderedElem);
     hiddenRenderedElem.appendChild(elm);
 
     this.DOM.walkNodeTree(elm, {
@@ -322,7 +330,7 @@ export class HtmlParserHelpers {
     });
 
     hiddenRenderedElem.innerHTML = '';
-    document.body.removeChild(hiddenRenderedElem);
+    this.documentRef.nativeDocument.body.removeChild(hiddenRenderedElem);
 
     return returnDOM ? elm : this.DOMtoString(elm);
   }
@@ -437,7 +445,7 @@ export class HtmlParserHelpers {
     const elm: HTMLElement = isDomElement(value)
       ? value
       : this.stringToDOM(value);
-    const docFrag = document.createDocumentFragment();
+    const docFrag = this.documentRef.nativeDocument.createDocumentFragment();
 
     Array.from(elm.querySelectorAll('div > div'))
       .filter(
@@ -605,20 +613,41 @@ export class HtmlParserHelpers {
     return res;
   }
 
+  private decodeHtml(html: string): string {
+    (
+      this._txtAreaEl ||
+      (this._txtAreaEl = this.documentRef.nativeDocument.createElement(
+        'textarea'
+      ))
+    ).innerHTML = html;
+    return this._txtAreaEl.value;
+  }
+
   public getPlainText(html: string | HTMLElement | any): string {
     if (!html) {
       return '';
     }
 
-    if (!isString(html) || isDomElement(html)) {
-      return String(html.textContent || html || '').replace(/\s+/gi, ' ');
+    if (!isString(html) && !isDomElement(html)) {
+      return String(html.textContent || '').replace(/\s+/gi, ' ');
+    }
+
+    if (isString(html) && !html.match(/[<&]/)) {
+      return html;
     }
 
     const elm: HTMLElement = isDomElement(html)
       ? (html.cloneNode() as HTMLElement)
       : this.stringToDOM(html);
 
-    elm.innerHTML = this.deLinkify(elm.innerHTML);
+    elm.innerHTML = this.deLinkify(
+      this.cleanupHtml(elm.innerHTML, [
+        HTML_CLEANUP_REPLACERS.nbsp,
+        HTML_CLEANUP_REPLACERS.spacesBetweenTextAndTag,
+        HTML_CLEANUP_REPLACERS.spacesBetweenTags,
+        HTML_CLEANUP_REPLACERS.whiteSpace,
+      ])
+    );
 
     elm.querySelectorAll('div, li, p, h1, h2, h3').forEach((e: HTMLElement) => {
       if (!this.DOM.isEmpty(e)) {
@@ -626,8 +655,7 @@ export class HtmlParserHelpers {
       }
     });
 
-    return elm.innerText
-      .replace(/\&nbsp;/g, ' ')
+    return this.decodeHtml(elm.textContent)
       .replace(/_§±§_/g, '\n')
       .replace(/_±§±_/g, '\n- ')
       .replace(/^[ \t]+/gim, '')
@@ -640,7 +668,9 @@ export class HtmlParserHelpers {
     if (!isString(value)) {
       return value as any;
     }
-    const elm: HTMLElement = document.createElement('div');
+    const elm: HTMLElement = this.documentRef.nativeDocument.createElement(
+      'div'
+    );
     elm.innerHTML = value;
     return elm;
   }
@@ -672,7 +702,8 @@ export class HtmlParserHelpers {
         forEach: (node) => {
           this.DOM.setAttributes(
             node.parentElement as HTMLElement,
-            LANGUAGE_TESTS[key].attributes
+            LANGUAGE_TESTS[key].attributes,
+            false
           );
         },
       });

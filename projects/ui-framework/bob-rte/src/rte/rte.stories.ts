@@ -33,8 +33,6 @@ const controlsDef = [
   BlotType.pasteAsText,
 ];
 
-const value = rteMockHtml;
-
 const template = `<b-rich-text-editor
       [value]="html === 'rich text' ? rteMockHtml : xssTest"
       [type]="type"

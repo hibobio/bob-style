@@ -269,7 +269,7 @@ export abstract class RTEbaseElement extends BaseFormElement
     }
 
     if (
-      hasChanges(changes, ['placeholderList', 'mode']) ||
+      hasChanges(changes, ['placeholderList', 'mode', 'type']) ||
       (this.inputTransformers.length === 0 && !notFirstChanges(changes))
     ) {
       this.initTransformers();
@@ -393,10 +393,11 @@ export abstract class RTEbaseElement extends BaseFormElement
         this.placeholderList
       )
     );
-    this.outputTransformers.push(
-      (value: string): string =>
-        this.parserService.addLangAttributes(value, false) as string
-    );
+    this.mode !== RTEMode.plainText &&
+      this.outputTransformers.push(
+        (value: string): string =>
+          this.parserService.addLangAttributes(value, false) as string
+      );
   }
 
   private initMentions(): void {

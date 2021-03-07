@@ -12,13 +12,14 @@ import formElemsPropsDoc from '../form-elements.properties.md';
 // @ts-ignore: md file and not a module
 import inputElemsPropsDoc from '../input.properties.md';
 import { FormElementsCommonProps } from '../form-elements.stories.common';
+import { rteMockHtml } from '../../../../bob-rte/src/rte/rte.mocks';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-textarea [value]="value"
+<b-textarea [value]="value||rteMockHtml"
             [label]="label"
             [description]="description"
             [placeholder]="placeholder"
@@ -65,6 +66,8 @@ story.add(
       props: {
         inputEvents: action('inputEvents'),
         value: text('value', ''),
+
+        rteMockHtml: rteMockHtml,
 
         ...FormElementsCommonProps('Textarea label', 'Write something', ''),
 

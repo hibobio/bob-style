@@ -8,33 +8,40 @@ import { inputValue } from '../../services/utils/test-helpers';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
+import { HtmlParserHelpersProvideMock } from '../../tests/services.stub.spec';
 
 describe('TextareaComponent', () => {
   let component: TextareaComponent;
   let fixture: ComponentFixture<TextareaComponent>;
   let textareaElement: any;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [TextareaComponent],
-      imports: [
-        NoopAnimationsModule,
-        InputMessageModule,
-        FormElementLabelModule,
-      ],
-      providers: [DOMhelpers, EventManagerPlugins[0]],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(TextareaComponent);
-        component = fixture.componentInstance;
-        component.ignoreEvents = [];
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [TextareaComponent],
+        imports: [
+          NoopAnimationsModule,
+          InputMessageModule,
+          FormElementLabelModule,
+        ],
+        providers: [
+          DOMhelpers,
+          HtmlParserHelpersProvideMock(),
+          EventManagerPlugins[0],
+        ],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(TextareaComponent);
+          component = fixture.componentInstance;
+          component.ignoreEvents = [];
 
-        spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => {});
-        fixture.detectChanges();
-      });
-  }));
+          spyOn(component.changed, 'emit');
+          component.changed.subscribe(() => {});
+          fixture.detectChanges();
+        });
+    })
+  );
 
   afterEach(() => {
     component.changed.complete();

@@ -32,6 +32,7 @@ import { URLutils } from '../services/url/url-utils.service';
 import { filestackTest, imageLinkTest } from '../services/url/url.const';
 import { MediaType } from '../popups/lightbox/media-embed/media-embed.enum';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { HtmlParserHelpers } from '../services/html/html-parser.service';
 
 // This file is intentionally named .spec.ts - to fix build problems due to missing jasmine namespace
 
@@ -140,6 +141,27 @@ export const getDOMhelpersMock = () =>
 export const DOMhelpersProvideMock = (mock: Mock<DOMhelpers> = null) => ({
   provide: DOMhelpers,
   useFactory: () => (mock || getDOMhelpersMock()).Object,
+});
+
+export const getHtmlParserHelpersMock = () =>
+  new Mock<HtmlParserHelpers>({
+    enforceAttributes: (v) => v,
+    replaceElements: (v) => v,
+    unwrapDivElements: (v) => v,
+    unwrapInlineElements: (v) => v,
+    removeElements: (v) => v,
+    deLinkify: (v) => v,
+    getPlainText: (v) => v,
+    addLangAttributes: (v) => v,
+    removeInvalid: (v) => v,
+    cleanupHtml: (v) => v,
+  });
+
+export const HtmlParserHelpersProvideMock = (
+  mock: Mock<HtmlParserHelpers> = null
+) => ({
+  provide: HtmlParserHelpers,
+  useFactory: () => (mock || getHtmlParserHelpersMock()).Object,
 });
 
 export const getNgZoneMock = () =>

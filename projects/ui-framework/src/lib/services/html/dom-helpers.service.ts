@@ -204,13 +204,19 @@ export class DOMhelpers {
     }
   }
 
-  public setAttributes(element: HTMLElement, attrs: GenericObject): void {
+  public setAttributes(
+    element: HTMLElement,
+    attrs: GenericObject,
+    overWriteExisting = true
+  ): void {
     if (!isDomElement(element)) {
       return;
     }
     for (const attr of Object.keys(attrs)) {
       if (!isNullOrUndefined(attrs[attr])) {
-        element.setAttribute(attr, attrs[attr] as string);
+        if (overWriteExisting || !element.getAttribute(attr)) {
+          element.setAttribute(attr, attrs[attr] as string);
+        }
       } else {
         element.removeAttribute(attr);
       }

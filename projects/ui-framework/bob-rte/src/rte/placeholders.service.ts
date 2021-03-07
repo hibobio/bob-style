@@ -19,7 +19,7 @@ export class PlaceholdersConverterService {
           'data-placeholder-id'
         );
         const placeholderTextElement: Text = document.createTextNode(
-          '{{' + placeholderId + '}}'
+          `{{${placeholderId}}}`
         );
         existingElement.parentNode.replaceChild(
           placeholderTextElement,

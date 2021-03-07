@@ -76,8 +76,8 @@ export const HTML_CLEANUP_REPLACERS: {
   },
 
   nbsp: {
-    find: [/\&nbsp;/gi],
-    replaceWith: [' '],
+    find: [/\&nbsp;/gi, /\u00A0/g],
+    replaceWith: [' ', ' '],
   },
 
   blockStyleTagsUsedAsBR: {

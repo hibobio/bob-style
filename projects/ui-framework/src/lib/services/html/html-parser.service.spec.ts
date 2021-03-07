@@ -1,9 +1,13 @@
 import { HtmlParserHelpers } from './html-parser.service';
 import { DOMhelpers } from './dom-helpers.service';
 import { WindowRef } from '../utils/window-ref.service';
+import { DocumentRef } from '../utils/document-ref.service';
 
 describe('HtmlParserHelpers', () => {
-  const parser = new HtmlParserHelpers(new DOMhelpers(new WindowRef()));
+  const parser = new HtmlParserHelpers(
+    new DocumentRef(),
+    new DOMhelpers(new WindowRef())
+  );
 
   const testEnforce = {
     'span,p,div,a': {

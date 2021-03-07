@@ -62,7 +62,7 @@ placeholderMock.splice(0, 0, {
 export const mock1 = `<br><br> <br><br> <span> <br> </span> <div><br></div> <span><br></span>
 
 <div>
-  <span style="color: red;">Hello</span> http://Google.com!
+  <span style="color: red;">Hello</span> &nbsp;&nbsp;&nbsp;http://Google.com!
   Some <em>funky</em> <strong>bold</strong> text
   of <span style="font-size: 18px;">large 🔍</span> size.
 </div>

@@ -182,21 +182,23 @@ export class RichTextEditorComponent extends RTEbaseElement
       contentChanged: () => {
         this.updateLength();
 
-        this.transmitValue(this.editor.html.get(), {
-          eventType: [InputEventType.onChange],
-          updateValue: true,
-        });
+        !this.ignoreEvents.includes(InputEventType.onChange) &&
+          this.transmitValue(this.editor.html.get(), {
+            eventType: [InputEventType.onChange],
+            updateValue: true,
+          });
       },
 
       focus: (event: FocusEvent) => {
         event?.preventDefault();
 
-        this.transmitValue(this.editor.html.get(), {
-          eventType: [InputEventType.onFocus],
-          emitterName: FormEvents.focused,
-          updateValue: true,
-          doPropagate: false,
-        });
+        !this.ignoreEvents.includes(InputEventType.onFocus) &&
+          this.transmitValue(this.editor.html.get(), {
+            eventType: [InputEventType.onFocus],
+            emitterName: FormEvents.focused,
+            updateValue: true,
+            doPropagate: false,
+          });
         this.inputFocused = true;
 
         if (!this.cd['destroyed']) {
@@ -209,11 +211,12 @@ export class RichTextEditorComponent extends RTEbaseElement
       blur: () => {
         this.closeMentions(true);
 
-        this.transmitValue(this.editor.html.get(), {
-          eventType: [InputEventType.onBlur],
-          emitterName: FormEvents.blurred,
-          updateValue: true,
-        });
+        !this.ignoreEvents.includes(InputEventType.onBlur) &&
+          this.transmitValue(this.editor.html.get(), {
+            eventType: [InputEventType.onBlur],
+            emitterName: FormEvents.blurred,
+            updateValue: true,
+          });
         this.inputFocused = false;
 
         if (!this.cd['destroyed']) {
