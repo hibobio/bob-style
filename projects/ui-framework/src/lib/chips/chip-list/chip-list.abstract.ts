@@ -5,7 +5,7 @@ import {
   QueryList,
   HostListener,
   HostBinding,
-  Injectable,
+  Directive,
 } from '@angular/core';
 import { ChipComponent } from '../chip/chip.component';
 import { Chip, ChipListConfig } from '../chips.interface';
@@ -13,7 +13,8 @@ import { ChipListSelectable, ChipListAlign, ChipType } from '../chips.enum';
 import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 
-@Injectable()
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class ChipListBaseElement {
   constructor(protected zone: NgZone, protected cd: ChangeDetectorRef) {}
 
