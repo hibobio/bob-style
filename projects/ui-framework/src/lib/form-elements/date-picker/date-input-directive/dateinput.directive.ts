@@ -46,7 +46,10 @@ export class DateInputDirective implements OnChanges, OnInit {
   private lastDate: Date;
 
   @Input('bDateInput')
-  dateFormat: FormatParserResult | DateFormatFullDate = DISPLAY_DATE_FORMAT_DEF;
+  dateFormat:
+    | FormatParserResult
+    | DateFormatFullDate
+    | string = DISPLAY_DATE_FORMAT_DEF;
   @Input() date: Date;
   @Input() min: Date;
   @Input() max: Date;

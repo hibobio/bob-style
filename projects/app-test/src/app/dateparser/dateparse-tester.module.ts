@@ -36,7 +36,7 @@ import { DateInputDirectiveModule } from '../../../../ui-framework/src/lib/form-
       <br /><br />
       <select
         [(ngModel)]="dateStr"
-        (change)="onValueChange($event.target.value)"
+        (change)="onValueChange($event.target['value'])"
       >
         <option *ngFor="let date of dateStrVars" [value]="date">{{
           date
@@ -73,11 +73,12 @@ export class DateParseTesterComponent implements AfterViewInit, OnInit {
     if (doTest) {
       let counter = 0;
 
+      // tslint:disable-next-line: no-console
       console.time('test');
-      Object.keys(DateParseServiceTest).forEach(format => {
+      Object.keys(DateParseServiceTest).forEach((format) => {
         Object.keys(DateParseServiceTest[format])
           // .filter(k => DateParseServiceTest[format][k].only)
-          .forEach(date => {
+          .forEach((date) => {
             const parsed = DateParseService.prototype.parseDate(
               format as any,
               date,
@@ -134,6 +135,7 @@ export class DateParseTesterComponent implements AfterViewInit, OnInit {
             }
           });
       });
+      // tslint:disable-next-line: no-console
       console.timeEnd('test');
 
       console.log('TOTAL FAILED: ', counter);

@@ -353,6 +353,17 @@ export class RteUtilsService {
               ),
           ];
 
+    mode === RTEMode.htmlInlineCSS &&
+      outputTransformers.unshift(
+        (value: string): string =>
+          this.parserService.addLangAttributes(
+            value,
+            false,
+            ['hebrew'],
+            ['style']
+          ) as string
+      );
+
     if (placeholdersEnabled) {
       inputTransformers.push((value: string): string =>
         this.placeholdersConverter.toRte(value, placeholderList)

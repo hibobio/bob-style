@@ -10,6 +10,7 @@ import {
   OnInit,
   HostBinding,
   Directive,
+  Injectable,
 } from '@angular/core';
 import { ButtonType, ButtonSize, BackButtonType } from './buttons.enum';
 import { Icons, IconColor, IconSize } from '../icons/icons.enum';
@@ -22,7 +23,7 @@ import {
 } from '../services/utils/functional-utils';
 import { Button } from './buttons.interface';
 
-@Directive()
+@Injectable()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseButtonElement implements OnChanges, OnInit {
   constructor(protected cd: ChangeDetectorRef) {}

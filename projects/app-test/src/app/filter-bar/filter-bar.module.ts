@@ -44,20 +44,21 @@ import {
 import { QuickFilterLayoutComponent } from '../../../../ui-framework/src/lib/search/quick-filter-layout/quick-filter-layout.component';
 import { DatepickerType } from '../../../../ui-framework/src/lib/form-elements/date-picker/datepicker.enum';
 import { InputTypes } from '../../../../ui-framework/src/lib/form-elements/input/input.enum';
+import { LinkColor } from '../../../../ui-framework/src/lib/indicators/link/link.enum';
 
-const deselectOptions = options =>
-  options.map(g => ({
+const deselectOptions = (options) =>
+  options.map((g) => ({
     ...g,
-    options: g.options.map(o => ({ ...o, selected: false })),
+    options: g.options.map((o) => ({ ...o, selected: false })),
   }));
 
-const selectRandom = options =>
-  options.map(g => ({
+const selectRandom = (options) =>
+  options.map((g) => ({
     ...g,
-    options: g.options.map(o => ({ ...o, selected: randomNumber() > 80 })),
+    options: g.options.map((o) => ({ ...o, selected: randomNumber() > 80 })),
   }));
 
-const selectOneRandom = options => {
+const selectOneRandom = (options) => {
   const newOptions = deselectOptions(options);
   newOptions[randomNumber(0, newOptions.length - 1)].options[
     randomNumber(0, 3)
@@ -140,7 +141,7 @@ QFconfig[1].options = selectOneRandom(SSoptionsMock);
           bar-prefix
           *ngIf="show.LeftButt"
           text="Left"
-          color="primary"
+          [color]="linkColor.primary"
         >
         </b-text-button>
 
@@ -149,7 +150,7 @@ QFconfig[1].options = selectOneRandom(SSoptionsMock);
           bar-suffix
           *ngIf="show.RightButt"
           text="Right"
-          color="primary"
+          [color]="linkColor.primary"
         >
         </b-text-button>
 
@@ -299,6 +300,8 @@ export class FilterBarTestComponent implements OnInit {
   public allShown = true;
   public enblInterval = false;
 
+  readonly linkColor = LinkColor;
+
   public show = {
     ResetFilter: false,
     LeftButt: false,
@@ -317,7 +320,7 @@ export class FilterBarTestComponent implements OnInit {
   }
 
   changeProps() {
-    this.quickFilters = this.quickFilters.map(item => ({
+    this.quickFilters = this.quickFilters.map((item) => ({
       ...item,
       label: mockText(2),
       hintMessage: mockText(4),
@@ -353,14 +356,14 @@ export class FilterBarTestComponent implements OnInit {
   }
 
   changeShow() {
-    Object.keys(this.show).forEach(i => {
+    Object.keys(this.show).forEach((i) => {
       this.show[i] = randomNumber() > 70;
     });
   }
 
   changeShowAll() {
     this.allShown = !this.allShown;
-    Object.keys(this.show).forEach(i => {
+    Object.keys(this.show).forEach((i) => {
       this.show[i] = this.allShown;
     });
   }

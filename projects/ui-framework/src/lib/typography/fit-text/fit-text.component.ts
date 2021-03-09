@@ -54,7 +54,7 @@ const FIT_TEXT_STYLES_BY_TYPE = {
 @Component({
   selector: 'b-fit-text',
   template: `<span
-    [ngStyle]="styles[fontType$ | async] || 'display'"
+    [ngStyle]="styles[(fontType$ | async) || 'display']"
     [style.fontSize]="(fontSize$ | async) + 'px'"
     >{{ text$ | async }}</span
   >`,

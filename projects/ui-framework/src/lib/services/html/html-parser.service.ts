@@ -11,6 +11,7 @@ import {
   isDomElement,
   isFunction,
   arrayFlatten,
+  isArray,
 } from '../utils/functional-utils';
 import { DOMhelpers } from './dom-helpers.service';
 import { EnforceFontSizeConfig, ProcessCSS } from './html-parser.interface';
@@ -21,10 +22,12 @@ import {
   FONTSIZE_KEY_TO_NUM_MAP,
   LANGUAGE_TESTS,
   HTML_CLEANUP_REPLACERS,
+  LANGUAGE_ATTRS_DEF,
 } from './html-parser.const';
 import { TreeWalkerTake, TreeWalkerFilter, DOMtags } from './dom-helpers.enum';
 import { GetElementStylesConfig } from './dom-helpers.interface';
 import { DocumentRef } from '../utils/document-ref.service';
+import { HtmlAttrs, HtmlLangs } from './html-helpers.interface';
 
 @Injectable({ providedIn: 'root' })
 export class HtmlParserHelpers {
@@ -684,25 +687,47 @@ export class HtmlParserHelpers {
 
   public addLangAttributes(
     html: string | HTMLElement,
-    returnDOM = false
+    returnDOM?: boolean,
+    langs?: (HtmlLangs | string)[],
+    attrs?: (HtmlAttrs | string)[] | Record<HtmlLangs, Record<HtmlAttrs, any>>
   ): string | HTMLElement {
     const elm: HTMLElement = isDomElement(html) ? html : this.stringToDOM(html);
     const plainText = isString(html) ? html : elm.innerText;
 
-    Object.keys(LANGUAGE_TESTS).forEach((key) => {
-      if (!LANGUAGE_TESTS[key].test.test(plainText)) {
+    langs = langs || Object.keys(LANGUAGE_TESTS);
+
+    attrs = isObject(attrs)
+      ? { ...LANGUAGE_ATTRS_DEF, ...attrs }
+      : isArray(attrs)
+      ? langs.reduce((resAttrs, lang) => {
+          resAttrs[lang] = (attrs as HtmlAttrs[]).reduce(
+            (filteredAttrs, attr) => {
+              filteredAttrs[attr] = LANGUAGE_ATTRS_DEF[lang][attr];
+              return filteredAttrs;
+            },
+            {}
+          );
+          return resAttrs;
+        }, {} as Record<HtmlLangs, Record<HtmlAttrs, any>>)
+      : LANGUAGE_ATTRS_DEF;
+
+    langs.forEach((lang: HtmlLangs) => {
+      if (
+        isEmptyObject(attrs[lang]) ||
+        !LANGUAGE_TESTS[lang]?.test(plainText)
+      ) {
         return;
       }
       this.DOM.walkNodeTree(elm, {
         take: TreeWalkerTake.textNodes,
         filter: (node: Node) =>
-          node.nodeType !== 8 && LANGUAGE_TESTS[key].test.test(node.textContent)
+          node.nodeType !== 8 && LANGUAGE_TESTS[lang].test(node.textContent)
             ? TreeWalkerFilter.accept
             : TreeWalkerFilter.reject,
         forEach: (node) => {
           this.DOM.setAttributes(
             node.parentElement as HTMLElement,
-            LANGUAGE_TESTS[key].attributes,
+            attrs[lang],
             false
           );
         },

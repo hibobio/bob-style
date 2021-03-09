@@ -3,11 +3,10 @@ import { MediaType } from '../../popups/lightbox/media-embed/media-embed.enum';
 import { URLtype } from './url.enum';
 
 export interface VideoData {
-  type: URLtype;
-  id: string;
+  type?: URLtype;
+  id?: string;
   url: string;
   thumb: string;
-
   thumbAlt?: string;
   thumbMinWidth?: number;
 }

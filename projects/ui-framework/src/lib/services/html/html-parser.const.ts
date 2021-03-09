@@ -1,4 +1,4 @@
-import { GenericObject } from '../../types';
+import { HtmlAttrs, HtmlLangs } from './html-helpers.interface';
 
 export const FONTSIZE_KEY_TO_NUM_MAP = {
   medium: 12, // 16, body
@@ -16,21 +16,23 @@ export const FONTSIZE_KEY_TO_NUM_MAP = {
 
 export const STYLES_KEEP_ON_DIV = ['text-align', 'direction'];
 
-export const LANGUAGE_TESTS: {
-  [lang: string]: { test: RegExp; attributes: GenericObject };
-} = {
+export const LANGUAGE_TESTS: Record<HtmlLangs, RegExp> = {
+  hebrew: /[\u0590-\u05FF]/,
+  russian: /[а-яА-ЯЁё]/,
+};
+
+export const LANGUAGE_ATTRS_DEF: Record<HtmlLangs, Record<HtmlAttrs, any>> = {
   hebrew: {
-    test: /[\u0590-\u05FF]/,
-    attributes: {
-      lang: 'he',
-      dir: 'rtl',
+    lang: 'he',
+    dir: 'rtl',
+    style: {
+      'text-align': 'right',
+      direction: 'rtl',
     },
   },
+
   russian: {
-    test: /[а-яА-ЯЁё]/,
-    attributes: {
-      lang: 'ru',
-    },
+    lang: 'ru',
   },
 };
 

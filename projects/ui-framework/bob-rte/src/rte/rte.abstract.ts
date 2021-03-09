@@ -393,11 +393,6 @@ export abstract class RTEbaseElement extends BaseFormElement
         this.placeholderList
       )
     );
-    this.mode !== RTEMode.plainText &&
-      this.outputTransformers.push(
-        (value: string): string =>
-          this.parserService.addLangAttributes(value, false) as string
-      );
   }
 
   private initMentions(): void {

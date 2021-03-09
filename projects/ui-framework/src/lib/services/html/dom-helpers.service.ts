@@ -180,7 +180,7 @@ export class DOMhelpers {
   // (provided as JSON with props in kebab-case),
   // including css variables ('--color-red')
   public setCssProps(element: HTMLElement, props: Styles): void {
-    if (!isDomElement(element)) {
+    if (!isDomElement(element) || !isObject(props)) {
       return;
     }
     for (const prop of Object.keys(props)) {
@@ -214,8 +214,14 @@ export class DOMhelpers {
     }
     for (const attr of Object.keys(attrs)) {
       if (!isNullOrUndefined(attrs[attr])) {
-        if (overWriteExisting || !element.getAttribute(attr)) {
-          element.setAttribute(attr, attrs[attr] as string);
+        if (
+          attr !== 'style' &&
+          (overWriteExisting || !element.getAttribute(attr))
+        ) {
+          element.setAttribute(attr, attrs[attr]);
+        }
+        if (attr === 'style') {
+          this.setCssProps(element, attrs[attr]);
         }
       } else {
         element.removeAttribute(attr);

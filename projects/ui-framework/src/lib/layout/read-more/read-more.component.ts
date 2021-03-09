@@ -15,8 +15,8 @@ import { Subscription, merge, of, Observable } from 'rxjs';
 import { tap, throttleTime, filter, take, skip } from 'rxjs/operators';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
 import { UtilsService } from '../../services/utils/utils.service';
-import { outsideZone } from '../../services/utils/rxjs.operators';
 import { InputObservable } from '../../services/utils/decorators';
+import { LinkColor } from '../../indicators/link/link.enum';
 
 export interface ReadMoreConfig {
   maxLines?: number;
@@ -48,7 +48,7 @@ export const READ_MORE_CONFIG_DEF: ReadMoreConfig = {
     <b-text-button
       *ngIf="needsReadMoreButton"
       class="read-more-button mrg-t-8"
-      [color]="'primary'"
+      [color]="linkColor.primary"
       [text]="'Read More'"
       (clicked)="onReadMoreClicked($event)"
     ></b-text-button>
@@ -69,6 +69,7 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
   private contentEl: HTMLElement;
   private updater: Subscription;
   public needsReadMoreButton = false;
+  readonly linkColor = LinkColor;
 
   // tslint:disable-next-line: no-input-rename
   @InputObservable({ ...READ_MORE_CONFIG_DEF })

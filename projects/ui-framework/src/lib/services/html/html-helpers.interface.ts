@@ -1,9 +1,9 @@
 export interface Styles {
-  [key: string]: string | number;
+  [property: string]: string | number;
 }
 
 export interface TextProps {
-  [key: string]: number;
+  [property: string]: number;
 }
 
 export interface NotEmptyChildren {
@@ -12,5 +12,24 @@ export interface NotEmptyChildren {
 }
 
 export interface NgClass {
-  [key: string]: boolean;
+  [className: string]: boolean;
 }
+
+export type HtmlLangs = 'hebrew' | 'russian';
+export type HtmlAttrs =
+  | 'dir'
+  | 'lang'
+  | 'class'
+  | 'style'
+  | 'alt'
+  | 'href'
+  | 'id'
+  | 'rel'
+  | 'src'
+  | 'target'
+  | 'title'
+  | 'valign'
+  | 'contenteditable'
+  | 'spellcheck'
+  | 'tabindex'
+  | string;

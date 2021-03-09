@@ -1,7 +1,8 @@
 import FroalaEditor from 'froala-editor';
-import { SelectGroupOption } from 'bob-style';
-import { HtmlParserHelpers } from 'bob-style';
+import { SelectGroupOption, HtmlParserHelpers } from 'bob-style';
 import { PlaceholdersConverterService } from './placeholders.service';
+
+// import { HtmlParserHelpers } from '../../../../ui-framework/src/lib/services/html/html-parser.service';
 
 export const initPasteAsTextControl = (controlsState: {
   pasteAsText: boolean;

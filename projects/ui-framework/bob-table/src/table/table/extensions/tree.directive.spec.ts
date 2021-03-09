@@ -4,7 +4,6 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { TableModule } from '../../table.module';
 import { TableComponent } from '../table.component';
 import { defaultTreeConfig, TreeConfig } from './tree.config';
-import { TreeDirective } from './tree.directive';
 
 import { Component, OnInit } from '@angular/core';
 import {
