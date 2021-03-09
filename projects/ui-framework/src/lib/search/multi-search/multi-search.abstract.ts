@@ -33,6 +33,7 @@ import { simpleUID } from '../../services/utils/functional-utils';
 import { SearchComponent } from '../search/search.component';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { Panel } from '../../popups/panel/panel.interface';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -71,6 +72,7 @@ export abstract class MultiSearchBaseElement
   readonly iconColor = IconColor;
   readonly iconSize = IconSize;
   readonly iconBgColor = '#f57738';
+  readonly tooltipType = TruncateTooltipType;
 
   protected lastFocusedOption: HTMLElement;
   protected ignoreFocusOut = false;

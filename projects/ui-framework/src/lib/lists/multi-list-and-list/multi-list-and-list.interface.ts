@@ -10,7 +10,7 @@ export interface ListViewConfig {
     menu?: MenuItem[];
   };
   showActionOnHover?: boolean;
-  maxLines?: boolean;
+  maxLines?: number;
 }
 
 export interface ListRow extends BasicListItem {

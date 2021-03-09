@@ -5,7 +5,7 @@
 <form [formGroup]="testForm"
       style="margin: 50px auto; max-width: 400px;">
   <b-tree-select formControlName="treeSelect"
-                 [type]="'single'"
+                 [type]="selectType.single"
                  [list]="list"
                  [value]="listVal"
                  [keyMap]="keymap"
@@ -33,7 +33,7 @@
 <form [formGroup]="testForm2"
       style="margin: 50px auto; max-width: 400px;">
   <b-tree-select formControlName="treeSelect2"
-                 [type]="'multi'"
+                 [type]="selectType.multi"
                  [list]="list"
                  [value]="listVal2"
                  [keyMap]="keymap"

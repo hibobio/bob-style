@@ -9,10 +9,13 @@ import {
   Output,
   QueryList,
   SimpleChanges,
-  ViewChildren
+  ViewChildren,
 } from '@angular/core';
 import { CollapsibleContentDirective } from './collapsible-content.directive';
-import { SortableCollapsibleDropped, SortableCollapsibleSection } from './sortable-collapsible-sections.interface';
+import {
+  SortableCollapsibleDropped,
+  SortableCollapsibleSection,
+} from './sortable-collapsible-sections.interface';
 import { CollapsibleHeaderDirective } from './collapsible-header.directive';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CollapsibleSectionComponent } from '../collapsible-section/collapsible-section.component';
@@ -25,18 +28,23 @@ import { cloneDeep } from 'lodash';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SortableCollapsibleSectionsComponent implements OnChanges {
+  @ContentChild(CollapsibleHeaderDirective, { static: true })
+  collapsibleHeader!: CollapsibleHeaderDirective;
+  @ContentChild(CollapsibleContentDirective, { static: true })
+  collapsibleContent!: CollapsibleContentDirective;
 
-  @ContentChild(CollapsibleHeaderDirective, { static: true }) collapsibleHeader !: CollapsibleHeaderDirective;
-  @ContentChild(CollapsibleContentDirective, { static: true }) collapsibleContent !: CollapsibleContentDirective;
-
-  @ViewChildren(CollapsibleSectionComponent, { read: CollapsibleSectionComponent })
+  @ViewChildren(CollapsibleSectionComponent, {
+    read: CollapsibleSectionComponent,
+  })
   private collapsibleSections: QueryList<CollapsibleSectionComponent>;
 
   @Input() sections: SortableCollapsibleSection[];
 
   @Output() dragStart: EventEmitter<number> = new EventEmitter<number>();
   @Output() dragEnd: EventEmitter<number> = new EventEmitter<number>();
-  @Output() orderChanged: EventEmitter<SortableCollapsibleDropped> = new EventEmitter<SortableCollapsibleDropped>();
+  @Output() orderChanged: EventEmitter<
+    SortableCollapsibleDropped
+  > = new EventEmitter<SortableCollapsibleDropped>();
   @Output() opened: EventEmitter<number> = new EventEmitter<number>();
   @Output() closed: EventEmitter<number> = new EventEmitter<number>();
 
@@ -46,15 +54,12 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
   contentLoadedMap: Map<number | string, boolean> = new Map();
   expandedMap: Map<number | string, boolean> = new Map();
 
-  constructor(
-    private cdr: ChangeDetectorRef
-  ) {
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.sections && changes.sections.currentValue) {
       this.UISections = cloneDeep(this.sections);
-      this.UISections.forEach(section => {
+      this.UISections.forEach((section) => {
         if (section.expanded) {
           this.contentLoadedMap.set(section.id, true);
           this.expandedMap.set(section.id, true);
@@ -72,11 +77,11 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
     this.orderChanged.emit({
       currentIndex,
       previousIndex,
-      sections: this.UISections
+      sections: this.UISections,
     });
   }
 
-  trackId(section: SortableCollapsibleSection): string | number {
+  trackId(index: number, section: SortableCollapsibleSection): string | number {
     return section.id;
   }
 
@@ -85,7 +90,9 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
     setTimeout(() => {
       this.collapsibleSections
         .toArray()
-        .forEach(collapsibleSectionComponent => collapsibleSectionComponent.togglePanel(false));
+        .forEach((collapsibleSectionComponent) =>
+          collapsibleSectionComponent.togglePanel(false)
+        );
       this.cdr.detectChanges();
     });
   }
@@ -111,8 +118,7 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
   togglePanel(sectionId: string | number, expand: boolean) {
     const section = this.collapsibleSections
       .toArray()
-      .filter(s => s.panelID === sectionId)
-      [0];
+      .filter((s) => s.panelID === sectionId)[0];
     section.togglePanel(expand);
   }
 }

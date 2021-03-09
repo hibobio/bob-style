@@ -36,7 +36,7 @@ export class ChipListComponent extends ChipListBaseElement
   @Input() chipListSelectable: ChipListSelectable = ChipListSelectable.multi;
 
   @Input() activeIndex: number;
-  @Input() chips: Chip[] = [];
+  @Input() chips: (Chip | any)[] = [];
   @Input() config: ChipListConfig = {};
 
   readonly avatarSize = AvatarSize;

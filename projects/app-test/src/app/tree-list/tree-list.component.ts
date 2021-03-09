@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { TreeListModule } from '../../../../ui-framework/src/lib/lists/tree-list/tree-list/tree-list.module';
 import { TreeSelectModule } from '../../../../ui-framework/src/lib/lists/tree-list/tree-select/tree-select.module';
 import { StatsModule } from '../../../../ui-framework/src/lib/services/util-components/stats.module';
+import { SelectType } from '../../../../ui-framework/src/lib/lists/list.enum';
 
 @Component({
   selector: 'app-tree-list',
@@ -44,6 +45,8 @@ export class TreeListTestComponent implements OnInit {
     HListMockSimple[2].children[1].children[2].serverId,
     HListMockSimple[2].children[2].serverId,
   ];
+
+  readonly selectType = SelectType;
 
   ngOnInit() {
     this.testForm.get('treeSelect').valueChanges.subscribe((value) => {

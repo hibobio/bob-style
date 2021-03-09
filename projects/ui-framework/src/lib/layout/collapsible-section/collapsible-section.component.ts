@@ -62,7 +62,7 @@ export class CollapsibleSectionComponent
   private resizeSubscription: Subscription;
   private firstExpand = false;
 
-  @Input() panelID = simpleUID('bcp');
+  @Input() panelID: string | number = simpleUID('bcp');
   @Input() collapsible = false;
 
   @Input() expanded = false;

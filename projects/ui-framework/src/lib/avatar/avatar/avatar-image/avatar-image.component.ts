@@ -67,8 +67,8 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   @Input() backgroundColor: string;
   @Input() border = false;
   @Input() icon: Icons | Icon;
-  @Input() badge: AvatarBadge | Icon;
-  @Input() text: string;
+  @Input() badge: AvatarBadge | Icon | BadgeConfig;
+  @Input() text: string | number;
   @Input() disabled = false;
   @Input() isClickable: boolean;
   @Input() supressWarnings = false;

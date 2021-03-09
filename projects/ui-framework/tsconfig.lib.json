@@ -20,7 +20,6 @@
     "strictInjectionParameters": true,
     "enableResourceInlining": true,
     "enableIvy": false,
-    "strictTemplates": true
   },
   "exclude": ["src/test.ts", "**/*.spec.ts", "**/*.stories.ts"]
 }

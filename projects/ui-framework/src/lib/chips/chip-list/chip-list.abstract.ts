@@ -1,11 +1,11 @@
 import {
-  Directive,
   NgZone,
   ChangeDetectorRef,
   ViewChildren,
   QueryList,
   HostListener,
   HostBinding,
+  Injectable,
 } from '@angular/core';
 import { ChipComponent } from '../chip/chip.component';
 import { Chip, ChipListConfig } from '../chips.interface';
@@ -13,14 +13,13 @@ import { ChipListSelectable, ChipListAlign, ChipType } from '../chips.enum';
 import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 
-@Directive()
-// tslint:disable-next-line: directive-class-suffix
+@Injectable()
 export abstract class ChipListBaseElement {
   constructor(protected zone: NgZone, protected cd: ChangeDetectorRef) {}
 
   @ViewChildren('list') public list: QueryList<ChipComponent>;
 
-  public chips: Chip[] = [];
+  public chips: (Chip | any)[] = [];
   public chipListSelectable: ChipListSelectable = ChipListSelectable.multi;
   public config: ChipListConfig = {};
   readonly chipType = ChipType;

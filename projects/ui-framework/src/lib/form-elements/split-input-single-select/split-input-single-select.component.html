@@ -28,7 +28,7 @@
   <b-single-select *ngIf="options"
                    class="bsiss-select"
                    [options]="options"
-                   [value]="value.selectValue"
+                   [value]="[value.selectValue]"
                    (selectChange)="onSelectChange($event)"
                    [isDisabled]="disabled || selectDisabled"
                    [readonly]="readonly"

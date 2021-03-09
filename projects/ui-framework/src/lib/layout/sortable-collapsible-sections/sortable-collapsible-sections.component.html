@@ -8,7 +8,7 @@
       [class.mrg-b-16]="!last"
       cdkDrag
       cdkDragLockAxis="y"
-      cdkDragStartDelay="5"
+      [cdkDragStartDelay]="5"
       cdkDragBoundary="sections"
       (cdkDragStarted)="dragStart.emit(index); draggedSection=section"
       (cdkDragEnded)="dragEnd.emit(index)">
