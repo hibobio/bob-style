@@ -13,20 +13,22 @@ describe('AddFileComponent', () => {
   let fixture: ComponentFixture<AddFileComponent>;
   let component: AddFileComponent;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [AddFileComponent],
-      imports: [IconsModule],
-      schemas: [NO_ERRORS_SCHEMA],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [AddFileComponent],
+        imports: [IconsModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(AddFileComponent);
+          component = fixture.componentInstance;
+          spyOn(component.clicked, 'emit');
+          fixture.detectChanges();
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(AddFileComponent);
-        component = fixture.componentInstance;
-        spyOn(component.clicked, 'emit');
-        fixture.detectChanges();
-      });
-  }));
+  );
 
   describe('onClick', () => {
     it('should emit Clicked event', () => {
@@ -53,15 +55,15 @@ describe('AddFileComponent', () => {
     });
     it('Should set icon color to normal if no image url ', () => {
       const iconElement = fixture.debugElement.query(By.css('.b-icon'))
-        .nativeElement;
-      expect(iconElement.className).toContain('normal');
+        .componentInstance;
+      expect(iconElement.color).toEqual('normal');
     });
     it('Should set icon color to white if image url ', () => {
       component.imageUrl = emptyImg;
       fixture.detectChanges();
       const iconElement = fixture.debugElement.query(By.css('.b-icon'))
-        .nativeElement;
-      expect(iconElement.className).toContain('white');
+        .componentInstance;
+      expect(iconElement.color).toEqual('white');
     });
   });
   describe('container', () => {

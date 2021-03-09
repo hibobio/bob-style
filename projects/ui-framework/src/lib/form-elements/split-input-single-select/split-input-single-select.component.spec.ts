@@ -22,43 +22,45 @@ describe('SplitInputSingleSelectComponent', () => {
   let optionsMock: SelectGroupOption[];
   let valueMock: InputSingleSelectValue;
 
-  beforeEach(waitForAsync(() => {
-    valueMock = {
-      inputValue: 200,
-      selectValue: 'USD',
-    };
+  beforeEach(
+    waitForAsync(() => {
+      valueMock = {
+        inputValue: 200,
+        selectValue: 'USD',
+      };
 
-    optionsMock = [
-      {
-        groupName: 'currencies',
-        options: [
-          { value: 'USD', id: 'USD', selected: false },
-          { value: 'GBP', id: 'GBP', selected: false },
-          { value: 'ILS', id: 'ILS', selected: false },
+      optionsMock = [
+        {
+          groupName: 'currencies',
+          options: [
+            { value: 'USD', id: 'USD', selected: false },
+            { value: 'GBP', id: 'GBP', selected: false },
+            { value: 'ILS', id: 'ILS', selected: false },
+          ],
+        },
+      ];
+
+      TestBed.configureTestingModule({
+        declarations: [
+          SplitInputSingleSelectComponent,
+          MockComponent(SingleSelectComponent),
+          MockComponent(InputComponent),
+          MockComponent(InputMessageComponent),
+          MockComponent(FormElementLabelComponent),
         ],
-      },
-    ];
-
-    TestBed.configureTestingModule({
-      declarations: [
-        SplitInputSingleSelectComponent,
-        MockComponent(SingleSelectComponent),
-        MockComponent(InputComponent),
-        MockComponent(InputMessageComponent),
-        MockComponent(FormElementLabelComponent),
-      ],
-      imports: [NoopAnimationsModule, CommonModule],
+        imports: [NoopAnimationsModule, CommonModule],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(SplitInputSingleSelectComponent);
+          component = fixture.componentInstance;
+          component.wrapEvent = true;
+          spyOn(component.changed, 'emit');
+          component.changed.subscribe(() => {});
+          fixture.detectChanges();
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(SplitInputSingleSelectComponent);
-        component = fixture.componentInstance;
-        component.wrapEvent = true;
-        spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => {});
-        fixture.detectChanges();
-      });
-  }));
+  );
 
   afterEach(() => {
     component.changed.complete();
@@ -94,7 +96,7 @@ describe('SplitInputSingleSelectComponent', () => {
       const selectEl = fixture.debugElement.query(By.css('b-single-select'));
 
       expect(selectEl.context.options).toEqual(optionsMock);
-      expect(selectEl.context.value).toEqual(valueMock.selectValue);
+      expect(selectEl.context.value).toEqual([valueMock.selectValue]);
     });
   });
 

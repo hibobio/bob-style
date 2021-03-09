@@ -44,10 +44,8 @@ describe('IconElementComponent', () => {
         .nativeElement;
 
       expect(iconElement.className).toContain(Icons.toDos_link);
-      expect(iconElement.dataset('data-icon-before-size')).toContain('medium');
-      expect(iconElement.dataset('data-icon-before-color')).toContain(
-        'primary'
-      );
+      expect(iconElement.dataset.iconBeforeSize).toContain('medium');
+      expect(iconElement.dataset.iconBeforeColor).toContain('primary');
     });
 
     it('Should put tooltip text in attribute', () => {
