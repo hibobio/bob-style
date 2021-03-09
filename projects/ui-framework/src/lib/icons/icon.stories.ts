@@ -6,6 +6,8 @@ import { reduce, values } from 'lodash';
 import { ComponentGroupType } from '../consts';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ColorPalette } from '../services/color-service/color-palette.enum';
+import { randomFromArray } from '../services/utils/functional-utils';
 
 const story = storiesOf(ComponentGroupType.Icons, module).addDecorator(
   withKnobs
@@ -22,9 +24,6 @@ let iconKeys = iconClasses.reduce((acc, ic) => {
   return acc;
 }, []);
 iconKeys = Array.from(new Set(iconKeys));
-
-const size = values(IconSize);
-const color = values(IconColor);
 
 const template = `<b-icon [config]="{
                       icon: icon,
@@ -60,8 +59,8 @@ const note = `
   --- | --- | --- | ---
   [type] | IconType | regular or circular | regular
   [icon] | Icons | enum for the available icons | &nbsp;
-  [size] | IconSize | enum for the available icon sizes | &nbsp;
-  [color] | IconColor | enum for the available icon colors | dark
+  [size] | IconSize/number | icon size preset/enum, or custom size in px | medium
+  [color] | IconColor/string | icon color preset/enum, or string with custom color | dark
   [toolTipSummary] | String | Tooltip text (uses simple CSS tooltip. if it looks bad, use matTooltip instead)  | &nbsp;
   [hasHoverState] | boolean | if icon has hover state | false
   [rotate] | '90', '-90', '180' | icon transform/rotate | &nbsp;
@@ -74,6 +73,10 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
+const colors = Object.values(IconColor).concat(
+  randomFromArray(Object.values(ColorPalette), 5) as any
+);
+
 story.add(
   'Icon element',
   () => {
@@ -82,8 +85,8 @@ story.add(
       props: {
         type: select('type', Object.values(IconType), IconType.regular),
         icon: select('icon', iconClasses, Icons.person),
-        size: select('size', size, IconSize.large),
-        color: select('color', color, IconColor.normal),
+        size: select('size', [...Object.values(IconSize), 30], IconSize.large),
+        color: select('color', colors, IconColor.normal),
         hasHoverState: boolean('hasHoverState', true),
         toolTipSummary: text('toolTipSummary', 'This is the icon element'),
         rotate: select('rotate', ['0', '90', '180', '-90'], '0'),

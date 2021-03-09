@@ -11,13 +11,15 @@ describe('IconElementComponent', () => {
   let component: IconComponent;
   let componentElement: HTMLElement;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [IconComponent],
-      providers: [],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [IconComponent],
+        providers: [],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IconComponent);
@@ -38,15 +40,14 @@ describe('IconElementComponent', () => {
 
   describe('getClassNames', () => {
     it('Should set correct icon class', () => {
-      const iconElement = fixture.debugElement.query(
-        By.css('.' + Icons.toDos_link)
-      ).nativeElement;
+      const iconElement = fixture.debugElement.query(By.css('.b-icon'))
+        .nativeElement;
 
-      const expectedClass = Icons.toDos_link + ' b-icon-medium b-icon-primary';
-
-      expect(component.iconClass).toContain(expectedClass);
-
-      expect(iconElement.className).toContain(expectedClass);
+      expect(iconElement.className).toContain(Icons.toDos_link);
+      expect(iconElement.dataset('data-icon-before-size')).toContain('medium');
+      expect(iconElement.dataset('data-icon-before-color')).toContain(
+        'primary'
+      );
     });
 
     it('Should put tooltip text in attribute', () => {
