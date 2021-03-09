@@ -181,8 +181,9 @@
   @content;
 }
 
-@mixin flex-align {
-  display: flex;
+@mixin flex-align($display: flex, $dir: null) {
+  display: $display;
+  flex-direction: $dir;
   justify-content: center;
   align-items: center;
 }

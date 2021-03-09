@@ -11,10 +11,8 @@ $circularIconSizes: (
 );
 
 :host {
-  display: inline-flex;
+  @include flex-align(inline-flex);
   vertical-align: middle;
-  justify-content: center;
-  align-items: center;
   position: relative;
   flex-shrink: 0;
 

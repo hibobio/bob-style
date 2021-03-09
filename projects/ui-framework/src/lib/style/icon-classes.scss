@@ -1,7 +1,6 @@
 .b-icon,
 [class*='b-icon'] {
-  display: block;
-
+  @include flex-align;
   @include b-icon(null, large, dark);
 }
 
