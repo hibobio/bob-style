@@ -32,7 +32,6 @@ const template = `
               [disabled]="disabled"
               [required]="required"
               [hideLabelOnFocus]="hideLabelOnFocus"
-              [enableBrowserAutoComplete]="undefined"
               [focusOnInit]="focusOnInit"
               (inputEvents)="onChange($event)">
 </b-password-input>
