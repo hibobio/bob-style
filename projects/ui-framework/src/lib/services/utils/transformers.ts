@@ -34,6 +34,8 @@ export const truthyOrFalse = (value) => {
     : TRUTHY_LOOKING_STRINGS.includes(String(value).toLowerCase());
 };
 
+export const parseBooleanString = truthyOrFalse;
+
 export const stringListToArray = (
   list: string,
   test = /[^\w\u0020]+/
