@@ -26,7 +26,16 @@ import { itemID } from '../../lists/list.interface';
 // Transformers
 // -------------------------------
 
-export const TRUTHY_LOOKING_STRINGS = ['true', '1', 'on', 'yes'];
+export const TRUTHY_LOOKING_STRINGS = [
+  'true',
+  '1',
+  'on',
+  'yes',
+  'ja',
+  'oui',
+  'si',
+  'da',
+];
 
 export const truthyOrFalse = (value) => {
   return typeof value === 'boolean'
