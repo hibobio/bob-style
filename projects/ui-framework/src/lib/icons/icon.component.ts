@@ -19,6 +19,7 @@ import {
 import { TooltipClass } from '../popups/tooltip/tooltip.enum';
 import { DOMhelpers } from '../services/html/dom-helpers.service';
 import { Icon } from './icon.interface';
+import { Color } from '../types';
 
 @Component({
   selector: 'b-icon, [b-icon]',
@@ -50,7 +51,7 @@ export class IconComponent implements OnChanges {
   }
 
   @Input() icon: Icons;
-  @Input() color: IconColor | string = IconColor.dark;
+  @Input() color: IconColor | Color = IconColor.dark;
   @HostBinding('attr.data-size') @Input() size: IconSize | string | number =
     IconSize.medium;
   @Input() rotate: IconRotate = null;

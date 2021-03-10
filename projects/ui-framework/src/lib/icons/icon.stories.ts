@@ -60,7 +60,7 @@ const note = `
   [type] | IconType | regular or circular | regular
   [icon] | Icons | enum for the available icons | &nbsp;
   [size] | IconSize/number | icon size preset/enum, or custom size in px | medium
-  [color] | IconColor/string | icon color preset/enum, or string with custom color | dark
+  [color] | IconColor/<wbr>ColorPalette/<wbr>string | icon color preset/enum, or string with custom color | dark
   [toolTipSummary] | String | Tooltip text (uses simple CSS tooltip. if it looks bad, use matTooltip instead)  | &nbsp;
   [hasHoverState] | boolean | if icon has hover state | false
   [rotate] | '90', '-90', '180' | icon transform/rotate | &nbsp;

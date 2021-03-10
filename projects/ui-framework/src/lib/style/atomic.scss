@@ -367,10 +367,12 @@ $acss-dirs: top right bottom left;
   .grd-auto-#{$col} {
     display: grid !important;
     grid-template-columns: repeat(#{$col}, auto);
+    grid-template-rows: min-content;
   }
   .grd-eq-#{$col} {
     display: grid !important;
     grid-template-columns: repeat(#{$col}, 1fr);
+    grid-template-rows: min-content;
   }
 }
 

@@ -1,7 +1,17 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, NgZone, OnDestroy, OnInit, Output, ViewChild,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
 } from '@angular/core';
 import { remove as _remove, isEqual as _isEqual } from 'lodash';
+import { Color } from '../../types';
 
 const GRAVITY = 0.4;
 const CONFETTI_WIDTH = 12;
@@ -11,26 +21,23 @@ const CONFETTI_HEIGHT = 15;
   selector: 'b-confetti',
   template: '<canvas #confettiCanvas></canvas>',
   styleUrls: ['./confetti.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfettiComponent implements OnInit, OnDestroy {
+  constructor(private zone: NgZone) {}
+
   @ViewChild('confettiCanvas', { static: true }) canvas: ElementRef;
 
   @Output() complete: EventEmitter<any> = new EventEmitter<any>();
-  @Input() colors: string[];
+  @Input() colors: Color[];
   @Input() numberOfConfetti = 20;
 
   private canvasEl: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
-  private windowDim: { w: number, h: number };
+  private windowDim: { w: number; h: number };
   private CONFETTI = [];
   private CONFETTI_AREA = CONFETTI_WIDTH * CONFETTI_HEIGHT;
   private loopReq;
-
-  constructor(
-    private zone: NgZone,
-  ) {
-  }
 
   ngOnInit(): void {
     this.windowDim = {
@@ -43,7 +50,7 @@ export class ConfettiComponent implements OnInit, OnDestroy {
     this.canvasEl.height = this.windowDim.h;
   }
 
-  fireConfetti(pos: { x: number, y: number }[]) {
+  fireConfetti(pos: { x: number; y: number }[]) {
     pos.forEach((p) => {
       for (let i = 0; i < this.numberOfConfetti; i++) {
         this.CONFETTI.push(new Plane(p, this.colors));
@@ -55,32 +62,55 @@ export class ConfettiComponent implements OnInit, OnDestroy {
   }
 
   private _getColor(w, h, color) {
-    const percent = -0.5 * (1 - w * h / this.CONFETTI_AREA);
+    const percent = -0.5 * (1 - (w * h) / this.CONFETTI_AREA);
     // tslint:disable-next-line:max-line-length no-bitwise
-    const f = parseInt(color.slice(1), 16), t = percent < 0 ? 0 : 255, p = percent < 0 ? percent * -1 : percent, R = f >> 16,
+    const f = parseInt(color.slice(1), 16),
+      t = percent < 0 ? 0 : 255,
+      p = percent < 0 ? percent * -1 : percent,
+      R = f >> 16,
       // tslint:disable-next-line:no-bitwise
-      G = f >> 8 & 0x00FF, B = f & 0x0000FF;
+      G = (f >> 8) & 0x00ff,
+      B = f & 0x0000ff;
     // tslint:disable-next-line:max-line-length
-    return '#' + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1);
+    return (
+      '#' +
+      (
+        0x1000000 +
+        (Math.round((t - R) * p) + R) * 0x10000 +
+        (Math.round((t - G) * p) + G) * 0x100 +
+        (Math.round((t - B) * p) + B)
+      )
+        .toString(16)
+        .slice(1)
+    );
   }
 
   private _render() {
     this.zone.runOutsideAngular(() => {
       this.ctx.clearRect(0, 0, this.windowDim.w, this.windowDim.h);
 
-      this.CONFETTI.forEach(confetti => {
+      this.CONFETTI.forEach((confetti) => {
         this.ctx.save();
         confetti.update(confetti);
         this.ctx.translate(confetti.x, confetti.y);
         this.ctx.rotate(confetti.rot);
-        this.ctx.fillStyle = this._getColor(confetti.w, confetti.h, confetti.color);
-        this.ctx.fillRect(-confetti.w * 0.5, -confetti.h * 0.5, confetti.w, confetti.h);
+        this.ctx.fillStyle = this._getColor(
+          confetti.w,
+          confetti.h,
+          confetti.color
+        );
+        this.ctx.fillRect(
+          -confetti.w * 0.5,
+          -confetti.h * 0.5,
+          confetti.w,
+          confetti.h
+        );
         this.ctx.restore();
-        if ((confetti.y - confetti.h) > this.windowDim.h) {
+        if (confetti.y - confetti.h > this.windowDim.h) {
           confetti.outOfBounds = true;
         }
       });
-      _remove(this.CONFETTI, confetti => {
+      _remove(this.CONFETTI, (confetti) => {
         return _isEqual(confetti.outOfBounds, true);
       });
 

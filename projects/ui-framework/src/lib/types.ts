@@ -2,13 +2,14 @@ import { Sort } from './enums';
 import {
   ColorPalette,
   ColorsGrey,
+  ColorsMain,
 } from './services/color-service/color-palette.enum';
 
 export interface GenericObject<T = any> {
   [key: string]: T;
 }
 
-export type Color = ColorPalette | ColorsGrey | string;
+export type Color = ColorPalette | ColorsMain | ColorsGrey | string;
 
 export type SortType = Sort | 'asc' | 'desc' | boolean;
 

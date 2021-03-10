@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { Color } from '../../../types';
 import {
   ColorTextItem,
   InfoGraphicItem,
@@ -15,7 +16,7 @@ import {
 })
 export class TextColoredLinksComponent implements OnChanges {
   @Input() colorTextItems: ColorTextItem[] = [];
-  @Input() colors = DEFAULT_COLORS;
+  @Input() colors: Color[] = DEFAULT_COLORS;
   @Input() isClickable = true;
 
   sizes = DEFAULT_FONT_SIZES;
@@ -23,8 +24,6 @@ export class TextColoredLinksComponent implements OnChanges {
   fontStyle = DEFAULT_FONT_STYLES;
 
   infoGraphicItems: InfoGraphicItem[];
-
-  constructor() {}
 
   ngOnChanges(): void {
     this.infoGraphicItems = this.colorTextItems.map(

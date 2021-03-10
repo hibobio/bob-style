@@ -19,6 +19,7 @@ import {
   COLOR_GREY_500,
   pass,
   simpleUID,
+  Color,
 } from 'bob-style';
 import {
   ChartFormatterThis,
@@ -70,7 +71,7 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
     ChartLegendPositionEnum.BOTTOM;
   @Input() preTooltipValue = '';
   @Input() postTooltipValue = '';
-  @Input() colorPalette: string[] = [...CHART_CORE_COLORPALETTE_DEF];
+  @Input() colorPalette: Color[] = [...CHART_CORE_COLORPALETTE_DEF];
   @Input() height = this.sizeDefaults[0];
   @Input() title: string = null;
   @Input() legend = false;
@@ -210,7 +211,6 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
           useHTML: true,
           style: {
             color: COLOR_GREY_700,
-
           },
           formatter: this.formatter,
         },

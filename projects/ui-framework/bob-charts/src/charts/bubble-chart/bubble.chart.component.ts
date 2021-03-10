@@ -5,8 +5,9 @@ import {
   Input,
   NgZone,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
+import { Color } from 'bob-style';
 import { ChartCore } from '../chart/chart-core';
 import { ChartTypesEnum } from '../charts.enum';
 import { ExtendedSeriesBubbleDataOptions } from '../charts.interface';
@@ -18,8 +19,10 @@ import { ExtendedSeriesBubbleDataOptions } from '../charts.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BubbleChartComponent extends ChartCore implements OnChanges {
-
-  readonly type: ChartTypesEnum = ChartTypesEnum.Bubble;
+  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
+    super(cdr, zone);
+    this.sizeDefaults[0] = 450;
+  }
 
   @Input() xTitle: string;
   @Input() yTitle: string;
@@ -27,13 +30,10 @@ export class BubbleChartComponent extends ChartCore implements OnChanges {
   @Input() yLabels: string[];
   @Input() xSize: number;
   @Input() ySize: number;
-  @Input() color: string;
+  @Input() color: Color;
   @Input() data: ExtendedSeriesBubbleDataOptions[];
 
-  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
-    super(cdr, zone);
-    this.sizeDefaults[0] = 450;
-  }
+  readonly type: ChartTypesEnum = ChartTypesEnum.Bubble;
 
   ngOnChanges(changes: SimpleChanges): void {
     super.ngOnChanges(changes);
@@ -78,9 +78,9 @@ export class BubbleChartComponent extends ChartCore implements OnChanges {
         series: {
           dataLabels: {
             enabled: true,
-            format: '{point.name}'
-          }
-        }
+            format: '{point.name}',
+          },
+        },
       },
       series: [{ data: this.data, type: 'bubble' }],
     };
