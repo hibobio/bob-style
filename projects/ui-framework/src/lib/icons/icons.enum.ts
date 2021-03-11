@@ -155,6 +155,7 @@ export enum Icons {
   info = 'b-icon-info',
   info_outline = 'b-icon-info-outline',
   initials = 'b-icon-initials',
+  link = 'b-icon-link',
   linkedin = 'b-icon-linkedin',
   list_insert = 'b-icon-list-insert',
   location = 'b-icon-location',
