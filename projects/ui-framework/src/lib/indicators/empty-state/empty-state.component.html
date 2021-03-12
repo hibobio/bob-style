@@ -4,7 +4,7 @@
      border="0"
      alt="">
 
-<ng-content selector="[top]"></ng-content>
+<ng-content select="[top]"></ng-content>
 
 <b-icon *ngIf="config?.icon && !config.imgSrc"
         class="empty-state-icon"
@@ -23,4 +23,4 @@
           [type]="buttonType"
           [size]="buttonSize">{{config.buttonLabel}}</b-button>
 
-<ng-content selector="[bottom]"></ng-content>
+<ng-content select="[bottom]"></ng-content>
