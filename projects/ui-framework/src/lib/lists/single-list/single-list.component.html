@@ -96,6 +96,7 @@
             'disabled': option.disabled,
             'single-group-option': options.length === 1
            }"
+           [attr.data-id]="!option.isPlaceHolder ? option.id : null"
            class="option-select">
 
         <b-avatar-image *ngIf="option.avatar"
