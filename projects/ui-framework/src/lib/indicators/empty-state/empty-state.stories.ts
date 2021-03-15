@@ -40,6 +40,18 @@ const note = `
   ~~~
   ${template}
   ~~~
+
+  #### (interface) EmptyStateConfig
+  Name | Type
+  --- | ---
+  title | string
+  text | string
+  icon | Icons
+  iconSize | IconSize
+  buttonLabel |  string
+  imgSrc | string / SafeResourceUrl
+  button | Button
+  buttonClick | () => void
 `;
 
 const toAdd = () => {

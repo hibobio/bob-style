@@ -243,11 +243,13 @@ $font-size-subheading: $font-size-body;
   $lineHeight: $line-height-heading,
   $color: null,
   $style: null,
-  $addCssVars: false
+  $addCssVars: false,
+  $weight: $font-weight-heading
 ) {
   @include HeadingFont(
     $color: $color,
     $size: $font-size-heading,
+    $weight: $weight,
     $lineHeight: $lineHeight,
     $style: $style,
     $addCssVars: $addCssVars

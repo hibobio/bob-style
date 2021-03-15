@@ -17,30 +17,28 @@ $minWidthLarge: 110px;
 
 button {
   @include button-basic-types;
+  font-weight: 500;
 
   &.small {
     padding: 0 $padding;
     min-width: $minWidthSmall;
     height: $button-size-small;
-    font-weight: 500;
   }
 
   &.medium,
   &.large {
-    @include b-heading($addCssVars: false);
+    @include b-heading($addCssVars: false, $weight: null);
   }
   &.medium {
     padding: 0 $padding;
     min-width: $minWidthMedium;
     height: $button-size-medium;
-    font-weight: 500;
   }
   &.large {
     padding: 0 $padding;
     min-width: $minWidthLarge;
     height: $button-size-large;
     text-transform: uppercase;
-    font-weight: 500;
   }
 
   &[class*='b-icon'],

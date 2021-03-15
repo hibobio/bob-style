@@ -1,4 +1,4 @@
-$acss-sizes: 0 4 8 16 24 32 40 48;
+$acss-sizes: 0 4 8 10 12 16 24 32 40 48;
 $acss-dirs: top right bottom left;
 
 // misc
@@ -257,6 +257,9 @@ $acss-dirs: top right bottom left;
 
 .bg-grey-100 {
   background-color: $grey-100;
+}
+.bg-grey-200 {
+  background-color: $grey-200;
 }
 .bg-grey-300 {
   background-color: $grey-300;
