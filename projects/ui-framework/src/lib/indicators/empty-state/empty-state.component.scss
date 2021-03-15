@@ -12,29 +12,22 @@
   text-align: center;
 }
 
-.empty-state-text {
-  margin: times8(1) 0 0;
-  color: $grey-600;
-}
-
 .empty-state-button {
   margin-top: times8(3);
   display: flex;
   justify-content: center;
-  
+
   button.medium {
     font-weight: 700;
   }
 }
 
 .empty-state-image {
-  display: block;
-  height: auto;
   max-width: 500px;
+  height: auto;
 }
 
-[top],
-.empty-state-image {
+[top] {
   margin-bottom: times8(2);
 }
 

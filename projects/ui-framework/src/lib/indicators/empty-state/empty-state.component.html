@@ -1,5 +1,5 @@
 <img *ngIf="config?.imgSrc"
-     class="empty-state-image"
+     class="empty-state-image blk mrg-b-16"
      [src]="config.imgSrc"
      border="0"
      alt="">
@@ -12,16 +12,16 @@
         [color]="iconColor"
         [size]="config.iconSize || iconSize.xxLarge"></b-icon>
 
-<div *ngIf="config?.title" 
-     class="b-display-4 mrg-b-8"
+<div *ngIf="config?.title"
+     class="b-display-4 mrg-t-8"
      [innerHTML]="config.title"></div>
 
 <div *ngIf="config?.text"
-     class="empty-state-text"
+     class="empty-state-text mrg-t-8 clr-grey-600"
      [innerHTML]="config.text"></div>
 
 <b-button *ngIf="config?.buttonLabel || config?.button"
-          class="empty-state-button"
+          class="empty-state-button mrg-t-24"
           (clicked)="onButtonClick()"
           [button]="config.button"
           [type]="buttonType"
