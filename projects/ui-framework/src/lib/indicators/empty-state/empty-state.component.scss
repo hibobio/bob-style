@@ -13,11 +13,10 @@
 }
 
 .empty-state-button {
-  margin-top: times8(3);
   display: flex;
   justify-content: center;
 
-  button.medium {
+  ::ng-deep button.medium {
     font-weight: 700;
   }
 }

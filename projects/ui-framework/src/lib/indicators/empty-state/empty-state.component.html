@@ -13,15 +13,18 @@
         [size]="config.iconSize || iconSize.xxLarge"></b-icon>
 
 <div *ngIf="config?.title"
-     class="b-display-4 mrg-t-8"
+     class="empty-state-title b-display-4 mrg-t-8"
+     [ngClass]="config.titleClass"
      [innerHTML]="config.title"></div>
 
 <div *ngIf="config?.text"
      class="empty-state-text mrg-t-8 clr-grey-600"
+     [ngClass]="config.textClass"
      [innerHTML]="config.text"></div>
 
 <b-button *ngIf="config?.buttonLabel || config?.button"
-          class="empty-state-button mrg-t-24"
+          class="empty-state-button mrg-t-16"
+          [ngClass]="config.buttonClass"
           (clicked)="onButtonClick()"
           [button]="config.button"
           [type]="buttonType"
