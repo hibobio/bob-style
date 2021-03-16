@@ -10,6 +10,7 @@ import {
   ElementRef,
   Directive,
   AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -32,6 +33,7 @@ import {
   isObject,
   objectRemoveEntriesByValue,
   objectRemoveKeys,
+  unsubscribeArray,
 } from '../services/utils/functional-utils';
 import { InputEventType, FormElementSize } from './form-elements.enum';
 import {
@@ -41,11 +43,17 @@ import {
 } from './form-elements.interface';
 import { IGNORE_EVENTS_DEF, TRANSMIT_OPTIONS_DEF } from './form-elements.const';
 import { InputAutoCompleteOptions, InputTypes } from './input/input.enum';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseFormElement
-  implements ControlValueAccessor, FormElementSpec, OnChanges, AfterViewInit {
+  implements
+    ControlValueAccessor,
+    FormElementSpec,
+    OnChanges,
+    AfterViewInit,
+    OnDestroy {
   protected constructor(protected cd: ChangeDetectorRef) {}
 
   @ViewChild('input', { static: true, read: ElementRef })
@@ -111,6 +119,8 @@ export abstract class BaseFormElement
   protected skipFocusEvent = false;
   protected forceElementValue: ForceElementValue = false;
   readonly inputTypes = InputTypes;
+
+  readonly subs: Subscription[] = [];
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
 
@@ -315,5 +325,10 @@ export abstract class BaseFormElement
     }element id: ${this.id}${
       this.value ? ', value: ' + stringify(this.value) : ''
     }]`;
+  }
+
+  ngOnDestroy(): void {
+    unsubscribeArray(this.subs);
+    this['subscribtions'] && unsubscribeArray(this['subscribtions']);
   }
 }

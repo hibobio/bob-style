@@ -65,7 +65,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
     height: 0,
   };
   private particles: AvatarParticle[] = [];
-  private subs: Subscription[] = [];
+  private readonly subs: Subscription[] = [];
 
   private isMobile = false;
 

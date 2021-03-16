@@ -62,7 +62,7 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
   private config: MasonryConfig;
   private state: MasonryState = {};
   private updater: Subscription;
-  private subs: Subscription[] = [];
+  private readonly subs: Subscription[] = [];
   private elementsToUpdate: Set<HTMLElement> = new Set();
 
   ngOnInit() {

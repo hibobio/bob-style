@@ -27,7 +27,6 @@ import {
   MultiSearchClickedEvent,
 } from './multi-search.interface';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
-import { Subscription } from 'rxjs';
 import { OverlayPositionClasses } from '../../types';
 import { simpleUID } from '../../services/utils/functional-utils';
 import { SearchComponent } from '../search/search.component';
@@ -86,7 +85,6 @@ export abstract class MultiSearchBaseElement
   public panel: Panel;
   public panelOpen = false;
   public panelPosition = PanelDefaultPosVer.belowLeftRight;
-  public subscribtions: Subscription[] = [];
   public panelClassList: string[] = ['b-select-panel', 'bms-select-panel'];
   public positionClassList: OverlayPositionClasses = {};
 

@@ -21,7 +21,6 @@ import {
   OverlayRef,
   ConnectedPosition,
 } from '@angular/cdk/overlay';
-import { Subscription } from 'rxjs';
 import { BaseFormElement } from '../form-elements/base-form-element';
 import { DOMhelpers } from '../services/html/dom-helpers.service';
 import { TruncateTooltipType } from '../popups/truncate-tooltip/truncate-tooltip.enum';
@@ -134,7 +133,6 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   public panelOpen = false;
   public panelClassList: string[] = ['b-select-panel'];
   public positionClassList: OverlayPositionClasses = {};
-  public subscribtions: Subscription[] = [];
 
   public get overlayRef(): OverlayRef {
     return this.panel?.overlayRef;
@@ -218,6 +216,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   }
 
   ngOnDestroy(): void {
+    super.ngOnDestroy();
     this.destroyPanel(true);
   }
 

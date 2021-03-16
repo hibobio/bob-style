@@ -32,7 +32,7 @@ export class LightboxService {
     this.isEmbedMode = this.windowRef.isEmbedMode();
   }
 
-  private subs: Subscription[] = [];
+  private readonly subs: Subscription[] = [];
   private readonly isEmbedMode: boolean;
 
   private overlayConfig: OverlayConfig = {
@@ -156,13 +156,13 @@ export class LightboxService {
     this.lightbox.overlayRef = null;
     this.lightbox = null;
 
+    unsubscribeArray(this.subs);
+
     if (
       !this.isEmbedMode &&
       this.windowRef.nativeWindow.history.state?.lightbox
     ) {
       this.windowRef.nativeWindow.history.back();
     }
-
-    unsubscribeArray(this.subs);
   }
 }

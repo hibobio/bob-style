@@ -14,7 +14,7 @@ $b-checkbox-size: 16px;
   $required-selector: $input-selector + ':required + label',
   $indeterminate-selector: $input-selector + ':indeterminate + label',
   $hover-selector: $input-selector + ':focus + label,' + $input-selector +
-    '+ label:hover'
+    '+ label:hover,' + $input-selector + '+ label:focus'
 ) {
   @if ($input-selector) {
     #{$input-selector} {

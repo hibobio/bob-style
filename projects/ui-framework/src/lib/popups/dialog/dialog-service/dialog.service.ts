@@ -24,7 +24,7 @@ export class DialogService {
     private zone: NgZone
   ) {}
 
-  private subs: Subscription[] = [];
+  private readonly subs: Subscription[] = [];
 
   openDialog(
     dialogComponent: ComponentType<any>,

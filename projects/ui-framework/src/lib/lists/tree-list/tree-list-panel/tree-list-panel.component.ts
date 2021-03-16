@@ -20,7 +20,6 @@ import {
 } from '@angular/cdk/overlay';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { PanelDefaultPosVer } from '../../../popups/panel/panel.enum';
-import { Subscription } from 'rxjs';
 import { OverlayPositionClasses } from '../../../types';
 import {
   hasChanges,
@@ -74,7 +73,6 @@ export class TreeListPanelComponent extends TreeListInputOutput
   public panelOpen = false;
   public panelClassList: string[] = ['b-select-panel'];
   public positionClassList: OverlayPositionClasses = {};
-  public subscribtions: Subscription[] = [];
 
   public get overlayRef(): OverlayRef {
     return this.panel?.overlayRef;

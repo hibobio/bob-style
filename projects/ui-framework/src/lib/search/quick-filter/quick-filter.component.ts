@@ -13,7 +13,6 @@ import {
   QuickFilterConfig,
 } from './quick-filter.interface';
 import { QuickFilterSelectType } from './quick-filter.enum';
-import { has } from 'lodash';
 import { SingleSelectComponent } from '../../lists/single-select/single-select.component';
 import { MultiSelectComponent } from '../../lists/multi-select/multi-select.component';
 import { ListChange } from '../../lists/list-change/list-change';
@@ -21,6 +20,7 @@ import { ListModelService } from '../../lists/list-service/list-model.service';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { SelectMode } from '../../lists/list.enum';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { hasChanges } from '../../services/utils/functional-utils';
 
 const QUICK_FILTER_CONFIG_DEF = {
   selectMode: SelectMode.classic,
@@ -35,6 +35,8 @@ const QUICK_FILTER_CONFIG_DEF = {
   templateUrl: './quick-filter.component.html',
 })
 export class QuickFilterComponent implements OnChanges {
+  constructor(private listModelService: ListModelService) {}
+
   @ViewChild('singleSelect', { static: true }) singleSelect: TemplateRef<
     SingleSelectComponent
   >;
@@ -51,10 +53,8 @@ export class QuickFilterComponent implements OnChanges {
   public hasValue = false;
   readonly tooltipType = TruncateTooltipType;
 
-  constructor(private listModelService: ListModelService) {}
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (has(changes, 'quickFilterConfig')) {
+    if (hasChanges(changes, ['quickFilterConfig'], true)) {
       this.quickFilterConfig = {
         ...QUICK_FILTER_CONFIG_DEF,
         ...changes.quickFilterConfig.currentValue,

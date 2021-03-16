@@ -25,7 +25,7 @@ export class WindowKeydownDirective implements OnInit, OnDestroy {
     KeyboardEvent
   >();
 
-  private subs: Subscription[] = [];
+  private readonly subs: Subscription[] = [];
 
   ngOnInit() {
     this.subs.push(

@@ -4,7 +4,6 @@ import {
   Component,
   forwardRef,
   HostBinding,
-  Input,
   NgZone,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';

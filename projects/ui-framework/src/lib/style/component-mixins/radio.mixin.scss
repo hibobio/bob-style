@@ -7,9 +7,10 @@
   $disabled-selector: $input-selector + ':disabled + label',
   $required-selector: $input-selector + ':required + label',
   $hover-selector: $input-selector + ':focus + label,' + $input-selector +
-    '+ label:hover',
+    '+ label:hover,' + $input-selector + '+ label:focus',
   $checked-hover-selector: $input-selector + ':checked:focus + label,' +
-    $input-selector + ':checked + label:hover',
+    $input-selector + ':checked + label:hover,' + $input-selector +
+    ':checked + label:focus',
   $checked-color: var(--primary-500)
 ) {
   $shadow-inset-size-def: $size/2;

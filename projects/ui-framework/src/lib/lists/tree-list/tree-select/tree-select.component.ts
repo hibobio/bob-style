@@ -178,6 +178,7 @@ export class TreeSelectComponent extends BaseFormElement
   }
 
   ngOnDestroy(): void {
+    super.ngOnDestroy();
     this.itemsMap.clear();
   }
 

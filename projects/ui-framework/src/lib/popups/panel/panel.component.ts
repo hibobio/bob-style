@@ -65,7 +65,7 @@ export class PanelComponent implements OnInit, OnDestroy {
   public positionClassList: OverlayPositionClasses = {};
   public mouseEnterDebounce: any;
   public mouseLeaveDebounce: any;
-  private subs: Subscription[] = [];
+  private readonly subs: Subscription[] = [];
 
   public get overlayRef(): OverlayRef {
     return this.panel?.overlayRef;

@@ -7,7 +7,6 @@ import {
   SimpleChanges,
   Output,
   EventEmitter,
-  OnDestroy,
   ChangeDetectionStrategy,
   NgZone,
   ChangeDetectorRef,
@@ -27,7 +26,6 @@ import { InputEventType } from '../../form-elements/form-elements.enum';
 import { arrayOrFail } from '../../services/utils/transformers';
 import { ChipListComponent } from '../chip-list/chip-list.component';
 import { UtilsService } from '../../services/utils/utils.service';
-import { Subscription } from 'rxjs';
 import { ChipInputValidation, CHIP_INPUT_VALIDATION } from './chip-input.const';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
 
@@ -53,9 +51,7 @@ import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChipInputComponent
-  extends BaseFormElement
-  implements OnInit, OnDestroy {
+export class ChipInputComponent extends BaseFormElement implements OnInit {
   constructor(
     protected cd: ChangeDetectorRef,
     private utilsService: UtilsService,
@@ -95,7 +91,6 @@ export class ChipInputComponent
   private autocompleteTrigger: MatAutocompleteTrigger;
   @ViewChild('auto', { static: true })
   private autocompletePanel: MatAutocomplete;
-  private windowClickSubscriber: Subscription;
 
   @Output()
   changed: EventEmitter<ChipInputChange> = new EventEmitter<ChipInputChange>();
@@ -122,17 +117,11 @@ export class ChipInputComponent
   ngOnInit(): void {
     this.updatePossibleChips();
 
-    this.windowClickSubscriber = this.utilsService
-      .getWindowClickEvent(true)
-      .subscribe(() => {
+    this.subs.push(
+      this.utilsService.getWindowClickEvent(true).subscribe(() => {
         this.unSelectLastChip();
-      });
-  }
-
-  ngOnDestroy(): void {
-    if (this.windowClickSubscriber) {
-      this.windowClickSubscriber.unsubscribe();
-    }
+      })
+    );
   }
 
   private transmit(change: Partial<ChipInputChange>): void {

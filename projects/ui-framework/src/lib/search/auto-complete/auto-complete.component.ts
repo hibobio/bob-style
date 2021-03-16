@@ -13,7 +13,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { has } from 'lodash';
-import { Subscription } from 'rxjs';
 import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
 import { AutoCompleteOption } from './auto-complete.interface';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
@@ -68,7 +67,6 @@ export class AutoCompleteComponent
   public panelPosition = PanelDefaultPosVer.belowLeftRight;
   public panelClassList: string[] = ['b-auto-complete-panel'];
   public positionClassList: OverlayPositionClasses = {};
-  public subscribtions: Subscription[] = [];
 
   public get overlayRef(): OverlayRef {
     return this.panel?.overlayRef;

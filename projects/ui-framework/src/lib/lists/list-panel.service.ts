@@ -32,7 +32,8 @@ export interface OverlayEnabledComponent {
   templateRef: TemplateRef<unknown>;
   panelPosition: PanelDefaultPosVer | ConnectedPosition[];
   cd: ChangeDetectorRef;
-  subscribtions: Subscription[];
+  subscribtions?: Subscription[];
+  subs?: Subscription[];
   panelClassList: string[];
   positionClassList: OverlayPositionClasses;
 
@@ -79,7 +80,7 @@ export class ListPanelService {
     }
 
     const {
-      subs = self.subscribtions,
+      subs = self.subscribtions || self.subs || (self.subs = []),
       hasBackdrop,
       backdropClickMode = self.backdropClickMode || BackdropClickMode.apply,
     } = config;
@@ -209,7 +210,8 @@ export class ListPanelService {
 
     this.panelService.destroyPanel(self.panel);
 
-    unsubscribeArray(self.subscribtions);
+    self.subscribtions && unsubscribeArray(self.subscribtions);
+    self.subs && unsubscribeArray(self.subs);
 
     if (!self.cd['destroyed']) {
       self.cd.detectChanges();

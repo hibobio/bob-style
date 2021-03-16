@@ -10,6 +10,7 @@ import { ElementRef, SimpleChanges } from '@angular/core';
 import { SelectGroupOption, ListFooterActions } from '../lists/list.interface';
 import { SelectMode } from '../lists/list.enum';
 import { TruncateTooltipType } from '../popups/truncate-tooltip/truncate-tooltip.enum';
+import { Subscription } from 'rxjs';
 
 export interface TransmitOptions {
   eventType: InputEventType[];
@@ -81,5 +82,9 @@ export interface FormElementSpec {
   listActions?: ListFooterActions;
   touched?: boolean;
   dirty?: boolean;
+
+  subs?: Subscription[];
+  subscribtions?: Subscription[];
+
   [key: string]: any;
 }

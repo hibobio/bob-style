@@ -31,4 +31,5 @@ export enum DOMtags {
   sub = 'SUB',
   sup = 'SUP',
   br = 'BR',
+  input = 'INPUT',
 }

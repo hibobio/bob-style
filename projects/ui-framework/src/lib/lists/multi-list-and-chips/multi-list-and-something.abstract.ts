@@ -143,7 +143,7 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
     this.listValue$.next(value);
   }
 
-  protected subs: Subscription[] = [];
+  protected readonly subs: Subscription[] = [];
 
   ngOnInit(): void {
     //

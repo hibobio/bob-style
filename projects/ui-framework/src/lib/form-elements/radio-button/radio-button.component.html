@@ -18,10 +18,12 @@
            [required]="required"
            [readonly]="readonly"
            [attr.disabled]="disabled || readonly || null"
+           tabindex="-1"
            (change)="onRadioChange(radio[key])" />
 
     <label class="brd-label"
-           [attr.for]="id+'-'+i">
+           [attr.for]="id+'-'+i"
+           tabindex="0">
 
       <span [b-truncate-tooltip]="1"
             [trustCssVars]="true"

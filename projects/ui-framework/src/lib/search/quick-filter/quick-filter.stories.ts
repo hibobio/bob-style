@@ -9,7 +9,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuickFilterSelectType } from './quick-filter.enum';
 import { QuickFilterConfig } from './quick-filter.interface';
 import { mockCities, mockDepartments, mockJobs } from '../../mock.const';
-import { simpleUID } from '../../services/utils/functional-utils';
+import {
+  cloneDeepSimpleObject,
+  simpleUID,
+} from '../../services/utils/functional-utils';
 import { LinkColor } from '../../indicators/link/link.enum';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { select } from '@storybook/addon-knobs';
@@ -18,7 +21,7 @@ const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
   withKnobs
 );
 
-const template = `<b-quick-filter-bar [quickFilters]="quickFilters"
+const template = `<b-quick-filter-bar [quickFilters]="quickFiltersTempl()"
                       [size]="size"
                       [showResetFilter]="showResetFilter"
                       (filtersChange)="filtersChange($event)"
@@ -84,7 +87,7 @@ const optionsFromList = (list, key = 'Stuff') => [
   },
 ];
 
-const quickFilters: QuickFilterConfig[] = [
+let quickFilters: QuickFilterConfig[] = [
   {
     selectType: QuickFilterSelectType.multiSelect,
     label: 'Sites',
@@ -92,6 +95,7 @@ const quickFilters: QuickFilterConfig[] = [
     key: 'site',
     showSingleGroupHeader: false,
     options: optionsFromList(mockCities(), 'All sites'),
+    value: [],
   },
   {
     selectType: QuickFilterSelectType.multiSelect,
@@ -100,6 +104,7 @@ const quickFilters: QuickFilterConfig[] = [
     key: 'department',
     showSingleGroupHeader: false,
     options: optionsFromList(mockDepartments(), 'All departments'),
+    value: [],
   },
   {
     selectType: QuickFilterSelectType.singleSelect,
@@ -108,6 +113,7 @@ const quickFilters: QuickFilterConfig[] = [
     key: 'employment',
     showSingleGroupHeader: false,
     options: optionsFromList(mockJobs(), 'All jobs'),
+    value: [],
   },
 ];
 
@@ -121,12 +127,17 @@ story.add(
         size: select(
           'size',
           [FormElementSize.smaller, FormElementSize.regular],
-          FormElementSize.regular
+          FormElementSize.regular,
+          'Props'
         ),
-        showResetFilter: boolean('showResetFilter', false),
-        quickFilters: object('quickFilters', quickFilters),
+        showResetFilter: boolean('showResetFilter', false, 'Props'),
+        quickFiltersNotes: object('quickFilters', quickFilters, 'Data'),
+        quickFiltersTempl: () => quickFilters,
         filtersChange: action('Quick filter bar change'),
-        resetFilters: action('Reset Filters click'),
+        resetFilters: () => {
+          quickFilters = [...quickFilters];
+          action('Reset Filters click')();
+        },
       },
       moduleMetadata: {
         imports: [

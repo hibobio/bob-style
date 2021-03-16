@@ -4,7 +4,6 @@ import {
   NgZone,
   Input,
   OnInit,
-  OnDestroy,
   SimpleChanges,
   ViewChildren,
   QueryList,
@@ -17,7 +16,6 @@ import {
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { MobileService } from '../../services/utils/mobile.service';
-import { Subscription } from 'rxjs';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import {
   simpleUID,
@@ -26,7 +24,6 @@ import {
   hasProp,
   hasChanges,
   isEmpty,
-  unsubscribeArray,
 } from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
 import { DateParseService } from './date-parse-service/date-parse.service';
@@ -67,7 +64,7 @@ export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
 export abstract class BaseDatepickerElement<
   I = Date | string,
   O = DatePickerChangeEvent
-> extends BaseFormElement implements OnInit, AfterViewInit, OnDestroy {
+> extends BaseFormElement implements OnInit, AfterViewInit {
   constructor(
     protected windowRef: WindowRef,
     protected utilsService: UtilsService,
@@ -153,8 +150,6 @@ export abstract class BaseDatepickerElement<
   private doneFirstChange = false;
   private useFormatForPlaceholder = false;
 
-  protected subs: Subscription[] = [];
-
   protected doOnPickerOpen(picker: MatDatepicker<any>): void {}
 
   ngOnInit(): void {
@@ -198,10 +193,6 @@ export abstract class BaseDatepickerElement<
     if (!this.doneFirstChange) {
       this.ngOnChanges({});
     }
-  }
-
-  ngOnDestroy(): void {
-    unsubscribeArray(this.subs);
   }
 
   // extends BaseFormElement's ngOnChanges

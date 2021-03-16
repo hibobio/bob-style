@@ -14,9 +14,11 @@
        [required]="required"
        [attr.disabled]="disabled || readonly || null"
        [readonly]="readonly"
+       tabindex="-1"
        (change)="toggleCheckbox()" />
 
 <label class="bchk-label"
+       tabindex="0"
        [ngClass]="{
           'empty-label': !placeholder && !label
          }"

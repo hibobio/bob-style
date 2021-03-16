@@ -65,7 +65,7 @@ export class CardsLayoutComponent
   public cardsInRow$: Observable<number>;
   public cardsInRow = 1;
   public isMobile = false;
-  private subs: Subscription[] = [];
+  private readonly subs: Subscription[] = [];
 
   getCardsInRow$(): Observable<number> {
     return this.cardsInRow$;

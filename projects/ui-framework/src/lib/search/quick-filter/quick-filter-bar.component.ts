@@ -24,7 +24,10 @@ import { ButtonType } from '../../buttons/buttons.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
-import { hasChanges } from '../../services/utils/functional-utils';
+import {
+  cloneDeepSimpleObject,
+  hasChanges,
+} from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-quick-filter-bar',
@@ -50,6 +53,14 @@ import { hasChanges } from '../../services/utils/functional-utils';
   ],
 })
 export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
+  constructor(
+    private listModelService: ListModelService,
+    private listChangeService: ListChangeService,
+    private DOM: DOMhelpers,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
+  ) {}
+
   @ViewChild('prefix') prefix: ElementRef;
   @ViewChild('suffix') suffix: ElementRef;
 
@@ -70,21 +81,26 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
   public hasPrefix = true;
   public hasSuffix = true;
 
-  constructor(
-    private listModelService: ListModelService,
-    private listChangeService: ListChangeService,
-    private DOM: DOMhelpers,
-    private zone: NgZone,
-    private cd: ChangeDetectorRef
-  ) {}
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (hasChanges(changes, ['quickFilters'], true)) {
-      this.quickFilters = changes.quickFilters.currentValue;
+    if (
+      hasChanges(changes, ['quickFilters'], true, {
+        checkEquality: true,
+        equalCheck: <T = QuickFilterConfig[]>(a: T, b: T) => a === b,
+      })
+    ) {
+      this.quickFilters = changes.quickFilters.currentValue.map(
+        (qf: QuickFilterConfig) => {
+          if (qf.value) {
+            qf.value = cloneDeepSimpleObject(qf.value);
+          }
+          return { ...qf };
+        }
+      );
+
       this.quickFiltersChanges =
         this.quickFilters?.reduce(
-          (changes: QuickFilterBarChangeEvent, qf: QuickFilterConfig) => {
-            changes[qf.key] = {
+          (qfbChanges: QuickFilterBarChangeEvent, qf: QuickFilterConfig) => {
+            qfbChanges[qf.key] = {
               key: qf.key,
               listChange: this.listChangeService.getListChange(
                 qf.options,
@@ -92,7 +108,7 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
               ),
             };
 
-            return changes;
+            return qfbChanges;
           },
           {}
         ) || {};

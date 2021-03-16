@@ -11,6 +11,7 @@ import {
   ElementRef,
   QueryList,
   AfterViewInit,
+  NgZone,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
@@ -27,6 +28,7 @@ import {
   isNullOrUndefined,
   hasProp,
   notFirstChanges,
+  getEventPath,
 } from '../../services/utils/functional-utils';
 import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
 import {
@@ -34,6 +36,11 @@ import {
   TooltipPosition,
 } from '../../popups/tooltip/tooltip.enum';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { UtilsService } from '../../services/utils/utils.service';
+import { filter } from 'rxjs/operators';
+import { arrowKeys, clickKeys, Keys } from '../../enums';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { DOMtags } from '../../services/html/dom-helpers.enum';
 
 @Component({
   selector: 'b-radio-button',
@@ -55,7 +62,13 @@ import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tool
 })
 export class RadioButtonComponent extends BaseFormElement
   implements OnChanges, AfterViewInit {
-  constructor(cd: ChangeDetectorRef) {
+  constructor(
+    cd: ChangeDetectorRef,
+    private zone: NgZone,
+    private utilsService: UtilsService,
+    private DOM: DOMhelpers,
+    public hostElRef: ElementRef<HTMLElement>
+  ) {
     super(cd);
 
     this.inputTransformers = [
@@ -71,6 +84,45 @@ export class RadioButtonComponent extends BaseFormElement
     ];
     this.baseValue = {};
     this.wrapEvent = false;
+
+    const controlKeys = clickKeys.concat(arrowKeys);
+
+    this.subs.push(
+      this.utilsService
+        .getWindowKeydownEvent(true)
+        .pipe(
+          filter((event) => {
+            const target = event.target as HTMLElement;
+            return (
+              controlKeys.includes(event.key as Keys) &&
+              getEventPath(event).includes(this.hostElRef.nativeElement) &&
+              target.matches(`label,input`)
+            );
+          })
+        )
+        .subscribe((event) => {
+          event.preventDefault();
+          const target = event.target as HTMLElement;
+          const isInput = this.DOM.isTag(target, DOMtags.input);
+          this.zone.run(() => {
+            if (clickKeys.includes(event.key as Keys)) {
+              target.click();
+            }
+            if ([Keys.arrowdown, Keys.arrowleft].includes(event.key as Keys)) {
+              this.DOM.getPrevSibling(
+                target,
+                isInput ? 'input' : 'label'
+              )?.focus();
+            }
+            if ([Keys.arrowup, Keys.arrowright].includes(event.key as Keys)) {
+              this.DOM.getNextSibling(
+                target,
+                isInput ? 'input' : 'label'
+              )?.focus();
+            }
+          });
+        })
+    );
   }
 
   @ViewChildren('input', { read: ElementRef })

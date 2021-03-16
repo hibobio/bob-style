@@ -16,6 +16,9 @@ import {
   hasProp,
   isFunction,
   injectStyles,
+  setCssProps,
+  setAttributes,
+  getSiblingElement,
 } from '../utils/functional-utils';
 import {
   Styles,
@@ -180,28 +183,7 @@ export class DOMhelpers {
   // (provided as JSON with props in kebab-case),
   // including css variables ('--color-red')
   public setCssProps(element: HTMLElement, props: Styles): void {
-    if (!isDomElement(element) || !isObject(props)) {
-      return;
-    }
-    for (const prop of Object.keys(props)) {
-      if (!isNullOrUndefined(props[prop])) {
-        element.style.setProperty(prop, props[prop] as string);
-      } else {
-        element.style.removeProperty(prop);
-      }
-    }
-
-    const currStyleAttr = element.getAttribute('style');
-    if (!currStyleAttr) {
-      return;
-    }
-
-    if (currStyleAttr.trim() === '') {
-      element.removeAttribute('style');
-    }
-    if (currStyleAttr !== currStyleAttr.trim()) {
-      element.setAttribute('style', currStyleAttr.trim());
-    }
+    setCssProps(element, props);
   }
 
   public setAttributes(
@@ -209,24 +191,7 @@ export class DOMhelpers {
     attrs: GenericObject,
     overWriteExisting = true
   ): void {
-    if (!isDomElement(element)) {
-      return;
-    }
-    for (const attr of Object.keys(attrs)) {
-      if (!isNullOrUndefined(attrs[attr])) {
-        if (
-          attr !== 'style' &&
-          (overWriteExisting || !element.getAttribute(attr))
-        ) {
-          element.setAttribute(attr, attrs[attr]);
-        }
-        if (attr === 'style') {
-          this.setCssProps(element, attrs[attr]);
-        }
-      } else {
-        element.removeAttribute(attr);
-      }
-    }
+    setAttributes(element, attrs, overWriteExisting);
   }
 
   // WIP----start------------------
@@ -448,26 +413,7 @@ export class DOMhelpers {
     selector: string = null,
     which: 'next' | 'prev' = 'next'
   ): HTMLElement {
-    if (!isDomElement(element)) {
-      return null;
-    }
-    let sibling: HTMLElement =
-      which === 'prev'
-        ? (element.previousElementSibling as HTMLElement)
-        : (element.nextElementSibling as HTMLElement);
-    if (!selector) {
-      return sibling;
-    }
-    while (sibling) {
-      if (sibling.matches(selector)) {
-        return sibling;
-      }
-      sibling =
-        which === 'prev'
-          ? (sibling.previousElementSibling as HTMLElement)
-          : (sibling.nextElementSibling as HTMLElement);
-    }
-    return null;
+    return getSiblingElement(element, selector, which);
   }
 
   // TODO: Add Test

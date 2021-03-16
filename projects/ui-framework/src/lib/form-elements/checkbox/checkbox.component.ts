@@ -7,6 +7,7 @@ import {
   SimpleChanges,
   ChangeDetectorRef,
   OnChanges,
+  NgZone,
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -20,6 +21,9 @@ import {
   TooltipClass,
   TooltipPosition,
 } from '../../popups/tooltip/tooltip.enum';
+import { clickKeys, Keys } from '../../enums';
+import { UtilsService } from '../../services/utils/utils.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'b-checkbox',
@@ -40,11 +44,35 @@ import {
   ],
 })
 export class CheckboxComponent extends BaseFormElement implements OnChanges {
-  constructor(cd: ChangeDetectorRef) {
+  constructor(
+    cd: ChangeDetectorRef,
+    private zone: NgZone,
+    private utilsService: UtilsService
+  ) {
     super(cd);
     this.inputTransformers = [booleanOrFail];
     this.wrapEvent = false;
     this.baseValue = false;
+
+    this.subs.push(
+      this.utilsService
+        .getWindowKeydownEvent(true)
+        .pipe(
+          filter((event) => {
+            const target = event.target as HTMLElement;
+            return (
+              clickKeys.includes(event.key as Keys) &&
+              target.matches(`label[for="${this.id}"],input[id="${this.id}"]`)
+            );
+          })
+        )
+        .subscribe((event) => {
+          event.preventDefault();
+          this.zone.run(() => {
+            this.toggleCheckbox(!this.input.nativeElement.checked);
+          });
+        })
+    );
   }
 
   @Input() public value = false;
@@ -92,8 +120,11 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
     }
   }
 
-  public toggleCheckbox(): void {
-    this.value = this.input.nativeElement.checked;
+  public toggleCheckbox(value: boolean = null): void {
+    this.value =
+      value === null
+        ? this.input.nativeElement.checked
+        : (this.input.nativeElement.checked = value);
     this.indeterminate = false;
     this.transmit(InputEventType.onBlur);
   }

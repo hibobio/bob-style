@@ -4,7 +4,8 @@ import {
   forwardRef,
   OnDestroy,
   TemplateRef,
-  ViewChild, ViewContainerRef,
+  ViewChild,
+  ViewContainerRef,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
@@ -15,10 +16,11 @@ import {
   Panel,
   PanelDefaultPosVer,
 } from 'bob-style';
-import { ListPanelService, OverlayEnabledComponent } from '../../lists/list-panel.service';
+import {
+  ListPanelService,
+  OverlayEnabledComponent,
+} from '../../lists/list-panel.service';
 import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
-import { Subscription } from 'rxjs';
-
 
 @Component({
   selector: 'b-colorpicker',
@@ -38,18 +40,20 @@ import { Subscription } from 'rxjs';
     { provide: BaseFormElement, useExisting: ColorPickerComponent },
   ],
 })
-export class ColorPickerComponent extends BaseFormElement implements OnDestroy, OverlayEnabledComponent {
+export class ColorPickerComponent extends BaseFormElement
+  implements OnDestroy, OverlayEnabledComponent {
   constructor(
     public cd: ChangeDetectorRef,
     public viewContainerRef: ViewContainerRef,
-    private listPanelService: ListPanelService,
+    private listPanelService: ListPanelService
   ) {
     super(cd);
     this.baseValue = '';
     this.wrapEvent = false;
   }
 
-  @ViewChild(CdkOverlayOrigin, { static: true }) overlayOrigin: CdkOverlayOrigin;
+  @ViewChild(CdkOverlayOrigin, { static: true })
+  overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
 
   public panel: Panel;
@@ -57,7 +61,6 @@ export class ColorPickerComponent extends BaseFormElement implements OnDestroy, 
   public panelPosition = PanelDefaultPosVer.belowLeftRight;
   public panelClassList: string[] = ['b-select-panel'];
   public positionClassList: OverlayPositionClasses = {};
-  public subscribtions: Subscription[] = [];
 
   public get overlayRef(): OverlayRef {
     return this.panel?.overlayRef;
@@ -71,8 +74,7 @@ export class ColorPickerComponent extends BaseFormElement implements OnDestroy, 
     this.destroyPanel();
   }
 
-  public onInputChange(event: DOMInputEvent): void {
-  }
+  public onInputChange(event: DOMInputEvent): void {}
 
   public onColorPickerChange(color) {
     this.value = color;
@@ -80,6 +82,7 @@ export class ColorPickerComponent extends BaseFormElement implements OnDestroy, 
   }
 
   ngOnDestroy(): void {
+    super.ngOnDestroy();
     this.destroyPanel(true);
   }
 
