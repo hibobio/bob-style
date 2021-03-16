@@ -1,4 +1,13 @@
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  inject,
+  TestBed,
+  tick,
+  resetFakeAsyncZone,
+  waitForAsync,
+} from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AutoCompleteComponent } from './auto-complete.component';
 import { AutoCompleteModule } from './auto-complete.module';
@@ -23,54 +32,56 @@ describe('AutoCompleteComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(waitForAsync(() => {
-    optionsMock = Array.from(Array(12), (_, k) => {
-      return {
-        value: `Basic Info E${k} - option`,
-        subText: `subtext e${k}`,
-        id: k.toString(),
-      };
-    });
-
-    TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(SearchComponent),
-        MockComponent(AutoCompletePanelComponent),
-      ],
-      imports: [
-        NoopAnimationsModule,
-        AutoCompleteModule,
-        OverlayModule,
-        SearchModule,
-      ],
-      providers: [],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(AutoCompleteComponent);
-        component = fixture.componentInstance;
-        spyOn(component.optionSelect, 'emit');
-        spyOn(component.searchChange, 'emit');
-        component.ngOnChanges({
-          options: {
-            previousValue: undefined,
-            currentValue: optionsMock,
-            firstChange: true,
-            isFirstChange: () => true,
-          },
-        });
-        fixture.autoDetectChanges();
+  beforeEach(
+    waitForAsync(() => {
+      optionsMock = Array.from(Array(12), (_, k) => {
+        return {
+          value: `Basic Info E${k} - option`,
+          subText: `subtext e${k}`,
+          id: k.toString(),
+        };
       });
 
-    inject(
-      [OverlayContainer, Platform],
-      (oc: OverlayContainer, p: Platform) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-        platform = p;
-      }
-    )();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [
+          MockComponent(SearchComponent),
+          MockComponent(AutoCompletePanelComponent),
+        ],
+        imports: [
+          NoopAnimationsModule,
+          AutoCompleteModule,
+          OverlayModule,
+          SearchModule,
+        ],
+        providers: [],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(AutoCompleteComponent);
+          component = fixture.componentInstance;
+          spyOn(component.optionSelect, 'emit');
+          spyOn(component.searchChange, 'emit');
+          component.ngOnChanges({
+            options: {
+              previousValue: undefined,
+              currentValue: optionsMock,
+              firstChange: true,
+              isFirstChange: () => true,
+            },
+          });
+          fixture.autoDetectChanges();
+        });
+
+      inject(
+        [OverlayContainer, Platform],
+        (oc: OverlayContainer, p: Platform) => {
+          overlayContainer = oc;
+          overlayContainerElement = oc.getContainerElement();
+          platform = p;
+        }
+      )();
+    })
+  );
 
   describe('OnChanges', () => {
     it('should update filtered list', () => {
@@ -188,7 +199,7 @@ describe('AutoCompleteComponent', () => {
       fixture.autoDetectChanges();
 
       component.ngOnDestroy();
-      expect(component['subscribtions']).toEqual([]);
+      expect(component['subs']).toEqual([]);
       expect(component['panelOpen']).toBe(false);
     });
   });

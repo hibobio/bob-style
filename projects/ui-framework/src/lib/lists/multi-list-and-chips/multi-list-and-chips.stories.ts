@@ -49,6 +49,7 @@ const template = `<b-multi-list-and-chips
         [max]="max"
         [maxHeight]="maxHeight"
         [emptyState]="emptyStateConfig"
+        [disabled]="disabled"
         (selectChange)="onSelectChange($event)"
         (changed)="onChange($event)">
   </b-multi-list-and-chips>`;
@@ -123,6 +124,8 @@ const toAdd = () => ({
     max: number('max', 0, {}, 'Props'),
 
     maxHeight: number('maxHeight', 0, {}, 'Props'),
+
+    disabled: boolean('disabled', false, 'Props'),
 
     value: select('value', [0, 1, 2, 3], 0, 'Data'),
     someValues1: someValues1,

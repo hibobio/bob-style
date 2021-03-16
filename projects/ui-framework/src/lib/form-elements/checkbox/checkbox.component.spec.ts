@@ -5,30 +5,41 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxComponent } from './checkbox.component';
 import { InputEventType } from '../form-elements.enum';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { UtilsService } from '../../services/utils/utils.service';
+import {
+  DOMhelpersProvideMock,
+  utilsServiceStub,
+} from '../../tests/services.stub.spec';
 
 describe('CheckboxComponent', () => {
   let component: CheckboxComponent;
   let fixture: ComponentFixture<CheckboxComponent>;
   let checkboxLabel: HTMLElement;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [CheckboxComponent],
-      imports: [NoopAnimationsModule, CommonModule],
-      schemas: [NO_ERRORS_SCHEMA],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CheckboxComponent],
+        imports: [NoopAnimationsModule, CommonModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          { provide: UtilsService, useValue: utilsServiceStub },
+          DOMhelpersProvideMock(),
+        ],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(CheckboxComponent);
+          component = fixture.componentInstance;
+          component.wrapEvent = true;
+          spyOn(component.changed, 'emit');
+          component.changed.subscribe(() => {});
+          fixture.detectChanges();
+          checkboxLabel = fixture.debugElement.query(By.css('.bchk-label'))
+            .nativeElement;
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(CheckboxComponent);
-        component = fixture.componentInstance;
-        component.wrapEvent = true;
-        spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => {});
-        fixture.detectChanges();
-        checkboxLabel = fixture.debugElement.query(By.css('.bchk-label'))
-          .nativeElement;
-      });
-  }));
+  );
 
   afterEach(() => {
     component.changed.complete();

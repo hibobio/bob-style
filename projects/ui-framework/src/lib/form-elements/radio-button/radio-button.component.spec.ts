@@ -7,37 +7,48 @@ import { SimpleChanges, SimpleChange, NO_ERRORS_SCHEMA } from '@angular/core';
 import { RadioDirection } from './radio-button.enum';
 import { RadioConfig } from './radio-button.interface';
 import { InputEventType } from '../form-elements.enum';
+import {
+  DOMhelpersProvideMock,
+  utilsServiceStub,
+} from '../../tests/services.stub.spec';
+import { UtilsService } from '../../services/utils/utils.service';
 
 describe('RadioButtonComponent', () => {
   let component: RadioButtonComponent;
   let fixture: ComponentFixture<RadioButtonComponent>;
   let radioConfigMock: RadioConfig[];
 
-  beforeEach(waitForAsync(() => {
-    radioConfigMock = [
-      { id: 11, label: 'option one' },
-      { id: 12, label: 'option two' },
-      { id: 13, label: 'option three' },
-    ];
-    TestBed.configureTestingModule({
-      declarations: [RadioButtonComponent],
-      imports: [NoopAnimationsModule, CommonModule],
-      schemas: [NO_ERRORS_SCHEMA],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(RadioButtonComponent);
-        component = fixture.componentInstance;
-        component.wrapEvent = true;
-        component.ngOnChanges({
-          radioConfig: new SimpleChange(null, radioConfigMock, true),
+  beforeEach(
+    waitForAsync(() => {
+      radioConfigMock = [
+        { id: 11, label: 'option one' },
+        { id: 12, label: 'option two' },
+        { id: 13, label: 'option three' },
+      ];
+      TestBed.configureTestingModule({
+        declarations: [RadioButtonComponent],
+        imports: [NoopAnimationsModule, CommonModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          { provide: UtilsService, useValue: utilsServiceStub },
+          DOMhelpersProvideMock(),
+        ],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(RadioButtonComponent);
+          component = fixture.componentInstance;
+          component.wrapEvent = true;
+          component.ngOnChanges({
+            radioConfig: new SimpleChange(null, radioConfigMock, true),
+          });
+          spyOn(component.changed, 'emit');
+          component.changed.subscribe(() => {});
+          spyOn(component, 'propagateChange');
+          fixture.detectChanges();
         });
-        spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => {});
-        spyOn(component, 'propagateChange');
-        fixture.detectChanges();
-      });
-  }));
+    })
+  );
 
   afterEach(() => {
     component.changed.complete();

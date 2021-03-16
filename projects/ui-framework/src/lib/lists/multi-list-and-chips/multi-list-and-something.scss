@@ -7,6 +7,23 @@ $gap: 20px;
   justify-content: space-between;
   text-align: left;
   min-width: 0;
+
+  &[data-disabled='true'] {
+    @include disabled-state;
+
+    ::ng-deep {
+      input,
+      button,
+      select,
+      b-icon,
+      .headers .header,
+      .bml-checkbox:before,
+      .bchk-label:before,
+      .brd-label:before {
+        pointer-events: none;
+      }
+    }
+  }
 }
 
 .mlas-list {
