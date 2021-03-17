@@ -310,7 +310,7 @@ export const parseToNumber = asNumber;
 // ----------------------
 
 export const hasProp = <T = GenericObject>(
-  obj: T,
+  obj: T | any,
   key: string,
   strict = true
 ): boolean =>
@@ -1511,6 +1511,57 @@ export const setAttributes = (
       element.removeAttribute(attr);
     }
   }
+};
+
+export const elementIsInView = (
+  element: HTMLElement,
+  win: (Window & typeof globalThis) | WindowLike = window
+): boolean => {
+  if (!isDomElement(element, win)) {
+    return;
+  }
+  const { top, height } = element.getBoundingClientRect();
+  const vpHeight = win.innerHeight || win.document.documentElement.clientHeight;
+
+  return top <= vpHeight && top + height >= 0;
+};
+
+export const getClosestUntil = (
+  element: HTMLElement | Node,
+  closestSelector: string,
+  until: string | HTMLElement,
+  win: (Window & typeof globalThis) | WindowLike = window
+): HTMLElement => {
+  win = win || getElementWindow(element);
+
+  if (
+    !(isTextNode(element, win) || isDomElement(element, win)) ||
+    !closestSelector ||
+    !until
+  ) {
+    return null;
+  }
+
+  let parent =
+    element.nodeType === Node.TEXT_NODE
+      ? element.parentElement
+      : (element as HTMLElement);
+
+  if (!parent) {
+    return null;
+  }
+
+  while (
+    ((isDomElement(until, win) && until !== parent) ||
+      (isString(until) && !parent.matches(until))) &&
+    !parent.matches(closestSelector) &&
+    parent !== document.documentElement &&
+    parent.parentElement
+  ) {
+    parent = parent.parentElement;
+  }
+
+  return parent?.matches(closestSelector) ? parent : null;
 };
 
 export const getSiblingElement = (

@@ -19,6 +19,8 @@ import {
   setCssProps,
   setAttributes,
   getSiblingElement,
+  getClosestUntil,
+  elementIsInView,
 } from '../utils/functional-utils';
 import {
   Styles,
@@ -340,11 +342,7 @@ export class DOMhelpers {
   }
 
   public isInView(element: HTMLElement) {
-    const { top, height } = element.getBoundingClientRect();
-    const vpHeight =
-      window.innerHeight || document.documentElement.clientHeight;
-
-    return top <= vpHeight && top + height >= 0;
+    return elementIsInView(element);
   }
 
   // TODO: Add Test
@@ -377,34 +375,7 @@ export class DOMhelpers {
     closestSelector: string,
     until: string | HTMLElement
   ): HTMLElement {
-    if (
-      !(isTextNode(element) || isDomElement(element)) ||
-      !closestSelector ||
-      !until
-    ) {
-      return null;
-    }
-
-    let parent =
-      element.nodeType === Node.TEXT_NODE
-        ? element.parentElement
-        : (element as HTMLElement);
-
-    if (!parent) {
-      return null;
-    }
-
-    while (
-      ((isDomElement(until) && until !== parent) ||
-        (isString(until) && !parent.matches(until))) &&
-      !parent.matches(closestSelector) &&
-      parent !== document.documentElement &&
-      parent.parentElement
-    ) {
-      parent = parent.parentElement;
-    }
-
-    return parent?.matches(closestSelector) ? parent : null;
+    return getClosestUntil(element, closestSelector, until);
   }
 
   // TODO: Add Test

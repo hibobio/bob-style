@@ -7,6 +7,8 @@ import {
   ResizeObserverEntry,
 } from './window-ref.service';
 import {
+  elementIsInView,
+  getClosestUntil,
   getElementWindow,
   getType,
   isDomElement,
@@ -14,7 +16,6 @@ import {
   isNotEmptyString,
   pass,
 } from './functional-utils';
-import { DOMhelpers } from '../html/dom-helpers.service';
 import { UtilsService } from './utils.service';
 import {
   delay,
@@ -73,7 +74,6 @@ export const ELEMENT_IN_VIEW_CONFIG_DEF: IntersectionObservableConfig = {
 export class MutationObservableService {
   constructor(
     private windowRef: WindowRef,
-    private DOM: DOMhelpers,
     private utilsService: UtilsService
   ) {
     this.nativeWindow = (this.windowRef.nativeWindow || window) as WindowLike;
@@ -244,7 +244,7 @@ export class MutationObservableService {
           leading: true,
           trailing: true,
         }),
-        map(() => this.DOM.isInView(element)),
+        map(() => elementIsInView(element, win)),
         distinctUntilChanged(),
         map(
           (isInView) =>
@@ -335,9 +335,12 @@ export class MutationObservableService {
     mutations: MutationRecord[],
     observedElement: HTMLElement,
     config: MutationObservableConfig,
-    win: WindowLike = this.nativeWindow
+    win: WindowLike | Window = this.nativeWindow
   ): Set<HTMLElement> {
     let affectedElements: Set<HTMLElement> = new Set();
+
+    win = win || getElementWindow(observedElement);
+    const doc = win.document;
 
     mutations.forEach((mutation: MutationRecord) => {
       //
@@ -375,14 +378,14 @@ export class MutationObservableService {
     if (config.filterSelector || config.filterBy) {
       affectedElements.forEach((el) => {
         let target = isNotEmptyString(config.filterSelector)
-          ? this.DOM.getClosestUntil(el, config.filterSelector, observedElement)
+          ? getClosestUntil(el, config.filterSelector, observedElement, win)
           : el;
 
         if (isFunction(config.filterBy) && !config.filterBy(el)) {
           target = undefined;
         }
 
-        if (target && target !== observedElement && document.contains(target)) {
+        if (target && target !== observedElement && doc.contains(target)) {
           filteredElements.add(target);
         }
       });

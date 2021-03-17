@@ -90,11 +90,15 @@ export const dateToString = (
   frmt: string = SERVER_DATE_FORMAT
 ): string => (isDate(date) ? format(date as Date, frmt) : date) as string;
 
-export const valueToObjectKey = (key: string) => (value: any) => {
+export const valueToObjectKey = <T = any, O = GenericObject<T>>(
+  key: string
+) => (value: T | O): O => {
   if (isNullOrUndefined(value)) {
-    return value;
+    return (value as unknown) as O;
   }
-  return hasProp(value, key) ? value : { [key]: value };
+  return hasProp<O>(value, key)
+    ? (value as O)
+    : (({ [key]: value } as unknown) as O);
 };
 
 export const arrayOfValuesToArrayOfObjects = (key: string) => (
@@ -211,9 +215,9 @@ export const stringyOrFail = (value) => {
   return value + '';
 };
 
-export const dateOrFail = (value) => {
+export const dateOrFail = (value: string | Date): Date => {
   if (isDate(value) || isNullOrUndefined(value)) {
-    return value;
+    return value as Date;
   }
   if (!value) {
     return undefined;
@@ -254,7 +258,7 @@ export const timeyOrFail = (value) => {
   return value;
 };
 
-export const selectValueOrFail = (value) => {
+export const selectValueOrFail = (value: any): itemID[] => {
   if (isNullOrUndefined(value)) {
     return value;
   }
@@ -278,17 +282,17 @@ export const selectValueOrFail = (value) => {
 export const defaultValue = (def) => (value) =>
   isNullOrUndefined(value) ? def : value;
 
-export const objectHasKeyOrFail = (
+export const objectHasKeyOrFail = <T = GenericObject>(
   key: string | string[],
   fuzzyFalsey = false
-) => (value: object) => {
+) => (value: T): T => {
   if (isNullOrUndefined(value)) {
     return value;
   }
   if (fuzzyFalsey && !value) {
     return undefined;
   }
-  if (isNullOrUndefined(key) || !isObject(value)) {
+  if (isNullOrUndefined(key) || !isObject<T>(value)) {
     throw new Error(
       `Value (${stringify(
         value
@@ -305,11 +309,11 @@ export const objectHasKeyOrFail = (
   return value;
 };
 
-export const valueInArrayOrFail = (
-  value: any,
-  array: any[],
+export const valueInArrayOrFail = <T = any>(
+  value: T,
+  array: T[],
   key: string = null
-) => {
+): T => {
   if (isNullOrUndefined(value)) {
     return value;
   }
@@ -320,8 +324,6 @@ export const valueInArrayOrFail = (
     (key && !array.find((i) => i[key] === value[key])) ||
     (!key && !array.includes(value))
   ) {
-    value = stringify(value);
-    array = array.map((i) => stringify(i));
     throw new Error(
       `Value (${stringify(value)}) is not part of array (${stringify(array)}).`
     );
