@@ -9,11 +9,14 @@
      class="bfe-wrap"
      [ngClass]="{
        focused: panelOpen,
+       'has-prefix': value,
        'panel-open': panelOpen,
        'panel-above': positionClassList['panel-above'],
        'panel-below': positionClassList['panel-below']
       }"
      (click)="openPanel()">
+
+  <div *ngIf="value" class="bfe-prefix color-circle" [style.background-color]="value"></div>
 
   <input #input
          class="bfe-input"
@@ -25,7 +28,8 @@
          [attr.disabled]="disabled || readonly || null"
          [required]="required"
          [readonly]="readonly"
-         [attr.maxlength]="7">
+         [attr.maxlength]="7"
+         (input)="onInputChange($event)">
 
   <div class="bfe-suffix">
     <span class="select-chevron b-icon-medium"

@@ -16,11 +16,10 @@ import {
   Panel,
   PanelDefaultPosVer,
 } from 'bob-style';
-import {
-  ListPanelService,
-  OverlayEnabledComponent,
-} from '../../lists/list-panel.service';
+import { ListPanelService, OverlayEnabledComponent } from '../../lists/list-panel.service';
 import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
+import { TranslateService } from '@ngx-translate/core';
+
 
 @Component({
   selector: 'b-colorpicker',
@@ -40,20 +39,19 @@ import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
     { provide: BaseFormElement, useExisting: ColorPickerComponent },
   ],
 })
-export class ColorPickerComponent extends BaseFormElement
-  implements OnDestroy, OverlayEnabledComponent {
+export class ColorPickerComponent extends BaseFormElement implements OnDestroy, OverlayEnabledComponent {
   constructor(
     public cd: ChangeDetectorRef,
     public viewContainerRef: ViewContainerRef,
-    private listPanelService: ListPanelService
+    private listPanelService: ListPanelService,
+    private translateService: TranslateService,
   ) {
     super(cd);
     this.baseValue = '';
     this.wrapEvent = false;
   }
 
-  @ViewChild(CdkOverlayOrigin, { static: true })
-  overlayOrigin: CdkOverlayOrigin;
+  @ViewChild(CdkOverlayOrigin, { static: true }) overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
 
   public panel: Panel;
@@ -74,10 +72,32 @@ export class ColorPickerComponent extends BaseFormElement
     this.destroyPanel();
   }
 
-  public onInputChange(event: DOMInputEvent): void {}
+  public onInputChange(event: DOMInputEvent): void {
+    const value = event.target.value;
+
+    // tslint:disable-next-line: triple-equals
+    if (value != this.value && this.isValidValue(value)) {
+      this.errorMessage = '';
+      this.writeValue(value, this.forceElementValue);
+      this.transmitValue(this.value, {
+        eventType: [InputEventType.onChange]
+      });
+    }
+  }
+
+  private isValidValue(value: string): boolean {
+    const regExp = new RegExp('^#(?:[0-9a-fA-F]{3}){1,2}$');
+    if (regExp.test(value) || value === '') {
+      this.errorMessage = '';
+      return true;
+    }
+    this.errorMessage = this.translateService.instant('bob-style.lists.empty-state-default');
+    return false;
+  }
 
   public onColorPickerChange(color) {
     this.value = color;
+    this.errorMessage = '';
     this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
   }
 

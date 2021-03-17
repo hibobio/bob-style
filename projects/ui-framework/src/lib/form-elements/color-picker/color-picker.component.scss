@@ -1,4 +1,7 @@
 @import '../../style/common-imports';
+@import '../../style/panels';
+@import '../../style/variables';
+@import '../../style/typography';
 
 @include bFormElement();
 
@@ -17,6 +20,17 @@
   }
 }
 
+.color-circle {
+  border-radius: 50%;
+  height: times8(3);
+  width: times8(3);
+}
+
+.bfe-wrap .bfe-prefix {
+  margin-left: 6px;
+  display: block;
+}
+
 .select-chevron {
   &:before {
     width: 12px;
@@ -27,7 +41,28 @@
 
 ::ng-deep {
   .cdk-overlay-container .color-picker-dropdown .color-picker {
-    width: 100% !important;
+    width: #{$b-select-panel-min-width - 2px} !important;
     border: none;
+    border-radius: $border-radius;
+    margin: 0 auto;
+    @include b-body($addCssVars: false);
+
+    .type-policy {
+      display: none;
+    }
+
+    .hue-alpha .hue {
+      border-radius: $border-radius;
+    }
+
+    .hex-text {
+      input {
+        border-radius: $border-radius;
+      }
+
+      .box div {
+        display: none !important;
+      }
+    }
   }
 }

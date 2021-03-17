@@ -1,8 +1,8 @@
 import { storiesOf } from '@storybook/angular';
 import {
-  text,
   boolean,
   withKnobs,
+  select,
 } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -68,7 +68,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        value: text('value (text input)', '#C6C6C6'),
+        value: select('value', ['#C6C6C6', '#FAFAFA', '#702727', '#592fb1', '#f339a3'], '#C6C6C6'),
         ...FormElementsCommonProps('Input label', 'Input placeholder'),
         showCharCounter: boolean('showCharCounter', true),
       },

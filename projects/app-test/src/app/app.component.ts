@@ -25,10 +25,6 @@ export class AppComponent {
     this.formGroup = formBuilder.group({
       tester: ['', Validators.required]
     });
-
-    setTimeout(() => {
-      console.log('formGroup: ', this.formGroup.value);
-    }, 7000);
   }
 
   num = 3;
