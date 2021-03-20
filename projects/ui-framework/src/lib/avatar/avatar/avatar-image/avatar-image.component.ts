@@ -1,37 +1,38 @@
 import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
+  EventEmitter,
+  HostListener,
   Input,
-  ChangeDetectionStrategy,
-  SimpleChanges,
+  NgZone,
   OnChanges,
   OnInit,
-  HostListener,
-  EventEmitter,
   Output,
-  NgZone,
-  AfterViewInit,
-  ChangeDetectorRef,
+  SimpleChanges,
 } from '@angular/core';
+
+import { Icon } from '../../../icons/icon.interface';
+import { IconColor, Icons } from '../../../icons/icons.enum';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
-import { AvatarSize, AvatarBadge } from '../avatar.enum';
-import { Icons, IconColor } from '../../../icons/icons.enum';
 import {
   applyChanges,
-  notFirstChanges,
+  firstChanges,
   getKeyByValue,
   hasChanges,
-  isObject,
-  objectRemoveEntriesByValue,
-  firstChanges,
-  isString,
   isNumber,
+  isObject,
+  isString,
+  notFirstChanges,
+  objectRemoveEntriesByValue,
 } from '../../../services/utils/functional-utils';
-import { AvatarIconSize, AvatarBadges, BadgeSize } from '../avatar.consts';
-import { Avatar, BadgeConfig } from '../avatar.interface';
-import { Icon } from '../../../icons/icon.interface';
-import { valueAsNumber } from '../../../services/utils/transformers';
 import { log } from '../../../services/utils/logger';
+import { valueAsNumber } from '../../../services/utils/transformers';
+import { AvatarBadges, AvatarIconSize, BadgeSize } from '../avatar.consts';
+import { AvatarBadge, AvatarSize } from '../avatar.enum';
+import { Avatar, BadgeConfig } from '../avatar.interface';
 
 @Component({
   selector: 'b-avatar-image',
@@ -44,12 +45,7 @@ import { log } from '../../../services/utils/logger';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
-  constructor(
-    private elRef: ElementRef,
-    private DOM: DOMhelpers,
-    private zone: NgZone,
-    private cd: ChangeDetectorRef
-  ) {
+  constructor(private elRef: ElementRef, private DOM: DOMhelpers, private zone: NgZone, private cd: ChangeDetectorRef) {
     this.host = this.elRef.nativeElement;
   }
 
@@ -135,9 +131,7 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   private setAttributes(hasContent = false): void {
     this.zone.runOutsideAngular(() => {
       this.DOM.mutate(() => {
-        const isClickable =
-          this.isClickable !== false &&
-          (this.isClickable || this.clicked.observers.length > 0);
+        const isClickable = this.isClickable !== false && (this.isClickable || this.clicked.observers.length > 0);
         this.hasContent = hasContent || this.checkIfHasContent();
 
         if (
@@ -147,9 +141,7 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
           !/default-avatars/.test(this.imageSource) &&
           !/align\W{1,2}faces/.test(this.imageSource)
         ) {
-          const imgref = this.imageSource.split(
-            /(?:filestackcontent\W{1,2}com\W{1,2})|(?:\W{0,1}\?)/i
-          )[1];
+          const imgref = this.imageSource.split(/(?:filestackcontent\W{1,2}com\W{1,2})|(?:\W{0,1}\?)/i)[1];
           log.wrn(
             `Please check your imageSource ${imgref ? '(' + imgref + ')' : ''} -
 you should be using EmployeeAvatarService.getOptimizedAvatarImage
@@ -167,11 +159,7 @@ on b-avatar-image element.`,
           this.host.removeAttribute('data-tooltip');
         }
 
-        if (
-          decodeURIComponent(this.imageSource).includes(
-            'default-avatars/default.png'
-          )
-        ) {
+        if (decodeURIComponent(this.imageSource).includes('default-avatars/default.png')) {
           this.imageSource = undefined;
         }
 
@@ -180,7 +168,7 @@ on b-avatar-image element.`,
           '--bg-color': this.backgroundColor || null,
           '--avatar-image':
             this.imageSource && !this.imageSource.includes('emptyAvatar')
-              ? `url(${this.imageSource})`
+              ? `url(${this.imageSource}),var(--avatar-image-def)`
               : null,
         });
 
@@ -190,26 +178,16 @@ on b-avatar-image element.`,
           'data-disabled': this.disabled || null,
           tabindex: isClickable && !this.disabled ? '0' : null,
           'data-badge-align':
-            this.badge === AvatarBadge.online ||
-            this.badge === AvatarBadge.offline
-              ? 'bottom-right'
-              : null,
+            this.badge === AvatarBadge.online || this.badge === AvatarBadge.offline ? 'bottom-right' : null,
 
           'data-size': getKeyByValue(AvatarSize, this.size),
-          'data-icon-before-size':
-            (this.icon as Icon)?.size || AvatarIconSize[this.size],
+          'data-icon-before-size': (this.icon as Icon)?.size || AvatarIconSize[this.size],
           'data-icon-after-size': BadgeSize[this.size],
 
           'data-icon-before':
             !this.hasContent && this.icon
-              ? ((this.icon as Icon).icon || (this.icon as string))?.replace(
-                  'b-icon-',
-                  ''
-                ) || null
-              : !this.hasContent &&
-                !this.imageSource &&
-                !this.icon &&
-                this.icon !== null
+              ? ((this.icon as Icon).icon || (this.icon as string))?.replace('b-icon-', '') || null
+              : !this.hasContent && !this.imageSource && !this.icon && this.icon !== null
               ? Icons.person.replace('b-icon-', '')
               : null,
           'data-icon-before-color': (this.icon as Icon)?.color
@@ -219,23 +197,17 @@ on b-avatar-image element.`,
             : IconColor.normal,
 
           'data-icon-after': this.badge
-            ? (
-                (this.badge as BadgeConfig).icon ||
-                AvatarBadges[this.badge as AvatarBadge].icon
-              ).replace('b-icon-', '')
+            ? ((this.badge as BadgeConfig).icon || AvatarBadges[this.badge as AvatarBadge].icon).replace('b-icon-', '')
             : null,
           'data-icon-after-color': this.badge
-            ? (this.badge as BadgeConfig).color ||
-              AvatarBadges[this.badge as AvatarBadge].color
+            ? (this.badge as BadgeConfig).color || AvatarBadges[this.badge as AvatarBadge].color
             : null,
         });
 
         this.DOM.bindClasses(this.host, {
           avatar: true,
           'has-hover': isClickable && !this.disabled,
-          'icon-on-hover': Boolean(
-            this.imageSource && (this.icon || this.hasContent)
-          ),
+          'icon-on-hover': Boolean(this.imageSource && (this.icon || this.hasContent)),
           'has-content': this.hasContent,
         });
 
@@ -247,10 +219,6 @@ on b-avatar-image element.`,
   }
 
   private checkIfHasContent(): boolean {
-    return Boolean(
-      isNumber(this.text) ||
-        (isString(this.text) && this.text.trim()) ||
-        !this.DOM.isEmpty(this.host)
-    );
+    return Boolean(isNumber(this.text) || (isString(this.text) && this.text.trim()) || !this.DOM.isEmpty(this.host));
   }
 }
