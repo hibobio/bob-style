@@ -46,7 +46,7 @@ const defautlAttrs: AttrCheck = {
 };
 
 const defaultAttrsWithImg: Partial<AttrCheck> = {
-  varImg: `url(${emptyFilestackImg}),var(--avatar-image-def)`,
+  varImg: `url(${emptyFilestackImg}), var(--avatar-image-def)`,
   iconBefore: null,
   iconBeforeColor: 'white',
 };
