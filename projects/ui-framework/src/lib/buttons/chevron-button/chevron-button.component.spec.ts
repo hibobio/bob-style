@@ -1,38 +1,31 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ChevronButtonComponent } from './chevron-button.component';
-import { By } from '@angular/platform-browser';
+
 import { simpleChange } from '../../services/utils/functional-utils';
+import { ChevronButtonComponent } from './chevron-button.component';
 
 describe('ChevronButtonComponent', () => {
   let component: ChevronButtonComponent;
   let fixture: ComponentFixture<ChevronButtonComponent>;
+  let buttonElement: HTMLElement;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ChevronButtonComponent],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ChevronButtonComponent],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(ChevronButtonComponent);
+          component = fixture.componentInstance;
+          spyOn(component.clicked, 'emit');
+          component.text = 'Click';
+          fixture.detectChanges();
+          buttonElement = component.button.nativeElement;
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(ChevronButtonComponent);
-        component = fixture.componentInstance;
-        component.clicked.subscribe(() => {});
-        spyOn(component.clicked, 'emit');
-        component.text = 'Click';
-        fixture.detectChanges();
-      });
-  }));
-
-  afterEach(() => {
-    component.clicked.complete();
-  });
+  );
 
   describe('Inputs', () => {
-    let buttonElement: HTMLElement;
-    beforeEach(() => {
-      buttonElement = fixture.debugElement.query(By.css('button'))
-        .nativeElement;
-    });
-
     it('should display text in the button', () => {
       expect(buttonElement.innerText).toEqual('Click');
     });
@@ -54,12 +47,8 @@ describe('ChevronButtonComponent', () => {
 
   describe('onClick', () => {
     it('should emit clicked', () => {
-      const e = {
-        id: 1,
-        stopPropagation: () => true,
-      } as any;
-      component.onClick(e);
-      expect(component.clicked.emit).toHaveBeenCalledWith(e);
+      buttonElement.click();
+      expect(component.clicked.emit).toHaveBeenCalledTimes(1);
     });
   });
 });

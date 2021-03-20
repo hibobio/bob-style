@@ -1,54 +1,48 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { SquareButtonComponent } from './square.component';
-import { MatButtonModule } from '@angular/material/button';
-import { ButtonSize, ButtonType } from '../buttons.enum';
-import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
+
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatButtonModule } from '@angular/material/button';
+
 import { IconComponent } from '../../icons/icon.component';
 import { Icons, IconSize } from '../../icons/icons.enum';
 import { simpleChange } from '../../services/utils/functional-utils';
+import { ButtonSize, ButtonType } from '../buttons.enum';
+import { SquareButtonComponent } from './square.component';
 
 describe('SquareButtonComponent', () => {
   let component: SquareButtonComponent;
   let fixture: ComponentFixture<SquareButtonComponent>;
   let buttonElement: HTMLElement;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [SquareButtonComponent, MockComponent(IconComponent)],
-      imports: [MatButtonModule],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SquareButtonComponent, MockComponent(IconComponent)],
+        imports: [MatButtonModule],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(SquareButtonComponent);
+          component = fixture.componentInstance;
+
+          component.ngOnChanges(
+            simpleChange({
+              icon: Icons.file_copy,
+            })
+          );
+
+          buttonElement = component.button.nativeElement;
+
+          spyOn(component.clicked, 'emit');
+          fixture.detectChanges();
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(SquareButtonComponent);
-        component = fixture.componentInstance;
-
-        component.ngOnChanges(
-          simpleChange({
-            icon: Icons.file_copy,
-          })
-        );
-
-        buttonElement = fixture.debugElement.query(By.css('button'))
-          .nativeElement;
-        component.clicked.subscribe(() => {});
-        spyOn(component.clicked, 'emit');
-        fixture.detectChanges();
-      });
-  }));
-
-  afterEach(() => {
-    component.clicked.complete();
-  });
+  );
 
   describe('onClick', () => {
     it('Should emit the click event', () => {
-      const e = {
-        id: 1,
-      } as any;
-      component.onClick(e);
-      expect(component.clicked.emit).toHaveBeenCalledWith(e);
+      buttonElement.click();
+      expect(component.clicked.emit).toHaveBeenCalledTimes(1);
     });
   });
 

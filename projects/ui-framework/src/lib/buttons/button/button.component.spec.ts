@@ -1,48 +1,40 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { ButtonComponent } from './button.component';
-import { ButtonSize, ButtonType } from '../buttons.enum';
-import { By } from '@angular/platform-browser';
 import { MatButtonModule } from '@angular/material/button';
-import { IconsModule } from '../../icons/icons.module';
+
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { IconsModule } from '../../icons/icons.module';
 import { simpleChange } from '../../services/utils/functional-utils';
+import { ButtonSize, ButtonType } from '../buttons.enum';
+import { ButtonComponent } from './button.component';
 
 describe('ButtonComponent', () => {
   let component: ButtonComponent;
   let fixture: ComponentFixture<ButtonComponent>;
   let buttonElement: HTMLElement;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ButtonComponent],
-      providers: [],
-      imports: [MatButtonModule, IconsModule],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(ButtonComponent);
-        component = fixture.componentInstance;
-        buttonElement = fixture.debugElement.query(By.css('button'))
-          .nativeElement;
-        component.clicked.subscribe(() => {});
-        spyOn(component.clicked, 'emit');
-        fixture.detectChanges();
-      });
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ButtonComponent],
+        providers: [],
+        imports: [MatButtonModule, IconsModule],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(ButtonComponent);
+          component = fixture.componentInstance;
+          buttonElement = component.button.nativeElement;
 
-  afterEach(() => {
-    component.clicked.complete();
-  });
+          spyOn(component.clicked, 'emit');
+          fixture.detectChanges();
+        });
+    })
+  );
 
   describe('onClick', () => {
     it('Should emit the click event', () => {
-      const e = {
-        id: 1,
-        stopPropagation: () => true,
-      } as any;
-      component.onClick(e);
-      expect(component.clicked.emit).toHaveBeenCalledWith(e);
+      buttonElement.click();
+      expect(component.clicked.emit).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -89,10 +81,7 @@ describe('ButtonComponent', () => {
   });
 
   describe('OnChanges', () => {
-    const testColor = (
-      buttonType: ButtonType,
-      expectedColor: IconColor
-    ): void => {
+    const testColor = (buttonType: ButtonType, expectedColor: IconColor): void => {
       component.ngOnChanges(
         simpleChange({
           type: buttonType,

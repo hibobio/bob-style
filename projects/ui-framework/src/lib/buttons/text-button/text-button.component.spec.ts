@@ -1,35 +1,38 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { TextButtonComponent } from './text-button.component';
-import { IconComponent } from '../../icons/icon.component';
 import { MockComponent } from 'ng-mocks';
-import { TypographyModule } from '../../typography/typography.module';
+
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+
+import { IconComponent } from '../../icons/icon.component';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { LinkColor } from '../../indicators/link/link.enum';
 import { simpleChange } from '../../services/utils/functional-utils';
+import { TypographyModule } from '../../typography/typography.module';
+import { TextButtonComponent } from './text-button.component';
 
 describe('TextButtonComponent', () => {
   let component: TextButtonComponent;
   let fixture: ComponentFixture<TextButtonComponent>;
   let element: HTMLElement;
+  let buttonElement: HTMLElement;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [MockComponent(IconComponent), TextButtonComponent],
-      imports: [TypographyModule],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [MockComponent(IconComponent), TextButtonComponent],
+        imports: [TypographyModule],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(TextButtonComponent);
+          component = fixture.componentInstance;
+          element = fixture.debugElement.nativeElement;
+
+          buttonElement = component.button.nativeElement;
+
+          spyOn(component.clicked, 'emit');
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(TextButtonComponent);
-        component = fixture.componentInstance;
-        element = fixture.debugElement.nativeElement;
-        component.clicked.subscribe(() => {});
-        spyOn(component.clicked, 'emit');
-      });
-  }));
-
-  afterEach(() => {
-    component.clicked.complete();
-  });
+  );
 
   it('should display input text', () => {
     component.text = 'Button text';
@@ -40,7 +43,7 @@ describe('TextButtonComponent', () => {
   it('should not display icon if no input is passed', () => {
     fixture.detectChanges();
     expect(component.buttonClass).not.toContain('b-icon');
-    expect((element.children[0] as HTMLElement).dataset.iconBefore).toBeFalsy();
+    expect(buttonElement.dataset.iconBefore).toBeFalsy();
   });
 
   it('should display icon if is input', () => {
@@ -51,12 +54,8 @@ describe('TextButtonComponent', () => {
     );
 
     expect(component.buttonClass).toContain(IconColor.dark);
-    expect(
-      (element.children[0] as HTMLElement).dataset.iconBefore
-    ).toBeTruthy();
-    expect((element.children[0] as HTMLElement).dataset.iconBeforeSize).toEqual(
-      IconSize.medium
-    );
+    expect(buttonElement.dataset.iconBefore).toBeTruthy();
+    expect(buttonElement.dataset.iconBeforeSize).toEqual(IconSize.medium);
   });
 
   it('should set color to orange for component and icon', () => {
@@ -69,15 +68,13 @@ describe('TextButtonComponent', () => {
 
     expect(component.buttonClass).toContain('color-primary');
     expect(component.buttonClass).toContain('b-icon-' + IconColor.primary);
-    expect(element.children[0].className).toContain('color-primary');
-    expect(element.children[0].className).toContain(
-      'b-icon-' + IconColor.primary
-    );
+    expect(buttonElement.className).toContain('color-primary');
+    expect(buttonElement.className).toContain('b-icon-' + IconColor.primary);
   });
 
   it('should emit clicked when clicking the span', () => {
     fixture.detectChanges();
-    (element.children[0] as HTMLElement).click();
+    buttonElement.click();
     expect(component.clicked.emit).toHaveBeenCalled();
   });
 
@@ -89,6 +86,6 @@ describe('TextButtonComponent', () => {
     );
 
     expect(component.buttonClass).toContain('disabled');
-    expect(element.children[0].className).toContain('disabled');
+    expect(buttonElement.className).toContain('disabled');
   });
 });

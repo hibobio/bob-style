@@ -2,7 +2,6 @@ import { fromEvent, Subscription } from 'rxjs';
 import { tap, throttleTime } from 'rxjs/operators';
 
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Directive,
   ElementRef,
@@ -35,7 +34,7 @@ import { Button } from './buttons.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class BaseButtonElement implements OnChanges, OnInit, AfterViewInit, OnDestroy {
+export abstract class BaseButtonElement implements OnChanges, OnInit, OnDestroy {
   constructor(protected cd: ChangeDetectorRef, protected zone: NgZone) {}
 
   @ViewChild('button', { static: true }) public button: ElementRef;
@@ -87,7 +86,7 @@ export abstract class BaseButtonElement implements OnChanges, OnInit, AfterViewI
     this.buttonClass = this.getButtonClass();
 
     if (notFirstChanges(changes, ['throttle']) && this.subs.length) {
-      this.ngAfterViewInit();
+      this.setClickListener();
     }
 
     if (dc && notFirstChanges(changes) && !this.cd['destroyed']) {
@@ -101,9 +100,14 @@ export abstract class BaseButtonElement implements OnChanges, OnInit, AfterViewI
       this.buttonClass = this.getButtonClass();
       this.cd.detectChanges();
     }
+    this.setClickListener();
   }
 
-  ngAfterViewInit(): void {
+  ngOnDestroy(): void {
+    unsubscribeArray(this.subs);
+  }
+
+  protected setClickListener() {
     unsubscribeArray(this.subs);
 
     this.zone.runOutsideAngular(() => {
@@ -124,18 +128,14 @@ export abstract class BaseButtonElement implements OnChanges, OnInit, AfterViewI
                   trailing: false,
                 })
               : pass,
-            insideZone(this.zone),
-            tap((event) => {
-              isFunction(this.onClick) && this.onClick(event);
-            })
+            insideZone(this.zone)
           )
-          .subscribe(this.clicked)
+          .subscribe((event) => {
+            isFunction(this.onClick) && this.onClick(event);
+            this.clicked.emit(event);
+          })
       );
     });
-  }
-
-  ngOnDestroy(): void {
-    unsubscribeArray(this.subs);
   }
 
   protected setIconVars(): void {
