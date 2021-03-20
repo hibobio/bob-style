@@ -14,11 +14,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { FormElementsModule } from '../../form-elements/form-elements.module';
 import { InputEventType } from '../../form-elements/form-elements.enum';
-import { BInputEvent } from '../../form-elements/input/input.interface';
 import { SelectGroupOption } from '../../lists/list.interface';
 import { DialogSize } from './dialog.enum';
 import { DialogButtons } from './dialog.interface';
 import { ButtonType } from '../../buttons/buttons.enum';
+import { BInputEvent } from '../../form-elements/form-elements.interface';
 
 @Component({
   selector: 'b-dialog-example',

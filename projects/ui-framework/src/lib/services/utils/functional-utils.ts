@@ -1,19 +1,14 @@
-import { SimpleChanges, SimpleChange, ElementRef, Type } from '@angular/core';
-import { controlKeys, KEYCODES, Keys, metaKeys } from '../../enums';
-import { Color, GenericObject, SortType } from '../../types';
 import {
-  isEqual as _isEqual,
-  cloneDeep as _cloneDeep,
-  set as _set,
-  get as _get,
-  merge as _merge,
-  pick as _pick,
-  omit as _omit,
   assign as _assign,
+  cloneDeep as _cloneDeep,
+  get as _get,
+  isEqual as _isEqual,
+  merge as _merge,
+  omit as _omit,
+  pick as _pick,
+  set as _set,
   sortBy as _sortBy,
 } from 'lodash';
-import { RenderedComponent } from '../component-renderer/component-renderer.interface';
-import { SelectGroupOption } from '../../lists/list.interface';
 import {
   BehaviorSubject,
   Observable,
@@ -21,8 +16,13 @@ import {
   Subject,
   Subscription,
 } from 'rxjs';
-import { delay, take } from 'rxjs/operators';
 import { AnonymousSubject } from 'rxjs/internal/Subject';
+import { delay, take } from 'rxjs/operators';
+import { ElementRef, SimpleChange, SimpleChanges, Type } from '@angular/core';
+import { SafeResourceUrl } from '@angular/platform-browser';
+import { controlKeys, KEYCODES, Keys, metaKeys } from '../../enums';
+import { SelectGroupOption } from '../../lists/list.interface';
+import { Color, GenericObject, SortType } from '../../types';
 import {
   ColorPalette,
   PalletteColorSet,
@@ -33,9 +33,10 @@ import {
   PaletteColorGeneratorConfig,
 } from '../color-service/color-palette.service';
 import { ColorService } from '../color-service/color.service';
-import { SafeResourceUrl } from '@angular/platform-browser';
-import { WindowLike } from './window-ref.service';
+import { RenderedComponent } from '../component-renderer/component-renderer.interface';
 import { Styles } from '../html/html-helpers.interface';
+import { log } from './logger';
+import { WindowLike } from './window-ref.service';
 
 // ----------------------
 // TYPES
@@ -60,7 +61,7 @@ export const isFalsey = (val: any): boolean => !val;
 export const isFunction = (val: any): val is Function =>
   !!val && typeof val === 'function';
 
-export const isNotEmptyString = (val: any): boolean =>
+export const isNotEmptyString = (val: any): val is string =>
   isString(val) && val.trim() !== '';
 
 export const isEmptyString = (val: any): boolean => !isNotEmptyString(val);
@@ -858,15 +859,15 @@ export type Func<A = any, B = A> = (val: A, ...args: any[]) => B;
 
 export const pass = <T = any>(a: T): T => a;
 
-export const chainCall = <A = any>(
-  funcs: Func<A>[],
+export const chainCall = <A = any, B = A>(
+  funcs: Func<A | B, A | B>[],
   value: A,
   ...args: any[]
-): A => {
+): B => {
   return funcs.reduce(
     (previousResult, fn) => fn(previousResult, ...args),
     value
-  );
+  ) as B;
 };
 
 export const pipe = <T = any>(...functions: ((val: T) => T)[]) => (
@@ -1228,7 +1229,9 @@ export const isEqualByValues = <T = any>(
     truthyA !== truthyB ||
     typeof dataA !== typeof dataB ||
     dataA.constructor !== dataB.constructor ||
-    ((isPrimitive(dataA) || isPrimitive(dataB)) && dataA !== dataB)
+    ((isPrimitive(dataA) || isPrimitive(dataB)) && dataA !== dataB) ||
+    dataA['length'] !== dataB['length'] ||
+    dataA['size'] !== dataB['size']
   ) {
     return false;
   }
@@ -1299,26 +1302,28 @@ export const recursiveFilter = <T = any>(
 // CLONES
 // ----------------------
 
-export const cloneObject = <T = any>(value: T): T =>
+export const cloneObject = <T = GenericObject>(value: T): T =>
   isObject(value) ? Object.assign({}, value) : value;
 
-export const cloneArray = <T = any>(value: T[]): T[] =>
-  isArray(value) ? value.slice() : value;
+export const cloneArray = <T = unknown>(value: T[]): T[] =>
+  isArray<T>(value) ? value.slice() : value;
 
-export const cloneValue = (value: any) =>
-  isObject(value)
+export const cloneValue = <T = unknown>(value: T): T =>
+  (isObject(value)
     ? cloneObject(value)
     : isArray(value)
     ? cloneArray(value)
-    : value;
+    : value) as T;
 
 export const cloneDeepSimpleObject = <T = GenericObject>(obj: T): T => {
   if (!obj || obj !== obj || isPrimitive(obj)) {
     return obj;
   }
   if (!isPlainObject(obj) && !isArray(obj)) {
-    console.warn(`[cloneDeepSimpleObject]:
-    ${getType(obj)} (${stringify(obj, 100)}) is not a simple object`);
+    log.wrn(
+      `${getType(obj)} (${stringify(obj, 100)}) is not a simple object`,
+      'cloneDeepSimpleObject'
+    );
     return cloneDeep(obj);
   }
   return JSON.parse(JSON.stringify(obj));
@@ -1830,9 +1835,9 @@ export const prefetchSharedObservables = (
           }
         },
         (err) => {
-          console.error(
-            '[prefetchSharedObservables] failed:',
-            err?.error?.error || err?.error || err
+          log.err(
+            err?.error?.error || err?.error || err,
+            'prefetchSharedObservables'
           );
           reject();
         }

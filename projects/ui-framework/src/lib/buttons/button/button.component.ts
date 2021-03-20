@@ -1,8 +1,5 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone } from '@angular/core';
+
 import { BaseButtonElement } from '../button.abstract';
 
 @Component({
@@ -16,7 +13,6 @@ import { BaseButtonElement } from '../button.abstract';
       [attr.data-icon-before]="icn || null"
       [attr.data-icon-before-size]="icn ? icnSize : null"
       [attr.data-icon-before-color]="icn ? icnColor : null"
-      (click)="onClick($event)"
     >
       {{ text }}
       <ng-content></ng-content>
@@ -27,7 +23,7 @@ import { BaseButtonElement } from '../button.abstract';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonComponent extends BaseButtonElement {
-  constructor(protected cd: ChangeDetectorRef) {
-    super(cd);
+  constructor(protected cd: ChangeDetectorRef, protected zone: NgZone) {
+    super(cd, zone);
   }
 }

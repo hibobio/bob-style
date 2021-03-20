@@ -31,6 +31,7 @@ import { AvatarIconSize, AvatarBadges, BadgeSize } from '../avatar.consts';
 import { Avatar, BadgeConfig } from '../avatar.interface';
 import { Icon } from '../../../icons/icon.interface';
 import { valueAsNumber } from '../../../services/utils/transformers';
+import { log } from '../../../services/utils/logger';
 
 @Component({
   selector: 'b-avatar-image',
@@ -149,16 +150,20 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
           const imgref = this.imageSource.split(
             /(?:filestackcontent\W{1,2}com\W{1,2})|(?:\W{0,1}\?)/i
           )[1];
-          console.warn(`AvatarImageComponent: Please check your imageSource ${
-            imgref ? '(' + imgref + ')' : ''
-          } -
+          log.wrn(
+            `Please check your imageSource ${imgref ? '(' + imgref + ')' : ''} -
 you should be using EmployeeAvatarService.getOptimizedAvatarImage
-to get the right avatar image.`);
+to get the right avatar image.`,
+            'AvatarImageComponent'
+          );
         }
 
         if (this.host.getAttribute('data-tooltip')) {
-          console.error(`AvatarImageComponent: You can not use data-tooltip attribute
-on b-avatar-image element.`);
+          log.err(
+            `You can not use data-tooltip attribute
+on b-avatar-image element.`,
+            'AvatarImageComponent'
+          );
           this.host.removeAttribute('data-tooltip');
         }
 

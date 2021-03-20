@@ -1,10 +1,7 @@
-import {
-  Component,
-  ChangeDetectorRef,
-  ChangeDetectionStrategy,
-} from '@angular/core';
-import { BaseButtonElement } from '../button.abstract';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone } from '@angular/core';
+
 import { Icons } from '../../icons/icons.enum';
+import { BaseButtonElement } from '../button.abstract';
 import { ButtonSize, ButtonType } from '../buttons.enum';
 
 @Component({
@@ -18,22 +15,18 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
       [attr.data-icon-before]="icn || null"
       [attr.data-icon-before-size]="icn ? icnSize : null"
       [attr.data-icon-before-color]="icn ? icnColor : null"
-      (click)="onClick($event)"
     >
       {{ text }}
       <ng-content></ng-content>
     </button>
   `,
-  styleUrls: [
-    '../button/button.component.scss',
-    './back-button.component.scss',
-  ],
+  styleUrls: ['../button/button.component.scss', './back-button.component.scss'],
   providers: [{ provide: BaseButtonElement, useExisting: BackButtonComponent }],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BackButtonComponent extends BaseButtonElement {
-  constructor(protected cd: ChangeDetectorRef) {
-    super(cd);
+  constructor(protected cd: ChangeDetectorRef, protected zone: NgZone) {
+    super(cd, zone);
 
     this.typeDefault = ButtonType.secondary;
     this.icon = Icons.back_arrow_link;

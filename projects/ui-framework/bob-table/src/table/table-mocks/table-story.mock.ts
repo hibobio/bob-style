@@ -15,17 +15,18 @@ import {
   simpleUID,
   mockThings,
   mockAnimals,
+  log,
 } from 'bob-style';
 
 const gridActions: GridActions = {
   menuItems: [
     {
       label: 'menu item 1',
-      action: ($event) => console.log('menu item 1 clicked', $event),
+      action: ($event) => log.inf(['menu item 1 clicked', $event], 'Table'),
     },
     {
       label: 'menu item 2',
-      action: ($event) => console.log('menu item 2 clicked', $event),
+      action: ($event) => log.inf(['menu item 2 clicked', $event], 'Table'),
     },
   ],
 };
@@ -48,7 +49,7 @@ export const mockColumnsDefs: ColumnDef[] = [
     headerClass: 'test-class',
     field: 'fullName',
     sort: SortDirections.Asc,
-    flex: 2
+    flex: 2,
   },
   {
     headerName: 'Email',

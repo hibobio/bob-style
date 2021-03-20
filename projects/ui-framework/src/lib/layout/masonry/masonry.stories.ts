@@ -6,6 +6,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { MasonryLayoutModule } from './masonry.module';
 import { masonryCardsMock } from './masonry.mock';
 import { MasonryTestModule } from './masonry-test.component';
+import { log } from '../../services/utils/logger';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
@@ -145,7 +146,7 @@ story.add(
         debug: boolean('debug', false),
 
         onMasonryItemsChanged: (event) => {
-          console.log('[masonryItemsChanged]', event);
+          log.inf(event, 'masonryItemsChanged');
         },
       },
       moduleMetadata: {

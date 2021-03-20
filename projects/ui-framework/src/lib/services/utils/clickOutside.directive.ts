@@ -1,15 +1,8 @@
-import {
-  Directive,
-  ElementRef,
-  EventEmitter,
-  NgModule,
-  NgZone,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+
+import { Directive, ElementRef, EventEmitter, NgModule, NgZone, OnDestroy, OnInit, Output } from '@angular/core';
+
 import { getEventPath } from './functional-utils';
 import { insideZone } from './rxjs.operators';
 import { UtilsService } from './utils.service';
@@ -19,11 +12,7 @@ import { UtilsService } from './utils.service';
   selector: '[click.outside]',
 })
 export class ClickOutsideDirective implements OnInit, OnDestroy {
-  constructor(
-    private hostElRef: ElementRef,
-    private utilsService: UtilsService,
-    private zone: NgZone
-  ) {}
+  constructor(private hostElRef: ElementRef, private utilsService: UtilsService, private zone: NgZone) {}
 
   @Output('click.outside') clicked = new EventEmitter<MouseEvent>();
 

@@ -130,7 +130,7 @@ export { LinkColor, LinkTarget } from './lib/indicators/link/link.enum';
 // Empty State Module
 export { EmptyStateModule } from './lib/indicators/empty-state/empty-state.module';
 export { EmptyStateComponent } from './lib/indicators/empty-state/empty-state.component';
-export { EmptyStateConfig } from './lib/indicators/empty-state/empty-state.interface';
+export * from './lib/indicators/empty-state/empty-state.interface';
 // Progress Bar
 export * from './lib/indicators/progress/progress.enum';
 export * from './lib/indicators/progress/progress.interface';
@@ -157,6 +157,7 @@ export { LegendComponent } from './lib/indicators/legend/legend.component';
 */
 
 export { CommentsModule } from './lib/comments/comments.module';
+export * from './lib/comments/comments.interface';
 export { CommentListComponent } from './lib/comments/comment-list/comment-list.component';
 export { EditCommentComponent } from './lib/comments/edit-comment/edit-comment.component';
 
@@ -167,7 +168,7 @@ export { EditCommentComponent } from './lib/comments/edit-comment/edit-comment.c
 // Chip Module
 export { ChipsModule } from './lib/chips/chips.module';
 export { ChipType, ChipListAlign, ChipListSelectable } from './lib/chips/chips.enum';
-export { Chip, ChipListConfig, ChipKeydownEvent, ChipInputChange } from './lib/chips/chips.interface';
+export * from './lib/chips/chips.interface';
 // Single Chip
 export { ChipModule } from './lib/chips/chip/chip.module';
 export {
@@ -191,6 +192,7 @@ export { MultiListAndChipsComponent } from './lib/lists/multi-list-and-chips/mul
 export { EmojiChipListModule } from './lib/chips/emoji-chip-list/emoji-chip-list.module';
 export { EmojiChipListComponent } from './lib/chips/emoji-chip-list/emoji-chip-list.component';
 export { EmojiFromCodePipe } from './lib/chips/emoji-chip-list/emoji-from-code.pipe';
+export * from './lib/chips/emoji-chip-list/emoji-chip-list.interface';
 
 /*
  * Lists & Selects
@@ -271,9 +273,7 @@ export { EditableTreeListComponent } from './lib/lists/tree-list/editable-tree-l
 export {
   ChainSelectEventEnum
 } from './lib/lists/chain-select/chain-select.enum';
-export {
-  ChainSelectEvent
-} from './lib/lists/chain-select/chain-select.interface';
+export * from './lib/lists/chain-select/chain-select.interface';
 export {
   ChainSelectComponent
 } from './lib/lists/chain-select/chain-select.component';
@@ -324,7 +324,6 @@ export { DatepickerInlineComponent } from './lib/form-elements/date-picker/datep
 // Input Module
 export { InputModule } from './lib/form-elements/input/input.module';
 export { InputComponent } from './lib/form-elements/input/input.component';
-export * from './lib/form-elements/input/input.interface';
 export {
   InputTypes, InputAutoCompleteOptions
 } from './lib/form-elements/input/input.enum';
@@ -335,9 +334,7 @@ export {
 export {
   SplitInputSingleSelectComponent
 } from './lib/form-elements/split-input-single-select/split-input-single-select.component';
-export {
-  InputSingleSelectValue
-} from './lib/form-elements/split-input-single-select/split-input-single-select.interface';
+export * from './lib/form-elements/split-input-single-select/split-input-single-select.interface';
 // Social Module
 export { SocialModule } from './lib/form-elements/social/social.module';
 export { SocialComponent } from './lib/form-elements/social/social.component';
@@ -364,9 +361,7 @@ export {
 export {
   RadioDirection
 } from './lib/form-elements/radio-button/radio-button.enum';
-export {
-  RadioConfig
-} from './lib/form-elements/radio-button/radio-button.interface';
+export * from './lib/form-elements/radio-button/radio-button.interface';
 
 
 /*
@@ -383,9 +378,7 @@ export {
 export {
   AutoCompleteComponent
 } from './lib/search/auto-complete/auto-complete.component';
-export {
-  AutoCompleteOption
-} from './lib/search/auto-complete/auto-complete.interface';
+export * from './lib/search/auto-complete/auto-complete.interface';
 // Quick Filters Module
 export {
   QuickFilterModule
@@ -394,11 +387,7 @@ export {
   QuickFilterComponent
 } from './lib/search/quick-filter/quick-filter.component';
 export { QuickFilterBarComponent } from './lib/search/quick-filter/quick-filter-bar.component';
-export {
-  QuickFilterConfig,
-  QuickFilterChangeEvent,
-  QuickFilterBarChangeEvent
-} from './lib/search/quick-filter/quick-filter.interface';
+export * from './lib/search/quick-filter/quick-filter.interface';
 export { QuickFilterSelectType } from './lib/search/quick-filter/quick-filter.enum';
 export { QuickFilterLayoutModule } from './lib/search/quick-filter-layout/quick-filter-layout.module';
 export { QuickFilterLayoutComponent } from './lib/search/quick-filter-layout/quick-filter-layout.component';
@@ -418,7 +407,7 @@ export { CompactSearchComponent } from './lib/search/compact-search/compact-sear
 // Menu Module
 export { MenuModule } from './lib/navigation/menu/menu.module';
 export { MenuComponent } from './lib/navigation/menu/menu.component';
-export { MenuItem } from './lib/navigation/menu/menu.interface';
+export * from './lib/navigation/menu/menu.interface';
 // Side Menu Module
 export { SideMenuModule } from './lib/navigation/side-menu/side-menu.module';
 export {
@@ -428,8 +417,8 @@ export * from './lib/navigation/side-menu/side-menu.interface';
 // Tabs Module
 export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { TabsComponent } from './lib/navigation/tabs/tabs.component';
-export { Tab } from './lib/navigation/tabs/tabs.interface';
-export { TabChangeEvent } from './lib/navigation/tabs/tabs.interface';
+export * from './lib/navigation/tabs/tabs.interface';
+export * from './lib/navigation/tabs/tabs.interface';
 export { TabsType } from './lib/navigation/tabs/tabs.enum';
 // Breadcrumbs Module
 export {
@@ -465,38 +454,34 @@ export * from './lib/popups/panel/panel-position-service/panel-position.const';
 export { DialogModule } from './lib/popups/dialog/dialog.module';
 export { DialogComponent } from './lib/popups/dialog/dialog.component';
 export { DialogSize } from './lib/popups/dialog/dialog.enum';
-export {
-  DialogConfig,
-  DialogButtons,
-  DialogButton
-} from './lib/popups/dialog/dialog.interface';
+export * from './lib/popups/dialog/dialog.interface';
 export {
   DialogService
 } from './lib/popups/dialog/dialog-service/dialog.service';
 // Confirmation dialog module
 export { ConfirmationDialogModule } from './lib/popups/confirmation-dialog/confirmation-dialog.module';
 export { ConfirmationDialogComponent } from './lib/popups/confirmation-dialog/confirmation-dialog.component';
-export { ConfirmationDialogConfig } from './lib/popups/confirmation-dialog/confirmation-dialog.interface';
+export * from './lib/popups/confirmation-dialog/confirmation-dialog.interface';
 export { ConfirmationDialogService } from './lib/popups/confirmation-dialog/confirmation-dialog.service';
 // Alert Module
 export { AlertModule } from './lib/popups/alert/alert.module';
 export { AlertService } from './lib/popups/alert/alert-service/alert.service';
 export { AlertComponent } from './lib/popups/alert/alert/alert.component';
-export { AlertConfig } from './lib/popups/alert/alert.interface';
+export * from './lib/popups/alert/alert.interface';
 export { AlertType } from './lib/popups/alert/alert.enum';
 // Lightbox Module
 export { LightboxModule } from './lib/popups/lightbox/lightbox.module';
 export { LightboxService } from './lib/popups/lightbox/lightbox.service';
 export { LightboxComponent } from './lib/popups/lightbox/lightbox.component';
 export { MediaEmbedComponent } from './lib/popups/lightbox/media-embed/media-embed.component';
-export { LightboxConfig, LightboxData } from './lib/popups/lightbox/lightbox.interface';
+export * from './lib/popups/lightbox/lightbox.interface';
 // InfoTooltip Module
 export { InfoTooltipModule } from './lib/popups/info-tooltip/info-tooltip.module';
 export { InfoTooltipComponent } from './lib/popups/info-tooltip/info-tooltip.component';
 // Emoji Module
 export { EmojiModule } from './lib/popups/emoji/emoji.module';
 export { EmojiComponent } from './lib/popups/emoji/emoji.component';
-export { Emoji, EmojiCategory } from './lib/popups/emoji/emoji.interface';
+export * from './lib/popups/emoji/emoji.interface';
 export { EMOJI_DATA } from './lib/popups/emoji/emoji-data.consts';
 // Truncate Tooltip
 export { TruncateTooltipModule } from './lib/popups/truncate-tooltip/truncate-tooltip.module';
@@ -519,11 +504,11 @@ export { DividerComponent } from './lib/layout/divider/divider.component';
 // Collapsible Section
 export { CollapsibleSectionModule } from './lib/layout/collapsible-section/collapsible-section.module';
 export { CollapsibleSectionComponent, COLLAPSIBLE_OPTIONS_DEF } from './lib/layout/collapsible-section/collapsible-section.component';
-export { CollapsibleOptions } from './lib/layout/collapsible-section/collapsible-section.interface';
+export * from './lib/layout/collapsible-section/collapsible-section.interface';
 // Draggable Collapsible Sections
 export { SortableCollapsibleSectionsModule } from './lib/layout/sortable-collapsible-sections/sortable-collapsible-sections.module';
 export { SortableCollapsibleSectionsComponent } from './lib/layout/sortable-collapsible-sections/sortable-collapsible-sections.component';
-export { SortableCollapsibleSection, SortableCollapsibleDropped } from './lib/layout/sortable-collapsible-sections/sortable-collapsible-sections.interface';
+export * from './lib/layout/sortable-collapsible-sections/sortable-collapsible-sections.interface';
 export { CollapsibleHeaderDirective } from './lib/layout/sortable-collapsible-sections/collapsible-header.directive';
 export { CollapsibleContentDirective } from './lib/layout/sortable-collapsible-sections/collapsible-content.directive';
 export { CollapsibleModule } from './lib/layout/collapsible/collapsible.module';
@@ -554,12 +539,10 @@ export { BaseCardElement } from './lib/cards/card/card.abstract';
 export { CardComponent } from './lib/cards/card/card.component';
 // Add new Card
 export { CardAddComponent } from './lib/cards/card-add/card-add.component';
-export { AddCard } from './lib/cards/card-add/card-add.interface';
+export * from './lib/cards/card-add/card-add.interface';
 // Employee Card
 export { CardEmployeeComponent } from './lib/cards/card-employee/card-employee.component';
-export {
-  CardEmployee, CardEmployeeSocial, CardEmployeeCoverColors,
-} from './lib/cards/card-employee/card-employee.interface';
+export * from './lib/cards/card-employee/card-employee.interface';
 // Cards Layout
 export { CardsLayoutComponent } from './lib/cards/cards-layout/cards-layout.component';
 export * from './lib/cards/cards-layout/cards-layout.const';
@@ -612,7 +595,7 @@ export { allowedDomainsTest, naiveLinkTest, imageLinkTest } from './lib/services
 // Component Renderer
 export { ComponentRendererModule } from './lib/services/component-renderer/component-renderer.module';
 export { ComponentRendererComponent } from './lib/services/component-renderer/component-renderer.component';
-export { RenderedComponent } from './lib/services/component-renderer/component-renderer.interface';
+export * from './lib/services/component-renderer/component-renderer.interface';
 export * from './lib/services/component-renderer/component-renderer.service';
 // RxJs operators
 export * from './lib/services/utils/rxjs.operators';
@@ -643,6 +626,7 @@ export * from './lib/services/items-in-row/items-in-row.service';
 // Event directives
 export { InViewModule, InViewDirective } from './lib/services/utils/inview.directive';
 export { ClickOutsideModule, ClickOutsideDirective } from './lib/services/utils/clickOutside.directive';
+export { DoubleClickModule, DoubleClickDirective } from './lib/services/utils/clickDouble.directive';
 export { WindowKeydownModule, WindowKeydownDirective } from './lib/services/utils/windowKeydown.directive';
 
 // Eye Candy
@@ -658,7 +642,7 @@ export {
   TextColoredLinksComponent
 } from
   './lib/eye-candy/text-colored-links/text-colored-links/text-colored-links.component';
-export { ColorTextItem } from './lib/eye-candy/text-colored-links/text-colored-links.interface';
+export * from './lib/eye-candy/text-colored-links/text-colored-links.interface';
 // Mocks
 export * from './lib/mock.const';
 // Test helpers
@@ -683,7 +667,7 @@ export * from './lib/services/html/sanitizer.service';
 /*
 * Animation
  */
-export { SLIDE_UP_DOWN } from './lib/style/animations';
+export * from './lib/style/animations';
 
 
 /*

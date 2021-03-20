@@ -1,32 +1,21 @@
-import { NgZone } from '@angular/core';
+import { defer, EMPTY, interval, merge, Observable, OperatorFunction, Subscription } from 'rxjs';
+import { distinctUntilChanged, filter, finalize, map, tap } from 'rxjs/operators';
+
+import { NgZone, ɵɵdirectiveInject as directiveInject } from '@angular/core';
+
+import { Keys } from '../../enums';
 import {
-  Subscription,
-  Observable,
-  defer,
-  OperatorFunction,
-  interval,
-  merge,
-  EMPTY,
-} from 'rxjs';
-import {
-  distinctUntilChanged,
-  filter,
-  map,
-  tap,
-  finalize,
-} from 'rxjs/operators';
-import { ɵɵdirectiveInject as directiveInject } from '@angular/core';
-import {
+  asArray,
   cloneDeepSimpleObject,
   EqualByValuesConfig,
+  getEventPath,
+  isArray,
   isEqualByValues,
   isFalsyOrEmpty,
-  isKey,
-  randomFromArray,
-  isArray,
   isNumber,
+  isString,
+  randomFromArray,
 } from './functional-utils';
-import { Keys } from '../../enums';
 import { log } from './logger';
 
 // Source: https://netbasal.com/optimizing-angular-change-detection-triggered-by-dom-events-d2a3b2e11d87
@@ -129,8 +118,51 @@ export function counter<T = any>() {
   };
 }
 
-export function filterKey(key: Keys | string) {
-  return filter<KeyboardEvent>((event) => isKey(event.key, key));
+export function filterKey(key: Keys | string | (Keys | string)[]) {
+  return filter<KeyboardEvent>((event) => asArray(key).includes(event.key));
+}
+
+export const filterByEventKey = filterKey;
+
+export function filterByEventPath<E extends Event = Event | KeyboardEvent | MouseEvent | FocusEvent>(
+  element: HTMLElement
+) {
+  return filter<E>((event) => {
+    return getEventPath(event).includes(element);
+  });
+}
+
+export function filterByEventTarget<E extends Event = Event | KeyboardEvent | MouseEvent | FocusEvent>(
+  target: string | HTMLElement
+) {
+  return filter<E>((event) => {
+    const targetEl = event.target as HTMLElement;
+    return isString(target) ? targetEl.matches(target) : targetEl === target;
+  });
+}
+
+export function filterDOMevent<E extends Event = Event | KeyboardEvent | MouseEvent | FocusEvent>({
+  pathIncludes,
+  targetMatches,
+  allowedKeys,
+}: {
+  pathIncludes?: HTMLElement;
+  targetMatches?: string | HTMLElement;
+  allowedKeys?: Keys | string | (Keys | string)[];
+}) {
+  return filter<E>((event) => {
+    const targetEl = event.target as HTMLElement;
+
+    return (
+      (allowedKeys ? asArray(allowedKeys).includes(event['key']) : true) &&
+      (targetMatches
+        ? isString(targetMatches)
+          ? targetEl.matches(targetMatches)
+          : targetEl === targetMatches
+        : true) &&
+      (pathIncludes ? getEventPath(event).includes(pathIncludes) : true)
+    );
+  });
 }
 
 export function onlyDistinct<T = any>(config?: EqualByValuesConfig) {
@@ -163,9 +195,7 @@ export interface TimedSliceConfig {
   shuffle?: boolean | 'auto';
 }
 
-export function timedSlice<T = unknown>(
-  config: TimedSliceConfig = {}
-): OperatorFunction<T[], T[]> {
+export function timedSlice<T = unknown>(config: TimedSliceConfig = {}): OperatorFunction<T[], T[]> {
   const { slice, time = null, loop = false, shuffle = false } = config;
 
   return function (source: Observable<T[]>): Observable<T[]> {
@@ -199,15 +229,9 @@ export function timedSlice<T = unknown>(
               reset();
               dataSize = arrOrNum.length;
               sliceSize = slice > 0 ? slice : dataSize;
-              doShuffle =
-                shuffle === 'auto' && loop && dataSize >= sliceSize * 2
-                  ? true
-                  : shuffle;
+              doShuffle = shuffle === 'auto' && loop && dataSize >= sliceSize * 2 ? true : shuffle;
 
-              data =
-                doShuffle === true
-                  ? randomFromArray(arrOrNum, null)
-                  : arrOrNum.slice();
+              data = doShuffle === true ? randomFromArray(arrOrNum, null) : arrOrNum.slice();
             }
 
             ++sliceIndex;
@@ -218,16 +242,13 @@ export function timedSlice<T = unknown>(
             }
 
             (currentSlice || (currentSlice = [] as any))[0] =
-              (sliceSize * sliceIndex) %
-              (loop ? Math.max(dataSize, sliceSize) : dataSize);
+              (sliceSize * sliceIndex) % (loop ? Math.max(dataSize, sliceSize) : dataSize);
 
             currentSlice[1] = currentSlice[0] + sliceSize;
 
             if (loop && currentSlice[1] > dataSize) {
               while (data.length < currentSlice[1]) {
-                data.push(
-                  ...(doShuffle === true ? randomFromArray(data, null) : data)
-                );
+                data.push(...(doShuffle === true ? randomFromArray(data, null) : data));
               }
               dataSize = data.length;
             }

@@ -269,7 +269,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         columnDefs.find((colDef) => colDef.sortable || colDef.sort)
       ) {
         log.wrn(
-          ['Sorting disabled, because row drag is enabled'],
+          'Sorting disabled, because row drag is enabled',
           'TableComponent'
         );
       }

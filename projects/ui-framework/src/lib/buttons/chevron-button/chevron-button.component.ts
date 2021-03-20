@@ -1,9 +1,5 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+
 import { Icons } from '../../icons/icons.enum';
 import { BaseButtonElement } from '../button.abstract';
 import { ButtonComponent } from '../button/button.component';
@@ -23,27 +19,21 @@ import { ButtonType } from '../buttons.enum';
       [attr.data-icon-after]="!active ? chevronIcn[0] : chevronIcn[1]"
       [attr.data-icon-after-size]="icnSize"
       [attr.data-icon-after-color]="icnColor"
-      (click)="onClick($event)"
     >
       {{ text }}
       <ng-content></ng-content>
     </button>
   `,
   styleUrls: ['../button/button.component.scss'],
-  providers: [
-    { provide: BaseButtonElement, useExisting: ChevronButtonComponent },
-  ],
+  providers: [{ provide: BaseButtonElement, useExisting: ChevronButtonComponent }],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChevronButtonComponent extends ButtonComponent implements OnInit {
-  constructor(protected cd: ChangeDetectorRef) {
-    super(cd);
+  constructor(protected cd: ChangeDetectorRef, protected zone: NgZone) {
+    super(cd, zone);
 
     this.typeDefault = ButtonType.secondary;
   }
 
-  public chevronIcn = [
-    Icons.chevron_down.replace('b-icon-', ''),
-    Icons.chevron_up.replace('b-icon-', ''),
-  ];
+  public chevronIcn = [Icons.chevron_down.replace('b-icon-', ''), Icons.chevron_up.replace('b-icon-', '')];
 }

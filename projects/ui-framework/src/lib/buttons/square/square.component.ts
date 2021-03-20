@@ -1,21 +1,24 @@
 import {
-  Component,
-  Input,
-  HostBinding,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  SimpleChanges,
+  Component,
+  HostBinding,
+  Input,
+  NgZone,
   OnChanges,
+  SimpleChanges,
 } from '@angular/core';
-import { ButtonSize, ButtonType } from '../buttons.enum';
+
 import { IconColor, IconSize } from '../../icons/icons.enum';
-import { BaseButtonElement } from '../button.abstract';
 import { notFirstChanges } from '../../services/utils/functional-utils';
+import { BaseButtonElement } from '../button.abstract';
+import { ButtonSize, ButtonType } from '../buttons.enum';
 
 @Component({
   selector: 'b-square-button, [b-square-button]',
   template: `
     <button
+      #button
       type="button"
       [ngClass]="buttonClass"
       [class.has-hover]="type === buttonType.tertiary"
@@ -23,21 +26,17 @@ import { notFirstChanges } from '../../services/utils/functional-utils';
       [attr.data-icon-before]="icn || null"
       [attr.data-icon-before-size]="icn ? icnSize : null"
       [attr.data-icon-before-color]="icn ? color || icnColor : null"
-      (click)="onClick($event)"
     >
       <ng-content></ng-content>
     </button>
   `,
   styleUrls: ['./square.component.scss'],
-  providers: [
-    { provide: BaseButtonElement, useExisting: SquareButtonComponent },
-  ],
+  providers: [{ provide: BaseButtonElement, useExisting: SquareButtonComponent }],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SquareButtonComponent extends BaseButtonElement
-  implements OnChanges {
-  constructor(protected cd: ChangeDetectorRef) {
-    super(cd);
+export class SquareButtonComponent extends BaseButtonElement implements OnChanges {
+  constructor(protected cd: ChangeDetectorRef, protected zone: NgZone) {
+    super(cd, zone);
 
     this.typeDefault = ButtonType.secondary;
   }
@@ -54,8 +53,7 @@ export class SquareButtonComponent extends BaseButtonElement
   ngOnChanges(changes: SimpleChanges) {
     super.ngOnChanges(changes, false);
 
-    this.icnSize =
-      this.size === ButtonSize.small ? IconSize.medium : IconSize.large;
+    this.icnSize = this.size === ButtonSize.small ? IconSize.medium : IconSize.large;
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();

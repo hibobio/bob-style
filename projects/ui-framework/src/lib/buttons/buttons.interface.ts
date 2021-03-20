@@ -10,6 +10,9 @@ export interface Button {
   active?: boolean;
   disabled?: boolean;
   preloader?: boolean;
+  throttle?: number;
+  swallow?: boolean;
+  onClick?: (event: MouseEvent) => void;
 }
 
 export interface ButtonConfig {

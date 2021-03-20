@@ -17,6 +17,7 @@ import {
   MASONRY_ROW_DIVISION_DEF,
 } from './masonry.const';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { log } from '../../services/utils/logger';
 
 @Injectable()
 export class MasonryService {
@@ -50,8 +51,8 @@ export class MasonryService {
       (elements[0]?.tagName !== 'B-MASONRY-ITEM' ||
         elements[0]?.children.length !== 1)
     ) {
-      console.error(
-        `[MasonryLayoutComponent]: ${
+      log.err(
+        `${
           elements[0]?.tagName !== 'B-MASONRY-ITEM'
             ? '<b-masonry-layout> should use <b-masonry-item> for children (you have ' +
               elements[0]?.tagName +
@@ -63,7 +64,8 @@ export class MasonryService {
               elements[0]?.children.length +
               ')'
             : ''
-        }.`
+        }.`,
+        'MasonryLayoutComponent'
       );
     }
 
@@ -94,12 +96,13 @@ export class MasonryService {
     { host, config, state, emitter = null, debug = false }: MasonryUpdateConfig
   ): void {
     if (false && debug) {
-      console.log(
+      log.me(
         `updateElementsRowSpan: will process ${
           elements.length
         } elements - in ${Math.ceil(
           elements.length / Math.min(elements.length, 15)
-        )} batches of ${Math.min(elements.length, 15)} items`
+        )} batches of ${Math.min(elements.length, 15)} items`,
+        'MasonryLayoutComponent'
       );
     }
 

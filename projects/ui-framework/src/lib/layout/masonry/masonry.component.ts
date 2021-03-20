@@ -23,6 +23,7 @@ import {
   cloneDeepSimpleObject,
   unsubscribeArray,
 } from '../../services/utils/functional-utils';
+import { log } from '../../services/utils/logger';
 
 @Component({
   selector: 'b-masonry-item, [b-masonry-item]',
@@ -65,7 +66,13 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
   private readonly subs: Subscription[] = [];
   private elementsToUpdate: Set<HTMLElement> = new Set();
 
+  private logger: log;
+
   ngOnInit() {
+    if (this.debug) {
+      this.logger = new log('Masonry');
+    }
+
     this.zone.runOutsideAngular(() => {
       this.subs.push(
         (this.updater = merge(
@@ -75,7 +82,7 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
               this.state.config = undefined;
 
               if (this.debug) {
-                console.log('Masonry: new config:', this.config);
+                this.logger.info('new config:', this.config);
               }
             })
           ),
@@ -108,8 +115,8 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
             .pipe(
               tap(() => {
                 if (this.debug) {
-                  console.log(
-                    `Masonry: host resized, prev hostWidth: ${this.state.hostWidth}, new hostWidth: ${this.hostEl.offsetWidth}`
+                  this.logger.info(
+                    `host resized, prev hostWidth: ${this.state.hostWidth}, new hostWidth: ${this.hostEl.offsetWidth}`
                   );
                 }
                 this.state.hostWidth = this.hostEl.offsetWidth;
@@ -137,8 +144,8 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
               }
 
               if (this.debug) {
-                console.log(
-                  `Masonry: hostWidth (${this.state.hostWidth}) too narrow for more than 1 column (of min-width ${this.config.columnWidth}), converting to single column`
+                this.logger.info(
+                  `hostWidth (${this.state.hostWidth}) too narrow for more than 1 column (of min-width ${this.config.columnWidth}), converting to single column`
                 );
               }
 
@@ -155,7 +162,7 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
             }
 
             if (this.debug) {
-              console.log(
+              this.logger.info(
                 'Masonry update: ' + this.elementsToUpdate.size + ' items.'
               );
             }
@@ -181,7 +188,7 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
 
   public init(config: MasonryConfig = this.config): void {
     if (this.debug) {
-      console.log('Masonry: init');
+      this.logger.info('init');
     }
     if (!this.updater) {
       this.ngOnInit();
@@ -197,7 +204,7 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
 
   public destroy(fullCleanup = true): void {
     if (this.debug) {
-      console.log('Masonry: destroy');
+      this.logger.info('destroy');
     }
     unsubscribeArray(this.subs);
 

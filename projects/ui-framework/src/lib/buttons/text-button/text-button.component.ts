@@ -1,9 +1,5 @@
-import {
-  Component,
-  Input,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone } from '@angular/core';
+
 import { IconColor } from '../../icons/icons.enum';
 import { LinkColor } from '../../indicators/link/link.enum';
 import { BaseButtonElement } from '../button.abstract';
@@ -13,12 +9,12 @@ import { ButtonType } from '../buttons.enum';
   selector: 'b-text-button, [b-text-button]',
   template: `
     <span
+      #button
       role="button"
       class="text-button"
       [ngClass]="buttonClass"
       [attr.data-icon-before]="icn || null"
       [attr.data-icon-before-size]="icn ? iconSize.medium : null"
-      (click)="onClick($event)"
     >
       {{ text }}
       <ng-content></ng-content>
@@ -29,8 +25,8 @@ import { ButtonType } from '../buttons.enum';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextButtonComponent extends BaseButtonElement {
-  constructor(protected cd: ChangeDetectorRef) {
-    super(cd);
+  constructor(protected cd: ChangeDetectorRef, protected zone: NgZone) {
+    super(cd, zone);
 
     this.typeDefault = ButtonType.secondary;
   }
@@ -45,15 +41,12 @@ export class TextButtonComponent extends BaseButtonElement {
     [ButtonType.negative]: 'b-icon-' + IconColor.negative,
   };
 
-  getButtonClass(): string {
+  protected getButtonClass(): string {
     return (
       (this.color === LinkColor.primary ? 'color-primary ' : '') +
       (this.disabled ? 'disabled ' : '') +
       (this.icon
-        ? ' ' +
-          (this.color === LinkColor.primary
-            ? 'b-icon-' + IconColor.primary
-            : this.iconColorMap[this.type])
+        ? ' ' + (this.color === LinkColor.primary ? 'b-icon-' + IconColor.primary : this.iconColorMap[this.type])
         : '')
     );
   }

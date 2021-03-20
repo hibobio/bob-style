@@ -1,18 +1,16 @@
-import { storiesOf } from '@storybook/angular';
-import { text, select, boolean, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
-import { ButtonsModule } from '../buttons.module';
-import { ButtonType, ButtonSize } from '../buttons.enum';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { Icons } from '../../icons/icons.enum';
+import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
 
+import { ComponentGroupType } from '../../consts';
+import { Icons } from '../../icons/icons.enum';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 // @ts-ignore: md file and not a module
 import buttonsProps from '../button.properties.md';
+import { ButtonSize, ButtonType } from '../buttons.enum';
+import { ButtonsModule } from '../buttons.module';
 
-const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
-  withKnobs
-);
+const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(withKnobs);
 
 const template = `<b-button
           [type]="type"
@@ -21,6 +19,9 @@ const template = `<b-button
           [disabled]="disabled"
           [active]="active"
           [preloader]="preloader"
+          [throttle]="throttle"
+          [swallow]="swallow"
+          (click)="regClick()"
           (clicked)="onClick($event)">
 </b-button>
 
@@ -100,6 +101,9 @@ story.add(
       active: boolean('active', false),
       icon: select('icon', [0, ...Object.values(Icons)], Icons.timeline),
       preloader: boolean('preloader', false),
+      throttle: number('throttle', 0),
+      swallow: boolean('swallow', false),
+      regClick: action('regular (click) binding - if swallow is true, you will not see this'),
     },
     moduleMetadata: {
       imports: [ButtonsModule, StoryBookLayoutModule],

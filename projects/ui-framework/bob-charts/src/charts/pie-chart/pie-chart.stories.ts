@@ -14,6 +14,7 @@ import { StoryBookLayoutModule } from '../../../../src/lib/story-book-layout/sto
 import { LINE_CHART_DATA_MOCK } from '../chart.mock';
 import { ChartLegendPositionEnum } from '../charts.interface';
 import { DonutSize } from '../../../../src/lib/indicators/progress/progress.enum';
+import { log } from '../../../../src/lib/services/utils/logger';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
@@ -131,7 +132,7 @@ story.add(
       template: storyTemplate,
       props: {
         tooltipTemplate: (component, point) => {
-          console.log('point: ', point);
+          log.inf(point, 'point');
           return `<b>${point.key}</b> - ${component.formatValue(point.y)}`;
         },
 
