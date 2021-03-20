@@ -288,6 +288,7 @@ export {
 
 // FormElements Module
 export { FormElementsModule } from './lib/form-elements/form-elements.module';
+export * from './lib/form-elements/form-elements.interface';
 export * from './lib/form-elements/form-elements.enum';
 export * from './lib/form-elements/form-elements.const';
 export { BaseFormElement } from './lib/form-elements/base-form-element';
