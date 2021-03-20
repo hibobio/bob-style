@@ -8,14 +8,11 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import {
-  BaseFormElement,
-  DOMInputEvent,
-  InputEventType,
-  OverlayPositionClasses,
-  Panel,
-  PanelDefaultPosVer,
-} from 'bob-style';
+import { BaseFormElement } from '../base-form-element'
+import { DOMInputEvent, OverlayPositionClasses } from '../../types';
+import { InputEventType } from '../form-elements.enum';
+import { Panel } from '../../popups/panel/panel.interface';
+import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { ListPanelService, OverlayEnabledComponent } from '../../lists/list-panel.service';
 import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
 import { TranslateService } from '@ngx-translate/core';
