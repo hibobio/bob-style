@@ -50,6 +50,7 @@ export class ColorPickerComponent extends BaseFormElement implements OnDestroy, 
     this.baseValue = '';
     this.wrapEvent = false;
   }
+  // test
 
   @ViewChild(CdkOverlayOrigin, { static: true }) overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
