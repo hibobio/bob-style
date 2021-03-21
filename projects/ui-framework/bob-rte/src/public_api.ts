@@ -2,7 +2,8 @@
  * Rich Text Editor
  */
 
-export { FroalaOptions, FroalaEditorInstance } from './rte/froala.interface';
+export * from './rte/froala.interface';
+export * from './rte/tribute.interface';
 export * from './rte/rte.const';
 export * from './rte/rte.enum';
 export * from './rte/rte.interface';

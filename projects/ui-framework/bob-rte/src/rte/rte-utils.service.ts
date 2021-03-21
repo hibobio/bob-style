@@ -1,24 +1,31 @@
+import Tribute from 'tributejs';
+
+import { Injectable, SecurityContext } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+
 import {
   DOMhelpers,
   escapeSafe,
   Func,
   HtmlParserHelpers,
+  isNotEmptyObject,
   joinArrays,
   SanitizerService,
   SelectGroupOption,
   stringyOrFail,
 } from 'bob-style';
-import { RteMentionsOption } from './rte.interface';
-import { Injectable, SecurityContext } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { BlotType, RTEMode } from './rte.enum';
+
+import { PlaceholdersConverterService } from './placeholders.service';
 import {
   RTE_CONTROLS_DEF,
   RTE_DISABLE_CONTROLS_DEF,
   RTE_HTML_CLEANUP_REPLACERS_INPUT,
   RTE_HTML_CLEANUP_REPLACERS_OUTPUT,
+  RTE_MENTIONS_OPTIONS_DEF,
 } from './rte.const';
-import { PlaceholdersConverterService } from './placeholders.service';
+import { BlotType, RTEMode } from './rte.enum';
+import { RteMentionsOption } from './rte.interface';
+import { TributeInstance, TributeItem } from './tribute.interface';
 
 // import { HtmlParserHelpers } from '../../../../ui-framework/src/lib/services/html/html-parser.service';
 
@@ -32,21 +39,12 @@ export class RteUtilsService {
     private placeholdersConverter: PlaceholdersConverterService
   ) {}
 
-  public getSanitizeMentions(
-    mentionsList: RteMentionsOption[]
-  ): RteMentionsOption[] {
+  public getSanitizeMentions(mentionsList: RteMentionsOption[]): RteMentionsOption[] {
     return mentionsList.map((mentionListItem) => {
       return {
         displayName: escapeSafe(mentionListItem.displayName),
-        link:
-          mentionListItem.link &&
-          this.domSanitizer.sanitize(SecurityContext.URL, mentionListItem.link),
-        avatar:
-          mentionListItem.avatar &&
-          this.domSanitizer.sanitize(
-            SecurityContext.URL,
-            mentionListItem.avatar
-          ),
+        link: mentionListItem.link && this.domSanitizer.sanitize(SecurityContext.URL, mentionListItem.link),
+        avatar: mentionListItem.avatar && this.domSanitizer.sanitize(SecurityContext.URL, mentionListItem.avatar),
         attributes:
           mentionListItem.attributes &&
           Object.keys(mentionListItem.attributes).reduce((acc, key) => {
@@ -74,10 +72,7 @@ export class RteUtilsService {
     }
 
     if (controls.includes(BlotType.direction)) {
-      controls = joinArrays(controls, [
-        BlotType.rightToLeft,
-        BlotType.leftToRight,
-      ]);
+      controls = joinArrays(controls, [BlotType.rightToLeft, BlotType.leftToRight]);
     }
 
     if (disableControls.includes(BlotType.list)) {
@@ -85,19 +80,12 @@ export class RteUtilsService {
     }
 
     if (disableControls.includes(BlotType.direction)) {
-      disableControls = joinArrays(disableControls, [
-        BlotType.rightToLeft,
-        BlotType.leftToRight,
-      ]);
+      disableControls = joinArrays(disableControls, [BlotType.rightToLeft, BlotType.leftToRight]);
     }
 
-    controls = joinArrays(RTE_CONTROLS_DEF, [
-      BlotType.removeFormat,
-      BlotType.pasteAsText,
-    ]).filter(
+    controls = joinArrays(RTE_CONTROLS_DEF, [BlotType.removeFormat, BlotType.pasteAsText]).filter(
       (cntrl: BlotType) =>
-        (controls || RTE_CONTROLS_DEF).includes(cntrl) &&
-        !(disableControls || RTE_DISABLE_CONTROLS_DEF).includes(cntrl)
+        (controls || RTE_CONTROLS_DEF).includes(cntrl) && !(disableControls || RTE_DISABLE_CONTROLS_DEF).includes(cntrl)
     );
 
     return { controls, disableControls };
@@ -131,11 +119,7 @@ export class RteUtilsService {
                 css: true,
               }),
 
-            (value: string): string =>
-              this.parserService.cleanupHtml(
-                value,
-                RTE_HTML_CLEANUP_REPLACERS_INPUT
-              ),
+            (value: string): string => this.parserService.cleanupHtml(value, RTE_HTML_CLEANUP_REPLACERS_INPUT),
 
             (value: string): string | HTMLElement =>
               this.parserService.replaceElements(
@@ -151,10 +135,7 @@ export class RteUtilsService {
 
                   b: {
                     withFnc: (el: HTMLElement) =>
-                      el.style.fontWeight !== 'normal' &&
-                      el.style.fontWeight !== '400'
-                        ? 'strong'
-                        : 'span',
+                      el.style.fontWeight !== 'normal' && el.style.fontWeight !== '400' ? 'strong' : 'span',
                   },
 
                   pre: {
@@ -163,10 +144,7 @@ export class RteUtilsService {
 
                   span: {
                     withFnc: (el: HTMLElement) => {
-                      if (
-                        el.style.fontWeight === 'bold' ||
-                        parseInt(el.style.fontWeight, 10) > 500
-                      ) {
+                      if (el.style.fontWeight === 'bold' || parseInt(el.style.fontWeight, 10) > 500) {
                         return 'strong';
                       }
 
@@ -193,8 +171,7 @@ export class RteUtilsService {
                 true
               ),
 
-            (value: string | HTMLElement): string | HTMLElement =>
-              this.parserService.unwrapInlineElements(value, true),
+            (value: string | HTMLElement): string | HTMLElement => this.parserService.unwrapInlineElements(value, true),
 
             (value: string | HTMLElement): string =>
               this.parserService.enforceAttributes(
@@ -226,10 +203,7 @@ export class RteUtilsService {
               ) as string,
 
             (value: string): string =>
-              this.parserService.linkify(
-                value,
-                'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
-              ),
+              this.parserService.linkify(value, 'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'),
           ];
 
     const inputTransformers = [
@@ -238,8 +212,7 @@ export class RteUtilsService {
       ...(mode === RTEMode.plainText
         ? [(value: string): string => this.parserService.getPlainText(value)]
         : [
-            (value: string | HTMLElement): string | HTMLElement =>
-              this.parserService.unwrapInlineElements(value, true),
+            (value: string | HTMLElement): string | HTMLElement => this.parserService.unwrapInlineElements(value, true),
 
             (value: string): string | HTMLElement =>
               this.parserService.enforceAttributes(
@@ -257,11 +230,7 @@ export class RteUtilsService {
                 false
               ),
 
-            (value: string): string =>
-              this.parserService.cleanupHtml(
-                value,
-                RTE_HTML_CLEANUP_REPLACERS_INPUT
-              ),
+            (value: string): string => this.parserService.cleanupHtml(value, RTE_HTML_CLEANUP_REPLACERS_INPUT),
 
             (value: string | HTMLElement): string | HTMLElement =>
               this.parserService.replaceElements(
@@ -311,10 +280,7 @@ export class RteUtilsService {
               ) as string,
 
             (value: string): string =>
-              this.parserService.linkify(
-                value,
-                'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
-              ),
+              this.parserService.linkify(value, 'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'),
           ]),
     ];
 
@@ -337,8 +303,7 @@ export class RteUtilsService {
                   ...(mode === RTEMode.htmlInlineCSS
                     ? {
                         a: {
-                          style:
-                            'color: #fea54a; font-weight: 600; text-decoration: none;',
+                          style: 'color: #fea54a; font-weight: 600; text-decoration: none;',
                         },
                       }
                     : {}),
@@ -346,34 +311,46 @@ export class RteUtilsService {
                 false
               ) as string,
 
-            (value: string): string =>
-              this.parserService.cleanupHtml(
-                value,
-                RTE_HTML_CLEANUP_REPLACERS_OUTPUT
-              ),
+            (value: string): string => this.parserService.cleanupHtml(value, RTE_HTML_CLEANUP_REPLACERS_OUTPUT),
           ];
 
     mode === RTEMode.htmlInlineCSS &&
       outputTransformers.unshift(
-        (value: string): string =>
-          this.parserService.addLangAttributes(
-            value,
-            false,
-            ['hebrew'],
-            ['style']
-          ) as string
+        (value: string): string => this.parserService.addLangAttributes(value, false, ['hebrew'], ['style']) as string
       );
 
     if (placeholdersEnabled) {
-      inputTransformers.push((value: string): string =>
-        this.placeholdersConverter.toRte(value, placeholderList)
-      );
-      pasteTransformers.push((value: string): string =>
-        this.placeholdersConverter.toRte(value, placeholderList)
-      );
+      inputTransformers.push((value: string): string => this.placeholdersConverter.toRte(value, placeholderList));
+      pasteTransformers.push((value: string): string => this.placeholdersConverter.toRte(value, placeholderList));
       outputTransformers.unshift(this.placeholdersConverter.fromRte);
     }
 
     return { pasteTransformers, inputTransformers, outputTransformers };
+  }
+
+  public getTributeInstance(mentionsList: RteMentionsOption[]): TributeInstance {
+    return new Tribute({
+      ...RTE_MENTIONS_OPTIONS_DEF,
+
+      values: this.getSanitizeMentions(mentionsList),
+
+      selectTemplate: (item: TributeItem) => {
+        // prettier-ignore
+        // tslint:disable-next-line: max-line-length
+        let html = `<a href="${item.original.link}" class="fr-deletable" spellcheck="false" contenteditable="false" tabindex="-1">@${item.original.displayName}</a>`;
+
+        if (isNotEmptyObject(item.original.attributes)) {
+          html = this.parserService.enforceAttributes(
+            html,
+            {
+              a: item.original.attributes,
+            },
+            false
+          ) as string;
+        }
+
+        return html;
+      },
+    }) as TributeInstance;
   }
 }
