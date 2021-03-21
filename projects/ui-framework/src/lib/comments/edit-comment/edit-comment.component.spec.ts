@@ -1,29 +1,32 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { EditCommentComponent } from './edit-comment.component';
-import { COMMENT_ITEM, eventEnterShiftKey } from '../comments.mocks';
-import { AvatarModule } from '../../avatar/avatar/avatar.module';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
+import { COMMENT_ITEM, eventEnterShiftKey } from '../comments.mocks';
+import { EditCommentComponent } from './edit-comment.component';
 
 describe('EditCommentComponent', () => {
   let component: EditCommentComponent;
   let fixture: ComponentFixture<EditCommentComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [AvatarModule, MatTooltipModule],
-      declarations: [EditCommentComponent],
-      schemas: [NO_ERRORS_SCHEMA],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [AvatarModule, MatTooltipModule],
+        declarations: [EditCommentComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(EditCommentComponent);
+          component = fixture.componentInstance;
+          component.placeholder = 'text of placeholder';
+          component.comment = COMMENT_ITEM;
+          fixture.detectChanges();
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(EditCommentComponent);
-        component = fixture.componentInstance;
-        component.placeholder = 'text of placeholder';
-        component.comment = COMMENT_ITEM;
-        fixture.detectChanges();
-      });
-  }));
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -39,7 +42,8 @@ describe('EditCommentComponent', () => {
       expect(sendCommentSpy).toHaveBeenCalled();
     });
     it('should not run if shiftKey === false', () => {
-      component.commentInput.nativeElement.value = 'some input update';
+      (component.commentInput.nativeElement as HTMLTextAreaElement).value =
+        'some input update';
       fixture.detectChanges();
       component.enterPress(eventEnterShiftKey(false));
       expect(sendCommentSpy).toHaveBeenCalledWith({
