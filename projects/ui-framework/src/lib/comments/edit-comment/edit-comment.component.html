@@ -10,7 +10,8 @@
             [attr.placeholder]="placeholder || null"
             [attr.data-empty]="!value?.length"
             (blur)="onBlur()"
-            (keydown)="enterPress($event)"></textarea>
+            (keydown)="enterPress($event)"
+            (input)="onInputChange()"></textarea>
 
   <div #commentInput
        *ngIf="isHtml"
@@ -20,5 +21,6 @@
        [attr.data-placeholder]="placeholder || null"
        [attr.data-empty]="!value?.length"
        (blur)="onBlur()"
-       (keydown)="enterPress($event)"></div>
+       (keydown)="enterPress($event)"
+       (input)="onInputChange()"></div>
 </div>
