@@ -45,6 +45,7 @@ export class AlertService {
   }
 
   public showAlert(config: AlertConfig): ComponentRef<AlertComponent> {
+    console.log('config', config);
     this.closeAlertCallback();
 
     this.panel = this.panelService.createPanel({
@@ -55,7 +56,10 @@ export class AlertService {
     this.panel.portal = new ComponentPortal(AlertComponent, null);
     this.panel.componentRef = this.overlayRef.attach(this.panel.portal);
 
-    this.panel.componentRef.instance.alertConfig = { ...config };
+    this.panel.componentRef.instance.alertConfig = {
+      isAutoClose: true,
+      ...config,
+    };
     this.panel.componentRef.instance.closeAlertCallback = this.closeAlertCallback.bind(
       this
     );
