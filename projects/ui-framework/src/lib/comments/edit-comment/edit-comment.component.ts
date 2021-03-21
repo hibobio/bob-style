@@ -124,6 +124,7 @@ export class EditCommentComponent implements OnChanges, AfterViewInit, OnDestroy
     }
 
     if (eventHasMetaKey(event) && !this.isHtml) {
+      event.preventDefault();
       this.kbrdCntrlSrvc.insertNewLineAtCursor(this.input);
     }
   }
