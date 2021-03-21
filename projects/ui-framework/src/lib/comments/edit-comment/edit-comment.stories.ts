@@ -29,8 +29,7 @@ const name = mockName();
 
 const contentHTML = `Hello! This is a comment with a mention! <span contenteditable="false"><a href="https://www.google.com/search?q=Earum" spellcheck="false" tabindex="-1" mention-employee-id="e6c3f-0194" class="employee-mention" target="_blank" rel="noopener noreferrer">@Laine Ostler</a></span> is the best!`;
 
-const template = `
-<b-edit-comment
+const template = `<b-edit-comment
   [comment]="{
     content: mentionsList?.length ? contentHTML : content,
     avatar: avatar,
@@ -40,8 +39,8 @@ const template = `
   [placeholder]="placeholder"
   [autoFocus]="autoFocus"
   [mentionsList]="mentionsList"
-  (sendComment)="sendComment($event)"></b-edit-comment>
-`;
+  (sendComment)="sendComment($event)">
+</b-edit-comment>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Edit Comment'">
@@ -66,7 +65,7 @@ const note = `
   [updateOnBlur] | boolean | if true - will emit changes on input blur, if false - will emit on Enter key press | false
   [placeholder] | string | placeholder label | &nbsp;
   [autoFocus] | boolean | if true will focus input on init | false
-  (sendComment) | EventEmitter<CommentItemDto | emits {content} object on change | &nbsp;
+  (sendComment) | EventEmitter<wbr>&lt;CommentItemDto&gt; | emits {content} object on change | &nbsp;
   [mentionsList] | RteMentionsOption[] | pass an array of \
   { avatar, displayName, link, attributes? } \
   objects for mentions functionality (similar to RTE) | &nbsp;
