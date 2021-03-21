@@ -13,14 +13,29 @@
   padding: 11px 15px;
   transition: height, min-height 0.3s;
   will-change: height, min-height;
+  cursor: text;
 
   &:hover {
     transition-duration: 0.3s;
   }
 
-  &:focus {
+  &:focus,
+  &[data-empty='false'] {
     height: times8(10);
     min-height: times8(10);
     max-height: times8(10);
+  }
+
+  &[data-placeholder][data-empty='false'] {
+    &:before {
+      color: transparent;
+    }
+  }
+}
+
+:host ::ng-deep {
+  a.employee-mention,
+  [mention-employee-id] {
+    @include b-link($color-link-primary);
   }
 }

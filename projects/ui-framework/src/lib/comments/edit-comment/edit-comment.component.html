@@ -5,9 +5,20 @@
 
 <div class="bfe-wrap text-section">
   <textarea #commentInput
+            *ngIf="!isHtml"
             class="bfe-input bfe-textarea"
             [attr.placeholder]="placeholder || null"
-            [value]="comment?.content"
+            [attr.data-empty]="!value?.length"
             (blur)="onBlur()"
             (keydown)="enterPress($event)"></textarea>
+
+  <div #commentInput
+       *ngIf="isHtml"
+       contenteditable="true"
+       tabindex="0"
+       class="bfe-input bfe-textarea scroll-visible-alt"
+       [attr.data-placeholder]="placeholder || null"
+       [attr.data-empty]="!value?.length"
+       (blur)="onBlur()"
+       (keydown)="enterPress($event)"></div>
 </div>

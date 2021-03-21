@@ -38,12 +38,7 @@ $input-focus-border-color: $grey-700;
   }
 }
 
-@mixin input-border-colors(
-  $selector: '&',
-  $add: '',
-  $error-class: '.error',
-  $warn-class: '.warn'
-) {
+@mixin input-border-colors($selector: '&', $add: '', $error-class: '.error', $warn-class: '.warn') {
   @if $warn-class {
     #{$selector}#{$warn-class}#{$add} {
       border-color: $color-warn;
@@ -75,11 +70,7 @@ $input-focus-border-color: $grey-700;
   border-radius: inherit;
   margin: 0;
   outline: 0;
-  @include b-body(
-    $lineHeight: null,
-    $color: $body-text-color,
-    $addCssVars: false
-  );
+  @include b-body($lineHeight: null, $color: $body-text-color, $addCssVars: false);
   background: transparent;
   height: $height;
   line-height: $height;
@@ -131,6 +122,32 @@ $input-focus-border-color: $grey-700;
   }
 }
 
+@mixin bFormElement-placeholder {
+  &[data-placeholder] {
+    position: relative;
+  }
+
+  &::placeholder,
+  &[data-placeholder]:before {
+    color: $grey-600;
+    transition: opacity 0.2s;
+    @include text-truncate;
+    pointer-events: none;
+  }
+
+  &:focus::placeholder,
+  &[data-placeholder]:focus:before {
+    opacity: 0;
+  }
+
+  &[data-placeholder]:before {
+    @include size;
+    @include position(0 0 0 0);
+    padding: inherit;
+    content: attr(data-placeholder);
+  }
+}
+
 @mixin bFormElement($sel: ':host') {
   #{$sel} {
     @include bFormElement-basics;
@@ -149,28 +166,7 @@ $input-focus-border-color: $grey-700;
     .bfe-input {
       @include input-basics;
 
-      &[data-placeholder] {
-        position: relative;
-      }
-
-      &::placeholder,
-      &[data-placeholder]:before {
-        color: $grey-600;
-        transition: opacity 0.2s;
-        @include text-truncate;
-      }
-
-      &:focus::placeholder,
-      &[data-placeholder]:focus:before {
-        opacity: 0;
-      }
-
-      &[data-placeholder]:before {
-        @include size;
-        @include position(0 0 0 0);
-        padding: inherit;
-        content: attr(data-placeholder);
-      }
+      @include bFormElement-placeholder;
 
       &[readonly] {
         cursor: default;
