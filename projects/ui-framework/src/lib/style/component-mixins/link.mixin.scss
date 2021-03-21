@@ -2,6 +2,7 @@
   font-weight: 600;
   color: $color;
   text-decoration: none;
+  user-select: text;
 
   @if $color == inherit {
     &.primary {

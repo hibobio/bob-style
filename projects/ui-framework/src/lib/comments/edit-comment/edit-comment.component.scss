@@ -32,9 +32,3 @@
     }
   }
 }
-
-:host ::ng-deep {
-  a {
-    @include b-link($color-link-primary);
-  }
-}

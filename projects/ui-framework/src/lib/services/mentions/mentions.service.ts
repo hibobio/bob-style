@@ -88,7 +88,7 @@ export class MentionsService {
         } spellcheck="false" tabindex="-1">@${item.original.displayName}</a>`;
 
         if (mode === 'div') {
-          html = ` <span contenteditable="false">${html}</span> `;
+          html = `&nbsp;<span contenteditable="false">${html}</span>`;
         }
 
         if (isNotEmptyObject(item.original.attributes)) {
