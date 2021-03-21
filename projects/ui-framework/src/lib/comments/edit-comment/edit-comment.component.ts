@@ -151,7 +151,9 @@ export class EditCommentComponent implements OnChanges, AfterViewInit, OnDestroy
 
   private updateCommentAndResetValue(): void {
     this.sendComment.emit({
-      content: !this.isHtml ? this.value : this.sanitizer.sanitizeHtml(this.value, HTML_COMMENT_SANITIZER_OPTIONS),
+      content: !this.isHtml
+        ? this.inputValue
+        : this.sanitizer.sanitizeHtml(this.inputValue, HTML_COMMENT_SANITIZER_OPTIONS),
     });
     this.value = this.inputValue = '';
   }

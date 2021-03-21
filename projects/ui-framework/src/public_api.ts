@@ -633,6 +633,9 @@ export { InViewModule, InViewDirective } from './lib/services/utils/inview.direc
 export { ClickOutsideModule, ClickOutsideDirective } from './lib/services/utils/clickOutside.directive';
 export { DoubleClickModule, DoubleClickDirective } from './lib/services/utils/clickDouble.directive';
 export { WindowKeydownModule, WindowKeydownDirective } from './lib/services/utils/windowKeydown.directive';
+// Mentions
+export * from './lib/services/mentions/mentions.service';
+export * from './lib/services/mentions/tribute.interface';
 
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
