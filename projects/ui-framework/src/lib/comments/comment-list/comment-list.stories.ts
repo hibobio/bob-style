@@ -1,12 +1,19 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+import { object, withKnobs } from '@storybook/addon-knobs';
 import { moduleMetadata, storiesOf } from '@storybook/angular';
-// @ts-ignore
-import * as readme from './README.md';
-import { withKnobs, object, text } from '@storybook/addon-knobs';
+
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { COMMENT_ITEM, LONG_COMMENT_ITEM } from '../comments.mocks';
+import {
+  COMMENT_ITEM,
+  HTML_COMMENT,
+  LONG_COMMENT_ITEM,
+} from '../comments.mocks';
 import { CommentsModule } from '../comments.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommentListComponent } from './comment-list.component';
+// @ts-ignore
+import * as readme from './README.md';
 
 const story = storiesOf(ComponentGroupType.Comments, module).addDecorator(
   withKnobs
@@ -24,7 +31,25 @@ story
   .addDecorator(
     moduleMetadata({
       declarations: [],
-      imports: [StoryBookLayoutModule, BrowserAnimationsModule, CommentsModule],
+      imports: [
+        StoryBookLayoutModule,
+        BrowserAnimationsModule,
+        CommentsModule,
+
+        RouterModule.forRoot(
+          [
+            {
+              path: '',
+              component: CommentListComponent,
+            },
+            {
+              path: 'employee-profile/:id',
+              component: CommentListComponent,
+            },
+          ],
+          { useHash: true }
+        ),
+      ],
       providers: [],
       schemas: [],
     })
@@ -34,11 +59,12 @@ story
     () => ({
       template: storyTemplate,
       props: {
-        comments: object('comments', [
+        commentsNote: object('comments', [
           COMMENT_ITEM,
           LONG_COMMENT_ITEM,
-          COMMENT_ITEM,
+          HTML_COMMENT,
         ]),
+        comments: [COMMENT_ITEM, LONG_COMMENT_ITEM, HTML_COMMENT],
       },
     }),
     {

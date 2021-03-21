@@ -37,6 +37,6 @@
     </div>
     <div *ngIf="comment?.content"
          class="comment-body"
-         [innerHtml]="comment?.content | linkify"></div>
+         #commentContent></div>
   </div>
 </div>

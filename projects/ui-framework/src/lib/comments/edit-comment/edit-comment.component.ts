@@ -17,57 +17,69 @@ import { Keys } from '../../enums';
 import { InputTypes } from '../../form-elements/input/input.enum';
 // tslint:disable-next-line: max-line-length
 import { FormElementKeyboardCntrlService } from '../../form-elements/services/keyboard-cntrl.service';
+import { HTML_TAG_TEST } from '../../services/html/html-parser.const';
 import {
-  FilterXSSOptions,
-  SANITIZER_ALLOWED_ATTRS,
-  SANITIZER_FILTER_XSS_OPTIONS,
-  SanitizerService,
-} from '../../services/html/sanitizer.service';
-import { MentionsOption, MentionsService } from '../../services/mentions/mentions.service';
+  MentionsOption,
+  MentionsService,
+} from '../../services/mentions/mentions.service';
 import { TributeInstance } from '../../services/mentions/tribute.interface';
-import { eventHasMetaKey, hasChanges, isKey, notFirstChanges } from '../../services/utils/functional-utils';
+import {
+  eventHasMetaKey,
+  hasChanges,
+  isKey,
+  notFirstChanges,
+} from '../../services/utils/functional-utils';
+import { COMMENT_EQ_CHECK, MENTIONS_LIST_EQ_CHECK } from '../comments.const';
 import { CommentItem, CommentItemDto } from '../comments.interface';
-
-export const HTML_COMMENT_SANITIZER_OPTIONS: Partial<FilterXSSOptions> = {
-  whiteList: {
-    ...SANITIZER_FILTER_XSS_OPTIONS.whiteList,
-    a: SANITIZER_ALLOWED_ATTRS.filter((a) => a !== 'style'),
-  },
-};
+import { CommentsUtilService } from '../comments.service';
 
 @Component({
   selector: 'b-edit-comment',
   templateUrl: './edit-comment.component.html',
-  styleUrls: ['../../form-elements/input/input.component.scss', '../comments.scss', './edit-comment.component.scss'],
+  styleUrls: [
+    '../../form-elements/input/input.component.scss',
+    '../comments.scss',
+    './edit-comment.component.scss',
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [CommentsUtilService],
 })
-export class EditCommentComponent implements OnChanges, AfterViewInit, OnDestroy {
+export class EditCommentComponent
+  implements OnChanges, AfterViewInit, OnDestroy {
   constructor(
     private kbrdCntrlSrvc: FormElementKeyboardCntrlService,
     private mentionsService: MentionsService,
-    private sanitizer: SanitizerService
+    private commentsUtilService: CommentsUtilService
   ) {}
 
-  @ViewChild('commentInput', { static: false }) commentInput: ElementRef;
+  @ViewChild('commentInput', { static: false }) commentInput: ElementRef<
+    HTMLTextAreaElement | HTMLDivElement
+  >;
 
-  @Input() autoFocus = false;
   @Input() placeholder: string;
   @Input() comment: CommentItem;
+
+  @Input() autoFocus = false;
   @Input() updateOnBlur = false;
 
   @Input() public mentionsList: MentionsOption[];
 
-  @Output() sendComment: EventEmitter<CommentItemDto> = new EventEmitter<CommentItemDto>();
+  @Output() sendComment: EventEmitter<CommentItemDto> = new EventEmitter<
+    CommentItemDto
+  >();
 
   readonly inputTypes = InputTypes;
   readonly avatarSize = AvatarSize;
 
-  public get input(): HTMLInputElement {
+  public get input(): HTMLTextAreaElement | HTMLDivElement {
     return this.commentInput?.nativeElement;
   }
 
   public get isHtml(): boolean {
-    return Boolean(this.tribute || this.mentionsList?.length);
+    return (
+      Boolean(this.tribute || this.mentionsList?.length) ||
+      HTML_TAG_TEST.test(this.comment?.content)
+    );
   }
 
   public value: string;
@@ -83,12 +95,25 @@ export class EditCommentComponent implements OnChanges, AfterViewInit, OnDestroy
   public tribute: TributeInstance;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (hasChanges(changes, ['comment'])) {
-      this.value = this.inputValue = !this.isHtml
-        ? this.comment.content
-        : this.sanitizer.sanitizeHtml(this.comment.content, HTML_COMMENT_SANITIZER_OPTIONS);
+    if (
+      hasChanges(changes, ['comment'], false, {
+        checkEquality: true,
+        equalCheck: COMMENT_EQ_CHECK,
+      })
+    ) {
+      this.value = this.inputValue = this.commentsUtilService.sanitizeValue(
+        this.comment?.content,
+        this.isHtml,
+        true
+      );
     }
-    if (notFirstChanges(changes, ['mentionsList'])) {
+
+    if (
+      notFirstChanges(changes, ['mentionsList'], false, {
+        checkEquality: true,
+        equalCheck: MENTIONS_LIST_EQ_CHECK,
+      })
+    ) {
       if (!this.tribute) {
         this.initMentions();
       } else if (this.mentionsList?.length) {
@@ -134,7 +159,7 @@ export class EditCommentComponent implements OnChanges, AfterViewInit, OnDestroy
 
     if (eventHasMetaKey(event) && !this.isHtml) {
       event.preventDefault();
-      this.kbrdCntrlSrvc.insertNewLineAtCursor(this.input);
+      this.kbrdCntrlSrvc.insertNewLineAtCursor(<HTMLTextAreaElement>this.input);
     }
   }
 
@@ -145,15 +170,20 @@ export class EditCommentComponent implements OnChanges, AfterViewInit, OnDestroy
   }
 
   private initMentions(): void {
-    this.tribute = this.mentionsService.getTributeInstance(this.mentionsList, 'div');
+    this.tribute = this.mentionsService.getTributeInstance(
+      this.mentionsList,
+      'div'
+    );
     this.tribute.attach(this.input);
   }
 
   private updateCommentAndResetValue(): void {
     this.sendComment.emit({
-      content: !this.isHtml
-        ? this.inputValue
-        : this.sanitizer.sanitizeHtml(this.inputValue, HTML_COMMENT_SANITIZER_OPTIONS),
+      content: this.commentsUtilService.sanitizeValue(
+        this.inputValue,
+        this.isHtml,
+        false
+      ),
     });
     this.value = this.inputValue = '';
   }

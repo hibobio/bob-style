@@ -1,11 +1,11 @@
+import * as xss from 'xss';
+
 import { Injectable } from '@angular/core';
-import { isString, chainCall } from '../utils/functional-utils';
+
+import { chainCall, isString } from '../utils/functional-utils';
 import { HtmlParserHelpers } from './html-parser.service';
 
-import * as xss from 'xss';
-import { IFilterXSSOptions, ICSSFilter } from 'xss';
-
-export interface FilterXSSOptions extends IFilterXSSOptions {
+export interface FilterXSSOptions extends xss.IFilterXSSOptions {
   css?: { whiteList: { [key: string]: boolean } } | boolean;
 }
 
@@ -109,7 +109,7 @@ export const SANITIZER_FILTER_XSS_OPTIONS: FilterXSSOptions = {
 export class SanitizerService {
   constructor(private htmlParser: HtmlParserHelpers) {}
 
-  private htmlSanitizer: ICSSFilter;
+  private htmlSanitizer: xss.ICSSFilter;
 
   private htmlSanitizeChain = [
     //

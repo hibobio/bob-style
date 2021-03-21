@@ -34,8 +34,7 @@
 }
 
 :host ::ng-deep {
-  a.employee-mention,
-  [mention-employee-id] {
+  a {
     @include b-link($color-link-primary);
   }
 }

@@ -16,6 +16,8 @@ export const FONTSIZE_KEY_TO_NUM_MAP = {
 
 export const STYLES_KEEP_ON_DIV = ['text-align', 'direction'];
 
+export const HTML_TAG_TEST = /<\/?[a-z][\s\S]*>/i;
+
 export const LANGUAGE_TESTS: Record<HtmlLangs, RegExp> = {
   hebrew: /[\u0590-\u05FF]/,
   russian: /[а-яА-ЯЁё]/,

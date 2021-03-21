@@ -10,7 +10,7 @@
     "trailingComma": "multiLine",
     "maximumNumberOfImportExpressionsPerLine": {
       "type": "newLineEachExpressionAfterCountLimitExceptIfOnlyOne",
-      "count": 120
+      "count": 80
     },
     "numberOfEmptyLinesAfterAllImports": 1
   },

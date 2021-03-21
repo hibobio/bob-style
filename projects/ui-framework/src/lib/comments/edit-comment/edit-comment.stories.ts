@@ -8,9 +8,12 @@ import { mockAvatar, mockName, mockNames, mockText } from '../../mock.const';
 import { MentionsOption } from '../../services/mentions/mentions.service';
 import { simpleUID } from '../../services/utils/functional-utils';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { HTML_COMMENT_TEXT } from '../comments.mocks';
 import { CommentsModule } from '../comments.module';
 
-const story = storiesOf(ComponentGroupType.Comments, module).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Comments, module).addDecorator(
+  withKnobs
+);
 
 const mentionsOptions = mockNames(200).map(
   (name: string): MentionsOption => ({
@@ -26,8 +29,6 @@ const mentionsOptions = mockNames(200).map(
 
 const avatar = mockAvatar();
 const name = mockName();
-
-const contentHTML = `Hello! This is a comment with a mention! <span contenteditable="false"><a href="https://www.google.com/search?q=Earum" spellcheck="false" tabindex="-1" mention-employee-id="e6c3f-0194" class="employee-mention" target="_blank" rel="noopener noreferrer">@Laine Ostler</a></span> is the best!`;
 
 const template = `<b-edit-comment
     [comment]="{
@@ -79,25 +80,23 @@ story.add(
       props: {
         sendComment: action('Send comment click'),
 
+        mentionsList: object('mentionsList', mentionsOptions, 'Data'),
+
+        contentHTML: HTML_COMMENT_TEXT,
+        content: text('content', 'First comment!', 'Props'),
+        name: text('name', name, 'Props'),
+        avatar: text('avatar', avatar, 'Props'),
+
         placeholder: text('placeholder', 'Write your comment here.', 'Props'),
         autoFocus: boolean('autoFocus', true, 'Props'),
         updateOnBlur: boolean('updateOnBlur', false, 'Props'),
-        comment: object(
-          'comment',
-          {
-            content: 'First comment!',
-            avatar: avatar,
-            name: name,
-          },
-          'Props'
-        ),
-        mentionsList: object('mentionsList', mentionsOptions, 'Data'),
-        contentHTML: contentHTML,
-        content: 'First comment!',
-        avatar: avatar,
       },
       moduleMetadata: {
-        imports: [StoryBookLayoutModule, BrowserAnimationsModule, CommentsModule],
+        imports: [
+          StoryBookLayoutModule,
+          BrowserAnimationsModule,
+          CommentsModule,
+        ],
       },
     };
   },

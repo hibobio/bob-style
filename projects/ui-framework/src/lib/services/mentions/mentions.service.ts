@@ -7,7 +7,11 @@ import { GenericObject } from '../../types';
 import { HtmlParserHelpers } from '../html/html-parser.service';
 import { isNotEmptyObject } from '../utils/functional-utils';
 import { escapeSafe } from '../utils/security-utils';
-import { TributeInstance, TributeItem, TributeOptions } from './tribute.interface';
+import {
+  TributeInstance,
+  TributeItem,
+  TributeOptions,
+} from './tribute.interface';
 
 export interface MentionsOption {
   id?: string | number;
@@ -39,14 +43,24 @@ export const MENTIONS_OPTIONS_DEF: TributeOptions = {
   providedIn: 'root',
 })
 export class MentionsService {
-  constructor(private domSanitizer: DomSanitizer, private parserService: HtmlParserHelpers) {}
+  constructor(
+    private domSanitizer: DomSanitizer,
+    private parserService: HtmlParserHelpers
+  ) {}
 
   public getSanitizeMentions(mentionsList: MentionsOption[]): MentionsOption[] {
     return mentionsList.map((mentionListItem) => {
       return {
         displayName: escapeSafe(mentionListItem.displayName),
-        link: mentionListItem.link && this.domSanitizer.sanitize(SecurityContext.URL, mentionListItem.link),
-        avatar: mentionListItem.avatar && this.domSanitizer.sanitize(SecurityContext.URL, mentionListItem.avatar),
+        link:
+          mentionListItem.link &&
+          this.domSanitizer.sanitize(SecurityContext.URL, mentionListItem.link),
+        avatar:
+          mentionListItem.avatar &&
+          this.domSanitizer.sanitize(
+            SecurityContext.URL,
+            mentionListItem.avatar
+          ),
         attributes:
           mentionListItem.attributes &&
           Object.keys(mentionListItem.attributes).reduce((acc, key) => {
@@ -57,7 +71,10 @@ export class MentionsService {
     });
   }
 
-  public getTributeInstance(mentionsList: MentionsOption[], mode: 'rte' | 'div' = 'rte'): TributeInstance {
+  public getTributeInstance(
+    mentionsList: MentionsOption[],
+    mode: 'rte' | 'div' = 'rte'
+  ): TributeInstance {
     return new Tribute({
       ...MENTIONS_OPTIONS_DEF,
 
@@ -71,7 +88,7 @@ export class MentionsService {
         } spellcheck="false" tabindex="-1">@${item.original.displayName}</a>`;
 
         if (mode === 'div') {
-          html = `<span contenteditable="false">${html}</span>`;
+          html = ` <span contenteditable="false">${html}</span> `;
         }
 
         if (isNotEmptyObject(item.original.attributes)) {

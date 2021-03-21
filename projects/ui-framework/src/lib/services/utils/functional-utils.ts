@@ -18,8 +18,10 @@ import {
 } from 'rxjs';
 import { AnonymousSubject } from 'rxjs/internal/Subject';
 import { delay, take } from 'rxjs/operators';
+
 import { ElementRef, SimpleChange, SimpleChanges, Type } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
+
 import { controlKeys, KEYCODES, Keys, metaKeys } from '../../enums';
 import { SelectGroupOption } from '../../lists/list.interface';
 import { Color, GenericObject, SortType } from '../../types';
@@ -1609,7 +1611,7 @@ export interface ChangesHelperConfig {
   checkEquality?: boolean;
 
   truthyCheck?: (val: unknown) => boolean;
-  equalCheck?: <T = unknown>(valA: T, valB: T) => boolean;
+  equalCheck?: (valA: unknown, valB: unknown) => boolean;
   transform?: { [prop: string]: (val: any) => any };
 }
 

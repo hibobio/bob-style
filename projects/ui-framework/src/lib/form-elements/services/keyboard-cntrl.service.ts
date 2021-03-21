@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+
 import { controlKeys, Keys } from '../../enums';
 import {
-  isNumber,
   eventHasCntrlKey,
+  isNumber,
 } from '../../services/utils/functional-utils';
 
 export interface InputCursorState {
@@ -42,7 +43,9 @@ export class FormElementKeyboardCntrlService {
     }
   }
 
-  public insertNewLineAtCursor(inputEl: HTMLInputElement): string {
+  public insertNewLineAtCursor(
+    inputEl: HTMLInputElement | HTMLTextAreaElement
+  ): string {
     const cursorPos = inputEl.selectionStart;
 
     if (!isNumber(cursorPos)) {
@@ -59,7 +62,9 @@ export class FormElementKeyboardCntrlService {
     return inputEl.value;
   }
 
-  public getInputCursorState(inputEl: HTMLInputElement): InputCursorState {
+  public getInputCursorState(
+    inputEl: HTMLInputElement | HTMLTextAreaElement
+  ): InputCursorState {
     const value = inputEl.value,
       valueLength = inputEl.value.length,
       selectionStart = inputEl.selectionStart,
@@ -82,7 +87,10 @@ export class FormElementKeyboardCntrlService {
     };
   }
 
-  public setCursorAtIndex(inputEl: HTMLInputElement, index?: number): void {
+  public setCursorAtIndex(
+    inputEl: HTMLInputElement | HTMLTextAreaElement,
+    index?: number
+  ): void {
     inputEl.selectionStart = inputEl.selectionEnd = Math.max(index || 0, 0);
   }
 }

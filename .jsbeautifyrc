@@ -5,7 +5,7 @@
   "preserve_newlines": true,
   "keep_array_indentation": true,
   "break_chained_methods": true,
-  "wrap_line_length": 120,
+  "wrap_line_length": 80,
   "end_with_newline": true,
   "brace_style": "collapse,preserve-inline",
   "wrap_attributes": "force-aligned",
