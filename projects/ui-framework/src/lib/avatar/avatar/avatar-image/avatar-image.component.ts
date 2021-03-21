@@ -168,7 +168,7 @@ on b-avatar-image element.`,
           '--bg-color': this.backgroundColor || null,
           '--avatar-image':
             this.imageSource && !this.imageSource.includes('emptyAvatar')
-              ? `url(${this.imageSource}), var(--avatar-image-def)`
+              ? `url(${this.imageSource}),var(--avatar-image-def)`
               : null,
         });
 

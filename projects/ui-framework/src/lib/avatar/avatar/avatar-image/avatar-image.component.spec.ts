@@ -46,7 +46,7 @@ const defautlAttrs: AttrCheck = {
 };
 
 const defaultAttrsWithImg: Partial<AttrCheck> = {
-  varImg: `url(${emptyFilestackImg}), var(--avatar-image-def)`,
+  varImg: `url(${emptyFilestackImg}),`,
   iconBefore: null,
   iconBeforeColor: 'white',
 };
@@ -70,7 +70,7 @@ const checkAttrubutes = (elem: HTMLElement, expected: Partial<AttrCheck> = defau
     class: trim(elem.className) || null,
     varSize: trim(DOMhelpers.prototype.getElementCSSvar(elem, '--avatar-size')) || null,
     varBgColor: trim(DOMhelpers.prototype.getElementCSSvar(elem, '--bg-color')) || '#f3f2f2',
-    varImg: trim(DOMhelpers.prototype.getElementCSSvar(elem, '--avatar-image')) || 'none',
+    varImg: trim(DOMhelpers.prototype.getElementCSSvar(elem, '--avatar-image').split(' ')[0]) || 'none',
   };
 
   return isEqual(expected, reality) || reality;
