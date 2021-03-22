@@ -26,6 +26,9 @@ export const MENTIONS_LIST_EQ_CHECK = (
 ): boolean => {
   const randomIndex = randomNumber(0, a?.length || 0);
   return (
-    a?.length === b?.length && (!a || a[randomIndex]?.id === b[randomIndex]?.id)
+    a?.length === b?.length &&
+    (!a ||
+      (a[randomIndex]?.id || a[randomIndex]?.displayName) ===
+        (b[randomIndex]?.id || b[randomIndex]?.displayName))
   );
 };
