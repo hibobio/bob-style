@@ -1,36 +1,38 @@
-import { Injectable } from '@angular/core';
 import { cloneDeep } from 'lodash';
+
+import { Injectable } from '@angular/core';
+
+import { AvatarSize } from '../../avatar/avatar/avatar.enum';
+import { Avatar } from '../../avatar/avatar/avatar.interface';
+import { FORM_ELEMENT_HEIGHT } from '../../form-elements/form-elements.const';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { Icon } from '../../icons/icon.interface';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import {
+  arrayFlatten,
+  getMatcher,
+  hasProp,
+  isArray,
+  isBoolean,
+  isEmptyArray,
+  isNotEmptyArray,
+  isNullOrUndefined,
+  isNumber,
+  normalizeString,
+  objectRemoveKey,
+} from '../../services/utils/functional-utils';
 import {
   LIST_EL_HEIGHT,
   LIST_FOOTER_HEIGHT,
   SELECT_MAX_ITEMS,
 } from '../list.consts';
 import {
-  ListOption,
+  itemID,
   ListHeader,
+  ListOption,
   SelectGroupOption,
   SelectOption,
-  itemID,
 } from '../list.interface';
-import {
-  arrayFlatten,
-  isNullOrUndefined,
-  isNotEmptyArray,
-  isArray,
-  hasProp,
-  isEmptyArray,
-  isBoolean,
-  objectRemoveKey,
-  isNumber,
-  normalizeString,
-  getMatcher,
-} from '../../services/utils/functional-utils';
-import { FormElementSize } from '../../form-elements/form-elements.enum';
-import { FORM_ELEMENT_HEIGHT } from '../../form-elements/form-elements.const';
-import { Icon } from '../../icons/icon.interface';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { Avatar } from '../../avatar/avatar/avatar.interface';
-import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 
 interface GetHeadersModelConfig {
   collapseHeaders?: boolean;
@@ -317,7 +319,9 @@ export class ListModelService {
     color: IconColor = IconColor.dark
   ): Icon {
     const optionIcon: Icon | Icons =
-      option?.icon || option?.prefixComponent?.attributes?.icon;
+      option?.icon ||
+      option?.avatar?.icon ||
+      option?.prefixComponent?.attributes?.icon;
     const iconSize =
       size === FormElementSize.smaller ? IconSize.medium : IconSize.large;
 
@@ -344,7 +348,9 @@ export class ListModelService {
     const prefixComponent = option?.prefixComponent?.attributes;
     let optionAvatar: Avatar =
       option?.avatar ||
-      ((prefixComponent?.imageSource || prefixComponent?.icon) &&
+      ((prefixComponent?.imageSource ||
+        prefixComponent?.icon ||
+        prefixComponent?.backgroundColor) &&
         prefixComponent);
 
     optionAvatar = optionAvatar && {

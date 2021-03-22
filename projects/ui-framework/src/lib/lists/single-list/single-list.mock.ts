@@ -1,11 +1,15 @@
-import { SelectGroupOption } from '../list.interface';
-import { makeArray, simpleUID } from '../../services/utils/functional-utils';
-import { mockAvatar, mockName, mockJobs, mockText } from '../../mock.const';
-import { randomNumber } from '../../services/utils/functional-utils';
 import { cloneDeep } from 'lodash';
+
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { IconColor, Icons } from '../../icons/icons.enum';
 import { SwitchToggleComponent } from '../../indicators/switch-toggle/switch-toggle.component';
+import { mockAvatar, mockJobs, mockName, mockText } from '../../mock.const';
+import {
+  makeArray,
+  randomNumber,
+  simpleUID,
+} from '../../services/utils/functional-utils';
+import { SelectGroupOption } from '../list.interface';
 
 const mayBeSelected = (perc = 80) => {
   return randomNumber() > perc;
@@ -142,9 +146,14 @@ export const optionsMock: SelectGroupOption[] = [
           disabled: false,
           prefixComponent: {
             component: AvatarImageComponent,
-            attributes: {
-              imageSource: mockAvatar(),
-            },
+            attributes:
+              index === 0 && i === 0
+                ? {
+                    backgroundColor: 'red',
+                  }
+                : {
+                    imageSource: mockAvatar(),
+                  },
           },
           someOptionData: simpleUID(),
           description: mayBeSelected(35) ? mockText(10) : null,
