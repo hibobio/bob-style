@@ -1,27 +1,28 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
+
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import {
+  batchProcess,
+  cloneDeepSimpleObject,
+  isNumber,
+  joinArrays,
+} from '../../services/utils/functional-utils';
+import { log } from '../../services/utils/logger';
+import {
+  MASONRY_COLS_DEF,
+  MASONRY_CONFIG_DEF,
+  MASONRY_GAP_DEF,
+  MASONRY_ROW_DIVISION_DEF,
+} from './masonry.const';
 import {
   MasonryConfig,
   MasonryState,
   MasonryUpdateConfig,
 } from './masonry.interface';
-import {
-  isNumber,
-  batchProcess,
-  joinArrays,
-  cloneDeepSimpleObject,
-} from '../../services/utils/functional-utils';
-import {
-  MASONRY_CONFIG_DEF,
-  MASONRY_GAP_DEF,
-  MASONRY_COLS_DEF,
-  MASONRY_ROW_DIVISION_DEF,
-} from './masonry.const';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { log } from '../../services/utils/logger';
 
 @Injectable()
 export class MasonryService {
-  constructor(private DOM: DOMhelpers) {}
+  constructor(private DOM: DOMhelpers, private zone: NgZone) {}
 
   public initMasonry({
     host,
@@ -132,11 +133,14 @@ export class MasonryService {
       },
 
       afterAll: () => {
-        emitter?.emit({
-          ...state,
-          host,
-          updatedItems: elements,
-        });
+        emitter &&
+          this.zone.run(() => {
+            emitter.emit({
+              ...state,
+              host,
+              updatedItems: elements,
+            });
+          });
       },
     });
   }

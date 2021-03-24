@@ -13,8 +13,10 @@ export const MASONRY_CONFIG_DEF: MasonryConfig = {
     childList: true,
     subtree: true,
     attributeFilter: ['src', 'data-loaded', 'data-updated'],
-    mutations: 'processed',
     filterSelector: 'b-masonry-item, b-masonry-layout > *',
+    removedElements: false,
+    bufferTime: 200,
+    outsideZone: true,
   },
   enableResizeObserverOnItems: false,
 };

@@ -1,33 +1,34 @@
+import { Subscription } from 'rxjs';
+
 import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
   AfterViewInit,
-  ViewChild,
-  ElementRef,
-  NgZone,
-  ChangeDetectorRef,
   ChangeDetectionStrategy,
-  SimpleChanges,
-  OnChanges,
-  OnInit,
-  OnDestroy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
   HostBinding,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
 } from '@angular/core';
+
+import { ColorService } from '../../services/color-service/color.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import {
-  simpleUID,
-  notFirstChanges,
-  cloneObject,
   applyChanges,
+  cloneObject,
   hasChanges,
+  notFirstChanges,
+  simpleUID,
 } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
-import { Subscription } from 'rxjs';
-import { outsideZone } from '../../services/utils/rxjs.operators';
 import { CollapsibleOptions } from './collapsible-section.interface';
-import { ColorService } from '../../services/color-service/color.service';
 
 export const COLLAPSIBLE_OPTIONS_DEF: CollapsibleOptions = {
   smallTitle: false,
@@ -57,10 +58,10 @@ export class CollapsibleSectionComponent
   public hasFooterContent = true;
   public contentLoaded = false;
   public startsExpanded = false;
+  public expandedFirst = false;
 
   private contentHeight = 0;
   private resizeSubscription: Subscription;
-  private firstExpand = false;
 
   @Input() panelID: string | number = simpleUID('bcp');
   @Input() collapsible = false;
@@ -190,7 +191,7 @@ export class CollapsibleSectionComponent
 
       if (!this.contentLoaded) {
         this.contentLoaded = true;
-        this.firstExpand = true;
+        this.expandedFirst = true;
         this.cd.detectChanges();
 
         this.zone.runOutsideAngular(() => {
@@ -240,11 +241,11 @@ export class CollapsibleSectionComponent
   }
 
   private emitEvent(): void {
-    if (this.expanded && this.firstExpand && this.openedFirst.observers) {
-      this.firstExpand = false;
+    if (this.expanded && this.expandedFirst && this.openedFirst.observers) {
+      this.expandedFirst = false;
       this.openedFirst.emit();
     }
-    if (this.expanded && !this.firstExpand && this.opened.observers) {
+    if (this.expanded && !this.expandedFirst && this.opened.observers) {
       this.opened.emit();
     }
     if (!this.expanded && this.closed.observers) {

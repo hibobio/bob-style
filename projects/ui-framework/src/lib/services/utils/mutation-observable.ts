@@ -1,12 +1,18 @@
-import { Injectable } from '@angular/core';
 import { merge, Observable, of, Subscriber } from 'rxjs';
 import {
-  WindowRef,
-  WindowLike,
-  ResizeObserverInstance,
-  ResizeObserverEntry,
-} from './window-ref.service';
+  bufferTime,
+  delay,
+  distinctUntilChanged,
+  filter,
+  map,
+  startWith,
+  throttleTime,
+} from 'rxjs/operators';
+
+import { Injectable, NgZone } from '@angular/core';
+
 import {
+  arrayFlatten,
   elementIsInView,
   getClosestUntil,
   getElementWindow,
@@ -14,21 +20,25 @@ import {
   isDomElement,
   isFunction,
   isNotEmptyString,
+  isNumber,
   pass,
 } from './functional-utils';
+import { insideZone } from './rxjs.operators';
 import { UtilsService } from './utils.service';
 import {
-  delay,
-  distinctUntilChanged,
-  map,
-  startWith,
-  throttleTime,
-} from 'rxjs/operators';
+  ResizeObserverEntry,
+  ResizeObserverInstance,
+  WindowLike,
+  WindowRef,
+} from './window-ref.service';
 
 export interface MutationObservableConfig extends MutationObserverInit {
-  mutations?: 'original' | 'processed';
+  mutations?: 'processed';
   filterSelector?: string;
   filterBy?: (node: Node) => boolean;
+  removedElements?: boolean;
+  bufferTime?: number | boolean;
+  outsideZone?: boolean;
 }
 
 export interface ResizeObservableConfig {
@@ -54,6 +64,8 @@ export const MUTATION_OBSERVABLE_CONFIG_DEF: MutationObservableConfig = {
   attributeFilter: ['src', 'data-loaded', 'data-updated'],
   mutations: 'processed',
   filterBy: (node) => node?.nodeType === Node.ELEMENT_NODE,
+  removedElements: false,
+  bufferTime: false,
 };
 
 export const RESIZE_OBSERVERVABLE_CONFIG_DEF: ResizeObservableConfig = {
@@ -74,7 +86,8 @@ export const ELEMENT_IN_VIEW_CONFIG_DEF: IntersectionObservableConfig = {
 export class MutationObservableService {
   constructor(
     private windowRef: WindowRef,
-    private utilsService: UtilsService
+    private utilsService: UtilsService,
+    private zone: NgZone
   ) {
     this.nativeWindow = (this.windowRef.nativeWindow || window) as WindowLike;
   }
@@ -98,35 +111,56 @@ export class MutationObservableService {
       return of(new Set());
     }
 
-    return new Observable((subscriber: Subscriber<Set<HTMLElement>>) => {
-      const mutationObserver: MutationObserver = new win.MutationObserver(
-        (mutations: MutationRecord[]) => {
-          if (config.mutations === 'original') {
-            subscriber.next(mutations as any);
-            return;
-          }
+    let observable: Observable<Set<HTMLElement>>;
 
-          const affectedElementsSet = this.processMutations(
-            mutations,
-            element,
-            config,
-            win
+    this.zone.runOutsideAngular(() => {
+      observable = new Observable(
+        (subscriber: Subscriber<Set<HTMLElement>>) => {
+          //
+          const mutationObserver: MutationObserver = new win.MutationObserver(
+            (mutations: MutationRecord[]) => {
+              //
+              const affectedElementsSet = this.processMutations(
+                mutations,
+                element,
+                config,
+                win
+              );
+
+              if (affectedElementsSet.size) {
+                subscriber.next(affectedElementsSet);
+              }
+            }
           );
 
-          if (affectedElementsSet.size) {
-            subscriber.next(affectedElementsSet);
-          }
+          mutationObserver.observe(element, config);
+
+          const unsubscribe = () => {
+            mutationObserver.disconnect();
+          };
+
+          return unsubscribe;
         }
       );
-
-      mutationObserver.observe(element, config);
-
-      const unsubscribe = () => {
-        mutationObserver.disconnect();
-      };
-
-      return unsubscribe;
     });
+
+    return !config.bufferTime
+      ? config.outsideZone === true
+        ? observable
+        : observable.pipe(insideZone(this.zone))
+      : observable.pipe(
+          bufferTime<Set<HTMLElement>>(
+            isNumber(config.bufferTime) ? config.bufferTime : 100
+          ),
+          filter<Set<HTMLElement>[]>((sets) => Boolean(sets.length)),
+          //
+          map<Set<HTMLElement>[], Set<HTMLElement>>((collectedResults) => {
+            return new Set(
+              arrayFlatten(collectedResults.map((s) => Array.from(s)))
+            );
+          }),
+          config.outsideZone !== true ? insideZone(this.zone) : pass
+        );
   }
 
   public getResizeObservervable(
@@ -349,6 +383,9 @@ export class MutationObservableService {
           affectedElements = new Set([
             ...affectedElements,
             ...Array.from(mutation.addedNodes),
+            ...(config.removedElements
+              ? Array.from(mutation.removedNodes)
+              : []),
           ]) as Set<HTMLElement>;
         }
       }
@@ -385,7 +422,11 @@ export class MutationObservableService {
           target = undefined;
         }
 
-        if (target && target !== observedElement && doc.contains(target)) {
+        if (
+          target &&
+          target !== observedElement &&
+          (config.removedElements || doc.contains(target))
+        ) {
           filteredElements.add(target);
         }
       });

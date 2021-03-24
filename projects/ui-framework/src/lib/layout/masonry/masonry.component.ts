@@ -1,29 +1,32 @@
+import { merge, Observable, Subscription } from 'rxjs';
+import { filter, tap, throttleTime } from 'rxjs/operators';
+
 import {
   Component,
-  OnInit,
-  Input,
   ElementRef,
-  OnDestroy,
-  NgZone,
   EventEmitter,
+  Input,
+  NgZone,
+  OnDestroy,
+  OnInit,
   Output,
 } from '@angular/core';
-import {
-  MasonryConfig,
-  MasonryItemsChangedEvent,
-  MasonryState,
-} from './masonry.interface';
-import { throttleTime, filter, tap } from 'rxjs/operators';
+
 import { InputObservable } from '../../services/utils/decorators';
-import { merge, Subscription, Observable } from 'rxjs';
-import { MasonryService } from './masonry.service';
-import { MASONRY_CONFIG_DEF } from './masonry.const';
-import { MutationObservableService } from '../../services/utils/mutation-observable';
 import {
   cloneDeepSimpleObject,
   unsubscribeArray,
 } from '../../services/utils/functional-utils';
 import { log } from '../../services/utils/logger';
+import { MutationObservableService } from '../../services/utils/mutation-observable';
+import { debug } from '../../services/utils/rxjs.operators';
+import { MASONRY_CONFIG_DEF } from './masonry.const';
+import {
+  MasonryConfig,
+  MasonryItemsChangedEvent,
+  MasonryState,
+} from './masonry.interface';
+import { MasonryService } from './masonry.service';
 
 @Component({
   selector: 'b-masonry-item, [b-masonry-item]',
@@ -88,14 +91,11 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
           ),
 
           this.mutationObservableService
-            .getMutationObservable(this.hostEl, {
-              characterData: true,
-              childList: true,
-              subtree: true,
-              attributeFilter: ['src', 'data-loaded', 'data-updated'],
-              mutations: 'processed',
-              filterSelector: 'b-masonry-item, b-masonry-layout > *',
-            })
+            .getMutationObservable(
+              this.hostEl,
+              this.config?.mutationObserverConfig ||
+                MASONRY_CONFIG_DEF.mutationObserverConfig
+            )
             .pipe(
               tap((elementsToUpdate) => {
                 this.elementsToUpdate = new Set([
