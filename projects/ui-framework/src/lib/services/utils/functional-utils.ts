@@ -2,7 +2,6 @@ import {
   assign as _assign,
   cloneDeep as _cloneDeep,
   get as _get,
-  isEqual as _isEqual,
   merge as _merge,
   omit as _omit,
   pick as _pick,
@@ -330,22 +329,30 @@ export const keysFromArrayOrObject = (smth: string[] | {}): string[] =>
 export const getKeyByValue = (object: GenericObject, value: any) =>
   Object.keys(object).find((key) => object[key] === value);
 
-export const onlyUpdatedProps = (
-  oldObj: GenericObject,
-  newObj: GenericObject
-): GenericObject => {
+export const onlyUpdatedProps = <T = GenericObject>(
+  oldObj: Partial<T>,
+  newObj: Partial<T>,
+  equalCheck: (
+    a: Partial<T>,
+    b: Partial<T>
+  ) => boolean = isEqualByValuesConfigured({
+    limit: 5000,
+    primitives: true,
+    sort: false,
+  })
+): Partial<T> => {
   if (isEmptyObject(oldObj)) {
-    return newObj;
+    return { ...newObj };
   }
 
-  if (!newObj) {
+  if (isEmptyObject(newObj)) {
     return {};
   }
 
   return Object.keys(newObj)
     .filter(
       (key: string) =>
-        !hasProp(oldObj, key) || !_isEqual(oldObj[key], newObj[key])
+        !hasProp(oldObj, key) || !equalCheck(oldObj[key], newObj[key])
     )
     .reduce((updObj, key) => {
       updObj[key] = newObj[key];
