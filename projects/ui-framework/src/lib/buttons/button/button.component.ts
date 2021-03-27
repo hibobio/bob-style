@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  NgZone,
+} from '@angular/core';
 
 import { BaseButtonElement } from '../button.abstract';
 
@@ -25,5 +30,7 @@ import { BaseButtonElement } from '../button.abstract';
 export class ButtonComponent extends BaseButtonElement {
   constructor(protected cd: ChangeDetectorRef, protected zone: NgZone) {
     super(cd, zone);
+
+    this.throttle = 150;
   }
 }

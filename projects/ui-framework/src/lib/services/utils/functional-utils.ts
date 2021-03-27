@@ -444,7 +444,9 @@ export const objectStringID = <T = GenericObject>(
   }
 
   const str = String(
-    primitives !== false ? JSON.stringify(obj) : stringify(obj, null, 1)
+    primitives !== false || obj instanceof Date
+      ? JSON.stringify(obj)
+      : stringify(obj, null, 1)
   ).replace(/[\s\//'"\.,:\-_\+={}()\[\]]+/gi, '');
   const len = str.length;
   const slice =
@@ -765,37 +767,38 @@ export const getMapKeys = <K = string, V = unknown>(map: Map<K, V>): K[] => {
 // ----------------------
 
 export const stringify = (smth: any, limit = 300, limitKeys = null): string => {
-  const stringified = isPrimitive(smth)
-    ? String(smth)
-    : isArray(smth)
-    ? '[' +
-      smth
-        .reduce((str, i) => {
-          if (!limit || str.length < limit * 0.7) {
-            str += `${stringify(i, limit, limitKeys)}, `;
-          }
-          return str;
-        }, '')
-        .replace(/[\s,]+$/, '') +
-      ']'
-    : isFunction(smth)
-    ? String(smth).split('{')[0].trim().replace('function', 'fnc')
-    : isObject(smth)
-    ? '{' +
-      Object.keys(smth)
-        .reduce((str, k) => {
-          if ((!limit || str.length < limit * 0.7) && smth[k] !== undefined) {
-            str += `${limitKeys ? k.slice(0, limitKeys) : k}: ${stringify(
-              smth[k],
-              limit,
-              limitKeys
-            )}, `;
-          }
-          return str;
-        }, '')
-        .replace(/[\s,]+$/, '') +
-      '}'
-    : String(smth);
+  const stringified =
+    isPrimitive(smth) || smth instanceof Date
+      ? String(smth)
+      : isArray(smth)
+      ? '[' +
+        smth
+          .reduce((str, i) => {
+            if (!limit || str.length < limit * 0.7) {
+              str += `${stringify(i, limit, limitKeys)}, `;
+            }
+            return str;
+          }, '')
+          .replace(/[\s,]+$/, '') +
+        ']'
+      : isFunction(smth)
+      ? String(smth).split('{')[0].trim().replace('function', 'fnc')
+      : isObject(smth)
+      ? '{' +
+        Object.keys(smth)
+          .reduce((str, k) => {
+            if ((!limit || str.length < limit * 0.7) && smth[k] !== undefined) {
+              str += `${limitKeys ? k.slice(0, limitKeys) : k}: ${stringify(
+                smth[k],
+                limit,
+                limitKeys
+              )}, `;
+            }
+            return str;
+          }, '')
+          .replace(/[\s,]+$/, '') +
+        '}'
+      : String(smth);
 
   return limit && stringified.length > limit
     ? stringified.slice(0, limit) + '...'

@@ -1,5 +1,19 @@
-import { defer, EMPTY, interval, merge, Observable, OperatorFunction, Subscription } from 'rxjs';
-import { distinctUntilChanged, filter, finalize, map, tap } from 'rxjs/operators';
+import {
+  defer,
+  EMPTY,
+  interval,
+  merge,
+  Observable,
+  OperatorFunction,
+  Subscription,
+} from 'rxjs';
+import {
+  distinctUntilChanged,
+  filter,
+  finalize,
+  map,
+  tap,
+} from 'rxjs/operators';
 
 import { NgZone, ɵɵdirectiveInject as directiveInject } from '@angular/core';
 
@@ -124,30 +138,36 @@ export function filterKey(key: Keys | string | (Keys | string)[]) {
 
 export const filterByEventKey = filterKey;
 
-export function filterByEventPath<E extends Event = Event | KeyboardEvent | MouseEvent | FocusEvent>(
-  element: HTMLElement
-) {
+export function filterByEventPath<
+  E extends Event = Event | KeyboardEvent | MouseEvent | FocusEvent
+>(element: HTMLElement) {
   return filter<E>((event) => {
     return getEventPath(event).includes(element);
   });
 }
 
-export function filterByEventTarget<E extends Event = Event | KeyboardEvent | MouseEvent | FocusEvent>(
-  target: string | HTMLElement
-) {
+export function filterByEventTarget<
+  E extends Event = Event | KeyboardEvent | MouseEvent | FocusEvent
+>(target: string | HTMLElement) {
   return filter<E>((event) => {
     const targetEl = event.target as HTMLElement;
     return isString(target) ? targetEl.matches(target) : targetEl === target;
   });
 }
 
-export function filterDOMevent<E extends Event = Event | KeyboardEvent | MouseEvent | FocusEvent>({
+export function filterDOMevent<
+  E extends Event = Event | KeyboardEvent | MouseEvent | FocusEvent
+>({
   pathIncludes,
   targetMatches,
+  pathIncludesNot,
+  targetMatchesNot,
   allowedKeys,
 }: {
   pathIncludes?: HTMLElement;
   targetMatches?: string | HTMLElement;
+  pathIncludesNot?: HTMLElement;
+  targetMatchesNot?: string | HTMLElement;
   allowedKeys?: Keys | string | (Keys | string)[];
 }) {
   return filter<E>((event) => {
@@ -160,7 +180,13 @@ export function filterDOMevent<E extends Event = Event | KeyboardEvent | MouseEv
           ? targetEl.matches(targetMatches)
           : targetEl === targetMatches
         : true) &&
-      (pathIncludes ? getEventPath(event).includes(pathIncludes) : true)
+      (pathIncludes ? getEventPath(event).includes(pathIncludes) : true) &&
+      (targetMatchesNot
+        ? isString(targetMatchesNot)
+          ? !targetEl.matches(targetMatchesNot)
+          : targetEl !== targetMatchesNot
+        : true) &&
+      (pathIncludesNot ? !getEventPath(event).includes(pathIncludesNot) : true)
     );
   });
 }
@@ -195,7 +221,9 @@ export interface TimedSliceConfig {
   shuffle?: boolean | 'auto';
 }
 
-export function timedSlice<T = unknown>(config: TimedSliceConfig = {}): OperatorFunction<T[], T[]> {
+export function timedSlice<T = unknown>(
+  config: TimedSliceConfig = {}
+): OperatorFunction<T[], T[]> {
   const { slice, time = null, loop = false, shuffle = false } = config;
 
   return function (source: Observable<T[]>): Observable<T[]> {
@@ -229,9 +257,15 @@ export function timedSlice<T = unknown>(config: TimedSliceConfig = {}): Operator
               reset();
               dataSize = arrOrNum.length;
               sliceSize = slice > 0 ? slice : dataSize;
-              doShuffle = shuffle === 'auto' && loop && dataSize >= sliceSize * 2 ? true : shuffle;
+              doShuffle =
+                shuffle === 'auto' && loop && dataSize >= sliceSize * 2
+                  ? true
+                  : shuffle;
 
-              data = doShuffle === true ? randomFromArray(arrOrNum, null) : arrOrNum.slice();
+              data =
+                doShuffle === true
+                  ? randomFromArray(arrOrNum, null)
+                  : arrOrNum.slice();
             }
 
             ++sliceIndex;
@@ -242,13 +276,16 @@ export function timedSlice<T = unknown>(config: TimedSliceConfig = {}): Operator
             }
 
             (currentSlice || (currentSlice = [] as any))[0] =
-              (sliceSize * sliceIndex) % (loop ? Math.max(dataSize, sliceSize) : dataSize);
+              (sliceSize * sliceIndex) %
+              (loop ? Math.max(dataSize, sliceSize) : dataSize);
 
             currentSlice[1] = currentSlice[0] + sliceSize;
 
             if (loop && currentSlice[1] > dataSize) {
               while (data.length < currentSlice[1]) {
-                data.push(...(doShuffle === true ? randomFromArray(data, null) : data));
+                data.push(
+                  ...(doShuffle === true ? randomFromArray(data, null) : data)
+                );
               }
               dataSize = data.length;
             }
