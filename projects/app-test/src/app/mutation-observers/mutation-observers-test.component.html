@@ -19,11 +19,15 @@
       <button type="button"
               class="mrg-l-16"
               (click)="addNumber()">add a number</button>
+
+      <button type="button"
+              class="mrg-l-16"
+              (click)="removeNumber()">remove a number</button>
     </div>
   </div>
 
   <div class="flx mrg-t-32">
-    {{ moMessage$ | async }}
+    MO: {{ moMessage$ | async }}
   </div>
 
 </div>

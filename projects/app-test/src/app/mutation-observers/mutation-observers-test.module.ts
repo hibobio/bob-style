@@ -1,18 +1,21 @@
-import {
-  NgModule,
-  Component,
-  ViewChild,
-  ChangeDetectorRef,
-  OnInit,
-  ElementRef,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MutationObservableService } from '../../../../ui-framework/src/lib/services/utils/mutation-observable';
-import { FormsModule } from '@angular/forms';
-import { arrayOfNumbers } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
-import { map } from 'rxjs/internal/operators/map';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/internal/operators/map';
 import { tap } from 'rxjs/operators';
+
+import { CommonModule } from '@angular/common';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  NgModule,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { arrayOfNumbers } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
+import { MutationObservableService } from '../../../../ui-framework/src/lib/services/utils/mutation-observable';
+import { debug } from '../../../../ui-framework/src/lib/services/utils/rxjs.operators';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -45,10 +48,18 @@ export class MutationObserversTestComponent implements OnInit {
     this.numbers.push(this.numbers.length);
   }
 
+  public removeNumber() {
+    this.numbers.pop();
+  }
+
   ngOnInit() {
     this.moMessage$ = this.mutationObservableService
-      .getMutationObservable(this.moBox.nativeElement)
+      .getMutationObservable(this.moBox.nativeElement, {
+        removedElements: true,
+        bufferTime: 100,
+      })
       .pipe(
+        debug('mutationObservableService'),
         map((els) => {
           return Array.from(els)
             .map((el) => el?.getAttribute('id') || el?.getAttribute('class'))

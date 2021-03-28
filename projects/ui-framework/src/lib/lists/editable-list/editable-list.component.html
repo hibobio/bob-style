@@ -63,6 +63,7 @@
               [icon]="listState.sortType === order.UserDefined || listState.sortType === order.Asc ? icons.sort_asc :
               icons.sort_desc"
               [ngClass]="{'custom-sorting': listState.sortType === order.UserDefined}"
+              [throttle]="false"
               (clicked)="sortList()"
               [text]="listState.sortType === order.Asc
                 ? ('list-editor.editor.sortAsc' | translate) :

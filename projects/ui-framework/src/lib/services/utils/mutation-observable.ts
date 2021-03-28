@@ -111,6 +111,14 @@ export class MutationObservableService {
       return of(new Set());
     }
 
+    if (
+      !config.attributes &&
+      !config.attributeFilter &&
+      !config.characterData &&
+      !config.childList
+    ) {
+      config = { ...MUTATION_OBSERVABLE_CONFIG_DEF, ...config };
+    }
     let observable: Observable<Set<HTMLElement>>;
 
     this.zone.runOutsideAngular(() => {
@@ -379,7 +387,10 @@ export class MutationObservableService {
     mutations.forEach((mutation: MutationRecord) => {
       //
       if (mutation.type === 'childList' && config.childList) {
-        if (mutation.addedNodes.length) {
+        if (
+          mutation.addedNodes.length ||
+          (config.removedElements && mutation.removedNodes.length)
+        ) {
           affectedElements = new Set([
             ...affectedElements,
             ...Array.from(mutation.addedNodes),
