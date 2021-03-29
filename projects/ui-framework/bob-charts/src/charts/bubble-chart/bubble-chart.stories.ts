@@ -35,6 +35,7 @@ const template = `<b-bubble-chart
         [xTitle]="xTitle"
         [yTitle]="yTitle"
         [color]="color"
+        [hoverColor]="hoverColor"
         #chart>
 </b-bubble-chart>
 <button (click)="chart.exportChart(downloadChart)">download</button>`;
@@ -76,6 +77,7 @@ const note = `
   xSize | number | x series size |
   ySize | number | y series size |
   color | string | bubbles color | #A4C9EF
+  hoverColor | string | bubbles hover color | #2E4D6E
 `;
 
 story.add(
@@ -108,6 +110,7 @@ story.add(
         xLabels: object('xLabels', BUBBLE_CHART_CATEGORIES_MOCK),
         yLabels: object('yLabels', BUBBLE_CHART_CATEGORIES_MOCK),
         color: text('color', '#A4C9EF'),
+        hoverColor: text('hoverColor', '#2E4D6E'),
         data: object('data', BUBBLE_CHART_DATA_MOCK),
       },
       moduleMetadata: {
