@@ -130,8 +130,8 @@ const note = `
   [expandOnClick] | boolean | expands panel on click | true
   [showTotal] | boolean | show the total counter circle \
    - only valid for avatar size < medium; will be disabled if [fadeOut] is true) | true
-  [showTotalLabel] | boolean | show total text ("Total: X") to the right of the showcase | false
-  [showEmptyTotalLabel] | boolean | show total text when employees are empty ("Total: 0") to the right of the showcase | false
+  [showTotalLabel] | boolean | show total text ("X Employees") to the right of the showcase | false
+  [showEmptyTotalLabel] | boolean | show total text when employees are empty ("0 Employees") to the right of the showcase | false
   [inverseStack] | boolean | the 'front', uppermost avatar \
   will be on the left, and not on the right, as in defauult mode | false
   [fadeOut] | boolean | make avatars fade out, from front to back | false
