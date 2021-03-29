@@ -72,4 +72,17 @@ export class ColorService {
       ? undefined
       : (color[0] * 299 + color[1] * 587 + color[2] * 114) / 1000;
   }
+
+    // https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
+    // color = rgb/rgba color
+    // offset = a number in the range of -1(=darkest) to 1(=brightest)
+    public LinearShade(color: string, offset: number) {
+      let isNegative = offset < 0; 
+      const [a,b,c,d] = color.split(",");
+      const t = isNegative ? 0 : 255 * offset
+      const P = (isNegative ? 1 + offset : 1 - offset);
+  
+      return "rgb" + (d ? "a(" : "(") + Math.round(parseInt(a[3] == "a" ? a.slice(5) : a.slice(4)) * P + t)
+      + "," + Math.round(parseInt(b) * P + t) + "," + Math.round(parseInt(c) * P + t) + (d ? "," + d : ")");
+    }
 }
