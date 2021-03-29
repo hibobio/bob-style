@@ -77,6 +77,7 @@ export class EmployeesShowcaseComponent
 
   @Input() showTotal = true;
   @Input() showTotalLabel = false;
+  @Input() showEmptyTotalLabel = false;
   @Input() readonly = false;
   @Input() hasBackdrop: boolean;
   @Input() doShuffle = false;

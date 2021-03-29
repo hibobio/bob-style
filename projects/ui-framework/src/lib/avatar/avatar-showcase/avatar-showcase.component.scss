@@ -6,7 +6,8 @@ $bes-avatar-count-default: 3;
 
 :host {
   width: 100%;
-  display: block;
+  display: flex;
+  align-items: center;
   text-align: left;
   backface-visibility: hidden;
   min-height: var(--avatar-size, #{$bes-avatar-size-default});
@@ -30,10 +31,6 @@ $bes-avatar-count-default: 3;
 .avatar-showcase {
   display: flex;
   align-items: center;
-}
-
-.total-label {
-  margin-left: times8(1);
 }
 
 .avatar {

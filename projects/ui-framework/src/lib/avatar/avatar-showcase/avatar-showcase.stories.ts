@@ -43,6 +43,7 @@ const template1 = `
             [max]="max"
             [showTotal]="showTotal"
             [showTotalLabel]="showTotalLabel"
+            [showEmptyTotalLabel]="showEmptyTotalLabel"
             [expandOnClick]="expandOnClick"
             [inverseStack]="inverseStack"
             [fadeOut]="fadeOut"
@@ -62,6 +63,7 @@ const template1ForNotes = `
             [max]="max"
             [showTotal]="showTotal"
             [showTotalLabel]="showTotalLabel"
+            [showEmptyTotalLabel]="showEmptyTotalLabel"
             [expandOnClick]="expandOnClick"
             [inverseStack]="inverseStack"
             [fadeOut]="fadeOut"
@@ -79,6 +81,8 @@ const template2 = `
             [min]="3"
             [max]="8"
             [showTotal]="true"
+            [showTotalLabel]="showTotalLabel"
+            [showEmptyTotalLabel]="showEmptyTotalLabel"
             [expandOnClick]="true"
             [inverseStack]="true"
             [fadeOut]="true"
@@ -127,6 +131,7 @@ const note = `
   [showTotal] | boolean | show the total counter circle \
    - only valid for avatar size < medium; will be disabled if [fadeOut] is true) | true
   [showTotalLabel] | boolean | show total text ("Total: X") to the right of the showcase | false
+  [showEmptyTotalLabel] | boolean | show total text when employees are empty ("Total: 0") to the right of the showcase | false
   [inverseStack] | boolean | the 'front', uppermost avatar \
   will be on the left, and not on the right, as in defauult mode | false
   [fadeOut] | boolean | make avatars fade out, from front to back | false
@@ -180,6 +185,7 @@ story.add(
         expandOnClick: boolean('expandOnClick', true, 'Props'),
         showTotal: boolean('showTotal', true, 'Props'),
         showTotalLabel: boolean('showTotalLabel', false, 'Props'),
+        showEmptyTotalLabel:  boolean('showEmptyTotalLabel', false, 'Props'),
         inverseStack: boolean('inverseStack', false, 'Props'),
         fadeOut: boolean('fadeOut', false, 'Props'),
         zoomOnHover: boolean('zoomOnHover', false, 'Props'),
