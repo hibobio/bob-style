@@ -1,33 +1,42 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MenuItem } from '../../navigation/menu/menu.interface';
-import { ButtonConfig } from '../buttons.interface';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+
 import { ButtonType } from '../../buttons/buttons.enum';
-import { Icons, IconColor } from '../../icons/icons.enum';
+import { IconColor, Icons } from '../../icons/icons.enum';
+import { MenuItem } from '../../navigation/menu/menu.interface';
+import { hasChanges } from '../../services/utils/functional-utils';
+import { Button, ButtonConfig } from '../buttons.interface';
 
 @Component({
   selector: 'b-action-menu-button',
   templateUrl: './action-menu-button.component.html',
   styleUrls: ['./action-menu-button.component.scss'],
 })
-export class ActionMenuButtonComponent implements OnInit {
+export class ActionMenuButtonComponent implements OnChanges {
   @Input() menuItems: MenuItem[];
   @Input() openLeft: boolean;
   @Input() buttonConfig: ButtonConfig;
   @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter<MenuItem>();
 
-  public buttonType: ButtonType;
-  public buttonColor: IconColor;
-  public buttonIcon: Icons;
+  readonly button: Button = {
+    type: ButtonType.tertiary,
+    icon: Icons.three_dots_vert,
+    color: IconColor.normal,
+  };
 
-  constructor() {}
-
-  ngOnInit() {
-    this.buttonType = this.buttonConfig ? this.buttonConfig.type : ButtonType.tertiary;
-    this.buttonColor = this.buttonConfig ? this.buttonConfig.color : IconColor.normal;
-    this.buttonIcon = this.buttonConfig ? this.buttonConfig.icon : Icons.three_dots_vert;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (hasChanges(changes, ['buttonConfig'], true)) {
+      Object.assign(this.button, this.buttonConfig);
+    }
   }
 
-  public onActionClicked($event) {
-    this.actionClick.emit($event);
+  public onActionClicked(event: MenuItem): void {
+    this.actionClick.emit(event);
   }
 }
