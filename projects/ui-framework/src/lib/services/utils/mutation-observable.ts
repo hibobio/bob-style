@@ -23,6 +23,7 @@ import {
   isNumber,
   pass,
 } from './functional-utils';
+import { log } from './logger';
 import { insideZone } from './rxjs.operators';
 import { UtilsService } from './utils.service';
 import {
@@ -381,68 +382,72 @@ export class MutationObservableService {
   ): Set<HTMLElement> {
     let affectedElements: Set<HTMLElement> = new Set();
 
-    win = win || getElementWindow(observedElement);
-    const doc = win.document;
+    try {
+      win = win || getElementWindow(observedElement);
+      const doc = win.document;
 
-    mutations.forEach((mutation: MutationRecord) => {
-      //
-      if (mutation.type === 'childList' && config.childList) {
-        if (
-          mutation.addedNodes.length ||
-          (config.removedElements && mutation.removedNodes.length)
-        ) {
-          affectedElements = new Set([
-            ...affectedElements,
-            ...Array.from(mutation.addedNodes),
-            ...(config.removedElements
-              ? Array.from(mutation.removedNodes)
-              : []),
-          ]) as Set<HTMLElement>;
-        }
-      }
-
-      if (
-        mutation.type === 'characterData' &&
-        config.characterData &&
-        mutation.target.nodeType !== 8
-      ) {
-        affectedElements.add(
-          isDomElement(mutation.target, win)
-            ? mutation.target
-            : mutation.target.parentElement
-        );
-      }
-
-      if (
-        mutation.type === 'attributes' &&
-        (config.attributes || config.attributeFilter)
-      ) {
-        affectedElements.add(mutation.target as HTMLElement);
-      }
-    });
-
-    const filteredElements: Set<HTMLElement> = new Set();
-
-    if (config.filterSelector || config.filterBy) {
-      affectedElements.forEach((el) => {
-        let target = isNotEmptyString(config.filterSelector)
-          ? getClosestUntil(el, config.filterSelector, observedElement, win)
-          : el;
-
-        if (isFunction(config.filterBy) && !config.filterBy(el)) {
-          target = undefined;
+      mutations.forEach((mutation: MutationRecord) => {
+        //
+        if (mutation.type === 'childList' && config.childList) {
+          if (
+            mutation.addedNodes.length ||
+            (config.removedElements && mutation.removedNodes.length)
+          ) {
+            affectedElements = new Set([
+              ...affectedElements,
+              ...Array.from(mutation.addedNodes),
+              ...(config.removedElements
+                ? Array.from(mutation.removedNodes)
+                : []),
+            ]) as Set<HTMLElement>;
+          }
         }
 
         if (
-          target &&
-          target !== observedElement &&
-          (config.removedElements || doc.contains(target))
+          mutation.type === 'characterData' &&
+          config.characterData &&
+          mutation.target.nodeType !== 8
         ) {
-          filteredElements.add(target);
+          affectedElements.add(
+            isDomElement(mutation.target, win)
+              ? mutation.target
+              : mutation.target.parentElement
+          );
+        }
+
+        if (
+          mutation.type === 'attributes' &&
+          (config.attributes || config.attributeFilter)
+        ) {
+          affectedElements.add(mutation.target as HTMLElement);
         }
       });
 
-      return filteredElements;
+      const filteredElements: Set<HTMLElement> = new Set();
+
+      if (config.filterSelector || config.filterBy) {
+        affectedElements.forEach((el) => {
+          let target = isNotEmptyString(config.filterSelector)
+            ? getClosestUntil(el, config.filterSelector, observedElement, win)
+            : el;
+
+          if (!el || (isFunction(config.filterBy) && !config.filterBy(el))) {
+            target = undefined;
+          }
+
+          if (
+            target &&
+            target !== observedElement &&
+            (config.removedElements || doc.contains(target))
+          ) {
+            filteredElements.add(target);
+          }
+        });
+
+        return filteredElements;
+      }
+    } catch (error) {
+      log.err(error, 'processMutations');
     }
 
     return affectedElements;

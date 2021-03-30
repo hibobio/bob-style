@@ -24,7 +24,7 @@ export class ActionMenuButtonComponent implements OnChanges {
   @Input() buttonConfig: ButtonConfig;
   @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter<MenuItem>();
 
-  readonly button: Button = {
+  public button: Button = {
     type: ButtonType.tertiary,
     icon: Icons.three_dots_vert,
     color: IconColor.normal,
@@ -32,7 +32,7 @@ export class ActionMenuButtonComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (hasChanges(changes, ['buttonConfig'], true)) {
-      Object.assign(this.button, this.buttonConfig);
+      this.button = { ...this.button, ...this.buttonConfig };
     }
   }
 
