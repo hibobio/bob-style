@@ -29,9 +29,14 @@
                     [border]="true">
     </b-avatar-image>
 
-    <span *ngIf="showTotalLabel && totalAvatars"
-          class="b-body total-label">
-      {{ ('common.total' | translate) }}: {{ totalAvatars }}
+    <span
+      *ngIf="showTotalLabel && (showEmptyTotalLabel || totalAvatars)"
+      class="b-body"
+      [ngClass]="{
+        'mrg-l-8': totalAvatars
+      }"
+    >
+      {{ totalAvatars }} {{ 'bob-style.avatar-showcase.employees' | translate }}
     </span>
   </div>
 
