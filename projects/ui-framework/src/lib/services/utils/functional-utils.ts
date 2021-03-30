@@ -1447,18 +1447,23 @@ export const countChildren = (
 
 export const injectStyles = (
   styles: string = '',
-  elem: HTMLElement | Document = document
+  elem: HTMLElement | Document = document,
+  win: (Window & typeof globalThis) | WindowLike = window
 ): void => {
+  win = win || getElementWindow(elem);
   let styleEl: HTMLStyleElement, existingStyles: string;
-  if (elem === getElementDocument(elem)) {
-    elem = document.head;
+  if (!elem || elem === win?.document) {
+    elem = win?.document.head;
+  }
+  if (!elem) {
+    return;
   }
   styleEl = elem.querySelector(`style[data-injected="true"]`);
   if (styleEl) {
     existingStyles = styleEl.innerHTML.replace(/\s*/gim, '');
   }
   if (!styleEl && styles) {
-    styleEl = document.createElement('style');
+    styleEl = win.document.createElement('style');
     styleEl.setAttribute('data-injected', 'true');
     elem.appendChild(styleEl);
   }
@@ -1480,8 +1485,13 @@ export const injectStyles = (
 // set any css properties
 // (provided as JSON with props in kebab-case),
 // including css variables ('--color-red')
-export const setCssProps = (element: HTMLElement, props: Styles): void => {
-  if (!isDomElement(element) || !isObject(props)) {
+export const setCssProps = (
+  element: HTMLElement,
+  props: Styles,
+  win: (Window & typeof globalThis) | WindowLike = window
+): void => {
+  win = win || getElementWindow(element);
+  if (!isDomElement(element, win) || !isObject(props)) {
     return;
   }
   for (const prop of Object.keys(props)) {
@@ -1508,9 +1518,11 @@ export const setCssProps = (element: HTMLElement, props: Styles): void => {
 export const setAttributes = (
   element: HTMLElement,
   attrs: GenericObject,
-  overWriteExisting = true
+  overWriteExisting = true,
+  win: (Window & typeof globalThis) | WindowLike = window
 ): void => {
-  if (!isDomElement(element)) {
+  win = win || getElementWindow(element);
+  if (!isDomElement(element, win)) {
     return;
   }
   for (const attr of Object.keys(attrs)) {
@@ -1534,6 +1546,7 @@ export const elementIsInView = (
   element: HTMLElement,
   win: (Window & typeof globalThis) | WindowLike = window
 ): boolean => {
+  win = win || getElementWindow(element);
   if (!isDomElement(element, win)) {
     return;
   }
@@ -1572,7 +1585,7 @@ export const getClosestUntil = (
     ((isDomElement(until, win) && until !== parent) ||
       (isString(until) && !parent.matches(until))) &&
     !parent.matches(closestSelector) &&
-    parent !== document.documentElement &&
+    parent !== win.document.documentElement &&
     parent.parentElement
   ) {
     parent = parent.parentElement;
@@ -1584,9 +1597,11 @@ export const getClosestUntil = (
 export const getSiblingElement = (
   element: HTMLElement,
   selector: string = null,
-  which: 'next' | 'prev' = 'next'
+  which: 'next' | 'prev' = 'next',
+  win: (Window & typeof globalThis) | WindowLike = window
 ): HTMLElement => {
-  if (!isDomElement(element)) {
+  win = win || getElementWindow(element);
+  if (!isDomElement(element, win)) {
     return null;
   }
   let sibling: HTMLElement =
@@ -1834,12 +1849,12 @@ export const prefetchSharedObservables = (
   if (isEmptyArray(observables)) {
     return;
   }
-  observables = asArray(observables);
+  observables = asArray(observables).filter(Boolean);
   const total = observables.length;
   let counter = 0;
 
   return new Promise((resolve, reject) => {
-    asArray(observables).forEach((o) => {
+    observables.forEach((o) => {
       o?.pipe(take(1), delay(0)).subscribe(
         () => {
           if (++counter === total) {
