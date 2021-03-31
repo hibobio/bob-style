@@ -75,11 +75,26 @@ a {
   overflow: hidden !important;
   padding: 0 !important;
 
-  * {
-    opacity: 0;
-    visibility: hidden !important;
+  & > * {
     transition: none;
     animation: none;
+  }
+
+  &:not(.disabled) > * {
+    opacity: 0;
+    visibility: hidden !important;
+  }
+
+  &.disabled {
+    opacity: 1;
+
+    &:before {
+      z-index: 2;
+    }
+  }
+
+  &.disabled > * {
+    opacity: 0.3;
   }
 }
 .preloading {
