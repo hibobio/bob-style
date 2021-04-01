@@ -57,11 +57,8 @@ const disableTooltipDebouncer = (
 ) => {
   const bttComp1 = fixture.debugElement.query(By.css('.trigger-input'))
     .componentInstance;
-<<<<<<< HEAD
   bttComp1.delay = bttComp1.lazyness = 0;
-=======
-  bttComp1.delay = bttComp1.lazyness = bttComp1.checkDebounceTime = 0;
->>>>>>> 14f7cdac (ss)
+
   bttComp1['checker$'] = overwriteObservable(() => {
     bttComp1['checkTooltipNecessity']();
     bttComp1['cd']['detectChanges']();
