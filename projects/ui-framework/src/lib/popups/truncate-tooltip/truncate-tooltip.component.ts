@@ -105,7 +105,7 @@ export class TruncateTooltipComponent
     ) {
       this.expectChanges = false;
       this.tooltipText = this.text
-        ?.replace(/(<([^>]+)>)/gi, '')
+        ?.replace(/(<[^>]+>)/gi, '')
         .replace(/\s+/gi, ' ')
         .trim();
       this.checker$.next();
@@ -170,7 +170,7 @@ export class TruncateTooltipComponent
       this.DOM.mutate(() => {
         this.tooltipText =
           this.text
-            ?.replace(/(<([^>]+)>)/gi, '')
+            ?.replace(/(<[^>]+>)/gi, '')
             .replace(/\s+/gi, ' ')
             .trim() || this.textContainer.nativeElement.textContent.trim();
 
