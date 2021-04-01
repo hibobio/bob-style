@@ -1,40 +1,52 @@
 import createSpyObj = jasmine.createSpyObj;
 import spyObj = jasmine.SpyObj;
-import { of, Observable, EMPTY } from 'rxjs';
-import { UtilsService } from '../services/utils/utils.service';
-import { MobileService, MediaEvent } from '../services/utils/mobile.service';
-import { ScrollEvent, WinResizeEvent } from '../services/utils/utils.interface';
 import { MockPipe } from 'ng-mocks';
+import { EMPTY, Observable, of } from 'rxjs';
 import { Mock } from 'ts-mocks';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
+import { CommonModule } from '@angular/common';
 import {
-  PipeTransform,
-  Pipe,
-  NgModule,
   Component,
   Input,
+  NgModule,
   NgZone,
+  Pipe,
+  PipeTransform,
   TrackByFunction,
 } from '@angular/core';
-import { ListKeyboardService } from '../lists/list-service/list-keyboard.service';
-import { HighlightPipe } from '../services/filters/highlight.pipe';
-import { FormatNumberPipe } from '../services/filters/formatNumber.pipe';
-import { DOMhelpers } from '../services/html/dom-helpers.service';
-import { MutationObservableService } from '../services/utils/mutation-observable';
-import { CommonModule } from '@angular/common';
-import { TruncateTooltipType } from '../popups/truncate-tooltip/truncate-tooltip.enum';
 import { TooltipPosition } from '@angular/material/tooltip';
+import { SafeResourceUrl } from '@angular/platform-browser';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
+import { ListKeyboardService } from '../lists/list-service/list-keyboard.service';
+import { MediaType } from '../popups/lightbox/media-embed/media-embed.enum';
 import { TooltipClass } from '../popups/tooltip/tooltip.enum';
 import { TruncateTooltipComponent } from '../popups/truncate-tooltip/truncate-tooltip.component';
-import { WindowLike, WindowRef } from '../services/utils/window-ref.service';
-import { simpleUID } from '../services/utils/functional-utils';
+import { TruncateTooltipType } from '../popups/truncate-tooltip/truncate-tooltip.enum';
+import { FormatNumberPipe } from '../services/filters/formatNumber.pipe';
+import { HighlightPipe } from '../services/filters/highlight.pipe';
+import { DOMhelpers } from '../services/html/dom-helpers.service';
+import { HtmlParserHelpers } from '../services/html/html-parser.service';
 import { URLutils } from '../services/url/url-utils.service';
 import { filestackTest, imageLinkTest } from '../services/url/url.const';
-import { MediaType } from '../popups/lightbox/media-embed/media-embed.enum';
-import { SafeResourceUrl } from '@angular/platform-browser';
-import { HtmlParserHelpers } from '../services/html/html-parser.service';
+import { simpleUID } from '../services/utils/functional-utils';
+import { MediaEvent, MobileService } from '../services/utils/mobile.service';
+import { MutationObservableService } from '../services/utils/mutation-observable';
+import { ScrollEvent, WinResizeEvent } from '../services/utils/utils.interface';
+import { UtilsService } from '../services/utils/utils.service';
+import { WindowLike, WindowRef } from '../services/utils/window-ref.service';
 
 // This file is intentionally named .spec.ts - to fix build problems due to missing jasmine namespace
+
+export const overwriteObservable = (action: () => void = null) => {
+  return {
+    pipe: () => ({
+      subscribe: action || (() => {}),
+    }),
+    subscribe: action || (() => {}),
+    next: action || (() => {}),
+  } as any;
+};
 
 @Pipe({ name: 'trackByProp' })
 export class TrackByPropPipeStub implements PipeTransform {

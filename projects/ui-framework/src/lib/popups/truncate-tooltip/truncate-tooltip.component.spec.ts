@@ -18,6 +18,7 @@ import { fakeAsyncFlush } from '../../services/utils/test-helpers';
 import {
   DOMhelpersProvideMock,
   MutationObservableServiceProvideMock,
+  overwriteObservable,
 } from '../../tests/services.stub.spec';
 import { TruncateTooltipComponent } from './truncate-tooltip.component';
 import { TruncateTooltipDirective } from './truncate-tooltip.directive';
@@ -111,15 +112,10 @@ describe('TruncateTooltipComponent', () => {
           bttComp1.trustCssVars = false;
           bttComp1.delay = bttComp1.lazyness = 0;
 
-          bttComp1['checker$'] = {
-            pipe: () => ({
-              subscribe: () => {},
-            }),
-            next: () => {
-              bttComp1['checkTooltipNecessity']();
-              bttComp1['cd']['detectChanges']();
-            },
-          } as any;
+          bttComp1['checker$'] = overwriteObservable(() => {
+            bttComp1['checkTooltipNecessity']();
+            bttComp1['cd']['detectChanges']();
+          });
         });
     })
   );

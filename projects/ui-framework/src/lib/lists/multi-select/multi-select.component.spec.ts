@@ -35,6 +35,7 @@ import {
   mockHighlightPipe,
   mockTranslatePipe,
   MutationObservableServiceProvideMock,
+  overwriteObservable,
   TrackByPropPipeStub,
   TranslateServiceProvideMock,
 } from '../../tests/services.stub.spec';
@@ -55,15 +56,10 @@ const disableTooltipDebouncer = (fixture) => {
   const bttComp1 = fixture.debugElement.query(By.css('.trigger-input'))
     .componentInstance;
   bttComp1.delay = bttComp1.lazyness = bttComp1.checkDebounceTime = 0;
-  bttComp1['checker$'] = {
-    pipe: () => ({
-      subscribe: () => {},
-    }),
-    next: () => {
-      bttComp1['checkTooltipNecessity']();
-      bttComp1['cd']['detectChanges']();
-    },
-  } as any;
+  bttComp1['checker$'] = overwriteObservable(() => {
+    bttComp1['checkTooltipNecessity']();
+    bttComp1['cd']['detectChanges']();
+  });
 };
 
 describe('MultiSelectComponent', () => {

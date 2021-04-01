@@ -22,6 +22,7 @@ import { dateToString } from '../../../services/utils/transformers';
 import { UtilsService } from '../../../services/utils/utils.service';
 import {
   mobileServiceStub,
+  overwriteObservable,
   utilsServiceStub,
 } from '../../../tests/services.stub.spec';
 import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
@@ -81,16 +82,12 @@ describe('DatepickerComponent', () => {
           component.hintMessage = 'Hint';
           component.required = true;
 
-          component['transmitDebouncer$'] = {
-            pipe: () => ({
-              subscribe: () => {},
-            }),
-            next: () =>
-              component.transmitValue(component.value, {
-                eventType: [InputEventType.onBlur],
-                addToEventObj: { date: component.value },
-              }),
-          } as any;
+          component['transmitDebouncer$'] = overwriteObservable(() =>
+            component.transmitValue(component.value, {
+              eventType: [InputEventType.onBlur],
+              addToEventObj: { date: component.value },
+            })
+          );
 
           fixture.detectChanges();
 

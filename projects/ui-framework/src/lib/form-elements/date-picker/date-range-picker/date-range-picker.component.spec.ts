@@ -24,6 +24,7 @@ import {
 import { UtilsService } from '../../../services/utils/utils.service';
 import {
   mobileServiceStub,
+  overwriteObservable,
   utilsServiceStub,
 } from '../../../tests/services.stub.spec';
 import { InputEventType } from '../../form-elements.enum';
@@ -76,16 +77,12 @@ describe('DateRangePickerComponent', () => {
           component.hintMessage = 'Hint';
           component.required = true;
 
-          component['transmitDebouncer$'] = {
-            pipe: () => ({
-              subscribe: () => {},
-            }),
-            next: () =>
-              component.transmitValue(component.value, {
-                eventType: [InputEventType.onBlur],
-                addToEventObj: { date: component.value },
-              }),
-          } as any;
+          component['transmitDebouncer$'] = overwriteObservable(() =>
+            component.transmitValue(component.value, {
+              eventType: [InputEventType.onBlur],
+              addToEventObj: { date: component.value },
+            })
+          );
 
           fixture.detectChanges();
 
