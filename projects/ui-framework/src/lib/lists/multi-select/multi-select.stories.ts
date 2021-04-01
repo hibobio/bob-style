@@ -1,38 +1,44 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs, object, boolean, select } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
-import { ButtonsModule } from '../../buttons/buttons.module';
-import { TypographyModule } from '../../typography/typography.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { MultiSelectModule } from './multi-select.module';
-import { SelectGroupOption } from '../list.interface';
-import { AvatarModule } from '../../avatar/avatar/avatar.module';
-import { mockText } from '../../mock.const';
 import { cloneDeep } from 'lodash';
-import { optionsMock, optionsMockDef } from '../multi-list/multi-list.mock';
-import { ListModelService } from '../list-service/list-model.service';
-import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
-import { SelectMode } from '../list.enum';
-import { SSPjobsOptionsMock } from '../single-select-panel/single-select-panel.stories';
-import { FormElementSize } from '../../form-elements/form-elements.enum';
-import { number } from '@storybook/addon-knobs';
-import { MultiSelectComponent } from './multi-select.component';
-import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
 
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { action } from '@storybook/addon-actions';
+import {
+  boolean,
+  number,
+  object,
+  select,
+  withKnobs,
+} from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { ComponentGroupType } from '../../consts';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
+// @ts-ignore: md file and not a module
+import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
+import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
+import { Icons } from '../../icons/icons.enum';
+import { mockText } from '../../mock.const';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { TypographyModule } from '../../typography/typography.module';
+import { ListModelService } from '../list-service/list-model.service';
+import { SelectMode } from '../list.enum';
+import { SelectGroupOption } from '../list.interface';
 // @ts-ignore: md file and not a module
 import listInterfaceDoc from '../list.interface.md';
 // @ts-ignore: md file and not a module
 import listSelectsPropsDoc from '../lists-selects.properties.md';
-// @ts-ignore: md file and not a module
-import selectsPropsDoc from '../selects.properties.md';
-// @ts-ignore: md file and not a module
-import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
+import { optionsMock, optionsMockDef } from '../multi-list/multi-list.mock';
 // @ts-ignore: md file and not a module
 import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
-import { Icons } from '../../icons/icons.enum';
-import { ScrollingModule } from '@angular/cdk/scrolling';
+// @ts-ignore: md file and not a module
+import selectsPropsDoc from '../selects.properties.md';
+import { SSPjobsOptionsMock } from '../single-select-panel/single-select-panel.stories';
+import { MultiSelectComponent } from './multi-select.component';
+import { MultiSelectModule } from './multi-select.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -235,7 +241,8 @@ const toAdd = () => ({
       'Options'
     ),
     options_plain: SSPjobsOptionsMock,
-    options_avatars: object<SelectGroupOption[]>(
+    options_avatars: options,
+    options_notes: object<SelectGroupOption[]>(
       'options data',
       options,
       'Options'
