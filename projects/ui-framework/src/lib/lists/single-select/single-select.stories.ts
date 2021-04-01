@@ -1,39 +1,34 @@
-import { storiesOf } from '@storybook/angular';
-import {
-  boolean,
-  object,
-  text,
-  withKnobs,
-  select,
-} from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
-import { ButtonsModule } from '../../buttons/buttons.module';
-import { TypographyModule } from '../../typography/typography.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { SingleSelectModule } from './single-select.module';
-import { SelectGroupOption } from '../list.interface';
-import { mockText } from '../../mock.const';
-import { optionsMock } from '../single-list/single-list.mock';
-import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { cloneDeep } from 'lodash';
-import { ListModelService } from '../list-service/list-model.service';
-import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
-import { FormElementSize } from '../../form-elements/form-elements.enum';
-import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
 
-// @ts-ignore: md file and not a module
-import listInterfaceDoc from '../list.interface.md';
-// @ts-ignore: md file and not a module
-import selectsPropsDoc from '../selects.properties.md';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { action } from '@storybook/addon-actions';
+import { boolean, object, select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { ComponentGroupType } from '../../consts';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
 // @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
+import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
+import { Icons } from '../../icons/icons.enum';
+import { mockText } from '../../mock.const';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { TypographyModule } from '../../typography/typography.module';
+import { ListModelService } from '../list-service/list-model.service';
+import { SelectGroupOption } from '../list.interface';
+// @ts-ignore: md file and not a module
+import listInterfaceDoc from '../list.interface.md';
 // @ts-ignore: md file and not a module
 import listSelectsPropsDoc from '../lists-selects.properties.md';
 // @ts-ignore: md file and not a module
 import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
-import { Icons } from '../../icons/icons.enum';
+// @ts-ignore: md file and not a module
+import selectsPropsDoc from '../selects.properties.md';
+import { optionsMock } from '../single-list/single-list.mock';
+import { SingleSelectModule } from './single-select.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -172,7 +167,9 @@ const toAdd = () => ({
       'Props'
     ),
 
-    options: object<SelectGroupOption[]>('options', options, 'Options'),
+    optionsNotes: object<SelectGroupOption[]>('options', options, 'Options'),
+
+    options: options,
 
     opened: action('Panel opened'),
     closed: action('Panel closed'),

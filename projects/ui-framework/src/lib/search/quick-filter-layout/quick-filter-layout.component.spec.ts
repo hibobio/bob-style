@@ -1,33 +1,47 @@
-import { ComponentFixture, TestBed, fakeAsync, tick, flush, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
-import {
-  Component,
-  ChangeDetectionStrategy,
-  Output,
-  EventEmitter,
-} from '@angular/core';
+import { cloneDeep } from 'lodash';
+
 import { CommonModule } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Output,
+} from '@angular/core';
+import {
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  resetFakeAsyncZone,
+  TestBed,
+  tick,
+  waitForAsync,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { GenericObject } from '../../types';
-import { QuickFilterLayoutModule } from './quick-filter-layout.module';
-import { QuickFilterLayoutComponent } from './quick-filter-layout.component';
-import { QuickFilterConfig } from '../quick-filter/quick-filter.interface';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { ButtonsModule } from '../../buttons/buttons.module';
-import { InputModule } from '../../form-elements/input/input.module';
-import { MultiSelectModule } from '../../lists/multi-select/multi-select.module';
-import { SingleSelectModule } from '../../lists/single-select/single-select.module';
-import { SocialModule } from '../../form-elements/social/social.module';
 import { DateRangePickerModule } from '../../form-elements/date-picker/date-range-picker/date-range-picker.module';
-import { TimePickerModule } from '../../form-elements/timepicker/timepicker.module';
+import { InputModule } from '../../form-elements/input/input.module';
+import { SocialModule } from '../../form-elements/social/social.module';
 // tslint:disable-next-line: max-line-length
 import { SplitInputSingleSelectModule } from '../../form-elements/split-input-single-select/split-input-single-select.module';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { TimePickerModule } from '../../form-elements/timepicker/timepicker.module';
+import { MultiSelectModule } from '../../lists/multi-select/multi-select.module';
+import { SingleSelectModule } from '../../lists/single-select/single-select.module';
+import { simpleChange } from '../../services/utils/functional-utils';
 import {
   elementFromFixture,
   elementsFromFixture,
   inputValue,
 } from '../../services/utils/test-helpers';
-import { cloneDeep } from 'lodash';
-import { simpleChange } from '../../services/utils/functional-utils';
+import {
+  DOMhelpersProvideMock,
+  MutationObservableServiceProvideMock,
+} from '../../tests/services.stub.spec';
+import { GenericObject } from '../../types';
+import { QuickFilterConfig } from '../quick-filter/quick-filter.interface';
+import { QuickFilterLayoutComponent } from './quick-filter-layout.component';
+import { QuickFilterLayoutModule } from './quick-filter-layout.module';
 
 const QFconfig = [
   {
@@ -185,35 +199,40 @@ describe('QuickFilterLayoutComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [TestComponent],
-      imports: [
-        CommonModule,
-        NoopAnimationsModule,
-        QuickFilterLayoutModule,
-        ButtonsModule,
-        InputModule,
-        MultiSelectModule,
-        SingleSelectModule,
-        SocialModule,
-        DateRangePickerModule,
-        TimePickerModule,
-        SplitInputSingleSelectModule,
-      ],
-      providers: [],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [TestComponent],
+        imports: [
+          CommonModule,
+          NoopAnimationsModule,
+          QuickFilterLayoutModule,
+          ButtonsModule,
+          InputModule,
+          MultiSelectModule,
+          SingleSelectModule,
+          SocialModule,
+          DateRangePickerModule,
+          TimePickerModule,
+          SplitInputSingleSelectModule,
+        ],
+        providers: [
+          DOMhelpersProvideMock(),
+          MutationObservableServiceProvideMock(),
+        ],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(TestComponent);
+          testComponent = fixture.componentInstance;
+          fixture.detectChanges();
+          QFLcomponent = fixture.debugElement.query(
+            By.css('b-quick-filter-layout')
+          ).componentInstance;
+          spyOn(QFLcomponent.filtersChange, 'emit').and.callThrough();
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(TestComponent);
-        testComponent = fixture.componentInstance;
-        fixture.detectChanges();
-        QFLcomponent = fixture.debugElement.query(
-          By.css('b-quick-filter-layout')
-        ).componentInstance;
-        spyOn(QFLcomponent.filtersChange, 'emit').and.callThrough();
-      });
-  }));
+  );
 
   describe('Initial render', () => {
     afterEach(fakeAsync(() => {

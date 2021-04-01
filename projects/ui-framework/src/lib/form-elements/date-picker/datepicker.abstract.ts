@@ -1,58 +1,61 @@
+import { isSameDay } from 'date-fns';
+import { get, set } from 'lodash';
+import { Subject } from 'rxjs';
+import { debounceTime, throttleTime } from 'rxjs/operators';
+
+import { Overlay } from '@angular/cdk/overlay';
 import {
-  ViewChild,
+  AfterViewInit,
   ChangeDetectorRef,
-  NgZone,
-  Input,
-  OnInit,
-  SimpleChanges,
-  ViewChildren,
-  QueryList,
+  Directive,
   ElementRef,
-  Output,
   EventEmitter,
   HostBinding,
-  AfterViewInit,
-  Directive,
+  Input,
+  NgZone,
+  OnInit,
+  Output,
+  QueryList,
+  SimpleChanges,
+  ViewChild,
+  ViewChildren,
 } from '@angular/core';
-import { BaseFormElement } from '../base-form-element';
-import { MobileService } from '../../services/utils/mobile.service';
-import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
-import {
-  simpleUID,
-  isKey,
-  cloneValue,
-  hasProp,
-  hasChanges,
-  isEmpty,
-} from '../../services/utils/functional-utils';
-import { dateOrFail } from '../../services/utils/transformers';
-import { DateParseService } from './date-parse-service/date-parse.service';
-import { Keys } from '../../enums';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { throttleTime } from 'rxjs/operators';
-import { WindowRef } from '../../services/utils/window-ref.service';
-import { InputEventType } from '../form-elements.enum';
-import { set, get } from 'lodash';
-import { DatepickerType, DateAdjust } from './datepicker.enum';
-import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
-import { Styles } from '../../services/html/html-helpers.interface';
-import {
-  DateParseResult,
-  DatePickerChangeEvent,
-  FormatParserResult,
-} from './datepicker.interface';
+import { MatDatepicker } from '@angular/material/datepicker';
+
 import {
   DISPLAY_DATE_FORMAT_DEF,
   DISPLAY_MONTH_FORMAT_DEF,
   LOCALE_FORMATS,
 } from '../../consts';
+import { Keys } from '../../enums';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
-import { LocaleFormat, DateFormatFullDate, DateFormat } from '../../types';
-import { Overlay } from '@angular/cdk/overlay';
-import { MatDatepicker } from '@angular/material/datepicker';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { Styles } from '../../services/html/html-helpers.interface';
+import {
+  cloneValue,
+  hasChanges,
+  hasProp,
+  isEmpty,
+  isKey,
+  simpleUID,
+} from '../../services/utils/functional-utils';
+import { MobileService } from '../../services/utils/mobile.service';
+import { dateOrFail } from '../../services/utils/transformers';
 import { UtilsService } from '../../services/utils/utils.service';
-import { isSameDay } from 'date-fns';
+import { WindowRef } from '../../services/utils/window-ref.service';
+import { DateFormat, DateFormatFullDate, LocaleFormat } from '../../types';
+import { BaseFormElement } from '../base-form-element';
+import { InputEventType } from '../form-elements.enum';
 import { InputAutoCompleteOptions } from '../input/input.enum';
+import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
+import { DateParseService } from './date-parse-service/date-parse.service';
+import { DateAdjust, DatepickerType } from './datepicker.enum';
+import {
+  DateParseResult,
+  DatePickerChangeEvent,
+  FormatParserResult,
+} from './datepicker.interface';
 
 export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
   const strategy = () => overlay.scrollStrategies.close();
@@ -150,10 +153,22 @@ export abstract class BaseDatepickerElement<
   private doneFirstChange = false;
   private useFormatForPlaceholder = false;
 
+  private transmitDebouncer$: Subject<void> = new Subject().pipe(
+    debounceTime(100)
+  ) as Subject<void>;
+
   protected doOnPickerOpen(picker: MatDatepicker<any>): void {}
 
   ngOnInit(): void {
     this.subs.push(
+      //
+      this.transmitDebouncer$.subscribe(() => {
+        this.transmitValue(this.value, {
+          eventType: [InputEventType.onBlur],
+          addToEventObj: { date: this.value },
+        });
+      }),
+
       this.utilsService
         .getResizeEvent(true)
         .pipe(
@@ -262,26 +277,20 @@ export abstract class BaseDatepickerElement<
     this.doneFirstChange = true;
   }
 
-  public transmit(
-    value = NaN,
-    path = 'value',
-    event = [InputEventType.onBlur]
-  ) {
+  public transmit(value: Date = NaN as any, path = 'value') {
     const currentValue = get(this, path);
 
-    if (currentValue && value && isSameDay(currentValue, value)) {
+    if (
+      (currentValue && value && isSameDay(currentValue, value)) ||
+      value !== value
+    ) {
       this.writingValue = false;
       return;
     }
 
-    if (value === value) {
-      set(this, path, value);
-    }
+    set(this, path, value);
 
-    this.transmitValue(this.value, {
-      eventType: this.writingValue ? [InputEventType.onWrite] : event,
-      addToEventObj: { date: this.value },
-    });
+    !this.writingValue && this.transmitDebouncer$.next();
   }
 
   public onInputChange(parsed: DateParseResult, index: number = 0): void {

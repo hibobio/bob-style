@@ -1,35 +1,38 @@
-import { DatepickerComponent } from './datepicker.component';
+import { isDate, parseISO } from 'date-fns';
+
+import { OverlayModule } from '@angular/cdk/overlay';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatNativeDateModule } from '@angular/material/core';
+import {
+  MatDatepicker,
+  MatDatepickerModule,
+} from '@angular/material/datepicker';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { IconsModule } from '../../../icons/icons.module';
+import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
+import { simpleChange } from '../../../services/utils/functional-utils';
+import { MobileService } from '../../../services/utils/mobile.service';
 import {
   elementFromFixture,
   getPseudoContent,
 } from '../../../services/utils/test-helpers';
-import { UtilsService } from '../../../services/utils/utils.service';
-import { DateParseService } from '../date-parse-service/date-parse.service';
-import { MobileService } from '../../../services/utils/mobile.service';
-import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
-import { IconsModule } from '../../../icons/icons.module';
-import { InputMessageModule } from '../../input-message/input-message.module';
 import { dateToString } from '../../../services/utils/transformers';
-import { isDate, parseISO } from 'date-fns';
-import { DatepickerType } from '../datepicker.enum';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.service';
-import { OverlayModule } from '@angular/cdk/overlay';
-import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
-import { DateInputDirectiveModule } from '../date-input-directive/dateinput.directive.module';
+import { UtilsService } from '../../../services/utils/utils.service';
 import {
-  utilsServiceStub,
   mobileServiceStub,
+  overwriteObservable,
+  utilsServiceStub,
 } from '../../../tests/services.stub.spec';
+import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
 import { InputEventType } from '../../form-elements.enum';
-import {
-  MatDatepickerModule,
-  MatDatepicker,
-} from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { simpleChange } from '../../../services/utils/functional-utils';
+import { InputMessageModule } from '../../input-message/input-message.module';
+import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.service';
+import { DateInputDirectiveModule } from '../date-input-directive/dateinput.directive.module';
+import { DateParseService } from '../date-parse-service/date-parse.service';
+import { DatepickerType } from '../datepicker.enum';
+import { DatepickerComponent } from './datepicker.component';
 
 describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
@@ -78,6 +81,13 @@ describe('DatepickerComponent', () => {
           component.label = 'Label';
           component.hintMessage = 'Hint';
           component.required = true;
+
+          component['transmitDebouncer$'] = overwriteObservable(() =>
+            component.transmitValue(component.value, {
+              eventType: [InputEventType.onBlur],
+              addToEventObj: { date: component.value },
+            })
+          );
 
           fixture.detectChanges();
 

@@ -1,11 +1,13 @@
 import { merge, Observable, of, Subscriber } from 'rxjs';
 import {
   bufferTime,
+  debounceTime,
   delay,
   distinctUntilChanged,
   filter,
   map,
   startWith,
+  tap,
   throttleTime,
 } from 'rxjs/operators';
 
@@ -45,6 +47,8 @@ export interface MutationObservableConfig extends MutationObserverInit {
 export interface ResizeObservableConfig {
   watch?: 'both' | 'width' | 'height';
   threshold?: number;
+  debounceTime?: number | boolean;
+  outsideZone?: boolean;
 }
 
 // tslint:disable-next-line: no-empty-interface
@@ -72,6 +76,7 @@ export const MUTATION_OBSERVABLE_CONFIG_DEF: MutationObservableConfig = {
 export const RESIZE_OBSERVERVABLE_CONFIG_DEF: ResizeObservableConfig = {
   watch: 'both',
   threshold: 10,
+  debounceTime: false,
 };
 
 export const INTERSECTION_OBSERVABLE_CONFIG_DEF: IntersectionObservableConfig = {};
@@ -104,10 +109,11 @@ export class MutationObservableService {
     win = win || (getElementWindow(element) as any);
 
     if (!isDomElement(element, win)) {
-      console.error(
-        `[MutationObservableService.getMutationObservable]: valid element to observe was not provided - got "${getType(
+      log.err(
+        `valid element to observe was not provided - got "${getType(
           element
-        )}" instead`
+        )}" instead`,
+        'MutationObservableService.getMutationObservable'
       );
       return of(new Set());
     }
@@ -181,69 +187,68 @@ export class MutationObservableService {
     win = win || (getElementWindow(element) as any);
 
     if (!isDomElement(element, win)) {
-      console.error(
-        `[MutationObservableService.getResizeObservervable]: valid element to observe was not provided - got "${getType(
+      log.err(
+        `valid element to observe was not provided - got "${getType(
           element
-        )}" instead`
+        )}" instead`,
+        'MutationObservableService.getResizeObservervable'
       );
       return of({ width: 0, height: 0 });
     }
 
-    if (!win.ResizeObserver) {
-      console.warn(
-        `[MutationObservableService.getResizeObservervable] This browser doesn't support ResizeObserver`
-      );
-      return new Observable(
-        (subscriber: Subscriber<Partial<DOMRectReadOnly>>) => {
-          let lastRect: Partial<DOMRectReadOnly> = {
-            width: 0,
-            height: 0,
-          };
+    let observable: Observable<Partial<DOMRectReadOnly>>;
+    let lastRect: Partial<DOMRectReadOnly> = { width: 0, height: 0 };
 
-          const resizeSub = this.utilsService.getResizeEvent().subscribe(() => {
-            const newRect = {
-              width: element.offsetWidth,
-              height: element.offsetHeight,
+    if (!win.ResizeObserver) {
+      log.wrn(
+        `This browser doesn't support ResizeObserver`,
+        'MutationObservableService.getResizeObservervable'
+      );
+
+      observable = this.utilsService.getResizeEvent(true).pipe(
+        map(() => {
+          return {
+            width: element.offsetWidth,
+            height: element.offsetHeight,
+          };
+        })
+      );
+    } else {
+      this.zone.runOutsideAngular(() => {
+        //
+        observable = new Observable(
+          (subscriber: Subscriber<Partial<DOMRectReadOnly>>) => {
+            //
+            const resizeObserver: ResizeObserverInstance = new win.ResizeObserver(
+              (entries: ResizeObserverEntry[]) => {
+                subscriber.next(entries[entries.length - 1].contentRect);
+              }
+            );
+            resizeObserver.observe(element);
+
+            const unsubscribe = () => {
+              resizeObserver.disconnect();
             };
 
-            if (this.compareDOMRects(lastRect, newRect, config)) {
-              subscriber.next({ ...newRect });
-              lastRect = newRect;
-            }
-          });
-
-          const unsubscribe = () => {
-            resizeSub.unsubscribe();
-          };
-
-          return unsubscribe;
-        }
-      );
-    }
-
-    return new Observable(
-      (subscriber: Subscriber<Partial<DOMRectReadOnly>>) => {
-        let lastRect: Partial<DOMRectReadOnly> = { width: 0, height: 0 };
-
-        const resizeObserver: ResizeObserverInstance = new win.ResizeObserver(
-          (entries: ResizeObserverEntry[]) => {
-            const newRect = entries[entries.length - 1].contentRect;
-
-            if (this.compareDOMRects(lastRect, newRect, config)) {
-              subscriber.next(newRect);
-              lastRect = newRect;
-            }
+            return unsubscribe;
           }
         );
+      });
+    }
 
-        resizeObserver.observe(element);
-
-        const unsubscribe = () => {
-          resizeObserver.disconnect();
-        };
-
-        return unsubscribe;
-      }
+    return observable.pipe(
+      !config.debounceTime || !win.ResizeObserver
+        ? pass
+        : debounceTime(
+            isNumber(config.debounceTime) ? config.debounceTime : 100
+          ),
+      filter((newRect) => {
+        return this.compareDOMRects(lastRect, newRect, config);
+      }),
+      tap((rect) => {
+        lastRect = rect;
+      }),
+      !config.outsideZone ? insideZone(this.zone) : pass
     );
   }
 
@@ -257,10 +262,11 @@ export class MutationObservableService {
     win = win || (getElementWindow(element) as any);
 
     if (!isDomElement(element, win)) {
-      console.error(
-        `[MutationObservableService.getIntersectionObservable]: valid element to observe was not provided - got "${getType(
+      log.err(
+        `valid element to observe was not provided - got "${getType(
           element
-        )}" instead`
+        )}" instead`,
+        'MutationObservableService.getIntersectionObservable'
       );
       return of({
         target: element,
@@ -274,13 +280,14 @@ export class MutationObservableService {
       !('IntersectionObserverEntry' in win) ||
       !('intersectionRatio' in win.IntersectionObserverEntry?.prototype)
     ) {
-      console.warn(
-        `[MutationObservableService.getIntersectionObservable] This browser doesn't support IntersectionObserver`
+      log.wrn(
+        `This browser doesn't support IntersectionObserver`,
+        'MutationObservableService.getIntersectionObservable'
       );
 
       return merge(
-        this.utilsService.getScrollEvent(),
-        this.utilsService.getResizeEvent()
+        this.utilsService.getScrollEvent(true),
+        this.utilsService.getResizeEvent(true)
       ).pipe(
         startWith(1),
         throttleTime(300, undefined, {
@@ -296,7 +303,8 @@ export class MutationObservableService {
               isIntersecting: isInView,
               isVisible: isInView,
             } as any) as IntersectionObserverableEntry)
-        )
+        ),
+        insideZone(this.zone)
       );
     }
 

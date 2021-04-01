@@ -38,7 +38,12 @@ $input-focus-border-color: $grey-700;
   }
 }
 
-@mixin input-border-colors($selector: '&', $add: '', $error-class: '.error', $warn-class: '.warn') {
+@mixin input-border-colors(
+  $selector: '&',
+  $add: '',
+  $error-class: '.error',
+  $warn-class: '.warn'
+) {
   @if $warn-class {
     #{$selector}#{$warn-class}#{$add} {
       border-color: $color-warn;
@@ -70,7 +75,11 @@ $input-focus-border-color: $grey-700;
   border-radius: inherit;
   margin: 0;
   outline: 0;
-  @include b-body($lineHeight: null, $color: $body-text-color, $addCssVars: false);
+  @include b-body(
+    $lineHeight: null,
+    $color: $body-text-color,
+    $addCssVars: false
+  );
   background: transparent;
   height: $height;
   line-height: $height;
@@ -238,6 +247,10 @@ $input-focus-border-color: $grey-700;
 
   #{$sel}.disabled {
     @include disabled-state;
+
+    ::selection {
+      background: transparent;
+    }
   }
 
   #{$sel}.required ::ng-deep {

@@ -16,7 +16,8 @@
         'tooltip-enabled': tooltipEnabled
       }"
      data-max-lines="1">
-  {{ text }}
+  <span *ngIf="text"
+        [innerHTML]="text"></span>
   <ng-content></ng-content>
   <ng-template #directiveTemplate></ng-template>
 </div>

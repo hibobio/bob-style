@@ -1,53 +1,68 @@
+import { getTestScheduler } from 'jasmine-marbles';
+import { cloneDeep } from 'lodash';
+import { MockComponent } from 'ng-mocks';
+
+import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
   inject,
+  resetFakeAsyncZone,
   TestBed,
   tick,
-  resetFakeAsyncZone,
   waitForAsync,
 } from '@angular/core/testing';
-import { CommonModule } from '@angular/common';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { Platform } from '@angular/cdk/platform';
-import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
-import { MultiSelectComponent } from './multi-select.component';
 import { By } from '@angular/platform-browser';
-import { SelectGroupOption } from '../list.interface';
-import { ListModelService } from '../list-service/list-model.service';
-import { cloneDeep } from 'lodash';
-import {
-  mockTranslatePipe,
-  TranslateServiceProvideMock,
-  mockHighlightPipe,
-  listKeyboardServiceStub,
-  MobileServiceProvideMock,
-  DOMhelpersProvideMock,
-  MutationObservableServiceProvideMock,
-  TrackByPropPipeStub,
-} from '../../tests/services.stub.spec';
-import { MockComponent } from 'ng-mocks';
-import { MultiListComponent } from '../multi-list/multi-list.component';
-import { ListFooterComponent } from '../list-footer/list-footer.component';
-import { CheckboxComponent } from '../../form-elements/checkbox/checkbox.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { ButtonComponent } from '../../buttons/button/button.component';
 import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
+import { CheckboxComponent } from '../../form-elements/checkbox/checkbox.component';
 import { IconComponent } from '../../icons/icon.component';
-import { SearchComponent } from '../../search/search/search.component';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { ListChangeService } from '../list-change/list-change.service';
-import { ListKeyboardService } from '../list-service/list-keyboard.service';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
+import { SearchComponent } from '../../search/search/search.component';
 import { simpleChange } from '../../services/utils/functional-utils';
-import { getTestScheduler } from 'jasmine-marbles';
 import { fakeAsyncFlush } from '../../services/utils/test-helpers';
+import {
+  DOMhelpersProvideMock,
+  listKeyboardServiceStub,
+  MobileServiceProvideMock,
+  mockHighlightPipe,
+  mockTranslatePipe,
+  MutationObservableServiceProvideMock,
+  overwriteObservable,
+  TrackByPropPipeStub,
+  TranslateServiceProvideMock,
+} from '../../tests/services.stub.spec';
+import { ListChangeService } from '../list-change/list-change.service';
+import { ListFooterComponent } from '../list-footer/list-footer.component';
+import { ListKeyboardService } from '../list-service/list-keyboard.service';
+import { ListModelService } from '../list-service/list-model.service';
+import { SelectGroupOption } from '../list.interface';
 import {
   compareListChange,
   getOptionsModel,
   mockListChange,
 } from '../lists-test-helpers.spec';
+import { MultiListComponent } from '../multi-list/multi-list.component';
+import { MultiSelectComponent } from './multi-select.component';
+
+const disableTooltipDebouncer = (
+  fixture: ComponentFixture<MultiSelectComponent>
+) => {
+  const bttComp1 = fixture.debugElement.query(By.css('.trigger-input'))
+    .componentInstance;
+  bttComp1.delay = bttComp1.lazyness = 0;
+  bttComp1['checker$'] = overwriteObservable(() => {
+    bttComp1['checkTooltipNecessity']();
+    bttComp1['cd']['detectChanges']();
+  });
+};
 
 describe('MultiSelectComponent', () => {
   let component: MultiSelectComponent;
@@ -121,7 +136,10 @@ describe('MultiSelectComponent', () => {
           fixture = TestBed.createComponent(MultiSelectComponent);
           component = fixture.componentInstance;
           component.startWithGroupsCollapsed = false;
-          component.ngAfterViewInit = () => {};
+
+          component.ngAfterViewInit = () => {
+            disableTooltipDebouncer(fixture);
+          };
 
           component.ngOnChanges(
             simpleChange({
@@ -358,6 +376,7 @@ describe('MultiSelectComponent', () => {
     beforeEach(() => {
       fixture.nativeElement.style.width = '150px';
       fixture.nativeElement.style.minWidth = '150px';
+      disableTooltipDebouncer(fixture);
     });
 
     it('should not show tooltip', () => {
@@ -414,6 +433,7 @@ describe('MultiSelectComponent', () => {
     beforeEach(() => {
       fixture.nativeElement.style.width = '150px';
       fixture.nativeElement.style.minWidth = '150px';
+      disableTooltipDebouncer(fixture);
     });
 
     it('should put a selected values number in suffix, if tooltip is enabled', fakeAsync(() => {

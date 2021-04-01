@@ -141,7 +141,7 @@ export const optionsMock: SelectGroupOption[] = [
 
         return {
           id: optId,
-          value: optVal,
+          value: `<div>${optVal}</div>`,
           selected: false,
           disabled: false,
           prefixComponent: {

@@ -1,26 +1,32 @@
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+
 import {
-  Component,
-  Input,
-  OnDestroy,
-  ViewChild,
-  ElementRef,
   AfterViewInit,
-  ViewContainerRef,
-  DoCheck,
-  NgZone,
-  OnInit,
   ChangeDetectorRef,
+  Component,
+  ElementRef,
   HostListener,
-  SimpleChanges,
+  Input,
+  NgZone,
   OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+  ViewContainerRef,
 } from '@angular/core';
-import { TruncateTooltipType } from './truncate-tooltip.enum';
+
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { TextProps } from '../../services/html/html-helpers.interface';
-import { Subscription } from 'rxjs';
-import { TooltipClass, TooltipPosition } from '../tooltip/tooltip.enum';
-import { asArray, hasChanges } from '../../services/utils/functional-utils';
+import {
+  asArray,
+  hasChanges,
+  unsubscribeArray,
+} from '../../services/utils/functional-utils';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
+import { TooltipClass, TooltipPosition } from '../tooltip/tooltip.enum';
+import { TruncateTooltipType } from './truncate-tooltip.enum';
 
 @Component({
   selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
@@ -28,7 +34,7 @@ import { MutationObservableService } from '../../services/utils/mutation-observa
   styleUrls: ['./truncate-tooltip.component.scss'],
 })
 export class TruncateTooltipComponent
-  implements OnChanges, AfterViewInit, DoCheck, OnInit, OnDestroy {
+  implements OnChanges, AfterViewInit, OnInit, OnDestroy {
   constructor(
     private DOM: DOMhelpers,
     private zone: NgZone,
@@ -50,8 +56,7 @@ export class TruncateTooltipComponent
   @ViewChild('textContainer', { static: true }) textContainer: ElementRef;
   @ViewChild('directiveTemplate', { read: ViewContainerRef, static: true })
   child: ViewContainerRef;
-  @Input() delay = 300;
-  @Input() lazyness = 200;
+
   @Input() expectChanges = false;
   @Input() trustCssVars = false;
   @Input() type: TruncateTooltipType = TruncateTooltipType.auto;
@@ -59,17 +64,26 @@ export class TruncateTooltipComponent
 
   @Input() tooltipClass: TooltipClass | string | (TooltipClass | string)[];
 
+  public delay = 300;
+  public lazyness = 200;
+
   private textElementTextProps: TextProps;
   private maxLinesDefault = 1;
   private maxLinesCache = this.maxLinesDefault;
   private hoverTimer;
+
   public maxLines = this.maxLinesDefault;
   public tooltipText: string;
   public tooltipEnabled = false;
   public tooltipAllowed = false;
   public initialized = this.trustCssVars;
+
   readonly types = TruncateTooltipType;
-  private resizeSubscription: Subscription;
+  private readonly subs: Subscription[] = [];
+
+  private checker$: Subject<any> = new Subject().pipe(
+    debounceTime(100)
+  ) as Subject<any>;
 
   @HostListener('click.outside-zone')
   onClick() {
@@ -78,13 +92,7 @@ export class TruncateTooltipComponent
       this.type === TruncateTooltipType.css &&
       !this.tooltipEnabled
     ) {
-      // this.zone.runOutsideAngular(() => {
-      this.DOM.mutate(() => {
-        if (this.checkTooltipNecessity() && !this.cd['destroyed']) {
-          this.cd.detectChanges();
-        }
-      });
-      // });
+      this.checker$.next();
     }
   }
 
@@ -97,14 +105,7 @@ export class TruncateTooltipComponent
     ) {
       this.expectChanges = false;
       this.tooltipText = this.text;
-
-      this.zone.runOutsideAngular(() => {
-        this.DOM.mutate(() => {
-          if (this.checkTooltipNecessity() && !this.cd['destroyed']) {
-            this.cd.detectChanges();
-          }
-        });
-      });
+      this.checker$.next();
     }
   }
 
@@ -113,24 +114,48 @@ export class TruncateTooltipComponent
       'b-truncate-tooltip'
     );
 
+    this.subs.push(
+      this.checker$.subscribe(() => {
+        this.DOM.mutate(() => {
+          if (this.checkTooltipNecessity() && !this.cd['destroyed']) {
+            this.cd.detectChanges();
+          }
+        });
+      })
+    );
+
     if (this.type !== TruncateTooltipType.none) {
+      //
       if (this.lazyness !== 0 && this.type !== TruncateTooltipType.css) {
         this.addMouseListeners();
       }
 
       this.zone.runOutsideAngular(() => {
-        this.resizeSubscription = this.mutationObservableService
-          .getResizeObservervable(this.textContainer.nativeElement, {
-            watch: 'width',
-            threshold: 15,
-          })
-          .subscribe(() => {
-            this.DOM.mutate(() => {
-              if (this.checkTooltipNecessity() && !this.cd['destroyed']) {
-                this.cd.detectChanges();
-              }
-            });
-          });
+        this.subs.push(
+          this.mutationObservableService
+            .getResizeObservervable(this.textContainer.nativeElement, {
+              watch: 'width',
+              threshold: 15,
+              outsideZone: true,
+              debounceTime: true,
+            })
+            .subscribe(this.checker$),
+
+          !this.text &&
+            this.expectChanges &&
+            this.mutationObservableService
+              .getMutationObservable(this.textContainer.nativeElement, {
+                attributes: false,
+                childList: true,
+                characterData: true,
+                subtree: true,
+                outsideZone: true,
+                bufferTime: true,
+              })
+              .subscribe(() => {
+                this.doCheck();
+              })
+        );
       });
     }
   }
@@ -147,7 +172,6 @@ export class TruncateTooltipComponent
         this.setMaxLinesAttr();
 
         if (this.type !== TruncateTooltipType.none) {
-          this.checkTooltipNecessity();
           this.initialized = true;
 
           if (this.type === TruncateTooltipType.css || this.lazyness === 0) {
@@ -159,45 +183,37 @@ export class TruncateTooltipComponent
           if (!this.cd['destroyed']) {
             this.cd.detectChanges();
           }
+
+          this.checker$.next();
         }
       });
     });
   }
 
-  ngDoCheck(): void {
+  doCheck(): void {
     if (
       !this.text &&
       this.expectChanges &&
       this.type !== TruncateTooltipType.none
     ) {
-      this.zone.runOutsideAngular(() => {
-        this.DOM.mutate(() => {
-          if (
-            this.initialized &&
-            this.tooltipText !==
-              this.textContainer.nativeElement.textContent.trim()
-          ) {
-            this.tooltipText = this.textContainer.nativeElement.textContent.trim();
-            this.checkTooltipNecessity();
-
-            if (!this.cd['destroyed']) {
-              this.cd.detectChanges();
-            }
-          }
-
-          if (this.initialized && this.maxLines !== this.maxLinesCache) {
-            this.setMaxLines(this.maxLines);
-            if (!this.cd['destroyed']) {
-              this.cd.detectChanges();
-            }
-          }
-        });
+      this.DOM.mutate(() => {
+        if (this.initialized && this.maxLines !== this.maxLinesCache) {
+          this.setMaxLines(this.maxLines);
+        }
+        if (
+          this.initialized &&
+          this.tooltipText !==
+            this.textContainer.nativeElement.textContent.trim()
+        ) {
+          this.tooltipText = this.textContainer.nativeElement.textContent.trim();
+          this.checker$.next();
+        }
       });
     }
   }
 
   ngOnDestroy(): void {
-    this.resizeSubscription?.unsubscribe();
+    unsubscribeArray(this.subs);
     this.stopHoverTimer();
   }
 
@@ -281,7 +297,7 @@ export class TruncateTooltipComponent
     if (this.maxLines !== this.maxLinesCache && this.initialized) {
       this.setMaxHeight();
       this.setMaxLinesAttr();
-      this.checkTooltipNecessity();
+      this.checker$.next();
     }
     this.maxLinesCache = this.maxLines;
   }
