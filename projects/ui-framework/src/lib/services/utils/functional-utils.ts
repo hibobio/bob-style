@@ -1875,7 +1875,8 @@ export const prefetchSharedObservables = (
 
 export const unsubscribeArray = (subs: Subscription[]): void => {
   subs.forEach((sub) => {
-    sub?.unsubscribe();
+    // sub?.unsubscribe();
+    invoke(sub, 'unsubscribe');
   });
   subs.length = 0;
 };

@@ -41,7 +41,6 @@ import {
   simpleUID,
 } from '../../services/utils/functional-utils';
 import { MobileService } from '../../services/utils/mobile.service';
-import { debug } from '../../services/utils/rxjs.operators';
 import { dateOrFail } from '../../services/utils/transformers';
 import { UtilsService } from '../../services/utils/utils.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
@@ -163,7 +162,7 @@ export abstract class BaseDatepickerElement<
   ngOnInit(): void {
     this.subs.push(
       //
-      this.transmitDebouncer$.pipe(debug('transmitter$')).subscribe(() => {
+      this.transmitDebouncer$.subscribe(() => {
         this.transmitValue(this.value, {
           eventType: [InputEventType.onBlur],
           addToEventObj: { date: this.value },

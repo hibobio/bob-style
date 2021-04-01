@@ -1,11 +1,17 @@
+import { endOfMonth, isDate, parseISO } from 'date-fns';
+
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { DateRangePickerComponent } from './date-range-picker.component';
-import { UtilsService } from '../../../services/utils/utils.service';
-import { MobileService } from '../../../services/utils/mobile.service';
-import { DateParseService } from '../date-parse-service/date-parse.service';
-import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
+import { MatNativeDateModule } from '@angular/material/core';
+import {
+  MatDatepicker,
+  MatDatepickerModule,
+} from '@angular/material/datepicker';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { IconsModule } from '../../../icons/icons.module';
-import { InputMessageModule } from '../../input-message/input-message.module';
+import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
+import { simpleChange } from '../../../services/utils/functional-utils';
+import { MobileService } from '../../../services/utils/mobile.service';
 import {
   elementFromFixture,
   elementsFromFixture,
@@ -15,21 +21,17 @@ import {
   dateToString,
   stringToDate,
 } from '../../../services/utils/transformers';
-import { isDate, parseISO, endOfMonth } from 'date-fns';
-import { DatepickerType } from '../datepicker.enum';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { DateInputDirectiveModule } from '../date-input-directive/dateinput.directive.module';
+import { UtilsService } from '../../../services/utils/utils.service';
 import {
-  utilsServiceStub,
   mobileServiceStub,
+  utilsServiceStub,
 } from '../../../tests/services.stub.spec';
 import { InputEventType } from '../../form-elements.enum';
-import {
-  MatDatepicker,
-  MatDatepickerModule,
-} from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { simpleChange } from '../../../services/utils/functional-utils';
+import { InputMessageModule } from '../../input-message/input-message.module';
+import { DateInputDirectiveModule } from '../date-input-directive/dateinput.directive.module';
+import { DateParseService } from '../date-parse-service/date-parse.service';
+import { DatepickerType } from '../datepicker.enum';
+import { DateRangePickerComponent } from './date-range-picker.component';
 
 describe('DateRangePickerComponent', () => {
   let fixture: ComponentFixture<DateRangePickerComponent>;
@@ -73,6 +75,17 @@ describe('DateRangePickerComponent', () => {
           component.endDateLabel = 'End date';
           component.hintMessage = 'Hint';
           component.required = true;
+
+          component['transmitDebouncer$'] = {
+            pipe: () => ({
+              subscribe: () => {},
+            }),
+            next: () =>
+              component.transmitValue(component.value, {
+                eventType: [InputEventType.onBlur],
+                addToEventObj: { date: component.value },
+              }),
+          } as any;
 
           fixture.detectChanges();
 
@@ -189,13 +202,14 @@ describe('DateRangePickerComponent', () => {
     });
 
     it('should emit changed event', () => {
-      expect(component.changed.emit).toHaveBeenCalledWith({
-        event: InputEventType.onWrite,
-        value: {
-          from: '2019-09-15',
-          to: '2019-09-27',
-        },
-      });
+      expect(component.changed.emit).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          value: {
+            from: '2019-09-15',
+            to: '2019-09-27',
+          },
+        })
+      );
       expect(component.propagateChange).toHaveBeenCalledWith({
         from: '2019-09-15',
         to: '2019-09-27',
@@ -226,17 +240,18 @@ describe('DateRangePickerComponent', () => {
       expect(component.value.startDate).not.toBeNull();
       iconElems[0].click();
       expect(component.value.startDate).toBeNull();
-      expect(component.changed.emit).toHaveBeenCalledWith({
-        event: InputEventType.onBlur,
-        value: {
-          from: null,
-          to: '2019-09-27',
-        },
-        date: {
-          startDate: null,
-          endDate: stringToDate('2019-09-27'),
-        },
-      });
+      expect(component.changed.emit).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          value: {
+            from: null,
+            to: '2019-09-27',
+          },
+          date: {
+            startDate: null,
+            endDate: stringToDate('2019-09-27'),
+          },
+        })
+      );
       expect(component.propagateChange).toHaveBeenCalledWith({
         from: null,
         to: '2019-09-27',

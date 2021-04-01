@@ -105,8 +105,7 @@ const storyTemplate = `
   ${template3}
  <hr style="margin: 60px 0 50px 0; border: 0; height: 0; border-top: 2px dashed #d2d2d2;">
   ${template4}
-  <br><br>
-  ${template1}
+
 </div>
 
 
@@ -141,8 +140,6 @@ const note = `
   [trustCssVars] | boolean | performance can be optimised, if --line-height and --font-size \
   CSS variables exist on the element | false
   [expectChanges] | boolean | if text inside truncate-tooltip component will be changing, set to true | false
-  [delay] | number | time in ms before tooltip shows | 300
-  [lazyness] | number | if type is Material, it will be initialized lazyly after this many ms of hover | 200
   [tooltipClass] | TooltipClass / TooltipClass[] | classes to control tooltip text-align and wrapping | &nbsp;
 
    --------
@@ -162,7 +159,7 @@ const note = `
 
  --------
 
-  #### (example 3) Use as a (structural) directive (*bTruncateTooltip):
+  #### <s>(example 3) Use as a (structural) directive (*bTruncateTooltip):</s> DEPRECATED, DONT USE
   ~~~
   <b-big-body *bTruncateTooltip="maxLines">
    {{ text }}

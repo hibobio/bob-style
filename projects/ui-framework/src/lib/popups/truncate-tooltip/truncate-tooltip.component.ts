@@ -57,9 +57,6 @@ export class TruncateTooltipComponent
   @ViewChild('directiveTemplate', { read: ViewContainerRef, static: true })
   child: ViewContainerRef;
 
-  @Input()
-  delay = 300;
-  @Input() lazyness = 200;
   @Input() expectChanges = false;
   @Input() trustCssVars = false;
   @Input() type: TruncateTooltipType = TruncateTooltipType.auto;
@@ -67,15 +64,20 @@ export class TruncateTooltipComponent
 
   @Input() tooltipClass: TooltipClass | string | (TooltipClass | string)[];
 
+  public delay = 300;
+  public lazyness = 200;
+
   private textElementTextProps: TextProps;
   private maxLinesDefault = 1;
   private maxLinesCache = this.maxLinesDefault;
   private hoverTimer;
+
   public maxLines = this.maxLinesDefault;
   public tooltipText: string;
   public tooltipEnabled = false;
   public tooltipAllowed = false;
   public initialized = this.trustCssVars;
+
   readonly types = TruncateTooltipType;
   private readonly subs: Subscription[] = [];
 
@@ -123,6 +125,7 @@ export class TruncateTooltipComponent
     );
 
     if (this.type !== TruncateTooltipType.none) {
+      //
       if (this.lazyness !== 0 && this.type !== TruncateTooltipType.css) {
         this.addMouseListeners();
       }
@@ -133,12 +136,13 @@ export class TruncateTooltipComponent
             .getResizeObservervable(this.textContainer.nativeElement, {
               watch: 'width',
               threshold: 15,
+              outsideZone: true,
+              debounceTime: true,
             })
             .subscribe(this.checker$),
 
           !this.text &&
             this.expectChanges &&
-            this.type !== TruncateTooltipType.none &&
             this.mutationObservableService
               .getMutationObservable(this.textContainer.nativeElement, {
                 attributes: false,
