@@ -313,7 +313,8 @@ export class MutationObservableService {
               isIntersecting: isInView,
               isVisible: isInView,
             } as any) as IntersectionObserverableEntry)
-        )
+        ),
+        insideZone(this.zone)
       );
     }
 
