@@ -52,10 +52,12 @@ import {
 import { MultiListComponent } from '../multi-list/multi-list.component';
 import { MultiSelectComponent } from './multi-select.component';
 
-const disableTooltipDebouncer = (fixture) => {
+const disableTooltipDebouncer = (
+  fixture: ComponentFixture<MultiSelectComponent>
+) => {
   const bttComp1 = fixture.debugElement.query(By.css('.trigger-input'))
     .componentInstance;
-  bttComp1.delay = bttComp1.lazyness = bttComp1.checkDebounceTime = 0;
+  bttComp1.delay = bttComp1.lazyness = 0;
   bttComp1['checker$'] = overwriteObservable(() => {
     bttComp1['checkTooltipNecessity']();
     bttComp1['cd']['detectChanges']();
