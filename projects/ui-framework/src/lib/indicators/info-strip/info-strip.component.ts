@@ -1,5 +1,3 @@
-
-
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Icon } from '../../icons/icon.interface';
