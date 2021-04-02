@@ -1,8 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { IconColor, Icons } from '../../icons/icons.enum';
-import { Link } from './../link/link.types';
-import { InfoStripIconSize, InfoStripIconType } from './info-strip.enum';
 import { Dictionary } from 'lodash';
+
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+import { IconColor, Icons } from '../../icons/icons.enum';
+import { Link } from '../link/link.types';
+import { InfoStripIconSize, InfoStripIconType } from './info-strip.enum';
 import { InfoStripIcon } from './info-strip.types';
 
 @Component({
@@ -11,12 +13,13 @@ import { InfoStripIcon } from './info-strip.types';
   styleUrls: ['./info-strip.component.scss'],
 })
 export class InfoStripComponent {
-  @Input() iconType: InfoStripIconType;
+  @Input() iconType: InfoStripIconType = InfoStripIconType.information;
   @Input() link: Link;
   @Input() text: string;
   @Input() iconSize: InfoStripIconSize = InfoStripIconSize.large;
   @Output() linkClicked: EventEmitter<void> = new EventEmitter<void>();
 
+  readonly iconSizes = InfoStripIconSize;
   readonly iconsDic: Dictionary<InfoStripIcon> = {
     warning: { color: IconColor.primary, icon: Icons.warning },
     error: { color: IconColor.negative, icon: Icons.error },

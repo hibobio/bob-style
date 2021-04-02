@@ -1,7 +1,7 @@
 <b-icon class="icon"
-        [icon]="iconsDic[iconType].icon"
-        [color]="iconsDic[iconType].color"
-        [size]="iconSize">
+        [icon]="iconsDic[iconType]?.icon || iconsDic.warning.icon"
+        [color]="iconsDic[iconType]?.color || iconsDic.warning.color"
+        [size]="iconSize || iconSizes.large">
 </b-icon>
 
 <div class="content">
