@@ -1,11 +1,12 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
-import { ButtonsModule } from '../../buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { ConfirmationDialogModule } from './confirmation-dialog.module';
 import { ConfirmationDialogExampleModule } from './confirmation-dialog-example.module';
+import { ConfirmationDialogModule } from './confirmation-dialog.module';
 
 const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
@@ -80,6 +81,7 @@ const note = `
   message | string | Dialog message
   class | string | Class to be added to the dialog panel
   confirmationData | ConfirmationData | confirmation data config - <strong>Optional</strong>
+  infoStrip? | InfoStrip | config for optional info strip component
 
   #### interface ConfirmationDialogButtons
   Name | Type | Description

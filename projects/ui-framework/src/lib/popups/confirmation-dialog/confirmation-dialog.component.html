@@ -1,8 +1,21 @@
 <b-dialog [dialogTitle]="config.title"
           [dialogButtons]="config.buttonConfig">
+
   <div b-dialog-content
-       class="message"
+       class="flx flx-col">
+
+    <p class="message mrg-b-0 mrg-t-8"
        *ngIf="config.message"
-       [innerHTML]="config.message">
+       [innerHTML]="config.message"></p>
+
+    <b-info-strip *ngIf="config.infoStrip"
+                  class="mrg-t-16"
+                  [iconType]="config.infoStrip.iconType"
+                  [iconSize]="config.infoStrip.iconSize"
+                  [text]="config.infoStrip.text"
+                  [link]="config.infoStrip.link"
+                  (linkClicked)="config.infoStrip.linkClicked && config.infoStrip.linkClicked()">
+    </b-info-strip>
   </div>
+
 </b-dialog>

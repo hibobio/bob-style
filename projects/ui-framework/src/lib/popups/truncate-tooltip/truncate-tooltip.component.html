@@ -1,13 +1,13 @@
 <i *ngIf="type === types.material && tooltipAllowed && tooltipEnabled"
    class="tooltip-trigger"
-   [matTooltip]="text || tooltipText"
+   [matTooltip]="tooltipText"
    [matTooltipShowDelay]="delay"
    [matTooltipPosition]="position"
    [matTooltipClass]="tooltipClass"></i>
 <i *ngIf="type === types.css && tooltipEnabled"
    class="tooltip-trigger"
    [ngClass]="tooltipClass"
-   [attr.data-tooltip]="text || tooltipText"
+   [attr.data-tooltip]="tooltipText"
    [attr.data-tooltip-position]="position"></i>
 <div #textContainer
      class="btt"
