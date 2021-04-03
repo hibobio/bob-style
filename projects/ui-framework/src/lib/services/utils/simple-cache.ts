@@ -1,5 +1,6 @@
-import { ɵɵdirectiveInject as directiveInject } from '@angular/core';
-import { NgZone } from '@angular/core';
+import { NgZone, ɵɵdirectiveInject as directiveInject } from '@angular/core';
+
+import { Timer } from '../../types';
 import { isMap, mapSplice } from './functional-utils';
 
 export const SIMPLE_CACHE_TTL_DEF = 15 * 60000;
@@ -11,8 +12,6 @@ export interface SimpleCacheConfig<V = unknown, K = unknown> {
   TTL?: number;
   zone?: NgZone;
 }
-
-export type Timer = NodeJS.Timer | number;
 
 export class SimpleCache<V = unknown, K = string> {
   constructor({ map, capacity, TTL, zone }: SimpleCacheConfig<V, K> = {}) {

@@ -49,3 +49,7 @@
 :host[data-type='negative'] {
   color: var(--negative-600);
 }
+
+:host[data-type='positive'] {
+  color: var(--positive-600);
+}

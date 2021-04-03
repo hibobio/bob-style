@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  NgZone,
+} from '@angular/core';
 
 import { IconColor } from '../../icons/icons.enum';
 import { LinkColor } from '../../indicators/link/link.enum';
@@ -39,6 +45,7 @@ export class TextButtonComponent extends BaseButtonElement {
     [ButtonType.secondary]: 'b-icon-' + IconColor.dark,
     [ButtonType.tertiary]: 'b-icon-' + IconColor.normal,
     [ButtonType.negative]: 'b-icon-' + IconColor.negative,
+    [ButtonType.positive]: 'b-icon-' + IconColor.positive,
   };
 
   protected getButtonClass(): string {
@@ -46,7 +53,10 @@ export class TextButtonComponent extends BaseButtonElement {
       (this.color === LinkColor.primary ? 'color-primary ' : '') +
       (this.disabled ? 'disabled ' : '') +
       (this.icon
-        ? ' ' + (this.color === LinkColor.primary ? 'b-icon-' + IconColor.primary : this.iconColorMap[this.type])
+        ? ' ' +
+          (this.color === LinkColor.primary
+            ? 'b-icon-' + IconColor.primary
+            : this.iconColorMap[this.type])
         : '')
     );
   }

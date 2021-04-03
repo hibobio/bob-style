@@ -1,61 +1,67 @@
+import { MockComponent } from 'ng-mocks';
+
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {InfoStripComponent} from './info-strip.component';
-import {By} from '@angular/platform-browser';
-import {MockComponent} from 'ng-mocks';
-import {IconComponent} from '../../icons/icon.component';
-import {LinkModule} from '../link/link.module';
-import {LinkColor, LinkTarget} from '../link/link.enum';
-import {InfoStripIconType} from './info-strip.enum';
-import {IconColor, Icons} from '../../icons/icons.enum';
+import { By } from '@angular/platform-browser';
+
+import { IconComponent } from '../../icons/icon.component';
+import { LinkColor, LinkTarget } from '../link/link.enum';
+import { LinkModule } from '../link/link.module';
+import { InfoStripComponent } from './info-strip.component';
+import { INFOSTRIP_ICON_DICT } from './info-strip.const';
+import { InfoStripIconType } from './info-strip.enum';
 
 describe('InfoStripComponent', () => {
   let component: InfoStripComponent;
   let fixture: ComponentFixture<InfoStripComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(IconComponent),
-        InfoStripComponent,
-      ],
-      imports: [
-        LinkModule
-      ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [MockComponent(IconComponent), InfoStripComponent],
+        imports: [LinkModule],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(InfoStripComponent);
+          component = fixture.componentInstance;
+          component.link = {
+            url: 'https://app.hibob.com',
+            text: 'Click here',
+            target: LinkTarget.blank,
+            color: LinkColor.primary,
+          };
+          component.iconType = InfoStripIconType.information;
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(InfoStripComponent);
-        component = fixture.componentInstance;
-        component.link = {
-          url: 'https://app.hibob.com', text: 'Click here', target: LinkTarget.blank, color: LinkColor.primary
-        };
-        component.iconType = InfoStripIconType.information;
-      });
-  }));
+  );
 
   describe('icon dictionary', () => {
-    const testIcon = (type: InfoStripIconType, icon: Icons, color: IconColor) => {
+    const testIcon = (type: InfoStripIconType) => {
       component.iconType = type;
       fixture.detectChanges();
       const iconElement = fixture.debugElement.query(By.css('b-icon'));
-      expect(iconElement.componentInstance.color).toEqual(color);
-      expect(iconElement.componentInstance.icon).toEqual(icon);
+      expect(iconElement.componentInstance.color).toEqual(
+        INFOSTRIP_ICON_DICT[type].color
+      );
+      expect(iconElement.componentInstance.icon).toEqual(
+        INFOSTRIP_ICON_DICT[type].icon
+      );
     };
 
     it('should have warning icon with primary color', () => {
-      testIcon(InfoStripIconType.warning, Icons.warning, IconColor.primary);
+      testIcon(InfoStripIconType.warning);
     });
 
     it('should have success icon with positive color', () => {
-      testIcon(InfoStripIconType.success, Icons.success, IconColor.positive);
+      testIcon(InfoStripIconType.success);
     });
 
     it('should have error icon with negative color', () => {
-      testIcon(InfoStripIconType.error, Icons.error, IconColor.negative);
+      testIcon(InfoStripIconType.error);
     });
 
     it('should have information icon with inform color', () => {
-      testIcon(InfoStripIconType.information, Icons.baseline_info_icon, IconColor.inform);
+      testIcon(InfoStripIconType.information);
     });
   });
 

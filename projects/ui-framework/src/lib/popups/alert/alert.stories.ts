@@ -1,11 +1,13 @@
-import { storiesOf } from '@storybook/angular';
+import { values } from 'lodash';
+
 import { select, text, withKnobs } from '@storybook/addon-knobs';
-import { AlertModule } from './alert.module';
+import { storiesOf } from '@storybook/angular';
+
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { values } from 'lodash';
-import { AlertType } from './alert.enum';
 import { AlertExampleModule } from './alert-example.module';
+import { AlertType } from './alert.enum';
+import { AlertModule } from './alert.module';
 
 const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
@@ -44,7 +46,14 @@ const note = `
   #### Module
   *AlertModule*
 
-  #### Properties
+  #### methods: AlertService
+  Name | Signature | Description
+  --- | --- | --- | ---
+  showAlert | (config: AlertConfig) => ComponentRef<wbr>&lt;AlertComponent&gt; | show regular Alert
+  showErrorAlert | (error: string / HttpErrorResponse) => ComponentRef<wbr>&lt;AlertComponent&gt; | show Error Alert
+  showSuccessAlert | (success: string / HttpResponse) => ComponentRef<wbr>&lt;AlertComponent&gt; | show Success Alert
+
+  #### interface: AlertConfig
   Name | Type | Description
   --- | --- | --- | ---
   alertType | AlertType | types - success, error, information, warning
@@ -58,7 +67,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        alertType: select('alertType', alertTypes, AlertType.success),
+        alertType: select('alertType', alertTypes, AlertType.information),
         title: text('title', 'Alert title'),
         text: text('text', 'The alert text appear here'),
       },

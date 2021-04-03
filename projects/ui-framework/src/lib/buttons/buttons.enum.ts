@@ -3,6 +3,7 @@ export enum ButtonType {
   secondary = 'secondary',
   tertiary = 'tertiary',
   negative = 'negative',
+  positive = 'positive',
 }
 
 export enum ButtonSize {

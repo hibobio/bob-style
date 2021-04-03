@@ -1,11 +1,11 @@
-import { Dictionary } from 'lodash';
+
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { IconColor, Icons } from '../../icons/icons.enum';
+import { Icon } from '../../icons/icon.interface';
 import { Link } from '../link/link.types';
+import { INFOSTRIP_ICON_DICT } from './info-strip.const';
 import { InfoStripIconSize, InfoStripIconType } from './info-strip.enum';
-import { InfoStripIcon } from './info-strip.types';
 
 @Component({
   selector: 'b-info-strip',
@@ -20,12 +20,7 @@ export class InfoStripComponent {
   @Output() linkClicked: EventEmitter<void> = new EventEmitter<void>();
 
   readonly iconSizes = InfoStripIconSize;
-  readonly iconsDic: Dictionary<InfoStripIcon> = {
-    warning: { color: IconColor.primary, icon: Icons.warning },
-    error: { color: IconColor.negative, icon: Icons.error },
-    success: { color: IconColor.positive, icon: Icons.success },
-    information: { color: IconColor.inform, icon: Icons.baseline_info_icon },
-  };
+  readonly iconsDic: Record<InfoStripIconType, Icon> = INFOSTRIP_ICON_DICT;
 
   constructor() {}
 }

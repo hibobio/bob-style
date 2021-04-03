@@ -1,14 +1,27 @@
 import { MockComponent } from 'ng-mocks';
 
 import { Overlay, OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { ComponentRef, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { fakeAsync, flush, inject, resetFakeAsyncZone, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentRef,
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
+import {
+  fakeAsync,
+  flush,
+  inject,
+  resetFakeAsyncZone,
+  TestBed,
+  tick,
+  waitForAsync,
+} from '@angular/core/testing';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ButtonsModule } from '../../../buttons/buttons.module';
 import { IconComponent } from '../../../icons/icon.component';
 import { fakeAsyncFlush } from '../../../services/utils/test-helpers';
+import { TranslateServiceProvideMock } from '../../../tests/services.stub.spec';
 import { PanelService } from '../../panel/panel.service';
 import { AlertType } from '../alert.enum';
 import { AlertConfig } from '../alert.interface';
@@ -36,7 +49,7 @@ describe('AlertService', () => {
         imports: [OverlayModule, ButtonsModule, BrowserAnimationsModule],
         declarations: [AlertComponent, MockComponent(IconComponent)],
         schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-        providers: [AlertService, PanelService],
+        providers: [AlertService, PanelService, TranslateServiceProvideMock()],
       }).overrideModule(BrowserDynamicTestingModule, {
         set: {
           entryComponents: [AlertComponent],
@@ -54,13 +67,21 @@ describe('AlertService', () => {
 
   describe('Alert Service', () => {
     it('should create the alert component and init its configuration', fakeAsync(() => {
-      const alertComponentRef: ComponentRef<AlertComponent> = alertService.showAlert(ALERT_CONFIG);
+      const alertComponentRef: ComponentRef<AlertComponent> = alertService.showAlert(
+        ALERT_CONFIG
+      );
       tick(ALERT_DURATION_TICK);
-      expect(alertComponentRef.instance.alertConfig.title).toEqual(ALERT_CONFIG.title);
-      expect(alertComponentRef.instance.alertConfig.text).toEqual(ALERT_CONFIG.text);
-      expect(alertComponentRef.instance.alertConfig.alertType).toEqual(ALERT_CONFIG.alertType);
+      expect(alertComponentRef.instance.alertConfig.title).toEqual(
+        ALERT_CONFIG.title
+      );
+      expect(alertComponentRef.instance.alertConfig.text).toEqual(
+        ALERT_CONFIG.text
+      );
+      expect(alertComponentRef.instance.alertConfig.alertType).toEqual(
+        ALERT_CONFIG.alertType
+      );
       expect(alertService.isOpen).toBeFalsy();
-      alertComponentRef.instance.onAnimationDone({ toState: 'leave' });
+      alertComponentRef.instance.onAnimationDone({ toState: 'leave' } as any);
 
       fakeAsyncFlush();
     }));
@@ -74,12 +95,16 @@ describe('AlertService', () => {
     });
 
     it('should start leave animation on button click and close alert', fakeAsync(() => {
-      const alertComponentRef: ComponentRef<AlertComponent> = alertService.showAlert(ALERT_CONFIG);
-      const closeButton = overlayElement.querySelector('b-square-button button') as HTMLElement;
+      const alertComponentRef: ComponentRef<AlertComponent> = alertService.showAlert(
+        ALERT_CONFIG
+      );
+      const closeButton = overlayElement.querySelector(
+        'b-square-button button'
+      ) as HTMLElement;
       closeButton.click();
       flush();
       expect(alertComponentRef.instance.animationState).toEqual('leave');
-      alertComponentRef.instance.onAnimationDone({ toState: 'leave' });
+      alertComponentRef.instance.onAnimationDone({ toState: 'leave' } as any);
       expect(alertService.overlayRef?.hostElement).toBeFalsy();
       expect(alertService.overlayRef?.hasAttached()).toBeFalsy();
       expect(alertService.isOpen).toBeFalsy();
@@ -89,10 +114,12 @@ describe('AlertService', () => {
     }));
 
     it('should close the alert after 7 seconds', fakeAsync(() => {
-      const alertComponentRef: ComponentRef<AlertComponent> = alertService.showAlert(ALERT_CONFIG);
+      const alertComponentRef: ComponentRef<AlertComponent> = alertService.showAlert(
+        ALERT_CONFIG
+      );
       tick(ALERT_DURATION_TICK);
       expect(alertComponentRef.instance.animationState).toEqual('leave');
-      alertComponentRef.instance.onAnimationDone({ toState: 'leave' });
+      alertComponentRef.instance.onAnimationDone({ toState: 'leave' } as any);
       expect(alertService.overlayRef?.hostElement).toBeFalsy();
       expect(alertService.overlayRef?.hasAttached()).toBeFalsy();
       expect(alertService.isOpen).toBeFalsy();
