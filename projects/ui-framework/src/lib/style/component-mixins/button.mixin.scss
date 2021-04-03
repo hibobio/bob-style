@@ -54,6 +54,22 @@ $button-size-large: 44px;
       }
     }
 
+    @if $type == 'positive' {
+      background-color: var(--positive-600);
+
+      &,
+      &[disabled] {
+        color: $white;
+      }
+      &:hover,
+      &:focus {
+        background-color: var(--positive-500);
+      }
+      &:active {
+        background-color: var(--positive-700);
+      }
+    }
+
     @if $type == 'secondary' {
       background-color: var(--secondary-600);
       &:hover,
@@ -89,6 +105,9 @@ $button-size-large: 44px;
   }
   &.negative {
     @include Button(negative, $basics: false);
+  }
+  &.positive {
+    @include Button(positive, $basics: false);
   }
   @if ($disabled) {
     &.disabled,

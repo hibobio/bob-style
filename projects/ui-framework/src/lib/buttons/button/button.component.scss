@@ -93,9 +93,11 @@ button {
 :host.preloading[data-type='primary']::ng-deep button,
 :host.preloading[data-type='secondary']::ng-deep button,
 :host.preloading[data-type='negative']::ng-deep button,
+:host.preloading[data-type='positive']::ng-deep button,
 :host[data-type='primary']::ng-deep button.preloader,
 :host[data-type='secondary']::ng-deep button.preloader,
-:host[data-type='negative']::ng-deep button.preloader {
+:host[data-type='negative']::ng-deep button.preloader,
+:host[data-type='positive']::ng-deep button.preloader {
   @include preloader-mod-white($base-selector: '&', $pseudo: null);
 }
 
@@ -112,6 +114,11 @@ button {
 :host.preloading[data-type='negative']::ng-deep button,
 :host[data-type='negative']::ng-deep button.preloader {
   background-color: var(--negative-700);
+}
+
+:host.preloading[data-type='positive']::ng-deep button,
+:host[data-type='positive']::ng-deep button.preloader {
+  background-color: var(--positive-700);
 }
 
 :host.preloading[data-type='tertiary']::ng-deep button,

@@ -119,9 +119,11 @@ export {
   SwitchToggleComponent
 } from './lib/indicators/switch-toggle/switch-toggle.component';
 // InfoStrip Module
+export * from './lib/indicators/info-strip/info-strip.enum';
+export * from './lib/indicators/info-strip/info-strip.interface';
+export * from './lib/indicators/info-strip/info-strip.const';
 export { InfoStripModule } from './lib/indicators/info-strip/info-strip.module';
 export { InfoStripComponent } from './lib/indicators/info-strip/info-strip.component';
-export * from './lib/indicators/info-strip/info-strip.enum';
 // Link Module
 export { LinkModule } from './lib/indicators/link/link.module';
 export { LinkComponent } from './lib/indicators/link/link.component';

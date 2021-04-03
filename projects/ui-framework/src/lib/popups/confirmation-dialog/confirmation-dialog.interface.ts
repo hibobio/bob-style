@@ -1,4 +1,4 @@
-import { InfoStrip } from '../../indicators/info-strip/info-strip.types';
+import { InfoStrip } from '../../indicators/info-strip/info-strip.interface';
 import { DialogButton } from '../dialog/dialog.interface';
 
 export interface ConfirmationDialogConfig {

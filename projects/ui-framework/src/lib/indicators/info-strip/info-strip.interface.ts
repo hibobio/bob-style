@@ -3,8 +3,8 @@ import { Link } from '../link/link.types';
 import { InfoStripIconSize, InfoStripIconType } from './info-strip.enum';
 
 export interface InfoStripIcon {
-  color: IconColor;
   icon: Icons;
+  color: IconColor;
 }
 
 export interface InfoStrip {

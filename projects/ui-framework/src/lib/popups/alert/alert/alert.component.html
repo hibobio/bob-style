@@ -1,8 +1,17 @@
-<div class="alert-container" [@toastAnimation]="animationState" (@toastAnimation.done)="onAnimationDone($event)">
-  <b-square-button (clicked)="closeAlert()" [type]="closeButtonType" [icon]="closeButtonIcon" class="close-button"></b-square-button>
-  <b-icon class="icon" [icon]="iconsDic[alertConfig.alertType].icon" [color]="iconsDic[alertConfig.alertType].color" [size]="iconSize"></b-icon>
+<div class="alert-container"
+     [@toastAnimation]="animationState"
+     (@toastAnimation.done)="onAnimationDone($event)">
+
+  <b-square-button (clicked)="closeAlert()"
+                   [button]="closeButton"
+                   class="close-button"></b-square-button>
+  <b-icon class="icon"
+          [config]="iconsDic[alertConfig.alertType]"
+          [size]="iconSize"></b-icon>
+
   <div class="content">
     <b-bold-body>{{alertConfig.title}}</b-bold-body>
     <p [innerHTML]="alertConfig.text"></p>
   </div>
+
 </div>

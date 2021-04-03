@@ -34,7 +34,8 @@ import { Button } from './buttons.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class BaseButtonElement implements OnChanges, OnInit, OnDestroy {
+export abstract class BaseButtonElement
+  implements OnChanges, OnInit, OnDestroy {
   constructor(protected cd: ChangeDetectorRef, protected zone: NgZone) {}
 
   @ViewChild('button', { static: true }) public button: ElementRef;
@@ -141,16 +142,18 @@ export abstract class BaseButtonElement implements OnChanges, OnInit, OnDestroy 
   protected setIconVars(): void {
     this.icn = isString(this.icon) && this.icon.replace('b-icon-', '');
 
-    this.icnSize = this.size === ButtonSize.large ? IconSize.large : IconSize.medium;
+    this.icnSize =
+      this.size === ButtonSize.large ? IconSize.large : IconSize.medium;
 
-    this.icnColor =
-      this.type === ButtonType.primary ||
-      this.type === ButtonType.negative ||
-      (!this.type && (this.typeDefault === ButtonType.primary || this.typeDefault === ButtonType.negative))
-        ? IconColor.white
-        : this.disabled
-        ? IconColor.normal
-        : IconColor.dark;
+    this.icnColor = [
+      ButtonType.primary,
+      ButtonType.negative,
+      ButtonType.positive,
+    ].includes((this.type || this.typeDefault) as any)
+      ? IconColor.white
+      : this.disabled
+      ? IconColor.normal
+      : IconColor.dark;
   }
 
   protected getButtonClass(): string {
