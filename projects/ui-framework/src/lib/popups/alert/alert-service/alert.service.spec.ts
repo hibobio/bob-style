@@ -21,6 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonsModule } from '../../../buttons/buttons.module';
 import { IconComponent } from '../../../icons/icon.component';
 import { fakeAsyncFlush } from '../../../services/utils/test-helpers';
+import { TranslateServiceProvideMock } from '../../../tests/services.stub.spec';
 import { PanelService } from '../../panel/panel.service';
 import { AlertType } from '../alert.enum';
 import { AlertConfig } from '../alert.interface';
@@ -48,7 +49,7 @@ describe('AlertService', () => {
         imports: [OverlayModule, ButtonsModule, BrowserAnimationsModule],
         declarations: [AlertComponent, MockComponent(IconComponent)],
         schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-        providers: [AlertService, PanelService],
+        providers: [AlertService, PanelService, TranslateServiceProvideMock()],
       }).overrideModule(BrowserDynamicTestingModule, {
         set: {
           entryComponents: [AlertComponent],

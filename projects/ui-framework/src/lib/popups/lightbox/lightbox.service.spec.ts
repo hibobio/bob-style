@@ -1,3 +1,11 @@
+import { MockComponent } from 'ng-mocks';
+
+import { Overlay, OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
+import {
+  ComponentFactoryResolver,
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
 import {
   fakeAsync,
   flush,
@@ -5,18 +13,14 @@ import {
   TestBed,
   waitForAsync,
 } from '@angular/core/testing';
-import { LightboxService } from './lightbox.service';
-import { LightboxData } from './lightbox.interface';
-import {
-  ComponentFactoryResolver,
-  CUSTOM_ELEMENTS_SCHEMA,
-  NO_ERRORS_SCHEMA,
-} from '@angular/core';
-import { Overlay, OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { ButtonsModule } from '../../buttons/buttons.module';
-import { LightboxModule } from './lightbox.module';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { IconComponent } from '../../icons/icon.component';
+import { ComponentRendererService } from '../../services/component-renderer/component-renderer.service';
 import {
   emptyImg,
   emptyImgTestString,
@@ -24,13 +28,12 @@ import {
 import {
   DOMhelpersProvideMock,
   MockCompsModule,
+  TranslateServiceProvideMock,
   WindowRefProvideMock,
 } from '../../tests/services.stub.spec';
-import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
-import { MockComponent } from 'ng-mocks';
-import { IconComponent } from '../../icons/icon.component';
-import { ComponentRendererService } from '../../services/component-renderer/component-renderer.service';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { LightboxData } from './lightbox.interface';
+import { LightboxModule } from './lightbox.module';
+import { LightboxService } from './lightbox.service';
 
 const detectChanges = (lightbox: LightboxData) => {
   lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
@@ -80,6 +83,7 @@ describe('LightboxService', () => {
           ComponentRendererService,
           DOMhelpersProvideMock(),
           WindowRefProvideMock(),
+          TranslateServiceProvideMock(),
         ],
         schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
       }).overrideModule(BrowserDynamicTestingModule, {

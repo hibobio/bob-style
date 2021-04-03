@@ -1,12 +1,17 @@
-import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
+import { take } from 'rxjs/operators';
+
+import { OverlayModule } from '@angular/cdk/overlay';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+
+import { emptyImg } from '../../../services/utils/test-helpers';
+import {
+  TranslateServiceProvideMock,
+  URLutilsProvideMock,
+} from '../../../tests/services.stub.spec';
 import { LightboxModule } from '../lightbox.module';
 import { MediaEmbedComponent } from './media-embed.component';
-import { emptyImg } from '../../../services/utils/test-helpers';
 import { MediaType } from './media-embed.enum';
-import { OverlayModule } from '@angular/cdk/overlay';
-import { URLutilsProvideMock } from '../../../tests/services.stub.spec';
-import { take } from 'rxjs/operators';
 
 describe('MediaEmbedComponent', () => {
   let component: MediaEmbedComponent;
@@ -18,7 +23,7 @@ describe('MediaEmbedComponent', () => {
       TestBed.configureTestingModule({
         imports: [LightboxModule, OverlayModule],
         declarations: [],
-        providers: [URLutilsProvideMock()],
+        providers: [URLutilsProvideMock(), TranslateServiceProvideMock()],
         schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
