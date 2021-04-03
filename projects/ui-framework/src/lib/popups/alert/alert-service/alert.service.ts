@@ -170,6 +170,18 @@ export class AlertService {
     });
   }
 
+  public showSuccessAlert(
+    text: string,
+    config?: AlertConfig
+  ): ComponentRef<AlertComponent> {
+    return this.showAlert({
+      alertType: AlertType.success,
+      title: this.translate.instant('common.success'),
+      text,
+      ...config,
+    });
+  }
+
   private getConfig(): OverlayConfig {
     return {
       disposeOnNavigation: true,
