@@ -1,20 +1,34 @@
-import { ComponentRef, Injectable } from '@angular/core';
-import { AlertConfig } from '../alert.interface';
-import { AlertComponent } from '../alert/alert.component';
+import { bind, cloneDeep } from 'lodash';
+
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { cloneDeep, bind } from 'lodash';
-import { PanelService } from '../../panel/panel.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ComponentRef, Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+
+import {
+  objectGetDeepestValid,
+  stringify,
+} from '../../../services/utils/functional-utils';
+import { Timer } from '../../../types';
 import { Panel } from '../../panel/panel.interface';
+import { PanelService } from '../../panel/panel.service';
+import { AlertType } from '../alert.enum';
+import { AlertConfig } from '../alert.interface';
+import { AlertComponent } from '../alert/alert.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AlertService {
-  constructor(private overlay: Overlay, private panelService: PanelService) {}
+  constructor(
+    private overlay: Overlay,
+    private panelService: PanelService,
+    private translate: TranslateService
+  ) {}
 
   public isOpen: boolean;
-  private timeRef: NodeJS.Timer;
+  private timeRef: Timer;
   private alertDuration = 7000;
 
   public panel: Panel<AlertComponent>;
@@ -56,6 +70,28 @@ export class AlertService {
     }
   }
 
+  public showErrorAlert(
+    error: HttpErrorResponse,
+    config?: AlertConfig
+  ): ComponentRef<AlertComponent> {
+    return this.showAlert({
+      alertType: AlertType.error,
+      title: objectGetDeepestValid(
+        error,
+        'error.statusText',
+        this.translate.instant('common.error')
+      ),
+      text: stringify(
+        objectGetDeepestValid(
+          error,
+          'error.error',
+          this.translate.instant('common.general_error')
+        )
+      ),
+      ...config,
+    });
+  }
+
   private getConfig(): OverlayConfig {
     return {
       disposeOnNavigation: true,
@@ -77,6 +113,6 @@ export class AlertService {
     this.isOpen = false;
     this.panelService.destroyPanel(this.panel);
     this.panel = undefined;
-    clearTimeout(this.timeRef);
+    clearTimeout(this.timeRef as any);
   }
 }
