@@ -148,6 +148,28 @@ export class AlertService {
     });
   }
 
+  public showErrorAlert(
+    error: HttpErrorResponse,
+    config?: AlertConfig
+  ): ComponentRef<AlertComponent> {
+    return this.showAlert({
+      alertType: AlertType.error,
+      title: objectGetDeepestValid(
+        error,
+        'error.statusText',
+        this.translate.instant('common.error')
+      ),
+      text: stringify(
+        objectGetDeepestValid(
+          error,
+          'error.error',
+          this.translate.instant('common.general_error')
+        )
+      ),
+      ...config,
+    });
+  }
+
   private getConfig(): OverlayConfig {
     return {
       disposeOnNavigation: true,
