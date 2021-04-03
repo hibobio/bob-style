@@ -1,4 +1,4 @@
-import { bind, cloneDeep } from 'lodash';
+import { bind } from 'lodash';
 
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
@@ -52,7 +52,7 @@ export class AlertService {
       this.panel.portal = new ComponentPortal(AlertComponent, null);
       this.panel.componentRef = this.overlayRef.attach(this.panel.portal);
 
-      this.panel.componentRef.instance.alertConfig = cloneDeep(config);
+      this.panel.componentRef.instance.alertConfig = { ...config };
       this.panel.componentRef.instance.closeAlertCallback = bind(
         this.closeAlertCallback,
         this
@@ -88,6 +88,18 @@ export class AlertService {
           this.translate.instant('common.general_error')
         )
       ),
+      ...config,
+    });
+  }
+
+  public showSuccessAlert(
+    text: string,
+    config?: AlertConfig
+  ): ComponentRef<AlertComponent> {
+    return this.showAlert({
+      alertType: AlertType.success,
+      title: this.translate.instant('common.success'),
+      text,
       ...config,
     });
   }
