@@ -149,34 +149,61 @@ export class AlertService {
   }
 
   public showErrorAlert(
-    error: HttpErrorResponse,
+    error: string | HttpErrorResponse,
     config?: AlertConfig
   ): ComponentRef<AlertComponent> {
+    let title = isObject(error)
+      ? error.error?.statusText || error.statusText
+      : this.translate.instant('common.error');
+    if (!title || title.toUpperCase() === 'OK' || !/\D/.test(title)) {
+      title = this.translate.instant('common.error');
+    }
+
+    let text = isString(error)
+      ? error
+      : stringify(
+          objectGetDeepestValid(
+            error,
+            'error.error',
+            this.translate.instant('common.general_error')
+          )
+        );
+    if (text.replace(/\W/g, '') === 'isTrustedtrue') {
+      text = null;
+    }
+
     return this.showAlert({
       alertType: AlertType.error,
-      title: objectGetDeepestValid(
-        error,
-        'error.statusText',
-        this.translate.instant('common.error')
-      ),
-      text: stringify(
-        objectGetDeepestValid(
-          error,
-          'error.error',
-          this.translate.instant('common.general_error')
-        )
-      ),
+      title,
+      text,
       ...config,
     });
   }
 
   public showSuccessAlert(
-    text: string,
+    success: string | HttpResponse<unknown> | Response,
     config?: AlertConfig
   ): ComponentRef<AlertComponent> {
+    let title =
+      isObject(success) && success.statusText
+        ? success.statusText
+        : this.translate.instant('common.success');
+    if (title.toUpperCase() === 'OK' || !/\D/.test(title)) {
+      title = this.translate.instant('common.success');
+    }
+
+    let text = stringify(
+      isObject(success)
+        ? success['body'] || objectRemoveKey(success, 'headers')
+        : success
+    );
+    if (text.replace(/\W/g, '') === 'isTrustedtrue') {
+      text = null;
+    }
+
     return this.showAlert({
       alertType: AlertType.success,
-      title: this.translate.instant('common.success'),
+      title,
       text,
       ...config,
     });
