@@ -10,9 +10,14 @@
            [class.animate]="animate"
            [ngStyle]="config.headerStyle"
            [attr.data-icon-before]="chevronIcon"
-           [attr.data-icon-before-size]="config.chevronIcon?.size || null"
-           [attr.data-icon-before-color]="config.chevronIcon?.color || null"
-           [attr.data-icon-before-rotate]="isExpanded ? '90' : config.chevronIcon?.rotate || null">
+           [attr.data-icon-before-size]="chevronSize"
+           [attr.data-icon-before-color]="chevronColor"
+           [style.--icon-before-size]="chevronSize==='custom'
+            ? config.chevronIcon.size : null"
+           [style.--icon-before-color]="chevronColor==='custom'
+            ? config.chevronIcon.color : null"
+           [attr.data-icon-before-rotate]="isExpanded
+            ? '90' : config.chevronIcon?.rotate || null">
     {{ title }}
     <ng-content select="[header]"></ng-content>
   </summary>

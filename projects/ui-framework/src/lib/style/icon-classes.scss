@@ -20,6 +20,13 @@
   }
 }
 
+[data-icon-before-size='custom']:before {
+  @include icon-size(var(--icon-before-size), $elem: '&');
+}
+[data-icon-after-size='custom']:after {
+  @include icon-size(var(--icon-after-size), $elem: '&');
+}
+
 @each $colorKey, $colors in $icon-colors {
   .b-icon-#{'' + $colorKey} {
     @include icon-color($colorKey, true);
@@ -29,6 +36,29 @@
   }
   [data-icon-after-color='#{$colorKey}'] {
     @include icon-color($colorKey, true, $elem: '&:after');
+  }
+}
+
+[data-icon-before-color='custom'] {
+  @include icon-color(var(--icon-before-color), false, $elem: '&:before');
+  .has-hover:hover &,
+  .has-hover:focus &,
+  &.has-hover:hover,
+  &.has-hover:focus {
+    &:before {
+      filter: brightness(0.8);
+    }
+  }
+}
+[data-icon-after-color='custom'] {
+  @include icon-color(var(--icon-after-color), false, $elem: '&:after');
+  .has-hover:hover &,
+  .has-hover:focus &,
+  &.has-hover:hover,
+  &.has-hover:focus {
+    &:after {
+      filter: brightness(0.8);
+    }
   }
 }
 
