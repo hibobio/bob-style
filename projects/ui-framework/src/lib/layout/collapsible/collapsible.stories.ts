@@ -1,16 +1,15 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, object, text, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { mockText } from '../../mock.const';
-import { randomNumber } from '../../services/utils/functional-utils';
-import { CollapsibleModule } from './collapsible.module';
-import { COLLAPSIBLE_STYLE_DEF } from './collapsible.const';
-import { CollapsibleComponent } from './collapsible.component';
+import { boolean, object, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { mockText } from '../../mock.const';
 import { ClickOutsideModule } from '../../services/utils/clickOutside.directive';
+import { randomNumber } from '../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { COLLAPSIBLE_STYLE_DEF } from './collapsible.const';
+import { CollapsibleModule } from './collapsible.module';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
@@ -71,6 +70,20 @@ const note = `
   chevronIcon (icon config, Icon interface) | COLLAPSIBLE<sub>-</sub>STYLE<sub>-</sub>DEF
   &lt;ng-content&gt; | template | pass anything to be put inside panel | &nbsp;
   &lt;ng-content header&gt; | template | pass div with attribute 'header' to be put in the header | &nbsp;
+
+  #### Config example
+  ~~~
+  {
+    "sectionClass": "bg-white brd rounded",
+    "headerClass": "flx flx-row-align-y b-caption uppercase text-bold pad-l-24 pad-r-8 pad-y-4",
+    "panelClass": "pad-8 brd-t b-caption",
+    "chevronIcon": {
+      "icon": "b-icon-arrow-drop-right",
+      "size": "medium",
+      "color": "dark"
+    }
+  }
+  ~~~
 
 `;
 

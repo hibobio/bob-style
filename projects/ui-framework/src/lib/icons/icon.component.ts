@@ -1,25 +1,26 @@
 import {
-  Component,
-  Input,
-  HostBinding,
-  OnChanges,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  SimpleChanges,
+  Component,
   ElementRef,
+  HostBinding,
+  Input,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
-import { IconColor, Icons, IconSize, IconType, IconRotate } from './icons.enum';
-import {
-  notFirstChanges,
-  applyChanges,
-  isObject,
-  objectRemoveEntriesByValue,
-  hasChanges,
-} from '../services/utils/functional-utils';
+
 import { TooltipClass } from '../popups/tooltip/tooltip.enum';
 import { DOMhelpers } from '../services/html/dom-helpers.service';
-import { Icon } from './icon.interface';
+import {
+  applyChanges,
+  hasChanges,
+  isObject,
+  notFirstChanges,
+  objectRemoveEntriesByValue,
+} from '../services/utils/functional-utils';
 import { Color } from '../types';
+import { Icon } from './icon.interface';
+import { IconColor, IconRotate, Icons, IconSize, IconType } from './icons.enum';
 
 @Component({
   selector: 'b-icon, [b-icon]',
@@ -79,14 +80,14 @@ export class IconComponent implements OnChanges {
     if (hasChanges(changes, ['color', 'setProps'], true)) {
       this.customColor = !Object.values(IconColor).includes(this.color as any);
       this.DOM.setCssProps(this.host.nativeElement, {
-        '--icon-color': this.customColor ? this.color : null,
+        '--icon-before-color': this.customColor ? this.color : null,
       });
     }
 
     if (hasChanges(changes, ['size', 'setProps'], true)) {
       this.customSize = !Object.values(IconSize).includes(this.size as any);
       this.DOM.setCssProps(this.host.nativeElement, {
-        '--icon-size': this.customSize
+        '--icon-before-size': this.customSize
           ? parseInt(this.size as any, 10) + 'px'
           : null,
       });

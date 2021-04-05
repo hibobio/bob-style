@@ -27,15 +27,3 @@ $circularIconSizes: (
     }
   }
 }
-
-[data-icon-before-color='custom'] {
-  @include icon-color(var(--icon-color));
-
-  &.has-hover:hover {
-    filter: brightness(0.8);
-  }
-}
-
-[data-icon-before-size='custom'] {
-  @include icon-size(var(--icon-size));
-}

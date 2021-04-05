@@ -2,14 +2,18 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef, EventEmitter,
+  ElementRef,
+  EventEmitter,
   Input,
   NgZone,
-  OnChanges, Output,
+  OnChanges,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { Icons } from '../../icons/icons.enum';
+
+import { Icon } from '../../icons/icon.interface';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import {
   applyChanges,
   hasChanges,
@@ -47,6 +51,8 @@ export class CollapsibleComponent implements OnChanges {
   public isExpanded = false;
   public shouldAnimate = false;
   public chevronIcon: string = Icons.chevron_right.replace('b-icon-', '');
+  public chevronColor: Icon['color'] = null;
+  public chevronSize: Icon['size'] = null;
   private timeout: any;
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -66,6 +72,20 @@ export class CollapsibleComponent implements OnChanges {
       this.chevronIcon = (
         this.config?.chevronIcon?.icon || Icons.chevron_right
       ).replace('b-icon-', '');
+
+      this.chevronSize = this.config?.chevronIcon?.size
+        ? Object.values(IconSize).includes(this.config.chevronIcon.size as any)
+          ? this.config.chevronIcon.size
+          : 'custom'
+        : null;
+
+      this.chevronColor = this.config?.chevronIcon?.color
+        ? Object.values(IconColor).includes(
+            this.config.chevronIcon.color as any
+          )
+          ? this.config.chevronIcon.color
+          : 'custom'
+        : null;
     }
 
     this.animate = Boolean(this.animate || this.config?.animate);
@@ -83,7 +103,7 @@ export class CollapsibleComponent implements OnChanges {
     this.addAnimation();
     this.isExpanded = event.target['open'];
     this.cd.detectChanges();
-    this.isExpanded ? this.expanded.emit() : this.collapsed.emit()
+    this.isExpanded ? this.expanded.emit() : this.collapsed.emit();
   }
 
   private addAnimation() {

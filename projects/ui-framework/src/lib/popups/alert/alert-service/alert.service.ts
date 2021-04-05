@@ -1,3 +1,6 @@
+import { OperatorFunction, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
@@ -85,7 +88,7 @@ export class AlertService {
           objectGetDeepestValid(
             error,
             'error.error',
-            this.translate.instant('common.general_error')
+            error.message || this.translate.instant('common.general_error')
           )
         );
     if (text.replace(/\W/g, '') === 'isTrustedtrue') {
@@ -97,6 +100,15 @@ export class AlertService {
       title,
       text,
       ...config,
+    });
+  }
+
+  public catchErrorAndAlert(
+    return$ = null
+  ): OperatorFunction<unknown, unknown> {
+    return catchError((error) => {
+      this.showErrorAlert(error);
+      return return$ || throwError(error);
     });
   }
 

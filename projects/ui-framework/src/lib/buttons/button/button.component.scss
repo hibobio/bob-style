@@ -13,6 +13,11 @@ $minWidthLarge: 110px;
   &:hover {
     text-decoration: none;
   }
+
+  &[data-disabled='true'] {
+    cursor: default;
+    pointer-events: none;
+  }
 }
 
 button {
