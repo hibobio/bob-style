@@ -15,12 +15,8 @@ $minWidthLarge: 110px;
   }
 
   &[data-disabled='true'] {
-    cursor: not-allowed;
-
-    &[href],
-    &[routerLink] {
-      pointer-events: none;
-    }
+    cursor: default;
+    pointer-events: none;
   }
 }
 
