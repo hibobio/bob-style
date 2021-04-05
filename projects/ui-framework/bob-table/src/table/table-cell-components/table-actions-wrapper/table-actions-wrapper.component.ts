@@ -12,13 +12,11 @@ export class TableActionsWrapperComponent {
   @Input() icon: Icons = null;
   @Input() iconTooltip: string;
   @Input() iconType: IconType = IconType.circular;
+  @Input() iconColor: IconColor = IconColor.normal;
+  @Input() iconSize: IconSize = IconSize.medium;
   public openLeft: boolean;
   readonly buttonSize = ButtonSize;
   readonly squareButtonType = ButtonType;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
   readonly buttonColor: IconColor = IconColor.normal;
   readonly buttonIcon: Icons = Icons.three_dots_vert;
-
-  constructor() { }
 }
