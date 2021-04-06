@@ -18,12 +18,59 @@
       border-top-left-radius: 0;
     }
   }
+
+  &.default-value {
+    .bfe-input {
+      padding-left: 15px;
+    }
+  }
 }
 
 .color-circle {
   border-radius: 50%;
-  height: times8(3);
-  width: times8(3);
+  height: 24px;
+  width: 24px;
+}
+
+.default-color-circle {
+  height: 24px;
+  width: 24px;
+  position: relative;
+  border-radius: 50%;
+
+  .quarter {
+    width: 12px;
+    height: 12px;
+    position: absolute;
+  }
+
+  .left-top {
+    left: 0;
+    top: 0;
+    background: $grey-700;
+    border-top-left-radius: 100%;
+  }
+
+  .right-top {
+    left: 12px;
+    top: 0;
+    background: $negative-600;
+    border-top-right-radius: 100%;
+  }
+
+  .left-bottom {
+    left: 0;
+    top: 12px;
+    background: #D38865;
+    border-bottom-left-radius: 100%;
+  }
+
+  .right-bottom {
+    left: 12px;
+    top: 12px;
+    background: #7D273F;
+    border-bottom-right-radius: 100%;
+  }
 }
 
 .bfe-wrap .bfe-prefix {

@@ -10,13 +10,20 @@
      [ngClass]="{
        focused: panelOpen,
        'has-prefix': value,
+       'default-value': value === defaultValue,
        'panel-open': panelOpen,
        'panel-above': positionClassList['panel-above'],
        'panel-below': positionClassList['panel-below']
       }"
      (click)="openPanel()">
 
-  <div *ngIf="value" class="bfe-prefix color-circle" [style.background-color]="value"></div>
+  <div *ngIf="value && value !== defaultValue" class="bfe-prefix color-circle" [style.background-color]="value"></div>
+  <div *ngIf="value === defaultValue" class="bfe-prefix default-color-circle">
+    <div class="quarter left-top"></div>
+    <div class="quarter right-top"></div>
+    <div class="quarter left-bottom"></div>
+    <div class="quarter right-bottom"></div>
+  </div>
 
   <input #input
          class="bfe-input"

@@ -27,6 +27,10 @@ export class AppComponent {
     });
   }
 
+  makeDefault() {
+    this.formGroup.get('tester').setValue('default');
+  }
+
   num = 3;
   ids = makeArray(this.num).map(() => simpleUID());
   names = makeArray(this.num).map(() => mockNames(1));

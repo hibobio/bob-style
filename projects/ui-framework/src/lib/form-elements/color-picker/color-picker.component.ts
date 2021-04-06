@@ -16,6 +16,7 @@ import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { ListPanelService, OverlayEnabledComponent } from '../../lists/list-panel.service';
 import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
 import { TranslateService } from '@ngx-translate/core';
+import { COLOR_PICKER_DEFAULT } from './color-picker.const';
 
 
 @Component({
@@ -57,6 +58,7 @@ export class ColorPickerComponent extends BaseFormElement implements OnDestroy, 
   public panelPosition = PanelDefaultPosVer.belowLeftRight;
   public panelClassList: string[] = ['b-select-panel'];
   public positionClassList: OverlayPositionClasses = {};
+  public readonly defaultValue = COLOR_PICKER_DEFAULT;
 
   public get overlayRef(): OverlayRef {
     return this.panel?.overlayRef;
