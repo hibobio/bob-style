@@ -369,6 +369,7 @@ export * from './lib/form-elements/radio-button/radio-button.interface';
 // Colorpicker
 export { ColorPickerModule } from './lib/form-elements/color-picker/color-picker.module';
 export { ColorPickerComponent } from './lib/form-elements/color-picker/color-picker.component';
+export { COLOR_PICKER_DEFAULT } from './lib/form-elements/color-picker/color-picker.const';
 
 
 /*
