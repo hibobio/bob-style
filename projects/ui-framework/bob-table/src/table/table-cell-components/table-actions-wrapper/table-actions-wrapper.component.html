@@ -7,7 +7,7 @@
         [matTooltip]="iconTooltip">
 </b-icon>
 
-<b-menu *ngIf="menuItems && menuItems.length > 1"
+<b-menu *ngIf="menuItems?.length > 1"
         [menu]="menuItems"
         [openLeft]="openLeft"
         (click)="$event.stopPropagation()">
@@ -16,7 +16,7 @@
   </b-square-button>
 </b-menu>
 
-<b-button *ngIf="menuItems && menuItems.length === 1"
+<b-button *ngIf="menuItems?.length === 1"
           [size]="buttonSize.small"
           [text]="menuItems[0].label"
           [type]="buttonType"

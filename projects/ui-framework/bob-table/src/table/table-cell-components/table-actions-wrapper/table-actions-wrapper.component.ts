@@ -7,6 +7,7 @@ import {
   Icon,
   IconColor,
   Icons,
+  IconSize,
   IconType,
   isObject,
   MenuItem,
@@ -24,6 +25,7 @@ export class TableActionsWrapperComponent {
 
   public tooltipIconConfig: Icon = {
     type: IconType.circular,
+    size: IconSize.medium,
     color: IconColor.normal,
     icon: null,
   };
