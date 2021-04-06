@@ -3,10 +3,7 @@
 </div>
 
 <b-icon *ngIf="icon"
-        [color]="iconColor.normal"
-        [size]="iconSize.medium"
-        [type]="iconType"
-        [icon]="icon"
+        [config]="tooltipIconConfig"
         [matTooltip]="iconTooltip">
 </b-icon>
 
@@ -15,15 +12,13 @@
         [openLeft]="openLeft"
         (click)="$event.stopPropagation()">
   <b-square-button menu-trigger
-                   [type]="squareButtonType.tertiary"
-                   [icon]="buttonIcon"
-                   [color]="buttonColor">
+                   [button]="menuTriggerButton">
   </b-square-button>
 </b-menu>
 
 <b-button *ngIf="menuItems && menuItems.length === 1"
           [size]="buttonSize.small"
           [text]="menuItems[0].label"
-          [type]="buttonType ? buttonType : null"
+          [type]="buttonType"
           (clicked)="menuItems[0].action($event)">
 </b-button>

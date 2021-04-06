@@ -1,24 +1,51 @@
-import {Component, Input} from '@angular/core';
-import {ButtonSize, ButtonType, IconColor, Icons, IconSize, IconType, MenuItem} from 'bob-style';
+import { Component, Input } from '@angular/core';
+
+import {
+  Button,
+  ButtonSize,
+  ButtonType,
+  Icon,
+  IconColor,
+  Icons,
+  IconType,
+  isObject,
+  MenuItem,
+} from 'bob-style';
 
 @Component({
   selector: 'b-table-actions-wrapper',
   templateUrl: './table-actions-wrapper.component.html',
-  styleUrls: ['./table-actions-wrapper.component.scss']
+  styleUrls: ['./table-actions-wrapper.component.scss'],
 })
 export class TableActionsWrapperComponent {
   @Input() menuItems: MenuItem[];
   @Input() buttonType: ButtonType = ButtonType.primary;
-  @Input() icon: Icons = null;
   @Input() iconTooltip: string;
-  @Input() iconType: IconType = IconType.circular;
-  public openLeft: boolean;
-  readonly buttonSize = ButtonSize;
-  readonly squareButtonType = ButtonType;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
-  readonly buttonColor: IconColor = IconColor.normal;
-  readonly buttonIcon: Icons = Icons.three_dots_vert;
 
-  constructor() { }
+  public tooltipIconConfig: Icon = {
+    type: IconType.circular,
+    color: IconColor.normal,
+    icon: null,
+  };
+
+  @Input() set icon(icon: Icons | Icon) {
+    this.tooltipIconConfig = {
+      ...this.tooltipIconConfig,
+      ...(isObject(icon) ? icon : { icon }),
+    };
+  }
+
+  get icon() {
+    return this.tooltipIconConfig.icon;
+  }
+
+  public openLeft: boolean;
+
+  public menuTriggerButton: Button = {
+    type: ButtonType.tertiary,
+    icon: Icons.three_dots_vert,
+    color: IconColor.normal,
+  };
+
+  readonly buttonSize = ButtonSize;
 }

@@ -1,22 +1,23 @@
-import { ColumnDef } from '../table/table.interface';
-import { AvatarCellComponent } from '../table-cell-components/avatar-cell/avatar.component';
-import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
-import { GridActions } from '../table-cell-components/actions-cell/actions-cell.interface';
-import { PinDirection, SortDirections } from '../table/table.enum';
 import {
   Icons,
+  log,
   makeArray,
+  mockAnimals,
   mockAvatar,
   mockDate,
   mockNames,
   mockText,
+  mockThings,
   randomFromArray,
   randomNumber,
   simpleUID,
-  mockThings,
-  mockAnimals,
-  log,
 } from 'bob-style';
+
+import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
+import { GridActions } from '../table-cell-components/actions-cell/actions-cell.interface';
+import { AvatarCellComponent } from '../table-cell-components/avatar-cell/avatar.component';
+import { PinDirection, SortDirections } from '../table/table.enum';
+import { ColumnDef } from '../table/table.interface';
 
 const gridActions: GridActions = {
   menuItems: [
@@ -43,6 +44,7 @@ export const mockColumnsDefs: ColumnDef[] = [
     resizable: false,
     sortable: false,
     flex: 1,
+    menuItems: gridActions.menuItems,
   },
   {
     headerName: 'Display Name',
@@ -89,6 +91,7 @@ export const mockColumnsDefsExtended: ColumnDef[] = [
   ...mockFields.map((field) => ({
     headerName: field,
     field: field,
+    menuItems: gridActions.menuItems,
   })),
 ];
 
