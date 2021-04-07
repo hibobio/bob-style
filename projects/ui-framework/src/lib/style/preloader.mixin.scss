@@ -57,10 +57,18 @@ $preloader-size: 48px 12px;
     @if ($full-size-selector) {
       #{$full-size-selector} {
         @include flex-align;
-        @include size(100%);
+        width: 100%;
         flex-grow: 5;
         margin-left: auto;
         margin-right: auto;
+
+        @if ($base-selector== '&' and $full-size-selector== '&') {
+          &:only-child {
+            height: 100%;
+          }
+        } @else {
+          height: 100%;
+        }
       }
     }
   }
