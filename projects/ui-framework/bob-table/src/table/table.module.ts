@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { AgGridModule } from 'ag-grid-angular';
 import {
   AvatarModule,
-  ButtonsModule,
+  ButtonsModule, ComponentRendererModule,
   EmptyStateModule,
   IconsModule,
   MenuModule,
@@ -21,6 +21,7 @@ import { TableUtilsService } from './table-utils-service/table-utils.service';
 import { TreeDirective } from './table/extensions/tree.directive';
 import { TableComponent } from './table/table.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CellRenderersWrapperComponent } from './table-cell-components/cell-renderers-wrapper/cell-renderers-wrapper.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     TableActionsWrapperComponent,
     CircleIconAndLabelComponent,
     TreeDirective,
+    CellRenderersWrapperComponent,
   ],
   providers: [TableUtilsService],
   imports: [
@@ -50,6 +52,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     IconsModule,
     PagerModule,
     EmptyStateModule,
+    ComponentRendererModule,
   ],
   exports: [
     TableComponent,
@@ -58,6 +61,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ActionsCellComponent,
     TableActionsWrapperComponent,
     CircleIconAndLabelComponent,
+    CellRenderersWrapperComponent,
   ],
 })
 export class TableModule {}
