@@ -17,11 +17,13 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import {
-  MatTooltip,
-  MatTooltipDefaultOptions,
   MAT_TOOLTIP_DEFAULT_OPTIONS,
   MAT_TOOLTIP_SCROLL_STRATEGY,
+  MatTooltip,
+  MatTooltipDefaultOptions,
 } from '@angular/material/tooltip';
+
+import { DocumentRef } from '../../../services/utils/document-ref.service';
 import { isObject, isString } from '../../../services/utils/functional-utils';
 import { InfoTooltip } from '../../info-tooltip/info-tooltip.interface';
 
@@ -44,7 +46,8 @@ export class MetaTooltipDirective implements AfterViewInit, OnDestroy {
     private platform: Platform,
     private ariaDescriber: AriaDescriber,
     private focusMonitor: FocusMonitor,
-    private dir: Directionality
+    private dir: Directionality,
+    private documentRef: DocumentRef
   ) {}
 
   @Input('bTooltip') tooltip: string | InfoTooltip;
@@ -77,7 +80,8 @@ export class MetaTooltipDirective implements AfterViewInit, OnDestroy {
         this.focusMonitor,
         this.matTooltipScrollStrategy,
         this.dir,
-        this.matTooltipDefaultOptions
+        this.matTooltipDefaultOptions,
+        this.documentRef.nativeDocument
       );
     }
     this.matTooltip.message = tooltip;
