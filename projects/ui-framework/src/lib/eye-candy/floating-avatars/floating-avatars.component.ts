@@ -1,3 +1,5 @@
+import { Subscription } from 'rxjs';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,21 +12,21 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+
+import {
+  isNotEmptyArray,
+  notFirstChanges,
+  unsubscribeArray,
+} from '../../services/utils/functional-utils';
+import { MobileService } from '../../services/utils/mobile.service';
+import { MutationObservableService } from '../../services/utils/mutation-observable';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { AvatarLocation, CanvasDimension } from './floating-avatars.interface';
+import { AvatarParticle } from './avatar.particle';
 import {
   AVATAR_LOCATIONS_DEF_DESK,
   AVATAR_LOCATIONS_DEF_MOB,
 } from './floating-avatars.const';
-import { MobileService } from '../../services/utils/mobile.service';
-import {
-  notFirstChanges,
-  isNotEmptyArray,
-  unsubscribeArray,
-} from '../../services/utils/functional-utils';
-import { AvatarParticle } from './avatar.particle';
-import { MutationObservableService } from '../../services/utils/mutation-observable';
+import { AvatarLocation, CanvasDimension } from './floating-avatars.interface';
 
 @Component({
   selector: 'b-floating-avatars',
@@ -86,8 +88,10 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
         }),
 
       this.mutationObservableService
-        .getElementInViewEvent(this.hostRef.nativeElement, {})
-        .pipe(outsideZone(this.zone))
+        .getElementInViewEvent(this.hostRef.nativeElement, {
+          threshold: 0,
+          outsideZone: true,
+        })
         .subscribe((isInView) => {
           if (isInView) {
             this.startLoop();

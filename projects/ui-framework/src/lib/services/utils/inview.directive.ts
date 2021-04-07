@@ -1,28 +1,25 @@
-import {
-  Directive,
-  OnInit,
-  Input,
-  NgModule,
-  ElementRef,
-  OnDestroy,
-  Output,
-  EventEmitter,
-  NgZone,
-} from '@angular/core';
+import { Subscription } from 'rxjs';
+
 import { CommonModule } from '@angular/common';
 import {
+  Directive,
+  ElementRef,
+  EventEmitter,
+  Input,
+  NgModule,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+
+import {
   IntersectionObservableConfig,
-  INTERSECTION_OBSERVABLE_CONFIG_DEF,
   MutationObservableService,
 } from './mutation-observable';
-import { Subscription } from 'rxjs';
-import { pass } from './functional-utils';
-import { delay, map } from 'rxjs/operators';
-import { insideZone } from './rxjs.operators';
 
 export const IN_VIEW_DIR_CONFIG_DEF: IntersectionObservableConfig = {
-  ...INTERSECTION_OBSERVABLE_CONFIG_DEF,
   threshold: 0.25,
+  debounceTime: false,
 };
 
 @Directive({
@@ -32,8 +29,7 @@ export const IN_VIEW_DIR_CONFIG_DEF: IntersectionObservableConfig = {
 export class InViewDirective implements OnInit, OnDestroy {
   constructor(
     private hostRef: ElementRef,
-    private mutationObservableService: MutationObservableService,
-    private zone: NgZone
+    private mutationObservableService: MutationObservableService
   ) {}
 
   // tslint:disable-next-line: no-input-rename
@@ -46,19 +42,12 @@ export class InViewDirective implements OnInit, OnDestroy {
   private inViewSub: Subscription;
 
   ngOnInit(): void {
-    this.zone.runOutsideAngular(() => {
-      this.inViewSub = this.mutationObservableService
-        .getIntersectionObservable(
-          this.hostRef.nativeElement,
-          this.config || IN_VIEW_DIR_CONFIG_DEF
-        )
-        .pipe(
-          this.config?.delayEmit > 0 ? delay(this.config.delayEmit) : pass,
-          map((entry) => entry.isIntersecting),
-          insideZone(this.zone)
-        )
-        .subscribe(this.isInView);
-    });
+    this.inViewSub = this.mutationObservableService
+      .getElementInViewEvent(this.hostRef.nativeElement, {
+        ...IN_VIEW_DIR_CONFIG_DEF,
+        ...this.config,
+      })
+      .subscribe(this.isInView);
   }
 
   ngOnDestroy(): void {

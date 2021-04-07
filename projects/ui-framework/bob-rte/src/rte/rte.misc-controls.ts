@@ -1,5 +1,7 @@
 import FroalaEditor from 'froala-editor';
-import { SelectGroupOption, HtmlParserHelpers } from 'bob-style';
+
+import { HtmlParserHelpers, log, SelectGroupOption } from 'bob-style';
+
 import { PlaceholdersConverterService } from './placeholders.service';
 
 // import { HtmlParserHelpers } from '../../../../ui-framework/src/lib/services/html/html-parser.service';
@@ -43,7 +45,7 @@ export const initPasteAsTextControl = (controlsState: {
           );
         }
       } catch (e) {
-        console.error(e);
+        log.err(e, 'RTE PasteAsTextControl');
       }
     },
   });
@@ -86,7 +88,7 @@ export const initRemoveFormatControl = (config: {
             : newHtml
         );
       } catch (e) {
-        console.error(e);
+        log.err(e, 'RTE RemoveFormatControl');
       }
     },
   });

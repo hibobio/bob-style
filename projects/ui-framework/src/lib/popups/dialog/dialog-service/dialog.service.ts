@@ -1,16 +1,19 @@
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { EMPTY, merge, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
+
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable, NgZone } from '@angular/core';
-import { DialogConfig } from '../dialog.interface';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+
+import { Keys } from '../../../enums';
 import { DocumentRef } from '../../../services/utils/document-ref.service';
+import { unsubscribeArray } from '../../../services/utils/functional-utils';
+import { log } from '../../../services/utils/logger';
+import { filterKey, insideZone } from '../../../services/utils/rxjs.operators';
+import { UtilsService } from '../../../services/utils/utils.service';
 import { WindowRef } from '../../../services/utils/window-ref.service';
 import { DIALOG_CONFIG_DEF, DIALOG_SIZE_TO_WIDTH } from '../dialog.const';
-import { take } from 'rxjs/operators';
-import { EMPTY, merge, Subscription } from 'rxjs';
-import { UtilsService } from '../../../services/utils/utils.service';
-import { filterKey, insideZone } from '../../../services/utils/rxjs.operators';
-import { Keys } from '../../../enums';
-import { unsubscribeArray } from '../../../services/utils/functional-utils';
+import { DialogConfig } from '../dialog.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -31,9 +34,7 @@ export class DialogService {
     config: DialogConfig
   ): MatDialogRef<any> {
     if (!config.panelClass) {
-      console.warn(
-        'DialogService: panelClass should be provided and it was not'
-      );
+      log.wrn('panelClass should be provided and it was not', 'DialogService');
     }
 
     const scrollBarGap =

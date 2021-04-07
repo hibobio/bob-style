@@ -1,18 +1,20 @@
 import {
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChild,
-  Input,
-  HostBinding,
-  Output,
   EventEmitter,
-  ChangeDetectorRef,
+  HostBinding,
+  Input,
   NgZone,
-  ChangeDetectionStrategy,
-  AfterContentInit,
+  Output,
 } from '@angular/core';
-import { BasicListConfig, BasicListItem } from './basic-list.interface';
-import { BasicListActionDirective } from './basic-list-action.directive';
+import { TranslateService } from '@ngx-translate/core';
+
+import { Types } from '../../enums';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
 import {
   asArray,
   cloneDeepSimpleObject,
@@ -20,10 +22,10 @@ import {
   isNotEmptyArray,
   isObject,
 } from '../../services/utils/functional-utils';
+import { log } from '../../services/utils/logger';
+import { BasicListActionDirective } from './basic-list-action.directive';
 import { BasicListType } from './basic-list.enum';
-import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
-import { TranslateService } from '@ngx-translate/core';
-import { Types } from '../../enums';
+import { BasicListConfig, BasicListItem } from './basic-list.interface';
 
 @Component({
   selector: 'b-basic-list',
@@ -65,8 +67,9 @@ export class BasicListComponent implements AfterContentInit {
     this.isTable = this.labelsCount > 1;
 
     if (this.items.find((itm) => itm.label.length !== this.labelsCount)) {
-      console.warn(
-        'BasicListComponent: BasicListItems should have the same number of label texts.'
+      log.wrn(
+        'BasicListItems should have the same number of label texts.',
+        'BasicListComponent'
       );
       this.isTable = false;
     }

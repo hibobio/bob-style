@@ -1,37 +1,37 @@
-import {
-  Component,
-  Input,
-  ChangeDetectionStrategy,
-  EventEmitter,
-  Output,
-  ElementRef,
-  OnDestroy,
-  SimpleChanges,
-  OnChanges,
-  ChangeDetectorRef,
-  ContentChildren,
-  QueryList,
-  OnInit,
-  AfterContentInit,
-  NgZone,
-} from '@angular/core';
-import { CardType } from '../cards.enum';
 import { Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+
 import {
-  CARD_TYPE_WIDTH,
-  GAP_SIZE,
-  CARD_TYPE_WIDTH_MOBILE,
-} from './cards-layout.const';
-import { BaseCardElement } from '../card/card.abstract';
-import { MediaEvent, MobileService } from '../../services/utils/mobile.service';
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChildren,
+  ElementRef,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  Output,
+  QueryList,
+  SimpleChanges,
+} from '@angular/core';
+
+import { ItemsInRowService } from '../../services/items-in-row/items-in-row.service';
 import {
   applyChanges,
   notFirstChanges,
   unsubscribeArray,
 } from '../../services/utils/functional-utils';
-import { ItemsInRowService } from '../../services/items-in-row/items-in-row.service';
-import { outsideZone } from '../../services/utils/rxjs.operators';
+import { MediaEvent, MobileService } from '../../services/utils/mobile.service';
+import { BaseCardElement } from '../card/card.abstract';
+import { CardType } from '../cards.enum';
+import {
+  CARD_TYPE_WIDTH,
+  CARD_TYPE_WIDTH_MOBILE,
+  GAP_SIZE,
+} from './cards-layout.const';
 
 @Component({
   selector: 'b-cards',
@@ -40,7 +40,7 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardsLayoutComponent
-  implements OnDestroy, OnChanges, OnInit, AfterContentInit {
+  implements OnDestroy, OnChanges, AfterContentInit {
   constructor(
     private hostRef: ElementRef,
     private zone: NgZone,
@@ -49,6 +49,7 @@ export class CardsLayoutComponent
     private itemsInRowService: ItemsInRowService
   ) {
     this.isMobile = this.mobileService.isMobile();
+    this.setCardsInRow();
   }
 
   @ContentChildren(BaseCardElement) public cards: QueryList<BaseCardElement>;
@@ -82,7 +83,7 @@ export class CardsLayoutComponent
     }
 
     if (notFirstChanges(changes, ['type'])) {
-      this.ngOnInit();
+      this.setCardsInRow();
     }
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
@@ -90,15 +91,14 @@ export class CardsLayoutComponent
     }
   }
 
-  ngOnInit(): void {
+  private setCardsInRow(): void {
     this.cardsInRow$ = this.itemsInRowService
       .getItemsInRow$({
         hostElem: this.hostRef.nativeElement,
         elemWidth: this.getCardWidth(),
         gapSize: GAP_SIZE,
         minItems: 1,
-        update$: this.mobileService.getMediaEvent().pipe(
-          outsideZone(this.zone),
+        update$: this.mobileService.getMediaEvent(true).pipe(
           tap((mediaEvent: MediaEvent) => {
             this.isMobile = mediaEvent.isMobile;
           }),

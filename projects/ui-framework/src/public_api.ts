@@ -554,7 +554,9 @@ export * from './lib/cards/card-employee/card-employee.interface';
 // Cards Layout
 export { CardsLayoutComponent } from './lib/cards/cards-layout/cards-layout.component';
 export * from './lib/cards/cards-layout/cards-layout.const';
-
+// Image Card
+export * from './lib/cards/card-image/card-image.interface';
+export { CardImageComponent } from './lib/cards/card-image/card-image.component';
 
 // Card Table
 export { CardTableModule } from './lib/table/card-table/card-table.module';
@@ -632,7 +634,7 @@ export * from './lib/services/color-service/color-palette.service';
 // ItemsInRowService
 export * from './lib/services/items-in-row/items-in-row.service';
 // Event directives
-export { InViewModule, InViewDirective } from './lib/services/utils/inview.directive';
+export * from './lib/services/utils/inview.directive';
 export { ClickOutsideModule, ClickOutsideDirective } from './lib/services/utils/clickOutside.directive';
 export { DoubleClickModule, DoubleClickDirective } from './lib/services/utils/clickDouble.directive';
 export { WindowKeydownModule, WindowKeydownDirective } from './lib/services/utils/windowKeydown.directive';

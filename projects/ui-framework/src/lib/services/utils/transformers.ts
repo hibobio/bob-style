@@ -1,3 +1,10 @@
+import { format, parseISO } from 'date-fns';
+
+import { SERVER_DATE_FORMAT } from '../../consts';
+import { InputTypes } from '../../form-elements/input/input.enum';
+import { SelectType } from '../../lists/list.enum';
+import { itemID } from '../../lists/list.interface';
+import { GenericObject } from '../../types';
 import {
   asArray,
   compareAsStrings,
@@ -7,20 +14,15 @@ import {
   isDate,
   isDateFormat,
   isDateISO8601,
+  isEmptyArray,
   isNullOrUndefined,
   isNumber,
   isObject,
   isString,
   parseToNumber,
   stringify,
-  isEmptyArray,
 } from './functional-utils';
-import { format, parseISO } from 'date-fns';
-import { InputTypes } from '../../form-elements/input/input.enum';
-import { SERVER_DATE_FORMAT } from '../../consts';
-import { GenericObject } from '../../types';
-import { SelectType } from '../../lists/list.enum';
-import { itemID } from '../../lists/list.interface';
+import { log } from './logger';
 
 // -------------------------------
 // Transformers
@@ -126,7 +128,10 @@ export const valueAsNumber = (
   }
   const parsed = parseToNumber(value, decimals);
   if (parsed !== parsed && value !== '--') {
-    console.warn(`Value (${stringify(value)}) is not parseable to number.`);
+    log.wrn(
+      `Value (${stringify(value)}) is not parseable to number.`,
+      'valueAsNumber'
+    );
   }
   return parsed === parsed ? parsed : def;
 };

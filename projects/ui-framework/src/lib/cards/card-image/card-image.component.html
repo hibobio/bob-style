@@ -1,0 +1,11 @@
+<div class="card-image mrg-b-16 brd-b"
+     [style.background-image]="card?.imgSrc ? ('url(\'' + card?.imgSrc + '\')') : null"
+     [ngClass]="card?.imageClass"
+     [ngStyle]="card?.imageStyle"></div>
+<p class="card-title b-display-3 pad-x-24"
+   [ngClass]="card?.titleClass"
+   [ngStyle]="card?.titleStyle"
+   [b-truncate-tooltip]="2"
+   [type]="tooltipType.css"
+   [trustCssVars]="true"
+   [text]="card?.title"></p>

@@ -1,34 +1,36 @@
+
+
 import {
-  Component,
-  Input,
-  ViewChildren,
-  ElementRef,
-  QueryList,
-  NgZone,
-  ChangeDetectorRef,
-  SimpleChanges,
-  OnChanges,
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
   EventEmitter,
-  Output,
   HostBinding,
+  Input,
+  NgZone,
+  OnChanges,
+  Output,
+  QueryList,
+  SimpleChanges,
+  ViewChildren,
 } from '@angular/core';
-import { SimpleBarChartItem } from './simple-bar-chart.interface';
+
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import {
-  simpleUID,
-  randomNumber,
   applyChanges,
   notFirstChanges,
   numberMinMax,
+  randomNumber,
+  simpleUID,
 } from '../../services/utils/functional-utils';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { outsideZone } from '../../services/utils/rxjs.operators';
-import { filter, take } from 'rxjs/operators';
-import { valueAsNumber } from '../../services/utils/transformers';
-import { ProgressConfig } from '../progress/progress.interface';
-import { ProgressSize } from '../progress/progress.enum';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
+import { outsideZone } from '../../services/utils/rxjs.operators';
+import { valueAsNumber } from '../../services/utils/transformers';
+import { ProgressSize } from '../progress/progress.enum';
+import { ProgressConfig } from '../progress/progress.interface';
+import { SimpleBarChartItem } from './simple-bar-chart.interface';
 
 @Component({
   selector: 'b-simple-bar-chart',
@@ -102,8 +104,9 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
   ngAfterViewInit() {
     if (!this.config.disableAnimation) {
       this.mutationObservableService
-        .getElementInViewEvent(this.host.nativeElement)
-        .pipe(outsideZone(this.zone), filter(Boolean), take(1))
+        .getElementFirstInViewEvent(this.host.nativeElement, {
+          outsideZone: true,
+        })
         .subscribe(() => {
           this.wasInView = true;
           this.setCssProps();

@@ -1,16 +1,19 @@
-import { Injectable } from '@angular/core';
-import { mobileBreakpoint } from '../../consts';
-import { Observable } from 'rxjs';
-import { UtilsService } from './utils.service';
-import {
-  shareReplay,
-  map,
-  startWith,
-  distinctUntilChanged,
-} from 'rxjs/operators';
-import { WindowRef } from './window-ref.service';
 import { isEqual } from 'lodash';
+import { Observable } from 'rxjs';
+import {
+  distinctUntilChanged,
+  map,
+  shareReplay,
+  startWith,
+} from 'rxjs/operators';
+
+import { Injectable, NgZone } from '@angular/core';
+
+import { mobileBreakpoint } from '../../consts';
+import { insideZone } from './rxjs.operators';
 import { WinResizeEvent } from './utils.interface';
+import { UtilsService } from './utils.service';
+import { WindowRef } from './window-ref.service';
 
 export enum WidthMode {
   min = 'min',
@@ -47,12 +50,13 @@ export class MobileService {
 
   constructor(
     private windowRef: WindowRef,
-    private utilsService: UtilsService
+    private utilsService: UtilsService,
+    private zone: NgZone
   ) {
     this.isMobBrowser = this.checkForMobileBrowser();
     this.mobileOS = this.getMobileOperatingSystem();
     this.isTouchDevice = this.checkForTouchDevice();
-    this.mediaEvent$ = this.utilsService.getResizeEvent().pipe(
+    this.mediaEvent$ = this.utilsService.getResizeEvent(true).pipe(
       startWith({}),
       map((resizeEvent: WinResizeEvent) => this.getMediaData(resizeEvent)),
       distinctUntilChanged(isEqual),
@@ -71,8 +75,10 @@ export class MobileService {
     return this.matchMedia(`(${mode}-width: ${point}px)`);
   }
 
-  public getMediaEvent(): Observable<MediaEvent> {
-    return this.mediaEvent$;
+  public getMediaEvent(outsideNgZone = false): Observable<MediaEvent> {
+    return outsideNgZone
+      ? this.mediaEvent$
+      : this.mediaEvent$.pipe(insideZone(this.zone));
   }
 
   public isMobile(matchMobile = null): boolean {
