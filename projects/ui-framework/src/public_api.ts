@@ -554,7 +554,9 @@ export * from './lib/cards/card-employee/card-employee.interface';
 // Cards Layout
 export { CardsLayoutComponent } from './lib/cards/cards-layout/cards-layout.component';
 export * from './lib/cards/cards-layout/cards-layout.const';
-
+// Image Card
+export * from './lib/cards/card-image/card-image.interface';
+export { CardImageComponent } from './lib/cards/card-image/card-image.component';
 
 // Card Table
 export { CardTableModule } from './lib/table/card-table/card-table.module';

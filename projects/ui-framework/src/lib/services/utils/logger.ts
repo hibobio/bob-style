@@ -3,6 +3,7 @@ import { asArray, isDark, isString } from './functional-utils';
 const LOGGER_DATA = {
   message: ['log', '#535353', '•', '13px'],
   info: ['info', '#4b95ec', 'ℹ', '12px'],
+  dir: ['dir', '#4b95ec', 'ℹ', '12px'],
   success: ['log', '#0d853d', '✔', '13px'],
   warning: ['warn', '#ff8100', '⚠', '13px'],
   attention: ['log', '#ff8100', '⚑', '13px'],
@@ -67,6 +68,9 @@ export class log {
   }
   static inf(...args: LoggerArgs) {
     this.do('info', ...args);
+  }
+  static dir(...args: LoggerArgs) {
+    this.do('dir', ...args);
   }
   static scs(...args: LoggerArgs) {
     this.do('success', ...args);
