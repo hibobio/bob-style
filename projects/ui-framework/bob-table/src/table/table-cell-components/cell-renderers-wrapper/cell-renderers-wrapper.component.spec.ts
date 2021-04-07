@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CellRenderersWrapperComponent } from './cell-renderers-wrapper.component';
-import { ComponentRendererComponent } from 'bob-style';
+import { ComponentRendererComponent } from '../../../../../../ui-framework/src/lib/services/component-renderer/component-renderer.component';
 import { MockComponent } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 
