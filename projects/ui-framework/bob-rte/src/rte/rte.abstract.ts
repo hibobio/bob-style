@@ -36,6 +36,7 @@ import {
   isNotEmptyArray,
   isNotEmptyObject,
   isNullOrUndefined,
+  log,
   notFirstChanges,
   PanelDefaultPosVer,
   SanitizerService,
@@ -59,14 +60,18 @@ import { initDirectionControl } from './rte.direction';
 import { BlotType, RTEMode, RTEType } from './rte.enum';
 import { RteMentionsOption } from './rte.interface';
 import { initMentionsControl } from './rte.mentions';
-import { initPasteAsTextControl, initRemoveFormatControl } from './rte.misc-controls';
+import {
+  initPasteAsTextControl,
+  initRemoveFormatControl,
+} from './rte.misc-controls';
 import { TributeInstance } from './tribute.interface';
 
 // import { HtmlParserHelpers } from '../../../../ui-framework/src/lib/services/html/html-parser.service';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class RTEbaseElement extends BaseFormElement implements OnChanges, OnInit {
+export abstract class RTEbaseElement extends BaseFormElement
+  implements OnChanges, OnInit {
   constructor(
     protected cd: ChangeDetectorRef,
     protected placeholdersConverter: PlaceholdersConverterService,
@@ -114,12 +119,16 @@ export abstract class RTEbaseElement extends BaseFormElement implements OnChange
   @Input() public minChars = 0;
   @Input() public maxChars = 0;
   @Input() public controls: BlotType[] = cloneArray(RTE_CONTROLS_DEF);
-  @Input() public disableControls: BlotType[] = cloneArray(RTE_DISABLE_CONTROLS_DEF);
+  @Input() public disableControls: BlotType[] = cloneArray(
+    RTE_DISABLE_CONTROLS_DEF
+  );
 
   @Input() public minHeight = RTE_MINHEIGHT_DEF;
   @Input() public maxHeight = RTE_MAXHEIGHT_DEF;
 
-  @Input() public options: FroalaOptions = cloneDeepSimpleObject(RTE_OPTIONS_DEF);
+  @Input() public options: FroalaOptions = cloneDeepSimpleObject(
+    RTE_OPTIONS_DEF
+  );
 
   @Input() public mentionsList: RteMentionsOption[];
   @Input() public placeholderList: SelectGroupOption[];
@@ -128,7 +137,8 @@ export abstract class RTEbaseElement extends BaseFormElement implements OnChange
   @Output() focused: EventEmitter<string> = new EventEmitter<string>();
   @Output() changed: EventEmitter<string> = new EventEmitter<string>();
 
-  @HostBinding('attr.data-type') @Input() public type: RTEType = RTEType.primary;
+  @HostBinding('attr.data-type') @Input() public type: RTEType =
+    RTEType.primary;
   @HostBinding('attr.data-mode') @Input() public mode: RTEMode = RTEMode.html;
 
   public writeValue(value: any, onChanges = false, force = false): void {
@@ -141,7 +151,10 @@ export abstract class RTEbaseElement extends BaseFormElement implements OnChange
             ...(this.mode !== RTEMode.plainText
               ? [
                   (html: string) =>
-                    this.parserService.removeElements(html, 'img:not([src]), img[src=""], a:not([href]), a[href=""]'),
+                    this.parserService.removeElements(
+                      html,
+                      'img:not([src]), img[src=""], a:not([href]), a[href=""]'
+                    ),
                 ]
               : []),
 
@@ -150,12 +163,15 @@ export abstract class RTEbaseElement extends BaseFormElement implements OnChange
           value || ''
         );
       } catch (error) {
-        console.error(`${this.getElementIDdata()} threw an error:\n`, error);
+        log.err([`threw an error:\n`, error], this.getElementIDdata());
         return;
       }
     }
 
-    if ((value === undefined || isNullOrUndefined(this.editorValue)) && this.baseValue !== undefined) {
+    if (
+      (value === undefined || isNullOrUndefined(this.editorValue)) &&
+      this.baseValue !== undefined
+    ) {
       this.editorValue = cloneValue(this.baseValue);
     }
 
@@ -190,7 +206,10 @@ export abstract class RTEbaseElement extends BaseFormElement implements OnChange
       this.updateEditorOptions(merge(RTE_OPTIONS_DEF, this.options));
     }
 
-    if (firstChanges(changes, ['type', 'mode']) && this.mode === RTEMode.plainText) {
+    if (
+      firstChanges(changes, ['type', 'mode']) &&
+      this.mode === RTEMode.plainText
+    ) {
       this.updateEditorOptions({
         shortcutsEnabled: [],
         pluginsEnabled: [],
@@ -223,8 +242,14 @@ export abstract class RTEbaseElement extends BaseFormElement implements OnChange
 
       this.updateEditorOptions(
         {
-          heightMin: this.minHeight && this.type !== RTEType.singleLine ? this.minHeight - RTE_TOOLBAR_HEIGHT : null,
-          heightMax: this.maxHeight && this.type !== RTEType.singleLine ? this.maxHeight - RTE_TOOLBAR_HEIGHT : null,
+          heightMin:
+            this.minHeight && this.type !== RTEType.singleLine
+              ? this.minHeight - RTE_TOOLBAR_HEIGHT
+              : null,
+          heightMax:
+            this.maxHeight && this.type !== RTEType.singleLine
+              ? this.maxHeight - RTE_TOOLBAR_HEIGHT
+              : null,
         },
         () => {
           this.editor.size.refresh();
@@ -232,7 +257,9 @@ export abstract class RTEbaseElement extends BaseFormElement implements OnChange
       );
       this.DOM.setCssProps(this.host.nativeElement, {
         '--popup-max-height':
-          this.type !== RTEType.singleLine ? Math.max(150, this.maxHeight || RTE_MAXHEIGHT_DEF) + 'px' : null,
+          this.type !== RTEType.singleLine
+            ? Math.max(150, this.maxHeight || RTE_MAXHEIGHT_DEF) + 'px'
+            : null,
       });
     }
 
@@ -262,7 +289,10 @@ export abstract class RTEbaseElement extends BaseFormElement implements OnChange
       }
     }
 
-    if (hasChanges(changes, ['value', 'mode']) || (changes.placeholderList && this.editorValue !== undefined)) {
+    if (
+      hasChanges(changes, ['value', 'mode']) ||
+      (changes.placeholderList && this.editorValue !== undefined)
+    ) {
       this.writeValue(this.value, true, true);
 
       this.transmitValue(this.editorValue, {
@@ -297,14 +327,30 @@ export abstract class RTEbaseElement extends BaseFormElement implements OnChange
     }
 
     this.DOM.setCssProps(this.host.nativeElement, {
-      '--translation-small': `'${this.translate.instant('bob-style.rte.font-size.small')}'`,
-      '--translation-normal': `'${this.translate.instant('bob-style.rte.font-size.normal')}'`,
-      '--translation-large': `'${this.translate.instant('bob-style.rte.font-size.large')}'`,
-      '--translation-huge': `'${this.translate.instant('bob-style.rte.font-size.huge')}'`,
-      '--translation-insert': `'${this.translate.instant('bob-style.rte.link.insert')}'`,
-      '--translation-update': `'${this.translate.instant('bob-style.rte.link.update')}'`,
-      '--translation-url': `'${this.translate.instant('bob-style.rte.link.url')}'`,
-      '--translation-text': `'${this.translate.instant('bob-style.rte.link.text')}'`,
+      '--translation-small': `'${this.translate.instant(
+        'bob-style.rte.font-size.small'
+      )}'`,
+      '--translation-normal': `'${this.translate.instant(
+        'bob-style.rte.font-size.normal'
+      )}'`,
+      '--translation-large': `'${this.translate.instant(
+        'bob-style.rte.font-size.large'
+      )}'`,
+      '--translation-huge': `'${this.translate.instant(
+        'bob-style.rte.font-size.huge'
+      )}'`,
+      '--translation-insert': `'${this.translate.instant(
+        'bob-style.rte.link.insert'
+      )}'`,
+      '--translation-update': `'${this.translate.instant(
+        'bob-style.rte.link.update'
+      )}'`,
+      '--translation-url': `'${this.translate.instant(
+        'bob-style.rte.link.url'
+      )}'`,
+      '--translation-text': `'${this.translate.instant(
+        'bob-style.rte.link.text'
+      )}'`,
 
       '--link-label-wch':
         Math.max(
@@ -315,21 +361,38 @@ export abstract class RTEbaseElement extends BaseFormElement implements OnChange
   }
 
   public placeholdersEnabled(): boolean {
-    return isNotEmptyArray(this.placeholderList) && this.controls.includes(BlotType.placeholder);
+    return (
+      isNotEmptyArray(this.placeholderList) &&
+      this.controls.includes(BlotType.placeholder)
+    );
   }
 
   public mentionsEnabled(): boolean {
-    return isNotEmptyArray(this.mentionsList) && this.controls.includes(BlotType.mentions);
+    return (
+      isNotEmptyArray(this.mentionsList) &&
+      this.controls.includes(BlotType.mentions)
+    );
   }
 
   private initControls(): void {
-    Object.assign(this, this.rteUtilsService.getControls(this.mode, this.controls, this.disableControls));
+    Object.assign(
+      this,
+      this.rteUtilsService.getControls(
+        this.mode,
+        this.controls,
+        this.disableControls
+      )
+    );
   }
 
   private initTransformers(): void {
     Object.assign(
       this,
-      this.rteUtilsService.getTransformers(this.mode, this.placeholdersEnabled(), this.placeholderList)
+      this.rteUtilsService.getTransformers(
+        this.mode,
+        this.placeholdersEnabled(),
+        this.placeholderList
+      )
     );
   }
 
@@ -347,10 +410,14 @@ export abstract class RTEbaseElement extends BaseFormElement implements OnChange
     }
 
     const requestedElements = Array.from(
-      (this.host.nativeElement as HTMLElement).querySelectorAll(selector) as NodeListOf<HTMLElement>
+      (this.host.nativeElement as HTMLElement).querySelectorAll(
+        selector
+      ) as NodeListOf<HTMLElement>
     );
 
-    return requestedElements.length < 2 ? requestedElements[0] : requestedElements;
+    return requestedElements.length < 2
+      ? requestedElements[0]
+      : requestedElements;
   }
 
   protected getEditorTextbox(): HTMLElement {
@@ -375,7 +442,10 @@ export abstract class RTEbaseElement extends BaseFormElement implements OnChange
     }
   }
 
-  protected updateEditorOptions(options: Partial<FroalaOptions>, callback: Function = null): void {
+  protected updateEditorOptions(
+    options: Partial<FroalaOptions>,
+    callback: Function = null
+  ): void {
     if (isNotEmptyObject(options)) {
       Object.assign(this.options, options);
 
@@ -406,6 +476,8 @@ export abstract class RTEbaseElement extends BaseFormElement implements OnChange
 
   protected getNativeRange(): Range {
     const selection = document.getSelection();
-    return selection == null || selection.rangeCount <= 0 ? null : selection.getRangeAt(0);
+    return selection == null || selection.rangeCount <= 0
+      ? null
+      : selection.getRangeAt(0);
   }
 }

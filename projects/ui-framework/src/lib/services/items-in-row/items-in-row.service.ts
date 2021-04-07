@@ -1,8 +1,11 @@
-import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+
+import { Injectable } from '@angular/core';
+
 import { DOMhelpers } from '../html/dom-helpers.service';
 import { isDomElement, isFunction, isNumber } from '../utils/functional-utils';
+import { log } from '../utils/logger';
 import { MutationObservableService } from '../utils/mutation-observable';
 
 export interface ItemsInRowConfig {
@@ -53,8 +56,9 @@ export class ItemsInRowService {
     calcItemsFit = isFunction(calcItemsFit) ? calcItemsFit : this.calcItemsFit;
 
     if (!isDomElement(hostElem)) {
-      console.error(
-        `[ItemsInRowService.getItemsInRow$] host element was not provided`
+      log.err(
+        `host element was not provided`,
+        'ItemsInRowService.getItemsInRow$'
       );
       this.setCssProps(hostElem, elemWidth, gapSize, 1);
       return of(minItems);

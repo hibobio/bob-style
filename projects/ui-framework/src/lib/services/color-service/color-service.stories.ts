@@ -1,7 +1,8 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import {
   COLOR_PALETTE_MAIN_COLOR_ORDER,
@@ -12,8 +13,8 @@ import {
   COLOR_PALETTE_SET5_COLOR_ORDER,
   COLOR_PALETTE_SET6_COLOR_ORDER,
 } from './color-palette.const';
-import { ColorService } from './color.service';
 import { ColorPalette } from './color-palette.enum';
+import { ColorService } from './color.service';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs
@@ -22,6 +23,9 @@ const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
 const getTextColor = (color: string): string => {
   return ColorService.prototype.isDark(color) ? 'white' : 'black';
 };
+
+const hexToRgb = (color: string): string =>
+  `(${ColorService.prototype.hexToRgb(color).join(',')})`;
 
 const orderedPalette = Object.keys(ColorPalette)
   .slice()
@@ -80,6 +84,8 @@ const storyTemplate = `
         key +
         '<br>' +
         ColorPalette[key] +
+        '<br>' +
+        hexToRgb(ColorPalette[key]) +
         '</div>'
       );
     })
@@ -101,6 +107,8 @@ const storyTemplate = `
       key +
       '<br>' +
       ColorPalette[key] +
+      '<br>' +
+      hexToRgb(ColorPalette[key]) +
       '</div>'
     );
   }).join('')}
@@ -121,6 +129,8 @@ const storyTemplate = `
       key +
       '<br>' +
       ColorPalette[key] +
+      '<br>' +
+      hexToRgb(ColorPalette[key]) +
       '</div>'
     );
   }).join('')}
@@ -141,6 +151,8 @@ const storyTemplate = `
       key +
       '<br>' +
       ColorPalette[key] +
+      '<br>' +
+      hexToRgb(ColorPalette[key]) +
       '</div>'
     );
   }).join('')}
@@ -161,6 +173,8 @@ const storyTemplate = `
       key +
       '<br>' +
       ColorPalette[key] +
+      '<br>' +
+      hexToRgb(ColorPalette[key]) +
       '</div>'
     );
   }).join('')}
@@ -181,6 +195,8 @@ const storyTemplate = `
       key +
       '<br>' +
       ColorPalette[key] +
+      '<br>' +
+      hexToRgb(ColorPalette[key]) +
       '</div>'
     );
   }).join('')}
@@ -201,6 +217,8 @@ const storyTemplate = `
       key +
       '<br>' +
       ColorPalette[key] +
+      '<br>' +
+      hexToRgb(ColorPalette[key]) +
       '</div>'
     );
   }).join('')}
@@ -221,6 +239,8 @@ const storyTemplate = `
       key +
       '<br>' +
       ColorPalette[key] +
+      '<br>' +
+      hexToRgb(ColorPalette[key]) +
       '</div>'
     );
   }).join('')}

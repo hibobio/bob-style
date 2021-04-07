@@ -1,29 +1,31 @@
+
+
 import {
-  OnChanges,
-  SimpleChanges,
   ChangeDetectorRef,
-  OnInit,
-  ElementRef,
-  NgZone,
-  Input,
-  HostBinding,
   Directive,
-  Output,
+  ElementRef,
   EventEmitter,
+  HostBinding,
+  Input,
+  NgZone,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
 } from '@angular/core';
+
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import {
   applyChanges,
-  numberMinMax,
-  notFirstChanges,
   isObject,
+  notFirstChanges,
+  numberMinMax,
 } from '../../services/utils/functional-utils';
-import { valueAsNumber } from '../../services/utils/transformers';
-import { outsideZone } from '../../services/utils/rxjs.operators';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { filter, take } from 'rxjs/operators';
-import { ProgressData, ProgressConfig } from './progress.interface';
-import { ProgressSize, ProgressType } from './progress.enum';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
+import { outsideZone } from '../../services/utils/rxjs.operators';
+import { valueAsNumber } from '../../services/utils/transformers';
+import { ProgressSize, ProgressType } from './progress.enum';
+import { ProgressConfig, ProgressData } from './progress.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -101,8 +103,9 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
   ngOnInit(): void {
     if (!this.config.disableAnimation) {
       this.mutationObservableService
-        .getElementInViewEvent(this.host.nativeElement)
-        .pipe(outsideZone(this.zone), filter(Boolean), take(1))
+        .getElementFirstInViewEvent(this.host.nativeElement, {
+          outsideZone: true,
+        })
         .subscribe(() => {
           this.wasInView = true;
           this.setCssProps();

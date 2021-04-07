@@ -1,17 +1,18 @@
-import { TreeListItem, TreeListItemMap } from '../tree-list.interface';
 import {
-  TreeListItemEditContext,
+  arrayInsertAt,
+  arrayRemoveItemsMutate,
+  isNumber,
+  simpleUID,
+} from '../../../services/utils/functional-utils';
+import { log } from '../../../services/utils/logger';
+import { itemID } from '../../list.interface';
+import {
   InsertItemLocation,
+  TreeListItemEditContext,
 } from '../editable-tree-list/editable-tree-list.interface';
 import { BTL_ROOT_ID } from '../tree-list.const';
-import {
-  simpleUID,
-  isNumber,
-  arrayRemoveItemsMutate,
-  arrayInsertAt,
-} from '../../../services/utils/functional-utils';
+import { TreeListItem, TreeListItemMap } from '../tree-list.interface';
 import { TreeListModelUtils } from './tree-list-model.static';
-import { itemID } from '../../list.interface';
 
 export class TreeListEditUtils {
   //
@@ -103,8 +104,10 @@ export class TreeListEditUtils {
     }
 
     if (!target) {
-      console.error(`[TreeListEditUtils.getItemEditContext]:
-          Something's wrong!`);
+      log.err(
+        `Something's wrong! Target not found.`,
+        'TreeListEditUtils.getItemEditContext'
+      );
       return;
     }
 

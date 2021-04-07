@@ -7,6 +7,7 @@ import {
   filter,
   map,
   startWith,
+  take,
   tap,
   throttleTime,
 } from 'rxjs/operators';
@@ -54,6 +55,8 @@ export interface ResizeObservableConfig {
 // tslint:disable-next-line: no-empty-interface
 export interface IntersectionObservableConfig extends IntersectionObserverInit {
   delayEmit?: number;
+  debounceTime?: number | boolean;
+  outsideZone?: boolean;
 }
 
 export interface IntersectionObserverableEntry
@@ -79,10 +82,11 @@ export const RESIZE_OBSERVERVABLE_CONFIG_DEF: ResizeObservableConfig = {
   debounceTime: false,
 };
 
-export const INTERSECTION_OBSERVABLE_CONFIG_DEF: IntersectionObservableConfig = {};
+export const INTERSECTION_OBSERVABLE_CONFIG_DEF: IntersectionObservableConfig = {
+  debounceTime: false,
+};
 
 export const ELEMENT_IN_VIEW_CONFIG_DEF: IntersectionObservableConfig = {
-  ...INTERSECTION_OBSERVABLE_CONFIG_DEF,
   threshold: 0.8,
 };
 
@@ -180,11 +184,13 @@ export class MutationObservableService {
 
   public getResizeObservervable(
     element: HTMLElement,
-    config: ResizeObservableConfig = RESIZE_OBSERVERVABLE_CONFIG_DEF,
+    config: ResizeObservableConfig = {},
     win: WindowLike = this.nativeWindow
   ): Observable<Partial<DOMRectReadOnly>> {
     //
     win = win || (getElementWindow(element) as any);
+
+    config = { ...RESIZE_OBSERVERVABLE_CONFIG_DEF, ...config };
 
     if (!isDomElement(element, win)) {
       log.err(
@@ -254,12 +260,14 @@ export class MutationObservableService {
 
   public getIntersectionObservable(
     element: HTMLElement,
-    config: IntersectionObservableConfig = INTERSECTION_OBSERVABLE_CONFIG_DEF,
+    config: IntersectionObservableConfig = {},
     observer: IntersectionObserver = null,
     win: WindowLike = this.nativeWindow
   ): Observable<IntersectionObserverableEntry> {
     //
     win = win || (getElementWindow(element) as any);
+
+    config = { ...INTERSECTION_OBSERVABLE_CONFIG_DEF, ...config };
 
     if (!isDomElement(element, win)) {
       log.err(
@@ -275,6 +283,8 @@ export class MutationObservableService {
       } as any);
     }
 
+    let observable: Observable<IntersectionObserverableEntry>;
+
     if (
       !('IntersectionObserver' in win) ||
       !('IntersectionObserverEntry' in win) ||
@@ -285,7 +295,7 @@ export class MutationObservableService {
         'MutationObservableService.getIntersectionObservable'
       );
 
-      return merge(
+      observable = merge(
         this.utilsService.getScrollEvent(true),
         this.utilsService.getResizeEvent(true)
       ).pipe(
@@ -303,69 +313,90 @@ export class MutationObservableService {
               isIntersecting: isInView,
               isVisible: isInView,
             } as any) as IntersectionObserverableEntry)
-        ),
-        insideZone(this.zone)
+        )
       );
     }
 
-    return new Observable(
-      (
-        subscriber: Subscriber<
-          IntersectionObserverableEntry | IntersectionObserverEntry[]
-        >
-      ) => {
-        const intersectionObserver =
-          observer ||
-          new win.IntersectionObserver((entries) => {
-            subscriber.next(entries);
-          }, config);
-
-        intersectionObserver.observe(element);
-
-        const unsubscribe = () => {
-          if (observer) {
-            observer.unobserve(element);
-          } else {
-            intersectionObserver?.disconnect();
-          }
-        };
-
-        return unsubscribe;
-      }
-    ).pipe(
-      map((entries: IntersectionObserverEntry[]) => {
-        return Object.assign(
-          entries
-            .slice()
-            .reverse()
-            .find((entry) => entry.target === element) ||
-            (({
-              target: element,
-              isIntersecting: false,
-              isVisible: false,
-            } as any) as IntersectionObserverableEntry),
-          {
-            observer,
-            entries,
-          }
-        );
-      }),
-      distinctUntilChanged(
+    this.zone.runOutsideAngular(() => {
+      observable = new Observable(
         (
-          prevEntry: IntersectionObserverableEntry,
-          currEntry: IntersectionObserverableEntry
-        ) => prevEntry.isIntersecting === currEntry.isIntersecting
-      )
+          subscriber: Subscriber<
+            IntersectionObserverableEntry | IntersectionObserverEntry[]
+          >
+        ) => {
+          const intersectionObserver =
+            observer ||
+            new win.IntersectionObserver((entries) => {
+              subscriber.next(entries);
+            }, config);
+
+          intersectionObserver.observe(element);
+
+          const unsubscribe = () => {
+            if (observer) {
+              observer.unobserve(element);
+            } else {
+              intersectionObserver?.disconnect();
+            }
+          };
+
+          return unsubscribe;
+        }
+      ).pipe(
+        map((entries: IntersectionObserverEntry[]) => {
+          return Object.assign(
+            entries
+              .slice()
+              .reverse()
+              .find((entry) => entry.target === element) ||
+              (({
+                target: element,
+                isIntersecting: false,
+                isVisible: false,
+              } as any) as IntersectionObserverableEntry),
+            {
+              observer,
+              entries,
+            }
+          );
+        }),
+        distinctUntilChanged(
+          (
+            prevEntry: IntersectionObserverableEntry,
+            currEntry: IntersectionObserverableEntry
+          ) => prevEntry.isIntersecting === currEntry.isIntersecting
+        )
+      );
+    });
+
+    return observable.pipe(
+      !config.outsideZone ? insideZone(this.zone) : pass,
+      !config.debounceTime
+        ? pass
+        : debounceTime(
+            isNumber(config.debounceTime) ? config.debounceTime : 100
+          )
     );
   }
 
   public getElementInViewEvent(
     element: HTMLElement,
-    config: IntersectionObservableConfig = ELEMENT_IN_VIEW_CONFIG_DEF
+    config: IntersectionObservableConfig = {}
   ): Observable<boolean> {
+    config = { ...ELEMENT_IN_VIEW_CONFIG_DEF, ...config };
     return this.getIntersectionObservable(element, config).pipe(
       map((entry: IntersectionObserverEntry) => entry.isIntersecting),
-      config.delayEmit ? delay(config.delayEmit) : pass
+      config.delayEmit > 0 ? delay(config.delayEmit) : pass
+    );
+  }
+
+  public getElementFirstInViewEvent(
+    element: HTMLElement,
+    config: IntersectionObservableConfig = {}
+  ): Observable<boolean> {
+    return this.getElementInViewEvent(element, config).pipe(
+      filter((e) => e === true),
+      take(1)
     );
   }
 

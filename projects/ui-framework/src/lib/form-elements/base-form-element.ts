@@ -1,49 +1,52 @@
+import { Subscription } from 'rxjs/internal/Subscription';
+
 import {
-  Input,
-  HostBinding,
-  SimpleChanges,
-  OnChanges,
-  Output,
-  EventEmitter,
-  ChangeDetectorRef,
-  ViewChild,
-  ElementRef,
-  Directive,
   AfterViewInit,
+  ChangeDetectorRef,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnChanges,
   OnDestroy,
+  Output,
+  SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import {
   ControlValueAccessor,
   FormControl,
-  ValidatorFn,
   ValidationErrors,
+  ValidatorFn,
 } from '@angular/forms';
+
 import {
-  simpleUID,
-  asArray,
-  isNullOrUndefined,
-  cloneValue,
   applyChanges,
-  notFirstChanges,
+  asArray,
   chainCall,
-  Func,
   cloneArray,
-  stringify,
+  cloneValue,
+  Func,
   isFunction,
+  isNullOrUndefined,
   isObject,
+  notFirstChanges,
   objectRemoveEntriesByValue,
   objectRemoveKeys,
+  simpleUID,
+  stringify,
   unsubscribeArray,
 } from '../services/utils/functional-utils';
-import { InputEventType, FormElementSize } from './form-elements.enum';
+import { log } from '../services/utils/logger';
+import { IGNORE_EVENTS_DEF, TRANSMIT_OPTIONS_DEF } from './form-elements.const';
+import { FormElementSize, InputEventType } from './form-elements.enum';
 import {
-  TransmitOptions,
   ForceElementValue,
   FormElementSpec,
+  TransmitOptions,
 } from './form-elements.interface';
-import { IGNORE_EVENTS_DEF, TRANSMIT_OPTIONS_DEF } from './form-elements.const';
 import { InputAutoCompleteOptions, InputTypes } from './input/input.enum';
-import { Subscription } from 'rxjs/internal/Subscription';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -92,12 +95,13 @@ export abstract class BaseFormElement
       ].filter((p) => spec[p]);
 
       if (errorProps.length) {
-        console.error(
-          `[BaseFormElement.spec]: <${errorProps}> ${
+        log.err(
+          `<${errorProps}> ${
             errorProps.length > 1 ? 'are' : 'is'
           } not allowed in [spec] input and should be ${
             errorProps.length > 1 ? '' : 'a'
-          } separate binding${errorProps.length > 1 ? 's' : ''}`
+          } separate binding${errorProps.length > 1 ? 's' : ''}`,
+          'BaseFormElement.spec'
         );
       }
       Object.assign(
@@ -181,7 +185,7 @@ export abstract class BaseFormElement
       try {
         this.value = chainCall(this.inputTransformers, value);
       } catch (error) {
-        console.error(`${this.getElementIDdata()} threw an error:\n`, error);
+        log.err([`threw an error:\n`, error], this.getElementIDdata());
         return;
       }
     }

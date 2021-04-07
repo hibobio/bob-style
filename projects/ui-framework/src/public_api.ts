@@ -631,7 +631,7 @@ export * from './lib/services/color-service/color-palette.service';
 // ItemsInRowService
 export * from './lib/services/items-in-row/items-in-row.service';
 // Event directives
-export { InViewModule, InViewDirective } from './lib/services/utils/inview.directive';
+export * from './lib/services/utils/inview.directive';
 export { ClickOutsideModule, ClickOutsideDirective } from './lib/services/utils/clickOutside.directive';
 export { DoubleClickModule, DoubleClickDirective } from './lib/services/utils/clickDouble.directive';
 export { WindowKeydownModule, WindowKeydownDirective } from './lib/services/utils/windowKeydown.directive';

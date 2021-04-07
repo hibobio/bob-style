@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ColorPalette, PalletteColorSet } from './color-palette.enum';
+
+import { ArrayES } from '../../types';
 import {
   arrayDifference,
   asArray,
@@ -10,7 +11,7 @@ import {
   randomNumber,
 } from '../utils/functional-utils';
 import { COLOR_PALETTE_SETS_COLOR_ORDER } from './color-palette.const';
-import { ArrayES } from '../../types';
+import { ColorPalette, PalletteColorSet } from './color-palette.enum';
 
 export interface PaletteColorGenerator {
   colorSet: PalletteColorSet;

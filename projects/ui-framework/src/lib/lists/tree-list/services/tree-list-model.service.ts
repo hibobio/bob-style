@@ -1,32 +1,34 @@
 import { Injectable } from '@angular/core';
+
 import {
-  TreeListItemMap,
-  TreeListOption,
-  TreeListItem,
-  ViewFilter,
-  TreeListKeyMap,
-} from '../tree-list.interface';
-import {
-  isNotEmptyArray,
-  stringify,
-  simpleArraysEqual,
-  joinArrays,
   arrayIntersection,
+  isNotEmptyArray,
+  joinArrays,
+  simpleArraysEqual,
+  stringify,
 } from '../../../services/utils/functional-utils';
+import { log } from '../../../services/utils/logger';
+import { selectValueOrFail } from '../../../services/utils/transformers';
+import { SelectType } from '../../list.enum';
+import { itemID } from '../../list.interface';
 import {
-  BTL_ROOT_ID,
   BTL_KEYMAP_DEF,
+  BTL_ROOT_ID,
   BTL_VALUE_SEPARATOR_DEF,
 } from '../tree-list.const';
-import { TreeListSearchUtils } from './tree-list-search.static';
+import {
+  TreeListItem,
+  TreeListItemMap,
+  TreeListKeyMap,
+  TreeListOption,
+  ViewFilter,
+} from '../tree-list.interface';
 import {
   TreeListConverterConfig,
   TreeListModelUtils,
 } from './tree-list-model.static';
-import { SelectType } from '../../list.enum';
-import { selectValueOrFail } from '../../../services/utils/transformers';
+import { TreeListSearchUtils } from './tree-list-search.static';
 import { TreeListValueUtils } from './tree-list-value.static';
-import { itemID } from '../../list.interface';
 
 interface TreeListGetListViewModelConfig {
   keyMap: TreeListKeyMap;
@@ -71,9 +73,9 @@ export class TreeListModelService {
         );
 
         if (!itemData) {
-          console.error(
-            `[TreeListModelService.getListViewModel]:
-            Cannot find item data for ${stringify(item, 70)}.`
+          log.err(
+            `Cannot find item data for ${stringify(item, 70)}.`,
+            'TreeListModelService.getListViewModel'
           );
           continue;
         }
@@ -184,9 +186,9 @@ export class TreeListModelService {
         const item = itemsMap.get(id);
 
         if (!item) {
-          console.error(
-            `[TreeListComponent.applyValue]:
-            No item data for ID: "${stringify(id)}". Removing ID from value.`
+          log.err(
+            `No item data for ID: "${stringify(id)}". Removing ID from value.`,
+            'TreeListComponent.applyValue'
           );
           value = value.filter((valId) => valId !== id);
           return;

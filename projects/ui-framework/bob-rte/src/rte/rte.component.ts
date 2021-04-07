@@ -1,38 +1,40 @@
 import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  forwardRef,
-  ChangeDetectorRef,
-  ElementRef,
-  OnDestroy,
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  forwardRef,
   HostListener,
+  OnDestroy,
+  OnInit,
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+
 import {
-  InputEventType,
-  FormEvents,
-  HtmlParserHelpers,
-  isKey,
-  Keys,
-  ListChange,
-  cloneArray,
+  asArray,
+  BaseFormElement,
   chainCall,
-  eventHasMetaKey,
-  eventHasCntrlKey,
+  cloneArray,
   DOMhelpers,
   EMOJI_DATA,
-  asArray,
-  SanitizerService,
+  eventHasCntrlKey,
+  eventHasMetaKey,
+  FormEvents,
+  HtmlParserHelpers,
+  InputEventType,
+  isKey,
   keyEventIsCharacter,
-  BaseFormElement,
+  Keys,
+  ListChange,
+  log,
+  SanitizerService,
 } from 'bob-style';
 
-import { RTEbaseElement } from './rte.abstract';
 import { PlaceholdersConverterService } from './placeholders.service';
-import { TranslateService } from '@ngx-translate/core';
 import { RteUtilsService } from './rte-utils.service';
+import { RTEbaseElement } from './rte.abstract';
 import { RTEMode } from './rte.enum';
 
 // import { HtmlParserHelpers } from '../../../../ui-framework/src/lib/services/html/html-parser.service';
@@ -471,7 +473,7 @@ export class RichTextEditorComponent extends RTEbaseElement
       const selection = this.getNativeRange();
       if (selection.startOffset === selection.endOffset) {
         event.preventDefault();
-        console.warn('Copy prevented, because selection is empty');
+        log.wrn('Copy prevented, because selection is empty', 'RichTextEditor');
         return false;
       }
     }
