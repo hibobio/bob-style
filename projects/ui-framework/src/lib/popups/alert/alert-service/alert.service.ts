@@ -57,7 +57,7 @@ export class AlertService {
     this.panel.componentRef = this.overlayRef.attach(this.panel.portal);
 
     this.panel.componentRef.instance.alertConfig = {
-      isAutoClose: true,
+      autoClose: true,
       ...config,
     };
     this.panel.componentRef.instance.closeAlertCallback = this.closeAlertCallback.bind(
@@ -65,10 +65,12 @@ export class AlertService {
     );
 
     this.panel.componentRef.instance.animationState = 'enter';
-    this.timeRef = setTimeout(
-      () => this.panel.componentRef.instance.closeAlert(),
-      this.alertDuration
-    );
+    if (this.panel.componentRef.instance.alertConfig.autoClose) {
+      this.timeRef = setTimeout(
+        () => this.panel.componentRef.instance.closeAlert(),
+        this.alertDuration
+      );
+    }
 
     this.isOpen = true;
 
