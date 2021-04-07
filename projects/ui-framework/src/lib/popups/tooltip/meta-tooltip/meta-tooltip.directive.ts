@@ -69,20 +69,20 @@ export class MetaTooltipDirective implements AfterViewInit, OnDestroy {
 
   private attachMatTooltip(tooltip: string): void {
     if (!this.matTooltip) {
-      this.matTooltip = new MatTooltip(
-        this.overlay,
-        this.hostElRef,
-        this.scrollDispatcher,
-        this.viewContainerRef,
-        this.ngZone,
-        this.platform,
-        this.ariaDescriber,
-        this.focusMonitor,
-        this.matTooltipScrollStrategy,
-        this.dir,
-        this.matTooltipDefaultOptions,
-        this.documentRef.nativeDocument
-      );
+      // this.matTooltip = new MatTooltip(
+      //   this.overlay,
+      //   this.hostElRef,
+      //   this.scrollDispatcher,
+      //   this.viewContainerRef,
+      //   this.ngZone,
+      //   this.platform,
+      //   this.ariaDescriber,
+      //   this.focusMonitor,
+      //   this.matTooltipScrollStrategy,
+      //   this.dir,
+      //   this.matTooltipDefaultOptions,
+      //   this.documentRef.nativeDocument
+      // );
     }
     this.matTooltip.message = tooltip;
     this.matTooltip.ngAfterViewInit();

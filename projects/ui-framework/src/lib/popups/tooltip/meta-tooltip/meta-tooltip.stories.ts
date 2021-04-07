@@ -1,14 +1,10 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../../consts';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
-import { MetaTooltipModule } from './meta-tooltip.module';
 
-const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
-  withKnobs
-);
+
+
+
+// const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
+//   withKnobs
+// );
 
 const template = `
 
@@ -40,18 +36,18 @@ const note = `
 
 
 `;
-story.add(
-  'Meta Tooltip',
-  () => ({
-    template: storyTemplate,
-    props: {},
-    moduleMetadata: {
-      imports: [
-        BrowserAnimationsModule,
-        StoryBookLayoutModule,
-        MetaTooltipModule,
-      ],
-    },
-  }),
-  { notes: { markdown: note } }
-);
+// story.add(
+//   'Meta Tooltip',
+//   () => ({
+//     template: storyTemplate,
+//     props: {},
+//     moduleMetadata: {
+//       imports: [
+//         BrowserAnimationsModule,
+//         StoryBookLayoutModule,
+//         MetaTooltipModule,
+//       ],
+//     },
+//   }),
+//   { notes: { markdown: note } }
+// );
