@@ -32,6 +32,7 @@ export class BubbleChartComponent extends ChartCore implements OnChanges {
   @Input() ySize: number;
   @Input() color: Color;
   @Input() hoverColor: Color;
+  @Input() bubbleTextColor: Color;
   @Input() data: ExtendedSeriesBubbleDataOptions[];
 
   readonly type: ChartTypesEnum = ChartTypesEnum.Bubble;
@@ -80,6 +81,7 @@ export class BubbleChartComponent extends ChartCore implements OnChanges {
           dataLabels: {
             enabled: true,
             format: '{point.name}',
+            color: this.bubbleTextColor
           },
         },
       },
