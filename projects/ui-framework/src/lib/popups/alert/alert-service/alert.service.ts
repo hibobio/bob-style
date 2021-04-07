@@ -1,4 +1,4 @@
-import { OperatorFunction, throwError } from 'rxjs';
+import { Observable, OperatorFunction, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
@@ -103,9 +103,9 @@ export class AlertService {
     });
   }
 
-  public catchErrorAndAlert(
-    return$ = null
-  ): OperatorFunction<unknown, unknown> {
+  public catchErrorAndAlert<T = unknown>(
+    return$: Observable<any> = null
+  ): OperatorFunction<T, T | never> {
     return catchError((error) => {
       this.showErrorAlert(error);
       return return$ || throwError(error);
