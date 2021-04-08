@@ -1,24 +1,27 @@
 import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
   NgZone,
-  ViewChild,
-  ChangeDetectorRef,
-  AfterViewInit,
+  OnChanges,
   SimpleChanges,
-  OnChanges
+  ViewChild,
 } from '@angular/core';
+
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
-import { CardEmployee } from './card-employee.interface';
-import { BaseCardElement } from '../card/card.abstract';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { BaseCardElement } from '../card/card.abstract';
+import { CardEmployee } from './card-employee.interface';
 
 @Component({
   selector: 'b-card-employee, [b-card-employee]',
   templateUrl: './card-employee.component.html',
   styleUrls: ['./card-employee.component.scss'],
-  providers: [{ provide: BaseCardElement, useExisting: CardEmployeeComponent }]
+  providers: [{ provide: BaseCardElement, useExisting: CardEmployeeComponent }],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardEmployeeComponent extends BaseCardElement
   implements OnChanges, AfterViewInit {
@@ -70,7 +73,7 @@ export class CardEmployeeComponent extends BaseCardElement
     if (this.card.coverColors) {
       this.DOM.setCssProps(this.cardElRef.nativeElement, {
         '--background-color-1': this.card.coverColors.color1,
-        '--background-color-2': this.card.coverColors.color2
+        '--background-color-2': this.card.coverColors.color2,
       });
     }
   }

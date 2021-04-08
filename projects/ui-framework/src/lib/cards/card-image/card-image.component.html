@@ -1,5 +1,7 @@
 <div class="card-image mrg-b-16 brd-b"
-     [style.background-image]="card?.imgSrc ? ('url(\'' + card?.imgSrc + '\')') : null"
+     [style.background-image]="card?.imageUrl ? ('url(\'' + card?.imageUrl +
+     '\')') : null"
+     [style.padding-bottom]="card?.imageRatio ? getRatio(card?.imageRatio)+'%' : null"
      [ngClass]="card?.imageClass"
      [ngStyle]="card?.imageStyle"></div>
 <p class="card-title b-display-3 pad-x-24"

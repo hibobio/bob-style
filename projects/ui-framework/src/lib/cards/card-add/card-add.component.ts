@@ -1,19 +1,22 @@
 import {
+  ChangeDetectionStrategy,
   Component,
+  ElementRef,
   HostBinding,
   HostListener,
   Input,
-  ElementRef,
 } from '@angular/core';
-import { AddCard } from './card-add.interface';
-import { BaseCardElement } from '../card/card.abstract';
+
 import { isFunction } from '../../services/utils/functional-utils';
+import { BaseCardElement } from '../card/card.abstract';
+import { AddCard } from './card-add.interface';
 
 @Component({
   selector: 'b-card-add, [b-card-add]',
   templateUrl: './card-add.component.html',
   styleUrls: ['./card-add.component.scss'],
   providers: [{ provide: BaseCardElement, useExisting: CardAddComponent }],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardAddComponent extends BaseCardElement {
   constructor(public cardElRef: ElementRef) {

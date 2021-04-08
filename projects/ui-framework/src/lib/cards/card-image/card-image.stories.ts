@@ -2,7 +2,7 @@ import { values } from 'lodash';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { action } from '@storybook/addon-actions';
-import { select, text, withKnobs } from '@storybook/addon-knobs';
+import { number, select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
@@ -17,7 +17,8 @@ const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
 const template = `
   <b-card-image [card]="{
                 title: title,
-                imgSrc: imgSrc,
+                imageUrl: imageUrl,
+                imageRatio: imageRatio,
                 imageStyle: {
                   backgroundSize: 'auto 70%',
                   backgroundColor: '#fbf5d7'
@@ -58,10 +59,11 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   title | string | card title
-  imgSrc | string / SafeResourceUrl | img url
-  action | Function | handler of card click
-  imageClass, titleClass | string / string[] / NgClass | add class to image or title container
-  imageStyle, titleStyle | GenericObject | ngStyle-compatible css to add to image or title container
+  imageUrl | string / SafeResourceUrl | img url
+  imageRatio? | number | image width/height relation <br>(literally "width divided by height") (defaults to 1.5)
+  imageClass?, titleClass? | string / string[] / NgClass | add class to image or title container
+  imageStyle?, titleStyle? | GenericObject | ngStyle-compatible css to add to image or title container <br>(**note:** image is displayed as background image)
+  action? | Function | handler of card click
 
 
 `;
@@ -82,10 +84,11 @@ story.add(
           CardType.regular
         ),
         title: text('title', 'Guy and Gal pointing at a honeycomb folder'),
-        imgSrc: text(
-          'imgSrc',
+        imageUrl: text(
+          'imageUrl',
           'http://images.hibob.com/img/dcmnt-empty-state-img.svg'
         ),
+        imageRatio: number('imageRatio', 1.5),
         onClick: action('Card clicked'),
         onAction: action('Action called'),
         imgDef: img,
