@@ -276,6 +276,17 @@ export const closestDivisable = (val: number, step: number = 1): number => {
   return (val - c1 > c2 - val ? c2 : c1) * polarity;
 };
 
+export const percentage = <R extends string | number = number>(
+  partialValue: number,
+  totalValue: number = 100,
+  cap: number = 100,
+  asString = false
+): R => {
+  let p = (partialValue > 1 ? partialValue : partialValue * 100) / totalValue;
+  p = roundToDecimals(Math.min(p > 1 ? p : p * 100, cap || 100), 3);
+  return (asString ? `${p}%` : p) as R;
+};
+
 // ----------------------
 // CONVERTERS
 // ----------------------
