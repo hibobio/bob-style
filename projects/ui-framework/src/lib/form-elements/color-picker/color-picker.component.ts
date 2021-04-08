@@ -76,8 +76,7 @@ export class ColorPickerComponent extends BaseFormElement implements OnDestroy, 
     const value = event.target.value;
 
     // tslint:disable-next-line: triple-equals
-    if (value != this.value && this.isValidValue(value)) {
-      this.errorMessage = '';
+    if (value != this.value) {
       this.writeValue(value, this.forceElementValue);
       this.transmitValue(this.value, {
         eventType: [InputEventType.onChange]
@@ -85,19 +84,8 @@ export class ColorPickerComponent extends BaseFormElement implements OnDestroy, 
     }
   }
 
-  private isValidValue(value: string): boolean {
-    const regExp = new RegExp('^#(?:[0-9a-fA-F]{3}){1,2}$');
-    if (regExp.test(value) || value === '') {
-      this.errorMessage = '';
-      return true;
-    }
-    this.errorMessage = this.translateService.instant('bob-style.lists.empty-state-default');
-    return false;
-  }
-
   public onColorPickerChange(color) {
     this.value = color;
-    this.errorMessage = '';
     this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
   }
 

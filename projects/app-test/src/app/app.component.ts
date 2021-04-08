@@ -10,6 +10,7 @@ import {
   simpleUID,
 } from '../../../ui-framework/src/lib/services/utils/functional-utils';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { COLOR_PICKER_DEFAULT } from 'bob-style';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +29,7 @@ export class AppComponent {
   }
 
   makeDefault() {
-    this.formGroup.get('tester').setValue('default');
+    this.formGroup.get('tester').setValue(COLOR_PICKER_DEFAULT);
   }
 
   num = 3;
