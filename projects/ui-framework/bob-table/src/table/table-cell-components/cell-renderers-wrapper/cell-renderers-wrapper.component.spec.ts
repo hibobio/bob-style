@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CellRenderersWrapperComponent } from './cell-renderers-wrapper.component';
-import { ComponentRendererComponent } from '../../../../../../ui-framework/src/lib/services/component-renderer/component-renderer.component';
 import { MockComponent } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
+import { ComponentRendererComponent } from 'bob-style';
 
 describe('CellRenderersWrapperComponent', () => {
   let component: CellRenderersWrapperComponent;
@@ -23,7 +23,7 @@ describe('CellRenderersWrapperComponent', () => {
   });
   it('should display just prefix-cell-component', () => {
     component.componentRendererConfig = {
-      prefixComponentRenderer: { component: 'prefix' } as any,
+      prefixComponent: { component: 'prefix' } as any,
     }
     fixture.detectChanges();
     const prefixCellComponent = fixture.debugElement.query(By.css('.prefix-cell-component'));
@@ -38,7 +38,7 @@ describe('CellRenderersWrapperComponent', () => {
   });
   it('should display just suffix-cell-component', () => {
     component.componentRendererConfig = {
-      suffixComponentRenderer: { component: 'suffix' } as any,
+      suffixComponent: { component: 'suffix' } as any,
     }
     fixture.detectChanges();
     const prefixCellComponent = fixture.debugElement.query(By.css('.prefix-cell-component'));
@@ -48,8 +48,8 @@ describe('CellRenderersWrapperComponent', () => {
   });
   it('should display both *-cell-component', () => {
     component.componentRendererConfig = {
-      suffixComponentRenderer: { component: 'suffix' } as any,
-      prefixComponentRenderer: { component: 'prefix' } as any,
+      suffixComponent: { component: 'suffix' } as any,
+      prefixComponent: { component: 'prefix' } as any,
     }
     fixture.detectChanges();
     const prefixCellComponent = fixture.debugElement.query(By.css('.prefix-cell-component'));

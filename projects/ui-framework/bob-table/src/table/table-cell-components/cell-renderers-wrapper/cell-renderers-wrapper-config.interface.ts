@@ -1,6 +1,6 @@
-import { RenderedComponent } from '../../../../../../ui-framework/src/lib/services/component-renderer/component-renderer.interface';
+import { RenderedComponent } from 'bob-style';
 
 export interface CellRenderersWrapperConfig {
-  prefixComponentRenderer?: RenderedComponent;
-  suffixComponentRenderer?: RenderedComponent;
+  prefixComponent?: RenderedComponent;
+  suffixComponent?: RenderedComponent;
 }

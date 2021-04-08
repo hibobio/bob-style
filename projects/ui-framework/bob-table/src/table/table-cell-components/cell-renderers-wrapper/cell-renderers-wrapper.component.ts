@@ -5,21 +5,22 @@ import { CellRenderersWrapperConfig } from './cell-renderers-wrapper-config.inte
   selector: 'b-cell-renderers-wrapper',
   template: `
     <b-component-renderer
-      class="prefix-cell-component"
-      *ngIf="componentRendererConfig?.prefixComponentRenderer"
-      [render]="componentRendererConfig.prefixComponentRenderer"
+      class="prefix-cell-component mrg-r-8"
+      *ngIf="componentRendererConfig?.prefixComponent"
+      [render]="componentRendererConfig.prefixComponent"
     ></b-component-renderer>
     <ng-content></ng-content>
     <b-component-renderer
-      class="suffix-cell-component"
-      *ngIf="componentRendererConfig?.suffixComponentRenderer"
-      [render]="componentRendererConfig.suffixComponentRenderer"
+      class="suffix-cell-component mrg-l-8"
+      *ngIf="componentRendererConfig?.suffixComponent"
+      [render]="componentRendererConfig.suffixComponent"
     ></b-component-renderer>
   `,
   styles: [
     `
       :host {
-        display: block;
+        display: flex;
+        align-items: center;
       }
     `,
   ],
