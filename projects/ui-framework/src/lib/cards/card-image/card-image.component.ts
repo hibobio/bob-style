@@ -1,6 +1,12 @@
-import { Component, ElementRef, HostListener, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+} from '@angular/core';
 
-import { isFunction } from '../../services/utils/functional-utils';
+import { isFunction, percentage } from '../../services/utils/functional-utils';
 import { BaseCardElement } from '../card/card.abstract';
 import { ImageCard } from './card-image.interface';
 
@@ -9,6 +15,7 @@ import { ImageCard } from './card-image.interface';
   templateUrl: './card-image.component.html',
   styleUrls: ['./card-image.component.scss'],
   providers: [{ provide: BaseCardElement, useExisting: CardImageComponent }],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardImageComponent extends BaseCardElement {
   constructor(public cardElRef: ElementRef) {
@@ -25,5 +32,9 @@ export class CardImageComponent extends BaseCardElement {
     if (this.clicked.observers.length) {
       this.clicked.emit($event);
     }
+  }
+
+  getRatio(ratio = 1.5): number {
+    return percentage(1 / ratio);
   }
 }

@@ -1,22 +1,25 @@
 import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
-  ViewChild,
   NgZone,
-  ChangeDetectorRef,
-  AfterViewInit,
+  ViewChild,
 } from '@angular/core';
-import { IconColor, Icons } from '../../icons/icons.enum';
+
 import { ButtonType } from '../../buttons/buttons.enum';
+import { IconColor, Icons } from '../../icons/icons.enum';
 import { LinkColor } from '../../indicators/link/link.enum';
-import { BaseCardElement } from './card.abstract';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { BaseCardElement } from './card.abstract';
 
 @Component({
   selector: 'b-card, [b-card]',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
   providers: [{ provide: BaseCardElement, useExisting: CardComponent }],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardComponent extends BaseCardElement implements AfterViewInit {
   constructor(

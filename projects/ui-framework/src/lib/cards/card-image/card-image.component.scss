@@ -17,7 +17,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-color: $grey-100;
-  @include ratioPad(304/205);
+  @include ratioPad(1.5);
   border-top-left-radius: $border-radius;
   border-top-right-radius: $border-radius;
   overflow: hidden;
