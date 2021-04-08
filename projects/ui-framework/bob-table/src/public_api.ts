@@ -5,7 +5,6 @@
 // Table Module
 
 export * from './table/table/table.interface';
-export * from './table/table/table.interface';
 export * from './table/table/table.enum';
 export * from './table/table/table.consts';
 export * from './table/table/extensions/tree.directive';
@@ -25,3 +24,9 @@ export {
 export {
   CircleIconAndLabelParams
 } from './table/table-cell-components/circle-icon-and-label/circle-icon-and-label.interface';
+export {
+  CellRenderersWrapperComponent,
+} from './table/table-cell-components/cell-renderers-wrapper/cell-renderers-wrapper.component';
+export {
+  CellRenderersWrapperConfig,
+} from './table/table-cell-components/cell-renderers-wrapper/cell-renderers-wrapper-config.interface';
