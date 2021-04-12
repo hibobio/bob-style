@@ -58,7 +58,6 @@
 
 ::ng-deep {
   .cdk-overlay-container .color-picker-dropdown .color-picker {
-    width: #{$b-select-panel-min-width - 2px} !important;
     border: none;
     border-radius: $border-radius;
     margin: 0 auto;
