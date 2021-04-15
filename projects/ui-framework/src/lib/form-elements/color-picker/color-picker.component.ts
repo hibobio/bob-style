@@ -48,7 +48,6 @@ export class ColorPickerComponent extends BaseFormElement implements OnDestroy, 
     this.baseValue = '';
     this.wrapEvent = false;
   }
-  // test
 
   @ViewChild(CdkOverlayOrigin, { static: true }) overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
@@ -59,6 +58,7 @@ export class ColorPickerComponent extends BaseFormElement implements OnDestroy, 
   public panelClassList: string[] = ['b-select-panel'];
   public positionClassList: OverlayPositionClasses = {};
   public readonly defaultValue = COLOR_PICKER_DEFAULT;
+  public readonly colorPickerWidth = '278'; // scss $b-select-panel-min-width - 2px
 
   public get overlayRef(): OverlayRef {
     return this.panel?.overlayRef;
