@@ -317,6 +317,7 @@ export abstract class BaseDatepickerElement<
   }
 
   public clearInput(index: number = 0, path = 'value'): void {
+    this.closePicker(index);
     set(this, path, null);
     this.cd.detectChanges();
   }
@@ -373,6 +374,19 @@ export abstract class BaseDatepickerElement<
         if (elToFocus) {
           elToFocus.focus();
         }
+      }
+    }
+
+    if (isKey(event.key, Keys.delete) || isKey(event.key, Keys.backspace)) {
+      const target = event.target as HTMLInputElement;
+
+      if (target.selectionEnd - target.selectionStart === target.value.length) {
+        const clearBtn: HTMLElement = this.DOM.getNextSibling(
+          target,
+          '.bfe-suffix'
+        )?.children[0] as HTMLElement;
+
+        clearBtn?.click();
       }
     }
   }
