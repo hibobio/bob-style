@@ -79,7 +79,14 @@ export class ConfirmationDialogExampleComponent {
   }
 
   openDeleteConfirmationDialog(): void {
-    const dialogRef: MatDialogRef<ConfirmationDialogComponent> = this.cds.openDeleteConfirmationDialog();
+    const dialogRef: MatDialogRef<ConfirmationDialogComponent> = this.cds.openDeleteConfirmationDialog(
+      {
+        confirmationData: {
+          confirmationText: 'ARRIVEDERCI',
+          label: 'type ARRIVEDERCI to confirm',
+        },
+      }
+    );
   }
 }
 
