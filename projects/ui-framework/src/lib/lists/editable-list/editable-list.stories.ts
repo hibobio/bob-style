@@ -25,7 +25,8 @@ const componentTemplate1 = `
                  [allowedActions]="{
                    sort: allowSort,
                    add: allowAdd,
-                   remove: allowRemove
+                   remove: allowRemove,
+                   preventOrder: preventOrder
                  }"
                  [maxChars]="maxChars"
                  (changed)="onListUpdate($event)"
@@ -114,6 +115,7 @@ story.add(
         allowSort: boolean('allowSort', true, 'Props'),
         allowAdd: boolean('allowAdd', true, 'Props'),
         allowRemove: boolean('allowRemove', true, 'Props'),
+        preventOrder: boolean('preventOrder', false, 'Props'),
 
         onListUpdate: action('onListUpdate'),
         onInputChange: action('onInputChange'),

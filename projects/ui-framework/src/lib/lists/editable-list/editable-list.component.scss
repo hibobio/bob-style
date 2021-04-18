@@ -94,6 +94,9 @@ $bel-item-dragged-border-color: $grey-400;
 
   cursor: move;
   cursor: grab;
+  .non-draggable-item {
+    cursor: default !important;
+  }
   box-shadow: inset 0 0 0 1px $bel-item-border-color;
 
   &.focused {

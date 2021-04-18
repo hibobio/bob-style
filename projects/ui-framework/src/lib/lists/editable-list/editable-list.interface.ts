@@ -5,6 +5,7 @@ export interface EditableListActions {
   sort?: boolean;
   add?: boolean | string;
   remove?: boolean;
+  preventOrder?: boolean;
 }
 
 export interface EditableListState {
