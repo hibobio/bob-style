@@ -10,7 +10,7 @@ import {
   simpleUID,
 } from '../../../ui-framework/src/lib/services/utils/functional-utils';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { COLOR_PICKER_DEFAULT } from 'bob-style';
+import { COLOR_PICKER_DEFAULT, Icons } from 'bob-style';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +21,7 @@ import { COLOR_PICKER_DEFAULT } from 'bob-style';
 export class AppComponent {
 
   formGroup: FormGroup;
+  icons = Icons;
 
   constructor(formBuilder: FormBuilder) {
     this.formGroup = formBuilder.group({
