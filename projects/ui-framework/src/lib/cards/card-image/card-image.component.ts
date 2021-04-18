@@ -6,7 +6,7 @@ import {
   Input,
 } from '@angular/core';
 
-import { isFunction, percentage } from '../../services/utils/functional-utils';
+import { isFunction } from '../../services/utils/functional-utils';
 import { BaseCardElement } from '../card/card.abstract';
 import { ImageCard } from './card-image.interface';
 
@@ -35,6 +35,6 @@ export class CardImageComponent extends BaseCardElement {
   }
 
   getRatio(ratio = 1.5): number {
-    return percentage(1 / ratio);
+    return (100 / (ratio >= 10 ? ratio : ratio * 100)) * 100;
   }
 }

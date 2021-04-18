@@ -29,13 +29,13 @@ $cardPadding-small: times8(2);
   }
 }
 
-@mixin card-common($doHover: true) {
+@mixin card-common($doHover: true, $padding: $cardPadding) {
   :host {
     box-sizing: border-box;
     position: relative;
     display: flex;
     flex-direction: column;
-    padding: $cardPadding;
+    padding: $padding;
     border: 1px solid $border-color;
     border-radius: $border-radius;
     text-align: left;
