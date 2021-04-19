@@ -21,6 +21,7 @@ import { CellRenderersWrapperConfig } from './cell-renderers-wrapper-config.inte
       :host {
         display: flex;
         align-items: center;
+        max-width: 100%;
       }
     `,
   ],
