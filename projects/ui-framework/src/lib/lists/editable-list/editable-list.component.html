@@ -82,18 +82,20 @@
                       [lockAxis]="'y'"
                       [dragClass]="'bel-item-dragged'"
                       [dropClass]="'bel-item-dropped'"
-                      [nonDragAreaSelector]="'.bel-item-confirm, .bel-trash-button'"
+                      [nonDragAreaSelector]="'.bel-item-confirm, .bel-trash-button, .non-draggable-item'"
                       (dragStart)="onDragStart()"
                       (drop)="onDrop($event)">
 
   <smooth-dnd-draggable *ngFor="let item of listState.list; let index = index; trackBy: listTrackBy"
                         role="listitem">
 
-    <div class="bel-item b-icon-drag-alt b-icon-medium b-icon-dark"
+    <div class="bel-item b-icon-medium b-icon-dark"
          [attr.data-item-id]="item.id"
          [ngClass]="{'new': addedItem && index === 0,
                      'deleted':removedItem && removingIndex === index,
-                     'warn': sameItemIndex === index}">
+                     'warn': sameItemIndex === index,
+                     'b-icon-drag-alt': allowedActions.order !== false,
+                     'non-draggable-item': allowedActions.order === false}">
 
       <span class="bel-item-value"
             data-max-lines="2">
