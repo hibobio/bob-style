@@ -94,8 +94,8 @@
          [ngClass]="{'new': addedItem && index === 0,
                      'deleted':removedItem && removingIndex === index,
                      'warn': sameItemIndex === index,
-                     'b-icon-drag-alt': !allowedActions.preventOrder,
-                     'non-draggable-item': allowedActions.preventOrder }">
+                     'b-icon-drag-alt': allowedActions.order !== false,
+                     'non-draggable-item': allowedActions.order === false}">
 
       <span class="bel-item-value"
             data-max-lines="2">
