@@ -1,14 +1,14 @@
-import { storiesOf } from '@storybook/angular';
-import { object, select, withKnobs, boolean } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BreadcrumbsModule } from './breadcrumbs.module';
+import { action } from '@storybook/addon-actions';
+import { boolean, object, select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
 
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { BreadcrumbsType, BreadcrumbsStepState } from './breadcrumbs.enum';
-import { ButtonsModule } from '../../buttons/buttons.module';
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { ComponentGroupType } from '../../consts';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { BreadcrumbsStepState, BreadcrumbsType } from './breadcrumbs.enum';
+import { BreadcrumbsModule } from './breadcrumbs.module';
 
 const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(
   withKnobs
@@ -69,6 +69,7 @@ const note = `
 const breadcrumbsMock = [
   { title: 'Welcome', state: BreadcrumbsStepState.success },
   { title: 'Details', state: BreadcrumbsStepState.active },
+  { title: 'More Dedails', state: BreadcrumbsStepState.successActive },
   { title: 'Avatar', state: BreadcrumbsStepState.open },
   { title: 'To dos', state: BreadcrumbsStepState.warning },
   { title: 'Summary', state: BreadcrumbsStepState.closed },

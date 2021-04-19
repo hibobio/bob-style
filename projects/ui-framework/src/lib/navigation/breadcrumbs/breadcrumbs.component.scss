@@ -104,17 +104,20 @@ $brdcrb-show-step-numbers: false;
   }
 }
 
-[data-state='active'] ::ng-deep {
+[data-state='active'] ::ng-deep,
+[data-state='success-active'] ::ng-deep {
   .step-wrap {
     @include hide-tooltip;
   }
 
-  .step-index {
-    background-color: $brdcrb-active-color;
-  }
-
   .step-title {
     font-weight: 700;
+  }
+}
+
+[data-state='active'] ::ng-deep {
+  .step-index {
+    background-color: $brdcrb-active-color;
   }
 }
 
@@ -131,7 +134,8 @@ $brdcrb-show-step-numbers: false;
   }
 }
 
-[data-state='success'] ::ng-deep {
+[data-state='success'] ::ng-deep,
+[data-state='success-active'] ::ng-deep {
   .step-index {
     @include b-icon(
       $icon: success-alt,
@@ -326,7 +330,8 @@ $brdcrb-show-step-numbers: false;
     }
   }
 
-  [data-state='success'] {
+  [data-state='success'],
+  [data-state='success-active'] {
     &:after {
       background-color: $brdcrb-active-color;
     }
@@ -335,7 +340,8 @@ $brdcrb-show-step-numbers: false;
   [data-state='warning'],
   [data-state='open'],
   [data-state='closed'] {
-    & ~ [data-state='success'] {
+    & ~ [data-state='success'],
+    & ~ [data-state='success-active'] {
       &:after {
         background-color: $brdcrb-inactive-color;
       }
