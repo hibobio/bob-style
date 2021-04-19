@@ -71,10 +71,8 @@ export class AlertService {
     return this.panel.componentRef;
   }
 
-  public showErrorAlert(
-    error: string | HttpErrorResponse,
-    config?: AlertConfig
-  ): ComponentRef<AlertComponent> {
+  public getErrorAlertConfig(error: string | HttpErrorResponse): AlertConfig {
+    //
     let title = isObject(error)
       ? error.error?.statusText || error.statusText
       : this.translate.instant('common.error');
@@ -95,10 +93,19 @@ export class AlertService {
       text = null;
     }
 
-    return this.showAlert({
+    return {
       alertType: AlertType.error,
       title,
       text,
+    };
+  }
+
+  public showErrorAlert(
+    error: string | HttpErrorResponse,
+    config?: AlertConfig
+  ): ComponentRef<AlertComponent> {
+    return this.showAlert({
+      ...this.getErrorAlertConfig(error),
       ...config,
     });
   }

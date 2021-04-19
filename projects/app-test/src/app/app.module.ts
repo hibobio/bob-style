@@ -25,6 +25,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PipesDecoratorsModule } from './pipes-decorators/pipes-decorators.module';
 import { MutationObserversTestModule } from './mutation-observers/mutation-observers-test.module';
 import { ColorPickerModule } from '../../../ui-framework/src/lib/form-elements/color-picker/color-picker.module';
+import { AddFileModule } from 'bob-style';
 
 @NgModule({
   declarations: [AppComponent],
@@ -56,6 +57,7 @@ import { ColorPickerModule } from '../../../ui-framework/src/lib/form-elements/c
     // PipesDecoratorsModule,
     MutationObserversTestModule,
     ColorPickerModule,
+    AddFileModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

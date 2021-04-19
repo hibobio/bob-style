@@ -10,6 +10,7 @@ import {
 } from 'lodash';
 import {
   BehaviorSubject,
+  EMPTY,
   Observable,
   ReplaySubject,
   Subject,
@@ -273,17 +274,6 @@ export const closestDivisable = (val: number, step: number = 1): number => {
   const c1 = val - (val % step);
   const c2 = val + step - (val % step);
   return (val - c1 > c2 - val ? c2 : c1) * polarity;
-};
-
-export const percentage = <R extends string | number = number>(
-  partialValue: number,
-  totalValue: number = 100,
-  cap: number = 100,
-  asString = false
-): R => {
-  let p = (partialValue > 1 ? partialValue : partialValue * 100) / totalValue;
-  p = roundToDecimals(Math.min(p > 1 ? p : p * 100, cap || 100), 3);
-  return (asString ? `${p}%` : p) as R;
 };
 
 // ----------------------
@@ -1890,6 +1880,55 @@ export const unsubscribeArray = (subs: Subscription[]): void => {
     invoke(sub, 'unsubscribe');
   });
   subs.length = 0;
+};
+
+export const getObjectChanges$ = <T = GenericObject>(
+  obj: Partial<T>,
+  watchProps: string | string[] = null,
+  pushTo: Subject<Partial<T>> = null
+): Observable<Partial<T>> => {
+  if (isSubject<Subject<Partial<T>>>(obj['_changes$'])) {
+    return obj['_changes$'].asObservable();
+  }
+  if (!isPlainObject(obj)) {
+    log.err(
+      `Provided object must be a plain object, instead ${thisClassName(
+        obj
+      )} was provided`,
+      'getObjectChanges$'
+    );
+    return EMPTY;
+  }
+  const watchedProps: string[] = asArray(
+    watchProps || Object.getOwnPropertyNames(obj)
+  );
+  const ctr: Partial<T> = Object.create(Object.getPrototypeOf(obj));
+
+  watchedProps.forEach((k) => {
+    ctr[k] = obj[k];
+    delete obj[k];
+  });
+
+  obj['_changes$'] = pushTo || new Subject<Partial<T>>();
+
+  Object.setPrototypeOf(
+    obj,
+    new Proxy(ctr, {
+      get(_, key: string) {
+        return Reflect.get(ctr, key);
+      },
+
+      set: (_, key: string, value) => {
+        if (!watchProps || watchedProps.includes(key)) {
+          obj['_changes$'].next({ [key]: value } as Partial<T>);
+        }
+        Reflect.set(ctr, key, value);
+        return true;
+      },
+    })
+  );
+
+  return obj['_changes$'].asObservable();
 };
 
 // ----------------------
