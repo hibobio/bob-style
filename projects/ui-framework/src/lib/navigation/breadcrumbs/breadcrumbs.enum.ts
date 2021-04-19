@@ -10,4 +10,5 @@ export enum BreadcrumbsStepState {
   active = 'active',
   success = 'success',
   warning = 'warning',
+  successActive = 'success-active',
 }
