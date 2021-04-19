@@ -32,7 +32,7 @@ describe('AddFileComponent', () => {
 
   describe('onClick', () => {
     it('should emit Clicked event', () => {
-      component.onIconClick();
+      component.onClick();
       expect(component.clicked.emit).toHaveBeenCalled();
     });
   });
@@ -53,6 +53,11 @@ describe('AddFileComponent', () => {
       );
       expect(iconElement).toBeTruthy();
     });
+    it('Should set icon color to normal if no image url ', () => {
+      const iconElement = fixture.debugElement.query(By.css('.b-icon'))
+        .componentInstance;
+      expect(iconElement.color).toEqual('normal');
+    });
     it('Should set icon color to white if image url ', () => {
       component.imageUrl = emptyImg;
       fixture.detectChanges();
@@ -62,6 +67,14 @@ describe('AddFileComponent', () => {
     });
   });
   describe('container', () => {
+    it('Should add edit-mode class if image url', () => {
+      component.imageUrl = emptyImg;
+      fixture.detectChanges();
+      const elementContainerClasses = fixture.debugElement.query(
+        By.css('.container')
+      ).nativeElement.classList;
+      expect(elementContainerClasses).toContain('edit-mode');
+    });
     it('Should add background image url to style if backgroundImage', () => {
       component.imageUrl = emptyImg;
       fixture.detectChanges();

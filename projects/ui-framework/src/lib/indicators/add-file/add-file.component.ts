@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 
 @Component({
@@ -9,15 +9,13 @@ import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 export class AddFileComponent {
   @Input() icon: Icons;
   @Input() imageUrl?: string;
-  @Input() backgroundSize = 'contain';
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
   readonly iconColor = IconColor;
   readonly iconSize = IconSize;
   readonly iconShape = Icons;
   constructor() {}
-
-
-  onIconClick() {
+  @HostListener('click')
+  onClick() {
     this.clicked.emit();
   }
 }
