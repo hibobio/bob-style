@@ -3,9 +3,11 @@
         'background-image': imageUrl ? 'url(' + imageUrl + ')' : null,
         'background-size': backgroundSize
       }">
-  <b-icon [icon]="imageUrl ? iconShape.edit_field_pencil : icon"
-          [size]="iconSize.large"
-          [color]="iconColor.white"
-          (click)="onIconClick()">
-  </b-icon>
+  <div class="icon-wrap">
+    <b-icon [icon]="imageUrl ? iconShape.edit_field_pencil : icon"
+            [size]="iconSize.small"
+            [color]="iconColor.white"
+            (click)="onIconClick()">
+    </b-icon>
+  </div>
 </div>
