@@ -34,9 +34,9 @@ import { insideZone } from '../../services/utils/rxjs.operators';
       <span *ngIf="text$ | async as text" [innerHTML]="text"></span>
       <ng-content></ng-content>
     </div>
-    <a *ngIf="hasReadMore$ | async" class="b-link" (click)="showMore()"
-      >View More</a
-    >
+    <a *ngIf="hasReadMore$ | async" class="b-link" (click)="showMore()">{{
+      linkText || ('common.view-more' | translate)
+    }}</a>
   `,
   styles: [
     `
@@ -63,6 +63,7 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
   text$: Observable<string>;
 
   @Input() maxLines: number;
+  @Input() linkText: number;
 
   @Output() clicked = new EventEmitter<void>();
 

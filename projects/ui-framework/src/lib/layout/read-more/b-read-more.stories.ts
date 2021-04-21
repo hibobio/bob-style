@@ -80,6 +80,7 @@ const note = `
   --- | --- | ---
   [readMore] | string | full text
   [maxLines] | number | max lines to display before ellipsis
+  [linkText] | string | text for expand link (defaults to 'View More')
   (clicked) | EventEmitter | if listener exists, text will not be expanded, instead event will be emitted
 
 
