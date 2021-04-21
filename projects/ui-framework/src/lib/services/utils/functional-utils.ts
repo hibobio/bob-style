@@ -1887,14 +1887,14 @@ export const getObjectChanges$ = <T = GenericObject>(
   watchProps: string | string[] = null,
   pushTo: Subject<Partial<T>> = null
 ): Observable<Partial<T>> => {
-  if (isSubject<Subject<Partial<T>>>(obj['_changes$'])) {
+  if (obj && isSubject<Subject<Partial<T>>>(obj['_changes$'])) {
     return obj['_changes$'].asObservable();
   }
   if (!isPlainObject(obj)) {
     log.err(
-      `Provided object must be a plain object, instead ${thisClassName(
+      `Provided object must be a plain object, instead "${thisClassName(
         obj
-      )} was provided`,
+      )}" was provided`,
       'getObjectChanges$'
     );
     return EMPTY;

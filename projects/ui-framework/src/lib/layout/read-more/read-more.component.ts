@@ -1,200 +1,131 @@
+import { BehaviorSubject, merge, Observable } from 'rxjs';
 import {
-  OnInit,
-  Input,
-  ElementRef,
-  OnDestroy,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  takeUntil,
+} from 'rxjs/operators';
+
+import {
   Component,
-  NgZone,
-  Output,
+  ElementRef,
   EventEmitter,
-  HostListener,
+  Input,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
 } from '@angular/core';
+
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { closestDivisable } from '../../services/utils/functional-utils';
-import { Subscription, merge, of, Observable } from 'rxjs';
-import { tap, throttleTime, filter, take, skip } from 'rxjs/operators';
-import { MutationObservableService } from '../../services/utils/mutation-observable';
-import { UtilsService } from '../../services/utils/utils.service';
 import { InputObservable } from '../../services/utils/decorators';
-import { LinkColor } from '../../indicators/link/link.enum';
-
-export interface ReadMoreConfig {
-  maxLines?: number;
-  maxHeight?: number;
-  expandable?: boolean;
-  watchClicks?: 'text' | 'read-more' | boolean;
-  expectChanges?: boolean;
-  trustCssVars?: boolean;
-  dynamicFontSize?: boolean;
-}
-
-export const READ_MORE_CONFIG_DEF: ReadMoreConfig = {
-  maxLines: 10,
-  maxHeight: null,
-  expandable: true,
-  watchClicks: false,
-  expectChanges: false,
-  trustCssVars: true,
-  dynamicFontSize: false,
-};
+import { MutationObservableService } from '../../services/utils/mutation-observable';
+import { insideZone } from '../../services/utils/rxjs.operators';
 
 @Component({
-  selector: 'b-read-more',
-  styleUrls: ['./read-more.component.scss'],
+  selector: 'b-read-more, [readMore]',
   template: `
-    <div class="container">
+    <div
+      #textContainer
+      [attr.data-max-lines]="!(complete$ | async) && maxLines ? maxLines : null"
+    >
+      <span *ngIf="text$ | async as text" [innerHTML]="text"></span>
       <ng-content></ng-content>
     </div>
-    <b-text-button
-      *ngIf="needsReadMoreButton"
-      class="read-more-button mrg-t-8"
-      [color]="linkColor.primary"
-      [text]="'Read More'"
-      (clicked)="onReadMoreClicked($event)"
-    ></b-text-button>
+    <a *ngIf="hasReadMore$ | async" class="b-link" (click)="showMore()"
+      >View More</a
+    >
   `,
+  styles: [
+    `
+      :host {
+        display: block;
+        min-width: 0;
+      }
+    `,
+  ],
 })
 export class ReadMoreComponent implements OnInit, OnDestroy {
   constructor(
-    private host: ElementRef,
-    private zone: NgZone,
+    private hostElRef: ElementRef<HTMLElement>,
+    private mutationObservableService: MutationObservableService,
     private DOM: DOMhelpers,
-    private utilsService: UtilsService,
-    private mutationObservableService: MutationObservableService
-  ) {
-    this.hostEl = this.host.nativeElement;
-  }
+    private zone: NgZone
+  ) {}
 
-  private hostEl: HTMLElement;
-  private contentEl: HTMLElement;
-  private updater: Subscription;
-  public needsReadMoreButton = false;
-  readonly linkColor = LinkColor;
+  @ViewChild('textContainer', { static: true })
+  private textContainer: ElementRef<HTMLElement>;
 
-  // tslint:disable-next-line: no-input-rename
-  @InputObservable({ ...READ_MORE_CONFIG_DEF })
-  @Input('config')
-  config$: Observable<ReadMoreConfig>;
-  private config: ReadMoreConfig = READ_MORE_CONFIG_DEF;
+  @InputObservable(null, [filter(Boolean)])
+  @Input('readMore')
+  text$: Observable<string>;
 
-  @Output() clicked: EventEmitter<'text' | 'read-more'> = new EventEmitter<
-    'text' | 'read-more'
-  >();
+  @Input() maxLines: number;
 
-  @HostListener('click.outside-zone')
-  onHostClick() {
-    if (
-      this.clicked.observers.length &&
-      this.config?.watchClicks !== 'read-more' &&
-      this.config?.watchClicks !== false
-    ) {
-      this.zone.run(() => {
-        this.clicked.emit('text');
-      });
+  @Output() clicked = new EventEmitter<void>();
+
+  readonly complete$ = new BehaviorSubject<boolean>(false);
+  readonly hasReadMore$ = new BehaviorSubject<boolean>(true);
+
+  showMore() {
+    if (this.clicked.observers.length) {
+      this.clicked.emit();
+    } else {
+      this.hasReadMore$.next(false);
+      this.ngOnDestroy();
     }
   }
 
-  ngOnInit(): void {
-    this.contentEl = this.hostEl.children[0] as HTMLElement;
+  ngOnInit() {
+    const { lineHeightPx } = this.DOM.getElementTextProps(
+      this.textContainer.nativeElement
+    );
 
-    this.updater = merge(
-      this.config$.pipe(
-        tap((config: ReadMoreConfig) => {
-          this.config = { ...READ_MORE_CONFIG_DEF, ...config };
-          this.DOM.setAttributes(this.hostEl, {
-            'data-clickable': this.config.watchClicks,
-          });
-        })
-      ),
-
+    merge(
+      this.text$,
       this.mutationObservableService
-        .getMutationObservable(this.hostEl, {
+        .getMutationObservable(this.textContainer.nativeElement, {
+          attributes: false,
           characterData: true,
           childList: true,
           subtree: true,
-          attributes: false,
-          mutations: 'processed',
+          removedElements: true,
+          outsideZone: true,
         })
-        .pipe(this.config?.expectChanges ? tap() : take(3)),
-
-      this.mutationObservableService.getResizeObservervable(this.hostEl, {
-        watch: this.config?.dynamicFontSize ? 'both' : 'height',
-        threshold: 5,
-      }),
-
-      this.utilsService.getResizeEvent(true).pipe(
-        skip(1),
-        filter(() => Boolean(this.config?.dynamicFontSize))
+        .pipe(takeUntil(this.text$)),
+      this.mutationObservableService.getResizeObservervable(
+        this.hostElRef.nativeElement,
+        {
+          watch: 'both',
+          debounceTime: true,
+          outsideZone: true,
+        }
       )
     )
       .pipe(
-        throttleTime(200, undefined, {
-          leading: false,
-          trailing: true,
+        takeUntil(this.complete$.pipe(filter(Boolean))),
+        debounceTime(50),
+        map(() => {
+          const scrollHeight = this.textContainer.nativeElement.scrollHeight;
+          const offsetHeight = this.textContainer.nativeElement.offsetHeight;
+
+          return Boolean(
+            scrollHeight > offsetHeight ||
+              (this.maxLines &&
+                offsetHeight > this.maxLines * (lineHeightPx || 12 * 1.5))
+          );
         }),
-        filter(() => Boolean(this.contentEl?.children.length))
+        distinctUntilChanged(),
+        insideZone(this.zone)
       )
-      .subscribe(() => {
-        this.checkStuff();
-      });
+      .subscribe(this.hasReadMore$);
   }
 
-  checkStuff() {
-    this.DOM.setAttributes(this.hostEl, {
-      'data-readmore':
-        (this.needsReadMoreButton =
-          this.contentEl.scrollHeight > this.contentEl.offsetHeight) + '',
-    });
-
-    let deepEl = this.contentEl;
-    while (deepEl.children.length === 1) {
-      deepEl = deepEl.children[0] as HTMLElement;
-    }
-    const textProps = this.DOM.getElementTextProps(deepEl);
-
-    this.DOM.setCssProps(this.contentEl, {
-      '--max-height':
-        Math.floor(
-          closestDivisable(
-            this.config.maxHeight ||
-              Math.floor(
-                textProps.lineHeight * textProps.fontSize * this.config.maxLines
-              ),
-            Math.floor(textProps.fontSize * textProps.lineHeight)
-          )
-        ) + 'px',
-      '--line-height': textProps.lineHeight,
-      '--font-size': textProps.fontSize + 'px',
-    });
-  }
-
-  onReadMoreClicked(event: MouseEvent) {
-    if (
-      this.clicked.observers.length &&
-      this.config?.watchClicks !== 'text' &&
-      this.config?.watchClicks !== false
-    ) {
-      event.stopPropagation();
-      this.clicked.emit('read-more');
-    }
-
-    if (!this.config?.expandable) {
-      return;
-    }
-
-    this.ngOnDestroy();
-
-    this.DOM.setCssProps(this.contentEl, {
-      transition: 'max-height 0.3s',
-      '--max-height': this.contentEl.scrollHeight + 100 + 'px',
-    });
-
-    this.DOM.setAttributes(this.hostEl, {
-      'data-readmore': this.needsReadMoreButton = false,
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.updater?.unsubscribe();
+  ngOnDestroy() {
+    this.complete$.next(true);
+    this.complete$.complete();
+    this.hasReadMore$.complete();
   }
 }

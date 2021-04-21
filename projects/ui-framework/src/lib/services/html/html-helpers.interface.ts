@@ -3,7 +3,9 @@ export interface Styles {
 }
 
 export interface TextProps {
-  [property: string]: number;
+  fontSize: number;
+  lineHeightPx: number;
+  lineHeight: number;
 }
 
 export interface NotEmptyChildren {

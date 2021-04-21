@@ -1,21 +1,29 @@
+import { Subject } from 'rxjs';
+
 import {
   Component,
-  ViewChild,
-  ViewContainerRef,
-  Input,
   ComponentRef,
+  Input,
+  OnChanges,
   OnDestroy,
   SimpleChanges,
-  OnChanges,
+  ViewChild,
+  ViewContainerRef,
 } from '@angular/core';
-import { Subject } from 'rxjs';
+
 import { RenderedComponent } from './component-renderer.interface';
 import { ComponentRendererService } from './component-renderer.service';
 
 @Component({
   selector: 'b-component-renderer',
   template: ` <ng-template #componentHost></ng-template> `,
-  styles: [],
+  styles: [
+    `
+      :host {
+        min-width: 0;
+      }
+    `,
+  ],
 })
 export class ComponentRendererComponent implements OnChanges, OnDestroy {
   constructor(private service: ComponentRendererService) {}

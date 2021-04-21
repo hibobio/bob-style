@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+
 import { CellRenderersWrapperConfig } from './cell-renderers-wrapper-config.interface';
 
 @Component({
@@ -9,7 +10,9 @@ import { CellRenderersWrapperConfig } from './cell-renderers-wrapper-config.inte
       *ngIf="componentRendererConfig?.prefixComponent"
       [render]="componentRendererConfig.prefixComponent"
     ></b-component-renderer>
-    <ng-content></ng-content>
+    <span class="content-wrap">
+      <ng-content></ng-content>
+    </span>
     <b-component-renderer
       class="suffix-cell-component mrg-l-8"
       *ngIf="componentRendererConfig?.suffixComponent"
@@ -21,7 +24,15 @@ import { CellRenderersWrapperConfig } from './cell-renderers-wrapper-config.inte
       :host {
         display: flex;
         align-items: center;
+<<<<<<< HEAD
         max-width: 100%;
+=======
+        min-width: 0;
+      }
+      .content-wrap {
+        display: flex;
+        min-width: 0;
+>>>>>>> a90d75c77 (simple read more)
       }
     `,
   ],
