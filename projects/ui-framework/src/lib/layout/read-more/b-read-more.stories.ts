@@ -56,11 +56,11 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
-const template1 = `<p [readMore]="text" [maxLines]="maxLines"></p>`;
+const template1 = `<p [readMore]="text" [maxLines]="maxLines" [linkText]="linkText"></p>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Read More'">
-<div>
+<div style="max-width:300px; text-align: left;">
   ${template1}
 </div>
 </b-story-book-layout>
@@ -92,8 +92,9 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        text: mockText(50),
+        text: text('text', mockText(50)),
         maxLines: number('maxLines', 5),
+        linkText: text('linkText', 'View More'),
       },
       moduleMetadata: {
         imports: [
