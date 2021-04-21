@@ -4,7 +4,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { normalizeString } from 'bob-style';
 
 const LICENSE_KEY =
-  'CompanyName=hibob,LicensedApplication=BOB,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008172,ExpiryDate=19_May_2021_[v2]_MTYyMTM3ODgwMDAwMA==9881948aa1a535a25dcd3c056897f090';
+  'CompanyName=hibob,LicensedApplication=BOB,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-015061,ExpiryDate=19_May_2022_[v2]_MTY1MjkxNDgwMDAwMA==bda3de240a296bd210aae366fc10899d';
 
 export class AgGridWrapper {
   public gridOptions: GridOptions;
