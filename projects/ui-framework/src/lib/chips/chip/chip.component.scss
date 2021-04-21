@@ -150,11 +150,18 @@ $chipTypeMap: (
       border-radius: $border-radius,
     ),
   ),
-  label: (
+  label label-secondary: (
     '*': (
       border-radius: $border-radius/2,
       height: times8(2),
       padding: 0 8px,
+    ),
+  ),
+  label-secondary: (
+    '*': (
+      background-color: white,
+      color: $grey-600,
+      border-color: $grey-500,
     ),
   )
 );
