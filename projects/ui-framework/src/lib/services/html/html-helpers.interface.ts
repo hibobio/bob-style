@@ -6,6 +6,7 @@ export interface TextProps {
   fontSize: number;
   lineHeightPx: number;
   lineHeight: number;
+  [prop: string]: number;
 }
 
 export interface NotEmptyChildren {
