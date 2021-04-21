@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+
 import { CellRenderersWrapperConfig } from './cell-renderers-wrapper-config.interface';
 
 @Component({
@@ -22,6 +23,7 @@ import { CellRenderersWrapperConfig } from './cell-renderers-wrapper-config.inte
         display: flex;
         align-items: center;
         max-width: 100%;
+        min-width: 0;
       }
     `,
   ],
