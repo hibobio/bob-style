@@ -118,7 +118,10 @@ export class MobileService {
 
     // iOS detection from: http://stackoverflow.com/a/9039885/177710
     // @ts-ignore
-    if (/ipad|iphone|ipod/i.test(userAgent) && !window.MSStream) {
+    if (
+      /ipad|iphone|ipod/i.test(userAgent) &&
+      !this.windowRef.nativeWindow.MSStream
+    ) {
       return MobileOS.iOS;
     }
 
@@ -142,7 +145,11 @@ export class MobileService {
 
   private getUserAgent(): string {
     // @ts-ignore
-    return navigator.userAgent || navigator.vendor || window.opera;
+    return (
+      navigator.userAgent ||
+      navigator.vendor ||
+      this.windowRef.nativeWindow.opera
+    );
   }
 
   private checkForTouchDevice(): boolean {

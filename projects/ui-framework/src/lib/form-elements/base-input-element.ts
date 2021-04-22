@@ -1,22 +1,23 @@
 import {
-  EventEmitter,
-  Input,
-  Output,
-  NgZone,
   ChangeDetectorRef,
-  SimpleChanges,
-  HostBinding,
   Directive,
   ElementRef,
+  EventEmitter,
+  HostBinding,
+  Input,
+  NgZone,
+  Output,
+  SimpleChanges,
 } from '@angular/core';
-import { BInputEvent } from './input/input.interface';
-import { BaseFormElement } from './base-form-element';
-import { InputTypes } from './input/input.enum';
-import { InputEventType } from './form-elements.enum';
-import { isKey, notFirstChanges } from '../services/utils/functional-utils';
+
 import { Keys } from '../enums';
+import { isKey, notFirstChanges } from '../services/utils/functional-utils';
 import { stringyOrFail } from '../services/utils/transformers';
 import { DOMInputEvent } from '../types';
+import { BaseFormElement } from './base-form-element';
+import { InputEventType } from './form-elements.enum';
+import { InputTypes } from './input/input.enum';
+import { BInputEvent } from './input/input.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -80,11 +81,13 @@ export abstract class BaseInputElement extends BaseFormElement {
     }
     this.inputFocused = true;
     this.skipFocusEvent = false;
+    this.cd.detectChanges();
   }
 
   public onInputBlur(event: FocusEvent): void {
     this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
     this.inputFocused = false;
+    this.cd.detectChanges();
   }
 
   public onInputKeydown(event: KeyboardEvent): void {
