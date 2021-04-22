@@ -48,14 +48,6 @@
   display: block;
 }
 
-.select-chevron {
-  &:before {
-    width: 12px;
-    display: flex;
-    justify-content: center;
-  }
-}
-
 ::ng-deep {
   .cdk-overlay-container .color-picker-dropdown .color-picker {
     border: none;
