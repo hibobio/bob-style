@@ -4,9 +4,25 @@
   position: relative;
   text-align: left;
   padding: 10px;
-  background-color: rgba($grey-800, 0.04);
+  
   border-radius: $border-radius;
   display: flex;
+  &[data-type='warning'] {
+    background-color: rgba($color-warn, 0.1);
+    color: $color3_darker
+  }
+  &[data-type='information'] {
+    background-color: rgba($inform-600, 0.1);
+    color: $color9_darker
+  }
+  &[data-type='error'] {
+    background-color: rgba($color-error , 0.1);
+    color: $color1_darker
+  }
+  &[data-type='success'] {
+    background-color: rgba($positive-600, 0.1);
+    color: $color7_darker
+  }
 }
 
 .icon {
