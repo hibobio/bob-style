@@ -7,20 +7,20 @@
   
   border-radius: $border-radius;
   display: flex;
-  &.warning {
-    background-color: rgba($color3_darker, 0.1);
+  &[data-type='warning'] {
+    background-color: rgba($color-warn, 0.1);
     color: $color3_darker
   }
-  &.information {
-    background-color: rgba($color9_darker, 0.1);
+  &[data-type='information'] {
+    background-color: rgba($inform-600, 0.1);
     color: $color9_darker
   }
-  &.error {
-    background-color: rgba($color1_darker, 0.1);
+  &[data-type='error'] {
+    background-color: rgba($color-error , 0.1);
     color: $color1_darker
   }
-  &.success {
-    background-color: rgba($color7_darker, 0.1);
+  &[data-type='success'] {
+    background-color: rgba($positive-600, 0.1);
     color: $color7_darker
   }
 }
