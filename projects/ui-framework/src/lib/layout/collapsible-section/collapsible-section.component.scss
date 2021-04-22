@@ -65,7 +65,7 @@ $bcp-header-min-height: 70px;
 
 .bcp-header {
   min-height: $bcp-header-min-height;
-  padding: times8(2) times8(4);
+  padding: times8(1) times8(4);
 
   @include icon-size(32px);
   &:before {
