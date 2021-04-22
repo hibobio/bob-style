@@ -18,7 +18,7 @@ export class HighlightPipe implements PipeTransform {
 
     const matcher = !fuzzy ? getMatcher(searchStr) : getFuzzyMatcher(searchStr);
 
-    const match = matcher.exec(normalizeString(value));
+    const match = matcher.exec(normalizeString(value.split('<')[0]));
 
     if (!match) {
       return value;
