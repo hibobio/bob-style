@@ -38,7 +38,7 @@ describe('DeleteConfirmationDialogComponent', () => {
         }
       },
       confirmationData: {
-        confirmationText: 'test',
+        confirmationText: 'DELETE',
         label: 'delete confirmation test',
         errorMessage: 'error message'
       },
@@ -113,9 +113,9 @@ describe('DeleteConfirmationDialogComponent', () => {
 
     it('should not show error msg', (done) => {
       const input = fixture.debugElement.query(By.css('b-input'));
-      input.context.value = 'test';
+      input.context.value = 'DELETE';
       const event = {
-        value: 'test'
+        value: 'DELETE'
       };
       component.valid$.subscribe(valid => {
         expect(valid).toBeTrue();
