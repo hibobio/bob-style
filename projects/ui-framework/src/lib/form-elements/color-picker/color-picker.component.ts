@@ -1,3 +1,6 @@
+import { ColorPickerDirective } from 'ngx-color-picker';
+
+import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
 import {
   ChangeDetectorRef,
   Component,
@@ -8,16 +11,19 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BaseFormElement } from '../base-form-element'
-import { DOMInputEvent, OverlayPositionClasses } from '../../types';
-import { InputEventType } from '../form-elements.enum';
-import { Panel } from '../../popups/panel/panel.interface';
-import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
-import { ListPanelService, OverlayEnabledComponent } from '../../lists/list-panel.service';
-import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
 import { TranslateService } from '@ngx-translate/core';
-import { COLOR_PICKER_DEFAULT } from './color-picker.const';
 
+import {
+  ListPanelService,
+  OverlayEnabledComponent,
+} from '../../lists/list-panel.service';
+import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
+import { Panel } from '../../popups/panel/panel.interface';
+import { isString } from '../../services/utils/functional-utils';
+import { DOMInputEvent, OverlayPositionClasses } from '../../types';
+import { BaseFormElement } from '../base-form-element';
+import { InputEventType } from '../form-elements.enum';
+import { COLOR_PICKER_DEFAULT } from './color-picker.const';
 
 @Component({
   selector: 'b-colorpicker',
@@ -37,20 +43,24 @@ import { COLOR_PICKER_DEFAULT } from './color-picker.const';
     { provide: BaseFormElement, useExisting: ColorPickerComponent },
   ],
 })
-export class ColorPickerComponent extends BaseFormElement implements OnDestroy, OverlayEnabledComponent {
+export class ColorPickerComponent extends BaseFormElement
+  implements OnDestroy, OverlayEnabledComponent {
   constructor(
     public cd: ChangeDetectorRef,
     public viewContainerRef: ViewContainerRef,
     private listPanelService: ListPanelService,
-    private translateService: TranslateService,
+    private translateService: TranslateService
   ) {
     super(cd);
     this.baseValue = '';
     this.wrapEvent = false;
   }
 
-  @ViewChild(CdkOverlayOrigin, { static: true }) overlayOrigin: CdkOverlayOrigin;
+  @ViewChild(CdkOverlayOrigin, { static: true })
+  overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
+
+  @ViewChild(ColorPickerDirective) clrp: ColorPickerDirective;
 
   public panel: Panel;
   public panelOpen = false;
@@ -73,20 +83,20 @@ export class ColorPickerComponent extends BaseFormElement implements OnDestroy, 
   }
 
   public onInputChange(event: DOMInputEvent): void {
-    const value = event.target.value;
-
-    // tslint:disable-next-line: triple-equals
-    if (value != this.value) {
-      this.writeValue(value, this.forceElementValue);
-      this.transmitValue(this.value, {
-        eventType: [InputEventType.onChange]
-      });
+    if (!this.panel) {
+      this.openPanel();
     }
+    this.clrp?.handleInput(event);
   }
 
-  public onColorPickerChange(color) {
-    this.value = color;
-    this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
+  public onColorPickerChange(event: any) {
+    const value = isString(event.value) ? event.value : event;
+
+    this.writeValue(value, true);
+
+    this.transmitValue(value, {
+      eventType: [InputEventType.onBlur],
+    });
   }
 
   ngOnDestroy(): void {

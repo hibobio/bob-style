@@ -17,8 +17,11 @@
       }"
      (click)="openPanel()">
 
-  <div *ngIf="value && value !== defaultValue" class="bfe-prefix color-circle" [style.background-color]="value"></div>
-  <div *ngIf="value === defaultValue" class="bfe-prefix default-value-color-circle"></div>
+  <div *ngIf="value && value !== defaultValue"
+       class="bfe-prefix color-circle"
+       [style.background-color]="value"></div>
+  <div *ngIf="value === defaultValue"
+       class="bfe-prefix default-value-color-circle"></div>
 
   <input #input
          class="bfe-input"
@@ -31,7 +34,7 @@
          [required]="required"
          [readonly]="readonly"
          [attr.maxlength]="7"
-         (change)="onInputChange($event)">
+         (input)="onInputChange($event)">
 </div>
 
 <p b-input-message
@@ -44,13 +47,14 @@
 
 <ng-template #templateRef>
   <div class="b-select-panel color-picker-dropdown">
-    <span
-      [cpToggle]="true"
-      [cpWidth]="colorPickerWidth"
-      [cpOutputFormat]="'hex'"
-      [cpDialogDisplay]="'inline'"
-      [colorPicker]="value"
-      (colorPickerChange)="onColorPickerChange($event)">
-    </span>
+    <span [colorPicker]="value"
+          [cpToggle]="true"
+          [cpDisableInput]="true"
+          [cpWidth]="colorPickerWidth"
+          [cpOutputFormat]="'hex'"
+          [cpDialogDisplay]="'inline'"
+          (colorPickerChange)="onColorPickerChange($event)"
+          (colorPickerClose)="onColorPickerChange($event)"></span>
+
   </div>
 </ng-template>
