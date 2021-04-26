@@ -23,17 +23,18 @@ export class InsightsPanelComponent implements OnInit {
   public readonly iconTypes = Icons;
   public readonly containerStates = ContainerState;
 
+  @Output() containerStateEmiiter: EventEmitter<ContainerState> = new EventEmitter<ContainerState>();
+
+  @HostBinding('attr.data-type') @Input() type: InsightsPanelTypeEnums = InsightsPanelTypeEnums.information;
+  @HostBinding('attr.container-state') @Input() containerState: ContainerState = ContainerState.expanded;
+
   @Input() contractButtonConf: Button = {
     type: ButtonType.tertiary,
     size: ButtonSize.small,
     color: IconColor.dark,
     text: 'INSIGHTS',
   };
-  @HostBinding('attr.data-type') @Input() type: InsightsPanelTypeEnums = InsightsPanelTypeEnums.information;
-  @HostBinding('attr.container-state') @Input() containerState: ContainerState = ContainerState.expanded;
-  @Output() expandContractBtnicon: Icons.contract | Icons.expand = Icons.contract;
-  @Output() containerStateEmiiter: EventEmitter<ContainerState> = new EventEmitter<ContainerState>();
-
+  @Input() expandContractBtnicon: Icons.contract | Icons.expand = Icons.contract;
   @Input() iconType?: Icons = Icons.graph_timeline;
   @Input() data: InsightsData[];
   @Input() maxLines?: number = 3;
