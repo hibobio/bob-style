@@ -16,8 +16,7 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
 
-const template = `
-  <b-colorpicker
+const template = `<b-colorpicker
   [value]="value"
   [label]="label"
   [placeholder]="placeholder"
@@ -31,8 +30,7 @@ const template = `
   [errorMessage]="errorMessage"
   [focusOnInit]="focusOnInit"
   (changed)="onChange($event)">
-</b-colorpicker>
-`;
+</b-colorpicker>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Input'">
@@ -66,8 +64,8 @@ story.add(
       props: {
         value: select(
           'value',
-          ['#C6C6C6', '#FAFAFA', '#702727', '#592fb1', '#f339a3'],
-          '#C6C6C6'
+          [null, '#C6C6C6', '#FAFAFA', '#702727', '#592fb1', '#f339a3'],
+          null
         ),
         ...FormElementsCommonProps('Input label', 'Input placeholder'),
         showCharCounter: boolean('showCharCounter', true),
