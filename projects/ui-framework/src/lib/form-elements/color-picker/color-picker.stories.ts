@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { action } from '@storybook/addon-actions';
-import { boolean, select, withKnobs } from '@storybook/addon-knobs';
+import { select, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
@@ -9,8 +9,6 @@ import { FormElementSize } from '../form-elements.enum';
 // @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';
 import { FormElementsCommonProps } from '../form-elements.stories.common';
-// @ts-ignore: md file and not a module
-import inputElemsPropsDoc from '../input.properties.md';
 import { COLOR_PICKER_DEFAULT } from './color-picker.const';
 import { ColorPickerModule } from './color-picker.module';
 
@@ -19,20 +17,18 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
 );
 
 const template = `<b-colorpicker
-  [value]="value"
-  [label]="label"
-  [placeholder]="placeholder"
-  [description]="description"
-  [hideLabelOnFocus]="hideLabelOnFocus"
-  [disabled]="disabled"
-  [required]="required"
-  [readonly]="readonly"
-  [hintMessage]="hintMessage"
-  [warnMessage]="warnMessage"
-  [errorMessage]="errorMessage"
-  [focusOnInit]="focusOnInit"
-  [size]="size"
-  (changed)="onChange($event)">
+      [value]="value"
+      [label]="label"
+      [placeholder]="placeholder"
+      [description]="description"
+      [disabled]="disabled"
+      [required]="required"
+      [readonly]="readonly"
+      [hintMessage]="hintMessage"
+      [warnMessage]="warnMessage"
+      [errorMessage]="errorMessage"
+      [size]="size"
+      (changed)="onChange($event)">
 </b-colorpicker>`;
 
 const storyTemplate = `
@@ -52,10 +48,7 @@ const note = `
   ${template}
   ~~~
 
-  *Note*: Component for selecting the color in the HEX format by the color picker dropdown, or properly via the input.
-  Can be used inside the forms.
-
-  ${inputElemsPropsDoc}
+  *Note*: Component supports only HEX color format.
 
   ${formElemsPropsDoc}
 `;
@@ -78,15 +71,15 @@ story.add(
           ],
           ''
         ),
-        ...FormElementsCommonProps('Input label', COLOR_PICKER_DEFAULT),
-        showCharCounter: boolean('showCharCounter', true),
-        onChange: action('change'),
+        ...FormElementsCommonProps('Pick a color', COLOR_PICKER_DEFAULT),
 
         size: select(
           'size',
           Object.values(FormElementSize),
           FormElementSize.regular
         ),
+
+        onChange: action('change'),
       },
       moduleMetadata: {
         imports: [
