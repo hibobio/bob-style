@@ -6,6 +6,7 @@ import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   forwardRef,
   OnDestroy,
   OnInit,
@@ -51,7 +52,8 @@ export class ColorPickerComponent extends BaseFormElement
   constructor(
     public cd: ChangeDetectorRef,
     public viewContainerRef: ViewContainerRef,
-    private listPanelService: ListPanelService
+    private listPanelService: ListPanelService,
+    private hostElRef: ElementRef<HTMLElement>
   ) {
     super(cd);
     this.baseValue = null;
@@ -150,7 +152,7 @@ export class ColorPickerComponent extends BaseFormElement
   }
 
   private setColorPickerWidth(
-    width: number = this.overlayOrigin?.elementRef.nativeElement.offsetWidth
+    width: number = this.hostElRef?.nativeElement.offsetWidth
   ): void {
     // $b-select-panel-min-width: 280px;
     this.colorPickerWidth = Math.max(280, width || this.colorPickerWidth || 0);
