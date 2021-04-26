@@ -11,7 +11,7 @@
   <div [ngClass]="{'pad-t-16': !isContracteble}" *ngIf="containerState === containerStates.expanded">
     <div class="pad-b-32" *ngFor="let insight of data">
       <div class="title">
-        <b-icon class="icon"
+        <b-icon class="icon pad-b-8"
                 [icon]=" insight.icon || iconType"
                 [color]="iconColor"
                 [size]="iconSize || iconSizes.medium">
