@@ -5,11 +5,13 @@ import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { FormElementSize } from '../form-elements.enum';
 // @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';
 import { FormElementsCommonProps } from '../form-elements.stories.common';
 // @ts-ignore: md file and not a module
 import inputElemsPropsDoc from '../input.properties.md';
+import { COLOR_PICKER_DEFAULT } from './color-picker.const';
 import { ColorPickerModule } from './color-picker.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
@@ -29,11 +31,12 @@ const template = `<b-colorpicker
   [warnMessage]="warnMessage"
   [errorMessage]="errorMessage"
   [focusOnInit]="focusOnInit"
+  [size]="size"
   (changed)="onChange($event)">
 </b-colorpicker>`;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Input'">
+<b-story-book-layout [title]="'ColorPicker'">
   <div style="max-width: 300px;">
     ${template}
   </div>
@@ -64,12 +67,26 @@ story.add(
       props: {
         value: select(
           'value',
-          [null, '#C6C6C6', '#FAFAFA', '#702727', '#592fb1', '#f339a3'],
-          null
+          [
+            '',
+            '#C6C6C6',
+            '#FAFAFA',
+            '#702727',
+            '#592fb1',
+            '#f339a3',
+            'invalidColor',
+          ],
+          ''
         ),
-        ...FormElementsCommonProps('Input label', 'Input placeholder'),
+        ...FormElementsCommonProps('Input label', COLOR_PICKER_DEFAULT),
         showCharCounter: boolean('showCharCounter', true),
         onChange: action('change'),
+
+        size: select(
+          'size',
+          Object.values(FormElementSize),
+          FormElementSize.regular
+        ),
       },
       moduleMetadata: {
         imports: [
