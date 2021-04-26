@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { object, select, text, withKnobs } from '@storybook/addon-knobs';
+import { boolean, object, select, text, withKnobs } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { values } from 'lodash';
@@ -31,6 +31,7 @@ const storyTemplate = `
         [iconType]="iconType"
         [maxLines]="maxLines"
         [iconColor]="iconColor"
+        [isContracteble]="isContracteble"
         [type]="type"
   ></b-insights-panel>
 </div>
@@ -61,6 +62,7 @@ story.add(
         type: select('type', type, InsightsPanelTypeEnums.information),
         iconType: select('iconType', iconTypes, Icons.graph_timeline),
         iconColor: select('iconColor', iconColor, IconColor.dark),
+        isContracteble: boolean('isContracteble', true),
         iconSize: select('iconSize', iconSizes, IconSize.large),
         maxLines: 3,
         data: object('data', [{

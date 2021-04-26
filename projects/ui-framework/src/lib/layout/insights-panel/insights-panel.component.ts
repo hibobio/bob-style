@@ -37,6 +37,7 @@ export class InsightsPanelComponent implements OnInit {
   @Input() iconType?: Icons = Icons.graph_timeline;
   @Input() data: InsightsData[];
   @Input() maxLines?: number = 3;
+  @Input() isContracteble?: boolean = true;
   @Input() iconColor?: IconColor = IconColor.dark;
   @Input() iconSize?: IconSize = IconSize.medium;
 
