@@ -1,0 +1,51 @@
+
+@import '../../style/common-imports';
+
+:host {
+    display: flex;
+    width: 100%;
+    min-height: 452px;
+
+    .employee-template-side-bar {
+        margin-right: 24px;
+        width: 180px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .employee-template-content {
+        width: calc(100% - 204px);
+        display: flex;
+        flex-direction: column;
+        &_content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+        }
+        &_title {
+            display: flex;
+            justify-content: start;
+        }
+    }
+
+    &[data-type='transparentSidebar'] {
+        .employee-template-side-bar {
+            background-color: white;
+        }
+        .employee-template-content_content {
+            border: 1px solid $grey-500;
+            border-radius: 4px;
+        }
+    }
+
+    &[data-type='regular'] {
+        .employee-template-side-bar {
+            background-color: $inform-500;
+        }
+        .employee-template-content_content {
+            background-color: #C4C4C4;
+        }
+    }
+}
