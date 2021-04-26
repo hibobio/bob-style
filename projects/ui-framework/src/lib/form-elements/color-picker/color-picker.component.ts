@@ -15,6 +15,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import {
@@ -27,7 +28,6 @@ import { distinctFrom } from '../../services/utils/rxjs.operators';
 import { DOMInputEvent, OverlayPositionClasses } from '../../types';
 import { BaseFormElement } from '../base-form-element';
 import { InputEventType } from '../form-elements.enum';
-import { COLOR_PICKER_DEFAULT } from './color-picker.const';
 
 @Component({
   selector: 'b-colorpicker',
@@ -53,11 +53,12 @@ export class ColorPickerComponent extends BaseFormElement
     public cd: ChangeDetectorRef,
     public viewContainerRef: ViewContainerRef,
     private listPanelService: ListPanelService,
+    protected translate: TranslateService,
     private hostElRef: ElementRef<HTMLElement>
   ) {
     super(cd);
     this.baseValue = null;
-    this.placeholder = COLOR_PICKER_DEFAULT;
+    this.placeholder = this.translate.instant('common.select');
     this.wrapEvent = false;
     this.forceElementValue = true;
 
