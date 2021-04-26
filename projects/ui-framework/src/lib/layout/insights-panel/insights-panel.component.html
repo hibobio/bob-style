@@ -1,0 +1,26 @@
+<div class="content">
+
+  <div class="contract-container" (click)="onContractClick()">
+    <b-heading *ngIf="containerState === containerStates.contracted" class="heading uppercase mrg-y-16 mrg-l-8"> {{ contractButtonConf.text }} </b-heading>
+    <b-square-button class="btn-minimize mrg-b-8"
+                     [button]="contractButtonConf"
+                     [icon]="expandContractBtnicon">
+    </b-square-button>
+  </div>
+
+  <div *ngIf="containerState === containerStates.expanded">
+    <div class=" pad-b-32" *ngFor="let insight of data">
+      <div class="title">
+        <b-icon class="icon"
+                [icon]=" insight.icon || iconType"
+                [color]="iconColor"
+                [size]="iconSize || iconSizes.medium">
+        </b-icon>
+        <b-heading class="heading pad-b-16 uppercase"> {{ insight.title }} </b-heading>
+      </div>
+      <p [hidden]="!insight" [readMore]="insight.content" [maxLines]="maxLines"></p>
+      <ng-content></ng-content>
+    </div>
+  </div>
+
+</div>

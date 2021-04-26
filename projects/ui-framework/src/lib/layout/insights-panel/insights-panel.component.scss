@@ -1,0 +1,77 @@
+@import '../../style/common-imports';
+
+:host {
+  position: relative;
+  text-align: left;
+  padding: 10px;
+
+  .contract-container {
+    text-align: end;
+  }
+
+  .contracted {
+
+  }
+
+  border-radius: $border-radius;
+  display: flex;
+
+  &[data-type='warning'] {
+    background-color: rgba($color-warn, 0.1);
+    color: $color3_darker;
+    &[container-state='contracted']{
+      max-width: max-content;
+      max-height: times8(5);
+      cursor: pointer;
+    }
+  }
+
+  &[data-type='information'] {
+    background-color: rgba($inform-600, 0.1);
+    color: $color9_darker;
+    &[container-state='contracted']{
+      max-width: max-content;
+      max-height: times8(5);
+      cursor: pointer;
+    }
+  }
+
+  &[data-type='error'] {
+    background-color: rgba($color-error, 0.1);
+    color: $color1_darker;
+    &[container-state='contracted']{
+      max-width: times8(10);
+      max-height: times8(5);
+      cursor: pointer;
+    }
+  }
+
+  &[data-type='success'] {
+    background-color: rgba($positive-600, 0.1);
+    color: $color7_darker;
+    &[container-state='contracted']{
+      max-width: times8(10);
+      max-height: times8(5);
+      cursor: pointer;
+    }
+  }
+}
+
+.icon {
+  margin-right: 10px;
+}
+
+.heading {
+  display: inline-block;
+}
+
+p {
+  margin: 0;
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
