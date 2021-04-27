@@ -31,7 +31,7 @@
 
 .color-circle {
   border-radius: 50%;
-  box-shadow: inset 0 0 0 1px var(--avatar-border-color, $border-color);
+  box-shadow: inset 0 0 0 1px var(--circle-border-color, $border-color);
   @include size(map-get($avatarSizes, mini)-4px);
   margin-left: -8px;
   pointer-events: none;
@@ -62,11 +62,11 @@
     }
 
     .saturation-lightness .cursor {
-      border-color: var(--cursor-color, $grey-800);
+      border-color: var(--cursor-border-color, $grey-800);
     }
 
     .selected-color {
-      border-color: var(--avatar-border-color, $border-color);
+      border-color: var(--circle-border-color, $border-color);
     }
 
     .color-picker {

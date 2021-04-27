@@ -240,15 +240,15 @@ export class ColorPickerComponent extends BaseFormElement
       : ColorsGrey.color_grey_800;
 
     setCssProps(this.hostElRef.nativeElement, {
-      '--avatar-border-color': avatarBorderColor,
+      '--circle-border-color': avatarBorderColor,
     });
 
     this.panel &&
       setCssProps(
         this.panel.overlayRef.overlayElement.children[0] as HTMLElement,
         {
-          '--avatar-border-color': avatarBorderColor,
-          '--cursor-color': cursorColor,
+          '--circle-border-color': avatarBorderColor,
+          '--cursor-border-color': cursorColor,
         }
       );
   }
