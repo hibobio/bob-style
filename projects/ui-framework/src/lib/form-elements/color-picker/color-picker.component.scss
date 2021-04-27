@@ -55,11 +55,32 @@
     }
 
     .saturation-lightness {
-      box-shadow: black(0.3) -1px 0px 0px 0px, black(0.6) 1px 0px 0px 0px;
+      overflow: hidden;
+      box-shadow: black(0.3) -1px 0px 0px 0px, black(0.6) 1px 0px 0px 0px,
+        black(0.2) 0 -1px 0 0;
+    }
+
+    &.panel-above {
+      .saturation-lightness {
+        border-top-left-radius: $border-radius;
+        border-top-right-radius: $border-radius;
+        box-shadow: none;
+      }
     }
 
     .saturation-lightness .cursor {
       border-color: var(--cursor-border-color, $grey-800);
+    }
+
+    .hue .cursor {
+      border-color: $grey-800;
+    }
+
+    .color-picker .cursor {
+      // @supports (mix-blend-mode: difference) {
+      //   border-color: white;
+      //   mix-blend-mode: difference;
+      // }
     }
 
     .selected-color {
@@ -77,8 +98,37 @@
       display: none;
     }
 
+    .hue-alpha.box {
+      display: grid;
+      grid-template-columns: 40px auto;
+      grid-gap: 16px;
+      margin-bottom: 1px;
+      padding: 20px 15px;
+    }
+
+    .hue-alpha .left,
+    .hue-alpha .right {
+      padding: 0;
+    }
+
+    .hue-alpha .left {
+      padding: 0;
+      display: grid;
+    }
+
+    .hue-alpha .left > div {
+      position: static;
+      grid-column: 1/2;
+      grid-row: 1/2;
+    }
+
+    .hue-alpha .right > div:not(.hue) {
+      display: none;
+    }
+
     .hue-alpha .hue {
       border-radius: $border-radius;
+      margin: 0;
     }
 
     .hex-text {
