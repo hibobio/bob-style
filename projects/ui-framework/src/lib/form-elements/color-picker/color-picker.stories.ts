@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { action } from '@storybook/addon-actions';
-import { select, withKnobs } from '@storybook/addon-knobs';
+import { boolean, select, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
@@ -17,6 +17,11 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
 );
 
 const template = `<b-colorpicker
+      [config]="{
+        emitOnChange: emitOnChange,
+        showClearButton: showClearButton,
+        showFooter: showFooter
+      }"
       [value]="value"
       [label]="label"
       [placeholder]="placeholder"
@@ -50,6 +55,11 @@ const note = `
 
   *Note*: Component supports only HEX color format.
 
+  #### Properties
+  Name | Type | Description | Defaults
+  --- | --- | --- | ---
+  [config] | ColorPickerConfig | emitOnChange, showClearButton, showFooter;<br> emitOnChange and showClearButton are only relevant if showFooter is false | showFooter:&nbsp;true,<br> showClearButton:&nbsp;true,<br> emitOnChange:&nbsp;false
+
   ${formElemsPropsDoc}
 `;
 story.add(
@@ -71,6 +81,11 @@ story.add(
           ],
           ''
         ),
+
+        emitOnChange: boolean('emitOnChange', false),
+        showClearButton: boolean('showClearButton', true),
+        showFooter: boolean('showFooter', true),
+
         ...FormElementsCommonProps('Pick a color', COLOR_PICKER_DEFAULT),
 
         size: select(
