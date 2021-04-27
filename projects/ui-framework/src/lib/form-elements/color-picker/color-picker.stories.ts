@@ -103,7 +103,7 @@ story.add(
         showFooter: boolean('showFooter', true),
         defaultValue: select(
           'defaultValue',
-          ['null', COLOR_PICKER_DEFAULT],
+          ['null', '#ff962b', COLOR_PICKER_DEFAULT],
           'null'
         ),
 

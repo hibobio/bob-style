@@ -123,7 +123,7 @@ export class ColorPickerComponent extends BaseFormElement
     LIST_ACTIONS_STATE_DEF
   );
 
-  readonly nullColor = '#fff';
+  public nullColor = '#fff';
   readonly resetIcon = {
     icon: Icons.reset_x,
     size: IconSize.small,
@@ -147,6 +147,8 @@ export class ColorPickerComponent extends BaseFormElement
       )
         ? changes.config.currentValue.defaultValue
         : null;
+
+      this.nullColor = HEX_REGEX.test(this.baseValue) ? this.baseValue : '#fff';
     }
 
     if (changes.value) {
@@ -159,7 +161,7 @@ export class ColorPickerComponent extends BaseFormElement
   public writeValue(color: string, slice = true): void {
     if (this.value !== color) {
       this.listActionsState.apply.disabled = false;
-      this.listActionsState.clear.hidden = !color;
+      this.listActionsState.clear.hidden = !color || this.isNullColor(color);
     }
 
     this.setColorVars(color);
@@ -244,11 +246,18 @@ export class ColorPickerComponent extends BaseFormElement
   }
 
   private setColorPickerWidth(): void {
+    const hostWidth = this.hostElRef?.nativeElement.offsetWidth;
+
+    if (hostWidth <= 140) {
+      (this.config || (this.config = {})).showClearButton = false;
+    }
+
     // $b-select-panel-min-width: 280px;
     this.colorPickerWidth = Math.max(
       280,
-      this.hostElRef?.nativeElement.offsetWidth || this.colorPickerWidth || 0
+      hostWidth || this.colorPickerWidth || 0
     );
+
     this.cd.detectChanges();
   }
 
@@ -284,6 +293,7 @@ export class ColorPickerComponent extends BaseFormElement
   }
 
   public closePanel(): void {
+    this.input?.nativeElement.blur();
     this.destroyPanel();
   }
 
