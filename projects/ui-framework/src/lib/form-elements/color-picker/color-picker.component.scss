@@ -20,6 +20,13 @@
   }
 }
 
+:host.readonly {
+  .bfe-wrap,
+  .bfe-input {
+    pointer-events: none;
+  }
+}
+
 .bfe-wrap.focused .bfe-input::placeholder,
 .bfe-input:focus::placeholder {
   opacity: 1;
