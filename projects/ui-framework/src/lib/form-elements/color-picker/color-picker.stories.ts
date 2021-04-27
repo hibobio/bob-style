@@ -20,17 +20,32 @@ const template = `<b-colorpicker
       [config]="{
         emitOnChange: emitOnChange,
         showClearButton: showClearButton,
-        showFooter: showFooter
+        showFooter: showFooter,
+        defaultValue: defaultValue === 'null' ? null : defaultValue
       }"
-      [value]="value"
+      [value]="value === 'null' ? null : value"
       [label]="label"
       [placeholder]="placeholder"
       [description]="description"
       [disabled]="disabled"
       [required]="required"
       [readonly]="readonly"
+      [hideLabelOnFocus]="hideLabelOnFocus"
+      [focusOnInit]="focusOnInit"
       [hintMessage]="hintMessage"
       [warnMessage]="warnMessage"
+      [errorMessage]="errorMessage"
+      [size]="size"
+      (changed)="onChange($event)">
+</b-colorpicker>`;
+
+const templateForNotes = `<b-colorpicker
+      [config]="config"
+      [value]="value"
+      [label]="label"
+      [placeholder]="placeholder"
+      [disabled]="disabled"
+      [hintMessage]="hintMessage"
       [errorMessage]="errorMessage"
       [size]="size"
       (changed)="onChange($event)">
@@ -50,7 +65,7 @@ const note = `
   *ColorPickerModule* or *FormElementsModule*
 
   ~~~
-  ${template}
+  ${templateForNotes}
   ~~~
 
   *Note*: Component supports only HEX color format.
@@ -58,7 +73,7 @@ const note = `
   #### Properties
   Name | Type | Description | Defaults
   --- | --- | --- | ---
-  [config] | ColorPickerConfig | emitOnChange, showClearButton, showFooter;<br> emitOnChange and showClearButton are only relevant if showFooter is false | showFooter:&nbsp;true,<br> showClearButton:&nbsp;true,<br> emitOnChange:&nbsp;false
+  [config] | ColorPickerConfig | emitOnChange, showClearButton, showFooter, defaultValue; <p style="margin-top:8px; margin-bottom:8px">\`emitOnChange\` and \`showClearButton\` are only relevant if \`showFooter\` is false.</p> \`defaultValue\` can be used to provide any string to be used instead of \`null\` for empty value | showFooter:&nbsp;true,<br> showClearButton:&nbsp;true,<br> emitOnChange:&nbsp;false,<br>defaultValue:&nbsp;null
 
   ${formElemsPropsDoc}
 `;
@@ -71,20 +86,26 @@ story.add(
         value: select(
           'value',
           [
-            '',
+            'null',
             '#C6C6C6',
             '#FAFAFA',
             '#702727',
             '#592fb1',
             '#f339a3',
             'invalidColor',
+            COLOR_PICKER_DEFAULT,
           ],
-          ''
+          'null'
         ),
 
         emitOnChange: boolean('emitOnChange', false),
         showClearButton: boolean('showClearButton', true),
         showFooter: boolean('showFooter', true),
+        defaultValue: select(
+          'defaultValue',
+          ['null', COLOR_PICKER_DEFAULT],
+          'null'
+        ),
 
         ...FormElementsCommonProps('Pick a color', COLOR_PICKER_DEFAULT),
 

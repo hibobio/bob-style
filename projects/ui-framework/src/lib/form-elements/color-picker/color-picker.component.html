@@ -8,19 +8,19 @@
 <div cdkOverlayOrigin
      class="bfe-wrap has-prefix"
      [ngClass]="{
-       'has-suffix': config?.showClearButton!==false,
+       'has-suffix': config?.showClearButton!==false && !readonly && !disabled,
        focused: panelOpen,
        'hide-clear': panelOpen && config?.showFooter!==false,
        'panel-open': panelOpen,
        'panel-above': positionClassList['panel-above'],
        'panel-below': positionClassList['panel-below']
       }"
-     (click)="openPanel()">
+     (click)="!readonly && openPanel()">
 
   <div class="bfe-prefix">
     <span class="blk color-circle"
-          [style.background-color]="value || nullColor"
-          [class.default-value]="!value"></span>
+          [style.background-color]="(value!==baseValue && value)||nullColor"
+          [class.default-value]="!value || value===baseValue"></span>
   </div>
 
   <input #input
@@ -35,10 +35,11 @@
          [required]="required"
          [readonly]="readonly"
          (blur)="isTyping=false"
-         (input)="onInputChange($event)">
+         (input)="onInputChange($event)"
+         (keydown.enter)="!readonly && onApply()">
 
-  <span *ngIf="config?.showClearButton!==false"
-        [hidden]="!value || readonly"
+  <span *ngIf="config?.showClearButton!==false && !readonly && !disabled"
+        [hidden]="!value || value===baseValue"
         class="bfe-suffix">
     <b-icon class="clear-input"
             role="button"
@@ -58,7 +59,7 @@
 
 <ng-template #templateRef>
   <div class="b-select-panel color-picker-dropdown">
-    <span [colorPicker]="value||nullColor"
+    <span [colorPicker]="(value!==baseValue && value)||nullColor"
           [cpFallbackColor]="nullColor"
           [cpToggle]="true"
           [cpDisableInput]="true"
@@ -70,7 +71,7 @@
           (colorPickerClose)="colorPickerClose($event)"></span>
 
     <b-list-footer #footer
-                   *ngIf="config?.showFooter !== false"
+                   *ngIf="!config?.showFooter !== false"
                    [listActionsState]="listActionsState"
                    [size]="size"
                    (apply)="onApply()"
