@@ -41,7 +41,7 @@ export class ColorService {
       color = this.parseToRGB(color);
     }
     const brightness = this.getBrightness(color);
-    return brightness && brightness < sensitivity; // 128
+    return brightness < sensitivity; // 128
   }
 
   public randomColor(): string {

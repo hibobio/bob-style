@@ -157,6 +157,11 @@ export const selectValueMultiOrSingle = (
     : value;
 };
 
+export const hexifyColor = (color: string): string => {
+  color = color?.replace(/#|[^#0-9a-fA-F]/gi, '');
+  return color && `#${color}`;
+};
+
 // -------------------------------
 // Typecheckers
 // -------------------------------
@@ -341,12 +346,7 @@ export const valueInArrayOrFail = <T = any>(
 // Helpers
 // -------------------------------
 
-export const logValue = <T = any>(value: T): T => {
-  console.log(value);
-  return value;
-};
-
-export const logValueComment = <T = any>(comment: string) => (value: T): T => {
-  console.log(comment + ': ', value);
+export const logValue = <T = any>(tag?: string) => (value: T): T => {
+  log.inf(isString(value) ? `"${value}"` : stringify(value), tag);
   return value;
 };

@@ -177,7 +177,8 @@ export abstract class BaseFormElement
 
   public writeValue(
     value: any,
-    forceElementValue: ForceElementValue = this.forceElementValue
+    forceElementValue: ForceElementValue = this.forceElementValue,
+    ...args: any[]
   ): void {
     this.writingValue = true;
 
@@ -205,9 +206,12 @@ export abstract class BaseFormElement
         this.input?.nativeElement?.nodeName.toUpperCase()
       )
     ) {
-      this.input.nativeElement.value = isFunction(forceElementValue)
-        ? forceElementValue(this.value)
+      const newInputValue = isFunction(forceElementValue)
+        ? forceElementValue(this.value, ...args)
         : this.value;
+
+      this.input.nativeElement.value !== newInputValue &&
+        (this.input.nativeElement.value = newInputValue);
     }
 
     this.writingValue = false;
