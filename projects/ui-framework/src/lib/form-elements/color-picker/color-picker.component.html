@@ -8,8 +8,9 @@
 <div cdkOverlayOrigin
      class="bfe-wrap has-prefix"
      [ngClass]="{
-       'has-suffix': config?.showClearButton!==false && config?.showFooter===false,
+       'has-suffix': config?.showClearButton!==false,
        focused: panelOpen,
+       'hide-clear': panelOpen && config?.showFooter!==false,
        'panel-open': panelOpen,
        'panel-above': positionClassList['panel-above'],
        'panel-below': positionClassList['panel-below']
@@ -36,7 +37,7 @@
          (blur)="isTyping=false"
          (input)="onInputChange($event)">
 
-  <span *ngIf="config?.showClearButton!==false && config?.showFooter===false"
+  <span *ngIf="config?.showClearButton!==false"
         [hidden]="!value || readonly"
         class="bfe-suffix">
     <b-icon class="clear-input"
