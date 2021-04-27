@@ -8,7 +8,9 @@
 <div cdkOverlayOrigin
      class="bfe-wrap has-prefix"
      [ngClass]="{
+       'has-suffix': config?.showClearButton!==false,
        focused: panelOpen,
+       'hide-clear': panelOpen && config?.showFooter!==false,
        'panel-open': panelOpen,
        'panel-above': positionClassList['panel-above'],
        'panel-below': positionClassList['panel-below']
@@ -25,17 +27,18 @@
          class="bfe-input"
          [attr.id]="id"
          [attr.name]="id"
-         [type]="'text'"
+         type="text"
+         maxlength="7"
          [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label :
          label + '*') : placeholder"
-         [value]="value"
          [attr.disabled]="disabled || readonly || null"
          [required]="required"
          [readonly]="readonly"
-         [attr.maxlength]="7"
+         (blur)="isTyping=false"
          (input)="onInputChange($event)">
 
-  <span [hidden]="!value || readonly"
+  <span *ngIf="config?.showClearButton!==false"
+        [hidden]="!value || readonly"
         class="bfe-suffix">
     <b-icon class="clear-input"
             role="button"
@@ -62,7 +65,19 @@
           [cpWidth]="(colorPickerWidth||280)-2"
           [cpOutputFormat]="'hex'"
           [cpDialogDisplay]="'inline'"
+          (cpSliderDragStart)="isTyping=false"
           (colorPickerChange)="onColorPickerChange($event)"
-          (colorPickerClose)="onColorPickerChange($event)"></span>
+          (colorPickerClose)="colorPickerClose($event)"></span>
+
+    <b-list-footer #footer
+                   *ngIf="config?.showFooter !== false"
+                   [listActionsState]="listActionsState"
+                   [size]="size"
+                   (apply)="onApply()"
+                   (cancel)="onCancel()"
+                   (clear)="clearInput()">
+      <ng-content footerAction
+                  select="[footerAction],[footerActionRight]"></ng-content>
+    </b-list-footer>
   </div>
 </ng-template>

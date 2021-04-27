@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { IconsModule } from '../../icons/icons.module';
+import { ListFooterModule } from '../../lists/list-footer/list-footer.module';
 import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { ColorPickerComponent } from './color-picker.component';
@@ -17,6 +18,7 @@ import { ColorPickerComponent } from './color-picker.component';
     InputMessageModule,
     OverlayModule,
     IconsModule,
+    ListFooterModule,
   ],
   exports: [ColorPickerComponent],
   declarations: [ColorPickerComponent],

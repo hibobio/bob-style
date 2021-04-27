@@ -1,27 +1,26 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { CardExampleModule } from './card-example.module';
 import { CardsModule } from '../cards.module';
+import { CardExampleModule } from './card-example.module';
 
 const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs
 );
 
-const template = `
-<b-card [card]="cardData"
+const template = `<b-card [card]="cardData"
         [type]="type"
         (clicked)="cardClickHandler($event)">
-  <div card-top>
-     ...card top - ng-content
-  </div>
-  <div card-content>
-    ...card content - ng-content
-  </div>
-</b-card>
-`;
+    <div card-top>
+      ...card top - ng-content
+    </div>
+    <div card-content>
+      ...card content - ng-content
+    </div>
+</b-card>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Single Card'">
@@ -84,6 +83,14 @@ const note = `
   --- | --- | --- | ---
   [type] | CardType | Card theme | primary
   [card] | Card | card contents data | &nbsp;
+  [isClickable] | boolean | makes the card focusable and adds hover state | false
+  (clicked) | EventEmitter | emits on footer CTA click
+
+  **Note:**
+  The (clicked) event of the Card emits, when the user clicks the CTA in the footer (for which you need to pass label as card.footerCtaLabel).<br>
+  To make the <u>whole card</u> clickable, you need:
+  - use (click) listener instead of (clicked)
+  - pass [isClickable]="true"
 
   #### Card interface
   ~~~
