@@ -46,6 +46,19 @@
 
 :host[data-size='smaller'] .color-circle {
   @include size(map-get($avatarSizes, micro));
+<<<<<<< HEAD
+=======
+}
+
+.default-value {
+  box-shadow: none;
+  background-image: linear-gradient($grey-700, $grey-700),
+    linear-gradient($negative-600, $negative-600),
+    linear-gradient(#d38865, #d38865), linear-gradient(#7d273f, #7d273f);
+  background-size: 50% 50%;
+  background-position: left top, right top, left bottom, right bottom;
+  background-repeat: no-repeat;
+>>>>>>> Pavel/ more work on color-picker (#2068)
 }
 
 ::ng-deep {
@@ -81,6 +94,14 @@
       //   border-color: white;
       //   mix-blend-mode: difference;
       // }
+    }
+
+    .selected-color {
+      border-color: var(--circle-border-color, $border-color);
+    }
+
+    .saturation-lightness .cursor {
+      border-color: var(--cursor-border-color, $grey-800);
     }
 
     .selected-color {

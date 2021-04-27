@@ -8,7 +8,11 @@
 <div cdkOverlayOrigin
      class="bfe-wrap has-prefix"
      [ngClass]="{
+<<<<<<< HEAD
        'has-suffix': config?.showClearButton!==false && !readonly && !disabled,
+=======
+       'has-suffix': config?.showClearButton!==false,
+>>>>>>> Pavel/ more work on color-picker (#2068)
        focused: panelOpen,
        'hide-clear': panelOpen && config?.showFooter!==false,
        'panel-open': panelOpen,
@@ -35,11 +39,18 @@
          [required]="required"
          [readonly]="readonly"
          (blur)="isTyping=false"
+<<<<<<< HEAD
          (input)="onInputChange($event)"
          (keydown.enter)="!readonly && onApply()">
 
   <span *ngIf="config?.showClearButton!==false && !readonly && !disabled"
         [hidden]="!value || value===baseValue"
+=======
+         (input)="onInputChange($event)">
+
+  <span *ngIf="config?.showClearButton!==false"
+        [hidden]="!value || readonly"
+>>>>>>> Pavel/ more work on color-picker (#2068)
         class="bfe-suffix">
     <b-icon class="clear-input"
             role="button"
@@ -72,7 +83,11 @@
           (colorPickerClose)="colorPickerClose($event)"></span>
 
     <b-list-footer #footer
+<<<<<<< HEAD
                    *ngIf="config?.showFooter!==false"
+=======
+                   *ngIf="config?.showFooter !== false"
+>>>>>>> Pavel/ more work on color-picker (#2068)
                    [listActionsState]="listActionsState"
                    [size]="size"
                    (apply)="onApply()"

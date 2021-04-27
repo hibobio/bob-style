@@ -30,7 +30,10 @@ import { ColorsGrey } from '../../services/color-service/color-palette.enum';
 import {
   cloneDeepSimpleObject,
   isDark,
+<<<<<<< HEAD
   isString,
+=======
+>>>>>>> Pavel/ more work on color-picker (#2068)
   setCssProps,
 } from '../../services/utils/functional-utils';
 import { hexifyColor } from '../../services/utils/transformers';
@@ -38,7 +41,11 @@ import { DOMInputEvent, OverlayPositionClasses } from '../../types';
 import { BaseFormElement } from '../base-form-element';
 import { InputEventType } from '../form-elements.enum';
 import { TransmitOptions } from '../form-elements.interface';
+<<<<<<< HEAD
 import { COLOR_PICKER_DEFAULT, HEX_REGEX } from './color-picker.const';
+=======
+import { HEX_REGEX } from './color-picker.const';
+>>>>>>> Pavel/ more work on color-picker (#2068)
 import { ColorPickerConfig } from './color-picker.interface';
 
 @Component({
@@ -72,6 +79,7 @@ export class ColorPickerComponent extends BaseFormElement
     this.lastEmittedValue = this.baseValue = null;
     this.placeholder = this.translate.instant('common.select');
     this.wrapEvent = false;
+<<<<<<< HEAD
 
     this.forceElementValue = (color: string, slice = true) =>
       color === this.baseValue
@@ -100,6 +108,27 @@ export class ColorPickerComponent extends BaseFormElement
       hexifyColor,
       this.nullifyColor,
     ];
+=======
+
+    this.forceElementValue = (color: string, slice = true) =>
+      (!slice
+        ? color
+        : color?.slice(
+            0,
+            this.input?.nativeElement.value?.length || undefined
+          )) || null;
+
+    this.isNullColor = (color) =>
+      color?.length > 1 &&
+      !color?.replace(new RegExp(this.nullColor.replace('#', '#|'), 'gi'), '');
+
+    this.nullifyColor = (color: string) =>
+      !HEX_REGEX.test(color) || (!this.value && this.isNullColor(color))
+        ? this.baseValue
+        : color;
+
+    this.inputTransformers = [hexifyColor, this.nullifyColor];
+>>>>>>> Pavel/ more work on color-picker (#2068)
     this.outputTransformers = [this.nullifyColor];
   }
 
@@ -141,6 +170,7 @@ export class ColorPickerComponent extends BaseFormElement
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+<<<<<<< HEAD
     if (changes.config?.currentValue?.defaultValue !== undefined) {
       this.lastEmittedValue = this.baseValue = isString(
         changes.config.currentValue.defaultValue
@@ -176,6 +206,33 @@ export class ColorPickerComponent extends BaseFormElement
 
     this.listActionsState.apply.disabled = true;
 
+=======
+    if (changes.value) {
+      this.lastEmittedValue = changes.value.currentValue;
+    }
+
+    super.ngOnChanges(changes);
+  }
+
+  public writeValue(color: string, slice = true): void {
+    if (this.value !== color) {
+      this.listActionsState.apply.disabled = false;
+      this.listActionsState.clear.hidden = !color;
+    }
+
+    this.setColorVars(color);
+    super.writeValue(color, this.forceElementValue, slice);
+  }
+
+  public transmitValue(
+    color: string,
+    options: Partial<TransmitOptions> = {}
+  ): void {
+    this.writeValue(color, (this.isTyping = false));
+
+    this.listActionsState.apply.disabled = true;
+
+>>>>>>> Pavel/ more work on color-picker (#2068)
     if (color !== this.lastEmittedValue) {
       super.transmitValue((this.lastEmittedValue = color), {
         eventType: [InputEventType.onBlur],
@@ -196,10 +253,14 @@ export class ColorPickerComponent extends BaseFormElement
         ? hexifyColor(event.target.value)
         : event.target.value) || null;
 
+<<<<<<< HEAD
     if (
       this.isNullColor(event.target.value) &&
       (!this.value || this.value === this.baseValue)
     ) {
+=======
+    if (this.isNullColor(event.target.value) && !this.value) {
+>>>>>>> Pavel/ more work on color-picker (#2068)
       this.writeValue((this.value = event.target.value));
     }
 
@@ -215,9 +276,15 @@ export class ColorPickerComponent extends BaseFormElement
       this.panel &&
       (this.config?.showFooter !== false || !this.config?.emitOnChange)
     ) {
+<<<<<<< HEAD
       this.writeValue(this.baseValue);
     } else {
       this.transmitValue(this.baseValue);
+=======
+      this.writeValue(null);
+    } else {
+      this.transmitValue(null);
+>>>>>>> Pavel/ more work on color-picker (#2068)
     }
   }
 
@@ -246,6 +313,7 @@ export class ColorPickerComponent extends BaseFormElement
   }
 
   private setColorPickerWidth(): void {
+<<<<<<< HEAD
     const hostWidth = this.hostElRef?.nativeElement.offsetWidth;
 
     if (hostWidth <= 140) {
@@ -258,6 +326,13 @@ export class ColorPickerComponent extends BaseFormElement
       hostWidth || this.colorPickerWidth || 0
     );
 
+=======
+    // $b-select-panel-min-width: 280px;
+    this.colorPickerWidth = Math.max(
+      280,
+      this.hostElRef?.nativeElement.offsetWidth || this.colorPickerWidth || 0
+    );
+>>>>>>> Pavel/ more work on color-picker (#2068)
     this.cd.detectChanges();
   }
 
@@ -284,8 +359,12 @@ export class ColorPickerComponent extends BaseFormElement
   }
 
   public openPanel(): void {
+<<<<<<< HEAD
     this.listActionsState.clear.hidden =
       !this.value || this.value === this.baseValue;
+=======
+    this.listActionsState.clear.hidden = !this.value;
+>>>>>>> Pavel/ more work on color-picker (#2068)
     this.setColorPickerWidth();
 
     this.panel = this.listPanelService.openPanel({ self: this });
