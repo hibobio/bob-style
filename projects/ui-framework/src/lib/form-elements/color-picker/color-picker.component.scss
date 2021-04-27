@@ -48,16 +48,6 @@
   @include size(map-get($avatarSizes, micro));
 }
 
-// .default-value {
-//   box-shadow: none;
-//   background-image: linear-gradient($grey-700, $grey-700),
-//     linear-gradient($negative-600, $negative-600),
-//     linear-gradient(#d38865, #d38865), linear-gradient(#7d273f, #7d273f);
-//   background-size: 50% 50%;
-//   background-position: left top, right top, left bottom, right bottom;
-//   background-repeat: no-repeat;
-// }
-
 ::ng-deep {
   .cdk-overlay-container .color-picker-dropdown {
     color-picker {
