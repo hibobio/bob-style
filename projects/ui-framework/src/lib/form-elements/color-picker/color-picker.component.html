@@ -58,7 +58,8 @@
 </p>
 
 <ng-template #templateRef>
-  <div class="b-select-panel color-picker-dropdown">
+  <div *ngIf="!readonly && !disabled"
+       class="b-select-panel color-picker-dropdown">
     <span [colorPicker]="(value!==baseValue && value)||nullColor"
           [cpFallbackColor]="nullColor"
           [cpToggle]="true"
