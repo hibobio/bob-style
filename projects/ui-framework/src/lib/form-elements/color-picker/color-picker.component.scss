@@ -5,9 +5,11 @@
 
 @include bFormElement();
 
+@include clear-input-suffix('&.focused');
 
 .bfe-wrap {
   position: relative;
+
   &.panel-open {
     &.panel-below {
       border-bottom-right-radius: 0;
@@ -18,42 +20,46 @@
       border-top-left-radius: 0;
     }
   }
+}
 
-  &.default-value {
-    .bfe-input {
-      padding-left: 15px;
-    }
-  }
+.bfe-wrap.focused .bfe-input::placeholder,
+.bfe-input:focus::placeholder {
+  opacity: 1;
 }
 
 .color-circle {
   border-radius: 50%;
   height: 24px;
   width: 24px;
-}
+  box-shadow: 0 0 0 1px $border-color;
 
-.default-value-color-circle {
-  height: 24px;
-  width: 24px;
-  position: relative;
-  border-radius: 50%;
-  background-image: linear-gradient($grey-700, $grey-700), linear-gradient($negative-600,$negative-600), linear-gradient(#D38865, #D38865), linear-gradient(#7D273F, #7D273F);
-  background-size: 50% 50%;
-  background-position: left top, right top, left bottom, right bottom;
-  background-repeat: no-repeat;
-}
-
-.bfe-wrap .bfe-prefix {
-  margin-left: 6px;
-  display: block;
+  &.default-value {
+    box-shadow: none;
+    background-image: linear-gradient($grey-700, $grey-700),
+      linear-gradient($negative-600, $negative-600),
+      linear-gradient(#d38865, #d38865), linear-gradient(#7d273f, #7d273f);
+    background-size: 50% 50%;
+    background-position: left top, right top, left bottom, right bottom;
+    background-repeat: no-repeat;
+  }
 }
 
 ::ng-deep {
-  .cdk-overlay-container .color-picker-dropdown .color-picker {
-    border: none;
-    border-radius: $border-radius;
-    margin: 0 auto;
-    @include b-body($addCssVars: false);
+  .cdk-overlay-container .color-picker-dropdown {
+    color-picker {
+      display: block;
+    }
+
+    .saturation-lightness {
+      box-shadow: black(0.3) -1px 0px 0px 0px, black(0.6) 1px 0px 0px 0px;
+    }
+
+    .color-picker {
+      border: none;
+      border-radius: $border-radius;
+      margin: 0 auto;
+      @include b-body($addCssVars: false);
+    }
 
     .type-policy {
       display: none;

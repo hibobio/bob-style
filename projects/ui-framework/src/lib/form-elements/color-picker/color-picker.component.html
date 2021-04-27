@@ -6,32 +6,43 @@
 </b-form-element-label>
 
 <div cdkOverlayOrigin
-     class="bfe-wrap"
+     class="bfe-wrap has-prefix"
      [ngClass]="{
        focused: panelOpen,
-       'has-prefix': value,
-       'default-value': value === defaultValue,
        'panel-open': panelOpen,
        'panel-above': positionClassList['panel-above'],
        'panel-below': positionClassList['panel-below']
       }"
      (click)="openPanel()">
 
-  <div *ngIf="value && value !== defaultValue" class="bfe-prefix color-circle" [style.background-color]="value"></div>
-  <div *ngIf="value === defaultValue" class="bfe-prefix default-value-color-circle"></div>
+  <div class="bfe-prefix">
+    <span class="blk color-circle"
+          [style.background-color]="value || nullColor"
+          [class.default-value]="!value"></span>
+  </div>
 
   <input #input
          class="bfe-input"
          [attr.id]="id"
          [attr.name]="id"
          [type]="'text'"
-         [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
+         [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label :
+         label + '*') : placeholder"
          [value]="value"
          [attr.disabled]="disabled || readonly || null"
          [required]="required"
          [readonly]="readonly"
          [attr.maxlength]="7"
-         (change)="onInputChange($event)">
+         (input)="onInputChange($event)">
+
+  <span [hidden]="!value || readonly"
+        class="bfe-suffix">
+    <b-icon class="clear-input"
+            role="button"
+            [config]="resetIcon"
+            (click)="$event.stopPropagation(); clearInput()">
+    </b-icon>
+  </span>
 </div>
 
 <p b-input-message
@@ -44,13 +55,14 @@
 
 <ng-template #templateRef>
   <div class="b-select-panel color-picker-dropdown">
-    <span
-      [cpToggle]="true"
-      [cpWidth]="colorPickerWidth"
-      [cpOutputFormat]="'hex'"
-      [cpDialogDisplay]="'inline'"
-      [colorPicker]="value"
-      (colorPickerChange)="onColorPickerChange($event)">
-    </span>
+    <span [colorPicker]="value||nullColor"
+          [cpFallbackColor]="nullColor"
+          [cpToggle]="true"
+          [cpDisableInput]="true"
+          [cpWidth]="(colorPickerWidth||280)-2"
+          [cpOutputFormat]="'hex'"
+          [cpDialogDisplay]="'inline'"
+          (colorPickerChange)="onColorPickerChange($event)"
+          (colorPickerClose)="onColorPickerChange($event)"></span>
   </div>
 </ng-template>

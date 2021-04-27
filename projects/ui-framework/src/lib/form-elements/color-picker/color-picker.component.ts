@@ -1,23 +1,33 @@
+import { ColorPickerDirective } from 'ngx-color-picker';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, map, tap } from 'rxjs/operators';
+
+import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   forwardRef,
   OnDestroy,
+  OnInit,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BaseFormElement } from '../base-form-element'
-import { DOMInputEvent, OverlayPositionClasses } from '../../types';
-import { InputEventType } from '../form-elements.enum';
-import { Panel } from '../../popups/panel/panel.interface';
-import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
-import { ListPanelService, OverlayEnabledComponent } from '../../lists/list-panel.service';
-import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
 import { TranslateService } from '@ngx-translate/core';
-import { COLOR_PICKER_DEFAULT } from './color-picker.const';
 
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import {
+  ListPanelService,
+  OverlayEnabledComponent,
+} from '../../lists/list-panel.service';
+import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
+import { Panel } from '../../popups/panel/panel.interface';
+import { distinctFrom } from '../../services/utils/rxjs.operators';
+import { DOMInputEvent, OverlayPositionClasses } from '../../types';
+import { BaseFormElement } from '../base-form-element';
+import { InputEventType } from '../form-elements.enum';
 
 @Component({
   selector: 'b-colorpicker',
@@ -37,34 +47,121 @@ import { COLOR_PICKER_DEFAULT } from './color-picker.const';
     { provide: BaseFormElement, useExisting: ColorPickerComponent },
   ],
 })
-export class ColorPickerComponent extends BaseFormElement implements OnDestroy, OverlayEnabledComponent {
+export class ColorPickerComponent extends BaseFormElement
+  implements OnInit, OnDestroy, OverlayEnabledComponent {
   constructor(
     public cd: ChangeDetectorRef,
     public viewContainerRef: ViewContainerRef,
     private listPanelService: ListPanelService,
-    private translateService: TranslateService,
+    protected translate: TranslateService,
+    private hostElRef: ElementRef<HTMLElement>
   ) {
     super(cd);
-    this.baseValue = '';
+    this.baseValue = null;
+    this.placeholder = this.translate.instant('common.select');
     this.wrapEvent = false;
+    this.forceElementValue = true;
+
+    this.inputTransformers = [
+      (value) =>
+        /^#(?:[0-9a-fA-F]{3}){1,2}$/i.test(value) ? value : this.baseValue,
+    ];
   }
 
-  @ViewChild(CdkOverlayOrigin, { static: true }) overlayOrigin: CdkOverlayOrigin;
+  @ViewChild(CdkOverlayOrigin, { static: true })
+  overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
+
+  @ViewChild(ColorPickerDirective) clrp: ColorPickerDirective;
 
   public panel: Panel;
   public panelOpen = false;
   public panelPosition = PanelDefaultPosVer.belowLeftRight;
   public panelClassList: string[] = ['b-select-panel'];
   public positionClassList: OverlayPositionClasses = {};
-  public readonly defaultValue = COLOR_PICKER_DEFAULT;
-  public readonly colorPickerWidth = '278'; // scss $b-select-panel-min-width - 2px
+
+  readonly nullColor = '#fff';
+  readonly resetIcon = {
+    icon: Icons.reset_x,
+    size: IconSize.small,
+    color: IconColor.normal,
+    hasHoverState: true,
+  };
+  public colorPickerWidth: number;
+
+  private clrpChanges$ = new Subject<string>();
+  private sub: Subscription;
+  private lastEmittedValue: string;
 
   public get overlayRef(): OverlayRef {
     return this.panel?.overlayRef;
   }
 
+  ngOnInit(): void {
+    //
+    this.sub = this.clrpChanges$
+      .pipe(
+        debounceTime(100),
+
+        map((color) =>
+          !this.value && color?.includes(this.nullColor) ? null : color
+        ),
+
+        tap((color) => {
+          this.writeValue(color);
+        }),
+
+        distinctFrom(() => this.lastEmittedValue)
+      )
+      .subscribe((color) => {
+        this.transmitValue((this.lastEmittedValue = color), {
+          eventType: [InputEventType.onBlur],
+        });
+      });
+  }
+
+  public onInputChange(event: DOMInputEvent): void {
+    if (!this.panel) {
+      this.openPanel();
+    }
+
+    event.target.value = event.target.value
+      ? `#${event.target.value.replace('#', '')}`
+      : null;
+
+    if (event.target.value?.includes(this.nullColor) && !this.value) {
+      this.value = event.target.value;
+      this.onColorPickerChange(event.target.value);
+    } else if (event.target.value) {
+      this.clrp?.inputChange(event);
+    } else {
+      this.clearInput();
+    }
+  }
+
+  public clearInput(): void {
+    this.value = null;
+    if (this.panel) {
+      this.clrp?.inputChange({ target: { value: this.nullColor } });
+    } else {
+      this.onColorPickerChange(null);
+    }
+  }
+
+  public onColorPickerChange(color: string): void {
+    this.clrpChanges$.next(color);
+  }
+
+  private setColorPickerWidth(
+    width: number = this.hostElRef?.nativeElement.offsetWidth
+  ): void {
+    // $b-select-panel-min-width: 280px;
+    this.colorPickerWidth = Math.max(280, width || this.colorPickerWidth || 0);
+    this.cd.detectChanges();
+  }
+
   public openPanel(): void {
+    this.setColorPickerWidth();
     this.panel = this.listPanelService.openPanel({ self: this });
   }
 
@@ -72,29 +169,14 @@ export class ColorPickerComponent extends BaseFormElement implements OnDestroy, 
     this.destroyPanel();
   }
 
-  public onInputChange(event: DOMInputEvent): void {
-    const value = event.target.value;
-
-    // tslint:disable-next-line: triple-equals
-    if (value != this.value) {
-      this.writeValue(value, this.forceElementValue);
-      this.transmitValue(this.value, {
-        eventType: [InputEventType.onChange]
-      });
-    }
-  }
-
-  public onColorPickerChange(color) {
-    this.value = color;
-    this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
+  private destroyPanel(skipEmit = false): void {
+    this.panel = this.listPanelService.destroyPanel({ self: this, skipEmit });
   }
 
   ngOnDestroy(): void {
     super.ngOnDestroy();
     this.destroyPanel(true);
-  }
-
-  private destroyPanel(skipEmit = false): void {
-    this.panel = this.listPanelService.destroyPanel({ self: this, skipEmit });
+    this.sub?.unsubscribe();
+    this.clrpChanges$.complete();
   }
 }
