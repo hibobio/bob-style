@@ -35,7 +35,7 @@ export class CardTableComponent implements OnInit {
   public cardsElRefs: QueryList<TableCardComponent>;
   @Input() meta: CardTableCellMeta[];
   @Input() table: CardTableCellData[][];
-  @Input() default = 'No data to display';
+  @Input() default;
   @Input() minCellWidth = 5;
 
   @HostBinding('attr.role') string = 'table';
