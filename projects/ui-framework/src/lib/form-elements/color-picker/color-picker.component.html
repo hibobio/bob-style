@@ -71,7 +71,7 @@
           (colorPickerClose)="colorPickerClose($event)"></span>
 
     <b-list-footer #footer
-                   *ngIf="!config?.showFooter !== false"
+                   *ngIf="config?.showFooter!==false"
                    [listActionsState]="listActionsState"
                    [size]="size"
                    (apply)="onApply()"
