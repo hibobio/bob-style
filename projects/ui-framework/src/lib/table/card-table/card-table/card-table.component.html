@@ -31,7 +31,7 @@
 </ul>
 
 <div class="card-table-body"
-     *ngIf="default && !(table?.length)">
+     *ngIf="!(table?.length)">
   <p class="table-card-empty b-display-3">
     {{ default || 'bob-style.card-table.default-empty' | translate}}
   </p>
