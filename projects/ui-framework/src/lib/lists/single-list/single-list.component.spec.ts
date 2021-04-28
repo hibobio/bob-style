@@ -24,12 +24,18 @@ import { MockComponent } from 'ng-mocks';
 import { ButtonComponent } from '../../buttons/button/button.component';
 import { SearchComponent } from '../../search/search/search.component';
 import { simpleChange } from '../../services/utils/functional-utils';
+import { TranslateService } from '@ngx-translate/core';
+import { of } from 'rxjs';
 
 describe('SingleListComponent', () => {
   let component: SingleListComponent;
   let optionsMock: SelectGroupOption[];
   let fixture: ComponentFixture<SingleListComponent>;
-
+  const translateServiceStub: jasmine.SpyObj<TranslateService> = jasmine.createSpyObj(
+    'TranslateService',
+    ['get']
+  );
+  translateServiceStub.get.and.callFake((val) => of(`translated ${val}`));
   beforeEach(
     waitForAsync(() => {
       optionsMock = [
@@ -454,14 +460,14 @@ describe('SingleListComponent', () => {
     });
   });
 
-  describe('-None-', () => {
-    it('should not show -None- button by default', () => {
+  describe('clear-list button', () => {
+    it('should not show clear-list button by default', () => {
       const clearSelection = fixture.debugElement.query(
         By.css('.clear-selection')
       );
       expect(clearSelection).toBeFalsy();
     });
-    it('should show -None- button if showNoneOption is true', () => {
+    it('should show clear-list button if showNoneOption is true', () => {
       component.showNoneOption = true;
       const testOptionsMock = [
         {
@@ -479,7 +485,9 @@ describe('SingleListComponent', () => {
         By.css('.clear-selection')
       );
       expect(clearSelection).toBeTruthy();
-      expect(clearSelection.nativeElement.innerText).toEqual('— None —');
+      translateServiceStub.get(clearSelection.nativeElement.innerText).subscribe((res) => {
+        expect(res).toEqual(`translated ${clearSelection.nativeElement.innerText}`);
+      })
     });
     it('should call clearList method  on click', () => {
       spyOn(component, 'clearList').and.callThrough();
