@@ -50,7 +50,7 @@
      [length]="addingItemLen">
   </p>
 
-  <div class="bel-header-bottom">
+  <div class="bel-header-bottom" *ngIf="listState.list.length > 0">
 
     <span class="bel-total b-big-body">
       {{('common.total' | translate)}}: {{listState.list.length || 0}}
@@ -76,18 +76,11 @@
 
 </header>
 
-<smooth-dnd-container role="list"
-                      [ngClass]="{'bel-has-item-dragged': isDragged}"
-                      [orientation]="'vertical'"
-                      [lockAxis]="'y'"
-                      [dragClass]="'bel-item-dragged'"
-                      [dropClass]="'bel-item-dropped'"
-                      [nonDragAreaSelector]="'.bel-item-confirm, .bel-trash-button, .non-draggable-item'"
-                      (dragStart)="onDragStart()"
-                      (drop)="onDrop($event)">
-
-  <smooth-dnd-draggable *ngFor="let item of listState.list; let index = index; trackBy: listTrackBy"
-                        role="listitem">
+<div 
+  cdkDropList
+  (cdkDropListDropped)="onDrop($event)"
+  >
+  <div *ngFor="let item of listState.list; let index = index; trackBy: listTrackBy" cdkDrag cdkDragLockAxis="y">
 
     <div class="bel-item b-icon-medium b-icon-dark"
          [attr.data-item-id]="item.id"
@@ -132,5 +125,5 @@
 
     </div>
 
-  </smooth-dnd-draggable>
-</smooth-dnd-container>
+  </div>
+</div>

@@ -41,6 +41,7 @@ import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { EditableListUtils } from './editable-list.static';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'b-editable-list',
@@ -263,9 +264,12 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
         this.listState.delete.push(this.listState.list[index].value);
         this.listState.list.splice(index, 1);
         this.transmit();
-
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
+        }
+        this.addingItem = this.listState.list.length === 0;
+        if (this.addingItem) {
+          this.addItem();
         }
       }, 150);
     }
@@ -304,17 +308,8 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  public onDragStart(): void {
-    this.isDragged = true;
-    this.addedItem = false;
-  }
-
-  public onDrop(dropResult: DropResult): void {
-    this.isDragged = false;
-    if (EditableListUtils.onDrop(this.listState.list, dropResult)) {
-      this.listState.sortType = ListSortType.UserDefined;
-      this.transmit();
-    }
+  public onDrop(event: CdkDragDrop<DropResult>): void {
+    moveItemInArray(this.listState.list, event.previousIndex, event.currentIndex);
   }
 
   public sortList(
