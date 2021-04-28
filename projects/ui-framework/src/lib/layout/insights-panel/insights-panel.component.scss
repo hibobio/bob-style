@@ -3,12 +3,20 @@
 :host {
   position: relative;
   text-align: left;
+
   &[container-expanded='true']:not([class*='pad-']) {
-    padding: 16px;
+    padding-left: 16px;
   }
 
   .contract-container {
     text-align: end;
+  }
+  &[container-expanded='true']{
+      padding-top: 8px;
+      }
+
+  .content-container {
+    padding-right: 16px;
   }
 
   display: flex;

@@ -1,16 +1,15 @@
 <div class="content">
 
   <div *ngIf="isContracteble" class="contract-container">
-    <b-heading *ngIf="!isExpanded"
-               class="heading uppercase mrg-y-16 mrg-l-8"> {{ contractButtonConf.text }} </b-heading>
-    <b-square-button class="btn-minimize mrg-b-8"
+    <b-button class="btn-minimize mrg-b-8 mrg-y-8"
                      [button]="contractButtonConf"
+                     [text]="isExpanded ? null : contractButtonConf.text"
                      [icon]="isExpanded ? iconTypes.contract : iconTypes.expand"
                      (clicked)="onContractClick()">
-    </b-square-button>
+    </b-button>
   </div>
 
-  <div [ngClass]="{'pad-t-16': !isContracteble}" *ngIf="isExpanded">
+  <div class="content-container" [ngClass]="{'pad-t-16': !isContracteble}" *ngIf="isExpanded">
     <div class="pad-b-32" *ngFor="let insight of data;  let last = last; trackBy: ('$index' | trackByProp)">
       <div class="title">
         <b-icon class="icon pad-b-8"
