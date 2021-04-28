@@ -5,7 +5,7 @@
                class="heading uppercase mrg-y-16 mrg-l-8"> {{ contractButtonConf.text }} </b-heading>
     <b-square-button class="btn-minimize mrg-b-8"
                      [button]="contractButtonConf"
-                     [icon]="expandContractBtnicon"
+                     [icon]="isExpanded ? iconTypes.contract : iconTypes.expand"
                      (clicked)="onContractClick()">
     </b-square-button>
   </div>

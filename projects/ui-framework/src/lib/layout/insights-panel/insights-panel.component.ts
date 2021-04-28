@@ -40,7 +40,6 @@ export class InsightsPanelComponent {
     color: IconColor.dark,
     text: 'INSIGHTS',
   };
-  @Input() expandContractBtnicon: Icons.contract | Icons.expand = Icons.contract;
   @Input() iconType?: Icons = Icons.graph_timeline;
   @Input() data: InsightsData[];
   @Input() maxLines?: number = 3;
@@ -49,7 +48,6 @@ export class InsightsPanelComponent {
   @Input() iconSize?: IconSize = IconSize.medium;
 
   public onContractClick(): void {
-    this.expandContractBtnicon = this.expandContractBtnicon === Icons.expand ? Icons.contract : Icons.expand;
     this.expended.emit(this.isExpanded = !this.isExpanded);
     this.cdr.detectChanges();
   }
