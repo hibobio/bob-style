@@ -73,7 +73,7 @@ const note = `
   #### Properties
   Name | Type | Description | Defaults
   --- | --- | --- | ---
-  [config] | ColorPickerConfig | emitOnChange, showClearButton, showFooter, defaultValue; <p style="margin-top:8px; margin-bottom:8px">\`emitOnChange\` and \`showClearButton\` are only relevant if \`showFooter\` is false.</p> \`defaultValue\` can be used to provide any string to be used instead of \`null\` for empty value | showFooter:&nbsp;true,<br> showClearButton:&nbsp;true,<br> emitOnChange:&nbsp;false,<br>defaultValue:&nbsp;null
+  [config] | ColorPickerConfig | emitOnChange, showClearButton, showFooter, defaultValue; <p style="margin-top:8px; margin-bottom:8px">\`emitOnChange\` and \`showClearButton\` are only relevant if \`showFooter\` is false.</p> \`defaultValue\` can be used to provide any string (that can also be a hex color) to be used instead of \`null\` (white color) for default/empty value | showFooter:&nbsp;true,<br> showClearButton:&nbsp;true,<br> emitOnChange:&nbsp;false,<br>defaultValue:&nbsp;null
 
   ${formElemsPropsDoc}
 `;

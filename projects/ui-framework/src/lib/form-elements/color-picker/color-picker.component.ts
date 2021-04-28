@@ -73,15 +73,8 @@ export class ColorPickerComponent extends BaseFormElement
     this.placeholder = this.translate.instant('common.select');
     this.wrapEvent = false;
 
-    this.forceElementValue = (color: string, slice = true) =>
-      color === this.baseValue
-        ? null
-        : (!slice
-            ? color
-            : color?.slice(
-                0,
-                this.input?.nativeElement.value?.length || undefined
-              )) || null;
+    this.forceElementValue = (color: string) =>
+      color === this.baseValue ? null : color || null;
 
     this.isNullColor = (color) =>
       color?.length > 1 &&
@@ -158,21 +151,21 @@ export class ColorPickerComponent extends BaseFormElement
     super.ngOnChanges(changes);
   }
 
-  public writeValue(color: string, slice = true): void {
+  public writeValue(color: string, forceElementValue = true): void {
     if (this.value !== color) {
       this.listActionsState.apply.disabled = false;
       this.listActionsState.clear.hidden = !color || this.isNullColor(color);
     }
 
     this.setColorVars(color);
-    super.writeValue(color, this.forceElementValue, slice);
+    super.writeValue(color, forceElementValue && this.forceElementValue);
   }
 
   public transmitValue(
     color: string,
     options: Partial<TransmitOptions> = {}
   ): void {
-    this.writeValue(color, (this.isTyping = false));
+    this.writeValue(color, !(this.isTyping = false));
 
     this.listActionsState.apply.disabled = true;
 
@@ -225,7 +218,7 @@ export class ColorPickerComponent extends BaseFormElement
     if (this.config?.emitOnChange && this.config?.showFooter === false) {
       this.transmitValue(color);
     } else {
-      this.writeValue(color, this.isTyping);
+      this.writeValue(color, !this.isTyping);
     }
   }
 
