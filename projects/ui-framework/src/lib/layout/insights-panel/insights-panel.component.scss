@@ -3,57 +3,44 @@
 :host {
   position: relative;
   text-align: left;
-  padding: 10px;
+  &[container-expanded='true']:not([class*='pad-']) {
+    padding: 16px;
+  }
 
   .contract-container {
     text-align: end;
   }
 
-  .contracted {
-
-  }
-
-  border-radius: $border-radius;
   display: flex;
 
   &[data-type='warning'] {
     background-color: rgba($color-warn, 0.1);
     color: $color3_darker;
-    &[container-state='contracted']{
-      max-width: max-content;
-      max-height: times8(5);
-      cursor: pointer;
-    }
   }
 
   &[data-type='information'] {
     background-color: rgba($inform-600, 0.1);
     color: $color9_darker;
-    &[container-state='contracted']{
-      max-width: max-content;
-      max-height: times8(5);
-      cursor: pointer;
-    }
   }
+
+  &[container-expanded='false']{
+        max-width: max-content;
+        max-height: times8(5);
+        cursor: pointer;
+    }
+
+    &[container-brd='true']{
+     border-radius: $border-radius;
+    }
 
   &[data-type='error'] {
     background-color: rgba($color-error, 0.1);
     color: $color1_darker;
-    &[container-state='contracted']{
-      max-width: times8(10);
-      max-height: times8(5);
-      cursor: pointer;
-    }
   }
 
   &[data-type='success'] {
     background-color: rgba($positive-600, 0.1);
     color: $color7_darker;
-    &[container-state='contracted']{
-      max-width: times8(10);
-      max-height: times8(5);
-      cursor: pointer;
-    }
   }
 }
 

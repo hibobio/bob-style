@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { InsightsPanelComponent } from './insights-panel.component';
 import { CommonModule } from '@angular/common';
-import { ButtonsModule, IconsModule, ReadMoreModule, TypographyModule } from 'bob-style';
+import { ButtonsModule, IconsModule, ReadMoreModule, TrackByPropModule, TypographyModule } from 'bob-style';
 
 @NgModule({
   imports: [
@@ -10,6 +10,7 @@ import { ButtonsModule, IconsModule, ReadMoreModule, TypographyModule } from 'bo
     ReadMoreModule,
     ButtonsModule,
     TypographyModule,
+    TrackByPropModule,
   ],
   declarations: [InsightsPanelComponent],
   exports: [InsightsPanelComponent]

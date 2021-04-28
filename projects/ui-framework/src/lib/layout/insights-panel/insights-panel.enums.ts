@@ -1,11 +1,6 @@
-export enum InsightsPanelTypeEnums {
+export enum InsightsPanelType {
   information = 'information',
   warning = 'warning',
   error = 'error',
   success = 'success'
-}
-
-export enum ContainerState {
-  contracted = 'contracted',
-  expanded = 'expanded'
 }

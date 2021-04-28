@@ -2,21 +2,20 @@ import { storiesOf } from '@storybook/angular';
 import { boolean, object, select, text, withKnobs } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { values } from 'lodash';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
 import { InsightsPanelModule } from './insights-panel.module';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { InsightsPanelTypeEnums } from './insights-panel.enums';
+import { InsightsPanelType } from './insights-panel.enums';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs,
 );
 
-const iconTypes = values(Icons);
-const type = values(InsightsPanelTypeEnums);
-const iconSizes = values(IconSize);
-const iconColor = values(IconColor);
+const iconTypes = Object.values(Icons);
+const type = Object.values(InsightsPanelType);
+const iconSizes = Object.values(IconSize);
+const iconColor = Object.values(IconColor);
 
 const template1 = `
 
@@ -59,7 +58,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', type, InsightsPanelTypeEnums.information),
+        type: select('type', type, InsightsPanelType.information),
         iconType: select('iconType', iconTypes, Icons.graph_timeline),
         iconColor: select('iconColor', iconColor, IconColor.dark),
         isContracteble: boolean('isContracteble', true),
