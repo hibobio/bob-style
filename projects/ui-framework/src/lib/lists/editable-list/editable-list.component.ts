@@ -267,10 +267,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
         }
-        this.addingItem = this.listState.list.length === 0;
-        if (this.addingItem) {
-          this.addItem();
-        }
       }, 150);
     }
 
