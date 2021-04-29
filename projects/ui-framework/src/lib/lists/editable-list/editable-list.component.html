@@ -77,12 +77,14 @@
 </header>
 
 <div 
+  [ngClass]="{'bel-has-item-dragged': isDragged}"
   cdkDropList
   (cdkDropListDropped)="onDrop($event)"
   >
-  <div *ngFor="let item of listState.list; let index = index; trackBy: listTrackBy" cdkDrag cdkDragLockAxis="y">
-
-    <div class="bel-item b-icon-medium b-icon-dark"
+    <div class="bel-item b-icon-medium b-icon-dark mrg-y-4"
+         cdkDragPreviewClass="bel-item-dragged"
+         (cdkDragStarted)="onDragStart()"
+         *ngFor="let item of listState.list; let index = index; trackBy: listTrackBy" cdkDrag cdkDragLockAxis="y"
          [attr.data-item-id]="item.id"
          [ngClass]="{'new': addedItem && index === 0,
                      'deleted':removedItem && removingIndex === index,
@@ -122,8 +124,6 @@
                   (clicked)="removeItem(index,true)">
         </b-button>
       </div>
-
-    </div>
 
   </div>
 </div>

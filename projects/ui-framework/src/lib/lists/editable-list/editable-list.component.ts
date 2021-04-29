@@ -304,8 +304,17 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
+  public onDragStart(): void {
+    this.isDragged = true;
+    this.addedItem = false;
+  }
+
   public onDrop(event: CdkDragDrop<DropResult>): void {
-    moveItemInArray(this.listState.list, event.previousIndex, event.currentIndex);
+    this.isDragged = false;
+    if (EditableListUtils.onDrop(this.listState.list, event.previousIndex, event.currentIndex)) {
+      this.listState.sortType = ListSortType.UserDefined;
+      this.transmit();
+    }
   }
 
   public sortList(

@@ -11,9 +11,9 @@ export class EditableListUtils {
   //
   public static onDrop(
     list: SelectOption[],
-    dropResult: DropResult
+    removedIndex: number,
+    addedIndex: number
   ): SelectOption[] {
-    const { removedIndex, addedIndex } = dropResult;
     if (removedIndex === addedIndex) {
       return null;
     }
