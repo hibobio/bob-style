@@ -2,6 +2,7 @@
 Name | Type | Description
 --- | --- | ---
 groupName | string | group display name
+groupSelectable | boolean | show select all in group checkbox
 key | string / number | grpup ID
 options | SelectOption[] | array of options
 description | string | text to be added to (i) tooltip on the right of the group
