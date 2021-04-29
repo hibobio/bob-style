@@ -69,7 +69,7 @@ export class ColorPickerComponent extends BaseFormElement
     private hostElRef: ElementRef<HTMLElement>
   ) {
     super(cd);
-    this.lastEmittedValue = this.baseValue = null;
+    this.baseValue = null;
     this.placeholder = this.translate.instant('common.select');
     this.wrapEvent = false;
 
@@ -135,9 +135,7 @@ export class ColorPickerComponent extends BaseFormElement
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.config?.currentValue?.defaultValue !== undefined) {
-      this.lastEmittedValue = this.baseValue = isString(
-        changes.config.currentValue.defaultValue
-      )
+      this.baseValue = isString(changes.config.currentValue.defaultValue)
         ? changes.config.currentValue.defaultValue
         : null;
 
