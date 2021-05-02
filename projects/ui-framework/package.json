@@ -1,6 +1,6 @@
 {
   "name": "bob-style",
-  "version": "4.3.159",
+  "version": "4.3.160",
   "peerDependencies": {
     "@angular/animations": "^11.0.5",
     "@angular/cdk": "^11.0.3",
@@ -20,7 +20,6 @@
     "highcharts": "^8.1.1",
     "date-fns": "^2.9.0",
     "tributejs": "^4.1.1",
-    "ngx-smooth-dnd": "^0.4.1",
     "ngx-color-picker": "^11.0.0",
     "froala-editor": "^3.2.6",
     "xss": "^1.0.7"
