@@ -2,7 +2,6 @@ import {
   simpleUID,
   arrOfObjSortByProp,
 } from '../../services/utils/functional-utils';
-import { DropResult } from 'ngx-smooth-dnd';
 
 import { SelectOption } from '../list.interface';
 import { ListSortType } from './editable-list.enum';

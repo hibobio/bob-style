@@ -15,7 +15,6 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { itemID, SelectOption } from '../list.interface';
-import { DropResult } from 'ngx-smooth-dnd';
 import { Icons } from '../../icons/icons.enum';
 import { ButtonType, ButtonSize } from '../../buttons/buttons.enum';
 import {
@@ -309,7 +308,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     this.addedItem = false;
   }
 
-  public onDrop(event: CdkDragDrop<DropResult>): void {
+  public onDrop(event: CdkDragDrop<SelectOption[]>): void {
     this.isDragged = false;
     if (EditableListUtils.onDrop(this.listState.list, event.previousIndex, event.currentIndex)) {
       this.listState.sortType = ListSortType.UserDefined;
