@@ -26,12 +26,7 @@ const storyTemplate = `
 <div>
   <b-insights-panel
         [data]="data"
-        [iconSize]="iconSize"
-        [iconType]="iconType"
-        [maxLines]="maxLines"
-        [iconColor]="iconColor"
-        [isContracteble]="isContracteble"
-        [type]="type"
+        [config]="config"
   ></b-insights-panel>
 </div>
 </b-story-book-layout>
@@ -58,12 +53,15 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        config: object('config', {
+          collapsible: true,
+          iconColor: IconColor.dark,
+          iconSize: IconSize.medium,
+          iconType: Icons.graph_timeline,
+          isBorderRadius: true,
+          maxLines: 3
+        }),
         type: select('type', type, InsightsPanelType.information),
-        iconType: select('iconType', iconTypes, Icons.graph_timeline),
-        iconColor: select('iconColor', iconColor, IconColor.dark),
-        isContracteble: boolean('isContracteble', true),
-        iconSize: select('iconSize', iconSizes, IconSize.large),
-        maxLines: 3,
         data: object('data', [{
           title: 'At a glance',
           content: 'The number of leavers between Q1 2020 and Q4 2020 was highest in Kendall Roys team (13.25 per quarter), which is 73% of all company leavers. The number of leavers between Q1 2020 and Q4 2020 was highest in Kendall Roys team (13.25 per quarter), which is 73% of all company leavers. The number of leavers between Q1 2020 and Q4 2020 was highest in Kendall Roys team (13.25 per quarter), which is 73% of all company leavers. The number of leavers between Q1 2020 and Q4 2020 was highest in Kendall Roys team (13.25 per quarter), which is 73% of all company leavers. ',

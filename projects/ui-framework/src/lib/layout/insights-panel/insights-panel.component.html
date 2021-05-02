@@ -1,6 +1,6 @@
 <div class="content">
 
-  <div *ngIf="isContracteble" class="contract-container">
+  <div *ngIf="config.collapsible" class="contract-container">
     <b-button class="btn-minimize mrg-b-8 mrg-y-8"
                      [button]="contractButtonConf"
                      [text]="isExpanded ? null : contractButtonConf.text"
@@ -9,18 +9,17 @@
     </b-button>
   </div>
 
-  <div class="content-container" [ngClass]="{'pad-t-16': !isContracteble}" *ngIf="isExpanded">
+  <div class="content-container" [ngClass]="{'pad-t-16': !config.collapsible}" *ngIf="isExpanded">
     <div class="pad-b-32" *ngFor="let insight of data;  let last = last; trackBy: ('$index' | trackByProp)">
       <div class="title">
-        <b-icon class="icon pad-b-8"
-                [icon]=" insight.icon || iconType"
-                [color]="iconColor"
-                [size]="iconSize || iconSizes.medium">
+        <b-icon class="icon pad-b-8 mrg-r-10"
+                [icon]=" insight.icon || config.iconType"
+                [color]="config.iconColor"
+                [size]="config.iconSize || iconSizes.medium">
         </b-icon>
         <b-heading class="heading pad-b-16 uppercase"> {{ insight.title }} </b-heading>
       </div>
-      <p [hidden]="!insight" [readMore]="insight.content" [maxLines]="maxLines"></p>
-      <ng-content></ng-content>
+      <p class="mrg-0" [readMore]="insight.content" [maxLines]="config.maxLines"></p>
     </div>
   </div>
 

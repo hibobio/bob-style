@@ -9,10 +9,11 @@ import {
 } from '@angular/core';
 
 import { InsightsPanelType } from './insights-panel.enums';
-import { InsightsData } from './insight-panel.interfaces';
+import { InsightsPanelConfig, InsightsPanelData } from './insight-panel.interfaces';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { Button } from '../../buttons/buttons.interface';
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
+import { INSIGHTS_PANEL_CONFIG_DEF } from './insights-panel-consts';
 
 @Component({
   selector: 'b-insights-panel',
@@ -40,12 +41,20 @@ export class InsightsPanelComponent {
     color: IconColor.dark,
     text: 'INSIGHTS',
   };
-  @Input() iconType?: Icons = Icons.graph_timeline;
-  @Input() data: InsightsData[];
-  @Input() maxLines?: number = 3;
-  @Input() isContracteble?: boolean = true;
-  @Input() iconColor?: IconColor = IconColor.dark;
-  @Input() iconSize?: IconSize = IconSize.medium;
+
+  @Input('config') set setConfig(config: InsightsPanelConfig) {
+    this.config = { ...this.config, ...config };
+  }
+
+
+  @Input() data: InsightsPanelData[];
+  // @Input() iconType?: Icons = Icons.graph_timeline;
+  // @Input() maxLines?: number = 3;
+  // @Input() collapsible?: boolean = true;
+  // @Input() iconColor?: IconColor = IconColor.dark;
+  // @Input() iconSize?: IconSize = IconSize.medium;
+
+  public config: InsightsPanelConfig = { ...INSIGHTS_PANEL_CONFIG_DEF };
 
   public onContractClick(): void {
     this.expended.emit(this.isExpanded = !this.isExpanded);
