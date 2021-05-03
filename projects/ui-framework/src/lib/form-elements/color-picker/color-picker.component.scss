@@ -74,13 +74,34 @@
 
     .hue .cursor {
       border-color: $grey-800;
+
+      @supports (mix-blend-mode: difference) {
+        border: 0;
+        position: relative;
+
+        &:before,
+        &:after {
+          content: '';
+          display: block;
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          border: 2px solid white;
+        }
+
+        &:before {
+          mix-blend-mode: exclusion;
+        }
+        &:after {
+          mix-blend-mode: saturation;
+          opacity: 0.75;
+        }
+      }
     }
 
-    .color-picker .cursor {
-      // @supports (mix-blend-mode: difference) {
-      //   border-color: white;
-      //   mix-blend-mode: difference;
-      // }
+    .selected-color-background {
+      display: none;
     }
 
     .selected-color {
@@ -120,6 +141,8 @@
       position: static;
       grid-column: 1/2;
       grid-row: 1/2;
+      left: auto;
+      top: auto;
     }
 
     .hue-alpha .right > div:not(.hue) {
@@ -129,6 +152,7 @@
     .hue-alpha .hue {
       border-radius: $border-radius;
       margin: 0;
+      overflow: hidden;
     }
 
     .hex-text {
