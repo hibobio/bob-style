@@ -1,0 +1,43 @@
+@import '../../style/common-imports';
+
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  width: 100%;
+  min-width: 0;
+}
+
+header {
+  width: 100%;
+}
+
+aside,
+section {
+  display: flex;
+  flex-direction: column;
+}
+
+aside {
+  width: 180px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+section {
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.content {
+  flex-grow: 1;
+}
+
+header,
+.title {
+  &:empty {
+    display: none;
+  }
+}

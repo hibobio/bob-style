@@ -1,0 +1,38 @@
+<header #header
+        *ngIf="hasHeader"
+        class="mrg-b-24"
+        [ngClass]="config?.headerClass"
+        [ngStyle]="config?.headerStyle">
+  <ng-content select="[header], b-ee-layout-header"></ng-content>
+</header>
+
+<aside class="mrg-r-24"
+       [ngClass]="config?.sidebarClass"
+       [ngStyle]="config?.sidebarStyle">
+
+  <b-avatar *ngIf="avatar"
+            [avatar]="avatar"
+            size="medium"
+            orientation="vertical"></b-avatar>
+
+  <ng-content select="[sidebar], b-ee-layout-sidebar"></ng-content>
+</aside>
+
+<section [ngClass]="config?.sectionClass"
+         [ngStyle]="config?.sectionStyle">
+
+  <div #title
+       *ngIf="hasTitle"
+       class="title mrg-b-24"
+       [ngClass]="config?.sectionTitleClass"
+       [ngStyle]="config?.sectionTitleStyle">
+    <ng-content select="[title], b-ee-layout-title"></ng-content>
+  </div>
+
+  <div class="content grid-layout-12-cols row-gap"
+       [ngClass]="config?.contentClass"
+       [ngStyle]="config?.contentStyle">
+    <ng-content></ng-content>
+  </div>
+
+</section>
