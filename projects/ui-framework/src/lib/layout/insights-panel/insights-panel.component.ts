@@ -33,30 +33,21 @@ export class InsightsPanelComponent {
 
   @HostBinding('attr.data-type') @Input() type: InsightsPanelType = InsightsPanelType.information;
   @HostBinding('attr.container-expanded') @Input() isExpanded: boolean = true;
-  @HostBinding('attr.container-brd') @Input() isBorderRadius?: boolean = true;
 
-  @Input() contractButtonConf: Button = {
+  public readonly expandButtonConf: Button = {
     type: ButtonType.tertiary,
     size: ButtonSize.small,
-    color: IconColor.dark,
-    text: 'INSIGHTS',
+    color: IconColor.dark
   };
 
   @Input('config') set setConfig(config: InsightsPanelConfig) {
     this.config = { ...this.config, ...config };
   }
 
-
   @Input() data: InsightsPanelData[];
-  // @Input() iconType?: Icons = Icons.graph_timeline;
-  // @Input() maxLines?: number = 3;
-  // @Input() collapsible?: boolean = true;
-  // @Input() iconColor?: IconColor = IconColor.dark;
-  // @Input() iconSize?: IconSize = IconSize.medium;
-
   public config: InsightsPanelConfig = { ...INSIGHTS_PANEL_CONFIG_DEF };
 
-  public onContractClick(): void {
+  public onExpandClick(): void {
     this.expended.emit(this.isExpanded = !this.isExpanded);
     this.cdr.detectChanges();
   }

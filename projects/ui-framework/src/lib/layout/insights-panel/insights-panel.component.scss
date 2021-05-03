@@ -4,10 +4,10 @@
   position: relative;
   text-align: left;
 
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border-radius: $border-radius;
 
   &[container-expanded='true']:not([class*='pad-']) {
     padding-left: 16px;
@@ -40,10 +40,6 @@
         max-width: max-content;
         max-height: times8(5);
         cursor: pointer;
-    }
-
-    &[container-brd='true']{
-     border-radius: $border-radius;
     }
 
   &[data-type='error'] {

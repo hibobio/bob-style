@@ -1,23 +1,23 @@
 <div class="content">
 
   <div *ngIf="config.collapsible" class="contract-container">
-    <b-button class="btn-minimize mrg-b-8 mrg-y-8"
-                     [button]="contractButtonConf"
-                     [text]="isExpanded ? null : contractButtonConf.text"
+    <b-button class="btn-minimize mrg-y-8"
+                     [button]="expandButtonConf"
+                     [text]="isExpanded ? null : config.expandButtonText"
                      [icon]="isExpanded ? iconTypes.contract : iconTypes.expand"
-                     (clicked)="onContractClick()">
+                     (clicked)="onExpandClick()">
     </b-button>
   </div>
 
   <div class="content-container" [ngClass]="{'pad-t-16': !config.collapsible}" *ngIf="isExpanded">
-    <div class="pad-b-32" *ngFor="let insight of data;  let last = last; trackBy: ('$index' | trackByProp)">
+    <div class="mrg-b-32" *ngFor="let insight of data;  let last = last; trackBy: ('$index' | trackByProp)">
       <div class="title">
         <b-icon class="icon pad-b-8 mrg-r-10"
-                [icon]=" insight.icon || config.iconType"
-                [color]="config.iconColor"
-                [size]="config.iconSize || iconSizes.medium">
+                [icon]=" insight?.icon?.type || config.icon.type"
+                [color]="insight?.icon?.color ||config.icon.color"
+                [size]="insight?.icon?.size || iconSizes.medium">
         </b-icon>
-        <b-heading class="heading pad-b-16 uppercase"> {{ insight.title }} </b-heading>
+        <b-heading class="heading mrg-b-16 uppercase"> {{ insight.title }} </b-heading>
       </div>
       <p class="mrg-0" [readMore]="insight.content" [maxLines]="config.maxLines"></p>
     </div>
