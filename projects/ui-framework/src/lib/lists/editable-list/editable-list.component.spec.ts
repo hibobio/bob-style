@@ -135,6 +135,9 @@ describe('EditableListComponent', () => {
       expect(del.length).toEqual(2);
     });
     it('should delete item from the list', fakeAsync(() => {
+      component.allowedActions = {
+        remove: true,
+      };
       triggerChanges();
       const del = fixture.debugElement.queryAll(
         By.css('.bel-trash-button button')
@@ -155,6 +158,9 @@ describe('EditableListComponent', () => {
     }));
 
     it('should emit the right event when item was deleted', fakeAsync(() => {
+      component.allowedActions = {
+        remove: true,
+      };
       spyOn(component.changed, 'emit');
       triggerChanges();
       const del = fixture.debugElement.queryAll(
@@ -353,7 +359,6 @@ describe('EditableListComponent', () => {
       };
       expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
     });
-
     it('should sort descending with sortType input', () => {
       spyOn(component.changed, 'emit');
       component.ngOnChanges(
