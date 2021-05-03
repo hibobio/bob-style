@@ -167,10 +167,12 @@ $bel-item-dragged-border-color: $grey-400;
 
 :host ::ng-deep {
   .bel-trash-button,
+  b-action-menu-button,
   .bel-has-item-dragged .bel-item:hover .bel-trash-button {
     opacity: 0;
   }
   .bel-item:hover .bel-trash-button,
+  .bel-item:hover b-action-menu-button,
   .bel-item-dragged .bel-trash-button {
     opacity: 1;
   }

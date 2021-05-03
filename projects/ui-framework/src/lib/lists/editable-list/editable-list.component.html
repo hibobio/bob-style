@@ -29,7 +29,8 @@
         <b-button class="bel-cancel-button"
                   [type]="buttonType.tertiary"
                   [size]="buttonSize.small"
-                  [text]="('common.cancel' | translate)">
+                  [text]="('common.cancel' | translate)"
+                  (clicked)="resetActionsData()">
         </b-button>
         <b-button class="bel-done-button"
                   [type]="buttonType.secondary"
@@ -42,13 +43,9 @@
     </div>
   </div>
 
-  <p b-input-message
-     *ngIf="addingItemLen"
-     [hidden]="!addingItem || !(inputInvalid || maxChars - addingItemLen < 15)"
-     [errorMessage]="inputInvalid ? '&#34;' + listState.list[sameItemIndex].value + '&#34; ' + ('list-editor.editor.already-exists' | translate) : null"
-     [maxChars]="maxChars - addingItemLen < 15 ? maxChars : null"
-     [length]="addingItemLen">
-  </p>
+    <ng-container 
+    *ngTemplateOutlet="errorMsg; context: {'showError': addingItemLen ,
+     'hidden': !addingItem || !(inputInvalid || maxChars - addingItemLen < 15)}"></ng-container>
 
   <div class="bel-header-bottom">
 
@@ -81,23 +78,36 @@
   cdkDropList
   (cdkDropListDropped)="onDrop($event)"
   >
+  <ng-container *ngFor="let item of listState.list; let index = index; trackBy: listTrackBy">
+
     <div class="bel-item b-icon-medium b-icon-dark mrg-y-4"
          cdkDragPreviewClass="bel-item-dragged"
          (cdkDragStarted)="onDragStart()"
-         *ngFor="let item of listState.list; let index = index; trackBy: listTrackBy" cdkDrag cdkDragLockAxis="y"
+         cdkDrag cdkDragLockAxis="y"
          [attr.data-item-id]="item.id"
          [ngClass]="{'new': addedItem && index === 0,
                      'deleted':removedItem && removingIndex === index,
                      'warn': sameItemIndex === index,
                      'b-icon-drag-alt': allowedActions.order !== false,
+                     error: editInputInvalid && index === removingIndex,
                      'non-draggable-item': allowedActions.order === false}">
 
-      <span class="bel-item-value"
+      <span [hidden]="isEditMode && index === removingIndex" class="bel-item-value"
             data-max-lines="2">
         {{ item.value }}
       </span>
 
-      <b-square-button *ngIf="allowedActions.remove && item.canBeDeleted!==false"
+      <input #editItemInput
+             type="text"
+             [hidden]="!isEditMode || index !== removingIndex"
+             class="bfe-input bel-item-input"
+             [attr.autocomplete]="autoComplete.off"
+             [id]="index"
+             [attr.innerHTML]="item.value"
+             [attr.maxlength]="maxChars || null"
+             (input.outside-zone)="onInputChange()">
+
+      <b-square-button *ngIf="allowedActions.remove && item.canBeDeleted!==false && !isMultipleActions"
                        class="bel-trash-button"
                        [hidden]="removingIndex === index"
                        [type]="buttonType.tertiary"
@@ -106,7 +116,22 @@
                        (clicked)="removeItem(index)">
       </b-square-button>
 
-      <div *ngIf="allowedActions.remove"
+      <b-square-button *ngIf="allowedActions.edit && !isMultipleActions"
+                       class="bel-trash-button"
+                       [hidden]="removingIndex === index"
+                       [type]="buttonType.tertiary"
+                       [size]="buttonSize.small"
+                       [icon]="icons.edit"
+                       (clicked)="editItem(item, index)">
+      </b-square-button>
+
+      <div>
+        <b-action-menu-button *ngIf="removingIndex !== index && isMultipleActions"
+          [menuItems]="this.initActionMenuItems(index, item)" (actionClick)="onActionClicked($event)">
+        </b-action-menu-button>
+      </div>
+
+      <div *ngIf="allowedActions.remove || allowedActions.edit"
            class="bel-item-confirm"
            [hidden]="removingIndex !== index"
            tabindex="0">
@@ -114,16 +139,46 @@
         <b-button class="bel-cancel-button"
                   [type]="buttonType.tertiary"
                   [size]="buttonSize.small"
-                  [text]="('common.cancel' | translate)">
+                  [text]="('common.cancel' | translate)"
+                  (clicked)="resetActionsData()">
         </b-button>
-
-        <b-button class="bel-remove-button"
-                  [type]="buttonType.negative"
-                  [size]="buttonSize.small"
-                  [text]="('common.remove' | translate)"
-                  (clicked)="removeItem(index,true)">
-        </b-button>
+        <ng-container *ngIf="!isEditMode else saveBtn">
+          <ng-container *ngTemplateOutlet="removeBtn; context: {'index': index}"></ng-container>
+        </ng-container>
       </div>
-
   </div>
+  <ng-container 
+      *ngTemplateOutlet="errorMsg; context: {'showError': removingIndex === index,
+       'hidden': !currentEditInput || !(editInputInvalid || maxChars - addingItemLen < 15)}">
+  </ng-container>
+  </ng-container>
+
 </div>
+
+<ng-template #removeBtn let-index="index">
+  <b-button class="bel-remove-button"
+              [type]="buttonType.negative"
+              [size]="buttonSize.small"
+              [text]="('common.remove' | translate)"
+              (clicked)="removeItem(index,true)">
+  </b-button>
+</ng-template>
+
+<ng-template #saveBtn>
+  <b-button class="bel-done-button"
+              [type]="buttonType.secondary"
+              [size]="buttonSize.small"
+              [text]="('common.save' | translate)"
+              (clicked)="saveEdit()">
+    </b-button>
+</ng-template>
+
+<ng-template #errorMsg let-show="showError" let-hidden="hidden">
+  <p b-input-message
+      *ngIf="show"
+      [hidden]="hidden"
+      [errorMessage]="inputInvalid || editInputInvalid ? '&#34;' + listState.list[sameItemIndex].value + '&#34; ' + ('list-editor.editor.already-exists' | translate) : null"
+      [maxChars]="maxChars - addingItemLen < 15 ? maxChars : null"
+      [length]="addingItemLen">
+  </p>
+</ng-template>
