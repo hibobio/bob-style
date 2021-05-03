@@ -6,6 +6,7 @@ export interface EditableListActions {
   add?: boolean | string;
   remove?: boolean;
   order?: boolean;
+  edit?: boolean;
 }
 
 export interface EditableListState {
@@ -15,3 +16,5 @@ export interface EditableListState {
   order: string[];
   list: SelectOption[];
 }
+
+export const ACTIONS_ICONS: Array<keyof EditableListActions> = ['edit', 'remove'];

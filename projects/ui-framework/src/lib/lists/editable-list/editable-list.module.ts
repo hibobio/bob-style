@@ -7,6 +7,7 @@ import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MenuModule } from '../../navigation/menu/menu.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ButtonsModule,
     InputMessageModule,
     TranslateModule,
-    DragDropModule
+    DragDropModule,
+    MenuModule
   ],
   declarations: [EditableListComponent],
   exports: [EditableListComponent],
