@@ -67,13 +67,15 @@ $bel-item-dragged-border-color: $grey-400;
 }
 
 :host ::ng-deep {
-  .smooth-dnd-draggable-wrapper {
-    padding: 4px 0;
+  .cdk-drag-placeholder {
+    opacity: 0;
   }
-
-  .smooth-dnd-container > .smooth-dnd-draggable-wrapper {
-    overflow: visible;
+  .cdk-drag-animating {
+    transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) !important;
   }
+  .cdk-drop-list-dragging .bel-item:not(.cdk-drag-placeholder) {
+    transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+  }  
 }
 
 .bel-item {
