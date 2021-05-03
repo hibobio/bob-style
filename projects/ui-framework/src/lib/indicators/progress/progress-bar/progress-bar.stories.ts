@@ -1,24 +1,24 @@
-import { storiesOf } from '@storybook/angular';
-import {
-  text,
-  select,
-  boolean,
-  withKnobs,
-  number,
-} from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../../consts';
-import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
-import { ProgressBarModule } from './progress-bar.module';
-import {
-  randomNumber,
-  randomFromArray,
-} from '../../../services/utils/functional-utils';
-import { ProgressType, ProgressSize } from '../progress.enum';
-import { ColorService } from '../../../services/color-service/color.service';
-
-import { Icons } from '../../../icons/icons.enum';
-import { ButtonsModule } from '../../../buttons/buttons.module';
 import { action } from '@storybook/addon-actions';
+import {
+  boolean,
+  number,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ButtonsModule } from '../../../buttons/buttons.module';
+import { ComponentGroupType } from '../../../consts';
+import { Icons } from '../../../icons/icons.enum';
+import { ColorService } from '../../../services/color-service/color.service';
+import {
+  randomFromArray,
+  randomNumber,
+} from '../../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
+import { ProgressSize, ProgressType } from '../progress.enum';
+import { ProgressBarModule } from './progress-bar.module';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
@@ -42,7 +42,8 @@ const template = `
                   [config]="{
                     disableAnimation: disableAnimation,
                     hideValue: hideValue,
-                    clickable: clickable
+                    clickable: clickable,
+                    reverseTextLocation: reverseTextLocation
                   }"
                   (clicked)="onClick($event)">
   </b-progress-bar>
@@ -313,6 +314,7 @@ hideValue = true`,
     ),
     iconHeaderRight: select('iconHeaderRight', icons, Icons.doc_icon),
     disableAnimation: boolean('disableAnimation', false),
+    reverseTextLocation: boolean('reverseTextLocation', false),
     hideValue: boolean('hideValue', false),
     clickable: boolean('clickable', false),
     onClick: action('bar clicked'),
