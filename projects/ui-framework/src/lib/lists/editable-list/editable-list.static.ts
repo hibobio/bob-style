@@ -2,7 +2,6 @@ import {
   simpleUID,
   arrOfObjSortByProp,
 } from '../../services/utils/functional-utils';
-import { DropResult } from 'ngx-smooth-dnd';
 
 import { SelectOption } from '../list.interface';
 import { ListSortType } from './editable-list.enum';
@@ -11,9 +10,9 @@ export class EditableListUtils {
   //
   public static onDrop(
     list: SelectOption[],
-    dropResult: DropResult
+    removedIndex: number,
+    addedIndex: number
   ): SelectOption[] {
-    const { removedIndex, addedIndex } = dropResult;
     if (removedIndex === addedIndex) {
       return null;
     }

@@ -367,9 +367,10 @@ export {
 } from './lib/form-elements/radio-button/radio-button.enum';
 export * from './lib/form-elements/radio-button/radio-button.interface';
 // Colorpicker
+export * from './lib/form-elements/color-picker/color-picker.interface';
+export * from './lib/form-elements/color-picker/color-picker.const';
 export { ColorPickerModule } from './lib/form-elements/color-picker/color-picker.module';
 export { ColorPickerComponent } from './lib/form-elements/color-picker/color-picker.component';
-export { COLOR_PICKER_DEFAULT } from './lib/form-elements/color-picker/color-picker.const';
 
 
 /*

@@ -26,6 +26,7 @@ import {
   isArray,
   isEqualByValues,
   isFalsyOrEmpty,
+  isFunction,
   isNumber,
   isString,
   randomFromArray,
@@ -202,10 +203,13 @@ export function onlyDistinct<T = any>(config?: EqualByValuesConfig) {
   );
 }
 
-export function distinctFrom<T = any>(prev: T, config?: EqualByValuesConfig) {
+export function distinctFrom<T = any>(
+  prev: T | (() => T),
+  config?: EqualByValuesConfig
+) {
   return filter<T>(
     (curr: T) =>
-      !isEqualByValues<T>(prev, curr, {
+      !isEqualByValues<T>(isFunction(prev) ? prev() : prev, curr, {
         limit: 5000,
         primitives: true,
         sort: false,

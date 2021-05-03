@@ -5,7 +5,8 @@
           [size]="iconSize"></b-icon>
   <div panel-content>
     <b-display-3>{{title}}</b-display-3>
-    <p>{{text}}</p>
+    <p class="info-tooltip-text"
+       [innerHTML]="text"></p>
     <b-link *ngIf="link"
             [config]="link"
             (clicked)="linkClicked.emit()"></b-link>
