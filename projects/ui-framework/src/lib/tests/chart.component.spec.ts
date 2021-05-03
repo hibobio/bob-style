@@ -1,10 +1,11 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import * as Highcharts from 'highcharts';
 
 import { ChangeDetectorRef, NgZone } from '@angular/core';
-import * as Highcharts from 'highcharts';
-import { PieChartComponent } from '../../../bob-charts/src/charts/pie-chart/pie-chart.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+
 import { LINE_CHART_DATA_MOCK } from '../../../bob-charts/src/charts/chart.mock';
 import { ChartCore } from '../../../bob-charts/src/charts/chart/chart-core';
+import { PieChartComponent } from '../../../bob-charts/src/charts/pie-chart/pie-chart.component';
 
 export class MockNgZone extends NgZone {
   run(fn: Function): any {
@@ -17,20 +18,22 @@ describe('PieChartComponent', () => {
   let fixture: ComponentFixture<PieChartComponent>;
   let updateChartOptionsSpy, applyOnChangeSpy, highchartRefSpy;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [PieChartComponent],
-      providers: [ChangeDetectorRef],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [PieChartComponent],
+        providers: [ChangeDetectorRef],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(PieChartComponent);
+          component = fixture.componentInstance;
+          highchartRefSpy = spyOn(Highcharts, 'chart');
+          component.data = LINE_CHART_DATA_MOCK as any;
+          component.name = 'fruits';
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(PieChartComponent);
-        component = fixture.componentInstance;
-        highchartRefSpy = spyOn(Highcharts, 'chart');
-        component.data = LINE_CHART_DATA_MOCK as any;
-        component.name = 'fruits';
-      });
-  }));
+  );
 
   describe('chartCore', () => {
     it('should initialize', () => {
@@ -127,7 +130,7 @@ describe('PieChartComponent', () => {
       });
       it('should highchart update with options', () => {
         expect(highchartRefSpy).toHaveBeenCalledWith(
-          component.containerId,
+          jasmine.any(HTMLElement),
           component.options
         );
       });
