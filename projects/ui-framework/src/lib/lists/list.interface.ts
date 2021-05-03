@@ -8,6 +8,7 @@ export type itemID = string | number;
 export interface SelectGroupOption {
   groupName: string;
   groupIndex?: number;
+  groupSelectable?: boolean;
   key?: itemID;
   options: SelectOption[];
   description?: string;

@@ -86,7 +86,7 @@ export class ListModelService {
             : selectedCount === group.options.length,
           indeterminate: this.isIndeterminate(group.options, selectedCount),
           selectedCount,
-          hasCheckbox,
+          hasCheckbox: hasCheckbox && group.groupSelectable !== false,
           groupIsOption,
         };
       }

@@ -15,7 +15,6 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { itemID, SelectOption } from '../list.interface';
-import { DropResult } from 'ngx-smooth-dnd';
 import { Icons } from '../../icons/icons.enum';
 import { ButtonType, ButtonSize } from '../../buttons/buttons.enum';
 import {
@@ -41,6 +40,7 @@ import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { EditableListUtils } from './editable-list.static';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'b-editable-list',
@@ -263,7 +263,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
         this.listState.delete.push(this.listState.list[index].value);
         this.listState.list.splice(index, 1);
         this.transmit();
-
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
         }
@@ -309,9 +308,9 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     this.addedItem = false;
   }
 
-  public onDrop(dropResult: DropResult): void {
+  public onDrop(event: CdkDragDrop<SelectOption[]>): void {
     this.isDragged = false;
-    if (EditableListUtils.onDrop(this.listState.list, dropResult)) {
+    if (EditableListUtils.onDrop(this.listState.list, event.previousIndex, event.currentIndex)) {
       this.listState.sortType = ListSortType.UserDefined;
       this.transmit();
     }

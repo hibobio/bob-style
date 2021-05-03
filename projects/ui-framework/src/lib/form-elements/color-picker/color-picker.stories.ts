@@ -1,3 +1,9 @@
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { action } from '@storybook/addon-actions';
 import { boolean, select, withKnobs } from '@storybook/addon-knobs';
@@ -16,7 +22,9 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
 
-const template = `<b-colorpicker
+const template = `<form [formGroup]="form">
+<b-colorpicker
+      formControlName="colorPicker"
       [config]="{
         emitOnChange: emitOnChange,
         showClearButton: showClearButton,
@@ -27,7 +35,7 @@ const template = `<b-colorpicker
       [label]="label"
       [placeholder]="placeholder"
       [description]="description"
-      [disabled]="disabled"
+      [isDisabled]="disabled"
       [required]="required"
       [readonly]="readonly"
       [hideLabelOnFocus]="hideLabelOnFocus"
@@ -37,7 +45,14 @@ const template = `<b-colorpicker
       [errorMessage]="errorMessage"
       [size]="size"
       (changed)="onChange($event)">
-</b-colorpicker>`;
+</b-colorpicker></form>
+
+<div>
+  <h4 class="mrg-0">formGroup valueChanges:</h4>
+  <p class="mrg-0">{{ form.valueChanges|async|json }}</p>
+</div>
+
+`;
 
 const templateForNotes = `<b-colorpicker
       [config]="config"
@@ -53,7 +68,7 @@ const templateForNotes = `<b-colorpicker
 
 const storyTemplate = `
 <b-story-book-layout [title]="'ColorPicker'">
-  <div style="max-width: 300px;">
+  <div style="max-width: 300px; text-align: left; min-height: 60vh; display: flex; flex-direction: column; justify-content:space-between;">
     ${template}
   </div>
 </b-story-book-layout>
@@ -73,7 +88,7 @@ const note = `
   #### Properties
   Name | Type | Description | Defaults
   --- | --- | --- | ---
-  [config] | ColorPickerConfig | emitOnChange, showClearButton, showFooter, defaultValue; <p style="margin-top:8px; margin-bottom:8px">\`emitOnChange\` and \`showClearButton\` are only relevant if \`showFooter\` is false.</p> \`defaultValue\` can be used to provide any string to be used instead of \`null\` for empty value | showFooter:&nbsp;true,<br> showClearButton:&nbsp;true,<br> emitOnChange:&nbsp;false,<br>defaultValue:&nbsp;null
+  [config] | ColorPickerConfig | emitOnChange, showClearButton, showFooter, defaultValue; <p style="margin-top:8px; margin-bottom:8px">\`emitOnChange\` and \`showClearButton\` are only relevant if \`showFooter\` is false.</p> \`defaultValue\` can be used to provide any string (that can also be a hex color) to be used instead of \`null\` (white color) for default/empty value | showFooter:&nbsp;true,<br> showClearButton:&nbsp;true,<br> emitOnChange:&nbsp;false,<br>defaultValue:&nbsp;null
 
   ${formElemsPropsDoc}
 `;
@@ -87,15 +102,16 @@ story.add(
           'value',
           [
             'null',
-            '#C6C6C6',
-            '#FAFAFA',
-            '#702727',
+            '#9D9D9D',
+            '#E52C51',
+            '#4b95ec',
             '#592fb1',
-            '#f339a3',
+            '#ff8100',
+            '#9368bf',
             'invalidColor',
             COLOR_PICKER_DEFAULT,
           ],
-          'null'
+          '#9368bf'
         ),
 
         emitOnChange: boolean('emitOnChange', false),
@@ -103,8 +119,8 @@ story.add(
         showFooter: boolean('showFooter', true),
         defaultValue: select(
           'defaultValue',
-          ['null', '#ff962b', COLOR_PICKER_DEFAULT],
-          'null'
+          ['null', '#ff8100', COLOR_PICKER_DEFAULT],
+          '#ff8100'
         ),
 
         ...FormElementsCommonProps('Pick a color', COLOR_PICKER_DEFAULT),
@@ -116,12 +132,16 @@ story.add(
         ),
 
         onChange: action('change'),
+
+        form: new FormGroup({ colorPicker: new FormControl('#9368bf') }),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           ColorPickerModule,
           StoryBookLayoutModule,
+          ReactiveFormsModule,
+          FormsModule,
         ],
       },
     };

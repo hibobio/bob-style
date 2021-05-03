@@ -3,7 +3,6 @@ import { EditableListComponent } from './editable-list.component';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
 import { SelectOption } from '../list.interface';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { inputValue, fakeAsyncFlush } from '../../services/utils/test-helpers';
@@ -71,7 +70,7 @@ describe('EditableListComponent', () => {
         SquareButtonComponent,
         InputMessageComponent,
       ],
-      imports: [CommonModule, NgxSmoothDnDModule],
+      imports: [CommonModule],
       providers: [EventManagerPlugins[0]],
       schemas: [NO_ERRORS_SCHEMA],
     })
