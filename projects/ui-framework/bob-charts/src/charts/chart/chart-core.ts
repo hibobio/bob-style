@@ -8,6 +8,8 @@ import {
   Directive,
   SimpleChanges,
   OnChanges,
+  ElementRef,
+  ViewChild,
 } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { ExportingMimeTypeValue, Options, Chart } from 'highcharts';
@@ -52,6 +54,10 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
     noData(Highcharts);
     More(Highcharts);
   }
+
+  @ViewChild('container', { static: true }) chartContainer: ElementRef<
+    HTMLElement
+  >;
 
   highChartRef: Chart;
   readonly containerId: string = simpleUID('bhc', 7);
@@ -266,7 +272,10 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
     this.initialOptions();
 
     this.zone.runOutsideAngular(() => {
-      this.highChartRef = Highcharts.chart(this.containerId, this.options);
+      this.highChartRef = Highcharts.chart(
+        this.chartContainer.nativeElement,
+        this.options
+      );
     });
   }
 
@@ -277,7 +286,10 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
       this.zone.runOutsideAngular(() => {
         if (destroy) {
           this.highChartRef.destroy();
-          this.highChartRef = Highcharts.chart(this.containerId, this.options);
+          this.highChartRef = Highcharts.chart(
+            this.chartContainer.nativeElement,
+            this.options
+          );
         } else {
           this.highChartRef.update(this.options, true, true);
         }

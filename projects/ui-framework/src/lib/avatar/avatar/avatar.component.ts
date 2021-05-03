@@ -1,30 +1,32 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
-  Input,
-  Output,
   HostBinding,
-  SimpleChanges,
-  OnChanges,
-  ChangeDetectorRef,
+  Input,
   NgZone,
-  ChangeDetectionStrategy,
+  OnChanges,
+  Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
+
 import { ChipType } from '../../chips/chips.enum';
 import { Chip } from '../../chips/chips.interface';
-import { Avatar, BadgeConfig } from './avatar.interface';
+import { Icon } from '../../icons/icon.interface';
+import { Icons } from '../../icons/icons.enum';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import {
   getKeyByValue,
+  isFunction,
   isObject,
   notFirstChanges,
   objectRemoveEntriesByValue,
 } from '../../services/utils/functional-utils';
-import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
-import { Icons } from '../../icons/icons.enum';
-import { Icon } from '../../icons/icon.interface';
 import { AvatarImageComponent } from './avatar-image/avatar-image.component';
+import { AvatarBadge, AvatarOrientation, AvatarSize } from './avatar.enum';
+import { Avatar, BadgeConfig } from './avatar.interface';
 
 @Component({
   selector: 'b-avatar',
@@ -74,6 +76,8 @@ export class AvatarComponent implements OnChanges {
 
   @HostBinding('attr.data-disabled') @Input() disabled = false;
 
+  onClick: (event: MouseEvent) => void;
+
   ngOnChanges(changes: SimpleChanges): void {
     this.isClickable =
       this.isClickable ||
@@ -84,9 +88,10 @@ export class AvatarComponent implements OnChanges {
     }
   }
 
-  onClick(event: MouseEvent): void {
+  onAvatarClick(event: MouseEvent): void {
     if (this.isClickable) {
       this.zone.run(() => {
+        isFunction(this.onClick) && this.onClick(event);
         this.clicked.emit(event);
       });
     }
