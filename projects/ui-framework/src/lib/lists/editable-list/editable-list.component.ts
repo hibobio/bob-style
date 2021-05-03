@@ -13,11 +13,14 @@ import {
   HostListener,
   OnInit,
   OnDestroy,
+  QueryList,
+  ViewChildren,
 } from '@angular/core';
 import { itemID, SelectOption } from '../list.interface';
 import { Icons } from '../../icons/icons.enum';
 import { ButtonType, ButtonSize } from '../../buttons/buttons.enum';
 import {
+  ACTIONS_ICONS,
   EditableListActions,
   EditableListState,
 } from './editable-list.interface';
@@ -34,13 +37,14 @@ import {
 } from '../../services/utils/functional-utils';
 import { cloneDeep } from 'lodash';
 import { EDITABLE_LIST_ALLOWED_ACTIONS_DEF } from './editable-list.const';
-import { ListSortType } from './editable-list.enum';
+import { IconActionsType, ListSortType } from './editable-list.enum';
 import { Keys } from '../../enums';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { EditableListUtils } from './editable-list.static';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { MenuItem } from 'bob-style';
 
 @Component({
   selector: 'b-editable-list',
@@ -52,7 +56,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
 
   @ViewChild('addItemInput') addItemInput: ElementRef;
-
+  @ViewChildren('editItemInput') editItemInputs: QueryList<ElementRef<HTMLInputElement>>;
   @Input() list: SelectOption[] = [];
   @Input() sortType: ListSortType;
   @Input() allowedActions: EditableListActions = cloneObject(
@@ -88,7 +92,10 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   public removedItem = false;
   private inputChangeDbncr: Subject<string> = new Subject<string>();
   private inputChangeSbscr: Subscription;
-
+  public currentActionType: IconActionsType;
+  public currentItemEdit: SelectOption;
+  public currentEditInput: ElementRef<HTMLInputElement>;
+  public editInputInvalid: boolean;
   @HostListener('keydown.outside-zone', ['$event'])
   onHostKeydown(event: KeyboardEvent): void {
     if (isNumber(this.removingIndex) && isKey(event.key, Keys.escape)) {
@@ -110,16 +117,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     }
     if (this.addingItem && isKey(event.key, Keys.escape)) {
       this.addItemCancel();
-    }
-  }
-
-  @HostListener('focusout.outside-zone', ['$event'])
-  onHostFocusout(event: FocusEvent): void {
-    if (isNumber(this.removingIndex)) {
-      this.removeCancel(event);
-    }
-    if (this.addingItem) {
-      this.addItemCancel(event);
     }
   }
 
@@ -165,6 +162,76 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
+  public onActionClicked(event: MenuItem<{data: SelectOption, index: number}>): void {
+    this.resetActionsData();
+    switch (event.label as IconActionsType) {
+      case IconActionsType.Edit:
+        this.editItem(event.data.data, event.data.index);
+        break;
+      case IconActionsType.Remove:
+        this.removeItem(event.data.index);
+    }
+  }
+
+  public resetActionsData(): void {
+    this.currentActionType = null;
+    this.removingIndex = null;
+    this.addingItem = false;
+    this.inputInvalid = false;
+    this.editInputInvalid = false;
+    this.sameItemIndex = null;
+  }
+
+  public get isEditMode(): boolean {
+    return this.currentActionType === IconActionsType.Edit;
+  }
+
+  public initActionMenuItems(index: number, item: SelectOption): MenuItem[] {
+    return Object.keys(this.allowedActions).filter((a: keyof EditableListActions) => ACTIONS_ICONS.includes(a))
+     .map((action: keyof EditableListActions) => {
+      return {
+        label: action,
+        data: { data: item , index},
+      }
+     });
+  }
+
+  public saveEdit(): void {
+    const value = this.currentEditInput.nativeElement.value.replace(/\s+/gi, ' ').trim();
+    if (value) {
+      this.sameItemIndex = this.listState.list.filter((_, i) => i !== this.removingIndex)
+          .map((i) => i.value)
+          .findIndex((i) => compareAsStrings(i, value, false));
+
+      if (this.sameItemIndex > -1) {
+          this.editInputInvalid = true;
+          return;
+      }
+      this.listState.list[this.removingIndex].value = this.currentEditInput.nativeElement.value
+      this.removingIndex = null;
+      this.transmit();
+    } else {
+      this.removingIndex = null;
+    }
+  }
+
+  public get isMultipleActions(): boolean {
+    return ACTIONS_ICONS.filter(a => this.allowedActions[a] === true).length > 1;
+  }
+
+  public editItem(data: SelectOption, index: number): void {
+    this.removingIndex = index;
+    this.currentActionType = IconActionsType.Edit
+    this.currentItemEdit = data;
+    this.currentEditInput = this.editItemInputs.toArray().find(i => i.nativeElement.id === this.removingIndex.toString());
+    this.currentEditInput.nativeElement.value = this.listState.list[this.removingIndex].value;
+    this.currentEditInput.nativeElement.focus();
+  }
+
+  public openActionsMenu(index: number): void {
+    this.removingIndex = index
+  }
+
   ngOnDestroy(): void {
     if (this.inputChangeSbscr) {
       this.inputChangeDbncr.complete();
@@ -173,9 +240,9 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public addItem(confirm = false): void {
+    this.removingIndex = null;
     if (!confirm) {
       this.addingItem = true;
-
       this.zone.runOutsideAngular(() => {
         setTimeout(() => {
           this.addItemInput.nativeElement.focus();
@@ -251,6 +318,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public removeItem(index: number, confirm = false): void {
+    this.currentActionType = IconActionsType.Remove
     if (!confirm) {
       this.removingIndex = index;
     } else {
@@ -290,6 +358,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     const value = this.addItemInput.nativeElement.value.trim();
     this.addingItemLen = value.length;
     this.inputInvalid = false;
+    this.editInputInvalid = false;
     this.sameItemIndex = null;
 
     if (!this.cd['destroyed']) {
