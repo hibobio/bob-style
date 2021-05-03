@@ -6,6 +6,6 @@ export enum ListSortType {
 
 
 export enum IconActionsType {
-  Edit = 'edit',
-  Remove = 'remove'
+  Delete = 'Delete',
+  Rename = 'Rename'
 }

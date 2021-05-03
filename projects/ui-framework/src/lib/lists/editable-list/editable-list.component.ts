@@ -165,10 +165,10 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   public onActionClicked(event: MenuItem<{data: SelectOption, index: number}>): void {
     this.resetActionsData();
     switch (event.label as IconActionsType) {
-      case IconActionsType.Edit:
+      case IconActionsType.Rename:
         this.editItem(event.data.data, event.data.index);
         break;
-      case IconActionsType.Remove:
+      case IconActionsType.Delete:
         this.removeItem(event.data.index);
     }
   }
@@ -183,14 +183,14 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public get isEditMode(): boolean {
-    return this.currentActionType === IconActionsType.Edit;
+    return this.currentActionType === IconActionsType.Rename;
   }
 
   public initActionMenuItems(index: number, item: SelectOption): MenuItem[] {
-    return Object.keys(this.allowedActions).filter((a: keyof EditableListActions) => ACTIONS_ICONS.includes(a))
+    return Object.keys(this.allowedActions).filter((a: keyof EditableListActions) => ACTIONS_ICONS.has(a))
      .map((action: keyof EditableListActions) => {
       return {
-        label: action,
+        label: ACTIONS_ICONS.get(action),
         data: { data: item , index},
       }
      });
@@ -216,12 +216,13 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public get isMultipleActions(): boolean {
-    return ACTIONS_ICONS.filter(a => this.allowedActions[a] === true).length > 1;
+    return  Object.keys(this.allowedActions).filter(
+      (a: keyof EditableListActions) => ACTIONS_ICONS.has(a) && this.allowedActions[a]).length > 1;
   }
 
   public editItem(data: SelectOption, index: number): void {
     this.removingIndex = index;
-    this.currentActionType = IconActionsType.Edit
+    this.currentActionType = IconActionsType.Rename
     this.currentItemEdit = data;
     this.currentEditInput = this.editItemInputs.toArray().find(i => i.nativeElement.id === this.removingIndex.toString());
     this.currentEditInput.nativeElement.value = this.listState.list[this.removingIndex].value;
@@ -318,7 +319,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public removeItem(index: number, confirm = false): void {
-    this.currentActionType = IconActionsType.Remove
+    this.currentActionType = IconActionsType.Delete
     if (!confirm) {
       this.removingIndex = index;
     } else {

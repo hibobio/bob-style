@@ -1,4 +1,4 @@
-import { ListSortType } from './editable-list.enum';
+import { IconActionsType, ListSortType } from './editable-list.enum';
 import { SelectOption } from '../list.interface';
 
 export interface EditableListActions {
@@ -17,4 +17,5 @@ export interface EditableListState {
   list: SelectOption[];
 }
 
-export const ACTIONS_ICONS: Array<keyof EditableListActions> = ['edit', 'remove'];
+export const ACTIONS_ICONS: Map<keyof EditableListActions, keyof typeof IconActionsType> = new Map([['edit', 'Rename'], ['remove', 'Delete']]) 
+
