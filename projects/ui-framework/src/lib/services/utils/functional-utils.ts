@@ -2142,6 +2142,8 @@ export const getPaletteColorByIndex = (
 export const isDark = (color: Color, sensitivity?: number) =>
   ColorService.prototype.isDark(color, sensitivity);
 
+export const randomColor = () => ColorService.prototype.randomColor();
+
 export const invoke = <T = unknown, R = any>(smth: T, method: string): R => {
   return smth && isFunction(smth[method]) && smth[method]();
 };

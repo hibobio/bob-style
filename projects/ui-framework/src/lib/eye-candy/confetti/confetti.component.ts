@@ -1,3 +1,5 @@
+import { isEqual as _isEqual, remove as _remove } from 'lodash';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,7 +12,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { remove as _remove, isEqual as _isEqual } from 'lodash';
+
 import { Color } from '../../types';
 
 const GRAVITY = 0.4;
@@ -126,6 +128,7 @@ export class ConfettiComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     window.cancelAnimationFrame(this.loopReq);
+    this.ctx.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
   }
 }
 
