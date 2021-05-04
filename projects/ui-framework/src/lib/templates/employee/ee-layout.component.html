@@ -6,8 +6,7 @@
   <ng-content select="[header], b-ee-layout-header"></ng-content>
 </header>
 
-<aside class="mrg-r-24"
-       [ngClass]="config?.sidebarClass"
+<aside [ngClass]="config?.sidebarClass"
        [ngStyle]="config?.sidebarStyle">
 
   <b-avatar *ngIf="avatar"
@@ -29,7 +28,7 @@
     <ng-content select="[title], b-ee-layout-title"></ng-content>
   </div>
 
-  <div class="content grid-layout-12-cols row-gap"
+  <div class="content"
        [ngClass]="config?.contentClass"
        [ngStyle]="config?.contentStyle">
     <ng-content></ng-content>

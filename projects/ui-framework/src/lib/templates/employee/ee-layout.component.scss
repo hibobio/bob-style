@@ -1,33 +1,43 @@
 @import '../../style/common-imports';
 
+$ee-layout-sidebar-width: 180px;
+
 :host {
-  display: flex;
   flex-grow: 1;
-  flex-wrap: wrap;
   width: 100%;
   min-width: 0;
+  text-align: left;
+
+  display: grid;
+  grid-template-columns: $ee-layout-sidebar-width 1fr;
+  grid-column-gap: 24px;
 }
 
 header {
   width: 100%;
+  grid-column: 1/3;
 }
 
 aside,
-section {
+section,
+:host::ng-deep b-ee-layout-sidebar {
   display: flex;
   flex-direction: column;
 }
 
 aside {
-  width: 180px;
-  flex-grow: 0;
-  flex-shrink: 0;
   align-items: center;
+
+  ::ng-deep {
+    b-side-menu,
+    .menu-options,
+    .menu-header {
+      width: 100%;
+    }
+  }
 }
 
 section {
-  flex-grow: 1;
-  flex-shrink: 1;
   min-width: 0;
 }
 

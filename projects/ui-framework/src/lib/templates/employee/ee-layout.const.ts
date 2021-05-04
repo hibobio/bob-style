@@ -6,6 +6,16 @@ export const EE_LAYOUT_CONFIG_BY_TYPE: Partial<Record<
   EELayoutConfig
 >> = {
   [Types.primary]: {
-    sectionClass: ['bg-white', 'brd', 'rounded', 'pad-x-32', 'pad-y-24'],
+    contentClass: ['grid-layout-12-cols'],
+  },
+  [Types.secondary]: {
+    contentClass: [
+      'bg-white',
+      'brd',
+      'rounded',
+      'pad-x-32',
+      'pad-y-24',
+      'grid-layout-12-cols',
+    ],
   },
 };

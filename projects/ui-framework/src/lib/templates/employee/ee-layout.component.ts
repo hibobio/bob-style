@@ -14,7 +14,10 @@ import {
 import { Avatar } from '../../avatar/avatar/avatar.interface';
 import { Types } from '../../enums';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { hasChanges } from '../../services/utils/functional-utils';
+import {
+  hasChanges,
+  mergeObjects,
+} from '../../services/utils/functional-utils';
 import { EE_LAYOUT_CONFIG_BY_TYPE } from './ee-layout.const';
 import { EELayoutConfig } from './ee-layout.interface';
 
@@ -43,20 +46,21 @@ export class EELayoutComponent implements OnChanges, AfterViewInit {
   public hasTitle = true;
 
   ngOnChanges(changes: SimpleChanges): void {
+    //
     if (hasChanges(changes, ['type', 'config'])) {
-      this.config = {
-        ...(Object.keys(EE_LAYOUT_CONFIG_BY_TYPE).includes(this.type) &&
-          EE_LAYOUT_CONFIG_BY_TYPE[this.type]),
-        ...(changes.config?.currentValue || this.config),
-      };
+      //
+      this.config = mergeObjects<EELayoutConfig>(
+        EE_LAYOUT_CONFIG_BY_TYPE[this.type],
+        changes.config?.currentValue || this.config
+      );
     }
   }
 
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
-        this.hasHeader = this.DOM.isEmpty(this.header.nativeElement);
-        this.hasTitle = this.DOM.isEmpty(this.title.nativeElement);
+        this.hasHeader = !this.DOM.isEmpty(this.header.nativeElement);
+        this.hasTitle = !this.DOM.isEmpty(this.title.nativeElement);
 
         this.cd.detectChanges();
       }, 0);
