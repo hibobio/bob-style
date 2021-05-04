@@ -29,7 +29,11 @@ $cardPadding-small: times8(2);
   }
 }
 
-@mixin card-common($doHover: true, $padding: $cardPadding) {
+@mixin card-common(
+  $doHover: true,
+  $padding: $cardPadding,
+  $padding-small: $cardPadding-small
+) {
   :host {
     box-sizing: border-box;
     position: relative;
@@ -121,16 +125,20 @@ $cardPadding-small: times8(2);
     &[data-type='small'] {
       min-width: $card-width-small;
       min-height: 0;
-      padding: $cardPadding-small;
+      padding: $padding-small;
 
       .card-subtitle {
         font-size: $font-size-caption;
         --font-size: #{$font-size-caption};
       }
 
-      .card-top-with-image {
-        margin: (-1 * $cardPadding-small) (-1 * $cardPadding-small) 0
-          (-1 * $cardPadding-small);
+      @if ($padding-small) {
+        .card-top-with-image {
+          margin: (-1 * $padding-small)
+            (-1 * $padding-small)
+            0
+            (-1 * $padding-small);
+        }
       }
     }
 
