@@ -1,18 +1,19 @@
 import {
+  ChangeDetectorRef,
   Component,
   forwardRef,
-  NgZone,
-  ChangeDetectorRef,
   Input,
-  SimpleChanges,
+  NgZone,
   OnChanges,
+  SimpleChanges,
 } from '@angular/core';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { InputAutoCompleteOptions, InputTypes } from '../input/input.enum';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BaseInputElement } from '../base-input-element';
-import { BaseFormElement } from '../base-form-element';
+
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { applyChanges } from '../../services/utils/functional-utils';
+import { BaseFormElement } from '../base-form-element';
+import { BaseInputElement } from '../base-input-element';
+import { InputAutoCompleteOptions, InputTypes } from '../input/input.enum';
 
 @Component({
   selector: 'b-password-input',
@@ -39,7 +40,6 @@ export class PasswordInputComponent extends BaseInputElement
   implements OnChanges {
   constructor(cd: ChangeDetectorRef, zone: NgZone) {
     super(cd, zone);
-    this.outputTransformers = [];
   }
 
   @Input() minChars = 4;
