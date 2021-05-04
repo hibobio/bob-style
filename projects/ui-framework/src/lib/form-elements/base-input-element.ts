@@ -28,6 +28,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   ) {
     super(cd);
     this.inputTransformers = [stringyOrFail];
+    this.outputTransformers = [(v) => v?.trim()];
 
     this.baseValue = '';
     this.forceElementValue = true;
