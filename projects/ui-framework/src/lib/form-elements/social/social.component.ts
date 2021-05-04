@@ -15,6 +15,7 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { IconColor, IconSize } from '../../icons/icons.enum';
 import { URLutils } from '../../services/url/url-utils.service';
+import { isString } from '../../services/utils/functional-utils';
 import { stringyOrFail } from '../../services/utils/transformers';
 import { BaseFormElement } from '../base-form-element';
 import { InputEventType } from '../form-elements.enum';
@@ -66,7 +67,7 @@ export class SocialComponent extends BaseFormElement
       },
     ];
     this.outputTransformers = [
-      (v) => v?.trim(),
+      (v) => (isString(v) ? v.trim() : v),
       (value: string): string =>
         value ? `https://${SocialTypes[this.type].prefix}${value}` : '',
     ];

@@ -11,7 +11,11 @@ import {
 } from '@angular/core';
 
 import { Keys } from '../enums';
-import { isKey, notFirstChanges } from '../services/utils/functional-utils';
+import {
+  isKey,
+  isString,
+  notFirstChanges,
+} from '../services/utils/functional-utils';
 import { stringyOrFail } from '../services/utils/transformers';
 import { DOMInputEvent } from '../types';
 import { BaseFormElement } from './base-form-element';
@@ -28,7 +32,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   ) {
     super(cd);
     this.inputTransformers = [stringyOrFail];
-    this.outputTransformers = [(v) => v?.trim()];
+    this.outputTransformers = [(v) => (isString(v) ? v.trim() : v)];
 
     this.baseValue = '';
     this.forceElementValue = true;
