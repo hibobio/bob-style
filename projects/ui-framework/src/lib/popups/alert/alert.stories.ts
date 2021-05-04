@@ -1,23 +1,24 @@
-import { values } from 'lodash';
-
-import { select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
-
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
+import { AlertModule } from './alert.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { AlertExampleModule } from './alert-example.module';
 import { AlertType } from './alert.enum';
-import { AlertModule } from './alert.module';
+import { values } from 'lodash';
 
 const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
 );
 const alertTypes = values(AlertType);
 
-const template = `<b-alert-example
+const template = `
+<b-alert-example
   [title]="title"
   [alertType]="alertType"
-  [text]="text"></b-alert-example>`;
+  [text]="text"
+  [autoClose]="autoClose">
+</b-alert-example>`;
 
 const storyTemplate = `<b-story-book-layout [title]="'Alert'">
     ${template}
@@ -37,7 +38,8 @@ const note = `
         .showAlert({
           alertType: this.alertType,
           title: this.title,
-          text: this.text
+          text: this.text,
+          autoClose: this.autoClose,
       });
     }
   }
@@ -59,6 +61,7 @@ const note = `
   alertType | AlertType | types - success, error, information, warning
   title | string | alert title
   text | string | alert content
+  autoClose | boolean | a flag for auto close the alert after timeout (default true)
 `;
 
 story.add(
@@ -70,6 +73,7 @@ story.add(
         alertType: select('alertType', alertTypes, AlertType.information),
         title: text('title', 'Alert title'),
         text: text('text', 'The alert text appear here'),
+        autoClose: boolean('autoClose', true),
       },
       moduleMetadata: {
         imports: [AlertModule, AlertExampleModule, StoryBookLayoutModule],
