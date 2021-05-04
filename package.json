@@ -35,6 +35,7 @@
     "@ngx-translate/core": "^13.0.0",
     "@schematics/angular": "^11.2.9",
     "@types/highcharts": "^5.0.44",
+    "@types/webpack": "^5.28.0",
     "ag-grid-angular": "^22.1.1",
     "ag-grid-community": "^22.1.1",
     "ag-grid-enterprise": "^22.1.1",
