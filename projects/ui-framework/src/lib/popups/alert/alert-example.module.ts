@@ -1,5 +1,3 @@
-
-
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, Input, NgModule } from '@angular/core';
@@ -32,6 +30,7 @@ export class AlertExampleComponent {
   @Input() public alertType: AlertType;
   @Input() public text: string;
   @Input() public title: string;
+  @Input() public autoClose: boolean;
 
   showSuccessAlert(): void {
     // this.http
@@ -49,7 +48,9 @@ export class AlertExampleComponent {
     //     this.alertService.showSuccessAlert(response);
     //   });
 
-    this.alertService.showSuccessAlert('Something good happened');
+    this.alertService.showSuccessAlert('Something good happened', {
+      autoClose: this.autoClose,
+    });
   }
 
   showErrorAlert(): void {
@@ -64,7 +65,9 @@ export class AlertExampleComponent {
     //   )
     //   .subscribe();
 
-    this.alertService.showErrorAlert('Something bad happened');
+    this.alertService.showErrorAlert('Something bad happened', {
+      autoClose: this.autoClose,
+    });
   }
 
   showAlert(): void {
@@ -72,6 +75,7 @@ export class AlertExampleComponent {
       alertType: this.alertType,
       title: this.title,
       text: this.text,
+      autoClose: this.autoClose,
     };
     this.alertService.showAlert(alertConfig);
   }
