@@ -9,7 +9,7 @@ import { inputValue, fakeAsyncFlush } from '../../services/utils/test-helpers';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { ListSortType } from './editable-list.enum';
 import { cloneDeep } from 'lodash';
-import { mockTranslatePipe } from '../../tests/services.stub.spec';
+import { mockTranslatePipe, TranslateServiceProvideMock } from '../../tests/services.stub.spec';
 import { ButtonComponent } from '../../buttons/button/button.component';
 import { InputMessageComponent } from '../../form-elements/input-message/input-message.component';
 import { SquareButtonComponent } from '../../buttons/square/square.component';
@@ -71,7 +71,7 @@ describe('EditableListComponent', () => {
         InputMessageComponent,
       ],
       imports: [CommonModule],
-      providers: [EventManagerPlugins[0]],
+      providers: [EventManagerPlugins[0], TranslateServiceProvideMock()],
       schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(EditableListComponent, {
@@ -81,7 +81,6 @@ describe('EditableListComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(EditableListComponent);
         component = fixture.componentInstance;
-        component.ngOnInit = () => {};
       });
   }));
 
@@ -228,32 +227,6 @@ describe('EditableListComponent', () => {
       doneButton.nativeElement.click();
       fixture.detectChanges();
     });
-
-    it('should show an error if item is in the list already', fakeAsync(() => {
-      triggerChanges();
-      const input = fixture.debugElement.query(By.css('.bel-item-input'));
-      inputValue(
-        input.nativeElement,
-        component.list[0].value.toUpperCase(),
-        false,
-        false
-      );
-      fixture.detectChanges();
-      const done = fixture.debugElement.query(
-        By.css('.bel-done-button button')
-      );
-      done.nativeElement.click();
-      fixture.detectChanges();
-      tick(100);
-      const error = fixture.debugElement.query(
-        By.css('[b-input-message] .error')
-      );
-      expect(error.nativeElement.innerText).toContain(
-        selectOptionsMock[0].value
-      );
-      expect(error.nativeElement.innerText).toContain('already');
-      fakeAsyncFlush();
-    }));
   });
 
   describe('Sorting', () => {
