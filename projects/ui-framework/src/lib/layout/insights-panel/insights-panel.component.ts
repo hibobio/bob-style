@@ -11,12 +11,12 @@ import {
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { Button } from '../../buttons/buttons.interface';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { INSIGHTS_PANEL_CONFIG_DEF } from './insights-panel.const';
+import { InsightsPanelType } from './insights-panel.enum';
 import {
   InsightsPanelConfig,
   InsightsPanelData,
-} from './insight-panel.interfaces';
-import { INSIGHTS_PANEL_CONFIG_DEF } from './insights-panel-consts';
-import { InsightsPanelType } from './insights-panel.enums';
+} from './insights-panel.interface';
 
 @Component({
   selector: 'b-insights-panel',
@@ -30,19 +30,20 @@ export class InsightsPanelComponent {
   readonly iconSizes = IconSize;
   readonly iconTypes = Icons;
 
-  @HostBinding('attr.data-type') @Input() type: InsightsPanelType =
-    InsightsPanelType.information;
-
-  @HostBinding('attr.data-expanded')
-  @Input('expanded')
-  isExpanded: boolean = true;
+  @Input() data: InsightsPanelData[];
+  @Input('expanded') isExpanded: boolean = true;
 
   @Input('config') set setConfig(config: InsightsPanelConfig) {
     this.config = { ...this.config, ...config };
   }
   public config: InsightsPanelConfig = { ...INSIGHTS_PANEL_CONFIG_DEF };
 
-  @Input() data: InsightsPanelData[];
+  @HostBinding('attr.data-type') @Input() type: InsightsPanelType =
+    InsightsPanelType.information;
+
+  @HostBinding('attr.data-expanded') get panelIsExpanded() {
+    return this.config?.collapsible === false || this.isExpanded;
+  }
 
   @Output() expanded: EventEmitter<boolean> = new EventEmitter<boolean>();
 

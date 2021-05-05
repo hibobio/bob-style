@@ -1,6 +1,13 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { action } from '@storybook/addon-actions';
-import { boolean, object, select, withKnobs } from '@storybook/addon-knobs';
+import {
+  boolean,
+  number,
+  object,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
@@ -8,7 +15,7 @@ import { Icons } from '../../icons/icons.enum';
 import { mockText } from '../../mock.const';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
-import { InsightsPanelType } from './insights-panel.enums';
+import { InsightsPanelType } from './insights-panel.enum';
 import { InsightsPanelModule } from './insights-panel.module';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
@@ -21,7 +28,13 @@ const template1 = `
   <b-insights-panel
         [type]="type"
         [data]="data"
-        [config]="config"
+        [config]="{
+          collapsible:collapsible,
+          icon:icon,
+          maxLines:maxLines,
+          expandButtonText:expandButtonText,
+          readMoreLinkText:readMoreLinkText
+        }"
         [expanded]="expanded"
         (expanded)="onExpand($event ? 'yes' : 'no')"
   ></b-insights-panel>
@@ -63,6 +76,16 @@ const note = `
   [expanded] | boolean | control expanded/collapsed state
   (expanded) | EventEmitter<wbr>&lt;boolean&gt; | emits on expanded/collapsed state change
 
+  #### interface: InsightsPanelConfig
+  Name | Type | Description
+  --- | --- | ---
+  collapsible? | boolean | if panel is collapsible
+  icon? | Icons | default icon for the section header
+  maxLines? | number | max lines of section content before 'View more' link is shown
+  expandButtonText? | string | text for the expand/collapse button
+  readMoreLinkText? | string | text for the 'View more' link
+  headingClass, sectionClass |string / string[] / object | custom content & heading classes - support what ngClass binding supports
+  headingStyle, sectionStyle | object | custom content & heading css styles - support what ngStyle supports
 
 `;
 
@@ -92,18 +115,30 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', type, InsightsPanelType.information),
-
-        expanded: boolean('expanded', false),
-
-        config: object('config', {
-          collapsible: true,
-          icon: Icons.graph_timeline,
-          expandButtonText: 'INSIGHTS',
-          maxLines: 3,
-        }),
+        type: select('type', type, InsightsPanelType.information, 'Props'),
+        expanded: boolean('expanded', false, 'Props'),
+        collapsible: boolean('collapsible', true, 'Props'),
+        icon: select(
+          'icon',
+          [
+            Icons.graph_timeline,
+            Icons.analytics,
+            Icons.analytics_alt,
+            Icons.chart,
+            Icons.chart_area,
+            Icons.chart_bar_horiz,
+            Icons.chart_bar_vert,
+            Icons.chart_donut,
+            Icons.chart_line,
+          ],
+          Icons.graph_timeline,
+          'Props'
+        ),
+        maxLines: number('maxLines', 3, {}, 'Props'),
+        expandButtonText: text('expandButtonText', 'Insights', 'Props'),
+        readMoreLinkText: text('readMoreLinkText', 'Read More', 'Props'),
         data: data,
-
+        dataNotes: object('data', data, 'Data'),
         onExpand: action('expanded'),
       },
       moduleMetadata: {
