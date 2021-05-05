@@ -34,7 +34,7 @@
 
   .btn-minimize ::ng-deep {
     button {
-      font-weight: 700;
+      font-weight: 500;
       @include button-icon-right;
       @include icon-color(var(--color));
     }
