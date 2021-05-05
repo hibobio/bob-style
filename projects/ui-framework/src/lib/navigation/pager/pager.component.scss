@@ -5,22 +5,19 @@
   display: flex;
   align-items: center;
   flex-grow: 1;
+  min-width: 0;
   user-select: none;
-}
-
-.bpgr-slice-info {
-  text-align: left;
-  @include text-truncate;
 }
 
 .bpgr-page-buttons {
   display: flex;
   text-align: center;
+  flex-grow: 1;
+  justify-content: flex-end;
 }
 
-.bpgr-slice-size-select {
-  margin-left: auto;
-  min-width: 100px;
+.bpgr-slice-select {
+  min-width: 75px;
 }
 
 .bpgr-page-buttons ::ng-deep {
