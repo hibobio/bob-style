@@ -9,6 +9,18 @@
   @include animate(slide-down, 0.2s, $val: 5px, $keyframes: true);
 }
 
+[data-max-lines='1'] {
+  white-space: normal;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical;
+  min-height: unquote('calc(var(--font-size) * var(--line-height))');
+
+  max-height: unquote('calc(var(--font-size) * var(--line-height))');
+
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+}
+
 [hidden] {
   display: none;
 }
