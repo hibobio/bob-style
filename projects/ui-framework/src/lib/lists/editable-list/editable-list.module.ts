@@ -8,6 +8,7 @@ import { InputMessageModule } from '../../form-elements/input-message/input-mess
 import { TranslateModule } from '@ngx-translate/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MenuModule } from '../../navigation/menu/menu.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { MenuModule } from '../../navigation/menu/menu.module';
     InputMessageModule,
     TranslateModule,
     DragDropModule,
+    FormsModule,
     MenuModule
   ],
   declarations: [EditableListComponent],
