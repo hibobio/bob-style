@@ -216,6 +216,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.maxHeight = this.enablePager ? null : this.maxHeight;
     this.setGridHeight(this.maxHeight);
     this.setGridOptions({
       ...this.initGridOptions(),
