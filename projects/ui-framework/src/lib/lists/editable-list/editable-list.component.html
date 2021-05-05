@@ -29,8 +29,7 @@
         <b-button class="bel-cancel-button"
                   [type]="buttonType.tertiary"
                   [size]="buttonSize.small"
-                  [text]="('common.cancel' | translate)"
-                  (clicked)="resetActionsData()">
+                  [text]="('common.cancel' | translate)">
         </b-button>
         <b-button class="bel-done-button"
                   [type]="buttonType.secondary"
@@ -86,30 +85,30 @@
          cdkDrag cdkDragLockAxis="y"
          [attr.data-item-id]="item.id"
          [ngClass]="{'new': addedItem && index === 0,
-                     'deleted':removedItem && removingIndex === index,
+                     'deleted':removedItem && itemHandledIndex === index,
                      'warn': sameItemIndex === index,
                      'b-icon-drag-alt': allowedActions.order !== false,
-                     error: editInputInvalid && index === removingIndex,
+                     error: editInputInvalid && index === itemHandledIndex,
                      'non-draggable-item': allowedActions.order === false}">
 
-      <span [hidden]="isEditMode && index === removingIndex" class="bel-item-value"
+      <span [hidden]="isEditMode && index === itemHandledIndex" class="bel-item-value"
             data-max-lines="2">
         {{ item.value }}
       </span>
 
       <input #editItemInput
              type="text"
-             [hidden]="!isEditMode || index !== removingIndex"
-             class="bfe-input bel-item-input"
+             [hidden]="!isEditMode || index !== itemHandledIndex"
+             class="bfe-input bel-item-input edit-input"
              [attr.autocomplete]="autoComplete.off"
              [id]="index"
-             [attr.innerHTML]="item.value"
+             [(ngModel)]="item.value"
              [attr.maxlength]="maxChars || null"
              (input.outside-zone)="onInputChange()">
 
       <b-square-button *ngIf="allowedActions.remove && item.canBeDeleted!==false && !isMultipleActions"
                        class="bel-trash-button"
-                       [hidden]="removingIndex === index"
+                       [hidden]="itemHandledIndex === index"
                        [type]="buttonType.tertiary"
                        [size]="buttonSize.small"
                        [icon]="icons.delete"
@@ -118,7 +117,7 @@
 
       <b-square-button *ngIf="allowedActions.edit && !isMultipleActions"
                        class="bel-trash-button"
-                       [hidden]="removingIndex === index"
+                       [hidden]="itemHandledIndex === index"
                        [type]="buttonType.tertiary"
                        [size]="buttonSize.small"
                        [icon]="icons.edit"
@@ -126,29 +125,34 @@
       </b-square-button>
 
       <div>
-        <b-action-menu-button *ngIf="removingIndex !== index && isMultipleActions"
-          [menuItems]="this.initActionMenuItems(index, item)" (actionClick)="onActionClicked($event)">
+        <b-action-menu-button *ngIf="itemHandledIndex !== index && isMultipleActions"
+          [menuItems]="this.initMenuItems(index, item)">
         </b-action-menu-button>
       </div>
 
       <div *ngIf="allowedActions.remove || allowedActions.edit"
            class="bel-item-confirm"
-           [hidden]="removingIndex !== index"
+           [hidden]="itemHandledIndex !== index"
            tabindex="0">
 
         <b-button class="bel-cancel-button"
                   [type]="buttonType.tertiary"
                   [size]="buttonSize.small"
                   [text]="('common.cancel' | translate)"
-                  (clicked)="resetActionsData()">
+                  (clicked)="itemHandledIndex = null">
         </b-button>
-        <ng-container *ngIf="!isEditMode else saveBtn">
-          <ng-container *ngTemplateOutlet="removeBtn; context: {'index': index}"></ng-container>
+        <ng-container [ngSwitch]="currentActionType">
+          <ng-container *ngSwitchCase="'remove'">
+            <ng-container *ngTemplateOutlet="removeBtn; context: {'index': index}"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'edit'">
+            <ng-container *ngTemplateOutlet="saveBtn; context: {'item': item}"></ng-container>
+          </ng-container>
         </ng-container>
       </div>
   </div>
   <ng-container 
-      *ngTemplateOutlet="errorMsg; context: {'showError': removingIndex === index,
+      *ngTemplateOutlet="errorMsg; context: {'showError': itemHandledIndex === index,
        'hidden': !currentEditInput || !(editInputInvalid || maxChars - addingItemLen < 15)}">
   </ng-container>
   </ng-container>
@@ -164,12 +168,12 @@
   </b-button>
 </ng-template>
 
-<ng-template #saveBtn>
-  <b-button class="bel-done-button"
+<ng-template #saveBtn let-item="item">
+  <b-button class="bel-done-button save-edit-btn"
               [type]="buttonType.secondary"
               [size]="buttonSize.small"
               [text]="('common.save' | translate)"
-              (clicked)="saveEdit()">
+              (clicked)="saveEdit(item)">
     </b-button>
 </ng-template>
 
