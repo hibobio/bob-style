@@ -528,6 +528,42 @@ export const objectGetDeepestValid = <T = any, V = any>(
     : value) as V;
 };
 
+export const mergeObjects = <I = GenericObject, O = I>(
+  target: I,
+  ...rest: I[]
+): O => {
+  //
+  const allObjects: I[] = [target, ...rest].filter(isNotEmptyObject);
+
+  const allKeys: string[] = joinArrays(
+    [],
+    ...allObjects.map((c) => Object.keys(c))
+  );
+
+  const allValues: GenericObject<any[]> = allKeys.reduce((vals, key) => {
+    vals[key] = allObjects.map((c) => c[key]).filter((v) => v !== undefined);
+    if (!vals[key].length) {
+      delete vals[key];
+    }
+    return vals;
+  }, {});
+
+  const merged: O = Object.keys(allValues).reduce((cnfg, key) => {
+    //
+    if (allValues[key].every((v) => isPlainObject(v))) {
+      cnfg[key] = Object.assign({}, ...allValues[key]);
+    } else if (allValues[key].every((v) => isArray(v))) {
+      cnfg[key] = joinArrays([], ...allValues[key]);
+    } else {
+      cnfg[key] = allValues[key].slice(-1)[0];
+    }
+
+    return cnfg;
+  }, {} as O);
+
+  return merged;
+};
+
 // ----------------------
 // ARRAYS
 // ----------------------
@@ -2105,6 +2141,8 @@ export const getPaletteColorByIndex = (
 
 export const isDark = (color: Color, sensitivity?: number) =>
   ColorService.prototype.isDark(color, sensitivity);
+
+export const randomColor = () => ColorService.prototype.randomColor();
 
 export const invoke = <T = unknown, R = any>(smth: T, method: string): R => {
   return smth && isFunction(smth[method]) && smth[method]();

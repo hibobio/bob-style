@@ -10,7 +10,7 @@ import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-to
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CardTableSortableComponent } from './card-table-sortable/card-table-sortable.component';
 import { IconsModule } from '../../icons/icons.module';
-
+import { TranslateModule } from '@ngx-translate/core';
 @NgModule({
   declarations: [
     TableCardCellComponent,
@@ -25,6 +25,7 @@ import { IconsModule } from '../../icons/icons.module';
     TruncateTooltipModule,
     DragDropModule,
     IconsModule,
+    TranslateModule
   ],
   exports: [CardTableComponent, CardTableSortableComponent],
   providers: [],

@@ -24,7 +24,7 @@ $chipTypeMap: (
         font-weight: $font-weight-body,
       ),
     ),
-  normal info warning error success:
+  normal info warning error success other:
     (
       font-weight: 500,
     ),
@@ -61,6 +61,13 @@ $chipTypeMap: (
       background-color: var(--positive-500),
       color: white,
       border-color: var(--positive-500),
+    ),
+  ),
+  other: (
+    '*': (
+      background-color: $color6_base,
+      color: white,
+      border-color: $color6_base,
     ),
   ),
   avatar icon:
@@ -150,13 +157,14 @@ $chipTypeMap: (
       border-radius: $border-radius,
     ),
   ),
-  label label-secondary: (
-    '*': (
-      border-radius: $border-radius/2,
-      height: times8(2),
-      padding: 0 8px,
+  label label-secondary:
+    (
+      '*': (
+        border-radius: $border-radius/2,
+        height: times8(2),
+        padding: 0 8px,
+      ),
     ),
-  ),
   label-secondary: (
     '*': (
       background-color: white,

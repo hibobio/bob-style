@@ -1,3 +1,7 @@
+import { AgGridModule } from 'ag-grid-angular';
+import { values } from 'lodash';
+import { of } from 'rxjs';
+
 import { Component } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { action } from '@storybook/addon-actions';
@@ -5,33 +9,35 @@ import {
   boolean,
   object,
   select,
-  withKnobs,
   text,
+  withKnobs,
 } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
-import { AgGridModule } from 'ag-grid-angular';
-import { AvatarModule, ComponentGroupType, SearchModule } from 'bob-style';
-import { values } from 'lodash';
-import { Icons } from '../../../src/lib/icons/icons.enum';
+
+import {
+  AvatarModule,
+  ComponentGroupType,
+  Icons,
+  SearchModule,
+} from 'bob-style';
+
 import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
 import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
 import {
+  mockColumnsDefsExtended,
   mockRowData,
   treeColumnDefsMock,
   treeRowDataMock,
-  mockColumnsDefsExtended,
 } from './table-mocks/table-story.mock';
 import { TableModule } from './table.module';
 import {
-  TreeConfig,
   TreeCellRendererComponent,
+  TreeConfig,
 } from './table/extensions/tree.config';
 import { TableComponent } from './table/table.component';
 import { RowSelection, TableType } from './table/table.enum';
 import { ColumnDef } from './table/table.interface';
-import { of } from 'rxjs';
-import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'b-tree-cell-avatar',
@@ -54,7 +60,7 @@ const template = `<b-table #table
     [rowData]="rowData | async"
     [columnDefs]="columnDefs | async"
     [tableGridOptions]="tableGridOptions"
-    [maxHeight]="maxHeight"
+    [maxHeight]="maxHeight === 'null' ? null : maxHeight"
     [rowSelection]="rowSelection"
     [removeColumnButtonEnabled]="removeColumnButtonEnabled"
     [shouldAutoSizeColumns]="shouldAutoSizeColumns"
@@ -221,7 +227,12 @@ function tableStoryFactory({
 }: TableStory) {
   const defaultProps = {
     type: select('type', type, TableType.Primary, 'Props'),
-    maxHeight: text('maxHeight', '450', 'Props'),
+    maxHeight: select(
+      'maxHeight',
+      [450, 250, 350, 600, 'null', 0],
+      450,
+      'Props'
+    ),
     rowSelection: select(
       'rowSelection',
       rowSelection,

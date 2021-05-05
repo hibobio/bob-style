@@ -24,6 +24,7 @@ import {
   DONUT_DIAMETERS,
   DONUT_SIZES,
   GenericObject,
+  simpleUID,
 } from 'bob-style';
 
 @Component({
@@ -132,7 +133,7 @@ export class PieChartComponent extends ChartCore implements OnChanges {
       series: [
         {
           type: 'pie',
-          name: this.name,
+          name: this.name || simpleUID('bhc'),
           data: this.data,
         },
       ],

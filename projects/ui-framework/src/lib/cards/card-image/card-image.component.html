@@ -1,10 +1,10 @@
-<div class="card-image mrg-b-16 brd-b"
+<div class="card-image brd-b"
      [style.background-image]="card?.imageUrl ? ('url(\'' + card?.imageUrl +
      '\')') : null"
      [style.padding-bottom]="card?.imageRatio ? getRatio(card?.imageRatio)+'%' : null"
      [ngClass]="card?.imageClass"
      [ngStyle]="card?.imageStyle"></div>
-<p class="card-title b-display-3 pad-x-24"
+<p class="card-title"
    [ngClass]="card?.titleClass"
    [ngStyle]="card?.titleStyle"
    [b-truncate-tooltip]="3"

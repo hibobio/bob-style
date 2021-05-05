@@ -13,6 +13,10 @@ import { ComponentRendererComponent } from '../../../services/component-renderer
 import { ButtonComponent } from '../../../buttons/button/button.component';
 import { ButtonsModule } from '../../../buttons/buttons.module';
 import { TruncateTooltipModule } from '../../../popups/truncate-tooltip/truncate-tooltip.module';
+import { TranslateFakeLoader, TranslateLoader, TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
+import createSpyObj = jasmine.createSpyObj;
+import SpyObj = jasmine.SpyObj;
+import { of } from 'rxjs';
 
 describe('CardTableComponent', () => {
   let fixture: ComponentFixture<CardTableComponent>;
@@ -23,7 +27,9 @@ describe('CardTableComponent', () => {
   let tableBodyElement: HTMLElement;
   let buttonElement: HTMLElement;
   let cardElement: HTMLElement;
-
+  let spyTranslate: SpyObj<TranslateService>;
+  spyTranslate = createSpyObj('TranslateService', ['get'])
+  spyTranslate.get.and.callFake((key: string) => of(key))
   let testVar = 'hello';
 
   const CardTableMockMetaData = [
@@ -77,8 +83,14 @@ describe('CardTableComponent', () => {
         CardTableModule,
         ButtonsModule,
         TruncateTooltipModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useValue: TranslateFakeLoader,
+         }
+        })
       ],
-      providers: [CellWidthsService],
+      providers: [CellWidthsService, TranslateService, TranslateStore],
       schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideModule(BrowserDynamicTestingModule, {
@@ -191,7 +203,7 @@ describe('CardTableComponent', () => {
     });
   });
 
-  describe('Default text when no table data', () => {
+  describe('Default text from localization when no table data', () => {
     it('should display default text if table is empty', () => {
       component.table = [];
       fixture.detectChanges();
@@ -199,9 +211,9 @@ describe('CardTableComponent', () => {
         By.css('.table-card-empty')
       ).nativeElement;
       expect(emptyTableElement).toBeTruthy();
-      expect(emptyTableElement.textContent.trim()).toEqual(
-        'No data to display'
-      );
+      spyTranslate.get(emptyTableElement.textContent).subscribe(res => {
+        expect(res).toEqual(emptyTableElement.textContent)
+      })
     });
     it('should display text passed via [default] input if table is empty', () => {
       component.table = undefined;

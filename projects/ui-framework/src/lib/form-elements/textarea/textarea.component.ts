@@ -1,13 +1,14 @@
 import {
+  ChangeDetectorRef,
   Component,
   forwardRef,
   NgZone,
-  ChangeDetectorRef,
 } from '@angular/core';
-import { BaseInputElement } from '../base-input-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BaseFormElement } from '../base-form-element';
+
 import { HtmlParserHelpers } from '../../services/html/html-parser.service';
+import { BaseFormElement } from '../base-form-element';
+import { BaseInputElement } from '../base-input-element';
 
 @Component({
   selector: 'b-textarea',
@@ -37,6 +38,5 @@ export class TextareaComponent extends BaseInputElement {
     this.inputTransformers.push((value: string): string => {
       return this.parserService.getPlainText(value);
     });
-    this.outputTransformers = [];
   }
 }

@@ -1,26 +1,28 @@
 import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  forwardRef,
-  ViewChild,
-  OnInit,
-  NgZone,
-  ElementRef,
-  ChangeDetectorRef,
   AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  Input,
+  NgZone,
+  OnInit,
+  Output,
+  ViewChild,
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+
 import { IconColor, IconSize } from '../../icons/icons.enum';
-import { BInputEvent } from '../input/input.interface';
-import { SocialTypes } from './social.const';
-import { Social } from './social.enum';
+import { URLutils } from '../../services/url/url-utils.service';
+import { isString } from '../../services/utils/functional-utils';
+import { stringyOrFail } from '../../services/utils/transformers';
 import { BaseFormElement } from '../base-form-element';
 import { InputEventType } from '../form-elements.enum';
 import { InputComponent } from '../input/input.component';
-import { stringyOrFail } from '../../services/utils/transformers';
-import { URLutils } from '../../services/url/url-utils.service';
+import { BInputEvent } from '../input/input.interface';
+import { SocialTypes } from './social.const';
+import { Social } from './social.enum';
 
 @Component({
   selector: 'b-social',
@@ -65,6 +67,7 @@ export class SocialComponent extends BaseFormElement
       },
     ];
     this.outputTransformers = [
+      (v) => (isString(v) ? v.trim() : v),
       (value: string): string =>
         value ? `https://${SocialTypes[this.type].prefix}${value}` : '',
     ];

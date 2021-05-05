@@ -1,6 +1,11 @@
 import { Icons } from '../../icons/icons.enum';
 import { Color } from '../../types';
-import { ProgressDirection } from './progress.enum';
+import {
+  DonutSize,
+  ProgressDirection,
+  ProgressSize,
+  ProgressType,
+} from './progress.enum';
 
 export interface ProgressData {
   value: number;
@@ -15,6 +20,7 @@ export interface ProgressConfig {
   disableAnimation?: boolean;
   hideValue?: boolean;
   clickable?: boolean;
+  reverseTextLocation?: boolean;
 }
 
 export interface ProgressBarData extends ProgressData {}
@@ -42,4 +48,20 @@ export interface MultiProgressBarConfig
   trackColor?: Color;
   total?: number;
   direction?: ProgressDirection;
+}
+
+export interface ProgressBar {
+  data: ProgressBarData;
+  config?: ProgressBarConfig;
+  type?: ProgressType;
+  size?: ProgressSize;
+}
+
+export interface ProgressDonut {
+  data: ProgressDonutData;
+  config?: ProgressDonutConfig;
+  type?: ProgressType;
+  size?: ProgressSize;
+  donutSize?: DonutSize;
+  customSize?: number;
 }

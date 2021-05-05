@@ -1,13 +1,18 @@
-import { ComponentFixture, TestBed, fakeAsync, flush, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
-import { AvatarComponent } from './avatar.component';
-import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
-import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { ChipType } from '../../chips/chips.enum';
-import { AvatarImageComponent } from './avatar-image/avatar-image.component';
 import { MockComponent } from 'ng-mocks';
+
+import { ChangeDetectionStrategy } from '@angular/core';
+import {
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  resetFakeAsyncZone,
+  TestBed,
+  waitForAsync,
+} from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+
 import { ChipComponent } from '../../chips/chip/chip.component';
-import { TruncateTooltipComponent } from '../../popups/truncate-tooltip/truncate-tooltip.component';
+import { ChipType } from '../../chips/chips.enum';
 import {
   emptyImg,
   emptyImgTestString,
@@ -16,6 +21,9 @@ import {
   DOMhelpersProvideMock,
   MockCompsModule,
 } from '../../tests/services.stub.spec';
+import { AvatarImageComponent } from './avatar-image/avatar-image.component';
+import { AvatarComponent } from './avatar.component';
+import { AvatarBadge, AvatarOrientation, AvatarSize } from './avatar.enum';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;
@@ -28,36 +36,38 @@ describe('AvatarComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AvatarComponent,
-        AvatarImageComponent,
-        MockComponent(ChipComponent),
-      ],
-      imports: [MockCompsModule],
-      providers: [DOMhelpersProvideMock()],
-    })
-      .overrideComponent(AvatarComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          AvatarComponent,
+          AvatarImageComponent,
+          MockComponent(ChipComponent),
+        ],
+        imports: [MockCompsModule],
+        providers: [DOMhelpersProvideMock()],
       })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(AvatarComponent);
-        component = fixture.componentInstance;
-        componentElem = fixture.nativeElement;
-        component.title = 'Title';
-        component.imageSource = emptyImg;
-        component.backgroundColor = 'red';
-        fixture.detectChanges();
+        .overrideComponent(AvatarComponent, {
+          set: { changeDetection: ChangeDetectionStrategy.Default },
+        })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(AvatarComponent);
+          component = fixture.componentInstance;
+          componentElem = fixture.nativeElement;
+          component.title = 'Title';
+          component.imageSource = emptyImg;
+          component.backgroundColor = 'red';
+          fixture.detectChanges();
 
-        avatarElement = fixture.debugElement.query(By.css('.avatar'))
-          .nativeElement;
-        titleElement = fixture.debugElement.query(By.css('.title'))
-          .nativeElement;
-        spyOn(component.clicked, 'emit');
-      });
-  }));
+          avatarElement = fixture.debugElement.query(By.css('.avatar'))
+            .nativeElement;
+          titleElement = fixture.debugElement.query(By.css('.title'))
+            .nativeElement;
+          spyOn(component.clicked, 'emit');
+        });
+    })
+  );
 
   it('should create avatar with default values', () => {
     expect(component).toBeTruthy();
@@ -74,16 +84,16 @@ describe('AvatarComponent', () => {
     });
   });
 
-  describe('onClick', () => {
+  describe('onAvatarClick', () => {
     it('Should not emit the click event if the component is set to not be clickable', () => {
-      component.onClick('click' as any);
+      component.onAvatarClick('click' as any);
       expect(component.clicked.emit).not.toHaveBeenCalled();
     });
 
     it('Should emit the click event if the component is set to be clickable', () => {
       component.isClickable = true;
       component.clicked.subscribe(() => {});
-      component.onClick('click' as any);
+      component.onAvatarClick('click' as any);
       expect(component.clicked.emit).toHaveBeenCalledWith('click' as any);
       component.clicked.complete();
     });
@@ -149,7 +159,7 @@ describe('AvatarComponent', () => {
       fixture.detectChanges();
 
       expect(componentElem.dataset.disabled).toEqual('true');
-      component.onClick('click' as any);
+      component.onAvatarClick('click' as any);
       expect(component.clicked.emit).not.toHaveBeenCalled();
     });
   });

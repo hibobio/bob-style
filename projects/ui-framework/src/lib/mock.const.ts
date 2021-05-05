@@ -1,12 +1,12 @@
+import { Icons } from './icons/icons.enum';
 import {
-  randomNumber,
-  randomFromArray,
-  padWith0,
-  simpleUID,
   capitalize,
   dedupeArray,
+  padWith0,
+  randomFromArray,
+  randomNumber,
+  simpleUID,
 } from './services/utils/functional-utils';
-import { Icons } from './icons/icons.enum';
 
 export const mockCitiesList = [
   'Tokyo-Yokohama',
@@ -261,6 +261,88 @@ export const mockCountriesList = [
   'Zambia',
   'Zimbabwe',
 ];
+
+export const funnyNames = [
+  'Adam Baum',
+  'Al Bino',
+  'Ali Gaither',
+  'Andy Friese',
+  'Anna Conda',
+  'Anna Fender',
+  'Annie Matter',
+  'Barry Cade',
+  'Bea Minor',
+  'Dee Major',
+  'Bill Ding',
+  'Bonnie Ann Clyde',
+  'Bonnie Beaver',
+  'Bud Light',
+  'Bud Wieser',
+  'Candy Barr',
+  'Cara Van',
+  'Carrie Oakey',
+  'Casey Macy',
+  'Chip Munk',
+  'Chris Cross',
+  'Chuck Waggon',
+  'Corey Ander',
+  'Dan Druff',
+  'Daryl Rhea',
+  'Dick Bender',
+  'Dick Long',
+  'Dick Tator',
+  'Dick Wood',
+  'Dr. Baldock',
+  'Dr. DeKay',
+  'Dr. Shelly Fingerhood',
+  'Dr. Looney',
+  'Drew Peacock',
+  'Dusty Carr',
+  'Earl E. Bird',
+  'Earl Lee Riser',
+  'Easton West',
+  'Weston East',
+  'Fonda Dicks',
+  'Ford Parker',
+  'Forrest Green',
+  'Dr. Frank Bonebreak',
+  'Frank Enstein',
+  'Gaye Barr',
+  'Harry Baals',
+  'Harry Cox',
+  'Honey Bee',
+  'I.M. Boring',
+  'Jack Hoff',
+  'Jack Knoff',
+  'Jack Pott',
+  'Kenny Penny',
+  'Kent C. Strait',
+  'Kerry Oki',
+  'Liv Long',
+  'Lucy Fer',
+  'Luke Warm',
+  'Lynn O. Liam',
+  'Marsha Mellow',
+  'Max Power',
+  'May Day',
+  'Moe B. Dick',
+  'Pepe Roni',
+  'Pierce Cox',
+  'Polly Ester',
+  'Price Wright',
+  'R. M. Pitt',
+  'Randy Lover',
+  'Ray Gunn',
+  'Tad Moore',
+  'Tamara Knight',
+  'Ted E. Baer',
+  'Will Power',
+  'Willie Leak',
+  'Willie Stroker',
+  'Woody Forrest',
+];
+
+export const funnyName = (num?) => randomFromArray(funnyNames, num);
 
 export const mockNamesList = [
   'Nada Gish',
@@ -1246,6 +1328,120 @@ const uselessURLs = [
   'http://www.amialright.com/',
   'http://nooooooooooooooo.com/',
 ];
+
+export const meanwhileInRussia = [
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNYZ0LTX29WBcGG5fCmsDnSa7azDVST6s7JtsgRd96QK4moPMyWjgVwP5j3KdLEq8jMsM&usqp',
+  'https://imgix.ranker.com/user_node_img/50040/1000786935/original/pineapple-photo-u1?auto=format&q=60&fit=crop&fm=pjpg&w=375',
+  'https://pbs.twimg.com/profile_images/717748785884110848/CneF3oAU_400x400.jpg',
+  'https://www.topbestpics.com/wp-content/uploads/2018/03/ugly-woman-funny-ugly-people-pictures-26-450x350.jpg',
+  'https://drolldump.com/wp-content/uploads/awkward-pics-from-russian-social-networks-33.jpg',
+  'https://i2.wp.com/scrollbreak.com/wp-content/uploads/2019/09/crazy-russians-20.jpg?fit=600%2C939&ssl=1',
+  'https://i2.wp.com/scrollbreak.com/wp-content/uploads/2019/09/russian-social-weirdos-1.jpg?fit=600%2C682&ssl=1',
+  'https://buzzly.info/upload/1493/c77bd63180006e51ae0e6ff9610c0e50.jpg',
+  'https://worldwideinterweb.com/wp-content/uploads/2017/09/dating-sites-pics.jpg',
+  'https://i.pinimg.com/736x/65/fc/60/65fc60559389aefde80ba8cb33b7e00b--russian-dating-site-awkward-pictures.jpg',
+  'https://i.dailymail.co.uk/i/pix/2013/11/08/article-2492393-1948979000000578-163_306x592.jpg',
+  'https://i1.wp.com/scrollbreak.com/wp-content/uploads/2019/09/funny-meme-picture-1569315038.jpg?w=720&ssl=1',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/04/knitted-balaclavas5.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/04/knitted-balaclavas6.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/04/knitted-balaclavas4.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/04/knitted-balaclavas7.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/04/knitted-balaclavas17.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/04/knitted-balaclavas16.jpg',
+];
+
+export const diseases = [
+  'Mississippiphobia',
+  'Monoorangosis',
+  'Fish Odor Syndrome',
+  'Boanthropy',
+  'Ablutomania',
+  'Clinomania',
+  'Basorexia',
+  'Polydactylism',
+  'Misophonia',
+  'Dysania',
+  'Cataplexy',
+  'Tanorexica',
+  'Empirism',
+  'Galactorrhea',
+  'Dipsomania',
+  'Tyrotoxism',
+  'Formication',
+  'Gynecomastia',
+  'Rhinotillexomania',
+  'Nintendonitis',
+  'Priapism',
+];
+
+const jokes = [
+  'I ate a clock yesterday, it was very time-consuming.',
+  'My three favorite things are eating my family and not using commas.',
+  'A perfectionist walked into a bar...apparently, the bar wasn’t set high enough.',
+  'I went to buy some camo pants but couldn’t find any.',
+  'I failed math so many times at school, I can’t even count.',
+  'I used to have a handle on life, but then it broke.',
+  'I was wondering why the frisbee kept getting bigger and bigger, but then it hit me.',
+  `I want to die peacefully in my sleep, like my grandfather…
+  Not screaming and yelling like the passengers in his car.`,
+  'When life gives you melons, you might be dyslexic.',
+  'Don’t you hate it when someone answers their own questions? I do.',
+  'The problem with kleptomaniacs is that they always take things literally.',
+  'Most people are shocked when they find out how bad I am as an electrician.',
+  'Never trust atoms; they make up everything.',
+  'I used to think I was indecisive. But now I’m not so sure.',
+  'The easiest time to add insult to injury is when you’re signing someone’s cast.',
+  'Light travels faster than sound, which is the reason that some people appear bright before you hear them speak.',
+  'I always take life with a grain of salt. And a slice of lemon. And a shot of tequila.',
+  'Always borrow money from a pessimist. They’ll never expect it back.',
+  'I don’t suffer from insanity—I enjoy every minute of it.',
+  'The last thing I want to do is hurt you; but it’s still on the list.',
+  `‘Doctor, there’s a patient on line one that says he’s invisible.’
+‘Well, tell him I can’t see him right now.’`,
+  'Atheism is a non-prophet organization.',
+  'Before you criticize someone, walk a mile in their shoes. That way, when you <em>do</em> criticize them, you’re a mile away and you have their shoes.',
+  'I got a new pair of gloves today, but they’re both ‘lefts,’ which on the one hand is great, but on the other, it’s just not right.',
+  `I was riding a donkey the other day when someone threw a rock at me
+  and I fell off. I guess I was stoned off my ass.`,
+  `What’s the difference between ignorance and apathy?
+  I don’t know and I don’t care.`,
+  'Despite the high cost of living, it remains popular.',
+  'Pollen is what happens when flowers can’t keep it in their plants.',
+  'Communist jokes aren’t funny unless everyone gets them.',
+  'I threw a boomerang a couple years ago; I know live in constant fear.',
+  'I put my grandma on speed dial the other day. I call it insta-gram.',
+  'I have a few jokes about unemployed people, but none of them work.',
+];
+
+const imgs = [
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/04/you-had-one-job2.jpg',
+  'https://teamjimmyjoe.com/wp-content/uploads/2017/07/lemur-monkey-girl-kitchen-awkward-family-photos.jpg',
+  'https://nedhardy.com/wp-content/uploads/2021/04/cats_of_instagram_175863746_495388971509470_1171968361243479112_n.jpg',
+  'https://nedhardy.com/wp-content/uploads/2021/04/jkdb0y5a9xu61.jpg',
+  'https://www.adaptnetwork.com/wp-content/uploads/2020/08/comedy-wildlife-photography-awards-2020-mark-fitzpatrick-840x1144.jpg',
+  'https://bloximages.chicago2.vip.townnews.com/tbrnews.com/content/tncms/assets/v3/editorial/e/f1/ef10457a-0b73-11e8-b13d-77924b8494ac/5a7a01e77568b.image.jpg?resize=1200%2C791',
+  'https://i.dailymail.co.uk/i/pix/2017/02/24/11/3D9B40BB00000578-0-image-a-66_1487936234264.jpg',
+  'https://i.dailymail.co.uk/i/pix/2017/02/24/12/3D9B415900000578-4256220-This_teen_opted_for_a_bold_look_with_her_fringed_mullet_and_over-a-89_1487939631861.jpg',
+  'https://teamjimmyjoe.com/wp-content/uploads/2017/07/awkward-family-funny-girl-mustache-snaps.jpg',
+  'https://teamjimmyjoe.com/wp-content/uploads/2017/07/awkward-family-snapshot-grandma-cleaning-bathrub.jpg',
+  'https://teamjimmyjoe.com/wp-content/uploads/2017/07/awkward-family-snapshot-mon-daughter-son-knife.jpg',
+  'https://teamjimmyjoe.com/wp-content/uploads/2017/07/1980s-awkward-art-student-hippie.jpg',
+  'https://www.teamjimmyjoe.com/wp-content/uploads/2014/03/Worst-jobs-underarm-smeller.jpg',
+  'https://www.teamjimmyjoe.com/wp-content/uploads/2012/11/Funny-Wedding-Photos.jpg',
+  'https://www.teamjimmyjoe.com/wp-content/uploads/2013/03/Funny-Pictures-Fall.jpg',
+  'https://www.teamjimmyjoe.com/wp-content/uploads/2013/03/funeral.jpg',
+  'https://i.imgur.com/zjad48a.jpeg',
+  'https://i.imgur.com/XcRh9ud.jpeg',
+  'https://i.chzbgr.com/full/9040314368/hA3C336AE/hair',
+];
+
+export const joke = (num?) => randomFromArray(jokes, num);
+
+export const funnyImg = (num?) => randomFromArray(imgs, num);
+
+export const disease = (num?) => randomFromArray(diseases, num);
+
+export const sadAvatar = (num?) => randomFromArray(meanwhileInRussia, num);
 
 export const mockAvatar = (): string =>
   `https://randomuser.me/api/portraits/${randomFromArray([

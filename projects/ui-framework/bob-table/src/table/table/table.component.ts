@@ -1,3 +1,18 @@
+import { AgGridAngular } from 'ag-grid-angular';
+import {
+  AgGridEvent,
+  CellClickedEvent,
+  Column,
+  DragStoppedEvent,
+  FirstDataRenderedEvent,
+  GridColumnsChangedEvent,
+  GridOptions,
+  GridReadyEvent,
+  RowDragEvent,
+  RowEvent,
+} from 'ag-grid-community';
+import { get, map } from 'lodash';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -13,26 +28,35 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { AgGridAngular } from 'ag-grid-angular';
+import { TranslateService } from '@ngx-translate/core';
+
 import {
-  CellClickedEvent,
-  Column,
-  DragStoppedEvent,
-  GridColumnsChangedEvent,
-  GridOptions,
-  GridReadyEvent,
-  AgGridEvent,
-  RowEvent,
-  RowDragEvent,
-  FirstDataRenderedEvent,
-} from 'ag-grid-community';
-import { get, map } from 'lodash';
+  applyChanges,
+  DOMhelpers,
+  EmptyStateConfig,
+  hasChanges,
+  Icons,
+  IconSize,
+  isString,
+  isValuevy,
+  log,
+  notFirstChanges,
+  PAGER_CONFIG_DEF,
+  PagerConfig,
+} from 'bob-style';
+
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { AgGridWrapper } from './ag-grid-wrapper';
 import {
+  TABLE_AUTOSIZE_PADDING,
+  TABLE_MIN_HEIGHT,
+  TABLE_PAGER_HEIGHT,
+  TABLE_ROW_HEIGHT,
+} from './table.consts';
+import {
   ColumnOrderStrategy,
-  TableEventName,
   RowSelection,
+  TableEventName,
   TableType,
 } from './table.enum';
 import {
@@ -46,27 +70,6 @@ import {
   TablePagerState,
   TableStyleConfig,
 } from './table.interface';
-import {
-  applyChanges,
-  DOMhelpers,
-  EmptyStateConfig,
-  hasChanges,
-  Icons,
-  IconSize,
-  isString,
-  notFirstChanges,
-  PagerConfig,
-  PAGER_CONFIG_DEF,
-  log,
-  isValuevy,
-} from 'bob-style';
-import {
-  TABLE_AUTOSIZE_PADDING,
-  TABLE_MIN_HEIGHT,
-  TABLE_PAGER_HEIGHT,
-  TABLE_ROW_HEIGHT,
-} from './table.consts';
-import { TranslateService } from '@ngx-translate/core';
 
 const CLOSE_BUTTON_DIAMETER = 20;
 const CLOSE_MARGIN_OFFSET = 6;
@@ -221,7 +224,9 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes, DEFAULT_PROP_VALUES);
+    applyChanges(this, changes, DEFAULT_PROP_VALUES, [], true, {
+      truthyCheck: (v) => v !== undefined,
+    });
 
     let previousColumnDefValue: ColumnDef[];
 
@@ -450,6 +455,12 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   }
 
   private setGridHeight(height: number | string): void {
+    if (!height) {
+      this.DOM.setCssProps(this.elRef.nativeElement, {
+        '--max-height': 'none',
+      });
+      return;
+    }
     let heightValue: string;
 
     const heightMod =

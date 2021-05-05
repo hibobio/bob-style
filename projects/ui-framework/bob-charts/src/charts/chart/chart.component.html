@@ -1,3 +1,4 @@
-<div [id]="containerId"
+<div #container
+     [attr.id]="containerId"
      [hidden]="!data || data.length < 1"></div>
 <ng-content></ng-content>
