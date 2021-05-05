@@ -1,43 +1,45 @@
-<div class="bpgr-slice-size-select-container">
   <b-single-select *ngIf="sliceOptions && sliceOptions[0].options.length > 1"
-    [options]="sliceOptions"
-    [size]="formElementSize.smaller"
-    [showNoneOption]="false"
-    [doPropagate]="false"
-    (selectChange)="onSliceSizeChange($event)">
+                   class="bpgr-slice-select"
+                   [options]="sliceOptions"
+                   [size]="formElementSize.smaller"
+                   [showNoneOption]="false"
+                   [doPropagate]="false"
+                   [min]="1"
+                   tooltipType="material"
+                   (selectChange)="onSliceSizeChange($event)">
   </b-single-select>
-  <span class="mrg-l-8">{{'bob-style.pager.items_per_page' | translate}}</span>
-</div>
 
-<div class="bpgr-page-buttons"
-     role="navigation"
-     [hidden]="totalPages < 2 || !(totalItems > 0)"
-     (click.outside-zone)="onPageClick($event)">
+  <span class="mrg-l-8"
+        data-max-lines="1">{{'bob-style.pager.items_per_page' | translate}}</span>
 
-  <b-square-button [type]="buttonType.tertiary"
-                   [icon]="icons.chevron_left"
-                   [disabled]="currentPage === 0">
-  </b-square-button>
+  <div class="bpgr-page-buttons mrg-l-auto"
+       role="navigation"
+       [hidden]="totalPages < 2 || !(totalItems > 0)"
+       (click.outside-zone)="onPageClick($event)">
 
-  <b-square-button *ngFor="let page of pagesViewModel; trackBy: pageButtonsTrackBy;"
-                   [type]="totalPages > 1 && currentPage===page
+    <b-square-button [type]="buttonType.tertiary"
+                     [icon]="icons.chevron_left"
+                     [disabled]="currentPage === 0">
+    </b-square-button>
+
+    <b-square-button *ngFor="let page of pagesViewModel; trackBy: pageButtonsTrackBy;"
+                     [type]="totalPages > 1 && currentPage===page
                      ?
                      buttonType.secondary
                      :
                      buttonType.tertiary"
-                   [class.current-page]="totalPages > 1 && currentPage===page"
-                   [disabled]="page !== page || totalPages < 2">
-    {{page === page ? page + 1 : '...'}}
-  </b-square-button>
+                     [class.current-page]="totalPages > 1 && currentPage===page"
+                     [disabled]="page !== page || totalPages < 2">
+      {{page === page ? page + 1 : '...'}}
+    </b-square-button>
 
-  <b-square-button [type]="buttonType.tertiary"
-                   [icon]="icons.chevron_right"
-                   [disabled]="currentPage >= totalPages - 1">
-  </b-square-button>
-</div>
+    <b-square-button [type]="buttonType.tertiary"
+                     [icon]="icons.chevron_right"
+                     [disabled]="currentPage >= totalPages - 1">
+    </b-square-button>
+  </div>
 
-
-<span *ngIf="sliceOptions && sliceOptions[0].options.length === 1"
-      class="bpgr-slice-size-select clr-grey-600 mrg-l-16">
-  {{sliceOptions[0].options[0].value}}
-</span>
+  <span *ngIf="sliceOptions && sliceOptions[0].options.length === 1"
+        class="bpgr-slice-size-select clr-grey-600 mrg-l-16">
+    {{sliceOptions[0].options[0].value}}
+  </span>
