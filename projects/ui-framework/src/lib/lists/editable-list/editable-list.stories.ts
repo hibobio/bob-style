@@ -24,7 +24,13 @@ const componentTemplate1 = `
                         ? listMockDesc
                         : listMock"
                  [sortType]="sortType !== 0 ? sortType : undefined"
-                 [allowedActions]="allowedActions"
+                 [allowedActions]="{
+                   sort: allowSort,
+                   add: allowAdd,
+                   remove: allowRemove,
+                   order: allowOrder,
+                   edit: allowEdit
+                 }"
                  [maxChars]="maxChars"
                  (changed)="onListUpdate($event)"
                  (inputChanged)="onInputChange($event)"
@@ -88,7 +94,6 @@ const listMockAsc = cloneDeep(editableListMock);
 const listMockDesc = cloneDeep(editableListMock);
 EditableListUtils.sortList(listMockAsc, ListSortType.Asc);
 EditableListUtils.sortList(listMockDesc, ListSortType.Desc);
-const allowedActions: EditableListActions = { ...EDITABLE_LIST_ALLOWED_ACTIONS_DEF }
 story.add(
   'Editable List',
   () => {
@@ -112,8 +117,8 @@ story.add(
         allowAdd: boolean('allowAdd', true, 'Props'),
         allowRemove: boolean('allowRemove', true, 'Props'),
         allowOrder: boolean('allowOrder', true, 'Props'),
+        allowEdit: boolean('allowEdit', true, 'Props'),
         allowActions: select('sortType', [0, 'Asc', 'Desc'], 0, 'Props'),
-        allowedActions: object('allowedActions', allowedActions, 'Props'),
         onListUpdate: action('onListUpdate'),
         onInputChange: action('onInputChange'),
       },
