@@ -40,6 +40,7 @@ export interface SelectOption {
   description?: string;
   canBeDeleted?: boolean;
   [key: string]: any;
+  originalValue?: string;
 }
 
 export interface ListHeader
