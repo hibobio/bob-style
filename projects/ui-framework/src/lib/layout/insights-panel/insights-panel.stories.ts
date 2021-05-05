@@ -23,6 +23,16 @@ const template1 = `
         [data]="data"
         [config]="config"
         [expanded]="expanded"
+        (expanded)="onExpand($event ? 'yes' : 'no')"
+  ></b-insights-panel>
+`;
+
+const templateForNotes = `
+  <b-insights-panel
+        [type]="type"
+        [data]="data"
+        [config]="config"
+        [expanded]="expanded"
         (expanded)="onExpand($event)"
   ></b-insights-panel>
 `;
@@ -40,18 +50,20 @@ const note = `
   #### Module
   *InsightsPanelModule*
 
+  ~~~
+  ${templateForNotes}
+  ~~~
+
   #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
+  Name | Type | Description
+  --- | --- | ---
   [type] | InsightsPanelType | type (information, warning, error, success)
   [config] | InsightsPanelConfig | panel config
   [data] | InsightsPanelData[] | insights data
   [expanded] | boolean | control expanded/collapsed state
   (expanded) | EventEmitter<wbr>&lt;boolean&gt; | emits on expanded/collapsed state change
 
-  ~~~
-  ${template1}
-  ~~~
+
 `;
 
 const data = [
