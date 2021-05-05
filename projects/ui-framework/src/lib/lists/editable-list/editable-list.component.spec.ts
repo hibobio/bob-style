@@ -174,10 +174,6 @@ describe('EditableListComponent', () => {
       tick(300);
       fixture.detectChanges();
       const expectedParam = {
-        delete: ['Football'],
-        create: [],
-        order: ['Martial arts', 'Climbing'],
-        sortType: ListSortType.UserDefined,
         list: [
           {
             id: 1,
@@ -218,8 +214,7 @@ describe('EditableListComponent', () => {
         By.css('.bel-done-button button')
       );
       component.changed.subscribe((data) => {
-        expect(data.create[0]).toEqual('abc');
-        expect(data.order[0]).toEqual('abc');
+        expect(data.list[0].value).toEqual('abc');
         done();
       });
       inputValue(input.nativeElement, 'abc');
@@ -241,10 +236,6 @@ describe('EditableListComponent', () => {
       sort.nativeElement.click();
       fixture.detectChanges();
       const expectedParam = {
-        delete: [],
-        create: [],
-        order: ['Climbing', 'Football', 'Martial arts'],
-        sortType: ListSortType.Asc,
         list: [
           {
             id: 2,
@@ -275,10 +266,6 @@ describe('EditableListComponent', () => {
       sort.nativeElement.click();
       fixture.detectChanges();
       const expectedParam = {
-        delete: [],
-        create: [],
-        order: ['Martial arts', 'Football', 'Climbing'],
-        sortType: ListSortType.Desc,
         list: [
           {
             id: 1,
@@ -308,14 +295,10 @@ describe('EditableListComponent', () => {
         })
       );
       const expectedParam = {
-        delete: [],
-        create: [],
-        order: ['Climbing', 'Football', 'Martial arts'],
-        sortType: ListSortType.Asc,
         list: [
           {
-            id: 2,
-            value: 'Climbing',
+            id: 1,
+            value: 'Martial arts',
             selected: false,
           },
           {
@@ -324,8 +307,8 @@ describe('EditableListComponent', () => {
             selected: true,
           },
           {
-            id: 1,
-            value: 'Martial arts',
+            id: 2,
+            value: 'Climbing',
             selected: false,
           },
         ],
@@ -339,16 +322,11 @@ describe('EditableListComponent', () => {
           sortType: ListSortType.Desc,
         })
       );
-
       const expectedParam = {
-        delete: [],
-        create: [],
-        order: ['Martial arts', 'Football', 'Climbing'],
-        sortType: ListSortType.Desc,
         list: [
           {
-            id: 1,
-            value: 'Martial arts',
+            id: 2,
+            value: 'Climbing',
             selected: false,
           },
           {
@@ -357,8 +335,8 @@ describe('EditableListComponent', () => {
             selected: true,
           },
           {
-            id: 2,
-            value: 'Climbing',
+            id: 1,
+            value: 'Martial arts',
             selected: false,
           },
         ],
