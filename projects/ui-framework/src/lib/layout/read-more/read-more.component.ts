@@ -5,11 +5,9 @@ import {
   filter,
   map,
   takeUntil,
-  tap,
 } from 'rxjs/operators';
 
 import {
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -36,23 +34,25 @@ import { insideZone } from '../../services/utils/rxjs.operators';
       <span *ngIf="text$ | async as text" [innerHTML]="text"></span>
       <ng-content></ng-content>
     </div>
-    <a
-      *ngIf="hasReadMore$ | async"
-      class="b-link"
-      [hidden]="!ready"
-      (click)="showMore()"
-      >{{ linkText || ('common.view-more' | translate) }}</a
-    >
+    <a *ngIf="hasReadMore$ | async" class="b-link" (click)="showMore()">{{
+      linkText || ('common.view-more' | translate)
+    }}</a>
   `,
-  styleUrls: ['./read-more.component.scss'],
+  styles: [
+    `
+      :host {
+        display: block;
+        min-width: 0;
+      }
+    `,
+  ],
 })
 export class ReadMoreComponent implements OnInit, OnDestroy {
   constructor(
     private hostElRef: ElementRef<HTMLElement>,
     private mutationObservableService: MutationObservableService,
     private DOM: DOMhelpers,
-    private zone: NgZone,
-    private cd: ChangeDetectorRef
+    private zone: NgZone
   ) {}
 
   @ViewChild('textContainer', { static: true })
@@ -69,7 +69,6 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
 
   readonly complete$ = new BehaviorSubject<boolean>(false);
   readonly hasReadMore$ = new BehaviorSubject<boolean>(true);
-  public ready = false;
 
   showMore() {
     if (this.clicked.observers.length) {
@@ -120,10 +119,6 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
           );
         }),
         distinctUntilChanged(),
-        tap(() => {
-          this.ready = true;
-          this.cd.detectChanges();
-        }),
         insideZone(this.zone)
       )
       .subscribe(this.hasReadMore$);
