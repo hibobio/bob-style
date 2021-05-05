@@ -1,0 +1,77 @@
+@import '../../style/common-imports';
+@import '../../style/icons.mixin';
+
+:host {
+  position: relative;
+  text-align: left;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &[data-type='warning'] {
+    --bg-color: #{rgba($color-warn, 0.1)};
+    --txt-color: #{$color3_darker};
+  }
+
+  &[data-type='information'] {
+    --bg-color: #{rgba($inform-600, 0.1)};
+    --txt-color: #{$color9_darker};
+  }
+
+  &[data-type='error'] {
+    --bg-color: #{rgba($color-error, 0.1)};
+    --txt-color: #{$color1_darker};
+  }
+
+  &[data-type='success'] {
+    --bg-color: #{rgba($positive-600, 0.1)};
+    --txt-color: #{$color7_darker};
+  }
+
+  background-color: var(--bg-color);
+  color: var(--color);
+
+  .btn-minimize ::ng-deep {
+    button {
+      font-weight: 500;
+      @include button-icon-right;
+      @include icon-color(var(--color));
+    }
+  }
+
+  &[data-expanded='false'] {
+    max-width: max-content;
+    max-height: 30px;
+    cursor: pointer;
+    border-radius: $border-radius;
+
+    ::ng-deep .btn-minimize {
+      button {
+        @include icon-size(18px);
+      }
+    }
+  }
+
+  &[data-expanded='true'] {
+    &:not([class*='pad-']) {
+      padding: times8(4);
+    }
+
+    ::ng-deep .btn-minimize {
+      position: absolute;
+      top: 0;
+      right: 5px;
+      width: 30px;
+
+      button {
+        min-width: 0;
+        padding: 0;
+
+        &:before {
+          margin: 0;
+        }
+      }
+    }
+  }
+}
