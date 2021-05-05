@@ -72,10 +72,6 @@ export class EditableListComponent implements OnChanges {
   readonly autoComplete = InputAutoCompleteOptions;
 
   public listState: EditableListState = {
-    delete: [],
-    create: [],
-    order: null,
-    sortType: null,
     list: [],
   };
 
@@ -89,6 +85,7 @@ export class EditableListComponent implements OnChanges {
   public currentActionType: IconActionsType;
   public currentEditInput: ElementRef<HTMLInputElement>;
   public editInputInvalid: boolean;
+  public isFocusOutEdit: boolean;
   @HostListener('keydown.outside-zone', ['$event'])
   onHostKeydown(event: KeyboardEvent): void {
     if (isNumber(this.itemHandledIndex) && isKey(event.key, Keys.escape)) {
@@ -117,12 +114,19 @@ export class EditableListComponent implements OnChanges {
     if (this.currentEditInput) {
       this.cancelEdit(this.listState.list[this.itemHandledIndex], event);
     }
-    if (isNumber(this.itemHandledIndex)) {
+    if (isNumber(this.itemHandledIndex) && !this.isFocusOutEdit) {
       this.removeCancel(event);
     }
    if (this.addingItem) {
       this.addItemCancel(event);
     }
+ }
+
+ public handleEditInputFocusOut(event: FocusEvent): void {
+  this.isFocusOutEdit = true;
+  setTimeout(() => {
+     this.isFocusOutEdit = false;
+  }, 0);
  }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -139,7 +143,7 @@ export class EditableListComponent implements OnChanges {
 
     if (hasChanges(changes, ['list'])) {
       this.listState.list = cloneDeep(this.list);
-      this.listState.sortType = EditableListUtils.getListSortType(
+      this.sortType = EditableListUtils.getListSortType(
         this.listState.list
       );
     }
@@ -147,24 +151,14 @@ export class EditableListComponent implements OnChanges {
     if (hasChanges(changes, ['sortType'], true)) {
       this.sortList(
         this.listState.list,
-        this.sortType,
-        this.listState.sortType
+        null,
+        this.sortType
       );
     }
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
     }
-  }
-
-  public cancelEdit(item: SelectOption, event: FocusEvent = null): void {
-    const relatedTarget = event && (event.relatedTarget as HTMLButtonElement);
-    if (relatedTarget && relatedTarget.matches('.save-edit-btn button') || !item) { 
-      return;
-    }
-    item.value = item.originalValue;
-    this.itemHandledIndex = null;
-    this.currentEditInput = null;
   }
 
   public get isEditMode(): boolean {
@@ -195,6 +189,16 @@ export class EditableListComponent implements OnChanges {
     } else {
       this.cancelEdit(item);
     }
+  }
+
+  public cancelEdit(item: SelectOption, event: FocusEvent = null): void {
+    const relatedTarget = event && (event.relatedTarget as HTMLButtonElement);
+    if (relatedTarget && relatedTarget.matches('.save-edit-btn button') || !item) { 
+      return;
+    }
+    item.value = item.originalValue;
+    this.itemHandledIndex = null;
+    this.currentEditInput = null;
   }
 
   public get isMultipleActions(): boolean {
@@ -230,9 +234,8 @@ export class EditableListComponent implements OnChanges {
           this.addingItem = false;
           this.addedItem = true;
           EditableListUtils.addItem(this.listState.list, value);
-          this.listState.create.push(value);
           this.transmit();
-          this.listState.sortType = ListSortType.UserDefined;
+          this.sortType = ListSortType.UserDefined;
           this.addItemInput.nativeElement.value = '';
           this.addingItemLen = 0;
       } else {
@@ -286,7 +289,6 @@ export class EditableListComponent implements OnChanges {
       setTimeout(() => {
         this.itemHandledIndex = null;
         this.removedItem = false;
-        this.listState.delete.push(this.listState.list[index].value);
         this.listState.list.splice(index, 1);
         this.transmit();
         if (!this.cd['destroyed']) {
@@ -332,7 +334,7 @@ export class EditableListComponent implements OnChanges {
   public onDrop(event: CdkDragDrop<SelectOption[]>): void {
     this.isDragged = false;
     if (EditableListUtils.onDrop(this.listState.list, event.previousIndex, event.currentIndex)) {
-      this.listState.sortType = ListSortType.UserDefined;
+      this.sortType = ListSortType.UserDefined;
       this.transmit();
     }
   }
@@ -340,9 +342,9 @@ export class EditableListComponent implements OnChanges {
   public sortList(
     list: SelectOption[] = this.listState.list,
     order: ListSortType = null,
-    currentOrder: ListSortType = this.listState.sortType
+    currentOrder: ListSortType = this.sortType
   ): void {
-    this.listState.sortType = EditableListUtils.sortList(
+    this.sortType = EditableListUtils.sortList(
       list,
       order,
       currentOrder
@@ -352,20 +354,6 @@ export class EditableListComponent implements OnChanges {
   }
 
   private transmit(): void {
-    this.listState.order = this.listState.list.map((i) => i.value);
-    const itersection = this.listState.create.filter((i) =>
-      this.listState.delete.includes(i)
-    );
-
-    if (isNotEmptyArray(itersection)) {
-      this.listState.create = this.listState.create.filter(
-        (i) => !itersection.includes(i)
-      );
-      this.listState.delete = this.listState.delete.filter(
-        (i) => !itersection.includes(i)
-      );
-    }
-
     this.changed.emit(
       Object.assign({}, this.listState, {
         list: cloneArray(this.listState.list),

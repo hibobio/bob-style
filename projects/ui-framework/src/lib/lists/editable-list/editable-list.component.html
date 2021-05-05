@@ -56,14 +56,14 @@
               class="bel-sort-button"
               [type]="buttonType.tertiary"
               [size]="buttonSize.small"
-              [icon]="listState.sortType === order.UserDefined || listState.sortType === order.Asc ? icons.sort_asc :
+              [icon]="sortType === order.UserDefined || sortType === order.Asc ? icons.sort_asc :
               icons.sort_desc"
-              [ngClass]="{'custom-sorting': listState.sortType === order.UserDefined}"
+              [ngClass]="{'custom-sorting': sortType === order.UserDefined}"
               [throttle]="false"
               (clicked)="sortList()"
-              [text]="listState.sortType === order.Asc
+              [text]="sortType === order.Asc
                 ? ('list-editor.editor.sortAsc' | translate) :
-                  listState.sortType === order.Desc ?
+                  sortType === order.Desc ?
                   ('list-editor.editor.sortDesc' | translate) :
                   ('list-editor.editor.sortCustom' | translate)">
     </b-button>
@@ -101,6 +101,7 @@
              [hidden]="!isEditMode || index !== itemHandledIndex"
              class="bfe-input bel-item-input edit-input"
              [attr.autocomplete]="autoComplete.off"
+             (focusout)="handleEditInputFocusOut($event)"
              [id]="index"
              [(ngModel)]="item.value"
              [attr.maxlength]="maxChars || null"

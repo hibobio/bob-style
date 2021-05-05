@@ -1,4 +1,3 @@
-import { ListSortType } from './editable-list.enum';
 import { SelectOption } from '../list.interface';
 
 export interface EditableListActions {
@@ -10,10 +9,6 @@ export interface EditableListActions {
 }
 
 export interface EditableListState {
-  delete: string[];
-  create: string[];
-  sortType: ListSortType;
-  order: string[];
   list: SelectOption[];
 }
 
