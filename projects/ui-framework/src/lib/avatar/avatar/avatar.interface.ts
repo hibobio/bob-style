@@ -1,8 +1,8 @@
 import { Chip } from '../../chips/chips.interface';
-import { AvatarBadge, AvatarOrientation, AvatarSize } from './avatar.enum';
-import { Icons, IconColor } from '../../icons/icons.enum';
 import { Icon } from '../../icons/icon.interface';
+import { IconColor, Icons } from '../../icons/icons.enum';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { AvatarBadge, AvatarOrientation, AvatarSize } from './avatar.enum';
 
 export interface BadgeConfig {
   icon: string;
@@ -27,5 +27,6 @@ export interface Avatar {
   tooltipType?: TruncateTooltipType;
   expectChanges?: boolean;
   supressWarnings?: boolean;
+  onClick?: (event: MouseEvent) => void;
   [key: string]: any;
 }

@@ -1,5 +1,3 @@
-
-
 import {
   ChangeDetectorRef,
   Directive,
@@ -62,6 +60,9 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
           (this.config.clickable !== false && this.clicked.observers.length > 0)
       ) || null
     );
+  }
+  @HostBinding('attr.data-reverse-locations') get isTextLocReversed() {
+    return Boolean(this.config?.reverseTextLocation) || null;
   }
 
   protected onNgChanges(changes: SimpleChanges): void {}

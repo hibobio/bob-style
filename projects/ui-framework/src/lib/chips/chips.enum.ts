@@ -10,7 +10,8 @@ export enum ChipType {
   tab = 'tab',
   button = 'button',
   label = 'label',
-  labelSecondary = 'label-secondary'
+  labelSecondary = 'label-secondary',
+  other = 'other'
 }
 
 export enum ChipListAlign {

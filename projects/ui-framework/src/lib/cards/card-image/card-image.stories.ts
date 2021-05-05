@@ -23,7 +23,8 @@ const template = `
                   backgroundSize: 'auto 70%',
                   backgroundColor: '#fbf5d7'
                 },
-                action: onAction
+                action: onAction,
+                titleClass: ['my-title']
               }"
               [type]="type"
               (clicked)="onClick($event)">
@@ -76,13 +77,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select(
-          'type',
-          Object.values(CardType).filter(
-            (t) => t === CardType.regular || t === CardType.large
-          ),
-          CardType.regular
-        ),
+        type: select('type', Object.values(CardType), CardType.regular),
         title: text('title', 'Guy and Gal pointing at a honeycomb folder'),
         imageUrl: text(
           'imageUrl',

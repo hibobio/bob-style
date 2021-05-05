@@ -1,3 +1,5 @@
+import { isEqual as _isEqual, remove as _remove } from 'lodash';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,9 +10,8 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
-import { remove as _remove, isEqual as _isEqual } from 'lodash';
 
 const MIN_WEIGHT = 1.5;
 const MAX_WEIGHT = 4;
@@ -20,7 +21,7 @@ const MAX_SPEED = 3;
   selector: 'b-snow',
   template: '<canvas #snowCanvas></canvas>',
   styleUrls: ['./snow.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SnowComponent implements OnInit, OnDestroy {
   @ViewChild('snowCanvas', { static: true }) canvas: ElementRef;
@@ -31,15 +32,12 @@ export class SnowComponent implements OnInit, OnDestroy {
 
   private canvasEl: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
-  private windowDim: { w: number, h: number };
+  private windowDim: { w: number; h: number };
   private FLAKES = [];
   private loopReq;
   private snowing = false;
 
-  constructor(
-    private zone: NgZone,
-  ) {
-  }
+  constructor(private zone: NgZone) {}
 
   ngOnInit(): void {
     this.windowDim = {
@@ -54,6 +52,7 @@ export class SnowComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     window.cancelAnimationFrame(this.loopReq);
+    this.ctx.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
   }
 
   makeSnow(): void {
@@ -91,10 +90,10 @@ export class SnowComponent implements OnInit, OnDestroy {
 
         this.ctx.beginPath();
         this.ctx.arc(flake.x, flake.y, flake.weight, 0, 2 * Math.PI, false);
-        this.ctx.fillStyle = `rgba(255, 255, 255, ${ flake.alpha })`;
+        this.ctx.fillStyle = `rgba(255, 255, 255, ${flake.alpha})`;
         this.ctx.fill();
 
-        if ((flake.y + flake.weight * 0.5) > this.windowDim.h) {
+        if (flake.y + flake.weight * 0.5 > this.windowDim.h) {
           if (this.snowing) {
             this._repositionFlake(flake);
           } else {
@@ -103,7 +102,7 @@ export class SnowComponent implements OnInit, OnDestroy {
         }
       });
 
-      _remove(this.FLAKES, flake => {
+      _remove(this.FLAKES, (flake) => {
         return _isEqual(flake.outOfBounds, true);
       });
 
@@ -124,9 +123,7 @@ export class SnowComponent implements OnInit, OnDestroy {
 
   private _randomBetween(min, max, round = false) {
     const num = Math.random() * (max - min + 1) + min;
-    return round
-      ? Math.floor(num)
-      : num;
+    return round ? Math.floor(num) : num;
   }
 
   private _generateFlake(posX, posY) {
@@ -138,7 +135,7 @@ export class SnowComponent implements OnInit, OnDestroy {
       r: this._randomBetween(0, 1),
       a: this._randomBetween(0, Math.PI),
       aStep: 0.01,
-      alpha: (weight / MAX_WEIGHT),
+      alpha: weight / MAX_WEIGHT,
       speed: (weight / MAX_WEIGHT) * MAX_SPEED,
       update: (flake) => {
         flake.x += Math.cos(flake.a) * flake.r;
@@ -147,5 +144,4 @@ export class SnowComponent implements OnInit, OnDestroy {
       },
     };
   }
-
 }

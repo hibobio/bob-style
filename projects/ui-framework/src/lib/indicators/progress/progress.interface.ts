@@ -15,6 +15,7 @@ export interface ProgressConfig {
   disableAnimation?: boolean;
   hideValue?: boolean;
   clickable?: boolean;
+  reverseTextLocation?: boolean;
 }
 
 export interface ProgressBarData extends ProgressData {}
