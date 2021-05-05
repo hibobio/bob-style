@@ -8,19 +8,16 @@
   user-select: none;
 }
 
-.bpgr-slice-info {
-  text-align: left;
-  @include text-truncate;
-}
-
 .bpgr-page-buttons {
   display: flex;
   text-align: center;
 }
 
-.bpgr-slice-size-select {
-  margin-left: auto;
+.bpgr-slice-size-select-container {
+  margin-right: auto;
   min-width: 100px;
+  display: flex;
+  align-items: center;
 }
 
 .bpgr-page-buttons ::ng-deep {
