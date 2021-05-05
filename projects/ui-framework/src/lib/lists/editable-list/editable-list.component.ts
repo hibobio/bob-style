@@ -11,8 +11,6 @@ import {
   ViewChild,
   NgZone,
   HostListener,
-  OnInit,
-  OnDestroy,
   QueryList,
   ViewChildren,
 } from '@angular/core';
@@ -20,7 +18,6 @@ import { itemID, SelectOption } from '../list.interface';
 import { Icons } from '../../icons/icons.enum';
 import { ButtonType, ButtonSize } from '../../buttons/buttons.enum';
 import {
-  ACTIONS_ICONS,
   EditableListActions,
   EditableListState,
 } from './editable-list.interface';
@@ -33,18 +30,16 @@ import {
   cloneArray,
   isKey,
   isNumber,
-  compareAsStrings,
 } from '../../services/utils/functional-utils';
 import { cloneDeep } from 'lodash';
 import { EDITABLE_LIST_ALLOWED_ACTIONS_DEF } from './editable-list.const';
 import { IconActionsType, ListSortType } from './editable-list.enum';
 import { Keys } from '../../enums';
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
 import { EditableListUtils } from './editable-list.static';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { MenuItem } from 'bob-style';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'b-editable-list',
@@ -52,8 +47,11 @@ import { MenuItem } from 'bob-style';
   styleUrls: ['./editable-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
-  constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
+export class EditableListComponent implements OnChanges {
+  constructor(
+    private zone: NgZone,
+    private cd: ChangeDetectorRef,
+    private translateService: TranslateService) {}
 
   @ViewChild('addItemInput') addItemInput: ElementRef;
   @ViewChildren('editItemInput') editItemInputs: QueryList<ElementRef<HTMLInputElement>>;
@@ -66,7 +64,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   @Output() changed: EventEmitter<EditableListState> = new EventEmitter<
     EditableListState
   >();
-  @Output() inputChanged: EventEmitter<string> = new EventEmitter<string>();
 
   readonly icons = Icons;
   readonly buttonType = ButtonType;
@@ -87,23 +84,19 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   public addingItemLen = 0;
   public addedItem = false;
   public inputInvalid = false;
-  public sameItemIndex: number = null;
-  public removingIndex: number = null;
+  public itemHandledIndex: number = null;
   public removedItem = false;
-  private inputChangeDbncr: Subject<string> = new Subject<string>();
-  private inputChangeSbscr: Subscription;
   public currentActionType: IconActionsType;
-  public currentItemEdit: SelectOption;
   public currentEditInput: ElementRef<HTMLInputElement>;
   public editInputInvalid: boolean;
   @HostListener('keydown.outside-zone', ['$event'])
   onHostKeydown(event: KeyboardEvent): void {
-    if (isNumber(this.removingIndex) && isKey(event.key, Keys.escape)) {
+    if (isNumber(this.itemHandledIndex) && isKey(event.key, Keys.escape)) {
       this.removeCancel();
     }
-    if (isNumber(this.removingIndex) && isKey(event.key, Keys.enter)) {
+    if (isNumber(this.itemHandledIndex) && isKey(event.key, Keys.enter)) {
       this.zone.run(() => {
-        this.removeItem(this.removingIndex, true);
+        this.removeItem(this.itemHandledIndex, true);
       });
     }
 
@@ -119,6 +112,18 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
       this.addItemCancel();
     }
   }
+  @HostListener('focusout.outside-zone', ['$event'])
+  onHostFocusout(event: FocusEvent): void {
+    if (this.currentEditInput) {
+      this.cancelEdit(this.listState.list[this.itemHandledIndex], event);
+    }
+    if (isNumber(this.itemHandledIndex)) {
+      this.removeCancel(event);
+    }
+   if (this.addingItem) {
+      this.addItemCancel(event);
+    }
+ }
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(
@@ -152,98 +157,66 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void {
-    if (this.inputChanged.observers.length) {
-      this.inputChangeSbscr = this.inputChangeDbncr
-        .pipe(debounceTime(300))
-        .subscribe((value) => {
-          this.inputChanged.emit(value);
-        });
+  public cancelEdit(item: SelectOption, event: FocusEvent = null): void {
+    const relatedTarget = event && (event.relatedTarget as HTMLButtonElement);
+    if (relatedTarget && relatedTarget.matches('.save-edit-btn button') || !item) { 
+      return;
     }
-  }
-
-  public onActionClicked(event: MenuItem<{data: SelectOption, index: number}>): void {
-    this.resetActionsData();
-    switch (event.label as IconActionsType) {
-      case IconActionsType.Rename:
-        this.editItem(event.data.data, event.data.index);
-        break;
-      case IconActionsType.Delete:
-        this.removeItem(event.data.index);
-    }
-  }
-
-  public resetActionsData(): void {
-    this.currentActionType = null;
-    this.removingIndex = null;
-    this.addingItem = false;
-    this.inputInvalid = false;
-    this.editInputInvalid = false;
-    this.sameItemIndex = null;
+    item.value = item.originalValue;
+    this.itemHandledIndex = null;
+    this.currentEditInput = null;
   }
 
   public get isEditMode(): boolean {
-    return this.currentActionType === IconActionsType.Rename;
+    return this.currentActionType === 'edit';
   }
 
-  public initActionMenuItems(index: number, item: SelectOption): MenuItem[] {
-    return Object.keys(this.allowedActions).filter((a: keyof EditableListActions) => ACTIONS_ICONS.has(a))
-     .map((action: keyof EditableListActions) => {
-      return {
-        label: ACTIONS_ICONS.get(action),
-        data: { data: item , index},
+  public initMenuItems(index: number, item: SelectOption): MenuItem[] {
+    return [
+      {
+        label: this.translateService.instant('common.delete'),
+        id: 'remove',
+        action: this.removeItem.bind(this, index, false)
+      },
+      {
+        label: this.translateService.instant('common.rename'),
+        id: 'edit',
+        action: this.editItem.bind(this, item, index)
       }
-     });
+    ]
   }
 
-  public saveEdit(): void {
-    const value = this.currentEditInput.nativeElement.value.replace(/\s+/gi, ' ').trim();
-    if (value) {
-      this.sameItemIndex = this.listState.list.filter((_, i) => i !== this.removingIndex)
-          .map((i) => i.value)
-          .findIndex((i) => compareAsStrings(i, value, false));
-
-      if (this.sameItemIndex > -1) {
-          this.editInputInvalid = true;
-          return;
-      }
-      this.listState.list[this.removingIndex].value = this.currentEditInput.nativeElement.value
-      this.removingIndex = null;
+  public saveEdit(item: SelectOption): void {
+    if (item.value) {
+      this.listState.list[this.itemHandledIndex].value = item.value
+      this.itemHandledIndex = null;
+      this.currentEditInput = null;
       this.transmit();
     } else {
-      this.removingIndex = null;
+      this.cancelEdit(item);
     }
   }
 
   public get isMultipleActions(): boolean {
-    return  Object.keys(this.allowedActions).filter(
-      (a: keyof EditableListActions) => ACTIONS_ICONS.has(a) && this.allowedActions[a]).length > 1;
+    return this.allowedActions.remove && this.allowedActions.edit;
   }
 
-  public editItem(data: SelectOption, index: number): void {
-    this.removingIndex = index;
-    this.currentActionType = IconActionsType.Rename
-    this.currentItemEdit = data;
-    this.currentEditInput = this.editItemInputs.toArray().find(i => i.nativeElement.id === this.removingIndex.toString());
-    this.currentEditInput.nativeElement.value = this.listState.list[this.removingIndex].value;
+  public editItem(item: SelectOption, index: number): void {
+    this.itemHandledIndex = index;
+    this.currentActionType = 'edit'
+    item.originalValue = item.value;
+    this.addingItemLen = item.value.length;
+    this.currentEditInput = this.editItemInputs.toArray().find(i => i.nativeElement.id === this.itemHandledIndex.toString());
     this.currentEditInput.nativeElement.focus();
   }
 
-  public openActionsMenu(index: number): void {
-    this.removingIndex = index
-  }
-
-  ngOnDestroy(): void {
-    if (this.inputChangeSbscr) {
-      this.inputChangeDbncr.complete();
-      this.inputChangeSbscr.unsubscribe();
-    }
-  }
-
   public addItem(confirm = false): void {
-    this.removingIndex = null;
+    this.itemHandledIndex = null;
+    this.currentActionType = null;
+    const value = this.addItemInput.nativeElement.value.replace(/\s+/gi, ' ').trim();
     if (!confirm) {
       this.addingItem = true;
+      this.addingItemLen = value.length;
       this.zone.runOutsideAngular(() => {
         setTimeout(() => {
           this.addItemInput.nativeElement.focus();
@@ -253,21 +226,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
         }, 0);
       });
     } else {
-      const value = this.addItemInput.nativeElement.value
-        .replace(/\s+/gi, ' ')
-        .trim();
-
       if (value) {
-        this.sameItemIndex = this.listState.list
-          .map((i) => i.value)
-          .findIndex((i) => compareAsStrings(i, value, false));
-
-        if (this.sameItemIndex > -1) {
-          this.inputInvalid = true;
-          this.addedItem = false;
-        }
-
-        if (this.sameItemIndex === -1) {
           this.addingItem = false;
           this.addedItem = true;
           EditableListUtils.addItem(this.listState.list, value);
@@ -276,7 +235,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
           this.listState.sortType = ListSortType.UserDefined;
           this.addItemInput.nativeElement.value = '';
           this.addingItemLen = 0;
-        }
       } else {
         this.addItemCancel();
       }
@@ -298,7 +256,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     ) {
       this.addingItem = false;
       this.inputInvalid = false;
-      this.sameItemIndex = null;
 
       if (!this.cd['destroyed']) {
         this.cd.detectChanges();
@@ -319,15 +276,15 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public removeItem(index: number, confirm = false): void {
-    this.currentActionType = IconActionsType.Delete
+    this.currentActionType = 'remove'
     if (!confirm) {
-      this.removingIndex = index;
+      this.itemHandledIndex = index;
     } else {
       this.addedItem = false;
       this.removedItem = true;
 
       setTimeout(() => {
-        this.removingIndex = null;
+        this.itemHandledIndex = null;
         this.removedItem = false;
         this.listState.delete.push(this.listState.list[index].value);
         this.listState.list.splice(index, 1);
@@ -347,7 +304,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     const relatedTarget = event && (event.relatedTarget as HTMLElement);
 
     if (!relatedTarget || !relatedTarget.matches('.bel-remove-button button')) {
-      this.removingIndex = null;
+      this.itemHandledIndex = null;
 
       if (!this.cd['destroyed']) {
         this.cd.detectChanges();
@@ -356,20 +313,14 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public onInputChange(): void {
-    const value = this.addItemInput.nativeElement.value.trim();
+    const value = this.currentEditInput ? this.currentEditInput.nativeElement.value.trim() : 
+    this.addItemInput.nativeElement.value.trim();
     this.addingItemLen = value.length;
     this.inputInvalid = false;
     this.editInputInvalid = false;
-    this.sameItemIndex = null;
 
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
-    }
-
-    if (this.inputChangeSbscr) {
-      this.zone.run(() => {
-        this.inputChangeDbncr.next(value);
-      });
     }
   }
 
