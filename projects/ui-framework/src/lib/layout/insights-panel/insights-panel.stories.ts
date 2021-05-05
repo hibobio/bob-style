@@ -1,5 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { object, select, withKnobs } from '@storybook/addon-knobs';
+import { action } from '@storybook/addon-actions';
+import { boolean, object, select, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
@@ -21,6 +22,8 @@ const template1 = `
         [type]="type"
         [data]="data"
         [config]="config"
+        [expanded]="expanded"
+        (expanded)="onExpand($event)"
   ></b-insights-panel>
 `;
 
@@ -40,7 +43,11 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  text | string | text to be displayed in divider | null
+  [type] | InsightsPanelType | type (information, warning, error, success)
+  [config] | InsightsPanelConfig | panel config
+  [data] | InsightsPanelData[] | insights data
+  [expanded] | boolean | control expanded/collapsed state
+  (expanded) | EventEmitter<wbr>&lt;boolean&gt; | emits on expanded/collapsed state change
 
   ~~~
   ${template1}
@@ -73,14 +80,19 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        type: select('type', type, InsightsPanelType.information),
+
+        expanded: boolean('expanded', false),
+
         config: object('config', {
           collapsible: true,
           icon: Icons.graph_timeline,
           expandButtonText: 'INSIGHTS',
           maxLines: 3,
         }),
-        type: select('type', type, InsightsPanelType.information),
         data: data,
+
+        onExpand: action('expanded'),
       },
       moduleMetadata: {
         imports: [
