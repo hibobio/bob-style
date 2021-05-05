@@ -1,4 +1,5 @@
 @import '../../style/common-imports';
+@import '../../style/icons.mixin';
 
 :host {
   position: relative;
@@ -7,52 +8,70 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-radius: $border-radius;
-
-  &[container-expanded='true']:not([class*='pad-']) {
-    padding-left: 16px;
-  }
-
-  .contract-container {
-    text-align: end;
-  }
-  &[container-expanded='true']{
-      padding-top: 8px;
-      }
-
-  .content-container {
-    padding-right: 16px;
-  }
-
-  display: flex;
 
   &[data-type='warning'] {
-    background-color: rgba($color-warn, 0.1);
-    color: $color3_darker;
+    --bg-color: #{rgba($color-warn, 0.1)};
+    --txt-color: #{$color3_darker};
   }
 
   &[data-type='information'] {
-    background-color: rgba($inform-600, 0.1);
-    color: $color9_darker;
+    --bg-color: #{rgba($inform-600, 0.1)};
+    --txt-color: #{$color9_darker};
   }
 
-  &[container-expanded='false']{
-        max-width: max-content;
-        max-height: times8(5);
-        cursor: pointer;
-    }
-
   &[data-type='error'] {
-    background-color: rgba($color-error, 0.1);
-    color: $color1_darker;
+    --bg-color: #{rgba($color-error, 0.1)};
+    --txt-color: #{$color1_darker};
   }
 
   &[data-type='success'] {
-    background-color: rgba($positive-600, 0.1);
-    color: $color7_darker;
+    --bg-color: #{rgba($positive-600, 0.1)};
+    --txt-color: #{$color7_darker};
   }
-}
 
-.heading {
-  display: inline-block;
+  background-color: var(--bg-color);
+  color: var(--color);
+
+  .btn-minimize ::ng-deep {
+    button {
+      font-weight: 700;
+      @include button-icon-right;
+      @include icon-color(var(--color));
+    }
+  }
+
+  &[data-expanded='false'] {
+    max-width: max-content;
+    max-height: 30px;
+    cursor: pointer;
+    border-radius: $border-radius;
+
+    ::ng-deep .btn-minimize {
+      button {
+        @include icon-size(18px);
+      }
+    }
+  }
+
+  &[data-expanded='true'] {
+    &:not([class*='pad-']) {
+      padding: times8(4);
+    }
+
+    ::ng-deep .btn-minimize {
+      position: absolute;
+      top: 0;
+      right: 5px;
+      width: 30px;
+
+      button {
+        min-width: 0;
+        padding: 0;
+
+        &:before {
+          margin: 0;
+        }
+      }
+    }
+  }
 }

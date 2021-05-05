@@ -1,7 +1,12 @@
-import { NgModule } from '@angular/core';
-import { InsightsPanelComponent } from './insights-panel.component';
 import { CommonModule } from '@angular/common';
-import { ButtonsModule, IconsModule, ReadMoreModule, TrackByPropModule, TypographyModule } from 'bob-style';
+import { NgModule } from '@angular/core';
+
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { IconsModule } from '../../icons/icons.module';
+import { TrackByPropModule } from '../../services/filters/trackByProp.pipe';
+import { TypographyModule } from '../../typography/typography.module';
+import { ReadMoreModule } from '../read-more/read-more.module';
+import { InsightsPanelComponent } from './insights-panel.component';
 
 @NgModule({
   imports: [
@@ -13,7 +18,6 @@ import { ButtonsModule, IconsModule, ReadMoreModule, TrackByPropModule, Typograp
     TrackByPropModule,
   ],
   declarations: [InsightsPanelComponent],
-  exports: [InsightsPanelComponent]
+  exports: [InsightsPanelComponent],
 })
-export class InsightsPanelModule {
-}
+export class InsightsPanelModule {}

@@ -1,26 +1,25 @@
-<div class="content">
+  <b-button *ngIf="config.collapsible"
+            class="btn-minimize mrg-l-auto"
+            [button]="expandButtonConf"
+            [text]="isExpanded ? null : config.expandButtonText"
+            [icon]="isExpanded ? iconTypes.contract : iconTypes.expand"
+            (clicked)="onExpandClick()">
+  </b-button>
 
-  <div *ngIf="config.collapsible" class="contract-container">
-    <b-button class="btn-minimize mrg-y-8"
-                     [button]="expandButtonConf"
-                     [text]="isExpanded ? null : config.expandButtonText"
-                     [icon]="isExpanded ? iconTypes.contract : iconTypes.expand"
-                     (clicked)="onExpandClick()">
-    </b-button>
-  </div>
+  <ng-container *ngIf="isExpanded">
 
-  <div class="content-container" [ngClass]="{'pad-t-16': !config.collapsible}" *ngIf="isExpanded">
-    <div class="mrg-b-32" *ngFor="let insight of data;  let last = last; trackBy: ('$index' | trackByProp)">
-      <div class="title">
-        <b-icon class="icon pad-b-8 mrg-r-10"
-                [icon]=" insight?.icon?.type || config.icon.type"
-                [color]="insight?.icon?.color ||config.icon.color"
-                [size]="insight?.icon?.size || iconSizes.medium">
-        </b-icon>
-        <b-heading class="heading mrg-b-16 uppercase"> {{ insight.title }} </b-heading>
-      </div>
-      <p class="mrg-0" [readMore]="insight.content" [maxLines]="config.maxLines"></p>
+    <div *ngFor="let insight of data;  let last = last; trackBy: ('$index' | trackByProp)"
+         class="insight"
+         [class.mrg-b-40]="!last">
+      <h4 class="b-heading inl-blk mrg-b-10 uppercase">
+        <b-icon class="icon pad-b-4 mrg-r-8"
+                [icon]="insight?.icon || config?.icon"
+                [size]="iconSizes.small">
+        </b-icon>{{ insight.title }}
+      </h4>
+      <p class="mrg-0"
+         [readMore]="insight.content"
+         [maxLines]="config.maxLines"></p>
     </div>
-  </div>
 
-</div>
+  </ng-container>
