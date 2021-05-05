@@ -5,7 +5,4 @@ export enum ListSortType {
 }
 
 
-export enum IconActionsType {
-  Delete = 'Delete',
-  Rename = 'Rename'
-}
+export type IconActionsType = 'edit' | 'remove'
