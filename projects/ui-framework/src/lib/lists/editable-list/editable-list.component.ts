@@ -26,7 +26,6 @@ import {
   notFirstChanges,
   cloneObject,
   hasChanges,
-  isNotEmptyArray,
   cloneArray,
   isKey,
   isNumber,
@@ -113,20 +112,14 @@ export class EditableListComponent implements OnChanges {
   onHostFocusout(event: FocusEvent): void {
     if (this.currentEditInput) {
       this.cancelEdit(this.listState.list[this.itemHandledIndex], event);
+      return;
     }
-    if (isNumber(this.itemHandledIndex) && !this.isFocusOutEdit) {
+    if (isNumber(this.itemHandledIndex)) {
       this.removeCancel(event);
     }
    if (this.addingItem) {
       this.addItemCancel(event);
     }
- }
-
- public handleEditInputFocusOut(event: FocusEvent): void {
-  this.isFocusOutEdit = true;
-  setTimeout(() => {
-     this.isFocusOutEdit = false;
-  }, 0);
  }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -193,7 +186,8 @@ export class EditableListComponent implements OnChanges {
 
   public cancelEdit(item: SelectOption, event: FocusEvent = null): void {
     const relatedTarget = event && (event.relatedTarget as HTMLButtonElement);
-    if (relatedTarget && relatedTarget.matches('.save-edit-btn button') || !item) { 
+    if (relatedTarget && (relatedTarget.matches('.save-edit-btn button') ||
+    relatedTarget.matches('.edit-input')) || !item) { 
       return;
     }
     item.value = item.originalValue;
@@ -304,10 +298,8 @@ export class EditableListComponent implements OnChanges {
 
   public removeCancel(event: FocusEvent = null): void {
     const relatedTarget = event && (event.relatedTarget as HTMLElement);
-
     if (!relatedTarget || !relatedTarget.matches('.bel-remove-button button')) {
       this.itemHandledIndex = null;
-
       if (!this.cd['destroyed']) {
         this.cd.detectChanges();
       }
@@ -355,7 +347,7 @@ export class EditableListComponent implements OnChanges {
 
   private transmit(): void {
     this.changed.emit(
-      Object.assign({}, this.listState, {
+      Object.assign({}, {
         list: cloneArray(this.listState.list),
       })
     );
