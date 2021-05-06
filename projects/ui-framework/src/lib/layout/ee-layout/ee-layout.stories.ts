@@ -220,6 +220,8 @@ const note = `
     </tbody>
   </table>
 
+  **Note**: all template parts are optional. pass what you need.
+
   ~~~
 <b-ee-layout
       [type]="type"
