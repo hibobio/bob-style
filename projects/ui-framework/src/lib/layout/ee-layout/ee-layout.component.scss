@@ -41,6 +41,7 @@ $ee-layout-grid-gap: $b-grid-gap;
 
 .bel-sidebar {
   min-width: 0;
+  width: $ee-layout-sidebar-width;
   grid-template-columns: $ee-layout-sidebar-width;
 }
 
