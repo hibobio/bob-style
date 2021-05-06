@@ -86,7 +86,7 @@ const template = `
       <ng-container ee-layout-sidebar>
 
         <p class="b-quote mrg-0">
-          <span>{{joke}}</span>
+          <span>{{jokes[jokeIndex]}}</span>
         </p>
 
         <b-side-menu [options]="sideMenu"
@@ -145,8 +145,8 @@ const template = `
 
           <b-switch-toggle
             class="mrg-l-auto"
-            label="Make it larger"
-            [isChecked]="zoom" (changed)="zoom=$event"></b-switch-toggle>
+            label="Make it better"
+            [isChecked]="zoom" (changed)="zoom=$event; jokeIndex=jokeIndex+1"></b-switch-toggle>
         </div>
 
         <b-cards [type]="zoom ? 'regular' : 'small'">
@@ -439,7 +439,7 @@ const chips = makeArray(randomNumber(3, 5)).map((_, i) => ({
 }));
 
 story.add(
-  'Employee template',
+  'EE Layout',
   () => {
     return {
       template: storyTemplate,
@@ -470,7 +470,8 @@ story.add(
         avatars: avatars,
         sideMenu: sideMenu,
         cards: cards,
-        joke: joke(),
+        jokes: jokes,
+        jokeIndex: 0,
         headerMenu: headerMenu,
         breadcrumbs: [
           {
