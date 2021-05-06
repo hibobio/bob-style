@@ -510,6 +510,12 @@ export { MetaTooltipDirective } from './lib/popups/tooltip/meta-tooltip/meta-too
 // Divider
 export { DividerModule } from './lib/layout/divider/divider.module';
 export { DividerComponent } from './lib/layout/divider/divider.component';
+// Insights Panel
+export * from './lib/layout/insights-panel/insights-panel.interface';
+export * from './lib/layout/insights-panel/insights-panel.enum';
+export * from './lib/layout/insights-panel/insights-panel.const';
+export { InsightsPanelModule } from './lib/layout/insights-panel/insights-panel.module';
+export { InsightsPanelComponent } from './lib/layout/insights-panel/insights-panel.component';
 // Collapsible Section
 export { CollapsibleSectionModule } from './lib/layout/collapsible-section/collapsible-section.module';
 export { CollapsibleSectionComponent, COLLAPSIBLE_OPTIONS_DEF } from './lib/layout/collapsible-section/collapsible-section.component';
