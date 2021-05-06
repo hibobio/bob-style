@@ -1,6 +1,5 @@
 @import '../../style/common-imports';
 @import '../../avatar/avatar/avatar.mixin';
-@import '../../style/colors';
 
 $chip-selected-color: $grey-700;
 $chip-tab-selected-color: $primary-indication;
@@ -69,7 +68,7 @@ $chipTypeMap: (
       background-color: $color6_base,
       color: white,
       border-color: $color6_base,
-    )
+    ),
   ),
   avatar icon:
     (
@@ -158,13 +157,14 @@ $chipTypeMap: (
       border-radius: $border-radius,
     ),
   ),
-  label label-secondary: (
-    '*': (
-      border-radius: $border-radius/2,
-      height: times8(2),
-      padding: 0 8px,
+  label label-secondary:
+    (
+      '*': (
+        border-radius: $border-radius/2,
+        height: times8(2),
+        padding: 0 8px,
+      ),
     ),
-  ),
   label-secondary: (
     '*': (
       background-color: white,

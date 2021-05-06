@@ -90,8 +90,12 @@ export class BubbleChartComponent extends ChartCore implements OnChanges {
           data: this.data,
           type: 'bubble',
           marker: {
+            fillOpacity: 1,
             states: {
               hover: {
+                fillColor: this.hoverColor
+              },
+              select: {
                 fillColor: this.hoverColor
               }
             }

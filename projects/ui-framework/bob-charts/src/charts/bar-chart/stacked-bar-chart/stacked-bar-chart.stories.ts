@@ -9,7 +9,7 @@ import {
 } from '@storybook/addon-knobs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartsModule } from '../../charts.module';
-import { ComponentGroupType } from '../../../../../src/lib/consts';
+import { ComponentGroupType } from 'bob-style';
 import { StoryBookLayoutModule } from '../../../../../src/lib/story-book-layout/story-book-layout.module';
 import {
   MULTI_BAR_CHART_CATEGORIES,

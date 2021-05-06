@@ -1,0 +1,30 @@
+<b-button *ngIf="config?.collapsible!==false"
+          class="btn-minimize uppercase mrg-l-auto"
+          [button]="expandButtonConf"
+          [text]="isExpanded ? null : config?.expandButtonText"
+          [icon]="isExpanded ? iconTypes.contract : iconTypes.expand"
+          (clicked)="onExpandClick()">
+</b-button>
+
+<ng-container *ngIf="config?.collapsible === false || isExpanded">
+
+  <div *ngFor="let insight of data;  let last = last; trackBy: ('$index' | trackByProp)"
+       class="insight"
+       [class.mrg-b-40]="!last"
+       [ngClass]="config?.sectionClass"
+       [ngStyle]="config?.sectionStyle">
+    <h4 class="b-heading uppercase inl-blk mrg-b-10"
+        [ngClass]="config?.headingClass"
+        [ngStyle]="config?.headingStyle">
+      <b-icon class="icon pad-b-4 mrg-r-8"
+              [icon]="insight?.icon || config?.icon"
+              [size]="iconSizes.small">
+      </b-icon>{{ insight.title }}
+    </h4>
+    <p class="mrg-0"
+       [readMore]="insight.content"
+       [maxLines]="config?.maxLines"
+       [linkText]="config?.readMoreLinkText"></p>
+  </div>
+
+</ng-container>
