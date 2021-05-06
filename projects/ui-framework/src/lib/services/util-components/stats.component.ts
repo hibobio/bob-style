@@ -1,13 +1,15 @@
+import { debounce } from 'lodash';
+
 import {
   Component,
   DoCheck,
-  Input,
-  HostListener,
-  ViewChild,
   ElementRef,
+  HostListener,
+  Input,
   NgZone,
+  ViewChild,
 } from '@angular/core';
-import { debounce } from 'lodash';
+
 import { DOMhelpers } from '../html/dom-helpers.service';
 import { countChildren } from '../utils/functional-utils';
 
@@ -36,6 +38,11 @@ import { countChildren } from '../utils/functional-utils';
         right: 15px;
         bottom: 15px;
         z-index: 100;
+        user-select: none;
+        opacity: 0.65;
+      }
+      :host:hover {
+        opacity: 1;
       }
       .cntr-diff {
         color: red;

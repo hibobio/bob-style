@@ -84,7 +84,7 @@ const note = `
   maxLines? | number | max lines of section content before 'View more' link is shown
   expandButtonText? | string | text for the expand/collapse button
   readMoreLinkText? | string | text for the 'View more' link
-  headingClass, sectionClass |string / string[] / object | custom content & heading classes - support what ngClass binding supports
+  headingClass, sectionClass | string / string[] / object | custom content & heading classes - support what ngClass binding supports
   headingStyle, sectionStyle | object | custom content & heading css styles - support what ngStyle supports
 
 `;
