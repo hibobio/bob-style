@@ -18,6 +18,7 @@ export enum ComponentGroupType {
   Navigation = 'Components/Navigation',
   Search = 'Components/Search',
   Lists = 'Components/Lists',
+  Templates = 'Components/Templates',
   Icons = 'Others/Icons',
   Typography = 'Others/Typography',
   Services = 'Others/Services',

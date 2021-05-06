@@ -526,10 +526,17 @@ export { SortableCollapsibleSectionsComponent } from './lib/layout/sortable-coll
 export * from './lib/layout/sortable-collapsible-sections/sortable-collapsible-sections.interface';
 export { CollapsibleHeaderDirective } from './lib/layout/sortable-collapsible-sections/collapsible-header.directive';
 export { CollapsibleContentDirective } from './lib/layout/sortable-collapsible-sections/collapsible-content.directive';
+// Simple Collapsible
 export { CollapsibleModule } from './lib/layout/collapsible/collapsible.module';
 export { CollapsibleComponent } from './lib/layout/collapsible/collapsible.component';
 export * from './lib/layout/collapsible/collapsible.const';
 export * from './lib/layout/collapsible/collapsible.interface';
+// EE Layout
+export * from './lib/layout/ee-layout/ee-layout.const';
+export * from './lib/layout/ee-layout/ee-layout.interface';
+export { EELayoutModule } from './lib/layout/ee-layout/ee-layout.module';
+export { EELayoutComponent } from './lib/layout/ee-layout/ee-layout.component';
+
 
 // Masonry
 export { MasonryLayoutModule } from './lib/layout/masonry/masonry.module';
