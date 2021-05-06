@@ -242,10 +242,10 @@ const note = `
   ~~~
 
   #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  [type] | Types | style config preset | none
-  [avatar] | Avatar | ee avatar config | none
+  Name | Type | Description
+  --- | --- | ---
+  [type] | Types / null | style config preset
+  [avatar] | Avatar | ee avatar config
   [config] | EELayoutConfig | layout style config
 
   #### interface: EELayoutConfig
