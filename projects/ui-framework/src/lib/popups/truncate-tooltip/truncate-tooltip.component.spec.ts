@@ -141,9 +141,9 @@ describe('TruncateTooltipComponent', () => {
       const tooltipElem = document.querySelector(
         '#cdk-describedby-message-container'
       ) as HTMLElement;
-      expect(tooltipElem.innerText).toContain('TEST1');
-      expect(tooltipElem.innerText).toContain('TEXTSTART');
-      expect(tooltipElem.innerText).toContain('TEXTEND1');
+      expect(tooltipElem.textContent).toContain('TEST1');
+      expect(tooltipElem.textContent).toContain('TEXTSTART');
+      expect(tooltipElem.textContent).toContain('TEXTEND1');
     });
   });
 
@@ -166,8 +166,8 @@ describe('TruncateTooltipComponent', () => {
         '#cdk-describedby-message-container'
       ) as HTMLElement;
       tick();
-      expect(tooltipElem.innerText).toContain('TEST2');
-      expect(tooltipElem.innerText).toContain('TEXTEND1');
+      expect(tooltipElem.textContent).toContain('TEST2');
+      expect(tooltipElem.textContent).toContain('TEXTEND1');
       fakeAsyncFlush();
     }));
   });

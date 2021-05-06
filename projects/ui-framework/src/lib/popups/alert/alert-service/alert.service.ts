@@ -45,7 +45,6 @@ export class AlertService {
   }
 
   public showAlert(config: AlertConfig): ComponentRef<AlertComponent> {
-    console.log('config', config);
     this.closeAlertCallback();
 
     this.panel = this.panelService.createPanel({

@@ -8,10 +8,13 @@ import {
   withKnobs,
 } from '@storybook/addon-knobs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ComponentGroupType } from '../../../../src/lib/consts';
+import { ComponentGroupType } from 'bob-style';
 import { StoryBookLayoutModule } from '../../../../src/lib/story-book-layout/story-book-layout.module';
 import { ChartsModule } from '../charts.module';
-import { BUBBLE_CHART_CATEGORIES_MOCK, BUBBLE_CHART_DATA_MOCK } from '../chart.mock';
+import {
+  BUBBLE_CHART_CATEGORIES_MOCK,
+  BUBBLE_CHART_DATA_MOCK,
+} from '../chart.mock';
 import { ChartLegendPositionEnum } from '../charts.interface';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(

@@ -1,16 +1,17 @@
 import {
   Component,
-  OnInit,
-  Input,
-  Output,
   EventEmitter,
+  Input,
   NgZone,
+  OnInit,
+  Output,
 } from '@angular/core';
+
 import { ButtonType } from '../../buttons/buttons.enum';
-import { Icons } from '../../icons/icons.enum';
-import { SelectGroupOption } from '../../lists/list.interface';
-import { ListChange } from '../../lists/list-change/list-change';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { Icons } from '../../icons/icons.enum';
+import { ListChange } from '../../lists/list-change/list-change';
+import { SelectGroupOption } from '../../lists/list.interface';
 import {
   isArray,
   isNumber,
@@ -23,7 +24,7 @@ import { PagerService } from './pager.service';
   selector: 'b-pager',
   templateUrl: './pager.component.html',
   styleUrls: ['./pager.component.scss'],
-  providers: [PagerService]
+  providers: [PagerService],
 })
 export class PagerComponent<T = any> implements OnInit {
   constructor(private zone: NgZone, private pagerService: PagerService) {}

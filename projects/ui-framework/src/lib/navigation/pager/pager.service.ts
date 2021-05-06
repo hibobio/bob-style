@@ -45,10 +45,7 @@ export class PagerService {
             const sliceSize = (index + 1) * config.sliceStep;
             return {
               id: sliceSize,
-              value:
-                sliceSize +
-                ' ' +
-                this.translate.instant('bob-style.pager.items_per_page'),
+              value: sliceSize.toString(),
               selected: sliceSize === config.sliceSize,
             };
           }

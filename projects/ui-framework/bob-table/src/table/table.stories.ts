@@ -14,9 +14,13 @@ import {
 } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
-import { AvatarModule, ComponentGroupType, SearchModule } from 'bob-style';
+import {
+  AvatarModule,
+  ComponentGroupType,
+  Icons,
+  SearchModule,
+} from 'bob-style';
 
-import { Icons } from '../../../src/lib/icons/icons.enum';
 import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
 import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';

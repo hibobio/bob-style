@@ -7,14 +7,13 @@ import {
   text,
   withKnobs,
 } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../../../src/lib/consts';
+import { ComponentGroupType } from 'bob-style';
 import { StoryBookLayoutModule } from '../../../../src/lib/story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartsModule } from '../charts.module';
-import { TypographyModule } from 'bob-style';
 import { LINE_CHART_DATA_MOCK, NUMBER_OF_EMPLOYEES } from '../chart.mock';
 import { ChartLegendPositionEnum } from '../charts.interface';
-import { DonutSize } from '../../../../src/lib/indicators/progress/progress.enum';
+import { DonutSize, TypographyModule } from 'bob-style';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
