@@ -221,7 +221,7 @@ const note = `
     </tbody>
   </table>
 
-  **Note**: all template parts are optional. pass what you need.
+  **Note**: All template parts are optional. Use what you need. You don't have to pass [avatar], you can also place it in the sidebar with transclude. Pass [type]="null" if you want just the layout, without most of the styles.
 
   ~~~
 <b-ee-layout
@@ -333,11 +333,11 @@ const avatars = sadAvatar(10).map((avtr, i) => ({
   subtitle: jobs[i + 1],
 }));
 
-const sideMenu: SideMenuOption[] = makeArray(4).map((i, index) => ({
+const sideMenu: SideMenuOption[] = makeArray(4).map((_, index) => ({
   id: index,
   displayName: diseases[index + 4],
   icon: Icons.folder,
-  actions: disease(4).map((dis, i) => ({
+  actions: disease(4).map((dis) => ({
     label: dis,
   })),
 }));
