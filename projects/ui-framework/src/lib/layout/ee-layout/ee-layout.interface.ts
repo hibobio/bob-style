@@ -5,15 +5,18 @@ export interface EELayoutConfig {
   headerClass?: string | string[] | NgClass;
   headerStyle?: GenericObject<string>;
 
-  sectionClass?: string | string[] | NgClass;
-  sectionStyle?: GenericObject<string>;
-
   sidebarClass?: string | string[] | NgClass;
   sidebarStyle?: GenericObject<string>;
 
-  sectionTitleClass?: string | string[] | NgClass;
-  sectionTitleStyle?: GenericObject<string>;
+  sectionHeaderClass?: string | string[] | NgClass;
+  sectionHeaderStyle?: GenericObject<string>;
+
+  contentHeaderClass?: string | string[] | NgClass;
+  contentHeaderStyle?: GenericObject<string>;
 
   contentClass?: string | string[] | NgClass;
   contentStyle?: GenericObject<string>;
+
+  contentFooterClass?: string | string[] | NgClass;
+  contentFooterStyle?: GenericObject<string>;
 }

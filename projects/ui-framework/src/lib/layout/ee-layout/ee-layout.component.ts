@@ -34,16 +34,20 @@ export class EELayoutComponent implements OnChanges, AfterViewInit {
   ) {}
 
   @ViewChild('header') header: ElementRef<HTMLElement>;
-  @ViewChild('title') title: ElementRef<HTMLElement>;
+  @ViewChild('sectionHeader') sectionHeader: ElementRef<HTMLElement>;
+  @ViewChild('contentHeader') contentHeader: ElementRef<HTMLElement>;
+  @ViewChild('contentFooter') contentFooter: ElementRef<HTMLElement>;
 
-  @HostBinding('attr.data-type') @Input() type: Types = Types.primary;
+  @HostBinding('attr.data-type') @Input() type: Types;
 
   @Input() config: EELayoutConfig = EE_LAYOUT_CONFIG_BY_TYPE[Types.primary];
 
   @Input() avatar: Avatar;
 
   public hasHeader = true;
-  public hasTitle = true;
+  public hasSectionHeader = true;
+  public hasContentHeader = true;
+  public hasContentFooter = true;
 
   ngOnChanges(changes: SimpleChanges): void {
     //
@@ -51,7 +55,8 @@ export class EELayoutComponent implements OnChanges, AfterViewInit {
       //
       this.config = mergeObjects<EELayoutConfig>(
         EE_LAYOUT_CONFIG_BY_TYPE[this.type],
-        changes.config?.currentValue || this.config
+        changes.config?.currentValue ||
+          (changes.type && this.type === null ? {} : this.config)
       );
     }
   }
@@ -60,8 +65,15 @@ export class EELayoutComponent implements OnChanges, AfterViewInit {
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
         this.hasHeader = !this.DOM.isEmpty(this.header.nativeElement);
-        this.hasTitle = !this.DOM.isEmpty(this.title.nativeElement);
-
+        this.hasSectionHeader = !this.DOM.isEmpty(
+          this.sectionHeader.nativeElement
+        );
+        this.hasContentHeader = !this.DOM.isEmpty(
+          this.contentHeader.nativeElement
+        );
+        this.hasContentFooter = !this.DOM.isEmpty(
+          this.contentFooter.nativeElement
+        );
         this.cd.detectChanges();
       }, 0);
     });

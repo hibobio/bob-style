@@ -11,6 +11,7 @@ import {
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { CardsModule } from '../../cards/cards.module';
+import { ChipListModule } from '../../chips/chip-list/chip-list.module';
 import { ComponentGroupType } from '../../consts';
 import { EyeCandyModule } from '../../eye-candy/eye-candy.module';
 import { Icons } from '../../icons/icons.enum';
@@ -23,13 +24,17 @@ import {
   funnyName,
   joke,
   mockBadJobs,
+  mockThings,
   sadAvatar,
 } from '../../mock.const';
 import { BreadcrumbsModule } from '../../navigation/breadcrumbs/breadcrumbs.module';
 import { MenuModule } from '../../navigation/menu/menu.module';
 import { SideMenuOption } from '../../navigation/side-menu/side-menu.interface';
 import { SideMenuModule } from '../../navigation/side-menu/side-menu.module';
-import { COLOR_PALETTE_SET1_COLOR_ORDER } from '../../services/color-service/color-palette.const';
+import {
+  COLOR_PALETTE_SET1_COLOR_ORDER,
+  COLOR_PALETTE_SET5_COLOR_ORDER,
+} from '../../services/color-service/color-palette.const';
 import {
   ColorPalette,
   ColorsGrey,
@@ -57,12 +62,13 @@ const template = `
           [numberOfFlakes]="120"
           [snowDuration]="10000">
   </b-snow>
+
 <b-ee-layout
-      [type]="type"
+      [type]="type === 'null' ? null : type"
       [config]="config"
       [avatar]="avatars[avIndx]">
 
-      <ng-container header>
+      <ng-container ee-layout-header>
 
         <b-menu [menu]="headerMenu">
           <b-chevron-button menu-trigger type="primary" text="Today's tasks">
@@ -77,19 +83,19 @@ const template = `
 
       </ng-container>
 
-      <ng-container sidebar>
+      <ng-container ee-layout-sidebar>
 
-        <p class="b-quote mrg-t-24 mrg-b-0">
+        <p class="b-quote mrg-0">
           <span>{{joke}}</span>
         </p>
 
-        <b-side-menu class="mrg-t-24" [options]="sideMenu"
+        <b-side-menu [options]="sideMenu"
                     headerLabel="Because">
         </b-side-menu>
 
       </ng-container>
 
-      <ng-container title>
+      <ng-container ee-layout-section-header>
         <b-display-2>Shiny happy people</b-display-2>
 
         <b-group class="mrg-l-auto">
@@ -104,7 +110,14 @@ const template = `
         </b-group>
       </ng-container>
 
-      <ng-container content>
+      <ng-container ee-layout-content-header>
+
+        <b-chip-list [chips]="chips" [config]="{type:'label'}">
+        </b-chip-list>
+
+      </ng-container>
+
+      <ng-container ee-layout-content>
 
         <div class="flx flx-row-align-y">
           <ng-container *ngFor="let donut of donuts; let index=index; let last=last;">
@@ -144,6 +157,10 @@ const template = `
 
       </ng-container>
 
+      <ng-container ee-layout-content-footer>
+        <span class="mrg-l-auto">&copy; 2021 Pasha Golovin</span>
+      </ng-container>
+
 </b-ee-layout>`;
 
 const note = `
@@ -151,14 +168,91 @@ const note = `
   #### Module
   *EELayoutModule*
 
+
+  <table style="background-color:#faf7f2; text-align:center; font-size:12px">
+    <thead>
+      <tr style="background-color:transparent;">
+        <td colspan="2" style="border-color:grey; background-color:transparent;text-align:center;">
+          &lt;ng-container ee-layout-<b>header</b>&gt;
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background-color:transparent;">
+        <td width="30%" height="100%" rowspan="4" valign="top" style="border-color:grey; background-color:transparent;text-align:center;">
+          <div style="width: 100%; height: 100%; display: flex; flex-direction:column;align-items: center;">
+
+            <span style="display:flex; justify-content:center; align-items:center; width:60px;height:60px;border-radius:50%;background:white;border:1px solid grey;margin-bottom:30px;margin-top:20px;">
+  <svg style="width:50%; height:50%;" xmlns="http://www.w3.org/2000/svg"
+     height="24"
+     viewBox="0 0 24 24"
+     width="24">
+  <path fill="#9d9d9d"
+        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+  </svg>
+            </span>
+
+            <span style="flex-grow:1; display: flex;align-items: center;">
+              &lt;ng-container ee-layout-<b>sidebar</b>&gt;
+            </span>
+
+          </div>
+        </td>
+        <td width="70%" style="border-color:grey; background-color:transparent;text-align:center;">
+           &lt;ng-container ee-layout-<b>section-header</b>&gt;
+        </td>
+      </tr>
+      <tr style="background-color:transparent;">
+        <td width="70%" style="border-color:black; border-width:2px;background-color:white;text-align:center;">
+           &lt;ng-container ee-layout-<b>content-header</b>&gt;
+        </td>
+      </tr>
+      <tr style="background-color:transparent;">
+        <td width="70%" height="100" style="border-color:black; border-width:2px;background-color:white;text-align:center;">
+           &lt;ng-container ee-layout-<b>content</b>&gt;
+        </td>
+      </tr>
+      <tr style="background-color:transparent;">
+        <td width="70%" style="border-color:black; border-width:2px;background-color:white;text-align:center;">
+           &lt;ng-container ee-layout-<b>content-footer</b>&gt;
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
   ~~~
-  ${template}
+<b-ee-layout
+      [type]="type"
+      [config]="config"
+      [avatar]="avatar">
+
+    <ng-container ee-layout-header> ... </ng-container>
+
+    <ng-container ee-layout-sidebar> ... </ng-container>
+
+    <ng-container ee-layout-section-header> ... </ng-container>
+
+    <ng-container ee-layout-content-header> ... </ng-container>
+
+    <ng-container ee-layout-content> ... </ng-container>
+
+    <ng-container ee-layout-content-footer> ... </ng-container>
+
+</b-ee-layout>
   ~~~
 
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [type] | Types | style config preset | primary
+  [type] | Types | style config preset | none
+  [avatar] | Avatar | ee avatar config | none
+  [config] | EELayoutConfig | layout style config
+
+  #### interface: EELayoutConfig
+  Name | Type | Description
+  --- | --- | ---
+  headerClass, sidebarClass, sectionHeaderClass, contentHeaderClass, contentClass, contentFooterClass | string / string[] / object | custom layout parts classes - support what ngClass binding supports
+  headerStyle, sidebarStyle, sectionHeaderStyle, contentHeaderStyle, contentStyle, contentFooterStyle | object | custom css styles - support what ngStyle supports
 `;
 
 const storyTemplate = `
@@ -337,6 +431,13 @@ const pos: { x: number; y: number }[] = makeArray(5).map(() => ({
   y: Math.random() * document.documentElement.clientHeight,
 }));
 
+const randomItems = mockThings();
+
+const chips = makeArray(randomNumber(3, 5)).map((_, i) => ({
+  text: randomItems[i],
+  color: ColorPalette[COLOR_PALETTE_SET5_COLOR_ORDER[i]],
+}));
+
 story.add(
   'Employee template',
   () => {
@@ -346,11 +447,20 @@ story.add(
         type: select(
           'type',
           ['null', ...Object.keys(EE_LAYOUT_CONFIG_BY_TYPE)],
-          'secondary'
+          'primary'
         ),
 
         config: object('config', {
-          headerClass: ['flx', 'flx-row-align-y', 'brd-b', 'pad-b-8'],
+          headerClass: ['brd-b', 'pad-b-8', 'b-sticky'],
+          headerStyle: {
+            top: 0,
+            'background-color': '#faf7f2',
+            'z-index': 2,
+          },
+          sidebarClass: ['b-sticky'],
+          sidebarStyle: {
+            top: '100px',
+          },
           contentClass: ['row-gap'],
           sectionTitleClass: ['flx', 'flx-row-align-y'],
         }),
@@ -381,6 +491,7 @@ story.add(
           },
         ],
         donuts: donuts,
+        chips: chips,
         pos: pos,
         icons: Icons,
         confettiColors: Object.values(ColorPalette),
@@ -401,6 +512,7 @@ story.add(
           ProgressBarModule,
           SwitchToggleModule,
           EyeCandyModule,
+          ChipListModule,
         ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       },
