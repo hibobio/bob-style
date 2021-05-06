@@ -5,7 +5,8 @@
                       [fieldId]="id">
 </b-form-element-label>
 
-<b-tree-list-panel [type]="type"
+<b-tree-list-panel [id]="id"
+                   [type]="type"
                    [mode]="mode"
                    [list]="list"
                    [value]="value"
@@ -36,7 +37,7 @@
        (click)="openPanel()">
 
     <div #input
-         [id]="id"
+         [attr.id]="id"
          class="bfe-input"
          tabindex="0"
          (focus)="openPanel()"

@@ -22,6 +22,7 @@
   <b-button *ngIf="listActions.cancel"
             class="cancel-button"
             (clicked)="onCancel()"
+            [id]="id ? id+'-cancel' : null"
             [disabled]="listActionsState.cancel.disabled"
             [hidden]="listActionsState.cancel.hidden"
             [size]="buttonSize.small"
@@ -32,9 +33,11 @@
   <b-button *ngIf="listActions.apply"
             class="apply-button"
             (clicked)="onApply()"
+            [id]="id ? id+'-apply' : null"
             [disabled]="listActionsState.apply.disabled"
             [hidden]="listActionsState.apply.hidden"
             [size]="buttonSize.small"
             [type]="buttonType.primary"
-            [text]="(listActions.apply !== true && listActions.apply) || ('common.apply' | translate)"></b-button>
+            [text]="(listActions.apply !== true && listActions.apply) || ('common.apply' | translate)">
+  </b-button>
 </div>

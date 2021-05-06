@@ -5,15 +5,16 @@ import {
   Input,
   Output,
 } from '@angular/core';
+
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { Icons } from '../../icons/icons.enum';
+import {
+  cloneDeepSimpleObject,
+  cloneObject,
+} from '../../services/utils/functional-utils';
 import { ListFooterActions, ListFooterActionsState } from '../list.interface';
 import { LIST_ACTIONS_DEF, LIST_ACTIONS_STATE_DEF } from './list-footer.const';
-import {
-  cloneObject,
-  cloneDeepSimpleObject,
-} from '../../services/utils/functional-utils';
-import { FormElementSize } from '../../form-elements/form-elements.enum';
 
 @Component({
   selector: 'b-list-footer',
@@ -21,6 +22,8 @@ import { FormElementSize } from '../../form-elements/form-elements.enum';
   styleUrls: ['./list-footer.component.scss'],
 })
 export class ListFooterComponent {
+  //
+  @Input() id: string;
   @Input() listActions: ListFooterActions = cloneObject(LIST_ACTIONS_DEF);
   @Input() listActionsState: ListFooterActionsState = cloneDeepSimpleObject(
     LIST_ACTIONS_STATE_DEF

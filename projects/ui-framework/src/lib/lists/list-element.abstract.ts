@@ -1,65 +1,67 @@
+import { cloneDeep, isEqual } from 'lodash';
+import { Subscription } from 'rxjs';
+
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
   AfterViewInit,
+  ChangeDetectorRef,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Input,
+  NgZone,
+  OnChanges,
   OnDestroy,
   OnInit,
-  Renderer2,
-  ViewChild,
-  ChangeDetectorRef,
-  Input,
   Output,
-  EventEmitter,
-  ElementRef,
-  NgZone,
+  Renderer2,
   SimpleChanges,
-  OnChanges,
-  HostBinding,
-  Directive,
+  ViewChild,
 } from '@angular/core';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { Subscription } from 'rxjs';
-import {
-  ListHeader,
-  ListOption,
-  ListFooterActions,
-  SelectGroupOption,
-  ListFooterActionsState,
-  UpdateListsConfig,
-  itemID,
-} from './list.interface';
-import { cloneDeep, isEqual } from 'lodash';
-import {
-  LIST_EL_HEIGHT,
-  DISPLAY_SEARCH_OPTION_NUM,
-  UPDATE_LISTS_CONFIG_DEF,
-  SELECT_MAX_ITEMS,
-} from './list.consts';
-import { ListKeyboardService } from './list-service/list-keyboard.service';
+
+import { AvatarSize } from '../avatar/avatar/avatar.enum';
 import { Keys } from '../enums';
-import { ListChange } from './list-change/list-change';
-import { DOMhelpers } from '../services/html/dom-helpers.service';
-import {
-  objectHasTruthyValue,
-  applyChanges,
-  isNotEmptyArray,
-  getEventPath,
-  hasChanges,
-  cloneDeepSimpleObject,
-  simpleChange,
-  isArray,
-  objectRemoveKey,
-  notFirstChanges,
-} from '../services/utils/functional-utils';
-import { ListModelService } from './list-service/list-model.service';
-import { ListChangeService } from './list-change/list-change.service';
-import { LIST_ACTIONS_STATE_DEF } from './list-footer/list-footer.const';
-import { SelectType, SelectMode } from './list.enum';
-import { SearchComponent } from '../search/search/search.component';
-import { MobileService } from '../services/utils/mobile.service';
+import { FORM_ELEMENT_HEIGHT } from '../form-elements/form-elements.const';
+import { FormElementSize } from '../form-elements/form-elements.enum';
 import { IconColor, Icons, IconSize } from '../icons/icons.enum';
 import { TooltipClass, TooltipPosition } from '../popups/tooltip/tooltip.enum';
-import { FormElementSize } from '../form-elements/form-elements.enum';
-import { AvatarSize } from '../avatar/avatar/avatar.enum';
-import { FORM_ELEMENT_HEIGHT } from '../form-elements/form-elements.const';
+import { SearchComponent } from '../search/search/search.component';
+import { DOMhelpers } from '../services/html/dom-helpers.service';
+import {
+  applyChanges,
+  cloneDeepSimpleObject,
+  getEventPath,
+  hasChanges,
+  isArray,
+  isNotEmptyArray,
+  notFirstChanges,
+  objectHasTruthyValue,
+  objectRemoveKey,
+  simpleChange,
+} from '../services/utils/functional-utils';
+import { MobileService } from '../services/utils/mobile.service';
+import { ListChange } from './list-change/list-change';
+import { ListChangeService } from './list-change/list-change.service';
+import { LIST_ACTIONS_STATE_DEF } from './list-footer/list-footer.const';
+import { ListKeyboardService } from './list-service/list-keyboard.service';
+import { ListModelService } from './list-service/list-model.service';
+import {
+  DISPLAY_SEARCH_OPTION_NUM,
+  LIST_EL_HEIGHT,
+  SELECT_MAX_ITEMS,
+  UPDATE_LISTS_CONFIG_DEF,
+} from './list.consts';
+import { SelectMode, SelectType } from './list.enum';
+import {
+  itemID,
+  ListFooterActions,
+  ListFooterActionsState,
+  ListHeader,
+  ListOption,
+  SelectGroupOption,
+  UpdateListsConfig,
+} from './list.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -86,6 +88,7 @@ export abstract class BaseListElement
   @ViewChild('search', { read: SearchComponent })
   protected search: SearchComponent;
 
+  @Input() id: string;
   @Input() options: SelectGroupOption[] = [];
   @Input() optionsDefault: SelectGroupOption[];
   @Input() mode: SelectMode = SelectMode.classic;
@@ -128,9 +131,8 @@ export abstract class BaseListElement
 
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
 
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
+  @Output()
+  selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
 
   @Output() apply: EventEmitter<ListChange> = new EventEmitter<ListChange>();
   @Output() cancel: EventEmitter<void> = new EventEmitter<void>();

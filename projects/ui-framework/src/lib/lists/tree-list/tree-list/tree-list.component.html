@@ -15,7 +15,8 @@
     (click)="onListClick($event)"
     (keydown)="onListKeyDown($event)">
 
-  <ng-container *ngFor="let itemID of $listViewModel | async; let index = index; trackBy: trackBy">
+  <ng-container
+                *ngFor="let itemID of $listViewModel | async; let index = index; trackBy: trackBy">
     <ng-container *ngTemplateOutlet="listItem; context: {
       index: index,
       item: itemsMap.get(itemID)
@@ -69,6 +70,7 @@
 <b-list-footer #footer
                *ngIf="hasFooter"
                class="btl-footer"
+               [id]="id"
                [listActions]="!readonly ? listActions : {}"
                [listActionsState]="!readonly ? listActionsState : {}"
                (apply)="onApply()"
