@@ -86,7 +86,6 @@
          [attr.data-item-id]="item.id"
          [ngClass]="{'new': addedItem && index === 0,
                      'deleted':removedItem && itemHandledIndex === index,
-                     'warn': sameItemIndex === index,
                      'b-icon-drag-alt': allowedActions.order !== false,
                      error: editInputInvalid && index === itemHandledIndex,
                      'non-draggable-item': allowedActions.order === false}">
@@ -101,7 +100,6 @@
              [hidden]="!isEditMode || index !== itemHandledIndex"
              class="bfe-input bel-item-input edit-input"
              [attr.autocomplete]="autoComplete.off"
-             (focusout)="handleEditInputFocusOut($event)"
              [id]="index"
              [(ngModel)]="item.value"
              [attr.maxlength]="maxChars || null"
@@ -182,7 +180,7 @@
   <p b-input-message
       *ngIf="show"
       [hidden]="hidden"
-      [errorMessage]="inputInvalid || editInputInvalid ? '&#34;' + listState.list[sameItemIndex].value + '&#34; ' + ('list-editor.editor.already-exists' | translate) : null"
+      [errorMessage]="inputInvalid || editInputInvalid ? '&#34; ' + ('list-editor.editor.already-exists' | translate) : null"
       [maxChars]="maxChars - addingItemLen < 15 ? maxChars : null"
       [length]="addingItemLen">
   </p>
