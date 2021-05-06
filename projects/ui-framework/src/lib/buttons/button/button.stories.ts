@@ -1,5 +1,11 @@
 import { action } from '@storybook/addon-actions';
-import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
+import {
+  boolean,
+  number,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
@@ -10,9 +16,12 @@ import buttonsProps from '../button.properties.md';
 import { ButtonSize, ButtonType } from '../buttons.enum';
 import { ButtonsModule } from '../buttons.module';
 
-const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
+  withKnobs
+);
 
 const template = `<b-button
+          [id]="id"
           [type]="type"
           [size]="size"
           [text]="text"
@@ -27,6 +36,7 @@ const template = `<b-button
 
 <a b-button href="javascript:void()"
           [button]="{
+            id: id,
             type: type,
             size: size,
             text: text,
@@ -94,6 +104,7 @@ story.add(
     template: storyTemplate,
     props: {
       onClick: action('onClick'),
+      id: text('id', 'jingle-bells'),
       text: text('text', 'Click me'),
       type: select('type', [0, ...Object.values(ButtonType)], 0),
       size: select('size', [...Object.values(ButtonSize), 0], 0),
@@ -103,7 +114,9 @@ story.add(
       preloader: boolean('preloader', false),
       throttle: number('throttle', 0),
       swallow: boolean('swallow', false),
-      regClick: action('regular (click) binding - if swallow is true, you will not see this'),
+      regClick: action(
+        'regular (click) binding - if swallow is true, you will not see this'
+      ),
     },
     moduleMetadata: {
       imports: [ButtonsModule, StoryBookLayoutModule],

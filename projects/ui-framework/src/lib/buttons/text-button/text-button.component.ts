@@ -17,6 +17,7 @@ import { ButtonType } from '../buttons.enum';
     <span
       #button
       role="button"
+      [attr.id]="id || null"
       class="text-button"
       [ngClass]="buttonClass"
       [attr.data-icon-before]="icn || null"
@@ -50,6 +51,7 @@ export class TextButtonComponent extends BaseButtonElement {
 
   protected getButtonClass(): string {
     return (
+      (this.id ? this.id + ' ' : '') +
       (this.color === LinkColor.primary ? 'color-primary ' : '') +
       (this.disabled ? 'disabled ' : '') +
       (this.icon

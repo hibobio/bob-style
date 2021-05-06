@@ -53,7 +53,8 @@
         <b-component-renderer *ngIf="header.suffixComponent"
                               class="comp-suffix"
                               [render]="header.suffixComponent"
-                              (click.outside-zone)="$event.stopPropagation()"></b-component-renderer>
+                              (click.outside-zone)="$event.stopPropagation()">
+        </b-component-renderer>
 
         <span *ngIf="header.description && !header.suffixComponent"
               class="comp-suffix has-hover"
@@ -82,7 +83,7 @@
             type="button"
             class="clear-selection"
             (click)="clearList()">
-            — {{ 'bob-style.single-list.reset-list' | translate}} —
+      — {{'bob-style.single-list.reset-list' | translate}} —
     </button>
 
     <div class="options">
@@ -106,7 +107,8 @@
 
         <b-component-renderer *ngIf="!option.avatar && option.prefixComponent"
                               class="comp-prefix"
-                              [render]="option.prefixComponent"></b-component-renderer>
+                              [render]="option.prefixComponent">
+        </b-component-renderer>
 
         <span *ngIf="!option.isPlaceHolder && option.value"
               class="option-value"
@@ -133,6 +135,7 @@
 
 <b-list-footer #footer
                *ngIf="hasFooter"
+               [id]="id"
                [listActions]="!readonly ? listActions : {}"
                [listActionsState]="!readonly ? listActionsState : {}"
                [size]="size"

@@ -1,9 +1,11 @@
-import { SelectType, SelectMode } from '../list.enum';
-import { itemID, ListFooterActions } from '../list.interface';
 import { EventEmitter } from '@angular/core';
+
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { SelectMode, SelectType } from '../list.enum';
+import { itemID, ListFooterActions } from '../list.interface';
 
 export interface TreeListComponentIO {
+  id?: string;
   list: TreeListOption[];
   value: itemID[];
   valueDefault: itemID[];
