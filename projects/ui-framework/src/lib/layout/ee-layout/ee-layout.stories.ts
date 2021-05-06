@@ -26,6 +26,7 @@ import {
   mockBadJobs,
   mockThings,
   sadAvatar,
+  uselessURLs,
 } from '../../mock.const';
 import { BreadcrumbsModule } from '../../navigation/breadcrumbs/breadcrumbs.module';
 import { MenuModule } from '../../navigation/menu/menu.module';
@@ -86,7 +87,7 @@ const template = `
       <ng-container ee-layout-sidebar>
 
         <p class="b-quote mrg-0">
-          <span>{{jokes[jokeIndex]}}</span>
+          <span [innerHTML]="jokes[jokeIndex]"></span>
         </p>
 
         <b-side-menu [options]="sideMenu"
@@ -351,10 +352,13 @@ const headerMenu = [
   'Watch some TV',
 ].map((o) => ({ label: o }));
 
+const urls = randomFromArray(uselessURLs, null);
+
 const cards = funnyImg(9).map((img, i) => ({
   imageUrl: img,
   imageRatio: 1,
   title: jobs[i + 10],
+  action: () => window.open(urls[i], '_blank'),
 }));
 
 const metrics1 = [
