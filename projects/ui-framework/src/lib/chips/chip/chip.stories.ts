@@ -1,24 +1,25 @@
-import { storiesOf } from '@storybook/angular';
-import { text, select, boolean, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
-import { ChipModule } from './chip.module';
-import { ChipType } from '../chips.enum';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import {
-  mockHobbies,
-  mockAvatar,
-  mockThings,
-  mockAnimals,
-  mockName,
-} from '../../mock.const';
-import { AvatarModule } from '../../avatar/avatar/avatar.module';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
+import { ComponentGroupType } from '../../consts';
+import { Icons, IconSize } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
-import { IconSize, Icons } from '../../icons/icons.enum';
-import { randomFromArray } from '../../services/utils/functional-utils';
+import {
+  mockAnimals,
+  mockAvatar,
+  mockHobbies,
+  mockName,
+  mockThings,
+} from '../../mock.const';
 import { COLOR_PALETTE_SET1_COLOR_ORDER } from '../../services/color-service/color-palette.const';
 import { ColorPalette } from '../../services/color-service/color-palette.enum';
+import { randomFromArray } from '../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { ChipType } from '../chips.enum';
+import { ChipModule } from './chip.module';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
@@ -30,7 +31,7 @@ const template = `
     [textStrong]="textStrong"
     [text]="text"
     [icon]="icon"
-    [color]="colorPalette[color]"
+    [color]="colorPalette[color] || null"
     [removable]="removable"
     [disabled]="disabled"
     [selected]="selected"
@@ -191,7 +192,11 @@ story.add(
       type: select('type', Object.values(ChipType), ChipType.tag),
       text: text('text', mockName()),
       textStrong: text('textStrong', undefined),
-      color: select('color', [0, ...COLOR_PALETTE_SET1_COLOR_ORDER], 0),
+      color: select(
+        'color',
+        ['null', ...COLOR_PALETTE_SET1_COLOR_ORDER],
+        'null'
+      ),
       removable: boolean('removable', false),
       disabled: boolean('disabled', false),
       selected: boolean('selected', false),
