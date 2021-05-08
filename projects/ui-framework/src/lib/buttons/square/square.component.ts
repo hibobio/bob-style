@@ -20,6 +20,7 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
     <button
       #button
       type="button"
+      [attr.id]="id || null"
       [ngClass]="buttonClass"
       [class.has-hover]="type === buttonType.tertiary"
       [attr.disabled]="disabled || null"
@@ -31,10 +32,14 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
     </button>
   `,
   styleUrls: ['./square.component.scss'],
-  providers: [{ provide: BaseButtonElement, useExisting: SquareButtonComponent }],
+  providers: [
+    { provide: BaseButtonElement, useExisting: SquareButtonComponent },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SquareButtonComponent extends BaseButtonElement implements OnChanges {
+export class SquareButtonComponent
+  extends BaseButtonElement
+  implements OnChanges {
   constructor(protected cd: ChangeDetectorRef, protected zone: NgZone) {
     super(cd, zone);
 
@@ -53,7 +58,8 @@ export class SquareButtonComponent extends BaseButtonElement implements OnChange
   ngOnChanges(changes: SimpleChanges) {
     super.ngOnChanges(changes, false);
 
-    this.icnSize = this.size === ButtonSize.small ? IconSize.medium : IconSize.large;
+    this.icnSize =
+      this.size === ButtonSize.small ? IconSize.medium : IconSize.large;
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();

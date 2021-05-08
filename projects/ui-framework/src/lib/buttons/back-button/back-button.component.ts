@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  NgZone,
+} from '@angular/core';
 
 import { Icons } from '../../icons/icons.enum';
 import { BaseButtonElement } from '../button.abstract';
@@ -10,6 +15,7 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
     <button
       #button
       type="button"
+      [attr.id]="id || null"
       [ngClass]="buttonClass"
       [attr.disabled]="disabled || null"
       [attr.data-icon-before]="icn || null"
@@ -20,7 +26,10 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
       <ng-content></ng-content>
     </button>
   `,
-  styleUrls: ['../button/button.component.scss', './back-button.component.scss'],
+  styleUrls: [
+    '../button/button.component.scss',
+    './back-button.component.scss',
+  ],
   providers: [{ provide: BaseButtonElement, useExisting: BackButtonComponent }],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

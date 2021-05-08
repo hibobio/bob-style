@@ -3,9 +3,9 @@ const DisableWarnings = require('./disable-warnings.js');
 module.exports = {
   stories: ['../projects/ui-framework/**/*.stories.ts'],
   addons: [
-    '@storybook/addon-essentials',
-    '@storybook/addon-notes',
     `@storybook/addon-knobs`,
+    '@storybook/addon-notes',
+    '@storybook/addon-essentials',
   ],
   webpackFinal: async (config, { configType }) => {
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'

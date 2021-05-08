@@ -46,6 +46,7 @@ export abstract class BaseButtonElement
     }
   }
 
+  @Input() id: string;
   @Input() text: string;
   @Input() icon: Icons;
   @Input() active = false;
@@ -158,6 +159,7 @@ export abstract class BaseButtonElement
 
   protected getButtonClass(): string {
     return (
+      (this.id ? this.id + ' ' : '') +
       (this.type || this.typeDefault) +
       ' ' +
       (this.size || ButtonSize.medium) +

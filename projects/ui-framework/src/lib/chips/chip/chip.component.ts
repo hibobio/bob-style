@@ -1,25 +1,26 @@
 import {
   Component,
-  Input,
   ElementRef,
-  Output,
   EventEmitter,
   HostBinding,
-  SimpleChanges,
+  Input,
   OnChanges,
+  Output,
+  SimpleChanges,
 } from '@angular/core';
-import { ChipType } from '../chips.enum';
-import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
+
+import { Icon } from '../../icons/icon.interface';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { ColorsGrey } from '../../services/color-service/color-palette.enum';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { NgClass } from '../../services/html/html-helpers.interface';
 import {
   applyChanges,
   hasChanges,
   isDark,
 } from '../../services/utils/functional-utils';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { Icon } from '../../icons/icon.interface';
-import { NgClass } from '../../services/html/html-helpers.interface';
 import { Color } from '../../types';
-import { ColorsGrey } from '../../services/color-service/color-palette.enum';
+import { ChipType } from '../chips.enum';
 
 @Component({
   selector: 'b-chip, [b-chip]',
@@ -60,7 +61,10 @@ export class ChipComponent implements OnChanges {
         type: ChipType.tag,
       },
       [],
-      true
+      true,
+      {
+        truthyCheck: (v) => v !== undefined,
+      }
     );
 
     if (changes.type || changes.icon) {
@@ -79,10 +83,14 @@ export class ChipComponent implements OnChanges {
       this.DOM.bindClasses(this.chip, this.class);
     }
 
-    if (hasChanges(changes, ['color'], true)) {
+    if (
+      hasChanges(changes, ['color'], true, {
+        truthyCheck: (v) => v !== undefined,
+      })
+    ) {
       this.DOM.setCssProps(this.chip, {
-        'background-color': this.color,
-        'border-color': this.color,
+        'background-color': this.color || null,
+        'border-color': this.color || null,
         color: isDark(this.color, 200) ? 'white' : ColorsGrey.color_grey_800,
       });
     }

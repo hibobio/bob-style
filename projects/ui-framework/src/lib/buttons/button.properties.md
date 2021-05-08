@@ -1,6 +1,7 @@
 #### Buttons common properties
 Name | Type | Description | Default
 --- | --- | --- | ---
+[id] | string | (optional) unique string that will be added as both id and class to the button element (usefull for tracking)
 [button] | Button | all inputs/props can also be provided as single object | &nbsp;
 [text] | string | button text (alternative to passing text inside b-button element) | &nbsp;
 [disabled] | boolean | disabled | false

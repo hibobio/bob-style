@@ -13,6 +13,7 @@ import { BaseButtonElement } from '../button.abstract';
     <button
       #button
       type="button"
+      [attr.id]="id || null"
       [ngClass]="buttonClass"
       [attr.disabled]="disabled || null"
       [attr.data-icon-before]="icn || null"
