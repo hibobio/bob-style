@@ -14,8 +14,8 @@
     <b-avatar *ngIf="avatar"
               class="bel-avatar"
               [avatar]="avatar"
-              size="medium"
-              orientation="vertical"></b-avatar>
+              [size]="avatarSize.medium"
+              [orientation]="avatarOrientation.vertical"></b-avatar>
 
     <ng-content select="[ee-layout-sidebar]"></ng-content>
   </div>

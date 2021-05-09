@@ -25,6 +25,7 @@
               mat-menu-item
               type="button"
               class="{{item.key}}"
+              [attr.id]="id && item.key ? (id+'__'+item.key+'__btn') : null"
               [disabled]="itemIsDisabled(item)"
               [matMenuTriggerFor]="menu.childMenu"
               [disableRipple]="true">
@@ -52,6 +53,7 @@
               mat-menu-item
               type="button"
               class="{{item.key}}"
+              [attr.id]="id && item.key ? (id+'__'+item.key+'__btn') : null"
               (click)="onClick(item)"
               [disabled]="itemIsDisabled(item)"
               [disableRipple]="true">

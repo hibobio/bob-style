@@ -47,29 +47,32 @@
   <div mat-dialog-actions
        *ngIf="dialogButtons">
 
-    <ng-content select="[mat-dialog-footer-left], [b-dialog-footer]"></ng-content>
+    <ng-content select="[mat-dialog-footer-left], [b-dialog-footer]">
+    </ng-content>
 
     <div class="action-buttons"
          *ngIf="dialogButtons.ok || dialogButtons.cancel">
       <b-button *ngIf="dialogButtons.cancel"
                 (clicked)="onCancel()"
+                [id]="dialogButtons.cancel?.class||null"
                 [disabled]="showProgress"
                 [size]="buttonSize.medium"
                 [type]="dialogButtons.cancel?.type || buttonType.secondary"
-                class="dialog-button cancel-button{{dialogButtons.cancel?.class ? ' ' + dialogButtons.cancel.class : ''}}">
+                class="dialog-button cancel-button {{dialogButtons.cancel?.class||''}}">
         {{dialogButtons.cancel?.label || 'Cancel'}}
       </b-button>
       <b-button *ngIf="dialogButtons.ok"
                 (clicked)="onOk()"
+                [id]="(showConfirmation ?
+                dialogButtons.confirmation?.buttonClass : dialogButtons.ok?.class)||null"
                 [disabled]="showProgress || dialogButtons.ok.disabled"
                 [size]="buttonSize.medium"
                 [type]="(showConfirmation && dialogButtons.confirmation?.buttonType ?
                 dialogButtons.confirmation.buttonType : dialogButtons.ok?.type) || buttonType.primary"
-                class="dialog-button ok-button{{
-                !showConfirmation && dialogButtons.ok.class ?
-                ' ' + dialogButtons.ok.class :
-               showConfirmation && dialogButtons.confirmation?.buttonClass ?
-                ' ' + dialogButtons.confirmation.buttonClass : ''}}">
+                class="dialog-button ok-button {{
+                (showConfirmation ?
+                dialogButtons.confirmation?.buttonClass :
+                dialogButtons.ok?.class)||''}}">
         {{showConfirmation && dialogButtons.confirmation?.buttonLabel ? dialogButtons.confirmation.buttonLabel : dialogButtons.ok?.label || 'OK'}}
       </b-button>
     </div>

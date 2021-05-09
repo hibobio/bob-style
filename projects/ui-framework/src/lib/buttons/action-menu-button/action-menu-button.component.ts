@@ -19,9 +19,10 @@ import { Button, ButtonConfig } from '../buttons.interface';
   styleUrls: ['./action-menu-button.component.scss'],
 })
 export class ActionMenuButtonComponent implements OnChanges {
+  @Input() id: string;
   @Input() menuItems: MenuItem[];
   @Input() openLeft: boolean;
-  @Input() buttonConfig: ButtonConfig;
+  @Input() buttonConfig: Button | ButtonConfig;
   @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter<MenuItem>();
 
   public button: Button = {

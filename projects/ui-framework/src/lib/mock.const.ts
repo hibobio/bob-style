@@ -1348,6 +1348,16 @@ export const meanwhileInRussia = [
   'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/04/knitted-balaclavas7.jpg',
   'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/04/knitted-balaclavas17.jpg',
   'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/04/knitted-balaclavas16.jpg',
+
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/05/insane-self-portrait1.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/05/insane-self-portrait21.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/05/insane-self-portrait13.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/05/insane-self-portrait17.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/05/terrifying-plush-toys6.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/05/terrifying-plush-toys8.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/05/terrifying-plush-toys13.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/05/terrifying-plush-toys2.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/05/terrifying-plush-toys20.jpg',
 ];
 
 export const diseases = [
