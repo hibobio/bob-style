@@ -18,19 +18,22 @@ import {
 } from '@angular/core';
 
 import { IconColor, Icons, IconSize } from '../icons/icons.enum';
+import { DialogButton } from '../popups/dialog/dialog.interface';
 import {
   applyChanges,
   isFunction,
   isObject,
   isString,
   notFirstChanges,
+  objectMapKeys,
   objectRemoveEntriesByValue,
   pass,
   unsubscribeArray,
 } from '../services/utils/functional-utils';
 import { insideZone } from '../services/utils/rxjs.operators';
+import { GenericObject } from '../types';
 import { BackButtonType, ButtonSize, ButtonType } from './buttons.enum';
-import { Button } from './buttons.interface';
+import { Button, ButtonConfig } from './buttons.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -40,9 +43,19 @@ export abstract class BaseButtonElement
 
   @ViewChild('button', { static: true }) public button: ElementRef;
 
-  @Input('button') set setProps(button: Button) {
+  @Input('button') set setProps(button: Button | DialogButton | ButtonConfig) {
     if (isObject(button)) {
-      Object.assign(this, objectRemoveEntriesByValue(button, [undefined]));
+      Object.assign(
+        this,
+        objectMapKeys<GenericObject, Button>(
+          objectRemoveEntriesByValue(button, [undefined]),
+          {
+            label: 'text',
+            class: 'id',
+            action: 'onClick',
+          }
+        )
+      );
     }
   }
 

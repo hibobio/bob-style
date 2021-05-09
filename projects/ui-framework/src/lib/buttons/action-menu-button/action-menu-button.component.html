@@ -1,8 +1,10 @@
-<b-menu [menu]="menuItems"
+<b-menu [id]="id"
+        [menu]="menuItems"
         [openLeft]="openLeft"
         (click)="$event.stopPropagation()"
         (actionClick)="onActionClicked($event)">
   <b-square-button menu-trigger
-                   [button]="button">
+                   [button]="button"
+                   [id]="id?id+'-trgr':null">
   </b-square-button>
 </b-menu>

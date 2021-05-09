@@ -2,6 +2,7 @@ import { IconColor, Icons } from '../icons/icons.enum';
 import { ButtonSize, ButtonType } from './buttons.enum';
 
 export interface Button {
+  id?: string;
   type?: ButtonType;
   size?: ButtonSize;
   text?: string;
@@ -15,8 +16,4 @@ export interface Button {
   onClick?: (event: MouseEvent) => void;
 }
 
-export interface ButtonConfig {
-  type: ButtonType;
-  icon: Icons;
-  color: IconColor;
-}
+export interface ButtonConfig extends Button {}

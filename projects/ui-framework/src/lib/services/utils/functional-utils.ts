@@ -564,6 +564,19 @@ export const mergeObjects = <I = GenericObject, O = I>(
   return merged;
 };
 
+export const objectMapKeys = <I = GenericObject, O = I>(
+  obj: I,
+  map: Record<keyof I | string, string>
+): O => {
+  if (isEmptyObject(obj) || isEmptyObject(map)) {
+    return (obj as any) as O;
+  }
+  return Object.keys(obj).reduce((res: O, key) => {
+    res[map[key] || key] = obj[key];
+    return res;
+  }, {} as O);
+};
+
 // ----------------------
 // ARRAYS
 // ----------------------
