@@ -4,7 +4,6 @@ import { ListSortType } from './editable-list.enum';
 
 export class EditableListUtils {
   //
-
   public static sortList(
     list: SelectOption[],
     order: ListSortType = null,

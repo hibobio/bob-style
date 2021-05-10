@@ -29,9 +29,6 @@ export class EditableListComponent extends BaseEditableListElement {
     super(hostElRef, zone, cd, translateService, utilsService);
   }
 
-  public currentItemIndex: number = null;
-  public removedItemIndex = null;
-
   public addItem(): void {
     this.currentItemIndex = null;
     this.currentAction = 'add';
@@ -127,9 +124,7 @@ export class EditableListComponent extends BaseEditableListElement {
     }
   }
 
-  public cancel(action: ListActionType | 'all' = null) {
-    console.log('cancelAll');
-
+  public cancel(action: ListActionType | 'all' = 'all') {
     if (action) {
       this.currentAction = null;
       this.addedItem = false;

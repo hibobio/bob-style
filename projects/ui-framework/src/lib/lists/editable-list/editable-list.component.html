@@ -1,8 +1,7 @@
 <header *ngIf="allowedActions.add || allowedActions.sort"
         class="bel-header mrg-b-4">
 
-  <div #header
-       class="bel-header-top flx flx-row-align-y flx-wrap mrg-b-4"
+  <div class="bel-header-top flx flx-row-align-y flx-wrap mrg-b-4"
        *ngIf="allowedActions.add">
 
     <b-button class="bel-plus-button"
@@ -40,6 +39,8 @@
 
     <span class="bel-total b-big-body">
       {{('common.total' | translate)}}: {{listState.list.length || 0}}
+
+      <strong>{{currentAction}}</strong>
     </span>
 
     <b-button *ngIf="allowedActions.sort"
@@ -55,10 +56,8 @@
 
 </header>
 
-<h4>{{currentAction}}</h4>
 
-<div #list
-     cdkDropList
+<div cdkDropList
      [cdkDropListDisabled]="allowedActions.order === false"
      (cdkDropListDropped)="onDrop($event)">
 
@@ -69,13 +68,12 @@
        data-icon-before-color="dark"
        cdkDrag
        cdkDragLockAxis="y"
-       cdkDragStartDelay="30"
-       cdkDragPreviewClass="bel-item-dragged"
+       [cdkDragData]="item"
        (cdkDragStarted)="onDragStart()"
        [attr.data-item-id]="item.id"
        [ngClass]="{
           'b-icon-drag-alt': allowedActions.order !== false,
-          'focused': currentItemIndex === index,
+          'focused': currentAction!=='order' && currentItemIndex === index,
           'new': addedItem && index === 0,
           'deleted': removedItemIndex === index
          }">
@@ -116,13 +114,14 @@
                           [swallow]="true"
                           [menuItems]="menuItems"
                           [hidden]="currentItemIndex===index"
+                          (openMenu)="cancel('all')"
                           (actionClick)="onMenuAction($event.key,item,index)">
     </b-action-menu-button>
 
     <div *ngIf="allowedActions.remove || allowedActions.edit"
          class="bel-item-confirm flx flx-row-align-y"
          tabindex="0"
-         [hidden]="currentItemIndex !== index">
+         [hidden]="currentAction==='order' || currentItemIndex !== index">
 
       <b-button class="bel-cancel-button"
                 [button]="cancelButton"
@@ -142,6 +141,21 @@
       </b-button>
 
     </div>
+
+    <ng-template cdkDragPreview
+                 [data]="item"
+                 [matchSize]="true">
+      <div class="bel-item flx flx-row-align-y b-body pad-x-16 mrg-y-4 bg-white rounded bel-item-dragged"
+           data-icon-before="drag-alt"
+           data-icon-before-size="medium"
+           data-icon-before-color="dark">
+        <span class="bel-item-value flx-grow"
+              data-max-lines="2">
+          {{ item.value }}
+        </span>
+      </div>
+    </ng-template>
+
   </div>
 
 </div>

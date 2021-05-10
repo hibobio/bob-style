@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs';
+import { merge, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
@@ -22,6 +22,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { Button } from '../../buttons/buttons.interface';
+import { Keys } from '../../enums';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
 import { Icons } from '../../icons/icons.enum';
 import {
@@ -29,10 +30,11 @@ import {
   cloneDeepSimpleObject,
   getEventPath,
   hasChanges,
+  isFunction,
   notFirstChanges,
   unsubscribeArray,
 } from '../../services/utils/functional-utils';
-import { insideZone } from '../../services/utils/rxjs.operators';
+import { filterByEventKey } from '../../services/utils/rxjs.operators';
 import { UtilsService } from '../../services/utils/utils.service';
 import { itemID, SelectOption } from '../list.interface';
 import { EDITABLE_LIST_ALLOWED_ACTIONS_DEF } from './editable-list.const';
@@ -61,8 +63,6 @@ export abstract class BaseEditableListElement
     protected utilsService: UtilsService
   ) {}
 
-  @ViewChild('header') headerElRef: ElementRef<HTMLElement>;
-  @ViewChild('list') listElRef: ElementRef<HTMLElement>;
   @ViewChild('addItemInput') addItemInput: ElementRef<HTMLInputElement>;
   @ViewChildren('editItemInput') editItemInputs: QueryList<
     ElementRef<HTMLInputElement>
@@ -77,12 +77,15 @@ export abstract class BaseEditableListElement
 
   @Output() changed: EventEmitter<EditableListState> = new EventEmitter();
 
+  public currentAction: ListActionType;
+  public currentItemIndex: number = null;
+  public removedItemIndex = null;
+  public addedItem = false;
+
+  private subs: Subscription[] = [];
+
   readonly order = ListSortType;
   readonly autoComplete = InputAutoCompleteOptions;
-
-  public currentAction: ListActionType;
-  public addedItem = false;
-  private subs: Subscription[] = [];
 
   readonly addButton: Button = {
     ...LIST_EDIT_BTN_BASE,
@@ -190,24 +193,31 @@ export abstract class BaseEditableListElement
 
   ngOnInit(): void {
     this.subs.push(
-      this.utilsService
-        .getWindowClickEvent(true)
-        .pipe(
+      merge(
+        this.utilsService.getWindowKeydownEvent(true).pipe(
+          filter(() => this.currentAction && this.currentAction !== 'order'),
+          filterByEventKey(Keys.escape)
+        ),
+
+        this.utilsService.getWindowClickEvent(true).pipe(
           filter((event: MouseEvent) => {
-            const path = getEventPath(event);
-            return (
-              (this.currentAction === 'add' &&
-                !path.includes(this.headerElRef.nativeElement)) ||
-              (this.currentAction !== 'add' &&
-                !path.includes(this.listElRef.nativeElement))
+            if (!['add', 'remove', 'edit'].includes(this.currentAction)) {
+              return false;
+            }
+            return !getEventPath(event).some(
+              (el) =>
+                isFunction(el.matches) &&
+                el.matches(
+                  this.currentAction === 'add'
+                    ? '.bel-header-top'
+                    : '.bel-item[cdkDrag].focused'
+                )
             );
-          }),
-          insideZone(this.zone)
+          })
         )
-        .subscribe((e) => {
-          console.log('click outside', e);
-          this.cancel();
-        })
+      ).subscribe(() => {
+        this.cancel('all');
+      })
     );
   }
 
@@ -215,7 +225,7 @@ export abstract class BaseEditableListElement
     unsubscribeArray(this.subs);
   }
 
-  public abstract cancel(action?: ListActionType): void;
+  public abstract cancel(action?: ListActionType | 'all'): void;
   public abstract removeItem(item: SelectOption, index: number): void;
   public abstract editItem(item: SelectOption, index: number): void;
 
@@ -224,7 +234,6 @@ export abstract class BaseEditableListElement
     item: SelectOption,
     index: number
   ): void {
-    console.log('onMenuAction', action);
     action === 'remove'
       ? this.removeItem(item, index)
       : action === 'edit'
@@ -233,13 +242,12 @@ export abstract class BaseEditableListElement
   }
 
   public onDragStart(): void {
+    this.cancel('all');
     this.currentAction = 'order';
-    this.addedItem = false;
     this.cd.detectChanges();
   }
 
   public onDrop({ previousIndex, currentIndex }: CdkDragDrop<any>): void {
-    console.log('onDrop', previousIndex, currentIndex);
     this.currentAction = null;
 
     if (previousIndex !== currentIndex) {
