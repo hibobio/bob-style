@@ -1,25 +1,28 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { EditableListComponent } from './editable-list.component';
-import { IconsModule } from '../../icons/icons.module';
-import { ButtonsModule } from '../../buttons/buttons.module';
-import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
-import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
-import { TranslateModule } from '@ngx-translate/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { MenuModule } from '../../navigation/menu/menu.module';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
+import { IconsModule } from '../../icons/icons.module';
+import { MenuModule } from '../../navigation/menu/menu.module';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { EditableListComponent } from './editable-list.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    BrowserAnimationsModule,
     IconsModule,
     ButtonsModule,
     InputMessageModule,
     TranslateModule,
     DragDropModule,
     FormsModule,
-    MenuModule
+    MenuModule,
   ],
   declarations: [EditableListComponent],
   exports: [EditableListComponent],

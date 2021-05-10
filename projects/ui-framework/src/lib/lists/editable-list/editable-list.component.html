@@ -64,19 +64,18 @@
   <div *ngFor="let item of listState.list; let index = index; trackBy: listTrackBy"
        class="bel-item flx flx-row-align-y b-body pad-x-16 mrg-y-4 bg-white
        rounded"
-       data-icon-before-size="medium"
-       data-icon-before-color="dark"
+       [@zoomInOut]
+       [@.disabled]="!ready"
        cdkDrag
        cdkDragLockAxis="y"
        [cdkDragData]="item"
        (cdkDragStarted)="onDragStart()"
+       data-icon-before-size="medium"
+       data-icon-before-color="dark"
+       [attr.data-icon-before]="allowedActions.order !== false ? 'drag-alt' :
+       null"
        [attr.data-item-id]="item.id"
-       [ngClass]="{
-          'b-icon-drag-alt': allowedActions.order !== false,
-          'focused': currentAction!=='order' && currentItemIndex === index,
-          'new': addedItem && index === 0,
-          'deleted': removedItemIndex === index
-         }">
+       [class.focused]="currentAction!=='order' && currentItemIndex === index">
 
     <span class="bel-item-value flx-grow"
           [hidden]="currentAction === 'edit' && currentItemIndex === index"
@@ -137,7 +136,7 @@
       <b-button class="bel-done-button"
                 [button]="doneButton"
                 [hidden]="currentAction!=='edit'"
-                (clicked)="saveEdit(item)">
+                (clicked)="editItemApply(item, index)">
       </b-button>
 
     </div>

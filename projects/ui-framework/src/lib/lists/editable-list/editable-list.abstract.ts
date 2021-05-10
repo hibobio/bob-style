@@ -8,7 +8,6 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -31,6 +30,7 @@ import {
   getEventPath,
   hasChanges,
   isFunction,
+  isKey,
   notFirstChanges,
   unsubscribeArray,
 } from '../../services/utils/functional-utils';
@@ -56,8 +56,6 @@ const LIST_EDIT_BTN_BASE: Button = {
 export abstract class BaseEditableListElement
   implements OnChanges, OnInit, OnDestroy {
   constructor(
-    protected hostElRef: ElementRef<HTMLElement>,
-    protected zone: NgZone,
     protected cd: ChangeDetectorRef,
     protected translateService: TranslateService,
     protected utilsService: UtilsService
@@ -79,8 +77,7 @@ export abstract class BaseEditableListElement
 
   public currentAction: ListActionType;
   public currentItemIndex: number = null;
-  public removedItemIndex = null;
-  public addedItem = false;
+  public ready = false;
 
   private subs: Subscription[] = [];
 
@@ -217,7 +214,34 @@ export abstract class BaseEditableListElement
         )
       ).subscribe(() => {
         this.cancel('all');
-      })
+      }),
+
+      this.utilsService
+        .getWindowKeydownEvent(true)
+        .pipe(
+          filter(
+            (event: KeyboardEvent) =>
+              isKey(event.key, Keys.enter) &&
+              ['add', 'remove', 'edit'].includes(this.currentAction)
+          )
+        )
+        .subscribe(() => {
+          if (this.currentAction === 'add') {
+            this.addItemApply();
+          }
+          if (this.currentAction === 'remove') {
+            this.removeItemApply(
+              this.listState.list[this.currentItemIndex],
+              this.currentItemIndex
+            );
+          }
+          if (this.currentAction === 'edit') {
+            this.editItemApply(
+              this.listState.list[this.currentItemIndex],
+              this.currentItemIndex
+            );
+          }
+        })
     );
   }
 
@@ -225,21 +249,13 @@ export abstract class BaseEditableListElement
     unsubscribeArray(this.subs);
   }
 
-  public abstract cancel(action?: ListActionType | 'all'): void;
+  public abstract addItem(): void;
+  public abstract addItemApply(): void;
   public abstract removeItem(item: SelectOption, index: number): void;
+  public abstract removeItemApply(item: SelectOption, index: number): void;
   public abstract editItem(item: SelectOption, index: number): void;
-
-  public onMenuAction(
-    action: ListActionType,
-    item: SelectOption,
-    index: number
-  ): void {
-    action === 'remove'
-      ? this.removeItem(item, index)
-      : action === 'edit'
-      ? this.editItem(item, index)
-      : null;
-  }
+  public abstract editItemApply(item: SelectOption, index: number): void;
+  public abstract cancel(action?: ListActionType | 'all'): void;
 
   public onDragStart(): void {
     this.cancel('all');
@@ -268,7 +284,6 @@ export abstract class BaseEditableListElement
     currentOrder: ListSortType = this.sortType
   ): void {
     this.sortType = EditableListUtils.sortList(list, order, currentOrder);
-    this.addedItem = false;
     this.transmit();
   }
 
