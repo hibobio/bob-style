@@ -1,6 +1,7 @@
 <b-menu [id]="id"
         [menu]="menuItems"
         [openLeft]="openLeft"
+        [swallow]="swallow"
         (click)="$event.stopPropagation()"
         (actionClick)="onActionClicked($event)">
   <b-square-button menu-trigger
