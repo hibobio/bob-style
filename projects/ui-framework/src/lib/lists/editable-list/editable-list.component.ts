@@ -149,7 +149,7 @@ export class EditableListComponent extends BaseEditableListElement {
     }
   }
 
-  public cancel(action: ListActionType | 'all' = this.currentAction) {
+  public cancel(action: ListActionType | 'all' = this.currentAction || 'all') {
     if (action === 'edit') {
       this.currentItem.value = this.currentItem.originalValue || '';
       delete this.currentItem.originalValue;
