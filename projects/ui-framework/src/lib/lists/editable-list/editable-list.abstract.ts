@@ -110,7 +110,7 @@ export abstract class BaseEditableListElement
   readonly doneButton: Button = {
     ...LIST_EDIT_BTN_BASE,
     type: ButtonType.secondary,
-    text: this.translateService.instant('common.done'),
+    text: this.translateService.instant('common.save'),
   };
 
   readonly sortButton: Button = {
@@ -150,7 +150,7 @@ export abstract class BaseEditableListElement
   readonly menuItems = [
     {
       key: 'remove',
-      label: this.translateService.instant('common.remove'),
+      label: this.translateService.instant('common.delete'),
     },
     {
       key: 'edit',
