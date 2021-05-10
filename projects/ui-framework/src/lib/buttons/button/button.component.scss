@@ -32,6 +32,7 @@ button {
     padding: 0 $padding;
     min-width: $minWidthSmall;
     height: $button-size-small;
+    font-weight: 600;
   }
 
   &.medium,
@@ -74,6 +75,12 @@ button {
   button,
   button[disabled] {
     color: inherit !important;
+  }
+}
+
+:host.text-normal {
+  button {
+    font-weight: 500;
   }
 }
 
