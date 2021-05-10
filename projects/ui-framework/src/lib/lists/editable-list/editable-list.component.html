@@ -63,15 +63,14 @@
   <div *ngFor="let item of listState.list; let index = index; trackBy: listTrackBy"
        class="bel-item flx flx-row-align-y b-body pad-x-16 mrg-y-4 bg-white rounded has-hover"
        [@zoomInOut]
-       [@.disabled]="!ready"
+       [@.disabled]="!ready||!index"
        cdkDrag
        cdkDragLockAxis="y"
        [cdkDragData]="item"
        (cdkDragStarted)="onDragStart()"
        data-icon-before-size="medium"
        data-icon-before-color="light"
-       [attr.data-icon-before]="allowedActions.order !== false ? 'drag-alt' :
-       null"
+       [attr.data-icon-before]="allowedActions.order !== false ? 'drag-alt' : null"
        [attr.data-item-id]="item.id"
        [class.focused]="currentAction!=='order' && currentItemIndex === index">
 
