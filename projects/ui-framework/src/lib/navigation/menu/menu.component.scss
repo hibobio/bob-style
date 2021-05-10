@@ -1,5 +1,9 @@
 :host {
   display: inline-block;
+
+  &[data-menu-open='true'] {
+    opacity: 1;
+  }
 }
 
 .menu-trigger-wrapper {

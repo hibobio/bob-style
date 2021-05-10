@@ -276,8 +276,10 @@ $icon-colors: (
   @if ($hover and map-has-key($icon-colors, $color)) {
     .has-hover:hover &,
     .has-hover:focus &,
+    .has-hover.focused &,
     &.has-hover:hover,
-    &.has-hover:focus {
+    &.has-hover:focus,
+    &.has-hover.focused {
       #{$elem} {
         color: map-get-deep($icon-colors, $color, hover);
       }

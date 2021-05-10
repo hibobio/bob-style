@@ -1,11 +1,12 @@
-import { ComponentGroupType } from '../../consts';
-import { storiesOf } from '@storybook/angular';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ButtonsModule } from '../../buttons/buttons.module';
-import { buttonConfigMock, menuItemsMock } from './action-menu-button.mock';
-import { object, boolean, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
+import { boolean, object, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { ComponentGroupType } from '../../consts';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { buttonConfigMock, menuItemsMock } from './action-menu-button.mock';
 
 const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
   withKnobs
@@ -33,6 +34,8 @@ const note = `
   [buttonConfig] | ButtonConfig | button config | { type: ButtonType.tertiary, icon: Icons.three_dots_vert,\
    color: IconColor.normal }
   (actionClick) | EventEmitter | emited on menu click | &nbsp;
+  (openMenu) | &lt;string / void&gt; | notifies on menu open, outputs menu's id, if present | &nbsp;
+  (closeMenu) | &lt;string / void&gt; | notifies on menu close, outputs menu's id, if present | &nbsp;
 
   ~~~
   ${template}
