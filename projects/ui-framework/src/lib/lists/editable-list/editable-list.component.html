@@ -75,7 +75,7 @@
        [attr.data-item-id]="item.id"
        [ngClass]="{
           'b-icon-drag-alt': allowedActions.order !== false,
-          'focused': currentAction === 'edit' && currentItemIndex === index,
+          'focused': currentItemIndex === index,
           'new': addedItem && index === 0,
           'deleted': removedItemIndex === index
          }">
@@ -112,9 +112,11 @@
 
     <b-action-menu-button *ngIf="allowedActions.remove && allowedActions.edit"
                           class="bel-item-menu-btn"
+                          [id]="(item.id||item.value)+'-menu'"
+                          [swallow]="true"
                           [menuItems]="menuItems"
                           [hidden]="currentItemIndex===index"
-                          (actionClick)="onMenuAction($event.id,item,index)">
+                          (actionClick)="onMenuAction($event.key,item,index)">
     </b-action-menu-button>
 
     <div *ngIf="allowedActions.remove || allowedActions.edit"

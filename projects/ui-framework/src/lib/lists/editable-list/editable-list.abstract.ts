@@ -145,11 +145,11 @@ export abstract class BaseEditableListElement
 
   readonly menuItems = [
     {
-      id: 'remove',
+      key: 'remove',
       label: this.translateService.instant('common.remove'),
     },
     {
-      id: 'edit',
+      key: 'edit',
       label: this.translateService.instant('common.rename'),
     },
   ];
@@ -224,6 +224,7 @@ export abstract class BaseEditableListElement
     item: SelectOption,
     index: number
   ): void {
+    console.log('onMenuAction', action);
     action === 'remove'
       ? this.removeItem(item, index)
       : action === 'edit'
