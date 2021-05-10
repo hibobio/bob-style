@@ -54,15 +54,11 @@ export class MenuComponent implements OnChanges, OnInit, OnDestroy {
   @Input() clickToOpenSub = false;
   @Input() panelClass: string;
   @Input() disabled: boolean;
-  @Input() swallow = false;
+  @Input() swallow = true;
 
-  @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter<MenuItem>();
-  @Output() openMenu: EventEmitter<string | void> = new EventEmitter<
-    string | void
-  >();
-  @Output() closeMenu: EventEmitter<string | void> = new EventEmitter<
-    string | void
-  >();
+  @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter();
+  @Output() openMenu: EventEmitter<string | void> = new EventEmitter();
+  @Output() closeMenu: EventEmitter<string | void> = new EventEmitter();
 
   @ViewChild('childMenu', { static: true }) public childMenu: MatMenu;
   @ViewChildren(MenuComponent)

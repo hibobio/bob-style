@@ -1,4 +1,5 @@
 *.html
 *.json
 *.md
+*.d.ts
 public_api.ts
