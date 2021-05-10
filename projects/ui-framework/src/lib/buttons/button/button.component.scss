@@ -78,6 +78,12 @@ button {
   }
 }
 
+:host.text-normal {
+  button {
+    font-weight: 500;
+  }
+}
+
 // Preloader
 
 :host.preloading ::ng-deep button,
