@@ -1,0 +1,60 @@
+<header #header
+        *ngIf="hasHeader"
+        class="bel-header flx flx-row-align-y"
+        [ngClass]="config?.headerClass"
+        [ngStyle]="config?.headerStyle">
+  <ng-content select="[ee-layout-header]"></ng-content>
+</header>
+
+<aside class="bel-sidebar-wrap">
+  <div class="bel-sidebar grd gap-24"
+       [ngClass]="config?.sidebarClass"
+       [ngStyle]="config?.sidebarStyle">
+
+    <b-avatar *ngIf="avatar"
+              class="bel-avatar"
+              [avatar]="avatar"
+              [size]="avatarSize.medium"
+              [orientation]="avatarOrientation.vertical"></b-avatar>
+
+    <ng-content select="[ee-layout-sidebar]"></ng-content>
+  </div>
+</aside>
+
+<section class="bel-section grd gap-24">
+
+  <header #sectionHeader
+          *ngIf="hasSectionHeader"
+          class="bel-section-header flx flx-row-align-y"
+          [ngClass]="config?.sectionHeaderClass"
+          [ngStyle]="config?.sectionHeaderStyle">
+    <ng-content select="[ee-layout-section-header]"></ng-content>
+  </header>
+
+  <article class="bel-content-wrap grd gap-24"
+           [class.gap-24]="!type">
+
+    <header #contentHeader
+            *ngIf="hasContentHeader"
+            class="bel-content-header flx flx-row-align-y"
+            [ngClass]="config?.contentHeaderClass"
+            [ngStyle]="config?.contentHeaderStyle">
+      <ng-content select="[ee-layout-content-header]"></ng-content>
+    </header>
+
+    <div class="bel-content grid-layout-12-cols gap-24"
+         [ngClass]="config?.contentClass"
+         [ngStyle]="config?.contentStyle">
+      <ng-content></ng-content>
+    </div>
+
+    <footer #contentFooter
+            *ngIf="hasContentFooter"
+            class="bel-content-footer flx flx-row-align-y"
+            [ngClass]="config?.contentFooterClass"
+            [ngStyle]="config?.contentFooterStyle">
+      <ng-content select="[ee-layout-content-footer]"></ng-content>
+    </footer>
+  </article>
+
+</section>
