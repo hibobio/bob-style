@@ -23,6 +23,8 @@ export class ActionMenuButtonComponent implements OnChanges {
   @Input() menuItems: MenuItem[];
   @Input() openLeft: boolean;
   @Input() buttonConfig: Button | ButtonConfig;
+  @Input() swallow: boolean;
+
   @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter<MenuItem>();
 
   public button: Button = {
