@@ -81,7 +81,7 @@ export class EditableListComponent extends BaseEditableListElement {
   }
 
   public addItem(): void {
-    if (this.currentAction = 'edit') {
+    if (this.currentAction === 'edit') {
       this.cancel(this.currentAction);
     }
     this.ready = true;
