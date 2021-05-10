@@ -23,9 +23,10 @@ export class ActionMenuButtonComponent implements OnChanges {
   @Input() menuItems: MenuItem[];
   @Input() openLeft: boolean;
   @Input() buttonConfig: Button | ButtonConfig;
-  @Input() swallow: boolean;
+  @Input() swallow = true;
 
-  @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter<MenuItem>();
+  @Output() openMenu: EventEmitter<string | void> = new EventEmitter();
+  @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter();
 
   public button: Button = {
     type: ButtonType.tertiary,
@@ -37,9 +38,5 @@ export class ActionMenuButtonComponent implements OnChanges {
     if (hasChanges(changes, ['buttonConfig'], true)) {
       this.button = { ...this.button, ...this.buttonConfig };
     }
-  }
-
-  public onActionClicked(event: MenuItem): void {
-    this.actionClick.emit(event);
   }
 }
