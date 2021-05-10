@@ -32,6 +32,7 @@ button {
     padding: 0 $padding;
     min-width: $minWidthSmall;
     height: $button-size-small;
+    font-weight: 600;
   }
 
   &.medium,
