@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  HostBinding,
   Input,
   OnChanges,
   Output,
@@ -26,7 +27,10 @@ export class ActionMenuButtonComponent implements OnChanges {
   @Input() swallow = true;
 
   @Output() openMenu: EventEmitter<string | void> = new EventEmitter();
+  @Output() closeMenu: EventEmitter<string | void> = new EventEmitter();
   @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter();
+
+  @HostBinding('attr.data-menu-open') menuOpen = false;
 
   public button: Button = {
     type: ButtonType.tertiary,
