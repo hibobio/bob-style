@@ -138,6 +138,8 @@ export class MenuComponent implements OnChanges, OnInit, OnDestroy {
     if (item.action && triggerAction) {
       item.action(item);
     }
+
+    this.close();
   }
 
   public onOpenMenu(): void {
@@ -170,6 +172,7 @@ export class MenuComponent implements OnChanges, OnInit, OnDestroy {
     this.menuViewModel =
       this.menu?.map((item) => ({
         ...item,
+        ...(item.id && !item.key && { key: item.id }),
         ...(this.id && { id: this.id }),
         ...(this.data && { data: this.data }),
         clickToOpenSub: Boolean(this.clickToOpenSub || item.clickToOpenSub),
