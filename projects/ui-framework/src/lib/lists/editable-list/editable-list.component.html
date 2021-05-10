@@ -1,187 +1,145 @@
 <header *ngIf="allowedActions.add || allowedActions.sort"
-        class="bel-header">
+        class="bel-header mrg-b-4">
 
-  <div class="bel-header-top"
+  <div #header
+       class="bel-header-top flx flx-row-align-y flx-wrap mrg-b-4"
        *ngIf="allowedActions.add">
 
     <b-button class="bel-plus-button"
-              [hidden]="addingItem"
-              [type]="buttonType.secondary"
-              [size]="buttonSize.small"
-              [icon]="icons.add"
-              [text]="allowedActions.add!==true ? allowedActions.add : ('common.add' | translate)"
+              [button]="addButton"
+              [hidden]="currentAction === 'add'"
               (clicked)="addItem()">
     </b-button>
 
-    <div class="bel-item focused"
-         [hidden]="!addingItem"
-         [ngClass]="{error: inputInvalid}">
+    <div class="bel-item flx flx-row-align-y flx-grow b-body pad-x-16 bg-white rounded focused"
+         [hidden]="currentAction !== 'add'">
 
       <input #addItemInput
              type="text"
-             class="bfe-input bel-item-input"
+             class="bfe-input bel-item-input flex-grow"
+             [(ngModel)]="listState.newItem.value"
              [attr.autocomplete]="autoComplete.off"
-             [attr.maxlength]="maxChars || null"
-             (input.outside-zone)="onInputChange()">
+             [attr.maxlength]="maxChars || null">
 
       <div class="bel-item-confirm"
            tabindex="0">
         <b-button class="bel-cancel-button"
-                  [type]="buttonType.tertiary"
-                  [size]="buttonSize.small"
-                  [text]="('common.cancel' | translate)">
+                  [button]="cancelButton"
+                  (clicked)="cancel('add')">
         </b-button>
         <b-button class="bel-done-button"
-                  [type]="buttonType.secondary"
-                  [size]="buttonSize.small"
-                  [text]="('common.done' | translate)"
-                  (clicked)="addItem(true)">
+                  [button]="doneButton"
+                  (clicked)="addItemApply()">
         </b-button>
       </div>
 
     </div>
   </div>
 
-    <ng-container 
-    *ngTemplateOutlet="errorMsg; context: {'showError': addingItemLen ,
-     'hidden': !addingItem || !(inputInvalid || maxChars - addingItemLen < 15)}"></ng-container>
-
-  <div class="bel-header-bottom">
+  <div class="bel-header-bottom flx flx-row-align-y mrg-b-16">
 
     <span class="bel-total b-big-body">
       {{('common.total' | translate)}}: {{listState.list.length || 0}}
     </span>
 
     <b-button *ngIf="allowedActions.sort"
-              class="bel-sort-button"
-              [type]="buttonType.tertiary"
-              [size]="buttonSize.small"
-              [icon]="sortType === order.UserDefined || sortType === order.Asc ? icons.sort_asc :
-              icons.sort_desc"
-              [ngClass]="{'custom-sorting': sortType === order.UserDefined}"
-              [throttle]="false"
-              (clicked)="sortList()"
-              [text]="sortType === order.Asc
-                ? ('list-editor.editor.sortAsc' | translate) :
-                  sortType === order.Desc ?
-                  ('list-editor.editor.sortDesc' | translate) :
-                  ('list-editor.editor.sortCustom' | translate)">
+              class="bel-sort-button clr-grey-600 mrg-l-auto"
+              [attr.data-sorting]="sortType"
+              [button]="sortButton"
+              [icon]="sortButton['icons'][sortType]"
+              [text]="sortButton['texts'][sortType]"
+              (clicked)="sortList()">
     </b-button>
 
   </div>
 
 </header>
 
-<div 
-  [ngClass]="{'bel-has-item-dragged': isDragged}"
-  cdkDropList
-  (cdkDropListDropped)="onDrop($event)"
-  >
-  <ng-container *ngFor="let item of listState.list; let index = index; trackBy: listTrackBy">
+<h4>{{currentAction}}</h4>
 
-    <div class="bel-item b-icon-medium b-icon-dark mrg-y-4"
-         cdkDragPreviewClass="bel-item-dragged"
-         (cdkDragStarted)="onDragStart()"
-         cdkDrag cdkDragLockAxis="y"
-         [attr.data-item-id]="item.id"
-         [ngClass]="{'new': addedItem && index === 0,
-                     'deleted':removedItem && itemHandledIndex === index,
-                     'b-icon-drag-alt': allowedActions.order !== false,
-                     error: editInputInvalid && index === itemHandledIndex,
-                     'non-draggable-item': allowedActions.order === false}">
+<div #list
+     cdkDropList
+     [cdkDropListDisabled]="allowedActions.order === false"
+     (cdkDropListDropped)="onDrop($event)">
 
-      <span [hidden]="isEditMode && index === itemHandledIndex" class="bel-item-value"
-            data-max-lines="2">
-        {{ item.value }}
-      </span>
+  <div *ngFor="let item of listState.list; let index = index; trackBy: listTrackBy"
+       class="bel-item flx flx-row-align-y b-body pad-x-16 mrg-y-4 bg-white
+       rounded"
+       data-icon-before-size="medium"
+       data-icon-before-color="dark"
+       cdkDrag
+       cdkDragLockAxis="y"
+       cdkDragStartDelay="30"
+       cdkDragPreviewClass="bel-item-dragged"
+       (cdkDragStarted)="onDragStart()"
+       [attr.data-item-id]="item.id"
+       [ngClass]="{
+          'b-icon-drag-alt': allowedActions.order !== false,
+          'focused': currentAction === 'edit' && currentItemIndex === index,
+          'new': addedItem && index === 0,
+          'deleted': removedItemIndex === index
+         }">
 
-      <input #editItemInput
-             type="text"
-             [hidden]="!isEditMode || index !== itemHandledIndex"
-             class="bfe-input bel-item-input edit-input"
-             [attr.autocomplete]="autoComplete.off"
-             [id]="index"
-             [(ngModel)]="item.value"
-             [attr.maxlength]="maxChars || null"
-             (input.outside-zone)="onInputChange()">
+    <span class="bel-item-value flx-grow"
+          [hidden]="currentAction === 'edit' && currentItemIndex === index"
+          data-max-lines="2">
+      {{ item.value }}
+    </span>
 
-      <b-square-button *ngIf="allowedActions.remove && item.canBeDeleted!==false && !isMultipleActions"
-                       class="bel-trash-button"
-                       [hidden]="itemHandledIndex === index"
-                       [type]="buttonType.tertiary"
-                       [size]="buttonSize.small"
-                       [icon]="icons.delete"
-                       (clicked)="removeItem(index)">
+    <input #editItemInput
+           type="text"
+           class="bfe-input bel-item-input edit-input flex-grow"
+           [(ngModel)]="item.value"
+           [hidden]="currentAction !== 'edit' || currentItemIndex !== index"
+           [attr.autocomplete]="autoComplete.off"
+           [attr.maxlength]="maxChars || null">
+
+    <ng-container *ngIf="!allowedActions.remove || !allowedActions.edit">
+      <b-square-button *ngIf="allowedActions.remove && item.canBeDeleted!==false"
+                       class="bel-item-action-btn mrg-l-auto"
+                       [button]="deleteButton"
+                       [hidden]="currentItemIndex===index"
+                       (clicked)="removeItem(item, index)">
       </b-square-button>
 
-      <b-square-button *ngIf="allowedActions.edit && !isMultipleActions"
-                       class="bel-trash-button"
-                       [hidden]="itemHandledIndex === index"
-                       [type]="buttonType.tertiary"
-                       [size]="buttonSize.small"
-                       [icon]="icons.edit"
+      <b-square-button *ngIf="allowedActions.edit"
+                       class="bel-item-action-btn mrg-l-auto"
+                       [button]="editButton"
+                       [hidden]="currentItemIndex===index"
                        (clicked)="editItem(item, index)">
       </b-square-button>
+    </ng-container>
 
-      <div>
-        <b-action-menu-button *ngIf="itemHandledIndex !== index && isMultipleActions"
-          [menuItems]="this.initMenuItems(index, item)">
-        </b-action-menu-button>
-      </div>
+    <b-action-menu-button *ngIf="allowedActions.remove && allowedActions.edit"
+                          class="bel-item-menu-btn"
+                          [menuItems]="menuItems"
+                          [hidden]="currentItemIndex===index"
+                          (actionClick)="onMenuAction($event.id,item,index)">
+    </b-action-menu-button>
 
-      <div *ngIf="allowedActions.remove || allowedActions.edit"
-           class="bel-item-confirm"
-           [hidden]="itemHandledIndex !== index"
-           tabindex="0">
+    <div *ngIf="allowedActions.remove || allowedActions.edit"
+         class="bel-item-confirm flx flx-row-align-y"
+         tabindex="0"
+         [hidden]="currentItemIndex !== index">
 
-        <b-button class="bel-cancel-button"
-                  [type]="buttonType.tertiary"
-                  [size]="buttonSize.small"
-                  [text]="('common.cancel' | translate)"
-                  (clicked)="itemHandledIndex = null">
-        </b-button>
-        <ng-container [ngSwitch]="currentActionType">
-          <ng-container *ngSwitchCase="'remove'">
-            <ng-container *ngTemplateOutlet="removeBtn; context: {'index': index}"></ng-container>
-          </ng-container>
-          <ng-container *ngSwitchCase="'edit'">
-            <ng-container *ngTemplateOutlet="saveBtn; context: {'item': item}"></ng-container>
-          </ng-container>
-        </ng-container>
-      </div>
+      <b-button class="bel-cancel-button"
+                [button]="cancelButton"
+                (clicked)="cancel('all')">
+      </b-button>
+
+      <b-button class="bel-remove-button"
+                [button]="removeButton"
+                [hidden]="currentAction!=='remove'"
+                (clicked)="removeItemApply(item, index)">
+      </b-button>
+
+      <b-button class="bel-done-button"
+                [button]="doneButton"
+                [hidden]="currentAction!=='edit'"
+                (clicked)="saveEdit(item)">
+      </b-button>
+
+    </div>
   </div>
-  <ng-container 
-      *ngTemplateOutlet="errorMsg; context: {'showError': itemHandledIndex === index,
-       'hidden': !currentEditInput || !(editInputInvalid || maxChars - addingItemLen < 15)}">
-  </ng-container>
-  </ng-container>
 
 </div>
-
-<ng-template #removeBtn let-index="index">
-  <b-button class="bel-remove-button"
-              [type]="buttonType.negative"
-              [size]="buttonSize.small"
-              [text]="('common.remove' | translate)"
-              (clicked)="removeItem(index,true)">
-  </b-button>
-</ng-template>
-
-<ng-template #saveBtn let-item="item">
-  <b-button class="bel-done-button save-edit-btn"
-              [type]="buttonType.secondary"
-              [size]="buttonSize.small"
-              [text]="('common.save' | translate)"
-              (clicked)="saveEdit(item)">
-    </b-button>
-</ng-template>
-
-<ng-template #errorMsg let-show="showError" let-hidden="hidden">
-  <p b-input-message
-      *ngIf="show"
-      [hidden]="hidden"
-      [errorMessage]="inputInvalid || editInputInvalid ? '&#34; ' + ('list-editor.editor.already-exists' | translate) : null"
-      [maxChars]="maxChars - addingItemLen < 15 ? maxChars : null"
-      [length]="addingItemLen">
-  </p>
-</ng-template>
