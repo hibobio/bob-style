@@ -81,6 +81,9 @@ export class EditableListComponent extends BaseEditableListElement {
   }
 
   public addItem(): void {
+    if (this.currentAction = 'edit') {
+      this.cancel(this.currentAction);
+    }
     this.ready = true;
     this.currentItemIndex = null;
     this.currentAction = 'add';
@@ -140,11 +143,16 @@ export class EditableListComponent extends BaseEditableListElement {
       this.transmit();
       this.cd.detectChanges();
     } else {
-      this.removeItemApply(item, index);
+      item.value = item.originalValue;
+      this.currentAction = null;
+      this.currentItemIndex = null;
     }
   }
 
   public cancel(action: ListActionType | 'all' = 'all') {
+    if (action === 'edit') {
+      this.listState.list[this.currentItemIndex].value = this.listState.list[this.currentItemIndex].originalValue
+    }
     this.currentAction = null;
     this.currentItemIndex = null;
     this.listState.newItem.value = '';

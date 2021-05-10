@@ -213,7 +213,7 @@ export abstract class BaseEditableListElement
           })
         )
       ).subscribe(() => {
-        this.cancel('all');
+        this.cancel(this.currentAction);
       }),
 
       this.utilsService
@@ -258,7 +258,7 @@ export abstract class BaseEditableListElement
   public abstract cancel(action?: ListActionType | 'all'): void;
 
   public onDragStart(): void {
-    this.cancel('all');
+    this.cancel(this.currentAction);
     this.currentAction = 'order';
     this.cd.detectChanges();
   }

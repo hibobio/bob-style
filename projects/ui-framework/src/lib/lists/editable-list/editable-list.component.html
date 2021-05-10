@@ -39,8 +39,6 @@
 
     <span class="bel-total b-big-body">
       {{('common.total' | translate)}}: {{listState.list.length || 0}}
-
-      <strong>{{currentAction}}</strong>
     </span>
 
     <b-button *ngIf="allowedActions.sort"
@@ -124,7 +122,7 @@
 
       <b-button class="bel-cancel-button"
                 [button]="cancelButton"
-                (clicked)="cancel('all')">
+                (clicked)="cancel('edit')">
       </b-button>
 
       <b-button class="bel-remove-button"
