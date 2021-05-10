@@ -1,6 +1,6 @@
 @import '../../style/common-imports';
 
-$bel-item-height: 55px;
+$bel-item-height: 48px;
 $bel-item-padding: times8(2);
 $bel-item-border-color: $border-color-light;
 $bel-item-dragged-bgcolor: $grey-100;
@@ -114,6 +114,7 @@ $bel-item-dragged-border-color: $grey-400;
   .cdk-drop-list-dragging .bel-item:hover .bel-item-action-btn,
   .cdk-drop-list-dragging .bel-item:hover .bel-item-menu-btn {
     opacity: 0;
+    transition-delay: 0.07s;
   }
   .bel-item:hover .bel-item-action-btn,
   .bel-item:hover .bel-item-menu-btn,

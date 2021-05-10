@@ -35,7 +35,8 @@
     </div>
   </div>
 
-  <div class="bel-header-bottom flx flx-row-align-y mrg-b-16">
+  <div class="bel-header-bottom flx flx-row-align-y mrg-b-16"
+       [hidden]="!listState.list.length">
 
     <span class="bel-total b-big-body">
       {{('common.total' | translate)}}: {{listState.list.length || 0}}
@@ -108,7 +109,7 @@
                           class="bel-item-menu-btn"
                           [id]="(item.id||item.value)+'-menu'"
                           [swallow]="true"
-                          [menuItems]="menuItems"
+                          [menuItems]="item.canBeDeleted!==false?menuItems:[menuItems[1]]"
                           [hidden]="currentItemIndex===index"
                           (openMenu)="cancel('all')"
                           (actionClick)="onMenuAction($event.key,item,index)">
