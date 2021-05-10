@@ -82,7 +82,7 @@ export class EditableListComponent extends BaseEditableListElement {
 
   public addItem(): void {
     if (this.currentAction === 'edit') {
-      this.cancel(this.currentAction);
+      this.cancel('edit');
     }
     this.ready = true;
     this.currentItemIndex = null;
@@ -131,27 +131,28 @@ export class EditableListComponent extends BaseEditableListElement {
     this.ready = true;
     this.currentAction = 'edit';
     this.currentItemIndex = index;
-    item.originalValue = item.value;
+    item.originalValue = item.value.trim();
     this.cd.detectChanges();
     this.editItemInputs.get(index).nativeElement.focus();
   }
 
   public editItemApply(item: SelectOption, index: number): void {
-    if (item.value.trim()) {
+    item.value = item.value.trim();
+    if (item.value && item.value !== item.originalValue) {
       this.currentAction = null;
       this.currentItemIndex = null;
+      delete item.originalValue;
       this.transmit();
       this.cd.detectChanges();
     } else {
-      item.value = item.originalValue;
-      this.currentAction = null;
-      this.currentItemIndex = null;
+      this.cancel('edit');
     }
   }
 
-  public cancel(action: ListActionType | 'all' = 'all') {
+  public cancel(action: ListActionType | 'all' = this.currentAction) {
     if (action === 'edit') {
-      this.listState.list[this.currentItemIndex].value = this.listState.list[this.currentItemIndex].originalValue
+      this.currentItem.value = this.currentItem.originalValue || '';
+      delete this.currentItem.originalValue;
     }
     this.currentAction = null;
     this.currentItemIndex = null;

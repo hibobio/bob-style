@@ -79,6 +79,10 @@ export abstract class BaseEditableListElement
   public currentItemIndex: number = null;
   public ready = false;
 
+  public get currentItem() {
+    return this.listState.list[this.currentItemIndex] || this.listState.newItem;
+  }
+
   private subs: Subscription[] = [];
 
   readonly order = ListSortType;
@@ -213,7 +217,7 @@ export abstract class BaseEditableListElement
           })
         )
       ).subscribe(() => {
-        this.cancel(this.currentAction);
+        this.cancel();
       }),
 
       this.utilsService
@@ -258,7 +262,7 @@ export abstract class BaseEditableListElement
   public abstract cancel(action?: ListActionType | 'all'): void;
 
   public onDragStart(): void {
-    this.cancel(this.currentAction);
+    this.cancel();
     this.currentAction = 'order';
     this.cd.detectChanges();
   }

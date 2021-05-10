@@ -111,7 +111,7 @@
                           [swallow]="true"
                           [menuItems]="item.canBeDeleted!==false?menuItems:[menuItems[1]]"
                           [hidden]="currentItemIndex===index"
-                          (openMenu)="cancel('all')"
+                          (openMenu)="cancel()"
                           (actionClick)="onMenuAction($event.key,item,index)">
     </b-action-menu-button>
 
@@ -122,7 +122,7 @@
 
       <b-button class="bel-cancel-button"
                 [button]="cancelButton"
-                (clicked)="cancel(currentAction)">
+                (clicked)="cancel()">
       </b-button>
 
       <b-button class="bel-remove-button"
