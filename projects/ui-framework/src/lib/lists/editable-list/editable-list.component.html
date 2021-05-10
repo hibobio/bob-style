@@ -38,12 +38,13 @@
   <div class="bel-header-bottom flx flx-row-align-y mrg-b-16"
        [hidden]="!listState.list.length">
 
-    <span class="bel-total b-big-body">
+    <span class="bel-total">
       {{('common.total' | translate)}}: {{listState.list.length || 0}}
     </span>
 
     <b-button *ngIf="allowedActions.sort"
-              class="bel-sort-button clr-grey-600 mrg-l-auto"
+              class="bel-sort-button mrg-l-auto"
+              [ngClass]="sortType===order.UserDefined?'clr-grey-700':'clr-grey-600'"
               [attr.data-sorting]="sortType"
               [button]="sortButton"
               [icon]="sortButton['icons'][sortType]"
@@ -60,8 +61,7 @@
      (cdkDropListDropped)="onDrop($event)">
 
   <div *ngFor="let item of listState.list; let index = index; trackBy: listTrackBy"
-       class="bel-item flx flx-row-align-y b-body pad-x-16 mrg-y-4 bg-white
-       rounded"
+       class="bel-item flx flx-row-align-y b-body pad-x-16 mrg-y-4 bg-white rounded has-hover"
        [@zoomInOut]
        [@.disabled]="!ready"
        cdkDrag
@@ -69,7 +69,7 @@
        [cdkDragData]="item"
        (cdkDragStarted)="onDragStart()"
        data-icon-before-size="medium"
-       data-icon-before-color="dark"
+       data-icon-before-color="light"
        [attr.data-icon-before]="allowedActions.order !== false ? 'drag-alt' :
        null"
        [attr.data-item-id]="item.id"

@@ -17,21 +17,16 @@ $bel-item-dragged-border-color: $grey-400;
   min-height: $bel-item-height;
 }
 
-:host ::ng-deep .bel-sort-button {
-  button[class*='b-icon'] {
+:host .bel-sort-button {
+  ::ng-deep button.tertiary {
     @include button-icon-right;
     font-weight: 400;
     padding-right: 0;
     min-width: 0;
-  }
-
-  button {
     transition: color 0.4s;
   }
 
-  &[data-sorting='UserDefined'] {
-    color: $grey-700;
-
+  &.clr-grey-700 ::ng-deep {
     button:before {
       color: $grey-600;
     }
@@ -45,7 +40,9 @@ $bel-item-dragged-border-color: $grey-400;
   transition: box-shadow 0.2s;
 
   &:before {
-    margin-right: 10px;
+    margin-right: 12px;
+    width: 12px;
+    overflow: hidden;
   }
 
   cursor: move;
