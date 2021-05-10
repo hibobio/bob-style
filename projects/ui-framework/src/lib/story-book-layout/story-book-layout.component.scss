@@ -50,7 +50,7 @@ b-display-3 {
     box-sizing: border-box;
   }
 
-  .small {
+  .small:not([type='button']) {
     font-size: 12px;
     font-weight: normal;
   }
