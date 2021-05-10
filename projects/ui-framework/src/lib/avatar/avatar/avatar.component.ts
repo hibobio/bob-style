@@ -22,8 +22,10 @@ import {
   isFunction,
   isObject,
   notFirstChanges,
+  objectMapKeys,
   objectRemoveEntriesByValue,
 } from '../../services/utils/functional-utils';
+import { GenericObject } from '../../types';
 import { AvatarImageComponent } from './avatar-image/avatar-image.component';
 import { AvatarBadge, AvatarOrientation, AvatarSize } from './avatar.enum';
 import { Avatar, BadgeConfig } from './avatar.interface';
@@ -39,14 +41,22 @@ export class AvatarComponent implements OnChanges {
 
   @ViewChild(AvatarImageComponent) avatarImage: AvatarImageComponent;
 
-  readonly avatarSize = AvatarSize;
+  readonly avatarSizes = AvatarSize;
   readonly chipType = ChipType;
   readonly orient = AvatarOrientation;
   readonly tooltipTypes = TruncateTooltipType;
 
   @Input('avatar') set setProps(avatar: Avatar) {
     if (isObject(avatar)) {
-      Object.assign(this, objectRemoveEntriesByValue(avatar, [undefined]));
+      Object.assign(
+        this,
+        objectMapKeys<GenericObject, Avatar>(
+          objectRemoveEntriesByValue(avatar, [undefined]),
+          {
+            avatarSize: 'size',
+          }
+        )
+      );
     }
   }
 

@@ -11,6 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
+import { AvatarOrientation, AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { Avatar } from '../../avatar/avatar/avatar.interface';
 import { Types } from '../../enums';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -40,7 +41,7 @@ export class EELayoutComponent implements OnChanges, AfterViewInit {
 
   @HostBinding('attr.data-type') @Input() type: Types;
 
-  @Input() config: EELayoutConfig = EE_LAYOUT_CONFIG_BY_TYPE[Types.primary];
+  @Input() config: EELayoutConfig;
 
   @Input() avatar: Avatar;
 
@@ -48,6 +49,8 @@ export class EELayoutComponent implements OnChanges, AfterViewInit {
   public hasSectionHeader = true;
   public hasContentHeader = true;
   public hasContentFooter = true;
+  readonly avatarSize = AvatarSize;
+  readonly avatarOrientation = AvatarOrientation;
 
   ngOnChanges(changes: SimpleChanges): void {
     //

@@ -314,3 +314,32 @@ export function timedSlice<T = unknown>(
     });
   };
 }
+
+export function collectToArray<T = unknown>(
+  startArray: T[] = [],
+  clearValue = null
+): OperatorFunction<T, T[]> {
+  return function (source: Observable<T>): Observable<T[]> {
+    //
+    return new Observable<T[]>((subscriber) => {
+      const collection = new Set(startArray);
+
+      return source.subscribe({
+        next: (value: T) => {
+          if (value === clearValue) {
+            collection.clear();
+          } else if (value !== undefined) {
+            collection.add(value);
+          }
+          subscriber.next(Array.from(collection));
+        },
+        complete: () => {
+          subscriber.complete();
+        },
+        error: (error) => {
+          subscriber.error(error);
+        },
+      });
+    });
+  };
+}

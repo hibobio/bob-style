@@ -10,5 +10,5 @@ export interface EditableListActions {
 
 export interface EditableListState {
   list: SelectOption[];
+  newItem?: SelectOption;
 }
-

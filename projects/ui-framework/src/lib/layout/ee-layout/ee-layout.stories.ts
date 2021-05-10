@@ -6,7 +6,6 @@ import { storiesOf } from '@storybook/angular';
 import {
   AvatarBadge,
   AvatarOrientation,
-  AvatarSize,
 } from '../../avatar/avatar/avatar.enum';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
@@ -321,7 +320,8 @@ const jobs = mockBadJobs();
 const diseases = disease(null);
 
 const avatars = sadAvatar(10).map((avtr, i) => ({
-  size: AvatarSize.medium,
+  size: 90,
+  avatarSize: 90,
   orientation: AvatarOrientation.vertical,
   imageSource: avtr,
   badge: randomFromArray([

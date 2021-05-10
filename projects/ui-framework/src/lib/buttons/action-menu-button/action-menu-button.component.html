@@ -1,8 +1,12 @@
-<b-menu [menu]="menuItems"
+<b-menu [id]="id"
+        [menu]="menuItems"
         [openLeft]="openLeft"
-        (click)="$event.stopPropagation()"
-        (actionClick)="onActionClicked($event)">
+        [swallow]="swallow"
+        (click.outside-zone)="swallow && $event.stopPropagation()"
+        (openMenu)="openMenu.emit($event)"
+        (actionClick)="actionClick.emit($event)">
   <b-square-button menu-trigger
-                   [button]="button">
+                   [button]="button"
+                   [id]="id?id+'-trgr':null">
   </b-square-button>
 </b-menu>

@@ -70,6 +70,13 @@ button {
   }
 }
 
+:host[class*='clr-'] {
+  button,
+  button[disabled] {
+    color: inherit !important;
+  }
+}
+
 // Preloader
 
 :host.preloading ::ng-deep button,

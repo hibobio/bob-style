@@ -19,10 +19,14 @@ import { Button, ButtonConfig } from '../buttons.interface';
   styleUrls: ['./action-menu-button.component.scss'],
 })
 export class ActionMenuButtonComponent implements OnChanges {
+  @Input() id: string;
   @Input() menuItems: MenuItem[];
   @Input() openLeft: boolean;
-  @Input() buttonConfig: ButtonConfig;
-  @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter<MenuItem>();
+  @Input() buttonConfig: Button | ButtonConfig;
+  @Input() swallow = true;
+
+  @Output() openMenu: EventEmitter<string | void> = new EventEmitter();
+  @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter();
 
   public button: Button = {
     type: ButtonType.tertiary,
@@ -34,9 +38,5 @@ export class ActionMenuButtonComponent implements OnChanges {
     if (hasChanges(changes, ['buttonConfig'], true)) {
       this.button = { ...this.button, ...this.buttonConfig };
     }
-  }
-
-  public onActionClicked(event: MenuItem): void {
-    this.actionClick.emit(event);
   }
 }

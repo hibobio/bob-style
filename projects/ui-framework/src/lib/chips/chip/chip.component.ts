@@ -91,7 +91,11 @@ export class ChipComponent implements OnChanges {
       this.DOM.setCssProps(this.chip, {
         'background-color': this.color || null,
         'border-color': this.color || null,
-        color: isDark(this.color, 200) ? 'white' : ColorsGrey.color_grey_800,
+        color: !this.color
+          ? null
+          : isDark(this.color, 200)
+          ? 'white'
+          : ColorsGrey.color_grey_800,
       });
     }
 
