@@ -1,0 +1,19 @@
+@import '../../style/common-imports';
+@import '../../style/icons.mixin';
+
+:host {
+  display: flex;
+  align-content: flex-start;
+  width: 100%;
+
+  .insight-pad {
+    padding-left: times8(2);
+    padding-right: times8(5);
+  }
+
+  ::ng-deep {
+    .blv-value {
+      height: 100%;
+    }
+  }
+}
