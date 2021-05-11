@@ -1,4 +1,19 @@
 import {
+  BehaviorSubject,
+  combineLatest,
+  merge,
+  Observable,
+  Subscription,
+} from 'rxjs';
+import {
+  distinctUntilChanged,
+  filter,
+  map,
+  shareReplay,
+  skip,
+} from 'rxjs/operators';
+
+import {
   AfterViewInit,
   ChangeDetectorRef,
   Directive,
@@ -15,20 +30,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  BehaviorSubject,
-  combineLatest,
-  merge,
-  Observable,
-  Subscription,
-} from 'rxjs';
-import {
-  distinctUntilChanged,
-  filter,
-  map,
-  shareReplay,
-  skip,
-} from 'rxjs/operators';
+
 import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { Icons } from '../../icons/icons.enum';
 import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
@@ -57,13 +59,16 @@ import {
   simpleUID,
   unsubscribeArray,
 } from '../../services/utils/functional-utils';
+import { BaseListElement } from '../list-element.abstract';
 import { MultiListAndSomething } from './multi-list-and-something.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class BaseMultiListAndSomethingElement<T = any>
-  implements
-    MultiListAndSomething<T>,
+export abstract class BaseMultiListAndSomethingElement<
+  T = any,
+  L extends BaseListElement = MultiListComponent
+> implements
+    MultiListAndSomething<T, L>,
     OnChanges,
     OnInit,
     AfterViewInit,
@@ -84,7 +89,7 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
     };
   }
 
-  @ViewChild(MultiListComponent, { static: true }) list: MultiListComponent;
+  @ViewChild(BaseListElement, { static: true }) list: L;
 
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
   @HostBinding('attr.data-disabled') @Input() disabled = null;
@@ -104,9 +109,8 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
   @Input() maxHeight: number;
   public listMaxHeight: number;
 
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
+  @Output()
+  selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
 
   @Output() changed: EventEmitter<itemID[]> = new EventEmitter<itemID[]>();
 

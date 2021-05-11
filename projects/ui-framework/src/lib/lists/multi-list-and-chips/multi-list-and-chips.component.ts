@@ -1,34 +1,37 @@
+import { get } from 'lodash';
+import { filter, map } from 'rxjs/operators';
+
 import {
-  Component,
-  Input,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  OnInit,
+  Component,
   ElementRef,
-  ViewChild,
+  Input,
   NgZone,
+  OnInit,
+  ViewChild,
 } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+
+import { ChipListComponent } from '../../chips/chip-list/chip-list.component';
+import { ChipType } from '../../chips/chips.enum';
+import { ChipListConfig } from '../../chips/chips.interface';
+import { ListChangeService } from '../../lists/list-change/list-change.service';
+import { ListModelService } from '../../lists/list-service/list-model.service';
 import {
   itemID,
   SelectGroupOption,
   SelectOption,
 } from '../../lists/list.interface';
-import { ChipListConfig } from '../../chips/chips.interface';
-import { ChipType } from '../../chips/chips.enum';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import {
   isArray,
   isNotEmptyArray,
 } from '../../services/utils/functional-utils';
-import { get } from 'lodash';
-import { TranslateService } from '@ngx-translate/core';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { ChipListComponent } from '../../chips/chip-list/chip-list.component';
-import { ListChangeService } from '../../lists/list-change/list-change.service';
+import { MultiListComponent } from '../multi-list/multi-list.component';
+import { MlacChip } from './multi-list-and-chips.interface';
 import { BaseMultiListAndSomethingElement } from './multi-list-and-something.abstract';
 import { MultiListAndSomething } from './multi-list-and-something.interface';
-import { ListModelService } from '../../lists/list-service/list-model.service';
-import { filter, map } from 'rxjs/operators';
-import { MlacChip } from './multi-list-and-chips.interface';
 
 @Component({
   selector: 'b-multi-list-and-chips',
@@ -40,8 +43,8 @@ import { MlacChip } from './multi-list-and-chips.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiListAndChipsComponent
-  extends BaseMultiListAndSomethingElement<MlacChip>
-  implements MultiListAndSomething<MlacChip>, OnInit {
+  extends BaseMultiListAndSomethingElement<MlacChip, MultiListComponent>
+  implements MultiListAndSomething<MlacChip, MultiListComponent>, OnInit {
   constructor(
     public host: ElementRef,
     protected DOM: DOMhelpers,

@@ -9,23 +9,25 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+
+import { ButtonType } from '../../buttons/buttons.enum';
+import { BasicListComponent } from '../../lists/basic-list/basic-list.component';
+import { BasicListType } from '../../lists/basic-list/basic-list.enum';
 import {
   itemID,
   SelectGroupOption,
   SelectOption,
 } from '../../lists/list.interface';
-import { isArray } from '../../services/utils/functional-utils';
-import { TranslateService } from '@ngx-translate/core';
-import { BasicListType } from '../../lists/basic-list/basic-list.enum';
-import { ButtonType } from '../../buttons/buttons.enum';
-import { BasicListComponent } from '../../lists/basic-list/basic-list.component';
-import { BaseMultiListAndSomethingElement } from '../multi-list-and-chips/multi-list-and-something.abstract';
-import { ListModelService } from '../list-service/list-model.service';
-import { ListChangeService } from '../list-change/list-change.service';
-import { MultiListAndSomething } from '../multi-list-and-chips/multi-list-and-something.interface';
-import { ListRow, ListViewConfig } from './multi-list-and-list.interface';
 import { MenuItem } from '../../navigation/menu/menu.interface';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { isArray } from '../../services/utils/functional-utils';
+import { ListChangeService } from '../list-change/list-change.service';
+import { ListModelService } from '../list-service/list-model.service';
+import { BaseMultiListAndSomethingElement } from '../multi-list-and-chips/multi-list-and-something.abstract';
+import { MultiListAndSomething } from '../multi-list-and-chips/multi-list-and-something.interface';
+import { MultiListComponent } from '../multi-list/multi-list.component';
+import { ListRow, ListViewConfig } from './multi-list-and-list.interface';
 
 @Component({
   selector: 'b-multi-list-and-list',
@@ -37,8 +39,8 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiListAndListComponent
-  extends BaseMultiListAndSomethingElement<ListRow>
-  implements MultiListAndSomething<ListRow> {
+  extends BaseMultiListAndSomethingElement<ListRow, MultiListComponent>
+  implements MultiListAndSomething<ListRow, MultiListComponent> {
   constructor(
     public host: ElementRef,
     protected DOM: DOMhelpers,

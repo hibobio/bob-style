@@ -1,5 +1,7 @@
-import { EventEmitter } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+
+import { EventEmitter } from '@angular/core';
+
 import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
 import { ListChange } from '../../lists/list-change/list-change';
 import { SelectMode } from '../../lists/list.enum';
@@ -9,9 +11,13 @@ import {
   SelectGroupOption,
 } from '../../lists/list.interface';
 import { MultiListComponent } from '../../lists/multi-list/multi-list.component';
+import { BaseListElement } from '../list-element.abstract';
 
-export interface MultiListAndSomething<T = any> {
-  list: MultiListComponent;
+export interface MultiListAndSomething<
+  T = any,
+  L extends BaseListElement = MultiListComponent
+> {
+  list: L;
 
   inputOptions$: Observable<SelectGroupOption[]>;
   inputValue$: Observable<itemID[]>;
