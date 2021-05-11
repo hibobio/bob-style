@@ -2,7 +2,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ButtonsModule } from '../../buttons/buttons.module';
@@ -15,7 +14,6 @@ import { EditableListComponent } from './editable-list.component';
 @NgModule({
   imports: [
     CommonModule,
-    BrowserAnimationsModule,
     IconsModule,
     ButtonsModule,
     InputMessageModule,
