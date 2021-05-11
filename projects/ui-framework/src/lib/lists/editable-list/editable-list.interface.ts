@@ -1,17 +1,18 @@
-import { ListSortType } from './editable-list.enum';
-import { SelectOption } from '../list.interface';
+import { itemID, SelectOption } from '../list.interface';
 
 export interface EditableListActions {
   sort?: boolean;
   add?: boolean | string;
   remove?: boolean;
   order?: boolean;
+  edit?: boolean;
 }
 
 export interface EditableListState {
-  delete: string[];
-  create: string[];
-  sortType: ListSortType;
-  order: string[];
   list: SelectOption[];
+
+  newItem?: SelectOption;
+  create?: string[];
+  delete?: string[];
+  deletedIDs?: itemID[];
 }

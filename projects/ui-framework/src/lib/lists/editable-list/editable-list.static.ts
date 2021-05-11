@@ -1,36 +1,9 @@
-import {
-  simpleUID,
-  arrOfObjSortByProp,
-} from '../../services/utils/functional-utils';
-
+import { arrOfObjSortByProp } from '../../services/utils/functional-utils';
 import { SelectOption } from '../list.interface';
 import { ListSortType } from './editable-list.enum';
 
 export class EditableListUtils {
   //
-  public static onDrop(
-    list: SelectOption[],
-    removedIndex: number,
-    addedIndex: number
-  ): SelectOption[] {
-    if (removedIndex === addedIndex) {
-      return null;
-    }
-
-    list.splice(addedIndex, 0, list.splice(removedIndex, 1)[0]);
-    return list;
-  }
-
-  public static addItem(list: SelectOption[], value: string): SelectOption[] {
-    if (value) {
-      list.unshift({
-        id: simpleUID('new'),
-        value: value,
-      });
-    }
-    return list;
-  }
-
   public static sortList(
     list: SelectOption[],
     order: ListSortType = null,

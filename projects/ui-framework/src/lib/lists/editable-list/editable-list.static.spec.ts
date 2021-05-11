@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash';
+
 import { ListSortType } from './editable-list.enum';
 import { EditableListUtils } from './editable-list.static';
 
@@ -24,14 +25,6 @@ describe('DateParseService', () => {
     { id: 3, value: 'C' },
     { id: 16, value: 'T' },
   ];
-
-  describe('addItem', () => {
-    it('should insert item in the beginning of list', () => {
-      const list = cloneDeep(ascList);
-      const result = service.addItem(list, 'NEW ITEM');
-      expect(result[0].value).toEqual('NEW ITEM');
-    });
-  });
 
   describe('isListAscending', () => {
     it('should return true for ascening list', () => {

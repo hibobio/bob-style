@@ -3,3 +3,5 @@ export enum ListSortType {
   Asc = 'Asc',
   Desc = 'Desc',
 }
+
+export type ListActionType = 'add' | 'remove' | 'order' | 'edit';
