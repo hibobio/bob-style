@@ -1,26 +1,28 @@
 import {
-  Component,
-  Renderer2,
   ChangeDetectorRef,
-  NgZone,
+  Component,
   ElementRef,
+  NgZone,
+  Renderer2,
 } from '@angular/core';
-import { ListModelService } from '../list-service/list-model.service';
-import { ListHeader } from '../list.interface';
-import { BaseListElement } from '../list-element.abstract';
-import { ListKeyboardService } from '../list-service/list-keyboard.service';
-import { ListChangeService } from '../list-change/list-change.service';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { SelectType } from '../list.enum';
-import { MobileService } from '../../services/utils/mobile.service';
-import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
-import { LIST_EL_HEIGHT } from '../list.consts';
+
 import { FORM_ELEMENT_HEIGHT } from '../../form-elements/form-elements.const';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { MobileService } from '../../services/utils/mobile.service';
+import { ListChangeService } from '../list-change/list-change.service';
+import { BaseListElement } from '../list-element.abstract';
+import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
+import { ListKeyboardService } from '../list-service/list-keyboard.service';
+import { ListModelService } from '../list-service/list-model.service';
+import { LIST_EL_HEIGHT } from '../list.consts';
+import { SelectType } from '../list.enum';
+import { ListHeader } from '../list.interface';
 
 @Component({
   selector: 'b-single-list',
   templateUrl: 'single-list.component.html',
   styleUrls: ['single-list.component.scss', 'single-list-extended.scss'],
+  providers: [{ provide: BaseListElement, useExisting: SingleListComponent }],
 })
 export class SingleListComponent extends BaseListElement {
   constructor(
