@@ -32,6 +32,7 @@ import {
   isFunction,
   isKey,
   notFirstChanges,
+  objectRemoveKey,
   unsubscribeArray,
 } from '../../services/utils/functional-utils';
 import { filterByEventKey } from '../../services/utils/rxjs.operators';
@@ -164,6 +165,9 @@ export abstract class BaseEditableListElement
       id: null,
       value: '',
     },
+    create: [],
+    delete: [],
+    deletedIDs: [],
   };
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -292,9 +296,9 @@ export abstract class BaseEditableListElement
   }
 
   protected transmit(): void {
-    this.changed.emit({
-      list: cloneDeepSimpleObject(this.listState.list),
-    });
+    this.changed.emit(
+      cloneDeepSimpleObject(objectRemoveKey(this.listState, 'newItem'))
+    );
   }
 
   public listTrackBy(index: number, item: SelectOption): itemID {

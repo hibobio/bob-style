@@ -12,7 +12,10 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { simpleUID } from '../../services/utils/functional-utils';
+import {
+  arrayRemoveItemMutate,
+  simpleUID,
+} from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
 import { SelectOption } from '../list.interface';
 import { BaseEditableListElement } from './editable-list.abstract';
@@ -92,12 +95,15 @@ export class EditableListComponent extends BaseEditableListElement {
   }
 
   public addItemApply(): void {
-    if (this.listState.newItem.value.trim()) {
+    const value = this.listState.newItem.value.trim();
+
+    if (value) {
       this.currentAction = null;
 
+      this.listState.create.push(value);
       this.listState.list.unshift({
-        id: simpleUID('new'),
-        value: this.listState.newItem.value.trim(),
+        id: simpleUID('new--'),
+        value,
       });
       this.transmit();
 
@@ -120,6 +126,13 @@ export class EditableListComponent extends BaseEditableListElement {
   public removeItemApply(item: SelectOption, index: number): void {
     this.currentAction = null;
     this.currentItemIndex = null;
+
+    if (!String(item.id).startsWith('new--')) {
+      this.listState.delete.push(item.value);
+      this.listState.deletedIDs.push(item.id);
+    } else {
+      arrayRemoveItemMutate(this.listState.create, item.value);
+    }
 
     this.listState.list.splice(index, 1);
     this.transmit();

@@ -1,4 +1,4 @@
-import { SelectOption } from '../list.interface';
+import { itemID, SelectOption } from '../list.interface';
 
 export interface EditableListActions {
   sort?: boolean;
@@ -10,5 +10,9 @@ export interface EditableListActions {
 
 export interface EditableListState {
   list: SelectOption[];
+
   newItem?: SelectOption;
+  create?: string[];
+  delete?: string[];
+  deletedIDs?: itemID[];
 }
