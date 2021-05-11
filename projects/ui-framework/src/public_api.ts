@@ -547,6 +547,10 @@ export { MasonryLayoutComponent, MasonryItemComponent } from './lib/layout/mason
 export * from './lib/layout/masonry/masonry.interface';
 export * from './lib/layout/masonry/masonry.const';
 
+// Third-2thirds
+export { Third2ThirdsModule } from './lib/layout/third-2thirds/third-2thirds.module';
+export { Third2ThirdsComponent } from './lib/layout/third-2thirds/third-2thirds.component';
+
 // Read More
 export { ReadMoreModule } from './lib/layout/read-more/read-more.module';
 export { ReadMoreComponent } from './lib/layout/read-more/read-more.component';
