@@ -11,6 +11,10 @@
     padding-right: times8(5);
   }
 
+  .progress-bar-inner-label{
+    color: $grey-600;
+  }
+
   ::ng-deep {
     .blv-value {
       height: 100%;

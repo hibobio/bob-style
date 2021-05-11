@@ -1,4 +1,3 @@
-import { LabelValue, ProgressBar, ProgressDonut } from 'bob-style';
 
 export enum SummaryInsightType {
   labelValue = 'LabelValue',

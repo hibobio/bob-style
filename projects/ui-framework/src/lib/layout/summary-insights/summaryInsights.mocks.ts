@@ -34,8 +34,8 @@ export const labelValueDataMock2: LabelValue = {
 
 export const progressBarDataMock: ProgressBar = {
   data: { value: 20 },
-  config: {},
-  type: ProgressType.primary,
+  config: { reverseTextLocation: true },
+  type: ProgressType.secondary,
   size: ProgressSize.small,
 };
 
@@ -54,7 +54,7 @@ export const progressDonutMock: ProgressDonut = {
 export const summaryInsightsDataMock: SummaryInsight[] = [
   {
     type: SummaryInsightType.labelValue,
-    label: labelValueDataMock
+    label: labelValueDataMock,
   },
   {
     type: SummaryInsightType.progressDonutWithLabelValue,
@@ -69,6 +69,6 @@ export const summaryInsightsDataMock: SummaryInsight[] = [
   {
     type: SummaryInsightType.progressBar,
     data: progressBarDataMock,
-    label: labelValueDataMock2,
+    label: { value: 'im a string | num val' },
   },
 ];
