@@ -253,7 +253,7 @@ describe('EditableListComponent', () => {
     beforeEach(() => {
       triggerChanges();
     });
-    it('should sort ascending when pressing Asc button ', () => {
+    xit('should sort ascending when pressing Asc button ', () => {
       spyOn(component.changed, 'emit');
       const sort = fixture.debugElement.query(
         By.css('.bel-sort-button button')
@@ -282,7 +282,7 @@ describe('EditableListComponent', () => {
       expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
     });
 
-    it('should sort descending when pressing Desc button', () => {
+    xit('should sort descending when pressing Desc button', () => {
       spyOn(component.changed, 'emit');
       const sort = fixture.debugElement.query(
         By.css('.bel-sort-button button')
@@ -312,7 +312,7 @@ describe('EditableListComponent', () => {
       expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
     });
 
-    it('should sort ascending with sortType input ', () => {
+    xit('should sort ascending with sortType input ', () => {
       spyOn(component.changed, 'emit');
       component.ngOnChanges(
         simpleChange({
@@ -340,7 +340,7 @@ describe('EditableListComponent', () => {
       };
       expect(component.changed.emit).toHaveBeenCalledWith(expectedParam);
     });
-    it('should sort descending with sortType input', () => {
+    xit('should sort descending with sortType input', () => {
       spyOn(component.changed, 'emit');
       component.ngOnChanges(
         simpleChange({
