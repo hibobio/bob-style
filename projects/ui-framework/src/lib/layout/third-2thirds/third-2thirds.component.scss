@@ -16,9 +16,13 @@
     max-width: 792px;
     min-width: 464px;
     margin-right: 24px;
+    display: flex;
+    flex-direction: column;
   }
   [side] {
     flex: none;
     width: 384px;
+    display: flex;
+    flex-direction: column;
   }
 }
