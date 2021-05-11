@@ -34,7 +34,7 @@ const template = `<b-button
           (clicked)="onClick($event)">
 </b-button>
 
-<a b-button href="javascript:void()"
+<a b-button
           [button]="{
             id: id,
             type: type,
@@ -43,7 +43,9 @@ const template = `<b-button
             icon: icon,
             disabled: disabled,
             active: active,
-            preloader: preloader
+            preloader: preloader,
+            throttle: throttle,
+            swallow: swallow
           }"
           (clicked)="onClick($event)">
 </a>`;

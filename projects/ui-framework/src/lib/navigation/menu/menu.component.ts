@@ -1,33 +1,35 @@
+import { Subscription } from 'rxjs';
+
 import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
-  ViewChild,
-  OnInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  ViewChildren,
-  QueryList,
+  Component,
+  EventEmitter,
   HostBinding,
+  Input,
   NgZone,
+  OnChanges,
   OnDestroy,
+  OnInit,
+  Output,
+  QueryList,
+  SimpleChanges,
+  ViewChild,
+  ViewChildren,
 } from '@angular/core';
-import { MenuItem } from './menu.interface';
-import { MenuPositionX, MatMenu, MatMenuTrigger } from '@angular/material/menu';
-import {
-  isFunction,
-  hasChanges,
-  applyChanges,
-  notFirstChanges,
-  isValuevy,
-} from '../../services/utils/functional-utils';
-import { UtilsService } from '../../services/utils/utils.service';
-import { Subscription } from 'rxjs';
+import { MatMenu, MatMenuTrigger, MenuPositionX } from '@angular/material/menu';
+
 import { Keys } from '../../enums';
+import {
+  applyChanges,
+  hasChanges,
+  isFunction,
+  isValuevy,
+  notFirstChanges,
+} from '../../services/utils/functional-utils';
 import { filterKey } from '../../services/utils/rxjs.operators';
+import { UtilsService } from '../../services/utils/utils.service';
+import { MenuItem } from './menu.interface';
 
 @Component({
   selector: 'b-menu',
@@ -52,14 +54,11 @@ export class MenuComponent implements OnChanges, OnInit, OnDestroy {
   @Input() clickToOpenSub = false;
   @Input() panelClass: string;
   @Input() disabled: boolean;
+  @Input() swallow = true;
 
-  @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter<MenuItem>();
-  @Output() openMenu: EventEmitter<string | void> = new EventEmitter<
-    string | void
-  >();
-  @Output() closeMenu: EventEmitter<string | void> = new EventEmitter<
-    string | void
-  >();
+  @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter();
+  @Output() openMenu: EventEmitter<string | void> = new EventEmitter();
+  @Output() closeMenu: EventEmitter<string | void> = new EventEmitter();
 
   @ViewChild('childMenu', { static: true }) public childMenu: MatMenu;
   @ViewChildren(MenuComponent)
@@ -135,6 +134,8 @@ export class MenuComponent implements OnChanges, OnInit, OnDestroy {
     if (item.action && triggerAction) {
       item.action(item);
     }
+
+    this.close();
   }
 
   public onOpenMenu(): void {
@@ -167,6 +168,7 @@ export class MenuComponent implements OnChanges, OnInit, OnDestroy {
     this.menuViewModel =
       this.menu?.map((item) => ({
         ...item,
+        ...(item.id && !item.key && { key: item.id }),
         ...(this.id && { id: this.id }),
         ...(this.data && { data: this.data }),
         clickToOpenSub: Boolean(this.clickToOpenSub || item.clickToOpenSub),
