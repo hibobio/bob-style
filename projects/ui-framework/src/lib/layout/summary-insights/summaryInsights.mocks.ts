@@ -15,20 +15,15 @@ import { SummaryInsight } from './summary-insights.interfaces';
 export const labelValueDataMock: LabelValue = {
   type: LabelValueType.six,
   value: 'label',
-  label: 27,
+  label: '23%',
   textAlign: TextAlign.left,
-  tooltipType: TruncateTooltipType.material,
-  expectChanges: true,
-  labelDescription: { text: 'labelDescription text' },
 };
 
 
 export const labelValueDataMock2: LabelValue = {
   type: LabelValueType.six,
-  value: 'label long la ',
-  tooltipType: TruncateTooltipType.material,
-  expectChanges: true,
-  labelDescription: { text: 'labelDescription text' },
+  textAlign: TextAlign.left,
+  value: 'label too',
 };
 
 
