@@ -1,13 +1,13 @@
-import { storiesOf } from '@storybook/angular';
-import { object, select, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { values } from 'lodash';
-import { ComponentGroupType } from '../../consts';
-import { CardsModule } from '../cards.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { action } from '@storybook/addon-actions';
+import { object, select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { CardType } from '../cards.enum';
 import { EmployeeCardsMockData } from '../cards.mock';
+import { CardsModule } from '../cards.module';
 
 const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs
@@ -76,7 +76,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', values(CardType), CardType.large),
+        type: select('type', Object.values(CardType), CardType.large),
         card: object('card', EmployeeCardsMockData[0]),
         clicked: action('Employee avatar clicked'),
       },

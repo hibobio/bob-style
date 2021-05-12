@@ -1,16 +1,15 @@
-import { storiesOf } from '@storybook/angular';
 import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
-import { AlertModule } from './alert.module';
+import { storiesOf } from '@storybook/angular';
+
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { AlertExampleModule } from './alert-example.module';
 import { AlertType } from './alert.enum';
-import { values } from 'lodash';
+import { AlertModule } from './alert.module';
 
 const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
 );
-const alertTypes = values(AlertType);
 
 const template = `
 <b-alert-example
@@ -70,7 +69,11 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        alertType: select('alertType', alertTypes, AlertType.information),
+        alertType: select(
+          'alertType',
+          Object.values(AlertType),
+          AlertType.information
+        ),
         title: text('title', 'Alert title'),
         text: text('text', 'The alert text appear here'),
         autoClose: boolean('autoClose', true),

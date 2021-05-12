@@ -528,6 +528,7 @@ export const objectGetDeepestValid = <T = any, V = any>(
     : value) as V;
 };
 
+// simple 1 level merge
 export const mergeObjects = <I = GenericObject, O = I>(
   target: I,
   ...rest: I[]
@@ -682,6 +683,7 @@ export const arrayRemoveItemMutate = <T = any>(arr: T[], item: T): T[] => {
 };
 
 export const arrayRemoveItemsMutate = <T = any>(arr: T[], items: T[]): T[] => {
+  items = asArray(items);
   const arrCopy = arr.slice();
   arr.length = 0;
   arr.push(...arrCopy.filter((id) => !items.includes(id)));
@@ -2164,6 +2166,39 @@ export const invoke = <T = unknown, R = any>(smth: T, method: string): R => {
 // ----------------------
 // LODASH WRAPS
 // ----------------------
+
+export const compact = <T = unknown>(arr: T[]): T[] => {
+  return asArray(arr).filter(Boolean);
+};
+
+export const concat = <T = any>(
+  target: T | T[],
+  ...sources: (T | T[])[]
+): T[] => {
+  return asArray(target).concat(...sources);
+};
+
+export const remove = <T = any>(
+  arr: T[],
+  predicate: (i: T, idx: number) => boolean
+): T[] => {
+  arr = asArray(arr);
+  const removed = [];
+  const arrCopy = arr.slice();
+  arr.length = 0;
+
+  arrCopy.forEach((itm, idx) => {
+    if (predicate(itm, idx)) {
+      arr.push(itm);
+    } else {
+      removed.push(itm);
+    }
+  });
+
+  return removed;
+};
+
+export const pull = arrayRemoveItemsMutate;
 
 export const cloneDeep = <T = unknown>(smth: T): T => {
   return _cloneDeep(smth) as T;

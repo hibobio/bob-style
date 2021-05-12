@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,15 +12,15 @@ import {
   SimpleChanges,
   ViewChildren,
 } from '@angular/core';
+
+import { cloneDeepSimpleObject } from '../../services/utils/functional-utils';
+import { CollapsibleSectionComponent } from '../collapsible-section/collapsible-section.component';
 import { CollapsibleContentDirective } from './collapsible-content.directive';
+import { CollapsibleHeaderDirective } from './collapsible-header.directive';
 import {
   SortableCollapsibleDropped,
   SortableCollapsibleSection,
 } from './sortable-collapsible-sections.interface';
-import { CollapsibleHeaderDirective } from './collapsible-header.directive';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { CollapsibleSectionComponent } from '../collapsible-section/collapsible-section.component';
-import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'b-sortable-collapsible-sections',
@@ -42,9 +43,8 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
 
   @Output() dragStart: EventEmitter<number> = new EventEmitter<number>();
   @Output() dragEnd: EventEmitter<number> = new EventEmitter<number>();
-  @Output() orderChanged: EventEmitter<
-    SortableCollapsibleDropped
-  > = new EventEmitter<SortableCollapsibleDropped>();
+  @Output()
+  orderChanged: EventEmitter<SortableCollapsibleDropped> = new EventEmitter<SortableCollapsibleDropped>();
   @Output() opened: EventEmitter<number> = new EventEmitter<number>();
   @Output() closed: EventEmitter<number> = new EventEmitter<number>();
 
@@ -58,7 +58,7 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.sections && changes.sections.currentValue) {
-      this.UISections = cloneDeep(this.sections);
+      this.UISections = cloneDeepSimpleObject(this.sections);
       this.UISections.forEach((section) => {
         if (section.expanded) {
           this.contentLoadedMap.set(section.id, true);

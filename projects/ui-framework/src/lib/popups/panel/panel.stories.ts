@@ -1,23 +1,21 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
-import { PanelModule } from './panel.module';
-import { ButtonsModule } from '../../buttons/buttons.module';
-import { TypographyModule } from '../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { CheckboxModule } from '../../form-elements/checkbox/checkbox.module';
-import { PanelDefaultPosVer, PanelSize } from './panel.enum';
-import { values } from 'lodash';
+import { action } from '@storybook/addon-actions';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
-import { mockAvatar, mockName, mockJobs } from '../../mock.const';
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { ComponentGroupType } from '../../consts';
+import { CheckboxModule } from '../../form-elements/checkbox/checkbox.module';
+import { mockAvatar, mockJobs, mockName } from '../../mock.const';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { TypographyModule } from '../../typography/typography.module';
+import { PanelDefaultPosVer, PanelSize } from './panel.enum';
+import { PanelModule } from './panel.module';
 
 const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
 );
-
-const panelSize = values(PanelSize);
 
 const template = `<b-panel [panelClass]="panelClass"
           [size]="panelSize"
@@ -145,7 +143,7 @@ story.add(
       title: mockName(),
       subtitle: mockJobs(1),
       panelClass: text('panelClass', 'my-panel-class'),
-      panelSize: select('size', panelSize, PanelSize.medium),
+      panelSize: select('size', Object.values(PanelSize), PanelSize.medium),
       defaultPosVer: select(
         'defaultPosVer',
         Object.values(PanelDefaultPosVer),

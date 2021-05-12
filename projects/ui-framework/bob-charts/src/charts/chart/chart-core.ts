@@ -14,7 +14,6 @@ import {
 import * as Highcharts from 'highcharts';
 import { ExportingMimeTypeValue, Options, Chart } from 'highcharts';
 import { ChartTypesEnum } from '../charts.enum';
-import { merge } from 'lodash';
 import {
   applyChanges,
   COLOR_GREY_700,
@@ -22,6 +21,7 @@ import {
   pass,
   simpleUID,
   Color,
+  merge,
 } from 'bob-style';
 import {
   ChartFormatterThis,
@@ -55,14 +55,13 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
     More(Highcharts);
   }
 
-  @ViewChild('container', { static: true }) chartContainer: ElementRef<
-    HTMLElement
-  >;
+  @ViewChild('container', { static: true })
+  chartContainer: ElementRef<HTMLElement>;
 
   highChartRef: Chart;
   readonly containerId: string = simpleUID('bhc', 7);
   chartOptions: Options;
-  options: Options;
+  options: HighChartOptions;
 
   protected sizeDefaults = CHART_CORE_SIZE_DEFS;
 

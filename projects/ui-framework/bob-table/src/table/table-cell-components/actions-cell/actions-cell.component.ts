@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
-import { IconColor, Icons, ButtonType, MenuItem } from 'bob-style';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
-import { assign, map, get } from 'lodash';
+
+import { Component } from '@angular/core';
+
+import { ButtonType, get, IconColor, Icons, MenuItem } from 'bob-style';
 
 @Component({
   selector: 'b-actions-cell',
@@ -30,10 +31,9 @@ export class ActionsCellComponent implements ICellRendererAngularComp {
 
   agInit(params: any): void {
     this.openLeft = get(params, 'value.openLeft', false);
-    this.menuItems = map(
-      get(params, 'value.menuItems', []),
+    this.menuItems = get(params, 'value.menuItems', []).map(
       (item: MenuItem) => {
-        return assign({}, item, {
+        return Object.assign({}, item, {
           action: () => {
             item.action(params.data);
           },
