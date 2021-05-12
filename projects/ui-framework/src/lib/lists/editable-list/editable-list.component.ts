@@ -14,6 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import {
   arrayRemoveItemMutate,
+  isFunction,
   simpleUID,
 } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
@@ -91,7 +92,7 @@ export class EditableListComponent extends BaseEditableListElement {
     this.currentItemIndex = null;
     this.currentAction = 'add';
     this.cd.detectChanges();
-    this.addItemInput.nativeElement.focus();
+    this.addItemInput?.nativeElement.focus();
   }
 
   public addItemApply(): void {
@@ -146,7 +147,11 @@ export class EditableListComponent extends BaseEditableListElement {
     this.currentItemIndex = index;
     item.originalValue = item.value.trim();
     this.cd.detectChanges();
-    this.editItemInputs.get(index).nativeElement.focus();
+
+    (isFunction(this.editItemInputs?.get)
+      ? this.editItemInputs?.get(index)
+      : this.editItemInputs?.toArray()[index]
+    )?.nativeElement.focus();
   }
 
   public editItemApply(item: SelectOption, index: number): void {
