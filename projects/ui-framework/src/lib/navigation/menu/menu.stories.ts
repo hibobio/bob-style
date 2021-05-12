@@ -1,17 +1,22 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, object, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
-import { ButtonType } from '../../buttons/buttons.enum';
-import { MenuModule } from './menu.module';
-import { ButtonsModule } from '../../buttons/buttons.module';
-import { IconsModule } from '../../icons/icons.module';
-import { Icons } from '../../icons/icons.enum';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { action } from '@storybook/addon-actions';
+import { boolean, object, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ButtonType } from '../../buttons/buttons.enum';
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { ComponentGroupType } from '../../consts';
+import { Icons } from '../../icons/icons.enum';
+import { IconsModule } from '../../icons/icons.module';
+import { mockThings } from '../../mock.const';
+import {
+  makeArray,
+  randomNumber,
+  simpleUID,
+} from '../../services/utils/functional-utils';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { MenuItem } from './menu.interface';
-import { makeArray, simpleUID } from '../../services/utils/functional-utils';
-import { mockThings } from '../../mock.const';
+import { MenuModule } from './menu.module';
 
 const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(
   withKnobs
@@ -165,7 +170,7 @@ const menuMock: MenuItem[] = [
   },
   {
     label: 'Employee',
-    key: 'employee',
+    key: randomNumber(100, 999),
 
     children: [
       {
@@ -176,12 +181,12 @@ const menuMock: MenuItem[] = [
           {
             label: 'Update site',
             action: action('update site'),
-            key: 'update.site',
+            id: randomNumber(100, 999),
           },
           {
             label: 'Update email',
             action: action('update email'),
-            key: 'update.email',
+            id: randomNumber(100, 999),
           },
           {
             label: 'Update reports to',
@@ -245,7 +250,7 @@ const menuMock: MenuItem[] = [
     label: mockThings(1),
     key: simpleUID(),
   })),
-];
+] as any;
 
 story.add(
   'Menu',

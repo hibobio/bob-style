@@ -1,7 +1,7 @@
 <div [matMenuTriggerFor]="childMenu"
      (menuOpened)="onOpenMenu()"
      (menuClosed)="onCloseMenu()"
-     [ngClass]="{'disabled': disabled}"
+     [class.disabled]="disabled"
      class="menu-trigger-wrapper">
   <ng-content select="[menu-trigger]"></ng-content>
 </div>
@@ -11,7 +11,7 @@
           [class]="panelClass">
   <div (click.outside-zone)="swallow && $event.stopPropagation()">
     <div *ngFor="let item of menuViewModel; trackBy: trackBy"
-         [ngClass]="{'separator-after': item.separatorAfter}">
+         [class.separator-after]="item.separatorAfter">
 
       <!-- Handle branch node menu menu -->
       <span *ngIf="item.children?.length > 0"
@@ -20,12 +20,13 @@
             (click.outside-zone)="!itemIsDisabled(item) && item.clickToOpenSub && $event.stopPropagation()">
 
         <span *ngIf="item.isTitle"
-              class="b-subheading {{item.key}}"
+              class="b-subheading"
+              [ngClass]="item.key+''"
               (click.outside-zone)="$event.stopPropagation()">{{item.label}}</span>
         <button *ngIf="!item.isTitle"
                 mat-menu-item
                 type="button"
-                class="{{item.key}}"
+                [ngClass]="item.key+''"
                 [attr.id]="id && item.key ? (id+'__'+item.key+'__btn') : null"
                 [disabled]="itemIsDisabled(item)"
                 [matMenuTriggerFor]="menu.childMenu"
@@ -48,12 +49,13 @@
       <!-- Handle leaf node menu menu -->
       <ng-container *ngIf="!item.children || item.children.length === 0">
         <span *ngIf="item.isTitle"
-              class="b-subheading {{item.key}}"
+              class="b-subheading"
+              [ngClass]="item.key+''"
               (click.outside-zone)="$event.stopPropagation()">{{item.label}}</span>
         <button *ngIf="!item.isTitle"
                 mat-menu-item
                 type="button"
-                class="{{item.key}}"
+                [ngClass]="item.key+''"
                 [attr.id]="id && item.key ? (id+'__'+item.key+'__btn') : null"
                 (click)="onClick(item)"
                 [disabled]="itemIsDisabled(item)"
