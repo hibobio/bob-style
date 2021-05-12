@@ -39,6 +39,7 @@ import {
   objectHasTruthyValue,
   objectRemoveKey,
   simpleChange,
+  isEmptyArray
 } from '../services/utils/functional-utils';
 import { MobileService } from '../services/utils/mobile.service';
 import { ListChange } from './list-change/list-change';
@@ -199,12 +200,9 @@ export abstract class BaseListElement
 
     if (hasChanges(changes, ['options'], true)) {
       this.options = this.modelSrvc.enrichIncomingOptions(this.options);
-    }
-
-    if (hasChanges(changes, ['startWithGroupsCollapsed', 'options'])) {
-      this.startWithGroupsCollapsed =
-        (this.startWithGroupsCollapsed || !changes.startWithGroupsCollapsed) &&
-        isNotEmptyArray(this.options, 1);
+      this.startWithGroupsCollapsed = isEmptyArray(this.options)
+        ? false
+        : this.startWithGroupsCollapsed;
     }
 
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
