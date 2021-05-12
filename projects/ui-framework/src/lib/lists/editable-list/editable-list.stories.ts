@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { withKnobs, boolean, select, number } from '@storybook/addon-knobs';
+import { withKnobs, boolean, select, number, object } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -10,6 +10,8 @@ import { action } from '@storybook/addon-actions';
 import { ListSortType } from './editable-list.enum';
 import { CommonModule } from '@angular/common';
 import { EditableListUtils } from './editable-list.static';
+import { EditableListActions } from './editable-list.interface';
+import { EDITABLE_LIST_ALLOWED_ACTIONS_DEF } from './editable-list.const';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -26,7 +28,8 @@ const componentTemplate1 = `
                    sort: allowSort,
                    add: allowAdd,
                    remove: allowRemove,
-                   order: allowOrder
+                   order: allowOrder,
+                   edit: allowEdit
                  }"
                  [maxChars]="maxChars"
                  (changed)="onListUpdate($event)"
@@ -89,10 +92,8 @@ const note = `
 const listMock = cloneDeep(editableListMock);
 const listMockAsc = cloneDeep(editableListMock);
 const listMockDesc = cloneDeep(editableListMock);
-
 EditableListUtils.sortList(listMockAsc, ListSortType.Asc);
 EditableListUtils.sortList(listMockDesc, ListSortType.Desc);
-
 story.add(
   'Editable List',
   () => {
@@ -116,7 +117,8 @@ story.add(
         allowAdd: boolean('allowAdd', true, 'Props'),
         allowRemove: boolean('allowRemove', true, 'Props'),
         allowOrder: boolean('allowOrder', true, 'Props'),
-
+        allowEdit: boolean('allowEdit', true, 'Props'),
+        allowActions: select('sortType', [0, 'Asc', 'Desc'], 0, 'Props'),
         onListUpdate: action('onListUpdate'),
         onInputChange: action('onInputChange'),
       },

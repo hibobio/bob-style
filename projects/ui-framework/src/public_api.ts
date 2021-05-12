@@ -269,6 +269,9 @@ export { TreeSelectModule } from './lib/lists/tree-list/tree-select/tree-select.
 export { TreeSelectComponent } from './lib/lists/tree-list/tree-select/tree-select.component';
 export { EditableTreeListModule } from './lib/lists/tree-list/editable-tree-list/editable-tree-list.module';
 export { EditableTreeListComponent } from './lib/lists/tree-list/editable-tree-list/editable-tree-list.component';
+// Select and view
+export { SelectAndViewModule } from './lib/lists/select-and-view/select-and-view.module';
+export { SelectAndViewComponent } from './lib/lists/select-and-view/select-and-view.component';
 
 
 // Chain select
