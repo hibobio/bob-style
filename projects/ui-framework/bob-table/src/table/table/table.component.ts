@@ -11,6 +11,7 @@ import {
   RowDragEvent,
   RowEvent,
 } from 'ag-grid-community';
+import { map } from 'lodash';
 
 import {
   ChangeDetectionStrategy,
@@ -347,12 +348,12 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     columns: Column[],
     eventName: TableEventName
   ): void {
-    this.columns = columns.map((col) => col['colDef'].field);
+    this.columns = map(columns, (col) => col.colDef.field);
     this.columnsOrderChanged.emit({ columns: this.columns.slice(), eventName });
   }
 
   private emitColumnsChangedEvent(columns: Column[]): void {
-    this.columns = columns.map((col) => col['colDef'].field);
+    this.columns = map(columns, (col) => col.colDef.field);
     this.columnsChanged.emit({ columns: this.columns.slice() });
   }
 
