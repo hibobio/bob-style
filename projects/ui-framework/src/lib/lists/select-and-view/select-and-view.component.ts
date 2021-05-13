@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { InputObservable } from '../../services/utils/decorators';
+import { InputObservable, InputSubject } from '../../services/utils/decorators';
 import { itemID, SelectGroupOption, SelectOption } from '../../lists/list.interface';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
-import { asArray, isArray, unsubscribeArray } from '../../services/utils/functional-utils';
+import { asArray, isNotEmptyArray, unsubscribeArray } from '../../services/utils/functional-utils';
 import { map } from 'rxjs/operators';
-import { chain } from 'lodash';
 import { ListChange } from '../../lists/list-change/list-change';
+import { SingleListComponent } from '../single-list/single-list.component';
 
 @Component({
   selector: 'b-select-and-view',
@@ -19,30 +19,37 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
   @Input('options')
   public inputOptions$: Observable<SelectGroupOption[]>;
 
-  @InputObservable(null)
+  @InputSubject([])
   @Input('value')
-  public inputValue$: Observable<itemID[]>;
+  public listValue$: BehaviorSubject<itemID[]>;
+
+  @ViewChild(SingleListComponent, {static: true}) listComponent: SingleListComponent;
 
   public selectOptions$: BehaviorSubject<SelectGroupOption[]> = new BehaviorSubject(undefined);
-  public listValue$: BehaviorSubject<itemID[]> = new BehaviorSubject(null);
 
   protected readonly subs: Subscription[] = [];
 
   ngOnInit(): void {
-
-    this.subs.push(this.inputValue$.subscribe(this.listValue$));
-
     this.subs.push(
       combineLatest([
         this.inputOptions$,
         this.listValue$,
       ])
         .pipe(
-          map(([options, value]) => isArray(value)
+          map(([options, value]) => isNotEmptyArray(value)
             ? this.getOptionsWithoutSelected(options, value)
             : options),
         )
         .subscribe(this.selectOptions$)
+    );
+
+    this.subs.push(
+      this.listComponent.selectChange
+        .pipe(
+          map((listChange) =>  asArray(this.listValue$.getValue())
+            .concat(listChange.selectedIDs || []))
+        )
+        .subscribe(this.listValue$)
     );
   }
 
@@ -55,15 +62,14 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
   }
 
   private getOptionsWithoutSelected(options: SelectGroupOption[], value: itemID[]): SelectGroupOption[] {
-    return chain(options)
+    return options
       .map(group => ({
         ...group,
         options: group.options
           .filter((option: SelectOption) => !asArray(value).includes(option.id))
           .map((option: SelectOption) => ({ ...option, selected: false })),
       }))
-      .filter(group => group.options.length)
-      .value();
+      .filter(group => group.options.length);
   }
 
   public onSelectChange(listChange: ListChange): void {

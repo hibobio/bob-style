@@ -205,6 +205,12 @@ export abstract class BaseListElement
         : this.startWithGroupsCollapsed;
     }
 
+    if (hasChanges(changes, ['startWithGroupsCollapsed', 'options'])) {
+      this.startWithGroupsCollapsed =
+        (this.startWithGroupsCollapsed || !changes.startWithGroupsCollapsed) &&
+        isNotEmptyArray(this.options, 1);
+    }
+
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
       this.selectedIDs = this.getSelectedIDs(this.options);
       this.filteredOptions = this.options || [];
