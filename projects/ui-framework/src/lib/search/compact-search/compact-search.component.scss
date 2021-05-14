@@ -8,15 +8,6 @@ $transitionDuration: 0.3s;
   vertical-align: middle;
 }
 
-.search-button {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-}
-
 .search {
   width: $wrap-height-smaller;
   transition: width $transitionDuration;
@@ -26,6 +17,12 @@ $transitionDuration: 0.3s;
       border-radius: $wrap-height-smaller/2;
       transition: border-radius $transitionDuration;
     }
+
+    .bfe-input::placeholder {
+      color: transparent;
+      transition: none;
+    }
+
     .bfe-prefix.input-icon {
       padding: 0;
       width: $wrap-height-smaller;
@@ -34,6 +31,7 @@ $transitionDuration: 0.3s;
 
   &.as-icon ::ng-deep {
     .bfe-wrap {
+      cursor: pointer;
       border-color: transparent;
       background-color: transparent;
     }

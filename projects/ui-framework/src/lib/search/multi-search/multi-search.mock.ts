@@ -1,28 +1,29 @@
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { AvatarBadge } from '../../avatar/avatar/avatar.enum';
+import { Icons } from '../../icons/icons.enum';
+import {
+  adorableAvatar,
+  mockAnimals,
+  mockAvatar,
+  mockBadJobs,
+  mockDepartments,
+  mockHobbies,
+  mockJobs,
+  mockNames,
+  mockText,
+  mockThings,
+  uselessDomain,
+} from '../../mock.const';
+import {
+  asArray,
+  makeArray,
+  randomFromArray,
+  randomNumber,
+} from '../../services/utils/functional-utils';
 import {
   MultiSearchGroupOption,
   MultiSearchOption,
 } from './multi-search.interface';
-import {
-  mockAnimals,
-  mockHobbies,
-  mockThings,
-  mockDepartments,
-  adorableAvatar,
-  mockAvatar,
-  mockNames,
-  mockBadJobs,
-  mockText,
-  mockJobs,
-  uselessDomain,
-} from '../../mock.const';
-import { Icons } from '../../icons/icons.enum';
-import {
-  randomFromArray,
-  makeArray,
-  randomNumber,
-} from '../../services/utils/functional-utils';
-import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
-import { AvatarBadge } from '../../avatar/avatar/avatar.enum';
 
 const iconsAnimals = [
   Icons.twitter,
@@ -79,14 +80,16 @@ iconsThings.push(...iconsThings);
 const hobbies = mockHobbies().filter((h) => h.split(' ').length < 3);
 
 const items = 30;
+const groups = 10;
 
 export const mockSearchData: MultiSearchGroupOption[] = [
   {
     groupName: 'People',
     key: 'people',
     icon: Icons.department_icon,
-    options: ['Crème Brûlée', ...mockNames(items)].map(
-      (name: string, index) => ({
+    options: [items > 1 ? 'Crème Brûlée' : null, ...asArray(mockNames(items))]
+      .filter(Boolean)
+      .map((name: string, index) => ({
         value: name,
         id: name,
 
@@ -99,44 +102,49 @@ export const mockSearchData: MultiSearchGroupOption[] = [
           randomNumber(100000000, 999999999),
         ] as string[],
 
-        prefixComponent: {
-          component: AvatarImageComponent,
-          attributes: {
-            imageSource: mockAvatar(),
-            badge: randomFromArray([
-              null,
-              null,
-              null,
-              AvatarBadge.approved,
-              AvatarBadge.pending,
-              AvatarBadge.rejected,
-              AvatarBadge.error,
-            ]),
+        ...(items > 1 && {
+          prefixComponent: {
+            component: AvatarImageComponent,
+            attributes: {
+              imageSource: mockAvatar(),
+              badge: randomFromArray([
+                null,
+                null,
+                null,
+                AvatarBadge.approved,
+                AvatarBadge.pending,
+                AvatarBadge.rejected,
+                AvatarBadge.error,
+              ]),
+            },
           },
-        },
-      })
-    ),
-    optionClickHandler: (option: MultiSearchOption) => {
-      console.log(`Handler for: ${option.value}`);
-    },
+        }),
+      })),
+    ...(items > 1 && {
+      optionClickHandler: (option: MultiSearchOption) => {
+        console.log(`Handler for: ${option.value}`);
+      },
+    }),
   },
 
   {
     groupName: 'Animals',
     key: 'animals',
     icon: Icons.twitter,
-    options: mockAnimals(items).map((animal: string, index: number) => ({
-      id: animal,
-      value: animal,
-      searchValue: mockAnimals(1),
-      prefixComponent: {
-        component: AvatarImageComponent,
-        attributes: {
-          imageSource: adorableAvatar(),
-          icon: iconsAnimals[index],
+    options: asArray(mockAnimals(items)).map(
+      (animal: string, index: number) => ({
+        id: animal,
+        value: animal,
+        searchValue: mockAnimals(1),
+        prefixComponent: {
+          component: AvatarImageComponent,
+          attributes: {
+            imageSource: adorableAvatar(),
+            icon: iconsAnimals[index],
+          },
         },
-      },
-    })),
+      })
+    ),
     optionClickHandler: (option: MultiSearchOption) => {
       console.log(`Handler for: ${option.value}`);
     },
@@ -153,11 +161,13 @@ export const mockSearchData: MultiSearchGroupOption[] = [
     name: 'Things',
     serverId: 'things',
     icon: Icons.attachment,
-    children: mockThings(items).map((thing: string, index: number) => ({
-      serverId: thing,
-      name: thing,
-      icon: iconsThings[index],
-    })),
+    children: asArray(mockThings(items)).map(
+      (thing: string, index: number) => ({
+        serverId: thing,
+        name: thing,
+        icon: iconsThings[index],
+      })
+    ),
     optionClickHandler: (option: MultiSearchOption) => {
       console.log(`Handler for: ${option.name}`);
     },
@@ -196,7 +206,7 @@ export const mockSearchData: MultiSearchGroupOption[] = [
     id: 'Jobs',
     name: 'Jobs',
     icon: Icons.notification,
-    children: mockBadJobs(items).map((job: string) => ({
+    children: asArray(mockBadJobs(items)).map((job: string) => ({
       id: job,
       name: job,
       label: mockDepartments(1),
@@ -206,6 +216,6 @@ export const mockSearchData: MultiSearchGroupOption[] = [
       console.log(`Handler for: ${option.name}`);
     },
   },
-];
+].slice(0, groups);
 
 // ❯

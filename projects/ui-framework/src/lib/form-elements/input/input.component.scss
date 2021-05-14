@@ -1,3 +1,48 @@
 @import '../../style/common-imports';
 
 @include bFormElement();
+
+:host {
+  &.uppercase,
+  &.capitalize {
+    .bfe-label,
+    .bfe-wrap,
+    [b-input-message] {
+      text-transform: initial;
+    }
+  }
+
+  &.uppercase {
+    .bfe-input {
+      text-transform: uppercase;
+    }
+  }
+
+  &.capitalize {
+    .bfe-input {
+      text-transform: capitalize;
+    }
+  }
+
+  &.text-bold {
+    .bfe-label,
+    .bfe-wrap,
+    [b-input-message] {
+      font-weight: initial;
+    }
+    .bfe-input {
+      font-weight: 700;
+    }
+  }
+
+  &.text-center {
+    .bfe-label,
+    .bfe-wrap,
+    [b-input-message] {
+      text-align: initial;
+    }
+    .bfe-input {
+      text-align: center;
+    }
+  }
+}

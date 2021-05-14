@@ -43,7 +43,7 @@
               }"></span>
 
         <span class="header-option-value"
-              [innerHTML]="header.groupName"></span>
+              [innerHTML]="header.groupName | highlight: searchValue:true"></span>
 
         <span *ngIf="header.selectedCount"
               class="header-selected-count">
@@ -113,7 +113,7 @@
         <span *ngIf="!option.isPlaceHolder && option.value"
               class="option-value"
               [attr.data-max-lines]="size === formElementSize.smaller ? 2 : 3"
-              [innerHTML]="option.value | highlight: searchValue"></span>
+              [innerHTML]="option.value | highlight: searchValue:true"></span>
 
         <span *ngIf="!option.isPlaceHolder && option.description"
               class="comp-suffix has-hover"

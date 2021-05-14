@@ -1,13 +1,6 @@
-<button class="search-button"
-        type="button"
-        *ngIf="!open"
-        (click)="onSearchOpen()">
-</button>
-
-<b-search #search
-          class="search"
+<b-search class="search has-hover"
+          (click)="$event.stopPropagation(); onSearchOpen()"
           [size]="formElementSize.smaller"
-          [placeholder]="placeholder"
           (searchBlur)="onSearchClose($event)"
           (searchChange)="onSearchChange($event)"
           [ngClass]="{'open': open, 'as-icon': !open}">

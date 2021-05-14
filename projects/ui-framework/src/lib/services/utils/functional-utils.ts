@@ -900,10 +900,13 @@ export const sameStringsDifferentCase = (a: string, b: string): boolean => {
   );
 };
 
+export const normalizeStringSpaces = (value: string): string =>
+  isString(value) ? value?.replace(/(\s|&nbsp;)+/g, ' ').trim() : value;
+
 export const normalizeString = (value: string): string => {
   return (
     value &&
-    String(value)
+    normalizeStringSpaces(String(value))
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase()
@@ -1071,14 +1074,19 @@ export const stringToRegex = (value: string, options = 'i'): RegExp => {
 export const getMatcher = (searchStr: string): RegExp =>
   stringToRegex(normalizeString(searchStr), 'i');
 
-export const getFuzzyMatcher = (searchStr: string): RegExp =>
-  new RegExp(
-    normalizeString(searchStr)
-      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\*\[\]\+><@\s]+/g, '')
-      .split('')
-      .join('[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\*\\[\\]\\+><@\\s]*'),
-    'i'
-  );
+// normalizeString(searchStr)
+//   .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\*\[\]\+><@\s]+/g, '')
+//   .split('')
+//   .join('[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\*\\[\\]\\+><@\\s]*')
+export const getFuzzyMatcher = (searchStr: string): RegExp => {
+  const split = normalizeString(searchStr).replace(/\W/g, '')?.split('');
+  const ptrn = split.length
+    ? split.reduce((a, b) => {
+        return a + '[^' + b + ']*' + b;
+      })
+    : '';
+  return new RegExp(ptrn, 'gi');
+};
 
 // ----------------------
 // RANDOMIZERS
@@ -2189,9 +2197,9 @@ export const remove = <T = any>(
 
   arrCopy.forEach((itm, idx) => {
     if (predicate(itm, idx)) {
-      arr.push(itm);
-    } else {
       removed.push(itm);
+    } else {
+      arr.push(itm);
     }
   });
 

@@ -1,9 +1,10 @@
-import { storiesOf } from '@storybook/angular';
-import { ComponentGroupType } from '../../consts';
-import { select, text, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { action } from '@storybook/addon-actions';
+import { text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { CompactSearchModule } from './compact-search.module';
 
@@ -13,17 +14,17 @@ const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
 
 const template = `
 <b-compact-search [value]="value"
-                  [placeholder]="placeholder"
-                  [size]="size"
                   (searchChange)="searchChange($event)"
                   (searchFocus)="searchFocus($event)">
 </b-compact-search>
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Compact Search'">
+<b-story-book-layout [title]="'Compact Search'" style="background-color:#faf7f2;">
   <div style="display: flex; align-items: center;">
     ${template}
+
+    <b-button class="mrg-l-16" type="secondary" disabled="true">Click on the 🔍 icon</b-button>
   </div>
 </b-story-book-layout>
 `;
@@ -38,7 +39,6 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   [value] | string | input value | &nbsp;
-  [placeholder] | string | placeholder text | &nbsp;
   (searchFocus) | EventEmitter<wbr>&lt;string&gt;  | emits on input focus | &nbsp;
   (searchChange) | EventEmitter<wbr>&lt;string&gt;  | emits on input value change | &nbsp;
 
@@ -53,12 +53,17 @@ story.add(
       template: storyTemplate,
       props: {
         value: text('value', ''),
-        placeholder: text('placeholder', 'Search'),
+
         searchChange: action('searchChange'),
         searchFocus: action('searchFocus'),
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, CompactSearchModule, StoryBookLayoutModule],
+        imports: [
+          BrowserAnimationsModule,
+          CompactSearchModule,
+          StoryBookLayoutModule,
+          ButtonsModule,
+        ],
       },
     };
   },

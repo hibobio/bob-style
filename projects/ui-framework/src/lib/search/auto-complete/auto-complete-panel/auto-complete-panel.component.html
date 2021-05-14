@@ -13,9 +13,10 @@
            [ngClass]="{'focus': option.id===focusOption?.id}"
            *cdkVirtualFor="let option of options"
            class="option-select">
-        <span [innerHTML]="option.value | highlight: searchValue"></span>
+        <span [innerHTML]="option.value | highlight: searchValue:true"></span>
         <b-caption *ngIf="option.subText"
-                   [innerHTML]="option.subText | highlight: searchValue"></b-caption>
+                   [innerHTML]="option.subText | highlight: searchValue:true">
+        </b-caption>
       </div>
     </div>
 

@@ -13,7 +13,7 @@ import {
 import { Keys } from '../enums';
 import {
   isKey,
-  isString,
+  normalizeStringSpaces,
   notFirstChanges,
 } from '../services/utils/functional-utils';
 import { stringyOrFail } from '../services/utils/transformers';
@@ -32,7 +32,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   ) {
     super(cd);
     this.inputTransformers = [stringyOrFail];
-    this.outputTransformers = [(v) => (isString(v) ? v.trim() : v)];
+    this.outputTransformers = [(v) => normalizeStringSpaces(v)];
 
     this.baseValue = '';
     this.forceElementValue = true;

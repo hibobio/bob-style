@@ -10,7 +10,7 @@ import { Icon } from '../../icons/icon.interface';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import {
   arrayFlatten,
-  getMatcher,
+  getFuzzyMatcher,
   hasProp,
   isArray,
   isBoolean,
@@ -206,15 +206,18 @@ export class ListModelService {
     searchValue: string
   ): SelectGroupOption[] {
     searchValue = searchValue.trim();
-    const matcher = getMatcher(searchValue);
+    const matcher = getFuzzyMatcher(searchValue);
 
     return searchValue
       ? options
           .map((group: SelectGroupOption) =>
             Object.assign({}, group, {
-              options: group.options.filter((option: SelectOption) =>
-                matcher.test(normalizeString(option.value))
-              ),
+              options: group.options.filter((option: SelectOption) => {
+                return (
+                  matcher.test(normalizeString(option.value)) ||
+                  matcher.test(normalizeString(group.groupName))
+                );
+              }),
             })
           )
           .filter((group: SelectGroupOption) => isNotEmptyArray(group.options))
