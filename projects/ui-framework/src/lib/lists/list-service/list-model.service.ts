@@ -213,8 +213,12 @@ export class ListModelService {
           .map((group: SelectGroupOption) =>
             Object.assign({}, group, {
               options: group.options.filter((option: SelectOption) => {
+                const searcheableValue = option.value
+                  .split(/^<[^>]+>|</)
+                  .filter(Boolean)[0];
+                matcher.lastIndex = 0;
                 return (
-                  matcher.test(normalizeString(option.value)) ||
+                  matcher.test(normalizeString(searcheableValue)) ||
                   matcher.test(normalizeString(group.groupName))
                 );
               }),

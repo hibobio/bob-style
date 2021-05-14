@@ -150,11 +150,13 @@ export class AutoCompleteComponent
   private filterOptions(): AutoCompleteOption[] {
     const matcher = getFuzzyMatcher(this.searchValue);
 
-    return this.options.filter(
-      (option) =>
+    return this.options.filter((option) => {
+      matcher.lastIndex = 0;
+      return (
         matcher.test(normalizeString(option.value)) ||
         matcher.test(normalizeString(option.subText))
-    );
+      );
+    });
   }
 
   private skipFiltering(): AutoCompleteOption[] {

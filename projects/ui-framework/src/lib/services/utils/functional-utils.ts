@@ -1074,12 +1074,10 @@ export const stringToRegex = (value: string, options = 'i'): RegExp => {
 export const getMatcher = (searchStr: string): RegExp =>
   stringToRegex(normalizeString(searchStr), 'i');
 
-// normalizeString(searchStr)
-//   .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\*\[\]\+><@\s]+/g, '')
-//   .split('')
-//   .join('[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\*\\[\\]\\+><@\\s]*')
 export const getFuzzyMatcher = (searchStr: string): RegExp => {
-  const split = normalizeString(searchStr).replace(/\W/g, '')?.split('');
+  const split = normalizeString(searchStr)
+    .replace(/[\s,.\-=*+?^${}()|[\]\\\/]+/g, '')
+    ?.split('');
   const ptrn = split.length
     ? split.reduce((a, b) => {
         return a + '[^' + b + ']*' + b;
