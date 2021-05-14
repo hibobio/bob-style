@@ -15,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 import {
   arrayRemoveItemMutate,
   isFunction,
+  normalizeStringSpaces,
   simpleUID,
 } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
@@ -96,7 +97,7 @@ export class EditableListComponent extends BaseEditableListElement {
   }
 
   public addItemApply(): void {
-    const value = this.listState.newItem.value.trim();
+    const value = normalizeStringSpaces(this.listState.newItem.value);
 
     if (value) {
       this.currentAction = null;
@@ -145,7 +146,7 @@ export class EditableListComponent extends BaseEditableListElement {
     this.ready = true;
     this.currentAction = 'edit';
     this.currentItemIndex = index;
-    item.originalValue = item.value.trim();
+    item.originalValue = normalizeStringSpaces(item.value);
     this.cd.detectChanges();
 
     (isFunction(this.editItemInputs?.get)
@@ -155,7 +156,8 @@ export class EditableListComponent extends BaseEditableListElement {
   }
 
   public editItemApply(item: SelectOption, index: number): void {
-    item.value = item.value.trim();
+    item.value = normalizeStringSpaces(item.value);
+
     if (item.value && item.value !== item.originalValue) {
       this.currentAction = null;
       this.currentItemIndex = null;

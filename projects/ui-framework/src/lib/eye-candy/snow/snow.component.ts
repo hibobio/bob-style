@@ -52,10 +52,14 @@ export class SnowComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     window.cancelAnimationFrame(this.loopReq);
-    this.ctx.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+    this.stop();
   }
 
   makeSnow(): void {
+    if (this.snowing) {
+      return;
+    }
+
     this.snowing = true;
     setTimeout(() => {
       this.snowing = false;
@@ -114,6 +118,12 @@ export class SnowComponent implements OnInit, OnDestroy {
         this.complete.emit();
       }
     });
+  }
+
+  private stop() {
+    this.ctx.clearRect(0, 0, this.windowDim.w, this.windowDim.h);
+    this.FLAKES.length = 0;
+    this.snowing = false;
   }
 
   private _repositionFlake(flake) {

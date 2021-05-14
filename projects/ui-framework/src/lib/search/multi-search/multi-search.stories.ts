@@ -1,14 +1,21 @@
-import { storiesOf } from '@storybook/angular';
-import { text, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { MultiSearchModule } from './multi-search.module';
-import { mockSearchData } from './multi-search.mock';
+import { action } from '@storybook/addon-actions';
+import {
+  boolean,
+  number,
+  object,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
-import { boolean, select, number } from '@storybook/addon-knobs';
+import { ComponentGroupType } from '../../consts';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { mockSearchData } from './multi-search.mock';
+import { MultiSearchModule } from './multi-search.module';
 
 const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
   withKnobs
@@ -119,22 +126,26 @@ interface MultiSearchKeyMap {
 }
   ~~~
 `;
+
 story.add(
   'Multi-Search',
   () => {
     return {
       template: storyTemplate,
       props: {
-        options: mockSearchData,
-        minSearchLength: number('minSearchLength', 2),
-        label: text('label', ''),
-        placeholder: text('placeholder', 'Search me'),
-        showAll: boolean('showAll', false),
+        minSearchLength: number('minSearchLength', 2, {}, 'Props'),
+        label: text('label', '', 'Props'),
+        placeholder: text('placeholder', 'Search me', 'Props'),
+        showAll: boolean('showAll', false, 'Props'),
         size: select(
           'size',
           Object.values(FormElementSize),
-          FormElementSize.regular
+          FormElementSize.regular,
+          'Props'
         ),
+
+        options: object('options', mockSearchData, 'Data'),
+
         onSelect: action('Option selected'),
         onPanelOpen: action('Search panel opened'),
         onPanelClose: action('Search panel closed'),

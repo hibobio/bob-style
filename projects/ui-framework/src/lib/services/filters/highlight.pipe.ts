@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
 import {
   getFuzzyMatcher,
   getMatcher,
@@ -18,18 +19,22 @@ export class HighlightPipe implements PipeTransform {
 
     const matcher = !fuzzy ? getMatcher(searchStr) : getFuzzyMatcher(searchStr);
 
-    const match = matcher.exec(normalizeString(value.split('<')[0]));
+    const searcheableValue = value.split(/^<[^>]+>|</).filter(Boolean)[0];
+
+    const match = matcher.exec(normalizeString(searcheableValue));
 
     if (!match) {
       return value;
     }
 
-    return (
-      value.slice(0, match.index) +
-      '<strong>' +
-      value.slice(match.index, match.index + match['0'].length) +
-      '</strong>' +
-      value.slice(match.index + match['0'].length)
+    return value.replace(
+      searcheableValue,
+
+      searcheableValue.slice(0, match.index) +
+        '<strong>' +
+        searcheableValue.slice(match.index, match.index + match['0'].length) +
+        '</strong>' +
+        searcheableValue.slice(match.index + match['0'].length)
     );
   }
 }

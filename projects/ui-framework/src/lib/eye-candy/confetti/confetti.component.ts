@@ -52,6 +52,10 @@ export class ConfettiComponent implements OnInit, OnDestroy {
   }
 
   fireConfetti(pos: { x: number; y: number }[]) {
+    if (this.loopReq) {
+      return;
+    }
+
     pos.forEach((p) => {
       for (let i = 0; i < this.numberOfConfetti; i++) {
         this.CONFETTI.push(new Plane(p, this.colors));
@@ -64,15 +68,15 @@ export class ConfettiComponent implements OnInit, OnDestroy {
 
   private _getColor(w, h, color) {
     const percent = -0.5 * (1 - (w * h) / this.CONFETTI_AREA);
-    // tslint:disable-next-line:max-line-length no-bitwise
     const f = parseInt(color.slice(1), 16),
       t = percent < 0 ? 0 : 255,
       p = percent < 0 ? percent * -1 : percent,
+      // tslint:disable-next-line: no-bitwise
       R = f >> 16,
       // tslint:disable-next-line:no-bitwise
       G = (f >> 8) & 0x00ff,
+      // tslint:disable-next-line: no-bitwise
       B = f & 0x0000ff;
-    // tslint:disable-next-line:max-line-length
     return (
       '#' +
       (
@@ -125,9 +129,14 @@ export class ConfettiComponent implements OnInit, OnDestroy {
     });
   }
 
+  private stop() {
+    this.ctx.clearRect(0, 0, this.windowDim.w, this.windowDim.h);
+    this.CONFETTI.length = 0;
+  }
+
   ngOnDestroy(): void {
     window.cancelAnimationFrame(this.loopReq);
-    this.ctx.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+    this.stop();
   }
 }
 

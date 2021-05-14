@@ -1,9 +1,9 @@
-import { ViewFilter, TreeListItem } from '../tree-list.interface';
 import {
   getFuzzyMatcher,
   isRegExp,
   normalizeString,
 } from '../../../services/utils/functional-utils';
+import { TreeListItem, ViewFilter } from '../tree-list.interface';
 
 export class TreeListSearchUtils {
   //
@@ -65,6 +65,7 @@ export class TreeListSearchUtils {
         (viewFilter.hide && viewFilter.hide.searchBy) ||
         'name';
 
+      matcher.lastIndex = 0;
       const matches = matcher.test(normalizeString(item[searchBy]));
 
       if (
