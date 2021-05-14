@@ -1,50 +1,50 @@
-import {
-  NgModule,
-  Component,
-  ChangeDetectionStrategy,
-  ViewChild,
-  ChangeDetectorRef,
-  OnInit,
-} from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { ButtonsModule } from '../../../../ui-framework/src/lib/buttons/buttons.module';
-import { cloneDeep } from 'lodash';
-
-import { FormsModule } from '@angular/forms';
-import { QuickFilterConfig } from '../../../../ui-framework/src/lib/search/quick-filter/quick-filter.interface';
 import { CommonModule } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  NgModule,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { ButtonsModule } from '../../../../ui-framework/src/lib/buttons/buttons.module';
 // tslint:disable-next-line: max-line-length
-import { QuickFilterLayoutModule } from '../../../../ui-framework/src/lib/search/quick-filter-layout/quick-filter-layout.module';
+import { DateRangePickerModule } from '../../../../ui-framework/src/lib/form-elements/date-picker/date-range-picker/date-range-picker.module';
+import { DatepickerType } from '../../../../ui-framework/src/lib/form-elements/date-picker/datepicker.enum';
+import { InputTypes } from '../../../../ui-framework/src/lib/form-elements/input/input.enum';
 import { InputModule } from '../../../../ui-framework/src/lib/form-elements/input/input.module';
+import { Social } from '../../../../ui-framework/src/lib/form-elements/social/social.enum';
+import { SocialModule } from '../../../../ui-framework/src/lib/form-elements/social/social.module';
+// tslint:disable-next-line: max-line-length
+import { SplitInputSingleSelectModule } from '../../../../ui-framework/src/lib/form-elements/split-input-single-select/split-input-single-select.module';
+import { TimePickerModule } from '../../../../ui-framework/src/lib/form-elements/timepicker/timepicker.module';
+import { LinkColor } from '../../../../ui-framework/src/lib/indicators/link/link.enum';
+// tslint:disable-next-line: max-line-length
+import { optionsMock as MSoptionsMock } from '../../../../ui-framework/src/lib/lists/multi-list/multi-list.mock';
 // tslint:disable-next-line: max-line-length
 import { MultiSelectModule } from '../../../../ui-framework/src/lib/lists/multi-select/multi-select.module';
 // tslint:disable-next-line: max-line-length
-import { SingleSelectModule } from '../../../../ui-framework/src/lib/lists/single-select/single-select.module';
-import { SocialModule } from '../../../../ui-framework/src/lib/form-elements/social/social.module';
-// tslint:disable-next-line: max-line-length
-import { DateRangePickerModule } from '../../../../ui-framework/src/lib/form-elements/date-picker/date-range-picker/date-range-picker.module';
-import { TimePickerModule } from '../../../../ui-framework/src/lib/form-elements/timepicker/timepicker.module';
-// tslint:disable-next-line: max-line-length
-import { SplitInputSingleSelectModule } from '../../../../ui-framework/src/lib/form-elements/split-input-single-select/split-input-single-select.module';
-import {
-  mockText,
-  mockISOdate,
-  mockTime,
-} from '../../../../ui-framework/src/lib/mock.const';
-// tslint:disable-next-line: max-line-length
 import { optionsMock as SSoptionsMock } from '../../../../ui-framework/src/lib/lists/single-list/single-list.mock';
 // tslint:disable-next-line: max-line-length
-import { optionsMock as MSoptionsMock } from '../../../../ui-framework/src/lib/lists/multi-list/multi-list.mock';
-import { Social } from '../../../../ui-framework/src/lib/form-elements/social/social.enum';
+import { SingleSelectModule } from '../../../../ui-framework/src/lib/lists/single-select/single-select.module';
 import {
-  randomNumber,
-  randomFromArray,
-} from '../../../../ui-framework/src/lib/services/utils/functional-utils';
+  mockISOdate,
+  mockText,
+  mockTime,
+} from '../../../../ui-framework/src/lib/mock.const';
 import { QuickFilterLayoutComponent } from '../../../../ui-framework/src/lib/search/quick-filter-layout/quick-filter-layout.component';
-import { DatepickerType } from '../../../../ui-framework/src/lib/form-elements/date-picker/datepicker.enum';
-import { InputTypes } from '../../../../ui-framework/src/lib/form-elements/input/input.enum';
-import { LinkColor } from '../../../../ui-framework/src/lib/indicators/link/link.enum';
+// tslint:disable-next-line: max-line-length
+import { QuickFilterLayoutModule } from '../../../../ui-framework/src/lib/search/quick-filter-layout/quick-filter-layout.module';
+import { QuickFilterConfig } from '../../../../ui-framework/src/lib/search/quick-filter/quick-filter.interface';
+import {
+  cloneDeepSimpleObject,
+  randomFromArray,
+  randomNumber,
+} from '../../../../ui-framework/src/lib/services/utils/functional-utils';
 
 const deselectOptions = (options) =>
   options.map((g) => ({
@@ -77,13 +77,13 @@ const QFconfig = [
     key: 'singleSelect',
     label: 'SingleSelect label',
     hintMessage: 'SingleSelect hint',
-    options: cloneDeep(SSoptionsMock),
+    options: cloneDeepSimpleObject(SSoptionsMock),
   },
   {
     key: 'multiSelect',
     label: 'MultiSelect label',
     hintMessage: 'MultiSelect hint',
-    options: cloneDeep(MSoptionsMock),
+    options: cloneDeepSimpleObject(MSoptionsMock),
   },
   {
     key: 'social',

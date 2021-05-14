@@ -1,17 +1,15 @@
-import { ComponentGroupType } from '../../consts';
-import { storiesOf } from '@storybook/angular';
-import { text, select, boolean, withKnobs } from '@storybook/addon-knobs';
-import { AddFileModule } from './add-file.module';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { Icons } from '../../icons/icons.enum';
 import { action } from '@storybook/addon-actions';
-import { values } from 'lodash';
+import { select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
+import { Icons } from '../../icons/icons.enum';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { AddFileModule } from './add-file.module';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
 );
-
-const icons = values(Icons);
 
 const template = `
   <b-add-file (clicked)="onClick($event)"
@@ -41,7 +39,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        icon: select('icon', icons, Icons.add_photo),
+        icon: select('icon', Object.values(Icons), Icons.add_photo),
         imageUrl: select(
           'imageUrl',
           [

@@ -1,5 +1,3 @@
-import { merge } from 'lodash';
-
 import {
   ChangeDetectorRef,
   Directive,
@@ -37,6 +35,7 @@ import {
   isNotEmptyObject,
   isNullOrUndefined,
   log,
+  merge,
   notFirstChanges,
   PanelDefaultPosVer,
   SanitizerService,
@@ -70,7 +69,8 @@ import { TributeInstance } from './tribute.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class RTEbaseElement extends BaseFormElement
+export abstract class RTEbaseElement
+  extends BaseFormElement
   implements OnChanges, OnInit {
   constructor(
     protected cd: ChangeDetectorRef,

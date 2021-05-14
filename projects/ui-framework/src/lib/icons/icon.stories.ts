@@ -1,13 +1,13 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
-import { IconsModule } from './icons.module';
-import { IconColor, Icons, IconSize, IconType } from './icons.enum';
-import { reduce, values } from 'lodash';
-import { ComponentGroupType } from '../consts';
-import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../consts';
 import { ColorPalette } from '../services/color-service/color-palette.enum';
 import { randomFromArray } from '../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
+import { IconColor, Icons, IconSize, IconType } from './icons.enum';
+import { IconsModule } from './icons.module';
 
 const story = storiesOf(ComponentGroupType.Icons, module).addDecorator(
   withKnobs
@@ -99,22 +99,19 @@ story.add(
   { notes: { markdown: note } }
 );
 
-const listHtml = reduce(
-  iconKeys,
-  (iconsTemplate, icon) => {
-    return (
-      iconsTemplate +
-      `<div class="icon-wrapper">
+const listHtml = iconKeys.reduce((iconsTemplate, icon) => {
+  return (
+    iconsTemplate +
+    `<div class="icon-wrapper">
       <b-icon icon=${Icons[icon]} size="large"></b-icon>
       <div class="icon-title">
         <strong>enum:</strong> ${icon}<br>
         <strong>class:</strong> ${Icons[icon]}
       </div>
     </div>`
-    );
-  },
-  ''
-);
+  );
+}, '');
+
 const iconsListTemplate = `
 <b-story-book-layout [title]="'Icon list'">
     <style>

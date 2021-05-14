@@ -1,25 +1,17 @@
-import { storiesOf } from '@storybook/angular';
-import {
-  boolean,
-  object,
-  select,
-  text,
-  withKnobs,
-} from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { SplitInputSingleSelectModule } from './split-input-single-select.module';
-import { SelectGroupOption } from '../../lists/list.interface';
-import { InputTypes } from '../input/input.enum';
-import { map } from 'lodash';
-import { InputSingleSelectValue } from './split-input-single-select.interface';
-import { mockText } from '../../mock.const';
+import { action } from '@storybook/addon-actions';
+import { boolean, object, select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
 
+import { ComponentGroupType } from '../../consts';
+import { SelectGroupOption } from '../../lists/list.interface';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 // @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';
 import { FormElementsCommonProps } from '../form-elements.stories.common';
+import { InputTypes } from '../input/input.enum';
+import { InputSingleSelectValue } from './split-input-single-select.interface';
+import { SplitInputSingleSelectModule } from './split-input-single-select.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -132,7 +124,7 @@ const currencies = [
 const optionsMock: SelectGroupOption[] = Array.from(Array(1), (_, i) => {
   return {
     groupName: 'all currencies',
-    options: map(currencies, (currency) => ({
+    options: currencies.map((currency) => ({
       value: currency.value,
       id: currency.value,
       selected: null,

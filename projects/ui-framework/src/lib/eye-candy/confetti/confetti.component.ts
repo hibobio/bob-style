@@ -1,5 +1,3 @@
-import { isEqual as _isEqual, remove as _remove } from 'lodash';
-
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,6 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
+import { remove } from '../../services/utils/functional-utils';
 import { Color } from '../../types';
 
 const GRAVITY = 0.4;
@@ -112,8 +111,8 @@ export class ConfettiComponent implements OnInit, OnDestroy {
           confetti.outOfBounds = true;
         }
       });
-      _remove(this.CONFETTI, (confetti) => {
-        return _isEqual(confetti.outOfBounds, true);
+      remove(this.CONFETTI, (confetti) => {
+        return confetti.outOfBounds === true;
       });
 
       if (this.CONFETTI.length > 0) {

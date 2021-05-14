@@ -1,32 +1,30 @@
-import { storiesOf } from '@storybook/angular';
-import {
-  text,
-  select,
-  boolean,
-  withKnobs,
-  number,
-} from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { values } from 'lodash';
-import { InputModule } from './input.module';
-import { InputAutoCompleteOptions, InputTypes } from './input.enum';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { action } from '@storybook/addon-actions';
+import {
+  boolean,
+  number,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
 
+import { ComponentGroupType } from '../../consts';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { FormElementSize } from '../form-elements.enum';
 // @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';
+import { FormElementsCommonProps } from '../form-elements.stories.common';
 // @ts-ignore: md file and not a module
 import inputElemsPropsDoc from '../input.properties.md';
-import { FormElementSize } from '../form-elements.enum';
-import { FormElementsCommonProps } from '../form-elements.stories.common';
+import { InputTypes } from './input.enum';
+import { InputModule } from './input.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
 
-const inputTypes = values(InputTypes);
-const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
+const inputTypes = Object.values(InputTypes);
 
 const template2 = `<b-input  [value]="(inputType === inputTypes.number ? valueNum : value)"
           [spec]="{

@@ -1,15 +1,17 @@
+import { format, parseISO } from 'date-fns';
+
 import { Injectable } from '@angular/core';
 import { NativeDateAdapter } from '@angular/material/core';
-import { LocaleFormat, DateLocaleFormatKeys, DateFormat } from '../../types';
+
 import {
-  LOCALE_FORMATS,
   DISPLAY_DATE_FORMAT_DEF,
   DISPLAY_MONTH_FORMAT_DEF,
+  LOCALE_FORMATS,
 } from '../../consts';
-import { get } from 'lodash';
-import { format, parseISO } from 'date-fns';
+import { get } from '../../services/utils/functional-utils';
+import { DateFormat, DateLocaleFormatKeys, LocaleFormat } from '../../types';
 import { DateParseService } from './date-parse-service/date-parse.service';
-import { FormatParserResult, BDateAdapter } from './datepicker.interface';
+import { BDateAdapter, FormatParserResult } from './datepicker.interface';
 
 const mockUser: {
   dateFormat: DateLocaleFormatKeys;
@@ -27,7 +29,7 @@ export const UserLocaleServiceMock = {
   getDisplayDate(date, localeFormat) {
     const dateToFormat = date;
 
-    const dateFormat = get(
+    const dateFormat: string = get(
       get(LOCALE_FORMATS, UserLocaleServiceMock.dateFormat),
       localeFormat
     );
@@ -48,7 +50,8 @@ export const UserLocaleServiceMock = {
 @Injectable({
   providedIn: 'root',
 })
-export class BDateAdapterMock extends NativeDateAdapter
+export class BDateAdapterMock
+  extends NativeDateAdapter
   implements BDateAdapter {
   public static readonly formatMonthYearLabel = 'MMM yyyy';
 

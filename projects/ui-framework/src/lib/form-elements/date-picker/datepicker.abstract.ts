@@ -1,5 +1,4 @@
 import { isSameDay } from 'date-fns';
-import { get, set } from 'lodash';
 import { Subject } from 'rxjs';
 import { debounceTime, throttleTime } from 'rxjs/operators';
 
@@ -34,10 +33,12 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { Styles } from '../../services/html/html-helpers.interface';
 import {
   cloneValue,
+  get,
   hasChanges,
   hasProp,
   isEmpty,
   isKey,
+  set,
   simpleUID,
 } from '../../services/utils/functional-utils';
 import { MobileService } from '../../services/utils/mobile.service';
@@ -65,9 +66,11 @@ export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseDatepickerElement<
-  I = Date | string,
-  O = DatePickerChangeEvent
-> extends BaseFormElement implements OnInit, AfterViewInit {
+    I = Date | string,
+    O = DatePickerChangeEvent
+  >
+  extends BaseFormElement
+  implements OnInit, AfterViewInit {
   constructor(
     protected windowRef: WindowRef,
     protected utilsService: UtilsService,
@@ -278,7 +281,7 @@ export abstract class BaseDatepickerElement<
   }
 
   public transmit(value: Date = NaN as any, path = 'value') {
-    const currentValue = get(this, path);
+    const currentValue: Date = get(this, path);
 
     if (
       (currentValue && value && isSameDay(currentValue, value)) ||

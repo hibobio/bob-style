@@ -1,4 +1,4 @@
-import { cloneDeep, zipObject } from 'lodash';
+import { zipObject } from 'lodash';
 
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -200,9 +200,9 @@ story.add(
           cloneDeepSimpleObject(EMPLOYEE_SHOWCASE_MOCK),
           'Data'
         ),
-        employeeOptions: object<SelectGroupOption>(
+        employeeOptions: object<SelectGroupOption[]>(
           'employeeOptions',
-          cloneDeep(EMPLOYEE_SHOWCASE_OPTIONS_MOCK),
+          cloneDeepSimpleObject(EMPLOYEE_SHOWCASE_OPTIONS_MOCK),
           'Data'
         ),
         clone: cloneDeepSimpleObject,

@@ -1,25 +1,17 @@
-import { storiesOf } from '@storybook/angular';
-import {
-  boolean,
-  select,
-  text,
-  object,
-  withKnobs,
-} from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RadioButtonModule } from './radio-button.module';
-import { values } from 'lodash';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { RadioDirection } from './radio-button.enum';
+import { action } from '@storybook/addon-actions';
+import { object, select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
 
+import { ComponentGroupType } from '../../consts';
+import { mockAnimals, mockText } from '../../mock.const';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 // @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';
-import { mockAnimals, mockText } from '../../mock.const';
 import { FormElementsCommonProps } from '../form-elements.stories.common';
+import { RadioDirection } from './radio-button.enum';
+import { RadioButtonModule } from './radio-button.module';
 
-const direction = values(RadioDirection);
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
@@ -80,7 +72,11 @@ story.add(
       template: stroyTemplate,
       props: {
         value: object('value', { id: 0 }),
-        direction: select('direction', direction, direction.row),
+        direction: select(
+          'direction',
+          Object.values(RadioDirection),
+          RadioDirection.row
+        ),
 
         ...FormElementsCommonProps('Radio label', '', ''),
 

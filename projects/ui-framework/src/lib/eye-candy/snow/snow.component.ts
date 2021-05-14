@@ -1,5 +1,3 @@
-import { isEqual as _isEqual, remove as _remove } from 'lodash';
-
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,6 +10,8 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+
+import { remove } from '../../services/utils/functional-utils';
 
 const MIN_WEIGHT = 1.5;
 const MAX_WEIGHT = 4;
@@ -102,8 +102,8 @@ export class SnowComponent implements OnInit, OnDestroy {
         }
       });
 
-      _remove(this.FLAKES, (flake) => {
-        return _isEqual(flake.outOfBounds, true);
+      remove(this.FLAKES, (flake) => {
+        return flake.outOfBounds === true;
       });
 
       if (this.FLAKES.length > 0) {

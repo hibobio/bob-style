@@ -11,7 +11,7 @@ import {
   RowDragEvent,
   RowEvent,
 } from 'ag-grid-community';
-import { get, map } from 'lodash';
+import { map } from 'lodash';
 
 import {
   ChangeDetectionStrategy,
@@ -34,6 +34,7 @@ import {
   applyChanges,
   DOMhelpers,
   EmptyStateConfig,
+  get,
   hasChanges,
   Icons,
   IconSize,
@@ -150,30 +151,23 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   public emptyStateConfig: EmptyStateConfig;
 
-  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
-    SortChangedEvent
-  >();
-  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<
-    RowClickedEvent
-  >();
-  @Output() rowDragEnd: EventEmitter<BRowDragEvent> = new EventEmitter<
-    BRowDragEvent
-  >();
+  @Output()
+  sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<SortChangedEvent>();
+  @Output()
+  rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
+  @Output()
+  rowDragEnd: EventEmitter<BRowDragEvent> = new EventEmitter<BRowDragEvent>();
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() gridInit: EventEmitter<void> = new EventEmitter<void>();
-  @Output() columnsChanged: EventEmitter<
-    ColumnsChangedEvent
-  > = new EventEmitter<ColumnsChangedEvent>();
-  @Output() columnsOrderChanged: EventEmitter<
-    ColumnsOrderChangedEvent
-  > = new EventEmitter<ColumnsOrderChangedEvent>();
-  @Output() cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter<
-    CellClickedEvent
-  >();
+  @Output()
+  columnsChanged: EventEmitter<ColumnsChangedEvent> = new EventEmitter<ColumnsChangedEvent>();
+  @Output()
+  columnsOrderChanged: EventEmitter<ColumnsOrderChangedEvent> = new EventEmitter<ColumnsOrderChangedEvent>();
+  @Output()
+  cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter<CellClickedEvent>();
   @Output() columnRemoved: EventEmitter<string> = new EventEmitter<string>();
-  @Output() pagerPageSizeChange: EventEmitter<number> = new EventEmitter<
-    number
-  >();
+  @Output()
+  pagerPageSizeChange: EventEmitter<number> = new EventEmitter<number>();
 
   readonly tableType = TableType;
 
