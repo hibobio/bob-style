@@ -23,6 +23,7 @@ export enum IconColor {
   inform = 'inform',
   negative = 'negative',
   positive = 'positive',
+  inherit = 'inherit',
 }
 
 export enum Icons {

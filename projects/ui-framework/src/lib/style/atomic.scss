@@ -308,6 +308,10 @@ bg-positive-500,
   background-color: var(--positive-500);
 }
 
+.bg-inherit {
+  background-color: inherit !important;
+}
+
 clr-white,
 .clr-white {
   color: white;
@@ -366,6 +370,10 @@ clr-negative-500,
 clr-positive-500,
 .clr-positive-500 {
   color: var(--positive-500);
+}
+
+.clr-inherit {
+  color: inherit !important;
 }
 
 // Responsive

@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  NgZone,
+} from '@angular/core';
 
 import { BaseButtonElement } from '../button.abstract';
 import { SquareButtonComponent } from '../square/square.component';
@@ -13,13 +18,15 @@ import { SquareButtonComponent } from '../square/square.component';
       [attr.disabled]="disabled || null"
       [attr.data-icon-before]="icn || null"
       [attr.data-icon-before-size]="icn ? icnSize : null"
-      [attr.data-icon-before-color]="icn ? icnColor : null"
+      [attr.data-icon-before-color]="icn ? 'inherit' : null"
     >
       <ng-content></ng-content>
     </button>
   `,
   styleUrls: ['../square/square.component.scss'],
-  providers: [{ provide: BaseButtonElement, useExisting: RoundButtonComponent }],
+  providers: [
+    { provide: BaseButtonElement, useExisting: RoundButtonComponent },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoundButtonComponent extends SquareButtonComponent {

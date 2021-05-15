@@ -28,19 +28,33 @@
 }
 
 @each $colorKey, $colors in $icon-colors {
-  .b-icon-#{'' + $colorKey} {
-    @include icon-color($colorKey, true);
+  @if $colorKey != 'inherit' {
+    .b-icon-#{'' + $colorKey} {
+      @include icon-color($colorKey, true);
+    }
+    [data-icon-before-color='#{$colorKey}'] {
+      @include icon-color($colorKey, true, $elem: '&:before');
+    }
+    [data-icon-after-color='#{$colorKey}'] {
+      @include icon-color($colorKey, true, $elem: '&:after');
+    }
   }
-  [data-icon-before-color='#{$colorKey}'] {
-    @include icon-color($colorKey, true, $elem: '&:before');
-  }
-  [data-icon-after-color='#{$colorKey}'] {
-    @include icon-color($colorKey, true, $elem: '&:after');
-  }
+}
+
+.b-icon-inherit:before,
+.b-icon-inherit:after,
+[data-icon-before-color='inherit']:before,
+[data-icon-after-color='inherit']:after {
+  color: inherit;
 }
 
 [data-icon-before-color='custom'] {
   @include icon-color(var(--icon-before-color), false, $elem: '&:before');
+}
+
+.b-icon-inherit,
+[data-icon-before-color='inherit'],
+[data-icon-before-color='custom'] {
   .has-hover:hover &,
   .has-hover:focus &,
   &.has-hover:hover,
@@ -50,8 +64,14 @@
     }
   }
 }
+
 [data-icon-after-color='custom'] {
   @include icon-color(var(--icon-after-color), false, $elem: '&:after');
+}
+
+.b-icon-inherit,
+[data-icon-after-color='inherit'],
+[data-icon-after-color='custom'] {
   .has-hover:hover &,
   .has-hover:focus &,
   &.has-hover:hover,
