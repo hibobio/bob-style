@@ -115,15 +115,15 @@ export const DISPLAY_DATE_FORMAT_DEF = LOCALE_FORMATS['DD/MM/YYYY'].FullDate;
 
 export const DISPLAY_MONTH_FORMAT_DEF = LOCALE_FORMATS['DD/MM/YYYY'].MonthYear;
 
-export const COLOR_GREY_100 = ColorsGrey.color_grey_100;
-export const COLOR_GREY_200 = ColorsGrey.color_grey_200;
-export const COLOR_GREY_300 = ColorsGrey.color_grey_300;
-export const COLOR_GREY_400 = ColorsGrey.color_grey_400;
-export const COLOR_GREY_500 = ColorsGrey.color_grey_500;
-export const COLOR_GREY_600 = ColorsGrey.color_grey_600;
-export const COLOR_GREY_700 = ColorsGrey.color_grey_700;
-export const COLOR_GREY_800 = ColorsGrey.color_grey_800;
-export const COLOR_GREY_900 = ColorsGrey.color_grey_900;
+export const COLOR_GREY_100 = ColorsGrey.grey_100;
+export const COLOR_GREY_200 = ColorsGrey.grey_200;
+export const COLOR_GREY_300 = ColorsGrey.grey_300;
+export const COLOR_GREY_400 = ColorsGrey.grey_400;
+export const COLOR_GREY_500 = ColorsGrey.grey_500;
+export const COLOR_GREY_600 = ColorsGrey.grey_600;
+export const COLOR_GREY_700 = ColorsGrey.grey_700;
+export const COLOR_GREY_800 = ColorsGrey.grey_800;
+export const COLOR_GREY_900 = ColorsGrey.grey_900;
 
 export const emptyPixel =
   'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';

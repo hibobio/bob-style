@@ -900,17 +900,32 @@ export const sameStringsDifferentCase = (a: string, b: string): boolean => {
   );
 };
 
-export const normalizeStringSpaces = (value: string): string =>
-  isString(value) ? value?.replace(/(\s|&nbsp;)+/g, ' ').trim() : value;
+export const removePunctuation = (val: string): string =>
+  val?.replace(/[\.,-\/\\#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g, '');
 
-export const normalizeString = (value: string): string => {
-  return (
-    value &&
-    normalizeStringSpaces(String(value))
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .toLowerCase()
-  );
+export const normalizeStringSpaces = (
+  value: string,
+  removeSpaces = false
+): string =>
+  isString(value)
+    ? value?.replace(/(\s|&nbsp;)+/g, removeSpaces ? '' : ' ').trim()
+    : value;
+
+export const normalizeString = (
+  value: string,
+  removePncttn = false,
+  removeSpaces = false
+): string => {
+  if (!value || !isString(value)) {
+    return value;
+  }
+  if (removePncttn) {
+    value = removePunctuation(value);
+  }
+  return normalizeStringSpaces(value, removeSpaces)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
 };
 
 export const testNormalized = (partial: string, full: string): boolean => {
@@ -1075,9 +1090,7 @@ export const getMatcher = (searchStr: string): RegExp =>
   stringToRegex(normalizeString(searchStr), 'i');
 
 export const getFuzzyMatcher = (searchStr: string): RegExp => {
-  const split = normalizeString(searchStr)
-    .replace(/[\s,.\-=*+?^${}()|[\]\\\/]+/g, '')
-    ?.split('');
+  const split = normalizeString(searchStr, true, true)?.split('');
   const ptrn = split.length
     ? split.reduce((a, b) => {
         return a + '[^' + b + ']*' + b;

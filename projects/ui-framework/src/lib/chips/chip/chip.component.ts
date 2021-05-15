@@ -95,7 +95,7 @@ export class ChipComponent implements OnChanges {
           ? null
           : isDark(this.color, 200)
           ? 'white'
-          : ColorsGrey.color_grey_800,
+          : ColorsGrey.grey_800,
       });
     }
 
