@@ -81,7 +81,10 @@ describe('ButtonComponent', () => {
   });
 
   describe('OnChanges', () => {
-    const testColor = (buttonType: ButtonType, expectedColor: IconColor): void => {
+    const testColor = (
+      buttonType: ButtonType,
+      expectedColor: IconColor
+    ): void => {
       component.ngOnChanges(
         simpleChange({
           type: buttonType,
@@ -89,7 +92,7 @@ describe('ButtonComponent', () => {
         })
       );
 
-      expect(buttonElement.dataset.iconBeforeColor).toEqual(expectedColor);
+      expect(buttonElement.dataset.iconBeforeColor).toEqual('inherit');
     };
 
     const testSize = (buttonSize: ButtonSize, expectedSize: IconSize): void => {

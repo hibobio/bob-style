@@ -3,7 +3,7 @@ import { MockComponent } from 'ng-mocks';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { IconComponent } from '../../icons/icon.component';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { Icons, IconSize } from '../../icons/icons.enum';
 import { LinkColor } from '../../indicators/link/link.enum';
 import { simpleChange } from '../../services/utils/functional-utils';
 import { TypographyModule } from '../../typography/typography.module';
@@ -53,7 +53,6 @@ describe('TextButtonComponent', () => {
       })
     );
 
-    expect(component.buttonClass).toContain(IconColor.dark);
     expect(buttonElement.dataset.iconBefore).toBeTruthy();
     expect(buttonElement.dataset.iconBeforeSize).toEqual(IconSize.medium);
   });
@@ -67,9 +66,7 @@ describe('TextButtonComponent', () => {
     );
 
     expect(component.buttonClass).toContain('color-primary');
-    expect(component.buttonClass).toContain('b-icon-' + IconColor.primary);
     expect(buttonElement.className).toContain('color-primary');
-    expect(buttonElement.className).toContain('b-icon-' + IconColor.primary);
   });
 
   it('should emit clicked when clicking the span', () => {
