@@ -78,6 +78,12 @@ button {
     color: inherit !important;
   }
 }
+:host[class*='bg-'] {
+  button,
+  button[disabled] {
+    background-color: inherit !important;
+  }
+}
 
 :host.text-normal {
   button {

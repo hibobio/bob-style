@@ -17,7 +17,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { IconColor, Icons, IconSize } from '../icons/icons.enum';
+import { Icons, IconSize } from '../icons/icons.enum';
 import { DialogButton } from '../popups/dialog/dialog.interface';
 import {
   applyChanges,
@@ -81,13 +81,10 @@ export abstract class BaseButtonElement
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
   readonly icons = Icons;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
 
   public buttonClass: string = null;
   public icn: string;
   public icnSize: IconSize;
-  public icnColor: IconColor;
 
   protected typeDefault = ButtonType.primary;
 
@@ -158,16 +155,6 @@ export abstract class BaseButtonElement
 
     this.icnSize =
       this.size === ButtonSize.large ? IconSize.large : IconSize.medium;
-
-    this.icnColor = [
-      ButtonType.primary,
-      ButtonType.negative,
-      ButtonType.positive,
-    ].includes((this.type || this.typeDefault) as any)
-      ? IconColor.white
-      : this.disabled
-      ? IconColor.normal
-      : IconColor.dark;
   }
 
   protected getButtonClass(): string {

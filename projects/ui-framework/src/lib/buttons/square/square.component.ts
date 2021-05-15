@@ -26,7 +26,7 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
       [attr.disabled]="disabled || null"
       [attr.data-icon-before]="icn || null"
       [attr.data-icon-before-size]="icn ? icnSize : null"
-      [attr.data-icon-before-color]="icn ? color || icnColor : null"
+      [attr.data-icon-before-color]="icn ? color || 'inherit' : null"
     >
       <ng-content></ng-content>
     </button>
