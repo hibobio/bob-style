@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
+
+import { Component } from '@angular/core';
 
 // both this and the parent component could be folded into one component as they're both simple,
 // but it illustrates how a fuller example could work
