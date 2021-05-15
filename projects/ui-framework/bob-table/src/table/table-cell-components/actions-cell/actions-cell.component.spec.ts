@@ -1,15 +1,21 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ActionsCellComponent } from './actions-cell.component';
-import { By } from '@angular/platform-browser';
-import { IconColor, Icons } from 'bob-style';
-import { ButtonType } from 'bob-style';
-import { MockComponent } from 'ng-mocks';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MenuComponent } from 'bob-style';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { SquareButtonComponent } from 'bob-style';
-import { GridActions } from './actions-cell.interface';
 import { map } from 'lodash';
+import { MockComponent } from 'ng-mocks';
+
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import {
+  ButtonType,
+  IconColor,
+  Icons,
+  MenuComponent,
+  SquareButtonComponent,
+} from 'bob-style';
+
+import { ActionsCellComponent } from './actions-cell.component';
+import { GridActions } from './actions-cell.interface';
 
 describe('ActionsCellComponent', () => {
   let component: ActionsCellComponent;

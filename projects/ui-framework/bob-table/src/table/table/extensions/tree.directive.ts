@@ -7,10 +7,8 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 
-import {
-  cloneDeepSimpleObject,
-  merge,
-} from '../../../../../src/lib/services/utils/functional-utils';
+import { cloneDeepSimpleObject, merge } from 'bob-style';
+
 import { TableComponent } from '../table.component';
 import {
   defaultTreeConfig,

@@ -1,6 +1,9 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
-import { Icons } from 'bob-style';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
+
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
+
+import { Icons } from 'bob-style';
+
 import { CircleIconAndLabelParams } from './circle-icon-and-label.interface';
 
 @Component({

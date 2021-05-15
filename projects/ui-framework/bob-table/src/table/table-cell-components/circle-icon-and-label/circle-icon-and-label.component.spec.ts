@@ -1,10 +1,13 @@
+import { MockComponent } from 'ng-mocks';
+
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {CircleIconAndLabelComponent} from './circle-icon-and-label.component';
-import {By} from '@angular/platform-browser';
-import {CircleIconAndLabelParams} from './circle-icon-and-label.interface';
-import {AvatarModule, ButtonType, Icons, IconsModule} from 'bob-style';
-import {MockComponent} from 'ng-mocks';
-import {TableActionsWrapperComponent} from '../table-actions-wrapper/table-actions-wrapper.component';
+import { By } from '@angular/platform-browser';
+
+import { AvatarModule, ButtonType, Icons, IconsModule } from 'bob-style';
+
+import { TableActionsWrapperComponent } from '../table-actions-wrapper/table-actions-wrapper.component';
+import { CircleIconAndLabelComponent } from './circle-icon-and-label.component';
+import { CircleIconAndLabelParams } from './circle-icon-and-label.interface';
 
 describe('CircleIconAndLabelComponent', () => {
   let component: CircleIconAndLabelComponent;
