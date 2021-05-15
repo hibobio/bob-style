@@ -15,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 import {
   arrayRemoveItemMutate,
   isFunction,
+  normalizeString,
   normalizeStringSpaces,
   simpleUID,
 } from '../../services/utils/functional-utils';
@@ -98,15 +99,22 @@ export class EditableListComponent extends BaseEditableListElement {
 
   public addItemApply(): void {
     const value = normalizeStringSpaces(this.listState.newItem.value);
+    const valueID = normalizeString(this.listState.newItem.value, true, true);
 
     if (value) {
       this.currentAction = null;
 
-      this.listState.create.push(value);
-      this.listState.list.unshift({
-        id: simpleUID('new--'),
-        value,
-      });
+      if (this.deleted.has(valueID)) {
+        this.listState.list.unshift({ ...this.deleted.get(valueID), value });
+        this.deleted.delete(valueID);
+      } else {
+        this.listState.create.push(value);
+        this.listState.list.unshift({
+          id: simpleUID('new--'),
+          value,
+        });
+      }
+
       this.transmit();
 
       this.sortType = ListSortType.UserDefined;
@@ -130,8 +138,7 @@ export class EditableListComponent extends BaseEditableListElement {
     this.currentItemIndex = null;
 
     if (!String(item.id).startsWith('new--')) {
-      this.listState.delete.push(item.value);
-      this.listState.deletedIDs.push(item.id);
+      this.deleted.set(normalizeString(item.value, true, true), item);
     } else {
       arrayRemoveItemMutate(this.listState.create, item.value);
     }

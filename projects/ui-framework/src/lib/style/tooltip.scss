@@ -224,12 +224,29 @@ $toolti-offset: 10px;
 
   // show on
 
-  &[data-tooltip-show='focus'] {
+  &[data-tooltip-show] {
     &:before,
     &:after {
       animation-delay: 0s;
     }
+  }
 
+  &[data-tooltip-show='true'] {
+    &:before,
+    &:after {
+      display: block;
+    }
+  }
+
+  &[data-tooltip-show='false'] {
+    &:before,
+    &:after {
+      display: none;
+    }
+  }
+
+  &[data-tooltip-show='focus'] {
+    &.focused,
     &:focus {
       &:before,
       &:after {
@@ -237,7 +254,7 @@ $toolti-offset: 10px;
       }
     }
 
-    &:hover:not(:focus) {
+    &:hover:not(:focus):not(.focused) {
       &:before,
       &:after {
         display: none;

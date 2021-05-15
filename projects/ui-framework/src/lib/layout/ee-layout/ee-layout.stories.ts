@@ -428,7 +428,7 @@ const donuts = randomFromArray(metrics1, 3)
       ...m,
       headerTextSecondary,
       color: ColorPalette[COLOR_PALETTE_SET1_COLOR_ORDER[i]],
-      trackColor: ColorsGrey.color_grey_400,
+      trackColor: ColorsGrey.grey_400,
     };
   });
 
