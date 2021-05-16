@@ -1,33 +1,35 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import {
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
+  HostBinding,
   Input,
+  NgZone,
   OnChanges,
   Output,
   SimpleChanges,
   ViewChild,
-  ElementRef,
-  AfterViewInit,
-  ChangeDetectorRef,
-  NgZone,
-  HostBinding,
 } from '@angular/core';
+
+import { ButtonType } from '../../buttons/buttons.enum';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { ICON_CONFIG } from '../../icons/common-icons.const';
+import { Icon } from '../../icons/icon.interface';
+import { ListChangeService } from '../../lists/list-change/list-change.service';
+import { ListModelService } from '../../lists/list-service/list-model.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import {
+  cloneDeepSimpleObject,
+  hasChanges,
+} from '../../services/utils/functional-utils';
 import {
   QuickFilterBarChangeEvent,
   QuickFilterChangeEvent,
   QuickFilterConfig,
 } from './quick-filter.interface';
-import { ListChangeService } from '../../lists/list-change/list-change.service';
-import { ListModelService } from '../../lists/list-service/list-model.service';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { ButtonType } from '../../buttons/buttons.enum';
-import { animate, style, transition, trigger } from '@angular/animations';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { FormElementSize } from '../../form-elements/form-elements.enum';
-import {
-  cloneDeepSimpleObject,
-  hasChanges,
-} from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-quick-filter-bar',
@@ -67,16 +69,13 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
   @Input() quickFilters: QuickFilterConfig[];
   @Input() showResetFilter = false;
-  @Output() filtersChange: EventEmitter<
-    QuickFilterBarChangeEvent
-  > = new EventEmitter<QuickFilterBarChangeEvent>();
+  @Output()
+  filtersChange: EventEmitter<QuickFilterBarChangeEvent> = new EventEmitter<QuickFilterBarChangeEvent>();
   @Output() resetFilters: EventEmitter<void> = new EventEmitter<void>();
 
   quickFiltersChanges: QuickFilterBarChangeEvent = {};
 
-  readonly icons = Icons;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
+  readonly refreshIcn: Icon = ICON_CONFIG.refresh;
   readonly buttonType = ButtonType;
   public hasPrefix = true;
   public hasSuffix = true;

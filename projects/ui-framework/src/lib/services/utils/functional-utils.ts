@@ -24,7 +24,7 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 
 import { controlKeys, KEYCODES, Keys, metaKeys } from '../../enums';
 import { SelectGroupOption } from '../../lists/list.interface';
-import { Color, GenericObject, SortType } from '../../types';
+import { Color, GenericObject, HexColor, SortType } from '../../types';
 import {
   ColorPalette,
   PalletteColorSet,
@@ -2173,8 +2173,10 @@ export const getPaletteColorByIndex = (
 ): ColorPalette =>
   new ColorPaletteService().getPaletteColorByIndex(index, colorSet);
 
-export const isDark = (color: Color, sensitivity?: number) =>
-  ColorService.prototype.isDark(color, sensitivity);
+export const isDark = (
+  color: Color | HexColor | string,
+  sensitivity?: number
+) => ColorService.prototype.isDark(color, sensitivity);
 
 export const randomColor = () => ColorService.prototype.randomColor();
 

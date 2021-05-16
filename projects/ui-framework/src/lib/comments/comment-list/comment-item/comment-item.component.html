@@ -2,41 +2,40 @@
                 [imageSource]="comment?.avatar"
                 [matTooltip]="comment?.name"></b-avatar-image>
 
-<div class="text-section b-body">
-  <div class="comment-menu"
-       [class.focused]="menuOpen">
-    <b-menu class="card-menu"
-            *ngIf="comment?.menuConfig?.length > 0"
-            [menu]="comment.menuConfig"
-            (click.outside-zone)="$event.stopPropagation()"
-            (openMenu)="menuOpen = true"
-            (closeMenu)="closeMenu()">
-      <b-square-button menu-trigger
-                       [type]="buttonType.tertiary"
-                       [color]="iconColor.normal"
-                       [size]="buttonSize.medium"
-                       [icon]="icons.three_dots_vert">
-      </b-square-button>
-    </b-menu>
+<div class="text-section b-body brd rounded bg-grey-100 flx-grow">
 
-    <b-square-button class="card-action"
-                     *ngIf="!(comment?.menuConfig?.length > 0) && comment.actionConfig"
+  <b-menu *ngIf="comment?.menuConfig?.length > 0"
+          class="comment-menu card-menu mrg-y-4"
+          [menu]="comment.menuConfig"
+          [swallow]="true">
+    <b-square-button menu-trigger
                      [type]="buttonType.tertiary"
-                     [size]="buttonSize.medium"
-                     [icon]="comment.actionConfig.icon"
                      [color]="iconColor.normal"
-                     [matTooltip]="comment.actionConfig.tooltip"
-                     (clicked)="comment.actionConfig.action($event)">
+                     [size]="buttonSize.medium"
+                     [icon]="icons.three_dots_vert">
     </b-square-button>
-  </div>
-  <div class="comment-content">
-    <div class="comment-header">
+  </b-menu>
+
+  <b-square-button *ngIf="!comment?.menuConfig?.length && comment.actionConfig"
+                   class="comment-menu card-action mrg-y-4"
+                   [type]="buttonType.tertiary"
+                   [size]="buttonSize.medium"
+                   [icon]="comment.actionConfig.icon"
+                   [color]="iconColor.normal"
+                   [matTooltip]="comment.actionConfig.tooltip"
+                   (clicked)="comment.actionConfig.action($event)">
+  </b-square-button>
+
+  <div class="comment-content flx-grow">
+
+    <div class="comment-header mrg-b-6">
       <span *ngIf="comment?.name"
-            class="b-bold-body name">{{comment?.name}}</span>
-      <span class="b-caption date">{{comment?.date}}</span>
+            class="b-bold-body name clr-grey-700 mrg-r-8">{{comment?.name}}</span>
+      <span class="b-caption date clr-grey-600">{{comment?.date}}</span>
     </div>
+
     <div *ngIf="comment?.content"
-         class="comment-body"
+         class="comment-body pre-line hyphenate"
          #commentContent></div>
   </div>
 </div>

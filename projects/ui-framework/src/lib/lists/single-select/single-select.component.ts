@@ -1,34 +1,35 @@
 import {
+  ChangeDetectorRef,
   Component,
   forwardRef,
-  ViewContainerRef,
-  NgZone,
-  ChangeDetectorRef,
   Input,
+  NgZone,
   OnChanges,
+  ViewContainerRef,
 } from '@angular/core';
-import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ListChange } from '../list-change/list-change';
-import { ListChangeService } from '../list-change/list-change.service';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { TranslateService } from '@ngx-translate/core';
+
+import { AvatarSize } from '../../avatar/avatar/avatar.enum';
+import { Avatar } from '../../avatar/avatar/avatar.interface';
 import { BaseFormElement } from '../../form-elements/base-form-element';
-import { isArray, arrayFlatten } from '../../services/utils/functional-utils';
-import { ListModelService } from '../list-service/list-model.service';
-import { SelectOption } from '../list.interface';
-import { SelectType } from '../list.enum';
 import {
   FormElementSize,
   FormEvents,
 } from '../../form-elements/form-elements.enum';
-import { ListPanelService } from '../list-panel.service';
-import { MobileService } from '../../services/utils/mobile.service';
+import { IconColor } from '../../icons/icons.enum';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { arrayFlatten, isArray } from '../../services/utils/functional-utils';
+import { MobileService } from '../../services/utils/mobile.service';
+import { ListChange } from '../list-change/list-change';
+import { ListChangeService } from '../list-change/list-change.service';
 import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
-import { TranslateService } from '@ngx-translate/core';
-import { Avatar } from '../../avatar/avatar/avatar.interface';
-import { AvatarSize } from '../../avatar/avatar/avatar.enum';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { ListPanelService } from '../list-panel.service';
+import { ListModelService } from '../list-service/list-model.service';
+import { SelectType } from '../list.enum';
+import { SelectOption } from '../list.interface';
+import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 
 @Component({
   selector: 'b-single-select',
@@ -51,7 +52,8 @@ import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
     { provide: BaseFormElement, useExisting: SingleSelectComponent },
   ],
 })
-export class SingleSelectComponent extends BaseSelectPanelElement
+export class SingleSelectComponent
+  extends BaseSelectPanelElement
   implements OnChanges {
   constructor(
     protected listChangeSrvc: ListChangeService,
@@ -89,9 +91,6 @@ export class SingleSelectComponent extends BaseSelectPanelElement
 
   readonly avatarSize = AvatarSize;
   readonly formElementSize = FormElementSize;
-  readonly icons = Icons;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
 
   protected getDisplayValue(): string {
     const option: SelectOption =

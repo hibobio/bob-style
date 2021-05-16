@@ -2,10 +2,7 @@
         *ngIf="showResetFilter"
         class="reset-filters"
         role="button"
-        [icon]="icons.refresh"
-        [color]="iconColor.normal"
-        [size]="iconSize.large"
-        [hasHoverState]="true"
+        [config]="refreshIcn"
         (click)="onReset()">
 </b-icon>
 

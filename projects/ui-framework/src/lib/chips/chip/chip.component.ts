@@ -48,10 +48,14 @@ export class ChipComponent implements OnChanges {
   @Output() removed: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   readonly chipType = ChipType;
-  readonly icons = Icons;
-  readonly iconSize = IconSize;
 
   public removeIconColor: IconColor;
+
+  readonly removeIcn: Icon = {
+    icon: Icons.reset_x,
+    hasHoverState: true,
+    size: IconSize.small,
+  };
 
   ngOnChanges(changes: SimpleChanges) {
     applyChanges(

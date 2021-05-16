@@ -1,42 +1,22 @@
 @import '../../../style/common-imports';
 
-:host {
-  &:hover .comment-menu,
-  .comment-menu.focused {
-    opacity: 1;
-  }
-}
-
 .comment-menu {
-  display: block;
   float: right;
-  margin: 3px 0;
   opacity: 0;
   transition: opacity 0.3s;
 }
 
-.comment-content {
-  padding: 11px 15px;
-  flex-grow: 1;
+:host:hover .comment-menu,
+.comment-menu.focused {
+  opacity: 1;
 }
 
-.comment-header {
-  margin-bottom: 6px;
-
-  .name {
-    color: $grey-700;
-    margin-right: times8(1);
-  }
-
-  .date {
-    color: $grey-600;
-  }
+.comment-content {
+  padding: 11px 15px;
 }
 
 .comment-body {
   line-height: 20px;
-  @include text-hyphenate;
-  white-space: pre-line;
 
   ::ng-deep a {
     color: $primary-500;
@@ -44,15 +24,12 @@
 }
 
 .text-section {
-  display: block;
-  background-color: $grey-100;
   min-height: $wrap-height;
   min-width: 0;
-  border: 1px solid $border-color;
-  border-radius: $border-radius;
 
   &:after {
     border-right-color: $grey-100;
+    clear: both;
   }
 
   &:before {

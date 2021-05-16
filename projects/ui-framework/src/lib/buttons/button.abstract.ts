@@ -63,7 +63,6 @@ export abstract class BaseButtonElement
   @Input() text: string;
   @Input() icon: Icons;
   @Input() active = false;
-  @Input() color: any;
   @Input() preloader = false;
 
   @Input() public type: ButtonType | BackButtonType;

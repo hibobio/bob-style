@@ -1,4 +1,4 @@
-$acss-sizes: 0 4 8 10 12 16 24 32 40 48;
+$acss-sizes: 0 4 6 8 10 12 16 24 32 40 48;
 $acss-dirs: top right bottom left;
 
 // misc
@@ -110,6 +110,9 @@ $acss-dirs: top right bottom left;
 .no-wrap {
   white-space: nowrap;
 }
+.pre-wrap {
+  white-space: pre-line;
+}
 
 .uppercase {
   text-transform: uppercase;
@@ -131,12 +134,20 @@ $acss-dirs: top right bottom left;
   text-align: center;
 }
 
+.text-right {
+  text-align: right;
+}
+
 .text-bold {
   font-weight: 700;
 }
 
 .text-normal {
   font-weight: 400;
+}
+
+.hyphenate {
+  @include text-hyphenate;
 }
 
 // Margin & Padding

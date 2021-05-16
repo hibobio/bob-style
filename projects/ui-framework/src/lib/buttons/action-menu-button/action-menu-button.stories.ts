@@ -44,7 +44,7 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Action menu button'">
-<div style="text-align: center; max-width: 100%;">
+<div style="text-align: center; max-width: 100%;" (click)="actionClick($event)">
     ${template}
 </div>
 </b-story-book-layout>

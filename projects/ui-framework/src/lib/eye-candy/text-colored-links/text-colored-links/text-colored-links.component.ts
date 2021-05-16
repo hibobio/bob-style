@@ -1,12 +1,13 @@
 import { Component, Input, OnChanges } from '@angular/core';
+
 import { Color } from '../../../types';
 import {
   ColorTextItem,
-  InfoGraphicItem,
   DEFAULT_COLORS,
   DEFAULT_FONT_SIZES,
   DEFAULT_FONT_STYLES,
   DEFAULT_FONT_WEIGHTS,
+  InfoGraphicItem,
 } from '../text-colored-links.interface';
 
 @Component({

@@ -13,9 +13,8 @@
      (click.outside-zone)="inputHours.focus()">
 
   <b-icon class="bfe-prefix input-icon"
-          [icon]="icons.timeline"
-          [color]="(hoursFocused || minutesFocused) ? iconColor.dark : iconColor.normal"
-          [size]="iconSize.medium">
+          [config]="timeIcn"
+          [color]="(hoursFocused || minutesFocused) ? iconColor.dark : iconColor.normal">
   </b-icon>
 
   <span class="bfe-input"
@@ -62,10 +61,7 @@
         class="bfe-suffix">
     <b-icon class="clear-input"
             role="button"
-            [icon]="icons.reset_x"
-            [size]="iconSize.small"
-            [color]="iconColor.normal"
-            [hasHoverState]="true"
+            [config]="clearIcn"
             (click)="$event.stopPropagation(); clearInput()">
     </b-icon>
   </span>
