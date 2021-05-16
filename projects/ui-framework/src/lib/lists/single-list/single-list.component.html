@@ -59,8 +59,8 @@
         <span *ngIf="header.description && !header.suffixComponent"
               class="comp-suffix has-hover"
               [attr.data-icon-before]="infoIcon"
-              [attr.data-icon-before-color]="iconColor.normal"
-              [attr.data-icon-before-size]="iconSize.small"
+              data-icon-before-color="normal"
+              data-icon-before-size="small"
               [matTooltip]="header.description"
               [matTooltipClass]="tooltipClass"
               [matTooltipShowDelay]="tooltipDelay"
@@ -111,15 +111,15 @@
         </b-component-renderer>
 
         <span *ngIf="!option.isPlaceHolder && option.value"
-              class="option-value"
+              class="option-value pre-wrap"
               [attr.data-max-lines]="size === formElementSize.smaller ? 2 : 3"
               [innerHTML]="option.value | highlight: searchValue:true"></span>
 
         <span *ngIf="!option.isPlaceHolder && option.description"
               class="comp-suffix has-hover"
               [attr.data-icon-before]="infoIcon"
-              [attr.data-icon-before-color]="iconColor.normal"
-              [attr.data-icon-before-size]="iconSize.small"
+              data-icon-before-color="normal"
+              data-icon-before-size="small"
               [matTooltip]="option.description"
               [matTooltipClass]="tooltipClass"
               [matTooltipShowDelay]="tooltipDelay"

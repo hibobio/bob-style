@@ -2,7 +2,8 @@
      (menuOpened)="onOpenMenu()"
      (menuClosed)="onCloseMenu()"
      [class.disabled]="disabled"
-     class="menu-trigger-wrapper">
+     class="menu-trigger-wrapper"
+     (click.outside-zone)="swallow && $event.stopPropagation()">
   <ng-content select="[menu-trigger]"></ng-content>
 </div>
 

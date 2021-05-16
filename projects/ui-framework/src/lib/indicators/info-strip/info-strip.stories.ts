@@ -5,7 +5,7 @@ import { storiesOf } from '@storybook/angular';
 import { ComponentGroupType } from '../../consts';
 import { CheckboxModule } from '../../form-elements/checkbox/checkbox.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { LinkColor, LinkTarget } from '../link/link.enum';
+import { LinkTarget } from '../link/link.enum';
 import { InfoStripIconSize, InfoStripIconType } from './info-strip.enum';
 import { InfoStripModule } from './info-strip.module';
 
@@ -83,7 +83,6 @@ story.add(
           text: 'Click here',
           url: 'https://app.hibob.com',
           target: LinkTarget.blank,
-          color: LinkColor.none,
         }),
         onLinkClick: action('Link clicked'),
       },

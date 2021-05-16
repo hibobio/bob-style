@@ -1,28 +1,32 @@
-import {
-  Component,
-  EventEmitter,
-  Output,
-  Input,
-  SimpleChanges,
-  OnChanges,
-  ViewChild,
-  ElementRef,
-  HostBinding,
-  OnInit,
-  OnDestroy,
-  NgZone,
-} from '@angular/core';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import {
-  InputTypes,
-  InputAutoCompleteOptions,
-} from '../../form-elements/input/input.enum';
-import { simpleUID } from '../../services/utils/functional-utils';
-import { DOMInputEvent } from '../../types';
-import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { fromEvent, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
+
+import { FormElementSize } from '../../form-elements/form-elements.enum';
+import {
+  InputAutoCompleteOptions,
+  InputTypes,
+} from '../../form-elements/input/input.enum';
+import { ICON_CONFIG } from '../../icons/common-icons.const';
+import { Icon } from '../../icons/icon.interface';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { simpleUID } from '../../services/utils/functional-utils';
 import { insideZone } from '../../services/utils/rxjs.operators';
+import { DOMInputEvent } from '../../types';
 
 @Component({
   selector: 'b-search',
@@ -49,19 +53,22 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy {
 
   public inputFocused = false;
 
-  readonly icons = Icons;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
   readonly inputTypes = InputTypes;
+  readonly iconColor = IconColor;
+  readonly clearIcn: Icon = ICON_CONFIG.reset;
+  readonly searchIcn: Icon = {
+    icon: Icons.search,
+    size: IconSize.medium,
+    hasHoverState: true,
+  };
 
   private skipFocusEvent = false;
   private sub: Subscription;
 
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() searchFocus: EventEmitter<string> = new EventEmitter<string>();
-  @Output() searchBlur: EventEmitter<FocusEvent> = new EventEmitter<
-    FocusEvent
-  >();
+  @Output()
+  searchBlur: EventEmitter<FocusEvent> = new EventEmitter<FocusEvent>();
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value) {

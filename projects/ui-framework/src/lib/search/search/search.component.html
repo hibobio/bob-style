@@ -7,10 +7,8 @@
      (click.outside-zone)="input.focus()">
 
   <b-icon class="bfe-prefix input-icon"
-          [hasHoverState]="true"
-          [icon]="icons.search"
-          [color]="!inputFocused ? iconColor.normal : iconColor.dark"
-          [size]="iconSize.medium">
+          [config]="searchIcn"
+          [color]="!inputFocused ? iconColor.normal : iconColor.dark">
   </b-icon>
 
   <input #input
@@ -28,10 +26,7 @@
     <b-icon class="clear-input"
             role="button"
             tabindex="2"
-            [icon]="icons.reset_x"
-            [size]="iconSize.small"
-            [color]="iconColor.normal"
-            [hasHoverState]="true"
+            [config]="clearIcn"
             (click)="$event.stopPropagation(); onResetClick()">
     </b-icon>
   </span>

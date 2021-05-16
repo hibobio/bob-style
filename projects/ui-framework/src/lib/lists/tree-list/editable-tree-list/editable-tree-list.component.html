@@ -10,7 +10,8 @@
     (mouseover)="onListHover($event)"
     (input.outside-zone)="onListInput($event)">
 
-  <ng-container *ngFor="let itemID of listViewModel; let index = index; trackBy: trackBy">
+  <ng-container
+                *ngFor="let itemID of listViewModel; let index = index; trackBy: trackBy">
 
     <ng-container *ngTemplateOutlet="listItem; context: {
       index: index,
@@ -66,10 +67,7 @@
         <b-icon menu-trigger
                 role="button"
                 class="betl-item-menu-trigger"
-                [type]="iconType.circular"
-                [size]="iconSize.small"
-                [color]="iconColor.white"
-                [icon]="icons.three_dots">
+                [config]="menuTriggerIcn">
         </b-icon>
       </b-menu>
 
@@ -96,10 +94,7 @@
 <div class="betl-list-footer betl-item-grid">
   <b-icon role="button"
           class="betl-item-elmnt betl-list-add-item"
-          [type]="iconType.circular"
-          [size]="iconSize.small"
-          [color]="iconColor.white"
-          [icon]="icons.add"
+          [config]="addItemIcn"
           (click)="$event.stopPropagation(); insertNewItem('lastChildOf', rootItem, false)">
   </b-icon>
 </div>

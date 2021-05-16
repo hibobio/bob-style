@@ -17,7 +17,8 @@ import {
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { ICON_CONFIG } from '../../icons/common-icons.const';
+import { Icon } from '../../icons/icon.interface';
 import { LIST_ACTIONS_STATE_DEF } from '../../lists/list-footer/list-footer.const';
 import {
   ListPanelService,
@@ -118,12 +119,7 @@ export class ColorPickerComponent
   );
 
   public nullColor = '#fff';
-  readonly resetIcon = {
-    icon: Icons.reset_x,
-    size: IconSize.small,
-    color: IconColor.normal,
-    hasHoverState: true,
-  };
+  readonly clearIcn: Icon = ICON_CONFIG.reset;
 
   public lastEmittedValue: string;
   public isTyping = false;

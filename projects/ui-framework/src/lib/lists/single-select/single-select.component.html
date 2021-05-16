@@ -57,11 +57,8 @@
                         class="mrg-r-4"
                         [maxLines]="1"
                         [text]="displayValue"></b-truncate-tooltip>
-    <b-icon class="select-chevron"
-            [icon]="icons.arrow_drop_down"
-            [size]="iconSize.medium"
-            [color]="iconColor.dark"
-            [rotate]="panelOpen ? '180' : null"></b-icon>
+    <span class="b-icon-medium b-icon-arrow-drop-down"
+          [attr.data-icon-before-rotate]="panelOpen && '180'"></span>
   </div>
 </ng-template>
 

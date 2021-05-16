@@ -13,7 +13,8 @@ import {
 } from '@angular/core';
 
 import { Icon } from '../../icons/icon.interface';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { getIconColor, getIconSize } from '../../icons/icon.static';
+import { Icons, IconSize } from '../../icons/icons.enum';
 import {
   applyChanges,
   hasChanges,
@@ -32,9 +33,8 @@ import { CollapsibleStyle } from './collapsible.interface';
 export class CollapsibleComponent implements OnChanges {
   constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
 
-  @ViewChild('section', { static: true }) section: ElementRef<
-    HTMLDetailsElement
-  >;
+  @ViewChild('section', { static: true })
+  section: ElementRef<HTMLDetailsElement>;
   @Output() collapsed: EventEmitter<void> = new EventEmitter<void>();
   @Output() expanded: EventEmitter<void> = new EventEmitter<void>();
   @Input() id: string = simpleUID('bcl');
@@ -73,19 +73,13 @@ export class CollapsibleComponent implements OnChanges {
         this.config?.chevronIcon?.icon || Icons.chevron_right
       ).replace('b-icon-', '');
 
-      this.chevronSize = this.config?.chevronIcon?.size
-        ? Object.values(IconSize).includes(this.config.chevronIcon.size as any)
-          ? this.config.chevronIcon.size
-          : 'custom'
-        : null;
+      this.chevronColor = getIconColor(this.config?.chevronIcon?.color).color;
 
-      this.chevronColor = this.config?.chevronIcon?.color
-        ? Object.values(IconColor).includes(
-            this.config.chevronIcon.color as any
-          )
-          ? this.config.chevronIcon.color
-          : 'custom'
-        : null;
+      this.chevronSize = getIconSize(this.config?.chevronIcon?.size).size;
+      this.chevronSize === IconSize.custom &&
+        (this.config.chevronIcon.size = getIconSize(
+          this.config?.chevronIcon?.size
+        ).cssVar);
     }
 
     this.animate = Boolean(this.animate || this.config?.animate);

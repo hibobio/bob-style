@@ -1,21 +1,21 @@
 <b-menu class="card-menu"
-        *ngIf="card.menuConfig && card.menuConfig.length > 0"
+        *ngIf="card.menuConfig?.length > 0"
         [menu]="card.menuConfig"
-        (click.outside-zone)="$event.stopPropagation()">
+        [swallow]="true">
   <b-square-button menu-trigger
                    [id]="card.id ? (card['id']+'-menu') : null"
                    [type]="buttonType.tertiary"
-                   [color]="card.imageUrl ? iconColor.white : iconColor.dark"
+                   [color]="card.imageUrl ? iconColor.white : iconColor.normal"
                    [icon]="icons.three_dots_vert">
   </b-square-button>
 </b-menu>
 
 <b-square-button class="card-action"
-                 *ngIf="!(card.menuConfig && card.menuConfig.length > 0) && card.actionConfig"
+                 *ngIf="!card.menuConfig?.length && card.actionConfig"
                  [id]="card.id ? (card['id']+'-action') : null"
                  [type]="buttonType.tertiary"
                  [icon]="card.actionConfig.icon"
-                 [color]="card.imageUrl ? iconColor.white : iconColor.dark"
+                 [color]="card.imageUrl ? iconColor.white : iconColor.normal"
                  [toolTipSummary]="card.actionConfig.tooltip"
                  (clicked)="card.actionConfig.action($event)">
 </b-square-button>

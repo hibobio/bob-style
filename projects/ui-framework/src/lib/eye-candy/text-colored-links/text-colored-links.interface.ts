@@ -1,13 +1,15 @@
+import { HexColor } from '../../types';
+
 export const DEFAULT_FONT_STYLES = ['italic', 'normal'];
 export const DEFAULT_FONT_WEIGHTS = [400, 600, 800];
 export const DEFAULT_FONT_SIZES = ['30px', '35px', '38px'];
-export const DEFAULT_COLORS = [
+export const DEFAULT_COLORS: HexColor[] = [
   '#e52c51',
   '#8f233d',
   '#f38161',
   '#f57738',
   '#535353',
-  '#9d9d9d'
+  '#9d9d9d',
 ];
 
 export interface ColorTextItem {

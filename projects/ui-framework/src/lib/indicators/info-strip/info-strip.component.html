@@ -1,13 +1,15 @@
-<b-icon class="icon"
-        [icon]="iconsDic[iconType]?.icon || iconsDic.warning.icon"
-        [color]="iconsDic[iconType]?.color || iconsDic.warning.color"
-        [size]="iconSize || iconSizes.large">
+<b-icon class="icon mrg-r-10"
+        [config]="iconsDic[iconType]"
+        [size]="iconSize">
 </b-icon>
 
-<div class="content">
+<div class="content flx-col flx-grow flx-col-align-y">
   <p *ngIf="text"
+     class="mrg-0 pre-wrap"
      [innerHTML]="text"></p>
+
   <ng-content></ng-content>
+
   <b-link *ngIf="link"
           [config]="link"
           (clicked)="linkClicked.emit()"></b-link>

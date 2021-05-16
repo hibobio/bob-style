@@ -27,6 +27,8 @@ import {
   LOCALE_FORMATS,
 } from '../../consts';
 import { Keys } from '../../enums';
+import { ICON_CONFIG } from '../../icons/common-icons.const';
+import { Icon } from '../../icons/icon.interface';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -146,15 +148,19 @@ export abstract class BaseDatepickerElement<
   private allowInputBlur = !this.allowKeyInput;
 
   readonly types = DatepickerType;
-  readonly icons = Icons;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
   readonly panelPos = PanelDefaultPosVer;
   readonly dateAdjust = DateAdjust;
   readonly autoComplete = InputAutoCompleteOptions;
 
   private doneFirstChange = false;
   private useFormatForPlaceholder = false;
+
+  readonly iconColor = IconColor;
+  readonly clearIcn: Icon = ICON_CONFIG.reset;
+  readonly dateIcn: Icon = {
+    icon: Icons.date,
+    size: IconSize.medium,
+  };
 
   private transmitDebouncer$: Subject<void> = new Subject().pipe(
     debounceTime(100)

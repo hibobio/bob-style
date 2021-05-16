@@ -21,10 +21,16 @@
 }
 
 [data-icon-before-size='custom']:before {
-  @include icon-size(var(--icon-before-size), $elem: '&');
+  @include icon-size(
+    var(--icon-before-size, #{map-get($icon-sizes, large)}),
+    $elem: '&'
+  );
 }
 [data-icon-after-size='custom']:after {
-  @include icon-size(var(--icon-after-size), $elem: '&');
+  @include icon-size(
+    var(--icon-after-size, #{map-get($icon-sizes, large)}),
+    $elem: '&'
+  );
 }
 
 @each $colorKey, $colors in $icon-colors {
@@ -49,7 +55,11 @@
 }
 
 [data-icon-before-color='custom'] {
-  @include icon-color(var(--icon-before-color), false, $elem: '&:before');
+  @include icon-color(
+    var(--icon-before-color, #{map-get-deep($icon-colors, dark, color)}),
+    false,
+    $elem: '&:before'
+  );
 }
 
 .b-icon-inherit,
@@ -66,7 +76,11 @@
 }
 
 [data-icon-after-color='custom'] {
-  @include icon-color(var(--icon-after-color), false, $elem: '&:after');
+  @include icon-color(
+    var(--icon-after-color, #{map-get-deep($icon-colors, dark, color)}),
+    false,
+    $elem: '&:after'
+  );
 }
 
 .b-icon-inherit,
