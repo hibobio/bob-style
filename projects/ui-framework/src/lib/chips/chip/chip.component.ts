@@ -9,6 +9,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 
+import { ICON_CONFIG } from '../../icons/common-icons.const';
 import { Icon } from '../../icons/icon.interface';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { ColorsGrey } from '../../services/color-service/color-palette.enum';
@@ -51,11 +52,7 @@ export class ChipComponent implements OnChanges {
 
   public removeIconColor: IconColor;
 
-  readonly removeIcn: Icon = {
-    icon: Icons.reset_x,
-    hasHoverState: true,
-    size: IconSize.small,
-  };
+  readonly removeIcn: Icon = ICON_CONFIG.reset;
 
   ngOnChanges(changes: SimpleChanges) {
     applyChanges(
