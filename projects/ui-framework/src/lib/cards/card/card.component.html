@@ -1,5 +1,5 @@
 <b-menu class="card-menu"
-        *ngIf="card.menuConfig && card.menuConfig.length > 0"
+        *ngIf="card.menuConfig?.length > 0"
         [menu]="card.menuConfig"
         [swallow]="true">
   <b-square-button menu-trigger
@@ -11,7 +11,7 @@
 </b-menu>
 
 <b-square-button class="card-action"
-                 *ngIf="!(card.menuConfig && card.menuConfig.length > 0) && card.actionConfig"
+                 *ngIf="!card.menuConfig?.length && card.actionConfig"
                  [id]="card.id ? (card['id']+'-action') : null"
                  [type]="buttonType.tertiary"
                  [icon]="card.actionConfig.icon"

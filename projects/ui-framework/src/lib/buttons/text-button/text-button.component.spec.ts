@@ -7,6 +7,7 @@ import { Icons, IconSize } from '../../icons/icons.enum';
 import { LinkColor } from '../../indicators/link/link.enum';
 import { simpleChange } from '../../services/utils/functional-utils';
 import { TypographyModule } from '../../typography/typography.module';
+import { ButtonType } from '../buttons.enum';
 import { TextButtonComponent } from './text-button.component';
 
 describe('TextButtonComponent', () => {
@@ -65,8 +66,7 @@ describe('TextButtonComponent', () => {
       })
     );
 
-    expect(component.buttonClass).toContain('color-primary');
-    expect(buttonElement.className).toContain('color-primary');
+    expect(component.type).toEqual(ButtonType.primary);
   });
 
   it('should emit clicked when clicking the span', () => {

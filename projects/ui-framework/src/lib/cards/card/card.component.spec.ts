@@ -1,18 +1,25 @@
-import { CardComponent } from './card.component';
-import { ComponentFixture, fakeAsync, TestBed, tick, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
-import { MenuComponent } from '../../navigation/menu/menu.component';
-import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
-import { CardType } from '../cards.enum';
+
+import {
+  ComponentFixture,
+  resetFakeAsyncZone,
+  TestBed,
+  waitForAsync,
+} from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+
 import { SquareButtonComponent } from '../../buttons/square/square.component';
 import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
-import { TypographyModule } from '../../typography/typography.module';
 import { IconColor, Icons } from '../../icons/icons.enum';
+import { MenuComponent } from '../../navigation/menu/menu.component';
+import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import {
   emptyImg,
   emptyImgTestString,
 } from '../../services/utils/test-helpers';
+import { TypographyModule } from '../../typography/typography.module';
+import { CardType } from '../cards.enum';
+import { CardComponent } from './card.component';
 
 describe('CardComponent', () => {
   let fixture: ComponentFixture<CardComponent>;
@@ -22,24 +29,26 @@ describe('CardComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        CardComponent,
-        MockComponent(MenuComponent),
-        MockComponent(SquareButtonComponent),
-        MockComponent(TextButtonComponent),
-      ],
-      imports: [TruncateTooltipModule, TypographyModule],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          CardComponent,
+          MockComponent(MenuComponent),
+          MockComponent(SquareButtonComponent),
+          MockComponent(TextButtonComponent),
+        ],
+        imports: [TruncateTooltipModule, TypographyModule],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(CardComponent);
+          component = fixture.componentInstance;
+          component.ngAfterViewInit = () => {};
+          fixture.debugElement.nativeElement.style.width = '300px';
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(CardComponent);
-        component = fixture.componentInstance;
-        component.ngAfterViewInit = () => {};
-        fixture.debugElement.nativeElement.style.width = '300px';
-      });
-  }));
+  );
 
   describe('Type', () => {
     beforeEach(() => {
@@ -150,7 +159,7 @@ describe('CardComponent', () => {
       fixture.detectChanges();
       const action = fixture.debugElement.query(By.css('.card-action'));
       expect(action.componentInstance.icon).toEqual('b-icon-file-copy');
-      expect(action.componentInstance.color).toEqual(IconColor.dark);
+      expect(action.componentInstance.color).toEqual(IconColor.normal);
     });
   });
 
