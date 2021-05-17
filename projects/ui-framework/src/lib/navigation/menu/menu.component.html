@@ -61,7 +61,7 @@
                 (click)="onClick(item)"
                 [disabled]="itemIsDisabled(item)"
                 [disableRipple]="true">
-          <span>{{item.label}}</span>
+          <span [matTooltip]="item.tooltip">{{item.label}}</span>
         </button>
       </ng-container>
 

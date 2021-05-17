@@ -9,6 +9,7 @@ import {
   arrayInsertAt,
   simpleChange,
 } from '../../services/utils/functional-utils';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -42,7 +43,7 @@ describe('MenuComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [MenuComponent],
-      imports: [CommonModule, NoopAnimationsModule, MatMenuModule],
+      imports: [CommonModule, NoopAnimationsModule, MatMenuModule, MatTooltipModule],
     })
       .compileComponents()
       .then(() => {
@@ -112,6 +113,14 @@ describe('MenuComponent', () => {
       expect(menuOptions[0].nativeElement.innerText).toEqual('button 0');
       expect(menuOptions[1].nativeElement.innerText).toEqual('button 1');
       expect(menuOptions[2].nativeElement.innerText).toEqual('button 2');
+    });
+
+    it('should add mat-tooltip-trigger class to button 1', () => {
+      openMenu();
+      const menuOptions = fixture.debugElement.queryAll(
+        By.css('.mat-menu-item span')
+      );
+      expect(menuOptions[1].nativeElement.classList).toContain('mat-tooltip-trigger');
     });
 
     it('should display deep options', () => {
