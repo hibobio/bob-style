@@ -115,14 +115,6 @@ describe('MenuComponent', () => {
       expect(menuOptions[2].nativeElement.innerText).toEqual('button 2');
     });
 
-    it('should add mat-tooltip-trigger class to button 1', () => {
-      openMenu();
-      const menuOptions = fixture.debugElement.queryAll(
-        By.css('.mat-menu-item span')
-      );
-      expect(menuOptions[1].nativeElement.classList).toContain('mat-tooltip-trigger');
-    });
-
     it('should display deep options', () => {
       openMenu();
       let menuOptions = fixture.debugElement.queryAll(
