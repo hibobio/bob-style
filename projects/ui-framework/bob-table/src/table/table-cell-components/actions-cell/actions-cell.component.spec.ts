@@ -26,27 +26,29 @@ describe('ActionsCellComponent', () => {
     openLeft: true,
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ActionsCellComponent,
-        MockComponent(SquareButtonComponent),
-        MockComponent(MenuComponent),
-      ],
-      imports: [NoopAnimationsModule],
-      schemas: [NO_ERRORS_SCHEMA],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          ActionsCellComponent,
+          MockComponent(SquareButtonComponent),
+          MockComponent(MenuComponent),
+        ],
+        imports: [NoopAnimationsModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(ActionsCellComponent);
+          component = fixture.componentInstance;
+          component.agInit({ value: mockGridActions });
+          fixture.detectChanges();
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(ActionsCellComponent);
-        component = fixture.componentInstance;
-        component.agInit({ value: mockGridActions });
-        fixture.detectChanges();
-      });
-  }));
+  );
 
   it('should get menu items data', () => {
-    component.menuItems = map(component.menuItems, item => {
+    component.menuItems = map(component.menuItems, (item) => {
       delete item.action;
       return item;
     });
@@ -61,7 +63,7 @@ describe('ActionsCellComponent', () => {
     });
     fixture.detectChanges();
     const menuElement = fixture.debugElement.query(By.css('b-menu'));
-    component.menuItems = map(component.menuItems, item => {
+    component.menuItems = map(component.menuItems, (item) => {
       delete item.action;
       return item;
     });
@@ -81,13 +83,13 @@ describe('ActionsCellComponent', () => {
     const triggerButtonElement = fixture.debugElement.query(
       By.css('b-square-button')
     );
-    expect(triggerButtonElement.componentInstance.color).toEqual(
+    expect(triggerButtonElement.componentInstance.setProps.color).toEqual(
       IconColor.normal
     );
-    expect(triggerButtonElement.componentInstance.type).toEqual(
+    expect(triggerButtonElement.componentInstance.setProps.type).toEqual(
       ButtonType.tertiary
     );
-    expect(triggerButtonElement.componentInstance.icon).toEqual(
+    expect(triggerButtonElement.componentInstance.setProps.icon).toEqual(
       Icons.three_dots_vert
     );
   });
