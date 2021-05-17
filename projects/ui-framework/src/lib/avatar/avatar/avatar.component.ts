@@ -66,9 +66,9 @@ export class AvatarComponent implements OnChanges {
   @Input() title: AvatarInputCmnt | string;
   @Input() subtitle: AvatarInputCmnt | string;
   @Input() caption: AvatarInputCmnt | string;
-  @Input() icon: AvatarInputCmnt | Icons | Icon;
-  @Input() badge: AvatarInputCmnt | AvatarBadge | BadgeConfig | Icon;
-  @Input() chip: AvatarInputCmnt | Chip;
+  @Input() icon: Icons | Icon;
+  @Input() badge: AvatarBadge | BadgeConfig | Icon;
+  @Input() chip: Chip;
   @Input() afterChipText: AvatarInputCmnt | string;
   @Input() isClickable: AvatarInputCmnt | boolean = false;
   @Input() expectChanges: AvatarInputCmnt | boolean = false;
