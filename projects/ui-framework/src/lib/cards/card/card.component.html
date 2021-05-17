@@ -3,10 +3,9 @@
         [menu]="card.menuConfig"
         [swallow]="true">
   <b-square-button menu-trigger
+                   [button]="menuTriggerBtn"
                    [id]="card.id ? (card['id']+'-menu') : null"
-                   [type]="buttonType.tertiary"
-                   [color]="card.imageUrl ? iconColor.white : iconColor.normal"
-                   [icon]="icons.three_dots_vert">
+                   [color]="card.imageUrl ? iconColor.white : iconColor.normal">
   </b-square-button>
 </b-menu>
 
@@ -48,6 +47,6 @@
                class="card-bottom cta-button"
                [id]="card.id ? (card['id']+'-cta') : null"
                [text]="card.footerCtaLabel"
-               [color]="linkColor.primary"
+               type="primary"
                (clicked)="onCtaClick($event)">
 </b-text-button>

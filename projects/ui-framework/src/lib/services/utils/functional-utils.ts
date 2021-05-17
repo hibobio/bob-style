@@ -51,6 +51,8 @@ export const isPrimitive = (val: any): boolean => {
 export const isNullOrUndefined = (val: any): boolean =>
   val === undefined || val === null;
 
+export const isDefined = (val: any): boolean => val !== undefined;
+
 export const isString = (val: any): val is string => typeof val === 'string';
 
 export const isNumber = (val: any): val is number =>
@@ -322,7 +324,7 @@ export const hasProp = <T = GenericObject>(
     (!strict && typeof obj[key] !== 'undefined'));
 
 export const objectHasTruthyValue = (obj: GenericObject): boolean =>
-  isNotEmptyObject(obj) && Boolean(Object.values(obj).find((v) => Boolean(v)));
+  isNotEmptyObject(obj) && Object.values(obj).some((v) => Boolean(v));
 
 export const keysFromArrayOrObject = (smth: string[] | {}): string[] =>
   Array.isArray(smth) ? smth : Object.keys(smth);
@@ -834,9 +836,10 @@ export const stringify = (smth: any, limit = 300, limitKeys = null): string => {
           .replace(/[\s,]+$/, '') +
         ']'
       : isFunction(smth)
-      ? String(smth).split('{')[0].trim().replace('function', 'fnc')
+      ? // ? '[fnc ' + (smth.name || '(anonymous)') + ']'
+        String(smth).split('{')[0].trim().replace('function', '') + '{}'
       : isObject(smth)
-      ? '{' +
+      ? '{ ' +
         Object.keys(smth)
           .reduce((str, k) => {
             if ((!limit || str.length < limit * 0.7) && smth[k] !== undefined) {
@@ -849,7 +852,7 @@ export const stringify = (smth: any, limit = 300, limitKeys = null): string => {
             return str;
           }, '')
           .replace(/[\s,]+$/, '') +
-        '}'
+        ' }'
       : String(smth);
 
   return limit && stringified.length > limit
@@ -1010,9 +1013,9 @@ export const isDateFormat = (frmt: string): boolean => {
 
   return (
     split.length > 1 &&
-    (!!split.find((i) => i === 'DD') ||
-      !!split.find((i) => i === 'YYYY') ||
-      !!split.find((i) => i.includes('MM')))
+    (split.some((i) => i === 'DD') ||
+      split.some((i) => i === 'YYYY') ||
+      split.some((i) => i.includes('MM')))
   );
 };
 
@@ -1778,38 +1781,38 @@ export const hasChanges = (
 
   config = {
     ...config,
-    discardAllFalsey: config?.discardAllFalsey || discardAllFalsey,
+    discardAllFalsey: Boolean(
+      discardAllFalsey || config?.discardAllFalsey || config?.truthyCheck
+    ),
   };
   const { firstChange } = config;
 
-  return Boolean(
-    keys.find((i) => {
-      if (
-        !changes[i] &&
-        changes[CHANGES_SET_PROPS]?.currentValue?.hasOwnProperty(i)
-      ) {
-        changes[i] = simpleChange(
-          {
-            [i]: changes[CHANGES_SET_PROPS].currentValue[i],
-          },
-          changes[CHANGES_SET_PROPS].firstChange,
-          {
-            [i]:
-              changes[CHANGES_SET_PROPS].previousValue &&
-              changes[CHANGES_SET_PROPS].previousValue[i],
-          }
-        )[i];
-      }
+  return keys.some((i) => {
+    if (
+      !changes[i] &&
+      changes[CHANGES_SET_PROPS]?.currentValue?.hasOwnProperty(i)
+    ) {
+      changes[i] = simpleChange(
+        {
+          [i]: changes[CHANGES_SET_PROPS].currentValue[i],
+        },
+        changes[CHANGES_SET_PROPS].firstChange,
+        {
+          [i]:
+            changes[CHANGES_SET_PROPS].previousValue &&
+            changes[CHANGES_SET_PROPS].previousValue[i],
+        }
+      )[i];
+    }
 
-      return (
-        changes[i] &&
-        (!isBoolean(firstChange) ||
-          (firstChange === true && changes[i].firstChange) ||
-          (firstChange === false && !changes[i].firstChange)) &&
-        simpleChangeFilter(changes[i], config)
-      );
-    })
-  );
+    return (
+      changes[i] &&
+      (!isBoolean(firstChange) ||
+        (firstChange === true && changes[i].firstChange) ||
+        (firstChange === false && !changes[i].firstChange)) &&
+      simpleChangeFilter(changes[i], config)
+    );
+  });
 };
 
 export const firstChanges = (
@@ -1840,15 +1843,17 @@ export const applyChanges = (
   defaults: GenericObject = {},
   skip: string[] = [],
   discardAllFalsey = CHANGES_HELPER_CONFIG_DEF.discardAllFalsey,
-  config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
+  config?: ChangesHelperConfig
 ): SimpleChanges => {
   if (!changes) {
     return changes;
   }
 
+  discardAllFalsey = Boolean(
+    discardAllFalsey || config?.discardAllFalsey || config?.truthyCheck
+  );
   config = { ...CHANGES_HELPER_CONFIG_DEF, ...config };
   const { keyMap, skipSetters, truthyCheck, transform } = config;
-  discardAllFalsey = config.discardAllFalsey || discardAllFalsey;
 
   if (keyMap) {
     Object.keys(keyMap).forEach((targetKey: string) => {

@@ -1,38 +1,40 @@
+import { BehaviorSubject } from 'rxjs';
+
 import {
-  Component,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  NgZone,
+  Component,
   ElementRef,
-  SimpleChanges,
   Input,
+  NgZone,
+  SimpleChanges,
 } from '@angular/core';
+
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import {
-  isBoolean,
-  isNotEmptyArray,
-  hasChanges,
   firstChanges,
-  notFirstChanges,
-  isNotEmptyMap,
+  hasChanges,
+  isBoolean,
+  isDefined,
   isEmptyArray,
-  isValuevy,
+  isNotEmptyArray,
+  isNotEmptyMap,
+  notFirstChanges,
 } from '../../../services/utils/functional-utils';
-import { SelectType } from '../../list.enum';
-import {
-  TreeListItem,
-  TreeListOption,
-  TreeListItemMap,
-} from '../tree-list.interface';
-import { TreeListModelService } from '../services/tree-list-model.service';
-import { TreeListControlsService } from '../services/tree-list-controls.service';
-import { TreeListViewUtils } from '../services/tree-list-view.static';
-import { BaseTreeListElement } from './tree-list.abstract';
-import { BehaviorSubject } from 'rxjs';
-import { TreeListValueUtils } from '../services/tree-list-value.static';
 import { MobileService } from '../../../services/utils/mobile.service';
 import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../../list-footer/list-footer.const';
+import { SelectType } from '../../list.enum';
 import { itemID } from '../../list.interface';
+import { TreeListControlsService } from '../services/tree-list-controls.service';
+import { TreeListModelService } from '../services/tree-list-model.service';
+import { TreeListValueUtils } from '../services/tree-list-value.static';
+import { TreeListViewUtils } from '../services/tree-list-view.static';
+import {
+  TreeListItem,
+  TreeListItemMap,
+  TreeListOption,
+} from '../tree-list.interface';
+import { BaseTreeListElement } from './tree-list.abstract';
 
 @Component({
   selector: 'b-tree-list',
@@ -93,7 +95,7 @@ export class TreeListComponent extends BaseTreeListElement {
 
     if (
       hasChanges(changes, ['list', 'itemsMap', 'value'], true, {
-        truthyCheck: isValuevy,
+        truthyCheck: isDefined,
       })
     ) {
       viewModelWasUpdated =
@@ -126,7 +128,7 @@ export class TreeListComponent extends BaseTreeListElement {
         ['list', 'itemsMap', 'viewFilter', 'value', 'startCollapsed'],
         true,
         {
-          truthyCheck: isValuevy,
+          truthyCheck: isDefined,
         }
       )
     ) {

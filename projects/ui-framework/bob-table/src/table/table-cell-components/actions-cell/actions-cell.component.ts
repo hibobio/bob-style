@@ -3,7 +3,7 @@ import { ICellRendererParams } from 'ag-grid-community';
 
 import { Component } from '@angular/core';
 
-import { ButtonType, get, IconColor, Icons, MenuItem } from 'bob-style';
+import { Button, BUTTON_CONFIG, get, MenuItem } from 'bob-style';
 
 @Component({
   selector: 'b-actions-cell',
@@ -21,13 +21,10 @@ import { ButtonType, get, IconColor, Icons, MenuItem } from 'bob-style';
   ],
 })
 export class ActionsCellComponent implements ICellRendererAngularComp {
+  readonly triggerBtn: Button = BUTTON_CONFIG.trigger;
+
   public menuItems: MenuItem[];
   public openLeft: boolean;
-  readonly buttonType: ButtonType = ButtonType.tertiary;
-  readonly buttonColor: IconColor = IconColor.normal;
-  readonly buttonIcon: Icons = Icons.three_dots_vert;
-
-  constructor() {}
 
   agInit(params: any): void {
     this.openLeft = get(params, 'value.openLeft', false);

@@ -18,7 +18,7 @@ import {
   notFirstChanges,
   objectRemoveEntriesByValue,
 } from '../services/utils/functional-utils';
-import { Icon } from './icon.interface';
+import { Icon, IconInputCmnt } from './icon.interface';
 import { getIconColor, getIconSize } from './icon.static';
 import { IconColor, IconRotate, Icons, IconSize, IconType } from './icons.enum';
 
@@ -51,14 +51,21 @@ export class IconComponent implements OnChanges {
     }
   }
 
-  @Input() icon: Icons;
-  @Input() color: Icon['color'] = IconColor.dark;
-  @HostBinding('attr.data-size') @Input() size: Icon['size'] = IconSize.medium;
-  @Input() rotate: IconRotate = null;
-  @HostBinding('attr.data-type') @Input() type: IconType = IconType.regular;
-  @Input() hasHoverState = false;
-  @Input() tooltipClass: TooltipClass | TooltipClass[];
-  @HostBinding('attr.data-tooltip') @Input() toolTipSummary: string = null;
+  @Input() icon: IconInputCmnt | Icons;
+  @Input() color: IconInputCmnt | Icon['color'] = IconColor.dark;
+  @HostBinding('attr.data-size') @Input() size: IconInputCmnt | Icon['size'] =
+    IconSize.medium;
+
+  @Input() rotate: IconInputCmnt | IconRotate = null;
+  @Input() hasHoverState: IconInputCmnt | boolean = false;
+  @Input() tooltipClass: IconInputCmnt | TooltipClass | TooltipClass[];
+
+  @HostBinding('attr.data-type') @Input() type: IconInputCmnt | IconType =
+    IconType.regular;
+
+  @HostBinding('attr.data-tooltip') @Input() toolTipSummary:
+    | IconInputCmnt
+    | string = null;
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(

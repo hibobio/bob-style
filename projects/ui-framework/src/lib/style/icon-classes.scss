@@ -67,8 +67,11 @@
 [data-icon-before-color='custom'] {
   .has-hover:hover &,
   .has-hover:focus &,
+  .has-hover.focused &,
+  [data-menu-open='true'] &.has-hover,
   &.has-hover:hover,
-  &.has-hover:focus {
+  &.has-hover:focus,
+  &.has-hover.focused {
     &:before {
       filter: brightness(0.8);
     }
@@ -88,8 +91,11 @@
 [data-icon-after-color='custom'] {
   .has-hover:hover &,
   .has-hover:focus &,
+  .has-hover.focused &,
+  [data-menu-open='true'] &.has-hover,
   &.has-hover:hover,
-  &.has-hover:focus {
+  &.has-hover:focus,
+  &.has-hover.focused {
     &:after {
       filter: brightness(0.8);
     }

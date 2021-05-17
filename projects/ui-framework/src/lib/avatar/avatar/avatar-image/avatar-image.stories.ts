@@ -1,15 +1,17 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
 import { zipObject } from 'lodash';
-import { AvatarSize, AvatarBadge } from '../avatar.enum';
-import { ComponentGroupType } from '../../../consts';
-import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
-import { AvatarModule } from '../avatar.module';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { IconsModule } from '../../../icons/icons.module';
+import { action } from '@storybook/addon-actions';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../../consts';
 import { Icons } from '../../../icons/icons.enum';
+import { IconsModule } from '../../../icons/icons.module';
 import { mockAvatar } from '../../../mock.const';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
+import { AvatarBadge, AvatarSize } from '../avatar.enum';
+import { AvatarModule } from '../avatar.module';
 
 const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
   withKnobs
@@ -79,12 +81,19 @@ const note = `
   *AvatarModule*
 
   ~~~
-  ${template}
+  <b-avatar-image
+    [avatar]="avatar"
+    [disabled]="disabled"
+    (clicked)="onClick($event)">
+  </b-avatar-image>
   ~~~
 
-  #### Properties
+  <mark>**Note**: Use [avatar] input for static props and separate inputs for dynamic props</mark>
+
+  #### Properties (interface Avatar)
   Name | Type | Description | Default value
   --- | --- | --- | ---
+  [avatar] | <u>Avatar</u> | all properties of Avatar interface can be assigned with single input | &nbsp;
   [imageSource] | string | URL of the avatar image<br>\
   **Important!** <br>\
   use **EmployeeAvatarService<wbr>.getOptimizedAvatarImage<wbr>\
@@ -104,7 +113,7 @@ const note = `
   ng-content | element | you can pass stuff to be placed inside Avatar as ng-content | &nbsp;
 
   ~~~
-  ${template2}
+  ${template}
   ~~~
 `;
 

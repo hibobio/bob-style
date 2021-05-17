@@ -16,6 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 import {
   applyChanges,
   BaseFormElement,
+  Button,
   ButtonSize,
   ButtonType,
   chainCall,
@@ -98,11 +99,14 @@ export abstract class RTEbaseElement
   public editorValue: string;
   public plchldrPnlTrgrFocused = false;
 
-  readonly icons = Icons;
-  readonly buttonType = ButtonType;
-  readonly buttonSize = ButtonSize;
-  readonly iconColor = IconColor;
   readonly plchldrPanelPosition = PanelDefaultPosVer.belowRight;
+
+  readonly addBtn: Button = {
+    type: ButtonType.tertiary,
+    size: ButtonSize.small,
+    icon: Icons.placeholder_add,
+    color: IconColor.normal,
+  };
 
   private cntrlsInited = false;
   protected miscControlsState: { pasteAsText: boolean } = {

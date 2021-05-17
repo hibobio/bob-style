@@ -70,6 +70,7 @@ export {
   ActionMenuButtonComponent
 } from './lib/buttons/action-menu-button/action-menu-button.component';
 export * from './lib/buttons/buttons.interface';
+export * from './lib/buttons/common-buttons.const';
 /*
  * Avatar
  */

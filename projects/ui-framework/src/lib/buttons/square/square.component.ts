@@ -10,9 +10,9 @@ import {
   SimpleChanges,
 } from '@angular/core';
 
-import { COLOR_TO_ICONCOLOR_MAP } from '../../icons/icon.const';
 import { Icon } from '../../icons/icon.interface';
-import { IconColor, IconSize } from '../../icons/icons.enum';
+import { getIconColor } from '../../icons/icon.static';
+import { IconSize } from '../../icons/icons.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import {
   hasChanges,
@@ -33,9 +33,7 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
       [attr.disabled]="disabled || null"
       [attr.data-icon-before]="icn || null"
       [attr.data-icon-before-size]="icn ? icnSize : null"
-      [attr.data-icon-before-color]="
-        icn ? (customColor ? 'custom' : color || 'inherit') : null
-      "
+      [attr.data-icon-before-color]="icn ? color || 'inherit' : null"
     >
       <ng-content></ng-content>
     </button>
@@ -77,12 +75,10 @@ export class SquareButtonComponent
       this.size === ButtonSize.small ? IconSize.medium : IconSize.large;
 
     if (hasChanges(changes, ['color', 'setProps'], true)) {
-      if (COLOR_TO_ICONCOLOR_MAP[this.color]) {
-        this.color = COLOR_TO_ICONCOLOR_MAP[this.color];
-      }
-      this.customColor = !Object.values(IconColor).includes(this.color as any);
+      const { color, cssVar } = getIconColor(this.color);
+      this.color = color;
       this.DOM.setCssProps(this.host.nativeElement, {
-        '--icon-before-color': this.customColor ? this.color : null,
+        '--icon-before-color': cssVar,
       });
     }
 

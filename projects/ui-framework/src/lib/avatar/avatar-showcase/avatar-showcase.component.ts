@@ -39,6 +39,7 @@ import { InputObservable } from '../../services/utils/decorators';
 import {
   applyChanges,
   hasChanges,
+  isDefined,
 } from '../../services/utils/functional-utils';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
 import { insideZone, timedSlice } from '../../services/utils/rxjs.operators';
@@ -103,9 +104,8 @@ export class EmployeesShowcaseComponent
   @Input()
   zoomOnHover = false;
 
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
+  @Output()
+  selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
   @Output() selectPanelOpened: EventEmitter<void> = new EventEmitter<void>();
   @Output() selectPanelClosed: EventEmitter<void> = new EventEmitter<void>();
 
@@ -210,7 +210,7 @@ export class EmployeesShowcaseComponent
 
     if (
       hasChanges(changes, ['doShuffle'], true, {
-        truthyCheck: (v) => v !== undefined,
+        truthyCheck: isDefined,
         checkEquality: true,
       })
     ) {

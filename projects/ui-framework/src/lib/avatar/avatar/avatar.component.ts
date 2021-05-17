@@ -28,7 +28,7 @@ import {
 import { GenericObject } from '../../types';
 import { AvatarImageComponent } from './avatar-image/avatar-image.component';
 import { AvatarBadge, AvatarOrientation, AvatarSize } from './avatar.enum';
-import { Avatar, BadgeConfig } from './avatar.interface';
+import { Avatar, AvatarInputCmnt, BadgeConfig } from './avatar.interface';
 
 @Component({
   selector: 'b-avatar',
@@ -60,20 +60,21 @@ export class AvatarComponent implements OnChanges {
     }
   }
 
-  @Input() size: AvatarSize = AvatarSize.mini;
-  @Input() imageSource: string;
-  @Input() backgroundColor: string;
-  @Input() title: string;
-  @Input() subtitle: string;
-  @Input() caption: string;
-  @Input() icon: Icons | Icon;
-  @Input() badge: AvatarBadge | BadgeConfig | Icon;
-  @Input() chip: Chip;
-  @Input() afterChipText: string;
-  @Input() isClickable = false;
-  @Input() expectChanges = false;
-  @Input() supressWarnings = false;
-  @Input() tooltipType = TruncateTooltipType.css;
+  @Input() size: AvatarInputCmnt | AvatarSize = AvatarSize.mini;
+  @Input() imageSource: AvatarInputCmnt | string;
+  @Input() backgroundColor: AvatarInputCmnt | string;
+  @Input() title: AvatarInputCmnt | string;
+  @Input() subtitle: AvatarInputCmnt | string;
+  @Input() caption: AvatarInputCmnt | string;
+  @Input() icon: AvatarInputCmnt | Icons | Icon;
+  @Input() badge: AvatarInputCmnt | AvatarBadge | BadgeConfig | Icon;
+  @Input() chip: AvatarInputCmnt | Chip;
+  @Input() afterChipText: AvatarInputCmnt | string;
+  @Input() isClickable: AvatarInputCmnt | boolean = false;
+  @Input() expectChanges: AvatarInputCmnt | boolean = false;
+  @Input() supressWarnings: AvatarInputCmnt | boolean = false;
+  @Input() tooltipType: AvatarInputCmnt | TruncateTooltipType =
+    TruncateTooltipType.css;
 
   @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
@@ -82,9 +83,12 @@ export class AvatarComponent implements OnChanges {
   }
   @HostBinding('attr.data-orientation')
   @Input()
-  orientation: AvatarOrientation = AvatarOrientation.horizontal;
+  orientation: AvatarInputCmnt | AvatarOrientation =
+    AvatarOrientation.horizontal;
 
-  @HostBinding('attr.data-disabled') @Input() disabled = false;
+  @HostBinding('attr.data-disabled') @Input() disabled:
+    | AvatarInputCmnt
+    | boolean = false;
 
   onClick: (event: MouseEvent) => void;
 
