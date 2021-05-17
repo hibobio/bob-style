@@ -277,6 +277,7 @@ $icon-colors: (
     .has-hover:hover &,
     .has-hover:focus &,
     .has-hover.focused &,
+    [data-menu-open='true'] &.has-hover,
     &.has-hover:hover,
     &.has-hover:focus,
     &.has-hover.focused {

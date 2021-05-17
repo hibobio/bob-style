@@ -40,8 +40,8 @@ import {
   eventHasCntrlKey,
   getEventPath,
   hasChanges,
+  isDefined,
   isKey,
-  isValuevy,
   notFirstChanges,
 } from '../../../services/utils/functional-utils';
 import { UtilsService } from '../../../services/utils/utils.service';
@@ -203,18 +203,13 @@ export abstract class BaseEditableTreeListElement
 
     if (
       hasChanges(changes, ['list', 'startCollapsed'], true, {
-        truthyCheck: isValuevy,
+        truthyCheck: isDefined,
       })
     ) {
       this.toggleCollapseAll(this.startCollapsed, false);
     }
 
-    if (
-      notFirstChanges(changes, null, true, {
-        truthyCheck: isValuevy,
-      }) &&
-      !this.cd['destroyed']
-    ) {
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
     }
   }

@@ -1,15 +1,15 @@
-import { storiesOf } from '@storybook/angular';
-import { select, boolean, withKnobs, text } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
-import { ButtonsModule } from '../buttons.module';
-import { ButtonSize, ButtonType } from '../buttons.enum';
-import { Icons, IconColor } from '../../icons/icons.enum';
-import { IconsModule } from '../../icons/icons.module';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
 
+import { ComponentGroupType } from '../../consts';
+import { IconColor, Icons } from '../../icons/icons.enum';
+import { IconsModule } from '../../icons/icons.module';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 // @ts-ignore: md file and not a module
 import buttonsProps from '../button.properties.md';
+import { ButtonSize, ButtonType } from '../buttons.enum';
+import { ButtonsModule } from '../buttons.module';
 
 const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
   withKnobs
@@ -31,8 +31,12 @@ const note = `
   *ButtonsModule*
 
   ~~~
-  ${template}
+  <b-square-button [button]="buttonConfig"
+          [text]="text">
+  </b-square-button>
   ~~~
+
+  <mark>**Note**: Use [button] input for static props and separate inputs for dynamic props</mark>
 
   #### Properties
 
@@ -41,13 +45,17 @@ const note = `
   [type] | ButtonType | button type | secondary
   [size] | ButtonSize | button size | medium
   [icon] | Icons | button icon | &nbsp;
-  <s>[color]</s> | IconColor | button icon color (deprecated, use [type] instead) | dark
+  <s>[color]</s> | <s>IconColor</s> | <s>button icon color</s> (deprecated, use [type] instead) | dark
   [round] | boolean | make it round! | &nbsp;
   [toolTipSummary] | string | Tooltip text | &nbsp;
   [text] | string | same as toolTipSummary - text will be displayed as tooltip | &nbsp;
 
 
   ${buttonsProps}
+
+  ~~~
+  ${template}
+  ~~~
 `;
 
 const storyTemplate = `

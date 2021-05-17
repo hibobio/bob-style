@@ -1,51 +1,53 @@
 import {
   AfterViewInit,
-  OnDestroy,
   ChangeDetectorRef,
-  NgZone,
-  ElementRef,
-  ViewChild,
-  Input,
-  HostBinding,
-  SimpleChanges,
-  OnChanges,
   Directive,
+  ElementRef,
+  HostBinding,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
   OnInit,
+  SimpleChanges,
+  ViewChild,
 } from '@angular/core';
+
 import { SearchComponent } from '../../../search/search/search.component';
-import {
-  cloneDeepSimpleObject,
-  objectHasTruthyValue,
-  isBoolean,
-  arrayDifference,
-  isEmptyArray,
-  notFirstChanges,
-  applyChanges,
-  hasChanges,
-  isNotEmptyArray,
-  isValuevy,
-} from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
-import { SelectType, SelectMode } from '../../list.enum';
-import { itemID, ListFooterActionsState } from '../../list.interface';
-import { TreeListItemMap, TreeListItem } from '../tree-list.interface';
-import { TreeListInputOutput } from '../tree-list-IO.abstract';
-import { TreeListModelService } from '../services/tree-list-model.service';
-import { TreeListControlsService } from '../services/tree-list-controls.service';
+import {
+  applyChanges,
+  arrayDifference,
+  cloneDeepSimpleObject,
+  hasChanges,
+  isBoolean,
+  isDefined,
+  isEmptyArray,
+  isNotEmptyArray,
+  notFirstChanges,
+  objectHasTruthyValue,
+} from '../../../services/utils/functional-utils';
+import { MobileService } from '../../../services/utils/mobile.service';
 import { LIST_ACTIONS_STATE_DEF } from '../../list-footer/list-footer.const';
+import { LIST_MAX_ITEMS } from '../../list.consts';
+import { SelectMode, SelectType } from '../../list.enum';
+import { itemID, ListFooterActionsState } from '../../list.interface';
+import { TreeListControlsService } from '../services/tree-list-controls.service';
+import { TreeListModelService } from '../services/tree-list-model.service';
+import { TreeListSearchUtils } from '../services/tree-list-search.static';
+import { TreeListViewUtils } from '../services/tree-list-view.static';
+import { TreeListInputOutput } from '../tree-list-IO.abstract';
 import {
   BTL_KEYMAP_DEF,
   BTL_ROOT_ID,
   BTL_VALUE_SEPARATOR_DEF,
 } from '../tree-list.const';
-import { TreeListSearchUtils } from '../services/tree-list-search.static';
-import { MobileService } from '../../../services/utils/mobile.service';
-import { TreeListViewUtils } from '../services/tree-list-view.static';
-import { LIST_MAX_ITEMS } from '../../list.consts';
+import { TreeListItem, TreeListItemMap } from '../tree-list.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class BaseTreeListElement extends TreeListInputOutput
+export abstract class BaseTreeListElement
+  extends TreeListInputOutput
   implements OnChanges, OnInit, AfterViewInit, OnDestroy {
   constructor(
     protected modelSrvc: TreeListModelService,
@@ -128,7 +130,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
 
     if (
       hasChanges(changes, ['value', 'valueDefault'], true, {
-        truthyCheck: isValuevy,
+        truthyCheck: isDefined,
       })
     ) {
       this.updateActionButtonsState();
@@ -151,12 +153,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
       this.hasFooter = !this.readonly && objectHasTruthyValue(this.listActions);
     }
 
-    if (
-      notFirstChanges(changes, null, true, {
-        truthyCheck: isValuevy,
-      }) &&
-      !this.cd['destroyed']
-    ) {
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
     }
   }

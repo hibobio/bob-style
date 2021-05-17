@@ -20,3 +20,5 @@ export interface Icon {
   toolTipSummary?: string;
   tooltipClass?: TooltipClass | TooltipClass[] | string[];
 }
+
+export type IconInputCmnt = 'use [config] input for static props and separate inputs for dynamic props';

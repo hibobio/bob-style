@@ -38,8 +38,8 @@ import {
   hasChanges,
   Icons,
   IconSize,
+  isDefined,
   isString,
-  isValuevy,
   log,
   notFirstChanges,
   PAGER_CONFIG_DEF,
@@ -219,7 +219,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes, DEFAULT_PROP_VALUES, [], true, {
-      truthyCheck: (v) => v !== undefined,
+      truthyCheck: isDefined,
     });
 
     let previousColumnDefValue: ColumnDef[];
@@ -248,7 +248,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         changes,
         ['columnDefs', 'columnDefConfig', 'enableRowDrag'],
         true,
-        { truthyCheck: isValuevy }
+        { truthyCheck: isDefined }
       )
     ) {
       const existingColumns = previousColumnDefValue

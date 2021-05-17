@@ -19,6 +19,7 @@ import {
   applyChanges,
   hasChanges,
   isDark,
+  isDefined,
 } from '../../services/utils/functional-utils';
 import { Color } from '../../types';
 import { ChipType } from '../chips.enum';
@@ -64,7 +65,7 @@ export class ChipComponent implements OnChanges {
       [],
       true,
       {
-        truthyCheck: (v) => v !== undefined,
+        truthyCheck: isDefined,
       }
     );
 
@@ -86,7 +87,7 @@ export class ChipComponent implements OnChanges {
 
     if (
       hasChanges(changes, ['color'], true, {
-        truthyCheck: (v) => v !== undefined,
+        truthyCheck: isDefined,
       })
     ) {
       this.DOM.setCssProps(this.chip, {

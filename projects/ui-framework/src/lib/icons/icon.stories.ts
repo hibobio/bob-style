@@ -40,9 +40,7 @@ const templForNotes = `<b-icon [type]="type"
         [icon]="icon"
         [size]="size"
         [color]="color"
-        [hasHoverState]="hasHoverState"
-        [rotate]="rotate"
-        [toolTipSummary]="toolTipSummary">
+        [hasHoverState]="true">
 </b-icon>`;
 
 const note = `
@@ -51,12 +49,17 @@ const note = `
   *IconsModule*
 
   ~~~
+  <b-icon [config]="iconConfig"></b-icon>
+
   ${templForNotes}
   ~~~
 
-  #### Properties
+  <mark>**Note**: Use [config] input for static props and separate inputs for dynamic props</mark>
+
+  #### Properties (interface Icon)
   Name | Type | Description | Default value
   --- | --- | --- | ---
+  [config] | <u>Icon</u> | all properties can be supplied as one config object | &nbsp;
   [type] | IconType | regular or circular | regular
   [icon] | Icons | enum for the available icons | &nbsp;
   [size] | IconSize/number | icon size preset/enum, or custom size in px | medium
@@ -64,7 +67,6 @@ const note = `
   [toolTipSummary] | String | Tooltip text (uses simple CSS tooltip. if it looks bad, use matTooltip instead)  | &nbsp;
   [hasHoverState] | boolean | if icon has hover state | false
   [rotate] | '90', '-90', '180' | icon transform/rotate | &nbsp;
-  [config] | Icon | all properties can be supplied as one config object | &nbsp;
 `;
 
 const storyTemplate = `

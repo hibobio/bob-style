@@ -1,51 +1,51 @@
+import { OverlayRef } from '@angular/cdk/overlay';
 import {
-  Component,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Input,
-  ViewChild,
-  Output,
+  Component,
   EventEmitter,
   forwardRef,
-  SimpleChanges,
-  OnDestroy,
+  Input,
   OnChanges,
-  ChangeDetectionStrategy,
+  OnDestroy,
+  Output,
+  SimpleChanges,
+  ViewChild,
 } from '@angular/core';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+
 import { BaseFormElement } from '../../../form-elements/base-form-element';
-import {
-  TreeListOption,
-  ViewFilter,
-  TreeListComponentIO,
-  TreeListKeyMap,
-  TreeListValue,
-  TreeListItemMap,
-} from '../tree-list.interface';
-import { SelectType, SelectMode } from '../../list.enum';
-import { itemID, ListFooterActions } from '../../list.interface';
+import { PanelDefaultPosVer } from '../../../popups/panel/panel.enum';
+import { TooltipClass } from '../../../popups/tooltip/tooltip.enum';
 import { TruncateTooltipType } from '../../../popups/truncate-tooltip/truncate-tooltip.enum';
-import { OverlayRef } from '@angular/cdk/overlay';
-import { TreeListPanelComponent } from '../tree-list-panel/tree-list-panel.component';
-import { BTL_KEYMAP_DEF, BTL_VALUE_SEPARATOR_DEF } from '../tree-list.const';
-import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import {
+  applyChanges,
   hasChanges,
   isNotEmptyArray,
   isNotEmptyMap,
   notFirstChanges,
-  applyChanges,
-  isValuevy,
 } from '../../../services/utils/functional-utils';
-import { TooltipClass } from '../../../popups/tooltip/tooltip.enum';
-import { TreeListPanelIO } from '../tree-list-panel/tree-list-panel.interface';
-import { TreeListModelService } from '../services/tree-list-model.service';
 import {
-  selectValueOrFail,
   selectValueMultiOrSingle,
+  selectValueOrFail,
 } from '../../../services/utils/transformers';
-import { TreeListValueUtils } from '../services/tree-list-value.static';
-import { PanelDefaultPosVer } from '../../../popups/panel/panel.enum';
 import { LIST_ACTIONS_DEF } from '../../list-footer/list-footer.const';
 import { SELECT_MAX_ITEMS } from '../../list.consts';
+import { SelectMode, SelectType } from '../../list.enum';
+import { itemID, ListFooterActions } from '../../list.interface';
+import { TreeListModelService } from '../services/tree-list-model.service';
+import { TreeListValueUtils } from '../services/tree-list-value.static';
+import { TreeListPanelComponent } from '../tree-list-panel/tree-list-panel.component';
+import { TreeListPanelIO } from '../tree-list-panel/tree-list-panel.interface';
+import { BTL_KEYMAP_DEF, BTL_VALUE_SEPARATOR_DEF } from '../tree-list.const';
+import {
+  TreeListComponentIO,
+  TreeListItemMap,
+  TreeListKeyMap,
+  TreeListOption,
+  TreeListValue,
+  ViewFilter,
+} from '../tree-list.interface';
 
 @Component({
   selector: 'b-tree-select',
@@ -69,7 +69,8 @@ import { SELECT_MAX_ITEMS } from '../../list.consts';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TreeSelectComponent extends BaseFormElement
+export class TreeSelectComponent
+  extends BaseFormElement
   implements TreeListComponentIO, TreeListPanelIO, OnChanges, OnDestroy {
   constructor(private modelSrvc: TreeListModelService, cd: ChangeDetectorRef) {
     super(cd);
@@ -98,9 +99,8 @@ export class TreeSelectComponent extends BaseFormElement
   @Input() listActions: ListFooterActions;
   @Input() tooltipType: TruncateTooltipType = TruncateTooltipType.auto;
 
-  @Output() changed: EventEmitter<TreeListValue> = new EventEmitter<
-    TreeListValue
-  >();
+  @Output()
+  changed: EventEmitter<TreeListValue> = new EventEmitter<TreeListValue>();
   @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
@@ -167,12 +167,7 @@ export class TreeSelectComponent extends BaseFormElement
       this.writeValue(isNotEmptyArray(this.value) ? [this.value[0]] : []);
     }
 
-    if (
-      hasChanges(changes, null, true, {
-        truthyCheck: isValuevy,
-      }) &&
-      !this.cd['destroyed']
-    ) {
+    if (!this.cd['destroyed']) {
       this.cd.detectChanges();
     }
   }

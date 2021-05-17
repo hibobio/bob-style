@@ -21,3 +21,5 @@ export interface Button {
 }
 
 export interface ButtonConfig extends Button {}
+
+export type ButtonInputCmnt = 'use [button] input for static props and separate inputs for dynamic props';
