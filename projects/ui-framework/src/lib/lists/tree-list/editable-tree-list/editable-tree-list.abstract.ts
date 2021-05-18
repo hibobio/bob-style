@@ -1,69 +1,70 @@
+import { cloneDeep } from 'lodash';
+import { Subscription } from 'rxjs';
+import { delay, filter } from 'rxjs/operators';
+
+import { DragRef } from '@angular/cdk/drag-drop';
 import {
-  Directive,
-  OnChanges,
-  SimpleChanges,
-  Input,
-  HostBinding,
-  Output,
-  EventEmitter,
-  ViewChild,
-  ElementRef,
-  ChangeDetectorRef,
-  OnInit,
-  NgZone,
-  OnDestroy,
   AfterViewInit,
+  ChangeDetectorRef,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
   HostListener,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
 } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+
+import { Keys } from '../../../enums';
+import { InputAutoCompleteOptions } from '../../../form-elements/input/input.enum';
+import { Icon } from '../../../icons/icon.interface';
 import {
-  applyChanges,
-  hasChanges,
-  notFirstChanges,
-  isValuevy,
-  isKey,
-  eventHasCntrlKey,
-  getEventPath,
-  compareAsStrings,
-  simpleChange,
-} from '../../../services/utils/functional-utils';
-import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from '../tree-list.const';
-import {
-  TreeListOption,
-  TreeListKeyMap,
-  TreeListItemMap,
-  TreeListItem,
-} from '../tree-list.interface';
-import { MenuItem } from '../../../navigation/menu/menu.interface';
-import {
-  Icons,
-  IconType,
-  IconSize,
   IconColor,
+  Icons,
+  IconSize,
+  IconType,
 } from '../../../icons/icons.enum';
-import { TreeListModelService } from '../services/tree-list-model.service';
-import { TreeListControlsService } from '../services/tree-list-controls.service';
-import {
-  TreeListItemEditContext,
-  InsertItemLocation,
-  UndoState,
-} from './editable-tree-list.interface';
-import { TreeListEditUtils } from '../services/tree-list-edit.static';
+import { MenuItem } from '../../../navigation/menu/menu.interface';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { Styles } from '../../../services/html/html-helpers.interface';
-import { TreeListViewUtils } from '../services/tree-list-view.static';
-import { DragRef } from '@angular/cdk/drag-drop';
-import { Keys } from '../../../enums';
-import { Subscription } from 'rxjs';
+import {
+  applyChanges,
+  compareAsStrings,
+  eventHasCntrlKey,
+  getEventPath,
+  hasChanges,
+  isDefined,
+  isKey,
+  notFirstChanges,
+} from '../../../services/utils/functional-utils';
 import { UtilsService } from '../../../services/utils/utils.service';
-import { outsideZone } from '../../../services/utils/rxjs.operators';
-import { filter, delay } from 'rxjs/operators';
-import { cloneDeep } from 'lodash';
 import { DOMInputEvent } from '../../../types';
-import { TreeListModelUtils } from '../services/tree-list-model.static';
 import { SelectMode } from '../../list.enum';
-import { TranslateService } from '@ngx-translate/core';
 import { itemID } from '../../list.interface';
-import { InputAutoCompleteOptions } from '../../../form-elements/input/input.enum';
+import { TreeListControlsService } from '../services/tree-list-controls.service';
+import { TreeListEditUtils } from '../services/tree-list-edit.static';
+import { TreeListModelService } from '../services/tree-list-model.service';
+import { TreeListModelUtils } from '../services/tree-list-model.static';
+import { TreeListViewUtils } from '../services/tree-list-view.static';
+import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from '../tree-list.const';
+import {
+  TreeListItem,
+  TreeListItemMap,
+  TreeListKeyMap,
+  TreeListOption,
+} from '../tree-list.interface';
+import {
+  InsertItemLocation,
+  TreeListItemEditContext,
+  UndoState,
+} from './editable-tree-list.interface';
 
 const LISTITEM_EL_HEIGHT = 32;
 
@@ -123,14 +124,23 @@ export abstract class BaseEditableTreeListElement
   protected expandedWhileDragging: Set<TreeListItem> = new Set();
   private windowKeydownSubscriber: Subscription;
 
-  readonly icons = Icons;
-  readonly iconType = IconType;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
   readonly autoComplete = InputAutoCompleteOptions;
 
   protected savestate: UndoState;
   protected listBackup: TreeListOption[];
+
+  readonly menuTriggerIcn: Icon = {
+    type: IconType.circular,
+    size: IconSize.small,
+    color: IconColor.white,
+    icon: Icons.three_dots,
+  };
+  readonly addItemIcn: Icon = {
+    type: IconType.circular,
+    size: IconSize.small,
+    color: IconColor.white,
+    icon: Icons.add,
+  };
 
   @HostListener('click', ['$event']) onHostClick(event: MouseEvent) {
     if (this.cancelFocus) {
@@ -193,18 +203,13 @@ export abstract class BaseEditableTreeListElement
 
     if (
       hasChanges(changes, ['list', 'startCollapsed'], true, {
-        truthyCheck: isValuevy,
+        truthyCheck: isDefined,
       })
     ) {
       this.toggleCollapseAll(this.startCollapsed, false);
     }
 
-    if (
-      notFirstChanges(changes, null, true, {
-        truthyCheck: isValuevy,
-      }) &&
-      !this.cd['destroyed']
-    ) {
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
     }
   }

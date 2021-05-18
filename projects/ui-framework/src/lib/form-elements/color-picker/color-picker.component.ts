@@ -17,7 +17,8 @@ import {
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { ICON_CONFIG } from '../../icons/common-icons.const';
+import { Icon } from '../../icons/icon.interface';
 import { LIST_ACTIONS_STATE_DEF } from '../../lists/list-footer/list-footer.const';
 import {
   ListPanelService,
@@ -59,7 +60,8 @@ import { ColorPickerConfig } from './color-picker.interface';
     { provide: BaseFormElement, useExisting: ColorPickerComponent },
   ],
 })
-export class ColorPickerComponent extends BaseFormElement
+export class ColorPickerComponent
+  extends BaseFormElement
   implements OnChanges, OnDestroy, OverlayEnabledComponent {
   constructor(
     public cd: ChangeDetectorRef,
@@ -117,12 +119,7 @@ export class ColorPickerComponent extends BaseFormElement
   );
 
   public nullColor = '#fff';
-  readonly resetIcon = {
-    icon: Icons.reset_x,
-    size: IconSize.small,
-    color: IconColor.normal,
-    hasHoverState: true,
-  };
+  readonly clearIcn: Icon = ICON_CONFIG.reset;
 
   public lastEmittedValue: string;
   public isTyping = false;
@@ -255,10 +252,10 @@ export class ColorPickerComponent extends BaseFormElement
   private setColorVars(color: string): void {
     const avatarBorderColor = isDark(color, 200)
       ? 'transparent'
-      : ColorsGrey.color_grey_500;
+      : ColorsGrey.grey_500;
     const cursorColor = isDark(color, 80)
-      ? ColorsGrey.color_grey_500
-      : ColorsGrey.color_grey_800;
+      ? ColorsGrey.grey_500
+      : ColorsGrey.grey_800;
 
     setCssProps(this.hostElRef.nativeElement, {
       '--circle-border-color': avatarBorderColor,

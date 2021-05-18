@@ -67,6 +67,16 @@ export enum ColorsGrey {
   color_grey_700 = '#535353',
   color_grey_800 = '#303030',
   color_grey_900 = '#050505',
+
+  grey_100 = '#f8f7f7',
+  grey_200 = '#f3f2f2',
+  grey_300 = '#e9e9e9',
+  grey_400 = '#e2e2e2',
+  grey_500 = '#d2d2d2',
+  grey_600 = '#9d9d9d',
+  grey_700 = '#535353',
+  grey_800 = '#303030',
+  grey_900 = '#050505',
 }
 
 export enum ColorsMain {

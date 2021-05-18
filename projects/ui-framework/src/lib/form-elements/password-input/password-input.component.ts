@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { Icon } from '../../icons/icon.interface';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { applyChanges } from '../../services/utils/functional-utils';
 import { BaseFormElement } from '../base-form-element';
@@ -36,7 +37,8 @@ import { InputAutoCompleteOptions, InputTypes } from '../input/input.enum';
     { provide: BaseFormElement, useExisting: PasswordInputComponent },
   ],
 })
-export class PasswordInputComponent extends BaseInputElement
+export class PasswordInputComponent
+  extends BaseInputElement
   implements OnChanges {
   constructor(cd: ChangeDetectorRef, zone: NgZone) {
     super(cd, zone);
@@ -51,6 +53,12 @@ export class PasswordInputComponent extends BaseInputElement
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
+
+  readonly showIcn: Partial<Icon> = {
+    size: IconSize.medium,
+    color: IconColor.dark,
+    hasHoverState: true,
+  };
 
   public inputType = InputTypes.password;
 

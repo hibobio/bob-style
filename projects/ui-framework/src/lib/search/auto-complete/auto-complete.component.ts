@@ -1,22 +1,22 @@
+import { has } from 'lodash';
+
+import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
-  ChangeDetectorRef,
-  OnInit,
 } from '@angular/core';
-import { has } from 'lodash';
-import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
-import { AutoCompleteOption } from './auto-complete.interface';
+
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
-import { OverlayPositionClasses } from '../../types';
 import {
   ListPanelService,
   OverlayEnabledComponent,
@@ -24,9 +24,11 @@ import {
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { Panel } from '../../popups/panel/panel.interface';
 import {
-  getMatcher,
+  getFuzzyMatcher,
   normalizeString,
 } from '../../services/utils/functional-utils';
+import { OverlayPositionClasses } from '../../types';
+import { AutoCompleteOption } from './auto-complete.interface';
 
 @Component({
   selector: 'b-auto-complete',
@@ -55,9 +57,8 @@ export class AutoCompleteComponent
   @Input() skipOptionsFiltering = false;
 
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
-  @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<
-    AutoCompleteOption
-  >();
+  @Output()
+  optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<AutoCompleteOption>();
 
   searchValue = '';
   filteredOptions: AutoCompleteOption[];
@@ -147,13 +148,15 @@ export class AutoCompleteComponent
   }
 
   private filterOptions(): AutoCompleteOption[] {
-    const matcher = getMatcher(this.searchValue);
+    const matcher = getFuzzyMatcher(this.searchValue);
 
-    return this.options.filter(
-      (option) =>
+    return this.options.filter((option) => {
+      matcher.lastIndex = 0;
+      return (
         matcher.test(normalizeString(option.value)) ||
         matcher.test(normalizeString(option.subText))
-    );
+      );
+    });
   }
 
   private skipFiltering(): AutoCompleteOption[] {

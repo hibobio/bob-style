@@ -5,6 +5,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
+
 import { Types } from '../../enums';
 import { ColorsGrey } from '../../services/color-service/color-palette.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -61,7 +62,7 @@ export class LegendComponent implements OnChanges {
         ? null
         : isDark(item.color, 215)
         ? 'white'
-        : ColorsGrey.color_grey_800,
+        : ColorsGrey.grey_800,
     }));
   }
   public data: LegendData[] = [];

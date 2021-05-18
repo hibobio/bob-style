@@ -70,6 +70,7 @@ export {
   ActionMenuButtonComponent
 } from './lib/buttons/action-menu-button/action-menu-button.component';
 export * from './lib/buttons/buttons.interface';
+export * from './lib/buttons/common-buttons.const';
 /*
  * Avatar
  */
@@ -593,6 +594,9 @@ export { IconsModule } from './lib/icons/icons.module';
 export { IconComponent } from './lib/icons/icon.component';
 export * from './lib/icons/icons.enum';
 export * from './lib/icons/icon.interface';
+export * from './lib/icons/icon.const';
+export * from './lib/icons/common-icons.const';
+export * from './lib/icons/icon.static';
 // Filter Module
 export { FiltersModule } from './lib/services/filters/filters.module';
 export { LinkifyPipe } from './lib/services/filters/linkify.pipe';

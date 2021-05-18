@@ -9,9 +9,7 @@
  <b-icon *ngIf="removable && !disabled"
          class="remove-button"
          role="button"
-         [icon]="icons.reset_x"
+         [config]="removeIcn"
          [color]="removeIconColor"
-         [hasHoverState]="true"
-         [size]="iconSize.small"
          (click)="onRemoveClick($event)">
  </b-icon>

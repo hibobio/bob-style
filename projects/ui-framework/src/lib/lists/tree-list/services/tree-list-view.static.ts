@@ -1,16 +1,16 @@
-import { TreeListItem, TreeListItemMap } from '../tree-list.interface';
 import {
+  compareAsStrings,
+  isBoolean,
   isEmptyArray,
   isEmptyMap,
   isNullOrUndefined,
-  isBoolean,
   isNumber,
-  compareAsStrings,
 } from '../../../services/utils/functional-utils';
 import { LIST_EL_HEIGHT, LIST_MAX_ITEMS } from '../../list.consts';
-import { TreeListModelUtils } from './tree-list-model.static';
-import { BTL_ROOT_ID } from '../tree-list.const';
 import { itemID } from '../../list.interface';
+import { BTL_ROOT_ID } from '../tree-list.const';
+import { TreeListItem, TreeListItemMap } from '../tree-list.interface';
+import { TreeListModelUtils } from './tree-list-model.static';
 
 interface TreeListItemElementContext {
   item: TreeListItem;
@@ -60,12 +60,8 @@ export class TreeListViewUtils {
   public static scrollToItem(
     config: Partial<TreeListItemElementContext>
   ): void {
-    const {
-      item,
-      itemElement,
-      listElement,
-      maxHeightItems,
-    } = this.getItemElementContext(config);
+    const { item, itemElement, listElement, maxHeightItems } =
+      this.getItemElementContext(config) || {};
 
     if (!itemElement) {
       console.error(`[TreeListViewUtils.scrollToItem]:

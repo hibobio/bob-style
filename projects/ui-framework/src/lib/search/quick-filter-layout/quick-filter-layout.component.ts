@@ -1,38 +1,41 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  ElementRef,
-  ContentChildren,
-  QueryList,
-  OnDestroy,
-  SimpleChanges,
-  OnChanges,
-  AfterContentInit,
-} from '@angular/core';
-import { animate, style, transition, trigger } from '@angular/animations';
-import { QuickFilterConfig } from '../quick-filter/quick-filter.interface';
-import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
-import { BaseFormElement } from '../../form-elements/base-form-element';
-import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
-import { BaseButtonElement } from '../../buttons/button.abstract';
-import { GenericObject } from '../../types';
-import {
-  applyChanges,
-  notFirstChanges,
-  onlyUpdatedProps,
-  asArray,
-  hasProp,
-  cloneArray,
-  simpleChange,
-} from '../../services/utils/functional-utils';
+import { cloneDeep, keyBy } from 'lodash';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { keyBy, cloneDeep } from 'lodash';
-import { ListChange } from '../../lists/list-change/list-change';
+
+import { animate, style, transition, trigger } from '@angular/animations';
+import {
+  AfterContentInit,
+  Component,
+  ContentChildren,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  QueryList,
+  SimpleChanges,
+} from '@angular/core';
+
+import { BaseButtonElement } from '../../buttons/button.abstract';
+import { BaseFormElement } from '../../form-elements/base-form-element';
 import { IGNORE_EVENTS_DEF } from '../../form-elements/form-elements.const';
+import { ICON_CONFIG } from '../../icons/common-icons.const';
+import { Icon } from '../../icons/icon.interface';
+import { ListChange } from '../../lists/list-change/list-change';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import {
+  applyChanges,
+  asArray,
+  cloneArray,
+  hasProp,
+  notFirstChanges,
+  onlyUpdatedProps,
+  simpleChange,
+} from '../../services/utils/functional-utils';
+import { GenericObject } from '../../types';
+import { QuickFilterConfig } from '../quick-filter/quick-filter.interface';
 
 @Component({
   selector: 'b-quick-filter-layout',
@@ -59,20 +62,16 @@ import { IGNORE_EVENTS_DEF } from '../../form-elements/form-elements.const';
 })
 export class QuickFilterLayoutComponent
   implements OnChanges, OnInit, AfterContentInit, OnDestroy {
-  constructor() {}
-
-  @ContentChildren(BaseFormElement) public formComponents: QueryList<
-    BaseFormElement
-  >;
+  @ContentChildren(BaseFormElement)
+  public formComponents: QueryList<BaseFormElement>;
   @ContentChildren(BaseButtonElement, { read: ElementRef })
   public actionButtons: QueryList<ElementRef>;
 
   @Input() quickFilters: QuickFilterConfig[];
   @Input() showResetFilter = false;
 
-  @Output() filtersChange: EventEmitter<GenericObject> = new EventEmitter<
-    GenericObject
-  >();
+  @Output()
+  filtersChange: EventEmitter<GenericObject> = new EventEmitter<GenericObject>();
   @Output() resetFilters: EventEmitter<void> = new EventEmitter<void>();
 
   public value: GenericObject = {};
@@ -86,9 +85,7 @@ export class QuickFilterLayoutComponent
   private subscribtions: Subscription[] = [];
   private hasChanges = false;
 
-  readonly icons = Icons;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
+  readonly refreshIcn: Icon = ICON_CONFIG.refresh;
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);

@@ -40,10 +40,10 @@ describe('InfoStripComponent', () => {
       component.iconType = type;
       fixture.detectChanges();
       const iconElement = fixture.debugElement.query(By.css('b-icon'));
-      expect(iconElement.componentInstance.color).toEqual(
+      expect(iconElement.componentInstance.setProps.color).toEqual(
         INFOSTRIP_ICON_DICT[type].color
       );
-      expect(iconElement.componentInstance.icon).toEqual(
+      expect(iconElement.componentInstance.setProps.icon).toEqual(
         INFOSTRIP_ICON_DICT[type].icon
       );
     };

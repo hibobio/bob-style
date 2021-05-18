@@ -63,10 +63,7 @@
           class="bfe-suffix">
       <b-icon class="clear-input"
               role="button"
-              [icon]="icons.reset_x"
-              [size]="iconSize.small"
-              [color]="iconColor.normal"
-              [hasHoverState]="true"
+              [config]="clearIcn"
               (click)="$event.stopPropagation(); clearInput(0, 'value.startDate')">
       </b-icon>
     </span>
@@ -120,10 +117,7 @@
           class="bfe-suffix">
       <b-icon class="clear-input"
               role="button"
-              [icon]="icons.reset_x"
-              [size]="iconSize.small"
-              [color]="iconColor.normal"
-              [hasHoverState]="true"
+              [config]="clearIcn"
               (click)="$event.stopPropagation(); clearInput(1, 'value.endDate')">
       </b-icon>
     </span>

@@ -10,9 +10,9 @@
 <b-menu *ngIf="menuItems?.length > 1"
         [menu]="menuItems"
         [openLeft]="openLeft"
-        (click)="$event.stopPropagation()">
+        [swallow]="true">
   <b-square-button menu-trigger
-                   [button]="menuTriggerButton">
+                   [button]="triggerBtn">
   </b-square-button>
 </b-menu>
 

@@ -1,15 +1,21 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ActionsCellComponent } from './actions-cell.component';
-import { By } from '@angular/platform-browser';
-import { IconColor, Icons } from 'bob-style';
-import { ButtonType } from 'bob-style';
-import { MockComponent } from 'ng-mocks';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MenuComponent } from 'bob-style';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { SquareButtonComponent } from 'bob-style';
-import { GridActions } from './actions-cell.interface';
 import { map } from 'lodash';
+import { MockComponent } from 'ng-mocks';
+
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import {
+  ButtonType,
+  IconColor,
+  Icons,
+  MenuComponent,
+  SquareButtonComponent,
+} from 'bob-style';
+
+import { ActionsCellComponent } from './actions-cell.component';
+import { GridActions } from './actions-cell.interface';
 
 describe('ActionsCellComponent', () => {
   let component: ActionsCellComponent;
@@ -20,27 +26,29 @@ describe('ActionsCellComponent', () => {
     openLeft: true,
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ActionsCellComponent,
-        MockComponent(SquareButtonComponent),
-        MockComponent(MenuComponent),
-      ],
-      imports: [NoopAnimationsModule],
-      schemas: [NO_ERRORS_SCHEMA],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          ActionsCellComponent,
+          MockComponent(SquareButtonComponent),
+          MockComponent(MenuComponent),
+        ],
+        imports: [NoopAnimationsModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(ActionsCellComponent);
+          component = fixture.componentInstance;
+          component.agInit({ value: mockGridActions });
+          fixture.detectChanges();
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(ActionsCellComponent);
-        component = fixture.componentInstance;
-        component.agInit({ value: mockGridActions });
-        fixture.detectChanges();
-      });
-  }));
+  );
 
   it('should get menu items data', () => {
-    component.menuItems = map(component.menuItems, item => {
+    component.menuItems = map(component.menuItems, (item) => {
       delete item.action;
       return item;
     });
@@ -55,7 +63,7 @@ describe('ActionsCellComponent', () => {
     });
     fixture.detectChanges();
     const menuElement = fixture.debugElement.query(By.css('b-menu'));
-    component.menuItems = map(component.menuItems, item => {
+    component.menuItems = map(component.menuItems, (item) => {
       delete item.action;
       return item;
     });
@@ -75,13 +83,13 @@ describe('ActionsCellComponent', () => {
     const triggerButtonElement = fixture.debugElement.query(
       By.css('b-square-button')
     );
-    expect(triggerButtonElement.componentInstance.color).toEqual(
+    expect(triggerButtonElement.componentInstance.setProps.color).toEqual(
       IconColor.normal
     );
-    expect(triggerButtonElement.componentInstance.type).toEqual(
+    expect(triggerButtonElement.componentInstance.setProps.type).toEqual(
       ButtonType.tertiary
     );
-    expect(triggerButtonElement.componentInstance.icon).toEqual(
+    expect(triggerButtonElement.componentInstance.setProps.icon).toEqual(
       Icons.three_dots_vert
     );
   });

@@ -1,13 +1,16 @@
-import { TestBed } from '@angular/core/testing';
-import { TableUtilsService } from './table-utils.service';
-import { ColumnDef } from '../table/table.interface';
 import { concat } from 'lodash';
+
+import { TestBed } from '@angular/core/testing';
+
+import { IconColor, Icons, objectRemoveKeys } from 'bob-style';
+
 import {
   PinDirection,
   RowSelection,
   SortDirections,
 } from '../table/table.enum';
-import { IconColor, Icons, objectRemoveKeys } from 'bob-style';
+import { ColumnDef } from '../table/table.interface';
+import { TableUtilsService } from './table-utils.service';
 
 describe('TableUtilsService', () => {
   let tableUtilsService: TableUtilsService;

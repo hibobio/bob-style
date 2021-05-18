@@ -1,14 +1,21 @@
-import { Component, ElementRef, EventEmitter, HostBinding, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
+
 import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { SearchComponent } from '../search/search.component';
 
 @Component({
   selector: 'b-compact-search',
   templateUrl: './compact-search.component.html',
-  styleUrls: ['./compact-search.component.scss']
+  styleUrls: ['./compact-search.component.scss'],
 })
-export class CompactSearchComponent implements OnInit {
-  @ViewChild('search') search: SearchComponent;
+export class CompactSearchComponent {
+  @ViewChild(SearchComponent, { static: true }) search: SearchComponent;
 
   @Input() value = '';
   @Input() placeholder: string;
@@ -17,40 +24,29 @@ export class CompactSearchComponent implements OnInit {
   @Output() searchFocus: EventEmitter<string> = new EventEmitter<string>();
 
   readonly formElementSize = FormElementSize;
+  public open = false;
 
-  open = false;
+  public onSearchOpen(): void {
+    !this.open && (this.open = true);
+  }
 
-  constructor() { }
+  public onSearchClose(event: FocusEvent): void {
+    const relatedTarget = event.relatedTarget as HTMLElement;
+    if (!relatedTarget || !relatedTarget.matches('.clear-input')) {
+      this.search.inputFocused = false;
+      this.open = false;
+    }
+    if (relatedTarget?.matches('.clear-input')) {
+      this.focusSearchInput();
+    }
+  }
 
-  ngOnInit(): void {
+  public onSearchChange(event: string): void {
+    this.searchChange.emit(event);
   }
 
   private focusSearchInput(): void {
     this.search['skipFocusEvent'] = true;
     this.search.input.nativeElement.focus();
-  }
-
-  onSearchOpen(): void {
-    this.open = true;
-    setTimeout(() => {
-      this.search.input.nativeElement.focus();
-    }, 300);
-  }
-
-  onSearchClose(event: FocusEvent): void {
-    const relatedTarget = event.relatedTarget as HTMLElement;
-    if (!relatedTarget || !relatedTarget.matches('.clear-input')) {
-      this.search.inputFocused = false;
-      this.open = false;
-      return;
-    }
-    if (relatedTarget.matches('.clear-input')) {
-      this.focusSearchInput();
-      return;
-    }
-  }
-
-  onSearchChange(event: string): void {
-    this.searchChange.emit(event);
   }
 }

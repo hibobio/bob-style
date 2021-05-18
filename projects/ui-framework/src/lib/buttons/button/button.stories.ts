@@ -58,14 +58,8 @@ const templForNotes = `<b-button [type]="type"
       Click me
 </b-button>
 
-<a b-button
-            [routerLink]="someRoute"
-            [button]="{
-              type: type,
-              text: text,
-              icon: icon,
-              preloader: preloader
-            }">
+<a b-button [button]="buttonConfig}"
+            [routerLink]="someRoute">
       Go to profile
 </a>`;
 
@@ -77,6 +71,8 @@ const note = `
   ~~~
   ${templForNotes}
   ~~~
+
+  <mark>**Note**: Use [button] input for static props and separate inputs for dynamic props</mark>
 
   #### Properties
   Name | Type | Description | Default

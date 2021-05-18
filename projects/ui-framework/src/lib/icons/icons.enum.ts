@@ -6,12 +6,15 @@ export enum IconType {
 export type IconRotate = '90' | '-90' | '180';
 
 export enum IconSize {
-  small = 'small',
-  medium = 'medium',
-  large = 'large',
-  xLarge = 'x-large',
-  xxLarge = 'xx-large',
+  small = 'small', // 16
+  medium = 'medium', // 20
+  large = 'large', // 24
+  xLarge = 'x-large', // 46
+  xxLarge = 'xx-large', // 60
+  custom = 'custom',
 }
+
+export type IconSizes = keyof typeof IconSize;
 
 export enum IconColor {
   dark = 'dark',
@@ -23,7 +26,11 @@ export enum IconColor {
   inform = 'inform',
   negative = 'negative',
   positive = 'positive',
+  inherit = 'inherit',
+  custom = 'custom',
 }
+
+export type IconColors = keyof typeof IconColor;
 
 export enum Icons {
   add = 'b-icon-plus',

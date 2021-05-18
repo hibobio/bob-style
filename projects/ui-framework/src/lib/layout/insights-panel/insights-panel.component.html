@@ -1,5 +1,5 @@
 <b-button *ngIf="config?.collapsible!==false"
-          class="btn-minimize uppercase mrg-l-auto"
+          class="btn-minimize clr-inherit uppercase mrg-l-auto"
           [button]="expandButtonConf"
           [text]="isExpanded ? null : config?.expandButtonText"
           [icon]="isExpanded ? iconTypes.contract : iconTypes.expand"
@@ -18,7 +18,8 @@
         [ngStyle]="config?.headingStyle">
       <b-icon class="icon pad-b-4 mrg-r-8"
               [icon]="insight?.icon || config?.icon"
-              [size]="iconSizes.small">
+              [size]="iconSizes.small"
+              color="inherit">
       </b-icon>{{ insight.title }}
     </h4>
     <p class="mrg-0"

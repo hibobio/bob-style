@@ -22,6 +22,7 @@ import { TextProps } from '../../services/html/html-helpers.interface';
 import {
   asArray,
   hasChanges,
+  isDefined,
   unsubscribeArray,
 } from '../../services/utils/functional-utils';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
@@ -99,7 +100,7 @@ export class TruncateTooltipComponent
   ngOnChanges(changes: SimpleChanges): void {
     if (
       hasChanges(changes, ['text'], true, {
-        truthyCheck: (v: unknown) => v !== undefined,
+        truthyCheck: isDefined,
         checkEquality: true,
       })
     ) {

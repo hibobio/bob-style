@@ -6,14 +6,20 @@ export interface Button {
   type?: ButtonType;
   size?: ButtonSize;
   text?: string;
-  color?: IconColor;
+
   icon?: Icons;
+
+  color?: IconColor; // only for Square/Round button
+
   active?: boolean;
   disabled?: boolean;
   preloader?: boolean;
+
   throttle?: number | false;
   swallow?: boolean;
   onClick?: (arg?: MouseEvent | any) => void;
 }
 
 export interface ButtonConfig extends Button {}
+
+export type ButtonInputCmnt = 'use [button] input for static props and separate inputs for dynamic props';

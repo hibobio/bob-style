@@ -14,6 +14,12 @@ $list-max-items: 8;
   overflow: hidden;
 }
 
+.header-option-value ::ng-deep {
+  strong {
+    text-decoration: underline;
+  }
+}
+
 :host b-search {
   margin: 0;
   top: 0;
@@ -173,10 +179,6 @@ $list-max-items: 8;
   .header-option-value,
   .option-value {
     min-width: 0;
-  }
-
-  .option-value {
-    white-space: pre-line;
   }
 }
 

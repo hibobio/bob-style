@@ -80,8 +80,6 @@ story.add(
       props: {
         sendComment: action('Send comment click'),
 
-        mentionsList: object('mentionsList', mentionsOptions, 'Data'),
-
         contentHTML: HTML_COMMENT_TEXT,
         content: text('content', 'First comment!', 'Props'),
         name: text('name', name, 'Props'),
@@ -90,6 +88,8 @@ story.add(
         placeholder: text('placeholder', 'Write your comment here.', 'Props'),
         autoFocus: boolean('autoFocus', true, 'Props'),
         updateOnBlur: boolean('updateOnBlur', false, 'Props'),
+
+        mentionsList: object('mentionsList', mentionsOptions, 'Data'),
       },
       moduleMetadata: {
         imports: [

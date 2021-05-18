@@ -6,7 +6,8 @@
      [attr.id]="id"
      [ngClass]="{'direction-row': !direction || direction === dir.row, 'direction-column': direction === dir.column}">
 
-  <ng-container *ngFor="let radio of options; let i = index; trackBy: trackByID">
+  <ng-container
+                *ngFor="let radio of options; let i = index; trackBy: trackByID">
 
     <input type="radio"
            #input
@@ -31,10 +32,7 @@
             [text]="radio.label || radio[key] || radio"></span>
 
       <b-icon *ngIf="radio.description"
-              [icon]="icons.info_outline"
-              [color]="iconColor.normal"
-              [size]="iconSize.small"
-              [hasHoverState]="true"
+              [config]="infoIcn"
               [matTooltip]="radio.description"
               [matTooltipClass]="tooltipClass"
               [matTooltipShowDelay]="delay"

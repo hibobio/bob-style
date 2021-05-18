@@ -30,3 +30,5 @@ export interface Avatar {
   onClick?: (event: MouseEvent) => void;
   [key: string]: any;
 }
+
+export type AvatarInputCmnt = 'use [avatar] input for static props and separate inputs for dynamic props';

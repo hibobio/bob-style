@@ -1,4 +1,3 @@
-import { cloneDeep, isEqual } from 'lodash';
 import { Subscription } from 'rxjs';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -30,6 +29,7 @@ import { SearchComponent } from '../search/search/search.component';
 import { DOMhelpers } from '../services/html/dom-helpers.service';
 import {
   applyChanges,
+  cloneDeep,
   cloneDeepSimpleObject,
   getEventPath,
   hasChanges,
@@ -38,6 +38,7 @@ import {
   notFirstChanges,
   objectHasTruthyValue,
   objectRemoveKey,
+  simpleArraysEqual,
   simpleChange,
 } from '../services/utils/functional-utils';
 import { MobileService } from '../services/utils/mobile.service';
@@ -606,7 +607,7 @@ export abstract class BaseListElement
         ? forceReset
         : !this.selectedIDs ||
           !this.optionsDefaultIDs ||
-          isEqual(this.selectedIDs.sort(), this.optionsDefaultIDs.sort());
+          simpleArraysEqual(this.selectedIDs, this.optionsDefaultIDs);
   }
 
   public isSameGroup(

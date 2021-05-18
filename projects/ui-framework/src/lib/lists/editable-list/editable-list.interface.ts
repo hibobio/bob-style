@@ -10,9 +10,11 @@ export interface EditableListActions {
 
 export interface EditableListState {
   list: SelectOption[];
-
-  newItem?: SelectOption;
   create?: string[];
   delete?: string[];
   deletedIDs?: itemID[];
+}
+
+export interface EditableListStateLocal extends EditableListState {
+  newItem: SelectOption;
 }

@@ -15,7 +15,8 @@
                   (linkClicked)="config.infoStrip.linkClicked && config.infoStrip.linkClicked()">
     </b-info-strip>
 
-    <b-input [label]="config?.confirmationData?.label || defaultLabel"
+    <b-input class="uppercase"
+             [label]="config?.confirmationData?.label || defaultLabel"
              [placeholder]="config?.confirmationData?.placeholder"
              [hintMessage]="config?.confirmationData?.hintMessage"
              [errorMessage]="(valid$ | async) === false && (config?.confirmationData?.errorMessage || ('bob-style.delete-confirmation.default.error' | translate))">

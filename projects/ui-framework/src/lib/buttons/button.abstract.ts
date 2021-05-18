@@ -17,7 +17,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { IconColor, Icons, IconSize } from '../icons/icons.enum';
+import { Icons, IconSize } from '../icons/icons.enum';
 import { DialogButton } from '../popups/dialog/dialog.interface';
 import {
   applyChanges,
@@ -33,7 +33,7 @@ import {
 import { insideZone } from '../services/utils/rxjs.operators';
 import { GenericObject } from '../types';
 import { BackButtonType, ButtonSize, ButtonType } from './buttons.enum';
-import { Button, ButtonConfig } from './buttons.interface';
+import { Button, ButtonConfig, ButtonInputCmnt } from './buttons.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -59,35 +59,35 @@ export abstract class BaseButtonElement
     }
   }
 
-  @Input() id: string;
-  @Input() text: string;
-  @Input() icon: Icons;
-  @Input() active = false;
-  @Input() color: any;
-  @Input() preloader = false;
+  @Input() id: ButtonInputCmnt | string;
+  @Input() text: ButtonInputCmnt | string;
+  @Input() icon: ButtonInputCmnt | Icons;
+  @Input() active: ButtonInputCmnt | boolean = false;
+  @Input() preloader: ButtonInputCmnt | boolean = false;
 
-  @Input() public type: ButtonType | BackButtonType;
-  @Input() public swallow = false;
-  @Input() public throttle: number;
+  @Input() public type: ButtonInputCmnt | ButtonType | BackButtonType;
+  @Input() public swallow: ButtonInputCmnt | boolean = false;
+  @Input() public throttle: ButtonInputCmnt | number;
 
   @HostBinding('attr.data-type') get getButtonType() {
     return this.type || this.typeDefault;
   }
-  @HostBinding('attr.data-size') @Input() public size: ButtonSize = null;
-  @HostBinding('attr.data-disabled') @Input() public disabled = false;
+  @HostBinding('attr.data-size') @Input() public size:
+    | ButtonInputCmnt
+    | ButtonSize = null;
+  @HostBinding('attr.data-disabled') @Input() public disabled:
+    | ButtonInputCmnt
+    | boolean = false;
 
   @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
   readonly icons = Icons;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
 
   public buttonClass: string = null;
   public icn: string;
   public icnSize: IconSize;
-  public icnColor: IconColor;
 
   protected typeDefault = ButtonType.primary;
 
@@ -138,7 +138,7 @@ export abstract class BaseButtonElement
               }
             }),
             this.throttle > 0
-              ? throttleTime(this.throttle, undefined, {
+              ? throttleTime(this.throttle as number, undefined, {
                   leading: true,
                   trailing: false,
                 })
@@ -158,16 +158,6 @@ export abstract class BaseButtonElement
 
     this.icnSize =
       this.size === ButtonSize.large ? IconSize.large : IconSize.medium;
-
-    this.icnColor = [
-      ButtonType.primary,
-      ButtonType.negative,
-      ButtonType.positive,
-    ].includes((this.type || this.typeDefault) as any)
-      ? IconColor.white
-      : this.disabled
-      ? IconColor.normal
-      : IconColor.dark;
   }
 
   protected getButtonClass(): string {

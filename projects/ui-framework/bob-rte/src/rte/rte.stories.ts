@@ -1,4 +1,5 @@
-import { storiesOf } from '@storybook/angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { action } from '@storybook/addon-actions';
 import {
   array,
   number,
@@ -7,18 +8,16 @@ import {
   text,
   withKnobs,
 } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { values } from 'lodash';
-import { BlotType, RTEType, RTEMode } from './rte.enum';
-import { mentionsOptions, placeholderMock, rteMockHtml } from './rte.mocks';
-import { ComponentGroupType } from 'bob-style';
-import { dedupeArray } from 'bob-style';
-import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
-import { RichTextEditorModule } from './rte.module';
-import { mockText } from 'bob-style';
-import { xssMock } from '../../../src/lib/services/utils/xss.mock';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType, dedupeArray, mockText } from 'bob-style';
+
 import { FormElementsCommonProps } from '../../../src/lib/form-elements/form-elements.stories.common';
+import { xssMock } from '../../../src/lib/services/utils/xss.mock';
+import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
+import { BlotType, RTEMode, RTEType } from './rte.enum';
+import { mentionsOptions, placeholderMock, rteMockHtml } from './rte.mocks';
+import { RichTextEditorModule } from './rte.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -209,8 +208,8 @@ story.add(
       props: {
         html: select('value', ['rich text', 'xss test'], 'rich text', 'Props'),
 
-        type: select('type', values(RTEType), RTEType.primary, 'Props'),
-        mode: select('mode', values(RTEMode), RTEMode.html, 'Props'),
+        type: select('type', Object.values(RTEType), RTEType.primary, 'Props'),
+        mode: select('mode', Object.values(RTEMode), RTEMode.html, 'Props'),
 
         rteMockHtml: text('html', rteMockHtml, 'Data'),
         xssTest: xssMock,

@@ -28,11 +28,11 @@ import {
   applyChanges,
   cloneDeepSimpleObject,
   getEventPath,
+  getMapValues,
   hasChanges,
   isFunction,
   isKey,
   notFirstChanges,
-  objectRemoveKey,
   unsubscribeArray,
 } from '../../services/utils/functional-utils';
 import { filterByEventKey } from '../../services/utils/rxjs.operators';
@@ -43,6 +43,7 @@ import { ListActionType, ListSortType } from './editable-list.enum';
 import {
   EditableListActions,
   EditableListState,
+  EditableListStateLocal,
 } from './editable-list.interface';
 import { EditableListUtils } from './editable-list.static';
 
@@ -84,6 +85,7 @@ export abstract class BaseEditableListElement
     return this.listState.list[this.currentItemIndex] || this.listState.newItem;
   }
 
+  protected deleted: Map<string, SelectOption> = new Map();
   private subs: Subscription[] = [];
 
   readonly order = ListSortType;
@@ -159,15 +161,13 @@ export abstract class BaseEditableListElement
     },
   ];
 
-  readonly listState: EditableListState = {
+  readonly listState: EditableListStateLocal = {
     list: [],
     newItem: {
       id: null,
       value: '',
     },
     create: [],
-    delete: [],
-    deletedIDs: [],
   };
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -296,9 +296,17 @@ export abstract class BaseEditableListElement
   }
 
   protected transmit(): void {
-    this.changed.emit(
-      cloneDeepSimpleObject(objectRemoveKey(this.listState, 'newItem'))
-    );
+    this.changed.emit({
+      list: this.listState.list.map((item) => {
+        return String(item.id).startsWith('new--')
+          ? ({ value: item.value } as SelectOption)
+          : { ...item };
+      }),
+
+      create: this.listState.create.slice(),
+      delete: getMapValues(this.deleted).map((o) => o.value),
+      deletedIDs: getMapValues(this.deleted).map((o) => o.id),
+    });
   }
 
   public listTrackBy(index: number, item: SelectOption): itemID {

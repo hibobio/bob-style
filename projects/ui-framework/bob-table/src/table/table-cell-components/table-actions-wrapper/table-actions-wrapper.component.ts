@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 
 import {
   Button,
+  BUTTON_CONFIG,
   ButtonSize,
   ButtonType,
   Icon,
@@ -30,6 +31,11 @@ export class TableActionsWrapperComponent {
     icon: null,
   };
 
+  readonly buttonSize = ButtonSize;
+  readonly triggerBtn: Button = BUTTON_CONFIG.trigger;
+
+  public openLeft: boolean;
+
   @Input() set icon(icon: Icons | Icon) {
     this.tooltipIconConfig = {
       ...this.tooltipIconConfig,
@@ -40,14 +46,4 @@ export class TableActionsWrapperComponent {
   get icon() {
     return this.tooltipIconConfig.icon;
   }
-
-  public openLeft: boolean;
-
-  public menuTriggerButton: Button = {
-    type: ButtonType.tertiary,
-    icon: Icons.three_dots_vert,
-    color: IconColor.normal,
-  };
-
-  readonly buttonSize = ButtonSize;
 }

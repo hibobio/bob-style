@@ -1,18 +1,19 @@
 import {
+  ComponentFactoryResolver,
   Directive,
+  Host,
   Input,
   OnInit,
-  Host,
-  ComponentFactoryResolver,
-  Injector,
   ViewContainerRef,
 } from '@angular/core';
-import { merge, cloneDeep } from 'lodash';
+
+import { cloneDeepSimpleObject, merge } from 'bob-style';
+
 import { TableComponent } from '../table.component';
 import {
-  TreeConfig,
   defaultTreeConfig,
   TreeCellRendererComponent,
+  TreeConfig,
 } from './tree.config';
 
 function getTreeCellRenderer(
@@ -65,7 +66,10 @@ export class TreeDirective implements OnInit {
   }
 
   @Input('treeConfig') set setTreeConfig(treeConfig: TreeConfig) {
-    this.treeConfig = merge(cloneDeep(defaultTreeConfig), treeConfig);
+    this.treeConfig = merge(
+      cloneDeepSimpleObject(defaultTreeConfig),
+      treeConfig
+    );
     this.applyTreeConfig(this.treeConfig);
   }
   @Input() isCollapsable = true;

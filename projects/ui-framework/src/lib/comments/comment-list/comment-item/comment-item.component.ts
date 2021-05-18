@@ -36,11 +36,8 @@ export class CommentItemComponent implements OnChanges, AfterViewInit {
 
   @Input() comment: CommentItem;
 
-  @ViewChild('commentContent', { static: false }) contentElRef: ElementRef<
-    HTMLDivElement
-  >;
-
-  public menuOpen = false;
+  @ViewChild('commentContent', { static: false })
+  contentElRef: ElementRef<HTMLDivElement>;
 
   readonly avatarSize = AvatarSize;
   readonly buttonType = ButtonType;
@@ -79,7 +76,7 @@ export class CommentItemComponent implements OnChanges, AfterViewInit {
         equalCheck: COMMENT_EQ_CHECK,
       })
     ) {
-      this.value = this.commentsUtilService.sanitizeValue(
+      this.contentValue = this.value = this.commentsUtilService.sanitizeValue(
         this.comment?.content
       );
     }
@@ -87,11 +84,5 @@ export class CommentItemComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.contentValue = this.value;
-  }
-
-  closeMenu() {
-    setTimeout(() => {
-      this.menuOpen = false;
-    });
   }
 }

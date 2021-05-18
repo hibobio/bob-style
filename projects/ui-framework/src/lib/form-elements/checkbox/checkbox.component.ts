@@ -1,29 +1,32 @@
+import { filter } from 'rxjs/operators';
+
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   forwardRef,
   Input,
+  NgZone,
+  OnChanges,
   Output,
   SimpleChanges,
-  ChangeDetectorRef,
-  OnChanges,
-  NgZone,
 } from '@angular/core';
-import { BaseFormElement } from '../base-form-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BInputEvent } from '../input/input.interface';
-import { InputEventType } from '../form-elements.enum';
-import { booleanOrFail } from '../../services/utils/transformers';
-import { notFirstChanges } from '../../services/utils/functional-utils';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+
+import { clickKeys, Keys } from '../../enums';
+import { ICON_CONFIG } from '../../icons/common-icons.const';
+import { Icon } from '../../icons/icon.interface';
 import {
   TooltipClass,
   TooltipPosition,
 } from '../../popups/tooltip/tooltip.enum';
-import { clickKeys, Keys } from '../../enums';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { notFirstChanges } from '../../services/utils/functional-utils';
+import { booleanOrFail } from '../../services/utils/transformers';
 import { UtilsService } from '../../services/utils/utils.service';
-import { filter } from 'rxjs/operators';
+import { BaseFormElement } from '../base-form-element';
+import { InputEventType } from '../form-elements.enum';
+import { BInputEvent } from '../input/input.interface';
 
 @Component({
   selector: 'b-checkbox',
@@ -83,9 +86,6 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
     BInputEvent<boolean>
   > = new EventEmitter<BInputEvent<boolean>>();
 
-  readonly icons = Icons;
-  readonly iconColor = IconColor;
-  readonly iconSize = IconSize;
   readonly delay = 300;
   readonly tooltipPosition = TooltipPosition;
   readonly tooltipClass: TooltipClass[] = [
@@ -93,6 +93,8 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
     TooltipClass.PreWrap,
   ];
   readonly truncateTooltipType = TruncateTooltipType;
+
+  readonly infoIcn: Icon = ICON_CONFIG.info;
 
   private transmit(event: InputEventType): void {
     this.transmitValue(this.value, {

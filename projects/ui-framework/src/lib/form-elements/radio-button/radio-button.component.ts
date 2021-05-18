@@ -1,46 +1,49 @@
+import { filter } from 'rxjs/operators';
+
 import {
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   forwardRef,
   Input,
-  Output,
-  SimpleChanges,
-  OnChanges,
-  ChangeDetectorRef,
-  ViewChildren,
-  ElementRef,
-  QueryList,
-  AfterViewInit,
   NgZone,
+  OnChanges,
+  Output,
+  QueryList,
+  SimpleChanges,
+  ViewChildren,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BaseFormElement } from '../base-form-element';
-import { RadioDirection } from './radio-button.enum';
-import { InputEventType } from '../form-elements.enum';
-import { RadioConfig } from './radio-button.interface';
-import { BInputEvent } from '../input/input.interface';
-import {
-  valueInArrayOrFail,
-  objectHasKeyOrFail,
-  valueToObjectKey,
-} from '../../services/utils/transformers';
-import {
-  isNullOrUndefined,
-  hasProp,
-  notFirstChanges,
-  getEventPath,
-} from '../../services/utils/functional-utils';
-import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
+
+import { arrowKeys, clickKeys, Keys } from '../../enums';
+import { ICON_CONFIG } from '../../icons/common-icons.const';
+import { Icon } from '../../icons/icon.interface';
 import {
   TooltipClass,
   TooltipPosition,
 } from '../../popups/tooltip/tooltip.enum';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
-import { UtilsService } from '../../services/utils/utils.service';
-import { filter } from 'rxjs/operators';
-import { arrowKeys, clickKeys, Keys } from '../../enums';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { DOMtags } from '../../services/html/dom-helpers.enum';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import {
+  getEventPath,
+  hasProp,
+  isNullOrUndefined,
+  notFirstChanges,
+} from '../../services/utils/functional-utils';
+import {
+  objectHasKeyOrFail,
+  valueInArrayOrFail,
+  valueToObjectKey,
+} from '../../services/utils/transformers';
+import { UtilsService } from '../../services/utils/utils.service';
+import { BaseFormElement } from '../base-form-element';
+import { InputEventType } from '../form-elements.enum';
+import { BInputEvent } from '../input/input.interface';
+import { RadioDirection } from './radio-button.enum';
+import { RadioConfig } from './radio-button.interface';
 
 @Component({
   selector: 'b-radio-button',
@@ -60,7 +63,8 @@ import { DOMtags } from '../../services/html/dom-helpers.enum';
     { provide: BaseFormElement, useExisting: RadioButtonComponent },
   ],
 })
-export class RadioButtonComponent extends BaseFormElement
+export class RadioButtonComponent
+  extends BaseFormElement
   implements OnChanges, AfterViewInit {
   constructor(
     cd: ChangeDetectorRef,
@@ -142,9 +146,8 @@ export class RadioButtonComponent extends BaseFormElement
     BInputEvent<number | string>
   > = new EventEmitter<BInputEvent<number | string>>();
 
-  readonly icons = Icons;
-  readonly iconColor = IconColor;
-  readonly iconSize = IconSize;
+  readonly infoIcn: Icon = ICON_CONFIG.info;
+
   readonly delay = 300;
   readonly tooltipPosition = TooltipPosition;
   readonly tooltipClass: TooltipClass[] = [

@@ -42,7 +42,7 @@ export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy {
     private translateService: TranslateService
   ) {
     const confirmationText =
-      config?.confirmationData?.confirmationText ??
+      config?.confirmationData?.confirmationText ||
       this.translateService.instant(
         'bob-style.delete-confirmation.default.confirmationText'
       );
@@ -52,7 +52,7 @@ export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy {
     this.defaultLabel = this.translateService.instant(
       'bob-style.delete-confirmation.default.label',
       {
-        confirmationText: (config?.confirmationData?.confirmationText || confirmationText).toUpperCase(),
+        confirmationText: confirmationText.toUpperCase(),
       }
     );
   }
