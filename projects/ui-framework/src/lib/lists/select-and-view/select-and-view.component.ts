@@ -4,8 +4,15 @@ import { itemID, SelectGroupOption, SelectOption } from '../../lists/list.interf
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { asArray, isNotEmptyArray, unsubscribeArray } from '../../services/utils/functional-utils';
 import { map } from 'rxjs/operators';
-import { ListChange } from '../../lists/list-change/list-change';
 import { SingleListComponent } from '../single-list/single-list.component';
+import { Icon } from '../../icons/icon.interface';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+
+export interface ViewListItem {
+  id: itemID;
+  value: string;
+  groupName: string
+}
 
 @Component({
   selector: 'b-select-and-view',
@@ -26,8 +33,19 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
   @ViewChild(SingleListComponent, {static: true}) listComponent: SingleListComponent;
 
   public selectOptions$: BehaviorSubject<SelectGroupOption[]> = new BehaviorSubject(undefined);
+  public viewList$: BehaviorSubject<ViewListItem[]> = new BehaviorSubject(undefined);
 
   protected readonly subs: Subscription[] = [];
+  protected readonly viewItemIconConfig: Icon = {
+    size: IconSize.small,
+    color: IconColor.light,
+    icon: Icons.drag_alt,
+  };
+  protected readonly removeViewItemIconConfig: Icon = {
+    size: IconSize.small,
+    color: IconColor.dark,
+    icon: Icons.reset_x,
+  };
 
   ngOnInit(): void {
     this.subs.push(
@@ -46,7 +64,18 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
           map((listChange) =>  asArray(this.listValue$.getValue())
             .concat(listChange.selectedIDs || []))
         )
-        .subscribe(this.listValue$)
+        .subscribe(this.listValue$),
+      combineLatest([
+        this.inputOptions$,
+        this.listValue$,
+      ])
+        .pipe(
+          map(([options, value]) => isNotEmptyArray(value)
+            ? this.getViewListData(options, value)
+            : []
+          ),
+        )
+        .subscribe(this.viewList$)
     );
   }
 
@@ -54,6 +83,7 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
     unsubscribeArray(this.subs);
 
     [
+      this.viewList$,
       this.selectOptions$,
     ].forEach((subj) => subj.complete());
   }
@@ -67,5 +97,25 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
           .map((option: SelectOption) => ({ ...option, selected: false })),
       }))
       .filter(group => group.options.length);
+  }
+
+  private getViewListData(options: SelectGroupOption[], value: itemID[]): ViewListItem[] {
+    const data = [];
+
+    options.forEach(group =>
+      group.options.forEach(option =>
+        asArray(value).includes(option.id)
+        && data.push({ value: option.value, groupName: group.groupName, id: option.id })));
+
+    return data.sort((a, b) => value.indexOf(a.id) < value.indexOf(b.id) ? -1 : 1);
+  }
+
+  public removeItemFromList(itemId: string): void {
+    const currentValue = this.listValue$.getValue();
+    const index = currentValue.indexOf(itemId);
+
+    currentValue.splice(index, 1);
+
+    this.listValue$.next(currentValue);
   }
 }

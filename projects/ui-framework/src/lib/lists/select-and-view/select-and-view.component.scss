@@ -1,0 +1,29 @@
+@import '../../style/common-imports';
+
+.viewList {
+  border-radius: $border-radius;
+  border: 1px solid $border-color;
+  box-shadow: 0 2px 3px 0 $boxShadowColor;
+  overflow: hidden;
+}
+
+.viewItem {
+  grid-template-columns: 40px auto 40px;
+  height: times8(5.5);
+  text-align: left;
+  border-bottom: 1px solid $border-color;
+
+  &:hover,
+  &.focus {
+    background-color: $color-option-hover-solid;
+
+    .remove-button {
+      opacity: 1;
+    }
+  }
+}
+
+.remove-button {
+  opacity: 0;
+}
+

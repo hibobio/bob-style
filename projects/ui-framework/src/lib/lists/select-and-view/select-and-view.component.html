@@ -1,3 +1,18 @@
 <b-single-list [options]="selectOptions$ | async"
                [startWithGroupsCollapsed]="false">
 </b-single-list>
+
+<div *ngIf="viewList$ | async as viewList"
+     class="viewList">
+  <div *ngFor="let item of viewList;"
+       class="viewItem grd">
+    <b-icon class="mrg-l-8 mrg-r-16" [config]="viewItemIconConfig"></b-icon>
+    <div class="mrg-y-auto">
+      <div>{{item.value}}</div>
+      <div class="b-caption clr-grey-600">{{item.groupName}}</div>
+    </div>
+    <b-icon class="remove-button mrg-l-16 mrg-r-8"
+            [config]="removeViewItemIconConfig"
+            (click)="removeItemFromList(item.id)"></b-icon>
+  </div>
+</div>
