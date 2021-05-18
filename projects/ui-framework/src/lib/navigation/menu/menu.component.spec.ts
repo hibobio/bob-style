@@ -9,6 +9,7 @@ import {
   arrayInsertAt,
   simpleChange,
 } from '../../services/utils/functional-utils';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -42,7 +43,7 @@ describe('MenuComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [MenuComponent],
-      imports: [CommonModule, NoopAnimationsModule, MatMenuModule],
+      imports: [CommonModule, NoopAnimationsModule, MatMenuModule, MatTooltipModule],
     })
       .compileComponents()
       .then(() => {

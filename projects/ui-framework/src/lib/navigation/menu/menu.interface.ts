@@ -12,6 +12,7 @@ export interface MenuItem<T = any> {
   children?: MenuItem[];
   separatorAfter?: boolean;
   isTitle?: boolean;
+  tooltip?: string;
   action?($event): void;
 }
 
