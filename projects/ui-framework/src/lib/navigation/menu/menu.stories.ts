@@ -157,6 +157,7 @@ menu = [
   openLeft? | boolean | child menu should open to the left | false
   panelClass? | string | class to be added to child menu | &nbsp;
   separatorAfter? | boolean | if true, will add a divider line after item | false
+  tooltip? | string | menu item tooltip | &nbsp;
   isTitle? | boolean | will make item a non-clickable 'title' | false
   action? |  (item?: MenuItem) => void | function to be called on item click | &nbsp;
   children | MenuItem[] | sub-menu items | &nbsp;
