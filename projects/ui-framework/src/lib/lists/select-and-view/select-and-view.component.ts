@@ -40,10 +40,7 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
             ? this.getOptionsWithoutSelected(options, value)
             : options),
         )
-        .subscribe(this.selectOptions$)
-    );
-
-    this.subs.push(
+        .subscribe(this.selectOptions$),
       this.listComponent.selectChange
         .pipe(
           map((listChange) =>  asArray(this.listValue$.getValue())
@@ -70,12 +67,5 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
           .map((option: SelectOption) => ({ ...option, selected: false })),
       }))
       .filter(group => group.options.length);
-  }
-
-  public onSelectChange(listChange: ListChange): void {
-    const selected = listChange.getSelectedIds();
-    const currentValue = this.listValue$.getValue();
-
-    this.listValue$.next(currentValue.concat(selected));
   }
 }
