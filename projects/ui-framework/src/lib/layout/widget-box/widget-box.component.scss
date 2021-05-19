@@ -29,8 +29,5 @@ b-text-button {
 
   ::ng-deep span {
     color: $grey-700;
-    &:hover {
-      text-decoration: none !important;
-    }
   }
 }
