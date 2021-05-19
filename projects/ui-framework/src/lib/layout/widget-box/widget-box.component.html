@@ -1,0 +1,15 @@
+<header class="flx">
+  <b-subheading>{{title}}</b-subheading>
+  <div class="header-right">
+    <ng-content select="[header-right]"></ng-content>
+  </div>
+</header>
+<div class="content mrg-16">
+  <ng-content select="[content]"></ng-content>
+</div>
+<b-divider class="mrg-0"></b-divider>
+<b-button class="mrg-y-8"
+  [type]="buttonType.tertiary"
+  [text]="'View all'"
+  (clicked)="null">
+</b-button>

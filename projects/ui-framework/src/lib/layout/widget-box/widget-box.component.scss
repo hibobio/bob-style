@@ -1,0 +1,41 @@
+@import '../../style/common-imports';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  margin: 24px; //DELETE ME
+  user-select: none;
+}
+
+header {
+  height: 20px;
+  border: 1px solid lightgrey; //DELETE ME
+  margin: 16px 16px 0 16px;
+
+  b-subheading {
+    flex: 1;
+    line-height: 19.2px;
+  }
+
+  .header-right {
+    margin-right: 20px;
+    color: $grey-600;
+    line-height: 19.2px;
+  }
+}
+
+.content {
+  height: 142px;
+  border: 1px solid lightgrey; //DELETE ME
+}
+
+b-button ::ng-deep button {
+  color: $grey-700;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  height: 19px !important;
+  line-height: 19.2px !important;
+}
