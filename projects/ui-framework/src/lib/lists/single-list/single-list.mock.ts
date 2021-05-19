@@ -130,7 +130,12 @@ export const optionsMock: SelectGroupOption[] = [
       key: groupId,
 
       options: makeArray(optionsNum).map((_, i) => {
-        const optVal = mockName();
+        const optVal =
+          i === 0
+            ? mockName().split(/\s+/).join('&nbsp;')
+            : i === 1 || i === 2
+            ? mockName().split(/\s+/).join('\u00A0')
+            : mockName();
         const optId = simpleUID(
           groupId +
             '/' +
@@ -141,7 +146,7 @@ export const optionsMock: SelectGroupOption[] = [
 
         return {
           id: optId,
-          value: `<div>${optVal}</div>`,
+          value: i <= 2 ? `<div>${optVal}</div>` : optVal,
           selected: false,
           disabled: false,
           prefixComponent: {

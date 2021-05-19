@@ -4,6 +4,7 @@ import {
   getFuzzyMatcher,
   getMatcher,
   normalizeString,
+  normalizeStringSpaces,
 } from '../utils/functional-utils';
 
 @Pipe({
@@ -17,11 +18,20 @@ export class HighlightPipe implements PipeTransform {
       return value || '';
     }
 
-    const matcher = !fuzzy ? getMatcher(searchStr) : getFuzzyMatcher(searchStr);
+    // if string contains html or line break (\n), search only first half
+    const searcheableValue = value
+      .trim()
+      .split(/<[^>]+>|\n/)
+      .filter(Boolean)[0];
+    // remove weird spaces
+    const searcheableValueNorm = normalizeStringSpaces(searcheableValue);
+    // normalize Crème Brûlée
+    const valueToMatch = normalizeString(searcheableValue);
 
-    const searcheableValue = value.split(/^<[^>]+>|</).filter(Boolean)[0];
-
-    const match = matcher.exec(normalizeString(searcheableValue));
+    // try to match string as is, then try fuzzy match
+    const match =
+      getMatcher(searchStr).exec(valueToMatch) ||
+      (fuzzy ? getFuzzyMatcher(searchStr).exec(valueToMatch) : null);
 
     if (!match) {
       return value;
@@ -30,11 +40,14 @@ export class HighlightPipe implements PipeTransform {
     return value.replace(
       searcheableValue,
 
-      searcheableValue.slice(0, match.index) +
+      searcheableValueNorm.slice(0, match.index) +
         '<strong>' +
-        searcheableValue.slice(match.index, match.index + match['0'].length) +
+        searcheableValueNorm.slice(
+          match.index,
+          match.index + match['0'].length
+        ) +
         '</strong>' +
-        searcheableValue.slice(match.index + match['0'].length)
+        searcheableValueNorm.slice(match.index + match['0'].length)
     );
   }
 }

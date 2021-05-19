@@ -250,7 +250,9 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
           let searchValueIndex = 0,
             valueToMatch =
               option[group.keyMap?.value || MULTI_SEARCH_KEYMAP_DEF.value],
-            match: RegExpExecArray,
+            match: RegExpExecArray = matcher.exec(
+              normalizeString(valueToMatch)
+            ),
             highlightedMatch: string;
 
           if (option.searchValue) {

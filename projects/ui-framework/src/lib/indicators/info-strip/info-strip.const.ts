@@ -4,7 +4,7 @@ import { InfoStripIconType } from './info-strip.enum';
 
 export const INFOSTRIP_ICON_DICT: Record<InfoStripIconType, Icon> = {
   warning: {
-    color: IconColor.primary_alt,
+    color: IconColor.warn,
     icon: Icons.error_alt,
   },
   error: {
