@@ -2,7 +2,12 @@ import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild
 import { InputObservable, InputSubject } from '../../services/utils/decorators';
 import { itemID, SelectGroupOption, SelectOption } from '../../lists/list.interface';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
-import { asArray, isNotEmptyArray, unsubscribeArray } from '../../services/utils/functional-utils';
+import {
+  arrayRemoveItemMutate,
+  asArray,
+  isNotEmptyArray,
+  unsubscribeArray
+} from '../../services/utils/functional-utils';
 import { map } from 'rxjs/operators';
 import { SingleListComponent } from '../single-list/single-list.component';
 import { Icon } from '../../icons/icon.interface';
@@ -110,12 +115,9 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
     return data.sort((a, b) => value.indexOf(a.id) < value.indexOf(b.id) ? -1 : 1);
   }
 
-  public removeItemFromList(itemId: string): void {
-    const currentValue = this.listValue$.getValue();
-    const index = currentValue.indexOf(itemId);
-
-    currentValue.splice(index, 1);
-
-    this.listValue$.next(currentValue);
+  public removeItemFromList(itemId: itemID): void {
+    this.listValue$.next(
+      arrayRemoveItemMutate(this.listValue$.getValue()?.slice(), itemId)
+    );
   }
 }

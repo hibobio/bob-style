@@ -3,9 +3,9 @@
 </b-single-list>
 
 <div *ngIf="viewList$ | async as viewList"
-     class="viewList">
-  <div *ngFor="let item of viewList;"
-       class="viewItem grd">
+     class="viewList brd rounded shadow">
+  <div *ngFor="let item of viewList; trackBy: 'id' | trackByProp"
+       class="viewItem grd brd-b">
     <b-icon class="mrg-l-8 mrg-r-16" [config]="viewItemIconConfig"></b-icon>
     <div class="mrg-y-auto">
       <div>{{item.value}}</div>
