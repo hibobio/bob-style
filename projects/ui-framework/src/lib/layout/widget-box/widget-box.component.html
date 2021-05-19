@@ -8,7 +8,9 @@
   <ng-content select="[content]"></ng-content>
 </div>
 
-<b-text-button
-[text]="'View all'"
-         (clicked)="null">
-</b-text-button>
+<b-button class="mrg-4"
+  [type]="buttonType.tertiary"
+  [size]="buttonSize.small"
+  [text]="'View all'"
+  (clicked)="null">
+</b-button>

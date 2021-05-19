@@ -24,10 +24,11 @@ header {
   border-color: $grey-400;
 }
 
-b-text-button {
-  margin: 8px auto;
-
-  ::ng-deep span {
-    color: $grey-700;
+b-button ::ng-deep button {
+  color: $grey-700;
+  font-weight: 700 !important;
+  height: 27px !important;
+  &:hover {
+    background-color: $grey-200;
   }
 }
