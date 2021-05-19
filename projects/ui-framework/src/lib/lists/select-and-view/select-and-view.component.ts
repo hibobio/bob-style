@@ -112,7 +112,7 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
         asArray(value).includes(option.id)
         && data.push({ value: option.value, groupName: group.groupName, id: option.id })));
 
-    return data.sort((a, b) => value.indexOf(a.id) < value.indexOf(b.id) ? -1 : 1);
+    return data.sort((a, b) => value.indexOf(a.id) - value.indexOf(b.id));
   }
 
   public removeItemFromList(itemId: itemID): void {
