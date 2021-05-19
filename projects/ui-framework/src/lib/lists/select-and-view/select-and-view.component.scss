@@ -1,0 +1,20 @@
+@import '../../style/common-imports';
+
+.viewItem {
+  grid-template-columns: 40px auto 40px;
+  height: $wrap-height;
+  text-align: left;
+
+  &:hover {
+    background-color: $color-option-hover-solid;
+
+    .remove-button {
+      opacity: 1;
+    }
+  }
+}
+
+.remove-button {
+  opacity: 0;
+}
+
