@@ -10,7 +10,7 @@ export class ListLayoutComponent implements OnInit {
   @ContentChild(ListLayoutItemDirective, { static: true })
   contentChild!: ListLayoutItemDirective;
   @Input() items: any[];
-  
+
   constructor() { }
 
   ngOnInit() { }
