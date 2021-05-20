@@ -19,7 +19,7 @@ import {
 import { InputObservable, InputSubject } from '../../services/utils/decorators';
 import {
   arrayRemoveItemMutate,
-  asArray, getFuzzyMatcher, isEmptyArray,
+  asArray, getFuzzyMatcher, isEmptyArray, isEmptyString,
   isNotEmptyArray, isNotEmptyString, normalizeString,
   unsubscribeArray
 } from '../../services/utils/functional-utils';
@@ -118,7 +118,7 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
         .pipe(
           tap(([_, value, searchValue]) => {
             this.shouldDisplaySearch = isNotEmptyString(searchValue) || value.length >= DISPLAY_SEARCH_OPTION_NUM;
-            this.shouldDisplayEmpty = isNotEmptyString(searchValue) && isEmptyArray(value)
+            this.shouldDisplayEmpty = isEmptyString(searchValue) && isEmptyArray(value)
           }),
           map(([options, value, searchValue]) => isNotEmptyArray(value)
             ? this.getViewListData(options, value, searchValue)
