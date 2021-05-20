@@ -1,18 +1,40 @@
-<b-single-list [options]="selectOptions$ | async"
+<b-single-list class="slc-n-viw-list"
+               [options]="selectOptions$ | async"
                [startWithGroupsCollapsed]="false">
 </b-single-list>
 
-<div *ngIf="viewList$ | async as viewList"
-     class="viewList brd rounded shadow">
-  <div *ngFor="let item of viewList; trackBy: 'id' | trackByProp"
-       class="viewItem grd brd-b">
-    <b-icon class="mrg-l-8 mrg-r-16" [config]="viewItemIconConfig"></b-icon>
-    <div class="mrg-y-auto">
-      <div>{{item.value}}</div>
-      <div class="b-caption clr-grey-600">{{item.groupName}}</div>
-    </div>
-    <b-icon class="remove-button mrg-l-16 mrg-r-8"
-            [config]="removeViewItemIconConfig"
-            (click)="removeItemFromList(item.id)"></b-icon>
+<div *ngLet="{
+    viewList: viewList$ | async,
+    searchValue: searchValue$ | async
+  } as data"
+     class="slc-n-viw-list brd rounded shadow">
+
+  <b-search *ngIf="shouldDisplaySearch"
+            (searchChange)="searchChange($event)"
+            [ngClass]="{ 'no-result': !data.viewList?.length }">
+  </b-search>
+
+  <div *ngIf="shouldDisplaySearch && !data.viewList?.length"
+       class="clr-grey-600 mrg-l-16">
+    {{'bob-style.lists.empty-state-default' | translate}}
   </div>
+
+  <div class="items scroll-visible-alt">
+    <div *ngFor="let item of data.viewList; trackBy: 'id' | trackByProp"
+         class="viewItem grd brd-b">
+      <b-icon class="mrg-l-8 mrg-r-16" [config]="viewItemIconConfig"></b-icon>
+      <div class="mrg-y-auto">
+        <div [innerHTML]="item.value | highlight: data.searchValue:true"></div>
+        <div class="b-caption clr-grey-600"
+             [innerHTML]="item.groupName | highlight: data.searchValue:true"></div>
+      </div>
+      <b-icon class="remove-button mrg-l-16 mrg-r-8"
+              [config]="removeViewItemIconConfig"
+              (click)="removeItemFromList(item.id)"></b-icon>
+    </div>
+  </div>
+
+  <b-empty-state *ngIf="shouldDisplayEmpty"
+                 [config]="emptyStateConfig">
+  </b-empty-state>
 </div>

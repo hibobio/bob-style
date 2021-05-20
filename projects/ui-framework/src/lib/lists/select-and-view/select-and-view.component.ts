@@ -1,5 +1,4 @@
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -20,11 +19,15 @@ import {
 import { InputObservable, InputSubject } from '../../services/utils/decorators';
 import {
   arrayRemoveItemMutate,
-  asArray,
-  isNotEmptyArray,
-  unsubscribeArray,
+  asArray, getFuzzyMatcher, isEmptyArray,
+  isNotEmptyArray, isNotEmptyString, normalizeString,
+  unsubscribeArray
 } from '../../services/utils/functional-utils';
+import { map, tap } from 'rxjs/operators';
 import { SingleListComponent } from '../single-list/single-list.component';
+import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
+import { TranslateService } from '@ngx-translate/core';
+import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 
 export interface ViewListItem {
   id: itemID;
@@ -39,6 +42,9 @@ export interface ViewListItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectAndViewComponent implements OnInit, OnDestroy {
+
+  constructor(private translateService: TranslateService) {}
+
   @InputObservable([])
   @Input('options')
   public inputOptions$: Observable<SelectGroupOption[]>;
@@ -56,6 +62,7 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
   public viewList$: BehaviorSubject<ViewListItem[]> = new BehaviorSubject(
     undefined
   );
+  private searchValue$: BehaviorSubject<string> = new BehaviorSubject('');
 
   private readonly subs: Subscription[] = [];
   readonly viewItemIconConfig: Icon = {
@@ -68,6 +75,20 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
     color: IconColor.dark,
     icon: Icons.reset_x,
   };
+  readonly emptyStateConfig: EmptyStateConfig = {
+    icon: Icons.checkbox,
+    text: this.translateService.instant('bob-style.select-and-view.empty-list-text')
+  };
+
+  public shouldDisplaySearch = false;
+  public shouldDisplayEmpty = false;
+
+  public get value(): itemID[] {
+    return this.listValue$.getValue();
+  }
+  public set value(value: itemID[]) {
+    this.listValue$.next(value);
+  }
 
   ngOnInit(): void {
     this.subs.push(
@@ -89,11 +110,20 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
           )
         )
         .subscribe(this.listValue$),
-      combineLatest([this.inputOptions$, this.listValue$])
+      combineLatest([
+        this.inputOptions$,
+        this.listValue$,
+        this.searchValue$
+      ])
         .pipe(
-          map(([options, value]) =>
-            isNotEmptyArray(value) ? this.getViewListData(options, value) : []
-          )
+          tap(([_, value, searchValue]) => {
+            this.shouldDisplaySearch = isNotEmptyString(searchValue) || value.length >= DISPLAY_SEARCH_OPTION_NUM;
+            this.shouldDisplayEmpty = isNotEmptyString(searchValue) && isEmptyArray(value)
+          }),
+          map(([options, value, searchValue]) => isNotEmptyArray(value)
+            ? this.getViewListData(options, value, searchValue)
+            : []
+          ),
         )
         .subscribe(this.viewList$)
     );
@@ -121,15 +151,18 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
 
   private getViewListData(
     options: SelectGroupOption[],
-    value: itemID[]
+    value: itemID[],
+    searchValue: string
   ): ViewListItem[] {
     const data = [];
+    const matcher = getFuzzyMatcher(searchValue);
 
     options.forEach((group) =>
       group.options.forEach(
         (option) =>
-          asArray(value).includes(option.id) &&
-          data.push({
+          asArray(value).includes(option.id)
+          && (matcher.test(normalizeString(group.groupName)) || matcher.test(normalizeString(option.value)))
+          && data.push({
             value: option.value,
             groupName: group.groupName,
             id: option.id,
@@ -145,4 +178,46 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
       arrayRemoveItemMutate(this.listValue$.getValue()?.slice(), itemId)
     );
   }
+
+  public searchChange(searchValue: string): void {
+    this.searchValue$.next(searchValue.trim());
+  }
+
+  /*private filterItemsBySearch(currentList: ViewListItem[]): ViewListItem[] {
+    if (isEmptyString(this.searchValue)) {
+      return currentList;
+    }
+
+    const matcher = getFuzzyMatcher(this.searchValue);
+
+    return [];
+  }*/
+
+  /*
+
+ getFilteredOptions(
+    options: SelectGroupOption[],
+    searchValue: string
+  ): SelectGroupOption[] {
+
+    return searchValue
+      ? options
+          .map((group: SelectGroupOption) =>
+            Object.assign({}, group, {
+              options: group.options.filter((option: SelectOption) => {
+                const searcheableValue = option.value
+                  .split(/^<[^>]+>|</)
+                  .filter(Boolean)[0];
+                matcher.lastIndex = 0;
+                return (
+                  matcher.test(normalizeString(searcheableValue)) ||
+                  matcher.test(normalizeString(group.groupName))
+                );
+              }),
+            })
+          )
+          .filter((group: SelectGroupOption) => isNotEmptyArray(group.options))
+      : cloneDeep(options);
+  }
+   */
 }
