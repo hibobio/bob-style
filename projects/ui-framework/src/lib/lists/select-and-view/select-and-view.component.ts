@@ -182,42 +182,4 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
   public searchChange(searchValue: string): void {
     this.searchValue$.next(searchValue.trim());
   }
-
-  /*private filterItemsBySearch(currentList: ViewListItem[]): ViewListItem[] {
-    if (isEmptyString(this.searchValue)) {
-      return currentList;
-    }
-
-    const matcher = getFuzzyMatcher(this.searchValue);
-
-    return [];
-  }*/
-
-  /*
-
- getFilteredOptions(
-    options: SelectGroupOption[],
-    searchValue: string
-  ): SelectGroupOption[] {
-
-    return searchValue
-      ? options
-          .map((group: SelectGroupOption) =>
-            Object.assign({}, group, {
-              options: group.options.filter((option: SelectOption) => {
-                const searcheableValue = option.value
-                  .split(/^<[^>]+>|</)
-                  .filter(Boolean)[0];
-                matcher.lastIndex = 0;
-                return (
-                  matcher.test(normalizeString(searcheableValue)) ||
-                  matcher.test(normalizeString(group.groupName))
-                );
-              }),
-            })
-          )
-          .filter((group: SelectGroupOption) => isNotEmptyArray(group.options))
-      : cloneDeep(options);
-  }
-   */
 }
