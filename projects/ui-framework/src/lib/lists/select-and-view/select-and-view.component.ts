@@ -1,22 +1,35 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { InputObservable, InputSubject } from '../../services/utils/decorators';
-import { itemID, SelectGroupOption, SelectOption } from '../../lists/list.interface';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+
+import { Icon } from '../../icons/icon.interface';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import {
+  itemID,
+  SelectGroupOption,
+  SelectOption,
+} from '../../lists/list.interface';
+import { InputObservable, InputSubject } from '../../services/utils/decorators';
 import {
   arrayRemoveItemMutate,
   asArray,
   isNotEmptyArray,
-  unsubscribeArray
+  unsubscribeArray,
 } from '../../services/utils/functional-utils';
-import { map } from 'rxjs/operators';
 import { SingleListComponent } from '../single-list/single-list.component';
-import { Icon } from '../../icons/icon.interface';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 
 export interface ViewListItem {
   id: itemID;
   value: string;
-  groupName: string
+  groupName: string;
 }
 
 @Component({
@@ -26,7 +39,6 @@ export interface ViewListItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectAndViewComponent implements OnInit, OnDestroy {
-
   @InputObservable([])
   @Input('options')
   public inputOptions$: Observable<SelectGroupOption[]>;
@@ -35,18 +47,23 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
   @Input('value')
   public listValue$: BehaviorSubject<itemID[]>;
 
-  @ViewChild(SingleListComponent, {static: true}) listComponent: SingleListComponent;
+  @ViewChild(SingleListComponent, { static: true })
+  listComponent: SingleListComponent;
 
-  public selectOptions$: BehaviorSubject<SelectGroupOption[]> = new BehaviorSubject(undefined);
-  public viewList$: BehaviorSubject<ViewListItem[]> = new BehaviorSubject(undefined);
+  public selectOptions$: BehaviorSubject<
+    SelectGroupOption[]
+  > = new BehaviorSubject(undefined);
+  public viewList$: BehaviorSubject<ViewListItem[]> = new BehaviorSubject(
+    undefined
+  );
 
-  protected readonly subs: Subscription[] = [];
-  protected readonly viewItemIconConfig: Icon = {
+  private readonly subs: Subscription[] = [];
+  readonly viewItemIconConfig: Icon = {
     size: IconSize.small,
     color: IconColor.light,
     icon: Icons.drag_alt,
   };
-  protected readonly removeViewItemIconConfig: Icon = {
+  readonly removeViewItemIconConfig: Icon = {
     size: IconSize.small,
     color: IconColor.dark,
     icon: Icons.reset_x,
@@ -54,31 +71,29 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.push(
-      combineLatest([
-        this.inputOptions$,
-        this.listValue$,
-      ])
+      combineLatest([this.inputOptions$, this.listValue$])
         .pipe(
-          map(([options, value]) => isNotEmptyArray(value)
-            ? this.getOptionsWithoutSelected(options, value)
-            : options),
+          map(([options, value]) =>
+            isNotEmptyArray(value)
+              ? this.getOptionsWithoutSelected(options, value)
+              : options
+          )
         )
         .subscribe(this.selectOptions$),
       this.listComponent.selectChange
         .pipe(
-          map((listChange) =>  asArray(this.listValue$.getValue())
-            .concat(listChange.selectedIDs || []))
+          map((listChange) =>
+            asArray(this.listValue$.getValue()).concat(
+              listChange.selectedIDs || []
+            )
+          )
         )
         .subscribe(this.listValue$),
-      combineLatest([
-        this.inputOptions$,
-        this.listValue$,
-      ])
+      combineLatest([this.inputOptions$, this.listValue$])
         .pipe(
-          map(([options, value]) => isNotEmptyArray(value)
-            ? this.getViewListData(options, value)
-            : []
-          ),
+          map(([options, value]) =>
+            isNotEmptyArray(value) ? this.getViewListData(options, value) : []
+          )
         )
         .subscribe(this.viewList$)
     );
@@ -87,30 +102,40 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     unsubscribeArray(this.subs);
 
-    [
-      this.viewList$,
-      this.selectOptions$,
-    ].forEach((subj) => subj.complete());
+    [this.viewList$, this.selectOptions$].forEach((subj) => subj.complete());
   }
 
-  private getOptionsWithoutSelected(options: SelectGroupOption[], value: itemID[]): SelectGroupOption[] {
+  private getOptionsWithoutSelected(
+    options: SelectGroupOption[],
+    value: itemID[]
+  ): SelectGroupOption[] {
     return options
-      .map(group => ({
+      .map((group) => ({
         ...group,
         options: group.options
           .filter((option: SelectOption) => !asArray(value).includes(option.id))
           .map((option: SelectOption) => ({ ...option, selected: false })),
       }))
-      .filter(group => group.options.length);
+      .filter((group) => group.options.length);
   }
 
-  private getViewListData(options: SelectGroupOption[], value: itemID[]): ViewListItem[] {
+  private getViewListData(
+    options: SelectGroupOption[],
+    value: itemID[]
+  ): ViewListItem[] {
     const data = [];
 
-    options.forEach(group =>
-      group.options.forEach(option =>
-        asArray(value).includes(option.id)
-        && data.push({ value: option.value, groupName: group.groupName, id: option.id })));
+    options.forEach((group) =>
+      group.options.forEach(
+        (option) =>
+          asArray(value).includes(option.id) &&
+          data.push({
+            value: option.value,
+            groupName: group.groupName,
+            id: option.id,
+          })
+      )
+    );
 
     return data.sort((a, b) => value.indexOf(a.id) - value.indexOf(b.id));
   }
