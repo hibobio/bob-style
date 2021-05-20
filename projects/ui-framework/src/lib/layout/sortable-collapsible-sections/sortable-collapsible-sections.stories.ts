@@ -1,15 +1,16 @@
-import { storiesOf } from '@storybook/angular';
-import { object, withKnobs } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { action } from '@storybook/addon-actions';
-import { makeArray, simpleUID } from '../../services/utils/functional-utils';
+import { object, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
 import { ButtonType } from '../../buttons/buttons.enum';
-import { IconColor, Icons } from '../../icons/icons.enum';
-import { SortableCollapsibleSectionsModule } from './sortable-collapsible-sections.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
+import { ComponentGroupType } from '../../consts';
 import { TextareaModule } from '../../form-elements/textarea/textarea.module';
+import { IconColor, Icons } from '../../icons/icons.enum';
+import { makeArray, simpleUID } from '../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { SortableCollapsibleSectionsModule } from './sortable-collapsible-sections.module';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
@@ -118,8 +119,14 @@ const sectionsMock = makeArray(10).map((_, index) => {
         color: IconColor.normal,
       },
       menuItems: [
-        { label: 'add', action: () => console.log('add ' + index) },
-        { label: 'remove', action: () => console.log('remove ' + index) },
+        {
+          label: 'add',
+          action: (item) => console.log(item.label + ': ' + index),
+        },
+        {
+          label: 'remove',
+          action: (item) => console.log(item.label + ': ' + index),
+        },
       ],
     },
   };
