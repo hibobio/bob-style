@@ -13,7 +13,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 
-import { cloneDeepSimpleObject } from '../../services/utils/functional-utils';
+import { cloneDeep } from '../../services/utils/functional-utils';
 import { CollapsibleSectionComponent } from '../collapsible-section/collapsible-section.component';
 import { CollapsibleContentDirective } from './collapsible-content.directive';
 import { CollapsibleHeaderDirective } from './collapsible-header.directive';
@@ -58,7 +58,7 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.sections && changes.sections.currentValue) {
-      this.UISections = cloneDeepSimpleObject(this.sections);
+      this.UISections = cloneDeep(this.sections);
       this.UISections.forEach((section) => {
         if (section.expanded) {
           this.contentLoadedMap.set(section.id, true);
