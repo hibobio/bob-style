@@ -3,7 +3,8 @@ import { ListLayoutItemDirective } from '../list-layout-item.directive';
 
 @Component({
   selector: 'b-list-layout',
-  templateUrl: 'list-layout.component.html'
+  templateUrl: 'list-layout.component.html',
+  styleUrls: ['./list-layout.component.scss']
 })
 
 export class ListLayoutComponent implements OnInit {

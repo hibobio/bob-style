@@ -24,6 +24,7 @@ export enum ComponentGroupType {
   Templates = 'Templates',
   Tooltip = 'Tooltip',
   Typography = 'Typography',
+  Widgets = 'Widgets',
 }
 
 export const mobileBreakpoint = 768;

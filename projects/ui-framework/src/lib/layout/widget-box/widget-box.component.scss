@@ -18,10 +18,15 @@ header {
   .header-right {
     margin-right: 20px;
   }
+
+  b-subheading {
+    text-align: left;
+  }
 }
 
 .content {
   border-color: $grey-400;
+  flex-grow: 1;
 }
 
 b-button ::ng-deep button {

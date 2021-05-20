@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ButtonType } from 'bob-style';
+import { ButtonType, ButtonSize } from 'bob-style';
 
 @Component({
   selector: 'b-widget-box, [b-widget-box]',
@@ -8,6 +8,7 @@ import { ButtonType } from 'bob-style';
 })
 export class WidgetBoxComponent implements OnInit {
   readonly buttonType = ButtonType;
+  readonly buttonSize = ButtonSize;
   
   @Input() title: string;
 
