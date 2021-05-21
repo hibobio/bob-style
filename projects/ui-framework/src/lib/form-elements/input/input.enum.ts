@@ -15,4 +15,6 @@ export enum InputAutoCompleteOptions {
   off = 'off',
   chromeOff = 'chrome-off',
   newPassword = 'new-password',
+  email = 'email',
+  password = 'password',
 }
