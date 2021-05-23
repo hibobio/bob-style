@@ -5,8 +5,8 @@ import {
   randomFromArray,
   randomNumber,
 } from '../../services/utils/functional-utils';
-import { SummaryInsightType } from './summary-insights.enums';
-import { SummaryInsight } from './summary-insights.interfaces';
+import { SummaryInsightType } from './summary-insights.enum';
+import { SummaryInsight } from './summary-insights.interface';
 
 const colors = randomFromArray(
   Object.keys(ColorPalette)

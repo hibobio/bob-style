@@ -540,7 +540,11 @@ export * from './lib/layout/ee-layout/ee-layout.const';
 export * from './lib/layout/ee-layout/ee-layout.interface';
 export { EELayoutModule } from './lib/layout/ee-layout/ee-layout.module';
 export { EELayoutComponent } from './lib/layout/ee-layout/ee-layout.component';
-
+// Summary Insights
+export * from './lib/layout/summary-insights/summary-insights.enum';
+export * from './lib/layout/summary-insights/summary-insights.interface';
+export { SummaryInsightsModule } from './lib/layout/summary-insights/summary-insights.module';
+export { SummaryInsightsComponent } from './lib/layout/summary-insights/summary-insights.component';
 
 // Masonry
 export { MasonryLayoutModule } from './lib/layout/masonry/masonry.module';
