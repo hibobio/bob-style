@@ -585,6 +585,9 @@ export { TableCardCellComponent } from './lib/table/card-table/table-card-cell/t
 export { TableCardComponent } from './lib/table/card-table/table-card/table-card.component';
 export * from './lib/table/card-table/card-table.interface';
 
+// Card Table
+export { WidgetBoxModule } from './lib/layout/widget-box/widget-box.module';
+
 /*
  * Misc
  */
