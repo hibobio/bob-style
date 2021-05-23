@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { SummaryInsightType } from './summary-insights.enums';
-import { SummaryInsight } from './summary-insights.interfaces';
+import { SummaryInsightType } from './summary-insights.enum';
+import { SummaryInsight } from './summary-insights.interface';
 
 @Component({
   selector: 'b-summary-insights',

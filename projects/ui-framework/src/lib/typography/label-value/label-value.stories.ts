@@ -165,6 +165,16 @@ const template2 = `
 
     <div class="cell">
       <p class="hdr">
+        <span class="bx">LabelValueType.ten</span>
+      </p>
+      <b-label-value
+        [type]="'10'"
+        [label]="'Like 6 but reversed'"
+        [value]="'39%'"></b-label-value>
+    </div>
+
+    <div class="cell">
+      <p class="hdr">
         <span class="bx">LabelValueType.seven</span>
       </p>
       <b-label-value
