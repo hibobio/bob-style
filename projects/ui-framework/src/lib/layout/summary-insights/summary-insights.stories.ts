@@ -1,128 +1,63 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { withKnobs } from '@storybook/addon-knobs';
+import { object, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { TypographyModule } from '../../typography/typography.module';
+import { summaryInsightsDataMock } from './summary-insights.mock';
 import { SummaryInsightsModule } from './summary-insights.module';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
-
-
 const template1 = `
- <b-summary-insights></b-summary-insights>
-`;
-
-const templateForNotes = `
-  <b-insights-panel
-        [type]="type"
-        [data]="data"
-        [config]="config"
-        [expanded]="expanded"
-        (expanded)="onExpand($event)"
-  ></b-insights-panel>
+ <b-summary-insights [data]="data"></b-summary-insights>
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Summary Insight'">
-  <div style="justify-content: flex-end;display: flex;">
+<b-story-book-layout [title]="'Summary Insights'">
+  <div style="text-align:left">
     ${template1}
   </div>
 </b-story-book-layout>
 `;
 
 const note = `
-  ## Insights Panel
+  ## Summary Insights
   #### Module
-  *InsightsPanelModule*
+  *SummaryInsightsModule*
 
   ~~~
-  ${templateForNotes}
+  ${template1}
   ~~~
 
   #### Properties
   Name | Type | Description
   --- | --- | ---
-  [type] | InsightsPanelType | type (information, warning, error, success)
-  [config] | InsightsPanelConfig | panel config
-  [data] | InsightsPanelData[] | insights data
-  [expanded] | boolean | control expanded/collapsed state
-  (expanded) | EventEmitter<wbr>&lt;boolean&gt; | emits on expanded/collapsed state change
+  [data] | SummaryInsight[] | summary items
 
-  #### interface: InsightsPanelConfig
+
+  #### interface: SummaryInsight
   Name | Type | Description
   --- | --- | ---
-  collapsible? | boolean | if panel is collapsible
-  icon? | Icons | default icon for the section header
-  maxLines? | number | max lines of section content before 'View more' link is shown
-  expandButtonText? | string | text for the expand/collapse button
-  readMoreLinkText? | string | text for the 'View more' link
-  headingClass, sectionClass | string / string[] / object | custom content & heading classes - support what ngClass binding supports
-  headingStyle, sectionStyle | object | custom content & heading css styles - support what ngStyle supports
+  type | SummaryInsightType | selects item type
+  data | LabelValue / ProgressBar / ProgressDonut | for descriptions of interfaces see related components
 
 `;
-//
-// const data = [
-//   {
-//     title: 'At a glance',
-//     content: `The number of leavers between <strong>Q1 2020</strong> and <strong>Q4 2020</strong> was highest in Kendall Roys team (13.25 per quarter), which is 73% of all company leavers. ${mockText(
-//       50
-//     )}`,
-//     icon: Icons.analytics,
-//   },
-//   {
-//     title: 'Spotlight',
-//     content:
-//       'For 60% of teams, <strong>Q3 2020</strong> was the quarter with the highest number of leavers.',
-//   },
-//   {
-//     title: 'Outliers',
-//     content:
-//       "The number of leavers in Kendall Roy's team during <strong>Q3 2020</strong> (10) was lower than expected from the average trend for that group.",
-//   },
-// ];
 
 story.add(
-  'Summary insights',
+  'Summary Insights',
   () => {
     return {
       template: storyTemplate,
       props: {
-        // type: select('type', type, InsightsPanelType.information, 'Props'),
-        // expanded: boolean('expanded', false, 'Props'),
-        // collapsible: boolean('collapsible', true, 'Props'),
-        // icon: select(
-        //   'icon',
-        //   [
-        //     Icons.graph_timeline,
-        //     Icons.analytics,
-        //     Icons.analytics_alt,
-        //     Icons.chart,
-        //     Icons.chart_area,
-        //     Icons.chart_bar_horiz,
-        //     Icons.chart_bar_vert,
-        //     Icons.chart_donut,
-        //     Icons.chart_line,
-        //   ],
-        //   Icons.graph_timeline,
-        //   'Props'
-        // ),
-        // maxLines: number('maxLines', 3, {}, 'Props'),
-        // expandButtonText: text('expandButtonText', 'Insights', 'Props'),
-        // readMoreLinkText: text('readMoreLinkText', 'Read More', 'Props'),
-        // data: data,
-        // dataNotes: object('data', data, 'Data'),
-        // onExpand: action('expanded'),
+        data: object('data', summaryInsightsDataMock),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           SummaryInsightsModule,
-          TypographyModule,
           StoryBookLayoutModule,
         ],
       },

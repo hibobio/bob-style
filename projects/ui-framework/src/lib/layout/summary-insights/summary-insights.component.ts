@@ -1,22 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { summaryInsightsDataMock } from './summaryInsights.mocks';
-import { SummaryInsight } from './summary-insights.interfaces';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
 import { SummaryInsightType } from './summary-insights.enums';
+import { SummaryInsight } from './summary-insights.interfaces';
 
 @Component({
   selector: 'b-summary-insights',
   templateUrl: 'summary-insights.component.html',
   styleUrls: ['summary-insights.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
+export class SummaryInsightsComponent {
+  public readonly type = SummaryInsightType;
 
-export class SummaryInsightsComponent implements OnInit {
-  constructor() {
-  }
-
-  public readonly summaryInsightType = SummaryInsightType;
-
-  @Input() data: SummaryInsight[] = summaryInsightsDataMock;
-
-  ngOnInit() {
-  }
+  @Input() data: SummaryInsight[];
 }

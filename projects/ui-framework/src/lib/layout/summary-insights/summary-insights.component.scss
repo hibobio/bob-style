@@ -2,21 +2,18 @@
 
 :host {
   display: flex;
-  max-height: times8(6);
+}
 
-  .progress-bar-inner-label {
-    color: $grey-600;
-  }
+.bsi-item:not(:last-child) {
+  padding-right: 40px;
 
-  .bpb-text {
-    color: $grey-600;
-  }
-
-  ::ng-deep {
-    p.bpb-text.bpb-text-prmr {
-      color: $grey-600;
-    }
+  @include mobile($breakpoint-device-lg) {
+    padding-right: 24px;
   }
 }
 
-
+:host.brd-0 {
+  .bsi-item {
+    border-width: 0;
+  }
+}

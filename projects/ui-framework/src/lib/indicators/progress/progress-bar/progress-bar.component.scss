@@ -90,9 +90,10 @@ $BPBtypeMap: (
 );
 
 :host {
-  @include progress-host('bpb', grid);
+  @include progress-host('bpb', $display: grid, $width: null);
   text-align: left;
-  min-width: 0;
+  min-width: 120px;
+  flex-grow: 1;
 
   &[data-type='secondary'] {
     --bpb-color: #{$grey-600};

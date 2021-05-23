@@ -431,14 +431,18 @@ clr-positive-500,
 }
 
 @each $size in $acss-sizes {
+  $imp: '';
+  @if $size == 0 {
+    $imp: ' !important';
+  }
   .gap-#{$size} {
-    grid-gap: $size * 1px;
+    grid-gap: #{$size * 1px}#{$imp};
   }
   .col-gap-#{$size} {
-    grid-column-gap: $size * 1px;
+    grid-column-gap: #{$size * 1px}#{$imp};
   }
   .row-gap-#{$size} {
-    grid-row-gap: $size * 1px;
+    grid-row-gap: #{$size * 1px}#{$imp};
   }
 }
 

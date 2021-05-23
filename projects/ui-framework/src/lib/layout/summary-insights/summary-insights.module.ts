@@ -1,8 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { ProgressBarModule } from '../../indicators/progress/progress-bar/progress-bar.module';
+import { ProgressDonutModule } from '../../indicators/progress/progress-donut/progress-donut.module';
+import { TrackByPropModule } from '../../services/filters/trackByProp.pipe';
+import { LabelValueModule } from '../../typography/label-value/label-value.module';
 import { SummaryInsightsComponent } from './summary-insights.component';
-import { CommonModule } from '@angular/common';
-import { LabelValueModule, ProgressBarModule, ProgressDonutModule } from 'bob-style';
 
 @NgModule({
   imports: [
@@ -10,10 +13,10 @@ import { LabelValueModule, ProgressBarModule, ProgressDonutModule } from 'bob-st
     LabelValueModule,
     ProgressBarModule,
     ProgressDonutModule,
+    TrackByPropModule,
   ],
   exports: [SummaryInsightsComponent],
   declarations: [SummaryInsightsComponent],
   providers: [],
 })
-export class SummaryInsightsModule {
-}
+export class SummaryInsightsModule {}
