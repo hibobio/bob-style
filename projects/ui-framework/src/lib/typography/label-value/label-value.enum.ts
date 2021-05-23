@@ -8,6 +8,7 @@ export enum LabelValueType {
   seven = '7',
   eight = '8',
   nine = '9',
+  ten = '10',
 }
 
 export enum TextAlign {

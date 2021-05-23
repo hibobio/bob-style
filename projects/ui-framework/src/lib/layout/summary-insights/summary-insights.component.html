@@ -6,7 +6,8 @@
                  class="bsi-item flx-col-align-y"
                  [ngClass]="!last&&['brd-r','mrg-r-16']"
                  [labelValue]="item.data"
-                 [type]="item.data.type||'6'">
+                 [type]="item.data.type||'10'"
+                 [swap]="!item.data.type">
   </b-label-value>
 
   <b-progress-donut *ngIf="item.type === type.progressDonut"
@@ -17,14 +18,13 @@
                     [donutSize]="item.data.donutSize"
                     [customSize]="item.data.donutSize"
                     [data]="item.data.data"
-                    [config]="item.data.config">
+                    [config]="item.data.config||{hideValue:true}">
   </b-progress-donut>
 
   <div *ngIf="item.type === type.progressBar"
        class="bsi-item flx flx-grow flx-row-align-y"
        [ngClass]="!last&&['brd-r','mrg-r-16']">
-    <b-progress-bar class="row-gap-0"
-                    [type]="item.data.type||'secondary'"
+    <b-progress-bar [type]="item.data.type||'secondary'"
                     [size]="item.data.size||'small'"
                     [data]="item.data.data"
                     [config]="item.data.config||{reverseTextLocation:true}">

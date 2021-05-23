@@ -4,6 +4,10 @@
   display: flex;
 }
 
+.bsi-item {
+  max-width: 300px;
+}
+
 .bsi-item:not(:last-child) {
   padding-right: 40px;
 
@@ -12,8 +16,24 @@
   }
 }
 
-:host.brd-0 {
-  .bsi-item {
-    border-width: 0;
+:host.brd-0 .bsi-item {
+  border-width: 0;
+}
+
+:host.flex-grow .bsi-item {
+  flex-grow: 1;
+}
+
+.bsi-item b-progress-bar {
+  row-gap: 0;
+
+  ::ng-deep .bpb-value {
+    @include mobile($breakpoint-device-lg) {
+      width: auto;
+    }
+  }
+
+  ::ng-deep .bpb-text-prmr {
+    color: $grey-600;
   }
 }
