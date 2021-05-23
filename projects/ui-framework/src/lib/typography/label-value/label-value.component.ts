@@ -1,36 +1,38 @@
 import {
-  Component,
-  Input,
-  HostBinding,
-  ChangeDetectionStrategy,
-  Output,
-  HostListener,
-  EventEmitter,
-  NgZone,
-  SimpleChanges,
-  OnChanges,
-  ChangeDetectorRef,
-  ElementRef,
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  HostListener,
+  Input,
+  NgZone,
+  OnChanges,
+  Output,
+  SimpleChanges,
 } from '@angular/core';
-import { LabelValueType, TextAlign, IconPosition } from './label-value.enum';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import {
-  isKey,
-  applyChanges,
-  notFirstChanges,
-  hasChanges,
-  isObject,
-  objectRemoveEntriesByValue,
-  isFunction,
-} from '../../services/utils/functional-utils';
+
 import { Keys } from '../../enums';
-import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
-import { LabelValue } from './label-value.interface';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { InfoTooltip } from '../../popups/info-tooltip/info-tooltip.interface';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { NgClass } from '../../services/html/html-helpers.interface';
+import {
+  applyChanges,
+  isFunction,
+  isKey,
+  isObject,
+  notFirstChanges,
+  objectRemoveEntriesByValue,
+} from '../../services/utils/functional-utils';
+import { GenericObject } from '../../types';
+import { IconPosition, LabelValueType, TextAlign } from './label-value.enum';
+import { LabelValue } from './label-value.interface';
 
 @Component({
-  selector: 'b-label-value',
+  selector: 'b-label-value, [labelValue]',
   templateUrl: './label-value.component.html',
   styleUrls: ['./label-value.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,12 +45,12 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
   ) {}
 
   public iconAfter = false;
-  public iconClass: string;
-  public labelClass: string;
-  public valueClass: string;
-
-  readonly iconPositions = IconPosition;
-  readonly iconSizes = IconSize;
+  public labelClass: string | string[] | NgClass;
+  public labelStyle: GenericObject<string>;
+  public valueClass: string | string[] | NgClass;
+  public valueStyle: GenericObject<string>;
+  public expectChanges = false;
+  public tooltipType = TruncateTooltipType.css;
 
   @Input('labelValue') set setProps(labelValue: LabelValue) {
     if (isObject(labelValue)) {
@@ -60,28 +62,40 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
   @Input() value: string | number;
   @Input() labelMaxLines: number;
   @Input() valueMaxLines: number;
-  @Input() expectChanges = false;
-  @Input() tooltipType = TruncateTooltipType.css;
+
   @Input() labelDescription: InfoTooltip;
+  @Input() valueDescription: InfoTooltip;
 
   @Input() icon: Icons;
   @Input() iconPosition: IconPosition = IconPosition.left;
   @Input() iconSize: IconSize;
   @Input() iconColor: IconColor;
 
+  public get mainIcon(): string {
+    return this.icon &&
+      !this.iconPosition?.includes('label') &&
+      !this.iconPosition?.includes('value')
+      ? this.icon.replace('b-icon-', '')
+      : null;
+  }
+  public get labelIcon(): string {
+    return this.icon && this.iconPosition?.includes('label')
+      ? this.icon.replace('b-icon-', '')
+      : null;
+  }
+  public get valueIcon(): string {
+    return this.icon && this.iconPosition?.includes('value')
+      ? this.icon.replace('b-icon-', '')
+      : null;
+  }
+
   @Output() clicked: EventEmitter<
     MouseEvent | KeyboardEvent
   > = new EventEmitter<MouseEvent | KeyboardEvent>();
-  @Output() valueClicked: EventEmitter<
-    MouseEvent | KeyboardEvent
-  > = new EventEmitter<MouseEvent | KeyboardEvent>();
-  @Output() labelClicked: EventEmitter<
-    MouseEvent | KeyboardEvent
-  > = new EventEmitter<MouseEvent | KeyboardEvent>();
-  @Output() iconClicked: EventEmitter<
-    MouseEvent | KeyboardEvent
-  > = new EventEmitter<MouseEvent | KeyboardEvent>();
-  @Output() linkClicked: EventEmitter<void> = new EventEmitter<void>();
+
+  public valueClicked: (e: MouseEvent | KeyboardEvent) => void;
+  public labelClicked: (e: MouseEvent | KeyboardEvent) => void;
+  public iconClicked: (e: MouseEvent | KeyboardEvent) => void;
 
   @HostBinding('attr.data-type') @Input() type: LabelValueType =
     LabelValueType.one;
@@ -91,8 +105,8 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
 
   @HostBinding('attr.data-icon-position') get iconPos() {
     return this.icon &&
-      this.iconPosition !== IconPosition.label &&
-      this.iconPosition !== IconPosition.value
+      !this.iconPosition?.includes('label') &&
+      !this.iconPosition?.includes('value')
       ? this.iconPosition
       : null;
   }
@@ -116,38 +130,9 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
 
-    if (hasChanges(changes, ['icon', 'iconSize', 'iconPosition'])) {
-      this.iconAfter =
-        this.iconPosition === this.iconPositions.label_after ||
-        this.iconPosition === this.iconPositions.value_after;
-
-      this.iconPosition =
-        this.iconPosition === this.iconPositions.label_after
-          ? this.iconPositions.label
-          : this.iconPosition === this.iconPositions.value_after
-          ? this.iconPositions.value
-          : this.iconPosition;
-
-      this.iconClass =
-        this.icon +
-        (this.iconSize ? ' b-icon-' + this.iconSize : ' b-icon-large');
-
-      this.labelClass =
-        this.icon && this.iconPosition === IconPosition.label
-          ? this.icon +
-            (this.iconSize ? ' b-icon-' + this.iconSize : ' b-icon-small') +
-            (this.labelClicked.observers.length ? ' has-hover' : '') +
-            (this.iconAfter ? ' icon-after' : '')
-          : null;
-
-      this.valueClass =
-        this.icon && this.iconPosition === IconPosition.value
-          ? this.icon +
-            (this.iconSize ? ' b-icon-' + this.iconSize : ' b-icon-small') +
-            (this.valueClicked.observers.length ? ' has-hover' : '') +
-            (this.iconAfter ? ' icon-after' : '')
-          : null;
-    }
+    this.iconAfter =
+      this.iconPosition === IconPosition.label_after ||
+      this.iconPosition === IconPosition.value_after;
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
@@ -158,36 +143,27 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
     this.hostRef.nativeElement.dataset.initialized = 'true';
   }
 
-  onTooltipLinkClick(): void {
-    if (isFunction(this.labelDescription.linkClicked)) {
-      this.labelDescription.linkClicked();
-    }
-    if (this.linkClicked.observers.length > 0) {
-      this.linkClicked.emit();
-    }
-  }
-
   private emitEvents($event: MouseEvent | KeyboardEvent): void {
     if (
       ($event.target as HTMLElement).className.includes('blv-value') &&
-      this.valueClicked.observers.length > 0
+      isFunction(this.valueClicked)
     ) {
       this.zone.run(() => {
-        this.valueClicked.emit($event);
+        this.valueClicked($event);
       });
     } else if (
       ($event.target as HTMLElement).className.includes('blv-label') &&
-      this.labelClicked.observers.length > 0
+      isFunction(this.labelClicked)
     ) {
       this.zone.run(() => {
-        this.labelClicked.emit($event);
+        this.labelClicked($event);
       });
     } else if (
       ($event.target as HTMLElement).className.includes('blv-icon') &&
-      this.iconClicked.observers.length > 0
+      isFunction(this.iconClicked)
     ) {
       this.zone.run(() => {
-        this.iconClicked.emit($event);
+        this.iconClicked($event);
       });
     }
     if (this.clicked.observers.length > 0) {

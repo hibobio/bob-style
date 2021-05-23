@@ -37,3 +37,7 @@
     }
   }
 }
+
+:host ::ng-deep .mat-tooltip-trigger {
+  pointer-events: all;
+}

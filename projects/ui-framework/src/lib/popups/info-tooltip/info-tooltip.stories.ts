@@ -1,10 +1,11 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs, object, text } from '@storybook/addon-knobs';
-import { InfoTooltipModule } from './info-tooltip.module';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { LinkColor, LinkTarget } from '../../indicators/link/link.enum';
 import { action } from '@storybook/addon-actions';
+import { object, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
+import { LinkColor, LinkTarget } from '../../indicators/link/link.enum';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { InfoTooltipModule } from './info-tooltip.module';
 
 const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
   withKnobs
@@ -21,9 +22,16 @@ const note = `
   #### Module
   *InfoTooltipModule*
 
+  ~~~
+  <b-info-tooltip
+              [config]="infoTooltipConfig">
+  </b-info-tooltip>
+  ~~~
+
   #### Properties
   Name | Type | Description
   --- | --- | ---
+  [config] | InfoTooltip | single config input
   [icon] | Icons | icon to use for trigger (most of the time, omit this input to keep to default)
   [title] | string | tooltip title
   [text] | string | tooltip text
