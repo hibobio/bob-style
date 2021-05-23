@@ -3,6 +3,5 @@ import { SummaryInsightType } from './summary-insights.enums';
 
 export interface SummaryInsight {
   type: SummaryInsightType,
-  label?: LabelValue,
-  data?: (ProgressBar | ProgressDonut)
+  data?: (ProgressBar | ProgressDonut | LabelValue)
 }

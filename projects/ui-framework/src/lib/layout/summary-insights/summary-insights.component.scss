@@ -1,23 +1,22 @@
 @import '../../style/common-imports';
-@import '../../style/icons.mixin';
 
 :host {
   display: flex;
-  align-content: flex-start;
   width: 100%;
 
-  .insight-pad {
-    padding-left: times8(2);
-    padding-right: times8(5);
+  .progress-bar-inner-label {
+    color: $grey-600;
   }
 
-  .progress-bar-inner-label{
+  .bpb-text {
     color: $grey-600;
   }
 
   ::ng-deep {
-    .blv-value {
-      height: 100%;
+    p.bpb-text.bpb-text-prmr {
+      color: $grey-600;
     }
   }
 }
+
+

@@ -1,39 +1,24 @@
-<div class="inl-blk" *ngFor="let item of data; let last = last" [class.brd-r]="!last" >
+<ng-container *ngFor="let item of data; let last = last; let first = first">
 
-  <div class="insight-pad">
-    <b-label-value  *ngIf="item.type === summaryInsightType.labelValue"
-                   [labelValue]="item.label">
+  <div [class.brd-r]="!last" [class.pad-l-16]="!first">
+    <b-label-value class="pad-r-40" *ngIf="item.type === summaryInsightType.labelValue"
+                   [labelValue]="item.data">
     </b-label-value>
-  </div>
 
-  <b-progress-donut class="insight-pad progress-donut" *ngIf="item.type === summaryInsightType.progressDonut"
-                    [size]="item.data.size"
-                    [donutSize]="item.data.donutSize"
-                    [data]="item.data"
-                    [config]="item.data.config">
-  </b-progress-donut>
-
-  <div class="insight-pad flx"
-       *ngIf="item.type === summaryInsightType.progressDonutWithLabelValue">
-    <b-progress-donut class="inl-blk progress-donut"
+    <b-progress-donut class="pad-r-40" *ngIf="item.type === summaryInsightType.progressDonut"
                       [size]="item.data.size"
                       [donutSize]="item.data.donutSize"
                       [data]="item.data.data"
                       [config]="item.data.config">
     </b-progress-donut>
-    <b-label-value class="inl-blk pad-l-16"
-                   [labelValue]="item.label">
-    </b-label-value>
-  </div>
 
-  <div class="insight-pad" *ngIf="item.type === summaryInsightType.progressBar">
-    <b-progress-bar class="inl-blk"
-                    [type]="item.data.type"
-                    [size]="item.data.size"
-                    [data]="item.data.data"
-                    [config]="item.data.config">
-      <span class="progress-bar-inner-label" header-left>{{item.label.value}}</span>
-    </b-progress-bar>
+    <div *ngIf="item.type === summaryInsightType.progressBar">
+      <b-progress-bar [class.pad-l-16]="!first" [type]="item.data.type"
+                      [size]="item.data.size"
+                      [data]="item.data.data"
+                      [config]="item.data.config">
+      </b-progress-bar>
+    </div>
   </div>
-</div>
+</ng-container>
 

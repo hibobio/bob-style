@@ -7,7 +7,6 @@ import {
   ProgressSize,
   ProgressType,
   TextAlign,
-  TruncateTooltipType,
 } from 'bob-style';
 import { SummaryInsightType } from './summary-insights.enums';
 import { SummaryInsight } from './summary-insights.interfaces';
@@ -19,16 +18,8 @@ export const labelValueDataMock: LabelValue = {
   textAlign: TextAlign.left,
 };
 
-
-export const labelValueDataMock2: LabelValue = {
-  type: LabelValueType.six,
-  textAlign: TextAlign.left,
-  value: 'label too',
-};
-
-
 export const progressBarDataMock: ProgressBar = {
-  data: { value: 20 },
+  data: { value: 20, headerTextPrimary: 'headerTextPrimary' },
   config: { reverseTextLocation: true },
   type: ProgressType.secondary,
   size: ProgressSize.small,
@@ -36,34 +27,48 @@ export const progressBarDataMock: ProgressBar = {
 
 export const progressDonutDataMock: ProgressDonutData = {
   value: 20,
+  headerTextSecondary: 'lable ',
+  color: '#926296',
 };
 
+export const progressDonutDataMock2: ProgressDonutData = {
+  value: 20,
+  headerTextSecondary: 'headerTextSecondary',
+  color: '#926296',
+};
 
 export const progressDonutMock: ProgressDonut = {
   data: progressDonutDataMock,
   config: {
     hideValue: true,
+    showValueInCenter: false,
+  },
+};
+
+
+export const progressDonutMock2: ProgressDonut = {
+  data: progressDonutDataMock2,
+  config: {
+    hideValue: false,
+    showValueInCenter: false,
   },
 };
 
 export const summaryInsightsDataMock: SummaryInsight[] = [
   {
     type: SummaryInsightType.labelValue,
-    label: labelValueDataMock,
+    data: labelValueDataMock,
   },
   {
-    type: SummaryInsightType.progressDonutWithLabelValue,
+    type: SummaryInsightType.progressDonut,
     data: progressDonutMock,
-    label: labelValueDataMock,
   },
   {
-    type: SummaryInsightType.progressDonutWithLabelValue,
-    data: progressDonutMock,
-    label: labelValueDataMock2,
+    type: SummaryInsightType.progressDonut,
+    data: progressDonutMock2,
   },
   {
     type: SummaryInsightType.progressBar,
     data: progressBarDataMock,
-    label: { value: 'im a string | num val' },
   },
 ];
