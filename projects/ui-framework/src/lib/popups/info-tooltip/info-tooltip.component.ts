@@ -1,16 +1,8 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { Link } from '../../indicators/link/link.types';
 import {
-  applyChanges,
   isFunction,
   isObject,
   objectMapKeys,
@@ -23,7 +15,7 @@ import { InfoTooltip } from './info-tooltip.interface';
   templateUrl: './info-tooltip.component.html',
   styleUrls: ['./info-tooltip.component.scss'],
 })
-export class InfoTooltipComponent implements OnChanges {
+export class InfoTooltipComponent {
   @Input() title: string;
   @Input() text: string;
   @Input() link: Link;
@@ -43,10 +35,6 @@ export class InfoTooltipComponent implements OnChanges {
         })
       );
     }
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes);
   }
 
   onLinkClick() {
