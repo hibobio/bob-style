@@ -569,6 +569,7 @@ export const mergeObjects = <I = GenericObject, O = I>(
 
 export const objectMapKeys = <I = GenericObject, O = I>(
   obj: I,
+  // { origProp: targetProp }
   map: Record<keyof I | string, string>
 ): O => {
   if (isEmptyObject(obj) || isEmptyObject(map)) {
