@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ButtonType, ButtonSize } from 'bob-style';
+import { ButtonType, ButtonSize } from '../../buttons/buttons.enum';
 
 @Component({
   selector: 'b-widget-box, [b-widget-box]',
