@@ -148,6 +148,7 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
       ($event.target as HTMLElement).className.includes('blv-value') &&
       isFunction(this.valueClicked)
     ) {
+      $event.stopPropagation();
       this.zone.run(() => {
         this.valueClicked($event);
       });
@@ -155,6 +156,7 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
       ($event.target as HTMLElement).className.includes('blv-label') &&
       isFunction(this.labelClicked)
     ) {
+      $event.stopPropagation();
       this.zone.run(() => {
         this.labelClicked($event);
       });
@@ -162,11 +164,13 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
       ($event.target as HTMLElement).className.includes('blv-icon') &&
       isFunction(this.iconClicked)
     ) {
+      $event.stopPropagation();
       this.zone.run(() => {
         this.iconClicked($event);
       });
     }
     if (this.clicked.observers.length > 0) {
+      $event.stopPropagation();
       this.zone.run(() => {
         this.clicked.emit($event);
       });

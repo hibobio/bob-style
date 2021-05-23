@@ -308,9 +308,9 @@ story.add(
       props: {
         longtext: `Some description of form section. Can be quite long. And possibly  not related to the form section at all.\nCan have line-breaks via '\\n' character!`,
         onClicked: action('Component clicked'),
-        onLabelClicked: action('Label clicked'),
-        onValueClicked: action('Value clicked'),
-        onIconClicked: action('Icon clicked'),
+        onLabelClicked: ($event) => action('Label clicked'),
+        onValueClicked: ($event) => action('Value clicked'),
+        onIconClicked: ($event) => action('Icon clicked'),
 
         type: select('type', Object.values(LabelValueType), LabelValueType.one),
         label: text('label', mockText(randomNumber(1, 3))),
