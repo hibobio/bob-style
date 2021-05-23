@@ -2,7 +2,7 @@
 
 :host {
   display: flex;
-  width: 100%;
+  max-height: times8(6);
 
   .progress-bar-inner-label {
     color: $grey-600;
