@@ -23,7 +23,7 @@ const story = storiesOf(ComponentGroupType.Typography, module).addDecorator(
 );
 
 const templateAlt = `
-  <b-label-value
+  <p class="mrg-0"
     [labelValue]="{
       type:type,
       textAlign:textAlign,
@@ -37,7 +37,7 @@ const templateAlt = `
       iconPosition:iconPosition,
       iconSize:iconSize,
       iconColor:iconColor
-    }"></b-label-value>
+    }"></p>
 `;
 
 const template3 = `
@@ -257,10 +257,16 @@ const note = `
   <b-label-value [labelValue]="labelValue">
   </b-label-value>
 
-  <p [labelValue]="labelValue"
+  <p class="mrg-0"
+      [labelValue]="{
+        ...labelValueConfig,
+        labelClass: ['mrg-b-24'],
+        valueStyle: { fontWeight: '700' }
+      }"
       [iconColor]="iconColor"
       [style.--blv-label-color]="customLcolor"
-      [style.--blv-value-color]="customVcolor"></p>
+      [style.--blv-value-color]="customVcolor">
+  </p>
   ~~~
 
   #### Note:
