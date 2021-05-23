@@ -2,9 +2,9 @@ import { Icons, IconSize } from '../../../lib/icons/icons.enum';
 import { Link } from '../../../lib/indicators/link/link.types';
 
 export interface InfoTooltip {
+  title?: string;
   text: string;
   link?: Link;
-  title?: string;
   icon?: Icons;
   iconSize?: IconSize;
   linkClicked?: () => any;

@@ -1,14 +1,21 @@
-<i *ngIf="icon && iconPosition !== iconPositions.label && iconPosition !== iconPositions.value"
+<i *ngIf="mainIcon"
    class="blv-icon"
-   [ngClass]="iconClass"
-   [attr.data-icon-before-color]="iconColor || null"
-   [attr.tabindex]="iconClicked.observers.length ? 0 : null"></i>
+   [class.has-hover]="!!iconClicked"
+   [attr.data-icon-before]="mainIcon"
+   [attr.data-icon-before-color]="iconColor||null"
+   [attr.data-icon-before-size]="iconSize||'large'"
+   [attr.tabindex]="iconClicked ? 0 : null"></i>
 
 <h6 *ngIf="label"
     class="blv-label"
+    [ngStyle]="labelStyle"
     [ngClass]="labelClass"
-    [attr.data-icon-before-color]="iconColor || null"
-    [attr.tabindex]="labelClicked.observers.length ? 0 : null">
+    [class.has-hover]="!!labelClicked"
+    [class.icon-after]="iconAfter"
+    [attr.data-icon-before]="labelIcon"
+    [attr.data-icon-before-color]="iconColor||null"
+    [attr.data-icon-before-size]="iconSize||'small'"
+    [attr.tabindex]="labelClicked ? 0 : null">
   <b-truncate-tooltip *ngIf="labelMaxLines"
                       [maxLines]="labelMaxLines"
                       [type]="tooltipType"
@@ -17,20 +24,21 @@
                       [text]="label"></b-truncate-tooltip>
   <ng-container *ngIf="!labelMaxLines">{{label}}</ng-container>
   <b-info-tooltip *ngIf="labelDescription"
-                  [title]="labelDescription.title"
-                  [iconSize]="labelDescription.iconSize"
-                  [icon]="labelDescription.icon"
-                  [text]="labelDescription.text"
-                  [link]="labelDescription.link"
-                  (linkClicked)="onTooltipLinkClick()">
+                  [config]="labelDescription">
   </b-info-tooltip>
+  <ng-content select="[label]"></ng-content>
 </h6>
 
 <p *ngIf="value"
    class="blv-value"
+   [ngStyle]="valueStyle"
    [ngClass]="valueClass"
+   [class.has-hover]="!!valueClicked"
+   [class.icon-after]="iconAfter"
+   [attr.data-icon-before]="valueIcon"
+   [attr.data-icon-before-size]="iconSize||'small'"
    [attr.data-icon-before-color]="iconColor || null"
-   [attr.tabindex]="valueClicked.observers.length ? 0 : null">
+   [attr.tabindex]="valueClicked ? 0 : null">
   <b-truncate-tooltip *ngIf="valueMaxLines"
                       [maxLines]="valueMaxLines"
                       [type]="tooltipType"
@@ -38,6 +46,10 @@
                       [expectChanges]="expectChanges"
                       [text]="value"></b-truncate-tooltip>
   <ng-container *ngIf="!valueMaxLines">{{value}}</ng-container>
+  <b-info-tooltip *ngIf="valueDescription"
+                  [config]="valueDescription">
+  </b-info-tooltip>
+  <ng-content select="[value]"></ng-content>
 </p>
 
 <ng-content></ng-content>

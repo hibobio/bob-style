@@ -312,6 +312,11 @@ b-info-tooltip {
       margin-right: 0;
       margin-left: 5px;
     }
+
+    b-info-tooltip {
+      margin-left: 0;
+      margin-right: 8px;
+    }
   }
 
   &[tabindex='0'] {
@@ -338,7 +343,14 @@ b-info-tooltip {
       @each $elem, $props in $elems {
         #{$elem} {
           @each $prop, $value in $props {
-            #{$prop}: $value;
+            @if ($prop == 'color') {
+              #{$prop}: var(
+                --#{str-replace($elem, '.', '')}-#{$prop},
+                #{$value}
+              );
+            } @else {
+              #{$prop}: $value;
+            }
 
             @if ($prop == 'font-size' or $prop == 'line-height') {
               --#{$prop}: #{$value};
@@ -346,7 +358,7 @@ b-info-tooltip {
 
             @if ($prop == 'color') {
               &:before {
-                color: $value;
+                color: inherit;
               }
             }
           }
