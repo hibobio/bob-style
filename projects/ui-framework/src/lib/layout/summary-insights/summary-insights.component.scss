@@ -1,0 +1,19 @@
+@import '../../style/common-imports';
+
+:host {
+  display: flex;
+}
+
+.bsi-item:not(:last-child) {
+  padding-right: 40px;
+
+  @include mobile($breakpoint-device-lg) {
+    padding-right: 24px;
+  }
+}
+
+:host.brd-0 {
+  .bsi-item {
+    border-width: 0;
+  }
+}
