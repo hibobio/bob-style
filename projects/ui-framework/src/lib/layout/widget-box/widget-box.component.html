@@ -4,13 +4,6 @@
     <ng-content select="[header-right]"></ng-content>
   </div>
 </header>
-<div class="content pad-16 brd-b">
+<div class="content pad-t-16">
   <ng-content select="[content]"></ng-content>
 </div>
-
-<b-button class="mrg-4"
-  [type]="buttonType.tertiary"
-  [size]="buttonSize.small"
-  [text]="'View all'"
-  (clicked)="null">
-</b-button>

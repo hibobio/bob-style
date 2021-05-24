@@ -6,10 +6,21 @@ import { ButtonsModule } from '../../buttons/buttons.module';
 import { TypographyModule } from '../../typography/typography.module';
 import { IconsModule } from '../../icons/icons.module';
 import { ListLayoutComponent } from './list-layout/list-layout.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [WidgetBoxComponent, ListLayoutItemDirective, ListLayoutComponent],
-  imports: [CommonModule, ButtonsModule, TypographyModule, IconsModule],
+  declarations: [
+    WidgetBoxComponent,
+    ListLayoutItemDirective,
+    ListLayoutComponent,
+  ],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    ButtonsModule,
+    TypographyModule,
+    IconsModule,
+  ],
   exports: [WidgetBoxComponent, ListLayoutItemDirective, ListLayoutComponent],
   providers: [],
 })
