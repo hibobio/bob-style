@@ -1,5 +1,23 @@
 @import '../../style/common-imports';
 
+:host {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  min-width: 0;
+}
+
+.slc-n-viw-list {
+  width: calc(50% - 10px);
+  height: times8(40);
+  display: flex;
+  flex-direction: column;
+}
+
+.items {
+  overflow-y: auto;
+}
+
 .viewItem {
   grid-template-columns: 40px auto 40px;
   height: $wrap-height;
@@ -16,5 +34,39 @@
 
 .remove-button {
   opacity: 0;
+}
+
+b-empty-state {
+  height: 100%;
+}
+
+b-search {
+  margin: 0;
+  top: 0;
+  z-index: 1;
+
+  &::ng-deep {
+    .bfe-wrap {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+
+      &,
+      &.focused {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+      }
+
+      &.focused {
+        border-color: $border-color;
+      }
+    }
+  }
+
+  &.no-result::ng-deep {
+    .bfe-wrap {
+      border: 0;
+    }
+  }
 }
 

@@ -1,13 +1,12 @@
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import {
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
   OnInit,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 
 import { Icon } from '../../icons/icon.interface';
@@ -20,11 +19,15 @@ import {
 import { InputObservable, InputSubject } from '../../services/utils/decorators';
 import {
   arrayRemoveItemMutate,
-  asArray,
-  isNotEmptyArray,
-  unsubscribeArray,
+  asArray, getFuzzyMatcher, isEmptyArray, isEmptyString,
+  isNotEmptyArray, isNotEmptyString, normalizeString,
+  unsubscribeArray
 } from '../../services/utils/functional-utils';
+import { map, tap } from 'rxjs/operators';
 import { SingleListComponent } from '../single-list/single-list.component';
+import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
+import { TranslateService } from '@ngx-translate/core';
+import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 
 export interface ViewListItem {
   id: itemID;
@@ -39,6 +42,10 @@ export interface ViewListItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectAndViewComponent implements OnInit, OnDestroy {
+
+  constructor(private translateService: TranslateService,
+              private cd: ChangeDetectorRef) {}
+
   @InputObservable([])
   @Input('options')
   public inputOptions$: Observable<SelectGroupOption[]>;
@@ -56,6 +63,7 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
   public viewList$: BehaviorSubject<ViewListItem[]> = new BehaviorSubject(
     undefined
   );
+  public searchValue$: BehaviorSubject<string> = new BehaviorSubject('');
 
   private readonly subs: Subscription[] = [];
   readonly viewItemIconConfig: Icon = {
@@ -68,6 +76,20 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
     color: IconColor.dark,
     icon: Icons.reset_x,
   };
+  readonly emptyStateConfig: EmptyStateConfig = {
+    icon: Icons.checkbox,
+    text: this.translateService.instant('bob-style.select-and-view.empty-list-text')
+  };
+
+  public shouldDisplaySearch = false;
+  public shouldDisplayEmpty = false;
+
+  public get value(): itemID[] {
+    return this.listValue$.getValue();
+  }
+  public set value(value: itemID[]) {
+    this.listValue$.next(value);
+  }
 
   ngOnInit(): void {
     this.subs.push(
@@ -89,11 +111,21 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
           )
         )
         .subscribe(this.listValue$),
-      combineLatest([this.inputOptions$, this.listValue$])
+      combineLatest([
+        this.inputOptions$,
+        this.listValue$,
+        this.searchValue$
+      ])
         .pipe(
-          map(([options, value]) =>
-            isNotEmptyArray(value) ? this.getViewListData(options, value) : []
-          )
+          tap(([_, value, searchValue]) => {
+            this.shouldDisplaySearch = isNotEmptyString(searchValue) || value.length >= DISPLAY_SEARCH_OPTION_NUM;
+            this.shouldDisplayEmpty = isEmptyString(searchValue) && isEmptyArray(value);
+            this.cd.detectChanges();
+          }),
+          map(([options, value, searchValue]) => isNotEmptyArray(value)
+            ? this.getViewListData(options, value, searchValue)
+            : []
+          ),
         )
         .subscribe(this.viewList$)
     );
@@ -121,15 +153,18 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
 
   private getViewListData(
     options: SelectGroupOption[],
-    value: itemID[]
+    value: itemID[],
+    searchValue: string
   ): ViewListItem[] {
     const data = [];
+    const matcher = getFuzzyMatcher(searchValue);
 
     options.forEach((group) =>
       group.options.forEach(
         (option) =>
-          asArray(value).includes(option.id) &&
-          data.push({
+          asArray(value).includes(option.id)
+          && (this.testMatch(matcher, group.groupName) || this.testMatch(matcher, option.value))
+          && data.push({
             value: option.value,
             groupName: group.groupName,
             id: option.id,
@@ -140,9 +175,18 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
     return data.sort((a, b) => value.indexOf(a.id) - value.indexOf(b.id));
   }
 
+  private testMatch(matcher: RegExp, value: string): boolean {
+    matcher.lastIndex = 0;
+    return matcher.test(normalizeString(value));
+  }
+
   public removeItemFromList(itemId: itemID): void {
     this.listValue$.next(
       arrayRemoveItemMutate(this.listValue$.getValue()?.slice(), itemId)
     );
+  }
+
+  public searchChange(searchValue: string): void {
+    this.searchValue$.next(searchValue.trim());
   }
 }
