@@ -60,7 +60,7 @@ export abstract class ContentTemplateConsumer {
       : {};
   }
 
-  public getContentTemplate(name: string) {
+  public getContentTemplate(name?: string) {
     return this.contentTemplates[name] || this.contentTemplate;
   }
 }
