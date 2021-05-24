@@ -1,12 +1,12 @@
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 
 import {
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
   OnInit,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 
 import { Icon } from '../../icons/icon.interface';
@@ -43,7 +43,8 @@ export interface ViewListItem {
 })
 export class SelectAndViewComponent implements OnInit, OnDestroy {
 
-  constructor(private translateService: TranslateService) {}
+  constructor(private translateService: TranslateService,
+              private cd: ChangeDetectorRef) {}
 
   @InputObservable([])
   @Input('options')
@@ -62,7 +63,7 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
   public viewList$: BehaviorSubject<ViewListItem[]> = new BehaviorSubject(
     undefined
   );
-  private searchValue$: BehaviorSubject<string> = new BehaviorSubject('');
+  public searchValue$: BehaviorSubject<string> = new BehaviorSubject('');
 
   private readonly subs: Subscription[] = [];
   readonly viewItemIconConfig: Icon = {
@@ -118,7 +119,8 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
         .pipe(
           tap(([_, value, searchValue]) => {
             this.shouldDisplaySearch = isNotEmptyString(searchValue) || value.length >= DISPLAY_SEARCH_OPTION_NUM;
-            this.shouldDisplayEmpty = isEmptyString(searchValue) && isEmptyArray(value)
+            this.shouldDisplayEmpty = isEmptyString(searchValue) && isEmptyArray(value);
+            this.cd.detectChanges();
           }),
           map(([options, value, searchValue]) => isNotEmptyArray(value)
             ? this.getViewListData(options, value, searchValue)
@@ -161,7 +163,7 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
       group.options.forEach(
         (option) =>
           asArray(value).includes(option.id)
-          && (matcher.test(normalizeString(group.groupName)) || matcher.test(normalizeString(option.value)))
+          && (this.testMatch(matcher, group.groupName) || this.testMatch(matcher, option.value))
           && data.push({
             value: option.value,
             groupName: group.groupName,
@@ -171,6 +173,11 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
     );
 
     return data.sort((a, b) => value.indexOf(a.id) - value.indexOf(b.id));
+  }
+
+  private testMatch(matcher: RegExp, value: string): boolean {
+    matcher.lastIndex = 0;
+    return matcher.test(normalizeString(value));
   }
 
   public removeItemFromList(itemId: itemID): void {
