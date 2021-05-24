@@ -150,13 +150,13 @@ export abstract class BaseEditableListElement
 
   readonly menuItems = [
     {
-      key: 'remove',
-      label: this.translateService.instant('common.delete'),
-    },
-    {
       key: 'edit',
       label: this.translateService.instant('common.rename'),
     },
+    {
+      key: 'remove',
+      label: this.translateService.instant('common.delete'),
+    }
   ];
 
   readonly listState: EditableListState = {
