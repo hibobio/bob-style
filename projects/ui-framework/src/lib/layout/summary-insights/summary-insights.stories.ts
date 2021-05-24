@@ -23,12 +23,13 @@ const template1 = `<b-summary-insights
     class="bg-grey-100 rounded pad-16 brd-0 flex-grow mrg-t-32"
     [data]="data2">
 
-    <ng-container *contentTemplate="let data=data">
+    <ng-container *contentTemplate="let data=data;">
       <h4 class="b-display-3 mrg-b-16">
         {{ data.title }}
       </h4>
       <p class="mrg-0 pre-wrap">{{ data.text}}</p>
     </ng-container>
+
 </b-summary-insights>`;
 
 const storyTemplate = `

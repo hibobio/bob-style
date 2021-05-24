@@ -1,15 +1,30 @@
-import { ContentChild, Directive, NgModule, TemplateRef } from '@angular/core';
+import {
+  ContentChildren,
+  Directive,
+  Input,
+  NgModule,
+  QueryList,
+  TemplateRef,
+} from '@angular/core';
 
-export interface ContentTemplateConsumer {
-  contentTemplate: ContentTemplateDirective;
-}
+import { GenericObject } from '../../types';
 
 /**
  <ng-container *contentTemplate="let data=data">
     {{ data.title }}
  </ng-container>
 
-  <ng-container *ngTemplateOutlet="contentTemplate?.tpl;
+  <ng-container *ngTemplateOutlet="contentTemplate;
+                context: { data: item.data }">
+  </ng-container>
+
+  // multiple templates:
+
+  <ng-container *contentTemplate="let data=data; name:'myTemplate'">
+    {{ data.title }}
+  </ng-container>
+
+  <ng-container *ngTemplateOutlet="getContentTemplate('myTemplate');
                 context: { data: item.data }">
   </ng-container>
  */
@@ -20,14 +35,34 @@ export interface ContentTemplateConsumer {
 })
 export class ContentTemplateDirective {
   constructor(public tpl: TemplateRef<any>) {}
+  @Input() contentTemplateName: string;
 }
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class ContentTemplateConsumer
-  implements ContentTemplateConsumer {
-  @ContentChild(ContentTemplateDirective, { static: true })
-  contentTemplate!: ContentTemplateDirective;
+export abstract class ContentTemplateConsumer {
+  //
+  @ContentChildren(ContentTemplateDirective)
+  private _cntntTmplts: QueryList<ContentTemplateDirective>;
+  private _tmpltsMap: GenericObject<TemplateRef<any>>;
+
+  public get contentTemplate(): TemplateRef<any> {
+    return this._cntntTmplts?.first?.tpl;
+  }
+
+  public get contentTemplates(): GenericObject<TemplateRef<any>> {
+    return this._cntntTmplts?.length
+      ? this._tmpltsMap ||
+          (this._tmpltsMap = this._cntntTmplts.reduce((map, dir) => {
+            map[dir.contentTemplateName] = dir.tpl;
+            return map;
+          }, {}))
+      : {};
+  }
+
+  public getContentTemplate(name: string) {
+    return this.contentTemplates[name] || this.contentTemplate;
+  }
 }
 
 @NgModule({
