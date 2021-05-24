@@ -1,4 +1,4 @@
-<ng-container *ngFor="let item of items; let i = index">
+<div class="list-item" *ngFor="let item of items; let i = index">
   <ng-container *ngTemplateOutlet="contentChild?.tpl; context: { item: item, index: i }">
   </ng-container>   
-</ng-container>
+</div>
