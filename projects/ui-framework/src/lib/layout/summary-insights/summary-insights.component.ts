@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+import { ContentTemplateConsumer } from '../../services/utils/contentTemplate.directive';
 import { SummaryInsightType } from './summary-insights.enum';
 import { SummaryInsight } from './summary-insights.interface';
 
@@ -9,7 +10,7 @@ import { SummaryInsight } from './summary-insights.interface';
   styleUrls: ['summary-insights.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SummaryInsightsComponent {
+export class SummaryInsightsComponent extends ContentTemplateConsumer {
   public readonly type = SummaryInsightType;
 
   @Input() data: SummaryInsight[];

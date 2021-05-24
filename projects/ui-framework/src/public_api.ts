@@ -704,6 +704,8 @@ export * from './lib/services/utils/transformers';
 export { selectOptionsMock } from './lib/lists/multi-select-panel/multi-select-panel.mock';
 // Sanitizer
 export * from './lib/services/html/sanitizer.service';
+// Misc directives
+export * from './lib/services/utils/contentTemplate.directive';
 
 /*
 * Animation

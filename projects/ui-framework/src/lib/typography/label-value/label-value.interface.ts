@@ -24,6 +24,8 @@ export interface LabelValue {
   expectChanges?: boolean;
   swap?: boolean;
 
+  useContentTemplate?: boolean;
+
   valueClicked?: (e: MouseEvent | KeyboardEvent) => void;
   labelClicked?: (e: MouseEvent | KeyboardEvent) => void;
   iconClicked?: (e: MouseEvent | KeyboardEvent) => void;
