@@ -22,8 +22,8 @@ const note = ``;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Select and view'">
-  <div style="display: flex; flex-direction: column;">
-    <div>this component is in progress</div>
+  <div style="display: flex; flex-direction: column; max-width: 100%">
+    <div style="margin-bottom: 30px">this component is in progress</div>
     ${template}
   </div>
 </b-story-book-layout>
