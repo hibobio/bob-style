@@ -7,12 +7,14 @@ import {
   TemplateRef,
 } from '@angular/core';
 
+import { GenericObject } from '../../types';
+
 /**
  <ng-container *contentTemplate="let data=data">
     {{ data.title }}
  </ng-container>
 
-  <ng-container *ngTemplateOutlet="contentTemplate?.tpl;
+  <ng-container *ngTemplateOutlet="contentTemplate;
                 context: { data: item.data }">
   </ng-container>
 
@@ -22,9 +24,9 @@ import {
     {{ data.title }}
   </ng-container>
 
-    <ng-container *ngTemplateOutlet="getContentTemplate('myTemplate');
-                  context: { data: item.data }">
-    </ng-container>
+  <ng-container *ngTemplateOutlet="getContentTemplate('myTemplate');
+                context: { data: item.data }">
+  </ng-container>
  */
 
 @Directive({
@@ -39,19 +41,27 @@ export class ContentTemplateDirective {
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class ContentTemplateConsumer {
+  //
   @ContentChildren(ContentTemplateDirective)
   private _cntntTmplts: QueryList<ContentTemplateDirective>;
-  public get contentTemplate() {
-    return this._cntntTmplts?.first || ({} as any);
+  private _tmpltsMap: GenericObject<TemplateRef<any>>;
+
+  public get contentTemplate(): TemplateRef<any> {
+    return this._cntntTmplts?.first?.tpl;
   }
+
+  public get contentTemplates(): GenericObject<TemplateRef<any>> {
+    return this._cntntTmplts?.length
+      ? this._tmpltsMap ||
+          (this._tmpltsMap = this._cntntTmplts.reduce((map, dir) => {
+            map[dir.contentTemplateName] = dir.tpl;
+            return map;
+          }, {}))
+      : {};
+  }
+
   public getContentTemplate(name: string) {
-    return (
-      (this._cntntTmplts?.length &&
-        this._cntntTmplts.find((dir) => {
-          return dir.contentTemplateName === name;
-        })) ||
-      this.contentTemplate
-    ).tpl;
+    return this.contentTemplates[name] || this.contentTemplate;
   }
 }
 
