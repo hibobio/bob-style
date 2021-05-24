@@ -13,12 +13,16 @@ import { ComponentGroupType } from '../../consts';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { LinkColor, LinkTarget } from '../../indicators/link/link.enum';
 import { mockText } from '../../mock.const';
+import { ContentTemplateModule } from '../../services/utils/contentTemplate.directive';
 import { randomNumber } from '../../services/utils/functional-utils';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { IconPosition, LabelValueType, TextAlign } from './label-value.enum';
 import { LabelValueModule } from './label-value.module';
 
 const story = storiesOf(ComponentGroupType.Typography, module).addDecorator(
+  withKnobs
+);
+const story2 = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
@@ -316,61 +320,58 @@ const note = `
   ~~~
 `;
 
-story.add(
-  'Label-Value',
-  () => {
-    return {
-      template: storyTemplate,
-      props: {
-        longtext: `Some description of form section. Can be quite long. And possibly  not related to the form section at all.\nCan have line-breaks via '\\n' character!`,
-        onClicked: action('Component clicked'),
-        onLabelClicked: ($event) => action('Label clicked'),
-        onValueClicked: ($event) => action('Value clicked'),
-        onIconClicked: ($event) => action('Icon clicked'),
+const toAdd = () => {
+  return {
+    template: storyTemplate,
+    props: {
+      longtext: `Some description of form section. Can be quite long. And possibly  not related to the form section at all.\nCan have line-breaks via '\\n' character!`,
+      onClicked: action('Component clicked'),
+      onLabelClicked: ($event) => action('Label clicked'),
+      onValueClicked: ($event) => action('Value clicked'),
+      onIconClicked: ($event) => action('Icon clicked'),
 
-        type: select('type', Object.values(LabelValueType), LabelValueType.one),
-        label: text('label', mockText(randomNumber(1, 3))),
-        value: text('value', mockText(randomNumber(4, 6))),
-        labelDescription: object('labelDescription', {
-          title: mockText(3),
-          text: mockText(7),
-          iconSize: IconSize.small,
-          icon: Icons.info_outline,
-          linkClicked: () => {
-            console.log('LINK WAS CLICKED');
-          },
-          link: {
-            text: mockText(2),
-            color: LinkColor.primary,
-            target: LinkTarget.blank,
-          },
-        }),
+      type: select('type', Object.values(LabelValueType), LabelValueType.one),
+      label: text('label', mockText(randomNumber(1, 3))),
+      value: text('value', mockText(randomNumber(4, 6))),
+      labelDescription: object('labelDescription', {
+        title: mockText(3),
+        text: mockText(7),
+        iconSize: IconSize.small,
+        icon: Icons.info_outline,
+        linkClicked: () => {
+          console.log('LINK WAS CLICKED');
+        },
+        link: {
+          text: mockText(2),
+          color: LinkColor.primary,
+          target: LinkTarget.blank,
+        },
+      }),
 
-        textAlign: select(
-          'textAlign',
-          Object.values(TextAlign),
-          TextAlign.left
-        ),
-        labelMaxLines: number('labelMaxLines', 0),
-        valueMaxLines: number('valueMaxLines', 0),
+      textAlign: select('textAlign', Object.values(TextAlign), TextAlign.left),
+      labelMaxLines: number('labelMaxLines', 0),
+      valueMaxLines: number('valueMaxLines', 0),
 
-        icon: select('icon', [0, ...Object.values(Icons)], 0),
-        iconPosition: select(
-          'iconPosition',
-          Object.values(IconPosition),
-          IconPosition.left
-        ),
-        iconSize: select('iconSize', [0, ...Object.values(IconSize)], 0),
-        iconColor: select('iconColor', IconColor, IconColor.dark),
-      },
-      moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          StoryBookLayoutModule,
-          LabelValueModule,
-        ],
-      },
-    };
-  },
-  { notes: { markdown: note } }
-);
+      icon: select('icon', [0, ...Object.values(Icons)], 0),
+      iconPosition: select(
+        'iconPosition',
+        Object.values(IconPosition),
+        IconPosition.left
+      ),
+      iconSize: select('iconSize', [0, ...Object.values(IconSize)], 0),
+      iconColor: select('iconColor', IconColor, IconColor.dark),
+    },
+    moduleMetadata: {
+      imports: [
+        BrowserAnimationsModule,
+        StoryBookLayoutModule,
+        LabelValueModule,
+        ContentTemplateModule,
+      ],
+    },
+  };
+};
+
+story.add('Label-Value', toAdd, { notes: { markdown: note } });
+
+story2.add('Label-Value', toAdd, { notes: { markdown: note } });

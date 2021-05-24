@@ -8,6 +8,12 @@
                  [labelValue]="item.data"
                  [type]="item.data.type||'10'"
                  [swap]="!item.data.type">
+    <ng-container label-tooltip
+                  *ngTemplateOutlet="contentTemplate?.tpl; context: { data: item.data.labelDescription }">
+    </ng-container>
+    <ng-container value-tooltip
+                  *ngTemplateOutlet="contentTemplate?.tpl; context: { data: item.data.valueDescription }">
+    </ng-container>
   </b-label-value>
 
   <b-progress-donut *ngIf="item.type === type.progressDonut"

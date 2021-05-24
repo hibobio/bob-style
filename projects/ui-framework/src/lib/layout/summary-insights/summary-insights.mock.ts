@@ -1,6 +1,5 @@
 import { IconColor, IconSize } from '../../icons/icons.enum';
-import { LinkColor } from '../../indicators/link/link.enum';
-import { mockHobbies, mockText, mockThings, mockTime } from '../../mock.const';
+import { mockThings, mockTime } from '../../mock.const';
 import { ColorPalette } from '../../services/color-service/color-palette.enum';
 import {
   makeArray,
@@ -71,12 +70,23 @@ export const summaryInsightsDataMock2 = makeArray(6).map((_, i) => ({
     labelStyle: {
       fontWeight: 600,
     },
-    valueDescription: i < 2 && {
-      title: mockHobbies(1),
-      text: mockText(10),
+    valueDescription: i === 0 && {
+      useContentTemplate: true,
+      title: 'Custom info-tooltip template',
+      text: `Data is the value of valueDescription property (make sure it includes useContentTemplate:true).
+        To use contentTemplate directive, import ContentTemplateModule.
+        See Notes tab for full example.`,
       iconSize: IconSize.small,
       iconColor: IconColor.normal,
-      link: { text: mockThings(1), color: LinkColor.primary },
+    },
+    labelDescription: i === 1 && {
+      useContentTemplate: true,
+      title: 'Custom info-tooltip template',
+      text: `Data is the value of valueDescription property (make sure it includes useContentTemplate:true).
+        To use contentTemplate directive, import ContentTemplateModule.
+        See Notes tab for full example.`,
+      iconSize: IconSize.small,
+      iconColor: IconColor.normal,
     },
   },
 }));

@@ -8,4 +8,6 @@ export interface InfoTooltip {
   icon?: Icons;
   iconSize?: IconSize;
   linkClicked?: () => any;
+  useContentTemplate?: boolean;
+  [key: string]: any;
 }

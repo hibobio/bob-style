@@ -21,6 +21,8 @@ export class InfoTooltipComponent {
   @Input() link: Link;
   @Input() icon: Icons = Icons.info_outline;
   @Input() iconSize: IconSize = IconSize.large;
+  @Input() useContentTemplate: boolean;
+
   @Output() linkClicked: EventEmitter<void> = new EventEmitter<void>();
   linkClickHandler: () => void;
 
