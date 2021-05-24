@@ -44,6 +44,8 @@ const note = `
   #### Module
   *SummaryInsightsModule*
 
+  (also import <u>ContentTemplateModule</u> to use <u>contentTemplates</u> for label-value's info-tooltips)
+
   ~~~
   ${template1}
   ~~~
@@ -59,6 +61,53 @@ const note = `
   --- | --- | ---
   type | SummaryInsightType | selects item type
   data | LabelValue / ProgressBar / ProgressDonut | for descriptions of interfaces see related components
+
+  #### example data
+
+~~~
+[
+    {
+      "type": "LabelValue",
+      "data": {
+        "label": "05:32",
+        "value": "Conditioner",
+        "type": "6",
+        "labelStyle": {
+          "fontWeight": 600
+        },
+        "valueDescription": {
+          "useContentTemplate": true,
+          "title": "Info-tooltip title",
+          "text": "Info-tooltip text",
+          "iconSize": "small",
+          "iconColor": "normal"
+        },
+        "labelDescription": false
+      }
+    },
+    {
+      "type": "ProgressDonut",
+      "data": {
+        "data": {
+          "value": 30,
+          "headerTextPrimary": "30%",
+          "headerTextSecondary": "Leg warmers",
+          "color": "#154156"
+        }
+      }
+    },
+    {
+      "type": "ProgressBar",
+      "data": {
+        "data": {
+          "value": 57,
+          "headerTextPrimary": "Keyboard",
+          "color": "#776926"
+        }
+      }
+    }
+]
+~~~
 
 `;
 
