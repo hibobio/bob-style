@@ -1,9 +1,9 @@
+import { HexColor } from 'bob-style';
 import { ChartCore } from './chart/chart-core';
 import {
   ChartFormatterThis,
   ChartTooltipTemplateFormatter,
 } from './charts.interface';
-
 
 export const COLUMN_BAR_WIDTH = {
   pointPadding: 0.1,
@@ -31,7 +31,7 @@ export const DONUT_CHART_WTEXT_SIZE_DEFS = [300, 80];
 export const CHART_CORE_POINTFORMAT_DEF =
   '{series.name}: <b>{point.percentage:.1f}%</b>';
 
-export const CHART_CORE_COLORPALETTE_DEF = [
+export const CHART_CORE_COLORPALETTE_DEF: HexColor[] = [
   '#058DC7',
   '#50B432',
   '#ED561B',

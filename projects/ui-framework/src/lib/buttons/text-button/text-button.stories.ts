@@ -1,16 +1,16 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
-import { ButtonsModule } from '../buttons.module';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { Icons } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { LinkColor } from '../../indicators/link/link.enum';
-import { ButtonType } from '../buttons.enum';
-
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 // @ts-ignore: md file and not a module
 import buttonsProps from '../button.properties.md';
+import { ButtonType } from '../buttons.enum';
+import { ButtonsModule } from '../buttons.module';
 
 const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
   withKnobs
@@ -18,7 +18,7 @@ const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
 
 const button1 = `<b-text-button [type]="type"
                [text]="text"
-               [color]="color"
+                 [color]="color"
                [disabled]="disabled"
                (clicked)="onClick($event)">
 </b-text-button>`;
@@ -28,7 +28,7 @@ const button2 = `<a b-text-button href="javascript:void()"
                 type: type,
                  text: text,
                  icon: icon,
-                 color: color,
+                   color: color,
                  disabled: disabled
               }"
               (clicked)="onClick($event)">
@@ -93,6 +93,7 @@ story.add(
       icon: select('icon', [0, ...Object.values(Icons)], Icons.phone_link),
       type: select('type', [0, ...Object.values(ButtonType)], 0),
       color: select('color', Object.values(LinkColor), LinkColor.none),
+
       disabled: boolean('disabled', false),
       onClick: action('Text button'),
     },

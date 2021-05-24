@@ -30,13 +30,12 @@
   }
 
   background-color: var(--bg-color);
-  color: var(--color);
+  color: var(--txt-color);
 
   .btn-minimize ::ng-deep {
     button {
       font-weight: 500;
       @include button-icon-right;
-      @include icon-color(var(--color));
     }
   }
 

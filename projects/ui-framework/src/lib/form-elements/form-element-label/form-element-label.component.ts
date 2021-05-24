@@ -1,15 +1,16 @@
 import {
-  Component,
-  Input,
-  HostBinding,
   ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  Input,
 } from '@angular/core';
-import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+
+import { Icons } from '../../icons/icons.enum';
 import {
   TooltipClass,
   TooltipPosition,
 } from '../../popups/tooltip/tooltip.enum';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 
 @Component({
   selector: 'b-form-element-label',
@@ -27,8 +28,6 @@ export class FormElementLabelComponent {
 
   readonly truncateTooltipType = TruncateTooltipType;
 
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
   readonly infoIcon = Icons.info_outline.replace('b-icon-', '');
   readonly tooltipPosition = TooltipPosition.above;
   readonly tooltipDelay = 300;

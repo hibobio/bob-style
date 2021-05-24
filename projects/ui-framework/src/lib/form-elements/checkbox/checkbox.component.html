@@ -27,10 +27,7 @@
   <span>{{ placeholder || label }}</span>
 
   <b-icon *ngIf="description"
-          [icon]="icons.info_outline"
-          [color]="iconColor.normal"
-          [size]="iconSize.small"
-          [hasHoverState]="true"
+          [config]="infoIcn"
           [matTooltip]="description"
           [matTooltipClass]="tooltipClass"
           [matTooltipShowDelay]="delay"
@@ -39,7 +36,6 @@
   </b-icon>
 
 </label>
-
 
 <p b-input-message
    *ngIf="hintMessage || warnMessage || errorMessage"

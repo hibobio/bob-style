@@ -23,8 +23,8 @@ import { Keys } from '../../enums';
 import {
   applyChanges,
   hasChanges,
+  isDefined,
   isFunction,
-  isValuevy,
   notFirstChanges,
 } from '../../services/utils/functional-utils';
 import { filterKey } from '../../services/utils/rxjs.operators';
@@ -87,7 +87,7 @@ export class MenuComponent implements OnChanges, OnInit, OnDestroy {
 
     if (
       hasChanges(changes, ['menu', 'id', 'data', 'clickToOpenSub'], true, {
-        truthyCheck: isValuevy,
+        truthyCheck: isDefined,
       })
     ) {
       this.setViewModel();

@@ -1,5 +1,3 @@
-import { isEqual as _isEqual, remove as _remove } from 'lodash';
-
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,6 +10,8 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+
+import { remove } from '../../services/utils/functional-utils';
 
 const MIN_WEIGHT = 1.5;
 const MAX_WEIGHT = 4;
@@ -52,10 +52,14 @@ export class SnowComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     window.cancelAnimationFrame(this.loopReq);
-    this.ctx.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+    this.stop();
   }
 
   makeSnow(): void {
+    if (this.snowing) {
+      return;
+    }
+
     this.snowing = true;
     setTimeout(() => {
       this.snowing = false;
@@ -102,8 +106,8 @@ export class SnowComponent implements OnInit, OnDestroy {
         }
       });
 
-      _remove(this.FLAKES, (flake) => {
-        return _isEqual(flake.outOfBounds, true);
+      remove(this.FLAKES, (flake) => {
+        return flake.outOfBounds === true;
       });
 
       if (this.FLAKES.length > 0) {
@@ -114,6 +118,12 @@ export class SnowComponent implements OnInit, OnDestroy {
         this.complete.emit();
       }
     });
+  }
+
+  private stop() {
+    this.ctx.clearRect(0, 0, this.windowDim.w, this.windowDim.h);
+    this.FLAKES.length = 0;
+    this.snowing = false;
   }
 
   private _repositionFlake(flake) {

@@ -1,16 +1,18 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
 import { zipObject } from 'lodash';
-import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { AvatarModule } from './avatar.module';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ChipType } from '../../chips/chips.enum';
-import { mockJobs, mockAvatar, mockName } from '../../mock.const';
-import { Icons } from '../../icons/icons.enum';
+import { action } from '@storybook/addon-actions';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
 import { ButtonsModule } from '../../buttons/buttons.module';
+import { ChipType } from '../../chips/chips.enum';
+import { ComponentGroupType } from '../../consts';
+import { Icons } from '../../icons/icons.enum';
+import { mockAvatar, mockJobs, mockName } from '../../mock.const';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { AvatarBadge, AvatarOrientation, AvatarSize } from './avatar.enum';
+import { AvatarModule } from './avatar.module';
 
 const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
   withKnobs
@@ -96,36 +98,18 @@ const note = `
 
   ~~~
   <b-avatar
-    [imageSource]="imageSource"
-    [backgroundColor]="backgroundColor"
-    [size]="size"
-    [orientation]="orientation"
-    [title]="title"
-    [subtitle]="subtitle"
-    [caption]="caption"
-    [icon]="icon"
-    [badge]="badge"
-    [chip]="chip"
-    [afterChipText]="afterChipText"
-    [isClickable]="isClickable"
+    [avatar]="avatarConfig"
     [disabled]="disabled"
     (clicked)="clickHandler($event)">
-
-    <b-text-button avatar-text type="primary" text="View goals"></b-text-button>
   </b-avatar>
   ~~~
 
-  ~~~
-  <b-avatar
-    [avatar]="avatar"
-    (clicked)="clickHandler($event)">
-  </b-avatar>
-  ~~~
+  <mark>**Note**: Use [avatar] input for static props and separate inputs for dynamic props</mark>
 
-  #### Properties
+  #### Properties (interface Avatar)
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [avatar] | Avatar | all properties of Avatar interface can be assigned with single input | &nbsp;
+  [avatar] | <u>Avatar</u> | all properties of Avatar interface can be assigned with single input | &nbsp;
   [imageSource] | string | URL of the avatar image<br>\
   **Important!** <br>\
   use **EmployeeAvatarService<wbr>.getOptimizedAvatarImage<wbr>(employee.about.avatar, AvatarSize)** <br>\
@@ -157,6 +141,28 @@ getOptimizedAvatarImage for imageSource (set to true if using images that are no
   &lt;element&gt; | ng-content | you can pass stuff to be placed inside Avatar as ng-content | &nbsp;
   &lt;element avatar-text&gt; | ng-content | element with attribute \`[avatar-text]\` \
   will be displayed below texts | &nbsp;
+
+
+  ~~~
+  <b-avatar
+    [imageSource]="imageSource"
+    [backgroundColor]="backgroundColor"
+    [size]="size"
+    [orientation]="orientation"
+    [title]="title"
+    [subtitle]="subtitle"
+    [caption]="caption"
+    [icon]="icon"
+    [badge]="badge"
+    [chip]="chip"
+    [afterChipText]="afterChipText"
+    [isClickable]="isClickable"
+    [disabled]="disabled"
+    (clicked)="clickHandler($event)">
+
+    <b-text-button avatar-text type="primary" text="View goals"></b-text-button>
+  </b-avatar>
+  ~~~
 `;
 
 const storyTemplate = `

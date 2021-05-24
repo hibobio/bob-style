@@ -1,30 +1,31 @@
 import {
-  Component,
-  Input,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  ViewContainerRef,
+  Component,
+  Input,
   NgZone,
+  ViewContainerRef,
 } from '@angular/core';
+
+import { arrowKeys, clickKeys, controlKeys, Keys } from '../../enums';
+import { ListPanelService } from '../../lists/list-panel.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import {
-  MultiSearchGroupOption,
-  MultiSearchOption,
-} from './multi-search.interface';
+  asArray,
+  getFuzzyMatcher,
+  isFunction,
+  isKey,
+  normalizeString,
+} from '../../services/utils/functional-utils';
+import { MultiSearchBaseElement } from './multi-search.abstract';
 import {
   MULTI_SEARCH_KEYMAP_DEF,
   MULTI_SEARCH_MIN_SEARCH_LENGTH_DEF,
 } from './multi-search.const';
 import {
-  isFunction,
-  isKey,
-  asArray,
-  getFuzzyMatcher,
-  normalizeString,
-} from '../../services/utils/functional-utils';
-import { ListPanelService } from '../../lists/list-panel.service';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { MultiSearchBaseElement } from './multi-search.abstract';
-import { Keys, clickKeys, controlKeys, arrowKeys } from '../../enums';
+  MultiSearchGroupOption,
+  MultiSearchOption,
+} from './multi-search.interface';
 
 @Component({
   selector: 'b-multi-search',
@@ -245,18 +246,22 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
         const options: MultiSearchOption[] = group[
           group.keyMap?.options || MULTI_SEARCH_KEYMAP_DEF.options
         ].filter((option: MultiSearchOption) => {
+          //
           let searchValueIndex = 0,
             valueToMatch =
               option[group.keyMap?.value || MULTI_SEARCH_KEYMAP_DEF.value],
-            match: RegExpExecArray,
+            match: RegExpExecArray = matcher.exec(
+              normalizeString(valueToMatch)
+            ),
             highlightedMatch: string;
 
           if (option.searchValue) {
             option.searchValue = asArray(option.searchValue);
 
-            searchValueIndex = option.searchValue.findIndex((sv) =>
-              matcher.test(normalizeString(sv))
-            );
+            searchValueIndex = option.searchValue.findIndex((sv) => {
+              matcher.lastIndex = 0;
+              return (match = matcher.exec(normalizeString(sv)));
+            });
 
             if (searchValueIndex === -1) {
               delete option.searchMatch;
@@ -265,8 +270,6 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
 
             valueToMatch = String(option.searchValue[searchValueIndex]);
           }
-
-          match = matcher.exec(normalizeString(valueToMatch));
 
           if (!match) {
             delete option.searchMatch;

@@ -89,6 +89,10 @@ $bel-item-dragged-border-color: $grey-400;
   outline: 0;
 }
 
+.bel-item-menu-btn {
+  margin-right: -8px;
+}
+
 :host ::ng-deep {
   .cdk-drop-list-disabled {
     .bel-item {

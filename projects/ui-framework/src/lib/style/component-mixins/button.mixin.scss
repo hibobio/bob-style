@@ -28,7 +28,7 @@ $button-size-large: 44px;
 
       &,
       &[disabled] {
-        color: $white;
+        color: var(--primary-bg-text-color, white);
       }
       &:hover,
       &:focus {
@@ -39,6 +39,27 @@ $button-size-large: 44px;
       }
     }
 
+    @if $type == 'secondary' {
+      background-color: var(--secondary-600);
+
+      &,
+      &[disabled] {
+        color: var(--secondary-bg-text-color, #{$grey-700});
+      }
+
+      &:hover,
+      &:focus {
+        background-color: var(--secondary-500);
+      }
+      &:active {
+        background-color: var(--secondary-700);
+      }
+    }
+
+    @if $type == 'tertiary' {
+      background-color: transparent;
+    }
+
     @if $type == 'negative' {
       background-color: var(--negative-600);
 
@@ -46,6 +67,7 @@ $button-size-large: 44px;
       &[disabled] {
         color: $white;
       }
+
       &:hover,
       &:focus {
         background-color: var(--negative-500);
@@ -69,21 +91,6 @@ $button-size-large: 44px;
       &:active {
         background-color: var(--positive-700);
       }
-    }
-
-    @if $type == 'secondary' {
-      background-color: var(--secondary-600);
-      &:hover,
-      &:focus {
-        background-color: var(--secondary-500);
-      }
-      &:active {
-        background-color: var(--secondary-700);
-      }
-    }
-
-    @if $type == 'tertiary' {
-      background-color: transparent;
     }
 
     @if $type == 'disabled' {

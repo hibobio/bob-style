@@ -1,28 +1,28 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs, object, boolean, select } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
-import { ButtonsModule } from '../../buttons/buttons.module';
-import { TypographyModule } from '../../typography/typography.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { SingleListModule } from './single-list.module';
-import { SelectGroupOption } from '../list.interface';
-import { AvatarModule } from '../../avatar/avatar/avatar.module';
-import { optionsMock } from './single-list.mock';
 import { cloneDeep } from 'lodash';
-import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
-import { SwitchToggleModule } from '../../indicators/switch-toggle/switch-toggle.module';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { action } from '@storybook/addon-actions';
+import { boolean, object, select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { ComponentGroupType } from '../../consts';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { SwitchToggleModule } from '../../indicators/switch-toggle/switch-toggle.module';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { TypographyModule } from '../../typography/typography.module';
+import { SelectGroupOption } from '../list.interface';
 // @ts-ignore: md file and not a module
 import listInterfaceDoc from '../list.interface.md';
 // @ts-ignore: md file and not a module
 import listSelectsPropsDoc from '../lists-selects.properties.md';
 // @ts-ignore: md file and not a module
 import listsPropsDoc from '../lists.properties.md';
-import { of } from 'rxjs';
-import { delay } from 'rxjs/operators';
-import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { optionsMock } from './single-list.mock';
+import { SingleListModule } from './single-list.module';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -37,7 +37,7 @@ const template = `
                [size]="size"
                (selectChange)="selectChange($event)">
 
-      <b-text-button footerAction *ngIf="options.length>1"
+      <b-text-button footerAction *ngIf="options?.length>1"
               [text]="list.allGroupsCollapsed ? 'Expand' : 'Collapse'"
               (clicked)="list.toggleCollapseAll()">
       </b-text-button>

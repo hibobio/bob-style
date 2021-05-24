@@ -31,7 +31,7 @@ export class InsightsPanelComponent {
   readonly iconTypes = Icons;
 
   @Input() data: InsightsPanelData[];
-  @Input('expanded') isExpanded: boolean = true;
+  @Input('expanded') isExpanded = true;
 
   @Input('config') set setConfig(config: InsightsPanelConfig) {
     this.config = { ...this.config, ...config };
@@ -50,7 +50,7 @@ export class InsightsPanelComponent {
   readonly expandButtonConf: Button = {
     type: ButtonType.tertiary,
     size: ButtonSize.small,
-    color: IconColor.dark,
+    color: IconColor.inherit,
   };
 
   public onExpandClick(): void {

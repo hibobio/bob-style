@@ -1,34 +1,34 @@
 import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
-  Output,
-  AfterViewInit,
-  ViewChildren,
-  QueryList,
-  ElementRef,
-  ChangeDetectionStrategy,
   NgZone,
-  ViewChild,
-  SimpleChanges,
   OnChanges,
-  ChangeDetectorRef,
+  Output,
+  QueryList,
+  SimpleChanges,
+  ViewChild,
+  ViewChildren,
 } from '@angular/core';
-import { Tab, TabChangeEvent } from './tabs.interface';
-import { MatTabNav, MatTabLink } from '@angular/material/tabs';
-import { TabsType } from './tabs.enum';
-import {
-  notFirstChanges,
-  isKey,
-  isObject,
-} from '../../services/utils/functional-utils';
-import { Keys } from '../../enums';
-import { IconSize, IconColor } from '../../icons/icons.enum';
-import { BadgeConfig } from '../../avatar/avatar/avatar.interface';
+import { MatTabLink, MatTabNav } from '@angular/material/tabs';
+
 import { AvatarBadges } from '../../avatar/avatar/avatar.consts';
 import { AvatarBadge } from '../../avatar/avatar/avatar.enum';
+import { BadgeConfig } from '../../avatar/avatar/avatar.interface';
+import { Keys } from '../../enums';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import {
+  isKey,
+  isObject,
+  notFirstChanges,
+} from '../../services/utils/functional-utils';
 import { WindowRef } from '../../services/utils/window-ref.service';
+import { TabsType } from './tabs.enum';
+import { Tab, TabChangeEvent } from './tabs.interface';
 
 @Component({
   selector: 'b-tabs',
@@ -66,15 +66,10 @@ export class TabsComponent implements OnChanges, AfterViewInit {
   // This input determines if the tabs will be changed automatically on click.
   @Input() controlled = false;
 
-  @Output() selectChange: EventEmitter<TabChangeEvent> = new EventEmitter<
-    TabChangeEvent
-  >();
-  @Output() selectClick: EventEmitter<TabChangeEvent> = new EventEmitter<
-    TabChangeEvent
-  >();
-
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
+  @Output()
+  selectChange: EventEmitter<TabChangeEvent> = new EventEmitter<TabChangeEvent>();
+  @Output()
+  selectClick: EventEmitter<TabChangeEvent> = new EventEmitter<TabChangeEvent>();
 
   ngOnChanges(changes: SimpleChanges): void {
     if (notFirstChanges(changes)) {

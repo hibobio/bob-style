@@ -9,7 +9,13 @@ export interface GenericObject<T = any> {
   [key: string]: T;
 }
 
-export type Color = ColorPalette | ColorsMain | ColorsGrey | string;
+// export type PxSize<S extends string = string> = `${S}px`;
+export type PxSize = string;
+
+// export type HexColor<H extends string = string> = `#${H}`;
+export type HexColor = string;
+
+export type Color = ColorPalette | ColorsMain | ColorsGrey | HexColor;
 
 export type SortType = Sort | 'asc' | 'desc' | boolean;
 

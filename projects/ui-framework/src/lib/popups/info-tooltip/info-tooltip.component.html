@@ -1,14 +1,18 @@
 <b-panel [openOnHover]="true">
+
   <b-icon panel-trigger
           [icon]="icon"
           [color]="iconColor"
           [size]="iconSize"></b-icon>
+
   <div panel-content>
     <b-display-3>{{title}}</b-display-3>
-    <p class="info-tooltip-text"
+
+    <p class="info-tooltip-text pre-wrap mrg-y-12"
        [innerHTML]="text"></p>
+
     <b-link *ngIf="link"
             [config]="link"
-            (clicked)="linkClicked.emit()"></b-link>
+            (clicked)="onLinkClick()"></b-link>
   </div>
 </b-panel>

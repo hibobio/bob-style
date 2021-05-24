@@ -1,7 +1,7 @@
 <header *ngIf="allowedActions.add || allowedActions.sort"
         class="bel-header mrg-b-4">
 
-  <div class="bel-header-top flx flx-row-align-y flx-wrap mrg-b-4"
+  <div class="bel-header-top flx flx-row-align-y flx-wrap"
        *ngIf="allowedActions.add">
 
     <b-button class="bel-plus-button"
@@ -35,7 +35,7 @@
     </div>
   </div>
 
-  <div class="bel-header-bottom flx flx-row-align-y mrg-b-16"
+  <div class="bel-header-bottom flx flx-row-align-y mrg-t-4"
        [hidden]="!listState.list.length">
 
     <span class="bel-total">

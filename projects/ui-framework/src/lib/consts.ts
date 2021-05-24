@@ -2,28 +2,29 @@ import { ColorsGrey } from './services/color-service/color-palette.enum';
 import { DateLocaleFormats } from './types';
 
 export enum ComponentGroupType {
-  Buttons = 'Components/Buttons',
-  Indicators = 'Components/Indicators',
-  Avatar = 'Components/Avatar',
-  FormElements = 'Components/Form Elements',
-  Comments = 'Components/Comments',
-  Cards = 'Components/Cards',
-  Charts = 'Components/Charts',
-  Chips = 'Components/Chips',
-  Tables = 'Components/Tables',
-  Popups = 'Components/Popups',
-  Tooltip = 'Components/Tooltip',
-  Layout = 'Components/Layout',
-  Misc = 'Components/Misc',
-  Navigation = 'Components/Navigation',
-  Search = 'Components/Search',
-  Lists = 'Components/Lists',
-  Templates = 'Components/Templates',
-  Icons = 'Others/Icons',
-  Typography = 'Others/Typography',
-  Services = 'Others/Services',
-  EyeCandy = 'Others/Eye Candy',
-  HtmlCss = 'Others/HTML-CSS',
+  Avatar = 'Avatar',
+  Buttons = 'Buttons',
+  Cards = 'Cards',
+  Charts = 'Charts',
+  Chips = 'Chips',
+  Comments = 'Comments',
+  EyeCandy = 'Eye Candy',
+  FormElements = 'Form Elements',
+  HtmlCss = 'HTML-CSS',
+  Icons = 'Icons',
+  Indicators = 'Indicators',
+  Layout = 'Layout',
+  Lists = 'Lists',
+  Misc = 'Misc',
+  Navigation = 'Navigation',
+  Popups = 'Popups',
+  Search = 'Search',
+  Services = 'Services',
+  Tables = 'Tables',
+  Templates = 'Templates',
+  Tooltip = 'Tooltip',
+  Typography = 'Typography',
+  Widgets = 'Widgets',
 }
 
 export const mobileBreakpoint = 768;
@@ -115,15 +116,15 @@ export const DISPLAY_DATE_FORMAT_DEF = LOCALE_FORMATS['DD/MM/YYYY'].FullDate;
 
 export const DISPLAY_MONTH_FORMAT_DEF = LOCALE_FORMATS['DD/MM/YYYY'].MonthYear;
 
-export const COLOR_GREY_100 = ColorsGrey.color_grey_100;
-export const COLOR_GREY_200 = ColorsGrey.color_grey_200;
-export const COLOR_GREY_300 = ColorsGrey.color_grey_300;
-export const COLOR_GREY_400 = ColorsGrey.color_grey_400;
-export const COLOR_GREY_500 = ColorsGrey.color_grey_500;
-export const COLOR_GREY_600 = ColorsGrey.color_grey_600;
-export const COLOR_GREY_700 = ColorsGrey.color_grey_700;
-export const COLOR_GREY_800 = ColorsGrey.color_grey_800;
-export const COLOR_GREY_900 = ColorsGrey.color_grey_900;
+export const COLOR_GREY_100 = ColorsGrey.grey_100;
+export const COLOR_GREY_200 = ColorsGrey.grey_200;
+export const COLOR_GREY_300 = ColorsGrey.grey_300;
+export const COLOR_GREY_400 = ColorsGrey.grey_400;
+export const COLOR_GREY_500 = ColorsGrey.grey_500;
+export const COLOR_GREY_600 = ColorsGrey.grey_600;
+export const COLOR_GREY_700 = ColorsGrey.grey_700;
+export const COLOR_GREY_800 = ColorsGrey.grey_800;
+export const COLOR_GREY_900 = ColorsGrey.grey_900;
 
 export const emptyPixel =
   'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';

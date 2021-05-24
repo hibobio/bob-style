@@ -1,19 +1,17 @@
-import { storiesOf } from '@storybook/angular';
-import { text, withKnobs, select, object } from '@storybook/addon-knobs';
-import { InfoStripModule } from './info-strip.module';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { values } from 'lodash';
-import { LinkColor, LinkTarget } from '../link/link.enum';
-import { InfoStripIconSize, InfoStripIconType } from './info-strip.enum';
 import { action } from '@storybook/addon-actions';
+import { object, select, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { CheckboxModule } from '../../form-elements/checkbox/checkbox.module';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { LinkTarget } from '../link/link.enum';
+import { InfoStripIconSize, InfoStripIconType } from './info-strip.enum';
+import { InfoStripModule } from './info-strip.module';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
 );
-const iconTypes = values(InfoStripIconType);
-const iconSizes = values(InfoStripIconSize);
 
 const template = `<b-info-strip
         [iconType]="iconType"
@@ -70,14 +68,21 @@ story.add(
       props: {
         infoStripIconType: InfoStripIconType,
         infoStripIconSize: InfoStripIconSize,
-        iconType: select('iconType', iconTypes, InfoStripIconType.information),
-        iconSize: select('iconSize', iconSizes, InfoStripIconSize.large),
+        iconType: select(
+          'iconType',
+          Object.values(InfoStripIconType),
+          InfoStripIconType.information
+        ),
+        iconSize: select(
+          'iconSize',
+          Object.values(InfoStripIconSize),
+          InfoStripIconSize.large
+        ),
         text: text('text', 'Place your info text here'),
         link: object('link', {
           text: 'Click here',
           url: 'https://app.hibob.com',
           target: LinkTarget.blank,
-          color: LinkColor.none,
         }),
         onLinkClick: action('Link clicked'),
       },

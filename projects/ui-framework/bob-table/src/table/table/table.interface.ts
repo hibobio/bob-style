@@ -1,9 +1,11 @@
+import { IconColor, Icons } from 'bob-style';
+
 import {
-  ColumnOrderStrategy, TableEventName,
+  ColumnOrderStrategy,
   PinDirection,
   SortDirections,
+  TableEventName,
 } from './table.enum';
-import { IconColor, Icons } from 'bob-style';
 
 export interface ColumnDef {
   headerName: string;

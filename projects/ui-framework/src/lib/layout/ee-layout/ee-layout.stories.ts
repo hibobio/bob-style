@@ -101,11 +101,11 @@ const template = `
         <b-group class="mrg-l-auto">
           <b-square-button size="small" type="tertiary"
                           [icon]="icons.file_upload"
-                          (clicked)="snow.ngOnDestroy();confetti.ngOnDestroy();confetti.fireConfetti(pos)">
+                          (clicked)="snow.stop();confetti.fireConfetti(pos)">
           </b-square-button>
           <b-square-button size="small" type="tertiary"
                           [icon]="icons.file_download"
-                          (clicked)="snow.ngOnDestroy();confetti.ngOnDestroy();snow.makeSnow()">
+                          (clicked)="confetti.stop();snow.makeSnow()">
           </b-square-button>
         </b-group>
       </ng-container>
@@ -428,7 +428,7 @@ const donuts = randomFromArray(metrics1, 3)
       ...m,
       headerTextSecondary,
       color: ColorPalette[COLOR_PALETTE_SET1_COLOR_ORDER[i]],
-      trackColor: ColorsGrey.color_grey_400,
+      trackColor: ColorsGrey.grey_400,
     };
   });
 

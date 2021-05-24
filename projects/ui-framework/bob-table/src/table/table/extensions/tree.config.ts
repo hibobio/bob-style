@@ -1,5 +1,6 @@
-import {ComponentType} from '@angular/cdk/overlay';
-import {ColDef} from 'ag-grid-community';
+import { ColDef } from 'ag-grid-community';
+
+import { ComponentType } from '@angular/cdk/overlay';
 
 export type HTML = string;
 

@@ -1,6 +1,7 @@
-import { RowNode, GridOptions, GridApi, ColumnApi } from 'ag-grid-community';
-import { LicenseManager } from 'ag-grid-enterprise';
 import { AgGridAngular } from 'ag-grid-angular';
+import { ColumnApi, GridApi, GridOptions, RowNode } from 'ag-grid-community';
+import { LicenseManager } from 'ag-grid-enterprise';
+
 import { normalizeString } from 'bob-style';
 
 const LICENSE_KEY =

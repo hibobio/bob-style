@@ -4,39 +4,29 @@
   position: relative;
   text-align: left;
   padding: 10px;
-  
+
   border-radius: $border-radius;
   display: flex;
+
   &[data-type='warning'] {
     background-color: rgba($color-warn, 0.1);
-    color: $color3_darker
+    color: $color3_darker;
   }
   &[data-type='information'] {
     background-color: rgba($inform-600, 0.1);
-    color: $color9_darker
+    color: $color9_darker;
   }
   &[data-type='error'] {
-    background-color: rgba($color-error , 0.1);
-    color: $color1_darker
+    background-color: rgba($color-error, 0.1);
+    color: $color1_darker;
   }
   &[data-type='success'] {
     background-color: rgba($positive-600, 0.1);
-    color: $color7_darker
+    color: $color7_darker;
   }
-}
 
-.icon {
-  display: block;
-  margin-right: 10px;
-}
-
-p {
-  margin: 0;
-}
-
-.content {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  .icon {
+    // don't remove this
+    display: block;
+  }
 }

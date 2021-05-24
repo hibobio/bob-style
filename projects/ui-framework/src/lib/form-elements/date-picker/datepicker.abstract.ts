@@ -1,5 +1,4 @@
 import { isSameDay } from 'date-fns';
-import { get, set } from 'lodash';
 import { Subject } from 'rxjs';
 import { debounceTime, throttleTime } from 'rxjs/operators';
 
@@ -28,16 +27,20 @@ import {
   LOCALE_FORMATS,
 } from '../../consts';
 import { Keys } from '../../enums';
+import { ICON_CONFIG } from '../../icons/common-icons.const';
+import { Icon } from '../../icons/icon.interface';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { Styles } from '../../services/html/html-helpers.interface';
 import {
   cloneValue,
+  get,
   hasChanges,
   hasProp,
   isEmpty,
   isKey,
+  set,
   simpleUID,
 } from '../../services/utils/functional-utils';
 import { MobileService } from '../../services/utils/mobile.service';
@@ -65,9 +68,11 @@ export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseDatepickerElement<
-  I = Date | string,
-  O = DatePickerChangeEvent
-> extends BaseFormElement implements OnInit, AfterViewInit {
+    I = Date | string,
+    O = DatePickerChangeEvent
+  >
+  extends BaseFormElement
+  implements OnInit, AfterViewInit {
   constructor(
     protected windowRef: WindowRef,
     protected utilsService: UtilsService,
@@ -143,15 +148,19 @@ export abstract class BaseDatepickerElement<
   private allowInputBlur = !this.allowKeyInput;
 
   readonly types = DatepickerType;
-  readonly icons = Icons;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
   readonly panelPos = PanelDefaultPosVer;
   readonly dateAdjust = DateAdjust;
   readonly autoComplete = InputAutoCompleteOptions;
 
   private doneFirstChange = false;
   private useFormatForPlaceholder = false;
+
+  readonly iconColor = IconColor;
+  readonly clearIcn: Icon = ICON_CONFIG.reset;
+  readonly dateIcn: Icon = {
+    icon: Icons.date,
+    size: IconSize.medium,
+  };
 
   private transmitDebouncer$: Subject<void> = new Subject().pipe(
     debounceTime(100)
@@ -278,7 +287,7 @@ export abstract class BaseDatepickerElement<
   }
 
   public transmit(value: Date = NaN as any, path = 'value') {
-    const currentValue = get(this, path);
+    const currentValue: Date = get(this, path);
 
     if (
       (currentValue && value && isSameDay(currentValue, value)) ||

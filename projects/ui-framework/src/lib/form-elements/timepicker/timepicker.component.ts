@@ -1,26 +1,29 @@
 import {
-  Component,
-  forwardRef,
-  ViewChild,
-  ElementRef,
   ChangeDetectorRef,
+  Component,
+  ElementRef,
+  forwardRef,
   NgZone,
+  ViewChild,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BaseFormElement } from '../base-form-element';
+
+import { Keys } from '../../enums';
+import { ICON_CONFIG } from '../../icons/common-icons.const';
+import { Icon } from '../../icons/icon.interface';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import {
-  padWith0,
-  isString,
   isKey,
-  isNumber,
   isNullOrUndefined,
+  isNumber,
+  isString,
+  padWith0,
 } from '../../services/utils/functional-utils';
 import { timeyOrFail } from '../../services/utils/transformers';
+import { BaseFormElement } from '../base-form-element';
 import { InputEventType } from '../form-elements.enum';
-import { Keys } from '../../enums';
-import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
-import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { InputAutoCompleteOptions } from '../input/input.enum';
+import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 
 interface ParseConfig {
   minValue?: number;
@@ -86,10 +89,13 @@ export class TimePickerComponent extends BaseFormElement {
   public hoursFocused = false;
   public minutesFocused = false;
 
-  readonly icons = Icons;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
   readonly autoComplete = InputAutoCompleteOptions;
+  readonly iconColor = IconColor;
+  readonly clearIcn: Icon = ICON_CONFIG.reset;
+  readonly timeIcn: Icon = {
+    icon: Icons.timeline,
+    size: IconSize.medium,
+  };
 
   onInputKeydown(event: KeyboardEvent) {
     if (!this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9]/)) {

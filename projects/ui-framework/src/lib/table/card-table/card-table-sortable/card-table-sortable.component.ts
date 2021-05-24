@@ -1,12 +1,14 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+import { Icon } from '../../../icons/icon.interface';
+import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 import {
   CardTableCellData,
   CardTableRowOrderChangeEvent,
 } from '../card-table.interface';
-import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
 import { CardTableComponent } from '../card-table/card-table.component';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
+import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
 
 @Component({
   selector: 'b-card-table-sortable',
@@ -20,17 +22,18 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 export class CardTableSortableComponent extends CardTableComponent {
   @Input() useDragHandle = false;
   @Input() disableDragging = false;
-  @Output() rowOrderChanged: EventEmitter<
-    CardTableRowOrderChangeEvent
-  > = new EventEmitter<CardTableRowOrderChangeEvent>();
+  @Output()
+  rowOrderChanged: EventEmitter<CardTableRowOrderChangeEvent> = new EventEmitter<CardTableRowOrderChangeEvent>();
 
   constructor(protected widthsService: CellWidthsService) {
     super(widthsService);
   }
 
-  public readonly icons = Icons;
-  public readonly iconSize = IconSize;
-  public readonly iconColor = IconColor;
+  readonly dragIcn: Icon = {
+    icon: Icons.drag_alt,
+    color: IconColor.light,
+    size: IconSize.small,
+  };
 
   onDrop(event: CdkDragDrop<CardTableCellData[][]>): void {
     moveItemInArray(this.table, event.previousIndex, event.currentIndex);

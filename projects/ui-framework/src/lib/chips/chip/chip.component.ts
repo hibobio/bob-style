@@ -9,6 +9,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 
+import { ICON_CONFIG } from '../../icons/common-icons.const';
 import { Icon } from '../../icons/icon.interface';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { ColorsGrey } from '../../services/color-service/color-palette.enum';
@@ -18,6 +19,7 @@ import {
   applyChanges,
   hasChanges,
   isDark,
+  isDefined,
 } from '../../services/utils/functional-utils';
 import { Color } from '../../types';
 import { ChipType } from '../chips.enum';
@@ -48,10 +50,10 @@ export class ChipComponent implements OnChanges {
   @Output() removed: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   readonly chipType = ChipType;
-  readonly icons = Icons;
-  readonly iconSize = IconSize;
 
   public removeIconColor: IconColor;
+
+  readonly removeIcn: Icon = ICON_CONFIG.reset;
 
   ngOnChanges(changes: SimpleChanges) {
     applyChanges(
@@ -63,7 +65,7 @@ export class ChipComponent implements OnChanges {
       [],
       true,
       {
-        truthyCheck: (v) => v !== undefined,
+        truthyCheck: isDefined,
       }
     );
 
@@ -85,7 +87,7 @@ export class ChipComponent implements OnChanges {
 
     if (
       hasChanges(changes, ['color'], true, {
-        truthyCheck: (v) => v !== undefined,
+        truthyCheck: isDefined,
       })
     ) {
       this.DOM.setCssProps(this.chip, {
@@ -95,7 +97,7 @@ export class ChipComponent implements OnChanges {
           ? null
           : isDark(this.color, 200)
           ? 'white'
-          : ColorsGrey.color_grey_800,
+          : ColorsGrey.grey_800,
       });
     }
 

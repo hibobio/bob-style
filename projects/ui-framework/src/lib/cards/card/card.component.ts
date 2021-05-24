@@ -9,8 +9,9 @@ import {
 } from '@angular/core';
 
 import { ButtonType } from '../../buttons/buttons.enum';
-import { IconColor, Icons } from '../../icons/icons.enum';
-import { LinkColor } from '../../indicators/link/link.enum';
+import { Button } from '../../buttons/buttons.interface';
+import { BUTTON_CONFIG } from '../../buttons/common-buttons.const';
+import { IconColor } from '../../icons/icons.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { BaseCardElement } from './card.abstract';
 
@@ -35,9 +36,9 @@ export class CardComponent extends BaseCardElement implements AfterViewInit {
   @ViewChild('cardContent') cardContent: ElementRef;
 
   readonly buttonType = ButtonType;
-  readonly icons = Icons;
   readonly iconColor = IconColor;
-  readonly linkColor = LinkColor;
+  readonly menuTriggerBtn: Button = BUTTON_CONFIG.trigger;
+
   public hasContent = true;
   public cardTopTextOnly = false;
 

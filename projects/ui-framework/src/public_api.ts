@@ -70,6 +70,7 @@ export {
   ActionMenuButtonComponent
 } from './lib/buttons/action-menu-button/action-menu-button.component';
 export * from './lib/buttons/buttons.interface';
+export * from './lib/buttons/common-buttons.const';
 /*
  * Avatar
  */
@@ -539,7 +540,11 @@ export * from './lib/layout/ee-layout/ee-layout.const';
 export * from './lib/layout/ee-layout/ee-layout.interface';
 export { EELayoutModule } from './lib/layout/ee-layout/ee-layout.module';
 export { EELayoutComponent } from './lib/layout/ee-layout/ee-layout.component';
-
+// Summary Insights
+export * from './lib/layout/summary-insights/summary-insights.enum';
+export * from './lib/layout/summary-insights/summary-insights.interface';
+export { SummaryInsightsModule } from './lib/layout/summary-insights/summary-insights.module';
+export { SummaryInsightsComponent } from './lib/layout/summary-insights/summary-insights.component';
 
 // Masonry
 export { MasonryLayoutModule } from './lib/layout/masonry/masonry.module';
@@ -584,6 +589,9 @@ export { TableCardCellComponent } from './lib/table/card-table/table-card-cell/t
 export { TableCardComponent } from './lib/table/card-table/table-card/table-card.component';
 export * from './lib/table/card-table/card-table.interface';
 
+// Widget Box
+export { WidgetBoxModule } from './lib/layout/widget-box/widget-box.module';
+
 /*
  * Misc
  */
@@ -593,6 +601,9 @@ export { IconsModule } from './lib/icons/icons.module';
 export { IconComponent } from './lib/icons/icon.component';
 export * from './lib/icons/icons.enum';
 export * from './lib/icons/icon.interface';
+export * from './lib/icons/icon.const';
+export * from './lib/icons/common-icons.const';
+export * from './lib/icons/icon.static';
 // Filter Module
 export { FiltersModule } from './lib/services/filters/filters.module';
 export { LinkifyPipe } from './lib/services/filters/linkify.pipe';

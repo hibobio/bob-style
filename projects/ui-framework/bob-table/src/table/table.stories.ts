@@ -1,5 +1,4 @@
 import { AgGridModule } from 'ag-grid-angular';
-import { values } from 'lodash';
 import { of } from 'rxjs';
 
 import { Component } from '@angular/core';
@@ -123,8 +122,8 @@ const treeStoryTemplate = `
 </b-story-book-layout>
 `;
 
-const type = values(TableType);
-const rowSelection = values(RowSelection);
+const type = Object.values(TableType);
+const rowSelection = Object.values(RowSelection);
 
 const note = `
   ## Data Table

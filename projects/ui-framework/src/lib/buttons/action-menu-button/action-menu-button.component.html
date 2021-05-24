@@ -2,7 +2,6 @@
         [menu]="menuItems"
         [openLeft]="openLeft"
         [swallow]="swallow"
-        (click.outside-zone)="swallow && $event.stopPropagation()"
         (openMenu)="menuOpen=true; openMenu.emit($event)"
         (closeMenu)="menuOpen=false; closeMenu.emit($event)"
         (actionClick)="actionClick.emit($event)">

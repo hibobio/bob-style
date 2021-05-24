@@ -1,23 +1,29 @@
-import { storiesOf } from '@storybook/angular';
-import { text, withKnobs, select, number } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LabelValueType, TextAlign, IconPosition } from './label-value.enum';
-import { randomNumber } from '../../services/utils/functional-utils';
-import { mockText } from '../../mock.const';
+import { action } from '@storybook/addon-actions';
+import {
+  number,
+  object,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { LabelValueModule } from './label-value.module';
-import { object } from '@storybook/addon-knobs';
 import { LinkColor, LinkTarget } from '../../indicators/link/link.enum';
+import { mockText } from '../../mock.const';
+import { randomNumber } from '../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { IconPosition, LabelValueType, TextAlign } from './label-value.enum';
+import { LabelValueModule } from './label-value.module';
 
 const story = storiesOf(ComponentGroupType.Typography, module).addDecorator(
   withKnobs
 );
 
 const templateAlt = `
-  <b-label-value
+  <p class="mrg-0"
     [labelValue]="{
       type:type,
       textAlign:textAlign,
@@ -31,22 +37,7 @@ const templateAlt = `
       iconPosition:iconPosition,
       iconSize:iconSize,
       iconColor:iconColor
-    }"></b-label-value>
-`;
-
-const template = `
-  <b-label-value
-        [type]="type"
-        [textAlign]="textAlign"
-        [label]="label"
-        [value]="value"
-        [labelMaxLines]="labelMaxLines"
-        [valueMaxLines]="valueMaxLines"
-        [expectChanges]="true"
-        [icon]="icon"
-        [iconPosition]="iconPosition"
-        [iconSize]="iconSize"
-        [iconColor]="iconColor"></b-label-value>
+    }"></p>
 `;
 
 const template3 = `
@@ -60,9 +51,13 @@ const template3 = `
         [icon]="icon"
         [iconPosition]="iconPosition"
         [iconSize]="iconSize"
-        (clicked)="OnClick($event)"
-        (labelClicked)="OnLabelClick($event)"
-        (valueClicked)="OnValueClick($event)"></b-label-value>
+        (clicked)="OnClick($event)">
+
+        <span label>(value content)</span>
+        <span value>(label content)</span>
+        <span>(also content)</span>
+
+  </b-label-value>
 `;
 
 const template2 = `
@@ -121,10 +116,10 @@ const template2 = `
         <span class="bx">LabelValueType.two, value clickable</span>
       </p>
       <b-label-value
+        [labelValue]="{valueClicked:onValueClicked($event)}"
         [type]="'2'"
         [label]="'Reason'"
-        [value]="'Im planning a trip to celebrate my birthday.'"
-        (valueClicked)="onValueClicked($event)"></b-label-value>
+        [value]="'Im planning a trip to celebrate my birthday.'"></b-label-value>
     </div>
 
     <div class="cell">
@@ -132,10 +127,10 @@ const template2 = `
         <span class="bx">LabelValueType.three, label clickable</span>
       </p>
       <b-label-value
+        [labelValue]="{labelClicked:onLabelClicked($event)}"
         [type]="'3'"
         [label]="'Alan Tulins'"
-        [value]="'Product designer'"
-        (labelClicked)="onLabelClicked($event)"></b-label-value>
+        [value]="'Product designer'"></b-label-value>
     </div>
 
     <div class="cell">
@@ -166,6 +161,16 @@ const template2 = `
         [type]="'6'"
         [label]="'Talent Group'"
         [value]="'Date created: 11/03/2019'"></b-label-value>
+    </div>
+
+    <div class="cell">
+      <p class="hdr">
+        <span class="bx">LabelValueType.ten</span>
+      </p>
+      <b-label-value
+        [type]="'10'"
+        [label]="'Like 6 but reversed'"
+        [value]="'39%'"></b-label-value>
     </div>
 
     <div class="cell">
@@ -205,11 +210,11 @@ const template2 = `
         <span class="bx">icon example 1, icon clickable</span>
       </p>
       <b-label-value
+        [labelValue]="{iconClicked:onIconClicked($event)}"
         [type]="'1'"
         [label]="'Restore'"
         [value]="'Click icon to restore'"
-        [icon]="'b-icon-restore'"
-        (iconClicked)="onIconClicked($event)"></b-label-value>
+        [icon]="'b-icon-restore'"></b-label-value>
     </div>
 
     <div class="cell">
@@ -217,12 +222,12 @@ const template2 = `
         <span class="bx">icon example 2, value clickable</span>
       </p>
       <b-label-value
+        [labelValue]="{valueClicked:onValueClicked($event)}"
         [type]="'1'"
         [label]="'Call me'"
         [value]="'555 55 55'"
         [icon]="'b-icon-phone-alt'"
-        [iconPosition]="'label'"
-        (valueClicked)="onValueClicked($event)"></b-label-value>
+        [iconPosition]="'label'"></b-label-value>
     </div>
 
     <div class="cell">
@@ -259,10 +264,24 @@ const note = `
   *LabelValueModule*
 
   ~~~
-  <b-label-value
-        [labelValue]="labelValue">
+  <b-label-value [labelValue]="labelValue">
   </b-label-value>
+
+  <p class="mrg-0"
+      [labelValue]="{
+        ...labelValueConfig,
+        labelClass: ['mrg-b-24'],
+        valueStyle: { fontWeight: '700' }
+      }"
+      [iconColor]="iconColor"
+      [style.--blv-label-color]="customLcolor"
+      [style.--blv-value-color]="customVcolor">
+  </p>
   ~~~
+
+  #### Note:
+  • You can combine [labelValue] for static config and separate inputs for dynamic properties.<br>
+  • For quick customization beyound provided types, use <em>labelClass, labelStyle, valueClass, valueStyle</em> properties on [labelValue] and/or add css variables for label and value colors.
 
   #### Properties
   Name | Type | Description | Default value
@@ -279,11 +298,18 @@ const note = `
   which allow to put the icon inside label or value | left
   [iconSize] | IconSize | icon size | large (small if positioned inside label or value)
   [iconColor] | IconColor | icon color | null
-  [labelDescription] | InfoTooltip | All properties needed for the <b-info-tooltip> component | undefined
-  (clicked) | EventEmitter | emits when component is clicked
-  (labelClicked) | EventEmitter | emits when label is clicked
-  (valueClicked) | EventEmitter | emits when value is clicked
-  (iconClicked) | EventEmitter | emits when icon is clicked
+  [labelDescription], [valueDescription] | InfoTooltip |  &lt;b-info-tooltip&gt; component config | undefined
+  (clicked) | EventEmitter | emits when component is clicked | &nbsp;
+
+  #### additional properties on LabelValue interface
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  labelClass, valueClass | string / string[] / object | custom classes - support what ngClass binding supports | &nbsp;
+  labelStyle, valueStyle | object | custom css styles - support what ngStyle supports | &nbsp;
+  tooltipType | TruncateTooltipType | for built-in truncate-tooltip component | 'css'
+  labelClicked | function | handler for label click | &nbsp;
+  valueClicked | EventEmitter | handler for value click | &nbsp;
+  iconClicked | EventEmitter | handler for icon click | &nbsp;
 
   ~~~
   ${template3}
@@ -298,9 +324,9 @@ story.add(
       props: {
         longtext: `Some description of form section. Can be quite long. And possibly  not related to the form section at all.\nCan have line-breaks via '\\n' character!`,
         onClicked: action('Component clicked'),
-        onLabelClicked: action('Label clicked'),
-        onValueClicked: action('Value clicked'),
-        onIconClicked: action('Icon clicked'),
+        onLabelClicked: ($event) => action('Label clicked'),
+        onValueClicked: ($event) => action('Value clicked'),
+        onIconClicked: ($event) => action('Icon clicked'),
 
         type: select('type', Object.values(LabelValueType), LabelValueType.one),
         label: text('label', mockText(randomNumber(1, 3))),
@@ -315,7 +341,6 @@ story.add(
           },
           link: {
             text: mockText(2),
-            url: 'https://app.hibob.com',
             color: LinkColor.primary,
             target: LinkTarget.blank,
           },

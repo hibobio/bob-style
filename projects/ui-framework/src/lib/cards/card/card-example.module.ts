@@ -1,12 +1,13 @@
-import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CardsModule } from '../cards.module';
+import { Component, NgModule } from '@angular/core';
+
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
 import { SliderModule } from '../../indicators/slider/slider.module';
-import { Card } from './card.interface';
 import { CardType } from '../cards.enum';
-import { AvatarModule } from '../../avatar/avatar/avatar.module';
+import { CardsModule } from '../cards.module';
+import { Card } from './card.interface';
 
 @Component({
   selector: 'b-card-example-1-component',
@@ -124,7 +125,7 @@ export class CardExample2Component {
     actionConfig: {
       icon: Icons.edit_field_pencil,
       tooltip: 'Edit',
-      action: $event => console.log('edit'),
+      action: ($event) => console.log('edit'),
     },
     footerCtaLabel: 'EDIT',
   };
@@ -254,7 +255,7 @@ export class CardExample4Component {
     actionConfig: {
       icon: Icons.delete,
       tooltip: 'Delete',
-      action: $event => console.log('delete'),
+      action: ($event) => console.log('delete'),
     },
   };
 

@@ -216,41 +216,43 @@ $icon-sizes: (
 );
 
 $icon-colors: (
-  'dark': (
-    color: $grey-700,
-    hover: $grey-800,
-  ),
-  'normal': (
-    color: $grey-600,
-    hover: $grey-700,
+  'white': (
+    color: white,
+    hover: white,
   ),
   'light': (
     color: $grey-500,
     hover: $grey-600,
   ),
-  'white': (
-    color: $white,
-    hover: $white,
+  'normal': (
+    color: $grey-600,
+    hover: $grey-700,
+  ),
+  'dark': (
+    color: $grey-700,
+    hover: $grey-800,
   ),
   'primary': (
     color: var(--primary-500),
     hover: var(--primary-700),
   ),
-  'primary-alt': (
-    color: var(--primary-600),
-    hover: var(--primary-500),
+  'warn': (
+    // $color-warn,
+    color: $primary-600,
+    hover: $primary-700,
   ),
   'inform': (
-    color: var(--inform-500),
-    hover: var(--inform-700),
+    color: $inform-500,
+    hover: $inform-600,
   ),
   'negative': (
-    color: var(--negative-600),
-    hover: var(--negative-700),
+    // $negative-600
+    color: $negative-600,
+    hover: $negative-700,
   ),
   'positive': (
-    color: var(--positive-500),
-    hover: var(--positive-600),
+    color: $positive-500,
+    hover: $positive-600,
   ),
 );
 
@@ -277,6 +279,7 @@ $icon-colors: (
     .has-hover:hover &,
     .has-hover:focus &,
     .has-hover.focused &,
+    [data-menu-open='true'] &.has-hover,
     &.has-hover:hover,
     &.has-hover:focus,
     &.has-hover.focused {

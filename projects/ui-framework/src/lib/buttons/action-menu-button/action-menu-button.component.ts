@@ -8,11 +8,10 @@ import {
   SimpleChanges,
 } from '@angular/core';
 
-import { ButtonType } from '../../buttons/buttons.enum';
-import { IconColor, Icons } from '../../icons/icons.enum';
 import { MenuItem } from '../../navigation/menu/menu.interface';
 import { hasChanges } from '../../services/utils/functional-utils';
 import { Button, ButtonConfig } from '../buttons.interface';
+import { BUTTON_CONFIG } from '../common-buttons.const';
 
 @Component({
   selector: 'b-action-menu-button',
@@ -32,11 +31,7 @@ export class ActionMenuButtonComponent implements OnChanges {
 
   @HostBinding('attr.data-menu-open') menuOpen = false;
 
-  public button: Button = {
-    type: ButtonType.tertiary,
-    icon: Icons.three_dots_vert,
-    color: IconColor.normal,
-  };
+  public button: Button = BUTTON_CONFIG.trigger;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (hasChanges(changes, ['buttonConfig'], true)) {

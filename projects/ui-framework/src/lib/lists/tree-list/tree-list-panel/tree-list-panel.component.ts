@@ -1,40 +1,40 @@
 import {
-  Component,
-  ViewChild,
-  TemplateRef,
-  ViewContainerRef,
-  NgZone,
-  ChangeDetectorRef,
-  Input,
-  Output,
-  EventEmitter,
-  ChangeDetectionStrategy,
-  SimpleChanges,
-  OnChanges,
-  OnDestroy,
-} from '@angular/core';
-import {
   CdkOverlayOrigin,
   ConnectedPosition,
   OverlayRef,
 } from '@angular/cdk/overlay';
-import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
+
 import { PanelDefaultPosVer } from '../../../popups/panel/panel.enum';
-import { OverlayPositionClasses } from '../../../types';
+import { Panel } from '../../../popups/panel/panel.interface';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import {
   hasChanges,
   notFirstChanges,
-  isValuevy,
 } from '../../../services/utils/functional-utils';
-import { TreeListValue } from '../tree-list.interface';
-import { TreeListInputOutput } from '../tree-list-IO.abstract';
+import { OverlayPositionClasses } from '../../../types';
+import { LIST_ACTIONS_DEF } from '../../list-footer/list-footer.const';
 import {
   ListPanelService,
   OverlayEnabledComponent,
 } from '../../list-panel.service';
+import { TreeListInputOutput } from '../tree-list-IO.abstract';
+import { TreeListValue } from '../tree-list.interface';
 import { TreeListPanelIO } from './tree-list-panel.interface';
-import { LIST_ACTIONS_DEF } from '../../list-footer/list-footer.const';
-import { Panel } from '../../../popups/panel/panel.interface';
 
 @Component({
   selector: 'b-tree-list-panel',
@@ -42,7 +42,8 @@ import { Panel } from '../../../popups/panel/panel.interface';
   styleUrls: ['./tree-list-panel.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TreeListPanelComponent extends TreeListInputOutput
+export class TreeListPanelComponent
+  extends TreeListInputOutput
   implements TreeListPanelIO, OverlayEnabledComponent, OnChanges, OnDestroy {
   constructor(
     public viewContainerRef: ViewContainerRef,
@@ -83,12 +84,7 @@ export class TreeListPanelComponent extends TreeListInputOutput
       this.destroyPanel();
     }
 
-    if (
-      notFirstChanges(changes, null, true, {
-        truthyCheck: isValuevy,
-      }) &&
-      !this.cd['destroyed']
-    ) {
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
     }
   }

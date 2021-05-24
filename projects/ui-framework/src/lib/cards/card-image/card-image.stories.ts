@@ -1,5 +1,3 @@
-import { values } from 'lodash';
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { action } from '@storybook/addon-actions';
 import { number, select, text, withKnobs } from '@storybook/addon-knobs';

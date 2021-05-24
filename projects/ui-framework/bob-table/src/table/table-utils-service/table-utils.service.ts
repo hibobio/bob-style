@@ -1,18 +1,22 @@
-import { Injectable } from '@angular/core';
-import { ColumnDef } from '../table/table.interface';
-import { assign, chain, compact, concat, flatMap, get, has } from 'lodash';
-import { SELECTION_COLUMN_DEF } from '../table/table.consts';
 import { GridOptions } from 'ag-grid-community';
-import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
-import { PinDirection, RowSelection } from '../table/table.enum';
+import { flatMap, has } from 'lodash';
+
+import { Injectable } from '@angular/core';
+
 import {
-  GenericObject,
+  compact,
+  concat,
+  get,
   IconSize,
   isFunction,
   joinArrays,
   normalizeString,
-  pass,
 } from 'bob-style';
+
+import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
+import { SELECTION_COLUMN_DEF } from '../table/table.consts';
+import { PinDirection, RowSelection } from '../table/table.enum';
+import { ColumnDef } from '../table/table.interface';
 
 const ICON_CELL_STYLE = { padding: '0 15px 0 43px' };
 
@@ -79,12 +83,12 @@ export class TableUtilsService {
 
   private getCellClass(colDef: ColumnDef): string[] {
     const iconClass = has(colDef, 'icon') ? this.getIconClass(colDef) : [];
-    return chain(get(colDef, 'cellClass')).concat(iconClass).compact().value();
+    return compact(concat(get(colDef, 'cellClass'), iconClass));
   }
 
   private getCellStyle(colDef): { [key: string]: string } {
     return has(colDef, 'icon')
-      ? assign({}, get(colDef, 'cellStyle'), ICON_CELL_STYLE)
+      ? Object.assign({}, get(colDef, 'cellStyle'), ICON_CELL_STYLE)
       : get(colDef, 'cellStyle', {});
   }
 
@@ -97,7 +101,7 @@ export class TableUtilsService {
 
   private getRowSelectionColumnDef(rowSelection: RowSelection): ColumnDef {
     return rowSelection
-      ? assign({}, SELECTION_COLUMN_DEF, {
+      ? Object.assign({}, SELECTION_COLUMN_DEF, {
           headerCheckboxSelection:
             rowSelection === RowSelection.Multiple ? true : false,
           headerCheckboxSelectionFilteredOnly: true,

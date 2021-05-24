@@ -24,7 +24,7 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 
 import { controlKeys, KEYCODES, Keys, metaKeys } from '../../enums';
 import { SelectGroupOption } from '../../lists/list.interface';
-import { Color, GenericObject, SortType } from '../../types';
+import { Color, GenericObject, HexColor, SortType } from '../../types';
 import {
   ColorPalette,
   PalletteColorSet,
@@ -50,6 +50,8 @@ export const isPrimitive = (val: any): boolean => {
 
 export const isNullOrUndefined = (val: any): boolean =>
   val === undefined || val === null;
+
+export const isDefined = (val: any): boolean => val !== undefined;
 
 export const isString = (val: any): val is string => typeof val === 'string';
 
@@ -322,7 +324,7 @@ export const hasProp = <T = GenericObject>(
     (!strict && typeof obj[key] !== 'undefined'));
 
 export const objectHasTruthyValue = (obj: GenericObject): boolean =>
-  isNotEmptyObject(obj) && Boolean(Object.values(obj).find((v) => Boolean(v)));
+  isNotEmptyObject(obj) && Object.values(obj).some((v) => Boolean(v));
 
 export const keysFromArrayOrObject = (smth: string[] | {}): string[] =>
   Array.isArray(smth) ? smth : Object.keys(smth);
@@ -528,6 +530,7 @@ export const objectGetDeepestValid = <T = any, V = any>(
     : value) as V;
 };
 
+// simple 1 level merge
 export const mergeObjects = <I = GenericObject, O = I>(
   target: I,
   ...rest: I[]
@@ -566,6 +569,7 @@ export const mergeObjects = <I = GenericObject, O = I>(
 
 export const objectMapKeys = <I = GenericObject, O = I>(
   obj: I,
+  // { origProp: targetProp }
   map: Record<keyof I | string, string>
 ): O => {
   if (isEmptyObject(obj) || isEmptyObject(map)) {
@@ -682,6 +686,7 @@ export const arrayRemoveItemMutate = <T = any>(arr: T[], item: T): T[] => {
 };
 
 export const arrayRemoveItemsMutate = <T = any>(arr: T[], items: T[]): T[] => {
+  items = asArray(items);
   const arrCopy = arr.slice();
   arr.length = 0;
   arr.push(...arrCopy.filter((id) => !items.includes(id)));
@@ -832,9 +837,10 @@ export const stringify = (smth: any, limit = 300, limitKeys = null): string => {
           .replace(/[\s,]+$/, '') +
         ']'
       : isFunction(smth)
-      ? String(smth).split('{')[0].trim().replace('function', 'fnc')
+      ? // ? '[fnc ' + (smth.name || '(anonymous)') + ']'
+        String(smth).split('{')[0].trim().replace('function', '') + '{}'
       : isObject(smth)
-      ? '{' +
+      ? '{ ' +
         Object.keys(smth)
           .reduce((str, k) => {
             if ((!limit || str.length < limit * 0.7) && smth[k] !== undefined) {
@@ -847,7 +853,7 @@ export const stringify = (smth: any, limit = 300, limitKeys = null): string => {
             return str;
           }, '')
           .replace(/[\s,]+$/, '') +
-        '}'
+        ' }'
       : String(smth);
 
   return limit && stringified.length > limit
@@ -898,14 +904,32 @@ export const sameStringsDifferentCase = (a: string, b: string): boolean => {
   );
 };
 
-export const normalizeString = (value: string): string => {
-  return (
-    value &&
-    String(value)
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .toLowerCase()
-  );
+export const removePunctuation = (val: string): string =>
+  val?.replace(/[\.,-\/\\#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g, '');
+
+export const normalizeStringSpaces = (
+  value: string,
+  removeSpaces = false
+): string =>
+  isString(value)
+    ? value?.replace(/(\s|&nbsp;)+/g, removeSpaces ? '' : ' ').trim()
+    : value;
+
+export const normalizeString = (
+  value: string,
+  removePncttn = false,
+  removeSpaces = false
+): string => {
+  if (!value || !isString(value)) {
+    return value;
+  }
+  if (removePncttn) {
+    value = removePunctuation(value);
+  }
+  return normalizeStringSpaces(value, removeSpaces)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
 };
 
 export const testNormalized = (partial: string, full: string): boolean => {
@@ -990,9 +1014,9 @@ export const isDateFormat = (frmt: string): boolean => {
 
   return (
     split.length > 1 &&
-    (!!split.find((i) => i === 'DD') ||
-      !!split.find((i) => i === 'YYYY') ||
-      !!split.find((i) => i.includes('MM')))
+    (split.some((i) => i === 'DD') ||
+      split.some((i) => i === 'YYYY') ||
+      split.some((i) => i.includes('MM')))
   );
 };
 
@@ -1069,14 +1093,15 @@ export const stringToRegex = (value: string, options = 'i'): RegExp => {
 export const getMatcher = (searchStr: string): RegExp =>
   stringToRegex(normalizeString(searchStr), 'i');
 
-export const getFuzzyMatcher = (searchStr: string): RegExp =>
-  new RegExp(
-    normalizeString(searchStr)
-      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\*\[\]\+><@\s]+/g, '')
-      .split('')
-      .join('[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\*\\[\\]\\+><@\\s]*'),
-    'i'
-  );
+export const getFuzzyMatcher = (searchStr: string): RegExp => {
+  const split = normalizeString(searchStr, true, true)?.split('');
+  const ptrn = split.length
+    ? split.reduce((a, b) => {
+        return a + '[^' + b + ']*' + b;
+      })
+    : '';
+  return new RegExp(ptrn, 'gi');
+};
 
 // ----------------------
 // RANDOMIZERS
@@ -1757,38 +1782,38 @@ export const hasChanges = (
 
   config = {
     ...config,
-    discardAllFalsey: config?.discardAllFalsey || discardAllFalsey,
+    discardAllFalsey: Boolean(
+      discardAllFalsey || config?.discardAllFalsey || config?.truthyCheck
+    ),
   };
   const { firstChange } = config;
 
-  return Boolean(
-    keys.find((i) => {
-      if (
-        !changes[i] &&
-        changes[CHANGES_SET_PROPS]?.currentValue?.hasOwnProperty(i)
-      ) {
-        changes[i] = simpleChange(
-          {
-            [i]: changes[CHANGES_SET_PROPS].currentValue[i],
-          },
-          changes[CHANGES_SET_PROPS].firstChange,
-          {
-            [i]:
-              changes[CHANGES_SET_PROPS].previousValue &&
-              changes[CHANGES_SET_PROPS].previousValue[i],
-          }
-        )[i];
-      }
+  return keys.some((i) => {
+    if (
+      !changes[i] &&
+      changes[CHANGES_SET_PROPS]?.currentValue?.hasOwnProperty(i)
+    ) {
+      changes[i] = simpleChange(
+        {
+          [i]: changes[CHANGES_SET_PROPS].currentValue[i],
+        },
+        changes[CHANGES_SET_PROPS].firstChange,
+        {
+          [i]:
+            changes[CHANGES_SET_PROPS].previousValue &&
+            changes[CHANGES_SET_PROPS].previousValue[i],
+        }
+      )[i];
+    }
 
-      return (
-        changes[i] &&
-        (!isBoolean(firstChange) ||
-          (firstChange === true && changes[i].firstChange) ||
-          (firstChange === false && !changes[i].firstChange)) &&
-        simpleChangeFilter(changes[i], config)
-      );
-    })
-  );
+    return (
+      changes[i] &&
+      (!isBoolean(firstChange) ||
+        (firstChange === true && changes[i].firstChange) ||
+        (firstChange === false && !changes[i].firstChange)) &&
+      simpleChangeFilter(changes[i], config)
+    );
+  });
 };
 
 export const firstChanges = (
@@ -1819,15 +1844,17 @@ export const applyChanges = (
   defaults: GenericObject = {},
   skip: string[] = [],
   discardAllFalsey = CHANGES_HELPER_CONFIG_DEF.discardAllFalsey,
-  config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
+  config?: ChangesHelperConfig
 ): SimpleChanges => {
   if (!changes) {
     return changes;
   }
 
+  discardAllFalsey = Boolean(
+    discardAllFalsey || config?.discardAllFalsey || config?.truthyCheck
+  );
   config = { ...CHANGES_HELPER_CONFIG_DEF, ...config };
   const { keyMap, skipSetters, truthyCheck, transform } = config;
-  discardAllFalsey = config.discardAllFalsey || discardAllFalsey;
 
   if (keyMap) {
     Object.keys(keyMap).forEach((targetKey: string) => {
@@ -2152,8 +2179,10 @@ export const getPaletteColorByIndex = (
 ): ColorPalette =>
   new ColorPaletteService().getPaletteColorByIndex(index, colorSet);
 
-export const isDark = (color: Color, sensitivity?: number) =>
-  ColorService.prototype.isDark(color, sensitivity);
+export const isDark = (
+  color: Color | HexColor | string,
+  sensitivity?: number
+) => ColorService.prototype.isDark(color, sensitivity);
 
 export const randomColor = () => ColorService.prototype.randomColor();
 
@@ -2164,6 +2193,39 @@ export const invoke = <T = unknown, R = any>(smth: T, method: string): R => {
 // ----------------------
 // LODASH WRAPS
 // ----------------------
+
+export const compact = <T = unknown>(arr: T[]): T[] => {
+  return asArray(arr).filter(Boolean);
+};
+
+export const concat = <T = any>(
+  target: T | T[],
+  ...sources: (T | T[])[]
+): T[] => {
+  return asArray(target).concat(...sources);
+};
+
+export const remove = <T = any>(
+  arr: T[],
+  predicate: (i: T, idx: number) => boolean
+): T[] => {
+  arr = asArray(arr);
+  const removed = [];
+  const arrCopy = arr.slice();
+  arr.length = 0;
+
+  arrCopy.forEach((itm, idx) => {
+    if (predicate(itm, idx)) {
+      removed.push(itm);
+    } else {
+      arr.push(itm);
+    }
+  });
+
+  return removed;
+};
+
+export const pull = arrayRemoveItemsMutate;
 
 export const cloneDeep = <T = unknown>(smth: T): T => {
   return _cloneDeep(smth) as T;

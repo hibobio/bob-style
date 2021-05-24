@@ -55,9 +55,8 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
     More(Highcharts);
   }
 
-  @ViewChild('container', { static: true }) chartContainer: ElementRef<
-    HTMLElement
-  >;
+  @ViewChild('container', { static: true })
+  chartContainer: ElementRef<HTMLElement>;
 
   highChartRef: Chart;
   readonly containerId: string = simpleUID('bhc', 7);

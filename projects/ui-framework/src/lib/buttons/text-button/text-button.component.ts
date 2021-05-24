@@ -4,10 +4,13 @@ import {
   Component,
   Input,
   NgZone,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 
-import { IconColor } from '../../icons/icons.enum';
+import { IconSize } from '../../icons/icons.enum';
 import { LinkColor } from '../../indicators/link/link.enum';
+import { notFirstChanges } from '../../services/utils/functional-utils';
 import { BaseButtonElement } from '../button.abstract';
 import { ButtonType } from '../buttons.enum';
 
@@ -22,6 +25,7 @@ import { ButtonType } from '../buttons.enum';
       [ngClass]="buttonClass"
       [attr.data-icon-before]="icn || null"
       [attr.data-icon-before-size]="icn ? iconSize.medium : null"
+      [attr.data-icon-before-color]="icn ? 'inherit' : null"
     >
       {{ text }}
       <ng-content></ng-content>
@@ -31,7 +35,9 @@ import { ButtonType } from '../buttons.enum';
   providers: [{ provide: BaseButtonElement, useExisting: TextButtonComponent }],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TextButtonComponent extends BaseButtonElement {
+export class TextButtonComponent
+  extends BaseButtonElement
+  implements OnChanges {
   constructor(protected cd: ChangeDetectorRef, protected zone: NgZone) {
     super(cd, zone);
 
@@ -39,27 +45,28 @@ export class TextButtonComponent extends BaseButtonElement {
   }
 
   @Input() type: ButtonType = ButtonType.secondary;
-  @Input() color: LinkColor = LinkColor.none;
+  @Input() color: 'deprecated property' | LinkColor;
 
-  private readonly iconColorMap = {
-    [ButtonType.primary]: 'b-icon-' + IconColor.primary,
-    [ButtonType.secondary]: 'b-icon-' + IconColor.dark,
-    [ButtonType.tertiary]: 'b-icon-' + IconColor.normal,
-    [ButtonType.negative]: 'b-icon-' + IconColor.negative,
-    [ButtonType.positive]: 'b-icon-' + IconColor.positive,
-  };
+  readonly iconSize = IconSize;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes, false);
+
+    if (
+      changes.color &&
+      !changes.type &&
+      this.color === LinkColor.primary &&
+      this.type !== ButtonType.primary
+    ) {
+      this.type = ButtonType.primary;
+    }
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
+  }
 
   protected getButtonClass(): string {
-    return (
-      (this.id ? this.id + ' ' : '') +
-      (this.color === LinkColor.primary ? 'color-primary ' : '') +
-      (this.disabled ? 'disabled ' : '') +
-      (this.icon
-        ? ' ' +
-          (this.color === LinkColor.primary
-            ? 'b-icon-' + IconColor.primary
-            : this.iconColorMap[this.type])
-        : '')
-    );
+    return (this.id ? this.id + ' ' : '') + (this.disabled ? 'disabled ' : '');
   }
 }

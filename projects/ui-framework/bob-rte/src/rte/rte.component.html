@@ -25,10 +25,7 @@
                          (closed)="onPlaceholderPanelClose()">
     <b-square-button class="placeholder-panel-trigger"
                      [ngClass]="{ focused: plchldrPnlTrgrFocused }"
-                     [type]="buttonType.tertiary"
-                     [size]="buttonSize.small"
-                     [icon]="icons.placeholder_add"
-                     [color]="iconColor.normal"
+                     [button]="addBtn"
                      [matTooltip]="('bob-style.rte.add-variable' | translate)"
                      (clicked)="onPlaceholderPanelOpen()">
     </b-square-button>

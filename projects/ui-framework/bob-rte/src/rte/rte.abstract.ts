@@ -1,5 +1,3 @@
-import { merge } from 'lodash';
-
 import {
   ChangeDetectorRef,
   Directive,
@@ -18,6 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 import {
   applyChanges,
   BaseFormElement,
+  Button,
   ButtonSize,
   ButtonType,
   chainCall,
@@ -37,6 +36,7 @@ import {
   isNotEmptyObject,
   isNullOrUndefined,
   log,
+  merge,
   notFirstChanges,
   PanelDefaultPosVer,
   SanitizerService,
@@ -70,7 +70,8 @@ import { TributeInstance } from './tribute.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class RTEbaseElement extends BaseFormElement
+export abstract class RTEbaseElement
+  extends BaseFormElement
   implements OnChanges, OnInit {
   constructor(
     protected cd: ChangeDetectorRef,
@@ -98,11 +99,14 @@ export abstract class RTEbaseElement extends BaseFormElement
   public editorValue: string;
   public plchldrPnlTrgrFocused = false;
 
-  readonly icons = Icons;
-  readonly buttonType = ButtonType;
-  readonly buttonSize = ButtonSize;
-  readonly iconColor = IconColor;
   readonly plchldrPanelPosition = PanelDefaultPosVer.belowRight;
+
+  readonly addBtn: Button = {
+    type: ButtonType.tertiary,
+    size: ButtonSize.small,
+    icon: Icons.placeholder_add,
+    color: IconColor.normal,
+  };
 
   private cntrlsInited = false;
   protected miscControlsState: { pasteAsText: boolean } = {

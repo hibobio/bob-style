@@ -1,0 +1,37 @@
+@import '../../style/common-imports';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  user-select: none;
+}
+
+header {
+  min-height: 20px;
+  padding: 16px 16px 0 16px;
+
+  .header-right {
+    margin-right: 20px;
+  }
+
+  b-subheading {
+    text-align: left;
+  }
+}
+
+.content {
+  border-color: $grey-400;
+  flex-grow: 1;
+}
+
+b-button ::ng-deep button {
+  color: $grey-700;
+  font-weight: 700 !important;
+  height: 27px !important;
+  &:hover {
+    background-color: $grey-200;
+  }
+}

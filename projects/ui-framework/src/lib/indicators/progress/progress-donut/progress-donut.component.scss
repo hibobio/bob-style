@@ -58,7 +58,7 @@ $BPDtypeMap: (
 );
 
 :host {
-  @include progress-host($slctr-prfx: 'bpd', $display: flex, $width: null);
+  @include progress-host('bpd', $display: flex, $width: null);
   align-items: center;
   text-align: left;
   user-select: none;

@@ -22,7 +22,7 @@ const story = storiesOf(ComponentGroupType.Comments, module).addDecorator(
 const storyTemplate = `
 <b-story-book-layout [title]="'Comment List'">
   <div>
-    <b-comment-list [comments]="comments"></b-comment-list>
+    <b-comment-list [comments]="[cmnt1,cmnt2,cmnt3]"></b-comment-list>
   </div>
 </b-story-book-layout>
 `;
@@ -59,12 +59,9 @@ story
     () => ({
       template: storyTemplate,
       props: {
-        commentsNote: object('comments', [
-          COMMENT_ITEM,
-          LONG_COMMENT_ITEM,
-          HTML_COMMENT,
-        ]),
-        comments: [COMMENT_ITEM, LONG_COMMENT_ITEM, HTML_COMMENT],
+        cmnt1: object('1st comment', COMMENT_ITEM),
+        cmnt2: LONG_COMMENT_ITEM,
+        cmnt3: HTML_COMMENT,
       },
     }),
     {

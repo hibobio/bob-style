@@ -32,7 +32,7 @@ import { log } from '../../../services/utils/logger';
 import { valueAsNumber } from '../../../services/utils/transformers';
 import { AvatarBadges, AvatarIconSize, BadgeSize } from '../avatar.consts';
 import { AvatarBadge, AvatarSize } from '../avatar.enum';
-import { Avatar, BadgeConfig } from '../avatar.interface';
+import { Avatar, AvatarInputCmnt, BadgeConfig } from '../avatar.interface';
 
 @Component({
   selector: 'b-avatar-image',
@@ -64,16 +64,16 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
     }
   }
 
-  @Input() size: AvatarSize = AvatarSize.mini;
-  @Input() imageSource: string;
-  @Input() backgroundColor: string;
+  @Input() size: AvatarInputCmnt | AvatarSize = AvatarSize.mini;
+  @Input() imageSource: AvatarInputCmnt | string;
+  @Input() backgroundColor: AvatarInputCmnt | string;
   @Input() border = false;
   @Input() icon: Icons | Icon;
   @Input() badge: AvatarBadge | Icon | BadgeConfig;
-  @Input() text: string | number;
-  @Input() disabled = false;
-  @Input() isClickable: boolean;
-  @Input() supressWarnings = false;
+  @Input() text: AvatarInputCmnt | string | number;
+  @Input() disabled: AvatarInputCmnt | boolean = false;
+  @Input() isClickable: AvatarInputCmnt | boolean;
+  @Input() supressWarnings: AvatarInputCmnt | boolean = false;
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
