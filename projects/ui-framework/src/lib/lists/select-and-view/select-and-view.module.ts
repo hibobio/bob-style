@@ -9,6 +9,7 @@ import { SearchModule } from '../../search/search/search.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FiltersModule } from '../../services/filters/filters.module';
 import { NgLetModule } from '../../services/utils/nglet.directive';
+import { ButtonsModule } from '../../buttons/buttons.module';
 
 @NgModule({
   declarations: [SelectAndViewComponent],
@@ -21,7 +22,8 @@ import { NgLetModule } from '../../services/utils/nglet.directive';
     SearchModule,
     TranslateModule,
     FiltersModule,
-    NgLetModule
+    NgLetModule,
+    ButtonsModule
   ],
   exports: [SelectAndViewComponent]
 })

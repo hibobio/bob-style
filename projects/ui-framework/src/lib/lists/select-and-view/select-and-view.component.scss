@@ -1,9 +1,12 @@
 @import '../../style/common-imports';
 
 :host {
+  text-align: left;
+}
+
+.select-and-view {
   display: flex;
   justify-content: space-between;
-  text-align: left;
   min-width: 0;
 }
 
