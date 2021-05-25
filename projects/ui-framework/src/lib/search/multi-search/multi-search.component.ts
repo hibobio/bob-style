@@ -15,7 +15,6 @@ import {
   getFuzzyMatcher,
   isFunction,
   isKey,
-  normalizeString,
 } from '../../services/utils/functional-utils';
 import { MultiSearchBaseElement } from './multi-search.abstract';
 import {
@@ -250,17 +249,14 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
           let searchValueIndex = 0,
             valueToMatch =
               option[group.keyMap?.value || MULTI_SEARCH_KEYMAP_DEF.value],
-            match: RegExpExecArray = matcher.exec(
-              normalizeString(valueToMatch)
-            ),
+            match = matcher.exec(valueToMatch),
             highlightedMatch: string;
 
           if (option.searchValue) {
             option.searchValue = asArray(option.searchValue);
 
             searchValueIndex = option.searchValue.findIndex((sv) => {
-              matcher.lastIndex = 0;
-              return (match = matcher.exec(normalizeString(sv)));
+              return (match = matcher.exec(sv));
             });
 
             if (searchValueIndex === -1) {

@@ -1,7 +1,7 @@
 import {
   getFuzzyMatcher,
   isRegExp,
-  normalizeString,
+  wrapRegExp,
 } from '../../../services/utils/functional-utils';
 import { TreeListItem, ViewFilter } from '../tree-list.interface';
 
@@ -56,8 +56,8 @@ export class TreeListSearchUtils {
       (viewFilter.hide && viewFilter.hide.search) ||
       (viewFilter.show && viewFilter.show.search)
     ) {
-      const matcher: RegExp = isRegExp(viewFilter.show.search)
-        ? viewFilter.show.search
+      const matcher = isRegExp(viewFilter.show.search)
+        ? wrapRegExp(viewFilter.show.search)
         : getFuzzyMatcher(viewFilter.show.search);
 
       const searchBy =
@@ -65,8 +65,7 @@ export class TreeListSearchUtils {
         (viewFilter.hide && viewFilter.hide.searchBy) ||
         'name';
 
-      matcher.lastIndex = 0;
-      const matches = matcher.test(normalizeString(item[searchBy]));
+      const matches = matcher.test(item[searchBy]);
 
       if (
         (viewFilter.show && viewFilter.show.search && !matches) ||

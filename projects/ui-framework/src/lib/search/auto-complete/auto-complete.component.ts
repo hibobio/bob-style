@@ -23,10 +23,7 @@ import {
 } from '../../lists/list-panel.service';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { Panel } from '../../popups/panel/panel.interface';
-import {
-  getFuzzyMatcher,
-  normalizeString,
-} from '../../services/utils/functional-utils';
+import { getFuzzyMatcher } from '../../services/utils/functional-utils';
 import { OverlayPositionClasses } from '../../types';
 import { AutoCompleteOption } from './auto-complete.interface';
 
@@ -151,11 +148,7 @@ export class AutoCompleteComponent
     const matcher = getFuzzyMatcher(this.searchValue);
 
     return this.options.filter((option) => {
-      matcher.lastIndex = 0;
-      return (
-        matcher.test(normalizeString(option.value)) ||
-        matcher.test(normalizeString(option.subText))
-      );
+      return matcher.test(option.value) || matcher.test(option.subText);
     });
   }
 
