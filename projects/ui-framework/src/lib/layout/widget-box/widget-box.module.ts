@@ -6,6 +6,7 @@ import { TypographyModule } from '../../typography/typography.module';
 import { IconsModule } from '../../icons/icons.module';
 import { ListLayoutComponent } from './list-layout/list-layout.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { DividerModule } from '../divider/divider.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ButtonsModule,
     TypographyModule,
     IconsModule,
+    DividerModule
   ],
   exports: [WidgetBoxComponent, ListLayoutComponent],
   providers: [],

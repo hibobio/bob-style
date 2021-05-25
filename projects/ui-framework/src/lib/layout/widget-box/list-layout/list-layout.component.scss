@@ -5,6 +5,11 @@
   flex-direction: column;
 }
 
+.item-container[data-expanded='true'] {
+  max-height: 419px;
+  overflow-y: scroll;
+}
+
 .list-item {
   height: 70px;
   display: flex;
@@ -22,4 +27,8 @@ b-button ::ng-deep button {
   &:hover {
     background-color: $grey-200;
   }
+}
+
+ b-divider::before,  b-divider::after {
+  border-color: $grey-400 !important;
 }
