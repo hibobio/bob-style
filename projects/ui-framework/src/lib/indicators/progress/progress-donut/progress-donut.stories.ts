@@ -1,18 +1,19 @@
-import { storiesOf } from '@storybook/angular';
 import {
-  text,
-  select,
   boolean,
-  withKnobs,
   number,
+  select,
+  text,
+  withKnobs,
 } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
 import { ComponentGroupType } from '../../../consts';
-import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
-import { ProgressDonutModule } from './progress-donut.module';
-import { randomNumber } from '../../../services/utils/functional-utils';
-import { DonutSize, ProgressSize } from '../progress.enum';
 import { Icons, IconSize } from '../../../icons/icons.enum';
 import { IconsModule } from '../../../icons/icons.module';
+import { randomNumber } from '../../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
+import { DonutSize, ProgressSize } from '../progress.enum';
+import { ProgressDonutModule } from './progress-donut.module';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
@@ -22,7 +23,7 @@ const story2 = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
 );
 
-const template = `<b-progress-donut [size]="size"
+const template = `<b-progress-donut
                   [donutSize]="donutSize"
                   [customSize]="customSize"
                   [data]="{
@@ -193,7 +194,7 @@ const toAdd = () => ({
     icons: Icons,
     iconSize: IconSize,
 
-    size: select('size', [0, ...Object.values(ProgressSize)], 0),
+    // size: select('size', [0, ...Object.values(ProgressSize)], 0),
     donutSize: select('donutSize', [0, ...Object.values(DonutSize)], 0),
     customSize: number('customSize', 0),
 

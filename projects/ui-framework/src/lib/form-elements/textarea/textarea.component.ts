@@ -38,5 +38,6 @@ export class TextareaComponent extends BaseInputElement {
     this.inputTransformers.push((value: string): string => {
       return this.parserService.getPlainText(value);
     });
+    this.outputTransformers = [(value: string) => value?.trim()];
   }
 }

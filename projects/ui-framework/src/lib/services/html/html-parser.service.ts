@@ -1,33 +1,35 @@
 import { Injectable } from '@angular/core';
-import { LinkifyPipe } from '../filters/linkify.pipe';
+
 import { GenericObject } from '../../types';
-import {
-  isString,
-  isObject,
-  isEmptyObject,
-  isEmptyArray,
-  closestNumber,
-  asArray,
-  isDomElement,
-  isFunction,
-  arrayFlatten,
-  isArray,
-} from '../utils/functional-utils';
-import { DOMhelpers } from './dom-helpers.service';
-import { EnforceFontSizeConfig, ProcessCSS } from './html-parser.interface';
-import {
-  HTML_CLEANUP_REPLACERS_DEF,
-  HtmlCleanupReplacer,
-  STYLES_KEEP_ON_DIV,
-  FONTSIZE_KEY_TO_NUM_MAP,
-  LANGUAGE_TESTS,
-  HTML_CLEANUP_REPLACERS,
-  LANGUAGE_ATTRS_DEF,
-} from './html-parser.const';
-import { TreeWalkerTake, TreeWalkerFilter, DOMtags } from './dom-helpers.enum';
-import { GetElementStylesConfig } from './dom-helpers.interface';
+import { LinkifyPipe } from '../filters/linkify.pipe';
 import { DocumentRef } from '../utils/document-ref.service';
+import {
+  arrayFlatten,
+  asArray,
+  closestNumber,
+  isArray,
+  isDomElement,
+  isEmptyArray,
+  isEmptyObject,
+  isFunction,
+  isObject,
+  isString,
+} from '../utils/functional-utils';
+import { DOMtags, TreeWalkerFilter, TreeWalkerTake } from './dom-helpers.enum';
+import { GetElementStylesConfig } from './dom-helpers.interface';
+import { DOMhelpers } from './dom-helpers.service';
 import { HtmlAttrs, HtmlLangs } from './html-helpers.interface';
+import {
+  FONTSIZE_KEY_TO_NUM_MAP,
+  HTML_CLEANUP_REPLACERS,
+  HTML_CLEANUP_REPLACERS_DEF,
+  HTML_TEST,
+  HtmlCleanupReplacer,
+  LANGUAGE_ATTRS_DEF,
+  LANGUAGE_TESTS,
+  STYLES_KEEP_ON_DIV,
+} from './html-parser.const';
+import { EnforceFontSizeConfig, ProcessCSS } from './html-parser.interface';
 
 @Injectable({ providedIn: 'root' })
 export class HtmlParserHelpers {
@@ -635,7 +637,7 @@ export class HtmlParserHelpers {
       return String(html.textContent || '').replace(/\s+/gi, ' ');
     }
 
-    if (isString(html) && !html.match(/[<&]/)) {
+    if (isString(html) && !HTML_TEST.test(html)) {
       return html;
     }
 

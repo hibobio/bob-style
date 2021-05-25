@@ -1078,6 +1078,32 @@ export const isSameDay = (
   return true;
 };
 
+/**
+ *
+ * @param timeA start time in HH:mm format
+ * @param timeB end time in HH:mm format
+ * @returns time difference in HH:mm format.
+ * We assume timeA was earlier than timeB,
+ * so difference between 23:00 and 1:00 will be 2:00.
+ */
+export const timeDifferenceHHmm = (timeA: string, timeB: string): string => {
+  const dayMS = 24 * 3.6e6;
+  const aMS =
+    parseInt(timeA.split(/\D/)[0], 10) * 3.6e6 +
+    parseInt(timeA.split(/\D/)[1], 10) * 60000;
+  let bMS =
+    parseInt(timeB.split(/\D/)[0], 10) * 3.6e6 +
+    parseInt(timeB.split(/\D/)[1], 10) * 60000;
+  if (bMS < aMS) {
+    bMS = bMS + dayMS;
+  }
+  const diffMS = Math.abs(aMS - bMS);
+  const diffH = Math.floor(diffMS / 3.6e6);
+  const diffM = (diffMS - diffH * 3.6e6) / 60000;
+
+  return `${padWith0(diffH)}:${padWith0(diffM)}`;
+};
+
 // ----------------------
 // REGEX
 // ----------------------

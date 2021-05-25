@@ -17,7 +17,7 @@ import { Keys } from '../../enums';
 import { InputTypes } from '../../form-elements/input/input.enum';
 // tslint:disable-next-line: max-line-length
 import { FormElementKeyboardCntrlService } from '../../form-elements/services/keyboard-cntrl.service';
-import { HTML_TAG_TEST } from '../../services/html/html-parser.const';
+import { HTML_TEST } from '../../services/html/html-parser.const';
 import {
   MentionsOption,
   MentionsService,
@@ -64,9 +64,8 @@ export class EditCommentComponent
 
   @Input() public mentionsList: MentionsOption[];
 
-  @Output() sendComment: EventEmitter<CommentItemDto> = new EventEmitter<
-    CommentItemDto
-  >();
+  @Output()
+  sendComment: EventEmitter<CommentItemDto> = new EventEmitter();
 
   readonly inputTypes = InputTypes;
   readonly avatarSize = AvatarSize;
@@ -78,7 +77,7 @@ export class EditCommentComponent
   public get isHtml(): boolean {
     return (
       Boolean(this.tribute || this.mentionsList?.length) ||
-      HTML_TAG_TEST.test(this.comment?.content)
+      HTML_TEST.test(this.comment?.content)
     );
   }
 
